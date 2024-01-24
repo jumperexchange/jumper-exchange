@@ -1,13 +1,20 @@
 import type { Breakpoint, CSSObject } from '@mui/material';
-import { Box, Grid, Typography, alpha, useTheme } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { Box, Skeleton, Typography, useTheme } from '@mui/material';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useStrapi, useSwipe } from 'src/hooks';
 import type { BlogArticleData } from 'src/types';
 import type { HandleNavigationIndexProps } from 'src/utils';
 import { handleNavigationIndex } from 'src/utils';
-import { BlogHighlightsImage, Circle } from '.';
+import {
+  BlogHighlightsCard,
+  BlogHighlightsContent,
+  BlogHighlightsImage,
+  BlogHightsContainer,
+  Circle,
+  SkeletonCircle,
+} from '.';
 import { Button } from '../Button';
 
 interface BlogHighlightsProps {
@@ -30,12 +37,23 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
     const index = event.currentTarget.getAttribute('data-index');
 
     // Log the data attributes
-    index && setActivePost(parseInt(index));
+    !!index && setActivePost(parseInt(index));
   };
+
   const { data: blogArticles, url } = useStrapi<BlogArticleData>({
     contentType: 'blog-articles',
     queryKey: 'blog-articles',
   });
+
+  const maxItems = useMemo(
+    () =>
+      blogArticles?.length > maxHighlights
+        ? maxHighlights
+        : blogArticles?.length,
+    [blogArticles],
+  );
+
+  const [num, setNum] = useState(0);
 
   const handleButtonClick = (index: number) => {
     console.log('index', index);
@@ -58,33 +76,33 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
         active,
         max,
       });
-      console.log({ direction, active, max, newItem });
       newItem !== undefined && setActivePost(newItem);
     },
     [],
   );
 
   const swipe = useSwipe({
-    onSwipedLeft: () =>
-      handlePagination({
+    onSwipedLeft: () => {
+      console.log('blogArticles', blogArticles, activePost, maxItems);
+      return handlePagination({
         direction: 'next',
         active: activePost,
-        max:
-          blogArticles.length > maxHighlights
-            ? maxHighlights
-            : blogArticles.length,
-      }),
+        max: maxItems,
+      });
+    },
     onSwipedRight: () =>
       handlePagination({
         direction: 'prev',
         active: activePost,
-        max:
-          blogArticles.length > maxHighlights
-            ? maxHighlights
-            : blogArticles.length,
+        max: maxItems,
       }),
     onSwipe: () => {
       console.log('swiping');
+      setNum((state) => state + 1);
+      if (num === 100) {
+        setNum(0);
+        // debugger;
+      }
     },
     onClick: () => {
       console.log('CLICK');
@@ -100,17 +118,13 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
             activePost &&
               navigate(`/blog/${blogArticles[activePost].attributes.Slug}`);
             window.scrollTo({ top: 0, behavior: 'smooth' });
-
             break;
           case 39: // Right arrow key
             console.log('Right arrow key pressed!', activePost && true);
             handlePagination({
               direction: 'next',
               active: activePost,
-              max:
-                blogArticles.length > maxHighlights
-                  ? maxHighlights
-                  : blogArticles.length,
+              max: maxItems,
             });
             break;
           case 37: // Left arrow key
@@ -118,10 +132,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
             handlePagination({
               direction: 'prev',
               active: activePost,
-              max:
-                blogArticles.length > maxHighlights
-                  ? maxHighlights
-                  : blogArticles.length,
+              max: maxItems,
             });
             break;
           default:
@@ -135,150 +146,115 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
-  }, [activePost, blogArticles, handlePagination, navigate]);
+  }, [activePost, blogArticles, handlePagination, maxItems, navigate]);
 
-  return blogArticles ? (
-    <Box
-      sx={{
-        position: 'relative',
-        display: 'grid',
-        gridTemplateColumns: '1fr',
-        [theme.breakpoints.up('md' as Breakpoint)]: {
-          // height: 600,
-        },
-      }}
-    >
-      {blogArticles.map(
-        (el, index, source) =>
-          index < maxHighlights && (
-            <Grid
-              key={`blog-highlights-${index}`}
-              container
+  return (
+    <BlogHightsContainer>
+      {blogArticles ? (
+        blogArticles.map((el, index) => {
+          console.log(el, index, index === activePost);
+          return (
+            index < maxItems && (
+              <BlogHighlightsCard
+                key={`blog-highlights-${index}`}
+                index={index}
+                activePost={activePost}
+                active={index === activePost}
+                maxHighlights={maxItems}
+                swipe={swipe}
+                container
+                {...swipe.swipeHandlers}
+              >
+                <BlogHighlightsContent>
+                  <Typography
+                    variant="lifiHeaderMedium"
+                    sx={{
+                      userSelect: 'none',
+                      marginTop: theme.spacing(2),
+                      marginBottom: theme.spacing(2),
+                      maxHeight: 156,
+                      overflow: 'hidden',
+                      [theme.breakpoints.up('md' as Breakpoint)]: {
+                        marginTop: theme.spacing(0),
+                      },
+                    }}
+                  >
+                    {blogArticles[index].attributes.Title}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      userSelect: 'none',
+                      marginBottom: theme.spacing(3),
+                      maxHeight: 172,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {blogArticles[index].attributes.Subtitle}
+                  </Typography>
+                </BlogHighlightsContent>
+                <BlogHighlightsImage
+                  onClick={() => handleButtonClick(index)}
+                  draggable={false}
+                  src={`${url.origin}${blogArticles[index].attributes.Image.data.attributes.url}`}
+                  alt={
+                    blogArticles[index].attributes.Image.data.attributes
+                      .alternativeText
+                  }
+                />
+              </BlogHighlightsCard>
+            )
+          );
+        })
+      ) : (
+        <BlogHighlightsCard key={`blog-highlights-skeleton`} container>
+          <BlogHighlightsContent>
+            <Skeleton
+              variant="text"
               sx={{
-                display: 'grid',
-                gridColumn: 1,
-                gridRow: 1,
-                backgroundColor: alpha(theme.palette.primary.main, 0.25),
-                // position: 'absolute',
-                top: theme.spacing(-4),
-                ...(activePost === index && {
-                  opacity: 1,
-                }),
-                ...(activePost !== index && {
-                  opacity: 0,
-                  zIndex: 100,
-                  pointerEvents: 'none',
-                }),
-                // ...(swipe.swipeListener.activeTouch &&
-                //   swipe.swipeListener.distance === 0 && {
-                //     opacity: 0,
-                //   }),
-                ...(swipe.swipeListener.activeTouch &&
-                  swipe.swipeListener.distance > 0 &&
-                  index ===
-                    handleNavigationIndex({
-                      direction: 'next',
-                      active: activePost,
-                      max: maxHighlights,
-                    }) && {
-                    opacity: Math.abs(swipe.swipeListener.distance) / 250,
-                  }),
-                ...(swipe.swipeListener.activeTouch &&
-                  swipe.swipeListener.distance < 0 &&
-                  index ===
-                    handleNavigationIndex({
-                      direction: 'prev',
-                      active: activePost,
-                      max: maxHighlights,
-                    }) && {
-                    opacity: Math.abs(swipe.swipeListener.distance) / 250,
-                  }),
-                ...(swipe.swipeListener.activeTouch &&
-                  swipe.swipeListener.distance < 0 &&
-                  index === activePost && {
-                    opacity: 1 - Math.abs(swipe.swipeListener.distance) / 250,
-                  }),
-                ...(swipe.swipeListener.activeTouch &&
-                  swipe.swipeListener.distance > 0 &&
-                  index === activePost && {
-                    opacity: 1 - Math.abs(swipe.swipeListener.distance) / 250,
-                  }),
-                margin: theme.spacing(4, 6),
-                gridColumnGap: '2rem',
-                borderRadius: '36px',
-                width: 'auto',
-                padding: theme.spacing(4),
-                gridRowGap: 4,
-                gridTemplateRows: 'auto',
-                gridTemplateColumns: '1fr',
-                alignItems: 'center',
+                marginTop: theme.spacing(2),
+                marginBottom: theme.spacing(2),
+                height: 120,
                 [theme.breakpoints.up('md' as Breakpoint)]: {
-                  gridTemplateColumns: '.75fr 1fr',
-                  gridTemplateRows: '1fr 80px',
-                  height: 600,
+                  marginTop: theme.spacing(0),
                 },
               }}
-              {...swipe.swipeHandlers}
-            >
-              <Box
-                sx={{
-                  gridRow: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignSelf: 'flex-end',
-                  justifyContent: 'flex-end',
-                  // alignItems: 'center',
-                  padding: theme.spacing(0, 6, 2, 2),
-                  [theme.breakpoints.up('md' as Breakpoint)]: {
-                    paddingBottom: theme.spacing(10),
-                    gridRow: 'auto',
-                  },
-                }}
-              >
-                <Typography
-                  variant="lifiHeaderMedium"
-                  sx={{
-                    marginTop: theme.spacing(2),
-                    marginBottom: theme.spacing(2),
-                    maxHeight: 156,
-                    overflow: 'hidden',
-                    [theme.breakpoints.up('md' as Breakpoint)]: {
-                      marginTop: theme.spacing(0),
-                    },
-                  }}
-                >
-                  {el.attributes.Title}
-                </Typography>
-                <Typography
-                  sx={{
-                    marginBottom: theme.spacing(3),
-                    maxHeight: 172,
-                    overflow: 'hidden',
-                  }}
-                >
-                  {el.attributes.Subtitle}
-                </Typography>
-              </Box>
-              <BlogHighlightsImage
-                onClick={() => handleButtonClick(index)}
-                draggable={false}
-                src={`${url.origin}${blogArticles[index].attributes.Image.data.attributes.url}`}
-                alt={
-                  blogArticles[activePost].attributes.Image.data.attributes
-                    .alternativeText
-                }
-              />
-            </Grid>
-          ),
+            />
+            <Skeleton
+              variant="text"
+              sx={{
+                marginBottom: theme.spacing(3),
+                height: 72,
+              }}
+            />
+          </BlogHighlightsContent>
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              borderRadius: '14px',
+              height: 300,
+              gridRow: '1',
+              gridColumn: '1 / span 2',
+              width: '100%',
+              [theme.breakpoints.up('md' as Breakpoint)]: {
+                gridRow: '1 / span 2',
+                gridColumn: '2',
+              },
+            }}
+          />
+        </BlogHighlightsCard>
       )}
       <Box
         sx={{
           position: 'absolute',
           bottom: 0,
           left: 0,
-          margin: theme.spacing(4, 6),
+          margin: theme.spacing(4, 2.5),
           padding: theme.spacing(4),
           zIndex: 100,
+          [theme.breakpoints.up('md' as Breakpoint)]: {
+            margin: theme.spacing(4, 6),
+            padding: theme.spacing(4, 6),
+          },
         }}
       >
         <Button
@@ -289,69 +265,36 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
           {t('blog.goToArticle')}
         </Button>
         <Box sx={{ display: 'flex' }}>
-          {blogArticles.map(
-            (_, paginationIndex) =>
-              paginationIndex < maxHighlights && (
-                <Circle
-                  key={`pagination-${paginationIndex}`}
-                  data-index={paginationIndex}
-                  active={paginationIndex === activePost}
-                  onClick={handleChange}
-                  sx={{
-                    ...(swipe.swipeListener.activeTouch &&
-                      swipe.swipeListener.distance > 0 &&
-                      paginationIndex ===
-                        handleNavigationIndex({
-                          direction: 'next',
-                          active: activePost,
-                          max: maxHighlights,
-                        }) && {
-                        opacity:
-                          Math.abs(swipe.swipeListener.distance) / 250 + 0.16,
-                      }),
-                    ...(swipe.swipeListener.activeTouch &&
-                      swipe.swipeListener.distance < 0 &&
-                      paginationIndex ===
-                        handleNavigationIndex({
-                          direction: 'prev',
-                          active: activePost,
-                          max: maxHighlights,
-                        }) && {
-                        opacity:
-                          Math.abs(swipe.swipeListener.distance) / 250 + 0.16,
-                      }),
-                    ...(swipe.swipeListener.activeTouch &&
-                      swipe.swipeListener.distance < 0 &&
-                      paginationIndex === activePost && {
-                        opacity: Math.max(
-                          0.16,
-                          1 -
-                            Math.abs(
-                              swipe.swipeListener.distance < 250
-                                ? swipe.swipeListener.distance / 250
-                                : 0.84,
-                            ),
-                        ),
-                      }),
-                    ...(swipe.swipeListener.activeTouch &&
-                      swipe.swipeListener.distance > 0 &&
-                      paginationIndex === activePost && {
-                        opacity: Math.max(
-                          0.16,
-                          1 -
-                            Math.abs(
-                              swipe.swipeListener.distance < 250
-                                ? swipe.swipeListener.distance / 250
-                                : 0.84,
-                            ),
-                        ),
-                      }),
-                  }}
-                />
-              ),
+          {blogArticles?.length ? (
+            blogArticles.map(
+              (_, paginationIndex) =>
+                paginationIndex < maxItems && (
+                  <Circle
+                    key={`pagination-${paginationIndex}`}
+                    data-index={paginationIndex}
+                    paginationIndex={paginationIndex}
+                    active={paginationIndex === activePost}
+                    maxHighlights={maxItems}
+                    onClick={handleChange}
+                    swipe={swipe}
+                    activePost={activePost}
+                  />
+                ),
+            )
+          ) : (
+            <>
+              <SkeletonCircle
+                variant="rounded"
+                sx={{ backgroundColor: theme.palette.grey[800] }}
+              />
+              <SkeletonCircle variant="rounded" />
+              <SkeletonCircle variant="rounded" />
+              <SkeletonCircle variant="rounded" />
+              <SkeletonCircle variant="rounded" />
+            </>
           )}
         </Box>
       </Box>
-    </Box>
-  ) : null;
+    </BlogHightsContainer>
+  );
 };

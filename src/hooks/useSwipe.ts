@@ -29,7 +29,7 @@ interface SwipeHandlers {
   onMouseLeave: () => void;
 }
 
-interface SwipeOutput {
+export interface SwipeOutput {
   swipeHandlers: SwipeHandlers;
   swipeListener: SwipeListener;
 }
