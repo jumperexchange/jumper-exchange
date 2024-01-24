@@ -51,7 +51,7 @@ export const Tab = styled(MuiTab, {
   fontWeight: '700',
   fontSize: '16px',
   lineHeight: '20px',
-  margin: '6px 4px',
+  margin: theme.spacing(0.75, 0.5),
   background: 'transparent',
   minHeight: 'unset',
   color:
