@@ -1,14 +1,14 @@
+import type {
+  MultisigConfig,
+  MultisigTransaction,
+  MultisigTxDetails,
+} from '@lifi/sdk';
 import { type Process, type Route } from '@lifi/sdk';
 import type { GatewayTransactionDetails } from '@safe-global/safe-apps-sdk';
 import SafeAppsSDK, { TransactionStatus } from '@safe-global/safe-apps-sdk';
 import { useMultisigStore } from 'src/stores';
 import type { MultisigWidgetConfig } from 'src/types';
 import { useAccounts } from './useAccounts';
-import type {
-  MultisigConfig,
-  MultisigTransaction,
-  MultisigTxDetails,
-} from '@lifi/sdk/src/_types/core/EVM/types';
 
 export const useMultisig = () => {
   const { account } = useAccounts();
