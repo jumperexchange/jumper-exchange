@@ -44,7 +44,7 @@ export const useSwipe = (input: SwipeInput): SwipeOutput => {
   const isRightSwipe = distance < -minSwipeDistance;
 
   const onTouchStart = (e: TouchEvent) => {
-    setTouchEnd(0); // otherwise the swipe is fired even with usual touch events
+    setTouchEnd(e.targetTouches[0].clientX); // otherwise the swipe is fired even with usual touch events
     setTouchStart(e.targetTouches[0].clientX);
     setActiveTouch(true);
     console.log('touch start', e.targetTouches[0].clientX);
@@ -65,8 +65,10 @@ export const useSwipe = (input: SwipeInput): SwipeOutput => {
   };
 
   const onTouchMove = (e: TouchEvent) => {
-    setTouchEnd(touchStart - e.targetTouches[0].clientX);
-    input.onSwipe && input.onSwipe({ isLeftSwipe, isRightSwipe });
+    if (activeTouch) {
+      setTouchEnd(e.targetTouches[0].clientX);
+      input.onSwipe && input.onSwipe({ isLeftSwipe, isRightSwipe });
+    }
   };
 
   const onMouseMove: MouseEventHandler<HTMLDivElement> = (e) => {

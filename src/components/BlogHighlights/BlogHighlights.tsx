@@ -56,14 +56,6 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
   const [num, setNum] = useState(0);
 
   const handleButtonClick = (index: number) => {
-    console.log('index', index);
-    // if (!!index) {
-    console.log(
-      'HANDLE BUTTON CLICK',
-      swipe.swipeListener.activeTouch,
-      blogArticles[index],
-      index,
-    );
     navigate(`/blog/${blogArticles[index].attributes.Slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     // }
@@ -83,21 +75,22 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
 
   const swipe = useSwipe({
     onSwipedLeft: () => {
-      console.log('blogArticles', blogArticles, activePost, maxItems);
+      console.log('swipe left');
       return handlePagination({
         direction: 'next',
         active: activePost,
         max: maxItems,
       });
     },
-    onSwipedRight: () =>
+    onSwipedRight: () => {
+      console.log('swipe right');
       handlePagination({
         direction: 'prev',
         active: activePost,
         max: maxItems,
-      }),
+      });
+    },
     onSwipe: () => {
-      console.log('swiping');
       setNum((state) => state + 1);
       if (num === 100) {
         setNum(0);
@@ -152,7 +145,6 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
     <BlogHightsContainer>
       {blogArticles ? (
         blogArticles.map((el, index, source) => {
-          console.log(el, index, index === activePost);
           return (
             index < maxItems && (
               <BlogHighlightsCard

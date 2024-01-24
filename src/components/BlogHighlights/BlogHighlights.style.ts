@@ -31,10 +31,10 @@ export interface BlogHighlightsCardProps extends Omit<GridProps, 'component'> {
 
 export const BlogHighlightsCard = styled(Grid, {
   shouldForwardProp: (prop) =>
-    // prop !== 'index' &&
-    // prop !== 'activePost' &&
-    // prop !== 'maxHighlights' &&
-    // prop !== 'active' &&
+    prop !== 'index' &&
+    prop !== 'activePost' &&
+    prop !== 'maxHighlights' &&
+    prop !== 'active' &&
     prop !== 'swipe',
 })<BlogHighlightsCardProps>(
   ({ theme, index, activePost, maxHighlights, swipe }) => ({
@@ -68,53 +68,6 @@ export const BlogHighlightsCard = styled(Grid, {
       zIndex: 100,
       pointerEvents: 'none',
     }),
-    // ...(swipe.swipeListener.activeTouch &&
-    //   swipe.swipeListener.distance === 0 && {
-    //     opacity: 0,
-    //   }),
-    // ...(activePost &&
-    //   maxHighlights &&
-    //   swipe?.swipeListener.activeTouch &&
-    //   swipe.swipeListener.distance > 0 &&
-    //   index === 1 && {
-    //     opacity: Math.abs(swipe.swipeListener.distance) / 250,
-    //     backgroundColor: 'red',
-    //   }),
-
-    // ...(maxHighlights &&
-    //   activePost &&
-    //   swipe?.swipeListener.activeTouch &&
-    //   swipe.swipeListener.distance > 0 &&
-    //   index ===
-    //     handleNavigationIndex({
-    //       direction: 'next',
-    //       active: activePost,
-    //       max: maxHighlights,
-    //     }) && {
-    //     opacity: Math.abs(swipe.swipeListener.distance) / 250,
-    //   }),
-    // ...(activePost &&
-    //   maxHighlights &&
-    //   swipe?.swipeListener.activeTouch &&
-    //   swipe.swipeListener.distance < 0 &&
-    //   index ===
-    //     handleNavigationIndex({
-    //       direction: 'prev',
-    //       active: activePost,
-    //       max: maxHighlights,
-    //     }) && {
-    //     opacity: Math.abs(swipe.swipeListener.distance) / 250,
-    //   }),
-    // ...(swipe?.swipeListener.activeTouch &&
-    //   swipe.swipeListener.distance < 0 &&
-    //   index === activePost && {
-    //     opacity: 1 - Math.abs(swipe.swipeListener.distance) / 250,
-    //   }),
-    // ...(swipe?.swipeListener.activeTouch &&
-    //   swipe.swipeListener.distance > 0 &&
-    //   index === activePost && {
-    //     opacity: 1 - Math.abs(swipe.swipeListener.distance) / 250,
-    //   }),
   }),
 );
 
@@ -127,7 +80,12 @@ export interface CircleProps extends Omit<CardProps, 'component'> {
   maxHighlights: number;
 }
 export const Circle = styled('span', {
-  shouldForwardProp: (prop) => prop !== 'active',
+  shouldForwardProp: (prop) =>
+    prop !== 'active' &&
+    prop !== 'swipe' &&
+    prop !== 'paginationIndex' &&
+    prop !== 'activePost' &&
+    prop !== 'maxHighlights',
 })<CircleProps>(
   ({ theme, active, swipe, paginationIndex, activePost, maxHighlights }) => ({
     display: 'block',
