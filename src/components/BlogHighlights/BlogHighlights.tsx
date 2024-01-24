@@ -151,7 +151,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
   return (
     <BlogHightsContainer>
       {blogArticles ? (
-        blogArticles.map((el, index) => {
+        blogArticles.map((el, index, source) => {
           console.log(el, index, index === activePost);
           return (
             index < maxItems && (
@@ -160,8 +160,40 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
                 index={index}
                 activePost={activePost}
                 active={index === activePost}
-                maxHighlights={maxItems}
+                maxHighlights={source.length}
                 swipe={swipe}
+                sx={{
+                  ...(swipe.swipeListener.activeTouch &&
+                    swipe.swipeListener.distance > 0 &&
+                    index ===
+                      handleNavigationIndex({
+                        direction: 'next',
+                        active: activePost,
+                        max: source.length,
+                      }) && {
+                      opacity: Math.abs(swipe.swipeListener.distance) / 250,
+                    }),
+                  ...(swipe.swipeListener.activeTouch &&
+                    swipe.swipeListener.distance < 0 &&
+                    index ===
+                      handleNavigationIndex({
+                        direction: 'prev',
+                        active: activePost,
+                        max: source.length,
+                      }) && {
+                      opacity: Math.abs(swipe.swipeListener.distance) / 250,
+                    }),
+                  ...(swipe.swipeListener.activeTouch &&
+                    swipe.swipeListener.distance < 0 &&
+                    index === activePost && {
+                      opacity: 1 - Math.abs(swipe.swipeListener.distance) / 250,
+                    }),
+                  ...(swipe.swipeListener.activeTouch &&
+                    swipe.swipeListener.distance > 0 &&
+                    index === activePost && {
+                      opacity: 1 - Math.abs(swipe.swipeListener.distance) / 250,
+                    }),
+                }}
                 container
                 {...swipe.swipeHandlers}
               >

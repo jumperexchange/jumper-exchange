@@ -81,40 +81,40 @@ export const BlogHighlightsCard = styled(Grid, {
     //     backgroundColor: 'red',
     //   }),
 
-    ...(maxHighlights &&
-      activePost &&
-      swipe?.swipeListener.activeTouch &&
-      swipe.swipeListener.distance > 0 &&
-      index ===
-        handleNavigationIndex({
-          direction: 'next',
-          active: activePost,
-          max: maxHighlights,
-        }) && {
-        opacity: Math.abs(swipe.swipeListener.distance) / 250,
-      }),
-    ...(activePost &&
-      maxHighlights &&
-      swipe?.swipeListener.activeTouch &&
-      swipe.swipeListener.distance < 0 &&
-      index ===
-        handleNavigationIndex({
-          direction: 'prev',
-          active: activePost,
-          max: maxHighlights,
-        }) && {
-        opacity: Math.abs(swipe.swipeListener.distance) / 250,
-      }),
-    ...(swipe?.swipeListener.activeTouch &&
-      swipe.swipeListener.distance < 0 &&
-      index === activePost && {
-        opacity: 1 - Math.abs(swipe.swipeListener.distance) / 250,
-      }),
-    ...(swipe?.swipeListener.activeTouch &&
-      swipe.swipeListener.distance > 0 &&
-      index === activePost && {
-        opacity: 1 - Math.abs(swipe.swipeListener.distance) / 250,
-      }),
+    // ...(maxHighlights &&
+    //   activePost &&
+    //   swipe?.swipeListener.activeTouch &&
+    //   swipe.swipeListener.distance > 0 &&
+    //   index ===
+    //     handleNavigationIndex({
+    //       direction: 'next',
+    //       active: activePost,
+    //       max: maxHighlights,
+    //     }) && {
+    //     opacity: Math.abs(swipe.swipeListener.distance) / 250,
+    //   }),
+    // ...(activePost &&
+    //   maxHighlights &&
+    //   swipe?.swipeListener.activeTouch &&
+    //   swipe.swipeListener.distance < 0 &&
+    //   index ===
+    //     handleNavigationIndex({
+    //       direction: 'prev',
+    //       active: activePost,
+    //       max: maxHighlights,
+    //     }) && {
+    //     opacity: Math.abs(swipe.swipeListener.distance) / 250,
+    //   }),
+    // ...(swipe?.swipeListener.activeTouch &&
+    //   swipe.swipeListener.distance < 0 &&
+    //   index === activePost && {
+    //     opacity: 1 - Math.abs(swipe.swipeListener.distance) / 250,
+    //   }),
+    // ...(swipe?.swipeListener.activeTouch &&
+    //   swipe.swipeListener.distance > 0 &&
+    //   index === activePost && {
+    //     opacity: 1 - Math.abs(swipe.swipeListener.distance) / 250,
+    //   }),
   }),
 );
 
