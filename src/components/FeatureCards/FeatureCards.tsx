@@ -21,35 +21,30 @@ export const FeatureCards = () => {
       shallow,
     );
   // get english response
-  const { featureCards: data, isSuccess } = useFeatureCards();
+  const { featureCards: defaultFeatureCards, isSuccess } = useFeatureCards();
   // get translated response
-  const {
-    featureCards: translatedFeatureCards,
-    isSuccess: translatedFeatureCardsIsSuccess,
-  } = useFeatureCards({ translation: true });
+  const { featureCards: translatedFeatureCards } = useFeatureCards({
+    translation: true,
+  });
 
   // remove null´s (missing entries) from translated object
   const cleanedTranslation = useMemo(() => {
     const cleanedTranslation = translatedFeatureCards?.map((el) =>
       removeEmpty(el),
     );
-    return cleanedTranslation;
-  }, [translatedFeatureCards]);
+    // merge
+    const filteredResponse = defaultFeatureCards?.map((el) => {
+      const translatedItem = cleanedTranslation?.find(
+        (foundItem) =>
+          foundItem?.attributes?.DisplayConditions.id ===
+          el.attributes?.DisplayConditions.id,
+      );
+      if (translatedItem) {
+        return deepMerge(el, translatedItem);
+      }
+      return el;
+    });
 
-  // merge
-  const filteredResponse = data?.map((el) => {
-    const translatedItem = cleanedTranslation?.find(
-      (foundItem) =>
-        foundItem?.attributes?.DisplayConditions.id ===
-        el.attributes?.DisplayConditions.id,
-    );
-    if (translatedItem) {
-      return deepMerge(el, translatedItem);
-    }
-    return el;
-  });
-
-  const featureCardsFetched = useMemo(() => {
     if (Array.isArray(filteredResponse) && !!filteredResponse.length) {
       return filteredResponse?.filter(
         (el, index) =>
@@ -58,16 +53,19 @@ export const FeatureCards = () => {
           !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
       );
     }
-    // trigger featureCardsFetched-filtering only once
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [languageMode, isSuccess, translatedFeatureCardsIsSuccess]);
+  }, [
+    defaultFeatureCards,
+    disabledFeatureCards,
+    isSuccess,
+    translatedFeatureCards,
+  ]);
 
   useEffect(() => {
-    if (Array.isArray(featureCardsFetched)) {
-      !!featureCardsFetched.length &&
-        setFeatureCards(featureCardsFetched?.slice(0, 4));
+    if (Array.isArray(cleanedTranslation)) {
+      !!cleanedTranslation.length &&
+        setFeatureCards(cleanedTranslation?.slice(0, 4));
     }
-  }, [featureCardsFetched]);
+  }, [cleanedTranslation]);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
   return (
