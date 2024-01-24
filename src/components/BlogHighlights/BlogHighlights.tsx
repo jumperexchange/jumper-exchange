@@ -285,7 +285,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
           zIndex: 100,
           [theme.breakpoints.up('md' as Breakpoint)]: {
             margin: theme.spacing(4, 6),
-            padding: theme.spacing(4, 6),
+            padding: theme.spacing(4),
           },
         }}
       >
