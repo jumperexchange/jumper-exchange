@@ -17,11 +17,6 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
   const { closeAllMenus } = useMenuStore((state) => state);
 
   const connectHandler = async () => {
-    const identityCheckPassed = await isWalletInstalledAsync(evm.id);
-    if (!identityCheckPassed) {
-      //   onNotInstalled(connector);
-      return;
-    }
     connect({ evm });
     closeAllMenus();
   };
