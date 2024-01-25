@@ -58,7 +58,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           ) : null,
         )}
         <WalletButton
-          sx={{ width: 324 }}
+          sx={{ width: '100%' }}
           onClick={() => {
             closeAllMenus();
             setWalletSelectMenuState(true);
