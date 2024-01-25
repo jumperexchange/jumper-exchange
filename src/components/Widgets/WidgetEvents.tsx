@@ -3,7 +3,7 @@ import { useUserTracking } from 'src/hooks';
 
 import type {
   ChainTokenSelected,
-  // RouteContactSupport,
+  ContactSupport,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
 } from '@lifi/widget';
@@ -172,10 +172,10 @@ export function WidgetEvents() {
         },
       });
     };
-    // TODO: Discuss what is up here
-    // const onRouteContactSupport = (supportId: RouteContactSupport) => {
-    //   setSupportModalState(true);
-    // };
+
+    const onRouteContactSupport = (supportId: ContactSupport) => {
+      setSupportModalState(true);
+    };
 
     const handleMultisigChainTokenSelected = (
       destinationData: ChainTokenSelected,
@@ -191,7 +191,7 @@ export function WidgetEvents() {
     );
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
-    // widgetEvents.on(WidgetEvent.RouteContactSupport, onRouteContactSupport);
+    widgetEvents.on(WidgetEvent.ContactSupport, onRouteContactSupport);
     widgetEvents.on(
       WidgetEvent.DestinationChainTokenSelected,
       handleMultisigChainTokenSelected,
