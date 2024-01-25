@@ -119,7 +119,6 @@ export const useAccountConnect = () => {
       wagmiDisconnect();
       await connectAsync({ connector: combinedWallet.evm! });
       onWalletConnect(combinedWallet.evm.name);
-      console.log(combinedWallet.evm);
       trackConnectWallet({
         walletName: combinedWallet.evm.name,
         chainType: ChainType.EVM,
