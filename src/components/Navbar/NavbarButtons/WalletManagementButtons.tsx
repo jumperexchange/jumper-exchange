@@ -39,8 +39,7 @@ export const WalletManagementButtons: React.FC<
   const { chains } = useChains();
   const { trackEvent } = useUserTracking();
   const { account } = useAccounts();
-  const connectButtonRef = useRef<any>();
-  const digestButtonRef = useRef<any>();
+  const walletManagementButtonsRef = useRef<any>();
 
   const {
     openWalletSelectMenu,
@@ -99,61 +98,59 @@ export const WalletManagementButtons: React.FC<
     setWalletMenuState(!openWalletMenu);
   };
 
-  return !account.address ? (
-    // Connect/WalletSelect-Button -->
+  return (
     <>
-      <div ref={connectButtonRef}>
-        <Button
-          // Used in the widget
-          variant="primary"
-          id="connect-wallet-button"
-          onClick={handleWalletSelectClick}
-          styles={{
-            display: 'none',
-            [theme.breakpoints.up('sm' as Breakpoint)]: {
-              padding: theme.spacing(3),
-              display: 'inline-flex !important',
-            },
-          }}
-        >
-          {connectButtonLabel}
-        </Button>
+      <div ref={walletManagementButtonsRef}>
+        {!account.address ? (
+          <Button
+            // Used in the widget
+            variant="primary"
+            id="connect-wallet-button"
+            onClick={handleWalletSelectClick}
+            styles={{
+              display: 'none',
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                padding: theme.spacing(3),
+                display: 'inline-flex !important',
+              },
+            }}
+          >
+            {connectButtonLabel}
+          </Button>
+        ) : (
+          <Button
+            variant="secondary"
+            id="wallet-digest-button"
+            styles={{
+              display: 'flex',
+              placeContent: 'space-between',
+              justifyContent: 'center',
+              margin: 'auto',
+              position: 'relative',
+              p: theme.spacing(0.75),
+              pr: theme.spacing(2),
+              width: 'auto',
+            }}
+            onClick={handleWalletMenuClick}
+          >
+            {isSuccess && activeChain ? (
+              <WalletMgmtAvatarContainer>
+                <WalletMgmtWalletAvatar src={walletIcon} />
+                <WalletMgmtChainAvatar
+                  src={activeChain.logoURI || 'empty'}
+                  alt={`${activeChain.name}chain-logo`}
+                />
+              </WalletMgmtAvatarContainer>
+            ) : null}
+            <Typography variant={'lifiBodyMediumStrong'} width={'auto'}>
+              {_walletDigest}
+            </Typography>
+          </Button>
+        )}
       </div>
-      <WalletSelectMenu anchorEl={connectButtonRef.current} />
-      <EcosystemSelectMenu anchorEl={connectButtonRef.current} />
+      <WalletMenu anchorEl={walletManagementButtonsRef.current} />
+      <WalletSelectMenu anchorEl={walletManagementButtonsRef.current} />
+      <EcosystemSelectMenu anchorEl={walletManagementButtonsRef.current} />
     </>
-  ) : (
-    // Wallet-Menu-Button -->
-    <div ref={digestButtonRef}>
-      <Button
-        variant="secondary"
-        id="wallet-digest-button"
-        styles={{
-          display: 'flex',
-          placeContent: 'space-between',
-          justifyContent: 'center',
-          margin: 'auto',
-          position: 'relative',
-          p: theme.spacing(0.75),
-          pr: theme.spacing(2),
-          width: 'auto',
-        }}
-        onClick={handleWalletMenuClick}
-      >
-        {isSuccess && activeChain ? (
-          <WalletMgmtAvatarContainer>
-            <WalletMgmtWalletAvatar src={walletIcon} />
-            <WalletMgmtChainAvatar
-              src={activeChain.logoURI || 'empty'}
-              alt={`${activeChain.name}chain-logo`}
-            />
-          </WalletMgmtAvatarContainer>
-        ) : null}
-        <Typography variant={'lifiBodyMediumStrong'} width={'auto'}>
-          {_walletDigest}
-        </Typography>
-      </Button>
-      <WalletMenu anchorEl={digestButtonRef.current} />
-    </div>
   );
 };
