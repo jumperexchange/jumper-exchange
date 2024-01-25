@@ -27,18 +27,18 @@ export function useUserTracking() {
      */
     ({ disableTrackingTool, account, wallet }: TrackConnectWalletProps) => {
       if (account?.address && account?.chainId && wallet) {
-        if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-          arcx?.wallet({
-            account: `${account.address}`,
-            chainId: `${account.chainId}`,
-          });
-        }
-        if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
-          hotjar.identify(account.address, {
-            [TrackingEventParameter.Wallet]: wallet.name,
-          });
-          hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
-        }
+        arcx?.wallet({
+          account: `${account.address}`,
+          chainId: `${account.chainId}`,
+        });
+
+        hotjar.identify(account.address, {
+          [TrackingEventParameter.Wallet]: wallet.name,
+        });
+        hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
+        window.gtag('event', TrackingAction.ConnectWallet, {
+          data: { [TrackingEventParameter.Wallet]: wallet.name },
+        });
       }
     },
     [arcx],
