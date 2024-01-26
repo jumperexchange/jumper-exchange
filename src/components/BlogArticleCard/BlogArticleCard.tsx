@@ -1,4 +1,5 @@
-import { CardContent, Typography, useTheme } from '@mui/material';
+import type { CSSObject } from '@mui/material';
+import { CardContent, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import type { StrapiImageData } from 'src/types';
 import { BlogArticleCardContainer, BlogArticleCardImage } from '.';
@@ -8,15 +9,16 @@ interface BlogArticleCardProps {
   image: StrapiImageData;
   title: string;
   slug: string;
+  styles?: CSSObject;
 }
 
 export const BlogArticleCard = ({
   baseUrl,
   image,
   title,
+  styles,
   slug,
 }: BlogArticleCardProps) => {
-  const theme = useTheme();
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -24,20 +26,17 @@ export const BlogArticleCard = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   return (
-    <BlogArticleCardContainer variant="outlined" onClick={handleClick}>
+    <BlogArticleCardContainer
+      variant="outlined"
+      onClick={handleClick}
+      sx={styles}
+    >
       <BlogArticleCardImage
-        // sx={{ width: '100%', height: '100%' }}
         src={`${baseUrl?.origin}${image.data.attributes.url}`}
         alt={image.data.attributes.alternativeText}
         draggable={false}
       />
-      <CardContent
-        sx={{
-          ...(theme.palette.mode === 'dark' && {
-            color: theme.palette.black.main,
-          }),
-        }}
-      >
+      <CardContent>
         <Typography variant="lifiBodyLarge" sx={{ color: 'inherit' }}>
           {title}
         </Typography>

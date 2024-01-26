@@ -6,13 +6,13 @@ export const BlogArticleCardContainer = styled(Card, {
   shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
 })(({ theme }) => ({
   flexShrink: 0,
-  // width: '100%',
   width: '100%',
   border: 'unset',
-  p: 1,
+  padding: theme.spacing(1),
   borderRadius: '24px',
   background: 'transparent',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
+    minWidth: 250,
     width: 420,
   },
   '&:hover': {

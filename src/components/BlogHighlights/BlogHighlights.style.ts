@@ -94,7 +94,10 @@ export const Circle = styled('span', {
     borderRadius: 4,
     cursor: 'pointer',
     opacity: active ? 1 : 0.16,
-    backgroundColor: theme.palette.alphaDark800.main,
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.alphaDark800.main
+        : theme.palette.alphaLight800.main,
     '&:not(:first-of-type)': {
       marginLeft: theme.spacing(0.5),
     },
@@ -175,6 +178,7 @@ export const BlogHighlightsImage = styled('img', {
   userSelect: 'none',
   gridRow: '1',
   gridColumn: '1 / span 2',
+  alignSelf: 'flex-start',
   boxShadow:
     theme.palette.mode === 'light'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
@@ -185,6 +189,7 @@ export const BlogHighlightsImage = styled('img', {
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     gridRow: '1 / span 2',
+    alignSelf: 'center',
     gridColumn: '2',
   },
 }));
@@ -198,8 +203,10 @@ export const BlogHighlightsContent = styled(Box, {
   flexDirection: 'column',
   alignSelf: 'flex-end',
   justifyContent: 'flex-end',
-  // alignItems: 'center',
   paddingBottom: theme.spacing(2),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginRight: theme.spacing(2),
+  },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     paddingBottom: theme.spacing(10),
     marginBottom: theme.spacing(0),

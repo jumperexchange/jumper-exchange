@@ -3,23 +3,30 @@ import { Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Layout } from 'src/Layout';
 import {
-  BlogArticleCard,
+  BlogArticlesBoard,
   BlogHighlights,
+  BlogSlideshow,
   CustomColor,
   JoinDiscordBanner,
-  SlideshowContainer,
 } from 'src/components';
-import { BlogArticleCardSkeleton } from 'src/components/BlogArticleCard/BlogArticleCardSkeleton';
 import { useStrapi } from 'src/hooks';
 import type { BlogArticleData } from 'src/types';
 
 export const BlogPage = () => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const { data: blogArticles, url } = useStrapi<BlogArticleData>({
+
+  const {
+    data: recentArticles,
+    isSuccess: recentArticlesIsSuccess,
+    url,
+  } = useStrapi<BlogArticleData>({
     contentType: 'blog-articles',
-    queryKey: 'blog-articles',
+    queryKey: ['blog-articles-recent'],
+    sort: 'desc',
+    pagination: { page: 1, pageSize: 6, withCount: false },
   });
+
   return (
     <Layout hideNavbarTabs={true}>
       <CustomColor
@@ -47,31 +54,9 @@ export const BlogPage = () => {
         {t('blog.subtitle')}
       </Typography>
       <BlogHighlights />
-
-      <SlideshowContainer styles={{ height: 448 }}>
-        {blogArticles ? (
-          blogArticles?.map((article, index) => {
-            return (
-              <BlogArticleCard
-                baseUrl={url}
-                key={`blog-page-article-${index}`}
-                image={article.attributes.Image}
-                title={article.attributes.Title}
-                slug={article.attributes.Slug}
-              />
-            );
-          })
-        ) : (
-          <>
-            <BlogArticleCardSkeleton />
-            <BlogArticleCardSkeleton />
-            <BlogArticleCardSkeleton />
-            <BlogArticleCardSkeleton />
-          </>
-        )}
-      </SlideshowContainer>
+      <BlogSlideshow url={url} data={recentArticles} />
       <JoinDiscordBanner />
-
+      <BlogArticlesBoard />
       {/* <AccordionFAQ content={faqData as unknown as FaqMeta[]} /> */}
     </Layout>
   );

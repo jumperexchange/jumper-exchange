@@ -2,6 +2,7 @@ export * from './AccordionFAQ';
 export * from './BackgroundGradient';
 export * from './BlogArticle';
 export * from './BlogArticleCard';
+export * from './BlogArticlesBoard';
 export * from './BlogHighlights';
 export * from './BlogSlideshow';
 export * from './Button';

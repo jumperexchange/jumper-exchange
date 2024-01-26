@@ -73,6 +73,7 @@ export const BlogArticle = ({
   const [showCopyMessage, setShowCopyMessage] = useState(false);
   const { t } = useTranslation();
   const location = useLocation();
+  const [toggle, setToggle] = useState(false);
 
   const handleShareClick = () => {
     navigator.clipboard.writeText(
@@ -151,8 +152,12 @@ export const BlogArticle = ({
   });
   return (
     <>
-      <BlogArticleContainer>
-        {!!createdAt ? (
+      <BlogArticleContainer
+        onClick={() => {
+          setToggle((state) => !state);
+        }}
+      >
+        {toggle && !!createdAt ? (
           <>
             <Typography
               variant="lifiBodyXSmall"
@@ -185,9 +190,14 @@ export const BlogArticle = ({
             </Typography>
           </>
         ) : (
-          <Skeleton width={146} height={14.5} variant="text" />
+          <Skeleton
+            width={146}
+            height={14.5}
+            variant="text"
+            sx={{ marginTop: 1 }}
+          />
         )}
-        {title ? (
+        {toggle && title ? (
           <Typography variant="lifiHeaderLarge">{title}</Typography>
         ) : (
           <Skeleton width={'100%'} height={128} />
@@ -203,7 +213,7 @@ export const BlogArticle = ({
             sx={{ display: 'flex', alignItems: 'center' }}
             onClick={() => console.log('AUTHOR', author)}
           >
-            {author?.data ? (
+            {toggle && author?.data ? (
               <BlogAuthorAvatar
                 src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
                 alt="author-avatar"
@@ -216,7 +226,7 @@ export const BlogArticle = ({
                 sx={{ marginRight: theme.spacing(1) }}
               />
             )}
-            {author?.data ? (
+            {toggle && author?.data ? (
               <Typography
                 variant="lifiBodyXSmallStrong"
                 component="span"
@@ -232,7 +242,7 @@ export const BlogArticle = ({
               <Skeleton width={80} height={16} variant="text" />
             )}
           </Box>
-          {title ? (
+          {toggle && title ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Tooltip
                 title={'Share article on LinkedIn'}
@@ -347,21 +357,24 @@ export const BlogArticle = ({
             />
           )}
         </Box>
-        {image?.data ? (
+        {toggle && image?.data ? (
           <BlogArticleImage
             src={`${baseUrl}${image.data.attributes.url}`}
             alt={image?.data.attributes.alternativeText}
           />
         ) : (
-          <Skeleton width={'100%'} height={478} sx={{ borderRadius: '14px' }} />
+          <Skeleton
+            width={'100%'}
+            sx={{ aspectRatio: '4/3', borderRadius: '14px' }}
+          />
         )}
         <BlogArticleContentContainer>
-          {subtitle ? (
+          {toggle && subtitle ? (
             <Typography variant="lifiHeaderMedium">{subtitle}</Typography>
           ) : (
             <Skeleton width={'100%'} height={120} variant="text" />
           )}
-          {content ? (
+          {toggle && content ? (
             <BlocksRenderer
               content={content}
               blocks={customRichBlocks as any}
@@ -389,7 +402,7 @@ export const BlogArticle = ({
               borderRadius: '20px',
             }}
           >
-            {author?.data ? (
+            {toggle && author?.data ? (
               <BlogAuthorAvatar
                 src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
                 alt="author-avatar"
@@ -408,7 +421,7 @@ export const BlogArticle = ({
                 flexDirection: 'column',
               }}
             >
-              {author?.data ? (
+              {toggle && author?.data ? (
                 <Typography
                   variant="lifiBodyXSmallStrong"
                   component="span"
@@ -423,7 +436,7 @@ export const BlogArticle = ({
               ) : (
                 <Skeleton variant="text" width={90} height={16} />
               )}
-              {author?.data ? (
+              {toggle && author?.data ? (
                 <Typography
                   variant="lifiBodyXSmall"
                   component="span"

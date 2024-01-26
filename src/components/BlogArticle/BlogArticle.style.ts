@@ -29,7 +29,6 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   background: theme.palette.surface1.main,
   borderRadius: '8px',
   position: 'relative',
-  maxWidth: theme.breakpoints.values.md,
   width: '100% !important',
   boxShadow:
     theme.palette.mode === 'dark'
@@ -37,23 +36,33 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
       : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    width: theme.breakpoints.values.md,
-    maxWidth: theme.breakpoints.values.md,
+    // width: theme.breakpoints.values.md,
+    // maxWidth: theme.breakpoints.values.md,
+  },
+  [theme.breakpoints.up('xl' as Breakpoint)]: {
+    maxWidth: theme.breakpoints.values.lg,
   },
 }));
 
 export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   margin: 'auto',
   marginTop: theme.spacing(4),
-  maxWidth: theme.breakpoints.values.sm,
   img: {
     width: '100%',
   },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(4, 'unset'),
+    maxWidth: '100%',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     margin: theme.spacing(8, 'auto'),
+    maxWidth: '100%',
+  },
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    maxWidth: theme.breakpoints.values.md,
+  },
+  [theme.breakpoints.up('xl' as Breakpoint)]: {
+    maxWidth: theme.breakpoints.values.md,
   },
 }));

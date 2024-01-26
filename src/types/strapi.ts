@@ -39,7 +39,7 @@ export interface MediaAttributes {
   updatedAt: string;
 }
 
-interface StrapiMeta {
+export interface StrapiMeta {
   pagination: {
     page: number;
     pageSize: number;
@@ -97,6 +97,7 @@ export interface TagAttributes {
   attributes: {
     Title: string;
     TextColor?: string;
+    Key: string;
     BackgroundColor?: string;
     createdAt: string;
     locale: string;

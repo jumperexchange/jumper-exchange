@@ -63,7 +63,7 @@ export const SlideshowContainer = ({
     <Box
       sx={{
         backgroundColor: theme.palette.white.main,
-        padding: theme.spacing(6, 1, 8),
+        padding: theme.spacing('auto', 1),
       }}
     >
       <Box
@@ -86,7 +86,7 @@ export const SlideshowContainer = ({
             }),
           }}
         >
-          {t('blog.similarPosts')}
+          {t('blog.recentPosts')}
         </Typography>
         <Box
           sx={{
