@@ -51,7 +51,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
 
   const { data: blogArticles, url } = useStrapi<BlogArticleData>({
     contentType: 'blog-articles',
-    queryKey: 'blog-articles',
+    queryKey: ['blog-articles'],
   });
 
   const maxItems = useMemo(

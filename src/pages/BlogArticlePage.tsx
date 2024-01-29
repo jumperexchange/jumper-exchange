@@ -32,11 +32,9 @@ export const BlogArticlePage = () => {
   const { data: articles, isSuccess: articlesIsSuccess } =
     useStrapi<BlogArticleData>({
       contentType: 'blog-articles',
-      queryKey: [
-        `blog-articles${
-          currentCategories && currentCategories?.toString().replace(',', '-')
-        }`,
-      ],
+      queryKey: ['blog-articles'].concat(
+        currentCategories.toString().split(','),
+      ),
       filterTag: currentCategories,
     });
 

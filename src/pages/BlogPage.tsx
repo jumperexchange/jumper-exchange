@@ -16,11 +16,7 @@ export const BlogPage = () => {
   const theme = useTheme();
   const { t } = useTranslation();
 
-  const {
-    data: recentArticles,
-    isSuccess: recentArticlesIsSuccess,
-    url,
-  } = useStrapi<BlogArticleData>({
+  const { data: recentArticles, url } = useStrapi<BlogArticleData>({
     contentType: 'blog-articles',
     queryKey: ['blog-articles-recent'],
     sort: 'desc',

@@ -17,7 +17,7 @@ export const FeatureCards = () => {
 
   const { data, isSuccess } = useStrapi<FeatureCardData>({
     contentType: 'feature-cards',
-    queryKey: 'feature-cards',
+    queryKey: ['feature-cards'],
   });
   const featureCardsFetched = useMemo(() => {
     if (Array.isArray(data) && !!data.length) {

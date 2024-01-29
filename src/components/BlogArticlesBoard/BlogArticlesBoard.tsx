@@ -54,8 +54,12 @@ export const BlogArticlesBoard = () => {
     sort: 'desc',
     queryKey:
       catId === 0
-        ? `blog-articles-board-${page}`
-        : `blog-articles-board-${catId}-${page}`,
+        ? ['blog-articles-board', `${page}`]
+        : [
+            'blog-articles-board',
+            catId?.toString() ?? '',
+            page.toString() ?? '',
+          ],
   });
 
   const {
@@ -64,7 +68,7 @@ export const BlogArticlesBoard = () => {
     isLoading,
   } = useStrapi<TagAttributes>({
     contentType: STRAPI_TAGS,
-    queryKey: 'tags',
+    queryKey: ['tags'],
   });
 
   const handleTagsClick = useCallback(
