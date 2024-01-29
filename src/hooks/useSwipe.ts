@@ -1,5 +1,6 @@
 import type { MouseEventHandler, TouchEvent } from 'react';
 import { useRef, useState } from 'react';
+import { useIsTouchEnabled } from '.';
 
 interface SwipeInput {
   onSwipedLeft: () => void;
@@ -37,6 +38,7 @@ export const useSwipe = (input: SwipeInput): SwipeOutput => {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [activeTouch, setActiveTouch] = useState(false);
+  const touchEnabled = useIsTouchEnabled();
   const timeoutId = useRef<NodeJS.Timeout | null>(null);
   const minSwipeDistance = 50;
   const distance = touchStart - touchEnd;
@@ -92,12 +94,12 @@ export const useSwipe = (input: SwipeInput): SwipeOutput => {
   };
 
   const onMouseUp = () => {
+    !activeTouch && typeof input.onClick === 'function' && input.onClick();
     setActiveTouch(false);
     return touchEndHelper();
   };
 
   const onMouseLeave = () => {
-    // return touchEndHelper();
     setActiveTouch(false);
   };
 
@@ -107,7 +109,10 @@ export const useSwipe = (input: SwipeInput): SwipeOutput => {
   };
 
   const onClick = () =>
-    typeof input.onClick === 'function' ? input.onClick() : false;
+    typeof input.onClick === 'function' &&
+    !activeTouch &&
+    touchEnabled &&
+    input.onClick();
 
   return {
     swipeHandlers: {
