@@ -29,8 +29,6 @@ export const BlogArticlePage = () => {
   const currentCategories = useMemo(() => {
     return article && article[0]?.attributes.tags.data.map((el) => el.id);
   }, [article]);
-  console.log('###ARTICLE', article);
-  console.log('currentCategories', currentCategories);
   const { data: articles, isSuccess: articlesIsSuccess } =
     useStrapi<BlogArticleData>({
       contentType: 'blog-articles',

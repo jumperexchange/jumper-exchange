@@ -49,7 +49,6 @@ export const useSwipe = (input: SwipeInput): SwipeOutput => {
     setTouchEnd(e.targetTouches[0].clientX); // otherwise the swipe is fired even with usual touch events
     setTouchStart(e.targetTouches[0].clientX);
     setActiveTouch(true);
-    console.log('touch start', e.targetTouches[0].clientX);
   };
 
   const onMouseDown: MouseEventHandler<HTMLDivElement> = (e) => {
@@ -59,11 +58,6 @@ export const useSwipe = (input: SwipeInput): SwipeOutput => {
     setTouchStart(e.clientX);
     input.onSwipe && input.onSwipe({ isLeftSwipe, isRightSwipe });
     setTouchEnd(e.clientX);
-    console.log('MOUSEDOWN', {
-      touchStart: touchStart,
-      clientX: e.clientX,
-      touchEnd: touchEnd,
-    });
   };
 
   const onTouchMove = (e: TouchEvent) => {

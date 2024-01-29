@@ -112,7 +112,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
         active: activePost,
         max: maxItems,
       });
-      console.log('swipe left');
+      // console.log('swipe left');
       trackEvent({
         category: TrackingCategory.BlogHighlights,
         label: 'swipe-blog-highlights-left',
@@ -156,13 +156,13 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
       if (!!blogArticles.length) {
         switch (event.keyCode) {
           case 13: // Enter key
-            console.log('Enter key pressed!', activePost && true);
+            // console.log('Enter key pressed!', activePost && true);
             activePost &&
               navigate(`/blog/${blogArticles[activePost].attributes.Slug}`);
             window.scrollTo({ top: 0, behavior: 'smooth' });
             break;
           case 39: // Right arrow key
-            console.log('Right arrow key pressed!', activePost && true);
+            // console.log('Right arrow key pressed!', activePost && true);
             handlePagination({
               direction: 'next',
               active: activePost,
@@ -170,7 +170,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
             });
             break;
           case 37: // Left arrow key
-            console.log('Left arrow key pressed!', activePost && true);
+            // console.log('Left arrow key pressed!', activePost && true);
             handlePagination({
               direction: 'prev',
               active: activePost,

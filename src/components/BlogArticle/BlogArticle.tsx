@@ -187,19 +187,6 @@ export const BlogArticle = ({
     },
   };
 
-  console.log({
-    title,
-    subtitle,
-    content,
-    author,
-    tags,
-    publishedAt,
-    updatedAt,
-    createdAt,
-    slug,
-    image,
-    baseUrl,
-  });
   return (
     <>
       <BlogArticleContainer>
@@ -257,7 +244,7 @@ export const BlogArticle = ({
         >
           <Box
             sx={{ display: 'flex', alignItems: 'center' }}
-            onClick={() => console.log('AUTHOR', author)}
+            // onClick={() => console.log('AUTHOR', author)}
           >
             {author?.data ? (
               <BlogAuthorAvatar

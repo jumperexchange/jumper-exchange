@@ -67,10 +67,6 @@ export const BlogArticlesBoard = () => {
     queryKey: 'tags',
   });
 
-  console.log('meta', meta);
-
-  console.log('tags', tags);
-
   const handleTagsClick = useCallback(
     (id: number, label?: string) => () => {
       if (!isDesktop && !openDropdown) {
@@ -103,7 +99,6 @@ export const BlogArticlesBoard = () => {
       disabled: false,
     };
     const output = tags?.map((el, index) => {
-      console.log('EL', el);
       return {
         label: el.attributes.Title || undefined, //el.attributes.Title,
         value: el.id,
@@ -116,7 +111,6 @@ export const BlogArticlesBoard = () => {
     return output;
   }, [catId, catLabel, handleTagsClick, isDesktop, t, tags, theme]);
 
-  console.log('filteredTags', filteredTags);
   const containerStyles = {
     marginTop: theme.spacing(4),
     backgroundColor:
