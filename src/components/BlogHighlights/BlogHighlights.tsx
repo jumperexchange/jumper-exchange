@@ -60,8 +60,6 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
     [blogArticles],
   );
 
-  const [num, setNum] = useState(0);
-
   const handleImageClick = (index: number) => {
     if (!swipe.swipeListener.isLeftSwipe && !swipe.swipeListener.isRightSwipe) {
       trackEvent({
@@ -87,6 +85,16 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
 
   const handlePagination = useCallback(
     ({ direction, active, max }: HandleNavigationIndexProps) => {
+      trackEvent({
+        category: TrackingCategory.Menu,
+        label: 'click-join-discord-community-button',
+        action: TrackingAction.OpenMenu,
+        data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+      });
       const newItem = handleNavigationIndex({
         direction,
         active,
@@ -94,32 +102,52 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
       });
       newItem !== undefined && setActivePost(newItem);
     },
-    [],
+    [trackEvent],
   );
 
   const swipe = useSwipe({
     onSwipedLeft: () => {
-      console.log('swipe left');
-      return handlePagination({
+      const output = handlePagination({
         direction: 'next',
         active: activePost,
         max: maxItems,
       });
+      console.log('swipe left');
+      trackEvent({
+        category: TrackingCategory.BlogHighlights,
+        label: 'swipe-blog-highlights-left',
+        action: TrackingAction.SwipeHighlightCard,
+        data: {
+          [TrackingEventParameter.Pagination]: output,
+          [TrackingEventParameter.SwipeDirection]: 'left',
+        },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+      });
+      return output;
     },
     onSwipedRight: () => {
-      console.log('swipe right');
-      handlePagination({
+      const output = handlePagination({
         direction: 'prev',
         active: activePost,
         max: maxItems,
       });
-    },
-    onSwipe: () => {
-      setNum((state) => state + 1);
-      if (num === 100) {
-        setNum(0);
-        // debugger;
-      }
+      trackEvent({
+        category: TrackingCategory.BlogHighlights,
+        label: 'swipe-blog-highlights-left',
+        action: TrackingAction.SwipeHighlightCard,
+        data: {
+          [TrackingEventParameter.Pagination]: output,
+          [TrackingEventParameter.SwipeDirection]: 'right',
+        },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+      });
+      return output;
     },
   });
 

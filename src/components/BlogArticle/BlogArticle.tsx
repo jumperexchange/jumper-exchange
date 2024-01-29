@@ -2,6 +2,8 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import ShareIcon from '@mui/icons-material/Share';
 import XIcon from '@mui/icons-material/X';
+import { useUserTracking } from 'src/hooks';
+
 import {
   Box,
   Divider,
@@ -22,12 +24,20 @@ import {
   JumperBanner,
   Widget,
 } from 'src/components';
-import { FB_SHARE_URL, LINKEDIN_SHARE_URL, X_SHARE_URL } from 'src/const';
-import type {
-  AuthorData,
-  MediaAttributes,
-  StrapiImageData,
-  TagData,
+import {
+  FB_SHARE_URL,
+  LINKEDIN_SHARE_URL,
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+  X_SHARE_URL,
+} from 'src/const';
+import {
+  EventTrackingTool,
+  type AuthorData,
+  type MediaAttributes,
+  type StrapiImageData,
+  type TagData,
 } from 'src/types';
 import { formatDate, openInNewTab, readingTime } from 'src/utils';
 import {
@@ -73,12 +83,23 @@ export const BlogArticle = ({
   const [showCopyMessage, setShowCopyMessage] = useState(false);
   const { t } = useTranslation();
   const location = useLocation();
+  const { trackEvent } = useUserTracking();
 
   const handleShareClick = () => {
     navigator.clipboard.writeText(
       `${window.location.host}${location.pathname}`,
     );
     setShowCopyMessage(true);
+    trackEvent({
+      category: TrackingCategory.BlogArticle,
+      action: TrackingAction.ClickShareArticleLink,
+      label: 'click-share-blog-article-link',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+      data: {
+        [TrackingEventParameter.ArticleCardTitle]: title,
+        [TrackingEventParameter.ArticleCardId]: slug,
+      },
+    });
 
     // Hide the copy message after 3 seconds
     setTimeout(() => {
@@ -93,6 +114,16 @@ export const BlogArticle = ({
     const xUrl = new URL(X_SHARE_URL);
     xUrl.searchParams.set('url', `${window.location.host}${location.pathname}`);
     xUrl.searchParams.set('title', title);
+    trackEvent({
+      category: TrackingCategory.BlogArticle,
+      action: TrackingAction.ClickShareArticleX,
+      label: 'click-share-blog-article-x',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+      data: {
+        [TrackingEventParameter.ArticleCardTitle]: title,
+        [TrackingEventParameter.ArticleCardId]: slug,
+      },
+    });
     openInNewTab(xUrl.href);
   };
 
@@ -103,6 +134,16 @@ export const BlogArticle = ({
     const fbUrl = new URL(FB_SHARE_URL);
     fbUrl.searchParams.set('u', `${window.location.host}${location.pathname}`);
     fbUrl.searchParams.set('title', title);
+    trackEvent({
+      category: TrackingCategory.BlogArticle,
+      action: TrackingAction.ClickShareArticleFB,
+      label: 'click-share-blog-article-fb',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+      data: {
+        [TrackingEventParameter.ArticleCardTitle]: title,
+        [TrackingEventParameter.ArticleCardId]: slug,
+      },
+    });
     openInNewTab(fbUrl.href);
   };
 
@@ -117,6 +158,16 @@ export const BlogArticle = ({
       `${window.location.host}${location.pathname}`,
     );
     linkedInUrl.searchParams.set('title', title);
+    trackEvent({
+      category: TrackingCategory.BlogArticle,
+      action: TrackingAction.ClickShareArticleLinkedIn,
+      label: 'click-share-blog-article-linkedin',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+      data: {
+        [TrackingEventParameter.ArticleCardTitle]: title,
+        [TrackingEventParameter.ArticleCardId]: slug,
+      },
+    });
     openInNewTab(linkedInUrl.href);
   };
 

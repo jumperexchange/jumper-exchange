@@ -43,7 +43,10 @@ export const BlogSlideshow = ({
         padding: theme.spacing(8, 1, 4),
       }}
     >
-      <SlideshowContainer title={title}>
+      <SlideshowContainer
+        title={title}
+        trackingCategory={TrackingCategory.BlogSlideshow}
+      >
         {data ? (
           data?.map((article, index) => {
             return (

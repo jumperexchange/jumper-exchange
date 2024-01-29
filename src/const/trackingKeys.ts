@@ -46,6 +46,16 @@ export enum TrackingAction {
   SeeAllPosts = 'action_see_all_posts',
   ClickArticleCard = 'action_click_article_card',
   ClickHighlightCard = 'action_click_highlight_card',
+  SwipeHighlightCard = 'action_swipe_highlight_card',
+  SlideSlideshow = 'action_slide_slideshow',
+  ClickShareArticleFB = 'action_share_article_fb',
+  ClickShareArticleLinkedIn = 'action_share_article_linked',
+  ClickShareArticleX = 'action_share_article_x',
+  ClickShareArticleLink = 'action_share_article_link',
+
+  // Pagination
+  ClickPagination = 'action_click_pagination',
+
   // Discord
   JoinDiscordCommunity = 'action_join_discord_community',
 
@@ -69,7 +79,9 @@ export enum TrackingCategory {
   WidgetEvent = 'cat_widget_event',
   PoweredBy = 'cat_powered_by',
   BlogSlideshow = 'cat_blog_slideshow',
+  BlogHighlights = 'cat_blog_highlights',
   BlogArticlesBoard = 'cat_blog_articles_board',
+  BlogArticle = 'cat_blog_article',
 }
 
 // can be used as custom dimensions / metrics
@@ -120,6 +132,7 @@ export enum TrackingEventParameter {
   // Blog
   ArticleCardTitle = 'param_article_card_title',
   ArticleCardId = 'param_article_card_id',
+  SwipeDirection = 'param_swipe_direction',
 
   // Pagination
   Pagination = 'param_pagination',

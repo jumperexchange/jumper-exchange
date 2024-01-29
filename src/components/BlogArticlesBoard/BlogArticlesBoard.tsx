@@ -198,8 +198,11 @@ export const BlogArticlesBoard = () => {
     trackEvent({
       category: TrackingCategory.BlogArticlesBoard,
       label: 'click-pagination',
-      action: TrackingAction.OpenMenu,
-      data: { [TrackingEventParameter.Pagination]: page },
+      action: TrackingAction.ClickPagination,
+      data: {
+        [TrackingEventParameter.Pagination]: page,
+        [TrackingEventParameter.PaginationCat]: catId,
+      },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     setPage(page);
@@ -211,6 +214,16 @@ export const BlogArticlesBoard = () => {
     } else {
       setPage(1);
     }
+    trackEvent({
+      category: TrackingCategory.BlogArticlesBoard,
+      label: 'click-pagination-next',
+      action: TrackingAction.ClickPagination,
+      data: {
+        [TrackingEventParameter.Pagination]: page,
+        [TrackingEventParameter.PaginationCat]: catId,
+      },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
   };
 
   const handlePrev = () => {
@@ -219,6 +232,16 @@ export const BlogArticlesBoard = () => {
     } else {
       setPage(meta.pagination.pageCount);
     }
+    trackEvent({
+      category: TrackingCategory.BlogArticlesBoard,
+      label: 'click-pagination-prev',
+      action: TrackingAction.ClickPagination,
+      data: {
+        [TrackingEventParameter.Pagination]: page,
+        [TrackingEventParameter.PaginationCat]: catId,
+      },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
   };
 
   return (
