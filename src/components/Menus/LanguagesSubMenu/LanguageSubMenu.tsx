@@ -10,7 +10,7 @@ export const LanguagesSubmenu = () => {
   const openSubMenu = useMenuStore((state) => state.openSubMenu);
   return (
     <SubMenu
-      label={t('navbar.navbarMenu.developers')}
+      label={t('language.key', { ns: 'language' })}
       triggerSubMenu={MenuKeys.Language}
       open={openSubMenu === MenuKeys.Language}
       prevMenu={MenuKeys.None}
