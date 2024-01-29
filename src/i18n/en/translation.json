@@ -40,6 +40,7 @@
       "copiedMsg": "Wallet address copied",
       "walletNotInstalled": "{{wallet}} is not installed"
     },
+
     "themes": {
       "switchToLight": "Switch to Light Theme",
       "switchToDark": "Switch to Dark Theme",
@@ -54,6 +55,10 @@
     "info": "You’re using Testnet",
     "testnet": "Any transactions or actions performed on the Testnet will not be reflected on the Mainnet.",
     "switchToMainnet": "Switch to Mainnet"
+  },
+  "discordBanner": {
+    "ctaHeadline": "Level Up Your Crypto Knowledge",
+    "ctaButton": "Join our Discord Community"
   },
   "blog": {
     "title": "Tips and tutorials",
