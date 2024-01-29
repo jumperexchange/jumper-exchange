@@ -3,8 +3,13 @@ import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useStrapi, useSwipe } from 'src/hooks';
-import type { BlogArticleData } from 'src/types';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
+import { useStrapi, useSwipe, useUserTracking } from 'src/hooks';
+import { EventTrackingTool, type BlogArticleData } from 'src/types';
 import type { HandleNavigationIndexProps } from 'src/utils';
 import { handleNavigationIndex } from 'src/utils';
 import {
@@ -28,6 +33,8 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { trackEvent } = useUserTracking();
+
   const handleChange = (
     event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
   ) => {
@@ -54,6 +61,23 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
   );
 
   const [num, setNum] = useState(0);
+
+  const handleImageClick = (index: number) => {
+    if (!swipe.swipeListener.isLeftSwipe && !swipe.swipeListener.isRightSwipe) {
+      trackEvent({
+        category: TrackingCategory.Menu,
+        label: 'click-join-discord-community-button',
+        action: TrackingAction.OpenMenu,
+        data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+      });
+      navigate(`/blog/${blogArticles[index].attributes.Slug}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const handleButtonClick = (index: number) => {
     navigate(`/blog/${blogArticles[index].attributes.Slug}`);
@@ -96,9 +120,6 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
         setNum(0);
         // debugger;
       }
-    },
-    onClick: () => {
-      console.log('CLICK');
     },
   });
 
@@ -220,7 +241,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
                   </Typography>
                 </BlogHighlightsContent>
                 <BlogHighlightsImage
-                  onClick={() => handleButtonClick(index)}
+                  onClick={() => handleImageClick(index)}
                   draggable={false}
                   src={`${url.origin}${blogArticles[index].attributes.Image.data.attributes.url}`}
                   alt={

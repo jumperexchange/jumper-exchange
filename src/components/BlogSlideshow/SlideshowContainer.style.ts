@@ -1,4 +1,4 @@
-import type { BoxProps, CSSObject } from '@mui/material';
+import type { BoxProps, Breakpoint, CSSObject } from '@mui/material';
 import { Box, styled } from '@mui/material';
 
 export interface SlideshowContainerBoxProps extends Omit<BoxProps, 'variant'> {
@@ -19,5 +19,8 @@ export const SlideshowContainerBox = styled(Box, {
     scrollSnapAlign: 'center',
   },
   '::-webkit-scrollbar': { display: 'none' },
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    height: 308,
+  },
   ...styles,
 }));

@@ -10,9 +10,11 @@ import {
 } from '@mui/material';
 import { useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getContrastAlphaColor } from 'src/utils';
 import { SlideshowContainerBox } from '.';
 
 interface SlideshowContainerProps {
+  title?: string;
   styles?: CSSObject;
   children?: any;
 }
@@ -20,6 +22,7 @@ const slideDistance = 420;
 
 export const SlideshowContainer = ({
   styles,
+  title,
   children,
 }: SlideshowContainerProps) => {
   const slideshowContainerRef = useRef<HTMLDivElement>(null);
@@ -62,13 +65,16 @@ export const SlideshowContainer = ({
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.white.main,
-        padding: theme.spacing('auto', 1),
+        backgroundColor: theme.palette.surface1.main,
+        padding: theme.spacing(0, 1),
       }}
     >
       <Box
         sx={{
           display: 'flex',
+          ...(theme.palette.mode === 'dark' && {
+            color: theme.palette.white.main,
+          }),
           justifyContent: 'space-between',
           [theme.breakpoints.up('lg' as Breakpoint)]: {
             justifyContent: 'flex-start',
@@ -81,12 +87,10 @@ export const SlideshowContainer = ({
             fontWeight: 600,
             fontSize: 24,
             marginLeft: 2,
-            ...(theme.palette.mode === 'dark' && {
-              color: theme.palette.black.main,
-            }),
+            color: 'inherit',
           }}
         >
-          {t('blog.recentPosts')}
+          {title ?? t('blog.recentPosts')}
         </Typography>
         <Box
           sx={{
@@ -96,15 +100,58 @@ export const SlideshowContainer = ({
             },
           }}
         >
-          <IconButton onClick={() => handleChange('back')}>
-            <ArrowBackIosIcon />
+          <IconButton
+            onClick={() => handleChange('back')}
+            sx={{
+              width: 40,
+              color: 'inherit',
+              height: 40,
+              transition: 'background-color 250ms',
+              backgroundColor:
+                theme.palette.mode === 'light'
+                  ? getContrastAlphaColor(theme, '2%')
+                  : getContrastAlphaColor(theme, '4%'),
+              '&:hover': {
+                backgroundColor:
+                  theme.palette.mode === 'light'
+                    ? theme.palette.alphaDark100.main
+                    : theme.palette.alphaLight300.main,
+              },
+            }}
+          >
+            <ArrowBackIosIcon
+              sx={{
+                marginLeft: theme.spacing(0.75),
+              }}
+            />
           </IconButton>
 
           <IconButton
             onClick={() => handleChange('forward')}
-            sx={{ marginLeft: 1, marginRight: 2 }}
+            sx={{
+              marginLeft: 1,
+              marginRight: 2,
+              width: 40,
+              height: 40,
+              transition: 'background-color 250ms',
+              color: 'inherit',
+              backgroundColor:
+                theme.palette.mode === 'light'
+                  ? getContrastAlphaColor(theme, '2%')
+                  : getContrastAlphaColor(theme, '4%'),
+              '&:hover': {
+                backgroundColor:
+                  theme.palette.mode === 'light'
+                    ? theme.palette.alphaDark100.main
+                    : theme.palette.alphaLight300.main,
+              },
+            }}
           >
-            <ArrowForwardIosIcon />
+            <ArrowForwardIosIcon
+              sx={{
+                marginLeft: theme.spacing(0.25),
+              }}
+            />
           </IconButton>
         </Box>
       </Box>

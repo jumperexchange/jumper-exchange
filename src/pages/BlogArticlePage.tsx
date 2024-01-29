@@ -1,6 +1,7 @@
 import type { Breakpoint } from '@mui/material';
 import { Container, useTheme } from '@mui/material';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Layout } from 'src/Layout';
 import {
@@ -15,6 +16,7 @@ import type { BlogArticleData, TagAttributes } from 'src/types';
 export const BlogArticlePage = () => {
   const { id } = useParams();
   const theme = useTheme();
+  const { t } = useTranslation();
   const {
     data: article,
     url: articleUrl,
@@ -24,10 +26,20 @@ export const BlogArticlePage = () => {
     filterSlug: id,
     queryKey: ['blog-article', `${id ?? ''}`],
   });
+  const currentCategories = useMemo(() => {
+    return article && article[0]?.attributes.tags.data.map((el) => el.id);
+  }, [article]);
+  console.log('###ARTICLE', article);
+  console.log('currentCategories', currentCategories);
   const { data: articles, isSuccess: articlesIsSuccess } =
     useStrapi<BlogArticleData>({
       contentType: 'blog-articles',
-      queryKey: ['blog-articles'],
+      queryKey: [
+        `blog-articles${
+          currentCategories && currentCategories?.toString().replace(',', '-')
+        }`,
+      ],
+      filterTag: currentCategories,
     });
 
   const isSuccess = articleIsSuccess && articlesIsSuccess;
@@ -72,22 +84,24 @@ export const BlogArticlePage = () => {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            padding: theme.spacing(1.5, 2, 3),
+            justifyContent: 'center',
+            padding: theme.spacing(0, 2, 3),
             flexWrap: 'wrap',
             gap: theme.spacing(1),
             [theme.breakpoints.up('sm' as Breakpoint)]: {
+              justifyContent: 'flex-start',
               padding: theme.spacing(1.5, 3, 3),
               maxWidth: `100% !important`,
             },
             [theme.breakpoints.up('md' as Breakpoint)]: {
-              padding: theme.spacing(1.5, 0, 3),
-              maxWidth: `${theme.breakpoints.values.md}px !important`,
+              padding: `${theme.spacing(1.5, 3, 3)} !important`,
             },
             [theme.breakpoints.up('lg' as Breakpoint)]: {
-              padding: theme.spacing(1.5, 0, 3),
+              padding: `${theme.spacing(1.5, 3, 3)} !important`,
               maxWidth: `${theme.breakpoints.values.lg}px !important`,
             },
             [theme.breakpoints.up('xl' as Breakpoint)]: {
+              padding: `${theme.spacing(1.5, 3, 3)} !important`,
               maxWidth: `${theme.breakpoints.values.lg}px !important`,
             },
           }}
@@ -123,6 +137,7 @@ export const BlogArticlePage = () => {
       <JoinDiscordBanner />
 
       <BlogSlideshow
+        title={t('blog.similarPosts')}
         showAllButton={true}
         data={filteredArticles}
         url={articleUrl}

@@ -12,9 +12,19 @@ import {
 } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { STRAPI_BLOG_ARTICLES, STRAPI_TAGS } from 'src/const';
-import { useStrapi } from 'src/hooks';
-import type { BlogArticleData, TagAttributes } from 'src/types';
+import {
+  STRAPI_BLOG_ARTICLES,
+  STRAPI_TAGS,
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
+import { useStrapi, useUserTracking } from 'src/hooks';
+import {
+  EventTrackingTool,
+  type BlogArticleData,
+  type TagAttributes,
+} from 'src/types';
 import { getContrastAlphaColor } from 'src/utils';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
@@ -30,6 +40,7 @@ export const BlogArticlesBoard = () => {
   const [catLabel, setCatLabel] = useState<string | undefined>(
     t('blog.allCategories'),
   );
+  const { trackEvent } = useUserTracking();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
   const [page, setPage] = useState<number>(1);
   const {
@@ -47,7 +58,11 @@ export const BlogArticlesBoard = () => {
         : `blog-articles-board-${catId}-${page}`,
   });
 
-  const { data: tags, isSuccess } = useStrapi<TagAttributes>({
+  const {
+    data: tags,
+    isSuccess,
+    isLoading,
+  } = useStrapi<TagAttributes>({
     contentType: STRAPI_TAGS,
     queryKey: 'tags',
   });
@@ -58,24 +73,21 @@ export const BlogArticlesBoard = () => {
 
   const handleTagsClick = useCallback(
     (id: number, label?: string) => () => {
-      console.log('handleTagsClick');
-      if (!openDropdown) {
-        console.log(`click ${id}`);
+      if (!isDesktop && !openDropdown) {
         setOpenDropdown(true);
       } else {
-        console.log(`click ${id}`);
-        setCatId(id);
-        setCatLabel(label);
         setOpenDropdown(false);
       }
+      setCatId(id);
+      setCatLabel(label);
     },
-    [openDropdown],
+    [isDesktop, openDropdown],
   );
 
   const filteredTags = useMemo<TabProps[]>(() => {
     const defaultFilter = {
       id: 0,
-      label: catId !== 0 ? catLabel : t('blog.allCategories'),
+      label: !isDesktop && catId !== 0 ? catLabel : t('blog.allCategories'),
       icon: !isDesktop && (
         <ArrowDropDownIcon
           sx={{
@@ -107,11 +119,12 @@ export const BlogArticlesBoard = () => {
   console.log('filteredTags', filteredTags);
   const containerStyles = {
     marginTop: theme.spacing(4),
-    backgroundColor: openDropdown
-      ? theme.palette.surface1.main
-      : theme.palette.mode === 'dark'
-        ? getContrastAlphaColor(theme, '12%')
-        : getContrastAlphaColor(theme, '4%'),
+    backgroundColor:
+      !isDesktop && openDropdown
+        ? theme.palette.surface1.main
+        : theme.palette.mode === 'dark'
+          ? getContrastAlphaColor(theme, '12%')
+          : getContrastAlphaColor(theme, '4%'),
     display: 'flex',
     // height: openDropdown ? '68px' : 'auto',
     maxHeight: openDropdown ? 1000 : 0,
@@ -123,10 +136,14 @@ export const BlogArticlesBoard = () => {
     padding: theme.spacing(0.5, 1),
     overflow: 'hidden',
     minHeight: 68,
+    width: '100%',
+    maxWidth: '320px',
 
     [theme.breakpoints.up('lg')]: {
+      maxWidth: 'unset',
       borderRadius: '28px',
       minWidth: 392,
+      width: 'auto',
       display: 'flex',
     },
 
@@ -137,14 +154,23 @@ export const BlogArticlesBoard = () => {
     },
 
     '.MuiTabs-indicator': {
-      width: '100%',
-      top: '6px',
+      minWidth: '80%',
+      width: 300,
+      maxWidth: 320,
+      left: '50%',
+
+      // maxWidth: '80%',
+
+      top: `${theme.spacing(0.75)} !important`,
       borderRadius: '12px',
-      transform: 'unset',
+      transform: 'translateX(-50%)',
       zIndex: '-1',
       [theme.breakpoints.up('lg')]: {
+        width: 'auto',
+        minWidth: 'unset',
         position: 'absolute',
-        top: '50%',
+        top: '50% !important',
+        left: 'unset',
         transform: 'translateY(-50%) scaleY(0.98)',
         backgroundColor:
           theme.palette.mode === 'dark'
@@ -161,6 +187,7 @@ export const BlogArticlesBoard = () => {
     height: 48,
     borderRadius: '12px',
     width: '100%',
+    maxWidth: '320px',
     [theme.breakpoints.up('lg')]: {
       width: 142,
       borderRadius: '24px',
@@ -168,6 +195,13 @@ export const BlogArticlesBoard = () => {
   };
 
   const handlePage = (page: number) => {
+    trackEvent({
+      category: TrackingCategory.BlogArticlesBoard,
+      label: 'click-pagination',
+      action: TrackingAction.OpenMenu,
+      data: { [TrackingEventParameter.Pagination]: page },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
     setPage(page);
   };
 
@@ -189,11 +223,7 @@ export const BlogArticlesBoard = () => {
 
   return (
     <Box sx={{ marginBottom: theme.spacing(10) }}>
-      <Grid
-        sx={{
-          height: 540,
-        }}
-      >
+      <Grid>
         <Typography
           variant="lifiHeaderMedium"
           sx={{
@@ -205,7 +235,7 @@ export const BlogArticlesBoard = () => {
         </Typography>
         <Tabs
           data={filteredTags}
-          value={0}
+          value={catId ?? 0}
           orientation={isDesktop ? 'horizontal' : 'vertical'}
           ariaLabel="categories-switch-tabs"
           containerStyles={containerStyles}
@@ -231,15 +261,17 @@ export const BlogArticlesBoard = () => {
             },
           }}
         >
-          {isSuccess ? (
+          {isSuccess && !isLoading ? (
             blogArticles?.length > 0 ? (
               blogArticles?.map((article, index) => (
                 <BlogArticleCard
                   baseUrl={url}
+                  id={article.id}
                   key={`blog-articles-board-${index}`}
                   image={article.attributes.Image}
                   title={article.attributes.Title}
                   slug={article.attributes.Slug}
+                  trackingCategory={TrackingCategory.BlogArticlesBoard}
                   styles={{
                     width: '100%',
                     [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -289,6 +321,7 @@ export const BlogArticlesBoard = () => {
         {meta?.pagination.pageCount > 1 && (
           <Box
             sx={{
+              marginTop: theme.spacing(3),
               display: 'flex',
               justifyContent: 'center',
               gap: theme.spacing(2),
@@ -299,6 +332,8 @@ export const BlogArticlesBoard = () => {
               disableRipple={false}
               sx={{
                 color: theme.palette.grey[500],
+                width: 40,
+                height: 40,
                 '&:hover': {
                   backgroundColor:
                     theme.palette.mode === 'dark'
@@ -307,7 +342,11 @@ export const BlogArticlesBoard = () => {
                 },
               }}
             >
-              <ArrowBackIosIcon />
+              <ArrowBackIosIcon
+                sx={{
+                  marginLeft: theme.spacing(0.75),
+                }}
+              />
             </IconButton>
 
             {Array.from({ length: meta?.pagination.pageCount }).map(
@@ -322,7 +361,7 @@ export const BlogArticlesBoard = () => {
                             color:
                               theme.palette.mode === 'light'
                                 ? theme.palette.grey[800]
-                                : theme.palette.grey[800],
+                                : theme.palette.grey[300],
                           }
                         : {
                             color:
@@ -334,7 +373,10 @@ export const BlogArticlesBoard = () => {
                       height: '40px',
                       ...(actualPage === page && {
                         '& .MuiTouchRipple-root': {
-                          backgroundColor: theme.palette.grey[300],
+                          backgroundColor:
+                            theme.palette.mode === 'light'
+                              ? theme.palette.alphaDark100.main
+                              : theme.palette.alphaLight300.main,
                           zIndex: -1,
                         },
                       }),
@@ -357,6 +399,8 @@ export const BlogArticlesBoard = () => {
               onClick={() => handleNext()}
               sx={{
                 color: theme.palette.grey[500],
+                width: 40,
+                height: 40,
                 '&:hover': {
                   backgroundColor:
                     theme.palette.mode === 'dark'
@@ -365,7 +409,11 @@ export const BlogArticlesBoard = () => {
                 },
               }}
             >
-              <ArrowForwardIosIcon />
+              <ArrowForwardIosIcon
+                sx={{
+                  marginLeft: theme.spacing(0.25),
+                }}
+              />
             </IconButton>
           </Box>
         )}

@@ -42,6 +42,13 @@ export enum TrackingAction {
   SwitchTheme = 'action_switch_theme',
   DownloadBrandAssets = 'action_dl_brand_assets',
 
+  // Blog
+  SeeAllPosts = 'action_see_all_posts',
+  ClickArticleCard = 'action_click_article_card',
+  ClickHighlightCard = 'action_click_highlight_card',
+  // Discord
+  JoinDiscordCommunity = 'action_join_discord_community',
+
   PoweredBy = 'action_click_powered_by',
 }
 
@@ -53,6 +60,7 @@ export enum TrackingCategory {
   LanguageMenu = 'cat_language_menu',
   SubMenu = 'cat_submenu',
   ThemeSection = 'cat_theme_section',
+  DiscordBanner = 'cat_discord_banner',
   Wallet = 'cat_wallet',
   WalletMenu = 'cat_wallet_menu',
   WalletSelectMenu = 'cat_wallet_select_menu',
@@ -60,6 +68,8 @@ export enum TrackingCategory {
   Widget = 'cat_widget',
   WidgetEvent = 'cat_widget_event',
   PoweredBy = 'cat_powered_by',
+  BlogSlideshow = 'cat_blog_slideshow',
+  BlogArticlesBoard = 'cat_blog_articles_board',
 }
 
 // can be used as custom dimensions / metrics
@@ -106,4 +116,12 @@ export enum TrackingEventParameter {
   InsuranceState = 'param_insurance_state',
   InsuranceFeeAmountUSD = 'param_insurance_fee_amount_usd',
   ValueLoss = 'param_value_loss',
+
+  // Blog
+  ArticleCardTitle = 'param_article_card_title',
+  ArticleCardId = 'param_article_card_id',
+
+  // Pagination
+  Pagination = 'param_pagination',
+  PaginationCat = 'param_pagination_cat',
 }

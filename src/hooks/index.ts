@@ -3,6 +3,7 @@ export * from './useChains';
 export * from './useCountUpAnimation';
 export * from './useDexsAndBridges';
 export * from './useFeatureCards';
+export * from './useIsTouchEnabled';
 export * from './useMultisig';
 export * from './useStrapi';
 export * from './useSwipe';

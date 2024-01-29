@@ -1,6 +1,7 @@
 import { Card, type Breakpoint } from '@mui/material';
 
-import { lighten, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+import { getContrastAlphaColor } from 'src/utils';
 
 export const BlogArticleCardContainer = styled(Card, {
   shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
@@ -11,13 +12,17 @@ export const BlogArticleCardContainer = styled(Card, {
   padding: theme.spacing(1),
   borderRadius: '24px',
   background: 'transparent',
+  transition: 'background-color 250ms',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     minWidth: 250,
     width: 420,
   },
   '&:hover': {
     cursor: 'pointer',
-    background: lighten(theme.palette.grey[200], 0.5),
+    background:
+      theme.palette.mode === 'light'
+        ? theme.palette.alphaDark100.main
+        : theme.palette.alphaLight400.main,
   },
 }));
 
@@ -26,5 +31,5 @@ export const BlogArticleCardImage = styled('img', {
 })(({ theme }) => ({
   width: '100%',
   borderRadius: '16px',
-  border: `1px solid ${theme.palette.grey[300]}`,
+  border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
 }));

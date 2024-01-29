@@ -1,10 +1,27 @@
 import { Box, Typography, useTheme } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { TrackingAction, TrackingCategory } from 'src/const';
+import { useUserTracking } from 'src/hooks';
+import { EventTrackingTool } from 'src/types';
+import { openInNewTab } from 'src/utils';
 import { DiscordBanner } from '.';
 import { Button } from '../Button';
 import { Discord } from '../illustrations';
 
 export const JoinDiscordBanner = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
+  const { trackEvent } = useUserTracking();
+
+  const handleClick = () => {
+    trackEvent({
+      category: TrackingCategory.DiscordBanner,
+      action: TrackingAction.JoinDiscordCommunity,
+      label: 'click-join-discord-community',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
+    openInNewTab('https://discord.com/invite/lifi');
+  };
   return (
     <DiscordBanner>
       <Box
@@ -24,9 +41,10 @@ export const JoinDiscordBanner = () => {
               : theme.palette.black.main
           }
         >
-          Level Up Your Crypto Knowledge
+          {t('discordBanner.ctaHeadline')}
         </Typography>
         <Button
+          onClick={handleClick}
           styles={{
             padding: theme.spacing(0, 2),
             margin: theme.spacing(4, 'auto', 12),
@@ -41,7 +59,7 @@ export const JoinDiscordBanner = () => {
             }
           />
           <Typography marginLeft={theme.spacing(0.5)}>
-            Join our Discord Community
+            {t('discordBanner.ctaButton')}
           </Typography>
         </Button>
       </Box>
