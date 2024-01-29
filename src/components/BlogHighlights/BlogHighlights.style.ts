@@ -7,7 +7,6 @@ import type {
 import { Box, Grid, Skeleton, type CardProps } from '@mui/material';
 
 import { alpha, styled } from '@mui/material/styles';
-import type { SwipeOutput } from 'src/hooks';
 import { handleNavigationIndex } from 'src/utils';
 
 export const BlogHightsContainer = styled(Box, {
@@ -23,58 +22,50 @@ export const BlogHightsContainer = styled(Box, {
 
 export interface BlogHighlightsCardProps extends Omit<GridProps, 'component'> {
   active?: boolean;
-  swipe?: SwipeOutput;
   index?: number;
   activePost?: number;
-  maxHighlights?: number;
 }
 
 export const BlogHighlightsCard = styled(Grid, {
   shouldForwardProp: (prop) =>
-    prop !== 'index' &&
-    prop !== 'activePost' &&
-    prop !== 'maxHighlights' &&
-    prop !== 'active' &&
-    prop !== 'swipe',
-})<BlogHighlightsCardProps>(
-  ({ theme, index, activePost, maxHighlights, swipe }) => ({
-    display: 'grid',
-    gridColumn: 1,
-    gridRow: 1,
-    backgroundColor: alpha(theme.palette.primary.main, 0.25),
-    // position: 'absolute',
-    top: theme.spacing(-4),
-    margin: theme.spacing(4, 2.5),
-    gridColumnGap: theme.spacing(2),
-    borderRadius: '36px',
-    width: 'auto',
-    padding: theme.spacing(4),
-    gridRowGap: 4,
-    gridTemplateRows: 'auto',
-    gridTemplateColumns: '1fr',
-    alignItems: 'center',
-    [theme.breakpoints.up('md' as Breakpoint)]: {
-      margin: theme.spacing(4, 6),
-      gridColumnGap: theme.spacing(4),
-      gridTemplateColumns: '.75fr 1fr',
-      gridTemplateRows: '1fr 80px',
-      height: 600,
-    },
-    ...(activePost === index && {
-      opacity: 1,
-    }),
-    ...(activePost !== index && {
-      opacity: 0,
-      zIndex: 100,
-      pointerEvents: 'none',
-    }),
+    prop !== 'index' && prop !== 'activePost' && prop !== 'active',
+})<BlogHighlightsCardProps>(({ theme, index, activePost }) => ({
+  display: 'grid',
+  gridColumn: 1,
+  gridRow: 1,
+  backgroundColor: alpha(theme.palette.primary.main, 0.25),
+  // position: 'absolute',
+  top: theme.spacing(-4),
+  margin: theme.spacing(4, 2.5),
+  gridColumnGap: theme.spacing(2),
+  borderRadius: '36px',
+  width: 'auto',
+  padding: theme.spacing(4),
+  gridRowGap: 4,
+  gridTemplateRows: 'auto',
+  gridTemplateColumns: '1fr',
+  alignItems: 'center',
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    margin: theme.spacing(4, 6),
+    gridColumnGap: theme.spacing(4),
+    gridTemplateColumns: '.75fr 1fr',
+    gridTemplateRows: '1fr 80px',
+    height: 600,
+  },
+  ...(activePost === index && {
+    opacity: 1,
   }),
-);
+  ...(activePost !== index && {
+    opacity: 0,
+    zIndex: 100,
+    pointerEvents: 'none',
+  }),
+}));
 
 export interface CircleProps extends Omit<CardProps, 'component'> {
   active: boolean;
   'data-index': number;
-  swipe: SwipeOutput;
+  swipeDeltaX?: number | null;
   paginationIndex: number;
   activePost: number;
   maxHighlights: number;
@@ -82,12 +73,19 @@ export interface CircleProps extends Omit<CardProps, 'component'> {
 export const Circle = styled('span', {
   shouldForwardProp: (prop) =>
     prop !== 'active' &&
-    prop !== 'swipe' &&
+    prop !== 'swipeDeltaX' &&
     prop !== 'paginationIndex' &&
     prop !== 'activePost' &&
     prop !== 'maxHighlights',
 })<CircleProps>(
-  ({ theme, active, swipe, paginationIndex, activePost, maxHighlights }) => ({
+  ({
+    theme,
+    active,
+    swipeDeltaX,
+    paginationIndex,
+    activePost,
+    maxHighlights,
+  }) => ({
     display: 'block',
     width: 8,
     height: 8,
@@ -108,50 +106,40 @@ export const Circle = styled('span', {
       backgroundColor: theme.palette.alphaDark600,
     },
 
-    ...(swipe.swipeListener.activeTouch &&
-      swipe.swipeListener.distance > 0 &&
-      paginationIndex ===
-        handleNavigationIndex({
-          direction: 'next',
-          active: activePost,
-          max: maxHighlights,
-        }) && {
-        opacity: Math.abs(swipe.swipeListener.distance) / 250 + 0.16,
-      }),
-    ...(swipe.swipeListener.activeTouch &&
-      swipe.swipeListener.distance < 0 &&
+    ...(swipeDeltaX &&
+      swipeDeltaX > 0 &&
       paginationIndex ===
         handleNavigationIndex({
           direction: 'prev',
           active: activePost,
           max: maxHighlights,
         }) && {
-        opacity: Math.abs(swipe.swipeListener.distance) / 250 + 0.16,
+        opacity: Math.abs(swipeDeltaX) / 250 + 0.16,
       }),
-    ...(swipe.swipeListener.activeTouch &&
-      swipe.swipeListener.distance < 0 &&
+    ...(swipeDeltaX &&
+      swipeDeltaX < 0 &&
+      paginationIndex ===
+        handleNavigationIndex({
+          direction: 'next',
+          active: activePost,
+          max: maxHighlights,
+        }) && {
+        opacity: Math.abs(swipeDeltaX) / 250 + 0.16,
+      }),
+    ...(swipeDeltaX &&
+      swipeDeltaX > 0 &&
       paginationIndex === activePost && {
         opacity: Math.max(
           0.16,
-          1 -
-            Math.abs(
-              swipe.swipeListener.distance < 250
-                ? swipe.swipeListener.distance / 250
-                : 0.84,
-            ),
+          1 - Math.abs(swipeDeltaX < 250 ? swipeDeltaX / 250 : 0.84),
         ),
       }),
-    ...(swipe.swipeListener.activeTouch &&
-      swipe.swipeListener.distance > 0 &&
+    ...(swipeDeltaX &&
+      swipeDeltaX < 0 &&
       paginationIndex === activePost && {
         opacity: Math.max(
           0.16,
-          1 -
-            Math.abs(
-              swipe.swipeListener.distance < 250
-                ? swipe.swipeListener.distance / 250
-                : 0.84,
-            ),
+          1 - Math.abs(swipeDeltaX < 250 ? swipeDeltaX / 250 : 0.84),
         ),
       }),
   }),

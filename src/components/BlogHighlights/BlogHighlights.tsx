@@ -3,12 +3,13 @@ import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useSwipeable } from 'react-swipeable';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useStrapi, useSwipe, useUserTracking } from 'src/hooks';
+import { useStrapi, useUserTracking } from 'src/hooks';
 import { EventTrackingTool, type BlogArticleData } from 'src/types';
 import type { HandleNavigationIndexProps } from 'src/utils';
 import { handleNavigationIndex } from 'src/utils';
@@ -30,6 +31,7 @@ const maxHighlights = 5;
 
 export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
   const [activePost, setActivePost] = useState<number>(0);
+  const [swipeDeltaX, setSwipeDeltaX] = useState<number | null>(0);
   const theme = useTheme();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -61,7 +63,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
   );
 
   const handleImageClick = (index: number) => {
-    if (!swipe.swipeListener.isLeftSwipe && !swipe.swipeListener.isRightSwipe) {
+    if (!swipeDeltaX) {
       trackEvent({
         category: TrackingCategory.Menu,
         label: 'click-join-discord-community-button',
@@ -105,14 +107,16 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
     [trackEvent],
   );
 
-  const swipe = useSwipe({
-    onSwipedLeft: () => {
+  const swipeHandlers = useSwipeable({
+    onSwiping: (eventData) => {
+      setSwipeDeltaX(eventData.deltaX);
+    },
+    onSwipedLeft: ({ deltaX }) => {
       const output = handlePagination({
         direction: 'next',
         active: activePost,
         max: maxItems,
       });
-      // console.log('swipe left');
       trackEvent({
         category: TrackingCategory.BlogHighlights,
         label: 'swipe-blog-highlights-left',
@@ -136,7 +140,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
       });
       trackEvent({
         category: TrackingCategory.BlogHighlights,
-        label: 'swipe-blog-highlights-left',
+        label: 'swipe-blog-highlights-right',
         action: TrackingAction.SwipeHighlightCard,
         data: {
           [TrackingEventParameter.Pagination]: output,
@@ -149,6 +153,10 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
       });
       return output;
     },
+    onTouchStartOrOnMouseDown: ({ event }) => event.preventDefault(),
+    onTouchEndOrOnMouseUp: () => setSwipeDeltaX(null),
+    preventScrollOnSwipe: true,
+    trackMouse: true,
   });
 
   useEffect(() => {
@@ -201,42 +209,40 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
                 index={index}
                 activePost={activePost}
                 active={index === activePost}
-                maxHighlights={source.length}
-                swipe={swipe}
                 sx={{
-                  ...(swipe.swipeListener.activeTouch &&
-                    swipe.swipeListener.distance > 0 &&
+                  ...(swipeDeltaX !== null &&
+                    swipeDeltaX < 0 &&
                     index ===
                       handleNavigationIndex({
                         direction: 'next',
                         active: activePost,
                         max: source.length,
                       }) && {
-                      opacity: Math.abs(swipe.swipeListener.distance) / 250,
+                      opacity: Math.abs(swipeDeltaX) / 250,
                     }),
-                  ...(swipe.swipeListener.activeTouch &&
-                    swipe.swipeListener.distance < 0 &&
+                  ...(swipeDeltaX !== null &&
+                    swipeDeltaX > 0 &&
                     index ===
                       handleNavigationIndex({
                         direction: 'prev',
                         active: activePost,
                         max: source.length,
                       }) && {
-                      opacity: Math.abs(swipe.swipeListener.distance) / 250,
+                      opacity: Math.abs(swipeDeltaX) / 250,
                     }),
-                  ...(swipe.swipeListener.activeTouch &&
-                    swipe.swipeListener.distance < 0 &&
+                  ...(swipeDeltaX !== null &&
+                    swipeDeltaX < 0 &&
                     index === activePost && {
-                      opacity: 1 - Math.abs(swipe.swipeListener.distance) / 250,
+                      opacity: 1 - Math.abs(swipeDeltaX) / 250,
                     }),
-                  ...(swipe.swipeListener.activeTouch &&
-                    swipe.swipeListener.distance > 0 &&
+                  ...(swipeDeltaX !== null &&
+                    swipeDeltaX > 0 &&
                     index === activePost && {
-                      opacity: 1 - Math.abs(swipe.swipeListener.distance) / 250,
+                      opacity: 1 - Math.abs(swipeDeltaX) / 250,
                     }),
                 }}
                 container
-                {...swipe.swipeHandlers}
+                {...swipeHandlers}
               >
                 <BlogHighlightsContent>
                   <Typography
@@ -352,7 +358,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
                     active={paginationIndex === activePost}
                     maxHighlights={maxItems}
                     onClick={handleChange}
-                    swipe={swipe}
+                    swipeDeltaX={swipeDeltaX}
                     activePost={activePost}
                   />
                 ),

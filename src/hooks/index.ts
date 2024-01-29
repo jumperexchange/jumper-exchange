@@ -6,5 +6,4 @@ export * from './useFeatureCards';
 export * from './useIsTouchEnabled';
 export * from './useMultisig';
 export * from './useStrapi';
-export * from './useSwipe';
 export * from './userTracking';

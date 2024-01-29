@@ -8576,6 +8576,7 @@ __metadata:
     react-markdown: ^9.0.1
     react-query: ^3.39.3
     react-router-dom: ^6.20.1
+    react-swipeable: ^7.0.1
     rehype-raw: ^7.0.0
     remark-gfm: ^4.0.0
     remark-html: ^16.0.1
@@ -10689,6 +10690,15 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 046efa4b101c64de823f0c838948a50ad53f3ccdd7887604d93c1ccf19c4e797935cab602aa001d793544445412ebeb95c2c7f880e3e86ca447772db574789d7
+  languageName: node
+  linkType: hard
+
+"react-swipeable@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "react-swipeable@npm:7.0.1"
+  peerDependencies:
+    react: ^16.8.3 || ^17 || ^18
+  checksum: 1cd19275c5608cb202ca7717afc73e336fb51d6ae4c9353ef409e1779dfb90f36ac4c06aa870d3d862f15fb439f82b96d41395738d04b8d2290aefc670fd6b5b
   languageName: node
   linkType: hard
 
