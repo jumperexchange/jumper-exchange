@@ -73,7 +73,6 @@ export const BlogArticle = ({
   const [showCopyMessage, setShowCopyMessage] = useState(false);
   const { t } = useTranslation();
   const location = useLocation();
-  const [toggle, setToggle] = useState(false);
 
   const handleShareClick = () => {
     navigator.clipboard.writeText(
@@ -152,12 +151,8 @@ export const BlogArticle = ({
   });
   return (
     <>
-      <BlogArticleContainer
-        onClick={() => {
-          setToggle((state) => !state);
-        }}
-      >
-        {toggle && !!createdAt ? (
+      <BlogArticleContainer>
+        {!!createdAt ? (
           <>
             <Typography
               variant="lifiBodyXSmall"
@@ -197,7 +192,7 @@ export const BlogArticle = ({
             sx={{ marginTop: 1 }}
           />
         )}
-        {toggle && title ? (
+        {title ? (
           <Typography variant="lifiHeaderLarge">{title}</Typography>
         ) : (
           <Skeleton width={'100%'} height={128} />
@@ -213,7 +208,7 @@ export const BlogArticle = ({
             sx={{ display: 'flex', alignItems: 'center' }}
             onClick={() => console.log('AUTHOR', author)}
           >
-            {toggle && author?.data ? (
+            {author?.data ? (
               <BlogAuthorAvatar
                 src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
                 alt="author-avatar"
@@ -226,7 +221,7 @@ export const BlogArticle = ({
                 sx={{ marginRight: theme.spacing(1) }}
               />
             )}
-            {toggle && author?.data ? (
+            {author?.data ? (
               <Typography
                 variant="lifiBodyXSmallStrong"
                 component="span"
@@ -242,7 +237,7 @@ export const BlogArticle = ({
               <Skeleton width={80} height={16} variant="text" />
             )}
           </Box>
-          {toggle && title ? (
+          {title ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Tooltip
                 title={'Share article on LinkedIn'}
@@ -357,7 +352,7 @@ export const BlogArticle = ({
             />
           )}
         </Box>
-        {toggle && image?.data ? (
+        {image?.data ? (
           <BlogArticleImage
             src={`${baseUrl}${image.data.attributes.url}`}
             alt={image?.data.attributes.alternativeText}
@@ -369,12 +364,12 @@ export const BlogArticle = ({
           />
         )}
         <BlogArticleContentContainer>
-          {toggle && subtitle ? (
+          {subtitle ? (
             <Typography variant="lifiHeaderMedium">{subtitle}</Typography>
           ) : (
             <Skeleton width={'100%'} height={120} variant="text" />
           )}
-          {toggle && content ? (
+          {content ? (
             <BlocksRenderer
               content={content}
               blocks={customRichBlocks as any}
@@ -402,7 +397,7 @@ export const BlogArticle = ({
               borderRadius: '20px',
             }}
           >
-            {toggle && author?.data ? (
+            {author?.data ? (
               <BlogAuthorAvatar
                 src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
                 alt="author-avatar"
@@ -421,7 +416,7 @@ export const BlogArticle = ({
                 flexDirection: 'column',
               }}
             >
-              {toggle && author?.data ? (
+              {author?.data ? (
                 <Typography
                   variant="lifiBodyXSmallStrong"
                   component="span"
@@ -436,7 +431,7 @@ export const BlogArticle = ({
               ) : (
                 <Skeleton variant="text" width={90} height={16} />
               )}
-              {toggle && author?.data ? (
+              {author?.data ? (
                 <Typography
                   variant="lifiBodyXSmall"
                   component="span"
