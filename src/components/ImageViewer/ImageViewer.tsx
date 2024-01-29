@@ -10,7 +10,6 @@ interface ImageViewerProps {
 
 export const ImageViewer = ({ baseUrl, imageData }: ImageViewerProps) => {
   const [open, setOpen] = useState(false);
-  const [image, setImage] = useState('false');
   const theme = useTheme();
 
   const handleClose = () => {
@@ -18,7 +17,6 @@ export const ImageViewer = ({ baseUrl, imageData }: ImageViewerProps) => {
   };
 
   const handleImage = (value: any) => {
-    setImage(value);
     setOpen(true);
   };
   return (
@@ -46,9 +44,11 @@ export const ImageViewer = ({ baseUrl, imageData }: ImageViewerProps) => {
               alt={imageData.caption ?? 'article-image'}
             />
             <Box
-              display={'flex'}
-              flexDirection={'row'}
-              justifyContent={'flex-start'}
+              display="flex"
+              alignItems="center"
+              flexDirection="row"
+              justifyContent="flex-start"
+              marginTop={2}
             >
               <ImageIcon
                 sx={{
