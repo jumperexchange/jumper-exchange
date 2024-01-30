@@ -30,6 +30,7 @@ export const BlogArticlePage = () => {
   const currentCategories = useMemo(() => {
     return article && article[0]?.attributes.tags.data.map((el) => el.id);
   }, [article]);
+
   const { data: articles, isSuccess: articlesIsSuccess } =
     useStrapi<BlogArticleData>({
       contentType: STRAPI_BLOG_ARTICLES,

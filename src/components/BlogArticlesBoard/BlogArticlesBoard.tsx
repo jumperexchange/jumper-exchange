@@ -4,8 +4,10 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import type { Breakpoint } from '@mui/material';
 import {
   Box,
+  Fade,
   Grid,
   IconButton,
+  Skeleton,
   Typography,
   useMediaQuery,
   useTheme,
@@ -40,6 +42,7 @@ export const BlogArticlesBoard = () => {
   const [catLabel, setCatLabel] = useState<string | undefined>(
     t('blog.allCategories'),
   );
+  const [toggle, setToggle] = useState(false);
   const { trackEvent } = useUserTracking();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
   const [page, setPage] = useState<number>(1);
@@ -47,26 +50,22 @@ export const BlogArticlesBoard = () => {
     data: blogArticles,
     url,
     meta,
+    isFetching,
+    isRefetching,
+    isLoading: articleIsLoading,
+    isSuccess: articleIsSuccess,
   } = useStrapi<BlogArticleData>({
     contentType: STRAPI_BLOG_ARTICLES,
-    filterTag: catId === 0 ? undefined : catId,
+    filterTag: catId ? [catId] : null,
     pagination: { page: page, pageSize: pageSize },
     sort: 'desc',
     queryKey:
       catId === 0
-        ? ['blog-articles-board', `${page}`]
-        : [
-            'blog-articles-board',
-            catId?.toString() ?? '',
-            page.toString() ?? '',
-          ],
+        ? ['blog-articles-board', page]
+        : ['blog-articles-board', page, catId],
   });
 
-  const {
-    data: tags,
-    isSuccess,
-    isLoading,
-  } = useStrapi<TagAttributes>({
+  const { data: tags, isSuccess } = useStrapi<TagAttributes>({
     contentType: STRAPI_TAGS,
     queryKey: ['tags'],
   });
@@ -85,6 +84,7 @@ export const BlogArticlesBoard = () => {
   );
 
   const filteredTags = useMemo<TabProps[]>(() => {
+    // default "All" Category
     const defaultFilter = {
       id: 0,
       label: !isDesktop && catId !== 0 ? catLabel : t('blog.allCategories'),
@@ -102,6 +102,7 @@ export const BlogArticlesBoard = () => {
       onClick: handleTagsClick(0, t('blog.allCategories')),
       disabled: false,
     };
+    // tags
     const output = tags?.map((el, index) => {
       return {
         label: el.attributes.Title || undefined, //el.attributes.Title,
@@ -110,7 +111,7 @@ export const BlogArticlesBoard = () => {
         // disabled: false,
       };
     });
-
+    // merge default + tags
     output?.unshift(defaultFilter);
     return output;
   }, [catId, catLabel, handleTagsClick, isDesktop, t, tags, theme]);
@@ -136,6 +137,7 @@ export const BlogArticlesBoard = () => {
     minHeight: 68,
     width: '100%',
     maxWidth: '320px',
+    zIndex: 1,
 
     [theme.breakpoints.up('lg')]: {
       maxWidth: 'unset',
@@ -160,7 +162,7 @@ export const BlogArticlesBoard = () => {
       // maxWidth: '80%',
 
       top: `${theme.spacing(0.75)} !important`,
-      borderRadius: '12px',
+      borderRadius: '6px',
       transform: 'translateX(-50%)',
       zIndex: '-1',
       [theme.breakpoints.up('lg')]: {
@@ -176,14 +178,14 @@ export const BlogArticlesBoard = () => {
             : theme.palette.white.main,
         height: 48,
         zIndex: -1,
-        borderRadius: 24,
+        borderRadius: '24px',
       },
     },
   };
 
   const tabStyles = {
     height: 48,
-    borderRadius: '12px',
+    borderRadius: '6px',
     width: '100%',
     maxWidth: '320px',
     [theme.breakpoints.up('lg')]: {
@@ -243,7 +245,10 @@ export const BlogArticlesBoard = () => {
   };
 
   return (
-    <Box sx={{ marginBottom: theme.spacing(10) }}>
+    <Box
+      sx={{ marginBottom: theme.spacing(10), position: 'relative' }}
+      onClick={() => setToggle(!toggle)}
+    >
       <Grid>
         <Typography
           variant="lifiHeaderMedium"
@@ -254,36 +259,65 @@ export const BlogArticlesBoard = () => {
         >
           {t('blog.categories')}
         </Typography>
-        <Tabs
-          data={filteredTags}
-          value={catId ?? 0}
-          orientation={isDesktop ? 'horizontal' : 'vertical'}
-          ariaLabel="categories-switch-tabs"
-          containerStyles={containerStyles}
-          tabStyles={tabStyles}
-        />
-
-        <Grid
-          container
-          sx={{
-            margin: theme.spacing(2, 'auto'),
-            display: 'grid',
-            marginTop: `calc(${theme.spacing(4)} + 56px + ${theme.spacing(
-              4,
-            )} )`,
-            gridTemplateColumns: '1fr',
-            gap: theme.spacing(4),
-            maxWidth: theme.breakpoints.values.md,
-            [theme.breakpoints.up('sm' as Breakpoint)]: {
-              gridTemplateColumns: '1fr 1fr',
-            },
-            [theme.breakpoints.up('lg' as Breakpoint)]: {
-              gridTemplateColumns: '1fr 1fr 1fr',
-            },
-          }}
-        >
-          {isSuccess && !isLoading ? (
-            blogArticles?.length > 0 ? (
+        {filteredTags ? (
+          <Tabs
+            data={filteredTags}
+            value={catId ?? 0}
+            orientation={isDesktop ? 'horizontal' : 'vertical'}
+            ariaLabel="categories-switch-tabs"
+            containerStyles={containerStyles}
+            tabStyles={tabStyles}
+          />
+        ) : (
+          <Skeleton sx={{ width: '100%', height: 68 }} />
+        )}
+        <Fade in={!isFetching || !isRefetching} timeout={600}>
+          <Grid
+            container
+            sx={{
+              margin: theme.spacing(2, 'auto'),
+              display: 'grid',
+              marginTop: `calc(${theme.spacing(4)} + 56px + ${theme.spacing(
+                4,
+              )} )`,
+              paddingBottom: theme.spacing(9),
+              gridTemplateColumns: '1fr',
+              gap: theme.spacing(4),
+              maxWidth: theme.breakpoints.values.md,
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                gridTemplateColumns: '1fr 1fr',
+              },
+              [theme.breakpoints.up('lg' as Breakpoint)]: {
+                gridTemplateColumns: '1fr 1fr 1fr',
+              },
+            }}
+          >
+            {isFetching || isRefetching ? (
+              Array.from({ length: pageSize }).map((_, index) => (
+                <BlogArticleCardSkeleton
+                  key={`blog-article-card-skeleton-${index}`}
+                  containerStyles={{
+                    [theme.breakpoints.up('sm' as Breakpoint)]: {
+                      width: '100%',
+                      maxWidth: 420,
+                    },
+                  }}
+                  imageStyles={{
+                    width: '100%',
+                    height: 'auto',
+                    aspectRatio: 1.77,
+                  }}
+                  contentStyles={{
+                    padding: 0,
+                    width: '100%',
+                    [theme.breakpoints.up('sm' as Breakpoint)]: {
+                      // width: 230,
+                      height: 48,
+                    },
+                  }}
+                />
+              ))
+            ) : isSuccess && blogArticles?.length > 0 ? (
               blogArticles?.map((article, index) => (
                 <BlogArticleCard
                   baseUrl={url}
@@ -309,133 +343,136 @@ export const BlogArticlesBoard = () => {
               ))
             ) : (
               <p>No Content</p>
-            )
-          ) : (
-            Array.from({ length: pageSize }).map((_, index) => (
-              <BlogArticleCardSkeleton
-                key={`blog-article-card-skeleton-${index}`}
-                containerStyles={{
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    width: '100%',
-                    maxWidth: 420,
+            )}
+          </Grid>
+        </Fade>
+        {(!isFetching || !isRefetching) && isSuccess ? (
+          meta?.pagination.pageCount > 1 && (
+            <Box
+              sx={{
+                position: 'absolute',
+                bottom: 0,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                marginTop: theme.spacing(3),
+                display: 'flex',
+                justifyContent: 'center',
+                gap: theme.spacing(2),
+              }}
+            >
+              <IconButton
+                onClick={() => handlePrev()}
+                disableRipple={false}
+                sx={{
+                  color: theme.palette.grey[500],
+                  width: 40,
+                  height: 40,
+                  '&:hover': {
+                    backgroundColor:
+                      theme.palette.mode === 'dark'
+                        ? getContrastAlphaColor(theme, '12%')
+                        : getContrastAlphaColor(theme, '4%'),
                   },
                 }}
-                imageStyles={{
-                  width: 'auto',
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    width: 262,
-                    height: 148,
+              >
+                <ArrowBackIosIcon
+                  sx={{
+                    marginLeft: theme.spacing(0.75),
+                  }}
+                />
+              </IconButton>
+
+              {Array.from({ length: meta?.pagination.pageCount }).map(
+                (_, index) => {
+                  const actualPage = index + 1;
+                  return (
+                    <IconButton
+                      onClick={() => handlePage(actualPage)}
+                      sx={{
+                        ...(actualPage === page
+                          ? {
+                              color:
+                                theme.palette.mode === 'light'
+                                  ? theme.palette.grey[800]
+                                  : theme.palette.grey[300],
+                            }
+                          : {
+                              color:
+                                theme.palette.mode === 'light'
+                                  ? theme.palette.grey[800]
+                                  : theme.palette.grey[400],
+                            }),
+                        width: '40px',
+                        height: '40px',
+                        ...(actualPage === page && {
+                          '& .MuiTouchRipple-root': {
+                            backgroundColor:
+                              theme.palette.mode === 'light'
+                                ? theme.palette.alphaDark100.main
+                                : theme.palette.alphaLight300.main,
+                            zIndex: -1,
+                          },
+                        }),
+                        '&:hover': {
+                          backgroundColor:
+                            theme.palette.mode === 'dark'
+                              ? getContrastAlphaColor(theme, '12%')
+                              : getContrastAlphaColor(theme, '4%'),
+                        },
+                      }}
+                    >
+                      <Typography variant="lifiBodyMedium">
+                        {actualPage}
+                      </Typography>
+                    </IconButton>
+                  );
+                },
+              )}
+              <IconButton
+                onClick={() => handleNext()}
+                sx={{
+                  color: theme.palette.grey[500],
+                  width: 40,
+                  height: 40,
+                  '&:hover': {
+                    backgroundColor:
+                      theme.palette.mode === 'dark'
+                        ? getContrastAlphaColor(theme, '12%')
+                        : getContrastAlphaColor(theme, '4%'),
                   },
                 }}
-                contentStyles={{
-                  padding: 0,
-                  width: '100%',
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    // width: 230,
-                    height: 48,
-                  },
-                }}
-              />
-            ))
-          )}
-        </Grid>
-        {meta?.pagination.pageCount > 1 && (
+              >
+                <ArrowForwardIosIcon
+                  sx={{
+                    marginLeft: theme.spacing(0.25),
+                  }}
+                />
+              </IconButton>
+            </Box>
+          )
+        ) : (
           <Box
             sx={{
+              position: 'absolute',
+              bottom: 0,
+              left: '50%',
+              transform: 'translateX(-50%)',
               marginTop: theme.spacing(3),
               display: 'flex',
               justifyContent: 'center',
               gap: theme.spacing(2),
             }}
           >
-            <IconButton
-              onClick={() => handlePrev()}
-              disableRipple={false}
-              sx={{
-                color: theme.palette.grey[500],
-                width: 40,
-                height: 40,
-                '&:hover': {
-                  backgroundColor:
-                    theme.palette.mode === 'dark'
-                      ? getContrastAlphaColor(theme, '12%')
-                      : getContrastAlphaColor(theme, '4%'),
-                },
-              }}
-            >
-              <ArrowBackIosIcon
-                sx={{
-                  marginLeft: theme.spacing(0.75),
-                }}
-              />
-            </IconButton>
-
-            {Array.from({ length: meta?.pagination.pageCount }).map(
-              (_, index) => {
-                const actualPage = index + 1;
-                return (
-                  <IconButton
-                    onClick={() => handlePage(actualPage)}
-                    sx={{
-                      ...(actualPage === page
-                        ? {
-                            color:
-                              theme.palette.mode === 'light'
-                                ? theme.palette.grey[800]
-                                : theme.palette.grey[300],
-                          }
-                        : {
-                            color:
-                              theme.palette.mode === 'light'
-                                ? theme.palette.grey[800]
-                                : theme.palette.grey[400],
-                          }),
-                      width: '40px',
-                      height: '40px',
-                      ...(actualPage === page && {
-                        '& .MuiTouchRipple-root': {
-                          backgroundColor:
-                            theme.palette.mode === 'light'
-                              ? theme.palette.alphaDark100.main
-                              : theme.palette.alphaLight300.main,
-                          zIndex: -1,
-                        },
-                      }),
-                      '&:hover': {
-                        backgroundColor:
-                          theme.palette.mode === 'dark'
-                            ? getContrastAlphaColor(theme, '12%')
-                            : getContrastAlphaColor(theme, '4%'),
-                      },
-                    }}
-                  >
-                    <Typography variant="lifiBodyMedium">
-                      {actualPage}
-                    </Typography>
-                  </IconButton>
-                );
-              },
-            )}
-            <IconButton
-              onClick={() => handleNext()}
-              sx={{
-                color: theme.palette.grey[500],
-                width: 40,
-                height: 40,
-                '&:hover': {
-                  backgroundColor:
-                    theme.palette.mode === 'dark'
-                      ? getContrastAlphaColor(theme, '12%')
-                      : getContrastAlphaColor(theme, '4%'),
-                },
-              }}
-            >
-              <ArrowForwardIosIcon
-                sx={{
-                  marginLeft: theme.spacing(0.25),
-                }}
-              />
-            </IconButton>
+            {Array.from({ length: 4 }).map((_, index) => {
+              return (
+                <Skeleton
+                  variant="circular"
+                  width="40"
+                  height="40"
+                  key={`pagination-skeleton-${index}`}
+                />
+              );
+            })}
           </Box>
         )}
       </Grid>

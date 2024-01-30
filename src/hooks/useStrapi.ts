@@ -8,6 +8,8 @@ export interface UseStrapiProps<T> {
   url: URL;
   isSuccess: boolean;
   isLoading: boolean;
+  isRefetching: boolean;
+  isFetching: boolean;
 }
 
 interface PaginationProps {
@@ -18,11 +20,11 @@ interface PaginationProps {
 interface ContentTypeProps {
   contentType: 'feature-cards' | 'blog-articles' | 'faq-items' | 'tags';
   filterSlug?: string;
-  filterTag?: number | string | number[] | string[];
+  filterTag?: (number | null | undefined)[] | null | undefined;
   sort?: 'desc' | 'asc';
   pagination?: PaginationProps;
   filterDisplayed?: boolean;
-  queryKey: string | string[] | number;
+  queryKey: (string | number | undefined)[];
 }
 
 // Query passed Content-Type var from Strapi
@@ -44,15 +46,16 @@ export const useStrapi = <T>({
     apiUrl.searchParams.set('filters[Slug][$eq]', filterSlug);
   }
   if (filterTag) {
+    console.log('FILTERTAG', filterTag);
     if (typeof filterTag === 'string') {
       apiUrl.searchParams.set('filters[tags][id][$eq]', `${filterTag}`);
     } else if (Array.isArray(filterTag)) {
-      filterTag.forEach((el, index) =>
+      filterTag.forEach((el, index) => {
         apiUrl.searchParams.set(
           `filters[$and][0][$or][${index}][tags][id][$eq]`,
           `${el}`,
-        ),
-      );
+        );
+      });
     }
   }
   if (sort) {
@@ -97,9 +100,8 @@ export const useStrapi = <T>({
     import.meta.env.VITE_STRAPI_DEVELOP === 'true'
       ? import.meta.env.VITE_LOCAL_STRAPI_API_TOKEN
       : import.meta.env.VITE_STRAPI_API_TOKEN;
-  const { data, isSuccess, isLoading } = useQuery({
+  const { data, isSuccess, isLoading, isRefetching, isFetching } = useQuery({
     queryKey: [queryKey],
-
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {
@@ -119,5 +121,7 @@ export const useStrapi = <T>({
     url: apiUrl,
     isSuccess,
     isLoading,
+    isRefetching,
+    isFetching,
   };
 };
