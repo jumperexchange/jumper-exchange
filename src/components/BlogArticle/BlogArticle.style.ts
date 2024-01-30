@@ -35,10 +35,6 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
       ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
       : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
 
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    // width: theme.breakpoints.values.md,
-    // maxWidth: theme.breakpoints.values.md,
-  },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     maxWidth: theme.breakpoints.values.lg,
   },
