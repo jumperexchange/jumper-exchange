@@ -1,6 +1,6 @@
 import type { Breakpoint } from '@mui/material';
 import { Container, useTheme } from '@mui/material';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Layout } from 'src/Layout';
@@ -11,13 +11,20 @@ import {
   Tag,
 } from 'src/components';
 import { STRAPI_BLOG_ARTICLES } from 'src/const';
-import { useStrapi } from 'src/hooks';
+import { useCookie3, useInitUserTracking, useStrapi } from 'src/hooks';
 import type { BlogArticleData, TagAttributes } from 'src/types';
 
 export const BlogArticlePage = () => {
   const { id } = useParams();
   const theme = useTheme();
   const { t } = useTranslation();
+  const { initTracking } = useInitUserTracking();
+  const cookie3 = useCookie3();
+
+  useEffect(() => {
+    initTracking({});
+    cookie3?.trackPageView();
+  }, [cookie3, initTracking]);
   const {
     data: article,
     url: articleUrl,
