@@ -1,23 +1,18 @@
-import type { Breakpoint, IconButtonProps } from '@mui/material';
-import { Grid, IconButton } from '@mui/material';
+import type { IconButtonProps } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from 'src/utils';
 
-export const ArticlesGrid = styled(Grid)(({ theme }) => ({
-  margin: theme.spacing(2, 'auto'),
-  display: 'grid',
-  marginTop: `calc(${theme.spacing(4)} + 56px + ${theme.spacing(4)} )`,
-  paddingBottom: theme.spacing(9),
-  gridTemplateColumns: '1fr',
-  gap: theme.spacing(4),
-  maxWidth: theme.breakpoints.values.md,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    gridTemplateColumns: '1fr 1fr',
-  },
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    gridTemplateColumns: '1fr 1fr 1fr',
-  },
+export const PaginationContainer = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  bottom: 0,
+  left: '50%',
+  transform: 'translateX(-50%)',
+  marginTop: theme.spacing(3),
+  display: 'flex',
+  justifyContent: 'center',
+  gap: theme.spacing(2),
 }));
 
 export interface PaginationIndexButtonProps
