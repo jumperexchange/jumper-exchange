@@ -9,6 +9,7 @@ import {
   CustomColor,
   JoinDiscordBanner,
 } from 'src/components';
+import { STRAPI_BLOG_ARTICLES } from 'src/const';
 import { useStrapi } from 'src/hooks';
 import type { BlogArticleData } from 'src/types';
 
@@ -17,7 +18,7 @@ export const BlogPage = () => {
   const { t } = useTranslation();
 
   const { data: recentArticles, url } = useStrapi<BlogArticleData>({
-    contentType: 'blog-articles',
+    contentType: STRAPI_BLOG_ARTICLES,
     queryKey: ['blog-articles-recent'],
     sort: 'desc',
     pagination: { page: 1, pageSize: 6, withCount: false },

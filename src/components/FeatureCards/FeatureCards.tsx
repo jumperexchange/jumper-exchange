@@ -2,6 +2,7 @@ import type { Breakpoint } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { FeatureCard } from 'src/components';
+import { STRAPI_FEATURE_CARDS } from 'src/const';
 import { useStrapi } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
 import type { FeatureCardData } from 'src/types';
@@ -16,7 +17,7 @@ export const FeatureCards = () => {
   );
 
   const { data, isSuccess } = useStrapi<FeatureCardData>({
-    contentType: 'feature-cards',
+    contentType: STRAPI_FEATURE_CARDS,
     queryKey: ['feature-cards'],
   });
   const featureCardsFetched = useMemo(() => {

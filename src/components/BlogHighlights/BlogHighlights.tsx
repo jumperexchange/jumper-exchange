@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import {
+  STRAPI_BLOG_ARTICLES,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
@@ -50,7 +51,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
   };
 
   const { data: blogArticles, url } = useStrapi<BlogArticleData>({
-    contentType: 'blog-articles',
+    contentType: STRAPI_BLOG_ARTICLES,
     queryKey: ['blog-articles'],
   });
 

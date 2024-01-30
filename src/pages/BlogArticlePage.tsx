@@ -10,6 +10,7 @@ import {
   JoinDiscordBanner,
   Tag,
 } from 'src/components';
+import { STRAPI_BLOG_ARTICLES } from 'src/const';
 import { useStrapi } from 'src/hooks';
 import type { BlogArticleData, TagAttributes } from 'src/types';
 
@@ -22,7 +23,7 @@ export const BlogArticlePage = () => {
     url: articleUrl,
     isSuccess: articleIsSuccess,
   } = useStrapi<BlogArticleData>({
-    contentType: 'blog-articles',
+    contentType: STRAPI_BLOG_ARTICLES,
     filterSlug: id,
     queryKey: ['blog-article', `${id ?? ''}`],
   });
@@ -31,9 +32,9 @@ export const BlogArticlePage = () => {
   }, [article]);
   const { data: articles, isSuccess: articlesIsSuccess } =
     useStrapi<BlogArticleData>({
-      contentType: 'blog-articles',
+      contentType: STRAPI_BLOG_ARTICLES,
       queryKey: ['blog-articles'].concat(
-        currentCategories.toString().split(','),
+        currentCategories?.toString().split(','),
       ),
       filterTag: currentCategories,
     });
