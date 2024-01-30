@@ -60,9 +60,7 @@ export const PaginationIndexButton = styled(IconButton, {
   },
 }));
 
-export const PaginationButton = styled(IconButton, {
-  shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
-})(({ theme }) => ({
+export const PaginationButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.grey[500],
   width: 40,
   height: 40,

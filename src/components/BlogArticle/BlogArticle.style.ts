@@ -1,15 +1,9 @@
 import type { Breakpoint } from '@mui/material';
-import { Box, Container, type CardProps } from '@mui/material';
+import { Box, Container } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
-export interface BlogArticleProps extends Omit<CardProps, 'component'> {
-  // backgroundImageUrl?: string;
-}
-
-export const BlogArticleImage = styled('img', {
-  shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
-})(({ theme }) => ({
+export const BlogArticleImage = styled('img')(({ theme }) => ({
   borderRadius: '14px',
   width: '100%',
   marginTop: theme.spacing(1),

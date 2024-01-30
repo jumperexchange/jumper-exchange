@@ -159,9 +159,7 @@ export const SkeletonCircle = styled(Skeleton, {
   },
 }));
 
-export const BlogHighlightsImage = styled('img', {
-  shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
-})(({ theme }) => ({
+export const BlogHighlightsImage = styled('img')(({ theme }) => ({
   borderRadius: '14px',
   userSelect: 'none',
   gridRow: '1',
@@ -182,9 +180,7 @@ export const BlogHighlightsImage = styled('img', {
   },
 }));
 
-export const BlogHighlightsContent = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
-})(({ theme }) => ({
+export const BlogHighlightsContent = styled(Box)(({ theme }) => ({
   gridRow: 2,
   display: 'flex',
   marginBottom: theme.spacing(10),

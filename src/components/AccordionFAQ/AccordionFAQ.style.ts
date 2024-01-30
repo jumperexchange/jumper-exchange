@@ -1,9 +1,8 @@
-import { Card, type Breakpoint } from '@mui/material';
+import { Container, type Breakpoint } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from 'src/utils';
 
-export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
+export const AccordionContainer = styled(Container)(({ theme }) => ({
   flexShrink: 0,
   width: '100%',
   border: 'unset',
@@ -22,10 +21,4 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
         ? theme.palette.alphaDark100.main
         : theme.palette.alphaLight400.main,
   },
-}));
-
-export const BlogArticleCardImage = styled('img')(({ theme }) => ({
-  width: '100%',
-  borderRadius: '16px',
-  border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
 }));

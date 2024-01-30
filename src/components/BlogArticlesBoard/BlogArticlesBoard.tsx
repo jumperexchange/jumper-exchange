@@ -1,7 +1,6 @@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import type { Breakpoint } from '@mui/material';
 import {
-  Box,
   Fade,
   Grid,
   Skeleton,
@@ -102,93 +101,91 @@ export const BlogArticlesBoard = () => {
   }, [catId, catLabel, handleTagsClick, isDesktop, t, tags, theme]);
 
   return (
-    <Box sx={{ marginBottom: theme.spacing(10), position: 'relative' }}>
-      <Grid>
-        <Typography
-          variant="lifiHeaderMedium"
-          sx={{
-            textAlign: 'center',
-            margin: theme.spacing(10, 'auto', 0),
-          }}
-        >
-          {t('blog.categories')}
-        </Typography>
-        {filteredTags ? (
-          <BlogArticlesBoardTabs
-            openDropdown={openDropdown}
-            filteredTags={filteredTags}
-            catId={catId}
-          />
-        ) : (
-          <Skeleton sx={{ width: '100%', height: 68 }} />
-        )}
-        <Fade in={!isFetching || !isRefetching} timeout={600}>
-          <ArticlesGrid container>
-            {isFetching || isRefetching ? (
-              Array.from({ length: pageSize }).map((_, index) => (
-                <BlogArticleCardSkeleton
-                  key={`blog-article-card-skeleton-${index}`}
-                  containerStyles={{
-                    [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      width: '100%',
-                      maxWidth: 420,
-                    },
-                  }}
-                  imageStyles={{
+    <Grid sx={{ marginBottom: theme.spacing(10), position: 'relative' }}>
+      <Typography
+        variant="lifiHeaderMedium"
+        sx={{
+          textAlign: 'center',
+          margin: theme.spacing(10, 'auto', 0),
+        }}
+      >
+        {t('blog.categories')}
+      </Typography>
+      {filteredTags ? (
+        <BlogArticlesBoardTabs
+          openDropdown={openDropdown}
+          filteredTags={filteredTags}
+          catId={catId}
+        />
+      ) : (
+        <Skeleton sx={{ width: '100%', height: 68 }} />
+      )}
+      <Fade in={!isFetching || !isRefetching} timeout={600}>
+        <ArticlesGrid container>
+          {isFetching || isRefetching ? (
+            Array.from({ length: pageSize }).map((_, index) => (
+              <BlogArticleCardSkeleton
+                key={`blog-article-card-skeleton-${index}`}
+                containerStyles={{
+                  [theme.breakpoints.up('sm' as Breakpoint)]: {
                     width: '100%',
-                    height: 'auto',
-                    aspectRatio: 1.77,
-                  }}
-                  contentStyles={{
-                    padding: 0,
-                    width: '100%',
-                    [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      // width: 230,
-                      height: 48,
-                    },
-                  }}
-                />
-              ))
-            ) : isSuccess && blogArticles?.length > 0 ? (
-              blogArticles?.map((article, index) => (
-                <BlogArticleCard
-                  baseUrl={url}
-                  id={article.id}
-                  key={`blog-articles-board-${index}`}
-                  image={article.attributes.Image}
-                  title={article.attributes.Title}
-                  slug={article.attributes.Slug}
-                  trackingCategory={TrackingCategory.BlogArticlesBoard}
-                  styles={{
-                    width: '100%',
-                    [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      width: '100% !important',
-                    },
-                    '&:hover': {
-                      backgroundColor:
-                        theme.palette.mode === 'dark'
-                          ? getContrastAlphaColor(theme, '12%')
-                          : getContrastAlphaColor(theme, '4%'),
-                    },
-                  }}
-                />
-              ))
-            ) : (
-              <p>No Content</p>
-            )}
-          </ArticlesGrid>
-        </Fade>
-        {
-          <Pagination
-            isSuccess={(!isFetching || !isRefetching) && isSuccess}
-            isEmpty={meta?.pagination.pageCount < 1}
-            page={page}
-            setPage={setPage}
-            meta={meta}
-            catId={catId}
-          />
-        }
-      </Grid>
-    </Box>
+                    maxWidth: 420,
+                  },
+                }}
+                imageStyles={{
+                  width: '100%',
+                  height: 'auto',
+                  aspectRatio: 1.77,
+                }}
+                contentStyles={{
+                  padding: 0,
+                  width: '100%',
+                  [theme.breakpoints.up('sm' as Breakpoint)]: {
+                    // width: 230,
+                    height: 48,
+                  },
+                }}
+              />
+            ))
+          ) : isSuccess && blogArticles?.length > 0 ? (
+            blogArticles?.map((article, index) => (
+              <BlogArticleCard
+                baseUrl={url}
+                id={article.id}
+                key={`blog-articles-board-${index}`}
+                image={article.attributes.Image}
+                title={article.attributes.Title}
+                slug={article.attributes.Slug}
+                trackingCategory={TrackingCategory.BlogArticlesBoard}
+                styles={{
+                  width: '100%',
+                  [theme.breakpoints.up('sm' as Breakpoint)]: {
+                    width: '100% !important',
+                  },
+                  '&:hover': {
+                    backgroundColor:
+                      theme.palette.mode === 'dark'
+                        ? getContrastAlphaColor(theme, '12%')
+                        : getContrastAlphaColor(theme, '4%'),
+                  },
+                }}
+              />
+            ))
+          ) : (
+            <p>No Content</p>
+          )}
+        </ArticlesGrid>
+      </Fade>
+      {
+        <Pagination
+          isSuccess={(!isFetching || !isRefetching) && isSuccess}
+          isEmpty={meta?.pagination.pageCount < 1}
+          page={page}
+          setPage={setPage}
+          meta={meta}
+          catId={catId}
+        />
+      }
+    </Grid>
   );
 };

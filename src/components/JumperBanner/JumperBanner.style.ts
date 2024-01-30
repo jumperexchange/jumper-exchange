@@ -3,14 +3,7 @@ import { Box } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
-export interface JumperBannerContainerProps
-  extends Omit<BoxProps, 'component'> {
-  backgroundImageUrl?: string;
-}
-
-export const JumperBannerContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
-})<JumperBannerContainerProps>(({ theme }) => ({
+export const JumperBannerContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-evenly',
   alignItems: 'center',

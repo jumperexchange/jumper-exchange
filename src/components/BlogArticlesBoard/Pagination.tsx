@@ -101,6 +101,7 @@ export const BlogArticlesBoardPagination = ({
           const actualPage = index + 1;
           return (
             <PaginationIndexButton
+              key={`pagination-index-button-${index}`}
               onClick={() => handlePage(actualPage)}
               active={actualPage === page}
             >
