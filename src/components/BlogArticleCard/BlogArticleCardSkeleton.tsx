@@ -1,4 +1,4 @@
-import type { CSSObject } from '@mui/material';
+import type { Breakpoint, CSSObject } from '@mui/material';
 import { CardContent, Skeleton, useTheme } from '@mui/material';
 import { BlogArticleCardContainer } from '.';
 
@@ -30,7 +30,15 @@ export const BlogArticleCardSkeleton = ({
       >
         <Skeleton
           variant="text"
-          sx={{ width: 388, height: 24, ...contentStyles }}
+          sx={{
+            width: '80%',
+            height: 24,
+            marginTop: 2,
+            [theme.breakpoints.up('lg' as Breakpoint)]: {
+              height: 48,
+            },
+            ...contentStyles,
+          }}
         />
       </CardContent>
     </BlogArticleCardContainer>
