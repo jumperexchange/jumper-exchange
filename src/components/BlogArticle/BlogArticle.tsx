@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import {
@@ -85,6 +85,14 @@ export const BlogArticle = ({
   const location = useLocation();
   const { trackEvent } = useUserTracking();
 
+  const isComponentMounted = useRef(false);
+  useEffect(() => {
+    isComponentMounted.current = true;
+    return () => {
+      isComponentMounted.current = false;
+    };
+  }, []);
+
   const handleShareClick = () => {
     navigator.clipboard.writeText(
       `${window.location.host}${location.pathname}`,
@@ -103,7 +111,9 @@ export const BlogArticle = ({
 
     // Hide the copy message after 3 seconds
     setTimeout(() => {
-      setShowCopyMessage(false);
+      if (isComponentMounted.current) {
+        setShowCopyMessage(false);
+      }
     }, 3000);
   };
 
