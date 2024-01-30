@@ -1,3 +1,4 @@
+import type { PropsWithChildren } from 'react';
 import {
   BackgroundGradient,
   Menus,
@@ -8,18 +9,11 @@ import {
 
 interface LayoutProps {
   hideNavbarTabs?: boolean;
-  children?: React.ReactNode;
 }
-
-export const Layout: React.FC<LayoutProps> = ({ children, hideNavbarTabs }) => {
-  // const { initTracking } = useInitUserTracking();
-  // const cookie3 = useCookie3();
-
-  // useEffect(() => {
-  //   initTracking({});
-  //   cookie3?.trackPageView();
-  // }, [cookie3, initTracking]);
-
+export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
+  children,
+  hideNavbarTabs,
+}) => {
   return (
     <>
       <BackgroundGradient />
