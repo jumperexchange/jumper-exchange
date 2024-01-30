@@ -1,13 +1,13 @@
 import type { BoxProps, Breakpoint, CSSObject } from '@mui/material';
 import { Box, styled } from '@mui/material';
 
-export interface SlideshowContainerBoxProps extends Omit<BoxProps, 'variant'> {
+export interface CarouselContainerBoxProps extends Omit<BoxProps, 'variant'> {
   styles?: CSSObject;
 }
 
-export const SlideshowContainerBox = styled(Box, {
+export const CarouselContainerBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
-})<SlideshowContainerBoxProps>(({ theme, styles }) => ({
+})<CarouselContainerBoxProps>(({ theme, styles }) => ({
   display: 'flex',
   gap: 12,
   marginTop: theme.spacing(4),

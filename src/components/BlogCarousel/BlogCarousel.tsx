@@ -1,25 +1,25 @@
 import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { BlogArticleCard, Button, SlideshowContainer } from 'src/components';
+import { BlogArticleCard, Button, CarouselContainer } from 'src/components';
 import { TrackingAction, TrackingCategory } from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool, type BlogArticleData } from 'src/types';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
 
-interface BlogSlideshowProps {
+interface BlogCarouselProps {
   showAllButton?: boolean;
   url: URL;
   title?: string;
   data: BlogArticleData[];
 }
 
-export const BlogSlideshow = ({
+export const BlogCarousel = ({
   data,
   url,
   title,
   showAllButton,
-}: BlogSlideshowProps) => {
+}: BlogCarouselProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export const BlogSlideshow = ({
 
   const handleShowAll = () => {
     trackEvent({
-      category: TrackingCategory.BlogSlideshow,
+      category: TrackingCategory.BlogCarousel,
       action: TrackingAction.SeeAllPosts,
       label: 'click-see-all-posts',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
@@ -36,47 +36,54 @@ export const BlogSlideshow = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  return data ? (
+  return (
     <Box
       sx={{
         backgroundColor: theme.palette.surface1.main,
         padding: theme.spacing(8, 1, 4),
       }}
     >
-      <SlideshowContainer
-        title={title}
-        trackingCategory={TrackingCategory.BlogSlideshow}
-      >
-        {data ? (
-          data?.map((article, index) => {
-            return (
-              <BlogArticleCard
-                id={article.id}
-                baseUrl={url}
-                trackingCategory={TrackingCategory.BlogSlideshow}
-                key={`blog-page-article-${index}`}
-                image={article.attributes.Image}
-                title={article.attributes.Title}
-                slug={article.attributes.Slug}
-              />
-            );
-          })
-        ) : (
-          <>
-            <BlogArticleCardSkeleton />
-            <BlogArticleCardSkeleton />
-            <BlogArticleCardSkeleton />
-            <BlogArticleCardSkeleton />
-          </>
-        )}
-      </SlideshowContainer>
+      {data?.length ? (
+        <CarouselContainer
+          title={title}
+          trackingCategory={TrackingCategory.BlogCarousel}
+        >
+          {data ? (
+            data?.map((article, index) => {
+              return (
+                <BlogArticleCard
+                  id={article.id}
+                  baseUrl={url}
+                  trackingCategory={TrackingCategory.BlogCarousel}
+                  key={`blog-page-article-${index}`}
+                  image={article.attributes.Image}
+                  title={article.attributes.Title}
+                  slug={article.attributes.Slug}
+                />
+              );
+            })
+          ) : (
+            <>
+              <BlogArticleCardSkeleton />
+              <BlogArticleCardSkeleton />
+              <BlogArticleCardSkeleton />
+              <BlogArticleCardSkeleton />
+            </>
+          )}
+        </CarouselContainer>
+      ) : null}
       {showAllButton ? (
-        <Box width="100%" display="flex" justifyContent="center" marginTop={4}>
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="center"
+          marginTop={!!data?.length ? 4 : 0}
+        >
           <Button
             variant="secondary"
             onClick={handleShowAll}
             styles={{
-              width: '320px',
+              width: 320,
               margin: theme.spacing(0, 'auto', 4),
             }}
           >
@@ -85,5 +92,5 @@ export const BlogSlideshow = ({
         </Box>
       ) : null}
     </Box>
-  ) : null;
+  );
 };

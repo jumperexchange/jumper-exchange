@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Layout } from 'src/Layout';
 import {
   BlogArticlesBoard,
+  BlogCarousel,
   BlogHighlights,
-  BlogSlideshow,
   CustomColor,
   JoinDiscordBanner,
 } from 'src/components';
@@ -51,7 +51,7 @@ export const BlogPage = () => {
         {t('blog.subtitle')}
       </Typography>
       <BlogHighlights />
-      <BlogSlideshow url={url} data={recentArticles} />
+      <BlogCarousel url={url} data={recentArticles} />
       <JoinDiscordBanner />
       <BlogArticlesBoard />
       {/* <AccordionFAQ content={faqData as unknown as FaqMeta[]} /> */}

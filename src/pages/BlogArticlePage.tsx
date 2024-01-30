@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { Layout } from 'src/Layout';
 import {
   BlogArticle,
-  BlogSlideshow,
+  BlogCarousel,
   JoinDiscordBanner,
   Tag,
 } from 'src/components';
@@ -134,7 +134,7 @@ export const BlogArticlePage = () => {
       </Layout>
       <JoinDiscordBanner />
 
-      <BlogSlideshow
+      <BlogCarousel
         title={t('blog.similarPosts')}
         showAllButton={true}
         data={filteredArticles}

@@ -15,44 +15,44 @@ import { TrackingAction, TrackingEventParameter } from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
 import { getContrastAlphaColor } from 'src/utils';
-import { SlideshowContainerBox } from '.';
+import { CarouselContainerBox } from '.';
 
-interface SlideshowContainerProps {
+interface CarouselContainerProps {
   title?: string;
   styles?: CSSObject;
   children?: any;
   trackingCategory?: string;
 }
-const slideDistance = 420;
+const swipeDistance = 420;
 
-export const SlideshowContainer = ({
+export const CarouselContainer = ({
   styles,
   title,
   children,
   trackingCategory,
-}: SlideshowContainerProps) => {
+}: CarouselContainerProps) => {
   const { trackEvent } = useUserTracking();
 
-  const slideshowContainerRef = useRef<HTMLDivElement>(null);
+  const carouselContainerRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
   const { t } = useTranslation();
 
   const handleChange = useCallback(
     (direction: 'next' | 'prev') => {
-      if (slideshowContainerRef.current) {
-        const node: HTMLDivElement = slideshowContainerRef.current;
+      if (carouselContainerRef.current) {
+        const node: HTMLDivElement = carouselContainerRef.current;
         const scrollLeftPos = node.scrollLeft;
         const scrollWidth =
-          slideshowContainerRef.current.scrollWidth -
-          slideshowContainerRef.current.clientWidth;
+          carouselContainerRef.current.scrollWidth -
+          carouselContainerRef.current.clientWidth;
 
         let scrollPos = 0;
         switch (direction) {
           case 'next':
             trackEvent({
-              category: trackingCategory || 'slideshow',
-              label: 'swipe-slideshow',
-              action: TrackingAction.SlideSlideshow,
+              category: trackingCategory || 'carousel',
+              label: 'swipe-carousel',
+              action: TrackingAction.SwipeCarousel,
               data: {
                 [TrackingEventParameter.SwipeDirection]: 'left',
               },
@@ -61,17 +61,17 @@ export const SlideshowContainer = ({
                 EventTrackingTool.Cookie3,
               ],
             });
-            if (scrollLeftPos + slideDistance < scrollWidth) {
-              scrollPos = scrollLeftPos + slideDistance;
+            if (scrollLeftPos + swipeDistance < scrollWidth) {
+              scrollPos = scrollLeftPos + swipeDistance;
             } else {
               scrollPos = scrollWidth;
             }
             break;
           case 'prev':
             trackEvent({
-              category: trackingCategory || 'slideshow',
-              label: 'swipe-slideshow',
-              action: TrackingAction.SlideSlideshow,
+              category: trackingCategory || 'carousel',
+              label: 'swipe-carousel',
+              action: TrackingAction.SwipeCarousel,
               data: {
                 [TrackingEventParameter.SwipeDirection]: 'right',
               },
@@ -80,8 +80,8 @@ export const SlideshowContainer = ({
                 EventTrackingTool.Cookie3,
               ],
             });
-            if (scrollLeftPos - slideDistance > 0) {
-              scrollPos = scrollLeftPos - slideDistance;
+            if (scrollLeftPos - swipeDistance > 0) {
+              scrollPos = scrollLeftPos - swipeDistance;
             } else {
               scrollPos = 0;
             }
@@ -190,14 +190,14 @@ export const SlideshowContainer = ({
           </IconButton>
         </Box>
       </Box>
-      <SlideshowContainerBox
-        ref={slideshowContainerRef}
+      <CarouselContainerBox
+        ref={carouselContainerRef}
         sx={{
           ...styles,
         }}
       >
         {children}
-      </SlideshowContainerBox>
+      </CarouselContainerBox>
     </Box>
   );
 };
