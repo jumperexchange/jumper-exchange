@@ -1,24 +1,25 @@
-import { Stack, Typography } from '@mui/material';
+import type { Chain } from '@lifi/sdk';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import {
-  AvatarContainer,
-  WalletAvatar,
-  ChainAvatar,
-  WalletButton,
-  WalletCardContainer,
-  WalletCardButtonContainer,
-} from './WalletMenu.style';
+import { Stack, Typography } from '@mui/material';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TrackingAction, TrackingCategory } from 'src/const';
 import { useChains, useMultisig, useUserTracking } from 'src/hooks';
 import type { Account } from 'src/hooks/useAccounts';
 import { useAccountDisconnect } from 'src/hooks/useAccounts';
-import { openInNewTab, walletDigest } from 'src/utils';
 import { useMenuStore, useSettingsStore } from 'src/stores';
-import { TrackingAction, TrackingCategory } from 'src/const';
 import { EventTrackingTool } from 'src/types';
-import { useTranslation } from 'react-i18next';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { Chain } from '@lifi/sdk';
+import { openInNewTab, walletDigest } from 'src/utils';
+import {
+  AvatarContainer,
+  ChainAvatar,
+  WalletAvatar,
+  WalletButton,
+  WalletButtonPrimary,
+  WalletCardButtonContainer,
+  WalletCardContainer,
+} from './WalletMenu.style';
 
 interface WalletCardProps {
   account: Account;
@@ -120,16 +121,9 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           >
             <OpenInNewIcon sx={{ height: '20px' }} />
           </WalletButton>
-          <WalletButton
-            colored
-            onClick={() => handleDisconnect()}
-            sx={{
-              gridColumn: '2/3',
-              gridRow: '2/3',
-            }}
-          >
+          <WalletButtonPrimary onClick={() => handleDisconnect()} sx={{}}>
             <PowerSettingsNewIcon sx={{ height: '20px' }} />
-          </WalletButton>
+          </WalletButtonPrimary>
         </WalletCardButtonContainer>
       </Stack>
     </WalletCardContainer>

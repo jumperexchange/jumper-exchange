@@ -1,7 +1,7 @@
 import type { ButtonProps } from '@mui/material';
-import { Avatar, Button, Container, darken } from '@mui/material';
+import { Avatar, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from 'src/utils';
+import { ButtonPrimary, ButtonSecondary } from 'src/components/Button';
 
 export interface WalletButtonProps extends ButtonProps {
   colored?: boolean;
@@ -40,30 +40,22 @@ export const ChainAvatar = styled(Avatar)(({ theme }) => ({
   },
 }));
 
-export const WalletButton = styled(Button, {
+export const WalletButton = styled(ButtonSecondary, {
   shouldForwardProp: (prop) => prop !== 'colored',
 })<WalletButtonProps>(({ theme, colored }) => ({
   borderRadius: '24px',
   padding: '10px 24px',
   width: '100%',
-  backgroundColor:
-    colored && theme.palette.mode === 'dark'
-      ? theme.palette.primary.main
-      : colored && theme.palette.mode === 'light'
-        ? theme.palette.secondary.main
-        : theme.palette.mode === 'dark'
-          ? getContrastAlphaColor(theme, '12%')
-          : getContrastAlphaColor(theme, '4%'),
-  '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'dark'
-        ? theme.palette.alphaLight300.main
-        : darken(theme.palette.white.main, 0.08),
-  },
-  color:
-    theme.palette.mode === 'dark'
-      ? theme.palette.white.main
-      : theme.palette.black.main,
+}));
+
+export const WalletButtonPrimary = styled(ButtonPrimary, {
+  shouldForwardProp: (prop) => prop !== 'colored',
+})<WalletButtonProps>(({ theme }) => ({
+  borderRadius: '24px',
+  padding: '10px 24px',
+  width: '100%',
+  gridColumn: '2/3',
+  gridRow: '2/3',
 }));
 
 export const WalletCardContainer = styled(Container)(({ theme }) => ({
