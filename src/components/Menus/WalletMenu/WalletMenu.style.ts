@@ -1,7 +1,7 @@
-import { getContrastAlphaColor } from 'src/utils';
 import type { ButtonProps } from '@mui/material';
 import { Avatar, Button, Container, darken } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { getContrastAlphaColor } from 'src/utils';
 
 export interface WalletButtonProps extends ButtonProps {
   colored?: boolean;
@@ -45,6 +45,7 @@ export const WalletButton = styled(Button, {
 })<WalletButtonProps>(({ theme, colored }) => ({
   borderRadius: '24px',
   padding: '10px 24px',
+  width: '100%',
   backgroundColor:
     colored && theme.palette.mode === 'dark'
       ? theme.palette.primary.main
