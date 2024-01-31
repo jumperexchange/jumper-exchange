@@ -1,6 +1,6 @@
 import type { Breakpoint } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { FeatureCard } from 'src/components';
 import { useFeatureCards } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
@@ -10,16 +10,10 @@ import { shallow } from 'zustand/shallow';
 import { FeatureCardsContainer } from '.';
 
 export const FeatureCards = () => {
-  const [featureCards, setFeatureCards] = useState<FeatureCardData[]>([]);
-  const [disabledFeatureCards, welcomeScreenClosed, languageMode] =
-    useSettingsStore(
-      (state) => [
-        state.disabledFeatureCards,
-        state.welcomeScreenClosed,
-        state.languageMode,
-      ],
-      shallow,
-    );
+  const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
+    (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
+    shallow,
+  );
   // get english response
   const { featureCards: defaultFeatureCards, isSuccess } = useFeatureCards();
   // get translated response
@@ -28,7 +22,7 @@ export const FeatureCards = () => {
   });
 
   // remove null´s (missing entries) from translated object
-  const cleanedTranslation = useMemo(() => {
+  const featureCards: FeatureCardData[] | undefined = useMemo(() => {
     const cleanedTranslation = translatedFeatureCards?.map((el) =>
       removeEmpty(el),
     );
@@ -45,14 +39,16 @@ export const FeatureCards = () => {
       return el;
     });
 
-    if (Array.isArray(filteredResponse) && !!filteredResponse.length) {
-      const output = filteredResponse?.filter(
-        (el, index) =>
-          isSuccess &&
-          el.attributes.DisplayConditions &&
-          !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
-      );
-      setFeatureCards(output?.slice(0, 4));
+    if (filteredResponse?.length) {
+      const featureCards = filteredResponse
+        .filter(
+          (el, index) =>
+            isSuccess &&
+            el.attributes.DisplayConditions &&
+            !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
+        )
+        .slice(0, 4);
+      return featureCards;
     }
   }, [
     defaultFeatureCards,
@@ -67,7 +63,7 @@ export const FeatureCards = () => {
     isDesktop &&
     welcomeScreenClosed && (
       <FeatureCardsContainer>
-        {featureCards.map((cardData, index) => {
+        {featureCards?.map((cardData, index) => {
           return (
             <FeatureCard
               isSuccess={isSuccess}
