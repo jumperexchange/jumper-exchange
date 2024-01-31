@@ -1,6 +1,6 @@
 import { Button, Container, darken, styled } from '@mui/material';
 
-export const ConnectButton = styled(Button)(({ theme }) => ({
+export const SVMConnectButton = styled(Button)(({ theme }) => ({
   boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
   padding: '24px',
   display: 'flex',
@@ -18,7 +18,7 @@ export const ConnectButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const ConnectButtonContainer = styled(Container)(({ theme }) => ({
+export const SVMConnectButtonContainer = styled(Container)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'flex-start',

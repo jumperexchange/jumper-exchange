@@ -1,9 +1,8 @@
-import { isWalletInstalledAsync } from '@lifi/wallet-management';
 import { Avatar, Typography, useTheme } from '@mui/material';
+import { useAccountConnect } from 'src/hooks/useAccounts';
 import { useMenuStore } from 'src/stores';
 import { type Connector } from 'wagmi';
-import { ConnectButton } from './EcosystemSelectMenu.style';
-import { useAccountConnect } from 'src/hooks/useAccounts';
+import { SVMConnectButton } from './EcosystemSelectMenu.style';
 
 interface EvmConnectButton {
   walletIcon?: string;
@@ -21,7 +20,7 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
     closeAllMenus();
   };
   return (
-    <ConnectButton onClick={() => connectHandler()}>
+    <SVMConnectButton onClick={() => connectHandler()}>
       <Avatar src={walletIcon} sx={{ width: '88px', height: '88px' }} />
       <Typography
         variant={'lifiBodySmallStrong'}
@@ -35,6 +34,6 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
       >
         EVM
       </Typography>
-    </ConnectButton>
+    </SVMConnectButton>
   );
 };

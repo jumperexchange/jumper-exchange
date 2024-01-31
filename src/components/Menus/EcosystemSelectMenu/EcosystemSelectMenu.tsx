@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Menu, MenuHeaderAppBar, MenuHeaderAppWrapper } from 'src/components';
 import { useMenuStore } from 'src/stores';
 
-import { SVMConnectButton } from './SVMConnectButton';
 import { EVMConnectButton } from './EVMConnectButton';
-import { ConnectButtonContainer } from './EcosystemSelectMenu.style';
+import { SVMConnectButtonContainer as ConnectButtonContainer } from './EcosystemSelectMenu.style';
+import { SVMConnectButton } from './SVMConnectButton';
 
 interface MenuProps {
   anchorEl: any;

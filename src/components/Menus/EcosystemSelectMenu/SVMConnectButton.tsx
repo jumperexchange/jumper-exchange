@@ -1,8 +1,8 @@
 import { Avatar, Typography, useTheme } from '@mui/material';
 import type { Wallet } from '@solana/wallet-adapter-react';
-import { useMenuStore } from 'src/stores';
-import { ConnectButton } from './EcosystemSelectMenu.style';
 import { useAccountConnect } from 'src/hooks/useAccounts';
+import { useMenuStore } from 'src/stores';
+import { SVMConnectButton as ConnectButton } from './EcosystemSelectMenu.style';
 
 interface SVMConnectButtonProps {
   walletIcon?: string;
