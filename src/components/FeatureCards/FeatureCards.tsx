@@ -1,6 +1,6 @@
 import type { Breakpoint } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FeatureCard } from 'src/components';
 import { useFeatureCards } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
@@ -46,12 +46,13 @@ export const FeatureCards = () => {
     });
 
     if (Array.isArray(filteredResponse) && !!filteredResponse.length) {
-      return filteredResponse?.filter(
+      const output = filteredResponse?.filter(
         (el, index) =>
           isSuccess &&
           el.attributes.DisplayConditions &&
           !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
       );
+      setFeatureCards(output?.slice(0, 4));
     }
   }, [
     defaultFeatureCards,
@@ -60,12 +61,6 @@ export const FeatureCards = () => {
     translatedFeatureCards,
   ]);
 
-  useEffect(() => {
-    if (Array.isArray(cleanedTranslation)) {
-      !!cleanedTranslation.length &&
-        setFeatureCards(cleanedTranslation?.slice(0, 4));
-    }
-  }, [cleanedTranslation]);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
   return (
