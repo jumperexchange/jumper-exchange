@@ -14,15 +14,16 @@ export const AvatarContainer = styled('div')(() => ({
 }));
 
 export const WalletAvatar = styled(Avatar)(({ theme }) => ({
-  padding: theme.spacing(2.25),
+  // padding: theme.spacing(2.25),
   background:
     theme.palette.mode === 'light' ? 'transparent' : theme.palette.white.main,
   margin: 'auto',
   height: 88,
   width: 88,
   '> img': {
-    height: 58,
-    width: 58,
+    height: '100%',
+    width: '100%',
+    objectFit: 'contain',
   },
 }));
 
