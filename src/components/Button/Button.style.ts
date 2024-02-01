@@ -43,7 +43,7 @@ export const ButtonSecondary = styled(ButtonBase)<MuiButtonProps>(
     backgroundColor:
       theme.palette.mode === 'dark'
         ? theme.palette.alphaLight300.main
-        : theme.palette.alphaDark300.main,
+        : getContrastAlphaColor(theme, 0.04),
     '&:hover': {
       backgroundColor:
         theme.palette.mode === 'dark'
@@ -61,7 +61,7 @@ export const ButtonSecondary = styled(ButtonBase)<MuiButtonProps>(
       background: 'transparent',
     },
     '&:hover:before': {
-      background: getContrastAlphaColor(theme, '4%'),
+      background: getContrastAlphaColor(theme, '8%'),
     },
   }),
 );
