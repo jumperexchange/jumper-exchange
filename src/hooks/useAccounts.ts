@@ -2,6 +2,7 @@ import { ChainId, ChainType } from '@lifi/sdk';
 import type { WalletAdapter } from '@solana/wallet-adapter-base';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useMemo } from 'react';
+import { useSettingsStore } from 'src/stores';
 import type { Chain } from 'viem';
 import type { Connector } from 'wagmi';
 import {
@@ -11,7 +12,6 @@ import {
 } from 'wagmi';
 import { useBlockchainExplorerURL, useUserTracking } from '.';
 import type { CombinedWallet } from './useCombinedWallets';
-import { useSettingsStore } from 'src/stores';
 
 export interface AccountBase {
   address?: string;
@@ -25,7 +25,7 @@ export interface AccountBase {
   isReconnecting: boolean;
   status: 'connected' | 'reconnecting' | 'connecting' | 'disconnected';
   blockChainExplorerUrl?: string;
-  walletIcon?: string;
+  icon?: string;
 }
 
 export interface EVMAccount extends AccountBase {
@@ -65,7 +65,7 @@ export const useAccounts = (): AccountResult => {
             wallet?.adapter.publicKey.toString(),
             ChainId.SOL,
           ),
-          walletIcon: wallet?.adapter.icon,
+          icon: wallet?.adapter.icon,
         }
       : {
           chainType: ChainType.SVM,
@@ -75,7 +75,7 @@ export const useAccounts = (): AccountResult => {
           isDisconnected: true,
           status: 'disconnected',
           blockChainExplorerUrl: undefined,
-          walletIcon: undefined,
+          icon: undefined,
         };
     const evm: Account = {
       ...account,
@@ -84,7 +84,7 @@ export const useAccounts = (): AccountResult => {
         account.address,
         account.chainId,
       ),
-      walletIcon: account.connector?.icon,
+      icon: account.connector?.icon,
     };
 
     return {

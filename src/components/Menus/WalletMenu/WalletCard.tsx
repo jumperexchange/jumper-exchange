@@ -1,4 +1,5 @@
 import type { Chain } from '@lifi/sdk';
+import { getConnectorIcon } from '@lifi/wallet-management';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Skeleton, Stack, Typography } from '@mui/material';
@@ -115,7 +116,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             )
           }
         >
-          <WalletAvatar src={account.walletIcon} />
+          <WalletAvatar src={getConnectorIcon(account.connector)} />
         </WalletCardBadge>
         <WalletCardButtonContainer>
           <WalletButton

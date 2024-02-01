@@ -1,5 +1,5 @@
 import {
-  getWalletIcon,
+  getConnectorIcon,
   isWalletInstalled,
   isWalletInstalledAsync,
 } from '@lifi/wallet-management';
@@ -100,9 +100,9 @@ export const useWalletSelectContent = () => {
           <Avatar
             className="wallet-select-avatar"
             src={
+              getConnectorIcon(combinedWallet.evm) ||
               combinedWallet.evm?.icon ||
-              combinedWallet.svm?.adapter.icon ||
-              getWalletIcon(combinedWallet.evm?.id!)
+              combinedWallet.svm?.adapter.icon
             }
             alt={`${
               combinedWallet.evm?.id || combinedWallet.svm?.adapter.name

@@ -1,4 +1,5 @@
 import type { Chain } from '@lifi/types';
+import { getConnectorIcon } from '@lifi/wallet-management';
 import { Typography } from '@mui/material';
 import type { ReactElement } from 'react';
 import React, { useMemo, useRef } from 'react';
@@ -54,14 +55,6 @@ export const WalletManagementButtons: React.FC<
     () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
-
-  const walletIcon: string = useMemo(() => {
-    if (account.isConnected) {
-      return account.connector?.icon ?? '';
-    } else {
-      return '';
-    }
-  }, [account]);
 
   const handleWalletSelectClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -128,7 +121,9 @@ export const WalletManagementButtons: React.FC<
                   </WalletMgmtChainAvatar>
                 }
               >
-                <WalletMgmtWalletAvatar src={walletIcon} />
+                <WalletMgmtWalletAvatar
+                  src={getConnectorIcon(account.connector)}
+                />
               </WalletMgmtBadge>
             ) : null}
             <Typography

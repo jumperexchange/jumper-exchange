@@ -10,8 +10,6 @@ export const WalletMgmtAvatarContainer = styled('div')(({ theme }) => ({
 }));
 
 export const WalletMgmtWalletAvatar = styled(Avatar)(({ theme }) => ({
-  background:
-    theme.palette.mode === 'light' ? 'transparent' : theme.palette.white.main,
   height: 32,
   width: 32,
   // padding: theme.spacing(0.5),

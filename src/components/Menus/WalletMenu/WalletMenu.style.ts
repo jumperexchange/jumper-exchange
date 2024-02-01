@@ -14,9 +14,6 @@ export const AvatarContainer = styled('div')(() => ({
 }));
 
 export const WalletAvatar = styled(Avatar)(({ theme }) => ({
-  // padding: theme.spacing(2.25),
-  background:
-    theme.palette.mode === 'light' ? 'transparent' : theme.palette.white.main,
   margin: 'auto',
   height: 88,
   width: 88,
