@@ -59,6 +59,7 @@ export function useUserTracking() {
         [TrackingEventParameter.Ecosystem]: chainType,
       });
       hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
+
       window.gtag('event', TrackingAction.ConnectWallet, {
         [TrackingEventParameter.Wallet]: walletName,
         [TrackingEventParameter.Ecosystem]: chainType,
