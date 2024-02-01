@@ -1,5 +1,5 @@
 import type { ButtonProps } from '@mui/material';
-import { Avatar, Container } from '@mui/material';
+import { Avatar, Badge, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ButtonPrimary, ButtonSecondary } from 'src/components/Button';
 
@@ -76,4 +76,17 @@ export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
   alignItems: 'center',
   width: 'fit-content',
   padding: '0 !important',
+}));
+
+export const WalletCardBadge = styled(Badge)(({ theme }) => ({
+  borderRadius: '50%',
+  // overflow: 'hidden',
+  '> .MuiAvatar-root': {
+    overflow: 'hidden',
+    '--g': '#0000 98%,#000',
+    '--s': '100% 100% no-repeat',
+    '--mask':
+      'radial-gradient(circle 23px at calc(100% - 8px) calc(100% - 8px),var(--g)) 100% 100%/var(--s)',
+    mask: 'var(--mask)',
+  },
 }));

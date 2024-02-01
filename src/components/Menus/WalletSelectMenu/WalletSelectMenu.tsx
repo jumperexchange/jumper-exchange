@@ -114,7 +114,16 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
                     ? theme.palette.alphaLight300.main
                     : darken(theme.palette.white.main, 0.08),
               },
-              ...menuItemStyles,
+              margin: 0,
+              flexDirection: 'column',
+              flexWrap: 'wrap',
+              height: 72,
+              width: 72,
+              placeContent: 'center',
+
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                height: 72,
+              },
               ...el.styles,
             }}
             showMoreIcon={false}
@@ -154,7 +163,7 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
             }}
             prefixIcon={
               <Typography
-                variant={'lifiBodyMediumStrong'}
+                variant={'lifiBodySmallStrong'}
                 sx={{
                   color: isDarkMode
                     ? theme.palette.white.main

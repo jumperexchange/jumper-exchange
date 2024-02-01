@@ -1,7 +1,7 @@
 import type { Chain } from '@lifi/sdk';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import { Badge, Stack, Typography } from '@mui/material';
+import { Skeleton, Stack, Typography } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar } from 'src/components';
@@ -16,6 +16,7 @@ import {
   WalletAvatar,
   WalletButton,
   WalletButtonPrimary,
+  WalletCardBadge,
   WalletCardButtonContainer,
   WalletCardContainer,
 } from './WalletMenu.style';
@@ -96,34 +97,26 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   return (
     <WalletCardContainer>
       <Stack direction={'row'} spacing={4} sx={{ margin: 'auto' }}>
-        <Badge
+        <WalletCardBadge
           overlap="circular"
           className="badge"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          sx={{
-            borderRadius: '50%',
-            // overflow: 'hidden',
-            '> .MuiAvatar-root': {
-              overflow: 'hidden',
-              '--g': '#0000 98%,#000',
-              '--s': '100% 100% no-repeat',
-              '--mask':
-                'radial-gradient(circle 23px at calc(100% - 8px) calc(100% - 8px),var(--g)) 100% 100%/var(--s)',
-              mask: 'var(--mask)',
-            },
-          }}
           badgeContent={
-            <Avatar
-              size="large"
-              src={activeChain?.logoURI || ''}
-              alt={'wallet-avatar'}
-            >
-              {/* {activeChain.name[0]} */}
-            </Avatar>
+            activeChain?.logoURI ? (
+              <Avatar
+                size="large"
+                src={activeChain?.logoURI || ''}
+                alt={'wallet-avatar'}
+              >
+                {/* {activeChain.name[0]} */}
+              </Avatar>
+            ) : (
+              <Skeleton variant="circular" />
+            )
           }
         >
           <WalletAvatar src={account.walletIcon} />
-        </Badge>
+        </WalletCardBadge>
         <WalletCardButtonContainer>
           <WalletButton
             disabled={isMultisigEnvironment}
