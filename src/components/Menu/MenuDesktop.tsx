@@ -50,7 +50,6 @@ export const MenuDesktop = ({
       <MenuPopper
         open={open}
         anchorEl={anchorEl}
-        popperOptions={{ strategy: 'fixed' }}
         transition
         disablePortal
         placement="bottom"
