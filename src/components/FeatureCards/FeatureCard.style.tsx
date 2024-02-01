@@ -12,6 +12,7 @@ export const FCard = styled(MuiCard, {
 })<CardProps>(({ theme, backgroundImageUrl }) => ({
   width: 384,
   height: 160,
+  cursor: 'pointer',
   borderRadius: '12px',
   position: 'relative',
   marginBottom: theme.spacing(1.5),

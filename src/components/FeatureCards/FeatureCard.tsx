@@ -14,6 +14,7 @@ import {
 } from 'src/const';
 import { useFeatureCards, useUserTracking } from 'src/hooks';
 import { EventTrackingTool, type FeatureCardData } from 'src/types';
+import { openInNewTab } from 'src/utils';
 import { FCard as Card } from '.';
 
 interface FeatureCardProps {
@@ -99,7 +100,10 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     ],
   );
 
-  const handleClose = () => {
+  const handleClose = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
     setOpen(false);
     !data?.attributes.DisplayConditions?.hasOwnProperty('showOnce') &&
       !!data?.attributes.DisplayConditions?.id &&
@@ -117,11 +121,33 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     });
   };
 
-  const handleCTA = () => {
+  const handleCTA = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
+    console.log('handle cta');
     trackEvent({
       category: TrackingCategory.FeatureCard,
-      action: TrackingAction.ClickLearnMore,
+      action: TrackingAction.ClickCTA,
       label: 'click_cta',
+      data: {
+        [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
+        [TrackingEventParameter.FeatureCardId]:
+          data.attributes.DisplayConditions.id,
+        url: data.attributes.URL,
+      },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
+  };
+
+  const handleCardClick = () => {
+    console.log('handle card');
+    data?.attributes.URL && openInNewTab(data?.attributes.URL);
+
+    trackEvent({
+      category: TrackingCategory.FeatureCard,
+      action: TrackingAction.ClickFeatureCard,
+      label: 'click_card_bg',
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
         [TrackingEventParameter.FeatureCardId]:
@@ -141,7 +167,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       timeout={150}
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
-      <Card backgroundImageUrl={imageUrl.href}>
+      <Card backgroundImageUrl={imageUrl.href} onClick={handleCardClick}>
         <CardContent
           sx={{
             padding: theme.spacing(3),
@@ -155,7 +181,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
               right: 1,
               top: 1,
             }}
-            onClick={handleClose}
+            onClick={(e) => handleClose(e)}
           >
             <CloseIcon
               sx={{
@@ -203,7 +229,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
               target="_blank"
               rel="noopener"
               href={data?.attributes.URL}
-              onClick={handleCTA}
+              onClick={(e) => handleCTA(e)}
               sx={{
                 textDecoration: 'none',
                 color:
