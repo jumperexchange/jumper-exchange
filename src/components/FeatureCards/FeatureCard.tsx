@@ -125,7 +125,6 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
   ) => {
     event.stopPropagation();
-    console.log('handle cta');
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.ClickCTA,
@@ -141,7 +140,6 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   };
 
   const handleCardClick = () => {
-    console.log('handle card');
     data?.attributes.URL && openInNewTab(data?.attributes.URL);
 
     trackEvent({
