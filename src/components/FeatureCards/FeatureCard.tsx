@@ -127,7 +127,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     event.stopPropagation();
     trackEvent({
       category: TrackingCategory.FeatureCard,
-      action: TrackingAction.ClickCTA,
+      action: TrackingAction.ClickFeatureCardCTA,
       label: 'click_cta',
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
