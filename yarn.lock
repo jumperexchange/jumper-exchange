@@ -4724,7 +4724,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:5.18.0, @tanstack/react-query@npm:^5.18.0":
+"@tanstack/query-core@npm:5.18.1":
+  version: 5.18.1
+  resolution: "@tanstack/query-core@npm:5.18.1"
+  checksum: e832388e2033d6ae16eb9b9343e3d7a6f304f74ec74b16e4154417d2771aa9aa3f2659046223731d4eacb4e1ee125d98de330dd4208d9369fe0a81f5436c4847
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:5.18.1":
+  version: 5.18.1
+  resolution: "@tanstack/react-query@npm:5.18.1"
+  dependencies:
+    "@tanstack/query-core": "npm:5.18.1"
+  peerDependencies:
+    react: ^18.0.0
+  checksum: 6129af25c91768fc208fd4d52940b682988bcb90f1dd65baf241f474cd8a89b948a37736e57afb50ecfd5fa5a204870e02c9078b2d5fa3c44b7e94790d6085e5
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.18.0":
   version: 5.18.0
   resolution: "@tanstack/react-query@npm:5.18.0"
   dependencies:
@@ -5357,14 +5375,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.2.51":
-  version: 18.2.51
-  resolution: "@types/react@npm:18.2.51"
+"@types/react@npm:^18.2.55":
+  version: 18.2.55
+  resolution: "@types/react@npm:18.2.55"
   dependencies:
     "@types/prop-types": "npm:*"
     "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: af2935027172ea40695b90b02e98520a097160fa8517f6022e2e2cf8518017e0b84991cc34ee8d72cd91dcb7c5404784d4bada7a4836edf2727c3d6703c16ff8
+  checksum: bf8fe19e73575489e63c0726355f164157cd69e75f2a862436ad2c0586e732cb953a7255a6bc73145e8f9506ee7a723f9a569ca9a39c53984e5b12b84e1c718a
   languageName: node
   linkType: hard
 
@@ -10199,9 +10217,10 @@ __metadata:
     "@sentry/browser": "npm:^7.99.0"
     "@sentry/integrations": "npm:^7.99.0"
     "@sentry/react": "npm:^7.99.0"
-    "@tanstack/react-query": "npm:5.18.0"
+    "@solana/wallet-adapter-wallets": "npm:^0.19.26"
+    "@tanstack/react-query": "npm:5.18.1"
     "@types/node": "npm:^20.11.16"
-    "@types/react": "npm:^18.2.51"
+    "@types/react": "npm:^18.2.55"
     "@types/react-dom": "npm:^18.2.18"
     "@types/ungap__structured-clone": "npm:^1.2.0"
     "@types/uuid": "npm:^9.0.8"
@@ -10225,14 +10244,14 @@ __metadata:
     i18next-browser-languagedetector: "npm:^7.2.0"
     i18next-http-backend: "npm:^2.4.3"
     i18next-resources-to-backend: "npm:^1.2.0"
-    lint-staged: "npm:^15.2.1"
-    prettier: "npm:^3.2.4"
+    lint-staged: "npm:^15.2.2"
+    prettier: "npm:^3.2.5"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-error-boundary: "npm:^4.0.12"
     react-ga4: "npm:^2.1.0"
     react-hotjar: "npm:^6.2.0"
-    react-i18next: "npm:^14.0.1"
+    react-i18next: "npm:^14.0.3"
     react-router-dom: "npm:^6.22.0"
     rollup-plugin-polyfill-node: "npm:^0.13.0"
     typescript: "npm:^5.3.3"
@@ -10330,9 +10349,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^15.2.1":
-  version: 15.2.1
-  resolution: "lint-staged@npm:15.2.1"
+"lint-staged@npm:^15.2.2":
+  version: 15.2.2
+  resolution: "lint-staged@npm:15.2.2"
   dependencies:
     chalk: "npm:5.3.0"
     commander: "npm:11.1.0"
@@ -10346,7 +10365,7 @@ __metadata:
     yaml: "npm:2.3.4"
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: ee2e858b9afea01378ff3a3ff5fbed000f856c553f0ac570d9be6390e27299e586ae047d1efa77fdf17f15aeef0c53f6c658eeb24432748b9203698d929d0c76
+  checksum: 5855ae7abf3ffdc2d66e8ad20759915e76544e7c4bcdfef78c82b5c126502284320d9fb0ecde554a6d07747311ab751d0bccbe3468aa5d5a7661774317cd7437
   languageName: node
   linkType: hard
 
@@ -11622,12 +11641,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.2.4":
-  version: 3.2.4
-  resolution: "prettier@npm:3.2.4"
+"prettier@npm:^3.2.5":
+  version: 3.2.5
+  resolution: "prettier@npm:3.2.5"
   bin:
     prettier: bin/prettier.cjs
-  checksum: e2b735d0552501b3a7ac8bd3ba3b6de2920bb35bd4cd02d08cb9057ebe3e96d83b9a7e4b903d987b7530a50223b12c74d107c154337236ae2c68156ba1e65cd2
+  checksum: d509f9da0b70e8cacc561a1911c0d99ec75117faed27b95cc8534cb2349667dee6351b0ca83fa9d5703f14127faa52b798de40f5705f02d843da133fc3aa416a
   languageName: node
   linkType: hard
 
@@ -11966,6 +11985,24 @@ __metadata:
     react-native:
       optional: true
   checksum: f286bac8d091153dc5e8a469c181fddc916c660b10ca496f2fac7bd41ec6dd04e3074e0ce32db5f0192690fc6dbd522fbcf8644813a86b77eeee75d10725024b
+  languageName: node
+  linkType: hard
+
+"react-i18next@npm:^14.0.3":
+  version: 14.0.3
+  resolution: "react-i18next@npm:14.0.3"
+  dependencies:
+    "@babel/runtime": "npm:^7.23.9"
+    html-parse-stringify: "npm:^3.0.1"
+  peerDependencies:
+    i18next: ">= 23.2.3"
+    react: ">= 16.8.0"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 2c919b3b261b44adf2d0f36556e8db0fb31150596536edc00047d5e5d69f5d1ae8aa662feec60513ee5d3c5cbc11192440d4e1e65d86354d0b408235d3e94a2b
   languageName: node
   linkType: hard
 
