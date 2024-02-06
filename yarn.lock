@@ -2505,9 +2505,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:3.0.0-alpha.22":
-  version: 3.0.0-alpha.22
-  resolution: "@lifi/widget@npm:3.0.0-alpha.22"
+"@lifi/widget@npm:3.0.0-alpha.23":
+  version: 3.0.0-alpha.23
+  resolution: "@lifi/widget@npm:3.0.0-alpha.23"
   dependencies:
     "@emotion/react": "npm:^11.11.3"
     "@emotion/styled": "npm:^11.11.0"
@@ -2520,19 +2520,19 @@ __metadata:
     "@solana/wallet-adapter-react": "npm:^0.15.35"
     "@solana/wallet-adapter-wallets": "npm:^0.19.26"
     "@solana/web3.js": "npm:^1.89.1"
-    "@tanstack/react-query": "npm:^5.18.0"
-    "@tanstack/react-virtual": "npm:^3.0.2"
+    "@tanstack/react-query": "npm:^5.18.1"
+    "@tanstack/react-virtual": "npm:^3.0.4"
     i18next: "npm:^23.8.2"
     microdiff: "npm:^1.3.2"
     mitt: "npm:^3.0.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    react-i18next: "npm:^14.0.1"
-    react-intersection-observer: "npm:^9.6.0"
+    react-i18next: "npm:^14.0.3"
+    react-intersection-observer: "npm:^9.7.0"
     react-router-dom: "npm:^6.22.0"
     react-timer-hook: "npm:^3.0.7"
     uuid: "npm:^9.0.1"
-    viem: "npm:^2.7.1"
+    viem: "npm:^2.7.6"
     wagmi: "npm:^2.5.5"
     zustand: "npm:^4.5.0"
   peerDependencies:
@@ -2544,7 +2544,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: b347835198b4d0e57d81e7c8eeefb0d9e4de59c5b4fb257c8aff53d2eb3d44feea1db3d74d32803c424b3139285e9933289d2670d836e766cadff5617e549cac
+  checksum: 614277828f90ef6d3a6f5f5da0a98243e8e4086b73e76f7c144b6f3a8dee00204d50d6e28e0a78d3baece6cb27883e4cd9f6c8be0d0e5112b5c229f69a97c3b6
   languageName: node
   linkType: hard
 
@@ -4717,13 +4717,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.18.0":
-  version: 5.18.0
-  resolution: "@tanstack/query-core@npm:5.18.0"
-  checksum: e20fe65e14acf866daa7c37457055f8529e8125e12661a771a5ccba8dc05050c7a121bb06aa05d6e8e1a3faa47d7558ffb9bf8edec6892b0e68df306ea37f3a4
-  languageName: node
-  linkType: hard
-
 "@tanstack/query-core@npm:5.18.1":
   version: 5.18.1
   resolution: "@tanstack/query-core@npm:5.18.1"
@@ -4731,7 +4724,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:5.18.1":
+"@tanstack/react-query@npm:5.18.1, @tanstack/react-query@npm:^5.18.1":
   version: 5.18.1
   resolution: "@tanstack/react-query@npm:5.18.1"
   dependencies:
@@ -4742,26 +4735,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.18.0":
-  version: 5.18.0
-  resolution: "@tanstack/react-query@npm:5.18.0"
-  dependencies:
-    "@tanstack/query-core": "npm:5.18.0"
-  peerDependencies:
-    react: ^18.0.0
-  checksum: 3d84d8b381982fde0156b4a903ac6b9e77cbbe766c2caaa3b5244243c91d1d78b1a5c8c9b2be499e32c0f6bdbdc92e3301b527cdc51a8a6b313cd418b7279464
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-virtual@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "@tanstack/react-virtual@npm:3.0.2"
+"@tanstack/react-virtual@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@tanstack/react-virtual@npm:3.0.4"
   dependencies:
     "@tanstack/virtual-core": "npm:3.0.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 3794940cac5e17aa390905fc8e3c058e5a2570e54dc594c6c701622b3bcbec2e9551a769df3ae0210f33affa648c9935f65ee3c59373b8595bb7edaa474d516d
+  checksum: d99a18c78cbe2ab0618f9fd75b626bb9db36794dab62a4273922fd887996b01a36bc324a69047e4449c7b9aa0f11f2a19d02d70a94fb6255eaf924a619548322
   languageName: node
   linkType: hard
 
@@ -10210,7 +10192,7 @@ __metadata:
     "@lifi/sdk": "npm:^3.0.0-alpha.54"
     "@lifi/types": "npm:^11.2.0"
     "@lifi/wallet-management": "npm:3.0.0-alpha.15"
-    "@lifi/widget": "npm:3.0.0-alpha.22"
+    "@lifi/widget": "npm:3.0.0-alpha.23"
     "@mui/icons-material": "npm:^5.15.7"
     "@mui/material": "npm:^5.15.7"
     "@safe-global/safe-apps-sdk": "npm:^9.0.0"
@@ -11970,24 +11952,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^14.0.1":
-  version: 14.0.1
-  resolution: "react-i18next@npm:14.0.1"
-  dependencies:
-    "@babel/runtime": "npm:^7.22.5"
-    html-parse-stringify: "npm:^3.0.1"
-  peerDependencies:
-    i18next: ">= 23.2.3"
-    react: ">= 16.8.0"
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-  checksum: f286bac8d091153dc5e8a469c181fddc916c660b10ca496f2fac7bd41ec6dd04e3074e0ce32db5f0192690fc6dbd522fbcf8644813a86b77eeee75d10725024b
-  languageName: node
-  linkType: hard
-
 "react-i18next@npm:^14.0.3":
   version: 14.0.3
   resolution: "react-i18next@npm:14.0.3"
@@ -12006,16 +11970,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-intersection-observer@npm:^9.6.0":
-  version: 9.6.0
-  resolution: "react-intersection-observer@npm:9.6.0"
+"react-intersection-observer@npm:^9.7.0":
+  version: 9.7.0
+  resolution: "react-intersection-observer@npm:9.7.0"
   peerDependencies:
     react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 187be6c1185a5da3e4092b79985fcc2ef244912365175550d2edec0b6ed3ec668075d73ee1d61ca75448fb04a6481df5f257e574c3dc6ec64fba5e399169406c
+  checksum: 60d43bd35586b04f726175c3910679fa822fa6b1f756082931a0bba14a5d779c231de91d64b6e44fec9deff8b4fe6bc8ac6ecee5f928bdde64822137163750b6
   languageName: node
   linkType: hard
 
@@ -14011,6 +13975,27 @@ __metadata:
     typescript:
       optional: true
   checksum: c2da9e958d912cf125ec80abf43534939eec0f5b61c1b44684eefb9556bd23c3ca3707732226f299e06469d046058380cf36cbdee4f3a71dd411230fd3fe6f79
+  languageName: node
+  linkType: hard
+
+"viem@npm:^2.7.6":
+  version: 2.7.6
+  resolution: "viem@npm:2.7.6"
+  dependencies:
+    "@adraffy/ens-normalize": "npm:1.10.0"
+    "@noble/curves": "npm:1.2.0"
+    "@noble/hashes": "npm:1.3.2"
+    "@scure/bip32": "npm:1.3.2"
+    "@scure/bip39": "npm:1.2.1"
+    abitype: "npm:1.0.0"
+    isows: "npm:1.0.3"
+    ws: "npm:8.13.0"
+  peerDependencies:
+    typescript: ">=5.0.4"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 2903cc708ce9553aae8d072f6cce6b386139767fde3dc9d42619e92041882b9dec7f09b9f1b9a6c090814493fd08eee731dba1eb3ef0c1dc653dfb20eca7dc74
   languageName: node
   linkType: hard
 
