@@ -107,6 +107,7 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
 
   const handleDisconnectButton = () => {
     disconnect();
+    //Todo: clear the store by putting all to default settings
     onCloseAllMenus();
     onWalletDisconnect();
   };

@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-import type { LanguageKey } from 'src/types';
+import type { FeatureCardData, LanguageKey } from 'src/types';
 
 export type ThemeModesSupported = 'light' | 'dark' | 'auto';
 export type WalletConnected = string;
@@ -11,6 +11,7 @@ export interface SettingsProps {
   activeWalletName: WalletConnected;
   clientWallets: string[];
   disabledFeatureCards: string[];
+  featureCards: FeatureCardData[];
   welcomeScreenClosed: boolean;
   [key: string]: any;
 }
@@ -33,6 +34,9 @@ export interface SettingsState extends SettingsProps {
 
   // Disable Feature Cards
   onDisableFeatureCard: (id: string) => void;
+
+  // Personnalised Feature Cards
+  onUpdateFeatureCards: (cards: FeatureCardData[]) => void;
 
   // Reset
   onResetSetting: VoidFunction;

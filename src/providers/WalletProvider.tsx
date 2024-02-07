@@ -157,6 +157,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const connect = useCallback(
     async (wallet: Wallet) => {
       await liFiWalletManagement.connect(wallet);
+      //Todo: fetch the user here
       wallet.on('walletAccountChanged', handleWalletUpdate);
       handleWalletUpdate(wallet, WalletActions.Connect);
     },

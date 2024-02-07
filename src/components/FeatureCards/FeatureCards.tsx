@@ -9,9 +9,11 @@ import { shallow } from 'zustand/shallow';
 import { FeatureCardsContainer } from '.';
 
 export const FeatureCards = () => {
+  //Todo: rerender if new featureCards, fetch the featureCards from the store and merge cards
+
   const [featureCards, setFeatureCards] = useState<FeatureCardData[]>([]);
-  const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
-    (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
+  const [disabledFeatureCards, welcomeScreenClosed, personnalisedFeatureCards] = useSettingsStore(
+    (state) => [state.disabledFeatureCards, state.welcomeScreenClosed, state.featureCards],
     shallow,
   );
 
@@ -27,7 +29,7 @@ export const FeatureCards = () => {
     }
     // trigger featureCardsFetched-filtering only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, isSuccess]);
+  }, [data, isSuccess, personnalisedFeatureCards]);
 
   useEffect(() => {
     if (Array.isArray(featureCardsFetched)) {

@@ -1,6 +1,7 @@
 import i18next from 'i18next';
 import { defaultLang, defaultSettings } from 'src/config';
 import type {
+  FeatureCardData,
   LanguageKey,
   SettingsProps,
   SettingsState,
@@ -89,6 +90,14 @@ export const useSettingsStore = createWithEqualityFn(
         });
       },
 
+      // Personalised Feature Cards
+      //Todo: verify naming
+      onUpdateFeatureCards: (cards: FeatureCardData[]) => {
+        set({
+          featureCards: cards,
+        });
+      },
+
       // Reset
       onResetSetting: () => {
         set({
@@ -100,6 +109,7 @@ export const useSettingsStore = createWithEqualityFn(
             (i18next.language as LanguageKey) ||
             defaultLang,
           disabledFeatureCards: defaultSettings.disabledFeatureCards || [],
+          featureCards: defaultSettings.featureCards || [],
         });
       },
     }),
