@@ -17,6 +17,7 @@ export const useFeatureCards = (): UseFeatureCardsProps => {
   const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
   apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
   apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
+  apiUrl.searchParams.set('filters[jumper_users][id][$null]', 'true');
   import.meta.env.MODE !== 'production' &&
     apiUrl.searchParams.set('publicationState', 'preview');
   const apiAccesToken =
