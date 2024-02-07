@@ -10,6 +10,7 @@ import {
   WelcomeScreen,
   Widgets,
 } from './components';
+import { Banner } from './components/Banner';
 
 export function App() {
   const { initTracking } = useInitUserTracking();
@@ -22,6 +23,7 @@ export function App() {
 
   return (
     <AppProvider>
+      <Banner />
       <Navbar />
       <WelcomeScreen />
       <Menus />

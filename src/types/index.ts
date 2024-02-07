@@ -9,3 +9,4 @@ export * from './userTracking';
 export * from './utm';
 export * from './wallet';
 export * from './walletProvider';
+export * from './banner';
