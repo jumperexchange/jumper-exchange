@@ -10,7 +10,6 @@ import { FeatureCardsContainer } from '.';
 
 export const FeatureCards = () => {
   //Todo: rerender if new featureCards, fetch the featureCards from the store and merge cards
-
   const [featureCards, setFeatureCards] = useState<FeatureCardData[]>([]);
   const [disabledFeatureCards, welcomeScreenClosed, personnalisedFeatureCards] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed, state.featureCards],
@@ -19,13 +18,15 @@ export const FeatureCards = () => {
 
   const { featureCards: data, isSuccess } = useFeatureCards();
   const featureCardsFetched = useMemo(() => {
+    //Todo: verify the order of the display
     if (Array.isArray(data) && !!data.length) {
-      return data?.filter(
+      const filteredCards = data?.filter(
         (el, index) =>
           isSuccess &&
           el.attributes.DisplayConditions &&
           !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
       );
+      return Array.isArray(personnalisedFeatureCards) ? personnalisedFeatureCards.concat(filteredCards) : filteredCards;
     }
     // trigger featureCardsFetched-filtering only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,7 +37,7 @@ export const FeatureCards = () => {
       !!featureCardsFetched.length &&
         setFeatureCards(featureCardsFetched?.slice(0, 4));
     }
-  }, [featureCardsFetched]);
+  }, [featureCardsFetched, personnalisedFeatureCards]); //Todo: verify if we need the personnalisedFeatureCards
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
   return (

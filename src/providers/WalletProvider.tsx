@@ -158,6 +158,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
     async (wallet: Wallet) => {
       await liFiWalletManagement.connect(wallet);
       //Todo: fetch the user here
+      //Todo: store the featureCards in the store, do it inside the fetching directly?
       wallet.on('walletAccountChanged', handleWalletUpdate);
       handleWalletUpdate(wallet, WalletActions.Connect);
     },
