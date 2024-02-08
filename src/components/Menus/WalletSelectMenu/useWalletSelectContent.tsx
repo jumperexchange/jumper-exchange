@@ -70,7 +70,7 @@ export const useWalletSelectContent = () => {
   );
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
-    const handleClick = async (combinedWallet: CombinedWallet) => {
+    const handleWalletClick = async (combinedWallet: CombinedWallet) => {
       if (
         isWalletInstalled(combinedWallet.evm?.id || '') ||
         (await isWalletInstalledAsync(combinedWallet.evm?.id || '')) ||
@@ -116,7 +116,7 @@ export const useWalletSelectContent = () => {
         ),
         showMoreIcon: false,
         onClick: () => {
-          handleClick(combinedWallet);
+          handleWalletClick(combinedWallet);
         },
         styles: {
           '&:hover': {
