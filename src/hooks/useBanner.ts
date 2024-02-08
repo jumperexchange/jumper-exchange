@@ -43,8 +43,6 @@ export const useBanner = (): UseBannerProps => {
     refetchInterval: 1000 * 60 * 60,
   });
 
-  console.log(data);
-
   return {
     banner: data && data.length > 0 ? data[0] : undefined,
     url: apiUrl,
