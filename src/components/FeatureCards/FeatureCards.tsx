@@ -11,12 +11,8 @@ import { useWallet } from 'src/providers';
 import { useFetchUser } from 'src/hooks/useFetchUser';
 
 export const FeatureCards = () => {
-  const { account } = useWallet();
   //Todo: rerender if new featureCards, fetch the featureCards from the store and merge cards
   const [featureCards, setFeatureCards] = useState<FeatureCardData[]>([]);
-  const [personalizedFeatureCards, setPersonalizedFeatureCards] = useState<
-    FeatureCardData[]
-  >([]);
   const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
@@ -24,6 +20,8 @@ export const FeatureCards = () => {
 
   //Todo check if the user is Connected
   const { featureCards: data, isSuccess } = useFeatureCards();
+  const { featureCards: personalizedCards } = useFetchUser();
+
   const featureCardsFetched = useMemo(() => {
     if (Array.isArray(data) && !!data.length) {
       return data?.filter(
@@ -38,23 +36,16 @@ export const FeatureCards = () => {
   }, [data, isSuccess]);
 
   useEffect(() => {
-    if (!!account.address) {
-      const { featureCards: personalizedCards, isSuccess } = useFetchUser(
-        account.address,
-      );
-      if (isSuccess && personalizedCards) {
-        setPersonalizedFeatureCards(personalizedCards);
-      }
-    }
-  }, [account]);
-
-  useEffect(() => {
-    let cardsToDisplay = personalizedFeatureCards;
     if (Array.isArray(featureCardsFetched)) {
-      cardsToDisplay = cardsToDisplay.concat(featureCardsFetched);
+      let cardsToDisplay = [];
+      if (Array.isArray(personalizedCards)) {
+        cardsToDisplay = personalizedCards.concat(featureCardsFetched);
+      } else {
+        cardsToDisplay = featureCardsFetched;
+      }
+      !!cardsToDisplay.length && setFeatureCards(cardsToDisplay?.slice(0, 4));
     }
-    !!cardsToDisplay.length && setFeatureCards(cardsToDisplay?.slice(0, 4));
-  }, [featureCardsFetched, personalizedFeatureCards]);
+  }, [featureCardsFetched, personalizedCards]);
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
