@@ -11,7 +11,6 @@ import { useWallet } from 'src/providers';
 import { useFetchUser } from 'src/hooks/useFetchUser';
 
 export const FeatureCards = () => {
-  //Todo: rerender if new featureCards, fetch the featureCards from the store and merge cards
   const [featureCards, setFeatureCards] = useState<FeatureCardData[]>([]);
   const [personalizedFeatureCards, setPersonalizedFeatureCards] = useState<
     FeatureCardData[]
