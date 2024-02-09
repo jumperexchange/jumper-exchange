@@ -16,8 +16,8 @@ export function useInitUserTracking() {
           process.env.HOTJAR_ID &&
           process.env.HOTJAR_SNIPPET_VERSION &&
           hotjar.initialize(
-            parseInt(process.env.HOTJAR_ID),
-            parseInt(process.env.HOTJAR_SNIPPET_VERSION),
+            process.env.HOTJAR_ID,
+            process.env.HOTJAR_SNIPPET_VERSION,
           );
       }
     },

@@ -1,28 +1,26 @@
 /// <reference types="vite/client" />
 
-interface ImportMetaEnv {
-  readonly BASE_URL: string;
-  readonly DEV: boolean;
-  readonly MODE: 'development' | 'testnet' | 'production' | 'staging';
-  readonly PROD: boolean;
-  readonly SSR: boolean;
-  readonly ARCX_API_KEY: string;
-  readonly GOOGLE_ANALYTICS_TRACKING_ID: string;
-  readonly HOTJAR_ID: number;
-  readonly HOTJAR_SNIPPET_VERSION: number;
-  readonly SENTRY_DSN: string;
-  readonly CUSTOM_RPCS: string;
-  readonly WIDGET_INTEGRATOR: string;
-  readonly LIFI_API_URL: string;
-  readonly ONRAMPER_ENABLED: string;
-  readonly STRAPI_DEVELOP: string;
-  readonly STRAPI_URL: string;
-  readonly STRAPI_API_TOKEN: string;
-  readonly LOCAL_STRAPI_URL: string;
-  readonly LOCAL_STRAPI_API_TOKEN: string;
-  readonly WALLET_CONNECT_PROJECT_ID: string;
-}
-
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
+namespace NodeJS {
+  interface ProcessEnv {
+    BASE_URL: string;
+    DEV: boolean;
+    MODE: 'development' | 'testnet' | 'production' | 'staging';
+    PROD: boolean;
+    SSR: boolean;
+    ARCX_API_KEY: string;
+    GOOGLE_ANALYTICS_TRACKING_ID: string;
+    HOTJAR_ID: number;
+    HOTJAR_SNIPPET_VERSION: number;
+    SENTRY_DSN: string;
+    CUSTOM_RPCS: string;
+    WIDGET_INTEGRATOR: string;
+    LIFI_API_URL: string;
+    ONRAMPER_ENABLED: string;
+    STRAPI_DEVELOP: string;
+    STRAPI_URL: string;
+    STRAPI_API_TOKEN: string;
+    LOCAL_STRAPI_URL: string;
+    LOCAL_STRAPI_API_TOKEN: string;
+    WALLET_CONNECT_PROJECT_ID: string;
+  }
 }

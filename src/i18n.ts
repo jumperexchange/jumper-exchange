@@ -35,8 +35,13 @@ export default getRequestConfig(async ({ locale }) => {
         removeEmpty(value),
       )
     ).default;
-    const merge = deepMerge(enTranslation, translation);
-
+    const languageKeys = (
+      await import(`../messages/${locale}/language.json`).then((value) =>
+        removeEmpty(value),
+      )
+    ).default;
+    const merge = deepMerge(enTranslation, { ...translation, ...languageKeys });
+    console.log('MERGE', merge);
     return {
       messages: merge,
     };

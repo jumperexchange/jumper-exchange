@@ -1,7 +1,9 @@
-import { useMediaQuery } from '@mui/material';
+'use client';
+import { CssBaseline, useMediaQuery } from '@mui/material';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import type { PropsWithChildren } from 'react';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useSettingsStore } from 'src/stores';
 import { darkTheme, lightTheme } from 'src/theme/theme';
 
@@ -23,9 +25,14 @@ export const ThemeProvider: React.FC<PropsWithChildren<{}>> = ({
 }) => {
   const isDarkMode = useDetectDarkModePreference();
 
-  const activeTheme = useMemo(() => {
-    return isDarkMode ? darkTheme : lightTheme;
-  }, [isDarkMode]);
+  const activeTheme = isDarkMode ? darkTheme : lightTheme;
 
-  return <MuiThemeProvider theme={activeTheme}>{children}</MuiThemeProvider>;
+  return (
+    <AppRouterCacheProvider options={{ enableCssLayer: true, key: 'css' }}>
+      <MuiThemeProvider theme={activeTheme}>
+        <CssBaseline />
+        {children}
+      </MuiThemeProvider>
+    </AppRouterCacheProvider>
+  );
 };

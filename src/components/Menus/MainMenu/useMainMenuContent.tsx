@@ -102,7 +102,7 @@ export const useMainMenuContent = () => {
       disableRipple: true,
     },
     {
-      label: t('language.key', { ns: 'language' }),
+      label: t('language.key'),
       prefixIcon: <LanguageIcon />,
       suffixIcon: (
         <Typography

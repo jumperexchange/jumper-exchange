@@ -19,11 +19,11 @@ import type {
 } from 'src/types';
 import { EventTrackingTool } from 'src/types';
 import { useAccounts } from '../useAccounts';
-import { useCookie3 } from './useCookie3';
+// import { useCookie3 } from './useCookie3';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
-  const cookie3 = useCookie3();
+  // const cookie3 = useCookie3();
   const { account } = useAccounts();
 
   useEffect(() => {
@@ -144,15 +144,16 @@ export function useUserTracking() {
         });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.Cookie3)) {
-        cookie3?.trackEvent({
-          category,
-          action,
-          name: label,
-          value,
-        });
+        // todo: add
+        // cookie3?.trackEvent({
+        //   category,
+        //   action,
+        //   name: label,
+        //   value,
+        // });
       }
     },
-    [arcx, cookie3],
+    [arcx],
   );
 
   const trackPageload = useCallback(
@@ -217,15 +218,16 @@ export function useUserTracking() {
         });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.Cookie3)) {
-        cookie3?.trackEvent({
-          category,
-          action,
-          name: 'transaction',
-          value: value,
-        });
+        // todo: add cookie3
+        // cookie3?.trackEvent({
+        //   category,
+        //   action,
+        //   name: 'transaction',
+        //   value: value,
+        // });
       }
     },
-    [arcx, cookie3],
+    [arcx],
   );
 
   const trackChainSwitch = useCallback(

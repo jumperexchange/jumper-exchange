@@ -92,7 +92,7 @@ export const useAccounts = (): AccountResult => {
       account: account.isConnected ? evm : svm,
       accounts: [evm, svm],
     };
-  }, [account.status, getBlockexplorerURL, wallet?.readyState]);
+  }, [account, getBlockexplorerURL, wallet]);
 };
 
 export const useAccountDisconnect = () => {

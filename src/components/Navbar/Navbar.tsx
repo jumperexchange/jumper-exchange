@@ -1,3 +1,4 @@
+'use client';
 import { useTheme } from '@mui/material/styles';
 import { Logo, NavbarButtons, NavbarTabs } from 'src/components';
 import { useAccounts } from 'src/hooks';
