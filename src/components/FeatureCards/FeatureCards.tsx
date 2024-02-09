@@ -22,7 +22,7 @@ export const FeatureCards = () => {
 
   //Todo check if the user is Connected
   const { featureCards: data, isSuccess } = useFeatureCards();
-  const { featureCards: personalizedCards } = useFetchUser();
+  const { featureCards: personalizedCardsFetched } = useFetchUser();
 
   const featureCardsFetched = useMemo(() => {
     if (Array.isArray(data) && !!data.length) {
@@ -45,10 +45,10 @@ export const FeatureCards = () => {
   }, [featureCardsFetched]);
 
   useEffect(() => {
-    if (Array.isArray(personalizedCards)) {
-      setPersonalizedFeatureCards(personalizedCards?.slice(0, 1));
+    if (Array.isArray(personalizedCardsFetched)) {
+      setPersonalizedFeatureCards(personalizedCardsFetched?.slice(0, 1));
     }
-  }, [personalizedCards]);
+  }, [personalizedCardsFetched]);
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
