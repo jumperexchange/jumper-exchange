@@ -7,7 +7,6 @@ import { useSettingsStore } from 'src/stores';
 import type { FeatureCardData } from 'src/types';
 import { shallow } from 'zustand/shallow';
 import { FeatureCardsContainer } from '.';
-import { useWallet } from 'src/providers';
 import { useFetchUser } from 'src/hooks/useFetchUser';
 
 export const FeatureCards = () => {
@@ -20,7 +19,6 @@ export const FeatureCards = () => {
     shallow,
   );
 
-  //Todo check if the user is Connected
   const { featureCards: data, isSuccess } = useFeatureCards();
   const { featureCards: personalizedCardsFetched } = useFetchUser();
 
