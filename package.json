@@ -4,17 +4,18 @@
   "private": true,
   "repository": "https://github.com/lifinance/jumper.exchange",
   "packageManager": "yarn@4.0.2",
-  "type": "module",
-  "main": "./src/index.ts",
-  "types": "./index.d.ts",
   "dependencies": {
     "@arcxmoney/analytics": "^2.0.3",
     "@cookie3/analytics": "^0.6.0",
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@lifi/sdk": "^3.0.0-alpha.54",
     "@lifi/wallet-management": "3.0.0-alpha.15",
     "@lifi/widget": "3.0.0-alpha.23",
     "@mui/icons-material": "^5.15.7",
     "@mui/material": "^5.15.7",
+    "@mui/material-nextjs": "^5.15.7",
     "@safe-global/safe-apps-sdk": "^9.0.0",
     "@sentry/browser": "^7.99.0",
     "@sentry/integrations": "^7.99.0",
@@ -25,16 +26,13 @@
     "@widgetbot/react-embed": "^1.9.0",
     "ethers": "^6.10.0",
     "fontaine": "^0.4.1",
-    "i18next": "^23.8.2",
-    "i18next-browser-languagedetector": "^7.2.0",
-    "i18next-http-backend": "^2.4.3",
-    "i18next-resources-to-backend": "^1.2.0",
+    "next": "^14.1.0",
+    "next-intl": "^3.5.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.12",
     "react-ga4": "^2.1.0",
     "react-hotjar": "^6.2.0",
-    "react-i18next": "^14.0.3",
     "react-router-dom": "^6.22.0",
     "typescript": "^5.3.3",
     "vite-tsconfig-paths": "^4.3.1",
@@ -75,19 +73,20 @@
     ]
   },
   "scripts": {
-    "dev": "vite",
-    "dev:local": "vite --mode localhost",
-    "dev:testnet": "vite --mode testnet",
-    "dev:staging": "vite --mode staging",
-    "dev:production": "vite --mode production",
-    "build": "tsc && vite build",
-    "build:testnet": "tsc && vite build --mode testnet",
-    "build:develop": "tsc && vite build --mode development",
-    "build:staging": "tsc && vite build --mode staging",
-    "build:production": "tsc && vite build --mode production",
-    "preview": "vite preview",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "dev:local": "next --mode localhost",
+    "dev:testnet": "next --mode testnet",
+    "dev:staging": "next --mode staging",
+    "dev:production": "next --mode production",
+    "build:testnet": "tsc && next build --mode testnet",
+    "build:develop": "tsc && next build --mode development",
+    "build:staging": "tsc && next build --mode staging",
+    "build:production": "tsc && next build --mode production",
+    "preview": "next preview",
     "clean": "rm -rf ./tsconfig.tsbuildinfo",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint-staged": "lint-staged",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
     "test": "run-s 'test:*'",
@@ -95,8 +94,7 @@
     "fix:staged-files": "lint-staged --allow-empty",
     "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "pre-commit": "lint-staged",
-    "pre-push": "yarn && yarn build",
-    "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json"
+    "pre-push": "yarn && yarn build"
   },
   "lint-staged": {
     "**/*.(ts|tsx|js)": [
@@ -106,18 +104,6 @@
     ],
     "**/*.(md|json)": [
       "yarn prettier --write"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
     ]
   }
 }

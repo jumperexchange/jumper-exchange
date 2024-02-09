@@ -1,5 +1,5 @@
 // @mui
-import type { LanguageKey, ThemeModesSupported } from 'src/types';
+import type { LanguageKey, ThemeModesSupported } from '../types';
 
 export const cookiesExpires = 3;
 
@@ -19,11 +19,14 @@ export const localStorageKey = {
 export const defaultLang = 'en'; // English
 
 const setLanguage = () => {
-  if (!!localStorage.getItem(localStorageKey.languageMode)) {
-    return localStorage.getItem(localStorageKey.languageMode);
-  } else {
-    return '';
-  }
+  // if (
+  //   typeof window === 'undefined' &&
+  //   !!localStorage.getItem(localStorageKey.languageMode)
+  // ) {
+  //   return localStorage.getItem(localStorageKey.languageMode);
+  // } else {
+  return '';
+  // }
 };
 
 interface DefaultSettingsType {
@@ -37,12 +40,17 @@ interface DefaultSettingsType {
 
 export const defaultSettings: DefaultSettingsType = {
   themeMode:
-    (localStorage.getItem(localStorageKey.themeMode) as ThemeModesSupported) ||
+    // (typeof window === 'undefined' &&
+    //   (localStorage.getItem(
+    //     localStorageKey.themeMode,
+    //   ) as ThemeModesSupported)) ||
     'auto',
   languageMode: setLanguage() as LanguageKey,
   clientWallets: [],
   activeWalletName:
-    (localStorage.getItem(localStorageKey.activeWalletName) as string) || '',
+    // (typeof window === 'undefined' &&
+    //   (localStorage.getItem(localStorageKey.activeWalletName) as string)) ||
+    '',
   disabledFeatureCards: [],
   welcomeScreenClosed: false,
 };

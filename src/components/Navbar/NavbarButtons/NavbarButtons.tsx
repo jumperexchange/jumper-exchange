@@ -1,18 +1,18 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
 import { useChains, useUserTracking } from 'src/hooks';
+import { useAccounts } from 'src/hooks/useAccounts';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { NavbarButtonsContainer, WalletManagementButtons } from '.';
 import { MainMenu, MenuToggle } from '../..';
-import { useAccounts } from 'src/hooks/useAccounts';
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef<any>(null);
@@ -27,9 +27,11 @@ export const NavbarButtons = () => {
     state.setMainMenuState,
   ]);
 
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { account } = useAccounts();
-  if (!account.isConnected) onWalletDisconnect();
+  if (!account.isConnected) {
+    onWalletDisconnect();
+  }
 
   // return focus to the button when we transitioned from !open -> open
   const prevMainMenu = useRef(openMainMenu);

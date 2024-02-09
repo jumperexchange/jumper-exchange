@@ -2,7 +2,7 @@ import { useTheme } from '@mui/material';
 import { Button } from 'src/components';
 import { LogoLink } from '../Navbar';
 
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { Discord, Logo } from 'src/components';
 import {
   DISCORD_URL,
@@ -10,7 +10,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
+import { useAccounts, useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
 import { getContrastAlphaColor, openInNewTab } from 'src/utils';
 import {
@@ -19,12 +19,11 @@ import {
   NavbarContainer,
   SupportMessage,
 } from './FallbackError.styles';
-import { useAccounts } from 'src/hooks/useAccounts';
 
 export function FallbackError() {
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { account } = useAccounts();
   return (
     <>

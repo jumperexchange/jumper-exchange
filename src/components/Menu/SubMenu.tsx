@@ -17,7 +17,7 @@ import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-  type MenuKeys,
+  type MenuKeysEnum,
 } from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
@@ -31,9 +31,9 @@ interface SubMenuProps {
   prefixIcon?: JSX.Element | string;
   checkIcon?: boolean;
   url?: string;
-  prevMenu: MenuKeys;
+  prevMenu: MenuKeysEnum;
   subMenuList: MenuListItem[];
-  triggerSubMenu: MenuKeys;
+  triggerSubMenu: MenuKeysEnum;
 }
 
 export const SubMenu = ({

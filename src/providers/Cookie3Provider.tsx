@@ -1,3 +1,4 @@
+'use client';
 import { type Cookie3Analytics } from '@cookie3/analytics';
 import { createContext } from 'react';
 

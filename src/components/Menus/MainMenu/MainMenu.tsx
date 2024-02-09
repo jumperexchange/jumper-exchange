@@ -1,5 +1,5 @@
 import { Menu, MenuItem, useMainMenuContent } from 'src/components';
-import { MenuKeys } from 'src/const';
+import { MenuKeysEnum } from 'src/const';
 import { useMenuStore } from 'src/stores';
 import type { JsxElement } from 'typescript';
 import { DevelopersSubmenu, LanguagesSubmenu } from '..';
@@ -18,10 +18,10 @@ export const MainMenu = ({ anchorEl }: MenuProps) => {
     <Menu
       open={openMainMenu}
       setOpen={setMainMenuState}
-      isOpenSubMenu={openSubMenu !== MenuKeys.None}
+      isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
       anchorEl={anchorEl}
     >
-      {openSubMenu === MenuKeys.None &&
+      {openSubMenu === MenuKeysEnum.None &&
         mainMenuItems.map((el, index) => (
           <MenuItem
             key={`${el.label}-${index}`}

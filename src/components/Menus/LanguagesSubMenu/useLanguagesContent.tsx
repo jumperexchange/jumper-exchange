@@ -1,24 +1,29 @@
-import * as supportedLanguages from 'i18n';
-import { useTranslation } from 'react-i18next';
+'use client';
+import { useLocale } from 'next-intl';
+import * as supportedLanguages from 'root/messages';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
 import { useUserTracking } from 'src/hooks';
+import { usePathname, useRouter } from 'src/navigation';
 import { useSettingsStore } from 'src/stores';
 import type { LanguageKey } from 'src/types';
 import { EventTrackingTool } from 'src/types';
 
 export const useLanguagesContent = () => {
-  const { i18n } = useTranslation();
   const [languageMode, onChangeLanguage] = useSettingsStore((state) => [
     state.languageMode,
     state.onChangeLanguage,
   ]);
+  const router = useRouter();
+  const pathname = usePathname();
+  const locale = useLocale();
+
   const { trackEvent } = useUserTracking();
   const handleSwitchLanguage = (newLanguage: LanguageKey) => {
-    i18n.changeLanguage(newLanguage);
+    router.push(pathname, { locale: newLanguage });
     onChangeLanguage(newLanguage);
     trackEvent({
       category: TrackingCategory.LanguageMenu,

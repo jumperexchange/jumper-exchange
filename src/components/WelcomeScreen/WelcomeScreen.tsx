@@ -1,8 +1,8 @@
 import type { Breakpoint } from '@mui/material';
 import { Slide, Typography, useTheme } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
 import { ButtonPrimary, ToolCards } from 'src/components';
 import {
   TrackingAction,
@@ -35,7 +35,7 @@ const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
 
 export const WelcomeScreen = () => {
   const theme = useTheme();
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [welcomeScreenClosed, onWelcomeScreenClosed] = useSettingsStore(
     (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
     shallow,
@@ -151,28 +151,29 @@ export const WelcomeScreen = () => {
               }}
             >
               {
-                <Trans
-                  i18nKey={'navbar.welcome.subtitle' as string & never[]}
-                  components={[
-                    // fix: allow component with "no content"
-                    // eslint-disable-next-line jsx-a11y/anchor-has-content
-                    <a
-                      className={'link-lifi'}
-                      href={auditsWelcomeUrl}
-                      target={'_blank'}
-                      rel="noreferrer"
-                      onClick={handleAuditClick}
-                    />,
-                    // eslint-disable-next-line jsx-a11y/anchor-has-content
-                    <a
-                      className={'link-lifi'}
-                      href={lifiWelcomeUrl}
-                      onClick={handleLIFIClick}
-                      target={'_blank'}
-                      rel="noreferrer"
-                    />,
-                  ]}
-                />
+                'todo: add translation'
+                // <Trans
+                //   i18nKey={'navbar.welcome.subtitle' as string & never[]}
+                //   components={[
+                //     // fix: allow component with "no content"
+                //     // eslint-disable-next-line jsx-a11y/anchor-has-content
+                //     <a
+                //       className={'link-lifi'}
+                //       href={auditsWelcomeUrl}
+                //       target={'_blank'}
+                //       rel="noreferrer"
+                //       onClick={handleAuditClick}
+                //     />,
+                //     // eslint-disable-next-line jsx-a11y/anchor-has-content
+                //     <a
+                //       className={'link-lifi'}
+                //       href={lifiWelcomeUrl}
+                //       onClick={handleLIFIClick}
+                //       target={'_blank'}
+                //       rel="noreferrer"
+                //     />,
+                //   ]}
+                // />
               }
             </Typography>
             <ToolCards

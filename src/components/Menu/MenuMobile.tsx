@@ -6,7 +6,7 @@ import {
   MenuHeaderAppWrapper,
   MenuList,
 } from 'src/components';
-import { MenuKeys } from 'src/const';
+import { MenuKeysEnum } from 'src/const';
 import { useMenuStore } from 'src/stores';
 
 const paperProps = {
@@ -49,13 +49,13 @@ export const MenuMobile = ({
           autoFocusItem={open}
           id="main-burger-menu"
           autoFocus={open}
-          isOpenSubMenu={openSubMenu !== MenuKeys.None}
+          isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
           aria-labelledby="main-burger-menu"
           cardsLayout={cardsLayout}
           hasLabel={!!label}
           sx={styles}
           component={
-            isOpenSubMenu && openSubMenu !== MenuKeys.WalletSelect
+            isOpenSubMenu && openSubMenu !== MenuKeysEnum.WalletSelect
               ? 'div'
               : 'ul'
           }

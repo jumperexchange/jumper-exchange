@@ -1,10 +1,10 @@
 import { Stack, Typography, useTheme } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Menu, WalletButton } from 'src/components';
-import { MenuKeys } from 'src/const';
-import { useMenuStore } from 'src/stores';
+import { MenuKeysEnum } from 'src/const';
 import { useAccounts } from 'src/hooks/useAccounts';
+import { useMenuStore } from 'src/stores';
 import { WalletCard } from './WalletCard';
 
 interface WalletMenuProps {
@@ -12,7 +12,7 @@ interface WalletMenuProps {
 }
 
 export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
 
@@ -31,7 +31,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
     openWalletMenu! && setSnackbarState(false);
   }, [setSnackbarState, openWalletMenu]);
   useEffect(() => {
-    if (accounts.every((account) => account.status === 'disconnected')) {
+    if (accounts.every((account: any) => account.status === 'disconnected')) {
       setWalletMenuState(false);
     }
   }, [accounts, setWalletMenuState]);
@@ -40,7 +40,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
     <Menu
       open={openWalletMenu}
       setOpen={setWalletMenuState}
-      isOpenSubMenu={openSubMenu !== MenuKeys.None}
+      isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
       width={'auto'}
       styles={{
         background: theme.palette.surface1.main,

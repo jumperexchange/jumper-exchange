@@ -1,20 +1,20 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { SubMenu } from 'src/components';
-import { MenuKeys } from 'src/const';
+import { MenuKeysEnum } from 'src/const';
 import { useMenuStore } from 'src/stores';
 import { useWalletSelectContent } from '..';
 
 export const WalletSelectMoreSubMenu = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const walletSelectMenuItems = useWalletSelectContent();
   const openSubMenu = useMenuStore((state) => state.openSubMenu);
 
   return (
     <SubMenu
       label={t('navbar.walletSelectMenu.wallets')}
-      triggerSubMenu={MenuKeys.WalletSelectMore}
-      open={openSubMenu === MenuKeys.WalletSelectMore}
-      prevMenu={MenuKeys.None}
+      triggerSubMenu={MenuKeysEnum.WalletSelectMore}
+      open={openSubMenu === MenuKeysEnum.WalletSelectMore}
+      prevMenu={MenuKeysEnum.None}
       subMenuList={walletSelectMenuItems}
     />
   );

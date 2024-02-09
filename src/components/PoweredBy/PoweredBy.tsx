@@ -1,10 +1,9 @@
 import { Typography, useTheme } from '@mui/material';
-import { Trans } from 'react-i18next';
-import { appendUTMParametersToLink, openInNewTab } from '../../utils';
-import { Container } from './PoweredBy.style';
 import { LIFI_URL, TrackingAction, TrackingCategory } from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
+import { appendUTMParametersToLink, openInNewTab } from '../../utils';
+import { Container } from './PoweredBy.style';
 
 const lifiUrl = appendUTMParametersToLink(LIFI_URL, {
   utm_campaign: 'jumper_to_lifi',
@@ -43,7 +42,8 @@ export const PoweredBy = () => {
               : theme.palette.alphaDark500.main,
         }}
       >
-        <Trans
+        //todo: add translation
+        {/* <Trans
           i18nKey={'navbar.poweredByLifi' as string & never[]}
           components={[
             // fix: allow component with "no content"
@@ -58,7 +58,7 @@ export const PoweredBy = () => {
               rel="noreferrer"
             />,
           ]}
-        />
+        /> */}
       </Typography>
     </Container>
   );

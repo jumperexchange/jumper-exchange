@@ -81,7 +81,7 @@ export function Widgets() {
 
   return (
     <>
-      {import.meta.env.MODE === 'testnet' && (
+      {process.env.MODE === 'testnet' && (
         <Grid item xs={12} mt={theme.spacing(3)}>
           <TestnetAlert />
         </Grid>
@@ -100,7 +100,7 @@ export function Widgets() {
       >
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
-      {import.meta.env.VITE_ONRAMPER_ENABLED ? (
+      {process.env.ONRAMPER_ENABLED ? (
         <WidgetContainer
           onClick={handleCloseWelcomeScreen}
           isActive={_starterVariant === TabsMap.Buy.variant}

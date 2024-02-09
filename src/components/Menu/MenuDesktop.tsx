@@ -9,7 +9,7 @@ import {
   MenuPaper,
   MenuPopper,
 } from 'src/components';
-import { MenuKeys, MenuMain } from 'src/const';
+import { MenuKeysEnum, MenuMain } from 'src/const';
 import { useMenuStore } from 'src/stores';
 interface MenuProps {
   isOpenSubMenu: boolean;
@@ -71,7 +71,7 @@ export const MenuDesktop = ({
                   autoFocusItem={open}
                   id="main-burger-menu"
                   autoFocus={open}
-                  isOpenSubMenu={openSubMenu !== MenuKeys.None}
+                  isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
                   aria-labelledby="main-burger-menu"
                   onKeyDown={handleListKeyDown}
                   cardsLayout={cardsLayout}

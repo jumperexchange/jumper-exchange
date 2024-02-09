@@ -1,7 +1,7 @@
 import type { ButtonProps } from '@mui/material';
 import { Avatar, Badge, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ButtonPrimary, ButtonSecondary } from 'src/components/Button';
+import { ButtonPrimary, ButtonSecondary } from 'src/components';
 
 export interface WalletButtonProps extends ButtonProps {
   colored?: boolean;

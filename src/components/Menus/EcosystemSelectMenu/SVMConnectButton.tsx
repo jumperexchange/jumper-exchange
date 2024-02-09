@@ -1,6 +1,7 @@
+'use client';
 import { Avatar, Typography, useTheme } from '@mui/material';
 import type { Wallet } from '@solana/wallet-adapter-react';
-import { useAccountConnect } from 'src/hooks/useAccounts';
+import { useAccountConnect } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { SVMConnectButton as ConnectButton } from './EcosystemSelectMenu.style';
 

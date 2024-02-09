@@ -13,9 +13,11 @@ export function useInitUserTracking() {
     async ({ disableTrackingTool }: InitTrackingProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         !hotjar.initialized() &&
+          process.env.HOTJAR_ID &&
+          process.env.HOTJAR_SNIPPET_VERSION &&
           hotjar.initialize(
-            import.meta.env.VITE_HOTJAR_ID,
-            import.meta.env.VITE_HOTJAR_SNIPPET_VERSION,
+            parseInt(process.env.HOTJAR_ID),
+            parseInt(process.env.HOTJAR_SNIPPET_VERSION),
           );
       }
     },

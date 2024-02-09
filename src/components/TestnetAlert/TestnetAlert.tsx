@@ -1,6 +1,6 @@
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import { Typography, useTheme } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import {
   Button,
   WarningMessageCard,
@@ -9,7 +9,7 @@ import {
 import { JUMPER_URL } from 'src/const';
 import { appendUTMParametersToLink, openInNewTab } from 'src/utils';
 export const TestnetAlert = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const theme = useTheme();
 
   const PROD_URL = appendUTMParametersToLink(JUMPER_URL, {

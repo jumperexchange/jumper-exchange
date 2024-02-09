@@ -1,7 +1,7 @@
 import type { ChainID } from '@arcxmoney/analytics';
 import type { ChainType } from '@lifi/types';
 import type { TrackingCategory } from 'src/const';
-import type { Account } from 'src/hooks/useAccounts';
+import type { Account } from 'src/hooks';
 
 export enum EventTrackingTool {
   ARCx,

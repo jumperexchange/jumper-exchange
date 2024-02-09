@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { Menu, MenuHeaderAppBar, MenuHeaderAppWrapper } from 'src/components';
 import { useMenuStore } from 'src/stores';
 
@@ -13,7 +13,7 @@ interface MenuProps {
 }
 
 export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const theme = useTheme();
   const { openEcosystemSelect, setEcosystemSelectMenuState } = useMenuStore(
     (state) => state,

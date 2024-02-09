@@ -1,5 +1,5 @@
 import { Avatar, Typography, useTheme } from '@mui/material';
-import { useAccountConnect } from 'src/hooks/useAccounts';
+import { useAccountConnect } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { type Connector } from 'wagmi';
 import { SVMConnectButton } from './EcosystemSelectMenu.style';

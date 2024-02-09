@@ -3,7 +3,7 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import type { PropsWithChildren } from 'react';
 import React, { useMemo } from 'react';
 import { useSettingsStore } from 'src/stores';
-import { darkTheme, lightTheme } from 'src/theme';
+import { darkTheme, lightTheme } from 'src/theme/theme';
 
 export const useDetectDarkModePreference = () => {
   const themeMode = useSettingsStore((state) => state.themeMode);

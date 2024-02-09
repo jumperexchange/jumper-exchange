@@ -2,17 +2,15 @@ import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
+import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
-import { CreateConnectorFn, useConfig } from 'wagmi';
-import { getWalletClient, switchChain } from '@wagmi/core';
+import { useConfig } from 'wagmi';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
-import { safe } from '@lifi/wallet-management';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -49,9 +47,9 @@ export function Widget({ starterVariant }: WidgetProps) {
   const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
     try {
-      rpcUrls = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
+      rpcUrls = JSON.parse(process.env.CUSTOM_RPCS);
     } catch (e) {
-      if (import.meta.env.DEV) {
+      if (process.env.DEV) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
@@ -103,7 +101,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       keyPrefix: `jumper-${starterVariant}`,
       ...multisigWidget,
       sdkConfig: {
-        apiUrl: import.meta.env.VITE_LIFI_API_URL,
+        apiUrl: process.env.LIFI_API_URL,
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
@@ -124,7 +122,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       buildUrl: true,
       insurance: true,
-      integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
+      integrator: process.env.WIDGET_INTEGRATOR,
     };
   }, [
     starterVariant,
@@ -149,7 +147,7 @@ export function Widget({ starterVariant }: WidgetProps) {
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <LiFiWidget
-        integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
+        integrator={process.env.WIDGET_INTEGRATOR as string}
         config={widgetConfig}
       />
     </WidgetWrapper>

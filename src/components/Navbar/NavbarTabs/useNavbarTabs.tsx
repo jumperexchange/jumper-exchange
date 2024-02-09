@@ -2,7 +2,7 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import {
   TrackingAction,
   TrackingCategory,
@@ -13,7 +13,7 @@ import { EventTrackingTool } from 'src/types';
 
 export const useNavbarTabs = () => {
   const { trackEvent } = useUserTracking();
-  const { t } = useTranslation();
+  const t = useTranslations();
   const theme = useTheme();
 
   const handleClickTab =
@@ -82,7 +82,7 @@ export const useNavbarTabs = () => {
           }}
         />
       ),
-      disabled: import.meta.env.VITE_ONRAMPER_ENABLED !== 'true',
+      disabled: process.env.ONRAMPER_ENABLED !== 'true',
     },
   ];
 

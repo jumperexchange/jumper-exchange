@@ -4,18 +4,21 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { Discord, LIFIicon, Tabs } from 'src/components';
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
-import { getContrastAlphaColor, openInNewTab } from 'src/utils';
-import { appendUTMParametersToLink } from 'src/utils/append-utm-params-to-link';
+import {
+  appendUTMParametersToLink,
+  getContrastAlphaColor,
+  openInNewTab,
+} from 'src/utils';
 import {
   DISCORD_URL,
   EXPLORER_URL,
   LIFI_URL,
-  MenuKeys,
+  MenuKeysEnum,
   TWITTER_URL,
   TrackingAction,
   TrackingCategory,
@@ -24,9 +27,10 @@ import {
 } from '../../../const';
 
 export const useMainMenuContent = () => {
-  const { t, i18n } = useTranslation();
+  const t = useTranslations();
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
+  const locale = useLocale();
   const { setSupportModalState } = useMenuStore((state) => state);
   const themeMode = useSettingsStore((state) => state.themeMode);
   const explorerUrl = appendUTMParametersToLink(EXPLORER_URL, {
@@ -110,16 +114,16 @@ export const useMainMenuContent = () => {
             maxWidth: 38,
           }}
         >
-          {i18n.resolvedLanguage}
+          {locale}
         </Typography>
       ),
       showMoreIcon: true,
-      triggerSubMenu: MenuKeys.Language,
+      triggerSubMenu: MenuKeysEnum.Language,
     },
     {
       label: t('navbar.navbarMenu.developers'),
       prefixIcon: <DeveloperModeIcon />,
-      triggerSubMenu: MenuKeys.Devs,
+      triggerSubMenu: MenuKeysEnum.Devs,
     },
     {
       label: 'Twitter',

@@ -1,5 +1,5 @@
+import { useTranslations } from 'next-intl';
 import type { Dispatch, SetStateAction } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ToolModal } from 'src/components';
 import {
   TrackingAction,
@@ -42,7 +42,7 @@ export const ToolCards = ({
 }: ToolCardsProps) => {
   const { exchanges, bridges } = useDexsAndBridges();
   const { chains } = useChains();
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { trackEvent } = useUserTracking();
 
   const statsData: StatsDataProps[] = [

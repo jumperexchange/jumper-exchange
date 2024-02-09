@@ -2,7 +2,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
 import { Button } from 'src/components';
-import type { MenuKeys } from 'src/const';
+import type { MenuKeysEnum } from 'src/const';
 import {
   TrackingAction,
   TrackingCategory,
@@ -24,7 +24,7 @@ interface MenuItemProps {
   styles?: SxProps<Theme>;
   label?: string;
   onClick: any;
-  triggerSubMenu?: MenuKeys;
+  triggerSubMenu?: MenuKeysEnum;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
   checkIcon?: boolean;

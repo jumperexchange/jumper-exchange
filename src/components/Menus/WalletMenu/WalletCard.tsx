@@ -3,13 +3,17 @@ import { getConnectorIcon } from '@lifi/wallet-management';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Skeleton, Stack, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Avatar } from 'src/components';
 import { TrackingAction, TrackingCategory } from 'src/const';
-import { useChains, useMultisig, useUserTracking } from 'src/hooks';
-import type { Account } from 'src/hooks/useAccounts';
-import { useAccountDisconnect } from 'src/hooks/useAccounts';
+import type { Account } from 'src/hooks';
+import {
+  useAccountDisconnect,
+  useChains,
+  useMultisig,
+  useUserTracking,
+} from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { openInNewTab, walletDigest } from 'src/utils';
@@ -27,7 +31,7 @@ interface WalletCardProps {
 }
 
 export const WalletCard = ({ account }: WalletCardProps) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const disconnectWallet = useAccountDisconnect();
   const { trackPageload, trackEvent } = useUserTracking();
   const { chains } = useChains();
