@@ -1,5 +1,5 @@
 // @mui
-import type { FeatureCardData, LanguageKey, ThemeModesSupported } from 'src/types';
+import type { LanguageKey, ThemeModesSupported } from 'src/types';
 
 export const cookiesExpires = 3;
 
@@ -33,7 +33,6 @@ interface DefaultSettingsType {
   clientWallets: string[];
   disabledFeatureCards: string[];
   welcomeScreenClosed: boolean;
-  featureCards: FeatureCardData[];
 }
 
 export const defaultSettings: DefaultSettingsType = {
@@ -46,6 +45,4 @@ export const defaultSettings: DefaultSettingsType = {
     (localStorage.getItem(localStorageKey.activeWalletName) as string) || '',
   disabledFeatureCards: [],
   welcomeScreenClosed: false,
-  //Todo: add new variables
-  featureCards: []
 };

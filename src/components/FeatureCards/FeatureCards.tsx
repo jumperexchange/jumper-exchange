@@ -7,37 +7,55 @@ import { useSettingsStore } from 'src/stores';
 import type { FeatureCardData } from 'src/types';
 import { shallow } from 'zustand/shallow';
 import { FeatureCardsContainer } from '.';
+import { useWallet } from 'src/providers';
+import { useFetchUser } from 'src/hooks/useFetchUser';
 
 export const FeatureCards = () => {
+  const { account } = useWallet();
   //Todo: rerender if new featureCards, fetch the featureCards from the store and merge cards
   const [featureCards, setFeatureCards] = useState<FeatureCardData[]>([]);
-  const [disabledFeatureCards, welcomeScreenClosed, personnalisedFeatureCards] = useSettingsStore(
-    (state) => [state.disabledFeatureCards, state.welcomeScreenClosed, state.featureCards],
+  const [personalizedFeatureCards, setPersonalizedFeatureCards] = useState<
+    FeatureCardData[]
+  >([]);
+  const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
+    (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
   );
 
+  //Todo check if the user is Connected
   const { featureCards: data, isSuccess } = useFeatureCards();
   const featureCardsFetched = useMemo(() => {
-    //Todo: verify the order of the display
     if (Array.isArray(data) && !!data.length) {
-      const filteredCards = data?.filter(
+      return data?.filter(
         (el, index) =>
           isSuccess &&
           el.attributes.DisplayConditions &&
           !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
       );
-      return Array.isArray(personnalisedFeatureCards) ? personnalisedFeatureCards.concat(filteredCards) : filteredCards;
     }
     // trigger featureCardsFetched-filtering only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, isSuccess, personnalisedFeatureCards]);
+  }, [data, isSuccess]);
 
   useEffect(() => {
-    if (Array.isArray(featureCardsFetched)) {
-      !!featureCardsFetched.length &&
-        setFeatureCards(featureCardsFetched?.slice(0, 4));
+    if (!!account.address) {
+      const { featureCards: personalizedCards, isSuccess } = useFetchUser(
+        account.address,
+      );
+      if (isSuccess && personalizedCards) {
+        setPersonalizedFeatureCards(personalizedCards);
+      }
     }
-  }, [featureCardsFetched, personnalisedFeatureCards]); //Todo: verify if we need the personnalisedFeatureCards
+  }, [account]);
+
+  useEffect(() => {
+    let cardsToDisplay = personalizedFeatureCards;
+    if (Array.isArray(featureCardsFetched)) {
+      cardsToDisplay = cardsToDisplay.concat(featureCardsFetched);
+    }
+    !!cardsToDisplay.length && setFeatureCards(cardsToDisplay?.slice(0, 4));
+  }, [featureCardsFetched, personalizedFeatureCards]);
+
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
   return (

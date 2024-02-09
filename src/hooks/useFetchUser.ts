@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { FeatureCardData } from 'src/types';
 
 export interface UseFetchUserProps {
-  featureCards: FeatureCardData | undefined;
+  featureCards: FeatureCardData[] | undefined;
   isSuccess: boolean;
 }
 
@@ -39,9 +39,9 @@ export const useFetchUser = (EvmWalletAddress: string): UseFetchUserProps => {
   });
 
   // Todo: transform in the right featureCard format the return from strapi
-  console.log(data)
-  const featureCards = data?.attributes?.feature_cards.data
-  console.log(featureCards)
+  console.log(data);
+  const featureCards = data?.attributes?.feature_cards.data;
+  console.log(featureCards);
 
   return {
     featureCards: featureCards ?? undefined,

@@ -79,7 +79,6 @@ export const useWalletSelectContent = () => {
       }
       await connect(wallet as Wallet | undefined);
       onWalletConnect(wallet.name);
-      //Todo: fetch the user and store the information in the store 
       try {
       } catch (e) {}
     },
