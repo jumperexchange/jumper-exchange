@@ -57,17 +57,15 @@ export const FeatureCards = () => {
     isDesktop &&
     welcomeScreenClosed && (
       <FeatureCardsContainer>
-        {personalizedFeatureCards.length > 0
-          ? personalizedFeatureCards.map((cardData, index) => {
-              return (
-                <FeatureCard
-                  isSuccess={isSuccess}
-                  data={cardData}
-                  key={`feature-card-p-${index}`}
-                />
-              );
-            })
-          : null}
+        {personalizedFeatureCards.map((cardData, index) => {
+          return (
+            <FeatureCard
+              isSuccess={isSuccess}
+              data={cardData}
+              key={`feature-card-p-${index}`}
+            />
+          );
+        })}
         {featureCards.map((cardData, index) => {
           return (
             <FeatureCard
