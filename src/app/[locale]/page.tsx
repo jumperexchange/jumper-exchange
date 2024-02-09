@@ -1,12 +1,12 @@
 import { Button } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import React from 'react';
+import { LanguageChanger } from 'src/components';
 function Index() {
   const t = useTranslations();
 
   return (
     <div>
-      {/* <LanguageChanger /> */}
+      <LanguageChanger />
       <Button>test</Button>
       <h1>Test: {t('navbar.welcome.title')}</h1>
       <button>Change</button>

@@ -1,3 +1,5 @@
+'use client';
+
 import type { TabProps, TabsProps } from '@mui/material';
 import { Tab as MuiTab, Tabs, styled } from '@mui/material';
 import { getContrastAlphaColor } from 'src/utils';

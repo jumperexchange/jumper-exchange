@@ -1,9 +1,11 @@
+'use client';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { Menu, WalletButton } from 'src/components';
 import { MenuKeysEnum } from 'src/const';
-import { useAccounts } from 'src/hooks/useAccounts';
+import type { Account } from 'src/hooks';
+import { useAccounts } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { WalletCard } from './WalletCard';
 
@@ -52,7 +54,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         spacing={2}
         sx={{ padding: '0 !important', margin: '0 !important' }}
       >
-        {accounts.map((account) =>
+        {accounts.map((account: Account) =>
           account.isConnected ? (
             <WalletCard key={account.address} account={account} />
           ) : null,

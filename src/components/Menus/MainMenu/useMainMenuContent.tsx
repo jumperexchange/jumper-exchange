@@ -6,14 +6,6 @@ import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useLocale, useTranslations } from 'next-intl';
 import { Discord, LIFIicon, Tabs } from 'src/components';
-import { useUserTracking } from 'src/hooks';
-import { useMenuStore, useSettingsStore } from 'src/stores';
-import { EventTrackingTool } from 'src/types';
-import {
-  appendUTMParametersToLink,
-  getContrastAlphaColor,
-  openInNewTab,
-} from 'src/utils';
 import {
   DISCORD_URL,
   EXPLORER_URL,
@@ -23,8 +15,16 @@ import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-  useThemeSwitchTabs,
-} from '../../../const';
+} from 'src/const';
+import { useUserTracking } from 'src/hooks';
+import { useMenuStore, useSettingsStore } from 'src/stores';
+import { EventTrackingTool } from 'src/types';
+import {
+  appendUTMParametersToLink,
+  getContrastAlphaColor,
+  openInNewTab,
+} from 'src/utils';
+import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
   const t = useTranslations();

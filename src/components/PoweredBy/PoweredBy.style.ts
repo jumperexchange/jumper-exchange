@@ -1,3 +1,4 @@
+'use client';
 import { styled, type BoxProps } from '@mui/material';
 
 export interface ContainerProps extends Omit<BoxProps, 'variant'> {

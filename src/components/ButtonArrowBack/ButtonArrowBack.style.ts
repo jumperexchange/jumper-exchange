@@ -1,3 +1,4 @@
+'use client';
 import { IconButton, styled } from '@mui/material';
 import { getContrastAlphaColor } from 'src/utils';
 

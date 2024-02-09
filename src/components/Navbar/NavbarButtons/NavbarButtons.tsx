@@ -1,3 +1,4 @@
+'use client';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
@@ -7,8 +8,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useChains, useUserTracking } from 'src/hooks';
-import { useAccounts } from 'src/hooks/useAccounts';
+import { useAccounts, useChains, useUserTracking } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { NavbarButtonsContainer, WalletManagementButtons } from '.';

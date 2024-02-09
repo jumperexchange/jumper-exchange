@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Modal as MUIModal } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';

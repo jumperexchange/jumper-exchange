@@ -13,7 +13,6 @@ export default function LocaleLayout({
   return (
     <html lang={locale}>
       <body>
-        HUHU
         <AppRouterCacheProvider options={{ key: 'css' }}>
           <ThemeProvider theme={theme}>{children}</ThemeProvider>
         </AppRouterCacheProvider>

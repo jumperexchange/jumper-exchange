@@ -1,3 +1,4 @@
+'use client';
 import CheckIcon from '@mui/icons-material/Check';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import type { Breakpoint } from '@mui/material';

@@ -1,3 +1,4 @@
+'use client';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import type { SxProps, Theme } from '@mui/material';
 import { useTheme } from '@mui/material';

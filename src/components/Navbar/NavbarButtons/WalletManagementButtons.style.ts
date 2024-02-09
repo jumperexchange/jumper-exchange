@@ -1,7 +1,9 @@
+'use client';
+
 import { Avatar, Badge } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import { ButtonPrimary, ButtonSecondary } from 'src/components/Button';
+import { ButtonPrimary, ButtonSecondary } from 'src/components';
 import { getContrastAlphaColor } from 'src/utils';
 
 export const WalletMgmtAvatarContainer = styled('div')(({ theme }) => ({

@@ -1,3 +1,4 @@
+'use client';
 import type { Breakpoint } from '@mui/material';
 import { Slide, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';

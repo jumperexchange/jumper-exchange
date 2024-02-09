@@ -27,8 +27,8 @@ export const initSentry = () => {
     replaysSessionSampleRate: 0,
     replaysOnErrorSampleRate: 0.25,
     release: version,
-    environment: process.env.MODE,
-    enabled: process.env.PROD,
+    // ...(process.env.MODE && { environment: process.env.MODE }), // todo: add
+    // ...(process.env.PROD && { enabled: process.env.PROD }),
     ignoreErrors: [
       "MetaMask: 'eth_accounts' unexpectedly updated accounts.",
       'user rejected transaction',

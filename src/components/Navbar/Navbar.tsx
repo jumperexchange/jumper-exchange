@@ -1,8 +1,8 @@
 import { useTheme } from '@mui/material/styles';
 import { Logo, NavbarButtons, NavbarTabs } from 'src/components';
+import { useAccounts } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
 import { NavbarContainer as Container, LogoLink } from '.';
-import { useAccounts } from 'src/hooks/useAccounts';
 
 export const Navbar = () => {
   const theme = useTheme();

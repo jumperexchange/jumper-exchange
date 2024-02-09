@@ -1,3 +1,4 @@
+'use client';
 import type { Chain } from '@lifi/types';
 import { getConnectorIcon } from '@lifi/wallet-management';
 import { Typography } from '@mui/material';
@@ -5,6 +6,7 @@ import type { ReactElement } from 'react';
 import React, { useMemo, useRef } from 'react';
 import {
   ConnectButton,
+  EcosystemSelectMenu,
   WalletMenu,
   WalletMenuButton,
   WalletMgmtBadge,
@@ -12,14 +14,12 @@ import {
   WalletMgmtWalletAvatar,
   WalletSelectMenu,
 } from 'src/components';
-import { EcosystemSelectMenu } from 'src/components/Menus/EcosystemSelectMenu';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useChains, useUserTracking } from 'src/hooks';
-import { useAccounts } from 'src/hooks/useAccounts';
+import { useAccounts, useChains, useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { walletDigest } from 'src/utils';

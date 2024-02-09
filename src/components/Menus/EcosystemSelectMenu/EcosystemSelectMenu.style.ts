@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, Container, darken, styled } from '@mui/material';
 
 export const SVMConnectButton = styled(Button)(({ theme }) => ({

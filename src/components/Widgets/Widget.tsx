@@ -3,9 +3,11 @@ import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
+import { useLocale } from 'next-intl';
 import { useMemo } from 'react';
 import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
+import { locales } from 'src/i18n';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { useConfig } from 'wagmi';
@@ -31,7 +33,7 @@ interface WidgetProps {
 
 export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
-  const { i18n } = useTranslation();
+  const locale = useLocale();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
@@ -47,7 +49,7 @@ export function Widget({ starterVariant }: WidgetProps) {
   const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
     try {
-      rpcUrls = JSON.parse(process.env.CUSTOM_RPCS);
+      rpcUrls = process.env.CUSTOM_RPCS && JSON.parse(process.env.CUSTOM_RPCS);
     } catch (e) {
       if (process.env.DEV) {
         console.warn('Parsing custom rpcs failed', e);
@@ -74,8 +76,8 @@ export function Widget({ starterVariant }: WidgetProps) {
             : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
       },
       languages: {
-        default: i18n.resolvedLanguage as LanguageKey,
-        allow: i18n.languages as LanguageKey[],
+        default: locale as LanguageKey,
+        allow: locales,
       },
       appearance: theme.palette.mode === 'light' ? 'light' : 'dark',
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
@@ -122,21 +124,22 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       buildUrl: true,
       insurance: true,
-      integrator: process.env.WIDGET_INTEGRATOR,
+      ...(process.env.WIDGET_INTEGRATOR && {
+        integrator: process.env.WIDGET_INTEGRATOR,
+      }),
     };
   }, [
+    isMultisigSigner,
+    locale,
+    multisigSdkConfig,
+    multisigWidget,
+    setWalletSelectMenuState,
     starterVariant,
-    theme.palette.mode,
-    theme.palette.surface2.main,
-    theme.palette.surface1.main,
     theme.palette.accent1.main,
     theme.palette.grey,
-    i18n.resolvedLanguage,
-    i18n.languages,
-    multisigWidget,
-    isMultisigSigner,
-    multisigSdkConfig,
-    setWalletSelectMenuState,
+    theme.palette.mode,
+    theme.palette.surface1.main,
+    theme.palette.surface2.main,
     wagmiConfig,
   ]);
 

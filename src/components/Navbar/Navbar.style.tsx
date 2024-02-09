@@ -1,3 +1,5 @@
+'use client';
+
 import { AppBar } from '@mui/material';
 
 import { Link } from '@mui/material';

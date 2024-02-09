@@ -1,3 +1,4 @@
+'use client';
 import type { Breakpoint } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';

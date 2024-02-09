@@ -1,3 +1,4 @@
+'use client';
 import type { Route } from '@lifi/sdk';
 import { useUserTracking } from 'src/hooks';
 

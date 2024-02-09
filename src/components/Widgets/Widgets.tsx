@@ -1,3 +1,4 @@
+'use client';
 import type { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';

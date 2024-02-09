@@ -1,5 +1,5 @@
 'use client';
-import { MenuKeysEnum } from 'src/const/MenuKeysEnum';
+import { MenuKeysEnum } from 'src/const';
 import type {
   EcosystemSelectMenuProps,
   MenuState,

@@ -1,3 +1,4 @@
+'use client';
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Typography, keyframes, styled } from '@mui/material';
 

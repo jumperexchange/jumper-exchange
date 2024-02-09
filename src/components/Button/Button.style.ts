@@ -1,3 +1,4 @@
+'use client';
 import type { ButtonProps as MuiButtonProps } from '@mui/material';
 import { Button as MuiButton, alpha } from '@mui/material'; //ButtonProps
 import { styled } from '@mui/material/styles';

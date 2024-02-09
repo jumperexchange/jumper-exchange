@@ -1,3 +1,4 @@
+'use client';
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton, Link, Slide, useTheme } from '@mui/material';
 import CardActions from '@mui/material/CardActions';

@@ -4,6 +4,14 @@ import * as supportedLocales from '../messages';
 import type { LanguageResources } from './types';
 import { deepMerge, removeEmpty } from './utils';
 
+export interface Translation {
+  [key: string]: string;
+}
+
+export interface Translations {
+  [locale: string]: Translation;
+}
+
 export const locales = (
   Object.keys(supportedLocales as LanguageResources) as string[]
 ).map((language: string) => {

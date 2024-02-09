@@ -1,3 +1,5 @@
+'use client';
+
 import type { ButtonProps } from '@mui/material';
 import { Avatar, Badge, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';

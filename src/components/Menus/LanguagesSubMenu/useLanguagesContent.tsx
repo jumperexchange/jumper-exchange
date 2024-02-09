@@ -1,6 +1,5 @@
 'use client';
 import { useLocale } from 'next-intl';
-import * as supportedLanguages from 'root/messages';
 import {
   TrackingAction,
   TrackingCategory,
@@ -11,6 +10,7 @@ import { usePathname, useRouter } from 'src/navigation';
 import { useSettingsStore } from 'src/stores';
 import type { LanguageKey } from 'src/types';
 import { EventTrackingTool } from 'src/types';
+import * as supportedLanguages from '../../../../messages';
 
 export const useLanguagesContent = () => {
   const [languageMode, onChangeLanguage] = useSettingsStore((state) => [
@@ -38,7 +38,7 @@ export const useLanguagesContent = () => {
     .sort()
     .map(([language, languageValue]) => ({
       label: languageValue.language.value,
-      checkIcon: (languageMode || i18n.resolvedLanguage) === language,
+      checkIcon: (languageMode || locale) === language,
       onClick: () => handleSwitchLanguage(language as LanguageKey),
     }));
 
