@@ -13,6 +13,9 @@ import { useFetchUser } from 'src/hooks/useFetchUser';
 export const FeatureCards = () => {
   //Todo: rerender if new featureCards, fetch the featureCards from the store and merge cards
   const [featureCards, setFeatureCards] = useState<FeatureCardData[]>([]);
+  const [personalizedFeatureCards, setPersonalizedFeatureCards] = useState<
+    FeatureCardData[]
+  >([]);
   const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
@@ -37,15 +40,16 @@ export const FeatureCards = () => {
 
   useEffect(() => {
     if (Array.isArray(featureCardsFetched)) {
-      let cardsToDisplay = [];
-      if (Array.isArray(personalizedCards)) {
-        cardsToDisplay = personalizedCards.concat(featureCardsFetched);
-      } else {
-        cardsToDisplay = featureCardsFetched;
-      }
-      !!cardsToDisplay.length && setFeatureCards(cardsToDisplay?.slice(0, 4));
+      !!featureCardsFetched.length &&
+        setFeatureCards(featureCardsFetched?.slice(0, 2));
     }
-  }, [featureCardsFetched, personalizedCards]);
+  }, [featureCardsFetched]);
+
+  useEffect(() => {
+    if (Array.isArray(personalizedCards)) {
+      setPersonalizedFeatureCards(personalizedCards?.slice(0, 1));
+    }
+  }, [personalizedCards]);
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
@@ -53,6 +57,17 @@ export const FeatureCards = () => {
     isDesktop &&
     welcomeScreenClosed && (
       <FeatureCardsContainer>
+        {personalizedFeatureCards.length > 0
+          ? personalizedFeatureCards.map((cardData, index) => {
+              return (
+                <FeatureCard
+                  isSuccess={isSuccess}
+                  data={cardData}
+                  key={`feature-card-p-${index}`}
+                />
+              );
+            })
+          : null}
         {featureCards.map((cardData, index) => {
           return (
             <FeatureCard

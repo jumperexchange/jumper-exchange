@@ -138,7 +138,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       in={open}
       unmountOnExit
       appear={true}
-      timeout={150}
+      timeout={500}
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
       <Card backgroundImageUrl={imageUrl.href}>

@@ -54,9 +54,7 @@ export const useFetchUser = (): UseFetchUserProps => {
     enabled: !!account.address,
     refetchInterval: 1000 * 60 * 60,
   });
-
   const featureCards = data?.[0]?.attributes?.feature_cards.data;
-  console.log(featureCards);
 
   return {
     featureCards: featureCards ?? undefined,
