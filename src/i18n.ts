@@ -23,9 +23,14 @@ export default getRequestConfig(async ({ locale }) => {
   if (!locales.includes(locale as any)) {
     notFound();
   }
+  const languageKeys = (await import(`../messages/${locale}/language.json`))
+    .default;
   if (locale === 'en') {
     return {
-      messages: (await import(`../messages/en/translation.json`)).default,
+      messages: {
+        ...(await import(`../messages/en/translation.json`)).default,
+        ...languageKeys,
+      },
     };
   } else {
     const enTranslation = (await import(`../messages/en/translation.json`))
@@ -35,11 +40,7 @@ export default getRequestConfig(async ({ locale }) => {
         removeEmpty(value),
       )
     ).default;
-    const languageKeys = (
-      await import(`../messages/${locale}/language.json`).then((value) =>
-        removeEmpty(value),
-      )
-    ).default;
+
     const merge = deepMerge(enTranslation, { ...translation, ...languageKeys });
     console.log('MERGE', merge);
     return {

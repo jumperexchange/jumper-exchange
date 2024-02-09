@@ -11,18 +11,18 @@ const STRAPI_CONTENT_TYPE = 'feature-cards';
 // Query Content-Type "featureCards" from Contentful
 export const useFeatureCards = (): UseFeatureCardsProps => {
   const apiBaseUrl =
-    process.env.STRAPI_DEVELOP === 'true'
-      ? process.env.LOCAL_STRAPI_URL
-      : process.env.STRAPI_URL;
+    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
+      ? process.env.NEXT_PUBLIC_STRAPI_LOCAL_URL
+      : process.env.NEXT_PUBLIC_STRAPI_URL;
   const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
   apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
   apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
   process.env.MODE !== 'production' &&
     apiUrl.searchParams.set('publicationState', 'preview');
   const apiAccesToken =
-    process.env.STRAPI_DEVELOP === 'true'
-      ? process.env.LOCAL_STRAPI_API_TOKEN
-      : process.env.STRAPI_API_TOKEN;
+    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
+      ? process.env.NEXT_PUBLIC_STRAPI_API_TOKEN
+      : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
   const { data, isSuccess } = useQuery({
     queryKey: ['featureCard'],
 

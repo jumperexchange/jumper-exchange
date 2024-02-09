@@ -4,7 +4,7 @@ import type { FC, PropsWithChildren } from 'react';
 
 export const ArcxProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <ArcxAnalyticsProvider apiKey={process.env.ARCX_API_KEY}>
+    <ArcxAnalyticsProvider apiKey={process.env.NEXT_PUBLIC_ARCX_API_KEY}>
       {children}
     </ArcxAnalyticsProvider>
   );

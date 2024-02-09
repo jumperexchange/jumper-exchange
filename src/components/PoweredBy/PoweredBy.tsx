@@ -1,3 +1,4 @@
+'use client';
 import { Typography, useTheme } from '@mui/material';
 import { LIFI_URL, TrackingAction, TrackingCategory } from 'src/const';
 import { useUserTracking } from 'src/hooks';

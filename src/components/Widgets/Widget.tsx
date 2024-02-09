@@ -1,3 +1,4 @@
+'use client';
 import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
@@ -49,7 +50,9 @@ export function Widget({ starterVariant }: WidgetProps) {
   const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
     try {
-      rpcUrls = process.env.CUSTOM_RPCS && JSON.parse(process.env.CUSTOM_RPCS);
+      rpcUrls =
+        process.env.NEXT_PUBLIC_CUSTOM_RPCS &&
+        JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS);
     } catch (e) {
       if (process.env.DEV) {
         console.warn('Parsing custom rpcs failed', e);
@@ -103,7 +106,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       keyPrefix: `jumper-${starterVariant}`,
       ...multisigWidget,
       sdkConfig: {
-        apiUrl: process.env.LIFI_API_URL,
+        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
@@ -124,9 +127,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       buildUrl: true,
       insurance: true,
-      ...(process.env.WIDGET_INTEGRATOR && {
-        integrator: process.env.WIDGET_INTEGRATOR,
-      }),
+      integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
     };
   }, [
     isMultisigSigner,
@@ -149,10 +150,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       welcomeScreenClosed={welcomeScreenClosed}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
-      <LiFiWidget
-        integrator={process.env.WIDGET_INTEGRATOR as string}
-        config={widgetConfig}
-      />
+      <LiFiWidget integrator={'dev.jumper.exchange'} config={widgetConfig} />
     </WidgetWrapper>
   );
 }

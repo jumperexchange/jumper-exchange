@@ -1,19 +1,23 @@
-import { Button } from '@mui/material';
-import { useTranslations } from 'next-intl';
-import { LanguageChanger } from 'src/components';
-function Index() {
-  const t = useTranslations();
+import {
+  FeatureCards,
+  PoweredBy,
+  Snackbar,
+  WelcomeScreen,
+  Widgets,
+} from 'src/components';
+function LocalePage() {
   // const locale = useLocale();
   // const trans = await getTranslations({ locale, namespace: 'Metadata' });
   // console.log('trans', trans);
   return (
-    <div>
-      <LanguageChanger />
-      <Button>test</Button>
-      <h1>Test: {t('navbar.welcome.title')}</h1>
-      <button>Change</button>
-    </div>
+    <>
+      <WelcomeScreen />
+      <Widgets />
+      <FeatureCards />
+      <PoweredBy />
+      <Snackbar />
+    </>
   );
 }
 
-export default Index;
+export default LocalePage;

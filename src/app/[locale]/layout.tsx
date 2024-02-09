@@ -50,7 +50,9 @@ export default function LocaleLayout({
           }}
         />
 
-        <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_TRACKING_ID} />
+        <GoogleAnalytics
+          gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}
+        />
         <Script
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{

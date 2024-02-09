@@ -7,20 +7,20 @@ namespace NodeJS {
     MODE: 'development' | 'testnet' | 'production' | 'staging';
     PROD: boolean;
     SSR: boolean;
-    ARCX_API_KEY: string;
-    GOOGLE_ANALYTICS_TRACKING_ID: string;
-    HOTJAR_ID: number;
-    HOTJAR_SNIPPET_VERSION: number;
+    NEXT_PUBLIC_ARCX_API_KEY: string;
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: string;
+    NEXT_PUBLIC_HOTJAR_ID: number;
+    NEXT_PUBLIC_HOTJAR_SNIPPET_VERSION: number;
     SENTRY_DSN: string;
-    CUSTOM_RPCS: string;
-    WIDGET_INTEGRATOR: string;
-    LIFI_API_URL: string;
-    ONRAMPER_ENABLED: string;
-    STRAPI_DEVELOP: string;
-    STRAPI_URL: string;
-    STRAPI_API_TOKEN: string;
-    LOCAL_STRAPI_URL: string;
-    LOCAL_STRAPI_API_TOKEN: string;
-    WALLET_CONNECT_PROJECT_ID: string;
+    NEXT_PUBLIC_CUSTOM_RPCS: string;
+    NEXT_PUBLIC_WIDGET_INTEGRATOR: string;
+    NEXT_PUBLIC_LIFI_API_URL: string;
+    NEXT_PUBLIC_ONRAMPER_ENABLED: string;
+    NEXT_PUBLIC_STRAPI_DEVELOP: string;
+    NEXT_PUBLIC_STRAPI_URL: string;
+    NEXT_PUBLIC_STRAPI_API_TOKEN: string;
+    NEXT_PUBLIC_STRAPI_LOCAL_URL: string;
+    NEXT_PUBLIC_STRAPI_API_TOKEN: string;
+    NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: string;
   }
 }

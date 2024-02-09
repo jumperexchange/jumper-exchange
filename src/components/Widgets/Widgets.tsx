@@ -21,7 +21,7 @@ export function Widgets() {
   >(TabsMap.Exchange.variant);
 
   const starterVariant: StarterVariantType = useMemo(() => {
-    let url = window.location.pathname.slice(1);
+    let url = window?.location.pathname.slice(1);
     if (Object.values(LinkMap).includes(url as LinkMap)) {
       if (!!TabsMap.Buy.destination.filter((el) => el === url).length) {
         return TabsMap.Buy.variant;
@@ -101,7 +101,7 @@ export function Widgets() {
       >
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
-      {process.env.ONRAMPER_ENABLED ? (
+      {process.env.NEXT_PUBLIC_ONRAMPER_ENABLED ? (
         <WidgetContainer
           onClick={handleCloseWelcomeScreen}
           isActive={_starterVariant === TabsMap.Buy.variant}

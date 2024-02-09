@@ -10,7 +10,7 @@ export const OnRamper = () => {
     (state) => state.welcomeScreenClosed,
   );
   const onRamperConfig = {
-    apiKey: process.env.ONRAMPER_API_KEY,
+    apiKey: process.env.NEXT_PUBLIC_ONRAMPER_API_KEY,
     defaultCrypto: 'ETH',
     themeName: theme.palette.mode === 'light' ? 'light' : 'dark',
     containerColor: removeHash(theme.palette.surface1.main),

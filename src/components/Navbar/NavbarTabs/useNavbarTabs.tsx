@@ -82,7 +82,7 @@ export const useNavbarTabs = () => {
           }}
         />
       ),
-      disabled: process.env.ONRAMPER_ENABLED !== 'true',
+      disabled: process.env.NEXT_PUBLIC_ONRAMPER_ENABLED !== 'true',
     },
   ];
 
