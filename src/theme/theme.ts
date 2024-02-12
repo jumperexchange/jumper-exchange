@@ -245,9 +245,16 @@ const themeCustomized: Theme = createTheme({
         },
       },
     },
+    MuiAvatar: {
+      styleOverrides: {
+        img: {
+          objectFit: 'contain',
+        },
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: {
-        '@supports': { 'font-variation-settings': 'normal' },
+        '@supports': { fontVariationSettings: 'normal' },
       },
     },
 

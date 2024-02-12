@@ -1,5 +1,4 @@
-import type { Token } from '@lifi/sdk';
-import { ChainId } from '@lifi/sdk';
+import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
@@ -7,11 +6,13 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
-import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
+import { CreateConnectorFn, useConfig } from 'wagmi';
+import { getWalletClient, switchChain } from '@wagmi/core';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
+import { safe } from '@lifi/wallet-management';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -32,57 +33,34 @@ interface WidgetProps {
 
 export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
-  const { disconnect, account, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
+  const wagmiConfig = useConfig();
+  const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
+  const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
+
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
-  const onOpenWalletSelectMenu = useMenuStore(
-    (state: MenuState) => state.onOpenWalletSelectMenu,
+  const setWalletSelectMenuState = useMenuStore(
+    (state: MenuState) => state.setWalletSelectMenuState,
   );
-  const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
 
   // load environment config
   const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
-    let rpcs = {};
+    let rpcUrls = {};
     try {
-      rpcs = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
+      rpcUrls = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
     } catch (e) {
       if (import.meta.env.DEV) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
-
-    const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
-
     return {
       variant: starterVariant === 'refuel' ? 'default' : 'expandable',
       subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
-      walletManagement: {
-        signer: account.signer,
-        connect: async () => {
-          onOpenWalletSelectMenu(
-            true,
-            document.getElementById('connect-wallet-button'),
-          );
-          return account.signer!;
-        },
-        disconnect: async () => {
-          disconnect();
-        },
-        switchChain: async (reqChainId: number) => {
-          await switchChain(reqChainId);
-          if (account.signer) {
-            return account.signer!;
-          } else {
-            throw Error('No signer object after chain switch');
-          }
-        },
-        addToken: async (token: Token, chainId: number) => {
-          await addToken(chainId, token);
-        },
-        addChain: async (chainId: number) => {
-          return addChain(chainId);
+      walletConfig: {
+        onConnect: async () => {
+          setWalletSelectMenuState(true);
         },
       },
       chains: {
@@ -126,21 +104,30 @@ export function Widget({ starterVariant }: WidgetProps) {
       ...multisigWidget,
       sdkConfig: {
         apiUrl: import.meta.env.VITE_LIFI_API_URL,
-        rpcs,
-        defaultRouteOptions: {
+        rpcUrls,
+        routeOptions: {
           maxPriceImpact: 0.4,
           allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
-        multisigConfig: { ...(multisigSdkConfig ?? {}) },
+        providers: isMultisigSigner
+          ? [
+              EVM({
+                getWalletClient: () => getWalletClient(wagmiConfig),
+                switchChain: async (chainId: number) => {
+                  const chain = await switchChain(wagmiConfig, { chainId });
+                  return getWalletClient(wagmiConfig, { chainId: chain.id });
+                },
+                multisig: multisigSdkConfig,
+              }),
+            ]
+          : undefined,
       },
       buildUrl: true,
       insurance: true,
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
-    getMultisigWidgetConfig,
     starterVariant,
-    account.signer,
     theme.palette.mode,
     theme.palette.surface2.main,
     theme.palette.surface1.main,
@@ -148,12 +135,11 @@ export function Widget({ starterVariant }: WidgetProps) {
     theme.palette.grey,
     i18n.resolvedLanguage,
     i18n.languages,
+    multisigWidget,
     isMultisigSigner,
-    onOpenWalletSelectMenu,
-    disconnect,
-    switchChain,
-    addToken,
-    addChain,
+    multisigSdkConfig,
+    setWalletSelectMenuState,
+    wagmiConfig,
   ]);
 
   return (

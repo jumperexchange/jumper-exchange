@@ -21,35 +21,11 @@ import type { Breakpoint } from '@mui/material/styles';
 import { alpha, styled } from '@mui/material/styles';
 import type { ElementType } from 'react';
 
-const MenuLabelHeight = 64;
-
-export const ExternalBackground = styled('div')(({ theme }) => ({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  zIndex: 1600,
-  backgroundColor: '#000000',
-  opacity: theme.palette.mode === 'dark' ? 0.75 : 0.25,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    backgroundColor: 'transparent',
-  },
-}));
+const MENU_LABEL_HEIGHT = 64;
 
 export const MenuPopper = styled(Popper)<PopperProps>(({ theme }) => ({
   zIndex: 1600,
-  bottom: '0 !important',
-  left: '0 !important',
-  top: 'unset !important',
-  right: '0 !important',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    bottom: 'unset !important',
-    left: 'unset !important',
-    top: 'unset !important',
-    right: '1.5rem !important',
-    transform: 'unset !important',
-  },
+  top: '16px !important',
 }));
 export interface MenuListProps extends Omit<MuiMenuListProps, 'component'> {
   component?: string;
@@ -100,14 +76,14 @@ export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
 export interface MenuPaperProps
   extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
   isMobile?: boolean;
-  isWide?: boolean;
+  width?: string;
   component?: ElementType<any>;
 }
 
 export const MenuPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
     prop !== 'isMobile' && prop !== 'isWide' && prop !== 'isSubMenu',
-})<MenuPaperProps>(({ theme, isMobile, isWide }) => ({
+})<MenuPaperProps>(({ theme, isMobile, width }) => ({
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
@@ -121,7 +97,7 @@ export const MenuPaper = styled(Paper, {
         }8px 16px rgba(0, 0, 0, 0.16)`,
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
-  maxHeight: `calc( 100vh - ${MenuLabelHeight}px - 12px )`, // viewHeight - navbarHeight - offset
+  maxHeight: `calc( 100vh - ${MENU_LABEL_HEIGHT}px - 12px )`, // viewHeight - navbarHeight - offset
   overflowY: 'auto',
   overflowX: 'hidden',
   width: '100%',
@@ -138,8 +114,8 @@ export const MenuPaper = styled(Paper, {
     transformOrigin: 'inherit',
     maxHeight: 'calc( 100vh - 72px - 12px )',
     borderRadius: '12px !important',
-    width: isWide ? 320 : 288,
-    marginTop: theme.spacing(-0.25),
+    width: width ?? 288,
+    marginTop: -2,
   },
 
   [theme.breakpoints.up('md' as Breakpoint)]: {
@@ -176,10 +152,10 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
     margin: theme.spacing(0),
     marginBottom: 'inherit',
     marginTop: 0,
-    height: MenuLabelHeight,
+    height: MENU_LABEL_HEIGHT,
     padding: 0,
-    borderTopLeftRadius: '12px',
-    borderTopRightRadius: '12px',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       paddingLeft: 0,
     },

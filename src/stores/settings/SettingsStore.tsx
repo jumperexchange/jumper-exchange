@@ -63,7 +63,7 @@ export const useSettingsStore = createWithEqualityFn(
       },
 
       // Installed Wallets
-      onClientWallets: (wallet: string) => {
+      setClientWallets: (wallet: string) => {
         const clientWallets = (get() as SettingsProps)?.clientWallets;
         !clientWallets.includes(wallet) &&
           set({

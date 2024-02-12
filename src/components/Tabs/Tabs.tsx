@@ -1,4 +1,4 @@
-import type { CSSObject } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
 import { Tooltip } from '@mui/material';
 import { Tab, TabsContainer } from './Tabs.style';
 
@@ -16,8 +16,8 @@ interface TabsProps {
   value: number | boolean;
   onChange?: any;
   ariaLabel: string;
-  containerStyles?: CSSObject;
-  tabStyles?: CSSObject;
+  containerStyles?: SxProps<Theme>;
+  tabStyles?: SxProps<Theme>;
 }
 
 export const Tabs = ({
