@@ -50,7 +50,8 @@ export const WalletManagementButtons: React.FC<
 
   const _walletDigest = useMemo(() => {
     return walletDigest(account.address);
-  }, [account]);
+  }, [account.address]);
+
   const activeChain = useMemo(
     () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],

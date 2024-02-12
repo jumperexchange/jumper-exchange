@@ -47,7 +47,6 @@ export const SubMenu = ({
   const { trackEvent } = useUserTracking();
   const menuListRef = useRef(null);
   const { openSubMenu, setSubMenuState } = useMenuStore((state) => state);
-  console.log('submenu', openSubMenu);
 
   function handleBackSpace(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Backspace') {
@@ -87,7 +86,7 @@ export const SubMenu = ({
     }
   }, [open, openSubMenu, triggerSubMenu]);
 
-  return open && openSubMenu === triggerSubMenu ? (
+  return openSubMenu === triggerSubMenu ? (
     <MenuPaper
       className="submenu"
       onKeyDown={handleBackSpace}

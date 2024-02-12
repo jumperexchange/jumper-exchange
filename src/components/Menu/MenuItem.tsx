@@ -23,7 +23,7 @@ interface MenuItemProps {
   showMoreIcon?: boolean;
   styles?: SxProps<Theme>;
   label?: string;
-  onClick: any;
+  onClick?: any;
   triggerSubMenu?: MenuKeys;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
@@ -61,7 +61,7 @@ export const MenuItem = ({
           EventTrackingTool.Cookie3,
         ],
       });
-    !!onClick && onClick();
+    onClick && onClick();
   };
 
   return open ? (

@@ -30,11 +30,15 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   useEffect(() => {
     openWalletMenu! && setSnackbarState(false);
   }, [setSnackbarState, openWalletMenu]);
+
   useEffect(() => {
-    if (accounts.every((account) => account.status === 'disconnected')) {
+    if (
+      openWalletMenu &&
+      accounts.every((account) => account.status === 'disconnected')
+    ) {
       setWalletMenuState(false);
     }
-  }, [accounts, setWalletMenuState]);
+  }, [accounts, setWalletMenuState, openWalletMenu]);
 
   return (
     <Menu

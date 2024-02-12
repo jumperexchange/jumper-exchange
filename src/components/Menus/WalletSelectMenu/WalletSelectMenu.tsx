@@ -29,16 +29,8 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
     0,
     NUMBER_OF_WALLETS_DISPLAYED,
   );
-  const {
-    openWalletSelectMenu,
-    setWalletSelectMenuState,
-    openSubMenu,
-    setSubMenuState,
-  } = useMenuStore((state) => state);
-
-  const handleClickSelectMore = () => {
-    // setSubMenuState(MenuKeys.WalletSelectMore);
-  };
+  const { openWalletSelectMenu, setWalletSelectMenuState, openSubMenu } =
+    useMenuStore((state) => state);
 
   const menuItemStyles: SxProps<Theme> = {
     margin: 0,
@@ -137,9 +129,9 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
           <MenuItem
             key={`select-more-wallets`}
             triggerSubMenu={MenuKeys.WalletSelectMore}
-            showButton={true}
             showMoreIcon={false}
-            open={true}
+            open
+            showButton
             styles={{
               ...menuItemStyles,
               gridColumn: 'span 3',
@@ -173,7 +165,6 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
                 {t('navbar.seeAllWallets')}
               </Typography>
             }
-            onClick={handleClickSelectMore}
           />
         )}
 
