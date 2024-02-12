@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Menu, MenuHeaderAppBar, MenuHeaderAppWrapper } from 'src/components';
 import { useMenuStore } from 'src/stores';
 
+import { getConnectorIcon } from '@lifi/wallet-management';
 import { EVMConnectButton } from './EVMConnectButton';
 import { SVMConnectButtonContainer as ConnectButtonContainer } from './EcosystemSelectMenu.style';
 import { SVMConnectButton } from './SVMConnectButton';
@@ -50,6 +51,7 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
       <ConnectButtonContainer>
         <EVMConnectButton
           walletIcon={
+            getConnectorIcon(openEcosystemSelect.combinedWallet?.evm) ||
             openEcosystemSelect.combinedWallet?.evm?.icon ||
             openEcosystemSelect.combinedWallet?.svm?.adapter.icon
           }
@@ -57,6 +59,7 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
         />
         <SVMConnectButton
           walletIcon={
+            getConnectorIcon(openEcosystemSelect.combinedWallet?.evm) ||
             openEcosystemSelect.combinedWallet?.evm?.icon ||
             openEcosystemSelect.combinedWallet?.svm?.adapter.icon
           }
