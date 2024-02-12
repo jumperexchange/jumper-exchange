@@ -21,22 +21,21 @@ export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <I18NProvider>
-        <ThemeProvider>
-          <Cookie3Provider value={analytics}>
-            <ArcxAnalyticsProvider
-              apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
-            >
+        <Cookie3Provider value={analytics}>
+          <ArcxAnalyticsProvider
+            apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
+          >
+            <ThemeProvider>
               <WalletProvider>
-                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
                 <BackgroundGradient />
                 <ErrorBoundary fallback={<FallbackError />}>
                   {children}
                 </ErrorBoundary>
               </WalletProvider>
-            </ArcxAnalyticsProvider>
-          </Cookie3Provider>
-        </ThemeProvider>
+            </ThemeProvider>
+          </ArcxAnalyticsProvider>
+        </Cookie3Provider>
       </I18NProvider>
     </QueryClientProvider>
   );

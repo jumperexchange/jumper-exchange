@@ -4,9 +4,9 @@ import MuiAlert from '@mui/material/Alert';
 import { useMenuStore } from 'src/stores';
 
 export const Snackbar = () => {
-  const [openSnackbar, onOpenSnackbar] = useMenuStore((state) => [
+  const [openSnackbar, setSnackbarState] = useMenuStore((state) => [
     state.openSnackbar,
-    state.onOpenSnackbar,
+    state.setSnackbarState,
   ]);
 
   const handleCloseSnackbar = (
@@ -16,7 +16,7 @@ export const Snackbar = () => {
     if (reason === 'clickaway') {
       return;
     }
-    onOpenSnackbar(false);
+    setSnackbarState(false);
   };
 
   return (
@@ -25,6 +25,7 @@ export const Snackbar = () => {
       autoHideDuration={2000}
       onClose={handleCloseSnackbar}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      sx={{ zIndex: 9999 }}
     >
       <MuiAlert elevation={6} variant="filled" severity={openSnackbar.severity}>
         {openSnackbar.label}

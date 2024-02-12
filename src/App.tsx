@@ -3,10 +3,10 @@ import { useCookie3, useInitUserTracking } from 'src/hooks';
 import { AppProvider } from './AppProvider';
 import {
   FeatureCards,
-  Menus,
   Navbar,
   PoweredBy,
   Snackbar,
+  SupportModal,
   WelcomeScreen,
   Widgets,
 } from './components';
@@ -24,11 +24,11 @@ export function App() {
     <AppProvider>
       <Navbar />
       <WelcomeScreen />
-      <Menus />
       <Widgets />
       <FeatureCards />
       <PoweredBy />
       <Snackbar />
+      <SupportModal />
     </AppProvider>
   );
 }

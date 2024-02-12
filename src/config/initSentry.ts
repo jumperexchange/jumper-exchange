@@ -1,6 +1,6 @@
 import { version } from '@lifi/widget';
 import { BrowserTracing } from '@sentry/browser';
-import { CaptureConsole, HttpClient } from '@sentry/integrations';
+import { CaptureConsole } from '@sentry/integrations';
 import * as Sentry from '@sentry/react';
 
 export const initSentry = () => {
@@ -11,12 +11,12 @@ export const initSentry = () => {
         levels: ['error'],
       }),
       new BrowserTracing(),
-      new HttpClient({
-        failedRequestStatusCodes: [
-          [400, 499],
-          [500, 599],
-        ],
-      }),
+      // new HttpClient({
+      //   failedRequestStatusCodes: [
+      //     [400, 499],
+      //     [500, 599],
+      //   ],
+      // }),
       new Sentry.Replay({
         maskAllInputs: false,
         maskAllText: false,

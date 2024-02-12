@@ -1,12 +1,12 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import type { CSSObject } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { getContrastAlphaColor } from 'src/utils';
 import { ButtonBackArrowWrapper } from '.';
 
 type ButtonBackArrowProps = {
   onClick?: () => void;
-  styles?: CSSObject;
+  styles?: SxProps<Theme>;
 };
 
 export const ButtonBackArrow: React.FC<ButtonBackArrowProps> = ({

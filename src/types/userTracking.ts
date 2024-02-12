@@ -1,6 +1,7 @@
 import type { ChainID } from '@arcxmoney/analytics';
+import type { ChainType } from '@lifi/types';
 import type { TrackingCategory } from 'src/const';
-import type { Wallet, WalletAccount } from '.';
+import type { Account } from 'src/hooks/useAccounts';
 
 export enum EventTrackingTool {
   ARCx,
@@ -32,7 +33,7 @@ export interface TrackTransactionProps {
   txhash: string;
 }
 export interface TrackChainSwitchProps {
-  account?: WalletAccount;
+  account?: Account;
   disableTrackingTool?: EventTrackingTool[];
   action: string;
   category?: string;
@@ -63,15 +64,15 @@ export interface trackPageloadProps {
 }
 
 export interface TrackConnectWalletProps {
-  account?: WalletAccount;
-  data?: { [key: string]: string | number | boolean };
-  disableTrackingTool?: EventTrackingTool[];
-  wallet?: Wallet;
-  disconnect?: boolean;
+  account?: Account;
+  walletName?: string;
+  chainType?: ChainType;
+  chainId: number;
+  address?: string;
 }
 
 export interface TrackDisconnectWalletProps {
-  account?: WalletAccount;
+  account?: Account;
   data?: { [key: string]: string | number | boolean };
   disableTrackingTool?: EventTrackingTool[];
 }
