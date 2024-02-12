@@ -49,10 +49,7 @@ export const MenuItem = ({
   const { setSubMenuState } = useMenuStore((state) => state);
 
   const handleClick = () => {
-    triggerSubMenu &&
-      setSubMenuState(triggerSubMenu, () =>
-        console.log('MenutItem triggerSubMenu:', triggerSubMenu),
-      );
+    triggerSubMenu && setSubMenuState(triggerSubMenu);
     triggerSubMenu &&
       trackEvent({
         category: TrackingCategory.MainMenu,

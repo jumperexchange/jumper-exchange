@@ -37,9 +37,7 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
   } = useMenuStore((state) => state);
 
   const handleClickSelectMore = () => {
-    // setSubMenuState(MenuKeys.WalletSelectMore, () => {
-    //   console.log('WalletSelectMenu', openSubMenu);
-    // });
+    // setSubMenuState(MenuKeys.WalletSelectMore);
   };
 
   const menuItemStyles: SxProps<Theme> = {

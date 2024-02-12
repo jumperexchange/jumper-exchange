@@ -42,7 +42,7 @@ export interface MenuState extends MenuProps {
   ) => void;
 
   // Toggle Sub Menu
-  setSubMenuState: (subMenu: keyof typeof MenuKeys, caller?: any) => void;
+  setSubMenuState: (subMenu: keyof typeof MenuKeys) => void;
 
   // Open Snackbar and set label
   setSnackbarState: (
