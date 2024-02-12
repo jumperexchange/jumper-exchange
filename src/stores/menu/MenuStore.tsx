@@ -91,7 +91,12 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     },
 
     // Toggle Navbar Sub Menu
-    setSubMenuState: (subMenu) => {
+    setSubMenuState: (subMenu, caller) => {
+      console.log(caller);
+      if (typeof caller === 'function') {
+        caller();
+      }
+
       set({
         openSubMenu: subMenu,
       });

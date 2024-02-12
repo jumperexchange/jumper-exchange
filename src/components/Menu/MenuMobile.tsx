@@ -5,6 +5,7 @@ import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuList,
+  MenuPaper,
 } from 'src/components';
 import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
@@ -40,44 +41,46 @@ export const MenuMobile = ({
 
   return (
     <Drawer anchor="bottom" open={open} PaperProps={paperProps}>
-      <ClickAwayListener
-        onClickAway={(event) => {
-          closeAllMenus();
-        }}
-      >
-        <MenuList
-          autoFocusItem={open}
-          id="main-burger-menu"
-          autoFocus={open}
-          isOpenSubMenu={openSubMenu !== MenuKeys.None}
-          aria-labelledby="main-burger-menu"
-          cardsLayout={cardsLayout}
-          hasLabel={!!label}
-          sx={styles}
-          component={
-            isOpenSubMenu && openSubMenu !== MenuKeys.WalletSelect
-              ? 'div'
-              : 'ul'
-          }
+      <MenuPaper>
+        <ClickAwayListener
+          onClickAway={(event) => {
+            closeAllMenus();
+          }}
         >
-          {!!label ? (
-            <MenuHeaderAppWrapper>
-              <MenuHeaderAppBar component="div" elevation={0}>
-                <Typography
-                  variant={'lifiBodyMediumStrong'}
-                  width={'100%'}
-                  align={'center'}
-                  flex={1}
-                  noWrap
-                >
-                  {label}
-                </Typography>
-              </MenuHeaderAppBar>
-            </MenuHeaderAppWrapper>
-          ) : null}
-          {children}
-        </MenuList>
-      </ClickAwayListener>
+          <MenuList
+            autoFocusItem={open}
+            id="main-burger-menu"
+            autoFocus={open}
+            isOpenSubMenu={openSubMenu !== MenuKeys.None}
+            aria-labelledby="main-burger-menu"
+            cardsLayout={cardsLayout}
+            hasLabel={!!label}
+            sx={styles}
+            component={
+              isOpenSubMenu && openSubMenu !== MenuKeys.WalletSelect
+                ? 'div'
+                : 'ul'
+            }
+          >
+            {!!label ? (
+              <MenuHeaderAppWrapper>
+                <MenuHeaderAppBar component="div" elevation={0}>
+                  <Typography
+                    variant={'lifiBodyMediumStrong'}
+                    width={'100%'}
+                    align={'center'}
+                    flex={1}
+                    noWrap
+                  >
+                    {label}
+                  </Typography>
+                </MenuHeaderAppBar>
+              </MenuHeaderAppWrapper>
+            ) : null}
+            {children}
+          </MenuList>
+        </ClickAwayListener>
+      </MenuPaper>
     </Drawer>
   );
 };

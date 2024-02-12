@@ -56,9 +56,7 @@ export const WalletManagementButtons: React.FC<
     [chains, account.chainId],
   );
 
-  const handleWalletSelectClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
+  const handleWalletSelectClick = () => {
     !openWalletSelectMenu &&
       trackEvent({
         category: TrackingCategory.WalletSelectMenu,
@@ -73,9 +71,7 @@ export const WalletManagementButtons: React.FC<
     setWalletSelectMenuState(!openWalletSelectMenu);
   };
 
-  const handleWalletMenuClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
+  const handleWalletMenuClick = () => {
     openWalletMenu &&
       trackEvent({
         category: TrackingCategory.WalletMenu,

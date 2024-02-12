@@ -47,6 +47,7 @@ export const SubMenu = ({
   const { trackEvent } = useUserTracking();
   const menuListRef = useRef(null);
   const { openSubMenu, setSubMenuState } = useMenuStore((state) => state);
+  console.log('submenu', openSubMenu);
 
   function handleBackSpace(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Backspace') {

@@ -7,12 +7,12 @@ import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuItem,
-  SubMenu,
 } from 'src/components';
 import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
 import { getContrastAlphaColor } from 'src/utils';
 import { useWalletSelectContent } from './useWalletSelectContent';
+import { WalletSelectMoreSubMenu } from '../WalletSelectMoreSubMenu';
 
 interface MenuProps {
   anchorEl: any;
@@ -37,7 +37,9 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
   } = useMenuStore((state) => state);
 
   const handleClickSelectMore = () => {
-    setSubMenuState(MenuKeys.WalletSelectMore);
+    // setSubMenuState(MenuKeys.WalletSelectMore, () => {
+    //   console.log('WalletSelectMenu', openSubMenu);
+    // });
   };
 
   const menuItemStyles: SxProps<Theme> = {
@@ -176,13 +178,8 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
             onClick={handleClickSelectMore}
           />
         )}
-      <SubMenu
-        label={t('navbar.walletSelectMenu.wallets')}
-        triggerSubMenu={MenuKeys.WalletSelectMore}
-        open={openSubMenu === MenuKeys.WalletSelectMore}
-        prevMenu={MenuKeys.None}
-        subMenuList={walletSelectMenuItems}
-      />
+
+      <WalletSelectMoreSubMenu />
     </Menu>
   );
 };
