@@ -9,7 +9,6 @@ export interface UseFetchUserProps {
 }
 
 const STRAPI_CONTENT_TYPE = 'jumper-users';
-// Query Content-Type "featureCards" from Contentful
 export const useFetchUser = (): UseFetchUserProps => {
   const { account } = useWallet();
 
