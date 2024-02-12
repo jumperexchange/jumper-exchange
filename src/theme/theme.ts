@@ -254,7 +254,7 @@ const themeCustomized: Theme = createTheme({
     },
     MuiCssBaseline: {
       styleOverrides: {
-        '@supports': { 'font-variation-settings': 'normal' },
+        '@supports': { fontVariationSettings: 'normal' },
       },
     },
 
