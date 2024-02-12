@@ -6,7 +6,7 @@ import { useLanguagesContent } from '.';
 
 export const LanguagesSubmenu = () => {
   const { t } = useTranslation();
-  const subMenulanguages = useLanguagesContent();
+  const subMenuLanguages = useLanguagesContent();
   const openSubMenu = useMenuStore((state) => state.openSubMenu);
   return (
     <SubMenu
@@ -14,7 +14,7 @@ export const LanguagesSubmenu = () => {
       triggerSubMenu={MenuKeys.Language}
       open={openSubMenu === MenuKeys.Language}
       prevMenu={MenuKeys.None}
-      subMenuList={subMenulanguages}
+      subMenuList={subMenuLanguages}
     />
   );
 };

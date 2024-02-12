@@ -8,11 +8,11 @@ import {
   TrackingEventParameter,
 } from 'src/const';
 import { useChains, useUserTracking } from 'src/hooks';
-import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { NavbarButtonsContainer, WalletManagementButtons } from '.';
-import { MenuToggle } from '../..';
+import { MainMenu, MenuToggle } from '../..';
+import { useAccounts } from 'src/hooks/useAccounts';
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef<any>(null);
@@ -22,15 +22,14 @@ export const NavbarButtons = () => {
     (state) => state.onWalletDisconnect,
   );
 
-  const [openMainMenu, onOpenMainMenu] = useMenuStore((state) => [
+  const [openMainMenu, setMainMenuState] = useMenuStore((state) => [
     state.openMainMenu,
-    state.onOpenMainMenu,
+    state.setMainMenuState,
   ]);
 
   const { t } = useTranslation();
-  const walletManagement = useWallet();
-  const { account } = useWallet();
-  !account.isActive ?? onWalletDisconnect();
+  const { account } = useAccounts();
+  if (!account.isConnected) onWalletDisconnect();
 
   // return focus to the button when we transitioned from !open -> open
   const prevMainMenu = useRef(openMainMenu);
@@ -45,7 +44,7 @@ export const NavbarButtons = () => {
   const { isSuccess } = useChains();
 
   const handleOnOpenNavbarMainMenu = () => {
-    onOpenMainMenu(!openMainMenu, mainMenuAnchor.current);
+    setMainMenuState(!openMainMenu);
     trackEvent({
       category: TrackingCategory.Menu,
       action: TrackingAction.OpenMenu,
@@ -58,7 +57,6 @@ export const NavbarButtons = () => {
   return (
     <NavbarButtonsContainer className="settings">
       <WalletManagementButtons
-        walletManagement={walletManagement}
         connectButtonLabel={
           <Typography
             variant={'lifiBodyMediumStrong'}
@@ -78,8 +76,8 @@ export const NavbarButtons = () => {
 
       <MenuToggle
         ref={mainMenuAnchor}
-        id="composition-button"
-        aria-controls={openMainMenu ? 'composition-menu' : undefined}
+        id="main-burger-menu-button"
+        aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
         aria-expanded={openMainMenu ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleOnOpenNavbarMainMenu}
@@ -91,6 +89,7 @@ export const NavbarButtons = () => {
           }}
         />
       </MenuToggle>
+      <MainMenu anchorEl={mainMenuAnchor.current} />
     </NavbarButtonsContainer>
   );
 };

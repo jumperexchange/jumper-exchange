@@ -5,6 +5,7 @@ import nodePolyfills from 'rollup-plugin-polyfill-node';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
+// eslint-disable-next-line import/no-default-export
 export default defineConfig({
   plugins: [
     FontaineTransform.vite({
