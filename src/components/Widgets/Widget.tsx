@@ -2,17 +2,17 @@ import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
+import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
-import { CreateConnectorFn, useConfig } from 'wagmi';
-import { getWalletClient, switchChain } from '@wagmi/core';
+import { useConfig } from 'wagmi';
+import { widgetConfig } from '../../config';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
-import { safe } from '@lifi/wallet-management';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -46,7 +46,7 @@ export function Widget({ starterVariant }: WidgetProps) {
   );
 
   // load environment config
-  const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
+  const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
     try {
       rpcUrls = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
@@ -56,6 +56,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       }
     }
     return {
+      ...widgetConfig,
       variant: starterVariant === 'refuel' ? 'default' : 'expandable',
       subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
       walletConfig: {
@@ -150,7 +151,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <LiFiWidget
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
-        config={widgetConfig}
+        config={config}
       />
     </WidgetWrapper>
   );
