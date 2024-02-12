@@ -3,25 +3,23 @@ import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
 import type { JsxElement } from 'typescript';
 import { DevelopersSubmenu, LanguagesSubmenu } from '..';
-interface MainMenuProps {
-  handleClose: (event: MouseEvent | TouchEvent) => void;
+
+interface MenuProps {
+  anchorEl: any;
 }
 
-export const MainMenu = ({ handleClose }: MainMenuProps) => {
+export const MainMenu = ({ anchorEl }: MenuProps) => {
   const mainMenuItems = useMainMenuContent();
-  const [openMainMenu, onOpenMainMenu, openSubMenu] = useMenuStore((state) => [
-    state.openMainMenu,
-    state.onOpenMainMenu,
-    state.openSubMenu,
-  ]);
+  const { openMainMenu, setMainMenuState, openSubMenu } = useMenuStore(
+    (state) => state,
+  );
 
-  return openMainMenu ? (
+  return (
     <Menu
-      handleClose={handleClose}
-      open
-      transformOrigin={'top right'}
-      setOpen={onOpenMainMenu}
+      open={openMainMenu}
+      setOpen={setMainMenuState}
       isOpenSubMenu={openSubMenu !== MenuKeys.None}
+      anchorEl={anchorEl}
     >
       {openSubMenu === MenuKeys.None &&
         mainMenuItems.map((el, index) => (
@@ -45,5 +43,5 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       <LanguagesSubmenu />
       <DevelopersSubmenu />
     </Menu>
-  ) : null;
+  );
 };

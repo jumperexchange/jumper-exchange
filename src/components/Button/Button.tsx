@@ -1,4 +1,4 @@
-import type { CSSObject } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
 import type { ReactNode } from 'react';
 import { type PropsWithChildren } from 'react';
 import {
@@ -8,9 +8,9 @@ import {
 } from './Button.style';
 type ButtonVariant = 'primary' | 'secondary' | 'transparent';
 
-interface ButtonProbs {
+interface ButtonProps {
   variant: ButtonVariant;
-  styles?: CSSObject;
+  styles?: SxProps<Theme>;
   id?: string;
   fullWidth?: boolean;
   muiVariant?: 'text' | 'outlined' | 'contained';
@@ -18,7 +18,7 @@ interface ButtonProbs {
   children?: any;
 }
 
-export const Button: React.FC<PropsWithChildren<ButtonProbs>> = ({
+export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   variant,
   styles,
   id,
@@ -26,7 +26,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProbs>> = ({
   onClick,
   children,
   muiVariant,
-}: ButtonProbs) => {
+}: ButtonProps) => {
   let output: ReactNode;
 
   switch (variant) {

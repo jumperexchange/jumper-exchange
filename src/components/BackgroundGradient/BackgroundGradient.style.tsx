@@ -46,7 +46,9 @@ export const BackgroundGradients = styled('span')<any>(({ theme }) => ({
     width: '100vh',
     height: '100vh',
     transform:
-      theme.palette.mode === 'dark' ?? 'translate( -50vh, 100vh ) scale(1.5)',
+      theme.palette.mode === 'dark'
+        ? 'translate( -50vh, 100vh ) scale(1.5)'
+        : undefined,
     opacity: theme.palette.mode === 'dark' ? '0.24' : '0.12',
     background:
       'radial-gradient(50% 50% at 50% 50%, #1969FF 0%, rgba(255, 255, 255, 0) 100%)',

@@ -1,4 +1,4 @@
-import type { Breakpoint, CSSObject } from '@mui/material/styles';
+import type { Breakpoint, SxProps, Theme } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { MenuDesktop, MenuMobile } from '.';
@@ -6,57 +6,53 @@ import { MenuDesktop, MenuMobile } from '.';
 interface MenuProps {
   isOpenSubMenu?: boolean;
   label?: string;
-  handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: (open: boolean, anchorRef: any) => void;
   cardsLayout?: boolean;
-  styles?: CSSObject;
+  styles?: SxProps<Theme>;
   open: boolean;
-  transformOrigin?: string;
   children: any;
+  width?: string;
+  anchorEl: any;
 }
 
 export const Menu = ({
-  handleClose,
   open,
   setOpen,
-  transformOrigin,
   cardsLayout,
   styles,
+  width,
   label,
   isOpenSubMenu,
   children,
+  anchorEl,
 }: MenuProps) => {
   const theme = useTheme();
 
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
 
-  return (
-    open &&
-    (isDesktop ? (
-      <MenuDesktop
-        handleClose={handleClose}
-        label={label}
-        transformOrigin={transformOrigin}
-        open={open}
-        styles={styles}
-        cardsLayout={cardsLayout}
-        setOpen={setOpen}
-        isOpenSubMenu={isOpenSubMenu || false}
-      >
-        {children}
-      </MenuDesktop>
-    ) : (
-      <MenuMobile
-        handleClose={handleClose}
-        label={label}
-        open={open}
-        styles={styles}
-        cardsLayout={cardsLayout}
-        setOpen={setOpen}
-        isOpenSubMenu={isOpenSubMenu || false}
-      >
-        {children}
-      </MenuMobile>
-    ))
+  return isDesktop ? (
+    <MenuDesktop
+      label={label}
+      open={open}
+      styles={styles}
+      width={width}
+      cardsLayout={cardsLayout}
+      setOpen={setOpen}
+      isOpenSubMenu={isOpenSubMenu || false}
+      anchorEl={anchorEl}
+    >
+      {children}
+    </MenuDesktop>
+  ) : (
+    <MenuMobile
+      label={label}
+      open={open}
+      styles={styles}
+      cardsLayout={cardsLayout}
+      setOpen={setOpen}
+      isOpenSubMenu={isOpenSubMenu || false}
+    >
+      {children}
+    </MenuMobile>
   );
 };

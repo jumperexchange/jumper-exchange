@@ -4,6 +4,5 @@ export * from './LanguagesSubMenu';
 export * from './LanguagesSubMenu/useLanguagesContent';
 export * from './MainMenu';
 export * from './MainMenu/useMainMenuContent';
-export * from './Menus';
 export * from './WalletMenu';
 export * from './WalletSelectMenu';
