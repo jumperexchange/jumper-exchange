@@ -31,7 +31,7 @@ export const FeatureCards = () => {
           !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
       );
     }
-    // trigger featureCardsFetched-filtering only once
+    //trigger featureCardsFetched-filtering only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, isSuccess]);
 
