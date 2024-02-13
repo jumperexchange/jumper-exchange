@@ -1,8 +1,11 @@
 import { useArcxAnalytics } from '@arcxmoney/analytics';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { hotjar } from 'react-hotjar';
-import { TrackingAction, TrackingEventParameter } from 'src/const';
-import { useWallet } from 'src/providers';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
 import type {
   TrackAttributeProps,
   TrackChainSwitchProps,
@@ -14,32 +17,53 @@ import type {
 } from 'src/types';
 import { EventTrackingTool } from 'src/types';
 import { useCookie3 } from './useCookie3';
+import { useAccounts } from '../useAccounts';
+import { ChainType } from '@lifi/sdk';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
   const cookie3 = useCookie3();
-  const { account } = useWallet();
+  const { account } = useAccounts();
+
+  useEffect(() => {
+    if (account.chainId) {
+      arcx?.chain({
+        account: `${account?.address}`,
+        chainId: `${account?.chainId}`,
+      });
+      window.gtag('event', TrackingAction.SwitchChain, {
+        category: TrackingCategory.Wallet,
+        data: {
+          [TrackingEventParameter.SwitchedChain]: account?.chainId,
+        },
+      });
+    }
+  }, [account?.address, account.chainId, arcx]);
 
   const trackConnectWallet = useCallback(
     /**
-     * Track Wallet Connect with HJ and ARCx
+     * Track Wallet Connect with HJ, GA and ARCx
      *
      */
-    ({ disableTrackingTool, account, wallet }: TrackConnectWalletProps) => {
-      if (account?.address && account?.chainId && wallet) {
-        if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-          arcx?.wallet({
-            account: `${account.address}`,
-            chainId: `${account.chainId}`,
-          });
-        }
-        if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
-          hotjar.identify(account.address, {
-            [TrackingEventParameter.Wallet]: wallet.name,
-          });
-          hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
-        }
+
+    ({ walletName, chainType, chainId, address }: TrackConnectWalletProps) => {
+      if (chainType === ChainType.EVM) {
+        arcx?.wallet({
+          account: address || '',
+          chainId: chainId,
+        });
       }
+
+      hotjar.identify(address || null, {
+        [TrackingEventParameter.Wallet]: walletName,
+        [TrackingEventParameter.Ecosystem]: chainType,
+      });
+      hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
+
+      window.gtag('event', TrackingAction.ConnectWallet, {
+        [TrackingEventParameter.Wallet]: walletName,
+        [TrackingEventParameter.Ecosystem]: chainType,
+      });
     },
     [arcx],
   );

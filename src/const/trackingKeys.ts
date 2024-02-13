@@ -102,6 +102,7 @@ export enum TrackingEventParameter {
   AddedTokenAddress = 'param_added_token_address',
   AddedTokenName = 'param_added_token_name',
   Wallet = 'param_wallet',
+  Ecosystem = 'param_ecosystem',
 
   // Transaction:
   RouteId = 'param_route_id',

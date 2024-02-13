@@ -20,7 +20,11 @@
     "connect": "Connect",
     "walletSelectMenu": {
       "connectWallet": "Connect a wallet",
-      "wallets": "Wallets"
+      "wallets": "Wallets",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "Select wallet ecosystem",
+        "noEcosystemAdapter": "No appropriate ecosystem adapter found"
+      }
     },
     "seeAllWallets": "See all wallets",
     "navbarMenu": {
@@ -38,7 +42,8 @@
       "copy": "Copy",
       "explore": "Explore",
       "copiedMsg": "Wallet address copied",
-      "walletNotInstalled": "{{wallet}} is not installed"
+      "walletNotInstalled": "{{wallet}} is not installed",
+      "connectAnotherWallet": "Connect another wallet"
     },
 
     "themes": {

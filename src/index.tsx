@@ -1,14 +1,13 @@
-import { StrictMode } from 'react';
+import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { initSentry } from './config';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import 'src/fonts/inter.css';
 import 'src/utils/structuredClone';
+import { initSentry } from './config';
 import './fonts/inter.css';
-import { reportWebVitals } from './reportWebVitals';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { BlogArticlePage, BlogPage, Homepage } from './pages';
 import { AppProvider } from './providers';
-import React from 'react';
+import { reportWebVitals } from './reportWebVitals';
 
 initSentry();
 

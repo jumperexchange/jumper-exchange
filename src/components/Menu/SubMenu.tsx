@@ -47,20 +47,17 @@ export const SubMenu = ({
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const menuListRef = useRef(null);
-  const [openSubMenu, onOpenSubMenu] = useMenuStore((state) => [
-    state.openSubMenu,
-    state.onOpenSubMenu,
-  ]);
+  const { openSubMenu, setSubMenuState } = useMenuStore((state) => state);
 
   function handleBackSpace(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Backspace') {
-      onOpenSubMenu(prevMenu);
+      setSubMenuState(prevMenu);
     }
   }
 
   const handleClick = (el: MenuListItem) => {
     if (el.triggerSubMenu) {
-      onOpenSubMenu(el.triggerSubMenu);
+      setSubMenuState(el.triggerSubMenu);
       trackEvent({
         category: TrackingCategory.SubMenu,
         action: TrackingAction.OpenMenu,
@@ -80,7 +77,7 @@ export const SubMenu = ({
   };
 
   const handleBackNavigation = () => {
-    onOpenSubMenu(prevMenu);
+    setSubMenuState(prevMenu);
   };
 
   useEffect(() => {
@@ -90,7 +87,7 @@ export const SubMenu = ({
     }
   }, [open, openSubMenu, triggerSubMenu]);
 
-  return open && openSubMenu === triggerSubMenu ? (
+  return openSubMenu === triggerSubMenu ? (
     <MenuPaper
       className="submenu"
       onKeyDown={handleBackSpace}
@@ -127,7 +124,7 @@ export const SubMenu = ({
               autoFocus={index > 0 ? true : false}
               onClick={() => {
                 el.triggerSubMenu
-                  ? onOpenSubMenu(el.triggerSubMenu)
+                  ? setSubMenuState(el.triggerSubMenu)
                   : el.onClick();
               }}
               component="li"

@@ -49,6 +49,7 @@ export const Tab = styled(MuiTab, {
   fontSize: '16px',
   lineHeight: '20px',
   margin: theme.spacing(0.75, 0.5),
+  transition: 'background 250ms',
   background: 'transparent',
   minHeight: 'unset',
   color:

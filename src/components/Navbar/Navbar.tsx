@@ -1,9 +1,9 @@
 import { useTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { Logo, NavbarButtons, NavbarTabs } from 'src/components';
-import { useWallet } from 'src/providers';
 import { useSettingsStore } from 'src/stores';
 import { NavbarContainer as Container, LogoLink } from '.';
+import { useAccounts } from 'src/hooks/useAccounts';
 
 interface NavbarProps {
   hideNavbarTabs?: boolean;
@@ -11,7 +11,7 @@ interface NavbarProps {
 
 export const Navbar = ({ hideNavbarTabs }: NavbarProps) => {
   const theme = useTheme();
-  const { account } = useWallet();
+  const { account } = useAccounts();
   const [onWelcomeScreenClosed] = useSettingsStore((state) => [
     state.onWelcomeScreenClosed,
   ]);

@@ -7,5 +7,4 @@ export * from './settings';
 export * from './strapi';
 export * from './userTracking';
 export * from './utm';
-export * from './wallet';
 export * from './walletProvider';

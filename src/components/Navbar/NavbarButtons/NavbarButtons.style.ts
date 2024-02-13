@@ -23,7 +23,7 @@ export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => ({
   ':hover:before': {
     backgroundColor:
       theme.palette.mode === 'dark'
-        ? getContrastAlphaColor(theme, '4%')
+        ? getContrastAlphaColor(theme, '12%')
         : theme.palette.alphaDark100.main,
   },
   ':hover': {

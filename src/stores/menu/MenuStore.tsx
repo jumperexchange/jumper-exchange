@@ -1,5 +1,9 @@
 import { MenuKeys } from 'src/const';
-import type { MenuState, SnackbarProps } from 'src/types';
+import type {
+  EcosystemSelectMenuProps,
+  MenuState,
+  SnackbarProps,
+} from 'src/types';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 
@@ -7,20 +11,20 @@ interface DefaultMenuType {
   openMainMenu: boolean;
   openWalletMenu: boolean;
   openWalletSelectMenu: boolean;
+  openEcosystemSelect: EcosystemSelectMenuProps;
   openSubMenu: keyof typeof MenuKeys;
   openSupportModal: boolean;
   openSnackbar: SnackbarProps;
-  anchorRef: null | JSX.Element;
 }
 
 export const defaultMenu: DefaultMenuType = {
   openMainMenu: false,
   openWalletMenu: false,
   openWalletSelectMenu: false,
-  openSubMenu: 'None',
+  openEcosystemSelect: { open: false },
+  openSubMenu: MenuKeys.None,
   openSupportModal: false,
-  openSnackbar: { open: false, label: undefined, severity: undefined },
-  anchorRef: null,
+  openSnackbar: { open: false },
 };
 
 export const useMenuStore = createWithEqualityFn<MenuState>(
@@ -42,53 +46,59 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       }),
 
     // Close ALL Navbar Menus
-    onCloseAllMenus: () => {
+    closeAllMenus: () => {
       set({
         openMainMenu: false,
         openWalletSelectMenu: false,
         openWalletMenu: false,
         openSubMenu: MenuKeys.None,
         openSupportModal: false,
-        anchorRef: null,
+        openEcosystemSelect: { open: false },
       });
     },
 
     // Toggle Navbar Main Menu
-    onOpenMainMenu: (open, anchorRef) => {
+    setMainMenuState: (open) => {
       set({
         openMainMenu: open,
         openSubMenu: MenuKeys.None,
-        anchorRef: open ? anchorRef : null,
       });
     },
 
     // Toggle Navbar Wallet Menu
-    onOpenWalletSelectMenu: (open, anchorRef) => {
+    setWalletSelectMenuState: (open) => {
       set({
         openWalletSelectMenu: open,
         openSubMenu: MenuKeys.None,
-        anchorRef: open ? anchorRef : null,
       });
     },
 
     // Toggle Navbar Connected Menu
-    onOpenWalletMenu: (open, anchorRef) => {
+    setWalletMenuState: (open) => {
       set({
         openWalletMenu: open,
         openSubMenu: MenuKeys.None,
-        anchorRef: open ? anchorRef : null,
+      });
+    },
+
+    // Toggle Wallet Ecosystem Selection Menu
+    setEcosystemSelectMenuState: (open, combinedWallet) => {
+      set({
+        openEcosystemSelect: { open, combinedWallet },
+        openWalletSelectMenu: false,
+        openSubMenu: MenuKeys.None,
       });
     },
 
     // Toggle Navbar Sub Menu
-    onOpenSubMenu: (subMenu) => {
+    setSubMenuState: (subMenu) => {
       set({
         openSubMenu: subMenu,
       });
     },
 
     // Open Snackbar and set label
-    onOpenSnackbar: (open, label, severity) => {
+    setSnackbarState: (open, label, severity) => {
       set((state) => ({
         ...state,
         openSnackbar: {
@@ -100,7 +110,7 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     },
 
     // Toggle support modal
-    onOpenSupportModal: (open) => {
+    setSupportModalState: (open) => {
       set({
         openMainMenu: false,
         openWalletSelectMenu: false,
