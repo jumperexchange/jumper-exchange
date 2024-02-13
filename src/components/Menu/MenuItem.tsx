@@ -77,7 +77,7 @@ export const MenuItem = ({
       <>
         {children}
         {showButton && (
-          <Button variant="primary" styles={styles} fullWidth={true}>
+          <Button variant="secondary" styles={styles} fullWidth={true}>
             {prefixIcon}
             <Typography
               variant={'lifiBodyMediumStrong'}

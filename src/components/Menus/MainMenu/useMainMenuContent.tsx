@@ -240,7 +240,7 @@ export const useMainMenuContent = () => {
     },
     {
       label: t('navbar.navbarMenu.support'),
-      prefixIcon: <Discord color={theme.palette.white.main} />,
+      prefixIcon: <Discord color={theme.palette.primary.main} />,
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
