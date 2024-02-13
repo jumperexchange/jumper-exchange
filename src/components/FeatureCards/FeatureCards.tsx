@@ -1,10 +1,9 @@
 import type { Breakpoint } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { FeatureCard } from 'src/components';
 import { useFeatureCards } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
-import type { FeatureCardData } from 'src/types';
 import { shallow } from 'zustand/shallow';
 import { FeatureCardsContainer } from '.';
 import { useUser } from '../../hooks/useUser';
