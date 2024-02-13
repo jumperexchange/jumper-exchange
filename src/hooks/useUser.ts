@@ -1,16 +1,16 @@
+import { useAccounts } from './useAccounts';
 import { useQuery } from '@tanstack/react-query';
-import { useWallet } from 'src/providers';
 import type { FeatureCardData } from 'src/types';
 
-export interface UseFetchUserProps {
+export interface UseUserProps {
   featureCards: FeatureCardData[] | undefined;
   isSuccess: boolean;
   isConnected: boolean;
 }
 
 const STRAPI_CONTENT_TYPE = 'jumper-users';
-export const useFetchUser = (): UseFetchUserProps => {
-  const { account } = useWallet();
+export const useUser = (): UseUserProps => {
+  const { account } = useAccounts();
 
   const apiBaseUrl =
     import.meta.env.VITE_STRAPI_DEVELOP === 'true'
@@ -26,7 +26,7 @@ export const useFetchUser = (): UseFetchUserProps => {
     'populate[feature_cards][populate][1]',
     'BackgroundImageDark',
   );
-  if (account.address) {
+  if (account.address && account.chainType === 'EVM') {
     apiUrl.searchParams.set(
       'filters[EvmWalletAddress][$eqi]',
       account?.address,
@@ -50,14 +50,14 @@ export const useFetchUser = (): UseFetchUserProps => {
       const result = await response.json();
       return result.data;
     },
-    enabled: !!account.address,
+    enabled: !!account.address && account.chainType === 'EVM',
     refetchInterval: 1000 * 60 * 60,
   });
   const featureCards = data?.[0]?.attributes?.feature_cards.data;
 
   return {
-    featureCards: featureCards ?? undefined,
+    featureCards: featureCards,
     isSuccess,
-    isConnected: !!account.address,
+    isConnected: !!account.address && account.chainType === 'EVM',
   };
 };
