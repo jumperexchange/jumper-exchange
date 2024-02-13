@@ -38,7 +38,7 @@ export const WalletManagementButtons: React.FC<
 > = ({ connectButtonLabel, isSuccess }) => {
   const { chains } = useChains();
   const { trackEvent } = useUserTracking();
-  const { account } = useAccounts();
+  const { accounts, account } = useAccounts();
   const walletManagementButtonsRef = useRef<any>();
 
   const {
@@ -47,15 +47,6 @@ export const WalletManagementButtons: React.FC<
     openWalletMenu,
     setWalletMenuState,
   } = useMenuStore((state) => state);
-
-  const _walletDigest = useMemo(() => {
-    return walletDigest(account.address);
-  }, [account.address]);
-
-  const activeChain = useMemo(
-    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains, account.chainId],
-  );
 
   const handleWalletSelectClick = () => {
     !openWalletSelectMenu &&
@@ -87,6 +78,17 @@ export const WalletManagementButtons: React.FC<
     setWalletMenuState(!openWalletMenu);
   };
 
+  const walletDigestButtonLabelData = useMemo(() => {
+    const lastConnectedAccount = accounts.slice(-1)[0];
+    return {
+      addressDigest: walletDigest(lastConnectedAccount.address),
+      chain: chains?.find(
+        (chainEl: Chain) => chainEl.id === lastConnectedAccount.chainId,
+      ),
+      walletLogo: getConnectorIcon(lastConnectedAccount.connector),
+    };
+  }, [accounts, chains]);
+
   return (
     <>
       <div ref={walletManagementButtonsRef}>
@@ -103,7 +105,7 @@ export const WalletManagementButtons: React.FC<
             id="wallet-digest-button"
             onClick={handleWalletMenuClick}
           >
-            {isSuccess && activeChain ? (
+            {isSuccess && walletDigestButtonLabelData.chain ? (
               <WalletMgmtBadge
                 overlap="circular"
                 className="badge"
@@ -111,15 +113,15 @@ export const WalletManagementButtons: React.FC<
                 badgeContent={
                   <WalletMgmtChainAvatar
                     // size="large"
-                    src={activeChain?.logoURI || ''}
+                    src={walletDigestButtonLabelData.chain?.logoURI || ''}
                     alt={'wallet-avatar'}
                   >
-                    {activeChain.name[0]}
+                    {walletDigestButtonLabelData.chain?.name[0]}
                   </WalletMgmtChainAvatar>
                 }
               >
                 <WalletMgmtWalletAvatar
-                  src={getConnectorIcon(account.connector)}
+                  src={walletDigestButtonLabelData.walletLogo}
                 />
               </WalletMgmtBadge>
             ) : null}
@@ -129,7 +131,7 @@ export const WalletManagementButtons: React.FC<
               marginRight={0.25}
               marginLeft={0.75}
             >
-              {_walletDigest}
+              {walletDigestButtonLabelData.addressDigest}
             </Typography>
           </WalletMenuButton>
         )}
