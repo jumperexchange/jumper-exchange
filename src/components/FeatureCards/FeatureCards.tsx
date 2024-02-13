@@ -15,21 +15,31 @@ export const FeatureCards = () => {
     shallow,
   );
 
-  const { featureCards: data, isSuccess } = useFeatureCards();
-  const { featureCards: personalizedCardsFetched } = useUser();
+  const { featureCards: cards, isSuccess } = useFeatureCards();
+  const { featureCards: personalizedCards } = useUser();
 
-  const featureCardsFetched = useMemo(() => {
-    if (Array.isArray(data) && !!data.length) {
-      return data?.filter(
-        (el, index) =>
-          isSuccess &&
-          el.attributes.DisplayConditions &&
-          !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
-      );
+  const slicedFeatureCards = useMemo(() => {
+    if (Array.isArray(cards) && !!cards.length) {
+      return cards
+        ?.filter(
+          (el, index) =>
+            isSuccess &&
+            el.attributes.DisplayConditions &&
+            !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
+        )
+        .slice(0, 2);
     }
     //trigger featureCardsFetched-filtering only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, isSuccess]);
+  }, [cards, isSuccess]);
+
+  const slicedPersonalizedFeatureCards = useMemo(() => {
+    if (Array.isArray(personalizedCards) && !!personalizedCards.length) {
+      return personalizedCards.slice(0, 1);
+    }
+    //trigger featureCardsFetched-filtering only once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [personalizedCards]);
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
@@ -37,7 +47,7 @@ export const FeatureCards = () => {
     isDesktop &&
     welcomeScreenClosed && (
       <FeatureCardsContainer>
-        {personalizedCardsFetched?.slice(0, 1).map((cardData, index) => {
+        {slicedPersonalizedFeatureCards?.slice(0, 1).map((cardData, index) => {
           return (
             <FeatureCard
               isSuccess={isSuccess}
@@ -46,7 +56,7 @@ export const FeatureCards = () => {
             />
           );
         })}
-        {featureCardsFetched?.slice(0, 2).map((cardData, index) => {
+        {slicedFeatureCards?.map((cardData, index) => {
           return (
             <FeatureCard
               isSuccess={isSuccess}
