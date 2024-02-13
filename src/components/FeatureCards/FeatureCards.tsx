@@ -6,7 +6,7 @@ import { useFeatureCards } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
 import { shallow } from 'zustand/shallow';
 import { FeatureCardsContainer } from '.';
-import { useUser } from '../../hooks/useUser';
+import { usePersonalizedFeatureCards } from '../../hooks/usePersonalizedFeatureCards';
 
 export const FeatureCards = () => {
   const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
@@ -15,7 +15,7 @@ export const FeatureCards = () => {
   );
 
   const { featureCards: cards, isSuccess } = useFeatureCards();
-  const { featureCards: personalizedCards } = useUser();
+  const { featureCards: personalizedCards } = usePersonalizedFeatureCards();
 
   const slicedFeatureCards = useMemo(() => {
     if (Array.isArray(cards) && !!cards.length) {
