@@ -92,6 +92,9 @@ export const useAccounts = (): AccountResult => {
 
     const lastAccount = (() => {
       if (evm.status === 'connected' && svm.status === 'connected') {
+        if (!lastConnectedAccount) {
+          return evm.isConnected ? evm : svm;
+        }
         if ((lastConnectedAccount as Connector)?.name === evm.connector?.name) {
           return evm;
         } else if (
