@@ -91,16 +91,14 @@ export const useAccounts = (): AccountResult => {
     };
 
     const lastAccount = (() => {
-      if (evm.status === 'connected' && svm.status === 'connected') {
-        if (!lastConnectedAccount) {
-          return evm.isConnected ? evm : svm;
-        }
+      if (
+        evm.status === 'connected' &&
+        svm.status === 'connected' &&
+        lastConnectedAccount
+      ) {
         if ((lastConnectedAccount as Connector)?.name === evm.connector?.name) {
           return evm;
-        } else if (
-          (lastConnectedAccount as Wallet)?.adapter?.name ===
-          svm.connector?.name
-        ) {
+        } else {
           return svm;
         }
       } else if (evm.status === 'connected') {
@@ -140,6 +138,7 @@ export const useAccountConnect = () => {
   return async (combinedWallet: CombinedWallet) => {
     if (combinedWallet.evm) {
       wagmiDisconnect();
+      lastConnectedAccount = combinedWallet.evm;
       await connectAsync({ connector: combinedWallet.evm! });
       onWalletConnect(combinedWallet.evm.name);
       trackConnectWallet({
@@ -148,11 +147,11 @@ export const useAccountConnect = () => {
         chainId: await combinedWallet.evm.getChainId(),
         address: `${await combinedWallet.evm.getAccounts()}`,
       });
-      lastConnectedAccount = combinedWallet.evm;
     } else if (combinedWallet.svm) {
       if (connected) {
         disconnect();
       }
+      lastConnectedAccount = combinedWallet.svm;
       select(combinedWallet.svm.adapter.name);
       onWalletConnect(combinedWallet.svm.adapter.name);
       trackConnectWallet({
@@ -160,7 +159,6 @@ export const useAccountConnect = () => {
         chainType: ChainType.SVM,
         chainId: ChainId.SOL,
       });
-      lastConnectedAccount = combinedWallet.svm;
     }
   };
 };
