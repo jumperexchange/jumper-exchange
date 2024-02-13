@@ -34,7 +34,13 @@ export const FeatureCards = () => {
 
   const slicedPersonalizedFeatureCards = useMemo(() => {
     if (Array.isArray(personalizedCards) && !!personalizedCards.length) {
-      return personalizedCards.slice(0, 1);
+      return personalizedCards
+        ?.filter(
+          (el, index) =>
+            el.attributes.DisplayConditions &&
+            !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
+        )
+        .slice(0, 1);
     }
     //trigger featureCardsFetched-filtering only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
