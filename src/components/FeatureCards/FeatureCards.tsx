@@ -1,40 +1,33 @@
 import type { Breakpoint } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { FeatureCard } from 'src/components';
 import { useFeatureCards } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
-import type { FeatureCardData } from 'src/types';
 import { shallow } from 'zustand/shallow';
 import { FeatureCardsContainer } from '.';
 
 export const FeatureCards = () => {
-  const [featureCards, setFeatureCards] = useState<FeatureCardData[]>([]);
   const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
   );
 
   const { featureCards: data, isSuccess } = useFeatureCards();
-  const featureCardsFetched = useMemo(() => {
+  const featureCards = useMemo(() => {
     if (Array.isArray(data) && !!data.length) {
-      return data?.filter(
+      const filteredCards = data.filter(
         (el, index) =>
           isSuccess &&
           el.attributes.DisplayConditions &&
           !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
       );
+      const slicedCards = filteredCards.slice(0, 4);
+      return slicedCards;
     }
-    // trigger featureCardsFetched-filtering only once
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, isSuccess]);
-
-  useEffect(() => {
-    if (Array.isArray(featureCardsFetched)) {
-      !!featureCardsFetched.length &&
-        setFeatureCards(featureCardsFetched?.slice(0, 4));
-    }
-  }, [featureCardsFetched]);
+    // Return a default value if data is not an array or if it's empty
+    return [];
+  }, [data, isSuccess, disabledFeatureCards]);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
   return (
