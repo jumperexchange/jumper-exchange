@@ -152,7 +152,6 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
         [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
-        [TrackingEventParameter.FeatureCardBgClicked]: 0,
         url: data.attributes.URL,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
@@ -169,7 +168,6 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
         [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
-        [TrackingEventParameter.FeatureCardBgClicked]: 1,
         url: data.attributes.URL,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
