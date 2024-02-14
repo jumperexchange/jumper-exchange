@@ -30,7 +30,6 @@ export enum TrackingAction {
   OpenWelcomeMessageLink = 'action_open_welcome_message_link',
 
   // Feature Card
-  ClickFeatureCardCTA = 'action_click_feature_card_cta',
   ClickFeatureCard = 'action_click_feature_card',
   CloseFeatureCard = 'action_close_feature_card',
   DisplayFeatureCard = 'action_display_feature_card',
@@ -82,6 +81,7 @@ export enum TrackingEventParameter {
   AddedTokenName = 'param_added_token_name',
   Wallet = 'param_wallet',
   Ecosystem = 'param_ecosystem',
+  FeatureCardBgClicked = 'param_feature_card_bg_clicked',
 
   // Transaction:
   RouteId = 'param_route_id',

@@ -111,7 +111,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.CloseFeatureCard,
-      label: `close_${data?.attributes.DisplayConditions?.id}`,
+      label: `click_close`,
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data?.attributes.Title,
         [TrackingEventParameter.FeatureCardId]:
@@ -127,12 +127,13 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     event.stopPropagation();
     trackEvent({
       category: TrackingCategory.FeatureCard,
-      action: TrackingAction.ClickFeatureCardCTA,
-      label: 'click_cta',
+      action: TrackingAction.ClickFeatureCard,
+      label: `click_cta`,
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
         [TrackingEventParameter.FeatureCardId]:
           data.attributes.DisplayConditions.id,
+        [TrackingEventParameter.FeatureCardBgClicked]: 0,
         url: data.attributes.URL,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
@@ -150,6 +151,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
         [TrackingEventParameter.FeatureCardId]:
           data.attributes.DisplayConditions.id,
+        [TrackingEventParameter.FeatureCardBgClicked]: 1,
         url: data.attributes.URL,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
