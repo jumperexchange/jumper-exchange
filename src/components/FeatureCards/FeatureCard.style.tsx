@@ -16,12 +16,11 @@ export const FCard = styled(MuiCard, {
   cursor: 'pointer',
   borderRadius: '12px',
   position: 'relative',
-  ...(dark && {
-    backgroundColor: theme.palette.black.main,
-  }),
   marginBottom: theme.spacing(1.5),
   overflow: 'hidden',
-  backgroundImage: `url(${backgroundImageUrl})`,
+  backgroundImage: `url(${backgroundImageUrl}), radial-gradient(circle at 506px 437px, #3F49E1 -43%, ${
+    dark || theme.palette.mode === 'dark' ? '#20223D' : '#FFFFFF'
+  } 506px 349px)`,
   backgroundSize: 'contain',
   boxShadow:
     theme.palette.mode === 'dark'
