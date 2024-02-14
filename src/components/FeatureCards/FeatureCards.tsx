@@ -28,8 +28,6 @@ export const FeatureCards = () => {
         )
         .slice(0, 2);
     }
-    //trigger featureCardsFetched-filtering only once
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cards, isSuccess]);
 
   const slicedPersonalizedFeatureCards = useMemo(() => {
@@ -42,8 +40,6 @@ export const FeatureCards = () => {
         )
         .slice(0, 1);
     }
-    //trigger featureCardsFetched-filtering only once
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [personalizedCards]);
 
   const theme = useTheme();
