@@ -34,8 +34,12 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   useEffect(() => {
     data?.attributes.DisplayConditions &&
       data?.attributes.DisplayConditions.showOnce &&
-      onDisableFeatureCard(data?.attributes.DisplayConditions?.id);
-  }, [data?.attributes.DisplayConditions, onDisableFeatureCard]);
+      onDisableFeatureCard(data?.attributes.uid);
+  }, [
+    data?.attributes.DisplayConditions,
+    data?.attributes.uid,
+    onDisableFeatureCard,
+  ]);
 
   const typographyColor = useMemo(() => {
     if (data.attributes.DisplayConditions.mode) {
@@ -66,8 +70,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         label: 'display-feature-card',
         data: {
           [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
-          [TrackingEventParameter.FeatureCardId]:
-            data.attributes.DisplayConditions.id,
+          [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
           url: data.attributes.URL,
         },
         disableTrackingTool: [
@@ -77,7 +80,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       });
     }
   }, [
-    data.attributes.DisplayConditions.id,
+    data.attributes.uid,
     data.attributes.Title,
     data.attributes.URL,
     open,
@@ -106,16 +109,15 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     event.stopPropagation();
     setOpen(false);
     !data?.attributes.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes.DisplayConditions?.id &&
-      onDisableFeatureCard(data?.attributes.DisplayConditions?.id);
+      !!data?.attributes.uid &&
+      onDisableFeatureCard(data?.attributes.uid);
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.CloseFeatureCard,
       label: `click_close`,
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data?.attributes.Title,
-        [TrackingEventParameter.FeatureCardId]:
-          data?.attributes.DisplayConditions?.id,
+        [TrackingEventParameter.FeatureCardId]: data?.attributes.uid,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
@@ -131,8 +133,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       label: `click_cta`,
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
-        [TrackingEventParameter.FeatureCardId]:
-          data.attributes.DisplayConditions.id,
+        [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
         [TrackingEventParameter.FeatureCardBgClicked]: 0,
         url: data.attributes.URL,
       },
@@ -149,8 +150,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       label: 'click_card_bg',
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
-        [TrackingEventParameter.FeatureCardId]:
-          data.attributes.DisplayConditions.id,
+        [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
         [TrackingEventParameter.FeatureCardBgClicked]: 1,
         url: data.attributes.URL,
       },
