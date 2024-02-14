@@ -121,8 +121,6 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     url.origin,
   ]);
 
-  console.log(imageUrl);
-
   const handleClose = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
