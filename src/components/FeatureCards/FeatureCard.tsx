@@ -87,23 +87,41 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     trackEvent,
   ]);
 
-  const imageUrl = useMemo(
-    () =>
-      new URL(
-        theme.palette.mode === 'dark' ||
-        data.attributes.DisplayConditions.mode === 'dark'
-          ? data.attributes.BackgroundImageDark.data?.attributes.url
-          : data.attributes.BackgroundImageLight.data?.attributes.url,
+  const imageUrl = useMemo(() => {
+    // set bg image according to mode first
+    if (data.attributes.DisplayConditions.mode) {
+      if (data.attributes.DisplayConditions.mode === 'dark') {
+        return new URL(
+          data.attributes.BackgroundImageDark.data?.attributes.url,
+          url.origin,
+        );
+      } else if (data.attributes.DisplayConditions.mode === 'light') {
+        return new URL(
+          data.attributes.BackgroundImageLight.data?.attributes.url,
+          url.origin,
+        );
+      }
+      // OR theme.mode
+    } else if (theme.palette.mode === 'dark') {
+      return new URL(
+        data.attributes.BackgroundImageDark.data?.attributes.url,
         url.origin,
-      ),
-    [
-      data.attributes.BackgroundImageDark.data?.attributes.url,
-      data.attributes.BackgroundImageLight.data?.attributes.url,
-      data.attributes.DisplayConditions.mode,
-      theme.palette.mode,
-      url.origin,
-    ],
-  );
+      );
+    } else {
+      return new URL(
+        data.attributes.BackgroundImageLight.data?.attributes.url,
+        url.origin,
+      );
+    }
+  }, [
+    data.attributes.BackgroundImageDark.data?.attributes.url,
+    data.attributes.BackgroundImageLight.data?.attributes.url,
+    data.attributes.DisplayConditions.mode,
+    theme.palette.mode,
+    url.origin,
+  ]);
+
+  console.log(imageUrl);
 
   const handleClose = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -170,7 +188,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
       <Card
-        backgroundImageUrl={imageUrl.href}
+        backgroundImageUrl={imageUrl?.href}
         onClick={handleCardClick}
         dark={data.attributes.DisplayConditions.mode === 'dark'}
       >
