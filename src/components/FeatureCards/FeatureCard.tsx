@@ -90,14 +90,16 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   const imageUrl = useMemo(
     () =>
       new URL(
-        theme.palette.mode === 'dark'
+        theme.palette.mode === 'dark' ||
+        data.attributes.DisplayConditions.mode === 'dark'
           ? data.attributes.BackgroundImageDark.data?.attributes.url
           : data.attributes.BackgroundImageLight.data?.attributes.url,
         url.origin,
       ),
     [
-      data.attributes.BackgroundImageDark.data,
-      data.attributes.BackgroundImageLight.data,
+      data.attributes.BackgroundImageDark.data?.attributes.url,
+      data.attributes.BackgroundImageLight.data?.attributes.url,
+      data.attributes.DisplayConditions.mode,
       theme.palette.mode,
       url.origin,
     ],
