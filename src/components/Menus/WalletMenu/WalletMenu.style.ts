@@ -1,7 +1,7 @@
 import type { ButtonProps } from '@mui/material';
 import { Avatar, Badge, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ButtonPrimary, ButtonSecondary } from 'src/components/Button';
+import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
 
 export interface WalletButtonProps extends ButtonProps {
   colored?: boolean;
@@ -38,7 +38,7 @@ export const ChainAvatar = styled(Avatar)(({ theme }) => ({
   },
 }));
 
-export const WalletButton = styled(ButtonSecondary, {
+export const WalletButton = styled(ButtonTransparent, {
   shouldForwardProp: (prop) => prop !== 'colored',
 })<WalletButtonProps>(({ theme, colored }) => ({
   borderRadius: '24px',
@@ -46,7 +46,7 @@ export const WalletButton = styled(ButtonSecondary, {
   width: '100%',
 }));
 
-export const WalletButtonPrimary = styled(ButtonPrimary, {
+export const WalletButtonSecondary = styled(ButtonSecondary, {
   shouldForwardProp: (prop) => prop !== 'colored',
 })<WalletButtonProps>(({ theme }) => ({
   borderRadius: '24px',

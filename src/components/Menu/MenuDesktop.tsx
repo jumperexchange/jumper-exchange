@@ -52,7 +52,7 @@ export const MenuDesktop = ({
         anchorEl={anchorEl}
         transition
         disablePortal
-        placement="bottom"
+        placement="bottom-end"
       >
         {({ TransitionProps }) => (
           <Fade
