@@ -5,16 +5,20 @@ import { styled } from '@mui/material/styles';
 
 export interface CardProps extends Omit<MuiCardProps, 'component'> {
   backgroundImageUrl?: string;
+  dark?: boolean;
 }
 
 export const FCard = styled(MuiCard, {
-  shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
-})<CardProps>(({ theme, backgroundImageUrl }) => ({
+  shouldForwardProp: (prop) => prop !== 'backgroundImageUrl' && prop !== 'dark',
+})<CardProps>(({ theme, backgroundImageUrl, dark }) => ({
   width: 384,
   height: 160,
   cursor: 'pointer',
   borderRadius: '12px',
   position: 'relative',
+  ...(dark && {
+    backgroundColor: theme.palette.black.main,
+  }),
   marginBottom: theme.spacing(1.5),
   overflow: 'hidden',
   backgroundImage: `url(${backgroundImageUrl})`,

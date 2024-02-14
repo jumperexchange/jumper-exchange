@@ -167,7 +167,11 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       timeout={150}
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
-      <Card backgroundImageUrl={imageUrl.href} onClick={handleCardClick}>
+      <Card
+        backgroundImageUrl={imageUrl.href}
+        onClick={handleCardClick}
+        dark={data.attributes.DisplayConditions.mode === 'dark'}
+      >
         <CardContent
           sx={{
             padding: theme.spacing(3),
