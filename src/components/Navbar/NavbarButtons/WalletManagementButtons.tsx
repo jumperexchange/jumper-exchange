@@ -49,12 +49,12 @@ export const WalletManagementButtons: React.FC<
   } = useMenuStore((state) => state);
 
   const _walletDigest = useMemo(() => {
-    return walletDigest(account.address);
-  }, [account.address]);
+    return walletDigest(account?.address);
+  }, [account?.address]);
 
   const activeChain = useMemo(
-    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains, account.chainId],
+    () => chains?.find((chainEl: Chain) => chainEl.id === account?.chainId),
+    [chains, account?.chainId],
   );
 
   const handleWalletSelectClick = () => {
@@ -90,7 +90,7 @@ export const WalletManagementButtons: React.FC<
   return (
     <>
       <div ref={walletManagementButtonsRef}>
-        {!account.address ? (
+        {!account?.address ? (
           <ConnectButton
             // Used in the widget
             id="connect-wallet-button"

@@ -16,7 +16,7 @@ import { openInNewTab, walletDigest } from 'src/utils';
 import {
   WalletAvatar,
   WalletButton,
-  WalletButtonPrimary,
+  WalletButtonSecondary,
   WalletCardBadge,
   WalletCardButtonContainer,
   WalletCardContainer,
@@ -138,9 +138,9 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           >
             <OpenInNewIcon sx={{ height: '20px' }} />
           </WalletButton>
-          <WalletButtonPrimary onClick={() => handleDisconnect()} sx={{}}>
+          <WalletButtonSecondary onClick={() => handleDisconnect()} sx={{}}>
             <PowerSettingsNewIcon sx={{ height: '20px' }} />
-          </WalletButtonPrimary>
+          </WalletButtonSecondary>
         </WalletCardButtonContainer>
       </Stack>
     </WalletCardContainer>
