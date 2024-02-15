@@ -162,11 +162,11 @@ export const useMultisig = () => {
     };
 
     if (isSafeConnector) {
-      const shouldRequireToAddress = account.chainId !== destinationChain;
+      const shouldRequireToAddress = account?.chainId !== destinationChain;
 
       return {
         multisigWidget: {
-          fromChain: account.chainId,
+          fromChain: account?.chainId,
           requiredUI: shouldRequireToAddress ? ['toAddress'] : [],
         },
         multisigSdkConfig: {

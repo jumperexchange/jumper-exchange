@@ -26,7 +26,7 @@ export function useUserTracking() {
   const { account } = useAccounts();
 
   useEffect(() => {
-    if (account.chainId) {
+    if (account?.chainId) {
       arcx?.chain({
         account: `${account?.address}`,
         chainId: `${account?.chainId}`,
@@ -38,7 +38,7 @@ export function useUserTracking() {
         },
       });
     }
-  }, [account?.address, account.chainId, arcx]);
+  }, [account?.address, account?.chainId, arcx]);
 
   const trackConnectWallet = useCallback(
     /**
@@ -75,12 +75,12 @@ export function useUserTracking() {
      */
     async ({ data, disableTrackingTool }: TrackAttributeProps) => {
       if (
-        !!account.address &&
+        !!account?.address &&
         data &&
         !disableTrackingTool?.includes(EventTrackingTool.Hotjar)
       ) {
         hotjar.initialized() &&
-          hotjar.identify(account.address, {
+          hotjar.identify(account?.address, {
             ...data,
           });
       }
@@ -88,7 +88,7 @@ export function useUserTracking() {
         data && window.gtag('set', 'user_properties', data);
       }
     },
-    [account.address],
+    [account?.address],
   );
 
   const trackDisconnectWallet = useCallback(
@@ -97,7 +97,7 @@ export function useUserTracking() {
         account?.address &&
         !disableTrackingTool?.includes(EventTrackingTool.Hotjar)
       ) {
-        hotjar.identify(account.address, {
+        hotjar.identify(account?.address, {
           ...data,
         });
         hotjar.initialized() && hotjar.event(TrackingAction.DisconnectWallet);
@@ -109,7 +109,7 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
         arcx?.disconnection({
-          account: `${account?.address}`, // optional(string) - The account that got disconnected
+          account: `${account?.address}`, // optional(string) - The account? that got disconnected
           chainId: `${account?.chainId}`, // optional(string | number) - The chain ID from which the wallet disconnected
         });
       }
