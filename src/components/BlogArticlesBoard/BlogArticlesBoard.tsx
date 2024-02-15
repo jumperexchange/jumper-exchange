@@ -101,7 +101,10 @@ export const BlogArticlesBoard = () => {
   }, [catId, catLabel, handleTagsClick, isDesktop, t, tags, theme]);
 
   return (
-    <Grid sx={{ marginBottom: theme.spacing(10), position: 'relative' }}>
+    <Grid
+      sx={{ marginBottom: theme.spacing(10), position: 'relative' }}
+      id="see-all"
+    >
       <Typography
         variant="lifiHeaderMedium"
         sx={{
@@ -160,7 +163,7 @@ export const BlogArticlesBoard = () => {
                 styles={{
                   width: '100%',
                   [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    width: '100% !important',
+                    // width: '100% !important',
                   },
                   '&:hover': {
                     backgroundColor:
@@ -169,6 +172,10 @@ export const BlogArticlesBoard = () => {
                         : getContrastAlphaColor(theme, '4%'),
                   },
                 }}
+                content={article.attributes.Content}
+                publishedAt={article.attributes.publishedAt}
+                createdAt={article.attributes.createdAt}
+                tags={article.attributes.tags}
               />
             ))
           ) : (

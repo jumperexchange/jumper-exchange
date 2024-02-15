@@ -1,9 +1,9 @@
 import { useTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { Logo, NavbarButtons, NavbarTabs } from 'src/components';
+import { useAccounts } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
 import { NavbarContainer as Container, LogoLink } from '.';
-import { useAccounts } from 'src/hooks/useAccounts';
 
 interface NavbarProps {
   hideNavbarTabs?: boolean;

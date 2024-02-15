@@ -218,7 +218,7 @@ export const BlogArticle = ({
               }}
             >
               {formatDate(publishedAt || createdAt)}
-            </Typography>{' '}
+            </Typography>
             <Typography
               variant="lifiBodyXSmall"
               component="span"

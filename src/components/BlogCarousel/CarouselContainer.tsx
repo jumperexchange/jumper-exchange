@@ -1,5 +1,5 @@
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import type { Breakpoint } from '@mui/material';
 import {
   Box,
@@ -100,7 +100,6 @@ export const CarouselContainer = ({
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.surface1.main,
         padding: theme.spacing(0, 1),
       }}
     >
@@ -111,9 +110,9 @@ export const CarouselContainer = ({
             color: theme.palette.white.main,
           }),
           justifyContent: 'space-between',
-          [theme.breakpoints.up('lg' as Breakpoint)]: {
-            justifyContent: 'flex-start',
-          },
+          // [theme.breakpoints.up('lg' as Breakpoint)]: {
+          //   justifyContent: 'flex-start',
+          // },
         }}
       >
         <Typography
@@ -121,7 +120,6 @@ export const CarouselContainer = ({
           sx={{
             fontWeight: 600,
             fontSize: 24,
-            marginLeft: 2,
             color: 'inherit',
           }}
         >
@@ -141,11 +139,9 @@ export const CarouselContainer = ({
               width: 40,
               color: 'inherit',
               height: 40,
+              fontSize: 22,
               transition: 'background-color 250ms',
-              backgroundColor:
-                theme.palette.mode === 'light'
-                  ? getContrastAlphaColor(theme, '2%')
-                  : getContrastAlphaColor(theme, '4%'),
+              backgroundColor: getContrastAlphaColor(theme, '4%'),
               '&:hover': {
                 backgroundColor:
                   theme.palette.mode === 'light'
@@ -154,26 +150,19 @@ export const CarouselContainer = ({
               },
             }}
           >
-            <ArrowBackIosIcon
-              sx={{
-                marginLeft: theme.spacing(0.75),
-              }}
-            />
+            <ArrowBackIcon />
           </IconButton>
 
           <IconButton
             onClick={() => handleChange('next')}
             sx={{
-              marginLeft: 1,
-              marginRight: 2,
+              marginLeft: 2,
               width: 40,
               height: 40,
+              fontSize: 22,
               transition: 'background-color 250ms',
               color: 'inherit',
-              backgroundColor:
-                theme.palette.mode === 'light'
-                  ? getContrastAlphaColor(theme, '2%')
-                  : getContrastAlphaColor(theme, '4%'),
+              backgroundColor: getContrastAlphaColor(theme, '4%'),
               '&:hover': {
                 backgroundColor:
                   theme.palette.mode === 'light'
@@ -182,11 +171,7 @@ export const CarouselContainer = ({
               },
             }}
           >
-            <ArrowForwardIosIcon
-              sx={{
-                marginLeft: theme.spacing(0.25),
-              }}
-            />
+            <ArrowForwardIcon />
           </IconButton>
         </Box>
       </Box>

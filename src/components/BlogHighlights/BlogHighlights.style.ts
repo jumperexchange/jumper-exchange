@@ -1,65 +1,41 @@
-import type {
-  BoxProps,
-  Breakpoint,
-  GridProps,
-  SkeletonProps,
-} from '@mui/material';
-import { Box, Grid, Skeleton, type CardProps } from '@mui/material';
+import type { Breakpoint, TypographyProps } from '@mui/material';
+import { Typography } from '@mui/material';
 
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+
+import type { BoxProps, SkeletonProps } from '@mui/material';
+import { Box, Skeleton, type CardProps } from '@mui/material';
+
+import { alpha } from '@mui/material/styles';
 import { handleNavigationIndex } from 'src/utils';
 
 export const BlogHightsContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active',
 })<BoxProps>(({ theme }) => ({
   position: 'relative',
-  display: 'grid',
-  gridTemplateColumns: '1fr',
+  margin: theme.spacing(8),
+  padding: theme.spacing(8),
+  borderRadius: 32,
+  backgroundColor: '#F9F5FF', //todo: add to theme
+  display: 'flex',
   [theme.breakpoints.up('md' as Breakpoint)]: {
     // height: 600,
   },
 }));
 
-export interface BlogHighlightsCardProps extends Omit<GridProps, 'component'> {
-  active?: boolean;
-  index?: number;
-  activePost?: number;
-}
-
-export const BlogHighlightsCard = styled(Grid, {
-  shouldForwardProp: (prop) =>
-    prop !== 'index' && prop !== 'activePost' && prop !== 'active',
-})<BlogHighlightsCardProps>(({ theme, index, activePost }) => ({
-  display: 'grid',
-  gridColumn: 1,
-  gridRow: 1,
+export const BlogHighlightsCard = styled(Box)<BoxProps>(({ theme }) => ({
+  display: 'flex',
   backgroundColor: alpha(theme.palette.primary.main, 0.25),
-  // position: 'absolute',
   top: theme.spacing(-4),
   margin: theme.spacing(4, 2.5),
-  gridColumnGap: theme.spacing(2),
   borderRadius: '36px',
   width: 'auto',
   padding: theme.spacing(4),
-  gridRowGap: 4,
-  gridTemplateRows: 'auto',
-  gridTemplateColumns: '1fr',
   alignItems: 'center',
   [theme.breakpoints.up('md' as Breakpoint)]: {
     margin: theme.spacing(4, 6),
-    gridColumnGap: theme.spacing(4),
-    gridTemplateColumns: '.75fr 1fr',
-    gridTemplateRows: '1fr 80px',
-    height: 600,
+    height: 576,
   },
-  ...(activePost === index && {
-    opacity: 1,
-  }),
-  ...(activePost !== index && {
-    opacity: 0,
-    zIndex: 100,
-    pointerEvents: 'none',
-  }),
 }));
 
 export interface CircleProps extends Omit<CardProps, 'component'> {
@@ -162,38 +138,65 @@ export const SkeletonCircle = styled(Skeleton, {
 export const BlogHighlightsImage = styled('img')(({ theme }) => ({
   borderRadius: '14px',
   userSelect: 'none',
-  gridRow: '1',
-  gridColumn: '1 / span 2',
   alignSelf: 'flex-start',
   boxShadow:
     theme.palette.mode === 'light'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-  width: '100%',
+  width: '60%',
   '&:hover': {
     cursor: 'pointer',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    gridRow: '1 / span 2',
     alignSelf: 'center',
-    gridColumn: '2',
   },
 }));
 
 export const BlogHighlightsContent = styled(Box)(({ theme }) => ({
-  gridRow: 2,
   display: 'flex',
   marginBottom: theme.spacing(10),
+  color: '#525252', //todo: add to theme
   flexDirection: 'column',
   alignSelf: 'flex-end',
   justifyContent: 'flex-end',
   paddingBottom: theme.spacing(2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginRight: theme.spacing(2),
+    margin: theme.spacing(8),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     paddingBottom: theme.spacing(10),
     marginBottom: theme.spacing(0),
-    gridRow: 'auto',
   },
 }));
+
+export const BlogHighlightsDetails = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  fontWeight: 400,
+}));
+
+export const BlogHighlightsTitle = styled(Typography)<TypographyProps>(
+  ({ theme }) => ({
+    userSelect: 'none',
+    color: theme.palette.black.main,
+    marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(4),
+    maxHeight: 156,
+    overflow: 'hidden',
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      marginTop: theme.spacing(2),
+    },
+    [theme.breakpoints.up('md' as Breakpoint)]: {
+      marginTop: theme.spacing(4),
+    },
+  }),
+);
+
+export const BlogHighlightsSubtitle = styled(Typography)<TypographyProps>(
+  ({ theme }) => ({
+    userSelect: 'none',
+    marginBottom: theme.spacing(3),
+    maxHeight: 172,
+    overflow: 'hidden',
+  }),
+);

@@ -36,11 +36,18 @@ export const BlogCarousel = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  console.log('DATA', data);
+
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.surface1.main,
-        padding: theme.spacing(8, 1, 4),
+        backgroundColor:
+          theme.palette.mode === 'light'
+            ? '#F9F5FF'
+            : theme.palette.surface1.main,
+        padding: theme.spacing(8.5, 6),
+        margin: theme.spacing(12, 8, 8),
+        borderRadius: '32px',
       }}
     >
       {data?.length ? (
@@ -59,6 +66,10 @@ export const BlogCarousel = ({
                   image={article.attributes.Image}
                   title={article.attributes.Title}
                   slug={article.attributes.Slug}
+                  content={article.attributes.Content}
+                  publishedAt={article.attributes.publishedAt}
+                  createdAt={article.attributes.createdAt}
+                  tags={article.attributes.tags}
                 />
               );
             })

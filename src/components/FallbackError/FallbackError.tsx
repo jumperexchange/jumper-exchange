@@ -10,7 +10,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
+import { useAccounts, useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
 import { getContrastAlphaColor, openInNewTab } from 'src/utils';
 import {
@@ -19,7 +19,6 @@ import {
   NavbarContainer,
   SupportMessage,
 } from './FallbackError.styles';
-import { useAccounts } from 'src/hooks/useAccounts';
 
 export function FallbackError() {
   const { trackPageload, trackEvent } = useUserTracking();

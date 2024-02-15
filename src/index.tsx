@@ -1,4 +1,4 @@
-import React, { StrictMode } from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import 'src/fonts/inter.css';
@@ -15,7 +15,7 @@ const rootElement = document.getElementById('root');
 const root = createRoot(rootElement!);
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/*',
     element: <Homepage />,
   },
   {

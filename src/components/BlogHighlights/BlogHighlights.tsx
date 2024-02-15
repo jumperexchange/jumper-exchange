@@ -1,6 +1,7 @@
 import type { CSSObject } from '@mui/material';
-import { useCallback, useMemo, useState } from 'react';
-import { useSwipeable } from 'react-swipeable';
+import { Typography, useTheme } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
   STRAPI_BLOG_ARTICLES,
   TrackingAction,
@@ -8,140 +9,115 @@ import {
   TrackingEventParameter,
 } from 'src/const';
 import { useStrapi, useUserTracking } from 'src/hooks';
-import { EventTrackingTool, type BlogArticleData } from 'src/types';
-import type { HandleNavigationIndexProps } from 'src/utils';
-import { handleNavigationIndex } from 'src/utils';
-import { BlogHighlightsSkeleton, BlogHightsContainer } from '.';
-import { BlogHighlightsCard } from './BlogHighlightsCard';
-import { Pagination } from './Pagination';
+import type { BlogArticleData } from 'src/types';
+import { EventTrackingTool } from 'src/types';
+import { formatDate, readingTime } from 'src/utils';
+import {
+  BlogHighlightsContent,
+  BlogHighlightsDetails,
+  BlogHighlightsImage,
+  BlogHighlightsSubtitle,
+  BlogHighlightsTitle,
+  BlogHightsContainer,
+} from '.';
+import { Tag } from '../Tag.style';
 
 interface BlogHighlightsProps {
   styles?: CSSObject;
 }
 
-const maxHighlights = 5;
-
 export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
-  const [activePost, setActivePost] = useState<number>(0);
-  const [swipeDeltaX, setSwipeDeltaX] = useState<number | null>(0);
   const { trackEvent } = useUserTracking();
 
   const { data: blogArticles, url } = useStrapi<BlogArticleData>({
     contentType: STRAPI_BLOG_ARTICLES,
     queryKey: ['blog-articles'],
   });
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const handleImageClick = () => {
+    trackEvent({
+      category: TrackingCategory.Menu,
+      label: 'click-join-discord-community-button',
+      action: TrackingAction.OpenMenu,
+      data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
+    navigate(`/blog/${blogArticles[0].attributes.Slug}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-  const maxItems = useMemo(
-    () =>
-      blogArticles?.length > maxHighlights
-        ? maxHighlights
-        : blogArticles?.length,
-    [blogArticles],
-  );
-
-  const handlePagination = useCallback(
-    ({ direction, active, max }: HandleNavigationIndexProps) => {
-      trackEvent({
-        category: TrackingCategory.Menu,
-        label: 'click-join-discord-community-button',
-        action: TrackingAction.OpenMenu,
-        data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
-      });
-      const newItem = handleNavigationIndex({
-        direction,
-        active,
-        max,
-      });
-      newItem !== undefined && setActivePost(newItem);
-    },
-    [trackEvent],
-  );
-
-  const swipeHandlers = useSwipeable({
-    onSwiping: (eventData) => {
-      setSwipeDeltaX(eventData.deltaX);
-    },
-    onSwipedLeft: ({ deltaX }) => {
-      const output = handlePagination({
-        direction: 'next',
-        active: activePost,
-        max: maxItems,
-      });
-      trackEvent({
-        category: TrackingCategory.BlogHighlights,
-        label: 'swipe-blog-highlights-left',
-        action: TrackingAction.SwipeHighlightCard,
-        data: {
-          [TrackingEventParameter.Pagination]: output,
-          [TrackingEventParameter.SwipeDirection]: 'left',
-        },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
-      });
-      return output;
-    },
-    onSwipedRight: () => {
-      const output = handlePagination({
-        direction: 'prev',
-        active: activePost,
-        max: maxItems,
-      });
-      trackEvent({
-        category: TrackingCategory.BlogHighlights,
-        label: 'swipe-blog-highlights-right',
-        action: TrackingAction.SwipeHighlightCard,
-        data: {
-          [TrackingEventParameter.Pagination]: output,
-          [TrackingEventParameter.SwipeDirection]: 'right',
-        },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
-      });
-      return output;
-    },
-    onTouchStartOrOnMouseDown: ({ event }) => event.preventDefault(),
-    onTouchEndOrOnMouseUp: () => setSwipeDeltaX(null),
-    preventScrollOnSwipe: true,
-    trackMouse: true,
-  });
+  const minRead =
+    blogArticles && readingTime(blogArticles[0]?.attributes.Content);
 
   return (
     <BlogHightsContainer>
-      {blogArticles ? (
-        blogArticles.map((el, index, source) => {
-          return (
-            index < maxItems && (
-              <BlogHighlightsCard
-                swipeDeltaX={swipeDeltaX}
-                activePost={activePost}
-                articles={blogArticles}
-                index={index}
-                source={source}
-                swipeHandlers={swipeHandlers}
-                url={url}
-              />
-            )
-          );
-        })
+      {blogArticles?.length > 0 ? (
+        <>
+          <BlogHighlightsImage
+            onClick={() => handleImageClick()}
+            draggable={false}
+            src={`${url.origin}${blogArticles[0]?.attributes.Image.data.attributes.url}`}
+            alt={
+              blogArticles[0].attributes.Image.data.attributes.alternativeText
+            }
+          />
+          <BlogHighlightsContent>
+            <BlogHighlightsDetails>
+              {blogArticles[0].attributes.tags.data.slice(2).map((el) => (
+                <>
+                  <Tag>
+                    <Typography variant="lifiBodyMediumStrong">
+                      {el.attributes.Title}
+                    </Typography>
+                  </Tag>
+                </>
+              ))}
+              <Typography
+                variant="lifiBodyXSmall"
+                component="span"
+                color={
+                  theme.palette.mode === 'light'
+                    ? theme.palette.grey[800]
+                    : theme.palette.grey[300]
+                }
+                sx={{
+                  marginLeft: theme.spacing(3),
+                  '&:after': {
+                    content: '"•"',
+                    margin: '0 4px',
+                  },
+                }}
+              >
+                {formatDate(
+                  blogArticles[0].attributes.publishedAt ||
+                    blogArticles[0].attributes.createdAt,
+                )}
+              </Typography>
+              <Typography
+                variant="lifiBodyXSmall"
+                component="span"
+                color={
+                  theme.palette.mode === 'light'
+                    ? theme.palette.grey[800]
+                    : theme.palette.grey[300]
+                }
+              >
+                {t('blog.minRead', { minRead: minRead })}
+              </Typography>
+            </BlogHighlightsDetails>
+            <BlogHighlightsTitle variant="lifiHeaderMedium">
+              {blogArticles[0].attributes.Title}
+            </BlogHighlightsTitle>
+            <BlogHighlightsSubtitle>
+              {blogArticles[0].attributes.Subtitle}
+            </BlogHighlightsSubtitle>
+          </BlogHighlightsContent>
+        </>
       ) : (
-        <BlogHighlightsSkeleton />
+        <p>none</p>
       )}
-      <Pagination
-        articles={blogArticles}
-        activePost={activePost}
-        handlePagination={handlePagination}
-        setActivePost={setActivePost}
-        maxItems={maxItems}
-        swipeDeltaX={swipeDeltaX}
-      />
     </BlogHightsContainer>
   );
 };

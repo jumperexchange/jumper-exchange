@@ -11,11 +11,11 @@ export const ArticlesGrid = styled(Grid)(({ theme }) => ({
   paddingBottom: theme.spacing(9),
   gridTemplateColumns: '1fr',
   gap: theme.spacing(4),
-  maxWidth: theme.breakpoints.values.md,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gridTemplateColumns: '1fr 1fr',
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
+    maxWidth: 'fit-content',
     gridTemplateColumns: '1fr 1fr 1fr',
   },
 }));

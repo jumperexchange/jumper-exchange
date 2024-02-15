@@ -5,7 +5,7 @@ import { useCookie3, useInitUserTracking } from 'src/hooks';
 
 import React from 'react';
 import { PoweredBy, Snackbar, SupportModal } from 'src/components';
-import { AppProvider } from './AppProvider';
+import { AppProvider } from 'src/providers';
 
 export const Homepage = () => {
   const { initTracking } = useInitUserTracking();

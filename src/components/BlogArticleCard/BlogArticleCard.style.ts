@@ -7,13 +7,13 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   flexShrink: 0,
   width: '100%',
   border: 'unset',
-  padding: theme.spacing(1),
+  padding: theme.spacing(2),
   borderRadius: '24px',
-  background: 'transparent',
+  background: theme.palette.white.main,
   transition: 'background-color 250ms',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     minWidth: 250,
-    width: 420,
+    width: 416,
   },
   '&:hover': {
     cursor: 'pointer',
@@ -27,5 +27,6 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
 export const BlogArticleCardImage = styled('img')(({ theme }) => ({
   width: '100%',
   borderRadius: '16px',
+  height: 240,
   border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
 }));

@@ -7,12 +7,11 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useChains, useUserTracking } from 'src/hooks';
+import { useAccounts, useChains, useUserTracking } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { NavbarButtonsContainer, WalletManagementButtons } from '.';
 import { MainMenu, MenuToggle } from '../..';
-import { useAccounts } from 'src/hooks/useAccounts';
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef<any>(null);
@@ -29,7 +28,9 @@ export const NavbarButtons = () => {
 
   const { t } = useTranslation();
   const { account } = useAccounts();
-  if (!account.isConnected) onWalletDisconnect();
+  if (!account.isConnected) {
+    onWalletDisconnect();
+  }
 
   // return focus to the button when we transitioned from !open -> open
   const prevMainMenu = useRef(openMainMenu);
@@ -43,8 +44,9 @@ export const NavbarButtons = () => {
 
   const { isSuccess } = useChains();
 
-  const handleOnOpenNavbarMainMenu = () => {
-    setMainMenuState(!openMainMenu);
+  const handleOnOpenNavbarMainMenu = (ev) => {
+    ev.preventDefault();
+    setMainMenuState((prev: boolean) => !prev);
     trackEvent({
       category: TrackingCategory.Menu,
       action: TrackingAction.OpenMenu,
@@ -80,7 +82,7 @@ export const NavbarButtons = () => {
         aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
         aria-expanded={openMainMenu ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={handleOnOpenNavbarMainMenu}
+        onClick={(ev) => handleOnOpenNavbarMainMenu(ev)}
       >
         <MenuIcon
           sx={{
