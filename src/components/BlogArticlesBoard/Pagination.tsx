@@ -35,7 +35,6 @@ export const BlogArticlesBoardPagination = ({
 }: BlogArticlesBoardPaginationProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
-  console.log('META', meta);
   const handlePage = (page: number) => {
     trackEvent({
       category: TrackingCategory.BlogArticlesBoard,

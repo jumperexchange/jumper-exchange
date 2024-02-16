@@ -11,8 +11,6 @@ interface InstructionsAccordionProps {
 }
 
 export const InstructionsAccordion = (data: InstructionsAccordionProps) => {
-  console.log('PROPS', data);
-
   if (!data) {
     return;
   }

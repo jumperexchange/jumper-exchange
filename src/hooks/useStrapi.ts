@@ -48,7 +48,6 @@ export const useStrapi = <T>({
     apiUrl.searchParams.set('filters[Slug][$eq]', filterSlug);
   }
   if (filterTag) {
-    console.log('FILTERTAG', filterTag);
     if (typeof filterTag === 'string') {
       apiUrl.searchParams.set('filters[tags][id][$eq]', `${filterTag}`);
     } else if (Array.isArray(filterTag)) {

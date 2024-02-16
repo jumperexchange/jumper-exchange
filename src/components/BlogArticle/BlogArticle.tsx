@@ -89,8 +89,6 @@ export const BlogArticle = ({
   const { t } = useTranslation();
   const location = useLocation();
   const { trackEvent } = useUserTracking();
-  console.log('CONTENT', content);
-
   const isComponentMounted = useRef(false);
   useEffect(() => {
     isComponentMounted.current = true;
@@ -480,7 +478,6 @@ export const BlogArticle = ({
               display: 'flex',
               alignItems: 'center',
             }}
-            // onClick={() => console.log('AUTHOR', author)}
           >
             {author?.data?.attributes.Avatar.data?.attributes.url ? (
               <BlogAuthorAvatar

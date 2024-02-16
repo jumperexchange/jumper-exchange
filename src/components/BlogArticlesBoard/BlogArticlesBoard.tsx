@@ -49,8 +49,6 @@ export const BlogArticlesBoard = () => {
         : ['blog-articles-board', page, catId],
   });
 
-  console.log('blogArticles', blogArticles);
-
   const { data: tags, isSuccess } = useStrapi<TagAttributes>({
     contentType: STRAPI_TAGS,
     queryKey: ['tags'],
