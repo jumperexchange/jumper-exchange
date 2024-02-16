@@ -9,8 +9,10 @@ export const JumperBannerContainer = styled(Box)<BoxProps>(({ theme }) => ({
   alignItems: 'center',
   flexDirection: 'row',
   padding: theme.spacing(6),
+  margin: theme.spacing(6, 0),
+  borderRadius: '16px',
   background:
     theme.palette.mode === 'light'
-      ? theme.palette.grey[200]
+      ? '#F6F0FF' //todo: add to theme
       : theme.palette.accent1Alt.main,
 }));

@@ -19,10 +19,12 @@ import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import type { InstructionItemProps } from 'src/components';
 import {
   ArticleJsonSchema,
+  BlogCTA,
   ImageViewer,
-  JumperCTA,
+  InstructionsAccordion,
   Tag,
   Widget,
 } from 'src/components';
@@ -161,8 +163,6 @@ export const BlogArticle = ({
     openInNewTab(fbUrl.href);
   };
 
-  console.log('AUTHOR', author);
-
   const handleLinkedInClick = () => {
     if (!title) {
       return;
@@ -193,10 +193,43 @@ export const BlogArticle = ({
     image: (data: ImageData) =>
       baseUrl ? <ImageViewer imageData={data.image} baseUrl={baseUrl} /> : null,
     paragraph: ({ children }: any) => {
-      if (children[0].props.text.includes('<JUMPER_CTA>')) {
-        return <JumperCTA />;
+      if (children[0].props.text.includes('<JUMPER_CTA')) {
+        try {
+          const htmlString = children[0].props.text;
+
+          // Regular expressions to extract title and url strings
+          const titleRegex = /title="(.*?)"/;
+          const urlRegex = /url="(.*?)"/;
+
+          // Extract title and url strings using regular expressions
+          const titleMatch = htmlString.match(titleRegex);
+          const urlMatch = htmlString.match(urlRegex);
+
+          // Check if matches were found and extract strings
+          const title = titleMatch ? titleMatch[1] : null;
+          const url = urlMatch ? urlMatch[1] : null;
+          return <BlogCTA title={title} url={url} />;
+        } catch (error) {
+          return;
+        }
       } else if (children[0].props.text.includes('<WIDGET>')) {
         return <Widget starterVariant="default" />;
+      } else if (children[0].props.text.includes('<INSTRUCTIONS')) {
+        try {
+          const new_array: InstructionItemProps[] = [];
+          let jso = children[0].props.text
+            .replace('<INSTRUCTIONS ', '')
+            .replace('>', '');
+
+          // Parse the JSON string and push each parsed object into the new_array
+          JSON.parse(jso).forEach((obj: InstructionItemProps) => {
+            new_array.push(obj);
+          });
+
+          return <InstructionsAccordion data={new_array} />;
+        } catch (error) {
+          return;
+        }
       } else {
         return (
           <Typography

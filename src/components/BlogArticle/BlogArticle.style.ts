@@ -30,15 +30,15 @@ export const BlogAuthorAvatar = styled('img')(({ theme }) => ({
 
 export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   margin: 'auto',
-  background: theme.palette.surface1.main,
+  background: 'transparent',
   borderRadius: '8px',
   position: 'relative',
   width: '100% !important',
   overflow: 'hidden',
-  boxShadow:
-    theme.palette.mode === 'dark'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
+  // boxShadow:
+  //   theme.palette.mode === 'dark'
+  //     ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+  //     : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
 
   // padding: theme.spacing(1, 2, 3),
   padding: theme.spacing(1.5, 2, 3),

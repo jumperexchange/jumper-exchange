@@ -1,1 +1,2 @@
-export * from './JumperCTA';
+export * from './BlogCTA';
+export * from './InstructionsAccordion';

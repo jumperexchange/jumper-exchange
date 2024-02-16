@@ -1,4 +1,3 @@
-import { useTheme } from '@mui/material';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
@@ -10,7 +9,6 @@ import type { BlogArticleData } from 'src/types';
 
 export const BlogArticlePage = () => {
   const { id } = useParams();
-  const theme = useTheme();
   const { t } = useTranslation();
   const { initTracking } = useInitUserTracking();
   const cookie3 = useCookie3();
@@ -48,7 +46,7 @@ export const BlogArticlePage = () => {
   }, [article, articles]);
 
   return (
-    <Layout hideNavbarTabs={true}>
+    <Layout hideNavbarTabs={true} variant={'blog'}>
       <BlogArticle
         subtitle={isSuccess ? article[0].attributes?.Subtitle : undefined}
         title={isSuccess ? article[0].attributes.Title : undefined}
