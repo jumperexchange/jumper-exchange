@@ -2480,9 +2480,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:3.0.0-alpha.29":
-  version: 3.0.0-alpha.29
-  resolution: "@lifi/widget@npm:3.0.0-alpha.29"
+"@lifi/widget@npm:3.0.0-alpha.30":
+  version: 3.0.0-alpha.30
+  resolution: "@lifi/widget@npm:3.0.0-alpha.30"
   dependencies:
     "@emotion/react": "npm:^11.11.3"
     "@emotion/styled": "npm:^11.11.0"
@@ -2519,7 +2519,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: c629cb4e93644375e31f67b4a5becf80856f5f05e5263cb685f69e5cc53698d792b9a9df4bde4d8de66b1da2d2b1c6be749c97860c862548c43bfba03b6922e8
+  checksum: f0153e22fcce7d0a476c97e197e9a84d039255aa8db8725c3c159bc4e625f14cbe069253c2cfff699369527961c49229504c5ee74a340927e94c82c654cc1d40
   languageName: node
   linkType: hard
 
@@ -5282,12 +5282,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.11.18":
-  version: 20.11.18
-  resolution: "@types/node@npm:20.11.18"
+"@types/node@npm:^20.11.19":
+  version: 20.11.19
+  resolution: "@types/node@npm:20.11.19"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: eeaa55032e6702867e96d7b6f98df1d60af09d37ab72f2b905b349ec7e458dfb9c4d9cfc562962f5a51b156a968eea773d8025688f88b735944c81e3ac0e3b7f
+  checksum: c7f4705d6c84aa21679ad180c33c13ca9567f650e66e14bcee77c7c43d14619c7cd3b4d7b2458947143030b7b1930180efa6d12d999b45366abff9fed7a17472
   languageName: node
   linkType: hard
 
@@ -10165,7 +10165,7 @@ __metadata:
     "@lifi/sdk": "npm:^3.0.0-alpha.56"
     "@lifi/types": "npm:^11.2.0"
     "@lifi/wallet-management": "npm:3.0.0-alpha.20"
-    "@lifi/widget": "npm:3.0.0-alpha.29"
+    "@lifi/widget": "npm:3.0.0-alpha.30"
     "@mui/icons-material": "npm:^5.15.10"
     "@mui/material": "npm:^5.15.10"
     "@safe-global/safe-apps-sdk": "npm:^9.0.0"
@@ -10177,7 +10177,7 @@ __metadata:
     "@solana/wallet-adapter-wallets": "npm:^0.19.26"
     "@solana/web3.js": "npm:^1.90.0"
     "@tanstack/react-query": "npm:5.20.5"
-    "@types/node": "npm:^20.11.18"
+    "@types/node": "npm:^20.11.19"
     "@types/react": "npm:^18.2.55"
     "@types/react-dom": "npm:^18.2.19"
     "@types/ungap__structured-clone": "npm:^1.2.0"
@@ -10211,7 +10211,7 @@ __metadata:
     rollup-plugin-polyfill-node: "npm:^0.13.0"
     typescript: "npm:^5.3.3"
     viem: "npm:^2.7.9"
-    vite: "npm:^5.1.2"
+    vite: "npm:^5.1.3"
     vite-tsconfig-paths: "npm:^4.3.1"
     wagmi: "npm:2.5.7"
     web-vitals: "npm:^3.5.2"
@@ -13974,9 +13974,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.1.2":
-  version: 5.1.2
-  resolution: "vite@npm:5.1.2"
+"vite@npm:^5.1.3":
+  version: 5.1.3
+  resolution: "vite@npm:5.1.3"
   dependencies:
     esbuild: "npm:^0.19.3"
     fsevents: "npm:~2.3.3"
@@ -14010,7 +14010,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: fbfc5a84ee33c01cd2c3109ba08c2f3822df9a85bee79179ba5a812757f895e2da234208881b9943291d48b0a4ef8fb90ffaa790d89888530a2ad6c70c169e12
+  checksum: 6ba2223157e2cc2fa62dff9004ccba20fc409c6baf7354c64ed0f8e4bcd853092d08d06ec4dec37143e794a96e061879a870d85bad4f1eb9ee5c6d0a13cef30f
   languageName: node
   linkType: hard
 
