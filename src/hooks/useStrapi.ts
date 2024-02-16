@@ -21,6 +21,7 @@ interface ContentTypeProps {
   contentType: 'feature-cards' | 'blog-articles' | 'faq-items' | 'tags';
   filterSlug?: string;
   filterTag?: (number | null | undefined)[] | null | undefined;
+  filterFeaturedArticle?: boolean | undefined;
   sort?: 'desc' | 'asc';
   pagination?: PaginationProps;
   filterDisplayed?: boolean;
@@ -31,6 +32,7 @@ interface ContentTypeProps {
 export const useStrapi = <T>({
   contentType,
   filterSlug,
+  filterFeaturedArticle,
   sort,
   filterTag,
   pagination,
@@ -57,6 +59,9 @@ export const useStrapi = <T>({
         );
       });
     }
+  }
+  if (filterFeaturedArticle) {
+    apiUrl.searchParams.set('filters[featured][$eq]', 'true');
   }
   if (sort) {
     switch (sort) {

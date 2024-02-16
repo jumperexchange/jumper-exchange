@@ -98,11 +98,7 @@ export const CarouselContainer = ({
     [trackEvent, trackingCategory],
   );
   return (
-    <Box
-      sx={{
-        padding: theme.spacing(0, 1),
-      }}
-    >
+    <Box>
       <Box
         sx={{
           display: 'flex',
@@ -110,9 +106,6 @@ export const CarouselContainer = ({
             color: theme.palette.white.main,
           }),
           justifyContent: 'space-between',
-          // [theme.breakpoints.up('lg' as Breakpoint)]: {
-          //   justifyContent: 'flex-start',
-          // },
         }}
       >
         <Typography
@@ -123,12 +116,21 @@ export const CarouselContainer = ({
             fontSize: '24px',
             lineHeight: '32px',
             color: 'inherit',
+            margin: theme.spacing(3, 1.5, 0),
+            [theme.breakpoints.up('lg' as Breakpoint)]: {
+              justifyContent: 'flex-start',
+              margin: 0,
+            },
           }}
         >
           {title ?? t('blog.recentPosts')}
         </Typography>
         <Box
           sx={{
+            display: 'none',
+            [theme.breakpoints.up('sm' as Breakpoint)]: {
+              display: 'flex',
+            },
             [theme.breakpoints.up('md' as Breakpoint)]: {
               ...(children && children?.length < 3 && { display: 'none' }),
               marginLeft: 3,

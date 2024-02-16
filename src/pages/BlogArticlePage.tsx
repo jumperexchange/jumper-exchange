@@ -1,18 +1,12 @@
-import type { Breakpoint } from '@mui/material';
-import { Container, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Layout } from 'src/Layout';
-import {
-  BlogArticle,
-  BlogCarousel,
-  JoinDiscordBanner,
-  Tag,
-} from 'src/components';
+import { BlogArticle, BlogCarousel, JoinDiscordBanner } from 'src/components';
 import { STRAPI_BLOG_ARTICLES } from 'src/const';
 import { useCookie3, useInitUserTracking, useStrapi } from 'src/hooks';
-import type { BlogArticleData, TagAttributes } from 'src/types';
+import type { BlogArticleData } from 'src/types';
 
 export const BlogArticlePage = () => {
   const { id } = useParams();
@@ -54,80 +48,22 @@ export const BlogArticlePage = () => {
   }, [article, articles]);
 
   return (
-    <>
-      <Layout hideNavbarTabs={true}>
+    <Layout hideNavbarTabs={true}>
+      <BlogArticle
+        subtitle={isSuccess ? article[0].attributes?.Subtitle : undefined}
+        title={isSuccess ? article[0].attributes.Title : undefined}
+        content={isSuccess ? article[0].attributes.Content : undefined}
+        slug={isSuccess ? article[0].attributes.Slug : undefined}
+        author={!!article ? article[0].attributes.author : undefined}
+        publishedAt={isSuccess ? article[0].attributes.publishedAt : undefined}
+        createdAt={isSuccess ? article[0].attributes.createdAt : undefined}
+        updatedAt={isSuccess ? article[0].attributes.updatedAt : undefined}
+        tags={isSuccess ? article[0].attributes.tags : undefined}
+        image={isSuccess ? article[0].attributes.Image : undefined}
+        baseUrl={articleUrl.origin ?? undefined}
+      />
+      {/*
         <Container
-          sx={{
-            padding: theme.spacing(1.5, 0, 3),
-            [theme.breakpoints.up('sm' as Breakpoint)]: {
-              padding: theme.spacing(1.5, 3, 3),
-            },
-            [theme.breakpoints.up('xl' as Breakpoint)]: {
-              padding: theme.spacing(1.5, 3, 3),
-              maxWidth: `${theme.breakpoints.values.lg}px`,
-            },
-          }}
-        >
-          <BlogArticle
-            subtitle={isSuccess ? article[0].attributes?.Subtitle : undefined}
-            title={isSuccess ? article[0].attributes.Title : undefined}
-            content={isSuccess ? article[0].attributes.Content : undefined}
-            slug={isSuccess ? article[0].attributes.Slug : undefined}
-            author={!!article ? article[0].attributes.author : undefined}
-            publishedAt={
-              isSuccess ? article[0].attributes.publishedAt : undefined
-            }
-            createdAt={isSuccess ? article[0].attributes.createdAt : undefined}
-            updatedAt={isSuccess ? article[0].attributes.updatedAt : undefined}
-            tags={isSuccess ? article[0].attributes.tags : undefined}
-            image={isSuccess ? article[0].attributes.Image : undefined}
-            baseUrl={articleUrl.origin ?? undefined}
-          />
-        </Container>
-
-        <Container
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: theme.spacing(0, 2, 3),
-            flexWrap: 'wrap',
-            gap: theme.spacing(1),
-            [theme.breakpoints.up('sm' as Breakpoint)]: {
-              justifyContent: 'flex-start',
-              padding: theme.spacing(1.5, 3, 3),
-              maxWidth: `100% !important`,
-            },
-            [theme.breakpoints.up('md' as Breakpoint)]: {
-              padding: `${theme.spacing(1.5, 3, 3)} !important`,
-            },
-            [theme.breakpoints.up('lg' as Breakpoint)]: {
-              padding: `${theme.spacing(1.5, 3, 3)} !important`,
-              maxWidth: `${theme.breakpoints.values.lg}px !important`,
-            },
-            [theme.breakpoints.up('xl' as Breakpoint)]: {
-              padding: `${theme.spacing(1.5, 3, 3)} !important`,
-              maxWidth: `${theme.breakpoints.values.lg}px !important`,
-            },
-          }}
-        >
-          {isSuccess
-            ? article[0].attributes.tags?.data.length > 0 &&
-              article[0].attributes.tags.data.map(
-                (tag: TagAttributes, index: any) => (
-                  <Tag
-                    color={tag.attributes.TextColor}
-                    backgroundColor={tag.attributes.BackgroundColor}
-                    component="span"
-                    variant="lifiBodySmall"
-                    key={`blog-article-${index}`}
-                  >{`${tag.attributes.Title}`}</Tag>
-                ),
-              )
-            : null}
-        </Container>
-
-        {/* <Container
           sx={{
             padding: theme.spacing(1.5, 0, 3),
             [theme.breakpoints.up('sk' as Breakpoint)]: {
@@ -137,9 +73,8 @@ export const BlogArticlePage = () => {
           }}
         >
           <AccordionFAQ content={article[0].attributes.faq_items.data} />
-        </Container> */}
-      </Layout>
-      <JoinDiscordBanner />
+        </Container>
+      */}
 
       <BlogCarousel
         title={t('blog.similarPosts')}
@@ -147,6 +82,7 @@ export const BlogArticlePage = () => {
         data={filteredArticles}
         url={articleUrl}
       />
-    </>
+      <JoinDiscordBanner />
+    </Layout>
   );
 };

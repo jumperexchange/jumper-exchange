@@ -10,8 +10,9 @@ export const ArticlesGrid = styled(Grid)(({ theme }) => ({
   marginTop: `calc(${theme.spacing(4)} + 56px + ${theme.spacing(6)} )`,
   paddingBottom: theme.spacing(12),
   gridTemplateColumns: '1fr',
+  justifyItems: 'center',
   gap: theme.spacing(4),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('md' as Breakpoint)]: {
     gridTemplateColumns: '1fr 1fr',
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {

@@ -8,6 +8,7 @@ export const JumperBannerContainer = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: 'space-evenly',
   alignItems: 'center',
   flexDirection: 'row',
+  padding: theme.spacing(6),
   background:
     theme.palette.mode === 'light'
       ? theme.palette.grey[200]

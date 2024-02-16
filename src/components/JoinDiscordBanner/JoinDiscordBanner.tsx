@@ -1,3 +1,4 @@
+import type { Breakpoint } from '@mui/material';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const';
@@ -39,10 +40,14 @@ export const JoinDiscordBanner = () => {
                 : theme.palette.black.main,
             textAlign: 'center',
             margin: theme.spacing(0, 'auto'),
-            fontWeight: 700,
             fontFamily: 'Urbanist, Inter',
-            fontSize: '48px',
-            lineHeight: '58px',
+            fontSize: '32px',
+            lineHeight: '44px',
+            fontWeight: 700,
+            [theme.breakpoints.up('sm' as Breakpoint)]: {
+              fontSize: '48px',
+              lineHeight: '58px',
+            },
           }}
         >
           {t('discordBanner.ctaHeadline')}

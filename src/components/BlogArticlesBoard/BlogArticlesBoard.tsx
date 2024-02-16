@@ -104,7 +104,14 @@ export const BlogArticlesBoard = () => {
 
   return (
     <Grid
-      sx={{ marginBottom: theme.spacing(10), position: 'relative' }}
+      sx={{
+        position: 'relative',
+        margin: theme.spacing(6, 2),
+        marginBottom: theme.spacing(10),
+        [theme.breakpoints.up('sm' as Breakpoint)]: {
+          margin: theme.spacing(8),
+        },
+      }}
       id="see-all"
     >
       <Typography

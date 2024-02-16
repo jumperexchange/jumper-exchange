@@ -4,6 +4,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import XIcon from '@mui/icons-material/X';
 import { useUserTracking } from 'src/hooks';
 
+import type { Breakpoint } from '@mui/material';
 import {
   Box,
   Divider,
@@ -21,7 +22,8 @@ import { useLocation } from 'react-router-dom';
 import {
   ArticleJsonSchema,
   ImageViewer,
-  JumperBanner,
+  JumperCTA,
+  Tag,
   Widget,
 } from 'src/components';
 import {
@@ -44,6 +46,7 @@ import {
   BlogArticleContainer,
   BlogArticleContentContainer,
   BlogArticleImage,
+  BlogArticleImageContainer,
   BlogAuthorAvatar,
 } from './BlogArticle.style';
 
@@ -84,6 +87,7 @@ export const BlogArticle = ({
   const { t } = useTranslation();
   const location = useLocation();
   const { trackEvent } = useUserTracking();
+  console.log('CONTENT', content);
 
   const isComponentMounted = useRef(false);
   useEffect(() => {
@@ -157,6 +161,8 @@ export const BlogArticle = ({
     openInNewTab(fbUrl.href);
   };
 
+  console.log('AUTHOR', author);
+
   const handleLinkedInClick = () => {
     if (!title) {
       return;
@@ -187,12 +193,140 @@ export const BlogArticle = ({
     image: (data: ImageData) =>
       baseUrl ? <ImageViewer imageData={data.image} baseUrl={baseUrl} /> : null,
     paragraph: ({ children }: any) => {
-      if (children[0].props.text.includes('<JUMPER_BANNER>')) {
-        return <JumperBanner />;
+      if (children[0].props.text.includes('<JUMPER_CTA>')) {
+        return <JumperCTA />;
       } else if (children[0].props.text.includes('<WIDGET>')) {
         return <Widget starterVariant="default" />;
       } else {
-        return <p className="text-neutral900 max-w-prose">{children}</p>;
+        return (
+          <Typography
+            sx={{
+              margin: theme.spacing(2, 0),
+              fontFamily: 'Inter',
+              fontSize: '18px',
+              lineHeight: '32px',
+              fontWeight: 400,
+            }}
+          >
+            {children}
+          </Typography>
+        );
+      }
+    },
+    heading: ({ children, level }: any) => {
+      switch (level) {
+        case 1:
+          return (
+            <Typography
+              variant="h1"
+              sx={{
+                marginTop: theme.spacing(12),
+                marginBottom: theme.spacing(6),
+                fontFamily: 'Urbanist, Inter',
+                fontSize: '64px',
+                lineHeight: '64px',
+                fontWeight: 700,
+              }}
+            >
+              {children}
+            </Typography>
+          );
+        case 2:
+          return (
+            <Typography
+              variant="h2"
+              sx={{
+                marginTop: theme.spacing(6),
+                marginBottom: theme.spacing(3),
+                fontFamily: 'Urbanist, Inter',
+                fontSize: '32px',
+                lineHeight: '38px',
+                fontWeight: 700,
+              }}
+            >
+              {children}
+            </Typography>
+          );
+        case 3:
+          return (
+            <Typography
+              variant="h3"
+              sx={{
+                marginTop: theme.spacing(4),
+                marginBottom: theme.spacing(2),
+                fontFamily: 'Urbanist, Inter',
+                fontSize: '28px',
+                lineHeight: '32px',
+                fontWeight: 700,
+              }}
+            >
+              {children}
+            </Typography>
+          );
+        case 4:
+          return (
+            <Typography
+              variant="h4"
+              sx={{
+                marginTop: theme.spacing(3),
+                marginBottom: theme.spacing(1.5),
+                fontFamily: 'Urbanist, Inter',
+                fontSize: '22px',
+                lineHeight: '26px',
+                fontWeight: 700,
+              }}
+            >
+              {children}
+            </Typography>
+          );
+        case 5:
+          return (
+            <Typography
+              variant="h5"
+              sx={{
+                marginTop: theme.spacing(2),
+                marginBottom: theme.spacing(1),
+                fontFamily: 'Urbanist, Inter',
+                fontSize: '18px',
+                lineHeight: '24px',
+                fontWeight: 700,
+              }}
+            >
+              {children}
+            </Typography>
+          );
+        case 6:
+          return (
+            <Typography
+              variant="h6"
+              sx={{
+                marginTop: theme.spacing(1),
+                marginBottom: theme.spacing(0.5),
+                fontFamily: 'Urbanist, Inter',
+                fontSize: '12px',
+                lineHeight: '18px',
+                fontWeight: 700,
+              }}
+            >
+              {children}
+            </Typography>
+          );
+        default:
+          return (
+            <Typography
+              variant="h1"
+              sx={{
+                marginTop: theme.spacing(12),
+                marginBottom: theme.spacing(6),
+                fontFamily: 'Urbanist, Inter',
+                fontSize: '64px',
+                lineHeight: '64px',
+                fontWeight: 700,
+              }}
+            >
+              {children}
+            </Typography>
+          );
       }
     },
   };
@@ -200,73 +334,135 @@ export const BlogArticle = ({
   return (
     <>
       <BlogArticleContainer>
-        {!!createdAt ? (
-          <>
-            <Typography
-              variant="lifiBodyXSmall"
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            fontSize: '16px',
+            fontWeight: 400,
+            lineHeight: '32px',
+          }}
+        >
+          {!!tags?.data[0].attributes.Title ? (
+            <Tag
+              color={tags.data[0].attributes.TextColor}
+              backgroundColor={tags.data[0].attributes.BackgroundColor}
               component="span"
-              color={
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[800]
-                  : theme.palette.grey[300]
-              }
-              sx={{
-                '&:after': {
-                  content: '"•"',
-                  margin: '0 4px',
-                },
-              }}
+              variant="lifiBodySmall"
+              key={`blog-article-tag-${tags.data[0].id}`}
             >
-              {formatDate(publishedAt || createdAt)}
-            </Typography>
-            <Typography
-              variant="lifiBodyXSmall"
-              component="span"
-              mt={theme.spacing(1)}
-              color={
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[800]
-                  : theme.palette.grey[300]
-              }
-            >
-              {t('blog.minRead', { minRead: minRead })}
-            </Typography>
-          </>
-        ) : (
-          <Skeleton
-            width={146}
-            height={14.5}
-            variant="text"
-            sx={{ marginTop: 1 }}
-          />
-        )}
+              <Typography variant="lifiBodyMediumStrong">
+                {tags.data[0].attributes.Title}
+              </Typography>
+            </Tag>
+          ) : (
+            <Skeleton />
+          )}
+          {!!createdAt ? (
+            <>
+              <Typography
+                variant="lifiBodyXSmall"
+                component="span"
+                color={
+                  theme.palette.mode === 'light'
+                    ? theme.palette.grey[800]
+                    : theme.palette.grey[300]
+                }
+                sx={{
+                  marginLeft: theme.spacing(3),
+                  '&:after': {
+                    content: '"•"',
+                    margin: '0 4px',
+                  },
+                }}
+              >
+                {formatDate(publishedAt || createdAt)}
+              </Typography>
+              <Typography
+                variant="lifiBodyXSmall"
+                component="span"
+                color={
+                  theme.palette.mode === 'light'
+                    ? theme.palette.grey[800]
+                    : theme.palette.grey[300]
+                }
+              >
+                {t('blog.minRead', { minRead: minRead })}
+              </Typography>
+            </>
+          ) : (
+            <Skeleton
+              width={146}
+              height={14.5}
+              variant="text"
+              sx={{ marginTop: 1 }}
+            />
+          )}
+        </Box>
         {title ? (
-          <Typography variant="lifiHeaderLarge">{title}</Typography>
+          <Typography
+            sx={{
+              marginTop: theme.spacing(8),
+              fontWeight: 700,
+              lineHeight: '64px',
+              fontSize: '64px',
+              fontFamily: 'Urbanist, Inter', //todo: add font
+            }}
+          >
+            {title}
+          </Typography>
         ) : (
           <Skeleton width={'100%'} height={128} />
+        )}
+        {subtitle ? (
+          <Typography
+            variant="lifiHeaderMedium"
+            sx={{
+              marginTop: theme.spacing(8),
+              fontWeight: 400,
+              fontSize: '18px',
+              lineHeight: '32px',
+              fontFamily: 'Inter',
+            }}
+          >
+            {subtitle}
+          </Typography>
+        ) : (
+          <Skeleton width={'100%'} height={120} variant="text" />
         )}
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            marginTop: theme.spacing(1),
+            marginTop: theme.spacing(8),
+            gap: theme.spacing(2),
+            flexDirection: 'column',
+            [theme.breakpoints.up('sm' as Breakpoint)]: {
+              flexDirection: 'row',
+            },
           }}
         >
           <Box
-            sx={{ display: 'flex', alignItems: 'center' }}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
             // onClick={() => console.log('AUTHOR', author)}
           >
-            {author?.data ? (
+            {author?.data?.attributes.Avatar.data?.attributes.url ? (
               <BlogAuthorAvatar
                 src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
                 alt="author-avatar"
               />
             ) : (
               <Skeleton
-                width={28}
-                height={28}
                 variant="rounded"
-                sx={{ marginRight: theme.spacing(1) }}
+                sx={{
+                  marginRight: theme.spacing(3),
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '32px',
+                }}
               />
             )}
             {author?.data ? (
@@ -278,6 +474,12 @@ export const BlogArticle = ({
                     ? theme.palette.grey[800]
                     : theme.palette.grey[300]
                 }
+                sx={{
+                  fontSize: '24px',
+                  lineHeight: '28.5px',
+                  fontWeight: 700,
+                  fontFamily: 'Urbanist, Inter',
+                }}
               >
                 {author.data.attributes.Name}
               </Typography>
@@ -298,15 +500,15 @@ export const BlogArticle = ({
                   onClick={handleLinkedInClick}
                   sx={{
                     marginLeft: 0.5,
-                    width: '40px',
-                    height: '40px',
+                    width: '48px',
+                    height: '48px',
                     color:
                       theme.palette.mode === 'light'
                         ? theme.palette.grey[800]
                         : theme.palette.grey[300],
                   }}
                 >
-                  <LinkedInIcon sx={{ width: '18px' }} />
+                  <LinkedInIcon sx={{ width: '28px' }} />
                 </IconButton>
               </Tooltip>
               <Tooltip
@@ -320,15 +522,15 @@ export const BlogArticle = ({
                   onClick={handleFbClick}
                   sx={{
                     marginLeft: 0.5,
-                    width: '40px',
-                    height: '40px',
+                    width: '48px',
+                    height: '48px',
                     color:
                       theme.palette.mode === 'light'
                         ? theme.palette.grey[800]
                         : theme.palette.grey[300],
                   }}
                 >
-                  <FacebookIcon sx={{ width: '18px' }} />
+                  <FacebookIcon sx={{ width: '28px' }} />
                 </IconButton>
               </Tooltip>
               <Tooltip
@@ -342,15 +544,15 @@ export const BlogArticle = ({
                   onClick={handleTwitterClick}
                   sx={{
                     marginLeft: 0.5,
-                    width: '40px',
-                    height: '40px',
+                    width: '48px',
+                    height: '48px',
                     color:
                       theme.palette.mode === 'light'
                         ? theme.palette.grey[800]
                         : theme.palette.grey[300],
                   }}
                 >
-                  <XIcon sx={{ width: '18px' }} />
+                  <XIcon sx={{ width: '28px' }} />
                 </IconButton>
               </Tooltip>
               <Tooltip
@@ -367,11 +569,11 @@ export const BlogArticle = ({
                   onClick={handleShareClick}
                   sx={{
                     marginLeft: 0.5,
-                    width: showCopyMessage ? 'auto' : '40px',
+                    width: showCopyMessage ? 'auto' : '48px',
                     ...(showCopyMessage && {
                       borderRadius: '20px',
                     }),
-                    height: '40px',
+                    height: '48px',
                     color:
                       theme.palette.mode === 'light'
                         ? theme.palette.grey[800]
@@ -400,30 +602,30 @@ export const BlogArticle = ({
             />
           )}
         </Box>
-        {image?.data ? (
+      </BlogArticleContainer>
+
+      {image?.data ? (
+        <BlogArticleImageContainer>
           <BlogArticleImage
             src={`${baseUrl}${image.data.attributes.url}`}
             alt={image?.data.attributes.alternativeText}
           />
-        ) : (
-          <Skeleton
-            width={'100%'}
-            sx={{ aspectRatio: '4/3', borderRadius: '14px' }}
-          />
-        )}
+        </BlogArticleImageContainer>
+      ) : (
+        <Skeleton
+          width={'100%'}
+          sx={{ aspectRatio: '4/3', borderRadius: '14px' }}
+        />
+      )}
+      <BlogArticleContainer>
         <BlogArticleContentContainer>
-          {subtitle ? (
-            <Typography variant="lifiHeaderMedium">{subtitle}</Typography>
-          ) : (
-            <Skeleton width={'100%'} height={120} variant="text" />
-          )}
           {content ? (
             <BlocksRenderer
               content={content}
               blocks={customRichBlocks as any}
             />
           ) : (
-            <Skeleton width={'100%'} height={1000} />
+            <Skeleton sx={{ width: '100%', height: '1200px' }} />
           )}
           <Divider
             sx={{
@@ -431,31 +633,35 @@ export const BlogArticle = ({
                 theme.palette.mode === 'light'
                   ? theme.palette.grey[300]
                   : theme.palette.grey[800],
-              margin: theme.spacing(4, 0),
+              margin: theme.spacing(4, 0, 0),
             }}
-          ></Divider>
+          />
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              img: { width: '28px' },
+              margin: theme.spacing(6, 0),
               padding: theme.spacing(0.5),
               paddingRight: theme.spacing(1.5),
               width: 'fit-content',
               borderRadius: '20px',
             }}
           >
-            {author?.data ? (
+            {author?.data?.attributes.Avatar.data?.attributes.url ? (
               <BlogAuthorAvatar
                 src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
                 alt="author-avatar"
               />
             ) : (
               <Skeleton
-                width={28}
-                height={28}
                 variant="rounded"
-                sx={{ marginRight: theme.spacing(1) }}
+                sx={{
+                  width: '64px',
+                  height: '64px',
+                  transform: 'unset',
+                  marginRight: theme.spacing(3),
+                  borderRadius: '32px',
+                }}
               />
             )}
             <Box
@@ -466,33 +672,53 @@ export const BlogArticle = ({
             >
               {author?.data ? (
                 <Typography
-                  variant="lifiBodyXSmallStrong"
                   component="span"
-                  color={
-                    theme.palette.mode === 'light'
-                      ? theme.palette.grey[800]
-                      : theme.palette.grey[300]
-                  }
+                  sx={{
+                    color:
+                      theme.palette.mode === 'light'
+                        ? theme.palette.grey[800]
+                        : theme.palette.grey[300],
+                    fontFamily: 'Urbanist, Inter',
+                    fontWeight: 700,
+                    fontSize: '24px',
+                    lineHeight: '28px',
+                  }}
                 >
                   {author.data.attributes.Name}
                 </Typography>
               ) : (
-                <Skeleton variant="text" width={90} height={16} />
+                <Skeleton
+                  variant="text"
+                  sx={{ width: 142, height: 28, transform: 'unset' }}
+                />
               )}
               {author?.data ? (
                 <Typography
                   variant="lifiBodyXSmall"
                   component="span"
-                  color={
-                    theme.palette.mode === 'light'
-                      ? theme.palette.grey[800]
-                      : theme.palette.grey[300]
-                  }
+                  sx={{
+                    fontSize: '16px',
+                    fontWeight: 400,
+                    marginTop: theme.spacing(0.5),
+                    lineHeight: '20px',
+                    color:
+                      theme.palette.mode === 'light'
+                        ? '#525252' //todo: add to theme colors
+                        : theme.palette.grey[300],
+                  }}
                 >
                   {author.data.attributes.Role}
                 </Typography>
               ) : (
-                <Skeleton variant="text" width={90} height={16} />
+                <Skeleton
+                  variant="text"
+                  sx={{
+                    width: 220,
+                    height: 20,
+                    marginTop: theme.spacing(0.5),
+                    transform: 'unset',
+                  }}
+                />
               )}
             </Box>
           </Box>

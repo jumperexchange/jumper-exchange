@@ -19,6 +19,7 @@ export const Tag = styled(Typography, {
   fontSize: '14px',
   lineHeight: '24px',
   padding: theme.spacing(0, 3),
+  width: 'fit-content',
   backgroundColor: backgroundColor
     ? backgroundColor
     : theme.palette.mode === 'light'
@@ -39,8 +40,6 @@ export const Tag = styled(Typography, {
   ':not(:first-of-type)': {
     marginLeft: theme.spacing(0.5),
   },
-
-  '--border-width': '1px',
   position: 'relative',
   display: 'flex',
   justifyContent: 'center',

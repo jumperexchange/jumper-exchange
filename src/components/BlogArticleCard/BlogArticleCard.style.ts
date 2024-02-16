@@ -25,7 +25,11 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
 
 export const BlogArticleCardImage = styled('img')(({ theme }) => ({
   width: '100%',
+  height: 'auto',
   borderRadius: '16px',
-  height: 240,
   border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
+  objectFit: 'cover',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    height: 240,
+  },
 }));

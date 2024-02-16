@@ -87,7 +87,12 @@ export const BlogArticleCard = ({
         ></Skeleton>
       )}
 
-      <CardContent sx={{ padding: theme.spacing(3, 0) }}>
+      <CardContent
+        sx={{
+          padding: theme.spacing(3, 0),
+          '&:last-child': { paddingBottom: theme.spacing(1) },
+        }}
+      >
         <Box
           sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}
         >

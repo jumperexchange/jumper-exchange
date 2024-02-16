@@ -1,11 +1,15 @@
 import type { Breakpoint, CSSObject } from '@mui/material';
 import { Box, Skeleton, Typography, useTheme } from '@mui/material';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { STRAPI_BLOG_ARTICLES } from 'src/const';
+import {
+  STRAPI_BLOG_ARTICLES,
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
 import { useStrapi, useUserTracking } from 'src/hooks';
-import type { BlogArticleData } from 'src/types';
+import { EventTrackingTool, type BlogArticleData } from 'src/types';
 import { formatDate, readingTime } from 'src/utils';
 import {
   BlogHighlightsContent,
@@ -23,45 +27,44 @@ interface BlogHighlightsProps {
 
 export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
   const { trackEvent } = useUserTracking();
-  const [load, setLoad] = useState(false);
-  const { data: blogArticles, url } = useStrapi<BlogArticleData>({
+  const { data: featuredArticle, url } = useStrapi<BlogArticleData>({
     contentType: STRAPI_BLOG_ARTICLES,
     queryKey: ['blog-articles'],
+    filterFeaturedArticle: true,
   });
   const { t } = useTranslation();
   const navigate = useNavigate();
   const theme = useTheme();
   const handleClick = () => {
-    setLoad((prev) => !prev);
-    console.log('prev', load);
-    // trackEvent({
-    //   category: TrackingCategory.Menu,
-    //   label: 'click-join-discord-community-button',
-    //   action: TrackingAction.OpenMenu,
-    //   data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
-    //   disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
-    // });
-    // navigate(`/blog/${blogArticles[0].attributes.Slug}`);
-    // window.scrollTo({ top: 0, behavior: 'smooth' });
+    trackEvent({
+      category: TrackingCategory.Menu,
+      label: 'click-join-discord-community-button',
+      action: TrackingAction.OpenMenu,
+      data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
+    navigate(`/blog/${featuredArticle[0].attributes.Slug}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const minRead =
-    blogArticles && readingTime(blogArticles[0]?.attributes.Content);
+    featuredArticle && readingTime(featuredArticle[0]?.attributes.Content);
 
   return (
     <BlogHightsContainer onClick={() => handleClick()}>
-      {load && blogArticles?.length > 0 ? (
+      {featuredArticle?.length > 0 ? (
         <>
           <BlogHighlightsImage
             draggable={false}
-            src={`${url.origin}${blogArticles[0]?.attributes.Image.data.attributes.url}`}
+            src={`${url.origin}${featuredArticle[0]?.attributes.Image.data.attributes.url}`}
             alt={
-              blogArticles[0].attributes.Image.data.attributes.alternativeText
+              featuredArticle[0].attributes.Image.data.attributes
+                .alternativeText
             }
           />
           <BlogHighlightsContent>
             <BlogHighlightsDetails>
-              {blogArticles[0].attributes.tags.data.slice(0, 1).map((el) => (
+              {featuredArticle[0].attributes.tags.data.slice(0, 1).map((el) => (
                 <>
                   <Tag>
                     <Typography variant="lifiBodyMediumStrong">
@@ -70,47 +73,57 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
                   </Tag>
                 </>
               ))}
-              <Typography
-                variant="lifiBodyXSmall"
-                component="span"
-                color={
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[800]
-                    : theme.palette.grey[300]
-                }
+              <Box
                 sx={{
+                  display: 'flex',
                   marginLeft: theme.spacing(3),
-                  '&:after': {
-                    content: '"•"',
-                    margin: '0 4px',
+                  [theme.breakpoints.up('lg' as Breakpoint)]: {
+                    marginTop: 0,
+                    marginLeft: theme.spacing(3),
                   },
                 }}
               >
-                {formatDate(
-                  blogArticles[0].attributes.publishedAt ||
-                    blogArticles[0].attributes.createdAt,
-                )}
-              </Typography>
-              <Typography
-                variant="lifiBodyXSmall"
-                component="span"
-                color={
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[800]
-                    : theme.palette.grey[300]
-                }
-              >
-                {t('blog.minRead', { minRead: minRead })}
-              </Typography>
+                <Typography
+                  variant="lifiBodyXSmall"
+                  component="span"
+                  color={
+                    theme.palette.mode === 'light'
+                      ? theme.palette.grey[800]
+                      : theme.palette.grey[300]
+                  }
+                  sx={{
+                    '&:after': {
+                      content: '"•"',
+                      margin: '0 4px',
+                    },
+                  }}
+                >
+                  {formatDate(
+                    featuredArticle[0].attributes.publishedAt ||
+                      featuredArticle[0].attributes.createdAt,
+                  )}
+                </Typography>
+                <Typography
+                  variant="lifiBodyXSmall"
+                  component="span"
+                  color={
+                    theme.palette.mode === 'light'
+                      ? theme.palette.grey[800]
+                      : theme.palette.grey[300]
+                  }
+                >
+                  {t('blog.minRead', { minRead: minRead })}
+                </Typography>
+              </Box>
             </BlogHighlightsDetails>
             <Box>
               <BlogHighlightsTitle variant="lifiHeaderMedium">
-                {blogArticles[0].attributes.Title}
+                {featuredArticle[0].attributes.Title}
               </BlogHighlightsTitle>
             </Box>
             <Box>
               <BlogHighlightsSubtitle>
-                {blogArticles[0].attributes.Subtitle}
+                {featuredArticle[0].attributes.Subtitle}
               </BlogHighlightsSubtitle>
             </Box>
           </BlogHighlightsContent>
