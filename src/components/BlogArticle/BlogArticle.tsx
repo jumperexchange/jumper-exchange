@@ -380,7 +380,7 @@ export const BlogArticle = ({
               backgroundColor={tags.data[0].attributes.BackgroundColor}
               component="span"
               variant="lifiBodySmall"
-              key={`blog-article-tag-${tags.data[0].id}`}
+              key={`blog-article-tag-${tags.data[0]?.id}`}
             >
               <Typography variant="lifiBodyMediumStrong">
                 {tags.data[0].attributes.Title}

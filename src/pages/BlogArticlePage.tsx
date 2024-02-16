@@ -42,7 +42,7 @@ export const BlogArticlePage = () => {
   const isSuccess = articleIsSuccess && articlesIsSuccess;
 
   const filteredArticles = useMemo(() => {
-    return article && articles?.filter((el) => el.id !== article[0].id);
+    return article && articles?.filter((el) => el.id !== article[0]?.id);
   }, [article, articles]);
 
   return (
