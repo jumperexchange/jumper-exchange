@@ -48,7 +48,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
       width={'auto'}
       styles={{
         background: theme.palette.surface1.main,
-        padding: '16px',
+        padding: '12px',
       }}
       anchorEl={anchorEl}
     >

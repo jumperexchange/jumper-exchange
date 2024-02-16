@@ -21,14 +21,11 @@ export const NavbarButtons = () => {
     (state) => state.onWalletDisconnect,
   );
 
-  const [openMainMenu, setMainMenuState] = useMenuStore((state) => [
-    state.openMainMenu,
-    state.setMainMenuState,
-  ]);
+  const openMainMenu = useMenuStore((state) => state.openMainMenu);
 
   const { t } = useTranslation();
   const { account } = useAccounts();
-  if (!account.isConnected) {
+  if (!account?.isConnected) {
     onWalletDisconnect();
   }
 

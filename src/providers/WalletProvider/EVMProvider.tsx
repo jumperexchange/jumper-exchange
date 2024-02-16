@@ -18,7 +18,7 @@ import {
   okx,
   oneinch,
   ownbit,
-  rabby,
+  safe,
   safepal,
   status,
   taho,
@@ -26,16 +26,15 @@ import {
   tokenpocket,
   trust,
   xdefi,
-  safe,
 } from '@lifi/wallet-management';
 import { useMemo, type FC, type PropsWithChildren } from 'react';
+import { useChains } from 'src/hooks';
 import type { Chain } from 'viem';
 import { createClient } from 'viem';
 import type { CreateConnectorFn } from 'wagmi';
 import { WagmiProvider, createConfig, http } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { formatChain } from './utils';
-import { useChains } from 'src/hooks';
 
 const JUMPER_LOGO_URL = 'https://jumper.exchange/logo-144x144.svg';
 
@@ -71,7 +70,6 @@ const connectors: Record<string, CreateConnectorFn> = {
   oneinch,
   tokenary,
   safepal,
-  rabby,
   safe,
 };
 
