@@ -2465,9 +2465,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:3.0.0-alpha.20, @lifi/wallet-management@npm:^3.0.0-alpha.20":
-  version: 3.0.0-alpha.20
-  resolution: "@lifi/wallet-management@npm:3.0.0-alpha.20"
+"@lifi/types@npm:^11.3.0":
+  version: 11.3.0
+  resolution: "@lifi/types@npm:11.3.0"
+  checksum: 93d521e31891e756f0eb85e5ac443a8ca8c570ee2bc81a3134cbd3cc26846751ce4fa715f444fa2d1ae150773e3b3281146a6b4ff42c07015d7b835ecfe07484
+  languageName: node
+  linkType: hard
+
+"@lifi/wallet-management@npm:3.0.0-alpha.21, @lifi/wallet-management@npm:^3.0.0-alpha.21":
+  version: 3.0.0-alpha.21
+  resolution: "@lifi/wallet-management@npm:3.0.0-alpha.21"
   dependencies:
     "@lifi/sdk": "npm:^3.0.0-alpha.56"
     "@solana/wallet-adapter-base": "npm:^0.9.23"
@@ -2476,18 +2483,18 @@ __metadata:
   peerDependencies:
     "@tanstack/react-query": ^5.0.0
     viem: ^2.0.0
-  checksum: dd2f0694e502a1d7b0204913e171fe10316614deb6b1a2e09dd720ff706ae45c9dd1e43782d0da723a0760c30e0323ac32b348c0d89f99e22ffe75541c743b94
+  checksum: 68b0213b323c762a2a1108f45d82ed285ddd6535e27380488f7644140b2e6ffe5c9c5165a2009e734b9dd8f03c29f24c813e6733a126efd6f02614b2eadb07d3
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:3.0.0-alpha.30":
-  version: 3.0.0-alpha.30
-  resolution: "@lifi/widget@npm:3.0.0-alpha.30"
+"@lifi/widget@npm:3.0.0-alpha.31":
+  version: 3.0.0-alpha.31
+  resolution: "@lifi/widget@npm:3.0.0-alpha.31"
   dependencies:
     "@emotion/react": "npm:^11.11.3"
     "@emotion/styled": "npm:^11.11.0"
     "@lifi/sdk": "npm:^3.0.0-alpha.56"
-    "@lifi/wallet-management": "npm:^3.0.0-alpha.20"
+    "@lifi/wallet-management": "npm:^3.0.0-alpha.21"
     "@mui/icons-material": "npm:^5.15.10"
     "@mui/lab": "npm:^5.0.0-alpha.165"
     "@mui/material": "npm:^5.15.10"
@@ -2519,7 +2526,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: f0153e22fcce7d0a476c97e197e9a84d039255aa8db8725c3c159bc4e625f14cbe069253c2cfff699369527961c49229504c5ee74a340927e94c82c654cc1d40
+  checksum: 35f1081aa9af61a04ac04464d62ab5978756e6bfb316a002be2bd55d96d30c2c6dfe1a1d057033368550f9d106a5aa43ac84099dd1e40526446989a5c94d07c8
   languageName: node
   linkType: hard
 
@@ -10163,9 +10170,9 @@ __metadata:
     "@cookie3/analytics": "npm:^0.6.0"
     "@esbuild-plugins/node-globals-polyfill": "npm:^0.2.3"
     "@lifi/sdk": "npm:^3.0.0-alpha.56"
-    "@lifi/types": "npm:^11.2.0"
-    "@lifi/wallet-management": "npm:3.0.0-alpha.20"
-    "@lifi/widget": "npm:3.0.0-alpha.30"
+    "@lifi/types": "npm:^11.3.0"
+    "@lifi/wallet-management": "npm:3.0.0-alpha.21"
+    "@lifi/widget": "npm:3.0.0-alpha.31"
     "@mui/icons-material": "npm:^5.15.10"
     "@mui/material": "npm:^5.15.10"
     "@safe-global/safe-apps-sdk": "npm:^9.0.0"
