@@ -21,8 +21,10 @@ export const NavbarButtons = () => {
     (state) => state.onWalletDisconnect,
   );
 
-  const openMainMenu = useMenuStore((state) => state.openMainMenu);
-
+  const [openMainMenu, setMainMenuState] = useMenuStore((state) => [
+    state.openMainMenu,
+    state.setMainMenuState,
+  ]);
   const { t } = useTranslation();
   const { account } = useAccounts();
   if (!account?.isConnected) {
@@ -42,6 +44,7 @@ export const NavbarButtons = () => {
   const { isSuccess } = useChains();
 
   const handleOnOpenNavbarMainMenu = () => {
+    setMainMenuState(!openMainMenu);
     trackEvent({
       category: TrackingCategory.Menu,
       action: TrackingAction.OpenMenu,
