@@ -3,10 +3,17 @@ import {
   BackgroundGradientBottomRight,
   BackgroundGradientContainer,
   BackgroundGradientTopCenter,
+  BlogBackgroundGradient,
 } from '.';
 
-export const BackgroundGradient = () => {
-  return (
+interface BackgroundGradientProps {
+  variant?: 'blog';
+}
+
+export const BackgroundGradient = ({ variant }: BackgroundGradientProps) => {
+  return variant === 'blog' ? (
+    <BlogBackgroundGradient />
+  ) : (
     <BackgroundGradientContainer>
       <BackgroundGradientBottomLeft />
       <BackgroundGradientBottomRight />
