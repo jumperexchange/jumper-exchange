@@ -49,6 +49,8 @@ export const BlogArticlesBoard = () => {
         : ['blog-articles-board', page, catId],
   });
 
+  console.log('blogArticles', blogArticles);
+
   const { data: tags, isSuccess } = useStrapi<TagAttributes>({
     contentType: STRAPI_TAGS,
     queryKey: ['tags'],
@@ -108,6 +110,7 @@ export const BlogArticlesBoard = () => {
       <Typography
         variant="lifiHeaderMedium"
         sx={{
+          fontFamily: 'Urbanist, Inter',
           textAlign: 'center',
           margin: theme.spacing(10, 'auto', 0),
         }}
@@ -130,22 +133,36 @@ export const BlogArticlesBoard = () => {
               <BlogArticleCardSkeleton
                 key={`blog-article-card-skeleton-${index}`}
                 containerStyles={{
+                  flexShrink: 0,
+                  width: '100%',
+                  border: 'unset',
+                  boxShadow: 'unset',
+                  paddingBottom: 0,
+                  borderRadius: '32px',
+                  transition: 'unset',
                   [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    width: '100%',
-                    maxWidth: 420,
+                    minWidth: 250,
+                    width: 416,
                   },
                 }}
                 imageStyles={{
                   width: '100%',
                   height: 'auto',
-                  aspectRatio: 1.77,
+                  borderRadius: '16px',
+                  border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
+                  aspectRatio: 1.6,
                 }}
                 contentStyles={{
                   padding: 0,
                   width: '100%',
+                  '&:last-child': { paddingBottom: 0 },
                   [theme.breakpoints.up('sm' as Breakpoint)]: {
                     // width: 230,
-                    height: 48,
+                    height: 176,
+                  },
+                  [theme.breakpoints.up('xl' as Breakpoint)]: {
+                    // width: 230,
+                    height: 176,
                   },
                 }}
               />

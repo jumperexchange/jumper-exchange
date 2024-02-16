@@ -32,22 +32,27 @@ export const JoinDiscordBanner = () => {
       >
         <Typography
           variant="lifiHeaderMedium"
-          textAlign={'center'}
-          margin={theme.spacing(12, 'auto', 0)}
-          maxWidth={theme.breakpoints.values.sm}
-          color={
-            theme.palette.mode === 'light'
-              ? theme.palette.black.main
-              : theme.palette.black.main
-          }
+          sx={{
+            color:
+              theme.palette.mode === 'light'
+                ? theme.palette.black.main
+                : theme.palette.black.main,
+            textAlign: 'center',
+            margin: theme.spacing(0, 'auto'),
+            fontWeight: 700,
+            fontFamily: 'Urbanist, Inter',
+            fontSize: '48px',
+            lineHeight: '58px',
+          }}
         >
           {t('discordBanner.ctaHeadline')}
         </Typography>
         <Button
           onClick={handleClick}
           styles={{
-            padding: theme.spacing(0, 2),
-            margin: theme.spacing(4, 'auto', 12),
+            padding: theme.spacing(0, 4.5),
+            margin: 'auto',
+            marginTop: theme.spacing(4),
           }}
           variant="primary"
         >

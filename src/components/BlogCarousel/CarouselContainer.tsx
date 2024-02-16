@@ -118,8 +118,10 @@ export const CarouselContainer = ({
         <Typography
           variant="lifiHeaderMedium"
           sx={{
-            fontWeight: 600,
-            fontSize: 24,
+            fontFamily: 'Urbanist, Inter',
+            fontWeight: 700,
+            fontSize: '24px',
+            lineHeight: '32px',
             color: 'inherit',
           }}
         >

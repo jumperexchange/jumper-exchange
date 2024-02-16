@@ -45,7 +45,7 @@ export const BlogCarousel = ({
           theme.palette.mode === 'light'
             ? '#F9F5FF'
             : theme.palette.surface1.main,
-        padding: theme.spacing(8.5, 6),
+        padding: theme.spacing(6),
         margin: theme.spacing(12, 8, 8),
         borderRadius: '32px',
       }}

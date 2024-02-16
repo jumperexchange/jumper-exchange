@@ -44,9 +44,7 @@ export const NavbarButtons = () => {
 
   const { isSuccess } = useChains();
 
-  const handleOnOpenNavbarMainMenu = (ev) => {
-    ev.preventDefault();
-    setMainMenuState((prev: boolean) => !prev);
+  const handleOnOpenNavbarMainMenu = () => {
     trackEvent({
       category: TrackingCategory.Menu,
       action: TrackingAction.OpenMenu,
@@ -82,7 +80,7 @@ export const NavbarButtons = () => {
         aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
         aria-expanded={openMainMenu ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={(ev) => handleOnOpenNavbarMainMenu(ev)}
+        onClick={(ev) => handleOnOpenNavbarMainMenu()}
       >
         <MenuIcon
           sx={{

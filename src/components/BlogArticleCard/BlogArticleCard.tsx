@@ -48,7 +48,6 @@ export const BlogArticleCard = ({
   const theme = useTheme();
   const minRead = readingTime(content);
   const { t } = useTranslation();
-  console.log('tags', tags);
 
   const handleClick = () => {
     trackEvent({
@@ -89,20 +88,26 @@ export const BlogArticleCard = ({
       )}
 
       <CardContent sx={{ padding: theme.spacing(3, 0) }}>
-        <Box>
-          {tags?.data.map((tag) => (
+        <Box
+          sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}
+        >
+          {tags?.data.slice(0, 1).map((tag) => (
             <Typography
+              noWrap
               variant="lifiBodyXSmall"
               component="span"
-              color={
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[800]
-                  : theme.palette.grey[300]
-              }
               sx={{
+                color:
+                  theme.palette.mode === 'light'
+                    ? theme.palette.grey[800]
+                    : theme.palette.grey[300],
                 fontSize: '16px',
                 fontWeight: 400,
                 lineHeight: '32px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                maxWidth: '100%',
+                height: '64px',
                 ':not(:first-of-type)': {
                   marginLeft: theme.spacing(0.5),
                 },
@@ -112,48 +117,58 @@ export const BlogArticleCard = ({
             </Typography>
           ))}
         </Box>
-        <Typography
-          variant="lifiBodyLarge"
-          sx={{
-            color: 'inherit',
-            marginTop: theme.spacing(1),
-            height: '64px',
-            fontWeight: 700, //todo: use typography
-            fontSize: '24px',
-            lineHeight: '32px',
-          }}
-        >
-          {title}
-        </Typography>
-        <Typography
-          variant="lifiBodyXSmall"
-          component="span"
-          color={
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[800]
-              : theme.palette.grey[300]
-          }
-          sx={{
-            marginTop: theme.spacing(2),
-            '&:after': {
-              content: '"•"',
-              margin: '0 4px',
-            },
-          }}
-        >
-          {formatDate(publishedAt || createdAt)}
-        </Typography>
-        <Typography
-          variant="lifiBodyXSmall"
-          component="span"
-          color={
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[800]
-              : theme.palette.grey[300]
-          }
-        >
-          {t('blog.minRead', { minRead: minRead })}
-        </Typography>
+        <Box>
+          <Typography
+            variant="lifiBodyLarge"
+            sx={{
+              color: 'inherit',
+              marginTop: theme.spacing(1),
+              fontWeight: 700, //todo: use typography
+              fontSize: '24px',
+              fontFamily: 'Urbanist, Inter',
+              lineHeight: '32px',
+              minHeight: '64px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              '-webkit-line-clamp': '2',
+              '-webkit-box-orient': 'vertical',
+            }}
+          >
+            {title}
+          </Typography>
+        </Box>
+        <Box sx={{ marginTop: theme.spacing(2) }}>
+          <Typography
+            variant="lifiBodyXSmall"
+            component="span"
+            sx={{
+              marginTop: theme.spacing(2),
+              marginBottom: theme.spacing(0.5),
+              color:
+                theme.palette.mode === 'light'
+                  ? theme.palette.grey[800]
+                  : theme.palette.grey[300],
+              '&:after': {
+                content: '"•"',
+                margin: '0 4px',
+              },
+            }}
+          >
+            {formatDate(publishedAt || createdAt)}
+          </Typography>
+          <Typography
+            variant="lifiBodyXSmall"
+            component="span"
+            color={
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[800]
+                : theme.palette.grey[300]
+            }
+          >
+            {t('blog.minRead', { minRead: minRead })}
+          </Typography>
+        </Box>
       </CardContent>
     </BlogArticleCardContainer>
   );

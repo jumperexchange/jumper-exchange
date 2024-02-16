@@ -90,6 +90,7 @@ export const BlogArticlesBoardTabs = ({
     borderRadius: '6px',
     width: '100%',
     maxWidth: '320px',
+    fontFamily: 'Urbanist, Inter',
     [theme.breakpoints.up('lg')]: {
       width: 142,
       borderRadius: '24px',

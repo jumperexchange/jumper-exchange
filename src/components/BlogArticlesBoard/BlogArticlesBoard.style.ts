@@ -7,8 +7,8 @@ import { getContrastAlphaColor } from 'src/utils';
 export const ArticlesGrid = styled(Grid)(({ theme }) => ({
   margin: theme.spacing(2, 'auto'),
   display: 'grid',
-  marginTop: `calc(${theme.spacing(4)} + 56px + ${theme.spacing(4)} )`,
-  paddingBottom: theme.spacing(9),
+  marginTop: `calc(${theme.spacing(4)} + 56px + ${theme.spacing(6)} )`,
+  paddingBottom: theme.spacing(12),
   gridTemplateColumns: '1fr',
   gap: theme.spacing(4),
   [theme.breakpoints.up('sm' as Breakpoint)]: {

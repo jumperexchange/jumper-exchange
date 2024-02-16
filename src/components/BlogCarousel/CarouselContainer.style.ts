@@ -9,7 +9,7 @@ export const CarouselContainerBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<CarouselContainerBoxProps>(({ theme, styles }) => ({
   display: 'flex',
-  gap: 12,
+  gap: theme.spacing(4),
   marginTop: theme.spacing(4),
   p: theme.spacing(4, 0),
   overflow: 'auto',

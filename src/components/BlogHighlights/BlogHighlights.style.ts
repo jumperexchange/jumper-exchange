@@ -1,13 +1,12 @@
 import type { Breakpoint, TypographyProps } from '@mui/material';
-import { Typography } from '@mui/material';
+import { Typography, darken } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
-import type { BoxProps, SkeletonProps } from '@mui/material';
-import { Box, Skeleton, type CardProps } from '@mui/material';
+import type { BoxProps } from '@mui/material';
+import { Box } from '@mui/material';
 
 import { alpha } from '@mui/material/styles';
-import { handleNavigationIndex } from 'src/utils';
 
 export const BlogHightsContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active',
@@ -17,7 +16,26 @@ export const BlogHightsContainer = styled(Box, {
   padding: theme.spacing(8),
   borderRadius: 32,
   backgroundColor: '#F9F5FF', //todo: add to theme
+  transition: 'background-color 250ms',
   display: 'flex',
+  '&:hover': {
+    cursor: 'pointer',
+    backgroundColor: darken('#F9F5FF', 0.04),
+  },
+  // ':before': {
+  //   content: "' '",
+  //   position: 'absolute',
+  //   left: 0,
+  //   right: 0,
+  //   top: 0,
+  //   bottom: 0,
+  //   borderRadius: 32,
+  //   transition: 'background-color 250ms',
+  //   backgroundColor: 'transparent',
+  // },
+  // '&:hover:before': {
+  //   backgroundColor: getContrastAlphaColor(theme, 0.04),
+  // },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     // height: 600,
   },
@@ -38,103 +56,6 @@ export const BlogHighlightsCard = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-export interface CircleProps extends Omit<CardProps, 'component'> {
-  active: boolean;
-  'data-index': number;
-  swipeDeltaX?: number | null;
-  paginationIndex: number;
-  activePost: number;
-  maxHighlights: number;
-}
-export const Circle = styled('span', {
-  shouldForwardProp: (prop) =>
-    prop !== 'active' &&
-    prop !== 'swipeDeltaX' &&
-    prop !== 'paginationIndex' &&
-    prop !== 'activePost' &&
-    prop !== 'maxHighlights',
-})<CircleProps>(
-  ({
-    theme,
-    active,
-    swipeDeltaX,
-    paginationIndex,
-    activePost,
-    maxHighlights,
-  }) => ({
-    display: 'block',
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    cursor: 'pointer',
-    opacity: active ? 1 : 0.16,
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.alphaDark800.main
-        : theme.palette.alphaLight800.main,
-    '&:not(:first-of-type)': {
-      marginLeft: theme.spacing(0.5),
-    },
-    '&:not(:last-of-type)': {
-      marginRight: theme.spacing(0.5),
-    },
-    ':hover': {
-      backgroundColor: theme.palette.alphaDark600,
-    },
-
-    ...(swipeDeltaX &&
-      swipeDeltaX > 0 &&
-      paginationIndex ===
-        handleNavigationIndex({
-          direction: 'prev',
-          active: activePost,
-          max: maxHighlights,
-        }) && {
-        opacity: Math.abs(swipeDeltaX) / 250 + 0.16,
-      }),
-    ...(swipeDeltaX &&
-      swipeDeltaX < 0 &&
-      paginationIndex ===
-        handleNavigationIndex({
-          direction: 'next',
-          active: activePost,
-          max: maxHighlights,
-        }) && {
-        opacity: Math.abs(swipeDeltaX) / 250 + 0.16,
-      }),
-    ...(swipeDeltaX &&
-      swipeDeltaX > 0 &&
-      paginationIndex === activePost && {
-        opacity: Math.max(
-          0.16,
-          1 - Math.abs(swipeDeltaX < 250 ? swipeDeltaX / 250 : 0.84),
-        ),
-      }),
-    ...(swipeDeltaX &&
-      swipeDeltaX < 0 &&
-      paginationIndex === activePost && {
-        opacity: Math.max(
-          0.16,
-          1 - Math.abs(swipeDeltaX < 250 ? swipeDeltaX / 250 : 0.84),
-        ),
-      }),
-  }),
-);
-
-export const SkeletonCircle = styled(Skeleton, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<SkeletonProps>(({ theme }) => ({
-  display: 'block',
-  width: 8,
-  height: 8,
-  '&:not(:first-of-type)': {
-    marginLeft: theme.spacing(0.5),
-  },
-  '&:not(:last-of-type)': {
-    marginRight: theme.spacing(0.5),
-  },
-}));
-
 export const BlogHighlightsImage = styled('img')(({ theme }) => ({
   borderRadius: '14px',
   userSelect: 'none',
@@ -143,10 +64,7 @@ export const BlogHighlightsImage = styled('img')(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-  width: '60%',
-  '&:hover': {
-    cursor: 'pointer',
-  },
+  width: '54%',
   [theme.breakpoints.up('md' as Breakpoint)]: {
     alignSelf: 'center',
   },
@@ -162,6 +80,7 @@ export const BlogHighlightsContent = styled(Box)(({ theme }) => ({
   paddingBottom: theme.spacing(2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(8),
+    marginRight: 0,
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     paddingBottom: theme.spacing(10),
@@ -181,8 +100,17 @@ export const BlogHighlightsTitle = styled(Typography)<TypographyProps>(
     color: theme.palette.black.main,
     marginBottom: theme.spacing(4),
     marginTop: theme.spacing(4),
-    maxHeight: 156,
     overflow: 'hidden',
+    fontFamily: 'Urbanist, Inter', //todo: use typography
+    fontSize: '48px',
+    lineHeight: '56px',
+    fontWeight: 700,
+    maxHeight: 168,
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    '-webkit-line-clamp': '3',
+    '-webkit-box-orient': 'vertical',
+
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       marginTop: theme.spacing(2),
     },
@@ -195,8 +123,14 @@ export const BlogHighlightsTitle = styled(Typography)<TypographyProps>(
 export const BlogHighlightsSubtitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     userSelect: 'none',
+    fontSize: '18px',
+    lineHeight: '32px',
     marginBottom: theme.spacing(3),
-    maxHeight: 172,
     overflow: 'hidden',
+    maxHeight: 96,
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    '-webkit-line-clamp': '4',
+    '-webkit-box-orient': 'vertical',
   }),
 );

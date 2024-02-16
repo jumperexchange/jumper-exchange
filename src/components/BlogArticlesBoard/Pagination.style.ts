@@ -7,9 +7,15 @@ import { getContrastAlphaColor } from 'src/utils';
 export const PaginationContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
   bottom: 0,
+  padding: theme.spacing(1),
+  backgroundColor:
+    theme.palette.mode === 'dark'
+      ? getContrastAlphaColor(theme, '12%')
+      : getContrastAlphaColor(theme, '4%'),
+  borderRadius: '24px',
   left: '50%',
   transform: 'translateX(-50%)',
-  marginTop: theme.spacing(3),
+  marginTop: theme.spacing(6),
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(2),
@@ -25,6 +31,7 @@ export const PaginationIndexButton = styled(IconButton, {
 })<PaginationIndexButtonProps>(({ theme, active }) => ({
   ...(active
     ? {
+        backgroundColor: theme.palette.white.main,
         color:
           theme.palette.mode === 'light'
             ? theme.palette.grey[800]

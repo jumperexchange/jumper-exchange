@@ -45,7 +45,6 @@
       "walletNotInstalled": "{{wallet}} is not installed",
       "connectAnotherWallet": "Connect another wallet"
     },
-
     "themes": {
       "switchToLight": "Switch to Light Theme",
       "switchToDark": "Switch to Dark Theme",
@@ -63,7 +62,7 @@
   },
   "discordBanner": {
     "ctaHeadline": "Level Up Your Crypto Knowledge",
-    "ctaButton": "Join our Discord Community"
+    "ctaButton": "Join our Discord"
   },
   "blog": {
     "title": "Tips and tutorials",

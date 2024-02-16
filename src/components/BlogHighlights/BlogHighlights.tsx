@@ -1,16 +1,11 @@
-import type { CSSObject } from '@mui/material';
-import { Typography, useTheme } from '@mui/material';
+import type { Breakpoint, CSSObject } from '@mui/material';
+import { Box, Skeleton, Typography, useTheme } from '@mui/material';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import {
-  STRAPI_BLOG_ARTICLES,
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from 'src/const';
+import { STRAPI_BLOG_ARTICLES } from 'src/const';
 import { useStrapi, useUserTracking } from 'src/hooks';
 import type { BlogArticleData } from 'src/types';
-import { EventTrackingTool } from 'src/types';
 import { formatDate, readingTime } from 'src/utils';
 import {
   BlogHighlightsContent,
@@ -28,7 +23,7 @@ interface BlogHighlightsProps {
 
 export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
   const { trackEvent } = useUserTracking();
-
+  const [load, setLoad] = useState(false);
   const { data: blogArticles, url } = useStrapi<BlogArticleData>({
     contentType: STRAPI_BLOG_ARTICLES,
     queryKey: ['blog-articles'],
@@ -36,27 +31,28 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const theme = useTheme();
-  const handleImageClick = () => {
-    trackEvent({
-      category: TrackingCategory.Menu,
-      label: 'click-join-discord-community-button',
-      action: TrackingAction.OpenMenu,
-      data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
-    });
-    navigate(`/blog/${blogArticles[0].attributes.Slug}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleClick = () => {
+    setLoad((prev) => !prev);
+    console.log('prev', load);
+    // trackEvent({
+    //   category: TrackingCategory.Menu,
+    //   label: 'click-join-discord-community-button',
+    //   action: TrackingAction.OpenMenu,
+    //   data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+    //   disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    // });
+    // navigate(`/blog/${blogArticles[0].attributes.Slug}`);
+    // window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const minRead =
     blogArticles && readingTime(blogArticles[0]?.attributes.Content);
 
   return (
-    <BlogHightsContainer>
-      {blogArticles?.length > 0 ? (
+    <BlogHightsContainer onClick={() => handleClick()}>
+      {load && blogArticles?.length > 0 ? (
         <>
           <BlogHighlightsImage
-            onClick={() => handleImageClick()}
             draggable={false}
             src={`${url.origin}${blogArticles[0]?.attributes.Image.data.attributes.url}`}
             alt={
@@ -65,7 +61,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
           />
           <BlogHighlightsContent>
             <BlogHighlightsDetails>
-              {blogArticles[0].attributes.tags.data.slice(2).map((el) => (
+              {blogArticles[0].attributes.tags.data.slice(0, 1).map((el) => (
                 <>
                   <Tag>
                     <Typography variant="lifiBodyMediumStrong">
@@ -107,16 +103,63 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
                 {t('blog.minRead', { minRead: minRead })}
               </Typography>
             </BlogHighlightsDetails>
-            <BlogHighlightsTitle variant="lifiHeaderMedium">
-              {blogArticles[0].attributes.Title}
-            </BlogHighlightsTitle>
-            <BlogHighlightsSubtitle>
-              {blogArticles[0].attributes.Subtitle}
-            </BlogHighlightsSubtitle>
+            <Box>
+              <BlogHighlightsTitle variant="lifiHeaderMedium">
+                {blogArticles[0].attributes.Title}
+              </BlogHighlightsTitle>
+            </Box>
+            <Box>
+              <BlogHighlightsSubtitle>
+                {blogArticles[0].attributes.Subtitle}
+              </BlogHighlightsSubtitle>
+            </Box>
           </BlogHighlightsContent>
         </>
       ) : (
-        <p>none</p>
+        <>
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              borderRadius: '14px',
+              aspectRatio: 1.77,
+              height: 432,
+              userSelect: 'none',
+              alignSelf: 'flex-start',
+              boxShadow:
+                theme.palette.mode === 'light'
+                  ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+                  : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+              width: '54%',
+              [theme.breakpoints.up('md' as Breakpoint)]: {
+                alignSelf: 'center',
+              },
+            }}
+          />
+          <BlogHighlightsContent sx={{ width: '100%' }}>
+            <BlogHighlightsDetails>
+              <Skeleton
+                variant="rectangular"
+                sx={{ height: '48px', width: '108px', borderRadius: '24px' }}
+              />
+              <Skeleton
+                sx={{
+                  marginLeft: theme.spacing(3),
+                  height: '16px',
+                  width: '150px',
+                }}
+              />
+            </BlogHighlightsDetails>
+            <Skeleton
+              sx={{
+                margin: theme.spacing(4, 0),
+                transform: 'unset',
+                width: '100%',
+                height: '112px',
+              }}
+            />
+            <Skeleton sx={{ height: '64px' }} />
+          </BlogHighlightsContent>
+        </>
       )}
     </BlogHightsContainer>
   );

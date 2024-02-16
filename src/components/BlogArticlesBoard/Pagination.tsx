@@ -1,5 +1,5 @@
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Skeleton, Typography, useTheme } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
 import {
@@ -35,7 +35,7 @@ export const BlogArticlesBoardPagination = ({
 }: BlogArticlesBoardPaginationProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
-
+  console.log('META', meta);
   const handlePage = (page: number) => {
     trackEvent({
       category: TrackingCategory.BlogArticlesBoard,
@@ -90,9 +90,10 @@ export const BlogArticlesBoardPagination = ({
     !isEmpty && (
       <PaginationContainer>
         <PaginationButton onClick={() => handlePrev()} disableRipple={false}>
-          <ArrowBackIosIcon
+          <ArrowBackIcon
             sx={{
-              marginLeft: theme.spacing(0.75),
+              color:
+                page === 1 ? theme.palette.grey[400] : theme.palette.grey[800],
             }}
           />
         </PaginationButton>
@@ -105,14 +106,22 @@ export const BlogArticlesBoardPagination = ({
               onClick={() => handlePage(actualPage)}
               active={actualPage === page}
             >
-              <Typography variant="lifiBodyMedium">{actualPage}</Typography>
+              <Typography
+                variant="lifiBodySmallStrong"
+                sx={{ lineHeight: '18px' }}
+              >
+                {actualPage}
+              </Typography>
             </PaginationIndexButton>
           );
         })}
         <PaginationButton onClick={() => handleNext()}>
-          <ArrowForwardIosIcon
+          <ArrowForwardIcon
             sx={{
-              marginLeft: theme.spacing(0.25),
+              color:
+                meta?.pagination.pageCount === page
+                  ? theme.palette.grey[400]
+                  : theme.palette.grey[800],
             }}
           />
         </PaginationButton>

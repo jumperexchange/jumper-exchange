@@ -1,21 +1,20 @@
 import type { Breakpoint } from '@mui/material';
 import { Skeleton, useTheme } from '@mui/material';
+import { getContrastAlphaColor } from 'src/utils';
 import { BlogHighlightsCard, BlogHighlightsContent } from '.';
 
 export const BlogHighlightsSkeleton = () => {
   const theme = useTheme();
   return (
-    <BlogHighlightsCard key={`blog-highlights-skeleton`} container>
+    <BlogHighlightsCard key={`blog-highlights-skeleton`}>
       <BlogHighlightsContent>
         <Skeleton
           variant="text"
           sx={{
-            marginTop: theme.spacing(2),
-            marginBottom: theme.spacing(2),
-            height: 120,
-            [theme.breakpoints.up('md' as Breakpoint)]: {
-              marginTop: theme.spacing(0),
-            },
+            width: '100%',
+            borderRadius: '16px',
+            height: 240,
+            border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
           }}
         />
         <Skeleton

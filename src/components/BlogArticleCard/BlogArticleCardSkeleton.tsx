@@ -16,10 +16,7 @@ export const BlogArticleCardSkeleton = ({
   const theme = useTheme();
   return (
     <BlogArticleCardContainer sx={containerStyles}>
-      <Skeleton
-        variant="rectangular"
-        sx={{ width: 420, height: 236, borderRadius: '16px', ...imageStyles }}
-      />
+      <Skeleton variant="rectangular" sx={{ ...imageStyles }} />
       <CardContent
         sx={{
           ...(theme.palette.mode === 'dark' && {

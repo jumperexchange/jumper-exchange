@@ -1,4 +1,4 @@
-import { Card, type Breakpoint } from '@mui/material';
+import { Card, darken, type Breakpoint } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from 'src/utils';
@@ -8,7 +8,8 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   width: '100%',
   border: 'unset',
   padding: theme.spacing(2),
-  borderRadius: '24px',
+  paddingBottom: 0,
+  borderRadius: '32px',
   background: theme.palette.white.main,
   transition: 'background-color 250ms',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -17,10 +18,7 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   },
   '&:hover': {
     cursor: 'pointer',
-    background:
-      theme.palette.mode === 'light'
-        ? theme.palette.alphaDark100.main
-        : theme.palette.alphaLight400.main,
+    backgroundColor: darken(theme.palette.white.main, 0.04),
   },
 }));
 
