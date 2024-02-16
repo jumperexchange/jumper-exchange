@@ -124,6 +124,7 @@ export const BlogHighlights = ({ styles }: BlogHighlightsProps) => {
               aspectRatio: 1.77,
               height: 432,
               userSelect: 'none',
+              transform: 'unset',
               alignSelf: 'flex-start',
               boxShadow:
                 theme.palette.mode === 'light'

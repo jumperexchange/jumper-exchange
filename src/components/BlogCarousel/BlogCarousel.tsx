@@ -1,4 +1,5 @@
 import { Box, useTheme } from '@mui/material';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { BlogArticleCard, Button, CarouselContainer } from 'src/components';
@@ -24,6 +25,7 @@ export const BlogCarousel = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { trackEvent } = useUserTracking();
+  const [load, setLoad] = useState(false);
 
   const handleShowAll = () => {
     trackEvent({
@@ -40,6 +42,7 @@ export const BlogCarousel = ({
 
   return (
     <Box
+      onClick={() => setLoad((prev) => !prev)}
       sx={{
         backgroundColor:
           theme.palette.mode === 'light'
@@ -50,39 +53,37 @@ export const BlogCarousel = ({
         borderRadius: '32px',
       }}
     >
-      {data?.length ? (
-        <CarouselContainer
-          title={title}
-          trackingCategory={TrackingCategory.BlogCarousel}
-        >
-          {data ? (
-            data?.map((article, index) => {
-              return (
-                <BlogArticleCard
-                  id={article.id}
-                  baseUrl={url}
-                  trackingCategory={TrackingCategory.BlogCarousel}
-                  key={`blog-page-article-${index}`}
-                  image={article.attributes.Image}
-                  title={article.attributes.Title}
-                  slug={article.attributes.Slug}
-                  content={article.attributes.Content}
-                  publishedAt={article.attributes.publishedAt}
-                  createdAt={article.attributes.createdAt}
-                  tags={article.attributes.tags}
-                />
-              );
-            })
-          ) : (
-            <>
-              <BlogArticleCardSkeleton />
-              <BlogArticleCardSkeleton />
-              <BlogArticleCardSkeleton />
-              <BlogArticleCardSkeleton />
-            </>
-          )}
-        </CarouselContainer>
-      ) : null}
+      <CarouselContainer
+        title={title}
+        trackingCategory={TrackingCategory.BlogCarousel}
+      >
+        {load && data ? (
+          data?.map((article, index) => {
+            return (
+              <BlogArticleCard
+                id={article.id}
+                baseUrl={url}
+                trackingCategory={TrackingCategory.BlogCarousel}
+                key={`blog-page-article-${index}`}
+                image={article.attributes.Image}
+                title={article.attributes.Title}
+                slug={article.attributes.Slug}
+                content={article.attributes.Content}
+                publishedAt={article.attributes.publishedAt}
+                createdAt={article.attributes.createdAt}
+                tags={article.attributes.tags}
+              />
+            );
+          })
+        ) : (
+          <>
+            <BlogArticleCardSkeleton />
+            <BlogArticleCardSkeleton />
+            <BlogArticleCardSkeleton />
+            <BlogArticleCardSkeleton />
+          </>
+        )}
+      </CarouselContainer>
       {showAllButton ? (
         <Box
           width="100%"

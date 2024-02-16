@@ -5,10 +5,11 @@ import { getContrastAlphaColor } from 'src/utils';
 
 export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   flexShrink: 0,
+  display: 'flex',
+  flexDirection: 'column',
   width: '100%',
   border: 'unset',
   padding: theme.spacing(2),
-  paddingBottom: 0,
   borderRadius: '32px',
   background: theme.palette.white.main,
   transition: 'background-color 250ms',

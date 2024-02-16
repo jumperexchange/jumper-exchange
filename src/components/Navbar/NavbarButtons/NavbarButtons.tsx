@@ -80,7 +80,7 @@ export const NavbarButtons = () => {
         aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
         aria-expanded={openMainMenu ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={(ev) => handleOnOpenNavbarMainMenu()}
+        onClick={handleOnOpenNavbarMainMenu}
       >
         <MenuIcon
           sx={{
