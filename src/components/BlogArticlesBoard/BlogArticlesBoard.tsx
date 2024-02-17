@@ -201,11 +201,11 @@ export const BlogArticlesBoard = () => {
               />
             ))
           ) : (
-            <p>No Content</p>
+            <p>No Content</p> //todo: find
           )}
         </ArticlesGrid>
       </Fade>
-      {meta.pagination.pageCount > 1 ? (
+      {meta?.pagination.pageCount > 1 ? (
         <Pagination
           isSuccess={(!isFetching || !isRefetching) && isSuccess}
           isEmpty={meta?.pagination.pageCount < 1}
