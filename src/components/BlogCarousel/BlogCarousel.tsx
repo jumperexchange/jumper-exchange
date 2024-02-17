@@ -92,7 +92,7 @@ export const BlogCarousel = ({
           marginTop={!!data?.length ? 4 : 0}
         >
           <Button
-            onClick={() => handleShowAll}
+            onClick={handleShowAll}
             styles={{
               color: 'inherit',
               backgroundColor:

@@ -1,5 +1,5 @@
 import type { Breakpoint, TypographyProps } from '@mui/material';
-import { Typography, darken } from '@mui/material';
+import { Typography, darken, lighten } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
@@ -13,7 +13,10 @@ export const BlogHightsContainer = styled(Box, {
 })<BoxProps>(({ theme }) => ({
   position: 'relative',
   borderRadius: 32,
-  backgroundColor: '#F9F5FF', //todo: add to theme
+  background:
+    theme.palette.mode === 'light'
+      ? '#F9F5FF' //todo: add to theme
+      : theme.palette.alphaDark600.main,
   transition: 'background-color 250ms',
   display: 'flex',
   flexDirection: 'column',
@@ -21,7 +24,10 @@ export const BlogHightsContainer = styled(Box, {
   margin: theme.spacing(6, 2),
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor: darken('#F9F5FF', 0.04),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? darken('#F9F5FF', 0.04)
+        : theme.palette.alphaDark300.main,
   },
   // ':before': {
   //   content: "' '",
@@ -94,7 +100,7 @@ export const BlogHighlightsImage = styled('img')(({ theme }) => ({
 
 export const BlogHighlightsContent = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: '#525252', //todo: add to theme
+  color: theme.palette.mode === 'light' ? '#525252' : lighten('#525252', 0.8), //todo: add to theme
   flexDirection: 'column',
   alignSelf: 'flex-end',
   justifyContent: 'flex-end',
@@ -126,7 +132,10 @@ export const BlogHighlightsDetails = styled(Box)(({ theme }) => ({
 export const BlogHighlightsTitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     userSelect: 'none',
-    color: theme.palette.black.main,
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.black.main
+        : theme.palette.white.main,
     marginBottom: theme.spacing(4),
     marginTop: theme.spacing(4),
     overflow: 'hidden',

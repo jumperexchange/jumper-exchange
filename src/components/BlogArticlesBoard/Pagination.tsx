@@ -92,7 +92,13 @@ export const BlogArticlesBoardPagination = ({
           <ArrowBackIcon
             sx={{
               color:
-                page === 1 ? theme.palette.grey[400] : theme.palette.grey[800],
+                page === 1
+                  ? theme.palette.mode === 'light'
+                    ? theme.palette.grey[400]
+                    : theme.palette.grey[600]
+                  : theme.palette.mode === 'light'
+                    ? theme.palette.grey[800]
+                    : theme.palette.grey[400],
             }}
           />
         </PaginationButton>
@@ -119,8 +125,12 @@ export const BlogArticlesBoardPagination = ({
             sx={{
               color:
                 meta?.pagination.pageCount === page
-                  ? theme.palette.grey[400]
-                  : theme.palette.grey[800],
+                  ? theme.palette.mode === 'light'
+                    ? theme.palette.grey[400]
+                    : theme.palette.grey[600]
+                  : theme.palette.mode === 'light'
+                    ? theme.palette.grey[800]
+                    : theme.palette.grey[400],
             }}
           />
         </PaginationButton>

@@ -31,7 +31,10 @@ export const PaginationIndexButton = styled(IconButton, {
 })<PaginationIndexButtonProps>(({ theme, active }) => ({
   ...(active
     ? {
-        backgroundColor: theme.palette.white.main,
+        backgroundColor:
+          theme.palette.mode === 'light'
+            ? theme.palette.white.main
+            : getContrastAlphaColor(theme, '12%'),
         color:
           theme.palette.mode === 'light'
             ? theme.palette.grey[800]
@@ -56,9 +59,9 @@ export const PaginationIndexButton = styled(IconButton, {
   }),
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'dark'
-        ? getContrastAlphaColor(theme, '12%')
-        : getContrastAlphaColor(theme, '4%'),
+      theme.palette.mode === 'light'
+        ? getContrastAlphaColor(theme, '4%')
+        : getContrastAlphaColor(theme, '32%'),
   },
 }));
 
