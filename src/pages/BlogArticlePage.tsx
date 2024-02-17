@@ -48,31 +48,18 @@ export const BlogArticlePage = () => {
   return (
     <Layout hideNavbarTabs={true} variant={'blog'}>
       <BlogArticle
-        subtitle={isSuccess ? article[0].attributes?.Subtitle : undefined}
-        title={isSuccess ? article[0].attributes.Title : undefined}
-        content={isSuccess ? article[0].attributes.Content : undefined}
-        slug={isSuccess ? article[0].attributes.Slug : undefined}
-        author={!!article ? article[0].attributes.author : undefined}
-        publishedAt={isSuccess ? article[0].attributes.publishedAt : undefined}
-        createdAt={isSuccess ? article[0].attributes.createdAt : undefined}
-        updatedAt={isSuccess ? article[0].attributes.updatedAt : undefined}
-        tags={isSuccess ? article[0].attributes.tags : undefined}
-        image={isSuccess ? article[0].attributes.Image : undefined}
+        subtitle={isSuccess ? article[0]?.attributes.Subtitle : undefined}
+        title={isSuccess ? article[0]?.attributes.Title : undefined}
+        content={isSuccess ? article[0]?.attributes.Content : undefined}
+        slug={isSuccess ? article[0]?.attributes.Slug : undefined}
+        author={!!article ? article[0]?.attributes.author : undefined}
+        publishedAt={isSuccess ? article[0]?.attributes.publishedAt : undefined}
+        createdAt={isSuccess ? article[0]?.attributes.createdAt : undefined}
+        updatedAt={isSuccess ? article[0]?.attributes.updatedAt : undefined}
+        tags={isSuccess ? article[0]?.attributes.tags : undefined}
+        image={isSuccess ? article[0]?.attributes.Image : undefined}
         baseUrl={articleUrl.origin ?? undefined}
       />
-      {/*
-        <Container
-          sx={{
-            padding: theme.spacing(1.5, 0, 3),
-            [theme.breakpoints.up('sk' as Breakpoint)]: {
-              padding: theme.spacing(1.5, 3, 3),
-              maxWidth: `${theme.breakpoints.values.md}px`,
-            },
-          }}
-        >
-          <AccordionFAQ content={article[0].attributes.faq_items.data} />
-        </Container>
-      */}
 
       <BlogCarousel
         title={t('blog.similarPosts')}

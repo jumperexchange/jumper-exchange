@@ -374,16 +374,16 @@ export const BlogArticle = ({
             lineHeight: '32px',
           }}
         >
-          {!!tags?.data[0].attributes.Title ? (
+          {!!tags?.data[0]?.attributes.Title ? (
             <Tag
-              color={tags.data[0].attributes.TextColor}
-              backgroundColor={tags.data[0].attributes.BackgroundColor}
+              color={tags.data[0]?.attributes.TextColor}
+              backgroundColor={tags.data[0]?.attributes.BackgroundColor}
               component="span"
               variant="lifiBodySmall"
               key={`blog-article-tag-${tags.data[0]?.id}`}
             >
               <Typography variant="lifiBodyMediumStrong">
-                {tags.data[0].attributes.Title}
+                {tags.data[0].attributes?.Title}
               </Typography>
             </Tag>
           ) : (
@@ -479,7 +479,7 @@ export const BlogArticle = ({
               alignItems: 'center',
             }}
           >
-            {author?.data?.attributes.Avatar.data?.attributes.url ? (
+            {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
               <BlogAuthorAvatar
                 src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
                 alt="author-avatar"
@@ -511,7 +511,7 @@ export const BlogArticle = ({
                   fontFamily: 'Urbanist, Inter',
                 }}
               >
-                {author.data.attributes.Name}
+                {author.data?.attributes.Name}
               </Typography>
             ) : (
               <Skeleton width={80} height={16} variant="text" />
@@ -678,8 +678,8 @@ export const BlogArticle = ({
       {image?.data ? (
         <BlogArticleImageContainer>
           <BlogArticleImage
-            src={`${baseUrl}${image.data.attributes.url}`}
-            alt={image?.data.attributes.alternativeText}
+            src={`${baseUrl}${image.data.attributes?.url}`}
+            alt={image?.data.attributes?.alternativeText}
           />
         </BlogArticleImageContainer>
       ) : (
@@ -718,7 +718,7 @@ export const BlogArticle = ({
               borderRadius: '20px',
             }}
           >
-            {author?.data?.attributes.Avatar.data?.attributes.url ? (
+            {author?.data?.attributes?.Avatar.data?.attributes.url ? (
               <BlogAuthorAvatar
                 src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
                 alt="author-avatar"
@@ -755,7 +755,7 @@ export const BlogArticle = ({
                     lineHeight: '28px',
                   }}
                 >
-                  {author.data.attributes.Name}
+                  {author.data.attributes?.Name}
                 </Typography>
               ) : (
                 <Skeleton
@@ -778,7 +778,7 @@ export const BlogArticle = ({
                         : theme.palette.grey[300],
                   }}
                 >
-                  {author.data.attributes.Role}
+                  {author.data.attributes?.Role}
                 </Typography>
               ) : (
                 <Skeleton
@@ -798,10 +798,10 @@ export const BlogArticle = ({
       {image?.data && publishedAt && author?.data && title && createdAt ? (
         <ArticleJsonSchema
           title={title}
-          images={[`${baseUrl}${image.data.attributes.url}`]}
+          images={[`${baseUrl}${image.data.attributes?.url}`]}
           datePublished={publishedAt || createdAt}
           dateModified={updatedAt || createdAt}
-          authorName={author.data.attributes.Name}
+          authorName={author.data.attributes?.Name}
         />
       ) : null}
     </>
