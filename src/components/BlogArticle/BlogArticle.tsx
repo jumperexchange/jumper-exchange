@@ -529,13 +529,24 @@ export const BlogArticle = ({
                 <IconButton
                   onClick={handleLinkedInClick}
                   sx={{
-                    marginLeft: 0.5,
+                    marginLeft: theme.spacing(1.5),
                     width: '48px',
                     height: '48px',
+                    transition: 'background-color 0.3s',
+                    backgroundColor:
+                      theme.palette.mode === 'light'
+                        ? theme.palette.alphaDark100.main
+                        : theme.palette.alphaLight300.main,
                     color:
                       theme.palette.mode === 'light'
                         ? theme.palette.grey[800]
                         : theme.palette.grey[300],
+                    '&:hover': {
+                      backgroundColor:
+                        theme.palette.mode === 'light'
+                          ? theme.palette.alphaDark300.main
+                          : theme.palette.alphaLight500.main,
+                    },
                   }}
                 >
                   <LinkedInIcon sx={{ width: '28px' }} />
@@ -551,13 +562,24 @@ export const BlogArticle = ({
                 <IconButton
                   onClick={handleFbClick}
                   sx={{
-                    marginLeft: 0.5,
+                    marginLeft: theme.spacing(1.5),
                     width: '48px',
                     height: '48px',
+                    backgroundColor:
+                      theme.palette.mode === 'light'
+                        ? theme.palette.alphaDark100.main
+                        : theme.palette.alphaLight300.main,
+                    transition: 'background-color 0.3s',
                     color:
                       theme.palette.mode === 'light'
                         ? theme.palette.grey[800]
                         : theme.palette.grey[300],
+                    '&:hover': {
+                      backgroundColor:
+                        theme.palette.mode === 'light'
+                          ? theme.palette.alphaDark300.main
+                          : theme.palette.alphaLight500.main,
+                    },
                   }}
                 >
                   <FacebookIcon sx={{ width: '28px' }} />
@@ -573,13 +595,24 @@ export const BlogArticle = ({
                 <IconButton
                   onClick={handleTwitterClick}
                   sx={{
-                    marginLeft: 0.5,
+                    marginLeft: theme.spacing(1.5),
                     width: '48px',
                     height: '48px',
+                    transition: 'background-color 0.3s',
+                    backgroundColor:
+                      theme.palette.mode === 'light'
+                        ? theme.palette.alphaDark100.main
+                        : theme.palette.alphaLight300.main,
                     color:
                       theme.palette.mode === 'light'
                         ? theme.palette.grey[800]
                         : theme.palette.grey[300],
+                    '&:hover': {
+                      backgroundColor:
+                        theme.palette.mode === 'light'
+                          ? theme.palette.alphaDark300.main
+                          : theme.palette.alphaLight500.main,
+                    },
                   }}
                 >
                   <XIcon sx={{ width: '28px' }} />
@@ -598,16 +631,24 @@ export const BlogArticle = ({
                 <IconButton
                   onClick={handleShareClick}
                   sx={{
-                    marginLeft: 0.5,
-                    width: showCopyMessage ? 'auto' : '48px',
-                    ...(showCopyMessage && {
-                      borderRadius: '20px',
-                    }),
+                    marginLeft: theme.spacing(1.5),
+                    width: '48px',
                     height: '48px',
+                    transition: 'background-color 0.3s',
+                    backgroundColor:
+                      theme.palette.mode === 'light'
+                        ? theme.palette.alphaDark100.main
+                        : theme.palette.alphaLight300.main,
                     color:
                       theme.palette.mode === 'light'
                         ? theme.palette.grey[800]
                         : theme.palette.grey[300],
+                    '&:hover': {
+                      backgroundColor:
+                        theme.palette.mode === 'light'
+                          ? theme.palette.alphaDark300.main
+                          : theme.palette.alphaLight500.main,
+                    },
                   }}
                 >
                   <ShareIcon sx={{ width: '18px' }} />

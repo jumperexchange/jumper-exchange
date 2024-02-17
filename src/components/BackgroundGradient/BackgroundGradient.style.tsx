@@ -1,4 +1,4 @@
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, darken, styled } from '@mui/material/styles';
 export interface BackgroundGradientContainerProps
   extends Omit<HTMLDivElement, 'children'> {
   children?: JSX.Element | JSX.Element[] | React.ReactNode;
@@ -111,11 +111,16 @@ export const BlogBackgroundGradient = styled(
   transform: 'translateX(-50%)',
   top: 0,
   left: '50%',
+  position: theme.palette.mode === 'light' ? 'absolute' : 'fixed',
   opacity: 1,
   width: '100%',
-  height: theme.palette.mode === 'dark' ? '100vw' : '100vh',
+  height: theme.palette.mode === 'dark' ? '100vh' : '100vh',
+  zIndex: -1,
   // background: theme.palette.bg.main,
-  background: `linear-gradient(180deg, ${alpha(theme.palette.bg.main, 1)} 0%, ${alpha(theme.palette.bg.main, 0)} 100%)`,
+  background:
+    theme.palette.mode === 'light'
+      ? `linear-gradient(180deg, ${alpha(theme.palette.bg.main, 1)} 0%, ${alpha(theme.palette.bg.main, 0)} 100%)`
+      : `linear-gradient(180deg, rgba(3, 0, 20, 1) 0%, ${darken('#9747FF', 0.6)} 150%)`,
 }));
 
 // linear-gradient(180deg, rgba(243, 235, 255, 1)) 0%,rgba(243, 235, 255, 0) 100%)

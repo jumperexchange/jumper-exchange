@@ -1,5 +1,5 @@
 import type { TypographyProps } from '@mui/material';
-import { Typography, alpha, keyframes, lighten, styled } from '@mui/material';
+import { Typography, alpha, styled } from '@mui/material';
 
 export interface TagProps extends Omit<TypographyProps, 'component'> {
   component?: keyof JSX.IntrinsicElements;
@@ -7,11 +7,6 @@ export interface TagProps extends Omit<TypographyProps, 'component'> {
   color?: string;
 }
 
-const moveGradient = keyframes`
-50% {
-  background-position: 100% 50%;
-}
-`;
 export const Tag = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'color' && prop !== 'backgroundColor',
 })<TagProps>(({ theme, backgroundColor, color }) => ({
@@ -24,7 +19,7 @@ export const Tag = styled(Typography, {
     ? backgroundColor
     : theme.palette.mode === 'light'
       ? alpha(theme.palette.black.main, 0.04)
-      : lighten(theme.palette.black.main, 0.04),
+      : theme.palette.alphaLight300.main,
   color: color
     ? color
     : theme.palette.mode === 'light'

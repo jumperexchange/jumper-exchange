@@ -1,6 +1,12 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import type { Breakpoint } from '@mui/material';
-import { IconButton, Typography, useTheme } from '@mui/material';
+import {
+  IconButton,
+  Typography,
+  darken,
+  lighten,
+  useTheme,
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { openInNewTab } from 'src/utils';
@@ -45,6 +51,13 @@ export const BlogCTA = ({ title, url }: BlogCTAProps) => {
             display: 'flex',
             width: '48px',
             height: '48px',
+            transition: 'background 0.3s',
+          },
+          '&:hover': {
+            background:
+              theme.palette.mode === 'light'
+                ? darken('#E7D6FF', 0.04)
+                : lighten('#E7D6FF', 0.4),
           },
         }}
       >

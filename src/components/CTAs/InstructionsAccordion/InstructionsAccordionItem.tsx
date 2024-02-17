@@ -22,7 +22,10 @@ export const InstructionsAccordionItem = ({
     <Box
       sx={{
         display: 'flex',
-        backgroundColor: theme.palette.grey[100],
+        backgroundColor:
+          theme.palette.mode === 'light'
+            ? theme.palette.grey[100]
+            : theme.palette.grey[800],
         padding: theme.spacing(3),
         flexDirection: 'column',
         margin: theme.spacing(2, 0),
@@ -62,8 +65,19 @@ export const InstructionsAccordionItem = ({
             alignSelf: 'flex-end',
             position: 'absolute',
             right: theme.spacing(3),
-            backgroundColor: alpha(theme.palette.black.main, 0.04),
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? alpha(theme.palette.black.main, 0.04)
+                : theme.palette.alphaLight700.main,
             top: theme.spacing(2.5),
+            transition: 'background 0.3s',
+
+            ':hover': {
+              backgroundColor:
+                theme.palette.mode === 'light'
+                  ? alpha(theme.palette.black.main, 0.04)
+                  : theme.palette.alphaLight800.main,
+            },
           }}
         >
           <ExpandMoreIcon

@@ -1,4 +1,4 @@
-import { InstructionsAccordionContainer } from './InstructionsAccordion.style';
+import { Box } from '@mui/material';
 import { InstructionsAccordionItem } from './InstructionsAccordionItem';
 
 export interface InstructionItemProps {
@@ -15,7 +15,7 @@ export const InstructionsAccordion = (data: InstructionsAccordionProps) => {
     return;
   }
   return (
-    <InstructionsAccordionContainer>
+    <Box>
       {data.data?.map((el, index) => (
         <InstructionsAccordionItem
           index={index}
@@ -23,6 +23,6 @@ export const InstructionsAccordion = (data: InstructionsAccordionProps) => {
           step={el.step}
         />
       ))}
-    </InstructionsAccordionContainer>
+    </Box>
   );
 };

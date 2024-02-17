@@ -43,7 +43,7 @@ export const BlogCarousel = ({
         backgroundColor:
           theme.palette.mode === 'light'
             ? '#F9F5FF'
-            : theme.palette.surface1.main,
+            : theme.palette.alphaDark500.main,
         padding: theme.spacing(1.5),
         margin: theme.spacing(6, 2),
         borderRadius: '32px',
@@ -92,11 +92,21 @@ export const BlogCarousel = ({
           marginTop={!!data?.length ? 4 : 0}
         >
           <Button
-            variant="secondary"
-            onClick={handleShowAll}
+            onClick={() => handleShowAll}
             styles={{
+              color: 'inherit',
+              backgroundColor:
+                theme.palette.mode === 'light'
+                  ? theme.palette.alphaDark100.main
+                  : theme.palette.alphaLight400.main,
               width: 320,
               margin: theme.spacing(0, 'auto', 4),
+              '&:hover': {
+                backgroundColor:
+                  theme.palette.mode === 'light'
+                    ? theme.palette.alphaDark200.main
+                    : theme.palette.alphaLight500.main,
+              },
             }}
           >
             {t('blog.seeAllPosts')}

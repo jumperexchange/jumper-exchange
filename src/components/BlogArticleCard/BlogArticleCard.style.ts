@@ -11,7 +11,10 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   border: 'unset',
   padding: theme.spacing(2),
   borderRadius: '32px',
-  background: theme.palette.white.main,
+  background:
+    theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : theme.palette.alphaLight200.main,
   transition: 'background-color 250ms',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     minWidth: 250,
@@ -19,7 +22,10 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   },
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor: darken(theme.palette.white.main, 0.04),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? darken(theme.palette.white.main, 0.04)
+        : theme.palette.alphaLight300.main,
   },
 }));
 

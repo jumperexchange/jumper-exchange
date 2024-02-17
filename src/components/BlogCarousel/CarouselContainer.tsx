@@ -145,12 +145,9 @@ export const CarouselContainer = ({
               height: 40,
               fontSize: 22,
               transition: 'background-color 250ms',
-              backgroundColor: getContrastAlphaColor(theme, '4%'),
+              backgroundColor: getContrastAlphaColor(theme, '8%'),
               '&:hover': {
-                backgroundColor:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.alphaDark100.main
-                    : theme.palette.alphaLight300.main,
+                backgroundColor: getContrastAlphaColor(theme, '12%'),
               },
             }}
           >
@@ -166,12 +163,9 @@ export const CarouselContainer = ({
               fontSize: 22,
               transition: 'background-color 250ms',
               color: 'inherit',
-              backgroundColor: getContrastAlphaColor(theme, '4%'),
+              backgroundColor: getContrastAlphaColor(theme, '8%'),
               '&:hover': {
-                backgroundColor:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.alphaDark100.main
-                    : theme.palette.alphaLight300.main,
+                backgroundColor: getContrastAlphaColor(theme, '12%'),
               },
             }}
           >

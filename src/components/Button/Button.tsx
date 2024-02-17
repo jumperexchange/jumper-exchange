@@ -9,7 +9,7 @@ import {
 type ButtonVariant = 'primary' | 'secondary' | 'transparent';
 
 interface ButtonProps {
-  variant: ButtonVariant;
+  variant?: ButtonVariant;
   styles?: SxProps<Theme>;
   id?: string;
   fullWidth?: boolean;
