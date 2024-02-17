@@ -205,7 +205,7 @@ export const BlogArticlesBoard = () => {
           )}
         </ArticlesGrid>
       </Fade>
-      {
+      {meta.pagination.pageCount > 1 ? (
         <Pagination
           isSuccess={(!isFetching || !isRefetching) && isSuccess}
           isEmpty={meta?.pagination.pageCount < 1}
@@ -214,7 +214,7 @@ export const BlogArticlesBoard = () => {
           meta={meta}
           catId={catId}
         />
-      }
+      ) : null}
     </Grid>
   );
 };
