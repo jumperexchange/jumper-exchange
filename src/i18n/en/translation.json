@@ -75,7 +75,12 @@
     "similarPosts": "Similar Posts",
     "goToArticle": "Go to article",
     "faq": "FAQ",
-    "jumperCta": "Try jumper.exchange"
+    "jumperCta": "Try jumper.exchange",
+    "copiedLink": "Copied Link",
+    "shareLinkedIn": "Share article on LinkedIn",
+    "shareFb": "Share article on Facebook",
+    "shareX": "Share article on X",
+    "shareLink": "Share the link"
   },
   "featureCard": {
     "learnMore": "Learn more"

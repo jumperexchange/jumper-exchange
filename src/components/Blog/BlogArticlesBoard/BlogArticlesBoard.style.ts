@@ -4,20 +4,34 @@ import { Grid, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from 'src/utils';
 
+export const BlogArticlesBoardContainer = styled(Grid)(({ theme }) => ({
+  position: 'relative',
+  margin: theme.spacing(6, 2),
+  marginBottom: theme.spacing(10),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    margin: theme.spacing(8),
+  },
+}));
+
 export const ArticlesGrid = styled(Grid)(({ theme }) => ({
   margin: theme.spacing(2, 'auto'),
   display: 'grid',
   marginTop: `calc(${theme.spacing(4)} + 56px + ${theme.spacing(6)} )`,
-  paddingBottom: theme.spacing(12),
+  paddingBottom: theme.spacing(13),
   gridTemplateColumns: '1fr',
   justifyItems: 'center',
-  gap: theme.spacing(4),
+  gap: theme.spacing(3),
   [theme.breakpoints.up('md' as Breakpoint)]: {
     gridTemplateColumns: '1fr 1fr',
+    gap: theme.spacing(4),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     maxWidth: 'fit-content',
+    paddingBottom: theme.spacing(14.5),
+  },
+  [theme.breakpoints.up('xl' as Breakpoint)]: {
     gridTemplateColumns: '1fr 1fr 1fr',
+    paddingBottom: theme.spacing(14.5),
   },
 }));
 

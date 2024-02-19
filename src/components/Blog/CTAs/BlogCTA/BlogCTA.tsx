@@ -1,16 +1,10 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import type { Breakpoint } from '@mui/material';
-import {
-  IconButton,
-  Typography,
-  darken,
-  lighten,
-  useTheme,
-} from '@mui/material';
+import { IconButton, darken, lighten, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { openInNewTab } from 'src/utils';
-import { JumperBannerContainer } from '.';
+import { BlogCtaContainer, BlogCtaTitle } from '.';
 
 interface BlogCTAProps {
   title?: string;
@@ -26,22 +20,8 @@ export const BlogCTA = ({ title, url }: BlogCTAProps) => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
   return (
-    <JumperBannerContainer>
-      <Typography
-        sx={{
-          fontFamily: 'Urbanist, Inter',
-          fontWeight: 700,
-          fontSize: '32px',
-          lineHeight: '38px',
-
-          [theme.breakpoints.up('sm' as Breakpoint)]: {
-            fontSize: '48px',
-            lineHeight: '58px',
-          },
-        }}
-      >
-        {title ?? t('blog.jumperCta')}
-      </Typography>
+    <BlogCtaContainer>
+      <BlogCtaTitle>{title ?? t('blog.jumperCta')}</BlogCtaTitle>
       <IconButton
         onClick={handleClick}
         sx={{
@@ -67,6 +47,6 @@ export const BlogCTA = ({ title, url }: BlogCTAProps) => {
           }}
         />
       </IconButton>
-    </JumperBannerContainer>
+    </BlogCtaContainer>
   );
 };

@@ -1,21 +1,19 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import type { Breakpoint } from '@mui/material';
-import {
-  Box,
-  IconButton,
-  Typography,
-  useTheme,
-  type CSSObject,
-} from '@mui/material';
+import { Box, useTheme, type CSSObject } from '@mui/material';
 
 import { useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingEventParameter } from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
-import { getContrastAlphaColor } from 'src/utils';
-import { CarouselContainerBox } from '.';
+import {
+  CarouselContainerBox,
+  CarouselHeader,
+  CarouselNavigationButton,
+  CarouselNavigationContainer,
+  CarouselTitle,
+} from '.';
 
 interface CarouselContainerProps {
   title?: string;
@@ -32,9 +30,9 @@ export const CarouselContainer = ({
   trackingCategory,
 }: CarouselContainerProps) => {
   const { trackEvent } = useUserTracking();
+  const theme = useTheme();
 
   const carouselContainerRef = useRef<HTMLDivElement>(null);
-  const theme = useTheme();
   const { t } = useTranslation();
 
   const handleChange = useCallback(
@@ -99,80 +97,22 @@ export const CarouselContainer = ({
   );
   return (
     <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          ...(theme.palette.mode === 'dark' && {
-            color: theme.palette.white.main,
-          }),
-          justifyContent: 'space-between',
-        }}
-      >
-        <Typography
-          variant="lifiHeaderMedium"
-          sx={{
-            fontFamily: 'Urbanist, Inter',
-            fontWeight: 700,
-            fontSize: '24px',
-            lineHeight: '32px',
-            color: 'inherit',
-            margin: theme.spacing(3, 1.5, 0),
-            [theme.breakpoints.up('lg' as Breakpoint)]: {
-              justifyContent: 'flex-start',
-              margin: 0,
-            },
-          }}
-        >
+      <CarouselHeader>
+        <CarouselTitle variant="lifiHeaderMedium">
           {title ?? t('blog.recentPosts')}
-        </Typography>
-        <Box
-          sx={{
-            display: 'none',
-            [theme.breakpoints.up('sm' as Breakpoint)]: {
-              display: 'flex',
-            },
-            [theme.breakpoints.up('md' as Breakpoint)]: {
-              ...(children && children?.length < 3 && { display: 'none' }),
-              marginLeft: 3,
-            },
-          }}
-        >
-          <IconButton
-            onClick={() => handleChange('prev')}
-            sx={{
-              width: 40,
-              color: 'inherit',
-              height: 40,
-              fontSize: 22,
-              transition: 'background-color 250ms',
-              backgroundColor: getContrastAlphaColor(theme, '8%'),
-              '&:hover': {
-                backgroundColor: getContrastAlphaColor(theme, '12%'),
-              },
-            }}
-          >
+        </CarouselTitle>
+        <CarouselNavigationContainer show={children?.length < 3}>
+          <CarouselNavigationButton onClick={() => handleChange('prev')}>
             <ArrowBackIcon />
-          </IconButton>
-
-          <IconButton
+          </CarouselNavigationButton>
+          <CarouselNavigationButton
+            sx={{ marginLeft: theme.spacing(1) }}
             onClick={() => handleChange('next')}
-            sx={{
-              marginLeft: 2,
-              width: 40,
-              height: 40,
-              fontSize: 22,
-              transition: 'background-color 250ms',
-              color: 'inherit',
-              backgroundColor: getContrastAlphaColor(theme, '8%'),
-              '&:hover': {
-                backgroundColor: getContrastAlphaColor(theme, '12%'),
-              },
-            }}
           >
             <ArrowForwardIcon />
-          </IconButton>
-        </Box>
-      </Box>
+          </CarouselNavigationButton>
+        </CarouselNavigationContainer>
+      </CarouselHeader>
       <CarouselContainerBox
         ref={carouselContainerRef}
         sx={{

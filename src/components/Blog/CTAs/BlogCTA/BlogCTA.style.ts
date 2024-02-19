@@ -1,9 +1,9 @@
-import type { BoxProps } from '@mui/material';
+import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, darken } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
-export const JumperBannerContainer = styled(Box)<BoxProps>(({ theme }) => ({
+export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-evenly',
   alignItems: 'center',
@@ -15,4 +15,16 @@ export const JumperBannerContainer = styled(Box)<BoxProps>(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '#F6F0FF' //todo: add to theme
       : darken('#9747FF', 0.8),
+}));
+
+export const BlogCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
+  fontFamily: 'Urbanist, Inter',
+  fontWeight: 700,
+  fontSize: '32px',
+  lineHeight: '38px',
+
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    fontSize: '48px',
+    lineHeight: '58px',
+  },
 }));

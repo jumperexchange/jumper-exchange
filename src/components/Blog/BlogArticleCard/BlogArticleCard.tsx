@@ -14,7 +14,12 @@ import { useUserTracking } from 'src/hooks';
 import type { TagData } from 'src/types';
 import { EventTrackingTool, type StrapiImageData } from 'src/types';
 import { formatDate, getContrastAlphaColor, readingTime } from 'src/utils';
-import { BlogArticleCardContainer, BlogArticleCardImage } from '.';
+import {
+  BlogArticleCardContainer,
+  BlogArticleCardImage,
+  BlogArticleCardTitle,
+  BlogArticleTagTitle,
+} from '.';
 
 interface BlogArticleCardProps {
   baseUrl: URL;
@@ -97,63 +102,31 @@ export const BlogArticleCard = ({
           sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}
         >
           {tags?.data.slice(0, 1).map((tag) => (
-            <Typography
-              noWrap
-              variant="lifiBodyXSmall"
-              component="span"
-              sx={{
-                color:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[800]
-                    : theme.palette.grey[300],
-                fontSize: '16px',
-                fontWeight: 400,
-                lineHeight: '32px',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                maxWidth: '100%',
-                height: '64px',
-                ':not(:first-of-type)': {
-                  marginLeft: theme.spacing(0.5),
-                },
-              }}
-            >
+            <BlogArticleTagTitle noWrap variant="lifiBodyXSmall" as="span">
               {tag.attributes.Title}
-            </Typography>
+            </BlogArticleTagTitle>
           ))}
         </Box>
         <Box>
-          <Typography
-            variant="lifiBodyLarge"
-            sx={{
-              color: 'inherit',
-              marginTop: theme.spacing(1),
-              fontWeight: 700, //todo: use typography
-              fontSize: '24px',
-              fontFamily: 'Urbanist, Inter',
-              lineHeight: '32px',
-              minHeight: '64px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              '-webkit-line-clamp': '2',
-              '-webkit-box-orient': 'vertical',
-            }}
-          >
+          <BlogArticleCardTitle variant="lifiBodyLarge">
             {title}
-          </Typography>
+          </BlogArticleCardTitle>
         </Box>
-        <Box sx={{ marginTop: theme.spacing(2) }}>
+        <Box
+          sx={{
+            marginTop: theme.spacing(2),
+            color:
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[800]
+                : theme.palette.grey[300],
+          }}
+        >
           <Typography
             variant="lifiBodyXSmall"
             component="span"
             sx={{
               marginTop: theme.spacing(2),
               marginBottom: theme.spacing(0.5),
-              color:
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[800]
-                  : theme.palette.grey[300],
               '&:after': {
                 content: '"•"',
                 margin: '0 4px',
@@ -162,15 +135,7 @@ export const BlogArticleCard = ({
           >
             {formatDate(publishedAt || createdAt)}
           </Typography>
-          <Typography
-            variant="lifiBodyXSmall"
-            component="span"
-            color={
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[800]
-                : theme.palette.grey[300]
-            }
-          >
+          <Typography variant="lifiBodyXSmall" component="span">
             {t('blog.minRead', { minRead: minRead })}
           </Typography>
         </Box>

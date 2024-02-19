@@ -2,7 +2,6 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import type { Breakpoint } from '@mui/material';
 import {
   Fade,
-  Grid,
   Skeleton,
   Typography,
   useMediaQuery,
@@ -14,10 +13,13 @@ import { STRAPI_BLOG_ARTICLES, STRAPI_TAGS, TrackingCategory } from 'src/const';
 import { useStrapi } from 'src/hooks';
 import { type BlogArticleData, type TagAttributes } from 'src/types';
 import { getContrastAlphaColor } from 'src/utils';
+import type { TabProps } from '../../Tabs';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
-import type { TabProps } from '../Tabs';
-import { ArticlesGrid } from './BlogArticlesBoard.style';
+import {
+  ArticlesGrid,
+  BlogArticlesBoardContainer,
+} from './BlogArticlesBoard.style';
 import { BlogArticlesBoardTabs } from './BlogArticlesBoardTabs';
 import { BlogArticlesBoardPagination as Pagination } from './Pagination';
 
@@ -101,17 +103,7 @@ export const BlogArticlesBoard = () => {
   }, [catId, catLabel, handleTagsClick, isDesktop, t, tags, theme]);
 
   return (
-    <Grid
-      sx={{
-        position: 'relative',
-        margin: theme.spacing(6, 2),
-        marginBottom: theme.spacing(10),
-        [theme.breakpoints.up('sm' as Breakpoint)]: {
-          margin: theme.spacing(8),
-        },
-      }}
-      id="see-all"
-    >
+    <BlogArticlesBoardContainer id="see-all">
       <Typography
         variant="lifiHeaderMedium"
         sx={{
@@ -182,18 +174,6 @@ export const BlogArticlesBoard = () => {
                 title={article.attributes.Title}
                 slug={article.attributes.Slug}
                 trackingCategory={TrackingCategory.BlogArticlesBoard}
-                styles={{
-                  width: '100%',
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    // width: '100% !important',
-                  },
-                  '&:hover': {
-                    backgroundColor:
-                      theme.palette.mode === 'dark'
-                        ? getContrastAlphaColor(theme, '12%')
-                        : getContrastAlphaColor(theme, '4%'),
-                  },
-                }}
                 content={article.attributes.Content}
                 publishedAt={article.attributes.publishedAt}
                 createdAt={article.attributes.createdAt}
@@ -215,6 +195,6 @@ export const BlogArticlesBoard = () => {
           catId={catId}
         />
       ) : null}
-    </Grid>
+    </BlogArticlesBoardContainer>
   );
 };

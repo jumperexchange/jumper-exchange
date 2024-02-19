@@ -1,4 +1,4 @@
-import { Card, darken, type Breakpoint } from '@mui/material';
+import { Card, Typography, darken, type Breakpoint } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from 'src/utils';
@@ -37,5 +37,37 @@ export const BlogArticleCardImage = styled('img')(({ theme }) => ({
   objectFit: 'cover',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     height: 240,
+  },
+}));
+
+export const BlogArticleCardTitle = styled(Typography)(({ theme }) => ({
+  color: 'inherit',
+  marginTop: theme.spacing(1),
+  fontWeight: 700, //todo: use typography
+  fontSize: '24px',
+  fontFamily: 'Urbanist, Inter',
+  lineHeight: '32px',
+  minHeight: '64px',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  '-webkit-line-clamp': '2',
+  '-webkit-box-orient': 'vertical',
+}));
+
+export const BlogArticleTagTitle = styled(Typography)(({ theme }) => ({
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.grey[800]
+      : theme.palette.grey[300],
+  fontSize: '16px',
+  fontWeight: 400,
+  lineHeight: '32px',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxWidth: '100%',
+  height: '64px',
+  ':not(:first-of-type)': {
+    marginLeft: theme.spacing(0.5),
   },
 }));

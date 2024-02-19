@@ -11,6 +11,10 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
   margin: theme.spacing(6, 2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(12, 8),
+    margin: theme.spacing(8, 2),
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    padding: theme.spacing(12, 8),
     margin: theme.spacing(8),
   },
 }));

@@ -1,8 +1,8 @@
 import type { Breakpoint } from '@mui/material';
 import { Skeleton, useMediaQuery, useTheme } from '@mui/material';
 import { getContrastAlphaColor } from 'src/utils';
-import type { TabProps } from '../Tabs';
-import { Tabs } from '../Tabs';
+import type { TabProps } from '../../Tabs';
+import { Tabs } from '../../Tabs';
 
 interface BlogArticlesBoardTabsProps {
   openDropdown: boolean;
