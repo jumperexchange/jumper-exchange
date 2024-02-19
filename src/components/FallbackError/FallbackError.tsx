@@ -1,4 +1,3 @@
-import { useWallet } from '@lifi/widget';
 import { useTheme } from '@mui/material';
 import { Button } from 'src/components';
 import { LogoLink } from '../Navbar';
@@ -20,17 +19,18 @@ import {
   NavbarContainer,
   SupportMessage,
 } from './FallbackError.styles';
+import { useAccounts } from 'src/hooks/useAccounts';
 
 export function FallbackError() {
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const { t } = useTranslation();
-  const { account } = useWallet();
+  const { account } = useAccounts();
   return (
     <>
       <NavbarContainer>
         <LogoLink>
-          <Logo isConnected={!!account.address} theme={theme} />
+          <Logo isConnected={!!account?.address} theme={theme} />
         </LogoLink>
       </NavbarContainer>
       <CenteredContainer>

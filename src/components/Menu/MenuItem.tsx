@@ -1,5 +1,5 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import type { Breakpoint, CSSObject } from '@mui/material';
+import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
 import { Button } from 'src/components';
 import type { MenuKeys } from 'src/const';
@@ -21,9 +21,9 @@ interface MenuItemProps {
   disableRipple?: boolean | undefined;
   autoFocus?: boolean;
   showMoreIcon?: boolean;
-  styles?: CSSObject;
+  styles?: SxProps<Theme>;
   label?: string;
-  onClick: any;
+  onClick?: any;
   triggerSubMenu?: MenuKeys;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
@@ -46,10 +46,10 @@ export const MenuItem = ({
 }: MenuItemProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
-  const [onOpenSubMenu] = useMenuStore((state) => [state.onOpenSubMenu]);
+  const { setSubMenuState } = useMenuStore((state) => state);
 
   const handleClick = () => {
-    triggerSubMenu && onOpenSubMenu(triggerSubMenu);
+    triggerSubMenu && setSubMenuState(triggerSubMenu);
     triggerSubMenu &&
       trackEvent({
         category: TrackingCategory.MainMenu,
@@ -61,7 +61,7 @@ export const MenuItem = ({
           EventTrackingTool.Cookie3,
         ],
       });
-    !!onClick && onClick();
+    onClick && onClick();
   };
 
   return open ? (
@@ -77,7 +77,7 @@ export const MenuItem = ({
       <>
         {children}
         {showButton && (
-          <Button variant="primary" styles={styles} fullWidth={true}>
+          <Button variant="secondary" styles={styles} fullWidth={true}>
             {prefixIcon}
             <Typography
               variant={'lifiBodyMediumStrong'}

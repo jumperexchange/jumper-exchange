@@ -245,9 +245,16 @@ const themeCustomized: Theme = createTheme({
         },
       },
     },
+    MuiAvatar: {
+      styleOverrides: {
+        img: {
+          objectFit: 'contain',
+        },
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: {
-        '@supports': { 'font-variation-settings': 'normal' },
+        '@supports': { fontVariationSettings: 'normal' },
       },
     },
 
@@ -822,9 +829,9 @@ export const darkTheme: Theme = createTheme(
         dark: '#653BA3',
       },
       secondary: {
-        light: '#321D52',
-        main: '#321D52',
-        dark: '#321D52',
+        light: '#E9E1F5',
+        main: '#E9E1F5',
+        dark: '#E9E1F5',
       },
       tertiary: {
         light: '#33163D',

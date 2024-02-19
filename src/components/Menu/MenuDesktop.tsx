@@ -1,9 +1,8 @@
-import type { CSSObject } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
 import { Fade, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import type { KeyboardEvent } from 'react';
 import {
-  ExternalBackground,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuList,
@@ -15,53 +14,45 @@ import { useMenuStore } from 'src/stores';
 interface MenuProps {
   isOpenSubMenu: boolean;
   label?: string;
-  handleClose: (event: MouseEvent | TouchEvent) => void;
   transformOrigin?: string;
   cardsLayout?: boolean;
-  styles?: CSSObject;
+  styles?: SxProps<Theme>;
   setOpen: (open: boolean, anchorRef: any) => void;
   open: boolean;
   children: any;
+  width?: string;
+  anchorEl: any;
 }
 
 export const MenuDesktop = ({
   isOpenSubMenu,
   setOpen,
-  handleClose,
   styles,
   transformOrigin,
   cardsLayout,
+  width,
   label,
   open,
   children,
+  anchorEl,
 }: MenuProps) => {
-  const [openSubMenu, onCloseAllMenus, openWalletMenu, anchorRef] =
-    useMenuStore((state) => [
-      state.openSubMenu,
-      state.onCloseAllMenus,
-      state.openWalletMenu,
-      state.anchorRef,
-    ]);
+  const { openSubMenu, closeAllMenus } = useMenuStore((state) => state);
 
   function handleListKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Tab') {
+    if (event.key === 'Tab' || event.key === 'Escape') {
       event.preventDefault();
-      setOpen(false, null);
-    } else if (event.key === 'Escape') {
       setOpen(false, null);
     }
   }
 
   return open ? (
     <>
-      <ExternalBackground />
       <MenuPopper
         open={open}
-        anchorEl={anchorRef}
-        role={undefined}
-        popperOptions={{ strategy: 'fixed' }}
+        anchorEl={anchorEl}
         transition
         disablePortal
+        placement="bottom-end"
       >
         {({ TransitionProps }) => (
           <Fade
@@ -70,19 +61,18 @@ export const MenuDesktop = ({
               transformOrigin: transformOrigin || 'top',
             }}
           >
-            <MenuPaper isWide={openWalletMenu}>
+            <MenuPaper width={width}>
               <ClickAwayListener
                 onClickAway={(event) => {
-                  handleClose(event);
-                  onCloseAllMenus();
+                  closeAllMenus();
                 }}
               >
                 <MenuList
                   autoFocusItem={open}
-                  id="composition-menu"
+                  id="main-burger-menu"
                   autoFocus={open}
                   isOpenSubMenu={openSubMenu !== MenuKeys.None}
-                  aria-labelledby="composition-button"
+                  aria-labelledby="main-burger-menu"
                   onKeyDown={handleListKeyDown}
                   cardsLayout={cardsLayout}
                   hasLabel={!!label}

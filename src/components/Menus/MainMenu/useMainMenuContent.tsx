@@ -27,7 +27,7 @@ export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
-  const onOpenSupportModal = useMenuStore((state) => state.onOpenSupportModal);
+  const { setSupportModalState } = useMenuStore((state) => state);
   const themeMode = useSettingsStore((state) => state.themeMode);
   const explorerUrl = appendUTMParametersToLink(EXPLORER_URL, {
     utm_campaign: 'jumper_to_explorer',
@@ -240,7 +240,7 @@ export const useMainMenuContent = () => {
     },
     {
       label: t('navbar.navbarMenu.support'),
-      prefixIcon: <Discord color={theme.palette.white.main} />,
+      prefixIcon: <Discord color={theme.palette.primary.main} />,
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -252,7 +252,7 @@ export const useMainMenuContent = () => {
             EventTrackingTool.Cookie3,
           ],
         });
-        onOpenSupportModal(true);
+        setSupportModalState(true);
       },
       showButton: true,
     },

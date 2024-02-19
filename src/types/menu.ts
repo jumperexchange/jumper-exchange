@@ -1,3 +1,4 @@
+import type { CombinedWallet } from './../hooks/useCombinedWallets';
 // ----------------------------------------------------------------------
 
 import type { MenuKeys } from 'src/const';
@@ -10,39 +11,46 @@ export interface SnackbarProps {
   severity?: SnackbarSeverityType | undefined;
 }
 
+export interface EcosystemSelectMenuProps {
+  open: boolean;
+  combinedWallet?: CombinedWallet;
+}
+
 export type MenuProps = {
-  anchorRef: any;
   openMainMenu: boolean;
   openWalletSelectMenu: boolean;
   openWalletMenu: boolean;
   openSubMenu: keyof typeof MenuKeys;
   openSnackbar: SnackbarProps;
   openSupportModal: boolean;
+  openEcosystemSelect: EcosystemSelectMenuProps;
 };
-
 export interface MenuState extends MenuProps {
   // Close ALL Navbar Menus
-  onCloseAllMenus: () => void;
+  closeAllMenus: () => void;
 
   // Toggle Main Menu
-  onOpenMainMenu: (open: boolean, anchorRef?: any) => void;
-
+  setMainMenuState: (open: boolean) => void;
   // Toggle Wallet Menu
-  onOpenWalletMenu: (open: boolean, anchorRef?: any) => void;
-
+  setWalletMenuState: (open: boolean) => void;
   // Toggle Wallet Selection Menu
-  onOpenWalletSelectMenu: (open: boolean, anchorRef?: any) => void;
+  setWalletSelectMenuState: (open: boolean) => void;
+  // Toggle Ecosystem Select Menu
+  setEcosystemSelectMenuState: (
+    open: boolean,
+    combinedWallet?: CombinedWallet,
+  ) => void;
 
   // Toggle Sub Menu
-  onOpenSubMenu: (subMenu: keyof typeof MenuKeys) => void;
+  setSubMenuState: (subMenu: keyof typeof MenuKeys) => void;
 
   // Open Snackbar and set label
-  onOpenSnackbar: (
+  setSnackbarState: (
     open: boolean,
     label?: string,
     severity?: SnackbarSeverityType,
   ) => void;
 
   // Toggle support modal
-  onOpenSupportModal: (open: boolean) => void;
+  setSupportModalState: (open: boolean) => void;
 }

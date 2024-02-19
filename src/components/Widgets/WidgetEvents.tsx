@@ -3,7 +3,7 @@ import { useUserTracking } from 'src/hooks';
 
 import type {
   ChainTokenSelected,
-  RouteContactSupport,
+  ContactSupport,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
 } from '@lifi/widget';
@@ -16,7 +16,7 @@ import {
   TrackingEventParameter,
 } from 'src/const';
 import { useMultisig } from 'src/hooks';
-import { useWallet } from 'src/providers';
+import { useAccounts } from 'src/hooks/useAccounts';
 import { useActiveTabStore, useMenuStore, useMultisigStore } from 'src/stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
@@ -25,8 +25,8 @@ export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { activeTab } = useActiveTabStore();
   const { trackEvent, trackTransaction } = useUserTracking();
-  const [onOpenSupportModal] = useMenuStore((state) => [
-    state.onOpenSupportModal,
+  const [setSupportModalState] = useMenuStore((state) => [
+    state.setSupportModalState,
   ]);
   const widgetEvents = useWidgetEvents();
   const { isMultisigSigner, shouldOpenMultisigSignatureModal } = useMultisig();
@@ -34,7 +34,7 @@ export function WidgetEvents() {
     state.onDestinationChainSelected,
   ]);
 
-  const { account } = useWallet();
+  const { account } = useAccounts();
 
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
     useState(false);
@@ -173,8 +173,8 @@ export function WidgetEvents() {
       });
     };
 
-    const onRouteContactSupport = (supportId: RouteContactSupport) => {
-      onOpenSupportModal(true);
+    const onRouteContactSupport = (supportId: ContactSupport) => {
+      setSupportModalState(true);
     };
 
     const handleMultisigChainTokenSelected = (
@@ -191,7 +191,7 @@ export function WidgetEvents() {
     );
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
-    widgetEvents.on(WidgetEvent.RouteContactSupport, onRouteContactSupport);
+    widgetEvents.on(WidgetEvent.ContactSupport, onRouteContactSupport);
     widgetEvents.on(
       WidgetEvent.DestinationChainTokenSelected,
       handleMultisigChainTokenSelected,
@@ -201,7 +201,7 @@ export function WidgetEvents() {
   }, [
     activeTab,
     onDestinationChainSelected,
-    onOpenSupportModal,
+    setSupportModalState,
     shouldOpenMultisigSignatureModal,
     trackEvent,
     trackTransaction,
@@ -220,7 +220,7 @@ export function WidgetEvents() {
     setIsMultisigConnectedAlertOpen(isMultisigSigner);
     // prevent endless loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account.address]);
+  }, [account?.address]);
 
   return (
     <>
