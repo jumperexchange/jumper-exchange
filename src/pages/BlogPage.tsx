@@ -32,7 +32,7 @@ export const BlogPage = () => {
   });
 
   return (
-    <Layout hideNavbarTabs={true}>
+    <Layout hideNavbarTabs={true} redirectConnect={true}>
       <BlogHighlights />
       <BlogCarousel url={url} data={recentArticles} />
       <JoinDiscordBanner />

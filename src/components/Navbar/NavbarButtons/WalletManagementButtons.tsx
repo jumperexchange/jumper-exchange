@@ -3,6 +3,7 @@ import { getConnectorIcon } from '@lifi/wallet-management';
 import { Typography } from '@mui/material';
 import type { ReactElement } from 'react';
 import React, { useMemo, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ConnectButton,
   WalletMenu,
@@ -28,15 +29,17 @@ interface WalletManagementButtonsProps {
   backgroundColor?: string;
   color?: string;
   walletConnected?: boolean;
+  redirectConnect?: boolean;
   connectButtonLabel?: ReactElement<any, any>;
   isSuccess: boolean;
 }
 
 export const WalletManagementButtons: React.FC<
   WalletManagementButtonsProps
-> = ({ connectButtonLabel, isSuccess }) => {
+> = ({ connectButtonLabel, redirectConnect, isSuccess }) => {
   const { chains } = useChains();
   const { trackEvent } = useUserTracking();
+  const navigate = useNavigate();
   const { account } = useAccounts();
   const walletManagementButtonsRef = useRef<any>();
 
@@ -57,18 +60,31 @@ export const WalletManagementButtons: React.FC<
   );
 
   const handleWalletSelectClick = () => {
-    !openWalletSelectMenu &&
+    if (redirectConnect) {
+      navigate('/');
       trackEvent({
         category: TrackingCategory.WalletSelectMenu,
-        action: TrackingAction.OpenMenu,
-        label: 'open_wallet_select_menu',
-        data: { [TrackingEventParameter.Menu]: 'wallet_select_menu' },
+        action: TrackingAction.ClickConnectToWidget,
+        label: 'click_connect_wallet_on_jumper_learn',
         disableTrackingTool: [
           EventTrackingTool.ARCx,
           EventTrackingTool.Cookie3,
         ],
       });
-    setWalletSelectMenuState(!openWalletSelectMenu);
+    } else {
+      !openWalletSelectMenu &&
+        trackEvent({
+          category: TrackingCategory.WalletSelectMenu,
+          action: TrackingAction.OpenMenu,
+          label: 'open_wallet_select_menu',
+          data: { [TrackingEventParameter.Menu]: 'wallet_select_menu' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+      setWalletSelectMenuState(!openWalletSelectMenu);
+    }
   };
 
   const handleWalletMenuClick = () => {

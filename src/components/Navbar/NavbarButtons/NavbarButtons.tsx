@@ -13,7 +13,11 @@ import { EventTrackingTool } from 'src/types';
 import { NavbarButtonsContainer, WalletManagementButtons } from '.';
 import { MainMenu, MenuToggle } from '../..';
 
-export const NavbarButtons = () => {
+interface NavbarButtonsProps {
+  redirectConnect?: boolean;
+}
+
+export const NavbarButtons = ({ redirectConnect }: NavbarButtonsProps) => {
   const mainMenuAnchor = useRef<any>(null);
   const { trackEvent } = useUserTracking();
 
@@ -57,6 +61,7 @@ export const NavbarButtons = () => {
   return (
     <NavbarButtonsContainer className="settings">
       <WalletManagementButtons
+        redirectConnect={redirectConnect}
         connectButtonLabel={
           <Typography
             variant={'lifiBodyMediumStrong'}

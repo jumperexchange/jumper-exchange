@@ -7,9 +7,10 @@ import { NavbarContainer as Container, LogoLink } from '.';
 
 interface NavbarProps {
   hideNavbarTabs?: boolean;
+  redirectConnect?: boolean;
 }
 
-export const Navbar = ({ hideNavbarTabs }: NavbarProps) => {
+export const Navbar = ({ hideNavbarTabs, redirectConnect }: NavbarProps) => {
   const theme = useTheme();
   const { account } = useAccounts();
   const [onWelcomeScreenClosed] = useSettingsStore((state) => [
@@ -28,7 +29,7 @@ export const Navbar = ({ hideNavbarTabs }: NavbarProps) => {
         </LogoLink>
       </Link>
       {!hideNavbarTabs ? <NavbarTabs /> : null}
-      <NavbarButtons />
+      <NavbarButtons redirectConnect={redirectConnect} />
     </Container>
   );
 };
