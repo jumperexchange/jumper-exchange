@@ -1,6 +1,6 @@
 import type { InstructionItemProps } from 'src/components';
 
-import { Typography, useTheme } from '@mui/material';
+import { Typography, alpha, useTheme } from '@mui/material';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import {
@@ -71,6 +71,12 @@ export const CustomRichBlocks = ({
         return (
           <Typography
             sx={{
+              color: alpha(
+                theme.palette.mode === 'light'
+                  ? theme.palette.black.main
+                  : theme.palette.white.main,
+                0.75,
+              ),
               margin: theme.spacing(2, 0),
               fontFamily: 'Inter',
               fontSize: '18px',
@@ -109,7 +115,7 @@ export const CustomRichBlocks = ({
                 marginTop: theme.spacing(6),
                 marginBottom: theme.spacing(3),
                 fontFamily: 'Urbanist, Inter',
-                fontSize: '32px',
+                fontSize: '36px',
                 lineHeight: '38px',
                 fontWeight: 700,
               }}
