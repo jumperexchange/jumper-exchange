@@ -35,7 +35,7 @@ export const BlogCarousel = ({
       label: 'click-see-all-posts',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    navigate('/blog');
+    navigate('/learn');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

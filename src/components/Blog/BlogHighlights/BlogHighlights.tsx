@@ -40,7 +40,7 @@ export const BlogHighlights = () => {
       data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    navigate(`/blog/${featuredArticle[0].attributes.Slug}`);
+    navigate(`/learn/${featuredArticle[0].attributes.Slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

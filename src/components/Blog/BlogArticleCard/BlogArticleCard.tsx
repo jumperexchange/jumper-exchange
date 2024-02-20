@@ -65,7 +65,7 @@ export const BlogArticleCard = ({
         [TrackingEventParameter.ArticleCardId]: id,
       },
     });
-    navigate(`/blog/${slug}`);
+    navigate(`/learn/${slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   return (
