@@ -10,6 +10,7 @@ export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   flexDirection: 'row',
   padding: theme.spacing(6),
   cursor: 'pointer',
+  overflow: 'hidden',
   margin: theme.spacing(6, 0),
   borderRadius: '16px',
   background:
