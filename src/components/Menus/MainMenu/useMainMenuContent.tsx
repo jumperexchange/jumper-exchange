@@ -1,10 +1,12 @@
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
+import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { Discord, LIFIicon, Tabs } from 'src/components';
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
@@ -26,6 +28,7 @@ import {
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
+  const navigate = useNavigate();
   const theme = useTheme();
   const { setSupportModalState } = useMenuStore((state) => state);
   const themeMode = useSettingsStore((state) => state.themeMode);
@@ -120,6 +123,24 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.developers'),
       prefixIcon: <DeveloperModeIcon />,
       triggerSubMenu: MenuKeys.Devs,
+    },
+    {
+      label: 'Jumper Learn',
+      prefixIcon: <SchoolIcon />,
+      showMoreIcon: false,
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-jumper-learn-link',
+          action: TrackingAction.OpenMenu,
+          data: { [TrackingEventParameter.Menu]: 'jumper_learn' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+        navigate('/learn');
+      },
     },
     {
       label: 'X',
