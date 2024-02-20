@@ -5,12 +5,14 @@ interface LayoutProps {
   hideNavbarTabs?: boolean;
   redirectConnect?: boolean;
   variant?: 'blog' | undefined;
+  fixedPosition?: boolean;
 }
 export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
   children,
   variant,
   hideNavbarTabs,
   redirectConnect,
+  fixedPosition,
 }) => {
   return (
     <>
@@ -20,7 +22,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
         redirectConnect={redirectConnect}
       />
       {children}
-      <PoweredBy />
+      <PoweredBy fixedPosition={fixedPosition} />
       <Snackbar />
     </>
   );

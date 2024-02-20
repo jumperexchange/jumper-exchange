@@ -1,17 +1,21 @@
 import { Typography, useTheme } from '@mui/material';
 import { Trans } from 'react-i18next';
-import { appendUTMParametersToLink, openInNewTab } from '../../utils';
-import { Container } from './PoweredBy.style';
 import { LIFI_URL, TrackingAction, TrackingCategory } from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
+import { appendUTMParametersToLink, openInNewTab } from '../../utils';
+import { Container } from './PoweredBy.style';
 
 const lifiUrl = appendUTMParametersToLink(LIFI_URL, {
   utm_campaign: 'jumper_to_lifi',
   utm_medium: 'powered_by',
 });
 
-export const PoweredBy = () => {
+interface PoweredByProps {
+  fixedPosition?: boolean;
+}
+
+export const PoweredBy = ({ fixedPosition }: PoweredByProps) => {
   const theme = useTheme();
   const { trackPageload, trackEvent } = useUserTracking();
 
@@ -33,7 +37,7 @@ export const PoweredBy = () => {
   };
 
   return (
-    <Container>
+    <Container fixedPosition={fixedPosition}>
       <Typography
         variant={'lifiBodySmall'}
         sx={{
