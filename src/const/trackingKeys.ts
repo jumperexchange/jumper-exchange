@@ -41,6 +41,10 @@ export enum TrackingAction {
   SwitchTab = 'action_switch_tab',
   SwitchTheme = 'action_switch_theme',
   DownloadBrandAssets = 'action_dl_brand_assets',
+  ClickXLink = 'action_click_x_link',
+  ClickDiscordLink = 'action_click_discord_link',
+  ClickJumperLearnLink = 'action_click_jumper_learn_link',
+  ClickLifiExplorerLink = 'action_click_lifi_explorer_link',
 
   // Blog
   SeeAllPosts = 'action_see_all_posts',
