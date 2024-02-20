@@ -1,7 +1,7 @@
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import TwitterIcon from '@mui/icons-material/Twitter';
+import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
@@ -16,10 +16,10 @@ import {
   EXPLORER_URL,
   LIFI_URL,
   MenuKeys,
-  TWITTER_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
+  X_URL,
   useThemeSwitchTabs,
 } from '../../../const';
 
@@ -122,15 +122,15 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeys.Devs,
     },
     {
-      label: 'Twitter',
-      prefixIcon: <TwitterIcon />,
+      label: 'X',
+      prefixIcon: <XIcon />,
       showMoreIcon: false,
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'click-lifi-link',
           action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'lifi_twitter' },
+          data: { [TrackingEventParameter.Menu]: 'lifi_x' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
@@ -138,12 +138,12 @@ export const useMainMenuContent = () => {
         });
         trackPageload({
           source: TrackingCategory.MainMenu,
-          destination: 'twitter-jumper',
-          url: TWITTER_URL,
+          destination: 'x-jumper',
+          url: X_URL,
           pageload: true,
           disableTrackingTool: [EventTrackingTool.Cookie3],
         });
-        openInNewTab(TWITTER_URL);
+        openInNewTab(X_URL);
       },
     },
     {
