@@ -34,10 +34,6 @@ export const JoinDiscordBanner = () => {
         <Typography
           variant="lifiHeaderMedium"
           sx={{
-            color:
-              theme.palette.mode === 'light'
-                ? theme.palette.black.main
-                : theme.palette.black.main,
             textAlign: 'center',
             margin: theme.spacing(0, 'auto'),
             fontFamily: 'Urbanist, Inter',
