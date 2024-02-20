@@ -20,13 +20,14 @@ export const BlogCTA = ({ title, url }: BlogCTAProps) => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
   return (
-    <BlogCtaContainer>
+    <BlogCtaContainer onClick={handleClick}>
       <BlogCtaTitle>{title ?? t('blog.jumperCta')}</BlogCtaTitle>
       <IconButton
         onClick={handleClick}
         sx={{
           display: 'none',
           [theme.breakpoints.up('sm' as Breakpoint)]: {
+            marginLeft: theme.spacing(4),
             backgroundColor: '#E7D6FF', //todo: add to theme
             display: 'flex',
             width: '48px',

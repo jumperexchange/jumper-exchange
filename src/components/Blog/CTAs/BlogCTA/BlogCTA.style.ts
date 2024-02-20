@@ -5,10 +5,11 @@ import { styled } from '@mui/material/styles';
 
 export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'space-evenly',
+  justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'row',
   padding: theme.spacing(6),
+  cursor: 'pointer',
   margin: theme.spacing(6, 0),
   borderRadius: '16px',
   background:
@@ -22,6 +23,7 @@ export const BlogCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   fontWeight: 700,
   fontSize: '32px',
   lineHeight: '38px',
+  userSelect: 'none',
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     fontSize: '48px',
