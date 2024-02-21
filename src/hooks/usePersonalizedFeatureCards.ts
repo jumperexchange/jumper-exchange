@@ -27,7 +27,7 @@ export const usePersonalizedFeatureCards =
       'populate[feature_cards][populate][1]',
       'BackgroundImageDark',
     );
-    if (account.address && account.chainType === 'EVM') {
+    if (account?.address && account.chainType === 'EVM') {
       apiUrl.searchParams.set(
         'filters[EvmWalletAddress][$eqi]',
         account?.address,
@@ -51,7 +51,7 @@ export const usePersonalizedFeatureCards =
         const result = await response.json();
         return result.data;
       },
-      enabled: !!account.address && account.chainType === 'EVM',
+      enabled: !!account?.address && account.chainType === 'EVM',
       refetchInterval: 1000 * 60 * 60,
     });
     const featureCards = data?.[0]?.attributes?.feature_cards.data;
@@ -59,6 +59,6 @@ export const usePersonalizedFeatureCards =
     return {
       featureCards: featureCards,
       isSuccess,
-      isConnected: !!account.address && account.chainType === 'EVM',
+      isConnected: !!account?.address && account.chainType === 'EVM',
     };
   };

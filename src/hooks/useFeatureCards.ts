@@ -18,7 +18,7 @@ export const useFeatureCards = (): UseFeatureCardsProps => {
   apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
   apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
   apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
-  import.meta.env.MODE !== 'production' &&
+  import.meta.env.MODE === 'development' &&
     apiUrl.searchParams.set('publicationState', 'preview');
   const apiAccesToken =
     import.meta.env.VITE_STRAPI_DEVELOP === 'true'

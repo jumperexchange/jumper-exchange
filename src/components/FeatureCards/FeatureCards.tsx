@@ -24,7 +24,7 @@ export const FeatureCards = () => {
           (el, index) =>
             isSuccess &&
             el.attributes.DisplayConditions &&
-            !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
+            !disabledFeatureCards.includes(el.attributes.uid),
         )
         .slice(0, 2);
     }
@@ -36,7 +36,7 @@ export const FeatureCards = () => {
         ?.filter(
           (el, index) =>
             el.attributes.DisplayConditions &&
-            !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
+            !disabledFeatureCards.includes(el.attributes.uid),
         )
         .slice(0, 1);
     }
