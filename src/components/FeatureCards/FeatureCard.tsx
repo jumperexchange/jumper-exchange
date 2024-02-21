@@ -87,20 +87,17 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     trackEvent,
   ]);
 
-  const imageUrl = useMemo(() => {
-    const mode = data.attributes.DisplayConditions.mode || theme.palette.mode;
-    const imageUrl =
-      mode === 'dark'
-        ? data.attributes.BackgroundImageDark.data?.attributes.url
-        : data.attributes.BackgroundImageLight.data?.attributes.url;
-    return new URL(imageUrl, url.origin);
-  }, [
-    data.attributes.BackgroundImageDark.data?.attributes.url,
-    data.attributes.BackgroundImageLight.data?.attributes.url,
-    data.attributes.DisplayConditions.mode,
-    theme.palette.mode,
-    url.origin,
-  ]);
+  const mode = data.attributes.DisplayConditions.mode || theme.palette.mode;
+  const imageUrl =
+    mode === 'dark'
+      ? new URL(
+          data.attributes.BackgroundImageDark.data?.attributes.url,
+          url.origin,
+        )
+      : new URL(
+          data.attributes.BackgroundImageLight.data?.attributes.url,
+          url.origin,
+        );
 
   const handleClose = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
