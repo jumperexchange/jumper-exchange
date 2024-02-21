@@ -17,6 +17,7 @@ export const useFeatureCards = (): UseFeatureCardsProps => {
   const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
   apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
   apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
+  apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
   import.meta.env.MODE === 'development' &&
     apiUrl.searchParams.set('publicationState', 'preview');
   const apiAccesToken =
@@ -38,6 +39,7 @@ export const useFeatureCards = (): UseFeatureCardsProps => {
     enabled: true,
     refetchInterval: 1000 * 60 * 60,
   });
+
   return {
     featureCards: data ?? undefined,
     url: apiUrl,

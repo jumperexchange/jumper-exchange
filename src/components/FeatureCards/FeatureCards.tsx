@@ -6,6 +6,7 @@ import { useFeatureCards } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
 import { shallow } from 'zustand/shallow';
 import { FeatureCardsContainer } from '.';
+import { usePersonalizedFeatureCards } from '../../hooks/usePersonalizedFeatureCards';
 
 export const FeatureCards = () => {
   const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
@@ -13,28 +14,52 @@ export const FeatureCards = () => {
     shallow,
   );
 
-  const { featureCards: data, isSuccess } = useFeatureCards();
-  const featureCards = useMemo(() => {
-    if (Array.isArray(data) && !!data.length) {
-      const filteredCards = data.filter(
-        (el, index) =>
-          isSuccess &&
-          el.attributes.DisplayConditions &&
-          !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
-      );
-      const slicedCards = filteredCards.slice(0, 4);
-      return slicedCards;
+  const { featureCards: cards, isSuccess } = useFeatureCards();
+  const { featureCards: personalizedCards } = usePersonalizedFeatureCards();
+
+  const slicedFeatureCards = useMemo(() => {
+    if (Array.isArray(cards) && !!cards.length) {
+      return cards
+        ?.filter(
+          (el, index) =>
+            isSuccess &&
+            el.attributes.DisplayConditions &&
+            !disabledFeatureCards.includes(el.attributes.uid),
+        )
+        .slice(0, 2);
     }
-    // Return a default value if data is not an array or if it's empty
-    return [];
-  }, [data, isSuccess, disabledFeatureCards]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cards, isSuccess]);
+
+  const slicedPersonalizedFeatureCards = useMemo(() => {
+    if (Array.isArray(personalizedCards) && !!personalizedCards.length) {
+      return personalizedCards
+        ?.filter(
+          (el, index) =>
+            el.attributes.DisplayConditions &&
+            !disabledFeatureCards.includes(el.attributes.uid),
+        )
+        .slice(0, 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [personalizedCards]);
+
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
   return (
     isDesktop &&
     welcomeScreenClosed && (
       <FeatureCardsContainer>
-        {featureCards.map((cardData, index) => {
+        {slicedPersonalizedFeatureCards?.slice(0, 1).map((cardData, index) => {
+          return (
+            <FeatureCard
+              isSuccess={isSuccess}
+              data={cardData}
+              key={`feature-card-p-${index}`}
+            />
+          );
+        })}
+        {slicedFeatureCards?.map((cardData, index) => {
           return (
             <FeatureCard
               isSuccess={isSuccess}

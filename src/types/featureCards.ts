@@ -49,6 +49,7 @@ interface FeatureCardAttributes {
   DisplayConditions: FeatureCardDisplayConditions;
   createdAt: string;
   updatedAt: string;
+  PersonalizedFeatureCard?: boolean;
   publishedAt: string | null;
   locale: string;
   uid: string;
