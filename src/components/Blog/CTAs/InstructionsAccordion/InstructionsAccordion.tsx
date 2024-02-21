@@ -1,9 +1,14 @@
 import { Box } from '@mui/material';
 import { InstructionsAccordionItem } from './InstructionsAccordionItem';
 
+interface InstructionsItemLink {
+  label: string;
+  url: string;
+}
 export interface InstructionItemProps {
   title: string;
-  step: string;
+  step?: string;
+  link?: InstructionsItemLink;
 }
 
 interface InstructionsAccordionProps {
@@ -21,6 +26,7 @@ export const InstructionsAccordion = (data: InstructionsAccordionProps) => {
           index={index}
           title={el.title}
           step={el.step}
+          link={el.link}
         />
       ))}
     </Box>

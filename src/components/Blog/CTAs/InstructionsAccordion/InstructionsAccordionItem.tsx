@@ -16,9 +16,16 @@ interface InstructionsAccordionItemProps extends InstructionItemProps {
   index: number;
 }
 
+// Function to parse links within the title
+const parseTitle = (title: string, link: { label: string; url: string }) => {
+  // Replace <LINK> with anchor tag
+  return title.replace('<LINK>', `<a href="${link.url}">${link.label}</a>`);
+};
+
 export const InstructionsAccordionItem = ({
   title,
   step,
+  link,
   index,
 }: InstructionsAccordionItemProps) => {
   const [open, setOpen] = useState(false);
@@ -27,7 +34,7 @@ export const InstructionsAccordionItem = ({
     | MouseEventHandler<HTMLDivElement | HTMLButtonElement>
     | undefined = (e) => {
     e.stopPropagation();
-    setOpen((prev) => !prev);
+    step && setOpen((prev) => !prev);
   };
   return (
     <InstructionsAccordionItemContainer>
@@ -36,9 +43,15 @@ export const InstructionsAccordionItem = ({
           <InstructionsAccordionItemIndex>
             {index + 1}
           </InstructionsAccordionItemIndex>
-          <InstructionsAccordionItemLabel>
-            {title}
-          </InstructionsAccordionItemLabel>
+          {link ? (
+            <InstructionsAccordionItemLabel
+              dangerouslySetInnerHTML={{ __html: parseTitle(title, link) }}
+            />
+          ) : (
+            <InstructionsAccordionItemLabel>
+              {title}
+            </InstructionsAccordionItemLabel>
+          )}
         </Box>
         {step ? (
           <IconButtonSecondary

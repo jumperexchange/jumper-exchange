@@ -29,7 +29,6 @@ export const CustomRichBlocks = ({
   const customRichBlocks = {
     // You can use the default components to set class names...
     link: (data: any) => {
-      console.log('data', data);
       return <Link href={data.url}>{data.children[0].props.text}</Link>;
     },
     image: (data: ImageData) =>
@@ -61,7 +60,7 @@ export const CustomRichBlocks = ({
           const new_array: InstructionItemProps[] = [];
           let jso = children[0].props.text
             .replace('<INSTRUCTIONS ', '')
-            .replace('>', '');
+            .replace('/>', '');
 
           // Parse the JSON string and push each parsed object into the new_array
           JSON.parse(jso).forEach((obj: InstructionItemProps) => {
@@ -70,6 +69,7 @@ export const CustomRichBlocks = ({
 
           return <InstructionsAccordion data={new_array} />;
         } catch (error) {
+          // console.log(error);
           return;
         }
       } else {
