@@ -88,31 +88,12 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   ]);
 
   const imageUrl = useMemo(() => {
-    // set bg image according to mode first
-    if (data.attributes.DisplayConditions.mode) {
-      if (data.attributes.DisplayConditions.mode === 'dark') {
-        return new URL(
-          data.attributes.BackgroundImageDark.data?.attributes.url,
-          url.origin,
-        );
-      } else if (data.attributes.DisplayConditions.mode === 'light') {
-        return new URL(
-          data.attributes.BackgroundImageLight.data?.attributes.url,
-          url.origin,
-        );
-      }
-      // OR theme.mode
-    } else if (theme.palette.mode === 'dark') {
-      return new URL(
-        data.attributes.BackgroundImageDark.data?.attributes.url,
-        url.origin,
-      );
-    } else {
-      return new URL(
-        data.attributes.BackgroundImageLight.data?.attributes.url,
-        url.origin,
-      );
-    }
+    const mode = data.attributes.DisplayConditions.mode || theme.palette.mode;
+    const imageUrl =
+      mode === 'dark'
+        ? data.attributes.BackgroundImageDark.data?.attributes.url
+        : data.attributes.BackgroundImageLight.data?.attributes.url;
+    return new URL(imageUrl, url.origin);
   }, [
     data.attributes.BackgroundImageDark.data?.attributes.url,
     data.attributes.BackgroundImageLight.data?.attributes.url,
