@@ -28,7 +28,8 @@ export const FeatureCards = () => {
         )
         .slice(0, 2);
     }
-  }, [cards, disabledFeatureCards, isSuccess]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cards, isSuccess]);
 
   const slicedPersonalizedFeatureCards = useMemo(() => {
     if (Array.isArray(personalizedCards) && !!personalizedCards.length) {
@@ -40,7 +41,8 @@ export const FeatureCards = () => {
         )
         .slice(0, 1);
     }
-  }, [disabledFeatureCards, personalizedCards]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [personalizedCards]);
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
