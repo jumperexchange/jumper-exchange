@@ -7,6 +7,7 @@ import {
   BlogCTA,
   ImageViewer,
   InstructionsAccordion,
+  Link,
   Widget,
 } from 'src/components';
 import type { MediaAttributes } from 'src/types';
@@ -27,6 +28,10 @@ export const CustomRichBlocks = ({
   const theme = useTheme();
   const customRichBlocks = {
     // You can use the default components to set class names...
+    link: (data: any) => {
+      console.log('data', data);
+      return <Link href={data.url}>{data.children[0].props.text}</Link>;
+    },
     image: (data: ImageData) =>
       baseUrl ? <ImageViewer imageData={data.image} baseUrl={baseUrl} /> : null,
     paragraph: ({ children }: any) => {

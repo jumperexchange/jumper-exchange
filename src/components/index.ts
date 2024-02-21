@@ -10,6 +10,7 @@ export * from './IconButton.style';
 export * from './ImageViewer';
 export * from './JoinDiscordBanner';
 export * from './JsonSchema';
+export * from './Link.style';
 export * from './Menu';
 export * from './Menus';
 export * from './MessageCard';

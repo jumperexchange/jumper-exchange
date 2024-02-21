@@ -93,8 +93,6 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
     width: '100%',
   },
 
-  a: { color: 'inherit', fontWeight: 600 },
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(4, 'unset'),
     maxWidth: '100%',
