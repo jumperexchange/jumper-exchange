@@ -32,9 +32,9 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   ]);
   const theme = useTheme();
   useEffect(() => {
-    data?.attributes.DisplayConditions &&
-      data?.attributes.DisplayConditions.showOnce &&
+    if (data?.attributes.DisplayConditions?.showOnce) {
       onDisableFeatureCard(data?.attributes.uid);
+    }
   }, [
     data?.attributes.DisplayConditions,
     data?.attributes.uid,
