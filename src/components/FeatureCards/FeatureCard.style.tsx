@@ -5,12 +5,13 @@ import { styled } from '@mui/material/styles';
 
 export interface CardProps extends Omit<MuiCardProps, 'component'> {
   backgroundImageUrl?: string;
-  dark?: boolean;
+  isDarkCard?: boolean;
 }
 
 export const FCard = styled(MuiCard, {
-  shouldForwardProp: (prop) => prop !== 'backgroundImageUrl' && prop !== 'dark',
-})<CardProps>(({ theme, backgroundImageUrl, dark }) => ({
+  shouldForwardProp: (prop) =>
+    prop !== 'backgroundImageUrl' && prop !== 'isDarkCard',
+})<CardProps>(({ theme, backgroundImageUrl, isDarkCard }) => ({
   width: 384,
   height: 160,
   cursor: 'pointer',
@@ -19,7 +20,7 @@ export const FCard = styled(MuiCard, {
   marginBottom: theme.spacing(1.5),
   overflow: 'hidden',
   backgroundImage: `url(${backgroundImageUrl}), radial-gradient(circle at 506px 437px, #3F49E1 -43%, ${
-    dark || theme.palette.mode === 'dark' ? '#20223D' : '#FFFFFF'
+    isDarkCard || theme.palette.mode === 'dark' ? '#20223D' : '#FFFFFF'
   } 506px 349px)`,
   backgroundSize: 'contain',
   boxShadow:

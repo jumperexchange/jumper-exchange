@@ -167,7 +167,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       <Card
         backgroundImageUrl={imageUrl?.href}
         onClick={handleCardClick}
-        dark={data.attributes.DisplayConditions.mode === 'dark'}
+        isDarkCard={data.attributes.DisplayConditions.mode === 'dark'}
       >
         <CardContent
           sx={{
