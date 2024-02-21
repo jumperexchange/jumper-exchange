@@ -30,7 +30,7 @@ export function FallbackError() {
     <>
       <NavbarContainer>
         <LogoLink>
-          <Logo isConnected={!!account.address} theme={theme} />
+          <Logo isConnected={!!account?.address} theme={theme} />
         </LogoLink>
       </NavbarContainer>
       <CenteredContainer>

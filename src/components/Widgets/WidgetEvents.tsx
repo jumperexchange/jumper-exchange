@@ -220,7 +220,7 @@ export function WidgetEvents() {
     setIsMultisigConnectedAlertOpen(isMultisigSigner);
     // prevent endless loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account.address]);
+  }, [account?.address]);
 
   return (
     <>

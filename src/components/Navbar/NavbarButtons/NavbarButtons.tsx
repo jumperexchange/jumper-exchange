@@ -29,7 +29,9 @@ export const NavbarButtons = () => {
 
   const { t } = useTranslation();
   const { account } = useAccounts();
-  if (!account.isConnected) onWalletDisconnect();
+  if (!account?.isConnected) {
+    onWalletDisconnect();
+  }
 
   // return focus to the button when we transitioned from !open -> open
   const prevMainMenu = useRef(openMainMenu);
