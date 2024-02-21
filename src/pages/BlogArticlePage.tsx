@@ -1,8 +1,16 @@
+import type { Breakpoint } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Layout } from 'src/Layout';
-import { BlogArticle, BlogCarousel, JoinDiscordBanner } from 'src/components';
+import {
+  BackgroundGradient,
+  BlogArticle,
+  BlogCarousel,
+  JoinDiscordBanner,
+  PoweredBy,
+} from 'src/components';
 import { STRAPI_BLOG_ARTICLES } from 'src/const';
 import { useCookie3, useInitUserTracking, useStrapi } from 'src/hooks';
 import type { BlogArticleData } from 'src/types';
@@ -12,6 +20,7 @@ export const BlogArticlePage = () => {
   const { t } = useTranslation();
   const { initTracking } = useInitUserTracking();
   const cookie3 = useCookie3();
+  const theme = useTheme();
 
   useEffect(() => {
     initTracking({});
@@ -60,14 +69,31 @@ export const BlogArticlePage = () => {
         image={isSuccess ? article[0]?.attributes.Image : undefined}
         baseUrl={articleUrl.origin ?? undefined}
       />
+      <Box
+        position="relative"
+        sx={{
+          padding: theme.spacing(6, 2),
 
-      <BlogCarousel
-        title={t('blog.similarPosts')}
-        showAllButton={true}
-        data={filteredArticles}
-        url={articleUrl}
-      />
-      <JoinDiscordBanner />
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            padding: theme.spacing(6, 2),
+            paddingTop: theme.spacing(12),
+          },
+          [theme.breakpoints.up('md' as Breakpoint)]: {
+            padding: theme.spacing(8),
+            paddingTop: theme.spacing(12),
+          },
+        }}
+      >
+        <BackgroundGradient styles={{ position: 'absolute' }} />
+        <BlogCarousel
+          title={t('blog.similarPosts')}
+          showAllButton={true}
+          data={filteredArticles}
+          url={articleUrl}
+        />
+        <JoinDiscordBanner />
+        <PoweredBy />
+      </Box>
     </Layout>
   );
 };

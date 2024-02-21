@@ -1,3 +1,4 @@
+import type { CSSObject } from '@mui/material';
 import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
@@ -8,13 +9,17 @@ import {
 
 interface BackgroundGradientProps {
   variant?: 'blog';
+  styles?: CSSObject;
 }
 
-export const BackgroundGradient = ({ variant }: BackgroundGradientProps) => {
+export const BackgroundGradient = ({
+  variant,
+  styles,
+}: BackgroundGradientProps) => {
   return variant === 'blog' ? (
     <BlogBackgroundGradient />
   ) : (
-    <BackgroundGradientContainer>
+    <BackgroundGradientContainer sx={styles}>
       <BackgroundGradientBottomLeft />
       <BackgroundGradientBottomRight />
       <BackgroundGradientTopCenter />

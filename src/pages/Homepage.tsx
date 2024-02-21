@@ -1,16 +1,21 @@
 import { useEffect } from 'react';
 import { Layout } from 'src/Layout';
-import { FeatureCards, WelcomeScreen, Widgets } from 'src/components';
+import {
+  FeatureCards,
+  PoweredBy,
+  WelcomeScreen,
+  Widgets,
+} from 'src/components';
 import { useCookie3, useInitUserTracking } from 'src/hooks';
 
 import { Snackbar, SupportModal } from 'src/components';
 import { AppProvider } from 'src/providers';
 
 interface HomepageProps {
-  fixedPosition?: boolean;
+  fixedPoweredBy?: boolean;
 }
 
-export const Homepage = ({ fixedPosition }: HomepageProps) => {
+export const Homepage = ({ fixedPoweredBy }: HomepageProps) => {
   const { initTracking } = useInitUserTracking();
   const cookie3 = useCookie3();
 
@@ -21,16 +26,13 @@ export const Homepage = ({ fixedPosition }: HomepageProps) => {
 
   return (
     <AppProvider>
-      <Layout
-        hideNavbarTabs={false}
-        redirectConnect={false}
-        fixedPosition={true}
-      >
+      <Layout hideNavbarTabs={false} redirectConnect={false}>
         <WelcomeScreen />
         <Widgets />
         <FeatureCards />
         <Snackbar />
         <SupportModal />
+        <PoweredBy fixedPosition={fixedPoweredBy} />
       </Layout>
     </AppProvider>
   );

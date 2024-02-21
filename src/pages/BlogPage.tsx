@@ -7,6 +7,7 @@ import {
   BlogCarousel,
   BlogHighlights,
   JoinDiscordBanner,
+  PoweredBy,
 } from 'src/components';
 import { STRAPI_BLOG_ARTICLES } from 'src/const';
 import { useCookie3, useInitUserTracking, useStrapi } from 'src/hooks';
@@ -37,6 +38,7 @@ export const BlogPage = () => {
       <BlogCarousel url={url} data={recentArticles} />
       <JoinDiscordBanner />
       <BlogArticlesBoard />
+      <PoweredBy />
       {/* <AccordionFAQ content={faqData as unknown as FaqMeta[]} /> */}
     </Layout>
   );

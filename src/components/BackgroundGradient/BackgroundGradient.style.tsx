@@ -72,10 +72,10 @@ export const BackgroundGradientBottomLeft = styled(
 )<BackgroundGradientProps>(({ theme }) => ({
   transform: 'translate(-50%,50%) scale(1.5)',
   left: 0,
-  opacity: theme.palette.mode === 'dark' ? '0.24' : '0.12',
+  opacity: theme.palette.mode === 'dark' ? '0.24' : '0.16',
   bottom: 0,
   background:
-    'radial-gradient(50% 50% at 50% 50%, #1969FF 0%, rgba(255, 255, 255, 0) 100%)',
+    'radial-gradient(50% 50% at 50% 50%, #BB00FF 0%, rgba(255, 255, 255, 0) 100%)',
 }));
 
 export const BackgroundGradientBottomRight = styled(
@@ -84,9 +84,9 @@ export const BackgroundGradientBottomRight = styled(
   transform: 'translate(50%,50%) scale(1.5)',
   right: 0,
   bottom: 0,
-  opacity: theme.palette.mode === 'dark' ? '0.24' : '0.12',
+  opacity: theme.palette.mode === 'dark' ? '0.24' : '0.16',
   background:
-    'radial-gradient(50% 50% at 50% 50%, #E1147B 0%, rgba(255, 255, 255, 0) 100%)',
+    'radial-gradient(50% 50% at 50% 50%, #0044FF 0%, rgba(255, 255, 255, 0) 100%)',
 }));
 
 export const BackgroundGradientTopCenter = styled(
@@ -102,7 +102,7 @@ export const BackgroundGradientTopCenter = styled(
   height: theme.palette.mode === 'dark' ? '100vw' : '100vh',
   opacity: theme.palette.mode === 'dark' ? '0.24' : '0.12',
   background:
-    'radial-gradient(50% 50% at 50% 50%, #9747FF 0%, rgba(255, 255, 255, 0) 100%)',
+    'radial-gradient(50% 50% at 50% 50%, #8800FF 0%, rgba(255, 255, 255, 0) 100%)',
 }));
 
 export const BlogBackgroundGradient = styled(
