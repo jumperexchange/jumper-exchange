@@ -1,8 +1,8 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import type { Breakpoint } from '@mui/material';
-import { IconButton, darken, lighten, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { IconButtonPrimary } from 'src/components';
 import { openInNewTab } from 'src/utils';
 import { BlogCtaContainer, BlogCtaTitle } from '.';
 
@@ -22,32 +22,12 @@ export const BlogCTA = ({ title, url }: BlogCTAProps) => {
   return (
     <BlogCtaContainer onClick={handleClick}>
       <BlogCtaTitle>{title ?? t('blog.jumperCta')}</BlogCtaTitle>
-      <IconButton
+      <IconButtonPrimary
         onClick={handleClick}
-        sx={{
-          display: 'none',
-          [theme.breakpoints.up('sm' as Breakpoint)]: {
-            marginLeft: theme.spacing(4),
-            backgroundColor: '#E7D6FF', //todo: add to theme
-            display: 'flex',
-            width: '48px',
-            height: '48px',
-            transition: 'background 0.3s',
-          },
-          '&:hover': {
-            background:
-              theme.palette.mode === 'light'
-                ? darken('#E7D6FF', 0.04)
-                : lighten('#E7D6FF', 0.4),
-          },
-        }}
+        sx={{ marginLeft: theme.spacing(4) }}
       >
-        <ArrowForwardIcon
-          sx={{
-            color: '#240752', //todo: add to theme
-          }}
-        />
-      </IconButton>
+        <ArrowForwardIcon sx={{ width: '28px', height: '28px' }} />
+      </IconButtonPrimary>
     </BlogCtaContainer>
   );
 };

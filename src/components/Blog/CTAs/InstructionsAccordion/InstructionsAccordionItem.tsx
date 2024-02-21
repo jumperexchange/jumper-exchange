@@ -1,7 +1,8 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Box, IconButton, Typography, alpha, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
+import { IconButton } from 'src/components';
 import type { InstructionItemProps } from '.';
 
 interface InstructionsAccordionItemProps extends InstructionItemProps {
@@ -40,7 +41,12 @@ export const InstructionsAccordionItem = ({
       }}
     >
       <Box
-        sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}
+        sx={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
         onClick={(e) => handleOpen(e)}
       >
         <Box sx={{ display: 'flex' }}>
@@ -69,21 +75,7 @@ export const InstructionsAccordionItem = ({
         {step ? (
           <IconButton
             onClick={(e) => handleOpen(e)}
-            sx={{
-              alignSelf: 'center',
-              backgroundColor:
-                theme.palette.mode === 'light'
-                  ? alpha(theme.palette.black.main, 0.04)
-                  : theme.palette.alphaLight700.main,
-              transition: 'background 0.3s',
-
-              ':hover': {
-                backgroundColor:
-                  theme.palette.mode === 'light'
-                    ? alpha(theme.palette.black.main, 0.04)
-                    : theme.palette.alphaLight800.main,
-              },
-            }}
+            sx={{ width: '40px', height: '40px' }}
           >
             <ExpandMoreIcon
               sx={{ ...(open && { transform: 'rotate(180deg)' }) }}

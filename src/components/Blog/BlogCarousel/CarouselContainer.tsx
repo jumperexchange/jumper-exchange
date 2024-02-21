@@ -103,22 +103,17 @@ export const CarouselContainer = ({
         </CarouselTitle>
         <CarouselNavigationContainer show={children?.length < 3}>
           <CarouselNavigationButton onClick={() => handleChange('prev')}>
-            <ArrowBackIcon />
+            <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
           </CarouselNavigationButton>
           <CarouselNavigationButton
             sx={{ marginLeft: theme.spacing(1) }}
             onClick={() => handleChange('next')}
           >
-            <ArrowForwardIcon />
+            <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
           </CarouselNavigationButton>
         </CarouselNavigationContainer>
       </CarouselHeader>
-      <CarouselContainerBox
-        ref={carouselContainerRef}
-        sx={{
-          ...styles,
-        }}
-      >
+      <CarouselContainerBox ref={carouselContainerRef} sx={styles}>
         {children}
       </CarouselContainerBox>
     </Box>

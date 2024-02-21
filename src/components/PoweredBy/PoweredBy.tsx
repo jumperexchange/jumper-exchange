@@ -1,3 +1,4 @@
+import type { CSSObject } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
 import { Trans } from 'react-i18next';
 import { LIFI_URL, TrackingAction, TrackingCategory } from 'src/const';
@@ -13,9 +14,10 @@ const lifiUrl = appendUTMParametersToLink(LIFI_URL, {
 
 interface PoweredByProps {
   fixedPosition?: boolean;
+  styles?: CSSObject;
 }
 
-export const PoweredBy = ({ fixedPosition }: PoweredByProps) => {
+export const PoweredBy = ({ fixedPosition, styles }: PoweredByProps) => {
   const theme = useTheme();
   const { trackPageload, trackEvent } = useUserTracking();
 
@@ -37,7 +39,7 @@ export const PoweredBy = ({ fixedPosition }: PoweredByProps) => {
   };
 
   return (
-    <Container fixedPosition={fixedPosition}>
+    <Container fixedPosition={fixedPosition} sx={styles}>
       <Typography
         variant={'lifiBodySmall'}
         sx={{

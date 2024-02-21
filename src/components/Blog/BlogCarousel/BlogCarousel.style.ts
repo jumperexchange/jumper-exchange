@@ -9,15 +9,14 @@ export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
       ? '#F9F5FF'
       : theme.palette.alphaDark500.main,
   padding: theme.spacing(1.5),
-  margin: theme.spacing(6, 2),
+  // marginTop: theme.spacing(6),
   borderRadius: '32px',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(6, 4),
-    margin: theme.spacing(0, 2, 8),
+    // marginTop: theme.spacing(8),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     padding: theme.spacing(6),
-    margin: theme.spacing(12, 8, 8),
   },
 }));
 

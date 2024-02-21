@@ -4,8 +4,8 @@ import type {
   CSSObject,
   IconButtonProps,
 } from '@mui/material';
-import { Box, IconButton, Typography, styled } from '@mui/material';
-import { getContrastAlphaColor } from 'src/utils';
+import { Box, Typography, styled } from '@mui/material';
+import { IconButtonTransparent } from 'src/components/IconButton.style';
 
 export interface CarouselContainerBoxProps extends Omit<BoxProps, 'variant'> {
   styles?: CSSObject;
@@ -77,16 +77,10 @@ export const CarouselNavigationContainer = styled(Box, {
   },
 }));
 
-export const CarouselNavigationButton = styled(IconButton, {
+export const CarouselNavigationButton = styled(IconButtonTransparent, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<IconButtonProps>(({ theme }) => ({
   width: 40,
-  color: 'inherit',
   height: 40,
   fontSize: 22,
-  transition: 'background-color 250ms',
-  backgroundColor: getContrastAlphaColor(theme, '8%'),
-  '&:hover': {
-    backgroundColor: getContrastAlphaColor(theme, '12%'),
-  },
 }));

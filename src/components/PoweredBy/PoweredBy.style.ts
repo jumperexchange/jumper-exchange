@@ -1,3 +1,4 @@
+import type { Breakpoint } from '@mui/material';
 import { styled, type BoxProps } from '@mui/material';
 
 export interface ContainerProps extends Omit<BoxProps, 'variant'> {
@@ -12,8 +13,14 @@ export const Container = styled('div')<ContainerProps>(
           position: 'static',
           display: 'flex',
           justifyContent: 'flex-end',
-          marginRight: theme.spacing(3),
-          marginBottom: theme.spacing(2.75),
+          // marginRight: theme.spacing(3),
+          marginTop: theme.spacing(6),
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            marginTop: theme.spacing(8),
+          },
+          [theme.breakpoints.up('md' as Breakpoint)]: {
+            marginTop: theme.spacing(8),
+          },
         }
       : {
           position: 'fixed',

@@ -6,6 +6,7 @@ export * from './Button';
 export * from './CustomColorTypography.style';
 export * from './FallbackError';
 export * from './FeatureCards';
+export * from './IconButton.style';
 export * from './ImageViewer';
 export * from './JoinDiscordBanner';
 export * from './JsonSchema';
