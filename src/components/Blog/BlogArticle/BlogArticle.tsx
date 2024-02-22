@@ -1,5 +1,4 @@
-import type { Breakpoint } from '@mui/material';
-import { Skeleton, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
 import {
@@ -16,14 +15,21 @@ import {
   BlogArticlAuthorRole,
   BlogArticlAuthorRoleSkeleton,
   BlogArticleAuthorLabel,
+  BlogArticleAuthorLabelSkeleton,
   BlogArticleContainer,
   BlogArticleContentContainer,
+  BlogArticleContentSkeleton,
   BlogArticleHeaderMeta,
+  BlogArticleHeaderMetaDate,
+  BlogArticleHeaderTagSkeleton,
   BlogArticleImage,
   BlogArticleImageContainer,
   BlogArticleImageSkeleton,
+  BlogArticleMetaSkeleton,
   BlogArticleSubtitle,
+  BlogArticleSubtitleSkeleton,
   BlogArticleTitle,
+  BlogArticleTitleSkeleton,
   BlogAuthorAvatar,
   BlogAuthorAvatarSkeleton,
   BlogAuthorContainer,
@@ -81,82 +87,32 @@ export const BlogArticle = ({
               </Typography>
             </Tag>
           ) : (
-            <Skeleton
-              variant="rectangular"
-              sx={{
-                height: '48px',
-                width: '120px',
-                borderRadius: '24px',
-                transform: 'unset',
-              }}
-            />
+            <BlogArticleHeaderTagSkeleton variant="rectangular" />
           )}
           {!!createdAt ? (
             <>
-              <Typography
-                variant="lifiBodyXSmall"
-                component="span"
-                sx={{
-                  marginLeft: theme.spacing(3),
-                  '&:after': {
-                    content: '"•"',
-                    margin: theme.spacing(0, 1),
-                  },
-                }}
-              >
+              <BlogArticleHeaderMetaDate variant="lifiBodyXSmall" as="span">
                 {formatDate(publishedAt || createdAt)}
-              </Typography>
+              </BlogArticleHeaderMetaDate>
               <Typography variant="lifiBodyXSmall" component="span">
                 {t('blog.minRead', { minRead: minRead })}
               </Typography>
             </>
           ) : (
-            <Skeleton
-              width={146}
-              height={14.5}
-              variant="text"
-              sx={{ marginLeft: theme.spacing(3) }}
-            />
+            <BlogArticleMetaSkeleton variant="text" />
           )}
         </BlogArticleHeaderMeta>
         {title ? (
           <BlogArticleTitle>{title}</BlogArticleTitle>
         ) : (
-          <Skeleton
-            sx={{
-              marginTop: theme.spacing(8),
-              transform: 'unset',
-              width: '100%',
-              height: '256px',
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                height: '192px',
-              },
-              [theme.breakpoints.up('md' as Breakpoint)]: {
-                height: '120px',
-              },
-            }}
-          />
+          <BlogArticleTitleSkeleton />
         )}
         {subtitle ? (
           <BlogArticleSubtitle variant="lifiHeaderMedium">
             {subtitle}
           </BlogArticleSubtitle>
         ) : (
-          <Skeleton
-            sx={{
-              marginTop: theme.spacing(8),
-              transform: 'unset',
-              width: '100%',
-              height: '96px',
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                height: '64px',
-              },
-              [theme.breakpoints.up('lg' as Breakpoint)]: {
-                height: '32px',
-              },
-            }}
-            variant="text"
-          />
+          <BlogArticleSubtitleSkeleton variant="text" />
         )}
         <BlogMetaContainer>
           <BlogAuthorContainer>
@@ -176,10 +132,7 @@ export const BlogArticle = ({
                 {author.data?.attributes.Name}
               </BlogArticleAuthorLabel>
             ) : (
-              <Skeleton
-                sx={{ width: '140px', height: '28px', transform: 'unset' }}
-                variant="text"
-              />
+              <BlogArticleAuthorLabelSkeleton variant="text" />
             )}
           </BlogAuthorContainer>
           <ShareArticleIcons title={title} slug={slug} />
@@ -201,11 +154,7 @@ export const BlogArticle = ({
           {content ? (
             <CustomRichBlocks baseUrl={baseUrl} content={content} />
           ) : (
-            <Skeleton
-              variant="text"
-              sx={{ transform: 'unset', height: '5000px', width: '100%' }}
-              className="TEXT"
-            />
+            <BlogArticleContentSkeleton variant="text" />
           )}
           <Divider />
           <BlogAuthorWrapper>

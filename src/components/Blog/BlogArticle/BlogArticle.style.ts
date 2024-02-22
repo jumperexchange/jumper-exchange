@@ -35,6 +35,28 @@ export const BlogArticleHeaderMeta = styled(Box)(({ theme }) => ({
       : theme.palette.grey[300],
 }));
 
+export const BlogArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
+  marginLeft: theme.spacing(3),
+  transform: 'unset',
+  width: 146,
+  height: 14.5,
+}));
+
+export const BlogArticleHeaderTagSkeleton = styled(Skeleton)(({ theme }) => ({
+  height: '48px',
+  width: '120px',
+  borderRadius: '24px',
+  transform: 'unset',
+}));
+
+export const BlogArticleHeaderMetaDate = styled(Typography)(({ theme }) => ({
+  marginLeft: theme.spacing(3),
+  '&:after': {
+    content: '"•"',
+    margin: theme.spacing(0, 1),
+  },
+}));
+
 export const BlogArticleImage = styled('img')(({ theme }) => ({
   width: '100%',
   borderRadius: '16px',
@@ -120,6 +142,12 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
+export const BlogArticleContentSkeleton = styled(Skeleton)(() => ({
+  transform: 'unset',
+  height: '5000px',
+  width: '100%',
+}));
+
 export const BlogMetaContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
@@ -176,6 +204,21 @@ export const BlogArticleTitle = styled(Typography)<TypographyProps>(
   }),
 );
 
+export const BlogArticleTitleSkeleton = styled(Skeleton)<SkeletonProps>(
+  ({ theme }) => ({
+    marginTop: theme.spacing(8),
+    transform: 'unset',
+    width: '100%',
+    height: '256px',
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      height: '192px',
+    },
+    [theme.breakpoints.up('md' as Breakpoint)]: {
+      height: '120px',
+    },
+  }),
+);
+
 export const BlogArticleSubtitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     marginTop: theme.spacing(8),
@@ -183,6 +226,21 @@ export const BlogArticleSubtitle = styled(Typography)<TypographyProps>(
     fontSize: '18px',
     lineHeight: '32px',
     fontFamily: 'Inter',
+  }),
+);
+
+export const BlogArticleSubtitleSkeleton = styled(Skeleton)<SkeletonProps>(
+  ({ theme }) => ({
+    marginTop: theme.spacing(8),
+    transform: 'unset',
+    width: '100%',
+    height: '96px',
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      height: '64px',
+    },
+    [theme.breakpoints.up('lg' as Breakpoint)]: {
+      height: '32px',
+    },
   }),
 );
 
@@ -196,6 +254,14 @@ export const BlogArticleAuthorLabel = styled(Typography)<TypographyProps>(
     lineHeight: '28.5px',
     fontWeight: 700,
     fontFamily: 'Urbanist, Inter',
+  }),
+);
+
+export const BlogArticleAuthorLabelSkeleton = styled(Skeleton)<SkeletonProps>(
+  () => ({
+    width: '140px',
+    height: '28px',
+    transform: 'unset',
   }),
 );
 
