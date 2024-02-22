@@ -29,6 +29,7 @@ export const useMainMenuContent = () => {
   const { trackPageload, trackEvent } = useUserTracking();
   const navigate = useNavigate();
   const theme = useTheme();
+  const { closeAllMenus } = useMenuStore((state) => state);
   const { setSupportModalState } = useMenuStore((state) => state);
   const themeMode = useSettingsStore((state) => state.themeMode);
   const explorerUrl = appendUTMParametersToLink(EXPLORER_URL, {
@@ -133,6 +134,7 @@ export const useMainMenuContent = () => {
             EventTrackingTool.Cookie3,
           ],
         });
+        closeAllMenus();
         navigate('/learn');
       },
     },
