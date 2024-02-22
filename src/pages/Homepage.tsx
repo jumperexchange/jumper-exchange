@@ -11,11 +11,7 @@ import { useCookie3, useInitUserTracking } from 'src/hooks';
 import { Snackbar, SupportModal } from 'src/components';
 import { AppProvider } from 'src/providers';
 
-interface HomepageProps {
-  fixedPoweredBy?: boolean;
-}
-
-export const Homepage = ({ fixedPoweredBy }: HomepageProps) => {
+export const Homepage = () => {
   const { initTracking } = useInitUserTracking();
   const cookie3 = useCookie3();
 
@@ -32,7 +28,7 @@ export const Homepage = ({ fixedPoweredBy }: HomepageProps) => {
         <FeatureCards />
         <Snackbar />
         <SupportModal />
-        <PoweredBy fixedPosition={fixedPoweredBy} />
+        <PoweredBy fixedPosition={true} />
       </Layout>
     </AppProvider>
   );

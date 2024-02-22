@@ -15,6 +15,8 @@ export const Container = styled('div')<ContainerProps>(
           justifyContent: 'flex-end',
           // marginRight: theme.spacing(3),
           marginTop: theme.spacing(6),
+          marginBottom: theme.spacing(2.75),
+          marginRight: theme.spacing(3),
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             marginTop: theme.spacing(8),
           },

@@ -1,6 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { STRAPI_BLOG_ARTICLES, STRAPI_FEATURE_CARDS } from 'src/const';
+import {
+  STRAPI_BLOG_ARTICLES,
+  STRAPI_FAQ_ITEMS,
+  STRAPI_FEATURE_CARDS,
+} from 'src/const';
 import type { StrapiMeta, StrapiResponseData } from 'src/types';
+import type { Account } from './useAccounts';
 
 export interface UseStrapiProps<T> {
   data: StrapiResponseData<T>;
@@ -17,15 +22,26 @@ interface PaginationProps {
   pageSize: number;
   withCount?: boolean;
 }
+
+interface filterPerrsonalFeatureCardsProps {
+  enabled: boolean;
+  account: Account | undefined;
+}
 interface ContentTypeProps {
-  contentType: 'feature-cards' | 'blog-articles' | 'faq-items' | 'tags';
+  contentType:
+    | 'feature-cards'
+    | 'blog-articles'
+    | 'faq-items'
+    | 'tags'
+    | 'jumper-users';
   filterSlug?: string;
   filterTag?: (number | null | undefined)[] | null | undefined;
   filterFeaturedArticle?: boolean | undefined;
+  filterPersonalFeatureCards?: filterPerrsonalFeatureCardsProps;
   sort?: 'desc' | 'asc';
   pagination?: PaginationProps;
-  filterDisplayed?: boolean;
-  queryKey: (string | number | undefined)[];
+  filterFeaturedFaq?: boolean;
+  queryKey?: (string | number | undefined)[];
 }
 
 // Query passed Content-Type var from Strapi
@@ -33,35 +49,39 @@ export const useStrapi = <T>({
   contentType,
   filterSlug,
   filterFeaturedArticle,
+  filterPersonalFeatureCards,
   sort,
   filterTag,
   pagination,
-  filterDisplayed,
+  filterFeaturedFaq,
   queryKey,
 }: ContentTypeProps): UseStrapiProps<T> => {
+  // account needed to filter personalized feature cards
+
+  const hasQueryKey = queryKey !== undefined;
+  const enableQuery =
+    filterPersonalFeatureCards?.enabled && hasQueryKey
+      ? filterPersonalFeatureCards.account?.isConnected
+      : hasQueryKey;
+
+  // create url
   const apiBaseUrl =
     import.meta.env.VITE_STRAPI_DEVELOP === 'true'
       ? import.meta.env.VITE_LOCAL_STRAPI_URL
       : import.meta.env.VITE_STRAPI_URL;
   const apiUrl = new URL(`${apiBaseUrl}/${contentType}`);
-  if (filterSlug) {
-    apiUrl.searchParams.set('filters[Slug][$eq]', filterSlug);
+
+  // pagination by page + pagesize + return meta object
+  if (pagination) {
+    apiUrl.searchParams.set('pagination[page]', `${pagination.page}`);
+    apiUrl.searchParams.set('pagination[pageSize]', `${pagination.pageSize}`);
+    apiUrl.searchParams.set(
+      'pagination[withCount]',
+      pagination.withCount === false ? 'false' : 'true',
+    );
   }
-  if (filterTag) {
-    if (typeof filterTag === 'string') {
-      apiUrl.searchParams.set('filters[tags][id][$eq]', `${filterTag}`);
-    } else if (Array.isArray(filterTag)) {
-      filterTag.forEach((el, index) => {
-        apiUrl.searchParams.set(
-          `filters[$and][0][$or][${index}][tags][id][$eq]`,
-          `${el}`,
-        );
-      });
-    }
-  }
-  if (filterFeaturedArticle) {
-    apiUrl.searchParams.set('filters[featured][$eq]', 'true');
-  }
+
+  // sorting
   if (sort) {
     switch (sort) {
       case 'asc':
@@ -72,40 +92,96 @@ export const useStrapi = <T>({
         break;
     }
   }
-  if (pagination) {
-    apiUrl.searchParams.set('pagination[page]', `${pagination.page}`);
-    apiUrl.searchParams.set('pagination[pageSize]', `${pagination.pageSize}`);
-    apiUrl.searchParams.set(
-      'pagination[withCount]',
-      pagination.withCount === false ? 'false' : 'true',
-    );
+
+  // blog articles -->
+  if (contentType === STRAPI_BLOG_ARTICLES) {
+    // filter articles by slug
+    if (filterSlug) {
+      apiUrl.searchParams.set('filters[Slug][$eq]', filterSlug);
+    }
+
+    // filter articles by tag / category
+    if (filterTag) {
+      if (typeof filterTag === 'string') {
+        apiUrl.searchParams.set('filters[tags][id][$eq]', `${filterTag}`);
+      } else if (Array.isArray(filterTag)) {
+        filterTag.forEach((el, index) => {
+          apiUrl.searchParams.set(
+            `filters[$and][0][$or][${index}][tags][id][$eq]`,
+            `${el}`,
+          );
+        });
+      }
+    }
+
+    // filter articles by "featured" boolean flag
+    if (filterFeaturedArticle) {
+      apiUrl.searchParams.set('filters[featured][$eq]', 'true');
+    }
+
+    // populate images and relations (tags + faq)
+    if (contentType === STRAPI_BLOG_ARTICLES) {
+      apiUrl.searchParams.set('populate[0]', 'Image');
+      apiUrl.searchParams.set('populate[1]', 'tags');
+      apiUrl.searchParams.set('populate[2]', 'author.Avatar');
+      apiUrl.searchParams.set('populate[3]', 'faq_items');
+    }
   }
-  if (filterDisplayed) {
-    apiUrl.searchParams.set('filters[displayOnBlogPage][$eq]', 'true');
+
+  // faq items -->
+  if (contentType === STRAPI_FAQ_ITEMS) {
+    apiUrl.searchParams.set('populate[0]', 'faqItems');
+    // filter FAQ by boolean flag "displayOnBlogPage"
+    if (filterFeaturedFaq) {
+      apiUrl.searchParams.set('filters[displayOnBlogPage][$eq]', 'true');
+    }
   }
+
+  // feature cards -->
   if (contentType === STRAPI_FEATURE_CARDS) {
+    // populate images on feature card query
     apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
     apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
+    apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
   }
 
-  if (contentType === STRAPI_BLOG_ARTICLES) {
-    apiUrl.searchParams.set('populate[0]', 'Image');
-    apiUrl.searchParams.set('populate[1]', 'tags');
-    apiUrl.searchParams.set('populate[2]', 'author.Avatar');
-    apiUrl.searchParams.set('populate[3]', 'faq_items');
+  // jumper users -->
+  if (contentType === 'jumper-users') {
+    apiUrl.searchParams.set('populate[0]', 'feature_cards');
+    apiUrl.searchParams.set(
+      'populate[feature_cards][populate][0]',
+      'BackgroundImageLight',
+    );
+    apiUrl.searchParams.set(
+      'populate[feature_cards][populate][1]',
+      'BackgroundImageDark',
+    );
+    // filter feature cards by related EVM address
+    if (filterPersonalFeatureCards?.enabled) {
+      if (
+        filterPersonalFeatureCards.account?.address &&
+        filterPersonalFeatureCards.account.chainType === 'EVM'
+      ) {
+        apiUrl.searchParams.set(
+          'filters[EvmWalletAddress][$eqi]',
+          filterPersonalFeatureCards.account?.address,
+        );
+      }
+    }
   }
-  // if (contentType === FAQ_ITEMS) {
-  //   apiUrl.searchParams.set('populate[0]', 'faqItems');
-  // }
 
-  import.meta.env.MODE !== 'production' &&
+  // show drafts ONLY on development env
+  import.meta.env.MODE === 'development' &&
     apiUrl.searchParams.set('publicationState', 'preview');
+
+  // use local strapi on develop || prod strapi
   const apiAccesToken =
     import.meta.env.VITE_STRAPI_DEVELOP === 'true'
       ? import.meta.env.VITE_LOCAL_STRAPI_API_TOKEN
       : import.meta.env.VITE_STRAPI_API_TOKEN;
+
   const { data, isSuccess, isLoading, isRefetching, isFetching } = useQuery({
-    queryKey: [queryKey],
+    queryKey: [queryKey, filterPersonalFeatureCards?.account?.isConnected],
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {
@@ -115,7 +191,7 @@ export const useStrapi = <T>({
       const result = await response.json();
       return result;
     },
-    enabled: true,
+    enabled: enableQuery,
     refetchInterval: 1000 * 60 * 60,
   });
 

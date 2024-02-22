@@ -65,7 +65,6 @@ export interface FeatureCardData {
   attributes: FeatureCardAttributes;
 }
 interface FeatureCardDisplayConditions {
-  id: string;
   mode: string;
   showOnce?: boolean;
 }
@@ -80,13 +79,31 @@ interface FeatureCardAttributes {
   DisplayConditions: FeatureCardDisplayConditions;
   createdAt: string;
   updatedAt: string;
+  PersonalizedFeatureCard?: boolean;
   publishedAt: string | null;
   locale: string;
+  uid: string;
   BackgroundImageLight: StrapiImageData;
   BackgroundImageDark: StrapiImageData;
   localizations: {
     data: any[];
   };
+}
+
+/* Jumper User */
+export interface JumperUserData {
+  id: number;
+  attributes: JumperUserAttributes;
+}
+
+interface JumperUserAttributes {
+  EvmWalletAddress?: string;
+  SolWalletAddress?: string;
+  PersonalizedContent?: object;
+  feature_cards: { data: FeatureCardData[] };
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string | null;
 }
 
 /* Tags */

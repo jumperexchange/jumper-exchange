@@ -38,6 +38,7 @@ export const BlogArticlesBoard = () => {
     data: blogArticles,
     url,
     meta,
+    isSuccess: articlesIsSuccess,
     isFetching,
     isRefetching,
   } = useStrapi<BlogArticleData>({
@@ -125,7 +126,7 @@ export const BlogArticlesBoard = () => {
       )}
       <Fade in={!isFetching || !isRefetching} timeout={600}>
         <ArticlesGrid container>
-          {!isFetching || !isRefetching ? (
+          {!articlesIsSuccess ? (
             Array.from({ length: pageSize }).map((_, index) => (
               <BlogArticleCardSkeleton
                 key={`blog-article-card-skeleton-${index}`}
@@ -164,7 +165,7 @@ export const BlogArticlesBoard = () => {
                 }}
               />
             ))
-          ) : isSuccess && blogArticles?.length > 0 ? (
+          ) : articlesIsSuccess && blogArticles?.length > 0 ? (
             blogArticles?.map((article, index) => (
               <BlogArticleCard
                 baseUrl={url}

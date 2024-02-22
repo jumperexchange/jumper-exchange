@@ -105,7 +105,7 @@ export const WalletManagementButtons: React.FC<
   return (
     <>
       <div ref={walletManagementButtonsRef}>
-        {!account?.address ? (
+        {!account?.address || redirectConnect ? (
           <ConnectButton
             // Used in the widget
             id="connect-wallet-button"

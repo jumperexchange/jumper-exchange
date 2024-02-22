@@ -30,7 +30,7 @@ export enum TrackingAction {
   OpenWelcomeMessageLink = 'action_open_welcome_message_link',
 
   // Feature Card
-  ClickLearnMore = 'action_click_cta',
+  ClickFeatureCard = 'action_click_feature_card',
   CloseFeatureCard = 'action_close_feature_card',
   DisplayFeatureCard = 'action_display_feature_card',
 
