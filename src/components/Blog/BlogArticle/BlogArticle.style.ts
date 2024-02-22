@@ -106,6 +106,15 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   overflow: 'hidden',
   padding: theme.spacing(1.5, 2, 3),
 
+  a: {
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.primary.main
+        : theme.palette.accent1Alt.main,
+    fontWeight: 600,
+    marginLeft: theme.spacing(1),
+  },
+
   ':first-of-type': {
     marginTop: theme.spacing(6),
   },
