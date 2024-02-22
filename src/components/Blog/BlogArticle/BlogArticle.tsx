@@ -91,9 +91,7 @@ export const BlogArticle = ({
               <BlogArticleHeaderMetaDate variant="lifiBodyXSmall" as="span">
                 {formatDate(publishedAt || createdAt)}
               </BlogArticleHeaderMetaDate>
-              <Typography variant="lifiBodyXSmall" component="span">
-                {t('blog.minRead', { minRead: minRead })}
-              </Typography>
+              <span>{t('blog.minRead', { minRead: minRead })}</span>
             </>
           ) : (
             <BlogArticleMetaSkeleton variant="text" />
