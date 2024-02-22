@@ -18,7 +18,7 @@ import {
   BlogArticleCardContainer,
   BlogArticleCardImage,
   BlogArticleCardTitle,
-  BlogArticleTagTitle,
+  BlogArticleTag,
 } from '.';
 
 interface BlogArticleCardProps {
@@ -94,19 +94,11 @@ export const BlogArticleCard = ({
 
       <CardContent
         sx={{
-          padding: theme.spacing(3, 0),
+          margin: 0,
+          padding: theme.spacing(2, 0),
           '&:last-child': { paddingBottom: theme.spacing(1) },
         }}
       >
-        <Box
-          sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}
-        >
-          {tags?.data.slice(0, 1).map((tag) => (
-            <BlogArticleTagTitle noWrap variant="lifiBodyXSmall" as="span">
-              {tag.attributes.Title}
-            </BlogArticleTagTitle>
-          ))}
-        </Box>
         <Box>
           <BlogArticleCardTitle variant="lifiBodyLarge">
             {title}
@@ -114,30 +106,45 @@ export const BlogArticleCard = ({
         </Box>
         <Box
           sx={{
+            display: 'flex',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            width: '100%',
             marginTop: theme.spacing(2),
-            color:
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[800]
-                : theme.palette.grey[300],
           }}
         >
-          <Typography
-            variant="lifiBodyXSmall"
-            component="span"
+          {tags?.data.slice(0, 1).map((tag) => (
+            <BlogArticleTag noWrap variant="lifiBodyXSmall" as="span">
+              {tag.attributes.Title}
+            </BlogArticleTag>
+          ))}
+          <Box
             sx={{
-              marginTop: theme.spacing(2),
-              marginBottom: theme.spacing(0.5),
-              '&:after': {
-                content: '"•"',
-                margin: '0 4px',
-              },
+              display: 'flex',
+              alignItems: 'center',
+              marginLeft: theme.spacing(2),
+              color:
+                theme.palette.mode === 'light'
+                  ? theme.palette.grey[800]
+                  : theme.palette.grey[300],
             }}
           >
-            {formatDate(publishedAt || createdAt)}
-          </Typography>
-          <Typography variant="lifiBodyXSmall" component="span">
-            {t('blog.minRead', { minRead: minRead })}
-          </Typography>
+            <Typography
+              variant="lifiBodyXSmall"
+              component="span"
+              sx={{
+                '&:after': {
+                  content: '"•"',
+                  margin: '0 4px',
+                },
+              }}
+            >
+              {formatDate(publishedAt || createdAt)}
+            </Typography>
+            <Typography variant="lifiBodyXSmall" component="span">
+              {t('blog.minRead', { minRead: minRead })}
+            </Typography>
+          </Box>
         </Box>
       </CardContent>
     </BlogArticleCardContainer>

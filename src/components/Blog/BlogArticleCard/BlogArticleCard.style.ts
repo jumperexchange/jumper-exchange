@@ -1,6 +1,7 @@
 import { Card, Typography, darken, type Breakpoint } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
+import { Tag } from 'src/components/Tag.style';
 import { getContrastAlphaColor } from 'src/utils';
 
 export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
@@ -42,7 +43,6 @@ export const BlogArticleCardImage = styled('img')(({ theme }) => ({
 
 export const BlogArticleCardTitle = styled(Typography)(({ theme }) => ({
   color: 'inherit',
-  marginTop: theme.spacing(1),
   fontWeight: 700, //todo: use typography
   fontSize: '24px',
   fontFamily: 'Urbanist, Inter',
@@ -55,18 +55,18 @@ export const BlogArticleCardTitle = styled(Typography)(({ theme }) => ({
   '-webkit-box-orient': 'vertical',
 }));
 
-export const BlogArticleTagTitle = styled(Typography)(({ theme }) => ({
-  color:
-    theme.palette.mode === 'light'
-      ? theme.palette.grey[800]
-      : theme.palette.grey[300],
-  fontSize: '16px',
-  fontWeight: 400,
-  lineHeight: '32px',
+export const BlogArticleTag = styled(Tag)(({ theme }) => ({
+  // color:
+  //   theme.palette.mode === 'light'
+  //     ? theme.palette.grey[800]
+  //     : theme.palette.grey[300],
+  fontSize: '14px',
+  fontWeight: 600,
+  lineHeight: '18px',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  maxWidth: '100%',
-  height: '64px',
+  maxWidth: '50%',
+  height: '40px',
   ':not(:first-of-type)': {
     marginLeft: theme.spacing(0.5),
   },
