@@ -137,6 +137,31 @@ export const useMainMenuContent = () => {
       },
     },
     {
+      label: t('navbar.navbarMenu.lifiExplorer'),
+      prefixIcon: <SearchOutlinedIcon />,
+      showMoreIcon: false,
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'open-lifi-explorer',
+          action: TrackingAction.ClickLifiExplorerLink,
+          data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+        trackPageload({
+          source: TrackingCategory.Menu,
+          destination: 'lifi-explorer',
+          url: explorerUrl,
+          pageload: true,
+          disableTrackingTool: [EventTrackingTool.Cookie3],
+        });
+        openInNewTab(explorerUrl);
+      },
+    },
+    {
       label: 'X',
       prefixIcon: <XIcon />,
       showMoreIcon: false,
@@ -192,31 +217,6 @@ export const useMainMenuContent = () => {
           disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(DISCORD_URL);
-      },
-    },
-    {
-      label: t('navbar.navbarMenu.lifiExplorer'),
-      prefixIcon: <SearchOutlinedIcon />,
-      showMoreIcon: false,
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'open-lifi-explorer',
-          action: TrackingAction.ClickLifiExplorerLink,
-          data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
-        });
-        trackPageload({
-          source: TrackingCategory.Menu,
-          destination: 'lifi-explorer',
-          url: explorerUrl,
-          pageload: true,
-          disableTrackingTool: [EventTrackingTool.Cookie3],
-        });
-        openInNewTab(explorerUrl);
       },
     },
     {
