@@ -1,12 +1,7 @@
 import { Typography, useTheme } from '@mui/material';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
-import {
-  ArticleJsonSchema,
-  CustomRichBlocks,
-  ShareArticleIcons,
-  Tag,
-} from 'src/components';
+import { ArticleJsonSchema, ShareArticleIcons, Tag } from 'src/components';
 import { type AuthorData, type StrapiImageData, type TagData } from 'src/types';
 import { formatDate, readingTime } from 'src/utils';
 import {
@@ -38,6 +33,8 @@ import {
   BlogMetaContainer,
   Divider,
 } from './BlogArticle.style';
+
+import { CustomRichBlocks } from '..';
 
 interface BlogArticleProps {
   title: string | undefined;
