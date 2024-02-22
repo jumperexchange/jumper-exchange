@@ -1,6 +1,4 @@
-import { useTheme } from '@mui/material';
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Layout } from 'src/Layout';
 import {
   BlogArticlesBoard,
@@ -14,9 +12,6 @@ import { useCookie3, useInitUserTracking, useStrapi } from 'src/hooks';
 import type { BlogArticleData } from 'src/types';
 
 export const BlogPage = () => {
-  const theme = useTheme();
-  const { t } = useTranslation();
-
   const { initTracking } = useInitUserTracking();
   const cookie3 = useCookie3();
 

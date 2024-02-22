@@ -1,5 +1,5 @@
-import type { Breakpoint, CSSObject } from '@mui/material';
-import { CardContent, Skeleton, useTheme } from '@mui/material';
+import type { CSSObject } from '@mui/material';
+import { Box, CardContent, Skeleton, useTheme } from '@mui/material';
 import { getContrastAlphaColor } from 'src/utils';
 import { BlogArticleCardContainer } from '.';
 
@@ -18,26 +18,17 @@ export const BlogArticleCardSkeleton = ({
   return (
     <BlogArticleCardContainer
       sx={{
-        flexShrink: 0,
-        width: '100%',
-        border: 'unset',
         boxShadow: 'unset',
-        paddingBottom: 0,
-        borderRadius: '32px',
-        transition: 'unset',
-        [theme.breakpoints.up('sm' as Breakpoint)]: {
-          minWidth: 250,
-          width: 416,
-        },
-        ...containerStyles,
       }}
     >
       <Skeleton
         variant="rectangular"
+        component="img"
         sx={{
           width: '100%',
-          height: '216px',
+          height: 240,
           borderRadius: '16px',
+          transform: 'unset',
           border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
           aspectRatio: 1.6,
           ...imageStyles,
@@ -45,33 +36,11 @@ export const BlogArticleCardSkeleton = ({
       />
       <CardContent
         sx={{
-          padding: theme.spacing(3, 0),
-          ...(theme.palette.mode === 'dark' && {
-            color: theme.palette.black.main,
-          }),
-          width: '100%',
-          '&:last-child': { paddingBottom: 0 },
-          [theme.breakpoints.up('sm' as Breakpoint)]: {
-            // width: 230,
-            height: 176,
-          },
-          [theme.breakpoints.up('xl' as Breakpoint)]: {
-            // width: 230,
-            height: 176,
-          },
-          ...contentStyles,
+          margin: 0,
+          padding: theme.spacing(2, 0),
+          '&:last-child': { paddingBottom: theme.spacing(1) },
         }}
       >
-        <Skeleton
-          variant="text"
-          sx={{
-            width: '64px',
-            height: 24,
-            [theme.breakpoints.up('lg' as Breakpoint)]: {
-              height: 48,
-            },
-          }}
-        />
         <Skeleton
           variant="text"
           sx={{
@@ -80,15 +49,34 @@ export const BlogArticleCardSkeleton = ({
             transform: 'unset',
           }}
         />
-        <Skeleton
-          variant="text"
+        <Box
           sx={{
-            width: '150px',
-            height: '24px',
-            transform: 'unset',
+            display: 'flex',
+            width: '100%',
+            alignItems: 'center',
             marginTop: theme.spacing(2),
           }}
-        />
+        >
+          <Skeleton
+            variant="text"
+            sx={{
+              width: '120px',
+              height: 40,
+              transform: 'unset',
+              borderRadius: 20,
+            }}
+          />
+
+          <Skeleton
+            variant="text"
+            sx={{
+              width: 150,
+              height: 16,
+              transform: 'unset',
+              marginLeft: theme.spacing(2),
+            }}
+          />
+        </Box>
       </CardContent>
     </BlogArticleCardContainer>
   );

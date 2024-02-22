@@ -8,7 +8,7 @@ export const BlogArticlesBoardContainer = styled(Grid)(({ theme }) => ({
   position: 'relative',
   margin: theme.spacing(6, 2),
   marginBottom: theme.spacing(10),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
     margin: theme.spacing(8),
   },
 }));

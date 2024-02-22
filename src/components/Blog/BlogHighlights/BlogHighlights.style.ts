@@ -27,14 +27,11 @@ export const BlogHightsContainer = styled(Box, {
     margin: theme.spacing(8),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    margin: theme.spacing(8),
     padding: theme.spacing(8),
   },
 
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     flexDirection: 'row',
-    margin: theme.spacing(8),
-    padding: theme.spacing(8),
   },
 }));
 
@@ -98,19 +95,22 @@ export const BlogHighlightsContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   color: theme.palette.mode === 'light' ? '#525252' : lighten('#525252', 0.8), //todo: add to theme
   flexDirection: 'column',
-  alignSelf: 'flex-end',
+  alignSelf: 'center',
   justifyContent: 'flex-end',
   paddingBottom: theme.spacing(2),
   margin: theme.spacing(4, 0),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
+    padding: theme.spacing(2),
     marginBottom: 0,
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
+    padding: 0,
     margin: theme.spacing(4, 0),
     marginBottom: 0,
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     margin: theme.spacing(4),
+    width: '46%',
   },
 }));
 

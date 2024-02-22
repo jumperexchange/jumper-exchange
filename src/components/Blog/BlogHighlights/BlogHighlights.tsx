@@ -55,7 +55,7 @@ export const BlogHighlights = () => {
     featuredArticle && readingTime(featuredArticle[0]?.attributes.Content);
 
   return featuredArticle?.length > 0 ? (
-    <BlogHightsContainer onClick={() => handleClick()}>
+    <BlogHightsContainer onClick={handleClick}>
       <BlogHighlightsImage
         src={`${url.origin}${featuredArticle[0]?.attributes.Image.data.attributes.url}`}
         alt={

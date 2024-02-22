@@ -45,8 +45,19 @@ export const BlogArticleImage = styled('img')(({ theme }) => ({
 
 export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   width: '100%',
-  aspectRatio: '4/3',
-  borderRadius: '14px',
+  aspectRatio: 1.782,
+  transform: 'unset',
+  borderRadius: '16px',
+  margin: 'auto',
+  maxWidth: theme.breakpoints.values.xl,
+  textAlign: 'center',
+  padding: theme.spacing(2),
+  [theme.breakpoints.up('xl' as Breakpoint)]: {
+    margin: theme.spacing(0, 'auto'),
+  },
+  [theme.breakpoints.up('xl' as Breakpoint)]: {
+    maxWidth: theme.breakpoints.values.lg,
+  },
 }));
 
 export const BlogAuthorAvatar = styled('img')(({ theme }) => ({
@@ -94,7 +105,7 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(4, 'unset'),
+    margin: theme.spacing(4, 'auto'),
     maxWidth: '100%',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
@@ -112,6 +123,7 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
 export const BlogMetaContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   marginTop: theme.spacing(8),
   gap: theme.spacing(2),
   flexDirection: 'column',

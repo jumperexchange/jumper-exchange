@@ -14,10 +14,12 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
   borderRadius: '32px',
   cursor: 'pointer',
   padding: theme.spacing(6),
-  marginTop: theme.spacing(6),
+  margin: theme.spacing(6, 2),
+  marginBottom: 0,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(12, 8),
-    marginTop: theme.spacing(8),
+    margin: theme.spacing(8),
+    marginBottom: 0,
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     padding: theme.spacing(12, 8),

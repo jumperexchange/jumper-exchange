@@ -26,7 +26,7 @@ export const CarouselContainerBox = styled(Box, {
   },
   '::-webkit-scrollbar': { display: 'none' },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    height: 435,
+    // height: 435,
   },
   ...styles,
 }));

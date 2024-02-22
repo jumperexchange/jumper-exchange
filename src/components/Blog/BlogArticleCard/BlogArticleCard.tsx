@@ -24,6 +24,7 @@ import {
 interface BlogArticleCardProps {
   baseUrl: URL;
   id: number;
+  key?: string;
   image: StrapiImageData;
   content: RootNode[];
   publishedAt: string | null | undefined;
@@ -39,6 +40,7 @@ export const BlogArticleCard = ({
   baseUrl,
   trackingCategory,
   image,
+  key,
   tags,
   content,
   publishedAt,
@@ -71,6 +73,7 @@ export const BlogArticleCard = ({
   return (
     <BlogArticleCardContainer
       variant="outlined"
+      key={key || 'blog-article-card'}
       onClick={handleClick}
       sx={styles}
     >
@@ -82,9 +85,11 @@ export const BlogArticleCard = ({
         />
       ) : (
         <Skeleton
+          component="img"
           sx={{
             width: '100%',
-            height: 240,
+            aspectRatio: 1.6, // 1.782,
+            // height: 240,
             transform: 'unset',
             borderRadius: '16px',
             border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,

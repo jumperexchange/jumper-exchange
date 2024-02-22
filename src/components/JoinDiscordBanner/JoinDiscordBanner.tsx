@@ -13,7 +13,9 @@ export const JoinDiscordBanner = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>,
+  ) => {
     e.stopPropagation();
     trackEvent({
       category: TrackingCategory.DiscordBanner,
@@ -25,7 +27,7 @@ export const JoinDiscordBanner = () => {
   };
 
   return (
-    <DiscordBanner>
+    <DiscordBanner onClick={(e) => handleClick(e)}>
       <Typography
         variant="lifiHeaderMedium"
         sx={{

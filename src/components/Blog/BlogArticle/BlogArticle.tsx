@@ -1,3 +1,4 @@
+import type { Breakpoint } from '@mui/material';
 import { Skeleton, Typography, useTheme } from '@mui/material';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
@@ -80,7 +81,15 @@ export const BlogArticle = ({
               </Typography>
             </Tag>
           ) : (
-            <Skeleton />
+            <Skeleton
+              variant="rectangular"
+              sx={{
+                height: '48px',
+                width: '120px',
+                borderRadius: '24px',
+                transform: 'unset',
+              }}
+            />
           )}
           {!!createdAt ? (
             <>
@@ -106,21 +115,48 @@ export const BlogArticle = ({
               width={146}
               height={14.5}
               variant="text"
-              sx={{ marginTop: 1 }}
+              sx={{ marginLeft: theme.spacing(3) }}
             />
           )}
         </BlogArticleHeaderMeta>
         {title ? (
           <BlogArticleTitle>{title}</BlogArticleTitle>
         ) : (
-          <Skeleton width={'100%'} height={128} />
+          <Skeleton
+            sx={{
+              marginTop: theme.spacing(8),
+              transform: 'unset',
+              width: '100%',
+              height: '256px',
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                height: '192px',
+              },
+              [theme.breakpoints.up('md' as Breakpoint)]: {
+                height: '120px',
+              },
+            }}
+          />
         )}
         {subtitle ? (
           <BlogArticleSubtitle variant="lifiHeaderMedium">
             {subtitle}
           </BlogArticleSubtitle>
         ) : (
-          <Skeleton width={'100%'} height={120} variant="text" />
+          <Skeleton
+            sx={{
+              marginTop: theme.spacing(8),
+              transform: 'unset',
+              width: '100%',
+              height: '96px',
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                height: '64px',
+              },
+              [theme.breakpoints.up('lg' as Breakpoint)]: {
+                height: '32px',
+              },
+            }}
+            variant="text"
+          />
         )}
         <BlogMetaContainer>
           <BlogAuthorContainer>
@@ -140,29 +176,36 @@ export const BlogArticle = ({
                 {author.data?.attributes.Name}
               </BlogArticleAuthorLabel>
             ) : (
-              <Skeleton width={80} height={16} variant="text" />
+              <Skeleton
+                sx={{ width: '140px', height: '28px', transform: 'unset' }}
+                variant="text"
+              />
             )}
           </BlogAuthorContainer>
           <ShareArticleIcons title={title} slug={slug} />
         </BlogMetaContainer>
       </BlogArticleContainer>
 
-      {image?.data ? (
-        <BlogArticleImageContainer>
+      <BlogArticleImageContainer>
+        {image?.data ? (
           <BlogArticleImage
             src={`${baseUrl}${image.data.attributes?.url}`}
             alt={image?.data.attributes?.alternativeText}
           />
-        </BlogArticleImageContainer>
-      ) : (
-        <BlogArticleImageSkeleton />
-      )}
+        ) : (
+          <BlogArticleImageSkeleton />
+        )}
+      </BlogArticleImageContainer>
       <BlogArticleContainer>
         <BlogArticleContentContainer>
           {content ? (
             <CustomRichBlocks baseUrl={baseUrl} content={content} />
           ) : (
-            <Skeleton width={'100%'} height={'1200px'} />
+            <Skeleton
+              variant="text"
+              sx={{ transform: 'unset', height: '5000px', width: '100%' }}
+              className="TEXT"
+            />
           )}
           <Divider />
           <BlogAuthorWrapper>

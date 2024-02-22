@@ -1,6 +1,6 @@
 import FacebookIcon from '@mui/icons-material/Facebook';
+import LinkIcon from '@mui/icons-material/Link';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import ShareIcon from '@mui/icons-material/Share';
 import XIcon from '@mui/icons-material/X';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -150,12 +150,15 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
         key={'tooltip-share-link'}
         handleShare={handleShareClick}
         tooltipMsg={t('blog.shareLink')}
-        icon={<ShareIcon sx={{ width: '18px' }} />}
+        icon={<LinkIcon sx={{ width: '28px' }} />}
         showMsgActive={showCopyMessage}
         showMsg={t('blog.copiedLink')}
       />
     </ShareIconsContainer>
   ) : (
-    <ShareIconsSkeletons variant="rectangular" />
+    <ShareIconsSkeletons
+      variant="rectangular"
+      sx={{ width: '228px', height: '48px' }}
+    />
   );
 };

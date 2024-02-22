@@ -125,7 +125,7 @@ export const BlogArticlesBoard = () => {
       )}
       <Fade in={!isFetching || !isRefetching} timeout={600}>
         <ArticlesGrid container>
-          {isFetching || isRefetching ? (
+          {!isFetching || !isRefetching ? (
             Array.from({ length: pageSize }).map((_, index) => (
               <BlogArticleCardSkeleton
                 key={`blog-article-card-skeleton-${index}`}

@@ -8,12 +8,16 @@ export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '#F9F5FF'
       : theme.palette.alphaDark500.main,
-  padding: theme.spacing(1.5),
   // marginTop: theme.spacing(6),
+  padding: theme.spacing(1.5),
   borderRadius: '32px',
+  margin: theme.spacing(6, 2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
+    margin: theme.spacing(8),
     padding: theme.spacing(6, 4),
-    // marginTop: theme.spacing(8),
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    padding: theme.spacing(8),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     padding: theme.spacing(6),

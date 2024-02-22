@@ -12,10 +12,12 @@ export const BlogHighlightsSkeleton = () => {
     <BlogHightsContainer>
       <Skeleton
         variant="rectangular"
+        component="img"
         sx={{
           borderRadius: '14px',
-          aspectRatio: 1.77,
-          height: 432,
+          aspectRatio: 1.782,
+          width: '100%',
+          height: '100%',
           userSelect: 'none',
           transform: 'unset',
           alignSelf: 'flex-start',
@@ -23,9 +25,11 @@ export const BlogHighlightsSkeleton = () => {
             theme.palette.mode === 'light'
               ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
               : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-          width: '54%',
           [theme.breakpoints.up('md' as Breakpoint)]: {
             alignSelf: 'center',
+          },
+          [theme.breakpoints.up('lg' as Breakpoint)]: {
+            width: '54%',
           },
         }}
       />
@@ -48,7 +52,7 @@ export const BlogHighlightsSkeleton = () => {
             margin: theme.spacing(4, 0),
             transform: 'unset',
             width: '100%',
-            height: '112px',
+            height: '168px',
           }}
         />
         <Skeleton sx={{ height: '64px' }} />
