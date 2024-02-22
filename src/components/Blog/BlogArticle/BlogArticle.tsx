@@ -9,8 +9,6 @@ import {
   BlogArticlAuthorNameSkeleton,
   BlogArticlAuthorRole,
   BlogArticlAuthorRoleSkeleton,
-  BlogArticleAuthorLabel,
-  BlogArticleAuthorLabelSkeleton,
   BlogArticleContainer,
   BlogArticleContentContainer,
   BlogArticleContentSkeleton,
@@ -120,14 +118,14 @@ export const BlogArticle = ({
               <BlogAuthorAvatarSkeleton variant="rounded" />
             )}
             {author?.data ? (
-              <BlogArticleAuthorLabel
+              <BlogArticlAuthorName
                 variant="lifiBodyXSmallStrong"
                 component="span"
               >
                 {author.data?.attributes.Name}
-              </BlogArticleAuthorLabel>
+              </BlogArticlAuthorName>
             ) : (
-              <BlogArticleAuthorLabelSkeleton variant="text" />
+              <BlogArticlAuthorNameSkeleton variant="text" />
             )}
           </BlogAuthorContainer>
           <ShareArticleIcons title={title} slug={slug} />

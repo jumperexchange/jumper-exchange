@@ -253,34 +253,18 @@ export const BlogArticleSubtitleSkeleton = styled(Skeleton)<SkeletonProps>(
   }),
 );
 
-export const BlogArticleAuthorLabel = styled(Typography)<TypographyProps>(
+export const BlogArticlAuthorName = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     color:
       theme.palette.mode === 'light'
-        ? theme.palette.grey[800]
+        ? theme.palette.black.main
         : theme.palette.grey[300],
     fontSize: '24px',
-    lineHeight: '28.5px',
+    lineHeight: '28px',
     fontWeight: 700,
     fontFamily: 'Urbanist, Inter',
   }),
 );
-
-export const BlogArticleAuthorLabelSkeleton = styled(Skeleton)<SkeletonProps>(
-  () => ({
-    width: '140px',
-    height: '28px',
-    transform: 'unset',
-  }),
-);
-
-export const BlogArticlAuthorName = styled(Typography)<TypographyProps>(() => ({
-  color: 'inherit',
-  fontFamily: 'Urbanist, Inter',
-  fontWeight: 700,
-  fontSize: '24px',
-  lineHeight: '28px',
-}));
 
 export const BlogArticlAuthorNameSkeleton = styled(Skeleton)<SkeletonProps>(
   ({ theme }) => ({
