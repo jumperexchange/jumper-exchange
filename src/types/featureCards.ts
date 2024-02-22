@@ -1,5 +1,4 @@
 interface FeatureCardDisplayConditions {
-  id: string;
   mode: string;
   showOnce?: boolean;
 }
@@ -50,8 +49,10 @@ interface FeatureCardAttributes {
   DisplayConditions: FeatureCardDisplayConditions;
   createdAt: string;
   updatedAt: string;
+  PersonalizedFeatureCard?: boolean;
   publishedAt: string | null;
   locale: string;
+  uid: string;
   BackgroundImageLight: {
     data: FeatureCardMedia;
   };

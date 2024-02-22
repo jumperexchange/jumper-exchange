@@ -13,8 +13,6 @@ import { useAccounts } from './useAccounts';
 export const useMultisig = () => {
   const { account } = useAccounts();
 
-  const { destinationChain } = useMultisigStore();
-
   const checkMultisigEnvironment = async () => {
     // in Multisig env, window.parent is not equal to window
     const isIframeEnvironment = window.parent !== window;
@@ -160,6 +158,8 @@ export const useMultisig = () => {
       shouldBatchTransactions: isSafeConnector,
       sendBatchTransaction: handleSendingBatchTransaction,
     };
+
+    const destinationChain = useMultisigStore.getState().destinationChain;
 
     if (isSafeConnector) {
       const shouldRequireToAddress = account?.chainId !== destinationChain;
