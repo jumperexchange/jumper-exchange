@@ -19,7 +19,7 @@ export const BlogArticleImageContainer = styled(Box)(({ theme }) => ({
   textAlign: 'center',
   padding: theme.spacing(2),
   [theme.breakpoints.up('xl' as Breakpoint)]: {
-    margin: theme.spacing(0, 8),
+    margin: theme.spacing(0, 'auto'),
   },
 }));
 
