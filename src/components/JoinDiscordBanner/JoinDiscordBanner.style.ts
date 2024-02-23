@@ -1,5 +1,5 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box } from '@mui/material';
+import { Box, alpha } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
@@ -10,7 +10,7 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'light'
       ? '#F9F5FF' //todo: add to theme
-      : theme.palette.alphaDark600.main,
+      : alpha(theme.palette.white.main, 0.12),
   borderRadius: '32px',
   cursor: 'pointer',
   padding: theme.spacing(6),
