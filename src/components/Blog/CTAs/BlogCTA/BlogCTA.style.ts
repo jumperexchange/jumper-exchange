@@ -8,7 +8,7 @@ export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'row',
-  padding: theme.spacing(6),
+  padding: theme.spacing(8),
   cursor: 'pointer',
   overflow: 'hidden',
   margin: theme.spacing(6, 0),
