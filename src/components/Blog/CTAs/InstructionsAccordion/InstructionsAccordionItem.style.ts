@@ -40,7 +40,7 @@ export const InstructionsAccordionItemIndex = styled(Typography)(
     fontSize: '18px',
     fontWeight: 600,
     lineHeight: '32px',
-    color: theme.palette.grey[500],
+    color: getContrastAlphaColor(theme, 0.32),
   }),
 );
 
