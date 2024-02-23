@@ -5,6 +5,7 @@ import {
   Divider as MuiDivider,
   Skeleton,
   Typography,
+  alpha,
 } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
@@ -114,6 +115,20 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
         : theme.palette.accent1Alt.main,
     fontWeight: 600,
     marginLeft: theme.spacing(1),
+  },
+
+  li: {
+    color: alpha(
+      theme.palette.mode === 'light'
+        ? theme.palette.black.main
+        : theme.palette.white.main,
+      0.75,
+    ),
+    margin: theme.spacing(0.5, 0),
+    fontFamily: 'Inter',
+    fontSize: '18px',
+    lineHeight: '32px',
+    fontWeight: 400,
   },
 
   ':first-of-type': {
