@@ -7,7 +7,7 @@ export const InstructionsAccordionItemContainer = styled(Box)<BoxProps>(
     display: 'flex',
     backgroundColor:
       theme.palette.mode === 'dark'
-        ? getContrastAlphaColor(theme, '12%')
+        ? getContrastAlphaColor(theme, '8%')
         : getContrastAlphaColor(theme, '4%'),
     padding: theme.spacing(3),
     flexDirection: 'column',
