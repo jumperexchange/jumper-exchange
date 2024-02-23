@@ -137,6 +137,7 @@ export const BlogArticleCard = ({
             <Typography
               variant="lifiBodyXSmall"
               component="span"
+              fontSize={14}
               sx={{
                 '&:after': {
                   content: '"•"',
@@ -146,7 +147,7 @@ export const BlogArticleCard = ({
             >
               {formatDate(publishedAt || createdAt)}
             </Typography>
-            <Typography variant="lifiBodyXSmall" component="span">
+            <Typography variant="lifiBodyXSmall" component="span" fontSize={14}>
               {t('blog.minRead', { minRead: minRead })}
             </Typography>
           </Box>
