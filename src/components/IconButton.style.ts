@@ -43,7 +43,7 @@ export const IconButtonSecondary = styled(IconButton, {
   backgroundColor: theme.palette.white.main, //todo: add to theme
 
   '&:hover': {
-    backgroundColor: theme.palette.secondary.dark,
+    backgroundColor: getContrastAlphaColor(theme, '4%'),
   },
   '&:before': {
     content: '" "',
