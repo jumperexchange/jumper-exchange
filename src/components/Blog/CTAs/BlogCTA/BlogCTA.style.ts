@@ -27,7 +27,7 @@ export const BlogCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   userSelect: 'none',
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    fontSize: '48px',
-    lineHeight: '58px',
+    fontSize: '40px',
+    lineHeight: '56px',
   },
 }));

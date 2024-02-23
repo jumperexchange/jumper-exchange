@@ -37,8 +37,8 @@ export const JoinDiscordBanner = () => {
           lineHeight: '44px',
           fontWeight: 700,
           [theme.breakpoints.up('sm' as Breakpoint)]: {
-            fontSize: '48px',
-            lineHeight: '58px',
+            fontSize: '40px',
+            lineHeight: '56px',
           },
         }}
       >
