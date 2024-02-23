@@ -5,8 +5,8 @@ import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import {
   BlogCTA,
-  ImageViewer,
   InstructionsAccordion,
+  Lightbox,
   Link,
   Widget,
 } from 'src/components';
@@ -32,7 +32,7 @@ export const CustomRichBlocks = ({
       return <Link href={data.url}>{data.children[0].props.text}</Link>;
     },
     image: (data: ImageData) =>
-      baseUrl ? <ImageViewer imageData={data.image} baseUrl={baseUrl} /> : null,
+      baseUrl ? <Lightbox imageData={data.image} baseUrl={baseUrl} /> : null,
     paragraph: ({ children }: any) => {
       if (children[0].props.text.includes('<JUMPER_CTA')) {
         try {

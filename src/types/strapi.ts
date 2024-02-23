@@ -25,7 +25,10 @@ export interface MediaAttributes {
   width: number;
   height: number;
   formats: {
-    [key: string]: MediaFormat;
+    small: MediaFormat;
+    medium: MediaFormat;
+    large: MediaFormat;
+    [key: string]: MediaFormat; // Allow additional formats
   };
   hash: string;
   ext: string;
