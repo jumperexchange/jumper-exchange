@@ -1,5 +1,5 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, styled } from '@mui/material';
+import { Box, alpha, styled } from '@mui/material';
 import type { BlogArticleData } from 'src/types';
 import { ButtonPrimary } from '../../Button';
 
@@ -7,7 +7,7 @@ export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'light'
       ? '#F9F5FF'
-      : theme.palette.alphaDark500.main,
+      : alpha(theme.palette.white.main, 0.08),
   // marginTop: theme.spacing(6),
   padding: theme.spacing(1.5),
   borderRadius: '32px',
