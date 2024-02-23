@@ -141,7 +141,7 @@ export const BlogArticleCard = ({
               sx={{
                 '&:after': {
                   content: '"•"',
-                  margin: '0 4px',
+                  margin: theme.spacing(0, 0.5),
                 },
               }}
             >
