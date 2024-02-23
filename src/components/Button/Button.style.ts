@@ -1,5 +1,5 @@
 import type { ButtonProps as MuiButtonProps } from '@mui/material';
-import { Button as MuiButton, alpha } from '@mui/material'; //ButtonProps
+import { Button as MuiButton, alpha, darken } from '@mui/material'; //ButtonProps
 import { styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from 'src/utils';
 
@@ -33,7 +33,9 @@ export const ButtonPrimary = styled(ButtonBase)<MuiButtonProps>(
         : theme.palette.accent1.main,
     ':hover': {
       backgroundColor:
-        theme.palette.mode === 'dark' ? 'rgb(80, 47, 130)' : 'rgb(39, 0, 97)',
+        theme.palette.mode === 'dark'
+          ? darken(theme.palette.primary.main, 0.16)
+          : darken(theme.palette.accent1.main, 0.16),
     },
   }),
 );

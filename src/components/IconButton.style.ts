@@ -1,10 +1,5 @@
 import type { IconButtonProps } from '@mui/material';
-import {
-  IconButton as MuiIconButtom,
-  darken,
-  lighten,
-  styled,
-} from '@mui/material';
+import { IconButton as MuiIconButtom, darken, styled } from '@mui/material';
 import { getContrastAlphaColor } from 'src/utils';
 
 export const IconButton = styled(MuiIconButtom, {
@@ -26,13 +21,16 @@ export const IconButton = styled(MuiIconButtom, {
 export const IconButtonPrimary = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<IconButtonProps>(({ theme }) => ({
-  color: '#240752', // todo add color to theme
-  backgroundColor: '#E7D6FF', //todo: add to theme
-  '&:hover': {
+  color: theme.palette.white.main,
+  backgroundColor:
+    theme.palette.mode === 'dark'
+      ? theme.palette.primary.main
+      : theme.palette.accent1.main,
+  ':hover': {
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? darken('#E7D6FF', 0.04)
-        : lighten('#E7D6FF', 0.4),
+      theme.palette.mode === 'dark'
+        ? darken(theme.palette.primary.main, 0.16)
+        : darken(theme.palette.accent1.main, 0.16),
   },
 }));
 
