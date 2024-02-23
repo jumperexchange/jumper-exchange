@@ -117,7 +117,7 @@ export const CustomRichBlocks = ({
             <Typography
               variant="h2"
               sx={{
-                marginTop: theme.spacing(6),
+                marginTop: theme.spacing(8),
                 marginBottom: theme.spacing(3),
                 fontFamily: 'Urbanist, Inter',
                 fontSize: '36px',
@@ -133,7 +133,7 @@ export const CustomRichBlocks = ({
             <Typography
               variant="h3"
               sx={{
-                marginTop: theme.spacing(4),
+                marginTop: theme.spacing(6),
                 marginBottom: theme.spacing(2),
                 fontFamily: 'Urbanist, Inter',
                 fontSize: '28px',
@@ -149,7 +149,7 @@ export const CustomRichBlocks = ({
             <Typography
               variant="h4"
               sx={{
-                marginTop: theme.spacing(3),
+                marginTop: theme.spacing(4),
                 marginBottom: theme.spacing(1.5),
                 fontFamily: 'Urbanist, Inter',
                 fontSize: '22px',
@@ -165,7 +165,7 @@ export const CustomRichBlocks = ({
             <Typography
               variant="h5"
               sx={{
-                marginTop: theme.spacing(2),
+                marginTop: theme.spacing(3),
                 marginBottom: theme.spacing(1),
                 fontFamily: 'Urbanist, Inter',
                 fontSize: '18px',
@@ -181,7 +181,7 @@ export const CustomRichBlocks = ({
             <Typography
               variant="h6"
               sx={{
-                marginTop: theme.spacing(1),
+                marginTop: theme.spacing(2),
                 marginBottom: theme.spacing(0.5),
                 fontFamily: 'Urbanist, Inter',
                 fontSize: '12px',
