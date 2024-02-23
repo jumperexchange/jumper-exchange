@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
+import { getContrastAlphaColor } from 'src/utils';
 
 export const BlogArticleImageContainer = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -194,10 +195,7 @@ export const BlogAuthorMetaWrapper = styled(Box)(({ theme }) => ({
 }));
 
 export const Divider = styled(MuiDivider)(({ theme }) => ({
-  borderColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.grey[300]
-      : theme.palette.grey[800],
+  borderColor: getContrastAlphaColor(theme, 0.12),
   margin: theme.spacing(8, 0, 0),
 }));
 
