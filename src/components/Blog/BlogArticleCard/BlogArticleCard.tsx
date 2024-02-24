@@ -93,11 +93,9 @@ export const BlogArticleCard = ({
       )}
 
       <BlogArticleCardContent>
-        <Box>
-          <BlogArticleCardTitle variant="lifiBodyLarge">
-            {title}
-          </BlogArticleCardTitle>
-        </Box>
+        <BlogArticleCardTitle variant="lifiBodyLarge">
+          {title}
+        </BlogArticleCardTitle>
         <Box
           sx={{
             display: 'flex',
