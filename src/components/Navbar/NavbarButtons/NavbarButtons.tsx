@@ -46,8 +46,10 @@ export const NavbarButtons = ({ redirectConnect }: NavbarButtonsProps) => {
   }, [openMainMenu]);
 
   const { isSuccess } = useChains();
-
-  const handleOnOpenNavbarMainMenu = () => {
+  const handleOnOpenNavbarMainMenu = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
     setMainMenuState(!openMainMenu);
     trackEvent({
       category: TrackingCategory.Menu,
@@ -85,7 +87,7 @@ export const NavbarButtons = ({ redirectConnect }: NavbarButtonsProps) => {
         aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
         aria-expanded={openMainMenu ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={handleOnOpenNavbarMainMenu}
+        onClick={(e) => handleOnOpenNavbarMainMenu(e)}
       >
         <MenuIcon
           sx={{

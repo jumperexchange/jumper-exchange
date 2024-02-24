@@ -44,6 +44,7 @@ export const MenuMobile = ({
       <MenuPaper>
         <ClickAwayListener
           onClickAway={(event) => {
+            event.preventDefault();
             closeAllMenus();
           }}
         >
