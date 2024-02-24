@@ -1,7 +1,7 @@
 import type { CSSObject } from '@mui/material';
-import { Box, CardContent, Skeleton, useTheme } from '@mui/material';
+import { Box, Skeleton, useTheme } from '@mui/material';
 import { getContrastAlphaColor } from 'src/utils';
-import { BlogArticleCardContainer } from '.';
+import { BlogArticleCardContainer, BlogArticleCardContent } from '.';
 
 interface BlogArticleCardSkeletonProps {
   imageStyles?: CSSObject;
@@ -34,13 +34,7 @@ export const BlogArticleCardSkeleton = ({
           ...imageStyles,
         }}
       />
-      <CardContent
-        sx={{
-          margin: 0,
-          padding: theme.spacing(2, 0),
-          '&:last-child': { paddingBottom: theme.spacing(1) },
-        }}
-      >
+      <BlogArticleCardContent>
         <Skeleton
           variant="text"
           sx={{
@@ -77,7 +71,7 @@ export const BlogArticleCardSkeleton = ({
             }}
           />
         </Box>
-      </CardContent>
+      </BlogArticleCardContent>
     </BlogArticleCardContainer>
   );
 };
