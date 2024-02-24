@@ -1,4 +1,4 @@
-import type { Breakpoint, CSSObject } from '@mui/material';
+import type { CSSObject } from '@mui/material';
 import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,7 @@ import {
   BlogArticleCardContent,
   BlogArticleCardImage,
   BlogArticleCardTitle,
+  BlogArticleMetaContainer,
   BlogArticleTag,
 } from '.';
 
@@ -83,8 +84,7 @@ export const BlogArticleCard = ({
           component="img"
           sx={{
             width: '100%',
-            aspectRatio: 1.6, // 1.782,
-            // height: 240,
+            aspectRatio: 550 / 309,
             transform: 'unset',
             borderRadius: '16px',
             border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
@@ -110,20 +110,7 @@ export const BlogArticleCard = ({
               {tag.attributes.Title}
             </BlogArticleTag>
           ))}
-          <Box
-            sx={{
-              display: 'none',
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                display: 'flex',
-                alignItems: 'center',
-                marginLeft: theme.spacing(2),
-                color:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[800]
-                    : theme.palette.grey[300],
-              },
-            }}
-          >
+          <BlogArticleMetaContainer>
             <Typography
               variant="lifiBodyXSmall"
               component="span"
@@ -140,7 +127,7 @@ export const BlogArticleCard = ({
             <Typography variant="lifiBodyXSmall" component="span" fontSize={14}>
               {t('blog.minRead', { minRead: minRead })}
             </Typography>
-          </Box>
+          </BlogArticleMetaContainer>
         </Box>
       </BlogArticleCardContent>
     </BlogArticleCardContainer>

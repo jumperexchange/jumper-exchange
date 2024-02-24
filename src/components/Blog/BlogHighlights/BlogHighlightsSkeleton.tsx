@@ -15,7 +15,7 @@ export const BlogHighlightsSkeleton = () => {
         component="img"
         sx={{
           borderRadius: '14px',
-          aspectRatio: 1.782,
+          aspectRatio: 550 / 309,
           width: '100%',
           height: '100%',
           userSelect: 'none',

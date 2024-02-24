@@ -148,7 +148,7 @@ export const BlogArticlesBoard = () => {
                   height: 'auto',
                   borderRadius: '16px',
                   border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
-                  aspectRatio: 1.6,
+                  aspectRatio: 550 / 309,
                 }}
                 contentStyles={{
                   padding: 0,

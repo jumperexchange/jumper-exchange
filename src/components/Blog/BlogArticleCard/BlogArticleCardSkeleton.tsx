@@ -26,11 +26,10 @@ export const BlogArticleCardSkeleton = ({
         component="img"
         sx={{
           width: '100%',
-          height: 240,
           borderRadius: '16px',
           transform: 'unset',
           border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
-          aspectRatio: 1.782,
+          aspectRatio: 550 / 309,
           ...imageStyles,
         }}
       />

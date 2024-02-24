@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardContent,
   Typography,
@@ -41,10 +42,7 @@ export const BlogArticleCardImage = styled('img')(({ theme }) => ({
   height: 'auto',
   borderRadius: '16px',
   border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
-  objectFit: 'cover',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    height: 240,
-  },
+  objectFit: 'contain',
 }));
 
 export const BlogArticleCardContent = styled(CardContent)(({ theme }) => ({
@@ -65,6 +63,19 @@ export const BlogArticleCardTitle = styled(Typography)(({ theme }) => ({
   display: '-webkit-box',
   '-webkit-line-clamp': '2',
   '-webkit-box-orient': 'vertical',
+}));
+
+export const BlogArticleMetaContainer = styled(Box)(({ theme }) => ({
+  display: 'none',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    display: 'flex',
+    alignItems: 'center',
+    marginLeft: theme.spacing(2),
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[800]
+        : theme.palette.grey[300],
+  },
 }));
 
 export const BlogArticleTag = styled(Tag)(({ theme }) => ({
