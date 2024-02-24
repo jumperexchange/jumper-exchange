@@ -1,4 +1,4 @@
-import type { CSSObject } from '@mui/material';
+import type { Breakpoint, CSSObject } from '@mui/material';
 import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
@@ -112,13 +112,16 @@ export const BlogArticleCard = ({
           ))}
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              marginLeft: theme.spacing(2),
-              color:
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[800]
-                  : theme.palette.grey[300],
+              display: 'none',
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                display: 'flex',
+                alignItems: 'center',
+                marginLeft: theme.spacing(2),
+                color:
+                  theme.palette.mode === 'light'
+                    ? theme.palette.grey[800]
+                    : theme.palette.grey[300],
+              },
             }}
           >
             <Typography
