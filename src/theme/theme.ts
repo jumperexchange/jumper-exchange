@@ -848,7 +848,7 @@ export const darkTheme: Theme = createTheme(
         800: '#302B52',
       },
       bg: {
-        light: '#0E0B1F',
+        light: '#030014',
         main: '#030014',
         dark: '#030014',
       },
@@ -863,9 +863,9 @@ export const darkTheme: Theme = createTheme(
         dark: '#653BA3',
       },
       secondary: {
-        light: '#E9E1F5',
-        main: '#E9E1F5',
-        dark: '#E9E1F5',
+        light: '#321D52',
+        main: '#321D52',
+        dark: '#321D52',
       },
       tertiary: {
         light: '#33163D',

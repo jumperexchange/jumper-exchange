@@ -42,23 +42,15 @@ export const ButtonPrimary = styled(ButtonBase)<MuiButtonProps>(
 
 export const ButtonSecondary = styled(ButtonBase)<MuiButtonProps>(
   ({ theme }) => ({
-    color: theme.palette.primary.main,
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.primary.main, 0.08)
+        : alpha(theme.palette.primary.main, 0.42),
     '&:hover': {
-      backgroundColor: theme.palette.secondary.dark,
-    },
-    '&:before': {
-      content: '" "',
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      transition: 'background 250ms',
-      background: 'transparent',
-    },
-    '&:hover:before': {
-      background: getContrastAlphaColor(theme, '8%'),
+      backgroundColor:
+        theme.palette.mode === 'light'
+          ? alpha(theme.palette.primary.main, 0.12)
+          : alpha(theme.palette.primary.main, 0.56),
     },
   }),
 );
