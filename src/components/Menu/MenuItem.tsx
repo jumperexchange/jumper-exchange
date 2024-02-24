@@ -119,10 +119,6 @@ export const MenuItem = ({
                   variant={'lifiBodyMedium'}
                   ml={theme.spacing(1.5)}
                   sx={{
-                    color:
-                      theme.palette.mode === 'light'
-                        ? theme.palette.primary.main
-                        : theme.palette.white.main,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     [theme.breakpoints.up('sm' as Breakpoint)]: {
