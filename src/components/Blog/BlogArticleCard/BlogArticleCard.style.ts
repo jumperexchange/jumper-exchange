@@ -79,10 +79,6 @@ export const BlogArticleMetaContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const BlogArticleTag = styled(Tag)(({ theme }) => ({
-  // color:
-  //   theme.palette.mode === 'light'
-  //     ? theme.palette.grey[800]
-  //     : theme.palette.grey[300],
   fontSize: '14px',
   fontWeight: 600,
   lineHeight: '18px',
