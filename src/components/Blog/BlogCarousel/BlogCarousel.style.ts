@@ -9,18 +9,22 @@ export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
       ? '#F9F5FF'
       : alpha(theme.palette.white.main, 0.08),
   // marginTop: theme.spacing(6),
-  padding: theme.spacing(1.5),
+  padding: theme.spacing(2),
   borderRadius: '32px',
   margin: theme.spacing(6, 2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(8),
-    padding: theme.spacing(6, 4),
+    padding: theme.spacing(6, 3),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    padding: theme.spacing(8),
+    padding: theme.spacing(8, 4),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     padding: theme.spacing(6),
+  },
+  [theme.breakpoints.up('xl' as Breakpoint)]: {
+    margin: `${theme.spacing(8, 'auto')}`,
+    maxWidth: theme.breakpoints.values.xl,
   },
 }));
 

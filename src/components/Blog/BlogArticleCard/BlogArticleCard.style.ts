@@ -1,4 +1,10 @@
-import { Card, Typography, darken, type Breakpoint } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Typography,
+  darken,
+  type Breakpoint,
+} from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 import { Tag } from 'src/components/Tag.style';
@@ -39,6 +45,12 @@ export const BlogArticleCardImage = styled('img')(({ theme }) => ({
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     height: 240,
   },
+}));
+
+export const BlogArticleCardContent = styled(CardContent)(({ theme }) => ({
+  margin: 0,
+  padding: theme.spacing(2),
+  '&:last-child': { paddingBottom: theme.spacing(1) },
 }));
 
 export const BlogArticleCardTitle = styled(Typography)(({ theme }) => ({

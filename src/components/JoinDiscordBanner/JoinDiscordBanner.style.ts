@@ -25,4 +25,8 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
     padding: theme.spacing(12, 8),
     marginTop: theme.spacing(12),
   },
+  [theme.breakpoints.up('xl' as Breakpoint)]: {
+    margin: `${theme.spacing(12, 'auto')}`,
+    maxWidth: theme.breakpoints.values.xl,
+  },
 }));

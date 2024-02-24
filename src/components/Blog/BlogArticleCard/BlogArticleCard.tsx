@@ -1,11 +1,5 @@
 import type { CSSObject } from '@mui/material';
-import {
-  Box,
-  CardContent,
-  Skeleton,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +10,7 @@ import { EventTrackingTool, type StrapiImageData } from 'src/types';
 import { formatDate, getContrastAlphaColor, readingTime } from 'src/utils';
 import {
   BlogArticleCardContainer,
+  BlogArticleCardContent,
   BlogArticleCardImage,
   BlogArticleCardTitle,
   BlogArticleTag,
@@ -97,13 +92,7 @@ export const BlogArticleCard = ({
         ></Skeleton>
       )}
 
-      <CardContent
-        sx={{
-          margin: 0,
-          padding: theme.spacing(2, 0),
-          '&:last-child': { paddingBottom: theme.spacing(1) },
-        }}
-      >
+      <BlogArticleCardContent>
         <Box>
           <BlogArticleCardTitle variant="lifiBodyLarge">
             {title}
@@ -152,7 +141,7 @@ export const BlogArticleCard = ({
             </Typography>
           </Box>
         </Box>
-      </CardContent>
+      </BlogArticleCardContent>
     </BlogArticleCardContainer>
   );
 };

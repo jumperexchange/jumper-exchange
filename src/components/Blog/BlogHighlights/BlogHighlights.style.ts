@@ -7,14 +7,14 @@ export const BlogHightsContainer = styled(Box, {
 })<BoxProps>(({ theme }) => ({
   position: 'relative',
   borderRadius: 32,
-  background:
+  backgroundColor:
     theme.palette.mode === 'light'
-      ? '#F9F5FF' //todo: add to theme
-      : theme.palette.alphaDark600.main,
+      ? '#F9F5FF'
+      : alpha(theme.palette.white.main, 0.08),
   transition: 'background-color 250ms',
   display: 'flex',
   flexDirection: 'column',
-  padding: theme.spacing(1.5),
+  padding: theme.spacing(2),
   margin: theme.spacing(6, 2),
   '&:hover': {
     cursor: 'pointer',
@@ -25,13 +25,19 @@ export const BlogHightsContainer = styled(Box, {
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(8),
+    padding: theme.spacing(3),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    padding: theme.spacing(8),
+    padding: theme.spacing(4),
   },
 
   [theme.breakpoints.up('lg' as Breakpoint)]: {
+    padding: theme.spacing(8),
     flexDirection: 'row',
+  },
+  [theme.breakpoints.up('xl' as Breakpoint)]: {
+    margin: `${theme.spacing(8, 'auto')}`,
+    maxWidth: theme.breakpoints.values.xl,
   },
 }));
 
