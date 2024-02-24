@@ -37,39 +37,27 @@ export const IconButtonPrimary = styled(IconButton, {
 export const IconButtonSecondary = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<IconButtonProps>(({ theme }) => ({
-  color: '#240752', // todo add color to theme
-  backgroundColor: theme.palette.white.main, //todo: add to theme
-
+  color: theme.palette.mode === 'light' ? '#240752' : theme.palette.white.main, // todo add color to theme
+  backgroundColor:
+    theme.palette.mode === 'dark'
+      ? theme.palette.alphaLight300.main
+      : theme.palette.white.main,
   '&:hover': {
     backgroundColor: getContrastAlphaColor(theme, '4%'),
   },
-  '&:before': {
-    content: '" "',
-    position: 'absolute',
-    borderRadius: '24px',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    transition: 'background 250ms',
-    background: 'transparent',
-  },
-  '&:hover:before': {
-    background: getContrastAlphaColor(theme, '8%'),
-  },
 }));
 
-export const IconButtonTransparent = styled(IconButton, {
+export const IconButtonTertiary = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<IconButtonProps>(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'dark'
       ? theme.palette.alphaLight300.main
-      : theme.palette.alphaDark100.main,
+      : theme.palette.white.main,
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'
         ? theme.palette.alphaLight500.main
-        : theme.palette.alphaDark300.main,
+        : getContrastAlphaColor(theme, '4%'),
   },
 }));

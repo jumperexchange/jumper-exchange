@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
 import {
-  IconButtonSecondary,
+  IconButtonTertiary,
   InstructionsAccordionItemContainer,
   InstructionsAccordionItemIndex,
   InstructionsAccordionItemLabel,
@@ -54,14 +54,14 @@ export const InstructionsAccordionItem = ({
           )}
         </Box>
         {step ? (
-          <IconButtonSecondary
+          <IconButtonTertiary
             onClick={(e) => handleOpen(e)}
             sx={{ width: '40px', height: '40px' }}
           >
             <ExpandMoreIcon
               sx={{ ...(open && { transform: 'rotate(180deg)' }) }}
             />
-          </IconButtonSecondary>
+          </IconButtonTertiary>
         ) : null}
       </InstructionsAccordionItemMain>
 

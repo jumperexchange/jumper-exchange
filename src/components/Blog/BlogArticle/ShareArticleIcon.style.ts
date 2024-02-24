@@ -1,12 +1,12 @@
 import type { IconButtonProps } from '@mui/material';
 import { styled } from '@mui/material';
-import { IconButtonTransparent } from 'src/components/IconButton.style';
+import { IconButtonTertiary } from 'src/components/IconButton.style';
 
 export interface ShareButtonProps extends Omit<IconButtonProps, 'component'> {
   expanded?: boolean;
 }
 
-export const ShareButton = styled(IconButtonTransparent, {
+export const ShareButton = styled(IconButtonTertiary, {
   shouldForwardProp: (prop) => prop !== 'expanded',
 })<ShareButtonProps>(({ theme, expanded }) => ({
   marginLeft: theme.spacing(1.5),
