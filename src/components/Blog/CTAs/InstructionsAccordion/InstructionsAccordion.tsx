@@ -23,6 +23,7 @@ export const InstructionsAccordion = (data: InstructionsAccordionProps) => {
     <Box>
       {data.data?.map((el, index) => (
         <InstructionsAccordionItem
+          key={`instructions-accordion-item-${index}`}
           index={index}
           title={el.title}
           step={el.step}

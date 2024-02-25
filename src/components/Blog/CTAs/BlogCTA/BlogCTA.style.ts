@@ -25,9 +25,11 @@ export const BlogCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   fontSize: '32px',
   lineHeight: '38px',
   userSelect: 'none',
+  textDecoration: 'underline',
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     fontSize: '40px',
     lineHeight: '56px',
+    textDecoration: 'auto',
   },
 }));

@@ -129,7 +129,7 @@ export const BlogArticlesBoard = () => {
           {!articlesIsSuccess ? (
             Array.from({ length: pageSize }).map((_, index) => (
               <BlogArticleCardSkeleton
-                key={`blog-article-card-skeleton-${index}`}
+                key={`blog-article-card-skeleton-${catId}-${index}`}
                 containerStyles={{
                   flexShrink: 0,
                   width: '100%',
@@ -170,7 +170,7 @@ export const BlogArticlesBoard = () => {
               <BlogArticleCard
                 baseUrl={url}
                 id={article.id}
-                key={`blog-articles-board-${index}`}
+                key={`blog-articles-board-${catId}-${index}`}
                 image={article.attributes.Image}
                 title={article.attributes.Title}
                 slug={article.attributes.Slug}

@@ -2,7 +2,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import type { Breakpoint } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { DiscordBanner, IconButtonPrimary } from 'src/components';
+import { DiscordBanner, DiscordBannerButton } from 'src/components';
 import { TrackingAction, TrackingCategory } from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
@@ -32,6 +32,7 @@ export const JoinDiscordBanner = () => {
         variant="lifiHeaderMedium"
         sx={{
           textAlign: 'center',
+          textDecoration: 'underline',
           fontFamily: 'Urbanist, Inter',
           fontSize: '32px',
           lineHeight: '44px',
@@ -39,17 +40,15 @@ export const JoinDiscordBanner = () => {
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             fontSize: '40px',
             lineHeight: '56px',
+            textDecoration: 'auto',
           },
         }}
       >
         {t('discordBanner.ctaHeadline')}
       </Typography>
-      <IconButtonPrimary
-        onClick={(e) => handleClick(e)}
-        sx={{ marginLeft: theme.spacing(4) }}
-      >
+      <DiscordBannerButton onClick={(e) => handleClick(e)}>
         <ArrowForwardIcon sx={{ width: '28px', height: '28px' }} />
-      </IconButtonPrimary>
+      </DiscordBannerButton>
     </DiscordBanner>
   );
 };

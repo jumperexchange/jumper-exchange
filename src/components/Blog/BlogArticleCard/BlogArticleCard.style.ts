@@ -61,12 +61,13 @@ export const BlogArticleCardTitle = styled(Typography)(({ theme }) => ({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   display: '-webkit-box',
-  '-webkit-line-clamp': '2',
-  '-webkit-box-orient': 'vertical',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
 }));
 
 export const BlogArticleMetaContainer = styled(Box)(({ theme }) => ({
   display: 'none',
+  '*': { textWrap: 'nowrap' },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     display: 'flex',
     alignItems: 'center',
@@ -84,8 +85,10 @@ export const BlogArticleTag = styled(Tag)(({ theme }) => ({
   lineHeight: '18px',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  maxWidth: '50%',
   height: '40px',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    maxWidth: '50%',
+  },
   ':not(:first-of-type)': {
     marginLeft: theme.spacing(0.5),
   },

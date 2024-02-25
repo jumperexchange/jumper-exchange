@@ -129,25 +129,21 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
   return title ? (
     <ShareIconsContainer>
       <ShareArticleIcon
-        key={'tooltip-share-linkedin'}
         handleShare={handleLinkedInClick}
         tooltipMsg={t('blog.shareLinkedIn')}
         icon={<LinkedInIcon sx={{ width: '28px' }} />}
       />
       <ShareArticleIcon
-        key={'tooltip-share-facebook'}
         handleShare={handleFbClick}
         tooltipMsg={t('blog.shareFb')}
         icon={<FacebookIcon sx={{ width: '28px' }} />}
       />
       <ShareArticleIcon
-        key={'tooltip-share-x'}
         handleShare={handleXClick}
         tooltipMsg={t('blog.shareX')}
         icon={<XIcon sx={{ width: '28px' }} />}
       />
       <ShareArticleIcon
-        key={'tooltip-share-link'}
         handleShare={handleShareClick}
         tooltipMsg={t('blog.shareLink')}
         icon={<LinkIcon sx={{ width: '28px' }} />}

@@ -71,7 +71,7 @@ export const NavbarButtons = ({ redirectConnect }: NavbarButtonsProps) => {
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               display: '-webkit-box',
-              WebkitLineClamp: '2',
+              WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
             }}
           >

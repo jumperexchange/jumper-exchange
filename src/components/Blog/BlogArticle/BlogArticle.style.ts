@@ -25,9 +25,10 @@ export const BlogArticleImageContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const BlogArticleHeaderMeta = styled(Box)(({ theme }) => ({
+export const BlogArticleTopHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
-  alignItems: 'center',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
   fontSize: '16px',
   fontWeight: 400,
   lineHeight: '32px',
@@ -35,6 +36,12 @@ export const BlogArticleHeaderMeta = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? theme.palette.grey[800]
       : theme.palette.grey[300],
+  '*': { textWrap: 'nowrap' },
+
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 }));
 
 export const BlogArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
@@ -51,8 +58,17 @@ export const BlogArticleHeaderTagSkeleton = styled(Skeleton)(({ theme }) => ({
   transform: 'unset',
 }));
 
+export const BlogArticleHeaderMeta = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(1.5),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginTop: theme.spacing(0),
+  },
+}));
+
 export const BlogArticleHeaderMetaDate = styled(Typography)(({ theme }) => ({
-  marginLeft: theme.spacing(3),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginLeft: theme.spacing(3),
+  },
   '&:after': {
     content: '"•"',
     margin: theme.spacing(0, 1),
@@ -176,11 +192,12 @@ export const BlogArticleContentSkeleton = styled(Skeleton)(() => ({
 export const BlogMetaContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
+  alignItems: 'flex-start',
   marginTop: theme.spacing(8),
   gap: theme.spacing(2),
   flexDirection: 'column',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
+    alignItems: 'center',
     flexDirection: 'row',
   },
 }));
@@ -218,11 +235,16 @@ export const Divider = styled(MuiDivider)(({ theme }) => ({
 
 export const BlogArticleTitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(6),
     fontWeight: 700,
-    lineHeight: '64px',
-    fontSize: '64px',
+    lineHeight: '48px',
+    fontSize: '48px',
     fontFamily: 'Urbanist, Inter', //todo: add font
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      marginTop: theme.spacing(8),
+      fontSize: '64px',
+      lineHeight: '64px',
+    },
   }),
 );
 
@@ -243,11 +265,14 @@ export const BlogArticleTitleSkeleton = styled(Skeleton)<SkeletonProps>(
 
 export const BlogArticleSubtitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(6),
     fontWeight: 400,
     fontSize: '18px',
     lineHeight: '32px',
     fontFamily: 'Inter',
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      marginTop: theme.spacing(8),
+    },
   }),
 );
 

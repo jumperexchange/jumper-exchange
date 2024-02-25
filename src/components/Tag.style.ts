@@ -11,9 +11,8 @@ export const Tag = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'color' && prop !== 'backgroundColor',
 })<TagProps>(({ theme, backgroundColor, color }) => ({
   height: 48,
-  fontSize: '14px',
-  lineHeight: '24px',
   padding: theme.spacing(0, 3),
+  textWrap: 'nowrap',
   width: 'fit-content',
   backgroundColor: backgroundColor
     ? backgroundColor

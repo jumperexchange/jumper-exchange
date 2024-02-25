@@ -1,4 +1,5 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +25,13 @@ export const BlogCTA = ({ title, url }: BlogCTAProps) => {
       <BlogCtaTitle>{title ?? t('blog.jumperCta')}</BlogCtaTitle>
       <IconButtonPrimary
         onClick={handleClick}
-        sx={{ marginLeft: theme.spacing(4) }}
+        sx={{
+          display: 'none',
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            display: 'flex',
+            marginLeft: theme.spacing(4),
+          },
+        }}
       >
         <ArrowForwardIcon sx={{ width: '28px', height: '28px' }} />
       </IconButtonPrimary>

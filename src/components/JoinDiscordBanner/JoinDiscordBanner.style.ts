@@ -2,6 +2,7 @@ import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, alpha } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
+import { IconButtonPrimary } from '../IconButton.style';
 
 export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -30,3 +31,13 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
     maxWidth: theme.breakpoints.values.xl,
   },
 }));
+
+export const DiscordBannerButton = styled(IconButtonPrimary)<BoxProps>(
+  ({ theme }) => ({
+    display: 'none',
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      display: 'flex',
+      marginLeft: theme.spacing(4),
+    },
+  }),
+);

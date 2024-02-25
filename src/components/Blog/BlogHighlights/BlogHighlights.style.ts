@@ -73,7 +73,11 @@ export const BlogHighlightsMetaContainer = styled(Box)<BoxProps>(
 );
 
 export const BlogHighlightsMetaDate = styled(Typography)<TypographyProps>(
-  () => ({
+  ({ theme }) => ({
+    display: 'none',
+    [`@media (min-width: 400px)`]: {
+      display: 'block',
+    },
     '&:after': {
       content: '"•"',
       margin: '0 4px',
@@ -104,9 +108,11 @@ export const BlogHighlightsContent = styled(Box)(({ theme }) => ({
   alignSelf: 'center',
   justifyContent: 'flex-end',
   paddingBottom: theme.spacing(2),
-  margin: theme.spacing(4, 0),
+  margin: theme.spacing(3, 0),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(2),
+    paddingTop: 0,
+    margin: theme.spacing(4, 0),
     marginBottom: 0,
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
@@ -138,20 +144,22 @@ export const BlogHighlightsTitle = styled(Typography)<TypographyProps>(
       theme.palette.mode === 'light'
         ? theme.palette.black.main
         : theme.palette.white.main,
-    marginBottom: theme.spacing(4),
-    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(3),
     overflow: 'hidden',
     fontFamily: 'Urbanist, Inter', //todo: use typography
-    fontSize: '48px',
-    lineHeight: '56px',
+    lineHeight: '40px',
+    fontSize: '40px',
     fontWeight: 700,
     maxHeight: 168,
     textOverflow: 'ellipsis',
     display: '-webkit-box',
-    '-webkit-line-clamp': '3',
-    '-webkit-box-orient': 'vertical',
+    WebkitLineClamp: 4,
+    WebkitBoxOrient: 'vertical',
 
     [theme.breakpoints.up('sm' as Breakpoint)]: {
+      fontSize: '48px',
+      lineHeight: '56px',
       marginTop: theme.spacing(2),
     },
     [theme.breakpoints.up('md' as Breakpoint)]: {
@@ -169,7 +177,7 @@ export const BlogHighlightsSubtitle = styled(Typography)<TypographyProps>(
     maxHeight: 96,
     textOverflow: 'ellipsis',
     display: '-webkit-box',
-    '-webkit-line-clamp': '4',
-    '-webkit-box-orient': 'vertical',
+    WebkitLineClamp: 4,
+    WebkitBoxOrient: 'vertical',
   }),
 );

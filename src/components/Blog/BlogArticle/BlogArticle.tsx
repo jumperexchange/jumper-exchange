@@ -1,4 +1,4 @@
-import { Typography, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
 import { ArticleJsonSchema, ShareArticleIcons, Tag } from 'src/components';
@@ -23,6 +23,7 @@ import {
   BlogArticleSubtitleSkeleton,
   BlogArticleTitle,
   BlogArticleTitleSkeleton,
+  BlogArticleTopHeader,
   BlogAuthorAvatar,
   BlogAuthorAvatarSkeleton,
   BlogAuthorContainer,
@@ -68,33 +69,31 @@ export const BlogArticle = ({
   return (
     <>
       <BlogArticleContainer>
-        <BlogArticleHeaderMeta>
+        <BlogArticleTopHeader>
           {!!tags?.data[0]?.attributes.Title ? (
             <Tag
               color={tags.data[0]?.attributes.TextColor}
               backgroundColor={tags.data[0]?.attributes.BackgroundColor}
               component="span"
-              variant="lifiBodySmall"
+              variant="lifiBodyMediumStrong"
               key={`blog-article-tag-${tags.data[0]?.id}`}
             >
-              <Typography variant="lifiBodyMediumStrong">
-                {tags.data[0].attributes?.Title}
-              </Typography>
+              {tags.data[0].attributes?.Title}
             </Tag>
           ) : (
             <BlogArticleHeaderTagSkeleton variant="rectangular" />
           )}
           {!!createdAt ? (
-            <>
+            <BlogArticleHeaderMeta>
               <BlogArticleHeaderMetaDate variant="lifiBodyXSmall" as="span">
                 {formatDate(publishedAt || createdAt)}
               </BlogArticleHeaderMetaDate>
               <span>{t('blog.minRead', { minRead: minRead })}</span>
-            </>
+            </BlogArticleHeaderMeta>
           ) : (
             <BlogArticleMetaSkeleton variant="text" />
           )}
-        </BlogArticleHeaderMeta>
+        </BlogArticleTopHeader>
         {title ? (
           <BlogArticleTitle>{title}</BlogArticleTitle>
         ) : (

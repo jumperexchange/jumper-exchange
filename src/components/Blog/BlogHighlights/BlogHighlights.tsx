@@ -67,10 +67,11 @@ export const BlogHighlights = () => {
           {featuredArticle[0].attributes.tags.data
             .slice(0, 1)
             .map((el, index) => (
-              <Tag key={`blog-highlights-tag-${index}`}>
-                <Typography variant="lifiBodyMediumStrong">
-                  {el.attributes.Title}
-                </Typography>
+              <Tag
+                key={`blog-highlights-tag-${index}`}
+                variant="lifiBodyMediumStrong"
+              >
+                {el.attributes.Title}
               </Tag>
             ))}
           <BlogHighlightsMetaContainer>

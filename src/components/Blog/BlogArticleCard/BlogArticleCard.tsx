@@ -20,7 +20,6 @@ import {
 interface BlogArticleCardProps {
   baseUrl: URL;
   id: number;
-  key?: string;
   image: StrapiImageData;
   content: RootNode[];
   publishedAt: string | null | undefined;
@@ -36,7 +35,6 @@ export const BlogArticleCard = ({
   baseUrl,
   trackingCategory,
   image,
-  key,
   tags,
   content,
   publishedAt,
@@ -69,7 +67,6 @@ export const BlogArticleCard = ({
   return (
     <BlogArticleCardContainer
       variant="outlined"
-      key={key || 'blog-article-card'}
       onClick={handleClick}
       sx={styles}
     >
@@ -106,7 +103,7 @@ export const BlogArticleCard = ({
           }}
         >
           {tags?.data.slice(0, 1).map((tag) => (
-            <BlogArticleTag noWrap variant="lifiBodyXSmall" as="span">
+            <BlogArticleTag variant="lifiBodyXSmall" as="span">
               {tag.attributes.Title}
             </BlogArticleTag>
           ))}

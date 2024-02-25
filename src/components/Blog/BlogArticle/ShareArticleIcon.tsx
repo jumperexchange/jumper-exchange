@@ -5,7 +5,6 @@ import { ShareButton } from './ShareArticleIcon.style';
 interface ShareArticleIconProps {
   handleShare: () => void;
   tooltipMsg: string;
-  key: string;
   icon: ReactNode;
   showMsg?: string;
   showMsgActive?: boolean;
@@ -13,7 +12,6 @@ interface ShareArticleIconProps {
 
 export const ShareArticleIcon = ({
   handleShare,
-  key,
   tooltipMsg,
   icon,
   showMsg,
@@ -22,7 +20,6 @@ export const ShareArticleIcon = ({
   return (
     <Tooltip
       title={tooltipMsg}
-      key={key}
       open={showMsgActive ? false : undefined}
       disableFocusListener={showMsgActive ? false : undefined}
       disableInteractive={!showMsgActive ? false : undefined}
