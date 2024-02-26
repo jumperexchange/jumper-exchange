@@ -34,9 +34,10 @@ export const BlogHightsContainer = styled(Box, {
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     padding: theme.spacing(8),
     flexDirection: 'row',
+    gap: theme.spacing(8),
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
-    margin: `${theme.spacing(8, 'auto')}`,
+    margin: 'auto',
     maxWidth: theme.breakpoints.values.xl,
   },
 }));
@@ -120,7 +121,7 @@ export const BlogHighlightsContent = styled(Box)(({ theme }) => ({
     marginBottom: 0,
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
-    margin: theme.spacing(4),
+    margin: theme.spacing(0),
     width: '46%',
   },
 }));
