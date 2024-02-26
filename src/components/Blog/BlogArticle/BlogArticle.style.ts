@@ -45,10 +45,14 @@ export const BlogArticleTopHeader = styled(Box)(({ theme }) => ({
 }));
 
 export const BlogArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
-  marginLeft: theme.spacing(3),
   transform: 'unset',
-  width: 146,
-  height: 14.5,
+  width: 164,
+  height: 32,
+  marginTop: theme.spacing(1.5),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginLeft: theme.spacing(3),
+    marginTop: theme.spacing(0),
+  },
 }));
 
 export const BlogArticleHeaderTagSkeleton = styled(Skeleton)(({ theme }) => ({
