@@ -72,14 +72,14 @@ export const BlogArticlePage = () => {
       <Box
         position="relative"
         sx={{
-          padding: theme.spacing(6, 2),
+          padding: theme.spacing(6, 2, 0.25),
 
           [theme.breakpoints.up('sm' as Breakpoint)]: {
-            padding: theme.spacing(6, 2),
+            padding: theme.spacing(6, 2, 0.25),
             paddingTop: theme.spacing(12),
           },
           [theme.breakpoints.up('md' as Breakpoint)]: {
-            padding: theme.spacing(8),
+            padding: theme.spacing(8, 0, 0.25),
             paddingTop: theme.spacing(12),
           },
         }}
