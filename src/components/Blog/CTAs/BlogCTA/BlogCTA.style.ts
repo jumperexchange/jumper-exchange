@@ -5,10 +5,11 @@ import { styled } from '@mui/material/styles';
 
 export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
+  flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  flexDirection: 'row',
   padding: theme.spacing(8),
+  gap: theme.spacing(1.5),
   cursor: 'pointer',
   overflow: 'hidden',
   margin: theme.spacing(6, 0),
@@ -17,6 +18,10 @@ export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '#F6F0FF' //todo: add to theme
       : darken('#9747FF', 0.8),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    gap: theme.spacing(4),
+    flexDirection: 'row',
+  },
 }));
 
 export const BlogCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
@@ -25,7 +30,6 @@ export const BlogCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   fontSize: '32px',
   lineHeight: '38px',
   userSelect: 'none',
-  textDecoration: 'underline',
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     fontSize: '40px',

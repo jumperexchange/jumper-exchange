@@ -26,10 +26,8 @@ export const BlogCTA = ({ title, url }: BlogCTAProps) => {
       <IconButtonPrimary
         onClick={handleClick}
         sx={{
-          display: 'none',
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             display: 'flex',
-            marginLeft: theme.spacing(4),
           },
         }}
       >
