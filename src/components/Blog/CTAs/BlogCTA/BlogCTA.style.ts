@@ -1,5 +1,5 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, darken } from '@mui/material';
+import { Box, alpha } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
@@ -14,10 +14,10 @@ export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   overflow: 'hidden',
   margin: theme.spacing(6, 0),
   borderRadius: '16px',
-  background:
+  backgroundColor:
     theme.palette.mode === 'light'
-      ? '#F6F0FF' //todo: add to theme
-      : darken('#9747FF', 0.8),
+      ? '#F9F5FF' //todo: add to theme
+      : alpha(theme.palette.white.main, 0.12),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: theme.spacing(4),
     flexDirection: 'row',
