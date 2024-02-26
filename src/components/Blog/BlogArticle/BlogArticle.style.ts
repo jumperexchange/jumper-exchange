@@ -247,7 +247,7 @@ export const BlogArticleTitle = styled(Typography)<TypographyProps>(
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       marginTop: theme.spacing(8),
       fontSize: '64px',
-      lineHeight: '64px',
+      lineHeight: '72px',
     },
   }),
 );
