@@ -5,7 +5,7 @@ import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar } from 'src/components';
+import { Avatar, Button } from 'src/components';
 import { TrackingAction, TrackingCategory } from 'src/const';
 import { useChains, useMultisig, useUserTracking } from 'src/hooks';
 import type { Account } from 'src/hooks/useAccounts';
@@ -119,15 +119,22 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           <WalletAvatar src={getConnectorIcon(account.connector)} />
         </WalletCardBadge>
         <WalletCardButtonContainer>
-          <WalletButton
+          {/* <WalletButton
             disabled={isMultisigEnvironment}
-            sx={{ gridColumn: '1/3', gridRow: '1/2' }}
+            sx={{ width: '100%', gridColumn: '1/3', gridRow: '1/2' }}
+            onClick={() => handleCopyButton()}
+          > */}
+          <Button
+            variant="transparent"
+            // disabled={isMultisigEnvironment}
+            styles={{ width: '100%', gridColumn: '1/3', gridRow: '1/2' }}
             onClick={() => handleCopyButton()}
           >
             <Typography variant="lifiBodySmallStrong">
               {walletDigest(account.address)}
             </Typography>
-          </WalletButton>
+          </Button>
+          {/* </WalletButton> */}
 
           <WalletButton
             onClick={() => handleExploreButton()}
