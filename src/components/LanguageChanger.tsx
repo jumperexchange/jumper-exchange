@@ -1,20 +1,14 @@
 'use client';
 
-import { useLocale } from 'next-intl';
-import { usePathname, useRouter } from '../navigation';
-
 export const LanguageChanger = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const locale = useLocale();
-  console.log('locale', locale);
   const handleChange = (e: any) => {
-    console.log('OLD PATHNAME', pathname);
-    router.push(pathname, { locale: e.target.value });
+    console.log('todo handle change');
   };
 
   return (
-    <select value={locale} onChange={handleChange}>
+    <select value={'en'} onChange={handleChange}>
+      {' '}
+      {`//todo:`}
       <option value="en">English</option>
       <option value="fr">Francaise</option>
       <option value="es">Español</option>

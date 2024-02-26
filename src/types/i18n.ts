@@ -1,6 +1,6 @@
-import type * as languages from '../i18n';
-import type language from '../i18n/en/language.json';
-import type translation from '../i18n/en/translation.json';
+import type * as languages from '../i18n/i18n';
+import type language from '../i18n/locales/en/language.json';
+import type translation from '../i18n/locales/en/translation.json';
 
 // i18n: start -->
 export type PartialResource<T> = T extends object

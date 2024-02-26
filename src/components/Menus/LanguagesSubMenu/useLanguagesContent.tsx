@@ -1,29 +1,29 @@
 'use client';
-import { useLocale } from 'next-intl';
+
+import { useRouter } from 'next/router';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
 import { useUserTracking } from 'src/hooks';
-import { usePathname, useRouter } from 'src/navigation';
 import { useSettingsStore } from 'src/stores';
 import type { LanguageKey } from 'src/types';
 import { EventTrackingTool } from 'src/types';
 import * as supportedLanguages from '../../../../messages';
 
 export const useLanguagesContent = () => {
+  const { locale, asPath, pathname } = useRouter();
+  const router = useRouter();
   const [languageMode, onChangeLanguage] = useSettingsStore((state) => [
     state.languageMode,
     state.onChangeLanguage,
   ]);
-  const router = useRouter();
-  const pathname = usePathname();
-  const locale = useLocale();
 
   const { trackEvent } = useUserTracking();
   const handleSwitchLanguage = (newLanguage: LanguageKey) => {
-    router.push(pathname, { locale: newLanguage });
+    router.push(pathname, asPath, { locale: newLanguage });
+
     onChangeLanguage(newLanguage);
     trackEvent({
       category: TrackingCategory.LanguageMenu,

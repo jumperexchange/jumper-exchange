@@ -93,6 +93,7 @@
     "env.d.ts",
     "./src/**/*",
     "./src/**/*.json",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/i18n/locales"
   ]
 }

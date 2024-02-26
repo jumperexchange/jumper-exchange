@@ -4,11 +4,10 @@ import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import { useLocale } from 'next-intl';
+import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
-import { locales } from 'src/i18n';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { useConfig } from 'wagmi';
@@ -34,7 +33,7 @@ interface WidgetProps {
 
 export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
-  const locale = useLocale();
+  const { locale, locales } = useRouter();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
@@ -132,6 +131,7 @@ export function Widget({ starterVariant }: WidgetProps) {
   }, [
     isMultisigSigner,
     locale,
+    locales,
     multisigSdkConfig,
     multisigWidget,
     setWalletSelectMenuState,
