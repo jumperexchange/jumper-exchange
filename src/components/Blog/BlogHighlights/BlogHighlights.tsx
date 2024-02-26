@@ -78,7 +78,11 @@ export const BlogHighlights = () => {
             <BlogHighlightsMetaDate variant="lifiBodyXSmall" component="span">
               {formatedDate}
             </BlogHighlightsMetaDate>
-            <Typography variant="lifiBodyXSmall" component="span">
+            <Typography
+              variant="lifiBodyXSmall"
+              component="span"
+              fontSize={'inherit'}
+            >
               {t('blog.minRead', { minRead: minRead })}
             </Typography>
           </BlogHighlightsMetaContainer>

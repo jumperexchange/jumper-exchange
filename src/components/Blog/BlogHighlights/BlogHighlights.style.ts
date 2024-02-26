@@ -60,6 +60,7 @@ export const BlogHighlightsCard = styled(Box)<BoxProps>(({ theme }) => ({
 export const BlogHighlightsMetaContainer = styled(Box)<BoxProps>(
   ({ theme }) => ({
     display: 'flex',
+    fontSize: '14px',
     color:
       theme.palette.mode === 'light'
         ? theme.palette.grey[800]
@@ -75,6 +76,7 @@ export const BlogHighlightsMetaContainer = styled(Box)<BoxProps>(
 export const BlogHighlightsMetaDate = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     display: 'none',
+    fontSize: 'inherit',
     [`@media (min-width: 400px)`]: {
       display: 'block',
     },
