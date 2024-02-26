@@ -1,5 +1,4 @@
-import { Box } from '@mui/material';
-import { InstructionsAccordionItem } from './InstructionsAccordionItem';
+import { InstructionsAccordionContainer, InstructionsAccordionItem } from '.';
 
 interface InstructionsItemLink {
   label: string;
@@ -20,7 +19,7 @@ export const InstructionsAccordion = (data: InstructionsAccordionProps) => {
     return;
   }
   return (
-    <Box>
+    <InstructionsAccordionContainer>
       {data.data?.map((el, index) => (
         <InstructionsAccordionItem
           key={`instructions-accordion-item-${index}`}
@@ -30,6 +29,6 @@ export const InstructionsAccordion = (data: InstructionsAccordionProps) => {
           link={el.link}
         />
       ))}
-    </Box>
+    </InstructionsAccordionContainer>
   );
 };
