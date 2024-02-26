@@ -1,6 +1,7 @@
-export class EventDto {
+export interface TrackingEventDto {
   action: string;
-  session_id: string;
+  sessionId: string;
+  identityId: string;
   category: string;
   label: string;
   value?: number;

@@ -4,14 +4,19 @@ import { EventPattern, Payload } from '@nestjs/microservices';
 import { Events } from '@jumper-commons/commons/domain/events';
 
 import { TrackingService } from './tracking.service';
-import { EventDto } from '@jumper-commons/commons/domain/event.dto';
+import { TrackingEventDto } from '@jumper-commons/commons/domain/tracking/trackingEventDto';
 
 @Controller()
 export class TrackingController {
   constructor(private readonly trackingService: TrackingService) {}
 
   @EventPattern(Events.CREATE_EVENT)
-  createEvent(@Payload(ValidationPipe) createEventDto: EventDto) {
-    return this.trackingService.trackEvent(createEventDto);
+  createEvent(@Payload(ValidationPipe) createEventDto: TrackingEventDto) {
+    return this.trackingService.propagateTrackingOnThirdParties(createEventDto);
+  }
+
+  @EventPattern(Events.CREATE_EVENT)
+  saveEvent(@Payload(ValidationPipe) createEventDto: TrackingEventDto) {
+    return this.trackingService.saveTrackingEvent(createEventDto);
   }
 }

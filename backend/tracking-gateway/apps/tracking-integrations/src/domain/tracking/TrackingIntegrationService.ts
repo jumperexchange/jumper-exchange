@@ -1,5 +1,5 @@
-import { EventDto } from '@jumper-commons/commons/domain/event.dto';
+import { TrackingEventDto } from '@jumper-commons/commons/domain/tracking/trackingEventDto';
 
 export interface TrackingIntegrationService {
-  trackEvent(event: EventDto): Promise<void>;
+  trackEvent(event: TrackingEventDto): Promise<void>;
 }

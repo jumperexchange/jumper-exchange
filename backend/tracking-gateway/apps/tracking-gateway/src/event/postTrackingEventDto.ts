@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class PostEventDto {
+export class PostTrackingEventDto {
   @IsNotEmpty()
   action: string;
 
@@ -13,4 +13,10 @@ export class PostEventDto {
   value?: number;
 
   data?: { [key: string]: string | number | boolean | any };
+
+  @IsNotEmpty()
+  sessionId: string;
+
+  @IsNotEmpty()
+  identityId: string;
 }

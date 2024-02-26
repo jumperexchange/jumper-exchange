@@ -17,7 +17,8 @@ services:
     networks:
       - app-net
     environment:
-      BROKER_HOST: redis:6379
+      BROKER_HOST: redis
+      BROKER_PORT: 6379
     ports:
       - '3001:3000'
   tracking-integrations:
@@ -28,7 +29,8 @@ services:
     networks:
       - app-net
     environment:
-      BROKER_HOST: redis:6379
+      BROKER_HOST: redis
+      BROKER_PORT: 6379
       TRACKING_GOOGLE_ANALYTICS_ID: ${TRACKING_GOOGLE_ANALYTICS_ID}
       TRACKING_GOOGLE_ANALYTICS_SECRET: ${TRACKING_GOOGLE_ANALYTICS_ID}
     ports:

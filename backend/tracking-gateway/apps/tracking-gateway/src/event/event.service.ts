@@ -1,9 +1,9 @@
 import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices/client/client-proxy';
 import { Events } from '@jumper-commons/commons/domain/events';
-import { EventDto } from '@jumper-commons/commons/domain/event.dto';
 
 import { CLIENT_PROXY } from '../constants';
+import { PostTrackingEventDto } from './postTrackingEventDto';
 
 @Injectable()
 export class EventService implements OnModuleInit {
@@ -14,12 +14,18 @@ export class EventService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    await this.transportClient.connect();
+    try {
+      await this.transportClient.connect();
+    } catch (err) {
+      this.logger.error(`Unable to connect to event bus: ${err.message}`);
+
+      throw err;
+    }
 
     this.logger.log('Connected to event-bus');
   }
 
-  createEvent(createEventDto: EventDto) {
+  createEvent(createEventDto: PostTrackingEventDto) {
     this.transportClient // TODO: check if we should await and check emit
       .emit(Events.CREATE_EVENT, createEventDto);
   }

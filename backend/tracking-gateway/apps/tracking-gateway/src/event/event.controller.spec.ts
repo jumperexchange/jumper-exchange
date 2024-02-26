@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventController } from './event.controller';
 import { EventService } from './event.service';
-import { PostEventDto } from './postEventDto';
+import { PostTrackingEventDto } from './postTrackingEventDto';
 
 describe('EventController', () => {
   let controller: EventController;
@@ -34,7 +34,7 @@ describe('EventController', () => {
 
   describe('createEvent', () => {
     it('should call eventService.createEvent with the correct parameters', () => {
-      const eventDto: PostEventDto = {
+      const eventDto: PostTrackingEventDto = {
         action: 'test',
         category: 'cat_test',
         label: 'new_label',

@@ -39,6 +39,7 @@ export function useUserTracking() {
           [TrackingEventParameter.SwitchedChain]: account?.chainId,
         },
       });
+      customTracking?.alias(`${account.address}-${account.chainId}`);
     }
   }, [account?.address, account?.chainId, arcx]);
 

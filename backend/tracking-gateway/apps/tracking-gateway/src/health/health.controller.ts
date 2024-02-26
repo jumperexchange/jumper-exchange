@@ -4,6 +4,7 @@ import { Controller, Get } from '@nestjs/common';
 export class HealthController {
   @Get()
   health() {
+    //TODO: check if event-bus is accessible
     return 'ok';
   }
 }

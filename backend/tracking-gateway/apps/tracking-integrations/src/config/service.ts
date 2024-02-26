@@ -7,14 +7,12 @@ type Config = {
   BROKER_PORT: number;
   TRACKING_GOOGLE_ANALYTICS_ID: string;
   TRACKING_GOOGLE_ANALYTICS_SECRET: string;
-  TRACKING_GOOGLE_ANALYTICS_CLIENT_ID: string;
 };
 
 const schema = Joi.object({
   PORT: Joi.number().default(4000),
   TRACKING_GOOGLE_ANALYTICS_ID: Joi.string(),
   TRACKING_GOOGLE_ANALYTICS_SECRET: Joi.string(),
-  TRACKING_GOOGLE_ANALYTICS_CLIENT_ID: Joi.string().default('123456.7654322'),
   BROKER_HOST: Joi.string().required(),
   BROKER_PORT: Joi.number().required(),
 });

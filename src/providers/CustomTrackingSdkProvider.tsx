@@ -1,13 +1,6 @@
-import { TrackEventProps } from 'src/types';
-import {
-  createContext,
-  FC,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import type { TrackEventProps } from 'src/types';
+import type { FC, PropsWithChildren } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 export const IDENTITY_KEY = 'tracking-identity';
 export const SESSION_STORAGE_ID_KEY = 'tracking-session-id';
@@ -35,7 +28,7 @@ export class CustomTrackingSdkProvider {
   private static async _getIdentitityId(serverUrl: string) {
     const identityId =
       window.localStorage.getItem(IDENTITY_KEY) ||
-      (await request(serverUrl, 'auth/identify'));
+      (await request<string>(serverUrl, 'auth/identify'));
     window.localStorage.setItem(IDENTITY_KEY, identityId);
     return identityId;
   }
@@ -61,6 +54,9 @@ export class CustomTrackingSdkProvider {
     });
   }
 
+  /**
+   Alias method is used to combine accounts with incognito tracked solutions
+   */
   public alias(accountId: string) {
     return request(this.serverUrl, 'auth/alias');
   }
@@ -77,7 +73,7 @@ export async function request(
   base: string,
   path: string,
   data?: unknown,
-): Promise<string> {
+): Promise<any> {
   const response = await fetch(`${base}/${path}`, {
     method: 'POST',
     headers: {
@@ -85,10 +81,15 @@ export async function request(
     },
     body: JSON.stringify(data),
   });
-  const body = await response.json();
-
   if (response.ok) {
-    return body;
+    const text = await response.text(); // Parse it as text
+
+    try {
+      const data = JSON.parse(text);
+      return data;
+    } catch (e) {
+      return text;
+    }
   } else {
     throw new Error(`Cannot fetch ${base}${path} with code ${response.status}`);
   }
