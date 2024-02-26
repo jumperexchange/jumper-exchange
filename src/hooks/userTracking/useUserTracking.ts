@@ -19,11 +19,13 @@ import { EventTrackingTool } from 'src/types';
 import { useCookie3 } from './useCookie3';
 import { useAccounts } from '../useAccounts';
 import { ChainType } from '@lifi/sdk';
+import { useCustomTracking } from './useCustomTracking';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
   const cookie3 = useCookie3();
   const { account } = useAccounts();
+  const { trackCustomEvent } = useCustomTracking();
 
   useEffect(() => {
     if (account?.chainId) {
@@ -126,6 +128,16 @@ export function useUserTracking() {
       data,
       disableTrackingTool,
     }: TrackEventProps) => {
+      if (!disableTrackingTool?.includes(EventTrackingTool.Custom)) {
+        trackCustomEvent({
+          action,
+          category,
+          label,
+          value,
+          data,
+        });
+      }
+
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() &&
           hotjar.event(`${action}-${category}-${label ?? '-' + label}`);
@@ -151,7 +163,7 @@ export function useUserTracking() {
         });
       }
     },
-    [arcx, cookie3],
+    [arcx, cookie3, trackCustomEvent],
   );
 
   const trackPageload = useCallback(
@@ -199,6 +211,8 @@ export function useUserTracking() {
       disableTrackingTool,
       txhash,
     }: TrackTransactionProps) => {
+      console.log(action, category, data, value);
+
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() && hotjar.event(`${category}-${action}`);
       }
@@ -251,6 +265,14 @@ export function useUserTracking() {
     [arcx],
   );
 
+  const trackTabSwitch = useCallback(async ({}: any) => {
+    console.log('tab switched');
+  }, []);
+
+  const trackWalletSelect = useCallback(async ({}: any) => {
+    console.log('tab switched');
+  }, []);
+
   return {
     trackAttribute,
     trackDisconnectWallet,
@@ -259,5 +281,7 @@ export function useUserTracking() {
     trackPageload,
     trackTransaction,
     trackChainSwitch,
+    trackTabSwitch,
+    trackWalletSelect,
   };
 }

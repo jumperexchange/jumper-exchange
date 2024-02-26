@@ -1,0 +1,35 @@
+version: '2'
+
+#networks:
+#  app-net:
+
+services:
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
+  tracking-gateway:
+    image: jamakase/tracking-gateway
+    build:
+      context: .
+      dockerfile: apps/tracking-gateway/Dockerfile
+    networks:
+      - app-net
+    environment:
+      BROKER_HOST: redis:6379
+    ports:
+      - '3001:3000'
+  tracking-integrations:
+    image: jamakase/tracking-integrations
+    build:
+      context: .
+      dockerfile: apps/tracking-integrations/Dockerfile
+    networks:
+      - app-net
+    environment:
+      BROKER_HOST: redis:6379
+      TRACKING_GOOGLE_ANALYTICS_ID: ${TRACKING_GOOGLE_ANALYTICS_ID}
+      TRACKING_GOOGLE_ANALYTICS_SECRET: ${TRACKING_GOOGLE_ANALYTICS_ID}
+    ports:
+      - '4000:4000'

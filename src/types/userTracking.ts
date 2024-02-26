@@ -8,6 +8,7 @@ export enum EventTrackingTool {
   GA,
   Hotjar,
   Cookie3,
+  Custom,
 }
 
 export interface InitTrackingProps {

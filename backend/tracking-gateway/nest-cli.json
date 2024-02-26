@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/tracking-gateway/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/tracking-gateway/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/tracking-gateway",
+  "projects": {
+    "tracking-gateway": {
+      "type": "application",
+      "root": "apps/tracking-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/tracking-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/tracking-gateway/tsconfig.app.json"
+      }
+    },
+    "tracking-integrations": {
+      "type": "application",
+      "root": "apps/tracking-integrations",
+      "entryFile": "main",
+      "sourceRoot": "apps/tracking-integrations/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/tracking-integrations/tsconfig.app.json"
+      }
+    },
+    "commons": {
+      "type": "library",
+      "root": "libs/commons",
+      "entryFile": "index",
+      "sourceRoot": "libs/commons/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/commons/tsconfig.lib.json"
+      }
+    }
+  }
+}
