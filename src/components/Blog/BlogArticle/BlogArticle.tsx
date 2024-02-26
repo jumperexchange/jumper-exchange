@@ -95,7 +95,7 @@ export const BlogArticle = ({
           )}
         </BlogArticleTopHeader>
         {title ? (
-          <BlogArticleTitle>{title}</BlogArticleTitle>
+          <BlogArticleTitle as="h1">{title}</BlogArticleTitle>
         ) : (
           <BlogArticleTitleSkeleton />
         )}
