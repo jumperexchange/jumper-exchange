@@ -7,6 +7,13 @@ import {
   ButtonTransparent,
 } from './Button.style';
 type ButtonVariant = 'primary' | 'secondary' | 'transparent';
+type ButtonSize = 'small' | 'medium' | 'large';
+
+const buttonHeight = {
+  small: 30,
+  medium: 40,
+  large: 48,
+};
 
 interface ButtonProps {
   variant: ButtonVariant;
@@ -16,6 +23,8 @@ interface ButtonProps {
   muiVariant?: 'text' | 'outlined' | 'contained';
   onClick?: (event?: any) => void;
   children?: any;
+  disabled?: boolean;
+  size?: ButtonSize;
 }
 
 export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
@@ -26,18 +35,26 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   onClick,
   children,
   muiVariant,
+  disabled,
+  size,
 }: ButtonProps) => {
   let output: ReactNode;
+
+  const sx = {
+    ...styles,
+    height: size ? buttonHeight[size] : buttonHeight['large'],
+  };
 
   switch (variant) {
     case 'primary':
       output = (
         <ButtonPrimary
           id={id}
+          disabled={disabled}
           fullWidth={fullWidth}
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
-          sx={styles}
+          sx={sx}
         >
           {children}
         </ButtonPrimary>
@@ -47,10 +64,11 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
       output = (
         <ButtonSecondary
           id={id}
+          disabled={disabled}
           fullWidth={fullWidth}
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
-          sx={styles}
+          sx={sx}
         >
           {children}
         </ButtonSecondary>
@@ -60,10 +78,11 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
       output = (
         <ButtonTransparent
           id={id}
+          disabled={disabled}
           fullWidth={fullWidth}
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
-          sx={styles}
+          sx={sx}
         >
           {children}
         </ButtonTransparent>
@@ -73,10 +92,11 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
       output = (
         <ButtonPrimary
           id={id}
+          disabled={disabled}
           fullWidth={fullWidth}
           onClick={onClick}
           variant={muiVariant}
-          sx={styles}
+          sx={sx}
         >
           {children}
         </ButtonPrimary>

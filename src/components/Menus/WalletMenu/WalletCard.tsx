@@ -15,8 +15,6 @@ import { EventTrackingTool } from 'src/types';
 import { openInNewTab, walletDigest } from 'src/utils';
 import {
   WalletAvatar,
-  WalletButton,
-  WalletButtonSecondary,
   WalletCardBadge,
   WalletCardButtonContainer,
   WalletCardContainer,
@@ -126,7 +124,8 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           > */}
           <Button
             variant="transparent"
-            // disabled={isMultisigEnvironment}
+            size="medium"
+            disabled={isMultisigEnvironment}
             styles={{ width: '100%', gridColumn: '1/3', gridRow: '1/2' }}
             onClick={() => handleCopyButton()}
           >
@@ -136,18 +135,27 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           </Button>
           {/* </WalletButton> */}
 
-          <WalletButton
+          <Button
+            variant="transparent"
+            size="medium"
             onClick={() => handleExploreButton()}
-            sx={{
+            styles={{
               gridColumn: '1/2',
               gridRow: '2/3',
             }}
           >
             <OpenInNewIcon sx={{ height: '20px' }} />
-          </WalletButton>
-          <WalletButtonSecondary onClick={() => handleDisconnect()} sx={{}}>
+          </Button>
+          {/* <WalletButtonSecondary onClick={() => handleDisconnect()} sx={{}}> */}
+          <Button
+            variant="secondary"
+            size="medium"
+            onClick={() => handleDisconnect()}
+            styles={{}}
+          >
             <PowerSettingsNewIcon sx={{ height: '20px' }} />
-          </WalletButtonSecondary>
+          </Button>
+          {/* </WalletButtonSecondary> */}
         </WalletCardButtonContainer>
       </Stack>
     </WalletCardContainer>
