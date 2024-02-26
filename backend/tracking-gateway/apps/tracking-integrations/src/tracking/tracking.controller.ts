@@ -10,12 +10,12 @@ import { TrackingEventDto } from '@jumper-commons/commons/domain/tracking/tracki
 export class TrackingController {
   constructor(private readonly trackingService: TrackingService) {}
 
-  @EventPattern(Events.CREATE_EVENT)
+  @EventPattern(Events.CreateEvent)
   createEvent(@Payload(ValidationPipe) createEventDto: TrackingEventDto) {
     return this.trackingService.propagateTrackingOnThirdParties(createEventDto);
   }
 
-  @EventPattern(Events.CREATE_EVENT)
+  @EventPattern(Events.CreateEvent)
   saveEvent(@Payload(ValidationPipe) createEventDto: TrackingEventDto) {
     return this.trackingService.saveTrackingEvent(createEventDto);
   }

@@ -5,8 +5,5 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
-  },
-  "moduleNameMapper": {
-    "^@jumper-commons/commons(|/.*)$": "<rootDir>/../../../libs/commons/src/$1"
   }
 }

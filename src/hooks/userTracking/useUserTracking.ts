@@ -39,9 +39,14 @@ export function useUserTracking() {
           [TrackingEventParameter.SwitchedChain]: account?.chainId,
         },
       });
-      customTracking?.alias(`${account.address}-${account.chainId}`);
     }
   }, [account?.address, account?.chainId, arcx]);
+
+  useEffect(() => {
+    if (account?.chainId) {
+      customTracking?.alias(`${account.address}-${account.chainId}`);
+    }
+  }, [account?.address, account?.chainId, customTracking]);
 
   const trackConnectWallet = useCallback(
     /**
@@ -256,6 +261,8 @@ export function useUserTracking() {
     [arcx],
   );
 
+  // New method is added, even though it could be merged with current trackEvent code
+  // This decision was made, to no add additional data props, that may be not required for other destinations
   const trackCustomEvent = useCallback(
     async ({
       action,

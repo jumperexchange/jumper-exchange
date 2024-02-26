@@ -9,13 +9,20 @@ services:
     restart: always
     ports:
       - '6379:6379'
+  auth:
+    image: jamakase/auth
+    build:
+      context: .
+      dockerfile: apps/auth/Dockerfile
+    environment:
+      BROKER_HOST: redis
+      BROKER_PORT: 6379
+      PORT: 5001
   tracking-gateway:
     image: jamakase/tracking-gateway
     build:
       context: .
       dockerfile: apps/tracking-gateway/Dockerfile
-    networks:
-      - app-net
     environment:
       BROKER_HOST: redis
       BROKER_PORT: 6379
@@ -26,12 +33,11 @@ services:
     build:
       context: .
       dockerfile: apps/tracking-integrations/Dockerfile
-    networks:
-      - app-net
     environment:
       BROKER_HOST: redis
       BROKER_PORT: 6379
       TRACKING_GOOGLE_ANALYTICS_ID: ${TRACKING_GOOGLE_ANALYTICS_ID}
       TRACKING_GOOGLE_ANALYTICS_SECRET: ${TRACKING_GOOGLE_ANALYTICS_ID}
+      PORT: 4000
     ports:
       - '4000:4000'

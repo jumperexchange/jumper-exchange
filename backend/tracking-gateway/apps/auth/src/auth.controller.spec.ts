@@ -38,9 +38,13 @@ describe('AuthController', () => {
       const userId = 'user123';
       jest.spyOn(authServiceMock, 'identifyUser').mockResolvedValue(userId);
 
-      const result = await controller.identifyUser();
+      const result = await controller.identifyUser({
+        userAgentInfo: {},
+      });
 
-      expect(authServiceMock.identifyUser).toHaveBeenCalled();
+      expect(authServiceMock.identifyUser).toHaveBeenCalledWith({
+        userAgentInfo: {},
+      });
       expect(result).toEqual(userId);
     });
   });

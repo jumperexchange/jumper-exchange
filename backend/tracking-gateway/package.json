@@ -11,6 +11,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:tracking:dev": "nest start tracking-integrations --watch",
+    "start:auth:dev": "nest start auth --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/tracking-gateway/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",

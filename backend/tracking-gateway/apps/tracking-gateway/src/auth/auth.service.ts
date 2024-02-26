@@ -1,14 +1,23 @@
-import { Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
+import { Inject, Injectable } from '@nestjs/common';
+import { CLIENT_PROXY } from '../constants';
+import { ClientProxy } from '@nestjs/microservices/client/client-proxy';
+import { Events } from '@jumper-commons/commons/domain/events';
+import { firstValueFrom } from 'rxjs';
+import { AliasUserDto } from '@jumper-commons/commons/domain/auth';
 
 @Injectable()
 export class AuthService {
+  constructor(
+    @Inject(CLIENT_PROXY) private readonly transportClient: ClientProxy,
+  ) {}
+
   async identifyUser(): Promise<string> {
-    // Currently this method just returns new uuid.
-    // There are numerous options which could be used to track user
-    // 1. fingerprinting
-    // 2. etag
-    // 3. cookie
-    return uuidv4();
+    return firstValueFrom(this.transportClient.send(Events.IdentifyUser, {}));
+  }
+
+  async aliasUser(aliasUserDto: AliasUserDto): Promise<string> {
+    return firstValueFrom(
+      this.transportClient.send(Events.AliasUser, aliasUserDto),
+    );
   }
 }

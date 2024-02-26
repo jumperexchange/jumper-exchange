@@ -28,7 +28,7 @@ export class CustomTrackingSdkProvider {
   private static async _getIdentitityId(serverUrl: string) {
     const identityId =
       window.localStorage.getItem(IDENTITY_KEY) ||
-      (await request<string>(serverUrl, 'auth/identify'));
+      (await request(serverUrl, 'auth/identify'));
     window.localStorage.setItem(IDENTITY_KEY, identityId);
     return identityId;
   }
@@ -58,7 +58,10 @@ export class CustomTrackingSdkProvider {
    Alias method is used to combine accounts with incognito tracked solutions
    */
   public alias(accountId: string) {
-    return request(this.serverUrl, 'auth/alias');
+    return request(this.serverUrl, 'auth/alias', {
+      newAccountId: accountId,
+      identityId: this.identityId,
+    });
   }
 }
 
