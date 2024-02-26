@@ -1,6 +1,6 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
 import {
@@ -81,9 +81,7 @@ export const InstructionsAccordionItem = ({
       </InstructionsAccordionItemMain>
 
       {open ? (
-        <InstructionsAccordionItemMore>
-          <Typography>{step}</Typography>
-        </InstructionsAccordionItemMore>
+        <InstructionsAccordionItemMore>{step}</InstructionsAccordionItemMore>
       ) : null}
     </InstructionsAccordionItemContainer>
   );

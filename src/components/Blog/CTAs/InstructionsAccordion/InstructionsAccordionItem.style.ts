@@ -30,11 +30,10 @@ export const InstructionsAccordionItemMain = styled(Box)<BoxProps>(() => ({
 
 export const InstructionsAccordionItemMore = styled(Box)<BoxProps>(
   ({ theme }) => ({
-    width: '100%',
-    marginLeft: theme.spacing(7),
-    marginTop: theme.spacing(2),
+    margin: theme.spacing(2, 0, 0, 3),
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      marginLeft: theme.spacing(13),
+      alignSelf: 'flex-start',
+      margin: theme.spacing(2, 0, 0, 6),
     },
   }),
 );
