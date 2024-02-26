@@ -1,5 +1,5 @@
 import type { CSSObject } from '@mui/material';
-import { Box, Skeleton, Typography, useTheme } from '@mui/material';
+import { Skeleton, useTheme } from '@mui/material';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -11,9 +11,12 @@ import { formatDate, getContrastAlphaColor, readingTime } from 'src/utils';
 import {
   BlogArticleCardContainer,
   BlogArticleCardContent,
+  BlogArticleCardDetails,
   BlogArticleCardImage,
   BlogArticleCardTitle,
   BlogArticleMetaContainer,
+  BlogArticleMetaDate,
+  BlogArticleMetaReadingTime,
   BlogArticleTag,
 } from '.';
 
@@ -93,39 +96,21 @@ export const BlogArticleCard = ({
         <BlogArticleCardTitle variant="lifiBodyLarge">
           {title}
         </BlogArticleCardTitle>
-        <Box
-          sx={{
-            display: 'flex',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            width: '100%',
-            marginTop: theme.spacing(2),
-          }}
-        >
+        <BlogArticleCardDetails>
           {tags?.data.slice(0, 1).map((tag) => (
             <BlogArticleTag variant="lifiBodyXSmall" as="span">
               {tag.attributes.Title}
             </BlogArticleTag>
           ))}
           <BlogArticleMetaContainer>
-            <Typography
-              variant="lifiBodyXSmall"
-              component="span"
-              fontSize={14}
-              sx={{
-                '&:after': {
-                  content: '"•"',
-                  margin: theme.spacing(0, 0.5),
-                },
-              }}
-            >
+            <BlogArticleMetaDate variant="lifiBodyXSmall" as="span">
               {formatDate(publishedAt || createdAt)}
-            </Typography>
-            <Typography variant="lifiBodyXSmall" component="span" fontSize={14}>
+            </BlogArticleMetaDate>
+            <BlogArticleMetaReadingTime variant="lifiBodyXSmall" as="span">
               {t('blog.minRead', { minRead: minRead })}
-            </Typography>
+            </BlogArticleMetaReadingTime>
           </BlogArticleMetaContainer>
-        </Box>
+        </BlogArticleCardDetails>
       </BlogArticleCardContent>
     </BlogArticleCardContainer>
   );

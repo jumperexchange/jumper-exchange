@@ -37,6 +37,30 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   },
 }));
 
+export const BlogArticleCardDetails = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column-reverse',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  width: '100%',
+  marginTop: theme.spacing(2),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    flexDirection: 'row',
+  },
+}));
+
+export const BlogArticleMetaDate = styled(Typography)(({ theme }) => ({
+  fontSize: 'inherit',
+  '&:after': {
+    content: '"•"',
+    margin: theme.spacing(0, 0.5),
+  },
+}));
+
+export const BlogArticleMetaReadingTime = styled(Typography)(({ theme }) => ({
+  fontSize: 'inherit',
+}));
+
 export const BlogArticleCardImage = styled('img')(({ theme }) => ({
   width: '100%',
   height: 'auto',
@@ -66,16 +90,16 @@ export const BlogArticleCardTitle = styled(Typography)(({ theme }) => ({
 }));
 
 export const BlogArticleMetaContainer = styled(Box)(({ theme }) => ({
-  display: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  fontSize: '14px',
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.grey[800]
+      : theme.palette.grey[300],
   '*': { textWrap: 'nowrap' },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    display: 'flex',
-    alignItems: 'center',
     marginLeft: theme.spacing(2),
-    color:
-      theme.palette.mode === 'light'
-        ? theme.palette.grey[800]
-        : theme.palette.grey[300],
   },
 }));
 
@@ -84,9 +108,11 @@ export const BlogArticleTag = styled(Tag)(({ theme }) => ({
   fontWeight: 600,
   lineHeight: '18px',
   overflow: 'hidden',
+  marginTop: theme.spacing(2),
   textOverflow: 'ellipsis',
   height: '40px',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginTop: 0,
     maxWidth: '50%',
   },
   ':not(:first-of-type)': {
