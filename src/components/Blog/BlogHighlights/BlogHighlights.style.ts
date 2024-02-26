@@ -65,21 +65,18 @@ export const BlogHighlightsMetaContainer = styled(Box)<BoxProps>(
       theme.palette.mode === 'light'
         ? theme.palette.grey[800]
         : theme.palette.grey[300],
-    marginLeft: theme.spacing(3),
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      marginLeft: theme.spacing(3),
+    },
     [theme.breakpoints.up('lg' as Breakpoint)]: {
       marginTop: 0,
-      marginLeft: theme.spacing(3),
     },
   }),
 );
 
 export const BlogHighlightsMetaDate = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
-    display: 'none',
     fontSize: 'inherit',
-    [`@media (min-width: 400px)`]: {
-      display: 'block',
-    },
     '&:after': {
       content: '"•"',
       margin: '0 4px',
@@ -130,8 +127,13 @@ export const BlogHighlightsContent = styled(Box)(({ theme }) => ({
 
 export const BlogHighlightsDetails = styled(Box)(({ theme }) => ({
   display: 'flex',
-  alignItems: 'center',
+  flexDirection: 'column-reverse',
+  alignItems: 'flex-start',
   fontWeight: 400,
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     flexDirection: 'row',
