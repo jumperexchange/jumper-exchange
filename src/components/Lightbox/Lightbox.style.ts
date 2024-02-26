@@ -13,7 +13,7 @@ export const LightboxModal = styled(Modal)(({ theme }) => ({
 }));
 
 export const LightboxContainer = styled(Box)(({ theme }) => ({
-  background: alpha(theme.palette.black.main, 0.64),
+  background: alpha(theme.palette.black.main, 0.72),
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'column',

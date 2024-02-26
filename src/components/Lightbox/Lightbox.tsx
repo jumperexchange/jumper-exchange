@@ -1,5 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Fade, Typography, useTheme } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
+import { Fade, useTheme } from '@mui/material';
 import { useState } from 'react';
 import type { MediaAttributes } from 'src/types';
 import {
@@ -39,20 +40,27 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
               sx={{
                 position: 'absolute',
                 top: 0,
+                cursor: 'pointer',
                 right: 0,
-                margin: theme.spacing(2),
+                width: 32,
+                height: 32,
+                color: theme.palette.white.main,
+                margin: theme.spacing(2, 3),
+                [theme.breakpoints.up('sm' as Breakpoint)]: {
+                  margin: theme.spacing(3, 4),
+                },
               }}
             />
             <LightboxImage
               src={imageData?.url}
               alt={imageData.caption ?? 'article-image'}
             />
-            <Typography
+            {/* <Typography
               variant="lifiHeaderSmall"
               sx={{ width: 'auto', margin: 0, fontWeight: 400 }}
             >
               {imageData?.alternativeText}
-            </Typography>
+            </Typography> */}
           </LightboxContainer>
         </Fade>
       </LightboxModal>
