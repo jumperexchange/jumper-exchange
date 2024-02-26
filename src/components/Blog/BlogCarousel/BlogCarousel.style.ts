@@ -1,6 +1,5 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, alpha, styled } from '@mui/material';
-import type { BlogArticleData } from 'src/types';
 import { ButtonPrimary } from '../../Button';
 
 export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
@@ -17,10 +16,10 @@ export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
     padding: theme.spacing(6, 3),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    padding: theme.spacing(8, 4),
+    padding: theme.spacing(8, 4, 4),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
-    padding: theme.spacing(6),
+    padding: theme.spacing(6, 6, 4),
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     margin: `${theme.spacing(8, 'auto')}`,
@@ -30,18 +29,18 @@ export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
 
 export interface SeeAllButtonContainerProps
   extends Omit<BoxProps, 'component'> {
-  data: BlogArticleData[];
+  show: boolean;
 }
 
 export const SeeAllButtonContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'data',
-})<SeeAllButtonContainerProps>(({ theme, data }) => ({
+  shouldForwardProp: (prop) => prop !== 'show',
+})<SeeAllButtonContainerProps>(({ theme, show }) => ({
   width: '100%',
   display: 'flex',
   justifyContent: 'center',
-  marginTop: !!data?.length ? theme.spacing(1) : 0,
+  marginTop: show ? theme.spacing(2) : 0,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginTop: theme.spacing(4.5),
+    marginTop: theme.spacing(4),
   },
 }));
 
@@ -52,7 +51,6 @@ export const SeeAllButton = styled(ButtonPrimary)(({ theme }) => ({
       ? theme.palette.alphaDark100.main
       : theme.palette.alphaLight400.main,
   width: 320,
-  margin: theme.spacing(2, 'auto'),
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'light'

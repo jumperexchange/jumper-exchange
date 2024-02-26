@@ -73,7 +73,7 @@ export const BlogCarousel = ({
         )}
       </CarouselContainer>
       {showAllButton ? (
-        <SeeAllButtonContainer data={data}>
+        <SeeAllButtonContainer show={!!data?.length}>
           <SeeAllButton onClick={handleShowAll}>
             {t('blog.seeAllPosts')}
           </SeeAllButton>
