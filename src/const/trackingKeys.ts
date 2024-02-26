@@ -1,7 +1,7 @@
 export const UTM_SOURCE = 'jumper';
 
 /*
-  Name of an action that a user makes on the site. 
+  Name of an action that a user makes on the site.
   GA: in GA this is the name of the event that is fired
 */
 export enum TrackingAction {
@@ -22,6 +22,9 @@ export enum TrackingAction {
   OnRouteExecutionFailed = 'action_on_route_exec_failed',
   OnRouteExecutionUpdated = 'action_on_route_exec_updated',
   OnRouteHighValueLoss = 'action_on_route_high_value_loss',
+  OnSourceChange = 'action_on_source_change',
+  OnDestinationChange = 'action_on_destination_change',
+  OnSendToWalletToggled = 'action_on_send_toggled',
 
   // Welcome_Screen
   OpenWelcomeMessageScreen = 'action_open_welcome_screen',

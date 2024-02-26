@@ -14,6 +14,7 @@ import {
   ThemeProvider,
   WalletProvider,
 } from './providers';
+import { CustomTrackingProvider } from './providers/CustomTrackingSdkProvider';
 
 const analytics = cookie3Analytics(cookie3Config);
 
@@ -25,15 +26,19 @@ export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
           <ArcxAnalyticsProvider
             apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
           >
-            <ThemeProvider>
-              <WalletProvider>
-                <CssBaseline />
-                <BackgroundGradient />
-                <ErrorBoundary fallback={<FallbackError />}>
-                  {children}
-                </ErrorBoundary>
-              </WalletProvider>
-            </ThemeProvider>
+            <CustomTrackingProvider
+              serverUrl={`${import.meta.env.VITE_TRACKING_API_URL}`}
+            >
+              <ThemeProvider>
+                <WalletProvider>
+                  <CssBaseline />
+                  <BackgroundGradient />
+                  <ErrorBoundary fallback={<FallbackError />}>
+                    {children}
+                  </ErrorBoundary>
+                </WalletProvider>
+              </ThemeProvider>
+            </CustomTrackingProvider>
           </ArcxAnalyticsProvider>
         </Cookie3Provider>
       </I18NProvider>

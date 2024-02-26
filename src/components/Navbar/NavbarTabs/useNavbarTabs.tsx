@@ -12,13 +12,23 @@ import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
 
 export const useNavbarTabs = () => {
-  const { trackEvent } = useUserTracking();
+  const { trackEvent, trackClick } = useUserTracking();
   const { t } = useTranslation();
   const theme = useTheme();
 
   const handleClickTab =
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
       window.history.replaceState(null, document.title, `/${tab}`);
+      trackClick({
+        category: TrackingCategory.Navigation,
+        action: TrackingAction.SwitchTab,
+        label: `switch_tab_to_${tab}`,
+        data: { [TrackingEventParameter.Tab]: tab },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+      });
       trackEvent({
         category: TrackingCategory.Navigation,
         action: TrackingAction.SwitchTab,

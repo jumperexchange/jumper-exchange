@@ -14,6 +14,8 @@ import { useCombinedWallets } from 'src/hooks/useCombinedWallets';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { MenuListItem } from 'src/types';
 import { getContrastAlphaColor } from 'src/utils';
+import { useUserTracking } from 'src/hooks';
+import { TrackingAction, TrackingCategory, TrackingEventParameter } from 'src/const';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();
@@ -24,6 +26,7 @@ export const useWalletSelectContent = () => {
     theme.breakpoints.up('sm'),
   );
   const connect = useAccountConnect();
+  const { trackClick } = useUserTracking();
 
   const { setSnackbarState, closeAllMenus, setEcosystemSelectMenuState } =
     useMenuStore((state) => state);
@@ -71,6 +74,15 @@ export const useWalletSelectContent = () => {
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
     const handleWalletClick = async (combinedWallet: CombinedWallet) => {
+      trackClick({
+        category: TrackingCategory.WalletMenu,
+        label: 'wallet_clicked',
+        action: TrackingAction.ConnectWallet,
+        data: {
+          [TrackingEventParameter.Wallet]:
+            combinedWallet.evm?.name || combinedWallet.svm?.adapter.name,
+        },
+      });
       if (
         isWalletInstalled(combinedWallet.evm?.id || '') ||
         (await isWalletInstalledAsync(combinedWallet.evm?.id || '')) ||

@@ -8,7 +8,7 @@ import type {
   RouteHighValueLossUpdate,
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   TabsMap,
   TrackingAction,
@@ -24,7 +24,7 @@ import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { activeTab } = useActiveTabStore();
-  const { trackEvent, trackTransaction } = useUserTracking();
+  const { trackEvent, trackClick, trackTransaction } = useUserTracking();
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
   ]);
@@ -44,6 +44,8 @@ export function WidgetEvents() {
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: Route) => {
+      console.log(route);
+
       if (!!route.id) {
         trackEvent({
           category: TrackingCategory.WidgetEvent,
@@ -177,10 +179,42 @@ export function WidgetEvents() {
       setSupportModalState(true);
     };
 
+    const onSourceTokenSelected = (tokenSelected: ChainTokenSelected) => {
+      trackClick({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnSourceChange,
+        label: 'source_change',
+        value: tokenSelected.chainId,
+        data: {
+          [TrackingEventParameter.FromToken]: tokenSelected.tokenAddress,
+          [TrackingEventParameter.FromChainId]: tokenSelected.chainId,
+        },
+      });
+    };
+
+    const onSendToWalletToggled = (toggleValue: boolean) => {
+      trackClick({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnSendToWalletToggled,
+        label: 'send_toggled',
+        data: { toggleValue },
+      });
+    };
+
     const handleMultisigChainTokenSelected = (
       destinationData: ChainTokenSelected,
     ) => {
       onDestinationChainSelected(destinationData.chainId);
+      trackClick({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnDestinationChange,
+        label: 'destination_change',
+        value: destinationData.chainId,
+        data: {
+          [TrackingEventParameter.ToToken]: destinationData.tokenAddress,
+          [TrackingEventParameter.ToChainId]: destinationData.chainId,
+        },
+      });
     };
 
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
@@ -196,6 +230,13 @@ export function WidgetEvents() {
       WidgetEvent.DestinationChainTokenSelected,
       handleMultisigChainTokenSelected,
     );
+
+    widgetEvents.on(
+      WidgetEvent.SourceChainTokenSelected,
+      onSourceTokenSelected,
+    );
+
+    widgetEvents.on(WidgetEvent.SendToWalletToggled, onSendToWalletToggled);
 
     return () => widgetEvents.all.clear();
   }, [

@@ -19,13 +19,13 @@ import { EventTrackingTool } from 'src/types';
 import { useCookie3 } from './useCookie3';
 import { useAccounts } from '../useAccounts';
 import { ChainType } from '@lifi/sdk';
-import { useCustomTracking } from './useCustomTracking';
+import { useCustomTracking } from 'src/providers/CustomTrackingSdkProvider';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
   const cookie3 = useCookie3();
   const { account } = useAccounts();
-  const { trackCustomEvent } = useCustomTracking();
+  const customTracking = useCustomTracking();
 
   useEffect(() => {
     if (account?.chainId) {
@@ -128,16 +128,6 @@ export function useUserTracking() {
       data,
       disableTrackingTool,
     }: TrackEventProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTool.Custom)) {
-        trackCustomEvent({
-          action,
-          category,
-          label,
-          value,
-          data,
-        });
-      }
-
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() &&
           hotjar.event(`${action}-${category}-${label ?? '-' + label}`);
@@ -163,7 +153,7 @@ export function useUserTracking() {
         });
       }
     },
-    [arcx, cookie3, trackCustomEvent],
+    [arcx, cookie3],
   );
 
   const trackPageload = useCallback(
@@ -265,13 +255,27 @@ export function useUserTracking() {
     [arcx],
   );
 
-  const trackTabSwitch = useCallback(async ({}: any) => {
-    console.log('tab switched');
-  }, []);
-
-  const trackWalletSelect = useCallback(async ({}: any) => {
-    console.log('tab switched');
-  }, []);
+  const trackCustomEvent = useCallback(
+    async ({
+      action,
+      category,
+      label,
+      value,
+      data,
+      disableTrackingTool,
+    }: TrackEventProps) => {
+      if (!disableTrackingTool?.includes(EventTrackingTool.Custom)) {
+        customTracking?.trackEvent({
+          action,
+          category,
+          label,
+          value,
+          data,
+        });
+      }
+    },
+    [customTracking],
+  );
 
   return {
     trackAttribute,
@@ -281,7 +285,6 @@ export function useUserTracking() {
     trackPageload,
     trackTransaction,
     trackChainSwitch,
-    trackTabSwitch,
-    trackWalletSelect,
+    trackClick: trackCustomEvent,
   };
 }
