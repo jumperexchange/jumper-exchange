@@ -18,7 +18,7 @@ message queue when we need to communicate with such third party services. This a
 could also reduce the load on our servers as we could send events in batches and when required.
 - per-integration service
 
-## Implementation overview
+## Implementation estimation
 
 As I am a big fan of CI/CD and deploying often, I would go with setting up initial infra and CI/CD
 before even writing some code.
@@ -41,3 +41,17 @@ Current implementation is a bit simplified and it doesn't introduce message queu
 
 In k8s world it may look like this
 ![img.png](./schemas/img.png)
+
+This solution doesn't implement part about user identification, but there are
+3 mainly used technologies currently for that:
+- fingerprinting user identities
+- etags
+- cookie based solutions
+
+## Running the app
+
+Instructions about how to run backend are in
+
+[instructions](../backend/tracking-gateway/README.md)
+
+Frontend could be still run as [usual](../README.md)
