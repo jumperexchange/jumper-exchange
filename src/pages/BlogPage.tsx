@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Layout } from 'src/Layout';
 import {
-  BlogArticlesBoard,
   BlogCarousel,
   BlogHighlights,
   JoinDiscordBanner,
@@ -32,7 +31,7 @@ export const BlogPage = () => {
       <BlogHighlights />
       <BlogCarousel url={url} data={recentArticles} />
       <JoinDiscordBanner />
-      <BlogArticlesBoard />
+      {/* <BlogArticlesBoard /> */}
       <PoweredBy />
       {/* <AccordionFAQ content={faqData as unknown as FaqMeta[]} /> */}
     </Layout>
