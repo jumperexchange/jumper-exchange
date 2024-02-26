@@ -38,3 +38,6 @@ before even writing some code.
 ## Implementation details
 
 Current implementation is a bit simplified and it doesn't introduce message queue per 3rd party integration burden.
+
+In k8s world it may look like this
+![img.png](./schemas/img.png)
