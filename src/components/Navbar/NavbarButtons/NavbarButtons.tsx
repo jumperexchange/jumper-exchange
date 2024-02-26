@@ -75,7 +75,7 @@ export const NavbarButtons = ({ redirectConnect }: NavbarButtonsProps) => {
               WebkitBoxOrient: 'vertical',
             }}
           >
-            {t('navbar.connect')}
+            {redirectConnect ? t('blog.openApp') : t('navbar.connect')}
           </Typography>
         }
         isSuccess={isSuccess}
