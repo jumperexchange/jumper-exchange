@@ -53,11 +53,11 @@ export const IconButtonTertiary = styled(IconButton, {
   backgroundColor:
     theme.palette.mode === 'dark'
       ? theme.palette.alphaLight300.main
-      : theme.palette.white.main,
+      : theme.palette.alphaDark100.main,
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'
         ? theme.palette.alphaLight500.main
-        : getContrastAlphaColor(theme, '4%'),
+        : theme.palette.alphaDark300.main,
   },
 }));
