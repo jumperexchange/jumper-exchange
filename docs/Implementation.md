@@ -55,3 +55,11 @@ Instructions about how to run backend are in
 [instructions](../backend/tracking-gateway/README.md)
 
 Frontend could be still run as [usual](../README.md)
+
+## Running app in k8s
+
+Also this app has all required scripts to run it in local k8s that
+is spinned up in kind
+[IaaC](../infra)
+
+It builds docker images, starts kind cluster and deploys helm charts
