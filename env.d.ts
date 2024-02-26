@@ -21,6 +21,7 @@ interface ImportMetaEnv {
   readonly VITE_LOCAL_STRAPI_URL: string;
   readonly VITE_LOCAL_STRAPI_API_TOKEN: string;
   readonly VITE_WALLET_CONNECT_PROJECT_ID: string;
+  readonly VITE_TRACKING_API_URL: string;
 }
 
 interface ImportMeta {
