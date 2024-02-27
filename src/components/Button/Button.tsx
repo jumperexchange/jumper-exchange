@@ -9,11 +9,6 @@ import {
 
 type ButtonVariant = 'primary' | 'secondary' | 'transparent';
 type ButtonSize = 'small' | 'medium' | 'large';
-const ButtonHeight = {
-  small: 30,
-  medium: 40,
-  large: 48,
-};
 
 interface ButtonProps {
   variant: ButtonVariant;
@@ -40,21 +35,17 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
 }: ButtonProps) => {
   let output: ReactNode;
 
-  const sx = {
-    ...styles,
-    height: size ? ButtonHeight[size] : ButtonHeight['large'],
-  };
-
   switch (variant) {
     case 'primary':
       output = (
         <ButtonPrimary
+          size={size}
           id={id}
           disabled={disabled}
           fullWidth={fullWidth}
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
-          sx={sx}
+          sx={styles}
         >
           {children}
         </ButtonPrimary>
@@ -63,12 +54,13 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
     case 'secondary':
       output = (
         <ButtonSecondary
+          size={size}
           id={id}
           disabled={disabled}
           fullWidth={fullWidth}
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
-          sx={sx}
+          sx={styles}
         >
           {children}
         </ButtonSecondary>
@@ -77,12 +69,13 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
     case 'transparent':
       output = (
         <ButtonTransparent
+          size={size}
           id={id}
           disabled={disabled}
           fullWidth={fullWidth}
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
-          sx={sx}
+          sx={styles}
         >
           {children}
         </ButtonTransparent>
@@ -91,12 +84,13 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
     default:
       output = (
         <ButtonPrimary
+          size={size}
           id={id}
           disabled={disabled}
           fullWidth={fullWidth}
           onClick={onClick}
           variant={muiVariant}
-          sx={sx}
+          sx={styles}
         >
           {children}
         </ButtonPrimary>
