@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "repository": "https://github.com/lifinance/jumper.exchange",
-  "packageManager": "yarn@4.0.2",
+  "packageManager": "yarn@4.1.0",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./index.d.ts",
