@@ -152,7 +152,10 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   },
 
   ':first-of-type': {
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(4),
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      marginTop: theme.spacing(6),
+    },
   },
 
   // [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -239,15 +242,18 @@ export const Divider = styled(MuiDivider)(({ theme }) => ({
 
 export const BlogArticleTitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(4),
     fontWeight: 700,
     lineHeight: '64px',
     fontSize: '48px',
     fontFamily: 'Urbanist, Inter', //todo: add font
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      marginTop: theme.spacing(8),
+      marginTop: theme.spacing(6),
       fontSize: '64px',
       lineHeight: '72px',
+    },
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      marginTop: theme.spacing(8),
     },
   }),
 );
