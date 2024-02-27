@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 
 export const PreviewImage = styled('img')(({ theme }) => ({
   maxHeight: '100%',
+  borderRadius: '8px',
   maxWidth: '100%',
   '&:hover': { cursor: 'pointer' },
 }));
@@ -33,12 +34,14 @@ export const LightboxImageContainer = styled('img')(({ theme }) => ({
 }));
 
 export const LightboxImage = styled('img')(({ theme }) => ({
-  width: '100%',
+  maxWidth: '100%',
   height: 'auto',
   maxHeight: '90%',
   objectFit: 'contain',
+  borderRadius: 8,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    padding: theme.spacing(2),
+    maxWidth: 'calc( 100% - 32px)',
+    margin: theme.spacing(2),
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     maxWidth: theme.breakpoints.values.lg,
