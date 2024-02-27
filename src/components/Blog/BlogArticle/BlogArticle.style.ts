@@ -241,7 +241,7 @@ export const BlogArticleTitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     marginTop: theme.spacing(6),
     fontWeight: 700,
-    lineHeight: '48px',
+    lineHeight: '64px',
     fontSize: '48px',
     fontFamily: 'Urbanist, Inter', //todo: add font
     [theme.breakpoints.up('sm' as Breakpoint)]: {
