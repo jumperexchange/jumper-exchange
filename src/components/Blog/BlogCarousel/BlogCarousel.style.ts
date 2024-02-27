@@ -11,6 +11,10 @@ export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   borderRadius: '32px',
   margin: theme.spacing(6, 2),
+  boxShadow:
+    theme.palette.mode === 'dark'
+      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(8),
     padding: theme.spacing(6, 3),
