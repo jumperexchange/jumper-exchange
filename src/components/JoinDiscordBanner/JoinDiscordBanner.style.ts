@@ -14,6 +14,10 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '#F9F5FF' //todo: add to theme
       : alpha(theme.palette.white.main, 0.12),
+  boxShadow:
+    theme.palette.mode === 'dark'
+      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
   borderRadius: '32px',
   cursor: 'pointer',
   padding: theme.spacing(6),
