@@ -60,7 +60,7 @@ export const BlogArticleCard = ({
       label: 'click-blog-article-card',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
-        [TrackingEventParameter.ArticleCardTitle]: title,
+        [TrackingEventParameter.ArticleTitle]: title,
         [TrackingEventParameter.ArticleCardId]: id,
       },
     });

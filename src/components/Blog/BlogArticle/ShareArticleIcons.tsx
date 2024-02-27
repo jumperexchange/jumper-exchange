@@ -50,7 +50,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       label: 'click-share-blog-article-link',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
-        [TrackingEventParameter.ArticleCardTitle]: title,
+        [TrackingEventParameter.ArticleTitle]: title,
         [TrackingEventParameter.ArticleCardId]: slug,
       },
     });
@@ -76,7 +76,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       label: 'click-share-blog-article-x',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
-        [TrackingEventParameter.ArticleCardTitle]: title,
+        [TrackingEventParameter.ArticleTitle]: title,
         [TrackingEventParameter.ArticleCardId]: slug,
       },
     });
@@ -96,7 +96,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       label: 'click-share-blog-article-fb',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
-        [TrackingEventParameter.ArticleCardTitle]: title,
+        [TrackingEventParameter.ArticleTitle]: title,
         [TrackingEventParameter.ArticleCardId]: slug,
       },
     });
@@ -120,7 +120,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       label: 'click-share-blog-article-linkedin',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
-        [TrackingEventParameter.ArticleCardTitle]: title,
+        [TrackingEventParameter.ArticleTitle]: title,
         [TrackingEventParameter.ArticleCardId]: slug,
       },
     });

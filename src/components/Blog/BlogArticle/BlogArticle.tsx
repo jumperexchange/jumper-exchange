@@ -47,6 +47,7 @@ interface BlogArticleProps {
   createdAt: string | undefined;
   image: StrapiImageData | undefined;
   baseUrl: string | undefined;
+  id?: number;
 }
 
 export const BlogArticle = ({
@@ -55,6 +56,7 @@ export const BlogArticle = ({
   content,
   author,
   tags,
+  id,
   publishedAt,
   updatedAt,
   createdAt,
@@ -144,7 +146,7 @@ export const BlogArticle = ({
       <BlogArticleContainer>
         <BlogArticleContentContainer>
           {content ? (
-            <CustomRichBlocks baseUrl={baseUrl} content={content} />
+            <CustomRichBlocks id={id} baseUrl={baseUrl} content={content} />
           ) : (
             <BlogArticleContentSkeleton variant="text" />
           )}

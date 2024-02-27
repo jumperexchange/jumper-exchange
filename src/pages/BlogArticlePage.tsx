@@ -61,6 +61,7 @@ export const BlogArticlePage = () => {
         title={isSuccess ? article[0]?.attributes.Title : undefined}
         content={isSuccess ? article[0]?.attributes.Content : undefined}
         slug={isSuccess ? article[0]?.attributes.Slug : undefined}
+        id={isSuccess ? article[0].id : undefined}
         author={!!article ? article[0]?.attributes.author : undefined}
         publishedAt={isSuccess ? article[0]?.attributes.publishedAt : undefined}
         createdAt={isSuccess ? article[0]?.attributes.createdAt : undefined}

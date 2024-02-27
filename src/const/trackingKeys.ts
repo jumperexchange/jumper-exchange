@@ -50,7 +50,8 @@ export enum TrackingAction {
   // Blog
   SeeAllPosts = 'action_see_all_posts',
   ClickArticleCard = 'action_click_article_card',
-  ClickHighlightCard = 'action_click_highlight_card',
+  ClickFeaturedArticle = 'action_click_featured_article',
+  ClickBlogCTA = 'action_click_blog_cta',
   SwipeHighlightCard = 'action_swipe_highlight_card',
   SwipeCarousel = 'action_swipe_carousel',
   ClickShareArticleFB = 'action_share_article_fb',
@@ -84,7 +85,7 @@ export enum TrackingCategory {
   WidgetEvent = 'cat_widget_event',
   PoweredBy = 'cat_powered_by',
   BlogCarousel = 'cat_blog_carousel',
-  BlogHighlights = 'cat_blog_highlights',
+  BlogFeaturedArticle = 'cat_blog_featured_article',
   BlogArticlesBoard = 'cat_blog_articles_board',
   BlogArticle = 'cat_blog_article',
 }
@@ -139,6 +140,8 @@ export enum TrackingEventParameter {
   ArticleCardTitle = 'param_article_card_title',
   ArticleCardId = 'param_article_card_id',
   SwipeDirection = 'param_swipe_direction',
+  ArticleTitle = 'param_article_title',
+  ArticleID = 'param_article_id',
 
   // Pagination
   Pagination = 'param_pagination',

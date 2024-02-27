@@ -36,10 +36,10 @@ export const BlogHighlights = () => {
   const navigate = useNavigate();
   const handleClick = () => {
     trackEvent({
-      category: TrackingCategory.Menu,
-      label: 'click-join-discord-community-button',
-      action: TrackingAction.OpenMenu,
-      data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+      category: TrackingCategory.BlogFeaturedArticle,
+      label: 'click-featured-article',
+      action: TrackingAction.ClickFeaturedArticle,
+      data: { [TrackingEventParameter.ArticleID]: featuredArticle[0]?.id },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     navigate(`/learn/${featuredArticle[0].attributes.Slug}`);

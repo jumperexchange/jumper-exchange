@@ -15,6 +15,7 @@ import type { MediaAttributes } from 'src/types';
 interface CustomRichBlocksProps {
   baseUrl?: string;
   content: RootNode[] | undefined;
+  id?: number;
 }
 
 interface ImageData {
@@ -22,6 +23,7 @@ interface ImageData {
 }
 
 export const CustomRichBlocks = ({
+  id,
   baseUrl,
   content,
 }: CustomRichBlocksProps) => {
@@ -49,7 +51,7 @@ export const CustomRichBlocks = ({
           // Check if matches were found and extract strings
           const title = titleMatch ? titleMatch[1] : null;
           const url = urlMatch ? urlMatch[1] : null;
-          return <BlogCTA title={title} url={url} />;
+          return <BlogCTA title={title} url={url} id={id} />;
         } catch (error) {
           return;
         }
