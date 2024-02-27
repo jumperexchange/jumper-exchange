@@ -98,7 +98,7 @@ export const BlogArticleCard = ({
         </BlogArticleCardTitle>
         <BlogArticleCardDetails>
           {tags?.data.slice(0, 1).map((tag) => (
-            <BlogArticleTag variant="lifiBodyXSmall" as="span">
+            <BlogArticleTag variant="lifiBodyXSmall" as="h3">
               {tag.attributes.Title}
             </BlogArticleTag>
           ))}

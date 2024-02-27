@@ -89,7 +89,7 @@ export const BlogHighlights = () => {
           </BlogHighlightsMetaContainer>
         </BlogHighlightsDetails>
         <Box>
-          <BlogHighlightsTitle variant="lifiHeaderMedium">
+          <BlogHighlightsTitle variant="lifiHeaderMedium" as="h2">
             {featuredArticle[0].attributes.Title}
           </BlogHighlightsTitle>
         </Box>
