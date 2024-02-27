@@ -1,0 +1,4 @@
+redis:
+  architecture: standalone
+  auth:
+    enabled: false

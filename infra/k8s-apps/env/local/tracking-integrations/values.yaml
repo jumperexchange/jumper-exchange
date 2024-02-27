@@ -1,0 +1,5 @@
+extraEnv:
+  - name: BROKER_HOST
+    value: "redis-master.redis"
+  - name: BROKER_PORT
+    value: "6379"

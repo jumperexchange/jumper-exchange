@@ -1,2 +1,3 @@
 redis:
-  architecture: standalone
+  auth:
+    password:
