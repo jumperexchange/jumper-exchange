@@ -1,7 +1,7 @@
 import { useTheme } from '@mui/material';
 
 // jumper-icon
-export const LogoSmall = () => {
+export const JumperIcon = () => {
   const theme = useTheme();
   const mainCol =
     theme.palette.mode === 'light'
@@ -20,11 +20,11 @@ export const LogoSmall = () => {
     >
       <path
         fill={mainCol}
-        d="M18.869 16 6.999 27.869l3.238 3.237a3.052 3.052 0 0 0 4.316 0L27.5 18.158a3.052 3.052 0 0 0 0-4.316l-7.553-7.553-5.395 5.395L18.869 16Z"
+        d="M17.141 16 5.827 27.313l2.829 2.829c1.414 1.414 4.242 1.414 5.656 0l11.314-11.314c1.414-1.414 1.414-4.242 0-5.657L19.97 7.515l-5.656 5.656L17.14 16Z"
       />
       <path
         fill={subCol}
-        d="M7 4.13 10.237.895a3.052 3.052 0 0 1 4.316 0L17.79 4.13l-5.395 5.395L7 4.131Z"
+        d="m5.828 4.686 2.828-2.828c1.414-1.414 4.243-1.414 5.657 0l2.828 2.828-5.657 5.657-5.656-5.657Z"
       />
     </svg>
   );
