@@ -12,6 +12,10 @@ export const BlogHightsContainer = styled(Box, {
       ? '#F9F5FF'
       : alpha(theme.palette.white.main, 0.08),
   transition: 'background-color 250ms',
+  boxShadow:
+    theme.palette.mode === 'dark'
+      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
   display: 'flex',
   flexDirection: 'column',
   padding: theme.spacing(2),
