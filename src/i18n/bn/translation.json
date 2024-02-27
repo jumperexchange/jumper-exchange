@@ -20,7 +20,11 @@
     "connect": "",
     "walletSelectMenu": {
       "connectWallet": "",
-      "wallets": ""
+      "wallets": "",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "",
+        "noEcosystemAdapter": ""
+      }
     },
     "seeAllWallets": "",
     "navbarMenu": {
@@ -38,7 +42,8 @@
       "copy": "কপি",
       "explore": "অন্বেষণ করুন",
       "copiedMsg": "ওয়ালেট ঠিকানা কপি করা হয়েছে ৷",
-      "walletNotInstalled": ""
+      "walletNotInstalled": "",
+      "connectAnotherWallet": ""
     },
     "themes": {
       "switchToLight": "লাইট মোডে স্যুইচ করুন",
