@@ -16,14 +16,14 @@ export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(8, 8, 0),
-    padding: theme.spacing(6, 3),
+    padding: theme.spacing(3),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    padding: theme.spacing(8, 4, 4),
+    padding: theme.spacing(4),
     margin: theme.spacing(12, 8, 0),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
-    padding: theme.spacing(6, 6, 4),
+    padding: theme.spacing(6),
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     margin: `${theme.spacing(12, 'auto', 0)}`,
@@ -45,6 +45,9 @@ export const SeeAllButtonContainer = styled(Box, {
   marginTop: show ? theme.spacing(2) : 0,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: theme.spacing(4),
+  },
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    marginTop: theme.spacing(6),
   },
 }));
 

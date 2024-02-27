@@ -109,6 +109,7 @@ export const BlogArticleTag = styled(Tag)(({ theme }) => ({
   lineHeight: '18px',
   overflow: 'hidden',
   marginTop: theme.spacing(2),
+  marginBottom: 0,
   textOverflow: 'ellipsis',
   height: '40px',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
