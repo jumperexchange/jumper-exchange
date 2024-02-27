@@ -20,9 +20,6 @@ export const Container = styled('div')<ContainerProps>(
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             marginTop: theme.spacing(8),
           },
-          [theme.breakpoints.up('md' as Breakpoint)]: {
-            marginTop: theme.spacing(8),
-          },
         }
       : {
           position: 'fixed',

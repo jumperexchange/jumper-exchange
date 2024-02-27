@@ -32,7 +32,7 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(12, 8),
-    margin: theme.spacing(8),
+    margin: theme.spacing(8, 8, 0),
     marginBottom: 0,
     flexDirection: 'row',
     gap: theme.spacing(4),
@@ -42,7 +42,7 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
     marginTop: theme.spacing(12),
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
-    margin: `${theme.spacing(12, 'auto')}`,
+    margin: `${theme.spacing(12, 'auto', 0)}`,
     maxWidth: theme.breakpoints.values.xl,
   },
 }));
