@@ -27,6 +27,7 @@ export const WalletMgmtWalletAvatar = styled(Avatar)(({ theme }) => ({
 
 export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
   display: 'none',
+  height: 48,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
     display: 'inline-flex !important',

@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from 'src/utils';
 
 const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
-  height: 48,
   borderRadius: '24px',
   fontSize: '16px',
   letterSpacing: 0,

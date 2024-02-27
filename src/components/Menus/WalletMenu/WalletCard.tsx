@@ -117,11 +117,6 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           <WalletAvatar src={getConnectorIcon(account.connector)} />
         </WalletCardBadge>
         <WalletCardButtonContainer>
-          {/* <WalletButton
-            disabled={isMultisigEnvironment}
-            sx={{ width: '100%', gridColumn: '1/3', gridRow: '1/2' }}
-            onClick={() => handleCopyButton()}
-          > */}
           <Button
             variant="transparent"
             size="medium"
@@ -133,8 +128,6 @@ export const WalletCard = ({ account }: WalletCardProps) => {
               {walletDigest(account.address)}
             </Typography>
           </Button>
-          {/* </WalletButton> */}
-
           <Button
             variant="transparent"
             size="medium"
@@ -146,7 +139,6 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           >
             <OpenInNewIcon sx={{ height: '20px' }} />
           </Button>
-          {/* <WalletButtonSecondary onClick={() => handleDisconnect()} sx={{}}> */}
           <Button
             variant="secondary"
             size="medium"
@@ -155,7 +147,6 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           >
             <PowerSettingsNewIcon sx={{ height: '20px' }} />
           </Button>
-          {/* </WalletButtonSecondary> */}
         </WalletCardButtonContainer>
       </Stack>
     </WalletCardContainer>

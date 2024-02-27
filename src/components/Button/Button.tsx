@@ -6,10 +6,10 @@ import {
   ButtonSecondary,
   ButtonTransparent,
 } from './Button.style';
+
 type ButtonVariant = 'primary' | 'secondary' | 'transparent';
 type ButtonSize = 'small' | 'medium' | 'large';
-
-const buttonHeight = {
+const ButtonHeight = {
   small: 30,
   medium: 40,
   large: 48,
@@ -42,7 +42,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
 
   const sx = {
     ...styles,
-    height: size ? buttonHeight[size] : buttonHeight['large'],
+    height: size ? ButtonHeight[size] : ButtonHeight['large'],
   };
 
   switch (variant) {
