@@ -95,10 +95,7 @@ export function Widget({ starterVariant }: WidgetProps) {
           primary: {
             main: theme.palette.accent1.main,
           },
-          grey: {
-            300: theme.palette.grey[300],
-            800: theme.palette.grey[800],
-          },
+          grey: theme.palette.grey,
         },
       },
       keyPrefix: `jumper-${starterVariant}`,
