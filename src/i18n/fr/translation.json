@@ -20,7 +20,11 @@
     "connect": "Connecter",
     "walletSelectMenu": {
       "connectWallet": "Connecter un portefeuille",
-      "wallets": "Portefeuilles"
+      "wallets": "Portefeuilles",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "Sélectionnez l'écosystème du portefeuille",
+        "noEcosystemAdapter": "Aucun adaptateur écosystème approprié trouvé"
+      }
     },
     "seeAllWallets": "Afficher tous les portefeuilles",
     "navbarMenu": {
@@ -38,7 +42,8 @@
       "copy": "Copier",
       "explore": "Explorer",
       "copiedMsg": "Adresse du portefeuille copiée",
-      "walletNotInstalled": "{{wallet}} n'est pas installé"
+      "walletNotInstalled": "{{wallet}} n'est pas installé",
+      "connectAnotherWallet": "Connecter un autre portefeuille"
     },
     "themes": {
       "switchToLight": "Basculer en mode clair",
@@ -62,7 +67,7 @@
     "okay": "Ok"
   },
   "error": {
-    "message": ""
+    "message": "Une erreur s'est produite. Essayez de recharger la page. Si le problème persiste, contactez notre support."
   },
   "multisig": {
     "connected": {

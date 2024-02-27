@@ -20,7 +20,11 @@
     "connect": "Під’єднатися",
     "walletSelectMenu": {
       "connectWallet": "Під'єднати гаманець",
-      "wallets": "Гаманці"
+      "wallets": "Гаманці",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "Виберіть екосистему гаманця",
+        "noEcosystemAdapter": "Відповідного адаптера для екосистеми не знайдено"
+      }
     },
     "seeAllWallets": "Переглянути всі гаманці",
     "navbarMenu": {
@@ -38,7 +42,8 @@
       "copy": "Скопіювати",
       "explore": "Переглянути",
       "copiedMsg": "Адреса гаманця скопійована",
-      "walletNotInstalled": "{{wallet}} не встановлено"
+      "walletNotInstalled": "{{wallet}} не встановлено",
+      "connectAnotherWallet": "Під'єднати інший гаманець"
     },
     "themes": {
       "switchToLight": "Увімкнути світлу тему",
