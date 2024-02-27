@@ -15,6 +15,10 @@ export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   margin: theme.spacing(6, 0),
   transition: 'background-color 250ms',
   borderRadius: '16px',
+  boxShadow:
+    theme.palette.mode === 'dark'
+      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
   backgroundColor:
     theme.palette.mode === 'light'
       ? '#F9F5FF' //todo: add to theme
