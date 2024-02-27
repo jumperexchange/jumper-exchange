@@ -20,7 +20,11 @@
     "connect": "",
     "walletSelectMenu": {
       "connectWallet": "",
-      "wallets": ""
+      "wallets": "",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "",
+        "noEcosystemAdapter": ""
+      }
     },
     "seeAllWallets": "",
     "navbarMenu": {
@@ -38,7 +42,8 @@
       "copy": "Copia",
       "explore": "Esplora",
       "copiedMsg": "Indirizzo del portafogli copiato",
-      "walletNotInstalled": ""
+      "walletNotInstalled": "",
+      "connectAnotherWallet": ""
     },
     "themes": {
       "switchToLight": "Passa al tema chiaro",
