@@ -28,7 +28,7 @@ export const BlogHightsContainer = styled(Box, {
         : theme.palette.alphaLight300.main,
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(8, 8, 0),
+    margin: theme.spacing(6, 8, 0),
     padding: theme.spacing(3),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
@@ -41,7 +41,7 @@ export const BlogHightsContainer = styled(Box, {
     gap: theme.spacing(8),
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
-    margin: theme.spacing(8, 'auto', 0),
+    margin: theme.spacing(6, 'auto', 0),
     maxWidth: theme.breakpoints.values.xl,
   },
 }));
