@@ -11,6 +11,10 @@ export const InstructionsAccordionItemContainer = styled(Box)<BoxProps>(
       theme.palette.mode === 'dark'
         ? getContrastAlphaColor(theme, '8%')
         : getContrastAlphaColor(theme, '4%'),
+    boxShadow:
+      theme.palette.mode === 'dark'
+        ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
+        : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
     padding: theme.spacing(3),
     flexDirection: 'column',
     margin: theme.spacing(2, 0),
