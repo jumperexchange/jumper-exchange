@@ -20,7 +20,11 @@
     "connect": "Conectar",
     "walletSelectMenu": {
       "connectWallet": "Conectar uma carteira",
-      "wallets": "Carteiras"
+      "wallets": "Carteiras",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "Selecione o ecossistema da carteira",
+        "noEcosystemAdapter": "Não foi encontrado nenhum adaptador de ecossistema adequado"
+      }
     },
     "seeAllWallets": "Ver todas as carteiras",
     "navbarMenu": {
@@ -38,7 +42,8 @@
       "copy": "Copiar",
       "explore": "Explorar",
       "copiedMsg": "Endereço da carteira copiado",
-      "walletNotInstalled": "{{wallet}} não está instalada"
+      "walletNotInstalled": "{{wallet}} não está instalada",
+      "connectAnotherWallet": "Conectar outra carteira"
     },
     "themes": {
       "switchToLight": "Mudar para o Modo Claro",
