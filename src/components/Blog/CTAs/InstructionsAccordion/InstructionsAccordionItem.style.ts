@@ -17,8 +17,12 @@ export const InstructionsAccordionItemContainer = styled(Box)<BoxProps>(
     margin: theme.spacing(2, 0),
     borderRadius: '24px',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     position: 'relative',
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      alignSelf: 'flex-start',
+      margin: theme.spacing(2, 0, 0, 6),
+    },
   }),
 );
 
