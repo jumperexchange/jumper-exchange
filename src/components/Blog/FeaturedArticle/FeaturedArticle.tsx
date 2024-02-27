@@ -1,4 +1,3 @@
-import type { Breakpoint } from '@mui/material';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -70,12 +69,6 @@ export const BlogHighlights = () => {
             .slice(0, 1)
             .map((el, index) => (
               <Tag
-                sx={{
-                  marginTop: theme.spacing(2),
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    marginTop: 0,
-                  },
-                }}
                 key={`blog-highlights-tag-${index}`}
                 variant="lifiBodyMediumStrong"
               >
