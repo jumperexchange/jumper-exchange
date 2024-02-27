@@ -19,7 +19,7 @@ export const FeaturedArticleContainer = styled(Box, {
   display: 'flex',
   flexDirection: 'column',
   padding: theme.spacing(2),
-  margin: theme.spacing(6, 2),
+  margin: theme.spacing(4, 2, 0),
   '&:hover': {
     cursor: 'pointer',
     backgroundColor:
