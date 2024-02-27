@@ -9,6 +9,7 @@ export interface UseLoyaltyPassProps {
   isConnected?: boolean;
   points?: number | null;
   tier?: string | null;
+  address?: string | null;
   pdas?: PDA[];
 }
 
@@ -27,6 +28,8 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
           organization: { type: GATEWAY_ID, value: "lifi" }
           owner: { type: EVM, value: $EVMAddress }
         }
+        skip: 0
+        take: 100
       ) {
         id
         status
@@ -59,7 +62,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   };
 
   // query
-  const { data } = useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: ['loyalty-pass'],
     queryFn: async () =>
       request(
@@ -73,12 +76,13 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   });
 
   //   verify that the user is connected with an EVM address
-  if (!data || !account?.address || !(account.chainType === 'EVM')) {
+  if (!isSuccess || !account?.address || !(account.chainType === 'EVM')) {
     console.log('No account sorry');
     return {
       isConnected: false,
       points: null,
       tier: null,
+      address: null,
       pdas: [],
     };
   } else {
@@ -90,7 +94,6 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     // filter to remove loyalty pass from pda
     const pdasWithoutLoyalty = pdas.filter((pda: any) => {
       if (pda.dataAsset.title === 'LI.FI Loyalty Pass') {
-        console.log('HERE IS THE LOYALTY PASS');
         points = pda.dataAsset.claim.points;
         tier = pda.dataAsset.claim.tier;
         return false;
@@ -102,6 +105,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
       isConnected: true,
       points: points,
       tier: tier,
+      address: account?.address,
       pdas: pdasWithoutLoyalty,
     };
   }
