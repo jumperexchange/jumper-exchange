@@ -3,13 +3,13 @@ import { Skeleton, useTheme } from '@mui/material';
 import {
   BlogHighlightsContent,
   BlogHighlightsDetails,
-  BlogHightsContainer,
+  FeaturedArticleContainer,
 } from '.';
 
 export const BlogHighlightsSkeleton = () => {
   const theme = useTheme();
   return (
-    <BlogHightsContainer>
+    <FeaturedArticleContainer>
       <Skeleton
         variant="rectangular"
         component="img"
@@ -57,6 +57,6 @@ export const BlogHighlightsSkeleton = () => {
         />
         <Skeleton sx={{ height: '64px' }} />
       </BlogHighlightsContent>
-    </BlogHightsContainer>
+    </FeaturedArticleContainer>
   );
 };

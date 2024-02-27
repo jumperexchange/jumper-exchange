@@ -20,7 +20,7 @@ import {
   BlogHighlightsSkeleton,
   BlogHighlightsSubtitle,
   BlogHighlightsTitle,
-  BlogHightsContainer,
+  FeaturedArticleContainer,
 } from '.';
 import { Tag } from '../../Tag.style';
 
@@ -57,7 +57,7 @@ export const BlogHighlights = () => {
     featuredArticle && readingTime(featuredArticle[0]?.attributes.Content);
 
   return featuredArticle?.length > 0 ? (
-    <BlogHightsContainer onClick={handleClick}>
+    <FeaturedArticleContainer onClick={handleClick}>
       <BlogHighlightsImage
         src={`${url.origin}${featuredArticle[0]?.attributes.Image.data.attributes.url}`}
         alt={
@@ -106,7 +106,7 @@ export const BlogHighlights = () => {
           </BlogHighlightsSubtitle>
         </Box>
       </BlogHighlightsContent>
-    </BlogHightsContainer>
+    </FeaturedArticleContainer>
   ) : (
     <BlogHighlightsSkeleton />
   );

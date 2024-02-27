@@ -2,7 +2,7 @@ import type { BoxProps, Breakpoint, TypographyProps } from '@mui/material';
 import { Box, Typography, darken, lighten } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 
-export const BlogHightsContainer = styled(Box, {
+export const FeaturedArticleContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active',
 })<BoxProps>(({ theme }) => ({
   position: 'relative',
