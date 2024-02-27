@@ -9,7 +9,7 @@ export const FeaturedArticleContainer = styled(Box, {
   borderRadius: 32,
   backgroundColor:
     theme.palette.mode === 'light'
-      ? '#F9F5FF'
+      ? alpha(theme.palette.white.main, 0.72)
       : alpha(theme.palette.white.main, 0.08),
   transition: 'background-color 250ms',
   boxShadow:

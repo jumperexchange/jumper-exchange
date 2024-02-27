@@ -12,7 +12,7 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
   alignItems: 'center',
   backgroundColor:
     theme.palette.mode === 'light'
-      ? '#F9F5FF' //todo: add to theme
+      ? alpha(theme.palette.white.main, 0.72)
       : alpha(theme.palette.white.main, 0.12),
   boxShadow:
     theme.palette.mode === 'dark'
