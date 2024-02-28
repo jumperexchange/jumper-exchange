@@ -15,26 +15,23 @@ const SECONDS_IN_A_DAY = 86400;
 
 export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   const { account } = useAccounts();
-  // const [address, points, tier, pdas, timestamp, storeLoyaltyPassData] =
-  //   useLoyaltyPassStore((state) => [
-  //     state.address,
-  //     state.points,
-  //     state.tier,
-  //     state.pdas,
-  //     state.timestamp,
-  //     state.storeLoyaltyPassData,
-  //   ]);
+  const [
+    storedAddress,
+    storedPoints,
+    storedTier,
+    storedPdas,
+    timestamp,
+    storeLoyaltyPassData,
+  ] = useLoyaltyPassStore((state) => [
+    state.address,
+    state.points,
+    state.tier,
+    state.pdas,
+    state.timestamp,
+    state.storeLoyaltyPassData,
+  ]);
 
   // if connected, check in the local storage
-  // const t = Date.now() / 1000;
-  // if (address && t > timestamp + SECONDS_IN_A_DAY) {
-  //   return {
-  //     address: address,
-  //     points: points,
-  //     tier: tier,
-  //     pdas: pdas,
-  //   };
-  // }
   //   const apiBaseUrl = import.meta.env.VITE_GATEWAY_URL;
   const apiBaseUrl = 'https://protocol.mygateway.xyz/graphql';
   const apiUrl = new URL(`${apiBaseUrl}`);
@@ -71,60 +68,87 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   `;
 
   // tokens
-  //   const apiKey = import.meta.env.VITE_GATEWAY_API_KEY;
-  //   const apiAccesToken = import.meta.env.VITE_GATEWAY_API_TOKEN;
+  const apiKey = import.meta.env.VITE_GATEWAY_API_KEY;
+  const apiAccesToken = import.meta.env.VITE_GATEWAY_API_TOKEN;
 
   const headers = {
     'x-api-key': `${apiKey}`,
     Authorization: `Bearer ${apiAccesToken}`,
   };
 
+  const t = Date.now() / 1000;
   // query
   const { data, isSuccess } = useQuery({
     queryKey: ['loyalty-pass'],
-    queryFn: async () =>
-      request(
+    queryFn: async () => {
+      const res = await request(
         decodeURIComponent(apiUrl.href),
         getAllPDAs,
         { EVMAddress: account?.address },
         headers,
-      ),
-    enabled: !!account?.address && account.chainType === 'EVM',
+      );
+
+      if (res && account?.address) {
+        let points = 0;
+        let tier = '';
+        const { issuedPDAs: pdas } = res as any;
+        // filter to remove loyalty pass from pda
+        const pdasWithoutLoyalty = pdas.filter((pda: any) => {
+          if (pda.dataAsset.title === 'LI.FI Loyalty Pass') {
+            points = pda.dataAsset.claim.points;
+            tier = pda.dataAsset.claim.tier;
+            return false;
+          }
+          return true;
+        });
+
+        storeLoyaltyPassData(
+          account.address,
+          points,
+          tier,
+          pdasWithoutLoyalty,
+          t,
+        );
+
+        return {
+          address: account.address,
+          points: points,
+          tier: tier,
+          pdas: pdasWithoutLoyalty,
+        };
+      } else {
+        return null;
+      }
+    },
+    enabled:
+      !!account?.address &&
+      account.chainType === 'EVM' &&
+      t > (timestamp ?? 0) + SECONDS_IN_A_DAY &&
+      account.address !== storedAddress,
     refetchInterval: 1000 * 60 * 60,
   });
 
-  //   verify that the user is connected with an EVM address
-  if (!isSuccess || !account?.address || !(account.chainType === 'EVM')) {
-    console.log('No account sorry');
+  // We check if we have something inside the store
+  if (account?.address === storedAddress && t < timestamp + SECONDS_IN_A_DAY) {
+    return {
+      address: storedAddress,
+      points: storedPoints,
+      tier: storedTier,
+      pdas: storedPdas,
+    };
+  } else if (
+    !isSuccess ||
+    !data ||
+    !account?.address ||
+    !(account.chainType === 'EVM')
+  ) {
     return {
       address: null,
       points: null,
       tier: null,
       pdas: [],
     };
-  } else {
-    // transform the data
-    // console.log(data);
-    let points = 0;
-    let tier = '';
-    const { issuedPDAs: pdas } = data as any;
-    // filter to remove loyalty pass from pda
-    const pdasWithoutLoyalty = pdas.filter((pda: any) => {
-      if (pda.dataAsset.title === 'LI.FI Loyalty Pass') {
-        points = pda.dataAsset.claim.points;
-        tier = pda.dataAsset.claim.tier;
-        return false;
-      }
-      return true;
-    });
-
-    // storeLoyaltyPassData(account.address, points, tier, pdasWithoutLoyalty, t);
-
-    return {
-      address: account.address,
-      points: points,
-      tier: tier,
-      pdas: pdasWithoutLoyalty,
-    };
   }
+
+  return data;
 };
