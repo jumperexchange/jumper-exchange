@@ -21,7 +21,7 @@ export const InstructionsAccordionItemContainer = styled(Box)<BoxProps>(
     position: 'relative',
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       alignSelf: 'flex-start',
-      margin: theme.spacing(2, 0, 0, 6),
+      margin: theme.spacing(2, 0, 0, 0),
     },
   }),
 );
