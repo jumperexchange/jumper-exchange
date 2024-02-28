@@ -20,7 +20,11 @@
     "connect": "Bağlan",
     "walletSelectMenu": {
       "connectWallet": "Bir Cüzdan Bağlayın",
-      "wallets": "Cüzdanlar"
+      "wallets": "Cüzdanlar",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "",
+        "noEcosystemAdapter": ""
+      }
     },
     "seeAllWallets": "Tüm cüzdanları göster",
     "navbarMenu": {
@@ -38,7 +42,8 @@
       "copy": "Kopyala",
       "explore": "Keşfet",
       "copiedMsg": "Cüzdan Adresi kopyalandı",
-      "walletNotInstalled": "{{wallet}} kurulu değil"
+      "walletNotInstalled": "{{wallet}} kurulu değil",
+      "connectAnotherWallet": ""
     },
     "themes": {
       "switchToLight": "Açık temaya geç",
