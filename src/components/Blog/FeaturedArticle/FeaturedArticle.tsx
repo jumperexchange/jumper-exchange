@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -8,6 +8,7 @@ import {
   TrackingEventParameter,
 } from 'src/const';
 import { useStrapi, useUserTracking } from 'src/hooks';
+import { useMenuStore } from 'src/stores';
 import { EventTrackingTool, type BlogArticleData } from 'src/types';
 import { formatDate, readingTime } from 'src/utils';
 import {
@@ -31,7 +32,7 @@ export const FeaturedArticle = () => {
     filterFeaturedArticle: true,
   });
   const { t } = useTranslation();
-  const theme = useTheme();
+  const { closeAllMenus } = useMenuStore((state) => state);
   const navigate = useNavigate();
   const handleClick = () => {
     trackEvent({
@@ -41,6 +42,7 @@ export const FeaturedArticle = () => {
       data: { [TrackingEventParameter.ArticleID]: featuredArticle[0]?.id },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
+    closeAllMenus();
     navigate(`/learn/${featuredArticle[0].attributes.Slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };

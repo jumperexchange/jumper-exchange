@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { TrackingAction, TrackingEventParameter } from 'src/const';
 import { useUserTracking } from 'src/hooks';
+import { useMenuStore } from 'src/stores';
 import type { TagData } from 'src/types';
 import { EventTrackingTool, type StrapiImageData } from 'src/types';
 import { formatDate, getContrastAlphaColor, readingTime } from 'src/utils';
@@ -52,6 +53,7 @@ export const BlogArticleCard = ({
   const theme = useTheme();
   const minRead = readingTime(content);
   const { t } = useTranslation();
+  const { closeAllMenus } = useMenuStore((state) => state);
 
   const handleClick = () => {
     trackEvent({
@@ -64,6 +66,7 @@ export const BlogArticleCard = ({
         [TrackingEventParameter.ArticleCardId]: id,
       },
     });
+    closeAllMenus();
     navigate(`/learn/${slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
