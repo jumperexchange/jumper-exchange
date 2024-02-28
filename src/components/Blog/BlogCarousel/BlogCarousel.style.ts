@@ -5,7 +5,7 @@ import { ButtonPrimary } from '../../Button';
 export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'light'
-      ? alpha(theme.palette.white.main, 0.72)
+      ? alpha(theme.palette.white.main, 0.22)
       : alpha(theme.palette.white.main, 0.08),
   padding: theme.spacing(2),
   borderRadius: '32px',

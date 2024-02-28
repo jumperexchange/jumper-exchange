@@ -1,5 +1,5 @@
 import type { BoxProps, Breakpoint, TypographyProps } from '@mui/material';
-import { Box, Typography, darken, lighten } from '@mui/material';
+import { Box, Typography, lighten } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 
 export const FeaturedArticleContainer = styled(Box, {
@@ -9,7 +9,7 @@ export const FeaturedArticleContainer = styled(Box, {
   borderRadius: 32,
   backgroundColor:
     theme.palette.mode === 'light'
-      ? alpha(theme.palette.white.main, 0.72)
+      ? alpha(theme.palette.white.main, 0.22)
       : alpha(theme.palette.white.main, 0.08),
   transition: 'background-color 250ms',
   boxShadow:
@@ -24,7 +24,7 @@ export const FeaturedArticleContainer = styled(Box, {
     cursor: 'pointer',
     backgroundColor:
       theme.palette.mode === 'light'
-        ? darken(theme.palette.white.main, 0.04)
+        ? '#F9F5FF'
         : theme.palette.alphaLight300.main,
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
