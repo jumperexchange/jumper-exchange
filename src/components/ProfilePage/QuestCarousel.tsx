@@ -74,6 +74,7 @@ export const QuestCarousel = ({ quests }: any) => {
           quests?.map((quest: any, index: number) => {
             return (
               <QuestCard
+                key={`ongoing-mission-${index}`}
                 active={true}
                 title={quest?.attributes.Title}
                 image={

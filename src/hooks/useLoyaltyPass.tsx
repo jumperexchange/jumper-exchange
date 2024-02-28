@@ -1,21 +1,40 @@
 import { useAccounts } from './useAccounts';
 import { useQuery } from '@tanstack/react-query';
 import request, { gql } from 'graphql-request';
-
-// create PDA type
-export interface PDA {}
+import { useLoyaltyPassStore } from 'src/stores';
+import { PDA } from 'src/types';
 
 export interface UseLoyaltyPassProps {
-  isConnected?: boolean;
+  address?: string | null;
   points?: number | null;
   tier?: string | null;
-  address?: string | null;
   pdas?: PDA[];
 }
 
+const SECONDS_IN_A_DAY = 86400;
+
 export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   const { account } = useAccounts();
+  // const [address, points, tier, pdas, timestamp, storeLoyaltyPassData] =
+  //   useLoyaltyPassStore((state) => [
+  //     state.address,
+  //     state.points,
+  //     state.tier,
+  //     state.pdas,
+  //     state.timestamp,
+  //     state.storeLoyaltyPassData,
+  //   ]);
 
+  // if connected, check in the local storage
+  // const t = Date.now() / 1000;
+  // if (address && t > timestamp + SECONDS_IN_A_DAY) {
+  //   return {
+  //     address: address,
+  //     points: points,
+  //     tier: tier,
+  //     pdas: pdas,
+  //   };
+  // }
   //   const apiBaseUrl = import.meta.env.VITE_GATEWAY_URL;
   const apiBaseUrl = 'https://protocol.mygateway.xyz/graphql';
   const apiUrl = new URL(`${apiBaseUrl}`);
@@ -29,7 +48,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
           owner: { type: EVM, value: $EVMAddress }
         }
         skip: 0
-        take: 100
+        take: 300
       ) {
         id
         status
@@ -54,8 +73,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   // tokens
   //   const apiKey = import.meta.env.VITE_GATEWAY_API_KEY;
   //   const apiAccesToken = import.meta.env.VITE_GATEWAY_API_TOKEN;
-  const apiKey = '';
-  const apiAccesToken = '';
+
   const headers = {
     'x-api-key': `${apiKey}`,
     Authorization: `Bearer ${apiAccesToken}`,
@@ -79,17 +97,16 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   if (!isSuccess || !account?.address || !(account.chainType === 'EVM')) {
     console.log('No account sorry');
     return {
-      isConnected: false,
+      address: null,
       points: null,
       tier: null,
-      address: null,
       pdas: [],
     };
   } else {
     // transform the data
     // console.log(data);
     let points = 0;
-    let tier = null;
+    let tier = '';
     const { issuedPDAs: pdas } = data as any;
     // filter to remove loyalty pass from pda
     const pdasWithoutLoyalty = pdas.filter((pda: any) => {
@@ -101,11 +118,12 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
       return true;
     });
 
+    // storeLoyaltyPassData(account.address, points, tier, pdasWithoutLoyalty, t);
+
     return {
-      isConnected: true,
+      address: account.address,
       points: points,
       tier: tier,
-      address: account?.address,
       pdas: pdasWithoutLoyalty,
     };
   }

@@ -8,3 +8,4 @@ export * from './settings';
 export * from './userTracking';
 export * from './utm';
 export * from './walletProvider';
+export * from './loyaltyPass';

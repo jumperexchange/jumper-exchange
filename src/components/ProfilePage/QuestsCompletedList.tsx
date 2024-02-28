@@ -1,13 +1,4 @@
-import { Box, Container, Typography } from '@mui/material';
-import {
-  BlogCarouselContainer,
-  CarouselContainer,
-  CarouselContainerBox,
-  CarouselHeader,
-  CarouselNavigationButton,
-  CarouselNavigationContainer,
-  CarouselTitle,
-} from '.';
+import { Container, Typography } from '@mui/material';
 import { QuestCard } from './QuestCard';
 
 const data = [
@@ -69,6 +60,7 @@ export const QuestCompletedList = ({ pdas }: any) => {
           pdas?.map((pda: any, index: number) => {
             return (
               <QuestCard
+                key={`completed-mission-${index}`}
                 active={false}
                 title={pda?.dataAsset.title}
                 image={pda?.dataAsset.image}

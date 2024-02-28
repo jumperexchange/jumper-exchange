@@ -13,8 +13,8 @@ export const ProfilePage = () => {
   const theme = useTheme();
   const { trackPageload, trackEvent } = useUserTracking();
 
-  const { isConnected, points, tier, pdas, address } = useLoyaltyPass();
-  const { quests, isSuccess } = useOngoingQuests();
+  const { points, tier, pdas, address } = useLoyaltyPass();
+  const { quests } = useOngoingQuests();
 
   console.log('-------------');
   console.log(points);

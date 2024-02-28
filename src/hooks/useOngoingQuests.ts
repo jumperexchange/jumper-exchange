@@ -16,9 +16,9 @@ export const useOngoingQuests = (): UseQuestsProps => {
       : import.meta.env.VITE_STRAPI_URL;
   const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
   // TODO FIND A WAY TO FETCH ONLY WHAT WE WANT
-  apiUrl.searchParams.set('populate[0]', 'Image');
+  apiUrl.searchParams.set('populate', '*');
   // apiUrl.searchParams.set('populate[1]', 'quests_platform');
-  // apiUrl.searchParams.set('populate[quests_platform][populate]', '*');
+  // apiUrl.searchParams.set('populate[quests_platform][populate][0]', 'Logo');
   import.meta.env.MODE !== 'production' &&
     apiUrl.searchParams.set('publicationState', 'preview');
   const apiAccesToken =
