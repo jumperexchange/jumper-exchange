@@ -22,7 +22,7 @@ export const Homepage = () => {
 
   return (
     <AppProvider>
-      <Layout hideNavbarTabs={false} redirectConnect={false}>
+      <Layout hideNavbarTabs={false} redirectToLearn={false}>
         <WelcomeScreen />
         <Widgets />
         <FeatureCards />

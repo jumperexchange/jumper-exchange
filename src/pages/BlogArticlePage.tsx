@@ -55,7 +55,7 @@ export const BlogArticlePage = () => {
   }, [article, articles]);
 
   return (
-    <Layout hideNavbarTabs={true} redirectConnect={true} variant={'blog'}>
+    <Layout hideNavbarTabs={true} redirectToLearn={true} variant={'blog'}>
       <BlogArticle
         subtitle={isSuccess ? article[0]?.attributes.Subtitle : undefined}
         title={isSuccess ? article[0]?.attributes.Title : undefined}

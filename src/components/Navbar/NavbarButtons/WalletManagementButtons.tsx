@@ -29,14 +29,14 @@ interface WalletManagementButtonsProps {
   backgroundColor?: string;
   color?: string;
   walletConnected?: boolean;
-  redirectConnect?: boolean;
+  redirectToLearn?: boolean;
   connectButtonLabel?: ReactElement<any, any>;
   isSuccess: boolean;
 }
 
 export const WalletManagementButtons: React.FC<
   WalletManagementButtonsProps
-> = ({ connectButtonLabel, redirectConnect, isSuccess }) => {
+> = ({ connectButtonLabel, redirectToLearn, isSuccess }) => {
   const { chains } = useChains();
   const { trackEvent } = useUserTracking();
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ export const WalletManagementButtons: React.FC<
   );
 
   const handleWalletSelectClick = () => {
-    if (redirectConnect) {
+    if (redirectToLearn) {
       navigate('/');
       trackEvent({
         category: TrackingCategory.WalletSelectMenu,
@@ -105,7 +105,7 @@ export const WalletManagementButtons: React.FC<
   return (
     <>
       <div ref={walletManagementButtonsRef}>
-        {!account?.address || redirectConnect ? (
+        {!account?.address || redirectToLearn ? (
           <ConnectButton
             // Used in the widget
             id="connect-wallet-button"

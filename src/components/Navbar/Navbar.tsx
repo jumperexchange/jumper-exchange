@@ -12,10 +12,10 @@ import { NavbarContainer as Container, Logo, LogoLink } from '.';
 
 interface NavbarProps {
   hideNavbarTabs?: boolean;
-  redirectConnect?: boolean;
+  redirectToLearn?: boolean;
 }
 
-export const Navbar = ({ hideNavbarTabs, redirectConnect }: NavbarProps) => {
+export const Navbar = ({ hideNavbarTabs, redirectToLearn }: NavbarProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { account } = useAccounts();
@@ -25,7 +25,7 @@ export const Navbar = ({ hideNavbarTabs, redirectConnect }: NavbarProps) => {
 
   const handleClick = () => {
     onWelcomeScreenClosed(false);
-    redirectConnect ? navigate('/learn') : navigate('/');
+    redirectToLearn ? navigate('/learn') : navigate('/');
   };
 
   return (
@@ -34,11 +34,11 @@ export const Navbar = ({ hideNavbarTabs, redirectConnect }: NavbarProps) => {
         <Logo
           isConnected={!!account?.address}
           theme={theme}
-          logo={redirectConnect ? <JumperLearnLogo /> : <JumperLogo />}
+          logo={redirectToLearn ? <JumperLearnLogo /> : <JumperLogo />}
         />
       </LogoLink>
       {!hideNavbarTabs ? <NavbarTabs /> : null}
-      <NavbarButtons redirectConnect={redirectConnect} />
+      <NavbarButtons redirectToLearn={redirectToLearn} />
     </Container>
   );
 };

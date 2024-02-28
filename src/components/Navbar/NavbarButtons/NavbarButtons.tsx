@@ -14,10 +14,10 @@ import { NavbarButtonsContainer, WalletManagementButtons } from '.';
 import { MainMenu, MenuToggle } from '../..';
 
 interface NavbarButtonsProps {
-  redirectConnect?: boolean;
+  redirectToLearn?: boolean;
 }
 
-export const NavbarButtons = ({ redirectConnect }: NavbarButtonsProps) => {
+export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
   const mainMenuAnchor = useRef<any>(null);
   const { trackEvent } = useUserTracking();
 
@@ -63,7 +63,7 @@ export const NavbarButtons = ({ redirectConnect }: NavbarButtonsProps) => {
   return (
     <NavbarButtonsContainer className="settings">
       <WalletManagementButtons
-        redirectConnect={redirectConnect}
+        redirectToLearn={redirectToLearn}
         connectButtonLabel={
           <Typography
             variant={'lifiBodyMediumStrong'}
@@ -75,7 +75,7 @@ export const NavbarButtons = ({ redirectConnect }: NavbarButtonsProps) => {
               WebkitBoxOrient: 'vertical',
             }}
           >
-            {redirectConnect ? t('blog.openApp') : t('navbar.connect')}
+            {redirectToLearn ? t('blog.openApp') : t('navbar.connect')}
           </Typography>
         }
         isSuccess={isSuccess}
