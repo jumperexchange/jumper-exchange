@@ -7,7 +7,7 @@ import {
   NavbarTabs,
 } from 'src/components';
 import { useAccounts } from 'src/hooks';
-import { useSettingsStore } from 'src/stores';
+import { useMenuStore, useSettingsStore } from 'src/stores';
 import { NavbarContainer as Container, Logo, LogoLink } from '.';
 
 interface NavbarProps {
@@ -22,8 +22,10 @@ export const Navbar = ({ hideNavbarTabs, redirectToLearn }: NavbarProps) => {
   const [onWelcomeScreenClosed] = useSettingsStore((state) => [
     state.onWelcomeScreenClosed,
   ]);
+  const { closeAllMenus } = useMenuStore((state) => state);
 
   const handleClick = () => {
+    closeAllMenus();
     onWelcomeScreenClosed(false);
     redirectToLearn ? navigate('/learn') : navigate('/');
   };
