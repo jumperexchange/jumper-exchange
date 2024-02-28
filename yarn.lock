@@ -1610,6 +1610,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.23.7":
+  version: 7.24.0
+  resolution: "@babel/runtime@npm:7.24.0"
+  dependencies:
+    regenerator-runtime: "npm:^0.14.0"
+  checksum: 8d32c7e116606ea322b89f9fde8ffae6be9503b549dc0d0abb38bd9dc26e87469b9fb7a66964cc089ee558fd0a97d304fb0a3cfec140694764fb0d71b6a6f5e4
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.22.15, @babel/template@npm:^7.23.9":
   version: 7.23.9
   resolution: "@babel/template@npm:7.23.9"
@@ -9578,6 +9587,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"i18next-resources-for-ts@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "i18next-resources-for-ts@npm:1.5.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.23.7"
+    yaml: "npm:^2.3.4"
+  bin:
+    i18next-resources-for-ts: bin/i18next-resources-for-ts.js
+  checksum: e041cccaa1fa6d6560e8f1b45c04323a6e7b9b34837bfea7cec1950c7f9a4eebf3477584c4b9f3b7fec36ed855d16c56428e674cba3eb0ad31367d56fc908de7
+  languageName: node
+  linkType: hard
+
 "i18next-resources-to-backend@npm:^1.2.0":
   version: 1.2.0
   resolution: "i18next-resources-to-backend@npm:1.2.0"
@@ -10456,6 +10477,7 @@ __metadata:
     fontaine: "npm:^0.4.1"
     husky: "npm:^8.0.3"
     i18next: "npm:^23.8.2"
+    i18next-resources-for-ts: "npm:^1.5.0"
     i18next-resources-to-backend: "npm:^1.2.0"
     lint-staged: "npm:^15.2.2"
     next: "npm:^14.1.0"
@@ -14726,6 +14748,15 @@ __metadata:
   version: 1.10.2
   resolution: "yaml@npm:1.10.2"
   checksum: e088b37b4d4885b70b50c9fa1b7e54bd2e27f5c87205f9deaffd1fb293ab263d9c964feadb9817a7b129a5bf30a06582cb08750f810568ecc14f3cdbabb79cb3
+  languageName: node
+  linkType: hard
+
+"yaml@npm:^2.3.4":
+  version: 2.4.0
+  resolution: "yaml@npm:2.4.0"
+  bin:
+    yaml: bin.mjs
+  checksum: 60cdb4499365a9649b4fb5cfbc496a1cd415013166f1c97aef7bf002caa0ad146058c3af91dda94c5799085d8728f1e8859b3854897ecebd10b84d7b054f0a40
   languageName: node
   linkType: hard
 

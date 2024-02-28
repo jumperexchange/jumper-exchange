@@ -1,9 +1,10 @@
 import acceptLanguage from 'accept-language';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { cookieName, fallbackLng, languages } from './i18n/i18next-settings';
+import { locales } from './i18n';
+import { cookieName, fallbackLng } from './i18n/i18next-settings';
 
-acceptLanguage.languages(languages);
+acceptLanguage.languages(locales);
 
 export const config = {
   // matcher: '/:lng*'
@@ -30,7 +31,7 @@ export function middleware(req: NextRequest) {
 
   // Redirect if lng in path is not supported
   if (
-    !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
+    !locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
     !req.nextUrl.pathname.startsWith('/_next')
   ) {
     return NextResponse.redirect(
@@ -40,7 +41,7 @@ export function middleware(req: NextRequest) {
 
   if (req.headers.has('referer')) {
     const refererUrl = new URL(req.headers.get('referer') || '');
-    const lngInReferer = languages.find((l) =>
+    const lngInReferer = locales.find((l) =>
       refererUrl.pathname.startsWith(`/${l}`),
     );
     const response = NextResponse.next();

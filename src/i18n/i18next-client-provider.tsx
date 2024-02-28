@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
+import { createContext } from 'react';
 
 export const ClientTranslationContext = createContext({
   lng: '',

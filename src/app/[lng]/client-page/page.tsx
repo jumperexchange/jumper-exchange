@@ -13,13 +13,16 @@ function PageContent({
     lng: string;
   };
 }) {
-  const { t } = useClientTranslation('client-page');
+  const { t } = useClientTranslation();
+  // const { t } = useTranslation();
   const [counter, setCounter] = useState(0);
   return (
     <>
       <main>
-        <Header heading={t('h1')} />
-        <p>{t('counter', { count: counter })}</p>
+        <Header heading={t('navbar.welcome.title')} />
+        <p>
+          {t('counter', { count: counter })} - {counter}
+        </p>
         <div>
           <button onClick={() => setCounter(Math.max(0, counter - 1))}>
             -

@@ -5,7 +5,8 @@ import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next';
 // import LocizeBackend from 'i18next-locize-backend'
 import LanguageDetector from 'i18next-browser-languagedetector';
-import { getOptions, languages, runsOnServerSide } from './i18next-settings';
+import { locales } from './i18next-locales';
+import { getOptions, runsOnServerSide } from './i18next-settings';
 
 // on client side the normal singleton is ok
 i18next
@@ -14,7 +15,7 @@ i18next
   .use(
     resourcesToBackend(
       (language: string, namespace: string) =>
-        import(`./locales/${language}/${namespace}.json`),
+        import(`./locales_jumper/${language}/${namespace}.json`),
     ),
   )
   // .use(LocizeBackend) // locize backend could be used on client side, but prefer to keep it in sync with server side
@@ -24,5 +25,5 @@ i18next
     detection: {
       order: ['path', 'htmlTag', 'cookie', 'navigator'],
     },
-    preload: runsOnServerSide ? languages : [],
+    preload: runsOnServerSide ? locales : [],
   });
