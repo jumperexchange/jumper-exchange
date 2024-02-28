@@ -1,5 +1,5 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, Typography, alpha, darken } from '@mui/material';
+import { Box, Typography, alpha } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 import { IconButtonPrimary } from '../IconButton.style';
@@ -12,8 +12,8 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
   alignItems: 'center',
   backgroundColor:
     theme.palette.mode === 'light'
-      ? alpha(theme.palette.white.main, 0.22)
-      : alpha(theme.palette.white.main, 0.08),
+      ? alpha(theme.palette.white.main, 0.64)
+      : alpha(theme.palette.white.main, 0.12),
   boxShadow:
     theme.palette.mode === 'dark'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
@@ -27,8 +27,8 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'light'
-        ? darken(theme.palette.white.main, 0.04)
-        : alpha(theme.palette.white.main, 0.16),
+        ? alpha(theme.palette.white.main, 0.72)
+        : alpha(theme.palette.white.main, 0.2),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(12, 8),
