@@ -46,7 +46,7 @@ export const FeaturedArticleContainer = styled(Box, {
   },
 }));
 
-export const BlogHighlightsCard = styled(Box)<BoxProps>(({ theme }) => ({
+export const FeaturedArticleCard = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   backgroundColor: alpha(theme.palette.primary.main, 0.25),
   top: theme.spacing(-4),
@@ -62,7 +62,7 @@ export const BlogHighlightsCard = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-export const BlogHighlightsMetaContainer = styled(Box)<BoxProps>(
+export const FeaturedArticleMetaContainer = styled(Box)<BoxProps>(
   ({ theme }) => ({
     display: 'flex',
     fontSize: '14px',
@@ -81,7 +81,7 @@ export const BlogHighlightsMetaContainer = styled(Box)<BoxProps>(
   }),
 );
 
-export const BlogHighlightsMetaDate = styled(Typography)<TypographyProps>(
+export const FeaturedArticleMetaDate = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     fontSize: 'inherit',
     '&:after': {
@@ -91,7 +91,7 @@ export const BlogHighlightsMetaDate = styled(Typography)<TypographyProps>(
   }),
 );
 
-export const BlogHighlightsImage = styled('img')(({ theme }) => ({
+export const FeaturedArticleImage = styled('img')(({ theme }) => ({
   borderRadius: '20px',
   userSelect: 'none',
   alignSelf: 'flex-start',
@@ -107,7 +107,7 @@ export const BlogHighlightsImage = styled('img')(({ theme }) => ({
   },
 }));
 
-export const BlogHighlightsContent = styled(Box)(({ theme }) => ({
+export const FeaturedArticleContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   color: theme.palette.mode === 'light' ? '#525252' : lighten('#525252', 0.8), //todo: add to theme
   flexDirection: 'column',
@@ -132,7 +132,7 @@ export const BlogHighlightsContent = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const BlogHighlightsDetails = styled(Box)(({ theme }) => ({
+export const FeaturedArticleDetails = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
@@ -148,7 +148,7 @@ export const BlogHighlightsDetails = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const BlogHighlightsTitle = styled(Typography)<TypographyProps>(
+export const FeaturedArticleTitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     userSelect: 'none',
     color:
@@ -179,7 +179,7 @@ export const BlogHighlightsTitle = styled(Typography)<TypographyProps>(
   }),
 );
 
-export const BlogHighlightsSubtitle = styled(Typography)<TypographyProps>(
+export const FeaturedArticleSubtitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     userSelect: 'none',
     fontSize: '18px',

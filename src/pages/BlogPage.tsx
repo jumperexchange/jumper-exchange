@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Layout } from 'src/Layout';
 import {
   BlogCarousel,
-  BlogHighlights,
+  FeaturedArticle,
   JoinDiscordBanner,
   PoweredBy,
 } from 'src/components';
@@ -28,7 +28,7 @@ export const BlogPage = () => {
 
   return (
     <Layout hideNavbarTabs={true} redirectToLearn={true}>
-      <BlogHighlights />
+      <FeaturedArticle />
       <BlogCarousel url={url} data={recentArticles} />
       <JoinDiscordBanner />
       {/* <BlogArticlesBoard /> */}

@@ -11,19 +11,19 @@ import { useStrapi, useUserTracking } from 'src/hooks';
 import { EventTrackingTool, type BlogArticleData } from 'src/types';
 import { formatDate, readingTime } from 'src/utils';
 import {
-  BlogHighlightsContent,
-  BlogHighlightsDetails,
-  BlogHighlightsImage,
-  BlogHighlightsMetaContainer,
-  BlogHighlightsMetaDate,
-  BlogHighlightsSkeleton,
-  BlogHighlightsSubtitle,
-  BlogHighlightsTitle,
   FeaturedArticleContainer,
+  FeaturedArticleContent,
+  FeaturedArticleDetails,
+  FeaturedArticleImage,
+  FeaturedArticleMetaContainer,
+  FeaturedArticleMetaDate,
+  FeaturedArticleSkeleton,
+  FeaturedArticleSubtitle,
+  FeaturedArticleTitle,
 } from '.';
 import { Tag } from '../../Tag.style';
 
-export const BlogHighlights = () => {
+export const FeaturedArticle = () => {
   const { trackEvent } = useUserTracking();
   const { data: featuredArticle, url } = useStrapi<BlogArticleData>({
     contentType: STRAPI_BLOG_ARTICLES,
@@ -57,14 +57,14 @@ export const BlogHighlights = () => {
 
   return featuredArticle?.length > 0 ? (
     <FeaturedArticleContainer onClick={handleClick}>
-      <BlogHighlightsImage
+      <FeaturedArticleImage
         src={`${url.origin}${featuredArticle[0]?.attributes.Image.data.attributes.url}`}
         alt={
           featuredArticle[0].attributes.Image.data.attributes.alternativeText
         }
       />
-      <BlogHighlightsContent>
-        <BlogHighlightsDetails>
+      <FeaturedArticleContent>
+        <FeaturedArticleDetails>
           {featuredArticle[0].attributes.tags.data
             .slice(0, 1)
             .map((el, index) => (
@@ -75,10 +75,10 @@ export const BlogHighlights = () => {
                 {el.attributes.Title}
               </Tag>
             ))}
-          <BlogHighlightsMetaContainer>
-            <BlogHighlightsMetaDate variant="lifiBodyXSmall" component="span">
+          <FeaturedArticleMetaContainer>
+            <FeaturedArticleMetaDate variant="lifiBodyXSmall" component="span">
               {formatedDate}
-            </BlogHighlightsMetaDate>
+            </FeaturedArticleMetaDate>
             <Typography
               variant="lifiBodyXSmall"
               component="span"
@@ -86,21 +86,21 @@ export const BlogHighlights = () => {
             >
               {t('blog.minRead', { minRead: minRead })}
             </Typography>
-          </BlogHighlightsMetaContainer>
-        </BlogHighlightsDetails>
+          </FeaturedArticleMetaContainer>
+        </FeaturedArticleDetails>
         <Box>
-          <BlogHighlightsTitle variant="lifiHeaderMedium" as="h2">
+          <FeaturedArticleTitle variant="lifiHeaderMedium" as="h2">
             {featuredArticle[0].attributes.Title}
-          </BlogHighlightsTitle>
+          </FeaturedArticleTitle>
         </Box>
         <Box>
-          <BlogHighlightsSubtitle>
+          <FeaturedArticleSubtitle>
             {featuredArticle[0].attributes.Subtitle}
-          </BlogHighlightsSubtitle>
+          </FeaturedArticleSubtitle>
         </Box>
-      </BlogHighlightsContent>
+      </FeaturedArticleContent>
     </FeaturedArticleContainer>
   ) : (
-    <BlogHighlightsSkeleton />
+    <FeaturedArticleSkeleton />
   );
 };

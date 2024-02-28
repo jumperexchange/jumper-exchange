@@ -1,12 +1,12 @@
 import type { Breakpoint } from '@mui/material';
 import { Skeleton, useTheme } from '@mui/material';
 import {
-  BlogHighlightsContent,
-  BlogHighlightsDetails,
   FeaturedArticleContainer,
+  FeaturedArticleContent,
+  FeaturedArticleDetails,
 } from '.';
 
-export const BlogHighlightsSkeleton = () => {
+export const FeaturedArticleSkeleton = () => {
   const theme = useTheme();
   return (
     <FeaturedArticleContainer>
@@ -33,8 +33,8 @@ export const BlogHighlightsSkeleton = () => {
           },
         }}
       />
-      <BlogHighlightsContent sx={{ width: '100%' }}>
-        <BlogHighlightsDetails>
+      <FeaturedArticleContent sx={{ width: '100%' }}>
+        <FeaturedArticleDetails>
           <Skeleton
             variant="rectangular"
             sx={{ height: '48px', width: '108px', borderRadius: '24px' }}
@@ -46,7 +46,7 @@ export const BlogHighlightsSkeleton = () => {
               width: '150px',
             }}
           />
-        </BlogHighlightsDetails>
+        </FeaturedArticleDetails>
         <Skeleton
           sx={{
             margin: theme.spacing(4, 0),
@@ -56,7 +56,7 @@ export const BlogHighlightsSkeleton = () => {
           }}
         />
         <Skeleton sx={{ height: '64px' }} />
-      </BlogHighlightsContent>
+      </FeaturedArticleContent>
     </FeaturedArticleContainer>
   );
 };

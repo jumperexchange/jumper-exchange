@@ -218,7 +218,7 @@ export const WelcomeScreen = () => {
               </Typography>
             </ButtonPrimary>
           </WelcomeContent>
-          {/* <BlogHighlights
+          {/* <FeaturedArticle
             showIntro={true}
             showAllButton={true}
             styles={{
