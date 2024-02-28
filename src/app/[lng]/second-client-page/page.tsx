@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
 import { ClientTranslationProvider, useClientTranslation } from 'src/i18n';
 import { Footer } from '../components/Footer/client';
 import { Header } from '../components/Header';
@@ -13,29 +12,16 @@ function PageContent({
     lng: string;
   };
 }) {
-  const { t } = useClientTranslation('client-page');
-  const [counter, setCounter] = useState(0);
+  const { t } = useClientTranslation('second-client-page');
   return (
     <>
       <main>
         <Header heading={t('h1')} />
-        <p>{t('counter', { count: counter })}</p>
-        <div>
-          <button onClick={() => setCounter(Math.max(0, counter - 1))}>
-            -
-          </button>
-          <button onClick={() => setCounter(Math.min(10, counter + 1))}>
-            +
-          </button>
-        </div>
-        <Link href={`/${lng}/second-client-page`}>
-          {t('to-second-client-page')}
-        </Link>
         <Link href={`/${lng}`}>
           <button type="button">{t('back-to-home')}</button>
         </Link>
       </main>
-      <Footer path="/client-page" />
+      <Footer path="/second-client-page" />
     </>
   );
 }
