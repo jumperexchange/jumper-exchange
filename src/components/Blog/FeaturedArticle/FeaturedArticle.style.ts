@@ -9,7 +9,7 @@ export const FeaturedArticleContainer = styled(Box, {
   borderRadius: 32,
   backgroundColor:
     theme.palette.mode === 'light'
-      ? alpha(theme.palette.white.main, 0.64)
+      ? alpha(theme.palette.white.main, 0.48)
       : alpha(theme.palette.white.main, 0.12),
   transition: 'background-color 250ms',
   boxShadow:
@@ -24,7 +24,7 @@ export const FeaturedArticleContainer = styled(Box, {
     cursor: 'pointer',
     backgroundColor:
       theme.palette.mode === 'light'
-        ? alpha(theme.palette.white.main, 0.72)
+        ? alpha(theme.palette.white.main, 0.8)
         : alpha(theme.palette.white.main, 0.2),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {

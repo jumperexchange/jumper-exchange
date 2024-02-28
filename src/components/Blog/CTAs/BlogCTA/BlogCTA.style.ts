@@ -18,7 +18,7 @@ export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'light'
       ? '#F9F5FF' //todo: add to theme
-      : alpha(theme.palette.white.main, 0.12),
+      : alpha(theme.palette.white.main, 0.08),
   '&:hover': {
     cursor: 'pointer',
     backgroundColor:

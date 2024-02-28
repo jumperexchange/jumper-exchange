@@ -12,7 +12,7 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
   alignItems: 'center',
   backgroundColor:
     theme.palette.mode === 'light'
-      ? alpha(theme.palette.white.main, 0.64)
+      ? alpha(theme.palette.white.main, 0.48)
       : alpha(theme.palette.white.main, 0.12),
   boxShadow:
     theme.palette.mode === 'dark'
@@ -27,7 +27,7 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'light'
-        ? alpha(theme.palette.white.main, 0.72)
+        ? alpha(theme.palette.white.main, 1)
         : alpha(theme.palette.white.main, 0.2),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
