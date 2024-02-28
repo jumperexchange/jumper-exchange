@@ -8,11 +8,11 @@
   "main": "./src/index.ts",
   "types": "./index.d.ts",
   "dependencies": {
-    "@arcxmoney/analytics": "^2.0.3",
+    "@arcxmoney/analytics": "^2.1.0",
     "@cookie3/analytics": "^0.6.0",
     "@lifi/sdk": "^3.0.0-alpha.56",
     "@lifi/wallet-management": "3.0.0-alpha.22",
-    "@lifi/widget": "3.0.0-alpha.32",
+    "@lifi/widget": "3.0.0-alpha.33",
     "@mui/icons-material": "^5.15.11",
     "@mui/material": "^5.15.11",
     "@safe-global/safe-apps-sdk": "^9.0.0",
@@ -45,7 +45,7 @@
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@lifi/types": "^11.3.0",
-    "@types/node": "^20.11.20",
+    "@types/node": "^20.11.21",
     "@types/react": "^18.2.60",
     "@types/react-dom": "^18.2.19",
     "@types/ungap__structured-clone": "^1.2.0",
