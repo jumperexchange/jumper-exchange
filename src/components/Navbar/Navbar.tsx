@@ -30,7 +30,7 @@ export const Navbar = ({ hideNavbarTabs, redirectToLearn }: NavbarProps) => {
 
   return (
     <Container>
-      <LogoLink onClick={handleClick}>
+      <LogoLink onClick={handleClick} sx={{ height: '32px' }}>
         <Logo
           isConnected={!!account?.address}
           theme={theme}
