@@ -1,4 +1,4 @@
-import type { Route } from '@lifi/sdk';
+import { type Route } from '@lifi/sdk';
 import { useUserTracking } from 'src/hooks';
 
 import type {
@@ -17,13 +17,20 @@ import {
 } from 'src/const';
 import { useMultisig } from 'src/hooks';
 import { useAccounts } from 'src/hooks/useAccounts';
-import { useActiveTabStore, useMenuStore, useMultisigStore } from 'src/stores';
+import {
+  useActiveTabStore,
+  useChainTokenSelectionStore,
+  useMenuStore,
+  useMultisigStore,
+} from 'src/stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { activeTab } = useActiveTabStore();
+  const { setDestinationChainToken, setSourceChainToken } =
+    useChainTokenSelectionStore();
   const { trackEvent, trackTransaction } = useUserTracking();
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
@@ -183,6 +190,18 @@ export function WidgetEvents() {
       onDestinationChainSelected(destinationData.chainId);
     };
 
+    const handleSourceChainTokenSelection = async (
+      sourceChainData: ChainTokenSelected,
+    ) => {
+      setSourceChainToken(sourceChainData);
+    };
+
+    const handleDestinationChainTokenSelection = async (
+      toChainData: ChainTokenSelected,
+    ) => {
+      setDestinationChainToken(toChainData);
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
@@ -196,11 +215,21 @@ export function WidgetEvents() {
       WidgetEvent.DestinationChainTokenSelected,
       handleMultisigChainTokenSelected,
     );
+    widgetEvents.on(
+      WidgetEvent.SourceChainTokenSelected,
+      handleSourceChainTokenSelection,
+    );
+    widgetEvents.on(
+      WidgetEvent.DestinationChainTokenSelected,
+      handleDestinationChainTokenSelection,
+    );
 
     return () => widgetEvents.all.clear();
   }, [
     activeTab,
     onDestinationChainSelected,
+    setDestinationChainToken,
+    setSourceChainToken,
     setSupportModalState,
     shouldOpenMultisigSignatureModal,
     trackEvent,
