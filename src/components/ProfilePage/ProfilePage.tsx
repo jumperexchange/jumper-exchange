@@ -16,33 +16,7 @@ export const ProfilePage = () => {
   const theme = useTheme();
   const { trackPageload, trackEvent } = useUserTracking();
 
-  // let address: string | undefined | null;
-  // let points: number | undefined | null;
-  // let tier: string | undefined | null;
-  // let pdas: any[] | undefined | null;
-  // const [storedAddress, storedPoints, storedTier, storedPdas, timestamp] =
-  //   useLoyaltyPassStore((state) => [
-  //     state.address,
-  //     state.points,
-  //     state.tier,
-  //     state.pdas,
-  //     state.timestamp,
-  //   ]);
-  // if (!storedPdas || timestamp + SECONDS_IN_A_DAY < Date.now() / 1000) {
-  //   console.log('fetchin from gateway');
   const { points, tier, pdas, address } = useLoyaltyPass();
-  //   address = add;
-  //   points = loyaltyPoint;
-  //   tier = loyaltyTier;
-  //   pdas = loyaltyPDAs;
-  // } else {
-  //   console.log('not fetching but coming from the store');
-  //   address = storedAddress;
-  //   points = storedPoints;
-  //   tier = storedTier;
-  //   pdas = storedPdas;
-  // }
-
   const { quests } = useOngoingQuests();
 
   console.log('-------------');

@@ -47,7 +47,7 @@ export const useLoyaltyPassStore = createWithEqualityFn(
       },
     }),
     {
-      name: 'loyalty-pass-store', // name of the item in the storage (must be unique)
+      name: 'jumper-loyalty-pass', // name of the item in the storage (must be unique)
       version: 1,
     },
   ) as unknown as StateCreator<LoyaltyPassState, [], [], LoyaltyPassState>,

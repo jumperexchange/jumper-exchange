@@ -31,7 +31,6 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     state.storeLoyaltyPassData,
   ]);
 
-  // if connected, check in the local storage
   //   const apiBaseUrl = import.meta.env.VITE_GATEWAY_URL;
   const apiBaseUrl = 'https://protocol.mygateway.xyz/graphql';
   const apiUrl = new URL(`${apiBaseUrl}`);
