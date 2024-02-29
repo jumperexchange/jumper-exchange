@@ -263,7 +263,7 @@ const themeCustomized: Theme = createTheme({
       },
       styleOverrides: {
         sizeSmall: {
-          height: 30,
+          height: 32,
         },
         sizeMedium: {
           height: 40,
