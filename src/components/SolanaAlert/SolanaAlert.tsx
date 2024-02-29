@@ -1,16 +1,19 @@
+import { ChainId } from '@lifi/types';
 import InfoIcon from '@mui/icons-material/Info';
 import { Grid, Slide, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { InfoMessageCard, InfoMessageCardTitle } from 'src/components';
+import { useChainTokenSelectionStore } from 'src/stores';
 
-interface SolanaAlertProps {
-  active: boolean;
-}
-
-export const SolanaAlert = ({ active }: SolanaAlertProps) => {
+export const SolanaAlert = () => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { sourceChainToken, destinationChainToken } =
+    useChainTokenSelectionStore();
 
+  const active =
+    sourceChainToken.chainId === ChainId.SOL ||
+    destinationChainToken.chainId === ChainId.SOL;
   return (
     <Slide
       direction="up"

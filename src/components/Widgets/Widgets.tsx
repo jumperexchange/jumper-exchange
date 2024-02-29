@@ -1,22 +1,15 @@
-import { ChainId } from '@lifi/types';
 import type { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { OnRamper, SolanaAlert, TestnetAlert, Widget } from 'src/components';
 import { LinkMap, TabsMap } from 'src/const';
-import {
-  useActiveTabStore,
-  useChainTokenSelectionStore,
-  useSettingsStore,
-} from 'src/stores';
+import { useActiveTabStore, useSettingsStore } from 'src/stores';
 import type { StarterVariantType } from 'src/types';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
 
 export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
-  const { sourceChainToken, destinationChainToken } =
-    useChainTokenSelectionStore();
   const [welcomeScreenClosed, onWelcomeScreenClosed] = useSettingsStore(
     (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
   );
@@ -107,12 +100,7 @@ export function Widgets() {
       >
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
-      <SolanaAlert
-        active={
-          sourceChainToken.chainId === ChainId.SOL ||
-          destinationChainToken.chainId === ChainId.SOL
-        }
-      />
+      <SolanaAlert />
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
           onClick={handleCloseWelcomeScreen}
