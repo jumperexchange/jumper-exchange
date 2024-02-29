@@ -1,4 +1,4 @@
-import { Container, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Container, Stack, Typography, useTheme } from '@mui/material';
 import { Trans } from 'react-i18next';
 import { appendUTMParametersToLink, openInNewTab } from '../../utils';
 import { LIFI_URL, TrackingAction, TrackingCategory } from 'src/const';
@@ -9,6 +9,8 @@ import { QuestCarousel } from './QuestCarousel';
 import { QuestCompletedList } from './QuestsCompletedList';
 import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 import { useLoyaltyPassStore } from 'src/stores';
+import { TierBox } from './TierBox';
+import { AddressBox } from './AddressBox';
 
 const SECONDS_IN_A_DAY = 86400;
 
@@ -36,74 +38,31 @@ export const ProfilePage = () => {
         width: '100% !important',
         overflow: 'hidden',
         margin: 'auto',
-        padding: 0,
       }}
     >
       <Stack direction={'column'} spacing={4}>
-        <Container>
-          {/* FIRST PART TOP */}
-          <Stack direction={'row'} spacing={4}>
-            <Container
-              sx={{
-                width: '50%',
-                border: 1,
-                borderColor: 'blue',
-                backgroundColor: '#f9f5ff',
-                height: '312px',
-                padding: 0,
-                borderRadius: '24px',
-              }}
-            >
-              <Container
-                sx={{ height: '50%', backgroundColor: 'red', width: '100%' }}
-              >
-                <Typography>background</Typography>
-              </Container>
-              <Container>
-                <Typography>Image</Typography>
-              </Container>
-              <Container>
-                <Typography>
-                  {address
-                    ? address?.slice(0, 6) +
-                      '...' +
-                      address?.slice(address.length - 4, address.length)
-                    : null}
-                </Typography>
-              </Container>
-            </Container>
-            <Container
-              sx={{
-                border: 1,
-                gridRow: '2/3',
-                borderColor: 'blue',
-                backgroundColor: '#f9f5ff',
-                borderRadius: '24px',
-              }}
-            >
-              <Container
-                sx={{
-                  border: 1,
-                  backgroundColor: '#ffffff',
-                  height: '99%',
-                  width: '99%',
-                  borderRadius: '24px',
-                }}
-              >
-                <Typography>Tier</Typography>
-                <Stack direction={'row'} spacing={1}>
-                  <Stack direction={'row'} spacing={1}>
-                    <Typography>{points ?? null}</Typography>
-                    <Typography>{'points'}</Typography>
-                  </Stack>
-                  <Typography>{tier ?? null}</Typography>
-                </Stack>
-              </Container>
-            </Container>
-          </Stack>
-        </Container>
-
-        {/* Mission CAROUSSEL */}
+        <Stack direction={'row'} spacing={4}>
+          <Box
+            sx={{
+              width: '33%',
+              backgroundColor: '#f9f5ff',
+              height: '312px',
+              borderRadius: '24px',
+            }}
+          >
+            <AddressBox address={address} />
+          </Box>
+          <Box
+            sx={{
+              width: '67%',
+              backgroundColor: '#f9f5ff',
+              borderRadius: '24px',
+              padding: '24px',
+            }}
+          >
+            <TierBox points={points} tier={tier} />
+          </Box>
+        </Stack>
         <QuestCarousel quests={quests} />
         <QuestCompletedList pdas={pdas} />
       </Stack>

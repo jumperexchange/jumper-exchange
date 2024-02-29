@@ -73,19 +73,6 @@ export const QuestCompletedList = ({ pdas }: any) => {
                 image={pda?.dataAsset.image}
                 points={pda?.dataAsset.claim.points}
               />
-              //   <BlogArticleCard
-              //     id={article.id}
-              //     baseUrl={url}
-              //     trackingCategory={TrackingCategory.BlogCarousel}
-              //     key={`blog-carousel-article-${article.id}-${index}`}
-              //     image={article.attributes.Image}
-              //     title={article.attributes.Title}
-              //     slug={article.attributes.Slug}
-              //     content={article.attributes.Content}
-              //     publishedAt={article.attributes.publishedAt}
-              //     createdAt={article.attributes.createdAt}
-              //     tags={article.attributes.tags}
-              //   />
             );
           })
         ) : (

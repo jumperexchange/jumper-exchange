@@ -78,7 +78,7 @@ export const QuestCard = ({ active, title, image, points }: any) => {
             +{points}
           </Typography>
           {active ? (
-            <Button variant="secondary">
+            <Button variant="secondary" styles={{ alignItems: 'center' }}>
               <Typography
                 sx={{
                   color: '#31007A',
@@ -87,13 +87,13 @@ export const QuestCard = ({ active, title, image, points }: any) => {
                   fontStyle: 'normal',
                   fontWeight: 600,
                   lineHeight: '18px' /* 125% */,
+                  padding: '8px',
                 }}
               >
                 Join
               </Typography>
-              <CarouselNavigationButton>
-                <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
-              </CarouselNavigationButton>
+
+              <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
             </Button>
           ) : null}
         </Box>
