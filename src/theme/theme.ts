@@ -261,26 +261,17 @@ const themeCustomized: Theme = createTheme({
       defaultProps: {
         size: 'large',
       },
-      variants: [
-        {
-          props: { size: 'small' },
-          style: {
-            height: 30,
-          },
+      styleOverrides: {
+        sizeSmall: {
+          height: 30,
         },
-        {
-          props: { size: 'medium' },
-          style: {
-            height: 40,
-          },
+        sizeMedium: {
+          height: 40,
         },
-        {
-          props: { size: 'large' },
-          style: {
-            height: 48,
-          },
+        sizeLarge: {
+          height: 48,
         },
-      ],
+      },
     },
     MuiTypography: {
       defaultProps: {
