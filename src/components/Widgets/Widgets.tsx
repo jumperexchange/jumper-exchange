@@ -107,12 +107,12 @@ export function Widgets() {
       >
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
-      {(sourceChainToken.chainId === ChainId.SOL ||
-        destinationChainToken.chainId === ChainId.SOL) && (
-        <Grid item xs={12} m={theme.spacing(3)}>
-          <SolanaAlert />
-        </Grid>
-      )}
+      <SolanaAlert
+        active={
+          sourceChainToken.chainId === ChainId.SOL ||
+          destinationChainToken.chainId === ChainId.SOL
+        }
+      />
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
           onClick={handleCloseWelcomeScreen}
