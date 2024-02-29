@@ -82,9 +82,7 @@ export const BlogArticleHeaderMetaDate = styled(Typography)(({ theme }) => ({
 export const BlogArticleImage = styled('img')(({ theme }) => ({
   width: '100%',
   borderRadius: '16px',
-  [theme.breakpoints.up('xl' as Breakpoint)]: {
-    maxWidth: theme.breakpoints.values.lg,
-  },
+  maxWidth: theme.breakpoints.values.lg,
 }));
 
 export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
