@@ -67,6 +67,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   `;
 
   // tokens
+
   const apiKey = import.meta.env.VITE_GATEWAY_API_KEY;
   const apiAccesToken = import.meta.env.VITE_GATEWAY_API_TOKEN;
 

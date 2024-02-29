@@ -1,4 +1,4 @@
-import { Container, Typography } from '@mui/material';
+import { Container, Stack, Typography } from '@mui/material';
 import { QuestCard } from './QuestCard';
 
 const data = [
@@ -54,8 +54,15 @@ export const QuestCompletedList = ({ pdas }: any) => {
 
   return (
     <Container sx={{ backgroundColor: '#f9f5ff', borderRadius: '24px' }}>
-      <Typography>Completed Missions</Typography>
-      <Container>
+      <Typography sx={{ marginTop: 5 }}>Completed Missions</Typography>
+
+      <Stack
+        direction={'row'}
+        spacing={4}
+        sx={{ marginTop: 5 }}
+        useFlexGap
+        flexWrap="wrap"
+      >
         {pdas ? (
           pdas?.map((pda: any, index: number) => {
             return (
@@ -89,7 +96,7 @@ export const QuestCompletedList = ({ pdas }: any) => {
             <BlogArticleCardSkeleton /> */}
           </>
         )}
-      </Container>
+      </Stack>
     </Container>
   );
 };
