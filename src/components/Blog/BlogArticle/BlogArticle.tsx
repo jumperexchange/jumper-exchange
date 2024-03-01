@@ -101,13 +101,6 @@ export const BlogArticle = ({
         ) : (
           <BlogArticleTitleSkeleton />
         )}
-        {subtitle ? (
-          <BlogArticleSubtitle variant="lifiHeaderMedium" as="h3">
-            {subtitle}
-          </BlogArticleSubtitle>
-        ) : (
-          <BlogArticleSubtitleSkeleton variant="text" />
-        )}
         <BlogMetaContainer>
           <BlogAuthorContainer>
             {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
@@ -145,6 +138,13 @@ export const BlogArticle = ({
       </BlogArticleImageContainer>
       <BlogArticleContainer>
         <BlogArticleContentContainer>
+          {subtitle ? (
+            <BlogArticleSubtitle variant="lifiHeaderMedium" as="h3">
+              {subtitle}
+            </BlogArticleSubtitle>
+          ) : (
+            <BlogArticleSubtitleSkeleton variant="text" />
+          )}
           {content ? (
             <CustomRichBlocks id={id} baseUrl={baseUrl} content={content} />
           ) : (
