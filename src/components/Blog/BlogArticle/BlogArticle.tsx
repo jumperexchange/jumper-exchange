@@ -102,7 +102,7 @@ export const BlogArticle = ({
           <BlogArticleTitleSkeleton />
         )}
         {subtitle ? (
-          <BlogArticleSubtitle variant="lifiHeaderMedium">
+          <BlogArticleSubtitle variant="lifiHeaderMedium" as="h3">
             {subtitle}
           </BlogArticleSubtitle>
         ) : (

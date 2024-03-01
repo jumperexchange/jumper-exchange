@@ -274,9 +274,9 @@ export const BlogArticleTitleSkeleton = styled(Skeleton)<SkeletonProps>(
 export const BlogArticleSubtitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     marginTop: theme.spacing(6),
-    fontWeight: 400,
-    fontSize: '18px',
-    lineHeight: '32px',
+    fontWeight: 700,
+    fontSize: '24px',
+    lineHeight: '40px',
     fontFamily: 'Inter',
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       marginTop: theme.spacing(8),
