@@ -12,6 +12,7 @@ export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   gap: theme.spacing(1.5),
   cursor: 'pointer',
   overflow: 'hidden',
+  textAlign: 'center',
   margin: theme.spacing(6, 0),
   transition: 'background-color 250ms',
   borderRadius: '16px',
