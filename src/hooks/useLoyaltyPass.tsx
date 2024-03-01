@@ -5,6 +5,7 @@ import { useLoyaltyPassStore } from 'src/stores';
 import { PDA } from 'src/types';
 
 export interface UseLoyaltyPassProps {
+  isSuccess: boolean;
   address?: string | null;
   points?: number | null;
   tier?: string | null;
@@ -45,6 +46,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
         }
         skip: 0
         take: 300
+        order: { issuanceDate: "DESC" }
       ) {
         id
         status
@@ -131,6 +133,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   // We check if we have something inside the store
   if (account?.address === storedAddress && t < timestamp + SECONDS_IN_A_DAY) {
     return {
+      isSuccess: true,
       address: storedAddress,
       points: storedPoints,
       tier: storedTier,
@@ -143,6 +146,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     !(account.chainType === 'EVM')
   ) {
     return {
+      isSuccess: false,
       address: null,
       points: null,
       tier: null,
@@ -150,5 +154,5 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     };
   }
 
-  return data;
+  return { ...data, isSuccess: isSuccess };
 };

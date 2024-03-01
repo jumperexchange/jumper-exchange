@@ -1,4 +1,13 @@
-import { Box, Container, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Breakpoint,
+  Container,
+  Stack,
+  Typography,
+  alpha,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { Trans } from 'react-i18next';
 import { appendUTMParametersToLink, openInNewTab } from '../../utils';
 import { LIFI_URL, TrackingAction, TrackingCategory } from 'src/const';
@@ -12,13 +21,12 @@ import { useLoyaltyPassStore } from 'src/stores';
 import { TierBox } from './TierBox';
 import { AddressBox } from './AddressBox';
 
-const SECONDS_IN_A_DAY = 86400;
-
 export const ProfilePage = () => {
   const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   const { trackPageload, trackEvent } = useUserTracking();
 
-  const { points, tier, pdas, address } = useLoyaltyPass();
+  const { isSuccess, points, tier, pdas, address } = useLoyaltyPass();
   const { quests } = useOngoingQuests();
 
   console.log('-------------');
@@ -32,40 +40,75 @@ export const ProfilePage = () => {
   return (
     <Container
       sx={{
+        marginTop: 4,
+        marginBottom: 4,
         background: 'transparent',
         borderRadius: '8px',
         position: 'relative',
         width: '100% !important',
         overflow: 'hidden',
-        margin: 'auto',
       }}
     >
-      <Stack direction={'column'} spacing={4}>
-        <Stack direction={'row'} spacing={4}>
-          <Box
-            sx={{
-              width: '33%',
-              backgroundColor: '#f9f5ff',
-              height: '312px',
-              borderRadius: '24px',
-            }}
-          >
-            <AddressBox address={address} />
-          </Box>
-          <Box
-            sx={{
-              width: '67%',
-              backgroundColor: '#f9f5ff',
-              borderRadius: '24px',
-              padding: '24px',
-            }}
-          >
-            <TierBox points={points} tier={tier} />
-          </Box>
+      {isDesktop ? (
+        <Stack direction={'column'} spacing={4}>
+          <Stack direction={'row'} spacing={4}>
+            <Box
+              sx={{
+                width: '33%',
+
+                backgroundColor:
+                  theme.palette.mode === 'light'
+                    ? '#F9F5FF'
+                    : alpha(theme.palette.white.main, 0.08),
+                height: '312px',
+                borderRadius: '24px',
+              }}
+            >
+              <AddressBox address={address} />
+            </Box>
+            <Box
+              sx={{
+                width: '67%',
+                backgroundColor:
+                  theme.palette.mode === 'light'
+                    ? '#F9F5FF'
+                    : alpha(theme.palette.white.main, 0.08),
+                borderRadius: '24px',
+                padding: '24px',
+              }}
+            >
+              <TierBox points={points} tier={tier} />
+            </Box>
+          </Stack>
+          <QuestCarousel quests={quests} theme={theme} />
+          <QuestCompletedList
+            pdas={pdas}
+            dataIsFetched={isSuccess}
+            theme={theme}
+          />
         </Stack>
-        <QuestCarousel quests={quests} />
-        <QuestCompletedList pdas={pdas} />
-      </Stack>
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: 'Inter',
+              fontSize: '18px',
+              fontStyle: 'normal',
+              fontWeight: 700,
+              lineHeight: '40px' /* 125% */,
+            }}
+          >
+            Pass not available on mobile for now. <br /> Please connect to a
+            desktop.
+          </Typography>
+        </Box>
+      )}
     </Container>
   );
 };

@@ -1,17 +1,27 @@
-import { Box, Container, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Container,
+  Stack,
+  Typography,
+  alpha,
+  useTheme,
+} from '@mui/material';
 import { useUserTracking } from 'src/hooks';
 import { Button } from '../Button';
 import { CarouselNavigationButton } from './CarouselContainer.style';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-export const QuestCard = ({ active, title, image, points }: any) => {
+export const QuestCard = ({ active, title, image, points, link }: any) => {
   const theme = useTheme();
   const { trackPageload, trackEvent } = useUserTracking();
 
   return (
     <Box
       sx={{
-        backgroundColor: '#FFFFFF',
+        backgroundColor:
+          theme.palette.mode === 'light'
+            ? '#FFFFFF'
+            : alpha(theme.palette.white.main, 0.08),
         height: '392px',
         width: '272px',
         borderRadius: '24px',
@@ -66,7 +76,7 @@ export const QuestCard = ({ active, title, image, points }: any) => {
         >
           <Typography
             sx={{
-              color: '#31007A',
+              color: theme.palette.mode === 'light' ? '#31007A' : '#de85ff',
               fontFamily: 'Inter',
               fontSize: '32px',
               fontStyle: 'normal',
@@ -77,24 +87,26 @@ export const QuestCard = ({ active, title, image, points }: any) => {
             {' '}
             +{points}
           </Typography>
-          {active ? (
-            <Button variant="secondary" styles={{ alignItems: 'center' }}>
-              <Typography
-                sx={{
-                  color: '#31007A',
-                  fontFamily: 'Inter',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: 600,
-                  lineHeight: '18px' /* 125% */,
-                  padding: '8px',
-                }}
-              >
-                Join
-              </Typography>
+          {active && link ? (
+            <a href={link} target="_blank" style={{ textDecoration: 'none' }}>
+              <Button variant="secondary" styles={{ alignItems: 'center' }}>
+                <Typography
+                  sx={{
+                    color: '#31007A',
+                    fontFamily: 'Inter',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: 600,
+                    lineHeight: '18px' /* 125% */,
+                    padding: '8px',
+                  }}
+                >
+                  Join
+                </Typography>
 
-              <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
-            </Button>
+                <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
+              </Button>
+            </a>
           ) : null}
         </Box>
       </Box>

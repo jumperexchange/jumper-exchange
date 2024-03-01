@@ -3,6 +3,8 @@ import { CarouselContainer } from 'src/components';
 import { BlogCarouselContainer } from './BlogCarousel.style';
 import { QuestCard } from './QuestCard';
 import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
+import { Stack } from '@mui/material';
+import { QuestCardSkeleton } from './QuestCardSkeleton';
 
 interface BlogCarouselProps {
   showAllButton?: boolean;
@@ -14,47 +16,32 @@ interface BlogCarouselProps {
 const data = [
   {
     title: 'OP Red Wars',
-    img: '',
-    points: 50,
-  },
-  {
-    title: 'Arb Red Wars',
-    img: '',
-    points: 50,
-  },
-  {
-    title: 'Solana Launch Party',
-    img: '',
+    img: 'https://i.imgur.com/FUMliqO.png',
     points: 50,
   },
   {
     title: 'OP Red Wars',
-    img: '',
-    points: 50,
-  },
-  {
-    title: 'Arb Red Wars',
-    img: '',
-    points: 50,
-  },
-  {
-    title: 'Solana Launch Party',
-    img: '',
+    img: 'https://i.imgur.com/FUMliqO.png',
     points: 50,
   },
   {
     title: 'OP Red Wars',
-    img: '',
+    img: 'https://i.imgur.com/FUMliqO.png',
     points: 50,
   },
   {
-    title: 'Arb Red Wars',
-    img: '',
+    title: 'OP Red Wars',
+    img: 'https://i.imgur.com/FUMliqO.png',
     points: 50,
   },
   {
-    title: 'Solana Launch Party',
-    img: '',
+    title: 'OP Red Wars',
+    img: 'https://i.imgur.com/FUMliqO.png',
+    points: 50,
+  },
+  {
+    title: 'OP Red Wars',
+    img: 'https://i.imgur.com/FUMliqO.png',
     points: 50,
   },
 ];
@@ -67,47 +54,36 @@ export const QuestCarousel = ({ quests }: any) => {
   return (
     <BlogCarouselContainer>
       <CarouselContainer
-        title={'Ongoing Missions'}
+        title={'Available Missions'}
         // trackingCategory={TrackingCategory.BlogCarousel}
       >
-        {quests ? (
-          quests?.map((quest: any, index: number) => {
-            return (
-              <QuestCard
-                key={`ongoing-mission-${index}`}
-                active={true}
-                title={quest?.attributes.Title}
-                image={
-                  new URL(
-                    quest.attributes.Image?.data?.attributes?.url,
-                    url.origin,
-                  )
-                }
-                points={quest?.attributes.Points}
-              />
-              //   <BlogArticleCard
-              //     id={article.id}
-              //     baseUrl={url}
-              //     trackingCategory={TrackingCategory.BlogCarousel}
-              //     key={`blog-carousel-article-${article.id}-${index}`}
-              //     image={article.attributes.Image}
-              //     title={article.attributes.Title}
-              //     slug={article.attributes.Slug}
-              //     content={article.attributes.Content}
-              //     publishedAt={article.attributes.publishedAt}
-              //     createdAt={article.attributes.createdAt}
-              //     tags={article.attributes.tags}
-              //   />
-            );
-          })
-        ) : (
-          <>
-            {/* <BlogArticleCardSkeleton />
-            <BlogArticleCardSkeleton />
-            <BlogArticleCardSkeleton />
-            <BlogArticleCardSkeleton /> */}
-          </>
-        )}
+        <Stack direction={'row'} spacing={4}>
+          {quests ? (
+            quests?.map((quest: any, index: number) => {
+              return (
+                <QuestCard
+                  key={`ongoing-mission-${index}`}
+                  active={true}
+                  title={quest?.attributes.Title}
+                  image={
+                    new URL(
+                      quest.attributes.Image?.data?.attributes?.url,
+                      url.origin,
+                    )
+                  }
+                  points={quest?.attributes.Points}
+                  link={quest?.attributes.Link}
+                />
+              );
+            })
+          ) : (
+            <>
+              {Array.from({ length: 3 }, () => 42).map((el) => (
+                <QuestCardSkeleton />
+              ))}
+            </>
+          )}
+        </Stack>
       </CarouselContainer>
     </BlogCarouselContainer>
   );

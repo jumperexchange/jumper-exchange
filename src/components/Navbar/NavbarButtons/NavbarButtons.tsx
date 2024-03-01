@@ -13,6 +13,7 @@ import { EventTrackingTool } from 'src/types';
 import { NavbarButtonsContainer, WalletManagementButtons } from '.';
 import { MainMenu, MenuToggle } from '../..';
 import { useAccounts } from 'src/hooks/useAccounts';
+import { ProfileButton } from './ProfileButton';
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef<any>(null);
@@ -75,6 +76,8 @@ export const NavbarButtons = () => {
         }
         isSuccess={isSuccess}
       />
+
+      <ProfileButton />
 
       <MenuToggle
         ref={mainMenuAnchor}
