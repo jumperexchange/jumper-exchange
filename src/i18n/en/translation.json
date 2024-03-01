@@ -61,8 +61,8 @@
     "switchToMainnet": "Switch to Mainnet"
   },
   "solanaAlert": {
-    "title": "Solana swaps are currently limited!",
-    "subtitle": "Only bridge from stablecoin to stablecoin are possible when bridging from or to Solana"
+    "title": "Limited Solana token support",
+    "subtitle": "Currently only USDC and USDT can be bridged to and from Solana."
   },
   "featureCard": {
     "learnMore": "Learn more"
