@@ -26,12 +26,14 @@ export const BlogCTA = ({ title, url, id }: BlogCTAProps) => {
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const handleClick = () => {
-    url ? openInNewTab(url) : navigate(url ?? '/');
+    url?.length && (!url?.includes(window.location.host) || url[0] !== '/')
+      ? openInNewTab(url)
+      : navigate(url ?? '/');
     window.scrollTo({ top: 0, behavior: 'instant' });
     trackEvent({
       category: TrackingCategory.BlogArticle,
       action: TrackingAction.ClickBlogCTA,
-      label: 'click-blog-article-card',
+      label: 'click-blog-cta',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
         [TrackingEventParameter.ArticleTitle]: title,
