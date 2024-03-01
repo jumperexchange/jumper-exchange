@@ -4,7 +4,7 @@ import type {
   CSSObject,
   IconButtonProps,
 } from '@mui/material';
-import { Box, Typography, alpha, styled } from '@mui/material';
+import { Box, Stack, Typography, alpha, styled } from '@mui/material';
 /* The line `import { IconButtonTertiary } from 'src/components/IconButton.style';` is importing the
   `IconButtonTertiary` component from the file located at `'src/components/IconButton.style'`. This
   component is likely a custom styled IconButton component defined in that file and is being used in
@@ -67,4 +67,11 @@ export const CompletedQuestTitle = styled(Typography, {
     justifyContent: 'flex-start',
     margin: 0,
   },
+}));
+
+export const CompletedQuestStack = styled(Stack)(() => ({
+  marginTop: 32,
+  alignItems: 'center',
+  display: 'flex',
+  justifyContent: 'center',
 }));

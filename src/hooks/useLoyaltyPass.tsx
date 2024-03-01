@@ -35,7 +35,6 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   //   const apiBaseUrl = import.meta.env.VITE_GATEWAY_URL;
   const apiBaseUrl = 'https://protocol.mygateway.xyz/graphql';
   const apiUrl = new URL(`${apiBaseUrl}`);
-
   // prepare the gql for the query
   const getAllPDAs = gql`
     query issuedPDAs($EVMAddress: String!) {
@@ -78,7 +77,10 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     Authorization: `Bearer ${apiAccesToken}`,
   };
 
+  //we store the data during 24hours to avoid querying too much our partner API.
   const t = Date.now() / 1000;
+  const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_A_DAY;
+
   // query
   const { data, isSuccess } = useQuery({
     queryKey: ['loyalty-pass'],
@@ -125,13 +127,13 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     enabled:
       !!account?.address &&
       account.chainType === 'EVM' &&
-      t > (timestamp ?? 0) + SECONDS_IN_A_DAY &&
+      storeNeedsRefresh &&
       account.address !== storedAddress,
     refetchInterval: 1000 * 60 * 60,
   });
 
   // We check if we have something inside the store
-  if (account?.address === storedAddress && t < timestamp + SECONDS_IN_A_DAY) {
+  if (account?.address === storedAddress && !storeNeedsRefresh) {
     return {
       isSuccess: true,
       address: storedAddress,

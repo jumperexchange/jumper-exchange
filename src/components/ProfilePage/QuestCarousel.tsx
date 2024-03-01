@@ -46,7 +46,11 @@ const data = [
   },
 ];
 
-export const QuestCarousel = ({ quests }: any) => {
+interface QuestCarouselProps {
+  quests?: any;
+}
+
+export const QuestCarousel = ({ quests }: QuestCarouselProps) => {
   const { t } = useTranslation();
   const { url } = useOngoingQuests();
   //   const { trackEvent } = useUserTracking();
@@ -65,12 +69,12 @@ export const QuestCarousel = ({ quests }: any) => {
                   key={`ongoing-mission-${index}`}
                   active={true}
                   title={quest?.attributes.Title}
-                  image={
+                  image={String(
                     new URL(
                       quest.attributes.Image?.data?.attributes?.url,
                       url.origin,
-                    )
-                  }
+                    ),
+                  )}
                   points={quest?.attributes.Points}
                   link={quest?.attributes.Link}
                 />

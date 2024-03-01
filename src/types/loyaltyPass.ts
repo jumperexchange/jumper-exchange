@@ -3,6 +3,9 @@
 // create PDA type
 export interface PDA {}
 
+// create PDA type
+export interface Quest {}
+
 export interface LoyaltyPassProps {
   address?: string;
   points?: number;

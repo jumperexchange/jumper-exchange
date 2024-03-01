@@ -1,5 +1,6 @@
 import { Box, alpha, useTheme } from '@mui/material';
 import { useAccounts } from 'src/hooks/useAccounts';
+import { ProfileButtonBox } from './ProfileButton.style';
 
 export const ProfileButton = () => {
   const theme = useTheme();
@@ -8,15 +9,7 @@ export const ProfileButton = () => {
   return (
     <>
       {account?.address ? (
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginLeft: theme.spacing(1.5),
-            cursor: 'pointer',
-          }}
-        >
+        <ProfileButtonBox>
           <img
             src={`https://effigy.im/a/${account.address}.png`}
             width={'44px'}
@@ -31,7 +24,7 @@ export const ProfileButton = () => {
                   : alpha(theme.palette.white.main, 0.08),
             }}
           />
-        </Box>
+        </ProfileButtonBox>
       ) : null}
     </>
   );

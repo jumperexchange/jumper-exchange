@@ -1,78 +1,25 @@
-import { Box, Container, Stack, Typography } from '@mui/material';
 import { QuestCard } from './QuestCard';
 import {
   CompletedQuestContainer,
   CompletedQuestHeader,
+  CompletedQuestStack,
   CompletedQuestTitle,
 } from './QuestsCompletedList.style';
 import { VoidQuestCard } from './VoidQuestCard';
 import { QuestCardSkeleton } from './QuestCardSkeleton';
+import { useAccounts } from 'src/hooks/useAccounts';
 
-const data = [
-  {
-    title: 'OP Red Wars',
-    img: '',
-    points: 50,
-  },
-  {
-    title: 'Arb Red Wars',
-    img: '',
-    points: 50,
-  },
-  {
-    title: 'Solana Launch Party',
-    img: '',
-    points: 50,
-  },
-  {
-    title: 'OP Red Wars',
-    img: '',
-    points: 50,
-  },
-  {
-    title: 'Arb Red Wars',
-    img: '',
-    points: 50,
-  },
-  {
-    title: 'Solana Launch Party',
-    img: '',
-    points: 50,
-  },
-  {
-    title: 'OP Red Wars',
-    img: '',
-    points: 50,
-  },
-  {
-    title: 'Arb Red Wars',
-    img: '',
-    points: 50,
-  },
-  {
-    title: 'Solana Launch Party',
-    img: '',
-    points: 50,
-  },
-];
 export const QuestCompletedList = ({ pdas, dataIsFetched }: any) => {
-  //   const { t } = useTranslation();
-  //   const { trackEvent } = useUserTracking();
+  const { account } = useAccounts();
 
   return (
     <CompletedQuestContainer>
       <CompletedQuestHeader>
         <CompletedQuestTitle>Completed Missions</CompletedQuestTitle>
       </CompletedQuestHeader>
-      <Stack
+      <CompletedQuestStack
         direction={'row'}
         spacing={4}
-        sx={{
-          marginTop: 5,
-          alignItems: 'center',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
         useFlexGap
         flexWrap="wrap"
       >
@@ -88,15 +35,17 @@ export const QuestCompletedList = ({ pdas, dataIsFetched }: any) => {
                 />
               );
             })
-          : Array.from({ length: 6 }, () => 42).map(
-              (el: any, index: number) => <QuestCardSkeleton />,
-            )}
-        {dataIsFetched && pdas.length < 6
-          ? Array.from({ length: 6 - pdas.length }, () => 42).map(
-              (el: any, index: number) => <VoidQuestCard />,
-            )
           : null}
-      </Stack>
+        {(dataIsFetched && pdas.length < 6 && account?.address) ||
+        !account?.address
+          ? Array.from({ length: 6 - pdas.length }, () => 42).map(() => (
+              <VoidQuestCard />
+            ))
+          : null}
+        {account?.address && !dataIsFetched
+          ? Array.from({ length: 6 }, () => 42).map(() => <QuestCardSkeleton />)
+          : null}
+      </CompletedQuestStack>
     </CompletedQuestContainer>
   );
 };

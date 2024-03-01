@@ -1,15 +1,23 @@
-import { Box, Skeleton } from '@mui/material';
+import { Box, Skeleton, alpha, useTheme } from '@mui/material';
 
 export const QuestCardSkeleton = () => {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
-        backgroundColor: '#f5f5f5',
+        backgroundColor:
+          theme.palette.mode === 'light'
+            ? '#f5f5f5'
+            : alpha(theme.palette.white.main, 0.08),
         height: '392px',
         width: '272px',
-        borderRadius: '24px',
+        borderRadius: '20px',
         border: 16,
-        borderColor: '#FFFFFF',
+        borderColor:
+          theme.palette.mode === 'light'
+            ? '#ffffff'
+            : alpha(theme.palette.white.main, 0.08),
       }}
     >
       <Skeleton
@@ -17,7 +25,7 @@ export const QuestCardSkeleton = () => {
         sx={{
           width: '100%',
           height: '100%',
-          borderRadius: '12px',
+          borderRadius: '4px',
           transform: 'unset',
           aspectRatio: 550 / 300,
         }}
