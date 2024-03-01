@@ -12,7 +12,6 @@ import { useTranslation } from 'react-i18next';
 import { STRAPI_BLOG_ARTICLES, STRAPI_TAGS, TrackingCategory } from 'src/const';
 import { useStrapi } from 'src/hooks';
 import { type BlogArticleData, type TagAttributes } from 'src/types';
-import { getContrastAlphaColor } from 'src/utils';
 import type { TabProps } from '../../Tabs';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
@@ -130,39 +129,6 @@ export const BlogArticlesBoard = () => {
             Array.from({ length: pageSize }).map((_, index) => (
               <BlogArticleCardSkeleton
                 key={`blog-article-card-skeleton-${catId}-${index}`}
-                containerStyles={{
-                  flexShrink: 0,
-                  width: '100%',
-                  border: 'unset',
-                  boxShadow: 'unset',
-                  paddingBottom: 0,
-                  borderRadius: '32px',
-                  transition: 'unset',
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    minWidth: 250,
-                    width: 416,
-                  },
-                }}
-                imageStyles={{
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '16px',
-                  border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
-                  aspectRatio: 1.6,
-                }}
-                contentStyles={{
-                  padding: 0,
-                  width: '100%',
-                  '&:last-child': { paddingBottom: 0 },
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    // width: 230,
-                    height: 176,
-                  },
-                  [theme.breakpoints.up('xl' as Breakpoint)]: {
-                    // width: 230,
-                    height: 176,
-                  },
-                }}
               />
             ))
           ) : articlesIsSuccess && blogArticles?.length > 0 ? (

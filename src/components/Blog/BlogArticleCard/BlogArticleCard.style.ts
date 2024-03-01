@@ -2,6 +2,7 @@ import {
   Box,
   Card,
   CardContent,
+  Skeleton,
   Typography,
   darken,
   type Breakpoint,
@@ -61,12 +62,28 @@ export const BlogArticleMetaReadingTime = styled(Typography)(({ theme }) => ({
   fontSize: 'inherit',
 }));
 
+export const BlogArticleCardMetaSkeleton = styled(Skeleton)(({ theme }) => ({
+  width: 150,
+  height: 16,
+  transform: 'unset',
+  borderRadius: '8px',
+}));
+
 export const BlogArticleCardImage = styled('img')(({ theme }) => ({
   width: '100%',
   height: 'auto',
   borderRadius: '16px',
   border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
   objectFit: 'contain',
+}));
+
+export const BlogArticleCardImageSkeleton = styled(Skeleton)(({ theme }) => ({
+  width: '100%',
+  aspectRatio: 1.6,
+  transform: 'unset',
+  height: 'auto',
+  borderRadius: '16px',
+  border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
 }));
 
 export const BlogArticleCardContent = styled(CardContent)(({ theme }) => ({
@@ -89,7 +106,15 @@ export const BlogArticleCardTitle = styled(Typography)(({ theme }) => ({
   WebkitBoxOrient: 'vertical',
 }));
 
-export const BlogArticleMetaContainer = styled(Box)(({ theme }) => ({
+export const BlogArticleCardTitleSkeleton = styled(Skeleton)(({ theme }) => ({
+  width: '100%',
+  height: '64px',
+  transform: 'unset',
+  borderRadius: '12px',
+  minHeight: '64px',
+}));
+
+export const BlogArticleCardMetaContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   fontSize: '14px',
@@ -103,7 +128,7 @@ export const BlogArticleMetaContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const BlogArticleTag = styled(Tag)(({ theme }) => ({
+export const BlogArticleCardTag = styled(Tag)(({ theme }) => ({
   fontSize: '14px',
   fontWeight: 600,
   lineHeight: '18px',
@@ -111,6 +136,23 @@ export const BlogArticleTag = styled(Tag)(({ theme }) => ({
   marginTop: theme.spacing(2),
   marginBottom: 0,
   textOverflow: 'ellipsis',
+  height: '40px',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginTop: 0,
+    maxWidth: '50%',
+  },
+  ':not(:first-of-type)': {
+    marginLeft: theme.spacing(0.5),
+  },
+}));
+
+export const BlogArticleCardTagSkeleton = styled(Skeleton)(({ theme }) => ({
+  width: 120,
+  fontSize: '14px',
+  marginTop: theme.spacing(2),
+  borderRadius: '20px',
+  marginBottom: 0,
+  transform: 'unset',
   height: '40px',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: 0,

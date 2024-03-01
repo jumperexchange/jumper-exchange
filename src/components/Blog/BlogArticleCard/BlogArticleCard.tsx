@@ -14,11 +14,11 @@ import {
   BlogArticleCardContent,
   BlogArticleCardDetails,
   BlogArticleCardImage,
+  BlogArticleCardMetaContainer,
+  BlogArticleCardTag,
   BlogArticleCardTitle,
-  BlogArticleMetaContainer,
   BlogArticleMetaDate,
   BlogArticleMetaReadingTime,
-  BlogArticleTag,
 } from '.';
 
 interface BlogArticleCardProps {
@@ -101,18 +101,18 @@ export const BlogArticleCard = ({
         </BlogArticleCardTitle>
         <BlogArticleCardDetails>
           {tags?.data.slice(0, 1).map((tag) => (
-            <BlogArticleTag variant="lifiBodyXSmall" as="h3">
+            <BlogArticleCardTag variant="lifiBodyXSmall" as="h3">
               {tag.attributes.Title}
-            </BlogArticleTag>
+            </BlogArticleCardTag>
           ))}
-          <BlogArticleMetaContainer>
+          <BlogArticleCardMetaContainer>
             <BlogArticleMetaDate variant="lifiBodyXSmall" as="span">
               {formatDate(publishedAt || createdAt)}
             </BlogArticleMetaDate>
             <BlogArticleMetaReadingTime variant="lifiBodyXSmall" as="span">
               {t('blog.minRead', { minRead: minRead })}
             </BlogArticleMetaReadingTime>
-          </BlogArticleMetaContainer>
+          </BlogArticleCardMetaContainer>
         </BlogArticleCardDetails>
       </BlogArticleCardContent>
     </BlogArticleCardContainer>

@@ -48,6 +48,7 @@ export const BlogArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
   transform: 'unset',
   width: 164,
   height: 32,
+  borderRadius: 16,
   marginTop: theme.spacing(1.5),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginLeft: theme.spacing(3),
@@ -91,15 +92,9 @@ export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   transform: 'unset',
   borderRadius: '16px',
   margin: 'auto',
-  maxWidth: theme.breakpoints.values.xl,
+  maxWidth: theme.breakpoints.values.lg,
   textAlign: 'center',
   padding: theme.spacing(2),
-  [theme.breakpoints.up('xl' as Breakpoint)]: {
-    margin: theme.spacing(0, 'auto'),
-  },
-  [theme.breakpoints.up('xl' as Breakpoint)]: {
-    maxWidth: theme.breakpoints.values.lg,
-  },
 }));
 
 export const BlogAuthorAvatar = styled('img')(({ theme }) => ({
@@ -255,15 +250,17 @@ export const BlogArticleTitle = styled(Typography)<TypographyProps>(
 
 export const BlogArticleTitleSkeleton = styled(Skeleton)<SkeletonProps>(
   ({ theme }) => ({
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(4),
     transform: 'unset',
+    borderRadius: 16,
+    height: 320,
     width: '100%',
-    height: '256px',
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       height: '192px',
+      marginTop: theme.spacing(8),
     },
     [theme.breakpoints.up('md' as Breakpoint)]: {
-      height: '120px',
+      height: 144,
     },
   }),
 );
@@ -279,7 +276,6 @@ export const BlogArticleSubtitle = styled(Typography)<TypographyProps>(
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       fontSize: '36px',
       lineHeight: '38px',
-      marginTop: theme.spacing(8),
     },
   }),
 );
@@ -287,14 +283,15 @@ export const BlogArticleSubtitle = styled(Typography)<TypographyProps>(
 export const BlogArticleSubtitleSkeleton = styled(Skeleton)<SkeletonProps>(
   ({ theme }) => ({
     marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(6),
     transform: 'unset',
     width: '100%',
-    height: '96px',
+    height: 300,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      height: '64px',
+      height: 190,
     },
     [theme.breakpoints.up('lg' as Breakpoint)]: {
-      height: '32px',
+      height: 114,
     },
   }),
 );
