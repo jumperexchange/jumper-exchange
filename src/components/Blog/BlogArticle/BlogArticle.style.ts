@@ -87,7 +87,7 @@ export const BlogArticleImage = styled('img')(({ theme }) => ({
 
 export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   width: '100%',
-  aspectRatio: 550 / 309,
+  aspectRatio: 1.6,
   transform: 'unset',
   borderRadius: '16px',
   margin: 'auto',

@@ -29,7 +29,7 @@ export const BlogArticleCardSkeleton = ({
           borderRadius: '16px',
           transform: 'unset',
           border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
-          aspectRatio: 550 / 309,
+          aspectRatio: 1.6,
           ...imageStyles,
         }}
       />
