@@ -1,5 +1,5 @@
 import type { BoxProps, Breakpoint, TypographyProps } from '@mui/material';
-import { Box, Typography, lighten } from '@mui/material';
+import { Box, Skeleton, Typography, lighten } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 
 export const FeaturedArticleContainer = styled(Box, {
@@ -39,6 +39,7 @@ export const FeaturedArticleContainer = styled(Box, {
     padding: theme.spacing(8),
     flexDirection: 'row',
     gap: theme.spacing(8),
+    minHeight: 500,
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     margin: theme.spacing(6, 'auto', 0),
@@ -106,6 +107,61 @@ export const FeaturedArticleImage = styled('img')(({ theme }) => ({
         : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
   },
 }));
+
+export const FeaturedArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
+  borderRadius: '14px',
+  aspectRatio: 1.6,
+  width: '100%',
+  height: '100%',
+  userSelect: 'none',
+  transform: 'unset',
+  alignSelf: 'flex-start',
+  boxShadow:
+    theme.palette.mode === 'light'
+      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    alignSelf: 'center',
+  },
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    maxWidth: '54%',
+  },
+}));
+
+export const FeaturedArticleTagSkeleton = styled(Skeleton)(({ theme }) => ({
+  height: '48px',
+  width: '108px',
+  borderRadius: '24px',
+  transform: 'unset',
+}));
+
+export const FeaturedArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
+  height: 16,
+  width: 150,
+  borderRadius: 8,
+  transform: 'unset',
+  marginTop: theme.spacing(2),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginTop: 0,
+    marginLeft: theme.spacing(3),
+  },
+}));
+
+export const FeaturedArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
+  margin: theme.spacing(4, 0),
+  transform: 'unset',
+  width: '100%',
+  height: '120px',
+  borderRadius: '12px',
+}));
+
+export const FeaturedArticleSubtitleSkeleton = styled(Skeleton)(
+  ({ theme }) => ({
+    height: '64px',
+    transform: 'unset',
+    borderRadius: '12px',
+  }),
+);
 
 export const FeaturedArticleContent = styled(Box)(({ theme }) => ({
   display: 'flex',
