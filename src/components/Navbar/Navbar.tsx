@@ -6,6 +6,7 @@ import {
   NavbarButtons,
   NavbarTabs,
 } from 'src/components';
+import { JUMPER_LEARN_PATH } from 'src/const';
 import { useAccounts } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { NavbarContainer as Container, Logo, LogoLink } from '.';
@@ -27,7 +28,7 @@ export const Navbar = ({ hideNavbarTabs, redirectToLearn }: NavbarProps) => {
   const handleClick = () => {
     closeAllMenus();
     onWelcomeScreenClosed(false);
-    redirectToLearn ? navigate('/learn') : navigate('/');
+    redirectToLearn ? navigate(JUMPER_LEARN_PATH) : navigate('/');
   };
 
   return (

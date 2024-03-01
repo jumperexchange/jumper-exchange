@@ -16,6 +16,7 @@ import { appendUTMParametersToLink } from 'src/utils/append-utm-params-to-link';
 import {
   DISCORD_URL,
   EXPLORER_URL,
+  JUMPER_LEARN_PATH,
   MenuKeys,
   TrackingAction,
   TrackingCategory,
@@ -135,7 +136,7 @@ export const useMainMenuContent = () => {
           ],
         });
         closeAllMenus();
-        navigate('/learn');
+        navigate(JUMPER_LEARN_PATH);
       },
     },
     {

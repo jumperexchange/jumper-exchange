@@ -5,6 +5,7 @@ import 'src/fonts/inter.css';
 import 'src/fonts/urbanist.css';
 import 'src/utils/structuredClone';
 import { initSentry } from './config';
+import { JUMPER_LEARN_PATH } from './const';
 import './fonts/inter.css';
 import './fonts/urbanist.css';
 import { BlogArticlePage, BlogPage, Homepage } from './pages';
@@ -41,11 +42,11 @@ const router = createBrowserRouter([
     element: <Homepage />,
   },
   {
-    path: '/learn',
+    path: JUMPER_LEARN_PATH,
     element: <BlogPage />,
   },
   {
-    path: '/learn/:id',
+    path: `${JUMPER_LEARN_PATH}/:id`,
     element: <BlogArticlePage />,
   },
 ]);

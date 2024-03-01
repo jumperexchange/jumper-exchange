@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
+  JUMPER_LEARN_PATH,
   STRAPI_BLOG_ARTICLES,
   TrackingAction,
   TrackingCategory,
@@ -43,7 +44,7 @@ export const FeaturedArticle = () => {
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     closeAllMenus();
-    navigate(`/learn/${featuredArticle[0].attributes.Slug}`);
+    navigate(`${JUMPER_LEARN_PATH}/${featuredArticle[0].attributes.Slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

@@ -3,7 +3,11 @@ import { Skeleton, useTheme } from '@mui/material';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { TrackingAction, TrackingEventParameter } from 'src/const';
+import {
+  JUMPER_LEARN_PATH,
+  TrackingAction,
+  TrackingEventParameter,
+} from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import type { TagData } from 'src/types';
@@ -67,7 +71,7 @@ export const BlogArticleCard = ({
       },
     });
     closeAllMenus();
-    navigate(`/learn/${slug}`);
+    navigate(`${JUMPER_LEARN_PATH}/${slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   return (
