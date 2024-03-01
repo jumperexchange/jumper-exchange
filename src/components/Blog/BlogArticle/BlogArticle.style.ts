@@ -246,11 +246,8 @@ export const BlogArticleTitle = styled(Typography)<TypographyProps>(
     fontSize: '48px',
     fontFamily: 'Urbanist, Inter', //todo: add font
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      marginTop: theme.spacing(6),
       fontSize: '64px',
       lineHeight: '72px',
-    },
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
       marginTop: theme.spacing(8),
     },
   }),
@@ -273,12 +270,15 @@ export const BlogArticleTitleSkeleton = styled(Skeleton)<SkeletonProps>(
 
 export const BlogArticleSubtitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(6),
     fontWeight: 700,
-    fontSize: '24px',
-    lineHeight: '40px',
     fontFamily: 'Inter',
+    fontSize: '36px',
+    lineHeight: '38px',
     [theme.breakpoints.up('sm' as Breakpoint)]: {
+      fontSize: '36px',
+      lineHeight: '38px',
       marginTop: theme.spacing(8),
     },
   }),
