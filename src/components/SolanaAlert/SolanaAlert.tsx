@@ -79,11 +79,7 @@ export const SolanaAlert = () => {
               {t('solanaAlert.title')}
             </Typography>
           </InfoMessageCardTitle>
-          <Typography
-            color={theme.palette.black.main}
-            variant={'lifiBodySmall'}
-            pt={theme.spacing(1.5)}
-          >
+          <Typography variant={'lifiBodySmall'} pt={theme.spacing(1.5)}>
             {t('solanaAlert.subtitle')}
           </Typography>
         </SolanaMessageCard>

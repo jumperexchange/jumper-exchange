@@ -16,6 +16,6 @@ export const SolanaAlertContainer = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 export const SolanaMessageCard = styled(InfoMessageCard)(({ theme }) => ({
-  backgroundColor: '#EBF3FF', //todo: add to theme
+  backgroundColor: theme.palette.mode === 'light' ? '#EBF3FF' : '#00317A', //todo: add to theme
   width: 384,
 }));
