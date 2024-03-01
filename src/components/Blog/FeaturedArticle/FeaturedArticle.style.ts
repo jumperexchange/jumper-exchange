@@ -65,7 +65,7 @@ export const FeaturedArticleCard = styled(Box)<BoxProps>(({ theme }) => ({
 export const FeaturedArticleMetaContainer = styled(Box)<BoxProps>(
   ({ theme }) => ({
     display: 'flex',
-    fontSize: '14px',
+    fontSize: '16px',
     color:
       theme.palette.mode === 'light'
         ? theme.palette.grey[800]
