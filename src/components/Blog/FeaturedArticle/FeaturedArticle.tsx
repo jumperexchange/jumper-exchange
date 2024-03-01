@@ -60,7 +60,7 @@ export const FeaturedArticle = () => {
   return featuredArticle?.length > 0 ? (
     <FeaturedArticleContainer onClick={handleClick}>
       <FeaturedArticleImage
-        src={`${url.origin}${featuredArticle[0]?.attributes.Image.data.attributes.url}`}
+        src={`${url.origin}${featuredArticle[0]?.attributes.Image.data.attributes.formats.medium.url}`}
         alt={
           featuredArticle[0].attributes.Image.data.attributes.alternativeText
         }

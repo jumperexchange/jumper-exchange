@@ -28,7 +28,7 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
   return (
     <>
       <PreviewImage
-        src={imageData?.url}
+        src={imageData?.formats.large.url}
         alt={imageData.caption ?? 'article-image'}
         onClick={() => handleImage(imageData.alternativeText)}
       />
@@ -55,7 +55,7 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
               src={imageData?.url}
               alt={imageData.caption ?? 'article-image'}
             />
-            {/* <Typography
+            {/* <Typography 
               variant="lifiHeaderSmall"
               sx={{ width: 'auto', margin: 0, fontWeight: 400 }}
             >

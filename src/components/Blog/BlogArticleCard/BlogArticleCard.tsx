@@ -78,7 +78,7 @@ export const BlogArticleCard = ({
     >
       {image.data ? (
         <BlogArticleCardImage
-          src={`${baseUrl?.origin}${image.data?.attributes?.url}`}
+          src={`${baseUrl?.origin}${image.data?.attributes?.formats.small.url}`}
           alt={image.data?.attributes?.alternativeText}
           draggable={false}
         />
