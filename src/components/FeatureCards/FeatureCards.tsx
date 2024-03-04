@@ -19,25 +19,40 @@ export const FeatureCards = () => {
 
   const slicedFeatureCards = useMemo(() => {
     if (Array.isArray(cards) && !!cards.length) {
-      return cards
+      const now = new Date();
+      const filteredCards = cards
         ?.filter(
           (el, index) =>
             isSuccess &&
             el.attributes.DisplayConditions &&
-            !disabledFeatureCards.includes(el.attributes.uid),
+            !disabledFeatureCards.includes(el.attributes.uid) &&
+            // Check if campaignEnd is given and is after current date
+            (!el.attributes.campaignEnd ||
+              new Date(el.attributes.campaignEnd) > now) &&
+            // Check if campaignStart is given and is before current date
+            (!el.attributes.campaignStart ||
+              new Date(el.attributes.campaignStart) < now),
         )
         .slice(0, 2);
+      return filteredCards;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cards, isSuccess]);
 
   const slicedPersonalizedFeatureCards = useMemo(() => {
     if (Array.isArray(personalizedCards) && !!personalizedCards.length) {
+      const now = new Date();
       return personalizedCards
         ?.filter(
           (el, index) =>
             el.attributes.DisplayConditions &&
-            !disabledFeatureCards.includes(el.attributes.uid),
+            !disabledFeatureCards.includes(el.attributes.uid) &&
+            // Check if campaignEnd is given and is after current date
+            (!el.attributes.campaignEnd ||
+              new Date(el.attributes.campaignEnd) > now) &&
+            // Check if campaignStart is given and is before current date
+            (!el.attributes.campaignStart ||
+              new Date(el.attributes.campaignStart) < now),
         )
         .slice(0, 1);
     }

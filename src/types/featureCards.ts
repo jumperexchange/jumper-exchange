@@ -49,6 +49,8 @@ interface FeatureCardAttributes {
   DisplayConditions: FeatureCardDisplayConditions;
   createdAt: string;
   updatedAt: string;
+  campaignStart?: string;
+  campaignEnd?: string;
   PersonalizedFeatureCard?: boolean;
   publishedAt: string | null;
   locale: string;
