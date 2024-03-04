@@ -35,7 +35,6 @@ export function WidgetEvents() {
   ]);
 
   const { account } = useAccounts();
-
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
     useState(false);
 
@@ -65,6 +64,8 @@ export function WidgetEvents() {
             )[0].variant,
           },
         });
+
+        // trackApiEvent(account?.address, 'route_execution_started', { route });
       }
     };
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
