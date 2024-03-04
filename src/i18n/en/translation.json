@@ -62,7 +62,7 @@
   },
   "solanaAlert": {
     "title": "Limited Solana token support",
-    "subtitle": "Currently only USDC and USDT can be bridged to and from Solana."
+    "subtitle": "Currently only USDC can be bridged to and from Solana."
   },
   "featureCard": {
     "learnMore": "Learn more"
