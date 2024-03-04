@@ -27,10 +27,6 @@ export const Tag = styled(Typography, {
   userSelect: 'none',
   borderRadius: '24px',
   flexShrink: 0,
-  // boxShadow:
-  //   theme.palette.mode === 'dark'
-  //     ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-  //     : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
   ':not(:first-of-type)': {
     marginLeft: theme.spacing(0.5),
   },

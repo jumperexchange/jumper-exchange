@@ -30,7 +30,6 @@ export const AccordionContainer = styled(Container)(({ theme }) => ({
     bottom: 0,
     left: 0,
     background: 'linear-gradient(to top left, #fff 0%, #fff 100% )',
-    // transform: 'translate3d(0px, 20px, 0) scale(0.95)',
     filter: 'blur(20px)',
     opacity: 'var(0.7)',
     transition: 'opacity 0.3s',

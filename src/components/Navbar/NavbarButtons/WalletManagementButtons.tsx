@@ -125,7 +125,6 @@ export const WalletManagementButtons: React.FC<
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 badgeContent={
                   <WalletMgmtChainAvatar
-                    // size="large"
                     src={activeChain?.logoURI || ''}
                     alt={'wallet-avatar'}
                   >

@@ -42,7 +42,6 @@ export const BackgroundGradients = styled('span')<any>(({ theme }) => ({
     'radial-gradient(50% 50% at 50% 50%, #9747FF 0%, rgba(255, 255, 255, 0) 100%)',
   ':before': {
     content: '" "',
-    // position: 'absolute',
     width: '100vh',
     height: '100vh',
     transform:
@@ -116,12 +115,8 @@ export const BlogBackgroundGradient = styled(
   width: '100%',
   height: theme.palette.mode === 'dark' ? '100vh' : '100vh',
   zIndex: -1,
-  // background: theme.palette.bg.main,
   background:
     theme.palette.mode === 'light'
       ? `linear-gradient(180deg, ${alpha(theme.palette.bg.main, 1)} 0%, ${alpha(theme.palette.bg.main, 0)} 100%)`
       : `linear-gradient(180deg, rgba(3, 0, 20, 1) 0%, ${darken('#9747FF', 0.6)} 150%)`,
 }));
-
-// linear-gradient(180deg, rgba(243, 235, 255, 1)) 0%,rgba(243, 235, 255, 0) 100%)
-// linear-gradient(180deg, rgba(243,235,255,1) 0%, rgba(243,235,255,0) 100%);

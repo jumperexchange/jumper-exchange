@@ -151,11 +151,7 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
     },
   },
 
-  // [theme.breakpoints.up('sm' as Breakpoint)]: {
-  //   margin: theme.spacing(1.5, 3, 3),
-  // },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
-    // margin: theme.spacing(1.5, 3, 3),
     maxWidth: `${theme.breakpoints.values.md}px`,
   },
 }));
