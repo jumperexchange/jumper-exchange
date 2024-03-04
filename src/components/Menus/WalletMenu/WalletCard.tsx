@@ -5,7 +5,7 @@ import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar } from 'src/components';
+import { Avatar, Button } from 'src/components';
 import { TrackingAction, TrackingCategory } from 'src/const';
 import { useChains, useMultisig, useUserTracking } from 'src/hooks';
 import type { Account } from 'src/hooks/useAccounts';
@@ -15,8 +15,6 @@ import { EventTrackingTool } from 'src/types';
 import { openInNewTab, walletDigest } from 'src/utils';
 import {
   WalletAvatar,
-  WalletButton,
-  WalletButtonSecondary,
   WalletCardBadge,
   WalletCardButtonContainer,
   WalletCardContainer,
@@ -119,28 +117,36 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           <WalletAvatar src={getConnectorIcon(account.connector)} />
         </WalletCardBadge>
         <WalletCardButtonContainer>
-          <WalletButton
+          <Button
+            variant="transparent"
+            size="medium"
             disabled={isMultisigEnvironment}
-            sx={{ gridColumn: '1/3', gridRow: '1/2' }}
+            styles={{ width: '100%', gridColumn: '1/3', gridRow: '1/2' }}
             onClick={() => handleCopyButton()}
           >
             <Typography variant="lifiBodySmallStrong">
               {walletDigest(account.address)}
             </Typography>
-          </WalletButton>
-
-          <WalletButton
+          </Button>
+          <Button
+            variant="transparent"
+            size="medium"
             onClick={() => handleExploreButton()}
-            sx={{
+            styles={{
               gridColumn: '1/2',
               gridRow: '2/3',
             }}
           >
             <OpenInNewIcon sx={{ height: '20px' }} />
-          </WalletButton>
-          <WalletButtonSecondary onClick={() => handleDisconnect()} sx={{}}>
+          </Button>
+          <Button
+            variant="secondary"
+            size="medium"
+            onClick={() => handleDisconnect()}
+            styles={{}}
+          >
             <PowerSettingsNewIcon sx={{ height: '20px' }} />
-          </WalletButtonSecondary>
+          </Button>
         </WalletCardButtonContainer>
       </Stack>
     </WalletCardContainer>
