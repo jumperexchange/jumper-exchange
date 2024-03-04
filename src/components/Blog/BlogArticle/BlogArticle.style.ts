@@ -84,17 +84,26 @@ export const BlogArticleImage = styled('img')(({ theme }) => ({
   width: '100%',
   borderRadius: '16px',
   maxWidth: theme.breakpoints.values.lg,
+  aspectRatio: '16/12',
+  objectFit: 'cover',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    aspectRatio: '15/8',
+  },
 }));
 
 export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   width: '100%',
-  aspectRatio: 1.6,
   transform: 'unset',
   borderRadius: '16px',
   margin: 'auto',
   maxWidth: theme.breakpoints.values.lg,
   textAlign: 'center',
   padding: theme.spacing(2),
+  aspectRatio: '16/12',
+  objectFit: 'cover',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    aspectRatio: '15/8',
+  },
 }));
 
 export const BlogAuthorAvatar = styled('img')(({ theme }) => ({
