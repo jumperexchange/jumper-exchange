@@ -15,8 +15,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useMultisig } from 'src/hooks';
-import { useAccounts } from 'src/hooks/useAccounts';
+import { useAccounts, useMultisig, useTrackApiEvent } from 'src/hooks';
 import { useActiveTabStore, useMenuStore, useMultisigStore } from 'src/stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
@@ -34,8 +33,8 @@ export function WidgetEvents() {
     state.onDestinationChainSelected,
   ]);
 
+  const { trackApiEvent } = useTrackApiEvent();
   const { account } = useAccounts();
-
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
     useState(false);
 
@@ -65,6 +64,12 @@ export function WidgetEvents() {
             )[0].variant,
           },
         });
+
+        if (account?.address) {
+          trackApiEvent(account?.address, 'route_execution_started', {
+            activeTab,
+          });
+        }
       }
     };
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
@@ -116,6 +121,12 @@ export function WidgetEvents() {
               nonInteraction: true,
             },
           });
+
+          if (account?.address) {
+            trackApiEvent(account?.address, 'route_execution_updated', {
+              activeTab,
+            });
+          }
         }
       }
     };
@@ -139,6 +150,12 @@ export function WidgetEvents() {
             [TrackingEventParameter.ToToken]: route.toToken.address,
           },
         });
+
+        if (account?.address) {
+          trackApiEvent(account?.address, 'route_execution_completed', {
+            activeTab,
+          });
+        }
       }
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
@@ -156,6 +173,12 @@ export function WidgetEvents() {
           [TrackingEventParameter.ErrorCode]: update.process.error?.code || '',
         },
       });
+
+      if (account?.address) {
+        trackApiEvent(account?.address, 'route_execution_failed', {
+          activeTab,
+        });
+      }
     };
 
     const onRouteHighValueLoss = (update: RouteHighValueLossUpdate) => {
@@ -171,6 +194,12 @@ export function WidgetEvents() {
           [TrackingEventParameter.Timestamp]: Date.now(),
         },
       });
+
+      if (account?.address) {
+        trackApiEvent(account?.address, 'route_high_value_loss', {
+          activeTab,
+        });
+      }
     };
 
     const onRouteContactSupport = (supportId: ContactSupport) => {
@@ -199,10 +228,12 @@ export function WidgetEvents() {
 
     return () => widgetEvents.all.clear();
   }, [
+    account?.address,
     activeTab,
     onDestinationChainSelected,
     setSupportModalState,
     shouldOpenMultisigSignatureModal,
+    trackApiEvent,
     trackEvent,
     trackTransaction,
     widgetEvents,

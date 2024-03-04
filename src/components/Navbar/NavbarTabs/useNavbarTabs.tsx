@@ -8,17 +8,24 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
+import { useAccounts, useTrackApiEvent, useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
 
 export const useNavbarTabs = () => {
   const { trackEvent } = useUserTracking();
+  const { trackApiEvent } = useTrackApiEvent();
+  const { account } = useAccounts();
   const { t } = useTranslation();
   const theme = useTheme();
 
   const handleClickTab =
-    (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
+    (tab: string) => async (event: React.MouseEvent<HTMLDivElement>) => {
       window.history.replaceState(null, document.title, `/${tab}`);
+
+      if (account?.address) {
+        trackApiEvent(account.address, 'switch_tab', { tab });
+      }
+
       trackEvent({
         category: TrackingCategory.Navigation,
         action: TrackingAction.SwitchTab,

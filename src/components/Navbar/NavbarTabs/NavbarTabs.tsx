@@ -3,7 +3,7 @@ import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { Tabs } from 'src/components';
 import { useActiveTabStore } from 'src/stores';
-import { useNavbarTabs } from '.';
+import { useNavbarTabs } from './useNavbarTabs';
 
 export const NavbarTabs = () => {
   const theme = useTheme();
