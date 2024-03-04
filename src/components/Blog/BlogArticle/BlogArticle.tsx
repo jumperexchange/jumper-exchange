@@ -129,7 +129,7 @@ export const BlogArticle = ({
       <BlogArticleImageContainer>
         {image?.data ? (
           <BlogArticleImage
-            src={`${baseUrl}${image.data.attributes?.formats.large.url}`}
+            src={`${baseUrl}${image.data.attributes?.url}`}
             alt={image?.data.attributes?.alternativeText}
           />
         ) : (
