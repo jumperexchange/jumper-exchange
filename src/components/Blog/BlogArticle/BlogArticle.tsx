@@ -68,9 +68,9 @@ export const BlogArticle = ({
   const theme = useTheme();
   const minRead = readingTime(content);
   const { t } = useTranslation();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
   const handleImageLoaded = () => {
-    setIsLoaded(true);
+    setImgLoaded(true);
   };
   return (
     <>
@@ -134,11 +134,12 @@ export const BlogArticle = ({
         {image?.data && (
           <BlogArticleImage
             onLoad={handleImageLoaded}
+            sx={{ ...(!imgLoaded && { display: 'none' }) }}
             src={`${baseUrl}${image.data.attributes?.url}`}
             alt={image?.data.attributes?.alternativeText}
           />
         )}
-        {!isLoaded && !image?.data && <BlogArticleImageSkeleton />}
+        {!imgLoaded && <BlogArticleImageSkeleton />}
       </BlogArticleImageContainer>
       <BlogArticleContainer>
         <BlogArticleContentContainer>
