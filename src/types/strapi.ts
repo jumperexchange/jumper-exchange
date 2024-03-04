@@ -28,6 +28,7 @@ export interface MediaAttributes {
     small: MediaFormat;
     medium: MediaFormat;
     large: MediaFormat;
+    thumbnail: MediaFormat;
     [key: string]: MediaFormat; // Allow additional formats
   };
   hash: string;
