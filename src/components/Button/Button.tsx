@@ -6,7 +6,9 @@ import {
   ButtonSecondary,
   ButtonTransparent,
 } from './Button.style';
+
 type ButtonVariant = 'primary' | 'secondary' | 'transparent';
+type ButtonSize = 'small' | 'medium' | 'large';
 
 interface ButtonProps {
   variant?: ButtonVariant;
@@ -16,6 +18,8 @@ interface ButtonProps {
   muiVariant?: 'text' | 'outlined' | 'contained';
   onClick?: (event?: any) => void;
   children?: any;
+  disabled?: boolean;
+  size?: ButtonSize;
 }
 
 export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
@@ -26,6 +30,8 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   onClick,
   children,
   muiVariant,
+  disabled,
+  size,
 }: ButtonProps) => {
   let output: ReactNode;
 
@@ -33,7 +39,9 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
     case 'primary':
       output = (
         <ButtonPrimary
+          size={size}
           id={id}
+          disabled={disabled}
           fullWidth={fullWidth}
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
@@ -46,7 +54,9 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
     case 'secondary':
       output = (
         <ButtonSecondary
+          size={size}
           id={id}
+          disabled={disabled}
           fullWidth={fullWidth}
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
@@ -59,7 +69,9 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
     case 'transparent':
       output = (
         <ButtonTransparent
+          size={size}
           id={id}
+          disabled={disabled}
           fullWidth={fullWidth}
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
@@ -72,7 +84,9 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
     default:
       output = (
         <ButtonPrimary
+          size={size}
           id={id}
+          disabled={disabled}
           fullWidth={fullWidth}
           onClick={onClick}
           variant={muiVariant}
