@@ -95,10 +95,9 @@ export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   width: '100%',
   transform: 'unset',
   borderRadius: '16px',
-  margin: 'auto',
+  margin: theme.spacing(0, 'auto', 0.75),
   maxWidth: theme.breakpoints.values.lg,
   textAlign: 'center',
-  padding: theme.spacing(2),
   aspectRatio: '16/12',
   objectFit: 'cover',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -270,20 +269,16 @@ export const BlogArticleTitleSkeleton = styled(Skeleton)<SkeletonProps>(
   }),
 );
 
-export const BlogArticleSubtitle = styled(Typography)<TypographyProps>(
-  ({ theme }) => ({
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(6),
-    fontWeight: 700,
-    fontFamily: 'Inter',
-    fontSize: '36px',
-    lineHeight: '38px',
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      fontSize: '36px',
-      lineHeight: '38px',
-    },
-  }),
-);
+export const BlogArticleSubtitle = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'variant',
+})<TypographyProps>(({ theme }) => ({
+  marginTop: theme.spacing(8),
+  marginBottom: theme.spacing(6),
+  fontWeight: 700,
+  fontFamily: 'Inter',
+  fontSize: '28px',
+  lineHeight: '40px',
+}));
 
 export const BlogArticleSubtitleSkeleton = styled(Skeleton)<SkeletonProps>(
   ({ theme }) => ({

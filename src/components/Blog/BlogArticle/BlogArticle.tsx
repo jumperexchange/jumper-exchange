@@ -33,6 +33,7 @@ import {
   Divider,
 } from './BlogArticle.style';
 
+import { useState } from 'react';
 import { CustomRichBlocks } from '..';
 
 interface BlogArticleProps {
@@ -67,7 +68,10 @@ export const BlogArticle = ({
   const theme = useTheme();
   const minRead = readingTime(content);
   const { t } = useTranslation();
-
+  const [isLoaded, setIsLoaded] = useState(false);
+  const handleImageLoaded = () => {
+    setIsLoaded(true);
+  };
   return (
     <>
       <BlogArticleContainer>
@@ -127,14 +131,14 @@ export const BlogArticle = ({
       </BlogArticleContainer>
 
       <BlogArticleImageContainer>
-        {image?.data ? (
+        {image?.data && (
           <BlogArticleImage
+            onLoad={handleImageLoaded}
             src={`${baseUrl}${image.data.attributes?.url}`}
             alt={image?.data.attributes?.alternativeText}
           />
-        ) : (
-          <BlogArticleImageSkeleton />
         )}
+        {!isLoaded && !image?.data && <BlogArticleImageSkeleton />}
       </BlogArticleImageContainer>
       <BlogArticleContainer>
         <BlogArticleContentContainer>
