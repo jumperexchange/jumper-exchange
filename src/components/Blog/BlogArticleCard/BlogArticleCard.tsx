@@ -12,7 +12,7 @@ import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import type { TagData } from 'src/types';
 import { EventTrackingTool, type StrapiImageData } from 'src/types';
-import { formatDate, getContrastAlphaColor, readingTime } from 'src/utils';
+import { formatDate, readingTime } from 'src/utils';
 import {
   BlogArticleCardContainer,
   BlogArticleCardContent,
@@ -94,7 +94,6 @@ export const BlogArticleCard = ({
             aspectRatio: 1.6,
             transform: 'unset',
             borderRadius: '16px',
-            border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
           }}
         />
       )}
