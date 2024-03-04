@@ -2,9 +2,9 @@ import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import { InfoMessageCard } from '../MessageCard';
+import { InfoMessageCard } from 'src/components/MessageCard';
 
-export const SolanaAlertContainer = styled(Box)<BoxProps>(({ theme }) => ({
+export const InfoAlertContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   width: '100%',
   flexDirection: 'row',
@@ -19,7 +19,7 @@ export const SolanaAlertContainer = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-export const SolanaMessageCard = styled(InfoMessageCard)(({ theme }) => ({
+export const InfoAlertCard = styled(InfoMessageCard)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'light' ? '#EBF3FF' : '#00317A', //todo: add to theme
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: 384,

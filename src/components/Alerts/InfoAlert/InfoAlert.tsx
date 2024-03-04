@@ -3,19 +3,22 @@ import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import { Slide, Typography, useTheme } from '@mui/material';
 import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
+  InfoAlertContainer,
+  InfoMessageCard,
   InfoMessageCardTitle,
-  SolanaAlertContainer,
-  SolanaMessageCard,
 } from 'src/components';
 import { useChainTokenSelectionStore } from 'src/stores';
 import { getContrastAlphaColor } from 'src/utils';
-import { IconButtonAlpha } from '../IconButton';
+import { IconButtonAlpha } from '../../IconButton';
 
-export const SolanaAlert = () => {
+export interface InfoAlertProps {
+  title: string;
+  subtitle: string;
+}
+
+export const InfoAlert = ({ title, subtitle }: InfoAlertProps) => {
   const [closed, setClosed] = useState(false);
-  const { t } = useTranslation();
   const theme = useTheme();
   const { sourceChainToken, destinationChainToken } =
     useChainTokenSelectionStore();
@@ -44,8 +47,8 @@ export const SolanaAlert = () => {
       timeout={500}
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
-      <SolanaAlertContainer>
-        <SolanaMessageCard mt={theme.spacing(4)} mb={theme.spacing(4)}>
+      <InfoAlertContainer>
+        <InfoMessageCard mt={theme.spacing(4)} mb={theme.spacing(4)}>
           <IconButtonAlpha
             sx={{
               position: 'absolute',
@@ -75,15 +78,13 @@ export const SolanaAlert = () => {
                 marginRight: 1,
               }}
             />
-            <Typography variant={'lifiHeaderXSmall'}>
-              {t('solanaAlert.title')}
-            </Typography>
+            <Typography variant={'lifiHeaderXSmall'}>{title}</Typography>
           </InfoMessageCardTitle>
           <Typography variant={'lifiBodySmall'} pt={theme.spacing(1.5)}>
-            {t('solanaAlert.subtitle')}
+            {subtitle}
           </Typography>
-        </SolanaMessageCard>
-      </SolanaAlertContainer>
+        </InfoMessageCard>
+      </InfoAlertContainer>
     </Slide>
   );
 };

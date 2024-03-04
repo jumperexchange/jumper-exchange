@@ -1,3 +1,4 @@
+export * from './Alerts';
 export * from './Avatar';
 export * from './BackgroundGradient';
 export * from './Button';
@@ -13,7 +14,6 @@ export * from './Navbar';
 export * from './OnRamper';
 export * from './PoweredBy';
 export * from './Snackbar';
-export * from './SolanaAlert';
 export * from './SupportModal';
 export * from './Tabs';
 export * from './TestnetAlert';
