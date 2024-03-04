@@ -1,4 +1,5 @@
 export * from './AccordionFAQ';
+export * from './Alerts';
 export * from './Avatar';
 export * from './BackgroundGradient';
 export * from './Blog';
