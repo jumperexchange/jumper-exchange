@@ -27,7 +27,7 @@ export const BlogArticlesBoard = () => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
-  const [catId, setCatId] = useState<number | undefined>(undefined);
+  const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
   const [catLabel, setCatLabel] = useState<string | undefined>(
     t('blog.allCategories'),
   );
@@ -42,13 +42,13 @@ export const BlogArticlesBoard = () => {
     isRefetching,
   } = useStrapi<BlogArticleData>({
     contentType: STRAPI_BLOG_ARTICLES,
-    filterTag: catId ? [catId] : null,
+    filterTag: categoryId ? [categoryId] : null,
     pagination: { page: page, pageSize: pageSize },
     sort: 'desc',
     queryKey:
-      catId === 0
+      categoryId === 0
         ? ['blog-articles-board', page]
-        : ['blog-articles-board', page, catId],
+        : ['blog-articles-board', page, categoryId],
   });
 
   const { data: tags, isSuccess } = useStrapi<TagAttributes>({
@@ -63,7 +63,7 @@ export const BlogArticlesBoard = () => {
       } else {
         setOpenDropdown(false);
       }
-      setCatId(id);
+      setCategoryId(id);
       setCatLabel(label);
     },
     [isDesktop, openDropdown],
@@ -73,7 +73,8 @@ export const BlogArticlesBoard = () => {
     // default "All" Category
     const defaultFilter = {
       id: 0,
-      label: !isDesktop && catId !== 0 ? catLabel : t('blog.allCategories'),
+      label:
+        !isDesktop && categoryId !== 0 ? catLabel : t('blog.allCategories'),
       icon: !isDesktop && (
         <ArrowDropDownIcon
           sx={{
@@ -100,7 +101,7 @@ export const BlogArticlesBoard = () => {
     // merge default + tags
     output?.unshift(defaultFilter);
     return output;
-  }, [catId, catLabel, handleTagsClick, isDesktop, t, tags, theme]);
+  }, [categoryId, catLabel, handleTagsClick, isDesktop, t, tags, theme]);
 
   return (
     <BlogArticlesBoardContainer id="see-all">
@@ -118,7 +119,7 @@ export const BlogArticlesBoard = () => {
         <BlogArticlesBoardTabs
           openDropdown={openDropdown}
           filteredTags={filteredTags}
-          catId={catId}
+          categoryId={categoryId}
         />
       ) : (
         <Skeleton sx={{ width: '100%', height: 68 }} />
@@ -128,7 +129,7 @@ export const BlogArticlesBoard = () => {
           {!articlesIsSuccess ? (
             Array.from({ length: pageSize }).map((_, index) => (
               <BlogArticleCardSkeleton
-                key={`blog-article-card-skeleton-${catId}-${index}`}
+                key={`blog-article-card-skeleton-${categoryId}-${index}`}
               />
             ))
           ) : articlesIsSuccess && blogArticles?.length > 0 ? (
@@ -136,7 +137,7 @@ export const BlogArticlesBoard = () => {
               <BlogArticleCard
                 baseUrl={url}
                 id={article.id}
-                key={`blog-articles-board-${catId}-${index}`}
+                key={`blog-articles-board-${categoryId}-${index}`}
                 image={article.attributes.Image}
                 title={article.attributes.Title}
                 slug={article.attributes.Slug}
@@ -159,7 +160,7 @@ export const BlogArticlesBoard = () => {
           page={page}
           setPage={setPage}
           meta={meta}
-          catId={catId}
+          categoryId={categoryId}
         />
       ) : null}
     </BlogArticlesBoardContainer>

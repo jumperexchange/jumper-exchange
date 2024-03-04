@@ -22,7 +22,7 @@ interface BlogArticlesBoardPaginationProps {
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
   meta: StrapiMeta;
-  catId: number | undefined;
+  categoryId: number | undefined;
 }
 
 export const BlogArticlesBoardPagination = ({
@@ -30,7 +30,7 @@ export const BlogArticlesBoardPagination = ({
   page,
   setPage,
   meta,
-  catId,
+  categoryId,
   isEmpty,
 }: BlogArticlesBoardPaginationProps) => {
   const theme = useTheme();
@@ -42,7 +42,7 @@ export const BlogArticlesBoardPagination = ({
       action: TrackingAction.ClickPagination,
       data: {
         [TrackingEventParameter.Pagination]: page,
-        [TrackingEventParameter.PaginationCat]: catId,
+        [TrackingEventParameter.PaginationCat]: categoryId,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
@@ -61,7 +61,7 @@ export const BlogArticlesBoardPagination = ({
       action: TrackingAction.ClickPagination,
       data: {
         [TrackingEventParameter.Pagination]: page,
-        [TrackingEventParameter.PaginationCat]: catId,
+        [TrackingEventParameter.PaginationCat]: categoryId,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
@@ -79,7 +79,7 @@ export const BlogArticlesBoardPagination = ({
       action: TrackingAction.ClickPagination,
       data: {
         [TrackingEventParameter.Pagination]: page,
-        [TrackingEventParameter.PaginationCat]: catId,
+        [TrackingEventParameter.PaginationCat]: categoryId,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });

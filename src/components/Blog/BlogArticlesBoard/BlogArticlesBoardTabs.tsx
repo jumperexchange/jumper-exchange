@@ -7,13 +7,13 @@ import { Tabs } from '../../Tabs';
 interface BlogArticlesBoardTabsProps {
   openDropdown: boolean;
   filteredTags: TabProps[];
-  catId: number | undefined;
+  categoryId: number | undefined;
 }
 
 export const BlogArticlesBoardTabs = ({
   openDropdown,
   filteredTags,
-  catId,
+  categoryId,
 }: BlogArticlesBoardTabsProps) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
@@ -100,7 +100,7 @@ export const BlogArticlesBoardTabs = ({
   return filteredTags ? (
     <Tabs
       data={filteredTags}
-      value={catId ?? 0}
+      value={categoryId ?? 0}
       orientation={isDesktop ? 'horizontal' : 'vertical'}
       ariaLabel="categories-switch-tabs"
       containerStyles={containerStyles}
