@@ -257,7 +257,22 @@ const themeCustomized: Theme = createTheme({
         '@supports': { fontVariationSettings: 'normal' },
       },
     },
-
+    MuiButton: {
+      defaultProps: {
+        size: 'large',
+      },
+      styleOverrides: {
+        sizeSmall: {
+          height: 32,
+        },
+        sizeMedium: {
+          height: 40,
+        },
+        sizeLarge: {
+          height: 48,
+        },
+      },
+    },
     MuiTypography: {
       defaultProps: {
         variantMapping: {
