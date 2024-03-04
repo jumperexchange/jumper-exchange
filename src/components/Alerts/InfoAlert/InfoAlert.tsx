@@ -1,36 +1,24 @@
-import { ChainId } from '@lifi/types';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import { Slide, Typography, useTheme } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   InfoAlertContainer,
   InfoMessageCard,
   InfoMessageCardTitle,
 } from 'src/components';
-import { useChainTokenSelectionStore } from 'src/stores';
 import { getContrastAlphaColor } from 'src/utils';
 import { IconButtonAlpha } from '../../IconButton';
 
 export interface InfoAlertProps {
   title: string;
   subtitle: string;
+  active: boolean;
 }
 
-export const InfoAlert = ({ title, subtitle }: InfoAlertProps) => {
+export const InfoAlert = ({ title, subtitle, active }: InfoAlertProps) => {
   const [closed, setClosed] = useState(false);
   const theme = useTheme();
-  const { sourceChainToken, destinationChainToken } =
-    useChainTokenSelectionStore();
-
-  const solanaSelected = useMemo(() => {
-    const isSelected =
-      sourceChainToken?.chainId === ChainId.SOL ||
-      destinationChainToken?.chainId === ChainId.SOL;
-    isSelected && setClosed(false);
-    return isSelected;
-  }, [destinationChainToken, sourceChainToken]);
-
   const handleClose = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
@@ -38,12 +26,16 @@ export const InfoAlert = ({ title, subtitle }: InfoAlertProps) => {
     setClosed(true);
   };
 
+  useEffect(() => {
+    active && setClosed(false);
+  }, [active]);
+
   return (
     <Slide
       direction="up"
-      in={!closed && solanaSelected}
+      in={!closed && active}
       unmountOnExit
-      appear={!closed && solanaSelected}
+      appear={!closed && active}
       timeout={500}
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
