@@ -1,5 +1,5 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, Typography, keyframes, styled } from '@mui/material';
+import type { BoxProps } from '@mui/material';
+import { Box, keyframes, styled } from '@mui/material';
 
 export interface WrapperProps extends Omit<BoxProps, 'component'> {
   showWelcome?: boolean;
@@ -19,23 +19,6 @@ export const Overlay = styled(Box, {
   flexDirection: 'column',
   scrollBehavior: 'smooth',
   zIndex: '1400',
-}));
-
-export const CustomColor = styled(Typography)(({ theme }) => ({
-  background:
-    theme.palette.mode === 'dark'
-      ? 'linear-gradient(270deg, #D35CFF 0%, #BEA0EB 94.17%)'
-      : 'linear-gradient(270deg, #31007A 0%, #8700B8 94.17%);',
-  backgroundClip: 'text',
-  textFillColor: 'transparent',
-  userSelect: 'none',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    fontSize: '48px',
-    fontWeight: 700,
-    lineHeight: '56px',
-  },
 }));
 
 export interface ContentWrapperProps extends Omit<BoxProps, 'component'> {

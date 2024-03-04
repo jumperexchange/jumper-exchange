@@ -64,6 +64,7 @@ export const MenuDesktop = ({
             <MenuPaper width={width}>
               <ClickAwayListener
                 onClickAway={(event) => {
+                  event.preventDefault();
                   closeAllMenus();
                 }}
               >
