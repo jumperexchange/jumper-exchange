@@ -44,15 +44,15 @@ export const FeaturedArticle = () => {
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     closeAllMenus();
-    navigate(`${JUMPER_LEARN_PATH}/${featuredArticle[0].attributes.Slug}`);
+    navigate(`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const formatedDate =
     featuredArticle &&
     formatDate(
-      featuredArticle[0].attributes.publishedAt ||
-        featuredArticle[0].attributes.createdAt,
+      featuredArticle[0]?.attributes.publishedAt ||
+        featuredArticle[0]?.attributes.createdAt,
     );
 
   const minRead =
