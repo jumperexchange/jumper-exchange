@@ -7,14 +7,17 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useChains, useUserTracking } from 'src/hooks';
+import { useAccounts, useChains, useUserTracking } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { NavbarButtonsContainer, WalletManagementButtons } from '.';
 import { MainMenu, MenuToggle } from '../..';
-import { useAccounts } from 'src/hooks/useAccounts';
 
-export const NavbarButtons = () => {
+interface NavbarButtonsProps {
+  redirectToLearn?: boolean;
+}
+
+export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
   const mainMenuAnchor = useRef<any>(null);
   const { trackEvent } = useUserTracking();
 
@@ -26,7 +29,6 @@ export const NavbarButtons = () => {
     state.openMainMenu,
     state.setMainMenuState,
   ]);
-
   const { t } = useTranslation();
   const { account } = useAccounts();
   if (!account?.isConnected) {
@@ -44,8 +46,10 @@ export const NavbarButtons = () => {
   }, [openMainMenu]);
 
   const { isSuccess } = useChains();
-
-  const handleOnOpenNavbarMainMenu = () => {
+  const handleOnOpenNavbarMainMenu = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
     setMainMenuState(!openMainMenu);
     trackEvent({
       category: TrackingCategory.Menu,
@@ -59,6 +63,7 @@ export const NavbarButtons = () => {
   return (
     <NavbarButtonsContainer className="settings">
       <WalletManagementButtons
+        redirectToLearn={redirectToLearn}
         connectButtonLabel={
           <Typography
             variant={'lifiBodyMediumStrong'}
@@ -66,11 +71,11 @@ export const NavbarButtons = () => {
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               display: '-webkit-box',
-              WebkitLineClamp: '2',
+              WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
             }}
           >
-            {t('navbar.connect')}
+            {redirectToLearn ? t('blog.openApp') : t('navbar.connect')}
           </Typography>
         }
         isSuccess={isSuccess}
@@ -82,7 +87,7 @@ export const NavbarButtons = () => {
         aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
         aria-expanded={openMainMenu ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={handleOnOpenNavbarMainMenu}
+        onClick={(e) => handleOnOpenNavbarMainMenu(e)}
       >
         <MenuIcon
           sx={{

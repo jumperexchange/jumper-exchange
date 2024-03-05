@@ -3,6 +3,7 @@ import { getConnectorIcon } from '@lifi/wallet-management';
 import { Typography } from '@mui/material';
 import type { ReactElement } from 'react';
 import React, { useMemo, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ConnectButton,
   WalletMenu,
@@ -18,8 +19,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useChains, useUserTracking } from 'src/hooks';
-import { useAccounts } from 'src/hooks/useAccounts';
+import { useAccounts, useChains, useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { walletDigest } from 'src/utils';
@@ -29,15 +29,17 @@ interface WalletManagementButtonsProps {
   backgroundColor?: string;
   color?: string;
   walletConnected?: boolean;
+  redirectToLearn?: boolean;
   connectButtonLabel?: ReactElement<any, any>;
   isSuccess: boolean;
 }
 
 export const WalletManagementButtons: React.FC<
   WalletManagementButtonsProps
-> = ({ connectButtonLabel, isSuccess }) => {
+> = ({ connectButtonLabel, redirectToLearn, isSuccess }) => {
   const { chains } = useChains();
   const { trackEvent } = useUserTracking();
+  const navigate = useNavigate();
   const { account } = useAccounts();
   const walletManagementButtonsRef = useRef<any>();
 
@@ -58,18 +60,31 @@ export const WalletManagementButtons: React.FC<
   );
 
   const handleWalletSelectClick = () => {
-    !openWalletSelectMenu &&
+    if (redirectToLearn) {
+      navigate('/');
       trackEvent({
         category: TrackingCategory.WalletSelectMenu,
-        action: TrackingAction.OpenMenu,
-        label: 'open_wallet_select_menu',
-        data: { [TrackingEventParameter.Menu]: 'wallet_select_menu' },
+        action: TrackingAction.ClickConnectToWidget,
+        label: 'click_connect_wallet_on_jumper_learn',
         disableTrackingTool: [
           EventTrackingTool.ARCx,
           EventTrackingTool.Cookie3,
         ],
       });
-    setWalletSelectMenuState(!openWalletSelectMenu);
+    } else {
+      !openWalletSelectMenu &&
+        trackEvent({
+          category: TrackingCategory.WalletSelectMenu,
+          action: TrackingAction.OpenMenu,
+          label: 'open_wallet_select_menu',
+          data: { [TrackingEventParameter.Menu]: 'wallet_select_menu' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+      setWalletSelectMenuState(!openWalletSelectMenu);
+    }
   };
 
   const handleWalletMenuClick = () => {
@@ -90,7 +105,7 @@ export const WalletManagementButtons: React.FC<
   return (
     <>
       <div ref={walletManagementButtonsRef}>
-        {!account?.address ? (
+        {!account?.address || redirectToLearn ? (
           <ConnectButton
             // Used in the widget
             id="connect-wallet-button"
@@ -110,7 +125,6 @@ export const WalletManagementButtons: React.FC<
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 badgeContent={
                   <WalletMgmtChainAvatar
-                    // size="large"
                     src={activeChain?.logoURI || ''}
                     alt={'wallet-avatar'}
                   >

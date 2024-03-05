@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Menu, WalletButton } from 'src/components';
 import { MenuKeys } from 'src/const';
+import { useAccounts } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
-import { useAccounts } from 'src/hooks/useAccounts';
 import { WalletCard } from './WalletCard';
 
 interface WalletMenuProps {

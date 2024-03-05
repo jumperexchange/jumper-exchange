@@ -1,12 +1,12 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckIcon from '@mui/icons-material/Check';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import type { Breakpoint } from '@mui/material';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import type { KeyboardEvent } from 'react';
 import { useEffect, useRef } from 'react';
 import {
-  ButtonBackArrow,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuHeaderLabel,
@@ -22,6 +22,7 @@ import {
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool, type MenuListItem } from 'src/types';
+import { getContrastAlphaColor } from 'src/utils';
 import { MenuItemContainer, MenuLabel } from '.';
 
 interface SubMenuProps {
@@ -96,10 +97,23 @@ export const SubMenu = ({
     >
       <MenuHeaderAppWrapper>
         <MenuHeaderAppBar component="div" elevation={0}>
-          <ButtonBackArrow
-            styles={{ marginLeft: 0 }}
-            onClick={handleBackNavigation}
-          />
+          <IconButton
+            size="medium"
+            aria-label="settings"
+            edge="start"
+            sx={{
+              marginLeft: 0,
+              color: theme.palette.text.primary,
+              '&:hover': {
+                backgroundColor: getContrastAlphaColor(theme, '4%'),
+              },
+            }}
+            onClick={() => {
+              handleBackNavigation();
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
           <MenuHeaderLabel>{label}</MenuHeaderLabel>
         </MenuHeaderAppBar>
       </MenuHeaderAppWrapper>

@@ -15,8 +15,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useMultisig } from 'src/hooks';
-import { useAccounts } from 'src/hooks/useAccounts';
+import { useAccounts, useMultisig } from 'src/hooks';
 import {
   useActiveTabStore,
   useChainTokenSelectionStore,

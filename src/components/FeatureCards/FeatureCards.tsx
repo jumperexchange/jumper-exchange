@@ -2,11 +2,12 @@ import type { Breakpoint } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { FeatureCard } from 'src/components';
-import { useFeatureCards } from 'src/hooks';
+import { STRAPI_FEATURE_CARDS, STRAPI_JUMPER_USERS } from 'src/const';
+import { useAccounts, useStrapi } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
+import type { FeatureCardData, JumperUserData } from 'src/types';
 import { shallow } from 'zustand/shallow';
 import { FeatureCardsContainer } from '.';
-import { usePersonalizedFeatureCards } from '../../hooks/usePersonalizedFeatureCards';
 
 export const FeatureCards = () => {
   const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
@@ -14,8 +15,20 @@ export const FeatureCards = () => {
     shallow,
   );
 
-  const { featureCards: cards, isSuccess } = useFeatureCards();
-  const { featureCards: personalizedCards } = usePersonalizedFeatureCards();
+  const { account } = useAccounts();
+  const { data: cards, isSuccess } = useStrapi<FeatureCardData>({
+    contentType: STRAPI_FEATURE_CARDS,
+    queryKey: ['feature-cards'],
+  });
+
+  const { data: jumperUser } = useStrapi<JumperUserData>({
+    contentType: STRAPI_JUMPER_USERS,
+    filterPersonalFeatureCards: {
+      enabled: true,
+      account: account,
+    },
+    queryKey: ['personalized-feature-cards'],
+  });
 
   const slicedFeatureCards = useMemo(() => {
     if (Array.isArray(cards) && !!cards.length) {
@@ -32,8 +45,13 @@ export const FeatureCards = () => {
   }, [cards, isSuccess]);
 
   const slicedPersonalizedFeatureCards = useMemo(() => {
-    if (Array.isArray(personalizedCards) && !!personalizedCards.length) {
-      return personalizedCards
+    const personalizedFeatureCards =
+      jumperUser && jumperUser[0]?.attributes?.feature_cards.data;
+    if (
+      Array.isArray(personalizedFeatureCards) &&
+      !!personalizedFeatureCards.length
+    ) {
+      return personalizedFeatureCards
         ?.filter(
           (el, index) =>
             el.attributes.DisplayConditions &&
@@ -42,7 +60,7 @@ export const FeatureCards = () => {
         .slice(0, 1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [personalizedCards]);
+  }, [jumperUser]);
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
@@ -50,7 +68,7 @@ export const FeatureCards = () => {
     isDesktop &&
     welcomeScreenClosed && (
       <FeatureCardsContainer>
-        {slicedPersonalizedFeatureCards?.slice(0, 1).map((cardData, index) => {
+        {slicedPersonalizedFeatureCards?.map((cardData, index) => {
           return (
             <FeatureCard
               isSuccess={isSuccess}

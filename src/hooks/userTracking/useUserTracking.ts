@@ -1,4 +1,5 @@
 import { useArcxAnalytics } from '@arcxmoney/analytics';
+import { ChainType } from '@lifi/sdk';
 import { useCallback, useEffect } from 'react';
 import { hotjar } from 'react-hotjar';
 import {
@@ -16,9 +17,8 @@ import type {
   trackPageloadProps,
 } from 'src/types';
 import { EventTrackingTool } from 'src/types';
-import { useCookie3 } from './useCookie3';
 import { useAccounts } from '../useAccounts';
-import { ChainType } from '@lifi/sdk';
+import { useCookie3 } from './useCookie3';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
@@ -33,9 +33,7 @@ export function useUserTracking() {
       });
       window.gtag('event', TrackingAction.SwitchChain, {
         category: TrackingCategory.Wallet,
-        data: {
-          [TrackingEventParameter.SwitchedChain]: account?.chainId,
-        },
+        [TrackingEventParameter.SwitchedChain]: account?.chainId,
       });
     }
   }, [account?.address, account?.chainId, arcx]);
