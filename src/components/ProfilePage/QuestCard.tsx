@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import { useUserTracking } from 'src/hooks';
 import { Button } from '../Button';
-import { CarouselNavigationButton } from './CarouselContainer.style';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
   QuestCardBottomBox,

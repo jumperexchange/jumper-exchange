@@ -35,7 +35,7 @@ const progressionData = [
 ];
 
 interface ProgressionBarProps {
-  points?: number;
+  points?: number | null;
 }
 
 export const ProgressionBar = ({ points }: ProgressionBarProps) => {

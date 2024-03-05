@@ -1,15 +1,9 @@
-import type {
-  BoxProps,
-  Breakpoint,
-  CSSObject,
-  IconButtonProps,
-} from '@mui/material';
+import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, alpha, styled } from '@mui/material';
 /* The line `import { IconButtonTertiary } from 'src/components/IconButton.style';` is importing the
   `IconButtonTertiary` component from the file located at `'src/components/IconButton.style'`. This
   component is likely a custom styled IconButton component defined in that file and is being used in
   the current file for styling purposes within the styled components. */
-import { IconButtonTertiary } from './IconButton.style';
 
 export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
   backgroundColor:

@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { ProfilePageTypography } from './ProfilePage.style';
 
 interface PointsBoxProps {
-  points?: number;
+  points?: number | null;
 }
 
 export const PointsBox = ({ points }: PointsBoxProps) => {
