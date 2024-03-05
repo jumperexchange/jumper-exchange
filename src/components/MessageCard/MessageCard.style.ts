@@ -8,16 +8,16 @@ const MessageCard = styled(Box)(({ theme }) => ({
   position: 'relative',
   whiteSpace: 'pre-line',
   margin: 'auto',
-}));
-
-export const WarningMessageCard = styled(MessageCard)(({ theme }) => ({
   width: 392,
-  borderRadius: '12px',
   padding: theme.spacing(2, 3),
   boxShadow:
     theme.palette.mode === 'dark'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+}));
+
+export const WarningMessageCard = styled(MessageCard)(({ theme }) => ({
+  borderRadius: '12px',
   backgroundColor:
     theme.palette.mode === 'light'
       ? alpha(theme.palette.warning.main, 0.24)
@@ -33,7 +33,6 @@ export const WarningMessageCardTitle = styled(Box)(({ theme }) => ({
 }));
 
 export const InfoMessageCard = styled(MessageCard)(({ theme }) => ({
-  padding: 0,
   backgroundColor:
     theme.palette.mode === 'light'
       ? alpha(theme.palette.info.main, 0.12)

@@ -1,8 +1,7 @@
 import { useTheme } from '@mui/material';
-import { Button } from 'src/components';
+import { Button, JumperLogo } from 'src/components';
 import { LogoLink } from '../Navbar';
 
-import { useTranslations } from 'next-intl';
 import { Discord, Logo } from 'src/components';
 import {
   DISCORD_URL,
@@ -11,6 +10,7 @@ import {
   TrackingEventParameter,
 } from 'src/const';
 import { useAccounts, useUserTracking } from 'src/hooks';
+import { useClientTranslation } from 'src/i18n';
 import { EventTrackingTool } from 'src/types';
 import { getContrastAlphaColor, openInNewTab } from 'src/utils';
 import {
@@ -23,13 +23,17 @@ import {
 export function FallbackError() {
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const { account } = useAccounts();
   return (
     <>
       <NavbarContainer>
         <LogoLink>
-          <Logo isConnected={!!account.address} theme={theme} />
+          <Logo
+            isConnected={!!account?.address}
+            theme={theme}
+            logo={<JumperLogo />}
+          />
         </LogoLink>
       </NavbarContainer>
       <CenteredContainer>

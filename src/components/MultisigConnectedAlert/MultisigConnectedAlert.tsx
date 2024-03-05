@@ -1,6 +1,6 @@
 import { Modal, Typography } from '@mui/material';
-import { useTranslations } from 'next-intl';
 import { Button } from 'src/components';
+import { useClientTranslation } from 'src/i18n';
 import {
   MultisigConnectedAlertContainer,
   MultisigConnectedAlertIcon,
@@ -11,7 +11,7 @@ export const MultisigConnectedAlert: React.FC<{
   open: boolean;
   onClose: () => void;
 }> = ({ open, onClose }) => {
-  const t = useTranslations();
+  const { t } = useClientTranslation();
 
   return (
     <Modal open={open} onClose={onClose}>

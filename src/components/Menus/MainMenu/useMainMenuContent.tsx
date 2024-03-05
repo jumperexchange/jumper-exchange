@@ -1,22 +1,14 @@
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
+import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import TwitterIcon from '@mui/icons-material/Twitter';
+import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useLocale, useTranslations } from 'next-intl';
-import { Discord, LIFIicon, Tabs } from 'src/components';
-import {
-  DISCORD_URL,
-  EXPLORER_URL,
-  LIFI_URL,
-  MenuKeysEnum,
-  TWITTER_URL,
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from 'src/const';
+import { useNavigate } from 'react-router-dom';
+import { Discord, Tabs } from 'src/components';
 import { useUserTracking } from 'src/hooks';
+import { useClientTranslation } from 'src/i18n';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import {
@@ -24,22 +16,28 @@ import {
   getContrastAlphaColor,
   openInNewTab,
 } from 'src/utils';
+import {
+  DISCORD_URL,
+  EXPLORER_URL,
+  JUMPER_LEARN_PATH,
+  MenuKeysEnum,
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+  X_URL,
+} from '../../../const';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
+  const navigate = useNavigate();
   const theme = useTheme();
-  const locale = useLocale();
+  const { closeAllMenus } = useMenuStore((state) => state);
   const { setSupportModalState } = useMenuStore((state) => state);
   const themeMode = useSettingsStore((state) => state.themeMode);
   const explorerUrl = appendUTMParametersToLink(EXPLORER_URL, {
     utm_campaign: 'jumper_to_explorer',
-    utm_medium: 'menu',
-  });
-
-  const lifiUrl = appendUTMParametersToLink(LIFI_URL, {
-    utm_campaign: 'jumper_to_lifi',
     utm_medium: 'menu',
   });
 
@@ -126,15 +124,59 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeysEnum.Devs,
     },
     {
-      label: 'Twitter',
-      prefixIcon: <TwitterIcon />,
+      label: 'Jumper Learn',
+      prefixIcon: <SchoolIcon />,
       showMoreIcon: false,
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
-          label: 'click-lifi-link',
-          action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'lifi_twitter' },
+          label: 'click-jumper-learn-link',
+          action: TrackingAction.ClickJumperLearnLink,
+          data: { [TrackingEventParameter.Menu]: 'jumper_learn' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+        closeAllMenus();
+        navigate(JUMPER_LEARN_PATH);
+      },
+    },
+    {
+      label: t('navbar.navbarMenu.lifiExplorer'),
+      prefixIcon: <SearchOutlinedIcon />,
+      showMoreIcon: false,
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'open-lifi-explorer',
+          action: TrackingAction.ClickLifiExplorerLink,
+          data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+        trackPageload({
+          source: TrackingCategory.Menu,
+          destination: 'lifi-explorer',
+          url: explorerUrl,
+          pageload: true,
+          disableTrackingTool: [EventTrackingTool.Cookie3],
+        });
+        openInNewTab(explorerUrl);
+      },
+    },
+    {
+      label: 'X',
+      prefixIcon: <XIcon />,
+      showMoreIcon: false,
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-x-link',
+          action: TrackingAction.ClickXLink,
+          data: { [TrackingEventParameter.Menu]: 'lifi_x' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
@@ -142,12 +184,12 @@ export const useMainMenuContent = () => {
         });
         trackPageload({
           source: TrackingCategory.MainMenu,
-          destination: 'twitter-jumper',
-          url: TWITTER_URL,
+          destination: 'x-jumper',
+          url: X_URL,
           pageload: true,
           disableTrackingTool: [EventTrackingTool.Cookie3],
         });
-        openInNewTab(TWITTER_URL);
+        openInNewTab(X_URL);
       },
     },
     {
@@ -166,7 +208,7 @@ export const useMainMenuContent = () => {
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'click-discord-link',
-          action: TrackingAction.OpenMenu,
+          action: TrackingAction.ClickDiscordLink,
           data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
@@ -184,67 +226,16 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: t('navbar.navbarMenu.lifiExplorer'),
-      prefixIcon: <SearchOutlinedIcon />,
-      showMoreIcon: false,
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'open-lifi-explorer',
-          action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
-        });
-        trackPageload({
-          source: TrackingCategory.Menu,
-          destination: 'lifi-explorer',
-          url: explorerUrl,
-          pageload: true,
-          disableTrackingTool: [EventTrackingTool.Cookie3],
-        });
-        openInNewTab(explorerUrl);
-      },
-    },
-    {
-      label: t('navbar.navbarMenu.aboutLIFI'),
+      label: t('navbar.navbarMenu.support'),
       prefixIcon: (
-        <LIFIicon
-          styles={{ flexShrink: 0 }}
+        <Discord
           color={
-            theme.palette.mode === 'dark'
-              ? theme.palette.white.main
-              : theme.palette.black.main
+            theme.palette.mode === 'light'
+              ? theme.palette.primary.main
+              : theme.palette.white.main
           }
         />
       ),
-      showMoreIcon: false,
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-lifi-link',
-          action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'lifi_website' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
-        });
-        trackPageload({
-          source: TrackingCategory.Menu,
-          destination: 'lifi-website',
-          url: lifiUrl,
-          pageload: true,
-          disableTrackingTool: [EventTrackingTool.Cookie3],
-        });
-        openInNewTab(lifiUrl);
-      },
-    },
-    {
-      label: t('navbar.navbarMenu.support'),
-      prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,

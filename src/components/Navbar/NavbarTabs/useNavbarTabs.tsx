@@ -2,18 +2,18 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
-import { useTranslations } from 'next-intl';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
 import { useUserTracking } from 'src/hooks';
+import { useClientTranslation } from 'src/i18n';
 import { EventTrackingTool } from 'src/types';
 
 export const useNavbarTabs = () => {
   const { trackEvent } = useUserTracking();
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const theme = useTheme();
 
   const handleClickTab =

@@ -1,7 +1,7 @@
 import type { CombinedWallet } from './../hooks/useCombinedWallets';
 // ----------------------------------------------------------------------
 
-import type { MenuKeysEnum } from 'src/const';
+import type { MenuKeys, MenuKeysEnum } from 'src/const';
 
 type SnackbarSeverityType = 'error' | 'warning' | 'info' | 'success';
 
@@ -42,7 +42,7 @@ export interface MenuState extends MenuProps {
   ) => void;
 
   // Toggle Sub Menu
-  setSubMenuState: (subMenu: keyof typeof MenuKeysEnum) => void;
+  setSubMenuState: (subMenu: keyof typeof MenuKeys) => void;
 
   // Open Snackbar and set label
   setSnackbarState: (

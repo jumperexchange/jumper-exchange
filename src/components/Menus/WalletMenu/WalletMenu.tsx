@@ -1,11 +1,9 @@
-'use client';
 import { Stack, Typography, useTheme } from '@mui/material';
-import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { Menu, WalletButton } from 'src/components';
 import { MenuKeysEnum } from 'src/const';
-import type { Account } from 'src/hooks';
 import { useAccounts } from 'src/hooks';
+import { useClientTranslation } from 'src/i18n';
 import { useMenuStore } from 'src/stores';
 import { WalletCard } from './WalletCard';
 
@@ -14,7 +12,7 @@ interface WalletMenuProps {
 }
 
 export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
 
@@ -32,11 +30,15 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   useEffect(() => {
     openWalletMenu! && setSnackbarState(false);
   }, [setSnackbarState, openWalletMenu]);
+
   useEffect(() => {
-    if (accounts.every((account: any) => account.status === 'disconnected')) {
+    if (
+      openWalletMenu &&
+      accounts.every((account) => account.status === 'disconnected')
+    ) {
       setWalletMenuState(false);
     }
-  }, [accounts, setWalletMenuState]);
+  }, [accounts, setWalletMenuState, openWalletMenu]);
 
   return (
     <Menu
@@ -46,7 +48,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
       width={'auto'}
       styles={{
         background: theme.palette.surface1.main,
-        padding: '16px',
+        padding: '12px',
       }}
       anchorEl={anchorEl}
     >
@@ -54,7 +56,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         spacing={2}
         sx={{ padding: '0 !important', margin: '0 !important' }}
       >
-        {accounts.map((account: Account) =>
+        {accounts.map((account) =>
           account.isConnected ? (
             <WalletCard key={account.address} account={account} />
           ) : null,

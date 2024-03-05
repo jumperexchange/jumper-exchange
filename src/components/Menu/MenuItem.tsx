@@ -1,7 +1,7 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
-import { Button } from 'src/components';
+import { ButtonSecondary } from 'src/components';
 import type { MenuKeysEnum } from 'src/const';
 import {
   TrackingAction,
@@ -23,7 +23,7 @@ interface MenuItemProps {
   showMoreIcon?: boolean;
   styles?: SxProps<Theme>;
   label?: string;
-  onClick: any;
+  onClick?: any;
   triggerSubMenu?: MenuKeysEnum;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
@@ -46,7 +46,7 @@ export const MenuItem = ({
 }: MenuItemProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
-  const [setSubMenuState] = useMenuStore((state) => [state.setSubMenuState]);
+  const { setSubMenuState } = useMenuStore((state) => state);
 
   const handleClick = () => {
     triggerSubMenu && setSubMenuState(triggerSubMenu);
@@ -61,7 +61,7 @@ export const MenuItem = ({
           EventTrackingTool.Cookie3,
         ],
       });
-    !!onClick && onClick();
+    onClick && onClick();
   };
 
   return open ? (
@@ -77,7 +77,7 @@ export const MenuItem = ({
       <>
         {children}
         {showButton && (
-          <Button variant="primary" styles={styles} fullWidth={true}>
+          <ButtonSecondary fullWidth>
             {prefixIcon}
             <Typography
               variant={'lifiBodyMediumStrong'}
@@ -85,6 +85,10 @@ export const MenuItem = ({
               ml={!!prefixIcon ? '9.5px' : 'inherit'}
               mr={!!prefixIcon ? '9.5px' : 'inherit'}
               sx={{
+                color:
+                  theme.palette.mode === 'light'
+                    ? theme.palette.primary.main
+                    : theme.palette.white.main,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 maxWidth: 208,
@@ -96,7 +100,7 @@ export const MenuItem = ({
               {label}
             </Typography>
             {suffixIcon ?? null}
-          </Button>
+          </ButtonSecondary>
         )}
         {!showButton && (
           <>

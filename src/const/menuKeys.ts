@@ -1,5 +1,3 @@
-'use client';
-
 export const MenuKeys = {
   Main: 'Main',
   WalletSelect: 'WalletSelect',

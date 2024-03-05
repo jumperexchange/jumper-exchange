@@ -3,7 +3,7 @@
 import { Avatar, Badge } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import { ButtonPrimary, ButtonSecondary } from 'src/components';
+import { ButtonPrimary, ButtonTransparent } from 'src/components';
 import { getContrastAlphaColor } from 'src/utils';
 
 export const WalletMgmtAvatarContainer = styled('div')(({ theme }) => ({
@@ -35,7 +35,7 @@ export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
   },
 }));
 
-export const WalletMenuButton = styled(ButtonSecondary)(({ theme }) => ({
+export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'dark'
       ? theme.palette.alphaLight300.main

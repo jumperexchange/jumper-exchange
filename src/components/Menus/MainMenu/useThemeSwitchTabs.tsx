@@ -1,19 +1,19 @@
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import { useTranslations } from 'next-intl';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
 import { useUserTracking } from 'src/hooks';
+import { useClientTranslation } from 'src/i18n';
 import { useSettingsStore } from 'src/stores';
 import type { ThemeModesSupported } from 'src/types';
 import { EventTrackingTool } from 'src/types';
 
 export const useThemeSwitchTabs = () => {
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const { trackEvent } = useUserTracking();
 
   const onChangeMode = useSettingsStore((state) => state.onChangeMode);

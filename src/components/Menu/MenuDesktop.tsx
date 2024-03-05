@@ -52,7 +52,7 @@ export const MenuDesktop = ({
         anchorEl={anchorEl}
         transition
         disablePortal
-        placement="bottom"
+        placement="bottom-end"
       >
         {({ TransitionProps }) => (
           <Fade
@@ -64,6 +64,7 @@ export const MenuDesktop = ({
             <MenuPaper width={width}>
               <ClickAwayListener
                 onClickAway={(event) => {
+                  event.preventDefault();
                   closeAllMenus();
                 }}
               >

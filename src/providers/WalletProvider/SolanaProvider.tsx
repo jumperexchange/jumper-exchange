@@ -7,7 +7,7 @@ import {
 } from '@solana/wallet-adapter-react';
 import { SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
-import React, { type FC, type PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren } from 'react';
 
 const endpoint = clusterApiUrl(WalletAdapterNetwork.Mainnet);
 /**

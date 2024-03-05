@@ -1,11 +1,12 @@
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useTranslations } from 'next-intl';
 import { Menu, MenuHeaderAppBar, MenuHeaderAppWrapper } from 'src/components';
 import { useMenuStore } from 'src/stores';
 
+import { getConnectorIcon } from '@lifi/wallet-management';
+import { useClientTranslation } from 'src/i18n';
 import { EVMConnectButton } from './EVMConnectButton';
-import { SVMConnectButtonContainer as ConnectButtonContainer } from './EcosystemSelectMenu.style';
+import { ConnectButtonContainer } from './EcosystemSelectMenu.style';
 import { SVMConnectButton } from './SVMConnectButton';
 
 interface MenuProps {
@@ -13,7 +14,7 @@ interface MenuProps {
 }
 
 export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const theme = useTheme();
   const { openEcosystemSelect, setEcosystemSelectMenuState } = useMenuStore(
     (state) => state,
@@ -22,7 +23,7 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
   return (
     <Menu
       open={openEcosystemSelect.open}
-      width="420px"
+      width="100%"
       styles={{
         background: theme.palette.surface1.main,
       }}
@@ -32,13 +33,13 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
       <MenuHeaderAppWrapper
         sx={{
           gridColumn: 'span 3',
-          marginBottom: '-12px',
+          marginTop: '0px !important',
         }}
       >
         <MenuHeaderAppBar component="div" elevation={0}>
           <Typography
             variant="lifiBodyMediumStrong"
-            width={'100%'}
+            width={'auto'}
             align={'center'}
             flex={1}
             noWrap
@@ -50,6 +51,7 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
       <ConnectButtonContainer>
         <EVMConnectButton
           walletIcon={
+            getConnectorIcon(openEcosystemSelect.combinedWallet?.evm) ||
             openEcosystemSelect.combinedWallet?.evm?.icon ||
             openEcosystemSelect.combinedWallet?.svm?.adapter.icon
           }
@@ -57,6 +59,7 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
         />
         <SVMConnectButton
           walletIcon={
+            getConnectorIcon(openEcosystemSelect.combinedWallet?.evm) ||
             openEcosystemSelect.combinedWallet?.evm?.icon ||
             openEcosystemSelect.combinedWallet?.svm?.adapter.icon
           }

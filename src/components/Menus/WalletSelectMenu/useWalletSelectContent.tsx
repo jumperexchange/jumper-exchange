@@ -7,17 +7,17 @@ import {
 import type { Theme } from '@mui/material';
 import { Avatar, useMediaQuery, useTheme } from '@mui/material';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
-import { useTranslations } from 'next-intl';
 import { useCallback, useMemo } from 'react';
 import type { CombinedWallet } from 'src/hooks';
 import { useAccountConnect, useCombinedWallets } from 'src/hooks';
+import { useClientTranslation } from 'src/i18n';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { MenuListItem } from 'src/types';
 import { getContrastAlphaColor } from 'src/utils';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const { combinedInstalledWallets, combinedNotDetectedWallets } =
     useCombinedWallets();
   const isDesktopView = useMediaQuery((theme: Theme) =>
@@ -70,7 +70,7 @@ export const useWalletSelectContent = () => {
   );
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
-    const handleClick = async (combinedWallet: CombinedWallet) => {
+    const handleWalletClick = async (combinedWallet: CombinedWallet) => {
       if (
         isWalletInstalled(combinedWallet.evm?.id || '') ||
         (await isWalletInstalledAsync(combinedWallet.evm?.id || '')) ||
@@ -116,7 +116,7 @@ export const useWalletSelectContent = () => {
         ),
         showMoreIcon: false,
         onClick: () => {
-          handleClick(combinedWallet);
+          handleWalletClick(combinedWallet);
         },
         styles: {
           '&:hover': {

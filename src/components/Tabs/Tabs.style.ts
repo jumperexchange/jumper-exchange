@@ -34,9 +34,6 @@ export const TabsContainer = styled(Tabs, {
   '> .MuiTabs-root': {
     minHeight: 'unset !important',
   },
-  '.MuiTabs-root': {
-    minHeight: 'unset !important',
-  },
 }));
 
 export const Tab = styled(MuiTab, {

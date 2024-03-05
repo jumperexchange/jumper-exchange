@@ -3,9 +3,8 @@ import { getConnectorIcon } from '@lifi/wallet-management';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Skeleton, Stack, Typography } from '@mui/material';
-import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Avatar } from 'src/components';
+import { Avatar, Button } from 'src/components';
 import { TrackingAction, TrackingCategory } from 'src/const';
 import type { Account } from 'src/hooks';
 import {
@@ -14,13 +13,12 @@ import {
   useMultisig,
   useUserTracking,
 } from 'src/hooks';
+import { useClientTranslation } from 'src/i18n';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { openInNewTab, walletDigest } from 'src/utils';
 import {
   WalletAvatar,
-  WalletButton,
-  WalletButtonPrimary,
   WalletCardBadge,
   WalletCardButtonContainer,
   WalletCardContainer,
@@ -31,7 +29,7 @@ interface WalletCardProps {
 }
 
 export const WalletCard = ({ account }: WalletCardProps) => {
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const disconnectWallet = useAccountDisconnect();
   const { trackPageload, trackEvent } = useUserTracking();
   const { chains } = useChains();
@@ -123,28 +121,36 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           <WalletAvatar src={getConnectorIcon(account.connector)} />
         </WalletCardBadge>
         <WalletCardButtonContainer>
-          <WalletButton
+          <Button
+            variant="transparent"
+            size="medium"
             disabled={isMultisigEnvironment}
-            sx={{ gridColumn: '1/3', gridRow: '1/2' }}
+            styles={{ width: '100%', gridColumn: '1/3', gridRow: '1/2' }}
             onClick={() => handleCopyButton()}
           >
             <Typography variant="lifiBodySmallStrong">
               {walletDigest(account.address)}
             </Typography>
-          </WalletButton>
-
-          <WalletButton
+          </Button>
+          <Button
+            variant="transparent"
+            size="medium"
             onClick={() => handleExploreButton()}
-            sx={{
+            styles={{
               gridColumn: '1/2',
               gridRow: '2/3',
             }}
           >
             <OpenInNewIcon sx={{ height: '20px' }} />
-          </WalletButton>
-          <WalletButtonPrimary onClick={() => handleDisconnect()} sx={{}}>
+          </Button>
+          <Button
+            variant="secondary"
+            size="medium"
+            onClick={() => handleDisconnect()}
+            styles={{}}
+          >
             <PowerSettingsNewIcon sx={{ height: '20px' }} />
-          </WalletButtonPrimary>
+          </Button>
         </WalletCardButtonContainer>
       </Stack>
     </WalletCardContainer>

@@ -20,7 +20,11 @@
     "connect": "",
     "walletSelectMenu": {
       "connectWallet": "",
-      "wallets": ""
+      "wallets": "",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "",
+        "noEcosystemAdapter": ""
+      }
     },
     "seeAllWallets": "",
     "navbarMenu": {
@@ -38,7 +42,8 @@
       "copy": "Sao Chép",
       "explore": "",
       "copiedMsg": "Địa chỉ ví đã được sao chép",
-      "walletNotInstalled": ""
+      "walletNotInstalled": "",
+      "connectAnotherWallet": ""
     },
     "themes": {
       "switchToLight": "Đổi sang Chế độ nền sáng",

@@ -1,4 +1,3 @@
-import { useTranslations } from 'next-intl';
 import type { Dispatch, SetStateAction } from 'react';
 import { ToolModal } from 'src/components';
 import {
@@ -7,6 +6,7 @@ import {
   TrackingEventParameter,
 } from 'src/const';
 import { useChains, useDexsAndBridges, useUserTracking } from 'src/hooks';
+import { useClientTranslation } from 'src/i18n';
 import { EventTrackingTool, type DataItem } from 'src/types';
 import { sortByName } from 'src/utils';
 import { ToolCardsContainer as Container, ToolCard } from '.';
@@ -42,7 +42,7 @@ export const ToolCards = ({
 }: ToolCardsProps) => {
   const { exchanges, bridges } = useDexsAndBridges();
   const { chains } = useChains();
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const { trackEvent } = useUserTracking();
 
   const statsData: StatsDataProps[] = [

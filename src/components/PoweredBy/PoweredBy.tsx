@@ -1,4 +1,6 @@
 'use client';
+
+import type { CSSObject } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
 import { LIFI_URL, TrackingAction, TrackingCategory } from 'src/const';
 import { useUserTracking } from 'src/hooks';
@@ -11,7 +13,12 @@ const lifiUrl = appendUTMParametersToLink(LIFI_URL, {
   utm_medium: 'powered_by',
 });
 
-export const PoweredBy = () => {
+interface PoweredByProps {
+  fixedPosition?: boolean;
+  styles?: CSSObject;
+}
+
+export const PoweredBy = ({ fixedPosition, styles }: PoweredByProps) => {
   const theme = useTheme();
   const { trackPageload, trackEvent } = useUserTracking();
 
@@ -33,7 +40,7 @@ export const PoweredBy = () => {
   };
 
   return (
-    <Container>
+    <Container fixedPosition={fixedPosition} sx={styles}>
       <Typography
         variant={'lifiBodySmall'}
         sx={{

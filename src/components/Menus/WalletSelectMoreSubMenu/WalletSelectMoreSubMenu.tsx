@@ -1,11 +1,11 @@
-import { useTranslations } from 'next-intl';
 import { SubMenu } from 'src/components';
 import { MenuKeysEnum } from 'src/const';
+import { useClientTranslation } from 'src/i18n';
 import { useMenuStore } from 'src/stores';
 import { useWalletSelectContent } from '..';
 
 export const WalletSelectMoreSubMenu = () => {
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const walletSelectMenuItems = useWalletSelectContent();
   const openSubMenu = useMenuStore((state) => state.openSubMenu);
 

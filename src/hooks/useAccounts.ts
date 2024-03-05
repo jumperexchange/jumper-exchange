@@ -1,8 +1,10 @@
 'use client';
 import { ChainId, ChainType } from '@lifi/sdk';
 import type { WalletAdapter } from '@solana/wallet-adapter-base';
+import type { Wallet } from '@solana/wallet-adapter-react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useMemo } from 'react';
+import { useSettingsStore } from 'src/stores';
 import type { Chain } from 'viem';
 import type { Connector } from 'wagmi';
 import {
@@ -11,7 +13,6 @@ import {
   useAccount as useWagmiAccount,
 } from 'wagmi';
 import { useBlockchainExplorerURL, useUserTracking } from '.';
-import { useSettingsStore } from '../stores';
 import type { CombinedWallet } from './useCombinedWallets';
 
 export interface AccountBase {
@@ -42,9 +43,11 @@ export interface SVMAccount extends AccountBase {
 export type Account = EVMAccount | SVMAccount;
 
 export interface AccountResult {
-  account: Account;
+  account?: Account;
   accounts: Account[];
 }
+
+let lastConnectedAccount: Wallet | Connector;
 
 export const useAccounts = (): AccountResult => {
   const account = useWagmiAccount();
@@ -88,11 +91,29 @@ export const useAccounts = (): AccountResult => {
       icon: account.connector?.icon,
     };
 
+    const lastAccount = (() => {
+      if (
+        evm.status === 'connected' &&
+        svm.status === 'connected' &&
+        lastConnectedAccount
+      ) {
+        if ((lastConnectedAccount as Connector)?.name === evm.connector?.name) {
+          return evm;
+        } else {
+          return svm;
+        }
+      } else if (evm.status === 'connected') {
+        return evm;
+      } else {
+        return svm;
+      }
+    })();
+
     return {
-      account: account.isConnected ? evm : svm,
+      account: lastAccount,
       accounts: [evm, svm],
     };
-  }, [account, getBlockexplorerURL, wallet]);
+  }, [account.status, getBlockexplorerURL, wallet?.readyState]);
 };
 
 export const useAccountDisconnect = () => {
@@ -111,13 +132,14 @@ export const useAccountDisconnect = () => {
 export const useAccountConnect = () => {
   const { connectAsync } = useConnect();
   const { disconnect: wagmiDisconnect } = useDisconnect();
-  const { select, disconnect, connected, publicKey } = useWallet();
+  const { select, disconnect, connected } = useWallet();
   const { onWalletConnect } = useSettingsStore((state) => state);
   const { trackConnectWallet } = useUserTracking();
 
   return async (combinedWallet: CombinedWallet) => {
     if (combinedWallet.evm) {
       wagmiDisconnect();
+      lastConnectedAccount = combinedWallet.evm;
       await connectAsync({ connector: combinedWallet.evm! });
       onWalletConnect(combinedWallet.evm.name);
       trackConnectWallet({
@@ -130,9 +152,9 @@ export const useAccountConnect = () => {
       if (connected) {
         disconnect();
       }
+      lastConnectedAccount = combinedWallet.svm;
       select(combinedWallet.svm.adapter.name);
       onWalletConnect(combinedWallet.svm.adapter.name);
-
       trackConnectWallet({
         walletName: combinedWallet.svm.adapter.name,
         chainType: ChainType.SVM,

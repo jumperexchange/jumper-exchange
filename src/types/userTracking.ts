@@ -49,7 +49,7 @@ type destinations =
   | 'docs-sc-audits'
   | 'lifi-github'
   | 'lifi-docs'
-  | 'twitter-jumper'
+  | 'x-jumper'
   | 'blokchain-explorer';
 
 type source = TrackingCategory;

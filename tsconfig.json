@@ -94,6 +94,5 @@
     "./src/**/*",
     "./src/**/*.json",
     ".next/types/**/*.ts",
-    "src/i18n/locales"
   ]
 }

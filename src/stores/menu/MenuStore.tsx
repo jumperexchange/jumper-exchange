@@ -1,4 +1,5 @@
 'use client';
+import type { MenuKeys } from 'src/const';
 import { MenuKeysEnum } from 'src/const';
 import type {
   EcosystemSelectMenuProps,
@@ -13,7 +14,7 @@ interface DefaultMenuType {
   openWalletMenu: boolean;
   openWalletSelectMenu: boolean;
   openEcosystemSelect: EcosystemSelectMenuProps;
-  openSubMenu: keyof typeof MenuKeysEnum;
+  openSubMenu: keyof typeof MenuKeys;
   openSupportModal: boolean;
   openSnackbar: SnackbarProps;
 }

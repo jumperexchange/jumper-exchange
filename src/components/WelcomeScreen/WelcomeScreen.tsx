@@ -1,26 +1,21 @@
 'use client';
 import type { Breakpoint } from '@mui/material';
 import { Slide, Typography, useTheme } from '@mui/material';
-import { useTranslations } from 'next-intl';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
-import { ButtonPrimary, ToolCards } from 'src/components';
+import { ButtonPrimary, CustomColor, ToolCards } from 'src/components';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
 import { useUserTracking } from 'src/hooks';
+import { useClientTranslation } from 'src/i18n';
 import { useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { appendUTMParametersToLink } from 'src/utils';
 import { shallow } from 'zustand/shallow';
-import {
-  ContentWrapper,
-  CustomColor,
-  Overlay,
-  WelcomeContent,
-} from './WelcomeScreen.style';
+import { ContentWrapper, Overlay, WelcomeContent } from './WelcomeScreen.style';
 
 const auditsWelcomeUrl = appendUTMParametersToLink(
   'https://docs.li.fi/smart-contracts/audits',
@@ -36,7 +31,7 @@ const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
 
 export const WelcomeScreen = () => {
   const theme = useTheme();
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const [welcomeScreenClosed, onWelcomeScreenClosed] = useSettingsStore(
     (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
     shallow,
@@ -128,7 +123,7 @@ export const WelcomeScreen = () => {
       >
         <ContentWrapper showWelcome={!welcomeScreenClosed}>
           <WelcomeContent>
-            <CustomColor variant={'lifiHeaderMedium'}>
+            <CustomColor as="h1" variant={'lifiHeaderMedium'}>
               {t('navbar.welcome.title')}
             </CustomColor>
             <Typography
@@ -192,6 +187,17 @@ export const WelcomeScreen = () => {
               </Typography>
             </ButtonPrimary>
           </WelcomeContent>
+          {/* <FeaturedArticle
+            showIntro={true}
+            showAllButton={true}
+            styles={{
+              background: `linear-gradient(0deg, transparent, ${
+                theme.palette.mode === 'light'
+                  ? theme.palette.white.main
+                  : theme.palette.accent1Alt.main
+              })`,
+            }}
+          /> */}
         </ContentWrapper>
       </Slide>
     </Overlay>

@@ -2,7 +2,6 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FolderZipOutlinedIcon from '@mui/icons-material/FolderZipOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useTheme } from '@mui/material/styles';
-import { useTranslations } from 'next-intl';
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
@@ -13,9 +12,10 @@ import {
   TrackingEventParameter,
 } from '../../../const/trackingKeys';
 
+import { useClientTranslation } from 'src/i18n';
 import { DOCS_URL, GITHUB_URL } from '../../../const/urls';
 export const useDevelopersContent = () => {
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';

@@ -1,13 +1,13 @@
-'use client';
 import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import { useRouter } from 'next/router';
 import { useMemo } from 'react';
+import { widgetConfig } from 'src/config';
 import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
+import { useClientTranslation } from 'src/i18n';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { useConfig } from 'wagmi';
@@ -33,7 +33,7 @@ interface WidgetProps {
 
 export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
-  const { locale, locales } = useRouter();
+  const { i18n } = useClientTranslation();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
@@ -46,18 +46,17 @@ export function Widget({ starterVariant }: WidgetProps) {
   );
 
   // load environment config
-  const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
+  const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
     try {
-      rpcUrls =
-        process.env.NEXT_PUBLIC_CUSTOM_RPCS &&
-        JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS);
+      rpcUrls = JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS);
     } catch (e) {
       if (process.env.DEV) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
     return {
+      ...widgetConfig,
       variant: starterVariant === 'refuel' ? 'default' : 'expandable',
       subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
       walletConfig: {
@@ -96,10 +95,7 @@ export function Widget({ starterVariant }: WidgetProps) {
           primary: {
             main: theme.palette.accent1.main,
           },
-          grey: {
-            300: theme.palette.grey[300],
-            800: theme.palette.grey[800],
-          },
+          grey: theme.palette.grey,
         },
       },
       keyPrefix: `jumper-${starterVariant}`,
@@ -129,18 +125,16 @@ export function Widget({ starterVariant }: WidgetProps) {
       integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
     };
   }, [
-    isMultisigSigner,
-    locale,
-    locales,
-    multisigSdkConfig,
-    multisigWidget,
-    setWalletSelectMenuState,
     starterVariant,
+    theme.palette.mode,
+    theme.palette.surface2.main,
+    theme.palette.surface1.main,
     theme.palette.accent1.main,
     theme.palette.grey,
-    theme.palette.mode,
-    theme.palette.surface1.main,
-    theme.palette.surface2.main,
+    multisigWidget,
+    isMultisigSigner,
+    multisigSdkConfig,
+    setWalletSelectMenuState,
     wagmiConfig,
   ]);
 
@@ -150,7 +144,10 @@ export function Widget({ starterVariant }: WidgetProps) {
       welcomeScreenClosed={welcomeScreenClosed}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
-      <LiFiWidget integrator={'dev.jumper.exchange'} config={widgetConfig} />
+      <LiFiWidget
+        integrator={process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR as string}
+        config={config}
+      />
     </WidgetWrapper>
   );
 }

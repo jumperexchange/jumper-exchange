@@ -1,7 +1,7 @@
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 
 import { Typography } from '@mui/material';
-import { useTranslations } from 'next-intl';
+import { useClientTranslation } from 'src/i18n';
 import {
   MultisigWalletHeaderAlertContainer,
   MultisigWalletHeaderAlertContent,
@@ -9,7 +9,7 @@ import {
 } from '.';
 
 export const MultisigWalletHeaderAlert = () => {
-  const t = useTranslations();
+  const { t } = useClientTranslation();
 
   return (
     <MultisigWalletHeaderAlertContainer>

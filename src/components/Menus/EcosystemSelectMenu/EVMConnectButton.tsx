@@ -1,8 +1,12 @@
+import { ChainId } from '@lifi/types';
 import { Avatar, Typography, useTheme } from '@mui/material';
-import { useAccountConnect } from 'src/hooks';
+import { useAccountConnect, useChains } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { type Connector } from 'wagmi';
-import { SVMConnectButton } from './EcosystemSelectMenu.style';
+import {
+  ConnectButton,
+  EcoSystemSelectBadge,
+} from './EcosystemSelectMenu.style';
 
 interface EvmConnectButton {
   walletIcon?: string;
@@ -12,6 +16,8 @@ interface EvmConnectButton {
 export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
   const theme = useTheme();
   const connect = useAccountConnect();
+  const { chains } = useChains();
+  const ethereumChain = chains.find((chain) => chain.id === ChainId.ETH);
 
   const { closeAllMenus } = useMenuStore((state) => state);
 
@@ -20,8 +26,24 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
     closeAllMenus();
   };
   return (
-    <SVMConnectButton onClick={() => connectHandler()}>
-      <Avatar src={walletIcon} sx={{ width: '88px', height: '88px' }} />
+    <ConnectButton onClick={() => connectHandler()}>
+      <EcoSystemSelectBadge
+        overlap="circular"
+        className="badge"
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        badgeContent={
+          <Avatar
+            src={walletIcon}
+            alt={'wallet-avatar'}
+            sx={{ width: '33px', height: '33px' }}
+          />
+        }
+      >
+        <Avatar
+          src={ethereumChain?.logoURI}
+          sx={{ width: '88px', height: '88px' }}
+        />
+      </EcoSystemSelectBadge>
       <Typography
         variant={'lifiBodySmallStrong'}
         sx={{
@@ -29,11 +51,11 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
             theme.palette.mode === 'dark'
               ? theme.palette.white.main
               : theme.palette.black.main,
-          margin: '12px',
+          marginTop: 1.5,
         }}
       >
         EVM
       </Typography>
-    </SVMConnectButton>
+    </ConnectButton>
   );
 };

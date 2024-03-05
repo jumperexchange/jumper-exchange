@@ -1,17 +1,17 @@
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, darken } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useTranslations } from 'next-intl';
 import {
   Menu,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuItem,
-  SubMenu,
 } from 'src/components';
 import { MenuKeysEnum } from 'src/const';
+import { useClientTranslation } from 'src/i18n';
 import { useMenuStore } from 'src/stores';
 import { getContrastAlphaColor } from 'src/utils';
+import { WalletSelectMoreSubMenu } from '../WalletSelectMoreSubMenu';
 import { useWalletSelectContent } from './useWalletSelectContent';
 
 interface MenuProps {
@@ -21,7 +21,7 @@ interface MenuProps {
 const NUMBER_OF_WALLETS_DISPLAYED = 9;
 
 export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
-  const t = useTranslations();
+  const { t } = useClientTranslation();
   const theme = useTheme();
   const walletSelectMenuItems = useWalletSelectContent();
   const isDarkMode = theme.palette.mode === 'dark';
@@ -29,16 +29,8 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
     0,
     NUMBER_OF_WALLETS_DISPLAYED,
   );
-  const {
-    openWalletSelectMenu,
-    setWalletSelectMenuState,
-    openSubMenu,
-    setSubMenuState,
-  } = useMenuStore((state) => state);
-
-  const handleClickSelectMore = () => {
-    setSubMenuState(MenuKeysEnum.WalletSelectMore);
-  };
+  const { openWalletSelectMenu, setWalletSelectMenuState, openSubMenu } =
+    useMenuStore((state) => state);
 
   const menuItemStyles: SxProps<Theme> = {
     margin: 0,
@@ -137,9 +129,9 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
           <MenuItem
             key={`select-more-wallets`}
             triggerSubMenu={MenuKeysEnum.WalletSelectMore}
-            showButton={true}
             showMoreIcon={false}
-            open={true}
+            open
+            showButton
             styles={{
               ...menuItemStyles,
               gridColumn: 'span 3',
@@ -173,16 +165,10 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
                 {t('navbar.seeAllWallets')}
               </Typography>
             }
-            onClick={handleClickSelectMore}
           />
         )}
-      <SubMenu
-        label={t('navbar.walletSelectMenu.wallets')}
-        triggerSubMenu={MenuKeysEnum.WalletSelectMore}
-        open={openSubMenu === MenuKeysEnum.WalletSelectMore}
-        prevMenu={MenuKeysEnum.None}
-        subMenuList={walletSelectMenuItems}
-      />
+
+      <WalletSelectMoreSubMenu />
     </Menu>
   );
 };
