@@ -5,7 +5,6 @@ import {
   FeatureCards,
   Navbar,
   PoweredBy,
-  ProfilePage,
   Snackbar,
   SupportModal,
   WelcomeScreen,
@@ -25,10 +24,9 @@ export function App() {
     <AppProvider>
       <Navbar />
       <WelcomeScreen />
-      {/* <Widgets />
-      <FeatureCards /> */}
+      <Widgets />
+      <FeatureCards />
       <PoweredBy />
-      <ProfilePage />
       <Snackbar />
       <SupportModal />
     </AppProvider>

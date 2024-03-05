@@ -31,6 +31,7 @@ declare module '@mui/material/styles' {
     dataBg: Palette['primary'];
     dataOutline: Palette['primary'];
     bg: Palette['primary'];
+    shadow: Palette['primary'];
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
     alphaDark300: Palette['primary'];
@@ -63,6 +64,7 @@ declare module '@mui/material/styles' {
     dataBg?: Palette['primary'];
     dataOutline?: Palette['primary'];
     bg?: PaletteOptions['primary'];
+    shadow?: PaletteOptions['primary'];
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
     alphaDark300?: PaletteOptions['primary'];
@@ -97,6 +99,7 @@ declare module '@mui/material/styles' {
     lifiBodySmall: React.CSSProperties;
     lifiBodyXSmallStrong: React.CSSProperties;
     lifiBodyXSmall: React.CSSProperties;
+    lifiBrandHeaderXLarge: React.CSSProperties;
     lifiMono5: React.CSSProperties;
     lifiMono4: React.CSSProperties;
     lifiMono3: React.CSSProperties;
@@ -112,7 +115,7 @@ declare module '@mui/material/styles' {
     // lifiBrandBodySmall: React.CSSProperties;
     // lifiBrandHeaderMedium: React.CSSProperties;
     // lifiBrandHeaderLarge: React.CSSProperties;
-    // lifiBrandHeaderXLarge: React.CSSProperties;
+    lifiBrandHeaderXLarge: React.CSSProperties;
     lifiHeaderDisplay?: React.CSSProperties;
     lifiHeaderXLarge?: React.CSSProperties;
     lifiHeaderLarge?: React.CSSProperties;
@@ -152,6 +155,7 @@ declare module '@mui/material/Button' {
     dataBg: true;
     dataOutline: true;
     bg: true;
+    shadow: true;
     alphaDark100: true;
     alphaDark200: true;
     alphaDark300: true;
@@ -189,6 +193,7 @@ declare module '@mui/material/Typography' {
     lifiBodySmall: true;
     lifiBodyXSmallStrong: true;
     lifiBodyXSmall: true;
+    lifiBrandHeaderXLarge: true;
     lifiMono5: true;
     lifiMono4: true;
     lifiMono3: true;
@@ -257,7 +262,22 @@ const themeCustomized: Theme = createTheme({
         '@supports': { fontVariationSettings: 'normal' },
       },
     },
-
+    MuiButton: {
+      defaultProps: {
+        size: 'large',
+      },
+      styleOverrides: {
+        sizeSmall: {
+          height: 32,
+        },
+        sizeMedium: {
+          height: 40,
+        },
+        sizeLarge: {
+          height: 48,
+        },
+      },
+    },
     MuiTypography: {
       defaultProps: {
         variantMapping: {
@@ -277,6 +297,7 @@ const themeCustomized: Theme = createTheme({
           lifiBodySmall: 'p',
           lifiBodyXSmallStrong: 'p',
           lifiBodyXSmall: 'p',
+          lifiBrandHeaderXLarge: 'h1',
           lifiMono5: 'p',
           lifiMono4: 'p',
           lifiMono3: 'p',
@@ -492,8 +513,8 @@ const themeCustomized: Theme = createTheme({
       ].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
-      fontSize: '14px',
-      lineHeight: '20px',
+      fontSize: '18px',
+      lineHeight: '24px',
       letterSpacing: 0,
     },
     lifiBodyXLargeStrong: {
@@ -676,6 +697,24 @@ const themeCustomized: Theme = createTheme({
       lineHeight: '16px',
       letterSpacing: 0,
     },
+    lifiBrandHeaderXLarge: {
+      fontFamily: [
+        'Inter var',
+        'Inter',
+        'Inter fallback',
+        'Arial',
+        'Noto Sans',
+        'BlinkMacSystemFont',
+        'Segoe UI',
+        'Helvetica Neue',
+        'sans-serif',
+      ].join(','),
+      fontStyle: 'normal',
+      fontWeight: 700,
+      fontSize: '64px',
+      lineHeight: '72px',
+      letterSpacing: 0,
+    },
     lifiMono5: {
       fontFamily: 'Roboto Mono',
       fontStyle: 'normal',
@@ -736,6 +775,11 @@ export const lightTheme: Theme = createTheme(
         300: '#E5E1EB',
       },
       bg: {
+        light: '#F3EBFF',
+        main: '#F3EBFF',
+        dark: '#F3EBFF',
+      },
+      shadow: {
         light: '#F3EBFF',
         main: '#F3EBFF',
         dark: '#F3EBFF',
@@ -819,9 +863,14 @@ export const darkTheme: Theme = createTheme(
         800: '#302B52',
       },
       bg: {
-        light: '#0E0B1F',
+        light: '#030014',
         main: '#030014',
         dark: '#030014',
+      },
+      shadow: {
+        light: '#F3EBFF',
+        main: '#F3EBFF',
+        dark: '#F3EBFF',
       },
       primary: {
         light: '#653BA3',
@@ -829,9 +878,9 @@ export const darkTheme: Theme = createTheme(
         dark: '#653BA3',
       },
       secondary: {
-        light: '#E9E1F5',
-        main: '#E9E1F5',
-        dark: '#E9E1F5',
+        light: '#321D52',
+        main: '#321D52',
+        dark: '#321D52',
       },
       tertiary: {
         light: '#33163D',

@@ -60,13 +60,40 @@
     "testnet": "Any transactions or actions performed on the Testnet will not be reflected on the Mainnet.",
     "switchToMainnet": "Switch to Mainnet"
   },
+  "discordBanner": {
+    "ctaHeadline": "Join our Discord to learn more",
+    "ctaButton": "Join our Discord"
+  },
+  "blog": {
+    "title": "Tips and tutorials",
+    "categories": "Categories",
+    "allCategories": "All",
+    "subtitle": "TL;DR step-by-step guides to DeFi and crypto for all levels",
+    "minRead": "{{minRead}} min read",
+    "seeAllPosts": "See all posts",
+    "recentPosts": "Recent Posts",
+    "similarPosts": "Similar Posts",
+    "goToArticle": "Go to article",
+    "openApp": "Open app",
+    "faq": "FAQ",
+    "jumperCta": "Try jumper.exchange",
+    "copiedLink": "Copied Link",
+    "shareLinkedIn": "Share article on LinkedIn",
+    "shareFb": "Share article on Facebook",
+    "shareX": "Share article on X",
+    "shareLink": "Share the link"
+  },
+  "solanaAlert": {
+    "title": "Limited Solana token support",
+    "subtitle": "Currently only USDC and USDT can be bridged to and from Solana."
+  },
   "featureCard": {
     "learnMore": "Learn more"
   },
   "button": {
     "okay": "Okay"
   },
-  "error" : {
+  "error": {
     "message": "Something went wrong. Please try reloading the page. If the problem persists, contact our support."
   },
   "multisig": {

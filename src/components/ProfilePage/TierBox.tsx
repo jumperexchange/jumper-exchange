@@ -4,8 +4,8 @@ import { PointsBox } from './PointsBox';
 import { ProfilePageTypography } from './ProfilePage.style';
 
 interface TierBoxProps {
-  tier?: string;
-  points?: number;
+  tier?: string | null;
+  points?: number | null;
 }
 
 export const TierBox = ({ points, tier }: TierBoxProps) => {

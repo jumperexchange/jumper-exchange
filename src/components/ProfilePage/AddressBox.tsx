@@ -11,7 +11,7 @@ import {
 import { ProfilePageTypography } from './ProfilePage.style';
 
 interface AddressBoxProps {
-  address?: string;
+  address?: string | null;
 }
 
 export const AddressBox = ({ address }: AddressBoxProps) => {

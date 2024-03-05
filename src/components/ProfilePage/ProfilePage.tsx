@@ -41,7 +41,7 @@ export const ProfilePage = () => {
               <TierBox points={points} tier={tier} />
             </ProfilePageHeaderBox>
           </Stack>
-          <QuestCarousel quests={quests} theme={theme} />
+          <QuestCarousel quests={quests} />
           <QuestCompletedList
             pdas={pdas}
             dataIsFetched={isSuccess}
