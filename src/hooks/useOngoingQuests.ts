@@ -1,9 +1,9 @@
 import { useAccounts } from './useAccounts';
 import { useQuery } from '@tanstack/react-query';
-import type { FeatureCardData } from 'src/types';
+import type { FeatureCardData, Quest } from 'src/types';
 
 export interface UseQuestsProps {
-  quests: any[] | undefined;
+  quests: Quest[] | undefined;
   url: URL;
   isSuccess: boolean;
 }
@@ -39,6 +39,8 @@ export const useOngoingQuests = (): UseQuestsProps => {
     },
     refetchInterval: 1000 * 60 * 60,
   });
+
+  console.log(data);
 
   return {
     quests: data,

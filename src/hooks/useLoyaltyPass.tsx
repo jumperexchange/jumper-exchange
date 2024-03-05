@@ -14,6 +14,37 @@ export interface UseLoyaltyPassProps {
 
 const SECONDS_IN_A_DAY = 86400;
 
+const getAllPDAs = gql`
+  query issuedPDAs($EVMAddress: String!) {
+    issuedPDAs(
+      filter: {
+        organization: { type: GATEWAY_ID, value: "lifi" }
+        owner: { type: EVM, value: $EVMAddress }
+      }
+      skip: 0
+      take: 300
+      order: { issuanceDate: "DESC" }
+    ) {
+      id
+      status
+      ownerHash
+      dataAsset {
+        claim
+        title
+        description
+        image
+        dataModel {
+          id
+        }
+        owner {
+          gatewayId
+          walletId
+        }
+      }
+    }
+  }
+`;
+
 export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   const { account } = useAccounts();
   const [
@@ -32,43 +63,8 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     state.storeLoyaltyPassData,
   ]);
 
-  //   const apiBaseUrl = import.meta.env.VITE_GATEWAY_URL;
-  const apiBaseUrl = 'https://protocol.mygateway.xyz/graphql';
+  const apiBaseUrl = import.meta.env.VITE_GATEWAY_URL;
   const apiUrl = new URL(`${apiBaseUrl}`);
-  // prepare the gql for the query
-  const getAllPDAs = gql`
-    query issuedPDAs($EVMAddress: String!) {
-      issuedPDAs(
-        filter: {
-          organization: { type: GATEWAY_ID, value: "lifi" }
-          owner: { type: EVM, value: $EVMAddress }
-        }
-        skip: 0
-        take: 300
-        order: { issuanceDate: "DESC" }
-      ) {
-        id
-        status
-        ownerHash
-        dataAsset {
-          claim
-          title
-          description
-          image
-          dataModel {
-            id
-          }
-          owner {
-            gatewayId
-            walletId
-          }
-        }
-      }
-    }
-  `;
-
-  // tokens
-
   const apiKey = import.meta.env.VITE_GATEWAY_API_KEY;
   const apiAccesToken = import.meta.env.VITE_GATEWAY_API_TOKEN;
 
@@ -80,6 +76,11 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   //we store the data during 24hours to avoid querying too much our partner API.
   const t = Date.now() / 1000;
   const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_A_DAY;
+  const queryIsEnabled =
+    storeNeedsRefresh &&
+    !!account?.address &&
+    account.chainType === 'EVM' &&
+    account.address !== storedAddress;
 
   // query
   const { data, isSuccess } = useQuery({
@@ -124,16 +125,19 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
         return null;
       }
     },
-    enabled:
-      !!account?.address &&
-      account.chainType === 'EVM' &&
-      storeNeedsRefresh &&
-      account.address !== storedAddress,
+    enabled: queryIsEnabled,
     refetchInterval: 1000 * 60 * 60,
   });
 
-  // We check if we have something inside the store
-  if (account?.address === storedAddress && !storeNeedsRefresh) {
+  const returnLocalData =
+    account?.address === storedAddress && !storeNeedsRefresh;
+  const errorWhileFetchingData =
+    !data || !account?.address || !(account.chainType === 'EVM');
+
+  console.log(storedPdas);
+  console.log(data);
+
+  if (returnLocalData) {
     return {
       isSuccess: true,
       address: storedAddress,
@@ -141,12 +145,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
       tier: storedTier,
       pdas: storedPdas,
     };
-  } else if (
-    !isSuccess ||
-    !data ||
-    !account?.address ||
-    !(account.chainType === 'EVM')
-  ) {
+  } else if (errorWhileFetchingData) {
     return {
       isSuccess: false,
       address: null,
