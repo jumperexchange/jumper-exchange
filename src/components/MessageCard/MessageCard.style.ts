@@ -6,7 +6,7 @@ const MessageCard = styled(Box)(({ theme }) => ({
   position: 'relative',
   whiteSpace: 'pre-line',
   margin: 'auto',
-  width: 392,
+  width: 416,
   padding: theme.spacing(2, 3),
   boxShadow:
     theme.palette.mode === 'dark'

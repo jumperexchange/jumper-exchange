@@ -1,5 +1,5 @@
 import { useTheme } from '@mui/material';
-import { Button } from 'src/components';
+import { Button, JumperLogo } from 'src/components';
 import { LogoLink } from '../Navbar';
 
 import { useTranslation } from 'react-i18next';
@@ -10,7 +10,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
+import { useAccounts, useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
 import { getContrastAlphaColor, openInNewTab } from 'src/utils';
 import {
@@ -19,7 +19,6 @@ import {
   NavbarContainer,
   SupportMessage,
 } from './FallbackError.styles';
-import { useAccounts } from 'src/hooks/useAccounts';
 
 export function FallbackError() {
   const { trackPageload, trackEvent } = useUserTracking();
@@ -30,7 +29,11 @@ export function FallbackError() {
     <>
       <NavbarContainer>
         <LogoLink>
-          <Logo isConnected={!!account?.address} theme={theme} />
+          <Logo
+            isConnected={!!account?.address}
+            theme={theme}
+            logo={<JumperLogo />}
+          />
         </LogoLink>
       </NavbarContainer>
       <CenteredContainer>

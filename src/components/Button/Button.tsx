@@ -11,7 +11,7 @@ type ButtonVariant = 'primary' | 'secondary' | 'transparent';
 type ButtonSize = 'small' | 'medium' | 'large';
 
 interface ButtonProps {
-  variant: ButtonVariant;
+  variant?: ButtonVariant;
   styles?: SxProps<Theme>;
   id?: string;
   fullWidth?: boolean;

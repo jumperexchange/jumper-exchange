@@ -1,4 +1,4 @@
-import { MenuKeys } from 'src/const';
+import { MenuKeys } from 'src/const/menuKeys';
 import type {
   EcosystemSelectMenuProps,
   MenuState,
