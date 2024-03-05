@@ -10,7 +10,6 @@ import {
 
 import { styled } from '@mui/material/styles';
 import { Tag } from 'src/components/Tag.style';
-import { getContrastAlphaColor } from 'src/utils';
 
 export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   flexShrink: 0,
@@ -73,7 +72,6 @@ export const BlogArticleCardImage = styled('img')(({ theme }) => ({
   width: '100%',
   height: 'auto',
   borderRadius: '16px',
-  border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
   objectFit: 'contain',
 }));
 
@@ -83,7 +81,6 @@ export const BlogArticleCardImageSkeleton = styled(Skeleton)(({ theme }) => ({
   transform: 'unset',
   height: 'auto',
   borderRadius: '16px',
-  border: `1px solid ${getContrastAlphaColor(theme, '12%')}`,
 }));
 
 export const BlogArticleCardContent = styled(CardContent)(({ theme }) => ({

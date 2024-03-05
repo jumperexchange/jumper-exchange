@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -17,6 +18,7 @@ import {
   FeaturedArticleContent,
   FeaturedArticleDetails,
   FeaturedArticleImage,
+  FeaturedArticleImageSkeleton,
   FeaturedArticleMetaContainer,
   FeaturedArticleMetaDate,
   FeaturedArticleSkeleton,
@@ -32,6 +34,7 @@ export const FeaturedArticle = () => {
     queryKey: ['blog-articles'],
     filterFeaturedArticle: true,
   });
+  const [imgLoaded, setImgLoaded] = useState(false);
   const { t } = useTranslation();
   const { closeAllMenus } = useMenuStore((state) => state);
   const navigate = useNavigate();
@@ -48,6 +51,10 @@ export const FeaturedArticle = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleImgLoaded = () => {
+    setImgLoaded(true);
+  };
+
   const formatedDate =
     featuredArticle &&
     formatDate(
@@ -59,13 +66,16 @@ export const FeaturedArticle = () => {
     featuredArticle && readingTime(featuredArticle[0]?.attributes.Content);
 
   return featuredArticle?.length > 0 ? (
-    <FeaturedArticleContainer onClick={handleClick}>
+    <FeaturedArticleContainer onClick={() => handleClick()}>
       <FeaturedArticleImage
+        onLoad={handleImgLoaded}
         src={`${url.origin}${featuredArticle[0]?.attributes.Image.data.attributes.formats.medium.url}`}
+        sx={{ ...(!imgLoaded && { display: 'none' }) }}
         alt={
           featuredArticle[0].attributes.Image.data.attributes.alternativeText
         }
       />
+      {!imgLoaded && <FeaturedArticleImageSkeleton />}
       <FeaturedArticleContent>
         <FeaturedArticleDetails>
           {featuredArticle[0].attributes.tags.data

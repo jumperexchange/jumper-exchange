@@ -123,7 +123,7 @@ export const CustomRichBlocks = ({
                 marginBottom: theme.spacing(3),
                 fontFamily: 'Urbanist, Inter',
                 fontSize: '36px',
-                lineHeight: '38px',
+                lineHeight: '48px',
                 fontWeight: 700,
               }}
             >
@@ -139,7 +139,7 @@ export const CustomRichBlocks = ({
                 marginBottom: theme.spacing(2),
                 fontFamily: 'Urbanist, Inter',
                 fontSize: '28px',
-                lineHeight: '32px',
+                lineHeight: '36px',
                 fontWeight: 700,
               }}
             >
@@ -155,7 +155,7 @@ export const CustomRichBlocks = ({
                 marginBottom: theme.spacing(1.5),
                 fontFamily: 'Urbanist, Inter',
                 fontSize: '22px',
-                lineHeight: '26px',
+                lineHeight: '28px',
                 fontWeight: 700,
               }}
             >
