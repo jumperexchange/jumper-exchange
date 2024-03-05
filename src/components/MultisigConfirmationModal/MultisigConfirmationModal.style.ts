@@ -8,7 +8,7 @@ export const MultisigConfirmationModalContainer = styled(Box)(({ theme }) => ({
   top: 64,
   left: '50%',
   transform: 'translateX(-50%)',
-  width: 392,
+  width: 412,
   [theme.breakpoints.up('sm' as Breakpoint)]: { top: 72 },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     top: '50%',

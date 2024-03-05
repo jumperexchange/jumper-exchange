@@ -4,7 +4,7 @@ export const OnRamperIFrame = styled('iframe')(({ theme }) => ({
   borderRadius: '12px',
   border: 'unset',
   margin: theme.spacing(0, 'auto', 3, 'auto'),
-  maxWidth: 392,
+  maxWidth: 412,
   height: 630,
   minWidth: 375,
   boxShadow:
