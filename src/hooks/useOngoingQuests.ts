@@ -1,6 +1,5 @@
-import { useAccounts } from './useAccounts';
 import { useQuery } from '@tanstack/react-query';
-import type { FeatureCardData, Quest } from 'src/types';
+import type { Quest } from 'src/types';
 
 export interface UseQuestsProps {
   quests: Quest[] | undefined;
@@ -15,7 +14,6 @@ export const useOngoingQuests = (): UseQuestsProps => {
       ? import.meta.env.VITE_LOCAL_STRAPI_URL
       : import.meta.env.VITE_STRAPI_URL;
   const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
-  // TODO FIND A WAY TO FETCH ONLY WHAT WE WANT
   apiUrl.searchParams.set('populate', '*');
   // apiUrl.searchParams.set('populate[1]', 'quests_platform');
   // apiUrl.searchParams.set('populate[quests_platform][populate][0]', 'Logo');
@@ -39,8 +37,6 @@ export const useOngoingQuests = (): UseQuestsProps => {
     },
     refetchInterval: 1000 * 60 * 60,
   });
-
-  console.log(data);
 
   return {
     quests: data,

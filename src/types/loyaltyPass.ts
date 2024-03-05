@@ -69,8 +69,10 @@ type ImageAttributes = {
 };
 
 type ImageData = {
-  id: number;
-  attributes: ImageAttributes;
+  data: {
+    id: number;
+    attributes: ImageAttributes;
+  };
 };
 
 type QuestsPlatformAttributes = {

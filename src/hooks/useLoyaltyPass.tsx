@@ -134,9 +134,6 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   const errorWhileFetchingData =
     !data || !account?.address || !(account.chainType === 'EVM');
 
-  console.log(storedPdas);
-  console.log(data);
-
   if (returnLocalData) {
     return {
       isSuccess: true,
