@@ -36,9 +36,9 @@ export const JumperLogo = () => {
       />
       <path
         fill={mainCol}
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M97.002 8c-1 0-2 1-2 2v10h10c4 0 6-3 6-6s-2-6-6-6h-8Zm8 4h-6v4h6c1.5 0 2-1.264 2-2s-.5-2-2-2Z"
-        clip-rule="evenodd"
+        clipRule="evenodd"
       />
       <path
         fill={mainCol}
