@@ -275,7 +275,7 @@ export const BlogArticleSubtitle = styled(Typography, {
   marginTop: theme.spacing(8),
   marginBottom: theme.spacing(6),
   fontWeight: 700,
-  fontFamily: 'Inter',
+  fontFamily: 'Urbanist, Inter',
   fontSize: '28px',
   lineHeight: '40px',
 }));
