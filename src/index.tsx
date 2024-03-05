@@ -12,6 +12,7 @@ import { BlogArticlePage, BlogPage, Homepage } from './pages';
 import { AppProvider } from './providers';
 import { reportWebVitals } from './reportWebVitals';
 import { ProfilePage } from './components';
+import { LoyaltyPassPage } from './pages/LoyaltyPassPage';
 
 initSentry();
 
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
   {
     path: `${JUMPER_LEARN_PATH}/:id`,
     element: <BlogArticlePage />,
+  },
+  {
+    path: JUMPER_LOYALTY_PATH,
+    element: <LoyaltyPassPage />,
   },
 ]);
 root.render(

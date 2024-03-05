@@ -2,7 +2,7 @@ import { Box, alpha, useTheme } from '@mui/material';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { useNavigate } from 'react-router-dom';
 import { ProfileButtonBox } from './ProfileButton.style';
-import { JUMPER_LEARN_PATH } from 'src/const';
+import { JUMPER_LOYALTY_PATH } from 'src/const';
 
 export const ProfileButton = () => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export const ProfileButton = () => {
   return (
     <>
       {account?.address ? (
-        <ProfileButtonBox onClick={() => navigate(JUMPER_LEARN_PATH)}>
+        <ProfileButtonBox onClick={() => navigate(JUMPER_LOYALTY_PATH)}>
           <img
             src={`https://effigy.im/a/${account.address}.png`}
             width={'44px'}

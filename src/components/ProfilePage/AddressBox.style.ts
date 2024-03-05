@@ -1,6 +1,6 @@
 import { Box, Container, Typography, alpha, styled } from '@mui/material';
 
-export const IconButton = styled(Box)(({ theme, style }) => ({
+export const ProfileIconButton = styled(Box)(({ theme, style }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

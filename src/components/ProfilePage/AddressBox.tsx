@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import {
   AddressDisplayBox,
   BackgroundBox,
-  IconButton,
+  ProfileIconButton,
 } from './AddressBox.style';
 import { ProfilePageTypography } from './ProfilePage.style';
 
@@ -36,17 +36,17 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
                   address?.slice(address.length - 4, address.length)
                 : null}
             </ProfilePageTypography>
-            <IconButton onClick={() => handleCopyButton()}>
+            <ProfileIconButton onClick={() => handleCopyButton()}>
               <ContentCopyIcon sx={{ height: '16px' }} />
-            </IconButton>
+            </ProfileIconButton>
             <a
               href={`https://etherscan.io/address/${address}`}
               target="_blank"
               style={{ textDecoration: 'none', color: 'inherit' }}
             >
-              <IconButton>
+              <ProfileIconButton>
                 <OpenInNewIcon sx={{ height: '16px' }} />
-              </IconButton>
+              </ProfileIconButton>
             </a>
           </>
         ) : null}

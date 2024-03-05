@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { CarouselContainer } from 'src/components';
-import { BlogCarouselContainer } from './BlogCarousel.style';
 import { QuestCard } from './QuestCard';
 import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 import { Stack } from '@mui/material';
 import { QuestCardSkeleton } from './QuestCardSkeleton';
+import { BlogCarouselContainer } from '../Blog/BlogCarousel/BlogCarousel.style';
 
 interface BlogCarouselProps {
   showAllButton?: boolean;
