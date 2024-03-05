@@ -9,6 +9,7 @@ import type {
 } from '@mui/material';
 import {
   AppBar,
+  Drawer,
   Link,
   ListItem,
   MenuList as MuiMenuList,
@@ -121,6 +122,10 @@ export const MenuPaper = styled(Paper, {
   [theme.breakpoints.up('md' as Breakpoint)]: {
     maxHeight: 'calc( 100vh - 80px - 12px )',
   },
+}));
+
+export const MobileDrawer = styled(Drawer)<MenuItemLinkProps>(({ theme }) => ({
+  zIndex: 1400,
 }));
 
 export interface MenuItemLinkProps extends Omit<LinkProps, 'component'> {
