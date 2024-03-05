@@ -6,7 +6,7 @@ export const MultisigWalletHeaderAlertContainer = styled(Box)(({ theme }) => ({
   padding: `${theme.spacing(2)} !important`,
   boxShadow: `0px 8px 16px ${alpha(theme.palette.common.black, 0.04)}`,
   borderRadius: '12px',
-  maxWidth: 392,
+  maxWidth: 412,
   margin: '2rem auto 0.5rem auto',
   display: 'block !important',
 }));
