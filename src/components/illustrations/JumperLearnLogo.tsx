@@ -37,9 +37,9 @@ export const JumperLearnLogo = () => {
       />
       <path
         fill={mainCol}
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M97.002 8c-1 0-2 1-2 2v10h10c4 0 6-3 6-6s-2-6-6-6h-8Zm8 4h-6v4h6c1.5 0 2-1.264 2-2s-.5-2-2-2Z"
-        clip-rule="evenodd"
+        clipRule="evenodd"
       />
       <path
         fill={mainCol}
@@ -56,9 +56,9 @@ export const JumperLearnLogo = () => {
       />
       <path
         fill={subCol}
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M208.668 24c.737 0 1.333-.597 1.333-1.333V9.334c0-.737-.596-1.334-1.333-1.334h-13.333c-.737 0-1.334.597-1.334 1.334v13.333c0 .736.597 1.333 1.334 1.333h2.666v-4h8v4h2.667Zm-2.667-8v-4h-8v4h8Z"
-        clip-rule="evenodd"
+        clipRule="evenodd"
       />
       <path
         fill={subCol}
