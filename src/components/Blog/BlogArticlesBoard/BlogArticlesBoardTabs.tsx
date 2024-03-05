@@ -44,7 +44,7 @@ export const BlogArticlesBoardTabs = ({
     [theme.breakpoints.up('lg')]: {
       maxWidth: 'unset',
       borderRadius: '28px',
-      minWidth: 412,
+      minWidth: 416,
       width: 'auto',
       display: 'flex',
     },

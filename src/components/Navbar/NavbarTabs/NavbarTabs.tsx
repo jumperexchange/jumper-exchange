@@ -16,7 +16,7 @@ export const NavbarTabs = () => {
 
   const containerStyles = {
     display: 'none',
-    minWidth: 412,
+    minWidth: 416,
     borderRadius: 28,
     [theme.breakpoints.up('lg')]: {
       display: 'flex',
