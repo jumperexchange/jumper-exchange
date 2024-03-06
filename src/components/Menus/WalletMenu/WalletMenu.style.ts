@@ -88,7 +88,7 @@ export const WalletCardBadge = styled(Badge)(({ theme }) => ({
   },
   '> .MuiAvatar-root': {
     overflow: 'hidden',
-    '--g': '#0000 100%,#000',
+    '--g': '#0000 98%,#000',
     '--s': '100% 100% no-repeat',
     '--mask':
       'radial-gradient(circle 23px at calc(100% - 8px) calc(100% - 8px),var(--g)) 100% 100%/var(--s)',
