@@ -64,8 +64,17 @@ export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
     '--g': '#0000 98%,#000',
     '--s': '100% 100% no-repeat',
     '--mask':
-      'radial-gradient(circle 8px at calc(100% - 4.5px) calc(100% - 4.5px),var(--g)) 100% 100%/var(--s)',
+      'radial-gradient(circle 7px at calc(100% - 3px) calc(100% - 4px),var(--g)) 100% 100%/var(--s)',
     mask: 'var(--mask)',
+  },
+  span: {
+    width: 14,
+    height: 14,
+    padding: 0,
+    minWidth: 14,
+    transform: 'translate(0%, 0%)',
+    bottom: '-3px',
+    right: '-4px',
   },
 }));
 
