@@ -1,6 +1,7 @@
 import { Avatar, Badge } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import { avatarMask14 } from 'src/components';
 import { ButtonPrimary, ButtonTransparent } from 'src/components/Button';
 import { getContrastAlphaColor } from 'src/utils';
 
@@ -60,21 +61,7 @@ export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
   borderRadius: '50%',
   // overflow: 'hidden',
   '> .MuiAvatar-root': {
-    overflow: 'hidden',
-    '--g': '#0000 98%,#000',
-    '--s': '100% 100% no-repeat',
-    '--mask':
-      'radial-gradient(circle 7px at calc(100% - 3px) calc(100% - 4px),var(--g)) 100% 100%/var(--s)',
-    mask: 'var(--mask)',
-  },
-  span: {
-    width: 14,
-    height: 14,
-    padding: 0,
-    minWidth: 14,
-    transform: 'translate(0%, 0%)',
-    bottom: '-3px',
-    right: '-4px',
+    mask: avatarMask14,
   },
 }));
 
@@ -84,6 +71,8 @@ export const WalletMgmtChainAvatar = styled(Avatar)(({ theme }) => ({
   border: '1.5px solid transparent',
   borderRadius: '10px',
   background: 'transparent',
+  left: 1.5,
+  top: 0.5,
   img: {
     borderRadius: '50%',
   },
