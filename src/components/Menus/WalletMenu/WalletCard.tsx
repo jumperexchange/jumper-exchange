@@ -143,7 +143,6 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             variant="secondary"
             size="medium"
             onClick={() => handleDisconnect()}
-            styles={{}}
           >
             <PowerSettingsNewIcon sx={{ height: '20px' }} />
           </Button>
