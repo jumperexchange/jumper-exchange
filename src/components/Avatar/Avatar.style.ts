@@ -11,8 +11,6 @@ export const LargeAvatar = styled(Avatar)(({ theme }) => ({
   width: 44,
   position: 'relative',
   height: 44,
-  left: theme.spacing(0.5),
-  top: theme.spacing(-0.5),
   border: `6px solid transparent`,
   '& img': {
     objectFit: 'contain',
