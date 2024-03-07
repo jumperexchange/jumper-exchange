@@ -1,11 +1,12 @@
 import type { SxProps, Theme } from '@mui/material';
-import { Drawer, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuList,
   MenuPaper,
+  MobileDrawer,
 } from 'src/components';
 import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
@@ -40,7 +41,7 @@ export const MenuMobile = ({
   const { openSubMenu, closeAllMenus } = useMenuStore((state) => state);
 
   return (
-    <Drawer anchor="bottom" open={open} PaperProps={paperProps}>
+    <MobileDrawer anchor="bottom" open={open} PaperProps={paperProps}>
       <MenuPaper>
         <ClickAwayListener
           onClickAway={(event) => {
@@ -82,6 +83,6 @@ export const MenuMobile = ({
           </MenuList>
         </ClickAwayListener>
       </MenuPaper>
-    </Drawer>
+    </MobileDrawer>
   );
 };

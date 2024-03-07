@@ -2,6 +2,7 @@ import type { ButtonProps } from '@mui/material';
 import { Avatar, Badge, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
+import { avatarMask32 } from 'src/components/Mask.style';
 
 export interface WalletButtonProps extends ButtonProps {
   colored?: boolean;
@@ -22,6 +23,7 @@ export const WalletAvatar = styled(Avatar)(({ theme }) => ({
     width: '100%',
     objectFit: 'contain',
   },
+  mask: avatarMask32,
 }));
 
 export const ChainAvatar = styled(Avatar)(({ theme }) => ({
@@ -77,13 +79,7 @@ export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
 
 export const WalletCardBadge = styled(Badge)(({ theme }) => ({
   borderRadius: '50%',
-  // overflow: 'hidden',
   '> .MuiAvatar-root': {
-    overflow: 'hidden',
-    '--g': '#0000 98%,#000',
-    '--s': '100% 100% no-repeat',
-    '--mask':
-      'radial-gradient(circle 23px at calc(100% - 8px) calc(100% - 8px),var(--g)) 100% 100%/var(--s)',
-    mask: 'var(--mask)',
+    mask: avatarMask32,
   },
 }));
