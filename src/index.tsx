@@ -22,23 +22,23 @@ const router = createBrowserRouter([
     element: <Homepage />,
   },
   {
-    path: '/exchange',
+    path: '/exchange/*',
     element: <Homepage />,
   },
   {
-    path: '/swap',
+    path: '/swap/*',
     element: <Homepage />,
   },
   {
-    path: '/gas',
+    path: '/gas/*',
     element: <Homepage />,
   },
   {
-    path: '/refuel',
+    path: '/refuel/*',
     element: <Homepage />,
   },
   {
-    path: '/buy',
+    path: '/buy/*',
     element: <Homepage />,
   },
   {
