@@ -4,7 +4,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import 'src/fonts/inter.css';
 import 'src/fonts/urbanist.css';
 import 'src/utils/structuredClone';
-import { initSentry } from './config';
 import { JUMPER_LEARN_PATH } from './const';
 import './fonts/inter.css';
 import './fonts/urbanist.css';
@@ -12,7 +11,7 @@ import { BlogArticlePage, BlogPage, Homepage } from './pages';
 import { AppProvider } from './providers';
 import { reportWebVitals } from './reportWebVitals';
 
-initSentry();
+// initSentry();
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement!);
