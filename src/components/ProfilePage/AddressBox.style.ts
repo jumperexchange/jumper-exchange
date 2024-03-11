@@ -21,7 +21,7 @@ export const ProfileIconButton = styled(Box)(({ theme, style }) => ({
 
 export const BackgroundBox = styled(Box)(() => ({
   height: '50%',
-  backgroundColor: '#de85ff',
+  backgroundColor: '#31007A',
   borderTopLeftRadius: '24px',
   borderTopRightRadius: '24px',
 }));

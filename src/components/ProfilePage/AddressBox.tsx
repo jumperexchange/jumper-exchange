@@ -27,29 +27,27 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
     <Box sx={{ height: '100%' }}>
       <BackgroundBox />
       <AddressDisplayBox>
-        {address ? (
-          <>
-            <ProfilePageTypography fontSize={'24px'} lineHeight={'32px'}>
-              {address
-                ? address?.slice(0, 6) +
-                  '...' +
-                  address?.slice(address.length - 4, address.length)
-                : null}
-            </ProfilePageTypography>
-            <ProfileIconButton onClick={() => handleCopyButton()}>
-              <ContentCopyIcon sx={{ height: '16px' }} />
+        <>
+          <ProfilePageTypography fontSize={'24px'} lineHeight={'32px'}>
+            {address
+              ? address?.slice(0, 6) +
+                '...' +
+                address?.slice(address.length - 4, address.length)
+              : '0x0000...0000'}
+          </ProfilePageTypography>
+          <ProfileIconButton onClick={() => handleCopyButton()}>
+            <ContentCopyIcon sx={{ height: '16px' }} />
+          </ProfileIconButton>
+          <a
+            href={`https://etherscan.io/address/${address}`}
+            target="_blank"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <ProfileIconButton>
+              <OpenInNewIcon sx={{ height: '16px' }} />
             </ProfileIconButton>
-            <a
-              href={`https://etherscan.io/address/${address}`}
-              target="_blank"
-              style={{ textDecoration: 'none', color: 'inherit' }}
-            >
-              <ProfileIconButton>
-                <OpenInNewIcon sx={{ height: '16px' }} />
-              </ProfileIconButton>
-            </a>
-          </>
-        ) : null}
+          </a>
+        </>
       </AddressDisplayBox>
 
       <Box

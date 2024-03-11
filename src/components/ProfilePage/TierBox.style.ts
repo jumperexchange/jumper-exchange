@@ -9,28 +9,29 @@ export const TierMainBox = styled(Box)(({ theme, style }) => ({
     theme.palette.mode === 'light'
       ? '#FFFFFF'
       : alpha(theme.palette.white.main, 0.08),
-  padding: '20px',
+  padding: '10px',
 }));
 
 export const TierBadgeBox = styled(Box)(({ theme, style }) => ({
   borderStyle: 'solid',
-  borderWidth: 8,
+  borderWidth: '2px',
   borderColor:
     theme.palette.mode === 'light'
       ? '#F9F5FF'
       : alpha(theme.palette.white.main, 0.08),
   width: '168px',
-  height: '80px',
-  borderRadius: '24px',
+  height: '72px',
+  borderRadius: '48px',
   display: 'flex',
+
   justifyContent: 'center',
   alignItems: 'center',
   ...style,
 }));
 
 export const TierInfoBox = styled(Box)(() => ({
-  marginTop: '24px',
-  marginBottom: '24px',
+  marginBottom: '16px',
   display: 'flex',
+  alignItems: 'center',
   justifyContent: 'space-between',
 }));

@@ -1,38 +1,39 @@
 import { Box, Stack, Typography, alpha, useTheme } from '@mui/material';
 import { ProfilePageTypography } from './ProfilePage.style';
+import { XPBox } from './xpBox';
 
-const progressionData = [
-  {
-    title: 'Novice',
-    minPoints: 0,
-    maxPoints: 51,
-  },
-  {
-    title: 'Bronze',
-    minPoints: 51,
-    maxPoints: 151,
-  },
-  {
-    title: 'Silver',
-    minPoints: 151,
-    maxPoints: 351,
-  },
-  {
-    title: 'Gold',
-    minPoints: 351,
-    maxPoints: 701,
-  },
-  {
-    title: 'Platinum',
-    minPoints: 701,
-    maxPoints: 1100,
-  },
-  {
-    title: 'Tungsten',
-    minPoints: 1100,
-    maxPoints: 2000,
-  },
-];
+// const progressionData = [
+//   {
+//     title: 'Novice',
+//     minPoints: 0,
+//     maxPoints: 51,
+//   },
+//   {
+//     title: 'Bronze',
+//     minPoints: 51,
+//     maxPoints: 151,
+//   },
+//   {
+//     title: 'Silver',
+//     minPoints: 151,
+//     maxPoints: 351,
+//   },
+//   {
+//     title: 'Gold',
+//     minPoints: 351,
+//     maxPoints: 701,
+//   },
+//   {
+//     title: 'Platinum',
+//     minPoints: 701,
+//     maxPoints: 1100,
+//   },
+//   {
+//     title: 'Tungsten',
+//     minPoints: 1100,
+//     maxPoints: 2000,
+//   },
+// ];
 
 const levelsData = [
   { level: 1, minPoints: 0, maxPoints: 10 },
@@ -139,78 +140,159 @@ const levelsData = [
 
 interface ProgressionBarProps {
   points?: number | null;
+  levelData?: any;
 }
 
-export const ProgressionBar = ({ points }: ProgressionBarProps) => {
+export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
   const theme = useTheme();
+  const calcWidth = points
+    ? points - levelData.minPoints > 0
+      ? ((points - levelData.minPoints) /
+          (levelData.maxPoints - levelData.minPoints)) *
+        100
+      : 0
+    : 0;
 
   return (
-    <Stack direction={'row'} spacing={1}>
-      {progressionData.map((section, index) => {
-        const calcWidth = points
-          ? points - section.minPoints > 0
-            ? ((points - section.minPoints) /
-                (section.maxPoints - section.minPoints)) *
-              100
-            : 0
-          : 0;
-
-        return (
-          <Box>
-            <ProfilePageTypography fontSize={'14px'} lineHeight={'20px'}>
-              {section.title}
-            </ProfilePageTypography>
-            <Box
-              sx={{
-                height: '16px',
-                width: '100px',
-                display: 'flex',
-                marginTop: '8px',
-                marginBottom: '8px',
-              }}
-            >
-              <Box
-                sx={{
-                  height: '100%',
-                  width:
-                    points && points > section.minPoints
-                      ? '100%'
-                      : `${calcWidth}%`,
-                  backgroundColor: '#de85ff',
-                  borderTopLeftRadius: index === 0 ? '16px' : '0px',
-                  borderBottomLeftRadius: index === 0 ? '16px' : '0px',
-                }}
-              />
-              <Box
-                sx={{
-                  height: '100%',
-                  width:
-                    points && points > section.minPoints
-                      ? `${100 - calcWidth}%`
-                      : '100%',
-                  backgroundColor:
-                    theme.palette.mode === 'light'
-                      ? '#F9F5FF'
-                      : alpha(theme.palette.white.main, 0.08),
-                  borderTopRightRadius: index === 5 ? '16px' : '0px',
-                  borderBottomRightRadius: index === 5 ? '16px' : '0px',
-                }}
-              />
-            </Box>
-
-            <ProfilePageTypography
-              fontSize={'14px'}
-              lineHeight={'20px'}
-              fontWeight={400}
-              style={{
-                color: '#858585',
-              }}
-            >
-              {section.minPoints}
-            </ProfilePageTypography>
+    <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <ProfilePageTypography fontSize={'14px'} lineHeight={'18px'}>
+          {'LEVEL ' + levelData.level}
+        </ProfilePageTypography>
+        <ProfilePageTypography fontSize={'14px'} lineHeight={'18px'}>
+          {'LEVEL ' + parseInt(levelData.level + 1)}
+        </ProfilePageTypography>
+      </Box>
+      <Box
+        sx={{
+          height: '16px',
+          width: '100%',
+          display: 'flex',
+          marginTop: '12px',
+          marginBottom: '12px',
+        }}
+      >
+        <Box
+          sx={{
+            height: '100%',
+            width:
+              points && points > levelData.minPoints ? `${calcWidth}%` : '0%',
+            backgroundColor: '#31007A',
+            borderTopLeftRadius: '12px',
+            borderBottomLeftRadius: '12px',
+            borderRadius: points === levelData.maxPoints ? '12px' : null,
+          }}
+        />
+        <Box
+          sx={{
+            height: '100%',
+            width:
+              points && points > levelData.minPoints
+                ? '100%'
+                : `${100 - calcWidth}%`,
+            backgroundColor: '#f5f5f5',
+            borderTopRightRadius: '12px',
+            borderBottomRightRadius: '12px',
+          }}
+        />
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <ProfilePageTypography
+            fontSize={'16px'}
+            lineHeight={'20px'}
+            fontWeight={600}
+          >
+            {levelData.minPoints}
+          </ProfilePageTypography>
+          <Box
+            sx={{ marginLeft: '8px', alignItems: 'center', display: 'flex' }}
+          >
+            <XPBox size={24} />
           </Box>
-        );
-      })}
-    </Stack>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <ProfilePageTypography
+            fontSize={'16px'}
+            lineHeight={'20px'}
+            fontWeight={600}
+          >
+            {levelData.maxPoints}
+          </ProfilePageTypography>
+          <Box
+            sx={{ marginLeft: '8px', alignItems: 'center', display: 'flex' }}
+          >
+            <XPBox size={24} />
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+    // <Stack direction={'row'} spacing={1}>
+    //   {progressionData.map((section, index) => {
+    //     const calcWidth = points
+    //       ? points - section.minPoints > 0
+    //         ? ((points - section.minPoints) /
+    //             (section.maxPoints - section.minPoints)) *
+    //           100
+    //         : 0
+    //       : 0;
+
+    //     return (
+    //       <Box>
+    //         <ProfilePageTypography fontSize={'14px'} lineHeight={'20px'}>
+    //           {section.title}
+    //         </ProfilePageTypography>
+    //         <Box
+    //           sx={{
+    //             height: '16px',
+    //             width: '100px',
+    //             display: 'flex',
+    //             marginTop: '8px',
+    //             marginBottom: '8px',
+    //           }}
+    //         >
+    //           <Box
+    //             sx={{
+    //               height: '100%',
+    //               width:
+    //                 points && points > section.minPoints
+    //                   ? '100%'
+    //                   : `${calcWidth}%`,
+    //               backgroundColor: '#de85ff',
+    //               borderTopLeftRadius: index === 0 ? '16px' : '0px',
+    //               borderBottomLeftRadius: index === 0 ? '16px' : '0px',
+    //             }}
+    //           />
+    //           <Box
+    //             sx={{
+    //               height: '100%',
+    //               width:
+    //                 points && points > section.minPoints
+    //                   ? `${100 - calcWidth}%`
+    //                   : '100%',
+    //               backgroundColor:
+    //                 theme.palette.mode === 'light'
+    //                   ? '#F9F5FF'
+    //                   : alpha(theme.palette.white.main, 0.08),
+    //               borderTopRightRadius: index === 5 ? '16px' : '0px',
+    //               borderBottomRightRadius: index === 5 ? '16px' : '0px',
+    //             }}
+    //           />
+    //         </Box>
+
+    //         <ProfilePageTypography
+    //           fontSize={'14px'}
+    //           lineHeight={'20px'}
+    //           fontWeight={400}
+    //           style={{
+    //             color: '#858585',
+    //           }}
+    //         >
+    //           {section.minPoints}
+    //         </ProfilePageTypography>
+    //       </Box>
+    //     );
+    //   })}
+    // </Stack>
   );
 };

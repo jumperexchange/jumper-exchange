@@ -14,6 +14,7 @@ interface QuestCarouselProps {
 export const QuestCarousel = ({ quests }: QuestCarouselProps) => {
   const { url } = useOngoingQuests();
 
+  console.log(quests);
   return (
     <BlogCarouselContainer>
       <CarouselContainer title={'Available Missions'}>

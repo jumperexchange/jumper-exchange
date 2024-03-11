@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { ProfilePageTypography } from './ProfilePage.style';
+import { XPBox } from './xpBox';
 
 interface PointsBoxProps {
   points?: number | null;
@@ -7,22 +8,17 @@ interface PointsBoxProps {
 
 export const PointsBox = ({ points }: PointsBoxProps) => {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-      <ProfilePageTypography fontSize={'64px'} lineHeight={'72px'}>
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <ProfilePageTypography
+        fontSize={'80px'}
+        lineHeight={'96px'}
+        style={{ color: '#31007A' }}
+      >
         {points ?? 0}
       </ProfilePageTypography>
-      <ProfilePageTypography
-        fontSize={'14px'}
-        lineHeight={'20px'}
-        fontWeight={400}
-        style={{
-          color: '#858585',
-          marginLeft: '8px',
-          marginBottom: '8px',
-        }}
-      >
-        {'points'}
-      </ProfilePageTypography>
+      <Box sx={{ marginLeft: '16px' }}>
+        <XPBox size={48} />
+      </Box>
     </Box>
   );
 };

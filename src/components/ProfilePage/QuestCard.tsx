@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { useUserTracking } from 'src/hooks';
 import { Button } from '../Button';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import DoneIcon from '@mui/icons-material/Done';
 import {
   QuestCardBottomBox,
   QuestCardInfoBox,
@@ -16,6 +16,7 @@ import {
   QuestCardTitleBox,
 } from './QuestCard.style';
 import { ProfilePageTypography } from './ProfilePage.style';
+import { XPBox } from './xpBox';
 
 interface QuestCardProps {
   active?: boolean;
@@ -47,24 +48,86 @@ export const QuestCard = ({
         }}
       />
       <QuestCardBottomBox>
+        {active ? (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginBottom: '16px',
+            }}
+          >
+            <Box>Platform</Box>
+            <Box>Date</Box>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              marginBottom: '16px',
+              backgroundColor: '#d6ffe7',
+              borderRadius: '128px',
+              padding: '4px',
+              width: '50%',
+            }}
+          >
+            <DoneIcon sx={{ height: '16px', color: '#00B849' }} />
+            <ProfilePageTypography
+              fontSize={'12px'}
+              lineHeight={'16px'}
+              style={{ color: '#00B849' }}
+            >
+              Completed
+            </ProfilePageTypography>
+          </Box>
+        )}
         <QuestCardTitleBox>
           <ProfilePageTypography fontSize={'20px'} lineHeight={'20px'}>
             {title}
           </ProfilePageTypography>
         </QuestCardTitleBox>
         <QuestCardInfoBox>
-          <ProfilePageTypography
-            fontSize={'32px'}
-            lineHeight={'40px'}
+          <Box
             sx={{
-              color: theme.palette.mode === 'light' ? '#31007A' : '#de85ff',
+              display: 'flex',
+              width: active ? '50%' : '100%',
+              height: '40px',
+              alignItems: 'center',
+              borderRadius: '128px',
+              borderStyle: 'solid',
+              padding: '6px',
+              borderWidth: '1px',
+              borderColor: '#e7d6ff',
+              justifyContent: 'center',
+              marginRight: active ? '8px' : undefined,
             }}
           >
-            +{points}
-          </ProfilePageTypography>
+            <ProfilePageTypography
+              fontSize={'14px'}
+              lineHeight={'18px'}
+              sx={{
+                color: theme.palette.mode === 'light' ? '#31007A' : '#de85ff',
+              }}
+            >
+              +{points}
+            </ProfilePageTypography>
+            <Box
+              sx={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}
+            >
+              <XPBox size={24} />
+            </Box>
+          </Box>
           {active && link ? (
-            <a href={link} target="_blank" style={{ textDecoration: 'none' }}>
-              <Button variant="secondary" styles={{ alignItems: 'center' }}>
+            <a
+              href={link}
+              target="_blank"
+              style={{ textDecoration: 'none', width: '50%' }}
+            >
+              <Button
+                variant="secondary"
+                size="medium"
+                styles={{ alignItems: 'center', width: '100%' }}
+              >
                 <ProfilePageTypography
                   fontSize={'16px'}
                   lineHeight={'18px'}
@@ -76,7 +139,6 @@ export const QuestCard = ({
                 >
                   Join
                 </ProfilePageTypography>
-                <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
               </Button>
             </a>
           ) : null}
