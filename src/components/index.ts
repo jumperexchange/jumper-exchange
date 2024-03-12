@@ -12,6 +12,7 @@ export * from './JoinDiscordBanner';
 export * from './JsonSchema';
 export * from './Lightbox';
 export * from './Link.style';
+export * from './Mask.style';
 export * from './Menu';
 export * from './Menus';
 export * from './MessageCard';
