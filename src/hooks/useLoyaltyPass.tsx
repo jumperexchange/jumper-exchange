@@ -76,11 +76,12 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   //we store the data during 24hours to avoid querying too much our partner API.
   const t = Date.now() / 1000;
   const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_A_DAY;
+
   const queryIsEnabled =
     storeNeedsRefresh &&
     !!account?.address &&
-    account.chainType === 'EVM' &&
-    account.address !== storedAddress;
+    account?.chainType === 'EVM' &&
+    account?.address?.toLowerCase() !== storedAddress?.toLowerCase();
 
   // query
   const { data, isSuccess } = useQuery({

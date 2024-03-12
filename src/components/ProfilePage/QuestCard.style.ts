@@ -5,7 +5,7 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '#FFFFFF'
       : alpha(theme.palette.white.main, 0.08),
-  height: '428px',
+  height: '426px',
   width: '272px',
   borderRadius: '24px',
   textAlign: 'center',

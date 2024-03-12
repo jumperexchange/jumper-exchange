@@ -5,12 +5,15 @@ interface LayoutProps {
   hideNavbarTabs?: boolean;
   redirectToLearn?: boolean;
   variant?: 'blog' | undefined;
+  navbarPageReload?: boolean;
 }
+
 export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
   children,
   variant,
   hideNavbarTabs,
   redirectToLearn,
+  navbarPageReload,
 }) => {
   return (
     <>
@@ -18,6 +21,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
       <Navbar
         hideNavbarTabs={hideNavbarTabs}
         redirectToLearn={redirectToLearn}
+        navbarPageReload={navbarPageReload}
       />
       {children}
       <Snackbar />

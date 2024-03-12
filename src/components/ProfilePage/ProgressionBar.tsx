@@ -194,6 +194,7 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
             backgroundColor: '#f5f5f5',
             borderTopRightRadius: '12px',
             borderBottomRightRadius: '12px',
+            borderRadius: points ? null : '12px',
           }}
         />
       </Box>

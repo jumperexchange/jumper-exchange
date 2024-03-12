@@ -13,7 +13,7 @@ export const LoyaltyPassPage = () => {
   }, [cookie3, initTracking]);
 
   return (
-    <Layout>
+    <Layout navbarPageReload={true}>
       <ProfilePage />
     </Layout>
   );
