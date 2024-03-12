@@ -60,7 +60,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
       if (res && account?.address) {
         let points = 0;
         let tier = '';
-        const { issuedPDAs: pdas } = res;
+        const { issuedPDAs: pdas } = res as any;
         // filter to remove loyalty pass from pda
         const pdasWithoutLoyalty = pdas.filter((pda: PDA) => {
           if (pda.dataAsset.title === 'LI.FI Loyalty Pass') {
