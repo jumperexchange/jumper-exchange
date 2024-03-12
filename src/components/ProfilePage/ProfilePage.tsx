@@ -44,7 +44,7 @@ export const ProfilePage = () => {
           <QuestCarousel quests={quests} />
           <QuestCompletedList
             pdas={pdas}
-            dataIsFetched={isSuccess}
+            dataIsFetched={isSuccess || !!address} // we might have an address but no isSuccess if the user has no loyalty pass yet
             theme={theme}
           />
         </Stack>

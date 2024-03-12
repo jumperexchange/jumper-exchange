@@ -146,7 +146,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   } else if (errorWhileFetchingData) {
     return {
       isSuccess: false,
-      address: null,
+      address: account?.address,
       points: null,
       tier: null,
       pdas: [],
