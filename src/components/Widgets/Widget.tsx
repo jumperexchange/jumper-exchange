@@ -57,7 +57,7 @@ export function Widget({ starterVariant }: WidgetProps) {
     }
     return {
       ...widgetConfig,
-      variant: starterVariant === 'refuel' ? 'default' : 'expandable',
+      variant: starterVariant === 'refuel' ? 'compact' : 'wide',
       subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
       walletConfig: {
         onConnect: async () => {
@@ -68,14 +68,6 @@ export function Widget({ starterVariant }: WidgetProps) {
         allow:
           starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],
       },
-      containerStyle: {
-        borderRadius: '12px',
-        minWidth: 416,
-        boxShadow:
-          theme.palette.mode === 'light'
-            ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-            : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-      },
       languages: {
         default: i18n.resolvedLanguage as LanguageKey,
         allow: i18n.languages as LanguageKey[],
@@ -83,6 +75,14 @@ export function Widget({ starterVariant }: WidgetProps) {
       appearance: theme.palette.mode === 'light' ? 'light' : 'dark',
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
       theme: {
+        container: {
+          borderRadius: '12px',
+          minWidth: 416,
+          boxShadow:
+            theme.palette.mode === 'light'
+              ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+              : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+        },
         shape: {
           borderRadius: 12,
           borderRadiusSecondary: 24,
