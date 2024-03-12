@@ -9,6 +9,7 @@ import {
 import { useUserTracking } from 'src/hooks';
 import { Button } from '../Button';
 import DoneIcon from '@mui/icons-material/Done';
+import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
 import {
   QuestCardBottomBox,
   QuestCardInfoBox,
@@ -24,6 +25,18 @@ interface QuestCardProps {
   image?: string;
   points?: number;
   link?: string;
+  startDate?: string | null;
+  endDate?: string | null;
+  platformName?: string;
+  platformImage?: string;
+}
+
+function getDateFormat(startDate: string, endDate: string): string {
+  const sDate = new Date(startDate);
+  const eDate = new Date(endDate);
+  const startMonth = sDate.toLocaleString('default', { month: 'short' });
+  const endMonth = eDate.toLocaleString('default', { month: 'short' });
+  return `${startMonth} ${sDate.getDate()} - ${startMonth === endMonth ? '' : endMonth} ${eDate.getDate()}`;
 }
 
 export const QuestCard = ({
@@ -32,6 +45,10 @@ export const QuestCard = ({
   image,
   points,
   link,
+  startDate,
+  endDate,
+  platformName,
+  platformImage,
 }: QuestCardProps) => {
   const theme = useTheme();
   const { trackPageload, trackEvent } = useUserTracking();
@@ -52,12 +69,62 @@ export const QuestCard = ({
           <Box
             sx={{
               display: 'flex',
+              alignItems: 'center',
               justifyContent: 'space-between',
               marginBottom: '16px',
             }}
           >
-            <Box>Platform</Box>
-            <Box>Date</Box>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginRight: '4px',
+                }}
+              >
+                <img
+                  src={platformImage}
+                  width={'24px'}
+                  height={'24px'}
+                  style={{
+                    borderRadius: '100%',
+                  }}
+                />
+              </Box>
+              <ProfilePageTypography fontSize={'12px'} lineHeight={'16px'}>
+                {platformName}
+              </ProfilePageTypography>
+            </Box>
+            {startDate && endDate ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  backgroundColor:
+                    theme.palette.mode === 'light'
+                      ? alpha(theme.palette.black.main, 0.04)
+                      : theme.palette.alphaLight300.main,
+                  paddingTop: '4px',
+                  paddingBottom: '4px',
+                  paddingLeft: '8px',
+                  paddingRight: '8px',
+                  borderRadius: '128px',
+                  justifyContent: 'center',
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <DateRangeRoundedIcon sx={{ height: '16px' }} />
+                </Box>
+                <ProfilePageTypography fontSize={'12px'} lineHeight={'16px'}>
+                  {getDateFormat(startDate, endDate)}
+                </ProfilePageTypography>
+              </Box>
+            ) : null}
           </Box>
         ) : (
           <Box
@@ -106,7 +173,7 @@ export const QuestCard = ({
               fontSize={'14px'}
               lineHeight={'18px'}
               sx={{
-                color: theme.palette.mode === 'light' ? '#31007A' : '#de85ff',
+                color: theme.palette.mode === 'light' ? '#31007A' : '#BEA0EB',
               }}
             >
               +{points}
@@ -133,7 +200,6 @@ export const QuestCard = ({
                   lineHeight={'18px'}
                   fontWeight={600}
                   sx={{
-                    color: '#31007A',
                     padding: '8px',
                   }}
                 >

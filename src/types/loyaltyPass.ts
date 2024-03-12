@@ -82,11 +82,11 @@ type QuestsPlatformAttributes = {
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;
+  Logo: ImageData;
 };
 
 type QuestsPlatformData = {
-  id: number;
-  attributes: QuestsPlatformAttributes;
+  data: { id: number; attributes: QuestsPlatformAttributes };
 };
 
 type QuestAttributes = {

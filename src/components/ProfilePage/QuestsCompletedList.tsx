@@ -38,9 +38,10 @@ export const QuestCompletedList = ({ pdas, dataIsFetched }: any) => {
           : null}
         {(dataIsFetched && pdas.length < 6 && account?.address) ||
         !account?.address
-          ? Array.from({ length: 6 - pdas.length }, () => 42).map(() => (
-              <VoidQuestCard />
-            ))
+          ? Array.from(
+              { length: pdas.length > 0 ? 6 - pdas.length : 3 },
+              () => 42,
+            ).map(() => <VoidQuestCard />)
           : null}
         {account?.address && !dataIsFetched
           ? Array.from({ length: 6 }, () => 42).map(() => <QuestCardSkeleton />)

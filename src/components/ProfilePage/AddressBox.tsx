@@ -62,7 +62,7 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
           src={
             address
               ? `https://effigy.im/a/${address}.png`
-              : `https://effigy.im/a/${'jumperexchange.eth'}.png`
+              : `https://effigy.im/a/${'jumper.eth'}.png`
           }
           width={'128px'}
           height={'128px'}

@@ -14,9 +14,14 @@ export const useOngoingQuests = (): UseQuestsProps => {
       ? import.meta.env.VITE_LOCAL_STRAPI_URL
       : import.meta.env.VITE_STRAPI_URL;
   const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
-  apiUrl.searchParams.set('populate', '*');
-  // apiUrl.searchParams.set('populate[1]', 'quests_platform');
-  // apiUrl.searchParams.set('populate[quests_platform][populate][0]', 'Logo');
+  //populate url
+  apiUrl.searchParams.set('populate[0]', 'Image');
+  apiUrl.searchParams.set('populate[1]', 'quests_platform');
+  apiUrl.searchParams.set('populate[2]', 'quests_platform.Logo');
+  //filter url
+  const currentDate = new Date(Date.now()).toISOString().split('T')[0];
+  apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
+  apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
   import.meta.env.MODE !== 'production' &&
     apiUrl.searchParams.set('publicationState', 'preview');
   const apiAccesToken =

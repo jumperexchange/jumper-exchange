@@ -34,6 +34,17 @@ export const QuestCarousel = ({ quests }: QuestCarouselProps) => {
                   )}
                   points={quest?.attributes.Points}
                   link={quest?.attributes.Link}
+                  startDate={quest?.attributes.StartDate}
+                  endDate={quest?.attributes.EndDate}
+                  platformName={
+                    quest?.attributes.quests_platform?.data?.attributes?.Name
+                  }
+                  platformImage={String(
+                    new URL(
+                      quest.attributes.quests_platform?.data?.attributes?.Logo?.data?.attributes?.url,
+                      url.origin,
+                    ),
+                  )}
                 />
               );
             })

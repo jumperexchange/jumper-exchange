@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { ProfilePageTypography } from './ProfilePage.style';
 import { XPBox } from './xpBox';
 
@@ -7,12 +7,16 @@ interface PointsBoxProps {
 }
 
 export const PointsBox = ({ points }: PointsBoxProps) => {
+  const theme = useTheme();
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <ProfilePageTypography
         fontSize={'80px'}
         lineHeight={'96px'}
-        style={{ color: '#31007A' }}
+        style={{
+          color: theme.palette.mode === 'light' ? '#31007A' : '#BEA0EB',
+        }}
       >
         {points ?? 0}
       </ProfilePageTypography>

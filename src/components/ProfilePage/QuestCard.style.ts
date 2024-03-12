@@ -14,11 +14,13 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
 export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   paddingTop: 16,
   paddingBottom: 16,
-  paddingLeft: 32,
-  paddingRight: 32,
+  paddingLeft: 16,
+  paddingRight: 16,
 }));
 
 export const QuestCardTitleBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
   textAlign: 'left',
   height: '32px',
 }));
