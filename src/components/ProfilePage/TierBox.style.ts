@@ -1,7 +1,7 @@
 import { alpha } from '@mui/material';
 import { Box, styled } from '@mui/system';
 
-export const TierMainBox = styled(Box)(({ theme, style }) => ({
+export const TierMainBox = styled(Box)(({ theme }) => ({
   height: '100%',
   width: '100%',
   borderRadius: '24px',
@@ -12,7 +12,7 @@ export const TierMainBox = styled(Box)(({ theme, style }) => ({
   padding: '10px',
 }));
 
-export const TierBadgeBox = styled(Box)(({ theme, style }) => ({
+export const TierBadgeBox = styled(Box)(({ theme }) => ({
   borderStyle: 'solid',
   borderWidth: '2px',
   borderColor:
@@ -26,7 +26,6 @@ export const TierBadgeBox = styled(Box)(({ theme, style }) => ({
 
   justifyContent: 'center',
   alignItems: 'center',
-  ...style,
 }));
 
 export const TierInfoBox = styled(Box)(() => ({

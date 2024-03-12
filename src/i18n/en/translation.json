@@ -109,5 +109,9 @@
       "title": "Multisig wallet connected",
       "description": "Destination wallet address is required to complete the exchange."
     }
+  },
+  "questCard": {
+    "completed": "Completed",
+    "join": "Join"
   }
 }

@@ -30,7 +30,7 @@ export const useLoyaltyPassStore = createWithEqualityFn(
         }),
 
       // Loyalty Pass Information
-      storeLoyaltyPassData: (
+      setLoyaltyPassData: (
         address: string,
         points: number,
         tier: string,

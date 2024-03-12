@@ -25,12 +25,11 @@ export const QuestCarousel = ({ quests }: QuestCarouselProps) => {
                   key={`ongoing-mission-${index}`}
                   active={true}
                   title={quest?.attributes.Title}
-                  image={String(
-                    new URL(
+                  image={`
+                    ${new URL(
                       quest.attributes.Image?.data?.attributes?.url,
                       url.origin,
-                    ),
-                  )}
+                    )}`}
                   points={quest?.attributes.Points}
                   link={quest?.attributes.Link}
                   startDate={quest?.attributes.StartDate}
@@ -38,19 +37,19 @@ export const QuestCarousel = ({ quests }: QuestCarouselProps) => {
                   platformName={
                     quest?.attributes.quests_platform?.data?.attributes?.Name
                   }
-                  platformImage={String(
-                    new URL(
+                  platformImage={`
+                    ${new URL(
                       quest.attributes.quests_platform?.data?.attributes?.Logo?.data?.attributes?.url,
                       url.origin,
-                    ),
-                  )}
+                    )}
+                  `}
                 />
               );
             })
           ) : (
             <>
-              {Array.from({ length: 3 }, () => 42).map((el) => (
-                <QuestCardSkeleton />
+              {Array.from({ length: 3 }, () => 42).map((_, idx) => (
+                <QuestCardSkeleton key={'mission-card-skeleton-' + idx} />
               ))}
             </>
           )}

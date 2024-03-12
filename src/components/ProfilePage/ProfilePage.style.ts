@@ -9,7 +9,6 @@ import {
 
 export const ProfilePageContainer = styled(Container)(() => ({
   marginTop: 32,
-  marginBottom: 32,
   background: 'transparent',
   borderRadius: '8px',
   position: 'relative',

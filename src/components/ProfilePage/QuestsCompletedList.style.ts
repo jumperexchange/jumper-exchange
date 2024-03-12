@@ -1,19 +1,13 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, alpha, styled } from '@mui/material';
-/* The line `import { IconButtonTertiary } from 'src/components/IconButton.style';` is importing the
-  `IconButtonTertiary` component from the file located at `'src/components/IconButton.style'`. This
-  component is likely a custom styled IconButton component defined in that file and is being used in
-  the current file for styling purposes within the styled components. */
 
 export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'light'
       ? '#F9F5FF'
       : alpha(theme.palette.white.main, 0.08),
-  // marginTop: theme.spacing(6),
   padding: theme.spacing(2),
   borderRadius: '32px',
-  //   margin: theme.spacing(6, 2, 0),
   boxShadow:
     theme.palette.mode === 'dark'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
@@ -33,7 +27,6 @@ export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
     margin: `${theme.spacing(12, 'auto', 0)}`,
     maxWidth: theme.breakpoints.values.xl,
   },
-  marginBottom: 1,
 }));
 
 export const CompletedQuestHeader = styled(Box, {

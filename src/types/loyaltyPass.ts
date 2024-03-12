@@ -120,11 +120,17 @@ export interface LoyaltyPassProps {
 }
 
 export interface LoyaltyPassState extends LoyaltyPassProps {
-  storeLoyaltyPassData: (
+  setLoyaltyPassData: (
     address: string,
     points: number,
     tier: string,
     pdas: PDA[],
     time: number,
   ) => void;
+}
+
+export interface LevelData {
+  level: number;
+  minPoints: number;
+  maxPoints: number;
 }

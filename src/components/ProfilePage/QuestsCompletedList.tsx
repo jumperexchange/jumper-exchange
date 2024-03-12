@@ -36,15 +36,17 @@ export const QuestCompletedList = ({ pdas, dataIsFetched }: any) => {
               );
             })
           : null}
-        {(dataIsFetched && pdas.length < 6 && account?.address) ||
+        {(dataIsFetched && pdas?.length < 6 && account?.address) ||
         !account?.address
           ? Array.from(
-              { length: pdas.length > 0 ? 6 - pdas.length : 3 },
+              { length: pdas?.length > 0 ? 6 - pdas.length : 3 },
               () => 42,
-            ).map(() => <VoidQuestCard />)
+            ).map((_, idx) => <VoidQuestCard key={'void-' + idx} />)
           : null}
         {account?.address && !dataIsFetched
-          ? Array.from({ length: 6 }, () => 42).map(() => <QuestCardSkeleton />)
+          ? Array.from({ length: 6 }, () => 42).map((_, idx) => (
+              <QuestCardSkeleton key={'skeleton-' + idx} />
+            ))
           : null}
       </CompletedQuestStack>
     </CompletedQuestContainer>

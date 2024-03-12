@@ -1,14 +1,4 @@
-import {
-  Box,
-  Breakpoint,
-  Container,
-  Stack,
-  Typography,
-  alpha,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import { useUserTracking } from 'src/hooks';
+import { Box, Breakpoint, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { QuestCarousel } from './QuestCarousel';
 import { QuestCompletedList } from './QuestsCompletedList';
@@ -24,7 +14,6 @@ import {
 export const ProfilePage = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
-  // const { trackPageload, trackEvent } = useUserTracking();
 
   const { isSuccess, points, tier, pdas, address } = useLoyaltyPass();
   const { quests } = useOngoingQuests();
@@ -32,7 +21,7 @@ export const ProfilePage = () => {
   return (
     <ProfilePageContainer>
       {isDesktop ? (
-        <Stack direction={'column'} spacing={4}>
+        <Stack direction={'column'} spacing={4} sx={{ marginBottom: 8 }}>
           <Stack direction={'row'} spacing={4}>
             <ProfilePageHeaderBox style={{ width: '33%' }}>
               <AddressBox address={address} />

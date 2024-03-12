@@ -1,12 +1,4 @@
-import {
-  Box,
-  Container,
-  Stack,
-  Typography,
-  alpha,
-  useTheme,
-} from '@mui/material';
-import { useUserTracking } from 'src/hooks';
+import { Box, alpha, useTheme } from '@mui/material';
 import { Button } from '../Button';
 import DoneIcon from '@mui/icons-material/Done';
 import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
@@ -18,6 +10,7 @@ import {
 } from './QuestCard.style';
 import { ProfilePageTypography } from './ProfilePage.style';
 import { XPBox } from './xpBox';
+import { useTranslation } from 'react-i18next';
 
 interface QuestCardProps {
   active?: boolean;
@@ -51,7 +44,7 @@ export const QuestCard = ({
   platformImage,
 }: QuestCardProps) => {
   const theme = useTheme();
-  const { trackPageload, trackEvent } = useUserTracking();
+  const { t } = useTranslation();
 
   return (
     <QuestCardMainBox>
@@ -144,7 +137,7 @@ export const QuestCard = ({
               lineHeight={'16px'}
               style={{ color: '#00B849' }}
             >
-              Completed
+              {t('questCard.completed')}
             </ProfilePageTypography>
           </Box>
         )}
@@ -203,7 +196,7 @@ export const QuestCard = ({
                     padding: '8px',
                   }}
                 >
-                  Join
+                  {t('questCard.join')}
                 </ProfilePageTypography>
               </Button>
             </a>

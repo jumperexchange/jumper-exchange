@@ -1,8 +1,9 @@
 import { useAccounts } from './useAccounts';
 import { useQuery } from '@tanstack/react-query';
-import request, { gql } from 'graphql-request';
+import request from 'graphql-request';
 import { useLoyaltyPassStore } from 'src/stores';
 import { PDA } from 'src/types';
+import { getAllPDAs } from './querries/pdas';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
@@ -14,54 +15,16 @@ export interface UseLoyaltyPassProps {
 
 const SECONDS_IN_A_DAY = 86400;
 
-const getAllPDAs = gql`
-  query issuedPDAs($EVMAddress: String!) {
-    issuedPDAs(
-      filter: {
-        organization: { type: GATEWAY_ID, value: "lifi" }
-        owner: { type: EVM, value: $EVMAddress }
-      }
-      skip: 0
-      take: 300
-      order: { issuanceDate: "DESC" }
-    ) {
-      id
-      status
-      ownerHash
-      dataAsset {
-        claim
-        title
-        description
-        image
-        dataModel {
-          id
-        }
-        owner {
-          gatewayId
-          walletId
-        }
-      }
-    }
-  }
-`;
-
 export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   const { account } = useAccounts();
-  const [
-    storedAddress,
-    storedPoints,
-    storedTier,
-    storedPdas,
-    timestamp,
-    storeLoyaltyPassData,
-  ] = useLoyaltyPassStore((state) => [
-    state.address,
-    state.points,
-    state.tier,
-    state.pdas,
-    state.timestamp,
-    state.storeLoyaltyPassData,
-  ]);
+  const {
+    address: storedAddress,
+    points: storedPoints,
+    tier: storedTier,
+    pdas: storedPdas,
+    timestamp: timestamp,
+    setLoyaltyPassData,
+  } = useLoyaltyPassStore((state) => state);
 
   const apiBaseUrl = import.meta.env.VITE_GATEWAY_URL;
   const apiUrl = new URL(`${apiBaseUrl}`);
@@ -97,9 +60,9 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
       if (res && account?.address) {
         let points = 0;
         let tier = '';
-        const { issuedPDAs: pdas } = res as any;
+        const { issuedPDAs: pdas } = res;
         // filter to remove loyalty pass from pda
-        const pdasWithoutLoyalty = pdas.filter((pda: any) => {
+        const pdasWithoutLoyalty = pdas.filter((pda: PDA) => {
           if (pda.dataAsset.title === 'LI.FI Loyalty Pass') {
             points = pda.dataAsset.claim.points;
             tier = pda.dataAsset.claim.tier;
@@ -108,7 +71,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
           return true;
         });
 
-        storeLoyaltyPassData(
+        setLoyaltyPassData(
           account.address,
           points,
           tier,

@@ -1,7 +1,11 @@
 import { useTheme } from '@mui/material';
 
 // XPBox
-export const XPBox = ({ size }: any) => {
+interface XPBoxProps {
+  size?: number;
+}
+
+export const XPBox = ({ size }: XPBoxProps) => {
   const theme = useTheme();
 
   return theme.palette.mode === 'light' ? (
