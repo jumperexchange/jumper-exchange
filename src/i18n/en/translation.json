@@ -113,5 +113,9 @@
   "questCard": {
     "completed": "Completed",
     "join": "Join"
+  },
+  "missions": {
+    "available": "Available Missions",
+    "completed": "Completed Missions"
   }
 }

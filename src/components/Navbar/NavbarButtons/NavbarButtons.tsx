@@ -1,5 +1,5 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import { Typography } from '@mui/material';
+import { Breakpoint, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -19,6 +19,9 @@ interface NavbarButtonsProps {
 }
 
 export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
+
   const mainMenuAnchor = useRef<any>(null);
   const { trackEvent } = useUserTracking();
 
@@ -82,7 +85,7 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
         isSuccess={isSuccess}
       />
 
-      <ProfileButton />
+      {isDesktop ? <ProfileButton /> : null}
 
       <MenuToggle
         ref={mainMenuAnchor}

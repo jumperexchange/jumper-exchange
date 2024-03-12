@@ -13,10 +13,11 @@ interface QuestCarouselProps {
 
 export const QuestCarousel = ({ quests }: QuestCarouselProps) => {
   const { url } = useOngoingQuests();
+  const { t } = useTranslation();
 
   return (
     <BlogCarouselContainer>
-      <CarouselContainer title={'Available Missions'}>
+      <CarouselContainer title={t('missions.available')}>
         <Stack direction={'row'} spacing={4}>
           {quests ? (
             quests?.map((quest: Quest, index: number) => {

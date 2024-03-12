@@ -45,3 +45,9 @@ export const ProfilePageTypography = styled(
     lineHeight: lineHeight,
   }),
 );
+
+export const CenteredBox = styled(Box)(({ style }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  ...style,
+}));

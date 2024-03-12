@@ -1,15 +1,23 @@
-import { Box, Breakpoint, Stack, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  Breakpoint,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { QuestCarousel } from './QuestCarousel';
 import { QuestCompletedList } from './QuestsCompletedList';
 import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 import { TierBox } from './TierBox';
 import { AddressBox } from './AddressBox';
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {
   ProfilePageContainer,
   ProfilePageHeaderBox,
-  ProfilePageTypography,
 } from './ProfilePage.style';
+import { WarningMessageCard, WarningMessageCardTitle } from '../MessageCard';
 
 export const ProfilePage = () => {
   const theme = useTheme();
@@ -38,17 +46,22 @@ export const ProfilePage = () => {
           />
         </Stack>
       ) : (
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <ProfilePageTypography fontSize={'18px'} lineHeight={'40px'}>
-            Pass not available on mobile for now. <br /> Please connect to a
-            desktop.
-          </ProfilePageTypography>
+        <Box sx={{ right: 20, marginBottom: 8 }}>
+          <WarningMessageCard>
+            <WarningMessageCardTitle display="flex" alignItems="center">
+              <WarningRoundedIcon
+                sx={{
+                  marginRight: 1,
+                }}
+              />
+              <Typography variant={'lifiHeaderXSmall'}>
+                {'Not available on small screen'}
+              </Typography>
+            </WarningMessageCardTitle>
+            <Typography variant={'lifiBodySmall'} pt={theme.spacing(1.5)}>
+              {'for now'}
+            </Typography>
+          </WarningMessageCard>
         </Box>
       )}
     </ProfilePageContainer>

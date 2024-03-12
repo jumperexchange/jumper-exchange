@@ -8,14 +8,21 @@ import {
 import { VoidQuestCard } from './VoidQuestCard';
 import { QuestCardSkeleton } from './QuestCardSkeleton';
 import { useAccounts } from 'src/hooks/useAccounts';
+import { useTranslation } from 'react-i18next';
 
 export const QuestCompletedList = ({ pdas, dataIsFetched }: any) => {
   const { account } = useAccounts();
+  const { t } = useTranslation();
+
+  const showVoidCardsAsFewPdas =
+    (dataIsFetched && pdas?.length < 6 && account?.address) ||
+    !account?.address;
+  const loadingPdas = account?.address && !dataIsFetched;
 
   return (
     <CompletedQuestContainer>
       <CompletedQuestHeader>
-        <CompletedQuestTitle>Completed Missions</CompletedQuestTitle>
+        <CompletedQuestTitle>{t('missions.completed')}</CompletedQuestTitle>
       </CompletedQuestHeader>
       <CompletedQuestStack
         direction={'row'}
@@ -36,14 +43,13 @@ export const QuestCompletedList = ({ pdas, dataIsFetched }: any) => {
               );
             })
           : null}
-        {(dataIsFetched && pdas?.length < 6 && account?.address) ||
-        !account?.address
+        {showVoidCardsAsFewPdas
           ? Array.from(
               { length: pdas?.length > 0 ? 6 - pdas.length : 3 },
               () => 42,
             ).map((_, idx) => <VoidQuestCard key={'void-' + idx} />)
           : null}
-        {account?.address && !dataIsFetched
+        {loadingPdas
           ? Array.from({ length: 6 }, () => 42).map((_, idx) => (
               <QuestCardSkeleton key={'skeleton-' + idx} />
             ))

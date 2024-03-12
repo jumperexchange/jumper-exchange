@@ -33,3 +33,10 @@ export const AddressDisplayBox = styled(Box)(() => ({
   height: '50%',
   marginTop: 4,
 }));
+
+export const PassImageBox = styled(Box)(() => ({
+  display: 'flex',
+  justifyContent: 'center',
+  position: 'relative',
+  bottom: '75%',
+}));

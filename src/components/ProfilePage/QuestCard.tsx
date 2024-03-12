@@ -3,12 +3,16 @@ import { Button } from '../Button';
 import DoneIcon from '@mui/icons-material/Done';
 import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
 import {
+  CompletedBox,
   QuestCardBottomBox,
   QuestCardInfoBox,
   QuestCardMainBox,
   QuestCardTitleBox,
+  QuestDatesBox,
+  QuestPlatformMainBox,
+  XPDisplayBox,
 } from './QuestCard.style';
-import { ProfilePageTypography } from './ProfilePage.style';
+import { CenteredBox, ProfilePageTypography } from './ProfilePage.style';
 import { XPBox } from './xpBox';
 import { useTranslation } from 'react-i18next';
 
@@ -24,7 +28,7 @@ interface QuestCardProps {
   platformImage?: string;
 }
 
-function getDateFormat(startDate: string, endDate: string): string {
+function getStringDateFormatted(startDate: string, endDate: string): string {
   const sDate = new Date(startDate);
   const eDate = new Date(endDate);
   const startMonth = sDate.toLocaleString('default', { month: 'short' });
@@ -59,19 +63,10 @@ export const QuestCard = ({
       />
       <QuestCardBottomBox>
         {active ? (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '16px',
-            }}
-          >
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
+          <QuestPlatformMainBox>
+            <CenteredBox>
+              <CenteredBox
+                style={{
                   marginRight: '4px',
                 }}
               >
@@ -83,54 +78,24 @@ export const QuestCard = ({
                     borderRadius: '100%',
                   }}
                 />
-              </Box>
+              </CenteredBox>
               <ProfilePageTypography fontSize={'12px'} lineHeight={'16px'}>
                 {platformName}
               </ProfilePageTypography>
-            </Box>
+            </CenteredBox>
             {startDate && endDate ? (
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  backgroundColor:
-                    theme.palette.mode === 'light'
-                      ? alpha(theme.palette.black.main, 0.04)
-                      : theme.palette.alphaLight300.main,
-                  paddingTop: '4px',
-                  paddingBottom: '4px',
-                  paddingLeft: '8px',
-                  paddingRight: '8px',
-                  borderRadius: '128px',
-                  justifyContent: 'center',
-                }}
-              >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
+              <QuestDatesBox>
+                <CenteredBox>
                   <DateRangeRoundedIcon sx={{ height: '16px' }} />
-                </Box>
+                </CenteredBox>
                 <ProfilePageTypography fontSize={'12px'} lineHeight={'16px'}>
-                  {getDateFormat(startDate, endDate)}
+                  {getStringDateFormatted(startDate, endDate)}
                 </ProfilePageTypography>
-              </Box>
+              </QuestDatesBox>
             ) : null}
-          </Box>
+          </QuestPlatformMainBox>
         ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              marginBottom: '16px',
-              backgroundColor: '#d6ffe7',
-              borderRadius: '128px',
-              padding: '4px',
-              width: '50%',
-            }}
-          >
+          <CompletedBox>
             <DoneIcon sx={{ height: '16px', color: '#00B849' }} />
             <ProfilePageTypography
               fontSize={'12px'}
@@ -139,26 +104,17 @@ export const QuestCard = ({
             >
               {t('questCard.completed')}
             </ProfilePageTypography>
-          </Box>
+          </CompletedBox>
         )}
         <QuestCardTitleBox>
-          <ProfilePageTypography fontSize={'20px'} lineHeight={'20px'}>
+          <ProfilePageTypography fontSize={'18px'} lineHeight={'24px'}>
             {title}
           </ProfilePageTypography>
         </QuestCardTitleBox>
         <QuestCardInfoBox>
-          <Box
-            sx={{
-              display: 'flex',
+          <XPDisplayBox
+            style={{
               width: active ? '50%' : '100%',
-              height: '40px',
-              alignItems: 'center',
-              borderRadius: '128px',
-              borderStyle: 'solid',
-              padding: '6px',
-              borderWidth: '1px',
-              borderColor: '#e7d6ff',
-              justifyContent: 'center',
               marginRight: active ? '8px' : undefined,
             }}
           >
@@ -171,12 +127,7 @@ export const QuestCard = ({
             >
               +{points}
             </ProfilePageTypography>
-            <Box
-              sx={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}
-            >
-              <XPBox size={24} />
-            </Box>
-          </Box>
+          </XPDisplayBox>
           {active && link ? (
             <a
               href={link}

@@ -1,5 +1,5 @@
 import { Box, useTheme } from '@mui/material';
-import { ProfilePageTypography } from './ProfilePage.style';
+import { CenteredBox, ProfilePageTypography } from './ProfilePage.style';
 import { XPBox } from './xpBox';
 import { LevelData } from 'src/types';
 
@@ -69,7 +69,7 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
             />
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <CenteredBox>
               <ProfilePageTypography
                 fontSize={'16px'}
                 lineHeight={'20px'}
@@ -77,17 +77,9 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
               >
                 {levelData.minPoints}
               </ProfilePageTypography>
-              <Box
-                sx={{
-                  marginLeft: '8px',
-                  alignItems: 'center',
-                  display: 'flex',
-                }}
-              >
-                <XPBox size={24} />
-              </Box>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <XPBox size={24} marginLeft={'8px'} />
+            </CenteredBox>
+            <CenteredBox>
               <ProfilePageTypography
                 fontSize={'16px'}
                 lineHeight={'20px'}
@@ -95,16 +87,8 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
               >
                 {levelData.maxPoints}
               </ProfilePageTypography>
-              <Box
-                sx={{
-                  marginLeft: '8px',
-                  alignItems: 'center',
-                  display: 'flex',
-                }}
-              >
-                <XPBox size={24} />
-              </Box>
-            </Box>
+              <XPBox size={24} marginLeft={'8px'} />
+            </CenteredBox>
           </Box>
         </>
       ) : null}

@@ -1,5 +1,5 @@
-import { Box, Typography, useTheme } from '@mui/material';
-import { ProfilePageTypography } from './ProfilePage.style';
+import { useTheme } from '@mui/material';
+import { CenteredBox, ProfilePageTypography } from './ProfilePage.style';
 import { XPBox } from './xpBox';
 
 interface PointsBoxProps {
@@ -10,7 +10,7 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
   const theme = useTheme();
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    <CenteredBox>
       <ProfilePageTypography
         fontSize={'80px'}
         lineHeight={'96px'}
@@ -20,9 +20,7 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
       >
         {points ?? 0}
       </ProfilePageTypography>
-      <Box sx={{ marginLeft: '16px' }}>
-        <XPBox size={48} />
-      </Box>
-    </Box>
+      <XPBox size={48} marginLeft={'16px'} />
+    </CenteredBox>
   );
 };
