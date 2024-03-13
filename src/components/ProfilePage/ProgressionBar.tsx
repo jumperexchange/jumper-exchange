@@ -1,7 +1,7 @@
 import { Box, useTheme } from '@mui/material';
 import { CenteredBox, ProfilePageTypography } from './ProfilePage.style';
-import { XPBox } from './xpBox';
 import { LevelData } from 'src/types';
+import { XPIcon } from '../illustrations/XPIcon';
 
 interface ProgressionBarProps {
   points?: number | null;
@@ -77,7 +77,7 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
               >
                 {levelData.minPoints}
               </ProfilePageTypography>
-              <XPBox size={24} marginLeft={'8px'} />
+              <XPIcon size={24} marginLeft={'8px'} />
             </CenteredBox>
             <CenteredBox>
               <ProfilePageTypography
@@ -87,7 +87,7 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
               >
                 {levelData.maxPoints}
               </ProfilePageTypography>
-              <XPBox size={24} marginLeft={'8px'} />
+              <XPIcon size={24} marginLeft={'8px'} />
             </CenteredBox>
           </Box>
         </>

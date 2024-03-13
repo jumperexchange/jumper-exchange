@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material';
 import { CenteredBox, ProfilePageTypography } from './ProfilePage.style';
-import { XPBox } from './xpBox';
+import { XPIcon } from '../illustrations/XPIcon';
 
 interface PointsBoxProps {
   points?: number | null;
@@ -20,7 +20,7 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
       >
         {points ?? 0}
       </ProfilePageTypography>
-      <XPBox size={48} marginLeft={'16px'} />
+      <XPIcon size={48} marginLeft={'16px'} />
     </CenteredBox>
   );
 };

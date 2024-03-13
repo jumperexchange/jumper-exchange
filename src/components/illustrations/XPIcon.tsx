@@ -1,13 +1,13 @@
 import { Box, useTheme } from '@mui/material';
 
-// XPBox
-interface XPBoxProps {
+// XPIcon
+interface XPIconProps {
   size?: number;
   marginLeft?: string;
   marginRight?: string;
 }
 
-export const XPBox = ({ size, marginLeft, marginRight }: XPBoxProps) => {
+export const XPIcon = ({ size, marginLeft, marginRight }: XPIconProps) => {
   const theme = useTheme();
 
   return (

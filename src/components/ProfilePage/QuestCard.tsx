@@ -13,7 +13,6 @@ import {
   XPDisplayBox,
 } from './QuestCard.style';
 import { CenteredBox, ProfilePageTypography } from './ProfilePage.style';
-import { XPBox } from './xpBox';
 import { useTranslation } from 'react-i18next';
 
 interface QuestCardProps {
