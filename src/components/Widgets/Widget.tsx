@@ -122,7 +122,10 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       buildUrl: true,
       insurance: true,
-      integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
+      integrator:
+        starterVariant === 'refuel'
+          ? import.meta.env.VITE_WIDGET_INTEGRATOR_REFUEL
+          : import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
     starterVariant,
