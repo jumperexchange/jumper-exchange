@@ -16,8 +16,12 @@ export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
   ({ theme }) => ({
     backgroundColor:
       theme.palette.mode === 'light'
-        ? theme.palette.grey[100]
-        : alpha(theme.palette.grey[100], 0.08),
+        ? theme.palette.grey[200]
+        : alpha(theme.palette.grey[200], 0.08),
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.black.main
+        : theme.palette.grey[100],
     width: '32px',
     height: '32px',
     marginLeft: 8,

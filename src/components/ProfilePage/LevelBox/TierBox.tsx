@@ -7,16 +7,13 @@ import { levelsData } from './levelsData';
 import { LevelData } from 'src/types';
 
 function getLevelBasedOnPoints(points: number | undefined): LevelData {
-  let levelData = levelsData[0];
   if (points) {
-    for (const elem of levelsData) {
-      if (points >= elem.minPoints && points <= elem.maxPoints) {
-        levelData = elem;
-        break;
-      }
-    }
+    const levelData = levelsData.find(
+      (el) => points >= el.minPoints && points <= el.maxPoints,
+    );
+    return levelData ?? levelsData[0];
   }
-  return levelData;
+  return levelsData[0];
 }
 
 interface TierBoxProps {
