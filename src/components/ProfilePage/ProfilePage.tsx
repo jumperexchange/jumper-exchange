@@ -1,17 +1,17 @@
 import {
   Box,
-  Breakpoint,
   Stack,
+  Theme,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import { QuestCarousel } from './QuestCarousel';
-import { QuestCompletedList } from './QuestsCompletedList';
+import { QuestCarousel } from './QuestCarousel/QuestCarousel';
+import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
-import { TierBox } from './TierBox';
-import { AddressBox } from './AddressBox';
+import { TierBox } from './LevelBox/TierBox';
+import { AddressBox } from './AddressBox/AddressBox';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {
   ProfilePageContainer,
@@ -21,7 +21,7 @@ import { WarningMessageCard, WarningMessageCardTitle } from '../MessageCard';
 
 export const ProfilePage = () => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const { isSuccess, points, tier, pdas, address } = useLoyaltyPass();
   const { quests } = useOngoingQuests();
@@ -31,10 +31,10 @@ export const ProfilePage = () => {
       {isDesktop ? (
         <Stack direction={'column'} spacing={4} sx={{ marginBottom: 8 }}>
           <Stack direction={'row'} spacing={4}>
-            <ProfilePageHeaderBox style={{ width: '33%' }}>
+            <ProfilePageHeaderBox sx={{ width: '33%' }}>
               <AddressBox address={address} />
             </ProfilePageHeaderBox>
-            <ProfilePageHeaderBox style={{ width: '67%', padding: '24px' }}>
+            <ProfilePageHeaderBox sx={{ width: '67%', padding: '24px' }}>
               <TierBox points={points} tier={tier} />
             </ProfilePageHeaderBox>
           </Stack>
@@ -42,12 +42,11 @@ export const ProfilePage = () => {
           <QuestCompletedList
             pdas={pdas}
             dataIsFetched={isSuccess || !!address} // we might have an address but no isSuccess if the user has no loyalty pass yet
-            theme={theme}
           />
         </Stack>
       ) : (
         <Box sx={{ marginBottom: 8, marginTop: 16 }}>
-          <WarningMessageCard style={{ width: 350 }}>
+          <WarningMessageCard sx={{ width: 350 }}>
             <WarningMessageCardTitle display="flex" alignItems="center">
               <WarningRoundedIcon
                 sx={{

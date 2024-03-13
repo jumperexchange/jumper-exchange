@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { CarouselContainer } from 'src/components';
-import { QuestCard } from './QuestCard';
+import { QuestCard } from '../QuestCard/QuestCard';
 import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 import { Stack } from '@mui/material';
-import { QuestCardSkeleton } from './QuestCardSkeleton';
-import { BlogCarouselContainer } from '../Blog/BlogCarousel/BlogCarousel.style';
+import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
+import { BlogCarouselContainer } from '../../Blog/BlogCarousel/BlogCarousel.style';
 import { Quest } from 'src/types';
 
 interface QuestCarouselProps {

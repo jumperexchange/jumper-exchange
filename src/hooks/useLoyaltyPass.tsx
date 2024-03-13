@@ -7,9 +7,9 @@ import { getAllPDAs } from './querries/pdas';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
-  address?: string | undefined;
-  points?: number | null;
-  tier?: string | null;
+  address?: string;
+  points?: number;
+  tier?: string;
   pdas?: PDA[];
 }
 
@@ -26,16 +26,6 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     setLoyaltyPassData,
   } = useLoyaltyPassStore((state) => state);
 
-  const apiBaseUrl = import.meta.env.VITE_GATEWAY_URL;
-  const apiUrl = new URL(`${apiBaseUrl}`);
-  const apiKey = import.meta.env.VITE_GATEWAY_API_KEY;
-  const apiAccesToken = import.meta.env.VITE_GATEWAY_API_TOKEN;
-
-  const headers = {
-    'x-api-key': `${apiKey}`,
-    Authorization: `Bearer ${apiAccesToken}`,
-  };
-
   //we store the data during 24hours to avoid querying too much our partner API.
   const t = Date.now() / 1000;
   const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_A_DAY;
@@ -47,6 +37,15 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     account?.address?.toLowerCase() !== storedAddress?.toLowerCase();
 
   // query
+  const apiBaseUrl = import.meta.env.VITE_GATEWAY_URL;
+  const apiUrl = new URL(`${apiBaseUrl}`);
+  const apiKey = import.meta.env.VITE_GATEWAY_API_KEY;
+  const apiAccesToken = import.meta.env.VITE_GATEWAY_API_TOKEN;
+  const headers = {
+    'x-api-key': `${apiKey}`,
+    Authorization: `Bearer ${apiAccesToken}`,
+  };
+
   const { data, isSuccess } = useQuery({
     queryKey: ['loyalty-pass'],
     queryFn: async () => {
@@ -110,8 +109,8 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     return {
       isSuccess: false,
       address: account?.address,
-      points: null,
-      tier: null,
+      points: undefined,
+      tier: undefined,
       pdas: [],
     };
   }

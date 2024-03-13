@@ -16,14 +16,13 @@ export const ProfilePageContainer = styled(Container)(() => ({
   overflow: 'hidden',
 }));
 
-export const ProfilePageHeaderBox = styled(Box)(({ theme, style }) => ({
+export const ProfilePageHeaderBox = styled(Box)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'light'
-      ? '#F9F5FF'
-      : alpha(theme.palette.white.main, 0.08),
+      ? theme.palette.grey[100]
+      : alpha(theme.palette.grey[100], 0.08),
   height: '312px',
   borderRadius: '24px',
-  ...style,
 }));
 
 export interface ProfilePageTypographyProps
@@ -35,20 +34,16 @@ export interface ProfilePageTypographyProps
 
 export const ProfilePageTypography = styled(
   Typography,
-)<ProfilePageTypographyProps>(
-  ({ style, fontSize, fontWeight, lineHeight }) => ({
-    ...style,
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontSize: fontSize,
-    fontWeight: fontWeight ?? 700,
-    lineHeight: lineHeight,
-    userSelect: 'none',
-  }),
-);
+)<ProfilePageTypographyProps>(({ fontSize, fontWeight, lineHeight }) => ({
+  fontFamily: 'Inter',
+  fontStyle: 'normal',
+  fontSize: fontSize,
+  fontWeight: fontWeight ?? 700,
+  lineHeight: lineHeight,
+  userSelect: 'none',
+}));
 
-export const CenteredBox = styled(Box)(({ style }) => ({
+export const CenteredBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
-  ...style,
 }));

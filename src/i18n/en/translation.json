@@ -33,7 +33,8 @@
       "developers": "Developers",
       "lifiExplorer": "LI.FI Explorer",
       "aboutLIFI": "About LI.FI",
-      "support": "Support"
+      "support": "Support",
+      "profile": "Profile"
     },
     "walletMenu": {
       "disconnect": "Disconnect",

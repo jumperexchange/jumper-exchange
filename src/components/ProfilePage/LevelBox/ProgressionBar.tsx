@@ -1,7 +1,7 @@
 import { Box, useTheme } from '@mui/material';
-import { CenteredBox, ProfilePageTypography } from './ProfilePage.style';
+import { CenteredBox, ProfilePageTypography } from '../ProfilePage.style';
 import { LevelData } from 'src/types';
-import { XPIcon } from '../illustrations/XPIcon';
+import { XPIcon } from '../../illustrations/XPIcon';
 
 interface ProgressionBarProps {
   points?: number | null;
@@ -43,27 +43,29 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
             <Box
               sx={{
                 height: '100%',
+                borderTopLeftRadius: '12px',
+                borderBottomLeftRadius: '12px',
                 width:
                   points && points > levelData.minPoints
                     ? `${calcWidth}%`
                     : '0%',
                 backgroundColor:
-                  theme.palette.mode === 'light' ? '#31007A' : '#BEA0EB',
-                borderTopLeftRadius: '12px',
-                borderBottomLeftRadius: '12px',
+                  theme.palette.mode === 'light'
+                    ? theme.palette.pink.light
+                    : theme.palette.pink.dark,
                 borderRadius: points === levelData.maxPoints ? '12px' : null,
               }}
             />
             <Box
               sx={{
                 height: '100%',
-                width:
-                  points && points > levelData.minPoints
-                    ? '100%'
-                    : `${100 - calcWidth}%`,
-                backgroundColor: '#f5f5f5',
                 borderTopRightRadius: '12px',
                 borderBottomRightRadius: '12px',
+                width:
+                  points && points > levelData.minPoints
+                    ? `${100 - calcWidth}%`
+                    : '100%',
+                backgroundColor: theme.palette.grey[100],
                 borderRadius: points ? null : '12px',
               }}
             />
@@ -77,7 +79,7 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
               >
                 {levelData.minPoints}
               </ProfilePageTypography>
-              <CenteredBox style={{ marginLeft: '8px' }}>
+              <CenteredBox sx={{ marginLeft: '8px' }}>
                 <XPIcon size={24} />
               </CenteredBox>
             </CenteredBox>
@@ -89,7 +91,7 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
               >
                 {levelData.maxPoints}
               </ProfilePageTypography>
-              <CenteredBox style={{ marginLeft: '8px' }}>
+              <CenteredBox sx={{ marginLeft: '8px' }}>
                 <XPIcon size={24} />
               </CenteredBox>
             </CenteredBox>

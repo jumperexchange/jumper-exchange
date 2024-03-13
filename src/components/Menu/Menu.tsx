@@ -1,5 +1,4 @@
 import type { Breakpoint, SxProps, Theme } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { MenuDesktop, MenuMobile } from '.';
 
@@ -26,9 +25,7 @@ export const Menu = ({
   children,
   anchorEl,
 }: MenuProps) => {
-  const theme = useTheme();
-
-  const isDesktop = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   return isDesktop ? (
     <MenuDesktop

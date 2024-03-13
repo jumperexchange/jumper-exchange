@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useCookie3, useInitUserTracking } from 'src/hooks';
+import { UserTracking } from './UserTracking';
 import {
   FeatureCards,
   Navbar,
@@ -12,16 +11,9 @@ import {
 import { AppProvider } from './providers';
 
 export function App() {
-  const { initTracking } = useInitUserTracking();
-  const cookie3 = useCookie3();
-
-  useEffect(() => {
-    initTracking({});
-    cookie3?.trackPageView();
-  }, [cookie3, initTracking]);
-
   return (
     <AppProvider>
+      <UserTracking />
       <Navbar />
       <WelcomeScreen />
       <Widgets />

@@ -1,5 +1,5 @@
 import { Box, alpha, useTheme } from '@mui/material';
-import { Button } from '../Button';
+import { Button } from '../../Button';
 import DoneIcon from '@mui/icons-material/Done';
 import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
 import {
@@ -12,9 +12,9 @@ import {
   QuestPlatformMainBox,
   XPDisplayBox,
 } from './QuestCard.style';
-import { CenteredBox, ProfilePageTypography } from './ProfilePage.style';
+import { CenteredBox, ProfilePageTypography } from '../ProfilePage.style';
 import { useTranslation } from 'react-i18next';
-import { XPIcon } from '../illustrations/XPIcon';
+import { XPIcon } from '../../illustrations/XPIcon';
 
 interface QuestCardProps {
   active?: boolean;
@@ -66,7 +66,7 @@ export const QuestCard = ({
           <QuestPlatformMainBox>
             <CenteredBox>
               <CenteredBox
-                style={{
+                sx={{
                   marginRight: '4px',
                 }}
               >
@@ -100,7 +100,7 @@ export const QuestCard = ({
             <ProfilePageTypography
               fontSize={'12px'}
               lineHeight={'16px'}
-              style={{ color: '#00B849' }}
+              sx={{ color: '#00B849' }}
             >
               {t('questCard.completed')}
             </ProfilePageTypography>
@@ -113,7 +113,7 @@ export const QuestCard = ({
         </QuestCardTitleBox>
         <QuestCardInfoBox>
           <XPDisplayBox
-            style={{
+            sx={{
               width: active ? '50%' : '100%',
               marginRight: active ? '8px' : undefined,
             }}
@@ -127,7 +127,7 @@ export const QuestCard = ({
             >
               +{points}
             </ProfilePageTypography>
-            <CenteredBox style={{ marginLeft: '8px' }}>
+            <CenteredBox sx={{ marginLeft: '8px' }}>
               <XPIcon size={24} />
             </CenteredBox>
           </XPDisplayBox>

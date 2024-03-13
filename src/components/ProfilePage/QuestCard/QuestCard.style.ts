@@ -76,5 +76,4 @@ export const XPDisplayBox = styled(Box)(({ theme, style }) => ({
   borderWidth: '1px',
   borderColor: '#e7d6ff',
   justifyContent: 'center',
-  ...style,
 }));

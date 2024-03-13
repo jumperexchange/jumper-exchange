@@ -9,16 +9,15 @@ import {
   darken,
   ButtonProps as MuiButtonProps,
   IconButtonProps,
+  IconButton,
 } from '@mui/material';
-import { getContrastAlphaColor } from 'src/utils';
-import { IconButton } from '../IconButton';
 
 export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
   ({ theme }) => ({
     backgroundColor:
       theme.palette.mode === 'light'
-        ? '#efebf5'
-        : alpha(theme.palette.white.main, 0.08),
+        ? theme.palette.grey[100]
+        : alpha(theme.palette.grey[100], 0.08),
     width: '32px',
     height: '32px',
     marginLeft: 8,

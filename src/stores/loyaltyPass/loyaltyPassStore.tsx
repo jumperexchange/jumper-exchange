@@ -7,11 +7,11 @@ import { createWithEqualityFn } from 'zustand/traditional';
 export const useLoyaltyPassStore = createWithEqualityFn(
   persist(
     (set, get) => ({
-      address: null,
-      points: null,
-      tier: null,
+      address: undefined,
+      points: undefined,
+      tier: undefined,
       pdas: [],
-      timestamp: null,
+      timestamp: undefined,
 
       setValue: (key: keyof SettingsProps, value: any) =>
         set(() => ({

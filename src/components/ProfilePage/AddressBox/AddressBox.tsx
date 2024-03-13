@@ -9,19 +9,20 @@ import {
   PassImageBox,
   ProfileIconButton,
 } from './AddressBox.style';
-import { ProfilePageTypography } from './ProfilePage.style';
+import { ProfilePageTypography } from '../ProfilePage.style';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
+import { Address } from 'viem';
 
 interface AddressBoxProps {
-  address?: string | undefined;
+  address?: string;
 }
 
 export const AddressBox = ({ address }: AddressBoxProps) => {
   const { t } = useTranslation();
   const { setSnackbarState } = useMenuStore((state) => state);
   const { data: ensName, isSuccess } = useEnsName({
-    address: address as `0x${string}` | undefined,
+    address: address as Address | undefined,
     chainId: mainnet.id,
   });
 
@@ -31,10 +32,11 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
   };
 
   const getAddressOrENSString = (): string => {
-    if (isSuccess && ensName)
+    if (isSuccess && ensName) {
       return String(ensName).length > 20
         ? `${ensName.slice(0, 13)}...eth`
         : ensName;
+    }
     return address
       ? address?.slice(0, 6) +
           '...' +

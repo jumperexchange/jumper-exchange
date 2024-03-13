@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { alpha, darken, lighten, styled } from '@mui/material/styles';
 
-const MessageCard = styled(Box)(({ theme, style }) => ({
+const MessageCard = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   position: 'relative',
   whiteSpace: 'pre-line',
@@ -12,7 +12,6 @@ const MessageCard = styled(Box)(({ theme, style }) => ({
     theme.palette.mode === 'dark'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-  ...style,
 }));
 
 export const WarningMessageCard = styled(MessageCard)(({ theme }) => ({

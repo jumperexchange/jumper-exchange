@@ -1,21 +1,30 @@
-import { QuestCard } from './QuestCard';
+import { QuestCard } from '../QuestCard/QuestCard';
 import {
   CompletedQuestContainer,
   CompletedQuestHeader,
   CompletedQuestStack,
   CompletedQuestTitle,
 } from './QuestsCompletedList.style';
-import { VoidQuestCard } from './VoidQuestCard';
-import { QuestCardSkeleton } from './QuestCardSkeleton';
+import { VoidQuestCard } from '../QuestCard/VoidQuestCard';
+import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { useTranslation } from 'react-i18next';
+import { PDA } from 'src/types';
 
-export const QuestCompletedList = ({ pdas, dataIsFetched }: any) => {
+interface QuestCompletedList {
+  pdas?: PDA[];
+  dataIsFetched: boolean;
+}
+
+export const QuestCompletedList = ({
+  pdas,
+  dataIsFetched,
+}: QuestCompletedList) => {
   const { account } = useAccounts();
   const { t } = useTranslation();
 
   const showVoidCardsAsFewPdas =
-    (dataIsFetched && pdas?.length < 6 && account?.address) ||
+    (dataIsFetched && pdas && pdas?.length < 6 && account?.address) ||
     !account?.address;
   const loadingPdas = account?.address && !dataIsFetched;
 
@@ -31,7 +40,7 @@ export const QuestCompletedList = ({ pdas, dataIsFetched }: any) => {
         flexWrap="wrap"
       >
         {dataIsFetched && pdas
-          ? pdas?.map((pda: any, index: number) => {
+          ? pdas?.map((pda: PDA, index: number) => {
               return (
                 <QuestCard
                   key={`completed-mission-${index}`}
@@ -45,7 +54,7 @@ export const QuestCompletedList = ({ pdas, dataIsFetched }: any) => {
           : null}
         {showVoidCardsAsFewPdas
           ? Array.from(
-              { length: pdas?.length > 0 ? 6 - pdas.length : 3 },
+              { length: pdas && pdas?.length > 0 ? 6 - pdas.length : 3 },
               () => 42,
             ).map((_, idx) => <VoidQuestCard key={'void-' + idx} />)
           : null}

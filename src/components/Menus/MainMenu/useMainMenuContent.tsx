@@ -1,7 +1,7 @@
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
-import CardMembershipIcon from '@mui/icons-material/CardMembership';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
@@ -123,8 +123,8 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeys.Devs,
     },
     {
-      label: 'Loyalty Pass',
-      prefixIcon: <CardMembershipIcon />,
+      label: t('navbar.navbarMenu.profile'),
+      prefixIcon: <AccountCircleIcon />,
       showMoreIcon: false,
       onClick: () => {
         trackEvent({
