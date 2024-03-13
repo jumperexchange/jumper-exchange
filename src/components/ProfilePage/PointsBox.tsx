@@ -20,7 +20,9 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
       >
         {points ?? 0}
       </ProfilePageTypography>
-      <XPIcon size={48} marginLeft={'16px'} />
+      <CenteredBox sx={{ marginLeft: '16px' }}>
+        <XPIcon size={48} />
+      </CenteredBox>
     </CenteredBox>
   );
 };

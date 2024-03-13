@@ -43,6 +43,7 @@ export const ProfilePageTypography = styled(
     fontSize: fontSize,
     fontWeight: fontWeight ?? 700,
     lineHeight: lineHeight,
+    userSelect: 'none',
   }),
 );
 

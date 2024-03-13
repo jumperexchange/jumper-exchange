@@ -85,7 +85,7 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
         isSuccess={isSuccess}
       />
 
-      {isDesktop ? <ProfileButton /> : null}
+      {/* {isDesktop ? <ProfileButton /> : null} */}
 
       <MenuToggle
         ref={mainMenuAnchor}

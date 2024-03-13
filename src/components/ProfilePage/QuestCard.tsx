@@ -14,6 +14,7 @@ import {
 } from './QuestCard.style';
 import { CenteredBox, ProfilePageTypography } from './ProfilePage.style';
 import { useTranslation } from 'react-i18next';
+import { XPIcon } from '../illustrations/XPIcon';
 
 interface QuestCardProps {
   active?: boolean;
@@ -126,6 +127,9 @@ export const QuestCard = ({
             >
               +{points}
             </ProfilePageTypography>
+            <CenteredBox style={{ marginLeft: '8px' }}>
+              <XPIcon size={24} />
+            </CenteredBox>
           </XPDisplayBox>
           {active && link ? (
             <a

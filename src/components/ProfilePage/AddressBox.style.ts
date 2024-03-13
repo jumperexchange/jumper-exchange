@@ -1,23 +1,29 @@
-import { Box, Container, Typography, alpha, styled } from '@mui/material';
+import {
+  Box,
+  ButtonProps,
+  Container,
+  Typography,
+  alpha,
+  styled,
+  Button as MuiButton,
+  darken,
+  ButtonProps as MuiButtonProps,
+  IconButtonProps,
+} from '@mui/material';
+import { getContrastAlphaColor } from 'src/utils';
+import { IconButton } from '../IconButton';
 
-export const ProfileIconButton = styled(Box)(({ theme, style }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? '#efebf5'
-      : alpha(theme.palette.white.main, 0.08),
-  borderRadius: '100%',
-  width: '32px',
-  height: '32px',
-  padding: 1,
-  marginLeft: 8,
-  '&:hover': {
-    cursor: 'pointer',
-  },
-  ...style,
-}));
+export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
+  ({ theme }) => ({
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? '#efebf5'
+        : alpha(theme.palette.white.main, 0.08),
+    width: '32px',
+    height: '32px',
+    marginLeft: 8,
+  }),
+);
 
 export const BackgroundBox = styled(Box)(({ theme }) => ({
   height: '50%',

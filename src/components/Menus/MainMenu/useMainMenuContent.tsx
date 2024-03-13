@@ -1,6 +1,7 @@
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
+import BadgeIcon from '@mui/icons-material/Badge';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
@@ -17,6 +18,7 @@ import {
   DISCORD_URL,
   EXPLORER_URL,
   JUMPER_LEARN_PATH,
+  JUMPER_LOYALTY_PATH,
   MenuKeys,
   TrackingAction,
   TrackingCategory,
@@ -119,6 +121,25 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.developers'),
       prefixIcon: <DeveloperModeIcon />,
       triggerSubMenu: MenuKeys.Devs,
+    },
+    {
+      label: 'Loyalty Pass',
+      prefixIcon: <BadgeIcon />,
+      showMoreIcon: false,
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-jumper-pass-link',
+          action: TrackingAction.ClickJumperLearnLink,
+          data: { [TrackingEventParameter.Menu]: 'pass' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+        closeAllMenus();
+        navigate(JUMPER_LOYALTY_PATH);
+      },
     },
     {
       label: 'Jumper Learn',
