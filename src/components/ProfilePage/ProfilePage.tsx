@@ -46,8 +46,8 @@ export const ProfilePage = () => {
           />
         </Stack>
       ) : (
-        <Box sx={{ right: 20, marginBottom: 8 }}>
-          <WarningMessageCard>
+        <Box sx={{ marginBottom: 8, marginTop: 16 }}>
+          <WarningMessageCard style={{ width: 350 }}>
             <WarningMessageCardTitle display="flex" alignItems="center">
               <WarningRoundedIcon
                 sx={{
@@ -55,11 +55,13 @@ export const ProfilePage = () => {
                 }}
               />
               <Typography variant={'lifiHeaderXSmall'}>
-                {'Not available on small screen'}
+                {'Only available on Desktop'}
               </Typography>
             </WarningMessageCardTitle>
             <Typography variant={'lifiBodySmall'} pt={theme.spacing(1.5)}>
-              {'for now'}
+              {
+                'The Profile page is not available on small screens yet. We are working on it.'
+              }
             </Typography>
           </WarningMessageCard>
         </Box>
