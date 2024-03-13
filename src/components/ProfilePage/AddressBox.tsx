@@ -10,18 +10,36 @@ import {
   ProfileIconButton,
 } from './AddressBox.style';
 import { ProfilePageTypography } from './ProfilePage.style';
+import { useEnsName } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 interface AddressBoxProps {
-  address?: string | null;
+  address?: `0x${string}` | undefined;
 }
 
 export const AddressBox = ({ address }: AddressBoxProps) => {
   const { t } = useTranslation();
   const { setSnackbarState } = useMenuStore((state) => state);
+  const { data: ensName, isSuccess } = useEnsName({
+    address: address,
+    chainId: mainnet.id,
+  });
 
   const handleCopyButton = () => {
     address && navigator.clipboard.writeText(address);
     setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
+  };
+
+  const getAddressOrENSString = (): string => {
+    if (isSuccess && ensName)
+      return String(ensName).length > 20
+        ? `${ensName.slice(0, 13)}...eth`
+        : ensName;
+    return address
+      ? address?.slice(0, 6) +
+          '...' +
+          address?.slice(address.length - 4, address.length)
+      : '0x0000...0000';
   };
 
   return (
@@ -29,11 +47,7 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
       <BackgroundBox />
       <AddressDisplayBox>
         <ProfilePageTypography fontSize={'24px'} lineHeight={'32px'}>
-          {address
-            ? address?.slice(0, 6) +
-              '...' +
-              address?.slice(address.length - 4, address.length)
-            : '0x0000...0000'}
+          {getAddressOrENSString()}
         </ProfilePageTypography>
         <ProfileIconButton onClick={() => handleCopyButton()}>
           <ContentCopyIcon sx={{ height: '16px' }} />
