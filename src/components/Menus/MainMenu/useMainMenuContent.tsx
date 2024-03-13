@@ -1,7 +1,7 @@
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
-import BadgeIcon from '@mui/icons-material/Badge';
+import CardMembershipIcon from '@mui/icons-material/CardMembership';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
@@ -124,7 +124,7 @@ export const useMainMenuContent = () => {
     },
     {
       label: 'Loyalty Pass',
-      prefixIcon: <BadgeIcon />,
+      prefixIcon: <CardMembershipIcon />,
       showMoreIcon: false,
       onClick: () => {
         trackEvent({
