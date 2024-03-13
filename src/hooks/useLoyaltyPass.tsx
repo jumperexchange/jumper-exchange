@@ -7,7 +7,7 @@ import { getAllPDAs } from './querries/pdas';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
-  address?: string | null;
+  address?: string | undefined;
   points?: number | null;
   tier?: string | null;
   pdas?: PDA[];

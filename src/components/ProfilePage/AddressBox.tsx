@@ -14,14 +14,14 @@ import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
 interface AddressBoxProps {
-  address?: `0x${string}` | undefined;
+  address?: string | undefined;
 }
 
 export const AddressBox = ({ address }: AddressBoxProps) => {
   const { t } = useTranslation();
   const { setSnackbarState } = useMenuStore((state) => state);
   const { data: ensName, isSuccess } = useEnsName({
-    address: address,
+    address: address as `0x${string}` | undefined,
     chainId: mainnet.id,
   });
 
