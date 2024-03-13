@@ -1,6 +1,6 @@
+import { ArticleJsonSchema, ShareArticleIcons, Tag } from '@/components';
 import { useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { ArticleJsonSchema, ShareArticleIcons, Tag } from 'src/components';
 import { type AuthorData, type StrapiImageData, type TagData } from 'src/types';
 import { formatDate, readingTime } from 'src/utils';
 import {
@@ -32,7 +32,7 @@ import {
   Divider,
 } from './BlogArticle.style';
 
-import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import React, { useState } from 'react';
 import { CustomRichBlocks } from '..';
 
 interface BlogArticleProps {
@@ -67,7 +67,10 @@ export const BlogArticle = ({
   const theme = useTheme();
   const minRead = readingTime(content);
   const { t } = useTranslation();
-
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const handleImageLoaded = () => {
+    setImgLoaded(true);
+  };
   return (
     <>
       <BlogArticleContainer>
@@ -127,14 +130,15 @@ export const BlogArticle = ({
       </BlogArticleContainer>
 
       <BlogArticleImageContainer>
-        {image?.data ? (
+        {image?.data && (
           <BlogArticleImage
-            src={`${baseUrl}${image.data.attributes?.formats.large.url}`}
+            onLoad={handleImageLoaded}
+            sx={{ ...(!imgLoaded && { display: 'none' }) }}
+            src={`${baseUrl}${image.data.attributes?.url}`}
             alt={image?.data.attributes?.alternativeText}
           />
-        ) : (
-          <BlogArticleImageSkeleton />
         )}
+        {!imgLoaded && <BlogArticleImageSkeleton />}
       </BlogArticleImageContainer>
       <BlogArticleContainer>
         <BlogArticleContentContainer>

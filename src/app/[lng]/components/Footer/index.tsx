@@ -1,4 +1,4 @@
-import { useServerTranslation } from 'src/i18n';
+import { useServerTranslation } from '@/i18n/useServerTranslation';
 import { FooterBase } from './FooterBase';
 
 export const Footer = async ({ lng, path }: { lng: string; path?: string }) => {

@@ -1,5 +1,5 @@
+import { useServerTranslation } from '@/i18n/useServerTranslation';
 import Link from 'next/link';
-import { useServerTranslation } from 'src/i18n';
 import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
 

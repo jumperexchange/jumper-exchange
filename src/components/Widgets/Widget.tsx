@@ -1,3 +1,6 @@
+import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAlert';
+import { useMultisig } from '@/hooks/useMultisig';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
@@ -6,13 +9,10 @@ import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { widgetConfig } from 'src/config';
 import { TabsMap } from 'src/const';
-import { useMultisig } from 'src/hooks';
-import { useClientTranslation } from 'src/i18n';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { useConfig } from 'wagmi';
-import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
-import { WidgetWrapper } from './Widget.style';
+import { WidgetWrapper } from '.';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -70,15 +70,15 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       containerStyle: {
         borderRadius: '12px',
-        minWidth: 392,
+        minWidth: 416,
         boxShadow:
           theme.palette.mode === 'light'
             ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
             : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
       },
       languages: {
-        default: locale as LanguageKey,
-        allow: locales,
+        default: i18n.resolvedLanguage as LanguageKey,
+        allow: i18n.languages as LanguageKey[],
       },
       appearance: theme.palette.mode === 'light' ? 'light' : 'dark',
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
@@ -131,6 +131,8 @@ export function Widget({ starterVariant }: WidgetProps) {
     theme.palette.surface1.main,
     theme.palette.accent1.main,
     theme.palette.grey,
+    i18n.resolvedLanguage,
+    i18n.languages,
     multisigWidget,
     isMultisigSigner,
     multisigSdkConfig,

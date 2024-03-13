@@ -1,7 +1,8 @@
 'use client';
 
+import { ClientTranslationContext } from '@/i18n/i18next-client-provider';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { useContext } from 'react';
-import { ClientTranslationContext, useClientTranslation } from 'src/i18n';
 import { FooterBase } from './FooterBase';
 
 export function Footer({ path }: { path: string }) {

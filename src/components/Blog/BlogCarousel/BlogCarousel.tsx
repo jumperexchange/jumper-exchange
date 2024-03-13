@@ -1,8 +1,8 @@
+import { BlogArticleCard, CarouselContainer } from '@/components';
+import { useUserTracking } from '@/hooks';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { BlogArticleCard, CarouselContainer } from 'src/components';
 import { JUMPER_LEARN_PATH, TrackingAction, TrackingCategory } from 'src/const';
-import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool, type BlogArticleData } from 'src/types';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
 import {

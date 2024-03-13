@@ -1,6 +1,6 @@
-import { SubMenu } from 'src/components';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { SubMenu } from 'src/components/Menu/SubMenu';
 import { MenuKeysEnum } from 'src/const';
-import { useClientTranslation } from 'src/i18n';
 import { useMenuStore } from 'src/stores';
 import { useWalletSelectContent } from '..';
 

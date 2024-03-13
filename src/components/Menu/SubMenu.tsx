@@ -1,4 +1,5 @@
 'use client';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckIcon from '@mui/icons-material/Check';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -7,24 +8,24 @@ import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import type { KeyboardEvent } from 'react';
 import { useEffect, useRef } from 'react';
-import {
-  MenuHeaderAppBar,
-  MenuHeaderAppWrapper,
-  MenuHeaderLabel,
-  MenuItemLink,
-  MenuPaper,
-} from 'src/components';
 import type { MenuKeysEnum } from 'src/const';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool, type MenuListItem } from 'src/types';
 import { getContrastAlphaColor } from 'src/utils';
-import { MenuItemContainer, MenuLabel } from '.';
+import {
+  MenuHeaderAppBar,
+  MenuHeaderAppWrapper,
+  MenuHeaderLabel,
+  MenuItemContainer,
+  MenuItemLink,
+  MenuLabel,
+  MenuPaper,
+} from '.';
 
 interface SubMenuProps {
   open: boolean;

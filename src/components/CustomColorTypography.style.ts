@@ -1,5 +1,6 @@
 import type { Breakpoint } from '@mui/material';
 import { Typography, styled } from '@mui/material';
+import { urbanist } from 'src/fonts/fonts';
 
 export const CustomColor = styled(Typography)(({ theme }) => ({
   background:
@@ -8,7 +9,7 @@ export const CustomColor = styled(Typography)(({ theme }) => ({
       : 'linear-gradient(90deg, #31007A 10%, #D35CFF 100%);',
   backgroundClip: 'text',
   margin: 0,
-  fontFamily: 'Urbanist, Inter',
+  fontFamily: urbanist.style.fontFamily,
   fontSize: '48px',
   fontWeight: 700,
   lineHeight: '56px',

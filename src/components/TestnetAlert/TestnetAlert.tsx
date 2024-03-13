@@ -1,12 +1,12 @@
-import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
-import { Typography, useTheme } from '@mui/material';
+import { Button } from '@/components/Button';
 import {
-  Button,
   WarningMessageCard,
   WarningMessageCardTitle,
-} from 'src/components';
+} from '@/components/MessageCard';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import { Typography, useTheme } from '@mui/material';
 import { JUMPER_URL } from 'src/const';
-import { useClientTranslation } from 'src/i18n';
 import { appendUTMParametersToLink, openInNewTab } from 'src/utils';
 export const TestnetAlert = () => {
   const { t } = useClientTranslation();

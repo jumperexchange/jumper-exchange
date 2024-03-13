@@ -1,3 +1,4 @@
+import { useStrapi } from '@/hooks';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import type { Breakpoint } from '@mui/material';
 import {
@@ -10,7 +11,7 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { STRAPI_BLOG_ARTICLES, STRAPI_TAGS, TrackingCategory } from 'src/const';
-import { useStrapi } from 'src/hooks';
+import { urbanist } from 'src/fonts/fonts';
 import { type BlogArticleData, type TagAttributes } from 'src/types';
 import type { TabProps } from '../../Tabs';
 import { BlogArticleCard } from '../BlogArticleCard';
@@ -108,7 +109,7 @@ export const BlogArticlesBoard = () => {
       <Typography
         variant="lifiHeaderMedium"
         sx={{
-          fontFamily: 'Urbanist, Inter',
+          fontFamily: urbanist.style.fontFamily,
           textAlign: 'center',
           margin: theme.spacing(10, 'auto', 0),
         }}

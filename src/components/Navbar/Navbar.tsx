@@ -1,16 +1,19 @@
 'use client';
 import { useTheme } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
+
+import { useAccounts } from '@/hooks/useAccounts';
+import { JUMPER_LEARN_PATH } from 'src/const';
+import { useMenuStore, useSettingsStore } from 'src/stores';
 import {
-  JumperLearnLogo,
-  JumperLogo,
+  NavbarContainer as Container,
+  Logo,
+  LogoLink,
   NavbarButtons,
   NavbarTabs,
-} from 'src/components';
-import { JUMPER_LEARN_PATH } from 'src/const';
-import { useAccounts } from 'src/hooks';
-import { useMenuStore, useSettingsStore } from 'src/stores';
-import { NavbarContainer as Container, Logo, LogoLink } from '.';
+} from '.';
+import { JumperLearnLogo } from '../illustrations/JumperLearnLogo';
+import { JumperLogo } from '../illustrations/JumperLogo';
 
 interface NavbarProps {
   hideNavbarTabs?: boolean;
@@ -19,7 +22,7 @@ interface NavbarProps {
 
 export const Navbar = ({ hideNavbarTabs, redirectToLearn }: NavbarProps) => {
   const theme = useTheme();
-  const navigate = useNavigate();
+  const router = useRouter();
   const { account } = useAccounts();
   const [onWelcomeScreenClosed] = useSettingsStore((state) => [
     state.onWelcomeScreenClosed,
@@ -29,7 +32,7 @@ export const Navbar = ({ hideNavbarTabs, redirectToLearn }: NavbarProps) => {
   const handleClick = () => {
     closeAllMenus();
     onWelcomeScreenClosed(false);
-    redirectToLearn ? navigate(JUMPER_LEARN_PATH) : navigate('/');
+    redirectToLearn ? router.push(JUMPER_LEARN_PATH) : router.push('/');
   };
 
   return (

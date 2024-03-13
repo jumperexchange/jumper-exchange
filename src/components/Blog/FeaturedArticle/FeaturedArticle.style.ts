@@ -1,6 +1,7 @@
 import type { BoxProps, Breakpoint, TypographyProps } from '@mui/material';
 import { Box, Skeleton, Typography, lighten } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
+import { urbanist } from 'src/fonts/fonts';
 
 export const FeaturedArticleContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active',
@@ -16,7 +17,8 @@ export const FeaturedArticleContainer = styled(Box, {
     theme.palette.mode === 'dark'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-  display: 'flex',
+  display: 'grid',
+  gridTemplateRows: '1fr',
   flexDirection: 'column',
   padding: theme.spacing(2),
   margin: theme.spacing(4, 2, 0),
@@ -37,13 +39,15 @@ export const FeaturedArticleContainer = styled(Box, {
 
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     padding: theme.spacing(8),
-    flexDirection: 'row',
-    gap: theme.spacing(8),
     minHeight: 500,
+    gap: theme.spacing(8),
+    gridTemplateRows: '1fr',
+    gridTemplateColumns: '54% 1fr',
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     margin: theme.spacing(6, 'auto', 0),
     maxWidth: theme.breakpoints.values.xl,
+    minHeight: 600,
   },
 }));
 
@@ -99,7 +103,6 @@ export const FeaturedArticleImage = styled('img')(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     borderRadius: '14px',
-    width: '54%',
     alignSelf: 'center',
     boxShadow:
       theme.palette.mode === 'light'
@@ -123,9 +126,6 @@ export const FeaturedArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {
     alignSelf: 'center',
   },
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    maxWidth: '54%',
-  },
 }));
 
 export const FeaturedArticleTagSkeleton = styled(Skeleton)(({ theme }) => ({
@@ -148,11 +148,16 @@ export const FeaturedArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
 }));
 
 export const FeaturedArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
-  margin: theme.spacing(4, 0),
+  margin: theme.spacing(2, 0),
   transform: 'unset',
   width: '100%',
-  height: '120px',
+  height: 112,
   borderRadius: '12px',
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    margin: theme.spacing(4, 0),
+
+    height: 112,
+  },
 }));
 
 export const FeaturedArticleSubtitleSkeleton = styled(Skeleton)(
@@ -184,7 +189,6 @@ export const FeaturedArticleContent = styled(Box)(({ theme }) => ({
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     margin: theme.spacing(0),
-    width: '46%',
   },
 }));
 
@@ -214,7 +218,7 @@ export const FeaturedArticleTitle = styled(Typography)<TypographyProps>(
     marginBottom: theme.spacing(3),
     marginTop: theme.spacing(3),
     overflow: 'hidden',
-    fontFamily: 'Urbanist, Inter', //todo: use typography
+    fontFamily: urbanist.style.fontFamily,
     lineHeight: '40px',
     fontSize: '40px',
     fontWeight: 700,

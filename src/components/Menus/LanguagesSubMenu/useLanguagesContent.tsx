@@ -1,20 +1,21 @@
 'use client';
 
-import { useRouter } from 'next/router';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
 import type { LanguageKey } from 'src/types';
 import { EventTrackingTool } from 'src/types';
 import * as supportedLanguages from '../../../../messages';
 
 export const useLanguagesContent = () => {
-  const { locale, asPath, pathname } = useRouter();
-  const router = useRouter();
+  // const { locale, asPath, pathname } = nextRouter();
+  // const router = useRouter();
+  const { i18n } = useClientTranslation();
   const [languageMode, onChangeLanguage] = useSettingsStore((state) => [
     state.languageMode,
     state.onChangeLanguage,
@@ -22,7 +23,8 @@ export const useLanguagesContent = () => {
 
   const { trackEvent } = useUserTracking();
   const handleSwitchLanguage = (newLanguage: LanguageKey) => {
-    router.push(pathname, asPath, { locale: newLanguage });
+    // router.push(pathname, asPath, { locale: newLanguage });
+    i18n.changeLanguage(newLanguage);
 
     onChangeLanguage(newLanguage);
     trackEvent({
@@ -38,7 +40,7 @@ export const useLanguagesContent = () => {
     .sort()
     .map(([language, languageValue]) => ({
       label: languageValue.language.value,
-      checkIcon: (languageMode || locale) === language,
+      checkIcon: (languageMode || i18n.resolvedLanguage) === language,
       onClick: () => handleSwitchLanguage(language as LanguageKey),
     }));
 

@@ -1,3 +1,7 @@
+import { Tabs } from '@/components/Tabs/Tabs';
+import { Discord } from '@/components/illustrations/Discord';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
@@ -5,10 +9,9 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
-import { Discord, Tabs } from 'src/components';
-import { useUserTracking } from 'src/hooks';
-import { useClientTranslation } from 'src/i18n';
+import { useRouter } from 'next/navigation';
+import { useContext } from 'react';
+import { I18nContext } from 'react-i18next';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import {
@@ -29,9 +32,12 @@ import {
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
-  const { t } = useClientTranslation();
+  const { t, i18n } = useClientTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
-  const navigate = useNavigate();
+  const locale = useContext(I18nContext);
+  console.log('LOCALE', locale);
+  console.log('i18n', i18n);
+  const router = useRouter();
   const theme = useTheme();
   const { closeAllMenus } = useMenuStore((state) => state);
   const { setSupportModalState } = useMenuStore((state) => state);
@@ -100,7 +106,7 @@ export const useMainMenuContent = () => {
       disableRipple: true,
     },
     {
-      label: t('language.key'),
+      label: t('language.key', { ns: 'language' }),
       prefixIcon: <LanguageIcon />,
       suffixIcon: (
         <Typography
@@ -112,7 +118,7 @@ export const useMainMenuContent = () => {
             maxWidth: 38,
           }}
         >
-          {locale}
+          {i18n.resolvedLanguage}
         </Typography>
       ),
       showMoreIcon: true,
@@ -139,7 +145,7 @@ export const useMainMenuContent = () => {
           ],
         });
         closeAllMenus();
-        navigate(JUMPER_LEARN_PATH);
+        router.push(JUMPER_LEARN_PATH);
       },
     },
     {

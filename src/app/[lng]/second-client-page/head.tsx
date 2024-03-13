@@ -1,4 +1,4 @@
-import { useServerTranslation } from 'src/i18n';
+import { useServerTranslation } from '@/i18n/useServerTranslation';
 
 export default async function Head({
   params: { lng },

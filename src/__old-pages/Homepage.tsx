@@ -1,13 +1,8 @@
+import { FeatureCards, PoweredBy, WelcomeScreen, Widgets } from '@/components';
+import { useInitUserTracking } from '@/hooks';
 import { Layout } from 'src/Layout';
-import {
-  FeatureCards,
-  PoweredBy,
-  WelcomeScreen,
-  Widgets,
-} from 'src/components';
-import { useInitUserTracking } from 'src/hooks';
 
-import { Snackbar, SupportModal } from 'src/components';
+import { Snackbar, SupportModal } from '@/components';
 import { AppProvider } from 'src/providers';
 
 interface HomepageProps {

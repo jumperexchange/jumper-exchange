@@ -1,14 +1,14 @@
+import { Menu } from '@/components/Menu/Menu';
+import {
+  MenuHeaderAppBar,
+  MenuHeaderAppWrapper,
+} from '@/components/Menu/Menu.style';
+import { MenuItem } from '@/components/Menu/MenuItem';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, darken } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import {
-  Menu,
-  MenuHeaderAppBar,
-  MenuHeaderAppWrapper,
-  MenuItem,
-} from 'src/components';
 import { MenuKeysEnum } from 'src/const';
-import { useClientTranslation } from 'src/i18n';
 import { useMenuStore } from 'src/stores';
 import { getContrastAlphaColor } from 'src/utils';
 import { WalletSelectMoreSubMenu } from '../WalletSelectMoreSubMenu';

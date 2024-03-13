@@ -12,8 +12,9 @@ import {
   useDisconnect,
   useAccount as useWagmiAccount,
 } from 'wagmi';
-import { useBlockchainExplorerURL, useUserTracking } from '.';
+import { useBlockchainExplorerURL } from './useBlockchainExplorerURL';
 import type { CombinedWallet } from './useCombinedWallets';
+import { useUserTracking } from './userTracking';
 
 export interface AccountBase {
   address?: string;

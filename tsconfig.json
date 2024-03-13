@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "incremental": true,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
@@ -27,8 +27,11 @@
       "src/*": [
         "./src/*"
       ],
-      "src/components/*": [
-        "components/*"
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@/components/*": [
+        "src/components/*"
       ],
       "src/config/*": [
         "config/*"
@@ -36,17 +39,17 @@
       "src/const/*": [
         "const/*"
       ],
-      "src/fonts/*": [
-        "fonts/*"
+      "@/fonts/*": [
+        "src/fonts/*"
       ],
-      "src/hooks/*": [
-        "hooks/*"
+      "@/hooks/*": [
+        "src/hooks/*"
       ],
-      "src/i18n/*": [
-        "i18n/*"
+      "@/i18n/*": [
+        "src/i18n/*"
       ],
-      "src/providers/*": [
-        "providers/*"
+      "@/providers/*": [
+        "src/providers/*"
       ],
       "src/stores/*": [
         "stores/*"

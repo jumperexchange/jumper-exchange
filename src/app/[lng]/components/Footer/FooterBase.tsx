@@ -1,7 +1,7 @@
+import { locales } from '@/i18n/i18next-locales';
 import type { i18n } from 'i18next';
 import Link from 'next/link';
 import { Trans } from 'react-i18next/TransWithoutContext';
-import { locales } from 'src/i18n';
 
 export const FooterBase = ({
   i18n,

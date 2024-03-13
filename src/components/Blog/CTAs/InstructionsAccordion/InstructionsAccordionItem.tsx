@@ -1,8 +1,3 @@
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import type { Breakpoint } from '@mui/material';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
-import type { MouseEventHandler } from 'react';
-import { useState } from 'react';
 import {
   IconButtonTertiary,
   InstructionsAccordionItemContainer,
@@ -10,7 +5,12 @@ import {
   InstructionsAccordionItemLabel,
   InstructionsAccordionItemMain,
   InstructionsAccordionItemMore,
-} from 'src/components';
+} from '@/components';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import type { Breakpoint } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
+import type { MouseEventHandler } from 'react';
+import { useState } from 'react';
 import { getContrastAlphaColor } from 'src/utils';
 import type { InstructionItemProps } from '.';
 

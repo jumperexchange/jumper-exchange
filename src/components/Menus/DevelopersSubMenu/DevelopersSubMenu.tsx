@@ -1,6 +1,6 @@
-import { SubMenu } from 'src/components';
+import { SubMenu } from '@/components/Menu/SubMenu';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { MenuKeysEnum } from 'src/const';
-import { useClientTranslation } from 'src/i18n';
 import { useMenuStore } from 'src/stores';
 import { useDevelopersContent } from '.';
 

@@ -1,18 +1,18 @@
-import type { Breakpoint } from '@mui/material';
-import { Box, useTheme } from '@mui/material';
-import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
-import { Layout } from 'src/Layout';
 import {
   BackgroundGradient,
   BlogArticle,
   BlogCarousel,
   JoinDiscordBanner,
   PoweredBy,
-} from 'src/components';
+} from '@/components';
+import { useInitUserTracking, useStrapi } from '@/hooks';
+import type { Breakpoint } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { Layout } from 'src/Layout';
 import { STRAPI_BLOG_ARTICLES } from 'src/const';
-import { useInitUserTracking, useStrapi } from 'src/hooks';
 import type { BlogArticleData } from 'src/types';
 
 export const BlogArticlePage = () => {

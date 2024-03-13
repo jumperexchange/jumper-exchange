@@ -1,13 +1,13 @@
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useTheme } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import {
   DiscordBanner,
   DiscordBannerButton,
   DiscordBannerLabel,
-} from 'src/components';
+} from '@/components';
+import { useUserTracking } from '@/hooks';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useTheme } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const';
-import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
 import { openInNewTab } from 'src/utils';
 

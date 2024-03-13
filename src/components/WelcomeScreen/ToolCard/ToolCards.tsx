@@ -1,12 +1,14 @@
+import { ToolModal } from '@/components/WelcomeScreen';
+import { useChains } from '@/hooks/useChains';
+import { useDexsAndBridges } from '@/hooks/useDexsAndBridges';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import type { Dispatch, SetStateAction } from 'react';
-import { ToolModal } from 'src/components';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useChains, useDexsAndBridges, useUserTracking } from 'src/hooks';
-import { useClientTranslation } from 'src/i18n';
 import { EventTrackingTool, type DataItem } from 'src/types';
 import { sortByName } from 'src/utils';
 import { ToolCardsContainer as Container, ToolCard } from '.';

@@ -1,3 +1,4 @@
+import { useUserTracking } from '@/hooks';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Skeleton, Typography, useTheme } from '@mui/material';
@@ -7,7 +8,6 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
 import type { StrapiMeta } from 'src/types';
 import { EventTrackingTool } from 'src/types';
 import {

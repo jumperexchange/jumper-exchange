@@ -1,5 +1,7 @@
 import type { PropsWithChildren } from 'react';
-import { BackgroundGradient, Navbar, Snackbar } from './components';
+import { BackgroundGradient } from './components/BackgroundGradient/BackgroundGradient';
+import { Navbar } from './components/Navbar/Navbar';
+import { Snackbar } from './components/Snackbar/Snackbar';
 
 interface LayoutProps {
   hideNavbarTabs?: boolean;

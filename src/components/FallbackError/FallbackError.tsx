@@ -1,16 +1,16 @@
+import { Button, JumperLogo } from '@/components';
 import { useTheme } from '@mui/material';
-import { Button, JumperLogo } from 'src/components';
 import { LogoLink } from '../Navbar';
 
-import { Discord, Logo } from 'src/components';
+import { Discord, Logo } from '@/components';
+import { useAccounts, useUserTracking } from '@/hooks';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import {
   DISCORD_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useAccounts, useUserTracking } from 'src/hooks';
-import { useClientTranslation } from 'src/i18n';
 import { EventTrackingTool } from 'src/types';
 import { getContrastAlphaColor, openInNewTab } from 'src/utils';
 import {

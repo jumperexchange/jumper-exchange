@@ -2,6 +2,7 @@ import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Typography, alpha } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
+import { urbanist } from 'src/fonts/fonts';
 import { IconButtonPrimary } from '../IconButton.style';
 
 export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
@@ -49,7 +50,7 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
 
 export const DiscordBannerLabel = styled(Typography)(({ theme }) => ({
   textAlign: 'center',
-  fontFamily: 'Urbanist, Inter',
+  fontFamily: urbanist.style.fontFamily,
   fontSize: '32px',
   lineHeight: '44px',
   fontWeight: 700,

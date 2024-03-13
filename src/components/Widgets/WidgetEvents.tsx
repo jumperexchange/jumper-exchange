@@ -1,6 +1,11 @@
+'use client';
 import { type Route } from '@lifi/sdk';
-import { useUserTracking } from 'src/hooks';
 
+import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
+import { MultisigConnectedAlert } from '@/components/MultisigConnectedAlert';
+import { useAccounts } from '@/hooks/useAccounts';
+import { useMultisig } from '@/hooks/useMultisig';
+import { useUserTracking } from '@/hooks/userTracking';
 import type {
   ChainTokenSelected,
   ContactSupport,
@@ -15,15 +20,12 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useAccounts, useMultisig } from 'src/hooks';
 import {
   useActiveTabStore,
   useChainTokenSelectionStore,
   useMenuStore,
   useMultisigStore,
 } from 'src/stores';
-import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
-import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();

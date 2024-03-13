@@ -1,6 +1,7 @@
+import { useAccountConnect } from '@/hooks/useAccounts';
+import { useChains } from '@/hooks/useChains';
 import { ChainId } from '@lifi/types';
 import { Avatar, Typography, useTheme } from '@mui/material';
-import { useAccountConnect, useChains } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { type Connector } from 'wagmi';
 import {

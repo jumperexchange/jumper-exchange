@@ -1,7 +1,8 @@
+import { useAccountConnect } from '@/hooks/useAccounts';
+import { useChains } from '@/hooks/useChains';
 import { ChainId } from '@lifi/types';
 import { Avatar, Typography, useTheme } from '@mui/material';
 import type { Wallet } from '@solana/wallet-adapter-react';
-import { useAccountConnect, useChains } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import {
   ConnectButton,

@@ -1,4 +1,9 @@
 'use client';
+import { MainMenu } from '@/components/Menus/MainMenu';
+import { useAccounts } from '@/hooks/useAccounts';
+import { useChains } from '@/hooks/useChains';
+import { useUserTracking } from '@/hooks/userTracking';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
 import { useEffect, useRef } from 'react';
@@ -7,12 +12,9 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useAccounts, useChains, useUserTracking } from 'src/hooks';
-import { useClientTranslation } from 'src/i18n';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
-import { NavbarButtonsContainer, WalletManagementButtons } from '.';
-import { MainMenu, MenuToggle } from '../..';
+import { MenuToggle, NavbarButtonsContainer, WalletManagementButtons } from '.';
 
 interface NavbarButtonsProps {
   redirectToLearn?: boolean;

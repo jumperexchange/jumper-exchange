@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
+import { urbanist } from 'src/fonts/fonts';
 import { getContrastAlphaColor } from 'src/utils';
 
 export const BlogArticleImageContainer = styled(Box)(({ theme }) => ({
@@ -84,17 +85,25 @@ export const BlogArticleImage = styled('img')(({ theme }) => ({
   width: '100%',
   borderRadius: '16px',
   maxWidth: theme.breakpoints.values.lg,
+  aspectRatio: '16/12',
+  objectFit: 'cover',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    aspectRatio: '15/8',
+  },
 }));
 
 export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   width: '100%',
-  aspectRatio: 1.6,
   transform: 'unset',
   borderRadius: '16px',
-  margin: 'auto',
+  margin: theme.spacing(0, 'auto', 0.75),
   maxWidth: theme.breakpoints.values.lg,
   textAlign: 'center',
-  padding: theme.spacing(2),
+  aspectRatio: '16/12',
+  objectFit: 'cover',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    aspectRatio: '15/8',
+  },
 }));
 
 export const BlogAuthorAvatar = styled('img')(({ theme }) => ({
@@ -235,7 +244,7 @@ export const BlogArticleTitle = styled(Typography)<TypographyProps>(
     fontWeight: 700,
     lineHeight: '64px',
     fontSize: '48px',
-    fontFamily: 'Urbanist, Inter', //todo: add font
+    fontFamily: urbanist.style.fontFamily,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       fontSize: '64px',
       lineHeight: '72px',
@@ -261,20 +270,16 @@ export const BlogArticleTitleSkeleton = styled(Skeleton)<SkeletonProps>(
   }),
 );
 
-export const BlogArticleSubtitle = styled(Typography)<TypographyProps>(
-  ({ theme }) => ({
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(6),
-    fontWeight: 700,
-    fontFamily: 'Inter',
-    fontSize: '36px',
-    lineHeight: '38px',
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      fontSize: '36px',
-      lineHeight: '38px',
-    },
-  }),
-);
+export const BlogArticleSubtitle = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'variant',
+})<TypographyProps>(({ theme }) => ({
+  marginTop: theme.spacing(8),
+  marginBottom: theme.spacing(6),
+  fontWeight: 700,
+  fontFamily: urbanist.style.fontFamily,
+  fontSize: '28px',
+  lineHeight: '40px',
+}));
 
 export const BlogArticleSubtitleSkeleton = styled(Skeleton)<SkeletonProps>(
   ({ theme }) => ({
@@ -301,7 +306,7 @@ export const BlogArticlAuthorName = styled(Typography)<TypographyProps>(
     fontSize: '24px',
     lineHeight: '28px',
     fontWeight: 700,
-    fontFamily: 'Urbanist, Inter',
+    fontFamily: urbanist.style.fontFamily,
   }),
 );
 

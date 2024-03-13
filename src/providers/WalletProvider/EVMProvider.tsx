@@ -1,5 +1,6 @@
 'use client';
 
+import { useChains } from '@/hooks/useChains';
 import {
   alpha,
   binance,
@@ -30,7 +31,6 @@ import {
   xdefi,
 } from '@lifi/wallet-management';
 import { useMemo, type FC, type PropsWithChildren } from 'react';
-import { useChains } from 'src/hooks';
 import type { Chain } from 'viem';
 import { createClient } from 'viem';
 import type { CreateConnectorFn } from 'wagmi';

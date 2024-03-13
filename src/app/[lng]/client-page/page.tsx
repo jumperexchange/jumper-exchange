@@ -1,8 +1,9 @@
 'use client';
 
+import { ClientTranslationProvider } from '@/i18n/i18next-client-provider';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import Link from 'next/link';
 import { useState } from 'react';
-import { ClientTranslationProvider, useClientTranslation } from 'src/i18n';
 import { Footer } from '../components/Footer/client';
 import { Header } from '../components/Header';
 

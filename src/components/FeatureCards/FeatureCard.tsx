@@ -7,14 +7,15 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useMemo, useState } from 'react';
 import { useSettingsStore } from 'src/stores';
 
+import { useStrapi } from '@/hooks/useStrapi';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import {
   STRAPI_FEATURE_CARDS,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useStrapi, useUserTracking } from 'src/hooks';
-import { useClientTranslation } from 'src/i18n';
 import { EventTrackingTool, type FeatureCardData } from 'src/types';
 import { openInNewTab } from 'src/utils';
 import { FCard as Card } from '.';

@@ -1,5 +1,5 @@
+import { WidgetWrapper } from '@/components/Widgets';
 import { useTheme } from '@mui/material';
-import { WidgetWrapper } from 'src/components';
 import { useSettingsStore } from 'src/stores';
 import { removeHash } from 'src/utils';
 import { OnRamperIFrame } from './index';
@@ -47,7 +47,7 @@ export const OnRamper = () => {
         <OnRamperIFrame
           src={onRamperSrc}
           height="630px"
-          width="392px"
+          width="416px"
           title="Onramper widget"
           allow="accelerometer; autoplay; camera; gyroscope; payment"
         ></OnRamperIFrame>

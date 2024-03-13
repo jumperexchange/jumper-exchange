@@ -1,3 +1,4 @@
+import { useUserTracking } from '@/hooks';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkIcon from '@mui/icons-material/Link';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -13,7 +14,6 @@ import {
   TrackingEventParameter,
   X_SHARE_URL,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
 import { openInNewTab } from 'src/utils';
 import { ShareArticleIcon } from './ShareArticleIcon';

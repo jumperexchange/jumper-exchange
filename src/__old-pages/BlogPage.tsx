@@ -1,12 +1,12 @@
-import { Layout } from 'src/Layout';
 import {
   BlogCarousel,
   FeaturedArticle,
   JoinDiscordBanner,
   PoweredBy,
-} from 'src/components';
+} from '@/components';
+import { useInitUserTracking, useStrapi } from '@/hooks';
+import { Layout } from 'src/Layout';
 import { STRAPI_BLOG_ARTICLES } from 'src/const';
-import { useInitUserTracking, useStrapi } from 'src/hooks';
 import type { BlogArticleData } from 'src/types';
 
 export const BlogPage = () => {

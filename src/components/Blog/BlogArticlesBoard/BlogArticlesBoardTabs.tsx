@@ -1,5 +1,6 @@
 import type { Breakpoint } from '@mui/material';
 import { Skeleton, useMediaQuery, useTheme } from '@mui/material';
+import { urbanist } from 'src/fonts/fonts';
 import { getContrastAlphaColor } from 'src/utils';
 import type { TabProps } from '../../Tabs';
 import { Tabs } from '../../Tabs';
@@ -44,7 +45,7 @@ export const BlogArticlesBoardTabs = ({
     [theme.breakpoints.up('lg')]: {
       maxWidth: 'unset',
       borderRadius: '28px',
-      minWidth: 392,
+      minWidth: 416,
       width: 'auto',
       display: 'flex',
     },
@@ -90,7 +91,7 @@ export const BlogArticlesBoardTabs = ({
     borderRadius: '6px',
     width: '100%',
     maxWidth: '320px',
-    fontFamily: 'Urbanist, Inter',
+    fontFamily: urbanist.style.fontFamily,
     [theme.breakpoints.up('lg')]: {
       width: 142,
       borderRadius: '24px',

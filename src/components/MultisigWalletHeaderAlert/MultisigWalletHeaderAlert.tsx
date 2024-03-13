@@ -1,7 +1,7 @@
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { Typography } from '@mui/material';
-import { useClientTranslation } from 'src/i18n';
 import {
   MultisigWalletHeaderAlertContainer,
   MultisigWalletHeaderAlertContent,

@@ -2,15 +2,15 @@ import type { SxProps, Theme } from '@mui/material';
 import { Fade, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import type { KeyboardEvent } from 'react';
+import { MenuKeysEnum, MenuMain } from 'src/const';
+import { useMenuStore } from 'src/stores';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuList,
   MenuPaper,
   MenuPopper,
-} from 'src/components';
-import { MenuKeysEnum, MenuMain } from 'src/const';
-import { useMenuStore } from 'src/stores';
+} from './Menu.style';
 interface MenuProps {
   isOpenSubMenu: boolean;
   label?: string;

@@ -1,6 +1,6 @@
+import { Button } from '@/components/Button';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { Modal, Typography } from '@mui/material';
-import { Button } from 'src/components';
-import { useClientTranslation } from 'src/i18n';
 import {
   MultisigConnectedAlertContainer,
   MultisigConnectedAlertIcon,

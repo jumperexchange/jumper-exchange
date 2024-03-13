@@ -1,10 +1,14 @@
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Menu, MenuHeaderAppBar, MenuHeaderAppWrapper } from 'src/components';
 import { useMenuStore } from 'src/stores';
 
+import { Menu } from '@/components/Menu/Menu';
+import {
+  MenuHeaderAppBar,
+  MenuHeaderAppWrapper,
+} from '@/components/Menu/Menu.style';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { getConnectorIcon } from '@lifi/wallet-management';
-import { useClientTranslation } from 'src/i18n';
 import { EVMConnectButton } from './EVMConnectButton';
 import { ConnectButtonContainer } from './EcosystemSelectMenu.style';
 import { SVMConnectButton } from './SVMConnectButton';

@@ -1,4 +1,8 @@
 'use client';
+import { useAccountConnect } from '@/hooks/useAccounts';
+import type { CombinedWallet } from '@/hooks/useCombinedWallets';
+import { useCombinedWallets } from '@/hooks/useCombinedWallets';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import {
   getConnectorIcon,
   isWalletInstalled,
@@ -8,9 +12,6 @@ import type { Theme } from '@mui/material';
 import { Avatar, useMediaQuery, useTheme } from '@mui/material';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
 import { useCallback, useMemo } from 'react';
-import type { CombinedWallet } from 'src/hooks';
-import { useAccountConnect, useCombinedWallets } from 'src/hooks';
-import { useClientTranslation } from 'src/i18n';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { MenuListItem } from 'src/types';
 import { getContrastAlphaColor } from 'src/utils';

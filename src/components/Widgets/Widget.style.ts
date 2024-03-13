@@ -10,7 +10,7 @@ export interface WidgetWrapperProps extends Omit<BoxProps, 'component'> {
 export const WidgetWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'welcomeScreenClosed',
 })<WidgetWrapperProps>(({ theme, welcomeScreenClosed }) => ({
-  minWidth: 392,
+  minWidth: 416,
   position: 'relative',
   margin: theme.spacing(0, 'auto'),
 

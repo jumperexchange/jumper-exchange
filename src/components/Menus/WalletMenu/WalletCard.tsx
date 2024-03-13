@@ -1,19 +1,18 @@
+import { Avatar } from '@/components/Avatar/Avatar';
+import { Button } from '@/components/Button/Button';
+import type { Account } from '@/hooks/useAccounts';
+import { useAccountDisconnect } from '@/hooks/useAccounts';
+import { useChains } from '@/hooks/useChains';
+import { useMultisig } from '@/hooks/useMultisig';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import type { Chain } from '@lifi/sdk';
 import { getConnectorIcon } from '@lifi/wallet-management';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Avatar, Button } from 'src/components';
 import { TrackingAction, TrackingCategory } from 'src/const';
-import type { Account } from 'src/hooks';
-import {
-  useAccountDisconnect,
-  useChains,
-  useMultisig,
-  useUserTracking,
-} from 'src/hooks';
-import { useClientTranslation } from 'src/i18n';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { openInNewTab, walletDigest } from 'src/utils';
@@ -147,7 +146,6 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             variant="secondary"
             size="medium"
             onClick={() => handleDisconnect()}
-            styles={{}}
           >
             <PowerSettingsNewIcon sx={{ height: '20px' }} />
           </Button>

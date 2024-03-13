@@ -1,15 +1,15 @@
+import { IconButtonPrimary } from '@/components';
+import { useUserTracking } from '@/hooks';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { IconButtonPrimary } from 'src/components';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
 import { openInNewTab } from 'src/utils';
 import { BlogCtaContainer, BlogCtaTitle } from '.';

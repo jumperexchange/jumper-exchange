@@ -1,3 +1,5 @@
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
@@ -6,8 +8,6 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
-import { useClientTranslation } from 'src/i18n';
 import { useSettingsStore } from 'src/stores';
 import type { ThemeModesSupported } from 'src/types';
 import { EventTrackingTool } from 'src/types';

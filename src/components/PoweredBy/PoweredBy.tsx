@@ -1,9 +1,9 @@
 'use client';
 
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { CSSObject } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
 import { LIFI_URL, TrackingAction, TrackingCategory } from 'src/const';
-import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
 import { appendUTMParametersToLink, openInNewTab } from '../../utils';
 import { Container } from './PoweredBy.style';

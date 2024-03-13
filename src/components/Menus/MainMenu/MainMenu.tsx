@@ -1,8 +1,9 @@
-import { Menu, MenuItem, useMainMenuContent } from 'src/components';
+import { Menu } from '@/components/Menu/Menu';
+import { MenuItem } from '@/components/Menu/MenuItem';
 import { MenuKeysEnum } from 'src/const';
 import { useMenuStore } from 'src/stores';
 import type { JsxElement } from 'typescript';
-import { DevelopersSubmenu, LanguagesSubmenu } from '..';
+import { DevelopersSubmenu, LanguagesSubmenu, useMainMenuContent } from '..';
 
 interface MenuProps {
   anchorEl: any;
