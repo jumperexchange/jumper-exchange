@@ -32,9 +32,6 @@ export const TabsContainer = styled(Tabs, {
   '> .MuiTabs-root': {
     minHeight: 'unset !important',
   },
-  '.MuiTabs-root': {
-    minHeight: 'unset !important',
-  },
 }));
 
 export const Tab = styled(MuiTab, {
@@ -51,7 +48,8 @@ export const Tab = styled(MuiTab, {
   fontWeight: '700',
   fontSize: '16px',
   lineHeight: '20px',
-  margin: '6px 4px',
+  margin: theme.spacing(0.75, 0.5),
+  transition: 'background 250ms',
   background: 'transparent',
   minHeight: 'unset',
   color:

@@ -1,20 +1,59 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { initSentry } from 'src/config';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import 'src/fonts/inter.css';
+import 'src/fonts/urbanist.css';
 import 'src/utils/structuredClone';
-import { App } from './App';
+import { JUMPER_LEARN_PATH } from './const';
 import './fonts/inter.css';
+import './fonts/urbanist.css';
+import { BlogArticlePage, BlogPage, Homepage } from './pages';
+import { AppProvider } from './providers';
 import { reportWebVitals } from './reportWebVitals';
 
-initSentry();
+// initSentry();
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement!);
-
+const router = createBrowserRouter([
+  {
+    path: '/*',
+    element: <Homepage />,
+  },
+  {
+    path: '/exchange/*',
+    element: <Homepage />,
+  },
+  {
+    path: '/swap/*',
+    element: <Homepage />,
+  },
+  {
+    path: '/gas/*',
+    element: <Homepage />,
+  },
+  {
+    path: '/refuel/*',
+    element: <Homepage />,
+  },
+  {
+    path: '/buy/*',
+    element: <Homepage />,
+  },
+  {
+    path: JUMPER_LEARN_PATH,
+    element: <BlogPage />,
+  },
+  {
+    path: `${JUMPER_LEARN_PATH}/:id`,
+    element: <BlogArticlePage />,
+  },
+]);
 root.render(
   <StrictMode>
-    <App />
+    <AppProvider>
+      <RouterProvider router={router} />
+    </AppProvider>
   </StrictMode>,
 );
 

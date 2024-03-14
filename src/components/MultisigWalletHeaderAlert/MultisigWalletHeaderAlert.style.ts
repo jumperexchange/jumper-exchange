@@ -1,12 +1,12 @@
-import { alpha, styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles';
 
 export const MultisigWalletHeaderAlertContainer = styled(Box)(({ theme }) => ({
   backgroundColor: `${alpha(theme.palette.info.main, 0.12)}`,
-  padding: '16px !important',
+  padding: `${theme.spacing(2)} !important`,
   boxShadow: `0px 8px 16px ${alpha(theme.palette.common.black, 0.04)}`,
   borderRadius: '12px',
-  maxWidth: '392px',
+  maxWidth: 416,
   margin: '2rem auto 0.5rem auto',
   display: 'block !important',
 }));

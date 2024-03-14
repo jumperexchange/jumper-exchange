@@ -7,13 +7,13 @@ import { Modal, SupportModalContainer } from './SupportModal.style';
 
 export const SupportModal = () => {
   const theme = useTheme();
-  const [openSupportModal, onOpenSupportModal] = useMenuStore((state) => [
+  const [openSupportModal, setSupportModalState] = useMenuStore((state) => [
     state.openSupportModal,
-    state.onOpenSupportModal,
+    state.setSupportModalState,
   ]);
 
   return (
-    <Modal open={openSupportModal} onClose={() => onOpenSupportModal(false)}>
+    <Modal open={openSupportModal} onClose={() => setSupportModalState(false)}>
       <SupportModalContainer>
         <WidgetBot
           server="849912621360218112" // LI.FI
@@ -27,7 +27,7 @@ export const SupportModal = () => {
               maxHeight: `calc( 100vh - ${HeaderHeight.SM} )`,
             },
             [theme.breakpoints.up('md' as Breakpoint)]: {
-              height: '500px',
+              height: 500,
             },
           }}
         />

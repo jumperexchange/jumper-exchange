@@ -1,9 +1,9 @@
-import type { Route } from '@lifi/sdk';
+import { type Route } from '@lifi/sdk';
 import { useUserTracking } from 'src/hooks';
 
 import type {
   ChainTokenSelected,
-  RouteContactSupport,
+  ContactSupport,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
 } from '@lifi/widget';
@@ -15,18 +15,24 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useMultisig } from 'src/hooks';
-import { useWallet } from 'src/providers';
-import { useActiveTabStore, useMenuStore, useMultisigStore } from 'src/stores';
+import { useAccounts, useMultisig } from 'src/hooks';
+import {
+  useActiveTabStore,
+  useChainTokenSelectionStore,
+  useMenuStore,
+  useMultisigStore,
+} from 'src/stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { activeTab } = useActiveTabStore();
+  const { setDestinationChainToken, setSourceChainToken } =
+    useChainTokenSelectionStore();
   const { trackEvent, trackTransaction } = useUserTracking();
-  const [onOpenSupportModal] = useMenuStore((state) => [
-    state.onOpenSupportModal,
+  const [setSupportModalState] = useMenuStore((state) => [
+    state.setSupportModalState,
   ]);
   const widgetEvents = useWidgetEvents();
   const { isMultisigSigner, shouldOpenMultisigSignatureModal } = useMultisig();
@@ -34,7 +40,7 @@ export function WidgetEvents() {
     state.onDestinationChainSelected,
   ]);
 
-  const { account } = useWallet();
+  const { account } = useAccounts();
 
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
     useState(false);
@@ -173,14 +179,26 @@ export function WidgetEvents() {
       });
     };
 
-    const onRouteContactSupport = (supportId: RouteContactSupport) => {
-      onOpenSupportModal(true);
+    const onRouteContactSupport = (supportId: ContactSupport) => {
+      setSupportModalState(true);
     };
 
     const handleMultisigChainTokenSelected = (
       destinationData: ChainTokenSelected,
     ) => {
       onDestinationChainSelected(destinationData.chainId);
+    };
+
+    const handleSourceChainTokenSelection = async (
+      sourceChainData: ChainTokenSelected,
+    ) => {
+      setSourceChainToken(sourceChainData);
+    };
+
+    const handleDestinationChainTokenSelection = async (
+      toChainData: ChainTokenSelected,
+    ) => {
+      setDestinationChainToken(toChainData);
     };
 
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
@@ -191,17 +209,27 @@ export function WidgetEvents() {
     );
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
-    widgetEvents.on(WidgetEvent.RouteContactSupport, onRouteContactSupport);
+    widgetEvents.on(WidgetEvent.ContactSupport, onRouteContactSupport);
     widgetEvents.on(
       WidgetEvent.DestinationChainTokenSelected,
       handleMultisigChainTokenSelected,
+    );
+    widgetEvents.on(
+      WidgetEvent.SourceChainTokenSelected,
+      handleSourceChainTokenSelection,
+    );
+    widgetEvents.on(
+      WidgetEvent.DestinationChainTokenSelected,
+      handleDestinationChainTokenSelection,
     );
 
     return () => widgetEvents.all.clear();
   }, [
     activeTab,
     onDestinationChainSelected,
-    onOpenSupportModal,
+    setDestinationChainToken,
+    setSourceChainToken,
+    setSupportModalState,
     shouldOpenMultisigSignatureModal,
     trackEvent,
     trackTransaction,
@@ -220,7 +248,7 @@ export function WidgetEvents() {
     setIsMultisigConnectedAlertOpen(isMultisigSigner);
     // prevent endless loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account.address]);
+  }, [account?.address]);
 
   return (
     <>

@@ -1,23 +1,28 @@
-import type { CSSObject } from '@mui/material';
-import { ReactNode, type PropsWithChildren } from 'react';
+import type { SxProps, Theme } from '@mui/material';
+import type { ReactNode } from 'react';
+import { type PropsWithChildren } from 'react';
 import {
   ButtonPrimary,
   ButtonSecondary,
   ButtonTransparent,
 } from './Button.style';
-type ButtonVariant = 'primary' | 'secondary' | 'transparent';
 
-interface ButtonProbs {
-  variant: ButtonVariant;
-  styles?: CSSObject;
+type ButtonVariant = 'primary' | 'secondary' | 'transparent';
+type ButtonSize = 'small' | 'medium' | 'large';
+
+interface ButtonProps {
+  variant?: ButtonVariant;
+  styles?: SxProps<Theme>;
   id?: string;
   fullWidth?: boolean;
   muiVariant?: 'text' | 'outlined' | 'contained';
   onClick?: (event?: any) => void;
   children?: any;
+  disabled?: boolean;
+  size?: ButtonSize;
 }
 
-export const Button: React.FC<PropsWithChildren<ButtonProbs>> = ({
+export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   variant,
   styles,
   id,
@@ -25,14 +30,18 @@ export const Button: React.FC<PropsWithChildren<ButtonProbs>> = ({
   onClick,
   children,
   muiVariant,
-}: ButtonProbs) => {
+  disabled,
+  size,
+}: ButtonProps) => {
   let output: ReactNode;
 
   switch (variant) {
     case 'primary':
       output = (
         <ButtonPrimary
+          size={size}
           id={id}
+          disabled={disabled}
           fullWidth={fullWidth}
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
@@ -45,7 +54,9 @@ export const Button: React.FC<PropsWithChildren<ButtonProbs>> = ({
     case 'secondary':
       output = (
         <ButtonSecondary
+          size={size}
           id={id}
+          disabled={disabled}
           fullWidth={fullWidth}
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
@@ -58,7 +69,9 @@ export const Button: React.FC<PropsWithChildren<ButtonProbs>> = ({
     case 'transparent':
       output = (
         <ButtonTransparent
+          size={size}
           id={id}
+          disabled={disabled}
           fullWidth={fullWidth}
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
@@ -71,7 +84,9 @@ export const Button: React.FC<PropsWithChildren<ButtonProbs>> = ({
     default:
       output = (
         <ButtonPrimary
+          size={size}
           id={id}
+          disabled={disabled}
           fullWidth={fullWidth}
           onClick={onClick}
           variant={muiVariant}

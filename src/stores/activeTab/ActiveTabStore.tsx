@@ -1,4 +1,4 @@
-import { TabsMap } from 'src/const';
+import { TabsMap } from 'src/const/tabsMap';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface ActiveTabState {

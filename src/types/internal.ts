@@ -1,6 +1,6 @@
 import type { ChainId } from '@lifi/sdk';
 import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
-import type { CSSObject } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
 import 'react-i18next';
 import type { MenuKeys } from 'src/const';
 import type { Gtag } from './gtag';
@@ -25,7 +25,7 @@ export interface MenuListItem {
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
   showMoreIcon?: boolean;
-  styles?: CSSObject;
+  styles?: SxProps<Theme>;
   checkIcon?: boolean;
   url?: string;
   onClick?: any;

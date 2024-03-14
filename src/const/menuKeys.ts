@@ -6,6 +6,7 @@ export enum MenuKeys {
   Chains = 'Chains',
   Devs = 'Devs',
   Language = 'Language',
+  EcosystemSelect = 'EcosystemSelect',
   None = 'None',
 }
 
@@ -13,7 +14,8 @@ type MenuMainKeys =
   | MenuKeys.Main
   | MenuKeys.Chains
   | MenuKeys.Wallet
-  | MenuKeys.WalletSelect;
+  | MenuKeys.WalletSelect
+  | MenuKeys.EcosystemSelect;
 type MenuSubKeys = Exclude<MenuKeys, MenuMainKeys>;
 
 type MenuMainType = {
@@ -28,6 +30,7 @@ export const MenuMain: MenuMainType = {
   [MenuKeys.Main]: MenuKeys.Main,
   [MenuKeys.Chains]: MenuKeys.Chains,
   [MenuKeys.Wallet]: MenuKeys.Wallet,
+  [MenuKeys.EcosystemSelect]: MenuKeys.EcosystemSelect,
   [MenuKeys.WalletSelect]: MenuKeys.WalletSelect,
 };
 

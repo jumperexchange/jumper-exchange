@@ -16,24 +16,24 @@ export const NavbarTabs = () => {
 
   const containerStyles = {
     display: 'none',
-    minWidth: 392,
+    minWidth: 416,
     borderRadius: 28,
     [theme.breakpoints.up('lg')]: {
       display: 'flex',
     },
     div: {
-      height: '56px',
+      height: 56,
     },
     '.MuiTabs-indicator': {
-      height: '48px',
-      zIndex: '-1',
-      borderRadius: '24px',
+      height: 48,
+      zIndex: -1,
+      borderRadius: 24,
     },
   };
 
   const tabStyles = {
-    height: '48px',
-    width: '142px',
+    height: 48,
+    width: 142,
     borderRadius: '24px',
   };
 

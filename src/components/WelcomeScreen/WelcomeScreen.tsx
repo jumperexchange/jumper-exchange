@@ -3,7 +3,7 @@ import { Slide, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { ButtonPrimary, ToolCards } from 'src/components';
+import { ButtonPrimary, CustomColor, ToolCards } from 'src/components';
 import {
   TrackingAction,
   TrackingCategory,
@@ -14,12 +14,7 @@ import { useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { appendUTMParametersToLink } from 'src/utils';
 import { shallow } from 'zustand/shallow';
-import {
-  ContentWrapper,
-  CustomColor,
-  Overlay,
-  WelcomeContent,
-} from './WelcomeScreen.style';
+import { ContentWrapper, Overlay, WelcomeContent } from './WelcomeScreen.style';
 
 const auditsWelcomeUrl = appendUTMParametersToLink(
   'https://docs.li.fi/smart-contracts/audits',
@@ -127,13 +122,13 @@ export const WelcomeScreen = () => {
       >
         <ContentWrapper showWelcome={!welcomeScreenClosed}>
           <WelcomeContent>
-            <CustomColor variant={'lifiHeaderMedium'}>
+            <CustomColor as="h1" variant={'lifiHeaderMedium'}>
               {t('navbar.welcome.title')}
             </CustomColor>
             <Typography
               variant={'lifiBodyLarge'}
               sx={{
-                marginTop: theme.spacing(2),
+                marginTop: 2,
                 color:
                   theme.palette.mode === 'dark'
                     ? theme.palette.accent1Alt.main
@@ -186,26 +181,26 @@ export const WelcomeScreen = () => {
             <ButtonPrimary
               onClick={handleGetStarted}
               sx={(theme) => ({
-                height: '48px',
-                width: '192px',
-                margin: `${theme.spacing(4)} auto`,
+                height: 48,
+                width: 192,
+                margin: theme.spacing(4, 'auto'),
                 [theme.breakpoints.up('sm' as Breakpoint)]: {
-                  margin: `${theme.spacing(6)} auto`,
-                  height: '56px',
+                  margin: theme.spacing(6, 'auto'),
+                  height: 56,
                   borderRadius: '28px',
-                  width: '247px',
+                  width: 247,
                 },
               })}
             >
               <Typography
                 variant={'lifiBodyMediumStrong'}
                 sx={{
-                  maxHeight: '40px',
+                  maxHeight: 40,
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   [theme.breakpoints.up('sm' as Breakpoint)]: {
                     fontSize: '18px',
-                    maxHeight: '48px',
+                    maxHeight: 48,
                     lineHeight: '24px',
                   },
                 }}
@@ -214,6 +209,17 @@ export const WelcomeScreen = () => {
               </Typography>
             </ButtonPrimary>
           </WelcomeContent>
+          {/* <FeaturedArticle
+            showIntro={true}
+            showAllButton={true}
+            styles={{
+              background: `linear-gradient(0deg, transparent, ${
+                theme.palette.mode === 'light'
+                  ? theme.palette.white.main
+                  : theme.palette.accent1Alt.main
+              })`,
+            }}
+          /> */}
         </ContentWrapper>
       </Slide>
     </Overlay>

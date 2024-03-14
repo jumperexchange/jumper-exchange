@@ -1,12 +1,12 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckIcon from '@mui/icons-material/Check';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import type { Breakpoint } from '@mui/material';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import type { KeyboardEvent } from 'react';
 import { useEffect, useRef } from 'react';
 import {
-  ButtonBackArrow,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuHeaderLabel,
@@ -22,6 +22,7 @@ import {
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool, type MenuListItem } from 'src/types';
+import { getContrastAlphaColor } from 'src/utils';
 import { MenuItemContainer, MenuLabel } from '.';
 
 interface SubMenuProps {
@@ -46,20 +47,17 @@ export const SubMenu = ({
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const menuListRef = useRef(null);
-  const [openSubMenu, onOpenSubMenu] = useMenuStore((state) => [
-    state.openSubMenu,
-    state.onOpenSubMenu,
-  ]);
+  const { openSubMenu, setSubMenuState } = useMenuStore((state) => state);
 
   function handleBackSpace(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Backspace') {
-      onOpenSubMenu(prevMenu);
+      setSubMenuState(prevMenu);
     }
   }
 
   const handleClick = (el: MenuListItem) => {
     if (el.triggerSubMenu) {
-      onOpenSubMenu(el.triggerSubMenu);
+      setSubMenuState(el.triggerSubMenu);
       trackEvent({
         category: TrackingCategory.SubMenu,
         action: TrackingAction.OpenMenu,
@@ -79,7 +77,7 @@ export const SubMenu = ({
   };
 
   const handleBackNavigation = () => {
-    onOpenSubMenu(prevMenu);
+    setSubMenuState(prevMenu);
   };
 
   useEffect(() => {
@@ -89,7 +87,7 @@ export const SubMenu = ({
     }
   }, [open, openSubMenu, triggerSubMenu]);
 
-  return open && openSubMenu === triggerSubMenu ? (
+  return openSubMenu === triggerSubMenu ? (
     <MenuPaper
       className="submenu"
       onKeyDown={handleBackSpace}
@@ -99,10 +97,23 @@ export const SubMenu = ({
     >
       <MenuHeaderAppWrapper>
         <MenuHeaderAppBar component="div" elevation={0}>
-          <ButtonBackArrow
-            styles={{ marginLeft: '0px' }}
-            onClick={handleBackNavigation}
-          />
+          <IconButton
+            size="medium"
+            aria-label="settings"
+            edge="start"
+            sx={{
+              marginLeft: 0,
+              color: theme.palette.text.primary,
+              '&:hover': {
+                backgroundColor: getContrastAlphaColor(theme, '4%'),
+              },
+            }}
+            onClick={() => {
+              handleBackNavigation();
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
           <MenuHeaderLabel>{label}</MenuHeaderLabel>
         </MenuHeaderAppBar>
       </MenuHeaderAppWrapper>
@@ -113,7 +124,7 @@ export const SubMenu = ({
               autoFocus={index > 0 ? true : false}
               onClick={() => {
                 el.triggerSubMenu
-                  ? onOpenSubMenu(el.triggerSubMenu)
+                  ? setSubMenuState(el.triggerSubMenu)
                   : el.onClick();
               }}
               component="li"
@@ -136,8 +147,8 @@ export const SubMenu = ({
                     textOverflow: 'ellipsis',
                   }}
                   variant={'lifiBodyMedium'}
-                  ml={!!el.prefixIcon ? '12px' : 'inherit'}
-                  mr={!!el.suffixIcon ? '12px' : 'inherit'}
+                  ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
+                  mr={!!el.suffixIcon ? theme.spacing(1.5) : 'inherit'}
                 >
                   {`${el.label || ' '}`}
                 </Typography>
@@ -162,13 +173,13 @@ export const SubMenu = ({
                 {el.prefixIcon}
                 <Typography
                   variant={'lifiBodyMedium'}
-                  ml={!!el.prefixIcon ? '12px' : 'inherit'}
+                  ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
                   sx={{
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     maxWidth: 'inherit',
                     [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      maxWidth: el.prefixIcon ? '188px' : 'inherit',
+                      maxWidth: el.prefixIcon ? 188 : 'inherit',
                     },
                   }}
                 >

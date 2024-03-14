@@ -1,6 +1,6 @@
 import { Typography, useTheme } from '@mui/material';
 import { useCountUpAnimation } from 'src/hooks';
-import { SCard as Card } from './ToolCard.style';
+import { ToolCardContainer } from './ToolCard.style';
 
 interface ToolCardProps {
   number: string;
@@ -12,7 +12,7 @@ export const ToolCard = ({ number, title, handleClick }: ToolCardProps) => {
   const theme = useTheme();
   const counter = useCountUpAnimation({ children: number, duration: 1000 });
   return (
-    <Card
+    <ToolCardContainer
       className={'stats-card'}
       onClick={handleClick}
       sx={{ cursor: 'pointer' }}
@@ -25,11 +25,11 @@ export const ToolCard = ({ number, title, handleClick }: ToolCardProps) => {
           pointerEvents: 'none',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          maxWidth: '80px',
-          maxHeight: '32px',
+          maxWidth: 80,
+          maxHeight: 32,
           [theme.breakpoints.up('sm')]: {
             fontSize: '32px',
-            maxHeight: '40px',
+            maxHeight: 40,
             lineHeight: '40px',
           },
         }}
@@ -42,17 +42,17 @@ export const ToolCard = ({ number, title, handleClick }: ToolCardProps) => {
           pointerEvents: 'none',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          maxWidth: '80px',
-          maxHeight: '20px',
+          maxWidth: 80,
+          maxHeight: 20,
           [theme.breakpoints.up('sm')]: {
-            mt: theme.spacing(0.5),
+            mt: 0.5,
             fontSize: '16px',
-            maxWidth: '118px',
+            maxWidth: 118,
           },
         }}
       >
         {title}
       </Typography>
-    </Card>
+    </ToolCardContainer>
   );
 };

@@ -1,29 +1,33 @@
-import type { CSSObject } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
 import { Tooltip } from '@mui/material';
 import { Tab, TabsContainer } from './Tabs.style';
 
-interface TabProps {
+export interface TabProps {
   label?: string;
   tooltip?: string;
   value: number;
-  icon: JSX.Element;
+  icon?: JSX.Element;
   onClick: any;
   disabled?: boolean;
 }
+
+type Orientation = 'horizontal' | 'vertical';
 
 interface TabsProps {
   data: TabProps[];
   value: number | boolean;
   onChange?: any;
+  orientation?: Orientation;
   ariaLabel: string;
-  containerStyles?: CSSObject;
-  tabStyles?: CSSObject;
+  containerStyles?: SxProps<Theme>;
+  tabStyles?: SxProps<Theme>;
 }
 
 export const Tabs = ({
   data,
   value,
   onChange,
+  orientation,
   ariaLabel,
   containerStyles,
   tabStyles,
@@ -31,6 +35,7 @@ export const Tabs = ({
   return data ? (
     <TabsContainer
       value={value}
+      orientation={orientation ?? 'horizontal'}
       onChange={onChange}
       aria-label={ariaLabel}
       sx={containerStyles}

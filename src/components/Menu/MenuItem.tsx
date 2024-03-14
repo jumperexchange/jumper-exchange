@@ -1,7 +1,7 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import type { Breakpoint, CSSObject } from '@mui/material';
+import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
-import { Button } from 'src/components';
+import { ButtonSecondary } from 'src/components';
 import type { MenuKeys } from 'src/const';
 import {
   TrackingAction,
@@ -21,9 +21,9 @@ interface MenuItemProps {
   disableRipple?: boolean | undefined;
   autoFocus?: boolean;
   showMoreIcon?: boolean;
-  styles?: CSSObject;
+  styles?: SxProps<Theme>;
   label?: string;
-  onClick: any;
+  onClick?: any;
   triggerSubMenu?: MenuKeys;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
@@ -46,10 +46,10 @@ export const MenuItem = ({
 }: MenuItemProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
-  const [onOpenSubMenu] = useMenuStore((state) => [state.onOpenSubMenu]);
+  const { setSubMenuState } = useMenuStore((state) => state);
 
   const handleClick = () => {
-    triggerSubMenu && onOpenSubMenu(triggerSubMenu);
+    triggerSubMenu && setSubMenuState(triggerSubMenu);
     triggerSubMenu &&
       trackEvent({
         category: TrackingCategory.MainMenu,
@@ -61,7 +61,7 @@ export const MenuItem = ({
           EventTrackingTool.Cookie3,
         ],
       });
-    !!onClick && onClick();
+    onClick && onClick();
   };
 
   return open ? (
@@ -77,7 +77,7 @@ export const MenuItem = ({
       <>
         {children}
         {showButton && (
-          <Button variant="primary" styles={styles} fullWidth={true}>
+          <ButtonSecondary fullWidth>
             {prefixIcon}
             <Typography
               variant={'lifiBodyMediumStrong'}
@@ -85,18 +85,22 @@ export const MenuItem = ({
               ml={!!prefixIcon ? '9.5px' : 'inherit'}
               mr={!!prefixIcon ? '9.5px' : 'inherit'}
               sx={{
+                color:
+                  theme.palette.mode === 'light'
+                    ? theme.palette.primary.main
+                    : theme.palette.white.main,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                maxWidth: '208px',
+                maxWidth: 208,
                 [theme.breakpoints.up('sm' as Breakpoint)]: {
-                  maxWidth: '168px',
+                  maxWidth: 168,
                 },
               }}
             >
               {label}
             </Typography>
             {suffixIcon ?? null}
-          </Button>
+          </ButtonSecondary>
         )}
         {!showButton && (
           <>
@@ -113,12 +117,12 @@ export const MenuItem = ({
               {label ? (
                 <Typography
                   variant={'lifiBodyMedium'}
-                  ml={'12px'}
+                  ml={theme.spacing(1.5)}
                   sx={{
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      maxWidth: prefixIcon ? '188px' : 'inherit',
+                      maxWidth: prefixIcon ? 188 : 'inherit',
                     },
                   }}
                 >

@@ -8,12 +8,14 @@ import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from 'src/stores';
 
 import {
+  STRAPI_FEATURE_CARDS,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useFeatureCards, useUserTracking } from 'src/hooks';
+import { useStrapi, useUserTracking } from 'src/hooks';
 import { EventTrackingTool, type FeatureCardData } from 'src/types';
+import { openInNewTab } from 'src/utils';
 import { FCard as Card } from '.';
 
 interface FeatureCardProps {
@@ -24,17 +26,23 @@ interface FeatureCardProps {
 export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   const [open, setOpen] = useState(true);
   const { t } = useTranslation();
-  const { url } = useFeatureCards();
+  const { url } = useStrapi<FeatureCardData>({
+    contentType: STRAPI_FEATURE_CARDS,
+  });
   const { trackEvent } = useUserTracking();
   const [onDisableFeatureCard] = useSettingsStore((state) => [
     state.onDisableFeatureCard,
   ]);
   const theme = useTheme();
   useEffect(() => {
-    data?.attributes.DisplayConditions &&
-      data?.attributes.DisplayConditions.showOnce &&
-      onDisableFeatureCard(data?.attributes.DisplayConditions?.id);
-  }, [data?.attributes.DisplayConditions, onDisableFeatureCard]);
+    if (data?.attributes.DisplayConditions?.showOnce) {
+      onDisableFeatureCard(data?.attributes.uid);
+    }
+  }, [
+    data?.attributes.DisplayConditions,
+    data?.attributes.uid,
+    onDisableFeatureCard,
+  ]);
 
   const typographyColor = useMemo(() => {
     if (data.attributes.DisplayConditions.mode) {
@@ -65,8 +73,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         label: 'display-feature-card',
         data: {
           [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
-          [TrackingEventParameter.FeatureCardId]:
-            data.attributes.DisplayConditions.id,
+          [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
           url: data.attributes.URL,
         },
         disableTrackingTool: [
@@ -76,56 +83,72 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       });
     }
   }, [
-    data.attributes.DisplayConditions.id,
+    data.attributes.uid,
     data.attributes.Title,
     data.attributes.URL,
     open,
     trackEvent,
   ]);
 
-  const imageUrl = useMemo(
-    () =>
-      new URL(
-        theme.palette.mode === 'dark'
-          ? data.attributes.BackgroundImageDark.data?.attributes.url
-          : data.attributes.BackgroundImageLight.data?.attributes.url,
-        url.origin,
-      ),
-    [
-      data.attributes.BackgroundImageDark.data,
-      data.attributes.BackgroundImageLight.data,
-      theme.palette.mode,
-      url.origin,
-    ],
-  );
+  const mode = data.attributes.DisplayConditions.mode || theme.palette.mode;
+  const imageUrl =
+    mode === 'dark'
+      ? new URL(
+          data.attributes.BackgroundImageDark.data?.attributes.url,
+          url.origin,
+        )
+      : new URL(
+          data.attributes.BackgroundImageLight.data?.attributes.url,
+          url.origin,
+        );
 
-  const handleClose = () => {
+  const handleClose = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
     setOpen(false);
     !data?.attributes.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes.DisplayConditions?.id &&
-      onDisableFeatureCard(data?.attributes.DisplayConditions?.id);
+      !!data?.attributes.uid &&
+      onDisableFeatureCard(data?.attributes.uid);
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.CloseFeatureCard,
-      label: `close_${data?.attributes.DisplayConditions?.id}`,
+      label: `click_close`,
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data?.attributes.Title,
-        [TrackingEventParameter.FeatureCardId]:
-          data?.attributes.DisplayConditions?.id,
+        [TrackingEventParameter.FeatureCardId]: data?.attributes.uid,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
   };
 
-  const handleCTA = () => {
+  const handleCTA = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
     trackEvent({
       category: TrackingCategory.FeatureCard,
-      action: TrackingAction.ClickLearnMore,
-      label: 'click_cta',
+      action: TrackingAction.ClickFeatureCard,
+      label: `click_cta`,
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
-        [TrackingEventParameter.FeatureCardId]:
-          data.attributes.DisplayConditions.id,
+        [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
+        url: data.attributes.URL,
+      },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
+  };
+
+  const handleCardClick = () => {
+    data?.attributes.URL && openInNewTab(data?.attributes.URL);
+
+    trackEvent({
+      category: TrackingCategory.FeatureCard,
+      action: TrackingAction.ClickFeatureCard,
+      label: 'click_card_bg',
+      data: {
+        [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
+        [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
         url: data.attributes.URL,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
@@ -138,10 +161,14 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       in={open}
       unmountOnExit
       appear={true}
-      timeout={150}
+      timeout={500}
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
-      <Card backgroundImageUrl={imageUrl.href}>
+      <Card
+        backgroundImageUrl={imageUrl?.href}
+        onClick={handleCardClick}
+        isDarkCard={data.attributes.DisplayConditions.mode === 'dark'}
+      >
         <CardContent
           sx={{
             padding: theme.spacing(3),
@@ -152,15 +179,15 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
             disableRipple={true}
             sx={{
               position: 'absolute',
-              right: theme.spacing(1),
-              top: theme.spacing(1),
+              right: 1,
+              top: 1,
             }}
-            onClick={handleClose}
+            onClick={(e) => handleClose(e)}
           >
             <CloseIcon
               sx={{
-                width: '24px',
-                height: '24px',
+                width: 24,
+                height: 24,
                 color: typographyColor,
               }}
             />
@@ -173,7 +200,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
                 fontSize: '24px',
                 lineHeight: '32px',
                 userSelect: 'none',
-                maxHeight: '32px',
+                maxHeight: 32,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
               }}
@@ -188,9 +215,9 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
               sx={{
                 color: typographyColor,
                 lineHeight: '24px',
-                width: '224px',
+                width: 224,
                 userSelect: 'none',
-                height: '48px',
+                height: 48,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
               }}
@@ -203,7 +230,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
               target="_blank"
               rel="noopener"
               href={data?.attributes.URL}
-              onClick={handleCTA}
+              onClick={(e) => handleCTA(e)}
               sx={{
                 textDecoration: 'none',
                 color:
@@ -216,8 +243,8 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
               <Typography
                 variant="lifiBodySmallStrong"
                 sx={{
-                  maxWidth: '224px',
-                  maxHeight: '20px',
+                  maxWidth: 224,
+                  maxHeight: 20,
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   color: data.attributes.CTAColor ?? 'inherit',

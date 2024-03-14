@@ -15,15 +15,15 @@ export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => ({
     theme.palette.mode === 'dark'
       ? theme.palette.accent1Alt.main
       : theme.palette.primary.main,
-  width: '48px',
+  width: 48,
   borderRadius: '50%',
   marginLeft: theme.spacing(1.5),
   minWidth: 'unset',
-  height: '48px',
+  height: 48,
   ':hover:before': {
     backgroundColor:
       theme.palette.mode === 'dark'
-        ? getContrastAlphaColor(theme, '4%')
+        ? getContrastAlphaColor(theme, '12%')
         : theme.palette.alphaDark100.main,
   },
   ':hover': {

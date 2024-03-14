@@ -1,19 +1,17 @@
 import type { Breakpoint, Theme } from '@mui/material';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { LogoLarge, LogoSmall } from 'src/components';
+import type { ReactNode } from 'react';
+import { JumperIcon } from 'src/components';
 
 type LogoProps = {
   isConnected: boolean;
   theme: Theme;
+  logo: ReactNode;
 };
 
-export const Logo = ({ isConnected, theme }: LogoProps) => {
+export const Logo = ({ isConnected, theme, logo }: LogoProps) => {
   const isTablet = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
 
-  return !isTablet || (!isTablet && isConnected) ? (
-    <LogoSmall theme={theme} />
-  ) : (
-    <LogoLarge theme={theme} />
-  );
+  return !isTablet || (!isTablet && isConnected) ? <JumperIcon /> : logo;
 };

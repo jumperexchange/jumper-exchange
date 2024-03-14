@@ -30,7 +30,7 @@ export enum TrackingAction {
   OpenWelcomeMessageLink = 'action_open_welcome_message_link',
 
   // Feature Card
-  ClickLearnMore = 'action_click_cta',
+  ClickFeatureCard = 'action_click_feature_card',
   CloseFeatureCard = 'action_close_feature_card',
   DisplayFeatureCard = 'action_display_feature_card',
 
@@ -41,6 +41,29 @@ export enum TrackingAction {
   SwitchTab = 'action_switch_tab',
   SwitchTheme = 'action_switch_theme',
   DownloadBrandAssets = 'action_dl_brand_assets',
+  ClickConnectToWidget = 'action_click_connect_to_jumper',
+  ClickXLink = 'action_click_x_link',
+  ClickDiscordLink = 'action_click_discord_link',
+  ClickJumperLearnLink = 'action_click_jumper_learn_link',
+  ClickLifiExplorerLink = 'action_click_lifi_explorer_link',
+
+  // Blog
+  SeeAllPosts = 'action_see_all_posts',
+  ClickArticleCard = 'action_click_article_card',
+  ClickFeaturedArticle = 'action_click_featured_article',
+  ClickBlogCTA = 'action_click_blog_cta',
+  SwipeHighlightCard = 'action_swipe_highlight_card',
+  SwipeCarousel = 'action_swipe_carousel',
+  ClickShareArticleFB = 'action_share_article_fb',
+  ClickShareArticleLinkedIn = 'action_share_article_linked',
+  ClickShareArticleX = 'action_share_article_x',
+  ClickShareArticleLink = 'action_share_article_link',
+
+  // Pagination
+  ClickPagination = 'action_click_pagination',
+
+  // Discord
+  JoinDiscordCommunity = 'action_join_discord_community',
 
   PoweredBy = 'action_click_powered_by',
 }
@@ -53,6 +76,7 @@ export enum TrackingCategory {
   LanguageMenu = 'cat_language_menu',
   SubMenu = 'cat_submenu',
   ThemeSection = 'cat_theme_section',
+  DiscordBanner = 'cat_discord_banner',
   Wallet = 'cat_wallet',
   WalletMenu = 'cat_wallet_menu',
   WalletSelectMenu = 'cat_wallet_select_menu',
@@ -60,6 +84,10 @@ export enum TrackingCategory {
   Widget = 'cat_widget',
   WidgetEvent = 'cat_widget_event',
   PoweredBy = 'cat_powered_by',
+  BlogCarousel = 'cat_blog_carousel',
+  BlogFeaturedArticle = 'cat_blog_featured_article',
+  BlogArticlesBoard = 'cat_blog_articles_board',
+  BlogArticle = 'cat_blog_article',
 }
 
 // can be used as custom dimensions / metrics
@@ -80,6 +108,7 @@ export enum TrackingEventParameter {
   AddedTokenAddress = 'param_added_token_address',
   AddedTokenName = 'param_added_token_name',
   Wallet = 'param_wallet',
+  Ecosystem = 'param_ecosystem',
 
   // Transaction:
   RouteId = 'param_route_id',
@@ -106,4 +135,15 @@ export enum TrackingEventParameter {
   InsuranceState = 'param_insurance_state',
   InsuranceFeeAmountUSD = 'param_insurance_fee_amount_usd',
   ValueLoss = 'param_value_loss',
+
+  // Blog
+  ArticleCardTitle = 'param_article_card_title',
+  ArticleCardId = 'param_article_card_id',
+  SwipeDirection = 'param_swipe_direction',
+  ArticleTitle = 'param_article_title',
+  ArticleID = 'param_article_id',
+
+  // Pagination
+  Pagination = 'param_pagination',
+  PaginationCat = 'param_pagination_cat',
 }
