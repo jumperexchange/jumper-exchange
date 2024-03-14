@@ -60,6 +60,33 @@
     "testnet": "Quaisquer transações ou ações realizadas no Testnet não se refletem no Mainnet.",
     "switchToMainnet": "Alternar para a rede principal"
   },
+  "discordBanner": {
+    "ctaHeadline": "Entre no nosso Discord para saber mais",
+    "ctaButton": "Entre no nosso Discord"
+  },
+  "blog": {
+    "title": "Dicas e tutoriais",
+    "categories": "Categorias",
+    "allCategories": "Tudo",
+    "subtitle": "Resumo: guias com passo-a-passo para DeFi e cripto para todos os níveis",
+    "minRead": "{{minRead}} leitura mínima",
+    "seeAllPosts": "Ver todas as publicações",
+    "recentPosts": "Publicações recentes",
+    "similarPosts": "Publicações semelhantes",
+    "goToArticle": "Ir para o artigo",
+    "openApp": "Abrir aplicativo",
+    "faq": "FAQ (Perguntas Mais Frequentes)",
+    "jumperCta": "Tente jumper.exchange",
+    "copiedLink": "Link copiado",
+    "shareLinkedIn": "Compartilhar artigo no LinkedIn",
+    "shareFb": "Compartilhar artigo no Facebook",
+    "shareX": "Compartilhar artigo no X",
+    "shareLink": "Compartilhar o link"
+  },
+  "solanaAlert": {
+    "title": "Suporte limitado ao token Solana",
+    "subtitle": "No momento, apenas USDC e USDT podem ser enviados para e a partir da rede Solana."
+  },
   "featureCard": {
     "learnMore": "Saiba mais"
   },
