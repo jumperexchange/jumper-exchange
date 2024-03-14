@@ -63,26 +63,33 @@ export const QuestCard = ({
       />
       <QuestCardBottomBox>
         {active ? (
-          <QuestPlatformMainBox>
-            <CenteredBox>
-              <CenteredBox
-                sx={{
-                  marginRight: '4px',
-                }}
-              >
-                <img
-                  src={platformImage}
-                  width={'24px'}
-                  height={'24px'}
-                  style={{
-                    borderRadius: '100%',
+          <QuestPlatformMainBox
+            sx={{
+              display: 'flex',
+              justifyContent: platformName ? undefined : 'flex-end',
+            }}
+          >
+            {platformName ? (
+              <CenteredBox>
+                <CenteredBox
+                  sx={{
+                    marginRight: '4px',
                   }}
-                />
+                >
+                  <img
+                    src={platformImage}
+                    width={'24px'}
+                    height={'24px'}
+                    style={{
+                      borderRadius: '100%',
+                    }}
+                  />
+                </CenteredBox>
+                <ProfilePageTypography fontSize={'12px'} lineHeight={'16px'}>
+                  {platformName}
+                </ProfilePageTypography>
               </CenteredBox>
-              <ProfilePageTypography fontSize={'12px'} lineHeight={'16px'}>
-                {platformName}
-              </ProfilePageTypography>
-            </CenteredBox>
+            ) : null}
             {startDate && endDate ? (
               <QuestDatesBox>
                 <CenteredBox>
@@ -111,26 +118,33 @@ export const QuestCard = ({
             {title}
           </ProfilePageTypography>
         </QuestCardTitleBox>
-        <QuestCardInfoBox>
-          <XPDisplayBox
-            sx={{
-              width: active ? '50%' : '100%',
-              marginRight: active ? '8px' : undefined,
-            }}
-          >
-            <ProfilePageTypography
-              fontSize={'14px'}
-              lineHeight={'18px'}
+        <QuestCardInfoBox
+          sx={{
+            display: 'flex',
+            justifyContent: points ? undefined : 'flex-end',
+          }}
+        >
+          {points ? (
+            <XPDisplayBox
               sx={{
-                color: theme.palette.mode === 'light' ? '#31007A' : '#BEA0EB',
+                width: active ? '50%' : '100%',
+                marginRight: active ? '8px' : undefined,
               }}
             >
-              +{points}
-            </ProfilePageTypography>
-            <CenteredBox sx={{ marginLeft: '8px' }}>
-              <XPIcon size={24} />
-            </CenteredBox>
-          </XPDisplayBox>
+              <ProfilePageTypography
+                fontSize={'14px'}
+                lineHeight={'18px'}
+                sx={{
+                  color: theme.palette.mode === 'light' ? '#31007A' : '#BEA0EB',
+                }}
+              >
+                {`+${points}`}
+              </ProfilePageTypography>
+              <CenteredBox sx={{ marginLeft: '8px' }}>
+                <XPIcon size={24} />
+              </CenteredBox>
+            </XPDisplayBox>
+          ) : null}
           {active && link ? (
             <a
               href={link}
