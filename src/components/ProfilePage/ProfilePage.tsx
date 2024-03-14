@@ -18,10 +18,12 @@ import {
   ProfilePageHeaderBox,
 } from './ProfilePage.style';
 import { WarningMessageCard, WarningMessageCardTitle } from '../MessageCard';
+import { useTranslation } from 'react-i18next';
 
 export const ProfilePage = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const { t } = useTranslation();
 
   const { isSuccess, points, tier, pdas, address } = useLoyaltyPass();
   const { quests } = useOngoingQuests();
@@ -54,13 +56,11 @@ export const ProfilePage = () => {
                 }}
               />
               <Typography variant={'lifiHeaderXSmall'}>
-                {'Only available on Desktop'}
+                {t('profile_page.mobileTitle')}
               </Typography>
             </WarningMessageCardTitle>
             <Typography variant={'lifiBodySmall'} pt={theme.spacing(1.5)}>
-              {
-                'The Profile page is not available on small screens yet. We are working on it.'
-              }
+              {t('profile_page.mobileDescription')}
             </Typography>
           </WarningMessageCard>
         </Box>
