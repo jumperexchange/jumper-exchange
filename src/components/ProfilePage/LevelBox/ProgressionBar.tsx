@@ -1,6 +1,6 @@
 import { Box, useTheme } from '@mui/material';
 import { CenteredBox, ProfilePageTypography } from '../ProfilePage.style';
-import { LevelData } from 'src/types';
+import type { LevelData } from 'src/types';
 import { XPIcon } from '../../illustrations/XPIcon';
 
 interface ProgressionBarProps {

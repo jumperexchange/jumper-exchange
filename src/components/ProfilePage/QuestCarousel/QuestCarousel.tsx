@@ -5,7 +5,7 @@ import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 import { Stack } from '@mui/material';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { BlogCarouselContainer } from '../../Blog/BlogCarousel/BlogCarousel.style';
-import { Quest } from 'src/types';
+import type { Quest } from 'src/types';
 
 interface QuestCarouselProps {
   quests?: Quest[];

@@ -4,7 +4,7 @@ import { PointsBox } from './PointsBox';
 import { ProfilePageTypography } from '../ProfilePage.style';
 import { Box } from '@mui/material';
 import { levelsData } from './levelsData';
-import { LevelData } from 'src/types';
+import type { LevelData } from 'src/types';
 
 function getLevelBasedOnPoints(points: number | undefined): LevelData {
   if (points) {

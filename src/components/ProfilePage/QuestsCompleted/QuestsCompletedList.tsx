@@ -9,7 +9,7 @@ import { VoidQuestCard } from '../QuestCard/VoidQuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { useTranslation } from 'react-i18next';
-import { PDA } from 'src/types';
+import type { PDA } from 'src/types';
 
 interface QuestCompletedList {
   pdas?: PDA[];
