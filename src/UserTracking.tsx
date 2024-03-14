@@ -10,5 +10,5 @@ export function UserTracking() {
     cookie3?.trackPageView();
   }, [cookie3, initTracking]);
 
-  return <></>;
+  return null;
 }

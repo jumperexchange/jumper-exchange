@@ -13,6 +13,10 @@ export interface UseLoyaltyPassProps {
   pdas?: PDA[];
 }
 
+interface IGatewayAPI {
+  issuedPDAs: PDA[];
+}
+
 const SECONDS_IN_A_DAY = 86400;
 
 export const useLoyaltyPass = (): UseLoyaltyPassProps => {
@@ -59,7 +63,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
       if (res && account?.address) {
         let points = 0;
         let tier = '';
-        const { issuedPDAs: pdas } = res as any;
+        const { issuedPDAs: pdas } = res as IGatewayAPI;
         // filter to remove loyalty pass from pda
         const pdasWithoutLoyalty = pdas.filter((pda: PDA) => {
           if (pda.dataAsset.title === 'LI.FI Loyalty Pass') {

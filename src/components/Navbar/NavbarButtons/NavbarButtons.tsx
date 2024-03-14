@@ -1,5 +1,5 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import { Typography, useTheme } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -18,8 +18,6 @@ interface NavbarButtonsProps {
 }
 
 export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
-  const theme = useTheme();
-
   const mainMenuAnchor = useRef<any>(null);
   const { trackEvent } = useUserTracking();
 
