@@ -25,8 +25,8 @@ export const VoidQuestCard = () => {
     >
       <QuestionMarkIcon
         sx={{
-          height: '40px',
-          width: '40px',
+          height: '96px',
+          width: '96px',
           color:
             theme.palette.mode === 'light'
               ? theme.palette.grey[400]
