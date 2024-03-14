@@ -211,7 +211,7 @@ const shape = {
 
 const themeBase: Theme = createTheme();
 
-// in a seperate 'createTheme' to allow listening to breakpoints set above
+// in a separate 'createTheme' to allow listening to breakpoints set above
 const themeCustomized: Theme = createTheme({
   shape: {
     ...shape,

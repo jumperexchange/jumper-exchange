@@ -52,7 +52,7 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       )
       .use(initReactI18next)
       .init({
-        // required to be true for paritally loading languages from resources and backend
+        // required to be true for partially loading languages from resources and backend
         partialBundledLanguages: true,
         resources,
         fallbackLng: defaultLang,

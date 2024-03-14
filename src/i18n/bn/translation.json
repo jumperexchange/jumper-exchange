@@ -60,6 +60,33 @@
     "testnet": "টেস্টনেটে সম্পাদিত কোনো লেনদেন বা ক্রিয়া মেইননেটে প্রতিফলিত হবে না।",
     "switchToMainnet": "মেইননেটে স্যুইচ করুন"
   },
+  "discordBanner": {
+    "ctaHeadline": "",
+    "ctaButton": ""
+  },
+  "blog": {
+    "title": "",
+    "categories": "",
+    "allCategories": "",
+    "subtitle": "",
+    "minRead": "",
+    "seeAllPosts": "",
+    "recentPosts": "",
+    "similarPosts": "",
+    "goToArticle": "",
+    "openApp": "",
+    "faq": "",
+    "jumperCta": "",
+    "copiedLink": "",
+    "shareLinkedIn": "",
+    "shareFb": "",
+    "shareX": "",
+    "shareLink": ""
+  },
+  "solanaAlert": {
+    "title": "",
+    "subtitle": ""
+  },
   "featureCard": {
     "learnMore": ""
   },
