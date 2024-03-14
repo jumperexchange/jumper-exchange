@@ -56,7 +56,12 @@ export const QuestCompletedList = ({
           ? Array.from(
               { length: pdas && pdas?.length > 0 ? 6 - pdas.length : 3 },
               () => 42,
-            ).map((_, idx) => <VoidQuestCard key={'void-' + idx} />)
+            ).map((_, idx) => (
+              <VoidQuestCard
+                key={'void-' + idx}
+                connected={!!account?.address}
+              />
+            ))
           : null}
         {loadingPdas
           ? Array.from({ length: 6 }, () => 42).map((_, idx) => (
