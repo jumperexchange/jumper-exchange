@@ -23,7 +23,7 @@ export const BlogPage = () => {
     contentType: STRAPI_BLOG_ARTICLES,
     queryKey: ['blog-articles-recent'],
     sort: 'asc',
-    pagination: { page: 1, pageSize: 6, withCount: false },
+    pagination: { page: 1, pageSize: 20, withCount: false },
   });
 
   return (
