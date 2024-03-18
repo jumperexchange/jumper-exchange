@@ -60,6 +60,33 @@
     "testnet": "Mọi giao dịch hoặc hành động được thực hiện trên mạng thử nghiệm sẽ không được phản ánh trên mạng chính.",
     "switchToMainnet": "Chuyển sang mạng chính"
   },
+  "discordBanner": {
+    "ctaHeadline": "",
+    "ctaButton": ""
+  },
+  "blog": {
+    "title": "",
+    "categories": "",
+    "allCategories": "",
+    "subtitle": "",
+    "minRead": "",
+    "seeAllPosts": "",
+    "recentPosts": "",
+    "similarPosts": "",
+    "goToArticle": "",
+    "openApp": "",
+    "faq": "",
+    "jumperCta": "",
+    "copiedLink": "",
+    "shareLinkedIn": "",
+    "shareFb": "",
+    "shareX": "",
+    "shareLink": ""
+  },
+  "solanaAlert": {
+    "title": "",
+    "subtitle": ""
+  },
   "featureCard": {
     "learnMore": ""
   },

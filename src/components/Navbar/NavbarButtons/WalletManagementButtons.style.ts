@@ -79,5 +79,3 @@ export const WalletMgmtChainAvatar = styled(Avatar)(({ theme }) => ({
     borderRadius: '50%',
   },
 }));
-
-// radial-gradient(circle 8px at calc(100% - 4px) calc(100% - 4px),var(--g)) 100% 100%/var(--s)

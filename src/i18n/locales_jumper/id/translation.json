@@ -60,6 +60,33 @@
     "testnet": "Setiap transaksi atau tindakan yang dilakukan di Testnet tidak akan tercermin di Mainnet.",
     "switchToMainnet": "Beralih ke Mainnet"
   },
+  "discordBanner": {
+    "ctaHeadline": "",
+    "ctaButton": ""
+  },
+  "blog": {
+    "title": "",
+    "categories": "",
+    "allCategories": "",
+    "subtitle": "",
+    "minRead": "",
+    "seeAllPosts": "",
+    "recentPosts": "",
+    "similarPosts": "",
+    "goToArticle": "",
+    "openApp": "",
+    "faq": "",
+    "jumperCta": "",
+    "copiedLink": "",
+    "shareLinkedIn": "",
+    "shareFb": "",
+    "shareX": "",
+    "shareLink": ""
+  },
+  "solanaAlert": {
+    "title": "",
+    "subtitle": ""
+  },
   "featureCard": {
     "learnMore": ""
   },

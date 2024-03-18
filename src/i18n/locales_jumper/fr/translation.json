@@ -60,6 +60,33 @@
     "testnet": "Toute transaction ou action effectuée sur le Testnet ne sera pas reflétée sur le réseau principal.",
     "switchToMainnet": "Basculer vers le réseau principal"
   },
+  "discordBanner": {
+    "ctaHeadline": "",
+    "ctaButton": ""
+  },
+  "blog": {
+    "title": "",
+    "categories": "",
+    "allCategories": "",
+    "subtitle": "",
+    "minRead": "",
+    "seeAllPosts": "",
+    "recentPosts": "",
+    "similarPosts": "",
+    "goToArticle": "",
+    "openApp": "",
+    "faq": "",
+    "jumperCta": "",
+    "copiedLink": "",
+    "shareLinkedIn": "",
+    "shareFb": "",
+    "shareX": "",
+    "shareLink": ""
+  },
+  "solanaAlert": {
+    "title": "",
+    "subtitle": ""
+  },
   "featureCard": {
     "learnMore": "Plus d'info"
   },

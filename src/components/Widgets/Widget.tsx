@@ -6,10 +6,11 @@ import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { widgetConfig } from 'src/config';
 import { TabsMap } from 'src/const';
 import { useMenuStore, useSettingsStore } from 'src/stores';
+import { darkTheme } from 'src/theme';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
@@ -57,7 +58,7 @@ export function Widget({ starterVariant }: WidgetProps) {
     }
     return {
       ...widgetConfig,
-      variant: starterVariant === 'refuel' ? 'default' : 'expandable',
+      variant: starterVariant === 'refuel' ? 'compact' : 'wide',
       subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
       walletConfig: {
         onConnect: async () => {
@@ -68,14 +69,6 @@ export function Widget({ starterVariant }: WidgetProps) {
         allow:
           starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],
       },
-      containerStyle: {
-        borderRadius: '12px',
-        minWidth: 416,
-        boxShadow:
-          theme.palette.mode === 'light'
-            ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-            : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-      },
       languages: {
         default: i18n.resolvedLanguage as LanguageKey,
         allow: i18n.languages as LanguageKey[],
@@ -83,6 +76,14 @@ export function Widget({ starterVariant }: WidgetProps) {
       appearance: theme.palette.mode === 'light' ? 'light' : 'dark',
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
       theme: {
+        container: {
+          borderRadius: '12px',
+          minWidth: 416,
+          boxShadow:
+            theme.palette.mode === 'light'
+              ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+              : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+        },
         shape: {
           borderRadius: 12,
           borderRadiusSecondary: 24,
@@ -94,6 +95,10 @@ export function Widget({ starterVariant }: WidgetProps) {
           },
           primary: {
             main: theme.palette.accent1.main,
+          },
+          secondary: {
+            // FIXME: we need to find out how to use the correct color from the main theme config
+            main: darkTheme.palette.accent2.main,
           },
           grey: theme.palette.grey,
         },

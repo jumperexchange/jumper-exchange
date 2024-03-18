@@ -60,6 +60,24 @@
 //         ns: ['translation'],
 //       });
 
+// todo: cleanup -> DEVELOP:
+// i18n
+//   .use(LanguageDetector)
+//   .use(
+//     resourcesToBackend((language: string, namespace: string) => {
+//       return import(`../i18n/${language}/${namespace}.json`);
+//     }),
+//   )
+//   .use(initReactI18next)
+//   .init({
+//     // required to be true for partially loading languages from resources and backend
+//     partialBundledLanguages: true,
+//     resources,
+//     fallbackLng: defaultLang,
+//     react: { useSuspense: false },
+//     ns: ['translation'],
+//   });
+
 //     return i18n;
 //   }, [languageMode]);
 

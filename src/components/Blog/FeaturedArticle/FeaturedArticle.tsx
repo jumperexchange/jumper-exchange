@@ -1,8 +1,9 @@
 'use client';
 import { Box, Typography } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import React from 'react';
 import { type BlogArticleData } from 'src/types';
 import { formatDate, readingTime } from 'src/utils';
 import {
@@ -33,9 +34,9 @@ export const FeaturedArticle = ({
   const [imgLoaded, setImgLoaded] = useState(false);
   const { t } = useTranslation();
 
-  const handleImgLoaded = useCallback(() => {
+  const handleImgLoaded = () => {
     setImgLoaded(true);
-  }, []);
+  };
 
   const formatedDate =
     featuredArticle &&

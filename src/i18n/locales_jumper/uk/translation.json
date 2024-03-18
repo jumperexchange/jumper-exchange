@@ -60,6 +60,33 @@
     "testnet": "Будь-які транзакції або дії, що виконуються у Testnet, не будуть відображені в Mainnet.",
     "switchToMainnet": "Перейти на Mainnet"
   },
+  "discordBanner": {
+    "ctaHeadline": "Приєднуйтесь до нашого Discord, щоб дізнатися більше",
+    "ctaButton": "Доєднуйся до нас у Discord"
+  },
+  "blog": {
+    "title": "Поради та навчальні матеріали",
+    "categories": "Категорії",
+    "allCategories": "Всі",
+    "subtitle": "TL;DR покрокові інструкції до DeFi і крипто для всіх рівнів",
+    "minRead": "{{minRead}} хв читання",
+    "seeAllPosts": "Переглянути всі записи",
+    "recentPosts": "Останні дописи",
+    "similarPosts": "Схожі дописи",
+    "goToArticle": "Перейти до статті",
+    "openApp": "Відкрити додаток",
+    "faq": "FAQ",
+    "jumperCta": "Спробуйте jumper.exchange",
+    "copiedLink": "Посилання скопійовано",
+    "shareLinkedIn": "Поділитися статтею на LinkedIn",
+    "shareFb": "Поділитися статтею в Facebook",
+    "shareX": "Поділитися статтею на X",
+    "shareLink": "Поділитись посиланням"
+  },
+  "solanaAlert": {
+    "title": "Обмежена підтримка токенів Solana",
+    "subtitle": "Наразі можна перевести тільки USDT і USDT до та з Solana."
+  },
   "featureCard": {
     "learnMore": "Дізнатися більше"
   },

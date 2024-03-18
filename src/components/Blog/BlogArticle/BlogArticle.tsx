@@ -34,7 +34,7 @@ import {
 import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
 import { Tag } from '@/components/Tag.style';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
 
 interface BlogArticleProps {
