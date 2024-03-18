@@ -1,22 +1,22 @@
 'use client';
+import { ButtonPrimary } from '@/components/Button/Button.style';
+import { CustomColor } from '@/components/CustomColorTypography.style';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { useSettingsStore } from '@/stores/settings';
+import { EventTrackingTool } from '@/types/userTracking';
+import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import type { Breakpoint } from '@mui/material';
 import { Slide, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from 'src/const';
-import { useSettingsStore } from 'src/stores';
-import { EventTrackingTool } from 'src/types';
-import { appendUTMParametersToLink } from 'src/utils';
 import { shallow } from 'zustand/shallow';
-import { ButtonPrimary } from '../Button/Button.style';
-import { CustomColor } from '../CustomColorTypography.style';
 import { ToolCards } from './ToolCard/ToolCards';
 import { ContentWrapper, Overlay, WelcomeContent } from './WelcomeScreen.style';
 

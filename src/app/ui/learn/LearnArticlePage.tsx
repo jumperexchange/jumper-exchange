@@ -3,17 +3,17 @@
 import { BackgroundGradient } from '@/components/BackgroundGradient/BackgroundGradient';
 import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
+import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
+import { PoweredBy } from '@/components/PoweredBy/PoweredBy';
+import { STRAPI_BLOG_ARTICLES } from '@/const/strapiContentKeys';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useInitUserTracking } from '@/hooks/userTracking/useInitUserTracking';
+import type { BlogArticleData } from '@/types/strapi';
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { JoinDiscordBanner } from 'src/components/JoinDiscordBanner/JoinDiscordBanner';
-import { PoweredBy } from 'src/components/PoweredBy/PoweredBy';
-import { STRAPI_BLOG_ARTICLES } from 'src/const';
-import type { BlogArticleData } from 'src/types';
 
 export const LearnArticlePage = ({ article, url }) => {
   const { id } = useParams();

@@ -3,7 +3,7 @@
 import { ButtonSecondary } from '@/components/Button/Button.style';
 import type { ButtonProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from 'src/utils';
+import { getContrastAlphaColor } from 'src/utils/colors';
 
 export const NavbarButtonsContainer = styled('div')({
   display: 'flex',

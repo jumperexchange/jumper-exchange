@@ -27,20 +27,17 @@
       "src/*": [
         "./src/*"
       ],
-      "@components/*": [
-        "src/components/*"
-      ],
       "@/components/*": [
         "src/components/*"
       ],
-      "src/config/*": [
+      "@/config/*": [
         "src/config/*"
       ],
-      "src/const/*": [
+      "@/const/*": [
         "src/const/*"
       ],
       "@/fonts/*": [
-        "src/fonts/*"
+        "@/fonts/*"
       ],
       "@/hooks/*": [
         "src/hooks/*"
@@ -51,16 +48,16 @@
       "@/providers/*": [
         "src/providers/*"
       ],
-      "src/stores/*": [
+      "@/stores/*": [
         "src/stores/*"
       ],
       "src/themes/*": [
         "src/themes/*"
       ],
-      "src/types/*": [
+      "@/types/*": [
         "src/types/*"
       ],
-      "src/utils/*": [
+      "@/utils/*": [
         "src/utils/*"
       ]
     },

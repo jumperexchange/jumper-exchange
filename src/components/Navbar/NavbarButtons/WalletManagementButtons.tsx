@@ -2,23 +2,23 @@
 import { EcosystemSelectMenu } from '@/components/Menus/EcosystemSelectMenu';
 import { WalletMenu } from '@/components/Menus/WalletMenu';
 import { WalletSelectMenu } from '@/components/Menus/WalletSelectMenu';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useMenuStore } from '@/stores/menu';
+import { EventTrackingTool } from '@/types/userTracking';
+import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/types';
 import { getConnectorIcon } from '@lifi/wallet-management';
 import { Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import type { ReactElement } from 'react';
 import React, { useMemo, useRef } from 'react';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from 'src/const';
-import { useMenuStore } from 'src/stores';
-import { EventTrackingTool } from 'src/types';
-import { walletDigest } from 'src/utils';
 import {
   ConnectButton,
   WalletMenuButton,

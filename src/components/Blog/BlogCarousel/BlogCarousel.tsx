@@ -1,9 +1,11 @@
 'use client';
+import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
+import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import type { BlogArticleData } from '@/types/strapi';
+import { EventTrackingTool } from '@/types/userTracking';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { JUMPER_LEARN_PATH, TrackingAction, TrackingCategory } from 'src/const';
-import { EventTrackingTool, type BlogArticleData } from 'src/types';
 import { CarouselContainer } from '.';
 import { BlogArticleCard } from '../BlogArticleCard/BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';

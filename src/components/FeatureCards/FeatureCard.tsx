@@ -5,19 +5,20 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useEffect, useMemo, useState } from 'react';
-import { useSettingsStore } from 'src/stores';
 
-import { useStrapi } from '@/hooks/useStrapi';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
 import {
-  STRAPI_FEATURE_CARDS,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from 'src/const';
-import { EventTrackingTool, type FeatureCardData } from 'src/types';
-import { openInNewTab } from 'src/utils';
+} from '@/const/trackingKeys';
+import { useStrapi } from '@/hooks/useStrapi';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { useSettingsStore } from '@/stores/settings/SettingsStore';
+import type { FeatureCardData } from '@/types/strapi';
+import { EventTrackingTool } from '@/types/userTracking';
+import { openInNewTab } from '@/utils/openInNewTab';
 import { FCard as Card } from '.';
 
 interface FeatureCardProps {

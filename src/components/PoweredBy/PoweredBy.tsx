@@ -1,11 +1,13 @@
 'use client';
 
+import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
+import { LIFI_URL } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { EventTrackingTool } from '@/types/userTracking';
+import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
+import { openInNewTab } from '@/utils/openInNewTab';
 import type { CSSObject } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
-import { LIFI_URL, TrackingAction, TrackingCategory } from 'src/const';
-import { EventTrackingTool } from 'src/types';
-import { appendUTMParametersToLink, openInNewTab } from '../../utils';
 import { Container } from './PoweredBy.style';
 
 const lifiUrl = appendUTMParametersToLink(LIFI_URL, {

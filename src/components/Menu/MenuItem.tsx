@@ -1,18 +1,18 @@
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import type { Breakpoint, SxProps, Theme } from '@mui/material';
-import { Typography, useTheme } from '@mui/material';
-import type { MenuKeysEnum } from 'src/const';
+import { ButtonSecondary } from '@/components/Button/Button.style';
+import type { MenuKeysEnum } from '@/const/menuKeys';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from 'src/const';
-import { useMenuStore } from 'src/stores';
-import { EventTrackingTool } from 'src/types';
+} from '@/const/trackingKeys';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useMenuStore } from '@/stores/menu/MenuStore';
+import { EventTrackingTool } from '@/types/userTracking';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import type { Breakpoint, SxProps, Theme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import type { JsxElement } from 'typescript';
 import { MenuItemContainer, MenuLabel } from '.';
-import { ButtonSecondary } from '../Button/Button.style';
 
 interface MenuItemProps {
   open: boolean;

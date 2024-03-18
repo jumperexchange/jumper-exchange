@@ -1,4 +1,6 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { EventTrackingTool } from '@/types/userTracking';
+import { openInNewTab } from '@/utils/openInNewTab';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkIcon from '@mui/icons-material/Link';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -6,16 +8,13 @@ import XIcon from '@mui/icons-material/X';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import {
-  FB_SHARE_URL,
-  LINKEDIN_SHARE_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-  X_SHARE_URL,
-} from 'src/const';
-import { EventTrackingTool } from 'src/types';
-import { openInNewTab } from 'src/utils';
+} from '@/const/trackingKeys';
+import { FB_SHARE_URL, LINKEDIN_SHARE_URL, X_SHARE_URL } from '@/const/urls';
 import { ShareArticleIcon } from './ShareArticleIcon';
 import {
   ShareIconsContainer,

@@ -2,7 +2,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import type { Breakpoint } from '@mui/material';
 import { Fade, useTheme } from '@mui/material';
 import { useState } from 'react';
-import type { MediaAttributes } from 'src/types';
+import type { MediaAttributes } from 'src/types/strapi';
 import {
   LightboxContainer,
   LightboxImage,

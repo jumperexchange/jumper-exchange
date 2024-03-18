@@ -1,8 +1,8 @@
 import { Tabs } from '@/components/Tabs';
+import { useActiveTabStore } from '@/stores/activeTab';
 import { useMediaQuery } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
-import { useActiveTabStore } from 'src/stores';
 import { useNavbarTabs } from '.';
 
 export const NavbarTabs = () => {

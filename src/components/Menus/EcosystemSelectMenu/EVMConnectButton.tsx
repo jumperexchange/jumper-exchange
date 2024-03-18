@@ -2,7 +2,7 @@ import { useAccountConnect } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
 import { ChainId } from '@lifi/types';
 import { Avatar, Typography, useTheme } from '@mui/material';
-import { useMenuStore } from 'src/stores';
+import { useMenuStore } from 'src/stores/menu';
 import { type Connector } from 'wagmi';
 import {
   ConnectButton,

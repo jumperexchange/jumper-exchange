@@ -2,7 +2,7 @@
 import { Snackbar as MuiSnackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 
-import { useMenuStore } from 'src/stores';
+import { useMenuStore } from 'src/stores/menu';
 
 export const Snackbar = () => {
   const [openSnackbar, setSnackbarState] = useMenuStore((state) => [

@@ -2,12 +2,14 @@
 import { SolanaAlert } from '@/components/Alerts';
 import { OnRamper } from '@/components/OnRamper';
 import { TestnetAlert } from '@/components/TestnetAlert';
+import { LinkMap } from '@/const/linkMap';
+import { TabsMap } from '@/const/tabsMap';
+import { useActiveTabStore } from '@/stores/activeTab';
+import { useSettingsStore } from '@/stores/settings';
+import type { StarterVariantType } from '@/types/internal';
 import type { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { LinkMap, TabsMap } from 'src/const';
-import { useActiveTabStore, useSettingsStore } from 'src/stores';
-import type { StarterVariantType } from 'src/types';
 import { Widget } from '.';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';

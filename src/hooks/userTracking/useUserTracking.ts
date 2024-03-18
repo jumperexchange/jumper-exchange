@@ -1,13 +1,10 @@
 'use client';
-import { useArcxAnalytics } from '@arcxmoney/analytics';
-import { ChainType } from '@lifi/sdk';
-import { useCallback, useEffect } from 'react';
-import { hotjar } from 'react-hotjar';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from 'src/const';
+} from '@/const/trackingKeys';
+import { useAccounts } from '@/hooks/useAccounts';
 import type {
   TrackAttributeProps,
   TrackChainSwitchProps,
@@ -16,9 +13,12 @@ import type {
   TrackEventProps,
   TrackTransactionProps,
   trackPageloadProps,
-} from 'src/types';
-import { EventTrackingTool } from 'src/types';
-import { useAccounts } from '../useAccounts';
+} from '@/types/userTracking';
+import { EventTrackingTool } from '@/types/userTracking';
+import { useArcxAnalytics } from '@arcxmoney/analytics';
+import { ChainType } from '@lifi/sdk';
+import { useCallback, useEffect } from 'react';
+import { hotjar } from 'react-hotjar';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();

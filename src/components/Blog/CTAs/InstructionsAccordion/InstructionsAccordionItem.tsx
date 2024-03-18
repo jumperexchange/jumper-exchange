@@ -4,7 +4,7 @@ import type { Breakpoint } from '@mui/material';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
-import { getContrastAlphaColor } from 'src/utils';
+import { getContrastAlphaColor } from 'src/utils/colors';
 import type { InstructionItemProps } from '.';
 import {
   InstructionsAccordionItemContainer,

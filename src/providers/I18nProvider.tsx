@@ -4,9 +4,9 @@
 // import type { PropsWithChildren } from 'react';
 // import React, { useMemo } from 'react';
 // import { I18nextProvider, initReactI18next } from 'react-i18next';
-// import { defaultLang } from 'src/config';
-// import { useSettingsStore } from 'src/stores';
-// import type { LanguageKey, LanguageResources } from 'src/types';
+// import { defaultLang } from '@/config';
+// import { useSettingsStore } from 'src/stores/settings';
+// import type { LanguageKey, LanguageResources } from '@/types';
 // import * as supportedLanguages from '../i18n';
 // import translation from '../i18n/en/translation.json';
 

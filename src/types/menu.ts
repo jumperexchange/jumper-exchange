@@ -1,7 +1,7 @@
 import type { CombinedWallet } from './../hooks/useCombinedWallets';
 // ----------------------------------------------------------------------
 
-import type { MenuKeys, MenuKeysEnum } from 'src/const';
+import type { MenuKeys, MenuKeysEnum } from '@/const/menuKeys';
 
 type SnackbarSeverityType = 'error' | 'warning' | 'info' | 'success';
 

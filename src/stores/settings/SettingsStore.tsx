@@ -1,12 +1,12 @@
-import i18next from 'i18next';
-import { defaultLang, defaultSettings } from 'src/config';
+import { defaultLang, defaultSettings } from '@/config/config';
+import type { LanguageKey } from '@/types/i18n';
 import type {
-  LanguageKey,
   SettingsProps,
   SettingsState,
   ThemeModesSupported,
   WalletConnected,
-} from 'src/types';
+} from '@/types/settings';
+import i18next from 'i18next';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';

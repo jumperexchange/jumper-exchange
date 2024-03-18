@@ -1,4 +1,9 @@
+import type { TabProps } from '@/components/Tabs';
+import { STRAPI_BLOG_ARTICLES, STRAPI_TAGS } from '@/const/strapiContentKeys';
+import { TrackingCategory } from '@/const/trackingKeys';
+import { urbanist } from '@/fonts/fonts';
 import { useStrapi } from '@/hooks/useStrapi';
+import type { BlogArticleData, TagAttributes } from '@/types/strapi';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import type { Breakpoint } from '@mui/material';
 import {
@@ -10,10 +15,6 @@ import {
 } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { STRAPI_BLOG_ARTICLES, STRAPI_TAGS, TrackingCategory } from 'src/const';
-import { urbanist } from 'src/fonts/fonts';
-import { type BlogArticleData, type TagAttributes } from 'src/types';
-import type { TabProps } from '../../Tabs';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
 import {
@@ -91,7 +92,7 @@ export const BlogArticlesBoard = () => {
       disabled: false,
     };
     // tags
-    const output = tags?.map((el, index) => {
+    const output = tags?.map((el, index: number) => {
       return {
         label: el.attributes.Title || undefined, //el.attributes.Title,
         value: el.id,
@@ -134,7 +135,7 @@ export const BlogArticlesBoard = () => {
               />
             ))
           ) : articlesIsSuccess && blogArticles?.length > 0 ? (
-            blogArticles?.map((article, index) => (
+            blogArticles?.map((article: BlogArticleData, index: number) => (
               <BlogArticleCard
                 baseUrl={url}
                 id={article.id}
@@ -150,7 +151,7 @@ export const BlogArticlesBoard = () => {
               />
             ))
           ) : (
-            <p>No Content</p> //todo: find
+            <p>No Content</p> //todo: find better option
           )}
         </ArticlesGrid>
       </Fade>

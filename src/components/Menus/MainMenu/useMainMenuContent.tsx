@@ -2,6 +2,12 @@ import { Tabs } from '@/components/Tabs/Tabs';
 import { Discord } from '@/components/illustrations/Discord';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { useMenuStore } from '@/stores/menu';
+import { useSettingsStore } from '@/stores/settings';
+import { EventTrackingTool } from '@/types/userTracking';
+import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
+import { getContrastAlphaColor } from '@/utils/colors';
+import { openInNewTab } from '@/utils/openInNewTab';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
@@ -12,13 +18,6 @@ import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { I18nContext } from 'react-i18next';
-import { useMenuStore, useSettingsStore } from 'src/stores';
-import { EventTrackingTool } from 'src/types';
-import {
-  appendUTMParametersToLink,
-  getContrastAlphaColor,
-  openInNewTab,
-} from 'src/utils';
 import {
   DISCORD_URL,
   EXPLORER_URL,

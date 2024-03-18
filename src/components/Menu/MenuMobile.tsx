@@ -1,9 +1,8 @@
+import { MenuKeysEnum } from '@/const/menuKeys';
+import { useMenuStore } from '@/stores/menu';
 import type { SxProps, Theme } from '@mui/material';
 import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import React from 'react';
-import { MenuKeysEnum } from 'src/const';
-import { useMenuStore } from 'src/stores';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,

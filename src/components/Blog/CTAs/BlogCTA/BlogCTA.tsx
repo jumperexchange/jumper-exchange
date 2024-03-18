@@ -1,17 +1,16 @@
 'use client';
 import { IconButtonPrimary } from '@/components/IconButton.style';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import type { Breakpoint } from '@mui/material';
-import { useTheme } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from 'src/const';
-import { EventTrackingTool } from 'src/types';
+} from '@/const/trackingKeys';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { EventTrackingTool } from '@/types/userTracking';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import type { Breakpoint } from '@mui/material';
+import { useTheme } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { BlogCtaContainer, BlogCtaTitle } from '.';
 
 interface BlogCTAProps {
@@ -21,7 +20,6 @@ interface BlogCTAProps {
 }
 
 export const BlogCTA = ({ title, url, id }: BlogCTAProps) => {
-  const router = useRouter();
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const theme = useTheme();

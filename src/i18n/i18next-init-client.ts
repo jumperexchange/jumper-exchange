@@ -4,8 +4,8 @@ import i18next from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next';
 // import LocizeBackend from 'i18next-locize-backend'
+import type { LanguageKey, LanguageResources } from '@/types/i18n';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import type { LanguageKey, LanguageResources } from 'src/types/i18n';
 import { locales } from './i18next-locales';
 import { fallbackLng, getOptions, runsOnServerSide } from './i18next-settings';
 import translation from './locales_jumper/en/translation.json';

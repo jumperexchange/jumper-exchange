@@ -1,16 +1,17 @@
 import { ToolModal } from '@/components/WelcomeScreen';
-import { useChains } from '@/hooks/useChains';
-import { useDexsAndBridges } from '@/hooks/useDexsAndBridges';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
-import type { Dispatch, SetStateAction } from 'react';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from 'src/const';
-import { EventTrackingTool, type DataItem } from 'src/types';
-import { sortByName } from 'src/utils';
+} from '@/const/trackingKeys';
+import { useChains } from '@/hooks/useChains';
+import { useDexsAndBridges } from '@/hooks/useDexsAndBridges';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
+import type { DataItem } from '@/types/internal';
+import { EventTrackingTool } from '@/types/userTracking';
+import { sortByName } from '@/utils/sortByName';
+import type { Dispatch, SetStateAction } from 'react';
 import { ToolCardsContainer as Container, ToolCard } from '.';
 interface StatsDataProps {
   title: string;

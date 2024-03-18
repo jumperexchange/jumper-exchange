@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useMenuStore } from 'src/stores';
+import { useMenuStore } from 'src/stores/menu';
 
 import { Menu } from '@/components/Menu/Menu';
 import {

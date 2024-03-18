@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-import type { LanguageKey } from 'src/types';
+import type { LanguageKey } from './i18n';
 
 export type ThemeModesSupported = 'light' | 'dark' | 'auto';
 export type WalletConnected = string;

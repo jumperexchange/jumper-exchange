@@ -4,13 +4,13 @@ import {
   MenuHeaderAppWrapper,
 } from '@/components/Menu/Menu.style';
 import { MenuItem } from '@/components/Menu/MenuItem';
+import { MenuKeysEnum } from '@/const/menuKeys';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { useMenuStore } from '@/stores/menu';
+import { getContrastAlphaColor } from '@/utils/colors';
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, darken } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { MenuKeysEnum } from 'src/const';
-import { useMenuStore } from 'src/stores';
-import { getContrastAlphaColor } from 'src/utils';
 import { WalletSelectMoreSubMenu } from '../WalletSelectMoreSubMenu';
 import { useWalletSelectContent } from './useWalletSelectContent';
 

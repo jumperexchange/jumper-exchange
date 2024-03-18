@@ -1,10 +1,10 @@
 'use client';
+import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { EventTrackingTool } from '@/types/userTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useTranslation } from 'react-i18next';
-import { TrackingAction, TrackingCategory } from 'src/const';
-import { EventTrackingTool } from 'src/types';
-import { openInNewTab } from 'src/utils';
+import { openInNewTab } from 'src/utils/openInNewTab';
 import { DiscordBanner, DiscordBannerButton, DiscordBannerLabel } from '.';
 
 export const JoinDiscordBanner = () => {

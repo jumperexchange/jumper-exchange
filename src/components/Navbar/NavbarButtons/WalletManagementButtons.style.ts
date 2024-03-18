@@ -5,7 +5,7 @@ import { avatarMask14 } from '@/components/Mask.style';
 import { Avatar, Badge } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from 'src/utils';
+import { getContrastAlphaColor } from 'src/utils/colors';
 
 export const WalletMgmtAvatarContainer = styled('div')(({ theme }) => ({
   position: 'relative',

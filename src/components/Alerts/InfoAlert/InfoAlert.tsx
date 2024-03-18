@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import { Slide, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { getContrastAlphaColor } from 'src/utils';
+import { getContrastAlphaColor } from 'src/utils/colors';
 import { InfoAlertContainer } from '.';
 
 export interface InfoAlertProps {

@@ -1,10 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
 import {
   STRAPI_BLOG_ARTICLES,
   STRAPI_FAQ_ITEMS,
   STRAPI_FEATURE_CARDS,
-} from 'src/const';
-import type { StrapiMeta, StrapiResponseData } from 'src/types';
+} from '@/const/strapiContentKeys';
+import type { StrapiMeta, StrapiResponseData } from '@/types/strapi';
+import { useQuery } from '@tanstack/react-query';
 import type { Account } from './useAccounts';
 
 export interface UseStrapiProps<T> {

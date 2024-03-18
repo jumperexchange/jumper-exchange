@@ -1,5 +1,5 @@
+import type { FeatureCardData } from '@/types/strapi';
 import { useQuery } from '@tanstack/react-query';
-import type { FeatureCardData } from 'src/types';
 import { useAccounts } from './useAccounts';
 
 export interface UsePersonalizedFeatureCardsProps {

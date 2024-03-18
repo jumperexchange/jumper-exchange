@@ -1,17 +1,20 @@
 import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAlert';
+import { widgetConfig } from '@/config/widgetConfig';
+import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { useMenuStore } from '@/stores/menu';
+import { useSettingsStore } from '@/stores/settings';
+import type { LanguageKey } from '@/types/i18n';
+import type { StarterVariantType } from '@/types/internal';
+import type { MenuState } from '@/types/menu';
 import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import React, { useMemo } from 'react';
-import { widgetConfig } from 'src/config';
-import { TabsMap } from 'src/const';
-import { useMenuStore, useSettingsStore } from 'src/stores';
+import { useMemo } from 'react';
 import { darkTheme } from 'src/theme';
-import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 

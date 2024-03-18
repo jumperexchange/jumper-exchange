@@ -1,6 +1,6 @@
+import { urbanist } from '@/fonts/fonts';
 import type { Breakpoint } from '@mui/material';
 import { Typography, styled } from '@mui/material';
-import { urbanist } from 'src/fonts/fonts';
 
 export const CustomColor = styled(Typography)(({ theme }) => ({
   background:

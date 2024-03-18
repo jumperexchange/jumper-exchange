@@ -3,11 +3,12 @@ import {
   WarningMessageCard,
   WarningMessageCardTitle,
 } from '@/components/MessageCard';
+import { JUMPER_URL } from '@/const/urls';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
+import { openInNewTab } from '@/utils/openInNewTab';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import { Typography, useTheme } from '@mui/material';
-import { JUMPER_URL } from 'src/const';
-import { appendUTMParametersToLink, openInNewTab } from 'src/utils';
 export const TestnetAlert = () => {
   const { t } = useClientTranslation();
   const theme = useTheme();

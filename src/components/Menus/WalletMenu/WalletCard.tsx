@@ -1,21 +1,23 @@
 import { Avatar } from '@/components/Avatar/Avatar';
 import { Button } from '@/components/Button/Button';
+import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import type { Account } from '@/hooks/useAccounts';
 import { useAccountDisconnect } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { useMenuStore } from '@/stores/menu';
+import { useSettingsStore } from '@/stores/settings';
+import { EventTrackingTool } from '@/types/userTracking';
+import { openInNewTab } from '@/utils/openInNewTab';
+import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/sdk';
 import { getConnectorIcon } from '@lifi/wallet-management';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { TrackingAction, TrackingCategory } from 'src/const';
-import { useMenuStore, useSettingsStore } from 'src/stores';
-import { EventTrackingTool } from 'src/types';
-import { openInNewTab, walletDigest } from 'src/utils';
 import {
   WalletAvatar,
   WalletCardBadge,

@@ -1,5 +1,5 @@
+import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 import { LearnArticlePage } from 'src/app/ui/learn/LearnArticlePage';
-import { ArticleStrapiApi } from 'src/utils/strapi/StrapiApi';
 
 async function getArticle(slug: string) {
   const urlParams = new ArticleStrapiApi().filterBySlug(slug);

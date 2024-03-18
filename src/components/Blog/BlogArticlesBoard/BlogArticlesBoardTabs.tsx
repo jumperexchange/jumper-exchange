@@ -1,7 +1,7 @@
+import { urbanist } from '@/fonts/fonts';
 import type { Breakpoint } from '@mui/material';
 import { Skeleton, useMediaQuery, useTheme } from '@mui/material';
-import { urbanist } from 'src/fonts/fonts';
-import { getContrastAlphaColor } from 'src/utils';
+import { getContrastAlphaColor } from 'src/utils/colors';
 import type { TabProps } from '../../Tabs';
 import { Tabs } from '../../Tabs';
 

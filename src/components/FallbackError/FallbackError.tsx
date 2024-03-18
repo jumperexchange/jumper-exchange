@@ -3,19 +3,21 @@ import { JumperLogo } from '@/components/illustrations/JumperLogo';
 import { useTheme } from '@mui/material';
 import { LogoLink } from '../Navbar';
 
-import { Logo } from '@/components/Navbar/Logo/Logo'; //todo: move this out of navbar
+import { Logo } from '@/components/Navbar/Logo/Logo';
 import { Discord } from '@/components/illustrations/Discord';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { EventTrackingTool } from '@/types/userTracking';
+
 import {
-  DISCORD_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from 'src/const';
-import { EventTrackingTool } from 'src/types';
-import { getContrastAlphaColor, openInNewTab } from 'src/utils';
+} from '@/const/trackingKeys';
+import { DISCORD_URL } from '@/const/urls';
+import { getContrastAlphaColor } from 'src/utils/colors';
+import { openInNewTab } from 'src/utils/openInNewTab';
 import {
   CenteredContainer,
   ErrorMessage,

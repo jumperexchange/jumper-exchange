@@ -1,15 +1,15 @@
 'use client';
 
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from 'src/const';
-import { useSettingsStore } from 'src/stores';
-import type { LanguageKey } from 'src/types';
-import { EventTrackingTool } from 'src/types';
+} from '@/const/trackingKeys';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
+import type { LanguageKey } from '@/types/i18n';
+import { EventTrackingTool } from '@/types/userTracking';
+import { useSettingsStore } from 'src/stores/settings';
 import * as supportedLanguages from '../../../../messages';
 
 export const useLanguagesContent = () => {

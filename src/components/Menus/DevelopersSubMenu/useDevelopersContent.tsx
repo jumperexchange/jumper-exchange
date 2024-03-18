@@ -1,10 +1,9 @@
+import { EventTrackingTool } from '@/types/userTracking';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FolderZipOutlinedIcon from '@mui/icons-material/FolderZipOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useTheme } from '@mui/material/styles';
-import { useMenuStore } from 'src/stores';
-import { EventTrackingTool } from 'src/types';
-import { openInNewTab } from 'src/utils';
+import { useMenuStore } from 'src/stores/menu';
 import {
   TrackingAction,
   TrackingCategory,
@@ -13,6 +12,7 @@ import {
 
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { openInNewTab } from 'src/utils/openInNewTab';
 import { DOCS_URL, GITHUB_URL } from '../../../const/urls';
 export const useDevelopersContent = () => {
   const { t } = useClientTranslation();

@@ -2,7 +2,7 @@
 
 import type { TabProps, TabsProps } from '@mui/material';
 import { Tab as MuiTab, Tabs, styled } from '@mui/material';
-import { getContrastAlphaColor } from 'src/utils';
+import { getContrastAlphaColor } from 'src/utils/colors';
 
 export const TabsContainer = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'styles',

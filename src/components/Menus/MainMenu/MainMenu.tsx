@@ -1,7 +1,7 @@
 import { Menu } from '@/components/Menu/Menu';
 import { MenuItem } from '@/components/Menu/MenuItem';
-import { MenuKeysEnum } from 'src/const';
-import { useMenuStore } from 'src/stores';
+import { MenuKeysEnum } from '@/const/menuKeys';
+import { useMenuStore } from '@/stores/menu';
 import type { JsxElement } from 'typescript';
 import { DevelopersSubmenu, LanguagesSubmenu, useMainMenuContent } from '..';
 

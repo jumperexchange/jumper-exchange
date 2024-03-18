@@ -1,12 +1,12 @@
 'use client';
+import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
+import { FeaturedArticle } from '@/components/Blog/FeaturedArticle/FeaturedArticle';
+import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
+import { JUMPER_LEARN_PATH } from '@/const/urls';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import '@/i18n/i18next-init-client';
+import { useMenuStore } from '@/stores/menu';
 import { useRouter } from 'next/navigation';
-import { BlogCarousel } from 'src/components/Blog/BlogCarousel/BlogCarousel';
-import { FeaturedArticle } from 'src/components/Blog/FeaturedArticle/FeaturedArticle';
-import { JoinDiscordBanner } from 'src/components/JoinDiscordBanner/JoinDiscordBanner';
-import { JUMPER_LEARN_PATH } from 'src/const/urls';
-import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
-import { useMenuStore } from 'src/stores/menu/MenuStore';
 
 export const LearnPage = ({ carouselArticles, featuredArticle, url }) => {
   const { trackEvent } = useUserTracking();

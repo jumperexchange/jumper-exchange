@@ -1,10 +1,10 @@
 import { Menu } from '@/components/Menu/Menu';
+import { MenuKeysEnum } from '@/const/menuKeys';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useEffect } from 'react';
-import { MenuKeysEnum } from 'src/const';
-import { useMenuStore } from 'src/stores';
+import { useMenuStore } from 'src/stores/menu';
 import { WalletButton } from '.';
 import { WalletCard } from './WalletCard';
 

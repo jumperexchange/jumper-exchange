@@ -1,11 +1,11 @@
 'use client';
-import type { MenuKeys } from 'src/const';
-import { MenuKeysEnum } from 'src/const';
+import type { MenuKeys } from '@/const/menuKeys';
+import { MenuKeysEnum } from '@/const/menuKeys';
 import type {
   EcosystemSelectMenuProps,
   MenuState,
   SnackbarProps,
-} from 'src/types';
+} from '@/types/menu';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 

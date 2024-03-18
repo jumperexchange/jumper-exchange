@@ -1,4 +1,4 @@
-import type { LanguageResources } from 'src/types';
+import type { LanguageResources } from '@/types/i18n';
 import * as supportedLocales from './locales_jumper';
 
 export interface Translation {

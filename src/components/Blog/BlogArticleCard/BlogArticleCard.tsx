@@ -1,18 +1,16 @@
+import { TrackingAction, TrackingEventParameter } from '@/const/trackingKeys';
+import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useMenuStore } from '@/stores/menu/MenuStore';
+import type { StrapiImageData, TagData } from '@/types/strapi';
+import { EventTrackingTool } from '@/types/userTracking';
+import { formatDate } from '@/utils/formatDate';
+import { readingTime } from '@/utils/readingTime';
 import type { CSSObject } from '@mui/material';
 import { Skeleton } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
-import {
-  JUMPER_LEARN_PATH,
-  TrackingAction,
-  TrackingEventParameter,
-} from 'src/const';
-import { useMenuStore } from 'src/stores';
-import type { TagData } from 'src/types';
-import { EventTrackingTool, type StrapiImageData } from 'src/types';
-import { formatDate, readingTime } from 'src/utils';
 import {
   BlogArticleCardContainer,
   BlogArticleCardContent,

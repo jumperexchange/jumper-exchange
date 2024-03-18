@@ -3,9 +3,10 @@ import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import React from 'react';
-import { type BlogArticleData } from 'src/types';
-import { formatDate, readingTime } from 'src/utils';
+import { Tag } from '@/components/Tag.style';
+import type { BlogArticleData } from '@/types/strapi';
+import { formatDate } from '@/utils/formatDate';
+import { readingTime } from '@/utils/readingTime';
 import {
   FeaturedArticleContainer,
   FeaturedArticleContent,
@@ -18,7 +19,6 @@ import {
   FeaturedArticleSubtitle,
   FeaturedArticleTitle,
 } from '.';
-import { Tag } from '../../Tag.style';
 
 interface FeaturedArticleProps {
   url: URL;

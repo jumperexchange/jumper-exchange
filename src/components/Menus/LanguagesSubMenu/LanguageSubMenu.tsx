@@ -1,7 +1,7 @@
 import { SubMenu } from '@/components/Menu/SubMenu';
+import { MenuKeysEnum } from '@/const/menuKeys';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
-import { MenuKeysEnum } from 'src/const';
-import { useMenuStore } from 'src/stores';
+import { useMenuStore } from '@/stores/menu';
 import { useLanguagesContent } from '.';
 
 export const LanguagesSubmenu = () => {

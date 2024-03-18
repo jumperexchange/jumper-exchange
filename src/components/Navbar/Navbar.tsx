@@ -2,9 +2,11 @@
 import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 
+import { JumperLogo } from '@/components/illustrations/JumperLogo';
+import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useAccounts } from '@/hooks/useAccounts';
-import { JUMPER_LEARN_PATH } from 'src/const';
-import { useMenuStore, useSettingsStore } from 'src/stores';
+import { useMenuStore } from '@/stores/menu';
+import { useSettingsStore } from '@/stores/settings';
 import {
   NavbarContainer as Container,
   Logo,
@@ -13,7 +15,6 @@ import {
   NavbarTabs,
 } from '.';
 import { JumperLearnLogo } from '../illustrations/JumperLearnLogo';
-import { JumperLogo } from '../illustrations/JumperLogo';
 
 export const Navbar = () => {
   const theme = useTheme();

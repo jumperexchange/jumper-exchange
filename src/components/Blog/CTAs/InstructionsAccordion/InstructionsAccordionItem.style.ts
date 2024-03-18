@@ -1,7 +1,7 @@
 import type { Breakpoint } from '@mui/material';
 import { Box, Typography, styled } from '@mui/material';
 import type { BoxProps } from '@mui/system';
-import { getContrastAlphaColor } from 'src/utils';
+import { getContrastAlphaColor } from 'src/utils/colors';
 
 export const InstructionsAccordionItemContainer = styled(Box)<BoxProps>(
   ({ theme }) => ({

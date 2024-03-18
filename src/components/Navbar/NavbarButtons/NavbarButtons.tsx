@@ -1,19 +1,20 @@
 'use client';
 import { MainMenu } from '@/components/Menus/MainMenu';
-import { useAccounts } from '@/hooks/useAccounts';
-import { useChains } from '@/hooks/useChains';
-import { useUserTracking } from '@/hooks/userTracking';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
-import MenuIcon from '@mui/icons-material/Menu';
-import { Typography } from '@mui/material';
-import { useEffect, useRef } from 'react';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from 'src/const';
-import { useMenuStore, useSettingsStore } from 'src/stores';
-import { EventTrackingTool } from 'src/types';
+} from '@/const/trackingKeys';
+import { useAccounts } from '@/hooks/useAccounts';
+import { useChains } from '@/hooks/useChains';
+import { useUserTracking } from '@/hooks/userTracking';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { useMenuStore } from '@/stores/menu';
+import { useSettingsStore } from '@/stores/settings';
+import { EventTrackingTool } from '@/types/userTracking';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Typography } from '@mui/material';
+import { useEffect, useRef } from 'react';
 import { MenuToggle, NavbarButtonsContainer, WalletManagementButtons } from '.';
 
 interface NavbarButtonsProps {

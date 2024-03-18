@@ -1,4 +1,4 @@
-import type { Account } from 'src/hooks/useAccounts';
+import type { Account } from '@/hooks/useAccounts';
 
 interface GetStrapiBaseUrlProps {
   contentType:

@@ -1,4 +1,4 @@
-import { IconButtonTertiary } from '@components/IconButton.style';
+import { IconButtonTertiary } from '@/components/IconButton.style';
 import type { IconButtonProps } from '@mui/material';
 import { styled } from '@mui/material';
 

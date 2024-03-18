@@ -1,5 +1,15 @@
 'use client';
+import type { MenuKeysEnum } from '@/const/menuKeys';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useMenuStore } from '@/stores/menu';
+import type { MenuListItem } from '@/types/internal';
+import { EventTrackingTool } from '@/types/userTracking';
+import { getContrastAlphaColor } from '@/utils/colors';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckIcon from '@mui/icons-material/Check';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -8,15 +18,6 @@ import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import type { KeyboardEvent } from 'react';
 import { useEffect, useRef } from 'react';
-import type { MenuKeysEnum } from 'src/const';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from 'src/const';
-import { useMenuStore } from 'src/stores';
-import { EventTrackingTool, type MenuListItem } from 'src/types';
-import { getContrastAlphaColor } from 'src/utils';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,

@@ -3,6 +3,9 @@ import { useAccountConnect } from '@/hooks/useAccounts';
 import type { CombinedWallet } from '@/hooks/useCombinedWallets';
 import { useCombinedWallets } from '@/hooks/useCombinedWallets';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { useMenuStore } from '@/stores/menu';
+import { useSettingsStore } from '@/stores/settings';
+import type { MenuListItem } from '@/types/internal';
 import {
   getConnectorIcon,
   isWalletInstalled,
@@ -12,9 +15,7 @@ import type { Theme } from '@mui/material';
 import { Avatar, useMediaQuery, useTheme } from '@mui/material';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
 import { useCallback, useMemo } from 'react';
-import { useMenuStore, useSettingsStore } from 'src/stores';
-import type { MenuListItem } from 'src/types';
-import { getContrastAlphaColor } from 'src/utils';
+import { getContrastAlphaColor } from 'src/utils/colors';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();

@@ -1,12 +1,15 @@
 'use client';
+import {
+  STRAPI_FEATURE_CARDS,
+  STRAPI_JUMPER_USERS,
+} from '@/const/strapiContentKeys';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useStrapi } from '@/hooks/useStrapi';
+import { useSettingsStore } from '@/stores/settings/SettingsStore';
+import type { FeatureCardData, JumperUserData } from '@/types/strapi';
 import type { Breakpoint } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useMemo } from 'react';
-import { STRAPI_FEATURE_CARDS, STRAPI_JUMPER_USERS } from 'src/const';
-import { useSettingsStore } from 'src/stores';
-import type { FeatureCardData, JumperUserData } from 'src/types';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
 

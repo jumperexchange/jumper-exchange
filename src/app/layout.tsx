@@ -1,5 +1,6 @@
-import { Navbar } from 'src/components/Navbar/Navbar';
-import { AppProvider } from 'src/providers/AppProvider';
+import { Navbar } from '@/components/Navbar/Navbar';
+import { AppProvider } from '@/providers/AppProvider';
+import React from 'react';
 
 export default function RootLayout({
   children,

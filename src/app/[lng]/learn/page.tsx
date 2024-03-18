@@ -1,5 +1,5 @@
+import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 import { LearnPage } from 'src/app/ui/learn/LearnPage';
-import { ArticleStrapiApi } from 'src/utils/strapi/StrapiApi';
 
 async function getCarouselArticles() {
   const urlParams = new ArticleStrapiApi().sort('desc');

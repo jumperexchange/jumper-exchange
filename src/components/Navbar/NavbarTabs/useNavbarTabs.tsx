@@ -1,15 +1,15 @@
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import { useTheme } from '@mui/material';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from 'src/const';
-import { EventTrackingTool } from 'src/types';
+} from '@/const/trackingKeys';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { EventTrackingTool } from '@/types/userTracking';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import { useTheme } from '@mui/material';
 
 export const useNavbarTabs = () => {
   const { trackEvent } = useUserTracking();

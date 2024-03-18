@@ -1,9 +1,9 @@
-import type { Account } from '@/hooks/useAccounts';
 import {
   STRAPI_BLOG_ARTICLES,
   STRAPI_FAQ_ITEMS,
   STRAPI_FEATURE_CARDS,
-} from 'src/const';
+} from '@/const/strapiContentKeys';
+import type { Account } from '@/hooks/useAccounts';
 
 export interface UseStrapiProps<T> {
   apiAccesToken: string;

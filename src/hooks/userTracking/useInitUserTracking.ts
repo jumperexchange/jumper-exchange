@@ -1,7 +1,7 @@
+import type { InitTrackingProps } from '@/types/userTracking';
+import { EventTrackingTool } from '@/types/userTracking';
 import { useCallback } from 'react';
 import { hotjar } from 'react-hotjar';
-import type { InitTrackingProps } from 'src/types';
-import { EventTrackingTool } from 'src/types';
 
 export function useInitUserTracking() {
   const initTracking = useCallback(

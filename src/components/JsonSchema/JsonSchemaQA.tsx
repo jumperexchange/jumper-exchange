@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { FaqMeta } from 'src/types';
+import type { FaqMeta } from 'src/types/strapi';
 
 interface TextProps {
   text: string;
