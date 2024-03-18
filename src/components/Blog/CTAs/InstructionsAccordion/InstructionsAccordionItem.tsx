@@ -21,7 +21,6 @@ interface InstructionsAccordionItemProps extends InstructionItemProps {
 // Function to parse links within the title
 const parseTitle = (title: string, link: { label: string; url: string }) => {
   // Replace <LINK> with anchor tag
-  console.log('title', title);
   return title.replace(
     '<LINK>',
     `<a href="${link.url}" target="${link.url.includes(window.location.host) || link.url[0] === '/' ? '_self' : '_blank'}">${link.label}</a>`,
