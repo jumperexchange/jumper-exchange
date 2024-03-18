@@ -1,5 +1,6 @@
-import type { LoyaltyPassState, PDA, SettingsProps } from 'src/types';
-import { StateCreator } from 'zustand';
+import type { LoyaltyPassState, PDA } from '@/types/loyaltyPass';
+import type { SettingsProps } from '@/types/settings';
+import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';

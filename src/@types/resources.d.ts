@@ -40,7 +40,8 @@ interface Resources {
         "developers": "Developers",
         "lifiExplorer": "LI.FI Explorer",
         "aboutLIFI": "About LI.FI",
-        "support": "Support"
+        "support": "Support",
+        "profile": "Profile"
       },
       "walletMenu": {
         "disconnect": "Disconnect",
@@ -116,6 +117,18 @@ interface Resources {
         "title": "Multisig wallet connected",
         "description": "Destination wallet address is required to complete the exchange."
       }
+    },
+    "questCard": {
+      "completed": "Completed",
+      "join": "Join"
+    },
+    "missions": {
+      "available": "Available Missions",
+      "completed": "Completed Missions"
+    },
+    "profile_page": {
+      "mobileTitle": "Only available on Desktop",
+      "mobileDescription": "The Profile page is not available on small screens yet. We are working on it."
     }
   }
 }

@@ -8,7 +8,7 @@ import { useStrapi } from '@/hooks/useStrapi';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import type { FeatureCardData, JumperUserData } from '@/types/strapi';
 import type { Theme } from '@mui/material';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { useMemo } from 'react';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
@@ -66,7 +66,6 @@ export const FeatureCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jumperUser]);
 
-  const theme = useTheme();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   return (
     isDesktop &&

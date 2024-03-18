@@ -1,24 +1,21 @@
 import {
-  Box,
-  Stack,
-  Theme,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import { QuestCarousel } from './QuestCarousel/QuestCarousel';
-import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
-import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
-import { TierBox } from './LevelBox/TierBox';
-import { AddressBox } from './AddressBox/AddressBox';
+  WarningMessageCard,
+  WarningMessageCardTitle,
+} from '@/components/MessageCard';
+import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
+import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import type { Theme } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { AddressBox } from './AddressBox/AddressBox';
+import { TierBox } from './LevelBox/TierBox';
 import {
   ProfilePageContainer,
   ProfilePageHeaderBox,
 } from './ProfilePage.style';
-import { WarningMessageCard, WarningMessageCardTitle } from '../MessageCard';
-import { useTranslation } from 'react-i18next';
+import { QuestCarousel } from './QuestCarousel/QuestCarousel';
+import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 
 export const ProfilePage = () => {
   const theme = useTheme();
