@@ -66,9 +66,9 @@ export const useStrapi = <T>({
 
   // create url
   const apiBaseUrl =
-    process.env.NEXT_PRIVATE_STRAPI_DEVELOP === 'true'
+    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : process.env.NEXT_PRIVATE_STRAPI_URL;
+      : process.env.NEXT_PUBLIC_STRAPI_URL;
   const apiUrl = new URL(`${apiBaseUrl}/${contentType}`);
 
   // pagination by page + pagesize + return meta object
@@ -176,9 +176,9 @@ export const useStrapi = <T>({
 
   // use local strapi on develop || prod strapi
   const apiAccesToken =
-    process.env.NEXT_PRIVATE_STRAPI_DEVELOP === 'true'
+    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
-      : process.env.NEXT_PRIVATE_STRAPI_API_TOKEN;
+      : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
 
   const { data, isSuccess, isLoading, isRefetching, isFetching } = useQuery({
     queryKey: [queryKey, filterPersonalFeatureCards?.account?.isConnected],
