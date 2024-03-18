@@ -1,9 +1,9 @@
-import { useAccounts } from './useAccounts';
 import { useQuery } from '@tanstack/react-query';
 import request from 'graphql-request';
 import { useLoyaltyPassStore } from 'src/stores';
-import { PDA } from 'src/types';
+import type { PDA } from 'src/types';
 import { getAllPDAs } from './querries/pdas';
+import { useAccounts } from './useAccounts';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
@@ -26,7 +26,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     points: storedPoints,
     tier: storedTier,
     pdas: storedPdas,
-    timestamp: timestamp,
+    timestamp,
     setLoyaltyPassData,
   } = useLoyaltyPassStore((state) => state);
 
