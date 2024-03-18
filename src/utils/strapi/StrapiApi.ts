@@ -26,7 +26,8 @@ class StrapiApi {
 
     // Set up API access token based on environment
     this.apiAccessToken =
-      process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
+      process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true' &&
+      !!process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
         ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN!
         : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN!;
 
