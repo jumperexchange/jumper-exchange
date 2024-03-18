@@ -10,15 +10,24 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
-export const useNavbarTabs = () => {
+interface useNavbarTabsProps {
+  navbarPageReload?: boolean;
+}
+
+export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
   const { trackEvent } = useUserTracking();
   const { t } = useClientTranslation();
   const theme = useTheme();
+  const router = useRouter();
 
   const handleClickTab =
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
       window.history.replaceState(null, document.title, `/${tab}`);
+      if (navbarPageReload) {
+        router.push(`/${tab}`);
+      }
       trackEvent({
         category: TrackingCategory.Navigation,
         action: TrackingAction.SwitchTab,

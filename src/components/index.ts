@@ -32,3 +32,4 @@
 // export * from './Widgets';
 // export * from './illustrations';
 // export * from './GoogleAnalytics'
+// export * from './ProfilePage';

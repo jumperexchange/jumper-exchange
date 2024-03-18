@@ -10,6 +10,7 @@ import {
   DISCORD_URL,
   EXPLORER_URL,
   JUMPER_LEARN_PATH,
+  JUMPER_LOYALTY_PATH,
   X_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -20,6 +21,7 @@ import { EventTrackingTool } from '@/types/userTracking';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import { getContrastAlphaColor } from '@/utils/colors';
 import { openInNewTab } from '@/utils/openInNewTab';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
@@ -127,6 +129,25 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.developers'),
       prefixIcon: <DeveloperModeIcon />,
       triggerSubMenu: MenuKeysEnum.Devs,
+    },
+    {
+      label: t('navbar.navbarMenu.profile'),
+      prefixIcon: <AccountCircleIcon />,
+      showMoreIcon: false,
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-jumper-pass-link',
+          action: TrackingAction.ClickJumperLearnLink,
+          data: { [TrackingEventParameter.Menu]: 'pass' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+        closeAllMenus();
+        router.push(JUMPER_LOYALTY_PATH);
+      },
     },
     {
       label: 'Jumper Learn',

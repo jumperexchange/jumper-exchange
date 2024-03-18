@@ -2,7 +2,7 @@ import type { TabProps } from '@/components/Tabs';
 import { urbanist } from '@/fonts/fonts';
 import type { BlogArticleData, TagAttributes } from '@/types/strapi';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import type { Breakpoint } from '@mui/material';
+import type { Breakpoint, Theme } from '@mui/material';
 import {
   Fade,
   Skeleton,
@@ -34,7 +34,7 @@ export const BlogArticlesBoard = ({
   const [catLabel, setCatLabel] = useState<string | undefined>(
     t('blog.allCategories'),
   );
-  const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const [page, setPage] = useState<number>(1);
   const handleTagsClick = useCallback(
     (id: number, label?: string) => () => {

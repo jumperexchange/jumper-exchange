@@ -2,7 +2,7 @@ import type { TabProps } from '@/components/Tabs';
 import { Tabs } from '@/components/Tabs';
 import { urbanist } from '@/fonts/fonts';
 import { getContrastAlphaColor } from '@/utils/colors';
-import type { Breakpoint } from '@mui/material';
+import type { Theme } from '@mui/material';
 import { Skeleton, useMediaQuery, useTheme } from '@mui/material';
 
 interface BlogArticlesBoardTabsProps {
@@ -17,7 +17,7 @@ export const BlogArticlesBoardTabs = ({
   categoryId,
 }: BlogArticlesBoardTabsProps) => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const containerStyles = {
     marginTop: theme.spacing(4),

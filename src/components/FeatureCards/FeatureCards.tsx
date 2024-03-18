@@ -7,7 +7,7 @@ import { useAccounts } from '@/hooks/useAccounts';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import type { FeatureCardData, JumperUserData } from '@/types/strapi';
-import type { Breakpoint } from '@mui/material';
+import type { Theme } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { shallow } from 'zustand/shallow';
@@ -67,7 +67,7 @@ export const FeatureCards = () => {
   }, [jumperUser]);
 
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   return (
     isDesktop &&
     welcomeScreenClosed && (
