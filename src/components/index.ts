@@ -30,3 +30,4 @@ export * from './TestnetAlert';
 export * from './WelcomeScreen';
 export * from './Widgets';
 export * from './illustrations';
+export * from './ProfilePage';
