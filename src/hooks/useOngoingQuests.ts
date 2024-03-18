@@ -10,9 +10,9 @@ export interface UseQuestsProps {
 const STRAPI_CONTENT_TYPE = 'quests';
 export const useOngoingQuests = (): UseQuestsProps => {
   const apiBaseUrl =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
+    process.env.NEXT_PRIVATE_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : process.env.NEXT_PUBLIC_STRAPI_URL;
+      : process.env.NEXT_PRIVATE_STRAPI_URL;
   const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
   //populate url
   apiUrl.searchParams.set('populate[0]', 'Image');
@@ -25,9 +25,9 @@ export const useOngoingQuests = (): UseQuestsProps => {
   process.env.MODE !== 'production' &&
     apiUrl.searchParams.set('publicationState', 'preview');
   const apiAccesToken =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
+    process.env.NEXT_PRIVATE_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
-      : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+      : process.env.NEXT_PRIVATE_STRAPI_API_TOKEN;
   const { data, isSuccess } = useQuery({
     queryKey: ['ongoingQuests'],
 
