@@ -6,6 +6,7 @@ import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
 import type { MenuListItem } from '@/types/internal';
+import { getContrastAlphaColor } from '@/utils/colors';
 import {
   getConnectorIcon,
   isWalletInstalled,
@@ -15,7 +16,6 @@ import type { Theme } from '@mui/material';
 import { Avatar, useMediaQuery, useTheme } from '@mui/material';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
 import { useCallback, useMemo } from 'react';
-import { getContrastAlphaColor } from 'src/utils/colors';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();

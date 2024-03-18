@@ -1,7 +1,7 @@
+import { SubMenu } from '@/components/Menu/SubMenu';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
-import { SubMenu } from 'src/components/Menu/SubMenu';
-import { useMenuStore } from 'src/stores/menu';
+import { useMenuStore } from '@/stores/menu';
 import { useWalletSelectContent } from '..';
 
 export const WalletSelectMoreSubMenu = () => {

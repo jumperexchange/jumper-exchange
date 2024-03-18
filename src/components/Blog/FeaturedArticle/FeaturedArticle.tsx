@@ -21,7 +21,7 @@ import {
 } from '.';
 
 interface FeaturedArticleProps {
-  url: URL;
+  url: string;
   featuredArticle: BlogArticleData[];
   handleFeatureCardClick: () => void;
 }

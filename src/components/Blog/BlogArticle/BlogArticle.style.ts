@@ -9,8 +9,8 @@ import {
 } from '@mui/material';
 
 import { urbanist } from '@/fonts/fonts';
+import { getContrastAlphaColor } from '@/utils/colors';
 import { styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from 'src/utils/colors';
 
 export const BlogArticleImageContainer = styled(Box)(({ theme }) => ({
   width: '100%',

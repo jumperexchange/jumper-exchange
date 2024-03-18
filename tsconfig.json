@@ -37,7 +37,7 @@
         "src/const/*"
       ],
       "@/fonts/*": [
-        "@/fonts/*"
+        "src/fonts/*"
       ],
       "@/hooks/*": [
         "src/hooks/*"

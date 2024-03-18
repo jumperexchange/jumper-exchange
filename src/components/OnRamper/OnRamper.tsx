@@ -1,7 +1,7 @@
 import { WidgetWrapper } from '@/components/Widgets';
+import { useSettingsStore } from '@/stores/settings';
+import { removeHash } from '@/utils/removeHash';
 import { useTheme } from '@mui/material';
-import { useSettingsStore } from 'src/stores/settings';
-import { removeHash } from 'src/utils/removeHash';
 import { OnRamperIFrame } from './index';
 
 export const OnRamper = () => {

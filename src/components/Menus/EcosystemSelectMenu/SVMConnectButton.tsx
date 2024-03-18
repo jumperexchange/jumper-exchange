@@ -1,9 +1,9 @@
 import { useAccountConnect } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
+import { useMenuStore } from '@/stores/menu';
 import { ChainId } from '@lifi/types';
 import { Avatar, Typography, useTheme } from '@mui/material';
 import type { Wallet } from '@solana/wallet-adapter-react';
-import { useMenuStore } from 'src/stores/menu';
 import {
   ConnectButton,
   EcoSystemSelectBadge,

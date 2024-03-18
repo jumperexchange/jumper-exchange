@@ -1,19 +1,19 @@
+import { useMenuStore } from '@/stores/menu';
 import { EventTrackingTool } from '@/types/userTracking';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FolderZipOutlinedIcon from '@mui/icons-material/FolderZipOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useTheme } from '@mui/material/styles';
-import { useMenuStore } from 'src/stores/menu';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '../../../const/trackingKeys';
 
+import { DOCS_URL, GITHUB_URL } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
-import { openInNewTab } from 'src/utils/openInNewTab';
-import { DOCS_URL, GITHUB_URL } from '../../../const/urls';
+import { openInNewTab } from '@/utils/openInNewTab';
 export const useDevelopersContent = () => {
   const { t } = useClientTranslation();
   const { trackPageload, trackEvent } = useUserTracking();

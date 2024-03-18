@@ -24,7 +24,7 @@ import {
 } from '.';
 
 interface BlogArticleCardProps {
-  baseUrl: URL;
+  baseUrl: string;
   id: number;
   image: StrapiImageData;
   content: RootNode[];

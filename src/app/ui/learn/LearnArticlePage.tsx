@@ -13,10 +13,13 @@ import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
 
-export const LearnArticlePage = ({ article, url }) => {
-  const { id } = useParams();
+interface LearnArticlePageProps {
+  article: BlogArticleData[];
+  url: string;
+}
+
+export const LearnArticlePage = ({ article, url }: LearnArticlePageProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
 

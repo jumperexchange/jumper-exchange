@@ -1,5 +1,17 @@
 import { Tabs } from '@/components/Tabs/Tabs';
 import { Discord } from '@/components/illustrations/Discord';
+import { MenuKeysEnum } from '@/const/menuKeys';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
+import {
+  DISCORD_URL,
+  EXPLORER_URL,
+  JUMPER_LEARN_PATH,
+  X_URL,
+} from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { useMenuStore } from '@/stores/menu';
@@ -18,16 +30,6 @@ import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { I18nContext } from 'react-i18next';
-import {
-  DISCORD_URL,
-  EXPLORER_URL,
-  JUMPER_LEARN_PATH,
-  MenuKeysEnum,
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-  X_URL,
-} from '../../../const';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {

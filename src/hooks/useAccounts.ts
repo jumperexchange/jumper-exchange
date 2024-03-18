@@ -1,10 +1,10 @@
 'use client';
+import { useSettingsStore } from '@/stores/settings';
 import { ChainId, ChainType } from '@lifi/sdk';
 import type { WalletAdapter } from '@solana/wallet-adapter-base';
 import type { Wallet } from '@solana/wallet-adapter-react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useMemo } from 'react';
-import { useSettingsStore } from 'src/stores/settings';
 import type { Chain } from 'viem';
 import type { Connector } from 'wagmi';
 import {

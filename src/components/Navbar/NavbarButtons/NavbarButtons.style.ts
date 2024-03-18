@@ -1,9 +1,9 @@
 'use client';
 
 import { ButtonSecondary } from '@/components/Button/Button.style';
+import { getContrastAlphaColor } from '@/utils/colors';
 import type { ButtonProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from 'src/utils/colors';
 
 export const NavbarButtonsContainer = styled('div')({
   display: 'flex',

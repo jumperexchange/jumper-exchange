@@ -5,6 +5,7 @@ import {
 } from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
 import { Lightbox } from '@/components/Lightbox/Lightbox';
 import { Link } from '@/components/Link.style';
+import { Widget } from '@/components/Widgets/Widget';
 import { urbanist } from '@/fonts/fonts';
 import type { MediaAttributes } from '@/types/strapi';
 import { Typography, alpha, useTheme } from '@mui/material';

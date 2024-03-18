@@ -6,14 +6,25 @@ import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import '@/i18n/i18next-init-client';
 import { useMenuStore } from '@/stores/menu';
+import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { useRouter } from 'next/navigation';
 
-export const LearnPage = ({ carouselArticles, featuredArticle, url }) => {
+interface LearnPageProps {
+  carouselArticles: StrapiResponse<BlogArticleData>;
+  featuredArticle: StrapiResponse<BlogArticleData>;
+  url: string;
+}
+
+export const LearnPage = ({
+  carouselArticles,
+  featuredArticle,
+  url,
+}: LearnPageProps) => {
   const { trackEvent } = useUserTracking();
   const { closeAllMenus } = useMenuStore((state) => state);
   const router = useRouter();
 
-  const handleFeatureCardClick = (featuredArticle) => {
+  const handleFeatureCardClick = (featuredArticle: BlogArticleData[]) => {
     console.log('handle click');
     // trackEvent({
     //   category: TrackingCategory.BlogFeaturedArticle,

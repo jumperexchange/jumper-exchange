@@ -1,9 +1,9 @@
+import type { TabProps } from '@/components/Tabs';
+import { Tabs } from '@/components/Tabs';
 import { urbanist } from '@/fonts/fonts';
+import { getContrastAlphaColor } from '@/utils/colors';
 import type { Breakpoint } from '@mui/material';
 import { Skeleton, useMediaQuery, useTheme } from '@mui/material';
-import { getContrastAlphaColor } from 'src/utils/colors';
-import type { TabProps } from '../../Tabs';
-import { Tabs } from '../../Tabs';
 
 interface BlogArticlesBoardTabsProps {
   openDropdown: boolean;

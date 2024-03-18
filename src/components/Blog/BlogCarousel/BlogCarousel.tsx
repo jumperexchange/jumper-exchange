@@ -17,7 +17,7 @@ import {
 
 interface BlogCarouselProps {
   showAllButton?: boolean;
-  url: URL;
+  url: string;
   title?: string;
   data: BlogArticleData[];
 }

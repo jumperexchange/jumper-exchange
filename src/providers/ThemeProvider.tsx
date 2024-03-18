@@ -1,10 +1,10 @@
 'use client';
+import { useSettingsStore } from '@/stores/settings';
 import { CssBaseline, useMediaQuery } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import type { PropsWithChildren } from 'react';
 import React from 'react';
-import { useSettingsStore } from 'src/stores/settings';
 import { darkTheme, lightTheme } from 'src/theme/theme';
 
 export const useDetectDarkModePreference = () => {

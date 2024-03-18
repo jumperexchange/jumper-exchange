@@ -2,9 +2,9 @@ import { Menu } from '@/components/Menu/Menu';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { useMenuStore } from '@/stores/menu';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useEffect } from 'react';
-import { useMenuStore } from 'src/stores/menu';
 import { WalletButton } from '.';
 import { WalletCard } from './WalletCard';
 
