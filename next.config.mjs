@@ -9,6 +9,22 @@ const nextConfig = {
     // config.externals.push('pino-pretty');
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'effigy.im',
+        port: '',
+        pathname: '/a/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'strapi.li.finance',
+        port: '',
+        pathname: '/uploads/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;
