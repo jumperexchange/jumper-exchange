@@ -29,9 +29,10 @@ const refuelAllowChains: ChainId[] = [
 
 interface WidgetProps {
   starterVariant: StarterVariantType;
+  activeVariant: StarterVariantType;
 }
 
-export function Widget({ starterVariant }: WidgetProps) {
+export function Widget({ starterVariant, activeVariant }: WidgetProps) {
   const theme = useTheme();
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
@@ -55,6 +56,7 @@ export function Widget({ starterVariant }: WidgetProps) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
+
     return {
       ...widgetConfig,
       variant: starterVariant === 'refuel' ? 'compact' : 'wide',
@@ -123,12 +125,13 @@ export function Widget({ starterVariant }: WidgetProps) {
       buildUrl: true,
       insurance: true,
       integrator:
-        starterVariant === 'refuel'
+        activeVariant === 'refuel'
           ? import.meta.env.VITE_WIDGET_INTEGRATOR_REFUEL
           : import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
     starterVariant,
+    activeVariant,
     theme.palette.mode,
     theme.palette.surface2.main,
     theme.palette.surface1.main,
@@ -150,7 +153,11 @@ export function Widget({ starterVariant }: WidgetProps) {
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <LiFiWidget
-        integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
+        integrator={
+          activeVariant === 'refuel'
+            ? import.meta.env.VITE_WIDGET_INTEGRATOR_REFUEL
+            : import.meta.env.VITE_WIDGET_INTEGRATOR
+        }
         config={config}
       />
     </WidgetWrapper>

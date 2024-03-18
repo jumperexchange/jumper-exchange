@@ -91,14 +91,20 @@ export function Widgets() {
         isActive={_starterVariant === TabsMap.Exchange.variant}
         welcomeScreenClosed={welcomeScreenClosed}
       >
-        <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
+        <Widget
+          starterVariant={TabsMap.Exchange.variant as WidgetSubvariant}
+          activeVariant={_starterVariant}
+        />
       </WidgetContainer>
       <WidgetContainer
         onClick={handleCloseWelcomeScreen}
         isActive={_starterVariant === TabsMap.Refuel.variant}
         welcomeScreenClosed={welcomeScreenClosed}
       >
-        <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
+        <Widget
+          starterVariant={TabsMap.Refuel.variant as WidgetSubvariant}
+          activeVariant={_starterVariant}
+        />
       </WidgetContainer>
       <SolanaAlert />
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
