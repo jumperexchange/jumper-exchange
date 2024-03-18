@@ -29,15 +29,16 @@ const refuelAllowChains: ChainId[] = [
 
 interface WidgetProps {
   starterVariant: StarterVariantType;
-  activeVariant: StarterVariantType;
 }
 
-export function Widget({ starterVariant, activeVariant }: WidgetProps) {
+export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
+  const isGasVariant =
+    window?.location?.href?.includes(TabsMap.Refuel.variant) ?? false;
 
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
@@ -124,14 +125,12 @@ export function Widget({ starterVariant, activeVariant }: WidgetProps) {
       },
       buildUrl: true,
       insurance: true,
-      integrator:
-        activeVariant === 'refuel'
-          ? import.meta.env.VITE_WIDGET_INTEGRATOR_REFUEL
-          : import.meta.env.VITE_WIDGET_INTEGRATOR,
+      integrator: isGasVariant
+        ? import.meta.env.VITE_WIDGET_INTEGRATOR_REFUEL
+        : import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
     starterVariant,
-    activeVariant,
     theme.palette.mode,
     theme.palette.surface2.main,
     theme.palette.surface1.main,
@@ -144,6 +143,7 @@ export function Widget({ starterVariant, activeVariant }: WidgetProps) {
     multisigSdkConfig,
     setWalletSelectMenuState,
     wagmiConfig,
+    isGasVariant,
   ]);
 
   return (
@@ -152,14 +152,7 @@ export function Widget({ starterVariant, activeVariant }: WidgetProps) {
       welcomeScreenClosed={welcomeScreenClosed}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
-      <LiFiWidget
-        integrator={
-          activeVariant === 'refuel'
-            ? import.meta.env.VITE_WIDGET_INTEGRATOR_REFUEL
-            : import.meta.env.VITE_WIDGET_INTEGRATOR
-        }
-        config={config}
-      />
+      <LiFiWidget integrator={config.integrator} config={config} />
     </WidgetWrapper>
   );
 }
