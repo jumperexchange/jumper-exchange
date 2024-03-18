@@ -19,42 +19,51 @@ class StrapiApi {
   protected baseUrl: string;
   protected contentType: GetStrapiBaseUrlProps['contentType'];
   protected apiUrl: URL;
-  protected apiAccessToken: string;
+  public apiAccessToken: string;
 
   constructor({ contentType }: GetStrapiBaseUrlProps) {
     this.contentType = contentType;
 
     // Set up API access token based on environment
-    this.apiAccessToken =
-      process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true' &&
-      !!process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
-        ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN!
-        : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN!;
+    this.apiAccessToken = this.getApiAccessToken();
 
-    if (!this.apiAccessToken) {
-      console.error('No API access token provided!');
-      throw new Error('No API access token provided!');
-    }
+    // Set up base URL
+    this.baseUrl = this.getBaseUrl();
 
-    if (process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true') {
-      if (!process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL) {
-        console.error('Local Strapi URL is not provided.');
-        throw new Error('Local Strapi URL is not provided.');
-      }
-      this.baseUrl = process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL;
-    } else {
-      if (!process.env.NEXT_PUBLIC_STRAPI_URL) {
-        console.error('Strapi URL is not provided.');
-        throw new Error('Strapi URL is not provided.');
-      }
-      this.baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-    }
-
+    // Set up API URL
     this.apiUrl = new URL(`${this.baseUrl}/${this.contentType}`);
 
     // Show drafts ONLY on development env
     if (process.env.MODE === 'development') {
       this.apiUrl.searchParams.set('publicationState', 'preview');
+    }
+  }
+
+  public getApiAccessToken(): string {
+    if (process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true') {
+      // Use local-strapi-api token for development environment
+      return process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN || '';
+    } else {
+      // Use default STRAPI API token for other environments
+      return process.env.NEXT_PUBLIC_STRAPI_API_TOKEN || '';
+    }
+  }
+
+  private getBaseUrl(): string {
+    if (process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true') {
+      // Use local Strapi URL for development environment
+      if (!process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL) {
+        console.error('Local Strapi URL is not provided.');
+        throw new Error('Local Strapi URL is not provided.');
+      }
+      return process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL;
+    } else {
+      // Use default Strapi URL for other environments
+      if (!process.env.NEXT_PUBLIC_STRAPI_URL) {
+        console.error('Strapi URL is not provided.');
+        throw new Error('Strapi URL is not provided.');
+      }
+      return process.env.NEXT_PUBLIC_STRAPI_URL;
     }
   }
 
@@ -64,10 +73,6 @@ class StrapiApi {
 
   getApiBaseUrl(): string {
     return this.apiUrl.origin;
-  }
-
-  getApiAccessToken(): string {
-    return this.apiAccessToken;
   }
 
   addPaginationParams({
