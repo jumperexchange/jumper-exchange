@@ -10,5 +10,5 @@ export interface Translations {
 }
 
 export const locales = Object.keys(supportedLocales).map((locale: string) => {
-  return locale as LanguageResources as string[];
+  return locale as LanguageResources as string;
 });

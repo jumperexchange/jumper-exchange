@@ -1,5 +1,7 @@
 // @mui
-import type { LanguageKey, ThemeModesSupported } from '../types';
+
+import type { LanguageKey } from '@/types/i18n';
+import type { ThemeModesSupported } from '@/types/settings';
 
 export const cookiesExpires = 3;
 

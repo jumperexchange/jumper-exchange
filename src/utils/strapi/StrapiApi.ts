@@ -109,14 +109,14 @@ class ArticleStrapiApi extends StrapiApi {
     return this;
   }
 
-  filterByTag(tags: string | string[]): this {
+  filterByTag(tags: number | number[]): this {
     if (typeof tags === 'string') {
       this.apiUrl.searchParams.set('filters[tags][id][$eq]', tags);
     } else if (Array.isArray(tags)) {
       tags.forEach((tag, index) => {
         this.apiUrl.searchParams.set(
           `filters[$and][0][$or][${index}][tags][id][$eq]`,
-          tag,
+          `${tag}`,
         );
       });
     }

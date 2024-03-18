@@ -1,5 +1,4 @@
 'use client';
-import { useSettingsStore } from '@/stores/settings';
 import { ChainId, ChainType } from '@lifi/sdk';
 import type { WalletAdapter } from '@solana/wallet-adapter-base';
 import type { Wallet } from '@solana/wallet-adapter-react';
@@ -12,6 +11,7 @@ import {
   useDisconnect,
   useAccount as useWagmiAccount,
 } from 'wagmi';
+import { useSettingsStore } from '../stores/settings';
 import { useBlockchainExplorerURL } from './useBlockchainExplorerURL';
 import type { CombinedWallet } from './useCombinedWallets';
 import { useUserTracking } from './userTracking';
