@@ -1,17 +1,17 @@
-import { IconButtonPrimary } from '@/components';
-import { useUserTracking } from '@/hooks';
+'use client';
+import { IconButtonPrimary } from '@/components/IconButton.style';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
 import { EventTrackingTool } from 'src/types';
-import { openInNewTab } from 'src/utils';
 import { BlogCtaContainer, BlogCtaTitle } from '.';
 
 interface BlogCTAProps {
@@ -21,15 +21,16 @@ interface BlogCTAProps {
 }
 
 export const BlogCTA = ({ title, url, id }: BlogCTAProps) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const handleClick = () => {
-    url?.length && (!url?.includes(window.location.host) || url[0] !== '/')
-      ? openInNewTab(url)
-      : navigate(url ?? '/');
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    // url?.length && (!url?.includes(window?.location.host) || url[0] !== '/')
+    //   ? openInNewTab(url)
+    //   : router.push(url ?? '/');
+    // typeof window !== 'undefined' &&
+    //   window.scrollTo({ top: 0, behavior: 'instant' });
     trackEvent({
       category: TrackingCategory.BlogArticle,
       action: TrackingAction.ClickBlogCTA,

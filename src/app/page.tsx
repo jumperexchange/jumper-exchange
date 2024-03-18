@@ -8,14 +8,24 @@ import { useInitUserTracking } from '@/hooks/userTracking/useInitUserTracking';
 import { locales } from '@/i18n/i18next-locales';
 import { fallbackLng } from '@/i18n/i18next-settings';
 import { useServerTranslation } from '@/i18n/useServerTranslation';
+import type { Metadata, ResolvingMetadata } from 'next';
 
-export default async function Page({
-  params: { lng },
-}: {
+export async function generateMetadata(
+  { params }: PageProps,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  return {
+    title: product.title,
+  };
+}
+
+interface PageProps {
   params: {
     lng: string;
   };
-}) {
+}
+
+export default async function Page({ params: { lng } }: PageProps) {
   if (locales.indexOf(lng) < 0) {
     lng = fallbackLng;
   }
@@ -25,7 +35,7 @@ export default async function Page({
   return (
     <>
       <WelcomeScreen />
-      <Widgets />
+      <Widgets widgetVariant="default" />
       <FeatureCards />
       <Snackbar />
       <SupportModal />

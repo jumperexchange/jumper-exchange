@@ -1,4 +1,4 @@
-import { useUserTracking } from '@/hooks';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Skeleton, Typography, useTheme } from '@mui/material';

@@ -1,11 +1,11 @@
-import { useUserTracking } from '@/hooks';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkIcon from '@mui/icons-material/Link';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import XIcon from '@mui/icons-material/X';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
 import {
   FB_SHARE_URL,
   LINKEDIN_SHARE_URL,
@@ -30,7 +30,8 @@ interface ShareIconsProps {
 export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
   const [showCopyMessage, setShowCopyMessage] = useState(false);
   const { t } = useTranslation();
-  const location = useLocation();
+  const pathname = usePathname();
+
   const { trackEvent } = useUserTracking();
   const isComponentMounted = useRef(false);
   useEffect(() => {
@@ -40,9 +41,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
     };
   }, []);
   const handleShareClick = () => {
-    navigator.clipboard.writeText(
-      `${window.location.host}${location.pathname}`,
-    );
+    navigator.clipboard.writeText(`${window.location.host}${pathname}`);
     setShowCopyMessage(true);
     trackEvent({
       category: TrackingCategory.BlogArticle,
@@ -68,7 +67,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       return;
     }
     const xUrl = new URL(X_SHARE_URL);
-    xUrl.searchParams.set('url', `${window.location.host}${location.pathname}`);
+    xUrl.searchParams.set('url', `${window.location.host}${pathname}`);
     xUrl.searchParams.set('title', title);
     trackEvent({
       category: TrackingCategory.BlogArticle,
@@ -88,7 +87,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       return;
     }
     const fbUrl = new URL(FB_SHARE_URL);
-    fbUrl.searchParams.set('u', `${window.location.host}${location.pathname}`);
+    fbUrl.searchParams.set('u', `${window.location.host}${pathname}`);
     fbUrl.searchParams.set('title', title);
     trackEvent({
       category: TrackingCategory.BlogArticle,
@@ -109,10 +108,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
     }
     const linkedInUrl = new URL(LINKEDIN_SHARE_URL);
     linkedInUrl.searchParams.set('mini', 'true');
-    linkedInUrl.searchParams.set(
-      'url',
-      `${window.location.host}${location.pathname}`,
-    );
+    linkedInUrl.searchParams.set('url', `${window.location.host}${pathname}`);
     linkedInUrl.searchParams.set('title', title);
     trackEvent({
       category: TrackingCategory.BlogArticle,

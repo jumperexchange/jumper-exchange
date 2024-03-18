@@ -5,6 +5,8 @@ import GoogleAnalytics from './GoogleAnalytics';
 
 const UserTracking = () => {
   const { initTracking } = useInitUserTracking();
+  // todo: enable cookie3
+  // const cookie3 = useCookie3();
 
   useEffect(() => {
     initTracking({});

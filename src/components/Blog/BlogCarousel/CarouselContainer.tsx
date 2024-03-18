@@ -2,7 +2,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Box, useTheme, type CSSObject } from '@mui/material';
 
-import { useUserTracking } from '@/hooks';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingEventParameter } from 'src/const';

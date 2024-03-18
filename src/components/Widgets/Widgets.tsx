@@ -12,7 +12,11 @@ import { Widget } from '.';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
 
-export function Widgets() {
+interface WidgetsProps {
+  widgetVariant: StarterVariantType;
+}
+
+export function Widgets({ widgetVariant }: WidgetsProps) {
   const { activeTab, setActiveTab } = useActiveTabStore();
   const [welcomeScreenClosed, onWelcomeScreenClosed] = useSettingsStore(
     (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
@@ -24,22 +28,26 @@ export function Widgets() {
   >(TabsMap.Exchange.variant);
 
   const starterVariant: StarterVariantType = useMemo(() => {
-    let url = window?.location.pathname.slice(1);
-    if (Object.values(LinkMap).includes(url as LinkMap)) {
-      if (!!TabsMap.Buy.destination.filter((el) => el === url).length) {
-        return TabsMap.Buy.variant;
-      } else if (
-        !!TabsMap.Refuel.destination.filter((el) => el === url).length
-      ) {
-        return TabsMap.Refuel.variant;
+    if (widgetVariant) {
+      return widgetVariant;
+    } else {
+      let url = window?.location.pathname.slice(1);
+      if (Object.values(LinkMap).includes(url as LinkMap)) {
+        if (!!TabsMap.Buy.destination.filter((el) => el === url).length) {
+          return TabsMap.Buy.variant;
+        } else if (
+          !!TabsMap.Refuel.destination.filter((el) => el === url).length
+        ) {
+          return TabsMap.Refuel.variant;
+        } else {
+          return TabsMap.Exchange.variant;
+        }
       } else {
+        // default and fallback: Exchange-Tab
         return TabsMap.Exchange.variant;
       }
-    } else {
-      // default and fallback: Exchange-Tab
-      return TabsMap.Exchange.variant;
     }
-  }, []);
+  }, [widgetVariant]);
 
   const getActiveWidget = useCallback(() => {
     if (!starterVariantUsed) {

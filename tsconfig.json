@@ -34,10 +34,10 @@
         "src/components/*"
       ],
       "src/config/*": [
-        "config/*"
+        "src/config/*"
       ],
       "src/const/*": [
-        "const/*"
+        "src/const/*"
       ],
       "@/fonts/*": [
         "src/fonts/*"
@@ -52,16 +52,16 @@
         "src/providers/*"
       ],
       "src/stores/*": [
-        "stores/*"
+        "src/stores/*"
       ],
       "src/themes/*": [
-        "themes/*"
+        "src/themes/*"
       ],
       "src/types/*": [
-        "types/*"
+        "src/types/*"
       ],
       "src/utils/*": [
-        "utils/*"
+        "src/utils/*"
       ]
     },
     "plugins": [

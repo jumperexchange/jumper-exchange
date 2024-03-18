@@ -1,11 +1,4 @@
-import {
-  IconButtonTertiary,
-  InstructionsAccordionItemContainer,
-  InstructionsAccordionItemIndex,
-  InstructionsAccordionItemLabel,
-  InstructionsAccordionItemMain,
-  InstructionsAccordionItemMore,
-} from '@/components';
+import { IconButtonTertiary } from '@/components/IconButton.style';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
@@ -13,6 +6,13 @@ import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
 import { getContrastAlphaColor } from 'src/utils';
 import type { InstructionItemProps } from '.';
+import {
+  InstructionsAccordionItemContainer,
+  InstructionsAccordionItemIndex,
+  InstructionsAccordionItemLabel,
+  InstructionsAccordionItemMain,
+  InstructionsAccordionItemMore,
+} from '.';
 
 interface InstructionsAccordionItemProps extends InstructionItemProps {
   index: number;
@@ -21,10 +21,9 @@ interface InstructionsAccordionItemProps extends InstructionItemProps {
 // Function to parse links within the title
 const parseTitle = (title: string, link: { label: string; url: string }) => {
   // Replace <LINK> with anchor tag
-  console.log('title', title);
   return title.replace(
     '<LINK>',
-    `<a href="${link.url}" target="${link.url.includes(window.location.host) || link.url[0] === '/' ? '_self' : '_blank'}">${link.label}</a>`,
+    `<a href="${link.url}" target="${!link.url.includes('jumper.exchange') || link.url[0] === '/' ? '_self' : '_blank'}">${link.label}</a>`,
   );
 };
 
@@ -33,6 +32,7 @@ export const InstructionsAccordionItem = ({
   step,
   link,
   index,
+  url,
 }: InstructionsAccordionItemProps) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();

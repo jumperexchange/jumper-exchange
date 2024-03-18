@@ -35,8 +35,6 @@ export const useMainMenuContent = () => {
   const { t, i18n } = useClientTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
   const locale = useContext(I18nContext);
-  console.log('LOCALE', locale);
-  console.log('i18n', i18n);
   const router = useRouter();
   const theme = useTheme();
   const { closeAllMenus } = useMenuStore((state) => state);

@@ -1,20 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
+import type { Account } from '@/hooks/useAccounts';
 import {
   STRAPI_BLOG_ARTICLES,
   STRAPI_FAQ_ITEMS,
   STRAPI_FEATURE_CARDS,
 } from 'src/const';
-import type { StrapiMeta, StrapiResponseData } from 'src/types';
-import type { Account } from './useAccounts';
 
 export interface UseStrapiProps<T> {
-  data: StrapiResponseData<T>;
-  meta: StrapiMeta;
-  url: URL;
-  isSuccess: boolean;
-  isLoading: boolean;
-  isRefetching: boolean;
-  isFetching: boolean;
+  apiAccesToken: string;
+  enableQuery: boolean;
+  apiUrl: URL;
 }
 
 interface PaginationProps {
@@ -45,7 +39,7 @@ interface ContentTypeProps {
 }
 
 // Query passed Content-Type var from Strapi
-export const useStrapi = <T>({
+export const fetchStrapi = <T>({
   contentType,
   filterSlug,
   filterFeaturedArticle,
@@ -58,11 +52,11 @@ export const useStrapi = <T>({
 }: ContentTypeProps): UseStrapiProps<T> => {
   // account needed to filter personalized feature cards
 
-  const hasQueryKey = !!queryKey;
+  const hasQueryKey = queryKey !== undefined;
   const enableQuery =
-    filterPersonalFeatureCards?.enabled &&
-    hasQueryKey &&
-    filterPersonalFeatureCards.account?.isConnected;
+    filterPersonalFeatureCards?.enabled && hasQueryKey
+      ? filterPersonalFeatureCards.account?.isConnected
+      : hasQueryKey;
 
   // create url
   const apiBaseUrl =
@@ -180,28 +174,24 @@ export const useStrapi = <T>({
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
       : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
 
-  const { data, isSuccess, isLoading, isRefetching, isFetching } = useQuery({
-    queryKey: [queryKey, filterPersonalFeatureCards?.account?.isConnected],
-    queryFn: async () => {
-      const response = await fetch(decodeURIComponent(apiUrl.href), {
-        headers: {
-          Authorization: `Bearer ${apiAccesToken}`,
-        },
-      });
-      const result = await response.json();
-      return result;
-    },
-    enabled: enableQuery,
-    refetchInterval: 1000 * 60 * 60,
-  });
+  // const { data, isSuccess, isLoading, isRefetching, isFetching } = useQuery({
+  //   queryKey: [queryKey, filterPersonalFeatureCards?.account?.isConnected],
+  //   queryFn: async () => {
+  //     const response = await fetch(decodeURIComponent(apiUrl.href), {
+  //       headers: {
+  //         Authorization: `Bearer ${apiAccesToken}`,
+  //       },
+  //     });
+  //     const result = await response.json();
+  //     return result;
+  //   },
+  //   enabled: enableQuery,
+  //   refetchInterval: 1000 * 60 * 60,
+  // });
 
   return {
-    data: data?.data ?? undefined,
-    meta: data?.meta ?? undefined,
-    url: apiUrl,
-    isSuccess,
-    isLoading,
-    isRefetching,
-    isFetching,
+    apiAccesToken,
+    enableQuery,
+    apiUrl,
   };
 };

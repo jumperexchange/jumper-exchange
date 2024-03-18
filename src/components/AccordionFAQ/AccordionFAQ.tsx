@@ -1,8 +1,4 @@
-import {
-  Accordion,
-  AccordionContainer as Container,
-  QAJsonSchema,
-} from '@/components';
+import { QAJsonSchema } from '@/components/JsonSchema';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box, Divider, IconButton, useTheme } from '@mui/material';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -12,6 +8,7 @@ import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { FaqMeta } from 'src/types';
+import { Accordion, AccordionContainer as Container } from '.';
 
 interface AccordionFAQProps {
   content: FaqMeta[];

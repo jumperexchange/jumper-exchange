@@ -8,7 +8,7 @@ import { WalletProvider } from '@/providers/WalletProvider';
 import { dir } from 'i18next';
 import { Layout } from 'src/Layout';
 
-export async function generateStaticParams() {
+export async function generateStaticParams(context: any) {
   return locales.map((lng) => ({ lng }));
 }
 

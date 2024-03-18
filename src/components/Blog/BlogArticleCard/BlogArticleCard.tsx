@@ -1,9 +1,9 @@
-import { useUserTracking } from '@/hooks';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { CSSObject } from '@mui/material';
-import { Skeleton, useTheme } from '@mui/material';
+import { Skeleton } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import {
   JUMPER_LEARN_PATH,
   TrackingAction,
@@ -32,6 +32,7 @@ interface BlogArticleCardProps {
   content: RootNode[];
   publishedAt: string | null | undefined;
   createdAt: string;
+  key?: string;
   title: string;
   tags: TagData | undefined;
   trackingCategory: string;
@@ -48,13 +49,13 @@ export const BlogArticleCard = ({
   publishedAt,
   createdAt,
   id,
+  key,
   title,
   styles,
   slug,
 }: BlogArticleCardProps) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { trackEvent } = useUserTracking();
-  const theme = useTheme();
   const minRead = readingTime(content);
   const { t } = useTranslation();
   const { closeAllMenus } = useMenuStore((state) => state);
@@ -71,7 +72,7 @@ export const BlogArticleCard = ({
       },
     });
     closeAllMenus();
-    navigate(`${JUMPER_LEARN_PATH}/${slug}`);
+    router.push(`${JUMPER_LEARN_PATH}/${slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   return (
@@ -79,10 +80,11 @@ export const BlogArticleCard = ({
       variant="outlined"
       onClick={handleClick}
       sx={styles}
+      key={key}
     >
       {image.data ? (
         <BlogArticleCardImage
-          src={`${baseUrl?.origin}${image.data?.attributes?.formats.small.url}`}
+          src={`${baseUrl}${image.data?.attributes?.formats.small.url}`}
           alt={image.data?.attributes?.alternativeText}
           draggable={false}
         />

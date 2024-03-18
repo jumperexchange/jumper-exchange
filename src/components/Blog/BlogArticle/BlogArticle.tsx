@@ -1,4 +1,3 @@
-import { ArticleJsonSchema, ShareArticleIcons, Tag } from '@/components';
 import { useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { type AuthorData, type StrapiImageData, type TagData } from 'src/types';
@@ -32,8 +31,11 @@ import {
   Divider,
 } from './BlogArticle.style';
 
-import React, { useState } from 'react';
-import { CustomRichBlocks } from '..';
+import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
+import { Tag } from '@/components/Tag.style';
+import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { useState } from 'react';
+import { CustomRichBlocks, ShareArticleIcons } from '..';
 
 interface BlogArticleProps {
   title: string | undefined;

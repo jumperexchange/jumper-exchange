@@ -1,12 +1,9 @@
-import type { InstructionItemProps } from '@/components';
-
+import { BlogCTA } from '@/components/Blog/CTAs/BlogCTA/BlogCTA';
 import {
-  BlogCTA,
   InstructionsAccordion,
-  Lightbox,
-  Link,
-  Widget,
-} from '@/components';
+  type InstructionItemProps,
+} from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
+import { Lightbox } from '@/components/Lightbox/Lightbox';
 import { Typography, alpha, useTheme } from '@mui/material';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';

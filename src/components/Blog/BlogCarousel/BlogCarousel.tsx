@@ -1,9 +1,11 @@
-import { BlogArticleCard, CarouselContainer } from '@/components';
-import { useUserTracking } from '@/hooks';
+'use client';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { JUMPER_LEARN_PATH, TrackingAction, TrackingCategory } from 'src/const';
 import { EventTrackingTool, type BlogArticleData } from 'src/types';
+import { CarouselContainer } from '.';
+import { BlogArticleCard } from '../BlogArticleCard/BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
 import {
   BlogCarouselContainer,
@@ -25,8 +27,11 @@ export const BlogCarousel = ({
   showAllButton,
 }: BlogCarouselProps) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const router = useRouter();
   const { trackEvent } = useUserTracking();
+
+  console.log('BLOG CAROUSEL DATA', data);
+  console.log('URL', url);
 
   const handleShowAll = () => {
     trackEvent({
@@ -35,7 +40,7 @@ export const BlogCarousel = ({
       label: 'click-see-all-posts',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    navigate(JUMPER_LEARN_PATH);
+    router.push(JUMPER_LEARN_PATH);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

@@ -1,4 +1,4 @@
-import { useStrapi } from '@/hooks';
+import { useStrapi } from '@/hooks/useStrapi';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import type { Breakpoint } from '@mui/material';
 import {

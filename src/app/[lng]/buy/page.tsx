@@ -1,5 +1,7 @@
+import App from 'src/app/ui/app/App';
+
 const Page = () => {
-  return <div>Buy</div>;
+  return <App starterVariant="buy" />;
 };
 
 export default Page;

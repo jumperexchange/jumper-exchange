@@ -17,10 +17,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
   return (
     <>
       <BackgroundGradient variant={variant} />
-      <Navbar
-        hideNavbarTabs={hideNavbarTabs}
-        redirectToLearn={redirectToLearn}
-      />
+      <Navbar />
       {children}
       <Snackbar />
     </>

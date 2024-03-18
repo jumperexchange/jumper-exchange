@@ -1,6 +1,6 @@
 'use client';
 import { useTheme } from '@mui/material/styles';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { useAccounts } from '@/hooks/useAccounts';
 import { JUMPER_LEARN_PATH } from 'src/const';
@@ -15,14 +15,12 @@ import {
 import { JumperLearnLogo } from '../illustrations/JumperLearnLogo';
 import { JumperLogo } from '../illustrations/JumperLogo';
 
-interface NavbarProps {
-  hideNavbarTabs?: boolean;
-  redirectToLearn?: boolean;
-}
-
-export const Navbar = ({ hideNavbarTabs, redirectToLearn }: NavbarProps) => {
+export const Navbar = () => {
   const theme = useTheme();
   const router = useRouter();
+  const pathname = usePathname();
+  console.log('NAVBAR PATH:', pathname);
+  const isLearnPage = pathname.includes('/learn');
   const { account } = useAccounts();
   const [onWelcomeScreenClosed] = useSettingsStore((state) => [
     state.onWelcomeScreenClosed,
@@ -32,7 +30,7 @@ export const Navbar = ({ hideNavbarTabs, redirectToLearn }: NavbarProps) => {
   const handleClick = () => {
     closeAllMenus();
     onWelcomeScreenClosed(false);
-    redirectToLearn ? router.push(JUMPER_LEARN_PATH) : router.push('/');
+    isLearnPage ? router.push(JUMPER_LEARN_PATH) : router.push('/');
   };
 
   return (
@@ -41,11 +39,11 @@ export const Navbar = ({ hideNavbarTabs, redirectToLearn }: NavbarProps) => {
         <Logo
           isConnected={!!account?.address}
           theme={theme}
-          logo={redirectToLearn ? <JumperLearnLogo /> : <JumperLogo />}
+          logo={isLearnPage ? <JumperLearnLogo /> : <JumperLogo />}
         />
       </LogoLink>
-      {!hideNavbarTabs ? <NavbarTabs /> : null}
-      <NavbarButtons redirectToLearn={redirectToLearn} />
+      {!isLearnPage ? <NavbarTabs /> : null}
+      <NavbarButtons redirectToLearn={isLearnPage} />
     </Container>
   );
 };

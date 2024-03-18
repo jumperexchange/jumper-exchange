@@ -1,41 +1,35 @@
-import {
-  BackgroundGradient,
-  BlogArticle,
-  BlogCarousel,
-  JoinDiscordBanner,
-  PoweredBy,
-} from '@/components';
-import { useInitUserTracking, useStrapi } from '@/hooks';
+'use client';
+
+import { BackgroundGradient } from '@/components/BackgroundGradient/BackgroundGradient';
+import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
+import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
+import { useStrapi } from '@/hooks/useStrapi';
+import { useInitUserTracking } from '@/hooks/userTracking/useInitUserTracking';
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { Layout } from 'src/Layout';
+import { JoinDiscordBanner } from 'src/components/JoinDiscordBanner/JoinDiscordBanner';
+import { PoweredBy } from 'src/components/PoweredBy/PoweredBy';
 import { STRAPI_BLOG_ARTICLES } from 'src/const';
 import type { BlogArticleData } from 'src/types';
 
-export const BlogArticlePage = () => {
+export const LearnArticlePage = ({ article, url }) => {
   const { id } = useParams();
   const { t } = useTranslation();
-  const { initTracking } = useInitUserTracking();
-  // const cookie3 = useCookie3();
   const theme = useTheme();
 
+  console.log('ARTICLE:', article);
+
+  const { initTracking } = useInitUserTracking();
+  // const cookie3 = useCookie3();
   // todo: enable cookie3
   // useEffect(() => {
   //   initTracking({});
   //   cookie3?.trackPageView();
   // }, [cookie3, initTracking]);
-  const {
-    data: article,
-    url: articleUrl,
-    isSuccess: articleIsSuccess,
-  } = useStrapi<BlogArticleData>({
-    contentType: STRAPI_BLOG_ARTICLES,
-    filterSlug: id,
-    queryKey: ['blog-article', `${id ?? ''}`],
-  });
+
   const currentCategories = useMemo(() => {
     return article && article[0]?.attributes.tags.data.map((el) => el?.id);
   }, [article]);
@@ -49,27 +43,25 @@ export const BlogArticlePage = () => {
       filterTag: currentCategories,
     });
 
-  const isSuccess = articleIsSuccess && articlesIsSuccess;
-
   const filteredArticles = useMemo(() => {
     return article && articles?.filter((el) => el.id !== article[0]?.id);
   }, [article, articles]);
 
   return (
-    <Layout hideNavbarTabs={true} redirectToLearn={true} variant={'blog'}>
+    <>
       <BlogArticle
-        subtitle={isSuccess ? article[0]?.attributes.Subtitle : undefined}
-        title={isSuccess ? article[0]?.attributes.Title : undefined}
-        content={isSuccess ? article[0]?.attributes.Content : undefined}
-        slug={isSuccess ? article[0]?.attributes.Slug : undefined}
-        id={isSuccess ? article[0].id : undefined}
-        author={!!article ? article[0]?.attributes.author : undefined}
-        publishedAt={isSuccess ? article[0]?.attributes.publishedAt : undefined}
-        createdAt={isSuccess ? article[0]?.attributes.createdAt : undefined}
-        updatedAt={isSuccess ? article[0]?.attributes.updatedAt : undefined}
-        tags={isSuccess ? article[0]?.attributes.tags : undefined}
-        image={isSuccess ? article[0]?.attributes.Image : undefined}
-        baseUrl={articleUrl.origin ?? undefined}
+        subtitle={article[0]?.attributes.Subtitle}
+        title={article[0]?.attributes.Title}
+        content={article[0]?.attributes.Content}
+        slug={article[0]?.attributes.Slug}
+        id={article[0]?.id}
+        author={article[0]?.attributes.author}
+        publishedAt={article[0]?.attributes.publishedAt}
+        createdAt={article[0]?.attributes.createdAt}
+        updatedAt={article[0]?.attributes.updatedAt}
+        tags={article[0]?.attributes.tags}
+        image={article[0]?.attributes.Image}
+        baseUrl={url}
       />
       <Box
         position="relative"
@@ -91,11 +83,11 @@ export const BlogArticlePage = () => {
           title={t('blog.similarPosts')}
           showAllButton={true}
           data={filteredArticles}
-          url={articleUrl}
+          url={url}
         />
         <JoinDiscordBanner />
         <PoweredBy />
       </Box>
-    </Layout>
+    </>
   );
 };

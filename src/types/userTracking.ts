@@ -1,4 +1,4 @@
-import type { Account } from '@/hooks';
+import type { Account } from '@/hooks/useAccounts';
 import type { ChainID } from '@arcxmoney/analytics';
 import type { ChainType } from '@lifi/types';
 import type { TrackingCategory } from 'src/const';

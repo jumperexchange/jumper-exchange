@@ -1,4 +1,4 @@
-import { IconButtonTertiary } from '@/components';
+import { IconButtonTertiary } from '@/components/IconButton.style';
 import type {
   BoxProps,
   Breakpoint,

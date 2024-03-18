@@ -1,9 +1,12 @@
-import { Button, JumperLogo } from '@/components';
+import { Button } from '@/components/Button/Button';
+import { JumperLogo } from '@/components/illustrations/JumperLogo';
 import { useTheme } from '@mui/material';
 import { LogoLink } from '../Navbar';
 
-import { Discord, Logo } from '@/components';
-import { useAccounts, useUserTracking } from '@/hooks';
+import { Logo } from '@/components/Navbar/Logo/Logo'; //todo: move this out of navbar
+import { Discord } from '@/components/illustrations/Discord';
+import { useAccounts } from '@/hooks/useAccounts';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
 import {
   DISCORD_URL,
