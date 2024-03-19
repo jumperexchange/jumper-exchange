@@ -7,6 +7,7 @@ import { useActiveTabStore, useSettingsStore } from 'src/stores';
 import type { StarterVariantType } from 'src/types';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
+import { TestnetSideAlert } from '../Alerts/TestnetSideAlert';
 
 export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
@@ -81,11 +82,6 @@ export function Widgets() {
 
   return (
     <>
-      {import.meta.env.MODE === 'testnet' && (
-        <Grid item xs={12} mt={theme.spacing(3)}>
-          <TestnetAlert />
-        </Grid>
-      )}
       <WidgetContainer
         onClick={handleCloseWelcomeScreen}
         isActive={_starterVariant === TabsMap.Exchange.variant}
@@ -101,6 +97,8 @@ export function Widgets() {
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
       <SolanaAlert />
+
+      {import.meta.env.MODE === 'testnet' && <TestnetSideAlert />}
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
           onClick={handleCloseWelcomeScreen}

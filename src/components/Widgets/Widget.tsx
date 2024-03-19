@@ -12,8 +12,8 @@ import { darkTheme } from 'src/theme';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { useConfig } from 'wagmi';
 import { widgetConfig } from '../../config';
-import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
+import { MultisigSideAlert } from '../Alerts/MultisigSideAlert';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -150,11 +150,11 @@ export function Widget({ starterVariant }: WidgetProps) {
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed}
     >
-      {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <LiFiWidget
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
         config={config}
       />
+      {isMultisigSigner && <MultisigSideAlert />}
     </WidgetWrapper>
   );
 }
