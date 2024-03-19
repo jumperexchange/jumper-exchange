@@ -8,7 +8,6 @@ import { PoweredBy } from '@/components/PoweredBy/PoweredBy';
 import type { BlogArticleData } from '@/types/strapi';
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface LearnArticlePageProps {
@@ -24,14 +23,6 @@ export const LearnArticlePage = ({
 }: LearnArticlePageProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-
-  const currentCategories = useMemo(() => {
-    return article && article[0]?.attributes.tags.data.map((el) => el?.id);
-  }, [article]);
-
-  const filteredArticles = useMemo(() => {
-    return article && articles?.filter((el) => el.id !== article[0]?.id);
-  }, [article, articles]);
 
   return (
     <>
@@ -65,12 +56,14 @@ export const LearnArticlePage = ({
         }}
       >
         <BackgroundGradient styles={{ position: 'absolute' }} />
-        <BlogCarousel
-          title={t('blog.similarPosts')}
-          showAllButton={true}
-          data={filteredArticles}
-          url={url}
-        />
+        {articles.length > 2 && (
+          <BlogCarousel
+            title={t('blog.similarPosts')}
+            showAllButton={true}
+            data={articles}
+            url={url}
+          />
+        )}
         <JoinDiscordBanner />
         <PoweredBy />
       </Box>

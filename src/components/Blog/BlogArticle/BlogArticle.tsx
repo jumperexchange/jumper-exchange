@@ -13,7 +13,6 @@ import {
   BlogArticleHeaderTagSkeleton,
   BlogArticleImage,
   BlogArticleImageContainer,
-  BlogArticleImageSkeleton,
   BlogArticleMetaSkeleton,
   BlogArticleSubtitle,
   BlogArticleSubtitleSkeleton,
@@ -35,7 +34,6 @@ import type { AuthorData, StrapiImageData, TagData } from '@/types/strapi';
 import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import { useState } from 'react';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
 
 interface BlogArticleProps {
@@ -70,10 +68,7 @@ export const BlogArticle = ({
   const theme = useTheme();
   const minRead = readingTime(content);
   const { t } = useTranslation();
-  const [imgLoaded, setImgLoaded] = useState(false);
-  const handleImageLoaded = () => {
-    setImgLoaded(true);
-  };
+
   return (
     <>
       <BlogArticleContainer>
@@ -135,13 +130,10 @@ export const BlogArticle = ({
       <BlogArticleImageContainer>
         {image?.data && (
           <BlogArticleImage
-            onLoad={handleImageLoaded}
-            sx={{ ...(!imgLoaded && { display: 'none' }) }}
             src={`${baseUrl}${image.data.attributes?.url}`}
             alt={image?.data.attributes?.alternativeText}
           />
         )}
-        {!imgLoaded && <BlogArticleImageSkeleton />}
       </BlogArticleImageContainer>
       <BlogArticleContainer>
         <BlogArticleContentContainer>

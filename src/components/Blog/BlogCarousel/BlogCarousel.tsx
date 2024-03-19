@@ -17,7 +17,7 @@ import {
 
 interface BlogCarouselProps {
   showAllButton?: boolean;
-  url: string | undefined;
+  url: string;
   title?: string;
   data: BlogArticleData[] | undefined;
 }
