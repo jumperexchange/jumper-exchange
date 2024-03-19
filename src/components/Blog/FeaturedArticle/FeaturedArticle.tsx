@@ -1,6 +1,5 @@
 'use client';
 import { Box, Typography } from '@mui/material';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Tag } from '@/components/Tag.style';
@@ -12,7 +11,6 @@ import {
   FeaturedArticleContent,
   FeaturedArticleDetails,
   FeaturedArticleImage,
-  FeaturedArticleImageSkeleton,
   FeaturedArticleMetaContainer,
   FeaturedArticleMetaDate,
   FeaturedArticleSkeleton,
@@ -31,12 +29,7 @@ export const FeaturedArticle = ({
   handleFeatureCardClick,
   url,
 }: FeaturedArticleProps) => {
-  const [imgLoaded, setImgLoaded] = useState(false);
   const { t } = useTranslation();
-
-  const handleImgLoaded = () => {
-    setImgLoaded(true);
-  };
 
   const formatedDate =
     featuredArticle &&
@@ -52,14 +45,11 @@ export const FeaturedArticle = ({
     <>
       <FeaturedArticleContainer onClick={handleFeatureCardClick}>
         <FeaturedArticleImage
-          onLoad={handleImgLoaded}
           src={`${url}${featuredArticle[0]?.attributes.Image.data.attributes.formats.medium.url}`}
-          sx={{ ...(!imgLoaded && { display: 'none' }) }}
           alt={
             featuredArticle[0].attributes.Image.data.attributes.alternativeText
           }
         />
-        {!imgLoaded && <FeaturedArticleImageSkeleton />}
         <FeaturedArticleContent>
           <FeaturedArticleDetails>
             {featuredArticle[0].attributes.tags.data

@@ -25,6 +25,8 @@ export const LearnPage = ({
   const { closeAllMenus } = useMenuStore((state) => state);
   const router = useRouter();
 
+  console.log('CAROUSEL ARTICLES', carouselArticles);
+
   const handleFeatureCardClick = (featuredArticle: BlogArticleData[]) => {
     console.log('handle click');
     // trackEvent({
@@ -48,7 +50,7 @@ export const LearnPage = ({
           handleFeatureCardClick(featuredArticle.data)
         }
       />
-      <BlogCarousel url={url} data={carouselArticles.data} />
+      <BlogCarousel url={url} data={carouselArticles?.data} />
       <JoinDiscordBanner />
       {/* <BlogArticlesBoard /> */}
       <PoweredBy />

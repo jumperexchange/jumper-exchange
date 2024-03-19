@@ -1,8 +1,7 @@
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 
-interface GetArticlesResponse {
-  data: StrapiResponse<BlogArticleData>; // Define the shape of the data returned from the API
+interface GetArticlesResponse extends StrapiResponse<BlogArticleData> {
   url: string; // Define the shape of the URL
 }
 
@@ -24,12 +23,15 @@ export async function getArticles(
     throw new Error('Failed to fetch data');
   }
 
-  const data = await res.json().then(
-    (output) =>
-      // filter out given excludeId
-      excludeId &&
-      output.data.filter((el: BlogArticleData) => el.id !== excludeId),
+  const data = await res.json().then((output) =>
+    // filter out given excludeId
+    {
+      return {
+        meta: output.meta,
+        data: output.data.filter((el: BlogArticleData) => el.id !== excludeId),
+      };
+    },
   ); // Extract data from the response
 
-  return { data, url: apiBaseUrl }; // Return a plain object
+  return { ...data, url: apiBaseUrl }; // Return a plain object
 }
