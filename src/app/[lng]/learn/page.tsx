@@ -1,4 +1,4 @@
-import { getCarouselArticles } from 'src/app/lib/getArticles';
+import { getArticles } from 'src/app/lib/getArticles';
 import { getFeaturedArticle } from 'src/app/lib/getFeaturedArticle';
 import { LearnPage } from 'src/app/ui/learn/LearnPage';
 
@@ -11,7 +11,7 @@ export default async function Page({
   };
 }) {
   const featuredArticle = await getFeaturedArticle();
-  const carouselArticles = await getCarouselArticles(featuredArticle.data.id);
+  const carouselArticles = await getArticles(featuredArticle.data.id);
 
   return (
     <LearnPage

@@ -1,7 +1,14 @@
-import type { BlogArticleData } from '@/types/strapi';
+import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 
-export async function getCarouselArticles(excludeId?: number) {
+interface GetArticlesResponse {
+  data: StrapiResponse<BlogArticleData>; // Define the shape of the data returned from the API
+  url: string; // Define the shape of the URL
+}
+
+export async function getArticles(
+  excludeId?: number,
+): Promise<GetArticlesResponse> {
   const urlParams = new ArticleStrapiApi().sort('desc');
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();

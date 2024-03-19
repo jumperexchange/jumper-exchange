@@ -2,7 +2,7 @@
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import type { BlogArticleData } from '@/types/strapi';
+import type { BlogArticleData, StrapiResponseData } from '@/types/strapi';
 import { EventTrackingTool } from '@/types/userTracking';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,7 @@ interface BlogCarouselProps {
   showAllButton?: boolean;
   url: string;
   title?: string;
-  data: BlogArticleData[] | undefined;
+  data: StrapiResponseData<BlogArticleData> | undefined;
 }
 
 export const BlogCarousel = ({
