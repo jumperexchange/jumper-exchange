@@ -1,5 +1,6 @@
 import type { TypographyProps } from '@mui/material';
 import { Box, Container, Typography, alpha, styled } from '@mui/material';
+import { inter } from 'src/fonts/fonts';
 
 export const ProfilePageContainer = styled(Container)(() => ({
   marginTop: 32,
@@ -29,7 +30,7 @@ export interface ProfilePageTypographyProps
 export const ProfilePageTypography = styled(
   Typography,
 )<ProfilePageTypographyProps>(({ fontSize, fontWeight, lineHeight }) => ({
-  fontFamily: 'Inter',
+  fontFamily: inter.style.fontFamily,
   fontStyle: 'normal',
   fontSize: fontSize,
   fontWeight: fontWeight ?? 700,

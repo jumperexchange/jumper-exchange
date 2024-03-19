@@ -23,6 +23,12 @@ const nextConfig = {
         port: '',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.mygateway.xyz',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

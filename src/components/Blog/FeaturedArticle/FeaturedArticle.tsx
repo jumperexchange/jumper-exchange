@@ -21,9 +21,9 @@ import {
 } from '.';
 
 interface FeaturedArticleProps {
-  url: string;
-  featuredArticle: BlogArticleData[];
-  handleFeatureCardClick: () => void;
+  url: string | undefined;
+  featuredArticle: BlogArticleData[] | undefined;
+  handleFeatureCardClick?: () => void;
 }
 
 export const FeaturedArticle = ({
@@ -48,7 +48,7 @@ export const FeaturedArticle = ({
   const minRead =
     featuredArticle && readingTime(featuredArticle[0]?.attributes.Content);
 
-  return featuredArticle?.length > 0 ? (
+  return featuredArticle && featuredArticle?.length > 0 ? (
     <>
       <FeaturedArticleContainer onClick={handleFeatureCardClick}>
         <FeaturedArticleImage

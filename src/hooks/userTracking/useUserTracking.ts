@@ -31,7 +31,7 @@ export function useUserTracking() {
         chainId: `${account?.chainId}`,
       });
       typeof window !== 'undefined' &&
-        window.gtag('event', TrackingAction.SwitchChain, {
+        window?.gtag('event', TrackingAction.SwitchChain, {
           category: TrackingCategory.Wallet,
           [TrackingEventParameter.SwitchedChain]: account?.chainId,
         });
@@ -58,7 +58,7 @@ export function useUserTracking() {
       });
       hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
       typeof window !== 'undefined' &&
-        window.gtag('event', TrackingAction.ConnectWallet, {
+        window?.gtag('event', TrackingAction.ConnectWallet, {
           [TrackingEventParameter.Wallet]: walletName,
           [TrackingEventParameter.Ecosystem]: chainType,
         });
@@ -85,7 +85,7 @@ export function useUserTracking() {
       if (data && !disableTrackingTool?.includes(EventTrackingTool.GA)) {
         data &&
           typeof window !== 'undefined' &&
-          window.gtag('set', 'user_properties', data);
+          window?.gtag('set', 'user_properties', data);
       }
     },
     [account?.address],
@@ -104,7 +104,7 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         typeof window !== 'undefined' &&
-          window.gtag('event', TrackingAction.DisconnectWallet, {
+          window?.gtag('event', TrackingAction.DisconnectWallet, {
             ...data,
           });
       }
@@ -133,7 +133,7 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         typeof window !== 'undefined' &&
-          window.gtag('event', action, {
+          window?.gtag('event', action, {
             category: category,
             ...data,
           });
@@ -177,7 +177,7 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         typeof window !== 'undefined' &&
-          window.gtag('event', TrackingAction.PageLoad, {
+          window?.gtag('event', TrackingAction.PageLoad, {
             category: pageload ? 'external' : 'internal',
             url,
             source,
@@ -208,7 +208,7 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         typeof window !== 'undefined' &&
-          window.gtag('event', action, {
+          window?.gtag('event', action, {
             category,
             ...data,
           });
@@ -249,7 +249,7 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         typeof window !== 'undefined' &&
-          window.gtag('event', action, {
+          window?.gtag('event', action, {
             category: category,
             ...data,
           });

@@ -1,6 +1,3 @@
-import Script from 'next/script';
-import React from 'react';
-
 export default async function Head() {
   return (
     <>
@@ -97,18 +94,6 @@ export default async function Head() {
         href="/apple-touch-icon-180x180_DT.png"
         media="(prefers-color-scheme: dark)"
       />
-      <Script
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
-      />
-      <Script id="google-analytics">
-        {`
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}');
-`}
-      </Script>
     </>
   );
 }

@@ -3,7 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { JumperLogo } from '@/components/illustrations/JumperLogo';
-import { JUMPER_LEARN_PATH } from '@/const/urls';
+import { JUMPER_LEARN_PATH, JUMPER_LOYALTY_PATH } from '@/const/urls';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
@@ -20,8 +20,8 @@ export const Navbar = () => {
   const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname();
-  console.log('NAVBAR PATH:', pathname);
-  const isLearnPage = pathname.includes('/learn');
+  const isLearnPage = pathname.includes(JUMPER_LEARN_PATH);
+  const isLoyaltyPage = pathname.includes(JUMPER_LOYALTY_PATH);
   const { account } = useAccounts();
   const [onWelcomeScreenClosed] = useSettingsStore((state) => [
     state.onWelcomeScreenClosed,
@@ -43,7 +43,7 @@ export const Navbar = () => {
           logo={isLearnPage ? <JumperLearnLogo /> : <JumperLogo />}
         />
       </LogoLink>
-      {!isLearnPage ? <NavbarTabs /> : null}
+      {!isLearnPage ? <NavbarTabs navbarPageReload={isLoyaltyPage} /> : null}
       <NavbarButtons redirectToLearn={isLearnPage} />
     </Container>
   );

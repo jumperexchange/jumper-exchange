@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import { useMemo } from 'react';
 import type { FaqMeta } from 'src/types/strapi';
 
@@ -59,5 +60,5 @@ export const QAJsonSchema = ({ data }: QAJsonSchemaProps) => {
     };
     return structuredJson;
   }, [data]);
-  return <script type="application/ld+json">{JSON.stringify(schema)}</script>;
+  return <Script type="application/ld+json">{JSON.stringify(schema)}</Script>;
 };

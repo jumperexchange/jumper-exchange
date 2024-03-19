@@ -8,6 +8,7 @@ import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import { openInNewTab } from '@/utils/openInNewTab';
 import type { CSSObject } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
+import { Trans } from 'react-i18next';
 import { Container } from './PoweredBy.style';
 
 const lifiUrl = appendUTMParametersToLink(LIFI_URL, {
@@ -52,8 +53,7 @@ export const PoweredBy = ({ fixedPosition, styles }: PoweredByProps) => {
               : theme.palette.alphaDark500.main,
         }}
       >
-        //todo: add translation
-        {/* <Trans
+        <Trans
           i18nKey={'navbar.poweredByLifi' as string & never[]}
           components={[
             // fix: allow component with "no content"
@@ -68,7 +68,7 @@ export const PoweredBy = ({ fixedPosition, styles }: PoweredByProps) => {
               rel="noreferrer"
             />,
           ]}
-        /> */}
+        />
       </Typography>
     </Container>
   );

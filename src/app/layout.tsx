@@ -1,5 +1,6 @@
 import { Navbar } from '@/components/Navbar/Navbar';
 import { AppProvider } from '@/providers/AppProvider';
+import Script from 'next/script';
 import React from 'react';
 
 export default function RootLayout({
@@ -15,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* <Script
+        <Script
           async
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
         />
@@ -26,7 +27,7 @@ export default function RootLayout({
               gtag('js', new Date());
               gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}');
           `}
-        </Script> */}
+        </Script>
       </head>
 
       <body>

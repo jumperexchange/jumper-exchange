@@ -18,8 +18,6 @@ export const localStorageKey = {
 // Please remove `localStorage` when you change settings.
 // ----------------------------------------------------------------------
 
-export const defaultLang = 'en'; // English
-
 const setLanguage = () => {
   // if (
   //   typeof window === 'undefined' &&

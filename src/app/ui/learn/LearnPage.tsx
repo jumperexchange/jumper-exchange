@@ -2,6 +2,7 @@
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { FeaturedArticle } from '@/components/Blog/FeaturedArticle/FeaturedArticle';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
+import { PoweredBy } from '@/components/PoweredBy/PoweredBy';
 import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import '@/i18n/i18next-init-client';
@@ -50,7 +51,7 @@ export const LearnPage = ({
       <BlogCarousel url={url} data={carouselArticles.data} />
       <JoinDiscordBanner />
       {/* <BlogArticlesBoard /> */}
-      {/* <PoweredBy /> */}
+      <PoweredBy />
       {/* <AccordionFAQ content={faqData as unknown as FaqMeta[]} /> */}
     </>
   );

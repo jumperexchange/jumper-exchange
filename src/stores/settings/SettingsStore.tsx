@@ -1,4 +1,5 @@
-import { defaultLang, defaultSettings } from '@/config/config';
+import { defaultSettings } from '@/config/config';
+import { fallbackLng } from '@/i18n/i18next-settings';
 import type { LanguageKey } from '@/types/i18n';
 import type {
   SettingsProps,
@@ -98,7 +99,7 @@ export const useSettingsStore = createWithEqualityFn(
           languageMode:
             defaultSettings.languageMode ||
             (i18next.language as LanguageKey) ||
-            defaultLang,
+            fallbackLng,
           disabledFeatureCards: defaultSettings.disabledFeatureCards || [],
         });
       },

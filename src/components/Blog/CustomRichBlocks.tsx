@@ -6,7 +6,7 @@ import {
 import { Lightbox } from '@/components/Lightbox/Lightbox';
 import { Link } from '@/components/Link.style';
 import { Widget } from '@/components/Widgets/Widget';
-import { urbanist } from '@/fonts/fonts';
+import { inter, urbanist } from '@/fonts/fonts';
 import type { MediaAttributes } from '@/types/strapi';
 import { Typography, alpha, useTheme } from '@mui/material';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
@@ -85,7 +85,7 @@ export const CustomRichBlocks = ({
                 0.75,
               ),
               margin: theme.spacing(2, 0),
-              fontFamily: 'Inter',
+              fontFamily: inter.style.fontFamily,
               fontSize: '18px',
               lineHeight: '32px',
               fontWeight: 400,
