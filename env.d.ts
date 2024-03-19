@@ -15,12 +15,16 @@ interface ImportMetaEnv {
   readonly VITE_WIDGET_INTEGRATOR: string;
   readonly VITE_LIFI_API_URL: string;
   readonly VITE_ONRAMPER_ENABLED: string;
+  readonly VITE_ONRAMPER_API_KEY: string;
   readonly VITE_STRAPI_DEVELOP: string;
   readonly VITE_STRAPI_URL: string;
   readonly VITE_STRAPI_API_TOKEN: string;
   readonly VITE_LOCAL_STRAPI_URL: string;
   readonly VITE_LOCAL_STRAPI_API_TOKEN: string;
   readonly VITE_WALLET_CONNECT_PROJECT_ID: string;
+  readonly VITE_GATEWAY_URL: string;
+  readonly VITE_GATEWAY_API_KEY: string;
+  readonly VITE_GATEWAY_API_TOKEN: string;
 }
 
 interface ImportMeta {
