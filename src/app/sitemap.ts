@@ -1,17 +1,22 @@
 // app/sitemap.js
 
-const URL = 'https://claritydev.net';
+import { JUMPER_URL, pages } from '@/const/urls';
+import { getArticles } from './lib/getArticles';
 
 export default async function sitemap() {
-  const posts = getSortedPostsData.map(({ id, date }) => ({
-    url: `${URL}/blog/${id}`,
-    lastModified: date,
-  }));
+  const articles = await getArticles().then((article) =>
+    article.data.data.map((el) => {
+      return {
+        url: `${JUMPER_URL}/${el.attributes.Slug}`,
+        lastModified: el.attributes.updatedAt || el.attributes.publishedAt,
+      };
+    }),
+  );
 
-  const routes = ['', '/portfolio', '/blog'].map((route) => ({
-    url: `${URL}${route}`,
+  const routes = pages.map((route) => ({
+    url: `${JUMPER_URL}${route}`,
     lastModified: new Date().toISOString(),
   }));
 
-  return [...routes, ...posts];
+  return [...routes, ...articles];
 }
