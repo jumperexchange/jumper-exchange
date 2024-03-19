@@ -14,6 +14,7 @@ import { useConfig } from 'wagmi';
 import { widgetConfig } from '../../config';
 import { WidgetWrapper } from './Widget.style';
 import { MultisigSideAlert } from '../Alerts/MultisigSideAlert';
+import { AlertContainer } from '../Alerts';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -154,7 +155,7 @@ export function Widget({ starterVariant }: WidgetProps) {
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
         config={config}
       />
-      {isMultisigSigner && <MultisigSideAlert />}
+      <AlertContainer isMultisig={isMultisigSigner} />
     </WidgetWrapper>
   );
 }

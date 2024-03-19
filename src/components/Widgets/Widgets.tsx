@@ -1,7 +1,13 @@
 import type { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { OnRamper, SolanaAlert, TestnetAlert, Widget } from 'src/components';
+import {
+  AlertContainer,
+  OnRamper,
+  SolanaAlert,
+  TestnetAlert,
+  Widget,
+} from 'src/components';
 import { LinkMap, TabsMap } from 'src/const';
 import { useActiveTabStore, useSettingsStore } from 'src/stores';
 import type { StarterVariantType } from 'src/types';
@@ -96,9 +102,6 @@ export function Widgets() {
       >
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
-      <SolanaAlert />
-
-      {import.meta.env.MODE === 'testnet' && <TestnetSideAlert />}
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
           onClick={handleCloseWelcomeScreen}
