@@ -13,20 +13,17 @@ import type { PDA } from 'src/types';
 
 interface QuestCompletedList {
   pdas?: PDA[];
-  dataIsFetched: boolean;
+  // dataIsFetched: boolean;
+  loading: boolean;
 }
 
-export const QuestCompletedList = ({
-  pdas,
-  dataIsFetched,
-}: QuestCompletedList) => {
+export const QuestCompletedList = ({ pdas, loading }: QuestCompletedList) => {
   const { account } = useAccounts();
   const { t } = useTranslation();
 
   const showVoidCardsAsFewPdas =
-    (dataIsFetched && pdas && pdas?.length < 6 && account?.address) ||
+    (!loading && pdas && pdas?.length < 6 && account?.address) ||
     !account?.address;
-  const loadingPdas = account?.address && !dataIsFetched;
 
   return (
     <CompletedQuestContainer>
@@ -39,7 +36,7 @@ export const QuestCompletedList = ({
         useFlexGap
         flexWrap="wrap"
       >
-        {dataIsFetched && pdas
+        {!loading && pdas
           ? pdas?.map((pda: PDA, index: number) => {
               return (
                 <QuestCard
@@ -59,12 +56,12 @@ export const QuestCompletedList = ({
             ).map((_, idx) => (
               <VoidQuestCard
                 key={'void-' + idx}
-                connected={!!account?.address}
+                connected={!!account?.address && account?.chainType === 'EVM'}
               />
             ))
           : null}
-        {loadingPdas
-          ? Array.from({ length: 6 }, () => 42).map((_, idx) => (
+        {loading
+          ? Array.from({ length: 3 }, () => 42).map((_, idx) => (
               <QuestCardSkeleton key={'skeleton-' + idx} />
             ))
           : null}
