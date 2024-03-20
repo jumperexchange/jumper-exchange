@@ -17,7 +17,7 @@ interface LightboxProps {
 export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-
+  console.log('baseUrl', baseUrl);
   const handleClose = () => {
     setOpen(false);
   };
@@ -25,10 +25,12 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
   const handleImage = (value: any) => {
     setOpen(true);
   };
+
+  console.log('IMG', `${imageData?.url}`);
   return (
     <>
       <PreviewImage
-        src={imageData?.formats.large.url}
+        src={imageData?.url}
         alt={imageData.caption ?? 'article-image'}
         onClick={() => handleImage(imageData.alternativeText)}
       />
@@ -55,12 +57,6 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
               src={imageData?.url}
               alt={imageData.caption ?? 'article-image'}
             />
-            {/* <Typography 
-              variant="lifiHeaderSmall"
-              sx={{ width: 'auto', margin: 0, fontWeight: 400 }}
-            >
-              {imageData?.alternativeText}
-            </Typography> */}
           </LightboxContainer>
         </Fade>
       </LightboxModal>
