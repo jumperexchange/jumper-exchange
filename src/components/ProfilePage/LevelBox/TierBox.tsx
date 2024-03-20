@@ -5,6 +5,7 @@ import { ProfilePageTypography } from '../ProfilePage.style';
 import { Box } from '@mui/material';
 import { levelsData } from './levelsData';
 import type { LevelData } from 'src/types';
+import { LevelBox } from './LevelBox';
 
 function getLevelBasedOnPoints(points: number | undefined): LevelData {
   if (points) {
@@ -19,9 +20,10 @@ function getLevelBasedOnPoints(points: number | undefined): LevelData {
 interface TierBoxProps {
   tier?: string;
   points?: number;
+  loading: boolean;
 }
 
-export const TierBox = ({ points }: TierBoxProps) => {
+export const TierBox = ({ points, loading }: TierBoxProps) => {
   const levelData = getLevelBasedOnPoints(points);
 
   return (
@@ -29,11 +31,7 @@ export const TierBox = ({ points }: TierBoxProps) => {
       <Box sx={{ padding: '18px' }}>
         <TierInfoBox>
           <PointsBox points={points} />
-          <TierBadgeBox>
-            <ProfilePageTypography fontSize={'18px'} lineHeight={'24px'}>
-              {`LEVEL ${levelData.level}`}
-            </ProfilePageTypography>
-          </TierBadgeBox>
+          <LevelBox level={levelData.level} loading={loading} />
         </TierInfoBox>
         <ProgressionBar points={points} levelData={levelData} />
       </Box>
