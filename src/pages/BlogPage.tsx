@@ -22,7 +22,7 @@ export const BlogPage = () => {
   const { data: recentArticles, url } = useStrapi<BlogArticleData>({
     contentType: STRAPI_BLOG_ARTICLES,
     queryKey: ['blog-articles-recent'],
-    sort: 'asc',
+    sort: 'desc',
     pagination: { page: 1, pageSize: 20, withCount: false },
   });
 
