@@ -1,3 +1,4 @@
+'use client';
 import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAlert';
 import { widgetConfig } from '@/config/widgetConfig';
 import { TabsMap } from '@/const/tabsMap';

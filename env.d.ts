@@ -7,6 +7,7 @@ namespace NodeJS {
     MODE: 'development' | 'testnet' | 'production' | 'staging';
     PROD: boolean;
     SSR: boolean;
+    NEXT_PUBLIC_SITE_URL: string;
     NEXT_PUBLIC_ARCX_API_KEY: string;
     NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: string;
     NEXT_PUBLIC_HOTJAR_ID: number;
