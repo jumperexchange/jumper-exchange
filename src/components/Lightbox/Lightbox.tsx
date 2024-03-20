@@ -17,7 +17,6 @@ interface LightboxProps {
 export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-  console.log('baseUrl', baseUrl);
   const handleClose = () => {
     setOpen(false);
   };
@@ -26,7 +25,6 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
     setOpen(true);
   };
 
-  console.log('IMG', `${imageData?.url}`);
   return (
     <>
       <PreviewImage
