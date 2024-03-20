@@ -13,7 +13,6 @@ import { ProfilePageTypography } from '../ProfilePage.style';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { Address } from 'viem';
-import { useAccounts } from 'src/hooks';
 
 interface AddressBoxProps {
   address?: string;

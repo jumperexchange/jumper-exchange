@@ -13,7 +13,6 @@ import type { PDA } from 'src/types';
 
 interface QuestCompletedList {
   pdas?: PDA[];
-  // dataIsFetched: boolean;
   loading: boolean;
 }
 
