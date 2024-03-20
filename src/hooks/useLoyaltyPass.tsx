@@ -119,5 +119,5 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     };
   }
 
-  return { ...data, isSuccess: isSuccess, isLoading: isLoading };
+  return { ...data, isSuccess, isLoading };
 };
