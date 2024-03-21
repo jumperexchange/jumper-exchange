@@ -36,7 +36,7 @@ export const LearnPage = ({
     router.push(`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`);
     // closeAllMenus();
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   return (
     <>

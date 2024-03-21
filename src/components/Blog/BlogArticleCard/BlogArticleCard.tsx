@@ -71,7 +71,7 @@ export const BlogArticleCard = ({
     });
     closeAllMenus();
     router.push(`${JUMPER_LEARN_PATH}/${slug}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   return (
     <BlogArticleCardContainer
