@@ -14,9 +14,14 @@ import { NavbarContainer as Container, Logo, LogoLink } from '.';
 interface NavbarProps {
   hideNavbarTabs?: boolean;
   redirectToLearn?: boolean;
+  navbarPageReload?: boolean;
 }
 
-export const Navbar = ({ hideNavbarTabs, redirectToLearn }: NavbarProps) => {
+export const Navbar = ({
+  hideNavbarTabs,
+  redirectToLearn,
+  navbarPageReload,
+}: NavbarProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { account } = useAccounts();
@@ -40,7 +45,9 @@ export const Navbar = ({ hideNavbarTabs, redirectToLearn }: NavbarProps) => {
           logo={redirectToLearn ? <JumperLearnLogo /> : <JumperLogo />}
         />
       </LogoLink>
-      {!hideNavbarTabs ? <NavbarTabs /> : null}
+      {!hideNavbarTabs ? (
+        <NavbarTabs navbarPageReload={navbarPageReload} />
+      ) : null}
       <NavbarButtons redirectToLearn={redirectToLearn} />
     </Container>
   );
