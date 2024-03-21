@@ -1,19 +1,12 @@
 import type { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import {
-  AlertContainer,
-  OnRamper,
-  SolanaAlert,
-  TestnetAlert,
-  Widget,
-} from 'src/components';
+import { OnRamper, TestnetAlert, Widget } from 'src/components';
 import { LinkMap, TabsMap } from 'src/const';
 import { useActiveTabStore, useSettingsStore } from 'src/stores';
 import type { StarterVariantType } from 'src/types';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
-import { TestnetSideAlert } from '../Alerts/TestnetSideAlert';
 
 export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
@@ -88,6 +81,11 @@ export function Widgets() {
 
   return (
     <>
+      {import.meta.env.MODE === 'testnet' && (
+        <Grid item xs={12} mt={theme.spacing(3)}>
+          <TestnetAlert />
+        </Grid>
+      )}
       <WidgetContainer
         onClick={handleCloseWelcomeScreen}
         isActive={_starterVariant === TabsMap.Exchange.variant}
