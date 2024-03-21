@@ -74,7 +74,7 @@ export function Widget({ starterVariant }: WidgetProps) {
           starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],
       },
       languages: {
-        default: i18n.resolvedLanguage as LanguageKey,
+        default: i18n.language as LanguageKey,
         allow: i18n.languages as LanguageKey[],
       },
       appearance: theme.palette.mode === 'light' ? 'light' : 'dark',
@@ -135,13 +135,13 @@ export function Widget({ starterVariant }: WidgetProps) {
     };
   }, [
     starterVariant,
+    i18n.language,
+    i18n.languages,
     theme.palette.mode,
     theme.palette.surface2.main,
     theme.palette.surface1.main,
     theme.palette.accent1.main,
     theme.palette.grey,
-    i18n.resolvedLanguage,
-    i18n.languages,
     multisigWidget,
     isMultisigSigner,
     multisigSdkConfig,

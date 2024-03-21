@@ -12,7 +12,6 @@ export default async function Page({
 }) {
   const featuredArticle = await getFeaturedArticle();
   const carouselArticles = await getArticles(featuredArticle.data.id);
-  console.log('LEARN PAGE', carouselArticles);
   return (
     <LearnPage
       carouselArticles={carouselArticles}

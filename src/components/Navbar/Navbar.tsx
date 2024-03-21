@@ -27,7 +27,6 @@ export const Navbar = () => {
     state.onWelcomeScreenClosed,
   ]);
   const { closeAllMenus } = useMenuStore((state) => state);
-
   const handleClick = () => {
     closeAllMenus();
     onWelcomeScreenClosed(false);

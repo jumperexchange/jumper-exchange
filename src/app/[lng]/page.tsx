@@ -5,6 +5,7 @@ import App from '../ui/app/App';
 import type { Metadata } from 'next';
 
 import type { Viewport } from 'next';
+import { ClientTranslationProvider } from 'src/i18n/i18next-client-provider';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -91,5 +92,9 @@ export default async function Page({
     lng = fallbackLng;
   }
 
-  return <App starterVariant="default" />;
+  return (
+    <ClientTranslationProvider lng={lng}>
+      <App starterVariant="default" />
+    </ClientTranslationProvider>
+  );
 }

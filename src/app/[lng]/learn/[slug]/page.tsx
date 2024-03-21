@@ -15,7 +15,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
     currentTags,
   );
 
-  console.log('LEARN ARTICLE PAGE BEFORE COMPONENT', relatedArticles);
   return (
     <LearnArticlePage
       article={article.data.data}

@@ -25,10 +25,7 @@ export const LearnPage = ({
   const { closeAllMenus } = useMenuStore((state) => state);
   const router = useRouter();
 
-  console.log('CAROUSEL ARTICLES', carouselArticles);
-
   const handleFeatureCardClick = (featuredArticle: BlogArticleData[]) => {
-    console.log('handle click');
     // trackEvent({
     //   category: TrackingCategory.BlogFeaturedArticle,
     //   label: 'click-featured-article',

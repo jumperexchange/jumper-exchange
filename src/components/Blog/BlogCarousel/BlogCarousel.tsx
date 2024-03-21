@@ -32,9 +32,6 @@ export const BlogCarousel = ({
   const router = useRouter();
   const { trackEvent } = useUserTracking();
 
-  console.log('BLOG CAROUSEL DATA', data);
-  console.log('URL', url);
-
   const handleShowAll = () => {
     trackEvent({
       category: TrackingCategory.BlogCarousel,

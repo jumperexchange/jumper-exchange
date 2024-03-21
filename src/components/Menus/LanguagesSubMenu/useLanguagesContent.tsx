@@ -40,7 +40,7 @@ export const useLanguagesContent = () => {
     .sort()
     .map(([language, languageValue]) => ({
       label: languageValue.language.value,
-      checkIcon: (languageMode || i18n.resolvedLanguage) === language,
+      checkIcon: i18n.language === language,
       onClick: () => handleSwitchLanguage(language as LanguageKey),
     }));
 

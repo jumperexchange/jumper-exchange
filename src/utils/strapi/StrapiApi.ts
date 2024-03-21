@@ -60,7 +60,6 @@ class StrapiApi {
     } else {
       // Use default Strapi URL for other environments
       if (!process.env.NEXT_PUBLIC_STRAPI_URL) {
-        console.log('STRAPI URL: -->', process.env.NEXT_PUBLIC_STRAPI_URL);
         console.error('Strapi URL is not provided.');
         throw new Error('Strapi URL is not provided.');
       }

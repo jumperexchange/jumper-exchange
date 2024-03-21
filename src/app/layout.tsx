@@ -1,5 +1,3 @@
-import { Navbar } from '@/components/Navbar/Navbar';
-import { AppProvider } from '@/providers/AppProvider';
 import Script from 'next/script';
 import React from 'react';
 
@@ -30,12 +28,7 @@ export default function RootLayout({
         </Script>
       </head>
 
-      <body>
-        <AppProvider lng={lng}>
-          <Navbar />
-          {children}
-        </AppProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

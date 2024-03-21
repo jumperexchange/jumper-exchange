@@ -119,7 +119,7 @@ export const useMainMenuContent = () => {
             maxWidth: 38,
           }}
         >
-          {i18n.resolvedLanguage}
+          {i18n.language}
         </Typography>
       ),
       showMoreIcon: true,
