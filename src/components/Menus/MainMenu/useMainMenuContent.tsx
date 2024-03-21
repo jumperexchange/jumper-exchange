@@ -30,14 +30,11 @@ import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
-import { useContext } from 'react';
-import { I18nContext } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useClientTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
-  const locale = useContext(I18nContext);
   const router = useRouter();
   const theme = useTheme();
   const { closeAllMenus } = useMenuStore((state) => state);

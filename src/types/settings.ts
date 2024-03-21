@@ -1,13 +1,10 @@
 // ----------------------------------------------------------------------
 
-import type { LanguageKey } from './i18n';
-
 export type ThemeModesSupported = 'light' | 'dark' | 'auto';
 export type WalletConnected = string;
 
 export interface SettingsProps {
   themeMode: ThemeModesSupported;
-  languageMode: LanguageKey;
   activeWalletName: WalletConnected;
   clientWallets: string[];
   disabledFeatureCards: string[];
@@ -24,9 +21,6 @@ export interface SettingsState extends SettingsProps {
 
   // Mode
   onChangeMode: (mode: ThemeModesSupported) => void;
-
-  // Language
-  onChangeLanguage: (language: LanguageKey) => void;
 
   // Installed Wallets
   setClientWallets: (wallet: string) => void;

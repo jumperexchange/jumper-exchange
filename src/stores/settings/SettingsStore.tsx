@@ -1,13 +1,10 @@
 import { defaultSettings } from '@/config/config';
-import { fallbackLng } from '@/i18n/i18next-settings';
-import type { LanguageKey } from '@/types/i18n';
 import type {
   SettingsProps,
   SettingsState,
   ThemeModesSupported,
   WalletConnected,
 } from '@/types/settings';
-import i18next from 'i18next';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
@@ -56,13 +53,6 @@ export const useSettingsStore = createWithEqualityFn(
         });
       },
 
-      // Language
-      onChangeLanguage: (language: LanguageKey) => {
-        set({
-          languageMode: language,
-        });
-      },
-
       // Installed Wallets
       setClientWallets: (wallet: string) => {
         const clientWallets = (get() as SettingsProps)?.clientWallets;
@@ -96,10 +86,6 @@ export const useSettingsStore = createWithEqualityFn(
           activeWalletName: defaultSettings.activeWalletName || 'none',
           themeMode:
             defaultSettings.themeMode || ('auto' as ThemeModesSupported),
-          languageMode:
-            defaultSettings.languageMode ||
-            (i18next.language as LanguageKey) ||
-            fallbackLng,
           disabledFeatureCards: defaultSettings.disabledFeatureCards || [],
         });
       },

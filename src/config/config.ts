@@ -10,7 +10,6 @@ export const localStorageKey = {
   activeWalletName: 'activeWalletName',
   themeMode: 'themeMode',
   clientWallets: 'clientWallets',
-  languageMode: 'languageMode',
   disabledFeatureCards: 'disabledFeatureCards',
 };
 

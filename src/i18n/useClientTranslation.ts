@@ -14,11 +14,10 @@ import {
 } from 'react-i18next';
 import { ClientTranslationContext, locales } from '.';
 
-import { cookieName, getOptions, runsOnServerSide } from './i18next-settings';
-// import LocizeBackend from 'i18next-locize-backend'
 import i18next from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { useCookies } from 'react-cookie';
+import { cookieName, getOptions, runsOnServerSide } from './i18next-settings';
 
 // on client side the normal singleton is ok
 i18next
@@ -27,10 +26,25 @@ i18next
   .use(
     resourcesToBackend(
       (language: string, namespace: string) =>
-        import(`./locales_jumper/${language}/${namespace}.json`),
+        import(`./translations/${language}/${namespace}.json`),
+      // {
+      //   // Import both translation.json and language.json
+      //   const translationPromise = import(
+      //     `../i18n/translations/${language}/translation.json`
+      //   );
+      //   const languagePromise = import(
+      //     `../i18n/translations/${language}/language.json`
+      //   );
+      //   // Resolve both promises and return an object with translation and language resources
+      //   return Promise.all([translationPromise, languagePromise]).then(
+      //     ([translation, language]) => ({
+      //       translation,
+      //       language,
+      //     }),
+      //   );
+      // }
     ),
   )
-  // .use(LocizeBackend) // locize backend could be used on client side, but prefer to keep it in sync with server side
   .init({
     ...getOptions(),
     lng: undefined, // let detect the language on client side
@@ -38,6 +52,13 @@ i18next
       order: ['path', 'htmlTag', 'cookie', 'navigator'],
     },
     preload: runsOnServerSide ? locales : [],
+    // required to be true for paritally loading languages from resources and backend
+    partialBundledLanguages: true,
+    react: { useSuspense: false },
+    // resources,
+    // fallbackLng: fallbackLng,
+    ns: ['translation', 'language'],
+    returnEmptyString: false,
   });
 
 export function useClientTranslation<

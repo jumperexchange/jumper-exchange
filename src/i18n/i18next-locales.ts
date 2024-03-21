@@ -1,5 +1,5 @@
 import type { LanguageResources } from '@/types/i18n';
-import * as supportedLocales from './locales_jumper';
+import * as supportedLocales from './translations';
 
 export interface Translation {
   [key: string]: string;

@@ -11,9 +11,9 @@ export const initI18next = async (lng: string, ns: string | string[]) => {
     .use(
       resourcesToBackend(
         (language: string, namespace: string) =>
-          import(`./locales_jumper/${language}/${namespace}.json`),
+          import(`./translations/${language}/${namespace}.json`),
       ),
     )
-    .init(getOptions(lng, ns));
+    .init(getOptions(lng, ['translation', 'language']));
   return i18nInstance;
 };
