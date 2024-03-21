@@ -3,6 +3,7 @@ import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
   TrackingAction,
   TrackingCategory,
@@ -11,14 +12,22 @@ import {
 import { useUserTracking } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
 
-export const useNavbarTabs = () => {
+interface useNavbarTabsProps {
+  navbarPageReload?: boolean;
+}
+
+export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
   const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const handleClickTab =
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
       window.history.replaceState(null, document.title, `/${tab}`);
+      if (navbarPageReload) {
+        navigate(`/${tab}`);
+      }
       trackEvent({
         category: TrackingCategory.Navigation,
         action: TrackingAction.SwitchTab,
