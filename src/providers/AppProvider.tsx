@@ -3,7 +3,7 @@ import { BackgroundGradient } from '@/components/BackgroundGradient';
 import { ClientTranslationProvider } from '@/i18n/i18next-client-provider';
 import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
 import { CssBaseline } from '@mui/material';
-import type { PropsWithChildren } from 'react';
+import { useEffect, useState, type PropsWithChildren } from 'react';
 import { ReactQueryProvider } from './ReactQueryProvider';
 import { ThemeProvider } from './ThemeProvider';
 import { WalletProvider } from './WalletProvider';
@@ -20,7 +20,12 @@ export const AppProvider: React.FC<PropsWithChildren<AppProviderProps>> = ({
   children,
   lng,
 }) => {
-  return (
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  return isClient ? (
     <ReactQueryProvider>
       <ClientTranslationProvider lng={lng}>
         {/* <Cookie3Provider value={analytics}> */}
@@ -40,5 +45,5 @@ export const AppProvider: React.FC<PropsWithChildren<AppProviderProps>> = ({
         {/* </Cookie3Provider> */}
       </ClientTranslationProvider>
     </ReactQueryProvider>
-  );
+  ) : null;
 };
