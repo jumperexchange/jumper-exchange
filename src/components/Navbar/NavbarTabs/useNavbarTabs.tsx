@@ -9,7 +9,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
+import { useUserTracking, useEventCollector } from 'src/hooks';
 import { EventTrackingTool } from 'src/types';
 
 interface useNavbarTabsProps {
@@ -21,6 +21,7 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const navigate = useNavigate();
+  const { collectEvent } = useEventCollector();
 
   const handleClickTab =
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
@@ -28,15 +29,25 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
       if (navbarPageReload) {
         navigate(`/${tab}`);
       }
-      trackEvent({
+
+      const commonTrackingProps = {
         category: TrackingCategory.Navigation,
-        action: TrackingAction.SwitchTab,
         label: `switch_tab_to_${tab}`,
         data: { [TrackingEventParameter.Tab]: tab },
+      };
+
+      collectEvent({
+        name: TrackingAction.SwitchTab,
+        params: commonTrackingProps,
+      });
+
+      trackEvent({
+        action: TrackingAction.SwitchTab,
         disableTrackingTool: [
           EventTrackingTool.ARCx,
           EventTrackingTool.Cookie3,
         ],
+        ...commonTrackingProps,
       });
     };
 

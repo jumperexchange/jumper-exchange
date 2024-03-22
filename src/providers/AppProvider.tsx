@@ -9,11 +9,13 @@ import { FallbackError } from 'src/components';
 import { queryClient } from 'src/config';
 import { cookie3Config } from 'src/const/cookie3';
 import { useCookie3, useInitUserTracking } from 'src/hooks';
+
 import {
   Cookie3Provider,
   I18NProvider,
   ThemeProvider,
   WalletProvider,
+  EventCollectorProvider,
 } from '.';
 
 const analytics = cookie3Analytics(cookie3Config);
@@ -36,10 +38,12 @@ export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
           >
             <ThemeProvider>
               <WalletProvider>
-                <CssBaseline />
-                <ErrorBoundary fallback={<FallbackError />}>
-                  {children}
-                </ErrorBoundary>
+                <EventCollectorProvider>
+                  <CssBaseline />
+                  <ErrorBoundary fallback={<FallbackError />}>
+                    {children}
+                  </ErrorBoundary>
+                </EventCollectorProvider>
               </WalletProvider>
             </ThemeProvider>
           </ArcxAnalyticsProvider>

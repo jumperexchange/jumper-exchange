@@ -10,6 +10,7 @@ export enum TrackingAction {
   AddToken = 'action_add_token',
 
   // WalletMenu
+  SelectWallet = 'action_select_wallet',
   ConnectWallet = 'action_connect_wallet',
   CopyAddressToClipboard = 'action_copy_addr_to_clipboard',
   DisconnectWallet = 'action_disconnect_wallet',

@@ -6,3 +6,4 @@ export * from './useDexsAndBridges';
 export * from './useMultisig';
 export * from './useStrapi';
 export * from './userTracking';
+export * from './useEventCollector';

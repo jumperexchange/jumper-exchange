@@ -11,8 +11,13 @@ import {
   useDisconnect,
   useAccount as useWagmiAccount,
 } from 'wagmi';
-import { useBlockchainExplorerURL, useUserTracking } from '.';
+import {
+  useBlockchainExplorerURL,
+  useUserTracking,
+  useEventCollector,
+} from '.';
 import type { CombinedWallet } from './useCombinedWallets';
+import { TrackingAction } from 'src/const';
 
 export interface AccountBase {
   address?: string;
@@ -134,31 +139,47 @@ export const useAccountConnect = () => {
   const { select, disconnect, connected } = useWallet();
   const { onWalletConnect } = useSettingsStore((state) => state);
   const { trackConnectWallet } = useUserTracking();
+  const { collectEvent } = useEventCollector();
 
   return async (combinedWallet: CombinedWallet) => {
     if (combinedWallet.evm) {
-      wagmiDisconnect();
-      lastConnectedAccount = combinedWallet.evm;
-      await connectAsync({ connector: combinedWallet.evm! });
-      onWalletConnect(combinedWallet.evm.name);
-      trackConnectWallet({
+      const trackingParams = {
         walletName: combinedWallet.evm.name,
         chainType: ChainType.EVM,
         chainId: await combinedWallet.evm.getChainId(),
         address: `${await combinedWallet.evm.getAccounts()}`,
+      };
+
+      collectEvent({
+        name: TrackingAction.SelectWallet,
+        params: trackingParams,
       });
+
+      wagmiDisconnect();
+      lastConnectedAccount = combinedWallet.evm;
+      await connectAsync({ connector: combinedWallet.evm! });
+      onWalletConnect(combinedWallet.evm.name);
+
+      trackConnectWallet(trackingParams);
     } else if (combinedWallet.svm) {
+      const trackingParams = {
+        walletName: combinedWallet.svm.adapter.name,
+        chainType: ChainType.SVM,
+        chainId: ChainId.SOL,
+      };
+
+      collectEvent({
+        name: TrackingAction.ConnectWallet,
+        params: trackingParams,
+      });
+
       if (connected) {
         disconnect();
       }
       lastConnectedAccount = combinedWallet.svm;
       select(combinedWallet.svm.adapter.name);
       onWalletConnect(combinedWallet.svm.adapter.name);
-      trackConnectWallet({
-        walletName: combinedWallet.svm.adapter.name,
-        chainType: ChainType.SVM,
-        chainId: ChainId.SOL,
-      });
+      trackConnectWallet(trackingParams);
     }
   };
 };
