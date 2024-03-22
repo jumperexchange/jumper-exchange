@@ -14,7 +14,10 @@ export const config = {
 export function middleware(req: NextRequest) {
   let lng;
   if (req.cookies.has(cookieName)) {
-    lng = acceptLanguage.get(req.cookies.get(cookieName)?.value);
+    const cookieValue = req.cookies.get(cookieName)?.value;
+    if (cookieValue && cookieValue !== 'undefined') {
+      lng = acceptLanguage.get(req.cookies.get(cookieName)?.value);
+    }
   }
   if (!lng) {
     lng = acceptLanguage.get(req.headers.get('Accept-Language'));
@@ -28,11 +31,11 @@ export function middleware(req: NextRequest) {
     !locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
     !req.nextUrl.pathname.startsWith('/_next')
   ) {
+    console.log('REDIRECT LNG', lng);
     return NextResponse.redirect(
       new URL(`/${lng}${req.nextUrl.pathname}`, req.url),
     );
   }
-
   if (req.headers.has('referer')) {
     const refererUrl = new URL(req.headers.get('referer') || '');
     const lngInReferer = locales.find((l) =>
