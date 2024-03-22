@@ -1,8 +1,8 @@
-import { cookieName, fallbackLng } from '@/i18n/i18next-settings';
 import acceptLanguage from 'accept-language';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { locales } from './i18n/i18next-locales';
+import { cookieName, fallbackLng } from './i18n/i18next-settings';
 
 acceptLanguage.languages(locales);
 
@@ -12,13 +12,7 @@ export const config = {
 };
 
 export function middleware(req: NextRequest) {
-  if (
-    req.nextUrl.pathname.indexOf('icon') > -1 ||
-    req.nextUrl.pathname.indexOf('chrome') > -1
-  ) {
-    return NextResponse.next();
-  }
-  let lng: string | undefined | null;
+  let lng;
   if (req.cookies.has(cookieName)) {
     lng = acceptLanguage.get(req.cookies.get(cookieName)?.value);
   }

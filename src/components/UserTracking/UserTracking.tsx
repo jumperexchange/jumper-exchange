@@ -12,7 +12,7 @@ const UserTracking = () => {
     // cookie3?.trackPageView();
   }, [initTracking]);
 
-  return;
+  return null;
 };
 
 export default UserTracking;

@@ -5,7 +5,6 @@ import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBan
 import { PoweredBy } from '@/components/PoweredBy/PoweredBy';
 import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import '@/i18n/i18next-init-client';
 import { useMenuStore } from '@/stores/menu';
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { useRouter } from 'next/navigation';

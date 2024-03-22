@@ -27,22 +27,6 @@ i18next
     resourcesToBackend(
       (language: string, namespace: string) =>
         import(`./translations/${language}/${namespace}.json`),
-      // {
-      //   // Import both translation.json and language.json
-      //   const translationPromise = import(
-      //     `../i18n/translations/${language}/translation.json`
-      //   );
-      //   const languagePromise = import(
-      //     `../i18n/translations/${language}/language.json`
-      //   );
-      //   // Resolve both promises and return an object with translation and language resources
-      //   return Promise.all([translationPromise, languagePromise]).then(
-      //     ([translation, language]) => ({
-      //       translation,
-      //       language,
-      //     }),
-      //   );
-      // }
     ),
   )
   .init({
