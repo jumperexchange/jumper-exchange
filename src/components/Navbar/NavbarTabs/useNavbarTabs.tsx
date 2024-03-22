@@ -10,7 +10,8 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { replacePathInUrl } from 'src/utils/replacePathInUr';
 
 interface useNavbarTabsProps {
   navbarPageReload?: boolean;
@@ -21,10 +22,12 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
   const { t } = useClientTranslation();
   const theme = useTheme();
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleClickTab =
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
       window.history.replaceState(null, document.title, `/${tab}`);
+      replacePathInUrl(pathname, tab);
       if (navbarPageReload) {
         router.push(`/${tab}`);
       }
