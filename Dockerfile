@@ -8,12 +8,13 @@ RUN yarn install --frozen-lockfile
 ## App builder
 FROM node:20-alpine AS builder
 ARG ENV_FILE=.env
+ARG ENV_NAME=develop
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 COPY ./$ENV_FILE ./.env
 ENV NEXT_TELEMETRY_DISABLED 1
-RUN yarn build
+RUN yarn run build:$ENV_NAME
 
 ## Runner
 FROM node:20-alpine AS runner
