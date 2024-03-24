@@ -36,8 +36,8 @@ export function WidgetEvents() {
   ]);
   const widgetEvents = useWidgetEvents();
   const { isMultisigSigner, shouldOpenMultisigSignatureModal } = useMultisig();
-  const [onDestinationChainSelected] = useMultisigStore((state) => [
-    state.onDestinationChainSelected,
+  const [setDestinationChain] = useMultisigStore((state) => [
+    state.setDestinationChain,
   ]);
 
   const { account } = useAccounts();
@@ -186,7 +186,7 @@ export function WidgetEvents() {
     const handleMultisigChainTokenSelected = (
       destinationData: ChainTokenSelected,
     ) => {
-      onDestinationChainSelected(destinationData.chainId);
+      setDestinationChain(destinationData.chainId);
     };
 
     const handleSourceChainTokenSelection = async (
@@ -226,7 +226,7 @@ export function WidgetEvents() {
     return () => widgetEvents.all.clear();
   }, [
     activeTab,
-    onDestinationChainSelected,
+    setDestinationChain,
     setDestinationChainToken,
     setSourceChainToken,
     setSupportModalState,
