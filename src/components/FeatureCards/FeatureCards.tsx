@@ -1,6 +1,7 @@
+import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import type { Breakpoint } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FeatureCard } from 'src/components';
 import { STRAPI_FEATURE_CARDS, STRAPI_JUMPER_USERS } from 'src/const';
 import { useAccounts, useStrapi } from 'src/hooks';
@@ -14,12 +15,20 @@ export const FeatureCards = () => {
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
   );
-
+  const [widgetExpanded, setWidgetExpanded] = useState(false);
+  const widgetEvents = useWidgetEvents();
   const { account } = useAccounts();
   const { data: cards, isSuccess } = useStrapi<FeatureCardData>({
     contentType: STRAPI_FEATURE_CARDS,
     queryKey: ['feature-cards'],
   });
+
+  useEffect(() => {
+    const handleWidgetExpanded = async (expanded: boolean) =>
+      setWidgetExpanded(expanded);
+
+    widgetEvents.on(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
+  }, [widgetEvents]);
 
   const { data: jumperUser } = useStrapi<JumperUserData>({
     contentType: STRAPI_JUMPER_USERS,
@@ -66,7 +75,8 @@ export const FeatureCards = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
   return (
     isDesktop &&
-    welcomeScreenClosed && (
+    welcomeScreenClosed &&
+    !widgetExpanded && (
       <FeatureCardsContainer>
         {slicedPersonalizedFeatureCards?.map((cardData, index) => {
           return (
