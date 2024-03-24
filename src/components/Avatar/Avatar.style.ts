@@ -11,8 +11,8 @@ export const LargeAvatar = styled(Avatar)(({ theme }) => ({
   width: 44,
   position: 'relative',
   height: 44,
-  left: theme.spacing(0.5),
-  top: theme.spacing(-0.5),
+  left: 4,
+  top: 2.5,
   border: `6px solid transparent`,
   '& img': {
     objectFit: 'contain',
@@ -31,13 +31,13 @@ export const SmallAvatar = styled(Avatar)(({ theme }) => ({
   height: 16,
   top: theme.spacing(-0.25),
   backgroundColor: theme.palette.surface1.main,
-  img: {
-    padding: theme.spacing(0.25),
-    borderRadius: '50%',
-    objectFit: 'contain',
-    background:
-      theme.palette.mode === 'dark' ? theme.palette.white.main : 'inherit',
-  },
+  // img: {
+  //   padding: theme.spacing(0.25),
+  //   borderRadius: '50%',
+  //   objectFit: 'contain',
+  //   background:
+  //     theme.palette.mode === 'dark' ? theme.palette.white.main : 'inherit',
+  // },
 }));
 
 export const SmallAvatarSkeletonBase = styled(Skeleton)(({ theme }) => ({

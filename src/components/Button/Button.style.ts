@@ -1,10 +1,9 @@
 import type { ButtonProps as MuiButtonProps } from '@mui/material';
-import { Button as MuiButton, alpha } from '@mui/material'; //ButtonProps
+import { Button as MuiButton, alpha, darken } from '@mui/material'; //ButtonProps
 import { styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from 'src/utils';
 
 const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
-  height: 48,
   borderRadius: '24px',
   fontSize: '16px',
   letterSpacing: 0,
@@ -33,30 +32,24 @@ export const ButtonPrimary = styled(ButtonBase)<MuiButtonProps>(
         : theme.palette.accent1.main,
     ':hover': {
       backgroundColor:
-        theme.palette.mode === 'dark' ? 'rgb(80, 47, 130)' : 'rgb(39, 0, 97)',
+        theme.palette.mode === 'dark'
+          ? darken(theme.palette.primary.main, 0.16)
+          : darken(theme.palette.accent1.main, 0.16),
     },
   }),
 );
 
 export const ButtonSecondary = styled(ButtonBase)<MuiButtonProps>(
   ({ theme }) => ({
-    color: theme.palette.primary.main,
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.primary.main, 0.08)
+        : alpha(theme.palette.primary.main, 0.42),
     '&:hover': {
-      backgroundColor: theme.palette.secondary.dark,
-    },
-    '&:before': {
-      content: '" "',
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      transition: 'background 250ms',
-      background: 'transparent',
-    },
-    '&:hover:before': {
-      background: getContrastAlphaColor(theme, '8%'),
+      backgroundColor:
+        theme.palette.mode === 'light'
+          ? alpha(theme.palette.primary.main, 0.12)
+          : alpha(theme.palette.primary.main, 0.56),
     },
   }),
 );

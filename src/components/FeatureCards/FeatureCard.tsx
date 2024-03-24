@@ -8,11 +8,12 @@ import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from 'src/stores';
 
 import {
+  STRAPI_FEATURE_CARDS,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useFeatureCards, useUserTracking } from 'src/hooks';
+import { useStrapi, useUserTracking } from 'src/hooks';
 import { EventTrackingTool, type FeatureCardData } from 'src/types';
 import { openInNewTab } from 'src/utils';
 import { FCard as Card } from '.';
@@ -25,7 +26,9 @@ interface FeatureCardProps {
 export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   const [open, setOpen] = useState(true);
   const { t } = useTranslation();
-  const { url } = useFeatureCards();
+  const { url } = useStrapi<FeatureCardData>({
+    contentType: STRAPI_FEATURE_CARDS,
+  });
   const { trackEvent } = useUserTracking();
   const [onDisableFeatureCard] = useSettingsStore((state) => [
     state.onDisableFeatureCard,

@@ -1,22 +1,26 @@
 import { useMediaQuery } from '@mui/material';
-import type { Breakpoint } from '@mui/material/styles';
+import type { Breakpoint, Theme } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { Tabs } from 'src/components';
 import { useActiveTabStore } from 'src/stores';
 import { useNavbarTabs } from '.';
 
-export const NavbarTabs = () => {
+interface NavbarTabsProps {
+  navbarPageReload?: boolean;
+}
+
+export const NavbarTabs = ({ navbarPageReload }: NavbarTabsProps) => {
   const theme = useTheme();
   const { activeTab, setActiveTab } = useActiveTabStore();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
-  const navbarTabs = useNavbarTabs();
+  const navbarTabs = useNavbarTabs({ navbarPageReload });
 
   const containerStyles = {
     display: 'none',
-    minWidth: 392,
+    minWidth: 416,
     borderRadius: 28,
     [theme.breakpoints.up('lg')]: {
       display: 'flex',
