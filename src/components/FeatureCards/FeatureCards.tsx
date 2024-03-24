@@ -26,9 +26,10 @@ export const FeatureCards = () => {
   useEffect(() => {
     const handleWidgetExpanded = async (expanded: boolean) =>
       setWidgetExpanded(expanded);
-
     widgetEvents.on(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
-  }, [widgetEvents]);
+
+    return () => widgetEvents.all.clear();
+  }, [widgetEvents, widgetExpanded]);
 
   const { data: jumperUser } = useStrapi<JumperUserData>({
     contentType: STRAPI_JUMPER_USERS,
