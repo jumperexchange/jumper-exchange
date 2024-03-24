@@ -58,7 +58,7 @@ export const useSettingsStore = createWithEqualityFn(
       },
 
       // Disable Feature Card
-      setDisableFeatureCard: (id: string) => {
+      setDisabledFeatureCard: (id: string) => {
         const disabledFeatureCards = (get() as SettingsProps)
           ?.disabledFeatureCards;
         id &&

@@ -27,7 +27,7 @@ export interface SettingsState extends SettingsProps {
   setClientWallets: (wallet: string) => void;
 
   // Disable Feature Cards
-  setDisableFeatureCard: (id: string) => void;
+  setDisabledFeatureCard: (id: string) => void;
 
   // Reset
   setDefaultSettings: VoidFunction;
