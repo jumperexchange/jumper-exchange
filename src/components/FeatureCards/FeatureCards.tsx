@@ -1,6 +1,6 @@
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
-import type { Breakpoint } from '@mui/material';
-import { useMediaQuery, useTheme } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { FeatureCard } from 'src/components';
 import { STRAPI_FEATURE_CARDS, STRAPI_JUMPER_USERS } from 'src/const';
@@ -71,8 +71,7 @@ export const FeatureCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jumperUser]);
 
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   return (
     isDesktop &&
     welcomeScreenClosed &&
