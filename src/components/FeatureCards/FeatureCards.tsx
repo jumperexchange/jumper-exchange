@@ -1,5 +1,5 @@
 import type { Theme } from '@mui/material';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { useMemo } from 'react';
 import { FeatureCard } from 'src/components';
 import { STRAPI_FEATURE_CARDS, STRAPI_JUMPER_USERS } from 'src/const';
@@ -32,19 +32,12 @@ export const FeatureCards = () => {
 
   const slicedFeatureCards = useMemo(() => {
     if (Array.isArray(cards) && !!cards.length) {
-      const now = new Date();
       const filteredCards = cards
         ?.filter(
           (el, index) =>
             isSuccess &&
             el.attributes.DisplayConditions &&
-            !disabledFeatureCards.includes(el.attributes.uid) &&
-            // Check if campaignEnd is given and is after current date
-            (!el.attributes.campaignEnd ||
-              new Date(el.attributes.campaignEnd) > now) &&
-            // Check if campaignStart is given and is before current date
-            (!el.attributes.campaignStart ||
-              new Date(el.attributes.campaignStart) < now),
+            !disabledFeatureCards.includes(el.attributes.uid),
         )
         .slice(0, 2);
       return filteredCards;
@@ -64,20 +57,13 @@ export const FeatureCards = () => {
         ?.filter(
           (el, index) =>
             el.attributes.DisplayConditions &&
-            !disabledFeatureCards.includes(el.attributes.uid) &&
-            // Check if campaignEnd is given and is after current date
-            (!el.attributes.campaignEnd ||
-              new Date(el.attributes.campaignEnd) > now) &&
-            // Check if campaignStart is given and is before current date
-            (!el.attributes.campaignStart ||
-              new Date(el.attributes.campaignStart) < now),
+            !disabledFeatureCards.includes(el.attributes.uid),
         )
         .slice(0, 1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jumperUser]);
 
-  const theme = useTheme();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   return (
     isDesktop &&
