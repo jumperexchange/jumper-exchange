@@ -31,7 +31,6 @@ export function middleware(req: NextRequest) {
     !locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
     !req.nextUrl.pathname.startsWith('/_next')
   ) {
-    console.log('REDIRECT LNG', lng);
     return NextResponse.redirect(
       new URL(`/${lng}${req.nextUrl.pathname}`, req.url),
     );
