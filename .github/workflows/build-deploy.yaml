@@ -59,7 +59,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             ENV_FILE=${{ env.BRANCH_NAME == 'main' && '.env' || format('.env.{0}', env.BRANCH_NAME) }}
-            ENV_NAME=${{ env.BRANCH_NAME == 'main' && 'production' || env.BRANCH_NAME }}
       
       - id: out
         run: echo "docker-tag=${{ env.UNIQ_ID }}-${{ env.BRANCH_NAME }}" >> $GITHUB_OUTPUT
