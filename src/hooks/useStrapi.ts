@@ -185,8 +185,6 @@ export const useStrapi = <T>({
       ? import.meta.env.VITE_LOCAL_STRAPI_API_TOKEN
       : import.meta.env.VITE_STRAPI_API_TOKEN;
 
-  console.log('QUERY:', decodeURIComponent(apiUrl.href));
-
   const { data, isSuccess, isLoading, isRefetching, isFetching } = useQuery({
     queryKey: [queryKey, filterPersonalFeatureCards?.account?.isConnected],
     queryFn: async () => {

@@ -32,7 +32,7 @@ export const FeatureCards = () => {
 
   const slicedFeatureCards = useMemo(() => {
     if (Array.isArray(cards) && !!cards.length) {
-      const filteredCards = cards
+      return cards
         ?.filter(
           (el, index) =>
             isSuccess &&
@@ -40,13 +40,11 @@ export const FeatureCards = () => {
             !disabledFeatureCards.includes(el.attributes.uid),
         )
         .slice(0, 2);
-      return filteredCards;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cards, isSuccess]);
 
   const slicedPersonalizedFeatureCards = useMemo(() => {
-    const now = new Date();
     const personalizedFeatureCards =
       jumperUser && jumperUser[0]?.attributes?.feature_cards.data;
     if (
