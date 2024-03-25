@@ -41,6 +41,7 @@ export enum TrackingAction {
   ClickXLink = 'action_click_x_link',
   ClickDiscordLink = 'action_click_discord_link',
   ClickJumperLearnLink = 'action_click_jumper_learn_link',
+  ClickJumperProfileLink = 'action_click_jumper_profile_link',
   ClickLifiExplorerLink = 'action_click_lifi_explorer_link',
 
   // Blog
@@ -48,7 +49,6 @@ export enum TrackingAction {
   ClickArticleCard = 'action_click_article_card',
   ClickFeaturedArticle = 'action_click_featured_article',
   ClickBlogCTA = 'action_click_blog_cta',
-  SwipeHighlightCard = 'action_swipe_highlight_card',
   SwipeCarousel = 'action_swipe_carousel',
   ClickShareArticleFB = 'action_share_article_fb',
   ClickShareArticleLinkedIn = 'action_share_article_linked',
