@@ -5,10 +5,6 @@ export const UTM_SOURCE = 'jumper';
   GA: in GA this is the name of the event that is fired
 */
 export enum TrackingAction {
-  // Widget
-  AddChain = 'action_add_chain',
-  AddToken = 'action_add_token',
-
   // WalletMenu
   ConnectWallet = 'action_connect_wallet',
   CopyAddressToClipboard = 'action_copy_addr_to_clipboard',
