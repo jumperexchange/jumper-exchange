@@ -22,7 +22,7 @@ export const Snackbar = () => {
   return (
     <MuiSnackbar
       open={openSnackbar.open}
-      autoHideDuration={200000}
+      autoHideDuration={2000}
       onClose={handleCloseSnackbar}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       sx={{
