@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
-import { useMenuStore, useSettingsStore } from 'src/stores';
+import { useActiveTabStore, useMenuStore, useSettingsStore } from 'src/stores';
 import { darkTheme } from 'src/theme';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { useConfig } from 'wagmi';
