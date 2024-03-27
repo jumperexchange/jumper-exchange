@@ -223,7 +223,38 @@ export function WidgetEvents() {
       handleDestinationChainTokenSelection,
     );
 
-    return () => widgetEvents.all.clear();
+    return () => {
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionStarted,
+        onRouteExecutionStarted,
+      );
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionUpdated,
+        onRouteExecutionUpdated,
+      );
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionCompleted,
+        onRouteExecutionCompleted,
+      );
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionFailed,
+        onRouteExecutionFailed,
+      );
+      widgetEvents.off(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
+      widgetEvents.off(WidgetEvent.ContactSupport, onRouteContactSupport);
+      widgetEvents.off(
+        WidgetEvent.DestinationChainTokenSelected,
+        handleMultisigChainTokenSelected,
+      );
+      widgetEvents.off(
+        WidgetEvent.SourceChainTokenSelected,
+        handleSourceChainTokenSelection,
+      );
+      widgetEvents.off(
+        WidgetEvent.DestinationChainTokenSelected,
+        handleDestinationChainTokenSelection,
+      );
+    };
   }, [
     activeTab,
     setDestinationChain,
