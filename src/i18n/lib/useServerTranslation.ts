@@ -1,6 +1,6 @@
 import type { FlatNamespace, KeyPrefix } from 'i18next';
 import type { FallbackNs } from 'react-i18next';
-import { initI18next } from '.';
+import { initI18next } from './i18next-init';
 
 export async function useServerTranslation<
   Ns extends FlatNamespace,
