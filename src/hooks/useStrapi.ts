@@ -171,7 +171,7 @@ export const useStrapi = <T>({
   }
 
   // show drafts ONLY on development env
-  process.env.MODE === 'development' &&
+  process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
     apiUrl.searchParams.set('publicationState', 'preview');
 
   // use local strapi on develop || prod strapi

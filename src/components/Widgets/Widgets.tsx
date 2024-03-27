@@ -95,7 +95,7 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
 
   return (
     <>
-      {process.env.MODE === 'testnet' && (
+      {process.env.NEXT_PUBLIC_ENVIRONMENT === 'testnet' && (
         <Grid item xs={12} mt={theme.spacing(3)}>
           <TestnetAlert />
         </Grid>

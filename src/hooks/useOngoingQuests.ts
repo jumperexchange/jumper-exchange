@@ -22,7 +22,7 @@ export const useOngoingQuests = (): UseQuestsProps => {
   const currentDate = new Date(Date.now()).toISOString().split('T')[0];
   apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
   apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
-  process.env.MODE !== 'production' &&
+  process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('publicationState', 'preview');
   const apiAccesToken =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'

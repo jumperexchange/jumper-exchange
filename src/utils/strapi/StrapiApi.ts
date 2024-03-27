@@ -34,7 +34,7 @@ class StrapiApi {
     this.apiUrl = new URL(`${this.baseUrl}/${this.contentType}`);
 
     // Show drafts ONLY on development env
-    if (process.env.MODE === 'development') {
+    if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'development') {
       this.apiUrl.searchParams.set('publicationState', 'preview');
     }
   }

@@ -33,7 +33,7 @@ export const usePersonalizedFeatureCards =
         account?.address,
       );
     }
-    process.env.MODE !== 'production' &&
+    process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
       apiUrl.searchParams.set('publicationState', 'preview');
     const apiAccesToken =
       process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
