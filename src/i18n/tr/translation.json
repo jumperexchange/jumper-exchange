@@ -22,8 +22,8 @@
       "connectWallet": "Bir Cüzdan Bağlayın",
       "wallets": "Cüzdanlar",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "",
-        "noEcosystemAdapter": ""
+        "selectEcosystem": "Cüzdan ekosistemi seçin",
+        "noEcosystemAdapter": "Uygun ekosistem bağdaştırıcısı bulunamadı"
       }
     },
     "seeAllWallets": "Tüm cüzdanları göster",
@@ -43,12 +43,12 @@
       "explore": "Keşfet",
       "copiedMsg": "Cüzdan Adresi kopyalandı",
       "walletNotInstalled": "{{wallet}} kurulu değil",
-      "connectAnotherWallet": ""
+      "connectAnotherWallet": "Başka bir cüzdana bağlan"
     },
     "themes": {
       "switchToLight": "Açık temaya geç",
       "switchToDark": "Koyu Temaya geç",
-      "switchToSystem": ""
+      "switchToSystem": "Sisteme geçiş yap"
     },
     "developers": {
       "github": "GitHub",
@@ -59,6 +59,33 @@
     "info": "Şu anda Test ağındasınız",
     "testnet": "Testnet üzerinde yapacağınız hiçbir işlem Mainnet üzerinde etkili olmayacaktır.",
     "switchToMainnet": "Mainnet'e geç"
+  },
+  "discordBanner": {
+    "ctaHeadline": "Daha fazlası için Discord sunucumuza katıl",
+    "ctaButton": "Discord'a katıl"
+  },
+  "blog": {
+    "title": "İpuçları ve öğreticiler",
+    "categories": "Kategoriler",
+    "allCategories": "Tümü",
+    "subtitle": "Kısaca, tüm seviyeler için DeFi ve kriptoya ilişkin adım adım kılavuzlar",
+    "minRead": "Okuma süresi:{{minRead}}",
+    "seeAllPosts": "Tüm gönderileri gör",
+    "recentPosts": "Son Gönderiler",
+    "similarPosts": "Benzer gönderiler",
+    "goToArticle": "Makaleye git",
+    "openApp": "Uygulamayı aç",
+    "faq": "SSS",
+    "jumperCta": "jumper.exchange'i deneyin",
+    "copiedLink": "Bağlantı kopyalandı",
+    "shareLinkedIn": "Makaleyi LinkedIn'de paylaş",
+    "shareFb": "Makaleyi Facebook'ta paylaş",
+    "shareX": "Makaleyi X'te paylaş",
+    "shareLink": "Bağlantıyı paylaş"
+  },
+  "solanaAlert": {
+    "title": "Solana ağında kısıtlı token desteği bulunmaktadır",
+    "subtitle": "Şu anda hem Solana ağına hem Solana ağından sadece USDC ve USDT köprü kurulabiliyor."
   },
   "featureCard": {
     "learnMore": "Daha fazla bilgi edinin"

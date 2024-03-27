@@ -1,4 +1,4 @@
-import type { Breakpoint } from '@mui/material';
+import type { Breakpoint, Theme } from '@mui/material';
 import { Skeleton, useMediaQuery, useTheme } from '@mui/material';
 import { getContrastAlphaColor } from 'src/utils';
 import type { TabProps } from '../../Tabs';
@@ -16,7 +16,7 @@ export const BlogArticlesBoardTabs = ({
   categoryId,
 }: BlogArticlesBoardTabsProps) => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const containerStyles = {
     marginTop: theme.spacing(4),

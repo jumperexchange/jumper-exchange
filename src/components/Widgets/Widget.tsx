@@ -7,7 +7,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
-import { useActiveTabStore, useMenuStore, useSettingsStore } from 'src/stores';
+import { useMenuStore, useSettingsStore } from 'src/stores';
+import { darkTheme } from 'src/theme';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { useConfig } from 'wagmi';
 import { widgetConfig } from '../../config';
@@ -98,6 +99,10 @@ export function Widget({ starterVariant }: WidgetProps) {
           },
           primary: {
             main: theme.palette.accent1.main,
+          },
+          secondary: {
+            // FIXME: we need to find out how to use the correct color from the main theme config
+            main: darkTheme.palette.accent2.main,
           },
           grey: theme.palette.grey,
         },
