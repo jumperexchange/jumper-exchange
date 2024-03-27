@@ -9,6 +9,10 @@ import type { BlogArticleData } from '@/types/strapi';
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Navbar } from 'src/components/Navbar/Navbar';
+import { ReactQueryProvider } from 'src/providers/ReactQueryProvider';
+import { ThemeProvider } from 'src/providers/ThemeProvider';
+import { WalletProvider } from 'src/providers/WalletProvider/WalletProvider';
 
 interface LearnArticlePageProps {
   article: BlogArticleData[];
@@ -16,7 +20,7 @@ interface LearnArticlePageProps {
   url: string;
 }
 
-export const LearnArticlePage = ({
+const LearnArticlePage = ({
   article,
   articles,
   url,
@@ -70,3 +74,24 @@ export const LearnArticlePage = ({
     </>
   );
 };
+
+const LearnArticlePageWrapper = ({
+  article,
+  articles,
+  url,
+}: LearnArticlePageProps) => {
+  return (
+    <ReactQueryProvider>
+      <ThemeProvider>
+        <WalletProvider>
+          <BackgroundGradient />
+          <Navbar />
+          <LearnArticlePage article={article} articles={articles} url={url} />
+          <PoweredBy fixedPosition={true} />
+        </WalletProvider>
+      </ThemeProvider>
+    </ReactQueryProvider>
+  );
+};
+
+export default LearnArticlePageWrapper;

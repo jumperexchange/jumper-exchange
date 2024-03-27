@@ -2,8 +2,8 @@ import dynamic from 'next/dynamic';
 import { getArticles } from 'src/app/lib/getArticles';
 import { getFeaturedArticle } from 'src/app/lib/getFeaturedArticle';
 
-const LearnPage = dynamic(() => import('../../ui/learn/LearnPage'), {
-  ssr: false,
+const LearnPage = dynamic(() => import('../ui/learn/LearnPage'), {
+  ssr: true,
 });
 
 // `app/ui/learn/page.tsx` is the UI for the `/learn` URL

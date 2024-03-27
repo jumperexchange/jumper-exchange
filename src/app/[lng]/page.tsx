@@ -1,11 +1,10 @@
 import { locales } from '@/i18n/i18next-locales';
 import { fallbackLng } from '@/i18n/i18next-settings';
-import App from '../ui/app/App';
+import dynamic from 'next/dynamic';
 
 import type { Metadata } from 'next';
 
 import type { Viewport } from 'next';
-import { ClientTranslationProvider } from 'src/i18n/i18next-client-provider';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -81,6 +80,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+const App = dynamic(() => import('../ui/app/App'), { ssr: false });
+
 export default async function Page({
   params: { lng },
 }: {
@@ -92,9 +93,5 @@ export default async function Page({
     lng = fallbackLng;
   }
 
-  return (
-    <ClientTranslationProvider lng={lng}>
-      <App starterVariant="default" />
-    </ClientTranslationProvider>
-  );
+  return <App starterVariant="default" />;
 }

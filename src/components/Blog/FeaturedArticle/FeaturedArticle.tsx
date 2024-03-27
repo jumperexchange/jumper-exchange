@@ -3,9 +3,18 @@ import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { Tag } from '@/components/Tag.style';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
+import { JUMPER_LEARN_PATH } from '@/const/urls';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData } from '@/types/strapi';
+import { EventTrackingTool } from '@/types/userTracking';
 import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
+import { useRouter } from 'next/navigation';
 import {
   FeaturedArticleContainer,
   FeaturedArticleContent,
@@ -21,15 +30,28 @@ import {
 interface FeaturedArticleProps {
   url: string | undefined;
   featuredArticle: BlogArticleData[] | undefined;
-  handleFeatureCardClick?: () => void;
 }
 
 export const FeaturedArticle = ({
   featuredArticle,
-  handleFeatureCardClick,
   url,
 }: FeaturedArticleProps) => {
   const { t } = useTranslation();
+  const { trackEvent } = useUserTracking();
+  const router = useRouter();
+
+  const handleFeatureCardClick = (featuredArticle: BlogArticleData[]) => {
+    trackEvent({
+      category: TrackingCategory.BlogFeaturedArticle,
+      label: 'click-featured-article',
+      action: TrackingAction.ClickFeaturedArticle,
+      data: { [TrackingEventParameter.ArticleID]: featuredArticle[0]?.id },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
+    router.push(`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`);
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const formatedDate =
     featuredArticle &&
@@ -43,7 +65,11 @@ export const FeaturedArticle = ({
 
   return featuredArticle && featuredArticle?.length > 0 ? (
     <>
-      <FeaturedArticleContainer onClick={handleFeatureCardClick}>
+      <FeaturedArticleContainer
+        onClick={() => {
+          handleFeatureCardClick(featuredArticle);
+        }}
+      >
         <FeaturedArticleImage
           src={`${url}${featuredArticle[0]?.attributes.Image.data.attributes.formats.medium.url}`}
           alt={

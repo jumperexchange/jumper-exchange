@@ -1,7 +1,7 @@
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 
-interface GetArticlesResponse extends StrapiResponse<BlogArticleData> {
+export interface GetArticlesResponse extends StrapiResponse<BlogArticleData> {
   url: string; // Define the shape of the URL
 }
 

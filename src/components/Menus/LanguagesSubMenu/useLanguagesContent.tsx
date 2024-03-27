@@ -6,16 +6,19 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { cookieName } from '@/i18n/i18next-settings';
 import * as supportedLanguages from '@/i18n/translations';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
 import type { LanguageKey } from '@/types/i18n';
 import { EventTrackingTool } from '@/types/userTracking';
 import { replaceLocaleInUrl } from '@/utils/replaceLocaleInUrl';
 import { usePathname } from 'next/navigation';
+import { useCookies } from 'react-cookie';
 
 export const useLanguagesContent = () => {
   const pathname = usePathname();
   const { i18n } = useClientTranslation();
+  const [_, setCookie] = useCookies([cookieName]);
   const { trackEvent } = useUserTracking();
   const handleSwitchLanguage = (newLanguage: LanguageKey) => {
     trackEvent({
@@ -26,6 +29,7 @@ export const useLanguagesContent = () => {
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     i18n.changeLanguage(newLanguage);
+    setCookie(cookieName, newLanguage, { path: '/' });
     replaceLocaleInUrl(pathname, newLanguage);
   };
 

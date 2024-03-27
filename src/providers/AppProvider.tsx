@@ -1,10 +1,9 @@
 'use client';
 import { BackgroundGradient } from '@/components/BackgroundGradient';
-import { ClientTranslationProvider } from '@/i18n/i18next-client-provider';
 import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
 import { CssBaseline } from '@mui/material';
 import { useEffect, useState, type PropsWithChildren } from 'react';
-import { ReactQueryProvider } from './ReactQueryProvider';
+import { Navbar } from 'src/components/Navbar/Navbar';
 import { ThemeProvider } from './ThemeProvider';
 import { WalletProvider } from './WalletProvider';
 // import { cookie3Config } from 'src/const';
@@ -26,24 +25,17 @@ export const AppProvider: React.FC<PropsWithChildren<AppProviderProps>> = ({
     setIsClient(true);
   }, []);
   return isClient ? (
-    <ReactQueryProvider>
-      <ClientTranslationProvider lng={lng}>
-        {/* <Cookie3Provider value={analytics}> */}
-        <ArcxAnalyticsProvider
-          apiKey={`${process.env.NEXT_PUBLIC_ARCX_API_KEY}`}
-        >
-          <WalletProvider>
-            <ThemeProvider>
-              <CssBaseline />
-              <BackgroundGradient />
-              {/* <ErrorBoundary fallback={<FallbackError />}> */}
-              {children}
-              {/* </ErrorBoundary> */}
-            </ThemeProvider>
-          </WalletProvider>
-        </ArcxAnalyticsProvider>
-        {/* </Cookie3Provider> */}
-      </ClientTranslationProvider>
-    </ReactQueryProvider>
+    <ArcxAnalyticsProvider apiKey={`${process.env.NEXT_PUBLIC_ARCX_API_KEY}`}>
+      <WalletProvider>
+        <ThemeProvider>
+          <CssBaseline />
+          <BackgroundGradient />
+          <Navbar />
+          {/* <ErrorBoundary fallback={<FallbackError />}> */}
+          {children}
+          {/* </ErrorBoundary> */}
+        </ThemeProvider>
+      </WalletProvider>
+    </ArcxAnalyticsProvider>
   ) : null;
 };

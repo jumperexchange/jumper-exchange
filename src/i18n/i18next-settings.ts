@@ -2,7 +2,7 @@ import { locales } from './i18next-locales';
 
 export const fallbackLng = 'en';
 export const defaultNS = 'translation';
-export const cookieName = 'i18next';
+export const cookieName = 'NEXT_LOCALE';
 export const runsOnServerSide = typeof window === 'undefined';
 
 export function getOptions(

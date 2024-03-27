@@ -1,7 +1,6 @@
 import { locales } from '@/i18n/i18next-locales';
 
 export const replacePathInUrl = (currentPath: string, newPath: string) => {
-  console.log('currentpath', currentPath);
   const urlParts = currentPath.split('/');
   const localeIndex = 1; // The index of the locale in the URL
   const slicedUrl = urlParts.slice(0, localeIndex + 1);

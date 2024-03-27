@@ -1,11 +1,18 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { createContext } from 'react';
+import { createContext, useState } from 'react';
 
-export const ClientTranslationContext = createContext({
-  lng: '',
-});
+interface ClientTranslationContextType {
+  language: string;
+  setLanguage: (newValue: string) => void;
+}
+
+export const ClientTranslationContext =
+  createContext<ClientTranslationContextType>({
+    language: '',
+    setLanguage: () => {},
+  });
 
 interface ClientTranslationProviderProps extends PropsWithChildren {
   lng: string;
@@ -14,8 +21,9 @@ export const ClientTranslationProvider = ({
   children,
   lng,
 }: ClientTranslationProviderProps) => {
+  const [language, setLanguage] = useState(lng);
   return (
-    <ClientTranslationContext.Provider value={{ lng }}>
+    <ClientTranslationContext.Provider value={{ language, setLanguage }}>
       {children}
     </ClientTranslationContext.Provider>
   );

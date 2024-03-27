@@ -19,10 +19,12 @@ import { useArcxAnalytics } from '@arcxmoney/analytics';
 import { ChainType } from '@lifi/sdk';
 import { useCallback, useEffect } from 'react';
 import { hotjar } from 'react-hotjar';
+import { useCookie3 } from './useCookie3';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
   const { account } = useAccounts();
+  const cookie3 = useCookie3();
 
   useEffect(() => {
     if (account?.chainId) {
@@ -146,15 +148,15 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.Cookie3)) {
         // todo: add
-        // cookie3?.trackEvent({
-        //   category,
-        //   action,
-        //   name: label,
-        //   value,
-        // });
+        cookie3?.trackEvent({
+          category,
+          action,
+          name: label,
+          value,
+        });
       }
     },
-    [arcx],
+    [arcx, cookie3],
   );
 
   const trackPageload = useCallback(
