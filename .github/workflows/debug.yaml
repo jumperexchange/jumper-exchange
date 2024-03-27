@@ -11,11 +11,6 @@ jobs:
   debug:
     name: Debug wf
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: write
-      pull-requests: write
-
     steps:
       - name: Checkout jumper-exchange
         uses: actions/checkout@v4
