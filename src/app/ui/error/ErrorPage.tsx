@@ -1,7 +1,7 @@
 import { Button } from '@/components/Button/Button';
+import { LogoLink } from '@/components/Navbar';
 import { JumperLogo } from '@/components/illustrations/JumperLogo';
 import { useTheme } from '@mui/material';
-import { LogoLink } from '../Navbar';
 
 import { Logo } from '@/components/Navbar/Logo/Logo';
 import { Discord } from '@/components/illustrations/Discord';
@@ -23,9 +23,13 @@ import {
   ErrorMessage,
   NavbarContainer,
   SupportMessage,
-} from './FallbackError.styles';
+} from './ErrorPage.style';
 
-export function FallbackError() {
+interface FallbackErrorProps {
+  reset: () => void;
+}
+
+const ErrorPage = ({ reset }: FallbackErrorProps) => {
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const { t } = useClientTranslation();
@@ -99,4 +103,6 @@ export function FallbackError() {
       </CenteredContainer>
     </>
   );
-}
+};
+
+export default ErrorPage;

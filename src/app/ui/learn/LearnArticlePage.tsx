@@ -9,10 +9,7 @@ import type { BlogArticleData } from '@/types/strapi';
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Navbar } from 'src/components/Navbar/Navbar';
-import { ReactQueryProvider } from 'src/providers/ReactQueryProvider';
-import { ThemeProvider } from 'src/providers/ThemeProvider';
-import { WalletProvider } from 'src/providers/WalletProvider/WalletProvider';
+import { AppProvider } from 'src/providers/AppProvider';
 
 interface LearnArticlePageProps {
   article: BlogArticleData[];
@@ -29,7 +26,7 @@ const LearnArticlePage = ({
   const theme = useTheme();
 
   return (
-    <>
+    <AppProvider>
       <BlogArticle
         subtitle={article[0]?.attributes.Subtitle}
         title={article[0]?.attributes.Title}
@@ -71,27 +68,8 @@ const LearnArticlePage = ({
         <JoinDiscordBanner />
         <PoweredBy />
       </Box>
-    </>
+    </AppProvider>
   );
 };
 
-const LearnArticlePageWrapper = ({
-  article,
-  articles,
-  url,
-}: LearnArticlePageProps) => {
-  return (
-    <ReactQueryProvider>
-      <ThemeProvider>
-        <WalletProvider>
-          <BackgroundGradient />
-          <Navbar />
-          <LearnArticlePage article={article} articles={articles} url={url} />
-          <PoweredBy fixedPosition={true} />
-        </WalletProvider>
-      </ThemeProvider>
-    </ReactQueryProvider>
-  );
-};
-
-export default LearnArticlePageWrapper;
+export default LearnArticlePage;
