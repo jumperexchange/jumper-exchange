@@ -83,7 +83,9 @@ export const useWalletSelectContent = () => {
         setSnackbarState(
           true,
           t('navbar.walletMenu.walletNotInstalled', {
-            wallet: combinedWallet.evm?.id || combinedWallet.svm?.adapter.name,
+            wallet:
+              (combinedWallet.evm?.id || combinedWallet.svm?.adapter.name) ??
+              '',
           }),
           'error',
         );
