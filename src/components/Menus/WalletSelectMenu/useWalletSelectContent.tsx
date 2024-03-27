@@ -13,7 +13,7 @@ import type { CombinedWallet } from 'src/hooks/useCombinedWallets';
 import { useCombinedWallets } from 'src/hooks/useCombinedWallets';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { MenuListItem } from 'src/types';
-import { capitalizeFirstLetter, getContrastAlphaColor } from 'src/utils';
+import { getContrastAlphaColor } from 'src/utils';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();
@@ -83,10 +83,7 @@ export const useWalletSelectContent = () => {
         setSnackbarState(
           true,
           t('navbar.walletMenu.walletNotInstalled', {
-            wallet:
-              capitalizeFirstLetter(
-                combinedWallet.evm?.id || combinedWallet.svm?.adapter.name,
-              ) ?? '',
+            wallet: combinedWallet.evm?.id || combinedWallet.svm?.adapter.name,
           }),
           'error',
         );
