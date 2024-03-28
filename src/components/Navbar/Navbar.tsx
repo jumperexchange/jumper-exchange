@@ -23,13 +23,13 @@ export const Navbar = () => {
   const isLearnPage = pathname.includes(JUMPER_LEARN_PATH);
   const isLoyaltyPage = pathname.includes(JUMPER_LOYALTY_PATH);
   const { account } = useAccounts();
-  const [onWelcomeScreenClosed] = useSettingsStore((state) => [
-    state.onWelcomeScreenClosed,
+  const [setWelcomeScreenClosed] = useSettingsStore((state) => [
+    state.setWelcomeScreenClosed,
   ]);
   const { closeAllMenus } = useMenuStore((state) => state);
   const handleClick = () => {
     closeAllMenus();
-    onWelcomeScreenClosed(false);
+    setWelcomeScreenClosed(false);
     isLearnPage ? router.push(JUMPER_LEARN_PATH) : router.push('/');
   };
 

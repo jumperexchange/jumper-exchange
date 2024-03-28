@@ -1,6 +1,6 @@
+import { inter } from '@/fonts/fonts';
 import type { TypographyProps } from '@mui/material';
 import { Box, Container, Typography, alpha, styled } from '@mui/material';
-import { inter } from 'src/fonts/fonts';
 
 export const ProfilePageContainer = styled(Container)(() => ({
   marginTop: 32,

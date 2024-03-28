@@ -135,7 +135,7 @@ export const useMainMenuContent = () => {
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'click-jumper-pass-link',
-          action: TrackingAction.ClickJumperLearnLink,
+          action: TrackingAction.ClickJumperProfileLink,
           data: { [TrackingEventParameter.Menu]: 'pass' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,

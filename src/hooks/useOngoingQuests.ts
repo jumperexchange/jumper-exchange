@@ -18,6 +18,8 @@ export const useOngoingQuests = (): UseQuestsProps => {
   apiUrl.searchParams.set('populate[0]', 'Image');
   apiUrl.searchParams.set('populate[1]', 'quests_platform');
   apiUrl.searchParams.set('populate[2]', 'quests_platform.Logo');
+  //sort url
+  apiUrl.searchParams.set('sort[0]', 'id:desc');
   //filter url
   const currentDate = new Date(Date.now()).toISOString().split('T')[0];
   apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);

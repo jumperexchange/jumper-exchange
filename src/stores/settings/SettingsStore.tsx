@@ -3,7 +3,6 @@ import type {
   SettingsProps,
   SettingsState,
   ThemeModesSupported,
-  WalletConnected,
 } from '@/types/settings';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -33,26 +32,12 @@ export const useSettingsStore = createWithEqualityFn(
           return updatedState;
         }),
 
-      // Wallet
-      onWalletConnect: (activeWalletName: WalletConnected) => {
-        set({
-          activeWalletName,
-        });
-      },
-
-      onWalletDisconnect: () => {
-        set({
-          activeWalletName: 'none',
-        });
-      },
-
       // Mode
-      onChangeMode: (mode: ThemeModesSupported) => {
+      setThemeMode: (mode: ThemeModesSupported) => {
         set({
           themeMode: mode,
         });
       },
-
       // Installed Wallets
       setClientWallets: (wallet: string) => {
         const clientWallets = (get() as SettingsProps)?.clientWallets;
@@ -63,7 +48,7 @@ export const useSettingsStore = createWithEqualityFn(
       },
 
       // Disable Feature Card
-      onDisableFeatureCard: (id: string) => {
+      setDisabledFeatureCard: (id: string) => {
         const disabledFeatureCards = (get() as SettingsProps)
           ?.disabledFeatureCards;
         id &&
@@ -74,16 +59,15 @@ export const useSettingsStore = createWithEqualityFn(
       },
 
       // Welcome Screen
-      onWelcomeScreenClosed: (shown: boolean) => {
+      setWelcomeScreenClosed: (shown: boolean) => {
         set({
           welcomeScreenClosed: shown,
         });
       },
 
       // Reset
-      onResetSetting: () => {
+      setDefaultSettings: () => {
         set({
-          activeWalletName: defaultSettings.activeWalletName || 'none',
           themeMode:
             defaultSettings.themeMode || ('auto' as ThemeModesSupported),
           disabledFeatureCards: defaultSettings.disabledFeatureCards || [],

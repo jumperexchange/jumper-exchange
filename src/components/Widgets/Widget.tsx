@@ -4,6 +4,7 @@ import { widgetConfig } from '@/config/widgetConfig';
 import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
+import { useActiveTabStore } from '@/stores/activeTab/ActiveTabStore';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
 import type { LanguageKey } from '@/types/i18n';
@@ -15,7 +16,7 @@ import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
-import { darkTheme } from 'src/theme';
+import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 
@@ -43,6 +44,9 @@ export function Widget({ starterVariant }: WidgetProps) {
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
 
+  const { activeTab } = useActiveTabStore();
+  const isGasVariant = activeTab === TabsMap.Refuel.index;
+
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
@@ -60,6 +64,7 @@ export function Widget({ starterVariant }: WidgetProps) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
+
     return {
       ...widgetConfig,
       variant: starterVariant === 'refuel' ? 'compact' : 'wide',
@@ -131,7 +136,11 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       buildUrl: true,
       insurance: true,
-      integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+      integrator: `${
+        isGasVariant
+          ? process.env.VITE_WIDGET_INTEGRATOR_REFUEL
+          : process.env.VITE_WIDGET_INTEGRATOR
+      }`,
     };
   }, [
     starterVariant,
@@ -147,6 +156,7 @@ export function Widget({ starterVariant }: WidgetProps) {
     multisigSdkConfig,
     setWalletSelectMenuState,
     wagmiConfig,
+    isGasVariant,
   ]);
 
   return (
@@ -155,10 +165,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       welcomeScreenClosed={welcomeScreenClosed}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
-      <LiFiWidget
-        integrator={process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR as string}
-        config={config}
-      />
+      <LiFiWidget integrator={config.integrator} config={config} />
     </WidgetWrapper>
   );
 }

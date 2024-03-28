@@ -1,5 +1,5 @@
-import type { BlogArticleData } from 'src/types/strapi';
-import { ArticleStrapiApi } from 'src/utils/strapi/StrapiApi';
+import type { BlogArticleData } from '@/types/strapi';
+import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 
 export async function getArticlesByTag(
   excludeId: number,

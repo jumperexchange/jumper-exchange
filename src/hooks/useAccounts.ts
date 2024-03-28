@@ -134,7 +134,6 @@ export const useAccountConnect = () => {
   const { connectAsync } = useConnect();
   const { disconnect: wagmiDisconnect } = useDisconnect();
   const { select, disconnect, connected } = useWallet();
-  const { onWalletConnect } = useSettingsStore((state) => state);
   const { trackConnectWallet } = useUserTracking();
 
   return async (combinedWallet: CombinedWallet) => {
@@ -142,7 +141,6 @@ export const useAccountConnect = () => {
       wagmiDisconnect();
       lastConnectedAccount = combinedWallet.evm;
       await connectAsync({ connector: combinedWallet.evm! });
-      onWalletConnect(combinedWallet.evm.name);
       trackConnectWallet({
         walletName: combinedWallet.evm.name,
         chainType: ChainType.EVM,
@@ -155,7 +153,6 @@ export const useAccountConnect = () => {
       }
       lastConnectedAccount = combinedWallet.svm;
       select(combinedWallet.svm.adapter.name);
-      onWalletConnect(combinedWallet.svm.adapter.name);
       trackConnectWallet({
         walletName: combinedWallet.svm.adapter.name,
         chainType: ChainType.SVM,

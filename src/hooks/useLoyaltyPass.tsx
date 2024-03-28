@@ -7,7 +7,7 @@ import { useAccounts } from './useAccounts';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
-  address?: string;
+  isLoading: boolean;
   points?: number;
   tier?: string;
   pdas?: PDA[];
@@ -35,10 +35,10 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_A_DAY;
 
   const queryIsEnabled =
-    storeNeedsRefresh &&
     !!account?.address &&
     account?.chainType === 'EVM' &&
-    account?.address?.toLowerCase() !== storedAddress?.toLowerCase();
+    (storeNeedsRefresh ||
+      account?.address?.toLowerCase() !== storedAddress?.toLowerCase());
 
   // query
   const apiBaseUrl = process.env.NEXT_PUBLIC_GATEWAY_URL;
@@ -50,7 +50,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     Authorization: `Bearer ${apiAccesToken}`,
   };
 
-  const { data, isSuccess } = useQuery({
+  const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['loyalty-pass'],
     queryFn: async () => {
       const res = await request(
@@ -96,15 +96,15 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     refetchInterval: 1000 * 60 * 60,
   });
 
-  const returnLocalData =
-    account?.address === storedAddress && !storeNeedsRefresh;
+  const returnLocalData = account?.address === storedAddress && !queryIsEnabled;
+
   const errorWhileFetchingData =
     !data || !account?.address || !(account.chainType === 'EVM');
 
   if (returnLocalData) {
     return {
       isSuccess: true,
-      address: storedAddress,
+      isLoading: isLoading,
       points: storedPoints,
       tier: storedTier,
       pdas: storedPdas,
@@ -112,12 +112,12 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   } else if (errorWhileFetchingData) {
     return {
       isSuccess: false,
-      address: account?.address,
+      isLoading: isLoading,
       points: undefined,
       tier: undefined,
       pdas: [],
     };
   }
 
-  return { ...data, isSuccess: isSuccess };
+  return { ...data, isSuccess, isLoading };
 };

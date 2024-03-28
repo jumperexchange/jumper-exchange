@@ -1,11 +1,13 @@
 'use client';
 import { ProfilePage as ProfilePageComponent } from '@/components/ProfilePage';
-import { AppProvider } from 'src/providers/AppProvider';
+import { SupportModal } from '@/components/SupportModal/SupportModal';
+import { AppProvider } from '@/providers/AppProvider';
 
 const ProfilePage = () => {
   return (
     <AppProvider>
       <ProfilePageComponent />;
+      <SupportModal />
     </AppProvider>
   );
 };

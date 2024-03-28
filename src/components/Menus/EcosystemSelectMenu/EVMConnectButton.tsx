@@ -36,7 +36,7 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
           <Avatar
             src={walletIcon}
             alt={'wallet-avatar'}
-            sx={{ width: '33px', height: '33px' }}
+            sx={{ width: '36px', height: '36px' }}
           />
         }
       >

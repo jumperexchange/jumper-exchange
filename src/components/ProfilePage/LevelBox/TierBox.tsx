@@ -1,9 +1,9 @@
+import type { LevelData } from '@/types/loyaltyPass';
 import { Box } from '@mui/material';
-import type { LevelData } from 'src/types/loyaltyPass';
-import { ProfilePageTypography } from '../ProfilePage.style';
+import { LevelBox } from './LevelBox';
 import { PointsBox } from './PointsBox';
 import { ProgressionBar } from './ProgressionBar';
-import { TierBadgeBox, TierInfoBox, TierMainBox } from './TierBox.style';
+import { TierInfoBox, TierMainBox } from './TierBox.style';
 import { levelsData } from './levelsData';
 
 function getLevelBasedOnPoints(points: number | undefined): LevelData {
@@ -19,9 +19,10 @@ function getLevelBasedOnPoints(points: number | undefined): LevelData {
 interface TierBoxProps {
   tier?: string;
   points?: number;
+  loading: boolean;
 }
 
-export const TierBox = ({ points }: TierBoxProps) => {
+export const TierBox = ({ points, loading }: TierBoxProps) => {
   const levelData = getLevelBasedOnPoints(points);
 
   return (
@@ -29,11 +30,7 @@ export const TierBox = ({ points }: TierBoxProps) => {
       <Box sx={{ padding: '18px' }}>
         <TierInfoBox>
           <PointsBox points={points} />
-          <TierBadgeBox>
-            <ProfilePageTypography fontSize={'18px'} lineHeight={'24px'}>
-              {`LEVEL ${levelData.level}`}
-            </ProfilePageTypography>
-          </TierBadgeBox>
+          <LevelBox level={levelData.level} loading={loading} />
         </TierInfoBox>
         <ProgressionBar points={points} levelData={levelData} />
       </Box>

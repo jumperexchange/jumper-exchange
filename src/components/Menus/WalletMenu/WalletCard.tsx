@@ -8,7 +8,6 @@ import { useMultisig } from '@/hooks/useMultisig';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { useMenuStore } from '@/stores/menu';
-import { useSettingsStore } from '@/stores/settings';
 import { EventTrackingTool } from '@/types/userTracking';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { walletDigest } from '@/utils/walletDigest';
@@ -42,9 +41,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
     [chains, account.chainId],
   );
   const { closeAllMenus, setSnackbarState } = useMenuStore((state) => state);
-  const onWalletDisconnect = useSettingsStore(
-    (state) => state.onWalletDisconnect,
-  );
+
   const handleMultisigEnvironmentCheck = useCallback(async () => {
     const response = await checkMultisigEnvironment();
 
@@ -95,7 +92,6 @@ export const WalletCard = ({ account }: WalletCardProps) => {
 
   const handleDisconnect = () => {
     disconnectWallet(account);
-    onWalletDisconnect();
   };
 
   return (

@@ -1,7 +1,7 @@
 // app/server-sitemap.xml/route.ts
 import { JUMPER_LEARN_PATH, pages } from '@/const/urls';
+import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { getServerSideSitemap } from 'next-sitemap';
-import type { BlogArticleData, StrapiResponse } from 'src/types/strapi';
 import { getArticles } from '../lib/getArticles';
 
 export async function GET(request: Request) {

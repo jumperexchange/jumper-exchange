@@ -1,8 +1,8 @@
 import { CarouselContainer } from '@/components/Blog/BlogCarousel/CarouselContainer';
+import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import type { Quest } from '@/types/loyaltyPass';
 import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 import { BlogCarouselContainer } from '../../Blog/BlogCarousel/BlogCarousel.style';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';

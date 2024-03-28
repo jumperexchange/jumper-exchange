@@ -1,6 +1,6 @@
+import type { FaqMeta } from '@/types/strapi';
 import Script from 'next/script';
 import { useMemo } from 'react';
-import type { FaqMeta } from 'src/types/strapi';
 
 interface TextProps {
   text: string;

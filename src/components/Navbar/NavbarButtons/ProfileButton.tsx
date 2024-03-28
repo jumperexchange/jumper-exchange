@@ -1,8 +1,8 @@
+import { JUMPER_LOYALTY_PATH } from '@/const/urls';
+import { useAccounts } from '@/hooks/useAccounts';
 import { alpha, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useNavigate } from 'react-router-dom';
-import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
-import { useAccounts } from 'src/hooks/useAccounts';
 import { ProfileButtonBox } from './ProfileButton.style';
 
 export const ProfileButton = () => {

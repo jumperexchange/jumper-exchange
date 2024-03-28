@@ -5,11 +5,12 @@ import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
 import { PoweredBy } from '@/components/PoweredBy/PoweredBy';
+import { SupportModal } from '@/components/SupportModal/SupportModal';
+import { AppProvider } from '@/providers/AppProvider';
 import type { BlogArticleData } from '@/types/strapi';
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { AppProvider } from 'src/providers/AppProvider';
 
 interface LearnArticlePageProps {
   article: BlogArticleData[];
@@ -68,6 +69,7 @@ const LearnArticlePage = ({
         <JoinDiscordBanner />
         <PoweredBy />
       </Box>
+      <SupportModal />
     </AppProvider>
   );
 };

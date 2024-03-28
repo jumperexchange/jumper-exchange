@@ -8,7 +8,9 @@ export interface GetArticlesResponse extends StrapiResponse<BlogArticleData> {
 export async function getArticles(
   excludeId?: number,
 ): Promise<GetArticlesResponse> {
-  const urlParams = new ArticleStrapiApi().sort('desc');
+  const urlParams = new ArticleStrapiApi()
+    .sort('desc')
+    .addPaginationParams({ page: 1, pageSize: 20, withCount: false });
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.getApiAccessToken();

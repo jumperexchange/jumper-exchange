@@ -2,6 +2,7 @@
 import { BackgroundGradient } from '@/components/BackgroundGradient';
 import { Navbar } from '@/components/Navbar/Navbar';
 import { PoweredBy } from '@/components/PoweredBy/PoweredBy';
+import { cookie3Config } from '@/const/cookie3';
 import { Cookie3Provider } from '@/providers/Cookie3Provider';
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
 import { ThemeProvider } from '@/providers/ThemeProvider';
@@ -10,7 +11,6 @@ import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
 import { cookie3Analytics } from '@cookie3/analytics';
 import { useEffect, useState, type PropsWithChildren } from 'react';
 import { UserTracking } from 'src/UserTracking';
-import { cookie3Config } from 'src/const/cookie3';
 
 interface AppProviderProps {
   children: React.ReactNode | JSX.Element;

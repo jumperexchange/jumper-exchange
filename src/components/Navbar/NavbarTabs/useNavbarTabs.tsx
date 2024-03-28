@@ -6,12 +6,12 @@ import {
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { EventTrackingTool } from '@/types/userTracking';
+import { replacePathInUrl } from '@/utils/replacePathInUr';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
-import { replacePathInUrl } from 'src/utils/replacePathInUr';
 
 interface useNavbarTabsProps {
   navbarPageReload?: boolean;

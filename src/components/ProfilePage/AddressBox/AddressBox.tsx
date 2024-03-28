@@ -17,9 +17,10 @@ import {
 
 interface AddressBoxProps {
   address?: string;
+  isEVM?: boolean;
 }
 
-export const AddressBox = ({ address }: AddressBoxProps) => {
+export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
   const { t } = useTranslation();
   const { setSnackbarState } = useMenuStore((state) => state);
   const { data: ensName, isSuccess } = useEnsName({
@@ -38,7 +39,7 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
         ? `${ensName.slice(0, 13)}...eth`
         : ensName;
     }
-    return address
+    return address && isEVM
       ? address?.slice(0, 6) +
           '...' +
           address?.slice(address.length - 4, address.length)
@@ -70,7 +71,7 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
         <Image
           alt="Effigy Wallet Icon"
           src={
-            address
+            address && isEVM
               ? `https://effigy.im/a/${address}.png`
               : `https://effigy.im/a/${'jumper.eth'}.png`
           }

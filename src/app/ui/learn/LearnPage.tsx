@@ -2,9 +2,10 @@
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { FeaturedArticle } from '@/components/Blog/FeaturedArticle/FeaturedArticle';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
+import { SupportModal } from '@/components/SupportModal/SupportModal';
+import { AppProvider } from '@/providers/AppProvider';
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import type { GetArticlesResponse } from 'src/app/lib/getArticles';
-import { AppProvider } from 'src/providers/AppProvider';
 
 interface LearnPageProps {
   carouselArticles: GetArticlesResponse;
@@ -29,6 +30,7 @@ const LearnPage = ({
       <BlogCarousel url={url} data={carouselArticles?.data} />
       <JoinDiscordBanner />
       {/* <BlogArticlesBoard /> */}
+      <SupportModal />
     </AppProvider>
   );
 };

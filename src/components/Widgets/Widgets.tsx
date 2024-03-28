@@ -20,8 +20,8 @@ interface WidgetsProps {
 
 export function Widgets({ widgetVariant }: WidgetsProps) {
   const { activeTab, setActiveTab } = useActiveTabStore();
-  const [welcomeScreenClosed, onWelcomeScreenClosed] = useSettingsStore(
-    (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
+  const [welcomeScreenClosed, setWelcomeScreenClosed] = useSettingsStore(
+    (state) => [state.welcomeScreenClosed, state.setWelcomeScreenClosed],
   );
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
@@ -86,7 +86,7 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
   const handleCloseWelcomeScreen = () => {
-    onWelcomeScreenClosed(true);
+    setWelcomeScreenClosed(true);
   };
 
   useLayoutEffect(() => {

@@ -12,8 +12,7 @@ export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
 export const JUMPER_LEARN_PATH = '/learn';
 export const JUMPER_LOYALTY_PATH = '/profile';
 
-// prepare for sitemap
-
+// prepare sitemap
 export const pages = [
   '',
   JUMPER_LEARN_PATH,

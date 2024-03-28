@@ -1,8 +1,8 @@
+import type { MediaAttributes } from '@/types/strapi';
 import CloseIcon from '@mui/icons-material/Close';
 import type { Breakpoint } from '@mui/material';
 import { Fade, useTheme } from '@mui/material';
 import { useState } from 'react';
-import type { MediaAttributes } from 'src/types/strapi';
 import {
   LightboxContainer,
   LightboxImage,
@@ -17,7 +17,6 @@ interface LightboxProps {
 export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -25,10 +24,11 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
   const handleImage = (value: any) => {
     setOpen(true);
   };
+
   return (
     <>
       <PreviewImage
-        src={imageData?.formats.large.url}
+        src={imageData?.url}
         alt={imageData.caption ?? 'article-image'}
         onClick={() => handleImage(imageData.alternativeText)}
       />
@@ -55,12 +55,6 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
               src={imageData?.url}
               alt={imageData.caption ?? 'article-image'}
             />
-            {/* <Typography 
-              variant="lifiHeaderSmall"
-              sx={{ width: 'auto', margin: 0, fontWeight: 400 }}
-            >
-              {imageData?.alternativeText}
-            </Typography> */}
           </LightboxContainer>
         </Fade>
       </LightboxModal>

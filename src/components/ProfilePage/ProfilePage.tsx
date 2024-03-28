@@ -2,6 +2,7 @@ import {
   WarningMessageCard,
   WarningMessageCardTitle,
 } from '@/components/MessageCard';
+import { useAccounts } from '@/hooks/useAccounts';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
@@ -22,7 +23,8 @@ export const ProfilePage = () => {
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { t } = useTranslation();
 
-  const { isSuccess, points, tier, pdas, address } = useLoyaltyPass();
+  const { account } = useAccounts();
+  const { isLoading, points, tier, pdas } = useLoyaltyPass();
   const { quests } = useOngoingQuests();
 
   return (
@@ -31,17 +33,17 @@ export const ProfilePage = () => {
         <Stack direction={'column'} spacing={4} sx={{ marginBottom: 8 }}>
           <Stack direction={'row'} spacing={4}>
             <ProfilePageHeaderBox sx={{ width: '33%' }}>
-              <AddressBox address={address} />
+              <AddressBox
+                address={account?.address}
+                isEVM={account?.chainType === 'EVM'}
+              />
             </ProfilePageHeaderBox>
             <ProfilePageHeaderBox sx={{ width: '67%', padding: '24px' }}>
-              <TierBox points={points} tier={tier} />
+              <TierBox points={points} tier={tier} loading={isLoading} />
             </ProfilePageHeaderBox>
           </Stack>
           <QuestCarousel quests={quests} />
-          <QuestCompletedList
-            pdas={pdas}
-            dataIsFetched={isSuccess || !!address} // we might have an address but no isSuccess if the user has no loyalty pass yet
-          />
+          <QuestCompletedList pdas={pdas} loading={isLoading} />
         </Stack>
       ) : (
         <Box sx={{ marginBottom: 8, marginTop: 16 }}>
