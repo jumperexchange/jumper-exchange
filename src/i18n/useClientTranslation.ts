@@ -36,9 +36,8 @@ i18next
     preload: runsOnServerSide ? locales : [],
     // required to be true for paritally loading languages from resources and backend
     partialBundledLanguages: true,
-    react: { useSuspense: false },
+    react: { useSuspense: true },
     // resources,
-    // fallbackLng: fallbackLng,
     ns: ['translation', 'language'],
     returnEmptyString: false,
   });

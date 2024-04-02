@@ -21,14 +21,9 @@ export const AppProvider: React.FC<PropsWithChildren<AppProviderProps>> = ({
   children,
   fixedPoweredBy,
 }) => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
   const analytics = cookie3Analytics(cookie3Config);
 
-  return isClient ? (
+  return (
     <ReactQueryProvider>
       <ThemeProvider>
         <ArcxAnalyticsProvider
@@ -46,5 +41,5 @@ export const AppProvider: React.FC<PropsWithChildren<AppProviderProps>> = ({
         </ArcxAnalyticsProvider>
       </ThemeProvider>
     </ReactQueryProvider>
-  ) : null;
+  );
 };
