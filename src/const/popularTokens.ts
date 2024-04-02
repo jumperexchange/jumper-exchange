@@ -6,7 +6,7 @@ const ETH_USDC = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
 const ETH_DAI = '0x6b175474e89094c44da98b954eedeac495271d0f';
 const ETH_WBTC = '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599';
 
-export const ethereum_token_selection = [
+export const ethereum_popular_tokens = [
   ETH_ETHEREUM,
   ETH_WETH,
   ETH_USDT,
@@ -24,7 +24,7 @@ const ARB_DAI = '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1';
 const ARB_WBTC = '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f';
 const ARB_ARBITRUM = '0x912ce59144191c1204e64559fe8253a0e49e6548';
 
-export const arb_token_selection = [
+export const arb_popular_tokens = [
   ARB_ETHEREUM,
   ARB_WETH,
   ARB_USDT,
@@ -43,7 +43,7 @@ const OP_DAI = '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1';
 const OP_WBTC = '0x68f180fcce6836688e9084f035309e29bf0a2095';
 const OP_OPTIMISM = '0x4200000000000000000000000000000000000042';
 
-export const op_token_selection = [
+export const op_popular_tokens = [
   OP_ETHEREUM,
   OP_WETH,
   OP_USDT,
@@ -62,7 +62,7 @@ const MATIC_DAI = '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063';
 const MATIC_WBTC = '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6';
 const MATIC_WETH = '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619';
 
-export const matic_token_selection = [
+export const matic_popular_tokens = [
   MATIC_POLYGON,
   MATIC_WMATIC,
   MATIC_USDT,
@@ -80,7 +80,7 @@ const BSC_USDC = '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d';
 const BSC_DAI = '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3';
 const BSC_WETH = '0x2170Ed0880ac9A755fd29B2688956BD959F933F8';
 
-export const bsc_token_selection = [
+export const bsc_popular_tokens = [
   BSC_BNB,
   BSC_WBNB,
   BSC_USDT,
@@ -95,7 +95,7 @@ const ZKSYNC_WETH = '0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91';
 const ZKSYNC_USDT = '0x493257fD37EDB34451f62EDf8D2a0C418852bA4C';
 const ZKSYNC_USDC = '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4';
 
-export const zksync_token_selection = [
+export const zksync_popular_tokens = [
   ZKSYNC_ETHEREUM,
   ZKSYNC_WETH,
   ZKSYNC_USDT,
@@ -110,7 +110,7 @@ const POLZK_DAI = '0xC5015b9d9161Dca7e18e32f6f25C4aD850731Fd4';
 const POLZK_USDT = '0x1E4a5963aBFD975d8c9021ce480b42188849D41d';
 const POLZK_MATIC = '0xa2036f0538221a77A3937F1379699f44945018d0';
 
-export const polzk_token_selection = [
+export const polzk_popular_tokens = [
   POLZK_ETHEREUM,
   POLZK_WETH,
   POLZK_USDC,
@@ -126,7 +126,7 @@ const BASE_USDBC = '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca';
 const BASE_USDC = '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913';
 const BASE_DAI = '0x50c5725949a6f0c72e6c4a641f24049a917db0cb';
 
-export const base_token_selection = [
+export const base_popular_tokens = [
   BASE_ETHEREUM,
   BASE_WETH,
   BASE_USDBC,
@@ -144,7 +144,7 @@ const AVAX_WBTC = '0x50b7545627a5162F82A992c33b87aDc75187B218';
 const AVAX_WETHE = '0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB';
 const AVAX_USDCE = '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664';
 
-export const avax_token_selection = [
+export const avax_popular_tokens = [
   AVAX_AVALANCHE,
   AVAX_WAVAX,
   AVAX_USDTE,
@@ -162,7 +162,7 @@ const LINEA_USDT = '0xA219439258ca9da29E9Cc4cE5596924745e12B93';
 const LINEA_USDCE = '0x176211869cA2b568f2A7D4EE941E073a821EE1ff';
 const LINEA_DAI = '0x4AF15ec2A0BD43Db75dd04E62FAA3B8EF36b00d5';
 
-export const linea_token_selection = [
+export const linea_popular_tokens = [
   LINEA_ETHEREUM,
   LINEA_WETH,
   LINEA_USDT,
@@ -179,7 +179,7 @@ const GNO_USDT = '0x4ECaBa5870353805a9F068101A40E0f32ed605C6';
 const GNO_WETH = '0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1';
 const GNO_WBTC = '0x8e5bBbb09Ed1ebdE8674Cda39A0c169401db4252';
 
-export const gnosis_token_selection = [
+export const gnosis_popular_tokens = [
   GNO_XDAI,
   GNO_WXDAI,
   GNO_GNOSIS,
@@ -194,7 +194,7 @@ const FTM_FANTOM = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 const FTM_WFTM = '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83';
 const FTM_USDC = '0x04068da6c83afcfa0e13ba15a6696662335d5b75';
 
-export const ftm_token_selection = [FTM_FANTOM, FTM_WFTM, FTM_USDC];
+export const ftm_popular_tokens = [FTM_FANTOM, FTM_WFTM, FTM_USDC];
 
 // Moonbeam
 const GLMR_MOONBEAM = '0x0000000000000000000000000000000000000000';
@@ -203,7 +203,7 @@ const GLMR_USDC = '0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b';
 const GLMR_WETH = '0xfA9343C3897324496A05fC75abeD6bAC29f8A40f';
 const GLMR_WBTC = '0x922D641a426DcFFaeF11680e5358F34d97d112E1';
 
-export const glmr_token_selection = [
+export const glmr_popular_tokens = [
   GLMR_MOONBEAM,
   GLMR_WGLMR,
   GLMR_USDC,
@@ -219,7 +219,7 @@ const FUSE_USDT = '0xFaDbBF8Ce7D5b7041bE672561bbA99f79c532e10';
 const FUSE_WETH = '0xa722c13135930332Eb3d749B2F0906559D2C5b99';
 const FUSE_WBTC = '0x33284f95ccb7B948d9D352e1439561CF83d8d00d';
 
-export const fuse_token_selection = [
+export const fuse_popular_tokens = [
   FUSE_FUSE,
   FUSE_WFUSE,
   FUSE_USDC,
@@ -237,7 +237,7 @@ const OKX_DAIK = '0x21cDE7E32a6CAF4742d00d44B07279e7596d26B9';
 const OKX_ETHK = '0xEF71CA2EE68F45B9Ad6F72fbdb33d707b872315C';
 const OKX_WBTC = '0x506f731F7656e2FB34b587B912808f2a7aB640BD';
 
-export const okx_token_selection = [
+export const okx_popular_tokens = [
   OKX_OKT,
   OKX_WOKT,
   OKX_USDT,
@@ -256,7 +256,7 @@ const BOBA_DAI = '0xf74195Bb8a5cf652411867c5C2C5b8C2a402be35';
 const BOBA_WBTC = '0xdc0486f8bf31DF57a952bcd3c1d3e166e3d9eC8b';
 const BOBA_BOBA = '0xa18bF3994C0Cc6E3b63ac420308E5383f53120D7';
 
-export const boba_token_selection = [
+export const boba_popular_tokens = [
   BOBA_ETHEREUM,
   BOBA_WETH,
   BOBA_USDT,
@@ -274,7 +274,7 @@ const AURORA_USDCE = '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802';
 const AURORA_WBTC = '0xF4eB217Ba2454613b15dBdea6e5f22276410e89e';
 const AURORA_AURORA = '0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79';
 
-export const aurora_token_selection = [
+export const aurora_popular_tokens = [
   AURORA_ETHEREUM,
   AURORA_WETH,
   AURORA_USDTE,
@@ -284,12 +284,12 @@ export const aurora_token_selection = [
 ];
 
 // Solana
-// const SOL_SOLANA = '????'
+const SOL_SOLANA = 'So11111111111111111111111111111111111111112';
 const SOL_USDC = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 const SOL_USDT = 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB';
 const SOL_WSOL = 'So11111111111111111111111111111111111111112';
 
-export const sol_token_selection = [SOL_USDC, SOL_USDT, SOL_WSOL];
+export const sol_popular_tokens = [SOL_SOLANA, SOL_USDC, SOL_USDT, SOL_WSOL];
 
 // Metis
 const METIS_METIS = '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000';
@@ -299,7 +299,7 @@ const METIS_MUSDT = '0xbB06DCA3AE6887fAbF931640f67cab3e3a16F4dC';
 const METIS_MDAI = '0x4c078361FC9BbB78DF910800A991C7c3DD2F6ce0';
 const METIS_WETH = '0x420000000000000000000000000000000000000A';
 
-export const metis_token_selection = [
+export const metis_popular_tokens = [
   METIS_METIS,
   METIS_WMETIS,
   METIS_MUSDC,
