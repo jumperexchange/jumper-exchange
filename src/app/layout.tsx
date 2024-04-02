@@ -1,5 +1,8 @@
 import Script from 'next/script';
 import React from 'react';
+import { metadata as JumperMetadata } from './lib/metadata';
+
+export const metadata = JumperMetadata;
 
 export default function RootLayout({
   children,

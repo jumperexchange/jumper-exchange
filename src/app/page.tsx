@@ -2,7 +2,6 @@
 import { locales } from '@/i18n/i18next-locales';
 import { fallbackLng } from '@/i18n/i18next-settings';
 import dynamic from 'next/dynamic';
-import { generateMetadata } from './lib/generateMetadata';
 
 interface PageProps {
   params: {
@@ -16,8 +15,6 @@ export default async function Page({ params: { lng } }: PageProps) {
   if (locales.indexOf(lng) < 0) {
     lng = fallbackLng;
   }
-
-  generateMetadata();
 
   return <App starterVariant="default" />;
 }

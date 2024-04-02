@@ -1,5 +1,4 @@
 import dynamic from 'next/dynamic';
-import { generateMetadata } from 'src/app/lib/generateMetadata';
 import { getArticles } from 'src/app/lib/getArticles';
 import { getFeaturedArticle } from 'src/app/lib/getFeaturedArticle';
 
@@ -15,7 +14,6 @@ export default async function Page({
     lng: string;
   };
 }) {
-  generateMetadata();
   const featuredArticle = await getFeaturedArticle();
   const carouselArticles = await getArticles(featuredArticle.data.id);
   return (
