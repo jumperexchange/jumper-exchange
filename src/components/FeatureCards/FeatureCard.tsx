@@ -126,6 +126,9 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
   ) => {
     event.stopPropagation();
+    !data?.attributes.DisplayConditions?.hasOwnProperty('showOnce') &&
+      !!data?.attributes.uid &&
+      setDisabledFeatureCard(data?.attributes.uid);
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.ClickFeatureCard,
