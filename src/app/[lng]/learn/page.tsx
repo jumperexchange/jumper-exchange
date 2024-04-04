@@ -3,7 +3,7 @@ import { getArticles } from 'src/app/lib/getArticles';
 import { getFeaturedArticle } from 'src/app/lib/getFeaturedArticle';
 
 const LearnPage = dynamic(() => import('../../ui/learn/LearnPage'), {
-  ssr: false,
+  ssr: true,
 });
 
 // `app/ui/learn/page.tsx` is the UI for the `/learn` URL

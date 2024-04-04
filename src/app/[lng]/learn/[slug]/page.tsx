@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 const LearnArticlePageWrapper = dynamic(
   () => import('../../../ui/learn/LearnArticlePage'),
   {
-    ssr: false,
+    ssr: true,
   },
 );
 
