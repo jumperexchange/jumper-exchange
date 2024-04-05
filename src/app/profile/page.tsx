@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 
 const ProfilePageWrapper = dynamic(() => import('../ui/profile/ProfilePage'), {
-  ssr: true,
+  ssr: false,
 });
 
 // `app/ui/learn/page.tsx` is the UI for the `/learn` URL

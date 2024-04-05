@@ -20,7 +20,9 @@ import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 
 export const ProfilePage = () => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
+  );
   const { t } = useTranslation();
 
   const { account } = useAccounts();
@@ -29,23 +31,7 @@ export const ProfilePage = () => {
 
   return (
     <ProfilePageContainer>
-      {isDesktop ? (
-        <Stack direction={'column'} spacing={4} sx={{ marginBottom: 8 }}>
-          <Stack direction={'row'} spacing={4}>
-            <ProfilePageHeaderBox sx={{ width: '33%' }}>
-              <AddressBox
-                address={account?.address}
-                isEVM={account?.chainType === 'EVM'}
-              />
-            </ProfilePageHeaderBox>
-            <ProfilePageHeaderBox sx={{ width: '67%', padding: '24px' }}>
-              <TierBox points={points} tier={tier} loading={isLoading} />
-            </ProfilePageHeaderBox>
-          </Stack>
-          <QuestCarousel quests={quests} />
-          <QuestCompletedList pdas={pdas} loading={isLoading} />
-        </Stack>
-      ) : (
+      {isMobile ? (
         <Box sx={{ marginBottom: 8, marginTop: 16 }}>
           <WarningMessageCard sx={{ width: 350 }}>
             <WarningMessageCardTitle display="flex" alignItems="center">
@@ -63,6 +49,22 @@ export const ProfilePage = () => {
             </Typography>
           </WarningMessageCard>
         </Box>
+      ) : (
+        <Stack direction={'column'} spacing={4} sx={{ marginBottom: 8 }}>
+          <Stack direction={'row'} spacing={4}>
+            <ProfilePageHeaderBox sx={{ width: '33%' }}>
+              <AddressBox
+                address={account?.address}
+                isEVM={account?.chainType === 'EVM'}
+              />
+            </ProfilePageHeaderBox>
+            <ProfilePageHeaderBox sx={{ width: '67%', padding: '24px' }}>
+              <TierBox points={points} tier={tier} loading={isLoading} />
+            </ProfilePageHeaderBox>
+          </Stack>
+          <QuestCarousel quests={quests} />
+          <QuestCompletedList pdas={pdas} loading={isLoading} />
+        </Stack>
       )}
     </ProfilePageContainer>
   );
