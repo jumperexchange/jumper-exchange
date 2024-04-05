@@ -1,7 +1,6 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
-import { Typography, useTheme } from '@mui/material';
-import { ButtonSecondary } from 'src/components';
+import { Button, Typography, useTheme } from '@mui/material';
 import type { MenuKeys } from 'src/const';
 import {
   TrackingAction,
@@ -77,7 +76,7 @@ export const MenuItem = ({
       <>
         {children}
         {showButton && (
-          <ButtonSecondary fullWidth>
+          <Button variant="secondary" fullWidth>
             {prefixIcon}
             <Typography
               variant={'lifiBodyMediumStrong'}
@@ -100,7 +99,7 @@ export const MenuItem = ({
               {label}
             </Typography>
             {suffixIcon ?? null}
-          </ButtonSecondary>
+          </Button>
         )}
         {!showButton && (
           <>

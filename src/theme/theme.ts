@@ -1,7 +1,7 @@
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
-import type React from 'react';
+import { shape } from './themeStyles';
 
 declare module '@mui/material/styles' {
   interface Shape {
@@ -26,10 +26,6 @@ declare module '@mui/material/styles' {
     surface1: Palette['primary'];
     surface2: Palette['primary'];
     surface3: Palette['primary'];
-    templateBg: Palette['primary'];
-    templateOutline: Palette['primary'];
-    dataBg: Palette['primary'];
-    dataOutline: Palette['primary'];
     bg: Palette['primary'];
     shadow: Palette['primary'];
     alphaDark100: Palette['primary'];
@@ -60,10 +56,6 @@ declare module '@mui/material/styles' {
     surface1?: PaletteOptions['primary'];
     surface2?: PaletteOptions['primary'];
     surface3?: PaletteOptions['primary'];
-    templateBg?: Palette['primary'];
-    templateOutline?: Palette['primary'];
-    dataBg?: Palette['primary'];
-    dataOutline?: Palette['primary'];
     bg?: PaletteOptions['primary'];
     shadow?: PaletteOptions['primary'];
     alphaDark100?: PaletteOptions['primary'];
@@ -141,41 +133,6 @@ declare module '@mui/material/styles' {
     lifiMono1: React.CSSProperties;
   }
 }
-declare module '@mui/material/Button' {
-  interface ButtonPropsColorOverrides {
-    tertiary: true;
-    white: true;
-    black: true;
-    accent1: true;
-    accent1Alt: true;
-    accent2: true;
-    surface1: true;
-    surface2: true;
-    surface3: true;
-    templateBg: true;
-    templateOutline: true;
-    dataBg: true;
-    dataOutline: true;
-    bg: true;
-    shadow: true;
-    alphaDark100: true;
-    alphaDark200: true;
-    alphaDark300: true;
-    alphaDark400: true;
-    alphaDark500: true;
-    alphaDark600: true;
-    alphaDark700: true;
-    alphaDark800: true;
-    alphaLight100: true;
-    alphaLight200: true;
-    alphaLight300: true;
-    alphaLight400: true;
-    alphaLight500: true;
-    alphaLight600: true;
-    alphaLight700: true;
-    alphaLight800: true;
-  }
-}
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     '@supports (font-variation-settings: normal)': true;
@@ -204,15 +161,18 @@ declare module '@mui/material/Typography' {
   }
 }
 
-const shape = {
-  borderRadius: 12,
-  borderRadiusSecondary: 8,
-};
+declare module '@mui/material/Button' {
+  interface ButtonPropsVariantOverrides {
+    primary: true;
+    secondary: true;
+    transparent: true;
+  }
+}
 
-const themeBase: Theme = createTheme();
+export const themeBase: Theme = createTheme();
 
 // in a separate 'createTheme' to allow listening to breakpoints set above
-const themeCustomized: Theme = createTheme({
+export const themeCustomized: Theme = createTheme({
   shape: {
     ...shape,
   },
@@ -262,22 +222,6 @@ const themeCustomized: Theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         '@supports': { fontVariationSettings: 'normal' },
-      },
-    },
-    MuiButton: {
-      defaultProps: {
-        size: 'large',
-      },
-      styleOverrides: {
-        sizeSmall: {
-          height: 32,
-        },
-        sizeMedium: {
-          height: 40,
-        },
-        sizeLarge: {
-          height: 48,
-        },
       },
     },
     MuiTypography: {
@@ -766,185 +710,6 @@ const themeCustomized: Theme = createTheme({
   },
 });
 
-const themePreset: Theme = createTheme(deepmerge(themeBase, themeCustomized));
-
-export const lightTheme: Theme = createTheme(
-  deepmerge(themePreset, {
-    palette: {
-      mode: 'light',
-      background: {
-        default:
-          'linear-gradient(180deg, #F9F5FF 0%, #F3EBFF 49.48%, #F9F5FF 99.48%)',
-      },
-      text: {
-        primary: '#000',
-      },
-      grey: {
-        300: '#E5E1EB',
-      },
-      bg: {
-        light: '#F3EBFF',
-        main: '#F3EBFF',
-        dark: '#F3EBFF',
-      },
-      shadow: {
-        light: '#F3EBFF',
-        main: '#F3EBFF',
-        dark: '#F3EBFF',
-      },
-      primary: {
-        light: '#31007A',
-        main: '#31007A',
-        dark: '#31007A',
-      },
-      secondary: {
-        light: '#E9E1F5',
-        main: '#E9E1F5',
-        dark: '#E9E1F5',
-      },
-      tertiary: {
-        light: '#FCEBFF',
-        main: '#FCEBFF',
-        dark: '#FCEBFF',
-      },
-      accent1: {
-        light: '#31007A',
-        main: '#31007A',
-        dark: '#31007A',
-      },
-      accent2: {
-        light: '#8700B8',
-        main: '#8700B8',
-        dark: '#8700B8',
-      },
-      surface1: {
-        light: '#FCFAFF',
-        main: '#FCFAFF',
-        dark: '#FCFAFF',
-      },
-      surface2: {
-        light: '#FFFFFF',
-        main: '#FFFFFF',
-        dark: '#FFFFFF',
-      },
-      surface3: {
-        light: '#E5E1EB',
-        main: '#E5E1EB',
-        dark: '#E5E1EB',
-      },
-      templateBg: {
-        light: '#FEF5FF',
-        main: '#FEF5FF',
-        dark: '#FEF5FF',
-      },
-      templateOutline: {
-        light: '#C95CFF',
-        main: '#C95CFF',
-        dark: '#C95CFF',
-      },
-      dataBg: {
-        light: '#F5F6FF',
-        main: '#F5F6FF',
-        dark: '#F5F6FF',
-      },
-      dataOutline: {
-        light: '#7B61FF',
-        main: '#7B61FF',
-        dark: '#7B61FF',
-      },
-    },
-  }),
-);
-
-export const darkTheme: Theme = createTheme(
-  deepmerge(themePreset, {
-    palette: {
-      mode: 'dark',
-      background: {
-        default:
-          'linear-gradient(180deg, #000000 0%, #0C001F 49.48%, #000000 99.48%)', //'#241D52',
-      },
-      text: {
-        primary: '#fff',
-      },
-      grey: {
-        800: '#302B52',
-      },
-      bg: {
-        light: '#030014',
-        main: '#030014',
-        dark: '#030014',
-      },
-      shadow: {
-        light: '#F3EBFF',
-        main: '#F3EBFF',
-        dark: '#F3EBFF',
-      },
-      primary: {
-        light: '#653BA3',
-        main: '#653BA3',
-        dark: '#653BA3',
-      },
-      secondary: {
-        light: '#321D52',
-        main: '#321D52',
-        dark: '#321D52',
-      },
-      tertiary: {
-        light: '#33163D',
-        main: '#33163D',
-        dark: '#33163D',
-      },
-      accent1: {
-        light: '#653BA3',
-        main: '#653BA3',
-        dark: '#653BA3',
-      },
-      accent1Alt: {
-        light: '#BEA0EB',
-        main: '#BEA0EB',
-        dark: '#BEA0EB',
-      },
-      accent2: {
-        light: '#D35CFF',
-        main: '#D35CFF',
-        dark: '#D35CFF',
-      },
-      surface1: {
-        light: '#120F29',
-        main: '#120F29',
-        dark: '#120F29',
-      },
-      surface2: {
-        light: '#24203D',
-        main: '#24203D',
-        dark: '#24203D',
-      },
-      surface3: {
-        light: '#302B52',
-        main: '#302B52',
-        dark: '#302B52',
-      },
-      templateBg: {
-        light: '#401946',
-        main: '#401946',
-        dark: '#401946',
-      },
-      templateOutline: {
-        light: '#D47BEB',
-        main: '#D47BEB',
-        dark: '#D47BEB',
-      },
-      dataBg: {
-        light: '#28203D',
-        main: '#28203D',
-        dark: '#28203D',
-      },
-      dataOutline: {
-        light: '#B8ADFF',
-        main: '#B8ADFF',
-        dark: '#B8ADFF',
-      },
-    },
-  }),
+export const themePreset: Theme = createTheme(
+  deepmerge(themeBase, themeCustomized),
 );

@@ -1,9 +1,9 @@
 import type { Breakpoint } from '@mui/material';
-import { Slide, Typography, useTheme } from '@mui/material';
+import { Button, Slide, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { ButtonPrimary, CustomColor, ToolCards } from 'src/components';
+import { CustomColor, ToolCards } from 'src/components';
 import {
   TrackingAction,
   TrackingCategory,
@@ -178,7 +178,8 @@ export const WelcomeScreen = () => {
               openDexsToolModal={openDexsToolModal}
               setOpenDexsToolModal={setOpenDexsToolModal}
             />
-            <ButtonPrimary
+            <Button
+              variant="primary"
               onClick={handleGetStarted}
               sx={(theme) => ({
                 height: 48,
@@ -207,7 +208,7 @@ export const WelcomeScreen = () => {
               >
                 {t('navbar.welcome.cta')}
               </Typography>
-            </ButtonPrimary>
+            </Button>
           </WelcomeContent>
           {/* <FeaturedArticle
             showIntro={true}

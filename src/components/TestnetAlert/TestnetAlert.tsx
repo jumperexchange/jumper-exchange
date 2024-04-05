@@ -1,11 +1,7 @@
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
-import { Typography, useTheme } from '@mui/material';
+import { Button, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import {
-  Button,
-  WarningMessageCard,
-  WarningMessageCardTitle,
-} from 'src/components';
+import { WarningMessageCard, WarningMessageCardTitle } from 'src/components';
 import { JUMPER_URL } from 'src/const';
 import { appendUTMParametersToLink, openInNewTab } from 'src/utils';
 export const TestnetAlert = () => {
@@ -37,7 +33,7 @@ export const TestnetAlert = () => {
       <Button
         variant="transparent"
         onClick={handleClick}
-        styles={{ marginTop: theme.spacing(1.5), width: '100%' }}
+        sx={{ marginTop: theme.spacing(1.5), width: '100%' }}
       >
         {t('alert.switchToMainnet')}
       </Button>

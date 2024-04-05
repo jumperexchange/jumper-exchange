@@ -1,11 +1,10 @@
 import type { Chain } from '@lifi/types';
 import { getConnectorIcon } from '@lifi/wallet-management';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import type { ReactElement } from 'react';
 import React, { useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  ConnectButton,
   WalletMenu,
   WalletMenuButton,
   WalletMgmtBadge,
@@ -106,13 +105,14 @@ export const WalletManagementButtons: React.FC<
     <>
       <div ref={walletManagementButtonsRef}>
         {!account?.address || redirectToLearn ? (
-          <ConnectButton
+          <Button
             // Used in the widget
+            variant="primary"
             id="connect-wallet-button"
             onClick={handleWalletSelectClick}
           >
             {connectButtonLabel}
-          </ConnectButton>
+          </Button>
         ) : (
           <WalletMenuButton
             id="wallet-digest-button"

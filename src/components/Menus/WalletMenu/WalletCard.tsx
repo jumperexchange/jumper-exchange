@@ -2,10 +2,10 @@ import type { Chain } from '@lifi/sdk';
 import { getConnectorIcon } from '@lifi/wallet-management';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { Button, Skeleton, Stack, Typography } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Button } from 'src/components';
+import { Avatar } from 'src/components';
 import { TrackingAction, TrackingCategory } from 'src/const';
 import { useChains, useMultisig, useUserTracking } from 'src/hooks';
 import type { Account } from 'src/hooks/useAccounts';
@@ -118,7 +118,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             variant="transparent"
             size="medium"
             disabled={isMultisigEnvironment}
-            styles={{ width: '100%', gridColumn: '1/3', gridRow: '1/2' }}
+            sx={{ width: '100%', gridColumn: '1/3', gridRow: '1/2' }}
             onClick={() => handleCopyButton()}
           >
             <Typography variant="lifiBodySmallStrong">
@@ -129,7 +129,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             variant="transparent"
             size="medium"
             onClick={() => handleExploreButton()}
-            styles={{
+            sx={{
               gridColumn: '1/2',
               gridRow: '2/3',
             }}

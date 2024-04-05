@@ -1,7 +1,9 @@
-import { useTheme } from '@mui/material';
-import { Button } from '../../Button';
-import DoneIcon from '@mui/icons-material/Done';
 import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
+import DoneIcon from '@mui/icons-material/Done';
+import { Button, useTheme } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { XPIcon } from '../../illustrations/XPIcon';
+import { CenteredBox, ProfilePageTypography } from '../ProfilePage.style';
 import {
   CompletedBox,
   QuestCardBottomBox,
@@ -12,9 +14,6 @@ import {
   QuestPlatformMainBox,
   XPDisplayBox,
 } from './QuestCard.style';
-import { CenteredBox, ProfilePageTypography } from '../ProfilePage.style';
-import { useTranslation } from 'react-i18next';
-import { XPIcon } from '../../illustrations/XPIcon';
 
 interface QuestCardProps {
   active?: boolean;
@@ -155,7 +154,7 @@ export const QuestCard = ({
               <Button
                 variant="secondary"
                 size="medium"
-                styles={{ alignItems: 'center', width: '100%' }}
+                sx={{ alignItems: 'center', width: '100%' }}
               >
                 <ProfilePageTypography
                   fontSize={'16px'}

@@ -1,6 +1,5 @@
-import type { ButtonProps } from '@mui/material';
+import { Button, type ButtonProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ButtonSecondary } from 'src/components/Button/Button.style';
 import { getContrastAlphaColor } from 'src/utils';
 
 export const NavbarButtonsContainer = styled('div')({
@@ -8,7 +7,7 @@ export const NavbarButtonsContainer = styled('div')({
   justifySelf: 'self-end',
 });
 
-export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => ({
+export const MenuToggle = styled(Button)<ButtonProps>(({ theme }) => ({
   justifyContent: 'center',
   backgroundColor: 'transparent',
   color:

@@ -1,5 +1,5 @@
-import { useTheme } from '@mui/material';
-import { Button, JumperLogo } from 'src/components';
+import { Button, useTheme } from '@mui/material';
+import { JumperLogo } from 'src/components';
 import { LogoLink } from '../Navbar';
 
 import { useTranslation } from 'react-i18next';
@@ -62,7 +62,7 @@ export function FallbackError() {
             });
             openInNewTab(DISCORD_URL);
           }}
-          styles={{
+          sx={{
             width: 'auto',
             margin: theme.spacing(1.5),
             gap: '8px',
