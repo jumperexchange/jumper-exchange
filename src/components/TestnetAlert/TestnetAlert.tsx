@@ -31,7 +31,7 @@ export const TestnetAlert = () => {
         {t('alert.testnet')}
       </Typography>
       <Button
-        variant="transparent"
+        variant="alpha"
         onClick={handleClick}
         sx={{ marginTop: theme.spacing(1.5), width: '100%' }}
       >

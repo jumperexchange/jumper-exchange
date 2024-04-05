@@ -115,7 +115,7 @@ export const WalletManagementButtons: React.FC<
           </Button>
         ) : (
           <WalletMenuButton
-            variant="transparent"
+            variant="alpha"
             id="wallet-digest-button"
             onClick={handleWalletMenuClick}
           >

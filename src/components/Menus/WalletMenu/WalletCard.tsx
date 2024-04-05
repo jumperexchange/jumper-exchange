@@ -115,7 +115,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
         </WalletCardBadge>
         <WalletCardButtonContainer>
           <Button
-            variant="transparent"
+            variant="alpha"
             size="medium"
             disabled={isMultisigEnvironment}
             sx={{ width: '100%', gridColumn: '1/3', gridRow: '1/2' }}
@@ -126,7 +126,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             </Typography>
           </Button>
           <Button
-            variant="transparent"
+            variant="alpha"
             size="medium"
             onClick={() => handleExploreButton()}
             sx={{

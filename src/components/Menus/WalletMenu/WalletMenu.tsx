@@ -62,7 +62,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           ) : null,
         )}
         <WalletButton
-          variant="transparent"
+          variant="alpha"
           sx={{ width: '100%' }}
           onClick={() => {
             closeAllMenus();
