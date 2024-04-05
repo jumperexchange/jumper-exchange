@@ -1,8 +1,7 @@
-import { Avatar, Badge } from '@mui/material';
+import { Avatar, Badge, Button } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { avatarMask12 } from 'src/components';
-import { ButtonPrimary, ButtonTransparent } from 'src/components/Button';
 import { getContrastAlphaColor } from 'src/utils';
 
 export const WalletMgmtAvatarContainer = styled('div')(({ theme }) => ({
@@ -15,7 +14,7 @@ export const WalletMgmtWalletAvatar = styled(Avatar)(() => ({
   width: 32,
 }));
 
-export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
+export const ConnectButton = styled(Button)(({ theme }) => ({
   display: 'none',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
@@ -23,7 +22,7 @@ export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
   },
 }));
 
-export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
+export const WalletMenuButton = styled(Button)(({ theme }) => ({
   padding: theme.spacing(1),
   paddingRight: theme.spacing(1.5),
   backgroundColor:

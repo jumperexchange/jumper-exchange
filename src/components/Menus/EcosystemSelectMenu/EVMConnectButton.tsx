@@ -27,7 +27,7 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
     closeAllMenus();
   };
   return (
-    <ConnectButton onClick={() => connectHandler()}>
+    <ConnectButton variant="primary" onClick={() => connectHandler()}>
       <EcoSystemSelectBadge
         overlap="circular"
         className="badge"

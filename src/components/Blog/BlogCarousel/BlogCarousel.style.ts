@@ -1,6 +1,5 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, alpha, styled } from '@mui/material';
-import { ButtonPrimary } from '../../Button';
+import { Box, Button, alpha, styled } from '@mui/material';
 
 export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor:
@@ -51,7 +50,7 @@ export const SeeAllButtonContainer = styled(Box, {
   },
 }));
 
-export const SeeAllButton = styled(ButtonPrimary)(({ theme }) => ({
+export const SeeAllButton = styled(Button)(({ theme }) => ({
   color: 'inherit',
   backgroundColor:
     theme.palette.mode === 'light'

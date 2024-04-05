@@ -53,6 +53,8 @@ export const darkTheme: Theme = createTheme(
             props: (props: { variant: string }) =>
               props.variant === 'secondary',
             style: {
+              ...buttonStyles,
+              color: themeCustomized.palette.white.main,
               backgroundColor: alpha(darkColors.primary.main, 0.42),
               '&:hover': {
                 backgroundColor: alpha(darkColors.primary.main, 0.56),
@@ -63,6 +65,8 @@ export const darkTheme: Theme = createTheme(
             props: (props: { variant: string }) =>
               props.variant === 'transparent',
             style: {
+              ...buttonStyles,
+              color: themeCustomized.palette.white.main,
               backgroundColor: alpha(themeCustomized.palette.white.main, 0.12),
               '&:hover': {
                 backgroundColor: alpha(
