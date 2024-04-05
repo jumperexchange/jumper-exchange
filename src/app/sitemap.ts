@@ -1,8 +1,8 @@
 import { JUMPER_LEARN_PATH, pages } from '@/const/urls';
 import { locales } from '@/i18n/i18next-locales';
-import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import type { MetadataRoute } from 'next';
 import type { ChangeFrequency, SitemapPage } from 'src/types/sitemap';
+import type { BlogArticleData, StrapiResponse } from 'src/types/strapi';
 import { getArticles } from './lib/getArticles';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -13,14 +13,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date().toISOString().split('T')[0],
       changeFrequency: 'weekly' as ChangeFrequency,
       priority: route.priority,
-      alternates: JSON.stringify({
+      alternates: {
         languages: locales.reduce((acc, locale) => {
           return {
             ...acc,
-            [locale]: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}${route.path}`,
+            [locale !== 'en' ? locale : 'x-default']:
+              `${process.env.NEXT_PUBLIC_SITE_URL}/${locale !== 'en' ? locale + '/' : ''}${route.path}`,
           };
         }, {}),
-      }),
+      },
     };
   });
 
@@ -36,14 +37,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             .toISOString()
             .split('T')[0],
           changeFrequency: 'weekly' as ChangeFrequency,
-          alternates: JSON.stringify({
+          alternates: {
             languages: locales.reduce((acc, locale) => {
               return {
                 ...acc,
-                [locale]: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}${el.attributes.Slug}`,
+                [locale !== 'en' ? locale : 'x-default']:
+                  `${process.env.NEXT_PUBLIC_SITE_URL}/${locale !== 'en' ? locale + '/' : ''}/${el.attributes.Slug}`,
               };
             }, {}),
-          }),
+          },
           priority: 0.8,
         };
       }),

@@ -6,10 +6,8 @@ export const metadata = JumperMetadata;
 
 export default function RootLayout({
   children,
-  params: { lng },
 }: {
   children: React.ReactNode;
-  params: { lng: string };
 }) {
   // if (locales.indexOf(lng) < 0) {
   //   lng = fallbackLng;

@@ -12,7 +12,7 @@ export default function RootLayout({
   //   lng = fallbackLng;
   // }
   return (
-    <html lang="en">
+    <html lang={lng}>
       <head>
         <Script
           async
