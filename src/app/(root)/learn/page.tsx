@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 import { getArticles } from 'src/app/lib/getArticles';
 import { getFeaturedArticle } from 'src/app/lib/getFeaturedArticle';
 
-const LearnPage = dynamic(() => import('../ui/learn/LearnPage'), {
+const LearnPage = dynamic(() => import('../../ui/learn/LearnPage'), {
   ssr: true,
 });
 

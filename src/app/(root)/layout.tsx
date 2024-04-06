@@ -1,19 +1,22 @@
 import Script from 'next/script';
 import React from 'react';
-import { metadata as JumperMetadata } from './lib/metadata';
+import { fallbackLng } from 'src/i18n';
+import { AppProvider } from 'src/providers/AppProvider';
+import { metadata as JumperMetadata } from '../lib/metadata';
 
 export const metadata = JumperMetadata;
 
 export default function RootLayout({
   children,
+  params: { lng },
 }: {
   children: React.ReactNode;
+  params: { lng: string };
 }) {
-  // if (locales.indexOf(lng) < 0) {
-  //   lng = fallbackLng;
-  // }
+  console.log('LNG IN LAYOUT:', lng);
+
   return (
-    <html lang="en">
+    <html lang={lng || fallbackLng}>
       <head>
         <Script
           async
@@ -29,7 +32,9 @@ export default function RootLayout({
         </Script>
       </head>
 
-      <body>{children}</body>
+      <body>
+        <AppProvider>{children}</AppProvider>
+      </body>
     </html>
   );
 }

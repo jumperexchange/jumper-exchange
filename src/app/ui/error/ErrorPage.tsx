@@ -18,6 +18,7 @@ import {
 import { DISCORD_URL } from '@/const/urls';
 import { getContrastAlphaColor } from '@/utils/colors';
 import { openInNewTab } from '@/utils/openInNewTab';
+import { AppProvider } from 'src/providers/AppProvider';
 import {
   CenteredContainer,
   ErrorMessage,
@@ -35,7 +36,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
   const { t } = useClientTranslation();
   const { account } = useAccounts();
   return (
-    <>
+    <AppProvider>
       <NavbarContainer>
         <LogoLink>
           <Logo
@@ -101,7 +102,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
           </SupportMessage>
         </Button>
       </CenteredContainer>
-    </>
+    </AppProvider>
   );
 };
 

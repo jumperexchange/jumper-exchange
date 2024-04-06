@@ -5,7 +5,7 @@ import { getArticlesByTag } from 'src/app/lib/getArticlesByTag';
 import dynamic from 'next/dynamic';
 
 const LearnArticlePageWrapper = dynamic(
-  () => import('../../ui/learn/LearnArticlePage'),
+  () => import('../../../ui/learn/LearnArticlePage'),
   {
     ssr: true,
   },

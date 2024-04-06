@@ -1,5 +1,6 @@
 import Script from 'next/script';
 import React from 'react';
+import { AppProvider } from 'src/providers/AppProvider';
 
 export default function RootLayout({
   children,
@@ -28,7 +29,9 @@ export default function RootLayout({
         </Script>
       </head>
 
-      <body>{children}</body>
+      <body>
+        <AppProvider>{children}</AppProvider>
+      </body>
     </html>
   );
 }
