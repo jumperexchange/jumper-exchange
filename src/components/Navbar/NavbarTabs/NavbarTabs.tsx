@@ -1,3 +1,4 @@
+'use client';
 import { Tabs } from '@/components/Tabs';
 import { useActiveTabStore } from '@/stores/activeTab';
 import { useMediaQuery } from '@mui/material';

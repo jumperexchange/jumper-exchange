@@ -2,11 +2,11 @@
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 
-const ErrorPage = dynamic(() => import('./ui/error/ErrorPage'), {
-  ssr: true,
+const ErrorPage = dynamic(() => import('../ui/error/ErrorPage'), {
+  ssr: false,
 });
 
-export default function Error({
+export default async function Error({
   error,
   reset,
 }: {

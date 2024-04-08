@@ -8,16 +8,16 @@ import {
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { cookieName } from '@/i18n/i18next-settings';
 import * as supportedLanguages from '@/i18n/translations';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import type { LanguageKey } from '@/types/i18n';
 import { EventTrackingTool } from '@/types/userTracking';
 import { replaceLocaleInUrl } from '@/utils/replaceLocaleInUrl';
 import { usePathname } from 'next/navigation';
 import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
 
 export const useLanguagesContent = () => {
   const pathname = usePathname();
-  const { i18n } = useClientTranslation();
+  const { i18n } = useTranslation();
   const [_, setCookie] = useCookies([cookieName]);
   const { trackEvent } = useUserTracking();
   const handleSwitchLanguage = (newLanguage: LanguageKey) => {

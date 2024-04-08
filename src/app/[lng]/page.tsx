@@ -1,5 +1,3 @@
-import { locales } from '@/i18n/i18next-locales';
-import { fallbackLng } from '@/i18n/i18next-settings';
 import dynamic from 'next/dynamic';
 
 import type { Viewport } from 'next';
@@ -9,18 +7,13 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const App = dynamic(() => import('../ui/app/App'), { ssr: false });
+const App = dynamic(() => import('../ui/app/App'), { ssr: true });
 
-export default async function Page({
-  params: { lng },
-}: {
-  params: {
-    lng: string;
-  };
-}) {
-  if (locales.indexOf(lng) < 0) {
-    lng = fallbackLng;
-  }
-
-  return <App starterVariant="default" />;
+export default async function Page() {
+  return (
+    <>
+      {/* <p>{t('navbar.welcome.title')}</p> */}
+      <App starterVariant="default" />
+    </>
+  );
 }

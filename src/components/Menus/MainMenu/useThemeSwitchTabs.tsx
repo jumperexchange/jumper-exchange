@@ -4,16 +4,16 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { useSettingsStore } from '@/stores/settings';
 import type { ThemeModesSupported } from '@/types/settings';
 import { EventTrackingTool } from '@/types/userTracking';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
+import { useTranslation } from 'react-i18next';
 
 export const useThemeSwitchTabs = () => {
-  const { t } = useClientTranslation();
+  const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
 
   const setThemeMode = useSettingsStore((state) => state.setThemeMode);

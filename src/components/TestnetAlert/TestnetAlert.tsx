@@ -4,13 +4,13 @@ import {
   WarningMessageCardTitle,
 } from '@/components/MessageCard';
 import { JUMPER_URL } from '@/const/urls';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import { openInNewTab } from '@/utils/openInNewTab';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import { Typography, useTheme } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 export const TestnetAlert = () => {
-  const { t } = useClientTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
 
   const PROD_URL = appendUTMParametersToLink(JUMPER_URL, {

@@ -9,17 +9,24 @@ import { ThemeProvider } from '@/providers/ThemeProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
 import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
 import { cookie3Analytics } from '@cookie3/analytics';
-import { useEffect, useState, type PropsWithChildren } from 'react';
+import type { Resource } from 'i18next';
+import { type PropsWithChildren } from 'react';
 import { UserTracking } from 'src/UserTracking';
+import { defaultNS } from 'src/i18n';
+import TranslationsProvider from './TranslationProvider';
 
 interface AppProviderProps {
   children: React.ReactNode | JSX.Element;
   fixedPoweredBy?: boolean;
+  i18nResources: Resource;
+  lang?: string;
 }
 
 export const AppProvider: React.FC<PropsWithChildren<AppProviderProps>> = ({
   children,
   fixedPoweredBy,
+  i18nResources,
+  lang,
 }) => {
   const analytics = cookie3Analytics(cookie3Config);
 
@@ -32,10 +39,16 @@ export const AppProvider: React.FC<PropsWithChildren<AppProviderProps>> = ({
           <WalletProvider>
             <UserTracking />
             <Cookie3Provider value={analytics}>
-              <BackgroundGradient />
-              <Navbar />
-              {children}
-              <PoweredBy fixedPosition={fixedPoweredBy} />
+              <TranslationsProvider
+                namespaces={[defaultNS]}
+                locale={lang}
+                resources={i18nResources}
+              >
+                <BackgroundGradient />
+                <Navbar />
+                {children}
+                <PoweredBy fixedPosition={fixedPoweredBy} />
+              </TranslationsProvider>
             </Cookie3Provider>
           </WalletProvider>
         </ArcxAnalyticsProvider>

@@ -12,10 +12,10 @@ import {
 
 import { DOCS_URL, GITHUB_URL } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { openInNewTab } from '@/utils/openInNewTab';
+import { useTranslation } from 'react-i18next';
 export const useDevelopersContent = () => {
-  const { t } = useClientTranslation();
+  const { t } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';

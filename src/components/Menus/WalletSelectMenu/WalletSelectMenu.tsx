@@ -5,12 +5,12 @@ import {
 } from '@/components/Menu/Menu.style';
 import { MenuItem } from '@/components/Menu/MenuItem';
 import { MenuKeysEnum } from '@/const/menuKeys';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { useMenuStore } from '@/stores/menu';
 import { getContrastAlphaColor } from '@/utils/colors';
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, darken } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
 import { WalletSelectMoreSubMenu } from '../WalletSelectMoreSubMenu';
 import { useWalletSelectContent } from './useWalletSelectContent';
 
@@ -21,7 +21,7 @@ interface MenuProps {
 const NUMBER_OF_WALLETS_DISPLAYED = 9;
 
 export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
-  const { t } = useClientTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const walletSelectMenuItems = useWalletSelectContent();
   const isDarkMode = theme.palette.mode === 'dark';

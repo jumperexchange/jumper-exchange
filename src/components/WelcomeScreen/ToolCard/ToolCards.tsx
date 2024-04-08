@@ -7,11 +7,11 @@ import {
 import { useChains } from '@/hooks/useChains';
 import { useDexsAndBridges } from '@/hooks/useDexsAndBridges';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import type { DataItem } from '@/types/internal';
 import { EventTrackingTool } from '@/types/userTracking';
 import { sortByName } from '@/utils/sortByName';
 import type { Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ToolCardsContainer as Container, ToolCard } from '.';
 interface StatsDataProps {
   title: string;
@@ -45,13 +45,13 @@ export const ToolCards = ({
 }: ToolCardsProps) => {
   const { exchanges, bridges } = useDexsAndBridges();
   const { chains } = useChains();
-  const { t } = useClientTranslation();
+  const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
 
   const statsData: StatsDataProps[] = [
     {
       title: t('navbar.statsCards.chains'),
-      number: chains?.length || 0,
+      number: chains?.length.toString() || '0',
       data: sortByName(chains),
       open: openChainsToolModal,
       setOpen: setOpenChainsToolModal,

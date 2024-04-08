@@ -4,7 +4,6 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { EventTrackingTool } from '@/types/userTracking';
 import { replacePathInUrl } from '@/utils/replacePathInUr';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
@@ -12,6 +11,7 @@ import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 interface useNavbarTabsProps {
   navbarPageReload?: boolean;
@@ -19,7 +19,7 @@ interface useNavbarTabsProps {
 
 export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
   const { trackEvent } = useUserTracking();
-  const { t } = useClientTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname();

@@ -7,7 +7,6 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { useSettingsStore } from '@/stores/settings';
 import { EventTrackingTool } from '@/types/userTracking';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
@@ -15,7 +14,8 @@ import type { Breakpoint } from '@mui/material';
 import { Slide, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next/TransWithoutContext';
 import { shallow } from 'zustand/shallow';
 import { ToolCards } from './ToolCard/ToolCards';
 import { ContentWrapper, Overlay, WelcomeContent } from './WelcomeScreen.style';
@@ -34,7 +34,7 @@ const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
 
 export const WelcomeScreen = () => {
   const theme = useTheme();
-  const { t } = useClientTranslation();
+  const { t } = useTranslation();
   const [welcomeScreenClosed, setWelcomeScreenClosed] = useSettingsStore(
     (state) => [state.welcomeScreenClosed, state.setWelcomeScreenClosed],
     shallow,

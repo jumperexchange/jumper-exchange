@@ -6,7 +6,6 @@ import { useAccountDisconnect } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { useMenuStore } from '@/stores/menu';
 import { EventTrackingTool } from '@/types/userTracking';
 import { openInNewTab } from '@/utils/openInNewTab';
@@ -17,6 +16,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   WalletAvatar,
   WalletCardBadge,
@@ -29,7 +29,7 @@ interface WalletCardProps {
 }
 
 export const WalletCard = ({ account }: WalletCardProps) => {
-  const { t } = useClientTranslation();
+  const { t } = useTranslation();
   const disconnectWallet = useAccountDisconnect();
   const { trackPageload, trackEvent } = useUserTracking();
   const { chains } = useChains();

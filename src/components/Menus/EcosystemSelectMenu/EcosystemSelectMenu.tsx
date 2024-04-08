@@ -7,8 +7,8 @@ import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
 } from '@/components/Menu/Menu.style';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { getConnectorIcon } from '@lifi/wallet-management';
+import { useTranslation } from 'react-i18next';
 import { EVMConnectButton } from './EVMConnectButton';
 import { ConnectButtonContainer } from './EcosystemSelectMenu.style';
 import { SVMConnectButton } from './SVMConnectButton';
@@ -18,7 +18,7 @@ interface MenuProps {
 }
 
 export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
-  const { t } = useClientTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const { openEcosystemSelect, setEcosystemSelectMenuState } = useMenuStore(
     (state) => state,

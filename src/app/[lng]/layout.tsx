@@ -1,37 +1,24 @@
-import Script from 'next/script';
+import i18nConfig from 'i18nconfig';
 import React from 'react';
+import { namespaces } from 'src/i18n';
 import { AppProvider } from 'src/providers/AppProvider';
+import initTranslations from '../i18n';
 
-export default function RootLayout({
+export function generateStaticParams() {
+  return i18nConfig.locales.map((locale) => ({ locale }));
+}
+export default async function RootLayout({
   children,
   params: { lng },
 }: {
   children: React.ReactNode;
   params: { lng: string };
 }) {
-  // if (locales.indexOf(lng) < 0) {
-  //   lng = fallbackLng;
-  // }
-  return (
-    <html lang={lng}>
-      <head>
-        <Script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
-        />
-        <Script id="google-analytics">
-          {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag() { dataLayer.push(arguments); }
-              gtag('js', new Date());
-              gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}');
-          `}
-        </Script>
-      </head>
+  const { resources } = await initTranslations(lng, namespaces);
 
-      <body>
-        <AppProvider>{children}</AppProvider>
-      </body>
-    </html>
+  return (
+    <AppProvider i18nResources={resources} lang={lng}>
+      {children}
+    </AppProvider>
   );
 }

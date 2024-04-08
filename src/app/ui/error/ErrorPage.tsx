@@ -7,7 +7,6 @@ import { Logo } from '@/components/Navbar/Logo/Logo';
 import { Discord } from '@/components/illustrations/Discord';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { EventTrackingTool } from '@/types/userTracking';
 
 import {
@@ -18,7 +17,7 @@ import {
 import { DISCORD_URL } from '@/const/urls';
 import { getContrastAlphaColor } from '@/utils/colors';
 import { openInNewTab } from '@/utils/openInNewTab';
-import { AppProvider } from 'src/providers/AppProvider';
+import { useTranslation } from 'react-i18next';
 import {
   CenteredContainer,
   ErrorMessage,
@@ -33,10 +32,10 @@ interface FallbackErrorProps {
 const ErrorPage = ({ reset }: FallbackErrorProps) => {
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
-  const { t } = useClientTranslation();
+  const { t } = useTranslation();
   const { account } = useAccounts();
   return (
-    <AppProvider>
+    <>
       <NavbarContainer>
         <LogoLink>
           <Logo
@@ -102,7 +101,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
           </SupportMessage>
         </Button>
       </CenteredContainer>
-    </AppProvider>
+    </>
   );
 };
 

@@ -1,11 +1,11 @@
 import { SubMenu } from '@/components/Menu/SubMenu';
 import { MenuKeysEnum } from '@/const/menuKeys';
-import { useClientTranslation } from '@/i18n/useClientTranslation';
 import { useMenuStore } from '@/stores/menu';
+import { useTranslation } from 'react-i18next';
 import { useDevelopersContent } from '.';
 
 export const DevelopersSubmenu = () => {
-  const { t } = useClientTranslation();
+  const { t } = useTranslation();
   const subMenuDevelopers = useDevelopersContent();
   const openSubMenu = useMenuStore((state) => state.openSubMenu);
   return (
