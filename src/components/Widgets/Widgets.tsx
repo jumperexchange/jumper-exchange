@@ -19,8 +19,9 @@ export function Widgets() {
     WidgetSubvariant | 'buy'
   >(TabsMap.Exchange.variant);
   //Question: do we want to add a new state for this?
-  const [_themeVariant, setThemeVariant] =
-    useState<ThemeVariantType>(undefined);
+  const [_themeVariant, setThemeVariant] = useState<
+    ThemeVariantType | undefined
+  >(undefined);
 
   const starterVariant: StarterVariantType = useMemo(() => {
     let url = window.location.pathname.slice(1);
@@ -40,7 +41,7 @@ export function Widgets() {
     }
   }, []);
 
-  const themeVariant: ThemeVariantType = useMemo(() => {
+  const themeVariant: ThemeVariantType | undefined = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (Object.values(ThemesMap).includes(url as ThemesMap)) {
       if (url.includes(ThemesMap.Memecoins)) {
@@ -70,8 +71,6 @@ export function Widgets() {
         default:
           setActiveTab(TabsMap.Exchange.index);
       }
-      console.log('heree in the activeWidget');
-      console.log(starterVariant);
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
     } else {

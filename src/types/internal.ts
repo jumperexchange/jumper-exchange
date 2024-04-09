@@ -19,7 +19,7 @@ declare global {
 
 export type StarterVariantType = 'buy' | WidgetSubvariant;
 
-export type ThemeVariantType = 'memecoins' | undefined;
+export type ThemeVariantType = 'memecoins';
 
 export interface MenuListItem {
   label: string;
