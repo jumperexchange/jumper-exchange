@@ -12,7 +12,7 @@
     "@cookie3/analytics": "^0.6.0",
     "@lifi/sdk": "^3.0.0-alpha.58",
     "@lifi/wallet-management": "^3.0.0-alpha.24",
-    "@lifi/widget": "^3.0.0-alpha.36",
+    "@lifi/widget": "^3.0.0-alpha.37",
     "@mui/icons-material": "^5.15.13",
     "@mui/material": "^5.15.13",
     "@safe-global/safe-apps-sdk": "^9.0.0",
