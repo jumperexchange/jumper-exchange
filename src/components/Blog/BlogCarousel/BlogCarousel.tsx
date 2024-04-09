@@ -55,6 +55,7 @@ export const BlogCarousel = ({
               <BlogArticleCard
                 id={article.id}
                 baseUrl={url}
+                key={`blog-article-card-${article.id}-${index}`}
                 trackingCategory={TrackingCategory.BlogCarousel}
                 image={article.attributes.Image}
                 title={article.attributes.Title}
