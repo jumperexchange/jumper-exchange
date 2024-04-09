@@ -2,9 +2,9 @@ import type { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { OnRamper, SolanaAlert, TestnetAlert, Widget } from 'src/components';
-import { LinkMap, TabsMap } from 'src/const';
+import { LinkMap, TabsMap, ThemesMap } from 'src/const';
 import { useActiveTabStore, useSettingsStore } from 'src/stores';
-import type { StarterVariantType } from 'src/types';
+import type { StarterVariantType, ThemeVariantType } from 'src/types';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
 
@@ -18,6 +18,9 @@ export function Widgets() {
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'
   >(TabsMap.Exchange.variant);
+  //Question: do we want to add a new state for this?
+  const [_themeVariant, setThemeVariant] =
+    useState<ThemeVariantType>(undefined);
 
   const starterVariant: StarterVariantType = useMemo(() => {
     let url = window.location.pathname.slice(1);
@@ -37,7 +40,22 @@ export function Widgets() {
     }
   }, []);
 
+  const themeVariant: ThemeVariantType = useMemo(() => {
+    let url = window.location.pathname.slice(1);
+    if (Object.values(ThemesMap).includes(url as ThemesMap)) {
+      if (url.includes(ThemesMap.Memecoins)) {
+        //Question: is there a cleaner way to make the navbar not selected?
+        setActiveTab(-1);
+        return ThemesMap.Memecoins;
+      }
+    } else {
+      return undefined;
+    }
+  }, [activeTab]);
+
   const getActiveWidget = useCallback(() => {
+    setThemeVariant(themeVariant);
+
     if (!starterVariantUsed) {
       switch (starterVariant) {
         case TabsMap.Exchange.variant:
@@ -52,6 +70,8 @@ export function Widgets() {
         default:
           setActiveTab(TabsMap.Exchange.index);
       }
+      console.log('heree in the activeWidget');
+      console.log(starterVariant);
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
     } else {
@@ -69,7 +89,13 @@ export function Widgets() {
           setStarterVariant(TabsMap.Exchange.variant);
       }
     }
-  }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
+  }, [
+    activeTab,
+    setActiveTab,
+    starterVariant,
+    starterVariantUsed,
+    themeVariant,
+  ]);
 
   const handleCloseWelcomeScreen = () => {
     setWelcomeScreenClosed(true);
@@ -77,7 +103,7 @@ export function Widgets() {
 
   useLayoutEffect(() => {
     getActiveWidget();
-  }, [getActiveWidget, starterVariant, activeTab]);
+  }, [getActiveWidget, starterVariant, activeTab, themeVariant]);
 
   return (
     <>
@@ -91,7 +117,11 @@ export function Widgets() {
         isActive={_starterVariant === TabsMap.Exchange.variant}
         welcomeScreenClosed={welcomeScreenClosed}
       >
-        <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
+        <Widget
+          starterVariant={TabsMap.Exchange.variant as WidgetSubvariant}
+          //Question: do we want to merge starterVariant and themeVariant together?
+          themeVariant={themeVariant}
+        />
       </WidgetContainer>
       <WidgetContainer
         onClick={handleCloseWelcomeScreen}

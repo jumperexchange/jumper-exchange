@@ -6,3 +6,4 @@ export * from './tabsMap';
 export * from './trackingKeys';
 export * from './urls';
 export * from './strapiContentKeys';
+export * from './themesMap';

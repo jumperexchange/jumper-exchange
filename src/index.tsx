@@ -44,6 +44,10 @@ const router = createBrowserRouter([
     element: <Homepage />,
   },
   {
+    path: '/memecoins/*',
+    element: <Homepage />,
+  },
+  {
     path: JUMPER_LEARN_PATH,
     element: <BlogPage />,
   },

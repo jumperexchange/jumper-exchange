@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 import { BackgroundGradient, Navbar, Snackbar } from './components';
 
 interface LayoutProps {

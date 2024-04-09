@@ -5,15 +5,43 @@ import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TabsMap } from 'src/const';
+import { TabsMap, ThemesMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
 import { useActiveTabStore, useMenuStore, useSettingsStore } from 'src/stores';
 import { darkTheme } from 'src/theme';
-import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
+import type {
+  LanguageKey,
+  MenuState,
+  StarterVariantType,
+  ThemeVariantType,
+} from 'src/types';
 import { useConfig } from 'wagmi';
 import { widgetConfig } from '../../config';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
+import { useMemelist } from 'src/hooks/useMemelist';
+
+//
+const BASE_DEGEN = {
+  address: '0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed',
+  chainId: 8453,
+};
+
+const BASE_BENG = {
+  address: '0x3e05D37CFBd8caaad9E3322D35CC727AfaFF63E3',
+  chainId: 8453,
+  logoURI: 'https://strapi.li.finance/uploads/beng_fb10df317b.webp',
+};
+
+const BASE_MFER = {
+  address: '0xE3086852A4B125803C815a158249ae468A3254Ca',
+  chainId: 8453,
+  logoURI: 'https://strapi.li.finance/uploads/mfer_c5c316fa92.webp',
+};
+
+export const base_meme_tokens = [BASE_DEGEN, BASE_BENG, BASE_MFER];
+
+//
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -30,9 +58,10 @@ const refuelAllowChains: ChainId[] = [
 
 interface WidgetProps {
   starterVariant: StarterVariantType;
+  themeVariant?: ThemeVariantType;
 }
 
-export function Widget({ starterVariant }: WidgetProps) {
+export function Widget({ starterVariant, themeVariant }: WidgetProps) {
   const theme = useTheme();
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
@@ -40,6 +69,10 @@ export function Widget({ starterVariant }: WidgetProps) {
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
 
   const { activeTab } = useActiveTabStore();
+  //Questions: will we alter performance by calling a new external hook when initializing the widget?
+  const { tokens } = useMemelist({
+    enabled: !!themeVariant,
+  });
   const isGasVariant = activeTab === TabsMap.Refuel.index;
 
   const welcomeScreenClosed = useSettingsStore(
@@ -63,7 +96,9 @@ export function Widget({ starterVariant }: WidgetProps) {
     return {
       ...widgetConfig,
       variant: starterVariant === 'refuel' ? 'compact' : 'wide',
-      subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
+      subvariant:
+        (starterVariant !== 'buy' && !themeVariant && starterVariant) ||
+        'default',
       walletConfig: {
         onConnect: async () => {
           setWalletSelectMenuState(true);
@@ -71,7 +106,11 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       chains: {
         allow:
-          starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],
+          starterVariant === TabsMap.Refuel.variant
+            ? refuelAllowChains
+            : themeVariant === ThemesMap.Memecoins
+              ? [8453]
+              : [],
       },
       languages: {
         default: i18n.resolvedLanguage as LanguageKey,
@@ -134,6 +173,10 @@ export function Widget({ starterVariant }: WidgetProps) {
       integrator: isGasVariant
         ? import.meta.env.VITE_WIDGET_INTEGRATOR_REFUEL
         : import.meta.env.VITE_WIDGET_INTEGRATOR,
+      tokens:
+        themeVariant === ThemesMap.Memecoins
+          ? { allow: [...base_meme_tokens] }
+          : {},
     };
   }, [
     starterVariant,
@@ -150,6 +193,8 @@ export function Widget({ starterVariant }: WidgetProps) {
     setWalletSelectMenuState,
     wagmiConfig,
     isGasVariant,
+    tokens,
+    themeVariant,
   ]);
 
   return (
