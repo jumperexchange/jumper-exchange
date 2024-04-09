@@ -29,6 +29,8 @@ export default async function initTranslations(
     fallbackLng: i18nConfig.defaultLocale,
     react: { useSuspense: false },
     supportedLngs: i18nConfig.locales,
+    returnEmptyString: false,
+    partialBundledLanguages: true,
     defaultNS: namespaces[0],
     fallbackNS: namespaces[0],
     ns: namespaces,

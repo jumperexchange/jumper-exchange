@@ -30,7 +30,6 @@ interface BlogArticleCardProps {
   content: RootNode[];
   publishedAt: string | null | undefined;
   createdAt: string;
-  key?: string;
   title: string;
   tags: TagData | undefined;
   trackingCategory: string;
@@ -47,7 +46,6 @@ export const BlogArticleCard = ({
   publishedAt,
   createdAt,
   id,
-  key,
   title,
   styles,
   slug,
@@ -78,7 +76,6 @@ export const BlogArticleCard = ({
       variant="outlined"
       onClick={handleClick}
       sx={styles}
-      key={key}
     >
       {image.data ? (
         <BlogArticleCardImage

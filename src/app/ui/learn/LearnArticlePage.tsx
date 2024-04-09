@@ -4,8 +4,6 @@ import { BackgroundGradient } from '@/components/BackgroundGradient/BackgroundGr
 import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
-import { PoweredBy } from '@/components/PoweredBy/PoweredBy';
-import { SupportModal } from '@/components/SupportModal/SupportModal';
 import type { BlogArticleData } from '@/types/strapi';
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
@@ -26,7 +24,12 @@ const LearnArticlePage = ({
   const theme = useTheme();
 
   return (
-    <>
+    <Box
+      sx={{
+        background:
+          'linear-gradient(to bottom, #ffffff00 0%, #fff 500px, #fff 90%, #ffffff00 calc(100% - 1200px))',
+      }}
+    >
       <BlogArticle
         subtitle={article[0]?.attributes.Subtitle}
         title={article[0]?.attributes.Title}
@@ -66,10 +69,8 @@ const LearnArticlePage = ({
           />
         )}
         <JoinDiscordBanner />
-        <PoweredBy />
       </Box>
-      <SupportModal />
-    </>
+    </Box>
   );
 };
 

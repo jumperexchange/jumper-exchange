@@ -1,7 +1,7 @@
+import { AppProvider } from '@/providers/AppProvider';
 import i18nConfig from 'i18nconfig';
 import React from 'react';
 import { namespaces } from 'src/i18n';
-import { AppProvider } from 'src/providers/AppProvider';
 import initTranslations from '../i18n';
 
 export function generateStaticParams() {
@@ -10,9 +10,11 @@ export function generateStaticParams() {
 export default async function RootLayout({
   children,
   params: { lng },
+  req,
 }: {
   children: React.ReactNode;
   params: { lng: string };
+  req: any;
 }) {
   const { resources } = await initTranslations(lng, namespaces);
 

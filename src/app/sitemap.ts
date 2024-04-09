@@ -1,8 +1,8 @@
 import { JUMPER_LEARN_PATH, pages } from '@/const/urls';
 import { locales } from '@/i18n/i18next-locales';
+import type { ChangeFrequency, SitemapPage } from '@/types/sitemap';
+import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import type { MetadataRoute } from 'next';
-import type { ChangeFrequency, SitemapPage } from 'src/types/sitemap';
-import type { BlogArticleData, StrapiResponse } from 'src/types/strapi';
 import { getArticles } from './lib/getArticles';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
