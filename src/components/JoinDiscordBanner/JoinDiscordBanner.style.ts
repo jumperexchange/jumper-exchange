@@ -1,10 +1,17 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Typography, alpha } from '@mui/material';
 
+import { urbanist } from '@/fonts/fonts';
 import { styled } from '@mui/material/styles';
 import { IconButtonPrimary } from '../IconButton.style';
 
-export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
+export interface DiscordBannerProps extends Omit<BoxProps, 'component'> {
+  isArticlePage: boolean;
+}
+
+export const DiscordBanner = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'isArticlePage',
+})<DiscordBannerProps>(({ theme, isArticlePage }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -23,7 +30,7 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
   padding: theme.spacing(6),
   transition: 'background-color 250ms',
   margin: theme.spacing(6, 2),
-  marginBottom: 0,
+  marginBottom: isArticlePage ? theme.spacing(14.5) : 0,
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'light'
@@ -32,8 +39,8 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(12, 8),
-    margin: theme.spacing(8, 8, 0),
-    marginBottom: 0,
+    margin: theme.spacing(8),
+    marginBottom: isArticlePage ? theme.spacing(14.5) : theme.spacing(0),
     flexDirection: 'row',
     gap: theme.spacing(4),
   },
@@ -42,14 +49,18 @@ export const DiscordBanner = styled(Box)<BoxProps>(({ theme }) => ({
     marginTop: theme.spacing(12),
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
-    margin: `${theme.spacing(12, 'auto', 0)}`,
+    margin: isArticlePage
+      ? `${theme.spacing(12, 'auto')}`
+      : `${theme.spacing(12, 'auto')}`,
+    marginBottom: isArticlePage ? theme.spacing(14.5) : 0,
+
     maxWidth: theme.breakpoints.values.xl,
   },
 }));
 
 export const DiscordBannerLabel = styled(Typography)(({ theme }) => ({
   textAlign: 'center',
-  fontFamily: 'Urbanist, Inter',
+  fontFamily: urbanist.style.fontFamily,
   fontSize: '32px',
   lineHeight: '44px',
   fontWeight: 700,

@@ -1,19 +1,19 @@
+import { useMenuStore } from '@/stores/menu';
+import { EventTrackingTool } from '@/types/userTracking';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FolderZipOutlinedIcon from '@mui/icons-material/FolderZipOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import { useUserTracking } from 'src/hooks';
-import { useMenuStore } from 'src/stores';
-import { EventTrackingTool } from 'src/types';
-import { openInNewTab } from 'src/utils';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '../../../const/trackingKeys';
 
-import { DOCS_URL, GITHUB_URL } from '../../../const/urls';
+import { DOCS_URL, GITHUB_URL } from '@/const/urls';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { openInNewTab } from '@/utils/openInNewTab';
+import { useTranslation } from 'react-i18next';
 export const useDevelopersContent = () => {
   const { t } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();

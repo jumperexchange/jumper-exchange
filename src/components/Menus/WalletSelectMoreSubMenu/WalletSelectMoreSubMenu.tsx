@@ -1,7 +1,7 @@
+import { SubMenu } from '@/components/Menu/SubMenu';
+import { MenuKeysEnum } from '@/const/menuKeys';
+import { useMenuStore } from '@/stores/menu';
 import { useTranslation } from 'react-i18next';
-import { SubMenu } from 'src/components';
-import { MenuKeys } from 'src/const';
-import { useMenuStore } from 'src/stores';
 import { useWalletSelectContent } from '..';
 
 export const WalletSelectMoreSubMenu = () => {
@@ -12,9 +12,9 @@ export const WalletSelectMoreSubMenu = () => {
   return (
     <SubMenu
       label={t('navbar.walletSelectMenu.wallets')}
-      triggerSubMenu={MenuKeys.WalletSelectMore}
-      open={openSubMenu === MenuKeys.WalletSelectMore}
-      prevMenu={MenuKeys.None}
+      triggerSubMenu={MenuKeysEnum.WalletSelectMore}
+      open={openSubMenu === MenuKeysEnum.WalletSelectMore}
+      prevMenu={MenuKeysEnum.None}
       subMenuList={walletSelectMenuItems}
     />
   );
