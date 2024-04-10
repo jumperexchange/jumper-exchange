@@ -1,5 +1,6 @@
 .link {
   margin: 32px 16px 0px;
+  display: block;
   text-decoration: none;
 }
 
