@@ -1,5 +1,5 @@
 'use client';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { Tag } from '@/components/Tag.style';
@@ -14,7 +14,7 @@ import type { BlogArticleData } from '@/types/strapi';
 import { EventTrackingTool } from '@/types/userTracking';
 import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   FeaturedArticleContainer,
   FeaturedArticleContent,
@@ -26,7 +26,7 @@ import {
   FeaturedArticleSubtitle,
   FeaturedArticleTitle,
 } from '.';
-import styles from './FeaturedArticle.module.css';
+
 interface FeaturedArticleProps {
   url: string | undefined;
   featuredArticle: BlogArticleData[] | undefined;
@@ -38,7 +38,7 @@ export const FeaturedArticle = ({
 }: FeaturedArticleProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const theme = useTheme();
+  const router = useRouter();
 
   const handleFeatureCardClick = (featuredArticle: BlogArticleData[]) => {
     trackEvent({
@@ -48,6 +48,9 @@ export const FeaturedArticle = ({
       data: { [TrackingEventParameter.ArticleID]: featuredArticle[0]?.id },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
+    router.push(`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`);
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const formatedDate =
@@ -62,63 +65,57 @@ export const FeaturedArticle = ({
 
   return featuredArticle && featuredArticle?.length > 0 ? (
     <>
-      <Link
-        className={styles.link}
-        href={`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`}
+      <FeaturedArticleContainer
+        onClick={() => {
+          handleFeatureCardClick(featuredArticle);
+        }}
       >
-        <FeaturedArticleContainer
-          onClick={() => {
-            handleFeatureCardClick(featuredArticle);
-          }}
-        >
-          <FeaturedArticleImage
-            src={`${url}${featuredArticle[0]?.attributes.Image.data.attributes.formats.medium.url}`}
-            alt={
-              featuredArticle[0].attributes.Image.data.attributes
-                .alternativeText
-            }
-          />
-          <FeaturedArticleContent>
-            <FeaturedArticleDetails>
-              {featuredArticle[0].attributes.tags.data
-                .slice(0, 1)
-                .map((el, index) => (
-                  <Tag
-                    key={`blog-highlights-tag-${index}`}
-                    variant="lifiBodyMediumStrong"
-                  >
-                    {el.attributes.Title}
-                  </Tag>
-                ))}
-              <FeaturedArticleMetaContainer>
-                <FeaturedArticleMetaDate
-                  variant="lifiBodyXSmall"
-                  component="span"
+        <FeaturedArticleImage
+          src={`${url}${featuredArticle[0]?.attributes.Image.data.attributes.formats.medium.url}`}
+          alt={
+            featuredArticle[0].attributes.Image.data.attributes.alternativeText
+          }
+        />
+        <FeaturedArticleContent>
+          <FeaturedArticleDetails>
+            {featuredArticle[0].attributes.tags.data
+              .slice(0, 1)
+              .map((el, index) => (
+                <Tag
+                  key={`blog-highlights-tag-${index}`}
+                  variant="lifiBodyMediumStrong"
                 >
-                  {formatedDate}
-                </FeaturedArticleMetaDate>
-                <Typography
-                  variant="lifiBodyXSmall"
-                  component="span"
-                  fontSize={'inherit'}
-                >
-                  {t('blog.minRead', { minRead: minRead })}
-                </Typography>
-              </FeaturedArticleMetaContainer>
-            </FeaturedArticleDetails>
-            <Box>
-              <FeaturedArticleTitle variant="lifiHeaderMedium" as="h2">
-                {featuredArticle[0].attributes.Title}
-              </FeaturedArticleTitle>
-            </Box>
-            <Box>
-              <FeaturedArticleSubtitle>
-                {featuredArticle[0].attributes.Subtitle}
-              </FeaturedArticleSubtitle>
-            </Box>
-          </FeaturedArticleContent>
-        </FeaturedArticleContainer>
-      </Link>
+                  {el.attributes.Title}
+                </Tag>
+              ))}
+            <FeaturedArticleMetaContainer>
+              <FeaturedArticleMetaDate
+                variant="lifiBodyXSmall"
+                component="span"
+              >
+                {formatedDate}
+              </FeaturedArticleMetaDate>
+              <Typography
+                variant="lifiBodyXSmall"
+                component="span"
+                fontSize={'inherit'}
+              >
+                {t('blog.minRead', { minRead: minRead })}
+              </Typography>
+            </FeaturedArticleMetaContainer>
+          </FeaturedArticleDetails>
+          <Box>
+            <FeaturedArticleTitle variant="lifiHeaderMedium" as="h2">
+              {featuredArticle[0].attributes.Title}
+            </FeaturedArticleTitle>
+          </Box>
+          <Box>
+            <FeaturedArticleSubtitle>
+              {featuredArticle[0].attributes.Subtitle}
+            </FeaturedArticleSubtitle>
+          </Box>
+        </FeaturedArticleContent>
+      </FeaturedArticleContainer>
     </>
   ) : (
     <FeaturedArticleSkeleton />

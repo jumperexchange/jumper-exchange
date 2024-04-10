@@ -21,6 +21,7 @@ export const FeaturedArticleContainer = styled(Box, {
   gridTemplateRows: '1fr',
   flexDirection: 'column',
   padding: theme.spacing(2),
+  margin: theme.spacing(4, 2, 0),
   '&:hover': {
     cursor: 'pointer',
     backgroundColor:
@@ -29,6 +30,7 @@ export const FeaturedArticleContainer = styled(Box, {
         : alpha(theme.palette.white.main, 0.2),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
+    margin: theme.spacing(6, 8, 0),
     padding: theme.spacing(3),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
@@ -43,6 +45,8 @@ export const FeaturedArticleContainer = styled(Box, {
     gridTemplateColumns: '54% 1fr',
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
+    margin: theme.spacing(6, 'auto', 0),
+    maxWidth: theme.breakpoints.values.xl,
     minHeight: 600,
   },
 }));
