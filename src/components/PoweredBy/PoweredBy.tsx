@@ -30,7 +30,8 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
   const isArticle = isArticlePage(
     `${process.env.NEXT_PUBLIC_SITE_URL}/${currentPath}`,
   );
-  const isRoot = result === '/[lng]';
+
+  const isRoot = result === '/' || result === '';
   const isApp = Object.values(LinkMap).some((page) =>
     result.includes(`/${page}`),
   );
