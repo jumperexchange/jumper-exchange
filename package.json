@@ -50,7 +50,6 @@
     "react-router-dom": "^6.22.3",
     "typescript": "^5.4.2",
     "viem": "^2.9.13",
-    "vite-tsconfig-paths": "^4.3.2",
     "wagmi": "^2.5.19",
     "zustand": "^4.5.2"
   },
@@ -62,7 +61,6 @@
     "@types/react-dom": "^18.2.22",
     "@types/ungap__structured-clone": "^1.2.0",
     "@types/uuid": "^9.0.8",
-    "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-react-app": "^7.0.1",
@@ -78,7 +76,6 @@
     "prettier": "^3.2.5",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "typescript": "^5.4.2",
-    "vite-tsconfig-paths": "^4.3.2",
     "web-vitals": "^3.5.2"
   },
   "eslintConfig": {

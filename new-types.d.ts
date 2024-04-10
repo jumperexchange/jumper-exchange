@@ -1,6 +1,6 @@
-/// <reference types="vite/client" />
+/// <reference types="next" />
 
-namespace NodeJS {
+declare namespace NodeJS {
   interface ProcessEnv {
     BASE_URL: string;
     DEV: boolean;

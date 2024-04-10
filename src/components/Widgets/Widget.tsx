@@ -138,8 +138,8 @@ export function Widget({ starterVariant }: WidgetProps) {
       insurance: true,
       integrator: `${
         isGasVariant
-          ? process.env.VITE_WIDGET_INTEGRATOR_REFUEL
-          : process.env.VITE_WIDGET_INTEGRATOR
+          ? process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL
+          : process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR
       }`,
     };
   }, [
