@@ -40,7 +40,6 @@ export const BlogCarousel = ({
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     router.push(JUMPER_LEARN_PATH);
-    // window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
