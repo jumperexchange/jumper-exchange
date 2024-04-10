@@ -4,6 +4,7 @@ ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production YARN_VERSION=4.0.1
 RUN corepack enable && corepack prepare yarn@${YARN_VERSION}
 WORKDIR /app
 COPY . .
+RUN rm .env*
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
 RUN yarn install --immutable
