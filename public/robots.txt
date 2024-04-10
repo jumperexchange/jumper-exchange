@@ -7,4 +7,3 @@ Host: http://jumper.exchange
 
 # Sitemaps
 Sitemap: http://jumper.exchange/sitemap.xml
-Sitemap: http://jumper.exchange/server-sitemap.xml
