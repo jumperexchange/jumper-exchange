@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY: 403372804574.dkr.ecr.us-east-2.amazonaws.com/lifi-docker-repo
-  IMAGE_NAME: 'jumper-exchange'
+  IMAGE_NAME: 'lifinance/jumper-exchange'
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
 jobs:
