@@ -8,11 +8,7 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "bundler",
     "noEmit": true,
@@ -21,45 +17,19 @@
     "strict": true,
     "target": "ES2020",
     "paths": {
-      "src": [
-        "./src/"
-      ],
-      "src/*": [
-        "./src/*"
-      ],
-      "@/components/*": [
-        "src/components/*"
-      ],
-      "@/config/*": [
-        "src/config/*"
-      ],
-      "@/const/*": [
-        "src/const/*"
-      ],
-      "@/fonts/*": [
-        "src/fonts/*"
-      ],
-      "@/hooks/*": [
-        "src/hooks/*"
-      ],
-      "@/i18n/*": [
-        "src/i18n/*"
-      ],
-      "@/providers/*": [
-        "src/providers/*"
-      ],
-      "@/stores/*": [
-        "src/stores/*"
-      ],
-      "src/themes/*": [
-        "src/themes/*"
-      ],
-      "@/types/*": [
-        "src/types/*"
-      ],
-      "@/utils/*": [
-        "src/utils/*"
-      ]
+      "src": ["./src/"],
+      "src/*": ["./src/*"],
+      "@/components/*": ["src/components/*"],
+      "@/config/*": ["src/config/*"],
+      "@/const/*": ["src/const/*"],
+      "@/fonts/*": ["src/fonts/*"],
+      "@/hooks/*": ["src/hooks/*"],
+      "@/i18n/*": ["src/i18n/*"],
+      "@/providers/*": ["src/providers/*"],
+      "@/stores/*": ["src/stores/*"],
+      "src/themes/*": ["src/themes/*"],
+      "@/types/*": ["src/types/*"],
+      "@/utils/*": ["src/utils/*"]
     },
     "plugins": [
       {
@@ -67,32 +37,21 @@
       }
     ]
   },
-  "plugins": [
-    "import"
-  ],
+  "plugins": ["import"],
   "rules": {
     "import/no-unresolved": "error"
   },
   "settings": {
     "import/parsers": {
-      "@typescript-eslint/parser": [
-        ".ts",
-        ".tsx"
-      ]
+      "@typescript-eslint/parser": [".ts", ".tsx"]
     }
   },
-  "exclude": [
-    "**/.*/",
-    "**/build",
-    "**/dist",
-    "node_modules",
-    ".yarn"
-  ],
+  "exclude": ["**/.*/", "**/build", "**/dist", "node_modules", ".yarn"],
   "include": [
     "next-env.d.ts",
-    "env.d.ts",
+    "new-types.d.ts",
     "./src/**/*",
     "./src/**/*.json",
-    ".next/types/**/*.ts",
+    ".next/types/**/*.ts"
   ]
 }
