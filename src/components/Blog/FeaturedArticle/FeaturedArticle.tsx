@@ -49,8 +49,6 @@ export const FeaturedArticle = ({
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     router.push(`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`);
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const formatedDate =
