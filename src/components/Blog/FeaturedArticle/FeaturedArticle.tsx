@@ -1,5 +1,5 @@
 'use client';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { Tag } from '@/components/Tag.style';
@@ -26,7 +26,7 @@ import {
   FeaturedArticleSubtitle,
   FeaturedArticleTitle,
 } from '.';
-
+import styles from './FeaturedArticle.module.css';
 interface FeaturedArticleProps {
   url: string | undefined;
   featuredArticle: BlogArticleData[] | undefined;
@@ -38,6 +38,7 @@ export const FeaturedArticle = ({
 }: FeaturedArticleProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const theme = useTheme();
 
   const handleFeatureCardClick = (featuredArticle: BlogArticleData[]) => {
     trackEvent({
@@ -61,14 +62,14 @@ export const FeaturedArticle = ({
 
   return featuredArticle && featuredArticle?.length > 0 ? (
     <>
-      <FeaturedArticleContainer
-        onClick={() => {
-          handleFeatureCardClick(featuredArticle);
-        }}
+      <Link
+        className={styles.link}
+        href={`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`}
       >
-        <Link
-          style={{ textDecoration: 'none' }}
-          href={`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`}
+        <FeaturedArticleContainer
+          onClick={() => {
+            handleFeatureCardClick(featuredArticle);
+          }}
         >
           <FeaturedArticleImage
             src={`${url}${featuredArticle[0]?.attributes.Image.data.attributes.formats.medium.url}`}
@@ -116,8 +117,8 @@ export const FeaturedArticle = ({
               </FeaturedArticleSubtitle>
             </Box>
           </FeaturedArticleContent>
-        </Link>
-      </FeaturedArticleContainer>
+        </FeaturedArticleContainer>
+      </Link>
     </>
   ) : (
     <FeaturedArticleSkeleton />
