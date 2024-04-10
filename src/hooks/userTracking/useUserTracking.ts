@@ -147,7 +147,6 @@ export function useUserTracking() {
         });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.Cookie3)) {
-        // todo: add
         cookie3?.trackEvent({
           category,
           action,
@@ -223,13 +222,12 @@ export function useUserTracking() {
         });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.Cookie3)) {
-        // todo: add cookie3
-        // cookie3?.trackEvent({
-        //   category,
-        //   action,
-        //   name: 'transaction',
-        //   value: value,
-        // });
+        cookie3?.trackEvent({
+          category,
+          action,
+          name: 'transaction',
+          value: value,
+        });
       }
     },
     [arcx],
