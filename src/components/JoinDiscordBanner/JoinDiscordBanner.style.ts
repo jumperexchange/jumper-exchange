@@ -30,7 +30,7 @@ export const DiscordBanner = styled(Box, {
   padding: theme.spacing(6),
   transition: 'background-color 250ms',
   margin: theme.spacing(6, 2),
-  marginBottom: 0,
+  marginBottom: isArticlePage ? theme.spacing(14.5) : 0,
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'light'
@@ -40,7 +40,7 @@ export const DiscordBanner = styled(Box, {
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(12, 8),
     margin: theme.spacing(8),
-    marginBottom: isArticlePage ? theme.spacing(14) : theme.spacing(0),
+    marginBottom: isArticlePage ? theme.spacing(14.5) : theme.spacing(0),
     flexDirection: 'row',
     gap: theme.spacing(4),
   },
@@ -50,8 +50,10 @@ export const DiscordBanner = styled(Box, {
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     margin: isArticlePage
-      ? `${theme.spacing(12, 'auto', 8)}`
-      : `${theme.spacing(12, 'auto', 0)}`,
+      ? `${theme.spacing(12, 'auto')}`
+      : `${theme.spacing(12, 'auto')}`,
+    marginBottom: isArticlePage ? theme.spacing(14.5) : 0,
+
     maxWidth: theme.breakpoints.values.xl,
   },
 }));
