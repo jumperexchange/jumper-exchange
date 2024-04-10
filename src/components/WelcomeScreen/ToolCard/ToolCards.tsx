@@ -1,14 +1,17 @@
-import type { Dispatch, SetStateAction } from 'react';
-import { useTranslation } from 'react-i18next';
-import { ToolModal } from 'src/components';
+import { ToolModal } from '@/components/WelcomeScreen';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from 'src/const';
-import { useChains, useDexsAndBridges, useUserTracking } from 'src/hooks';
-import { EventTrackingTool, type DataItem } from 'src/types';
-import { sortByName } from 'src/utils';
+} from '@/const/trackingKeys';
+import { useChains } from '@/hooks/useChains';
+import { useDexsAndBridges } from '@/hooks/useDexsAndBridges';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import type { DataItem } from '@/types/internal';
+import { EventTrackingTool } from '@/types/userTracking';
+import { sortByName } from '@/utils/sortByName';
+import type { Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ToolCardsContainer as Container, ToolCard } from '.';
 interface StatsDataProps {
   title: string;
@@ -48,7 +51,7 @@ export const ToolCards = ({
   const statsData: StatsDataProps[] = [
     {
       title: t('navbar.statsCards.chains'),
-      number: chains?.length || 0,
+      number: chains?.length.toString() || '0',
       data: sortByName(chains),
       open: openChainsToolModal,
       setOpen: setOpenChainsToolModal,

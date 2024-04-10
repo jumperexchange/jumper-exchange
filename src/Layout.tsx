@@ -1,30 +1,26 @@
 import type { PropsWithChildren } from 'react';
-import { BackgroundGradient, Navbar, Snackbar } from './components';
+import { BackgroundGradient } from './components/BackgroundGradient/BackgroundGradient';
+import { Navbar } from './components/Navbar/Navbar';
+import { PoweredBy } from './components/PoweredBy/PoweredBy';
+import { Snackbar } from './components/Snackbar/Snackbar';
+import { SupportModal } from './components/SupportModal/SupportModal';
 
 interface LayoutProps {
-  hideNavbarTabs?: boolean;
-  redirectToLearn?: boolean;
-  variant?: 'blog' | undefined;
-  navbarPageReload?: boolean;
+  fixedPoweredBy?: boolean | undefined;
 }
 
 export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
   children,
-  variant,
-  hideNavbarTabs,
-  redirectToLearn,
-  navbarPageReload,
+  fixedPoweredBy,
 }) => {
   return (
     <>
-      <BackgroundGradient variant={variant} />
-      <Navbar
-        hideNavbarTabs={hideNavbarTabs}
-        redirectToLearn={redirectToLearn}
-        navbarPageReload={navbarPageReload}
-      />
+      <BackgroundGradient />
+      <Navbar />
       {children}
+      <SupportModal />
       <Snackbar />
+      <PoweredBy fixedPosition={fixedPoweredBy} />
     </>
   );
 };

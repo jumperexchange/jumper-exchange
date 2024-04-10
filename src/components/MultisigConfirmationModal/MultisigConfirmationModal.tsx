@@ -1,7 +1,7 @@
 import { Modal, Typography } from '@mui/material';
 
+import { Button } from '@/components/Button';
 import { useTranslation } from 'react-i18next';
-import { Button } from 'src/components';
 import {
   MultisigConfirmationModalContainer,
   MultisigConfirmationModalIcon,
