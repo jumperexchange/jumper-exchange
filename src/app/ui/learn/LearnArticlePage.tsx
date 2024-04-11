@@ -8,6 +8,8 @@ import type { BlogArticleData } from '@/types/strapi';
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { BlogBackgroundGradient } from 'src/components/BackgroundGradient';
+import { BlogArticleWrapper } from './LearnArticlePage.style';
 
 interface LearnArticlePageProps {
   article: BlogArticleData[];
@@ -24,26 +26,24 @@ const LearnArticlePage = ({
   const theme = useTheme();
 
   return (
-    <Box
-      sx={{
-        background:
-          'linear-gradient(to bottom, #ffffff00 0%, #fff 500px, #fff 90%, #ffffff00 calc(100% - 1200px))',
-      }}
-    >
-      <BlogArticle
-        subtitle={article[0]?.attributes.Subtitle}
-        title={article[0]?.attributes.Title}
-        content={article[0]?.attributes.Content}
-        slug={article[0]?.attributes.Slug}
-        id={article[0]?.id}
-        author={article[0]?.attributes.author}
-        publishedAt={article[0]?.attributes.publishedAt}
-        createdAt={article[0]?.attributes.createdAt}
-        updatedAt={article[0]?.attributes.updatedAt}
-        tags={article[0]?.attributes.tags}
-        image={article[0]?.attributes.Image}
-        baseUrl={url}
-      />
+    <>
+      <BlogArticleWrapper>
+        <BlogBackgroundGradient />
+        <BlogArticle
+          subtitle={article[0]?.attributes.Subtitle}
+          title={article[0]?.attributes.Title}
+          content={article[0]?.attributes.Content}
+          slug={article[0]?.attributes.Slug}
+          id={article[0]?.id}
+          author={article[0]?.attributes.author}
+          publishedAt={article[0]?.attributes.publishedAt}
+          createdAt={article[0]?.attributes.createdAt}
+          updatedAt={article[0]?.attributes.updatedAt}
+          tags={article[0]?.attributes.tags}
+          image={article[0]?.attributes.Image}
+          baseUrl={url}
+        />
+      </BlogArticleWrapper>
       <Box
         position="relative"
         sx={{
@@ -70,7 +70,7 @@ const LearnArticlePage = ({
         )}
         <JoinDiscordBanner />
       </Box>
-    </Box>
+    </>
   );
 };
 
