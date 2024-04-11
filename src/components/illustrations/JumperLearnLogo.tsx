@@ -16,7 +16,7 @@ export const JumperLearnLogo = () => {
       fill="none"
       viewBox="0 0 248 32"
     >
-      <g clip-path="url(#a)">
+      <g clipPath="url(#a)">
         <path
           fill={mainCol}
           d="M17.144 16 5.83 27.314l2.829 2.828c1.414 1.414 4.242 1.414 5.656 0L25.63 18.828c1.415-1.414 1.415-4.242 0-5.657l-5.656-5.657-5.657 5.657L17.144 16Z"

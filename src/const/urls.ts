@@ -1,3 +1,5 @@
+import type { SitemapPage } from '@/types/sitemap';
+
 export const JUMPER_URL = 'https://jumper.exchange';
 export const LIFI_URL = 'https://li.fi';
 export const EXPLORER_URL = 'https://explorer.li.fi';
@@ -11,3 +13,15 @@ export const FB_SHARE_URL = 'https://www.facebook.com/sharer/sharer.php';
 export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
 export const JUMPER_LEARN_PATH = '/learn';
 export const JUMPER_LOYALTY_PATH = '/profile';
+
+// prepare sitemap
+export const pages: SitemapPage[] = [
+  { path: '', priority: 1 },
+  { path: JUMPER_LEARN_PATH, priority: 0.9 },
+  { path: JUMPER_LOYALTY_PATH, priority: 0.8 },
+  { path: '/buy', priority: 0.7 },
+  { path: '/exchange', priority: 0.7 },
+  { path: '/swap', priority: 0.7 },
+  { path: '/refuel', priority: 0.7 },
+  { path: '/gas', priority: 0.7 },
+];

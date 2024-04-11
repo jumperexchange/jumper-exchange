@@ -1,10 +1,15 @@
+import { LinkMap } from '@/const/linkMap';
+import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
+import { LIFI_URL } from '@/const/urls';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { EventTrackingTool } from '@/types/userTracking';
+import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
+import { isArticlePage } from '@/utils/isArticlePage';
+import { openInNewTab } from '@/utils/openInNewTab';
 import type { CSSObject } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
-import { Trans } from 'react-i18next';
-import { LIFI_URL, TrackingAction, TrackingCategory } from 'src/const';
-import { useUserTracking } from 'src/hooks';
-import { EventTrackingTool } from 'src/types';
-import { appendUTMParametersToLink, openInNewTab } from '../../utils';
+import { usePathname } from 'next/navigation';
+import { Trans } from 'react-i18next/TransWithoutContext';
 import { Container } from './PoweredBy.style';
 
 const lifiUrl = appendUTMParametersToLink(LIFI_URL, {
@@ -17,9 +22,19 @@ interface PoweredByProps {
   styles?: CSSObject;
 }
 
-export const PoweredBy = ({ fixedPosition, styles }: PoweredByProps) => {
+export const PoweredBy = ({ styles }: PoweredByProps) => {
   const theme = useTheme();
   const { trackPageload, trackEvent } = useUserTracking();
+  const currentPath = usePathname();
+  let result = currentPath.substring(0, currentPath.lastIndexOf('/'));
+  const isArticle = isArticlePage(
+    `${process.env.NEXT_PUBLIC_SITE_URL}/${currentPath}`,
+  );
+
+  const isRoot = result === '/' || result === '';
+  const isApp = Object.values(LinkMap).some((page) =>
+    result.includes(`/${page}`),
+  );
 
   const handleClick = () => {
     trackPageload({
@@ -39,7 +54,11 @@ export const PoweredBy = ({ fixedPosition, styles }: PoweredByProps) => {
   };
 
   return (
-    <Container fixedPosition={fixedPosition} sx={styles}>
+    <Container
+      fixedPosition={isRoot || isApp}
+      sx={styles}
+      isArticlePage={isArticle}
+    >
       <Typography
         variant={'lifiBodySmall'}
         sx={{
@@ -50,6 +69,7 @@ export const PoweredBy = ({ fixedPosition, styles }: PoweredByProps) => {
         }}
       >
         <Trans
+          as="div"
           i18nKey={'navbar.poweredByLifi' as string & never[]}
           components={[
             // fix: allow component with "no content"

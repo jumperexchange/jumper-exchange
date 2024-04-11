@@ -1,10 +1,14 @@
+import { useMenuStore } from '@/stores/menu';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import { Menu, MenuHeaderAppBar, MenuHeaderAppWrapper } from 'src/components';
-import { useMenuStore } from 'src/stores';
 
+import { Menu } from '@/components/Menu/Menu';
+import {
+  MenuHeaderAppBar,
+  MenuHeaderAppWrapper,
+} from '@/components/Menu/Menu.style';
 import { getConnectorIcon } from '@lifi/wallet-management';
+import { useTranslation } from 'react-i18next';
 import { EVMConnectButton } from './EVMConnectButton';
 import { ConnectButtonContainer } from './EcosystemSelectMenu.style';
 import { SVMConnectButton } from './SVMConnectButton';
