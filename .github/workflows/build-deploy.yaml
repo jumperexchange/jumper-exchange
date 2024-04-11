@@ -80,7 +80,7 @@ jobs:
         with:
           repository: lifinance/lifi-deployment
           ssh-key: ${{ secrets.DEPLOY_SSH }}
-          ref: ${{ env.BRANCH_NAME == 'testnet' && 'staging' || env.BRANCH_NAME }}
+          ref: ${{ env.BRANCH_NAME }}
 
       - name: update image ID
         uses: mikefarah/yq@v4.34.2
