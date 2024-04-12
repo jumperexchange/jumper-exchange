@@ -7,16 +7,15 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useSettingsStore } from '@/stores/settings';
 import { EventTrackingTool } from '@/types/userTracking';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import type { Breakpoint } from '@mui/material';
 import { Slide, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next/TransWithoutContext';
-import { shallow } from 'zustand/shallow';
 import { ToolCards } from './ToolCard/ToolCards';
 import { ContentWrapper, Overlay, WelcomeContent } from './WelcomeScreen.style';
 
@@ -32,21 +31,27 @@ const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
   utm_medium: 'welcome_screen',
 });
 
-export const WelcomeScreen = () => {
-  const theme = useTheme();
-  const { t } = useTranslation();
-  const [welcomeScreenClosed, setWelcomeScreenClosed] = useSettingsStore(
-    (state) => [state.welcomeScreenClosed, state.setWelcomeScreenClosed],
-    shallow,
-  );
+interface WelcomeScreenProps {
+  closed: boolean;
+}
 
+export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
+  const theme = useTheme();
+  const [isClosed, setIsClosed] = useState(closed);
+  const [cookie, setCookie] = useCookies(['welcomeScreenClosed']);
+  useEffect(() => {
+    if (cookie.welcomeScreenClosed !== undefined) {
+      setIsClosed(cookie.welcomeScreenClosed);
+    }
+  }, [cookie.welcomeScreenClosed]);
+  const { t } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
   const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
   const [openBridgesToolModal, setOpenBridgesToolModal] = useState(false);
   const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
 
   useEffect(() => {
-    if (!welcomeScreenClosed) {
+    if (cookie.welcomeScreenClosed === 'true') {
       trackEvent({
         category: TrackingCategory.WelcomeScreen,
         label: 'open-welcome-screen',
@@ -57,7 +62,7 @@ export const WelcomeScreen = () => {
         ],
       });
     }
-  }, [trackEvent, welcomeScreenClosed]);
+  }, [cookie, trackEvent]);
 
   const handleAuditClick = () => {
     trackEvent({
@@ -102,7 +107,7 @@ export const WelcomeScreen = () => {
       return;
     } else {
       event.stopPropagation();
-      setWelcomeScreenClosed(true);
+      setCookie('welcomeScreenClosed', true);
       trackEvent({
         category: TrackingCategory.WelcomeScreen,
         action: TrackingAction.CloseWelcomeScreen,
@@ -116,15 +121,15 @@ export const WelcomeScreen = () => {
   };
 
   return (
-    <Overlay showWelcome={!welcomeScreenClosed || false}>
+    <Overlay showWelcome={!isClosed}>
       <Slide
         direction="up"
         unmountOnExit
         appear={false}
         timeout={400}
-        in={!welcomeScreenClosed}
+        in={!isClosed}
       >
-        <ContentWrapper showWelcome={!welcomeScreenClosed}>
+        <ContentWrapper showWelcome={!isClosed}>
           <WelcomeContent>
             <CustomColor as="h1" variant={'lifiHeaderMedium'}>
               {t('navbar.welcome.title')}

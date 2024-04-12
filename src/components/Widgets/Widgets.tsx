@@ -1,15 +1,19 @@
 'use client';
 import { SolanaAlert } from '@/components/Alerts';
 import { OnRamper } from '@/components/OnRamper';
-import { TestnetAlert } from '@/components/TestnetAlert';
 import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';
 import { useActiveTabStore } from '@/stores/activeTab';
-import { useSettingsStore } from '@/stores/settings';
 import type { StarterVariantType } from '@/types/internal';
 import type { WidgetSubvariant } from '@lifi/widget';
-import { Grid, useTheme } from '@mui/material';
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { useCookies } from 'react-cookie';
 import type { ThemeModesSupported } from 'src/types/settings';
 import { Widget } from '.';
 import { WidgetEvents } from './WidgetEvents';
@@ -18,14 +22,24 @@ import { WidgetContainer } from './Widgets.style';
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
   activeTheme: ThemeModesSupported | undefined;
+  closedWelcomeScreen: boolean;
 }
 
-export function Widgets({ widgetVariant, activeTheme }: WidgetsProps) {
+export function Widgets({
+  widgetVariant,
+  activeTheme,
+  closedWelcomeScreen,
+}: WidgetsProps) {
   const { activeTab, setActiveTab } = useActiveTabStore();
-  const [welcomeScreenClosed, setWelcomeScreenClosed] = useSettingsStore(
-    (state) => [state.welcomeScreenClosed, state.setWelcomeScreenClosed],
-  );
-  const theme = useTheme();
+  const [isClosed, setIsClosed] = useState(closedWelcomeScreen);
+  const [cookie, setCookie] = useCookies(['welcomeScreenClosed']);
+
+  useEffect(() => {
+    if (cookie.welcomeScreenClosed !== undefined) {
+      setIsClosed(cookie.welcomeScreenClosed);
+    }
+  }, [cookie.welcomeScreenClosed]);
+
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'
@@ -88,7 +102,7 @@ export function Widgets({ widgetVariant, activeTheme }: WidgetsProps) {
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
   const handleCloseWelcomeScreen = () => {
-    setWelcomeScreenClosed(true);
+    setCookie('welcomeScreenClosed', true, { path: '/' });
   };
 
   useLayoutEffect(() => {
@@ -97,22 +111,17 @@ export function Widgets({ widgetVariant, activeTheme }: WidgetsProps) {
 
   return (
     <>
-      {process.env.NEXT_PUBLIC_ENVIRONMENT === 'testnet' && (
-        <Grid item xs={12} mt={theme.spacing(3)}>
-          <TestnetAlert />
-        </Grid>
-      )}
       <WidgetContainer
         onClick={handleCloseWelcomeScreen}
         isActive={_starterVariant === TabsMap.Exchange.variant}
-        welcomeScreenClosed={welcomeScreenClosed}
+        welcomeScreenClosed={isClosed}
       >
         <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
       </WidgetContainer>
       <WidgetContainer
         onClick={handleCloseWelcomeScreen}
         isActive={_starterVariant === TabsMap.Refuel.variant}
-        welcomeScreenClosed={welcomeScreenClosed}
+        welcomeScreenClosed={isClosed}
       >
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
@@ -121,7 +130,7 @@ export function Widgets({ widgetVariant, activeTheme }: WidgetsProps) {
         <WidgetContainer
           onClick={handleCloseWelcomeScreen}
           isActive={_starterVariant === TabsMap.Buy.variant}
-          welcomeScreenClosed={welcomeScreenClosed}
+          welcomeScreenClosed={isClosed}
         >
           <OnRamper />
         </WidgetContainer>
