@@ -1,6 +1,8 @@
 import Script from 'next/script';
 import React from 'react';
 import { fallbackLng } from 'src/i18n';
+import { ReactQueryProvider } from 'src/providers/ReactQueryProvider';
+import { WalletProvider } from 'src/providers/WalletProvider';
 import { metadata as JumperMetadata } from './lib/metadata';
 
 export const metadata = JumperMetadata;
@@ -29,7 +31,11 @@ export default async function RootLayout({
         </Script>
       </head>
 
-      <body>{children}</body>
+      <body>
+        <ReactQueryProvider>
+          <WalletProvider>{children}</WalletProvider>
+        </ReactQueryProvider>
+      </body>
     </html>
   );
 }

@@ -1,13 +1,6 @@
-import dynamic from 'next/dynamic';
-
-const ProfilePageWrapper = dynamic(
-  () => import('../../ui/profile/ProfilePage'),
-  {
-    ssr: true,
-  },
-);
+import ProfilePage from '../../ui/profile/ProfilePage';
 
 // `app/ui/learn/page.tsx` is the UI for the `/learn` URL
 export default async function Page() {
-  return <ProfilePageWrapper />;
+  return <ProfilePage />;
 }

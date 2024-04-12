@@ -1,6 +1,4 @@
-import dynamic from 'next/dynamic';
-
-const App = dynamic(() => import('../../../ui/app/App'), { ssr: false });
+import App from 'src/app/ui/app/App';
 
 const Page = () => {
   return <App starterVariant="default" />;

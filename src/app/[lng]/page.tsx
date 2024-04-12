@@ -1,19 +1,12 @@
-import dynamic from 'next/dynamic';
+'use client';
+// import type { Viewport } from 'next';
+import App from '../ui/app/App';
 
-import type { Viewport } from 'next';
+// export const viewport: Viewport = {
+//   width: 'device-width',
+//   initialScale: 1,
+// };
 
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-};
-
-const App = dynamic(() => import('../ui/app/App'), { ssr: true });
-
-export default async function Page() {
-  return (
-    <>
-      {/* <p>{t('navbar.welcome.title')}</p> */}
-      <App starterVariant="default" />
-    </>
-  );
+export default function Page() {
+  return <App starterVariant="default" />;
 }
