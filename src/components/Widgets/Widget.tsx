@@ -7,7 +7,7 @@ import { useActiveTabStore } from '@/stores/activeTab/ActiveTabStore';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
 import type { LanguageKey } from '@/types/i18n';
-import type { StarterVariantType } from '@/types/internal';
+import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
 import type { MenuState } from '@/types/menu';
 import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
@@ -19,6 +19,16 @@ import { useTranslation } from 'react-i18next';
 import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
+import { useMemelist } from 'src/hooks/useMemelist';
+import { ThemesMap } from 'src/const/themesMap';
+
+export const base_meme_tokens = [
+  {
+    address: '0xE3086852A4B125803C815a158249ae468A3254Ca',
+    chainId: 8453,
+    logoURI: 'https://strapi.li.finance/uploads/mfer_c5c316fa92.webp',
+  },
+];
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -35,17 +45,21 @@ const refuelAllowChains: ChainId[] = [
 
 interface WidgetProps {
   starterVariant: StarterVariantType;
+  themeVariant?: ThemeVariantType;
 }
 
-export function Widget({ starterVariant }: WidgetProps) {
+export function Widget({ starterVariant, themeVariant }: WidgetProps) {
   const [loaded, setLoaded] = useState(false);
   const theme = useTheme();
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
-
   const { activeTab } = useActiveTabStore();
+  console.log(themeVariant);
+  const { tokens } = useMemelist({
+    enabled: !!themeVariant,
+  });
   const isGasVariant = activeTab === TabsMap.Refuel.index;
 
   const welcomeScreenClosed = useSettingsStore(
@@ -73,7 +87,9 @@ export function Widget({ starterVariant }: WidgetProps) {
     return {
       ...widgetConfig,
       variant: starterVariant === 'refuel' ? 'compact' : 'wide',
-      subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
+      subvariant:
+        (starterVariant !== 'buy' && !themeVariant && starterVariant) ||
+        'default',
       walletConfig: {
         onConnect: async () => {
           setWalletSelectMenuState(true);
@@ -81,7 +97,11 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       chains: {
         allow:
-          starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],
+          starterVariant === TabsMap.Refuel.variant
+            ? refuelAllowChains
+            : themeVariant === ThemesMap.Memecoins
+              ? [8453]
+              : [],
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -146,6 +166,8 @@ export function Widget({ starterVariant }: WidgetProps) {
           ? process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL
           : process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR
       }`,
+      tokens:
+        themeVariant === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
   }, [
     starterVariant,
@@ -162,6 +184,8 @@ export function Widget({ starterVariant }: WidgetProps) {
     setWalletSelectMenuState,
     wagmiConfig,
     isGasVariant,
+    tokens,
+    themeVariant,
   ]);
 
   return (

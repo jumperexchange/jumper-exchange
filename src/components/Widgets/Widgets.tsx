@@ -6,13 +6,14 @@ import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';
 import { useActiveTabStore } from '@/stores/activeTab';
 import { useSettingsStore } from '@/stores/settings';
-import type { StarterVariantType } from '@/types/internal';
+import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
 import type { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { Widget } from '.';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
+import { ThemesMap } from 'src/const/themesMap';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
@@ -28,6 +29,9 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'
   >(TabsMap.Exchange.variant);
+  const [_themeVariant, setThemeVariant] = useState<
+    ThemeVariantType | undefined
+  >(undefined);
 
   const starterVariant: StarterVariantType = useMemo(() => {
     if (widgetVariant) {
@@ -51,7 +55,22 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
     }
   }, [widgetVariant]);
 
+  const themeVariant: ThemeVariantType | undefined = useMemo(() => {
+    let url = window.location.pathname.slice(1);
+    console.log('in the theme');
+    console.log(url);
+    if (url.includes(ThemesMap.Memecoins)) {
+      console.log('hereeeee in the if');
+      //Todo: review the logic of the tab selection.
+      setActiveTab(-1);
+      return ThemesMap.Memecoins;
+    } else {
+      return undefined;
+    }
+  }, [activeTab]);
+
   const getActiveWidget = useCallback(() => {
+    setThemeVariant(themeVariant);
     if (!starterVariantUsed) {
       switch (starterVariant) {
         case TabsMap.Exchange.variant:
@@ -83,7 +102,13 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
           setStarterVariant(TabsMap.Exchange.variant);
       }
     }
-  }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
+  }, [
+    activeTab,
+    setActiveTab,
+    starterVariant,
+    starterVariantUsed,
+    themeVariant,
+  ]);
 
   const handleCloseWelcomeScreen = () => {
     setWelcomeScreenClosed(true);
@@ -91,7 +116,7 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
 
   useLayoutEffect(() => {
     getActiveWidget();
-  }, [getActiveWidget, starterVariant, activeTab]);
+  }, [getActiveWidget, starterVariant, activeTab, themeVariant]);
 
   return (
     <>
@@ -105,7 +130,10 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
         isActive={_starterVariant === TabsMap.Exchange.variant}
         welcomeScreenClosed={welcomeScreenClosed}
       >
-        <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
+        <Widget
+          starterVariant={TabsMap.Exchange.variant as WidgetSubvariant}
+          themeVariant={_themeVariant}
+        />
       </WidgetContainer>
       <WidgetContainer
         onClick={handleCloseWelcomeScreen}
