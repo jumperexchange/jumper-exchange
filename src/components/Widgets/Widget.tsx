@@ -14,11 +14,13 @@ import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
+import { ClientOnly } from './ClientOnly';
+import { WidgetSkeleton } from './WidgetSkeleton';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -38,7 +40,6 @@ interface WidgetProps {
 }
 
 export function Widget({ starterVariant }: WidgetProps) {
-  const [loaded, setLoaded] = useState(false);
   const theme = useTheme();
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
@@ -54,10 +55,6 @@ export function Widget({ starterVariant }: WidgetProps) {
   const setWalletSelectMenuState = useMenuStore(
     (state: MenuState) => state.setWalletSelectMenuState,
   );
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -165,14 +162,14 @@ export function Widget({ starterVariant }: WidgetProps) {
   ]);
 
   return (
-    loaded && (
-      <WidgetWrapper
-        className="widget-wrapper"
-        welcomeScreenClosed={welcomeScreenClosed}
-      >
-        {isMultisigSigner && <MultisigWalletHeaderAlert />}
+    <WidgetWrapper
+      className="widget-wrapper"
+      welcomeScreenClosed={welcomeScreenClosed}
+    >
+      {isMultisigSigner && <MultisigWalletHeaderAlert />}
+      <ClientOnly fallback={<WidgetSkeleton />}>
         <LiFiWidget integrator={config.integrator} config={config} />
-      </WidgetWrapper>
-    )
+      </ClientOnly>
+    </WidgetWrapper>
   );
 }
