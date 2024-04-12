@@ -63,7 +63,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            ENV_FILE='.env.development'
+            ENV_FILE=.env.development
 
       - name: Generate a token
         id: generate-token
