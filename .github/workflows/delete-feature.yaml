@@ -41,15 +41,9 @@ jobs:
         with:
           node-version: lts/*
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        id: pnpm-install
-        with:
-          run_install: false
-
       - name: Install node dependencies
         shell: bash
-        run: pnpm install -g yaml && pnpm link --global yaml
+        run: yarn add yaml
 
       - name: Update application deployment
         uses: actions/github-script@v7
