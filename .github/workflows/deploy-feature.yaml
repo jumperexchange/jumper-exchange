@@ -86,7 +86,7 @@ jobs:
 
       - name: Install node dependencies
         shell: bash
-        run: npm i -g yaml
+        run: npm i -g yaml && npm link yaml
 
       - name: Update feature img version
         uses: actions/github-script@v7
