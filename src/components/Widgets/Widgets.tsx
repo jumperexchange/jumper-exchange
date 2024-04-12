@@ -10,15 +10,17 @@ import type { StarterVariantType } from '@/types/internal';
 import type { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import type { ThemeModesSupported } from 'src/types/settings';
 import { Widget } from '.';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
+  activeTheme: ThemeModesSupported | undefined;
 }
 
-export function Widgets({ widgetVariant }: WidgetsProps) {
+export function Widgets({ widgetVariant, activeTheme }: WidgetsProps) {
   const { activeTab, setActiveTab } = useActiveTabStore();
   const [welcomeScreenClosed, setWelcomeScreenClosed] = useSettingsStore(
     (state) => [state.welcomeScreenClosed, state.setWelcomeScreenClosed],

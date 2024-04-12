@@ -1,3 +1,4 @@
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import Script from 'next/script';
 import React from 'react';
 import { fallbackLng } from 'src/i18n';
@@ -32,9 +33,11 @@ export default async function RootLayout({
       </head>
 
       <body>
-        <ReactQueryProvider>
-          <WalletProvider>{children}</WalletProvider>
-        </ReactQueryProvider>
+        <AppRouterCacheProvider options={{ enableCssLayer: true, key: 'css' }}>
+          <ReactQueryProvider>
+            <WalletProvider>{children}</WalletProvider>
+          </ReactQueryProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

@@ -41,11 +41,11 @@ interface WidgetProps {
 
 export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
+  const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
-
   const { activeTab } = useActiveTabStore();
   const isGasVariant = activeTab === TabsMap.Refuel.index;
 
@@ -84,7 +84,7 @@ export function Widget({ starterVariant }: WidgetProps) {
         default: i18n.language as LanguageKey,
         allow: i18n.languages as LanguageKey[],
       },
-      appearance: theme.palette.mode === 'light' ? 'light' : 'dark',
+      appearance: themeMode,
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
       theme: {
         container: {
@@ -148,6 +148,7 @@ export function Widget({ starterVariant }: WidgetProps) {
     starterVariant,
     i18n.language,
     i18n.languages,
+    themeMode,
     theme.palette.mode,
     theme.palette.surface2.main,
     theme.palette.surface1.main,
@@ -156,9 +157,9 @@ export function Widget({ starterVariant }: WidgetProps) {
     multisigWidget,
     isMultisigSigner,
     multisigSdkConfig,
+    isGasVariant,
     setWalletSelectMenuState,
     wagmiConfig,
-    isGasVariant,
   ]);
 
   return (

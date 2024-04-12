@@ -1,10 +1,9 @@
-import { cookie3Config } from '@/const/cookie3';
 import { ThemeProvider } from '@/providers/ThemeProvider';
-import { cookie3Analytics } from '@cookie3/analytics';
 import type { Resource } from 'i18next';
 import { type PropsWithChildren } from 'react';
 import { Layout } from 'src/Layout';
 import { defaultNS } from 'src/i18n';
+import type { ThemeModesSupported } from 'src/types/settings';
 import { TrackingProvider } from './TrackingProvider';
 import TranslationsProvider from './TranslationProvider';
 
@@ -12,17 +11,17 @@ interface AppProviderProps {
   children: React.ReactNode | JSX.Element;
   i18nResources: Resource;
   lang?: string;
+  theme?: ThemeModesSupported | undefined;
 }
 
 export const AppProvider: React.FC<PropsWithChildren<AppProviderProps>> = ({
   children,
   i18nResources,
+  theme,
   lang,
 }) => {
-  const analytics = cookie3Analytics(cookie3Config);
-
   return (
-    <ThemeProvider>
+    <ThemeProvider theme={theme}>
       <TrackingProvider>
         <TranslationsProvider
           namespaces={[defaultNS]}

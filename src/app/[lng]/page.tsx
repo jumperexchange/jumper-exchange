@@ -1,5 +1,6 @@
-'use client';
+import { cookies } from 'next/headers';
 // import type { Viewport } from 'next';
+import type { ThemeModesSupported } from 'src/types/settings';
 import App from '../ui/app/App';
 
 // export const viewport: Viewport = {
@@ -8,5 +9,8 @@ import App from '../ui/app/App';
 // };
 
 export default function Page() {
-  return <App starterVariant="default" />;
+  const activeTheme = cookies().get('theme')?.value as
+    | ThemeModesSupported
+    | undefined;
+  return <App starterVariant="default" activeTheme={activeTheme} />;
 }
