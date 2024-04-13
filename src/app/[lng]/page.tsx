@@ -8,9 +8,22 @@ import App from '../ui/app/App';
 //   initialScale: 1,
 // };
 
+export const dynamic = 'force-dynamic';
+
 export default function Page() {
   const activeTheme = cookies().get('theme')?.value as
     | ThemeModesSupported
     | undefined;
-  return <App starterVariant="default" activeTheme={activeTheme} />;
+  const welcomeScreenClosed = cookies().get('welcomeScreenClosed')?.value as
+    | 'false'
+    | 'true'
+    | undefined;
+
+  return (
+    <App
+      starterVariant="default"
+      activeTheme={activeTheme}
+      welcomeScreenClosedCookie={welcomeScreenClosed === 'true' ? true : false}
+    />
+  );
 }

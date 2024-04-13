@@ -6,6 +6,8 @@ import { namespaces } from 'src/i18n';
 import type { ThemeModesSupported } from 'src/types/settings';
 import initTranslations from '../i18n';
 
+export const dynamic = 'force-dynamic';
+
 export function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale }));
 }
