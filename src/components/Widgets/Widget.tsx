@@ -168,7 +168,15 @@ export function Widget({ starterVariant }: WidgetProps) {
       welcomeScreenClosed={welcomeScreenClosed}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
-      <ClientOnly fallback={<WidgetSkeleton />}>
+      <ClientOnly
+        fallback={
+          <WidgetSkeleton
+            welcomeScreenClosed={welcomeScreenClosed}
+            title={starterVariant === 'default' ? 'Exchange' : 'Gas'}
+            buttonTitle={starterVariant === 'default' ? 'Connect' : 'Get Gas'}
+          />
+        }
+      >
         <LiFiWidget integrator={config.integrator} config={config} />
       </ClientOnly>
     </WidgetWrapper>
