@@ -13,9 +13,9 @@ import type { Breakpoint } from '@mui/material';
 import { Slide, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next/TransWithoutContext';
+import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { ToolCards } from './ToolCard/ToolCards';
 import { ContentWrapper, Overlay, WelcomeContent } from './WelcomeScreen.style';
 
@@ -37,13 +37,8 @@ interface WelcomeScreenProps {
 
 export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
   const theme = useTheme();
-  const [isClosed, setIsClosed] = useState(closed);
-  const [cookie, setCookie] = useCookies(['welcomeScreenClosed']);
-  useEffect(() => {
-    if (cookie.welcomeScreenClosed !== undefined) {
-      setIsClosed(cookie.welcomeScreenClosed);
-    }
-  }, [cookie.welcomeScreenClosed]);
+  const { welcomeScreenClosed, setWelcomeScreenClosed } =
+    useWelcomeScreen(closed);
   const { t } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
   const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
@@ -51,7 +46,7 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
   const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
 
   useEffect(() => {
-    if (cookie.welcomeScreenClosed === 'true') {
+    if (welcomeScreenClosed) {
       trackEvent({
         category: TrackingCategory.WelcomeScreen,
         label: 'open-welcome-screen',
@@ -62,7 +57,7 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
         ],
       });
     }
-  }, [cookie, trackEvent]);
+  }, [trackEvent, welcomeScreenClosed]);
 
   const handleAuditClick = () => {
     trackEvent({
@@ -107,7 +102,7 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
       return;
     } else {
       event.stopPropagation();
-      setCookie('welcomeScreenClosed', true);
+      setWelcomeScreenClosed(true);
       trackEvent({
         category: TrackingCategory.WelcomeScreen,
         action: TrackingAction.CloseWelcomeScreen,
@@ -121,15 +116,15 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
   };
 
   return (
-    <Overlay showWelcome={!isClosed}>
+    <Overlay showWelcome={!welcomeScreenClosed}>
       <Slide
         direction="up"
         unmountOnExit
         appear={false}
         timeout={400}
-        in={!isClosed}
+        in={!welcomeScreenClosed}
       >
-        <ContentWrapper showWelcome={!isClosed}>
+        <ContentWrapper showWelcome={!welcomeScreenClosed}>
           <WelcomeContent>
             <CustomColor as="h1" variant={'lifiHeaderMedium'}>
               {t('navbar.welcome.title')}

@@ -6,14 +6,8 @@ import { TabsMap } from '@/const/tabsMap';
 import { useActiveTabStore } from '@/stores/activeTab';
 import type { StarterVariantType } from '@/types/internal';
 import type { WidgetSubvariant } from '@lifi/widget';
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { useCookies } from 'react-cookie';
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import type { ThemeModesSupported } from 'src/types/settings';
 import { Widget } from '.';
 import { WidgetEvents } from './WidgetEvents';
@@ -31,14 +25,8 @@ export function Widgets({
   closedWelcomeScreen,
 }: WidgetsProps) {
   const { activeTab, setActiveTab } = useActiveTabStore();
-  const [isClosed, setIsClosed] = useState(closedWelcomeScreen);
-  const [cookie, setCookie] = useCookies(['welcomeScreenClosed']);
-
-  useEffect(() => {
-    if (cookie.welcomeScreenClosed !== undefined) {
-      setIsClosed(cookie.welcomeScreenClosed);
-    }
-  }, [cookie.welcomeScreenClosed]);
+  const { welcomeScreenClosed, setWelcomeScreenClosed } =
+    useWelcomeScreen(closedWelcomeScreen);
 
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
@@ -101,10 +89,6 @@ export function Widgets({
     }
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
-  const handleCloseWelcomeScreen = () => {
-    setCookie('welcomeScreenClosed', true, { path: '/' });
-  };
-
   useLayoutEffect(() => {
     getActiveWidget();
   }, [getActiveWidget, starterVariant, activeTab]);
@@ -112,25 +96,25 @@ export function Widgets({
   return (
     <>
       <WidgetContainer
-        onClick={handleCloseWelcomeScreen}
+        onClick={() => setWelcomeScreenClosed(true)}
         isActive={_starterVariant === TabsMap.Exchange.variant}
-        welcomeScreenClosed={isClosed}
+        welcomeScreenClosed={!!welcomeScreenClosed}
       >
         <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
       </WidgetContainer>
       <WidgetContainer
-        onClick={handleCloseWelcomeScreen}
+        onClick={() => setWelcomeScreenClosed(true)}
         isActive={_starterVariant === TabsMap.Refuel.variant}
-        welcomeScreenClosed={isClosed}
+        welcomeScreenClosed={!!welcomeScreenClosed}
       >
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
       <SolanaAlert />
       {process.env.NEXT_PUBLIC_ONRAMPER_ENABLED ? (
         <WidgetContainer
-          onClick={handleCloseWelcomeScreen}
+          onClick={() => setWelcomeScreenClosed(true)}
           isActive={_starterVariant === TabsMap.Buy.variant}
-          welcomeScreenClosed={isClosed}
+          welcomeScreenClosed={!!welcomeScreenClosed}
         >
           <OnRamper />
         </WidgetContainer>

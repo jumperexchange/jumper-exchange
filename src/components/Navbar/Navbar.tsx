@@ -6,7 +6,7 @@ import { JumperLogo } from '@/components/illustrations/JumperLogo';
 import { JUMPER_LEARN_PATH, JUMPER_LOYALTY_PATH } from '@/const/urls';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useMenuStore } from '@/stores/menu';
-import { useCookies } from 'react-cookie';
+import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import {
   NavbarContainer as Container,
   Logo,
@@ -23,12 +23,12 @@ export const Navbar = () => {
   const isLearnPage = pathname.includes(JUMPER_LEARN_PATH);
   const isLoyaltyPage = pathname.includes(JUMPER_LOYALTY_PATH);
   const { account } = useAccounts();
-  const [_, setCookie] = useCookies(['welcomeScreenClosed']);
+  const { setWelcomeScreenClosed } = useWelcomeScreen();
   const { closeAllMenus } = useMenuStore((state) => state);
 
   const handleClick = () => {
     closeAllMenus();
-    setCookie('welcomeScreenClosed', false, { path: '/' });
+    setWelcomeScreenClosed(false);
     isLearnPage ? router.push(JUMPER_LEARN_PATH) : router.push('/');
   };
 
