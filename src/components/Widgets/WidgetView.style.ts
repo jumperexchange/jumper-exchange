@@ -35,7 +35,7 @@ export const WidgetSkeletonHeader = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1.5, 3),
   display: 'flex',
   width: '100%',
-  justifyContent: 'flex-start',
+  justifyContent: 'space-between',
 }));
 
 export const WidgetSkeletonTitle = styled(Typography)(({ theme }) => ({

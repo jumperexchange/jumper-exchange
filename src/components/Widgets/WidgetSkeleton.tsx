@@ -1,7 +1,7 @@
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import SettingsIcon from '@mui/icons-material/Settings';
 import WalletIcon from '@mui/icons-material/Wallet';
-import { Box } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import {
   WidgetFooter,
   WidgetSkeletonContainer,
@@ -10,14 +10,13 @@ import {
   WidgetSkeletonMainButton,
   WidgetSkeletonMainButtonTypography,
   WidgetSkeleton as WidgetSkeletonStyles,
-  WidgetSkeletonTitle,
   WidgetSkeletonWalletButton,
 } from './WidgetView.style';
 
 interface WidgetSkeletonProps {
   welcomeScreenClosed: boolean;
-  title: string;
-  buttonTitle: string;
+  title?: string;
+  buttonTitle?: string;
 }
 
 export const WidgetSkeleton = ({
@@ -28,7 +27,11 @@ export const WidgetSkeleton = ({
   return (
     <WidgetSkeletonContainer welcomeScreenClosed={welcomeScreenClosed}>
       <WidgetSkeletonHeader>
-        <WidgetSkeletonTitle>{title}</WidgetSkeletonTitle>
+        <Skeleton variant="text" width={164} height={40} />
+        {/* title could be here */}
+        {/* <WidgetSkeletonTitle>
+          {title}
+        </WidgetSkeletonTitle> */}
         <Box
           display="flex"
           gap="4px"
@@ -62,7 +65,8 @@ export const WidgetSkeleton = ({
       <WidgetFooter>
         <WidgetSkeletonMainButton>
           <WidgetSkeletonMainButtonTypography>
-            {buttonTitle}
+            {/* A button title could be here */}
+            {/* {buttonTitle} */}
           </WidgetSkeletonMainButtonTypography>
         </WidgetSkeletonMainButton>
         <WidgetSkeletonWalletButton>

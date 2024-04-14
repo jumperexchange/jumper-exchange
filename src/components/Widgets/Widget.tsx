@@ -172,8 +172,8 @@ export function Widget({ starterVariant }: WidgetProps) {
         fallback={
           <WidgetSkeleton
             welcomeScreenClosed={welcomeScreenClosed}
-            title={starterVariant === 'default' ? 'Exchange' : 'Gas'}
-            buttonTitle={starterVariant === 'default' ? 'Connect' : 'Get Gas'}
+            // title={starterVariant === 'default' ? 'Exchange' : 'Gas'}
+            // buttonTitle={starterVariant === 'default' ? 'Connect' : 'Get Gas'}
           />
         }
       >
