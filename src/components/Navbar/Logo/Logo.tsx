@@ -1,17 +1,11 @@
-import type { Breakpoint, Theme } from '@mui/material';
-
-import { JumperIcon } from '@/components/illustrations/JumperIcon';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import type { ReactNode } from 'react';
+import { JumperLearnLogo, JumperLogo } from 'src/components/illustrations';
 
 type LogoProps = {
-  isConnected: boolean;
-  theme: Theme;
-  logo: ReactNode;
+  variant: 'default' | 'learn';
 };
 
-export const Logo = ({ isConnected, theme, logo }: LogoProps) => {
-  const isTablet = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
+export const Logo = ({ variant }: LogoProps) => {
+  const logo = variant === 'default' ? <JumperLogo /> : <JumperLearnLogo />;
 
-  return !isTablet || (!isTablet && isConnected) ? <JumperIcon /> : logo;
+  return logo;
 };
