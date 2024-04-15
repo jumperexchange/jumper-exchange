@@ -32,7 +32,6 @@
     "accept-language": "^3.0.18",
     "dotenv-cli": "^7.4.1",
     "ethers": "^6.11.1",
-    "fontaine": "^0.5.0",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "i18next": "^23.11.1",
