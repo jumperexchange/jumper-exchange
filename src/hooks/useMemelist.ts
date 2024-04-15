@@ -13,9 +13,6 @@ export interface UseMemeProps {
 
 const STRAPI_CONTENT_TYPE = 'token-lists';
 export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
-  console.log('hereee');
-  console.log(enabled);
-
   const apiBaseUrl =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
@@ -44,11 +41,7 @@ export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
     enabled: enabled,
   });
 
-  console.log('STRAPI TOKEN');
-  console.log(data);
-
   const tokenList = data?.[0].attributes?.['DATA'];
-
   return {
     tokens: tokenList,
     isSuccess,

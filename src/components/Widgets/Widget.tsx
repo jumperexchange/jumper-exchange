@@ -56,7 +56,6 @@ export function Widget({ starterVariant, themeVariant }: WidgetProps) {
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
-  console.log(themeVariant);
   const { tokens } = useMemelist({
     enabled: !!themeVariant,
   });
