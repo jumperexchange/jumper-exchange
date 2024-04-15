@@ -11,7 +11,7 @@ import {
   WidgetSkeletonMainButtonTypography,
   WidgetSkeleton as WidgetSkeletonStyles,
   WidgetSkeletonWalletButton,
-} from './WidgetView.style';
+} from './WidgetSkeleton.style';
 
 interface WidgetSkeletonProps {
   welcomeScreenClosed: boolean;

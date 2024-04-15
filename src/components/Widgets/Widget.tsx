@@ -3,6 +3,7 @@ import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAler
 import { widgetConfig } from '@/config/widgetConfig';
 import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
+import { ClientOnly } from '@/providers/ClientOnly';
 import { useActiveTabStore } from '@/stores/activeTab/ActiveTabStore';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
@@ -19,7 +20,6 @@ import { useTranslation } from 'react-i18next';
 import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
-import { ClientOnly } from './ClientOnly';
 import { WidgetSkeleton } from './WidgetSkeleton';
 
 const refuelAllowChains: ChainId[] = [
