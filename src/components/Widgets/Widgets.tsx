@@ -56,16 +56,16 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
   }, [widgetVariant]);
 
   const themeVariant: ThemeVariantType | undefined = useMemo(() => {
-    let url = window.location.pathname.slice(1);
-    console.log('in the theme');
-    console.log(url);
-    if (url.includes(ThemesMap.Memecoins)) {
-      console.log('hereeeee in the if');
-      //Todo: review the logic of the tab selection.
-      setActiveTab(-1);
-      return ThemesMap.Memecoins;
-    } else {
-      return undefined;
+    if (window) {
+      let url = window?.location.pathname.slice(1);
+
+      if (url.includes(ThemesMap.Memecoins)) {
+        //Todo: review the logic of the tab selection.
+        setActiveTab(-1);
+        return ThemesMap.Memecoins;
+      } else {
+        return undefined;
+      }
     }
   }, [activeTab]);
 
