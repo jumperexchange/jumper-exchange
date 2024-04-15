@@ -100,7 +100,7 @@ export function Widget({ starterVariant, themeVariant }: WidgetProps) {
           starterVariant === TabsMap.Refuel.variant
             ? refuelAllowChains
             : themeVariant === ThemesMap.Memecoins
-              ? [8453]
+              ? [1, 8453, 10, 42161, 43114, 56]
               : [],
       },
       languages: {

@@ -31,7 +31,9 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
     `${process.env.NEXT_PUBLIC_SITE_URL}/${currentPath}`,
   );
 
+  //Todo: logic to review
   const isRoot = result === '/' || result === '';
+  const isThemePage = result === '/memecoins';
   const isApp = Object.values(LinkMap).some((page) =>
     result.includes(`/${page}`),
   );
@@ -55,7 +57,7 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
 
   return (
     <Container
-      fixedPosition={isRoot || isApp}
+      fixedPosition={isRoot || isApp || isThemePage}
       sx={styles}
       isArticlePage={isArticle}
     >
