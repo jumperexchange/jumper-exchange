@@ -29,9 +29,6 @@ export interface ProfilePageTypographyProps
 export const ProfilePageTypography = styled(
   Typography,
 )<ProfilePageTypographyProps>(({ fontSize, fontWeight, lineHeight }) => ({
-  fontFamily: 'Inter var, Inter',
-
-  fontStyle: 'normal',
   fontSize: fontSize,
   fontWeight: fontWeight ?? 700,
   lineHeight: lineHeight,

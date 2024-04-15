@@ -147,7 +147,6 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
       0.75,
     ),
     margin: theme.spacing(0.5, 0),
-    fontFamily: 'Inter var, Inter, sans-serif',
     fontSize: '18px',
     lineHeight: '32px',
     fontWeight: 400,

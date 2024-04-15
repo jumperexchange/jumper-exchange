@@ -85,7 +85,6 @@ export const CustomRichBlocks = ({
                 0.75,
               ),
               margin: theme.spacing(2, 0),
-              fontFamily: `Inter var, Inter, sans-serif`,
               fontSize: '18px',
               lineHeight: '32px',
               fontWeight: 400,
