@@ -1,5 +1,4 @@
 'use client';
-import { inter } from '@/fonts/fonts';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
@@ -389,16 +388,16 @@ const themeCustomized: Theme = createTheme({
     },
   },
   typography: {
-    fontFamily: inter.style.fontFamily,
+    fontFamily: `Inter var, Inter, sans-serif`,
     lifiHeaderDisplay: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontSize: '96px',
       lineHeight: '128px',
       fontWeight: 700,
     },
     lifiHeaderXLarge: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '64px',
@@ -406,7 +405,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderLarge: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '48px',
@@ -414,7 +413,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderMedium: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '32px',
@@ -422,7 +421,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderSmall: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
@@ -430,7 +429,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderXSmall: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
@@ -438,7 +437,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXLargeStrong: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 800,
       fontSize: '24px',
@@ -446,7 +445,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXLarge: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 400,
       fontSize: '24px',
@@ -454,7 +453,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyLargeStrong: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
@@ -462,7 +461,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyLarge: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '18px',
@@ -470,7 +469,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyMediumStrong: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '16px',
@@ -478,7 +477,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyMedium: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '16px',
@@ -486,7 +485,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodySmallStrong: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '14px',
@@ -494,7 +493,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodySmall: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 400,
       fontSize: '14px',
@@ -502,7 +501,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXSmallStrong: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '12px',
@@ -510,7 +509,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXSmall: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '12px',
@@ -518,7 +517,7 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBrandHeaderXLarge: {
-      fontFamily: inter.style.fontFamily,
+      fontFamily: `Inter var, Inter, sans-serif`,
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '64px',
