@@ -14,6 +14,7 @@ import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
 import { ThemesMap } from 'src/const/themesMap';
 import { ThemeModesSupported } from 'src/types/settings';
+import { useHydrated } from 'src/hooks/useHydrated';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
@@ -29,6 +30,7 @@ export function Widgets({
   const { activeTab, setActiveTab } = useActiveTabStore();
   const { welcomeScreenClosed, setWelcomeScreenClosed } =
     useWelcomeScreen(closedWelcomeScreen);
+  const hydrated = useHydrated();
 
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
@@ -61,9 +63,8 @@ export function Widgets({
   }, [widgetVariant]);
 
   const themeVariant: ThemeVariantType | undefined = useMemo(() => {
-    if (typeof window !== 'undefined') {
+    if (hydrated) {
       let url = window?.location.pathname.slice(1);
-
       if (url.includes(ThemesMap.Memecoins)) {
         //Todo: review the logic of the tab selection.
         setActiveTab(-1);
@@ -72,7 +73,7 @@ export function Widgets({
         return undefined;
       }
     }
-  }, [activeTab]);
+  }, [hydrated]);
 
   const getActiveWidget = useCallback(() => {
     setThemeVariant(themeVariant);

@@ -24,14 +24,6 @@ import { useMemelist } from 'src/hooks/useMemelist';
 import { ThemesMap } from 'src/const/themesMap';
 import { WidgetSkeleton } from './WidgetSkeleton';
 
-export const base_meme_tokens = [
-  {
-    address: '0xE3086852A4B125803C815a158249ae468A3254Ca',
-    chainId: 8453,
-    logoURI: 'https://strapi.li.finance/uploads/mfer_c5c316fa92.webp',
-  },
-];
-
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
   ChainId.POL,
@@ -43,6 +35,15 @@ const refuelAllowChains: ChainId[] = [
   ChainId.OPT,
   ChainId.FUS,
   ChainId.VEL,
+];
+
+const themeAllowChains: ChainId[] = [
+  ChainId.ETH,
+  ChainId.BAS,
+  ChainId.OPT,
+  ChainId.ARB,
+  ChainId.AVA,
+  ChainId.BSC,
 ];
 
 interface WidgetProps {
@@ -97,7 +98,7 @@ export function Widget({ starterVariant, themeVariant }: WidgetProps) {
           starterVariant === TabsMap.Refuel.variant
             ? refuelAllowChains
             : themeVariant === ThemesMap.Memecoins
-              ? [1, 8453, 10, 42161, 43114, 56]
+              ? themeAllowChains
               : [],
       },
       languages: {
