@@ -1,9 +1,7 @@
 import { getCookies } from 'src/app/lib/getCookies';
 import App from 'src/app/ui/app/App';
 
-export const dynamic = 'force-dynamic';
-
-const Page = () => {
+const Page = async () => {
   const { activeTheme, welcomeScreenClosed } = getCookies();
 
   return (

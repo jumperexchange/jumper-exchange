@@ -5,8 +5,6 @@ import { namespaces } from 'src/i18n';
 import initTranslations from '../i18n';
 import { getCookies } from '../lib/getCookies';
 
-export const dynamic = 'force-dynamic';
-
 export function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale }));
 }
