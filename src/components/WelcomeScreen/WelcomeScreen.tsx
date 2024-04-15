@@ -6,8 +6,8 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
+import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useSettingsStore } from '@/stores/settings';
 import { EventTrackingTool } from '@/types/userTracking';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import type { Breakpoint } from '@mui/material';
@@ -16,7 +16,6 @@ import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next/TransWithoutContext';
-import { shallow } from 'zustand/shallow';
 import { ToolCards } from './ToolCard/ToolCards';
 import { ContentWrapper, Overlay, WelcomeContent } from './WelcomeScreen.style';
 
@@ -32,21 +31,22 @@ const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
   utm_medium: 'welcome_screen',
 });
 
-export const WelcomeScreen = () => {
-  const theme = useTheme();
-  const { t } = useTranslation();
-  const [welcomeScreenClosed, setWelcomeScreenClosed] = useSettingsStore(
-    (state) => [state.welcomeScreenClosed, state.setWelcomeScreenClosed],
-    shallow,
-  );
+interface WelcomeScreenProps {
+  closed: boolean;
+}
 
+export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
+  const theme = useTheme();
+  const { welcomeScreenClosed, setWelcomeScreenClosed } =
+    useWelcomeScreen(closed);
+  const { t } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
   const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
   const [openBridgesToolModal, setOpenBridgesToolModal] = useState(false);
   const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
 
   useEffect(() => {
-    if (!welcomeScreenClosed) {
+    if (welcomeScreenClosed) {
       trackEvent({
         category: TrackingCategory.WelcomeScreen,
         label: 'open-welcome-screen',
@@ -116,7 +116,7 @@ export const WelcomeScreen = () => {
   };
 
   return (
-    <Overlay showWelcome={!welcomeScreenClosed || false}>
+    <Overlay showWelcome={!welcomeScreenClosed}>
       <Slide
         direction="up"
         unmountOnExit

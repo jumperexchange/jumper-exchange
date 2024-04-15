@@ -1,8 +1,11 @@
+import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
+import { WalletProvider } from '@/providers/WalletProvider';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import Script from 'next/script';
 import React from 'react';
+import 'src/fonts/inter.css';
 import { fallbackLng } from 'src/i18n';
 import { metadata as JumperMetadata } from './lib/metadata';
-
 export const metadata = JumperMetadata;
 
 export default async function RootLayout({
@@ -29,7 +32,13 @@ export default async function RootLayout({
         </Script>
       </head>
 
-      <body>{children}</body>
+      <body>
+        <AppRouterCacheProvider options={{ enableCssLayer: true, key: 'css' }}>
+          <ReactQueryProvider>
+            <WalletProvider>{children}</WalletProvider>
+          </ReactQueryProvider>
+        </AppRouterCacheProvider>
+      </body>
     </html>
   );
 }

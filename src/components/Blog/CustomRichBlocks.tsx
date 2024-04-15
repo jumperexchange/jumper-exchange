@@ -6,11 +6,11 @@ import {
 import { Lightbox } from '@/components/Lightbox/Lightbox';
 import { Link } from '@/components/Link.style';
 import { Widget } from '@/components/Widgets/Widget';
-import { inter, urbanist } from '@/fonts/fonts';
 import type { MediaAttributes } from '@/types/strapi';
 import { Typography, alpha, useTheme } from '@mui/material';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { urbanist } from 'src/fonts/fonts';
 
 interface CustomRichBlocksProps {
   baseUrl?: string;
@@ -85,7 +85,6 @@ export const CustomRichBlocks = ({
                 0.75,
               ),
               margin: theme.spacing(2, 0),
-              fontFamily: inter.style.fontFamily,
               fontSize: '18px',
               lineHeight: '32px',
               fontWeight: 400,
