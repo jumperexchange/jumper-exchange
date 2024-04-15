@@ -8,9 +8,9 @@ import {
   alpha,
 } from '@mui/material';
 
-import { inter, interVar, urbanist } from '@/fonts/fonts';
 import { getContrastAlphaColor } from '@/utils/colors';
 import { styled } from '@mui/material/styles';
+import { urbanist } from 'src/fonts/fonts';
 
 export const BlogArticleImageContainer = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -147,7 +147,7 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
       0.75,
     ),
     margin: theme.spacing(0.5, 0),
-    fontFamily: `${interVar.style.fontFamily}, ${inter.style.fontFamily}, sans-serif`,
+    fontFamily: 'Inter var, Inter, sans-serif',
     fontSize: '18px',
     lineHeight: '32px',
     fontWeight: 400,

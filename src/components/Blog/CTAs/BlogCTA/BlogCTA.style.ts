@@ -1,8 +1,8 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, alpha, darken } from '@mui/material';
 
-import { urbanist } from '@/fonts/fonts';
 import { styled } from '@mui/material/styles';
+import { urbanist } from 'src/fonts/fonts';
 
 export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
