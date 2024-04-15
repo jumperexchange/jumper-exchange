@@ -1,10 +1,9 @@
 import { AppProvider } from '@/providers/AppProvider';
 import i18nConfig from 'i18nconfig';
-import { cookies } from 'next/headers';
 import React from 'react';
 import { namespaces } from 'src/i18n';
-import type { ThemeModesSupported } from 'src/types/settings';
 import initTranslations from '../i18n';
+import { getCookies } from '../lib/getCookies';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,9 +20,8 @@ export default async function RootLayout({
   req: any;
 }) {
   const { resources } = await initTranslations(lng, namespaces);
-  const activeTheme = cookies().get('theme')?.value as
-    | ThemeModesSupported
-    | undefined;
+  const { activeTheme } = getCookies();
+
   return (
     <AppProvider i18nResources={resources} lang={lng} theme={activeTheme}>
       {children}

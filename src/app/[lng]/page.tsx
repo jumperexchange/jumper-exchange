@@ -1,6 +1,5 @@
-import { cookies } from 'next/headers';
 // import type { Viewport } from 'next';
-import type { ThemeModesSupported } from 'src/types/settings';
+import { getCookies } from '../lib/getCookies';
 import App from '../ui/app/App';
 
 // export const viewport: Viewport = {
@@ -11,13 +10,7 @@ import App from '../ui/app/App';
 export const dynamic = 'force-dynamic';
 
 export default function Page() {
-  const activeTheme = cookies().get('theme')?.value as
-    | ThemeModesSupported
-    | undefined;
-  const welcomeScreenClosed = cookies().get('welcomeScreenClosed')?.value as
-    | 'false'
-    | 'true'
-    | undefined;
+  const { activeTheme, welcomeScreenClosed } = getCookies();
 
   return (
     <App
