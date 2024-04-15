@@ -11,7 +11,7 @@ env:
 
 jobs:
   delete-feature-tags:
-    if: contains(github.event.label.name, 'newtesting') || contains(github.event.pull_request.labels.*.name, 'newtesting')
+    if: contains(github.event.label.name, 'feature') || contains(github.event.pull_request.labels.*.name, 'feature')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout jumper-exchange

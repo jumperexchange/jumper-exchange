@@ -15,7 +15,7 @@ env:
 
 jobs:
   deploy-feature:
-    if: contains(github.event.label.name, 'newtesting') || contains(github.event.pull_request.labels.*.name, 'newtesting')
+    if: contains(github.event.label.name, 'feature') || contains(github.event.pull_request.labels.*.name, 'feature')
     name: Check flags
     runs-on: ubuntu-latest
     permissions:
@@ -59,7 +59,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
