@@ -15,10 +15,10 @@ export function useInitUserTracking() {
         !hotjar.initialized() &&
           process.env.NEXT_PUBLIC_HOTJAR_ID &&
           process.env.NEXT_PUBLIC_HOTJAR_SNIPPET_VERSION &&
-          hotjar.initialize(
-            process.env.NEXT_PUBLIC_HOTJAR_ID,
-            process.env.NEXT_PUBLIC_HOTJAR_SNIPPET_VERSION,
-          );
+          hotjar.initialize({
+            id: process.env.NEXT_PUBLIC_HOTJAR_ID,
+            sv: process.env.NEXT_PUBLIC_HOTJAR_SNIPPET_VERSION,
+          });
       }
     },
     [],
