@@ -1,5 +1,5 @@
+import type { ThemeModesSupported } from '@/types/settings';
 import { cookies } from 'next/headers';
-import type { ThemeModesSupported } from 'src/types/settings';
 
 export function getCookies() {
   const cookieHandler = cookies();

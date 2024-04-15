@@ -2,8 +2,8 @@
 import { usePathname, useRouter } from 'next/navigation';
 
 import { JUMPER_LEARN_PATH, JUMPER_LOYALTY_PATH } from '@/const/urls';
+import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useMenuStore } from '@/stores/menu';
-import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import {
   NavbarContainer as Container,
   Logo,

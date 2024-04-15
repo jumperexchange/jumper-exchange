@@ -1,9 +1,9 @@
+import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
+import { WalletProvider } from '@/providers/WalletProvider';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import Script from 'next/script';
 import React from 'react';
 import { fallbackLng } from 'src/i18n';
-import { ReactQueryProvider } from 'src/providers/ReactQueryProvider';
-import { WalletProvider } from 'src/providers/WalletProvider';
 import { metadata as JumperMetadata } from './lib/metadata';
 
 export const metadata = JumperMetadata;

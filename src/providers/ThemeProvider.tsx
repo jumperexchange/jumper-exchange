@@ -1,11 +1,11 @@
 'use client';
 import { useSettingsStore } from '@/stores/settings';
+import type { ThemeModesSupported } from '@/types/settings';
 import { CssBaseline, useMediaQuery } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import type { PropsWithChildren } from 'react';
 import { useEffect, useState } from 'react';
 import { darkTheme, lightTheme } from 'src/theme/theme';
-import type { ThemeModesSupported } from 'src/types/settings';
 
 export const useDetectDarkModePreference = () => {
   const themeMode = useSettingsStore((state) => state.themeMode);

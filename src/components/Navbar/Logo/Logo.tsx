@@ -1,4 +1,4 @@
-import { JumperLearnLogo, JumperLogo } from 'src/components/illustrations';
+import { JumperLearnLogo, JumperLogo } from '@/components/illustrations';
 
 type LogoProps = {
   variant: 'default' | 'learn';

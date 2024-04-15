@@ -1,5 +1,5 @@
-import { getCookies } from 'src/app/lib/getCookies';
-import App from 'src/app/ui/app/App';
+import { getCookies } from '@/app/lib/getCookies';
+import App from '@/app/ui/app/App';
 
 const Page = async () => {
   const { activeTheme, welcomeScreenClosed } = getCookies();

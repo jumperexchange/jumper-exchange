@@ -1,9 +1,9 @@
 import { ThemeProvider } from '@/providers/ThemeProvider';
+import type { ThemeModesSupported } from '@/types/settings';
 import type { Resource } from 'i18next';
 import { type PropsWithChildren } from 'react';
 import { Layout } from 'src/Layout';
 import { defaultNS } from 'src/i18n';
-import type { ThemeModesSupported } from 'src/types/settings';
 import { TrackingProvider } from './TrackingProvider';
 import TranslationsProvider from './TranslationProvider';
 

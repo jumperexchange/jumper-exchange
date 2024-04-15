@@ -19,6 +19,7 @@
     "paths": {
       "src": ["./src/"],
       "src/*": ["./src/*"],
+      "@/app/*": ["src/app/*"],
       "@/components/*": ["src/components/*"],
       "@/config/*": ["src/config/*"],
       "@/const/*": ["src/const/*"],

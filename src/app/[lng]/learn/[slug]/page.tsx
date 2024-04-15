@@ -1,8 +1,8 @@
+import { getArticleBySlug } from '@/app/lib/getArticleBySlug';
+import { getArticlesByTag } from '@/app/lib/getArticlesByTag';
 import type { BlogArticleData } from '@/types/strapi';
-import { getArticleBySlug } from 'src/app/lib/getArticleBySlug';
-import { getArticlesByTag } from 'src/app/lib/getArticlesByTag';
 
-import LearnArticlePage from 'src/app/ui/learn/LearnArticlePage';
+import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const article = await getArticleBySlug(params.slug);
