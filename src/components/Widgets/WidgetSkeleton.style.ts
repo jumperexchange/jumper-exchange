@@ -20,6 +20,13 @@ export const WidgetSkeletonContainer = styled(
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
   borderRadius: theme.shape.borderRadius,
+
+  '&:before': {
+    display: 'none',
+  },
+  '& .widget-wrapper > div:before': {
+    display: 'none',
+  },
 }));
 
 export const WidgetSkeletonHeader = styled(Box)(({ theme }) => ({
