@@ -30,6 +30,7 @@
     "@ungap/structured-clone": "^1.2.0",
     "@widgetbot/react-embed": "^1.9.0",
     "accept-language": "^3.0.18",
+    "dotenv-cli": "^7.4.1",
     "ethers": "^6.11.1",
     "fontaine": "^0.5.0",
     "graphql": "^16.8.1",
@@ -86,6 +87,9 @@
   },
   "scripts": {
     "dev": "next dev",
+    "dev:local": "dotenv -e .env.localhost next dev",
+    "dev:staging": "dotenv -e .env.staging next dev",
+    "dev:production": "dotenv -e .env.production next dev",
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
