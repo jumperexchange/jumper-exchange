@@ -4,7 +4,7 @@ declare namespace NodeJS {
   interface ProcessEnv {
     BASE_URL: string;
     DEV: boolean;
-    MODE: 'development' | 'testnet' | 'production' | 'staging' | 'localhost';
+    MODE: 'development' | 'production' | 'staging' | 'localhost';
     PROD: boolean;
     SSR: boolean;
     NEXT_PUBLIC_ENVIRONMENT: string;
