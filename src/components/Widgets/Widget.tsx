@@ -1,4 +1,5 @@
 'use client';
+import { ClientOnly } from '@/components/ClientOnly';
 import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAlert';
 import { widgetConfig } from '@/config/widgetConfig';
 import { TabsMap } from '@/const/tabsMap';
@@ -14,11 +15,12 @@ import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
+import { WidgetSkeleton } from './WidgetSkeleton';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -38,13 +40,12 @@ interface WidgetProps {
 }
 
 export function Widget({ starterVariant }: WidgetProps) {
-  const [loaded, setLoaded] = useState(false);
   const theme = useTheme();
+  const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
-
   const { activeTab } = useActiveTabStore();
   const isGasVariant = activeTab === TabsMap.Refuel.index;
 
@@ -54,10 +55,6 @@ export function Widget({ starterVariant }: WidgetProps) {
   const setWalletSelectMenuState = useMenuStore(
     (state: MenuState) => state.setWalletSelectMenuState,
   );
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -87,7 +84,7 @@ export function Widget({ starterVariant }: WidgetProps) {
         default: i18n.language as LanguageKey,
         allow: i18n.languages as LanguageKey[],
       },
-      appearance: theme.palette.mode === 'light' ? 'light' : 'dark',
+      appearance: themeMode,
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
       theme: {
         container: {
@@ -151,6 +148,7 @@ export function Widget({ starterVariant }: WidgetProps) {
     starterVariant,
     i18n.language,
     i18n.languages,
+    themeMode,
     theme.palette.mode,
     theme.palette.surface2.main,
     theme.palette.surface1.main,
@@ -159,20 +157,28 @@ export function Widget({ starterVariant }: WidgetProps) {
     multisigWidget,
     isMultisigSigner,
     multisigSdkConfig,
+    isGasVariant,
     setWalletSelectMenuState,
     wagmiConfig,
-    isGasVariant,
   ]);
 
   return (
-    loaded && (
-      <WidgetWrapper
-        className="widget-wrapper"
-        welcomeScreenClosed={welcomeScreenClosed}
+    <WidgetWrapper
+      className="widget-wrapper"
+      welcomeScreenClosed={welcomeScreenClosed}
+    >
+      {isMultisigSigner && <MultisigWalletHeaderAlert />}
+      <ClientOnly
+        fallback={
+          <WidgetSkeleton
+            welcomeScreenClosed={welcomeScreenClosed}
+            // title={starterVariant === 'default' ? 'Exchange' : 'Gas'}
+            // buttonTitle={starterVariant === 'default' ? 'Connect' : 'Get Gas'}
+          />
+        }
       >
-        {isMultisigSigner && <MultisigWalletHeaderAlert />}
         <LiFiWidget integrator={config.integrator} config={config} />
-      </WidgetWrapper>
-    )
+      </ClientOnly>
+    </WidgetWrapper>
   );
 }

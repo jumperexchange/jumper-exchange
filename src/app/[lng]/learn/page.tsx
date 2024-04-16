@@ -1,19 +1,11 @@
-import dynamic from 'next/dynamic';
-import { getArticles } from 'src/app/lib/getArticles';
-import { getFeaturedArticle } from 'src/app/lib/getFeaturedArticle';
+import { getArticles } from '@/app/lib/getArticles';
+import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
+import LearnPage from '@/app/ui/learn/LearnPage';
 
-const LearnPage = dynamic(() => import('../../ui/learn/LearnPage'), {
-  ssr: true,
-});
+export const dynamic = 'force-dynamic';
 
 // `app/ui/learn/page.tsx` is the UI for the `/learn` URL
-export default async function Page({
-  params: { lng },
-}: {
-  params: {
-    lng: string;
-  };
-}) {
+export default async function Page() {
   const featuredArticle = await getFeaturedArticle();
   const carouselArticles = await getArticles(featuredArticle.data.id);
   return (

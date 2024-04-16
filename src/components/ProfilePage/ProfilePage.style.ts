@@ -1,4 +1,3 @@
-import { inter } from '@/fonts/fonts';
 import type { TypographyProps } from '@mui/material';
 import { Box, Container, Typography, alpha, styled } from '@mui/material';
 
@@ -30,8 +29,6 @@ export interface ProfilePageTypographyProps
 export const ProfilePageTypography = styled(
   Typography,
 )<ProfilePageTypographyProps>(({ fontSize, fontWeight, lineHeight }) => ({
-  fontFamily: inter.style.fontFamily,
-  fontStyle: 'normal',
   fontSize: fontSize,
   fontWeight: fontWeight ?? 700,
   lineHeight: lineHeight,

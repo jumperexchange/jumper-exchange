@@ -1,12 +1,9 @@
 'use client';
-import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 
-import { JumperLogo } from '@/components/illustrations/JumperLogo';
 import { JUMPER_LEARN_PATH, JUMPER_LOYALTY_PATH } from '@/const/urls';
-import { useAccounts } from '@/hooks/useAccounts';
+import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useMenuStore } from '@/stores/menu';
-import { useSettingsStore } from '@/stores/settings';
 import {
   NavbarContainer as Container,
   Logo,
@@ -14,19 +11,15 @@ import {
   NavbarButtons,
   NavbarTabs,
 } from '.';
-import { JumperLearnLogo } from '../illustrations/JumperLearnLogo';
 
 export const Navbar = () => {
-  const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname();
   const isLearnPage = pathname.includes(JUMPER_LEARN_PATH);
   const isLoyaltyPage = pathname.includes(JUMPER_LOYALTY_PATH);
-  const { account } = useAccounts();
-  const [setWelcomeScreenClosed] = useSettingsStore((state) => [
-    state.setWelcomeScreenClosed,
-  ]);
+  const { setWelcomeScreenClosed } = useWelcomeScreen();
   const { closeAllMenus } = useMenuStore((state) => state);
+
   const handleClick = () => {
     closeAllMenus();
     setWelcomeScreenClosed(false);
@@ -36,11 +29,7 @@ export const Navbar = () => {
   return (
     <Container>
       <LogoLink onClick={handleClick} sx={{ height: '32px' }}>
-        <Logo
-          isConnected={!!account?.address}
-          theme={theme}
-          logo={isLearnPage ? <JumperLearnLogo /> : <JumperLogo />}
-        />
+        <Logo variant={isLearnPage ? 'learn' : 'default'} />
       </LogoLink>
       {!isLearnPage ? <NavbarTabs navbarPageReload={isLoyaltyPage} /> : null}
       <NavbarButtons redirectToLearn={isLearnPage} />

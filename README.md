@@ -23,7 +23,6 @@ to install all dependencies, and choose one of these start commands to start the
 ```
 yarn dev
 yarn dev:local
-yarn dev:testnet
 yarn dev:staging
 yarn dev:production
 ```
@@ -32,7 +31,6 @@ Please refer to the following descriptions of the dev serve scripts:
 
     dev - starts the app using the backend develop stage
     dev:local - starts the app using a locally running backend
-    dev:testnet - starts the app in a testnet only mode using the backend staging stage
     dev:staging - starts the app using the backend staging stage
     dev:production - starts the app using the backend production stage
 

@@ -41,7 +41,7 @@ interface Resources {
         lifiExplorer: 'LI.FI Explorer';
         aboutLIFI: 'About LI.FI';
         support: 'Support';
-        profile: 'Profile';
+        profile: 'Jumper Profile';
       };
       walletMenu: {
         disconnect: 'Disconnect';
@@ -62,11 +62,6 @@ interface Resources {
         github: 'GitHub';
         documentation: 'Documentation';
       };
-    };
-    alert: {
-      info: 'You’re using Testnet';
-      testnet: 'Any transactions or actions performed on the Testnet will not be reflected on the Mainnet.';
-      switchToMainnet: 'Switch to Mainnet';
     };
     discordBanner: {
       ctaHeadline: 'Join our Discord to learn more';
@@ -128,7 +123,7 @@ interface Resources {
     };
     profile_page: {
       mobileTitle: 'Only available on Desktop';
-      mobileDescription: 'The Profile page is not available on small screens yet. We are working on it.';
+      mobileDescription: 'The Jumper Profile page is not available on small screens yet. We are working on it.';
     };
   };
 }
