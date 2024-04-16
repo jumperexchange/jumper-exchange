@@ -1,18 +1,28 @@
-'use client';
 import { FeatureCards } from '@/components/FeatureCards/FeatureCards';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
 import { WelcomeScreen } from '@/components/WelcomeScreen/WelcomeScreen';
 import { Widgets } from '@/components/Widgets/Widgets';
 import type { StarterVariantType } from '@/types/internal';
-interface AppProps {
+import type { ThemeModesSupported } from '@/types/settings';
+export interface AppProps {
   starterVariant: StarterVariantType;
+  activeTheme: ThemeModesSupported | undefined;
+  welcomeScreenClosedCookie: boolean;
 }
 
-const App = ({ starterVariant }: AppProps) => {
+const App = ({
+  starterVariant,
+  activeTheme,
+  welcomeScreenClosedCookie,
+}: AppProps) => {
   return (
     <>
-      <WelcomeScreen />
-      <Widgets widgetVariant={starterVariant} />
+      <WelcomeScreen closed={welcomeScreenClosedCookie} />
+      <Widgets
+        widgetVariant={starterVariant}
+        activeTheme={activeTheme}
+        closedWelcomeScreen={welcomeScreenClosedCookie}
+      />
       <FeatureCards />
       <Snackbar />
     </>

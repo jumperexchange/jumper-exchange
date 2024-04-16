@@ -1,3 +1,4 @@
+'use client';
 import { useCookie3 } from '@/hooks/userTracking/useCookie3';
 import { useInitUserTracking } from '@/hooks/userTracking/useInitUserTracking';
 import { useEffect } from 'react';

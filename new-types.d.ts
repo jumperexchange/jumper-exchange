@@ -4,7 +4,7 @@ declare namespace NodeJS {
   interface ProcessEnv {
     BASE_URL: string;
     DEV: boolean;
-    MODE: 'development' | 'testnet' | 'production' | 'staging' | 'localhost';
+    MODE: 'development' | 'production' | 'staging' | 'localhost';
     PROD: boolean;
     SSR: boolean;
     NEXT_PUBLIC_ENVIRONMENT: string;
@@ -19,6 +19,8 @@ declare namespace NodeJS {
     NEXT_PUBLIC_INTEGRATOR_REFUEL: string;
     NEXT_PUBLIC_LIFI_API_URL: string;
     NEXT_PUBLIC_ONRAMPER_ENABLED: string;
+    NEXT_PUBLIC_ONRAMPER_API_KEY: string;
+    NEXT_PUBLIC_COOKIE3_SITEID: string;
     NEXT_PUBLIC_STRAPI_DEVELOP: string;
     NEXT_PUBLIC_STRAPI_URL: string;
     NEXT_PUBLIC_STRAPI_API_TOKEN: string;

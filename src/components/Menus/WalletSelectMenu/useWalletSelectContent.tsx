@@ -15,6 +15,7 @@ import type { Theme } from '@mui/material';
 import { Avatar, useMediaQuery, useTheme } from '@mui/material';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
 import { useCallback, useMemo } from 'react';
+import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 
 export const useWalletSelectContent = () => {
@@ -26,6 +27,7 @@ export const useWalletSelectContent = () => {
     theme.breakpoints.up('sm'),
   );
   const connect = useAccountConnect();
+  const [_, setCookie] = useCookies(['welcomeScreenClosed']);
 
   const { setSnackbarState, closeAllMenus, setEcosystemSelectMenuState } =
     useMenuStore((state) => state);
@@ -59,11 +61,11 @@ export const useWalletSelectContent = () => {
         );
       }
       closeAllMenus();
-      setWelcomeScreenClosed(true);
+      setCookie('welcomeScreenClosed', true, { path: '/' });
     },
     [
       closeAllMenus,
-      setWelcomeScreenClosed,
+      setCookie,
       setEcosystemSelectMenuState,
       connect,
       setSnackbarState,
