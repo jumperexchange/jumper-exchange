@@ -23,10 +23,7 @@ export const useDetectDarkModePreference = () => {
 export const ThemeProvider: React.FC<
   PropsWithChildren<{ theme?: ThemeModesSupported | 'auto' }>
 > = ({ children, theme: themeProp }) => {
-  const [themeMode, setThemeMode] = useSettingsStore((state) => [
-    state.themeMode,
-    state.setThemeMode,
-  ]);
+  const themeMode = useSettingsStore((state) => state.themeMode);
   const [theme, setTheme] = useState<ThemeModesSupported | undefined>(
     themeProp,
   );
