@@ -3,6 +3,7 @@ import type { Breakpoint, Theme } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
+import { inter, interVar } from 'src/fonts/fonts';
 
 declare module '@mui/material/styles' {
   interface Shape {
@@ -206,11 +207,9 @@ const themeCustomized: Theme = createTheme({
     MuiScopedCssBaseline: {
       styleOverrides: {
         root: {
-          fontFamily:
-            'Inter, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif',
+          fontFamily: `${inter.style.fontFamily}, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif`,
           '@supports (font-variation-settings: normal)': {
-            fontFamily:
-              'Inter var, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif',
+            fontFamily: `${interVar.style.fontFamily}, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif`,
           },
         },
       },
@@ -389,8 +388,8 @@ const themeCustomized: Theme = createTheme({
   },
   typography: {
     fontFamily: [
-      'Inter var',
-      'Inter',
+      `${interVar.style.fontFamily}`,
+      `${inter.style.fontFamily}`,
       'Inter fallback',
       'Arial',
       'Noto Sans',
@@ -401,8 +400,8 @@ const themeCustomized: Theme = createTheme({
     ].join(','),
     lifiHeaderDisplay: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -418,8 +417,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiHeaderXLarge: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -436,8 +435,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiHeaderLarge: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -454,8 +453,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiHeaderMedium: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -472,8 +471,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiHeaderSmall: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -490,8 +489,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiHeaderXSmall: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -508,8 +507,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiBodyXLargeStrong: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -526,8 +525,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiBodyXLarge: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -544,8 +543,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiBodyLargeStrong: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -562,8 +561,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiBodyLarge: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -580,8 +579,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiBodyMediumStrong: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -598,8 +597,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiBodyMedium: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -616,8 +615,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiBodySmallStrong: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -634,8 +633,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiBodySmall: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -652,8 +651,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiBodyXSmallStrong: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -670,8 +669,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiBodyXSmall: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',
@@ -688,8 +687,8 @@ const themeCustomized: Theme = createTheme({
     },
     lifiBrandHeaderXLarge: {
       fontFamily: [
-        'Inter var',
-        'Inter',
+        `${interVar.style.fontFamily}`,
+        `${inter.style.fontFamily}`,
         'Inter fallback',
         'Arial',
         'Noto Sans',

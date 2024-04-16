@@ -5,15 +5,14 @@ import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
-import { useSettingsStore } from '@/stores/settings';
 import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
+import type { ThemeModesSupported } from '@/types/settings';
 import type { WidgetSubvariant } from '@lifi/widget';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { Widget } from '.';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
 import { ThemesMap } from 'src/const/themesMap';
-import { ThemeModesSupported } from 'src/types/settings';
 import { useHydrated } from 'src/hooks/useHydrated';
 
 interface WidgetsProps {

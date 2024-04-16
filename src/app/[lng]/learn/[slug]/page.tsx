@@ -3,6 +3,8 @@ import { getArticlesByTag } from '@/app/lib/getArticlesByTag';
 import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 import type { BlogArticleData } from '@/types/strapi';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page({ params }: { params: { slug: string } }) {
   const article = await getArticleBySlug(params.slug);
 
