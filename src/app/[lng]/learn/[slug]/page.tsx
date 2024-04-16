@@ -1,15 +1,9 @@
+import { getArticleBySlug } from '@/app/lib/getArticleBySlug';
+import { getArticlesByTag } from '@/app/lib/getArticlesByTag';
+import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 import type { BlogArticleData } from '@/types/strapi';
-import { getArticleBySlug } from 'src/app/lib/getArticleBySlug';
-import { getArticlesByTag } from 'src/app/lib/getArticlesByTag';
 
-import dynamic from 'next/dynamic';
-
-const LearnArticlePageWrapper = dynamic(
-  () => import('../../../ui/learn/LearnArticlePage'),
-  {
-    ssr: true,
-  },
-);
+export const dynamic = 'force-dynamic';
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const article = await getArticleBySlug(params.slug);
@@ -24,7 +18,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   );
 
   return (
-    <LearnArticlePageWrapper
+    <LearnArticlePage
       article={article.data.data}
       url={article.url}
       articles={relatedArticles.data}

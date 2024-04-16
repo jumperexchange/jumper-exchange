@@ -1,19 +1,16 @@
-import dynamic from 'next/dynamic';
+import { getCookies } from '../lib/getCookies';
+import App from '../ui/app/App';
 
-import type { Viewport } from 'next';
+export const dynamic = 'force-dynamic';
 
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-};
+export default function Page() {
+  const { activeTheme, welcomeScreenClosed } = getCookies();
 
-const App = dynamic(() => import('../ui/app/App'), { ssr: true });
-
-export default async function Page() {
   return (
-    <>
-      {/* <p>{t('navbar.welcome.title')}</p> */}
-      <App starterVariant="default" />
-    </>
+    <App
+      starterVariant="default"
+      activeTheme={activeTheme}
+      welcomeScreenClosedCookie={welcomeScreenClosed === 'true' ? true : false}
+    />
   );
 }

@@ -10,14 +10,19 @@ import { EventTrackingTool } from '@/types/userTracking';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 
 export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const [_, setCookie] = useCookies(['theme']);
+  const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
+    ? 'dark'
+    : 'light';
 
   const setThemeMode = useSettingsStore((state) => state.setThemeMode);
-
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     trackEvent({
       category: TrackingCategory.ThemeSection,
@@ -28,6 +33,7 @@ export const useThemeSwitchTabs = () => {
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
+    setCookie('theme', mode === 'auto' ? browserTheme : mode, { path: '/' });
     setThemeMode(mode);
   };
 

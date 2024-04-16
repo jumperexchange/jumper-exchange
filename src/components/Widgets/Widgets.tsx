@@ -1,14 +1,13 @@
 'use client';
 import { SolanaAlert } from '@/components/Alerts';
 import { OnRamper } from '@/components/OnRamper';
-import { TestnetAlert } from '@/components/TestnetAlert';
 import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';
+import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
-import { useSettingsStore } from '@/stores/settings';
 import type { StarterVariantType } from '@/types/internal';
+import type { ThemeModesSupported } from '@/types/settings';
 import type { WidgetSubvariant } from '@lifi/widget';
-import { Grid, useTheme } from '@mui/material';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { Widget } from '.';
 import { WidgetEvents } from './WidgetEvents';
@@ -16,14 +15,19 @@ import { WidgetContainer } from './Widgets.style';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
+  activeTheme: ThemeModesSupported | undefined;
+  closedWelcomeScreen: boolean;
 }
 
-export function Widgets({ widgetVariant }: WidgetsProps) {
+export function Widgets({
+  widgetVariant,
+  activeTheme,
+  closedWelcomeScreen,
+}: WidgetsProps) {
   const { activeTab, setActiveTab } = useActiveTabStore();
-  const [welcomeScreenClosed, setWelcomeScreenClosed] = useSettingsStore(
-    (state) => [state.welcomeScreenClosed, state.setWelcomeScreenClosed],
-  );
-  const theme = useTheme();
+  const { welcomeScreenClosed, setWelcomeScreenClosed } =
+    useWelcomeScreen(closedWelcomeScreen);
+
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'
@@ -85,41 +89,32 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
     }
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
-  const handleCloseWelcomeScreen = () => {
-    setWelcomeScreenClosed(true);
-  };
-
   useLayoutEffect(() => {
     getActiveWidget();
   }, [getActiveWidget, starterVariant, activeTab]);
 
   return (
     <>
-      {process.env.NEXT_PUBLIC_ENVIRONMENT === 'testnet' && (
-        <Grid item xs={12} mt={theme.spacing(3)}>
-          <TestnetAlert />
-        </Grid>
-      )}
       <WidgetContainer
-        onClick={handleCloseWelcomeScreen}
+        onClick={() => setWelcomeScreenClosed(true)}
         isActive={_starterVariant === TabsMap.Exchange.variant}
-        welcomeScreenClosed={welcomeScreenClosed}
+        welcomeScreenClosed={!!welcomeScreenClosed}
       >
         <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
       </WidgetContainer>
       <WidgetContainer
-        onClick={handleCloseWelcomeScreen}
+        onClick={() => setWelcomeScreenClosed(true)}
         isActive={_starterVariant === TabsMap.Refuel.variant}
-        welcomeScreenClosed={welcomeScreenClosed}
+        welcomeScreenClosed={!!welcomeScreenClosed}
       >
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
       <SolanaAlert />
       {process.env.NEXT_PUBLIC_ONRAMPER_ENABLED ? (
         <WidgetContainer
-          onClick={handleCloseWelcomeScreen}
+          onClick={() => setWelcomeScreenClosed(true)}
           isActive={_starterVariant === TabsMap.Buy.variant}
-          welcomeScreenClosed={welcomeScreenClosed}
+          welcomeScreenClosed={!!welcomeScreenClosed}
         >
           <OnRamper />
         </WidgetContainer>

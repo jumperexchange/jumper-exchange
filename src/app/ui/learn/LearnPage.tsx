@@ -1,9 +1,8 @@
-'use client';
+import type { GetArticlesResponse } from '@/app/lib/getArticles';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { FeaturedArticle } from '@/components/Blog/FeaturedArticle/FeaturedArticle';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
-import type { GetArticlesResponse } from 'src/app/lib/getArticles';
 
 interface LearnPageProps {
   carouselArticles: GetArticlesResponse;
@@ -18,13 +17,7 @@ const LearnPage = ({
 }: LearnPageProps) => {
   return (
     <>
-      <FeaturedArticle
-        url={url}
-        featuredArticle={featuredArticle.data}
-        // handleFeatureCardClick={() =>
-        //   handleFeatureCardClick(featuredArticle.data)
-        // }
-      />
+      <FeaturedArticle url={url} featuredArticle={featuredArticle.data} />
       <BlogCarousel url={url} data={carouselArticles?.data} />
       <JoinDiscordBanner />
       {/* <BlogArticlesBoard /> */}

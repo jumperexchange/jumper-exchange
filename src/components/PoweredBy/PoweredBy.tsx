@@ -1,3 +1,4 @@
+'use client';
 import { LinkMap } from '@/const/linkMap';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { LIFI_URL } from '@/const/urls';

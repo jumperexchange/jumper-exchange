@@ -15,7 +15,7 @@ env:
 
 jobs:
   deploy-feature:
-    if: contains(github.event.label.name, 'newtesting') || contains(github.event.pull_request.labels.*.name, 'newtesting')
+    if: contains(github.event.label.name, 'feature') || contains(github.event.pull_request.labels.*.name, 'feature')
     name: Check flags
     runs-on: ubuntu-latest
     permissions:
@@ -52,18 +52,21 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
+            type=raw,value=${{ env.APP_NAME }}
+            type=raw,value=${{ env.UNIQ_ID }}-${{ env.APP_NAME }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            ENV_FILE='.env.development'
+            ENV_FILE=.env.development
+
+      - id: out
+        run: echo "docker-tag=${{ env.UNIQ_ID }}-${{ env.APP_NAME }}" >> $GITHUB_OUTPUT
 
       - name: Generate a token
         id: generate-token
@@ -84,21 +87,15 @@ jobs:
         with:
           node-version: lts/*
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        id: pnpm-install
-        with:
-          run_install: false
-
       - name: Install node dependencies
         shell: bash
-        run: pnpm install -g yaml && pnpm link --global yaml
+        run: yarn add yaml
 
       - name: Update feature img version
         uses: actions/github-script@v7
         id: feature-state
         env:
-          DOCKER_TAG: ${{ steps.build-image.outputs.docker-tag }}
+          DOCKER_TAG: ${{ steps.out.outputs.docker-tag }}
         with:
           result-encoding: string
           script: |

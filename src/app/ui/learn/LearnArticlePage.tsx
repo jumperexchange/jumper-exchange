@@ -1,5 +1,6 @@
 'use client';
 
+import { BlogBackgroundGradient } from '@/components/BackgroundGradient';
 import { BackgroundGradient } from '@/components/BackgroundGradient/BackgroundGradient';
 import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
@@ -8,7 +9,6 @@ import type { BlogArticleData } from '@/types/strapi';
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { BlogBackgroundGradient } from 'src/components/BackgroundGradient';
 import { BlogArticleWrapper } from './LearnArticlePage.style';
 
 interface LearnArticlePageProps {
