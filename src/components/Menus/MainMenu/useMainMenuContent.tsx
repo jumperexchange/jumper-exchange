@@ -11,6 +11,7 @@ import {
   EXPLORER_URL,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
+  JUMPER_MEMECOIN_PATH,
   X_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -24,6 +25,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
@@ -246,6 +248,25 @@ export const useMainMenuContent = () => {
           disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(DISCORD_URL);
+      },
+    },
+    {
+      label: 'Go degen mode',
+      prefixIcon: <WhatshotIcon />,
+      showMoreIcon: false,
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-degen-mode-link',
+          action: TrackingAction.ClickJumperLearnLink,
+          data: { [TrackingEventParameter.Menu]: 'degen_mode' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+        closeAllMenus();
+        router.push(JUMPER_MEMECOIN_PATH);
       },
     },
     {
