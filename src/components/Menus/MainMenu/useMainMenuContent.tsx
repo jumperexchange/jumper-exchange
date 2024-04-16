@@ -266,7 +266,7 @@ export const useMainMenuContent = () => {
           ],
         });
         closeAllMenus();
-        router.push(JUMPER_MEMECOIN_PATH);
+        window.open(`${window?.location.origin}/memecoins`, '_self');
       },
     },
     {
