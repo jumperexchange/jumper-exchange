@@ -1,50 +1,36 @@
-import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
-import { cookie3Analytics } from '@cookie3/analytics';
-import { CssBaseline } from '@mui/material';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { useEffect, type PropsWithChildren } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+import { ThemeProvider } from '@/providers/ThemeProvider';
+import type { ThemeModesSupported } from '@/types/settings';
+import type { Resource } from 'i18next';
+import { type PropsWithChildren } from 'react';
+import { Layout } from 'src/Layout';
+import { defaultNS } from 'src/i18n';
+import { TrackingProvider } from './TrackingProvider';
+import TranslationsProvider from './TranslationProvider';
 
-import { FallbackError } from 'src/components';
-import { queryClient } from 'src/config';
-import { cookie3Config } from 'src/const/cookie3';
-import { useCookie3, useInitUserTracking } from 'src/hooks';
-import {
-  Cookie3Provider,
-  I18NProvider,
-  ThemeProvider,
-  WalletProvider,
-} from '.';
+interface AppProviderProps {
+  children: React.ReactNode | JSX.Element;
+  i18nResources: Resource;
+  lang?: string;
+  theme?: ThemeModesSupported | undefined;
+}
 
-const analytics = cookie3Analytics(cookie3Config);
-
-export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
-  const { initTracking } = useInitUserTracking();
-  const cookie3 = useCookie3();
-
-  useEffect(() => {
-    initTracking({});
-    cookie3?.trackPageView();
-  }, [cookie3, initTracking]);
-
+export const AppProvider: React.FC<PropsWithChildren<AppProviderProps>> = ({
+  children,
+  i18nResources,
+  theme,
+  lang,
+}) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <I18NProvider>
-        <Cookie3Provider value={analytics}>
-          <ArcxAnalyticsProvider
-            apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
-          >
-            <ThemeProvider>
-              <WalletProvider>
-                <CssBaseline />
-                <ErrorBoundary fallback={<FallbackError />}>
-                  {children}
-                </ErrorBoundary>
-              </WalletProvider>
-            </ThemeProvider>
-          </ArcxAnalyticsProvider>
-        </Cookie3Provider>
-      </I18NProvider>
-    </QueryClientProvider>
+    <ThemeProvider theme={theme}>
+      <TrackingProvider>
+        <TranslationsProvider
+          namespaces={[defaultNS]}
+          locale={lang}
+          resources={i18nResources}
+        >
+          <Layout>{children}</Layout>
+        </TranslationsProvider>
+      </TrackingProvider>
+    </ThemeProvider>
   );
 };

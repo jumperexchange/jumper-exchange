@@ -2,7 +2,7 @@ pull_request_title: 'chore: new Crowdin updates'
 commit_message: 'chore: new translations %original_file_name% (%language%)'
 append_commit_message: 
 files:
-  - source: /src/i18n/en/translation.json
-    translation: /src/i18n/%two_letters_code%/translation.%file_extension%
-  - source: /src/i18n/en/language.json
-    translation: /src/i18n/%two_letters_code%/language.%file_extension%
+  - source: /src/i18n/translations/en/translation.json
+    translation: /src/i18n/translations/%two_letters_code%/translation.%file_extension%
+  - source: /src/i18n/translations/en/language.json
+    translation: /src/i18n/translations/%two_letters_code%/language.%file_extension%

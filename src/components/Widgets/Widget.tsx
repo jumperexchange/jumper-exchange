@@ -1,19 +1,26 @@
+'use client';
+import { ClientOnly } from '@/components/ClientOnly';
+import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAlert';
+import { widgetConfig } from '@/config/widgetConfig';
+import { TabsMap } from '@/const/tabsMap';
+import { useMultisig } from '@/hooks/useMultisig';
+import { useActiveTabStore } from '@/stores/activeTab/ActiveTabStore';
+import { useMenuStore } from '@/stores/menu';
+import { useSettingsStore } from '@/stores/settings';
+import type { LanguageKey } from '@/types/i18n';
+import type { StarterVariantType } from '@/types/internal';
+import type { MenuState } from '@/types/menu';
 import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TabsMap } from 'src/const';
-import { useMultisig } from 'src/hooks';
-import { useActiveTabStore, useMenuStore, useSettingsStore } from 'src/stores';
-import { darkTheme } from 'src/theme';
-import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
+import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
-import { widgetConfig } from '../../config';
-import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
-import { WidgetWrapper } from './Widget.style';
+import { WidgetWrapper } from '.';
+import { WidgetSkeleton } from './WidgetSkeleton';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -33,12 +40,13 @@ interface WidgetProps {
 }
 
 export function Widget({ starterVariant }: WidgetProps) {
+  const [loaded, setLoaded] = useState(false);
   const theme = useTheme();
+  const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
-
   const { activeTab } = useActiveTabStore();
   const isGasVariant = activeTab === TabsMap.Refuel.index;
 
@@ -49,13 +57,17 @@ export function Widget({ starterVariant }: WidgetProps) {
     (state: MenuState) => state.setWalletSelectMenuState,
   );
 
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
     try {
-      rpcUrls = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
+      rpcUrls = JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS);
     } catch (e) {
-      if (import.meta.env.DEV) {
+      if (process.env.DEV) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
@@ -74,10 +86,10 @@ export function Widget({ starterVariant }: WidgetProps) {
           starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],
       },
       languages: {
-        default: i18n.resolvedLanguage as LanguageKey,
+        default: i18n.language as LanguageKey,
         allow: i18n.languages as LanguageKey[],
       },
-      appearance: theme.palette.mode === 'light' ? 'light' : 'dark',
+      appearance: themeMode,
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
       theme: {
         container: {
@@ -110,7 +122,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       keyPrefix: `jumper-${starterVariant}`,
       ...multisigWidget,
       sdkConfig: {
-        apiUrl: import.meta.env.VITE_LIFI_API_URL,
+        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
@@ -131,25 +143,28 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       buildUrl: true,
       insurance: true,
-      integrator: isGasVariant
-        ? import.meta.env.VITE_WIDGET_INTEGRATOR_REFUEL
-        : import.meta.env.VITE_WIDGET_INTEGRATOR,
+      integrator: `${
+        isGasVariant
+          ? process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL
+          : process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR
+      }`,
     };
   }, [
     starterVariant,
+    i18n.language,
+    i18n.languages,
+    themeMode,
     theme.palette.mode,
     theme.palette.surface2.main,
     theme.palette.surface1.main,
     theme.palette.accent1.main,
     theme.palette.grey,
-    i18n.resolvedLanguage,
-    i18n.languages,
     multisigWidget,
     isMultisigSigner,
     multisigSdkConfig,
+    isGasVariant,
     setWalletSelectMenuState,
     wagmiConfig,
-    isGasVariant,
   ]);
 
   return (
@@ -158,7 +173,17 @@ export function Widget({ starterVariant }: WidgetProps) {
       welcomeScreenClosed={welcomeScreenClosed}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
-      <LiFiWidget integrator={config.integrator} config={config} />
+      <ClientOnly
+        fallback={
+          <WidgetSkeleton
+            welcomeScreenClosed={welcomeScreenClosed}
+            // title={starterVariant === 'default' ? 'Exchange' : 'Gas'}
+            // buttonTitle={starterVariant === 'default' ? 'Connect' : 'Get Gas'}
+          />
+        }
+      >
+        <LiFiWidget integrator={config.integrator} config={config} />
+      </ClientOnly>
     </WidgetWrapper>
   );
 }

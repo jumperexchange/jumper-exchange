@@ -1,0 +1,126 @@
+name: Deploy feature
+
+on:
+  pull_request:
+    types:
+      - labeled
+      - opened
+      - reopened
+      - synchronize
+
+env:
+  REGISTRY: 403372804574.dkr.ecr.us-east-2.amazonaws.com/lifi-docker-repo
+  IMAGE_NAME: 'lifinance/jumper-exchange'
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+jobs:
+  deploy-feature:
+    if: contains(github.event.label.name, 'feature') || contains(github.event.pull_request.labels.*.name, 'feature')
+    name: Check flags
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout jumper-exchange
+        uses: actions/checkout@v4
+
+      - name: Set app name
+        run: |
+          NAME=$(echo "${{ env.BRANCH_NAME }}" | tr -d -c '[:alnum:]' | tr '[:upper:]' '[:lower:]')
+          echo "APP_NAME=feat-${NAME:0:30}" >> $GITHUB_ENV
+
+      - name: Set current date as env variable
+        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: arn:aws:iam::403372804574:role/github-actions
+          role-session-name: github-actions-role-session
+          aws-region: us-east-2
+
+      - name: Amazon ECR login
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ env.APP_NAME }}
+            type=raw,value=${{ env.UNIQ_ID }}-${{ env.APP_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            ENV_FILE=.env.development
+
+      - id: out
+        run: echo "docker-tag=${{ env.UNIQ_ID }}-${{ env.APP_NAME }}" >> $GITHUB_OUTPUT
+
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Checkout helm charts
+        uses: actions/checkout@v4
+        with:
+          repository: lifinance/lifi-deployment
+          ssh-key: ${{ secrets.DEPLOY_SSH }}
+          ref: develop
+          path: lifi-deployment
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install node dependencies
+        shell: bash
+        run: yarn add yaml
+
+      - name: Update feature img version
+        uses: actions/github-script@v7
+        id: feature-state
+        env:
+          DOCKER_TAG: ${{ steps.out.outputs.docker-tag }}
+        with:
+          result-encoding: string
+          script: |
+            const { default: init } = await import('${{ github.workspace }}/.github/scripts/update-feature-img-version.mjs')
+            const state = await init()
+            return state
+
+      - name: Push deployment changes
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        run: |
+          git config --global user.name "lifi-bot-action[bot]"
+          git config --global user.email "160733936+lifi-bot-action[bot]@users.noreply.github.com"
+          cd lifi-deployment
+          git commit -m "[bot][jumper] feature branch ${{ env.APP_NAME }} update"
+          git push
+
+      - name: Comment PR
+        if: steps.feature-state.outputs.result
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Hey! Those are your new endpoints: ${{ steps.feature-state.outputs.result }}`
+            })
