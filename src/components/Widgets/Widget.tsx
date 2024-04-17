@@ -33,8 +33,8 @@ const refuelAllowChains: ChainId[] = [
   ChainId.AVA,
   ChainId.ARB,
   ChainId.OPT,
-  ChainId.FUS,
-  ChainId.VEL,
+  ChainId.BAS,
+  ChainId.MAM,
 ];
 
 const themeAllowChains: ChainId[] = [
