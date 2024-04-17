@@ -27,7 +27,7 @@ export const useWalletSelectContent = () => {
     theme.breakpoints.up('sm'),
   );
   const connect = useAccountConnect();
-  const [_, setCookie] = useCookies(['welcomeScreenClosed']);
+  const [, setCookie] = useCookies(['welcomeScreenClosed']);
 
   const { setSnackbarState, closeAllMenus, setEcosystemSelectMenuState } =
     useMenuStore((state) => state);

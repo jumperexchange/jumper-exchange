@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 export const useLanguagesContent = () => {
   const pathname = usePathname();
   const { i18n } = useTranslation();
-  const [_, setCookie] = useCookies([cookieName]);
+  const [, setCookie] = useCookies([cookieName]);
   const { trackEvent } = useUserTracking();
   const handleSwitchLanguage = (newLanguage: LanguageKey) => {
     trackEvent({
