@@ -1,6 +1,31 @@
 import type { IconButtonProps } from '@mui/material';
 import { Box, IconButton, alpha, styled } from '@mui/material';
 
+export const AddressBoxContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 24,
+  ...(theme.palette.mode === 'light'
+    ? {
+        background: `linear-gradient(to bottom, ${theme.palette.primary.main} 50%, ${theme.palette.grey[100]} 50%)`,
+      }
+    : {
+        background: `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, transparent 50%)`,
+      }),
+  [theme.breakpoints.down('sm')]: {
+    paddingBottom: 8,
+    ...(theme.palette.mode === 'light'
+      ? {
+          background: `linear-gradient(to bottom, ${theme.palette.primary.main} 35%, ${theme.palette.grey[100]} 30%)`,
+        }
+      : {
+          background: `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 35%, transparent 0%)`,
+        }),
+  },
+}));
+
 export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
   ({ theme }) => ({
     backgroundColor:
@@ -17,24 +42,19 @@ export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
   }),
 );
 
-export const BackgroundBox = styled(Box)(({ theme }) => ({
-  height: '50%',
-  backgroundColor: theme.palette.mode === 'light' ? '#31007A' : '#BEA0EB',
-  borderTopLeftRadius: '24px',
-  borderTopRightRadius: '24px',
-}));
-
 export const AddressDisplayBox = styled(Box)(() => ({
   display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: '50%',
-  marginTop: 4,
+  marginTop: 12,
 }));
 
-export const PassImageBox = styled(Box)(() => ({
+export const PassImageBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'center',
-  position: 'relative',
-  bottom: '75%',
+  marginTop: 24,
+  [theme.breakpoints.down('sm')]: {
+    marginTop: 8,
+    '& > img': {
+      width: 64,
+      height: 64,
+    },
+  },
 }));

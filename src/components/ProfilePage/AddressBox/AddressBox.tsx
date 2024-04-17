@@ -1,7 +1,6 @@
 import { useMenuStore } from '@/stores/menu';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Box } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import type { Address } from 'viem';
@@ -9,8 +8,8 @@ import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { ProfilePageTypography } from '../ProfilePage.style';
 import {
+  AddressBoxContainer,
   AddressDisplayBox,
-  BackgroundBox,
   PassImageBox,
   ProfileIconButton,
 } from './AddressBox.style';
@@ -47,26 +46,7 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
   };
 
   return (
-    <Box sx={{ height: '100%' }}>
-      <BackgroundBox />
-      <AddressDisplayBox>
-        <ProfilePageTypography fontSize={'24px'} lineHeight={'32px'}>
-          {getAddressOrENSString()}
-        </ProfilePageTypography>
-        <ProfileIconButton onClick={() => handleCopyButton()}>
-          <ContentCopyIcon sx={{ height: '16px' }} />
-        </ProfileIconButton>
-        <a
-          href={`https://etherscan.io/address/${address}`}
-          target="_blank"
-          style={{ textDecoration: 'none', color: 'inherit' }}
-          rel="noreferrer"
-        >
-          <ProfileIconButton>
-            <OpenInNewIcon sx={{ height: '16px' }} />
-          </ProfileIconButton>
-        </a>
-      </AddressDisplayBox>
+    <AddressBoxContainer sx={{ height: '100%', width: '100%' }}>
       <PassImageBox>
         <Image
           alt="Effigy Wallet Icon"
@@ -85,6 +65,24 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
           }}
         />
       </PassImageBox>
-    </Box>
+      <AddressDisplayBox>
+        <ProfilePageTypography fontSize={'24px'} lineHeight={'32px'}>
+          {getAddressOrENSString()}
+        </ProfilePageTypography>
+        <ProfileIconButton onClick={() => handleCopyButton()}>
+          <ContentCopyIcon sx={{ height: '16px' }} />
+        </ProfileIconButton>
+        <a
+          href={`https://etherscan.io/address/${address}`}
+          target="_blank"
+          style={{ textDecoration: 'none', color: 'inherit' }}
+          rel="noreferrer"
+        >
+          <ProfileIconButton>
+            <OpenInNewIcon sx={{ height: '16px' }} />
+          </ProfileIconButton>
+        </a>
+      </AddressDisplayBox>
+    </AddressBoxContainer>
   );
 };

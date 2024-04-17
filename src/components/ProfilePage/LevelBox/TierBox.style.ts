@@ -29,7 +29,7 @@ export const TierBadgeBox = styled(Box)(({ theme }) => ({
 }));
 
 export const TierInfoBox = styled(Box)(() => ({
-  marginBottom: '16px',
+  marginBottom: 16,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',

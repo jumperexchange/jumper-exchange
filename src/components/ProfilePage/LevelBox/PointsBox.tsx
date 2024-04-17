@@ -12,7 +12,7 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
   return (
     <CenteredBox>
       <ProfilePageTypography
-        fontSize={'80px'}
+        fontSize={80}
         lineHeight={'96px'}
         sx={{
           color:

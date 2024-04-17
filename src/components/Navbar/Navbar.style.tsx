@@ -33,4 +33,7 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
   }),
 );
 
-export const LogoLink = styled(Link)(({ theme }) => ({ cursor: 'pointer' }));
+export const LogoLink = styled(Link)(({ theme }) => ({
+  cursor: 'pointer',
+  display: 'flex',
+}));

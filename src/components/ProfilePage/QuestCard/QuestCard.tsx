@@ -169,7 +169,7 @@ export const QuestCard = ({
                   lineHeight={'18px'}
                   fontWeight={600}
                   sx={{
-                    padding: '8px',
+                    padding: 8,
                   }}
                 >
                   {t('questCard.join')}
