@@ -37,9 +37,21 @@ const refuelAllowChains: ChainId[] = [
 
 interface WidgetProps {
   starterVariant: StarterVariantType;
+  fromChain?: number;
+  fromToken?: string;
+  toChain?: number;
+  toToken?: string;
+  fromAmount?: string;
 }
 
-export function Widget({ starterVariant }: WidgetProps) {
+export function Widget({
+  starterVariant,
+  fromChain,
+  fromToken,
+  toChain,
+  toToken,
+  fromAmount,
+}: WidgetProps) {
   const theme = useTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
@@ -48,7 +60,7 @@ export function Widget({ starterVariant }: WidgetProps) {
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
   const isGasVariant = activeTab === TabsMap.Refuel.index;
-
+  console.log('WIDGET', { fromAmount, fromChain, fromToken, toChain, toToken });
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
@@ -76,6 +88,11 @@ export function Widget({ starterVariant }: WidgetProps) {
           setWalletSelectMenuState(true);
         },
       },
+      fromChain: fromChain,
+      fromToken: fromToken,
+      toChain: toChain,
+      toToken: toToken,
+      fromAmount: fromAmount,
       chains: {
         allow:
           starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],

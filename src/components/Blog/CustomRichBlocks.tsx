@@ -5,12 +5,12 @@ import {
 } from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
 import { Lightbox } from '@/components/Lightbox/Lightbox';
 import { Link } from '@/components/Link.style';
-import { Widget } from '@/components/Widgets/Widget';
 import type { MediaAttributes } from '@/types/strapi';
 import { Typography, alpha, useTheme } from '@mui/material';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { urbanist } from 'src/fonts/fonts';
+import { BlogWidget } from './BlogWidget';
 
 interface CustomRichBlocksProps {
   baseUrl?: string;
@@ -20,6 +20,14 @@ interface CustomRichBlocksProps {
 
 interface ImageData {
   image: MediaAttributes;
+}
+
+interface WidgetRouteSettings {
+  fromChain?: string;
+  fromToken?: string;
+  toChain?: string;
+  toToken?: string;
+  fromAmount?: string;
 }
 
 export const CustomRichBlocks = ({
@@ -55,8 +63,43 @@ export const CustomRichBlocks = ({
         } catch (error) {
           return;
         }
-      } else if (children[0].props.text.includes('<WIDGET>')) {
-        return <Widget starterVariant="default" />;
+      } else if (children[0].props.text.includes('<WIDGET')) {
+        console.log('WIDGET', children[0].props.text);
+        // Regular expression to match specific props
+        try {
+          const propRegex =
+            /(?:fromAmount|fromChain|fromToken|toChain|toToken)="([^"]*)"/g;
+
+          let match;
+          const props: WidgetRouteSettings = {};
+          while ((match = propRegex.exec(children[0].props.text)) !== null) {
+            const [_, value] = match;
+            const prop = match[0].split('=')[0] as keyof WidgetRouteSettings;
+            props[prop] = value;
+          }
+
+          return (
+            <>
+              <BlogWidget
+                fromChain={
+                  props.fromChain !== undefined
+                    ? parseInt(props.fromChain)
+                    : undefined
+                }
+                fromToken={props.fromToken}
+                toChain={
+                  props.toChain !== undefined
+                    ? parseInt(props.toChain)
+                    : undefined
+                }
+                fromAmount={props.fromAmount}
+                toToken={props.toToken}
+              />
+            </>
+          );
+        } catch (error) {
+          console.error('Error integrating widget into blog article', error);
+        }
       } else if (children[0].props.text.includes('<INSTRUCTIONS')) {
         try {
           const new_array: InstructionItemProps[] = [];
