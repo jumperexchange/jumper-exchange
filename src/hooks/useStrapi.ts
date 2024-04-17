@@ -142,7 +142,10 @@ export const useStrapi = <T>({
     // populate images on feature card query
     apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
     apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
-    apiUrl.searchParams.set('populate[featureCardsExclusions][fields][0]', 'uid');
+    apiUrl.searchParams.set(
+      'populate[featureCardsExclusions][fields][0]',
+      'uid',
+    );
     apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
   }
 
