@@ -1,5 +1,5 @@
 'use client';
-import { Box, type CSSObject } from '@mui/material';
+import { type CSSObject } from '@mui/material';
 import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
@@ -7,6 +7,7 @@ import {
   BackgroundGradientTopCenter,
 } from '.';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 interface BackgroundGradientProps {
   styles?: CSSObject;
@@ -22,9 +23,12 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
       <BackgroundGradientTopCenter />
     </BackgroundGradientContainer>
   ) : (
-    <Box
-      component="img"
-      sx={{
+    <Image
+      src="/pepe_background.jpeg"
+      width={0}
+      height={0}
+      sizes="100vw"
+      style={{
         transform: 'translateX(-50%)',
         top: 0,
         left: '50%',
@@ -36,7 +40,6 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
         opacity: 0.8,
       }}
       alt="pepe_background"
-      src="https://strapi.li.finance/uploads/pepebackground_b08236de5e.jpg"
     />
   );
 };

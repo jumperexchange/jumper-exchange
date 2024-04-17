@@ -4,12 +4,13 @@ import App from '@/app/ui/app/App';
 export const dynamic = 'force-dynamic';
 
 const Page = () => {
-  const { activeTheme, welcomeScreenClosed } = getCookies();
+  const { activeTheme } = getCookies();
+
   return (
     <App
       starterVariant="default"
       activeTheme={activeTheme}
-      welcomeScreenClosedCookie={welcomeScreenClosed === 'true' ? true : false}
+      welcomeScreenClosedCookie={true}
     />
   );
 };
