@@ -30,7 +30,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
@@ -46,6 +46,7 @@ export const useMainMenuContent = () => {
     utm_campaign: 'jumper_to_explorer',
     utm_medium: 'menu',
   });
+  const pathname = usePathname();
 
   const themeSwitchTabs = useThemeSwitchTabs();
 
@@ -251,7 +252,7 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: 'Go degen mode',
+      label: `${pathname.includes('memecoins') ? 'Go normal mode' : 'Go degen mode'}`,
       prefixIcon: <WhatshotIcon />,
       showMoreIcon: false,
       onClick: () => {
@@ -266,7 +267,10 @@ export const useMainMenuContent = () => {
           ],
         });
         closeAllMenus();
-        window.open(`${window?.location.origin}/memecoins`, '_self');
+        window.open(
+          `${pathname.includes('memecoins') ? window?.location.origin + '/' : window?.location.origin + '/memecoins'}`,
+          '_self',
+        );
       },
     },
     {
