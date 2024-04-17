@@ -11,6 +11,7 @@ import { Typography, alpha, useTheme } from '@mui/material';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { urbanist } from 'src/fonts/fonts';
+import { BlogArticleParagraph } from './BlogArticle/BlogArticle.style';
 
 interface CustomRichBlocksProps {
   baseUrl?: string;
@@ -30,9 +31,9 @@ export const CustomRichBlocks = ({
   const theme = useTheme();
   const customRichBlocks = {
     // You can use the default components to set class names...
-    link: (data: any) => {
-      return <Link href={data.url}>{data.children[0].props.text}</Link>;
-    },
+    // link: (data: any) => {
+    //   return <Link href={data.url}>{data.children[0].props.text}</Link>;
+    // },
     image: (data: ImageData) =>
       baseUrl ? <Lightbox imageData={data.image} baseUrl={baseUrl} /> : null,
     paragraph: ({ children }: any) => {
@@ -76,22 +77,61 @@ export const CustomRichBlocks = ({
         }
       } else {
         return (
-          <Typography
-            sx={{
-              color: alpha(
-                theme.palette.mode === 'light'
-                  ? theme.palette.black.main
-                  : theme.palette.white.main,
-                0.75,
-              ),
-              margin: theme.spacing(2, 0),
-              fontSize: '18px',
-              lineHeight: '32px',
-              fontWeight: 400,
-            }}
-          >
-            {children}
-          </Typography>
+          <BlogArticleParagraph>
+            {children.map((el: any) => {
+              if (el.props.text && el.props.text !== '') {
+                return (
+                  <Typography
+                    sx={{
+                      display: 'inline',
+                      fontWeight: el.props.bold ? 700 : 400,
+                      color: alpha(
+                        theme.palette.mode === 'light'
+                          ? theme.palette.black.main
+                          : theme.palette.white.main,
+                        0.75,
+                      ),
+                      textDecoration: el.props.underline
+                        ? 'underline'
+                        : el.props.strikethrough
+                          ? 'line-through'
+                          : 'auto',
+                      fontStyle: el.props.italic ? 'italic' : 'normal',
+                      fontSize: '18px',
+                      lineHeight: '32px',
+                    }}
+                  >
+                    {el.props.text}
+                  </Typography>
+                );
+              } else if (el.props.content?.type === 'link') {
+                return (
+                  <Link
+                    sx={{
+                      marginLeft: theme.spacing(0.75),
+                      color:
+                        theme.palette.mode === 'light'
+                          ? theme.palette.primary.main
+                          : theme.palette.accent1Alt.main,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'inline',
+                      fontSize: '18px',
+                      lineHeight: '32px',
+                      ':first-child': {
+                        marginLeft: 0,
+                      },
+                    }}
+                    href={el.props.content.children[0].url}
+                  >
+                    {el.props.content.children[0].text}
+                  </Link>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </BlogArticleParagraph>
         );
       }
     },
