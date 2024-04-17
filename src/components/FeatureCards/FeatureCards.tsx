@@ -47,7 +47,20 @@ export const FeatureCards = () => {
 
   const slicedFeatureCards = useMemo(() => {
     if (Array.isArray(cards) && !!cards.length) {
-      return cards
+      // Remove excluded feature cards
+      const excludedFeatureCards = cards
+        ?.filter(
+          (el, index) => {
+            if ((el.attributes.featureCardsExclusions?.data || []).length === 0) {
+              return true;
+            }
+
+            const exclusions = el.attributes.featureCardsExclusions?.data.map((item) => item.attributes.uid) ?? []
+
+            return !exclusions.some((uid) => disabledFeatureCards.includes(uid));
+          })
+
+      return excludedFeatureCards
         ?.filter(
           (el, index) =>
             isSuccess &&
