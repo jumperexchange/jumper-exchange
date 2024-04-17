@@ -69,8 +69,6 @@ export function Widgets({
         //Todo: review the logic of the tab selection.
         setActiveTab(-1);
         return ThemesMap.Memecoins;
-      } else {
-        return undefined;
       }
     }
   }, [hydrated, pathname]);
