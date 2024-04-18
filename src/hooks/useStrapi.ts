@@ -140,8 +140,8 @@ export const useStrapi = <T>({
   // feature cards -->
   if (contentType === STRAPI_FEATURE_CARDS) {
     // populate images on feature card query
-    apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
-    apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
+    apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
+    apiUrl.searchParams.set('populate[1]', 'BackgroundImageLight');
     apiUrl.searchParams.set(
       'populate[featureCardsExclusions][fields][0]',
       'uid',

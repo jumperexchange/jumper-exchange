@@ -49,14 +49,16 @@ export const FeatureCards = () => {
     if (Array.isArray(cards) && !!cards.length) {
       // Remove excluded feature cards
       const excludedFeatureCards = cards?.filter((el, index) => {
-        if ((el.attributes.featureCardsExclusions?.data || []).length === 0) {
+        if (
+          !el.attributes.featureCardsExclusions ||
+          !Array.isArray(el.attributes.featureCardsExclusions?.data)
+        ) {
           return true;
         }
 
-        const exclusions =
-          el.attributes.featureCardsExclusions?.data.map(
-            (item) => item.attributes.uid,
-          ) ?? [];
+        const exclusions = el.attributes.featureCardsExclusions.data.map(
+          (item) => item.attributes.uid,
+        );
 
         return !exclusions.some((uid) => disabledFeatureCards.includes(uid));
       });
