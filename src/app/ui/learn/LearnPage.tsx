@@ -17,7 +17,13 @@ const LearnPage = ({
 }: LearnPageProps) => {
   return (
     <>
-      <FeaturedArticle url={url} featuredArticle={featuredArticle.data} />
+      <FeaturedArticle
+        url={url}
+        featuredArticle={featuredArticle.data}
+        // handleFeatureCardClick={() =>
+        //   handleFeatureCardClick(featuredArticle.data)
+        // }
+      />
       <BlogCarousel url={url} data={carouselArticles?.data} />
       <JoinDiscordBanner />
       {/* <BlogArticlesBoard /> */}
