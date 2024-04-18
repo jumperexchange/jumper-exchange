@@ -1,3 +1,11 @@
+function redirectToHome(path) {
+  return {
+    source: path,
+    destination: '/',
+    permanent: true,
+  };
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
@@ -8,6 +16,30 @@ const nextConfig = {
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
     // config.externals.push('pino-pretty');
     return config;
+  },
+  async redirects() {
+    return [
+      '/active-transactions',
+      '/bridges',
+      '/exchanges',
+      '/from-chain',
+      '/from-token',
+      '/languages',
+      '/settings',
+      '/routes',
+      '/select-wallet',
+      '/to-chain',
+      '/to-token',
+      '/to-token-native',
+      '/transaction-details',
+      '/transaction-execution',
+      '/transaction-history',
+      '/send-to-wallet',
+      '/bookmarks',
+      '/recent-wallets',
+      '/connected-wallets',
+      '/configured-wallets',
+    ].map(redirectToHome);
   },
   images: {
     remotePatterns: [
