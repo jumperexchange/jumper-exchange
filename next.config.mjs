@@ -1,9 +1,11 @@
-function redirectToHome(path) {
-  return {
-    source: path,
-    destination: '/',
-    permanent: true,
-  };
+function redirectToHome(prefix = []) {
+  return (path) => {
+    return prefix.map((prefix) => ({
+      source: `${prefix}${path}`,
+      destination: '/',
+      permanent: true,
+    }));
+  }
 }
 
 /** @type {import('next').NextConfig} */
@@ -39,7 +41,7 @@ const nextConfig = {
       '/recent-wallets',
       '/connected-wallets',
       '/configured-wallets',
-    ].map(redirectToHome);
+    ].map(redirectToHome(['/exchange', '/refuel'])).flat();
   },
   images: {
     remotePatterns: [
