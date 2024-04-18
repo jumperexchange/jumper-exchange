@@ -1,19 +1,22 @@
-import type { Breakpoint } from '@mui/material';
-import { Slide, Typography, useTheme } from '@mui/material';
-import type { MouseEventHandler } from 'react';
-import { useEffect, useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
-import { ButtonPrimary, CustomColor, ToolCards } from 'src/components';
+'use client';
+import { ButtonPrimary } from '@/components/Button/Button.style';
+import { CustomColor } from '@/components/CustomColorTypography.style';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from 'src/const';
-import { useUserTracking } from 'src/hooks';
-import { useSettingsStore } from 'src/stores';
-import { EventTrackingTool } from 'src/types';
-import { appendUTMParametersToLink } from 'src/utils';
-import { shallow } from 'zustand/shallow';
+} from '@/const/trackingKeys';
+import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { EventTrackingTool } from '@/types/userTracking';
+import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
+import type { Breakpoint } from '@mui/material';
+import { Slide, Typography, useTheme } from '@mui/material';
+import type { MouseEventHandler } from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next/TransWithoutContext';
+import { ToolCards } from './ToolCard/ToolCards';
 import { ContentWrapper, Overlay, WelcomeContent } from './WelcomeScreen.style';
 
 const auditsWelcomeUrl = appendUTMParametersToLink(
@@ -28,21 +31,22 @@ const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
   utm_medium: 'welcome_screen',
 });
 
-export const WelcomeScreen = () => {
-  const theme = useTheme();
-  const { t } = useTranslation();
-  const [welcomeScreenClosed, setWelcomeScreenClosed] = useSettingsStore(
-    (state) => [state.welcomeScreenClosed, state.setWelcomeScreenClosed],
-    shallow,
-  );
+interface WelcomeScreenProps {
+  closed: boolean;
+}
 
+export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
+  const theme = useTheme();
+  const { welcomeScreenClosed, setWelcomeScreenClosed } =
+    useWelcomeScreen(closed);
+  const { t } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
   const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
   const [openBridgesToolModal, setOpenBridgesToolModal] = useState(false);
   const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
 
   useEffect(() => {
-    if (!welcomeScreenClosed) {
+    if (welcomeScreenClosed) {
       trackEvent({
         category: TrackingCategory.WelcomeScreen,
         label: 'open-welcome-screen',
@@ -112,7 +116,7 @@ export const WelcomeScreen = () => {
   };
 
   return (
-    <Overlay showWelcome={!welcomeScreenClosed || false}>
+    <Overlay showWelcome={!welcomeScreenClosed}>
       <Slide
         direction="up"
         unmountOnExit
@@ -145,30 +149,28 @@ export const WelcomeScreen = () => {
                 },
               }}
             >
-              {
-                <Trans
-                  i18nKey={'navbar.welcome.subtitle' as string & never[]}
-                  components={[
-                    // fix: allow component with "no content"
-                    // eslint-disable-next-line jsx-a11y/anchor-has-content
-                    <a
-                      className={'link-lifi'}
-                      href={auditsWelcomeUrl}
-                      target={'_blank'}
-                      rel="noreferrer"
-                      onClick={handleAuditClick}
-                    />,
-                    // eslint-disable-next-line jsx-a11y/anchor-has-content
-                    <a
-                      className={'link-lifi'}
-                      href={lifiWelcomeUrl}
-                      onClick={handleLIFIClick}
-                      target={'_blank'}
-                      rel="noreferrer"
-                    />,
-                  ]}
-                />
-              }
+              <Trans
+                i18nKey={'navbar.welcome.subtitle' as string & never[]}
+                components={[
+                  // fix: allow component with "no content"
+                  // eslint-disable-next-line jsx-a11y/anchor-has-content
+                  <a
+                    className={'link-lifi'}
+                    href={auditsWelcomeUrl}
+                    target={'_blank'}
+                    rel="noreferrer"
+                    onClick={handleAuditClick}
+                  />,
+                  // eslint-disable-next-line jsx-a11y/anchor-has-content
+                  <a
+                    className={'link-lifi'}
+                    href={lifiWelcomeUrl}
+                    onClick={handleLIFIClick}
+                    target={'_blank'}
+                    rel="noreferrer"
+                  />,
+                ]}
+              />
             </Typography>
             <ToolCards
               openChainsToolModal={openChainsToolModal}

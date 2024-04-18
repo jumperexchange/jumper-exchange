@@ -1,7 +1,7 @@
+import { SubMenu } from '@/components/Menu/SubMenu';
+import { MenuKeysEnum } from '@/const/menuKeys';
+import { useMenuStore } from '@/stores/menu';
 import { useTranslation } from 'react-i18next';
-import { SubMenu } from 'src/components';
-import { MenuKeys } from 'src/const';
-import { useMenuStore } from 'src/stores';
 import { useDevelopersContent } from '.';
 
 export const DevelopersSubmenu = () => {
@@ -11,9 +11,9 @@ export const DevelopersSubmenu = () => {
   return (
     <SubMenu
       label={t('navbar.navbarMenu.developers')}
-      triggerSubMenu={MenuKeys.Devs}
-      open={openSubMenu === MenuKeys.Devs}
-      prevMenu={MenuKeys.None}
+      triggerSubMenu={MenuKeysEnum.Devs}
+      open={openSubMenu === MenuKeysEnum.Devs}
+      prevMenu={MenuKeysEnum.None}
       subMenuList={subMenuDevelopers}
     />
   );

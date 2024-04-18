@@ -1,3 +1,4 @@
+import { Tag } from '@/components/Tag.style';
 import {
   Box,
   Card,
@@ -7,9 +8,8 @@ import {
   darken,
   type Breakpoint,
 } from '@mui/material';
-
 import { styled } from '@mui/material/styles';
-import { Tag } from 'src/components/Tag.style';
+import { urbanist } from 'src/fonts/fonts';
 
 export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   flexShrink: 0,
@@ -93,7 +93,7 @@ export const BlogArticleCardTitle = styled(Typography)(({ theme }) => ({
   color: 'inherit',
   fontWeight: 700, //todo: use typography
   fontSize: '24px',
-  fontFamily: 'Urbanist, Inter',
+  fontFamily: urbanist.style.fontFamily,
   lineHeight: '32px',
   minHeight: '64px',
   overflow: 'hidden',

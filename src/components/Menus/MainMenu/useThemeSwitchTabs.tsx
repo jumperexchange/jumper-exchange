@@ -1,23 +1,28 @@
-import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import NightlightIcon from '@mui/icons-material/Nightlight';
-import { useTranslation } from 'react-i18next';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from 'src/const';
-import { useUserTracking } from 'src/hooks';
-import { useSettingsStore } from 'src/stores';
-import type { ThemeModesSupported } from 'src/types';
-import { EventTrackingTool } from 'src/types';
+} from '@/const/trackingKeys';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useSettingsStore } from '@/stores/settings';
+import type { ThemeModesSupported } from '@/types/settings';
+import { EventTrackingTool } from '@/types/userTracking';
+import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import NightlightIcon from '@mui/icons-material/Nightlight';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
 
 export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const [_, setCookie] = useCookies(['theme']);
+  const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
+    ? 'dark'
+    : 'light';
 
   const setThemeMode = useSettingsStore((state) => state.setThemeMode);
-
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     trackEvent({
       category: TrackingCategory.ThemeSection,
@@ -28,6 +33,7 @@ export const useThemeSwitchTabs = () => {
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
+    setCookie('theme', mode === 'auto' ? browserTheme : mode, { path: '/' });
     setThemeMode(mode);
   };
 
