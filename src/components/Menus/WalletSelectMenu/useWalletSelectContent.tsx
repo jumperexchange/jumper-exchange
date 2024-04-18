@@ -1,3 +1,11 @@
+'use client';
+import { useAccountConnect } from '@/hooks/useAccounts';
+import type { CombinedWallet } from '@/hooks/useCombinedWallets';
+import { useCombinedWallets } from '@/hooks/useCombinedWallets';
+import { useMenuStore } from '@/stores/menu';
+import { useSettingsStore } from '@/stores/settings';
+import type { MenuListItem } from '@/types/internal';
+import { getContrastAlphaColor } from '@/utils/colors';
 import {
   getConnectorIcon,
   isWalletInstalled,
@@ -7,13 +15,8 @@ import type { Theme } from '@mui/material';
 import { Avatar, useMediaQuery, useTheme } from '@mui/material';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
 import { useCallback, useMemo } from 'react';
+import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
-import { useAccountConnect } from 'src/hooks/useAccounts';
-import type { CombinedWallet } from 'src/hooks/useCombinedWallets';
-import { useCombinedWallets } from 'src/hooks/useCombinedWallets';
-import { useMenuStore, useSettingsStore } from 'src/stores';
-import type { MenuListItem } from 'src/types';
-import { getContrastAlphaColor } from 'src/utils';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();
@@ -24,10 +27,10 @@ export const useWalletSelectContent = () => {
     theme.breakpoints.up('sm'),
   );
   const connect = useAccountConnect();
+  const [, setCookie] = useCookies(['welcomeScreenClosed']);
 
   const { setSnackbarState, closeAllMenus, setEcosystemSelectMenuState } =
     useMenuStore((state) => state);
-  const { setWelcomeScreenClosed } = useSettingsStore((state) => state);
 
   const availableWallets = useMemo(() => {
     let allowedWallets = combinedInstalledWallets.slice(0, 7);
@@ -57,11 +60,11 @@ export const useWalletSelectContent = () => {
         );
       }
       closeAllMenus();
-      setWelcomeScreenClosed(true);
+      setCookie('welcomeScreenClosed', true, { path: '/', sameSite: true });
     },
     [
       closeAllMenus,
-      setWelcomeScreenClosed,
+      setCookie,
       setEcosystemSelectMenuState,
       connect,
       setSnackbarState,

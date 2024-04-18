@@ -1,21 +1,20 @@
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { EventTrackingTool } from '@/types/userTracking';
+import { openInNewTab } from '@/utils/openInNewTab';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkIcon from '@mui/icons-material/Link';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import XIcon from '@mui/icons-material/X';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+
 import {
-  FB_SHARE_URL,
-  LINKEDIN_SHARE_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-  X_SHARE_URL,
-} from 'src/const';
-import { useUserTracking } from 'src/hooks';
-import { EventTrackingTool } from 'src/types';
-import { openInNewTab } from 'src/utils';
+} from '@/const/trackingKeys';
+import { FB_SHARE_URL, LINKEDIN_SHARE_URL, X_SHARE_URL } from '@/const/urls';
 import { ShareArticleIcon } from './ShareArticleIcon';
 import {
   ShareIconsContainer,
@@ -30,7 +29,8 @@ interface ShareIconsProps {
 export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
   const [showCopyMessage, setShowCopyMessage] = useState(false);
   const { t } = useTranslation();
-  const location = useLocation();
+  const pathname = usePathname();
+
   const { trackEvent } = useUserTracking();
   const isComponentMounted = useRef(false);
   useEffect(() => {
@@ -41,7 +41,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
   }, []);
   const handleShareClick = () => {
     navigator.clipboard.writeText(
-      `${window.location.host}${location.pathname}`,
+      `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
     );
     setShowCopyMessage(true);
     trackEvent({
@@ -68,7 +68,10 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       return;
     }
     const xUrl = new URL(X_SHARE_URL);
-    xUrl.searchParams.set('url', `${window.location.host}${location.pathname}`);
+    xUrl.searchParams.set(
+      'url',
+      `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
+    );
     xUrl.searchParams.set('title', title);
     trackEvent({
       category: TrackingCategory.BlogArticle,
@@ -88,7 +91,10 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       return;
     }
     const fbUrl = new URL(FB_SHARE_URL);
-    fbUrl.searchParams.set('u', `${window.location.host}${location.pathname}`);
+    fbUrl.searchParams.set(
+      'u',
+      `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
+    );
     fbUrl.searchParams.set('title', title);
     trackEvent({
       category: TrackingCategory.BlogArticle,
@@ -111,7 +117,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
     linkedInUrl.searchParams.set('mini', 'true');
     linkedInUrl.searchParams.set(
       'url',
-      `${window.location.host}${location.pathname}`,
+      `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
     );
     linkedInUrl.searchParams.set('title', title);
     trackEvent({

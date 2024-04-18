@@ -1,3 +1,4 @@
+'use client';
 import { alpha, darken, styled } from '@mui/material/styles';
 export interface BackgroundGradientContainerProps
   extends Omit<HTMLDivElement, 'children'> {
@@ -108,12 +109,12 @@ export const BlogBackgroundGradient = styled(
   BackgroundGradient,
 )<BackgroundGradientProps>(({ theme }) => ({
   transform: 'translateX(-50%)',
-  top: 0,
+  top: -200,
   left: '50%',
   position: theme.palette.mode === 'light' ? 'absolute' : 'fixed',
   opacity: 1,
   width: '100%',
-  height: theme.palette.mode === 'dark' ? '100vh' : '100vh',
+  height: 'calc( 100vh + 200px )',
   zIndex: -1,
   background:
     theme.palette.mode === 'light'

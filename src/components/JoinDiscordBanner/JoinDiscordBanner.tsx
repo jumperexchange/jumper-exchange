@@ -1,21 +1,21 @@
+'use client';
+import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { EventTrackingTool } from '@/types/userTracking';
+import { isArticlePage } from '@/utils/isArticlePage';
+import { openInNewTab } from '@/utils/openInNewTab';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useTheme } from '@mui/material';
+import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import {
-  DiscordBanner,
-  DiscordBannerButton,
-  DiscordBannerLabel,
-} from 'src/components';
-import { TrackingAction, TrackingCategory } from 'src/const';
-import { useUserTracking } from 'src/hooks';
-import { EventTrackingTool } from 'src/types';
-import { openInNewTab } from 'src/utils';
+import { DiscordBanner, DiscordBannerButton, DiscordBannerLabel } from '.';
 
 export const JoinDiscordBanner = () => {
-  const theme = useTheme();
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-
+  const currentPath = usePathname();
+  const isArticle = isArticlePage(
+    `${process.env.NEXT_PUBLIC_SITE_URL}/${currentPath}`,
+  );
   const handleClick = (
     e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>,
   ) => {
@@ -30,7 +30,7 @@ export const JoinDiscordBanner = () => {
   };
 
   return (
-    <DiscordBanner onClick={(e) => handleClick(e)}>
+    <DiscordBanner onClick={(e) => handleClick(e)} isArticlePage={isArticle}>
       <DiscordBannerLabel variant="lifiHeaderMedium">
         {t('discordBanner.ctaHeadline')}
       </DiscordBannerLabel>
