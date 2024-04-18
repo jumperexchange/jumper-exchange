@@ -42,6 +42,7 @@ interface WidgetProps {
   toChain?: number;
   toToken?: string;
   fromAmount?: string;
+  widgetIntegrator?: string;
 }
 
 export function Widget({
@@ -51,6 +52,7 @@ export function Widget({
   toChain,
   toToken,
   fromAmount,
+  widgetIntegrator,
 }: WidgetProps) {
   const theme = useTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
@@ -60,7 +62,14 @@ export function Widget({
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
   const isGasVariant = activeTab === TabsMap.Refuel.index;
-  console.log('WIDGET', { fromAmount, fromChain, fromToken, toChain, toToken });
+  console.log('WIDGET', {
+    fromAmount,
+    fromChain,
+    fromToken,
+    toChain,
+    toToken,
+    widgetIntegrator,
+  });
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
@@ -155,29 +164,40 @@ export function Widget({
       },
       buildUrl: true,
       insurance: true,
-      integrator: `${
-        isGasVariant
-          ? process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL
-          : process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR
-      }`,
+      integrator:
+        (widgetIntegrator && `${widgetIntegrator}`) ??
+        `${
+          isGasVariant
+            ? process.env.NEXT_PUBLIC_WIDGETINTEGRATOR_REFUEL
+            : process.env.NEXT_PUBLIC_WIDGETINTEGRATOR
+        }`,
     };
   }, [
-    starterVariant,
+    fromAmount,
+    fromChain,
+    fromToken,
     i18n.language,
     i18n.languages,
-    themeMode,
-    theme.palette.mode,
-    theme.palette.surface2.main,
-    theme.palette.surface1.main,
-    theme.palette.accent1.main,
-    theme.palette.grey,
-    multisigWidget,
+    isGasVariant,
     isMultisigSigner,
     multisigSdkConfig,
-    isGasVariant,
+    multisigWidget,
     setWalletSelectMenuState,
+    starterVariant,
+    theme.palette.accent1.main,
+    theme.palette.grey,
+    theme.palette.mode,
+    theme.palette.surface1.main,
+    theme.palette.surface2.main,
+    themeMode,
+    toChain,
+    toToken,
     wagmiConfig,
+    widgetIntegrator,
   ]);
+
+  console.log('widgetIntegrator && ${widgetIntegrator}');
+  console.log(widgetIntegrator && `${widgetIntegrator}`);
 
   return (
     <WidgetWrapper

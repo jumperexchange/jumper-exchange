@@ -31,6 +31,7 @@ export const BlogWidget = ({
         toChain={toChain}
         fromAmount={fromAmount}
         toToken={toToken}
+        widgetIntegrator={process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_BLOG}
       />
     </>
   );
