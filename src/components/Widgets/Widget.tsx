@@ -42,6 +42,7 @@ interface WidgetProps {
   toChain?: number;
   toToken?: string;
   fromAmount?: string;
+  allowChains?: number[];
   widgetIntegrator?: string;
 }
 
@@ -52,6 +53,7 @@ export function Widget({
   toChain,
   toToken,
   fromAmount,
+  allowChains,
   widgetIntegrator,
 }: WidgetProps) {
   const theme = useTheme();
@@ -63,6 +65,7 @@ export function Widget({
   const { activeTab } = useActiveTabStore();
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   console.log('WIDGET', {
+    allowChains,
     fromAmount,
     fromChain,
     fromToken,
@@ -104,7 +107,9 @@ export function Widget({
       fromAmount: fromAmount,
       chains: {
         allow:
-          starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],
+          allowChains || starterVariant === TabsMap.Refuel.variant
+            ? refuelAllowChains
+            : [],
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -173,6 +178,7 @@ export function Widget({
         }`,
     };
   }, [
+    allowChains,
     fromAmount,
     fromChain,
     fromToken,
@@ -195,9 +201,6 @@ export function Widget({
     wagmiConfig,
     widgetIntegrator,
   ]);
-
-  console.log('widgetIntegrator && ${widgetIntegrator}');
-  console.log(widgetIntegrator && `${widgetIntegrator}`);
 
   return (
     <WidgetWrapper

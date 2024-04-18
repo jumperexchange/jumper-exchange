@@ -28,6 +28,7 @@ interface WidgetRouteSettings {
   toChain?: string;
   toToken?: string;
   fromAmount?: string;
+  allowChains?: string;
 }
 
 export const CustomRichBlocks = ({
@@ -68,12 +69,12 @@ export const CustomRichBlocks = ({
         // Regular expression to match specific props
         try {
           const propRegex =
-            /(?:fromAmount|fromChain|fromToken|toChain|toToken)="([^"]*)"/g;
+            /(?:fromAmount|fromChain|fromToken|toChain|toToken|allowChains)="([^"]*)"/g;
 
           let match;
           const props: WidgetRouteSettings = {};
           while ((match = propRegex.exec(children[0].props.text)) !== null) {
-            const [_, value] = match;
+            const [, value] = match;
             const prop = match[0].split('=')[0] as keyof WidgetRouteSettings;
             props[prop] = value;
           }
@@ -94,6 +95,7 @@ export const CustomRichBlocks = ({
                 }
                 fromAmount={props.fromAmount}
                 toToken={props.toToken}
+                allowChains={props.allowChains}
               />
             </>
           );

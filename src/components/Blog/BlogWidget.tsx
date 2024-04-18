@@ -8,6 +8,7 @@ interface BlogWidgetProps {
   toChain?: number;
   toToken?: string;
   fromAmount?: string;
+  allowChains?: string;
 }
 
 export const BlogWidget = ({
@@ -16,7 +17,13 @@ export const BlogWidget = ({
   toChain,
   toToken,
   fromAmount,
+  allowChains,
 }: BlogWidgetProps) => {
+  const allowChainsArray = (allowChains || '')
+    .split(',')
+    .map((el) => parseInt(el))
+    .filter((num) => !isNaN(num));
+
   return (
     <>
       <Box
@@ -31,6 +38,7 @@ export const BlogWidget = ({
         toChain={toChain}
         fromAmount={fromAmount}
         toToken={toToken}
+        allowChains={allowChainsArray}
         widgetIntegrator={process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_BLOG}
       />
     </>
