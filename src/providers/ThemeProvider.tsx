@@ -42,10 +42,14 @@ export const ThemeProvider: React.FC<
   useEffect(() => {
     if (themeMode === 'auto') {
       setTheme(isDarkMode ? 'dark' : 'light');
-      setCookie('theme', isDarkMode ? 'dark' : 'light', { path: '/' });
+      setCookie('theme', isDarkMode ? 'dark' : 'light', {
+        path: '/',
+        sameSite: true,
+      });
     } else {
       setCookie('theme', themeMode === 'dark' ? 'dark' : 'light', {
         path: '/',
+        sameSite: true,
       });
       setTheme(themeMode === 'dark' ? 'dark' : 'light');
     }

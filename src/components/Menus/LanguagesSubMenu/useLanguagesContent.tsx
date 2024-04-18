@@ -29,7 +29,7 @@ export const useLanguagesContent = () => {
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     i18n.changeLanguage(newLanguage);
-    setCookie(cookieName, newLanguage, { path: '/' });
+    setCookie(cookieName, newLanguage, { path: '/', sameSite: true });
     replaceLocaleInUrl(pathname, newLanguage);
   };
 
