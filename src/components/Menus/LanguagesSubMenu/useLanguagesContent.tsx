@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 export const useLanguagesContent = () => {
   const pathname = usePathname();
   const { i18n } = useTranslation();
-  const [_, setCookie] = useCookies([cookieName]);
+  const [, setCookie] = useCookies([cookieName]);
   const { trackEvent } = useUserTracking();
   const handleSwitchLanguage = (newLanguage: LanguageKey) => {
     trackEvent({
@@ -29,7 +29,7 @@ export const useLanguagesContent = () => {
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     i18n.changeLanguage(newLanguage);
-    setCookie(cookieName, newLanguage, { path: '/' });
+    setCookie(cookieName, newLanguage, { path: '/', sameSite: true });
     replaceLocaleInUrl(pathname, newLanguage);
   };
 
