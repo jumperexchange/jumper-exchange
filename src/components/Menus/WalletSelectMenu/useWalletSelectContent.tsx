@@ -3,7 +3,6 @@ import { useAccountConnect } from '@/hooks/useAccounts';
 import type { CombinedWallet } from '@/hooks/useCombinedWallets';
 import { useCombinedWallets } from '@/hooks/useCombinedWallets';
 import { useMenuStore } from '@/stores/menu';
-import { useSettingsStore } from '@/stores/settings';
 import type { MenuListItem } from '@/types/internal';
 import { getContrastAlphaColor } from '@/utils/colors';
 import {
@@ -27,11 +26,10 @@ export const useWalletSelectContent = () => {
     theme.breakpoints.up('sm'),
   );
   const connect = useAccountConnect();
-  const [_, setCookie] = useCookies(['welcomeScreenClosed']);
+  const [, setCookie] = useCookies(['welcomeScreenClosed']);
 
   const { setSnackbarState, closeAllMenus, setEcosystemSelectMenuState } =
     useMenuStore((state) => state);
-  const { setWelcomeScreenClosed } = useSettingsStore((state) => state);
 
   const availableWallets = useMemo(() => {
     let allowedWallets = combinedInstalledWallets.slice(0, 7);
@@ -61,7 +59,7 @@ export const useWalletSelectContent = () => {
         );
       }
       closeAllMenus();
-      setCookie('welcomeScreenClosed', true, { path: '/' });
+      setCookie('welcomeScreenClosed', true, { path: '/', sameSite: true });
     },
     [
       closeAllMenus,
