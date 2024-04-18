@@ -3,6 +3,7 @@ import { useAccountConnect } from '@/hooks/useAccounts';
 import type { CombinedWallet } from '@/hooks/useCombinedWallets';
 import { useCombinedWallets } from '@/hooks/useCombinedWallets';
 import { useMenuStore } from '@/stores/menu';
+import { useSettingsStore } from '@/stores/settings';
 import type { MenuListItem } from '@/types/internal';
 import { getContrastAlphaColor } from '@/utils/colors';
 import {
