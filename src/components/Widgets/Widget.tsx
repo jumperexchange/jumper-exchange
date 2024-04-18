@@ -15,7 +15,7 @@ import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
@@ -70,6 +70,10 @@ export function Widget({ starterVariant, themeVariant }: WidgetProps) {
   const setWalletSelectMenuState = useMenuStore(
     (state: MenuState) => state.setWalletSelectMenuState,
   );
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {

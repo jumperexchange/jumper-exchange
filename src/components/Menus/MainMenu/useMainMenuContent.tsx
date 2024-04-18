@@ -252,28 +252,6 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: `${pathname.includes('memecoins') ? 'Go normal mode' : 'Go degen mode'}`,
-      prefixIcon: <WhatshotIcon />,
-      showMoreIcon: false,
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-degen-mode-link',
-          action: TrackingAction.ClickJumperLearnLink,
-          data: { [TrackingEventParameter.Menu]: 'degen_mode' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
-        });
-        closeAllMenus();
-        window.open(
-          `${pathname.includes('memecoins') ? window?.location.origin + '/' : window?.location.origin + '/memecoins'}`,
-          '_self',
-        );
-      },
-    },
-    {
       label: t('navbar.navbarMenu.support'),
       prefixIcon: (
         <Discord

@@ -1,8 +1,4 @@
 'use client';
-import {
-  STRAPI_FEATURE_CARDS,
-  STRAPI_JUMPER_USERS,
-} from '@/const/strapiContentKeys';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
@@ -11,9 +7,13 @@ import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
-import { useCookies } from 'react-cookie';
+import {
+  STRAPI_FEATURE_CARDS,
+  STRAPI_JUMPER_USERS,
+} from '@/const/strapiContentKeys';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
+import { useCookies } from 'react-cookie';
 
 export const FeatureCards = () => {
   const [disabledFeatureCards] = useSettingsStore(
