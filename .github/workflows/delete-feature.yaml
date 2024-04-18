@@ -20,7 +20,7 @@ jobs:
       - name: Set app name
         run: |
           NAME=$(echo "${{ env.BRANCH_NAME }}" | tr -d -c '[:alnum:]' | tr '[:upper:]' '[:lower:]')
-          echo "APP_NAME=feat-${NAME:0:30}" >> $GITHUB_ENV
+          echo "APP_NAME=feat-${NAME:0:25}" >> $GITHUB_ENV
 
       - name: Generate a token
         id: generate-token
