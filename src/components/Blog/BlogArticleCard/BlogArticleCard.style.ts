@@ -1,4 +1,5 @@
 import { Tag } from '@/components/Tag.style';
+import { urbanist } from '@/fonts/fonts';
 import {
   Box,
   Card,
@@ -9,7 +10,6 @@ import {
   type Breakpoint,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { urbanist } from 'src/fonts/fonts';
 
 export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   flexShrink: 0,

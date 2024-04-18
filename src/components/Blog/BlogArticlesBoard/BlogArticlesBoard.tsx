@@ -1,4 +1,5 @@
 import type { TabProps } from '@/components/Tabs';
+import { urbanist } from '@/fonts/fonts';
 import type { BlogArticleData, TagAttributes } from '@/types/strapi';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import type { Theme } from '@mui/material';
@@ -11,7 +12,6 @@ import {
 } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { urbanist } from 'src/fonts/fonts';
 import { BlogArticlesBoardContainer } from './BlogArticlesBoard.style';
 import { BlogArticlesBoardTabs } from './BlogArticlesBoardTabs';
 

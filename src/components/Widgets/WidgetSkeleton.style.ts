@@ -14,6 +14,7 @@ export const WidgetSkeletonContainer = styled(
   flexDirection: 'column',
   alignItems: 'center',
   maxHeight: 'unset',
+  minHeight: 'unset',
   backgroundColor: theme.palette.surface1.main,
   boxShadow:
     theme.palette.mode === 'light'
