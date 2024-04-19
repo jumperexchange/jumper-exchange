@@ -14,12 +14,13 @@ export const WidgetWrapper = styled(Box, {
   position: 'relative',
   margin: theme.spacing(0, 'auto'),
 
+  iframe: {
+    pointerEvents: welcomeScreenClosed ? 'none' : 'auto',
+  },
+
   ...(!welcomeScreenClosed && {
     '&:hover': {
       marginTop: 0,
-    },
-    iframe: {
-      pointerEvents: !welcomeScreenClosed ? 'none' : 'auto',
     },
   }),
   zIndex: 2,
