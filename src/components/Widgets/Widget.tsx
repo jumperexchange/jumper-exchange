@@ -132,7 +132,7 @@ export function Widget({ starterVariant }: WidgetProps) {
           ? [
               EVM({
                 getWalletClient: () => getWalletClient(wagmiConfig),
-                switchChain: async (chainId: number) => {
+                switchChain: async (chainId) => {
                   const chain = await switchChain(wagmiConfig, { chainId });
                   return getWalletClient(wagmiConfig, { chainId: chain.id });
                 },

@@ -37,7 +37,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
 
   const activeChain = useMemo(
-    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
+    () => chains?.find((chainEl) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
   const { closeAllMenus, setSnackbarState } = useMenuStore((state) => state);
