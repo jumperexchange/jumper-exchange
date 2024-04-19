@@ -40,7 +40,6 @@ interface WidgetProps {
 }
 
 export function Widget({ starterVariant }: WidgetProps) {
-  const [loaded, setLoaded] = useState(false);
   const theme = useTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
@@ -56,10 +55,6 @@ export function Widget({ starterVariant }: WidgetProps) {
   const setWalletSelectMenuState = useMenuStore(
     (state: MenuState) => state.setWalletSelectMenuState,
   );
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {

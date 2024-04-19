@@ -29,7 +29,6 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const { t } = useTranslation();
-  const { account } = useAccounts();
   return (
     <CenteredContainer>
       <ErrorMessage variant={'lifiBodyLarge'}>
