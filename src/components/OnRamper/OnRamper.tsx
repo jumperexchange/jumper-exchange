@@ -45,9 +45,6 @@ export const OnRamper = () => {
     >
       <div>
         <OnRamperIFrame
-          sx={{
-            ...(!welcomeScreenClosed && { pointerEvents: 'none' }),
-          }}
           src={onRamperSrc}
           height="630px"
           width="416px"

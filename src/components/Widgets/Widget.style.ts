@@ -18,6 +18,9 @@ export const WidgetWrapper = styled(Box, {
     '&:hover': {
       marginTop: 0,
     },
+    iframe: {
+      pointerEvents: !welcomeScreenClosed ? 'none' : 'auto',
+    },
   }),
   zIndex: 2,
 }));
