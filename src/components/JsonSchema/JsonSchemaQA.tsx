@@ -60,5 +60,9 @@ export const QAJsonSchema = ({ data }: QAJsonSchemaProps) => {
     };
     return structuredJson;
   }, [data]);
-  return <Script type="application/ld+json">{JSON.stringify(schema)}</Script>;
+  return (
+    <Script type="application/ld+json" id="json-schema-qa">
+      {JSON.stringify(schema)}
+    </Script>
+  );
 };

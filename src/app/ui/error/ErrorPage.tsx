@@ -2,7 +2,6 @@ import { Button } from '@/components/Button/Button';
 import { useTheme } from '@mui/material';
 
 import { Discord } from '@/components/illustrations/Discord';
-import { useAccounts } from '@/hooks/useAccounts';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { EventTrackingTool } from '@/types/userTracking';
 
