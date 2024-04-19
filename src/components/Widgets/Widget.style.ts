@@ -13,11 +13,6 @@ export const WidgetWrapper = styled(Box, {
   minWidth: 416,
   position: 'relative',
   margin: theme.spacing(0, 'auto'),
-
-  iframe: {
-    pointerEvents: welcomeScreenClosed ? 'none' : 'auto',
-  },
-
   ...(!welcomeScreenClosed && {
     '&:hover': {
       marginTop: 0,
