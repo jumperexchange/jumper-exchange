@@ -18,6 +18,10 @@ export const WidgetWrapper = styled(Box, {
     '&:hover': {
       marginTop: 0,
     },
+
+    iframe: {
+      ...(!welcomeScreenClosed && { pointerEvents: 'none' }),
+    },
   }),
   zIndex: 2,
 }));
