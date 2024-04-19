@@ -24,7 +24,7 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
     </BackgroundGradientContainer>
   ) : (
     <Image
-      src="/pepe_background.jpeg"
+      src="/pepe_background.png"
       width={0}
       height={0}
       sizes="100vw"

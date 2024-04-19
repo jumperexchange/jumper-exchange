@@ -52,6 +52,7 @@ interface WidgetProps {
 }
 
 export function Widget({ starterVariant, themeVariant }: WidgetProps) {
+  const [loaded, setLoaded] = useState(false);
   const theme = useTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
