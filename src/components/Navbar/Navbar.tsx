@@ -19,7 +19,6 @@ export const Navbar = () => {
   const isLoyaltyPage = pathname.includes(JUMPER_LOYALTY_PATH);
   const { setWelcomeScreenClosed } = useWelcomeScreen();
   const { closeAllMenus } = useMenuStore((state) => state);
-
   const handleClick = () => {
     closeAllMenus();
     setWelcomeScreenClosed(false);
