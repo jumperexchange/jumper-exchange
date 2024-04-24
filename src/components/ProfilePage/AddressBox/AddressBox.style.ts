@@ -15,13 +15,14 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
         background: `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, transparent 50%)`,
       }),
   [theme.breakpoints.down('sm')]: {
+    paddingTop: 37,
     paddingBottom: 8,
     ...(theme.palette.mode === 'light'
       ? {
-          background: `linear-gradient(to bottom, ${theme.palette.primary.main} 35%, ${theme.palette.grey[100]} 30%)`,
+          background: `linear-gradient(to bottom, ${theme.palette.primary.main} 50%, ${theme.palette.grey[100]} 50%)`,
         }
       : {
-          background: `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 35%, transparent 0%)`,
+          background: `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, transparent 50%)`,
         }),
   },
 }));

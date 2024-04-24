@@ -1,5 +1,4 @@
 'use client';
-import { ClientOnly } from '@/components/ClientOnly';
 import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAlert';
 import { widgetConfig } from '@/config/widgetConfig';
 import { TabsMap } from '@/const/tabsMap';
@@ -21,6 +20,7 @@ import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import { ClientOnly } from '@/components/ClientOnly';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,

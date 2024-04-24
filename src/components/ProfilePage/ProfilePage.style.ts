@@ -16,7 +16,6 @@ export const ProfilePageHeaderBox = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? theme.palette.grey[100]
       : alpha(theme.palette.grey[100], 0.08),
-  height: '312px',
   borderRadius: '24px',
 }));
 

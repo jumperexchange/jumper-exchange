@@ -46,7 +46,7 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
   };
 
   return (
-    <AddressBoxContainer sx={{ height: '100%', width: '100%' }}>
+    <AddressBoxContainer sx={{ width: '100%' }}>
       <PassImageBox>
         <Image
           alt="Effigy Wallet Icon"
@@ -66,7 +66,7 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
         />
       </PassImageBox>
       <AddressDisplayBox>
-        <ProfilePageTypography fontSize={'24px'} lineHeight={'32px'}>
+        <ProfilePageTypography fontSize={20} lineHeight={'32px'}>
           {getAddressOrENSString()}
         </ProfilePageTypography>
         <ProfileIconButton onClick={() => handleCopyButton()}>
