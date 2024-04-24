@@ -20,6 +20,7 @@
     "@safe-global/safe-apps-sdk": "^9.0.0",
     "@sentry/browser": "^7.107.0",
     "@sentry/integrations": "^7.107.0",
+    "@sentry/nextjs": "^7.105.0",
     "@sentry/react": "^7.107.0",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
