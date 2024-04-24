@@ -8,6 +8,7 @@ export const ProfilePageContainer = styled(Container)(() => ({
   position: 'relative',
   width: '100% !important',
   overflow: 'hidden',
+  paddingBottom: 20,
 }));
 
 export const ProfilePageHeaderBox = styled(Box)(({ theme }) => ({

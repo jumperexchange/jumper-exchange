@@ -26,10 +26,10 @@ export const ProfilePage = () => {
 
   return (
     <ProfilePageContainer>
-      <Stack direction={'column'} spacing={{ xs: 1, sm: 4 }}>
+      <Stack direction={'column'} spacing={{ xs: 2, sm: 4 }}>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
-          spacing={{ xs: 1, sm: 4 }}
+          spacing={{ xs: 2, sm: 4 }}
         >
           <ProfilePageHeaderBox sx={{ display: 'flex', flex: 1 }}>
             <AddressBox

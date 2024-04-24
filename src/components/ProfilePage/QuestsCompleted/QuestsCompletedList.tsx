@@ -34,7 +34,7 @@ export const QuestCompletedList = ({
       </CompletedQuestHeader>
       <CompletedQuestStack
         direction={'row'}
-        spacing={4}
+        spacing={{ xs: 2, sm: 4 }}
         useFlexGap
         flexWrap="wrap"
       >
