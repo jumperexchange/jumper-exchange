@@ -6,11 +6,18 @@ import {
 import { Lightbox } from '@/components/Lightbox/Lightbox';
 import { Link } from '@/components/Link.style';
 import type { MediaAttributes } from '@/types/strapi';
-import { Typography, alpha, useTheme } from '@mui/material';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import { urbanist } from 'src/fonts/fonts';
 import { BlogWidget } from './BlogWidget';
+import {
+  BlogH1,
+  BlogH2,
+  BlogH3,
+  BlogH4,
+  BlogH5,
+  BlogH6,
+  BlogParagraph,
+} from './CustomRichBlocks.style';
 
 interface CustomRichBlocksProps {
   baseUrl?: string;
@@ -36,7 +43,6 @@ export const CustomRichBlocks = ({
   baseUrl,
   content,
 }: CustomRichBlocksProps) => {
-  const theme = useTheme();
   const customRichBlocks = {
     // You can use the default components to set class names...
     link: (data: any) => {
@@ -44,6 +50,24 @@ export const CustomRichBlocks = ({
     },
     image: (data: ImageData) =>
       baseUrl ? <Lightbox imageData={data.image} baseUrl={baseUrl} /> : null,
+    heading: ({ children, level }: any) => {
+      switch (level) {
+        case 1:
+          return <BlogH1 variant="h1">{children}</BlogH1>;
+        case 2:
+          return <BlogH2 variant="h2">{children}</BlogH2>;
+        case 3:
+          return <BlogH3 variant="h3">{children}</BlogH3>;
+        case 4:
+          return <BlogH4 variant="h4">{children}</BlogH4>;
+        case 5:
+          return <BlogH5 variant="h5">{children}</BlogH5>;
+        case 6:
+          return <BlogH6 variant="h6">{children}</BlogH6>;
+        default:
+          return <BlogH1 variant="h1">{children}</BlogH1>;
+      }
+    },
     paragraph: ({ children }: any) => {
       if (children[0].props.text.includes('<JUMPER_CTA')) {
         try {
@@ -65,7 +89,6 @@ export const CustomRichBlocks = ({
           return;
         }
       } else if (children[0].props.text.includes('<WIDGET')) {
-        console.log('WIDGET', children[0].props.text);
         // Regular expression to match specific props
         try {
           const propRegex =
@@ -120,140 +143,7 @@ export const CustomRichBlocks = ({
           return;
         }
       } else {
-        return (
-          <Typography
-            sx={{
-              color: alpha(
-                theme.palette.mode === 'light'
-                  ? theme.palette.black.main
-                  : theme.palette.white.main,
-                0.75,
-              ),
-              margin: theme.spacing(2, 0),
-              fontSize: '18px',
-              lineHeight: '32px',
-              fontWeight: 400,
-            }}
-          >
-            {children}
-          </Typography>
-        );
-      }
-    },
-    heading: ({ children, level }: any) => {
-      switch (level) {
-        case 1:
-          return (
-            <Typography
-              variant="h1"
-              sx={{
-                marginTop: theme.spacing(12),
-                marginBottom: theme.spacing(6),
-                fontFamily: urbanist.style.fontFamily,
-                fontSize: '64px',
-                lineHeight: '64px',
-                fontWeight: 700,
-              }}
-            >
-              {children}
-            </Typography>
-          );
-        case 2:
-          return (
-            <Typography
-              variant="h2"
-              sx={{
-                marginTop: theme.spacing(8),
-                marginBottom: theme.spacing(3),
-                fontFamily: urbanist.style.fontFamily,
-                fontSize: '36px',
-                lineHeight: '48px',
-                fontWeight: 700,
-              }}
-            >
-              {children}
-            </Typography>
-          );
-        case 3:
-          return (
-            <Typography
-              variant="h3"
-              sx={{
-                marginTop: theme.spacing(6),
-                marginBottom: theme.spacing(2),
-                fontFamily: urbanist.style.fontFamily,
-                fontSize: '28px',
-                lineHeight: '36px',
-                fontWeight: 700,
-              }}
-            >
-              {children}
-            </Typography>
-          );
-        case 4:
-          return (
-            <Typography
-              variant="h4"
-              sx={{
-                marginTop: theme.spacing(4),
-                marginBottom: theme.spacing(1.5),
-                fontFamily: urbanist.style.fontFamily,
-                fontSize: '22px',
-                lineHeight: '28px',
-                fontWeight: 700,
-              }}
-            >
-              {children}
-            </Typography>
-          );
-        case 5:
-          return (
-            <Typography
-              variant="h5"
-              sx={{
-                marginTop: theme.spacing(3),
-                marginBottom: theme.spacing(1),
-                fontFamily: urbanist.style.fontFamily,
-                fontSize: '18px',
-                lineHeight: '24px',
-                fontWeight: 700,
-              }}
-            >
-              {children}
-            </Typography>
-          );
-        case 6:
-          return (
-            <Typography
-              variant="h6"
-              sx={{
-                marginTop: theme.spacing(2),
-                marginBottom: theme.spacing(0.5),
-                fontFamily: urbanist.style.fontFamily,
-                fontSize: '12px',
-                lineHeight: '18px',
-                fontWeight: 700,
-              }}
-            >
-              {children}
-            </Typography>
-          );
-        default:
-          return (
-            <Typography
-              variant="h1"
-              sx={{
-                marginTop: theme.spacing(12),
-                marginBottom: theme.spacing(6),
-                fontFamily: urbanist.style.fontFamily,
-                fontSize: '64px',
-                lineHeight: '64px',
-                fontWeight: 700,
-              }}
-            >
-              {children}
-            </Typography>
-          );
+        return <BlogParagraph>{children}</BlogParagraph>;
       }
     },
   };
