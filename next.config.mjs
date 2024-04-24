@@ -41,7 +41,7 @@ const nextConfig = {
       '/recent-wallets',
       '/connected-wallets',
       '/configured-wallets',
-    ].map(redirectToHome(['/exchange', '/refuel'])).flat();
+    ].map(redirectToHome(['/:path*'])).flat();
   },
   images: {
     remotePatterns: [
