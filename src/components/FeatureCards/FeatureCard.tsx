@@ -129,6 +129,9 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
   ) => {
     event.stopPropagation();
+    !data?.attributes.DisplayConditions?.hasOwnProperty('showOnce') &&
+      !!data?.attributes.uid &&
+      setDisabledFeatureCard(data?.attributes.uid);
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.ClickFeatureCard,
@@ -144,7 +147,9 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
 
   const handleCardClick = () => {
     data?.attributes.URL && openInNewTab(data?.attributes.URL);
-
+    !data?.attributes.DisplayConditions?.hasOwnProperty('showOnce') &&
+      !!data?.attributes.uid &&
+      setDisabledFeatureCard(data?.attributes.uid);
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.ClickFeatureCard,
