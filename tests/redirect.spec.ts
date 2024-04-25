@@ -32,10 +32,23 @@ for (const locale of i18nConfig.locales) {
   test.describe(`Test redirects for locale ${locale}`, () => {
     for (const redirectUrl of shouldRedirects) {
       const url = `${baseUrl}${locale}${redirectUrl}`;
-      test(`should navigate to the home page from ${url}`, async ({ page }) => {
+      test(`url with local should navigate to the home page from ${url}`, async ({
+        page,
+      }) => {
         await page.goto(url);
         expect(page.url()).toEqual(baseUrl);
         const response = await page.request.fetch(url, { maxRedirects: 0 });
+        expect(response.status()).toEqual(statusCode);
+      });
+      const urlWithoutLocale = `${baseUrl}${redirectUrl}`;
+      test(`url without local should navigate to the home page from ${urlWithoutLocale}`, async ({
+        page,
+      }) => {
+        await page.goto(urlWithoutLocale);
+        expect(page.url()).toEqual(baseUrl);
+        const response = await page.request.fetch(urlWithoutLocale, {
+          maxRedirects: 0,
+        });
         expect(response.status()).toEqual(statusCode);
       });
       for (const invalidLocale of invalidLocales) {
