@@ -47,25 +47,25 @@ export const FeatureCards = () => {
     queryKey: ['personalized-feature-cards'],
   });
 
+  function excludedFeatureCardsFilter(el: FeatureCardData) {
+    if (
+      !el.attributes.featureCardsExclusions ||
+      !Array.isArray(el.attributes.featureCardsExclusions?.data)
+    ) {
+      return true;
+    }
+
+    const exclusions = el.attributes.featureCardsExclusions.data.map(
+      (item) => item.attributes.uid,
+    );
+
+    return !exclusions.some((uid) => disabledFeatureCards.includes(uid));
+  }
+
   const slicedFeatureCards = useMemo(() => {
     if (Array.isArray(cards) && !!cards.length) {
-      // Remove excluded feature cards
-      const excludedFeatureCards = cards?.filter((el, index) => {
-        if (
-          !el.attributes.featureCardsExclusions ||
-          !Array.isArray(el.attributes.featureCardsExclusions?.data)
-        ) {
-          return true;
-        }
-
-        const exclusions = el.attributes.featureCardsExclusions.data.map(
-          (item) => item.attributes.uid,
-        );
-
-        return !exclusions.some((uid) => disabledFeatureCards.includes(uid));
-      });
-
-      return excludedFeatureCards
+      return cards
+        ?.filter(excludedFeatureCardsFilter)
         ?.filter(
           (el, index) =>
             isSuccess &&
@@ -85,6 +85,7 @@ export const FeatureCards = () => {
       !!personalizedFeatureCards.length
     ) {
       return personalizedFeatureCards
+        ?.filter(excludedFeatureCardsFilter)
         ?.filter(
           (el, index) =>
             el.attributes.DisplayConditions &&
