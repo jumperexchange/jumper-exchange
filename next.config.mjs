@@ -1,8 +1,25 @@
+const locales = [
+  'bn',
+  'en',
+  'es',
+  'fr',
+  'id',
+  'it',
+  'ko',
+  'pt',
+  'th',
+  'tr',
+  'uk',
+  'vi',
+  'zh',
+]
+
 function redirectToHome(prefix = []) {
   return (path) => {
     return prefix.map((prefix) => ({
       source: `${prefix}${path}`,
       destination: '/',
+      locale: false,
       permanent: true,
     }));
   }
@@ -42,7 +59,7 @@ const nextConfig = {
       '/recent-wallets',
       '/connected-wallets',
       '/configured-wallets',
-    ].map(redirectToHome(['/:path*'])).flat();
+    ].map(redirectToHome([`/(${locales.join('|')})?/(exchange|refuel)?`])).flat();
   },
   images: {
     remotePatterns: [

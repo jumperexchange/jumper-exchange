@@ -57,6 +57,7 @@
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@lifi/types": "^11.5.0",
+    "@playwright/test": "^1.43.1",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.75",
     "@types/react-dom": "^18.2.24",
@@ -99,7 +100,7 @@
     "clean": "rm -rf ./tsconfig.tsbuildinfo",
     "lint-staged": "lint-staged",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
-    "test": "run-s 'test:*'",
+    "test": "npx playwright test",
     "test:unit": "echo \"No tests yet\"",
     "fix:staged-files": "lint-staged --allow-empty",
     "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
