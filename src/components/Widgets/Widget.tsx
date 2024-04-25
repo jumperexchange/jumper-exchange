@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
+import type { BlogWidgetProps } from '../Blog/BlogWidget';
 import { WidgetSkeleton } from './WidgetSkeleton';
 
 const refuelAllowChains: ChainId[] = [
@@ -35,15 +36,10 @@ const refuelAllowChains: ChainId[] = [
   ChainId.VEL,
 ];
 
-interface WidgetProps {
-  starterVariant: StarterVariantType;
-  fromChain?: number;
-  fromToken?: string;
-  toChain?: number;
-  toToken?: string;
-  fromAmount?: string;
+interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   allowChains?: number[];
   widgetIntegrator?: string;
+  starterVariant: StarterVariantType;
 }
 
 export function Widget({
