@@ -50,8 +50,6 @@ export const CustomRichBlocks = ({
       baseUrl ? <Lightbox imageData={data.image} baseUrl={baseUrl} /> : null,
     heading: ({ children, level }: any) => {
       switch (level) {
-        case 1:
-          return <BlogH1 variant="h1">{children}</BlogH1>;
         case 2:
           return <BlogH2 variant="h2">{children}</BlogH2>;
         case 3:
