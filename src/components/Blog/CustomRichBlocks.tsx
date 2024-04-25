@@ -8,6 +8,7 @@ import { Link } from '@/components/Link.style';
 import type { MediaAttributes } from '@/types/strapi';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { BlogWidgetProps } from './BlogWidget';
 import { BlogWidget } from './BlogWidget';
 import {
   BlogH1,
@@ -29,13 +30,10 @@ interface ImageData {
   image: MediaAttributes;
 }
 
-interface WidgetRouteSettings {
+interface WidgetRouteSettings
+  extends Omit<BlogWidgetProps, 'fromChain' | 'toChain'> {
   fromChain?: string;
-  fromToken?: string;
   toChain?: string;
-  toToken?: string;
-  fromAmount?: string;
-  allowChains?: string;
 }
 
 export const CustomRichBlocks = ({

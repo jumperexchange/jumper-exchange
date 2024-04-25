@@ -2,7 +2,7 @@ import { WallettButtons } from '../Navbar/WalletButton';
 import { Widget } from '../Widgets';
 import { BlogWidgetHeader } from './BlogWidget.style';
 
-interface BlogWidgetProps {
+export interface BlogWidgetProps {
   fromChain?: number;
   fromToken?: string;
   toChain?: number;
