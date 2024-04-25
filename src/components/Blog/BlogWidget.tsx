@@ -1,6 +1,6 @@
-import { Box } from '@mui/material';
 import { WallettButtons } from '../Navbar/WalletButton';
 import { Widget } from '../Widgets';
+import { BlogWidgetHeader } from './BlogWidget.style';
 
 interface BlogWidgetProps {
   fromChain?: number;
@@ -26,11 +26,9 @@ export const BlogWidget = ({
 
   return (
     <>
-      <Box
-        sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 3 }}
-      >
+      <BlogWidgetHeader>
         <WallettButtons />
-      </Box>
+      </BlogWidgetHeader>
       <Widget
         starterVariant="default"
         fromChain={fromChain}
