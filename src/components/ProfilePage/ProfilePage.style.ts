@@ -21,15 +21,14 @@ export const ProfilePageHeaderBox = styled(Box)(({ theme }) => ({
 
 export interface ProfilePageTypographyProps
   extends Omit<TypographyProps, 'component'> {
-  fontSize: string | number;
-  lineHeight: string;
+  lineHeight?: string;
   fontWeight?: number;
 }
 
 export const ProfilePageTypography = styled(
   Typography,
-)<ProfilePageTypographyProps>(({ fontSize, fontWeight, lineHeight }) => ({
-  fontSize: fontSize,
+)<ProfilePageTypographyProps>(({ fontWeight, lineHeight }) => ({
+  // fontSize: fontSize,
   fontWeight: fontWeight ?? 700,
   lineHeight: lineHeight,
   userSelect: 'none',

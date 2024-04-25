@@ -23,7 +23,12 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
     <Box>
       {levelData ? (
         <>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box
+            sx={{
+              display: { xs: 'none', sm: 'flex' },
+              justifyContent: 'space-between',
+            }}
+          >
             <ProfilePageTypography fontSize={'14px'} lineHeight={'18px'}>
               {`LEVEL ${levelData?.level}`}
             </ProfilePageTypography>

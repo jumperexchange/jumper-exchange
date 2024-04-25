@@ -46,6 +46,7 @@ export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
 export const AddressDisplayBox = styled(Box)(() => ({
   display: 'flex',
   marginTop: 12,
+  marginBottom: 12,
 }));
 
 export const PassImageBox = styled(Box)(({ theme }) => ({
@@ -54,8 +55,8 @@ export const PassImageBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     marginTop: 8,
     '& > img': {
-      width: 64,
-      height: 64,
+      width: 84,
+      height: 84,
     },
   },
 }));
