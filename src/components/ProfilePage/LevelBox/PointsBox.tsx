@@ -18,7 +18,7 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
           color:
             theme.palette.mode === 'light'
               ? theme.palette.pink.light
-              : theme.palette.pink.dark,
+              : theme.palette.white.main,
         }}
       >
         {points ?? 0}

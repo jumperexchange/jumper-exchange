@@ -57,7 +57,7 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
                 backgroundColor:
                   theme.palette.mode === 'light'
                     ? theme.palette.pink.light
-                    : theme.palette.pink.dark,
+                    : theme.palette.accent1Alt.main,
                 borderRadius: points === levelData.maxPoints ? '12px' : null,
               }}
             />
@@ -70,7 +70,7 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
                   points && points > levelData.minPoints
                     ? `${100 - calcWidth}%`
                     : '100%',
-                backgroundColor: theme.palette.grey[100],
+                backgroundColor: theme.palette.alphaLight200.main,
                 borderRadius: points ? null : '12px',
               }}
             />
