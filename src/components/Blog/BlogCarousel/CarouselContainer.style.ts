@@ -27,6 +27,9 @@ export const CarouselContainerBox = styled(Box, {
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: theme.spacing(4),
   },
+  [theme.breakpoints.up('xs' as Breakpoint)]: {
+    marginTop: theme.spacing(2),
+  },
   ...styles,
 }));
 

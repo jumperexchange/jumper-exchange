@@ -1,5 +1,4 @@
 'use client';
-import { ClientOnly } from '@/components/ClientOnly';
 import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAlert';
 import { widgetConfig } from '@/config/widgetConfig';
 import { TabsMap } from '@/const/tabsMap';
@@ -23,6 +22,7 @@ import { WidgetWrapper } from '.';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { ThemesMap } from 'src/const/themesMap';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import { ClientOnly } from '@/components/ClientOnly';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
