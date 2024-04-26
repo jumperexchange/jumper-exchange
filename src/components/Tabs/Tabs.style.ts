@@ -63,7 +63,7 @@ export const Tab = styled(MuiTab, {
         : theme.palette.black.main,
     backgroundColor:
       theme.palette.mode === 'dark'
-        ? alpha(theme.palette.white.main, 0.01)
+        ? alpha(theme.palette.white.main, 0.1)
         : theme.palette.white.main,
   },
 
