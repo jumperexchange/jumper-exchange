@@ -27,7 +27,7 @@ export const TierBox = ({ points, loading }: TierBoxProps) => {
 
   return (
     <TierMainBox>
-      <Box sx={{ padding: '18px' }}>
+      <Box sx={{ padding: { xs: 1, sm: 2 } }}>
         <TierInfoBox>
           <PointsBox points={points} />
           <LevelBox level={levelData.level} loading={loading} />
