@@ -66,7 +66,7 @@ export const JumperLogo = () => {
         <style type="text/css">
           {`
             .jumper-logo {
-              width: 248px;
+              width: 175px;
               height: 32px;
             }
             @media (max-width: ${theme.breakpoints.values.sm}px) {

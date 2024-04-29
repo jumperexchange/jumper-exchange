@@ -1,5 +1,4 @@
 'use client';
-import { ClientOnly } from '@/components/ClientOnly';
 import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAlert';
 import { widgetConfig } from '@/config/widgetConfig';
 import { TabsMap } from '@/const/tabsMap';
@@ -8,7 +7,7 @@ import { useActiveTabStore } from '@/stores/activeTab/ActiveTabStore';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
 import type { LanguageKey } from '@/types/i18n';
-import type { StarterVariantType } from '@/types/internal';
+import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
 import type { MenuState } from '@/types/menu';
 import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
@@ -20,7 +19,10 @@ import { useTranslation } from 'react-i18next';
 import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
+import { useMemelist } from 'src/hooks/useMemelist';
+import { ThemesMap } from 'src/const/themesMap';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import { ClientOnly } from '@/components/ClientOnly';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -31,15 +33,26 @@ const refuelAllowChains: ChainId[] = [
   ChainId.AVA,
   ChainId.ARB,
   ChainId.OPT,
-  ChainId.FUS,
-  ChainId.VEL,
+  ChainId.BAS,
+  ChainId.MAM,
+];
+
+const themeAllowChains: ChainId[] = [
+  ChainId.ETH,
+  ChainId.BAS,
+  ChainId.OPT,
+  ChainId.ARB,
+  ChainId.AVA,
+  ChainId.BSC,
 ];
 
 interface WidgetProps {
   starterVariant: StarterVariantType;
+  themeVariant?: ThemeVariantType;
 }
 
-export function Widget({ starterVariant }: WidgetProps) {
+export function Widget({ starterVariant, themeVariant }: WidgetProps) {
+  const [loaded, setLoaded] = useState(false);
   const theme = useTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
@@ -47,6 +60,9 @@ export function Widget({ starterVariant }: WidgetProps) {
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
+  const { tokens } = useMemelist({
+    enabled: !!themeVariant,
+  });
   const isGasVariant = activeTab === TabsMap.Refuel.index;
 
   const welcomeScreenClosed = useSettingsStore(
@@ -70,7 +86,9 @@ export function Widget({ starterVariant }: WidgetProps) {
     return {
       ...widgetConfig,
       variant: starterVariant === 'refuel' ? 'compact' : 'wide',
-      subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
+      subvariant:
+        (starterVariant !== 'buy' && !themeVariant && starterVariant) ||
+        'default',
       walletConfig: {
         onConnect: async () => {
           setWalletSelectMenuState(true);
@@ -78,7 +96,11 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       chains: {
         allow:
-          starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],
+          starterVariant === TabsMap.Refuel.variant
+            ? refuelAllowChains
+            : themeVariant === ThemesMap.Memecoins
+              ? themeAllowChains
+              : [],
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -143,6 +165,8 @@ export function Widget({ starterVariant }: WidgetProps) {
           ? process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL
           : process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR
       }`,
+      tokens:
+        themeVariant === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
   }, [
     starterVariant,
@@ -160,6 +184,9 @@ export function Widget({ starterVariant }: WidgetProps) {
     isGasVariant,
     setWalletSelectMenuState,
     wagmiConfig,
+    isGasVariant,
+    tokens,
+    themeVariant,
   ]);
 
   return (

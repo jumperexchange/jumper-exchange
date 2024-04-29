@@ -8,6 +8,7 @@ export const ProfilePageContainer = styled(Container)(() => ({
   position: 'relative',
   width: '100% !important',
   overflow: 'hidden',
+  paddingBottom: 20,
 }));
 
 export const ProfilePageHeaderBox = styled(Box)(({ theme }) => ({
@@ -15,21 +16,19 @@ export const ProfilePageHeaderBox = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? theme.palette.grey[100]
       : alpha(theme.palette.grey[100], 0.08),
-  height: '312px',
   borderRadius: '24px',
 }));
 
 export interface ProfilePageTypographyProps
   extends Omit<TypographyProps, 'component'> {
-  fontSize: string | number;
-  lineHeight: string;
+  lineHeight?: string;
   fontWeight?: number;
 }
 
 export const ProfilePageTypography = styled(
   Typography,
-)<ProfilePageTypographyProps>(({ fontSize, fontWeight, lineHeight }) => ({
-  fontSize: fontSize,
+)<ProfilePageTypographyProps>(({ fontWeight, lineHeight }) => ({
+  // fontSize: fontSize,
   fontWeight: fontWeight ?? 700,
   lineHeight: lineHeight,
   userSelect: 'none',

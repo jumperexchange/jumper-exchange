@@ -1,7 +1,7 @@
 'use client';
 import { LinkMap } from '@/const/linkMap';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
-import { LIFI_URL } from '@/const/urls';
+import { JUMPER_MEMECOIN_PATH, LIFI_URL } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { EventTrackingTool } from '@/types/userTracking';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
@@ -32,7 +32,9 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
     `${process.env.NEXT_PUBLIC_SITE_URL}/${currentPath}`,
   );
 
+  //Todo: logic to review
   const isRoot = result === '/' || result === '';
+  const isThemePage = result === JUMPER_MEMECOIN_PATH;
   const isApp = Object.values(LinkMap).some((page) =>
     result.includes(`/${page}`),
   );
@@ -56,7 +58,7 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
 
   return (
     <Container
-      fixedPosition={isRoot || isApp}
+      fixedPosition={isRoot || isApp || isThemePage}
       sx={styles}
       isArticlePage={isArticle}
     >
