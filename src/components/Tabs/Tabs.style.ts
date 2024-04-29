@@ -8,6 +8,7 @@ import { Tab as MuiTab, Tabs, styled } from '@mui/material';
 export const TabsContainer = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<TabsProps>(({ theme }) => ({
+  margin: '0 auto',
   backgroundColor:
     theme.palette.mode === 'dark'
       ? getContrastAlphaColor(theme, '12%')
