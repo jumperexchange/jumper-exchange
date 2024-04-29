@@ -2,19 +2,16 @@
 
 import { getContrastAlphaColor } from '@/utils/colors';
 import type { TabProps, TabsProps } from '@mui/material';
+import { alpha } from '@mui/material';
 import { Tab as MuiTab, Tabs, styled } from '@mui/material';
 
 export const TabsContainer = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<TabsProps>(({ theme }) => ({
-  position: 'absolute',
-  left: '50%',
-  transform: 'translateX(-50%)',
   backgroundColor:
     theme.palette.mode === 'dark'
       ? getContrastAlphaColor(theme, '12%')
       : getContrastAlphaColor(theme, '4%'),
-  margin: 'auto',
   padding: 1,
   alignItems: 'center',
 
@@ -64,7 +61,10 @@ export const Tab = styled(MuiTab, {
       theme.palette.mode === 'dark'
         ? theme.palette.white.main
         : theme.palette.black.main,
-    backgroundColor: 'transparent',
+    backgroundColor:
+      theme.palette.mode === 'dark'
+        ? alpha(theme.palette.white.main, 0.1)
+        : theme.palette.white.main,
   },
 
   ':hover': {

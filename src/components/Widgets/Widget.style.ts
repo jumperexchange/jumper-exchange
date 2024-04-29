@@ -13,7 +13,6 @@ export const WidgetWrapper = styled(Box, {
   minWidth: 416,
   position: 'relative',
   margin: theme.spacing(0, 'auto'),
-
   ...(!welcomeScreenClosed && {
     '&:hover': {
       marginTop: 0,

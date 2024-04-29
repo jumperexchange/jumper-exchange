@@ -60,7 +60,7 @@ export const QuestCard = ({
           width={240}
           height={240}
           style={{
-            borderRadius: '24px',
+            borderRadius: 16,
             marginTop: 16,
           }}
         />
@@ -169,7 +169,7 @@ export const QuestCard = ({
                   lineHeight={'18px'}
                   fontWeight={600}
                   sx={{
-                    padding: '8px',
+                    padding: 1,
                   }}
                 >
                   {t('questCard.join')}
