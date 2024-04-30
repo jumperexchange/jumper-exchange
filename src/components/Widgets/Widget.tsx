@@ -8,7 +8,7 @@ import { useActiveTabStore } from '@/stores/activeTab/ActiveTabStore';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
 import type { LanguageKey } from '@/types/i18n';
-import type { StarterVariantType } from '@/types/internal';
+import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
 import type { MenuState } from '@/types/menu';
 import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
@@ -17,6 +17,8 @@ import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ThemesMap } from 'src/const/themesMap';
+import { useMemelist } from 'src/hooks/useMemelist';
 import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
@@ -32,14 +34,24 @@ const refuelAllowChains: ChainId[] = [
   ChainId.AVA,
   ChainId.ARB,
   ChainId.OPT,
-  ChainId.FUS,
-  ChainId.VEL,
+  ChainId.BAS,
+  ChainId.MAM,
+];
+
+const themeAllowChains: ChainId[] = [
+  ChainId.ETH,
+  ChainId.BAS,
+  ChainId.OPT,
+  ChainId.ARB,
+  ChainId.AVA,
+  ChainId.BSC,
 ];
 
 interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   allowChains?: number[];
   widgetIntegrator?: string;
   starterVariant: StarterVariantType;
+  themeVariant?: ThemeVariantType;
 }
 
 export function Widget({
@@ -51,6 +63,7 @@ export function Widget({
   fromAmount,
   allowChains,
   widgetIntegrator,
+  themeVariant,
 }: WidgetProps) {
   const theme = useTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
@@ -59,16 +72,11 @@ export function Widget({
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
-  const isGasVariant = activeTab === TabsMap.Refuel.index;
-  console.log('WIDGET', {
-    allowChains,
-    fromAmount,
-    fromChain,
-    fromToken,
-    toChain,
-    toToken,
-    widgetIntegrator,
+  const { tokens } = useMemelist({
+    enabled: !!themeVariant,
   });
+  const isGasVariant = activeTab === TabsMap.Refuel.index;
+
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
@@ -90,7 +98,9 @@ export function Widget({
     return {
       ...widgetConfig,
       variant: starterVariant === 'refuel' ? 'compact' : 'wide',
-      subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
+      subvariant:
+        (starterVariant !== 'buy' && !themeVariant && starterVariant) ||
+        'default',
       walletConfig: {
         onConnect: async () => {
           setWalletSelectMenuState(true);
@@ -105,7 +115,9 @@ export function Widget({
         allow:
           allowChains || starterVariant === TabsMap.Refuel.variant
             ? refuelAllowChains
-            : [],
+            : themeVariant === ThemesMap.Memecoins
+              ? themeAllowChains
+              : [],
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -165,16 +177,15 @@ export function Widget({
       },
       buildUrl: true,
       insurance: true,
-      integrator:
-        (widgetIntegrator && `${widgetIntegrator}`) ??
-        `${
-          isGasVariant
-            ? process.env.NEXT_PUBLIC_WIDGETINTEGRATOR_REFUEL
-            : process.env.NEXT_PUBLIC_WIDGETINTEGRATOR
-        }`,
+      integrator: `${
+        widgetIntegrator || isGasVariant
+          ? process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL
+          : process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR
+      }`,
+      tokens:
+        themeVariant === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
   }, [
-    allowChains,
     fromAmount,
     fromChain,
     fromToken,
@@ -192,8 +203,10 @@ export function Widget({
     theme.palette.surface1.main,
     theme.palette.surface2.main,
     themeMode,
+    themeVariant,
     toChain,
     toToken,
+    tokens,
     wagmiConfig,
     widgetIntegrator,
   ]);

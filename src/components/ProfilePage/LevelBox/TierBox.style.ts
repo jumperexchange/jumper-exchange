@@ -1,4 +1,4 @@
-import { alpha } from '@mui/material';
+import { alpha, type Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/system';
 
 export const TierMainBox = styled(Box)(({ theme }) => ({
@@ -19,8 +19,7 @@ export const TierBadgeBox = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '#F9F5FF'
       : alpha(theme.palette.white.main, 0.08),
-  width: '168px',
-  height: '72px',
+  padding: '15px 40px',
   borderRadius: '48px',
   display: 'flex',
 
@@ -29,7 +28,7 @@ export const TierBadgeBox = styled(Box)(({ theme }) => ({
 }));
 
 export const TierInfoBox = styled(Box)(() => ({
-  marginBottom: '16px',
+  marginBottom: 16,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',

@@ -39,7 +39,7 @@ export default async function RootLayout({
         </Script>
       </head>
 
-      <body>
+      <body suppressHydrationWarning>
         <AppRouterCacheProvider>
           <ReactQueryProvider>
             <WalletProvider>{children}</WalletProvider>

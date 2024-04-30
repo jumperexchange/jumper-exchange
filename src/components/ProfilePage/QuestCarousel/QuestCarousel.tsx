@@ -18,7 +18,7 @@ export const QuestCarousel = ({ quests }: QuestCarouselProps) => {
   return (
     <BlogCarouselContainer>
       <CarouselContainer title={t('missions.available')}>
-        <Stack direction={'row'} spacing={4}>
+        <Stack direction={'row'} spacing={{ xs: 2, sm: 4 }}>
           {quests ? (
             quests?.map((quest: Quest, index: number) => {
               return (
