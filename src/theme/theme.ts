@@ -1,5 +1,5 @@
 'use client';
-import type { Breakpoint, Theme } from '@mui/material/styles';
+import type { Breakpoint } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
@@ -196,7 +196,7 @@ const shape = {
   borderRadiusSecondary: 8,
 };
 
-const themeBase: Theme = createTheme();
+const themeBase = createTheme();
 
 // in a separate 'createTheme' to allow listening to breakpoints set above
 const themeCustomized = createTheme({
@@ -518,46 +518,50 @@ const themeCustomized = createTheme({
     },
     h1: {
       fontFamily: urbanist.style.fontFamily,
-      fontSize: 64,
-      lineHeight: 64,
+      fontSize: themeBase.typography.pxToRem(48),
+      lineHeight: themeBase.typography.pxToRem(64),
       fontWeight: 700,
+      [themeBase.breakpoints.up('sm' as Breakpoint)]: {
+        fontSize: themeBase.typography.pxToRem(64),
+        lineHeight: themeBase.typography.pxToRem(72),
+      },
     },
     h2: {
       fontFamily: urbanist.style.fontFamily,
-      fontSize: 36,
-      lineHeight: '48px',
+      fontSize: themeBase.typography.pxToRem(36),
+      lineHeight: themeBase.typography.pxToRem(48),
       fontWeight: 700,
     },
     h3: {
       fontFamily: urbanist.style.fontFamily,
-      fontSize: '28px',
-      lineHeight: '36px',
+      fontSize: themeBase.typography.pxToRem(28),
+      lineHeight: themeBase.typography.pxToRem(36),
       fontWeight: 700,
     },
     h4: {
       fontFamily: urbanist.style.fontFamily,
-      fontSize: '22px',
-      lineHeight: '28px',
+      fontSize: themeBase.typography.pxToRem(22),
+      lineHeight: themeBase.typography.pxToRem(28),
       fontWeight: 700,
     },
     h5: {
       fontFamily: urbanist.style.fontFamily,
-      fontSize: '18px',
-      lineHeight: '24px',
+      fontSize: themeBase.typography.pxToRem(18),
+      lineHeight: themeBase.typography.pxToRem(24),
       fontWeight: 700,
     },
     h6: {
       fontFamily: urbanist.style.fontFamily,
-      fontSize: '12px',
-      lineHeight: '18px',
+      fontSize: themeBase.typography.pxToRem(12),
+      lineHeight: themeBase.typography.pxToRem(18),
       fontWeight: 700,
     },
   },
 });
 
-const themePreset: Theme = createTheme(deepmerge(themeBase, themeCustomized));
+const themePreset = createTheme(deepmerge(themeBase, themeCustomized));
 
-export const lightTheme: Theme = createTheme(
+export const lightTheme = createTheme(
   deepmerge(themePreset, {
     palette: {
       mode: 'light',
@@ -645,7 +649,7 @@ export const lightTheme: Theme = createTheme(
   }),
 );
 
-export const darkTheme: Theme = createTheme(
+export const darkTheme = createTheme(
   deepmerge(themePreset, {
     palette: {
       mode: 'dark',
