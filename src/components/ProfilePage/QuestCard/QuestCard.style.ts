@@ -1,4 +1,4 @@
-import { Box, alpha, darken, styled } from '@mui/material';
+import { Box, alpha, styled } from '@mui/material';
 
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   backgroundColor:

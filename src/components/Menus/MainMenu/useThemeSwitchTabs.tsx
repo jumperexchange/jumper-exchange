@@ -17,7 +17,7 @@ import { useCookies } from 'react-cookie';
 export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const [_, setCookie] = useCookies(['theme']);
+  const [, setCookie] = useCookies(['theme']);
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
     : 'light';
