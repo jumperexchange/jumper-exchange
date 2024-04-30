@@ -47,7 +47,7 @@ export default withSentryConfig(nextConfig, {
 // https://github.com/getsentry/sentry-webpack-plugin#options
 
 // Suppresses source map uploading logs during build
-  silent: false,
+  silent: true,
   org: 'lifi',
   project: 'jumper',
 }, {
@@ -70,7 +70,7 @@ export default withSentryConfig(nextConfig, {
   hideSourceMaps: true,
 
 // Automatically tree-shake Sentry logger statements to reduce bundle size
-  disableLogger: false,
+  disableLogger: true,
 
 // Enables automatic instrumentation of Vercel Cron Monitors.
 // See the following for more information:
