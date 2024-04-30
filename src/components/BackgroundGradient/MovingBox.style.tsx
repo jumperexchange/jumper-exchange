@@ -16,7 +16,7 @@ export const MovingBox = styled(Box)<BoxProps>(() => ({
   },
   '@keyframes slideEffect': {
     '0%': {
-      left: '0%',
+      left: '-10%',
     },
     '100%': {
       left: '100%',
