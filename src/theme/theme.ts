@@ -520,6 +520,7 @@ const themeCustomized = createTheme({
       fontFamily: urbanist.style.fontFamily,
       fontSize: themeBase.typography.pxToRem(48),
       lineHeight: themeBase.typography.pxToRem(64),
+      letterSpacing: 'inherit',
       fontWeight: 700,
       [themeBase.breakpoints.up('sm' as Breakpoint)]: {
         fontSize: themeBase.typography.pxToRem(64),
