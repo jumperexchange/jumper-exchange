@@ -10,7 +10,6 @@ import { useMenuStore } from '@/stores/menu';
 import { EventTrackingTool } from '@/types/userTracking';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { walletDigest } from '@/utils/walletDigest';
-import type { Chain } from '@lifi/sdk';
 import { getConnectorIcon } from '@lifi/wallet-management';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
@@ -37,7 +36,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
 
   const activeChain = useMemo(
-    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
+    () => chains?.find((chainEl) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
   const { closeAllMenus, setSnackbarState } = useMenuStore((state) => state);

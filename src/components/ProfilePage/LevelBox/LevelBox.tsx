@@ -1,4 +1,4 @@
-import { Skeleton, useTheme } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { ProfilePageTypography } from '../ProfilePage.style';
 import { TierBadgeBox } from './TierBox.style';
 
