@@ -56,7 +56,7 @@ jobs:
             type=raw,value=${{ env.UNIQ_ID }}-${{ env.APP_NAME }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: true
@@ -64,6 +64,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             ENV_FILE=.env.development
+          secret-envs: |
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
 
       - id: out
         run: echo "docker-tag=${{ env.UNIQ_ID }}-${{ env.APP_NAME }}" >> $GITHUB_OUTPUT
