@@ -11,6 +11,10 @@ COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
 RUN yarn install --immutable
 ARG ENV_FILE=.env
+
+ARG SENTRY_AUTH_TOKEN
+ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
+
 COPY ./$ENV_FILE ./.env
 RUN yarn run build
 
