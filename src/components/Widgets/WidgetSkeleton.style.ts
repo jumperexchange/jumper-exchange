@@ -1,15 +1,8 @@
-import type { BoxProps } from '@mui/material';
 import { Box, Skeleton, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import { WidgetContainer } from './Widgets.style';
 
-interface WidgetSkeletonContainerProps extends BoxProps {
-  welcomeScreenClosed: boolean;
-}
-
-export const WidgetSkeletonContainer = styled(
-  WidgetContainer,
-)<WidgetSkeletonContainerProps>(({ theme, welcomeScreenClosed }) => ({
+export const WidgetSkeletonContainer = styled(WidgetContainer)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
