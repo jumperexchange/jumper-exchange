@@ -64,7 +64,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             ENV_FILE=.env.development
-          secret-envs: |
             SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
 
       - id: out
