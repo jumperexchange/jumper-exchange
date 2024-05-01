@@ -188,6 +188,8 @@ export function Widget({
         themeVariant === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
   }, [
+    allowChains,
+    allowedChainsByVariant,
     fromAmount,
     fromChain,
     fromToken,
