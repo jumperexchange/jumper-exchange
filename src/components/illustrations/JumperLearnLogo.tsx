@@ -1,13 +1,9 @@
-import { useTheme } from '@mui/material';
+interface JumperLearnLogoProps {
+  mainCol: string;
+  subCol: string;
+}
 
-export const JumperLearnLogo = () => {
-  const theme = useTheme();
-  const mainCol =
-    theme.palette.mode === 'light'
-      ? theme.palette.accent1.main
-      : theme.palette.accent1Alt.main;
-  const subCol = theme.palette.accent2.main;
-
+export const JumperLearnLogo = ({ mainCol, subCol }: JumperLearnLogoProps) => {
   return (
     <svg
       className="jumper-learn-logo"
@@ -90,15 +86,6 @@ export const JumperLearnLogo = () => {
             .jumper-learn-logo {
               width: 248px;
               height: 32px;
-            }
-            @media (max-width: ${theme.breakpoints.values.sm}px) {
-              .jumper-learn-logo {
-                width: 32px;
-                height: 32px;
-              }
-              .jumper-learn-logo-desktop {
-                display: none;
-              }
             }
           `}
       </style>

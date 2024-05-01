@@ -1,14 +1,9 @@
-import { useTheme } from '@mui/material';
-
+interface JumperLogoProps {
+  mainCol: string;
+  subCol: string;
+}
 // brand-logo: "jumper" + jumper-icon
-export const JumperLogo = () => {
-  const theme = useTheme();
-  const mainCol =
-    theme.palette.mode === 'light'
-      ? theme.palette.accent1.main
-      : theme.palette.accent1Alt.main;
-  const subCol = theme.palette.accent2.main;
-
+export const JumperLogo = ({ mainCol, subCol }: JumperLogoProps) => {
   return (
     <>
       <svg
@@ -68,15 +63,6 @@ export const JumperLogo = () => {
             .jumper-logo {
               width: 175px;
               height: 32px;
-            }
-            @media (max-width: ${theme.breakpoints.values.sm}px) {
-              .jumper-logo {
-                width: 32px;
-                height: 32px;
-              }
-              .jumper-logo-desktop {
-                display: none;
-              }
             }
           `}
         </style>
