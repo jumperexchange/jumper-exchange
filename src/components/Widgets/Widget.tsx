@@ -75,6 +75,13 @@ export function Widget({
   const { tokens } = useMemelist({
     enabled: !!themeVariant,
   });
+
+  const allowedChainsByVariant =
+    starterVariant === TabsMap.Refuel.variant
+      ? refuelAllowChains
+      : themeVariant === ThemesMap.Memecoins
+        ? themeAllowChains
+        : [];
   const isGasVariant = activeTab === TabsMap.Refuel.index;
 
   const welcomeScreenClosed = useSettingsStore(
@@ -112,12 +119,7 @@ export function Widget({
       toToken: toToken,
       fromAmount: fromAmount,
       chains: {
-        allow:
-          allowChains || starterVariant === TabsMap.Refuel.variant
-            ? refuelAllowChains
-            : themeVariant === ThemesMap.Memecoins
-              ? themeAllowChains
-              : [],
+        allow: allowChains || allowedChainsByVariant,
       },
       languages: {
         default: i18n.language as LanguageKey,
