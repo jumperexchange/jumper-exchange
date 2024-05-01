@@ -8,9 +8,8 @@ import { useActiveTabStore } from '@/stores/activeTab/ActiveTabStore';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
 import type { LanguageKey } from '@/types/i18n';
-import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
 import type { MenuState } from '@/types/menu';
-import { ChainId, EVM } from '@lifi/sdk';
+import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
@@ -22,37 +21,9 @@ import { useMemelist } from 'src/hooks/useMemelist';
 import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
-import type { BlogWidgetProps } from '../Blog/BlogWidget';
+import type { WidgetProps } from './Widget.types';
+import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-
-const refuelAllowChains: ChainId[] = [
-  ChainId.ETH,
-  ChainId.POL,
-  ChainId.BSC,
-  ChainId.DAI,
-  ChainId.FTM,
-  ChainId.AVA,
-  ChainId.ARB,
-  ChainId.OPT,
-  ChainId.BAS,
-  ChainId.MAM,
-];
-
-const themeAllowChains: ChainId[] = [
-  ChainId.ETH,
-  ChainId.BAS,
-  ChainId.OPT,
-  ChainId.ARB,
-  ChainId.AVA,
-  ChainId.BSC,
-];
-
-interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
-  allowChains?: number[];
-  widgetIntegrator?: string;
-  starterVariant: StarterVariantType;
-  themeVariant?: ThemeVariantType;
-}
 
 export function Widget({
   starterVariant,
@@ -76,12 +47,6 @@ export function Widget({
     enabled: !!themeVariant,
   });
 
-  const allowedChainsByVariant =
-    starterVariant === TabsMap.Refuel.variant
-      ? refuelAllowChains
-      : themeVariant === ThemesMap.Memecoins
-        ? themeAllowChains
-        : [];
   const isGasVariant = activeTab === TabsMap.Refuel.index;
 
   const welcomeScreenClosed = useSettingsStore(
@@ -89,6 +54,16 @@ export function Widget({
   );
   const setWalletSelectMenuState = useMenuStore(
     (state: MenuState) => state.setWalletSelectMenuState,
+  );
+
+  const allowedChainsByVariant = useMemo(
+    () =>
+      starterVariant === TabsMap.Refuel.variant
+        ? refuelAllowChains
+        : themeVariant === ThemesMap.Memecoins
+          ? themeAllowChains
+          : [],
+    [starterVariant, themeVariant],
   );
 
   // load environment config
@@ -222,13 +197,7 @@ export function Widget({
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly
-        fallback={
-          <WidgetSkeleton
-            welcomeScreenClosed={welcomeScreenClosed}
-            // title={starterVariant === 'default' ? 'Exchange' : 'Gas'}
-            // buttonTitle={starterVariant === 'default' ? 'Connect' : 'Get Gas'}
-          />
-        }
+        fallback={<WidgetSkeleton welcomeScreenClosed={welcomeScreenClosed} />}
       >
         <LiFiWidget integrator={config.integrator} config={config} />
       </ClientOnly>

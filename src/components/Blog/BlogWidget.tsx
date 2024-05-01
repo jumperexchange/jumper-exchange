@@ -1,5 +1,5 @@
 import { WallettButtons } from '../Navbar/WalletButton';
-import { Widget } from '../Widgets';
+import { Widget } from '../Widgets/Widget';
 import { BlogWidgetHeader } from './BlogWidget.style';
 
 export interface BlogWidgetProps {
