@@ -1,5 +1,10 @@
-import { ChainId } from '@lifi/sdk';
+import { ChainId, createConfig } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
+
+createConfig({
+  apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+  integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+});
 
 export const widgetConfig: Partial<WidgetConfig> = {
   tokens: {
