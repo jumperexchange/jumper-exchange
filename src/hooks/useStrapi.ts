@@ -160,6 +160,10 @@ export const useStrapi = <T>({
       'populate[feature_cards][populate][1]',
       'BackgroundImageDark',
     );
+    apiUrl.searchParams.set(
+      'populate[feature_cards][populate][2]',
+      'featureCardsExclusions',
+    );
     // filter feature cards by related EVM address
     if (filterPersonalFeatureCards?.enabled) {
       if (

@@ -80,6 +80,7 @@ export const FeatureCards = () => {
   const slicedPersonalizedFeatureCards = useMemo(() => {
     const personalizedFeatureCards =
       jumperUser && jumperUser[0]?.attributes?.feature_cards.data;
+
     if (
       Array.isArray(personalizedFeatureCards) &&
       !!personalizedFeatureCards.length
@@ -95,6 +96,7 @@ export const FeatureCards = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jumperUser]);
+
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   return (
     isDesktop &&
