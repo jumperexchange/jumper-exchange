@@ -1,36 +1,9 @@
 {
-  "root": true,
-  "env": {
-    "es2021": true,
-    "browser": true,
-    "node": true
-  },
   "extends": [
     "react-app",
     "plugin:prettier/recommended",
-    "plugin:import/typescript"
+    "plugin:@next/next/recommended"
   ],
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [
-          ".js",
-          ".jsx",
-          ".ts",
-          ".tsx"
-        ]
-      }
-    }
-  },
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true,
-      "modules": true
-    },
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
   "rules": {
     "@typescript-eslint/consistent-type-imports": "warn",
     "@typescript-eslint/explicit-module-boundary-types": "off",

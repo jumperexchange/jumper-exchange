@@ -21,6 +21,7 @@ export const useWelcomeScreen = (
     setCookie('welcomeScreenClosed', closed, {
       path: '/', // Cookie available across the entire website
       expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000), // Cookie expires in one month
+      sameSite: true,
     });
   };
 

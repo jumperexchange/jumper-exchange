@@ -30,7 +30,7 @@ jobs:
       - name: Set app name
         run: |
           NAME=$(echo "${{ env.BRANCH_NAME }}" | tr -d -c '[:alnum:]' | tr '[:upper:]' '[:lower:]')
-          echo "APP_NAME=feat-${NAME:0:30}" >> $GITHUB_ENV
+          echo "APP_NAME=feat-${NAME:0:25}" >> $GITHUB_ENV
 
       - name: Set current date as env variable
         run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
@@ -64,7 +64,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             ENV_FILE=.env.development
-      
+
       - id: out
         run: echo "docker-tag=${{ env.UNIQ_ID }}-${{ env.APP_NAME }}" >> $GITHUB_OUTPUT
 

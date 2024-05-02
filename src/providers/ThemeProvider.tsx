@@ -5,6 +5,7 @@ import { CssBaseline, useMediaQuery } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import type { PropsWithChildren } from 'react';
 import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { darkTheme, lightTheme } from 'src/theme/theme';
 
 export const useDetectDarkModePreference = () => {
@@ -23,6 +24,7 @@ export const useDetectDarkModePreference = () => {
 export const ThemeProvider: React.FC<
   PropsWithChildren<{ theme?: ThemeModesSupported | 'auto' }>
 > = ({ children, theme: themeProp }) => {
+  const [, setCookie] = useCookies(['theme']);
   const themeMode = useSettingsStore((state) => state.themeMode);
   const [theme, setTheme] = useState<ThemeModesSupported | undefined>(
     themeProp,
@@ -40,10 +42,18 @@ export const ThemeProvider: React.FC<
   useEffect(() => {
     if (themeMode === 'auto') {
       setTheme(isDarkMode ? 'dark' : 'light');
+      setCookie('theme', isDarkMode ? 'dark' : 'light', {
+        path: '/',
+        sameSite: true,
+      });
     } else {
+      setCookie('theme', themeMode === 'dark' ? 'dark' : 'light', {
+        path: '/',
+        sameSite: true,
+      });
       setTheme(themeMode === 'dark' ? 'dark' : 'light');
     }
-  }, [themeMode, isDarkMode]);
+  }, [themeMode, isDarkMode, setCookie]);
 
   const activeTheme = theme === 'dark' ? darkTheme : lightTheme;
 
