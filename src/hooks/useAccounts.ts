@@ -11,7 +11,6 @@ import {
   useDisconnect,
   useAccount as useWagmiAccount,
 } from 'wagmi';
-import { useSettingsStore } from '../stores/settings';
 import { useBlockchainExplorerURL } from './useBlockchainExplorerURL';
 import type { CombinedWallet } from './useCombinedWallets';
 import { useUserTracking } from './userTracking';

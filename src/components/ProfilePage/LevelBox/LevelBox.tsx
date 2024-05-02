@@ -1,4 +1,4 @@
-import { Skeleton, useTheme } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { ProfilePageTypography } from '../ProfilePage.style';
 import { TierBadgeBox } from './TierBox.style';
 
@@ -11,9 +11,12 @@ export const LevelBox = ({ level, loading }: LevelBoxProps) => {
   return (
     <TierBadgeBox>
       {loading ? (
-        <Skeleton variant="text" sx={{ fontSize: '42px', width: '132px' }} />
+        <Skeleton
+          variant="text"
+          sx={{ fontSize: { xs: 18, sm: 22 }, minWidth: 60 }}
+        />
       ) : (
-        <ProfilePageTypography fontSize={'18px'} lineHeight={'24px'}>
+        <ProfilePageTypography fontSize={{ xs: 12, sm: 18 }}>
           {`LEVEL ${level}`}
         </ProfilePageTypography>
       )}

@@ -5,13 +5,15 @@ import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
-import type { StarterVariantType } from '@/types/internal';
+import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
 import type { ThemeModesSupported } from '@/types/settings';
 import type { WidgetSubvariant } from '@lifi/widget';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { Widget } from '.';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
+import { ThemesMap } from 'src/const/themesMap';
+import { usePathname } from 'next/navigation';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
@@ -27,11 +29,15 @@ export function Widgets({
   const { activeTab, setActiveTab } = useActiveTabStore();
   const { welcomeScreenClosed, setWelcomeScreenClosed } =
     useWelcomeScreen(closedWelcomeScreen);
+  const pathname = usePathname();
 
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'
   >(TabsMap.Exchange.variant);
+  const [_themeVariant, setThemeVariant] = useState<
+    ThemeVariantType | undefined
+  >(undefined);
 
   const starterVariant: StarterVariantType = useMemo(() => {
     if (widgetVariant) {
@@ -55,7 +61,17 @@ export function Widgets({
     }
   }, [widgetVariant]);
 
+  const themeVariant: ThemeVariantType | undefined = useMemo(() => {
+    if (pathname.includes('memecoins')) {
+      setWelcomeScreenClosed(true);
+      //Todo: review the logic of the tab selection.
+      setActiveTab(-1);
+      return ThemesMap.Memecoins;
+    }
+  }, [pathname]);
+
   const getActiveWidget = useCallback(() => {
+    setThemeVariant(themeVariant);
     if (!starterVariantUsed) {
       switch (starterVariant) {
         case TabsMap.Exchange.variant:
@@ -87,11 +103,17 @@ export function Widgets({
           setStarterVariant(TabsMap.Exchange.variant);
       }
     }
-  }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
+  }, [
+    activeTab,
+    setActiveTab,
+    starterVariant,
+    starterVariantUsed,
+    themeVariant,
+  ]);
 
   useLayoutEffect(() => {
     getActiveWidget();
-  }, [getActiveWidget, starterVariant, activeTab]);
+  }, [getActiveWidget, starterVariant, activeTab, themeVariant]);
 
   return (
     <>
@@ -100,7 +122,10 @@ export function Widgets({
         isActive={_starterVariant === TabsMap.Exchange.variant}
         welcomeScreenClosed={!!welcomeScreenClosed}
       >
-        <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
+        <Widget
+          starterVariant={TabsMap.Exchange.variant as WidgetSubvariant}
+          themeVariant={_themeVariant}
+        />
       </WidgetContainer>
       <WidgetContainer
         onClick={() => setWelcomeScreenClosed(true)}
