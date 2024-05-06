@@ -1,10 +1,9 @@
 import { Box, BoxProps, styled } from '@mui/material';
 
 export const MovingBox = styled(Box)<BoxProps>(() => ({
-  // put in the bottom left and put a percentage of the screen of 10%
   position: 'absolute',
   bottom: '1vh',
-  animation: 'slideEffect 60s linear infinite',
+  animation: 'slideEffect 45s linear infinite',
   transition: 'transform 1s ease',
   animationPlayState: 'running',
   opacity: 0.5,
