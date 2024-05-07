@@ -47,9 +47,25 @@ export const FeatureCards = () => {
     queryKey: ['personalized-feature-cards'],
   });
 
+  function excludedFeatureCardsFilter(el: FeatureCardData) {
+    if (
+      !el.attributes.featureCardsExclusions ||
+      !Array.isArray(el.attributes.featureCardsExclusions?.data)
+    ) {
+      return true;
+    }
+
+    const exclusions = el.attributes.featureCardsExclusions.data.map(
+      (item) => item.attributes.uid,
+    );
+
+    return !exclusions.some((uid) => disabledFeatureCards.includes(uid));
+  }
+
   const slicedFeatureCards = useMemo(() => {
     if (Array.isArray(cards) && !!cards.length) {
       return cards
+        ?.filter(excludedFeatureCardsFilter)
         ?.filter(
           (el, index) =>
             isSuccess &&
@@ -64,11 +80,13 @@ export const FeatureCards = () => {
   const slicedPersonalizedFeatureCards = useMemo(() => {
     const personalizedFeatureCards =
       jumperUser && jumperUser[0]?.attributes?.feature_cards.data;
+
     if (
       Array.isArray(personalizedFeatureCards) &&
       !!personalizedFeatureCards.length
     ) {
       return personalizedFeatureCards
+        ?.filter(excludedFeatureCardsFilter)
         ?.filter(
           (el, index) =>
             el.attributes.DisplayConditions &&
@@ -78,6 +96,7 @@ export const FeatureCards = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jumperUser]);
+
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   return (
     isDesktop &&

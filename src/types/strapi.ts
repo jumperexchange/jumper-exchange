@@ -68,9 +68,17 @@ export interface FeatureCardData {
   id: number;
   attributes: FeatureCardAttributes;
 }
+
 interface FeatureCardDisplayConditions {
   mode: string;
   showOnce?: boolean;
+}
+
+interface FeatureCardExclusions {
+  data: {
+    id: number;
+    attributes: Pick<FeatureCardAttributes, 'uid'>;
+  }[];
 }
 
 interface FeatureCardAttributes {
@@ -89,6 +97,8 @@ interface FeatureCardAttributes {
   uid: string;
   BackgroundImageLight: StrapiImageData;
   BackgroundImageDark: StrapiImageData;
+  featureCardsExclusions?: FeatureCardExclusions;
+
   localizations: {
     data: any[];
   };
