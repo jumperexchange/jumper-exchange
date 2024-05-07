@@ -140,8 +140,12 @@ export const useStrapi = <T>({
   // feature cards -->
   if (contentType === STRAPI_FEATURE_CARDS) {
     // populate images on feature card query
-    apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
-    apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
+    apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
+    apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
+    apiUrl.searchParams.set(
+      'populate[featureCardsExclusions][fields][0]',
+      'uid',
+    );
     apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
   }
 
@@ -155,6 +159,10 @@ export const useStrapi = <T>({
     apiUrl.searchParams.set(
       'populate[feature_cards][populate][1]',
       'BackgroundImageDark',
+    );
+    apiUrl.searchParams.set(
+      'populate[feature_cards][populate][2]',
+      'featureCardsExclusions',
     );
     // filter feature cards by related EVM address
     if (filterPersonalFeatureCards?.enabled) {
