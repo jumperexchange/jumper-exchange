@@ -1,15 +1,31 @@
+'use client';
 import { styled } from '@mui/system';
 
-export const LogoWrapper = styled('div')(({ theme }) => ({
-  cursor: 'pointer',
-  display: 'flex',
-  [theme.breakpoints.down('sm')]: {
-    '& .jumper-learn-logo, & .jumper-logo, ': {
-      width: 32,
-      height: 32,
+export const LogoWrapper = styled('div')(({ theme }) => {
+  const mainCol =
+    theme.palette.mode === 'light'
+      ? theme.palette.accent1.main
+      : theme.palette.accent1Alt.main;
+  const subCol = theme.palette.accent2.main;
+
+  return {
+    cursor: 'pointer',
+    display: 'flex',
+    fill: 'none',
+    '.main-color': {
+      fill: mainCol,
     },
-    '& .jumper-learn-logo-desktop, & .jumper-logo-desktop': {
-      display: 'none',
+    '.sub-color': {
+      fill: subCol,
     },
-  },
-}));
+    [theme.breakpoints.down('sm')]: {
+      '& .jumper-learn-logo, & .jumper-logo, ': {
+        width: 32,
+        height: 32,
+      },
+      '& .jumper-learn-logo-desktop, & .jumper-logo-desktop': {
+        display: 'none',
+      },
+    },
+  };
+});
