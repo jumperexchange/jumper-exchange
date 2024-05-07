@@ -27,6 +27,7 @@ const init = async () => {
       // value file does not exist yet, we need to create it
       const endpoint = `${appName}.jumper.exchange`;
       const newTemplate = {
+        config: { NODE_ENV: 'develop' },
         image: { tag: dockerTag },
         ingress: {
           hosts: [
