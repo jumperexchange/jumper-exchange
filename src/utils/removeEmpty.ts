@@ -3,7 +3,7 @@ export function removeEmpty(data: { [key: string]: any }): {
 } {
   //transform properties into key-values pairs and filter all the empty-values
   const entries = Object.entries(data).filter(
-    ([, value]) => value != null && value != '',
+    ([, value]) => value !== null && value !== '',
   );
 
   //map through all the remaining properties and check if the value is an object.
