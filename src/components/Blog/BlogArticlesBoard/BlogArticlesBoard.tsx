@@ -21,7 +21,6 @@ interface BlogArticlesBoardProps {
   url: string;
 }
 
-const pageSize = 6;
 export const BlogArticlesBoard = ({
   data,
   url,
@@ -35,7 +34,6 @@ export const BlogArticlesBoard = ({
     t('blog.allCategories'),
   );
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
-  const [page, setPage] = useState<number>(1);
   const handleTagsClick = useCallback(
     (id: number, label?: string) => () => {
       if (!isDesktop && !openDropdown) {

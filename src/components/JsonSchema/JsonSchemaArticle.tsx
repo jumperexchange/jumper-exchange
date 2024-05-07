@@ -32,5 +32,10 @@ export const ArticleJsonSchema = ({
       ],
     }),
   };
-  return <Script type="application/ld+json">{JSON.stringify(schema)}</Script>;
+
+  return (
+    <Script type="application/ld+json" id="json-schema-article">
+      {JSON.stringify(schema)}
+    </Script>
+  );
 };
