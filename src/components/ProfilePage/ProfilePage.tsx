@@ -23,7 +23,7 @@ export const ProfilePage = () => {
 
   const { account } = useAccounts();
   const { isLoading, points, tier, pdas } = useLoyaltyPass();
-  const { imageLink } = useMercleNft({ userAddress: '' });
+  const { imageLink } = useMercleNft({ userAddress: account?.address });
   const { quests } = useOngoingQuests();
 
   return (
