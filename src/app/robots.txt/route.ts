@@ -14,7 +14,7 @@ export async function GET() {
 
   const robots = resolveRobots({
     rules: {
-      userAgent: '*',
+      userAgent: 'test',
       ...(isProduction && { allow: '/' }),
       ...(!isProduction && { disallow: '/' }),
     },
