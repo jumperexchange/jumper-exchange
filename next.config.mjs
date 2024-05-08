@@ -4,10 +4,6 @@ const nextConfig = {
   reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
   swcMinify: true,
   trailingSlash: true,
-  serverRuntimeConfig: {
-    // Will only be available on the server side
-    environment: process.env.NODE_ENV ?? 'production',
-  },
   webpack: (config) => {
     config.resolve.fallback = { fs: false, net: false, tls: false };
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
