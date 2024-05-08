@@ -10,6 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${process.env.NEXT_PUBLIC_SITE_URL}${route.path}`,
     lastModified: new Date().toISOString().split('T')[0],
     changeFrequency: 'weekly' as ChangeFrequency,
+    // todo: enable alternates once xml formatting is fixed
     // alternates: {
     //   languages: locales.reduce(
     //     (acc, locale) => ({
@@ -34,6 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           .toISOString()
           .split('T')[0],
         changeFrequency: 'weekly' as ChangeFrequency,
+        // todo: enable alternates once xml formatting is fixed
         // alternates: {
         //   languages: locales.reduce((acc, locale) => {
         //     return {
