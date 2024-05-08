@@ -1,4 +1,4 @@
-import { JUMPER_LEARN_PATH, pages } from '@/const/urls';
+import { JUMPER_LEARN_PATH, JUMPER_URL, pages } from '@/const/urls';
 import type { ChangeFrequency, SitemapPage } from '@/types/sitemap';
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import type { MetadataRoute } from 'next';
@@ -7,7 +7,7 @@ import { getArticles } from './lib/getArticles';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // paths
   const routes = pages.map((route: SitemapPage) => ({
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}${route.path}`,
+    url: `${JUMPER_URL}${route.path}`,
     lastModified: new Date().toISOString().split('T')[0],
     changeFrequency: 'weekly' as ChangeFrequency,
     // todo: enable alternates once xml formatting is fixed
@@ -28,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articles = await getArticles().then(
     (article: StrapiResponse<BlogArticleData>) =>
       article.data.map((el) => ({
-        url: `${process.env.NEXT_PUBLIC_SITE_URL}${JUMPER_LEARN_PATH}/${el.attributes.Slug}`,
+        url: `${JUMPER_URL}${JUMPER_LEARN_PATH}/${el.attributes.Slug}`,
         lastModified: new Date(
           el.attributes.updatedAt || el.attributes.publishedAt || Date.now(),
         )
