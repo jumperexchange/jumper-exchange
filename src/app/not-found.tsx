@@ -41,7 +41,6 @@ export default async function NotFound() {
               <NavbarButtons redirectToLearn={false} />
             </NavbarContainer>
             <NotFoundComponent />
-            {/*<Image src={'/bg-notfound.webp'} alt="404" width={300} height={300} />*/}
             <PoweredBy fixedPosition={true} />
           </TranslationsProvider>
         </ThemeProvider>

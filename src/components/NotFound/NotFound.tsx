@@ -3,6 +3,7 @@ import RouterLink from 'next/link';
 import { Button } from '@mui/material';
 import React from 'react';
 import { Box } from '@mui/system';
+import { ButtonPrimary } from '@/components/Button';
 
 export function NotFoundComponent() {
   return (
@@ -11,9 +12,9 @@ export function NotFoundComponent() {
       <Box component="p" sx={{ marginTop: 0, marginBottom: 4 }}>
         The page you are looking for does not exist.
       </Box>
-      <Button component={RouterLink} href="/" variant="contained">
+      <ButtonPrimary component={RouterLink} href="/">
         Back to homepage
-      </Button>
+      </ButtonPrimary>
     </NotFoundWrapper>
   );
 }

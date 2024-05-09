@@ -739,7 +739,7 @@ export const lightTheme: Theme = createTheme(
       primary: {
         light: '#31007A',
         main: '#31007A',
-        dark: 'rgb(41, 0, 102)',
+        dark: '#290066',
       },
       secondary: {
         light: '#E9E1F5',
@@ -827,7 +827,7 @@ export const darkTheme: Theme = createTheme(
       primary: {
         light: '#653BA3',
         main: '#653BA3',
-        dark: 'rgb(84, 49, 136)',
+        dark: '#543188',
       },
       secondary: {
         light: '#321D52',

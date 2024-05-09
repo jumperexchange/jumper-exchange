@@ -1,8 +1,3 @@
-// interface JumperLearnLogoProps {
-//   mainCol: string;
-//   subCol: string;
-// }
-
 export const JumperLearnLogo = () => {
   return (
     <svg
