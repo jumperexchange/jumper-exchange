@@ -1,6 +1,6 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import { StrapiTokenInfo } from 'src/types/tokenList';
+import type { StrapiTokenInfo } from 'src/types/tokenList';
 
 export interface UseMemelistProps {
   tokens?: StrapiTokenInfo[];
