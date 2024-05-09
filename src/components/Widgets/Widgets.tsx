@@ -68,7 +68,7 @@ export function Widgets({
       setActiveTab(-1);
       return ThemesMap.Memecoins;
     }
-  }, [pathname, setActiveTab, setWelcomeScreenClosed]);
+  }, [pathname, setActiveTab]);
 
   const getActiveWidget = useCallback(() => {
     setThemeVariant(themeVariant);
