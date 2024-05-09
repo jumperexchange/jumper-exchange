@@ -254,6 +254,10 @@ const themeCustomized = createTheme({
         size: 'large',
       },
       styleOverrides: {
+        root: {
+          borderRadius: 24,
+          textTransform: 'none',
+        },
         sizeSmall: {
           height: 32,
         },
@@ -589,7 +593,7 @@ export const lightTheme = createTheme(
       primary: {
         light: '#31007A',
         main: '#31007A',
-        dark: '#31007A',
+        dark: '#290066',
       },
       secondary: {
         light: '#E9E1F5',
@@ -677,7 +681,7 @@ export const darkTheme = createTheme(
       primary: {
         light: '#653BA3',
         main: '#653BA3',
-        dark: '#653BA3',
+        dark: '#543188',
       },
       secondary: {
         light: '#321D52',
