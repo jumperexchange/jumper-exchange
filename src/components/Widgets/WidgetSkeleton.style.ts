@@ -6,6 +6,7 @@ export const WidgetSkeletonContainer = styled(WidgetContainer)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  maxWidth: 416,
   maxHeight: 'unset',
   minHeight: 'unset',
   backgroundColor: theme.palette.surface1.main,
