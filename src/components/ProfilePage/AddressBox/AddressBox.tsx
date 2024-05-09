@@ -48,18 +48,18 @@ export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
       : '0x0000...0000';
   };
 
+  const imgLink = imageLink
+    ? imageLink
+    : address && isEVM
+      ? `https://effigy.im/a/${address}.png`
+      : `https://effigy.im/a/${'jumper.eth'}.png`;
+
   return (
     <AddressBoxContainer sx={{ width: '100%' }}>
       <PassImageBox>
         <Image
           alt="Effigy Wallet Icon"
-          src={
-            imageLink
-              ? imageLink
-              : address && isEVM
-                ? `https://effigy.im/a/${address}.png`
-                : `https://effigy.im/a/${'jumper.eth'}.png`
-          }
+          src={imgLink}
           width={128}
           height={128}
           style={{
@@ -71,7 +71,7 @@ export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
             borderRadius: '100%',
             borderStyle: 'solid',
             borderWidth: '5px',
-            borderColor: 'white',
+            borderColor: theme.palette.white.main,
           }}
         />
       </PassImageBox>

@@ -17,8 +17,8 @@ const MERCLE_ADDRESS = '0x50527a3854b76f73e2720955b6ecccfac0c6f473';
 export const useMercleNft = ({
   userAddress,
 }: UseMercleProps): UseMercleNftProps => {
-  // In this readContract, we are fixing the type to 0xstring to respect viem type and we are sure the variable is
-  // not undefined thanks to the check inside `enabled`.
+  // In this readContract call, we enforce the type as 0xstring to adhere to the viem type,
+  // and we ensure the variable isn't undefined due to the check within enabled
   const tokenId = useReadContract({
     abi: MercleNFTABI,
     address: MERCLE_ADDRESS,
