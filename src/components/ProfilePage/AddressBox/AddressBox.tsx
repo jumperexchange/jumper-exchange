@@ -13,14 +13,17 @@ import {
   PassImageBox,
   ProfileIconButton,
 } from './AddressBox.style';
+import { useTheme } from '@mui/material';
 
 interface AddressBoxProps {
   address?: string;
   isEVM?: boolean;
+  imageLink?: string;
 }
 
-export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
+export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
   const { t } = useTranslation();
+  const theme = useTheme();
   const { setSnackbarState } = useMenuStore((state) => state);
   const { data: ensName, isSuccess } = useEnsName({
     address: address as Address | undefined,
@@ -45,23 +48,30 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
       : '0x0000...0000';
   };
 
+  const imgLink = imageLink
+    ? imageLink
+    : address && isEVM
+      ? `https://effigy.im/a/${address}.png`
+      : `https://effigy.im/a/${'jumper.eth'}.png`;
+
   return (
     <AddressBoxContainer sx={{ width: '100%' }}>
       <PassImageBox>
         <Image
           alt="Effigy Wallet Icon"
-          src={
-            address && isEVM
-              ? `https://effigy.im/a/${address}.png`
-              : `https://effigy.im/a/${'jumper.eth'}.png`
-          }
+          src={imgLink}
           width={128}
           height={128}
           style={{
+            backgroundColor: imageLink
+              ? theme.palette.mode === 'light'
+                ? '#F9F5FF'
+                : theme.palette.accent1Alt.main
+              : undefined,
             borderRadius: '100%',
             borderStyle: 'solid',
             borderWidth: '5px',
-            borderColor: '#FFFFFF',
+            borderColor: theme.palette.white.main,
           }}
         />
       </PassImageBox>
