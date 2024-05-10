@@ -1,6 +1,7 @@
 'use client';
 import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
 import { ChainId } from '@lifi/sdk';
+import type { Appearance } from '@lifi/widget';
 import type { BlogWidgetProps } from '../Blog/BlogWidget';
 
 export const refuelAllowChains: ChainId[] = [
@@ -30,4 +31,5 @@ export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   widgetIntegrator?: string;
   starterVariant: StarterVariantType;
   themeVariant?: ThemeVariantType;
+  appearance?: Appearance;
 }

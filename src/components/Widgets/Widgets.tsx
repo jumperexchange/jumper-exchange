@@ -6,7 +6,7 @@ import { TabsMap } from '@/const/tabsMap';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
 import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
-import type { WidgetSubvariant } from '@lifi/widget';
+import type { Appearance, WidgetSubvariant } from '@lifi/widget';
 import { usePathname } from 'next/navigation';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { ThemesMap } from 'src/const/themesMap';
@@ -19,12 +19,14 @@ interface WidgetsProps {
   widgetVariant: StarterVariantType;
   activeTheme: ThemeModesSupported | undefined;
   closedWelcomeScreen: boolean;
+  appearance?: Appearance;
 }
 
 export function Widgets({
   widgetVariant,
   activeTheme,
   closedWelcomeScreen,
+  appearance,
 }: WidgetsProps) {
   const { activeTab, setActiveTab } = useActiveTabStore();
   const { welcomeScreenClosed, setWelcomeScreenClosed } =
@@ -125,6 +127,7 @@ export function Widgets({
         <Widget
           starterVariant={TabsMap.Exchange.variant as WidgetSubvariant}
           themeVariant={_themeVariant}
+          appearance={appearance}
         />
       </WidgetContainer>
       <WidgetContainer
@@ -132,7 +135,10 @@ export function Widgets({
         isActive={_starterVariant === TabsMap.Refuel.variant}
         welcomeScreenClosed={!!welcomeScreenClosed}
       >
-        <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
+        <Widget
+          starterVariant={TabsMap.Refuel.variant as WidgetSubvariant}
+          appearance={appearance}
+        />
       </WidgetContainer>
       <SolanaAlert />
       {process.env.NEXT_PUBLIC_ONRAMPER_ENABLED ? (
