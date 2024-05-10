@@ -7,7 +7,7 @@ import { Lightbox } from '@/components/Lightbox/Lightbox';
 import type { MediaAttributes } from '@/types/strapi';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import { BlogArticleParagraph } from './BlogArticle/BlogArticle.style';
+import { BlogParagraphContainer } from './BlogArticle/BlogArticle.style';
 import type { BlogWidgetProps } from './BlogWidget';
 import { BlogWidget } from './BlogWidget';
 import {
@@ -139,7 +139,7 @@ export const CustomRichBlocks = ({
         }
       } else {
         return (
-          <BlogArticleParagraph>
+          <BlogParagraphContainer>
             {children.map((el: any, index: number) => {
               if (el.props.text && el.props.text !== '') {
                 return (
@@ -168,7 +168,7 @@ export const CustomRichBlocks = ({
                 return null;
               }
             })}
-          </BlogArticleParagraph>
+          </BlogParagraphContainer>
         );
       }
     },

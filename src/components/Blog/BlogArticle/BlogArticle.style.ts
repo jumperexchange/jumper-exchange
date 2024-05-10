@@ -318,6 +318,6 @@ export const BlogArticlAuthorRoleSkeleton = styled(Skeleton)<SkeletonProps>(
   }),
 );
 
-export const BlogArticleParagraph = styled(Box)(({ theme }) => ({
+export const BlogParagraphContainer = styled(Box)(({ theme }) => ({
   margin: theme.spacing(2, 0),
 }));
