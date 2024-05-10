@@ -6,8 +6,9 @@ import initTranslations from '../i18n';
 import { getCookies } from '../lib/getCookies';
 
 export function generateStaticParams() {
-  return i18nConfig.locales.map((locale) => ({ locale }));
+  return i18nConfig.locales.map((lng) => ({ lng }));
 }
+
 export default async function RootLayout({
   children,
   params: { lng },
