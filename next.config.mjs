@@ -36,6 +36,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'resolve.mercle.xyz',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

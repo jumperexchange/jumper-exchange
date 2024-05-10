@@ -5,11 +5,11 @@ import {
 } from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
 import { Lightbox } from '@/components/Lightbox/Lightbox';
 import type { MediaAttributes } from '@/types/strapi';
-import { useTheme } from '@mui/material';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import { Widget } from '../Widgets';
 import { BlogArticleParagraph } from './BlogArticle/BlogArticle.style';
+import type { BlogWidgetProps } from './BlogWidget';
+import { BlogWidget } from './BlogWidget';
 import {
   BlogH1,
   BlogH2,
@@ -31,12 +31,17 @@ interface ImageData {
   image: MediaAttributes;
 }
 
+interface WidgetRouteSettings
+  extends Omit<BlogWidgetProps, 'fromChain' | 'toChain'> {
+  fromChain?: string;
+  toChain?: string;
+}
+
 export const CustomRichBlocks = ({
   id,
   baseUrl,
   content,
 }: CustomRichBlocksProps) => {
-  const theme = useTheme();
   const customRichBlocks = {
     // You can use the default components to set class names...
     // link: (data: any) => {
@@ -46,8 +51,6 @@ export const CustomRichBlocks = ({
       baseUrl ? <Lightbox imageData={data.image} baseUrl={baseUrl} /> : null,
     heading: ({ children, level }: any) => {
       switch (level) {
-        case 1:
-          return <BlogH1 variant="h1">{children}</BlogH1>;
         case 2:
           return <BlogH2 variant="h2">{children}</BlogH2>;
         case 3:
@@ -82,21 +85,54 @@ export const CustomRichBlocks = ({
         } catch (error) {
           return;
         }
-      } else if (children[0].props.text.includes('<WIDGET>')) {
-        return <Widget starterVariant="default" />;
+      } else if (children[0].props.text.includes('<WIDGET')) {
+        // Regular expression to match specific props
+        try {
+          const propRegex =
+            /(?:fromAmount|fromChain|fromToken|toChain|toToken|allowChains)="([^"]*)"/g;
+
+          let match;
+          const props: WidgetRouteSettings = {};
+          while ((match = propRegex.exec(children[0].props.text)) !== null) {
+            const [, value] = match;
+            const prop = match[0].split('=')[0] as keyof WidgetRouteSettings;
+            props[prop] = value;
+          }
+
+          return (
+            <BlogWidget
+              fromChain={
+                props.fromChain !== undefined
+                  ? parseInt(props.fromChain)
+                  : undefined
+              }
+              fromToken={props.fromToken}
+              toChain={
+                props.toChain !== undefined
+                  ? parseInt(props.toChain)
+                  : undefined
+              }
+              fromAmount={props.fromAmount}
+              toToken={props.toToken}
+              allowChains={props.allowChains}
+            />
+          );
+        } catch (error) {
+          console.error('Error integrating widget into blog article', error);
+        }
       } else if (children[0].props.text.includes('<INSTRUCTIONS')) {
         try {
-          const new_array: InstructionItemProps[] = [];
+          const instructions_array: InstructionItemProps[] = [];
           let jso = children[0].props.text
             .replace('<INSTRUCTIONS ', '')
             .replace('/>', '');
 
-          // Parse the JSON string and push each parsed object into the new_array
+          // Parse the JSON string and push each parsed object into the instructions_array
           JSON.parse(jso).forEach((obj: InstructionItemProps) => {
-            new_array.push(obj);
+            instructions_array.push(obj);
           });
 
-          return <InstructionsAccordion data={new_array} />;
+          return <InstructionsAccordion data={instructions_array} />;
         } catch (error) {
           // console.log(error);
           return;
@@ -104,10 +140,11 @@ export const CustomRichBlocks = ({
       } else {
         return (
           <BlogArticleParagraph>
-            {children.map((el: any) => {
+            {children.map((el: any, index: number) => {
               if (el.props.text && el.props.text !== '') {
                 return (
                   <BlogParagraph
+                    key={`blog-paragraph-${index}`}
                     sx={{
                       bold: el.props.bold,
                       textDecoration: el.props.underline
@@ -123,7 +160,7 @@ export const CustomRichBlocks = ({
                 );
               } else if (el.props.content?.type === 'link') {
                 return (
-                  <BlogLink href={el.props.content.children[0].url}>
+                  <BlogLink href={el.props.content.url}>
                     {el.props.content.children[0].text}
                   </BlogLink>
                 );

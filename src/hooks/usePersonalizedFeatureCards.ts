@@ -27,6 +27,10 @@ export const usePersonalizedFeatureCards =
       'populate[feature_cards][populate][1]',
       'BackgroundImageDark',
     );
+    apiUrl.searchParams.set(
+      'populate[feature_cards][populate][2]',
+      'featureCardsExclusions',
+    );
     if (account?.address && account.chainType === 'EVM') {
       apiUrl.searchParams.set(
         'filters[EvmWalletAddress][$eqi]',

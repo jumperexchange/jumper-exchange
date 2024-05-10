@@ -6,14 +6,14 @@ import { TabsMap } from '@/const/tabsMap';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
 import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
-import type { ThemeModesSupported } from '@/types/settings';
 import type { WidgetSubvariant } from '@lifi/widget';
+import { usePathname } from 'next/navigation';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { Widget } from '.';
+import { ThemesMap } from 'src/const/themesMap';
+import type { ThemeModesSupported } from 'src/types/settings';
+import { Widget } from './Widget';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
-import { ThemesMap } from 'src/const/themesMap';
-import { usePathname } from 'next/navigation';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
@@ -68,7 +68,7 @@ export function Widgets({
       setActiveTab(-1);
       return ThemesMap.Memecoins;
     }
-  }, [pathname]);
+  }, [pathname, setActiveTab]);
 
   const getActiveWidget = useCallback(() => {
     setThemeVariant(themeVariant);

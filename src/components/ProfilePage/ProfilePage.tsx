@@ -12,6 +12,7 @@ import {
 } from './ProfilePage.style';
 import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
+import { useMercleNft } from 'src/hooks/useMercleNft';
 
 export const ProfilePage = () => {
   const theme = useTheme();
@@ -22,6 +23,7 @@ export const ProfilePage = () => {
 
   const { account } = useAccounts();
   const { isLoading, points, tier, pdas } = useLoyaltyPass();
+  const { imageLink } = useMercleNft({ userAddress: account?.address });
   const { quests } = useOngoingQuests();
 
   return (
@@ -35,6 +37,7 @@ export const ProfilePage = () => {
             <AddressBox
               address={account?.address}
               isEVM={account?.chainType === 'EVM'}
+              imageLink={imageLink}
             />
           </ProfilePageHeaderBox>
           <ProfilePageHeaderBox
