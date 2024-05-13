@@ -1,4 +1,4 @@
-name: Build and push image
+name: Build and deploy
 
 on:
   push:
@@ -8,25 +8,53 @@ on:
       - staging
       - main
 
+env:
+  REGISTRY: 403372804574.dkr.ecr.us-east-2.amazonaws.com/lifi-docker-repo
+  IMAGE_NAME: 'lifinance/jumper-exchange'
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
 jobs:
-  checkout-actions:
+  build:
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
       packages: write
-    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout github actions
+      - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Set current date as env variable
+        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
         with:
-          repository: lifinance/github-actions
-          ssh-key: ${{ secrets.DEPLOY_SSH }}
-          ref: 'main'
-          path: github-actions
-      - name: Trigger reusable workflow
-        uses: ./github-actions/.github/workflows/build-and-push-docker-with-args.yaml
+          role-to-assume: arn:aws:iam::403372804574:role/github-actions
+          role-session-name: github-actions-role-session
+          aws-region: us-east-2
+
+      - name: Amazon ECR login
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
         with:
-          registry: 403372804574.dkr.ecr.us-east-2.amazonaws.com/lifi-docker-repo
-          image-name: 'lifinance/jumper-exchange'
-        secrets:
-          deploy_key: ${{ secrets.DEPLOY_SSH }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            ENV_FILE=${{ env.BRANCH_NAME == 'main' && '.env.production' || env.BRANCH_NAME == 'develop' && '.env.development' || format('.env.{0}', env.BRANCH_NAME) }}
+            ENV_NAME=${{ env.BRANCH_NAME == 'main' && 'prod' || env.BRANCH_NAME }}
