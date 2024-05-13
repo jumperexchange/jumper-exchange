@@ -39,7 +39,7 @@ Please refer to the following descriptions of the dev serve scripts:
 In addition to these commands you should also run
 
 ```
-yarn husky install
+yarn add husky
 ```
 
 if you plan to commit to this repository to use all necessary husky hooks. If you have trouble running a script try modifying the permissions for the scripts with

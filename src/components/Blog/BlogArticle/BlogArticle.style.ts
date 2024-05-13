@@ -237,20 +237,12 @@ export const Divider = styled(MuiDivider)(({ theme }) => ({
 
 // Typography:
 
-export const BlogArticleTitle = styled(Typography)<TypographyProps>(
-  ({ theme }) => ({
-    marginTop: theme.spacing(4),
-    fontWeight: 700,
-    lineHeight: '64px',
-    fontSize: '48px',
-    fontFamily: urbanist.style.fontFamily,
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      fontSize: '64px',
-      lineHeight: '72px',
-      marginTop: theme.spacing(8),
-    },
-  }),
-);
+export const BlogArticleTitle = styled(Typography)(({ theme }) => ({
+  marginTop: theme.spacing(4),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginTop: theme.spacing(8),
+  },
+}));
 
 export const BlogArticleTitleSkeleton = styled(Skeleton)<SkeletonProps>(
   ({ theme }) => ({
