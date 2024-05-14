@@ -19,21 +19,22 @@ import {
   BlogH6,
   BlogParagraph,
 } from './CustomRichBlocks.style';
-import { ThemeModesSupported } from '@/types/settings';
+import type { ThemeModesSupported } from '@/types/settings';
 
 interface CustomRichBlocksProps {
   baseUrl?: string;
   content: RootNode[] | undefined;
-  activeTheme?: ThemeModesSupported;
   id?: number;
+  activeTheme?: ThemeModesSupported;
 }
 
 interface ImageData {
   image: MediaAttributes;
 }
 
+// TODO: Fix dynamic typing line 102
 interface WidgetRouteSettings
-  extends Omit<BlogWidgetProps, 'fromChain' | 'toChain'> {
+  extends Omit<BlogWidgetProps, 'activeTheme' | 'fromChain' | 'toChain'> {
   fromChain?: string;
   toChain?: string;
 }

@@ -35,7 +35,7 @@ import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
-import { ThemeModesSupported } from '@/types/settings';
+import type { ThemeModesSupported } from '@/types/settings';
 
 interface BlogArticleProps {
   title: string | undefined;
