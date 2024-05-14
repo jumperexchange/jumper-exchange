@@ -8,6 +8,7 @@ interface MenuProps {
   setOpen: (open: boolean, anchorRef: any) => void;
   cardsLayout?: boolean;
   styles?: SxProps<Theme>;
+  keepMounted?: boolean;
   open: boolean;
   children: any;
   width?: string;
@@ -19,6 +20,7 @@ export const Menu = ({
   setOpen,
   cardsLayout,
   styles,
+  keepMounted,
   width,
   label,
   isOpenSubMenu,
@@ -32,6 +34,7 @@ export const Menu = ({
       label={label}
       open={open}
       styles={styles}
+      keepMounted={keepMounted}
       width={width}
       cardsLayout={cardsLayout}
       setOpen={setOpen}
@@ -45,6 +48,7 @@ export const Menu = ({
       label={label}
       open={open}
       styles={styles}
+      keepMounted={keepMounted}
       cardsLayout={cardsLayout}
       setOpen={setOpen}
       isOpenSubMenu={isOpenSubMenu || false}

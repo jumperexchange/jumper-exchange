@@ -23,6 +23,7 @@ const paperProps = {
 interface MenuProps {
   isOpenSubMenu: boolean;
   setOpen: (open: boolean, anchorRef: any) => void;
+  keepMounted?: boolean;
   cardsLayout?: boolean;
   styles?: SxProps<Theme>;
   label?: string;
@@ -34,6 +35,7 @@ export const MenuMobile = ({
   open,
   cardsLayout,
   label,
+  keepMounted,
   styles,
   isOpenSubMenu,
   children,
@@ -41,8 +43,13 @@ export const MenuMobile = ({
   const { openSubMenu, closeAllMenus } = useMenuStore((state) => state);
 
   return (
-    <MobileDrawer anchor="bottom" open={open} PaperProps={paperProps}>
-      <MenuPaper>
+    <MobileDrawer
+      anchor="bottom"
+      open={open}
+      PaperProps={paperProps}
+      keepMounted={keepMounted}
+    >
+      <MenuPaper show={open}>
         <ClickAwayListener
           onClickAway={(event) => {
             event.preventDefault();

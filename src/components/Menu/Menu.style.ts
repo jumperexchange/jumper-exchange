@@ -1,6 +1,7 @@
 'use client';
 import type {
   AppBarProps,
+  BoxProps,
   CSSObject,
   LinkProps,
   ListItemProps,
@@ -10,6 +11,7 @@ import type {
 } from '@mui/material';
 import {
   AppBar,
+  Box,
   Drawer,
   Link,
   ListItem,
@@ -46,13 +48,13 @@ export const MenuList = styled(MuiMenuList, {
   justifyContent: cardsLayout ? 'center' : 'unset',
   flexWrap: cardsLayout ? 'wrap' : 'inherit',
   padding: cardsLayout ? theme.spacing(0, 3) : 0,
+  outline: 'unset',
   gap: cardsLayout ? '12px' : 'inherit',
   '& > :first-of-type': {
     marginTop:
       isOpenSubMenu || hasLabel || cardsLayout ? 'inherit' : theme.spacing(1.5),
-    paddingTop: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
   },
-  '& > :last-child': {
+  '& > li:last-of-type': {
     marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(3),
     paddingBottom: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
     paddingTop: hasLabel ? 0 : 'inherit',
@@ -78,14 +80,16 @@ export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
 export interface MenuPaperProps
   extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
   isMobile?: boolean;
+  show: boolean;
   width?: string;
   component?: ElementType<any>;
 }
 
 export const MenuPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
-    prop !== 'isMobile' && prop !== 'isWide' && prop !== 'isSubMenu',
-})<MenuPaperProps>(({ theme, isMobile, width }) => ({
+    prop !== 'isMobile' && prop !== 'isWide' && prop !== 'show',
+})<MenuPaperProps>(({ theme, isMobile, width, show }) => ({
+  display: show ? 'block' : 'none',
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
@@ -99,6 +103,7 @@ export const MenuPaper = styled(Paper, {
         }8px 16px rgba(0, 0, 0, 0.16)`,
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
+
   maxHeight: `calc( 100vh - ${MENU_LABEL_HEIGHT}px - 12px )`, // viewHeight - navbarHeight - offset
   overflowY: 'auto',
   overflowX: 'hidden',
@@ -111,6 +116,8 @@ export const MenuPaper = styled(Paper, {
     width: 32,
     height: 32,
   },
+
+  '.submenu': { paddingBottom: theme.spacing(1.5) },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     maxHeight: 'calc( 100vh - 72px - 12px )',
@@ -138,7 +145,6 @@ export const MenuItemLink = styled(Link, {
 })<MenuItemLinkProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  padding: theme.spacing(0, 1.5),
   height: 48,
   textDecoration: 'none',
   color: 'inherit',
@@ -191,5 +197,22 @@ export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
       position: 'relative',
       justifyContent: 'flex-start',
     },
+  }),
+);
+
+export interface MenuClickAwayBoxProps extends Omit<BoxProps, 'component'> {
+  open: boolean;
+}
+
+export const MenuClickAwayBox = styled(Box)<MenuClickAwayBoxProps>(
+  ({ open }) => ({
+    display: open ? 'block' : 'none',
+    position: 'absolute',
+    left: 0,
+    width: '100%',
+    height: '100vh',
+    top: 0,
+    zIndex: -1,
+    backgroundColor: 'transparent',
   }),
 );

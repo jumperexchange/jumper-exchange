@@ -20,7 +20,8 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
   const mainMenuAnchor = useRef<any>(null);
   const { trackEvent } = useUserTracking();
 
-  const [openMainMenu, setMainMenuState] = useMenuStore((state) => [
+  const [openedMenu, openMainMenu, setMainMenuState] = useMenuStore((state) => [
+    state.openedMenu,
     state.openMainMenu,
     state.setMainMenuState,
   ]);
@@ -38,36 +39,48 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
-    setMainMenuState(!openMainMenu);
-    trackEvent({
-      category: TrackingCategory.Menu,
-      action: TrackingAction.OpenMenu,
-      label: 'open_main_menu',
-      data: { [TrackingEventParameter.Menu]: 'main_menu' },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
-    });
+    event.stopPropagation();
+    const menuOpen = openedMenu();
+    setTimeout(() => {
+      if (menuOpen) {
+        setMainMenuState(false);
+      } else {
+        setMainMenuState(true);
+      }
+      trackEvent({
+        category: TrackingCategory.Menu,
+        action: TrackingAction.OpenMenu,
+        label: 'open_main_menu',
+        data: { [TrackingEventParameter.Menu]: 'main_menu' },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+      });
+    }, 50);
   };
 
   return (
-    <NavbarButtonsContainer className="settings">
-      <WalletManagementButtons redirectToLearn={redirectToLearn} />
-
-      <MenuToggle
-        ref={mainMenuAnchor}
-        id="main-burger-menu-button"
-        aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
-        aria-expanded={openMainMenu ? 'true' : undefined}
-        aria-haspopup="true"
-        onClick={(e) => handleOnOpenNavbarMainMenu(e)}
-      >
-        <MenuIcon
-          sx={{
-            fontSize: '32px',
-            color: 'inherit',
-          }}
-        />
-      </MenuToggle>
+    <>
+      <NavbarButtonsContainer className="settings">
+        <WalletManagementButtons redirectToLearn={redirectToLearn} />
+        <MenuToggle
+          ref={mainMenuAnchor}
+          id="main-burger-menu-button"
+          aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
+          aria-expanded={openMainMenu ? 'true' : undefined}
+          aria-haspopup="true"
+          onClick={(e) => handleOnOpenNavbarMainMenu(e)}
+        >
+          <MenuIcon
+            sx={{
+              fontSize: '32px',
+              color: 'inherit',
+            }}
+          />
+        </MenuToggle>
+      </NavbarButtonsContainer>
       <MainMenu anchorEl={mainMenuAnchor.current} />
-    </NavbarButtonsContainer>
+    </>
   );
 };
