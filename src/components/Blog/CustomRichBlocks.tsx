@@ -19,10 +19,12 @@ import {
   BlogH6,
   BlogParagraph,
 } from './CustomRichBlocks.style';
+import { ThemeModesSupported } from '@/types/settings';
 
 interface CustomRichBlocksProps {
   baseUrl?: string;
   content: RootNode[] | undefined;
+  activeTheme?: ThemeModesSupported;
   id?: number;
 }
 
@@ -40,6 +42,7 @@ export const CustomRichBlocks = ({
   id,
   baseUrl,
   content,
+  activeTheme,
 }: CustomRichBlocksProps) => {
   const customRichBlocks = {
     // You can use the default components to set class names...
@@ -115,6 +118,7 @@ export const CustomRichBlocks = ({
                 fromAmount={props.fromAmount}
                 toToken={props.toToken}
                 allowChains={props.allowChains}
+                activeTheme={activeTheme}
               />
             </>
           );
