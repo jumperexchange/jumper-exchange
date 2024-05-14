@@ -1,7 +1,7 @@
 import { WallettButtons } from '../Navbar/WalletButton';
 import { Widget } from '../Widgets/Widget';
 import { BlogWidgetHeader } from './BlogWidget.style';
-import { ThemeModesSupported } from '@/types/settings';
+import type { ThemeModesSupported } from '@/types/settings';
 
 export interface BlogWidgetProps {
   fromChain?: number;

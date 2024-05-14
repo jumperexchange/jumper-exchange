@@ -3,7 +3,7 @@ import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
 import { ChainId } from '@lifi/sdk';
 import type { Appearance } from '@lifi/widget';
 import type { BlogWidgetProps } from '../Blog/BlogWidget';
-import { ThemeModesSupported } from '@/types/settings';
+import type { ThemeModesSupported } from '@/types/settings';
 
 export const refuelAllowChains: ChainId[] = [
   ChainId.ETH,

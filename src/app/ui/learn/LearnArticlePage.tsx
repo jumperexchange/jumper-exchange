@@ -10,7 +10,7 @@ import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { BlogArticleWrapper } from './LearnArticlePage.style';
-import { ThemeModesSupported } from '@/types/settings';
+import type { ThemeModesSupported } from '@/types/settings';
 
 interface LearnArticlePageProps {
   article: BlogArticleData[];
