@@ -35,6 +35,7 @@ export function Widget({
   allowChains,
   widgetIntegrator,
   themeVariant,
+  activeTheme,
 }: WidgetProps) {
   const theme = useTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
@@ -101,7 +102,12 @@ export function Widget({
         allow: i18n.languages as LanguageKey[],
       },
       appearance: themeMode,
-      hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
+      hiddenUI: [
+        HiddenUI.Appearance,
+        HiddenUI.Language,
+        HiddenUI.PoweredBy,
+        HiddenUI.WalletMenu,
+      ],
       theme: {
         container: {
           borderRadius: '12px',
@@ -197,7 +203,12 @@ export function Widget({
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly
-        fallback={<WidgetSkeleton welcomeScreenClosed={welcomeScreenClosed} />}
+        fallback={
+          <WidgetSkeleton
+            welcomeScreenClosed={welcomeScreenClosed}
+            config={{ ...config, appearance: activeTheme }}
+          />
+        }
       >
         <LiFiWidget integrator={config.integrator} config={config} />
       </ClientOnly>
