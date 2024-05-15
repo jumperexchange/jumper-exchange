@@ -70,7 +70,7 @@ export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
   display: 'flex',
   marginRight: theme.spacing(4.75),
   flexWrap: 'nowrap',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('md' as Breakpoint)]: {
     maxWidth: 174,
     marginRight: 0,
     marginLeft: theme.spacing(0.75),
@@ -89,7 +89,7 @@ export const MenuPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
     prop !== 'isMobile' && prop !== 'isWide' && prop !== 'show',
 })<MenuPaperProps>(({ theme, isMobile, width, show }) => ({
-  display: show ? 'block' : 'none',
+  display: !show ? 'none' : 'block',
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
@@ -109,6 +109,7 @@ export const MenuPaper = styled(Paper, {
   overflowX: 'hidden',
   width: '100%',
   transformOrigin: 'bottom',
+  height: '100% !important',
   transition:
     'opacity 307ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 204ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
 
@@ -210,7 +211,6 @@ export const MenuClickAwayBox = styled(Box)<MenuClickAwayBoxProps>(
     position: 'absolute',
     left: 0,
     width: '100%',
-    height: '100vh',
     top: 0,
     zIndex: -1,
     backgroundColor: 'transparent',

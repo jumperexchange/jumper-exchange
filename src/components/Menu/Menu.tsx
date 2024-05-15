@@ -50,7 +50,6 @@ export const Menu = ({
       styles={styles}
       keepMounted={keepMounted}
       cardsLayout={cardsLayout}
-      setOpen={setOpen}
       isOpenSubMenu={isOpenSubMenu || false}
     >
       {children}

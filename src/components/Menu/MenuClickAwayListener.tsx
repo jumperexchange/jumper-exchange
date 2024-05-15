@@ -1,27 +1,31 @@
 import { useMenuStore } from '@/stores/menu/MenuStore';
+import type { CSSObject } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 import { MenuClickAwayBox } from './Menu.style';
 interface MenuClickAwayListenerProps {
   open: boolean;
+  styles?: CSSObject;
 }
 
 export const MenuClickAwayListener: React.FC<
   PropsWithChildren<MenuClickAwayListenerProps>
-> = ({ open, children }) => {
+> = ({ open, children, styles }) => {
   const { closeAllMenus } = useMenuStore((state) => state);
 
-  return (
+  return open ? (
     <MenuClickAwayBox
       open={open}
       className="click-away"
+      sx={styles}
       onClick={(event) => {
         event.preventDefault();
-        console.log('Click Away Listener', event.target);
         event.stopPropagation();
-        // closeAllMenus();
+        closeAllMenus();
       }}
     >
       {children}
     </MenuClickAwayBox>
+  ) : (
+    children
   );
 };

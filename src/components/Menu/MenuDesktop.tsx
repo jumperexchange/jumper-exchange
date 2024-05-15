@@ -4,13 +4,13 @@ import type { SxProps, Theme } from '@mui/material';
 import { Fade, Typography } from '@mui/material';
 import type { KeyboardEvent } from 'react';
 import {
-  MenuClickAwayBox,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuList,
   MenuPaper,
   MenuPopper,
 } from './Menu.style';
+import { MenuClickAwayListener } from './MenuClickAwayListener';
 interface MenuProps {
   isOpenSubMenu: boolean;
   label?: string;
@@ -38,7 +38,7 @@ export const MenuDesktop = ({
   children,
   anchorEl,
 }: MenuProps) => {
-  const { openSubMenu, closeAllMenus } = useMenuStore((state) => state);
+  const { openSubMenu } = useMenuStore((state) => state);
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab' || event.key === 'Escape') {
@@ -48,16 +48,7 @@ export const MenuDesktop = ({
   }
 
   return (
-    <MenuClickAwayBox
-      open={open}
-      className="click-away"
-      onClick={(event) => {
-        event.preventDefault();
-        console.log('Click Away Listener', event.target);
-        event.stopPropagation();
-        closeAllMenus();
-      }}
-    >
+    <MenuClickAwayListener open={open} styles={{ height: '100vh' }}>
       <MenuPopper
         open={open}
         anchorEl={anchorEl}
@@ -111,6 +102,6 @@ export const MenuDesktop = ({
           </Fade>
         )}
       </MenuPopper>
-    </MenuClickAwayBox>
+    </MenuClickAwayListener>
   );
 };
