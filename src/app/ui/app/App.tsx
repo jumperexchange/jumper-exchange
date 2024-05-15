@@ -7,15 +7,9 @@ import type { ThemeModesSupported } from '@/types/settings';
 import { getCookies } from '@/app/lib/getCookies';
 export interface AppProps {
   starterVariant: StarterVariantType;
-  // activeTheme: ThemeModesSupported | undefined;
-  // welcomeScreenClosedCookie: boolean;
 }
 
-const App = ({
-  starterVariant,
-  // activeTheme,
-  // welcomeScreenClosedCookie,
-}: AppProps) => {
+const App = ({ starterVariant }: AppProps) => {
   const { activeTheme, welcomeScreenClosed } = getCookies();
   const isWelcomeScreenClosed = welcomeScreenClosed === 'true';
 
