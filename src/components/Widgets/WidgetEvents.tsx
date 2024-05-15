@@ -70,6 +70,8 @@ export function WidgetEvents() {
               (el) => el.index === activeTab,
             )[0].variant,
           },
+          enableAddressable: true,
+          isConversion: true,
         });
       }
     };
@@ -144,6 +146,8 @@ export function WidgetEvents() {
             [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
             [TrackingEventParameter.ToToken]: route.toToken.address,
           },
+          enableAddressable: true,
+          isConversion: true,
         });
       }
     };
@@ -161,6 +165,7 @@ export function WidgetEvents() {
             update.process.error?.message || '',
           [TrackingEventParameter.ErrorCode]: update.process.error?.code || '',
         },
+        enableAddressable: true,
       });
     };
 

@@ -5,6 +5,14 @@ import type { Gtag } from './gtag';
 declare global {
   interface Window {
     gtag: Gtag.Gtag;
+    __adrsbl: {
+      queue: any[];
+      run: (
+        event_name: string,
+        is_conversion: boolean,
+        properties: { name: string; value: any }[],
+      ) => void;
+    };
   }
 }
 

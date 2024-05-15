@@ -128,6 +128,8 @@ export function useUserTracking() {
       value,
       data,
       disableTrackingTool,
+      enableAddressable,
+      isConversion,
     }: TrackEventProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() &&
@@ -153,6 +155,15 @@ export function useUserTracking() {
           name: label,
           value,
         });
+      }
+      if (enableAddressable) {
+        typeof window !== 'undefined' &&
+          data &&
+          window.__adrsbl.run(
+            action,
+            isConversion ?? false,
+            Object.entries(data).map(([key, value]) => ({ name: key, value })),
+          );
       }
     },
     [arcx, cookie3],
