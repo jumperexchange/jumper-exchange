@@ -19,19 +19,22 @@ import {
   BlogH6,
   BlogParagraph,
 } from './CustomRichBlocks.style';
+import type { ThemeModesSupported } from '@/types/settings';
 
 interface CustomRichBlocksProps {
   baseUrl?: string;
   content: RootNode[] | undefined;
   id?: number;
+  activeTheme?: ThemeModesSupported;
 }
 
 interface ImageData {
   image: MediaAttributes;
 }
 
+// TODO: Fix dynamic typing line 102
 interface WidgetRouteSettings
-  extends Omit<BlogWidgetProps, 'fromChain' | 'toChain'> {
+  extends Omit<BlogWidgetProps, 'activeTheme' | 'fromChain' | 'toChain'> {
   fromChain?: string;
   toChain?: string;
 }
@@ -40,6 +43,7 @@ export const CustomRichBlocks = ({
   id,
   baseUrl,
   content,
+  activeTheme,
 }: CustomRichBlocksProps) => {
   const customRichBlocks = {
     // You can use the default components to set class names...
@@ -115,6 +119,7 @@ export const CustomRichBlocks = ({
                 fromAmount={props.fromAmount}
                 toToken={props.toToken}
                 allowChains={props.allowChains}
+                activeTheme={activeTheme}
               />
             </>
           );

@@ -1,4 +1,5 @@
-import { Box, BoxProps, styled } from '@mui/material';
+import type { BoxProps } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 export const MovingBox = styled(Box)<BoxProps>(() => ({
   position: 'absolute',
