@@ -2,9 +2,11 @@ import { getArticleBySlug } from '@/app/lib/getArticleBySlug';
 import { getArticlesByTag } from '@/app/lib/getArticlesByTag';
 import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 import type { BlogArticleData } from '@/types/strapi';
+import { getCookies } from '@/app/lib/getCookies';
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const article = await getArticleBySlug(params.slug);
+  const { activeTheme } = getCookies();
 
   const currentTags = (
     article.data as BlogArticleData
@@ -20,6 +22,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       article={article.data.data}
       url={article.url}
       articles={relatedArticles.data}
+      activeTheme={activeTheme}
     />
   );
 }

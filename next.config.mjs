@@ -5,6 +5,9 @@ const nextConfig = {
   swcMinify: true,
   trailingSlash: true,
   webpack: (config) => {
+    config.resolve.extensionAlias = {
+      '.js': ['.ts', '.tsx', '.js', '.jsx'],
+    };
     config.resolve.fallback = { fs: false, net: false, tls: false };
     // Walletconnect configuration is blocking the build, pino-pretty needs to be added as an external
     config.externals.push('pino-pretty');
