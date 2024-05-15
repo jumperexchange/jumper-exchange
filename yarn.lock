@@ -9807,7 +9807,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-browser-languagedetector@npm:^7.1.0, i18next-browser-languagedetector@npm:^7.2.1":
+"i18next-browser-languagedetector@npm:^7.1.0":
   version: 7.2.1
   resolution: "i18next-browser-languagedetector@npm:7.2.1"
   dependencies:
@@ -10723,7 +10723,6 @@ __metadata:
     graphql-request: "npm:^6.1.0"
     husky: "npm:^9.0.11"
     i18next: "npm:^23.11.2"
-    i18next-browser-languagedetector: "npm:^7.2.1"
     i18next-resources-for-ts: "npm:^1.5.0"
     i18next-resources-to-backend: "npm:^1.2.1"
     lint-staged: "npm:^15.2.2"
