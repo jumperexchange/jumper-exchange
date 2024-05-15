@@ -10,17 +10,20 @@ import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { BlogArticleWrapper } from './LearnArticlePage.style';
+import type { ThemeModesSupported } from '@/types/settings';
 
 interface LearnArticlePageProps {
   article: BlogArticleData[];
   articles: BlogArticleData[];
   url: string;
+  activeTheme?: ThemeModesSupported;
 }
 
 const LearnArticlePage = ({
   article,
   articles,
   url,
+  activeTheme,
 }: LearnArticlePageProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -42,6 +45,7 @@ const LearnArticlePage = ({
           tags={article[0]?.attributes.tags}
           image={article[0]?.attributes.Image}
           baseUrl={url}
+          activeTheme={activeTheme}
         />
       </BlogArticleWrapper>
       <Box

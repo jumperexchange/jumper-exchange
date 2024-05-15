@@ -125,6 +125,7 @@ export function Widgets({
         <Widget
           starterVariant={TabsMap.Exchange.variant as WidgetSubvariant}
           themeVariant={_themeVariant}
+          activeTheme={activeTheme}
         />
       </WidgetContainer>
       <WidgetContainer
@@ -132,7 +133,10 @@ export function Widgets({
         isActive={_starterVariant === TabsMap.Refuel.variant}
         welcomeScreenClosed={!!welcomeScreenClosed}
       >
-        <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
+        <Widget
+          starterVariant={TabsMap.Refuel.variant as WidgetSubvariant}
+          activeTheme={activeTheme}
+        />
       </WidgetContainer>
       <SolanaAlert />
       {process.env.NEXT_PUBLIC_ONRAMPER_ENABLED ? (
