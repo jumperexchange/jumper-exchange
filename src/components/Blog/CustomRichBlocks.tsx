@@ -4,6 +4,7 @@ import {
   type InstructionItemProps,
 } from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
 import { Lightbox } from '@/components/Lightbox/Lightbox';
+import type { ThemeModesSupported } from '@/types/settings';
 import type { MediaAttributes } from '@/types/strapi';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
@@ -25,14 +26,16 @@ interface CustomRichBlocksProps {
   baseUrl?: string;
   content: RootNode[] | undefined;
   id?: number;
+  activeTheme?: ThemeModesSupported;
 }
 
 interface ImageData {
   image: MediaAttributes;
 }
 
+// TODO: Fix dynamic typing line 102
 interface WidgetRouteSettings
-  extends Omit<BlogWidgetProps, 'fromChain' | 'toChain'> {
+  extends Omit<BlogWidgetProps, 'activeTheme' | 'fromChain' | 'toChain'> {
   fromChain?: string;
   toChain?: string;
 }
@@ -41,6 +44,7 @@ export const CustomRichBlocks = ({
   id,
   baseUrl,
   content,
+  activeTheme,
 }: CustomRichBlocksProps) => {
   const customRichBlocks = {
     // You can use the default components to set class names...
