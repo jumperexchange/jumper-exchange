@@ -29,32 +29,39 @@ export const BlogParagraph = styled(Typography, {
 }));
 
 // Headings
-export const BlogH1 = styled(Typography)(({ theme }) => ({
+
+export const BlogHeadline = styled(Typography)(({ theme }) => ({
+  '& a:not(:first-child)': {
+    marginLeft: theme.spacing(0.5),
+  },
+}));
+
+export const BlogH1 = styled(BlogHeadline)(({ theme }) => ({
   marginTop: theme.spacing(12),
   marginBottom: theme.spacing(6),
 }));
 
-export const BlogH2 = styled(Typography)(({ theme }) => ({
+export const BlogH2 = styled(BlogHeadline)(({ theme }) => ({
   marginTop: theme.spacing(8),
   marginBottom: theme.spacing(3),
 }));
 
-export const BlogH3 = styled(Typography)(({ theme }) => ({
+export const BlogH3 = styled(BlogHeadline)(({ theme }) => ({
   marginTop: theme.spacing(6),
   marginBottom: theme.spacing(2),
 }));
 
-export const BlogH4 = styled(Typography)(({ theme }) => ({
+export const BlogH4 = styled(BlogHeadline)(({ theme }) => ({
   marginTop: theme.spacing(4),
   marginBottom: theme.spacing(1.5),
 }));
 
-export const BlogH5 = styled(Typography)(({ theme }) => ({
+export const BlogH5 = styled(BlogHeadline)(({ theme }) => ({
   marginTop: theme.spacing(3),
   marginBottom: theme.spacing(1),
 }));
 
-export const BlogH6 = styled(Typography)(({ theme }) => ({
+export const BlogH6 = styled(BlogHeadline)(({ theme }) => ({
   marginTop: theme.spacing(2),
   marginBottom: theme.spacing(0.5),
 }));
