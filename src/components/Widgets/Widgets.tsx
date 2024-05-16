@@ -68,7 +68,9 @@ export function Widgets({
       setActiveTab(-1);
       return ThemesMap.Memecoins;
     }
-  }, [pathname, setActiveTab, setWelcomeScreenClosed]);
+    // remove setWelcomeScreenClosed from array to prevent infinite re-rendering
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, setActiveTab]);
 
   const getActiveWidget = useCallback(() => {
     setThemeVariant(themeVariant);
