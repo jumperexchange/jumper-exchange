@@ -30,7 +30,7 @@ export const useLanguagesContent = () => {
     });
     i18n.changeLanguage(newLanguage);
     setCookie(cookieName, newLanguage, { path: '/', sameSite: true });
-    replaceLocaleInUrl(pathname, newLanguage);
+    pathname && replaceLocaleInUrl(pathname, newLanguage);
   };
 
   const languages = Object.entries(supportedLanguages)

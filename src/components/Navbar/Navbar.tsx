@@ -15,8 +15,8 @@ import {
 export const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const isLearnPage = pathname.includes(JUMPER_LEARN_PATH);
-  const isLoyaltyPage = pathname.includes(JUMPER_LOYALTY_PATH);
+  const isLearnPage = pathname?.includes(JUMPER_LEARN_PATH);
+  const isLoyaltyPage = pathname?.includes(JUMPER_LOYALTY_PATH);
   const { setWelcomeScreenClosed } = useWelcomeScreen();
   const { closeAllMenus } = useMenuStore((state) => state);
   const handleClick = () => {
