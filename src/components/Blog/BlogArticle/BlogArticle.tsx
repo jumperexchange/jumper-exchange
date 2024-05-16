@@ -35,6 +35,7 @@ import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
+import type { ThemeModesSupported } from '@/types/settings';
 
 interface BlogArticleProps {
   title: string | undefined;
@@ -48,6 +49,7 @@ interface BlogArticleProps {
   createdAt: string | undefined;
   image: StrapiImageData | undefined;
   baseUrl: string | undefined;
+  activeTheme?: ThemeModesSupported;
   id?: number;
 }
 
@@ -64,6 +66,7 @@ export const BlogArticle = ({
   slug,
   image,
   baseUrl,
+  activeTheme,
 }: BlogArticleProps) => {
   const theme = useTheme();
   const minRead = readingTime(content);
@@ -98,7 +101,7 @@ export const BlogArticle = ({
           )}
         </BlogArticleTopHeader>
         {title ? (
-          <BlogArticleTitle as="h1">{title}</BlogArticleTitle>
+          <BlogArticleTitle variant="h1">{title}</BlogArticleTitle>
         ) : (
           <BlogArticleTitleSkeleton />
         )}
@@ -145,7 +148,12 @@ export const BlogArticle = ({
             <BlogArticleSubtitleSkeleton variant="text" />
           )}
           {content ? (
-            <CustomRichBlocks id={id} baseUrl={baseUrl} content={content} />
+            <CustomRichBlocks
+              id={id}
+              baseUrl={baseUrl}
+              content={content}
+              activeTheme={activeTheme}
+            />
           ) : (
             <BlogArticleContentSkeleton variant="text" />
           )}

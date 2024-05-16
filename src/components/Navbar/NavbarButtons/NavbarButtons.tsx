@@ -5,14 +5,11 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { useChains } from '@/hooks/useChains';
 import { useUserTracking } from '@/hooks/userTracking';
 import { useMenuStore } from '@/stores/menu';
 import { EventTrackingTool } from '@/types/userTracking';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Typography } from '@mui/material';
 import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { MenuToggle, NavbarButtonsContainer, WalletManagementButtons } from '.';
 
 interface NavbarButtonsProps {
@@ -27,8 +24,6 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
     state.openMainMenu,
     state.setMainMenuState,
   ]);
-  const { t } = useTranslation();
-
   // return focus to the button when we transitioned from !open -> open
   const prevMainMenu = useRef(openMainMenu);
   useEffect(() => {
@@ -39,7 +34,6 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
     prevMainMenu.current = openMainMenu;
   }, [openMainMenu]);
 
-  const { isSuccess } = useChains();
   const handleOnOpenNavbarMainMenu = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
@@ -56,24 +50,7 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
 
   return (
     <NavbarButtonsContainer className="settings">
-      <WalletManagementButtons
-        redirectToLearn={redirectToLearn}
-        connectButtonLabel={
-          <Typography
-            variant={'lifiBodyMediumStrong'}
-            sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-            }}
-          >
-            {redirectToLearn ? t('blog.openApp') : t('navbar.connect')}
-          </Typography>
-        }
-        isSuccess={isSuccess}
-      />
+      <WalletManagementButtons redirectToLearn={redirectToLearn} />
 
       <MenuToggle
         ref={mainMenuAnchor}
