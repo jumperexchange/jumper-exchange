@@ -62,13 +62,13 @@ export function Widgets({
   }, [widgetVariant]);
 
   const themeVariant: ThemeVariantType | undefined = useMemo(() => {
-    if (pathname.includes('memecoins')) {
+    if (pathname?.includes('memecoins')) {
       setWelcomeScreenClosed(true);
       //Todo: review the logic of the tab selection.
       setActiveTab(-1);
       return ThemesMap.Memecoins;
     }
-  }, [pathname, setActiveTab]);
+  }, [pathname, setActiveTab, setWelcomeScreenClosed]);
 
   const getActiveWidget = useCallback(() => {
     setThemeVariant(themeVariant);
