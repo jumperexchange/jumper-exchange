@@ -47,10 +47,6 @@ export const CustomRichBlocks = ({
   activeTheme,
 }: CustomRichBlocksProps) => {
   const customRichBlocks = {
-    // You can use the default components to set class names...
-    // link: (data: any) => {
-    //   return <Link href={data.url}>{data.children[0].props.text}</Link>;
-    // },
     image: (data: ImageData) =>
       baseUrl ? <Lightbox imageData={data.image} baseUrl={baseUrl} /> : null,
     heading: ({ children, level }: any) => {
@@ -119,6 +115,7 @@ export const CustomRichBlocks = ({
               fromAmount={props.fromAmount}
               toToken={props.toToken}
               allowChains={props.allowChains}
+              activeTheme={activeTheme}
             />
           );
         } catch (error) {
