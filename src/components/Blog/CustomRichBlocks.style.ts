@@ -5,28 +5,39 @@ import Link from 'next/link';
 // Paragraph
 interface BlogParagraphProps extends TypographyProps {
   bold?: boolean;
-  textDecoration?: 'underline' | 'strke-through' | 'auto';
+  underline?: boolean;
+  strikethrough?: boolean;
   italic?: boolean;
 }
 
 export const BlogParagraph = styled(Typography, {
   shouldForwardProp: (prop) =>
-    prop !== 'bold' && prop !== 'textDecoration' && prop !== 'italic',
-})<BlogParagraphProps>(({ theme, bold, textDecoration, italic }) => ({
-  display: 'inline',
-  fontWeight: bold ? 700 : 400,
-  color: alpha(
-    theme.palette.mode === 'light'
-      ? theme.palette.black.main
-      : theme.palette.white.main,
-    0.75,
-  ),
-  textDecoration: textDecoration || 'auto',
-  fontStyle: italic ? 'italic' : 'normal',
-  fontSize: '18px',
-  lineHeight: '32px',
-  margin: theme.spacing(2, 0),
-}));
+    prop !== 'bold' &&
+    prop !== 'underline' &&
+    prop !== 'italic' &&
+    prop !== 'strikethrough',
+})<BlogParagraphProps>(({ theme, bold, underline, strikethrough, italic }) => {
+  const textDecoration = underline
+    ? 'underline'
+    : strikethrough
+      ? 'line-through'
+      : 'auto';
+  return {
+    display: 'inline',
+    fontWeight: bold ? 700 : 400,
+    color: alpha(
+      theme.palette.mode === 'light'
+        ? theme.palette.black.main
+        : theme.palette.white.main,
+      0.75,
+    ),
+    textDecoration: textDecoration,
+    fontStyle: italic ? 'italic' : 'normal',
+    fontSize: '18px',
+    lineHeight: '32px',
+    margin: theme.spacing(2, 0),
+  };
+});
 
 // Headings
 

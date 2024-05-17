@@ -148,16 +148,11 @@ export const CustomRichBlocks = ({
               if (el.props.text && el.props.text !== '') {
                 return (
                   <BlogParagraph
+                    italic={el.props.italic}
+                    strikethrough={el.props.strikethrough}
+                    underline={el.props.underline}
+                    bold={el.props.bold}
                     key={`blog-paragraph-${index}`}
-                    sx={{
-                      bold: el.props.bold,
-                      textDecoration: el.props.underline
-                        ? 'underline'
-                        : el.props.strikethrough
-                          ? 'line-through'
-                          : 'auto',
-                      fontStyle: el.props.italic ? 'italic' : 'normal',
-                    }}
                   >
                     {el.props.text}
                   </BlogParagraph>
