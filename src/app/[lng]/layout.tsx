@@ -16,3 +16,7 @@ export default async function RootLayout({
 export function generateStaticParams() {
   return i18nConfig.locales.map((lng) => ({ lng }));
 }
+
+export function generateStaticParams() {
+  return i18nConfig.locales.map((lng) => ({ lng }));
+}

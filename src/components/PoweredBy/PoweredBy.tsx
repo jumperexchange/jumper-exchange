@@ -27,7 +27,8 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
   const theme = useTheme();
   const { trackPageload, trackEvent } = useUserTracking();
   const currentPath = usePathname();
-  let result = currentPath.substring(0, currentPath.lastIndexOf('/'));
+  let result =
+    currentPath && currentPath.substring(0, currentPath.lastIndexOf('/'));
   const isArticle = isArticlePage(
     `${process.env.NEXT_PUBLIC_SITE_URL}/${currentPath}`,
   );
@@ -36,7 +37,7 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
   const isRoot = result === '/' || result === '';
   const isThemePage = result === JUMPER_MEMECOIN_PATH;
   const isApp = Object.values(LinkMap).some((page) =>
-    result.includes(`/${page}`),
+    result?.includes(`/${page}`),
   );
 
   const handleClick = () => {
