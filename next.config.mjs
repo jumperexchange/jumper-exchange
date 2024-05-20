@@ -9,8 +9,8 @@ const nextConfig = {
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
     };
     config.resolve.fallback = { fs: false, net: false, tls: false };
-    config.externals.push('pino-pretty', 'lokijs', 'encoding');
-    // config.externals.push('pino-pretty');
+    // Walletconnect configuration is blocking the build, pino-pretty needs to be added as an external
+    config.externals.push('pino-pretty');
     return config;
   },
   images: {
