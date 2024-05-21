@@ -95,7 +95,7 @@ export const SubMenu = ({
       className="submenu"
       onKeyDown={handleBackSpace}
       autoFocus={open}
-      component={'ul'}
+      component="ul"
       ref={menuListRef}
     >
       <MenuHeaderAppWrapper>
@@ -128,7 +128,7 @@ export const SubMenu = ({
               onClick={() => {
                 el.triggerSubMenu
                   ? setSubMenuState(el.triggerSubMenu)
-                  : el.onClick();
+                  : el.onClick && el.onClick();
               }}
               component="li"
               key={`${el.label}-${index}`}

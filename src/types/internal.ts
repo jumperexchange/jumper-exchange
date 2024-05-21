@@ -1,6 +1,7 @@
 import type { ChainId } from '@lifi/sdk';
 import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import type { SxProps, Theme } from '@mui/material';
+import type { MenuKeysEnum } from 'src/const/menuKeys';
 import type { Gtag } from './gtag';
 declare global {
   interface Window {
@@ -14,14 +15,14 @@ export type ThemeVariantType = 'memecoins';
 
 export interface MenuListItem {
   label: string;
-  triggerSubMenu?: any; //todo: proper typing
+  triggerSubMenu?: MenuKeysEnum;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
   showMoreIcon?: boolean;
   styles?: SxProps<Theme>;
   checkIcon?: boolean;
   url?: string;
-  onClick?: any;
+  onClick?: () => void;
   showButton?: boolean;
 }
 
@@ -30,7 +31,7 @@ export interface ChainsMenuListItem {
   prefixIcon?: JSX.Element | string;
   showMoreIcon?: boolean;
   checkIcon?: boolean;
-  onClick?: any;
+  onClick?: () => void;
   chainId: ChainId;
 }
 
@@ -42,7 +43,7 @@ export interface ChainsMenuListItem {
   showMoreIcon?: boolean;
   checkIcon?: boolean;
   url?: string;
-  onClick?: any;
+  onClick?: () => void;
   showButton?: boolean;
 }
 
@@ -51,6 +52,7 @@ export type MultisigWidgetConfig = Pick<
   'fromChain' | 'requiredUI'
 >;
 
-export type DataItem = {
+export interface DataItem {
+  logoURI?: string;
   name: string;
-};
+}

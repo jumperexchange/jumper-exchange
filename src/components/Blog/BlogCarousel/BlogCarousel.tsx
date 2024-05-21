@@ -49,23 +49,21 @@ export const BlogCarousel = ({
         trackingCategory={TrackingCategory.BlogCarousel}
       >
         {data ? (
-          data?.map((article, index) => {
-            return (
-              <BlogArticleCard
-                id={article.id}
-                baseUrl={url}
-                key={`blog-article-card-${article.id}-${index}`}
-                trackingCategory={TrackingCategory.BlogCarousel}
-                image={article.attributes.Image}
-                title={article.attributes.Title}
-                slug={article.attributes.Slug}
-                content={article.attributes.Content}
-                publishedAt={article.attributes.publishedAt}
-                createdAt={article.attributes.createdAt}
-                tags={article.attributes.tags}
-              />
-            );
-          })
+          data.map((article, index) => (
+            <BlogArticleCard
+              id={article.id}
+              baseUrl={url}
+              key={`blog-article-card-${article.id}-${index}`}
+              trackingCategory={TrackingCategory.BlogCarousel}
+              image={article.attributes.Image}
+              title={article.attributes.Title}
+              slug={article.attributes.Slug}
+              content={article.attributes.Content}
+              publishedAt={article.attributes.publishedAt}
+              createdAt={article.attributes.createdAt}
+              tags={article.attributes.tags}
+            />
+          ))
         ) : (
           <>
             <BlogArticleCardSkeleton />

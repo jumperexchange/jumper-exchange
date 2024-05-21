@@ -8,6 +8,7 @@ import {
   useTheme,
 } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
+import type { DataItem } from 'src/types/internal';
 import {
   ModalContainer,
   ModalContent,
@@ -18,7 +19,7 @@ interface ToolModalProps {
   title: string;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  data: any;
+  data: DataItem[];
 }
 
 export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
@@ -73,47 +74,42 @@ export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
           </IconButton>
         </ModalHeaderAppBar>
         <ModalContent container>
-          {data?.map(
-            (
-              el: { logoURI: string | undefined; name: string },
-              index: number,
-            ) => {
-              return (
-                <Grid
-                  item
-                  key={`${title}-item-${index}`}
-                  width={72}
-                  textAlign={'center'}
+          {data?.map((el, index) => {
+            return (
+              <Grid
+                item
+                key={`${title}-item-${index}`}
+                width={72}
+                textAlign={'center'}
+              >
+                <Avatar
+                  src={el.logoURI}
+                  sx={{
+                    margin: 'auto',
+                    height: 48,
+                    width: 48,
+                  }}
+                />
+                <Typography
+                  variant={'lifiBodyXSmall'}
+                  marginTop={theme.spacing(1.5)}
+                  sx={{
+                    color:
+                      theme.palette.mode === 'dark'
+                        ? theme.palette.white.main
+                        : theme.palette.black.main,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    maxWidth: 72,
+                    height: 32,
+                    maxHeight: 32,
+                  }}
                 >
-                  <Avatar
-                    src={el.logoURI}
-                    sx={{
-                      margin: 'auto',
-                      height: 48,
-                      width: 48,
-                    }}
-                  />
-                  <Typography
-                    variant={'lifiBodyXSmall'}
-                    marginTop={theme.spacing(1.5)}
-                    sx={{
-                      color:
-                        theme.palette.mode === 'dark'
-                          ? theme.palette.white.main
-                          : theme.palette.black.main,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      maxWidth: 72,
-                      height: 32,
-                      maxHeight: 32,
-                    }}
-                  >
-                    {el.name}
-                  </Typography>
-                </Grid>
-              );
-            },
-          )}
+                  {el.name}
+                </Typography>
+              </Grid>
+            );
+          })}
         </ModalContent>
       </ModalContainer>
     </MUIModal>

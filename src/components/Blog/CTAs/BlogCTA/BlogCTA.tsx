@@ -30,8 +30,8 @@ export const BlogCTA = ({ title, url, id }: BlogCTAProps) => {
       label: 'click-blog-cta',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
-        [TrackingEventParameter.ArticleTitle]: title,
-        [TrackingEventParameter.ArticleID]: id,
+        [TrackingEventParameter.ArticleTitle]: title || '',
+        [TrackingEventParameter.ArticleID]: id || '',
       },
     });
   };

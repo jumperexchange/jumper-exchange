@@ -23,7 +23,7 @@ interface MenuItemProps {
   showMoreIcon?: boolean;
   styles?: SxProps<Theme>;
   label?: string;
-  onClick?: any;
+  onClick?: () => void;
   triggerSubMenu?: MenuKeysEnum;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;

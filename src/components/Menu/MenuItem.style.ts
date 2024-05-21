@@ -12,7 +12,7 @@ import type { ElementType } from 'react';
 
 export interface MenuItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
   showButton?: boolean;
-  component?: ElementType<any>;
+  component?: ElementType;
 }
 
 export const MenuItemContainer = styled(MUIMenuItem, {

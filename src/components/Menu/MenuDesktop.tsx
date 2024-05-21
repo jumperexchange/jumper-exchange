@@ -19,7 +19,7 @@ interface MenuProps {
   styles?: SxProps<Theme>;
   setOpen: (open: boolean, anchorRef: any) => void;
   open: boolean;
-  children: any;
+  children: React.ReactNode;
   width?: string;
   anchorEl: any;
 }

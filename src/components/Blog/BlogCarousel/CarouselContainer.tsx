@@ -18,7 +18,7 @@ import {
 interface CarouselContainerProps {
   title?: string;
   styles?: CSSObject;
-  children?: any;
+  children?: React.ReactNode | React.ReactNode[];
   trackingCategory?: string;
 }
 const swipeDistance = 420;
@@ -101,7 +101,9 @@ export const CarouselContainer = ({
         <CarouselTitle variant="lifiHeaderMedium">
           {title ?? t('blog.recentPosts')}
         </CarouselTitle>
-        <CarouselNavigationContainer show={children?.length < 3}>
+        <CarouselNavigationContainer
+          show={(children as React.ReactNode[])?.length < 3}
+        >
           <CarouselNavigationButton onClick={() => handleChange('prev')}>
             <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
           </CarouselNavigationButton>

@@ -1,4 +1,5 @@
 'use client';
+import type { Theme } from '@mui/material/styles';
 import { alpha, darken, styled } from '@mui/material/styles';
 export interface BackgroundGradientContainerProps
   extends Omit<HTMLDivElement, 'children'> {
@@ -8,9 +9,10 @@ export interface BackgroundGradientProps
   extends Omit<HTMLSpanElement, 'children' | 'className'> {
   children?: JSX.Element | JSX.Element[] | React.ReactNode;
   className?: string;
+  theme: Theme;
 }
 
-export const BackgroundGradientContainer = styled('div')<any>(({ theme }) => ({
+export const BackgroundGradientContainer = styled('div')(({ theme }) => ({
   position: 'fixed',
   overflow: 'hidden',
   pointerEvents: 'none',
@@ -22,7 +24,7 @@ export const BackgroundGradientContainer = styled('div')<any>(({ theme }) => ({
   zIndex: -1,
 }));
 
-const BackgroundGradient = styled('span')<any>(({ theme }) => ({
+const BackgroundGradient = styled('span')<any>(() => ({
   content: '""',
   position: 'absolute',
   width: '100vh',

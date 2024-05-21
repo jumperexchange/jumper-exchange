@@ -1,17 +1,18 @@
 import type { SxProps, Theme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import type { LegacyRef } from 'react';
 import { MenuDesktop, MenuMobile } from '.';
 
 interface MenuProps {
   isOpenSubMenu?: boolean;
   label?: string;
-  setOpen: (open: boolean, anchorRef: any) => void;
+  setOpen: (open: boolean, anchorRef: LegacyRef<HTMLDivElement>) => void;
   cardsLayout?: boolean;
   styles?: SxProps<Theme>;
   open: boolean;
-  children: any;
+  children: React.ReactNode;
   width?: string;
-  anchorEl: any;
+  anchorEl?: HTMLDivElement | undefined;
 }
 
 export const Menu = ({
