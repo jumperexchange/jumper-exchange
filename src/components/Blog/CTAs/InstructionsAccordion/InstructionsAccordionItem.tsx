@@ -30,6 +30,7 @@ const parseTitle = (title: string, link: { label: string; url: string }) => {
         cleanText += `<a href="${link.url}" target="${!link.url.includes('jumper.exchange') || link.url[0] === '/' ? '_self' : '_blank'}">${link.label}</a>`;
       }
     }
+    return null;
   });
   return cleanText;
 };

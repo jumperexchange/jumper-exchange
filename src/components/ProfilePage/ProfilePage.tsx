@@ -16,7 +16,7 @@ export const ProfilePage = () => {
   const { account } = useAccounts();
   const { isLoading, points, tier, pdas } = useLoyaltyPass();
   const { imageLink } = useMercleNft({ userAddress: account?.address });
-  const { quests } = useOngoingQuests();
+  const { quests, isQuestLoading } = useOngoingQuests();
 
   return (
     <ProfilePageContainer className="profile-page">
@@ -38,7 +38,7 @@ export const ProfilePage = () => {
             <TierBox points={points} tier={tier} loading={isLoading} />
           </ProfilePageHeaderBox>
         </Stack>
-        <QuestCarousel quests={quests} />
+        <QuestCarousel quests={quests} loading={isQuestLoading} />
         <QuestCompletedList pdas={pdas} loading={isLoading} />
       </Stack>
     </ProfilePageContainer>
