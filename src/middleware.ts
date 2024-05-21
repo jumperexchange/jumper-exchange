@@ -18,9 +18,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
   // Check if the path is either "/gas"
-  if (urlPath.includes('/gas/')) {
+  if (urlPath.includes('/refuel/')) {
     // Redirect to the default gas-tab "/refuel"
-    return NextResponse.redirect(new URL('/refuel', request.url));
+    return NextResponse.redirect(new URL('/gas', request.url));
   }
 
   // Proceed with the i18nRouter middleware if no redirection occurs
