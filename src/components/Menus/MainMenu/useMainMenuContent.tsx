@@ -11,7 +11,6 @@ import {
   EXPLORER_URL,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
-  JUMPER_MEMECOIN_PATH,
   X_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -25,12 +24,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
-import WhatshotIcon from '@mui/icons-material/Whatshot';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
@@ -46,7 +44,6 @@ export const useMainMenuContent = () => {
     utm_campaign: 'jumper_to_explorer',
     utm_medium: 'menu',
   });
-  const pathname = usePathname();
 
   const themeSwitchTabs = useThemeSwitchTabs();
 
