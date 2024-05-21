@@ -8,8 +8,8 @@
     "poweredByLifi": "",
     "links": {
       "exchange": "",
-      "dashboard": "ড্যাশবোর্ড",
-      "refuel": "গ্যাস",
+      "dashboard": "",
+      "refuel": "",
       "buy": ""
     },
     "statsCards": {
@@ -29,36 +29,32 @@
     "seeAllWallets": "",
     "navbarMenu": {
       "brandAssets": "",
-      "theme": "থিম",
-      "developers": "ডেভেলপারস",
+      "theme": "",
+      "developers": "",
       "lifiExplorer": "",
-      "aboutLIFI": "লি.ফাই সম্পর্কে",
-      "support": "সাপোর্ট"
+      "aboutLIFI": "",
+      "support": "",
+      "profile": ""
     },
     "walletMenu": {
-      "disconnect": "সংযোগ বিচ্ছিন্ন করুন",
-      "chains": "চেইন",
-      "switchChain": "চেইন সুইচ করুন",
-      "copy": "কপি",
-      "explore": "অন্বেষণ করুন",
-      "copiedMsg": "ওয়ালেট ঠিকানা কপি করা হয়েছে ৷",
+      "disconnect": "",
+      "chains": "",
+      "switchChain": "",
+      "copy": "",
+      "explore": "",
+      "copiedMsg": "",
       "walletNotInstalled": "",
       "connectAnotherWallet": ""
     },
     "themes": {
-      "switchToLight": "লাইট মোডে স্যুইচ করুন",
-      "switchToDark": "ডার্ক মোডে স্যুইচ করুন",
+      "switchToLight": "",
+      "switchToDark": "",
       "switchToSystem": ""
     },
     "developers": {
-      "github": "গিটহাব",
-      "documentation": "ডকুমেন্টেশন"
+      "github": "",
+      "documentation": ""
     }
-  },
-  "alert": {
-    "info": "আপনি টেস্টনেট ব্যবহার করছেন",
-    "testnet": "টেস্টনেটে সম্পাদিত কোনো লেনদেন বা ক্রিয়া মেইননেটে প্রতিফলিত হবে না।",
-    "switchToMainnet": "মেইননেটে স্যুইচ করুন"
   },
   "discordBanner": {
     "ctaHeadline": "",
@@ -109,5 +105,17 @@
       "title": "",
       "description": ""
     }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
   }
 }
