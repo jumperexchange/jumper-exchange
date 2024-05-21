@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
     // Redirect to the root path "/"
     return NextResponse.redirect(new URL('/', request.url));
   }
-  // Check if the path is either "/gas"
+  // Check if the path is "/refuel"
   if (urlPath.includes('/refuel/')) {
     // Redirect to the default gas-tab "/refuel"
     return NextResponse.redirect(new URL('/gas', request.url));
