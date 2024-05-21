@@ -1,7 +1,6 @@
 'use client';
 import type {
   AppBarProps,
-  BoxProps,
   CSSObject,
   LinkProps,
   ListItemProps,
@@ -11,7 +10,6 @@ import type {
 } from '@mui/material';
 import {
   AppBar,
-  Box,
   Drawer,
   Link,
   ListItem,
@@ -198,21 +196,5 @@ export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
       position: 'relative',
       justifyContent: 'flex-start',
     },
-  }),
-);
-
-export interface MenuClickAwayBoxProps extends Omit<BoxProps, 'component'> {
-  open: boolean;
-}
-
-export const MenuClickAwayBox = styled(Box)<MenuClickAwayBoxProps>(
-  ({ open }) => ({
-    display: open ? 'block' : 'none',
-    position: 'absolute',
-    left: 0,
-    width: '100%',
-    top: 0,
-    zIndex: -1,
-    backgroundColor: 'transparent',
   }),
 );

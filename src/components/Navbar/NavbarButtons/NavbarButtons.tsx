@@ -41,23 +41,18 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
     event.preventDefault();
     event.stopPropagation();
     const menuOpen = openedMenu();
-    setTimeout(() => {
-      if (menuOpen) {
-        setMainMenuState(false);
-      } else {
-        setMainMenuState(true);
-      }
-      trackEvent({
-        category: TrackingCategory.Menu,
-        action: TrackingAction.OpenMenu,
-        label: 'open_main_menu',
-        data: { [TrackingEventParameter.Menu]: 'main_menu' },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
-      });
-    }, 50);
+    if (menuOpen) {
+      setMainMenuState(false);
+    } else {
+      setMainMenuState(true);
+    }
+    trackEvent({
+      category: TrackingCategory.Menu,
+      action: TrackingAction.OpenMenu,
+      label: 'open_main_menu',
+      data: { [TrackingEventParameter.Menu]: 'main_menu' },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
   };
 
   return (
