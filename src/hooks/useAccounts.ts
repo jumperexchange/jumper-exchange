@@ -113,6 +113,7 @@ export const useAccounts = (): AccountResult => {
       account: lastAccount,
       accounts: [evm, svm],
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account.status, getBlockexplorerURL, wallet?.readyState]);
 };
 

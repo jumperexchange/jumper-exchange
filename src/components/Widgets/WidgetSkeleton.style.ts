@@ -1,5 +1,4 @@
-import { Box, Skeleton, Typography } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { WidgetContainer } from './Widgets.style';
 
 export const WidgetSkeletonContainer = styled(WidgetContainer)(({ theme }) => ({
