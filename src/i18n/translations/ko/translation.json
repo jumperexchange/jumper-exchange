@@ -8,9 +8,9 @@
     "poweredByLifi": "",
     "links": {
       "exchange": "",
-      "dashboard": "대시보드",
-      "refuel": "가스",
-      "buy": "매수"
+      "dashboard": "",
+      "refuel": "",
+      "buy": ""
     },
     "statsCards": {
       "dexs": "",
@@ -29,36 +29,32 @@
     "seeAllWallets": "",
     "navbarMenu": {
       "brandAssets": "",
-      "theme": "테마",
-      "developers": "개발자",
+      "theme": "",
+      "developers": "",
       "lifiExplorer": "",
-      "aboutLIFI": "Li.Fi에 관하여",
-      "support": "지원"
+      "aboutLIFI": "",
+      "support": "",
+      "profile": ""
     },
     "walletMenu": {
-      "disconnect": "연결 해제",
-      "chains": "체인",
-      "switchChain": "체인 변경",
-      "copy": "복사",
-      "explore": "탐색",
-      "copiedMsg": "지갑 주소 복사 완료",
+      "disconnect": "",
+      "chains": "",
+      "switchChain": "",
+      "copy": "",
+      "explore": "",
+      "copiedMsg": "",
       "walletNotInstalled": "",
       "connectAnotherWallet": ""
     },
     "themes": {
-      "switchToLight": "라이트 모드로 전환",
-      "switchToDark": "다크 모드로 전환",
+      "switchToLight": "",
+      "switchToDark": "",
       "switchToSystem": ""
     },
     "developers": {
-      "github": "깃허브",
-      "documentation": "문서"
+      "github": "",
+      "documentation": ""
     }
-  },
-  "alert": {
-    "info": "현재 테스트넷을 사용하고 있습니다.",
-    "testnet": "테스트넷 상의 어떠한 트랜잭션도 메인넷에 반영되지 않습니다.",
-    "switchToMainnet": "메인넷으로 전환"
   },
   "discordBanner": {
     "ctaHeadline": "",
@@ -109,5 +105,17 @@
       "title": "",
       "description": ""
     }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
   }
 }
