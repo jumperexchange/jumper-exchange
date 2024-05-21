@@ -4,10 +4,11 @@ import {
   type InstructionItemProps,
 } from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
 import { Lightbox } from '@/components/Lightbox/Lightbox';
-import { Link } from '@/components/Link.style';
+import type { ThemeModesSupported } from '@/types/settings';
 import type { MediaAttributes } from '@/types/strapi';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { BlogParagraphContainer } from './BlogArticle/BlogArticle.style';
 import type { BlogWidgetProps } from './BlogWidget';
 import { BlogWidget } from './BlogWidget';
 import {
@@ -17,9 +18,9 @@ import {
   BlogH4,
   BlogH5,
   BlogH6,
+  BlogLink,
   BlogParagraph,
 } from './CustomRichBlocks.style';
-import type { ThemeModesSupported } from '@/types/settings';
 
 interface CustomRichBlocksProps {
   baseUrl?: string;
@@ -46,10 +47,6 @@ export const CustomRichBlocks = ({
   activeTheme,
 }: CustomRichBlocksProps) => {
   const customRichBlocks = {
-    // You can use the default components to set class names...
-    link: (data: any) => {
-      return <Link href={data.url}>{data.children[0].props.text}</Link>;
-    },
     image: (data: ImageData) =>
       baseUrl ? <Lightbox imageData={data.image} baseUrl={baseUrl} /> : null,
     heading: ({ children, level }: any) => {
@@ -103,48 +100,72 @@ export const CustomRichBlocks = ({
           }
 
           return (
-            <>
-              <BlogWidget
-                fromChain={
-                  props.fromChain !== undefined
-                    ? parseInt(props.fromChain)
-                    : undefined
-                }
-                fromToken={props.fromToken}
-                toChain={
-                  props.toChain !== undefined
-                    ? parseInt(props.toChain)
-                    : undefined
-                }
-                fromAmount={props.fromAmount}
-                toToken={props.toToken}
-                allowChains={props.allowChains}
-                activeTheme={activeTheme}
-              />
-            </>
+            <BlogWidget
+              fromChain={
+                props.fromChain !== undefined
+                  ? parseInt(props.fromChain)
+                  : undefined
+              }
+              fromToken={props.fromToken}
+              toChain={
+                props.toChain !== undefined
+                  ? parseInt(props.toChain)
+                  : undefined
+              }
+              fromAmount={props.fromAmount}
+              toToken={props.toToken}
+              allowChains={props.allowChains}
+              activeTheme={activeTheme}
+            />
           );
         } catch (error) {
           console.error('Error integrating widget into blog article', error);
         }
       } else if (children[0].props.text.includes('<INSTRUCTIONS')) {
         try {
-          const new_array: InstructionItemProps[] = [];
+          const instructions_array: InstructionItemProps[] = [];
           let jso = children[0].props.text
             .replace('<INSTRUCTIONS ', '')
             .replace('/>', '');
 
-          // Parse the JSON string and push each parsed object into the new_array
+          // Parse the JSON string and push each parsed object into the instructions_array
           JSON.parse(jso).forEach((obj: InstructionItemProps) => {
-            new_array.push(obj);
+            instructions_array.push(obj);
           });
 
-          return <InstructionsAccordion data={new_array} />;
+          return <InstructionsAccordion data={instructions_array} />;
         } catch (error) {
           // console.log(error);
           return;
         }
       } else {
-        return <BlogParagraph>{children}</BlogParagraph>;
+        return (
+          <BlogParagraphContainer>
+            {children.map((el: any, index: number) => {
+              if (el.props.text && el.props.text !== '') {
+                return (
+                  <BlogParagraph
+                    italic={el.props.italic}
+                    strikethrough={el.props.strikethrough}
+                    underline={el.props.underline}
+                    bold={el.props.bold}
+                    key={`blog-paragraph-${index}`}
+                  >
+                    {el.props.text}
+                  </BlogParagraph>
+                );
+              } else if (el.props.content?.type === 'link') {
+                return (
+                  <BlogLink href={el.props.content.url}>
+                    {el.props.content.children[0].text}
+                  </BlogLink>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </BlogParagraphContainer>
+        );
       }
     },
   };
