@@ -21,10 +21,18 @@ interface InstructionsAccordionItemProps extends InstructionItemProps {
 // Function to parse links within the title
 const parseTitle = (title: string, link: { label: string; url: string }) => {
   // Replace <LINK> with anchor tag
-  return title.replace(
-    '<LINK>',
-    `<a href="${link.url}" target="${!link.url.includes('jumper.exchange') || link.url[0] === '/' ? '_self' : '_blank'}">${link.label}</a>`,
-  );
+  const rawText = title.split('<LINK>');
+  let cleanText = '';
+  rawText.map((el, index) => {
+    if (el !== '') {
+      cleanText += `<p>${el}</p>`;
+      if (index < rawText.length - 1) {
+        cleanText += `<a href="${link.url}" target="${!link.url.includes('jumper.exchange') || link.url[0] === '/' ? '_self' : '_blank'}">${link.label}</a>`;
+      }
+    }
+    return null;
+  });
+  return cleanText;
 };
 
 export const InstructionsAccordionItem = ({

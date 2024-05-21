@@ -1,4 +1,4 @@
-import { alpha, type Breakpoint } from '@mui/material';
+import { alpha } from '@mui/material';
 import { Box, styled } from '@mui/system';
 
 export const TierMainBox = styled(Box)(({ theme }) => ({
