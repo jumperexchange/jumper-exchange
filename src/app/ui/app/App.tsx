@@ -22,6 +22,7 @@ const App = ({ starterVariant }: AppProps) => {
       />
       <FeatureCards />
       <Snackbar />
+      <PixelBg />
     </>
   );
 };
