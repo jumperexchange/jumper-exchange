@@ -19,7 +19,7 @@ export const ProfilePage = () => {
   const { quests } = useOngoingQuests();
 
   return (
-    <ProfilePageContainer>
+    <ProfilePageContainer className="profile-page">
       <Stack direction={'column'} spacing={{ xs: 2, sm: 4 }}>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}

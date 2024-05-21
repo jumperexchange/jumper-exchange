@@ -57,6 +57,7 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@eslint/eslintrc": "^3.0.2",
     "@next/eslint-plugin-next": "^14.2.2",
+    "@playwright/test": "^1.44.0",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
