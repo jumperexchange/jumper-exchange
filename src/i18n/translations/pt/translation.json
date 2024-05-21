@@ -1,7 +1,7 @@
 {
   "navbar": {
     "welcome": {
-      "title": "Encontrar a melhor rota",
+      "title": "Encontre a melhor rota",
       "subtitle": "Agregador de liquidez multi-cadeias <0>4x auditado</0> fornecido pela <1>LI.FI</1>",
       "cta": "Começar"
     },
@@ -28,12 +28,13 @@
     },
     "seeAllWallets": "Ver todas as carteiras",
     "navbarMenu": {
-      "brandAssets": "Ativos de marca",
+      "brandAssets": "Ativos da marca",
       "theme": "Tema",
       "developers": "Desenvolvedores",
       "lifiExplorer": "Explorador LI.FI",
       "aboutLIFI": "Sobre a LI.FI",
-      "support": "Suporte"
+      "support": "Suporte",
+      "profile": "Perfil Jumper"
     },
     "walletMenu": {
       "disconnect": "Desconectar",
@@ -54,11 +55,6 @@
       "github": "GitHub",
       "documentation": "Documentação"
     }
-  },
-  "alert": {
-    "info": "Você está usando a rede de testes",
-    "testnet": "Quaisquer transações ou ações realizadas no Testnet não se refletem no Mainnet.",
-    "switchToMainnet": "Alternar para a rede principal"
   },
   "discordBanner": {
     "ctaHeadline": "Entre no nosso Discord para saber mais",
@@ -107,7 +103,19 @@
     },
     "alert": {
       "title": "Carteira multisig conectada",
-      "description": "O endereço da carteira de destino é necessário para completar a troca."
+      "description": "O endereço da carteira de destino é necessário para completar a conversão."
     }
+  },
+  "questCard": {
+    "completed": "Concluído",
+    "join": "Entrar"
+  },
+  "missions": {
+    "available": "Missões Disponíveis",
+    "completed": "Missões Concluídas"
+  },
+  "profile_page": {
+    "mobileTitle": "Disponível apenas no Computador",
+    "mobileDescription": "A página do Perfil Jumper ainda não está disponível em telas pequenas. Estamos trabalhando nisso."
   }
 }
