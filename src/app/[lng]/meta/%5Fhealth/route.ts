@@ -2,6 +2,6 @@
 
 const data = { isHealthy: true };
 
-export async function GET(req: any) {
+export async function GET() {
   return Response.json(data);
 }
