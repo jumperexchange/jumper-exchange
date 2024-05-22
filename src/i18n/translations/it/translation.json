@@ -33,7 +33,8 @@
       "developers": "Sviluppatori",
       "lifiExplorer": "",
       "aboutLIFI": "Info su LI.FI",
-      "support": "Assistenza"
+      "support": "Assistenza",
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "Disconnetti",
@@ -54,11 +55,6 @@
       "github": "",
       "documentation": "Documentazione"
     }
-  },
-  "alert": {
-    "info": "Stai utilizzando una Testnet",
-    "testnet": "Qualsiasi transazione o azione eseguita su una Testnet non si rifletterà sulla rete principale Mainnet.",
-    "switchToMainnet": "Passa a Mainnet"
   },
   "discordBanner": {
     "ctaHeadline": "",
@@ -109,5 +105,17 @@
       "title": "Wallet Multisig connesso",
       "description": "L'indirizzo del wallet di destinazione è necessario per completare lo scambio."
     }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
   }
 }
