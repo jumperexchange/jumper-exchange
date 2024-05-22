@@ -60,5 +60,5 @@ export const CompletedQuestStack = styled(Stack)(() => ({
   marginTop: 32,
   alignItems: 'center',
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
 }));
