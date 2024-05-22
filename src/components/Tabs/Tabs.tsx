@@ -57,7 +57,7 @@ export const Tabs = ({
         );
         return !!el.tooltip ? (
           <Tooltip
-            title={el.tooltip ?? null}
+            title={el.tooltip}
             key={`tooltip-${el.label}-${index}`}
             enterTouchDelay={0}
             disableHoverListener={el.disabled}

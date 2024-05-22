@@ -48,7 +48,9 @@ export const CustomRichBlocks = ({
 }: CustomRichBlocksProps) => {
   const customRichBlocks = {
     image: (data: ImageData) =>
-      baseUrl ? <Lightbox imageData={data.image} baseUrl={baseUrl} /> : null,
+      baseUrl ? (
+        <Lightbox imageData={data.image} baseUrl={baseUrl} />
+      ) : undefined,
     heading: ({ children, level }: any) => {
       switch (level) {
         case 2:
@@ -79,8 +81,8 @@ export const CustomRichBlocks = ({
           const urlMatch = htmlString.match(urlRegex);
 
           // Check if matches were found and extract strings
-          const title = titleMatch ? titleMatch[1] : null;
-          const url = urlMatch ? urlMatch[1] : null;
+          const title = titleMatch ? titleMatch[1] : undefined;
+          const url = urlMatch ? urlMatch[1] : undefined;
           return <BlogCTA title={title} url={url} id={id} />;
         } catch (error) {
           return;
@@ -161,7 +163,7 @@ export const CustomRichBlocks = ({
                   </BlogLink>
                 );
               } else {
-                return null;
+                return undefined;
               }
             })}
           </BlogParagraphContainer>

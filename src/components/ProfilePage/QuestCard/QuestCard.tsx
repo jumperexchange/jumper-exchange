@@ -23,8 +23,8 @@ interface QuestCardProps {
   image?: string;
   points?: number;
   link?: string;
-  startDate?: string | null;
-  endDate?: string | null;
+  startDate?: string;
+  endDate?: string;
   platformName?: string;
   platformImage?: string;
 }
