@@ -1,16 +1,16 @@
 {
   "navbar": {
     "welcome": {
-      "title": "Tìm tuyến đường tốt nhất",
-      "subtitle": "<0>4x audited</0> Nguồn tổng hợp thanh khoản đa chuỗi được cung cấp bởi <1>LI.FI</1>",
-      "cta": "Bắt đầu"
+      "title": "",
+      "subtitle": "",
+      "cta": ""
     },
     "poweredByLifi": "",
     "links": {
-      "exchange": "Hoán đổi",
-      "dashboard": "Tổng quan",
+      "exchange": "",
+      "dashboard": "",
       "refuel": "",
-      "buy": "Mua"
+      "buy": ""
     },
     "statsCards": {
       "dexs": "",
@@ -29,36 +29,32 @@
     "seeAllWallets": "",
     "navbarMenu": {
       "brandAssets": "",
-      "theme": "Giao diện",
+      "theme": "",
       "developers": "",
       "lifiExplorer": "",
-      "aboutLIFI": "Về LI.FI",
-      "support": "Hỗ trợ"
+      "aboutLIFI": "",
+      "support": "",
+      "profile": ""
     },
     "walletMenu": {
-      "disconnect": "Ngắt kết nối",
+      "disconnect": "",
       "chains": "",
-      "switchChain": "Thay đổi Chain",
-      "copy": "Sao Chép",
+      "switchChain": "",
+      "copy": "",
       "explore": "",
-      "copiedMsg": "Địa chỉ ví đã được sao chép",
+      "copiedMsg": "",
       "walletNotInstalled": "",
       "connectAnotherWallet": ""
     },
     "themes": {
-      "switchToLight": "Đổi sang Chế độ nền sáng",
-      "switchToDark": "Chuyển sang Chế độ nền tối",
+      "switchToLight": "",
+      "switchToDark": "",
       "switchToSystem": ""
     },
     "developers": {
       "github": "",
-      "documentation": "Tài liệu"
+      "documentation": ""
     }
-  },
-  "alert": {
-    "info": "Bạn đang sử dụng mạng thử nghiệm",
-    "testnet": "Mọi giao dịch hoặc hành động được thực hiện trên mạng thử nghiệm sẽ không được phản ánh trên mạng chính.",
-    "switchToMainnet": "Chuyển sang mạng chính"
   },
   "discordBanner": {
     "ctaHeadline": "",
@@ -109,5 +105,17 @@
       "title": "",
       "description": ""
     }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
   }
 }

@@ -1,21 +1,21 @@
 {
   "navbar": {
     "welcome": {
-      "title": "Temukan rute terbaik",
-      "subtitle": "<0>4x diaudit</0> agregator likuiditas multi-rantai yang didukung oleh <1>LI.FI</1>",
-      "cta": "Memulai"
+      "title": "",
+      "subtitle": "",
+      "cta": ""
     },
     "poweredByLifi": "",
     "links": {
-      "exchange": "Pertukaran",
-      "dashboard": "Dasbor",
+      "exchange": "",
+      "dashboard": "",
       "refuel": "",
-      "buy": "Beli"
+      "buy": ""
     },
     "statsCards": {
       "dexs": "",
-      "bridges": "Bridge",
-      "chains": "Jaringan"
+      "bridges": "",
+      "chains": ""
     },
     "connect": "",
     "walletSelectMenu": {
@@ -29,36 +29,32 @@
     "seeAllWallets": "",
     "navbarMenu": {
       "brandAssets": "",
-      "theme": "Tema",
-      "developers": "Para Pengembang",
+      "theme": "",
+      "developers": "",
       "lifiExplorer": "",
-      "aboutLIFI": "Tentang LI.FI",
-      "support": "Bantuan"
+      "aboutLIFI": "",
+      "support": "",
+      "profile": ""
     },
     "walletMenu": {
-      "disconnect": "Tidak terkoneksi",
-      "chains": "Jaringan",
-      "switchChain": "Pindah Jaringan",
-      "copy": "Salin",
-      "explore": "Jelajah",
-      "copiedMsg": "Alamat dompet disalin",
+      "disconnect": "",
+      "chains": "",
+      "switchChain": "",
+      "copy": "",
+      "explore": "",
+      "copiedMsg": "",
       "walletNotInstalled": "",
       "connectAnotherWallet": ""
     },
     "themes": {
-      "switchToLight": "Beralih ke Tema Terang",
-      "switchToDark": "Beralih ke Tema Gelap",
+      "switchToLight": "",
+      "switchToDark": "",
       "switchToSystem": ""
     },
     "developers": {
       "github": "",
-      "documentation": "Dokumentasi"
+      "documentation": ""
     }
-  },
-  "alert": {
-    "info": "Anda menggunakan Testnet",
-    "testnet": "Setiap transaksi atau tindakan yang dilakukan di Testnet tidak akan tercermin di Mainnet.",
-    "switchToMainnet": "Beralih ke Mainnet"
   },
   "discordBanner": {
     "ctaHeadline": "",
@@ -109,5 +105,17 @@
       "title": "",
       "description": ""
     }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
   }
 }
