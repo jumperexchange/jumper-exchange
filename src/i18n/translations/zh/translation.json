@@ -33,7 +33,8 @@
       "developers": "开发者",
       "lifiExplorer": "LI.FI 浏览器",
       "aboutLIFI": "关于 LI.FI",
-      "support": "技术支持"
+      "support": "技术支持",
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "断开连接",
@@ -51,14 +52,9 @@
       "switchToSystem": "与系统保持一致"
     },
     "developers": {
-      "github": "GitHub",
+      "github": "",
       "documentation": "文档"
     }
-  },
-  "alert": {
-    "info": "您正在使用测试网",
-    "testnet": "在测试网上进行的任何交易或操作将不会在主网上显示。",
-    "switchToMainnet": "切换到主网"
   },
   "discordBanner": {
     "ctaHeadline": "",
@@ -109,5 +105,17 @@
       "title": "已连接多签钱包",
       "description": "需要目标钱包地址来完成交换。"
     }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
   }
 }

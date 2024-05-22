@@ -33,7 +33,8 @@
       "developers": "",
       "lifiExplorer": "",
       "aboutLIFI": "Về LI.FI",
-      "support": "Hỗ trợ"
+      "support": "Hỗ trợ",
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "Ngắt kết nối",
@@ -54,11 +55,6 @@
       "github": "",
       "documentation": "Tài liệu"
     }
-  },
-  "alert": {
-    "info": "Bạn đang sử dụng mạng thử nghiệm",
-    "testnet": "Mọi giao dịch hoặc hành động được thực hiện trên mạng thử nghiệm sẽ không được phản ánh trên mạng chính.",
-    "switchToMainnet": "Chuyển sang mạng chính"
   },
   "discordBanner": {
     "ctaHeadline": "",
@@ -109,5 +105,17 @@
       "title": "",
       "description": ""
     }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
   }
 }

@@ -21,6 +21,7 @@ import {
   BlogLink,
   BlogParagraph,
 } from './CustomRichBlocks.style';
+import generateKey from '@/app/lib/generateKey';
 
 interface CustomRichBlocksProps {
   baseUrl?: string;
@@ -52,17 +53,41 @@ export const CustomRichBlocks = ({
     heading: ({ children, level }: any) => {
       switch (level) {
         case 2:
-          return <BlogH2 variant="h2">{children}</BlogH2>;
+          return (
+            <BlogH2 variant="h2" key={generateKey('typography')}>
+              {children}
+            </BlogH2>
+          );
         case 3:
-          return <BlogH3 variant="h3">{children}</BlogH3>;
+          return (
+            <BlogH3 variant="h3" key={generateKey('typography')}>
+              {children}
+            </BlogH3>
+          );
         case 4:
-          return <BlogH4 variant="h4">{children}</BlogH4>;
+          return (
+            <BlogH4 variant="h4" key={generateKey('typography')}>
+              {children}
+            </BlogH4>
+          );
         case 5:
-          return <BlogH5 variant="h5">{children}</BlogH5>;
+          return (
+            <BlogH5 variant="h5" key={generateKey('typography')}>
+              {children}
+            </BlogH5>
+          );
         case 6:
-          return <BlogH6 variant="h6">{children}</BlogH6>;
+          return (
+            <BlogH6 variant="h6" key={generateKey('typography')}>
+              {children}
+            </BlogH6>
+          );
         default:
-          return <BlogH1 variant="h1">{children}</BlogH1>;
+          return (
+            <BlogH1 variant="h1" key={generateKey('typography')}>
+              {children}
+            </BlogH1>
+          );
       }
     },
     paragraph: ({ children }: any) => {
@@ -81,7 +106,9 @@ export const CustomRichBlocks = ({
           // Check if matches were found and extract strings
           const title = titleMatch ? titleMatch[1] : null;
           const url = urlMatch ? urlMatch[1] : null;
-          return <BlogCTA title={title} url={url} id={id} />;
+          return (
+            <BlogCTA title={title} url={url} id={id} key={generateKey('cta')} />
+          );
         } catch (error) {
           return;
         }
@@ -116,6 +143,7 @@ export const CustomRichBlocks = ({
               toToken={props.toToken}
               allowChains={props.allowChains}
               activeTheme={activeTheme}
+              key={generateKey('widget')}
             />
           );
         } catch (error) {
@@ -133,7 +161,12 @@ export const CustomRichBlocks = ({
             instructions_array.push(obj);
           });
 
-          return <InstructionsAccordion data={instructions_array} />;
+          return (
+            <InstructionsAccordion
+              data={instructions_array}
+              key={generateKey('instructions')}
+            />
+          );
         } catch (error) {
           // console.log(error);
           return;
@@ -156,7 +189,10 @@ export const CustomRichBlocks = ({
                 );
               } else if (el.props.content?.type === 'link') {
                 return (
-                  <BlogLink href={el.props.content.url}>
+                  <BlogLink
+                    href={el.props.content.url}
+                    key={generateKey('link')}
+                  >
                     {el.props.content.children[0].text}
                   </BlogLink>
                 );

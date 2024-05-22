@@ -1,3 +1,4 @@
+import { getCookies } from '@/app/lib/getCookies';
 import { FeatureCards } from '@/components/FeatureCards/FeatureCards';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
 import { WelcomeScreen } from '@/components/WelcomeScreen/WelcomeScreen';
