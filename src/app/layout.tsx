@@ -16,13 +16,11 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({
   children,
-  params: { lng },
 }: {
   children: React.ReactNode;
-  params: { lng: string };
 }) {
   return (
-    <html lang={lng || fallbackLng}>
+    <html lang={fallbackLng}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <Script

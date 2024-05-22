@@ -241,7 +241,7 @@ export function useUserTracking() {
         });
       }
     },
-    [arcx],
+    [arcx, cookie3],
   );
 
   const trackChainSwitch = useCallback(

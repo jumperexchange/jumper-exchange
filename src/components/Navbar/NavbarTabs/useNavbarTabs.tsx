@@ -27,7 +27,7 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
   const handleClickTab =
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
       window.history.replaceState(null, document.title, `/${tab}`);
-      replacePathInUrl(pathname, tab);
+      pathname && replacePathInUrl(pathname, tab);
       if (navbarPageReload) {
         router.push(`/${tab}`);
       }
