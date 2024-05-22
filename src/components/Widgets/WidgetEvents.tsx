@@ -219,6 +219,22 @@ export function WidgetEvents() {
     const handleDestinationChainTokenSelection = async (
       toChainData: ChainTokenSelected,
     ) => {
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnDestinationChainAndTokenSelection,
+        label: `select_destination_chain_and_token`,
+        data: {
+          [TrackingEventParameter.DestinationChainSelection]:
+            toChainData.chainId,
+          [TrackingEventParameter.DestinationTokenSelection]:
+            toChainData.tokenAddress,
+        },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+        enableAddressable: true,
+      });
       setDestinationChainToken(toChainData);
     };
 
