@@ -1,6 +1,9 @@
+import type { BoxProps } from '@mui/material';
 import { Box, alpha, styled } from '@mui/material';
 
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
   backgroundColor:
     theme.palette.mode === 'light'
       ? '#FFFFFF'
@@ -15,6 +18,10 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
 
 export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(2),
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  flexGrow: 1,
 }));
 
 export const QuestCardTitleBox = styled(Box)(() => ({
@@ -24,12 +31,16 @@ export const QuestCardTitleBox = styled(Box)(() => ({
   height: '32px',
 }));
 
-export const QuestCardInfoBox = styled(Box)(() => ({
-  marginTop: '16px',
+export interface QuestCardInfoBoxProps extends Omit<BoxProps, 'component'> {
+  points?: number;
+}
+
+export const QuestCardInfoBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'points',
+})<QuestCardInfoBoxProps>(({ points }) => ({
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
+  justifyContent: points ? 'space-between' : 'flex-end',
 }));
 
 export const CompletedBox = styled(Box)(() => ({
@@ -42,11 +53,16 @@ export const CompletedBox = styled(Box)(() => ({
   width: '50%',
 }));
 
-export const QuestPlatformMainBox = styled(Box)(() => ({
+export interface QuestPlatformMainBoxProps extends Omit<BoxProps, 'component'> {
+  platformName?: string;
+}
+
+export const QuestPlatformMainBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'platformName',
+})<QuestPlatformMainBoxProps>(({ platformName }) => ({
   display: 'flex',
+  justifyContent: platformName ? 'space-between' : 'flex-end',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  marginBottom: '16px',
 }));
 
 export const QuestDatesBox = styled(Box)(({ theme }) => ({
