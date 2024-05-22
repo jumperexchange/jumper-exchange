@@ -1,4 +1,8 @@
 'use client';
+import {
+  STRAPI_FEATURE_CARDS,
+  STRAPI_JUMPER_USERS,
+} from '@/const/strapiContentKeys';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
@@ -7,13 +11,12 @@ import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
-import {
-  STRAPI_FEATURE_CARDS,
-  STRAPI_JUMPER_USERS,
-} from '@/const/strapiContentKeys';
+import { useCookies } from 'react-cookie';
+import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
+import { useUserTracking } from 'src/hooks/userTracking';
+import { EventTrackingTool } from 'src/types/userTracking';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
-import { useCookies } from 'react-cookie';
 
 export const FeatureCards = () => {
   const [disabledFeatureCards] = useSettingsStore(
@@ -23,6 +26,7 @@ export const FeatureCards = () => {
   const [cookie] = useCookies(['welcomeScreenClosed']);
   const [widgetExpanded, setWidgetExpanded] = useState(false);
   const widgetEvents = useWidgetEvents();
+  const { trackEvent } = useUserTracking();
   const { account } = useAccounts();
   const { data: cards, isSuccess } = useStrapi<FeatureCardData>({
     contentType: STRAPI_FEATURE_CARDS,
@@ -30,13 +34,25 @@ export const FeatureCards = () => {
   });
 
   useEffect(() => {
-    const handleWidgetExpanded = async (expanded: boolean) =>
+    const handleWidgetExpanded = async (expanded: boolean) => {
       setWidgetExpanded(expanded);
+      expanded &&
+        trackEvent({
+          category: TrackingCategory.WidgetEvent,
+          action: TrackingAction.OnWidgetExpanded,
+          label: `widget_expanded`,
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+          enableAddressable: true,
+        });
+    };
     widgetEvents.on(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
 
     return () =>
       widgetEvents.off(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
-  }, [widgetEvents, widgetExpanded]);
+  }, [trackEvent, widgetEvents, widgetExpanded]);
 
   const { data: jumperUser } = useStrapi<JumperUserData>({
     contentType: STRAPI_JUMPER_USERS,

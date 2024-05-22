@@ -20,6 +20,7 @@ export enum TrackingAction {
   OnRouteHighValueLoss = 'action_on_route_high_value_loss',
   OnSourceChainAndTokenSelection = 'action_on_source_selection',
   OnDestinationChainAndTokenSelection = 'action_on_destination_selection',
+  OnWidgetExpanded = 'action_on_widget_expanded',
 
   // Welcome_Screen
   OpenWelcomeMessageScreen = 'action_open_welcome_screen',
