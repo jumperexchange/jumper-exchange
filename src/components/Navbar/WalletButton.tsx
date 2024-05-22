@@ -57,6 +57,7 @@ export const WallettButtons = () => {
           EventTrackingTool.ARCx,
           EventTrackingTool.Cookie3,
         ],
+        enableAddressable: true,
       });
     setWalletSelectMenuState(!openWalletSelectMenu);
   };
