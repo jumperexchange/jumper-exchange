@@ -33,7 +33,7 @@ const parseTitle = (title: string, link: { label: string; url: string }) => {
       }
       return paragraph;
     }
-    return '';
+    return undefined;
   });
   return cleanText;
 };
