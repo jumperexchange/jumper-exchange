@@ -33,7 +33,8 @@
       "developers": "Geliştiriciler",
       "lifiExplorer": "LI.FI Explorer",
       "aboutLIFI": "LI.FI Hakkında",
-      "support": "Destek"
+      "support": "Destek",
+      "profile": "Jumper Profili"
     },
     "walletMenu": {
       "disconnect": "Bağlantıyı Kes",
@@ -54,11 +55,6 @@
       "github": "GitHub",
       "documentation": "Dökümantasyon"
     }
-  },
-  "alert": {
-    "info": "Şu anda Test ağındasınız",
-    "testnet": "Testnet üzerinde yapacağınız hiçbir işlem Mainnet üzerinde etkili olmayacaktır.",
-    "switchToMainnet": "Mainnet'e geç"
   },
   "discordBanner": {
     "ctaHeadline": "Daha fazlası için Discord sunucumuza katıl",
@@ -109,5 +105,17 @@
       "title": "Çoklu cüzdan bağlandı",
       "description": "İşlemi tamamlamak için hedef cüzdan adresi gereklidir."
     }
+  },
+  "questCard": {
+    "completed": "Tamamlanan",
+    "join": "Katıl"
+  },
+  "missions": {
+    "available": "Mevcut Görevler",
+    "completed": "Tamamlanan Görevler"
+  },
+  "profile_page": {
+    "mobileTitle": "Yalnızca Masaüstünde kullanılabilir",
+    "mobileDescription": "Jumper Profil sayfası henüz küçük ekranlarda kullanılamıyor. Üzerinde çalışıyoruz."
   }
 }

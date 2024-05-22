@@ -33,7 +33,8 @@
       "developers": "Розробникам",
       "lifiExplorer": "LI.FI Explorer",
       "aboutLIFI": "Про LI.FI",
-      "support": "Підтримка"
+      "support": "Підтримка",
+      "profile": "Профіль Jumper"
     },
     "walletMenu": {
       "disconnect": "Від'єднатись",
@@ -54,11 +55,6 @@
       "github": "GitHub",
       "documentation": "Документація"
     }
-  },
-  "alert": {
-    "info": "Ви використовуєте Testnet",
-    "testnet": "Будь-які транзакції або дії, що виконуються у Testnet, не будуть відображені в Mainnet.",
-    "switchToMainnet": "Перейти на Mainnet"
   },
   "discordBanner": {
     "ctaHeadline": "Приєднуйтесь до нашого Discord, щоб дізнатися більше",
@@ -109,5 +105,17 @@
       "title": "Multisig гаманець під'єднано",
       "description": "Для завершення обміну необхідна адреса гаманця призначення."
     }
+  },
+  "questCard": {
+    "completed": "Завершено",
+    "join": "Приєднатися"
+  },
+  "missions": {
+    "available": "Доступні місії",
+    "completed": "Виконані місії"
+  },
+  "profile_page": {
+    "mobileTitle": "Доступно лише на комп'ютері",
+    "mobileDescription": "Сторінка профілю Jumper наразі недоступна на маленьких екранах. Ми працюємо над цим."
   }
 }

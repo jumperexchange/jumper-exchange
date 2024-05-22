@@ -1,6 +1,5 @@
 import { Box, alpha, useTheme } from '@mui/material';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 interface VoidQuestCardProps {
   connected: boolean;
