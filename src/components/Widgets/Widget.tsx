@@ -138,6 +138,7 @@ export function Widget({
       },
       keyPrefix: `jumper-${starterVariant}`,
       ...multisigWidget,
+      apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
         apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
         rpcUrls,
