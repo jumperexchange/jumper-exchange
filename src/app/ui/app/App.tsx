@@ -1,9 +1,9 @@
+import { getCookies } from '@/app/lib/getCookies';
 import { FeatureCards } from '@/components/FeatureCards/FeatureCards';
 import { Snackbar } from '@/components/Snackbar/Snackbar';
 import { WelcomeScreen } from '@/components/WelcomeScreen/WelcomeScreen';
 import { Widgets } from '@/components/Widgets/Widgets';
 import type { StarterVariantType } from '@/types/internal';
-import { getCookies } from '@/app/lib/getCookies';
 import { PixelBg } from 'src/components/illustrations/PixelBg';
 export interface AppProps {
   starterVariant: StarterVariantType;
