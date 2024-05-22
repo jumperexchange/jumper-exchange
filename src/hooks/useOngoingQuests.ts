@@ -5,6 +5,7 @@ export interface UseQuestsProps {
   quests: Quest[] | undefined;
   url: URL;
   isSuccess: boolean;
+  isQuestLoading: boolean;
 }
 
 const STRAPI_CONTENT_TYPE = 'quests';
@@ -30,7 +31,7 @@ export const useOngoingQuests = (): UseQuestsProps => {
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
       : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
-  const { data, isSuccess } = useQuery({
+  const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['ongoingQuests'],
 
     queryFn: async () => {
@@ -47,6 +48,7 @@ export const useOngoingQuests = (): UseQuestsProps => {
 
   return {
     quests: data,
+    isQuestLoading: isLoading,
     url: apiUrl,
     isSuccess,
   };
