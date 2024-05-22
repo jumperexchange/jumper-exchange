@@ -18,6 +18,7 @@ export enum TrackingAction {
   OnRouteExecutionFailed = 'action_on_route_exec_failed',
   OnRouteExecutionUpdated = 'action_on_route_exec_updated',
   OnRouteHighValueLoss = 'action_on_route_high_value_loss',
+  OnSourceChainAndTokenSelection = 'action_on_source_selection',
 
   // Welcome_Screen
   OpenWelcomeMessageScreen = 'action_open_welcome_screen',
@@ -105,6 +106,10 @@ export enum TrackingEventParameter {
   AddedTokenName = 'param_added_token_name',
   Wallet = 'param_wallet',
   Ecosystem = 'param_ecosystem',
+
+  // Widget:
+  SourceChainSelection = 'param_source_chain',
+  SourceTokenSelection = 'param_source_token',
 
   // Transaction:
   RouteId = 'param_route_id',

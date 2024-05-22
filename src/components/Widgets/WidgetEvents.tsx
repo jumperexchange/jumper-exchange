@@ -24,6 +24,7 @@ import type {
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
+import { EventTrackingTool } from 'src/types/userTracking';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -196,6 +197,22 @@ export function WidgetEvents() {
     const handleSourceChainTokenSelection = async (
       sourceChainData: ChainTokenSelected,
     ) => {
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnSourceChainAndTokenSelection,
+        label: `select_source_chain_and_token`,
+        data: {
+          [TrackingEventParameter.SourceChainSelection]:
+            sourceChainData.chainId,
+          [TrackingEventParameter.SourceTokenSelection]:
+            sourceChainData.tokenAddress,
+        },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+        enableAddressable: true,
+      });
       setSourceChainToken(sourceChainData);
     };
 
