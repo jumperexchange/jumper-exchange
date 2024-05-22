@@ -61,7 +61,6 @@ export const QuestCard = ({
           height={240}
           style={{
             borderRadius: 16,
-            marginTop: 16,
           }}
         />
       )}

@@ -10,13 +10,11 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   borderRadius: '24px',
   textAlign: 'center',
   overflow: 'hidden',
+  padding: theme.spacing(2),
 }));
 
-export const QuestCardBottomBox = styled(Box)(() => ({
-  paddingTop: 16,
-  paddingBottom: 16,
-  paddingLeft: 16,
-  paddingRight: 16,
+export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(2),
 }));
 
 export const QuestCardTitleBox = styled(Box)(() => ({
