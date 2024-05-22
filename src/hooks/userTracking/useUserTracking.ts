@@ -157,12 +157,22 @@ export function useUserTracking() {
         });
       }
       if (enableAddressable) {
+        const dataArray = [];
+        if (label) {
+          dataArray.push({ name: 'label', value: label });
+        }
+
         typeof window !== 'undefined' &&
           data &&
           window.__adrsbl.run(
             action,
             isConversion ?? false,
-            Object.entries(data).map(([key, value]) => ({ name: key, value })),
+            dataArray.concat(
+              Object.entries(data).map(([key, value]) => ({
+                name: key,
+                value,
+              })),
+            ),
           );
       }
     },
