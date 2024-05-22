@@ -20,7 +20,7 @@ themes.forEach((colorScheme) => {
 
       expect(await page.screenshot()).toMatchSnapshot(
         ['landing', colorScheme, 'welcome_screen.png'],
-        { threshold: 0.3 },
+        { maxDiffPixelRatio: 0.1 },
       );
     });
 
