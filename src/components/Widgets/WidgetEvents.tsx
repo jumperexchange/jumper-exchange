@@ -71,7 +71,6 @@ export function WidgetEvents() {
             )[0].variant,
           },
           enableAddressable: true,
-          isConversion: true,
         });
       }
     };
