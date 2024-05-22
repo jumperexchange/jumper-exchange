@@ -1,21 +1,21 @@
 {
   "navbar": {
     "welcome": {
-      "title": "",
-      "subtitle": "",
-      "cta": ""
+      "title": "Temukan rute terbaik",
+      "subtitle": "<0>4x diaudit</0> agregator likuiditas multi-rantai yang didukung oleh <1>LI.FI</1>",
+      "cta": "Memulai"
     },
     "poweredByLifi": "",
     "links": {
-      "exchange": "",
-      "dashboard": "",
+      "exchange": "Pertukaran",
+      "dashboard": "Dasbor",
       "refuel": "",
-      "buy": ""
+      "buy": "Beli"
     },
     "statsCards": {
       "dexs": "",
-      "bridges": "",
-      "chains": ""
+      "bridges": "Bridge",
+      "chains": "Jaringan"
     },
     "connect": "",
     "walletSelectMenu": {
@@ -29,31 +29,31 @@
     "seeAllWallets": "",
     "navbarMenu": {
       "brandAssets": "",
-      "theme": "",
-      "developers": "",
+      "theme": "Tema",
+      "developers": "Para Pengembang",
       "lifiExplorer": "",
-      "aboutLIFI": "",
-      "support": "",
+      "aboutLIFI": "Tentang LI.FI",
+      "support": "Bantuan",
       "profile": ""
     },
     "walletMenu": {
-      "disconnect": "",
-      "chains": "",
-      "switchChain": "",
-      "copy": "",
-      "explore": "",
-      "copiedMsg": "",
+      "disconnect": "Tidak terkoneksi",
+      "chains": "Jaringan",
+      "switchChain": "Pindah Jaringan",
+      "copy": "Salin",
+      "explore": "Jelajah",
+      "copiedMsg": "Alamat dompet disalin",
       "walletNotInstalled": "",
       "connectAnotherWallet": ""
     },
     "themes": {
-      "switchToLight": "",
-      "switchToDark": "",
+      "switchToLight": "Beralih ke Tema Terang",
+      "switchToDark": "Beralih ke Tema Gelap",
       "switchToSystem": ""
     },
     "developers": {
       "github": "",
-      "documentation": ""
+      "documentation": "Dokumentasi"
     }
   },
   "discordBanner": {
