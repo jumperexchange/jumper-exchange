@@ -1,19 +1,19 @@
 {
   "navbar": {
     "welcome": {
-      "title": "Scopri la route migliore",
-      "subtitle": "<0>4x verificato</0> aggregatori di liquidità multi-chain powerade by <1>LI.FI</1>",
-      "cta": "Inizia adesso"
+      "title": "",
+      "subtitle": "",
+      "cta": ""
     },
     "poweredByLifi": "",
     "links": {
       "exchange": "",
       "dashboard": "",
       "refuel": "",
-      "buy": "Acquista"
+      "buy": ""
     },
     "statsCards": {
-      "dexs": "DEX",
+      "dexs": "",
       "bridges": "",
       "chains": ""
     },
@@ -29,36 +29,32 @@
     "seeAllWallets": "",
     "navbarMenu": {
       "brandAssets": "",
-      "theme": "Tema",
-      "developers": "Sviluppatori",
+      "theme": "",
+      "developers": "",
       "lifiExplorer": "",
-      "aboutLIFI": "Info su LI.FI",
-      "support": "Assistenza"
+      "aboutLIFI": "",
+      "support": "",
+      "profile": ""
     },
     "walletMenu": {
-      "disconnect": "Disconnetti",
+      "disconnect": "",
       "chains": "",
-      "switchChain": "Cambia Chain",
-      "copy": "Copia",
-      "explore": "Esplora",
-      "copiedMsg": "Indirizzo del portafogli copiato",
+      "switchChain": "",
+      "copy": "",
+      "explore": "",
+      "copiedMsg": "",
       "walletNotInstalled": "",
       "connectAnotherWallet": ""
     },
     "themes": {
-      "switchToLight": "Passa al tema chiaro",
-      "switchToDark": "Passa al tema scuro",
+      "switchToLight": "",
+      "switchToDark": "",
       "switchToSystem": ""
     },
     "developers": {
       "github": "",
-      "documentation": "Documentazione"
+      "documentation": ""
     }
-  },
-  "alert": {
-    "info": "Stai utilizzando una Testnet",
-    "testnet": "Qualsiasi transazione o azione eseguita su una Testnet non si rifletterà sulla rete principale Mainnet.",
-    "switchToMainnet": "Passa a Mainnet"
   },
   "discordBanner": {
     "ctaHeadline": "",
@@ -91,23 +87,35 @@
     "learnMore": ""
   },
   "button": {
-    "okay": "Ok"
+    "okay": ""
   },
   "error": {
     "message": ""
   },
   "multisig": {
     "connected": {
-      "title": "Portafoglio Multisig connesso",
-      "description": "Si prega di avvisare gli altri partecipanti del wallet di essere pronti per firmare."
+      "title": "",
+      "description": ""
     },
     "transactionInitiated": {
-      "title": "Sono necessarie firme multiple",
-      "description": "Si prega di avvisare gli altri partecipanti del wallet multisig di firmare prima della scadenza della transazione."
+      "title": "",
+      "description": ""
     },
     "alert": {
-      "title": "Wallet Multisig connesso",
-      "description": "L'indirizzo del wallet di destinazione è necessario per completare lo scambio."
+      "title": "",
+      "description": ""
     }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
   }
 }
