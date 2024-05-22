@@ -27,6 +27,7 @@ import {
   MenuLabel,
   MenuPaper,
 } from '.';
+import { SubMenuLabel } from './SubMenu.style';
 
 interface SubMenuProps {
   open: boolean;
@@ -143,18 +144,13 @@ export const SubMenu = ({
                 }
               >
                 {el.prefixIcon}
-                <Typography
-                  sx={{
-                    maxWidth: 'inherit',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
+                <SubMenuLabel
+                  prefixIcon={!!el.prefixIcon}
+                  suffixIcon={!!el.suffixIcon}
                   variant={'lifiBodyMedium'}
-                  ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
-                  mr={!!el.suffixIcon ? theme.spacing(1.5) : 'inherit'}
                 >
                   {`${el.label || ' '}`}
-                </Typography>
+                </SubMenuLabel>
                 {el.suffixIcon}
               </MenuLabel>
             </MenuItemLink>

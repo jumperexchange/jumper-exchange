@@ -1,18 +1,16 @@
 import CloseIcon from '@mui/icons-material/Close';
-import {
-  Avatar,
-  Grid,
-  IconButton,
-  Modal as MUIModal,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Modal as MUIModal, useTheme } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
 import type { DataItem } from 'src/types/internal';
 import {
   ModalContainer,
   ModalContent,
   ModalHeaderAppBar,
+  ToolModaItemlTitle,
+  ToolModalAvatar,
+  ToolModalGrid,
+  ToolModalIconButton,
+  ToolModalTitle,
 } from './ToolModal.style';
 
 interface ToolModalProps {
@@ -45,69 +43,29 @@ export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
     >
       <ModalContainer className="modal-container">
         <ModalHeaderAppBar>
-          <Typography
+          <ToolModalTitle
             id="modal-modal-title"
             variant={'lifiHeaderXSmall'}
-            component="h3"
-            sx={{
-              fontStyle: 'normal',
-              fontWeight: '700',
-              fontSize: '18px',
-              lineHeight: '24px',
-              maxWidth: '80%',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
+            as="h3"
           >
             {title}
-          </Typography>
-          <IconButton
-            sx={{
-              color: theme.palette.text.primary,
-              transform: 'translateX(8px)',
-            }}
+          </ToolModalTitle>
+          <ToolModalIconButton
             aria-label="close modal"
-            component="label"
             onClick={handleCloseToolModal}
           >
             <CloseIcon />
-          </IconButton>
+          </ToolModalIconButton>
         </ModalHeaderAppBar>
         <ModalContent container>
           {data?.map((el, index) => {
             return (
-              <Grid
-                item
-                key={`${title}-item-${index}`}
-                width={72}
-                textAlign={'center'}
-              >
-                <Avatar
-                  src={el.logoURI}
-                  sx={{
-                    margin: 'auto',
-                    height: 48,
-                    width: 48,
-                  }}
-                />
-                <Typography
-                  variant={'lifiBodyXSmall'}
-                  marginTop={theme.spacing(1.5)}
-                  sx={{
-                    color:
-                      theme.palette.mode === 'dark'
-                        ? theme.palette.white.main
-                        : theme.palette.black.main,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    maxWidth: 72,
-                    height: 32,
-                    maxHeight: 32,
-                  }}
-                >
+              <ToolModalGrid item key={`${title}-item-${index}`}>
+                <ToolModalAvatar src={el.logoURI} />
+                <ToolModaItemlTitle variant={'lifiBodyXSmall'}>
                   {el.name}
-                </Typography>
-              </Grid>
+                </ToolModaItemlTitle>
+              </ToolModalGrid>
             );
           })}
         </ModalContent>

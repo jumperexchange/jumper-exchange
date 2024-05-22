@@ -67,12 +67,7 @@ export const QuestCard = ({
       )}
       <QuestCardBottomBox>
         {active ? (
-          <QuestPlatformMainBox
-            sx={{
-              display: 'flex',
-              justifyContent: platformName ? undefined : 'flex-end',
-            }}
-          >
+          <QuestPlatformMainBox platformName={platformName}>
             {platformName ? (
               <CenteredBox>
                 <CenteredBox
@@ -125,24 +120,17 @@ export const QuestCard = ({
             {title}
           </ProfilePageTypography>
         </QuestCardTitleBox>
-        <QuestCardInfoBox
-          sx={{
-            display: 'flex',
-            justifyContent: points ? undefined : 'flex-end',
-          }}
-        >
+        <QuestCardInfoBox points={points}>
           {points ? (
-            <XPDisplayBox
-              sx={{
-                width: active ? '50%' : '100%',
-                marginRight: active ? '8px' : undefined,
-              }}
-            >
+            <XPDisplayBox active={active}>
               <ProfilePageTypography
                 fontSize={'14px'}
                 lineHeight={'18px'}
                 sx={{
-                  color: theme.palette.mode === 'light' ? '#31007A' : '#BEA0EB',
+                  color:
+                    theme.palette.mode === 'light'
+                      ? theme.palette.primary.main
+                      : '#BEA0EB',
                 }}
               >
                 {`+${points}`}

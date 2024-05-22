@@ -1,17 +1,18 @@
-import { IconButtonTertiary } from '@/components/IconButton.style';
 import { getContrastAlphaColor } from '@/utils/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
 import type { InstructionItemProps } from '.';
 import {
   InstructionsAccordionItemContainer,
+  InstructionsAccordionItemHeader,
   InstructionsAccordionItemIndex,
   InstructionsAccordionItemLabel,
   InstructionsAccordionItemMain,
   InstructionsAccordionItemMore,
+  InstructionsAccordionToggle,
 } from '.';
 
 interface InstructionsAccordionItemProps extends InstructionItemProps {
@@ -25,11 +26,14 @@ const parseTitle = (title: string, link: { label: string; url: string }) => {
   let cleanText = '';
   rawText.map((el, index) => {
     if (el !== '') {
-      cleanText += `<p>${el}</p>`;
+      const paragraph = `<p>${el}</p>`;
       if (index < rawText.length - 1) {
-        cleanText += `<a href="${link.url}" target="${!link.url.includes('jumper.exchange') || link.url[0] === '/' ? '_self' : '_blank'}">${link.label}</a>`;
+        const anchor = `<a href="${link.url}" target="${!link.url.includes('jumper.exchange') || link.url[0] === '/' ? '_self' : '_blank'}">${link.label}</a>`;
+        return paragraph + anchor;
       }
+      return paragraph;
     }
+    return '';
   });
   return cleanText;
 };
@@ -54,7 +58,7 @@ export const InstructionsAccordionItem = ({
   return (
     <InstructionsAccordionItemContainer>
       <InstructionsAccordionItemMain onClick={(e) => handleOpen(e)}>
-        <Box sx={{ display: 'flex' }}>
+        <InstructionsAccordionItemHeader>
           <InstructionsAccordionItemIndex>
             {index + 1}
           </InstructionsAccordionItemIndex>
@@ -67,19 +71,16 @@ export const InstructionsAccordionItem = ({
               {title}
             </InstructionsAccordionItemLabel>
           )}
-        </Box>
+        </InstructionsAccordionItemHeader>
         {step ? (
           isTablet ? (
-            <IconButtonTertiary
-              onClick={(e) => handleOpen(e)}
-              sx={{ width: '40px', height: '40px' }}
-            >
+            <InstructionsAccordionToggle onClick={(e) => handleOpen(e)}>
               <ExpandMoreIcon
                 sx={{
                   ...(open && { transform: 'rotate(180deg)' }),
                 }}
               />
-            </IconButtonTertiary>
+            </InstructionsAccordionToggle>
           ) : (
             <ExpandMoreIcon
               sx={{

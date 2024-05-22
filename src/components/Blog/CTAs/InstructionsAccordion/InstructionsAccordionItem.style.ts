@@ -1,52 +1,52 @@
 import { getContrastAlphaColor } from '@/utils/colors';
 import type { Breakpoint } from '@mui/material';
 import { Box, Typography, styled } from '@mui/material';
-import type { BoxProps } from '@mui/system';
+import { IconButtonTertiary } from 'src/components/IconButton.style';
 
-export const InstructionsAccordionItemContainer = styled(Box)<BoxProps>(
-  ({ theme }) => ({
-    display: 'flex',
-    overflow: 'hidden',
-    backgroundColor:
-      theme.palette.mode === 'dark'
-        ? getContrastAlphaColor(theme, '8%')
-        : getContrastAlphaColor(theme, '4%'),
+export const InstructionsAccordionItemContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  overflow: 'hidden',
+  backgroundColor:
+    theme.palette.mode === 'dark'
+      ? getContrastAlphaColor(theme, '8%')
+      : getContrastAlphaColor(theme, '4%'),
 
-    padding: theme.spacing(3),
-    flexDirection: 'column',
-    margin: theme.spacing(2, 0),
-    borderRadius: '24px',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    position: 'relative',
+  padding: theme.spacing(3),
+  flexDirection: 'column',
+  margin: theme.spacing(2, 0),
+  borderRadius: '24px',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  position: 'relative',
 
-    '& a:not(:first-child)': {
-      marginLeft: theme.spacing(0.5),
-    },
+  '& a:not(:first-child)': {
+    marginLeft: theme.spacing(0.5),
+  },
 
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      alignSelf: 'flex-start',
-      margin: theme.spacing(2, 0, 0, 0),
-    },
-  }),
-);
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    alignSelf: 'flex-start',
+    margin: theme.spacing(2, 0, 0, 0),
+  },
+}));
 
-export const InstructionsAccordionItemMain = styled(Box)<BoxProps>(() => ({
+export const InstructionsAccordionItemMain = styled(Box)(() => ({
   display: 'flex',
   width: '100%',
   justifyContent: 'space-between',
   alignItems: 'center',
 }));
 
-export const InstructionsAccordionItemMore = styled(Box)<BoxProps>(
-  ({ theme }) => ({
-    margin: theme.spacing(2, 0, 0, 3),
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      alignSelf: 'flex-start',
-      margin: theme.spacing(2, 0, 0, 6),
-    },
-  }),
-);
+export const InstructionsAccordionItemHeader = styled(Box)(() => ({
+  display: 'flex',
+}));
+
+export const InstructionsAccordionItemMore = styled(Box)(({ theme }) => ({
+  margin: theme.spacing(2, 0, 0, 3),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    alignSelf: 'flex-start',
+    margin: theme.spacing(2, 0, 0, 6),
+  },
+}));
 
 export const InstructionsAccordionItemIndex = styled(Typography)(
   ({ theme }) => ({
@@ -57,6 +57,13 @@ export const InstructionsAccordionItemIndex = styled(Typography)(
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       marginLeft: theme.spacing(2),
     },
+  }),
+);
+
+export const InstructionsAccordionToggle = styled(IconButtonTertiary)(
+  ({ theme }) => ({
+    width: '40px',
+    height: '40px',
   }),
 );
 

@@ -1,7 +1,11 @@
 import type { AccordionProps as MuiAccordionProps } from '@mui/material';
 import {
+  Box,
   Container,
+  Divider,
+  IconButton,
   Accordion as MuiAccordion,
+  AccordionDetails as MuiAccordionDetails,
   type Breakpoint,
 } from '@mui/material';
 
@@ -53,4 +57,29 @@ export const Accordion = styled(MuiAccordion, {
   '&:last-of-type': {
     marginBottom: show ? theme.spacing(2) : 0,
   },
+}));
+
+export const AccordionDetails = styled(MuiAccordionDetails)<AccordionProps>(
+  () => ({
+    '& > img': { width: '100%' },
+  }),
+);
+
+export const AccordionToggleButton = styled(IconButton)(({ theme }) => ({
+  width: 42,
+  height: 42,
+  color:
+    theme.palette.mode === 'dark' ? theme.palette.white.main : 'currentColor',
+}));
+
+export const AccordionHeader = styled(Box)(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+}));
+
+export const AccordionDivider = styled(Divider)(({ theme }) => ({
+  ...(theme.palette.mode === 'dark' && {
+    borderColor: theme.palette.grey[200],
+  }),
 }));

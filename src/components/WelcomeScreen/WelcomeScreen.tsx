@@ -1,5 +1,4 @@
 'use client';
-import { ButtonPrimary } from '@/components/Button/Button.style';
 import { CustomColor } from '@/components/CustomColorTypography.style';
 import {
   TrackingAction,
@@ -10,14 +9,20 @@ import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { EventTrackingTool } from '@/types/userTracking';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
-import type { Breakpoint } from '@mui/material';
-import { Slide, Typography, useTheme } from '@mui/material';
+import { Slide, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next/TransWithoutContext';
 import { ToolCards } from './ToolCard/ToolCards';
-import { ContentWrapper, Overlay, WelcomeContent } from './WelcomeScreen.style';
+import {
+  ContentWrapper,
+  Overlay,
+  WelcomeContent,
+  WelcomeScreenButton,
+  WelcomeScreenButtonLabel,
+  WelcomeScreenSubtitle,
+} from './WelcomeScreen.style';
 
 const auditsWelcomeUrl = appendUTMParametersToLink(
   'https://docs.li.fi/smart-contracts/audits',
@@ -129,26 +134,7 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
             <CustomColor as="h1" variant={'lifiHeaderMedium'}>
               {t('navbar.welcome.title')}
             </CustomColor>
-            <Typography
-              variant={'lifiBodyLarge'}
-              sx={{
-                marginTop: 2,
-                color:
-                  theme.palette.mode === 'dark'
-                    ? theme.palette.accent1Alt.main
-                    : theme.palette.primary.main,
-                '& > .link-lifi': {
-                  fontWeight: 700,
-                  color: 'inherit',
-                  textDecoration: 'none',
-                },
-                [theme.breakpoints.up('sm' as Breakpoint)]: {
-                  fontSize: '24px',
-                  fontWeight: 400,
-                  lineHeight: '32px',
-                },
-              }}
-            >
+            <WelcomeScreenSubtitle variant={'lifiBodyLarge'}>
               <Trans
                 i18nKey={'navbar.welcome.subtitle' as string & never[]}
                 components={[
@@ -171,7 +157,7 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
                   />,
                 ]}
               />
-            </Typography>
+            </WelcomeScreenSubtitle>
             <ToolCards
               openChainsToolModal={openChainsToolModal}
               setOpenChainsToolModal={setOpenChainsToolModal}
@@ -180,36 +166,11 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
               openDexsToolModal={openDexsToolModal}
               setOpenDexsToolModal={setOpenDexsToolModal}
             />
-            <ButtonPrimary
-              onClick={handleGetStarted}
-              sx={(theme) => ({
-                height: 48,
-                width: 192,
-                margin: theme.spacing(4, 'auto'),
-                [theme.breakpoints.up('sm' as Breakpoint)]: {
-                  margin: theme.spacing(6, 'auto'),
-                  height: 56,
-                  borderRadius: '28px',
-                  width: 247,
-                },
-              })}
-            >
-              <Typography
-                variant={'lifiBodyMediumStrong'}
-                sx={{
-                  maxHeight: 40,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    fontSize: '18px',
-                    maxHeight: 48,
-                    lineHeight: '24px',
-                  },
-                }}
-              >
+            <WelcomeScreenButton onClick={handleGetStarted}>
+              <WelcomeScreenButtonLabel variant={'lifiBodyMediumStrong'}>
                 {t('navbar.welcome.cta')}
-              </Typography>
-            </ButtonPrimary>
+              </WelcomeScreenButtonLabel>
+            </WelcomeScreenButton>
           </WelcomeContent>
           {/* <FeaturedArticle
             showIntro={true}

@@ -9,10 +9,15 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu/MenuStore';
 import { EventTrackingTool } from '@/types/userTracking';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import type { Breakpoint, SxProps, Theme } from '@mui/material';
-import { Typography, useTheme } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import type { JsxElement } from 'typescript';
-import { MenuItemContainer, MenuLabel } from '.';
+import {
+  MenuItemButtonLabel,
+  MenuItemContainer,
+  MenuItemLabel,
+  MenuLabel,
+} from '.';
 
 interface MenuItemProps {
   open: boolean;
@@ -79,26 +84,12 @@ export const MenuItem = ({
         {showButton && (
           <ButtonSecondary fullWidth>
             {prefixIcon}
-            <Typography
+            <MenuItemButtonLabel
               variant={'lifiBodyMediumStrong'}
               component={'span'}
-              ml={!!prefixIcon ? '9.5px' : 'inherit'}
-              mr={!!prefixIcon ? '9.5px' : 'inherit'}
-              sx={{
-                color:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.primary.main
-                    : theme.palette.white.main,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                maxWidth: 208,
-                [theme.breakpoints.up('sm' as Breakpoint)]: {
-                  maxWidth: 168,
-                },
-              }}
             >
               {label}
-            </Typography>
+            </MenuItemButtonLabel>
             {suffixIcon ?? null}
           </ButtonSecondary>
         )}
@@ -115,19 +106,9 @@ export const MenuItem = ({
             >
               {prefixIcon ?? null}
               {label ? (
-                <Typography
-                  variant={'lifiBodyMedium'}
-                  ml={theme.spacing(1.5)}
-                  sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      maxWidth: prefixIcon ? 188 : 'inherit',
-                    },
-                  }}
-                >
+                <MenuItemLabel variant={'lifiBodyMedium'}>
                   {label}
-                </Typography>
+                </MenuItemLabel>
               ) : null}
             </MenuLabel>
             {suffixIcon || showMoreIcon ? (

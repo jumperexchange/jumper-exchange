@@ -2,8 +2,9 @@
 import type {
   ListItemProps,
   MenuItemProps as MUIMenuItemProps,
+  TypographyProps,
 } from '@mui/material';
-import { MenuItem as MUIMenuItem } from '@mui/material';
+import { MenuItem as MUIMenuItem, Typography } from '@mui/material';
 
 import { getContrastAlphaColor } from '@/utils/colors';
 import type { Breakpoint } from '@mui/material/styles';
@@ -54,5 +55,37 @@ export const MenuLabel = styled('div', {
   maxWidth: variant === 'xs' ? 198 : variant === 'md' ? 232 : 260,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     maxWidth: variant === 'xs' ? 168 : variant === 'md' ? 194 : 244,
+  },
+}));
+
+export interface MenuItemLabelProps extends Omit<TypographyProps, 'variant'> {
+  prefixIcon?: JSX.Element | string;
+}
+
+export const MenuItemButtonLabel = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'prefixIcon',
+})<MenuItemLabelProps>(({ prefixIcon, theme }) => ({
+  marginLeft: !!prefixIcon ? '9.5px' : 'inherit',
+  marginRight: !!prefixIcon ? '9.5px' : 'inherit',
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.white.main,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxWidth: 208,
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    maxWidth: 168,
+  },
+}));
+
+export const MenuItemLabel = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'prefixIcon',
+})<MenuItemLabelProps>(({ prefixIcon, theme }) => ({
+  marginLeft: theme.spacing(1.5),
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    maxWidth: prefixIcon ? 188 : 'inherit',
   },
 }));
