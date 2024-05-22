@@ -1,16 +1,16 @@
 {
   "navbar": {
     "welcome": {
-      "title": "",
-      "subtitle": "",
-      "cta": ""
+      "title": "Tìm tuyến đường tốt nhất",
+      "subtitle": "<0>4x audited</0> Nguồn tổng hợp thanh khoản đa chuỗi được cung cấp bởi <1>LI.FI</1>",
+      "cta": "Bắt đầu"
     },
     "poweredByLifi": "",
     "links": {
-      "exchange": "",
-      "dashboard": "",
+      "exchange": "Hoán đổi",
+      "dashboard": "Tổng quan",
       "refuel": "",
-      "buy": ""
+      "buy": "Mua"
     },
     "statsCards": {
       "dexs": "",
@@ -29,31 +29,31 @@
     "seeAllWallets": "",
     "navbarMenu": {
       "brandAssets": "",
-      "theme": "",
+      "theme": "Giao diện",
       "developers": "",
       "lifiExplorer": "",
-      "aboutLIFI": "",
-      "support": "",
+      "aboutLIFI": "Về LI.FI",
+      "support": "Hỗ trợ",
       "profile": ""
     },
     "walletMenu": {
-      "disconnect": "",
+      "disconnect": "Ngắt kết nối",
       "chains": "",
-      "switchChain": "",
-      "copy": "",
+      "switchChain": "Thay đổi Chain",
+      "copy": "Sao Chép",
       "explore": "",
-      "copiedMsg": "",
+      "copiedMsg": "Địa chỉ ví đã được sao chép",
       "walletNotInstalled": "",
       "connectAnotherWallet": ""
     },
     "themes": {
-      "switchToLight": "",
-      "switchToDark": "",
+      "switchToLight": "Đổi sang Chế độ nền sáng",
+      "switchToDark": "Chuyển sang Chế độ nền tối",
       "switchToSystem": ""
     },
     "developers": {
       "github": "",
-      "documentation": ""
+      "documentation": "Tài liệu"
     }
   },
   "discordBanner": {
