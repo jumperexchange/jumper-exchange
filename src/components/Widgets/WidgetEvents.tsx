@@ -181,6 +181,7 @@ export function WidgetEvents() {
           [TrackingEventParameter.ValueLoss]: update.valueLoss,
           [TrackingEventParameter.Timestamp]: Date.now(),
         },
+        enableAddressable: true,
       });
     };
 
