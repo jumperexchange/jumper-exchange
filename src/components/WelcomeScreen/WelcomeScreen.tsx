@@ -111,6 +111,7 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
           EventTrackingTool.ARCx,
           EventTrackingTool.Cookie3,
         ],
+        enableAddressable: true,
       });
     }
   };
