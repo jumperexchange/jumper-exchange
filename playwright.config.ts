@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { url } from 'inspector';
 
 /**
  * Read environment variables from file.
@@ -11,10 +12,10 @@ import { defineConfig, devices } from '@playwright/test';
  */
 
 // Use process.env.PORT by default and fallback to port 3000
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 
 // Set webServer.url and use.baseURL with the location of the WebServer respecting the correct set port
-const baseURL = `http://localhost:${PORT}`;
+// const baseURL = `http://localhost:${PORT}`;
 
 export default defineConfig({
   timeout: 30 * 1000,
@@ -32,14 +33,15 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    baseURL,
+    /* Base URL to use in actions like `await page.goto('/')`. */
+    baseURL: process.env.BASE_URL || 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
   webServer: {
     command: 'yarn run dev',
-    url: baseURL,
+    url: 'http://localhost:3000',
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
   },

@@ -8,21 +8,11 @@ import {
 } from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {
-  let profileUrl;
-  let learnUrl;
-  let xUrl;
-  let discordUrl;
-
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:3000');
+    await page.goto('/');
   });
 
   test('should navigate to the homepage and change tabs', async ({ page }) => {
-    profileUrl = `${page.baseURL}/profile/`;
-    learnUrl = `${page.baseURL}/learn/`;
-    xUrl = `${page.baseURL}/JumperExchange`;
-    discordUrl = `${page.baseURL}invite/lifi`;
-
     await closeWelcomeScreen(page);
     await page.getByRole('tab', { name: 'Exchange' }).click();
     await expect(
@@ -73,23 +63,25 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('should be able to navigate to profile', async ({ page }) => {
+    let profileUrl = `${await page.url()}profile/`;
     await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
     await itemInMenu(page, 'Jumper Profile');
     await page.waitForLoadState('networkidle');
-    expect(page.url()).toBe(profileUrl);
+    expect(await page.url()).toBe(profileUrl);
     await page.waitForLoadState('load');
     await page.locator('.profile-page').isVisible();
   });
 
   test('should be able to navigate to jumper learn', async ({ page }) => {
+    let learnUrl = `${await page.url()}learn/`;
     await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
     await itemInMenu(page, 'Jumper Learn');
     await page.waitForLoadState('networkidle');
-    expect(page.url()).toBe(learnUrl);
+    expect(await page.url()).toBe(learnUrl);
     await page.waitForLoadState('load');
     await page.locator('.learn-page').isVisible();
   });
@@ -106,6 +98,7 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('should be able to navigate to X', async ({ page }) => {
+    let xUrl = 'https://x.com/JumperExchange';
     await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await expect(page.getByRole('menu')).toBeVisible();
@@ -114,6 +107,7 @@ test.describe('Jumper full e2e flow', () => {
     expect(newPage.url()).toBe(xUrl);
   });
   test('should be able to navigate to Discord', async ({ page }) => {
+    let discordUrl = 'https://discord.com/invite/lifi';
     await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await expect(page.getByRole('menu')).toBeVisible();
