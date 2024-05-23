@@ -217,6 +217,20 @@ export function WidgetEvents() {
       setSourceChainToken(sourceChainData);
     };
 
+    const handleWidgetExpanded = async (expanded: boolean) => {
+      expanded &&
+        trackEvent({
+          category: TrackingCategory.WidgetEvent,
+          action: TrackingAction.OnWidgetExpanded,
+          label: `widget_expanded`,
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+          enableAddressable: true,
+        });
+    };
+
     const handleDestinationChainTokenSelection = async (
       toChainData: ChainTokenSelected,
     ) => {
@@ -260,6 +274,7 @@ export function WidgetEvents() {
       WidgetEvent.DestinationChainTokenSelected,
       handleDestinationChainTokenSelection,
     );
+    widgetEvents.on(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
 
     return () => {
       widgetEvents.off(
@@ -292,6 +307,7 @@ export function WidgetEvents() {
         WidgetEvent.DestinationChainTokenSelected,
         handleDestinationChainTokenSelection,
       );
+      widgetEvents.off(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
     };
   }, [
     activeTab,
