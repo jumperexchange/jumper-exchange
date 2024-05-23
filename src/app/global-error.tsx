@@ -1,11 +1,16 @@
 'use client';
 
 import * as Sentry from '@sentry/nextjs';
-import Error from 'next/error';
+import NextError from 'next/error';
+import { isProduction } from '@/utils/isProduction';
 import { useEffect } from 'react';
-import { isProduction } from '../utils/isProduction';
 
-export default function GlobalError({ error }) {
+export default function GlobalError({
+  error,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
   useEffect(() => {
     if (isProduction) {
       Sentry.captureException(error);
@@ -15,7 +20,8 @@ export default function GlobalError({ error }) {
   return (
     <html>
       <body>
-        <Error />
+        An error occured
+        {/*<NextError />*/}
       </body>
     </html>
   );
