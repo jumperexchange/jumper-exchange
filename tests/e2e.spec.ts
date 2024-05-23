@@ -97,22 +97,24 @@ test.describe('Jumper full e2e flow', () => {
     );
   });
 
-  test('should be able to navigate to X', async ({ page }) => {
+  test('should be able to navigate to X', async ({ page, context }) => {
     let xUrl = 'https://x.com/JumperExchange';
     await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await expect(page.getByRole('menu')).toBeVisible();
-    await page.getByRole('menuitem', { name: 'X', exact: true }).click();
-    const newPage = await page.waitForEvent('popup');
+    await page.getByRole('link', { name: 'X', exact: true }).click();
+    const newPage = await context.waitForEvent('page')
+    // newPage.waitForLoadState();
     expect(newPage.url()).toBe(xUrl);
   });
-  test('should be able to navigate to Discord', async ({ page }) => {
+  test('should be able to navigate to Discord', async ({ page, context}) => {
     let discordUrl = 'https://discord.com/invite/lifi';
     await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await expect(page.getByRole('menu')).toBeVisible();
-    await itemInMenu(page, 'Discord');
-    const newPage = await page.waitForEvent('popup');
+    await page.getByRole('link', { name: 'Discord' }).click();
+    const newPage = await context.waitForEvent('page')
+    // newPage.waitForLoadState();
     expect(newPage.url()).toBe(discordUrl);
   });
 });
