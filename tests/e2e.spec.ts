@@ -4,9 +4,8 @@ import {
   findTheBestRoute,
   openMainMenu,
   itemInMenu,
-  closeWelcomeScreen
+  closeWelcomeScreen,
 } from './testData/commonFunctions';
-
 
 test.describe('Jumper full e2e flow', () => {
   let profileUrl;
@@ -22,6 +21,7 @@ test.describe('Jumper full e2e flow', () => {
     profileUrl = 'http://localhost:3000/profile/';
     learnUrl = 'http://localhost:3000/learn/';
     xUrl = 'https://x.com/JumperExchange';
+    discordUrl = 'https://discord.com/invite/lifi';
 
     await closeWelcomeScreen(page);
     await page.getByRole('tab', { name: 'Exchange' }).click();
