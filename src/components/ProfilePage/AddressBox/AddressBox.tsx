@@ -1,6 +1,7 @@
 import { useMenuStore } from '@/stores/menu';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import type { Address } from 'viem';
@@ -13,7 +14,6 @@ import {
   PassImageBox,
   ProfileIconButton,
 } from './AddressBox.style';
-import { useTheme } from '@mui/material';
 
 interface AddressBoxProps {
   address?: string;
@@ -55,7 +55,7 @@ export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
       : `https://effigy.im/a/${'jumper.eth'}.png`;
 
   return (
-    <AddressBoxContainer sx={{ width: '100%' }}>
+    <AddressBoxContainer imgUrl={imgLink}>
       <PassImageBox>
         <Image
           alt="Effigy Wallet Icon"
@@ -72,6 +72,7 @@ export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
             borderStyle: 'solid',
             borderWidth: '5px',
             borderColor: theme.palette.white.main,
+            zIndex: 1,
           }}
         />
       </PassImageBox>

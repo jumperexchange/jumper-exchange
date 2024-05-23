@@ -1,29 +1,56 @@
-import type { IconButtonProps } from '@mui/material';
+import type { BoxProps, IconButtonProps } from '@mui/material';
 import { Box, IconButton, alpha, styled } from '@mui/material';
 
-export const AddressBoxContainer = styled(Box)(({ theme }) => ({
+export interface AddressBoxContainerProps extends Omit<BoxProps, 'component'> {
+  imgUrl?: string;
+}
+
+export const AddressBoxContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'imgUrl',
+})<AddressBoxContainerProps>(({ theme, imgUrl }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: 24,
-  ...(theme.palette.mode === 'light'
-    ? {
-        background: `linear-gradient(to bottom, ${theme.palette.primary.main} 50%, ${theme.palette.grey[100]} 50%)`,
-      }
-    : {
-        background: `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, transparent 50%)`,
-      }),
-  [theme.breakpoints.down('sm')]: {
-    paddingTop: 37,
-    paddingBottom: 8,
-    ...(theme.palette.mode === 'light'
-      ? {
-          background: `linear-gradient(to bottom, ${theme.palette.primary.main} 50%, ${theme.palette.grey[100]} 50%)`,
-        }
-      : {
-          background: `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, transparent 50%)`,
-        }),
+  paddingTop: 37,
+  overflow: 'hidden',
+  position: 'relative',
+  paddingBottom: 8,
+  width: '100%',
+
+  ...(!imgUrl && {
+    background: `linear-gradient(to bottom, ${theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.accent1Alt.main} 50%, ${theme.palette.mode === 'light' ? theme.palette.grey[100] : 'transparent'} 50%)`,
+  }),
+
+  [theme.breakpoints.up('sm')]: {
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+
+  '&:before': {
+    ...(imgUrl && { content: '" "' }),
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: '50%',
+    filter: 'blur(6px)',
+    background: `url(${imgUrl})`,
+    backgroundPosition: 'top',
+    backgroundSize: 'cover',
+  },
+  '&:after': {
+    ...(imgUrl && { content: '" "' }),
+    position: 'absolute',
+    left: 0,
+    top: '50%',
+    right: 0,
+    bottom: 0,
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[100]
+        : alpha(theme.palette.grey[100], 0.08),
   },
 }));
 
@@ -47,6 +74,7 @@ export const AddressDisplayBox = styled(Box)(() => ({
   display: 'flex',
   marginTop: 12,
   marginBottom: 12,
+  zIndex: 1,
 }));
 
 export const PassImageBox = styled(Box)(({ theme }) => ({
