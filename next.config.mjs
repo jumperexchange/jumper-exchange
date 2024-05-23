@@ -50,32 +50,17 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/exchange',
+        source: '/:lng?/swap',
         destination: '/',
         permanent: true,
       },
       {
-        source: '/swap',
+        source: '/:lng?/exchange',
         destination: '/',
         permanent: true,
       },
       {
-        source: '/refuel',
-        destination: '/gas',
-        permanent: true,
-      },
-      {
-        source: '/:lng/swap',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/:lng/exchange',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/:lng/refuel',
+        source: '/:lng?/refuel',
         destination: '/gas',
         permanent: true,
       },
