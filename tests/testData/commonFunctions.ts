@@ -9,10 +9,9 @@ export async function openMainMenu(page) {
   await page.locator('#main-burger-menu-button').click();
 }
 
-export async function itemInMenu(page , option:string) {
-    await page.getByRole('menuitem', { name: option }).click();
-
+export async function itemInMenu(page, option: string) {
+  await page.getByRole('menuitem', { name: option }).click();
 }
 export async function closeWelcomeScreen(page: Page) {
-    return page.locator('.widget-wrapper').first().click();
-  }
+  return page.locator('.widget-wrapper').first().click();
+}

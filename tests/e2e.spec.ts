@@ -18,10 +18,10 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('should navigate to the homepage and change tabs', async ({ page }) => {
-    profileUrl = 'http://localhost:3000/profile/';
-    learnUrl = 'http://localhost:3000/learn/';
-    xUrl = 'https://x.com/JumperExchange';
-    discordUrl = 'https://discord.com/invite/lifi';
+    profileUrl = `${page.baseURL}/profile/`;
+    learnUrl = `${page.baseURL}/learn/`;
+    xUrl = `${page.baseURL}/JumperExchange`;
+    discordUrl = `${page.baseURL}invite/lifi`;
 
     await closeWelcomeScreen(page);
     await page.getByRole('tab', { name: 'Exchange' }).click();
