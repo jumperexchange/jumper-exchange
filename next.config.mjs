@@ -73,7 +73,8 @@ const nextConfig = {
 export default withSentryConfig(nextConfig, {
 // For all available options, see:
 // https://github.com/getsentry/sentry-webpack-plugin#options
-
+// Cannot use `isProduction` here, as this file is not supporting ts
+  enabled: process.env.ENV_NAME === 'prod',
 // Suppresses source map uploading logs during build
   silent: true,
   org: 'lifi',
