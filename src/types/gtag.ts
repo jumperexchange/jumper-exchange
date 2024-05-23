@@ -1,38 +1,35 @@
-// Type definitions for non-npm package Google gtag.js API
-// Project: https://developers.google.com/gtagjs
-// Definitions by:  Junyoung Choi <https://github.com/rokt33r>
-//                  Lucas Akira Uehara <https://github.com/KsAkira10>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// Source: https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/gtag.js/index.d.ts
 
+export declare let gtag: Gtag.Gtag;
 export declare namespace Gtag {
-  interface Gtag {
-    (
-      command: 'config',
+  interface GtagCommands {
+    config: [
       targetId: string,
       config?: ControlParams | EventParams | ConfigParams | CustomParams,
-    ): void;
-    (
-      command: 'set',
-      targetId: string,
-      config: CustomParams | boolean | string,
-    ): void;
-    (command: 'set', config: CustomParams): void;
-    (command: 'js', config: Date): void;
-    (
-      command: 'event',
+    ];
+    set:
+      | [targetId: string, config: CustomParams | boolean | string]
+      | [config: CustomParams];
+    js: [config: Date];
+    event: [
       eventName: EventNames | (string & {}),
       eventParams?: ControlParams | EventParams | CustomParams,
-    ): void;
-    (
-      command: 'get',
+    ];
+    get: [
       targetId: string,
       fieldName: FieldNames | string,
       callback?: (field: string | CustomParams | undefined) => any,
-    ): void;
-    (
-      command: 'consent',
-      consentArg: ConsentArg | string,
+    ];
+    consent: [
+      consentArg: ConsentArg | (string & {}),
       consentParams: ConsentParams,
+    ];
+  }
+
+  interface Gtag {
+    <Command extends keyof GtagCommands>(
+      command: Command,
+      ...args: GtagCommands[Command]
     ): void;
   }
 
@@ -171,6 +168,8 @@ export declare namespace Gtag {
    * @see {@link https://developers.google.com/tag-platform/devguides/consent consent}
    */
   interface ConsentParams {
+    ad_personalization?: 'granted' | 'denied' | undefined;
+    ad_user_data?: 'granted' | 'denied' | undefined;
     ad_storage?: 'granted' | 'denied' | undefined;
     analytics_storage?: 'granted' | 'denied' | undefined;
     functionality_storage?: 'granted' | 'denied' | undefined;
