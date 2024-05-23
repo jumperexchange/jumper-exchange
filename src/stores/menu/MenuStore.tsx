@@ -1,6 +1,5 @@
 'use client';
-import type { MenuKeys } from '@/const/menuKeys';
-import { MenuKeysEnum } from '@/const/menuKeys';
+import { MenuKeys, MenuKeysEnum } from '@/const/menuKeys';
 import type {
   EcosystemSelectMenuProps,
   MenuState,
@@ -47,6 +46,19 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
         return updatedState;
       }),
 
+    openedMenu: () => {
+      const menuState = get();
+      return (
+        menuState.openMainMenu ||
+        menuState.openEcosystemSelect.open ||
+        menuState.openSubMenu !== MenuKeys.None ||
+        menuState.openSupportModal ||
+        menuState.openWalletSelectMenu ||
+        menuState.openWalletMenu
+      );
+      // Add your desired functionality here
+    },
+
     // Close ALL Navbar Menus
     closeAllMenus: () => {
       set({
@@ -64,6 +76,9 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       set({
         openMainMenu: open,
         openSubMenu: MenuKeysEnum.None,
+        openWalletSelectMenu: false,
+        openWalletMenu: false,
+        openSupportModal: false,
       });
     },
 
@@ -72,6 +87,9 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       set({
         openWalletSelectMenu: open,
         openSubMenu: MenuKeysEnum.None,
+        openMainMenu: false,
+        openWalletMenu: false,
+        openSupportModal: false,
       });
     },
 
@@ -80,6 +98,9 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       set({
         openWalletMenu: open,
         openSubMenu: MenuKeysEnum.None,
+        openMainMenu: false,
+        openWalletSelectMenu: false,
+        openSupportModal: false,
       });
     },
 
@@ -89,6 +110,9 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
         openEcosystemSelect: { open, combinedWallet },
         openWalletSelectMenu: false,
         openSubMenu: MenuKeysEnum.None,
+        openMainMenu: false,
+        openWalletMenu: false,
+        openSupportModal: false,
       });
     },
 
@@ -114,10 +138,10 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     // Toggle support modal
     setSupportModalState: (open) => {
       set({
+        openSupportModal: open,
         openMainMenu: false,
         openWalletSelectMenu: false,
         openWalletMenu: false,
-        openSupportModal: open,
         openSubMenu: MenuKeysEnum.None,
       });
     },

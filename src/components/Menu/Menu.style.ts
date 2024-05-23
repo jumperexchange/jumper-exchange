@@ -46,13 +46,13 @@ export const MenuList = styled(MuiMenuList, {
   justifyContent: cardsLayout ? 'center' : 'unset',
   flexWrap: cardsLayout ? 'wrap' : 'inherit',
   padding: cardsLayout ? theme.spacing(0, 3) : 0,
+  outline: 'unset',
   gap: cardsLayout ? '12px' : 'inherit',
   '& > :first-of-type': {
     marginTop:
       isOpenSubMenu || hasLabel || cardsLayout ? 'inherit' : theme.spacing(1.5),
-    paddingTop: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
   },
-  '& > :last-child': {
+  '& > li:last-of-type': {
     marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(3),
     paddingBottom: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
     paddingTop: hasLabel ? 0 : 'inherit',
@@ -68,7 +68,7 @@ export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
   display: 'flex',
   marginRight: theme.spacing(4.75),
   flexWrap: 'nowrap',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('md' as Breakpoint)]: {
     maxWidth: 174,
     marginRight: 0,
     marginLeft: theme.spacing(0.75),
@@ -78,14 +78,16 @@ export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
 export interface MenuPaperProps
   extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
   isMobile?: boolean;
+  show: boolean;
   width?: string;
   component?: ElementType<any>;
 }
 
 export const MenuPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
-    prop !== 'isMobile' && prop !== 'isWide' && prop !== 'isSubMenu',
-})<MenuPaperProps>(({ theme, isMobile, width }) => ({
+    prop !== 'isMobile' && prop !== 'isWide' && prop !== 'show',
+})<MenuPaperProps>(({ theme, isMobile, width, show }) => ({
+  display: !show ? 'none' : 'block',
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
@@ -99,11 +101,13 @@ export const MenuPaper = styled(Paper, {
         }8px 16px rgba(0, 0, 0, 0.16)`,
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
+
   maxHeight: `calc( 100vh - ${MENU_LABEL_HEIGHT}px - 12px )`, // viewHeight - navbarHeight - offset
   overflowY: 'auto',
   overflowX: 'hidden',
   width: '100%',
   transformOrigin: 'bottom',
+  height: '100% !important',
   transition:
     'opacity 307ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 204ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
 
@@ -111,6 +115,8 @@ export const MenuPaper = styled(Paper, {
     width: 32,
     height: 32,
   },
+
+  '.submenu': { paddingBottom: theme.spacing(1.5) },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     maxHeight: 'calc( 100vh - 72px - 12px )',
@@ -138,7 +144,6 @@ export const MenuItemLink = styled(Link, {
 })<MenuItemLinkProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  padding: theme.spacing(0, 1.5),
   height: 48,
   textDecoration: 'none',
   color: 'inherit',
