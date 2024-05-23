@@ -19,7 +19,6 @@ import { useSettingsStore } from '@/stores/settings';
 import { EventTrackingTool } from '@/types/userTracking';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import { getContrastAlphaColor } from '@/utils/colors';
-import { openInNewTab } from '@/utils/openInNewTab';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -37,8 +36,9 @@ export const useMainMenuContent = () => {
   const { trackPageload, trackEvent } = useUserTracking();
   const router = useRouter();
   const theme = useTheme();
-  const { closeAllMenus } = useMenuStore((state) => state);
-  const { setSupportModalState } = useMenuStore((state) => state);
+  const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
+    (state) => state,
+  );
   const themeMode = useSettingsStore((state) => state.themeMode);
   const explorerUrl = appendUTMParametersToLink(EXPLORER_URL, {
     utm_campaign: 'jumper_to_explorer',
@@ -121,16 +121,43 @@ export const useMainMenuContent = () => {
       ),
       showMoreIcon: true,
       triggerSubMenu: MenuKeysEnum.Language,
+      onClick: () => {
+        setSubMenuState(MenuKeysEnum.Language);
+        trackEvent({
+          category: TrackingCategory.MainMenu,
+          action: TrackingAction.OpenMenu,
+          label: `open_submenu_${MenuKeysEnum.Language.toLowerCase()}`,
+          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Language },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+      },
     },
     {
       label: t('navbar.navbarMenu.developers'),
       prefixIcon: <DeveloperModeIcon />,
       triggerSubMenu: MenuKeysEnum.Devs,
+      onClick: () => {
+        setSubMenuState(MenuKeysEnum.Devs);
+        trackEvent({
+          category: TrackingCategory.MainMenu,
+          action: TrackingAction.OpenMenu,
+          label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
+          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+      },
     },
     {
       label: t('navbar.navbarMenu.profile'),
       prefixIcon: <AccountCircleIcon />,
       showMoreIcon: false,
+      link: { url: '/profile' },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -150,6 +177,7 @@ export const useMainMenuContent = () => {
       label: 'Jumper Learn',
       prefixIcon: <SchoolIcon />,
       showMoreIcon: false,
+      link: { url: '/learn' },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -169,6 +197,7 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.lifiExplorer'),
       prefixIcon: <SearchOutlinedIcon />,
       showMoreIcon: false,
+      link: { url: explorerUrl, external: true },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -187,7 +216,6 @@ export const useMainMenuContent = () => {
           pageload: true,
           disableTrackingTool: [EventTrackingTool.Cookie3],
         });
-        openInNewTab(explorerUrl);
       },
     },
     {
@@ -212,8 +240,8 @@ export const useMainMenuContent = () => {
           pageload: true,
           disableTrackingTool: [EventTrackingTool.Cookie3],
         });
-        openInNewTab(X_URL);
       },
+      link: { url: X_URL, external: true },
     },
     {
       label: 'Discord',
@@ -245,8 +273,8 @@ export const useMainMenuContent = () => {
           pageload: true,
           disableTrackingTool: [EventTrackingTool.Cookie3],
         });
-        openInNewTab(DISCORD_URL);
       },
+      link: { url: DISCORD_URL, external: true },
     },
     {
       label: t('navbar.navbarMenu.support'),

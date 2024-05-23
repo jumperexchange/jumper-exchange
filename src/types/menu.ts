@@ -17,6 +17,7 @@ export interface EcosystemSelectMenuProps {
 }
 
 export type MenuProps = {
+  openedMenu: () => boolean;
   openMainMenu: boolean;
   openWalletSelectMenu: boolean;
   openWalletMenu: boolean;
