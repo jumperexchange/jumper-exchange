@@ -46,7 +46,6 @@ export const QuestCardInfoBox = styled(Box, {
 export const CompletedBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
-  marginBottom: '16px',
   backgroundColor: '#d6ffe7',
   borderRadius: '128px',
   padding: '4px',
