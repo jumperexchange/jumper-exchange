@@ -7,7 +7,9 @@ import { styled } from '@mui/material/styles';
 
 export const NavbarButtonsContainer = styled('div')({
   display: 'flex',
+  flex: 1,
   justifySelf: 'self-end',
+  justifyContent: 'flex-end',
 });
 
 export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => ({

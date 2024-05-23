@@ -30,7 +30,7 @@ export const useLanguagesContent = () => {
     });
     i18n.changeLanguage(newLanguage);
     setCookie(cookieName, newLanguage, { path: '/', sameSite: true });
-    replaceLocaleInUrl(pathname, newLanguage);
+    pathname && replaceLocaleInUrl(pathname, newLanguage);
   };
 
   const languages = Object.entries(supportedLanguages)
@@ -38,7 +38,9 @@ export const useLanguagesContent = () => {
     .map(([language, languageValue]) => ({
       label: languageValue.language.value,
       checkIcon: i18n.language === language,
-      onClick: () => handleSwitchLanguage(language as LanguageKey),
+      onClick: () => {
+        handleSwitchLanguage(language as LanguageKey);
+      },
     }));
 
   return languages;

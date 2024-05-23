@@ -6,14 +6,14 @@ import { TabsMap } from '@/const/tabsMap';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
 import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
-import type { ThemeModesSupported } from '@/types/settings';
 import type { WidgetSubvariant } from '@lifi/widget';
+import { usePathname } from 'next/navigation';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { Widget } from '.';
+import { ThemesMap } from 'src/const/themesMap';
+import type { ThemeModesSupported } from 'src/types/settings';
+import { Widget } from './Widget';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
-import { ThemesMap } from 'src/const/themesMap';
-import { usePathname } from 'next/navigation';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
@@ -62,13 +62,15 @@ export function Widgets({
   }, [widgetVariant]);
 
   const themeVariant: ThemeVariantType | undefined = useMemo(() => {
-    if (pathname.includes('memecoins')) {
+    if (pathname?.includes('memecoins')) {
       setWelcomeScreenClosed(true);
       //Todo: review the logic of the tab selection.
       setActiveTab(-1);
       return ThemesMap.Memecoins;
     }
-  }, [pathname]);
+    // remove setWelcomeScreenClosed from array to prevent infinite re-rendering
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, setActiveTab]);
 
   const getActiveWidget = useCallback(() => {
     setThemeVariant(themeVariant);
@@ -125,6 +127,7 @@ export function Widgets({
         <Widget
           starterVariant={TabsMap.Exchange.variant as WidgetSubvariant}
           themeVariant={_themeVariant}
+          activeTheme={activeTheme}
         />
       </WidgetContainer>
       <WidgetContainer
@@ -132,7 +135,10 @@ export function Widgets({
         isActive={_starterVariant === TabsMap.Refuel.variant}
         welcomeScreenClosed={!!welcomeScreenClosed}
       >
-        <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
+        <Widget
+          starterVariant={TabsMap.Refuel.variant as WidgetSubvariant}
+          activeTheme={activeTheme}
+        />
       </WidgetContainer>
       <SolanaAlert />
       {process.env.NEXT_PUBLIC_ONRAMPER_ENABLED ? (

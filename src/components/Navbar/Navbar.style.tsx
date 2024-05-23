@@ -15,6 +15,7 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
     justifyContent: 'space-between',
     position: 'sticky',
     top: 0,
+    minWidth: 416,
     backdropFilter: 'blur(12px)',
     boxShadow: 'unset',
     background: 'transparent',
@@ -36,4 +37,5 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
 export const LogoLink = styled(Link)(({ theme }) => ({
   cursor: 'pointer',
   display: 'flex',
+  flex: 1,
 }));

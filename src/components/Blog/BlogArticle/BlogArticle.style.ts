@@ -130,15 +130,6 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   overflow: 'hidden',
   padding: theme.spacing(1.5, 2, 3),
 
-  a: {
-    color:
-      theme.palette.mode === 'light'
-        ? theme.palette.primary.main
-        : theme.palette.accent1Alt.main,
-    fontWeight: 600,
-    marginLeft: theme.spacing(1),
-  },
-
   li: {
     color: alpha(
       theme.palette.mode === 'light'
@@ -237,20 +228,12 @@ export const Divider = styled(MuiDivider)(({ theme }) => ({
 
 // Typography:
 
-export const BlogArticleTitle = styled(Typography)<TypographyProps>(
-  ({ theme }) => ({
-    marginTop: theme.spacing(4),
-    fontWeight: 700,
-    lineHeight: '64px',
-    fontSize: '48px',
-    fontFamily: urbanist.style.fontFamily,
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      fontSize: '64px',
-      lineHeight: '72px',
-      marginTop: theme.spacing(8),
-    },
-  }),
-);
+export const BlogArticleTitle = styled(Typography)(({ theme }) => ({
+  marginTop: theme.spacing(4),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginTop: theme.spacing(8),
+  },
+}));
 
 export const BlogArticleTitleSkeleton = styled(Skeleton)<SkeletonProps>(
   ({ theme }) => ({
@@ -334,3 +317,7 @@ export const BlogArticlAuthorRoleSkeleton = styled(Skeleton)<SkeletonProps>(
     transform: 'unset',
   }),
 );
+
+export const BlogParagraphContainer = styled(Box)(({ theme }) => ({
+  margin: theme.spacing(2, 0),
+}));

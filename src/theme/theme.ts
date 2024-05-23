@@ -1,9 +1,9 @@
 'use client';
-import type { Breakpoint, Theme } from '@mui/material/styles';
+import type { Breakpoint } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
-import { inter, interVar } from 'src/fonts/fonts';
+import { inter, interVar, urbanist } from 'src/fonts/fonts';
 
 declare module '@mui/material/styles' {
   interface Shape {
@@ -196,10 +196,10 @@ const shape = {
   borderRadiusSecondary: 8,
 };
 
-const themeBase: Theme = createTheme();
+const themeBase = createTheme();
 
 // in a separate 'createTheme' to allow listening to breakpoints set above
-const themeCustomized: Theme = createTheme({
+const themeCustomized = createTheme({
   shape: {
     ...shape,
   },
@@ -254,6 +254,10 @@ const themeCustomized: Theme = createTheme({
         size: 'large',
       },
       styleOverrides: {
+        root: {
+          borderRadius: 24,
+          textTransform: 'none',
+        },
         sizeSmall: {
           height: 32,
         },
@@ -399,34 +403,12 @@ const themeCustomized: Theme = createTheme({
       'sans-serif',
     ].join(','),
     lifiHeaderDisplay: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontSize: '96px',
       lineHeight: '128px',
       fontWeight: 700,
     },
     lifiHeaderXLarge: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '64px',
@@ -434,17 +416,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderLarge: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '48px',
@@ -452,17 +423,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderMedium: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '32px',
@@ -470,17 +430,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderSmall: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
@@ -488,17 +437,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderXSmall: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
@@ -506,17 +444,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXLargeStrong: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 800,
       fontSize: '24px',
@@ -524,17 +451,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXLarge: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 400,
       fontSize: '24px',
@@ -542,17 +458,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyLargeStrong: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
@@ -560,17 +465,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyLarge: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '18px',
@@ -578,17 +472,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyMediumStrong: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '16px',
@@ -596,17 +479,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyMedium: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '16px',
@@ -614,17 +486,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodySmallStrong: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '14px',
@@ -632,17 +493,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodySmall: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 400,
       fontSize: '14px',
@@ -650,17 +500,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXSmallStrong: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '12px',
@@ -668,17 +507,6 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXSmall: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '12px',
@@ -686,29 +514,59 @@ const themeCustomized: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBrandHeaderXLarge: {
-      fontFamily: [
-        `${interVar.style.fontFamily}`,
-        `${inter.style.fontFamily}`,
-        'Inter fallback',
-        'Arial',
-        'Noto Sans',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'sans-serif',
-      ].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '64px',
       lineHeight: '72px',
       letterSpacing: 0,
     },
+    h1: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: themeBase.typography.pxToRem(48),
+      lineHeight: themeBase.typography.pxToRem(64),
+      letterSpacing: 'inherit',
+      fontWeight: 700,
+      [themeBase.breakpoints.up('sm' as Breakpoint)]: {
+        fontSize: themeBase.typography.pxToRem(64),
+        lineHeight: themeBase.typography.pxToRem(72),
+      },
+    },
+    h2: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: themeBase.typography.pxToRem(36),
+      lineHeight: themeBase.typography.pxToRem(48),
+      fontWeight: 700,
+    },
+    h3: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: themeBase.typography.pxToRem(28),
+      lineHeight: themeBase.typography.pxToRem(36),
+      fontWeight: 700,
+    },
+    h4: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: themeBase.typography.pxToRem(22),
+      lineHeight: themeBase.typography.pxToRem(28),
+      fontWeight: 700,
+    },
+    h5: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: themeBase.typography.pxToRem(18),
+      lineHeight: themeBase.typography.pxToRem(24),
+      fontWeight: 700,
+    },
+    h6: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: themeBase.typography.pxToRem(12),
+      lineHeight: themeBase.typography.pxToRem(18),
+      fontWeight: 700,
+    },
   },
 });
 
-const themePreset: Theme = createTheme(deepmerge(themeBase, themeCustomized));
+const themePreset = createTheme(deepmerge(themeBase, themeCustomized));
 
-export const lightTheme: Theme = createTheme(
+export const lightTheme = createTheme(
   deepmerge(themePreset, {
     palette: {
       mode: 'light',
@@ -735,7 +593,7 @@ export const lightTheme: Theme = createTheme(
       primary: {
         light: '#31007A',
         main: '#31007A',
-        dark: '#31007A',
+        dark: '#290066',
       },
       secondary: {
         light: '#E9E1F5',
@@ -796,7 +654,7 @@ export const lightTheme: Theme = createTheme(
   }),
 );
 
-export const darkTheme: Theme = createTheme(
+export const darkTheme = createTheme(
   deepmerge(themePreset, {
     palette: {
       mode: 'dark',
@@ -823,7 +681,7 @@ export const darkTheme: Theme = createTheme(
       primary: {
         light: '#653BA3',
         main: '#653BA3',
-        dark: '#653BA3',
+        dark: '#543188',
       },
       secondary: {
         light: '#321D52',

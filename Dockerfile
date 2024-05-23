@@ -1,5 +1,7 @@
 FROM node:20 AS builder
 
+ARG ENV_NAME
+ENV ENV_NAME $ENV_NAME
 ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production YARN_VERSION=4.0.1
 RUN corepack enable && corepack prepare yarn@${YARN_VERSION}
 
