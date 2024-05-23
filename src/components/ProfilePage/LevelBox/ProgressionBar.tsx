@@ -33,10 +33,10 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
               justifyContent: 'space-between',
             }}
           >
-            <ProfilePageTypography fontSize={'14px'} lineHeight={'18px'}>
+            <ProfilePageTypography fontSize="14px" lineHeight="18px">
               {`LEVEL ${levelData?.level}`}
             </ProfilePageTypography>
-            <ProfilePageTypography fontSize={'14px'} lineHeight={'18px'}>
+            <ProfilePageTypography fontSize="14px" lineHeight="18px">
               {`LEVEL ${levelData.level + 1}`}
             </ProfilePageTypography>
           </Box>
@@ -51,8 +51,8 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <CenteredBox>
               <ProfilePageTypography
-                fontSize={'16px'}
-                lineHeight={'20px'}
+                fontSize="16px"
+                lineHeight="20px"
                 fontWeight={600}
               >
                 {levelData.minPoints}

@@ -107,16 +107,16 @@ export const QuestCard = ({
           <CompletedBox>
             <DoneIcon sx={{ height: '16px', color: '#00B849' }} />
             <ProfilePageTypography
-              fontSize={'12px'}
-              lineHeight={'16px'}
-              sx={{ color: '#00B849' }}
+              fontSize="12px"
+              lineHeight="16px"
+              color="#00B849"
             >
               {t('questCard.completed')}
             </ProfilePageTypography>
           </CompletedBox>
         )}
         <QuestCardTitleBox>
-          <ProfilePageTypography fontSize={'18px'} lineHeight={'24px'}>
+          <ProfilePageTypography fontSize="18px" lineHeight="24px">
             {title}
           </ProfilePageTypography>
         </QuestCardTitleBox>
@@ -124,8 +124,8 @@ export const QuestCard = ({
           {points ? (
             <XPDisplayBox active={active}>
               <ProfilePageTypography
-                fontSize={'14px'}
-                lineHeight={'18px'}
+                fontSize="14px"
+                lineHeight="18px"
                 sx={{
                   color:
                     theme.palette.mode === 'light'
@@ -153,12 +153,9 @@ export const QuestCard = ({
                 styles={{ alignItems: 'center', width: '100%' }}
               >
                 <ProfilePageTypography
-                  fontSize={'16px'}
-                  lineHeight={'18px'}
+                  fontSize="16px"
+                  lineHeight="18px"
                   fontWeight={600}
-                  sx={{
-                    padding: 1,
-                  }}
                 >
                   {t('questCard.join')}
                 </ProfilePageTypography>

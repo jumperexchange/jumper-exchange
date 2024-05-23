@@ -27,11 +27,9 @@ export interface ProfilePageTypographyProps
 
 export const ProfilePageTypography = styled(
   Typography,
-)<ProfilePageTypographyProps>(({ fontWeight, lineHeight }) => ({
-  // fontSize: fontSize,
-  fontWeight: fontWeight ?? 700,
-  lineHeight: lineHeight,
+)<ProfilePageTypographyProps>(() => ({
   userSelect: 'none',
+  fontWeight: 700,
 }));
 
 export const CenteredBox = styled(Box)(() => ({
