@@ -1,4 +1,3 @@
-import type { Page } from '@playwright/test';
 import { test, expect } from '@playwright/test';
 import {
   findTheBestRoute,
@@ -105,7 +104,6 @@ test.describe('Jumper full e2e flow', () => {
     await expect(page.getByRole('menu')).toBeVisible();
     await page.getByRole('link', { name: 'X', exact: true }).click();
     const newPage = await context.waitForEvent('page');
-    // newPage.waitForLoadState();
     expect(newPage.url()).toBe(xUrl);
   });
   test('should be able to navigate to Discord', async ({ page, context }) => {
@@ -115,7 +113,6 @@ test.describe('Jumper full e2e flow', () => {
     await expect(page.getByRole('menu')).toBeVisible();
     await page.getByRole('link', { name: 'Discord' }).click();
     const newPage = await context.waitForEvent('page');
-    // newPage.waitForLoadState();
     expect(newPage.url()).toBe(discordUrl);
   });
 
