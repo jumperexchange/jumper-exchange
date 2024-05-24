@@ -42,6 +42,12 @@ export const BlogParagraph = styled(Typography, {
 // Headings
 
 export const BlogHeadline = styled(Typography)(({ theme }) => ({
+  a: {
+    color:
+      theme.palette.mode === 'dark'
+        ? theme.palette.white.main
+        : theme.palette.black.main,
+  },
   '& a:not(:first-child)': {
     marginLeft: theme.spacing(0.5),
   },
