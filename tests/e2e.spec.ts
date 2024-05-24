@@ -58,6 +58,7 @@ test.describe('Jumper full e2e flow', () => {
     await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
+
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
@@ -103,18 +104,38 @@ test.describe('Jumper full e2e flow', () => {
     await page.locator('#main-burger-menu-button').click();
     await expect(page.getByRole('menu')).toBeVisible();
     await page.getByRole('link', { name: 'X', exact: true }).click();
-    const newPage = await context.waitForEvent('page')
+    const newPage = await context.waitForEvent('page');
     // newPage.waitForLoadState();
     expect(newPage.url()).toBe(xUrl);
   });
-  test('should be able to navigate to Discord', async ({ page, context}) => {
+  test('should be able to navigate to Discord', async ({ page, context }) => {
     let discordUrl = 'https://discord.com/invite/lifi';
     await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await expect(page.getByRole('menu')).toBeVisible();
     await page.getByRole('link', { name: 'Discord' }).click();
-    const newPage = await context.waitForEvent('page')
+    const newPage = await context.waitForEvent('page');
     // newPage.waitForLoadState();
     expect(newPage.url()).toBe(discordUrl);
+  });
+
+  test.use({ colorScheme: 'dark' });
+  test('Should able to change color to Dark', async ({ page }) => {
+    await closeWelcomeScreen(page);
+    await page.locator('#main-burger-menu-button').click();
+    await page.locator('xpath=//*[@id="tab-key-1"]').click();
+    await page.locator('#main-burger-menu-button').click(); //Close menu
+    const backgroundColor = await page.locator('xpath=/html/body/div[1]');
+    expect(backgroundColor).toHaveCSS('background-color', 'rgb(3, 0, 20)');
+  });
+
+  test.use({ colorScheme: 'light' });
+  test('Should able to change color to Light', async ({ page }) => {
+    await closeWelcomeScreen(page);
+    await page.locator('#main-burger-menu-button').click();
+    await page.locator('xpath=//*[@id="tab-key-0"]').click();
+    await page.locator('#main-burger-menu-button').click(); // Close menu
+    const backgroundColor = await page.locator('xpath=/html/body/div[1]');
+    expect(backgroundColor).toHaveCSS('background-color', 'rgb(243, 235, 255)');
   });
 });
