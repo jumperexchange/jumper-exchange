@@ -5,12 +5,12 @@ import { BackgroundGradient } from '@/components/BackgroundGradient/BackgroundGr
 import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
+import type { ThemeModesSupported } from '@/types/settings';
 import type { BlogArticleData } from '@/types/strapi';
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { BlogArticleWrapper } from './LearnArticlePage.style';
-import type { ThemeModesSupported } from '@/types/settings';
 
 interface LearnArticlePageProps {
   article: BlogArticleData[];
@@ -52,7 +52,7 @@ const LearnArticlePage = ({
         position="relative"
         sx={{
           padding: theme.spacing(6, 2, 0.25),
-
+          zIndex: 0,
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             padding: theme.spacing(6, 2, 0.25),
             paddingTop: theme.spacing(12),
