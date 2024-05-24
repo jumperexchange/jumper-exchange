@@ -35,18 +35,19 @@ test.describe('Jumper full e2e flow', () => {
     await findTheBestRoute(page);
     expect(headerText).toBe('Find the best route');
     await page.locator('#get-started-button').click();
-    const connectWalletButton = page.locator('xpath=(//button[text()="Connect wallet"])[1]');
+    const connectWalletButton = page.locator(
+      'xpath=(//button[text()="Connect wallet"])[1]',
+    );
     await expect(connectWalletButton).toBeVisible();
   });
 
   test('should show again welcome screen when clicking jumper logo', async ({
     page,
   }) => {
-    const headerText = 'Find the best route'
+    const headerText = 'Find the best route';
     await findTheBestRoute(page);
     expect(headerText).toBe('Find the best route');
     await page.locator('#get-started-button').click();
-    
     await page.locator('#jumper-logo').click();
     expect(headerText).toBe('Find the best route');
   });
