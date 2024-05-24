@@ -1,20 +1,12 @@
 'use client';
 import type { MenuKeysEnum } from '@/const/menuKeys';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import type { MenuListItem } from '@/types/internal';
-import { EventTrackingTool } from '@/types/userTracking';
 import { getContrastAlphaColor } from '@/utils/colors';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckIcon from '@mui/icons-material/Check';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import type { Breakpoint } from '@mui/material';
-import { Box, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import type { KeyboardEvent } from 'react';
 import { useEffect, useRef } from 'react';
@@ -24,7 +16,7 @@ import {
   MenuHeaderLabel,
   MenuItemContainer,
   MenuItemLink,
-  MenuLabel,
+  MenuLabelContainer,
   MenuPaper,
 } from '.';
 import { SubMenuLabel } from './SubMenu.style';
@@ -32,10 +24,6 @@ import { SubMenuLabel } from './SubMenu.style';
 interface SubMenuProps {
   open: boolean;
   label: string;
-  suffixIcon?: JSX.Element | string;
-  prefixIcon?: JSX.Element | string;
-  checkIcon?: boolean;
-  url?: string;
   prevMenu: MenuKeysEnum;
   subMenuList: MenuListItem[];
   triggerSubMenu: MenuKeysEnum;
@@ -49,7 +37,6 @@ export const SubMenu = ({
   subMenuList,
 }: SubMenuProps) => {
   const theme = useTheme();
-  const { trackEvent } = useUserTracking();
   const menuListRef = useRef(null);
   const { openSubMenu, setSubMenuState } = useMenuStore((state) => state);
 
@@ -60,24 +47,7 @@ export const SubMenu = ({
   }
 
   const handleClick = (el: MenuListItem) => {
-    if (el.triggerSubMenu) {
-      setSubMenuState(el.triggerSubMenu);
-      trackEvent({
-        category: TrackingCategory.SubMenu,
-        action: TrackingAction.OpenMenu,
-        label: `open_submenu_${el.triggerSubMenu.toLowerCase()}`,
-        data: {
-          [TrackingEventParameter.Menu]: el.triggerSubMenu,
-          [TrackingEventParameter.PrevMenu]: prevMenu,
-        },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
-      });
-    } else {
-      typeof el.onClick === 'function' && el.onClick();
-    }
+    typeof el.onClick === 'function' && el.onClick();
   };
 
   const handleBackNavigation = () => {
@@ -91,8 +61,9 @@ export const SubMenu = ({
     }
   }, [open, openSubMenu, triggerSubMenu]);
 
-  return openSubMenu === triggerSubMenu ? (
+  return (
     <MenuPaper
+      show={openSubMenu === triggerSubMenu}
       className="submenu"
       onKeyDown={handleBackSpace}
       autoFocus={open}
@@ -112,7 +83,8 @@ export const SubMenu = ({
                 backgroundColor: getContrastAlphaColor(theme, '4%'),
               },
             }}
-            onClick={() => {
+            onClick={(event) => {
+              event.stopPropagation();
               handleBackNavigation();
             }}
           >
@@ -123,25 +95,23 @@ export const SubMenu = ({
       </MenuHeaderAppWrapper>
       {!!subMenuList.length ? (
         subMenuList.map((el, index) =>
-          !!el.url ? (
-            <MenuItemLink
+          !!el.link?.url ? (
+            <MenuItemContainer
               autoFocus={index > 0 ? true : false}
-              onClick={() => {
-                el.triggerSubMenu
-                  ? setSubMenuState(el.triggerSubMenu)
-                  : el.onClick && el.onClick();
-              }}
               component="li"
+              onClick={() => handleClick(el)}
               key={`${el.label}-${index}`}
             >
-              <MenuLabel
-                variant={
-                  !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
-                    ? 'lg'
-                    : (el.showMoreIcon || el.checkIcon) && el.suffixIcon
-                      ? 'xs'
-                      : 'md'
-                }
+              <MenuItemLink
+                autoFocus={index > 0 ? true : false}
+                href={el.link.url}
+                target={el.link.external ? '_blank' : '_self'}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  typeof el.onClick === 'function' && el.onClick();
+                }}
+                component="li"
+                key={`${el.label}-${index}`}
               >
                 {el.prefixIcon}
                 <SubMenuLabel
@@ -152,15 +122,15 @@ export const SubMenu = ({
                   {`${el.label || ' '}`}
                 </SubMenuLabel>
                 {el.suffixIcon}
-              </MenuLabel>
-            </MenuItemLink>
+              </MenuItemLink>
+            </MenuItemContainer>
           ) : (
             <MenuItemContainer
               autoFocus={index > 0 ? true : false}
               onClick={() => handleClick(el)}
               key={`${el.label}-${index}`}
             >
-              <MenuLabel
+              <MenuLabelContainer
                 variant={
                   !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
                     ? 'lg'
@@ -170,21 +140,15 @@ export const SubMenu = ({
                 }
               >
                 {el.prefixIcon}
-                <Typography
+                <SubMenuLabel
                   variant={'lifiBodyMedium'}
+                  prefixIcon={!!el.prefixIcon}
+                  suffixIcon={!!el.suffixIcon}
                   ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
-                  sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    maxWidth: 'inherit',
-                    [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      maxWidth: el.prefixIcon ? 188 : 'inherit',
-                    },
-                  }}
                 >
                   {`${el.label || ' '}`}
-                </Typography>
-              </MenuLabel>
+                </SubMenuLabel>
+              </MenuLabelContainer>
               {el.checkIcon && <CheckIcon />}
               {el.showMoreIcon ? (
                 <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
@@ -198,5 +162,5 @@ export const SubMenu = ({
         </Box>
       )}
     </MenuPaper>
-  ) : null;
+  );
 };

@@ -1,4 +1,3 @@
-'use client';
 import type {
   ListItemProps,
   MenuItemProps as MUIMenuItemProps,
@@ -47,7 +46,7 @@ export interface MenuLabelProps extends Omit<ListItemProps, 'variant'> {
   variant?: 'xs' | 'md' | 'lg';
 }
 
-export const MenuLabel = styled('div', {
+export const MenuLabelContainer = styled('div', {
   shouldForwardProp: (prop) => prop !== 'variant',
 })<MenuLabelProps>(({ variant, theme }) => ({
   display: 'flex',

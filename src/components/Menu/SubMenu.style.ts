@@ -1,5 +1,5 @@
 'use client';
-import type { TypographyProps } from '@mui/material';
+import type { Breakpoint, TypographyProps } from '@mui/material';
 import { Typography } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
@@ -20,4 +20,7 @@ export const SubMenuLabel = styled(Typography, {
   textOverflow: 'ellipsis',
   marginLeft: prefixIcon ? theme.spacing(1.5) : 'inherit',
   marginRight: suffixIcon ? theme.spacing(1.5) : 'inherit',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    maxWidth: prefixIcon ? 188 : 'inherit',
+  },
 }));

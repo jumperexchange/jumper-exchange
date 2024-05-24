@@ -1,24 +1,15 @@
 import { ButtonSecondary } from '@/components/Button/Button.style';
 import type { MenuKeysEnum } from '@/const/menuKeys';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useMenuStore } from '@/stores/menu/MenuStore';
-import { EventTrackingTool } from '@/types/userTracking';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import type { SxProps, Theme } from '@mui/material';
-import { useTheme } from '@mui/material';
+import type { Breakpoint, SxProps, Theme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import type { JsxElement } from 'typescript';
-import {
-  MenuItemButtonLabel,
-  MenuItemContainer,
-  MenuItemLabel,
-  MenuLabel,
-} from '.';
+import { MenuItemContainer, MenuItemLink } from '.';
+import { MenuItemLabel } from './MenuItemLabel';
 
+export interface MenuItemLinkType {
+  url: string;
+  external?: boolean;
+}
 interface MenuItemProps {
   open: boolean;
   showButton: boolean | undefined;
@@ -27,12 +18,12 @@ interface MenuItemProps {
   autoFocus?: boolean;
   showMoreIcon?: boolean;
   styles?: SxProps<Theme>;
+  link?: MenuItemLinkType;
   label?: string;
-  onClick?: () => void;
+  onClick?: any;
   triggerSubMenu?: MenuKeysEnum;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
-  checkIcon?: boolean;
 }
 
 export const MenuItem = ({
@@ -42,6 +33,7 @@ export const MenuItem = ({
   disableRipple,
   children,
   showMoreIcon = true,
+  link,
   styles,
   onClick,
   label,
@@ -50,22 +42,9 @@ export const MenuItem = ({
   suffixIcon,
 }: MenuItemProps) => {
   const theme = useTheme();
-  const { trackEvent } = useUserTracking();
-  const { setSubMenuState } = useMenuStore((state) => state);
 
-  const handleClick = () => {
-    triggerSubMenu && setSubMenuState(triggerSubMenu);
-    triggerSubMenu &&
-      trackEvent({
-        category: TrackingCategory.MainMenu,
-        action: TrackingAction.OpenMenu,
-        label: `open_submenu_${triggerSubMenu.toLowerCase()}`,
-        data: { [TrackingEventParameter.Menu]: triggerSubMenu },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
-      });
+  const handleClick = (event: any) => {
+    event?.stopPropagation();
     onClick && onClick();
   };
 
@@ -75,8 +54,9 @@ export const MenuItem = ({
       showButton={showButton || false}
       sx={styles}
       autoFocus={autoFocus}
-      onClick={() => {
-        !children && handleClick();
+      onClick={(event) => {
+        event.stopPropagation();
+        !children && handleClick(event);
       }}
     >
       <>
@@ -84,47 +64,49 @@ export const MenuItem = ({
         {showButton && (
           <ButtonSecondary fullWidth>
             {prefixIcon}
-            <MenuItemButtonLabel
+            <Typography
               variant={'lifiBodyMediumStrong'}
               component={'span'}
+              ml={!!prefixIcon ? '9.5px' : 'inherit'}
+              mr={!!prefixIcon ? '9.5px' : 'inherit'}
+              sx={{
+                color:
+                  theme.palette.mode === 'light'
+                    ? theme.palette.primary.main
+                    : theme.palette.white.main,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                maxWidth: 208,
+                [theme.breakpoints.up('sm' as Breakpoint)]: {
+                  maxWidth: 168,
+                },
+              }}
             >
               {label}
-            </MenuItemButtonLabel>
+            </Typography>
             {suffixIcon ?? null}
           </ButtonSecondary>
         )}
-        {!showButton && (
-          <>
-            <MenuLabel
-              variant={
-                suffixIcon && showMoreIcon
-                  ? 'xs'
-                  : !suffixIcon && !showMoreIcon
-                    ? 'lg'
-                    : 'md'
-              }
-            >
-              {prefixIcon ?? null}
-              {label ? (
-                <MenuItemLabel variant={'lifiBodyMedium'}>
-                  {label}
-                </MenuItemLabel>
-              ) : null}
-            </MenuLabel>
-            {suffixIcon || showMoreIcon ? (
-              <div
-                style={{
-                  display: suffixIcon || showMoreIcon ? 'flex' : 'none',
-                  alignItems: 'center',
-                }}
-              >
-                {suffixIcon ?? null}
-                {showMoreIcon ? (
-                  <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
-                ) : null}
-              </div>
-            ) : null}
-          </>
+        {!showButton && link?.url && (
+          <MenuItemLink
+            href={link.url}
+            target={link.external ? '_blank' : '_self'}
+          >
+            <MenuItemLabel
+              label={label}
+              showMoreIcon={showMoreIcon}
+              suffixIcon={suffixIcon}
+              prefixIcon={prefixIcon}
+            />
+          </MenuItemLink>
+        )}
+        {!showButton && !link?.url && (
+          <MenuItemLabel
+            label={label}
+            showMoreIcon={showMoreIcon}
+            suffixIcon={suffixIcon}
+            prefixIcon={prefixIcon}
+          />
         )}
       </>
     </MenuItemContainer>
