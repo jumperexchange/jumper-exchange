@@ -11,7 +11,7 @@ import {
 
 export const FeaturedArticleSkeleton = () => {
   return (
-    <FeaturedArticleContainer>
+    <FeaturedArticleContainer href={''}>
       <FeaturedArticleImageSkeleton variant="rectangular" />
       <FeaturedArticleContent sx={{ width: '100%' }}>
         <FeaturedArticleDetails>

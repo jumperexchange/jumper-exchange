@@ -8,13 +8,12 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData } from '@/types/strapi';
 import { EventTrackingTool } from '@/types/userTracking';
 import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
-import { useRouter } from 'next/navigation';
+import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import {
   FeaturedArticleContainer,
   FeaturedArticleContent,
@@ -38,9 +37,9 @@ export const FeaturedArticle = ({
 }: FeaturedArticleProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const router = useRouter();
 
   const handleFeatureCardClick = (featuredArticle: BlogArticleData[]) => {
+    console.log('CLICK');
     trackEvent({
       category: TrackingCategory.BlogFeaturedArticle,
       label: 'click-featured-article',
@@ -48,7 +47,6 @@ export const FeaturedArticle = ({
       data: { [TrackingEventParameter.ArticleID]: featuredArticle[0]?.id },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    router.push(`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`);
   };
 
   const formatedDate =
@@ -64,6 +62,7 @@ export const FeaturedArticle = ({
   return featuredArticle && featuredArticle?.length > 0 ? (
     <>
       <FeaturedArticleContainer
+        href={`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`}
         onClick={() => {
           handleFeatureCardClick(featuredArticle);
         }}
