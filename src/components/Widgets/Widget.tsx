@@ -191,6 +191,7 @@ export function Widget({
     theme.palette.mode,
     theme.palette.surface1.main,
     theme.palette.surface2.main,
+    theme.typography.fontFamily,
     themeMode,
     themeVariant,
     toChain,
