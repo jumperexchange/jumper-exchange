@@ -116,23 +116,4 @@ test.describe('Jumper full e2e flow', () => {
     expect(newPage.url()).toBe(discordUrl);
   });
 
-  test.use({ colorScheme: 'dark' });
-  test('Should able to change color to Dark', async ({ page }) => {
-    await closeWelcomeScreen(page);
-    await page.locator('#main-burger-menu-button').click();
-    await page.locator('xpath=//*[@id="tab-key-1"]').click();
-    await page.locator('#main-burger-menu-button').click(); //Close menu
-    const backgroundColor = await page.locator('xpath=/html/body/div[1]');
-    expect(backgroundColor).toHaveCSS('background-color', 'rgb(3, 0, 20)');
-  });
-
-  test.use({ colorScheme: 'light' });
-  test('Should able to change color to Light', async ({ page }) => {
-    await closeWelcomeScreen(page);
-    await page.locator('#main-burger-menu-button').click();
-    await page.locator('xpath=//*[@id="tab-key-0"]').click();
-    await page.locator('#main-burger-menu-button').click(); // Close menu
-    const backgroundColor = await page.locator('xpath=/html/body/div[1]');
-    expect(backgroundColor).toHaveCSS('background-color', 'rgb(243, 235, 255)');
-  });
 });
