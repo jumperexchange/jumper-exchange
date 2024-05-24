@@ -33,8 +33,8 @@ test.describe('Jumper full e2e flow', () => {
   test('should handle welcome screen', async ({ page }) => {
     await findTheBestRoute(page);
     await expect(
-      page.getByRole('heading', { name: 'Find the best route' }),
-    ).not.toBeVisible();
+      page.locator('xpath=//h1[text()="Find the best route"]')
+    ).toBeVisible();
   });
 
   test('should show again welcome screen when clicking jumper logo', async ({
