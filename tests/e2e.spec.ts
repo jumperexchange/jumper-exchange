@@ -31,24 +31,24 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('should handle welcome screen', async ({ page }) => {
+    const headerText = 'Find the best route';
     await findTheBestRoute(page);
-    await expect(
-      page.getByRole('heading', { name: 'Find the best route' }),
-    ).not.toBeVisible();
+    expect(headerText).toBe('Find the best route');
+    await page.locator('#get-started-button').click();
+    const connectWalletButton = page.locator('xpath=(//button[text()="Connect wallet"])[1]');
+    await expect(connectWalletButton).toBeVisible();
   });
 
   test('should show again welcome screen when clicking jumper logo', async ({
     page,
   }) => {
-    await page.reload();
+    const headerText = 'Find the best route'
     await findTheBestRoute(page);
-    await expect(
-      page.getByRole('heading', { name: 'Find the best route' }),
-    ).not.toBeVisible();
+    expect(headerText).toBe('Find the best route');
+    await page.locator('#get-started-button').click();
+    
     await page.locator('#jumper-logo').click();
-    await expect(
-      page.getByRole('heading', { name: 'Find the best route' }),
-    ).toBeVisible();
+    expect(headerText).toBe('Find the best route');
   });
 
   test('should be able to open menu and click away to close it', async ({
@@ -115,5 +115,4 @@ test.describe('Jumper full e2e flow', () => {
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(discordUrl);
   });
-
 });

@@ -1,8 +1,8 @@
 import type { Page } from '@playwright/test';
 
 export async function findTheBestRoute(page) {
-  await page.getByRole('heading', { name: 'Find the best route' });
-  await page.locator('.widget-wrapper').first().click();
+  await page.getByRole('heading',{name: 'Find the best route'})
+  
 }
 
 export async function openMainMenu(page) {
