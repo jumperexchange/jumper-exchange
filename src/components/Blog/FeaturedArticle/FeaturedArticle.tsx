@@ -39,7 +39,6 @@ export const FeaturedArticle = ({
   const { trackEvent } = useUserTracking();
 
   const handleFeatureCardClick = (featuredArticle: BlogArticleData[]) => {
-    console.log('CLICK');
     trackEvent({
       category: TrackingCategory.BlogFeaturedArticle,
       label: 'click-featured-article',
