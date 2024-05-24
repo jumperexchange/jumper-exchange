@@ -109,6 +109,10 @@ export function Widget({
         HiddenUI.WalletMenu,
       ],
       theme: {
+        // @ts-expect-error
+        typography: {
+          fontFamily: theme.typography.fontFamily,
+        },
         container: {
           borderRadius: '12px',
           minWidth: 416,

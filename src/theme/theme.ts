@@ -207,10 +207,7 @@ const themeCustomized = createTheme({
     MuiScopedCssBaseline: {
       styleOverrides: {
         root: {
-          fontFamily: `${inter.style.fontFamily}, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif`,
-          '@supports (font-variation-settings: normal)': {
-            fontFamily: `${inter.style.fontFamily}, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif`,
-          },
+          fontFamily: `${inter.style.fontFamily}, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif`,
         },
       },
     },
@@ -393,7 +390,6 @@ const themeCustomized = createTheme({
   typography: {
     fontFamily: [
       inter.style.fontFamily,
-      'Inter fallback',
       'Arial',
       'Noto Sans',
       'BlinkMacSystemFont',
