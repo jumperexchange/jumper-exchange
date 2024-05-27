@@ -1,0 +1,121 @@
+{
+  "navbar": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "cta": ""
+    },
+    "poweredByLifi": "",
+    "links": {
+      "exchange": "交換所",
+      "dashboard": "ダッシュボード",
+      "refuel": "リフューエル",
+      "buy": "購入"
+    },
+    "statsCards": {
+      "dexs": "",
+      "bridges": "ブリッジ",
+      "chains": "チェーン"
+    },
+    "connect": "",
+    "walletSelectMenu": {
+      "connectWallet": "ウォレットを接続",
+      "wallets": "ウォレット",
+      "ecosystemSelectMenu": {
+        "selectEcosystem": "",
+        "noEcosystemAdapter": ""
+      }
+    },
+    "seeAllWallets": "すべてのウォレットを見る",
+    "navbarMenu": {
+      "brandAssets": "ブランドアセット",
+      "theme": "テーマ",
+      "developers": "開発者",
+      "lifiExplorer": "LI.FIエクスプローラー",
+      "aboutLIFI": "Li.Fiについて",
+      "support": "サポート",
+      "profile": "Jumperプロフィール"
+    },
+    "walletMenu": {
+      "disconnect": "接続を解除",
+      "chains": "チェーン",
+      "switchChain": "チェーン変更",
+      "copy": "コピー",
+      "explore": "ナビゲーション",
+      "copiedMsg": "ウォレットアドレスをコピーしました",
+      "walletNotInstalled": "",
+      "connectAnotherWallet": ""
+    },
+    "themes": {
+      "switchToLight": "ライトモード",
+      "switchToDark": "ダークモード",
+      "switchToSystem": "システム設定に準拠"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "公式ドキュメント"
+    }
+  },
+  "discordBanner": {
+    "ctaHeadline": "",
+    "ctaButton": ""
+  },
+  "blog": {
+    "title": "",
+    "categories": "",
+    "allCategories": "",
+    "subtitle": "",
+    "minRead": "",
+    "seeAllPosts": "",
+    "recentPosts": "",
+    "similarPosts": "",
+    "goToArticle": "",
+    "openApp": "",
+    "faq": "",
+    "jumperCta": "",
+    "copiedLink": "",
+    "shareLinkedIn": "",
+    "shareFb": "",
+    "shareX": "",
+    "shareLink": ""
+  },
+  "solanaAlert": {
+    "title": "",
+    "subtitle": ""
+  },
+  "featureCard": {
+    "learnMore": ""
+  },
+  "button": {
+    "okay": ""
+  },
+  "error": {
+    "message": ""
+  },
+  "multisig": {
+    "connected": {
+      "title": "",
+      "description": ""
+    },
+    "transactionInitiated": {
+      "title": "",
+      "description": ""
+    },
+    "alert": {
+      "title": "",
+      "description": ""
+    }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
+  }
+}
