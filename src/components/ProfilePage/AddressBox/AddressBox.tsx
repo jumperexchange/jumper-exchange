@@ -77,7 +77,14 @@ export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
         />
       </PassImageBox>
       <AddressDisplayBox>
-        <ProfilePageTypography fontSize={20} lineHeight={'32px'}>
+        <ProfilePageTypography
+          fontSize={20}
+          lineHeight={'32px'}
+          sx={{
+            width: '100%',
+            textAlign: 'center',
+          }}
+        >
           {getAddressOrENSString()}
         </ProfilePageTypography>
         <ProfileIconButton onClick={() => handleCopyButton()}>

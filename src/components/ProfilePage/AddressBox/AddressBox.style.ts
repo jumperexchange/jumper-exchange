@@ -75,6 +75,16 @@ export const AddressDisplayBox = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(1.5),
   marginBottom: theme.spacing(1.5),
   zIndex: 1,
+
+  [theme.breakpoints.up('sm')]: {
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: theme.spacing(1),
+  },
+  [theme.breakpoints.up('md')]: {
+    flexWrap: 'nowrap',
+    gap: 0,
+  },
 }));
 
 export const PassImageBox = styled(Box)(({ theme }) => ({
