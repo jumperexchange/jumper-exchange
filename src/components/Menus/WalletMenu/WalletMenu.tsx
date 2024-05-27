@@ -24,7 +24,6 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
     setWalletMenuState,
     setSnackbarState,
     openSubMenu,
-    closeAllMenus,
     setWalletSelectMenuState,
   } = useMenuStore((state) => state);
 
@@ -64,8 +63,8 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         )}
         <WalletButton
           sx={{ width: '100%' }}
-          onClick={() => {
-            closeAllMenus();
+          onClick={(event) => {
+            event.stopPropagation();
             setWalletSelectMenuState(true);
           }}
         >

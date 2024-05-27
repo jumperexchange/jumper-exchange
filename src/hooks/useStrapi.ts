@@ -147,6 +147,15 @@ export const useStrapi = <T>({
       'uid',
     );
     apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
+    //filter url
+    const currentDate = new Date(Date.now()).toISOString().split('T')[0];
+    apiUrl.searchParams.set(
+      'filters[$or][0][campaignStart][$lte]',
+      currentDate,
+    );
+    apiUrl.searchParams.set('filters[$or][1][campaignStart][$null]', 'true');
+    apiUrl.searchParams.set('filters[$or][0][campaignEnd][$gte]', currentDate);
+    apiUrl.searchParams.set('filters[$or][1][campaignEnd][$null]', 'true');
   }
 
   // jumper users -->

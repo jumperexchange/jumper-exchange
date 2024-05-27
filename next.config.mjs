@@ -47,6 +47,25 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/:lng?/swap',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/:lng?/exchange',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/:lng?/refuel',
+        destination: '/gas',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
