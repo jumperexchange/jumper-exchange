@@ -1,8 +1,8 @@
 import {
-  FeaturedArticleContainer,
   FeaturedArticleContent,
   FeaturedArticleDetails,
   FeaturedArticleImageSkeleton,
+  FeaturedArticleLink,
   FeaturedArticleMetaSkeleton,
   FeaturedArticleSubtitleSkeleton,
   FeaturedArticleTagSkeleton,
@@ -11,7 +11,7 @@ import {
 
 export const FeaturedArticleSkeleton = () => {
   return (
-    <FeaturedArticleContainer>
+    <FeaturedArticleLink href={'#'} sx={{ pointerEvents: 'none' }}>
       <FeaturedArticleImageSkeleton variant="rectangular" />
       <FeaturedArticleContent sx={{ width: '100%' }}>
         <FeaturedArticleDetails>
@@ -21,6 +21,6 @@ export const FeaturedArticleSkeleton = () => {
         <FeaturedArticleTitleSkeleton variant="rectangular" />
         <FeaturedArticleSubtitleSkeleton />
       </FeaturedArticleContent>
-    </FeaturedArticleContainer>
+    </FeaturedArticleLink>
   );
 };
