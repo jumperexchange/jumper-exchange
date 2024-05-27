@@ -13,7 +13,7 @@ interface MenuProps {
   open: boolean;
   children: React.ReactNode;
   width?: string;
-  anchorEl?: HTMLDivElement | undefined;
+  anchorEl?: HTMLDivElement;
 }
 
 export const Menu = ({
