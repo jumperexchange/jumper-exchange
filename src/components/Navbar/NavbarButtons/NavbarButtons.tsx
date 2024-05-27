@@ -20,7 +20,8 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
   const mainMenuAnchor = useRef<any>(null);
   const { trackEvent } = useUserTracking();
 
-  const [openMainMenu, setMainMenuState] = useMenuStore((state) => [
+  const [openedMenu, openMainMenu, setMainMenuState] = useMenuStore((state) => [
+    state.openedMenu,
     state.openMainMenu,
     state.setMainMenuState,
   ]);
@@ -38,7 +39,13 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
-    setMainMenuState(!openMainMenu);
+    event.stopPropagation();
+    const menuOpen = openedMenu();
+    if (menuOpen) {
+      setMainMenuState(false);
+    } else {
+      setMainMenuState(true);
+    }
     trackEvent({
       category: TrackingCategory.Menu,
       action: TrackingAction.OpenMenu,
@@ -49,25 +56,26 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
   };
 
   return (
-    <NavbarButtonsContainer className="settings">
-      <WalletManagementButtons redirectToLearn={redirectToLearn} />
-
-      <MenuToggle
-        ref={mainMenuAnchor}
-        id="main-burger-menu-button"
-        aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
-        aria-expanded={openMainMenu ? 'true' : undefined}
-        aria-haspopup="true"
-        onClick={(e) => handleOnOpenNavbarMainMenu(e)}
-      >
-        <MenuIcon
-          sx={{
-            fontSize: '32px',
-            color: 'inherit',
-          }}
-        />
-      </MenuToggle>
+    <>
+      <NavbarButtonsContainer className="settings">
+        <WalletManagementButtons redirectToLearn={redirectToLearn} />
+        <MenuToggle
+          ref={mainMenuAnchor}
+          id="main-burger-menu-button"
+          aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
+          aria-expanded={openMainMenu ? 'true' : undefined}
+          aria-haspopup="true"
+          onClick={(e) => handleOnOpenNavbarMainMenu(e)}
+        >
+          <MenuIcon
+            sx={{
+              fontSize: '32px',
+              color: 'inherit',
+            }}
+          />
+        </MenuToggle>
+      </NavbarButtonsContainer>
       <MainMenu anchorEl={mainMenuAnchor.current} />
-    </NavbarButtonsContainer>
+    </>
   );
 };
