@@ -13,10 +13,10 @@ export const AddressBoxContainer = styled(Box, {
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: 24,
-  paddingTop: 37,
+  paddingTop: theme.spacing(3),
   overflow: 'hidden',
   position: 'relative',
-  paddingBottom: 8,
+  paddingBottom: theme.spacing(1),
   width: '100%',
 
   ...(!imgUrl && {
@@ -66,20 +66,20 @@ export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
         : theme.palette.grey[100],
     width: '32px',
     height: '32px',
-    marginLeft: 8,
+    marginLeft: theme.spacing(1),
   }),
 );
 
-export const AddressDisplayBox = styled(Box)(() => ({
+export const AddressDisplayBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  marginTop: 12,
-  marginBottom: 12,
+  marginTop: theme.spacing(1.5),
+  marginBottom: theme.spacing(1.5),
   zIndex: 1,
 }));
 
 export const PassImageBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  marginTop: 24,
+  marginTop: theme.spacing(3),
   [theme.breakpoints.down('sm')]: {
     marginTop: 8,
     '& > img': {
