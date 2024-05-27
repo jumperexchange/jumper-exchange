@@ -10,7 +10,7 @@ export interface DiscordBannerProps extends Omit<BoxProps, 'component'> {
   isArticlePage: boolean;
 }
 
-export const DiscordBanner = styled(Link, {
+export const DiscordBannerLink = styled(Link, {
   shouldForwardProp: (prop) => prop !== 'isArticlePage',
 })<DiscordBannerProps>(({ theme, isArticlePage }) => ({
   display: 'flex',

@@ -15,10 +15,10 @@ import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import {
-  FeaturedArticleContainer,
   FeaturedArticleContent,
   FeaturedArticleDetails,
   FeaturedArticleImage,
+  FeaturedArticleLink,
   FeaturedArticleMetaContainer,
   FeaturedArticleMetaDate,
   FeaturedArticleSkeleton,
@@ -60,7 +60,7 @@ export const FeaturedArticle = ({
 
   return featuredArticle && featuredArticle?.length > 0 ? (
     <>
-      <FeaturedArticleContainer
+      <FeaturedArticleLink
         href={`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`}
         onClick={() => {
           handleFeatureCardClick(featuredArticle);
@@ -111,7 +111,7 @@ export const FeaturedArticle = ({
             </FeaturedArticleSubtitle>
           </Box>
         </FeaturedArticleContent>
-      </FeaturedArticleContainer>
+      </FeaturedArticleLink>
     </>
   ) : (
     <FeaturedArticleSkeleton />

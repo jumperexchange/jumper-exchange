@@ -6,7 +6,7 @@ import { isArticlePage } from '@/utils/isArticlePage';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { DiscordBanner, DiscordBannerButton, DiscordBannerLabel } from '.';
+import { DiscordBannerButton, DiscordBannerLabel, DiscordBannerLink } from '.';
 
 export const JoinDiscordBanner = () => {
   const { t } = useTranslation();
@@ -26,7 +26,7 @@ export const JoinDiscordBanner = () => {
   };
 
   return (
-    <DiscordBanner
+    <DiscordBannerLink
       href={'https://discord.com/invite/lifi'}
       onClick={(e) => handleClick(e)}
       isArticlePage={isArticle}
@@ -37,6 +37,6 @@ export const JoinDiscordBanner = () => {
       <DiscordBannerButton onClick={(e) => handleClick(e)}>
         <ArrowForwardIcon sx={{ width: '28px', height: '28px' }} />
       </DiscordBannerButton>
-    </DiscordBanner>
+    </DiscordBannerLink>
   );
 };

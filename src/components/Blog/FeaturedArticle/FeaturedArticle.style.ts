@@ -4,7 +4,7 @@ import { Box, Skeleton, Typography, lighten } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import Link from 'next/link';
 
-export const FeaturedArticleContainer = styled(Link, {
+export const FeaturedArticleLink = styled(Link, {
   shouldForwardProp: (prop) => prop !== 'active',
 })<BoxProps>(({ theme }) => ({
   position: 'relative',
