@@ -42,15 +42,25 @@ In addition to these commands you should also run
 yarn add husky
 ```
 
-if you plan to commit to this repository to use all necessary husky hooks. If you have trouble running a script try modifying the permissions for the scripts with
+if you plan to commit to this repository please use all necessary husky hooks. If you have trouble running a script try modifying the permissions for the scripts with
 
 ```
 chmod ug+x .husky/
 ```
 
-to mark them as executables
+to mark them as executables.
 
 ### lint-staged
 
-small comment on the lint-staged config. The idea of invoking `tsc --noEmit` from bash instead of yarn comes from here: [github issue](https://github.com/lint-staged/lint-staged/issues/825#issuecomment-674575655)
+The idea of invoking `tsc --noEmit` from bash instead of yarn comes from here: [github issue](https://github.com/lint-staged/lint-staged/issues/825#issuecomment-674575655)
 It fixes some problems we had with lint-staged ignoring our tsconfig and not working properly.
+
+## Contributing Translations
+
+We appreciate your interest in helping translate our project! 
+
+If you'd like to contribute translations, please visit our Crowdin project page at [Crowdin Jumper Exchange](https://crowdin.com/project/jumper-exchange). 
+Register on Crowdin and you can start translating the project into your preferred language. 
+Your contributions will help make our project accessible to a wider audience around the world. 
+
+Thank you for your support!
