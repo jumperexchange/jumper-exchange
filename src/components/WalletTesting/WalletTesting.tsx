@@ -7,11 +7,11 @@ const WalletTesting = () => {
   const [provider, setProvider] = useState<string>();
 
   useEffect(() => {
-    setUserAgent(window.navigator.userAgent);
-    setProvider((window as any)?.ethereum);
+    typeof window !== 'undefined' && setUserAgent(window.navigator.userAgent);
+    typeof window !== 'undefined' && setProvider((window as any)?.ethereum);
   }, []);
 
-  console.log((window as any)?.ethereum);
+  console.log(typeof window !== 'undefined' && (window as any)?.ethereum);
 
   return (
     <Box>
