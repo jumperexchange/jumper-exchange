@@ -162,6 +162,13 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
     width: '100%',
   },
 
+  '& a': {
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.primary.main
+        : theme.palette.accent1Alt.main,
+  },
+
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(4, 'auto'),
     maxWidth: '100%',
@@ -320,4 +327,8 @@ export const BlogArticlAuthorRoleSkeleton = styled(Skeleton)<SkeletonProps>(
 
 export const BlogParagraphContainer = styled(Box)(({ theme }) => ({
   margin: theme.spacing(2, 0),
+
+  '& a:not(:first-child)': {
+    marginLeft: 0,
+  },
 }));
