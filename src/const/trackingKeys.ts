@@ -21,6 +21,7 @@ export enum TrackingAction {
   OnSourceChainAndTokenSelection = 'action_on_source_selection',
   OnDestinationChainAndTokenSelection = 'action_on_destination_selection',
   OnWidgetExpanded = 'action_on_widget_expanded',
+  OnAvailableRoutes = 'action_available_routes',
 
   // Welcome_Screen
   OpenWelcomeMessageScreen = 'action_open_welcome_screen',
@@ -140,6 +141,7 @@ export enum TrackingEventParameter {
   InsuranceState = 'param_insurance_state',
   InsuranceFeeAmountUSD = 'param_insurance_fee_amount_usd',
   ValueLoss = 'param_value_loss',
+  AvailableRoutesCount = 'param_available_routes_count',
 
   // Blog
   ArticleCardTitle = 'param_article_card_title',

@@ -189,13 +189,13 @@ export function WidgetEvents() {
       setSupportModalState(true);
     };
 
-    const handleMultisigChainTokenSelected = (
+    const onMultisigChainTokenSelected = (
       destinationData: ChainTokenSelected,
     ) => {
       setDestinationChain(destinationData.chainId);
     };
 
-    const handleSourceChainTokenSelection = async (
+    const onSourceChainTokenSelection = async (
       sourceChainData: ChainTokenSelected,
     ) => {
       trackEvent({
@@ -217,7 +217,7 @@ export function WidgetEvents() {
       setSourceChainToken(sourceChainData);
     };
 
-    const handleWidgetExpanded = async (expanded: boolean) => {
+    const onWidgetExpanded = async (expanded: boolean) => {
       expanded &&
         trackEvent({
           category: TrackingCategory.WidgetEvent,
@@ -231,7 +231,7 @@ export function WidgetEvents() {
         });
     };
 
-    const handleDestinationChainTokenSelection = async (
+    const onDestinationChainTokenSelection = async (
       toChainData: ChainTokenSelected,
     ) => {
       trackEvent({
@@ -253,28 +253,46 @@ export function WidgetEvents() {
       setDestinationChainToken(toChainData);
     };
 
+    const onAvailableRoutes = async (availableRoutes: Route[]) => {
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnAvailableRoutes,
+        label: `routes_available`,
+        enableAddressable: true,
+        data: {
+          [TrackingEventParameter.AvailableRoutesCount]: availableRoutes.length,
+        },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+      });
+      console.log('Available Routes: ', availableRoutes);
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
       WidgetEvent.RouteExecutionCompleted,
       onRouteExecutionCompleted,
     );
+    widgetEvents.on(WidgetEvent.AvailableRoutes, onAvailableRoutes);
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
     widgetEvents.on(WidgetEvent.ContactSupport, onRouteContactSupport);
     widgetEvents.on(
       WidgetEvent.DestinationChainTokenSelected,
-      handleMultisigChainTokenSelected,
+      onMultisigChainTokenSelected,
     );
     widgetEvents.on(
       WidgetEvent.SourceChainTokenSelected,
-      handleSourceChainTokenSelection,
+      onSourceChainTokenSelection,
     );
     widgetEvents.on(
       WidgetEvent.DestinationChainTokenSelected,
-      handleDestinationChainTokenSelection,
+      onDestinationChainTokenSelection,
     );
-    widgetEvents.on(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
+    widgetEvents.on(WidgetEvent.WidgetExpanded, onWidgetExpanded);
 
     return () => {
       widgetEvents.off(
@@ -297,17 +315,18 @@ export function WidgetEvents() {
       widgetEvents.off(WidgetEvent.ContactSupport, onRouteContactSupport);
       widgetEvents.off(
         WidgetEvent.DestinationChainTokenSelected,
-        handleMultisigChainTokenSelected,
+        onMultisigChainTokenSelected,
       );
       widgetEvents.off(
         WidgetEvent.SourceChainTokenSelected,
-        handleSourceChainTokenSelection,
+        onSourceChainTokenSelection,
       );
       widgetEvents.off(
         WidgetEvent.DestinationChainTokenSelected,
-        handleDestinationChainTokenSelection,
+        onDestinationChainTokenSelection,
       );
-      widgetEvents.off(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
+      widgetEvents.off(WidgetEvent.WidgetExpanded, onWidgetExpanded);
+      widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
     };
   }, [
     activeTab,
@@ -321,7 +340,7 @@ export function WidgetEvents() {
     widgetEvents,
   ]);
 
-  const handleMultiSigConfirmationModalClose = () => {
+  const onMultiSigConfirmationModalClose = () => {
     setIsMultiSigConfirmationModalOpen(false);
   };
 
@@ -343,7 +362,7 @@ export function WidgetEvents() {
       />
       <MultisigConfirmationModal
         open={isMultiSigConfirmationModalOpen}
-        onClose={handleMultiSigConfirmationModalClose}
+        onClose={onMultiSigConfirmationModalClose}
       />
     </>
   );
