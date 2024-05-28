@@ -42,6 +42,19 @@ export const BlogParagraph = styled(Typography, {
 // Headings
 
 export const BlogHeadline = styled(Typography)(({ theme }) => ({
+  a: {
+    fontWeight: 600,
+    textDecorationColor:
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.primary.main, 0.04)
+        : alpha(theme.palette.accent1Alt.main, 0.4),
+  },
+  'a:hover': {
+    textDecorationColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.primary.main
+        : theme.palette.accent1Alt.main,
+  },
   '& a:not(:first-child)': {
     marginLeft: theme.spacing(0.5),
   },
