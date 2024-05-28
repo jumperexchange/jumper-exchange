@@ -27,8 +27,7 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
   const theme = useTheme();
   const { trackPageload, trackEvent } = useUserTracking();
   const currentPath = usePathname();
-  let result =
-    currentPath && currentPath.substring(0, currentPath.lastIndexOf('/'));
+  let result = currentPath?.substring(0, currentPath.lastIndexOf('/'));
   const isArticle = isArticlePage(
     `${process.env.NEXT_PUBLIC_SITE_URL}/${currentPath}`,
   );
@@ -66,6 +65,7 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
       <Typography
         variant={'lifiBodySmall'}
         sx={{
+          zIndex: 1,
           color:
             theme.palette.mode === 'dark'
               ? theme.palette.alphaLight500.main

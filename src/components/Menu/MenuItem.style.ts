@@ -1,4 +1,3 @@
-'use client';
 import type {
   ListItemProps,
   MenuItemProps as MUIMenuItemProps,

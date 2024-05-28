@@ -83,7 +83,10 @@ export const WallettButtons = () => {
         <ConnectButton
           // Used in the widget
           id="connect-wallet-button"
-          onClick={handleWalletSelectClick}
+          onClick={(event) => {
+            event.stopPropagation();
+            handleWalletSelectClick();
+          }}
         >
           <Typography
             variant={'lifiBodyMediumStrong'}

@@ -20,6 +20,7 @@ interface CarouselContainerProps {
   styles?: CSSObject;
   children?: any;
   trackingCategory?: string;
+  itemsCount?: number;
 }
 const swipeDistance = 420;
 
@@ -27,6 +28,7 @@ export const CarouselContainer = ({
   styles,
   title,
   children,
+  itemsCount,
   trackingCategory,
 }: CarouselContainerProps) => {
   const { trackEvent } = useUserTracking();
@@ -101,7 +103,9 @@ export const CarouselContainer = ({
         <CarouselTitle variant="lifiHeaderMedium">
           {title ?? t('blog.recentPosts')}
         </CarouselTitle>
-        <CarouselNavigationContainer show={children?.length < 3}>
+        <CarouselNavigationContainer
+          hide={(itemsCount && itemsCount < 4) || children?.length < 4}
+        >
           <CarouselNavigationButton onClick={() => handleChange('prev')}>
             <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
           </CarouselNavigationButton>

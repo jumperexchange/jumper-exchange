@@ -1,6 +1,7 @@
 import type { ChainId } from '@lifi/sdk';
 import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import type { SxProps, Theme } from '@mui/material';
+import type { MenuItemLinkType } from 'src/components/Menu';
 import type { Gtag } from './gtag';
 declare global {
   interface Window {
@@ -28,7 +29,7 @@ export interface MenuListItem {
   showMoreIcon?: boolean;
   styles?: SxProps<Theme>;
   checkIcon?: boolean;
-  url?: string;
+  link?: MenuItemLinkType;
   onClick?: any;
   showButton?: boolean;
 }
