@@ -98,7 +98,7 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
     const wagmiConfig = createConfig({
       chains: _chains,
       connectors: isMobile
-        ? [injected()]
+        ? [injected()].filter((el: any) => el.icon !== undefined)
         : (Object.values(connectors) as CreateConnectorFn[]),
       // connectors: Object.values(connectors) as CreateConnectorFn[],
       client({ chain }) {
