@@ -22,7 +22,10 @@ export const QuestCarousel = ({ quests, loading }: QuestCarouselProps) => {
     <>
       {!isNotLive ? (
         <BlogCarouselContainer>
-          <CarouselContainer title={t('missions.available')}>
+          <CarouselContainer
+            title={t('missions.available')}
+            itemsCount={quests?.length}
+          >
             <Stack direction={'row'} spacing={{ xs: 2, sm: 4 }}>
               {!loading ? (
                 quests?.map((quest: Quest, index: number) => {
