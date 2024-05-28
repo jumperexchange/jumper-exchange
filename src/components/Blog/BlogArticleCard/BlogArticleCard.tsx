@@ -8,7 +8,7 @@ import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import type { CSSObject } from '@mui/material';
 import { Skeleton } from '@mui/material';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
 import {
@@ -50,6 +50,7 @@ export const BlogArticleCard = ({
   styles,
   slug,
 }: BlogArticleCardProps) => {
+  const router = useRouter();
   const { trackEvent } = useUserTracking();
   const minRead = readingTime(content);
   const { t } = useTranslation();
@@ -67,56 +68,52 @@ export const BlogArticleCard = ({
       },
     });
     closeAllMenus();
+    router.push(`${JUMPER_LEARN_PATH}/${slug}`);
   };
   return (
-    <Link
-      href={`${JUMPER_LEARN_PATH}/${slug}`}
-      style={{ textDecoration: 'none' }}
+    <BlogArticleCardContainer
+      variant="outlined"
+      onClick={handleClick}
+      sx={styles}
     >
-      <BlogArticleCardContainer
-        variant="outlined"
-        onClick={handleClick}
-        sx={styles}
-      >
-        {image.data ? (
-          <BlogArticleCardImage
-            src={`${baseUrl}${image.data?.attributes?.formats.small.url}`}
-            alt={image.data?.attributes?.alternativeText}
-            draggable={false}
-          />
-        ) : (
-          <Skeleton
-            component="img"
-            sx={{
-              width: '100%',
-              aspectRatio: 1.6,
-              transform: 'unset',
-              borderRadius: '16px',
-            }}
-          />
-        )}
+      {image.data ? (
+        <BlogArticleCardImage
+          src={`${baseUrl}${image.data?.attributes?.formats.small.url}`}
+          alt={image.data?.attributes?.alternativeText}
+          draggable={false}
+        />
+      ) : (
+        <Skeleton
+          component="img"
+          sx={{
+            width: '100%',
+            aspectRatio: 1.6,
+            transform: 'unset',
+            borderRadius: '16px',
+          }}
+        />
+      )}
 
-        <BlogArticleCardContent>
-          <BlogArticleCardTitle variant="lifiBodyLarge">
-            {title}
-          </BlogArticleCardTitle>
-          <BlogArticleCardDetails>
-            {tags?.data.slice(0, 1).map((tag, index) => (
-              <BlogArticleCardTag key={index} variant="lifiBodyXSmall" as="h3">
-                {tag.attributes.Title}
-              </BlogArticleCardTag>
-            ))}
-            <BlogArticleCardMetaContainer>
-              <BlogArticleMetaDate variant="lifiBodyXSmall" as="span">
-                {formatDate(publishedAt || createdAt)}
-              </BlogArticleMetaDate>
-              <BlogArticleMetaReadingTime variant="lifiBodyXSmall" as="span">
-                {t('blog.minRead', { minRead: minRead })}
-              </BlogArticleMetaReadingTime>
-            </BlogArticleCardMetaContainer>
-          </BlogArticleCardDetails>
-        </BlogArticleCardContent>
-      </BlogArticleCardContainer>
-    </Link>
+      <BlogArticleCardContent>
+        <BlogArticleCardTitle variant="lifiBodyLarge">
+          {title}
+        </BlogArticleCardTitle>
+        <BlogArticleCardDetails>
+          {tags?.data.slice(0, 1).map((tag, index) => (
+            <BlogArticleCardTag key={index} variant="lifiBodyXSmall" as="h3">
+              {tag.attributes.Title}
+            </BlogArticleCardTag>
+          ))}
+          <BlogArticleCardMetaContainer>
+            <BlogArticleMetaDate variant="lifiBodyXSmall" as="span">
+              {formatDate(publishedAt || createdAt)}
+            </BlogArticleMetaDate>
+            <BlogArticleMetaReadingTime variant="lifiBodyXSmall" as="span">
+              {t('blog.minRead', { minRead: minRead })}
+            </BlogArticleMetaReadingTime>
+          </BlogArticleCardMetaContainer>
+        </BlogArticleCardDetails>
+      </BlogArticleCardContent>
+    </BlogArticleCardContainer>
   );
 };

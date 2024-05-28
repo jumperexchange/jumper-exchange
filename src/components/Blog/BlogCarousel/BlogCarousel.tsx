@@ -4,7 +4,6 @@ import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData, StrapiResponseData } from '@/types/strapi';
 import { EventTrackingTool } from '@/types/userTracking';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { CarouselContainer } from '.';
@@ -40,6 +39,7 @@ export const BlogCarousel = ({
       label: 'click-see-all-posts',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
+    router.push(JUMPER_LEARN_PATH);
   };
 
   return (
@@ -77,11 +77,9 @@ export const BlogCarousel = ({
       </CarouselContainer>
       {showAllButton ? (
         <SeeAllButtonContainer show={!!data?.length}>
-          <Link href={JUMPER_LEARN_PATH} style={{ color: 'inherit' }}>
-            <SeeAllButton onClick={handleShowAll}>
-              {t('blog.seeAllPosts')}
-            </SeeAllButton>
-          </Link>
+          <SeeAllButton onClick={handleShowAll}>
+            {t('blog.seeAllPosts')}
+          </SeeAllButton>
         </SeeAllButtonContainer>
       ) : null}
     </BlogCarouselContainer>

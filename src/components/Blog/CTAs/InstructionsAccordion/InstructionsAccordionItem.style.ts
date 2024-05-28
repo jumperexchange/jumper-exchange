@@ -20,13 +20,6 @@ export const InstructionsAccordionItemContainer = styled(Box)<BoxProps>(
     alignItems: 'flex-start',
     position: 'relative',
 
-    a: {
-      color:
-        theme.palette.mode === 'light'
-          ? theme.palette.primary.main
-          : theme.palette.accent1Alt.main,
-    },
-
     '& a:not(:first-child)': {
       marginLeft: theme.spacing(0.5),
     },
@@ -61,7 +54,6 @@ export const InstructionsAccordionItemIndex = styled(Typography)(
     fontWeight: 600,
     lineHeight: '32px',
     color: getContrastAlphaColor(theme, 0.32),
-
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       marginLeft: theme.spacing(2),
     },

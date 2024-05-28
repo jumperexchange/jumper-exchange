@@ -60,13 +60,19 @@ export const QuestCard = ({
           width={240}
           height={240}
           style={{
-            borderRadius: 8,
+            borderRadius: 16,
+            marginTop: 16,
           }}
         />
       )}
       <QuestCardBottomBox>
         {active ? (
-          <QuestPlatformMainBox platformName={platformName}>
+          <QuestPlatformMainBox
+            sx={{
+              display: 'flex',
+              justifyContent: platformName ? undefined : 'flex-end',
+            }}
+          >
             {platformName ? (
               <CenteredBox>
                 <CenteredBox
@@ -119,7 +125,12 @@ export const QuestCard = ({
             {title}
           </ProfilePageTypography>
         </QuestCardTitleBox>
-        <QuestCardInfoBox points={points}>
+        <QuestCardInfoBox
+          sx={{
+            display: 'flex',
+            justifyContent: points ? undefined : 'flex-end',
+          }}
+        >
           {points ? (
             <XPDisplayBox
               sx={{

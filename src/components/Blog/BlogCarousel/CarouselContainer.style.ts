@@ -48,7 +48,9 @@ export const CarouselHeader = styled(Box, {
   },
 }));
 
-export const CarouselTitle = styled(Typography)(({ theme }) => ({
+export const CarouselTitle = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
+})<CarouselNavigationContainerProps>(({ theme, show }) => ({
   fontWeight: 700,
   fontSize: '24px',
   lineHeight: '32px',
@@ -65,15 +67,15 @@ export const CarouselTitle = styled(Typography)(({ theme }) => ({
 
 export interface CarouselNavigationContainerProps
   extends Omit<BoxProps, 'variant'> {
-  hide?: boolean;
+  show?: boolean;
 }
 
 export const CarouselNavigationContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'hide',
-})<CarouselNavigationContainerProps>(({ theme, hide }) => ({
+  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
+})<CarouselNavigationContainerProps>(({ theme, show }) => ({
   display: 'flex',
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    ...(hide && { display: 'none' }),
+    ...(show && { display: 'none' }),
     marginLeft: 3,
   },
 }));

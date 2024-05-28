@@ -1,24 +1,18 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Typography, alpha } from '@mui/material';
+import { Box, Typography, alpha } from '@mui/material';
 
 import { urbanist } from '@/fonts/fonts';
 import { styled } from '@mui/material/styles';
-import Link from 'next/link';
 import { IconButtonPrimary } from '../IconButton.style';
 
 export interface DiscordBannerProps extends Omit<BoxProps, 'component'> {
   isArticlePage: boolean;
 }
 
-export const DiscordBannerLink = styled(Link, {
+export const DiscordBanner = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isArticlePage',
 })<DiscordBannerProps>(({ theme, isArticlePage }) => ({
   display: 'flex',
-  color:
-    theme.palette.mode === 'light'
-      ? theme.palette.black.main
-      : theme.palette.white.main,
-  textDecoration: 'unset',
   flexDirection: 'column',
   justifyContent: 'center',
   gap: theme.spacing(1.5),

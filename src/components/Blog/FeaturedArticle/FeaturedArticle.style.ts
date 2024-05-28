@@ -2,9 +2,8 @@ import { urbanist } from '@/fonts/fonts';
 import type { BoxProps, Breakpoint, TypographyProps } from '@mui/material';
 import { Box, Skeleton, Typography, lighten } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
-import Link from 'next/link';
 
-export const FeaturedArticleLink = styled(Link, {
+export const FeaturedArticleContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active',
 })<BoxProps>(({ theme }) => ({
   position: 'relative',
@@ -20,7 +19,6 @@ export const FeaturedArticleLink = styled(Link, {
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
   display: 'grid',
   gridTemplateRows: '1fr',
-  textDecoration: 'none',
   flexDirection: 'column',
   padding: theme.spacing(2),
   margin: theme.spacing(4, 2, 0),
