@@ -41,9 +41,7 @@ export const useWalletSelectContent = () => {
       ];
     }
 
-    return allowedWallets.filter((el) => {
-      return el.evm !== undefined || el.svm !== undefined;
-    });
+    return allowedWallets;
   }, [combinedInstalledWallets, combinedNotDetectedWallets, isDesktopView]);
 
   const connectWallet = useCallback(
