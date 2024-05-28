@@ -145,6 +145,7 @@ export const MenuItemLink = styled(Link, {
   display: 'flex',
   justifyContent: 'space-between',
   height: 48,
+  width: '100%',
   textDecoration: 'none',
   color: 'inherit',
 }));
