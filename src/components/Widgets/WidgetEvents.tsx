@@ -267,7 +267,6 @@ export function WidgetEvents() {
           EventTrackingTool.Cookie3,
         ],
       });
-      console.log('Available Routes: ', availableRoutes);
     };
 
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
