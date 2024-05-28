@@ -90,7 +90,8 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
       _mainnet.contracts = mainnet.contracts;
     }
     const isMobile =
-      'userAgentData' in navigator &&
+      typeof window !== 'undefined' &&
+      'userAgentData' in window?.navigator &&
       (navigator as Navigator & { userAgentData: NavigatorUAData })
         .userAgentData.mobile;
 
