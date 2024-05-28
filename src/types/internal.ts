@@ -13,6 +13,16 @@ export type StarterVariantType = 'buy' | WidgetSubvariant;
 
 export type ThemeVariantType = 'memecoins';
 
+interface NavigatorUABrand {
+  brand: string;
+  version: string;
+}
+
+export interface NavigatorUAData {
+  brands: NavigatorUABrand[];
+  mobile: boolean;
+  platform: string;
+}
 export interface MenuListItem {
   label: string;
   triggerSubMenu?: any; //todo: proper typing

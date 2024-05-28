@@ -1,6 +1,8 @@
 'use client';
 
 import { useChains } from '@/hooks/useChains';
+import { injected } from 'wagmi/connectors';
+
 import {
   alpha,
   binance,
@@ -31,6 +33,7 @@ import {
   xdefi,
 } from '@lifi/wallet-management';
 import { useMemo, type FC, type PropsWithChildren } from 'react';
+import type { NavigatorUAData } from 'src/types/internal';
 import type { Chain } from 'viem';
 import { createClient } from 'viem';
 import type { CreateConnectorFn } from 'wagmi';
@@ -86,9 +89,17 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
     if (_mainnet) {
       _mainnet.contracts = mainnet.contracts;
     }
+    const isMobile =
+      'userAgentData' in navigator &&
+      (navigator as Navigator & { userAgentData: NavigatorUAData })
+        .userAgentData.mobile;
+
     const wagmiConfig = createConfig({
       chains: _chains,
-      connectors: Object.values(connectors) as CreateConnectorFn[],
+      connectors: isMobile
+        ? [injected()].filter((el: any) => el.icon !== undefined)
+        : (Object.values(connectors) as CreateConnectorFn[]),
+      // connectors: Object.values(connectors) as CreateConnectorFn[],
       client({ chain }) {
         return createClient({ chain, transport: http() });
       },
@@ -104,7 +115,6 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
       // Internal Wagmi hydration logic doesn't allow the safe creation of new configs in runtime.
       ssr: !chains?.length,
     });
-
     return wagmiConfig;
   }, [chains]);
 
