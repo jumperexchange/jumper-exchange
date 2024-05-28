@@ -33,7 +33,8 @@
       "developers": "डेवलपर",
       "lifiExplorer": "",
       "aboutLIFI": "लिफी के बारे में",
-      "support": "सहायता"
+      "support": "सहायता",
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "डिस्कनेक्ट करें",
@@ -54,11 +55,6 @@
       "github": "गिटहब",
       "documentation": "प्रलेखन"
     }
-  },
-  "alert": {
-    "info": "",
-    "testnet": "",
-    "switchToMainnet": ""
   },
   "discordBanner": {
     "ctaHeadline": "",
@@ -109,5 +105,17 @@
       "title": "",
       "description": ""
     }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
   }
 }

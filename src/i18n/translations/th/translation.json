@@ -5,7 +5,7 @@
       "subtitle": "4x ในการตรวจสอบหลายเชนโดย LI.FI",
       "cta": "เริ่มต้นใช้งาน"
     },
-    "poweredByLifi": "",
+    "poweredByLifi": "<0>ขับเคลื่อนโดย</0><1>LI.FI</1>",
     "links": {
       "exchange": "แลกเปลี่ยน",
       "dashboard": "แผงหน้าจอ",
@@ -17,23 +17,24 @@
       "bridges": "บริดจ์",
       "chains": "เชน"
     },
-    "connect": "",
+    "connect": "เชื่อมต่อ",
     "walletSelectMenu": {
-      "connectWallet": "",
-      "wallets": "",
+      "connectWallet": "เชื่อมต่อกระเป๋าเงิน",
+      "wallets": "กระเป๋าเงิน",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "",
-        "noEcosystemAdapter": ""
+        "selectEcosystem": "เลือก ecosystem ของ wallet",
+        "noEcosystemAdapter": "ไม่พบอแดปเตอร์ Ecosystem ที่เหมาะสม"
       }
     },
-    "seeAllWallets": "",
+    "seeAllWallets": "ดูกระเป๋าเงินทั้งหมด",
     "navbarMenu": {
-      "brandAssets": "",
+      "brandAssets": "มูลค่าสินทรัพท์ของแบรนด์",
       "theme": "ธีม",
       "developers": "ผู้พัฒนา",
-      "lifiExplorer": "",
+      "lifiExplorer": "LI.FI Explorer",
       "aboutLIFI": "เกี่ยวกับ LI.FI",
-      "support": "สนับสนุน"
+      "support": "สนับสนุน",
+      "profile": "โปรไฟล์ Jumper"
     },
     "walletMenu": {
       "disconnect": "ยกเลิกการเชื่อมต่อ",
@@ -42,72 +43,79 @@
       "copy": "คัดลอก",
       "explore": "สำรวจ",
       "copiedMsg": "คัดลอกที่อยู่กระเป๋าเงินแล้ว",
-      "walletNotInstalled": "",
-      "connectAnotherWallet": ""
+      "walletNotInstalled": "{{wallet}} ยังไม่ถูกติดตั้ง",
+      "connectAnotherWallet": "เชื่อมต่อกระเป๋าเงินอื่น"
     },
     "themes": {
       "switchToLight": "เปลี่ยนเป็นธีมสว่าง",
       "switchToDark": "เปลี่ยนเป็นธีมมืด",
-      "switchToSystem": ""
+      "switchToSystem": "เปลี่ยนไปยังระบบ"
     },
     "developers": {
       "github": "เว็บไซท์ Github",
       "documentation": "เอกสาร"
     }
   },
-  "alert": {
-    "info": "คุณกำลังใช้เทสเน็ต",
-    "testnet": "ธุรกรรมหรือการกระทำใดๆที่ดำเนินการบนเทสเน็ตจะไม่ปรากฏบนเมนเน็ต",
-    "switchToMainnet": "เปลี่ยนเป็นเมนเน็ต"
-  },
   "discordBanner": {
-    "ctaHeadline": "",
-    "ctaButton": ""
+    "ctaHeadline": "เข้าร่วม Discord ของเราเพื่อเรียนรู้เพิ่มเติม",
+    "ctaButton": "เข้าร่วมเซิฟเวอร์ Discord ของเรา"
   },
   "blog": {
-    "title": "",
-    "categories": "",
-    "allCategories": "",
-    "subtitle": "",
-    "minRead": "",
-    "seeAllPosts": "",
-    "recentPosts": "",
-    "similarPosts": "",
-    "goToArticle": "",
-    "openApp": "",
-    "faq": "",
-    "jumperCta": "",
-    "copiedLink": "",
-    "shareLinkedIn": "",
-    "shareFb": "",
-    "shareX": "",
-    "shareLink": ""
+    "title": "เคล็ดลับและบทแนะนำ",
+    "categories": "หมวดหมู่",
+    "allCategories": "ทั้งหมด",
+    "subtitle": "สรุปย่อ: คู่มือทีละขั้นตอนสำหรับ DeFi และคริปโตสำหรับทุกระดับ",
+    "minRead": "{{minRead}} อ่านน้อยที่สุด",
+    "seeAllPosts": "ดูโพสทั้งหมด",
+    "recentPosts": "โพสต์ล่าสุด",
+    "similarPosts": "โพสต์ที่ใกล้เคียง",
+    "goToArticle": "ไปยังบทความ",
+    "openApp": "เปิดแอปฯ",
+    "faq": "คำถามที่พบบ่อย",
+    "jumperCta": "ทดลองใช้ jumper.exchange",
+    "copiedLink": "คัดลอกลิงค์แล้ว",
+    "shareLinkedIn": "แบ่งปันบทความบน LinkedIn",
+    "shareFb": "แบ่งปันบทความบน Facebook",
+    "shareX": "แบ่งปันบทความบน X",
+    "shareLink": "แบ่งปันลิงค์"
   },
   "solanaAlert": {
-    "title": "",
-    "subtitle": ""
+    "title": "รองรับโทเค็น Solana อย่างจำกัด",
+    "subtitle": "ขณะนี้เฉพาะ USDC และ USDT เท่านั้นที่สามารถสร้างสะสมและเบริดไปยังและมาจาก Solana ได้"
   },
   "featureCard": {
-    "learnMore": ""
+    "learnMore": "เรียนรู้เพิ่มเติม"
   },
   "button": {
-    "okay": ""
+    "okay": "ตกลง"
   },
   "error": {
-    "message": ""
+    "message": "เกิดข้อผิดพลาดบางอย่าง โปรดลองโหลดหน้าเว็บใหม่อีกครั้ง หากปัญหายังคงอยู่ กรุณาติดต่อฝ่ายสนับสนุนของเรา"
   },
   "multisig": {
     "connected": {
-      "title": "",
-      "description": ""
+      "title": "Multisig wallet เชื่อมต่อแล้ว",
+      "description": "กรุณาแจ้งผู้ใช้งานวอลเล็ตอื่น ๆ ให้เตรียมพร้อมที่จะลงนาม"
     },
     "transactionInitiated": {
-      "title": "",
-      "description": ""
+      "title": "จำเป็นต้องใช้ Multiple signatures",
+      "description": "กรุณาแจ้งผู้ใช้งานอื่นที่เข้าร่วมในวอลเล็ตมัลติซิกให้ลงนามก่อนที่ธุรกรรมจะหมดอายุ"
     },
     "alert": {
-      "title": "",
-      "description": ""
+      "title": "Multisig wallet เชื่อมต่อแล้ว",
+      "description": "การสมัครสมาชิกต้องการที่อยู่ของวอลเล็ตปลายทางเพื่อทำการแลกเปลี่ยน"
     }
+  },
+  "questCard": {
+    "completed": "เสร็จสมบูรณ์",
+    "join": "เข้าร่วม"
+  },
+  "missions": {
+    "available": "ภารกิจที่มีอยู่",
+    "completed": "ภารกิจที่สำเร็จแล้ว"
+  },
+  "profile_page": {
+    "mobileTitle": "เฉพาะบนคอมพิวเตอร์เท่านั้น",
+    "mobileDescription": "หน้าโปรไฟล์ของ Jumper ยังไม่พร้อมใช้งานบนหน้าจอขนาดเล็ก  เรากำลังพัฒนาอยู่"
   }
 }

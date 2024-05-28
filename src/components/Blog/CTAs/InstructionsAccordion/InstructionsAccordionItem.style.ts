@@ -19,6 +19,18 @@ export const InstructionsAccordionItemContainer = styled(Box)<BoxProps>(
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     position: 'relative',
+
+    a: {
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.primary.main
+          : theme.palette.accent1Alt.main,
+    },
+
+    '& a:not(:first-child)': {
+      marginLeft: theme.spacing(0.5),
+    },
+
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       alignSelf: 'flex-start',
       margin: theme.spacing(2, 0, 0, 0),
@@ -49,6 +61,7 @@ export const InstructionsAccordionItemIndex = styled(Typography)(
     fontWeight: 600,
     lineHeight: '32px',
     color: getContrastAlphaColor(theme, 0.32),
+
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       marginLeft: theme.spacing(2),
     },
@@ -60,6 +73,16 @@ export const InstructionsAccordionItemLabel = styled(Box)(({ theme }) => ({
   fontWeight: 600,
   fontSize: '18px',
   lineHeight: '32px',
+
+  p: {
+    marginBlock: 'auto',
+    display: 'inline',
+  },
+
+  '& a:not(:first-child), & p:not(:first-child)': {
+    marginLeft: theme.spacing(0.5),
+  },
+
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginLeft: theme.spacing(3),
   },

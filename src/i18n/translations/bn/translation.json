@@ -33,7 +33,8 @@
       "developers": "ডেভেলপারস",
       "lifiExplorer": "",
       "aboutLIFI": "লি.ফাই সম্পর্কে",
-      "support": "সাপোর্ট"
+      "support": "সাপোর্ট",
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "সংযোগ বিচ্ছিন্ন করুন",
@@ -54,11 +55,6 @@
       "github": "গিটহাব",
       "documentation": "ডকুমেন্টেশন"
     }
-  },
-  "alert": {
-    "info": "আপনি টেস্টনেট ব্যবহার করছেন",
-    "testnet": "টেস্টনেটে সম্পাদিত কোনো লেনদেন বা ক্রিয়া মেইননেটে প্রতিফলিত হবে না।",
-    "switchToMainnet": "মেইননেটে স্যুইচ করুন"
   },
   "discordBanner": {
     "ctaHeadline": "",
@@ -109,5 +105,17 @@
       "title": "",
       "description": ""
     }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
   }
 }
