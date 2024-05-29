@@ -50,7 +50,6 @@ declare module '@mui/material/styles' {
     alphaLight600: Palette['primary'];
     alphaLight700: Palette['primary'];
     alphaLight800: Palette['primary'];
-    pink: Palette['primary'];
   }
   interface PaletteOptions {
     tertiary?: PaletteOptions['primary'];
@@ -84,7 +83,6 @@ declare module '@mui/material/styles' {
     alphaLight600?: PaletteOptions['primary'];
     alphaLight700?: PaletteOptions['primary'];
     alphaLight800?: PaletteOptions['primary'];
-    pink: Palette['primary'];
   }
   interface TypographyVariants {
     lifiHeaderDisplay: React.CSSProperties;
@@ -382,12 +380,6 @@ const themeCustomized = createTheme({
     },
     alphaLight800: {
       main: 'rgba(255, 255, 255, 0.64)',
-    },
-    pink: {
-      main: '',
-      contrastText: '',
-      light: '#31007A',
-      dark: '#BEA0EB',
     },
   },
   typography: {
