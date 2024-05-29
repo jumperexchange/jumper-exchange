@@ -1,7 +1,7 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import type { Breakpoint } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
-import { MenuLabelContainer } from '.';
+import { MenuLabel } from '.';
 
 interface MenuItemLabelProps {
   showMoreIcon?: boolean;
@@ -20,7 +20,7 @@ export const MenuItemLabel = ({
 
   return (
     <>
-      <MenuLabelContainer
+      <MenuLabel
         variant={
           suffixIcon && showMoreIcon
             ? 'xs'
@@ -45,7 +45,7 @@ export const MenuItemLabel = ({
             {label}
           </Typography>
         ) : null}
-      </MenuLabelContainer>
+      </MenuLabel>
       {suffixIcon || showMoreIcon ? (
         <div
           style={{

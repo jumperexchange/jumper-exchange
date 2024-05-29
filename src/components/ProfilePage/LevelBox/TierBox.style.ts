@@ -4,7 +4,7 @@ import { Box, styled } from '@mui/system';
 export const TierMainBox = styled(Box)(({ theme }) => ({
   height: '100%',
   width: '100%',
-  borderRadius: '24px',
+  borderRadius: '8px',
   backgroundColor:
     theme.palette.mode === 'light'
       ? '#FFFFFF'

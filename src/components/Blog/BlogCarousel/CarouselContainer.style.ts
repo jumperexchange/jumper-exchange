@@ -48,9 +48,7 @@ export const CarouselHeader = styled(Box, {
   },
 }));
 
-export const CarouselTitle = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
-})<CarouselNavigationContainerProps>(({ theme, show }) => ({
+export const CarouselTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   fontSize: '24px',
   lineHeight: '32px',

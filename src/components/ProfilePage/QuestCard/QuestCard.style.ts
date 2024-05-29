@@ -2,6 +2,8 @@ import type { BoxProps } from '@mui/material';
 import { Box, alpha, styled } from '@mui/material';
 
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
   backgroundColor:
     theme.palette.mode === 'light'
       ? '#FFFFFF'
@@ -11,13 +13,15 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   borderRadius: '24px',
   textAlign: 'center',
   overflow: 'hidden',
+  padding: theme.spacing(2),
 }));
 
-export const QuestCardBottomBox = styled(Box)(() => ({
-  paddingTop: 16,
-  paddingBottom: 16,
-  paddingLeft: 16,
-  paddingRight: 16,
+export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  flexGrow: 1,
 }));
 
 export const QuestCardTitleBox = styled(Box)(() => ({
@@ -34,17 +38,14 @@ export interface QuestCardInfoBoxProps extends Omit<BoxProps, 'component'> {
 export const QuestCardInfoBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'points',
 })<QuestCardInfoBoxProps>(({ points }) => ({
-  marginTop: '16px',
-  flexDirection: 'row',
-  alignItems: 'center',
   display: 'flex',
-  justifyContent: points ? 'space-between' : 'flex-end', //todo: double-check
+  flexDirection: 'row',
+  justifyContent: points ? 'space-between' : 'flex-end',
 }));
 
 export const CompletedBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
-  marginBottom: '16px',
   backgroundColor: '#d6ffe7',
   borderRadius: '128px',
   padding: '4px',
@@ -58,10 +59,9 @@ export interface QuestPlatformMainBoxProps extends Omit<BoxProps, 'component'> {
 export const QuestPlatformMainBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'platformName',
 })<QuestPlatformMainBoxProps>(({ platformName }) => ({
-  justifyContent: platformName ? 'space-between' : 'flex-end', //todo: check css for this
   display: 'flex',
+  justifyContent: platformName ? 'space-between' : 'flex-end',
   alignItems: 'center',
-  marginBottom: '16px',
 }));
 
 export const QuestDatesBox = styled(Box)(({ theme }) => ({

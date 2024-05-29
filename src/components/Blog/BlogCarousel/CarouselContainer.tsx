@@ -20,6 +20,7 @@ interface CarouselContainerProps {
   styles?: CSSObject;
   children?: React.ReactNode | React.ReactNode[];
   trackingCategory?: string;
+  itemsCount?: number;
 }
 const swipeDistance = 420;
 
@@ -27,6 +28,7 @@ export const CarouselContainer = ({
   styles,
   title,
   children,
+  itemsCount,
   trackingCategory,
 }: CarouselContainerProps) => {
   const { trackEvent } = useUserTracking();
@@ -102,7 +104,10 @@ export const CarouselContainer = ({
           {title ?? t('blog.recentPosts')}
         </CarouselTitle>
         <CarouselNavigationContainer
-          show={(children as React.ReactNode[])?.length < 3}
+          show={
+            (itemsCount && itemsCount < 4) ||
+            (Array.isArray(children) && children?.length < 3)
+          }
         >
           <CarouselNavigationButton onClick={() => handleChange('prev')}>
             <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />

@@ -46,7 +46,7 @@ export interface MenuLabelProps extends Omit<ListItemProps, 'variant'> {
   variant?: 'xs' | 'md' | 'lg';
 }
 
-export const MenuLabelContainer = styled('div', {
+export const MenuLabel = styled('div', {
   shouldForwardProp: (prop) => prop !== 'variant',
 })<MenuLabelProps>(({ variant, theme }) => ({
   display: 'flex',

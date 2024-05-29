@@ -16,7 +16,7 @@ import {
   MenuHeaderLabel,
   MenuItemContainer,
   MenuItemLink,
-  MenuLabelContainer,
+  MenuLabel,
   MenuPaper,
 } from '.';
 import { SubMenuLabel } from './SubMenu.style';
@@ -98,7 +98,6 @@ export const SubMenu = ({
           !!el.link?.url ? (
             <MenuItemContainer
               autoFocus={index > 0 ? true : false}
-              component="li"
               onClick={() => handleClick(el)}
               key={`${el.label}-${index}`}
             >
@@ -130,7 +129,7 @@ export const SubMenu = ({
               onClick={() => handleClick(el)}
               key={`${el.label}-${index}`}
             >
-              <MenuLabelContainer
+              <MenuLabel
                 variant={
                   !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
                     ? 'lg'
@@ -148,7 +147,7 @@ export const SubMenu = ({
                 >
                   {`${el.label || ' '}`}
                 </SubMenuLabel>
-              </MenuLabelContainer>
+              </MenuLabel>
               {el.checkIcon && <CheckIcon />}
               {el.showMoreIcon ? (
                 <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />

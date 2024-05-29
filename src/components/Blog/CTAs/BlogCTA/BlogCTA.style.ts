@@ -37,6 +37,10 @@ export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
 export const BlogCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   fontFamily: urbanist.style.fontFamily,
   fontWeight: 700,
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.accent1Alt.main,
   fontSize: '32px',
   lineHeight: '38px',
   userSelect: 'none',
