@@ -1,7 +1,7 @@
 'use client';
 
 import { useChains } from '@/hooks/useChains';
-import { injected, metaMask } from 'wagmi/connectors';
+import { injected } from 'wagmi/connectors';
 
 import {
   alpha,
@@ -102,16 +102,9 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const wagmiConfig = createConfig({
       chains: _chains,
-      connectors: isMobile
-        ? [
-            injected(),
-            metaMask({
-              dappMetadata: {
-                name: 'Jumper Exchange',
-              },
-            }),
-          ]
-        : (Object.values(connectors) as CreateConnectorFn[]),
+      connectors: !isMobile
+        ? (Object.values(connectors) as CreateConnectorFn[])
+        : undefined,
       // connectors: Object.values(connectors) as CreateConnectorFn[],
       client({ chain }) {
         return createClient({ chain, transport: http() });
