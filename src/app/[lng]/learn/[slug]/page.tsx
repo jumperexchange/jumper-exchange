@@ -11,22 +11,26 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const article = await getArticleBySlug(params.slug);
+  try {
+    const article = await getArticleBySlug(params.slug);
 
-  if (!article.data || !article.data.data?.[0]) {
+    if (!article.data || !article.data.data?.[0]) {
+      throw new Error();
+    }
+
+    const articleData = article.data.data?.[0]
+      .attributes as BlogArticleAttributes;
+
+    return {
+      title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
+      description: articleData.Subtitle,
+    };
+  } catch (err) {
     return {
       title: `Jumper Learn | ${sliceStrToXChar(params.slug.replaceAll('-', ' '), 45)}`,
       description: `This is the description for the article "${params.slug.replaceAll('-', ' ')}".`,
     };
   }
-
-  const articleData = article.data.data?.[0]
-    .attributes as BlogArticleAttributes;
-
-  return {
-    title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
-    description: articleData.Subtitle,
-  };
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
