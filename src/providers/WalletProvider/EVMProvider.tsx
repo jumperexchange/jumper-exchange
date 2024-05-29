@@ -78,6 +78,11 @@ const connectors: Record<string, CreateConnectorFn> = {
   safe,
 };
 
+export const metaMaskConnector = injected({
+  target: 'metaMask',
+  shimDisconnect: false,
+});
+
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
   const { chains } = useChains();
   const wagmiConfig = useMemo(() => {
@@ -98,7 +103,14 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
     const wagmiConfig = createConfig({
       chains: _chains,
       connectors: isMobile
-        ? [injected(), metaMask()]
+        ? [
+            injected(),
+            metaMask({
+              dappMetadata: {
+                name: 'Jumper Exchange',
+              },
+            }),
+          ]
         : (Object.values(connectors) as CreateConnectorFn[]),
       // connectors: Object.values(connectors) as CreateConnectorFn[],
       client({ chain }) {
