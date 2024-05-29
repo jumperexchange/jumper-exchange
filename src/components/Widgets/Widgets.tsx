@@ -43,15 +43,20 @@ export function Widgets({
   >(undefined);
 
   const handleWelcomeScreenEnter = (widgetVariant: StarterVariantType) => {
-    setWelcomeScreenClosed(true);
-    trackEvent({
-      category: TrackingCategory.WelcomeScreen,
-      action: TrackingAction.CloseWelcomeScreen,
-      label: 'enter_welcome_screen_on_widget-click',
-      data: { widgetVariant },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
-      enableAddressable: true,
-    });
+    if (!welcomeScreenClosed) {
+      setWelcomeScreenClosed(true);
+      trackEvent({
+        category: TrackingCategory.WelcomeScreen,
+        action: TrackingAction.CloseWelcomeScreen,
+        label: 'enter_welcome_screen_on_widget-click',
+        data: { widgetVariant },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+        enableAddressable: true,
+      });
+    }
   };
 
   const starterVariant: StarterVariantType = useMemo(() => {

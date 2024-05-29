@@ -24,7 +24,7 @@ export enum TrackingAction {
   OnAvailableRoutes = 'action_available_routes',
 
   // Welcome_Screen
-  OpenWelcomeMessageScreen = 'action_open_welcome_screen',
+  ShowWelcomeMessageScreen = 'action_show_welcome_screen',
   CloseWelcomeScreen = 'action_close_welcome_screen',
   OpenToolModal = 'action_open_stats_modal',
   OpenWelcomeMessageLink = 'action_open_welcome_message_link',
