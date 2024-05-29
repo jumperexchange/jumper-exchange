@@ -24,6 +24,8 @@ import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import { useMediaQuery } from '@mui/material';
+import type { Theme } from '@mui/material';
 
 export function Widget({
   starterVariant,
@@ -41,6 +43,7 @@ export function Widget({
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
@@ -66,6 +69,16 @@ export function Widget({
           : [],
     [starterVariant, themeVariant],
   );
+
+  const integratorStringByType = useMemo(
+    () =>
+      !isDesktop
+        ? process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE
+        : widgetIntegrator || isGasVariant
+          ? process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL
+          : process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+    [widgetIntegrator, isGasVariant, isDesktop],
+  ) as string;
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -160,11 +173,7 @@ export function Widget({
       },
       buildUrl: true,
       insurance: true,
-      integrator: `${
-        widgetIntegrator || isGasVariant
-          ? process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL
-          : process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR
-      }`,
+      integrator: integratorStringByType,
       tokens:
         themeVariant === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
