@@ -1,14 +1,7 @@
 'use client';
 import type { MenuKeysEnum } from '@/const/menuKeys';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import type { MenuListItem } from '@/types/internal';
-import { EventTrackingTool } from '@/types/userTracking';
 import { getContrastAlphaColor } from '@/utils/colors';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckIcon from '@mui/icons-material/Check';
@@ -31,10 +24,6 @@ import {
 interface SubMenuProps {
   open: boolean;
   label: string;
-  suffixIcon?: JSX.Element | string;
-  prefixIcon?: JSX.Element | string;
-  checkIcon?: boolean;
-  url?: string;
   prevMenu: MenuKeysEnum;
   subMenuList: MenuListItem[];
   triggerSubMenu: MenuKeysEnum;
@@ -48,7 +37,6 @@ export const SubMenu = ({
   subMenuList,
 }: SubMenuProps) => {
   const theme = useTheme();
-  const { trackEvent } = useUserTracking();
   const menuListRef = useRef(null);
   const { openSubMenu, setSubMenuState } = useMenuStore((state) => state);
 
@@ -59,24 +47,7 @@ export const SubMenu = ({
   }
 
   const handleClick = (el: MenuListItem) => {
-    if (el.triggerSubMenu) {
-      setSubMenuState(el.triggerSubMenu);
-      trackEvent({
-        category: TrackingCategory.SubMenu,
-        action: TrackingAction.OpenMenu,
-        label: `open_submenu_${el.triggerSubMenu.toLowerCase()}`,
-        data: {
-          [TrackingEventParameter.Menu]: el.triggerSubMenu,
-          [TrackingEventParameter.PrevMenu]: prevMenu,
-        },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
-      });
-    } else {
-      typeof el.onClick === 'function' && el.onClick();
-    }
+    el.onClick();
   };
 
   const handleBackNavigation = () => {
@@ -90,8 +61,9 @@ export const SubMenu = ({
     }
   }, [open, openSubMenu, triggerSubMenu]);
 
-  return openSubMenu === triggerSubMenu ? (
+  return (
     <MenuPaper
+      show={openSubMenu === triggerSubMenu}
       className="submenu"
       onKeyDown={handleBackSpace}
       autoFocus={open}
@@ -111,7 +83,8 @@ export const SubMenu = ({
                 backgroundColor: getContrastAlphaColor(theme, '4%'),
               },
             }}
-            onClick={() => {
+            onClick={(event) => {
+              event.stopPropagation();
               handleBackNavigation();
             }}
           >
@@ -122,42 +95,49 @@ export const SubMenu = ({
       </MenuHeaderAppWrapper>
       {!!subMenuList.length ? (
         subMenuList.map((el, index) =>
-          !!el.url ? (
-            <MenuItemLink
+          !!el.link?.url ? (
+            <MenuItemContainer
               autoFocus={index > 0 ? true : false}
-              onClick={() => {
-                el.triggerSubMenu
-                  ? setSubMenuState(el.triggerSubMenu)
-                  : el.onClick();
-              }}
-              component="li"
+              onClick={() => handleClick(el)}
               key={`${el.label}-${index}`}
             >
-              <MenuLabel
-                variant={
-                  !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
-                    ? 'lg'
-                    : (el.showMoreIcon || el.checkIcon) && el.suffixIcon
-                      ? 'xs'
-                      : 'md'
-                }
+              <MenuItemLink
+                autoFocus={index > 0 ? true : false}
+                href={el.link.url}
+                target={el.link.external ? '_blank' : '_self'}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  el.onClick();
+                }}
+                component="li"
+                key={`${el.label}-${index}`}
               >
-                {el.prefixIcon}
-                <Typography
-                  sx={{
-                    maxWidth: 'inherit',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                  variant={'lifiBodyMedium'}
-                  ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
-                  mr={!!el.suffixIcon ? theme.spacing(1.5) : 'inherit'}
+                <MenuLabel
+                  variant={
+                    !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
+                      ? 'lg'
+                      : (el.showMoreIcon || el.checkIcon) && el.suffixIcon
+                        ? 'xs'
+                        : 'md'
+                  }
                 >
-                  {`${el.label || ' '}`}
-                </Typography>
-                {el.suffixIcon}
-              </MenuLabel>
-            </MenuItemLink>
+                  {el.prefixIcon}
+                  <Typography
+                    sx={{
+                      maxWidth: 'inherit',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                    variant={'lifiBodyMedium'}
+                    ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
+                    mr={!!el.suffixIcon ? theme.spacing(1.5) : 'inherit'}
+                  >
+                    {`${el.label || ' '}`}
+                  </Typography>
+                  {el.suffixIcon}
+                </MenuLabel>
+              </MenuItemLink>
+            </MenuItemContainer>
           ) : (
             <MenuItemContainer
               autoFocus={index > 0 ? true : false}
@@ -202,5 +182,5 @@ export const SubMenu = ({
         </Box>
       )}
     </MenuPaper>
-  ) : null;
+  );
 };

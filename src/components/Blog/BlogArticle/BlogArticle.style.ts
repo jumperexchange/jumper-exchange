@@ -130,15 +130,6 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   overflow: 'hidden',
   padding: theme.spacing(1.5, 2, 3),
 
-  a: {
-    color:
-      theme.palette.mode === 'light'
-        ? theme.palette.primary.main
-        : theme.palette.accent1Alt.main,
-    fontWeight: 600,
-    marginLeft: theme.spacing(1),
-  },
-
   li: {
     color: alpha(
       theme.palette.mode === 'light'
@@ -169,6 +160,13 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(4),
   img: {
     width: '100%',
+  },
+
+  '& a': {
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.primary.main
+        : theme.palette.accent1Alt.main,
   },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -326,3 +324,11 @@ export const BlogArticlAuthorRoleSkeleton = styled(Skeleton)<SkeletonProps>(
     transform: 'unset',
   }),
 );
+
+export const BlogParagraphContainer = styled(Box)(({ theme }) => ({
+  margin: theme.spacing(2, 0),
+
+  '& a:not(:first-child)': {
+    marginLeft: 0,
+  },
+}));

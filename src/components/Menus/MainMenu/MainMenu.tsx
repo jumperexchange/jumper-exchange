@@ -17,6 +17,7 @@ export const MainMenu = ({ anchorEl }: MenuProps) => {
 
   return (
     <Menu
+      keepMounted={true}
       open={openMainMenu}
       setOpen={setMainMenuState}
       isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
@@ -29,6 +30,7 @@ export const MainMenu = ({ anchorEl }: MenuProps) => {
             autoFocus={index > 0 ? true : false}
             label={el.label}
             prefixIcon={el.prefixIcon}
+            link={el.link}
             styles={el.styles}
             children={el.children as unknown as JsxElement}
             triggerSubMenu={el.triggerSubMenu}
@@ -40,7 +42,6 @@ export const MainMenu = ({ anchorEl }: MenuProps) => {
             open
           />
         ))}
-
       <LanguagesSubmenu />
       <DevelopersSubmenu />
     </Menu>

@@ -33,7 +33,8 @@
       "developers": "Développeurs",
       "lifiExplorer": "Explorateur LI.FI",
       "aboutLIFI": "À propos de LI.FI",
-      "support": "Support"
+      "support": "Support",
+      "profile": "Profil Jumper"
     },
     "walletMenu": {
       "disconnect": "Se déconnecter",
@@ -55,37 +56,32 @@
       "documentation": "Documentation"
     }
   },
-  "alert": {
-    "info": "Vous utilisez le Testnet",
-    "testnet": "Toute transaction ou action effectuée sur le Testnet ne sera pas reflétée sur le réseau principal.",
-    "switchToMainnet": "Basculer vers le réseau principal"
-  },
   "discordBanner": {
-    "ctaHeadline": "",
-    "ctaButton": ""
+    "ctaHeadline": "Rejoignez notre Discord pour en savoir plus",
+    "ctaButton": "Rejoignez notre Discord"
   },
   "blog": {
-    "title": "",
-    "categories": "",
-    "allCategories": "",
-    "subtitle": "",
-    "minRead": "",
-    "seeAllPosts": "",
-    "recentPosts": "",
-    "similarPosts": "",
-    "goToArticle": "",
-    "openApp": "",
-    "faq": "",
-    "jumperCta": "",
-    "copiedLink": "",
-    "shareLinkedIn": "",
-    "shareFb": "",
-    "shareX": "",
-    "shareLink": ""
+    "title": "Conseils et tutoriels",
+    "categories": "Catégories",
+    "allCategories": "Tout",
+    "subtitle": "TL;DR guide pas à pas vers la DeFi et la crypto pour tous les niveaux",
+    "minRead": "{{minRead}} minute(s) de lecture",
+    "seeAllPosts": "Voir tous les posts",
+    "recentPosts": "Posts récents",
+    "similarPosts": "Posts similaires",
+    "goToArticle": "Aller à l'article",
+    "openApp": "Ouvrir l’application",
+    "faq": "FAQ",
+    "jumperCta": "Essayez jumper.exchange",
+    "copiedLink": "Lien copié",
+    "shareLinkedIn": "Partager l'article sur LinkedIn",
+    "shareFb": "Partager l'article sur Facebook",
+    "shareX": "Partager l'article sur X",
+    "shareLink": "Partager le lien"
   },
   "solanaAlert": {
-    "title": "",
-    "subtitle": ""
+    "title": "Prise en charge de jeton Solana limité",
+    "subtitle": "Actuellement, seuls les USDC et USDT peuvent être transférés vers et depuis Solana."
   },
   "featureCard": {
     "learnMore": "Plus d'info"
@@ -109,5 +105,17 @@
       "title": "Portefeuille multisignature connecté",
       "description": "L'adresse du portefeuille de destination est nécessaire pour effectuer l'échange."
     }
+  },
+  "questCard": {
+    "completed": "Complété",
+    "join": "Rejoindre"
+  },
+  "missions": {
+    "available": "Missions Disponibles",
+    "completed": "Missions Complétées"
+  },
+  "profile_page": {
+    "mobileTitle": "Disponible uniquement sur le bureau",
+    "mobileDescription": "La page du profil de Jumper n'est pas encore disponible sur les petits écrans. Nous y travaillons."
   }
 }

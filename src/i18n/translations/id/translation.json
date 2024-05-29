@@ -33,7 +33,8 @@
       "developers": "Para Pengembang",
       "lifiExplorer": "",
       "aboutLIFI": "Tentang LI.FI",
-      "support": "Bantuan"
+      "support": "Bantuan",
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "Tidak terkoneksi",
@@ -54,11 +55,6 @@
       "github": "",
       "documentation": "Dokumentasi"
     }
-  },
-  "alert": {
-    "info": "Anda menggunakan Testnet",
-    "testnet": "Setiap transaksi atau tindakan yang dilakukan di Testnet tidak akan tercermin di Mainnet.",
-    "switchToMainnet": "Beralih ke Mainnet"
   },
   "discordBanner": {
     "ctaHeadline": "",
@@ -109,5 +105,17 @@
       "title": "",
       "description": ""
     }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
   }
 }

@@ -1,9 +1,7 @@
-import { NotFoundWrapper } from '@/components/NotFound/NotFound.style';
-import RouterLink from 'next/link';
-import { Button } from '@mui/material';
-import React from 'react';
-import { Box } from '@mui/system';
 import { ButtonPrimary } from '@/components/Button';
+import { NotFoundWrapper } from '@/components/NotFound/NotFound.style';
+import { Box } from '@mui/system';
+import RouterLink from 'next/link';
 
 export function NotFoundComponent() {
   return (

@@ -1,8 +1,7 @@
 import { MenuKeysEnum, MenuMain } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu/MenuStore';
 import type { SxProps, Theme } from '@mui/material';
-import { Fade, Typography } from '@mui/material';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
+import { ClickAwayListener, Fade, Typography } from '@mui/material';
 import type { KeyboardEvent } from 'react';
 import {
   MenuHeaderAppBar,
@@ -17,6 +16,7 @@ interface MenuProps {
   transformOrigin?: string;
   cardsLayout?: boolean;
   styles?: SxProps<Theme>;
+  keepMounted?: boolean;
   setOpen: (open: boolean, anchorRef: any) => void;
   open: boolean;
   children: any;
@@ -28,6 +28,7 @@ export const MenuDesktop = ({
   isOpenSubMenu,
   setOpen,
   styles,
+  keepMounted,
   transformOrigin,
   cardsLayout,
   width,
@@ -36,7 +37,9 @@ export const MenuDesktop = ({
   children,
   anchorEl,
 }: MenuProps) => {
-  const { openSubMenu, closeAllMenus } = useMenuStore((state) => state);
+  const { openedMenu, openSubMenu, closeAllMenus } = useMenuStore(
+    (state) => state,
+  );
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab' || event.key === 'Escape') {
@@ -45,67 +48,71 @@ export const MenuDesktop = ({
     }
   }
 
-  return open ? (
-    <>
+  return (
+    <ClickAwayListener
+      touchEvent={'onTouchStart'}
+      mouseEvent={'onMouseDown'}
+      onClickAway={(event) => {
+        setTimeout(() => {
+          event.stopPropagation();
+          event.preventDefault();
+          open && closeAllMenus();
+        }, 150);
+      }}
+    >
       <MenuPopper
         open={open}
         anchorEl={anchorEl}
+        keepMounted={keepMounted}
         transition
-        disablePortal
         placement="bottom-end"
       >
         {({ TransitionProps }) => (
           <Fade
             {...TransitionProps}
+            in={open}
             style={{
               transformOrigin: transformOrigin || 'top',
             }}
           >
-            <MenuPaper width={width}>
-              <ClickAwayListener
-                onClickAway={(event) => {
-                  event.preventDefault();
-                  closeAllMenus();
-                }}
+            <MenuPaper show={open} width={width} className="menu-paper">
+              <MenuList
+                autoFocusItem={open}
+                id="main-burger-menu"
+                autoFocus={open}
+                isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
+                aria-labelledby="main-burger-menu"
+                onKeyDown={handleListKeyDown}
+                cardsLayout={cardsLayout}
+                hasLabel={!!label}
+                sx={styles}
+                component={
+                  isOpenSubMenu && openSubMenu !== MenuMain.WalletSelect
+                    ? 'div'
+                    : 'ul'
+                }
               >
-                <MenuList
-                  autoFocusItem={open}
-                  id="main-burger-menu"
-                  autoFocus={open}
-                  isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
-                  aria-labelledby="main-burger-menu"
-                  onKeyDown={handleListKeyDown}
-                  cardsLayout={cardsLayout}
-                  hasLabel={!!label}
-                  sx={styles}
-                  component={
-                    isOpenSubMenu && openSubMenu !== MenuMain.WalletSelect
-                      ? 'div'
-                      : 'ul'
-                  }
-                >
-                  {!!label ? (
-                    <MenuHeaderAppWrapper>
-                      <MenuHeaderAppBar component="div" elevation={0}>
-                        <Typography
-                          variant={'lifiBodyMediumStrong'}
-                          width={'100%'}
-                          align={'center'}
-                          flex={1}
-                          noWrap
-                        >
-                          {label}
-                        </Typography>
-                      </MenuHeaderAppBar>
-                    </MenuHeaderAppWrapper>
-                  ) : null}
-                  {children}
-                </MenuList>
-              </ClickAwayListener>
+                {!!label ? (
+                  <MenuHeaderAppWrapper>
+                    <MenuHeaderAppBar component="div" elevation={0}>
+                      <Typography
+                        variant={'lifiBodyMediumStrong'}
+                        width={'100%'}
+                        align={'center'}
+                        flex={1}
+                        noWrap
+                      >
+                        {label}
+                      </Typography>
+                    </MenuHeaderAppBar>
+                  </MenuHeaderAppWrapper>
+                ) : null}
+                {children}
+              </MenuList>
             </MenuPaper>
           </Fade>
         )}
       </MenuPopper>
-    </>
-  ) : null;
+    </ClickAwayListener>
+  );
 };

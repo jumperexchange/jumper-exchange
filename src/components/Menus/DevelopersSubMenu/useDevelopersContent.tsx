@@ -12,7 +12,6 @@ import {
 
 import { DOCS_URL, GITHUB_URL } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { openInNewTab } from '@/utils/openInNewTab';
 import { useTranslation } from 'react-i18next';
 export const useDevelopersContent = () => {
   const { t } = useTranslation();
@@ -51,9 +50,9 @@ export const useDevelopersContent = () => {
           pageload: true,
           disableTrackingTool: [EventTrackingTool.Cookie3],
         });
-        openInNewTab(GITHUB_URL);
         closeAllMenus();
       },
+      link: { url: GITHUB_URL, external: true },
     },
     {
       label: t('navbar.developers.documentation'),
@@ -76,9 +75,9 @@ export const useDevelopersContent = () => {
           pageload: true,
           disableTrackingTool: [EventTrackingTool.Cookie3],
         });
-        openInNewTab(DOCS_URL);
         closeAllMenus();
       },
+      link: { url: DOCS_URL, external: true },
     },
     {
       label: t('navbar.navbarMenu.brandAssets'),
@@ -95,8 +94,9 @@ export const useDevelopersContent = () => {
             EventTrackingTool.Cookie3,
           ],
         });
-        openInNewTab('/jumper_brand_assets.zip');
+        closeAllMenus();
       },
+      link: { url: '/jumper_brand_assets.zip', external: true },
     },
   ];
 };

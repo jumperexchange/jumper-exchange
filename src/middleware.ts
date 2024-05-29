@@ -8,12 +8,10 @@ import { locales } from './i18n/i18next-locales';
 acceptLanguage.languages(locales);
 
 export function middleware(request: NextRequest) {
-  request.headers.set('x-current-url', request.url);
-
   return i18nRouter(request, i18nConfig);
 }
 
-// applies this middleware only to files in the app directory
+// Applies this middleware only to specific paths
 export const config = {
   matcher: '/((?!api|static|.*\\..*|_next).*)',
 };

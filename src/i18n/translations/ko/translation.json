@@ -33,7 +33,8 @@
       "developers": "개발자",
       "lifiExplorer": "",
       "aboutLIFI": "Li.Fi에 관하여",
-      "support": "지원"
+      "support": "지원",
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "연결 해제",
@@ -54,11 +55,6 @@
       "github": "깃허브",
       "documentation": "문서"
     }
-  },
-  "alert": {
-    "info": "현재 테스트넷을 사용하고 있습니다.",
-    "testnet": "테스트넷 상의 어떠한 트랜잭션도 메인넷에 반영되지 않습니다.",
-    "switchToMainnet": "메인넷으로 전환"
   },
   "discordBanner": {
     "ctaHeadline": "",
@@ -109,5 +105,17 @@
       "title": "",
       "description": ""
     }
+  },
+  "questCard": {
+    "completed": "",
+    "join": ""
+  },
+  "missions": {
+    "available": "",
+    "completed": ""
+  },
+  "profile_page": {
+    "mobileTitle": "",
+    "mobileDescription": ""
   }
 }
