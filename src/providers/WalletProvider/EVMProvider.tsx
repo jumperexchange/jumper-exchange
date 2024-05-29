@@ -1,7 +1,7 @@
 'use client';
 
 import { useChains } from '@/hooks/useChains';
-import { injected } from 'wagmi/connectors';
+import { injected, metaMask } from 'wagmi/connectors';
 
 import {
   alpha,
@@ -98,7 +98,7 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
     const wagmiConfig = createConfig({
       chains: _chains,
       connectors: isMobile
-        ? [injected()].filter((el: any) => el.icon !== undefined)
+        ? [injected(), metaMask()]
         : (Object.values(connectors) as CreateConnectorFn[]),
       // connectors: Object.values(connectors) as CreateConnectorFn[],
       client({ chain }) {
