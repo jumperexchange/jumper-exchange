@@ -51,7 +51,6 @@ export const MenuDesktop = ({
       touchEvent={'onTouchStart'}
       mouseEvent={'onMouseDown'}
       onClickAway={(event) => {
-        console.log('Click Away Listener');
         setTimeout(() => {
           event.stopPropagation();
           event.preventDefault();

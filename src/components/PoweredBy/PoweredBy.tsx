@@ -65,6 +65,7 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
       <Typography
         variant={'lifiBodySmall'}
         sx={{
+          zIndex: 1,
           color:
             theme.palette.mode === 'dark'
               ? theme.palette.alphaLight500.main
