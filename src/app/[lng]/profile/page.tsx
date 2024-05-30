@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: 'https://strapi.li.finance/uploads/large_Save_on_Gas_Fees_518a5edcc9.jpg', // Must be an absolute URL
           width: 800,
           height: 600,
-          alt: 'banner image',
+          alt: 'small banner image',
         },
         {
           url: 'https://strapi.li.finance/uploads/large_Save_on_Gas_Fees_518a5edcc9.jpg', // Must be an absolute URL
