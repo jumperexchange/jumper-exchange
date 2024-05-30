@@ -8,18 +8,17 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData } from '@/types/strapi';
 import { EventTrackingTool } from '@/types/userTracking';
 import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
-import { useRouter } from 'next/navigation';
+import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import {
-  FeaturedArticleContainer,
   FeaturedArticleContent,
   FeaturedArticleDetails,
   FeaturedArticleImage,
+  FeaturedArticleLink,
   FeaturedArticleMetaContainer,
   FeaturedArticleMetaDate,
   FeaturedArticleSkeleton,
@@ -38,7 +37,6 @@ export const FeaturedArticle = ({
 }: FeaturedArticleProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const router = useRouter();
 
   const handleFeatureCardClick = (featuredArticle: BlogArticleData[]) => {
     trackEvent({
@@ -48,7 +46,6 @@ export const FeaturedArticle = ({
       data: { [TrackingEventParameter.ArticleID]: featuredArticle[0]?.id },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    router.push(`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`);
   };
 
   const formatedDate =
@@ -63,7 +60,8 @@ export const FeaturedArticle = ({
 
   return featuredArticle && featuredArticle?.length > 0 ? (
     <>
-      <FeaturedArticleContainer
+      <FeaturedArticleLink
+        href={`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`}
         onClick={() => {
           handleFeatureCardClick(featuredArticle);
         }}
@@ -113,7 +111,7 @@ export const FeaturedArticle = ({
             </FeaturedArticleSubtitle>
           </Box>
         </FeaturedArticleContent>
-      </FeaturedArticleContainer>
+      </FeaturedArticleLink>
     </>
   ) : (
     <FeaturedArticleSkeleton />
