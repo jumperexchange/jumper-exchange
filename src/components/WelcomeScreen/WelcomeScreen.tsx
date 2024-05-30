@@ -44,13 +44,12 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
   const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
   const [openBridgesToolModal, setOpenBridgesToolModal] = useState(false);
   const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
-
   useEffect(() => {
     if (welcomeScreenClosed) {
       trackEvent({
         category: TrackingCategory.WelcomeScreen,
         label: 'open-welcome-screen',
-        action: TrackingAction.OpenWelcomeMessageScreen,
+        action: TrackingAction.ShowWelcomeMessageScreen,
         disableTrackingTool: [
           EventTrackingTool.ARCx,
           EventTrackingTool.Cookie3,
@@ -102,16 +101,19 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
       return;
     } else {
       event.stopPropagation();
-      setWelcomeScreenClosed(true);
-      trackEvent({
-        category: TrackingCategory.WelcomeScreen,
-        action: TrackingAction.CloseWelcomeScreen,
-        label: 'enter_welcome_screen',
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
-      });
+      if (!welcomeScreenClosed) {
+        setWelcomeScreenClosed(true);
+        trackEvent({
+          category: TrackingCategory.WelcomeScreen,
+          action: TrackingAction.CloseWelcomeScreen,
+          label: 'enter_welcome_screen',
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+          enableAddressable: true,
+        });
+      }
     }
   };
 
