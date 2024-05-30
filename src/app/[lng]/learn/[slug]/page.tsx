@@ -24,6 +24,19 @@ export async function generateMetadata({
     return {
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
       description: articleData.Subtitle,
+      openGraph: {
+        title: 'Jumper Learn',
+        description: `${sliceStrToXChar(articleData.Title, 70)}`,
+        images: [
+          {
+            url: `${article.url}${articleData.Image.data.attributes?.url}`,
+            width: 900,
+            height: 450,
+            alt: 'banner image',
+          },
+        ],
+        type: 'article',
+      },
     };
   } catch (err) {
     return {
