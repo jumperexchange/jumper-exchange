@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'Jumper Learn',
-    description: 'Jumper Learn is the blog of Jumper exchange.',
+    description: 'Jumper Learn is the blog of Jumper Exchange.',
   };
 }
 
