@@ -26,7 +26,7 @@ export async function generateMetadata({
       description: articleData.Subtitle,
       openGraph: {
         title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
-        description: `${sliceStrToXChar(articleData.Subtitle, 100)}`,
+        description: `${sliceStrToXChar(articleData.Subtitle, 60)}`,
         images: [
           {
             url: `${article.url}${articleData.Image.data.attributes?.url}`,
