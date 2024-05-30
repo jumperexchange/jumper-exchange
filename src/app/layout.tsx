@@ -4,6 +4,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import Script from 'next/script';
 import type { Viewport } from 'next/types';
 import React from 'react';
+import 'src/fonts/inter.css';
 import { fallbackLng } from 'src/i18n';
 import { metadata as JumperMetadata } from './lib/metadata';
 export const metadata = JumperMetadata;
