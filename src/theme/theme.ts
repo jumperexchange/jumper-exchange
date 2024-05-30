@@ -3,7 +3,7 @@ import type { Breakpoint } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
-import { inter, interVar, urbanist } from 'src/fonts/fonts';
+import { inter, urbanist } from 'src/fonts/fonts';
 
 declare module '@mui/material/styles' {
   interface Shape {
@@ -207,10 +207,7 @@ const themeCustomized = createTheme({
     MuiScopedCssBaseline: {
       styleOverrides: {
         root: {
-          fontFamily: `${inter.style.fontFamily}, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif`,
-          '@supports (font-variation-settings: normal)': {
-            fontFamily: `${interVar.style.fontFamily}, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif`,
-          },
+          fontFamily: `${inter.style.fontFamily}, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif`,
         },
       },
     },
@@ -392,9 +389,7 @@ const themeCustomized = createTheme({
   },
   typography: {
     fontFamily: [
-      `${interVar.style.fontFamily}`,
-      `${inter.style.fontFamily}`,
-      'Inter fallback',
+      inter.style.fontFamily,
       'Arial',
       'Noto Sans',
       'BlinkMacSystemFont',
