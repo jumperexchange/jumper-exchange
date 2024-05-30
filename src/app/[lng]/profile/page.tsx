@@ -8,7 +8,6 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: 'Jumper Profile',
       description: 'Jumper Profile page where you can see your XP and level.',
-      url: 'https://jumper.exchange/profile',
       images: [
         {
           url: 'https://strapi.li.finance/uploads/large_Save_on_Gas_Fees_518a5edcc9.jpg', // Must be an absolute URL
