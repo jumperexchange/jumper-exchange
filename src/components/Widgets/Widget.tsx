@@ -24,6 +24,7 @@ import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 
 export function Widget({
   starterVariant,
@@ -42,6 +43,7 @@ export function Widget({
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
+  const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
   const { tokens } = useMemelist({
@@ -67,6 +69,8 @@ export function Widget({
     [starterVariant, themeVariant],
   );
 
+  console.log('-------- in widget');
+  console.log(partnerName);
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
@@ -96,6 +100,12 @@ export function Widget({
       fromAmount: fromAmount,
       chains: {
         allow: allowChains || allowedChainsByVariant,
+      },
+      bridges: {
+        allow: partnerName && isBridgeFiltered ? [partnerName] : undefined,
+      },
+      exchanges: {
+        allow: partnerName && isDexFiltered ? [partnerName] : undefined,
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -199,6 +209,9 @@ export function Widget({
     tokens,
     wagmiConfig,
     widgetIntegrator,
+    isBridgeFiltered,
+    isDexFiltered,
+    partnerName,
   ]);
 
   return (

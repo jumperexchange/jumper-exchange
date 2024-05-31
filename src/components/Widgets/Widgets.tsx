@@ -17,6 +17,7 @@ import { EventTrackingTool } from 'src/types/userTracking';
 import { Widget } from './Widget';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
