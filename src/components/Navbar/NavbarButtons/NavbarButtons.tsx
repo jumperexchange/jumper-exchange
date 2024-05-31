@@ -13,10 +13,10 @@ import { useEffect, useRef } from 'react';
 import { MenuToggle, NavbarButtonsContainer, WalletManagementButtons } from '.';
 
 interface NavbarButtonsProps {
-  redirectToLearn?: boolean;
+  redirectToApp?: boolean;
 }
 
-export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
+export const NavbarButtons = ({ redirectToApp }: NavbarButtonsProps) => {
   const mainMenuAnchor = useRef<any>(null);
   const { trackEvent } = useUserTracking();
 
@@ -58,7 +58,7 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
   return (
     <>
       <NavbarButtonsContainer className="settings">
-        <WalletManagementButtons redirectToLearn={redirectToLearn} />
+        <WalletManagementButtons redirectToApp={redirectToApp} />
         <MenuToggle
           ref={mainMenuAnchor}
           id="main-burger-menu-button"

@@ -1,20 +1,18 @@
-import { Link } from '@mui/material';
-import React from 'react';
-import { BackgroundGradient } from '@/components/BackgroundGradient';
-import { NavbarContainer } from '@/components/Navbar/Navbar.style';
-import { PoweredBy } from '@/components/PoweredBy';
+import initTranslations from '@/app/i18n';
 import { getCookies } from '@/app/lib/getCookies';
-import { ThemeProvider } from '@/providers/ThemeProvider';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import { BackgroundGradient } from '@/components/BackgroundGradient';
+import { Logo } from '@/components/Navbar/Logo/Logo';
+import { NavbarContainer } from '@/components/Navbar/Navbar.style';
 import { NavbarButtons } from '@/components/Navbar/NavbarButtons';
 import { NotFoundComponent } from '@/components/NotFound/NotFound';
-import { defaultNS } from 'src/i18n';
+import { PoweredBy } from '@/components/PoweredBy';
+import { ThemeProvider } from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
-import { namespaces } from 'src/i18n';
-import initTranslations from '@/app/i18n';
+import { Link } from '@mui/material';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { cookies } from 'next/headers';
-import { Logo } from '@/components/Navbar/Logo/Logo';
 import RouterLink from 'next/link';
+import { defaultNS, namespaces } from 'src/i18n';
 
 export default async function NotFound() {
   const { activeTheme } = getCookies();
@@ -38,7 +36,7 @@ export default async function NotFound() {
               <Link component={RouterLink} href="/">
                 <Logo variant="default" />
               </Link>
-              <NavbarButtons redirectToLearn={false} />
+              <NavbarButtons redirectToApp={false} />
             </NavbarContainer>
             <NotFoundComponent />
             <PoweredBy fixedPosition={true} />

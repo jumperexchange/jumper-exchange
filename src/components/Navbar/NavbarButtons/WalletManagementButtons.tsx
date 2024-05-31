@@ -18,13 +18,13 @@ interface WalletManagementButtonsProps {
   backgroundColor?: string;
   color?: string;
   walletConnected?: boolean;
-  redirectToLearn?: boolean;
+  redirectToApp?: boolean;
   connectButtonLabel?: ReactElement<any, any>;
 }
 
 export const WalletManagementButtons: React.FC<
   WalletManagementButtonsProps
-> = ({ connectButtonLabel, redirectToLearn }) => {
+> = ({ connectButtonLabel, redirectToApp }) => {
   const walletManagementButtonsRef = useRef<any>();
   const { t } = useTranslation();
   const router = useRouter();
@@ -43,7 +43,7 @@ export const WalletManagementButtons: React.FC<
   return (
     <>
       <div ref={walletManagementButtonsRef}>
-        {redirectToLearn ? (
+        {redirectToApp ? (
           <ConnectButton
             // Used in the widget
             onClick={handleLearnButton}
