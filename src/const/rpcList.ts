@@ -1,3 +1,5 @@
+import { shuffleArray } from 'src/utils/shuffleArray';
+
 const optRPCList = [
   'https://mainnet.optimism.io',
   'https://op-pokt.nodies.app',
