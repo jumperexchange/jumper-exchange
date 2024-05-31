@@ -1,5 +1,5 @@
 import type { LoyaltyPassState, PDA } from '@/types/loyaltyPass';
-import type { SettingsProps } from '@/types/settings';
+import { SettingsProps, ThemeModesSupported } from '@/types/settings';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
@@ -14,7 +14,7 @@ export const useLoyaltyPassStore = createWithEqualityFn(
       pdas: [],
       timestamp: undefined,
 
-      setValue: (key: keyof SettingsProps, value: any) =>
+      setValue: (key: keyof SettingsProps, value: SettingsProps) =>
         set(() => ({
           [key]: value,
         })),

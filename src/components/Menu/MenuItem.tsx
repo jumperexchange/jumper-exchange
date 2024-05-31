@@ -44,11 +44,6 @@ export const MenuItem = ({
 }: MenuItemProps) => {
   const theme = useTheme();
 
-  const handleClick = (event: any) => {
-    event?.stopPropagation();
-    onClick && onClick(event);
-  };
-
   return open ? (
     <MenuItemContainer
       disableRipple={disableRipple || showButton}
@@ -57,7 +52,9 @@ export const MenuItem = ({
       autoFocus={autoFocus}
       onClick={(event) => {
         event.stopPropagation();
-        !children && handleClick(event);
+        if (!children) {
+          onClick && onClick(event);
+        }
       }}
     >
       <>

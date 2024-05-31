@@ -42,6 +42,7 @@ export interface TrackChainSwitchProps {
   data?: { [key: string]: string | number | boolean | any };
 }
 
+
 type destinations =
   | 'discord-lifi'
   | 'lifi-explorer'

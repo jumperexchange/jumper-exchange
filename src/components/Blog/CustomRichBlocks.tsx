@@ -11,6 +11,7 @@ import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { BlogParagraphContainer } from './BlogArticle/BlogArticle.style';
 import type { BlogWidgetProps } from './BlogWidget';
+import { JSX } from 'react';
 import { BlogWidget } from './BlogWidget';
 import {
   BlogH1,
@@ -52,7 +53,7 @@ export const CustomRichBlocks = ({
       baseUrl ? (
         <Lightbox imageData={data.image} baseUrl={baseUrl} />
       ) : undefined,
-    heading: ({ children, level }: any) => {
+    heading: ({ children, level }: { children: JSX.Element | JSX.Element[], level: number }) => {
       switch (level) {
         case 2:
           return (
