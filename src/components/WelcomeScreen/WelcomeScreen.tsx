@@ -183,6 +183,7 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
               setOpenDexsToolModal={setOpenDexsToolModal}
             />
             <ButtonPrimary
+              id="get-started-button"
               onClick={handleGetStarted}
               sx={(theme) => ({
                 height: 48,
