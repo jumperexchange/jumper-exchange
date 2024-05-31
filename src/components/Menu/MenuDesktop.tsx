@@ -21,7 +21,7 @@ interface MenuProps {
   open: boolean;
   children: React.ReactNode;
   width?: string;
-  anchorEl: HTMLAnchorElement;
+  anchorEl?: HTMLAnchorElement;
 }
 
 export const MenuDesktop = ({
@@ -37,9 +37,7 @@ export const MenuDesktop = ({
   children,
   anchorEl,
 }: MenuProps) => {
-  const { openedMenu, openSubMenu, closeAllMenus } = useMenuStore(
-    (state) => state,
-  );
+  const { openSubMenu, closeAllMenus } = useMenuStore((state) => state);
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab' || event.key === 'Escape') {

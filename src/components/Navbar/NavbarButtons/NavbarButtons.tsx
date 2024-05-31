@@ -75,7 +75,7 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
           />
         </MenuToggle>
       </NavbarButtonsContainer>
-      <MainMenu anchorEl={mainMenuAnchor.current} />
+      <MainMenu anchorEl={mainMenuAnchor.current ?? undefined} />
     </>
   );
 };

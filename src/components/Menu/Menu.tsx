@@ -1,6 +1,5 @@
 import type { SxProps, Theme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import type { LegacyRef } from 'react';
 import { MenuDesktop, MenuMobile } from '.';
 
 interface MenuProps {
@@ -13,7 +12,7 @@ interface MenuProps {
   open: boolean;
   children: React.ReactNode;
   width?: string;
-  anchorEl: HTMLAnchorElement;
+  anchorEl?: HTMLAnchorElement;
 }
 
 export const Menu = ({

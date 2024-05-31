@@ -30,7 +30,7 @@ export const ProgressionChartScore = styled(Box, {
       : '0%',
   backgroundColor:
     theme.palette.mode === 'light'
-      ? theme.palette.pink.light
+      ? theme.palette.accent1.main
       : theme.palette.accent1Alt.main,
   ...(points &&
     levelData &&

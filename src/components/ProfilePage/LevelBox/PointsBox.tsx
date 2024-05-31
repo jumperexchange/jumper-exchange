@@ -15,7 +15,7 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
       <ProfilePageTypography
         color={
           theme.palette.mode === 'light'
-            ? theme.palette.pink.light
+            ? theme.palette.accent1.main
             : theme.palette.white.main
         }
         sx={{

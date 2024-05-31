@@ -21,6 +21,8 @@ export interface TrackEventProps {
   value?: number;
   data?: { [key: string]: string | number | boolean };
   disableTrackingTool?: EventTrackingTool[];
+  enableAddressable?: boolean;
+  isConversion?: boolean;
 }
 
 export interface TrackTransactionProps {
@@ -41,7 +43,6 @@ export interface TrackChainSwitchProps {
   value?: number;
   data?: { [key: string]: string | number | boolean | any };
 }
-
 
 type destinations =
   | 'discord-lifi'

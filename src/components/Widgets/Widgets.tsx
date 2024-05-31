@@ -10,7 +10,10 @@ import type { WidgetSubvariant } from '@lifi/widget';
 import { usePathname } from 'next/navigation';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { ThemesMap } from 'src/const/themesMap';
+import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
+import { useUserTracking } from 'src/hooks/userTracking';
 import type { ThemeModesSupported } from 'src/types/settings';
+import { EventTrackingTool } from 'src/types/userTracking';
 import { Widget } from './Widget';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
@@ -30,7 +33,7 @@ export function Widgets({
   const { welcomeScreenClosed, setWelcomeScreenClosed } =
     useWelcomeScreen(closedWelcomeScreen);
   const pathname = usePathname();
-
+  const { trackEvent } = useUserTracking();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'
@@ -38,6 +41,23 @@ export function Widgets({
   const [_themeVariant, setThemeVariant] = useState<
     ThemeVariantType | undefined
   >(undefined);
+
+  const handleWelcomeScreenEnter = (widgetVariant: StarterVariantType) => {
+    if (!welcomeScreenClosed) {
+      setWelcomeScreenClosed(true);
+      trackEvent({
+        category: TrackingCategory.WelcomeScreen,
+        action: TrackingAction.CloseWelcomeScreen,
+        label: 'enter_welcome_screen_on_widget-click',
+        data: { widgetVariant },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+        enableAddressable: true,
+      });
+    }
+  };
 
   const starterVariant: StarterVariantType = useMemo(() => {
     if (widgetVariant) {
@@ -120,7 +140,7 @@ export function Widgets({
   return (
     <>
       <WidgetContainer
-        onClick={() => setWelcomeScreenClosed(true)}
+        onClick={() => handleWelcomeScreenEnter(TabsMap.Exchange.variant)}
         isActive={_starterVariant === TabsMap.Exchange.variant}
         welcomeScreenClosed={!!welcomeScreenClosed}
       >
@@ -131,7 +151,7 @@ export function Widgets({
         />
       </WidgetContainer>
       <WidgetContainer
-        onClick={() => setWelcomeScreenClosed(true)}
+        onClick={() => handleWelcomeScreenEnter(TabsMap.Refuel.variant)}
         isActive={_starterVariant === TabsMap.Refuel.variant}
         welcomeScreenClosed={!!welcomeScreenClosed}
       >
@@ -143,7 +163,7 @@ export function Widgets({
       <SolanaAlert />
       {process.env.NEXT_PUBLIC_ONRAMPER_ENABLED ? (
         <WidgetContainer
-          onClick={() => setWelcomeScreenClosed(true)}
+          onClick={() => handleWelcomeScreenEnter(TabsMap.Buy.variant)}
           isActive={_starterVariant === TabsMap.Buy.variant}
           welcomeScreenClosed={!!welcomeScreenClosed}
         >

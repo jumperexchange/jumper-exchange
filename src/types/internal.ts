@@ -4,9 +4,16 @@ import type { SxProps, Theme } from '@mui/material';
 import type { MenuItemLinkType } from 'src/components/Menu';
 import type { MenuKeysEnum } from 'src/const/menuKeys';
 declare global {
-
   interface Window {
     gtag: Gtag.Gtag;
+    __adrsbl: {
+      queue: any[];
+      run: (
+        event_name: string,
+        is_conversion: boolean,
+        properties: { name: string; value: any }[],
+      ) => void;
+    };
   }
 }
 

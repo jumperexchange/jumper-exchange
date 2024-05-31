@@ -6,7 +6,7 @@ import type { JsxElement } from 'typescript';
 import { DevelopersSubmenu, LanguagesSubmenu, useMainMenuContent } from '..';
 
 interface MenuProps {
-  anchorEl: HTMLAnchorElement;
+  anchorEl?: HTMLAnchorElement;
 }
 
 export const MainMenu = ({ anchorEl }: MenuProps) => {

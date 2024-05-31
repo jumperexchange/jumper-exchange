@@ -128,6 +128,8 @@ export function useUserTracking() {
       value,
       data,
       disableTrackingTool,
+      enableAddressable,
+      isConversion,
     }: TrackEventProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() &&
@@ -153,6 +155,25 @@ export function useUserTracking() {
           name: label,
           value,
         });
+      }
+      if (enableAddressable) {
+        const dataArray = [];
+        if (label) {
+          dataArray.push({ name: 'label', value: label });
+        }
+
+        typeof window !== 'undefined' &&
+          data &&
+          window.__adrsbl.run(
+            action,
+            isConversion ?? false,
+            dataArray.concat(
+              Object.entries(data).map(([key, value]) => ({
+                name: `${key}`,
+                value: `${value}`,
+              })),
+            ),
+          );
       }
     },
     [arcx, cookie3],

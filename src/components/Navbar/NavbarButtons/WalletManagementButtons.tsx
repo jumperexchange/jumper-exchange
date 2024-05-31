@@ -2,7 +2,7 @@
 import { EcosystemSelectMenu } from '@/components/Menus/EcosystemSelectMenu';
 import { WalletMenu } from '@/components/Menus/WalletMenu';
 import { WalletSelectMenu } from '@/components/Menus/WalletSelectMenu';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,7 @@ interface WalletManagementButtonsProps {
 export const WalletManagementButtons = ({
   redirectToLearn,
 }: WalletManagementButtonsProps) => {
-  const walletManagementButtonsRef = useRef<HTMLDivElement>(null);
+  const walletManagementButtonsRef = useRef<HTMLAnchorElement>(null);
   const { t } = useTranslation();
   const router = useRouter();
   const { trackEvent } = useUserTracking();
@@ -36,7 +36,7 @@ export const WalletManagementButtons = ({
 
   return (
     <>
-      <div ref={walletManagementButtonsRef}>
+      <Box ref={walletManagementButtonsRef}>
         {redirectToLearn ? (
           <ConnectButton
             // Used in the widget
@@ -58,8 +58,8 @@ export const WalletManagementButtons = ({
         ) : (
           <WallettButtons />
         )}
-      </div>
-      <WalletMenu anchorEl={walletManagementButtonsRef.current} />
+      </Box>
+      <WalletMenu anchorEl={walletManagementButtonsRef.current ?? undefined} />
       <WalletSelectMenu
         anchorEl={walletManagementButtonsRef.current || undefined}
       />

@@ -14,7 +14,7 @@ import { ConnectButtonContainer } from './EcosystemSelectMenu.style';
 import { SVMConnectButton } from './SVMConnectButton';
 
 interface MenuProps {
-  anchorEl?: HTMLDivElement | undefined;
+  anchorEl?: HTMLAnchorElement;
 }
 
 export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
