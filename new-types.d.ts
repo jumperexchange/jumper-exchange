@@ -16,6 +16,7 @@ declare namespace NodeJS {
     NEXT_PUBLIC_HOTJAR_SNIPPET_VERSION: number;
     SENTRY_DSN: string;
     NEXT_PUBLIC_CUSTOM_RPCS: string;
+    NEXT_PUBLIC_DKEY: string;
     NEXT_PUBLIC_WIDGET_INTEGRATOR: string;
     NEXT_PUBLIC_INTEGRATOR_REFUEL: string;
     NEXT_PUBLIC_LIFI_API_URL: string;

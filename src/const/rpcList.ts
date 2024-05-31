@@ -4,13 +4,15 @@ const optRPCList = [
   'https://mainnet.optimism.io',
   'https://op-pokt.nodies.app',
   'https://optimism.llamarpc.com',
-  'https://optimism.drpc.org',
+  // 'https://optimism.drpc.org',
+  `https://lb.drpc.org/ogrpc?network=optimism&dkey=${process.env.NEXT_PUBLIC_DKEY}`,
   'https://optimism.meowrpc.com',
 ];
 
 const arbRPCList = [
   'https://arb1.arbitrum.io/rpc',
-  'https://arbitrum.drpc.org',
+  // 'https://arbitrum.drpc.org',
+  `https://lb.drpc.org/ogrpc?network=arbitrum&dkey=${process.env.NEXT_PUBLIC_DKEY}`,
   'https://arbitrum.llamarpc.com',
   'https://arb-pokt.nodies.app',
   'https://arbitrum.meowrpc.com',
@@ -20,7 +22,8 @@ const basRPCList = [
   'https://mainnet.base.org/',
   'https://base.llamarpc.com',
   'https://base.meowrpc.com',
-  'https://base.drpc.org',
+  // 'https://base.drpc.org',
+  `https://lb.drpc.org/ogrpc?network=base&dkey=${process.env.NEXT_PUBLIC_DKEY}`,
   'https://base-pokt.nodies.app',
 ];
 
