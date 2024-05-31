@@ -1,5 +1,5 @@
 import type { LoyaltyPassState, PDA } from '@/types/loyaltyPass';
-import { SettingsProps, ThemeModesSupported } from '@/types/settings';
+import type { SettingsProps } from '@/types/settings';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';

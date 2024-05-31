@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Modal as MUIModal, useTheme } from '@mui/material';
+import { Modal as MUIModal } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
 import type { DataItem } from 'src/types/internal';
 import {
@@ -21,8 +21,6 @@ interface ToolModalProps {
 }
 
 export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
-  const theme = useTheme();
-
   const handleOpenToolModal = () => {
     setOpen(false);
   };

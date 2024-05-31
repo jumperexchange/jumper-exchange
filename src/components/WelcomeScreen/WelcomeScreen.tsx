@@ -9,7 +9,7 @@ import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { EventTrackingTool } from '@/types/userTracking';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
-import { Slide, useTheme } from '@mui/material';
+import { Slide } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -41,7 +41,6 @@ interface WelcomeScreenProps {
 }
 
 export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
-  const theme = useTheme();
   const { welcomeScreenClosed, setWelcomeScreenClosed } =
     useWelcomeScreen(closed);
   const { t } = useTranslation();
