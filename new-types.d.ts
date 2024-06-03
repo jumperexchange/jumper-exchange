@@ -14,7 +14,7 @@ declare namespace NodeJS {
     NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: string;
     NEXT_PUBLIC_HOTJAR_ID: number;
     NEXT_PUBLIC_HOTJAR_SNIPPET_VERSION: number;
-    SENTRY_DSN: string;
+    SENTRY_AUTH_TOKEN: string;
     NEXT_PUBLIC_CUSTOM_RPCS: string;
     NEXT_PUBLIC_DKEY: string;
     NEXT_PUBLIC_WIDGET_INTEGRATOR: string;
