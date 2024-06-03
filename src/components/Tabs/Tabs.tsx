@@ -16,8 +16,8 @@ type Orientation = 'horizontal' | 'vertical';
 
 interface TabsProps {
   data: TabProps[];
-  value: number | boolean;
-  onChange?: (event: React.SyntheticEvent, value: number | boolean) => void;
+  value: number;
+  onChange?: (event: React.SyntheticEvent, value: number) => void;
   orientation?: Orientation;
   ariaLabel: string;
   containerStyles?: SxProps<Theme>;

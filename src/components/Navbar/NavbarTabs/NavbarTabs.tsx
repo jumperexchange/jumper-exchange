@@ -14,7 +14,7 @@ export const NavbarTabs = ({ navbarPageReload }: NavbarTabsProps) => {
   const theme = useTheme();
   const { activeTab, setActiveTab } = useActiveTabStore();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
-  const handleChange = (newValue: number) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
   const navbarTabs = useNavbarTabs({ navbarPageReload });
@@ -45,8 +45,8 @@ export const NavbarTabs = ({ navbarPageReload }: NavbarTabsProps) => {
   return (
     <Tabs
       data={navbarTabs}
-      value={!isDesktop || navbarPageReload ? false : activeTab}
-      onChange={() => handleChange}
+      value={!isDesktop || navbarPageReload ? -1 : activeTab}
+      onChange={handleChange}
       ariaLabel="navbar-tabs"
       containerStyles={containerStyles}
       tabStyles={tabStyles}
