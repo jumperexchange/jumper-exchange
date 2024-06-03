@@ -10,7 +10,7 @@ export const Overlay = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'showWelcome',
 })<WrapperProps>(({ theme, showWelcome }) => ({
   position: 'absolute',
-  top: '50vh',
+  bottom: 0,
   left: 0,
   right: 0,
   margin: 0,
@@ -42,7 +42,8 @@ export const ContentWrapper = styled(Box, {
   background: theme.palette.mode === 'dark' ? '#1A1033' : '#F3EBFF',
   width: '100%',
   position: 'absolute',
-  top: 0,
+  // top: 0,
+  bottom: 0,
   zIndex: '1400',
   height: 'auto',
   animation: !showWelcome ? fadeOut : 'unset',
