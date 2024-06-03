@@ -116,7 +116,7 @@ export interface LoyaltyPassProps {
   tier?: string;
   pdas?: PDA[];
   time?: number;
-  [key: string]: any;
+  timestamp: number;
 }
 
 export interface LoyaltyPassState extends LoyaltyPassProps {
