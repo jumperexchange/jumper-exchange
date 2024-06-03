@@ -142,7 +142,7 @@ export const MenuItemLink = styled(Link, {
   shouldForwardProp: (prop) => prop !== 'component',
 })<MenuItemLinkProps>(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'space-between',
+  alignItems: 'center',
   height: 48,
   width: '100%',
   textDecoration: 'none',
