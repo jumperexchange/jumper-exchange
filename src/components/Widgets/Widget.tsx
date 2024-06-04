@@ -24,12 +24,9 @@ import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-<<<<<<< HEAD
 import { useMediaQuery } from '@mui/material';
 import type { Theme } from '@mui/material';
-=======
 import { publicRPCList } from 'src/const/rpcList';
->>>>>>> develop
 
 export function Widget({
   starterVariant,
