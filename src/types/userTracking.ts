@@ -21,6 +21,8 @@ export interface TrackEventProps {
   value?: number;
   data?: { [key: string]: string | number | boolean | any };
   disableTrackingTool?: EventTrackingTool[];
+  enableAddressable?: boolean;
+  isConversion?: boolean;
 }
 
 export interface TrackTransactionProps {

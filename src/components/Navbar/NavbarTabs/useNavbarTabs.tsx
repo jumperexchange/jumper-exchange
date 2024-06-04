@@ -40,6 +40,7 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
           EventTrackingTool.ARCx,
           EventTrackingTool.Cookie3,
         ],
+        enableAddressable: true,
       });
     };
 

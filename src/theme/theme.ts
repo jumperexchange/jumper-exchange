@@ -3,7 +3,7 @@ import type { Breakpoint } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
-import { inter, interVar, urbanist } from 'src/fonts/fonts';
+import { inter, urbanist } from 'src/fonts/fonts';
 
 declare module '@mui/material/styles' {
   interface Shape {
@@ -50,7 +50,6 @@ declare module '@mui/material/styles' {
     alphaLight600: Palette['primary'];
     alphaLight700: Palette['primary'];
     alphaLight800: Palette['primary'];
-    pink: Palette['primary'];
   }
   interface PaletteOptions {
     tertiary?: PaletteOptions['primary'];
@@ -84,7 +83,6 @@ declare module '@mui/material/styles' {
     alphaLight600?: PaletteOptions['primary'];
     alphaLight700?: PaletteOptions['primary'];
     alphaLight800?: PaletteOptions['primary'];
-    pink: Palette['primary'];
   }
   interface TypographyVariants {
     lifiHeaderDisplay: React.CSSProperties;
@@ -207,10 +205,7 @@ const themeCustomized = createTheme({
     MuiScopedCssBaseline: {
       styleOverrides: {
         root: {
-          fontFamily: `${inter.style.fontFamily}, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif`,
-          '@supports (font-variation-settings: normal)': {
-            fontFamily: `${interVar.style.fontFamily}, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif`,
-          },
+          fontFamily: `${inter.style.fontFamily}, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif`,
         },
       },
     },
@@ -383,18 +378,10 @@ const themeCustomized = createTheme({
     alphaLight800: {
       main: 'rgba(255, 255, 255, 0.64)',
     },
-    pink: {
-      main: '',
-      contrastText: '',
-      light: '#31007A',
-      dark: '#BEA0EB',
-    },
   },
   typography: {
     fontFamily: [
-      `${interVar.style.fontFamily}`,
-      `${inter.style.fontFamily}`,
-      'Inter fallback',
+      inter.style.fontFamily,
       'Arial',
       'Noto Sans',
       'BlinkMacSystemFont',

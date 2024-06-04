@@ -5,7 +5,6 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData, StrapiResponseData } from '@/types/strapi';
 import { EventTrackingTool } from '@/types/userTracking';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { CarouselContainer } from '.';
 import { BlogArticleCard } from '../BlogArticleCard/BlogArticleCard';
@@ -30,7 +29,6 @@ export const BlogCarousel = ({
   showAllButton,
 }: BlogCarouselProps) => {
   const { t } = useTranslation();
-  const router = useRouter();
   const { trackEvent } = useUserTracking();
 
   const handleShowAll = () => {
