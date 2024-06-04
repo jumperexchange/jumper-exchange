@@ -83,6 +83,11 @@ export const metaMaskConnector = injected({
   shimDisconnect: false,
 });
 
+export const phantomConnector = injected({
+  target: 'phantom',
+  shimDisconnect: false,
+});
+
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
   const { chains } = useChains();
   const wagmiConfig = useMemo(() => {
@@ -96,15 +101,22 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
     }
     const isMobile =
       typeof window !== 'undefined' &&
-      'userAgentData' in window?.navigator &&
+      typeof navigator !== 'undefined' &&
+      'userAgentData' in navigator &&
       (navigator as Navigator & { userAgentData: NavigatorUAData })
         .userAgentData.mobile;
+    let customConnectors: CreateConnectorFn[];
 
+    if (navigator?.userAgent.includes('MetaMaskMobile')) {
+      customConnectors = [metaMaskConnector];
+    } else if (navigator.userAgent.includes('Phantom')) {
+      customConnectors = [phantomConnector];
+    } else {
+      customConnectors = Object.values(connectors) as CreateConnectorFn[];
+    }
     const wagmiConfig = createConfig({
       chains: _chains,
-      connectors: !isMobile
-        ? (Object.values(connectors) as CreateConnectorFn[])
-        : undefined,
+      connectors: !isMobile ? customConnectors : undefined,
       // connectors: Object.values(connectors) as CreateConnectorFn[],
       client({ chain }) {
         return createClient({ chain, transport: http() });
