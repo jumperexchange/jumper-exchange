@@ -1,7 +1,6 @@
 'use client';
 
 import * as Sentry from '@sentry/nextjs';
-import NextError from 'next/error';
 import { isProduction } from '@/utils/isProduction';
 import { useEffect } from 'react';
 
