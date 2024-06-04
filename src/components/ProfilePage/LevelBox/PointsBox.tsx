@@ -17,7 +17,7 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
           fontSize: { xs: 48, sm: 80 },
           color:
             theme.palette.mode === 'light'
-              ? theme.palette.pink.light
+              ? theme.palette.accent1.main
               : theme.palette.white.main,
         }}
       >

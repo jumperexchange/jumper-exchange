@@ -24,6 +24,7 @@ import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import { publicRPCList } from 'src/const/rpcList';
 
 export function Widget({
   starterVariant,
@@ -71,7 +72,10 @@ export function Widget({
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
     try {
-      rpcUrls = JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS);
+      rpcUrls = {
+        ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
+        ...publicRPCList,
+      };
     } catch (e) {
       if (process.env.DEV) {
         console.warn('Parsing custom rpcs failed', e);
@@ -109,6 +113,10 @@ export function Widget({
         HiddenUI.WalletMenu,
       ],
       theme: {
+        // @ts-expect-error
+        typography: {
+          fontFamily: theme.typography.fontFamily,
+        },
         container: {
           borderRadius: '12px',
           minWidth: 416,
@@ -188,6 +196,7 @@ export function Widget({
     theme.palette.mode,
     theme.palette.surface1.main,
     theme.palette.surface2.main,
+    theme.typography.fontFamily,
     themeMode,
     themeVariant,
     toChain,

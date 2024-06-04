@@ -4,7 +4,8 @@ import { Snackbar } from '@/components/Snackbar/Snackbar';
 import { WelcomeScreen } from '@/components/WelcomeScreen/WelcomeScreen';
 import { Widgets } from '@/components/Widgets/Widgets';
 import type { StarterVariantType } from '@/types/internal';
-import { PixelBg } from 'src/components/illustrations/PixelBg';
+import { PixelBg } from '@/components/illustrations/PixelBg';
+
 export interface AppProps {
   starterVariant: StarterVariantType;
 }
