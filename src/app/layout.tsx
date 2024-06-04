@@ -4,7 +4,6 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import Script from 'next/script';
 import type { Viewport } from 'next/types';
 import React from 'react';
-import 'src/fonts/inter.css';
 import { fallbackLng } from 'src/i18n';
 import { metadata as JumperMetadata } from './lib/metadata';
 export const metadata = JumperMetadata;
@@ -33,6 +32,23 @@ export default async function RootLayout({
               function gtag() { dataLayer.push(arguments); }
               gtag('js', new Date());
               gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}');
+          `}
+        </Script>
+        <Script id="addressable-tracker">
+          {`
+            !function(w, d){
+              w.__adrsbl = {
+                  queue: [],
+                  run: function(){
+                      this.queue.push(arguments);
+                  }
+              };
+              var s = d.createElement('script');
+              s.async = true;
+              s.src = 'https://tag.adrsbl.io/p.js?tid=${process.env.NEXT_PUBLIC_ADDRESSABLE_TID}';
+              var b = d.getElementsByTagName('script')[0];
+              b.parentNode.insertBefore(s, b);
+            }(window, document);
           `}
         </Script>
       </head>

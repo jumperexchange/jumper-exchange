@@ -24,6 +24,7 @@ import type {
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
+import { EventTrackingTool } from 'src/types/userTracking';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -70,6 +71,7 @@ export function WidgetEvents() {
               (el) => el.index === activeTab,
             )[0].variant,
           },
+          enableAddressable: true,
         });
       }
     };
@@ -144,6 +146,8 @@ export function WidgetEvents() {
             [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
             [TrackingEventParameter.ToToken]: route.toToken.address,
           },
+          enableAddressable: true,
+          isConversion: true,
         });
       }
     };
@@ -161,6 +165,7 @@ export function WidgetEvents() {
             update.process.error?.message || '',
           [TrackingEventParameter.ErrorCode]: update.process.error?.code || '',
         },
+        enableAddressable: true,
       });
     };
 
@@ -176,6 +181,7 @@ export function WidgetEvents() {
           [TrackingEventParameter.ValueLoss]: update.valueLoss,
           [TrackingEventParameter.Timestamp]: Date.now(),
         },
+        enableAddressable: true,
       });
     };
 
@@ -183,22 +189,84 @@ export function WidgetEvents() {
       setSupportModalState(true);
     };
 
-    const handleMultisigChainTokenSelected = (
+    const onMultisigChainTokenSelected = (
       destinationData: ChainTokenSelected,
     ) => {
       setDestinationChain(destinationData.chainId);
     };
 
-    const handleSourceChainTokenSelection = async (
+    const onSourceChainTokenSelection = async (
       sourceChainData: ChainTokenSelected,
     ) => {
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnSourceChainAndTokenSelection,
+        label: `select_source_chain_and_token`,
+        data: {
+          [TrackingEventParameter.SourceChainSelection]:
+            sourceChainData.chainId,
+          [TrackingEventParameter.SourceTokenSelection]:
+            sourceChainData.tokenAddress,
+        },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+        enableAddressable: true,
+      });
       setSourceChainToken(sourceChainData);
     };
 
-    const handleDestinationChainTokenSelection = async (
+    const onWidgetExpanded = async (expanded: boolean) => {
+      expanded &&
+        trackEvent({
+          category: TrackingCategory.WidgetEvent,
+          action: TrackingAction.OnWidgetExpanded,
+          label: `widget_expanded`,
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+          enableAddressable: true,
+        });
+    };
+
+    const onDestinationChainTokenSelection = async (
       toChainData: ChainTokenSelected,
     ) => {
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnDestinationChainAndTokenSelection,
+        label: `select_destination_chain_and_token`,
+        data: {
+          [TrackingEventParameter.DestinationChainSelection]:
+            toChainData.chainId,
+          [TrackingEventParameter.DestinationTokenSelection]:
+            toChainData.tokenAddress,
+        },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+        enableAddressable: true,
+      });
       setDestinationChainToken(toChainData);
+    };
+
+    const onAvailableRoutes = async (availableRoutes: Route[]) => {
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnAvailableRoutes,
+        label: `routes_available`,
+        enableAddressable: true,
+        data: {
+          [TrackingEventParameter.AvailableRoutesCount]: availableRoutes.length,
+        },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
+      });
     };
 
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
@@ -207,21 +275,23 @@ export function WidgetEvents() {
       WidgetEvent.RouteExecutionCompleted,
       onRouteExecutionCompleted,
     );
+    widgetEvents.on(WidgetEvent.AvailableRoutes, onAvailableRoutes);
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
     widgetEvents.on(WidgetEvent.ContactSupport, onRouteContactSupport);
     widgetEvents.on(
       WidgetEvent.DestinationChainTokenSelected,
-      handleMultisigChainTokenSelected,
+      onMultisigChainTokenSelected,
     );
     widgetEvents.on(
       WidgetEvent.SourceChainTokenSelected,
-      handleSourceChainTokenSelection,
+      onSourceChainTokenSelection,
     );
     widgetEvents.on(
       WidgetEvent.DestinationChainTokenSelected,
-      handleDestinationChainTokenSelection,
+      onDestinationChainTokenSelection,
     );
+    widgetEvents.on(WidgetEvent.WidgetExpanded, onWidgetExpanded);
 
     return () => {
       widgetEvents.off(
@@ -244,16 +314,18 @@ export function WidgetEvents() {
       widgetEvents.off(WidgetEvent.ContactSupport, onRouteContactSupport);
       widgetEvents.off(
         WidgetEvent.DestinationChainTokenSelected,
-        handleMultisigChainTokenSelected,
+        onMultisigChainTokenSelected,
       );
       widgetEvents.off(
         WidgetEvent.SourceChainTokenSelected,
-        handleSourceChainTokenSelection,
+        onSourceChainTokenSelection,
       );
       widgetEvents.off(
         WidgetEvent.DestinationChainTokenSelected,
-        handleDestinationChainTokenSelection,
+        onDestinationChainTokenSelection,
       );
+      widgetEvents.off(WidgetEvent.WidgetExpanded, onWidgetExpanded);
+      widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
     };
   }, [
     activeTab,
@@ -267,7 +339,7 @@ export function WidgetEvents() {
     widgetEvents,
   ]);
 
-  const handleMultiSigConfirmationModalClose = () => {
+  const onMultiSigConfirmationModalClose = () => {
     setIsMultiSigConfirmationModalOpen(false);
   };
 
@@ -289,7 +361,7 @@ export function WidgetEvents() {
       />
       <MultisigConfirmationModal
         open={isMultiSigConfirmationModalOpen}
-        onClose={handleMultiSigConfirmationModalClose}
+        onClose={onMultiSigConfirmationModalClose}
       />
     </>
   );
