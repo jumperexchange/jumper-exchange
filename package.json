@@ -56,7 +56,7 @@
     "@eslint/eslintrc": "^3.1.0",
     "@next/eslint-plugin-next": "^14.2.3",
     "@playwright/test": "^1.44.0",
-    "@types/gtag.js": "^0.0.19",
+    "@types/gtag.js": "^0.0.20",
     "@types/node": "^20.12.13",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
