@@ -37,6 +37,7 @@ export function Widget({
   widgetIntegrator,
   themeVariant,
   activeTheme,
+  bridgeFilter,
 }: WidgetProps) {
   const theme = useTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
@@ -69,8 +70,7 @@ export function Widget({
     [starterVariant, themeVariant],
   );
 
-  console.log('-------- in widget');
-  console.log(partnerName);
+  let i = 0;
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
@@ -81,6 +81,10 @@ export function Widget({
         console.warn('Parsing custom rpcs failed', e);
       }
     }
+    console.log(i);
+    i += 1;
+    console.log('hereeeeeee in memo');
+    console.log(bridgeFilter);
 
     return {
       ...widgetConfig,
@@ -102,10 +106,10 @@ export function Widget({
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
-        allow: partnerName && isBridgeFiltered ? [partnerName] : undefined,
+        allow: bridgeFilter ? [bridgeFilter] : [],
       },
       exchanges: {
-        allow: partnerName && isDexFiltered ? [partnerName] : undefined,
+        allow: bridgeFilter ? [bridgeFilter] : [],
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -209,9 +213,7 @@ export function Widget({
     tokens,
     wagmiConfig,
     widgetIntegrator,
-    isBridgeFiltered,
-    isDexFiltered,
-    partnerName,
+    bridgeFilter,
   ]);
 
   return (

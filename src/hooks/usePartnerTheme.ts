@@ -16,7 +16,6 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   const { isLoading, bridgesKeys, exchangesKeys } = useDexsAndBridgesKeys();
 
   const pathnameSplit = pathname.split('/');
-  console.log(pathnameSplit);
   const pathnameKey = pathnameSplit[pathnameSplit.length - 2].toLowerCase();
   let hasTheme = false;
   let isBridgeFiltered = false;
@@ -35,9 +34,6 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     isDexFiltered = true;
     partnerName = pathnameKey;
   }
-
-  console.log('in usepartnertheme');
-  console.log(partnerName);
 
   return {
     hasTheme,
