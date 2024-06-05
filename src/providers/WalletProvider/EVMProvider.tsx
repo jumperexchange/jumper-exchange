@@ -1,6 +1,7 @@
 'use client';
 
 import { useChains } from '@/hooks/useChains';
+import { useMemo } from 'react';
 import { injected } from 'wagmi/connectors';
 
 import {
@@ -32,7 +33,7 @@ import {
   trust,
   xdefi,
 } from '@lifi/wallet-management';
-import { useMemo, type FC, type PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren } from 'react';
 import type { NavigatorUAData } from 'src/types/internal';
 import type { Chain } from 'viem';
 import { createClient } from 'viem';
@@ -90,6 +91,32 @@ export const phantomConnector = injected({
 
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
   const { chains } = useChains();
+
+  const isMobile =
+    typeof window !== 'undefined' &&
+    typeof navigator !== 'undefined' &&
+    'userAgentData' in navigator &&
+    (navigator as Navigator & { userAgentData: NavigatorUAData }).userAgentData
+      .mobile;
+
+  const customConnectors = useMemo(() => {
+    if (isMobile) {
+      if (
+        typeof navigator !== 'undefined' &&
+        navigator.userAgent.includes('MetaMaskMobile')
+      ) {
+        return [metaMaskConnector];
+      } else if (
+        typeof navigator !== 'undefined' &&
+        navigator.userAgent.includes('Phantom')
+      ) {
+        return [phantomConnector];
+      }
+    } else {
+      return Object.values(connectors) as CreateConnectorFn[];
+    }
+  }, [isMobile]);
+
   const wagmiConfig = useMemo(() => {
     const _chains: [Chain, ...Chain[]] = chains?.length
       ? (chains.map(formatChain) as [Chain, ...Chain[]])
@@ -99,33 +126,10 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
     if (_mainnet) {
       _mainnet.contracts = mainnet.contracts;
     }
-    let customConnectors: CreateConnectorFn[];
 
-    if (
-      typeof navigator !== 'undefined' &&
-      navigator.userAgent.includes('MetaMaskMobile')
-    ) {
-      customConnectors = [metaMaskConnector];
-    } else if (
-      typeof navigator !== 'undefined' &&
-      navigator.userAgent.includes('Phantom')
-    ) {
-      customConnectors = [phantomConnector];
-    } else {
-      customConnectors = Object.values(connectors) as CreateConnectorFn[];
-    }
-
-    const isMobile =
-      typeof window !== 'undefined' &&
-      typeof navigator !== 'undefined' &&
-      'userAgentData' in navigator &&
-      (navigator as Navigator & { userAgentData: NavigatorUAData })
-        .userAgentData.mobile;
     const wagmiConfig = createConfig({
       chains: _chains,
-      connectors: isMobile
-        ? customConnectors
-        : (Object.values(connectors) as CreateConnectorFn[]),
+      connectors: customConnectors,
       client({ chain }) {
         return createClient({ chain, transport: http() });
       },
@@ -142,7 +146,7 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
       ssr: !chains?.length,
     });
     return wagmiConfig;
-  }, [chains]);
+  }, [chains, customConnectors]);
 
   return (
     <WagmiProvider
