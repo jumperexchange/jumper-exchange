@@ -99,25 +99,31 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
     if (_mainnet) {
       _mainnet.contracts = mainnet.contracts;
     }
+    let customConnectors: CreateConnectorFn[];
+
+    if (
+      typeof navigator !== 'undefined' &&
+      navigator.userAgent.includes('MetaMaskMobile')
+    ) {
+      customConnectors = [metaMaskConnector];
+    } else if (
+      typeof navigator !== 'undefined' &&
+      navigator.userAgent.includes('Phantom')
+    ) {
+      customConnectors = [phantomConnector];
+    } else {
+      customConnectors = Object.values(connectors) as CreateConnectorFn[];
+    }
+
     const isMobile =
       typeof window !== 'undefined' &&
       typeof navigator !== 'undefined' &&
       'userAgentData' in navigator &&
       (navigator as Navigator & { userAgentData: NavigatorUAData })
         .userAgentData.mobile;
-    let customConnectors: CreateConnectorFn[];
-
-    if (navigator?.userAgent.includes('MetaMaskMobile')) {
-      customConnectors = [metaMaskConnector];
-    } else if (navigator?.userAgent.includes('Phantom')) {
-      customConnectors = [phantomConnector];
-    } else {
-      customConnectors = Object.values(connectors) as CreateConnectorFn[];
-    }
     const wagmiConfig = createConfig({
       chains: _chains,
-      connectors: !isMobile ? customConnectors : undefined,
-      // connectors: Object.values(connectors) as CreateConnectorFn[],
+      connectors: Object.values(connectors) as CreateConnectorFn[],
       client({ chain }) {
         return createClient({ chain, transport: http() });
       },
