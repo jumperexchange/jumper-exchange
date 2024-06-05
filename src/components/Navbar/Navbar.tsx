@@ -27,7 +27,7 @@ export const Navbar = () => {
 
   return (
     <Container>
-      <LogoLink onClick={handleClick} sx={{ height: '32px' }}>
+      <LogoLink id="jumper-logo" onClick={handleClick} sx={{ height: '32px' }}>
         <Logo variant={isLearnPage ? 'learn' : 'default'} />
       </LogoLink>
       {!isLearnPage ? <NavbarTabs navbarPageReload={isLoyaltyPage} /> : null}
