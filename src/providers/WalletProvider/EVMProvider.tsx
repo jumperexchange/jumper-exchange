@@ -123,7 +123,9 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
         .userAgentData.mobile;
     const wagmiConfig = createConfig({
       chains: _chains,
-      connectors: Object.values(connectors) as CreateConnectorFn[],
+      connectors: isMobile
+        ? customConnectors
+        : (Object.values(connectors) as CreateConnectorFn[]),
       client({ chain }) {
         return createClient({ chain, transport: http() });
       },
