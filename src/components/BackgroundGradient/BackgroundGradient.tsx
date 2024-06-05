@@ -18,7 +18,11 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   const { partnerName, backgroundURL } = usePartnerTheme();
 
   if (backgroundURL) {
-    return;
+    return (
+      <>
+        <></>
+      </>
+    );
   }
   if (partnerName === 'memecoins') {
     return (
