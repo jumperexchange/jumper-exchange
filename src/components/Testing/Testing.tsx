@@ -1,6 +1,14 @@
 'use client';
 
+import type { NavigatorUAData } from 'src/types/internal';
+
 const Testing = () => {
+  const isMobile =
+    typeof window !== 'undefined' &&
+    typeof navigator !== 'undefined' &&
+    'userAgentData' in navigator &&
+    (navigator as Navigator & { userAgentData: NavigatorUAData }).userAgentData
+      .mobile;
   const isMetamask = `${
     typeof navigator !== 'undefined' &&
     navigator?.userAgent?.includes('MetaMaskMobile')
@@ -12,6 +20,10 @@ const Testing = () => {
   return (
     <>
       -
+      <p>
+        isMobile?
+        {isMobile}
+      </p>
       <p>
         IsMetamask?
         {isMetamask}
