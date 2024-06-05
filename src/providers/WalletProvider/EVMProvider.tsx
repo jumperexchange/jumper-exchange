@@ -109,7 +109,7 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
 
     if (navigator?.userAgent.includes('MetaMaskMobile')) {
       customConnectors = [metaMaskConnector];
-    } else if (navigator.userAgent.includes('Phantom')) {
+    } else if (navigator?.userAgent.includes('Phantom')) {
       customConnectors = [phantomConnector];
     } else {
       customConnectors = Object.values(connectors) as CreateConnectorFn[];

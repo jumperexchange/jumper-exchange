@@ -5,6 +5,7 @@ import { WelcomeScreen } from '@/components/WelcomeScreen/WelcomeScreen';
 import { Widgets } from '@/components/Widgets/Widgets';
 import { PixelBg } from '@/components/illustrations/PixelBg';
 import type { StarterVariantType } from '@/types/internal';
+import Testing from 'src/components/Testing/Testing';
 
 export interface AppProps {
   starterVariant: StarterVariantType;
@@ -16,8 +17,7 @@ const App = ({ starterVariant }: AppProps) => {
 
   return (
     <>
-      <p>IsMetamask? {navigator?.userAgent?.includes('MetaMaskMobile')}</p>
-      <p>IsPhantom? {navigator?.userAgent?.includes('Phantom')}</p>
+      <Testing />
       <WelcomeScreen closed={isWelcomeScreenClosed} />
       <Widgets
         widgetVariant={starterVariant}
