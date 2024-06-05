@@ -9,6 +9,7 @@ import {
 } from '.';
 import { SirBridgeLot } from '../illustrations/SirBridgeLot';
 import { FixBoxWithNoOverflow, MovingBox } from './MovingBox.style';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 
 interface BackgroundGradientProps {
   styles?: CSSObject;
@@ -16,6 +17,7 @@ interface BackgroundGradientProps {
 
 export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   const pathname = usePathname();
+  const obj = usePartnerTheme();
 
   return !pathname?.includes('memecoins') ? (
     <BackgroundGradientContainer sx={styles}>

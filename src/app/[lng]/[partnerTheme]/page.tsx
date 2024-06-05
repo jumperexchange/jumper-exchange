@@ -17,7 +17,7 @@ export async function generateStaticParams() {
     filteredDexes = Object.values(exchanges).map((elem: any) => elem.key);
   }
   const res = filteredBridges.concat(filteredDexes);
-  const path = res.map((theme) => ({ theme }));
+  const path = res.map((partnerTheme) => ({ partnerTheme }));
   return path;
 }
 

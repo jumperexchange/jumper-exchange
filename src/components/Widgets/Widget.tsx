@@ -230,7 +230,9 @@ export function Widget({
           />
         }
       >
+        {/* {bridgeFilter === 'across' && partnerName && ( */}
         <LiFiWidget integrator={config.integrator} config={config} />
+        {/* )} */}
       </ClientOnly>
     </WidgetWrapper>
   );
