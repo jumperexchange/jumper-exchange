@@ -1,7 +1,9 @@
 'use client';
 
 const Testing = () => {
-  const isMobile = `${(window as any)?.navigator.userAgentData.mobile}`;
+  const isMobile = (window as any)?.navigator.userAgentData.mobile
+    ? 'true'
+    : 'false';
   const isMetamask = `${
     typeof navigator !== 'undefined' &&
     navigator?.userAgent?.includes('MetaMaskMobile')
