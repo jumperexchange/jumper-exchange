@@ -18,9 +18,13 @@ export enum TrackingAction {
   OnRouteExecutionFailed = 'action_on_route_exec_failed',
   OnRouteExecutionUpdated = 'action_on_route_exec_updated',
   OnRouteHighValueLoss = 'action_on_route_high_value_loss',
+  OnSourceChainAndTokenSelection = 'action_on_source_selection',
+  OnDestinationChainAndTokenSelection = 'action_on_destination_selection',
+  OnWidgetExpanded = 'action_on_widget_expanded',
+  OnAvailableRoutes = 'action_available_routes',
 
   // Welcome_Screen
-  OpenWelcomeMessageScreen = 'action_open_welcome_screen',
+  ShowWelcomeMessageScreen = 'action_show_welcome_screen',
   CloseWelcomeScreen = 'action_close_welcome_screen',
   OpenToolModal = 'action_open_stats_modal',
   OpenWelcomeMessageLink = 'action_open_welcome_message_link',
@@ -106,6 +110,12 @@ export enum TrackingEventParameter {
   Wallet = 'param_wallet',
   Ecosystem = 'param_ecosystem',
 
+  // Widget:
+  SourceChainSelection = 'param_source_chain',
+  SourceTokenSelection = 'param_source_token',
+  DestinationChainSelection = 'param_destination_chain',
+  DestinationTokenSelection = 'param_destination_token',
+
   // Transaction:
   RouteId = 'param_route_id',
   FromToken = 'param_from_token',
@@ -131,6 +141,7 @@ export enum TrackingEventParameter {
   InsuranceState = 'param_insurance_state',
   InsuranceFeeAmountUSD = 'param_insurance_fee_amount_usd',
   ValueLoss = 'param_value_loss',
+  AvailableRoutesCount = 'param_available_routes_count',
 
   // Blog
   ArticleCardTitle = 'param_article_card_title',

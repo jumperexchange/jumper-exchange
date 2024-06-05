@@ -16,7 +16,7 @@ const LearnPage = ({
   url,
 }: LearnPageProps) => {
   return (
-    <>
+    <div className="learn-page">
       <FeaturedArticle
         url={url}
         featuredArticle={featuredArticle.data}
@@ -27,7 +27,7 @@ const LearnPage = ({
       <BlogCarousel url={url} data={carouselArticles?.data} />
       <JoinDiscordBanner />
       {/* <BlogArticlesBoard /> */}
-    </>
+    </div>
   );
 };
 

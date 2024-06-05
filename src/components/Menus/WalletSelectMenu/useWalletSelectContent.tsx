@@ -16,10 +16,14 @@ import { WalletReadyState } from '@solana/wallet-adapter-base';
 import { useCallback, useMemo } from 'react';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
+import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
+import { useUserTracking } from 'src/hooks/userTracking';
+import { EventTrackingTool } from 'src/types/userTracking';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const { trackEvent } = useUserTracking();
   const { combinedInstalledWallets, combinedNotDetectedWallets } =
     useCombinedWallets();
   const isDesktopView = useMediaQuery((theme: Theme) =>
@@ -119,6 +123,22 @@ export const useWalletSelectContent = () => {
         showMoreIcon: false,
         onClick: () => {
           handleWalletClick(combinedWallet);
+          trackEvent({
+            category: TrackingCategory.WalletSelectMenu,
+            action: TrackingAction.ConnectWallet,
+            label: 'click_connect_wallet',
+            data: {
+              wallet:
+                (combinedWallet.evm?.name ||
+                  combinedWallet.svm?.adapter.name) ??
+                '',
+            },
+            enableAddressable: true,
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Cookie3,
+            ],
+          });
         },
         styles: {
           '&:hover': {
@@ -135,6 +155,7 @@ export const useWalletSelectContent = () => {
     setSnackbarState,
     t,
     theme,
+    trackEvent,
   ]);
 
   return walletMenuItems;
