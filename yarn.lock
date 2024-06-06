@@ -4947,13 +4947,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ungap__structured-clone@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@types/ungap__structured-clone@npm:1.2.0"
-  checksum: 10/df0c3e47bb066d699501991f1347f2b4e1d7ec27954368afba3fbfe612c8ccf61783071dba3ef891448eee9855cfccef0d463fb0e0c327207820d7b8a51f9fee
-  languageName: node
-  linkType: hard
-
 "@types/uuid@npm:^9.0.8":
   version: 9.0.8
   resolution: "@types/uuid@npm:9.0.8"
@@ -9400,9 +9393,7 @@ __metadata:
     "@types/node": "npm:^20.12.13"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
-    "@types/ungap__structured-clone": "npm:^1.2.0"
     "@types/uuid": "npm:^9.0.8"
-    "@ungap/structured-clone": "npm:^1.2.0"
     "@widgetbot/react-embed": "npm:^1.9.0"
     accept-language: "npm:^3.0.18"
     dotenv-cli: "npm:^7.4.2"
