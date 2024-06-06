@@ -71,15 +71,20 @@ export function Widget({
     [starterVariant, themeVariant],
   );
 
-  const integratorStringByType = useMemo(
-    () =>
-      !isDesktop
-        ? process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE
-        : widgetIntegrator || isGasVariant
-          ? process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL
-          : process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
-    [widgetIntegrator, isGasVariant, isDesktop],
-  ) as string;
+  const integratorStringByType = useMemo(() => {
+    if (widgetIntegrator) {
+      return widgetIntegrator;
+    }
+    // all the trafic from mobile (including "/gas")
+    if (!isDesktop) {
+      return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+    }
+    // all the trafic from web on "/gas"
+    if (isGasVariant) {
+      return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
+    }
+    return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
+  }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
