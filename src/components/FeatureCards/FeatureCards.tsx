@@ -24,9 +24,20 @@ export const FeatureCards = () => {
   const [widgetExpanded, setWidgetExpanded] = useState(false);
   const widgetEvents = useWidgetEvents();
   const { account } = useAccounts();
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+
   const { data: cards, isSuccess } = useStrapi<FeatureCardData>({
     contentType: STRAPI_FEATURE_CARDS,
     queryKey: ['feature-cards'],
+  });
+
+  const { data: jumperUser } = useStrapi<JumperUserData>({
+    contentType: STRAPI_JUMPER_USERS,
+    filterPersonalFeatureCards: {
+      enabled: true,
+      account: account,
+    },
+    queryKey: ['personalized-feature-cards'],
   });
 
   useEffect(() => {
@@ -38,15 +49,6 @@ export const FeatureCards = () => {
     return () =>
       widgetEvents.off(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
   }, [widgetEvents, widgetExpanded]);
-
-  const { data: jumperUser } = useStrapi<JumperUserData>({
-    contentType: STRAPI_JUMPER_USERS,
-    filterPersonalFeatureCards: {
-      enabled: true,
-      account: account,
-    },
-    queryKey: ['personalized-feature-cards'],
-  });
 
   function excludedFeatureCardsFilter(el: FeatureCardData) {
     if (
@@ -98,7 +100,6 @@ export const FeatureCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jumperUser]);
 
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   return (
     isDesktop &&
     cookie.welcomeScreenClosed &&
