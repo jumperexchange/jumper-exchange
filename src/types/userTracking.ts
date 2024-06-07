@@ -1,5 +1,3 @@
-import type { Account } from '@/hooks/useAccounts';
-
 export enum EventTrackingTool {
   GA,
 }
@@ -40,9 +38,3 @@ export interface TrackTransactionProps {
 //   | 'blokchain-explorer';
 
 // type source = TrackingCategory;
-
-export interface TrackDisconnectWalletProps {
-  account?: Account;
-  data?: { [key: string]: string | number | boolean };
-  disableTrackingTool?: EventTrackingTool[];
-}
