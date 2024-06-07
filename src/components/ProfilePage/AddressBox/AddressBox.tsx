@@ -62,6 +62,7 @@ export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
           src={imgLink}
           width={128}
           height={128}
+          priority={false}
           style={{
             backgroundColor: imageLink
               ? theme.palette.mode === 'light'
