@@ -2,6 +2,7 @@
 import {
   STRAPI_FEATURE_CARDS,
   STRAPI_JUMPER_USERS,
+  STRAPI_PERSONALIZED_CARDS_NO_USERS,
 } from '@/const/strapiContentKeys';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useStrapi } from '@/hooks/useStrapi';
@@ -14,6 +15,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
+import { usePersonalizedFeatureCardsNoUsers } from 'src/hooks/usePersonalizedFeatureCardsNoUsers';
 
 export const FeatureCards = () => {
   const [disabledFeatureCards] = useSettingsStore(
@@ -31,14 +33,24 @@ export const FeatureCards = () => {
     queryKey: ['feature-cards'],
   });
 
-  const { data: jumperUser } = useStrapi<JumperUserData>({
-    contentType: STRAPI_JUMPER_USERS,
-    filterPersonalFeatureCards: {
-      enabled: true,
-      account: account,
-    },
-    queryKey: ['personalized-feature-cards'],
+  const { data: jumperUser, isSuccess: isJumperUsersSuccess } =
+    useStrapi<JumperUserData>({
+      contentType: STRAPI_JUMPER_USERS,
+      filterPersonalFeatureCards: {
+        enabled: true,
+        account: account,
+      },
+      queryKey: ['personalized-feature-cards'],
+    });
+
+  const { featureCards } = usePersonalizedFeatureCardsNoUsers({
+    enabled:
+      isJumperUsersSuccess &&
+      jumperUser[0]?.attributes?.feature_cards.data.length === 0,
   });
+
+  console.log('hereeeee');
+  console.log(featureCards);
 
   useEffect(() => {
     const handleWidgetExpanded = async (expanded: boolean) => {
