@@ -77,7 +77,7 @@
     "prettier": "^3.2.5",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "typescript": "^5.4.5",
-    "web-vitals": "^3.5.2"
+    "web-vitals": "^4.1.0"
   },
   "scripts": {
     "dev": "next dev",
