@@ -8,6 +8,7 @@ const i18nConfig: Config = {
     'fr',
     'id',
     'it',
+    'ja',
     'ko',
     'pt',
     'th',
