@@ -167,7 +167,10 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
               openDexsToolModal={openDexsToolModal}
               setOpenDexsToolModal={setOpenDexsToolModal}
             />
-            <WelcomeScreenButton onClick={handleGetStarted}>
+            <WelcomeScreenButton
+              onClick={handleGetStarted}
+              id="get-started-button"
+            >
               <WelcomeScreenButtonLabel variant={'lifiBodyMediumStrong'}>
                 {t('navbar.welcome.cta')}
               </WelcomeScreenButtonLabel>
