@@ -30,7 +30,7 @@ export function WidgetEvents() {
   const { activeTab } = useActiveTabStore();
   const { setDestinationChainToken, setSourceChainToken } =
     useChainTokenSelectionStore();
-  const { trackEvent, trackTransaction } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
   ]);
@@ -88,14 +88,11 @@ export function WidgetEvents() {
       if (!!update.process && !!update.route) {
         if (update.process.txHash !== lastTxHashRef.current) {
           lastTxHashRef.current = update.process.txHash;
-          trackTransaction({
-            chain: update.route.fromChainId,
-            txhash: update.process.txHash || '',
+          trackEvent({
             category: TrackingCategory.WidgetEvent,
             action: TrackingAction.OnRouteExecutionUpdated,
-            value: parseFloat(update.route.fromAmountUSD),
+            label: 'execution_update',
             data: {
-              label: 'execution_update',
               [TrackingEventParameter.FromAmountUSD]:
                 update.route.fromAmountUSD,
               [TrackingEventParameter.ToAmountUSD]: update.route.toAmountUSD,
@@ -318,7 +315,6 @@ export function WidgetEvents() {
     setSupportModalState,
     shouldOpenMultisigSignatureModal,
     trackEvent,
-    trackTransaction,
     widgetEvents,
   ]);
 

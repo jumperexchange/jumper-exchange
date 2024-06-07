@@ -17,16 +17,6 @@ export interface TrackEventProps {
   isConversion?: boolean;
 }
 
-export interface TrackTransactionProps {
-  action: string;
-  category: string;
-  chain: number;
-  value?: number;
-  disableTrackingTool?: EventTrackingTool[];
-  data: Record<string, unknown>;
-  txhash: string;
-}
-
 // type destinations =
 //   | 'discord-lifi'
 //   | 'lifi-explorer'

@@ -5,10 +5,7 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useAccounts } from '@/hooks/useAccounts';
-import type {
-  TrackEventProps,
-  TrackTransactionProps,
-} from '@/types/userTracking';
+import type { TrackEventProps } from '@/types/userTracking';
 import { EventTrackingTool } from '@/types/userTracking';
 import { useCallback, useEffect } from 'react';
 
@@ -65,32 +62,7 @@ export function useUserTracking() {
     [],
   );
 
-  const trackTransaction = useCallback(
-    /**
-     * Track Transaction with GA, HJ and ARCx
-     *
-     */
-    async ({
-      action,
-      category,
-      value,
-      data,
-      disableTrackingTool,
-      txhash,
-    }: TrackTransactionProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        typeof window !== 'undefined' &&
-          window?.gtag('event', action, {
-            category,
-            ...data,
-          });
-      }
-    },
-    [],
-  );
-
   return {
     trackEvent,
-    trackTransaction,
   };
 }
