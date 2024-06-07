@@ -5,7 +5,6 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { EventTrackingTool } from '@/types/userTracking';
-import { replacePathInUrl } from '@/utils/replacePathInUr';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
@@ -26,11 +25,7 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
 
   const handleClickTab =
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
-      window.history.replaceState(null, document.title, `/${tab}`);
-      pathname && replacePathInUrl(pathname, tab);
-      if (navbarPageReload) {
-        router.push(`/${tab}`);
-      }
+      router.push(`/${tab}`);
       trackEvent({
         category: TrackingCategory.Navigation,
         action: TrackingAction.SwitchTab,
@@ -60,11 +55,11 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
           }}
         />
       ),
-      onClick: handleClickTab('exchange'),
+      onClick: handleClickTab(''),
     },
     {
       label: t('navbar.links.refuel'),
-      onClick: handleClickTab('refuel'),
+      onClick: handleClickTab('gas/'),
       value: 1,
       icon: (
         <EvStationOutlinedIcon
@@ -81,7 +76,7 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
     },
     {
       label: t('navbar.links.buy'),
-      onClick: handleClickTab('buy'),
+      onClick: handleClickTab('buy/'),
       value: 2,
       icon: (
         <CreditCardIcon

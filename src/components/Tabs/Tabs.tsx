@@ -51,6 +51,7 @@ export const Tabs = ({
             icon={el.icon}
             label={el.label}
             id={`tab-${el.label ?? 'key'}-${el.value}`}
+            aria-label={el.label}
             aria-controls={`simple-tabpanel-${index}`}
             sx={tabStyles}
           />

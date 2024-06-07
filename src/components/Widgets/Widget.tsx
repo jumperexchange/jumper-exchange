@@ -14,7 +14,7 @@ import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
@@ -25,6 +25,8 @@ import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
 import { publicRPCList } from 'src/const/rpcList';
+import { useRouter } from 'next/navigation';
+import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 
 export function Widget({
   starterVariant,
@@ -47,6 +49,15 @@ export function Widget({
   const { activeTab } = useActiveTabStore();
   const { tokens } = useMemelist({
     enabled: !!themeVariant,
+  });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    console.log('prefetching');
+    router.prefetch('/', { kind: PrefetchKind.FULL });
+    router.prefetch('/gas/', { kind: PrefetchKind.FULL });
+    router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
@@ -215,7 +226,6 @@ export function Widget({
       <ClientOnly
         fallback={
           <WidgetSkeleton
-            welcomeScreenClosed={welcomeScreenClosed}
             config={{ ...config, appearance: activeTheme }}
           />
         }

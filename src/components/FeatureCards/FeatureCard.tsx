@@ -185,6 +185,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         >
           <IconButton
             disableRipple={true}
+            aria-label="close"
             sx={{
               position: 'absolute',
               right: 1,
