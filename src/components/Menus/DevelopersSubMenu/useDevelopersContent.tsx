@@ -14,7 +14,7 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useTranslation } from 'react-i18next';
 export const useDevelopersContent = () => {
   const { t } = useTranslation();
-  const { trackPageload, trackEvent } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const closeAllMenus = useMenuStore((state) => state.closeAllMenus);
@@ -38,11 +38,16 @@ export const useDevelopersContent = () => {
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameter.Menu]: 'lifi_github' },
         });
-        trackPageload({
-          source: TrackingCategory.Menu,
-          destination: 'lifi-github',
-          url: GITHUB_URL,
-          pageload: true,
+        trackEvent({
+          category: TrackingCategory.Pageload,
+          action: TrackingAction.PageLoad,
+          label: 'pageload-discord',
+          data: {
+            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
+            [TrackingEventParameter.PageloadDestination]: 'lifi-github',
+            [TrackingEventParameter.PageloadURL]: GITHUB_URL,
+            [TrackingEventParameter.PageloadExternal]: true,
+          },
         });
         closeAllMenus();
       },
@@ -58,11 +63,16 @@ export const useDevelopersContent = () => {
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameter.Menu]: 'lifi_docs' },
         });
-        trackPageload({
-          source: TrackingCategory.Menu,
-          destination: 'lifi-docs',
-          url: DOCS_URL,
-          pageload: true,
+        trackEvent({
+          category: TrackingCategory.Pageload,
+          action: TrackingAction.PageLoad,
+          label: 'pageload-discord',
+          data: {
+            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
+            [TrackingEventParameter.PageloadDestination]: 'lifi-docs',
+            [TrackingEventParameter.PageloadURL]: DOCS_URL,
+            [TrackingEventParameter.PageloadExternal]: true,
+          },
         });
         closeAllMenus();
       },

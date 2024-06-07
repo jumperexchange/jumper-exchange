@@ -81,6 +81,7 @@ export enum TrackingCategory {
   Wallet = 'cat_wallet',
   WalletMenu = 'cat_wallet_menu',
   Connect = 'cat_connect_wallet',
+  Pageload = 'cat_pageload',
   WalletSelectMenu = 'cat_wallet_select_menu',
   WelcomeScreen = 'cat_welcome_screen',
   Widget = 'cat_widget',
@@ -118,6 +119,12 @@ export enum TrackingEventParameter {
   SourceTokenSelection = 'param_source_token',
   DestinationChainSelection = 'param_destination_chain',
   DestinationTokenSelection = 'param_destination_token',
+
+  // Pageload:
+  PageloadSource = 'param_pageload_source',
+  PageloadURL = 'param_pageload_url',
+  PageloadDestination = 'param_pageload_destination',
+  PageloadExternal = 'param_pageload_external',
 
   // Transaction:
   RouteId = 'param_route_id',

@@ -24,7 +24,7 @@ interface FallbackErrorProps {
 }
 
 const ErrorPage = ({ reset }: FallbackErrorProps) => {
-  const { trackPageload, trackEvent } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const { t } = useTranslation();
   return (
@@ -41,11 +41,16 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
             action: TrackingAction.OpenMenu,
             data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
           });
-          trackPageload({
-            source: TrackingCategory.Menu,
-            destination: 'discord-lifi',
-            url: DISCORD_URL,
-            pageload: true,
+          trackEvent({
+            category: TrackingCategory.Pageload,
+            action: TrackingAction.PageLoad,
+            label: 'pageload-discord',
+            data: {
+              [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
+              [TrackingEventParameter.PageloadDestination]: 'discord-lifi',
+              [TrackingEventParameter.PageloadURL]: DISCORD_URL,
+              [TrackingEventParameter.PageloadExternal]: true,
+            },
           });
           openInNewTab(DISCORD_URL);
         }}

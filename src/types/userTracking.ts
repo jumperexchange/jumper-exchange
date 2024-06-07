@@ -1,4 +1,3 @@
-import type { TrackingCategory } from '@/const/trackingKeys';
 import type { Account } from '@/hooks/useAccounts';
 
 export enum EventTrackingTool {
@@ -30,26 +29,17 @@ export interface TrackTransactionProps {
   txhash: string;
 }
 
-type destinations =
-  | 'discord-lifi'
-  | 'lifi-explorer'
-  | 'lifi-website'
-  | 'docs-sc-audits'
-  | 'lifi-github'
-  | 'lifi-docs'
-  | 'x-jumper'
-  | 'blokchain-explorer';
+// type destinations =
+//   | 'discord-lifi'
+//   | 'lifi-explorer'
+//   | 'lifi-website'
+//   | 'docs-sc-audits'
+//   | 'lifi-github'
+//   | 'lifi-docs'
+//   | 'x-jumper'
+//   | 'blokchain-explorer';
 
-type source = TrackingCategory;
-
-export interface trackPageloadProps {
-  destination: destinations;
-  source: source;
-  data?: { [key: string]: string | number | boolean };
-  pageload: boolean;
-  disableTrackingTool?: EventTrackingTool[];
-  url: string;
-}
+// type source = TrackingCategory;
 
 export interface TrackDisconnectWalletProps {
   account?: Account;

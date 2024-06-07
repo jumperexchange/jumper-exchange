@@ -1,6 +1,10 @@
 'use client';
 import { LinkMap } from '@/const/linkMap';
-import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 import { JUMPER_MEMECOIN_PATH, LIFI_URL } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
@@ -24,7 +28,7 @@ interface PoweredByProps {
 
 export const PoweredBy = ({ styles }: PoweredByProps) => {
   const theme = useTheme();
-  const { trackPageload, trackEvent } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const currentPath = usePathname();
   let result = currentPath?.substring(0, currentPath.lastIndexOf('/'));
   const isArticle = isArticlePage(
@@ -39,11 +43,16 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
   );
 
   const handleClick = () => {
-    trackPageload({
-      source: TrackingCategory.PoweredBy,
-      destination: 'lifi-website',
-      url: lifiUrl,
-      pageload: true,
+    trackEvent({
+      category: TrackingCategory.Pageload,
+      action: TrackingAction.PageLoad,
+      label: 'pageload-discord',
+      data: {
+        [TrackingEventParameter.PageloadSource]: TrackingCategory.PoweredBy,
+        [TrackingEventParameter.PageloadDestination]: 'lifi-website',
+        [TrackingEventParameter.PageloadURL]: lifiUrl,
+        [TrackingEventParameter.PageloadExternal]: true,
+      },
     });
     trackEvent({
       category: TrackingCategory.PoweredBy,

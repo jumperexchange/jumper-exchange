@@ -1,6 +1,10 @@
 import { Avatar } from '@/components/Avatar/Avatar';
 import { Button } from '@/components/Button/Button';
-import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 import type { Account } from '@/hooks/useAccounts';
 import { useAccountDisconnect } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
@@ -29,7 +33,7 @@ interface WalletCardProps {
 export const WalletCard = ({ account }: WalletCardProps) => {
   const { t } = useTranslation();
   const disconnectWallet = useAccountDisconnect();
-  const { trackPageload, trackEvent } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const { chains } = useChains();
   const { checkMultisigEnvironment } = useMultisig();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
@@ -61,11 +65,17 @@ export const WalletCard = ({ account }: WalletCardProps) => {
       label: 'open-blockchain-explorer-wallet',
     });
     if (account.blockChainExplorerUrl) {
-      trackPageload({
-        source: TrackingCategory.Wallet,
-        destination: 'blokchain-explorer',
-        url: account.blockChainExplorerUrl || '',
-        pageload: true,
+      trackEvent({
+        category: TrackingCategory.Pageload,
+        action: TrackingAction.PageLoad,
+        label: 'pageload-discord',
+        data: {
+          [TrackingEventParameter.PageloadSource]: TrackingCategory.Wallet,
+          [TrackingEventParameter.PageloadDestination]: 'blokchain-explorer',
+          [TrackingEventParameter.PageloadURL]:
+            account.blockChainExplorerUrl || '',
+          [TrackingEventParameter.PageloadExternal]: true,
+        },
       });
       openInNewTab(account.blockChainExplorerUrl);
     }

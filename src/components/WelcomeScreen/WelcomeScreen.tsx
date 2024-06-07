@@ -39,7 +39,7 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
   const { welcomeScreenClosed, setWelcomeScreenClosed } =
     useWelcomeScreen(closed);
   const { t } = useTranslation();
-  const { trackPageload, trackEvent } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
   const [openBridgesToolModal, setOpenBridgesToolModal] = useState(false);
   const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
@@ -60,11 +60,16 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
       action: TrackingAction.OpenWelcomeMessageLink,
       data: { [TrackingEventParameter.WelcomeMessageLink]: '4x_audited' },
     });
-    trackPageload({
-      source: TrackingCategory.WelcomeScreen,
-      destination: 'docs-sc-audits',
-      url: auditsWelcomeUrl,
-      pageload: true,
+    trackEvent({
+      category: TrackingCategory.Pageload,
+      action: TrackingAction.PageLoad,
+      label: 'pageload-discord',
+      data: {
+        [TrackingEventParameter.PageloadSource]: TrackingCategory.WelcomeScreen,
+        [TrackingEventParameter.PageloadDestination]: 'docs-sc-audits',
+        [TrackingEventParameter.PageloadURL]: auditsWelcomeUrl,
+        [TrackingEventParameter.PageloadExternal]: true,
+      },
     });
   };
 
@@ -75,11 +80,16 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
       action: TrackingAction.OpenWelcomeMessageLink,
       data: { [TrackingEventParameter.WelcomeMessageLink]: 'LIFI' },
     });
-    trackPageload({
-      source: TrackingCategory.WelcomeScreen,
-      destination: 'lifi-website',
-      url: lifiWelcomeUrl,
-      pageload: true,
+    trackEvent({
+      category: TrackingCategory.Pageload,
+      action: TrackingAction.PageLoad,
+      label: 'pageload-discord',
+      data: {
+        [TrackingEventParameter.PageloadSource]: TrackingCategory.WelcomeScreen,
+        [TrackingEventParameter.PageloadDestination]: 'lifi-website',
+        [TrackingEventParameter.PageloadURL]: lifiWelcomeUrl,
+        [TrackingEventParameter.PageloadExternal]: true,
+      },
     });
   };
 

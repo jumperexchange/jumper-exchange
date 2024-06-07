@@ -9,7 +9,6 @@ import type {
   TrackDisconnectWalletProps,
   TrackEventProps,
   TrackTransactionProps,
-  trackPageloadProps,
 } from '@/types/userTracking';
 import { EventTrackingTool } from '@/types/userTracking';
 import { useCallback, useEffect } from 'react';
@@ -44,7 +43,6 @@ export function useUserTracking() {
       action,
       category,
       label,
-      value,
       data,
       disableTrackingTool,
       enableAddressable,
@@ -80,33 +78,6 @@ export function useUserTracking() {
     [],
   );
 
-  const trackPageload = useCallback(
-    /**
-     * Track PageLoad with GA, HJ and ARCx
-     *
-     */
-    async ({
-      destination,
-      source,
-      data,
-      pageload, // requires page load? -> true
-      disableTrackingTool,
-      url,
-    }: trackPageloadProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        typeof window !== 'undefined' &&
-          window?.gtag('event', TrackingAction.PageLoad, {
-            category: pageload ? 'external' : 'internal',
-            url,
-            source,
-            destination,
-            ...data,
-          });
-      }
-    },
-    [],
-  );
-
   const trackTransaction = useCallback(
     /**
      * Track Transaction with GA, HJ and ARCx
@@ -134,7 +105,6 @@ export function useUserTracking() {
   return {
     trackDisconnectWallet,
     trackEvent,
-    trackPageload,
     trackTransaction,
   };
 }

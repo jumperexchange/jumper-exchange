@@ -32,7 +32,7 @@ import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
-  const { trackPageload, trackEvent } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const router = useRouter();
   const theme = useTheme();
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
@@ -188,11 +188,16 @@ export const useMainMenuContent = () => {
           action: TrackingAction.ClickLifiExplorerLink,
           data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
         });
-        trackPageload({
-          source: TrackingCategory.Menu,
-          destination: 'lifi-explorer',
-          url: explorerUrl,
-          pageload: true,
+        trackEvent({
+          category: TrackingCategory.Pageload,
+          action: TrackingAction.PageLoad,
+          label: 'pageload-discord',
+          data: {
+            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
+            [TrackingEventParameter.PageloadDestination]: 'lifi-explorer',
+            [TrackingEventParameter.PageloadURL]: explorerUrl,
+            [TrackingEventParameter.PageloadExternal]: true,
+          },
         });
       },
     },
@@ -207,11 +212,16 @@ export const useMainMenuContent = () => {
           action: TrackingAction.ClickXLink,
           data: { [TrackingEventParameter.Menu]: 'lifi_x' },
         });
-        trackPageload({
-          source: TrackingCategory.MainMenu,
-          destination: 'x-jumper',
-          url: X_URL,
-          pageload: true,
+        trackEvent({
+          category: TrackingCategory.Pageload,
+          action: TrackingAction.PageLoad,
+          label: 'pageload-discord',
+          data: {
+            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
+            [TrackingEventParameter.PageloadDestination]: 'x-jumper',
+            [TrackingEventParameter.PageloadURL]: X_URL,
+            [TrackingEventParameter.PageloadExternal]: true,
+          },
         });
       },
       link: { url: X_URL, external: true },
@@ -235,11 +245,16 @@ export const useMainMenuContent = () => {
           action: TrackingAction.ClickDiscordLink,
           data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
         });
-        trackPageload({
-          source: TrackingCategory.Menu,
-          destination: 'discord-lifi',
-          url: DISCORD_URL,
-          pageload: true,
+        trackEvent({
+          category: TrackingCategory.Pageload,
+          action: TrackingAction.PageLoad,
+          label: 'pageload-discord',
+          data: {
+            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
+            [TrackingEventParameter.PageloadDestination]: 'discord-lifi',
+            [TrackingEventParameter.PageloadURL]: DISCORD_URL,
+            [TrackingEventParameter.PageloadExternal]: true,
+          },
         });
       },
       link: { url: DISCORD_URL, external: true },
