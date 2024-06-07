@@ -4947,13 +4947,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:^9.0.8":
-  version: 9.0.8
-  resolution: "@types/uuid@npm:9.0.8"
-  checksum: 10/b8c60b7ba8250356b5088302583d1704a4e1a13558d143c549c408bf8920535602ffc12394ede77f8a8083511b023704bc66d1345792714002bfa261b17c5275
-  languageName: node
-  linkType: hard
-
 "@types/ws@npm:^7.4.4":
   version: 7.4.7
   resolution: "@types/ws@npm:7.4.7"
@@ -9393,7 +9386,6 @@ __metadata:
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@types/ungap__structured-clone": "npm:^1.2.0"
-    "@types/uuid": "npm:^9.0.8"
     "@ungap/structured-clone": "npm:^1.2.0"
     "@widgetbot/react-embed": "npm:^1.9.0"
     accept-language: "npm:^3.0.18"
@@ -9431,6 +9423,7 @@ __metadata:
     rollup-plugin-polyfill-node: "npm:^0.13.0"
     sharp: "npm:^0.33.4"
     typescript: "npm:^5.4.5"
+    uuidv7: "npm:^1.0.0"
     web-vitals: "npm:^3.5.2"
     zustand: "npm:^4.5.2"
   languageName: unknown
@@ -12862,6 +12855,15 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: 10/9d0b6adb72b736e36f2b1b53da0d559125ba3e39d913b6072f6f033e0c87835b414f0836b45bcfaf2bdf698f92297fea1c3cc19b0b258bc182c9c43cc0fab9f2
+  languageName: node
+  linkType: hard
+
+"uuidv7@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "uuidv7@npm:1.0.0"
+  bin:
+    uuidv7: cli.js
+  checksum: 10/6c5efb803aa376bfe7b1ae27c20663cf0f01a5c1aa8c167187ee4f4b8b43b8761a467257b8f6a634ec2dd65a34063e545168b5ca10387e7f98453c209f1dc479
   languageName: node
   linkType: hard
 
