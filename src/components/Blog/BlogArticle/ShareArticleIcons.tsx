@@ -75,7 +75,6 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       category: TrackingCategory.BlogArticle,
       action: TrackingAction.ClickShareArticleX,
       label: 'click-share-blog-article-x',
-
       data: {
         [TrackingEventParameter.ArticleTitle]: title,
         [TrackingEventParameter.ArticleCardId]: slug,
@@ -98,7 +97,6 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       category: TrackingCategory.BlogArticle,
       action: TrackingAction.ClickShareArticleFB,
       label: 'click-share-blog-article-fb',
-
       data: {
         [TrackingEventParameter.ArticleTitle]: title,
         [TrackingEventParameter.ArticleCardId]: slug,
@@ -122,7 +120,6 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       category: TrackingCategory.BlogArticle,
       action: TrackingAction.ClickShareArticleLinkedIn,
       label: 'click-share-blog-article-linkedin',
-
       data: {
         [TrackingEventParameter.ArticleTitle]: title,
         [TrackingEventParameter.ArticleCardId]: slug,
