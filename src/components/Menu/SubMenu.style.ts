@@ -6,21 +6,21 @@ import { styled } from '@mui/material/styles';
 import type { ElementType } from 'react';
 
 export interface SubMenuLabelProps extends Omit<TypographyProps, 'component'> {
-  prefixIcon?: boolean;
-  suffixIcon?: boolean;
+  isPrefixIcon?: boolean;
+  isSuffixIcon?: boolean;
   component?: ElementType;
 }
 
 export const SubMenuLabel = styled(Typography, {
   shouldForwardProp: (prop) =>
     prop !== 'prefixIcon' && prop !== 'suffixIcon' && prop !== 'component',
-})<SubMenuLabelProps>(({ theme, prefixIcon, suffixIcon }) => ({
+})<SubMenuLabelProps>(({ theme, isPrefixIcon, isSuffixIcon }) => ({
   maxWidth: 'inherit',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  marginLeft: prefixIcon ? theme.spacing(1.5) : 'inherit',
-  marginRight: suffixIcon ? theme.spacing(1.5) : 'inherit',
+  marginLeft: isPrefixIcon ? theme.spacing(1.5) : 'inherit',
+  marginRight: isSuffixIcon ? theme.spacing(1.5) : 'inherit',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxWidth: prefixIcon ? 188 : 'inherit',
+    maxWidth: isPrefixIcon ? 188 : 'inherit',
   },
 }));

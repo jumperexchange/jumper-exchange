@@ -114,8 +114,8 @@ export const SubMenu = ({
               >
                 {el.prefixIcon}
                 <SubMenuLabel
-                  prefixIcon={!!el.prefixIcon}
-                  suffixIcon={!!el.suffixIcon}
+                  isPrefixIcon={!!el.prefixIcon}
+                  isSuffixIcon={!!el.suffixIcon}
                   variant={'lifiBodyMedium'}
                 >
                   {`${el.label || ' '}`}
@@ -141,8 +141,8 @@ export const SubMenu = ({
                 {el.prefixIcon}
                 <SubMenuLabel
                   variant={'lifiBodyMedium'}
-                  prefixIcon={!!el.prefixIcon}
-                  suffixIcon={!!el.suffixIcon}
+                  isPrefixIcon={!!el.prefixIcon}
+                  isSuffixIcon={!!el.suffixIcon}
                   ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
                 >
                   {`${el.label || ' '}`}
