@@ -24,6 +24,8 @@ import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import { useMediaQuery } from '@mui/material';
+import type { Theme } from '@mui/material';
 import { publicRPCList } from 'src/const/rpcList';
 import { useRouter } from 'next/navigation';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
@@ -44,6 +46,7 @@ export function Widget({
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
@@ -78,6 +81,21 @@ export function Widget({
           : [],
     [starterVariant, themeVariant],
   );
+
+  const integratorStringByType = useMemo(() => {
+    if (widgetIntegrator) {
+      return widgetIntegrator;
+    }
+    // all the trafic from mobile (including "/gas")
+    if (!isDesktop) {
+      return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+    }
+    // all the trafic from web on "/gas"
+    if (isGasVariant) {
+      return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
+    }
+    return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
+  }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -180,11 +198,7 @@ export function Widget({
       },
       buildUrl: true,
       insurance: true,
-      integrator: `${
-        widgetIntegrator || isGasVariant
-          ? process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL
-          : process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR
-      }`,
+      integrator: integratorStringByType,
       tokens:
         themeVariant === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
