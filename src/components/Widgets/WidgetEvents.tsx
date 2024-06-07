@@ -175,7 +175,9 @@ export function WidgetEvents() {
           [TrackingEventParameter.ToAmountUSD]: update.toAmountUSD,
           [TrackingEventParameter.GasCostUSD]: update.gasCostUSD,
           [TrackingEventParameter.ValueLoss]: update.valueLoss,
-          [TrackingEventParameter.Timestamp]: Date.now(),
+          [TrackingEventParameter.Timestamp]: new Date(
+            Date.now(),
+          ).toUTCString(),
         },
         enableAddressable: true,
       });

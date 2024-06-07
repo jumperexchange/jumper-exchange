@@ -97,6 +97,11 @@ export const WalletCard = ({ account }: WalletCardProps) => {
 
   const handleDisconnect = () => {
     disconnectWallet(account);
+    trackEvent({
+      category: TrackingCategory.WalletMenu,
+      action: TrackingAction.DisconnectWallet,
+      label: 'disconnect_wallet',
+    });
   };
 
   return (
