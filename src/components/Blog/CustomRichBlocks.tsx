@@ -205,8 +205,6 @@ export const CustomRichBlocks = ({
                     {el.props.content.children[0].text}
                   </BlogLink>
                 );
-              } else {
-                return undefined;
               }
             })}
           </BlogParagraphContainer>
