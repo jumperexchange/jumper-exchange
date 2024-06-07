@@ -113,7 +113,7 @@ export const CustomRichBlocks = ({
           const urlMatch = htmlString.match(urlRegex);
 
           // Check if matches were found and extract strings
-          const title = titleMatch ? titleMatch[1] : undefined;
+          const title = titleMatch?.[1];
           const url = urlMatch ? urlMatch[1] : undefined;
           return (
             <BlogCTA title={title} url={url} id={id} key={generateKey('cta')} />
