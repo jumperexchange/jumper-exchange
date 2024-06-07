@@ -225,9 +225,7 @@ export function Widget({
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly
         fallback={
-          <WidgetSkeleton
-            config={{ ...config, appearance: activeTheme }}
-          />
+          <WidgetSkeleton config={{ ...config, appearance: activeTheme }} />
         }
       >
         <LiFiWidget integrator={config.integrator} config={config} />

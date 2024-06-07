@@ -7,12 +7,12 @@ interface WidgetSkeletonProps {
   config?: Partial<WidgetConfig>;
 }
 
-export const WidgetSkeleton = ({
-  config,
-}: WidgetSkeletonProps) => {
+export const WidgetSkeleton = ({ config }: WidgetSkeletonProps) => {
   return (
     <Box height="682px">
-      <WidgetSkeletonContainer welcomeScreenClosed={true}> {/* Does not matter in this scenario */}
+      <WidgetSkeletonContainer welcomeScreenClosed={true}>
+        {' '}
+        {/* Does not matter in this scenario */}
         <LifiWidgetSkeleton config={config} />
       </WidgetSkeletonContainer>
     </Box>
