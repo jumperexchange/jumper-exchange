@@ -29,15 +29,6 @@ export interface TrackTransactionProps {
   data: Record<string, unknown>;
   txhash: string;
 }
-export interface TrackChainSwitchProps {
-  account?: Account;
-  disableTrackingTool?: EventTrackingTool[];
-  action: string;
-  category?: string;
-  label?: string;
-  value?: number;
-  data?: { [key: string]: string | number | boolean | any };
-}
 
 type destinations =
   | 'discord-lifi'

@@ -6,7 +6,6 @@ import {
 } from '@/const/trackingKeys';
 import { useAccounts } from '@/hooks/useAccounts';
 import type {
-  TrackChainSwitchProps,
   TrackDisconnectWalletProps,
   TrackEventProps,
   TrackTransactionProps,
@@ -132,30 +131,10 @@ export function useUserTracking() {
     [],
   );
 
-  const trackChainSwitch = useCallback(
-    async ({
-      account,
-      disableTrackingTool,
-      action,
-      category,
-      data,
-    }: TrackChainSwitchProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        typeof window !== 'undefined' &&
-          window?.gtag('event', action, {
-            category: category,
-            ...data,
-          });
-      }
-    },
-    [],
-  );
-
   return {
     trackDisconnectWallet,
     trackEvent,
     trackPageload,
     trackTransaction,
-    trackChainSwitch,
   };
 }
