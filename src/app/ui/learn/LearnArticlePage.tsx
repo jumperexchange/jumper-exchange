@@ -5,10 +5,12 @@ import { BackgroundGradient } from '@/components/BackgroundGradient/BackgroundGr
 import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
+import { useSession } from '@/hooks/useSession';
 import type { ThemeModesSupported } from '@/types/settings';
 import type { BlogArticleData } from '@/types/strapi';
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BlogArticleWrapper } from './LearnArticlePage.style';
 
@@ -27,6 +29,12 @@ const LearnArticlePage = ({
 }: LearnArticlePageProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
+
+  // testing! todo: remove
+  const sessionID = useSession();
+  useEffect(() => {
+    !!sessionID && console.log('Session ID: ', sessionID);
+  }, [sessionID]);
 
   return (
     <>

@@ -3,12 +3,19 @@ import { SolanaAlert } from '@/components/Alerts';
 import { OnRamper } from '@/components/OnRamper';
 import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';
+import { useSession } from '@/hooks/useSession';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
 import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
 import type { WidgetSubvariant } from '@lifi/widget';
 import { usePathname } from 'next/navigation';
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { ThemesMap } from 'src/const/themesMap';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
@@ -58,6 +65,11 @@ export function Widgets({
       });
     }
   };
+  // testing! todo: remove
+  const sessionID = useSession();
+  useEffect(() => {
+    !!sessionID && console.log('Session ID: ', sessionID);
+  }, [sessionID]);
 
   const starterVariant: StarterVariantType = useMemo(() => {
     if (widgetVariant) {

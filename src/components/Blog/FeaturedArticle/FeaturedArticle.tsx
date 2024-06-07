@@ -8,11 +8,13 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
+import { useSession } from '@/hooks/useSession';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData } from '@/types/strapi';
 import { EventTrackingTool } from '@/types/userTracking';
 import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
+import { useEffect } from 'react';
 import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import {
   FeaturedArticleContent,
@@ -37,6 +39,12 @@ export const FeaturedArticle = ({
 }: FeaturedArticleProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
+
+  // testing! todo: remove
+  const sessionID = useSession();
+  useEffect(() => {
+    !!sessionID && console.log('Session ID: ', sessionID);
+  }, [sessionID]);
 
   const handleFeatureCardClick = (featuredArticle: BlogArticleData[]) => {
     trackEvent({
