@@ -43,14 +43,11 @@ export const FeatureCards = () => {
       queryKey: ['personalized-feature-cards'],
     });
 
-  const { featureCards } = usePersonalizedFeatureCardsNoUsers({
-    enabled:
-      isJumperUsersSuccess &&
-      jumperUser[0]?.attributes?.feature_cards.data.length === 0,
-  });
-
-  console.log('hereeeee');
-  console.log(featureCards);
+  const { featureCards: featureCardsNoUsers } =
+    usePersonalizedFeatureCardsNoUsers({
+      enabled:
+        isJumperUsersSuccess && (!jumperUser || jumperUser?.length === 0),
+    });
 
   useEffect(() => {
     const handleWidgetExpanded = async (expanded: boolean) => {
@@ -94,7 +91,11 @@ export const FeatureCards = () => {
 
   const slicedPersonalizedFeatureCards = useMemo(() => {
     const personalizedFeatureCards =
-      jumperUser && jumperUser[0]?.attributes?.feature_cards.data;
+      jumperUser && jumperUser[0]?.attributes?.feature_cards.data
+        ? jumperUser && jumperUser[0]?.attributes?.feature_cards.data
+        : featureCardsNoUsers && featureCardsNoUsers.length > 0
+          ? [featureCardsNoUsers[0]]
+          : undefined;
 
     if (
       Array.isArray(personalizedFeatureCards) &&
@@ -110,7 +111,7 @@ export const FeatureCards = () => {
         .slice(0, 1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jumperUser]);
+  }, [jumperUser, featureCardsNoUsers]);
 
   return (
     isDesktop &&
