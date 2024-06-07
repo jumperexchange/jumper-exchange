@@ -6,7 +6,6 @@ import {
 } from '@/const/trackingKeys';
 import { useAccounts } from '@/hooks/useAccounts';
 import type {
-  TrackAttributeProps,
   TrackChainSwitchProps,
   TrackDisconnectWalletProps,
   TrackEventProps,
@@ -28,21 +27,6 @@ export function useUserTracking() {
         });
     }
   }, [account, account?.chainId]);
-
-  const trackAttribute = useCallback(
-    /**
-     * Track Attributes with GA, HJ and ARCx
-     *
-     */
-    async ({ data, disableTrackingTool }: TrackAttributeProps) => {
-      if (data && !disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        data &&
-          typeof window !== 'undefined' &&
-          window?.gtag('set', 'user_properties', data);
-      }
-    },
-    [],
-  );
 
   const trackDisconnectWallet = useCallback(
     ({ data, disableTrackingTool }: TrackDisconnectWalletProps) => {
@@ -168,7 +152,6 @@ export function useUserTracking() {
   );
 
   return {
-    trackAttribute,
     trackDisconnectWallet,
     trackEvent,
     trackPageload,

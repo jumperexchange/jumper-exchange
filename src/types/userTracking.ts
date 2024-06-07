@@ -65,7 +65,3 @@ export interface TrackDisconnectWalletProps {
   data?: { [key: string]: string | number | boolean };
   disableTrackingTool?: EventTrackingTool[];
 }
-export interface TrackAttributeProps {
-  data?: { [key: string]: string | number | boolean };
-  disableTrackingTool?: EventTrackingTool[];
-}
