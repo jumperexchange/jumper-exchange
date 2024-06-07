@@ -1,6 +1,5 @@
 import type { TrackingCategory } from '@/const/trackingKeys';
 import type { Account } from '@/hooks/useAccounts';
-import type { ChainType } from '@lifi/types';
 
 export enum EventTrackingTool {
   GA,
@@ -59,14 +58,6 @@ export interface trackPageloadProps {
   pageload: boolean;
   disableTrackingTool?: EventTrackingTool[];
   url: string;
-}
-
-export interface TrackConnectWalletProps {
-  account?: Account;
-  walletName?: string;
-  chainType?: ChainType;
-  chainId: number;
-  address?: string;
 }
 
 export interface TrackDisconnectWalletProps {

@@ -124,7 +124,7 @@ export const useWalletSelectContent = () => {
           handleWalletClick(combinedWallet);
           trackEvent({
             category: TrackingCategory.WalletSelectMenu,
-            action: TrackingAction.ConnectWallet,
+            action: TrackingAction.ClickConnectWallet,
             label: 'click_connect_wallet',
             data: {
               wallet:

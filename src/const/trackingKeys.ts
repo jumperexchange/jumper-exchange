@@ -7,6 +7,7 @@ export const UTM_SOURCE = 'jumper';
 export enum TrackingAction {
   // WalletMenu
   ConnectWallet = 'action_connect_wallet',
+  ClickConnectWallet = 'action_click_connect_wallet',
   CopyAddressToClipboard = 'action_copy_addr_to_clipboard',
   DisconnectWallet = 'action_disconnect_wallet',
   OpenBlockchainExplorer = 'action_open_blockchain_explorer',
@@ -79,6 +80,7 @@ export enum TrackingCategory {
   DiscordBanner = 'cat_discord_banner',
   Wallet = 'cat_wallet',
   WalletMenu = 'cat_wallet_menu',
+  Connect = 'cat_connect_wallet',
   WalletSelectMenu = 'cat_wallet_select_menu',
   WelcomeScreen = 'cat_welcome_screen',
   Widget = 'cat_widget',
@@ -108,6 +110,7 @@ export enum TrackingEventParameter {
   AddedTokenAddress = 'param_added_token_address',
   AddedTokenName = 'param_added_token_name',
   Wallet = 'param_wallet',
+  WalletAddress = 'param_wallet_address',
   Ecosystem = 'param_ecosystem',
 
   // Widget:

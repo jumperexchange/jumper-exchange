@@ -8,7 +8,6 @@ import { useAccounts } from '@/hooks/useAccounts';
 import type {
   TrackAttributeProps,
   TrackChainSwitchProps,
-  TrackConnectWalletProps,
   TrackDisconnectWalletProps,
   TrackEventProps,
   TrackTransactionProps,
@@ -29,22 +28,6 @@ export function useUserTracking() {
         });
     }
   }, [account, account?.chainId]);
-
-  const trackConnectWallet = useCallback(
-    /**
-     * Track Wallet Connect with HJ, GA and ARCx
-     *
-     */
-
-    ({ walletName, chainType, chainId, address }: TrackConnectWalletProps) => {
-      typeof window !== 'undefined' &&
-        window?.gtag('event', TrackingAction.ConnectWallet, {
-          [TrackingEventParameter.Wallet]: walletName,
-          [TrackingEventParameter.Ecosystem]: chainType,
-        });
-    },
-    [],
-  );
 
   const trackAttribute = useCallback(
     /**
@@ -187,7 +170,6 @@ export function useUserTracking() {
   return {
     trackAttribute,
     trackDisconnectWallet,
-    trackConnectWallet,
     trackEvent,
     trackPageload,
     trackTransaction,
