@@ -18,7 +18,6 @@ import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
-import { EventTrackingTool } from 'src/types/userTracking';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();
@@ -134,10 +133,6 @@ export const useWalletSelectContent = () => {
                 '',
             },
             enableAddressable: true,
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Cookie3,
-            ],
           });
         },
         styles: {

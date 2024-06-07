@@ -1,13 +1,9 @@
 import type { TrackingCategory } from '@/const/trackingKeys';
 import type { Account } from '@/hooks/useAccounts';
-import type { ChainID } from '@arcxmoney/analytics';
 import type { ChainType } from '@lifi/types';
 
 export enum EventTrackingTool {
-  ARCx,
   GA,
-  Hotjar,
-  Cookie3,
 }
 
 export interface InitTrackingProps {
@@ -28,7 +24,7 @@ export interface TrackEventProps {
 export interface TrackTransactionProps {
   action: string;
   category: string;
-  chain: ChainID;
+  chain: number;
   value?: number;
   disableTrackingTool?: EventTrackingTool[];
   data: Record<string, unknown>;

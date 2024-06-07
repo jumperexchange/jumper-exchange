@@ -13,7 +13,6 @@ import { ThemesMap } from 'src/const/themesMap';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
 import type { ThemeModesSupported } from 'src/types/settings';
-import { EventTrackingTool } from 'src/types/userTracking';
 import { Widget } from './Widget';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
@@ -50,10 +49,6 @@ export function Widgets({
         action: TrackingAction.CloseWelcomeScreen,
         label: 'enter_welcome_screen_on_widget-click',
         data: { widgetVariant },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
         enableAddressable: true,
       });
     }

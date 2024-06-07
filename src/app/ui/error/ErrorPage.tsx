@@ -3,7 +3,6 @@ import { useTheme } from '@mui/material';
 
 import { Discord } from '@/components/illustrations/Discord';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { EventTrackingTool } from '@/types/userTracking';
 
 import {
   TrackingAction,
@@ -41,17 +40,12 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
             label: 'click-discord-link',
             action: TrackingAction.OpenMenu,
             data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Cookie3,
-            ],
           });
           trackPageload({
             source: TrackingCategory.Menu,
             destination: 'discord-lifi',
             url: DISCORD_URL,
             pageload: true,
-            disableTrackingTool: [EventTrackingTool.Cookie3],
           });
           openInNewTab(DISCORD_URL);
         }}

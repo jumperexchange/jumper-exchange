@@ -3,7 +3,6 @@ import { LinkMap } from '@/const/linkMap';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { JUMPER_MEMECOIN_PATH, LIFI_URL } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { EventTrackingTool } from '@/types/userTracking';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import { isArticlePage } from '@/utils/isArticlePage';
 import { openInNewTab } from '@/utils/openInNewTab';
@@ -45,13 +44,11 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
       destination: 'lifi-website',
       url: lifiUrl,
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackEvent({
       category: TrackingCategory.PoweredBy,
       action: TrackingAction.PoweredBy,
       label: 'click_lifi_in_powered_by',
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     openInNewTab(lifiUrl);
   };

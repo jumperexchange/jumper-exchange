@@ -8,7 +8,6 @@ import {
 } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { EventTrackingTool } from '@/types/userTracking';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import type { Breakpoint } from '@mui/material';
 import { Slide, Typography, useTheme } from '@mui/material';
@@ -50,10 +49,6 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
         category: TrackingCategory.WelcomeScreen,
         label: 'open-welcome-screen',
         action: TrackingAction.ShowWelcomeMessageScreen,
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
       });
     }
   }, [trackEvent, welcomeScreenClosed]);
@@ -64,14 +59,12 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
       label: 'open-welcome-message-link',
       action: TrackingAction.OpenWelcomeMessageLink,
       data: { [TrackingEventParameter.WelcomeMessageLink]: '4x_audited' },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackPageload({
       source: TrackingCategory.WelcomeScreen,
       destination: 'docs-sc-audits',
       url: auditsWelcomeUrl,
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.Cookie3],
     });
   };
 
@@ -81,14 +74,12 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
       label: 'open-welcome-message-link',
       action: TrackingAction.OpenWelcomeMessageLink,
       data: { [TrackingEventParameter.WelcomeMessageLink]: 'LIFI' },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackPageload({
       source: TrackingCategory.WelcomeScreen,
       destination: 'lifi-website',
       url: lifiWelcomeUrl,
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.Cookie3],
     });
   };
 
@@ -107,10 +98,6 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
           category: TrackingCategory.WelcomeScreen,
           action: TrackingAction.CloseWelcomeScreen,
           label: 'enter_welcome_screen',
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
           enableAddressable: true,
         });
       }

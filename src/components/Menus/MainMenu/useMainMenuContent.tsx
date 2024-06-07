@@ -16,7 +16,6 @@ import {
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
-import { EventTrackingTool } from '@/types/userTracking';
 import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -128,10 +127,6 @@ export const useMainMenuContent = () => {
           action: TrackingAction.OpenMenu,
           label: `open_submenu_${MenuKeysEnum.Language.toLowerCase()}`,
           data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Language },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
       },
     },
@@ -146,10 +141,6 @@ export const useMainMenuContent = () => {
           action: TrackingAction.OpenMenu,
           label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
           data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
       },
     },
@@ -164,10 +155,6 @@ export const useMainMenuContent = () => {
           label: 'click-jumper-pass-link',
           action: TrackingAction.ClickJumperProfileLink,
           data: { [TrackingEventParameter.Menu]: 'pass' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         closeAllMenus();
         router.push(JUMPER_LOYALTY_PATH);
@@ -184,10 +171,6 @@ export const useMainMenuContent = () => {
           label: 'click-jumper-learn-link',
           action: TrackingAction.ClickJumperLearnLink,
           data: { [TrackingEventParameter.Menu]: 'jumper_learn' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         closeAllMenus();
         router.push(JUMPER_LEARN_PATH);
@@ -204,17 +187,12 @@ export const useMainMenuContent = () => {
           label: 'open-lifi-explorer',
           action: TrackingAction.ClickLifiExplorerLink,
           data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         trackPageload({
           source: TrackingCategory.Menu,
           destination: 'lifi-explorer',
           url: explorerUrl,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
       },
     },
@@ -228,17 +206,12 @@ export const useMainMenuContent = () => {
           label: 'click-x-link',
           action: TrackingAction.ClickXLink,
           data: { [TrackingEventParameter.Menu]: 'lifi_x' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         trackPageload({
           source: TrackingCategory.MainMenu,
           destination: 'x-jumper',
           url: X_URL,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
       },
       link: { url: X_URL, external: true },
@@ -261,17 +234,12 @@ export const useMainMenuContent = () => {
           label: 'click-discord-link',
           action: TrackingAction.ClickDiscordLink,
           data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         trackPageload({
           source: TrackingCategory.Menu,
           destination: 'discord-lifi',
           url: DISCORD_URL,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
       },
       link: { url: DISCORD_URL, external: true },
@@ -293,10 +261,6 @@ export const useMainMenuContent = () => {
           label: 'open-support-modal',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameter.Menu]: 'support_modal' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         setSupportModalState(true);
       },

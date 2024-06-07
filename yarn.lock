@@ -22,19 +22,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arcxmoney/analytics@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@arcxmoney/analytics@npm:2.1.0"
-  dependencies:
-    "@restless/sanitizers": "npm:^0.2.5"
-    socket.io-client: "npm:^4.5.4"
-  peerDependencies:
-    "@types/react": ">=16.14.34"
-    react: ">=16.14.0"
-  checksum: 10/fa7695ad6484e02e7a7d2801ecd81783dc9eb47addd9515d29bf8e8fd9419a4c763e541cbfaad239fad98c11475bf3fa49d20b8fb0d9aa7b07739805e148dbb2
-  languageName: node
-  linkType: hard
-
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.24.6":
   version: 7.24.6
   resolution: "@babel/code-frame@npm:7.24.6"
@@ -1648,13 +1635,6 @@ __metadata:
     preact: "npm:^10.16.0"
     sha.js: "npm:^2.4.11"
   checksum: 10/16da929a78614ece1fd26ea42164f071f9b951699efb777b4adcb96f6bca4377e4f0f6a963cd4b29c5e3c6bb6aab746685d9ec2ab3b0e76f8e5683049fb233a5
-  languageName: node
-  linkType: hard
-
-"@cookie3/analytics@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@cookie3/analytics@npm:0.6.0"
-  checksum: 10/445e98a70a85beeea1884ca7984c6a59a063d8df0f5d33894b9f9b445d052f082e4692113a8ced975aa9476cb5fd61ad45a2f9ba1ad6601e0acf8dbfa6a7ad65
   languageName: node
   linkType: hard
 
@@ -3591,13 +3571,6 @@ __metadata:
   version: 1.16.1
   resolution: "@remix-run/router@npm:1.16.1"
   checksum: 10/0bfbf2a04707e7f7fde5c76614e7990945a6d854d50c1f9f63cea50208ff864a8920420534ff7ddff6a0bcb584c84456d2f7613d6d6e896db46cafcc70d8fb65
-  languageName: node
-  linkType: hard
-
-"@restless/sanitizers@npm:^0.2.5":
-  version: 0.2.5
-  resolution: "@restless/sanitizers@npm:0.2.5"
-  checksum: 10/9cceabe988df32059fc15ec0b280112bbc6c20f46b7cbf48f6f3b4845acf817eb7960c8a38c95831f2da61e15007d86c34ec71c1aa2c2206f1d3779eb5680953
   languageName: node
   linkType: hard
 
@@ -9363,8 +9336,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "jumper.exchange@workspace:."
   dependencies:
-    "@arcxmoney/analytics": "npm:^2.1.0"
-    "@cookie3/analytics": "npm:^0.6.0"
     "@emotion/cache": "npm:^11.11.0"
     "@emotion/react": "npm:^11.11.4"
     "@emotion/styled": "npm:^11.11.5"
@@ -9425,7 +9396,6 @@ __metadata:
     react-cookie: "npm:^7.1.4"
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^4.0.13"
-    react-hotjar: "npm:^6.3.1"
     react-i18next: "npm:^14.1.2"
     react-router-dom: "npm:^6.23.1"
     rollup-plugin-polyfill-node: "npm:^0.13.0"
@@ -11134,13 +11104,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hotjar@npm:^6.3.1":
-  version: 6.3.1
-  resolution: "react-hotjar@npm:6.3.1"
-  checksum: 10/0d375ff15e23086f873d02b6c089816ac4de195c22a5ea8d414455b93754c4a6aec62aca4c6f0f5e2225966185f937c04bc89dc7f23af09e3ab447d44a3f5bba
-  languageName: node
-  linkType: hard
-
 "react-i18next@npm:^14.1.2":
   version: 14.1.2
   resolution: "react-i18next@npm:14.1.2"
@@ -11911,7 +11874,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"socket.io-client@npm:^4.5.1, socket.io-client@npm:^4.5.4":
+"socket.io-client@npm:^4.5.1":
   version: 4.7.5
   resolution: "socket.io-client@npm:4.7.5"
   dependencies:

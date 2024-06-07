@@ -24,7 +24,6 @@ import type {
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
-import { EventTrackingTool } from 'src/types/userTracking';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -208,10 +207,6 @@ export function WidgetEvents() {
           [TrackingEventParameter.SourceTokenSelection]:
             sourceChainData.tokenAddress,
         },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
         enableAddressable: true,
       });
       setSourceChainToken(sourceChainData);
@@ -223,10 +218,6 @@ export function WidgetEvents() {
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnWidgetExpanded,
           label: `widget_expanded`,
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
           enableAddressable: true,
         });
     };
@@ -244,10 +235,6 @@ export function WidgetEvents() {
           [TrackingEventParameter.DestinationTokenSelection]:
             toChainData.tokenAddress,
         },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
         enableAddressable: true,
       });
       setDestinationChainToken(toChainData);
@@ -262,10 +249,6 @@ export function WidgetEvents() {
         data: {
           [TrackingEventParameter.AvailableRoutesCount]: availableRoutes.length,
         },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
       });
     };
 

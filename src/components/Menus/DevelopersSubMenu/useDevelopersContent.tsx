@@ -1,5 +1,4 @@
 import { useMenuStore } from '@/stores/menu';
-import { EventTrackingTool } from '@/types/userTracking';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FolderZipOutlinedIcon from '@mui/icons-material/FolderZipOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -38,17 +37,12 @@ export const useDevelopersContent = () => {
           label: 'open-lifi-github',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameter.Menu]: 'lifi_github' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         trackPageload({
           source: TrackingCategory.Menu,
           destination: 'lifi-github',
           url: GITHUB_URL,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         closeAllMenus();
       },
@@ -63,17 +57,12 @@ export const useDevelopersContent = () => {
           label: 'open-lifi-docs',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameter.Menu]: 'lifi_docs' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         trackPageload({
           source: TrackingCategory.Menu,
           destination: 'lifi-docs',
           url: DOCS_URL,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         closeAllMenus();
       },
@@ -89,10 +78,6 @@ export const useDevelopersContent = () => {
           label: 'click-brand-assets',
           action: TrackingAction.DownloadBrandAssets,
           data: { [TrackingEventParameter.Menu]: 'brand_assets' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         closeAllMenus();
       },

@@ -7,7 +7,6 @@ import { useChains } from '@/hooks/useChains';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
-import { EventTrackingTool } from '@/types/userTracking';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { walletDigest } from '@/utils/walletDigest';
 import { getConnectorIcon } from '@lifi/wallet-management';
@@ -60,7 +59,6 @@ export const WalletCard = ({ account }: WalletCardProps) => {
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.OpenBlockchainExplorer,
       label: 'open-blockchain-explorer-wallet',
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     if (account.blockChainExplorerUrl) {
       trackPageload({
@@ -68,7 +66,6 @@ export const WalletCard = ({ account }: WalletCardProps) => {
         destination: 'blokchain-explorer',
         url: account.blockChainExplorerUrl || '',
         pageload: true,
-        disableTrackingTool: [EventTrackingTool.Cookie3],
       });
       openInNewTab(account.blockChainExplorerUrl);
     }
@@ -84,7 +81,6 @@ export const WalletCard = ({ account }: WalletCardProps) => {
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.CopyAddressToClipboard,
       label: 'copy_addr_to_clipboard',
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     closeAllMenus();
   };
