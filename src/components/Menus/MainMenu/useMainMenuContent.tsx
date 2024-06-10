@@ -9,6 +9,7 @@ import {
 import {
   DISCORD_URL,
   EXPLORER_URL,
+  JUMPER_FEST,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   X_URL,
@@ -151,6 +152,26 @@ export const useMainMenuContent = () => {
             EventTrackingTool.Cookie3,
           ],
         });
+      },
+    },
+    {
+      label: t('navbar.navbarMenu.fest'),
+      prefixIcon: <AccountCircleIcon />,
+      showMoreIcon: false,
+      link: { url: '/superfest' },
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-jumper-fest-link',
+          action: TrackingAction.ClickJumperProfileLink,
+          data: { [TrackingEventParameter.Menu]: 'pass' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+        closeAllMenus();
+        router.push(JUMPER_FEST);
       },
     },
     {

@@ -1,5 +1,28 @@
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
+import {
+  RewardsCarouselContainer,
+  RewardsCarouselHeader,
+  RewardsCarouselTitle,
+} from './RewardsCarousel.style';
+import { RewardsBox } from './RewardsBox/RewardsBox';
+import { ClaimingButton } from './ClaimingButton/ClaimingButton';
 
 export const RewardsCarousel = ({}) => {
-  return <Box>Hello World</Box>;
+  return (
+    <RewardsCarouselContainer>
+      <RewardsCarouselHeader>
+        <RewardsCarouselTitle>{'Your Rewards'}</RewardsCarouselTitle>
+      </RewardsCarouselHeader>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignContent: 'center',
+          padding: '32px',
+        }}
+      >
+        <RewardsBox />
+      </Box>
+    </RewardsCarouselContainer>
+  );
 };

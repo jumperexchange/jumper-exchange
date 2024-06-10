@@ -42,6 +42,7 @@ interface Resources {
         aboutLIFI: 'About LI.FI';
         support: 'Support';
         profile: 'Jumper Profile';
+        fest: 'Jumper Fest';
       };
       walletMenu: {
         disconnect: 'Disconnect';
