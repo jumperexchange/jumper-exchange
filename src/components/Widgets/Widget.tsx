@@ -25,6 +25,9 @@ import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import { useMediaQuery } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { publicRPCList } from 'src/const/rpcList';
 
 export function Widget({
   starterVariant,
@@ -43,6 +46,7 @@ export function Widget({
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
@@ -70,21 +74,34 @@ export function Widget({
     [starterVariant, themeVariant],
   );
 
-  let i = 0;
+  const integratorStringByType = useMemo(() => {
+    if (widgetIntegrator) {
+      return widgetIntegrator;
+    }
+    // all the trafic from mobile (including "/gas")
+    if (!isDesktop) {
+      return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+    }
+    // all the trafic from web on "/gas"
+    if (isGasVariant) {
+      return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
+    }
+    return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
+  }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
+
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
     try {
-      rpcUrls = JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS);
+      rpcUrls = {
+        ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
+        ...publicRPCList,
+      };
     } catch (e) {
       if (process.env.DEV) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
-    console.log(i);
-    i += 1;
-    console.log('hereeeeeee in memo');
-    console.log(bridgeFilter);
 
     return {
       ...widgetConfig,
@@ -156,6 +173,7 @@ export function Widget({
       },
       keyPrefix: `jumper-${starterVariant}`,
       ...multisigWidget,
+      apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
         apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
         rpcUrls,
@@ -178,11 +196,7 @@ export function Widget({
       },
       buildUrl: true,
       insurance: true,
-      integrator: `${
-        widgetIntegrator || isGasVariant
-          ? process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL
-          : process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR
-      }`,
+      integrator: integratorStringByType,
       tokens:
         themeVariant === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };

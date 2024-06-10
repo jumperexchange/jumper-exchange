@@ -1,121 +1,121 @@
 {
   "navbar": {
     "welcome": {
-      "title": "",
-      "subtitle": "",
-      "cta": ""
+      "title": "最適なルートを探す",
+      "subtitle": "<0>4x audited</0><1>LI.FI</1> によるマルチチェーン流動性アグリゲータ",
+      "cta": "はじめよう"
     },
-    "poweredByLifi": "",
+    "poweredByLifi": "<0>Powered by </0><1>LI.FI</1>",
     "links": {
-      "exchange": "",
-      "dashboard": "",
-      "refuel": "",
-      "buy": ""
+      "exchange": "スワップ",
+      "dashboard": "ダッシュボード",
+      "refuel": "リフューエル",
+      "buy": "購入"
     },
     "statsCards": {
-      "dexs": "",
-      "bridges": "",
-      "chains": ""
+      "dexs": "DEX",
+      "bridges": "ブリッジ",
+      "chains": "チェーン"
     },
-    "connect": "",
+    "connect": "接続する",
     "walletSelectMenu": {
-      "connectWallet": "",
-      "wallets": "",
+      "connectWallet": "ウォレットを接続",
+      "wallets": "ウォレット",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "",
-        "noEcosystemAdapter": ""
+        "selectEcosystem": "ウォレットのエコシステムを選択",
+        "noEcosystemAdapter": "適切なエコシステムアダプタが見つかりませんでした"
       }
     },
-    "seeAllWallets": "",
+    "seeAllWallets": "すべてのウォレットを見る",
     "navbarMenu": {
-      "brandAssets": "",
-      "theme": "",
-      "developers": "",
-      "lifiExplorer": "",
-      "aboutLIFI": "",
-      "support": "",
-      "profile": ""
+      "brandAssets": "ブランドアセット",
+      "theme": "テーマ",
+      "developers": "開発者",
+      "lifiExplorer": "LI.FIエクスプローラー",
+      "aboutLIFI": "LI.FIについて",
+      "support": "サポート",
+      "profile": "Jumperプロフィール"
     },
     "walletMenu": {
-      "disconnect": "",
-      "chains": "",
-      "switchChain": "",
-      "copy": "",
-      "explore": "",
-      "copiedMsg": "",
-      "walletNotInstalled": "",
-      "connectAnotherWallet": ""
+      "disconnect": "接続を解除",
+      "chains": "チェーン",
+      "switchChain": "チェーン変更",
+      "copy": "コピー",
+      "explore": "ナビゲーション",
+      "copiedMsg": "ウォレットアドレスをコピーしました",
+      "walletNotInstalled": "{{wallet}} はインストールされていません。",
+      "connectAnotherWallet": "別のウォレットを接続する"
     },
     "themes": {
-      "switchToLight": "",
-      "switchToDark": "",
-      "switchToSystem": ""
+      "switchToLight": "ライトモード",
+      "switchToDark": "ダークモード",
+      "switchToSystem": "システム設定に準拠"
     },
     "developers": {
-      "github": "",
-      "documentation": ""
+      "github": "GitHub",
+      "documentation": "公式ドキュメント"
     }
   },
   "discordBanner": {
-    "ctaHeadline": "",
-    "ctaButton": ""
+    "ctaHeadline": "Discordに参加してもっと知る",
+    "ctaButton": "Discordに参加する"
   },
   "blog": {
-    "title": "",
-    "categories": "",
-    "allCategories": "",
-    "subtitle": "",
-    "minRead": "",
-    "seeAllPosts": "",
-    "recentPosts": "",
-    "similarPosts": "",
-    "goToArticle": "",
-    "openApp": "",
-    "faq": "",
-    "jumperCta": "",
-    "copiedLink": "",
-    "shareLinkedIn": "",
-    "shareFb": "",
-    "shareX": "",
-    "shareLink": ""
+    "title": "ヒントとチュートリアル",
+    "categories": "カテゴリー",
+    "allCategories": "すべて",
+    "subtitle": "DeFiとクリプトの完全ガイド - 全レベル対象",
+    "minRead": "{{minRead}} 分で読めます",
+    "seeAllPosts": "すべての記事を表示",
+    "recentPosts": "最近の記事",
+    "similarPosts": "似ている記事",
+    "goToArticle": "記事に移動",
+    "openApp": "アプリを開く",
+    "faq": "よくある質問",
+    "jumperCta": "jumper.exchangeを試す",
+    "copiedLink": "リンクをコピーしました",
+    "shareLinkedIn": "LinkedInで記事をシェア",
+    "shareFb": "Facebookで記事をシェア",
+    "shareX": "X で記事をシェア",
+    "shareLink": "リンクをシェア"
   },
   "solanaAlert": {
-    "title": "",
-    "subtitle": ""
+    "title": "Solanaトークンの限定的サポート",
+    "subtitle": "現時点では、USDCとUSDTのみがSolanaとの間でブリッジできます。"
   },
   "featureCard": {
-    "learnMore": ""
+    "learnMore": "さらに詳しく"
   },
   "button": {
-    "okay": ""
+    "okay": "OK"
   },
   "error": {
-    "message": ""
+    "message": "問題が発生しました。ページを再読み込みしてください。問題が解決しない場合はサポートにお問い合わせください。"
   },
   "multisig": {
     "connected": {
-      "title": "",
-      "description": ""
+      "title": "マルチシグウォレットが接続されました",
+      "description": "他のウォレット参加者に署名の準備ができていることを知らせてください"
     },
     "transactionInitiated": {
-      "title": "",
-      "description": ""
+      "title": "複数の署名が必要です",
+      "description": "トランザクションの有効期限が切れる前に他のマルチシグウォレット参加者に通知してください"
     },
     "alert": {
-      "title": "",
-      "description": ""
+      "title": "マルチシグウォレットが接続されました",
+      "description": "交換を完了するには、宛先ウォレットアドレスが必要です。"
     }
   },
   "questCard": {
-    "completed": "",
-    "join": ""
+    "completed": "完了しました",
+    "join": "参加する"
   },
   "missions": {
-    "available": "",
-    "completed": ""
+    "available": "利用可能なミッション",
+    "completed": "完了したミッション"
   },
   "profile_page": {
-    "mobileTitle": "",
-    "mobileDescription": ""
+    "mobileTitle": "デスクトップでのみ利用可能です",
+    "mobileDescription": "Jumper プロファイルページは、まだ小さな画面では利用できません。私たちは現在作業中です。"
   }
 }
