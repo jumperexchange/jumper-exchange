@@ -22,6 +22,7 @@ import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
+import FestivalIcon from '@mui/icons-material/Festival';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -156,7 +157,7 @@ export const useMainMenuContent = () => {
     },
     {
       label: t('navbar.navbarMenu.fest'),
-      prefixIcon: <AccountCircleIcon />,
+      prefixIcon: <FestivalIcon />,
       showMoreIcon: false,
       link: { url: '/superfest' },
       onClick: () => {

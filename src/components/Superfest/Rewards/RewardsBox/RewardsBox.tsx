@@ -2,11 +2,7 @@ import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import { Button } from 'src/components/Button';
 import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';
-import {
-  QuestCardBottomBox,
-  QuestCardMainBox,
-  QuestCardTitleBox,
-} from 'src/components/ProfilePage/QuestCard/QuestCard.style';
+
 import { RewardsRightBox, RewardsdMainBox } from './RewardsBox.style';
 
 export const RewardsBox = ({}) => {
@@ -16,19 +12,29 @@ export const RewardsBox = ({}) => {
 
   return (
     <RewardsdMainBox>
-      <Image
-        src={'https://strapi.li.finance/uploads/large_PDA_Mode_bbfc0a108d.png'}
-        alt="Quest Card Image"
-        width={240}
-        height={240}
-        style={{
-          borderRadius: 8,
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignContent: 'center',
         }}
-      />
+      >
+        <Image
+          src={
+            'https://strapi.li.finance/uploads/large_PDA_Mode_bbfc0a108d.png'
+          }
+          alt="Quest Card Image"
+          width={240}
+          height={240}
+          style={{
+            borderRadius: 8,
+          }}
+        />
+      </Box>
       <RewardsRightBox>
         <Box>
           <ProfilePageTypography fontSize={'18px'} lineHeight={'24px'}>
-            {'Your Position'}
+            {'Your Active Position'}
           </ProfilePageTypography>
         </Box>
         <Box>

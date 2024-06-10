@@ -6,7 +6,8 @@ import { Stack } from '@mui/material';
 import { SuperfestContainer } from './Superfest.style';
 import { QuestCarousel } from '../ProfilePage/QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from '../ProfilePage/QuestsCompleted/QuestsCompletedList';
-import { RewardsCarousel } from '../Rewards/RewardsCarousel';
+import { RewardsCarousel } from './Rewards/RewardsCarousel';
+import { NFTClaimingBox } from './NFTClaimingBox/NFTClaimingBox';
 
 export const Superfest = () => {
   const { account } = useAccounts();
@@ -18,6 +19,7 @@ export const Superfest = () => {
       <Stack direction={'column'} spacing={{ xs: 2, sm: 4 }}>
         <RewardsCarousel />
         <QuestCarousel quests={quests} loading={isQuestLoading} />
+        <NFTClaimingBox />
         <QuestCompletedList pdas={pdas} loading={isLoading} />
       </Stack>
     </SuperfestContainer>
