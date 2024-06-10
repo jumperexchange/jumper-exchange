@@ -34,7 +34,6 @@ export function Widgets({
   const { welcomeScreenClosed, setWelcomeScreenClosed } =
     useWelcomeScreen(closedWelcomeScreen);
   const pathname = usePathname();
-  const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { trackEvent } = useUserTracking();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
@@ -43,7 +42,6 @@ export function Widgets({
   const [_themeVariant, setThemeVariant] = useState<
     ThemeVariantType | undefined
   >(undefined);
-  const [_filter, setFilter] = useState<string | undefined>(undefined);
 
   const handleWelcomeScreenEnter = (widgetVariant: StarterVariantType) => {
     if (!welcomeScreenClosed) {
@@ -95,16 +93,8 @@ export function Widgets({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, setActiveTab]);
 
-  const pathFilter: string | undefined = useMemo(() => {
-    if (partnerName) {
-      return partnerName;
-    }
-    return undefined;
-  }, [partnerName]);
-
   const getActiveWidget = useCallback(() => {
     setThemeVariant(themeVariant);
-    setFilter(pathFilter);
     if (!starterVariantUsed) {
       switch (starterVariant) {
         case TabsMap.Exchange.variant:
@@ -142,12 +132,11 @@ export function Widgets({
     starterVariant,
     starterVariantUsed,
     themeVariant,
-    pathFilter,
   ]);
 
   useLayoutEffect(() => {
     getActiveWidget();
-  }, [getActiveWidget, starterVariant, activeTab, themeVariant, pathFilter]);
+  }, [getActiveWidget, starterVariant, activeTab, themeVariant]);
 
   return (
     <>
@@ -160,7 +149,6 @@ export function Widgets({
           starterVariant={TabsMap.Exchange.variant as WidgetSubvariant}
           themeVariant={_themeVariant}
           activeTheme={activeTheme}
-          bridgeFilter={_filter}
         />
       </WidgetContainer>
       <WidgetContainer

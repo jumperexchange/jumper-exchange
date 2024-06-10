@@ -40,7 +40,6 @@ export function Widget({
   widgetIntegrator,
   themeVariant,
   activeTheme,
-  bridgeFilter,
 }: WidgetProps) {
   const theme = useTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
@@ -123,10 +122,10 @@ export function Widget({
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
-        allow: bridgeFilter ? [bridgeFilter] : [],
+        allow: isBridgeFiltered && partnerName ? [partnerName] : undefined,
       },
       exchanges: {
-        allow: bridgeFilter ? [bridgeFilter] : [],
+        allow: isDexFiltered && partnerName ? [partnerName] : undefined,
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -227,7 +226,9 @@ export function Widget({
     tokens,
     wagmiConfig,
     widgetIntegrator,
-    bridgeFilter,
+    partnerName,
+    isDexFiltered,
+    isBridgeFiltered,
   ]);
 
   return (
