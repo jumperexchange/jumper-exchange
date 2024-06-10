@@ -16,6 +16,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   let isBridgeFiltered = false;
   let isDexFiltered = false;
   let partnerName = '';
+  let backgroundURL = '';
   if (pathname?.includes('memecoins')) {
     hasTheme = true;
     partnerName = 'memecoins';
@@ -32,7 +33,6 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
 
   const pathnameSplit = pathname.split('/');
   const pathnameKey = pathnameSplit[pathnameSplit.length - 2].toLowerCase();
-
   if (bridgesKeys && bridgesKeys.includes(pathnameKey)) {
     hasTheme = true;
     isBridgeFiltered = true;
@@ -43,10 +43,16 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     partnerName = pathnameKey;
   }
 
+  if (hasTheme) {
+    // check Strapi hook for the background URL;
+    backgroundURL = '';
+  }
+
   return {
     hasTheme,
     isBridgeFiltered,
     isDexFiltered,
     partnerName,
+    backgroundURL,
   };
 };
