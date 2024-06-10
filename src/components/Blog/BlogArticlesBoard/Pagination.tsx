@@ -43,7 +43,7 @@ export const BlogArticlesBoardPagination = ({
       action: TrackingAction.ClickPagination,
       data: {
         [TrackingEventParameter.Pagination]: page,
-        [TrackingEventParameter.PaginationCat]: categoryId,
+        [TrackingEventParameter.PaginationCat]: categoryId || '',
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
@@ -62,7 +62,7 @@ export const BlogArticlesBoardPagination = ({
       action: TrackingAction.ClickPagination,
       data: {
         [TrackingEventParameter.Pagination]: page,
-        [TrackingEventParameter.PaginationCat]: categoryId,
+        [TrackingEventParameter.PaginationCat]: categoryId || '',
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
@@ -80,7 +80,7 @@ export const BlogArticlesBoardPagination = ({
       action: TrackingAction.ClickPagination,
       data: {
         [TrackingEventParameter.Pagination]: page,
-        [TrackingEventParameter.PaginationCat]: categoryId,
+        [TrackingEventParameter.PaginationCat]: categoryId || '',
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });

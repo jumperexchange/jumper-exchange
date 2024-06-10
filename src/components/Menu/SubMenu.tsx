@@ -6,8 +6,7 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckIcon from '@mui/icons-material/Check';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import type { Breakpoint } from '@mui/material';
-import { Box, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import type { KeyboardEvent } from 'react';
 import { useEffect, useRef } from 'react';
@@ -20,6 +19,7 @@ import {
   MenuLabel,
   MenuPaper,
 } from '.';
+import { SubMenuLabel } from './SubMenu.style';
 
 interface SubMenuProps {
   open: boolean;
@@ -47,7 +47,7 @@ export const SubMenu = ({
   }
 
   const handleClick = (el: MenuListItem) => {
-    el.onClick();
+    typeof el.onClick === 'function' && el.onClick();
   };
 
   const handleBackNavigation = () => {
@@ -67,7 +67,7 @@ export const SubMenu = ({
       className="submenu"
       onKeyDown={handleBackSpace}
       autoFocus={open}
-      component={'ul'}
+      component="ul"
       ref={menuListRef}
     >
       <MenuHeaderAppWrapper>
@@ -107,35 +107,20 @@ export const SubMenu = ({
                 target={el.link.external ? '_blank' : '_self'}
                 onClick={(event) => {
                   event.stopPropagation();
-                  el.onClick();
+                  typeof el.onClick === 'function' && el.onClick();
                 }}
                 component="li"
                 key={`${el.label}-${index}`}
               >
-                <MenuLabel
-                  variant={
-                    !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
-                      ? 'lg'
-                      : (el.showMoreIcon || el.checkIcon) && el.suffixIcon
-                        ? 'xs'
-                        : 'md'
-                  }
+                {el.prefixIcon}
+                <SubMenuLabel
+                  isPrefixIcon={!!el.prefixIcon}
+                  isSuffixIcon={!!el.suffixIcon}
+                  variant={'lifiBodyMedium'}
                 >
-                  {el.prefixIcon}
-                  <Typography
-                    sx={{
-                      maxWidth: 'inherit',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
-                    variant={'lifiBodyMedium'}
-                    ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
-                    mr={!!el.suffixIcon ? theme.spacing(1.5) : 'inherit'}
-                  >
-                    {`${el.label || ' '}`}
-                  </Typography>
-                  {el.suffixIcon}
-                </MenuLabel>
+                  {`${el.label || ' '}`}
+                </SubMenuLabel>
+                {el.suffixIcon}
               </MenuItemLink>
             </MenuItemContainer>
           ) : (
@@ -154,20 +139,14 @@ export const SubMenu = ({
                 }
               >
                 {el.prefixIcon}
-                <Typography
+                <SubMenuLabel
                   variant={'lifiBodyMedium'}
+                  isPrefixIcon={!!el.prefixIcon}
+                  isSuffixIcon={!!el.suffixIcon}
                   ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
-                  sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    maxWidth: 'inherit',
-                    [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      maxWidth: el.prefixIcon ? 188 : 'inherit',
-                    },
-                  }}
                 >
                   {`${el.label || ' '}`}
-                </Typography>
+                </SubMenuLabel>
               </MenuLabel>
               {el.checkIcon && <CheckIcon />}
               {el.showMoreIcon ? (

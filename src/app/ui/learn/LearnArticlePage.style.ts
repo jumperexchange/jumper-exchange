@@ -1,4 +1,5 @@
 'use client';
+import type { Breakpoint } from '@mui/material';
 import { Box, styled, type BoxProps } from '@mui/material';
 
 export const BlogArticleWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -14,5 +15,19 @@ export const BlogArticleWrapper = styled(Box)<BoxProps>(({ theme }) => ({
     bottom: 0,
     height: 'calc( 100% + 200px )',
     background: theme.palette.white.main,
+  },
+}));
+
+export const BlogArticleSection = styled(Box)<BoxProps>(({ theme }) => ({
+  padding: theme.spacing(6, 2, 0.25),
+  position: 'relative',
+
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    padding: theme.spacing(6, 2, 0.25),
+    paddingTop: theme.spacing(12),
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    padding: theme.spacing(8, 0, 0.25),
+    paddingTop: theme.spacing(12),
   },
 }));

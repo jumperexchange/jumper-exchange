@@ -17,20 +17,6 @@ export const useSettingsStore = createWithEqualityFn(
   persist(
     (set, get) => ({
       ...defaultSettings,
-      setValue: (key: keyof SettingsProps, value: any) =>
-        set(() => ({
-          [key]: value,
-        })),
-      setValues: (values: { [x: string]: any }) =>
-        set((state: SettingsProps) => {
-          const updatedState: SettingsProps = { ...state };
-          for (const key in values) {
-            if (Object.hasOwn(state, key)) {
-              updatedState[key] = values[key];
-            }
-          }
-          return updatedState;
-        }),
 
       // Mode
       setThemeMode: (mode: ThemeModesSupported) => {
