@@ -18,7 +18,8 @@ export async function generateStaticParams() {
   }
   const res = filteredBridges.concat(filteredDexes);
   const path = res.map((partnerTheme) => ({ partnerTheme }));
-  return path;
+  const customPath = [{ partnerTheme: 'memecoins' }];
+  return [...path, ...customPath];
 }
 
 export default function Page() {

@@ -12,20 +12,28 @@ interface usePartnerThemeProps {
 
 export const usePartnerTheme = (): usePartnerThemeProps => {
   const pathname = usePathname();
+  let hasTheme = false;
+  let isBridgeFiltered = false;
+  let isDexFiltered = false;
+  let partnerName = '';
+  if (pathname?.includes('memecoins')) {
+    hasTheme = true;
+    partnerName = 'memecoins';
+    return {
+      hasTheme,
+      isBridgeFiltered,
+      isDexFiltered,
+      partnerName,
+    };
+  }
+
   // check the list of bridge that we suport the name that we use
   const { isLoading, bridgesKeys, exchangesKeys } = useDexsAndBridgesKeys();
 
   const pathnameSplit = pathname.split('/');
   const pathnameKey = pathnameSplit[pathnameSplit.length - 2].toLowerCase();
-  let hasTheme = false;
-  let isBridgeFiltered = false;
-  let isDexFiltered = false;
-  let partnerName = '';
 
-  if (pathname?.includes('memecoins')) {
-    hasTheme = true;
-    partnerName = 'memecoins';
-  } else if (bridgesKeys && bridgesKeys.includes(pathnameKey)) {
+  if (bridgesKeys && bridgesKeys.includes(pathnameKey)) {
     hasTheme = true;
     isBridgeFiltered = true;
     partnerName = pathnameKey;
