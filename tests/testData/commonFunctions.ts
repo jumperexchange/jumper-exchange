@@ -10,7 +10,7 @@ export async function openMainMenu(page) {
 }
 
 export async function itemInMenu(page, option: string) {
-  await page.getByRole('menuitem', { name: option }).click();
+  await page.getByRole('menuitem', { name: option }).click({timeout:20000});
 }
 export async function closeWelcomeScreen(page: Page) {
   return page.locator('.widget-wrapper').first().click();
