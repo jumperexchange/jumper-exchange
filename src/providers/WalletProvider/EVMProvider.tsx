@@ -1,83 +1,27 @@
 'use client';
-
 import { useChains } from '@/hooks/useChains';
-import { useMemo } from 'react';
 import { injected } from 'wagmi/connectors';
 
 import {
-  alpha,
-  binance,
-  bitget,
-  bitpie,
-  block,
-  brave,
-  createCoinbaseConnector,
-  createWalletConnectConnector,
-  dcent,
-  exodus,
-  frame,
-  frontier,
-  gate,
-  hyperpay,
-  imtoken,
-  liquality,
-  okx,
-  oneinch,
-  ownbit,
+  createDefaultWagmiConfig,
   safe,
-  safepal,
-  status,
-  taho,
-  tokenary,
-  tokenpocket,
-  trust,
-  xdefi,
+  useSyncWagmiConfig,
 } from '@lifi/wallet-management';
 import { type FC, type PropsWithChildren } from 'react';
-import type { NavigatorUAData } from 'src/types/internal';
-import type { Chain } from 'viem';
-import { createClient } from 'viem';
-import type { CreateConnectorFn } from 'wagmi';
-import { WagmiProvider, createConfig, http } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
-import { formatChain } from './utils';
+import { WagmiProvider } from 'wagmi';
 
 const JUMPER_LOGO_URL = 'https://jumper.exchange/logo-144x144.svg';
 
-const connectors: Record<string, CreateConnectorFn> = {
-  walletConnect: createWalletConnectConnector({
+const { config, connectors } = createDefaultWagmiConfig({
+  walletConnect: {
     projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
-  }),
-  coinbase: createCoinbaseConnector({
+  },
+  coinbase: {
     appName: 'Jumper.Exchange',
     appLogoUrl: JUMPER_LOGO_URL,
-  }),
-  bitget,
-  gate,
-  exodus,
-  taho,
-  binance,
-  frontier,
-  okx,
-  trust,
-  status,
-  alpha,
-  block,
-  bitpie,
-  brave,
-  dcent,
-  frame,
-  hyperpay,
-  imtoken,
-  liquality,
-  ownbit,
-  tokenpocket,
-  xdefi,
-  oneinch,
-  tokenary,
-  safepal,
-  safe,
-};
+  },
+  connectors: [safe],
+});
 
 export const metaMaskConnector = injected({
   target: 'metaMask',
@@ -91,68 +35,10 @@ export const phantomConnector = injected({
 
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
   const { chains } = useChains();
-
-  const isMobile =
-    typeof window !== 'undefined' &&
-    typeof navigator !== 'undefined' &&
-    'userAgentData' in navigator &&
-    (navigator as Navigator & { userAgentData: NavigatorUAData }).userAgentData
-      .mobile;
-
-  const customConnectors = useMemo(() => {
-    if (isMobile) {
-      if (
-        typeof navigator !== 'undefined' &&
-        navigator.userAgent.includes('MetaMaskMobile')
-      ) {
-        return [metaMaskConnector];
-      } else if (
-        typeof navigator !== 'undefined' &&
-        navigator.userAgent.includes('Phantom')
-      ) {
-        return [phantomConnector];
-      }
-    } else {
-      return Object.values(connectors) as CreateConnectorFn[];
-    }
-  }, [isMobile]);
-
-  const wagmiConfig = useMemo(() => {
-    const _chains: [Chain, ...Chain[]] = chains?.length
-      ? (chains.map(formatChain) as [Chain, ...Chain[]])
-      : [mainnet];
-    // Add ENS contracts
-    const _mainnet = _chains.find((chain) => chain.id === mainnet.id);
-    if (_mainnet) {
-      _mainnet.contracts = mainnet.contracts;
-    }
-
-    const wagmiConfig = createConfig({
-      chains: _chains,
-      connectors: customConnectors,
-      client({ chain }) {
-        return createClient({ chain, transport: http() });
-      },
-      // transports: _chains.reduce(
-      //   (transports, chain) => {
-      //     transports[chain.id] = http();
-      //     return transports;
-      //   },
-      //   {} as Record<number, Transport>,
-      // ),
-
-      // Workaround for Wagmi config re-creation after we load chains.
-      // Internal Wagmi hydration logic doesn't allow the safe creation of new configs in runtime.
-      ssr: !chains?.length,
-    });
-    return wagmiConfig;
-  }, [chains, customConnectors]);
+  useSyncWagmiConfig(config, connectors, chains);
 
   return (
-    <WagmiProvider
-      config={wagmiConfig}
-      reconnectOnMount={Boolean(chains?.length)}
-    >
+    <WagmiProvider config={config} reconnectOnMount={false}>
       {children}
     </WagmiProvider>
   );

@@ -17,6 +17,7 @@ export const ProfileButton = () => {
         alt="Effigy Wallet Icon"
         width={44}
         height={44}
+        priority={false}
         style={{
           borderRadius: '100%',
           borderStyle: 'solid',

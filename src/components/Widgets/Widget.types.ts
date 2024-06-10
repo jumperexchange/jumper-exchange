@@ -9,6 +9,7 @@ export const refuelAllowChains: ChainId[] = [
   ChainId.POL,
   ChainId.BSC,
   ChainId.DAI,
+  ChainId.BLS,
   ChainId.FTM,
   ChainId.AVA,
   ChainId.ARB,
