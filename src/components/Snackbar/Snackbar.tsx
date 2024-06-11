@@ -1,8 +1,8 @@
 'use client';
-import { Snackbar as MuiSnackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 
 import { useMenuStore } from '@/stores/menu';
+import { SnackbarStyled } from './Snackbar.style';
 
 export const Snackbar = () => {
   const [openSnackbar, setSnackbarState] = useMenuStore((state) => [
@@ -21,21 +21,15 @@ export const Snackbar = () => {
   };
 
   return (
-    <MuiSnackbar
+    <SnackbarStyled
       open={openSnackbar.open}
       autoHideDuration={2000}
       onClose={handleCloseSnackbar}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      sx={{
-        zIndex: 9999,
-        '.MuiAlert-message:first-letter': {
-          textTransform: 'capitalize',
-        },
-      }}
     >
       <MuiAlert elevation={6} variant="filled" severity={openSnackbar.severity}>
         {openSnackbar.label}
       </MuiAlert>
-    </MuiSnackbar>
+    </SnackbarStyled>
   );
 };

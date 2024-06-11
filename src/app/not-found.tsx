@@ -36,7 +36,7 @@ export default async function NotFound() {
               <Link component={RouterLink} href="/">
                 <Logo variant="default" />
               </Link>
-              <NavbarButtons redirectToApp={false} />
+              <NavbarButtons />
             </NavbarContainer>
             <NotFoundComponent />
             <PoweredBy fixedPosition={true} />

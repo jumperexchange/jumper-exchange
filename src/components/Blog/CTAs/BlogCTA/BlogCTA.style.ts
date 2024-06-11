@@ -2,6 +2,7 @@ import { urbanist } from '@/fonts/fonts';
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, alpha, darken } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { IconButtonPrimary } from 'src/components/IconButton';
 
 export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -48,5 +49,11 @@ export const BlogCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
     fontSize: '40px',
     lineHeight: '56px',
     textDecoration: 'auto',
+  },
+}));
+
+export const BlogCtaButton = styled(IconButtonPrimary)(({ theme }) => ({
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    display: 'flex',
   },
 }));

@@ -14,7 +14,7 @@ import { ConnectButtonContainer } from './EcosystemSelectMenu.style';
 import { SVMConnectButton } from './SVMConnectButton';
 
 interface MenuProps {
-  anchorEl: any;
+  anchorEl?: HTMLAnchorElement;
 }
 
 export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
@@ -24,6 +24,11 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
     (state) => state,
   );
 
+  const handleEcoSystemSelectClose = () =>
+    setEcosystemSelectMenuState(
+      openEcosystemSelect.open,
+      openEcosystemSelect.combinedWallet,
+    );
   return (
     <Menu
       open={openEcosystemSelect.open}
@@ -31,7 +36,7 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
       styles={{
         background: theme.palette.surface1.main,
       }}
-      setOpen={setEcosystemSelectMenuState}
+      setOpen={handleEcoSystemSelectClose}
       anchorEl={anchorEl}
     >
       <MenuHeaderAppWrapper

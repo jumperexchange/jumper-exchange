@@ -5,14 +5,14 @@ import { MenuDesktop, MenuMobile } from '.';
 interface MenuProps {
   isOpenSubMenu?: boolean;
   label?: string;
-  setOpen: (open: boolean, anchorRef: any) => void;
+  setOpen: (open: boolean, anchorRef: HTMLAnchorElement | null) => void;
   cardsLayout?: boolean;
   styles?: SxProps<Theme>;
   keepMounted?: boolean;
   open: boolean;
-  children: any;
+  children: React.ReactNode;
   width?: string;
-  anchorEl: any;
+  anchorEl?: HTMLAnchorElement;
 }
 
 export const Menu = ({

@@ -79,7 +79,15 @@ export const QuestDatesBox = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
 }));
 
-export const XPDisplayBox = styled(Box)(({ theme, style }) => ({
+export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {
+  active?: boolean;
+}
+
+export const XPDisplayBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<XPDisplayBoxProps>(({ active }) => ({
+  width: active ? '50%' : '100%',
+  marginRight: active ? '8px' : undefined,
   display: 'flex',
   height: '40px',
   alignItems: 'center',

@@ -16,8 +16,8 @@ interface ButtonProps {
   id?: string;
   fullWidth?: boolean;
   muiVariant?: 'text' | 'outlined' | 'contained';
-  onClick?: (event?: any) => void;
-  children?: any;
+  onClick?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+  children?: ReactNode;
   disabled?: boolean;
   size?: ButtonSize;
 }
