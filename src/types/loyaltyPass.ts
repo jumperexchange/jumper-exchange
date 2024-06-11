@@ -12,7 +12,7 @@ type Claim = {
 
 type Owner = {
   gatewayId: string;
-  walletId: string | null;
+  walletId?: string;
 };
 
 type DataModel = {
@@ -42,7 +42,7 @@ type ImageFormatThumbnail = {
   hash: string;
   mime: string;
   name: string;
-  path: string | null;
+  path?: string;
   size: number;
   width: number;
   height: number;
@@ -50,8 +50,8 @@ type ImageFormatThumbnail = {
 
 type ImageAttributes = {
   name: string;
-  alternativeText: string | null;
-  caption: string | null;
+  alternativeText?: string;
+  caption?: string;
   width: number;
   height: number;
   formats: {
@@ -62,7 +62,7 @@ type ImageAttributes = {
   mime: string;
   size: number;
   url: string;
-  previewUrl: string | null;
+  previewUrl?: string;
   provider: string;
   createdAt: string;
   updatedAt: string;
@@ -78,10 +78,10 @@ type ImageData = {
 type QuestsPlatformAttributes = {
   Name: string;
   WebsiteLink: string;
-  Description: string | null;
+  Description?: string;
   createdAt: string;
   updatedAt: string;
-  publishedAt: string | null;
+  publishedAt?: string;
   Logo: ImageData;
 };
 
@@ -92,15 +92,15 @@ type QuestsPlatformData = {
 type QuestAttributes = {
   UID: string;
   Title: string;
-  Description: string | null;
+  Description?: string;
   Link: string;
-  Type: string | null;
+  Type?: string;
   Points: number;
-  EndDate: string | null;
-  StartDate: string | null;
+  EndDate?: string;
+  StartDate?: string;
   createdAt: string;
   updatedAt: string;
-  publishedAt: string | null;
+  publishedAt?: string;
   Image: ImageData;
   quests_platform: QuestsPlatformData;
 };
@@ -116,7 +116,7 @@ export interface LoyaltyPassProps {
   tier?: string;
   pdas?: PDA[];
   time?: number;
-  [key: string]: any;
+  timestamp: number;
 }
 
 export interface LoyaltyPassState extends LoyaltyPassProps {

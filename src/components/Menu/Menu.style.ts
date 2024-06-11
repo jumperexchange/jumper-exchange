@@ -21,7 +21,6 @@ import {
 
 import type { Breakpoint } from '@mui/material/styles';
 import { alpha, styled } from '@mui/material/styles';
-import type { ElementType } from 'react';
 
 const MENU_LABEL_HEIGHT = 64;
 
@@ -80,7 +79,7 @@ export interface MenuPaperProps
   isMobile?: boolean;
   show: boolean;
   width?: string;
-  component?: ElementType<any>;
+  component?: string;
 }
 
 export const MenuPaper = styled(Paper, {
@@ -143,7 +142,7 @@ export const MenuItemLink = styled(Link, {
   shouldForwardProp: (prop) => prop !== 'component',
 })<MenuItemLinkProps>(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'space-between',
+  alignItems: 'center',
   height: 48,
   width: '100%',
   textDecoration: 'none',
