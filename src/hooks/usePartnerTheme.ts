@@ -17,6 +17,10 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   let isDexFiltered = false;
   let partnerName = '';
   let backgroundURL = '';
+
+  // check the list of bridge that we suport the name that we use
+  const { isLoading, bridgesKeys, exchangesKeys } = useDexsAndBridgesKeys();
+
   if (pathname?.includes('memecoins')) {
     hasTheme = true;
     partnerName = 'memecoins';
@@ -27,9 +31,6 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
       partnerName,
     };
   }
-
-  // check the list of bridge that we suport the name that we use
-  const { isLoading, bridgesKeys, exchangesKeys } = useDexsAndBridgesKeys();
 
   const pathnameSplit = pathname.split('/');
   const pathnameKey = pathnameSplit[pathnameSplit.length - 2].toLowerCase();
@@ -45,7 +46,8 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
 
   if (hasTheme) {
     // check Strapi hook for the background URL;
-    backgroundURL = '';
+    backgroundURL =
+      'https://strapi.li.finance/uploads/meme_background_dfed12edfe.jpeg';
   }
 
   return {

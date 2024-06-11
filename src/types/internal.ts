@@ -3,6 +3,7 @@ import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import type { SxProps, Theme } from '@mui/material';
 import type { MenuItemLinkType } from 'src/components/Menu';
 import type { MenuKeysEnum } from 'src/const/menuKeys';
+
 declare global {
   interface Window {
     gtag: Gtag.Gtag;
