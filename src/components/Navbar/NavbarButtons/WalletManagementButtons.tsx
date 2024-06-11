@@ -3,11 +3,11 @@ import { EcosystemSelectMenu } from '@/components/Menus/EcosystemSelectMenu';
 import { WalletMenu } from '@/components/Menus/WalletMenu';
 import { WalletSelectMenu } from '@/components/Menus/WalletSelectMenu';
 import { Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import type { ReactElement } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
+import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { EventTrackingTool } from 'src/types/userTracking';
 import { WallettButtons } from '../WalletButton';
@@ -18,17 +18,18 @@ interface WalletManagementButtonsProps {
   backgroundColor?: string;
   color?: string;
   walletConnected?: boolean;
-  redirectToApp?: boolean;
-  connectButtonLabel?: ReactElement<any, any>;
 }
 
 export const WalletManagementButtons: React.FC<
   WalletManagementButtonsProps
-> = ({ connectButtonLabel, redirectToApp }) => {
+> = () => {
   const walletManagementButtonsRef = useRef<any>();
   const { t } = useTranslation();
   const router = useRouter();
   const { trackEvent } = useUserTracking();
+
+  const pathname = usePathname();
+  const redirectToApp = pathname?.includes(JUMPER_LEARN_PATH);
 
   const handleLearnButton = () => {
     router.push('/');

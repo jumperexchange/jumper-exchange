@@ -31,7 +31,7 @@ export const Navbar = () => {
         <Logo variant={isLearnPage ? 'learn' : 'default'} />
       </LogoLink>
       {!isLearnPage ? <NavbarTabs navbarPageReload={isLoyaltyPage} /> : null}
-      <NavbarButtons redirectToApp={isLearnPage} />
+      <NavbarButtons />
     </Container>
   );
 };
