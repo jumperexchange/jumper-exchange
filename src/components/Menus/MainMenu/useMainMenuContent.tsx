@@ -24,6 +24,7 @@ import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import StyleIcon from '@mui/icons-material/Style';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -132,6 +133,20 @@ export const useMainMenuContent = () => {
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
+        });
+      },
+    },
+    {
+      label: t('navbar.navbarMenu.theme'),
+      prefixIcon: <StyleIcon />,
+      triggerSubMenu: MenuKeysEnum.Theme,
+      onClick: () => {
+        setSubMenuState(MenuKeysEnum.Theme);
+        trackEvent({
+          category: TrackingCategory.MainMenu,
+          action: TrackingAction.OpenMenu,
+          label: `open_submenu_${MenuKeysEnum.Theme.toLowerCase()}`,
+          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Theme },
         });
       },
     },

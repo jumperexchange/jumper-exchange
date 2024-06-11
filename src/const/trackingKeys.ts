@@ -104,6 +104,7 @@ export enum TrackingEventParameter {
   WelcomeMessageLink = 'param_welcome_message_link',
   SwitchedChain = 'param_switched_chain',
   SwitchedTheme = 'param_switched_theme',
+  SwitchedTemplate = 'param_switched_template',
   SwitchedLanguage = 'param_switched_language',
   AddedTokenAddress = 'param_added_token_address',
   AddedTokenName = 'param_added_token_name',
