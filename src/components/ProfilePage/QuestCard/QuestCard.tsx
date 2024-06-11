@@ -23,8 +23,8 @@ interface QuestCardProps {
   image?: string;
   points?: number;
   link?: string;
-  startDate?: string | null;
-  endDate?: string | null;
+  startDate?: string;
+  endDate?: string;
   platformName?: string;
   platformImage?: string;
 }
@@ -106,32 +106,30 @@ export const QuestCard = ({
           <CompletedBox>
             <DoneIcon sx={{ height: '16px', color: '#00B849' }} />
             <ProfilePageTypography
-              fontSize={'12px'}
-              lineHeight={'16px'}
-              sx={{ color: '#00B849' }}
+              fontSize="12px"
+              lineHeight="16px"
+              color="#00B849"
             >
               {t('questCard.completed')}
             </ProfilePageTypography>
           </CompletedBox>
         )}
         <QuestCardTitleBox>
-          <ProfilePageTypography fontSize={'18px'} lineHeight={'24px'}>
+          <ProfilePageTypography fontSize="18px" lineHeight="24px">
             {title}
           </ProfilePageTypography>
         </QuestCardTitleBox>
         <QuestCardInfoBox points={points}>
           {points ? (
-            <XPDisplayBox
-              sx={{
-                width: active ? '50%' : '100%',
-                marginRight: active ? '8px' : undefined,
-              }}
-            >
+            <XPDisplayBox active={active}>
               <ProfilePageTypography
-                fontSize={'14px'}
-                lineHeight={'18px'}
+                fontSize="14px"
+                lineHeight="18px"
                 sx={{
-                  color: theme.palette.mode === 'light' ? '#31007A' : '#BEA0EB',
+                  color:
+                    theme.palette.mode === 'light'
+                      ? theme.palette.primary.main
+                      : '#BEA0EB',
                 }}
               >
                 {`+${points}`}
@@ -154,12 +152,9 @@ export const QuestCard = ({
                 styles={{ alignItems: 'center', width: '100%' }}
               >
                 <ProfilePageTypography
-                  fontSize={'16px'}
-                  lineHeight={'18px'}
+                  fontSize="16px"
+                  lineHeight="18px"
                   fontWeight={600}
-                  sx={{
-                    padding: 1,
-                  }}
                 >
                   {t('questCard.join')}
                 </ProfilePageTypography>

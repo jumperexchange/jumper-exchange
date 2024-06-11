@@ -5,8 +5,8 @@ import type { ChainTokenSelected } from '@lifi/widget';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface OptionalChainTokenSelected {
-  chainId: ChainId | null | undefined;
-  tokenAddress: string | null | undefined;
+  chainId?: ChainId;
+  tokenAddress?: string;
 }
 
 interface ChainTokenSelectionState {
@@ -29,16 +29,16 @@ export const useChainTokenSelectionStore =
   createWithEqualityFn<ChainTokenSelectionState>(
     (set) => ({
       sourceChainToken: {
-        tokenAddress: fromToken || null,
-        chainId: (fromChain && (parseInt(fromChain) as ChainId)) || null,
+        tokenAddress: fromToken || undefined,
+        chainId: (fromChain && (parseInt(fromChain) as ChainId)) || undefined,
       },
       setSourceChainToken: (sourceChainToken) =>
         set({
           sourceChainToken,
         }),
       destinationChainToken: {
-        tokenAddress: toToken || null,
-        chainId: (toChain && (parseInt(toChain) as ChainId)) || null,
+        tokenAddress: toToken || undefined,
+        chainId: (toChain && (parseInt(toChain) as ChainId)) || undefined,
       },
       setDestinationChainToken: (destinationChainToken) =>
         set({

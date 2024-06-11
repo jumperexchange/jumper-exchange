@@ -8,7 +8,7 @@ export interface TabProps {
   tooltip?: string;
   value: number;
   icon?: JSX.Element;
-  onClick: any;
+  onClick: (event: React.MouseEvent<HTMLDivElement>, index: number) => void;
   disabled?: boolean;
 }
 
@@ -16,8 +16,8 @@ type Orientation = 'horizontal' | 'vertical';
 
 interface TabsProps {
   data: TabProps[];
-  value: number | boolean;
-  onChange?: any;
+  value: number;
+  onChange?: (event: React.SyntheticEvent, value: number) => void;
   orientation?: Orientation;
   ariaLabel: string;
   containerStyles?: SxProps<Theme>;
@@ -58,7 +58,7 @@ export const Tabs = ({
         );
         return !!el.tooltip ? (
           <Tooltip
-            title={el.tooltip ?? null}
+            title={el.tooltip}
             key={`tooltip-${el.label}-${index}`}
             enterTouchDelay={0}
             disableHoverListener={el.disabled}

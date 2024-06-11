@@ -11,7 +11,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
   params: { lng: string };
-  req: any;
 }) {
   return (
     <AppProvider lang={lng}>
