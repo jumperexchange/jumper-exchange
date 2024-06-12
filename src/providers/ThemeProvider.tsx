@@ -54,7 +54,7 @@ export const ThemeProvider: React.FC<
       setTheme(themeMode === 'dark' ? 'dark' : 'light');
     }
   }, [themeMode, isDarkMode, setCookie]);
-
+  console.log('activetheme', theme);
   const activeTheme = theme === 'dark' ? darkTheme : lightTheme;
 
   // Render children only when the theme is determined

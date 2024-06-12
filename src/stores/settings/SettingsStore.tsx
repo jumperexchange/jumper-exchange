@@ -4,7 +4,6 @@ import type {
   SettingsState,
   ThemeModesSupported,
 } from '@/types/settings';
-import type { PartnerThemesData } from 'src/types/strapi';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
@@ -34,9 +33,9 @@ export const useSettingsStore = createWithEqualityFn(
           });
       },
 
-      setPartnerTheme: (partnerTheme: PartnerThemesData) => {
+      setPartnerThemeUid: (partnerThemeUid: string) => {
         set({
-          partnerTheme: partnerTheme,
+          partnerThemeUid: partnerThemeUid,
         });
       },
 

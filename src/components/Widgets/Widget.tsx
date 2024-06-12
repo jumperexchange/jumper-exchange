@@ -10,7 +10,7 @@ import { useSettingsStore } from '@/stores/settings';
 import type { LanguageKey } from '@/types/i18n';
 import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
-import type { WidgetConfig } from '@lifi/widget';
+import type { WidgetConfig, WidgetTheme } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
@@ -19,12 +19,15 @@ import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { publicRPCList } from 'src/const/rpcList';
+import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { darkTheme } from 'src/theme/theme';
+import { useStrapi } from 'src/hooks/useStrapi';
+import type { PartnerThemesData } from 'src/types/strapi';
 import { useConfig } from 'wagmi';
 import { shallow } from 'zustand/shallow';
 import { WidgetWrapper } from '.';
+import { DefaultWidgetTheme } from './DefaultWidgetTheme';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
@@ -42,7 +45,6 @@ export function Widget({
   activeTheme,
 }: WidgetProps) {
   const theme = useTheme();
-  const partnerTheme = useSettingsStore((state) => state.partnerTheme, shallow);
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
@@ -53,7 +55,17 @@ export function Widget({
   const { tokens } = useMemelist({
     enabled: !!themeVariant,
   });
-  console.log('partnerTheme', partnerTheme);
+  const partnerThemeUid = useSettingsStore(
+    (state) => state.partnerThemeUid,
+    shallow,
+  );
+  const { data: partnerThemes, isSuccess: partnerThemesIsSuccess } =
+    useStrapi<PartnerThemesData>({
+      contentType: STRAPI_PARTNER_THEMES,
+      queryKey: ['partner-themes'],
+      filterUid: partnerThemeUid,
+    });
+  console.log('partnerThemeUid', partnerThemeUid);
   const isGasVariant = activeTab === TabsMap.Refuel.index;
 
   const welcomeScreenClosed = useSettingsStore(
@@ -73,6 +85,8 @@ export function Widget({
     [starterVariant, themeVariant],
   );
 
+  console.log('partnerThemes', partnerThemes);
+
   const integratorStringByType = useMemo(() => {
     if (widgetIntegrator) {
       return widgetIntegrator;
@@ -87,6 +101,14 @@ export function Widget({
     }
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
+
+  const widgetTheme = useMemo(() => {
+    if (partnerThemesIsSuccess && partnerThemes.length) {
+      return partnerThemes[0].attributes.config;
+    } else {
+      return DefaultWidgetTheme;
+    }
+  }, [partnerThemes, partnerThemesIsSuccess]);
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -132,37 +154,7 @@ export function Widget({
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
-      theme: (partnerTheme && partnerTheme.attributes.config) ?? {
-        typography: {
-          fontFamily: theme.typography.fontFamily,
-        },
-        container: {
-          borderRadius: '12px',
-          minWidth: 416,
-          boxShadow:
-            theme.palette.mode === 'light'
-              ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-              : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-        },
-        shape: {
-          borderRadius: 12,
-          borderRadiusSecondary: 24,
-        },
-        palette: {
-          background: {
-            paper: theme.palette.surface2.main,
-            default: theme.palette.surface1.main,
-          },
-          primary: {
-            main: theme.palette.accent1.main,
-          },
-          secondary: {
-            // FIXME: we need to find out how to use the correct color from the main theme config
-            main: darkTheme.palette.accent2.main,
-          },
-          grey: theme.palette.grey,
-        },
-      },
+      theme: widgetTheme as WidgetTheme,
       keyPrefix: `jumper-${starterVariant}`,
       ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
@@ -204,21 +196,15 @@ export function Widget({
     isMultisigSigner,
     multisigSdkConfig,
     multisigWidget,
-    partnerTheme,
     setWalletSelectMenuState,
     starterVariant,
-    theme.palette.accent1.main,
-    theme.palette.grey,
-    theme.palette.mode,
-    theme.palette.surface1.main,
-    theme.palette.surface2.main,
-    theme.typography.fontFamily,
     themeMode,
     themeVariant,
     toChain,
     toToken,
     tokens,
     wagmiConfig,
+    widgetTheme,
   ]);
 
   return (

@@ -36,6 +36,7 @@ interface ContentTypeProps {
     | 'partner-themes'
     | 'jumper-users';
   filterSlug?: string;
+  filterUid?: string;
   filterTag?: (number | null | undefined)[] | null | undefined;
   filterFeaturedArticle?: boolean | undefined;
   filterPersonalFeatureCards?: filterPerrsonalFeatureCardsProps;
@@ -49,6 +50,7 @@ interface ContentTypeProps {
 export const useStrapi = <T>({
   contentType,
   filterSlug,
+  filterUid,
   filterFeaturedArticle,
   filterPersonalFeatureCards,
   sort,
@@ -163,6 +165,11 @@ export const useStrapi = <T>({
   if (contentType === 'partner-themes') {
     apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
     apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
+
+    // filter partner-themes by "uid"
+    if (filterUid) {
+      apiUrl.searchParams.set('filters[uid][$eq]', filterUid);
+    }
   }
 
   // jumper users -->

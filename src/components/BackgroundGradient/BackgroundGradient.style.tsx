@@ -1,15 +1,20 @@
 'use client';
+import type { Theme } from '@mui/material/styles';
 import { alpha, darken, styled } from '@mui/material/styles';
-export interface BackgroundGradientContainerProps
-  extends Omit<HTMLDivElement, 'children'> {
-  children?: JSX.Element | JSX.Element[] | React.ReactNode;
+
+export interface BackgroundGradientContainerProps {
+  backgroundImageUrl?: URL;
 }
 
-export const BackgroundGradientContainer = styled('div')(({ theme }) => ({
+export const BackgroundGradientContainer = styled(
+  'div',
+)<BackgroundGradientContainerProps>(({ theme, backgroundImageUrl }) => ({
   position: 'fixed',
   overflow: 'hidden',
   pointerEvents: 'none',
-  background: theme.palette.bg.main,
+  background: !backgroundImageUrl
+    ? (theme as Theme).palette.bg.main
+    : `url(${backgroundImageUrl.href})`,
   left: 0,
   bottom: 0,
   right: 0,
