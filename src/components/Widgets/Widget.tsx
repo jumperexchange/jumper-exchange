@@ -12,21 +12,22 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
+import { shallow } from 'zustand/shallow';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { useMediaQuery } from '@mui/material';
-import type { Theme } from '@mui/material';
-import { publicRPCList } from 'src/const/rpcList';
 
 export function Widget({
   starterVariant,
@@ -41,6 +42,7 @@ export function Widget({
   activeTheme,
 }: WidgetProps) {
   const theme = useTheme();
+  const partnerTheme = useSettingsStore((state) => state.partnerTheme, shallow);
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
@@ -51,7 +53,7 @@ export function Widget({
   const { tokens } = useMemelist({
     enabled: !!themeVariant,
   });
-
+  console.log('partnerTheme', partnerTheme);
   const isGasVariant = activeTab === TabsMap.Refuel.index;
 
   const welcomeScreenClosed = useSettingsStore(
@@ -130,8 +132,7 @@ export function Widget({
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
-      theme: {
-        // @ts-expect-error
+      theme: (partnerTheme && partnerTheme.attributes.config) ?? {
         typography: {
           fontFamily: theme.typography.fontFamily,
         },
@@ -199,10 +200,11 @@ export function Widget({
     fromToken,
     i18n.language,
     i18n.languages,
-    isGasVariant,
+    integratorStringByType,
     isMultisigSigner,
     multisigSdkConfig,
     multisigWidget,
+    partnerTheme,
     setWalletSelectMenuState,
     starterVariant,
     theme.palette.accent1.main,
@@ -217,7 +219,6 @@ export function Widget({
     toToken,
     tokens,
     wagmiConfig,
-    widgetIntegrator,
   ]);
 
   return (
