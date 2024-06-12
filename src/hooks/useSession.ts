@@ -1,22 +1,20 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { uuidv7 } from 'uuidv7';
 
 export const useSession = (): string => {
-  const sessionIdRef = useRef<string>('');
+  const sessionIdFromStorage = sessionStorage.getItem('session_id');
+  const [session, setSession] = useState('');
 
   useEffect(() => {
-    let sessionId = sessionStorage.getItem('session_id');
-
-    if (!sessionId) {
-      sessionId = uuidv7();
-      sessionStorage.setItem('session_id', sessionId);
-      console.log('Init Session ID:', sessionId);
+    if (sessionIdFromStorage) {
+      setSession(sessionIdFromStorage);
+    } else {
+      setSession(uuidv7());
+      sessionStorage.setItem('session_id', session);
     }
 
-    sessionIdRef.current = sessionId;
-
     // Log the session ID for testing purposes
-  }, []);
+  }, [session, sessionIdFromStorage, setSession]);
 
-  return sessionIdRef.current;
+  return session;
 };

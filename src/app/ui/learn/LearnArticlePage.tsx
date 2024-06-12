@@ -8,7 +8,6 @@ import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBan
 import { useSession } from '@/hooks/useSession';
 import type { ThemeModesSupported } from '@/types/settings';
 import type { BlogArticleData } from '@/types/strapi';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   BlogArticleSection,
@@ -32,9 +31,7 @@ const LearnArticlePage = ({
 
   // testing! todo: remove
   const sessionID = useSession();
-  useEffect(() => {
-    !!sessionID && console.log('Session ID: ', sessionID);
-  }, [sessionID]);
+  console.log('sessionId', sessionID);
 
   return (
     <>

@@ -9,13 +9,7 @@ import { useActiveTabStore } from '@/stores/activeTab';
 import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
 import type { WidgetSubvariant } from '@lifi/widget';
 import { usePathname } from 'next/navigation';
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { ThemesMap } from 'src/const/themesMap';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
@@ -67,9 +61,7 @@ export function Widgets({
   };
   // testing! todo: remove
   const sessionID = useSession();
-  useEffect(() => {
-    !!sessionID && console.log('Session ID: ', sessionID);
-  }, [sessionID]);
+  console.log('sessionId', sessionID);
 
   const starterVariant: StarterVariantType = useMemo(() => {
     if (widgetVariant) {
