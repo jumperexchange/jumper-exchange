@@ -10,7 +10,7 @@ import { useStrapi } from 'src/hooks/useStrapi';
 import { useSettingsStore } from 'src/stores/settings';
 import type { PartnerThemesData } from 'src/types/strapi';
 
-export const useThemeContent = () => {
+export const useThemeMenuContent = () => {
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
   const setPartnerTheme = useSettingsStore((state) => state.setPartnerTheme);

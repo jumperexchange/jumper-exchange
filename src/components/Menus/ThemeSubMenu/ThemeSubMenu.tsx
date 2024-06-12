@@ -2,11 +2,11 @@ import { SubMenu } from '@/components/Menu/SubMenu';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
 import { useTranslation } from 'react-i18next';
-import { useThemeContent } from '.';
+import { useThemeMenuContent } from '.';
 
 export const ThemeSubmenu = () => {
   const { t } = useTranslation();
-  const subMenuTheme = useThemeContent();
+  const subMenuTheme = useThemeMenuContent();
   const openSubMenu = useMenuStore((state) => state.openSubMenu);
   console.log('sub', subMenuTheme.themes);
   return (

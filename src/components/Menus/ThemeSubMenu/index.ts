@@ -1,2 +1,2 @@
 export * from './ThemeSubMenu';
-export * from './useThemeContent';
+export * from './useThemeMenuContent';
