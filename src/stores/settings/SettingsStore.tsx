@@ -34,7 +34,6 @@ export const useSettingsStore = createWithEqualityFn(
           });
       },
 
-      // Installed Wallets
       setPartnerTheme: (partnerTheme: PartnerThemesData) => {
         set({
           partnerTheme: partnerTheme,
