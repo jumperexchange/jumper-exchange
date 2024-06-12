@@ -1,3 +1,4 @@
+import type { WidgetTheme } from '@lifi/widget';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 
 /* Strapi */
@@ -181,6 +182,28 @@ export interface AvatarItem {
 export interface AvatarData {
   id: number;
   attributes: MediaAttributes;
+}
+
+/* Themes */
+export interface PartnerThemesItems {
+  data: PartnerThemesData[];
+}
+
+export interface PartnerThemesData {
+  id: number;
+  attributes: PartnerThemesAttributes;
+}
+
+export interface PartnerThemesAttributes {
+  PartnerName: string;
+  config: WidgetTheme;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+  darkModeEnabled: boolean;
+  uid: string;
+  BackgroundImageLight: StrapiImageData;
+  BackgroundImageDark: StrapiImageData;
 }
 
 /* Blog */

@@ -33,6 +33,7 @@ interface ContentTypeProps {
     | 'blog-articles'
     | 'faq-items'
     | 'tags'
+    | 'partner-themes'
     | 'jumper-users';
   filterSlug?: string;
   filterTag?: (number | null | undefined)[] | null | undefined;
@@ -156,6 +157,12 @@ export const useStrapi = <T>({
     apiUrl.searchParams.set('filters[$or][1][campaignStart][$null]', 'true');
     apiUrl.searchParams.set('filters[$or][0][campaignEnd][$gte]', currentDate);
     apiUrl.searchParams.set('filters[$or][1][campaignEnd][$null]', 'true');
+  }
+
+  // partner-themes -->
+  if (contentType === 'partner-themes') {
+    apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
+    apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
   }
 
   // jumper users -->

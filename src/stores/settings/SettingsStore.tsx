@@ -4,6 +4,7 @@ import type {
   SettingsState,
   ThemeModesSupported,
 } from '@/types/settings';
+import type { PartnerThemesData } from 'src/types/strapi';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
@@ -31,6 +32,13 @@ export const useSettingsStore = createWithEqualityFn(
           set({
             clientWallets: [...clientWallets, wallet],
           });
+      },
+
+      // Installed Wallets
+      setPartnerTheme: (partnerTheme: PartnerThemesData) => {
+        set({
+          partnerTheme: partnerTheme,
+        });
       },
 
       // Disable Feature Card

@@ -61,6 +61,8 @@ export const SubMenu = ({
     }
   }, [open, openSubMenu, triggerSubMenu]);
 
+  console.log('subMenuList', subMenuList);
+
   return (
     <MenuPaper
       show={openSubMenu === triggerSubMenu}

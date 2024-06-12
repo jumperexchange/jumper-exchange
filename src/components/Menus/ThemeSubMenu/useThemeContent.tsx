@@ -1,34 +1,56 @@
-'use client';
-
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useTranslation } from 'react-i18next';
+import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
+import { useStrapi } from 'src/hooks/useStrapi';
+import { useSettingsStore } from 'src/stores/settings';
+import type { PartnerThemesData } from 'src/types/strapi';
 
 export const useThemeContent = () => {
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const handleThemeSwitch = (theme: string) => {
+  const setPartnerTheme = useSettingsStore((state) => state.setPartnerTheme);
+
+  const { data: partnerThemes, isSuccess } = useStrapi<PartnerThemesData>({
+    contentType: STRAPI_PARTNER_THEMES,
+    queryKey: ['partner-themes'],
+  });
+  console.log('partnerThemes', partnerThemes);
+  const handleThemeSwitch = (theme: PartnerThemesData | undefined) => {
     trackEvent({
-      category: TrackingCategory.LanguageMenu,
-      action: TrackingAction.SwitchLanguage,
-      label: `theme_${theme}`,
-      data: { [TrackingEventParameter.SwitchedTemplate]: theme },
+      category: TrackingCategory.ThemesMenu,
+      action: TrackingAction.SwitchThemeTemplate,
+      label: `theme_${theme ?? 'default'}`,
+      data: {
+        [TrackingEventParameter.SwitchedTemplate]:
+          theme?.attributes.PartnerName.replace(' ', '') ?? 'default',
+      },
     });
-    console.log('Change theme to:', theme);
+    setPartnerTheme(theme);
+    console.log('Change theme to:', theme?.attributes.PartnerName || 'default');
   };
 
-  const themes = [
+  const themes: any = [
     {
-      label: 'Windows 95',
+      label: 'Default',
       onClick: () => {
-        handleThemeSwitch('windows 95');
+        handleThemeSwitch(undefined);
       },
     },
   ];
 
-  return themes;
+  partnerThemes?.map((el) =>
+    themes.push({
+      label: el.attributes.PartnerName,
+      onClick: () => {
+        handleThemeSwitch(el);
+      },
+    }),
+  );
+
+  return { themes: themes, isSuccess };
 };

@@ -1,6 +1,7 @@
 // @mui
 
 import type { ThemeModesSupported } from '@/types/settings';
+import type { WidgetTheme } from '@lifi/widget';
 
 export const cookiesExpires = 3;
 
@@ -13,6 +14,7 @@ export const localStorageKey = {
 
 interface DefaultSettingsType {
   themeMode: ThemeModesSupported;
+  partnerTheme: WidgetTheme | undefined;
   clientWallets: string[];
   disabledFeatureCards: string[];
   welcomeScreenClosed: boolean;
@@ -20,6 +22,7 @@ interface DefaultSettingsType {
 
 export const defaultSettings: DefaultSettingsType = {
   themeMode: 'auto',
+  partnerTheme: undefined,
   clientWallets: [],
   disabledFeatureCards: [],
   welcomeScreenClosed: false,
