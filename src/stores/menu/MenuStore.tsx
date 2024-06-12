@@ -31,20 +31,6 @@ export const defaultMenu: DefaultMenuType = {
 export const useMenuStore = createWithEqualityFn<MenuState>(
   (set, get) => ({
     ...defaultMenu,
-    setValue: (key: keyof MenuState, value: any) =>
-      set(() => ({
-        [key]: value,
-      })),
-    setValues: (values: { [x: string]: any }) =>
-      set((state: MenuState) => {
-        const updatedState: { [key: string]: any } = { ...state };
-        for (const key in values) {
-          if (Object.hasOwnProperty.call(values, key)) {
-            updatedState[key] = values[key];
-          }
-        }
-        return updatedState;
-      }),
 
     openedMenu: () => {
       const menuState = get();

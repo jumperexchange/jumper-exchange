@@ -70,7 +70,7 @@ test.describe('Jumper full e2e flow', () => {
     await expect(page.getByRole('menu')).toBeVisible();
     await itemInMenu(page, 'Jumper Profile');
     expect(await page.url()).toBe(profileUrl);
-    await page.locator('.profile-page').isVisible({timeout: 15000});
+    await page.locator('.profile-page').isVisible({ timeout: 15000 });
   });
 
   test('should be able to navigate to jumper learn', async ({ page }) => {
@@ -79,9 +79,9 @@ test.describe('Jumper full e2e flow', () => {
     await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
     await itemInMenu(page, 'Jumper Learn');
-    
+
     expect(await page.url()).toBe(learnUrl);
-    await page.waitForLoadState('load', {timeout:15000});
+    await page.waitForLoadState('load', { timeout: 15000 });
     await page.locator('.learn-page').isVisible();
   });
 
@@ -90,7 +90,7 @@ test.describe('Jumper full e2e flow', () => {
     await page.locator('#main-burger-menu-button').click();
     await expect(page.getByRole('menu')).toBeVisible();
     await itemInMenu(page, 'LI.FI Explorer');
-    const newPage = await page.waitForEvent('popup', {timeout:15000});
+    const newPage = await page.waitForEvent('popup', { timeout: 15000 });
     expect(newPage.url()).toBe(
       'https://explorer.li.fi/?utm_source=jumper&utm_campaign=jumper_to_explorer&utm_medium=menu',
     );

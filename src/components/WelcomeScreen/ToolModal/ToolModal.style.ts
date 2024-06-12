@@ -5,7 +5,14 @@ import type {
   Breakpoint,
   GridProps,
 } from '@mui/material';
-import { AppBar, Box, Grid } from '@mui/material';
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Grid,
+  IconButton,
+  Typography,
+} from '@mui/material';
 
 import { alpha, styled } from '@mui/material/styles';
 
@@ -87,9 +94,48 @@ export const ModalHeaderAppBar = styled(AppBar)<ModalHeaderAppBarProps>(
   }),
 );
 
-export const ModalHeader = styled(Box)(({ theme }) => ({
+export const ModalHeader = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
   width: '100%',
   justifyContent: 'space-between',
+}));
+
+export const ToolModalTitle = styled(Typography)(() => ({
+  fontStyle: 'normal',
+  fontWeight: '700',
+  fontSize: '18px',
+  lineHeight: '24px',
+  maxWidth: '80%',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+}));
+
+export const ToolModalIconButton = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  transform: 'translateX(8px)',
+}));
+
+export const ToolModalGrid = styled(Grid)(() => ({
+  width: 72,
+  textAlign: 'center',
+}));
+
+export const ToolModalAvatar = styled(Avatar)(() => ({
+  margin: 'auto',
+  height: 48,
+  width: 48,
+}));
+
+export const ToolModaItemlTitle = styled(Typography)(({ theme }) => ({
+  color:
+    theme.palette.mode === 'dark'
+      ? theme.palette.white.main
+      : theme.palette.black.main,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxWidth: 72,
+  height: 32,
+  maxHeight: 32,
+  marginTop: theme.spacing(1.5),
 }));

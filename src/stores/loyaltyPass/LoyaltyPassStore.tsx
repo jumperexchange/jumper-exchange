@@ -1,5 +1,4 @@
 import type { LoyaltyPassState, PDA } from '@/types/loyaltyPass';
-import type { SettingsProps } from '@/types/settings';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
@@ -13,22 +12,6 @@ export const useLoyaltyPassStore = createWithEqualityFn(
       tier: undefined,
       pdas: [],
       timestamp: undefined,
-
-      setValue: (key: keyof SettingsProps, value: any) =>
-        set(() => ({
-          [key]: value,
-        })),
-
-      setValues: (values: { [x: string]: any }) =>
-        set((state: SettingsProps) => {
-          const updatedState: SettingsProps = { ...state };
-          for (const key in values) {
-            if (Object.hasOwn(state, key)) {
-              updatedState[key] = values[key];
-            }
-          }
-          return updatedState;
-        }),
 
       // Loyalty Pass Information
       setLoyaltyPassData: (

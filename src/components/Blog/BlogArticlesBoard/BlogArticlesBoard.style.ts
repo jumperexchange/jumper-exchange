@@ -1,8 +1,9 @@
 import type { Breakpoint, IconButtonProps } from '@mui/material';
-import { Grid, IconButton } from '@mui/material';
+import { Grid, IconButton, Typography } from '@mui/material';
 
 import { getContrastAlphaColor } from '@/utils/colors';
 import { styled } from '@mui/material/styles';
+import { urbanist } from 'src/fonts/fonts';
 
 export const BlogArticlesBoardContainer = styled(Grid)(({ theme }) => ({
   position: 'relative',
@@ -88,4 +89,10 @@ export const PaginationButton = styled(IconButton)(({ theme }) => ({
         ? getContrastAlphaColor(theme, '12%')
         : getContrastAlphaColor(theme, '4%'),
   },
+}));
+
+export const BlogArticlesBoardTitle = styled(Typography)(({ theme }) => ({
+  fontFamily: urbanist.style.fontFamily,
+  textAlign: 'center',
+  margin: theme.spacing(10, 'auto', 0),
 }));
