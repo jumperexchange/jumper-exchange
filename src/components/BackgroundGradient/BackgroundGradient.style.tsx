@@ -1,4 +1,5 @@
 'use client';
+import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, styled } from '@mui/material/styles';
 export interface BackgroundGradientContainerProps
   extends Omit<HTMLDivElement, 'children'> {
@@ -9,16 +10,19 @@ export const BackgroundGradientContainer = styled('div')(({ theme }) => ({
   position: 'fixed',
   overflow: 'hidden',
   pointerEvents: 'none',
-  background: theme.palette.bg.main,
+  background: theme.palette.surface1.main,
   left: 0,
   bottom: 0,
   right: 0,
   top: 0,
   zIndex: -1,
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    background: theme.palette.bg.main, //theme.palette.bg.main,
+  },
 }));
 
 const BackgroundGradient = styled('span')(() => ({
-  content: '""',
+  content: '" "',
   position: 'absolute',
   width: '100vh',
   height: '100vh',
@@ -29,7 +33,6 @@ export const BackgroundGradients = styled('span')(({ theme }) => ({
   width: theme.palette.mode === 'dark' ? '100vw' : '100vh',
   height: theme.palette.mode === 'dark' ? '100vw' : '100vh',
   opacity: theme.palette.mode === 'dark' ? '0.24' : '0.12',
-  display: 'block',
   transform:
     theme.palette.mode === 'dark'
       ? 'translate(-0%, -50%) scale( calc( 1 + 1 / 3 ))'
@@ -64,6 +67,9 @@ export const BackgroundGradients = styled('span')(({ theme }) => ({
 
 export const BackgroundGradientBottomLeft = styled(BackgroundGradient)(
   ({ theme }) => ({
+    [theme.breakpoints.down('sm' as Breakpoint)]: {
+      display: 'none',
+    },
     transform: 'translate(-50%,50%) scale(1.5)',
     left: 0,
     opacity: theme.palette.mode === 'dark' ? '0.24' : '0.16',
@@ -75,6 +81,9 @@ export const BackgroundGradientBottomLeft = styled(BackgroundGradient)(
 
 export const BackgroundGradientBottomRight = styled(BackgroundGradient)(
   ({ theme }) => ({
+    [theme.breakpoints.down('sm' as Breakpoint)]: {
+      display: 'none',
+    },
     transform: 'translate(50%,50%) scale(1.5)',
     right: 0,
     bottom: 0,
@@ -86,6 +95,9 @@ export const BackgroundGradientBottomRight = styled(BackgroundGradient)(
 
 export const BackgroundGradientTopCenter = styled(BackgroundGradient)(
   ({ theme }) => ({
+    [theme.breakpoints.down('sm' as Breakpoint)]: {
+      display: 'none',
+    },
     transform:
       theme.palette.mode === 'dark'
         ? 'translate(-50%, -50%) scale( calc( 1 + 1 / 3 ))'

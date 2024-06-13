@@ -12,6 +12,7 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
+import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useEffect, useMemo } from 'react';
@@ -64,7 +65,6 @@ export function Widget({
   });
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
-
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
@@ -148,11 +148,16 @@ export function Widget({
         },
         container: {
           borderRadius: '12px',
-          minWidth: 416,
-          boxShadow:
-            theme.palette.mode === 'light'
-              ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-              : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+          maxWidth: '100%',
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '12px',
+            maxWidth: 416,
+            minWidth: 416,
+            boxShadow:
+              theme.palette.mode === 'light'
+                ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+                : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+          },
         },
         shape: {
           borderRadius: 12,
@@ -216,6 +221,7 @@ export function Widget({
     multisigWidget,
     setWalletSelectMenuState,
     starterVariant,
+    theme.breakpoints,
     theme.palette.accent1.main,
     theme.palette.grey,
     theme.palette.mode,
