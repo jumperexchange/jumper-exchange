@@ -9,7 +9,7 @@ export interface WrapperProps extends Omit<BoxProps, 'component'> {
 
 export const Overlay = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'showWelcome',
-})<WrapperProps>(({ theme, showWelcome }) => ({
+})<WrapperProps>(({ theme }) => ({
   position: 'absolute',
   bottom: 0,
   left: 0,
@@ -21,6 +21,11 @@ export const Overlay = styled(Box, {
   flexDirection: 'column',
   scrollBehavior: 'smooth',
   zIndex: '1400',
+
+  // widget wrappers -> animations
+  '& +.widget-container .widget-wrapper > div:hover': {
+    marginTop: 0,
+  },
 }));
 
 export interface ContentWrapperProps extends Omit<BoxProps, 'component'> {
@@ -36,19 +41,20 @@ const fadeOut = keyframes`
   }
 `;
 
-export const ContentWrapper = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'showWelcome',
-})<ContentWrapperProps>(({ theme, showWelcome }) => ({
+export const ContentWrapper = styled(
+  Box,
+  {},
+)<ContentWrapperProps>(({ theme }) => ({
   textAlign: 'center',
   background: theme.palette.mode === 'dark' ? '#1A1033' : '#F3EBFF',
   width: '100%',
-  position: 'absolute',
+  // position: 'absolute',
   // top: 0,
-  bottom: 0,
+  // bottom: 0,
   zIndex: '1400',
   height: 'auto',
-  animation: !showWelcome ? fadeOut : 'unset',
-  animationDuration: '.5s',
+  // animation: !showWelcome ? fadeOut : 'unset',
+  // animationDuration: '.5s',
 
   '&:before': {
     content: '" "',

@@ -7,6 +7,8 @@ import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { EventTrackingTool } from '@/types/userTracking';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking';
+import { Box } from '@mui/material';
+import { StyledSlide } from './App.style';
 
 export interface AppProps {
   starterVariant: StarterVariantType;
@@ -37,12 +39,34 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
   };
 
   return (
-    <div onClick={handleWelcomeScreenEnter}>
-      <WelcomeScreen closed={isWelcomeScreenClosed} />
-      <WidgetContainer welcomeScreenClosed={isWelcomeScreenClosed}>
+    <Box onClick={handleWelcomeScreenEnter}>
+      <StyledSlide
+        direction="up"
+        in={!welcomeScreen.welcomeScreenClosed}
+        appear={false}
+        timeout={400}
+        mountOnEnter
+        unmountOnExit
+      >
+        <Box
+          style={{
+            zIndex: 1000,
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+          }}
+        >
+          <WelcomeScreen closed={isWelcomeScreenClosed} />
+        </Box>
+      </StyledSlide>
+      <WidgetContainer
+        welcomeScreenClosed={isWelcomeScreenClosed}
+        className="widget-container"
+      >
         {children}
       </WidgetContainer>
-    </div>
+    </Box>
   );
 };
 
