@@ -11,9 +11,9 @@ export const StyledSlide = styled(Slide)(({ theme }) => ({
     },
 
     [`@media screen and (min-height: 900px)`]: {
-      marginTop: 'calc( 50vh - 680px / 2.75 - 128px - 24px)',
+      marginTop: 'calc( 50vh - 680px / 2.75 - 104px - 24px)',
       '&:hover': {
-        marginTop: 'calc( 50vh - 680px / 2.75 - 128px - 48px)',
+        marginTop: 'calc( 50vh - 680px / 2.75 - 104px - 48px)',
       },
     },
   },
