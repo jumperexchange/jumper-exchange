@@ -4,11 +4,7 @@ import { useTheme } from '@mui/material';
 import { Discord } from '@/components/illustrations/Discord';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
+import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { DISCORD_URL } from '@/const/urls';
 import { getContrastAlphaColor } from '@/utils/colors';
 import { openInNewTab } from '@/utils/openInNewTab';
@@ -36,21 +32,9 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
         variant="primary"
         onClick={() => {
           trackEvent({
-            category: TrackingCategory.Menu,
-            label: 'click-discord-link',
-            action: TrackingAction.OpenMenu,
-            data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
-          });
-          trackEvent({
-            category: TrackingCategory.Pageload,
-            action: TrackingAction.PageLoad,
-            label: 'pageload-discord',
-            data: {
-              [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-              [TrackingEventParameter.PageloadDestination]: 'discord-lifi',
-              [TrackingEventParameter.PageloadURL]: DISCORD_URL,
-              [TrackingEventParameter.PageloadExternal]: true,
-            },
+            category: TrackingCategory.ErrorPage,
+            label: 'click-discord-support',
+            action: TrackingAction.OpenDiscordSupport,
           });
           openInNewTab(DISCORD_URL);
         }}

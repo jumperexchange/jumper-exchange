@@ -67,10 +67,10 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
     trackEvent({
       category: TrackingCategory.Pageload,
       action: TrackingAction.PageLoad,
-      label: 'pageload-discord',
+      label: 'pageload-audits',
       data: {
         [TrackingEventParameter.PageloadSource]: TrackingCategory.WelcomeScreen,
-        [TrackingEventParameter.PageloadDestination]: 'docs-sc-audits',
+        [TrackingEventParameter.PageloadDestination]: '4x_audited',
         [TrackingEventParameter.PageloadURL]: auditsWelcomeUrl,
         [TrackingEventParameter.PageloadExternal]: true,
       },
@@ -87,7 +87,7 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
     trackEvent({
       category: TrackingCategory.Pageload,
       action: TrackingAction.PageLoad,
-      label: 'pageload-discord',
+      label: 'pageload-lifi-website',
       data: {
         [TrackingEventParameter.PageloadSource]: TrackingCategory.WelcomeScreen,
         [TrackingEventParameter.PageloadDestination]: 'lifi-website',

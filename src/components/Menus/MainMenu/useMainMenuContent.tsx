@@ -191,7 +191,7 @@ export const useMainMenuContent = () => {
         trackEvent({
           category: TrackingCategory.Pageload,
           action: TrackingAction.PageLoad,
-          label: 'pageload-discord',
+          label: 'pageload-explorer',
           data: {
             [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
             [TrackingEventParameter.PageloadDestination]: 'lifi-explorer',
@@ -210,12 +210,12 @@ export const useMainMenuContent = () => {
           category: TrackingCategory.Menu,
           label: 'click-x-link',
           action: TrackingAction.ClickXLink,
-          data: { [TrackingEventParameter.Menu]: 'lifi_x' },
+          data: { [TrackingEventParameter.Menu]: 'x_jumper' },
         });
         trackEvent({
           category: TrackingCategory.Pageload,
           action: TrackingAction.PageLoad,
-          label: 'pageload-discord',
+          label: 'pageload-x_jumper',
           data: {
             [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
             [TrackingEventParameter.PageloadDestination]: 'x-jumper',

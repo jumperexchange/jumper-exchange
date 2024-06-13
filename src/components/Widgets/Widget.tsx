@@ -12,22 +12,28 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 import { useMemelist } from 'src/hooks/useMemelist';
+import { useUserTracking } from 'src/hooks/userTracking';
 import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { useMediaQuery } from '@mui/material';
-import type { Theme } from '@mui/material';
-import { publicRPCList } from 'src/const/rpcList';
 
 export function Widget({
   starterVariant,
@@ -49,6 +55,7 @@ export function Widget({
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
+  const { trackEvent } = useUserTracking();
   const { tokens } = useMemelist({
     enabled: !!themeVariant,
   });
@@ -183,6 +190,14 @@ export function Widget({
                 getWalletClient: () => getWalletClient(wagmiConfig),
                 switchChain: async (chainId) => {
                   const chain = await switchChain(wagmiConfig, { chainId });
+                  trackEvent({
+                    category: TrackingCategory.Widget,
+                    action: TrackingAction.SwitchChain,
+                    label: 'switch-chain',
+                    data: {
+                      [TrackingEventParameter.ChainId]: chainId,
+                    },
+                  });
                   return getWalletClient(wagmiConfig, { chainId: chain.id });
                 },
                 multisig: multisigSdkConfig,

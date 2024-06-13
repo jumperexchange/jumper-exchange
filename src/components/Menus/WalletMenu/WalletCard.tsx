@@ -68,7 +68,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
       trackEvent({
         category: TrackingCategory.Pageload,
         action: TrackingAction.PageLoad,
-        label: 'pageload-discord',
+        label: 'pageload-explorer',
         data: {
           [TrackingEventParameter.PageloadSource]: TrackingCategory.Wallet,
           [TrackingEventParameter.PageloadDestination]: 'blokchain-explorer',

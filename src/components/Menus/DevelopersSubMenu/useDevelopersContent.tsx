@@ -41,7 +41,7 @@ export const useDevelopersContent = () => {
         trackEvent({
           category: TrackingCategory.Pageload,
           action: TrackingAction.PageLoad,
-          label: 'pageload-discord',
+          label: 'pageload-lifi-github',
           data: {
             [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
             [TrackingEventParameter.PageloadDestination]: 'lifi-github',
@@ -66,7 +66,7 @@ export const useDevelopersContent = () => {
         trackEvent({
           category: TrackingCategory.Pageload,
           action: TrackingAction.PageLoad,
-          label: 'pageload-discord',
+          label: 'pageload-lifi_docs',
           data: {
             [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
             [TrackingEventParameter.PageloadDestination]: 'lifi-docs',

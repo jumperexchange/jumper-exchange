@@ -46,7 +46,7 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
     trackEvent({
       category: TrackingCategory.Pageload,
       action: TrackingAction.PageLoad,
-      label: 'pageload-discord',
+      label: 'pageload-powered-by',
       data: {
         [TrackingEventParameter.PageloadSource]: TrackingCategory.PoweredBy,
         [TrackingEventParameter.PageloadDestination]: 'lifi-website',

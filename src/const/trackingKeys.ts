@@ -65,13 +65,14 @@ export enum TrackingAction {
 
   // Discord
   JoinDiscordCommunity = 'action_join_discord_community',
-
+  OpenDiscordSupport = 'action_open_discord_support',
   PoweredBy = 'action_click_powered_by',
 }
 
 export enum TrackingCategory {
   MainMenu = 'cat_main_menu',
   Menu = 'cat_menu',
+  ErrorPage = 'cat_error_page',
   FeatureCard = 'cat_feature_card',
   Navigation = 'cat_navigation',
   LanguageMenu = 'cat_language_menu',
