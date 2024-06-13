@@ -2,6 +2,8 @@ import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
+import { IconButtonAlpha } from 'src/components/IconButton';
+import { getContrastAlphaColor } from 'src/utils/colors';
 import { InfoMessageCard } from '../../MessageCard/';
 
 export const InfoAlertContainer = styled(Box)<BoxProps>(({ theme }) => ({
@@ -24,4 +26,13 @@ export const InfoAlertCard = styled(InfoMessageCard)(({ theme }) => ({
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: 384,
   },
+}));
+
+export const InfoAlertButton = styled(IconButtonAlpha)(({ theme }) => ({
+  position: 'absolute',
+  right: theme.spacing(2),
+  top: theme.spacing(2),
+  backgroundColor: getContrastAlphaColor(theme, 0.04),
+  width: 24,
+  height: 24,
 }));

@@ -9,7 +9,7 @@ import { WalletButton } from '.';
 import { WalletCard } from './WalletCard';
 
 interface WalletMenuProps {
-  anchorEl: any;
+  anchorEl?: HTMLAnchorElement;
 }
 
 export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
