@@ -22,7 +22,7 @@ import {
 
 interface ShareIconsProps {
   title?: string;
-  slug: string | undefined;
+  slug?: string;
 }
 
 export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
@@ -48,8 +48,8 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       action: TrackingAction.ClickShareArticleLink,
       label: 'click-share-blog-article-link',
       data: {
-        [TrackingEventParameter.ArticleTitle]: title,
-        [TrackingEventParameter.ArticleCardId]: slug,
+        [TrackingEventParameter.ArticleTitle]: title || '',
+        [TrackingEventParameter.ArticleCardId]: slug || '',
       },
     });
 
@@ -76,8 +76,8 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       action: TrackingAction.ClickShareArticleX,
       label: 'click-share-blog-article-x',
       data: {
-        [TrackingEventParameter.ArticleTitle]: title,
-        [TrackingEventParameter.ArticleCardId]: slug,
+        [TrackingEventParameter.ArticleTitle]: title || '',
+        [TrackingEventParameter.ArticleCardId]: slug || '',
       },
     });
     openInNewTab(xUrl.href);
@@ -98,8 +98,8 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       action: TrackingAction.ClickShareArticleFB,
       label: 'click-share-blog-article-fb',
       data: {
-        [TrackingEventParameter.ArticleTitle]: title,
-        [TrackingEventParameter.ArticleCardId]: slug,
+        [TrackingEventParameter.ArticleTitle]: title || '',
+        [TrackingEventParameter.ArticleCardId]: slug || '',
       },
     });
     openInNewTab(fbUrl.href);
@@ -121,8 +121,8 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       action: TrackingAction.ClickShareArticleLinkedIn,
       label: 'click-share-blog-article-linkedin',
       data: {
-        [TrackingEventParameter.ArticleTitle]: title,
-        [TrackingEventParameter.ArticleCardId]: slug,
+        [TrackingEventParameter.ArticleTitle]: title || '',
+        [TrackingEventParameter.ArticleCardId]: slug || '',
       },
     });
     openInNewTab(linkedInUrl.href);

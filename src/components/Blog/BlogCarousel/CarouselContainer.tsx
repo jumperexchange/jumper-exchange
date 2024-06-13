@@ -17,7 +17,7 @@ import {
 interface CarouselContainerProps {
   title?: string;
   styles?: CSSObject;
-  children?: any;
+  children?: React.ReactNode | React.ReactNode[];
   trackingCategory?: string;
   itemsCount?: number;
 }
@@ -94,19 +94,25 @@ export const CarouselContainer = ({
         <CarouselTitle variant="lifiHeaderMedium">
           {title ?? t('blog.recentPosts')}
         </CarouselTitle>
-        <CarouselNavigationContainer
-          hide={(itemsCount && itemsCount < 4) || children?.length < 4}
-        >
-          <CarouselNavigationButton onClick={() => handleChange('prev')}>
-            <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
-          </CarouselNavigationButton>
-          <CarouselNavigationButton
-            sx={{ marginLeft: theme.spacing(1) }}
-            onClick={() => handleChange('next')}
-          >
-            <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
-          </CarouselNavigationButton>
-        </CarouselNavigationContainer>
+        {(itemsCount && itemsCount > 1) ||
+          (Array.isArray(children) && children?.length > 1 && (
+            <CarouselNavigationContainer
+              hide={
+                (itemsCount && itemsCount < 4) ||
+                (Array.isArray(children) && children?.length < 4)
+              }
+            >
+              <CarouselNavigationButton onClick={() => handleChange('prev')}>
+                <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
+              </CarouselNavigationButton>
+              <CarouselNavigationButton
+                sx={{ marginLeft: theme.spacing(1) }}
+                onClick={() => handleChange('next')}
+              >
+                <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
+              </CarouselNavigationButton>
+            </CarouselNavigationContainer>
+          ))}
       </CarouselHeader>
       <CarouselContainerBox ref={carouselContainerRef} sx={styles}>
         {children}

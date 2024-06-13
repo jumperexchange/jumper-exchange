@@ -6,7 +6,7 @@ interface MediaFormat {
   hash: string;
   ext: string;
   mime: string;
-  path: string | null;
+  path?: string;
   width: number;
   height: number;
   size: number;
@@ -21,7 +21,7 @@ export interface MediaData {
 export interface MediaAttributes {
   name: string;
   alternativeText: string | undefined;
-  caption: string | null;
+  caption?: string;
   width: number;
   height: number;
   formats: {
@@ -36,7 +36,7 @@ export interface MediaAttributes {
   mime: string;
   size: number;
   url: string;
-  previewUrl: string | null;
+  previewUrl?: string;
   provider: string;
   provider_metadata: any;
   createdAt: string;
@@ -86,13 +86,13 @@ interface FeatureCardAttributes {
   Subtitle: string;
   CTACall: string;
   URL: string;
-  TitleColor: string | null;
-  CTAColor: string | null;
+  TitleColor?: string;
+  CTAColor?: string;
   DisplayConditions: FeatureCardDisplayConditions;
   createdAt: string;
   updatedAt: string;
   PersonalizedFeatureCard?: boolean;
-  publishedAt: string | null;
+  publishedAt?: string;
   locale: string;
   uid: string;
   BackgroundImageLight: StrapiImageData;
@@ -117,7 +117,7 @@ interface JumperUserAttributes {
   feature_cards: { data: FeatureCardData[] };
   createdAt: string;
   updatedAt: string;
-  publishedAt: string | null;
+  publishedAt?: string;
 }
 
 /* Tags */
@@ -132,7 +132,7 @@ export interface TagAttributes {
     BackgroundColor?: string;
     createdAt: string;
     locale: string;
-    publishedAt: string | null;
+    publishedAt?: string;
     updatedAt: string;
   };
   id: number;
@@ -144,7 +144,7 @@ interface FaqItemAttributes {
   Answer: RootNode[];
   createdAt: string;
   updatedAt: string;
-  publishedAt: string | null;
+  publishedAt?: string;
   displayOnBlogPage: boolean;
 }
 
@@ -166,7 +166,7 @@ interface AuthorAttributes {
   attributes: {
     Name: string;
     createdAt: string;
-    publishedAt: string | null;
+    publishedAt?: string;
     updatedAt: string;
     Avatar: AvatarItem;
     Role: string;
@@ -199,7 +199,7 @@ export interface BlogArticleAttributes {
   tags: TagData;
   author: AuthorData;
   faq_items: FaqData;
-  publishedAt: string | null;
+  publishedAt?: string;
   locale: string;
   localizations: {
     data: any[];

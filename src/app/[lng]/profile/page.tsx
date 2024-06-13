@@ -1,5 +1,5 @@
 import ProfilePage from '../../ui/profile/ProfilePage';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

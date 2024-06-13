@@ -11,12 +11,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useEffect, useRef } from 'react';
 import { MenuToggle, NavbarButtonsContainer, WalletManagementButtons } from '.';
 
-interface NavbarButtonsProps {
-  redirectToLearn?: boolean;
-}
-
-export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
-  const mainMenuAnchor = useRef<any>(null);
+export const NavbarButtons = () => {
+  const mainMenuAnchor = useRef(null);
   const { trackEvent } = useUserTracking();
 
   const [openedMenu, openMainMenu, setMainMenuState] = useMenuStore((state) => [
@@ -28,7 +24,7 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
   const prevMainMenu = useRef(openMainMenu);
   useEffect(() => {
     if (prevMainMenu.current === true && openMainMenu === false) {
-      mainMenuAnchor!.current.focus();
+      mainMenuAnchor.current && (mainMenuAnchor.current as HTMLElement).focus();
     }
 
     prevMainMenu.current = openMainMenu;
@@ -56,7 +52,7 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
   return (
     <>
       <NavbarButtonsContainer className="settings">
-        <WalletManagementButtons redirectToLearn={redirectToLearn} />
+        <WalletManagementButtons />
         <MenuToggle
           ref={mainMenuAnchor}
           id="main-burger-menu-button"
@@ -73,7 +69,7 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
           />
         </MenuToggle>
       </NavbarButtonsContainer>
-      <MainMenu anchorEl={mainMenuAnchor.current} />
+      <MainMenu anchorEl={mainMenuAnchor.current ?? undefined} />
     </>
   );
 };

@@ -108,7 +108,8 @@ export function WidgetEvents() {
               [TrackingEventParameter.TxHash]: update.process.txHash || '',
               [TrackingEventParameter.TxLink]: update.process.txLink || '',
               [TrackingEventParameter.Type]: update.process.type,
-              [TrackingEventParameter.GasCostUSD]: update.route.gasCostUSD,
+              [TrackingEventParameter.GasCostUSD]:
+                update.route.gasCostUSD || '',
               [TrackingEventParameter.ErrorCode]:
                 update.process.error?.code || '',
               [TrackingEventParameter.ErrorMessage]:
@@ -154,7 +155,7 @@ export function WidgetEvents() {
         label: 'execution_error',
         data: {
           [TrackingEventParameter.RouteId]: update.route.id,
-          [TrackingEventParameter.TxHash]: update.process.txHash,
+          [TrackingEventParameter.TxHash]: update.process.txHash || '',
           [TrackingEventParameter.Status]: update.process.status,
           [TrackingEventParameter.Message]: update.process.message || '',
           [TrackingEventParameter.ErrorMessage]:
@@ -173,7 +174,7 @@ export function WidgetEvents() {
         data: {
           [TrackingEventParameter.FromAmountUSD]: update.fromAmountUsd,
           [TrackingEventParameter.ToAmountUSD]: update.toAmountUSD,
-          [TrackingEventParameter.GasCostUSD]: update.gasCostUSD,
+          [TrackingEventParameter.GasCostUSD]: update.gasCostUSD || '',
           [TrackingEventParameter.ValueLoss]: update.valueLoss,
           [TrackingEventParameter.Timestamp]: new Date(
             Date.now(),

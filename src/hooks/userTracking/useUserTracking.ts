@@ -52,8 +52,8 @@ export function useUserTracking() {
             isConversion ?? false,
             dataArray.concat(
               Object.entries(data).map(([key, value]) => ({
-                name: key,
-                value,
+                name: `${key}`,
+                value: `${value}`,
               })),
             ),
           );

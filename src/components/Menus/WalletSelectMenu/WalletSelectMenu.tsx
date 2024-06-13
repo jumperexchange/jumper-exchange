@@ -15,7 +15,7 @@ import { WalletSelectMoreSubMenu } from '../WalletSelectMoreSubMenu';
 import { useWalletSelectContent } from './useWalletSelectContent';
 
 interface MenuProps {
-  anchorEl: any;
+  anchorEl?: HTMLAnchorElement;
 }
 
 const NUMBER_OF_WALLETS_DISPLAYED = 9;

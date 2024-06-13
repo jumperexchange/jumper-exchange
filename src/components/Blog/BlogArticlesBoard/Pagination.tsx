@@ -42,7 +42,7 @@ export const BlogArticlesBoardPagination = ({
       action: TrackingAction.ClickPagination,
       data: {
         [TrackingEventParameter.Pagination]: page,
-        [TrackingEventParameter.PaginationCat]: categoryId,
+        [TrackingEventParameter.PaginationCat]: categoryId || '',
       },
     });
     setPage(page);
@@ -60,7 +60,7 @@ export const BlogArticlesBoardPagination = ({
       action: TrackingAction.ClickPagination,
       data: {
         [TrackingEventParameter.Pagination]: page,
-        [TrackingEventParameter.PaginationCat]: categoryId,
+        [TrackingEventParameter.PaginationCat]: categoryId || '',
       },
     });
   };
@@ -77,7 +77,7 @@ export const BlogArticlesBoardPagination = ({
       action: TrackingAction.ClickPagination,
       data: {
         [TrackingEventParameter.Pagination]: page,
-        [TrackingEventParameter.PaginationCat]: categoryId,
+        [TrackingEventParameter.PaginationCat]: categoryId || '',
       },
     });
   };

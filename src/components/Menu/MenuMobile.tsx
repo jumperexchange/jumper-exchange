@@ -2,6 +2,7 @@ import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
 import type { SxProps, Theme } from '@mui/material';
 import { Typography } from '@mui/material';
+import type { ReactNode } from 'react';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -26,7 +27,7 @@ interface MenuProps {
   styles?: SxProps<Theme>;
   label?: string;
   open: boolean;
-  children: any;
+  children: ReactNode;
 }
 
 export const MenuMobile = ({

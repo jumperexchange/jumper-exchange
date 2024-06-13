@@ -69,7 +69,7 @@ export interface CarouselNavigationContainerProps
 }
 
 export const CarouselNavigationContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'hide',
+  shouldForwardProp: (prop) => prop !== 'hide',
 })<CarouselNavigationContainerProps>(({ theme, hide }) => ({
   display: 'flex',
   [theme.breakpoints.up('md' as Breakpoint)]: {

@@ -17,11 +17,11 @@ interface MenuProps {
   cardsLayout?: boolean;
   styles?: SxProps<Theme>;
   keepMounted?: boolean;
-  setOpen: (open: boolean, anchorRef: any) => void;
+  setOpen: (open: boolean, anchorRef: HTMLAnchorElement | null) => void;
   open: boolean;
-  children: any;
+  children: React.ReactNode;
   width?: string;
-  anchorEl: any;
+  anchorEl?: HTMLAnchorElement;
 }
 
 export const MenuDesktop = ({

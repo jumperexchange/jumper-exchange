@@ -11,7 +11,7 @@ export interface TrackEventProps {
   category: string;
   label: string;
   value?: number;
-  data?: { [key: string]: string | number | boolean | any };
+  data?: { [key: string]: string | number | boolean };
   disableTrackingTool?: EventTrackingTool[];
   enableAddressable?: boolean;
   isConversion?: boolean;
