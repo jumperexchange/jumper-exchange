@@ -12,11 +12,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useEffect, useRef } from 'react';
 import { MenuToggle, NavbarButtonsContainer, WalletManagementButtons } from '.';
 
-interface NavbarButtonsProps {
-  redirectToLearn?: boolean;
-}
-
-export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
+export const NavbarButtons = () => {
   const mainMenuAnchor = useRef(null);
   const { trackEvent } = useUserTracking();
 
@@ -58,7 +54,7 @@ export const NavbarButtons = ({ redirectToLearn }: NavbarButtonsProps) => {
   return (
     <>
       <NavbarButtonsContainer className="settings">
-        <WalletManagementButtons redirectToLearn={redirectToLearn} />
+        <WalletManagementButtons />
         <MenuToggle
           ref={mainMenuAnchor}
           id="main-burger-menu-button"

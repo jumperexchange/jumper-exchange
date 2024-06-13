@@ -1,7 +1,7 @@
 import { getArticles } from '@/app/lib/getArticles';
 import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
 import LearnPage from '@/app/ui/learn/LearnPage';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

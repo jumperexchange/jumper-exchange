@@ -3,26 +3,24 @@ import { EcosystemSelectMenu } from '@/components/Menus/EcosystemSelectMenu';
 import { WalletMenu } from '@/components/Menus/WalletMenu';
 import { WalletSelectMenu } from '@/components/Menus/WalletSelectMenu';
 import { Box, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
+import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { EventTrackingTool } from 'src/types/userTracking';
 import { WallettButtons } from '../WalletButton';
 import { ConnectButton } from './WalletManagementButtons.style';
 
-interface WalletManagementButtonsProps {
-  redirectToLearn?: boolean;
-}
-
-export const WalletManagementButtons = ({
-  redirectToLearn,
-}: WalletManagementButtonsProps) => {
+export const WalletManagementButtons = () => {
   const walletManagementButtonsRef = useRef<HTMLAnchorElement>(null);
   const { t } = useTranslation();
   const router = useRouter();
   const { trackEvent } = useUserTracking();
+
+  const pathname = usePathname();
+  const redirectToApp = pathname?.includes(JUMPER_LEARN_PATH);
 
   const handleLearnButton = () => {
     router.push('/');
@@ -37,7 +35,7 @@ export const WalletManagementButtons = ({
   return (
     <>
       <Box ref={walletManagementButtonsRef}>
-        {redirectToLearn ? (
+        {redirectToApp ? (
           <ConnectButton
             // Used in the widget
             onClick={handleLearnButton}

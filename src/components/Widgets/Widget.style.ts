@@ -1,6 +1,6 @@
 'use client';
 
-import type { BoxProps } from '@mui/material';
+import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/material';
 
 export interface WidgetWrapperProps extends Omit<BoxProps, 'component'> {
@@ -10,7 +10,7 @@ export interface WidgetWrapperProps extends Omit<BoxProps, 'component'> {
 export const WidgetWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'welcomeScreenClosed',
 })<WidgetWrapperProps>(({ theme, welcomeScreenClosed }) => ({
-  minWidth: 416,
+  width: '100%',
   position: 'relative',
   margin: theme.spacing(0, 'auto'),
   ...(!welcomeScreenClosed && {
@@ -19,6 +19,9 @@ export const WidgetWrapper = styled(Box, {
     },
   }),
   zIndex: 2,
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    maxWidth: 416,
+  },
 }));
 
 export const GlowBackground = styled('span')(({ theme }) => ({

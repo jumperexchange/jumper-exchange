@@ -14,7 +14,6 @@ import type { WidgetConfig, WidgetTheme } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -44,7 +43,6 @@ export function Widget({
   themeVariant,
   activeTheme,
 }: WidgetProps) {
-  const theme = useTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
@@ -67,7 +65,6 @@ export function Widget({
     });
   console.log('partnerThemeUid', partnerThemeUid);
   const isGasVariant = activeTab === TabsMap.Refuel.index;
-
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
