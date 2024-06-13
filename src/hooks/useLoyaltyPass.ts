@@ -89,7 +89,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
           pdas: pdasWithoutLoyalty,
         };
       } else {
-        return null;
+        return undefined;
       }
     },
     enabled: queryIsEnabled,

@@ -1,14 +1,12 @@
-import { IconButtonAlpha } from '@/components/IconButton';
 import {
   InfoMessageCard,
   InfoMessageCardTitle,
 } from '@/components/MessageCard';
-import { getContrastAlphaColor } from '@/utils/colors';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import { Slide, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { InfoAlertContainer } from '.';
+import { InfoAlertButton, InfoAlertContainer } from '.';
 
 export interface InfoAlertProps {
   title: string;
@@ -41,24 +39,14 @@ export const InfoAlert = ({ title, subtitle, active }: InfoAlertProps) => {
     >
       <InfoAlertContainer>
         <InfoMessageCard mt={theme.spacing(4)} mb={theme.spacing(4)}>
-          <IconButtonAlpha
-            sx={{
-              position: 'absolute',
-              right: theme.spacing(2),
-              top: theme.spacing(2),
-              backgroundColor: getContrastAlphaColor(theme, 0.04),
-              width: 24,
-              height: 24,
-            }}
-            onClick={(e) => handleClose(e)}
-          >
+          <InfoAlertButton onClick={(e) => handleClose(e)}>
             <CloseIcon
               sx={{
                 width: 16,
                 height: 16,
               }}
             />
-          </IconButtonAlpha>
+          </InfoAlertButton>
           <InfoMessageCardTitle
             display="flex"
             alignItems="center"

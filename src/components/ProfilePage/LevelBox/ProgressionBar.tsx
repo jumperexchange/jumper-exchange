@@ -1,15 +1,19 @@
 import type { LevelData } from '@/types/loyaltyPass';
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import { XPIcon } from '../../illustrations/XPIcon';
 import { CenteredBox, ProfilePageTypography } from '../ProfilePage.style';
+import {
+  ProgressionChart,
+  ProgressionChartBg,
+  ProgressionChartScore,
+} from './ProgressionBar.style';
 
 interface ProgressionBarProps {
-  points?: number | null;
+  points?: number;
   levelData?: LevelData;
 }
 
 export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
-  const theme = useTheme();
   const calcWidth =
     points && levelData
       ? points - levelData.minPoints > 0
@@ -29,60 +33,26 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
               justifyContent: 'space-between',
             }}
           >
-            <ProfilePageTypography fontSize={'14px'} lineHeight={'18px'}>
+            <ProfilePageTypography fontSize="14px" lineHeight="18px">
               {`LEVEL ${levelData?.level}`}
             </ProfilePageTypography>
-            <ProfilePageTypography fontSize={'14px'} lineHeight={'18px'}>
+            <ProfilePageTypography fontSize="14px" lineHeight="18px">
               {`LEVEL ${levelData.level + 1}`}
             </ProfilePageTypography>
           </Box>
-          <Box
-            sx={{
-              height: '16px',
-              width: '100%',
-              display: 'flex',
-              marginTop: '12px',
-              marginBottom: '12px',
-            }}
-          >
-            <Box
-              sx={{
-                height: '100%',
-                borderTopLeftRadius: '12px',
-                borderBottomLeftRadius: '12px',
-                width:
-                  points && points > levelData.minPoints
-                    ? `${calcWidth}%`
-                    : '0%',
-                backgroundColor:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.accent1.main
-                    : theme.palette.accent1Alt.main,
-                borderRadius: points === levelData.maxPoints ? '12px' : null,
-              }}
+          <ProgressionChart>
+            <ProgressionChartScore
+              points={points}
+              calcWidth={calcWidth}
+              levelData={levelData}
             />
-            <Box
-              sx={{
-                height: '100%',
-                borderTopRightRadius: '12px',
-                borderBottomRightRadius: '12px',
-                width:
-                  points && points > levelData.minPoints
-                    ? `${100 - calcWidth}%`
-                    : '100%',
-                backgroundColor:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.alphaDark200.main
-                    : theme.palette.alphaLight200.main,
-                borderRadius: points ? null : '12px',
-              }}
-            />
-          </Box>
+            <ProgressionChartBg />
+          </ProgressionChart>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <CenteredBox>
               <ProfilePageTypography
-                fontSize={'16px'}
-                lineHeight={'20px'}
+                fontSize="16px"
+                lineHeight="20px"
                 fontWeight={600}
               >
                 {levelData.minPoints}

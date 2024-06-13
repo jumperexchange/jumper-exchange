@@ -9,12 +9,14 @@ export const refuelAllowChains: ChainId[] = [
   ChainId.POL,
   ChainId.BSC,
   ChainId.DAI,
+  ChainId.BLS,
   ChainId.FTM,
   ChainId.AVA,
   ChainId.ARB,
   ChainId.OPT,
   ChainId.BAS,
   ChainId.MAM,
+  ChainId.RSK,
 ];
 
 export const themeAllowChains: ChainId[] = [
