@@ -7,6 +7,7 @@ export interface TabProps {
   label?: string;
   tooltip?: string;
   value: number;
+  blur?: boolean;
   icon?: JSX.Element;
   onClick: (event: React.MouseEvent<HTMLDivElement>, index: number) => void;
   disabled?: boolean;
@@ -53,6 +54,7 @@ export const Tabs = ({
             id={`tab-${el.label ?? 'key'}-${el.value}`}
             aria-controls={`simple-tabpanel-${index}`}
             sx={tabStyles}
+            blur={el.blur}
           />
         );
         return !!el.tooltip ? (

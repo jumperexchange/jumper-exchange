@@ -39,8 +39,10 @@ export const useThemeMenuContent = () => {
     });
     setPartnerTheme(theme?.attributes.uid);
 
-    if (!theme?.attributes.darkModeEnabled) {
+    if (theme?.attributes.darkModeEnabled) {
       setThemeMode('dark');
+    } else {
+      setThemeMode('light');
     }
   };
 

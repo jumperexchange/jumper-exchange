@@ -11,8 +11,10 @@ import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTranslation } from 'react-i18next';
+import { useMemo } from 'react';
 import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 
 export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
@@ -21,7 +23,19 @@ export const useThemeSwitchTabs = () => {
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
     : 'light';
+  const { partnerTheme, activeUid } = usePartnerTheme();
 
+  const darkThemeSwitchEnabled = useMemo(() => {
+    if (activeUid) {
+      if (partnerTheme?.attributes.darkModeEnabled) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return undefined;
+    }
+  }, [activeUid, partnerTheme?.attributes.darkModeEnabled]);
   const setThemeMode = useSettingsStore((state) => state.setThemeMode);
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     trackEvent({
@@ -41,6 +55,7 @@ export const useThemeSwitchTabs = () => {
     {
       tooltip: t('navbar.themes.switchToLight'),
       value: 0,
+      blur: darkThemeSwitchEnabled,
       icon: (
         <LightModeIcon
           sx={{
@@ -49,12 +64,17 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        handleSwitchMode('light');
+        (darkThemeSwitchEnabled === undefined ||
+          darkThemeSwitchEnabled === false) &&
+          handleSwitchMode('light');
       },
     },
     {
       tooltip: t('navbar.themes.switchToDark'),
       value: 1,
+      blur:
+        darkThemeSwitchEnabled !== undefined &&
+        darkThemeSwitchEnabled === false,
       icon: (
         <NightlightIcon
           sx={{
@@ -63,12 +83,15 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        handleSwitchMode('dark');
+        (darkThemeSwitchEnabled === undefined ||
+          darkThemeSwitchEnabled === true) &&
+          handleSwitchMode('dark');
       },
     },
     {
       tooltip: t('navbar.themes.switchToSystem'),
       value: 2,
+      blur: darkThemeSwitchEnabled !== undefined,
       icon: (
         <BrightnessAutoIcon
           sx={{
@@ -77,7 +100,7 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        handleSwitchMode('auto');
+        darkThemeSwitchEnabled === undefined && handleSwitchMode('auto');
       },
     },
   ];
