@@ -7,7 +7,7 @@ import { WidgetSkeleton } from '@/components/Widgets/WidgetSkeleton';
 export default function Page() {
   const variant = 'default'; // exchange
   const { activeTheme, welcomeScreenClosed } = getCookies();
-  const isWelcomeScreenClosed = welcomeScreenClosed == 'true';
+  const isWelcomeScreenClosed = welcomeScreenClosed === 'true';
 
   return (
     <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>

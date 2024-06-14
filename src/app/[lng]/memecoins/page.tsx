@@ -6,7 +6,7 @@ import { getCookies } from '@/app/lib/getCookies';
 const Page = () => {
   const variant = 'default';
   const { activeTheme, welcomeScreenClosed } = getCookies();
-  const isWelcomeScreenClosed = welcomeScreenClosed == 'true';
+  const isWelcomeScreenClosed = welcomeScreenClosed === 'true';
 
   return (
     <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>
