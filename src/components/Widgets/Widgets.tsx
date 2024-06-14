@@ -56,7 +56,7 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
     if (pathname?.includes('memecoins')) {
       setWelcomeScreenClosed(true);
       //Todo: review the logic of the tab selection.
-      setActiveTab(-1);
+      setActiveTab(false);
       return ThemesMap.Memecoins;
     }
     // remove setWelcomeScreenClosed from array to prevent infinite re-rendering

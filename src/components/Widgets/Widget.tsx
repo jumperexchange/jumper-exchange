@@ -12,6 +12,8 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
@@ -25,8 +27,6 @@ import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { useMediaQuery } from '@mui/material';
-import type { Theme } from '@mui/material';
 import { publicRPCList } from 'src/const/rpcList';
 import { useRouter } from 'next/navigation';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
@@ -214,7 +214,7 @@ export function Widget({
     fromToken,
     i18n.language,
     i18n.languages,
-    isGasVariant,
+    integratorStringByType,
     isMultisigSigner,
     multisigSdkConfig,
     multisigWidget,
@@ -233,7 +233,6 @@ export function Widget({
     toToken,
     tokens,
     wagmiConfig,
-    widgetIntegrator,
   ]);
 
   return (
