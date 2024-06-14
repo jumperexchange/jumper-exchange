@@ -92,7 +92,7 @@ export const FeatureCards = () => {
 
   const slicedPersonalizedFeatureCards = useMemo(() => {
     const personalizedFeatureCards =
-      jumperUser && jumperUser[0]?.attributes?.feature_cards.data
+      jumperUser && jumperUser[0]?.attributes?.feature_cards.data.length > 0
         ? jumperUser && jumperUser[0]?.attributes?.feature_cards.data
         : featureCardsLevel && featureCardsLevel.length > 0
           ? [featureCardsLevel[0]]

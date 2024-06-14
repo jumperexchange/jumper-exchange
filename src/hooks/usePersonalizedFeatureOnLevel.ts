@@ -34,7 +34,7 @@ export const usePersonalizedFeatureOnLevel = ({
   apiUrl.searchParams.set('populate[featureCardsExclusions][fields][0]', 'uid');
   apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'false');
   // filter to get only the personalized feature cards that have the correct levels setup
-  apiUrl.searchParams.set('filters[minLevel][$lte]', String(level));
+  apiUrl.searchParams.set('filters[minlevel][$lte]', String(level));
   apiUrl.searchParams.set('filters[maxLevel][$gte]', String(level));
 
   process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
