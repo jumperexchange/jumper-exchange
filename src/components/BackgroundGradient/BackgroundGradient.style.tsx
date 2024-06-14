@@ -21,7 +21,9 @@ export const BackgroundGradientContainer = styled(
   top: 0,
   zIndex: -1,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    background: theme.palette.bg.main, //theme.palette.bg.main,
+    background: !backgroundImageUrl
+      ? (theme as Theme).palette.bg.main
+      : `url(${backgroundImageUrl.href})`,
   },
 }));
 

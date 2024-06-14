@@ -30,6 +30,7 @@ import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
@@ -37,6 +38,7 @@ export const useMainMenuContent = () => {
   const { trackPageload, trackEvent } = useUserTracking();
   const router = useRouter();
   const theme = useTheme();
+  const { activeUid } = usePartnerTheme();
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
@@ -140,6 +142,7 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.theme'),
       prefixIcon: <StyleIcon />,
       triggerSubMenu: MenuKeysEnum.Theme,
+      suffixIcon: activeUid ?? undefined,
       onClick: () => {
         setSubMenuState(MenuKeysEnum.Theme);
         trackEvent({

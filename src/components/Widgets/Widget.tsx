@@ -18,18 +18,16 @@ import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { publicRPCList } from 'src/const/rpcList';
-import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { useStrapi } from 'src/hooks/useStrapi';
-import type { PartnerThemesData } from 'src/types/strapi';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useConfig } from 'wagmi';
-import { shallow } from 'zustand/shallow';
 import { WidgetWrapper } from '.';
-import { DefaultWidgetTheme } from './DefaultWidgetTheme';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import { useDefaultWidgetTheme } from './useDefaultWidgetTheme';
 
 export function Widget({
   starterVariant,
@@ -50,24 +48,19 @@ export function Widget({
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
+  const defaultWidgetTheme = useDefaultWidgetTheme();
   const { tokens } = useMemelist({
     enabled: !!themeVariant,
   });
-  const partnerThemeUid = useSettingsStore(
-    (state) => state.partnerThemeUid,
-    shallow,
-  );
-  const { data: partnerThemes, isSuccess: partnerThemesIsSuccess } =
-    useStrapi<PartnerThemesData>({
-      contentType: STRAPI_PARTNER_THEMES,
-      queryKey: ['partner-themes'],
-      filterUid: partnerThemeUid,
-    });
-  console.log('partnerThemeUid', partnerThemeUid);
+  const { activeUid, partnerTheme } = usePartnerTheme();
+
+  const widgetTheme =
+    !!activeUid && partnerTheme
+      ? partnerTheme.attributes.config
+      : defaultWidgetTheme;
   const isGasVariant = activeTab === TabsMap.Refuel.index;
-  const welcomeScreenClosed = useSettingsStore(
-    (state) => state.welcomeScreenClosed,
-  );
+  const { welcomeScreenClosed, welcomeScreenDisabled } = useWelcomeScreen();
+
   const setWalletSelectMenuState = useMenuStore(
     (state: MenuState) => state.setWalletSelectMenuState,
   );
@@ -81,8 +74,6 @@ export function Widget({
           : [],
     [starterVariant, themeVariant],
   );
-
-  console.log('partnerThemes', partnerThemes);
 
   const integratorStringByType = useMemo(() => {
     if (widgetIntegrator) {
@@ -98,14 +89,6 @@ export function Widget({
     }
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
-
-  const widgetTheme = useMemo(() => {
-    if (partnerThemesIsSuccess && partnerThemes.length) {
-      return partnerThemes[0].attributes.config;
-    } else {
-      return DefaultWidgetTheme;
-    }
-  }, [partnerThemes, partnerThemesIsSuccess]);
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -207,13 +190,13 @@ export function Widget({
   return (
     <WidgetWrapper
       className="widget-wrapper"
-      welcomeScreenClosed={welcomeScreenClosed}
+      welcomeScreenClosed={!welcomeScreenDisabled ?? welcomeScreenClosed}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly
         fallback={
           <WidgetSkeleton
-            welcomeScreenClosed={welcomeScreenClosed}
+            welcomeScreenClosed={!welcomeScreenDisabled ?? welcomeScreenClosed}
             config={{ ...config, appearance: activeTheme }}
           />
         }

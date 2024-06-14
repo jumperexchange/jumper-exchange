@@ -14,7 +14,10 @@ import type { PartnerThemesData } from 'src/types/strapi';
 export const useThemeMenuContent = () => {
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const setPartnerTheme = useSettingsStore((state) => state.setPartnerThemeUid);
+  const [partnerThemeUid, setPartnerTheme] = useSettingsStore((state) => [
+    state.partnerThemeUid,
+    state.setPartnerThemeUid,
+  ]);
   const [themeMode, setThemeMode] = useSettingsStore((state) => [
     state.themeMode,
     state.setThemeMode,
@@ -24,7 +27,6 @@ export const useThemeMenuContent = () => {
     contentType: STRAPI_PARTNER_THEMES,
     queryKey: ['partner-themes'],
   });
-  console.log('partnerThemes', partnerThemes);
   const handleThemeSwitch = (theme: PartnerThemesData | undefined) => {
     trackEvent({
       category: TrackingCategory.ThemesMenu,
@@ -36,15 +38,10 @@ export const useThemeMenuContent = () => {
       },
     });
     setPartnerTheme(theme?.attributes.uid);
-    console.log('handle theme switch');
-    console.log('theme', theme);
 
     if (!theme?.attributes.darkModeEnabled) {
-      console.log('set theme mode dark');
       setThemeMode('dark');
     }
-    console.log('Change theme to:', theme?.attributes.PartnerName || 'default');
-    console.log('Change theme UID:', theme?.attributes.uid || 'none');
   };
 
   const themes: any = [
@@ -53,6 +50,7 @@ export const useThemeMenuContent = () => {
       onClick: () => {
         handleThemeSwitch(undefined);
       },
+      checkIcon: !partnerThemeUid,
     },
   ];
 
@@ -62,6 +60,7 @@ export const useThemeMenuContent = () => {
       onClick: () => {
         handleThemeSwitch(el);
       },
+      checkIcon: partnerThemeUid === el.attributes.uid,
     }),
   );
 

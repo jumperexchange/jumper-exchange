@@ -8,7 +8,6 @@ export const ThemeSubmenu = () => {
   const { t } = useTranslation();
   const subMenuTheme = useThemeMenuContent();
   const openSubMenu = useMenuStore((state) => state.openSubMenu);
-  console.log('sub', subMenuTheme.themes);
   return (
     <SubMenu
       label={t('navbar.navbarMenu.theme')}

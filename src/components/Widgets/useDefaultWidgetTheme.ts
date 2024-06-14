@@ -2,7 +2,7 @@ import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { darkTheme } from 'src/theme';
 
-export const DefaultWidgetTheme = () => {
+export const useDefaultWidgetTheme = () => {
   const theme = useTheme();
 
   return {
