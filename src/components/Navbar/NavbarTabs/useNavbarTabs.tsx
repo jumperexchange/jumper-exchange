@@ -9,7 +9,7 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 
 interface useNavbarTabsProps {
@@ -21,11 +21,11 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
-  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const handleClickTab =
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
-      router.push(`/${tab}`);
+      router.push(`/${tab}?${searchParams.toString()}`);
       trackEvent({
         category: TrackingCategory.Navigation,
         action: TrackingAction.SwitchTab,
