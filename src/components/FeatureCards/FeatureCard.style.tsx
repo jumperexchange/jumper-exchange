@@ -82,7 +82,7 @@ export interface FeatureCardSubtitleProps
 export const FeatureCardSubtitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'typographyColor',
 })<FeatureCardSubtitleProps>(({ typographyColor }) => ({
-  color: typographyColor,
+  color: '#FFFFFF',
   lineHeight: '24px',
   width: 224,
   userSelect: 'none',
