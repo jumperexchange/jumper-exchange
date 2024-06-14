@@ -1,41 +1,41 @@
 import type { FeatureCardData } from '@/types/strapi';
 import { useQuery } from '@tanstack/react-query';
 import { useAccounts } from './useAccounts';
+import { getLevelBasedOnPoints } from 'src/components/ProfilePage/LevelBox/TierBox';
 
-export interface UsePersonalizedFeatureCardsProps {
+export interface UsePersonalizedFeatureOnLevelProps {
   featureCards: FeatureCardData[] | undefined;
   isSuccess: boolean;
   isConnected: boolean;
 }
 
-interface FCNoUsersProps {
+interface FCLevelProps {
   enabled: boolean;
+  points?: number;
 }
 
 const STRAPI_CONTENT_TYPE = 'feature-cards';
-export const usePersonalizedFeatureCardsNoUsers = ({
+export const usePersonalizedFeatureOnLevel = ({
+  points,
   enabled,
-}: FCNoUsersProps): UsePersonalizedFeatureCardsProps => {
+}: FCLevelProps): UsePersonalizedFeatureOnLevelProps => {
   const { account } = useAccounts();
+  const levelData = getLevelBasedOnPoints(points);
+  const level = levelData.level;
 
   const apiBaseUrl =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
       : process.env.NEXT_PUBLIC_STRAPI_URL;
-  const apiUrl = new URL(
-    `${apiBaseUrl}/${STRAPI_CONTENT_TYPE}?jumper_users_null&jumper_users_empty`,
-  );
+  const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
 
   apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
   apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
-  apiUrl.searchParams.set('populate[jumper_users]', '*');
   apiUrl.searchParams.set('populate[featureCardsExclusions][fields][0]', 'uid');
   apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'false');
-  // filter to get only the personalized feature cards that have no jumper users associated.
-  apiUrl.searchParams.set(
-    'filters[jumper_users][EvmWalletAddress][$null]',
-    'true',
-  );
+  // filter to get only the personalized feature cards that have the correct levels setup
+  apiUrl.searchParams.set('filters[minLevel][$lte]', String(level));
+  apiUrl.searchParams.set('filters[maxLevel][$gte]', String(level));
 
   process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('publicationState', 'preview');
@@ -44,7 +44,7 @@ export const usePersonalizedFeatureCardsNoUsers = ({
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
       : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
   const { data, isSuccess } = useQuery({
-    queryKey: ['personalizedFeatureCardsNoUsers'],
+    queryKey: ['personalizedFeatureCardsOnLevel'],
 
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {

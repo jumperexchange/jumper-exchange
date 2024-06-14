@@ -15,13 +15,15 @@ import { useEffect, useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
-import { usePersonalizedFeatureCardsNoUsers } from 'src/hooks/usePersonalizedFeatureCardsNoUsers';
+import { usePersonalizedFeatureOnLevel } from 'src/hooks/usePersonalizedFeatureOnLevel';
+import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 
 export const FeatureCards = () => {
   const [disabledFeatureCards] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
   );
+  const { isLoading, points, tier, pdas } = useLoyaltyPass();
   const [cookie] = useCookies(['welcomeScreenClosed']);
   const [widgetExpanded, setWidgetExpanded] = useState(false);
   const widgetEvents = useWidgetEvents();
@@ -43,11 +45,10 @@ export const FeatureCards = () => {
       queryKey: ['personalized-feature-cards'],
     });
 
-  const { featureCards: featureCardsNoUsers } =
-    usePersonalizedFeatureCardsNoUsers({
-      enabled:
-        isJumperUsersSuccess && (!jumperUser || jumperUser?.length === 0),
-    });
+  const { featureCards: featureCardsLevel } = usePersonalizedFeatureOnLevel({
+    points: points,
+    enabled: !!points && (!jumperUser || jumperUser?.length === 0),
+  });
 
   useEffect(() => {
     const handleWidgetExpanded = async (expanded: boolean) => {
@@ -93,8 +94,8 @@ export const FeatureCards = () => {
     const personalizedFeatureCards =
       jumperUser && jumperUser[0]?.attributes?.feature_cards.data
         ? jumperUser && jumperUser[0]?.attributes?.feature_cards.data
-        : featureCardsNoUsers && featureCardsNoUsers.length > 0
-          ? [featureCardsNoUsers[0]]
+        : featureCardsLevel && featureCardsLevel.length > 0
+          ? [featureCardsLevel[0]]
           : undefined;
 
     if (
@@ -111,7 +112,7 @@ export const FeatureCards = () => {
         .slice(0, 1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jumperUser, featureCardsNoUsers]);
+  }, [jumperUser, featureCardsLevel]);
 
   return (
     isDesktop &&
