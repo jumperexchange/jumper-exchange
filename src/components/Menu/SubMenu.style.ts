@@ -13,7 +13,7 @@ export interface SubMenuLabelProps extends Omit<TypographyProps, 'component'> {
 
 export const SubMenuLabel = styled(Typography, {
   shouldForwardProp: (prop) =>
-    prop !== 'prefixIcon' && prop !== 'suffixIcon' && prop !== 'component',
+    prop !== 'isPrefixIcon' && prop !== 'isSuffixIcon' && prop !== 'component',
 })<SubMenuLabelProps>(({ theme, isPrefixIcon, isSuffixIcon }) => ({
   maxWidth: 'inherit',
   overflow: 'hidden',
