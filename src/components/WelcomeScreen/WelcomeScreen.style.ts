@@ -48,13 +48,8 @@ export const ContentWrapper = styled(
   textAlign: 'center',
   background: theme.palette.mode === 'dark' ? '#1A1033' : '#F3EBFF',
   width: '100%',
-  // position: 'absolute',
-  // top: 0,
-  // bottom: 0,
   zIndex: '1400',
   height: 'auto',
-  // animation: !showWelcome ? fadeOut : 'unset',
-  // animationDuration: '.5s',
 
   '&:before': {
     content: '" "',

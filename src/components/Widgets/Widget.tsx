@@ -58,7 +58,6 @@ export function Widget({
   const router = useRouter();
 
   useEffect(() => {
-    console.log('prefetching');
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas/', { kind: PrefetchKind.FULL });
     router.prefetch('/buy/', { kind: PrefetchKind.FULL });
