@@ -107,6 +107,21 @@ export const useMainMenuContent = () => {
       disableRipple: true,
     },
     {
+      label: t('navbar.navbarMenu.theme'),
+      prefixIcon: <StyleIcon />,
+      triggerSubMenu: MenuKeysEnum.Theme,
+      suffixIcon: activeUid ?? undefined,
+      onClick: () => {
+        setSubMenuState(MenuKeysEnum.Theme);
+        trackEvent({
+          category: TrackingCategory.MainMenu,
+          action: TrackingAction.OpenMenu,
+          label: `open_submenu_${MenuKeysEnum.Theme.toLowerCase()}`,
+          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Theme },
+        });
+      },
+    },
+    {
       label: t('language.key', { ns: 'language' }),
       prefixIcon: <LanguageIcon />,
       suffixIcon: (
@@ -135,21 +150,6 @@ export const useMainMenuContent = () => {
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
-        });
-      },
-    },
-    {
-      label: t('navbar.navbarMenu.theme'),
-      prefixIcon: <StyleIcon />,
-      triggerSubMenu: MenuKeysEnum.Theme,
-      suffixIcon: activeUid ?? undefined,
-      onClick: () => {
-        setSubMenuState(MenuKeysEnum.Theme);
-        trackEvent({
-          category: TrackingCategory.MainMenu,
-          action: TrackingAction.OpenMenu,
-          label: `open_submenu_${MenuKeysEnum.Theme.toLowerCase()}`,
-          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Theme },
         });
       },
     },
