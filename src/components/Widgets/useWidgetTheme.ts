@@ -1,11 +1,13 @@
+import { usePartnerTheme } from '@/hooks/usePartnerTheme';
 import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { darkTheme } from 'src/theme';
 
-export const useDefaultWidgetTheme = () => {
+export const useWidgetTheme = () => {
   const theme = useTheme();
+  const { activeUid, partnerTheme, isSuccess } = usePartnerTheme();
 
-  return {
+  const defaultWidgetTheme = {
     typography: {
       fontFamily: theme.typography.fontFamily,
     },
@@ -41,4 +43,10 @@ export const useDefaultWidgetTheme = () => {
       grey: theme.palette.grey,
     },
   };
+
+  if (!!activeUid && isSuccess && !!partnerTheme?.attributes?.config) {
+    return partnerTheme.attributes.config;
+  } else {
+    return defaultWidgetTheme;
+  }
 };

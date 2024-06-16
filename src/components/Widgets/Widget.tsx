@@ -20,14 +20,13 @@ import { useTranslation } from 'react-i18next';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { useDefaultWidgetTheme } from './useDefaultWidgetTheme';
+import { useWidgetTheme } from './useWidgetTheme';
 
 export function Widget({
   starterVariant,
@@ -48,16 +47,11 @@ export function Widget({
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
-  const defaultWidgetTheme = useDefaultWidgetTheme();
+  const widgetTheme = useWidgetTheme();
   const { tokens } = useMemelist({
     enabled: !!themeVariant,
   });
-  const { activeUid, partnerTheme } = usePartnerTheme();
 
-  const widgetTheme =
-    !!activeUid && partnerTheme
-      ? partnerTheme.attributes.config
-      : defaultWidgetTheme;
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   const { welcomeScreenClosed, welcomeScreenDisabled } = useWelcomeScreen();
 
