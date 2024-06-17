@@ -2,6 +2,7 @@ import { ButtonSecondary } from '@/components/Button/Button.style';
 import type { MenuKeysEnum } from '@/const/menuKeys';
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
+import type { MouseEventHandler } from 'react';
 import type { JsxElement } from 'typescript';
 import { MenuItemContainer, MenuItemLink } from '.';
 import { MenuItemLabel } from './MenuItemLabel';
@@ -20,7 +21,7 @@ interface MenuItemProps {
   styles?: SxProps<Theme>;
   link?: MenuItemLinkType;
   label?: string;
-  onClick?: any;
+  onClick?: MouseEventHandler<HTMLLIElement>;
   triggerSubMenu?: MenuKeysEnum;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
@@ -43,11 +44,6 @@ export const MenuItem = ({
 }: MenuItemProps) => {
   const theme = useTheme();
 
-  const handleClick = (event: any) => {
-    event?.stopPropagation();
-    onClick && onClick();
-  };
-
   return open ? (
     <MenuItemContainer
       disableRipple={disableRipple || showButton}
@@ -56,7 +52,9 @@ export const MenuItem = ({
       autoFocus={autoFocus}
       onClick={(event) => {
         event.stopPropagation();
-        !children && handleClick(event);
+        if (!children) {
+          onClick && onClick(event);
+        }
       }}
     >
       <>

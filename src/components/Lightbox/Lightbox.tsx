@@ -21,7 +21,7 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
     setOpen(false);
   };
 
-  const handleImage = (value: any) => {
+  const handleImage = () => {
     setOpen(true);
   };
 
@@ -30,7 +30,7 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
       <PreviewImage
         src={imageData?.url}
         alt={imageData.caption ?? 'article-image'}
-        onClick={() => handleImage(imageData.alternativeText)}
+        onClick={handleImage}
       />
       <LightboxModal open={open} onClose={handleClose} closeAfterTransition>
         <Fade in={open} timeout={500}>

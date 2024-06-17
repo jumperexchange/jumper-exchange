@@ -30,25 +30,25 @@ import {
 
 import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
 import { Tag } from '@/components/Tag.style';
+import type { ThemeModesSupported } from '@/types/settings';
 import type { AuthorData, StrapiImageData, TagData } from '@/types/strapi';
 import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
-import type { ThemeModesSupported } from '@/types/settings';
 
 interface BlogArticleProps {
-  title: string | undefined;
-  subtitle: string | undefined;
-  content: RootNode[] | undefined;
-  tags: TagData | undefined;
-  author: AuthorData | undefined;
+  title?: string;
+  subtitle?: string;
+  content?: RootNode[];
+  tags?: TagData;
+  author?: AuthorData;
   slug: string | undefined;
-  publishedAt: string | null | undefined;
-  updatedAt: string | null | undefined;
-  createdAt: string | undefined;
-  image: StrapiImageData | undefined;
-  baseUrl: string | undefined;
+  publishedAt?: string;
+  updatedAt?: string;
+  createdAt?: string;
+  image?: StrapiImageData;
+  baseUrl?: string;
   activeTheme?: ThemeModesSupported;
   id?: number;
 }
