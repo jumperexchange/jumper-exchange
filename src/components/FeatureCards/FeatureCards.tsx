@@ -2,7 +2,6 @@
 import {
   STRAPI_FEATURE_CARDS,
   STRAPI_JUMPER_USERS,
-  STRAPI_PERSONALIZED_CARDS_NO_USERS,
 } from '@/const/strapiContentKeys';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useStrapi } from '@/hooks/useStrapi';
