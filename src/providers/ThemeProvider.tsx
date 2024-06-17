@@ -79,6 +79,25 @@ export const ThemeProvider: React.FC<
                   ?.secondary as SimplePaletteColorOptions
               ).main || currentTheme.palette.secondary.main,
           },
+          surface1: {
+            main:
+              partnerTheme.attributes.config.palette?.background?.default ||
+              currentTheme.palette.secondary.main,
+          },
+          accent1: {
+            main:
+              (
+                partnerTheme.attributes.config.palette
+                  ?.primary as SimplePaletteColorOptions
+              ).main || currentTheme.palette.surface1.main,
+          },
+          accent2: {
+            main:
+              (
+                partnerTheme.attributes.config.palette
+                  ?.secondary as SimplePaletteColorOptions
+              ).main || currentTheme.palette.surface1.main,
+          },
         },
       });
       return mergedTheme;

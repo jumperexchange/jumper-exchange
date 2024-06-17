@@ -24,6 +24,8 @@ export const BackgroundGradientContainer = styled(
     background: !backgroundImageUrl
       ? (theme as Theme).palette.bg.main
       : `url(${backgroundImageUrl.href})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
   },
 }));
 
