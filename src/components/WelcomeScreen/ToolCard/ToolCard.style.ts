@@ -48,7 +48,7 @@ export const ToolCardContainer = styled('div')(({ theme }) => ({
 
 export const ToolCardCounter = styled(Typography)(({ theme }) => ({
   fontSize: 24,
-  lineHeight: 32,
+  lineHeight: '32px',
   pointerEvents: 'none',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
