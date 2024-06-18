@@ -2,6 +2,8 @@ import {
   STRAPI_BLOG_ARTICLES,
   STRAPI_FAQ_ITEMS,
   STRAPI_FEATURE_CARDS,
+  STRAPI_JUMPER_USERS,
+  STRAPI_PARTNER_THEMES,
 } from '@/const/strapiContentKeys';
 import type { StrapiMeta, StrapiResponseData } from '@/types/strapi';
 import { useQuery } from '@tanstack/react-query';
@@ -162,7 +164,7 @@ export const useStrapi = <T>({
   }
 
   // partner-themes -->
-  if (contentType === 'partner-themes') {
+  if (contentType === STRAPI_PARTNER_THEMES) {
     apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
     apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
 
@@ -173,7 +175,7 @@ export const useStrapi = <T>({
   }
 
   // jumper users -->
-  if (contentType === 'jumper-users') {
+  if (contentType === STRAPI_JUMPER_USERS) {
     apiUrl.searchParams.set('populate[0]', 'feature_cards');
     apiUrl.searchParams.set(
       'populate[feature_cards][populate][0]',
