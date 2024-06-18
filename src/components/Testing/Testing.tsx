@@ -1,10 +1,15 @@
 'use client';
 
 const Testing = () => {
-  const isMobile = (window as any)?.navigator.userAgentData.mobile
-    ? 'true'
-    : 'false';
-  const provider = (window as any)?.ethereum ? 'true' : 'false';
+  const isMobile =
+    typeof window !== 'undefined' &&
+    (window as any)?.navigator.userAgentData.mobile
+      ? 'true'
+      : 'false';
+  const provider =
+    typeof window !== 'undefined' && (window as any)?.ethereum
+      ? 'true'
+      : 'false';
   const isMetamask = `${
     typeof navigator !== 'undefined' &&
     navigator?.userAgent?.includes('MetaMaskMobile')
