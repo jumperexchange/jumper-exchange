@@ -13,11 +13,18 @@ const Testing = () => {
     typeof navigator !== 'undefined' &&
     navigator?.userAgent?.includes('Phantom')
   }`;
-
+  const userAgent = `${
+    typeof navigator !== 'undefined' && navigator?.userAgent
+  }`;
+  console.log('userAgent', userAgent);
   console.log('isMobile', isMobile);
   return (
     <>
       -
+      <p>
+        userAgent
+        {userAgent}
+      </p>
       <p>
         window.ethereum?
         {provider}
