@@ -6,10 +6,12 @@ import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import { useSettingsStore } from 'src/stores/settings';
 import type { PartnerThemesData } from 'src/types/strapi';
 import { shallow } from 'zustand/shallow';
+import { useIsHomepage } from './useIsHomepage';
 import { useStrapi } from './useStrapi';
 
 export const usePartnerTheme = () => {
   const theme = useTheme();
+  const isHomepage = useIsHomepage();
   const partnerThemeUid = useSettingsStore(
     (state) => state.partnerThemeUid,
     shallow,
@@ -76,11 +78,14 @@ export const usePartnerTheme = () => {
   }, [availableWidgetTheme, partnerThemes, theme.palette.mode]);
 
   return {
-    partnerTheme: partnerThemes?.length > 0 ? partnerThemes[0] : undefined,
-    availableWidgetTheme,
-    currentWidgetTheme,
-    activeUid: partnerThemeUid,
-    imgUrl: imageUrl,
-    isSuccess,
+    partnerTheme:
+      isHomepage && partnerThemes?.length > 0 ? partnerThemes[0] : undefined,
+    availableWidgetTheme:
+      isHomepage && availableWidgetTheme ? availableWidgetTheme : undefined,
+    currentWidgetTheme:
+      isHomepage && currentWidgetTheme ? currentWidgetTheme : undefined,
+    activeUid: isHomepage && partnerThemeUid ? partnerThemeUid : undefined,
+    imgUrl: isHomepage && imageUrl ? imageUrl : undefined,
+    isSuccess: isHomepage && isSuccess,
   };
 };
