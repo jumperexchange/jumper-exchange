@@ -87,6 +87,11 @@ export const ThemeProvider: React.FC<
               (currentWidgetTheme.palette?.primary as SimplePaletteColorOptions)
                 .main || currentTheme.palette.surface1.main,
           },
+          accent1Alt: {
+            main:
+              (currentWidgetTheme.palette?.primary as SimplePaletteColorOptions)
+                .main || currentTheme.palette.surface1.main,
+          },
           accent2: {
             main:
               (
