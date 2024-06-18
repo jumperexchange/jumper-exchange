@@ -23,7 +23,7 @@ export const usePartnerTheme = () => {
     url,
   } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
-    queryKey: ['partner-themes'],
+    queryKey: ['partner-themes-filter', partnerThemeUid],
     filterUid: partnerThemeUid,
   });
 
