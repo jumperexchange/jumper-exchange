@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { uuidv7 } from 'uuidv7';
 
 export const useSession = (): string => {
-  const sessionIdFromStorage = sessionStorage?.getItem('session_id');
+  const sessionIdFromStorage =
+    typeof sessionStorage !== 'undefined' &&
+    sessionStorage.getItem('session_id');
   const [session, setSession] = useState('');
 
   useEffect(() => {
@@ -10,7 +12,8 @@ export const useSession = (): string => {
       setSession(sessionIdFromStorage);
     } else {
       setSession(uuidv7());
-      sessionStorage?.setItem('session_id', session);
+      typeof sessionStorage !== 'undefined' &&
+        sessionStorage.setItem('session_id', session);
     }
 
     // Log the session ID for testing purposes
