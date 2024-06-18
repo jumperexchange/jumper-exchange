@@ -17,7 +17,7 @@ type Orientation = 'horizontal' | 'vertical';
 
 interface TabsProps {
   data: TabProps[];
-  value: number;
+  value: number | boolean;
   onChange?: (event: React.SyntheticEvent, value: number) => void;
   orientation?: Orientation;
   ariaLabel: string;

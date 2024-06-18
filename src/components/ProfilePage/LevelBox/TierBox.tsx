@@ -6,7 +6,7 @@ import { ProgressionBar } from './ProgressionBar';
 import { TierInfoBox, TierMainBox } from './TierBox.style';
 import { levelsData } from './levelsData';
 
-function getLevelBasedOnPoints(points: number | undefined): LevelData {
+export function getLevelBasedOnPoints(points: number | undefined): LevelData {
   if (points) {
     const levelData = levelsData.find(
       (el) => points >= el.minPoints && points <= el.maxPoints,
