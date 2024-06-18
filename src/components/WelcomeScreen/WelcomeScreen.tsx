@@ -41,13 +41,14 @@ interface WelcomeScreenProps {
 }
 
 export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
-  const { welcomeScreenClosed, setWelcomeScreenClosed } =
+  const { welcomeScreenClosed, setWelcomeScreenClosed, welcomeScreenDisabled } =
     useWelcomeScreen(closed);
   const { t } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
   const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
   const [openBridgesToolModal, setOpenBridgesToolModal] = useState(false);
   const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
+
   useEffect(() => {
     if (welcomeScreenClosed) {
       trackEvent({
@@ -105,7 +106,7 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
       return;
     } else {
       event.stopPropagation();
-      if (!welcomeScreenClosed) {
+      if (!welcomeScreenClosed && !welcomeScreenDisabled) {
         setWelcomeScreenClosed(true);
         trackEvent({
           category: TrackingCategory.WelcomeScreen,
@@ -122,15 +123,17 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
   };
 
   return (
-    <Overlay showWelcome={!welcomeScreenClosed}>
+    <Overlay showWelcome={!welcomeScreenClosed && !welcomeScreenDisabled}>
       <Slide
         direction="up"
         unmountOnExit
         appear={false}
         timeout={400}
-        in={!welcomeScreenClosed}
+        in={!welcomeScreenClosed && !welcomeScreenDisabled}
       >
-        <ContentWrapper showWelcome={!welcomeScreenClosed}>
+        <ContentWrapper
+          showWelcome={!welcomeScreenClosed && !welcomeScreenDisabled}
+        >
           <WelcomeContent>
             <CustomColor as="h1" variant={'lifiHeaderMedium'}>
               {t('navbar.welcome.title')}
