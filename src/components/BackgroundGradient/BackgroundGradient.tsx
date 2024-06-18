@@ -17,7 +17,7 @@ interface BackgroundGradientProps {
 
 export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   const pathname = usePathname();
-  const { backgroundColor, imgUrl } = usePartnerTheme();
+  const { activeUid, backgroundColor, imgUrl } = usePartnerTheme();
 
   return !pathname?.includes('memecoins') ? (
     <BackgroundGradientContainer
@@ -25,14 +25,13 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
       backgroundImageUrl={imgUrl}
       backgroundColor={backgroundColor}
     >
-      {!imgUrl ||
-        (!backgroundColor && (
-          <>
-            <BackgroundGradientBottomLeft />
-            <BackgroundGradientBottomRight />
-            <BackgroundGradientTopCenter />
-          </>
-        ))}
+      {!activeUid && (
+        <>
+          <BackgroundGradientBottomLeft />
+          <BackgroundGradientBottomRight />
+          <BackgroundGradientTopCenter />
+        </>
+      )}
     </BackgroundGradientContainer>
   ) : (
     <>
