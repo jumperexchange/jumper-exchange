@@ -18,6 +18,7 @@ const checkLocaleIsPath = (path: string | null) => {
         path.includes(`/${JUMPER_REFUEL_PATH}`) ||
         path.includes(`/${JUMPER_SWAP_PATH}`) ||
         path.includes(`/${JUMPER_EXCHANGE_PATH}`) ||
+        path === `/${locale}/` ||
         path === `/${locale}` ||
         path.includes(`/${locale}/${JUMPER_BUY_PATH}`) ||
         path.includes(`/${locale}/${JUMPER_GAS_PATH}`) ||
