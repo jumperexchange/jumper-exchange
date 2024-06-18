@@ -4,10 +4,7 @@ import { Box, alpha, styled } from '@mui/material';
 export const RewardsdMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? '#FFFFFF'
-      : alpha(theme.palette.white.main, 0.08),
+  backgroundColor: '#f8f3e0',
   height: '316px',
   width: '832px',
   borderRadius: '24px',

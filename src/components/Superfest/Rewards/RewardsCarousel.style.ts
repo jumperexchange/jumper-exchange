@@ -2,10 +2,7 @@ import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, alpha, styled } from '@mui/material';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? '#F9F5FF'
-      : alpha(theme.palette.white.main, 0.08),
+  backgroundColor: 'red',
   padding: theme.spacing(2),
   borderRadius: '32px',
   boxShadow:

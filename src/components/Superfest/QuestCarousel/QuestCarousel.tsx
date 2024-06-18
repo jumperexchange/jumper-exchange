@@ -5,14 +5,17 @@ import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
-import { QuestCarouselContainer } from './QuestCarousel.style';
+import { SuperfestCarouselContainer } from './QuestCarousel.style';
 
 interface QuestCarouselProps {
   quests?: Quest[];
   loading: boolean;
 }
 
-export const QuestCarousel = ({ quests, loading }: QuestCarouselProps) => {
+export const QuestCarouselSuperfest = ({
+  quests,
+  loading,
+}: QuestCarouselProps) => {
   const { url } = useOngoingQuests();
   const { t } = useTranslation();
 
@@ -21,7 +24,7 @@ export const QuestCarousel = ({ quests, loading }: QuestCarouselProps) => {
   return (
     <>
       {!isNotLive ? (
-        <QuestCarouselContainer>
+        <SuperfestCarouselContainer>
           <CarouselContainer
             title={t('missions.available')}
             itemsCount={quests?.length}
@@ -65,7 +68,7 @@ export const QuestCarousel = ({ quests, loading }: QuestCarouselProps) => {
               )}
             </Stack>
           </CarouselContainer>
-        </QuestCarouselContainer>
+        </SuperfestCarouselContainer>
       ) : null}
     </>
   );

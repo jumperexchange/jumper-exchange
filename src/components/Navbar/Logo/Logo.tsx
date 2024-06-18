@@ -1,12 +1,30 @@
 import { JumperLearnLogo, JumperLogo } from '@/components/illustrations';
-import { LogoWrapper } from '@/components/illustrations/Logo.style';
+import {
+  CollabLogoWrapper,
+  LogoWrapper,
+} from '@/components/illustrations/Logo.style';
+import { Box } from '@mui/material';
+import { CrossIcon } from 'src/components/illustrations/Cross';
+import { OptimismLogo } from 'src/components/illustrations/Optimism';
 
 type LogoProps = {
-  variant: 'default' | 'learn';
+  variant: 'default' | 'learn' | 'superfest';
 };
 
 export const Logo = ({ variant }: LogoProps) => {
-  const logo = variant === 'default' ? <JumperLogo /> : <JumperLearnLogo />;
-
+  let logo = <JumperLogo />;
+  if (variant === 'learn') {
+    logo = <JumperLearnLogo />;
+  } else if (variant === 'superfest') {
+    return (
+      <CollabLogoWrapper>
+        <JumperLogo />
+        <CrossIcon />
+        <Box sx={{ marginLeft: '32px' }}>
+          <OptimismLogo />
+        </Box>
+      </CollabLogoWrapper>
+    );
+  }
   return <LogoWrapper>{logo}</LogoWrapper>;
 };

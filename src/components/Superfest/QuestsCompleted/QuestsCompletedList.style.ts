@@ -1,8 +1,8 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, alpha, styled } from '@mui/material';
 
-export const NFTClaimingContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: '#f2d0f1',
+export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: '#ddf6e2',
   padding: theme.spacing(2),
   borderRadius: '32px',
   boxShadow:
@@ -26,18 +26,17 @@ export const NFTClaimingContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const NFTClaimingHeader = styled(Box, {
+export const CompletedQuestHeader = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<BoxProps>(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'column',
   ...(theme.palette.mode === 'dark' && {
     color: theme.palette.white.main,
   }),
   justifyContent: 'space-between',
 }));
 
-export const NFTClaimingTitle = styled(Typography, {
+export const CompletedQuestTitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
 })(({ theme }) => ({
   fontWeight: 700,
@@ -54,19 +53,9 @@ export const NFTClaimingTitle = styled(Typography, {
   },
 }));
 
-export const NFTClaimingDescription = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
-})(({ theme }) => ({
-  fontWeight: 500,
-  fontSize: '16px',
-  lineHeight: '24px',
-  color: 'inherit',
-  margin: theme.spacing(3, 1.5, 0),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(0, 1.5, 0),
-  },
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    justifyContent: 'flex-start',
-    margin: 0,
-  },
+export const CompletedQuestStack = styled(Stack)(() => ({
+  marginTop: 32,
+  alignItems: 'center',
+  display: 'flex',
+  justifyContent: 'center',
 }));
