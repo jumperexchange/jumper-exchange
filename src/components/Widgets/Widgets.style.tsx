@@ -95,7 +95,7 @@ export const WidgetContainer = styled(Box, {
     },
 
     // radial shadow glow
-    '&:before': {
+    '.welcome-screen-container + &:before': {
       content: '" "',
       transitionProperty: 'top, opacity',
       transitionDuration: '.4s',

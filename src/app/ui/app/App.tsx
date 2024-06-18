@@ -45,6 +45,7 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
         in={!welcomeScreen.welcomeScreenClosed}
         appear={false}
         timeout={400}
+        className="welcome-screen-container"
         mountOnEnter
         unmountOnExit
       >
