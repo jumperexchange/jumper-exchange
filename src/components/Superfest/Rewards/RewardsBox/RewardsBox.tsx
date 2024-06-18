@@ -4,8 +4,14 @@ import { Button } from 'src/components/Button';
 import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';
 
 import { RewardsRightBox, RewardsdMainBox } from './RewardsBox.style';
+import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 
 export const RewardsBox = ({}) => {
+  const { isLoading, isSuccess, userTVL, availableRewards, activePosition } =
+    useMerklRewards({
+      userAddress: '0x55048e0d46f66fa00cae12905f125194cd961581',
+    });
+
   async function handleClick() {
     console.log('hello world');
   }
@@ -36,11 +42,23 @@ export const RewardsBox = ({}) => {
           <ProfilePageTypography fontSize={'18px'} lineHeight={'24px'}>
             {'Your Active Position'}
           </ProfilePageTypography>
+          <ProfilePageTypography fontSize={'18px'} lineHeight={'24px'}>
+            {isSuccess ? `$${parseFloat(String(userTVL)).toFixed(2)}` : '...'}
+          </ProfilePageTypography>
         </Box>
         <Box>
           <ProfilePageTypography fontSize={'18px'} lineHeight={'24px'}>
             {'Available Rewards'}
           </ProfilePageTypography>
+          {isSuccess && availableRewards.length > 0
+            ? availableRewards.map((elem) => {
+                return (
+                  <ProfilePageTypography fontSize={'18px'} lineHeight={'24px'}>
+                    {elem.amountToClaim + ' ' + elem.symbol}
+                  </ProfilePageTypography>
+                );
+              })
+            : '...'}
         </Box>
         <Box
           sx={{

@@ -1,12 +1,15 @@
 'use client';
-import { MercleNFTABI } from './../const/abi/mercleNftABI';
+import { MercleNFTABI } from '../const/abi/mercleNftABI';
 import { base } from 'wagmi/chains';
 import { useReadContract } from 'wagmi';
 import { useQuery } from '@tanstack/react-query';
 
 export interface UseMerklRes {
-  activePosition: any;
-  availableRewards: any;
+  isSuccess: boolean;
+  isLoading: boolean;
+  userTVL: number;
+  activePosition: any[];
+  availableRewards: any[];
 }
 
 export interface UseMerklRewardsProps {
@@ -18,19 +21,26 @@ const JUMPER_QUEST_ID = ['0x1C6A6Ee7D2e0aC0D2E3de4a69433553e0cb52777'];
 const ACTIVE_CHAINS = ['42161', '10', '8453', '34443'];
 
 const MERKL_API = 'https://api.merkl.xyz/v3';
+const REWARDS_CHAIN_ID = '10';
+const REWARDS_TOKEN = '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb';
 
-export const useMerklRewards = ({
+export const useMerklRewardsPerCampaign = ({
   userAddress,
 }: UseMerklRewardsProps): UseMerklRes => {
   // state
   let userTVL = 0;
+  let rewardsToClaim = [];
   //test
   console.log('-------------');
 
   // Call to get the active positions
   // To do -> use the label to get only
   const MERKL_POSITIONS_API = `${MERKL_API}/positions?chainId=${ACTIVE_CHAINS.join(',')}&user=${userAddress}`;
-  const { data: positionsData, isSuccess: positionsIsSuccess } = useQuery({
+  const {
+    data: positionsData,
+    isSuccess: positionsIsSuccess,
+    isLoading: positionsIsLoading,
+  } = useQuery({
     queryKey: ['MerklPositions'],
 
     queryFn: async () => {
@@ -62,7 +72,11 @@ export const useMerklRewards = ({
 
   // Call to get the available rewards
   const MERKL_REWARDS_API = `${MERKL_API}/rewards?chainIds=10&user=${userAddress}`;
-  const { data: rewardsData, isSuccess: rewardsIsSuccess } = useQuery({
+  const {
+    data: rewardsData,
+    isSuccess: rewardsIsSuccess,
+    isLoading: rewardsIsLoading,
+  } = useQuery({
     queryKey: ['MerklRewards'],
 
     queryFn: async () => {
@@ -82,23 +96,36 @@ export const useMerklRewards = ({
   // transform the result to know what is coming from Jumper campaigns
   // transform to know what is not coming from Jumper campaigns
   if (rewardsData) {
-    const tokenData = rewardsData['10']?.tokenData;
+    const tokenData = rewardsData[REWARDS_CHAIN_ID]?.tokenData;
     let rewardData = [];
+    console.log(tokenData);
     if (tokenData) {
-      const rewardsData = Object.entries(positionsData).map((elem) => {
+      rewardsToClaim = Object.entries(tokenData).map((elem): any => {
         console.log('---');
-        console.log(elem);
+        const key = elem[0];
+        const value = elem[1] as any;
+        console.log(key);
+        console.log(value);
+        return {
+          chainId: REWARDS_CHAIN_ID,
+          address: key,
+          symbol: value.symbol,
+          amountToClaim: value.unclaimed / 10 ** value.decimals,
+          amountAccumulated: value.accumulated / 10 ** value.decimals,
+          proof: value.proof,
+        };
       });
     }
   }
 
-  console.log('-------------');
-  console.log(userTVL);
+  console.log('REWARDs ------------');
+  console.log(rewardsToClaim);
 
   return {
-    activePosition: {
-      userTVL,
-    },
-    availableRewards: {},
+    isLoading: positionsIsLoading && rewardsIsLoading,
+    isSuccess: positionsIsSuccess && rewardsIsSuccess,
+    userTVL: userTVL,
+    activePosition: [],
+    availableRewards: rewardsToClaim,
   };
 };
