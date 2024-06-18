@@ -3,6 +3,7 @@ import { SolanaAlert } from '@/components/Alerts';
 import { OnRamper } from '@/components/OnRamper';
 import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';
+import { useSession } from '@/hooks/useSession';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
 import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
@@ -58,6 +59,9 @@ export function Widgets({
       });
     }
   };
+  // testing! todo: remove
+  const sessionID = useSession();
+  console.log('sessionId', sessionID);
 
   const starterVariant: StarterVariantType = useMemo(() => {
     if (widgetVariant) {
