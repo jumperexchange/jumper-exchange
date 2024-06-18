@@ -205,6 +205,8 @@ export interface PartnerThemesAttributes {
   uid: string;
   BackgroundImageLight: StrapiImageData;
   BackgroundImageDark: StrapiImageData;
+  LightBackgroundColor?: string;
+  DarkBackgroundColor?: string;
 }
 
 /* Blog */

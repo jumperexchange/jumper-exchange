@@ -13,18 +13,18 @@ const checkLocaleIsPath = (path: string | null) => {
     return locales.some(
       (locale) =>
         path === '/' ||
-        path.includes(`/${JUMPER_BUY_PATH}`) ||
-        path.includes(`/${JUMPER_GAS_PATH}`) ||
-        path.includes(`/${JUMPER_REFUEL_PATH}`) ||
-        path.includes(`/${JUMPER_SWAP_PATH}`) ||
-        path.includes(`/${JUMPER_EXCHANGE_PATH}`) ||
-        path === `/${locale}/` ||
+        path.includes(`${JUMPER_BUY_PATH}`) ||
+        path.includes(`${JUMPER_GAS_PATH}`) ||
+        path.includes(`${JUMPER_REFUEL_PATH}`) ||
+        path.includes(`${JUMPER_SWAP_PATH}`) ||
+        path.includes(`${JUMPER_EXCHANGE_PATH}`) ||
         path === `/${locale}` ||
-        path.includes(`/${locale}/${JUMPER_BUY_PATH}`) ||
-        path.includes(`/${locale}/${JUMPER_GAS_PATH}`) ||
-        path.includes(`/${locale}/${JUMPER_REFUEL_PATH}`) ||
-        path.includes(`/${locale}/${JUMPER_SWAP_PATH}`) ||
-        path.includes(`/${locale}/${JUMPER_EXCHANGE_PATH}`),
+        path === `/${locale}/` ||
+        path.includes(`/${locale}${JUMPER_BUY_PATH}`) ||
+        path.includes(`/${locale}${JUMPER_GAS_PATH}`) ||
+        path.includes(`/${locale}${JUMPER_REFUEL_PATH}`) ||
+        path.includes(`/${locale}${JUMPER_SWAP_PATH}`) ||
+        path.includes(`/${locale}${JUMPER_EXCHANGE_PATH}`),
     );
   }
 };

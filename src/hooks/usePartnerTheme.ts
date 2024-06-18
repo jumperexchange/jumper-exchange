@@ -27,7 +27,13 @@ export const usePartnerTheme = () => {
   });
 
   const imageUrl = useMemo(() => {
-    if (partnerThemeUid && partnerThemes?.length > 0 && isSuccess) {
+    if (
+      partnerThemeUid &&
+      partnerThemes?.length > 0 &&
+      isSuccess &&
+      (partnerThemes[0].attributes.BackgroundImageLight.data?.attributes.url ||
+        partnerThemes[0].attributes.BackgroundImageDark.data?.attributes.url)
+    ) {
       return theme.palette.mode === 'light'
         ? new URL(
             partnerThemes[0].attributes.BackgroundImageLight.data?.attributes.url,
@@ -47,6 +53,16 @@ export const usePartnerTheme = () => {
     theme.palette.mode,
     url.origin,
   ]);
+
+  const backgroundColor = useMemo(() => {
+    if (partnerThemeUid && partnerThemes?.length > 0 && isSuccess) {
+      return theme.palette.mode === 'light'
+        ? partnerThemes[0].attributes.LightBackgroundColor
+        : partnerThemes[0].attributes.DarkBackgroundColor;
+    } else {
+      return undefined;
+    }
+  }, [isSuccess, partnerThemeUid, partnerThemes, theme.palette.mode]);
 
   const availableWidgetTheme = useMemo(() => {
     if (partnerThemeUid && partnerThemes?.length > 0 && isSuccess) {
@@ -80,6 +96,8 @@ export const usePartnerTheme = () => {
   return {
     partnerTheme:
       isHomepage && partnerThemes?.length > 0 ? partnerThemes[0] : undefined,
+    backgroundColor:
+      isHomepage && backgroundColor ? backgroundColor : undefined,
     availableWidgetTheme:
       isHomepage && availableWidgetTheme ? availableWidgetTheme : undefined,
     currentWidgetTheme:
