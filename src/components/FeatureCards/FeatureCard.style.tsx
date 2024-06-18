@@ -82,7 +82,7 @@ export interface FeatureCardSubtitleProps
 export const FeatureCardSubtitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'typographyColor',
 })<FeatureCardSubtitleProps>(({ typographyColor }) => ({
-  color: '#FFFFFF',
+  color: typographyColor,
   lineHeight: '24px',
   width: 224,
   userSelect: 'none',
@@ -114,11 +114,12 @@ export const FeatureCardCtaLink = styled(Link, {
 export interface FeatureCardCtaLabelProps
   extends Omit<TypographyProps, 'component'> {
   data: FeatureCardData;
+  typographyColor?: string;
 }
 
 export const FeatureCardCtaLabel = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'data',
-})<FeatureCardCtaLabelProps>(({ data }) => ({
+  shouldForwardProp: (prop) => prop !== 'data' && prop !== 'typographyColor',
+})<FeatureCardCtaLabelProps>(({ data, typographyColor }) => ({
   maxWidth: 224,
   maxHeight: 20,
   overflow: 'hidden',
