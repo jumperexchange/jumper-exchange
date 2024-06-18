@@ -5,8 +5,7 @@ import { darkTheme } from 'src/theme';
 
 export const useWidgetTheme = () => {
   const theme = useTheme();
-  const { activeUid, partnerTheme, isSuccess } = usePartnerTheme();
-
+  const { activeUid, isSuccess, currentWidgetTheme } = usePartnerTheme();
   const defaultWidgetTheme = {
     typography: {
       fontFamily: theme.typography.fontFamily,
@@ -44,8 +43,8 @@ export const useWidgetTheme = () => {
     },
   };
 
-  if (!!activeUid && isSuccess && !!partnerTheme?.attributes?.config) {
-    return partnerTheme.attributes.config;
+  if (!!activeUid && isSuccess && !!currentWidgetTheme) {
+    return currentWidgetTheme;
   } else {
     return defaultWidgetTheme;
   }

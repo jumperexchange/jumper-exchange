@@ -46,8 +46,39 @@ export const usePartnerTheme = () => {
     url.origin,
   ]);
 
+  const availableWidgetTheme = useMemo(() => {
+    if (partnerThemeUid && partnerThemes?.length > 0 && isSuccess) {
+      if (
+        partnerThemes[0].attributes.lightConfig &&
+        partnerThemes[0].attributes.darkConfig
+      ) {
+        return 'system';
+      } else if (partnerThemes[0].attributes.darkConfig) {
+        return 'dark';
+      } else {
+        return 'light';
+      }
+    }
+  }, [isSuccess, partnerThemeUid, partnerThemes]);
+
+  const currentWidgetTheme = useMemo(() => {
+    if (availableWidgetTheme === 'system') {
+      return theme.palette.mode === 'light'
+        ? partnerThemes[0].attributes.lightConfig
+        : partnerThemes[0].attributes.darkConfig;
+    } else if (availableWidgetTheme === 'dark') {
+      return partnerThemes[0].attributes.darkConfig;
+    } else if (availableWidgetTheme === 'light') {
+      return partnerThemes[0].attributes.lightConfig;
+    } else {
+      return undefined;
+    }
+  }, [availableWidgetTheme, partnerThemes, theme.palette.mode]);
+
   return {
     partnerTheme: partnerThemes?.length > 0 ? partnerThemes[0] : undefined,
+    availableWidgetTheme,
+    currentWidgetTheme,
     activeUid: partnerThemeUid,
     imgUrl: imageUrl,
     isSuccess,

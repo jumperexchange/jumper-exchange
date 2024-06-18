@@ -11,7 +11,6 @@ import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useMemo } from 'react';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
@@ -23,20 +22,11 @@ export const useThemeSwitchTabs = () => {
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
     : 'light';
-  const { partnerTheme, activeUid } = usePartnerTheme();
-
-  const darkThemeSwitchEnabled = useMemo(() => {
-    if (activeUid) {
-      if (partnerTheme?.attributes.darkModeEnabled) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return undefined;
-    }
-  }, [activeUid, partnerTheme?.attributes.darkModeEnabled]);
-  const setThemeMode = useSettingsStore((state) => state.setThemeMode);
+  const { availableWidgetTheme, activeUid } = usePartnerTheme();
+  const [themeMode, setThemeMode] = useSettingsStore((state) => [
+    state.themeMode,
+    state.setThemeMode,
+  ]);
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     trackEvent({
       category: TrackingCategory.ThemeSection,
@@ -51,11 +41,57 @@ export const useThemeSwitchTabs = () => {
     setThemeMode(mode);
   };
 
+  // tooltips:
+  const lightModeTooltip =
+    activeUid && availableWidgetTheme === 'dark'
+      ? t('navbar.themes.lightModeDisabled')
+      : t('navbar.themes.switchToLight');
+  const darkModeTooltip =
+    activeUid && availableWidgetTheme === 'light'
+      ? t('navbar.themes.darkModeDisabled')
+      : t('navbar.themes.switchToDark');
+  const systemModeTooltip =
+    activeUid && availableWidgetTheme !== 'system'
+      ? t('navbar.themes.systemModeDisabled')
+      : t('navbar.themes.switchToSystem');
+
+  // handlers:
+  let lightModeEnabled = false;
+  let darkModeEnabled = false;
+  let systemModeEnabled = false;
+
+  if (activeUid) {
+    if (availableWidgetTheme === 'system') {
+      systemModeEnabled = true;
+      lightModeEnabled = true;
+      darkModeEnabled = true;
+    } else {
+      if (availableWidgetTheme === 'light') {
+        lightModeEnabled = true;
+      }
+      if (availableWidgetTheme === 'dark') {
+        darkModeEnabled = true;
+      }
+    }
+  } else {
+    systemModeEnabled = true;
+    lightModeEnabled = true;
+    darkModeEnabled = true;
+  }
+
+  console.log({
+    availableWidgetTheme,
+    activeUid,
+    lightModeEnabled,
+    darkModeEnabled,
+    systemModeEnabled,
+  });
+
   const output = [
     {
-      tooltip: t('navbar.themes.switchToLight'),
+      tooltip: themeMode !== 'light' ? lightModeTooltip : undefined,
       value: 0,
-      blur: darkThemeSwitchEnabled,
+      blur: !lightModeEnabled,
       icon: (
         <LightModeIcon
           sx={{
@@ -64,17 +100,13 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        (darkThemeSwitchEnabled === undefined ||
-          darkThemeSwitchEnabled === false) &&
-          handleSwitchMode('light');
+        lightModeEnabled && themeMode !== 'light' && handleSwitchMode('light');
       },
     },
     {
-      tooltip: t('navbar.themes.switchToDark'),
+      tooltip: themeMode !== 'dark' ? darkModeTooltip : undefined,
       value: 1,
-      blur:
-        darkThemeSwitchEnabled !== undefined &&
-        darkThemeSwitchEnabled === false,
+      blur: !darkModeEnabled,
       icon: (
         <NightlightIcon
           sx={{
@@ -83,15 +115,13 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        (darkThemeSwitchEnabled === undefined ||
-          darkThemeSwitchEnabled === true) &&
-          handleSwitchMode('dark');
+        darkModeEnabled && themeMode !== 'dark' && handleSwitchMode('dark');
       },
     },
     {
-      tooltip: t('navbar.themes.switchToSystem'),
+      tooltip: themeMode !== 'auto' ? systemModeTooltip : undefined,
       value: 2,
-      blur: darkThemeSwitchEnabled !== undefined,
+      blur: !systemModeEnabled,
       icon: (
         <BrightnessAutoIcon
           sx={{
@@ -100,7 +130,7 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        darkThemeSwitchEnabled === undefined && handleSwitchMode('auto');
+        systemModeEnabled && themeMode !== 'auto' && handleSwitchMode('auto');
       },
     },
   ];

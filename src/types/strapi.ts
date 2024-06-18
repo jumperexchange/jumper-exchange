@@ -196,7 +196,8 @@ export interface PartnerThemesData {
 
 export interface PartnerThemesAttributes {
   PartnerName: string;
-  config: WidgetTheme;
+  lightConfig?: WidgetTheme;
+  darkConfig?: WidgetTheme;
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;

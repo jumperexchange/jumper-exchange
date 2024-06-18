@@ -1,5 +1,4 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import {
@@ -12,17 +11,13 @@ import { useSettingsStore } from 'src/stores/settings';
 import type { PartnerThemesData } from 'src/types/strapi';
 
 export const useThemeMenuContent = () => {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const [partnerThemeUid, setPartnerTheme] = useSettingsStore((state) => [
+  const [partnerThemeUid, setPartnerThemeUid] = useSettingsStore((state) => [
     state.partnerThemeUid,
     state.setPartnerThemeUid,
   ]);
-  const [themeMode, setThemeMode] = useSettingsStore((state) => [
-    state.themeMode,
-    state.setThemeMode,
-  ]);
-  const [, setCookie] = useCookies(['theme']);
+  const setThemeMode = useSettingsStore((state) => state.setThemeMode);
   const { data: partnerThemes, isSuccess } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
     queryKey: ['partner-themes'],
@@ -37,9 +32,10 @@ export const useThemeMenuContent = () => {
           theme?.attributes.PartnerName.replace(' ', '') ?? 'default',
       },
     });
-    setPartnerTheme(theme?.attributes.uid);
-
-    if (theme?.attributes.darkModeEnabled) {
+    setPartnerThemeUid(theme?.attributes.uid);
+    if (theme?.attributes.lightConfig && theme?.attributes.darkConfig) {
+      setThemeMode('auto');
+    } else if (theme?.attributes.darkConfig) {
       setThemeMode('dark');
     } else {
       setThemeMode('light');
@@ -48,7 +44,7 @@ export const useThemeMenuContent = () => {
 
   const themes: any = [
     {
-      label: 'Default',
+      label: t('navbar.themes.default'),
       onClick: () => {
         handleThemeSwitch(undefined);
       },

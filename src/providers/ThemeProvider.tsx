@@ -33,7 +33,7 @@ export const ThemeProvider: React.FC<
     themeProp,
   );
   const isDarkMode = useDetectDarkModePreference();
-  const { partnerTheme, activeUid } = usePartnerTheme();
+  const { activeUid, currentWidgetTheme } = usePartnerTheme();
 
   useEffect(() => {
     // Check if the theme prop is not provided (null or undefined)
@@ -61,40 +61,36 @@ export const ThemeProvider: React.FC<
 
   const activeTheme = useMemo(() => {
     let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
-    if (activeUid && partnerTheme) {
+    if (activeUid && currentWidgetTheme) {
       // Merge partner theme attributes into the base theme
       const mergedTheme = deepmerge(currentTheme, {
         palette: {
           primary: {
             main:
-              (
-                partnerTheme.attributes.config.palette
-                  ?.primary as SimplePaletteColorOptions
-              ).main || currentTheme.palette.primary.main,
+              (currentWidgetTheme.palette?.primary as SimplePaletteColorOptions)
+                .main || currentTheme.palette.primary.main,
           },
           secondary: {
             main:
               (
-                partnerTheme.attributes.config.palette
+                currentWidgetTheme.palette
                   ?.secondary as SimplePaletteColorOptions
               ).main || currentTheme.palette.secondary.main,
           },
           surface1: {
             main:
-              partnerTheme.attributes.config.palette?.background?.default ||
+              currentWidgetTheme.palette?.background?.default ||
               currentTheme.palette.secondary.main,
           },
           accent1: {
             main:
-              (
-                partnerTheme.attributes.config.palette
-                  ?.primary as SimplePaletteColorOptions
-              ).main || currentTheme.palette.surface1.main,
+              (currentWidgetTheme.palette?.primary as SimplePaletteColorOptions)
+                .main || currentTheme.palette.surface1.main,
           },
           accent2: {
             main:
               (
-                partnerTheme.attributes.config.palette
+                currentWidgetTheme.palette
                   ?.secondary as SimplePaletteColorOptions
               ).main || currentTheme.palette.surface1.main,
           },
@@ -104,7 +100,7 @@ export const ThemeProvider: React.FC<
     } else {
       return currentTheme;
     }
-  }, [activeUid, partnerTheme, theme]);
+  }, [activeUid, currentWidgetTheme, theme]);
 
   // Render children only when the theme is determined
   return (
