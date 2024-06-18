@@ -4,6 +4,7 @@ import { Navbar } from './components/Navbar/Navbar';
 import { PoweredBy } from './components/PoweredBy/PoweredBy';
 import { Snackbar } from './components/Snackbar/Snackbar';
 import { SupportModal } from './components/SupportModal/SupportModal';
+import Image from 'next/image';
 
 interface LayoutProps {
   fixedPoweredBy?: boolean | undefined;
@@ -29,7 +30,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
       >
         To ensure a seamless experience on Jumper, please update MetaMask to the
         latest version. This update solves a bug present in older versions.{' '}
-        <img
+        <Image
           alt=""
           width={24}
           height={24}
