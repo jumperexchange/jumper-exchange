@@ -21,7 +21,7 @@ const Testing = () => {
   const userAgent = `${
     typeof navigator !== 'undefined' && navigator?.userAgent
   }`;
-  console.log('userAgent', userAgent);
+  typeof navigator !== 'undefined' && console.log('userAgent', userAgent);
   console.log('isMobile', isMobile);
   return (
     <>
