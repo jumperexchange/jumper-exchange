@@ -25,7 +25,9 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
 
   const handleClickTab =
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
-      router.push(`/${tab}?${searchParams.toString()}`);
+      router.push(
+        `/${tab}?${searchParams.size !== 0 ? searchParams.toString() : window.location.search}`,
+      );
       trackEvent({
         category: TrackingCategory.Navigation,
         action: TrackingAction.SwitchTab,
