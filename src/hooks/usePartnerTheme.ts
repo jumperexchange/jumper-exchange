@@ -12,6 +12,7 @@ import { useStrapi } from './useStrapi';
 export const usePartnerTheme = () => {
   const theme = useTheme();
   const isHomepage = useIsHomepage();
+  const setThemeMode = useSettingsStore((state) => state.setThemeMode);
   const partnerThemeUid = useSettingsStore(
     (state) => state.partnerThemeUid,
     shallow,
@@ -72,12 +73,14 @@ export const usePartnerTheme = () => {
       ) {
         return 'system';
       } else if (partnerThemes[0].attributes.darkConfig) {
+        setThemeMode('dark');
         return 'dark';
       } else {
+        setThemeMode('light');
         return 'light';
       }
     }
-  }, [isSuccess, partnerThemeUid, partnerThemes]);
+  }, [isSuccess, partnerThemeUid, partnerThemes, setThemeMode]);
 
   const currentWidgetTheme = useMemo(() => {
     if (availableWidgetTheme === 'system') {

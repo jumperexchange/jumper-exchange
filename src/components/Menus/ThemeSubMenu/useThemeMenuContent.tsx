@@ -33,13 +33,6 @@ export const useThemeMenuContent = () => {
       },
     });
     setPartnerThemeUid(theme?.attributes.uid);
-    if (theme?.attributes.lightConfig && theme?.attributes.darkConfig) {
-      setThemeMode('auto');
-    } else if (theme?.attributes.darkConfig) {
-      setThemeMode('dark');
-    } else {
-      setThemeMode('light');
-    }
   };
 
   const themes: any = [
