@@ -15,6 +15,28 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
 }) => {
   return (
     <>
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          justifyContent: 'center',
+          width: '100%',
+          textAlign: 'center',
+          padding: '10px',
+          background: 'rgb(101 0 254 / 10%)',
+          fontWeight: 700,
+        }}
+      >
+        To ensure a seamless experience on Jumper, please update MetaMask to the
+        latest version. This update solves a bug present in older versions.{' '}
+        <img
+          alt=""
+          width={24}
+          height={24}
+          style={{ marginLeft: 8 }}
+          src="https://cdn.discordapp.com/emojis/898917406548836402.webp?size=96&quality=lossless"
+        />
+      </div>
       <BackgroundGradient />
       <Navbar />
       {children}
