@@ -16,6 +16,7 @@ export const refuelAllowChains: ChainId[] = [
   ChainId.OPT,
   ChainId.BAS,
   ChainId.MAM,
+  ChainId.RSK,
 ];
 
 export const themeAllowChains: ChainId[] = [

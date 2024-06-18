@@ -8,7 +8,6 @@ export interface SettingsProps {
   clientWallets: string[];
   disabledFeatureCards: string[];
   welcomeScreenClosed: boolean;
-  [key: string]: any;
 }
 export interface SettingsState extends SettingsProps {
   // Tabs

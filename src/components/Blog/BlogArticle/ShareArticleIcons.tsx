@@ -23,7 +23,7 @@ import {
 
 interface ShareIconsProps {
   title?: string;
-  slug: string | undefined;
+  slug?: string;
 }
 
 export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
@@ -50,8 +50,8 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       label: 'click-share-blog-article-link',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
-        [TrackingEventParameter.ArticleTitle]: title,
-        [TrackingEventParameter.ArticleCardId]: slug,
+        [TrackingEventParameter.ArticleTitle]: title || '',
+        [TrackingEventParameter.ArticleCardId]: slug || '',
       },
     });
 
@@ -79,8 +79,8 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       label: 'click-share-blog-article-x',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
-        [TrackingEventParameter.ArticleTitle]: title,
-        [TrackingEventParameter.ArticleCardId]: slug,
+        [TrackingEventParameter.ArticleTitle]: title || '',
+        [TrackingEventParameter.ArticleCardId]: slug || '',
       },
     });
     openInNewTab(xUrl.href);
@@ -102,8 +102,8 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       label: 'click-share-blog-article-fb',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
-        [TrackingEventParameter.ArticleTitle]: title,
-        [TrackingEventParameter.ArticleCardId]: slug,
+        [TrackingEventParameter.ArticleTitle]: title || '',
+        [TrackingEventParameter.ArticleCardId]: slug || '',
       },
     });
     openInNewTab(fbUrl.href);
@@ -126,8 +126,8 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       label: 'click-share-blog-article-linkedin',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
-        [TrackingEventParameter.ArticleTitle]: title,
-        [TrackingEventParameter.ArticleCardId]: slug,
+        [TrackingEventParameter.ArticleTitle]: title || '',
+        [TrackingEventParameter.ArticleCardId]: slug || '',
       },
     });
     openInNewTab(linkedInUrl.href);

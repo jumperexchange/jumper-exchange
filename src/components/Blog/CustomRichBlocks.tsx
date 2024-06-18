@@ -1,3 +1,4 @@
+import generateKey from '@/app/lib/generateKey';
 import { BlogCTA } from '@/components/Blog/CTAs/BlogCTA/BlogCTA';
 import {
   InstructionsAccordion,
@@ -8,6 +9,7 @@ import type { ThemeModesSupported } from '@/types/settings';
 import type { MediaAttributes } from '@/types/strapi';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { JSX } from 'react';
 import { BlogParagraphContainer } from './BlogArticle/BlogArticle.style';
 import type { BlogWidgetProps } from './BlogWidget';
 import { BlogWidget } from './BlogWidget';
@@ -21,7 +23,6 @@ import {
   BlogLink,
   BlogParagraph,
 } from './CustomRichBlocks.style';
-import generateKey from '@/app/lib/generateKey';
 
 interface CustomRichBlocksProps {
   baseUrl?: string;
@@ -49,8 +50,16 @@ export const CustomRichBlocks = ({
 }: CustomRichBlocksProps) => {
   const customRichBlocks = {
     image: (data: ImageData) =>
-      baseUrl ? <Lightbox imageData={data.image} baseUrl={baseUrl} /> : null,
-    heading: ({ children, level }: any) => {
+      baseUrl ? (
+        <Lightbox imageData={data.image} baseUrl={baseUrl} />
+      ) : undefined,
+    heading: ({
+      children,
+      level,
+    }: {
+      children: JSX.Element | JSX.Element[];
+      level: number;
+    }) => {
       switch (level) {
         case 2:
           return (
@@ -104,8 +113,8 @@ export const CustomRichBlocks = ({
           const urlMatch = htmlString.match(urlRegex);
 
           // Check if matches were found and extract strings
-          const title = titleMatch ? titleMatch[1] : null;
-          const url = urlMatch ? urlMatch[1] : null;
+          const title = titleMatch?.[1];
+          const url = urlMatch ? urlMatch[1] : undefined;
           return (
             <BlogCTA title={title} url={url} id={id} key={generateKey('cta')} />
           );
@@ -176,28 +185,28 @@ export const CustomRichBlocks = ({
           <BlogParagraphContainer>
             {children.map((el: any, index: number) => {
               if (el.props.text && el.props.text !== '') {
-                return (
-                  <BlogParagraph
-                    italic={el.props.italic}
-                    strikethrough={el.props.strikethrough}
-                    underline={el.props.underline}
-                    bold={el.props.bold}
-                    key={`blog-paragraph-${index}`}
-                  >
-                    {el.props.text}
-                  </BlogParagraph>
-                );
-              } else if (el.props.content?.type === 'link') {
-                return (
-                  <BlogLink
-                    href={el.props.content.url}
-                    key={generateKey('link')}
-                  >
-                    {el.props.content.children[0].text}
-                  </BlogLink>
-                );
-              } else {
-                return null;
+                if (el.props.content?.type === 'link') {
+                  return (
+                    <BlogLink
+                      href={el.props.content.url}
+                      key={generateKey('link')}
+                    >
+                      {el.props.content.children[0].text}
+                    </BlogLink>
+                  );
+                } else {
+                  return (
+                    <BlogParagraph
+                      italic={el.props.italic}
+                      strikethrough={el.props.strikethrough}
+                      underline={el.props.underline}
+                      bold={el.props.bold}
+                      key={`blog-paragraph-${index}`}
+                    >
+                      {el.props.text}
+                    </BlogParagraph>
+                  );
+                }
               }
             })}
           </BlogParagraphContainer>

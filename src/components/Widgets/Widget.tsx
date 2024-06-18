@@ -12,10 +12,14 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
+import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { darkTheme } from 'src/theme/theme';
@@ -24,9 +28,6 @@ import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { useMediaQuery } from '@mui/material';
-import type { Theme } from '@mui/material';
-import { publicRPCList } from 'src/const/rpcList';
 
 export function Widget({
   starterVariant,
@@ -53,7 +54,6 @@ export function Widget({
   });
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
-
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
@@ -76,9 +76,9 @@ export function Widget({
       return widgetIntegrator;
     }
     // all the trafic from mobile (including "/gas")
-    if (!isDesktop) {
-      return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
-    }
+    // if (!isDesktop) {
+    //   return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+    // }
     // all the trafic from web on "/gas"
     if (isGasVariant) {
       return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
@@ -137,11 +137,16 @@ export function Widget({
         },
         container: {
           borderRadius: '12px',
-          minWidth: 416,
-          boxShadow:
-            theme.palette.mode === 'light'
-              ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-              : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+          maxWidth: '100%',
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '12px',
+            maxWidth: 416,
+            minWidth: 416,
+            boxShadow:
+              theme.palette.mode === 'light'
+                ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+                : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+          },
         },
         shape: {
           borderRadius: 12,
@@ -199,12 +204,13 @@ export function Widget({
     fromToken,
     i18n.language,
     i18n.languages,
-    isGasVariant,
+    integratorStringByType,
     isMultisigSigner,
     multisigSdkConfig,
     multisigWidget,
     setWalletSelectMenuState,
     starterVariant,
+    theme.breakpoints,
     theme.palette.accent1.main,
     theme.palette.grey,
     theme.palette.mode,
@@ -217,7 +223,6 @@ export function Widget({
     toToken,
     tokens,
     wagmiConfig,
-    widgetIntegrator,
   ]);
 
   return (

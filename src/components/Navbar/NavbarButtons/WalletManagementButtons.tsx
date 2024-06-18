@@ -2,33 +2,25 @@
 import { EcosystemSelectMenu } from '@/components/Menus/EcosystemSelectMenu';
 import { WalletMenu } from '@/components/Menus/WalletMenu';
 import { WalletSelectMenu } from '@/components/Menus/WalletSelectMenu';
-import { Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import type { ReactElement } from 'react';
-import React, { useRef } from 'react';
+import { Box, Typography } from '@mui/material';
+import { usePathname, useRouter } from 'next/navigation';
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
+import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { EventTrackingTool } from 'src/types/userTracking';
 import { WallettButtons } from '../WalletButton';
 import { ConnectButton } from './WalletManagementButtons.style';
 
-interface WalletManagementButtonsProps {
-  children?: React.ReactNode;
-  backgroundColor?: string;
-  color?: string;
-  walletConnected?: boolean;
-  redirectToLearn?: boolean;
-  connectButtonLabel?: ReactElement<any, any>;
-}
-
-export const WalletManagementButtons: React.FC<
-  WalletManagementButtonsProps
-> = ({ connectButtonLabel, redirectToLearn }) => {
-  const walletManagementButtonsRef = useRef<any>();
+export const WalletManagementButtons = () => {
+  const walletManagementButtonsRef = useRef<HTMLAnchorElement>(null);
   const { t } = useTranslation();
   const router = useRouter();
   const { trackEvent } = useUserTracking();
+
+  const pathname = usePathname();
+  const redirectToApp = pathname?.includes(JUMPER_LEARN_PATH);
 
   const handleLearnButton = () => {
     router.push('/');
@@ -42,8 +34,8 @@ export const WalletManagementButtons: React.FC<
 
   return (
     <>
-      <div ref={walletManagementButtonsRef}>
-        {redirectToLearn ? (
+      <Box ref={walletManagementButtonsRef}>
+        {redirectToApp ? (
           <ConnectButton
             // Used in the widget
             onClick={handleLearnButton}
@@ -64,10 +56,14 @@ export const WalletManagementButtons: React.FC<
         ) : (
           <WallettButtons />
         )}
-      </div>
-      <WalletMenu anchorEl={walletManagementButtonsRef.current} />
-      <WalletSelectMenu anchorEl={walletManagementButtonsRef.current} />
-      <EcosystemSelectMenu anchorEl={walletManagementButtonsRef.current} />
+      </Box>
+      <WalletMenu anchorEl={walletManagementButtonsRef.current ?? undefined} />
+      <WalletSelectMenu
+        anchorEl={walletManagementButtonsRef.current || undefined}
+      />
+      <EcosystemSelectMenu
+        anchorEl={walletManagementButtonsRef?.current || undefined}
+      />
     </>
   );
 };

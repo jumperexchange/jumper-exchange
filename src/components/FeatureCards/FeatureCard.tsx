@@ -1,9 +1,6 @@
 'use client';
 import CloseIcon from '@mui/icons-material/Close';
-import { IconButton, Link, Slide, useTheme } from '@mui/material';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import { Slide, useTheme } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 
 import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
@@ -19,7 +16,16 @@ import type { FeatureCardData } from '@/types/strapi';
 import { EventTrackingTool } from '@/types/userTracking';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { useTranslation } from 'react-i18next';
-import { FCard as Card } from '.';
+import {
+  FCard as Card,
+  FeatureCardActions,
+  FeatureCardCloseButton,
+  FeatureCardContent,
+  FeatureCardCtaLabel,
+  FeatureCardCtaLink,
+  FeatureCardSubtitle,
+  FeatureCardTitle,
+} from '.';
 
 interface FeatureCardProps {
   data: FeatureCardData;
@@ -94,6 +100,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   ]);
 
   const mode = data.attributes.DisplayConditions.mode || theme.palette.mode;
+
   const imageUrl =
     mode === 'dark'
       ? new URL(
@@ -177,19 +184,9 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         onClick={handleCardClick}
         isDarkCard={data.attributes.DisplayConditions.mode === 'dark'}
       >
-        <CardContent
-          sx={{
-            padding: theme.spacing(3),
-            position: 'relative',
-          }}
-        >
-          <IconButton
+        <FeatureCardContent>
+          <FeatureCardCloseButton
             disableRipple={true}
-            sx={{
-              position: 'absolute',
-              right: 1,
-              top: 1,
-            }}
             onClick={(e) => handleClose(e)}
           >
             <CloseIcon
@@ -199,70 +196,43 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
                 color: typographyColor,
               }}
             />
-          </IconButton>
+          </FeatureCardCloseButton>
           {!!data?.attributes.Title && (
-            <Typography
-              variant={'lifiHeaderSmall'}
-              sx={{
-                color: data.attributes.TitleColor ?? typographyColor,
-                fontSize: '24px',
-                lineHeight: '32px',
-                userSelect: 'none',
-                maxHeight: 32,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
+            <FeatureCardTitle
+              variant="lifiHeaderSmall"
+              data={data}
+              typographyColor={data.attributes.TitleColor || typographyColor}
               gutterBottom
             >
               {data?.attributes.Title}
-            </Typography>
+            </FeatureCardTitle>
           )}
           {!!data?.attributes.Subtitle && (
-            <Typography
-              variant={'lifiBodySmall'}
-              sx={{
-                color: typographyColor,
-                lineHeight: '24px',
-                width: 224,
-                userSelect: 'none',
-                height: 48,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
+            <FeatureCardSubtitle
+              variant="lifiBodySmall"
+              typographyColor={typographyColor}
             >
               {data?.attributes.Subtitle}
-            </Typography>
+            </FeatureCardSubtitle>
           )}
-          <CardActions sx={{ padding: 0, marginTop: theme.spacing(1) }}>
-            <Link
+          <FeatureCardActions>
+            <FeatureCardCtaLink
               target="_blank"
               rel="noopener"
               href={data?.attributes.URL}
               onClick={(e) => handleCTA(e)}
-              sx={{
-                textDecoration: 'none',
-                color:
-                  data.attributes.DisplayConditions.mode === 'dark' ||
-                  theme.palette.mode === 'dark'
-                    ? theme.palette.accent1Alt?.main
-                    : theme.palette.primary.main,
-              }}
+              data={data}
             >
-              <Typography
+              <FeatureCardCtaLabel
                 variant="lifiBodySmallStrong"
-                sx={{
-                  maxWidth: 224,
-                  maxHeight: 20,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  color: data.attributes.CTAColor ?? 'inherit',
-                }}
+                data={data}
+                typographyColor={data.attributes.CTAColor || typographyColor}
               >
                 {data.attributes.CTACall ?? t('featureCard.learnMore')}
-              </Typography>
-            </Link>
-          </CardActions>
-        </CardContent>
+              </FeatureCardCtaLabel>
+            </FeatureCardCtaLink>
+          </FeatureCardActions>
+        </FeatureCardContent>
       </Card>
     </Slide>
   );

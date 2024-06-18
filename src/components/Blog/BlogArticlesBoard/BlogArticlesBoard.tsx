@@ -2,17 +2,13 @@ import type { TabProps } from '@/components/Tabs';
 import type { BlogArticleData, TagAttributes } from '@/types/strapi';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import type { Theme } from '@mui/material';
-import {
-  Fade,
-  Skeleton,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Fade, Skeleton, useMediaQuery, useTheme } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { urbanist } from 'src/fonts/fonts';
-import { BlogArticlesBoardContainer } from './BlogArticlesBoard.style';
+import {
+  BlogArticlesBoardContainer,
+  BlogArticlesBoardTitle,
+} from './BlogArticlesBoard.style';
 import { BlogArticlesBoardTabs } from './BlogArticlesBoardTabs';
 
 interface BlogArticlesBoardProps {
@@ -83,16 +79,9 @@ export const BlogArticlesBoard = ({
 
   return (
     <BlogArticlesBoardContainer id="see-all">
-      <Typography
-        variant="lifiHeaderMedium"
-        sx={{
-          fontFamily: urbanist.style.fontFamily,
-          textAlign: 'center',
-          margin: theme.spacing(10, 'auto', 0),
-        }}
-      >
+      <BlogArticlesBoardTitle variant="lifiHeaderMedium">
         {t('blog.categories')}
-      </Typography>
+      </BlogArticlesBoardTitle>
       {filteredTags ? (
         <BlogArticlesBoardTabs
           openDropdown={openDropdown}
