@@ -17,13 +17,7 @@ export const useSession = (): string | undefined => {
     if (!session) {
       const newSessionId = uuidv7();
       setSession(newSessionId);
-
-      if (
-        typeof window !== 'undefined' &&
-        typeof sessionStorage !== 'undefined'
-      ) {
-        sessionStorage.setItem('session_id', newSessionId);
-      }
+      sessionStorage.setItem('session_id', newSessionId);
     }
   }, [session]);
 
