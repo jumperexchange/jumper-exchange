@@ -3,6 +3,7 @@ import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import { Stack } from '@mui/material';
 import { useMercleNft } from 'src/hooks/useMercleNft';
+import { useSession } from 'src/hooks/useSession';
 import { AddressBox } from './AddressBox/AddressBox';
 import { TierBox } from './LevelBox/TierBox';
 import {
@@ -17,6 +18,10 @@ export const ProfilePage = () => {
   const { isLoading, points, tier, pdas } = useLoyaltyPass();
   const { imageLink } = useMercleNft({ userAddress: account?.address });
   const { quests, isQuestLoading } = useOngoingQuests();
+
+  // testing! todo: remove
+  const sessionID = useSession();
+  console.log('sessionId', sessionID);
 
   return (
     <ProfilePageContainer className="profile-page">
