@@ -94,6 +94,10 @@ export const WidgetContainer = styled(Box, {
       opacity: 0.25,
     },
 
+    '.welcome-screen-container + & .widget-wrapper > div': {
+      cursor: 'pointer',
+    },
+
     // radial shadow glow
     '.welcome-screen-container + &:before': {
       content: '" "',
