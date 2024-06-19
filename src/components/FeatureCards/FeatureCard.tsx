@@ -95,6 +95,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   ]);
 
   const mode = data.attributes.DisplayConditions.mode || theme.palette.mode;
+
   const imageUrl =
     mode === 'dark'
       ? new URL(
@@ -192,14 +193,17 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
             <FeatureCardTitle
               variant="lifiHeaderSmall"
               data={data}
-              typographyColor={typographyColor}
+              typographyColor={data.attributes.TitleColor || typographyColor}
               gutterBottom
             >
               {data?.attributes.Title}
             </FeatureCardTitle>
           )}
           {!!data?.attributes.Subtitle && (
-            <FeatureCardSubtitle variant="lifiBodySmall">
+            <FeatureCardSubtitle
+              variant="lifiBodySmall"
+              typographyColor={typographyColor}
+            >
               {data?.attributes.Subtitle}
             </FeatureCardSubtitle>
           )}
@@ -211,7 +215,11 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
               onClick={(e) => handleCTA(e)}
               data={data}
             >
-              <FeatureCardCtaLabel variant="lifiBodySmallStrong" data={data}>
+              <FeatureCardCtaLabel
+                variant="lifiBodySmallStrong"
+                data={data}
+                typographyColor={data.attributes.CTAColor || typographyColor}
+              >
                 {data.attributes.CTACall ?? t('featureCard.learnMore')}
               </FeatureCardCtaLabel>
             </FeatureCardCtaLink>

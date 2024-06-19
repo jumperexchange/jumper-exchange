@@ -83,9 +83,9 @@ export function Widget({
       return widgetIntegrator;
     }
     // all the trafic from mobile (including "/gas")
-    if (!isDesktop) {
-      return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
-    }
+    // if (!isDesktop) {
+    //   return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+    // }
     // all the trafic from web on "/gas"
     if (isGasVariant) {
       return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
@@ -219,7 +219,7 @@ export function Widget({
     fromToken,
     i18n.language,
     i18n.languages,
-    isGasVariant,
+    integratorStringByType,
     isMultisigSigner,
     multisigSdkConfig,
     multisigWidget,
@@ -238,7 +238,6 @@ export function Widget({
     toToken,
     tokens,
     wagmiConfig,
-    widgetIntegrator,
   ]);
 
   return (

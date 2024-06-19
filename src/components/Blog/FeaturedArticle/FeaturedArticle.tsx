@@ -8,6 +8,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
+import { useSession } from '@/hooks/useSession';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData } from '@/types/strapi';
 import { formatDate } from '@/utils/formatDate';
@@ -36,6 +37,10 @@ export const FeaturedArticle = ({
 }: FeaturedArticleProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
+
+  // testing! todo: remove
+  const sessionID = useSession();
+  console.log('sessionId', sessionID);
 
   const handleFeatureCardClick = (featuredArticle: BlogArticleData[]) => {
     trackEvent({
