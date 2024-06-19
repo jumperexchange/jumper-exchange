@@ -9490,8 +9490,8 @@ __metadata:
     rollup-plugin-polyfill-node: "npm:^0.13.0"
     sharp: "npm:^0.33.4"
     typescript: "npm:^5.4.5"
-    web-vitals: "npm:^4.1.0"
     uuidv7: "npm:^1.0.0"
+    web-vitals: "npm:^4.1.0"
     zustand: "npm:^4.5.2"
   languageName: unknown
   linkType: soft
