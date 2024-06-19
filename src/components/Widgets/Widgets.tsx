@@ -31,22 +31,6 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
     ThemeVariantType | undefined
   >(undefined);
 
-  const handleWelcomeScreenEnter = (widgetVariant: StarterVariantType) => {
-    if (!welcomeScreenClosed) {
-      setWelcomeScreenClosed(true);
-      trackEvent({
-        category: TrackingCategory.WelcomeScreen,
-        action: TrackingAction.CloseWelcomeScreen,
-        label: 'enter_welcome_screen_on_widget-click',
-        data: { widgetVariant },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
-        enableAddressable: true,
-      });
-    }
-  };
   // testing! todo: remove
   const sessionID = useSession();
   console.log('sessionId', sessionID);
