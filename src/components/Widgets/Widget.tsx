@@ -64,17 +64,6 @@ export function Widget({
     router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
 
-  useEffect(() => {
-    if (searchParams && starterVariant !== 'refuel') {
-      return;
-    }
-
-    const params = new URLSearchParams(searchParams.toString());
-    // params.delete('toToken');
-    params.set('toToken', '0x0000000000000000000000000000000000000000');
-    router.replace(`/gas/?${params.toString()}`);
-  }, [searchParams]);
-
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
