@@ -12,6 +12,8 @@ import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import { usePersonalizedFeatureOnLevel } from 'src/hooks/usePersonalizedFeatureOnLevel';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
 
@@ -20,13 +22,30 @@ export const FeatureCards = () => {
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
   );
+  const { points } = useLoyaltyPass();
   const [cookie] = useCookies(['welcomeScreenClosed']);
   const [widgetExpanded, setWidgetExpanded] = useState(false);
   const widgetEvents = useWidgetEvents();
   const { account } = useAccounts();
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+
   const { data: cards, isSuccess } = useStrapi<FeatureCardData>({
     contentType: STRAPI_FEATURE_CARDS,
     queryKey: ['feature-cards'],
+  });
+
+  const { data: jumperUser } = useStrapi<JumperUserData>({
+    contentType: STRAPI_JUMPER_USERS,
+    filterPersonalFeatureCards: {
+      enabled: true,
+      account: account,
+    },
+    queryKey: ['personalized-feature-cards'],
+  });
+
+  const { featureCards: featureCardsLevel } = usePersonalizedFeatureOnLevel({
+    points: points,
+    enabled: !!points && (!jumperUser || jumperUser?.length === 0),
   });
 
   useEffect(() => {
@@ -38,15 +57,6 @@ export const FeatureCards = () => {
     return () =>
       widgetEvents.off(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
   }, [widgetEvents, widgetExpanded]);
-
-  const { data: jumperUser } = useStrapi<JumperUserData>({
-    contentType: STRAPI_JUMPER_USERS,
-    filterPersonalFeatureCards: {
-      enabled: true,
-      account: account,
-    },
-    queryKey: ['personalized-feature-cards'],
-  });
 
   function excludedFeatureCardsFilter(el: FeatureCardData) {
     if (
@@ -80,7 +90,11 @@ export const FeatureCards = () => {
 
   const slicedPersonalizedFeatureCards = useMemo(() => {
     const personalizedFeatureCards =
-      jumperUser && jumperUser[0]?.attributes?.feature_cards.data;
+      jumperUser && jumperUser[0]?.attributes?.feature_cards.data.length > 0
+        ? jumperUser && jumperUser[0]?.attributes?.feature_cards.data
+        : featureCardsLevel && featureCardsLevel.length > 0
+          ? [featureCardsLevel[0]]
+          : undefined;
 
     if (
       Array.isArray(personalizedFeatureCards) &&
@@ -96,9 +110,8 @@ export const FeatureCards = () => {
         .slice(0, 1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jumperUser]);
+  }, [jumperUser, featureCardsLevel]);
 
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   return (
     isDesktop &&
     cookie.welcomeScreenClosed &&

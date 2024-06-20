@@ -5,6 +5,7 @@ import { BackgroundGradient } from '@/components/BackgroundGradient/BackgroundGr
 import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
+import { useSession } from '@/hooks/useSession';
 import type { ThemeModesSupported } from '@/types/settings';
 import type { BlogArticleData } from '@/types/strapi';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +28,10 @@ const LearnArticlePage = ({
   activeTheme,
 }: LearnArticlePageProps) => {
   const { t } = useTranslation();
+
+  // testing! todo: remove
+  const sessionID = useSession();
+  console.log('sessionId', sessionID);
 
   return (
     <>

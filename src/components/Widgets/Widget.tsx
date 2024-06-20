@@ -12,6 +12,7 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
+import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
@@ -28,6 +29,7 @@ import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useMediaQuery } from '@mui/material';
 import type { Theme } from '@mui/material';
 import { publicRPCList } from 'src/const/rpcList';
+import { PartnerItgString } from 'src/const/parterItgString';
 
 export function Widget({
   starterVariant,
@@ -55,7 +57,6 @@ export function Widget({
   });
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
-
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
@@ -77,14 +78,22 @@ export function Widget({
     if (widgetIntegrator) {
       return widgetIntegrator;
     }
-    // all the trafic from mobile (including "/gas")
-    if (!isDesktop) {
-      return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+
+    if (partnerName) {
+      return (
+        PartnerItgString[partnerName] ??
+        process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR
+      );
     }
+    // all the trafic from mobile (including "/gas")
+    // if (!isDesktop) {
+    //   return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+    // }
     // all the trafic from web on "/gas"
     if (isGasVariant) {
       return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
     }
+
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
 
@@ -145,11 +154,16 @@ export function Widget({
         },
         container: {
           borderRadius: '12px',
-          minWidth: 416,
-          boxShadow:
-            theme.palette.mode === 'light'
-              ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-              : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+          maxWidth: '100%',
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '12px',
+            maxWidth: 416,
+            minWidth: 416,
+            boxShadow:
+              theme.palette.mode === 'light'
+                ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+                : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+          },
         },
         shape: {
           borderRadius: 12,
@@ -207,12 +221,13 @@ export function Widget({
     fromToken,
     i18n.language,
     i18n.languages,
-    isGasVariant,
+    integratorStringByType,
     isMultisigSigner,
     multisigSdkConfig,
     multisigWidget,
     setWalletSelectMenuState,
     starterVariant,
+    theme.breakpoints,
     theme.palette.accent1.main,
     theme.palette.grey,
     theme.palette.mode,
@@ -229,6 +244,7 @@ export function Widget({
     partnerName,
     isDexFiltered,
     isBridgeFiltered,
+    integratorStringByType,
   ]);
 
   return (
@@ -245,9 +261,7 @@ export function Widget({
           />
         }
       >
-        {/* {bridgeFilter === 'across' && partnerName && ( */}
         <LiFiWidget integrator={config.integrator} config={config} />
-        {/* )} */}
       </ClientOnly>
     </WidgetWrapper>
   );

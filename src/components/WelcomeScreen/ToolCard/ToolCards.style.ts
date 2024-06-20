@@ -1,5 +1,4 @@
 'use client';
-import type { Breakpoint } from '@mui/material';
 import { styled } from '@mui/material';
 
 export const ToolCardsContainer = styled('div')(({ theme }) => ({
@@ -8,5 +7,7 @@ export const ToolCardsContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(2),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {},
+  [`@media screen and (max-height: 600px)`]: {
+    display: 'none',
+  },
 }));

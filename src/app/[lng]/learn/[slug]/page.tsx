@@ -1,9 +1,9 @@
 import { getArticleBySlug } from '@/app/lib/getArticleBySlug';
 import { getArticlesByTag } from '@/app/lib/getArticlesByTag';
+import { getCookies } from '@/app/lib/getCookies';
 import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
-import { getCookies } from '@/app/lib/getCookies';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 
 export async function generateMetadata({

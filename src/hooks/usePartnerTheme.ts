@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useDexsAndBridgesKeys } from './useDexsAndBridgesKeys';
 
@@ -7,7 +6,6 @@ interface usePartnerThemeProps {
   isBridgeFiltered: boolean;
   isDexFiltered: boolean;
   partnerName: string;
-  backgroundURL?: string;
 }
 
 export const usePartnerTheme = (): usePartnerThemeProps => {
@@ -16,10 +14,9 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   let isBridgeFiltered = false;
   let isDexFiltered = false;
   let partnerName = '';
-  let backgroundURL = '';
 
   // check the list of bridge that we suport the name that we use
-  const { isLoading, bridgesKeys, exchangesKeys } = useDexsAndBridgesKeys();
+  const { bridgesKeys, exchangesKeys } = useDexsAndBridgesKeys();
 
   if (pathname?.includes('memecoins')) {
     hasTheme = true;
@@ -44,17 +41,10 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     partnerName = pathnameKey;
   }
 
-  if (hasTheme) {
-    // check Strapi hook for the background URL;
-    backgroundURL =
-      'https://strapi.li.finance/uploads/meme_background_dfed12edfe.jpeg';
-  }
-
   return {
     hasTheme,
     isBridgeFiltered,
     isDexFiltered,
     partnerName,
-    backgroundURL,
   };
 };

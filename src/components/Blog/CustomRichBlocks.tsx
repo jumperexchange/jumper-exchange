@@ -185,26 +185,28 @@ export const CustomRichBlocks = ({
           <BlogParagraphContainer>
             {children.map((el: any, index: number) => {
               if (el.props.text && el.props.text !== '') {
-                return (
-                  <BlogParagraph
-                    italic={el.props.italic}
-                    strikethrough={el.props.strikethrough}
-                    underline={el.props.underline}
-                    bold={el.props.bold}
-                    key={`blog-paragraph-${index}`}
-                  >
-                    {el.props.text}
-                  </BlogParagraph>
-                );
-              } else if (el.props.content?.type === 'link') {
-                return (
-                  <BlogLink
-                    href={el.props.content.url}
-                    key={generateKey('link')}
-                  >
-                    {el.props.content.children[0].text}
-                  </BlogLink>
-                );
+                if (el.props.content?.type === 'link') {
+                  return (
+                    <BlogLink
+                      href={el.props.content.url}
+                      key={generateKey('link')}
+                    >
+                      {el.props.content.children[0].text}
+                    </BlogLink>
+                  );
+                } else {
+                  return (
+                    <BlogParagraph
+                      italic={el.props.italic}
+                      strikethrough={el.props.strikethrough}
+                      underline={el.props.underline}
+                      bold={el.props.bold}
+                      key={`blog-paragraph-${index}`}
+                    >
+                      {el.props.text}
+                    </BlogParagraph>
+                  );
+                }
               }
             })}
           </BlogParagraphContainer>
