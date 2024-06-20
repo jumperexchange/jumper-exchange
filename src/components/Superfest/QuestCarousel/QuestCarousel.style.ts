@@ -3,7 +3,7 @@ import { Box, alpha, styled } from '@mui/material';
 import { ButtonPrimary } from '../../Button';
 
 export const SuperfestCarouselContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: '#fff0ca',
+  backgroundColor: '#fdfbef',
   borderRadius: '32px',
   padding: theme.spacing(2),
   margin: theme.spacing(6, 2, 0),

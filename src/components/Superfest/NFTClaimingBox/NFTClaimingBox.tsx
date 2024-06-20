@@ -14,25 +14,29 @@ const NFT_ARRAY = [
     chain: 'mode',
     image: 'https://strapi.li.finance/uploads/mode_a66678926d.png',
     contractAddress: '',
-    color: '#dffe00',
+    bgColor: '#dffe00',
+    typoColor: '#000000',
   },
   {
     chain: 'base',
     image: 'https://strapi.li.finance/uploads/nft_f4eee6bf7b.png',
     contractAddress: '',
-    color: '#2151f5',
+    bgColor: '#2151f5',
+    typoColor: '#ffffff',
   },
   {
     chain: 'optimism',
     image: 'https://strapi.li.finance/uploads/nft_632580b867.png',
     contractAddress: '',
-    color: '#ff0000',
+    bgColor: '#ff0000',
+    typoColor: '#ffffff',
   },
   {
     chain: 'fraxtal',
     image: 'https://strapi.li.finance/uploads/nft_c1c8975aa4.png',
     contractAddress: '',
-    color: '#000000',
+    bgColor: '#000000',
+    typoColor: '#ffffff',
   },
 ];
 
@@ -83,7 +87,7 @@ export const NFTClaimingBox = ({}) => {
               />
               <Box
                 sx={{
-                  backgroundColor: '#FFFFFF',
+                  backgroundColor: '#fff0ca',
                   height: '72px',
                   justifyContent: 'center',
                   alignContent: 'center',
@@ -96,11 +100,14 @@ export const NFTClaimingBox = ({}) => {
                 <Button
                   size="medium"
                   styles={{
-                    backgroundColor: '#ff0000',
-                    color: '#FFFFFF',
-                    width: '67%',
+                    backgroundColor: 'transparent',
+                    border: '2px dotted',
+                    color: '#000000',
+                    borderColor: '#000000',
+                    width: '75%',
                     '&:hover': {
-                      backgroundColor: elem.color,
+                      backgroundColor: elem.bgColor,
+                      color: elem.typoColor,
                     },
                   }}
                 >

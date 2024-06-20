@@ -71,42 +71,50 @@ export const QuestCard = ({
             {title}
           </ProfilePageTypography>
         </QuestCardTitleBox>
-        <QuestCardInfoBox points={points}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginBottom: '8px',
+          }}
+        >
           <Box
             sx={{
               display: 'flex',
-              justifyContent: 'space-between',
-              marginBottom: '8px',
+              alignContent: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                alignContent: 'center',
-              }}
-            >
-              <Image
-                src="https://strapi.li.finance/uploads/base_314252c925.png"
-                alt="base"
-                width="32"
-                height="32"
-              />
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignContent: 'center',
-                }}
-              >
-                <Typography style={{ marginLeft: '8px' }}>BASE</Typography>
-              </Box>
-            </Box>
+            {Array.from({ length: 3 }).map((elem, i) => {
+              return (
+                <Image
+                  src="https://strapi.li.finance/uploads/base_314252c925.png"
+                  style={{
+                    marginLeft: i === 0 ? '' : '-8px',
+                    zIndex: 100 - i,
+                  }}
+                  alt="base"
+                  width="32"
+                  height="32"
+                />
+              );
+            })}
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              alignContent: 'center',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <XPDisplayBox active={active}>
               <ProfilePageTypography
                 fontSize="14px"
                 lineHeight="18px"
                 sx={{
-                  color: '#4285eb',
+                  color: '#ffffff',
                 }}
               >
                 {`+${15}`}
@@ -116,15 +124,24 @@ export const QuestCard = ({
               </CenteredBox>
             </XPDisplayBox>
           </Box>
-          {active && link ? (
+        </Box>
+        <QuestCardInfoBox points={points}>
+          {active ? (
             <Button
+              disabled={false}
               variant="secondary"
               size="medium"
               styles={{
                 alignItems: 'center',
                 width: '100%',
-                backgroundColor: '#fbb934',
+                backgroundColor: 'transparent',
+                borderColor: '#ffffff',
+                border: '2px dotted',
                 padding: '16px',
+                '&:hover': {
+                  color: '#FFFFFF',
+                  backgroundColor: '#ff0420',
+                },
               }}
             >
               <ProfilePageTypography

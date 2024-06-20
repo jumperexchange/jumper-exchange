@@ -16,12 +16,12 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
 }));
 
 export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(2),
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
   flexGrow: 1,
-  padding: '8px',
+  padding: '16px',
+  backgroundColor: '#fff0ca',
 }));
 
 export const QuestCardTitleBox = styled(Box)(() => ({
@@ -88,9 +88,11 @@ export const XPDisplayBox = styled(Box, {
   marginRight: active ? '8px' : undefined,
   display: 'flex',
   height: '24px',
+  alignContent: 'center',
+  justifyContent: 'center',
   alignItems: 'center',
   borderRadius: '128px',
   padding: '8px',
-  backgroundColor: '#ebf3ff',
+  backgroundColor: '#ff0420',
   justifyContent: 'center',
 }));

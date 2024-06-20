@@ -2,7 +2,7 @@ import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, alpha, styled } from '@mui/material';
 
 export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: '#ddf6e2',
+  backgroundColor: '#fdfbef',
   padding: theme.spacing(2),
   borderRadius: '32px',
   boxShadow:

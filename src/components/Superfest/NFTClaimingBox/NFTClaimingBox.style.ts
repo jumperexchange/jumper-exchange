@@ -2,7 +2,7 @@ import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, alpha, styled } from '@mui/material';
 
 export const NFTClaimingContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: '#f2d0f1',
+  backgroundColor: '#fdfbef',
   padding: theme.spacing(2),
   borderRadius: '32px',
   boxShadow:

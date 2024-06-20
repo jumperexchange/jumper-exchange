@@ -33,14 +33,13 @@ export const SuperfestBackgroundContainer = styled('div')(({ theme }) => ({
   position: 'fixed',
   overflow: 'hidden',
   pointerEvents: 'none',
-  background: '#f8f3e0',
   left: 0,
   bottom: 0,
   right: 0,
   top: 0,
   zIndex: -1,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    background: '#f8f3e0',
+    background: '#b7e9fb',
   },
 }));
 
