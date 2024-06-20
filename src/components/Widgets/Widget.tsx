@@ -70,7 +70,8 @@ export function Widget({
     }
 
     const params = new URLSearchParams(searchParams.toString());
-    params.delete('toToken');
+    // params.delete('toToken');
+    params.set('toToken', '0x0000000000000000000000000000000000000000');
     router.replace(`/gas/?${params.toString()}`);
   }, [searchParams]);
 
