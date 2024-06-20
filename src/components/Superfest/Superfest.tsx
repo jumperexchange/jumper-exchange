@@ -18,7 +18,7 @@ export const Superfest = () => {
     <SuperfestContainer className="superfest">
       <Stack direction={'column'} spacing={{ xs: 2, sm: 4 }}>
         <HeroBox />
-        {/* <RewardsCarousel /> */}
+        <RewardsCarousel />
         <QuestCarouselSuperfest quests={quests} loading={isQuestLoading} />
         <NFTClaimingBox />
         <QuestCompletedList pdas={pdas} loading={isLoading} />
