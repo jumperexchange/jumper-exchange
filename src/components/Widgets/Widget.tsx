@@ -28,7 +28,7 @@ import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
 import { publicRPCList } from 'src/const/rpcList';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 
 export function Widget({
@@ -44,6 +44,7 @@ export function Widget({
   activeTheme,
 }: WidgetProps) {
   const theme = useTheme();
+  const searchParams = useSearchParams();
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
@@ -62,6 +63,16 @@ export function Widget({
     router.prefetch('/gas/', { kind: PrefetchKind.FULL });
     router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
+
+  useEffect(() => {
+    if (searchParams && starterVariant !== 'refuel') {
+      return;
+    }
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('toToken');
+    router.replace(`/gas/?${params.toString()}`);
+  }, [searchParams]);
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   const welcomeScreenClosed = useSettingsStore(
