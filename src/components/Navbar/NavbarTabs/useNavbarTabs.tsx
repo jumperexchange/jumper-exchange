@@ -26,7 +26,14 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
       // Does not get updated if taken from the hook for some reasons
       const searchParams = new URLSearchParams(window.location.search);
-      searchParams.set('toToken', '0x0000000000000000000000000000000000000000');
+
+      // Only replace it if exists
+      if (searchParams.has('toToken')) {
+        searchParams.set(
+          'toToken',
+          '0x0000000000000000000000000000000000000000',
+        );
+      }
 
       let path = searchParams.toString();
       path = path.startsWith('?') ? path.substring(1) : path;

@@ -22,8 +22,9 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
   const welcomeScreen = useWelcomeScreen(isWelcomeScreenClosed);
 
   const handleWelcomeScreenEnter = () => {
-    if (!isWelcomeScreenClosed) {
+    if (!welcomeScreen.welcomeScreenClosed) {
       welcomeScreen.setWelcomeScreenClosed(true);
+
       trackEvent({
         category: TrackingCategory.WelcomeScreen,
         action: TrackingAction.CloseWelcomeScreen,
