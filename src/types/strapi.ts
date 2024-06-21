@@ -215,6 +215,7 @@ export interface PartnerThemesAttributes {
   publishedAt?: string;
   darkModeEnabled: boolean;
   uid: string;
+  SelectableInMenu?: boolean;
   BackgroundImageLight: StrapiImageData;
   BackgroundImageDark: StrapiImageData;
   FooterImageLight: StrapiImageData;

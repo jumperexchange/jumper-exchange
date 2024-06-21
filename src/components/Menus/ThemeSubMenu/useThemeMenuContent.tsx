@@ -17,7 +17,6 @@ export const useThemeMenuContent = () => {
     state.partnerThemeUid,
     state.setPartnerThemeUid,
   ]);
-  const setThemeMode = useSettingsStore((state) => state.setThemeMode);
   const { data: partnerThemes, isSuccess } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
     queryKey: ['partner-themes'],
@@ -45,14 +44,16 @@ export const useThemeMenuContent = () => {
     },
   ];
 
-  partnerThemes?.map((el) =>
-    themes.push({
-      label: el.attributes.PartnerName,
-      onClick: () => {
-        handleThemeSwitch(el);
-      },
-      checkIcon: partnerThemeUid === el.attributes.uid,
-    }),
+  partnerThemes?.map(
+    (el) =>
+      el.attributes.SelectableInMenu &&
+      themes.push({
+        label: el.attributes.PartnerName,
+        onClick: () => {
+          handleThemeSwitch(el);
+        },
+        checkIcon: partnerThemeUid === el.attributes.uid,
+      }),
   );
 
   return { themes: themes, isSuccess };

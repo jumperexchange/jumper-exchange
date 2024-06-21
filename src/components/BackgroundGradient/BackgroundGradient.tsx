@@ -29,14 +29,16 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
       backgroundImageUrl={imgUrl}
       backgroundColor={backgroundColor}
     >
-      {activeUid && footerImageUrl !== undefined && (
-        <BackgroundFooterImage
-          alt="footer-image"
-          src={footerImageUrl.href}
-          width={300}
-          height={200}
-        />
-      )}
+      {activeUid &&
+        footerImageUrl &&
+        !footerImageUrl?.href.includes('undefined') && (
+          <BackgroundFooterImage
+            alt="footer-image"
+            src={footerImageUrl.href}
+            width={300}
+            height={200}
+          />
+        )}
       {!activeUid && (
         <>
           <BackgroundGradientBottomLeft />
