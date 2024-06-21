@@ -86,6 +86,9 @@ export function Widget({
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
 
+  console.log('ttesssst SAFEEEE');
+  console.log(isMultisigSigner);
+
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
