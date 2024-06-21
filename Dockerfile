@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:20 AS builder
+FROM node:20 AS builder
 
 ARG ENV_NAME
 ENV ENV_NAME $ENV_NAME
@@ -23,7 +23,7 @@ COPY ./$ENV_FILE ./.env
 RUN yarn run build
 
 # Production image, copy all the files and run next
-FROM --platform=linux/amd64 node:20-alpine AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
