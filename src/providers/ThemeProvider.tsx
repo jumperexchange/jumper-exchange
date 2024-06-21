@@ -62,20 +62,25 @@ export const ThemeProvider: React.FC<
   const activeTheme = useMemo(() => {
     let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
     if (activeUid && currentWidgetTheme) {
+      console.log(currentWidgetTheme);
       // Merge partner theme attributes into the base theme
       const mergedTheme = deepmerge(currentTheme, {
         palette: {
           primary: {
-            main:
-              (currentWidgetTheme.palette?.primary as SimplePaletteColorOptions)
-                .main || currentTheme.palette.primary.main,
+            main: currentWidgetTheme.palette?.primary
+              ? (
+                  currentWidgetTheme.palette
+                    ?.primary as SimplePaletteColorOptions
+                ).main
+              : currentTheme.palette.primary.main,
           },
           secondary: {
-            main:
-              (
-                currentWidgetTheme.palette
-                  ?.secondary as SimplePaletteColorOptions
-              ).main || currentTheme.palette.secondary.main,
+            main: currentWidgetTheme.palette?.secondary
+              ? (
+                  currentWidgetTheme.palette
+                    ?.secondary as SimplePaletteColorOptions
+                ).main
+              : currentTheme.palette.secondary.main,
           },
           surface1: {
             main:
@@ -83,21 +88,28 @@ export const ThemeProvider: React.FC<
               currentTheme.palette.secondary.main,
           },
           accent1: {
-            main:
-              (currentWidgetTheme.palette?.primary as SimplePaletteColorOptions)
-                .main || currentTheme.palette.surface1.main,
+            main: currentWidgetTheme.palette?.primary
+              ? (
+                  currentWidgetTheme.palette
+                    ?.primary as SimplePaletteColorOptions
+                ).main
+              : currentTheme.palette.surface1.main,
           },
           accent1Alt: {
-            main:
-              (currentWidgetTheme.palette?.primary as SimplePaletteColorOptions)
-                .main || currentTheme.palette.surface1.main,
+            main: currentWidgetTheme.palette?.primary
+              ? (
+                  currentWidgetTheme.palette
+                    ?.primary as SimplePaletteColorOptions
+                ).main
+              : currentTheme.palette.surface1.main,
           },
           accent2: {
-            main:
-              (
-                currentWidgetTheme.palette
-                  ?.secondary as SimplePaletteColorOptions
-              ).main || currentTheme.palette.surface1.main,
+            main: currentWidgetTheme.palette?.secondary
+              ? (
+                  currentWidgetTheme.palette
+                    ?.secondary as SimplePaletteColorOptions
+                ).main
+              : currentTheme.palette.surface1.main,
           },
         },
       });
