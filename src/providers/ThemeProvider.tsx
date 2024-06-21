@@ -34,7 +34,6 @@ export const ThemeProvider: React.FC<
   );
   const isDarkMode = useDetectDarkModePreference();
   const { activeUid, currentWidgetTheme } = usePartnerTheme();
-
   useEffect(() => {
     // Check if the theme prop is not provided (null or undefined)
     if (theme === undefined) {
@@ -112,6 +111,9 @@ export const ThemeProvider: React.FC<
               : currentTheme.palette.surface1.main,
           },
         },
+        typography: currentWidgetTheme.typography
+          ? currentWidgetTheme.typography
+          : currentTheme.typography,
       });
       return mergedTheme;
     } else {
