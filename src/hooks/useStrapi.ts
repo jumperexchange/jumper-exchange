@@ -169,6 +169,8 @@ export const useStrapi = <T>({
     apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
     apiUrl.searchParams.set('populate[FooterImageLight]', '*');
     apiUrl.searchParams.set('populate[FooterImageDark]', '*');
+    apiUrl.searchParams.set('populate[LogoLight]', '*');
+    apiUrl.searchParams.set('populate[LogoDark]', '*');
 
     // filter partner-themes by "uid"
     if (filterUid) {

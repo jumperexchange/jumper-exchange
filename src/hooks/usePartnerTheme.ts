@@ -83,6 +83,34 @@ export const usePartnerTheme = () => {
     url.origin,
   ]);
 
+  const logoUrl = useMemo(() => {
+    if (
+      partnerThemeUid &&
+      partnerThemes?.length > 0 &&
+      isSuccess &&
+      (partnerThemes[0].attributes.LogoLight.data?.attributes.url ||
+        partnerThemes[0].attributes.LogoDark.data?.attributes.url)
+    ) {
+      return theme.palette.mode === 'light'
+        ? new URL(
+            partnerThemes[0].attributes.LogoLight.data?.attributes.url,
+            url.origin,
+          )
+        : new URL(
+            partnerThemes[0].attributes.LogoDark.data?.attributes.url,
+            url.origin,
+          );
+    } else {
+      return undefined;
+    }
+  }, [
+    isSuccess,
+    partnerThemeUid,
+    partnerThemes,
+    theme.palette.mode,
+    url.origin,
+  ]);
+
   const backgroundColor = useMemo(() => {
     if (partnerThemeUid && partnerThemes?.length > 0 && isSuccess) {
       return theme.palette.mode === 'light'
@@ -150,6 +178,7 @@ export const usePartnerTheme = () => {
       isHomepage && availableWidgetTheme ? availableWidgetTheme : undefined,
     currentWidgetTheme:
       isHomepage && currentWidgetTheme ? currentWidgetTheme : undefined,
+    logoUrl: isHomepage && logoUrl ? logoUrl : undefined,
     activeUid: isHomepage && partnerThemeUid ? partnerThemeUid : undefined,
     imgUrl: isHomepage && imageUrl ? imageUrl : undefined,
     isSuccess: isHomepage && isSuccess,

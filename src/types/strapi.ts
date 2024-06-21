@@ -219,6 +219,8 @@ export interface PartnerThemesAttributes {
   BackgroundImageDark: StrapiImageData;
   FooterImageLight: StrapiImageData;
   FooterImageDark: StrapiImageData;
+  LogoLight: StrapiImageData;
+  LogoDark: StrapiImageData;
   BackgroundColorLight?: string;
   BackgroundColorDark?: string;
 }
