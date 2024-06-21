@@ -15,7 +15,7 @@ import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
@@ -29,6 +29,8 @@ import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useMediaQuery } from '@mui/material';
 import type { Theme } from '@mui/material';
 import { publicRPCList } from 'src/const/rpcList';
+import { useRouter } from 'next/navigation';
+import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 
 export function Widget({
   starterVariant,
@@ -39,7 +41,6 @@ export function Widget({
   fromAmount,
   allowChains,
   widgetIntegrator,
-  themeVariant,
   activeTheme,
 }: WidgetProps) {
   const theme = useTheme();
@@ -52,7 +53,15 @@ export function Widget({
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
   const { tokens } = useMemelist({
-    enabled: !!themeVariant,
+    enabled: partnerName === ThemesMap.Memecoins,
+  });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch('/', { kind: PrefetchKind.FULL });
+    router.prefetch('/gas/', { kind: PrefetchKind.FULL });
+    router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
@@ -67,10 +76,10 @@ export function Widget({
     () =>
       starterVariant === TabsMap.Refuel.variant
         ? refuelAllowChains
-        : themeVariant === ThemesMap.Memecoins
+        : partnerName === ThemesMap.Memecoins
           ? themeAllowChains
           : [],
-    [starterVariant, themeVariant],
+    [starterVariant, partnerName],
   );
 
   const integratorStringByType = useMemo(() => {
@@ -107,7 +116,9 @@ export function Widget({
       ...widgetConfig,
       variant: starterVariant === 'refuel' ? 'compact' : 'wide',
       subvariant:
-        (starterVariant !== 'buy' && !themeVariant && starterVariant) ||
+        (starterVariant !== 'buy' &&
+          !(partnerName === ThemesMap.Memecoins) &&
+          starterVariant) ||
         'default',
       walletConfig: {
         onConnect: async () => {
@@ -203,7 +214,7 @@ export function Widget({
       insurance: true,
       integrator: integratorStringByType,
       tokens:
-        themeVariant === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
+        partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
   }, [
     allowChains,
@@ -227,7 +238,6 @@ export function Widget({
     theme.palette.surface2.main,
     theme.typography.fontFamily,
     themeMode,
-    themeVariant,
     toChain,
     toToken,
     tokens,
@@ -247,10 +257,7 @@ export function Widget({
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly
         fallback={
-          <WidgetSkeleton
-            welcomeScreenClosed={welcomeScreenClosed}
-            config={{ ...config, appearance: activeTheme }}
-          />
+          <WidgetSkeleton config={{ ...config, appearance: activeTheme }} />
         }
       >
         <LiFiWidget integrator={config.integrator} config={config} />
