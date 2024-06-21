@@ -22,9 +22,9 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
+import PaletteIcon from '@mui/icons-material/Palette';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import StyleIcon from '@mui/icons-material/Style';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -108,7 +108,7 @@ export const useMainMenuContent = () => {
     },
     {
       label: t('navbar.navbarMenu.theme'),
-      prefixIcon: <StyleIcon />,
+      prefixIcon: <PaletteIcon />,
       triggerSubMenu: MenuKeysEnum.Theme,
       suffixIcon: activeUid ?? undefined,
       onClick: () => {
