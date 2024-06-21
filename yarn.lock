@@ -9491,7 +9491,7 @@ __metadata:
     sharp: "npm:^0.33.4"
     typescript: "npm:^5.4.5"
     uuidv7: "npm:^1.0.0"
-    web-vitals: "npm:^3.5.2"
+    web-vitals: "npm:^4.1.0"
     zustand: "npm:^4.5.2"
   languageName: unknown
   linkType: soft
@@ -13022,10 +13022,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-vitals@npm:^3.5.2":
-  version: 3.5.2
-  resolution: "web-vitals@npm:3.5.2"
-  checksum: 10/59c5d7775c32977eb9156d186113f4de66c235cfea7a113d2f430ef25db25a5efe1980d2ba466f7ceefc7b1a3847764933dc1567b6d9b8f340d12e75209e3f79
+"web-vitals@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "web-vitals@npm:4.1.0"
+  checksum: 10/a9680ee8290d3e95cf08f43bf27bd7ff67ef2808df8e4b55cc3e52196b4eeeef0cf2ebdd09ee475abeefbc56009f14198fb094bdd0a0a3d6b45b5ec26ab3f283
   languageName: node
   linkType: hard
 

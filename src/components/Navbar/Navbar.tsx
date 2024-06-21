@@ -27,6 +27,11 @@ export const Navbar = () => {
   const handleClick = () => {
     closeAllMenus();
     setWelcomeScreenClosed(false);
+
+    if (pathname === '/gas/') {
+      return;
+    }
+
     isLearnPage ? router.push(JUMPER_LEARN_PATH) : router.push('/');
   };
 
