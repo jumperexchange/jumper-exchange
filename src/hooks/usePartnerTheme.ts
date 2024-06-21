@@ -55,11 +55,39 @@ export const usePartnerTheme = () => {
     url.origin,
   ]);
 
+  const footerImageUrl = useMemo(() => {
+    if (
+      partnerThemeUid &&
+      partnerThemes?.length > 0 &&
+      isSuccess &&
+      (partnerThemes[0].attributes.FooterImageLight.data?.attributes.url ||
+        partnerThemes[0].attributes.FooterImageDark.data?.attributes.url)
+    ) {
+      return theme.palette.mode === 'light'
+        ? new URL(
+            partnerThemes[0].attributes.FooterImageLight.data?.attributes.url,
+            url.origin,
+          )
+        : new URL(
+            partnerThemes[0].attributes.FooterImageDark.data?.attributes.url,
+            url.origin,
+          );
+    } else {
+      return undefined;
+    }
+  }, [
+    isSuccess,
+    partnerThemeUid,
+    partnerThemes,
+    theme.palette.mode,
+    url.origin,
+  ]);
+
   const backgroundColor = useMemo(() => {
     if (partnerThemeUid && partnerThemes?.length > 0 && isSuccess) {
       return theme.palette.mode === 'light'
-        ? partnerThemes[0].attributes.LightBackgroundColor
-        : partnerThemes[0].attributes.DarkBackgroundColor;
+        ? partnerThemes[0].attributes.BackgroundColorLight
+        : partnerThemes[0].attributes.BackgroundColorDark;
     } else {
       return undefined;
     }
@@ -85,12 +113,26 @@ export const usePartnerTheme = () => {
   const currentWidgetTheme = useMemo(() => {
     if (availableWidgetTheme === 'system') {
       return theme.palette.mode === 'light'
-        ? partnerThemes[0].attributes.lightConfig
-        : partnerThemes[0].attributes.darkConfig;
+        ? partnerThemes[0].attributes.lightConfig?.widgetTheme
+        : partnerThemes[0].attributes.darkConfig?.widgetTheme;
     } else if (availableWidgetTheme === 'dark') {
-      return partnerThemes[0].attributes.darkConfig;
+      return partnerThemes[0].attributes.darkConfig?.widgetTheme;
     } else if (availableWidgetTheme === 'light') {
-      return partnerThemes[0].attributes.lightConfig;
+      return partnerThemes[0].attributes.lightConfig?.widgetTheme;
+    } else {
+      return undefined;
+    }
+  }, [availableWidgetTheme, partnerThemes, theme.palette.mode]);
+
+  const currentCustomizedTheme = useMemo(() => {
+    if (availableWidgetTheme === 'system') {
+      return theme.palette.mode === 'light'
+        ? partnerThemes[0].attributes.lightConfig?.customization
+        : partnerThemes[0].attributes.darkConfig?.customization;
+    } else if (availableWidgetTheme === 'dark') {
+      return partnerThemes[0].attributes.darkConfig?.customization;
+    } else if (availableWidgetTheme === 'light') {
+      return partnerThemes[0].attributes.lightConfig?.customization;
     } else {
       return undefined;
     }
@@ -101,6 +143,9 @@ export const usePartnerTheme = () => {
       isHomepage && partnerThemes?.length > 0 ? partnerThemes[0] : undefined,
     backgroundColor:
       isHomepage && backgroundColor ? backgroundColor : undefined,
+    currentCustomizedTheme:
+      isHomepage && currentCustomizedTheme ? currentCustomizedTheme : undefined,
+    footerImageUrl: isHomepage && footerImageUrl ? footerImageUrl : undefined,
     availableWidgetTheme:
       isHomepage && availableWidgetTheme ? availableWidgetTheme : undefined,
     currentWidgetTheme:

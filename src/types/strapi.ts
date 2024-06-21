@@ -1,4 +1,5 @@
 import type { WidgetTheme } from '@lifi/widget';
+import type { PaletteOptions } from '@mui/material';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 
 /* Strapi */
@@ -194,10 +195,21 @@ export interface PartnerThemesData {
   attributes: PartnerThemesAttributes;
 }
 
+interface Customization {
+  palette: PaletteOptions;
+  logoName?: string;
+  footerBannerUrl?: string;
+}
+
+interface PartnerTheme {
+  widgetTheme: WidgetTheme;
+  customization: Customization;
+}
+
 export interface PartnerThemesAttributes {
   PartnerName: string;
-  lightConfig?: WidgetTheme;
-  darkConfig?: WidgetTheme;
+  lightConfig?: PartnerTheme;
+  darkConfig?: PartnerTheme;
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
@@ -205,8 +217,10 @@ export interface PartnerThemesAttributes {
   uid: string;
   BackgroundImageLight: StrapiImageData;
   BackgroundImageDark: StrapiImageData;
-  LightBackgroundColor?: string;
-  DarkBackgroundColor?: string;
+  FooterImageLight: StrapiImageData;
+  FooterImageDark: StrapiImageData;
+  BackgroundColorLight?: string;
+  BackgroundColorDark?: string;
 }
 
 /* Blog */

@@ -2,7 +2,6 @@
 import { useSettingsStore } from '@/stores/settings';
 import type { ThemeModesSupported } from '@/types/settings';
 import { CssBaseline, useMediaQuery } from '@mui/material';
-import type { SimplePaletteColorOptions } from '@mui/material/styles';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type { PropsWithChildren } from 'react';
@@ -33,7 +32,7 @@ export const ThemeProvider: React.FC<
     themeProp,
   );
   const isDarkMode = useDetectDarkModePreference();
-  const { activeUid, currentWidgetTheme } = usePartnerTheme();
+  const { activeUid, currentCustomizedTheme } = usePartnerTheme();
   useEffect(() => {
     // Check if the theme prop is not provided (null or undefined)
     if (theme === undefined) {
@@ -60,66 +59,50 @@ export const ThemeProvider: React.FC<
 
   const activeTheme = useMemo(() => {
     let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
-    if (activeUid && currentWidgetTheme) {
-      console.log(currentWidgetTheme);
+    if (activeUid && currentCustomizedTheme) {
       // Merge partner theme attributes into the base theme
       const mergedTheme = deepmerge(currentTheme, {
         palette: {
           primary: {
-            main: currentWidgetTheme.palette?.primary
-              ? (
-                  currentWidgetTheme.palette
-                    ?.primary as SimplePaletteColorOptions
-                ).main
+            main: currentCustomizedTheme.palette?.primary
+              ? currentCustomizedTheme.palette.primary
               : currentTheme.palette.primary.main,
           },
           secondary: {
-            main: currentWidgetTheme.palette?.secondary
-              ? (
-                  currentWidgetTheme.palette
-                    ?.secondary as SimplePaletteColorOptions
-                ).main
+            main: currentCustomizedTheme.palette?.secondary
+              ? currentCustomizedTheme.palette.secondary
               : currentTheme.palette.secondary.main,
           },
-          surface1: {
-            main:
-              currentWidgetTheme.palette?.background?.default ||
-              currentTheme.palette.secondary.main,
-          },
           accent1: {
-            main: currentWidgetTheme.palette?.primary
-              ? (
-                  currentWidgetTheme.palette
-                    ?.primary as SimplePaletteColorOptions
-                ).main
+            main: currentCustomizedTheme.palette?.accent1
+              ? currentCustomizedTheme.palette.accent1
               : currentTheme.palette.surface1.main,
           },
           accent1Alt: {
-            main: currentWidgetTheme.palette?.primary
-              ? (
-                  currentWidgetTheme.palette
-                    ?.primary as SimplePaletteColorOptions
-                ).main
+            main: currentCustomizedTheme.palette?.accent1Alt
+              ? currentCustomizedTheme.palette.accent1Alt
               : currentTheme.palette.surface1.main,
           },
           accent2: {
-            main: currentWidgetTheme.palette?.secondary
-              ? (
-                  currentWidgetTheme.palette
-                    ?.secondary as SimplePaletteColorOptions
-                ).main
+            main: currentCustomizedTheme.palette?.accent2
+              ? currentCustomizedTheme.palette.accent2
+              : currentTheme.palette.surface1.main,
+          },
+          surface1: {
+            main: currentCustomizedTheme.palette?.surface1
+              ? currentCustomizedTheme.palette.surface1
               : currentTheme.palette.surface1.main,
           },
         },
-        typography: currentWidgetTheme.typography
-          ? currentWidgetTheme.typography
-          : currentTheme.typography,
+        // typography: currentCustomizedTheme.typography
+        //   ? currentCustomizedTheme.typography
+        //   : currentTheme.typography,
       });
       return mergedTheme;
     } else {
       return currentTheme;
     }
-  }, [activeUid, currentWidgetTheme, theme]);
+  }, [activeUid, currentCustomizedTheme, theme]);
 
   // Render children only when the theme is determined
   return (
