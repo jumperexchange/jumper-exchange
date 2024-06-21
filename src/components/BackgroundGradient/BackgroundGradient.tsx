@@ -21,8 +21,6 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   const { activeUid, backgroundColor, imgUrl, footerImageUrl } =
     usePartnerTheme();
 
-  console.log('imgUrl', imgUrl);
-  console.log('footerImageUrl', footerImageUrl);
   return !pathname?.includes('memecoins') ? (
     <BackgroundGradientContainer
       sx={styles}

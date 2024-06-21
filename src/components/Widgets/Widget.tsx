@@ -12,10 +12,10 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig, WidgetTheme } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import type { Theme } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import { useMemo } from 'react';
+import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
@@ -43,13 +43,20 @@ export function Widget({
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
   const widgetTheme = useWidgetTheme();
   const { tokens } = useMemelist({
     enabled: !!themeVariant,
+  });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch('/', { kind: PrefetchKind.FULL });
+    router.prefetch('/gas/', { kind: PrefetchKind.FULL });
+    router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
@@ -189,10 +196,7 @@ export function Widget({
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly
         fallback={
-          <WidgetSkeleton
-            welcomeScreenClosed={!welcomeScreenDisabled ?? welcomeScreenClosed}
-            config={{ ...config, appearance: activeTheme }}
-          />
+          <WidgetSkeleton config={{ ...config, appearance: activeTheme }} />
         }
       >
         <LiFiWidget integrator={config.integrator} config={config} />

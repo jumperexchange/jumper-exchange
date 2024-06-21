@@ -1,6 +1,9 @@
 import { AppProvider } from '@/providers/AppProvider';
 import i18nConfig from 'i18nconfig';
 import React from 'react';
+import { FeatureCards } from '@/components/FeatureCards';
+import { Snackbar } from '@/components/Snackbar';
+import { PixelBg } from '@/components/illustrations/PixelBg';
 
 export default async function RootLayout({
   children,
@@ -9,7 +12,14 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { lng: string };
 }) {
-  return <AppProvider lang={lng}>{children}</AppProvider>;
+  return (
+    <AppProvider lang={lng}>
+      {children}
+      <FeatureCards />
+      <Snackbar />
+      <PixelBg />
+    </AppProvider>
+  );
 }
 
 export function generateStaticParams() {

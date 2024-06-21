@@ -1,3 +1,4 @@
+'use client';
 import { WidgetWrapper } from '@/components/Widgets';
 import { removeHash } from '@/utils/removeHash';
 import { useTheme } from '@mui/material';

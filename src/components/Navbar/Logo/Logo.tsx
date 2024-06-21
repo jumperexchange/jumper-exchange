@@ -1,7 +1,8 @@
+'use client';
 import { JumperLearnLogo, JumperLogo } from '@/components/illustrations';
 import { LogoWrapper } from '@/components/illustrations/Logo.style';
+import { usePartnerTheme } from '@/hooks/usePartnerTheme';
 import Image from 'next/image';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 type LogoProps = {
   variant: 'default' | 'learn';
 };

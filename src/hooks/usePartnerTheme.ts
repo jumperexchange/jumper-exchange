@@ -27,8 +27,6 @@ export const usePartnerTheme = () => {
     filterUid: partnerThemeUid,
   });
 
-  console.log(partnerThemes);
-
   const imageUrl = useMemo(() => {
     if (
       partnerThemeUid &&
