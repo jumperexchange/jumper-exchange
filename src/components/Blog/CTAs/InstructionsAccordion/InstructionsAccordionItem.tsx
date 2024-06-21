@@ -1,7 +1,7 @@
 import { getContrastAlphaColor } from '@/utils/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
 import type { InstructionItemProps } from '.';
@@ -14,6 +14,7 @@ import {
   InstructionsAccordionItemMore,
   InstructionsAccordionToggle,
 } from '.';
+import { Button } from 'src/components/Button';
 
 interface InstructionsAccordionItemProps extends InstructionItemProps {
   index: number;
@@ -42,6 +43,8 @@ export const InstructionsAccordionItem = ({
   link,
   index,
   url,
+  buttonText,
+  buttonLink,
 }: InstructionsAccordionItemProps) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
@@ -90,7 +93,18 @@ export const InstructionsAccordionItem = ({
       </InstructionsAccordionItemMain>
 
       {open ? (
-        <InstructionsAccordionItemMore>{step}</InstructionsAccordionItemMore>
+        <InstructionsAccordionItemMore>
+          <>
+            <Typography>{step}</Typography>
+            {buttonLink ? (
+              <>
+                <a href={buttonLink} target="_blank">
+                  <Button>{buttonText}</Button>
+                </a>
+              </>
+            ) : null}
+          </>
+        </InstructionsAccordionItemMore>
       ) : null}
     </InstructionsAccordionItemContainer>
   );

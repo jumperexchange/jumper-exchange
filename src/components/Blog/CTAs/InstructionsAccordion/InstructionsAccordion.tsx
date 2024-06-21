@@ -9,6 +9,8 @@ export interface InstructionItemProps {
   step?: string;
   link?: InstructionsItemLink;
   url?: string;
+  buttonText?: string;
+  buttonLink?: string;
 }
 
 interface InstructionsAccordionProps {
@@ -19,6 +21,7 @@ export const InstructionsAccordion = (data: InstructionsAccordionProps) => {
   if (!data) {
     return;
   }
+  console.log(data);
   return (
     <InstructionsAccordionContainer>
       {data.data?.map((el, index) => (
@@ -28,6 +31,8 @@ export const InstructionsAccordion = (data: InstructionsAccordionProps) => {
           title={el.title}
           step={el.step}
           link={el.link}
+          buttonText={el.buttonText}
+          buttonLink={el.buttonLink}
         />
       ))}
     </InstructionsAccordionContainer>
