@@ -29,7 +29,6 @@ import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useMediaQuery } from '@mui/material';
 import type { Theme } from '@mui/material';
 import { publicRPCList } from 'src/const/rpcList';
-import { PartnerItgString } from 'src/const/parterItgString';
 
 export function Widget({
   starterVariant,
@@ -77,13 +76,6 @@ export function Widget({
   const integratorStringByType = useMemo(() => {
     if (widgetIntegrator) {
       return widgetIntegrator;
-    }
-
-    if (partnerName) {
-      return (
-        PartnerItgString[partnerName] ??
-        process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR
-      );
     }
     // all the trafic from mobile (including "/gas")
     // if (!isDesktop) {
