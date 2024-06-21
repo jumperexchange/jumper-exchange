@@ -19,9 +19,9 @@ export const WidgetWrapper = styled(Box, {
     },
   }),
   zIndex: 2,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxWidth: 416,
-  },
+  // [theme.breakpoints.up('sm' as Breakpoint)]: {
+  //   maxWidth: 416,
+  // },
 }));
 
 export const GlowBackground = styled('span')(({ theme }) => ({
