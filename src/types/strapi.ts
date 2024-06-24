@@ -199,6 +199,7 @@ interface Customization {
   palette: PaletteOptions;
   logoName?: string;
   footerBannerUrl?: string;
+  typography?: string;
 }
 
 interface PartnerTheme {

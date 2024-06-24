@@ -7,6 +7,7 @@ import { deepmerge } from '@mui/utils';
 import type { PropsWithChildren } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { sora } from 'src/fonts/fonts';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { darkTheme, lightTheme } from 'src/theme/theme';
 
@@ -59,9 +60,18 @@ export const ThemeProvider: React.FC<
 
   const activeTheme = useMemo(() => {
     let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
+
     if (activeUid && currentCustomizedTheme) {
       // Merge partner theme attributes into the base theme
       const mergedTheme = deepmerge(currentTheme, {
+        typography: {
+          fontFamily:
+            currentCustomizedTheme.typography &&
+            currentTheme.typography.fontFamily &&
+            currentCustomizedTheme.typography.includes('Sora')
+              ? sora.style.fontFamily.concat(currentTheme.typography.fontFamily)
+              : currentTheme.typography.fontFamily,
+        },
         palette: {
           primary: {
             main: currentCustomizedTheme.palette?.primary
