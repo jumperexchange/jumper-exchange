@@ -102,7 +102,7 @@ export function WidgetContainer({
           <Link
             href={footerImageUrl.href}
             target="_blank"
-            style={{ zIndex: 2 }}
+            style={{ zIndex: 1 }}
           >
             <BackgroundFooterImage
               alt="footer-image"
