@@ -1,5 +1,5 @@
 'use client';
-import { SolanaAlert } from '@/components/Alerts';
+import { ChainAlert } from '@/components/Alerts';
 import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';
 import { useSession } from '@/hooks/useSession';
@@ -94,7 +94,7 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
 
   return (
     <>
-      <SolanaAlert />
+      <ChainAlert />
       <WidgetEvents />
     </>
   );
