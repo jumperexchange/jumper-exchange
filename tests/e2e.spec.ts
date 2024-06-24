@@ -18,9 +18,7 @@ test.describe('Jumper full e2e flow', () => {
       page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
     ).toBeVisible();
     await page.getByRole('tab', { name: 'Gas' }).click();
-    await expect(
-      page.locator('[id="widget-header-\\:r4\\:"]').getByText('Gas'),
-    ).toBeVisible();
+    await expect(page.locator('#tab-Gas-1')).toBeVisible();
     await page.getByRole('tab', { name: 'Buy' }).click();
     await expect(
       page
