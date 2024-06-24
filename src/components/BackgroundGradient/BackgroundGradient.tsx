@@ -1,5 +1,6 @@
 'use client';
 import { type CSSObject } from '@mui/material';
+import { usePartnerFilter } from 'src/hooks/usePartnerFilter';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import {
   BackgroundGradientBottomLeft,
@@ -15,7 +16,7 @@ interface BackgroundGradientProps {
 }
 
 export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
-  const { partnerName } = usePartnerTheme();
+  const { partnerName } = usePartnerFilter();
   const { activeUid, backgroundColor, imgUrl } = usePartnerTheme();
 
   if (partnerName === 'memecoins') {

@@ -2,27 +2,14 @@
 
 import type { WidgetTheme } from '@lifi/widget';
 import { useTheme } from '@mui/material';
-import { usePathname } from 'next/navigation';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import { useSettingsStore } from 'src/stores/settings';
 import type { PartnerThemesData } from 'src/types/strapi';
 import { shallow } from 'zustand/shallow';
-import { useDexsAndBridgesKeys } from './useDexsAndBridgesKeys';
 import { useIsHomepage } from './useIsHomepage';
 import { useStrapi } from './useStrapi';
 
 interface usePartnerThemeProps {
-  hasTheme: boolean;
-  isBridgeFiltered: boolean;
-  isDexFiltered: boolean;
-  partnerName: string;
-}
-
-interface usePartnerThemeProps {
-  hasTheme: boolean;
-  isBridgeFiltered: boolean;
-  isDexFiltered: boolean;
-  partnerName: string;
   partnerTheme?: PartnerThemesData;
   backgroundColor?: string;
   currentCustomizedTheme?: any;
@@ -43,6 +30,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     (state) => state.partnerThemeUid,
     shallow,
   );
+
   const {
     data: partnerThemes,
     isSuccess,
@@ -52,26 +40,6 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     queryKey: ['partner-themes-filter', partnerThemeUid],
     filterUid: partnerThemeUid,
   });
-
-  const pathname = usePathname();
-  let hasTheme = false;
-  let isBridgeFiltered = false;
-  let isDexFiltered = false;
-  let partnerName = '';
-
-  // check the list of bridge that we suport the name that we use
-  const { bridgesKeys, exchangesKeys } = useDexsAndBridgesKeys();
-
-  if (pathname?.includes('memecoins')) {
-    hasTheme = true;
-    partnerName = 'memecoins';
-    // return {
-    //   hasTheme,
-    //   isBridgeFiltered,
-    //   isDexFiltered,
-    //   partnerName,
-    // };
-  }
 
   let imageUrl: URL | undefined = undefined;
   if (
@@ -203,21 +171,6 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     currentCustomizedTheme = undefined;
   }
 
-  const pathnameSplit = pathname?.split('/');
-  const pathnameKey =
-    pathnameSplit && pathnameSplit[pathnameSplit.length - 2].toLowerCase();
-  if (pathnameKey) {
-    if (bridgesKeys && bridgesKeys.includes(pathnameKey)) {
-      hasTheme = true;
-      isBridgeFiltered = true;
-      partnerName = pathnameKey;
-    } else if (exchangesKeys && exchangesKeys.includes(pathnameKey)) {
-      hasTheme = true;
-      isDexFiltered = true;
-      partnerName = pathnameKey;
-    }
-  }
-
   return {
     partnerTheme:
       isHomepage && partnerThemes?.length > 0 ? partnerThemes[0] : undefined,
@@ -234,9 +187,5 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     activeUid: isHomepage && partnerThemeUid ? partnerThemeUid : undefined,
     imgUrl: isHomepage && imageUrl ? imageUrl : undefined,
     isSuccess: isHomepage && isSuccess,
-    hasTheme,
-    isBridgeFiltered,
-    isDexFiltered,
-    partnerName,
   };
 };

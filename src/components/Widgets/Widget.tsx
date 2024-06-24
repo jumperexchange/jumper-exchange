@@ -12,7 +12,6 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig, WidgetTheme } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
@@ -21,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import { usePartnerFilter } from 'src/hooks/usePartnerFilter';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
@@ -41,12 +40,11 @@ export function Widget({
   widgetIntegrator,
   activeTheme,
 }: WidgetProps) {
-  const theme = useTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
-  const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
+  const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerFilter();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
   const widgetTheme = useWidgetTheme();
