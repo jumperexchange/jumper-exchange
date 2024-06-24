@@ -4,15 +4,11 @@ import { TabsMap } from '@/const/tabsMap';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
 import type { StarterVariantType } from '@/types/internal';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { ThemesMap } from 'src/const/themesMap';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
-import {
-  BackgroundFooterImage,
-  WidgetContainerBox,
-} from './WidgetsContainer.style';
+import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
+import { WidgetContainerBox } from './WidgetsContainer.style';
 
 interface WidgetContainerProps {
   widgetVariant: StarterVariantType;
@@ -29,8 +25,6 @@ export function WidgetContainer({
   const { setWelcomeScreenClosed } = useWelcomeScreen(welcomeScreenClosed);
   const pathname = usePathname();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
-
-  const { activeUid, footerImageUrl } = usePartnerTheme();
 
   const starterVariant: StarterVariantType = useMemo(() => {
     if (widgetVariant) {
@@ -88,30 +82,10 @@ export function WidgetContainer({
     getActiveWidget();
   }, [getActiveWidget, starterVariant, activeTab, themeVariant]);
 
-  console.log(
-    'TEST',
-    activeUid && footerImageUrl && !footerImageUrl?.href.includes('undefined'),
-  );
-
   return (
     <WidgetContainerBox welcomeScreenClosed={welcomeScreenClosed}>
       {children}
-      {activeUid &&
-        footerImageUrl &&
-        !footerImageUrl?.href.includes('undefined') && (
-          <Link
-            href={footerImageUrl.href}
-            target="_blank"
-            style={{ zIndex: 1 }}
-          >
-            <BackgroundFooterImage
-              alt="footer-image"
-              src={footerImageUrl.href}
-              width={300}
-              height={200}
-            />
-          </Link>
-        )}
+      <PartnerThemeFooterImage />
     </WidgetContainerBox>
   );
 }

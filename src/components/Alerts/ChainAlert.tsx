@@ -33,7 +33,7 @@ export const ChainAlert = () => {
       setTitle(t('solanaAlert.title'));
       setSubtitle(t('solanaAlert.subtitle'));
     }
-  }, [destinationChainToken, sourceChainToken]);
+  }, [destinationChainToken, sourceChainToken, t]);
 
   return (
     <>
