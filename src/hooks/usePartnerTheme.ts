@@ -29,16 +29,19 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     };
   }
 
-  const pathnameSplit = pathname.split('/');
-  const pathnameKey = pathnameSplit[pathnameSplit.length - 2].toLowerCase();
-  if (bridgesKeys && bridgesKeys.includes(pathnameKey)) {
-    hasTheme = true;
-    isBridgeFiltered = true;
-    partnerName = pathnameKey;
-  } else if (exchangesKeys && exchangesKeys.includes(pathnameKey)) {
-    hasTheme = true;
-    isDexFiltered = true;
-    partnerName = pathnameKey;
+  const pathnameSplit = pathname && pathname.split('/');
+  const pathnameKey =
+    pathnameSplit && pathnameSplit[pathnameSplit.length - 2].toLowerCase();
+  if (pathnameKey) {
+    if (bridgesKeys && bridgesKeys.includes(pathnameKey)) {
+      hasTheme = true;
+      isBridgeFiltered = true;
+      partnerName = pathnameKey;
+    } else if (exchangesKeys && exchangesKeys.includes(pathnameKey)) {
+      hasTheme = true;
+      isDexFiltered = true;
+      partnerName = pathnameKey;
+    }
   }
 
   return {
