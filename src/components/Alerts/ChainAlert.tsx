@@ -18,8 +18,7 @@ export const ChainAlert = () => {
   useEffect(() => {
     if (
       sourceChainToken?.chainId === ChainId.SEI ||
-      destinationChainToken?.chainId === ChainId.SEI ||
-      true
+      destinationChainToken?.chainId === ChainId.SEI
     ) {
       setIsClickable(true);
       setChainId(ChainId.SEI);
