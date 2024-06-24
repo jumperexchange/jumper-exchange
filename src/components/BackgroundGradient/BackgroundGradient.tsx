@@ -1,6 +1,5 @@
 'use client';
 import { type CSSObject } from '@mui/material';
-import { usePathname } from 'next/navigation';
 import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
@@ -10,35 +9,37 @@ import {
 } from '.';
 import { SirBridgeLot } from '../illustrations/SirBridgeLot';
 import { FixBoxWithNoOverflow, MovingBox } from './MovingBox.style';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import Image from 'next/image';
 
 interface BackgroundGradientProps {
   styles?: CSSObject;
 }
 
 export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
-  const pathname = usePathname();
+  const { partnerName } = usePartnerTheme();
 
-  return !pathname?.includes('memecoins') &&
-    !pathname?.includes('superfest') ? (
+  if (partnerName === 'memecoins') {
+    return (
+      <>
+        <FixBoxWithNoOverflow>
+          <MovingBox>
+            <SirBridgeLot />
+          </MovingBox>
+        </FixBoxWithNoOverflow>
+        <BackgroundGradientContainer sx={styles}>
+          <BackgroundGradientBottomLeft />
+          <BackgroundGradientBottomRight />
+          <BackgroundGradientTopCenter />
+        </BackgroundGradientContainer>
+      </>
+    );
+  }
+  return (
     <BackgroundGradientContainer sx={styles}>
       <BackgroundGradientBottomLeft />
       <BackgroundGradientBottomRight />
       <BackgroundGradientTopCenter />
     </BackgroundGradientContainer>
-  ) : pathname?.includes('superfest') ? (
-    <SuperfestBackgroundContainer sx={styles} />
-  ) : (
-    <>
-      <FixBoxWithNoOverflow>
-        <MovingBox>
-          <SirBridgeLot />
-        </MovingBox>
-      </FixBoxWithNoOverflow>
-      <BackgroundGradientContainer sx={styles}>
-        <BackgroundGradientBottomLeft />
-        <BackgroundGradientBottomRight />
-        <BackgroundGradientTopCenter />
-      </BackgroundGradientContainer>
-    </>
   );
 };
