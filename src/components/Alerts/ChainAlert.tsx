@@ -18,13 +18,14 @@ export const ChainAlert = () => {
   useEffect(() => {
     if (
       sourceChainToken?.chainId === ChainId.SEI ||
-      destinationChainToken?.chainId === ChainId.SEI
+      destinationChainToken?.chainId === ChainId.SEI ||
+      true
     ) {
       setIsClickable(true);
       setChainId(ChainId.SEI);
       setTitle(t('seiAlert.title'));
-      setSubtitle('seiAlert.subtitle');
-      setButtontext('seiAlert.buttonText');
+      setSubtitle(t('seiAlert.subtitle'));
+      setButtontext(t('seiAlert.buttonText'));
     } else if (
       sourceChainToken?.chainId === ChainId.SOL ||
       destinationChainToken?.chainId === ChainId.SOL

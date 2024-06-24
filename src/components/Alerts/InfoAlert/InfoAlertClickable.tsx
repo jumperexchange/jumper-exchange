@@ -1,13 +1,16 @@
 import {
-  InfoMessageCard,
+  InfoMessageCardClickable,
   InfoMessageCardTitle,
 } from '@/components/MessageCard';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
-import { Slide, Typography, darken, lighten, useTheme } from '@mui/material';
+import { Slide, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { InfoAlertButton, InfoAlertContainer } from '.';
-import { Button } from 'src/components/Button';
+import {
+  InfoAlertButton,
+  ButtonInfoAlertClickable,
+  InfoAlertContainer,
+} from '.';
 
 export interface InfoAlertProps {
   title: string;
@@ -50,11 +53,7 @@ export const InfoAlertClickable = ({
           target="_blank"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
-          <InfoMessageCard
-            mt={theme.spacing(4)}
-            mb={theme.spacing(4)}
-            sx={{ cursor: 'pointer' }}
-          >
+          <InfoMessageCardClickable>
             <InfoAlertButton onClick={(e) => handleClose(e)}>
               <CloseIcon
                 sx={{
@@ -79,27 +78,10 @@ export const InfoAlertClickable = ({
             <Typography variant={'lifiBodySmall'} pt={theme.spacing(1.5)}>
               {subtitle}
             </Typography>
-            <Button
-              size="small"
-              styles={{
-                backgroundColor:
-                  theme.palette.mode === 'light'
-                    ? darken(theme.palette.info.main, 0.2)
-                    : lighten(theme.palette.info.main, 0.1),
-                padding: 2,
-                marginTop: theme.spacing(1.5),
-                display: 'flex',
-                alignContent: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                '&:hover': {
-                  backgroundColor: theme.palette.info.main,
-                },
-              }}
-            >
+            <ButtonInfoAlertClickable size="small">
               <Typography variant={'lifiBodySmall'}>{buttonText}</Typography>
-            </Button>
-          </InfoMessageCard>
+            </ButtonInfoAlertClickable>
+          </InfoMessageCardClickable>
         </a>
       </InfoAlertContainer>
     </Slide>
