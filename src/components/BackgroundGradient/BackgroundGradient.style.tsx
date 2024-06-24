@@ -1,7 +1,6 @@
 'use client';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, darken, styled } from '@mui/material/styles';
-import Image from 'next/image';
 
 export interface BackgroundGradientContainerProps {
   backgroundImageUrl?: URL;
@@ -44,21 +43,6 @@ export const BackgroundGradientContainer = styled('div', {
     },
   };
 });
-
-export const BackgroundFooterImage = styled(Image)(({ theme }) => ({
-  position: 'absolute',
-  width: 200,
-  height: 'auto',
-  bottom: 0,
-  left: 0,
-  cursor: 'pointer',
-  margin: theme.spacing(4),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(10),
-    width: 400,
-    height: 'auto',
-  },
-}));
 
 const BackgroundGradient = styled('span')(() => ({
   content: '" "',

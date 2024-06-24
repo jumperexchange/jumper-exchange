@@ -3,7 +3,6 @@ import { type CSSObject } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import {
-  BackgroundFooterImage,
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
   BackgroundGradientContainer,
@@ -18,8 +17,7 @@ interface BackgroundGradientProps {
 
 export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   const pathname = usePathname();
-  const { activeUid, backgroundColor, imgUrl, footerImageUrl } =
-    usePartnerTheme();
+  const { activeUid, backgroundColor, imgUrl } = usePartnerTheme();
 
   return !pathname?.includes('memecoins') ? (
     <BackgroundGradientContainer
@@ -27,16 +25,6 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
       backgroundImageUrl={imgUrl}
       backgroundColor={backgroundColor}
     >
-      {activeUid &&
-        footerImageUrl &&
-        !footerImageUrl?.href.includes('undefined') && (
-          <BackgroundFooterImage
-            alt="footer-image"
-            src={footerImageUrl.href}
-            width={300}
-            height={200}
-          />
-        )}
       {!activeUid && (
         <>
           <BackgroundGradientBottomLeft />

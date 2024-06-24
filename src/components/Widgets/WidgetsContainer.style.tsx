@@ -2,16 +2,17 @@
 
 import type { Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/material';
+import Image from 'next/image';
 
-export interface WidgetContainerProps {
+export interface WidgetContainerBoxProps {
   isActive?: boolean;
   welcomeScreenClosed: boolean;
 }
 
-export const WidgetContainer = styled(Box, {
+export const WidgetContainerBox = styled(Box, {
   shouldForwardProp: (prop) =>
     prop !== 'isActive' && prop !== 'welcomeScreenClosed',
-})<WidgetContainerProps>(
+})<WidgetContainerBoxProps>(
   ({ theme, isActive, welcomeScreenClosed = false }) => ({
     display: 'flex',
     margin: '0 auto 24px',
@@ -135,3 +136,18 @@ export const WidgetContainer = styled(Box, {
     },
   }),
 );
+
+export const BackgroundFooterImage = styled(Image)(({ theme }) => ({
+  position: 'absolute',
+  width: 200,
+  height: 'auto',
+  bottom: 0,
+  left: 0,
+  cursor: 'pointer',
+  margin: theme.spacing(4),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    margin: theme.spacing(10),
+    width: 400,
+    height: 'auto',
+  },
+}));
