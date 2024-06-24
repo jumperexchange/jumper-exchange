@@ -45,7 +45,7 @@ export const NavbarTabs = ({ navbarPageReload }: NavbarTabsProps) => {
   return (
     <Tabs
       data={navbarTabs}
-      value={!isDesktop || navbarPageReload ? -1 : activeTab}
+      value={!isDesktop || navbarPageReload ? false : activeTab}
       onChange={handleChange}
       ariaLabel="navbar-tabs"
       containerStyles={containerStyles}

@@ -4,17 +4,14 @@ import { Box } from '@mui/material';
 import { WidgetSkeletonContainer } from './WidgetSkeleton.style';
 
 interface WidgetSkeletonProps {
-  welcomeScreenClosed: boolean;
   config?: Partial<WidgetConfig>;
 }
 
-export const WidgetSkeleton = ({
-  welcomeScreenClosed,
-  config,
-}: WidgetSkeletonProps) => {
+export const WidgetSkeleton = ({ config }: WidgetSkeletonProps) => {
   return (
     <Box height="682px">
-      <WidgetSkeletonContainer welcomeScreenClosed={welcomeScreenClosed}>
+      <WidgetSkeletonContainer welcomeScreenClosed={true}>
+        {' '}
         <LifiWidgetSkeleton config={config} />
       </WidgetSkeletonContainer>
     </Box>

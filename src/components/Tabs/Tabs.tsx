@@ -16,7 +16,7 @@ type Orientation = 'horizontal' | 'vertical';
 
 interface TabsProps {
   data: TabProps[];
-  value: number;
+  value: number | boolean;
   onChange?: (event: React.SyntheticEvent, value: number) => void;
   orientation?: Orientation;
   ariaLabel: string;
@@ -51,6 +51,7 @@ export const Tabs = ({
             icon={el.icon}
             label={el.label}
             id={`tab-${el.label ?? 'key'}-${el.value}`}
+            aria-label={el.label}
             aria-controls={`simple-tabpanel-${index}`}
             sx={tabStyles}
           />

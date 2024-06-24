@@ -26,12 +26,10 @@ const parseTitle = (title: string, link: { label: string; url: string }) => {
   let cleanText = '';
   rawText.map((el, index) => {
     if (el !== '') {
-      const paragraph = `<p>${el}</p>`;
+      cleanText += `<p>${el}</p>`;
       if (index < rawText.length - 1) {
-        const anchor = `<a href="${link.url}" target="${!link.url.includes('jumper.exchange') || link.url[0] === '/' ? '_self' : '_blank'}">${link.label}</a>`;
-        return paragraph + anchor;
+        cleanText += `<a href="${link.url}" target="${!link.url.includes('jumper.exchange') || link.url[0] === '/' ? '_self' : '_blank'}">${link.label}</a>`;
       }
-      return paragraph;
     }
     return undefined;
   });
@@ -48,7 +46,6 @@ export const InstructionsAccordionItem = ({
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
-
   const handleOpen:
     | MouseEventHandler<HTMLDivElement | HTMLButtonElement>
     | undefined = (e) => {
