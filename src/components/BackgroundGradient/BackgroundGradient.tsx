@@ -1,6 +1,5 @@
 'use client';
 import { type CSSObject } from '@mui/material';
-import { usePathname } from 'next/navigation';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import {
   BackgroundGradientBottomLeft,
@@ -16,15 +15,32 @@ interface BackgroundGradientProps {
 }
 
 export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
-  const pathname = usePathname();
+  const { partnerName } = usePartnerTheme();
   const { activeUid, backgroundColor, imgUrl } = usePartnerTheme();
 
-  return !pathname?.includes('memecoins') ? (
+  if (partnerName === 'memecoins') {
+    return (
+      <>
+        <FixBoxWithNoOverflow>
+          <MovingBox>
+            <SirBridgeLot />
+          </MovingBox>
+        </FixBoxWithNoOverflow>
+        <BackgroundGradientContainer sx={styles}>
+          <BackgroundGradientBottomLeft />
+          <BackgroundGradientBottomRight />
+          <BackgroundGradientTopCenter />
+        </BackgroundGradientContainer>
+      </>
+    );
+  }
+  return (
     <BackgroundGradientContainer
       sx={styles}
       backgroundImageUrl={imgUrl}
       backgroundColor={backgroundColor}
     >
+      {' '}
       {!activeUid && (
         <>
           <BackgroundGradientBottomLeft />
@@ -33,18 +49,5 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
         </>
       )}
     </BackgroundGradientContainer>
-  ) : (
-    <>
-      <FixBoxWithNoOverflow>
-        <MovingBox>
-          <SirBridgeLot />
-        </MovingBox>
-      </FixBoxWithNoOverflow>
-      <BackgroundGradientContainer sx={styles}>
-        <BackgroundGradientBottomLeft />
-        <BackgroundGradientBottomRight />
-        <BackgroundGradientTopCenter />
-      </BackgroundGradientContainer>
-    </>
   );
 };

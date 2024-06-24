@@ -2,12 +2,9 @@
 import { SolanaAlert } from '@/components/Alerts';
 import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';
-import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
-import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
-import { usePathname } from 'next/navigation';
+import type { StarterVariantType } from '@/types/internal';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { ThemesMap } from 'src/const/themesMap';
 import type { ThemeModesSupported } from 'src/types/settings';
 import { WidgetEvents } from './WidgetEvents';
 
@@ -19,8 +16,6 @@ interface WidgetsProps {
 
 export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
   const { activeTab, setActiveTab } = useActiveTabStore();
-  const { setWelcomeScreenClosed } = useWelcomeScreen(closedWelcomeScreen);
-  const pathname = usePathname();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
 
   const starterVariant: StarterVariantType = useMemo(() => {
@@ -45,17 +40,6 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
     }
   }, [widgetVariant]);
 
-  const themeVariant: ThemeVariantType | undefined = useMemo(() => {
-    if (pathname?.includes('memecoins')) {
-      setWelcomeScreenClosed(true);
-      //Todo: review the logic of the tab selection.
-      setActiveTab(false);
-      return ThemesMap.Memecoins;
-    }
-    // remove setWelcomeScreenClosed from array to prevent infinite re-rendering
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, setActiveTab]);
-
   const getActiveWidget = useCallback(() => {
     if (!starterVariantUsed) {
       switch (starterVariant) {
@@ -77,7 +61,7 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
 
   useLayoutEffect(() => {
     getActiveWidget();
-  }, [getActiveWidget, starterVariant, activeTab, themeVariant]);
+  }, [getActiveWidget, starterVariant, activeTab]);
 
   return (
     <>

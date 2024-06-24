@@ -12,6 +12,7 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig, WidgetTheme } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
+import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
@@ -20,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
@@ -37,18 +39,19 @@ export function Widget({
   fromAmount,
   allowChains,
   widgetIntegrator,
-  themeVariant,
   activeTheme,
 }: WidgetProps) {
+  const theme = useTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
+  const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
   const widgetTheme = useWidgetTheme();
   const { tokens } = useMemelist({
-    enabled: !!themeVariant,
+    enabled: partnerName === ThemesMap.Memecoins,
   });
 
   const router = useRouter();
@@ -70,10 +73,10 @@ export function Widget({
     () =>
       starterVariant === TabsMap.Refuel.variant
         ? refuelAllowChains
-        : themeVariant === ThemesMap.Memecoins
+        : partnerName === ThemesMap.Memecoins
           ? themeAllowChains
           : [],
-    [starterVariant, themeVariant],
+    [starterVariant, partnerName],
   );
 
   const integratorStringByType = useMemo(() => {
@@ -88,6 +91,7 @@ export function Widget({
     if (isGasVariant) {
       return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
     }
+
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [widgetIntegrator, isGasVariant]) as string;
 
@@ -109,7 +113,9 @@ export function Widget({
       ...widgetConfig,
       variant: starterVariant === 'refuel' ? 'compact' : 'wide',
       subvariant:
-        (starterVariant !== 'buy' && !themeVariant && starterVariant) ||
+        (starterVariant !== 'buy' &&
+          !(partnerName === ThemesMap.Memecoins) &&
+          starterVariant) ||
         'default',
       walletConfig: {
         onConnect: async () => {
@@ -123,6 +129,12 @@ export function Widget({
       fromAmount: fromAmount,
       chains: {
         allow: allowChains || allowedChainsByVariant,
+      },
+      bridges: {
+        allow: isBridgeFiltered && partnerName ? [partnerName] : undefined,
+      },
+      exchanges: {
+        allow: isDexFiltered && partnerName ? [partnerName] : undefined,
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -163,7 +175,7 @@ export function Widget({
       insurance: true,
       integrator: integratorStringByType,
       tokens:
-        themeVariant === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
+        partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
   }, [
     allowChains,
@@ -174,13 +186,15 @@ export function Widget({
     i18n.language,
     i18n.languages,
     integratorStringByType,
+    isBridgeFiltered,
+    isDexFiltered,
     isMultisigSigner,
     multisigSdkConfig,
     multisigWidget,
+    partnerName,
     setWalletSelectMenuState,
     starterVariant,
     themeMode,
-    themeVariant,
     toChain,
     toToken,
     tokens,

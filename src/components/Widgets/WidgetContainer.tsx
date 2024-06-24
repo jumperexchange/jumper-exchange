@@ -3,7 +3,7 @@ import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
-import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
+import type { StarterVariantType } from '@/types/internal';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
@@ -54,7 +54,7 @@ export function WidgetContainer({
     }
   }, [widgetVariant]);
 
-  const themeVariant: ThemeVariantType | undefined = useMemo(() => {
+  const themeVariant = useMemo(() => {
     if (pathname?.includes('memecoins')) {
       setWelcomeScreenClosed(true);
       //Todo: review the logic of the tab selection.
