@@ -9,7 +9,6 @@ export const HeroBox = ({}) => {
     <Box
       sx={{
         marginTop: '64px',
-        marginBottom: '128px',
         display: 'flex',
         justifyContent: 'center',
         alignContent: 'center',

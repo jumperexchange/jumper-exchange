@@ -28,6 +28,7 @@ export const QuestCarouselSuperfest = ({
           <CarouselContainer
             title={t('missions.available')}
             itemsCount={quests?.length}
+            styles={{ paddingLeft: '32px' }}
           >
             <Stack direction={'row'} spacing={{ xs: 2, sm: 4 }}>
               {!loading ? (

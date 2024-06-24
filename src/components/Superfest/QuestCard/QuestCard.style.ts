@@ -12,7 +12,7 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   width: '256px',
   textAlign: 'center',
   overflow: 'hidden',
-  borderRadius: '16px',
+  borderRadius: '8px',
 }));
 
 export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
@@ -94,5 +94,4 @@ export const XPDisplayBox = styled(Box, {
   borderRadius: '128px',
   padding: '8px',
   backgroundColor: '#ff0420',
-  justifyContent: 'center',
 }));

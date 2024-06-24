@@ -1,24 +1,26 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, alpha, styled } from '@mui/material';
+import { sequel85, sora } from 'src/fonts/fonts';
 
 export const NFTClaimingContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#fdfbef',
   padding: theme.spacing(2),
-  borderRadius: '32px',
+  borderRadius: '12px',
+  width: '90%',
   boxShadow:
     theme.palette.mode === 'dark'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(8, 8, 0),
-    padding: theme.spacing(6, 3),
+    margin: theme.spacing(2, 4, 0),
+    padding: theme.spacing(3),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    padding: theme.spacing(8, 4, 4),
-    margin: theme.spacing(12, 8, 0),
+    padding: theme.spacing(4),
+    margin: theme.spacing(12, 4, 0),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
-    padding: theme.spacing(6, 6, 4),
+    padding: theme.spacing(6, 4),
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     margin: `${theme.spacing(12, 'auto', 0)}`,
@@ -31,18 +33,22 @@ export const NFTClaimingHeader = styled(Box, {
 })<BoxProps>(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'center',
+  alignContent: 'center',
+  textAlign: 'center',
   ...(theme.palette.mode === 'dark' && {
     color: theme.palette.white.main,
   }),
-  justifyContent: 'space-between',
 }));
 
 export const NFTClaimingTitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
 })(({ theme }) => ({
-  fontWeight: 700,
-  fontSize: '24px',
+  marginTop: '32px',
+  fontWeight: 900,
+  fontSize: '32px',
   lineHeight: '32px',
+  typography: sequel85.style.fontFamily,
   color: 'inherit',
   margin: theme.spacing(3, 1.5, 0),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -57,9 +63,11 @@ export const NFTClaimingTitle = styled(Typography, {
 export const NFTClaimingDescription = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
 })(({ theme }) => ({
+  marginTop: '32px',
   fontWeight: 500,
   fontSize: '16px',
   lineHeight: '24px',
+  typography: sora.style.fontFamily,
   color: 'inherit',
   margin: theme.spacing(3, 1.5, 0),
   [theme.breakpoints.up('sm' as Breakpoint)]: {

@@ -1,6 +1,7 @@
 'use client';
 import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, styled } from '@mui/material/styles';
+import BG from '../illustrations/spbg.svg';
 export interface BackgroundGradientContainerProps
   extends Omit<HTMLDivElement, 'children'> {
   children?: JSX.Element | JSX.Element[] | React.ReactNode;
@@ -31,6 +32,10 @@ const BackgroundGradient = styled('span')(() => ({
 
 export const SuperfestBackgroundContainer = styled('div')(({ theme }) => ({
   position: 'fixed',
+  backgroundRepeat: 'repeat',
+  width: '100%',
+  height: '100%',
+  backgroundImage: `url(https://strapi.li.finance/uploads/Superfest_OP_9e52e7917e.svg)`,
   overflow: 'hidden',
   pointerEvents: 'none',
   left: 0,
@@ -38,9 +43,9 @@ export const SuperfestBackgroundContainer = styled('div')(({ theme }) => ({
   right: 0,
   top: 0,
   zIndex: -1,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    background: '#b7e9fb',
-  },
+  // [theme.breakpoints.up('sm' as Breakpoint)]: {
+  //   background: '#b7e9fb',
+  // },
 }));
 
 export const BackgroundGradients = styled('span')(({ theme }) => ({

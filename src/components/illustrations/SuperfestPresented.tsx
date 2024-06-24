@@ -59,7 +59,7 @@ export function SuperfestPresented() {
         transform="rotate(-31.5384 182.218 18.3107)"
         fill="url(#pattern0_6699_48970)"
         stroke="#F8F3E0"
-        stroke-width="1.28804"
+        strokeWidth="1.28804"
       />
       <rect
         x="-0.235728"
@@ -70,7 +70,7 @@ export function SuperfestPresented() {
         transform="matrix(0.499999 0.866026 -0.866025 0.500001 245.699 2.15427)"
         fill="url(#pattern1_6699_48970)"
         stroke="#F8F3E0"
-        stroke-width="1.28804"
+        strokeWidth="1.28804"
       />
       <rect
         x="-7.67732e-08"
@@ -81,7 +81,7 @@ export function SuperfestPresented() {
         transform="matrix(-0.707106 -0.707107 0.707106 -0.707107 276.328 44.4393)"
         fill="url(#pattern2_6699_48970)"
         stroke="#F8F3E0"
-        stroke-width="1.28804"
+        strokeWidth="1.28804"
       />
       <rect
         x="299.045"
@@ -92,7 +92,7 @@ export function SuperfestPresented() {
         transform="rotate(15 299.045 4.55927)"
         fill="url(#pattern3_6699_48970)"
         stroke="#F8F3E0"
-        stroke-width="1.28804"
+        strokeWidth="1.28804"
       />
       <path
         d="M162.257 27.0653V31.0335H159.273V27.097L153.543 19.7002H157.178L160.765 24.5573L164.4 19.7002H167.987L162.257 27.0653Z"

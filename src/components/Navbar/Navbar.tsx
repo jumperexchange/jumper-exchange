@@ -52,7 +52,9 @@ export const Navbar = () => {
           }
         />
       </LogoLink>
-      {!isLearnPage ? <NavbarTabs navbarPageReload={isLoyaltyPage} /> : null}
+      {!isLearnPage ? (
+        <NavbarTabs navbarPageReload={isLoyaltyPage || isSuperFest} />
+      ) : null}
       <NavbarButtons />
     </Container>
   );

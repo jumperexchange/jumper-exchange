@@ -1,7 +1,7 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { useOngoingQuests } from '@/hooks/useOngoingQuests';
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { SuperfestContainer } from './Superfest.style';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
 import { NFTClaimingBox } from './NFTClaimingBox/NFTClaimingBox';
@@ -17,17 +17,22 @@ export const Superfest = () => {
 
   return (
     <SuperfestContainer className="superfest">
+      {/* <RewardsCarousel /> */}
       <HeroBox />
-      <Stack
-        direction={'column'}
-        spacing={{ xs: 2, sm: 4 }}
-        sx={{ width: '100%' }}
+      <Box
+        sx={{
+          minWidth: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignContent: 'center',
+        }}
       >
-        {/* <RewardsCarousel /> */}
         <QuestCarouselSuperfest quests={quests} loading={isQuestLoading} />
-        <NFTClaimingBox />
         <QuestCompletedList pdas={pdas} loading={isLoading} />
-      </Stack>
+        <NFTClaimingBox />
+      </Box>
     </SuperfestContainer>
   );
 };

@@ -30,7 +30,7 @@ export const QuestCompletedList = ({
   return (
     <CompletedQuestContainer>
       <CompletedQuestHeader>
-        <CompletedQuestTitle>{t('missions.completed')}</CompletedQuestTitle>
+        <CompletedQuestTitle>{'Active Missions'}</CompletedQuestTitle>
       </CompletedQuestHeader>
       <CompletedQuestStack
         direction={'row'}
@@ -53,7 +53,7 @@ export const QuestCompletedList = ({
           : null}
         {showVoidCardsAsFewPdas
           ? Array.from(
-              { length: pdas && pdas?.length > 0 ? 6 - pdas.length : 3 },
+              { length: pdas && pdas?.length > 0 ? 6 - pdas.length : 4 },
               () => 42,
             ).map((_, idx) => (
               <VoidQuestCard
@@ -63,7 +63,7 @@ export const QuestCompletedList = ({
             ))
           : null}
         {loading
-          ? Array.from({ length: 3 }, () => 42).map((_, idx) => (
+          ? Array.from({ length: 4 }, () => 42).map((_, idx) => (
               <QuestCardSkeleton key={'skeleton-' + idx} />
             ))
           : null}

@@ -16,15 +16,7 @@ export const Logo = ({ variant }: LogoProps) => {
   if (variant === 'learn') {
     logo = <JumperLearnLogo />;
   } else if (variant === 'superfest') {
-    return (
-      <CollabLogoWrapper>
-        <JumperLogo />
-        <CrossIcon />
-        <Box sx={{ marginLeft: '32px' }}>
-          <OptimismLogo />
-        </Box>
-      </CollabLogoWrapper>
-    );
+    return <JumperLogo />;
   }
   return <LogoWrapper>{logo}</LogoWrapper>;
 };

@@ -48,20 +48,29 @@ export const NFTClaimingBox = ({}) => {
   return (
     <NFTClaimingContainer>
       <NFTClaimingHeader>
-        <NFTClaimingTitle>{'Enter the liquidity festival'}</NFTClaimingTitle>
-        <NFTClaimingDescription>
-          {
-            'Explore the Superchain Festival and vibe at the sound of 1.5M OP rewards. Feel the music, complete the tasksand get ready to experience rewards like never before.'
-          }
-        </NFTClaimingDescription>
+        <NFTClaimingTitle>
+          {String('Enter the liquidity festival').toUpperCase()}
+        </NFTClaimingTitle>
+        <Box
+          sx={{
+            marginTop: '32px',
+            marginBottom: '32px',
+          }}
+        >
+          <NFTClaimingDescription>
+            {
+              'Explore the Superchain Festival and vibe at the sound of 1.5M OP rewards. Feel the music, complete the tasksand get ready to experience rewards like never before.'
+            }
+          </NFTClaimingDescription>
+        </Box>
       </NFTClaimingHeader>
       <Box
         sx={{
+          marginTop: '16px',
           display: 'flex',
           justifyContent: 'center',
           alignContent: 'center',
-          marginTop: '16px',
-          gap: '32px',
+          gap: '48px',
         }}
       >
         {NFT_ARRAY.map((elem) => {
@@ -69,15 +78,15 @@ export const NFTClaimingBox = ({}) => {
             <Box
               sx={{
                 width: '256px',
-                height: '328px',
+                height: '344px',
                 justifyContent: 'center',
                 alignContent: 'center',
               }}
             >
               <Image
                 style={{
-                  borderTopRightRadius: '32px',
-                  borderTopLeftRadius: '32px',
+                  borderTopRightRadius: '8px',
+                  borderTopLeftRadius: '8px',
                   marginBottom: '0px',
                 }}
                 src={elem.image}
@@ -92,8 +101,8 @@ export const NFTClaimingBox = ({}) => {
                   justifyContent: 'center',
                   alignContent: 'center',
                   textAlign: 'center',
-                  borderBottomRightRadius: '32px',
-                  borderBottomLeftRadius: '32px',
+                  borderBottomRightRadius: '8px',
+                  borderBottomLeftRadius: '8px',
                   marginTop: '-6px',
                 }}
               >
