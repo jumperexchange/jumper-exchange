@@ -5,7 +5,7 @@ import { TabsMap } from '@/const/tabsMap';
 import { useSession } from '@/hooks/useSession';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
-import type { StarterVariantType, ThemeVariantType } from '@/types/internal';
+import type { StarterVariantType } from '@/types/internal';
 import type { WidgetSubvariant } from '@lifi/widget';
 import { usePathname } from 'next/navigation';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
@@ -27,9 +27,6 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'
   >(TabsMap.Exchange.variant);
-  const [_themeVariant, setThemeVariant] = useState<
-    ThemeVariantType | undefined
-  >(undefined);
 
   // testing! todo: remove
   const sessionID = useSession();
@@ -57,19 +54,7 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
     }
   }, [widgetVariant]);
 
-  const themeVariant: ThemeVariantType | undefined = useMemo(() => {
-    if (pathname?.includes('memecoins')) {
-      setWelcomeScreenClosed(true);
-      //Todo: review the logic of the tab selection.
-      setActiveTab(false);
-      return ThemesMap.Memecoins;
-    }
-    // remove setWelcomeScreenClosed from array to prevent infinite re-rendering
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, setActiveTab]);
-
   const getActiveWidget = useCallback(() => {
-    setThemeVariant(themeVariant);
     if (!starterVariantUsed) {
       switch (starterVariant) {
         case TabsMap.Exchange.variant:
@@ -101,17 +86,11 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
           setStarterVariant(TabsMap.Exchange.variant);
       }
     }
-  }, [
-    activeTab,
-    setActiveTab,
-    starterVariant,
-    starterVariantUsed,
-    themeVariant,
-  ]);
+  }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
   useLayoutEffect(() => {
     getActiveWidget();
-  }, [getActiveWidget, starterVariant, activeTab, themeVariant]);
+  }, [getActiveWidget, starterVariant, activeTab]);
 
   return (
     <>
