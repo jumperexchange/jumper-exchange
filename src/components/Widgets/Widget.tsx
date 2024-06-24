@@ -12,14 +12,11 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import type { Theme } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { darkTheme } from 'src/theme/theme';
@@ -28,6 +25,12 @@ import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import { useMediaQuery } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { publicRPCList } from 'src/const/rpcList';
+import { useRouter } from 'next/navigation';
+import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 
 export function Widget({
   starterVariant,
@@ -38,7 +41,6 @@ export function Widget({
   fromAmount,
   allowChains,
   widgetIntegrator,
-  themeVariant,
   activeTheme,
 }: WidgetProps) {
   const theme = useTheme();
@@ -47,10 +49,19 @@ export function Widget({
   const wagmiConfig = useConfig();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
+  const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
   const { tokens } = useMemelist({
-    enabled: !!themeVariant,
+    enabled: partnerName === ThemesMap.Memecoins,
+  });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch('/', { kind: PrefetchKind.FULL });
+    router.prefetch('/gas/', { kind: PrefetchKind.FULL });
+    router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
@@ -65,10 +76,10 @@ export function Widget({
     () =>
       starterVariant === TabsMap.Refuel.variant
         ? refuelAllowChains
-        : themeVariant === ThemesMap.Memecoins
+        : partnerName === ThemesMap.Memecoins
           ? themeAllowChains
           : [],
-    [starterVariant, themeVariant],
+    [starterVariant, partnerName],
   );
 
   const integratorStringByType = useMemo(() => {
@@ -83,6 +94,7 @@ export function Widget({
     if (isGasVariant) {
       return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
     }
+
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
 
@@ -104,7 +116,9 @@ export function Widget({
       ...widgetConfig,
       variant: starterVariant === 'refuel' ? 'compact' : 'wide',
       subvariant:
-        (starterVariant !== 'buy' && !themeVariant && starterVariant) ||
+        (starterVariant !== 'buy' &&
+          !(partnerName === ThemesMap.Memecoins) &&
+          starterVariant) ||
         'default',
       walletConfig: {
         onConnect: async () => {
@@ -118,6 +132,12 @@ export function Widget({
       fromAmount: fromAmount,
       chains: {
         allow: allowChains || allowedChainsByVariant,
+      },
+      bridges: {
+        allow: isBridgeFiltered && partnerName ? [partnerName] : undefined,
+      },
+      exchanges: {
+        allow: isDexFiltered && partnerName ? [partnerName] : undefined,
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -194,7 +214,7 @@ export function Widget({
       insurance: true,
       integrator: integratorStringByType,
       tokens:
-        themeVariant === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
+        partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
   }, [
     allowChains,
@@ -218,11 +238,15 @@ export function Widget({
     theme.palette.surface2.main,
     theme.typography.fontFamily,
     themeMode,
-    themeVariant,
     toChain,
     toToken,
     tokens,
     wagmiConfig,
+    widgetIntegrator,
+    partnerName,
+    isDexFiltered,
+    isBridgeFiltered,
+    integratorStringByType,
   ]);
 
   return (
@@ -233,10 +257,7 @@ export function Widget({
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly
         fallback={
-          <WidgetSkeleton
-            welcomeScreenClosed={welcomeScreenClosed}
-            config={{ ...config, appearance: activeTheme }}
-          />
+          <WidgetSkeleton config={{ ...config, appearance: activeTheme }} />
         }
       >
         <LiFiWidget integrator={config.integrator} config={config} />

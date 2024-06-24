@@ -1,3 +1,4 @@
+'use client';
 import { WidgetWrapper } from '@/components/Widgets';
 import { useSettingsStore } from '@/stores/settings';
 import { removeHash } from '@/utils/removeHash';
