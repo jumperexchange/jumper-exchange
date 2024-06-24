@@ -1,7 +1,7 @@
 import { getContrastAlphaColor } from '@/utils/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
-import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
 import type { InstructionItemProps } from '.';
@@ -15,6 +15,7 @@ import {
   InstructionsAccordionToggle,
 } from '.';
 import { Button } from 'src/components/Button';
+import FestivalIcon from '@mui/icons-material/Festival';
 
 interface InstructionsAccordionItemProps extends InstructionItemProps {
   index: number;
@@ -97,11 +98,36 @@ export const InstructionsAccordionItem = ({
           <>
             <Typography>{step}</Typography>
             {buttonLink ? (
-              <>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignContent: 'center',
+                  justifyContent: 'flex-end',
+                }}
+              >
                 <a href={buttonLink} target="_blank">
-                  <Button>{buttonText}</Button>
+                  <Button>
+                    <Typography
+                      variant={'lifiBodyMediumStrong'}
+                      component={'span'}
+                      // ml={'9.5px'}
+                      mr={'9.5px'}
+                      sx={{
+                        color: theme.palette.white.main,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        maxWidth: 208,
+                        [theme.breakpoints.up('sm' as Breakpoint)]: {
+                          maxWidth: 168,
+                        },
+                      }}
+                    >
+                      {buttonText}
+                    </Typography>
+                    <FestivalIcon sx={{ color: '#FFFFFF' }} />
+                  </Button>
                 </a>
-              </>
+              </Box>
             ) : null}
           </>
         </InstructionsAccordionItemMore>
