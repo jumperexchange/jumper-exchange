@@ -60,7 +60,7 @@ export const Tab = styled(MuiTab, {
       ? theme.palette.white.main
       : theme.palette.black.main,
   textDecoration: 'none',
-  filter: blur ? 'blur(1.5px)' : 'unset',
+  opacity: blur ? 0.2 : 'unset',
 
   '&.Mui-selected': {
     color:
