@@ -207,7 +207,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   const pathnameKey =
     pathnameSplit && pathnameSplit[pathnameSplit.length - 2].toLowerCase();
   if (pathnameKey) {
-    if (pathnameSplit && bridgesKeys && bridgesKeys.includes(pathnameKey)) {
+    if (bridgesKeys && bridgesKeys.includes(pathnameKey)) {
       hasTheme = true;
       isBridgeFiltered = true;
       partnerName = pathnameKey;
