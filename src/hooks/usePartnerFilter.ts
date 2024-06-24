@@ -44,7 +44,7 @@ export const usePartnerFilter = (): usePartnerFilterProps => {
   }
 
   useEffect(() => {
-    setPartnerThemeUid(partnerName);
+    partnerName && setPartnerThemeUid(partnerName);
   }, [setPartnerThemeUid, partnerName]);
 
   if (pathname?.includes('memecoins')) {
