@@ -32,6 +32,7 @@ import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
+import { OPLogo } from 'src/components/illustrations/OpLogo';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -157,7 +158,7 @@ export const useMainMenuContent = () => {
     },
     {
       label: t('navbar.navbarMenu.fest'),
-      prefixIcon: <FestivalIcon />,
+      prefixIcon: <OPLogo />,
       showMoreIcon: false,
       link: { url: '/superfest' },
       onClick: () => {
@@ -165,7 +166,7 @@ export const useMainMenuContent = () => {
           category: TrackingCategory.Menu,
           label: 'click-jumper-fest-link',
           action: TrackingAction.ClickJumperProfileLink,
-          data: { [TrackingEventParameter.Menu]: 'pass' },
+          data: { [TrackingEventParameter.Menu]: 'fest' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,

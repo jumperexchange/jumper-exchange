@@ -40,6 +40,8 @@ const NFT_ARRAY = [
   },
 ];
 
+const NOT_LIVE = true;
+
 export const NFTClaimingBox = ({}) => {
   async function handleClick() {
     console.log('hello world');
@@ -81,6 +83,7 @@ export const NFTClaimingBox = ({}) => {
                 height: '344px',
                 justifyContent: 'center',
                 alignContent: 'center',
+                cursor: NOT_LIVE ? 'not-allowed' : undefined,
               }}
             >
               <Image
@@ -108,11 +111,12 @@ export const NFTClaimingBox = ({}) => {
               >
                 <Button
                   size="medium"
+                  disabled={NOT_LIVE}
                   styles={{
                     backgroundColor: 'transparent',
                     border: '2px dotted',
                     color: '#000000',
-                    borderColor: '#000000',
+                    borderColor: NOT_LIVE ? '#C5B99C' : '#000000',
                     width: '75%',
                     '&:hover': {
                       backgroundColor: elem.bgColor,

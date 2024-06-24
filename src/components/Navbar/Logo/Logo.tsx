@@ -1,11 +1,6 @@
 import { JumperLearnLogo, JumperLogo } from '@/components/illustrations';
-import {
-  CollabLogoWrapper,
-  LogoWrapper,
-} from '@/components/illustrations/Logo.style';
-import { Box } from '@mui/material';
-import { CrossIcon } from 'src/components/illustrations/Cross';
-import { OptimismLogo } from 'src/components/illustrations/Optimism';
+import { LogoWrapper } from '@/components/illustrations/Logo.style';
+import { JumperLogoBlack } from 'src/components/illustrations/JumperLogoBlack';
 
 type LogoProps = {
   variant: 'default' | 'learn' | 'superfest';
@@ -16,7 +11,7 @@ export const Logo = ({ variant }: LogoProps) => {
   if (variant === 'learn') {
     logo = <JumperLearnLogo />;
   } else if (variant === 'superfest') {
-    return <JumperLogo />;
+    logo = <JumperLogoBlack />;
   }
   return <LogoWrapper>{logo}</LogoWrapper>;
 };
