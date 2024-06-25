@@ -6,7 +6,7 @@ import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import { useSettingsStore } from 'src/stores/settings';
 import type { PartnerThemesData } from 'src/types/strapi';
 import { shallow } from 'zustand/shallow';
-import { useIsHomepage } from './useIsHomepage';
+import { useIsDapp } from './useIsDapp';
 import { useStrapi } from './useStrapi';
 
 interface usePartnerThemeProps {
@@ -24,7 +24,7 @@ interface usePartnerThemeProps {
 
 export const usePartnerTheme = (): usePartnerThemeProps => {
   const theme = useTheme();
-  const isHomepage = useIsHomepage();
+  const isHomepage = useIsDapp();
   const [partnerThemeUid, partnerPageThemeUid, setThemeMode] = useSettingsStore(
     (state) => [
       state.partnerThemeUid,

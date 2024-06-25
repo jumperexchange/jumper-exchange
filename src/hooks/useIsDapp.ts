@@ -12,7 +12,7 @@ const checkLocaleIsPath = (path: string | null) => {
   }
 };
 
-export const useIsHomepage = () => {
+export const useIsDapp = () => {
   const pathname = usePathname();
   const isHomepage = checkLocaleIsPath(pathname);
   return isHomepage;
