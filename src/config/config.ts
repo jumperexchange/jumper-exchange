@@ -22,7 +22,7 @@ interface DefaultSettingsType {
 
 export const defaultSettings: DefaultSettingsType = {
   themeMode: 'auto',
-  partnerThemeUid: undefined,
+  partnerThemeUid: 'OP',
   partnerPageThemeUid: undefined,
   clientWallets: [],
   disabledFeatureCards: [],
