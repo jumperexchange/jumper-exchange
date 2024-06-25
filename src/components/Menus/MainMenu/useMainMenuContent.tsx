@@ -39,6 +39,7 @@ export const useMainMenuContent = () => {
   const router = useRouter();
   const theme = useTheme();
   const { activeUid } = usePartnerTheme();
+  const { partnerPageThemeUid } = useSettingsStore((state) => state);
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
@@ -71,7 +72,7 @@ export const useMainMenuContent = () => {
     borderRadius: '18px',
   };
 
-  return [
+  const mainMenuContent = [
     {
       children: (
         <Tabs
@@ -321,4 +322,10 @@ export const useMainMenuContent = () => {
       showButton: true,
     },
   ];
+
+  if (partnerPageThemeUid) {
+    return mainMenuContent.slice(0, 1).concat(mainMenuContent.slice(2));
+  } else {
+    return mainMenuContent;
+  }
 };

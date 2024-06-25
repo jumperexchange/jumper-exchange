@@ -14,6 +14,7 @@ export const localStorageKey = {
 interface DefaultSettingsType {
   themeMode: ThemeModesSupported;
   partnerThemeUid?: string;
+  partnerPageThemeUid?: string;
   clientWallets: string[];
   disabledFeatureCards: string[];
   welcomeScreenClosed: boolean;
@@ -22,6 +23,7 @@ interface DefaultSettingsType {
 export const defaultSettings: DefaultSettingsType = {
   themeMode: 'auto',
   partnerThemeUid: undefined,
+  partnerPageThemeUid: undefined,
   clientWallets: [],
   disabledFeatureCards: [],
   welcomeScreenClosed: false,

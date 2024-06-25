@@ -25,9 +25,12 @@ interface usePartnerThemeProps {
 export const usePartnerTheme = (): usePartnerThemeProps => {
   const theme = useTheme();
   const isHomepage = useIsHomepage();
-  const setThemeMode = useSettingsStore((state) => state.setThemeMode);
-  const partnerThemeUid = useSettingsStore(
-    (state) => state.partnerThemeUid,
+  const [partnerThemeUid, partnerPageThemeUid, setThemeMode] = useSettingsStore(
+    (state) => [
+      state.partnerThemeUid,
+      state.partnerPageThemeUid,
+      state.setThemeMode,
+    ],
     shallow,
   );
 
@@ -37,13 +40,13 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     url,
   } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
-    queryKey: ['partner-themes-filter', partnerThemeUid],
-    filterUid: partnerThemeUid,
+    queryKey: ['partner-themes-filter', partnerPageThemeUid || partnerThemeUid],
+    filterUid: partnerPageThemeUid || partnerThemeUid,
   });
 
   let imageUrl: URL | undefined = undefined;
   if (
-    partnerThemeUid &&
+    (partnerPageThemeUid || partnerThemeUid) &&
     partnerThemes?.length > 0 &&
     isSuccess &&
     (partnerThemes[0].attributes.BackgroundImageLight.data?.attributes.url ||
@@ -66,7 +69,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
 
   let footerImageUrl;
   if (
-    partnerThemeUid &&
+    (partnerPageThemeUid || partnerThemeUid) &&
     partnerThemes?.length > 0 &&
     isSuccess &&
     (partnerThemes[0].attributes.FooterImageLight.data?.attributes.url ||
@@ -89,7 +92,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
 
   let logoUrl;
   if (
-    partnerThemeUid &&
+    (partnerPageThemeUid || partnerThemeUid) &&
     partnerThemes?.length > 0 &&
     isSuccess &&
     (partnerThemes[0].attributes.LogoLight.data?.attributes.url ||
@@ -111,7 +114,11 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   }
 
   let backgroundColor;
-  if (partnerThemeUid && partnerThemes?.length > 0 && isSuccess) {
+  if (
+    (partnerPageThemeUid || partnerThemeUid) &&
+    partnerThemes?.length > 0 &&
+    isSuccess
+  ) {
     if (theme.palette.mode === 'light') {
       backgroundColor = partnerThemes[0].attributes.BackgroundColorLight;
     } else {
@@ -122,7 +129,11 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   }
 
   let availableWidgetTheme;
-  if (partnerThemeUid && partnerThemes?.length > 0 && isSuccess) {
+  if (
+    (partnerPageThemeUid || partnerThemeUid) &&
+    partnerThemes?.length > 0 &&
+    isSuccess
+  ) {
     if (
       partnerThemes[0].attributes.lightConfig &&
       partnerThemes[0].attributes.darkConfig
@@ -184,7 +195,10 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     currentWidgetTheme:
       isHomepage && currentWidgetTheme ? currentWidgetTheme : undefined,
     logoUrl: isHomepage && logoUrl ? logoUrl : undefined,
-    activeUid: isHomepage && partnerThemeUid ? partnerThemeUid : undefined,
+    activeUid:
+      (isHomepage && partnerPageThemeUid) ||
+      (isHomepage && partnerThemeUid) ||
+      undefined,
     imgUrl: isHomepage && imageUrl ? imageUrl : undefined,
     isSuccess: isHomepage && isSuccess,
   };

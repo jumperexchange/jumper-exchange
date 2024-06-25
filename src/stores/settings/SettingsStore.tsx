@@ -39,6 +39,12 @@ export const useSettingsStore = createWithEqualityFn(
         });
       },
 
+      setPartnerPageThemeUid: (partnerPageThemeUid: string) => {
+        set({
+          partnerPageThemeUid: partnerPageThemeUid,
+        });
+      },
+
       // Disable Feature Card
       setDisabledFeatureCard: (id: string) => {
         const disabledFeatureCards = (get() as SettingsProps)

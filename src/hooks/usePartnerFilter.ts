@@ -16,8 +16,8 @@ interface usePartnerFilterProps {
 
 export const usePartnerFilter = (): usePartnerFilterProps => {
   const pathname = usePathname();
-  const setPartnerThemeUid = useSettingsStore(
-    (state) => state.setPartnerThemeUid,
+  const setPartnerPageThemeUid = useSettingsStore(
+    (state) => state.setPartnerPageThemeUid,
   );
 
   // check the list of bridge that we suport the name that we use
@@ -36,16 +36,20 @@ export const usePartnerFilter = (): usePartnerFilterProps => {
       hasTheme = true;
       isBridgeFiltered = true;
       partnerName = pathnameKey;
+    } else if (bridgesKeys && !bridgesKeys.includes(pathnameKey)) {
+      setPartnerPageThemeUid(undefined);
     } else if (exchangesKeys && exchangesKeys.includes(pathnameKey)) {
       hasTheme = true;
       isDexFiltered = true;
       partnerName = pathnameKey;
+    } else if (exchangesKeys && exchangesKeys.includes(pathnameKey)) {
+      setPartnerPageThemeUid(undefined);
     }
   }
 
   useEffect(() => {
-    partnerName && setPartnerThemeUid(partnerName);
-  }, [setPartnerThemeUid, partnerName]);
+    partnerName && setPartnerPageThemeUid(partnerName);
+  }, [setPartnerPageThemeUid, partnerName]);
 
   if (pathname?.includes('memecoins')) {
     hasTheme = true;
@@ -59,9 +63,6 @@ export const usePartnerFilter = (): usePartnerFilterProps => {
       bridgesKeys,
     };
   }
-
-  // console.log('set partner theme uid', partnerName);
-  // setPartnerThemeUid(partnerName);
 
   return {
     hasTheme,
