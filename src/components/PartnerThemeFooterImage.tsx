@@ -5,7 +5,7 @@ import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { BackgroundFooterImage } from './Widgets/WidgetsContainer.style';
 
 export const PartnerThemeFooterImage = () => {
-  const { activeUid, footerImageUrl } = usePartnerTheme();
+  const { activeUid, footerImageUrl, footerUrl } = usePartnerTheme();
   const { sourceChainToken, destinationChainToken } =
     useChainTokenSelectionStore();
 
@@ -18,9 +18,10 @@ export const PartnerThemeFooterImage = () => {
   return (
     !activeChainAlert &&
     activeUid &&
+    footerUrl &&
     footerImageUrl &&
     !footerImageUrl?.href.includes('undefined') && (
-      <Link href={footerImageUrl.href} target="_blank" style={{ zIndex: 1 }}>
+      <Link href={footerUrl} target="_blank" style={{ zIndex: 1 }}>
         <BackgroundFooterImage
           alt="footer-image"
           src={footerImageUrl.href}

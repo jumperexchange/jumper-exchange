@@ -14,6 +14,7 @@ interface usePartnerThemeProps {
   backgroundColor?: string;
   currentCustomizedTheme?: any;
   footerImageUrl?: URL;
+  footerUrl?: URL;
   availableWidgetTheme?: string;
   currentWidgetTheme?: WidgetTheme;
   logoUrl?: URL;
@@ -86,6 +87,18 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
         url.origin,
       );
     }
+  } else {
+    footerImageUrl = undefined;
+  }
+
+  let footerUrl;
+  if (
+    (partnerPageThemeUid || partnerThemeUid) &&
+    partnerThemes?.length > 0 &&
+    isSuccess &&
+    partnerThemes[0].attributes.PartnerURL
+  ) {
+    footerUrl = new URL(partnerThemes[0].attributes.PartnerURL, url.origin);
   } else {
     footerImageUrl = undefined;
   }
@@ -189,6 +202,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     currentCustomizedTheme:
       isDapp && currentCustomizedTheme ? currentCustomizedTheme : undefined,
     footerImageUrl: isDapp && footerImageUrl ? footerImageUrl : undefined,
+    footerUrl: isDapp && !!footerUrl ? new URL(footerUrl) : undefined,
     availableWidgetTheme:
       isDapp && availableWidgetTheme ? availableWidgetTheme : undefined,
     currentWidgetTheme:
