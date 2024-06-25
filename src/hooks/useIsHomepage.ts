@@ -1,5 +1,5 @@
 import { usePathname } from 'next/navigation';
-import { JUMPER_LEARN_PATH } from 'src/const/urls';
+import { JUMPER_LEARN_PATH, JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { locales } from 'src/i18n';
 
 const checkLocaleIsPath = (path: string | null) => {
@@ -7,7 +7,7 @@ const checkLocaleIsPath = (path: string | null) => {
     return locales.some(
       (locale) =>
         !path.includes(`${JUMPER_LEARN_PATH}`) ||
-        !path.includes(`${JUMPER_LEARN_PATH}`),
+        !path.includes(`${JUMPER_LOYALTY_PATH}`),
     );
   }
 };
