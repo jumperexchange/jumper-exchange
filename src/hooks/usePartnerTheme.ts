@@ -1,13 +1,13 @@
 'use client';
 
+import { useIsDapp } from '@/hooks/useIsDapp';
+import { useStrapi } from '@/hooks/useStrapi';
 import type { WidgetTheme } from '@lifi/widget';
 import { useTheme } from '@mui/material';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import { useSettingsStore } from 'src/stores/settings';
 import type { PartnerThemesData } from 'src/types/strapi';
 import { shallow } from 'zustand/shallow';
-import { useIsDapp } from './useIsDapp';
-import { useStrapi } from './useStrapi';
 
 interface usePartnerThemeProps {
   partnerTheme?: PartnerThemesData;
@@ -24,7 +24,7 @@ interface usePartnerThemeProps {
 
 export const usePartnerTheme = (): usePartnerThemeProps => {
   const theme = useTheme();
-  const isHomepage = useIsDapp();
+  const isDapp = useIsDapp();
   const [partnerThemeUid, partnerPageThemeUid, setThemeMode] = useSettingsStore(
     (state) => [
       state.partnerThemeUid,
@@ -184,22 +184,21 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
 
   return {
     partnerTheme:
-      isHomepage && partnerThemes?.length > 0 ? partnerThemes[0] : undefined,
-    backgroundColor:
-      isHomepage && backgroundColor ? backgroundColor : undefined,
+      isDapp && partnerThemes?.length > 0 ? partnerThemes[0] : undefined,
+    backgroundColor: isDapp && backgroundColor ? backgroundColor : undefined,
     currentCustomizedTheme:
-      isHomepage && currentCustomizedTheme ? currentCustomizedTheme : undefined,
-    footerImageUrl: isHomepage && footerImageUrl ? footerImageUrl : undefined,
+      isDapp && currentCustomizedTheme ? currentCustomizedTheme : undefined,
+    footerImageUrl: isDapp && footerImageUrl ? footerImageUrl : undefined,
     availableWidgetTheme:
-      isHomepage && availableWidgetTheme ? availableWidgetTheme : undefined,
+      isDapp && availableWidgetTheme ? availableWidgetTheme : undefined,
     currentWidgetTheme:
-      isHomepage && currentWidgetTheme ? currentWidgetTheme : undefined,
-    logoUrl: isHomepage && logoUrl ? logoUrl : undefined,
+      isDapp && currentWidgetTheme ? currentWidgetTheme : undefined,
+    logoUrl: isDapp && logoUrl ? logoUrl : undefined,
     activeUid:
-      (isHomepage && partnerPageThemeUid) ||
-      (isHomepage && partnerThemeUid) ||
+      (isDapp && partnerPageThemeUid) ||
+      (isDapp && partnerThemeUid) ||
       undefined,
-    imgUrl: isHomepage && imageUrl ? imageUrl : undefined,
-    isSuccess: isHomepage && isSuccess,
+    imgUrl: isDapp && imageUrl ? imageUrl : undefined,
+    isSuccess: isDapp && isSuccess,
   };
 };

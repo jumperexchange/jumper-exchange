@@ -30,6 +30,7 @@ import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { useIsDapp } from 'src/hooks/useIsDapp';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
@@ -38,6 +39,7 @@ export const useMainMenuContent = () => {
   const { trackPageload, trackEvent } = useUserTracking();
   const router = useRouter();
   const theme = useTheme();
+  const isDapp = useIsDapp();
   const { activeUid } = usePartnerTheme();
   const { partnerPageThemeUid } = useSettingsStore((state) => state);
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
@@ -323,7 +325,7 @@ export const useMainMenuContent = () => {
     },
   ];
 
-  if (partnerPageThemeUid) {
+  if (!isDapp || partnerPageThemeUid) {
     return mainMenuContent.slice(0, 1).concat(mainMenuContent.slice(2));
   } else {
     return mainMenuContent;
