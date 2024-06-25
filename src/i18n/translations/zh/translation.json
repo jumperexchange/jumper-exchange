@@ -34,7 +34,7 @@
       "lifiExplorer": "LI.FI 浏览器",
       "aboutLIFI": "关于 LI.FI",
       "support": "技术支持",
-      "profile": ""
+      "profile": "Jumper 个人资料"
     },
     "walletMenu": {
       "disconnect": "断开连接",
@@ -44,7 +44,7 @@
       "explore": "浏览区块浏览器",
       "copiedMsg": "钱包地址已复制",
       "walletNotInstalled": "{{wallet}} 钱包没有安装",
-      "connectAnotherWallet": ""
+      "connectAnotherWallet": "连接另一个钱包"
     },
     "themes": {
       "switchToLight": "切换到浅色主题",
@@ -52,36 +52,36 @@
       "switchToSystem": "与系统保持一致"
     },
     "developers": {
-      "github": "",
+      "github": "GitHub",
       "documentation": "文档"
     }
   },
   "discordBanner": {
-    "ctaHeadline": "",
-    "ctaButton": ""
+    "ctaHeadline": "加入我们的Discord来学习更多",
+    "ctaButton": "加入我们的 Discord"
   },
   "blog": {
-    "title": "",
-    "categories": "",
-    "allCategories": "",
-    "subtitle": "",
-    "minRead": "",
-    "seeAllPosts": "",
-    "recentPosts": "",
-    "similarPosts": "",
-    "goToArticle": "",
-    "openApp": "",
-    "faq": "",
-    "jumperCta": "",
-    "copiedLink": "",
+    "title": "指南和教程",
+    "categories": "分类",
+    "allCategories": "全部",
+    "subtitle": "TL:DR DeFi 和加密货币逐步指南，适合所有水平",
+    "minRead": "{{minRead}} 分钟阅读时间",
+    "seeAllPosts": "请看所有的帖子",
+    "recentPosts": "最新文章",
+    "similarPosts": "相似帖子",
+    "goToArticle": "转至文章",
+    "openApp": "打开应用",
+    "faq": "常见问题解答",
+    "jumperCta": "试试 jumper.exchange",
+    "copiedLink": "复制链接",
     "shareLinkedIn": "",
-    "shareFb": "",
-    "shareX": "",
-    "shareLink": ""
+    "shareFb": "在 Facebook 上分享文章",
+    "shareX": "在 X 上分享文章",
+    "shareLink": "分享链接"
   },
   "solanaAlert": {
-    "title": "",
-    "subtitle": ""
+    "title": "有限的 Solana 代币支持",
+    "subtitle": "目前只有USDC和USDT可以连接到Solana。"
   },
   "featureCard": {
     "learnMore": "了解更多"
@@ -107,15 +107,15 @@
     }
   },
   "questCard": {
-    "completed": "",
-    "join": ""
+    "completed": "已完成",
+    "join": "加入"
   },
   "missions": {
-    "available": "",
-    "completed": ""
+    "available": "现有任务",
+    "completed": "已完成的任务"
   },
   "profile_page": {
-    "mobileTitle": "",
-    "mobileDescription": ""
+    "mobileTitle": "仅可在桌面上使用",
+    "mobileDescription": "Jumper 个人资料页面尚未在小屏幕上可用。我们正在处理它。"
   }
 }

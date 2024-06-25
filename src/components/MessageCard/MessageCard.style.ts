@@ -46,3 +46,11 @@ export const InfoMessageCardTitle = styled(Box)(({ theme }) => ({
       ? theme.palette.info.main
       : lighten(theme.palette.info.main, 0.24),
 }));
+
+export const InfoMessageCardClickable = styled(MessageCard)(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? alpha(theme.palette.info.main, 0.12)
+      : alpha(theme.palette.info.main, 0.16),
+  cursor: 'pointer',
+}));

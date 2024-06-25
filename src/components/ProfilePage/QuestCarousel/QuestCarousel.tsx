@@ -34,11 +34,10 @@ export const QuestCarousel = ({ quests, loading }: QuestCarouselProps) => {
                       key={`ongoing-mission-${index}`}
                       active={true}
                       title={quest?.attributes.Title}
-                      image={`
-                    ${new URL(
-                      quest.attributes.Image?.data?.attributes?.url,
-                      url.origin,
-                    )}`}
+                      image={new URL(
+                        quest.attributes.Image?.data?.attributes?.url,
+                        url.origin,
+                      ).toString()}
                       points={quest?.attributes.Points}
                       link={quest?.attributes.Link}
                       startDate={quest?.attributes.StartDate}
@@ -47,12 +46,10 @@ export const QuestCarousel = ({ quests, loading }: QuestCarouselProps) => {
                         quest?.attributes.quests_platform?.data?.attributes
                           ?.Name
                       }
-                      platformImage={`
-                    ${new URL(
-                      quest.attributes.quests_platform?.data?.attributes?.Logo?.data?.attributes?.url,
-                      url.origin,
-                    )}
-                  `}
+                      platformImage={new URL(
+                        quest.attributes.quests_platform?.data?.attributes?.Logo?.data?.attributes?.url,
+                        url.origin,
+                      ).toString()}
                     />
                   );
                 })

@@ -90,6 +90,11 @@ interface Resources {
       title: 'Limited Solana token support';
       subtitle: 'Currently only USDC and USDT can be bridged to and from Solana.';
     };
+    seiAlert: {
+      title: 'Linking of SEI EVM wallet required';
+      subtitle: 'To use SEI EVM, you need to link your wallet address to the SEI ecosystem.';
+      buttonText: 'Link Wallet';
+    };
     featureCard: {
       learnMore: 'Learn more';
     };
