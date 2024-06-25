@@ -112,16 +112,19 @@ export const useMainMenuContent = () => {
     {
       label: t('navbar.navbarMenu.theme'),
       prefixIcon: <PaletteIcon />,
-      triggerSubMenu: MenuKeysEnum.Theme,
+      triggerSubMenu: !partnerPageThemeUid ? MenuKeysEnum.Theme : undefined,
+      showMoreIcon: !partnerPageThemeUid,
       suffixIcon: activeUid ?? undefined,
       onClick: () => {
-        setSubMenuState(MenuKeysEnum.Theme);
-        trackEvent({
-          category: TrackingCategory.MainMenu,
-          action: TrackingAction.OpenMenu,
-          label: `open_submenu_${MenuKeysEnum.Theme.toLowerCase()}`,
-          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Theme },
-        });
+        if (!partnerPageThemeUid) {
+          setSubMenuState(MenuKeysEnum.Theme);
+          trackEvent({
+            category: TrackingCategory.MainMenu,
+            action: TrackingAction.OpenMenu,
+            label: `open_submenu_${MenuKeysEnum.Theme.toLowerCase()}`,
+            data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Theme },
+          });
+        }
       },
     },
     {
@@ -325,7 +328,7 @@ export const useMainMenuContent = () => {
     },
   ];
 
-  if (!isDapp || partnerPageThemeUid) {
+  if (!isDapp) {
     return mainMenuContent.slice(0, 1).concat(mainMenuContent.slice(2));
   } else {
     return mainMenuContent;

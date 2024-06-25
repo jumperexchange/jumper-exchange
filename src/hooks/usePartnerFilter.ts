@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { useSettingsStore } from 'src/stores/settings';
 import { useDexsAndBridgesKeys } from './useDexsAndBridgesKeys';
+import { useIsDapp } from './useIsDapp';
 
 interface usePartnerFilterProps {
   hasTheme: boolean;
@@ -19,7 +20,7 @@ export const usePartnerFilter = (): usePartnerFilterProps => {
   const setPartnerPageThemeUid = useSettingsStore(
     (state) => state.setPartnerPageThemeUid,
   );
-
+  const isDapp = useIsDapp();
   // check the list of bridge that we suport the name that we use
   const { bridgesKeys, exchangesKeys } = useDexsAndBridgesKeys();
 
@@ -29,10 +30,18 @@ export const usePartnerFilter = (): usePartnerFilterProps => {
   let isDexFiltered = false;
   let partnerName = '';
   const pathnameSplit = pathname?.split('/');
-  const pathnameKey =
-    pathnameSplit && pathnameSplit[pathnameSplit.length - 2].toLowerCase();
+  const localeSplit =
+    pathnameSplit && pathnameSplit.length > 1 && pathnameSplit[1];
+  let pathnameKey;
+  if (localeSplit && localeSplit.length === 2) {
+    pathnameKey =
+      pathnameSplit && pathnameSplit[pathnameSplit.length - 1].toLowerCase();
+  } else {
+    pathnameKey = pathnameSplit && pathnameSplit[1].toLowerCase();
+  }
+
   if (pathnameKey) {
-    if (bridgesKeys && bridgesKeys.includes(pathnameKey)) {
+    if (bridgesKeys && bridgesKeys.includes(pathnameKey) && isDapp) {
       hasTheme = true;
       isBridgeFiltered = true;
       partnerName = pathnameKey;
@@ -42,9 +51,11 @@ export const usePartnerFilter = (): usePartnerFilterProps => {
       hasTheme = true;
       isDexFiltered = true;
       partnerName = pathnameKey;
-    } else if (exchangesKeys && exchangesKeys.includes(pathnameKey)) {
+    } else if (exchangesKeys && !exchangesKeys.includes(pathnameKey)) {
       setPartnerPageThemeUid(undefined);
     }
+  } else {
+    setPartnerPageThemeUid(undefined);
   }
 
   useEffect(() => {

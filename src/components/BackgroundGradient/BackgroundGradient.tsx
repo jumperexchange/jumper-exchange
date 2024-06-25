@@ -41,7 +41,6 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
       backgroundImageUrl={imgUrl}
       backgroundColor={backgroundColor}
     >
-      {' '}
       {!activeUid && (
         <>
           <BackgroundGradientBottomLeft />
