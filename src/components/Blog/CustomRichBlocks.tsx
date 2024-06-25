@@ -174,6 +174,7 @@ export const CustomRichBlocks = ({
             <InstructionsAccordion
               data={instructions_array}
               key={generateKey('instructions')}
+              activeTheme={activeTheme}
             />
           );
         } catch (error) {

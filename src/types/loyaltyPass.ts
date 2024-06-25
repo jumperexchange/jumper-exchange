@@ -101,6 +101,7 @@ type QuestAttributes = {
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
+  Slug?: string;
   Image: ImageData;
   quests_platform: QuestsPlatformData;
 };

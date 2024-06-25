@@ -15,7 +15,8 @@ import {
   InstructionsAccordionToggle,
 } from '.';
 import { Button } from 'src/components/Button';
-import FestivalIcon from '@mui/icons-material/Festival';
+import { sora } from 'src/fonts/fonts';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 interface InstructionsAccordionItemProps extends InstructionItemProps {
   index: number;
@@ -46,6 +47,7 @@ export const InstructionsAccordionItem = ({
   url,
   buttonText,
   buttonLink,
+  activeTheme,
 }: InstructionsAccordionItemProps) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
@@ -57,7 +59,14 @@ export const InstructionsAccordionItem = ({
     step && setOpen((prev) => !prev);
   };
   return (
-    <InstructionsAccordionItemContainer>
+    <InstructionsAccordionItemContainer
+      sx={{
+        typograpy:
+          activeTheme === 'superfest' ? sora.style.fontFamily : undefined,
+        border: activeTheme === 'superfest' ? '2px dotted' : undefined,
+        borderColor: activeTheme === 'superfest' ? '#000000' : undefined,
+      }}
+    >
       <InstructionsAccordionItemMain onClick={(e) => handleOpen(e)}>
         <InstructionsAccordionItemHeader>
           <InstructionsAccordionItemIndex>
@@ -102,18 +111,36 @@ export const InstructionsAccordionItem = ({
                 sx={{
                   display: 'flex',
                   alignContent: 'center',
-                  justifyContent: 'flex-end',
+                  justifyContent: 'flex-start',
+                  mt: '16px',
+                  typography:
+                    activeTheme === 'superfest'
+                      ? sora.style.fontFamily
+                      : undefined,
                 }}
               >
-                <a href={buttonLink} target="_blank">
-                  <Button>
+                <a
+                  href={buttonLink}
+                  target="_blank"
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      textAlign: 'left',
+                      alignItems: 'center',
+                      alignContent: 'center',
+                      color: '#000000',
+                      '&:hover': {
+                        color: theme.palette.primary.main,
+                      },
+                    }}
+                  >
                     <Typography
                       variant={'lifiBodyMediumStrong'}
                       component={'span'}
-                      // ml={'9.5px'}
-                      mr={'9.5px'}
+                      mr={'8px'}
                       sx={{
-                        color: theme.palette.white.main,
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         maxWidth: 208,
@@ -124,8 +151,8 @@ export const InstructionsAccordionItem = ({
                     >
                       {buttonText}
                     </Typography>
-                    <FestivalIcon sx={{ color: '#FFFFFF' }} />
-                  </Button>
+                    <ArrowForwardIcon />
+                  </Box>
                 </a>
               </Box>
             ) : null}

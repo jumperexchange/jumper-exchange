@@ -4,7 +4,9 @@ import { getCookies } from '@/app/lib/getCookies';
 import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
 import type { Metadata } from 'next';
+import { getQuestBySlug } from 'src/app/lib/getQUestBySlug';
 import SuperfestPage from 'src/app/ui/superfest/SuperfestMissionPage';
+import { useQuestBySlug } from 'src/hooks/useQuestBySlug';
 
 // export async function generateMetadata({
 //   params,
@@ -47,17 +49,9 @@ import SuperfestPage from 'src/app/ui/superfest/SuperfestMissionPage';
 // }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  //   const article = await getArticleBySlug(params.slug);
-  //   const { activeTheme } = getCookies();
+  const { data, url } = await getQuestBySlug(params.slug);
 
-  //   const currentTags = (
-  //     article.data as BlogArticleData
-  //   ).attributes?.tags.data.map((el) => el?.id);
+  console.log(data);
 
-  //   const relatedArticles = await getArticlesByTag(
-  //     article.data[0]?.id,
-  //     currentTags,
-  //   );
-
-  return <SuperfestPage />;
+  return <SuperfestPage quest={data?.data?.[0]} url={url} />;
 }

@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-export type ThemeModesSupported = 'light' | 'dark' | 'auto';
+export type ThemeModesSupported = 'light' | 'dark' | 'auto' | 'superfest';
 export type WalletConnected = string;
 
 export interface SettingsProps {

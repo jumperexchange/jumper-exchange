@@ -1,11 +1,11 @@
 import { CarouselContainer } from '@/components/Blog/BlogCarousel/CarouselContainer';
-import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import type { Quest } from '@/types/loyaltyPass';
 import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { SuperfestCarouselContainer } from './QuestCarousel.style';
+import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 
 interface QuestCarouselProps {
   quests?: Quest[];
@@ -16,7 +16,7 @@ export const QuestCarouselSuperfest = ({
   quests,
   loading,
 }: QuestCarouselProps) => {
-  const { url } = useOngoingQuests();
+  const { url } = useOngoingFestMissions();
   const { t } = useTranslation();
 
   const isNotLive = !loading && (!quests || quests.length === 0);
@@ -57,6 +57,7 @@ export const QuestCarouselSuperfest = ({
                       url.origin,
                     )}
                   `}
+                      slug={quest?.attributes.Slug}
                     />
                   );
                 })

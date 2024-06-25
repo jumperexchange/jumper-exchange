@@ -16,6 +16,7 @@ import {
 } from './QuestCard.style';
 import { CenteredBox } from '../Superfest.style';
 import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';
+import { useRouter } from 'next/navigation';
 
 interface QuestCardProps {
   active?: boolean;
@@ -27,6 +28,7 @@ interface QuestCardProps {
   endDate?: string;
   platformName?: string;
   platformImage?: string;
+  slug?: string;
 }
 
 function getStringDateFormatted(startDate: string, endDate: string): string {
@@ -45,11 +47,11 @@ export const QuestCard = ({
   link,
   startDate,
   endDate,
-  platformName,
-  platformImage,
+  slug,
 }: QuestCardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const router = useRouter();
 
   return (
     <QuestCardMainBox>
@@ -126,7 +128,7 @@ export const QuestCard = ({
           </Box>
         </Box>
         <QuestCardInfoBox points={points}>
-          {active ? (
+          {active && slug ? (
             <Button
               disabled={false}
               variant="secondary"
@@ -143,6 +145,7 @@ export const QuestCard = ({
                   backgroundColor: '#ff0420',
                 },
               }}
+              onClick={() => router.push(slug)}
             >
               <ProfilePageTypography
                 fontSize="16px"
