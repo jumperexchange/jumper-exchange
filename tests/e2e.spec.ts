@@ -12,20 +12,21 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('should navigate to the homepage and change tabs', async ({ page }) => {
+    const buyETHButton = page
+      .frameLocator('iframe[title="Onramper widget"]')
+      .locator('button:has-text("Buy ETH")');
     await closeWelcomeScreen(page);
     await page.getByRole('tab', { name: 'Exchange' }).click();
     await expect(
       page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
     ).toBeVisible();
     await page.getByRole('tab', { name: 'Gas' }).click();
-    await expect(
-      page.locator('[id="widget-header-\\:r4\\:"]').getByText('Gas'),
-    ).toBeVisible();
+    await expect(page.locator('#tab-Gas-1')).toBeVisible();
     await page.getByRole('tab', { name: 'Buy' }).click();
+    await expect(buyETHButton).toBeEnabled({ timeout: 20000 });
     await expect(
       page
         .frameLocator('iframe[title="Onramper widget"]')
-        .getByText('Buy crypto')
         .getByText('Buy crypto'),
     ).toBeVisible();
   });

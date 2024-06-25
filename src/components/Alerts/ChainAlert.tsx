@@ -32,6 +32,9 @@ export const ChainAlert = () => {
       setChainId(ChainId.SOL);
       setTitle(t('solanaAlert.title'));
       setSubtitle(t('solanaAlert.subtitle'));
+    } else {
+      setIsClickable(false);
+      setChainId(0);
     }
   }, [destinationChainToken, sourceChainToken, t]);
 
