@@ -1,5 +1,7 @@
 // ----------------------------------------------------------------------
 
+import { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+
 // PDA Type
 
 type Claim = {
@@ -101,8 +103,15 @@ type QuestAttributes = {
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
-  Slug?: string;
+  Slug: string;
+  Label?: string;
+  Information?: string;
+  CLaimingId?: string;
+  Subtitle?: string;
+  Steps?: RootNode[];
+  CustomInformation?: any;
   Image: ImageData;
+  BannerImage: ImageData;
   quests_platform: QuestsPlatformData;
 };
 
