@@ -3,9 +3,7 @@ import { Button } from 'src/components/Button';
 import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';
 
 export const ClaimingButton = ({}) => {
-  async function handleClick() {
-    console.log('hello world');
-  }
+  async function handleClick() {}
 
   return (
     <Box sx={{ width: '25%' }}>

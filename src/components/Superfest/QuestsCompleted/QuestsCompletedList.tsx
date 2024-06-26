@@ -18,7 +18,6 @@ function checkInclusion(
 ): boolean {
   const lowerActiveCampaigns = activeCampaigns.map((cId) => cId.toLowerCase());
   for (const id of claimingIds) {
-    console.log(id);
     if (lowerActiveCampaigns.includes(id.toLowerCase())) {
       return true;
     }
@@ -60,14 +59,9 @@ export const QuestCompletedList = ({
           ? quests?.map((quest: Quest, index: number) => {
               const claimingIds =
                 quest.attributes?.CustomInformation?.['claimingIds'];
-              console.log('hereee');
-              console.log(activeCampaigns);
-              console.log(quest.attributes.ClaimingId);
-
               let included = false;
               if (claimingIds && activeCampaigns) {
                 included = checkInclusion(activeCampaigns, claimingIds);
-                console.log('=============== LAST');
               }
 
               if (included) {

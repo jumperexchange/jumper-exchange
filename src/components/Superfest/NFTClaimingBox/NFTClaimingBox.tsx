@@ -62,9 +62,7 @@ const ClaimInfo = {
 };
 
 export const NFTClaimingBox = ({}) => {
-  async function handleClick() {
-    console.log('hello world');
-  }
+  async function handleClick() {}
 
   return (
     <NFTClaimingContainer>

@@ -10,8 +10,6 @@ export const SuperfestPresentedByBox = () => {
   const currentPath = usePathname();
   const isSuperfest = currentPath.includes(JUMPER_FEST);
 
-  console.log(currentPath);
-
   const handleClick = () => {
     // openInNewTab(lifiUrl);
   };

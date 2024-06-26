@@ -40,7 +40,19 @@ export const Superfest = () => {
         }
         rewardAmount={
           45.54
-          // availableRewards?.[0] as number
+          // availableRewards?.[0].amountToClaim as number
+        }
+        rewardAmountBN={
+          '455000000'
+          // availableRewards?.[0].amountToClaimBN
+        }
+        proof={
+          ['']
+          // availableRewards?.[0].proof
+        }
+        isMerklSuccess={
+          true
+          //isRewardSuccess
         }
       />
       <HeroBox />

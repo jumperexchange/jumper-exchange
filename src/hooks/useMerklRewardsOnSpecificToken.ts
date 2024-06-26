@@ -32,8 +32,7 @@ export const useMerklRewards = ({
   let userTVL = 0;
   let rewardsToClaim = [];
   const activeCampaigns = [];
-  //test
-  console.log('-------------');
+
   // userAddress = '0x55048E0d46f66FA00cae12905f125194CD961581';
   const addr = '0x55048E0d46f66FA00cae12905f125194CD961581';
 
@@ -48,13 +47,8 @@ export const useMerklRewards = ({
     queryKey: ['MerklPositions'],
 
     queryFn: async () => {
-      const response = await fetch(MERKL_POSITIONS_API, {
-        // headers: {
-        //   Authorization: `Bearer ${apiAccesToken}`,
-        // },
-      });
+      const response = await fetch(MERKL_POSITIONS_API, {});
       const result = await response.json();
-      console.log(result);
       return result;
     },
     // enabled: !!account?.address && account.chainType === 'EVM',
@@ -102,8 +96,6 @@ export const useMerklRewards = ({
   // transform to know what is not coming from Jumper campaigns
   if (rewardsData) {
     const tokenData = rewardsData[REWARDS_CHAIN_ID]?.tokenData;
-    let rewardData = [];
-    console.log(tokenData);
     if (tokenData) {
       rewardsToClaim = Object.entries(tokenData).map((elem): any => {
         console.log('---');
@@ -115,6 +107,7 @@ export const useMerklRewards = ({
           chainId: REWARDS_CHAIN_ID,
           address: key,
           symbol: value.symbol,
+          amountToClaimBN: value.unclaimed,
           amountToClaim: value.unclaimed / 10 ** value.decimals,
           amountAccumulated: value.accumulated / 10 ** value.decimals,
           proof: value.proof,

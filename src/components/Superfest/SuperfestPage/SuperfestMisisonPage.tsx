@@ -43,8 +43,6 @@ export const SuperfestMissionPage = ({
   const chains = attributes.CustomInformation['chains'];
   const partner = attributes.CustomInformation['partner'];
 
-  console.log(attributes);
-
   return (
     <SuperfestContainer className="superfest">
       <Box

@@ -12,9 +12,7 @@ export const RewardsBox = ({}) => {
       userAddress: '0x55048e0d46f66fa00cae12905f125194cd961581',
     });
 
-  async function handleClick() {
-    console.log('hello world');
-  }
+  async function handleClick() {}
 
   return (
     <RewardsdMainBox>

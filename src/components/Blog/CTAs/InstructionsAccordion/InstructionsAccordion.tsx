@@ -27,7 +27,7 @@ export const InstructionsAccordion = ({
   if (!data) {
     return;
   }
-  console.log(data);
+
   return (
     <InstructionsAccordionContainer>
       {data?.map((el, index) => (
