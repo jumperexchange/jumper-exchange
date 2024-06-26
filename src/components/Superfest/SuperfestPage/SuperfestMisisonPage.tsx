@@ -137,7 +137,16 @@ export const SuperfestMissionPage = ({
                   alignItems: 'center',
                 }}
               >
-                <Typography>Supported chains</Typography>
+                <Typography
+                  sx={{
+                    fontSize: '16px',
+                    typography: sora.style.fontFamily,
+                    fontWeight: 500,
+                    lineHeight: '20px',
+                  }}
+                >
+                  Supported chains
+                </Typography>
                 <Box
                   sx={{
                     ml: '8px',
@@ -179,6 +188,7 @@ export const SuperfestMissionPage = ({
             {/* rewards  */}
             <Box
               sx={{
+                mt: '16px',
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -205,12 +215,28 @@ export const SuperfestMissionPage = ({
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'center',
+                    textAlign: 'left',
                     alignContent: 'center',
+                    ml: '20px',
                   }}
                 >
-                  <Typography>Rewards</Typography>
-                  <Typography>{`${rewards.amount} ${rewards.name}`}</Typography>
+                  <Typography
+                    sx={{
+                      fontSize: '16px',
+                      typography: sora.style.fontFamily,
+                      fontWeight: 700,
+                      color: '#525252',
+                    }}
+                  >
+                    Rewards
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: '18px',
+                      typography: sora.style.fontFamily,
+                      fontWeight: 800,
+                    }}
+                  >{`${rewards.amount} ${rewards.name}`}</Typography>
                 </Box>
               </Box>
               {/* Points  */}
@@ -223,7 +249,7 @@ export const SuperfestMissionPage = ({
                 }}
               >
                 <Image
-                  src="https://strapi.li.finance/uploads/base_314252c925.png"
+                  src="https://strapi.li.finance/uploads/xp_cfcff186e5.png"
                   style={{}}
                   alt="base"
                   width="48"
@@ -233,12 +259,30 @@ export const SuperfestMissionPage = ({
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'center',
+                    textAlign: 'left',
                     alignContent: 'center',
+                    ml: '20px',
                   }}
                 >
-                  <Typography>Points</Typography>
-                  <Typography>{attributes.Points}</Typography>
+                  <Typography
+                    sx={{
+                      fontSize: '16px',
+                      typography: sora.style.fontFamily,
+                      fontWeight: 700,
+                      color: '#525252',
+                    }}
+                  >
+                    Points
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: '18px',
+                      typography: sora.style.fontFamily,
+                      fontWeight: 800,
+                    }}
+                  >
+                    {attributes.Points}
+                  </Typography>
                 </Box>
               </Box>
               {/* partner  */}
@@ -261,12 +305,30 @@ export const SuperfestMissionPage = ({
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'center',
+                    textAlign: 'left',
                     alignContent: 'center',
+                    ml: '20px',
                   }}
                 >
-                  <Typography>Sponsored by</Typography>
-                  <Typography>{partner.name}</Typography>
+                  <Typography
+                    sx={{
+                      fontSize: '16px',
+                      typography: sora.style.fontFamily,
+                      fontWeight: 700,
+                      color: '#525252',
+                    }}
+                  >
+                    Sponsored by
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: '18px',
+                      typography: sora.style.fontFamily,
+                      fontWeight: 800,
+                    }}
+                  >
+                    {partner.name}
+                  </Typography>
                 </Box>
               </Box>
             </Box>
