@@ -7,7 +7,9 @@ import {
   NFTClaimingDescription,
   NFTClaimingHeader,
   NFTClaimingTitle,
+  NFTDisplayBox,
 } from './NFTClaimingBox.style';
+import { NFTCard } from './NFTCard/NFTCard';
 
 const NFT_ARRAY = [
   {
@@ -40,8 +42,6 @@ const NFT_ARRAY = [
   },
 ];
 
-const NOT_LIVE = true;
-
 const ClaimInfo = {
   mode: {
     isClaimable: false,
@@ -70,12 +70,7 @@ export const NFTClaimingBox = ({}) => {
         <NFTClaimingTitle>
           {String('Enter the liquidity festival').toUpperCase()}
         </NFTClaimingTitle>
-        <Box
-          sx={{
-            marginTop: '32px',
-            marginBottom: '32px',
-          }}
-        >
+        <Box marginTop="32px" marginBottom="32px">
           <NFTClaimingDescription>
             {
               'Explore the Superchain Festival and vibe at the sound of 1.5M OP rewards. Feel the music, complete the tasksand get ready to experience rewards like never before.'
@@ -83,71 +78,18 @@ export const NFTClaimingBox = ({}) => {
           </NFTClaimingDescription>
         </Box>
       </NFTClaimingHeader>
-      <Box
-        sx={{
-          marginTop: '16px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignContent: 'center',
-          gap: '48px',
-        }}
-      >
+      <NFTDisplayBox>
         {NFT_ARRAY.map((elem) => {
           return (
-            <Box
-              sx={{
-                width: '256px',
-                height: '344px',
-                justifyContent: 'center',
-                alignContent: 'center',
-                cursor: NOT_LIVE ? 'not-allowed' : undefined,
-              }}
-            >
-              <Image
-                style={{
-                  borderTopRightRadius: '8px',
-                  borderTopLeftRadius: '8px',
-                  marginBottom: '0px',
-                }}
-                src={elem.image}
-                alt={elem.chain}
-                width="256"
-                height="256"
-              />
-              <Box
-                sx={{
-                  backgroundColor: '#fff0ca',
-                  height: '72px',
-                  justifyContent: 'center',
-                  alignContent: 'center',
-                  textAlign: 'center',
-                  borderBottomRightRadius: '8px',
-                  borderBottomLeftRadius: '8px',
-                  marginTop: '-6px',
-                }}
-              >
-                <Button
-                  size="medium"
-                  disabled={NOT_LIVE}
-                  styles={{
-                    backgroundColor: 'transparent',
-                    border: '2px dotted',
-                    color: '#000000',
-                    borderColor: NOT_LIVE ? '#C5B99C' : '#000000',
-                    width: '75%',
-                    '&:hover': {
-                      backgroundColor: elem.bgColor,
-                      color: elem.typoColor,
-                    },
-                  }}
-                >
-                  Mint Now
-                </Button>
-              </Box>
-            </Box>
+            <NFTCard
+              image={elem.image}
+              chain={elem.chain}
+              bgColor={elem.bgColor}
+              typoColor={elem.typoColor}
+            />
           );
         })}
-      </Box>
+      </NFTDisplayBox>
     </NFTClaimingContainer>
   );
 };

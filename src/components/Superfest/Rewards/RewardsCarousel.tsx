@@ -2,9 +2,10 @@ import { Box, Stack, Typography } from '@mui/material';
 import {
   RewardsCarouselContainer,
   RewardsCarouselHeader,
+  RewardsCarouselMainBox,
   RewardsCarouselTitle,
 } from './RewardsCarousel.style';
-import { RewardsBox } from './RewardsBox/RewardsBox';
+import { RewardsAmountBox } from './RewardsBox/RewardsBox';
 import Image from 'next/image';
 import { Button } from 'src/components/Button';
 import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';
@@ -72,17 +73,7 @@ export const RewardsCarousel = ({
     <>
       {isLoading ? undefined : (
         <RewardsCarouselContainer>
-          <Box
-            sx={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignContent: 'center',
-              padding: '32px',
-            }}
-          >
+          <RewardsCarouselMainBox>
             <Typography
               sx={{
                 fontSize: '32px',
@@ -93,52 +84,7 @@ export const RewardsCarousel = ({
             >
               You've earned:
             </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Box sx={{ marginLeft: '32px' }}>
-                <Image
-                  src={'https://strapi.li.finance/uploads/op_dddbaa6b32.png'}
-                  alt="token image"
-                  width={40}
-                  height={40}
-                  style={{
-                    borderRadius: 16,
-                  }}
-                />
-                <Image
-                  src={'https://strapi.li.finance/uploads/op_dddbaa6b32.png'}
-                  alt="token image"
-                  width={15}
-                  height={15}
-                  style={{
-                    borderRadius: 16,
-                    border: '2px solid',
-                    borderColor: '#FFFFFF',
-                    zIndex: 10,
-                    marginTop: 16,
-                    marginLeft: -8,
-                  }}
-                />
-              </Box>
-              <Box sx={{ marginLeft: '8px' }}>
-                <Typography
-                  sx={{
-                    fontSize: '40px',
-                    fontWeight: 700,
-                    typography: sora.style.fontFamily,
-                  }}
-                >
-                  {rewardAmount ?? '...'}
-                </Typography>
-              </Box>
-            </Box>
+            <RewardsAmountBox rewardAmount={rewardAmount} />
             <Button
               disabled={isPending || isConfirming || isConfirmed}
               variant="secondary"
@@ -166,8 +112,7 @@ export const RewardsCarousel = ({
                 {isConfirmed ? 'Claimed' : 'Claim Rewards'}
               </ProfilePageTypography>
             </Button>
-            {/* <RewardsBox /> */}
-          </Box>
+          </RewardsCarouselMainBox>
         </RewardsCarouselContainer>
       )}
     </>

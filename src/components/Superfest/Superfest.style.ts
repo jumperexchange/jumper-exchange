@@ -12,3 +12,8 @@ export const CenteredBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
 }));
+
+export const SuperStackMainBox = styled(Box)(() => ({
+  display: 'flex',
+  alignItems: 'center',
+}));

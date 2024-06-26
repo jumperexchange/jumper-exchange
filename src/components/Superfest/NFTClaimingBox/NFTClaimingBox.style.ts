@@ -78,3 +78,11 @@ export const NFTClaimingDescription = styled(Typography, {
     margin: 0,
   },
 }));
+
+export const NFTDisplayBox = styled(Box)(({ theme }) => ({
+  marginTop: '16px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignContent: 'center',
+  gap: '48px',
+}));

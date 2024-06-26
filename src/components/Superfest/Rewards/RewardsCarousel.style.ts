@@ -37,3 +37,13 @@ export const RewardsCarouselTitle = styled(Typography, {
     margin: 0,
   },
 }));
+
+export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  alignContent: 'center',
+  padding: '32px',
+}));

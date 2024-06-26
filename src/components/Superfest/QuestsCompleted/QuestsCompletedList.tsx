@@ -3,7 +3,6 @@ import type { Quest } from '@/types/loyaltyPass';
 import { useTranslation } from 'react-i18next';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
-import { VoidQuestCard } from '../QuestCard/VoidQuestCard';
 import {
   CompletedQuestContainer,
   CompletedQuestHeader,
@@ -39,10 +38,6 @@ export const QuestCompletedList = ({
   const { account } = useAccounts();
   const { t } = useTranslation();
   const { url } = useOngoingFestMissions();
-
-  const showVoidCardsAsFewPdas =
-    (!loading && quests && quests?.length < 6 && account?.address) ||
-    !account?.address;
 
   return (
     <CompletedQuestContainer>
@@ -94,17 +89,6 @@ export const QuestCompletedList = ({
               }
             })
           : null}
-        {/* {showVoidCardsAsFewPdas
-          ? Array.from(
-              { length: quests && quests?.length > 0 ? 6 - quests.length : 4 },
-              () => 42,
-            ).map((_, idx) => (
-              <VoidQuestCard
-                key={'void-' + idx}
-                connected={!!account?.address && account?.chainType === 'EVM'}
-              />
-            ))
-          : null} */}
         {loading
           ? Array.from({ length: 4 }, () => 42).map((_, idx) => (
               <QuestCardSkeleton key={'skeleton-' + idx} />

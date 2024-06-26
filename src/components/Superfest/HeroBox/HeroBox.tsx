@@ -1,20 +1,13 @@
-import { Box } from '@mui/material';
 import { SuperfestLogo } from 'src/components/illustrations/SuperfestLogo';
 import { useTheme } from '@mui/material';
+import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
 
 export const HeroBox = ({}) => {
   const theme = useTheme();
 
   return (
-    <Box
-      sx={{
-        marginTop: '64px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignContent: 'center',
-      }}
-    >
+    <FlexCenterRowBox mt={'64px'}>
       <SuperfestLogo />
-    </Box>
+    </FlexCenterRowBox>
   );
 };
