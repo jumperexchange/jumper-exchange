@@ -21,11 +21,14 @@ interface ToolModalProps {
 }
 
 export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
-  const handleOpenToolModal = () => {
+  const handleOpenToolModal = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setOpen(false);
   };
 
-  const handleCloseToolModal = () => {
+  const handleCloseToolModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
     setOpen(false);
   };
 
