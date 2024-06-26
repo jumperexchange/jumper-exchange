@@ -16,7 +16,7 @@ import {
   useSwitchChain,
 } from 'wagmi';
 import { ChainId } from '@lifi/types';
-import { MerklDistributorABI } from 'src/const/abi/merklDistributorABI';
+import { MerklDistributorABI } from './../../../const/abi/merklDistributorABI';
 
 interface RewardsCarouselProps {
   isLoading: boolean;
