@@ -96,19 +96,20 @@ export const SuperfestMissionPage = ({
         </Box>
         {/* big component with the main information */}
         <BannerMainBox>
-          <Image
-            src={`${new URL(
-              attributes.BannerImage?.data[0]?.attributes?.url,
-              baseUrl,
-            )}`}
-            alt="Banner Image"
-            height={316}
-            width={1300}
-            style={{
-              borderTopLeftRadius: '8px',
-              borderTopRightRadius: '8px',
-            }}
-          />
+          <Box sx={{ position: 'relative', width: '100%', height: '60%' }}>
+            <Image
+              src={`${new URL(
+                attributes.BannerImage?.data[0]?.attributes?.url,
+                baseUrl,
+              )}`}
+              fill
+              alt="Banner Image"
+              style={{
+                borderTopLeftRadius: '8px',
+                borderTopRightRadius: '8px',
+              }}
+            />
+          </Box>
           <BannerBottomBox>
             {/* date + chains */}
             <Box
