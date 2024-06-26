@@ -37,7 +37,7 @@ export const RewardsCarousel = ({
   proof,
 }: RewardsCarouselProps) => {
   const { address } = useAccount();
-  const { chains, switchChainAsync } = useSwitchChain();
+  const { switchChainAsync } = useSwitchChain();
   const { data: hash, isPending, writeContract } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
