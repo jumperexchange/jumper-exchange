@@ -25,12 +25,24 @@ import generateKey from 'src/app/lib/generateKey';
 import { MissionCTA } from './CTA/MissionCTA';
 // import { useRouter } from 'next/router';
 import { JUMPER_FEST } from 'src/const/urls';
+import { Quest } from 'src/types/loyaltyPass';
 
-export const SuperfestMissionPage = ({ quest, baseUrl }: any) => {
+interface SuperfestMissionPageVar {
+  quest: Quest;
+  baseUrl: string;
+}
+
+export const SuperfestMissionPage = ({
+  quest,
+  baseUrl,
+}: SuperfestMissionPageVar) => {
   const theme = useTheme();
   // const router = useRouter();
 
   const attributes = quest?.attributes;
+  const rewards = attributes.CustomInformation['rewards'];
+  const chains = attributes.CustomInformation['chains'];
+  const partner = attributes.CustomInformation['partner'];
 
   console.log(attributes);
 
@@ -85,10 +97,11 @@ export const SuperfestMissionPage = ({ quest, baseUrl }: any) => {
         {/* big component with the main information */}
         <BannerMainBox>
           <Image
-            src={
-              'https://strapi.li.finance/uploads/Rectangle_1181_1f3f3b54b6.png'
-            }
-            alt="Quest Card Image"
+            src={`${new URL(
+              attributes.BannerImage?.data[0]?.attributes?.url,
+              baseUrl,
+            )}`}
+            alt="Banner Image"
             height={316}
             width={1300}
             style={{
@@ -134,15 +147,15 @@ export const SuperfestMissionPage = ({ quest, baseUrl }: any) => {
                     alignItems: 'center',
                   }}
                 >
-                  {Array.from({ length: 3 }).map((elem, i) => {
+                  {chains.map((elem, i) => {
                     return (
                       <Image
-                        src="https://strapi.li.finance/uploads/base_314252c925.png"
+                        src={elem.logo}
                         style={{
                           marginLeft: i === 0 ? '' : '-8px',
                           zIndex: 100 - i,
                         }}
-                        alt="base"
+                        alt={elem.name}
                         width="32"
                         height="32"
                       />
@@ -160,7 +173,7 @@ export const SuperfestMissionPage = ({ quest, baseUrl }: any) => {
                   lineHeight: '96px',
                 }}
               >
-                {'Deposit into Velodrome'}
+                {attributes.Title}
               </Typography>
             </BannerTitleBox>
             {/* rewards  */}
@@ -172,37 +185,90 @@ export const SuperfestMissionPage = ({ quest, baseUrl }: any) => {
                 alignContent: 'center',
               }}
             >
-              {Array.from({ length: 3 }).map((elem, i) => {
-                return (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignContent: 'center',
-                    }}
-                  >
-                    <Image
-                      src="https://strapi.li.finance/uploads/base_314252c925.png"
-                      style={{}}
-                      alt="base"
-                      width="48"
-                      height="48"
-                    />
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignContent: 'center',
-                      }}
-                    >
-                      <Typography>Rewards</Typography>
-                      <Typography>165,000</Typography>
-                    </Box>
-                  </Box>
-                );
-              })}
+              {/* rewards  */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                }}
+              >
+                <Image
+                  src={rewards.logo}
+                  style={{}}
+                  alt="base"
+                  width="48"
+                  height="48"
+                />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                  }}
+                >
+                  <Typography>Rewards</Typography>
+                  <Typography>{`${rewards.amount} ${rewards.name}`}</Typography>
+                </Box>
+              </Box>
+              {/* Points  */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                }}
+              >
+                <Image
+                  src="https://strapi.li.finance/uploads/base_314252c925.png"
+                  style={{}}
+                  alt="base"
+                  width="48"
+                  height="48"
+                />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                  }}
+                >
+                  <Typography>Points</Typography>
+                  <Typography>{attributes.Points}</Typography>
+                </Box>
+              </Box>
+              {/* partner  */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                }}
+              >
+                <Image
+                  src={partner.logo}
+                  style={{ borderRadius: '64px' }}
+                  alt="base"
+                  width="48"
+                  height="48"
+                />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                  }}
+                >
+                  <Typography>Sponsored by</Typography>
+                  <Typography>{partner.name}</Typography>
+                </Box>
+              </Box>
             </Box>
           </BannerBottomBox>
         </BannerMainBox>
@@ -215,7 +281,7 @@ export const SuperfestMissionPage = ({ quest, baseUrl }: any) => {
               fontWeight: 700,
             }}
           >
-            Deposit weETH into Velodrome on Optimism and earn boosted APY
+            {attributes.Subtitle}
           </Typography>
           <Box
             marginTop={'32px'}
@@ -232,13 +298,7 @@ export const SuperfestMissionPage = ({ quest, baseUrl }: any) => {
                 lineHeight: '32px',
               }}
             >
-              Velodrome Finance is a next-generation AMM that combines the best
-              of Curve, Convex and Uniswap, designed to serve as the liquidity
-              hub for the Superchain. Velodrome's flywheel allows protocols to
-              build deep liquidity in a capital-efficient manner by directing
-              $VELO emissions to their pools. Just deposit liquidity on
-              Velodrome pools X and Y, earn boosted APY and officially enter the
-              Superfest festival
+              {attributes.Description}
             </Typography>
           </Box>
         </DescriptionBox>
@@ -268,21 +328,14 @@ export const SuperfestMissionPage = ({ quest, baseUrl }: any) => {
         <InformationBox>
           <InfoOutlinedIcon sx={{ width: 32, height: 32 }} />
           <Box sx={{ display: 'flex', textAlign: 'left', ml: '32px' }}>
-            <Typography>
-              {`You won’t have to come back for claiming, it will be done
-            automatically in 24h and as long as you are in the pool for the OP
-            rewards and the additional XP will be credited as PDAs on your
-            profile page :)`}
-            </Typography>
+            <Typography>{attributes.Information}</Typography>
           </Box>
         </InformationBox>
         {/* Big Button */}
         <DescriptionBox>
           <MissionCTA
-            title={'Deposit into Velodrome'}
-            url={
-              'https://feat-lf8678jumperimplementuith.jumper.exchange/across/'
-            }
+            title={attributes.Title}
+            url={attributes.Link}
             id={1}
             key={generateKey('cta')}
           />

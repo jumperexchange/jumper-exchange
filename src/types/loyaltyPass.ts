@@ -77,6 +77,15 @@ type ImageData = {
   };
 };
 
+type BannerImageData = {
+  data: [
+    {
+      id: number;
+      attributes: ImageAttributes;
+    },
+  ];
+};
+
 type QuestsPlatformAttributes = {
   Name: string;
   WebsiteLink: string;
@@ -109,9 +118,9 @@ type QuestAttributes = {
   CLaimingId?: string;
   Subtitle?: string;
   Steps?: RootNode[];
-  CustomInformation?: any;
+  CustomInformation?: any; // JSON object that can change and where type is not enforced inside Strapi yet.
   Image: ImageData;
-  BannerImage: ImageData;
+  BannerImage: BannerImageData;
   quests_platform: QuestsPlatformData;
 };
 
