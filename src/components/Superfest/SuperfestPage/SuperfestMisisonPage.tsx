@@ -1,5 +1,4 @@
 import { useAccounts } from '@/hooks/useAccounts';
-
 import { Box, Breakpoint, Stack, Typography, useTheme } from '@mui/material';
 import { CenteredBox, SuperfestContainer } from '../Superfest.style';
 import { Button, ButtonSecondary } from 'src/components/Button';
@@ -23,7 +22,7 @@ import { SuperfestXPIcon } from 'src/components/illustrations/XPIcon';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import generateKey from 'src/app/lib/generateKey';
 import { MissionCTA } from './CTA/MissionCTA';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { JUMPER_FEST } from 'src/const/urls';
 import { Quest } from 'src/types/loyaltyPass';
 
@@ -37,7 +36,7 @@ export const SuperfestMissionPage = ({
   baseUrl,
 }: SuperfestMissionPageVar) => {
   const theme = useTheme();
-  // const router = useRouter();
+  const router = useRouter();
 
   const attributes = quest?.attributes;
   const rewards = attributes.CustomInformation['rewards'];
@@ -69,7 +68,7 @@ export const SuperfestMissionPage = ({
           <Button
             size={'small'}
             onClick={() => {
-              // router.push(JUMPER_FEST);
+              router.push(JUMPER_FEST);
             }}
           >
             <ArrowBackIcon
@@ -160,6 +159,7 @@ export const SuperfestMissionPage = ({
                   {chains.map((elem, i) => {
                     return (
                       <Image
+                        key={`chain-logo-${i}`}
                         src={elem.logo}
                         style={{
                           marginLeft: i === 0 ? '' : '-8px',

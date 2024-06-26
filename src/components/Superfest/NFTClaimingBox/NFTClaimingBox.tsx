@@ -42,6 +42,25 @@ const NFT_ARRAY = [
 
 const NOT_LIVE = true;
 
+const ClaimInfo = {
+  mode: {
+    isClaimable: false,
+    isClaimed: false,
+  },
+  optimism: {
+    isClaimable: false,
+    isClaimed: false,
+  },
+  base: {
+    isClaimable: false,
+    isClaimed: false,
+  },
+  fraxtal: {
+    isClaimable: false,
+    isClaimed: false,
+  },
+};
+
 export const NFTClaimingBox = ({}) => {
   async function handleClick() {
     console.log('hello world');

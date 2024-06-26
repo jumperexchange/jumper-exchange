@@ -9,15 +9,40 @@ import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { QuestCarouselSuperfest } from './QuestCarousel/QuestCarousel';
 import { SuperfestPresentedByBox } from './SuperfestPresentedBy/SuperfestPresentedByBox';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
+import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 
 export const Superfest = () => {
+  //HOOKS
   const { account } = useAccounts();
-  const { isLoading, points, tier, pdas } = useLoyaltyPass();
   const { quests, isQuestLoading } = useOngoingFestMissions();
+  const {
+    activePosition,
+    availableRewards,
+    activeCampaigns,
+    isLoading: isRewardLoading,
+    isSuccess: isRewardSuccess,
+  } = useMerklRewards({
+    userAddress: account?.address,
+  });
+  // HookToCheckNFT eligibility
+
+  // CHECK ACTIVE MISSION
+  // create a loading state
+  // loop through the missions and check if they are in the activeList, if yes, add the activeState true
+  // create a new type that extend mission "MerklRewardedMissions" with the state active or not
 
   return (
     <SuperfestContainer className="superfest">
-      {/* <RewardsCarousel /> */}
+      <RewardsCarousel
+        isLoading={
+          false
+          // !isRewardLoading && isRewardSuccess
+        }
+        rewardAmount={
+          45.54
+          // availableRewards?.[0] as number
+        }
+      />
       <HeroBox />
       <Box
         sx={{
@@ -30,7 +55,13 @@ export const Superfest = () => {
         }}
       >
         <QuestCarouselSuperfest quests={quests} loading={isQuestLoading} />
-        <QuestCompletedList pdas={pdas} loading={isLoading} />
+        {isQuestLoading || activeCampaigns.length === 0 ? undefined : (
+          <QuestCompletedList
+            quests={quests}
+            loading={isQuestLoading}
+            activeCampaigns={activeCampaigns}
+          />
+        )}
         <NFTClaimingBox />
       </Box>
     </SuperfestContainer>

@@ -6,7 +6,6 @@ import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
 import type { Metadata } from 'next';
 import { getQuestBySlug } from 'src/app/lib/getQUestBySlug';
 import SuperfestPage from 'src/app/ui/superfest/SuperfestMissionPage';
-import { useQuestBySlug } from 'src/hooks/useQuestBySlug';
 
 // export async function generateMetadata({
 //   params,

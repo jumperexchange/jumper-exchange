@@ -24,6 +24,7 @@ export const useOngoingFestMissions = (): UseQuestsProps => {
   apiUrl.searchParams.set('fields[4]', 'EndDate'); // endDate
   apiUrl.searchParams.set('fields[5]', 'Slug'); // Slug
   apiUrl.searchParams.set('fields[6]', 'Label'); // label
+  apiUrl.searchParams.set('fields[7]', 'CustomInformation'); // CustomInformation
   //populate url
   apiUrl.searchParams.set('populate[0]', 'Image');
   apiUrl.searchParams.set('populate[1]', 'quests_platform');
@@ -57,6 +58,7 @@ export const useOngoingFestMissions = (): UseQuestsProps => {
   });
 
   return {
+    //missions: [],
     quests: data,
     isQuestLoading: isLoading,
     url: apiUrl,

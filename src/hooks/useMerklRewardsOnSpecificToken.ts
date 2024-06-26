@@ -8,6 +8,7 @@ export interface UseMerklRes {
   isSuccess: boolean;
   isLoading: boolean;
   userTVL: number;
+  activeCampaigns: string[];
   activePosition: any[];
   availableRewards: any[];
 }
@@ -30,12 +31,15 @@ export const useMerklRewards = ({
   // state
   let userTVL = 0;
   let rewardsToClaim = [];
+  const activeCampaigns = [];
   //test
   console.log('-------------');
+  // userAddress = '0x55048E0d46f66FA00cae12905f125194CD961581';
+  const addr = '0x55048E0d46f66FA00cae12905f125194CD961581';
 
   // Call to get the active positions
   // To do -> use the label to get only
-  const MERKL_POSITIONS_API = `${MERKL_API}/positions?chainId=${ACTIVE_CHAINS.join(',')}&user=${userAddress}`;
+  const MERKL_POSITIONS_API = `${MERKL_API}/positions?chainId=${ACTIVE_CHAINS.join(',')}&user=${addr}`;
   const {
     data: positionsData,
     isSuccess: positionsIsSuccess,
@@ -56,9 +60,11 @@ export const useMerklRewards = ({
     // enabled: !!account?.address && account.chainType === 'EVM',
     refetchInterval: 1000 * 60 * 60,
   });
+  console.log(positionsData);
   // loop through the position and sum the TVL USD
   if (positionsData) {
     for (const [key, data] of Object.entries(positionsData)) {
+      activeCampaigns.push(key);
       if (
         JUMPER_QUEST_ID.includes(key.split('_')[1]) &&
         (data as any)?.userTVL
@@ -71,7 +77,7 @@ export const useMerklRewards = ({
   // check the user positions for the interesting campaign
 
   // Call to get the available rewards
-  const MERKL_REWARDS_API = `${MERKL_API}/rewards?chainIds=10&user=${userAddress}`;
+  const MERKL_REWARDS_API = `${MERKL_API}/rewards?chainIds=10&user=${addr}`;
   const {
     data: rewardsData,
     isSuccess: rewardsIsSuccess,
@@ -91,7 +97,6 @@ export const useMerklRewards = ({
     // enabled: !!account?.address && account.chainType === 'EVM',
     refetchInterval: 1000 * 60 * 60,
   });
-  console.log(rewardsData);
   // transform the rewards to get the total in the token that we want // OP
   // transform the result to know what is coming from Jumper campaigns
   // transform to know what is not coming from Jumper campaigns
@@ -118,14 +123,12 @@ export const useMerklRewards = ({
     }
   }
 
-  console.log('REWARDs ------------');
-  console.log(rewardsToClaim);
-
   return {
     isLoading: positionsIsLoading && rewardsIsLoading,
     isSuccess: positionsIsSuccess && rewardsIsSuccess,
     userTVL: userTVL,
     activePosition: [],
+    activeCampaigns: activeCampaigns,
     availableRewards: rewardsToClaim,
   };
 };

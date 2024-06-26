@@ -115,7 +115,7 @@ type QuestAttributes = {
   Slug: string;
   Label?: string;
   Information?: string;
-  CLaimingId?: string;
+  ClaimingId?: string;
   Subtitle?: string;
   Steps?: RootNode[];
   CustomInformation?: any; // JSON object that can change and where type is not enforced inside Strapi yet.

@@ -34,8 +34,8 @@ export const JumperLogoBlack = () => {
         />
         <path d="M95 20H99V24H97C96 24 95 23 95 22V20Z" fill="black" />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M97 8C96 8 95 9 95 10V20H105C109 20 111 17 111 14C111 11 109 8 105 8H97ZM105 12H99V16H105C106.5 16 107 14.7364 107 14C107 13.2636 106.5 12 105 12Z"
           fill="black"
         />

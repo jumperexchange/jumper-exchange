@@ -1,5 +1,5 @@
 import { useAccounts } from '@/hooks/useAccounts';
-import type { PDA } from '@/types/loyaltyPass';
+import type { Quest } from '@/types/loyaltyPass';
 import { useTranslation } from 'react-i18next';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
@@ -10,21 +10,39 @@ import {
   CompletedQuestStack,
   CompletedQuestTitle,
 } from './QuestsCompletedList.style';
+import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
+
+function checkInclusion(
+  activeCampaigns: string[],
+  claimingIds: string[],
+): boolean {
+  const lowerActiveCampaigns = activeCampaigns.map((cId) => cId.toLowerCase());
+  for (const id of claimingIds) {
+    console.log(id);
+    if (lowerActiveCampaigns.includes(id.toLowerCase())) {
+      return true;
+    }
+  }
+  return false;
+}
 
 interface QuestCompletedListProps {
-  pdas?: PDA[];
+  activeCampaigns: string[];
+  quests?: Quest[];
   loading: boolean;
 }
 
 export const QuestCompletedList = ({
-  pdas,
+  activeCampaigns,
+  quests,
   loading,
 }: QuestCompletedListProps) => {
   const { account } = useAccounts();
   const { t } = useTranslation();
+  const { url } = useOngoingFestMissions();
 
   const showVoidCardsAsFewPdas =
-    (!loading && pdas && pdas?.length < 6 && account?.address) ||
+    (!loading && quests && quests?.length < 6 && account?.address) ||
     !account?.address;
 
   return (
@@ -38,22 +56,53 @@ export const QuestCompletedList = ({
         useFlexGap
         flexWrap="wrap"
       >
-        {!loading && pdas
-          ? pdas?.map((pda: PDA, index: number) => {
-              return (
-                <QuestCard
-                  key={`completed-mission-${index}`}
-                  active={false}
-                  title={pda?.dataAsset.title}
-                  image={pda?.dataAsset.image}
-                  points={pda?.dataAsset.claim.points}
-                />
-              );
+        {!loading && quests
+          ? quests?.map((quest: Quest, index: number) => {
+              const claimingIds =
+                quest.attributes?.CustomInformation?.['claimingIds'];
+              console.log('hereee');
+              console.log(activeCampaigns);
+              console.log(quest.attributes.ClaimingId);
+
+              let included = false;
+              if (claimingIds && activeCampaigns) {
+                included = checkInclusion(activeCampaigns, claimingIds);
+                console.log('=============== LAST');
+              }
+
+              if (included) {
+                return (
+                  <QuestCard
+                    key={`active-mission-${index}`}
+                    active={true}
+                    title={quest?.attributes.Title}
+                    image={`
+                    ${new URL(
+                      quest.attributes.Image?.data?.attributes?.url,
+                      url.origin,
+                    )}`}
+                    points={quest?.attributes.Points}
+                    link={quest?.attributes.Link}
+                    startDate={quest?.attributes.StartDate}
+                    endDate={quest?.attributes.EndDate}
+                    platformName={
+                      quest?.attributes.quests_platform?.data?.attributes?.Name
+                    }
+                    platformImage={`
+                    ${new URL(
+                      quest.attributes.quests_platform?.data?.attributes?.Logo?.data?.attributes?.url,
+                      url.origin,
+                    )}
+                  `}
+                    slug={quest?.attributes.Slug}
+                  />
+                );
+              }
             })
           : null}
-        {showVoidCardsAsFewPdas
+        {/* {showVoidCardsAsFewPdas
           ? Array.from(
-              { length: pdas && pdas?.length > 0 ? 6 - pdas.length : 4 },
+              { length: quests && quests?.length > 0 ? 6 - quests.length : 4 },
               () => 42,
             ).map((_, idx) => (
               <VoidQuestCard
@@ -61,7 +110,7 @@ export const QuestCompletedList = ({
                 connected={!!account?.address && account?.chainType === 'EVM'}
               />
             ))
-          : null}
+          : null} */}
         {loading
           ? Array.from({ length: 4 }, () => 42).map((_, idx) => (
               <QuestCardSkeleton key={'skeleton-' + idx} />
