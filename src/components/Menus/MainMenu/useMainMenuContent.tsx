@@ -32,7 +32,7 @@ import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
-import { OPLogo } from 'src/components/illustrations/OpLogo';
+import { OPLogo } from 'src/components/illustrations/OPLogo';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();

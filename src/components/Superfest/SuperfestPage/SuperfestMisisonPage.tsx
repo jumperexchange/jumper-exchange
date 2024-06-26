@@ -154,7 +154,7 @@ export const SuperfestMissionPage = ({
                     alignItems: 'center',
                   }}
                 >
-                  {chains.map((elem, i) => {
+                  {chains.map(({ elem, i }: any) => {
                     return (
                       <Image
                         key={`chain-logo-${i}`}

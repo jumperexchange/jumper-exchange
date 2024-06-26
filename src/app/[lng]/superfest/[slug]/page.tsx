@@ -4,7 +4,7 @@ import { getCookies } from '@/app/lib/getCookies';
 import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
 import type { Metadata } from 'next';
-import { getQuestBySlug } from 'src/app/lib/getQUestBySlug';
+import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import SuperfestPage from 'src/app/ui/superfest/SuperfestMissionPage';
 
 // export async function generateMetadata({
