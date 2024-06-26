@@ -29,15 +29,15 @@ export const usePartnerFilter = (): usePartnerFilterProps => {
   let isBridgeFiltered = false;
   let isDexFiltered = false;
   let partnerName = '';
-  const pathnameSplit = pathname?.split('/');
+  const pathnameSplit = pathname?.split('/').filter((el) => el !== '');
   const localeSplit =
-    pathnameSplit && pathnameSplit.length > 1 && pathnameSplit[1];
+    pathnameSplit && pathnameSplit.length > 1 && pathnameSplit[0];
   let pathnameKey;
   if (localeSplit && localeSplit.length === 2) {
     pathnameKey =
-      pathnameSplit && pathnameSplit[pathnameSplit.length - 1].toLowerCase();
+      pathnameSplit && pathnameSplit[pathnameSplit.length - 1]?.toLowerCase();
   } else {
-    pathnameKey = pathnameSplit && pathnameSplit[1].toLowerCase();
+    pathnameKey = pathnameSplit && pathnameSplit[0]?.toLowerCase();
   }
 
   if (pathnameKey) {
