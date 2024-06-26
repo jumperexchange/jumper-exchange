@@ -31,6 +31,11 @@ interface SuperfestMissionPageVar {
   baseUrl: string;
 }
 
+interface Chain {
+  logo: string;
+  name: string;
+}
+
 export const SuperfestMissionPage = ({
   quest,
   baseUrl,
@@ -154,7 +159,7 @@ export const SuperfestMissionPage = ({
                     alignItems: 'center',
                   }}
                 >
-                  {chains.map(({ elem, i }: any) => {
+                  {chains.map((elem: Chain, i: number) => {
                     return (
                       <Image
                         key={`chain-logo-${i}`}
