@@ -10,6 +10,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { MissionCtaContainer, MissionCtaTitle } from './MissionCTA.style';
+import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
 
 interface MissionCtaProps {
   title?: string;
@@ -33,18 +34,24 @@ export const MissionCTA = ({ title, url, id }: MissionCtaProps) => {
     // });
   };
   return (
-    <Link style={{ textDecoration: 'none' }} href={url || '/'} target="_blank">
-      <MissionCtaContainer onClick={handleClick}>
-        <MissionCtaTitle>{title ?? t('blog.jumperCta')}</MissionCtaTitle>
-        <IconButtonPrimary onClick={handleClick}>
-          <ArrowForwardIcon
-            sx={{
-              width: '28px',
-              height: '28px',
-            }}
-          />
-        </IconButtonPrimary>
-      </MissionCtaContainer>
-    </Link>
+    <FlexCenterRowBox>
+      <Link
+        style={{ textDecoration: 'none' }}
+        href={url || '/'}
+        target="_blank"
+      >
+        <MissionCtaContainer onClick={handleClick}>
+          <MissionCtaTitle>{title ?? t('blog.jumperCta')}</MissionCtaTitle>
+          <IconButtonPrimary onClick={handleClick}>
+            <ArrowForwardIcon
+              sx={{
+                width: '28px',
+                height: '28px',
+              }}
+            />
+          </IconButtonPrimary>
+        </MissionCtaContainer>
+      </Link>
+    </FlexCenterRowBox>
   );
 };
