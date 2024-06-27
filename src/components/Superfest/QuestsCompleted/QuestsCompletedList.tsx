@@ -84,6 +84,7 @@ export const QuestCompletedList = ({
                     )}
                   `}
                     slug={quest?.attributes.Slug}
+                    chains={quest.attributes.CustomInformation?.['chains']}
                   />
                 );
               }

@@ -58,6 +58,7 @@ export const QuestCarouselSuperfest = ({
                     )}
                   `}
                       slug={quest?.attributes.Slug}
+                      chains={quest.attributes.CustomInformation?.['chains']}
                     />
                   );
                 })

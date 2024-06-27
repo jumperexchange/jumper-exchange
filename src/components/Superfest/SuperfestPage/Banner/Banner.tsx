@@ -26,7 +26,7 @@ interface SuperfestMissionPageVar {
   baseUrl: string;
 }
 
-interface Chain {
+export interface Chain {
   logo: string;
   name: string;
 }

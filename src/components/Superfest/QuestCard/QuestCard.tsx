@@ -18,6 +18,7 @@ import {
 } from '../Superfest.style';
 import { useRouter } from 'next/navigation';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
+import { Chain } from '../SuperfestPage/Banner/Banner';
 
 interface QuestCardProps {
   active?: boolean;
@@ -30,14 +31,7 @@ interface QuestCardProps {
   platformName?: string;
   platformImage?: string;
   slug?: string;
-}
-
-function getStringDateFormatted(startDate: string, endDate: string): string {
-  const sDate = new Date(startDate);
-  const eDate = new Date(endDate);
-  const startMonth = sDate.toLocaleString('default', { month: 'short' });
-  const endMonth = eDate.toLocaleString('default', { month: 'short' });
-  return `${startMonth} ${sDate.getDate()} - ${startMonth === endMonth ? '' : endMonth} ${eDate.getDate()}`;
+  chains?: Chain[];
 }
 
 export const QuestCard = ({
@@ -49,6 +43,7 @@ export const QuestCard = ({
   startDate,
   endDate,
   slug,
+  chains,
 }: QuestCardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -77,15 +72,15 @@ export const QuestCard = ({
 
         <FlexSpaceBetweenBox marginBottom={'8px'}>
           <FlexCenterRowBox>
-            {Array.from({ length: 3 }).map((elem, i) => {
+            {chains?.map((elem: Chain, i: number) => {
               return (
                 <Image
-                  src="https://strapi.li.finance/uploads/base_314252c925.png"
+                  src={elem.logo}
                   style={{
                     marginLeft: i === 0 ? '' : '-8px',
                     zIndex: 100 - i,
                   }}
-                  alt="base"
+                  alt={elem.name}
                   width="32"
                   height="32"
                 />
