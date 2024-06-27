@@ -1,7 +1,9 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import {
   RewardsCarouselContainer,
   RewardsCarouselMainBox,
+  ClaimButtonBox,
+  EarnedTypography,
 } from './RewardsCarousel.style';
 import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
 import { Button } from 'src/components/Button';
@@ -71,15 +73,13 @@ export const RewardsCarousel = ({
       {isLoading ? undefined : (
         <RewardsCarouselContainer>
           <RewardsCarouselMainBox>
-            <Sequel85Typography
-              fontSize="32px"
-              lineHeight="32px"
-              fontWeight={500}
-            >
-              You've earned:
-            </Sequel85Typography>
-            <RewardsAmountBox rewardAmount={rewardAmount} />
-            <FlexCenterRowBox marginLeft={'32px'} width={'15%'}>
+            <FlexCenterRowBox>
+              <Box>
+                <EarnedTypography>You've earned:</EarnedTypography>
+              </Box>
+              <RewardsAmountBox rewardAmount={rewardAmount} />
+            </FlexCenterRowBox>
+            <ClaimButtonBox>
               <Button
                 disabled={isPending || isConfirming || isConfirmed}
                 variant="secondary"
@@ -105,7 +105,7 @@ export const RewardsCarousel = ({
                   {isConfirmed ? 'Claimed' : 'Claim Rewards'}
                 </SoraTypography>
               </Button>
-            </FlexCenterRowBox>
+            </ClaimButtonBox>
           </RewardsCarouselMainBox>
         </RewardsCarouselContainer>
       )}

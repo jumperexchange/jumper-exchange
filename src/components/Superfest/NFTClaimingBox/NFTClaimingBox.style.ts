@@ -11,6 +11,9 @@ export const NFTClaimingContainer = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'dark'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    marginTop: '64px',
+  },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(2, 4, 0),
     padding: theme.spacing(3),
@@ -85,4 +88,11 @@ export const NFTDisplayBox = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   alignContent: 'center',
   gap: '48px',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    flexDirection: 'row',
+  },
 }));

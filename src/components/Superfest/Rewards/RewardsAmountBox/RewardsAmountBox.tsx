@@ -14,17 +14,17 @@ export const RewardsAmountBox = ({
         <Image
           src={'https://strapi.li.finance/uploads/op_dddbaa6b32.png'}
           alt="token image"
-          width={40}
-          height={40}
+          width={48}
+          height={48}
           style={{
             borderRadius: 16,
           }}
         />
-        <Image
+        {/* <Image
           src={'https://strapi.li.finance/uploads/op_dddbaa6b32.png'}
           alt="token image"
-          width={15}
-          height={15}
+          width={18}
+          height={18}
           style={{
             borderRadius: 16,
             border: '2px solid',
@@ -33,7 +33,7 @@ export const RewardsAmountBox = ({
             marginTop: 16,
             marginLeft: -8,
           }}
-        />
+        /> */}
       </Box>
       <Box marginLeft={'8px'}>
         <SoraTypography fontSize="40px" fontWeight={700}>

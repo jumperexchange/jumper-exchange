@@ -1,9 +1,8 @@
-import { Box, Breakpoint, Stack, Typography, useTheme } from '@mui/material';
-import { sequel85, sora } from 'src/fonts/fonts';
 import Image from 'next/image';
 import { RewardLeftBox } from '../Banner.style';
 import { FlexCenterRowBox } from '../../SuperfestMissionPage.style';
 import { SoraTypography } from 'src/components/Superfest/Superfest.style';
+import { RewardTopBox } from './RewardBox.style';
 
 interface RewardBoxProps {
   logo: string;
@@ -13,7 +12,7 @@ interface RewardBoxProps {
 
 export const RewardBox = ({ logo, title, value }: RewardBoxProps) => {
   return (
-    <FlexCenterRowBox>
+    <RewardTopBox>
       <Image
         src={logo}
         style={{ borderRadius: '100%' }}
@@ -29,6 +28,6 @@ export const RewardBox = ({ logo, title, value }: RewardBoxProps) => {
           {value}
         </SoraTypography>
       </RewardLeftBox>
-    </FlexCenterRowBox>
+    </RewardTopBox>
   );
 };

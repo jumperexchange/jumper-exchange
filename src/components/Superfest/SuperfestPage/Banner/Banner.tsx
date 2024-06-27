@@ -9,6 +9,8 @@ import {
   BannerMainBox,
   QuestDatesBox,
   BannerTitleBox,
+  RewardMainBox,
+  BannerTitleTypography,
 } from './Banner.style';
 import {
   FlexCenterRowBox,
@@ -93,15 +95,9 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           </FlexCenterRowBox>
         </DateChainBox>
         <BannerTitleBox>
-          <Sequel85Typography
-            fontSize={'56px'}
-            fontWeight={500}
-            lineHeight={'96px'}
-          >
-            {attributes.Title}
-          </Sequel85Typography>
+          <BannerTitleTypography>{attributes.Title}</BannerTitleTypography>
         </BannerTitleBox>
-        <FlexCenterSpaceRowBox mt="16px">
+        <RewardMainBox>
           {/* rewards  */}
           <RewardBox
             logo={rewards.logo}
@@ -109,7 +105,6 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
             value={`${rewards.amount} ${rewards.name}`}
           />
           {/* Points  */}
-
           <RewardBox
             logo={'https://strapi.li.finance/uploads/xp_cfcff186e5.png'}
             title={'Points'}
@@ -121,7 +116,7 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
             title={'Supported by'}
             value={partner.name}
           />
-        </FlexCenterSpaceRowBox>
+        </RewardMainBox>
       </BannerBottomBox>
     </BannerMainBox>
   );

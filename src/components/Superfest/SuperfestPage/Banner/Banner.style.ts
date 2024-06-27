@@ -1,5 +1,6 @@
-import type { BoxProps } from '@mui/material';
-import { Box, alpha, styled } from '@mui/material';
+import type { BoxProps, Breakpoint } from '@mui/material';
+import { Box, Typography, alpha, styled } from '@mui/material';
+import { sequel85 } from 'src/fonts/fonts';
 
 export const BannerMainBox = styled(Box)(({ theme }) => ({
   width: '80%',
@@ -11,25 +12,41 @@ export const BannerMainBox = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '#FFFFFF'
       : alpha(theme.palette.white.main, 0.08),
-  height: '550px',
   textAlign: 'center',
   overflow: 'hidden',
   borderRadius: '8px',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    height: '850px',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    height: '620px',
+  },
 }));
 
 export const BannerBottomBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  flexGrow: 1,
   padding: '32px',
   backgroundColor: '#fdfbef',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    height: '60%',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    height: '40%',
+  },
 }));
 
-export const BannerTitleBox = styled(Box)(() => ({
+export const BannerTitleBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  textAlign: 'left',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    textAlign: 'center',
+    marginTop: '16px',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    textAlign: 'left',
+  },
 }));
 
 export interface BannerInfoBoxProps extends Omit<BoxProps, 'component'> {
@@ -70,14 +87,20 @@ export const SuperfestPageMainBox = styled(Box)(({ theme }) => ({
 export const BannerImageBox = styled(Box)(({ theme }) => ({
   position: 'relative',
   width: '100%',
-  height: '60%',
+  flexGrow: 1,
 }));
 
 export const DateChainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'row',
   justifyContent: 'space-between',
   alignContent: 'center',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    flexDirection: 'column',
+    gap: '8px',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    flexDirection: 'row',
+  },
 }));
 
 export const SupportedChainsBox = styled(Box)(() => ({
@@ -94,4 +117,35 @@ export const RewardLeftBox = styled(Box)(() => ({
   textAlign: 'left',
   alignContent: 'center',
   ml: '20px',
+}));
+
+export const RewardMainBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  marginTop: '16px',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    gap: '16px',
+    alignItems: 'left',
+    alignContent: 'flex-start',
+    textAlign: 'left',
+    flexDirection: 'column',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    flexDirection: 'row',
+    alignContent: 'center',
+  },
+}));
+
+export const BannerTitleTypography = styled(Typography)(({ theme }) => ({
+  typography: sequel85.style.fontFamily,
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    fontSize: '48px',
+    fontWeight: 700,
+    lineHeight: '48px',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    fontSize: '56px',
+    fontWeight: 500,
+    lineHeight: '96px',
+  },
 }));
