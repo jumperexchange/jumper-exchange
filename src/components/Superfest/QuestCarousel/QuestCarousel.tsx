@@ -35,7 +35,7 @@ export const QuestCarouselSuperfest = ({
                 quests?.map((quest: Quest, index: number) => {
                   return (
                     <QuestCard
-                      key={`ongoing-mission-${index}`}
+                      key={`ongoing-superfest-mission-${index}`}
                       active={true}
                       title={quest?.attributes.Title}
                       image={`
