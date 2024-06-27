@@ -52,7 +52,7 @@ export const Superfest = () => {
         }
         isMerklSuccess={
           true
-          //isRewardSuccess
+          ////isRewardSuccess
         }
       />
       <HeroBox />
