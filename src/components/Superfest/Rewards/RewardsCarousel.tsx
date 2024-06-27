@@ -17,7 +17,7 @@ import {
   useSwitchChain,
 } from 'wagmi';
 import { ChainId } from '@lifi/types';
-import { MerklDistributorABI } from './../../../const/abi/merklDistributorABI';
+import { MerklDistribABI } from '../../../const/abi/merklABI';
 
 interface RewardsCarouselProps {
   isLoading: boolean;
@@ -59,7 +59,7 @@ export const RewardsCarousel = ({
       ) {
         writeContract({
           address: CLAIMING_CONTRACT_ADDRESS,
-          abi: MerklDistributorABI,
+          abi: MerklDistribABI,
           functionName: 'claim',
           args: [[address], [OP_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
         });
