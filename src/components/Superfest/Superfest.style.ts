@@ -13,7 +13,11 @@ export const CenteredBox = styled(Box)(() => ({
   alignItems: 'center',
 }));
 
-export const SuperStackMainBox = styled(Box)(() => ({
+export const SuperfestMainBox = styled(Box)(() => ({
+  minWidth: '100%',
   display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
+  justifyContent: 'center',
+  alignContent: 'center',
 }));

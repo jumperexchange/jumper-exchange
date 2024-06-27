@@ -8,7 +8,7 @@ export const NFTCardMainBox = styled(Box)(({ theme }) => ({
   alignContent: 'center',
 }));
 
-export const NFTCardMainBox = styled(Box)(({ theme }) => ({
+export const NFTCardBotomBox = styled(Box)(({ theme }) => ({
   backgroundColor: '#fff0ca',
   height: '72px',
   justifyContent: 'center',

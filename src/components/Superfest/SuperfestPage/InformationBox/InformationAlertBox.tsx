@@ -1,7 +1,7 @@
 import { LeftTextBox } from '../SuperfestMissionPage.style';
 import { Typography } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { InformationBox } from './InformationBox.style';
+import { InformationBox } from './InformationAlertBox.style';
 
 interface InformationAlertBoxProps {
   information?: string;

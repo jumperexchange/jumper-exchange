@@ -5,7 +5,7 @@ import {
   RewardsCarouselMainBox,
   RewardsCarouselTitle,
 } from './RewardsCarousel.style';
-import { RewardsAmountBox } from './RewardsBox/RewardsBox';
+import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
 import Image from 'next/image';
 import { Button } from 'src/components/Button';
 import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';

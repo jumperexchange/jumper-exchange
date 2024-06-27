@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Button } from 'src/components/Button';
 import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';
 
-import { RewardsRightBox, RewardsdMainBox } from './RewardsBox.style';
+import { RewardsRightBox, RewardsdMainBox } from './RewardsAmountBox.style';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { FlexCenterRowBox } from '../../SuperfestPage/SuperfestMissionPage.style';
 import { sora } from 'src/fonts/fonts';
