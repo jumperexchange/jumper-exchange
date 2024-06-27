@@ -9476,7 +9476,7 @@ __metadata:
     i18next-resources-for-ts: "npm:^1.5.0"
     i18next-resources-to-backend: "npm:^1.2.1"
     lint-staged: "npm:^15.2.5"
-    next: "npm:^14.2.3"
+    next: "npm:^14.2.4"
     next-i18n-router: "npm:^5.5.0"
     next-sitemap: "npm:^4.2.3"
     prettier: "npm:^3.3.1"
@@ -10188,7 +10188,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:^14.2.3":
+"next@npm:^14.2.4":
   version: 14.2.4
   resolution: "next@npm:14.2.4"
   dependencies:
