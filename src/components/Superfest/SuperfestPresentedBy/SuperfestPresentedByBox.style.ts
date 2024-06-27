@@ -22,7 +22,7 @@ export const SuperFestPoweredContainer = styled('div', {
           // marginRight: theme.spacing(3),
           marginTop: theme.spacing(4),
           marginBottom: theme.spacing(4),
-          marginLeft: theme.spacing(6),
+          marginLeft: theme.spacing(2),
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             // marginTop: isArticlePage ? theme.spacing(-6) : theme.spacing(8),
           },

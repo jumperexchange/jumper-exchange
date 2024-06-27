@@ -35,7 +35,7 @@ export const Superfest = () => {
     <SuperfestContainer className="superfest">
       <RewardsCarousel
         isLoading={
-          false
+          !!account?.address
           // !isRewardLoading && isRewardSuccess
         }
         rewardAmount={
@@ -58,7 +58,9 @@ export const Superfest = () => {
       <HeroBox />
       <SuperfestMainBox>
         <QuestCarouselSuperfest quests={quests} loading={isQuestLoading} />
-        {isQuestLoading || activeCampaigns.length === 0 ? undefined : (
+        {!account?.address ||
+        isQuestLoading ||
+        activeCampaigns.length === 0 ? undefined : (
           <QuestCompletedList
             quests={quests}
             loading={isQuestLoading}

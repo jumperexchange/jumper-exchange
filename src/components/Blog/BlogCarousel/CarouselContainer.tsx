@@ -103,25 +103,22 @@ export const CarouselContainer = ({
         <CarouselTitle variant="lifiHeaderMedium">
           {title ?? t('blog.recentPosts')}
         </CarouselTitle>
-        {(itemsCount && itemsCount > 1) ||
-          (Array.isArray(children) && children?.length > 1 && (
-            <CarouselNavigationContainer
-              hide={
-                (itemsCount && itemsCount < 4) ||
-                (Array.isArray(children) && children?.length < 4)
-              }
-            >
-              <CarouselNavigationButton onClick={() => handleChange('prev')}>
-                <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
-              </CarouselNavigationButton>
-              <CarouselNavigationButton
-                sx={{ marginLeft: theme.spacing(1) }}
-                onClick={() => handleChange('next')}
-              >
-                <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
-              </CarouselNavigationButton>
-            </CarouselNavigationContainer>
-          ))}
+        <CarouselNavigationContainer
+          hide={
+            (itemsCount && itemsCount < 4) ||
+            (Array.isArray(children) && children?.length < 4)
+          }
+        >
+          <CarouselNavigationButton onClick={() => handleChange('prev')}>
+            <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
+          </CarouselNavigationButton>
+          <CarouselNavigationButton
+            sx={{ marginLeft: theme.spacing(1) }}
+            onClick={() => handleChange('next')}
+          >
+            <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
+          </CarouselNavigationButton>
+        </CarouselNavigationContainer>
       </CarouselHeader>
       <CarouselContainerBox ref={carouselContainerRef} sx={styles}>
         {children}

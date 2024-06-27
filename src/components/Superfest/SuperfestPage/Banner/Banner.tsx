@@ -70,7 +70,7 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           <FlexCenterRowBox>
             <SoraTypography
               fontSize={'16px'}
-              fontWeight={500}
+              fontWeight={700}
               lineHeight={'20px'}
             >
               Supported chains

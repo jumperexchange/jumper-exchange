@@ -39,11 +39,10 @@ export const SuperfestMissionPage = ({
         <StepsBox steps={attributes.Steps} baseUrl={baseUrl} />
         {/* Additional Info */}
         <InformationAlertBox information={attributes.Information} />
-        {/* Big Button */}
+        {/* Big CTA */}
         <MissionCTA
           title={attributes.Title}
           url={attributes.Link}
-          id={1}
           key={generateKey('cta')}
         />
       </SuperfestPageMainBox>

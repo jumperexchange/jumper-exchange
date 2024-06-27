@@ -1,16 +1,9 @@
 import { IconButtonPrimary } from '@/components/IconButton.style';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { EventTrackingTool } from '@/types/userTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { MissionCtaContainer, MissionCtaTitle } from './MissionCTA.style';
-import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
 
 interface MissionCtaProps {
   title?: string;
@@ -34,7 +27,11 @@ export const MissionCTA = ({ title, url, id }: MissionCtaProps) => {
     // });
   };
   return (
-    <Link style={{ textDecoration: 'none' }} href={url || '/'} target="_blank">
+    <Link
+      style={{ textDecoration: 'none', width: '80%' }}
+      href={url || '/'}
+      target="_blank"
+    >
       <MissionCtaContainer onClick={handleClick}>
         <MissionCtaTitle>{title ?? t('blog.jumperCta')}</MissionCtaTitle>
         <IconButtonPrimary onClick={handleClick}>

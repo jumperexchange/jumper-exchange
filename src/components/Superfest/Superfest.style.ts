@@ -1,5 +1,5 @@
 import { Box, Container, Typography, alpha, styled } from '@mui/material';
-import { sequel85, sora } from 'src/fonts/fonts';
+import { sequel65, sequel85, sora } from 'src/fonts/fonts';
 
 export const SuperfestContainer = styled(Box)(() => ({
   background: 'transparent',
@@ -35,4 +35,8 @@ export const SoraTypography = styled(Typography)(() => ({
 
 export const Sequel85Typography = styled(Typography)(() => ({
   fontFamily: sequel85.style.fontFamily,
+}));
+
+export const Sequel65Typography = styled(Typography)(() => ({
+  fontFamily: sequel65.style.fontFamily,
 }));

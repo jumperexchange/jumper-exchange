@@ -1,6 +1,6 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Typography, alpha, styled } from '@mui/material';
-import { sequel85 } from 'src/fonts/fonts';
+import { sequel65, sequel85 } from 'src/fonts/fonts';
 
 export const BannerMainBox = styled(Box)(({ theme }) => ({
   width: '80%',
@@ -137,7 +137,7 @@ export const RewardMainBox = styled(Box)(({ theme }) => ({
 }));
 
 export const BannerTitleTypography = styled(Typography)(({ theme }) => ({
-  typography: sequel85.style.fontFamily,
+  typography: sequel65.style.fontFamily,
   [theme.breakpoints.down('md' as Breakpoint)]: {
     fontSize: '48px',
     fontWeight: 700,
@@ -145,7 +145,7 @@ export const BannerTitleTypography = styled(Typography)(({ theme }) => ({
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     fontSize: '56px',
-    fontWeight: 500,
+    fontWeight: 700,
     lineHeight: '96px',
   },
 }));

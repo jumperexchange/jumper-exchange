@@ -30,7 +30,11 @@ export const QuestCarouselSuperfest = ({
             itemsCount={quests?.length}
             styles={{ paddingLeft: '32px' }}
           >
-            <Stack direction={'row'} spacing={{ xs: 2, sm: 4 }}>
+            <Stack
+              direction={'row'}
+              spacing={{ xs: 2, sm: 4 }}
+              marginTop={'16px'}
+            >
               {!loading ? (
                 quests?.map((quest: Quest, index: number) => {
                   return (
