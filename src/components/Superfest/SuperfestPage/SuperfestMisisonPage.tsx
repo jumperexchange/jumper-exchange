@@ -3,7 +3,6 @@ import { SuperfestContainer } from '../Superfest.style';
 import { SuperfestPageMainBox } from './SuperfestMissionPage.style';
 import generateKey from 'src/app/lib/generateKey';
 import { MissionCTA } from './CTA/MissionCTA';
-import { useRouter } from 'next/navigation';
 import { Quest } from 'src/types/loyaltyPass';
 import { BackButton } from './BackButton/BackButton';
 import { BannerBox } from './Banner/Banner';
@@ -16,22 +15,13 @@ interface SuperfestMissionPageVar {
   baseUrl: string;
 }
 
-interface Chain {
-  logo: string;
-  name: string;
-}
-
 export const SuperfestMissionPage = ({
   quest,
   baseUrl,
 }: SuperfestMissionPageVar) => {
   const theme = useTheme();
-  const router = useRouter();
 
   const attributes = quest?.attributes;
-  const rewards = attributes.CustomInformation['rewards'];
-  const chains = attributes.CustomInformation['chains'];
-  const partner = attributes.CustomInformation['partner'];
 
   return (
     <SuperfestContainer className="superfest">

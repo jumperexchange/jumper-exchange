@@ -81,7 +81,7 @@ export const DateChainBox = styled(Box)(({ theme }) => ({
 }));
 
 export const SupportedChainsBox = styled(Box)(() => ({
-  ml: '8px',
+  marginLeft: '8px',
   display: 'flex',
   alignContent: 'center',
   justifyContent: 'center',

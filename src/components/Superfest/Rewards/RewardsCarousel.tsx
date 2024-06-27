@@ -5,7 +5,6 @@ import {
 } from './RewardsCarousel.style';
 import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
 import { Button } from 'src/components/Button';
-import { sequel85 } from 'src/fonts/fonts';
 import {
   useAccount,
   useWriteContract,
@@ -75,12 +74,12 @@ export const RewardsCarousel = ({
             <Sequel85Typography
               fontSize="32px"
               lineHeight="32px"
-              fontWeight={700}
+              fontWeight={500}
             >
               You've earned:
             </Sequel85Typography>
             <RewardsAmountBox rewardAmount={rewardAmount} />
-            <FlexCenterRowBox marginLeft={'32px'}>
+            <FlexCenterRowBox marginLeft={'32px'} width={'15%'}>
               <Button
                 disabled={isPending || isConfirming || isConfirmed}
                 variant="secondary"
@@ -90,7 +89,7 @@ export const RewardsCarousel = ({
                   backgroundColor: 'transparent',
                   border: '2px dotted',
                   padding: '16px',
-                  width: '15%',
+                  width: '100%',
                   '&:hover': {
                     color: '#FFFFFF',
                     backgroundColor: '#ff0420',

@@ -34,24 +34,18 @@ export const MissionCTA = ({ title, url, id }: MissionCtaProps) => {
     // });
   };
   return (
-    <FlexCenterRowBox>
-      <Link
-        style={{ textDecoration: 'none' }}
-        href={url || '/'}
-        target="_blank"
-      >
-        <MissionCtaContainer onClick={handleClick}>
-          <MissionCtaTitle>{title ?? t('blog.jumperCta')}</MissionCtaTitle>
-          <IconButtonPrimary onClick={handleClick}>
-            <ArrowForwardIcon
-              sx={{
-                width: '28px',
-                height: '28px',
-              }}
-            />
-          </IconButtonPrimary>
-        </MissionCtaContainer>
-      </Link>
-    </FlexCenterRowBox>
+    <Link style={{ textDecoration: 'none' }} href={url || '/'} target="_blank">
+      <MissionCtaContainer onClick={handleClick}>
+        <MissionCtaTitle>{title ?? t('blog.jumperCta')}</MissionCtaTitle>
+        <IconButtonPrimary onClick={handleClick}>
+          <ArrowForwardIcon
+            sx={{
+              width: '28px',
+              height: '28px',
+            }}
+          />
+        </IconButtonPrimary>
+      </MissionCtaContainer>
+    </Link>
   );
 };

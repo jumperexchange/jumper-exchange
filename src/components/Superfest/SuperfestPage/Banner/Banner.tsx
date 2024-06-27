@@ -33,9 +33,9 @@ export interface Chain {
 
 export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
   const attributes = quest?.attributes;
-  const rewards = attributes.CustomInformation['rewards'];
-  const chains = attributes.CustomInformation['chains'];
-  const partner = attributes.CustomInformation['partner'];
+  const rewards = attributes?.CustomInformation?.['rewards'];
+  const chains = attributes?.CustomInformation?.['chains'];
+  const partner = attributes?.CustomInformation?.['partner'];
 
   return (
     <BannerMainBox>
@@ -95,7 +95,7 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
         <BannerTitleBox>
           <Sequel85Typography
             fontSize={'56px'}
-            fontWeight={900}
+            fontWeight={500}
             lineHeight={'96px'}
           >
             {attributes.Title}

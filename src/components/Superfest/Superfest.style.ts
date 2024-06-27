@@ -16,7 +16,8 @@ export const CenteredBox = styled(Box)(() => ({
 
 export const FlexSpaceBetweenBox = styled(Box)(() => ({
   display: 'flex',
-  alignItems: 'space-between',
+  alignItems: 'center',
+  justifyContent: 'space-between',
 }));
 
 export const SuperfestMainBox = styled(Box)(() => ({

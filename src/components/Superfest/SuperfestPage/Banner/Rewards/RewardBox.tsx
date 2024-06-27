@@ -14,8 +14,14 @@ interface RewardBoxProps {
 export const RewardBox = ({ logo, title, value }: RewardBoxProps) => {
   return (
     <FlexCenterRowBox>
-      <Image src={logo} style={{}} alt="base" width="48" height="48" />
-      <RewardLeftBox>
+      <Image
+        src={logo}
+        style={{ borderRadius: '100%' }}
+        alt="base"
+        width="48"
+        height="48"
+      />
+      <RewardLeftBox marginLeft={'20px'}>
         <SoraTypography fontSize={'16px'} fontWeight={700} color={'#525252'}>
           {title}
         </SoraTypography>

@@ -65,12 +65,12 @@ export const QuestCard = ({
       )}
       <QuestCardBottomBox>
         <QuestCardTitleBox>
-          <Sequel85Typography fontSize="18px" lineHeight="24px">
+          <SoraTypography fontSize="18px" lineHeight="24px" fontWeight={700}>
             {title}
-          </Sequel85Typography>
+          </SoraTypography>
         </QuestCardTitleBox>
 
-        <FlexSpaceBetweenBox marginBottom={'8px'}>
+        <FlexSpaceBetweenBox marginBottom={'8px'} marginTop={'8px'}>
           <FlexCenterRowBox>
             {chains?.map((elem: Chain, i: number) => {
               return (
@@ -89,13 +89,14 @@ export const QuestCard = ({
           </FlexCenterRowBox>
           <FlexCenterRowBox>
             <XPDisplayBox active={active}>
-              <Sequel85Typography
+              <SoraTypography
                 fontSize="14px"
+                fontWeight={700}
                 lineHeight="18px"
                 color={'#ffffff'}
               >
                 {`+${points}`}
-              </Sequel85Typography>
+              </SoraTypography>
               <CenteredBox sx={{ marginLeft: '4px' }}>
                 <SuperfestXPIcon size={16} />
               </CenteredBox>
