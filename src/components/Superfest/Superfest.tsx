@@ -5,9 +5,8 @@ import { SuperfestContainer, SuperfestMainBox } from './Superfest.style';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
 import { NFTClaimingBox } from './NFTClaimingBox/NFTClaimingBox';
 import { HeroBox } from './HeroBox/HeroBox';
-import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
-import { QuestCarouselSuperfest } from './QuestCarousel/QuestCarousel';
-import { SuperfestPresentedByBox } from './SuperfestPresentedBy/SuperfestPresentedByBox';
+import { AvailableMissionsList } from './AvailableMissionsList/AvailableMissionsList';
+import { ActiveSuperfestMissionsCarousel } from './ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 
@@ -26,16 +25,11 @@ export const Superfest = () => {
   });
   // HookToCheckNFT eligibility
 
-  // CHECK ACTIVE MISSION
-  // create a loading state
-  // loop through the missions and check if they are in the activeList, if yes, add the activeState true
-  // create a new type that extend mission "MerklRewardedMissions" with the state active or not
-
   return (
     <SuperfestContainer className="superfest">
       <RewardsCarousel
         isLoading={
-          !!account?.address
+          !account?.address
           // !isRewardLoading && isRewardSuccess
         }
         rewardAmount={
@@ -57,16 +51,16 @@ export const Superfest = () => {
       />
       <HeroBox />
       <SuperfestMainBox>
-        <QuestCarouselSuperfest quests={quests} loading={isQuestLoading} />
         {!account?.address ||
         isQuestLoading ||
         activeCampaigns.length === 0 ? undefined : (
-          <QuestCompletedList
+          <ActiveSuperfestMissionsCarousel
             quests={quests}
             loading={isQuestLoading}
             activeCampaigns={activeCampaigns}
           />
         )}
+        <AvailableMissionsList quests={quests} loading={isQuestLoading} />
         <NFTClaimingBox />
       </SuperfestMainBox>
     </SuperfestContainer>

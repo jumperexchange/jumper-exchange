@@ -4,17 +4,32 @@ import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
-import { SuperfestCarouselContainer } from './QuestCarousel.style';
+import { SuperfestCarouselContainer } from './ActiveSuperfestMissionsCarousel.style';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
+
+function checkInclusion(
+  activeCampaigns: string[],
+  claimingIds: string[],
+): boolean {
+  const lowerActiveCampaigns = activeCampaigns.map((cId) => cId.toLowerCase());
+  for (const id of claimingIds) {
+    if (lowerActiveCampaigns.includes(id.toLowerCase())) {
+      return true;
+    }
+  }
+  return false;
+}
 
 interface QuestCarouselProps {
   quests?: Quest[];
   loading: boolean;
+  activeCampaigns: string[];
 }
 
-export const QuestCarouselSuperfest = ({
+export const ActiveSuperfestMissionsCarousel = ({
   quests,
   loading,
+  activeCampaigns,
 }: QuestCarouselProps) => {
   const { url } = useOngoingFestMissions();
   const { t } = useTranslation();
@@ -26,7 +41,7 @@ export const QuestCarouselSuperfest = ({
       {!isNotLive ? (
         <SuperfestCarouselContainer>
           <CarouselContainer
-            title={t('missions.available')}
+            title={'Active Missions'}
             itemsCount={quests?.length}
             styles={{ paddingLeft: '32px' }}
           >
@@ -37,34 +52,43 @@ export const QuestCarouselSuperfest = ({
             >
               {!loading ? (
                 quests?.map((quest: Quest, index: number) => {
-                  return (
-                    <QuestCard
-                      key={`ongoing-superfest-mission-${index}`}
-                      active={true}
-                      title={quest?.attributes.Title}
-                      image={`
+                  const claimingIds =
+                    quest.attributes?.CustomInformation?.['claimingIds'];
+                  let included = false;
+                  if (claimingIds && activeCampaigns) {
+                    included = checkInclusion(activeCampaigns, claimingIds);
+                  }
+
+                  if (included) {
+                    return (
+                      <QuestCard
+                        key={`active-superfest-mission-${index}`}
+                        active={true}
+                        title={quest?.attributes.Title}
+                        image={`
                     ${new URL(
                       quest.attributes.Image?.data?.attributes?.url,
                       url.origin,
                     )}`}
-                      points={quest?.attributes.Points}
-                      link={quest?.attributes.Link}
-                      startDate={quest?.attributes.StartDate}
-                      endDate={quest?.attributes.EndDate}
-                      platformName={
-                        quest?.attributes.quests_platform?.data?.attributes
-                          ?.Name
-                      }
-                      platformImage={`
+                        points={quest?.attributes.Points}
+                        link={quest?.attributes.Link}
+                        startDate={quest?.attributes.StartDate}
+                        endDate={quest?.attributes.EndDate}
+                        platformName={
+                          quest?.attributes.quests_platform?.data?.attributes
+                            ?.Name
+                        }
+                        platformImage={`
                     ${new URL(
                       quest.attributes.quests_platform?.data?.attributes?.Logo?.data?.attributes?.url,
                       url.origin,
                     )}
                   `}
-                      slug={quest?.attributes.Slug}
-                      chains={quest.attributes.CustomInformation?.['chains']}
-                    />
-                  );
+                        slug={quest?.attributes.Slug}
+                        chains={quest.attributes.CustomInformation?.['chains']}
+                      />
+                    );
+                  }
                 })
               ) : (
                 <>
