@@ -1,17 +1,6 @@
-import { useAccounts } from '@/hooks/useAccounts';
-import { Box, Breakpoint, Stack, Typography, useTheme } from '@mui/material';
-import { Button, ButtonSecondary } from 'src/components/Button';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { sequel85, sora } from 'src/fonts/fonts';
-import { CustomRichBlocks } from 'src/components/Blog';
 import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
 import Image from 'next/image';
 import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';
-import { SuperfestXPIcon } from 'src/components/illustrations/XPIcon';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import generateKey from 'src/app/lib/generateKey';
-import { useRouter } from 'next/navigation';
-import { JUMPER_FEST } from 'src/const/urls';
 import { Quest } from 'src/types/loyaltyPass';
 import {
   BannerImageBox,
@@ -26,7 +15,11 @@ import {
   FlexCenterRowBox,
   FlexCenterSpaceRowBox,
 } from '../SuperfestMissionPage.style';
-import { CenteredBox } from '../../Superfest.style';
+import {
+  CenteredBox,
+  Sequel85Typography,
+  SoraTypography,
+} from '../../Superfest.style';
 import { RewardBox } from './Rewards/RewardBox';
 
 interface SuperfestMissionPageVar {
@@ -74,16 +67,13 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
             </ProfilePageTypography>
           </QuestDatesBox>
           <FlexCenterRowBox>
-            <Typography
-              sx={{
-                fontSize: '16px',
-                typography: sora.style.fontFamily,
-                fontWeight: 500,
-                lineHeight: '20px',
-              }}
+            <SoraTypography
+              fontSize={'16px'}
+              fontWeight={500}
+              lineHeight={'20px'}
             >
               Supported chains
-            </Typography>
+            </SoraTypography>
             <SupportedChainsBox>
               {chains.map((elem: Chain, i: number) => {
                 return (
@@ -104,16 +94,13 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           </FlexCenterRowBox>
         </DateChainBox>
         <BannerTitleBox>
-          <Typography
-            sx={{
-              typography: sequel85.style.fontFamily,
-              fontSize: '56px',
-              fontWeight: 900,
-              lineHeight: '96px',
-            }}
+          <Sequel85Typography
+            fontSize={'56px'}
+            fontWeight={900}
+            lineHeight={'96px'}
           >
             {attributes.Title}
-          </Typography>
+          </Sequel85Typography>
         </BannerTitleBox>
         <FlexCenterSpaceRowBox mt="16px">
           {/* rewards  */}

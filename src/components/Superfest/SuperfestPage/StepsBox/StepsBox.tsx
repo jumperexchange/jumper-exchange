@@ -10,6 +10,7 @@ import { Typography } from '@mui/material';
 import { sequel85 } from 'src/fonts/fonts';
 import { CustomRichBlocks } from 'src/components/Blog';
 import { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { Sequel85Typography } from '../../Superfest.style';
 
 interface StepsBoxProps {
   steps?: RootNode[];
@@ -20,15 +21,9 @@ export const StepsBox = ({ steps, baseUrl }: StepsBoxProps) => {
   return (
     <SuperfestPageElementContainer>
       <LeftTextBox>
-        <Typography
-          sx={{
-            typography: sequel85.style.fontFamily,
-            fontSize: '32px',
-            fontWeight: 700,
-          }}
-        >
+        <Sequel85Typography fontSize={'32px'} fontWeight={700}>
           Steps to complete the mission
-        </Typography>
+        </Sequel85Typography>
       </LeftTextBox>
       <>
         <CustomRichBlocks

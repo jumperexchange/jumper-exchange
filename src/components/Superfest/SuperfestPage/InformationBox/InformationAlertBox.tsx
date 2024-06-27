@@ -1,7 +1,7 @@
 import { LeftTextBox } from '../SuperfestMissionPage.style';
-import { Typography } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { InformationBox } from './InformationAlertBox.style';
+import { SoraTypography } from '../../Superfest.style';
 
 interface InformationAlertBoxProps {
   information?: string;
@@ -14,7 +14,7 @@ export const InformationAlertBox = ({
     <InformationBox>
       <InfoOutlinedIcon sx={{ width: 32, height: 32 }} />
       <LeftTextBox ml="32px">
-        <Typography>{information}</Typography>
+        <SoraTypography>{information}</SoraTypography>
       </LeftTextBox>
     </InformationBox>
   );

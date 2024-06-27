@@ -3,6 +3,7 @@ import { sequel85, sora } from 'src/fonts/fonts';
 import Image from 'next/image';
 import { RewardLeftBox } from '../Banner.style';
 import { FlexCenterRowBox } from '../../SuperfestMissionPage.style';
+import { SoraTypography } from 'src/components/Superfest/Superfest.style';
 
 interface RewardBoxProps {
   logo: string;
@@ -15,25 +16,12 @@ export const RewardBox = ({ logo, title, value }: RewardBoxProps) => {
     <FlexCenterRowBox>
       <Image src={logo} style={{}} alt="base" width="48" height="48" />
       <RewardLeftBox>
-        <Typography
-          sx={{
-            fontSize: '16px',
-            typography: sora.style.fontFamily,
-            fontWeight: 700,
-            color: '#525252',
-          }}
-        >
+        <SoraTypography fontSize={'16px'} fontWeight={700} color={'#525252'}>
           {title}
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: '18px',
-            typography: sora.style.fontFamily,
-            fontWeight: 800,
-          }}
-        >
+        </SoraTypography>
+        <SoraTypography fontSize={'18px'} fontWeight={800}>
           {value}
-        </Typography>
+        </SoraTypography>
       </RewardLeftBox>
     </FlexCenterRowBox>
   );
