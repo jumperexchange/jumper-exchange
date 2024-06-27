@@ -36,7 +36,6 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
           styles={{
             backgroundColor: 'transparent',
             border: '2px dotted',
-            color: '#000000',
             borderColor: NOT_LIVE ? '#C5B99C' : '#000000',
             width: '75%',
             '&:hover': {

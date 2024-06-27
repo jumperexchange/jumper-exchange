@@ -1,12 +1,7 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import Image from 'next/image';
-import { Button } from 'src/components/Button';
-import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';
-
-import { RewardsRightBox, RewardsdMainBox } from './RewardsAmountBox.style';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { FlexCenterRowBox } from '../../SuperfestPage/SuperfestMissionPage.style';
-import { sora } from 'src/fonts/fonts';
+import { SoraTypography } from '../../Superfest.style';
 
 export const RewardsAmountBox = ({
   rewardAmount,
@@ -41,15 +36,9 @@ export const RewardsAmountBox = ({
         />
       </Box>
       <Box marginLeft={'8px'}>
-        <Typography
-          sx={{
-            fontSize: '40px',
-            fontWeight: 700,
-            typography: sora.style.fontFamily,
-          }}
-        >
+        <SoraTypography fontSize="40px" fontWeight={700}>
           {rewardAmount ?? '...'}
-        </Typography>
+        </SoraTypography>
       </Box>
     </FlexCenterRowBox>
   );

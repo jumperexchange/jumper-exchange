@@ -1,22 +1,23 @@
-import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
-import { Box, Typography, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../Button';
-import { SuperfestXPIcon, XPIcon } from '../../illustrations/XPIcon';
+import { SuperfestXPIcon } from '../../illustrations/XPIcon';
 import {
-  CompletedBox,
   QuestCardBottomBox,
   QuestCardInfoBox,
   QuestCardMainBox,
   QuestCardTitleBox,
-  QuestDatesBox,
-  QuestPlatformMainBox,
   XPDisplayBox,
 } from './QuestCard.style';
-import { CenteredBox } from '../Superfest.style';
-import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';
+import {
+  CenteredBox,
+  FlexSpaceBetweenBox,
+  Sequel85Typography,
+  SoraTypography,
+} from '../Superfest.style';
 import { useRouter } from 'next/navigation';
+import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
 
 interface QuestCardProps {
   active?: boolean;
@@ -69,25 +70,13 @@ export const QuestCard = ({
       )}
       <QuestCardBottomBox>
         <QuestCardTitleBox>
-          <ProfilePageTypography fontSize="18px" lineHeight="24px">
+          <Sequel85Typography fontSize="18px" lineHeight="24px">
             {title}
-          </ProfilePageTypography>
+          </Sequel85Typography>
         </QuestCardTitleBox>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '8px',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              alignContent: 'center',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+
+        <FlexSpaceBetweenBox marginBottom={'8px'}>
+          <FlexCenterRowBox>
             {Array.from({ length: 3 }).map((elem, i) => {
               return (
                 <Image
@@ -102,31 +91,22 @@ export const QuestCard = ({
                 />
               );
             })}
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              alignContent: 'center',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          </FlexCenterRowBox>
+          <FlexCenterRowBox>
             <XPDisplayBox active={active}>
-              <ProfilePageTypography
+              <Sequel85Typography
                 fontSize="14px"
                 lineHeight="18px"
-                sx={{
-                  color: '#ffffff',
-                }}
+                color={'#ffffff'}
               >
-                {`+${15}`}
-              </ProfilePageTypography>
+                {`+${points}`}
+              </Sequel85Typography>
               <CenteredBox sx={{ marginLeft: '4px' }}>
                 <SuperfestXPIcon size={16} />
               </CenteredBox>
             </XPDisplayBox>
-          </Box>
-        </Box>
+          </FlexCenterRowBox>
+        </FlexSpaceBetweenBox>
         <QuestCardInfoBox points={points}>
           {active && slug ? (
             <Button
@@ -137,7 +117,6 @@ export const QuestCard = ({
                 alignItems: 'center',
                 width: '100%',
                 backgroundColor: 'transparent',
-                borderColor: '#ffffff',
                 border: '2px dotted',
                 padding: '16px',
                 '&:hover': {
@@ -147,13 +126,13 @@ export const QuestCard = ({
               }}
               onClick={() => router.push(slug)}
             >
-              <ProfilePageTypography
+              <SoraTypography
                 fontSize="16px"
                 lineHeight="18px"
                 fontWeight={600}
               >
                 {String(t('questCard.join')).toUpperCase()}
-              </ProfilePageTypography>
+              </SoraTypography>
             </Button>
           ) : null}
         </QuestCardInfoBox>

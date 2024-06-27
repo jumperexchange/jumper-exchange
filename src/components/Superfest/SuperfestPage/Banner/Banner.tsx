@@ -1,6 +1,5 @@
 import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
 import Image from 'next/image';
-import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';
 import { Quest } from 'src/types/loyaltyPass';
 import {
   BannerImageBox,
@@ -61,10 +60,10 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
             <CenteredBox>
               <DateRangeRoundedIcon sx={{ height: '16px' }} />
             </CenteredBox>
-            <ProfilePageTypography fontSize={'12px'} lineHeight={'16px'}>
+            <SoraTypography fontSize={'12px'} lineHeight={'16px'}>
               July-Aug
-              {/* {getStringDateFormatted(startDate, endDate)} */}
-            </ProfilePageTypography>
+            </SoraTypography>
+            {/* {getStringDateFormatted(startDate, endDate)} */}
           </QuestDatesBox>
           <FlexCenterRowBox>
             <SoraTypography

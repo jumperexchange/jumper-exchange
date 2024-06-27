@@ -1,7 +1,6 @@
 import { Box, Typography, Divider } from '@mui/material';
 import Image from 'next/image';
 import { Button } from 'src/components/Button';
-import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';
 import {
   NFTClaimingContainer,
   NFTClaimingDescription,

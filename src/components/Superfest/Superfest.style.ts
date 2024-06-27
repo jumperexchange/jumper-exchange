@@ -14,6 +14,11 @@ export const CenteredBox = styled(Box)(() => ({
   alignItems: 'center',
 }));
 
+export const FlexSpaceBetweenBox = styled(Box)(() => ({
+  display: 'flex',
+  alignItems: 'space-between',
+}));
+
 export const SuperfestMainBox = styled(Box)(() => ({
   minWidth: '100%',
   display: 'flex',

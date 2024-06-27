@@ -1,15 +1,11 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import {
   RewardsCarouselContainer,
-  RewardsCarouselHeader,
   RewardsCarouselMainBox,
-  RewardsCarouselTitle,
 } from './RewardsCarousel.style';
 import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
-import Image from 'next/image';
 import { Button } from 'src/components/Button';
-import { ProfilePageTypography } from 'src/components/ProfilePage/ProfilePage.style';
-import { sequel85, sora } from 'src/fonts/fonts';
+import { sequel85 } from 'src/fonts/fonts';
 import {
   useAccount,
   useWriteContract,
@@ -18,6 +14,8 @@ import {
 } from 'wagmi';
 import { ChainId } from '@lifi/types';
 import { MerklDistribABI } from '../../../const/abi/merklABI';
+import { Sequel85Typography, SoraTypography } from '../Superfest.style';
+import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
 
 interface RewardsCarouselProps {
   isLoading: boolean;
@@ -74,44 +72,41 @@ export const RewardsCarousel = ({
       {isLoading ? undefined : (
         <RewardsCarouselContainer>
           <RewardsCarouselMainBox>
-            <Typography
-              sx={{
-                fontSize: '32px',
-                lineHeight: '32px',
-                fontWeight: 700,
-                typography: sequel85.style.fontFamily,
-              }}
+            <Sequel85Typography
+              fontSize="32px"
+              lineHeight="32px"
+              fontWeight={700}
             >
               You've earned:
-            </Typography>
+            </Sequel85Typography>
             <RewardsAmountBox rewardAmount={rewardAmount} />
-            <Button
-              disabled={isPending || isConfirming || isConfirmed}
-              variant="secondary"
-              size="large"
-              styles={{
-                width: '15%',
-                marginLeft: '32px',
-                alignItems: 'center',
-                backgroundColor: 'transparent',
-                borderColor: '#ffffff',
-                border: '2px dotted',
-                padding: '16px',
-                '&:hover': {
-                  color: '#FFFFFF',
-                  backgroundColor: '#ff0420',
-                },
-              }}
-              onClick={() => handleClick()}
-            >
-              <ProfilePageTypography
-                fontSize="16px"
-                lineHeight="18px"
-                fontWeight={600}
+            <FlexCenterRowBox marginLeft={'32px'}>
+              <Button
+                disabled={isPending || isConfirming || isConfirmed}
+                variant="secondary"
+                size="large"
+                styles={{
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                  border: '2px dotted',
+                  padding: '16px',
+                  width: '15%',
+                  '&:hover': {
+                    color: '#FFFFFF',
+                    backgroundColor: '#ff0420',
+                  },
+                }}
+                onClick={() => handleClick()}
               >
-                {isConfirmed ? 'Claimed' : 'Claim Rewards'}
-              </ProfilePageTypography>
-            </Button>
+                <SoraTypography
+                  fontSize="16px"
+                  lineHeight="18px"
+                  fontWeight={600}
+                >
+                  {isConfirmed ? 'Claimed' : 'Claim Rewards'}
+                </SoraTypography>
+              </Button>
+            </FlexCenterRowBox>
           </RewardsCarouselMainBox>
         </RewardsCarouselContainer>
       )}
