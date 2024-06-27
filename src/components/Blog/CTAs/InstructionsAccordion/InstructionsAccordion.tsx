@@ -13,16 +13,19 @@ export interface InstructionItemProps {
   buttonText?: string;
   buttonLink?: string;
   activeTheme?: ThemeModesSupported;
+  variant?: string;
 }
 
 interface InstructionsAccordionProps {
   data: InstructionItemProps[];
   activeTheme?: ThemeModesSupported;
+  variant?: string;
 }
 
 export const InstructionsAccordion = ({
   data,
   activeTheme,
+  variant,
 }: InstructionsAccordionProps) => {
   if (!data) {
     return;
@@ -40,6 +43,7 @@ export const InstructionsAccordion = ({
           buttonText={el.buttonText}
           buttonLink={el.buttonLink}
           activeTheme={activeTheme}
+          variant={variant}
         />
       ))}
     </InstructionsAccordionContainer>

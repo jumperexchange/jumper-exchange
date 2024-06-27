@@ -48,6 +48,7 @@ export const InstructionsAccordionItem = ({
   buttonText,
   buttonLink,
   activeTheme,
+  variant,
 }: InstructionsAccordionItemProps) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
@@ -61,10 +62,9 @@ export const InstructionsAccordionItem = ({
   return (
     <InstructionsAccordionItemContainer
       sx={{
-        typograpy:
-          activeTheme === 'superfest' ? sora.style.fontFamily : undefined,
-        border: activeTheme === 'superfest' ? '2px dotted' : undefined,
-        borderColor: activeTheme === 'superfest' ? '#000000' : undefined,
+        typograpy: variant === 'superfest' ? sora.style.fontFamily : undefined,
+        border: variant === 'superfest' ? '2px dotted' : undefined,
+        borderColor: variant === 'superfest' ? '#000000' : undefined,
       }}
     >
       <InstructionsAccordionItemMain onClick={(e) => handleOpen(e)}>
@@ -114,9 +114,7 @@ export const InstructionsAccordionItem = ({
                   justifyContent: 'flex-start',
                   mt: '16px',
                   typography:
-                    activeTheme === 'superfest'
-                      ? sora.style.fontFamily
-                      : undefined,
+                    variant === 'superfest' ? sora.style.fontFamily : undefined,
                 }}
               >
                 <a
