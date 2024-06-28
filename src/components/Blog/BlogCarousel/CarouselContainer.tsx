@@ -5,6 +5,7 @@ import { Box, useTheme, type CSSObject } from '@mui/material';
 import { TrackingAction, TrackingEventParameter } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { EventTrackingTool } from '@/types/userTracking';
+import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -18,7 +19,7 @@ import {
 interface CarouselContainerProps {
   title?: string;
   styles?: CSSObject;
-  children?: React.ReactNode | React.ReactNode[];
+  children: ReactNode | ReactNode[];
   trackingCategory?: string;
 }
 const swipeDistance = 420;
@@ -97,9 +98,9 @@ export const CarouselContainer = ({
   return (
     <Box>
       <CarouselHeader>
-        <CarouselTitle variant="lifiHeaderMedium">
-          {title ?? t('blog.recentPosts')}
-        </CarouselTitle>
+        {title && (
+          <CarouselTitle variant="lifiHeaderMedium">{title}</CarouselTitle>
+        )}
         {Array.isArray(children) && children?.length > 1 && (
           <CarouselNavigationContainer hide={children?.length < 4}>
             <CarouselNavigationButton onClick={() => handleChange('prev')}>

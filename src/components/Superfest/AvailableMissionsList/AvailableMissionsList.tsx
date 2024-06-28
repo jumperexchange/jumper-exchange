@@ -1,15 +1,9 @@
-import { useAccounts } from '@/hooks/useAccounts';
 import type { Quest } from '@/types/loyaltyPass';
-import { useTranslation } from 'react-i18next';
+import { CarouselContainer } from 'src/components/Blog';
+import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
-import {
-  AvailableMissionsContainer,
-  AvailableMissionsHeader,
-  AvailableMissionsStack,
-  AvailableMissionsTitle,
-} from './AvailableMissionsList.style';
-import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
+import { AvailableMissionsContainer } from './AvailableMissionsList.style';
 
 interface QuestCompletedListProps {
   quests?: Quest[];
@@ -20,22 +14,12 @@ export const AvailableMissionsList = ({
   quests,
   loading,
 }: QuestCompletedListProps) => {
-  const { account } = useAccounts();
-  const { t } = useTranslation();
   const { url } = useOngoingFestMissions();
 
   return (
     <AvailableMissionsContainer>
-      <AvailableMissionsHeader>
-        <AvailableMissionsTitle>{'Available Missions'}</AvailableMissionsTitle>
-      </AvailableMissionsHeader>
-      <AvailableMissionsStack
-        direction={'row'}
-        spacing={{ xs: 2, sm: 4 }}
-        useFlexGap
-        flexWrap="wrap"
-      >
-        {!loading && quests
+      <CarouselContainer title="Available Missions">
+        {quests && !loading && quests
           ? quests?.map((quest: Quest, index: number) => {
               return (
                 <QuestCard
@@ -65,13 +49,10 @@ export const AvailableMissionsList = ({
                 />
               );
             })
-          : null}
-        {loading
-          ? Array.from({ length: 12 }, () => 42).map((_, idx) => (
+          : Array.from({ length: 12 }, () => 42).map((_, idx) => (
               <QuestCardSkeleton key={'skeleton-' + idx} />
-            ))
-          : null}
-      </AvailableMissionsStack>
+            ))}
+      </CarouselContainer>
     </AvailableMissionsContainer>
   );
 };

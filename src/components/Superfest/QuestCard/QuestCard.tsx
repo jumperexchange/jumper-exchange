@@ -1,8 +1,15 @@
-import { useTheme } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
+import {
+  CenteredBox,
+  FlexSpaceBetweenBox,
+  SoraTypography,
+} from '../Superfest.style';
+import type { Chain } from '../SuperfestPage/Banner/Banner';
+import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
 import {
   QuestCardBottomBox,
   QuestCardInfoBox,
@@ -10,15 +17,6 @@ import {
   QuestCardTitleBox,
   XPDisplayBox,
 } from './QuestCard.style';
-import {
-  CenteredBox,
-  FlexSpaceBetweenBox,
-  Sequel85Typography,
-  SoraTypography,
-} from '../Superfest.style';
-import { useRouter } from 'next/navigation';
-import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
-import { Chain } from '../SuperfestPage/Banner/Banner';
 
 interface QuestCardProps {
   active?: boolean;
@@ -45,7 +43,6 @@ export const QuestCard = ({
   slug,
   chains,
 }: QuestCardProps) => {
-  const theme = useTheme();
   const { t } = useTranslation();
   const router = useRouter();
 
