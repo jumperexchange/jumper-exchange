@@ -20,7 +20,6 @@ interface CarouselContainerProps {
   styles?: CSSObject;
   children?: React.ReactNode | React.ReactNode[];
   trackingCategory?: string;
-  itemsCount?: number;
 }
 const swipeDistance = 420;
 
@@ -28,12 +27,10 @@ export const CarouselContainer = ({
   styles,
   title,
   children,
-  itemsCount,
   trackingCategory,
 }: CarouselContainerProps) => {
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
-
   const carouselContainerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
 
@@ -103,22 +100,21 @@ export const CarouselContainer = ({
         <CarouselTitle variant="lifiHeaderMedium">
           {title ?? t('blog.recentPosts')}
         </CarouselTitle>
-        <CarouselNavigationContainer
-          hide={
-            (itemsCount && itemsCount < 4) ||
-            (Array.isArray(children) && children?.length < 4)
-          }
-        >
-          <CarouselNavigationButton onClick={() => handleChange('prev')}>
-            <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
-          </CarouselNavigationButton>
-          <CarouselNavigationButton
-            sx={{ marginLeft: theme.spacing(1) }}
-            onClick={() => handleChange('next')}
+        {Array.isArray(children) && children?.length > 1 && (
+          <CarouselNavigationContainer
+            hide={Array.isArray(children) && children?.length < 4}
           >
-            <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
-          </CarouselNavigationButton>
-        </CarouselNavigationContainer>
+            <CarouselNavigationButton onClick={() => handleChange('prev')}>
+              <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
+            </CarouselNavigationButton>
+            <CarouselNavigationButton
+              sx={{ marginLeft: theme.spacing(1) }}
+              onClick={() => handleChange('next')}
+            >
+              <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
+            </CarouselNavigationButton>
+          </CarouselNavigationContainer>
+        )}
       </CarouselHeader>
       <CarouselContainerBox ref={carouselContainerRef} sx={styles}>
         {children}

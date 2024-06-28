@@ -11,7 +11,6 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   height: '416px',
   width: '256px',
   textAlign: 'center',
-  overflow: 'hidden',
   borderRadius: '8px',
 }));
 

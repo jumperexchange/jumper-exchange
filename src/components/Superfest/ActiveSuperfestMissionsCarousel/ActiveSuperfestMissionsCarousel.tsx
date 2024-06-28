@@ -1,11 +1,10 @@
 import { CarouselContainer } from '@/components/Blog/BlogCarousel/CarouselContainer';
 import type { Quest } from '@/types/loyaltyPass';
-import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { SuperfestCarouselContainer } from './ActiveSuperfestMissionsCarousel.style';
-import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 
 function checkInclusion(
   activeCampaigns: string[],
@@ -35,69 +34,61 @@ export const ActiveSuperfestMissionsCarousel = ({
   const { t } = useTranslation();
 
   const isNotLive = !loading && (!quests || quests.length === 0);
-
   return (
     <>
       {!isNotLive ? (
         <SuperfestCarouselContainer>
           <CarouselContainer
             title={'Active Missions'}
-            itemsCount={quests?.length}
             styles={{ paddingLeft: '32px' }}
           >
-            <Stack
-              direction={'row'}
-              spacing={{ xs: 2, sm: 4 }}
-              marginTop={'16px'}
-            >
-              {!loading ? (
-                quests?.map((quest: Quest, index: number) => {
-                  const claimingIds =
-                    quest.attributes?.CustomInformation?.['claimingIds'];
-                  let included = false;
-                  if (claimingIds && activeCampaigns) {
-                    included = checkInclusion(activeCampaigns, claimingIds);
-                  }
+            {!loading ? (
+              quests?.map((quest: Quest, index: number) => {
+                const claimingIds =
+                  quest.attributes?.CustomInformation?.['claimingIds'];
+                let included = false;
+                if (claimingIds && activeCampaigns) {
+                  included = checkInclusion(activeCampaigns, claimingIds);
+                }
 
-                  if (included) {
-                    return (
-                      <QuestCard
-                        key={`active-superfest-mission-${index}`}
-                        active={true}
-                        title={quest?.attributes.Title}
-                        image={`
+                if (included) {
+                  return (
+                    <QuestCard
+                      key={`active-superfest-mission-${index}`}
+                      active={true}
+                      title={quest?.attributes.Title}
+                      image={`
                     ${new URL(
                       quest.attributes.Image?.data?.attributes?.url,
                       url.origin,
                     )}`}
-                        points={quest?.attributes.Points}
-                        link={quest?.attributes.Link}
-                        startDate={quest?.attributes.StartDate}
-                        endDate={quest?.attributes.EndDate}
-                        platformName={
-                          quest?.attributes.quests_platform?.data?.attributes
-                            ?.Name
-                        }
-                        platformImage={`
+                      points={quest?.attributes.Points}
+                      link={quest?.attributes.Link}
+                      startDate={quest?.attributes.StartDate}
+                      endDate={quest?.attributes.EndDate}
+                      platformName={
+                        quest?.attributes.quests_platform?.data?.attributes
+                          ?.Name
+                      }
+                      platformImage={`
                     ${new URL(
                       quest.attributes.quests_platform?.data?.attributes?.Logo?.data?.attributes?.url,
                       url.origin,
                     )}
                   `}
-                        slug={quest?.attributes.Slug}
-                        chains={quest.attributes.CustomInformation?.['chains']}
-                      />
-                    );
-                  }
-                })
-              ) : (
-                <>
-                  {Array.from({ length: 3 }, () => 42).map((_, idx) => (
-                    <QuestCardSkeleton key={'mission-card-skeleton-' + idx} />
-                  ))}
-                </>
-              )}
-            </Stack>
+                      slug={quest?.attributes.Slug}
+                      chains={quest.attributes.CustomInformation?.['chains']}
+                    />
+                  );
+                }
+              })
+            ) : (
+              <>
+                {Array.from({ length: 3 }, () => 42).map((_, idx) => (
+                  <QuestCardSkeleton key={'mission-card-skeleton-' + idx} />
+                ))}
+              </>
+            )}
           </CarouselContainer>
         </SuperfestCarouselContainer>
       ) : null}
