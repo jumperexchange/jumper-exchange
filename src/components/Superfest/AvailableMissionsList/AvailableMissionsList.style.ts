@@ -57,10 +57,16 @@ export const AvailableMissionsTitle = styled(Typography, {
   },
 }));
 
-export const AvailableMissionsStack = styled(Stack)(() => ({
+export const AvailableMissionsStack = styled(Stack)(({ theme }) => ({
   marginTop: 32,
   alignItems: 'center',
   display: 'flex',
-  justifyContent: 'flex-start',
   marginLeft: 32,
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    justifyContent: 'flex-start',
+  },
 }));

@@ -1,31 +1,24 @@
 import { gql } from 'graphql-request';
 
-export const availableNFTs = gql`
-  query issuedPDAs($EVMAddress: String!) {
-    issuedPDAs(
-      filter: {
-        organization: { type: GATEWAY_ID, value: "lifi" }
-        owner: { type: EVM, value: $EVMAddress }
+export const availableNFT = gql`
+  mutation claim($campaignID: ID!, $address: String!) {
+    prepareParticipate(
+      input: {
+        signature: "" # provide a test signature
+        campaignID: $campaignID # campaign hash id
+        address: $address # user address
       }
-      skip: 0
-      take: 300
-      order: { issuanceDate: "DESC" }
     ) {
-      id
-      status
-      ownerHash
-      dataAsset {
-        claim
-        title
-        description
-        image
-        dataModel {
-          id
-        }
-        owner {
-          gatewayId
-          walletId
-        }
+      allow # Is allow user claim nft
+      disallowReason # Disallow reason
+      signature # Claim signature
+      spaceStation # Claim nft contract address
+      mintFuncInfo {
+        # Claim function args
+        cap # Campaign cap, 0 is no cap
+        powahs # Reserved field, currently is campaign id
+        verifyIDs # Unique id
+        nftCoreAddress # NFT contract address
       }
     }
   }

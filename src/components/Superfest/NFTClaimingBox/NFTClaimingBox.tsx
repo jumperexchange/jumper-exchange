@@ -7,6 +7,7 @@ import {
   NFTDisplayBox,
 } from './NFTClaimingBox.style';
 import { NFTCard } from './NFTCard/NFTCard';
+import { NFTInfo } from 'src/hooks/useCheckFestNFTAvailability';
 
 const NFT_ARRAY = [
   {
@@ -39,28 +40,19 @@ const NFT_ARRAY = [
   },
 ];
 
-const ClaimInfo = {
-  mode: {
-    isClaimable: false,
-    isClaimed: false,
-  },
-  optimism: {
-    isClaimable: false,
-    isClaimed: false,
-  },
-  base: {
-    isClaimable: false,
-    isClaimed: false,
-  },
-  fraxtal: {
-    isClaimable: false,
-    isClaimed: false,
-  },
-};
+interface NFTClaimBoxProps {
+  claimInfos: {
+    [key: string]: NFTInfo;
+  };
+  infoLoading: boolean;
+  infoSuccess: boolean;
+}
 
-export const NFTClaimingBox = ({}) => {
-  async function handleClick() {}
-
+export const NFTClaimingBox = ({
+  claimInfos,
+  infoLoading,
+  infoSuccess,
+}: NFTClaimBoxProps) => {
   return (
     <NFTClaimingContainer>
       <NFTClaimingHeader>
@@ -84,6 +76,9 @@ export const NFTClaimingBox = ({}) => {
               chain={elem.chain}
               bgColor={elem.bgColor}
               typoColor={elem.typoColor}
+              claimInfo={claimInfos[elem.chain]}
+              isLoading={infoLoading}
+              isSuccess={infoSuccess}
             />
           );
         })}
