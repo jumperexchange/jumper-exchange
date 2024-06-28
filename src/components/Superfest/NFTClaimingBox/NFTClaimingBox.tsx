@@ -1,6 +1,4 @@
 import { Box, Typography, Divider } from '@mui/material';
-import Image from 'next/image';
-import { Button } from 'src/components/Button';
 import {
   NFTClaimingContainer,
   NFTClaimingDescription,
@@ -78,9 +76,10 @@ export const NFTClaimingBox = ({}) => {
         </Box>
       </NFTClaimingHeader>
       <NFTDisplayBox>
-        {NFT_ARRAY.map((elem) => {
+        {NFT_ARRAY.map((elem, i: number) => {
           return (
             <NFTCard
+              key={`nft-card-${i}`}
               image={elem.image}
               chain={elem.chain}
               bgColor={elem.bgColor}
