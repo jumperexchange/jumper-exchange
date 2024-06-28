@@ -1,7 +1,7 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, alpha, styled } from '@mui/material';
 
-export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
+export const AvailableMissionsContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#fdfbef',
   padding: theme.spacing(2),
   borderRadius: '12px',
@@ -30,7 +30,7 @@ export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const CompletedQuestHeader = styled(Box, {
+export const AvailableMissionsHeader = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -40,7 +40,7 @@ export const CompletedQuestHeader = styled(Box, {
   justifyContent: 'space-between',
 }));
 
-export const CompletedQuestTitle = styled(Typography, {
+export const AvailableMissionsTitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
 })(({ theme }) => ({
   fontWeight: 700,
@@ -57,7 +57,7 @@ export const CompletedQuestTitle = styled(Typography, {
   },
 }));
 
-export const CompletedQuestStack = styled(Stack)(() => ({
+export const AvailableMissionsStack = styled(Stack)(() => ({
   marginTop: 32,
   alignItems: 'center',
   display: 'flex',

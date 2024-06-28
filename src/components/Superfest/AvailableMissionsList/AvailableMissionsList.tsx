@@ -1,11 +1,15 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import type { Quest } from '@/types/loyaltyPass';
 import { useTranslation } from 'react-i18next';
-import { CarouselContainer } from 'src/components/Blog';
-import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
-import { CompletedQuestContainer } from './AvailableMissionsList.style';
+import {
+  AvailableMissionsContainer,
+  AvailableMissionsHeader,
+  AvailableMissionsStack,
+  AvailableMissionsTitle,
+} from './AvailableMissionsList.style';
+import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 
 interface QuestCompletedListProps {
   quests?: Quest[];
@@ -21,8 +25,16 @@ export const AvailableMissionsList = ({
   const { url } = useOngoingFestMissions();
 
   return (
-    <CompletedQuestContainer>
-      <CarouselContainer title={'Available Missions'}>
+    <AvailableMissionsContainer>
+      <AvailableMissionsHeader>
+        <AvailableMissionsTitle>{'Available Missions'}</AvailableMissionsTitle>
+      </AvailableMissionsHeader>
+      <AvailableMissionsStack
+        direction={'row'}
+        spacing={{ xs: 2, sm: 4 }}
+        useFlexGap
+        flexWrap="wrap"
+      >
         {!loading && quests
           ? quests?.map((quest: Quest, index: number) => {
               return (
@@ -59,7 +71,7 @@ export const AvailableMissionsList = ({
               <QuestCardSkeleton key={'skeleton-' + idx} />
             ))
           : null}
-      </CarouselContainer>
-    </CompletedQuestContainer>
+      </AvailableMissionsStack>
+    </AvailableMissionsContainer>
   );
 };
