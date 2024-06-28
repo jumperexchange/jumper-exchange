@@ -22,7 +22,7 @@ export const AvailableMissionsList = ({
 
   return (
     <CompletedQuestContainer>
-      <CarouselContainer title={'Available Missionssss'}>
+      <CarouselContainer title={'Available Missions'}>
         {!loading && quests
           ? quests?.map((quest: Quest, index: number) => {
               return (
