@@ -1,5 +1,5 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, Stack, Typography, alpha, styled } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import { sequel85, sora } from 'src/fonts/fonts';
 
 export const NFTClaimingContainer = styled(Box)(({ theme }) => ({
@@ -47,7 +47,7 @@ export const NFTClaimingHeader = styled(Box, {
 export const NFTClaimingTitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
 })(({ theme }) => ({
-  marginTop: '32px',
+  marginTop: theme.spacing(4),
   fontWeight: 900,
   fontSize: '32px',
   lineHeight: '32px',
@@ -66,7 +66,7 @@ export const NFTClaimingTitle = styled(Typography, {
 export const NFTClaimingDescription = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
 })(({ theme }) => ({
-  marginTop: '32px',
+  marginTop: theme.spacing(4),
   fontWeight: 500,
   fontSize: '16px',
   lineHeight: '24px',
@@ -83,8 +83,9 @@ export const NFTClaimingDescription = styled(Typography, {
 }));
 
 export const NFTDisplayBox = styled(Box)(({ theme }) => ({
-  marginTop: '16px',
+  marginTop: theme.spacing(2),
   display: 'flex',
+  flexWrap: 'wrap',
   justifyContent: 'center',
   alignContent: 'center',
   gap: '48px',

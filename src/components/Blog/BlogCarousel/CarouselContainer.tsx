@@ -101,9 +101,7 @@ export const CarouselContainer = ({
           {title ?? t('blog.recentPosts')}
         </CarouselTitle>
         {Array.isArray(children) && children?.length > 1 && (
-          <CarouselNavigationContainer
-            hide={Array.isArray(children) && children?.length < 4}
-          >
+          <CarouselNavigationContainer hide={children?.length < 4}>
             <CarouselNavigationButton onClick={() => handleChange('prev')}>
               <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
             </CarouselNavigationButton>
