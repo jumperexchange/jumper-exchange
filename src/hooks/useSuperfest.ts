@@ -9,6 +9,6 @@ export const useSuperfest = (): useSuperfestProps => {
   const pathname = usePathname();
 
   return {
-    isSuperfest: pathname.includes(JUMPER_FEST),
+    isSuperfest: pathname?.includes(JUMPER_FEST) ?? false,
   };
 };

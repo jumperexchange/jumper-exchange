@@ -1,14 +1,13 @@
 'use client';
 
-import { openInNewTab } from '@/utils/openInNewTab';
-import { SuperfestPresentedBy } from 'src/components/illustrations/SuperfestPresentedBy';
-import { SuperFestPoweredContainer } from './SuperfestPresentedByBox.style';
 import { usePathname } from 'next/navigation';
+import { SuperfestPresentedBy } from 'src/components/illustrations/SuperfestPresentedBy';
 import { JUMPER_FEST } from 'src/const/urls';
+import { SuperFestPoweredContainer } from './SuperfestPresentedByBox.style';
 
 export const SuperfestPresentedByBox = () => {
   const currentPath = usePathname();
-  const isSuperfest = currentPath.includes(JUMPER_FEST);
+  const isSuperfest = currentPath?.includes(JUMPER_FEST);
 
   const handleClick = () => {
     // openInNewTab(lifiUrl);
