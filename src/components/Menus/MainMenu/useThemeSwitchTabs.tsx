@@ -79,13 +79,6 @@ export const useThemeSwitchTabs = () => {
     darkModeEnabled = true;
   }
 
-  console.log('THEME MENU CHECK', {
-    systemModeEnabled,
-    lightModeEnabled,
-    darkModeEnabled,
-    activeUid,
-  });
-
   const output = [
     {
       tooltip: themeMode !== 'light' ? lightModeTooltip : undefined,

@@ -7,7 +7,6 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useStrapi } from 'src/hooks/useStrapi';
 import type { PartnerThemesData } from 'src/types/strapi';
 
@@ -15,7 +14,6 @@ export const useThemeMenuContent = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const [cookie, setCookie] = useCookies(['partnerThemeUid']);
-  const {} = usePartnerTheme();
   const { data: partnerThemes, isSuccess } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
     queryKey: ['partner-themes'],

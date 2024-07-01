@@ -38,14 +38,9 @@ export const ThemeProvider: React.FC<
   const [themeModeState, setThemeModeState] = useState<
     ThemeModesSupported | undefined
   >(themeProp);
-  console.log('partnerCustomizedTheme', partnerCustomizedTheme);
   const isDarkMode = useDetectDarkModePreference();
-  const { activeUid, currentCustomizedTheme } = usePartnerTheme();
-  console.log('CHECK OBJECT IN THEMEPROVIDER', {
-    activeUid,
-    currentCustomizedTheme,
-    themeModeState,
-  });
+  const { currentCustomizedTheme } = usePartnerTheme();
+
   useEffect(() => {
     setUpdatedTheme(
       (partnerCustomizedTheme &&
@@ -87,7 +82,7 @@ export const ThemeProvider: React.FC<
           fontFamily:
             updatedTheme?.typography &&
             currentTheme.typography.fontFamily &&
-            updatedTheme?.typography.includes('Sora')
+            currentCustomizedTheme?.typography.includes('Sora')
               ? sora.style.fontFamily.concat(currentTheme.typography.fontFamily)
               : currentTheme.typography.fontFamily,
         },
@@ -133,12 +128,11 @@ export const ThemeProvider: React.FC<
     }
   }, [
     cookie.partnerThemeUid,
+    currentCustomizedTheme?.typography,
     partnerCustomizedTheme,
     themeModeState,
     updatedTheme,
   ]);
-
-  console.log('activeTheme', activeTheme);
 
   // Render children only when the themeModeState is determined
   return (

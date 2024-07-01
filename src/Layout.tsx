@@ -20,7 +20,6 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
   fixedPoweredBy,
   themeMode,
 }) => {
-  console.log('Check in Layout', partnerTheme);
   return (
     <>
       <div

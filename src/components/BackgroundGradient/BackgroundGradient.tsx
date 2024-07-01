@@ -27,17 +27,7 @@ export const BackgroundGradient = ({
   themeMode,
 }: BackgroundGradientProps) => {
   const { partnerName } = usePartnerFilter();
-  const { activeUid, backgroundColor, imgUrl, availableWidgetTheme } =
-    usePartnerTheme();
-  console.log('BackgroundGradient: CHECK partnerTheme', partnerTheme);
-  console.log('BackgroundGradient: Check OBJECT', {
-    activeUid,
-    backgroundColor,
-    imgUrl,
-    availableWidgetTheme,
-  });
-
-  console.log('activeUid', activeUid);
+  const { activeUid, backgroundColor, imgUrl } = usePartnerTheme();
 
   const bgImg = useMemo(() => {
     return (
@@ -55,7 +45,6 @@ export const BackgroundGradient = ({
     );
   }, [imgUrl, partnerTheme, themeMode]);
 
-  console.log('bgImg', bgImg);
   const bgCol = useMemo(() => {
     return (
       backgroundColor ||
@@ -64,7 +53,6 @@ export const BackgroundGradient = ({
         : partnerTheme?.darkConfig?.customization?.palette.background)
     );
   }, [backgroundColor, partnerTheme, themeMode]);
-  console.log('bgCol', bgCol);
 
   if (partnerName === 'memecoins') {
     return (

@@ -19,12 +19,6 @@ export const BackgroundGradientContainer = styled('div', {
     ? `url(${backgroundImageUrl.href})`
     : backgroundColor;
 
-  console.log('CHECK IN BACKGROUND GRADIENT CONTAINER', {
-    theme,
-    backgroundImageUrl,
-    backgroundColor,
-  });
-
   return {
     position: 'fixed',
     overflow: 'hidden',

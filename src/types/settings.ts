@@ -7,8 +7,6 @@ export interface SettingsProps {
   themeMode: ThemeModesSupported;
   clientWallets: string[];
   disabledFeatureCards: string[];
-  partnerThemeUid: string;
-  partnerPageThemeUid: string;
   welcomeScreenClosed: boolean;
 }
 export interface SettingsState extends SettingsProps {
@@ -20,12 +18,6 @@ export interface SettingsState extends SettingsProps {
 
   // Installed Wallets
   setClientWallets: (wallet: string) => void;
-
-  // Partner Themes
-  setPartnerThemeUid: (partnerThemeUid?: string) => void;
-
-  // Partner Page Themes
-  setPartnerPageThemeUid: (partnerPageThemeUid?: string) => void;
 
   // Disable Feature Cards
   setDisabledFeatureCard: (id: string) => void;

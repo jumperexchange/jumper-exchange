@@ -22,8 +22,7 @@ export const AppProvider: React.FC<
   const partnerThemes =
     (partnerPageUid && (await getPartnerThemes(partnerPageUid))) ??
     (partnerThemeUid && (await getPartnerThemes(partnerThemeUid)));
-  console.log('AppProvider: CHECK cookie partnerThemeUid', partnerThemeUid);
-  console.log('AppProvider: CHECK partnerThemes', partnerThemes);
+
   return (
     <ThemeProvider
       theme={activeTheme}

@@ -31,7 +31,5 @@ export async function getPartnerThemes(
     };
   });
 
-  console.log('RESPONSE', data);
-
   return { ...data, url: apiBaseUrl };
 }

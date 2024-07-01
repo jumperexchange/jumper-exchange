@@ -33,18 +33,6 @@ export const useSettingsStore = createWithEqualityFn(
           });
       },
 
-      setPartnerThemeUid: (partnerThemeUid: string) => {
-        set({
-          partnerThemeUid: partnerThemeUid,
-        });
-      },
-
-      setPartnerPageThemeUid: (partnerPageThemeUid: string) => {
-        set({
-          partnerPageThemeUid: partnerPageThemeUid,
-        });
-      },
-
       // Disable Feature Card
       setDisabledFeatureCard: (id: string) => {
         const disabledFeatureCards = (get() as SettingsProps)

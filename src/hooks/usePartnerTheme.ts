@@ -27,8 +27,8 @@ interface usePartnerThemeProps {
 export const usePartnerTheme = (): usePartnerThemeProps => {
   const theme = useTheme();
   const isDapp = useIsDapp();
-  const [cookie, setCookie] = useCookies(['theme', 'partnerThemeUid']);
-  const { hasTheme, partnerName } = usePartnerFilter();
+  const [cookie] = useCookies(['theme', 'partnerThemeUid']);
+  const { partnerName } = usePartnerFilter();
   const setThemeMode = useSettingsStore((state) => state.setThemeMode);
 
   const {
@@ -43,13 +43,6 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     ],
     filterUid: partnerName ? partnerName : cookie.partnerThemeUid,
   });
-  console.log(
-    'partnerName',
-    partnerName,
-    'cookie.partnerThemeUid',
-    cookie.partnerThemeUid,
-  );
-  console.log('PARTNERTHEMES', partnerThemes);
 
   let imageUrl: URL | undefined = undefined;
   if (
@@ -192,8 +185,6 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   } else {
     currentCustomizedTheme = undefined;
   }
-
-  console.log('partnerTheme', partnerThemes);
 
   return {
     partnerTheme:
