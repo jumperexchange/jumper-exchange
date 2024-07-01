@@ -17,6 +17,14 @@ import {
   QuestCardTitleBox,
   XPDisplayBox,
 } from './QuestCard.style';
+import { OPBadge } from 'src/components/illustrations/OPBadge';
+import { Box } from '@mui/material';
+
+export interface RewardsInterface {
+  logo: string;
+  name: string;
+  amount: number;
+}
 
 interface QuestCardProps {
   active?: boolean;
@@ -30,6 +38,7 @@ interface QuestCardProps {
   platformImage?: string;
   slug?: string;
   chains?: Chain[];
+  rewards?: RewardsInterface;
 }
 
 export const QuestCard = ({
@@ -42,24 +51,35 @@ export const QuestCard = ({
   endDate,
   slug,
   chains,
+  rewards,
 }: QuestCardProps) => {
   const { t } = useTranslation();
   const router = useRouter();
 
   return (
     <QuestCardMainBox>
-      {image && (
-        <Image
-          src={image}
-          alt="Quest Card Image"
-          width={256}
-          height={256}
-          style={{
-            borderTopLeftRadius: '8px',
-            borderTopRightRadius: '8px',
+      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        {image && (
+          <Image
+            src={image}
+            alt="Quest Card Image"
+            width={256}
+            height={256}
+            style={{
+              borderTopLeftRadius: '8px',
+              borderTopRightRadius: '8px',
+            }}
+          />
+        )}
+        <Box
+          sx={{
+            position: 'relative',
+            marginLeft: '-32px',
           }}
-        />
-      )}
+        >
+          {rewards?.amount && <OPBadge />}
+        </Box>
+      </Box>
       <QuestCardBottomBox>
         <QuestCardTitleBox>
           <SoraTypography fontSize="18px" lineHeight="24px" fontWeight={700}>

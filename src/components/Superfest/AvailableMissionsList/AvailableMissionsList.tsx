@@ -59,6 +59,7 @@ export const AvailableMissionsList = ({
                   platformImage={`${imgURL}`}
                   slug={quest?.attributes.Slug}
                   chains={quest.attributes.CustomInformation?.['chains']}
+                  rewards={quest.attributes.CustomInformation?.['rewards']}
                 />
               );
             })
