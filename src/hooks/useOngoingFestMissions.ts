@@ -25,6 +25,7 @@ export const useOngoingFestMissions = (): UseQuestsProps => {
   apiUrl.searchParams.set('fields[5]', 'Slug'); // Slug
   apiUrl.searchParams.set('fields[6]', 'Label'); // label
   apiUrl.searchParams.set('fields[7]', 'CustomInformation'); // CustomInformation
+  apiUrl.searchParams.set('fields[8]', 'Category'); // Category
   //populate url
   apiUrl.searchParams.set('populate[0]', 'Image');
   apiUrl.searchParams.set('populate[1]', 'quests_platform');

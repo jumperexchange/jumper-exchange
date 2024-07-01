@@ -10,6 +10,8 @@ import {
   AvailableMissionsTitle,
 } from './AvailableMissionsList.style';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
+import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 interface QuestCompletedListProps {
   quests?: Quest[];
@@ -20,14 +22,26 @@ export const AvailableMissionsList = ({
   quests,
   loading,
 }: QuestCompletedListProps) => {
-  const { account } = useAccounts();
-  const { t } = useTranslation();
+  const [chainsFilter, setChainsFilter] = useState<string[]>([]);
+  const [rewardsFilter, setRewardsFilter] = useState<boolean | undefined>(
+    undefined,
+  );
+  const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
+  const [filteredQuests, setFilteredQuests] = useState<Quest[]>([]);
+  const [filterLoading, setFiltedLoading] = useState<boolean>(false);
   const { url } = useOngoingFestMissions();
+
+  useEffect(() => {
+    // setFiltedLoading(true);
+    // let _filterQuests = quests.maps()
+    // setFiltedLoading(false);
+  }, [chainsFilter, rewardsFilter, categoryFilter]);
 
   return (
     <AvailableMissionsContainer>
       <AvailableMissionsHeader>
         <AvailableMissionsTitle>{'Available Missions'}</AvailableMissionsTitle>
+        <Box>Filters</Box>
       </AvailableMissionsHeader>
       <AvailableMissionsStack
         direction={'row'}
@@ -35,10 +49,46 @@ export const AvailableMissionsList = ({
         useFlexGap
         flexWrap="wrap"
       >
-        {!loading && quests
+        {!loading && !filterLoading && quests
           ? quests?.map((quest: Quest, index: number) => {
               const baseURL = quest.attributes.Image?.data?.attributes?.url;
               const imgURL = new URL(baseURL, url.origin);
+              const rewards = quest.attributes.CustomInformation?.['rewards'];
+              const chains = quest.attributes.CustomInformation?.['chains'];
+              const rewardsAmount = rewards?.amount;
+
+              //todo: exclude in a dedicated helper function
+              if (rewardsFilter && (!rewardsAmount || rewardsAmount === 0)) {
+                return undefined;
+              }
+              if (
+                rewardsFilter === false &&
+                rewardsAmount &&
+                rewardsAmount > 0
+              ) {
+                return undefined;
+              }
+              if (chainsFilter && chainsFilter.length > 0) {
+                let included = false;
+                for (const chain of chains) {
+                  if (chainsFilter.includes(chain.name)) {
+                    included = true;
+                    break;
+                  }
+                }
+                if (!included) {
+                  return undefined;
+                }
+              }
+              if (
+                categoryFilter &&
+                categoryFilter.length > 0 &&
+                quest.attributes.Category &&
+                !categoryFilter.includes(quest.attributes.Category)
+              ) {
+                return undefined;
+              }
+
               return (
                 <QuestCard
                   key={`available-mission-${index}`}
@@ -58,13 +108,13 @@ export const AvailableMissionsList = ({
                   }
                   platformImage={`${imgURL}`}
                   slug={quest?.attributes.Slug}
-                  chains={quest.attributes.CustomInformation?.['chains']}
-                  rewards={quest.attributes.CustomInformation?.['rewards']}
+                  chains={chains}
+                  rewards={rewards}
                 />
               );
             })
           : null}
-        {loading
+        {loading || filterLoading
           ? Array.from({ length: 12 }, () => 42).map((_, idx) => (
               <QuestCardSkeleton key={'skeleton-' + idx} />
             ))

@@ -105,7 +105,7 @@ type QuestAttributes = {
   Title: string;
   Description?: string;
   Link: string;
-  Type?: string;
+  Category?: string;
   Points: number;
   EndDate?: string;
   StartDate?: string;
