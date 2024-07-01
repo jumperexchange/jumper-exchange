@@ -8,7 +8,7 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '#FFFFFF'
       : alpha(theme.palette.white.main, 0.08),
-  height: '416px',
+  height: '432px',
   width: '256px',
   textAlign: 'center',
   borderRadius: '8px',
@@ -26,7 +26,9 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
 export const QuestCardTitleBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
+  alignContent: 'center',
   textAlign: 'left',
+  minHeight: '48px',
 }));
 
 export interface QuestCardInfoBoxProps extends Omit<BoxProps, 'component'> {
