@@ -3,6 +3,7 @@ import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import type { SxProps, Theme } from '@mui/material';
 import type { MenuItemLinkType } from 'src/components/Menu';
 import type { MenuKeysEnum } from 'src/const/menuKeys';
+
 declare global {
   interface Window {
     gtag: Gtag.Gtag;
@@ -19,18 +20,6 @@ declare global {
 
 export type StarterVariantType = 'buy' | WidgetSubvariant;
 
-export type ThemeVariantType = 'memecoins';
-
-interface NavigatorUABrand {
-  brand: string;
-  version: string;
-}
-
-export interface NavigatorUAData {
-  brands: NavigatorUABrand[];
-  mobile: boolean;
-  platform: string;
-}
 export interface MenuListItem {
   label: string;
   triggerSubMenu?: MenuKeysEnum;
