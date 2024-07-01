@@ -5,8 +5,10 @@ import { SoraTypography } from '../../Superfest.style';
 
 export const RewardsAmountBox = ({
   rewardAmount,
+  isConfirmed,
 }: {
   rewardAmount: number;
+  isConfirmed: boolean;
 }) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
@@ -43,7 +45,7 @@ export const RewardsAmountBox = ({
       </Box>
       <Box marginLeft={'8px'}>
         <SoraTypography fontSize="40px" fontWeight={700}>
-          {rewardAmount ?? '...'}
+          {isConfirmed ? '0' : rewardAmount ? rewardAmount : '...'}
         </SoraTypography>
       </Box>
     </FlexCenterRowBox>

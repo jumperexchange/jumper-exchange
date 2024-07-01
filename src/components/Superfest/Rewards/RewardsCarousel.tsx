@@ -4,6 +4,7 @@ import {
   RewardsCarouselMainBox,
   ClaimButtonBox,
   EarnedTypography,
+  RewardsOpenIconButton,
 } from './RewardsCarousel.style';
 import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
 import { Button } from 'src/components/Button';
@@ -17,6 +18,7 @@ import { ChainId } from '@lifi/types';
 import { MerklDistribABI } from '../../../const/abi/merklABI';
 import { SoraTypography } from '../Superfest.style';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 interface RewardsCarouselProps {
   showComponent: boolean;
@@ -81,7 +83,10 @@ export const RewardsCarousel = ({
               <Box>
                 <EarnedTypography>You've earned:</EarnedTypography>
               </Box>
-              <RewardsAmountBox rewardAmount={rewardAmount} />
+              <RewardsAmountBox
+                rewardAmount={rewardAmount}
+                isConfirmed={isConfirmed}
+              />
             </FlexCenterRowBox>
             <ClaimButtonBox>
               <Button
@@ -114,6 +119,22 @@ export const RewardsCarousel = ({
                 </SoraTypography>
               </Button>
             </ClaimButtonBox>
+            {hash ? (
+              <a
+                href={`https://optimistic.etherscan.io/tx/${hash}`}
+                target="_blank"
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  marginLeft: '32px',
+                }}
+                rel="noreferrer"
+              >
+                <RewardsOpenIconButton>
+                  <OpenInNewIcon sx={{ height: '32px' }} />
+                </RewardsOpenIconButton>
+              </a>
+            ) : undefined}
           </RewardsCarouselMainBox>
         </RewardsCarouselContainer>
       )}

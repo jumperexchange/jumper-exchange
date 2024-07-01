@@ -1,6 +1,15 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, Stack, Typography, alpha, styled } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Typography,
+  alpha,
+  styled,
+  IconButton as MuiIconButton,
+} from '@mui/material';
 import { sequel65, sequel85 } from 'src/fonts/fonts';
+import { getContrastAlphaColor } from '@/utils/colors';
+import type { IconButtonProps } from '@mui/material';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#fdfbef',
@@ -83,5 +92,19 @@ export const EarnedTypography = styled(Typography)(({ theme }) => ({
     fontSize: '32px',
     lineHeight: '48px',
     fontWeight: 700,
+  },
+}));
+
+export const RewardsOpenIconButton = styled(MuiIconButton, {
+  shouldForwardProp: (prop) => prop !== 'styles',
+})<IconButtonProps>(({ theme }) => ({
+  color: getContrastAlphaColor(theme, '84%'),
+  transition: 'background 0.3s',
+  width: '48px',
+  height: '48px',
+  backgroundColor: '#fef0ca',
+  '&:hover': {
+    color: '#ffffff',
+    backgroundColor: '#FF0420',
   },
 }));
