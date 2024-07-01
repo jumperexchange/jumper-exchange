@@ -99,23 +99,29 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
         </BannerTitleBox>
         <RewardMainBox>
           {/* rewards  */}
-          <RewardBox
-            logo={rewards.logo}
-            title={'Rewards'}
-            value={`${rewards.amount} ${rewards.name}`}
-          />
+          {rewards && rewards.amount ? (
+            <RewardBox
+              logo={rewards.logo}
+              title={'Rewards'}
+              value={`${rewards.amount} ${rewards.name}`}
+            />
+          ) : undefined}
           {/* Points  */}
-          <RewardBox
-            logo={'https://strapi.li.finance/uploads/xp_cfcff186e5.png'}
-            title={'Points'}
-            value={String(attributes.Points)}
-          />
+          {attributes && attributes.Points ? (
+            <RewardBox
+              logo={'https://strapi.li.finance/uploads/xp_cfcff186e5.png'}
+              title={'Points'}
+              value={String(attributes.Points)}
+            />
+          ) : undefined}
           {/* partner  */}
-          <RewardBox
-            logo={partner.logo}
-            title={'Supported by'}
-            value={partner.name}
-          />
+          {partner && partner.logo ? (
+            <RewardBox
+              logo={partner.logo}
+              title={'Supported by'}
+              value={partner.name}
+            />
+          ) : undefined}
         </RewardMainBox>
       </BannerBottomBox>
     </BannerMainBox>

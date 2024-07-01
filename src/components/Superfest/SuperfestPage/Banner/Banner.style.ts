@@ -121,7 +121,7 @@ export const RewardLeftBox = styled(Box)(() => ({
 
 export const RewardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'space-between',
+  justifyContent: 'space-around',
   marginTop: '16px',
   [theme.breakpoints.down('md' as Breakpoint)]: {
     gap: '16px',

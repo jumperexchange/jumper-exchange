@@ -85,21 +85,23 @@ export const QuestCard = ({
               );
             })}
           </FlexCenterRowBox>
-          <FlexCenterRowBox>
-            <XPDisplayBox active={active}>
-              <SoraTypography
-                fontSize="14px"
-                fontWeight={700}
-                lineHeight="18px"
-                color={'#ffffff'}
-              >
-                {`+${points}`}
-              </SoraTypography>
-              <CenteredBox sx={{ marginLeft: '4px' }}>
-                <SuperfestXPIcon size={16} />
-              </CenteredBox>
-            </XPDisplayBox>
-          </FlexCenterRowBox>
+          {points ? (
+            <FlexCenterRowBox>
+              <XPDisplayBox active={active}>
+                <SoraTypography
+                  fontSize="14px"
+                  fontWeight={700}
+                  lineHeight="18px"
+                  color={'#ffffff'}
+                >
+                  {`+${points}`}
+                </SoraTypography>
+                <CenteredBox sx={{ marginLeft: '4px' }}>
+                  <SuperfestXPIcon size={16} />
+                </CenteredBox>
+              </XPDisplayBox>
+            </FlexCenterRowBox>
+          ) : undefined}
         </FlexSpaceBetweenBox>
         <QuestCardInfoBox points={points}>
           {active && slug ? (

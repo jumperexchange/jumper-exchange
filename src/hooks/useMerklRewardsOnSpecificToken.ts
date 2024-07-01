@@ -21,7 +21,7 @@ export interface UseMerklRewardsProps {
 
 const JUMPER_QUEST_ID = ['0x1C6A6Ee7D2e0aC0D2E3de4a69433553e0cb52777'];
 
-const ACTIVE_CHAINS = ['42161', '10', '8453', '34443'];
+const ACTIVE_CHAINS = ['10', '42161', '8453', '34443'];
 
 const MERKL_API = 'https://api.merkl.xyz/v3';
 
@@ -54,6 +54,7 @@ export const useMerklRewards = ({
     enabled: !!userAddress,
     refetchInterval: 1000 * 60 * 60,
   });
+
   // loop through the position and sum the TVL USD
   if (positionsData) {
     for (const [key, data] of Object.entries(positionsData)) {
