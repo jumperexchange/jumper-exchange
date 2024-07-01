@@ -195,7 +195,7 @@ export interface PartnerThemesData {
   attributes: PartnerThemesAttributes;
 }
 
-interface Customization {
+export interface Customization {
   palette: PaletteOptions;
   logoName?: string;
   footerBannerUrl?: string;

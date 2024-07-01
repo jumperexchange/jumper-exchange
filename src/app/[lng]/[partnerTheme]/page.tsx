@@ -1,7 +1,7 @@
 import { getCookies } from '@/app/lib/getCookies';
 import { WidgetContainerBox, Widgets } from '@/components/Widgets';
 import { Widget } from '@/components/Widgets/Widget';
-import App from '../../../ui/app/App';
+import App from '../../ui/app/App';
 
 export const dynamicParams = false;
 

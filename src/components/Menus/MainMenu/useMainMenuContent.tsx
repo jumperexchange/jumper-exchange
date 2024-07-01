@@ -114,7 +114,7 @@ export const useMainMenuContent = () => {
       prefixIcon: <PaletteIcon />,
       triggerSubMenu: !partnerPageThemeUid ? MenuKeysEnum.Theme : undefined,
       showMoreIcon: !partnerPageThemeUid,
-      suffixIcon: activeUid ?? undefined,
+      suffixIcon: (activeUid !== 'undefined' && activeUid) ?? undefined,
       onClick: () => {
         if (!partnerPageThemeUid) {
           setSubMenuState(MenuKeysEnum.Theme);

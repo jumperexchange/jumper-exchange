@@ -4,7 +4,7 @@ import { alpha, darken, styled } from '@mui/material/styles';
 
 export interface BackgroundGradientContainerProps {
   backgroundImageUrl?: URL;
-  backgroundColor?: string;
+  backgroundColor?: string | undefined;
 }
 
 export const BackgroundGradientContainer = styled('div', {
@@ -18,6 +18,12 @@ export const BackgroundGradientContainer = styled('div', {
   const background = backgroundImageUrl
     ? `url(${backgroundImageUrl.href})`
     : backgroundColor;
+
+  console.log('CHECK IN BACKGROUND GRADIENT CONTAINER', {
+    theme,
+    backgroundImageUrl,
+    backgroundColor,
+  });
 
   return {
     position: 'fixed',

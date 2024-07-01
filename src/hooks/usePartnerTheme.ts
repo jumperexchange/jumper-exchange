@@ -4,10 +4,11 @@ import { useIsDapp } from '@/hooks/useIsDapp';
 import { useStrapi } from '@/hooks/useStrapi';
 import type { WidgetTheme } from '@lifi/widget';
 import { useTheme } from '@mui/material';
+import { useCookies } from 'react-cookie';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import { useSettingsStore } from 'src/stores/settings';
 import type { PartnerThemesData } from 'src/types/strapi';
-import { shallow } from 'zustand/shallow';
+import { usePartnerFilter } from './usePartnerFilter';
 
 interface usePartnerThemeProps {
   partnerTheme?: PartnerThemesData;
@@ -26,14 +27,9 @@ interface usePartnerThemeProps {
 export const usePartnerTheme = (): usePartnerThemeProps => {
   const theme = useTheme();
   const isDapp = useIsDapp();
-  const [partnerThemeUid, partnerPageThemeUid, setThemeMode] = useSettingsStore(
-    (state) => [
-      state.partnerThemeUid,
-      state.partnerPageThemeUid,
-      state.setThemeMode,
-    ],
-    shallow,
-  );
+  const [cookie, setCookie] = useCookies(['theme', 'partnerThemeUid']);
+  const { hasTheme, partnerName } = usePartnerFilter();
+  const setThemeMode = useSettingsStore((state) => state.setThemeMode);
 
   const {
     data: partnerThemes,
@@ -41,13 +37,23 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     url,
   } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
-    queryKey: ['partner-themes-filter', partnerPageThemeUid || partnerThemeUid],
-    filterUid: partnerPageThemeUid || partnerThemeUid,
+    queryKey: [
+      'partner-themes-filter',
+      partnerName ? partnerName : cookie.partnerThemeUid,
+    ],
+    filterUid: partnerName ? partnerName : cookie.partnerThemeUid,
   });
+  console.log(
+    'partnerName',
+    partnerName,
+    'cookie.partnerThemeUid',
+    cookie.partnerThemeUid,
+  );
+  console.log('PARTNERTHEMES', partnerThemes);
 
   let imageUrl: URL | undefined = undefined;
   if (
-    (partnerPageThemeUid || partnerThemeUid) &&
+    cookie.partnerThemeUid &&
     partnerThemes?.length > 0 &&
     isSuccess &&
     (partnerThemes[0].attributes.BackgroundImageLight.data?.attributes.url ||
@@ -70,7 +76,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
 
   let footerImageUrl;
   if (
-    (partnerPageThemeUid || partnerThemeUid) &&
+    cookie.partnerThemeUid &&
     partnerThemes?.length > 0 &&
     isSuccess &&
     (partnerThemes[0].attributes.FooterImageLight.data?.attributes.url ||
@@ -93,7 +99,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
 
   let footerUrl;
   if (
-    (partnerPageThemeUid || partnerThemeUid) &&
+    cookie.partnerThemeUid &&
     partnerThemes?.length > 0 &&
     isSuccess &&
     partnerThemes[0].attributes.PartnerURL
@@ -105,7 +111,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
 
   let logoUrl;
   if (
-    (partnerPageThemeUid || partnerThemeUid) &&
+    cookie.partnerThemeUid &&
     partnerThemes?.length > 0 &&
     isSuccess &&
     (partnerThemes[0].attributes.LogoLight.data?.attributes.url ||
@@ -127,11 +133,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   }
 
   let backgroundColor;
-  if (
-    (partnerPageThemeUid || partnerThemeUid) &&
-    partnerThemes?.length > 0 &&
-    isSuccess
-  ) {
+  if (cookie.partnerThemeUid && partnerThemes?.length > 0 && isSuccess) {
     if (theme.palette.mode === 'light') {
       backgroundColor = partnerThemes[0].attributes.BackgroundColorLight;
     } else {
@@ -142,11 +144,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   }
 
   let availableWidgetTheme;
-  if (
-    (partnerPageThemeUid || partnerThemeUid) &&
-    partnerThemes?.length > 0 &&
-    isSuccess
-  ) {
+  if (cookie.partnerThemeUid && partnerThemes?.length > 0 && isSuccess) {
     if (
       partnerThemes[0].attributes.lightConfig &&
       partnerThemes[0].attributes.darkConfig
@@ -195,6 +193,8 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     currentCustomizedTheme = undefined;
   }
 
+  console.log('partnerTheme', partnerThemes);
+
   return {
     partnerTheme:
       isDapp && partnerThemes?.length > 0 ? partnerThemes[0] : undefined,
@@ -208,10 +208,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     currentWidgetTheme:
       isDapp && currentWidgetTheme ? currentWidgetTheme : undefined,
     logoUrl: isDapp && logoUrl ? logoUrl : undefined,
-    activeUid:
-      (isDapp && partnerPageThemeUid) ||
-      (isDapp && partnerThemeUid) ||
-      undefined,
+    activeUid: isDapp ? partnerName ?? cookie.partnerThemeUid : undefined,
     imgUrl: isDapp && imageUrl ? imageUrl : undefined,
     isSuccess: isDapp && isSuccess,
   };

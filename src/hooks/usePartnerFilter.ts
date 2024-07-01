@@ -10,7 +10,7 @@ interface usePartnerFilterProps {
   hasTheme: boolean;
   isBridgeFiltered: boolean;
   isDexFiltered: boolean;
-  partnerName: string;
+  partnerName?: string;
   bridgesKeys: string[];
   exchangesKeys: string[];
 }
@@ -28,7 +28,7 @@ export const usePartnerFilter = (): usePartnerFilterProps => {
   let hasTheme = false;
   let isBridgeFiltered = false;
   let isDexFiltered = false;
-  let partnerName = '';
+  let partnerName = undefined;
   const pathnameSplit = pathname?.split('/').filter((el) => el !== '');
   const localeSplit =
     pathnameSplit && pathnameSplit.length > 1 && pathnameSplit[0];

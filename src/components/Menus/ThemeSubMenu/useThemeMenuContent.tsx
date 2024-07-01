@@ -1,4 +1,5 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import {
@@ -6,17 +7,15 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useStrapi } from 'src/hooks/useStrapi';
-import { useSettingsStore } from 'src/stores/settings';
 import type { PartnerThemesData } from 'src/types/strapi';
 
 export const useThemeMenuContent = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const [partnerThemeUid, setPartnerThemeUid] = useSettingsStore((state) => [
-    state.partnerThemeUid,
-    state.setPartnerThemeUid,
-  ]);
+  const [cookie, setCookie] = useCookies(['partnerThemeUid']);
+  const {} = usePartnerTheme();
   const { data: partnerThemes, isSuccess } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
     queryKey: ['partner-themes'],
@@ -31,7 +30,7 @@ export const useThemeMenuContent = () => {
           theme?.attributes.PartnerName.replace(' ', '') ?? 'default',
       },
     });
-    setPartnerThemeUid(theme?.attributes.uid);
+    setCookie('partnerThemeUid', theme?.attributes.uid);
   };
 
   const themes: any = [
@@ -40,7 +39,8 @@ export const useThemeMenuContent = () => {
       onClick: () => {
         handleThemeSwitch(undefined);
       },
-      checkIcon: !partnerThemeUid,
+      checkIcon:
+        !cookie.partnerThemeUid || cookie.partnerThemeUid === 'undefined',
     },
   ];
 
@@ -52,7 +52,7 @@ export const useThemeMenuContent = () => {
         onClick: () => {
           handleThemeSwitch(el);
         },
-        checkIcon: partnerThemeUid === el.attributes.uid,
+        checkIcon: cookie.partnerThemeUid === el.attributes.uid,
       }),
   );
 

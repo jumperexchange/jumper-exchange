@@ -1,30 +1,45 @@
-import { ChainId } from '@lifi/sdk';
+'use server';
 import Link from 'next/link';
+import { getCookies } from 'src/app/lib/getCookies';
+import { getPartnerThemes } from 'src/app/lib/getPartnerTheme';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
-import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { BackgroundFooterImage } from './Widgets/WidgetsContainer.style';
 
-export const PartnerThemeFooterImage = () => {
+export const PartnerThemeFooterImage = async () => {
   const { activeUid, footerImageUrl, footerUrl } = usePartnerTheme();
-  const { sourceChainToken, destinationChainToken } =
-    useChainTokenSelectionStore();
+  const { activeTheme, partnerThemeUid } = getCookies();
+  const partnerThemes = partnerThemeUid
+    ? await getPartnerThemes(partnerThemeUid)
+    : undefined;
 
-  const activeChainAlert =
-    sourceChainToken?.chainId === ChainId.SEI ||
-    destinationChainToken?.chainId === ChainId.SEI ||
-    sourceChainToken?.chainId === ChainId.SOL ||
-    destinationChainToken?.chainId === ChainId.SOL;
-
-  return (
-    !activeChainAlert &&
+  let footerImg;
+  let partnerUrl;
+  if (partnerThemes) {
+    footerImg =
+      activeTheme === 'light'
+        ? partnerThemes?.data[0].attributes.FooterImageLight.data.attributes.url
+        : partnerThemes?.data[0].attributes.FooterImageDark.data.attributes.url;
+    partnerUrl = partnerThemes?.data[0].attributes.PartnerURL;
+  } else if (
     activeUid &&
     footerUrl &&
     footerImageUrl &&
-    !footerImageUrl?.href.includes('undefined') && (
-      <Link href={footerUrl} target="_blank" style={{ zIndex: 1 }}>
+    !footerImageUrl?.href.includes('undefined')
+  ) {
+    partnerUrl = footerUrl;
+    footerImg = footerImageUrl.href;
+  } else {
+    partnerUrl = undefined;
+    footerImg = undefined;
+  }
+
+  return (
+    footerImg &&
+    partnerUrl && (
+      <Link href={partnerUrl} target="_blank" style={{ zIndex: 1 }}>
         <BackgroundFooterImage
           alt="footer-image"
-          src={footerImageUrl.href}
+          src={footerImg}
           width={300}
           height={200}
         />

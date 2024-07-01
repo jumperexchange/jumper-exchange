@@ -19,6 +19,7 @@ export const JUMPER_REFUEL_PATH = '/refuel';
 export const JUMPER_GAS_PATH = '/gas';
 export const JUMPER_EXCHANGE_PATH = '/exchange';
 export const JUMPER_SWAP_PATH = '/swap';
+export const STRAPI_URL_PATH = 'https://strapi.li.finance';
 
 // prepare sitemap
 export const pages: SitemapPage[] = [

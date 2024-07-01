@@ -169,6 +169,11 @@ class PartnerThemeStrapiApi extends StrapiApi {
     this.apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
     this.apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
   }
+
+  filterUid(uid: string) {
+    this.apiUrl.searchParams.set('filters[uid][$eq]', uid);
+    return this;
+  }
 }
 
 interface FilterPerrsonalFeatureCardsProps {

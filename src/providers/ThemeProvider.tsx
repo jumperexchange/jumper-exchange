@@ -2,6 +2,7 @@
 import { useSettingsStore } from '@/stores/settings';
 import type { ThemeModesSupported } from '@/types/settings';
 import { CssBaseline, useMediaQuery } from '@mui/material';
+import type { Theme } from '@mui/material/styles';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type { PropsWithChildren } from 'react';
@@ -10,6 +11,7 @@ import { useCookies } from 'react-cookie';
 import { sora } from 'src/fonts/fonts';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { darkTheme, lightTheme } from 'src/theme/theme';
+import type { PartnerThemesAttributes } from 'src/types/strapi';
 
 export const useDetectDarkModePreference = () => {
   const themeMode = useSettingsStore((state) => state.themeMode);
@@ -25,26 +27,39 @@ export const useDetectDarkModePreference = () => {
 };
 
 export const ThemeProvider: React.FC<
-  PropsWithChildren<{ theme?: ThemeModesSupported | 'auto' }>
-> = ({ children, theme: themeProp }) => {
-  const [, setCookie] = useCookies(['theme']);
+  PropsWithChildren<{
+    theme?: ThemeModesSupported | 'auto';
+    partnerCustomizedTheme?: PartnerThemesAttributes;
+  }>
+> = ({ children, theme: themeProp, partnerCustomizedTheme }) => {
+  const [cookie, setCookie] = useCookies(['theme', 'partnerThemeUid']);
+  const [updatedTheme, setUpdatedTheme] = useState<Theme | undefined>();
   const themeMode = useSettingsStore((state) => state.themeMode);
-  const [theme, setTheme] = useState<ThemeModesSupported | undefined>(
-    themeProp,
-  );
+  const [themeModeState, setThemeModeState] = useState<
+    ThemeModesSupported | undefined
+  >(themeProp);
+  console.log('partnerCustomizedTheme', partnerCustomizedTheme);
   const isDarkMode = useDetectDarkModePreference();
   const { activeUid, currentCustomizedTheme } = usePartnerTheme();
+  console.log('CHECK OBJECT IN THEMEPROVIDER', {
+    activeUid,
+    currentCustomizedTheme,
+    themeModeState,
+  });
   useEffect(() => {
-    // Check if the theme prop is not provided (null or undefined)
-    if (theme === undefined) {
-      setTheme(isDarkMode ? 'dark' : 'light');
-    }
-  }, [theme, isDarkMode]);
+    setUpdatedTheme(
+      (partnerCustomizedTheme &&
+        (themeModeState === 'light'
+          ? partnerCustomizedTheme.lightConfig?.customization
+          : partnerCustomizedTheme.darkConfig?.customization)) ||
+        currentCustomizedTheme,
+    );
+  }, [currentCustomizedTheme, partnerCustomizedTheme, themeModeState]);
 
-  // Update the theme whenever themeMode changes
+  // Update the themeModeState whenever themeMode changes
   useEffect(() => {
     if (themeMode === 'auto') {
-      setTheme(isDarkMode ? 'dark' : 'light');
+      setThemeModeState(isDarkMode ? 'dark' : 'light');
       setCookie('theme', isDarkMode ? 'dark' : 'light', {
         path: '/',
         sameSite: true,
@@ -54,67 +69,78 @@ export const ThemeProvider: React.FC<
         path: '/',
         sameSite: true,
       });
-      setTheme(themeMode === 'dark' ? 'dark' : 'light');
+      setThemeModeState(themeMode === 'dark' ? 'dark' : 'light');
     }
   }, [themeMode, isDarkMode, setCookie]);
 
   const activeTheme = useMemo(() => {
-    let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
+    let currentTheme = themeModeState === 'dark' ? darkTheme : lightTheme;
 
-    if (activeUid && currentCustomizedTheme) {
-      // Merge partner theme attributes into the base theme
+    if (
+      partnerCustomizedTheme ||
+      (cookie.partnerThemeUid !== undefined &&
+        cookie.partnerThemeUid !== 'undefined')
+    ) {
+      // Merge partner themeModeState attributes into the base themeModeState
       const mergedTheme = deepmerge(currentTheme, {
         typography: {
           fontFamily:
-            currentCustomizedTheme.typography &&
+            updatedTheme?.typography &&
             currentTheme.typography.fontFamily &&
-            currentCustomizedTheme.typography.includes('Sora')
+            updatedTheme?.typography.includes('Sora')
               ? sora.style.fontFamily.concat(currentTheme.typography.fontFamily)
               : currentTheme.typography.fontFamily,
         },
         palette: {
           primary: {
-            main: currentCustomizedTheme.palette?.primary
-              ? currentCustomizedTheme.palette.primary
+            main: updatedTheme?.palette?.primary
+              ? updatedTheme?.palette.primary
               : currentTheme.palette.primary.main,
           },
           secondary: {
-            main: currentCustomizedTheme.palette?.secondary
-              ? currentCustomizedTheme.palette.secondary
+            main: updatedTheme?.palette?.secondary
+              ? updatedTheme?.palette.secondary
               : currentTheme.palette.secondary.main,
           },
           accent1: {
-            main: currentCustomizedTheme.palette?.accent1
-              ? currentCustomizedTheme.palette.accent1
+            main: updatedTheme?.palette?.accent1
+              ? updatedTheme?.palette.accent1
               : currentTheme.palette.surface1.main,
           },
           accent1Alt: {
-            main: currentCustomizedTheme.palette?.accent1Alt
-              ? currentCustomizedTheme.palette.accent1Alt
+            main: updatedTheme?.palette?.accent1Alt
+              ? updatedTheme?.palette.accent1Alt
               : currentTheme.palette.surface1.main,
           },
           accent2: {
-            main: currentCustomizedTheme.palette?.accent2
-              ? currentCustomizedTheme.palette.accent2
+            main: updatedTheme?.palette?.accent2
+              ? updatedTheme?.palette.accent2
               : currentTheme.palette.surface1.main,
           },
           surface1: {
-            main: currentCustomizedTheme.palette?.surface1
-              ? currentCustomizedTheme.palette.surface1
+            main: updatedTheme?.palette?.surface1
+              ? updatedTheme?.palette.surface1
               : currentTheme.palette.surface1.main,
           },
         },
-        // typography: currentCustomizedTheme.typography
-        //   ? currentCustomizedTheme.typography
+        // typography: updatedTheme?.typography
+        //   ? updatedTheme?.typography
         //   : currentTheme.typography,
       });
       return mergedTheme;
     } else {
       return currentTheme;
     }
-  }, [activeUid, currentCustomizedTheme, theme]);
+  }, [
+    cookie.partnerThemeUid,
+    partnerCustomizedTheme,
+    themeModeState,
+    updatedTheme,
+  ]);
 
-  // Render children only when the theme is determined
+  console.log('activeTheme', activeTheme);
+
+  // Render children only when the themeModeState is determined
   return (
     <MuiThemeProvider theme={activeTheme}>
       <CssBaseline />

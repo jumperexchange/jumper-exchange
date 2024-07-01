@@ -4,9 +4,11 @@ import { TabsMap } from '@/const/tabsMap';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useActiveTabStore } from '@/stores/activeTab';
 import type { StarterVariantType } from '@/types/internal';
+import { ChainId } from '@lifi/sdk';
 import { usePathname } from 'next/navigation';
 import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { ThemesMap } from 'src/const/themesMap';
+import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
 import { WidgetContainerBox } from './WidgetsContainer.style';
 
@@ -25,6 +27,15 @@ export function WidgetContainer({
   const { setWelcomeScreenClosed } = useWelcomeScreen(welcomeScreenClosed);
   const pathname = usePathname();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
+
+  const { sourceChainToken, destinationChainToken } =
+    useChainTokenSelectionStore();
+
+  const activeChainAlert =
+    sourceChainToken?.chainId === ChainId.SEI ||
+    destinationChainToken?.chainId === ChainId.SEI ||
+    sourceChainToken?.chainId === ChainId.SOL ||
+    destinationChainToken?.chainId === ChainId.SOL;
 
   const starterVariant: StarterVariantType = useMemo(() => {
     if (widgetVariant) {
@@ -85,7 +96,7 @@ export function WidgetContainer({
   return (
     <WidgetContainerBox welcomeScreenClosed={welcomeScreenClosed}>
       {children}
-      <PartnerThemeFooterImage />
+      {activeChainAlert && <PartnerThemeFooterImage />}
     </WidgetContainerBox>
   );
 }

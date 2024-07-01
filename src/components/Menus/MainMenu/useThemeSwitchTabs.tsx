@@ -43,15 +43,15 @@ export const useThemeSwitchTabs = () => {
 
   // tooltips:
   const lightModeTooltip =
-    activeUid && availableWidgetTheme === 'dark'
+    activeUid && activeUid !== 'undefined' && availableWidgetTheme === 'dark'
       ? t('navbar.themes.lightModeDisabled')
       : t('navbar.themes.switchToLight');
   const darkModeTooltip =
-    activeUid && availableWidgetTheme === 'light'
+    activeUid && activeUid !== 'undefined' && availableWidgetTheme === 'light'
       ? t('navbar.themes.darkModeDisabled')
       : t('navbar.themes.switchToDark');
   const systemModeTooltip =
-    activeUid && availableWidgetTheme !== 'system'
+    activeUid && activeUid !== 'undefined' && availableWidgetTheme !== 'system'
       ? t('navbar.themes.systemModeDisabled')
       : t('navbar.themes.switchToSystem');
 
@@ -60,7 +60,7 @@ export const useThemeSwitchTabs = () => {
   let darkModeEnabled = false;
   let systemModeEnabled = false;
 
-  if (activeUid) {
+  if (activeUid && activeUid !== 'undefined') {
     if (availableWidgetTheme === 'system') {
       systemModeEnabled = true;
       lightModeEnabled = true;
@@ -78,6 +78,13 @@ export const useThemeSwitchTabs = () => {
     lightModeEnabled = true;
     darkModeEnabled = true;
   }
+
+  console.log('THEME MENU CHECK', {
+    systemModeEnabled,
+    lightModeEnabled,
+    darkModeEnabled,
+    activeUid,
+  });
 
   const output = [
     {
