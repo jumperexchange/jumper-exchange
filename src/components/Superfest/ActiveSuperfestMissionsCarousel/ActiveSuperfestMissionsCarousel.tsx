@@ -51,6 +51,9 @@ export const ActiveSuperfestMissionsCarousel = ({
                   included = checkInclusion(activeCampaigns, claimingIds);
                 }
 
+                const baseURL = quest.attributes.Image?.data?.attributes?.url;
+                const imgURL = new URL(baseURL, url.origin);
+
                 if (included) {
                   return (
                     <QuestCard
@@ -70,12 +73,7 @@ export const ActiveSuperfestMissionsCarousel = ({
                         quest?.attributes.quests_platform?.data?.attributes
                           ?.Name
                       }
-                      platformImage={`
-                    ${new URL(
-                      quest.attributes.quests_platform?.data?.attributes?.Logo?.data?.attributes?.url,
-                      url.origin,
-                    )}
-                  `}
+                      platformImage={`${imgURL}`}
                       slug={quest?.attributes.Slug}
                       chains={quest.attributes.CustomInformation?.['chains']}
                     />

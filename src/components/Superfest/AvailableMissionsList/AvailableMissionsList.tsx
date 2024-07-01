@@ -37,6 +37,8 @@ export const AvailableMissionsList = ({
       >
         {!loading && quests
           ? quests?.map((quest: Quest, index: number) => {
+              const baseURL = quest.attributes.Image?.data?.attributes?.url;
+              const imgURL = new URL(baseURL, url.origin);
               return (
                 <QuestCard
                   key={`available-mission-${index}`}
@@ -54,12 +56,7 @@ export const AvailableMissionsList = ({
                   platformName={
                     quest?.attributes.quests_platform?.data?.attributes?.Name
                   }
-                  platformImage={`
-                    ${new URL(
-                      quest.attributes.quests_platform?.data?.attributes?.Logo?.data?.attributes?.url,
-                      url.origin,
-                    )}
-                  `}
+                  platformImage={`${imgURL}`}
                   slug={quest?.attributes.Slug}
                   chains={quest.attributes.CustomInformation?.['chains']}
                 />

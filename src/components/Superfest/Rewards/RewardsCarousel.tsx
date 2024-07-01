@@ -15,7 +15,7 @@ import {
 } from 'wagmi';
 import { ChainId } from '@lifi/types';
 import { MerklDistribABI } from '../../../const/abi/merklABI';
-import { Sequel85Typography, SoraTypography } from '../Superfest.style';
+import { SoraTypography } from '../Superfest.style';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
 
 interface RewardsCarouselProps {
@@ -28,6 +28,7 @@ interface RewardsCarouselProps {
 
 const CLAIMING_CONTRACT_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae';
 const OP_TOKEN = '0x4200000000000000000000000000000000000042';
+// const TEST_TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
 export const RewardsCarousel = ({
   showComponent,
@@ -49,17 +50,20 @@ export const RewardsCarousel = ({
       const { id } = await switchChainAsync({
         chainId: ChainId.OPT,
       });
-      if (
+
+      const canClaim =
         id === ChainId.OPT &&
         address &&
         isMerklSuccess &&
         proof &&
-        rewardAmount > 0
-      ) {
+        rewardAmount > 0;
+
+      if (canClaim) {
         writeContract({
           address: CLAIMING_CONTRACT_ADDRESS,
           abi: MerklDistribABI,
           functionName: 'claim',
+          // args: [[address], [TEST_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
           args: [[address], [OP_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
         });
       }
@@ -70,7 +74,7 @@ export const RewardsCarousel = ({
 
   return (
     <>
-      {showComponent ? undefined : (
+      {showComponent || rewardAmount === 0 ? undefined : (
         <RewardsCarouselContainer>
           <RewardsCarouselMainBox>
             <FlexCenterRowBox>
@@ -102,7 +106,11 @@ export const RewardsCarousel = ({
                   lineHeight="18px"
                   fontWeight={600}
                 >
-                  {isConfirmed ? 'Claimed' : 'Claim Rewards'}
+                  {isPending || isConfirming
+                    ? 'Claiming...'
+                    : isConfirmed
+                      ? 'Claimed'
+                      : 'Claim Rewards'}
                 </SoraTypography>
               </Button>
             </ClaimButtonBox>
