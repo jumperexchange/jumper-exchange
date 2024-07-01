@@ -19,7 +19,7 @@ import { Sequel85Typography, SoraTypography } from '../Superfest.style';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
 
 interface RewardsCarouselProps {
-  isLoading: boolean;
+  showComponent: boolean;
   rewardAmount: number;
   rewardAmountBN: string;
   isMerklSuccess: boolean;
@@ -30,7 +30,7 @@ const CLAIMING_CONTRACT_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae';
 const OP_TOKEN = '0x4200000000000000000000000000000000000042';
 
 export const RewardsCarousel = ({
-  isLoading,
+  showComponent,
   rewardAmount,
   rewardAmountBN,
   isMerklSuccess,
@@ -70,7 +70,7 @@ export const RewardsCarousel = ({
 
   return (
     <>
-      {isLoading ? undefined : (
+      {showComponent ? undefined : (
         <RewardsCarouselContainer>
           <RewardsCarouselMainBox>
             <FlexCenterRowBox>

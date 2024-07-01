@@ -14,7 +14,9 @@ export interface UseMerklRes {
 }
 
 export interface UseMerklRewardsProps {
+  rewardChainId: number;
   userAddress?: string;
+  rewardToken?: string;
 }
 
 const JUMPER_QUEST_ID = ['0x1C6A6Ee7D2e0aC0D2E3de4a69433553e0cb52777'];
@@ -22,23 +24,21 @@ const JUMPER_QUEST_ID = ['0x1C6A6Ee7D2e0aC0D2E3de4a69433553e0cb52777'];
 const ACTIVE_CHAINS = ['42161', '10', '8453', '34443'];
 
 const MERKL_API = 'https://api.merkl.xyz/v3';
-const REWARDS_CHAIN_ID = '10';
-const REWARDS_TOKEN = '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb';
 
 export const useMerklRewards = ({
   userAddress,
+  rewardChainId,
+  rewardToken,
 }: UseMerklRewardsProps): UseMerklRes => {
   // state
   let userTVL = 0;
   let rewardsToClaim = [];
   const activeCampaigns = [];
-
-  // userAddress = '0x55048E0d46f66FA00cae12905f125194CD961581';
-  const addr = '0x55048E0d46f66FA00cae12905f125194CD961581';
+  // const addr = '0x55048E0d46f66FA00cae12905f125194CD961581';
 
   // Call to get the active positions
   // To do -> use the label to get only
-  const MERKL_POSITIONS_API = `${MERKL_API}/positions?chainId=${ACTIVE_CHAINS.join(',')}&user=${addr}`;
+  const MERKL_POSITIONS_API = `${MERKL_API}/positions?chainId=${ACTIVE_CHAINS.join(',')}&user=${userAddress}`;
   const {
     data: positionsData,
     isSuccess: positionsIsSuccess,
@@ -51,10 +51,9 @@ export const useMerklRewards = ({
       const result = await response.json();
       return result;
     },
-    // enabled: !!account?.address && account.chainType === 'EVM',
+    enabled: !!userAddress,
     refetchInterval: 1000 * 60 * 60,
   });
-  console.log(positionsData);
   // loop through the position and sum the TVL USD
   if (positionsData) {
     for (const [key, data] of Object.entries(positionsData)) {
@@ -71,7 +70,7 @@ export const useMerklRewards = ({
   // check the user positions for the interesting campaign
 
   // Call to get the available rewards
-  const MERKL_REWARDS_API = `${MERKL_API}/rewards?chainIds=10&user=${addr}`;
+  const MERKL_REWARDS_API = `${MERKL_API}/rewards?chainIds=${rewardChainId}&user=${userAddress}`;
   const {
     data: rewardsData,
     isSuccess: rewardsIsSuccess,
@@ -88,23 +87,20 @@ export const useMerklRewards = ({
       const result = await response.json();
       return result;
     },
-    // enabled: !!account?.address && account.chainType === 'EVM',
+    enabled: !!userAddress,
     refetchInterval: 1000 * 60 * 60,
   });
   // transform the rewards to get the total in the token that we want // OP
   // transform the result to know what is coming from Jumper campaigns
   // transform to know what is not coming from Jumper campaigns
   if (rewardsData) {
-    const tokenData = rewardsData[REWARDS_CHAIN_ID]?.tokenData;
+    const tokenData = rewardsData[rewardChainId]?.tokenData;
     if (tokenData) {
       rewardsToClaim = Object.entries(tokenData).map((elem): any => {
-        console.log('---');
         const key = elem[0];
         const value = elem[1] as any;
-        console.log(key);
-        console.log(value);
         return {
-          chainId: REWARDS_CHAIN_ID,
+          chainId: rewardChainId,
           address: key,
           symbol: value.symbol,
           amountToClaimBN: value.unclaimed,

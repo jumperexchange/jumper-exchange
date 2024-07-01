@@ -72,6 +72,7 @@ export const QuestCard = ({
             {chains?.map((elem: Chain, i: number) => {
               return (
                 <Image
+                  key={elem.name + '-' + i}
                   src={elem.logo}
                   style={{
                     marginLeft: i === 0 ? '' : '-8px',

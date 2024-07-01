@@ -16,12 +16,12 @@ export const Superfest = () => {
   const { account } = useAccounts();
   const { quests, isQuestLoading } = useOngoingFestMissions();
   const {
-    activePosition,
     availableRewards,
     activeCampaigns,
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,
   } = useMerklRewards({
+    rewardChainId: 10,
     userAddress: account?.address,
   });
   // HookToCheckNFT eligibility
@@ -32,26 +32,11 @@ export const Superfest = () => {
   return (
     <SuperfestContainer className="superfest">
       <RewardsCarousel
-        isLoading={
-          !account?.address
-          // !isRewardLoading && isRewardSuccess
-        }
-        rewardAmount={
-          45.54
-          // availableRewards?.[0].amountToClaim as number
-        }
-        rewardAmountBN={
-          '455000000'
-          // availableRewards?.[0].amountToClaimBN
-        }
-        proof={
-          ['']
-          // availableRewards?.[0].proof
-        }
-        isMerklSuccess={
-          true
-          ////isRewardSuccess
-        }
+        showComponent={!account?.address || isRewardLoading || !isRewardSuccess}
+        rewardAmount={availableRewards?.[0]?.amountToClaim as number}
+        rewardAmountBN={availableRewards?.[0]?.amountToClaimBN}
+        proof={availableRewards?.[0]?.proof}
+        isMerklSuccess={isRewardSuccess}
       />
       <HeroBox />
       <SuperfestMainBox>
