@@ -24,6 +24,7 @@ export function WidgetContainer({
   const { activeTab, setActiveTab } = useActiveTabStore();
   const { setWelcomeScreenClosed } = useWelcomeScreen(welcomeScreenClosed);
   const pathname = usePathname();
+  const welcomeScreen = useWelcomeScreen(welcomeScreenClosed);
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
 
   const starterVariant: StarterVariantType = useMemo(() => {
@@ -83,7 +84,10 @@ export function WidgetContainer({
   }, [getActiveWidget, starterVariant, activeTab, themeVariant]);
 
   return (
-    <WidgetContainerBox welcomeScreenClosed={welcomeScreenClosed}>
+    <WidgetContainerBox
+      className="widget-container"
+      welcomeScreenClosed={welcomeScreen.welcomeScreenClosed!}
+    >
       {children}
       <PartnerThemeFooterImage />
     </WidgetContainerBox>

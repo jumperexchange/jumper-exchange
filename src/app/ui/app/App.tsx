@@ -58,7 +58,7 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
             right: 0,
           }}
         >
-          <WelcomeScreen closed={isWelcomeScreenClosed} />
+          <WelcomeScreen closed={welcomeScreen.welcomeScreenClosed!} />
         </Box>
       </StyledSlide>
       {children}
