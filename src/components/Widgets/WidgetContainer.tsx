@@ -27,6 +27,7 @@ export function WidgetContainer({
   const { setWelcomeScreenClosed } = useWelcomeScreen(welcomeScreenClosed);
   const pathname = usePathname();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
+  const welcomeScreen = useWelcomeScreen(welcomeScreenClosed);
 
   const { sourceChainToken, destinationChainToken } =
     useChainTokenSelectionStore();
@@ -94,7 +95,9 @@ export function WidgetContainer({
   }, [getActiveWidget, starterVariant, activeTab, themeVariant]);
 
   return (
-    <WidgetContainerBox welcomeScreenClosed={welcomeScreenClosed}>
+    <WidgetContainerBox
+      welcomeScreenClosed={welcomeScreen.welcomeScreenClosed || false}
+    >
       {children}
       {activeChainAlert && <PartnerThemeFooterImage />}
     </WidgetContainerBox>
