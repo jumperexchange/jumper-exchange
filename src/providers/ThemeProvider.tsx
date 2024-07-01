@@ -44,9 +44,9 @@ export const ThemeProvider: React.FC<
 
   useEffect(() => {
     setTimeout(() => {
-      setAbcd(true)
-    }, 2000)
-  })
+      setAbcd(true);
+    }, 2000);
+  });
 
   useEffect(() => {
     setUpdatedTheme(
@@ -78,31 +78,29 @@ export const ThemeProvider: React.FC<
   const activeTheme = useMemo(() => {
     let currentTheme = themeModeState === 'dark' ? darkTheme : lightTheme;
 
-    console.log('RELOAD THEME', abcd)
-
     if (abcd) {
       return deepmerge(currentTheme, {
         typography: {
-          fontFamily: currentTheme.typography.fontFamily
+          fontFamily: currentTheme.typography.fontFamily,
         },
         palette: {
           primary: {
-            main: '#ff0000'
+            main: '#ff0000',
           },
           secondary: {
-            main: '#ff0000'
+            main: '#ff0000',
           },
           accent1: {
-            main: '#ff0000'
+            main: '#ff0000',
           },
           accent1Alt: {
-            main: '#ff0000'
+            main: '#ff0000',
           },
           accent2: {
-            main: '#ff0000'
+            main: '#ff0000',
           },
           surface1: {
-            main: '#ff0000'
+            main: '#ff0000',
           },
         },
         // typography: updatedTheme?.typography
@@ -172,7 +170,7 @@ export const ThemeProvider: React.FC<
     partnerCustomizedTheme,
     themeModeState,
     updatedTheme,
-    abcd
+    abcd,
   ]);
 
   // Render children only when the themeModeState is determined

@@ -1,18 +1,23 @@
-import type { PartnerThemesItems, StrapiResponse } from '@/types/strapi';
+import type { PartnerThemesData, StrapiResponse } from '@/types/strapi';
 import { PartnerThemeStrapiApi } from '@/utils/strapi/StrapiApi';
 
 export interface GetPartnerThemesResponse
-  extends StrapiResponse<PartnerThemesItems> {
+  extends StrapiResponse<PartnerThemesData> {
   url: string;
 }
 
 export async function getPartnerThemes(
-  uid: string,
-): Promise<GetPartnerThemesResponse> {
+  uid?: string,
+): Promise<GetPartnerThemesResponse | undefined> {
+  if (!uid) {
+    return undefined;
+  }
+
   const urlParams = new PartnerThemeStrapiApi().filterUid(uid);
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.getApiAccessToken();
+
   const res = await fetch(decodeURIComponent(apiUrl), {
     cache: 'force-cache',
     headers: {

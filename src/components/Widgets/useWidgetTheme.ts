@@ -1,13 +1,11 @@
 import { usePartnerTheme } from '@/hooks/usePartnerTheme';
 import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
-import { usePartnerFilter } from 'src/hooks/usePartnerFilter';
 import { darkTheme } from 'src/theme';
 
 export const useWidgetTheme = () => {
   const theme = useTheme();
   const { activeUid, isSuccess, currentWidgetTheme } = usePartnerTheme();
-  const { hasTheme } = usePartnerFilter();
   const defaultWidgetTheme = {
     typography: {
       fontFamily: theme.typography.fontFamily,

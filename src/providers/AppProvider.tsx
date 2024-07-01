@@ -19,15 +19,16 @@ export const AppProvider: React.FC<
 > = async ({ children, lang, partnerPageUid }) => {
   const { resources } = await initTranslations(lang || fallbackLng, namespaces);
   const { activeTheme, partnerThemeUid } = getCookies();
-  const partnerThemes =
-    (partnerPageUid && (await getPartnerThemes(partnerPageUid))) ??
-    (partnerThemeUid && (await getPartnerThemes(partnerThemeUid)));
-
+  const partnerThemes = await getPartnerThemes(
+    partnerPageUid || partnerThemeUid,
+  );
   return (
     <ThemeProvider
       theme={activeTheme}
       partnerCustomizedTheme={
-        (partnerThemes?.data?.length && partnerThemes.data[0].attributes) ||
+        (partnerThemes &&
+          partnerThemes.data.length > 0 &&
+          partnerThemes.data[0].attributes) ||
         undefined
       }
     >
@@ -39,8 +40,8 @@ export const AppProvider: React.FC<
         >
           <Layout
             partnerTheme={
-              (partnerThemes?.data &&
-                partnerThemes.data.length &&
+              (partnerThemes &&
+                partnerThemes.data.length > 0 &&
                 partnerThemes.data[0].attributes) ||
               undefined
             }
