@@ -37,7 +37,7 @@ export const useWelcomeScreen = (
   };
 
   return {
-    welcomeScreenClosed: state || sessionWelcomeScreenClosed,
+    welcomeScreenClosed: !!activeUid || state || sessionWelcomeScreenClosed,
     setWelcomeScreenClosed: updateState,
     welcomeScreenDisabled: !!activeUid,
   };
