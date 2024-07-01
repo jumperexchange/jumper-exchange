@@ -59,11 +59,11 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
             right: 0,
           }}
         >
-          <WelcomeScreen closed={isWelcomeScreenClosed} />
+          <WelcomeScreen closed={welcomeScreen.welcomeScreenClosed!} />
         </Box>
       </StyledSlide>
       <WidgetContainer
-        welcomeScreenClosed={isWelcomeScreenClosed}
+        welcomeScreenClosed={welcomeScreen.welcomeScreenClosed!}
         className="widget-container"
       >
         {children}
