@@ -23,11 +23,7 @@ export const Navbar = () => {
   const { closeAllMenus } = useMenuStore((state) => state);
   const handleClick = () => {
     closeAllMenus();
-    !activeUid && setWelcomeScreenClosed(false);
-
-    if (pathname === '/gas/') {
-      return;
-    }
+    setWelcomeScreenClosed(false);
 
     isLearnPage ? router.push(JUMPER_LEARN_PATH) : router.push('/');
   };

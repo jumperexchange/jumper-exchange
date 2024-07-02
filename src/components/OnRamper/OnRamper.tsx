@@ -41,6 +41,7 @@ export const OnRamper = () => {
     <WidgetWrapper
       welcomeScreenClosed={welcomeScreenDisabled ?? welcomeScreenClosed}
       className="widget-wrapper"
+      sx={{ textAlign: 'center' }}
     >
       <div>
         <OnRamperIFrame

@@ -28,9 +28,9 @@ export const BackgroundGradient = ({
 }: BackgroundGradientProps) => {
   const { partnerName } = usePartnerFilter();
   const { activeUid, backgroundColor, imgUrl } = usePartnerTheme();
-
   const bgImg = useMemo(() => {
     return (
+      imgUrl ||
       (themeMode === 'light'
         ? partnerTheme?.BackgroundImageLight.data?.attributes.url &&
           new URL(
@@ -41,10 +41,9 @@ export const BackgroundGradient = ({
           new URL(
             partnerTheme?.BackgroundImageDark.data.attributes.url,
             STRAPI_URL_PATH,
-          )) || imgUrl
+          ))
     );
   }, [imgUrl, partnerTheme, themeMode]);
-
   const bgCol = useMemo(() => {
     return (
       backgroundColor ||
@@ -73,10 +72,10 @@ export const BackgroundGradient = ({
   return (
     <BackgroundGradientContainer
       sx={styles}
-      backgroundImageUrl={bgImg}
+      backgroundImageUrl={bgImg || undefined}
       backgroundColor={bgCol as string}
     >
-      {(!activeUid || activeUid === 'undefined') && (
+      {!activeUid && (
         <>
           <BackgroundGradientBottomLeft />
           <BackgroundGradientBottomRight />

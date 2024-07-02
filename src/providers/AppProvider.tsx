@@ -19,6 +19,7 @@ export const AppProvider: React.FC<
 > = async ({ children, lang, partnerPageUid }) => {
   const { resources } = await initTranslations(lang || fallbackLng, namespaces);
   const { activeTheme, partnerThemeUid } = getCookies();
+
   const partnerThemes = await getPartnerThemes(
     partnerPageUid || partnerThemeUid,
   );

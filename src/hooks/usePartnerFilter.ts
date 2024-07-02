@@ -19,7 +19,6 @@ export const usePartnerFilter = (): usePartnerFilterProps => {
   const isDapp = useIsDapp();
   // check the list of bridge that we suport the name that we use
   const { bridgesKeys, exchangesKeys } = useDexsAndBridgesKeys();
-
   // check the list of bridge that we suport the name that we use
   let hasTheme = false;
   let isBridgeFiltered = false;

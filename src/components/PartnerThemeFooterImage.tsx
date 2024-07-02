@@ -14,23 +14,13 @@ export const PartnerThemeFooterImage = async () => {
 
   let footerImg;
   let partnerUrl;
+
   if (partnerThemes) {
     footerImg =
       activeTheme === 'light'
         ? partnerThemes?.data[0].attributes.FooterImageLight.data.attributes.url
         : partnerThemes?.data[0].attributes.FooterImageDark.data.attributes.url;
     partnerUrl = partnerThemes?.data[0].attributes.PartnerURL;
-  } else if (
-    activeUid &&
-    footerUrl &&
-    footerImageUrl &&
-    !footerImageUrl?.href.includes('undefined')
-  ) {
-    partnerUrl = footerUrl;
-    footerImg = footerImageUrl.href;
-  } else {
-    partnerUrl = undefined;
-    footerImg = undefined;
   }
 
   return (

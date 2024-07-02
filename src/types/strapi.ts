@@ -1,5 +1,4 @@
-import type { WidgetTheme } from '@lifi/widget';
-import type { PaletteOptions } from '@mui/material';
+import type { WidgetConfig } from '@lifi/widget';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 
 /* Strapi */
@@ -186,25 +185,23 @@ export interface AvatarData {
 }
 
 /* Themes */
-export interface PartnerThemesItems {
-  data: PartnerThemesData[];
-}
-
 export interface PartnerThemesData {
   id: number;
   attributes: PartnerThemesAttributes;
 }
 
 export interface Customization {
-  palette: PaletteOptions;
+  palette: { [colorName: string]: string };
   logoName?: string;
   footerBannerUrl?: string;
   typography?: string;
 }
 
-interface PartnerTheme {
-  widgetTheme: WidgetTheme;
-  customization: Customization;
+type WidgetConfigProps = Omit<WidgetConfig, 'integrator'>;
+
+export interface PartnerTheme {
+  config: WidgetConfigProps;
+  customization?: Customization;
 }
 
 export interface PartnerThemesAttributes {

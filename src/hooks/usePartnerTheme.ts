@@ -2,12 +2,15 @@
 
 import { useIsDapp } from '@/hooks/useIsDapp';
 import { useStrapi } from '@/hooks/useStrapi';
-import type { WidgetTheme } from '@lifi/widget';
 import { useTheme } from '@mui/material';
 import { useCookies } from 'react-cookie';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import { useSettingsStore } from 'src/stores/settings';
-import type { PartnerThemesData } from 'src/types/strapi';
+import type {
+  MediaAttributes,
+  PartnerTheme,
+  PartnerThemesData,
+} from 'src/types/strapi';
 import { usePartnerFilter } from './usePartnerFilter';
 
 interface usePartnerThemeProps {
@@ -17,8 +20,9 @@ interface usePartnerThemeProps {
   footerImageUrl?: URL;
   footerUrl?: URL;
   availableWidgetTheme?: string;
-  currentWidgetTheme?: WidgetTheme;
+  currentWidgetTheme?: PartnerTheme;
   logoUrl?: URL;
+  logo?: MediaAttributes;
   activeUid?: string;
   imgUrl?: URL;
   isSuccess?: boolean;
@@ -103,6 +107,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   }
 
   let logoUrl;
+  let logo;
   if (
     cookie.partnerThemeUid &&
     partnerThemes?.length > 0 &&
@@ -115,11 +120,13 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
         partnerThemes[0].attributes.LogoLight.data?.attributes.url,
         url.origin,
       );
+      logo = partnerThemes[0].attributes.LogoLight.data?.attributes;
     } else {
       logoUrl = new URL(
         partnerThemes[0].attributes.LogoDark.data?.attributes.url,
         url.origin,
       );
+      logo = partnerThemes[0].attributes.LogoDark.data?.attributes;
     }
   } else {
     logoUrl = undefined;
@@ -155,14 +162,14 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   let currentWidgetTheme;
   if (availableWidgetTheme === 'system') {
     if (theme.palette.mode === 'light') {
-      currentWidgetTheme = partnerThemes[0].attributes.lightConfig?.widgetTheme;
+      currentWidgetTheme = partnerThemes[0].attributes.lightConfig;
     } else {
-      currentWidgetTheme = partnerThemes[0].attributes.darkConfig?.widgetTheme;
+      currentWidgetTheme = partnerThemes[0].attributes.darkConfig;
     }
   } else if (availableWidgetTheme === 'dark') {
-    currentWidgetTheme = partnerThemes[0].attributes.darkConfig?.widgetTheme;
+    currentWidgetTheme = partnerThemes[0].attributes.darkConfig;
   } else if (availableWidgetTheme === 'light') {
-    currentWidgetTheme = partnerThemes[0].attributes.lightConfig?.widgetTheme;
+    currentWidgetTheme = partnerThemes[0].attributes.lightConfig;
   } else {
     currentWidgetTheme = undefined;
   }
@@ -199,6 +206,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     currentWidgetTheme:
       isDapp && currentWidgetTheme ? currentWidgetTheme : undefined,
     logoUrl: isDapp && logoUrl ? logoUrl : undefined,
+    logo: isDapp && logo ? logo : undefined,
     activeUid: isDapp ? partnerName ?? cookie.partnerThemeUid : undefined,
     imgUrl: isDapp && imageUrl ? imageUrl : undefined,
     isSuccess: isDapp && isSuccess,

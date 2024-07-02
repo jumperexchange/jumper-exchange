@@ -45,7 +45,7 @@ export const ThemeProvider: React.FC<
   useEffect(() => {
     setTimeout(() => {
       setAbcd(true);
-    }, 2000);
+    }, 100);
   });
 
   useEffect(() => {
@@ -60,54 +60,64 @@ export const ThemeProvider: React.FC<
 
   // Update the themeModeState whenever themeMode changes
   useEffect(() => {
-    if (themeMode === 'auto') {
+    if (
+      (partnerCustomizedTheme?.lightConfig &&
+        partnerCustomizedTheme.darkConfig) ||
+      themeMode === 'auto'
+    ) {
       setThemeModeState(isDarkMode ? 'dark' : 'light');
       setCookie('theme', isDarkMode ? 'dark' : 'light', {
         path: '/',
         sameSite: true,
       });
     } else {
-      setCookie('theme', themeMode === 'dark' ? 'dark' : 'light', {
-        path: '/',
-        sameSite: true,
-      });
+      setCookie(
+        'theme',
+        partnerCustomizedTheme?.darkConfig || themeMode === 'dark'
+          ? 'dark'
+          : 'light',
+        {
+          path: '/',
+          sameSite: true,
+        },
+      );
       setThemeModeState(themeMode === 'dark' ? 'dark' : 'light');
     }
-  }, [themeMode, isDarkMode, setCookie]);
+  }, [themeMode, isDarkMode, setCookie, partnerCustomizedTheme]);
 
   const activeTheme = useMemo(() => {
     let currentTheme = themeModeState === 'dark' ? darkTheme : lightTheme;
 
-    if (abcd) {
-      return deepmerge(currentTheme, {
-        typography: {
-          fontFamily: currentTheme.typography.fontFamily,
-        },
-        palette: {
-          primary: {
-            main: '#ff0000',
-          },
-          secondary: {
-            main: '#ff0000',
-          },
-          accent1: {
-            main: '#ff0000',
-          },
-          accent1Alt: {
-            main: '#ff0000',
-          },
-          accent2: {
-            main: '#ff0000',
-          },
-          surface1: {
-            main: '#ff0000',
-          },
-        },
-        // typography: updatedTheme?.typography
-        //   ? updatedTheme?.typography
-        //   : currentTheme.typography,
-      });
-    }
+    // if (abcd) {
+    //   return deepmerge(currentTheme, {
+    //     typography: {
+    //       fontFamily: currentTheme.typography.fontFamily,
+    //     },
+    //     palette: {
+    //       primary: {
+    //         main: '#ff0000',
+    //       },
+    //       secondary: {
+    //         main: '#ff0000',
+    //       },
+    //       accent1: {
+    //         main: '#ff0000',
+    //       },
+    //       accent1Alt: {
+    //         main: '#ff0000',
+    //       },
+    //       accent2: {
+    //         main: '#ff0000',
+    //       },
+    //       surface1: {
+    //         main: '#ff0000',
+    //       },
+    //     },
+    //     // typography: updatedTheme?.typography
+    //     //   ? updatedTheme?.typography
+    //     //   : currentTheme.typography,
+    //   });
+    // }
 
     if (
       partnerCustomizedTheme ||
@@ -120,7 +130,7 @@ export const ThemeProvider: React.FC<
           fontFamily:
             updatedTheme?.typography &&
             currentTheme.typography.fontFamily &&
-            currentCustomizedTheme?.typography.includes('Sora')
+            currentCustomizedTheme?.typography?.includes('Sora')
               ? sora.style.fontFamily.concat(currentTheme.typography.fontFamily)
               : currentTheme.typography.fontFamily,
         },
@@ -155,6 +165,11 @@ export const ThemeProvider: React.FC<
               ? updatedTheme?.palette.surface1
               : currentTheme.palette.surface1.main,
           },
+          surface2: {
+            main: updatedTheme?.palette?.surface2
+              ? updatedTheme?.palette.surface2
+              : currentTheme.palette.surface2.main,
+          },
         },
         // typography: updatedTheme?.typography
         //   ? updatedTheme?.typography
@@ -170,7 +185,6 @@ export const ThemeProvider: React.FC<
     partnerCustomizedTheme,
     themeModeState,
     updatedTheme,
-    abcd,
   ]);
 
   // Render children only when the themeModeState is determined
