@@ -118,7 +118,7 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           {partner && partner.logo ? (
             <RewardBox
               logo={partner.logo}
-              title={'Supported by'}
+              title={'Sponsored by'}
               value={partner.name}
             />
           ) : undefined}
