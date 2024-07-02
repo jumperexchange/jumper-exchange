@@ -15,18 +15,14 @@ export const BackgroundGradientContainer = styled('div', {
   backgroundImageUrl,
   backgroundColor,
 }) => {
-  const background = backgroundImageUrl
-    ? `url(${backgroundImageUrl.href})`
-    : backgroundColor;
-
   return {
     position: 'fixed',
     overflow: 'hidden',
     pointerEvents: 'none',
-    background:
-      backgroundImageUrl || backgroundColor
-        ? background
-        : (theme as Theme).palette.surface1.main,
+    background: backgroundImageUrl
+      ? `url(${backgroundImageUrl.href})`
+      : (theme as Theme).palette.surface1.main,
+    backgroundColor: backgroundColor,
     left: 0,
     ...(backgroundImageUrl && { backgroundSize: 'cover' }),
     bottom: 0,
@@ -34,10 +30,6 @@ export const BackgroundGradientContainer = styled('div', {
     top: 0,
     zIndex: -1,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      background:
-        backgroundImageUrl || backgroundColor
-          ? background
-          : (theme as Theme).palette.surface1.main,
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
     },

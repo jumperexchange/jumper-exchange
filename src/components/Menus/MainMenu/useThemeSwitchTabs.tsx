@@ -22,7 +22,7 @@ export const useThemeSwitchTabs = () => {
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
     : 'light';
-  const { availableWidgetTheme, activeUid } = usePartnerTheme();
+  const { availableWidgetThemeMode, activeUid } = usePartnerTheme();
   const [themeMode, setThemeMode] = useSettingsStore((state) => [
     state.themeMode,
     state.setThemeMode,
@@ -43,15 +43,15 @@ export const useThemeSwitchTabs = () => {
 
   // tooltips:
   const lightModeTooltip =
-    activeUid && availableWidgetTheme === 'dark'
+    activeUid && availableWidgetThemeMode === 'dark'
       ? t('navbar.themes.lightModeDisabled')
       : t('navbar.themes.switchToLight');
   const darkModeTooltip =
-    activeUid && availableWidgetTheme === 'light'
+    activeUid && availableWidgetThemeMode === 'light'
       ? t('navbar.themes.darkModeDisabled')
       : t('navbar.themes.switchToDark');
   const systemModeTooltip =
-    activeUid && availableWidgetTheme !== 'system'
+    activeUid && availableWidgetThemeMode !== 'system'
       ? t('navbar.themes.systemModeDisabled')
       : t('navbar.themes.switchToSystem');
 
@@ -61,15 +61,15 @@ export const useThemeSwitchTabs = () => {
   let systemModeEnabled = false;
 
   if (activeUid) {
-    if (availableWidgetTheme === 'system') {
+    if (availableWidgetThemeMode === 'system') {
       systemModeEnabled = true;
       lightModeEnabled = true;
       darkModeEnabled = true;
     } else {
-      if (availableWidgetTheme === 'light') {
+      if (availableWidgetThemeMode === 'light') {
         lightModeEnabled = true;
       }
-      if (availableWidgetTheme === 'dark') {
+      if (availableWidgetThemeMode === 'dark') {
         darkModeEnabled = true;
       }
     }

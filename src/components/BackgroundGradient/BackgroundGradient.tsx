@@ -1,5 +1,7 @@
 'use client';
-import { type CSSObject } from '@mui/material';
+import { useTheme, type CSSObject } from '@mui/material';
+import { useMemo } from 'react';
+import { STRAPI_URL_PATH } from 'src/const/urls';
 import { usePartnerFilter } from 'src/hooks/usePartnerFilter';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import {
@@ -17,7 +19,45 @@ interface BackgroundGradientProps {
 
 export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   const { partnerName } = usePartnerFilter();
-  const { activeUid, backgroundColor, imgUrl } = usePartnerTheme();
+  const { partnerTheme, activeUid, backgroundColor, imgUrl } =
+    usePartnerTheme();
+  const theme = useTheme();
+  const bgImg = useMemo(() => {
+    return (
+      imgUrl ||
+      (theme.palette.mode === 'light'
+        ? partnerTheme?.attributes.BackgroundImageLight.data?.attributes.url &&
+          new URL(
+            partnerTheme?.attributes.BackgroundImageLight.data.attributes.url,
+            STRAPI_URL_PATH,
+          )
+        : partnerTheme?.attributes.BackgroundImageDark.data?.attributes.url &&
+          new URL(
+            partnerTheme?.attributes.BackgroundImageDark.data.attributes.url,
+            STRAPI_URL_PATH,
+          ))
+    );
+  }, [
+    imgUrl,
+    partnerTheme?.attributes.BackgroundImageDark,
+    partnerTheme?.attributes.BackgroundImageLight,
+    theme.palette.mode,
+  ]);
+  const bgCol = useMemo(() => {
+    return (
+      backgroundColor ||
+      (theme.palette.mode === 'light'
+        ? partnerTheme?.attributes.lightConfig?.customization?.palette
+            .background
+        : partnerTheme?.attributes.darkConfig?.customization?.palette
+            .background)
+    );
+  }, [
+    backgroundColor,
+    partnerTheme?.attributes.darkConfig,
+    partnerTheme?.attributes.lightConfig,
+    theme.palette.mode,
+  ]);
 
   if (partnerName === 'memecoins') {
     return (
@@ -38,8 +78,8 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   return (
     <BackgroundGradientContainer
       sx={styles}
-      backgroundImageUrl={imgUrl}
-      backgroundColor={backgroundColor}
+      backgroundImageUrl={bgImg || undefined}
+      backgroundColor={bgCol as string}
     >
       {!activeUid && (
         <>

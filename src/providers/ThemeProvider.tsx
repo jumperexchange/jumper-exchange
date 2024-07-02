@@ -103,6 +103,11 @@ export const ThemeProvider: React.FC<
               ? currentCustomizedTheme.palette.surface1
               : currentTheme.palette.surface1.main,
           },
+          surface2: {
+            main: currentCustomizedTheme?.palette?.surface2
+              ? currentCustomizedTheme?.palette.surface2
+              : currentTheme.palette.surface2.main,
+          },
         },
         // typography: currentCustomizedTheme.typography
         //   ? currentCustomizedTheme.typography

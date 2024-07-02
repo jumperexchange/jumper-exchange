@@ -2,11 +2,14 @@
 
 import { useIsDapp } from '@/hooks/useIsDapp';
 import { useStrapi } from '@/hooks/useStrapi';
-import type { WidgetTheme } from '@lifi/widget';
 import { useTheme } from '@mui/material';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import { useSettingsStore } from 'src/stores/settings';
-import type { PartnerThemesData } from 'src/types/strapi';
+import type {
+  MediaAttributes,
+  PartnerTheme,
+  PartnerThemesData,
+} from 'src/types/strapi';
 import { shallow } from 'zustand/shallow';
 
 interface usePartnerThemeProps {
@@ -15,9 +18,10 @@ interface usePartnerThemeProps {
   currentCustomizedTheme?: any;
   footerImageUrl?: URL;
   footerUrl?: URL;
-  availableWidgetTheme?: string;
-  currentWidgetTheme?: WidgetTheme;
+  availableWidgetThemeMode?: string;
+  currentWidgetTheme?: PartnerTheme;
   logoUrl?: URL;
+  logo?: MediaAttributes;
   activeUid?: string;
   imgUrl?: URL;
   isSuccess?: boolean;
@@ -104,8 +108,9 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   }
 
   let logoUrl;
+  let logo;
   if (
-    (partnerPageThemeUid || partnerThemeUid) &&
+    partnerThemeUid &&
     partnerThemes?.length > 0 &&
     isSuccess &&
     (partnerThemes[0].attributes.LogoLight.data?.attributes.url ||
@@ -116,11 +121,13 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
         partnerThemes[0].attributes.LogoLight.data?.attributes.url,
         url.origin,
       );
+      logo = partnerThemes[0].attributes.LogoLight.data?.attributes;
     } else {
       logoUrl = new URL(
         partnerThemes[0].attributes.LogoDark.data?.attributes.url,
         url.origin,
       );
+      logo = partnerThemes[0].attributes.LogoDark.data?.attributes;
     }
   } else {
     logoUrl = undefined;
@@ -141,7 +148,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     backgroundColor = undefined;
   }
 
-  let availableWidgetTheme;
+  let availableWidgetThemeMode;
   if (
     (partnerPageThemeUid || partnerThemeUid) &&
     partnerThemes?.length > 0 &&
@@ -151,33 +158,33 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
       partnerThemes[0].attributes.lightConfig &&
       partnerThemes[0].attributes.darkConfig
     ) {
-      availableWidgetTheme = 'system';
+      availableWidgetThemeMode = 'system';
     } else if (partnerThemes[0].attributes.darkConfig) {
       setThemeMode('dark');
-      availableWidgetTheme = 'dark';
+      availableWidgetThemeMode = 'dark';
     } else {
       setThemeMode('light');
-      availableWidgetTheme = 'light';
+      availableWidgetThemeMode = 'light';
     }
   }
 
   let currentWidgetTheme;
-  if (availableWidgetTheme === 'system') {
+  if (availableWidgetThemeMode === 'system') {
     if (theme.palette.mode === 'light') {
-      currentWidgetTheme = partnerThemes[0].attributes.lightConfig?.widgetTheme;
+      currentWidgetTheme = partnerThemes[0].attributes.lightConfig;
     } else {
-      currentWidgetTheme = partnerThemes[0].attributes.darkConfig?.widgetTheme;
+      currentWidgetTheme = partnerThemes[0].attributes.darkConfig;
     }
-  } else if (availableWidgetTheme === 'dark') {
-    currentWidgetTheme = partnerThemes[0].attributes.darkConfig?.widgetTheme;
-  } else if (availableWidgetTheme === 'light') {
-    currentWidgetTheme = partnerThemes[0].attributes.lightConfig?.widgetTheme;
+  } else if (availableWidgetThemeMode === 'dark') {
+    currentWidgetTheme = partnerThemes[0].attributes.darkConfig;
+  } else if (availableWidgetThemeMode === 'light') {
+    currentWidgetTheme = partnerThemes[0].attributes.lightConfig;
   } else {
     currentWidgetTheme = undefined;
   }
 
   let currentCustomizedTheme;
-  if (availableWidgetTheme === 'system') {
+  if (availableWidgetThemeMode === 'system') {
     if (theme.palette.mode === 'light') {
       currentCustomizedTheme =
         partnerThemes[0].attributes.lightConfig?.customization;
@@ -185,10 +192,10 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
       currentCustomizedTheme =
         partnerThemes[0].attributes.darkConfig?.customization;
     }
-  } else if (availableWidgetTheme === 'dark') {
+  } else if (availableWidgetThemeMode === 'dark') {
     currentCustomizedTheme =
       partnerThemes[0].attributes.darkConfig?.customization;
-  } else if (availableWidgetTheme === 'light') {
+  } else if (availableWidgetThemeMode === 'light') {
     currentCustomizedTheme =
       partnerThemes[0].attributes.lightConfig?.customization;
   } else {
@@ -203,11 +210,12 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
       isDapp && currentCustomizedTheme ? currentCustomizedTheme : undefined,
     footerImageUrl: isDapp && footerImageUrl ? footerImageUrl : undefined,
     footerUrl: isDapp && !!footerUrl ? new URL(footerUrl) : undefined,
-    availableWidgetTheme:
-      isDapp && availableWidgetTheme ? availableWidgetTheme : undefined,
+    availableWidgetThemeMode:
+      isDapp && availableWidgetThemeMode ? availableWidgetThemeMode : undefined,
     currentWidgetTheme:
       isDapp && currentWidgetTheme ? currentWidgetTheme : undefined,
     logoUrl: isDapp && logoUrl ? logoUrl : undefined,
+    logo: isDapp && logo ? logo : undefined,
     activeUid:
       (isDapp && partnerPageThemeUid) ||
       (isDapp && partnerThemeUid) ||

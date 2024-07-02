@@ -6,11 +6,10 @@ import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useActiveTabStore } from '@/stores/activeTab/ActiveTabStore';
 import { useMenuStore } from '@/stores/menu';
-import { useSettingsStore } from '@/stores/settings';
 import type { LanguageKey } from '@/types/i18n';
 import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
-import type { WidgetConfig, WidgetTheme } from '@lifi/widget';
+import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
@@ -40,7 +39,6 @@ export function Widget({
   widgetIntegrator,
   activeTheme,
 }: WidgetProps) {
-  const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
@@ -138,14 +136,14 @@ export function Widget({
         default: i18n.language as LanguageKey,
         allow: i18n.languages as LanguageKey[],
       },
-      appearance: themeMode,
+      appearance: widgetTheme.config.appearance,
       hiddenUI: [
         HiddenUI.Appearance,
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
-      theme: widgetTheme as WidgetTheme,
+      theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
       ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
@@ -192,7 +190,6 @@ export function Widget({
     partnerName,
     setWalletSelectMenuState,
     starterVariant,
-    themeMode,
     toChain,
     toToken,
     tokens,
