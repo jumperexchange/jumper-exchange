@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   RewardsCarouselContainer,
   RewardsCarouselMainBox,
@@ -29,8 +29,9 @@ interface RewardsCarouselProps {
 }
 
 const CLAIMING_CONTRACT_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae';
-const OP_TOKEN = '0x4200000000000000000000000000000000000042';
-// const TEST_TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
+// const OP_TOKEN = '0x4200000000000000000000000000000000000042';
+//TESTING
+const TEST_TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
 export const RewardsCarousel = ({
   showComponent,
@@ -65,8 +66,9 @@ export const RewardsCarousel = ({
           address: CLAIMING_CONTRACT_ADDRESS,
           abi: MerklDistribABI,
           functionName: 'claim',
-          // args: [[address], [TEST_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
-          args: [[address], [OP_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
+          // args: [[address], [OP_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
+          // TESTING
+          args: [[address], [TEST_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
         });
       }
     } catch (err) {
