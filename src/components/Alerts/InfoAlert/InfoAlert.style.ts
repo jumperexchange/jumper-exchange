@@ -1,10 +1,11 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box } from '@mui/material';
 
-import { styled } from '@mui/material/styles';
+import { darken, lighten, styled } from '@mui/material/styles';
 import { IconButtonAlpha } from 'src/components/IconButton';
 import { getContrastAlphaColor } from 'src/utils/colors';
 import { InfoMessageCard } from '../../MessageCard/';
+import { ButtonPrimary } from 'src/components/Button';
 
 export const InfoAlertContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -35,4 +36,21 @@ export const InfoAlertButton = styled(IconButtonAlpha)(({ theme }) => ({
   backgroundColor: getContrastAlphaColor(theme, 0.04),
   width: 24,
   height: 24,
+}));
+
+export const ButtonInfoAlertClickable = styled(ButtonPrimary)(({ theme }) => ({
+  height: 32,
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? darken(theme.palette.info.main, 0.1)
+      : lighten(theme.palette.info.main, 0.1),
+  padding: theme.spacing(2),
+  marginTop: theme.spacing(1.5),
+  display: 'flex',
+  alignContent: 'center',
+  justifyContent: 'center',
+  textAlign: 'center',
+  '&:hover': {
+    backgroundColor: theme.palette.info.main,
+  },
 }));

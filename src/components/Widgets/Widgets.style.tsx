@@ -13,7 +13,7 @@ export const WidgetContainer = styled(Box, {
     prop !== 'isActive' && prop !== 'welcomeScreenClosed',
 })<WidgetContainerProps>(
   ({ theme, isActive, welcomeScreenClosed = false }) => ({
-    display: isActive ? 'flex' : 'none',
+    display: 'flex',
     margin: '0 auto 24px',
     overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
     width: 'auto',
@@ -21,7 +21,7 @@ export const WidgetContainer = styled(Box, {
     transitionProperty: 'max-height',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
-    maxHeight: !welcomeScreenClosed ? '50vh' : 'inherit',
+    maxHeight: 'inherit',
 
     // setting hover animations on widget wrappers
     '& > .widget-wrapper > div': {
@@ -50,23 +50,6 @@ export const WidgetContainer = styled(Box, {
             ? 'calc( 50vh - 680px / 2.75 - 128px)'
             : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
         },
-      },
-    },
-
-    // widget wrappers -> animations
-    '& > .widget-wrapper > div:hover': !welcomeScreenClosed && {
-      marginTop: !welcomeScreenClosed ? 0 : theme.spacing(3.5),
-
-      [`@media screen and (min-height: 700px)`]: {
-        marginTop: !welcomeScreenClosed
-          ? 'calc( 50vh - 680px / 2.75 - 40px - 24px )'
-          : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - navbar height )
-      },
-
-      [`@media screen and (min-height: 900px)`]: {
-        marginTop: !welcomeScreenClosed
-          ? 'calc( 50vh - 680px / 2.75 - 128px - 24px)'
-          : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
       },
     },
 
@@ -111,8 +94,17 @@ export const WidgetContainer = styled(Box, {
       opacity: 0.25,
     },
 
+    '.welcome-screen-container + & .widget-wrapper > div': {
+      cursor: 'pointer',
+    },
+
+    // // TODO move to welcome screen component
+    '.welcome-screen-container + &': {
+      maxHeight: !welcomeScreenClosed ? '50vh' : 'auto',
+    },
+
     // radial shadow glow
-    '&:before': {
+    '.welcome-screen-container + &:before': {
       content: '" "',
       transitionProperty: 'top, opacity',
       transitionDuration: '.4s',
