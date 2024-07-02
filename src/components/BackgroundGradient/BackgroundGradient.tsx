@@ -1,7 +1,6 @@
 'use client';
 import { useTheme, type CSSObject } from '@mui/material';
 import { useMemo } from 'react';
-import { STRAPI_URL_PATH } from 'src/const/urls';
 import { usePartnerFilter } from 'src/hooks/usePartnerFilter';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import {
@@ -23,26 +22,8 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
     usePartnerTheme();
   const theme = useTheme();
   const bgImg = useMemo(() => {
-    return (
-      imgUrl ||
-      (theme.palette.mode === 'light'
-        ? partnerTheme?.attributes.BackgroundImageLight.data?.attributes.url &&
-          new URL(
-            partnerTheme?.attributes.BackgroundImageLight.data.attributes.url,
-            STRAPI_URL_PATH,
-          )
-        : partnerTheme?.attributes.BackgroundImageDark.data?.attributes.url &&
-          new URL(
-            partnerTheme?.attributes.BackgroundImageDark.data.attributes.url,
-            STRAPI_URL_PATH,
-          ))
-    );
-  }, [
-    imgUrl,
-    partnerTheme?.attributes.BackgroundImageDark,
-    partnerTheme?.attributes.BackgroundImageLight,
-    theme.palette.mode,
-  ]);
+    return imgUrl;
+  }, [imgUrl]);
   const bgCol = useMemo(() => {
     return (
       backgroundColor ||
@@ -78,8 +59,8 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   return (
     <BackgroundGradientContainer
       sx={styles}
-      backgroundImageUrl={bgImg || undefined}
-      backgroundColor={bgCol as string}
+      backgroundImageUrl={activeUid ? bgImg : undefined}
+      backgroundColor={activeUid ? (bgCol as string) : undefined}
     >
       {!activeUid && (
         <>

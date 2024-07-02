@@ -7,8 +7,8 @@ export interface SettingsProps {
   themeMode: ThemeModesSupported;
   clientWallets: string[];
   disabledFeatureCards: string[];
-  partnerThemeUid: string;
-  partnerPageThemeUid: string;
+  partnerThemeUid: string | undefined;
+  partnerPageThemeUid: string | undefined;
   welcomeScreenClosed: boolean;
 }
 export interface SettingsState extends SettingsProps {

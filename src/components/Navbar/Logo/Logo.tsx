@@ -15,7 +15,7 @@ export const Logo = ({ variant }: LogoProps) => {
   const theme = useTheme();
   return (
     <LogoWrapper>
-      {activeUid && logoUrl && partnerLogo && (
+      {activeUid && logoUrl && partnerLogo ? (
         <>
           {logo}
           <ClearIcon
@@ -39,6 +39,8 @@ export const Logo = ({ variant }: LogoProps) => {
             height={partnerLogo?.height}
           />
         </>
+      ) : (
+        logo
       )}
     </LogoWrapper>
   );
