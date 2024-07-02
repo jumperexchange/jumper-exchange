@@ -98,6 +98,11 @@ export const WidgetContainer = styled(Box, {
       cursor: 'pointer',
     },
 
+    // // TODO move to welcome screen component
+    '.welcome-screen-container + &': {
+      maxHeight: !welcomeScreenClosed ? '50vh' : 'auto',
+    },
+
     // radial shadow glow
     '.welcome-screen-container + &:before': {
       content: '" "',
