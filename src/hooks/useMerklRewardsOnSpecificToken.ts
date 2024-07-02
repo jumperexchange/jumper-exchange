@@ -104,7 +104,7 @@ export const useMerklRewards = ({
           chainId: rewardChainId,
           address: key,
           symbol: value.symbol,
-          amountToClaimBN: value.unclaimed,
+          accumulatedAmountForContractBN: value.accumulated,
           amountToClaim: value.unclaimed / 10 ** value.decimals,
           amountAccumulated: value.accumulated / 10 ** value.decimals,
           proof: value.proof,

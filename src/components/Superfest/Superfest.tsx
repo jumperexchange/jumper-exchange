@@ -34,7 +34,9 @@ export const Superfest = () => {
       <RewardsCarousel
         showComponent={!account?.address || isRewardLoading || !isRewardSuccess}
         rewardAmount={availableRewards?.[0]?.amountToClaim as number}
-        rewardAmountBN={availableRewards?.[0]?.amountToClaimBN}
+        accumulatedAmountForContractBN={
+          availableRewards?.[0]?.accumulatedAmountForContractBN
+        }
         proof={availableRewards?.[0]?.proof}
         isMerklSuccess={isRewardSuccess}
       />

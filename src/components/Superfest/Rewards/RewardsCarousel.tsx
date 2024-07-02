@@ -23,7 +23,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 interface RewardsCarouselProps {
   showComponent: boolean;
   rewardAmount: number;
-  rewardAmountBN: string;
+  accumulatedAmountForContractBN: string;
   isMerklSuccess: boolean;
   proof: any;
 }
@@ -36,7 +36,7 @@ const TEST_TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 export const RewardsCarousel = ({
   showComponent,
   rewardAmount,
-  rewardAmountBN,
+  accumulatedAmountForContractBN,
   isMerklSuccess,
   proof,
 }: RewardsCarouselProps) => {
@@ -68,7 +68,12 @@ export const RewardsCarousel = ({
           functionName: 'claim',
           // args: [[address], [OP_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
           // TESTING
-          args: [[address], [TEST_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
+          args: [
+            [address],
+            [TEST_TOKEN],
+            [accumulatedAmountForContractBN],
+            [proof],
+          ], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
         });
       }
     } catch (err) {
