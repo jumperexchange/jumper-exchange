@@ -1,9 +1,17 @@
-export const metadata = {
-  title: 'Jumper | Multi-Chain Bridging & Swapping (powered by LI.FI)', // Updated title
+import type { Metadata } from 'next';
+
+const siteName = 'Jumper.Exchange';
+const title = 'Jumper | Multi-Chain Bridging & Swapping (powered by LI.FI)';
+const description =
+  'Jumper is Crypto’s Everything Exchange, enabling seamless swap and bridge transactions across 25 blockchains. By aggregating all of DeFi liquidity, Jumper ensures the best routes for any token transaction.';
+
+export const metadata: Metadata = {
+  title,
+  description,
   openGraph: {
-    title: 'Jumper.Exchange', // Override title
-    description: 'Multi-Chain Bridging & Swapping (powered by LI.FI)', // Override description
-    siteName: 'Jumper.Exchange', // Override site name
+    title: 'Jumper.Exchange',
+    description,
+    siteName,
     images: [
       {
         url: 'https://jumper.exchange/preview.png', // Default image
@@ -18,7 +26,7 @@ export const metadata = {
     // cardType: 'summary_large_image',
     site: '@JumperExchange',
     title: 'Jumper.Exchange', // Twitter title
-    description: 'Multi-Chain Bridging & Swapping (powered by LI.FI)', // Twitter description
+    description,
     images: 'https://jumper.exchange/preview.png', // Twitter image
   },
   icons: {
