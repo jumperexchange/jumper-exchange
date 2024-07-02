@@ -21,22 +21,25 @@ export async function generateMetadata({
     const articleData = article.data.data?.[0]
       .attributes as BlogArticleAttributes;
 
+    const openGraph: Metadata['openGraph'] = {
+      title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
+      description: `${sliceStrToXChar(articleData.Subtitle, 60)}`,
+      images: [
+        {
+          url: `${article.url}${articleData.Image.data.attributes?.url}`,
+          width: 900,
+          height: 450,
+          alt: 'banner image',
+        },
+      ],
+      type: 'article',
+    };
+
     return {
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
       description: articleData.Subtitle,
-      openGraph: {
-        title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
-        description: `${sliceStrToXChar(articleData.Subtitle, 60)}`,
-        images: [
-          {
-            url: `${article.url}${articleData.Image.data.attributes?.url}`,
-            width: 900,
-            height: 450,
-            alt: 'banner image',
-          },
-        ],
-        type: 'article',
-      },
+      twitter: openGraph,
+      openGraph,
     };
   } catch (err) {
     return {
