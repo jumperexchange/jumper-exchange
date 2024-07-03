@@ -18,6 +18,7 @@ export const ProfileButton = () => {
         width={44}
         height={44}
         priority={false}
+        unoptimized={true}
         style={{
           borderRadius: '100%',
           borderStyle: 'solid',
