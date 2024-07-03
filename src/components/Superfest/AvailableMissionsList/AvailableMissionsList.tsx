@@ -1,6 +1,5 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import type { Quest } from '@/types/loyaltyPass';
-import { useTranslation } from 'react-i18next';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import {
@@ -20,6 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { SoraTypography } from '../Superfest.style';
+import Image from 'next/image';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -59,31 +59,43 @@ export const AvailableMissionsList = ({
 }: QuestCompletedListProps) => {
   const theme = useTheme();
   const [chainsFilter, setChainsFilter] = useState<string[]>([]);
-  const [rewardsFilter, setRewardsFilter] = useState<boolean | undefined>(
-    undefined,
-  );
+  const [rewardsFilter, setRewardsFilter] = useState<string[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
-  const [filteredQuests, setFilteredQuests] = useState<Quest[]>([]);
-  const [filterLoading, setFiltedLoading] = useState<boolean>(false);
   const { url } = useOngoingFestMissions();
 
   const [personName, setPersonName] = useState<string[]>([]);
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+  const handleChainChange = (event: SelectChangeEvent<typeof personName>) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
+    setChainsFilter(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
   };
 
-  useEffect(() => {
-    // setFiltedLoading(true);
-    // let _filterQuests = quests.maps()
-    // setFiltedLoading(false);
-  }, [chainsFilter, rewardsFilter, categoryFilter]);
+  const handleCategoryChange = (
+    event: SelectChangeEvent<typeof personName>,
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    setCategoryFilter(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
+
+  const handleRewardChange = (event: SelectChangeEvent<typeof personName>) => {
+    const {
+      target: { value },
+    } = event;
+    setRewardsFilter(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
 
   return (
     <AvailableMissionsContainer>
@@ -94,8 +106,8 @@ export const AvailableMissionsList = ({
             <Select
               multiple
               displayEmpty
-              value={personName}
-              onChange={handleChange}
+              value={chainsFilter}
+              onChange={handleChainChange}
               input={<OutlinedInput />}
               renderValue={(selected) => {
                 if (selected.length === 0) {
@@ -111,9 +123,17 @@ export const AvailableMissionsList = ({
                 <MenuItem
                   key={name}
                   value={name}
-                  style={getStyles(name, personName, theme)}
+                  style={getStyles(name, chainsFilter, theme)}
                 >
-                  <Checkbox checked={personName.indexOf(name) > -1} />
+                  <Checkbox checked={chainsFilter.indexOf(name) > -1} />
+                  <Image
+                    src={`https://strapi.li.finance/uploads/fraxtal_bbaa1cb0cd.png`}
+                    alt="Effigy Wallet Icon"
+                    width={16}
+                    height={16}
+                    priority={false}
+                    style={{ marginRight: '4px' }}
+                  />
                   <ListItemText primary={name} />
                 </MenuItem>
               ))}
@@ -123,8 +143,8 @@ export const AvailableMissionsList = ({
             <Select
               multiple
               displayEmpty
-              value={personName}
-              onChange={handleChange}
+              value={rewardsFilter}
+              onChange={handleRewardChange}
               input={<OutlinedInput />}
               renderValue={(selected) => {
                 if (selected.length === 0) {
@@ -140,9 +160,9 @@ export const AvailableMissionsList = ({
                 <MenuItem
                   key={name}
                   value={name}
-                  style={getStyles(name, personName, theme)}
+                  style={getStyles(name, rewardsFilter, theme)}
                 >
-                  <Checkbox checked={personName.indexOf(name) > -1} />
+                  <Checkbox checked={rewardsFilter.indexOf(name) > -1} />
                   <ListItemText primary={name} />
                 </MenuItem>
               ))}
@@ -152,8 +172,8 @@ export const AvailableMissionsList = ({
             <Select
               multiple
               displayEmpty
-              value={personName}
-              onChange={handleChange}
+              value={categoryFilter}
+              onChange={handleCategoryChange}
               input={<OutlinedInput />}
               renderValue={(selected) => {
                 if (selected.length === 0) {
@@ -168,10 +188,16 @@ export const AvailableMissionsList = ({
               {category.map((name) => (
                 <MenuItem
                   key={name}
-                  value={name}
-                  style={getStyles(name, personName, theme)}
+                  value={name.toLowerCase().replaceAll(' ', '-')}
+                  style={getStyles(name, categoryFilter, theme)}
                 >
-                  <Checkbox checked={personName.indexOf(name) > -1} />
+                  <Checkbox
+                    checked={
+                      categoryFilter.indexOf(
+                        name.toLowerCase().replaceAll(' ', '-'),
+                      ) > -1
+                    }
+                  />
                   <ListItemText primary={name} />
                 </MenuItem>
               ))}
@@ -185,7 +211,7 @@ export const AvailableMissionsList = ({
         useFlexGap
         flexWrap="wrap"
       >
-        {!loading && !filterLoading && quests
+        {!loading && quests
           ? quests?.map((quest: Quest, index: number) => {
               const baseURL = quest.attributes.Image?.data?.attributes?.url;
               const imgURL = new URL(baseURL, url.origin);
@@ -194,20 +220,28 @@ export const AvailableMissionsList = ({
               const rewardsAmount = rewards?.amount;
 
               //todo: exclude in a dedicated helper function
-              if (rewardsFilter && (!rewardsAmount || rewardsAmount === 0)) {
-                return undefined;
-              }
-              if (
-                rewardsFilter === false &&
-                rewardsAmount &&
-                rewardsAmount > 0
-              ) {
-                return undefined;
+              if (rewardsFilter.length === 1) {
+                if (
+                  rewardsFilter.includes('OP Rewards') &&
+                  (!rewardsAmount || rewardsAmount === 0)
+                ) {
+                  return undefined;
+                } else if (
+                  rewardsFilter.includes('No OP Rewards') &&
+                  rewardsAmount &&
+                  rewardsAmount > 0
+                ) {
+                  return undefined;
+                }
               }
               if (chainsFilter && chainsFilter.length > 0) {
                 let included = false;
                 for (const chain of chains) {
-                  if (chainsFilter.includes(chain.name)) {
+                  if (
+                    chainsFilter
+                      .map((chain) => chain.toLowerCase())
+                      .includes(chain.name)
+                  ) {
                     included = true;
                     break;
                   }
@@ -250,7 +284,7 @@ export const AvailableMissionsList = ({
               );
             })
           : null}
-        {loading || filterLoading
+        {loading
           ? Array.from({ length: 12 }, () => 42).map((_, idx) => (
               <QuestCardSkeleton key={'skeleton-' + idx} />
             ))
