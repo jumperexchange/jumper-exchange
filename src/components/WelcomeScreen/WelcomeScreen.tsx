@@ -16,7 +16,6 @@ import { Trans } from 'react-i18next/TransWithoutContext';
 import { ToolCards } from './ToolCard/ToolCards';
 import {
   ContentWrapper,
-  Overlay,
   WelcomeContent,
   WelcomeScreenButton,
   WelcomeScreenButtonLabel,
