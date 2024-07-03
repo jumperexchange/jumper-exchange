@@ -22,7 +22,7 @@ export const useThemeSwitchTabs = () => {
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
     : 'light';
-  const { availableWidgetTheme, activeUid } = usePartnerTheme();
+  const { availableThemeMode, activeUid } = usePartnerTheme();
   const [themeMode, setThemeMode] = useSettingsStore((state) => [
     state.themeMode,
     state.setThemeMode,
@@ -43,15 +43,15 @@ export const useThemeSwitchTabs = () => {
 
   // tooltips:
   const lightModeTooltip =
-    activeUid && activeUid !== 'undefined' && availableWidgetTheme === 'dark'
+    activeUid && activeUid !== 'undefined' && availableThemeMode === 'dark'
       ? t('navbar.themes.lightModeDisabled')
       : t('navbar.themes.switchToLight');
   const darkModeTooltip =
-    activeUid && activeUid !== 'undefined' && availableWidgetTheme === 'light'
+    activeUid && activeUid !== 'undefined' && availableThemeMode === 'light'
       ? t('navbar.themes.darkModeDisabled')
       : t('navbar.themes.switchToDark');
   const systemModeTooltip =
-    activeUid && activeUid !== 'undefined' && availableWidgetTheme !== 'system'
+    activeUid && activeUid !== 'undefined' && availableThemeMode !== 'system'
       ? t('navbar.themes.systemModeDisabled')
       : t('navbar.themes.switchToSystem');
 
@@ -61,15 +61,15 @@ export const useThemeSwitchTabs = () => {
   let systemModeEnabled = false;
 
   if (activeUid && activeUid !== 'undefined') {
-    if (availableWidgetTheme === 'system') {
+    if (availableThemeMode === 'system') {
       systemModeEnabled = true;
       lightModeEnabled = true;
       darkModeEnabled = true;
     } else {
-      if (availableWidgetTheme === 'light') {
+      if (availableThemeMode === 'light') {
         lightModeEnabled = true;
       }
-      if (availableWidgetTheme === 'dark') {
+      if (availableThemeMode === 'dark') {
         darkModeEnabled = true;
       }
     }

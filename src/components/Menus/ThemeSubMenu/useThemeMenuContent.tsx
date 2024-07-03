@@ -8,6 +8,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useStrapi } from 'src/hooks/useStrapi';
 import type { PartnerThemesData } from 'src/types/strapi';
 
@@ -15,18 +16,15 @@ export const useThemeMenuContent = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const segment = useSelectedLayoutSegment();
+  const { updateTheme } = usePartnerTheme();
 
-  const [cookie, setCookie, removeCookie] = useCookies(['partnerThemeUid']);
+  const [cookie] = useCookies(['partnerThemeUid']);
   const { data: partnerThemes, isSuccess } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
     queryKey: ['partner-themes'],
   });
 
   const handleThemeSwitch = (theme: PartnerThemesData | undefined) => {
-    if (!theme) {
-      removeCookie('partnerThemeUid');
-      return;
-    }
     trackEvent({
       category: TrackingCategory.ThemesMenu,
       action: TrackingAction.SwitchThemeTemplate,
@@ -36,7 +34,8 @@ export const useThemeMenuContent = () => {
           theme?.attributes.PartnerName.replace(' ', '') ?? 'default',
       },
     });
-    setCookie('partnerThemeUid', theme?.attributes.uid);
+    console.log('CHECK HANDLE THEME SWITCH', theme);
+    updateTheme(theme?.attributes.uid);
   };
 
   const themes: any = [

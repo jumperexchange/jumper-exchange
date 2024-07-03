@@ -23,14 +23,14 @@ export const AppProvider: React.FC<
   const partnerThemes = await getPartnerThemes(
     partnerPageUid || partnerThemeUid,
   );
+
+  console.log('APPPROVIDER FETCH', partnerThemes);
+
   return (
     <ThemeProvider
       theme={activeTheme}
       partnerCustomizedTheme={
-        (partnerThemes &&
-          partnerThemes.data.length > 0 &&
-          partnerThemes.data[0].attributes) ||
-        undefined
+        (partnerThemes && partnerThemes.data) || undefined
       }
     >
       <TrackingProvider>

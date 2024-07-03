@@ -1,49 +1,16 @@
-import type {
-  PartnerTheme,
-  PartnerThemesData,
-  StrapiResponse,
-} from '@/types/strapi';
+import type { PartnerThemesData, StrapiResponse } from '@/types/strapi';
 import { PartnerThemeStrapiApi } from '@/utils/strapi/StrapiApi';
-import type { PaletteColorOptions } from '@mui/material';
+import { cleanThemeCustomization } from 'src/utils/transformToPalette';
 
 export interface GetPartnerThemesResponse
   extends StrapiResponse<PartnerThemesData> {
   url: string;
 }
 
-function transformToPaletteColorOptions(a: any): PaletteColorOptions {
-  if (!a) {
-    return a;
-  }
-
-  return { main: a };
-}
-
-function transformCustomization(theme: PartnerTheme) {
-  if (!theme.customization) {
-    return theme;
-  }
-
-  return {
-    ...theme,
-    customization: {
-      ...theme.customization,
-      palette: Object.keys(theme.customization.palette).reduce(
-        (acc, key) => {
-          acc[key] = transformToPaletteColorOptions(
-            theme.customization?.palette[key],
-          );
-          return acc;
-        },
-        {} as Record<string, PaletteColorOptions>,
-      ),
-    },
-  };
-}
-
 export async function getPartnerThemes(
   uid?: string,
 ): Promise<GetPartnerThemesResponse | void> {
+  console.log('GET PARTNER THEMES', uid);
   if (!uid) {
     return;
   }
@@ -70,22 +37,8 @@ export async function getPartnerThemes(
     };
   });
 
-  if (
-    data.data[0].attributes.lightConfig &&
-    data.data[0].attributes.lightConfig.customization
-  ) {
-    data.data[0].attributes.lightConfig.customization = transformCustomization(
-      data.data[0].attributes.lightConfig.customization,
-    );
-  }
-  if (
-    data.data[0].attributes.darkConfig &&
-    data.data[0].attributes.darkConfig.customization
-  ) {
-    data.data[0].attributes.darkConfig.customization = transformCustomization(
-      data.data[0].attributes.darkConfig.customization,
-    );
-  }
+  data.data = cleanThemeCustomization(data.data[0]);
+
   return { ...data, url: apiBaseUrl };
 }
 

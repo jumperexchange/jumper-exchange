@@ -1,11 +1,33 @@
 'use client';
-import type { Breakpoint } from '@mui/material/styles';
+import type {
+  Breakpoint,
+  ComponentsOverrides,
+  ComponentsVariants,
+  Theme as MuiTheme,
+} from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
+import type { BackgroundContainerProps } from 'src/components/Background';
 import { inter, urbanist } from 'src/fonts/fonts';
 
+type Theme = Omit<MuiTheme, 'components'>;
+
 declare module '@mui/material/styles' {
+  // interface ComponentsOverrides()
+  interface ComponentNameToClassKey {
+    Background: 'root' | 'value' | 'unit';
+  }
+  interface ComponentsPropsList {
+    Background: Partial<BackgroundContainerProps>;
+  }
+  interface Components {
+    Background?: {
+      defaultProps?: ComponentsPropsList['Background'];
+      styleOverrides?: ComponentsOverrides<Theme>['Background'];
+      variants?: ComponentsVariants['Background'];
+    };
+  }
   interface Shape {
     borderRadius: number;
     borderRadiusSecondary: number;
@@ -202,6 +224,35 @@ const themeCustomized = createTheme({
     ...shape,
   },
   components: {
+    Background: {
+      styleOverrides: {
+        // the slot name defined in the `slot` and `overridesResolver` parameters
+        // of the `styled` API
+        root: ({ ownerState, theme }) => ({
+          position: 'fixed',
+          left: 0,
+          bottom: 0,
+          right: 0,
+          top: 0,
+          zIndex: -1,
+          overflow: 'hidden',
+          pointerEvents: 'none',
+          backgroundColor: theme.palette.bg.main,
+          // typed-safe access to the `variant` prop
+
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+          },
+        }),
+        value: {
+          color: '#fff',
+        },
+        unit: {
+          color: '#888',
+        },
+      },
+    },
     MuiScopedCssBaseline: {
       styleOverrides: {
         root: {
