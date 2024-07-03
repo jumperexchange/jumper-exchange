@@ -68,6 +68,7 @@ export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
           width={128}
           height={128}
           priority={false}
+          unoptimized={true}
           style={{
             backgroundColor: imageLink
               ? theme.palette.mode === 'light'
