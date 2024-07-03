@@ -6,12 +6,14 @@ import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
 import type { InstructionItemProps } from '.';
 import {
+  InstructionsAccordionButtonMainBox,
   InstructionsAccordionItemContainer,
   InstructionsAccordionItemHeader,
   InstructionsAccordionItemIndex,
   InstructionsAccordionItemLabel,
   InstructionsAccordionItemMain,
   InstructionsAccordionItemMore,
+  InstructionsAccordionLinkBox,
   InstructionsAccordionToggle,
 } from '.';
 import { Button } from 'src/components/Button';
@@ -45,8 +47,8 @@ export const InstructionsAccordionItem = ({
   link,
   index,
   url,
-  buttonText,
-  buttonLink,
+  buttonTitles,
+  buttonLinks,
   activeTheme,
   variant,
 }: InstructionsAccordionItemProps) => {
@@ -59,6 +61,7 @@ export const InstructionsAccordionItem = ({
     e.stopPropagation();
     step && setOpen((prev) => !prev);
   };
+
   return (
     <InstructionsAccordionItemContainer
       sx={{
@@ -106,52 +109,53 @@ export const InstructionsAccordionItem = ({
         <InstructionsAccordionItemMore>
           <>
             <Typography>{step}</Typography>
-            {buttonLink ? (
+            {buttonLinks && buttonTitles && buttonTitles.length > 0 ? (
               <Box
                 sx={{
                   display: 'flex',
+                  flexDirection: 'column',
                   alignContent: 'center',
                   justifyContent: 'flex-start',
-                  mt: '16px',
-                  typography:
-                    variant === 'superfest' ? sora.style.fontFamily : undefined,
+                  mt: '8px',
                 }}
               >
-                <a
-                  href={buttonLink}
-                  target="_blank"
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      textAlign: 'left',
-                      alignItems: 'center',
-                      alignContent: 'center',
-                      color: '#000000',
-                      '&:hover': {
-                        color: theme.palette.primary.main,
-                      },
-                    }}
-                  >
-                    <Typography
-                      variant={'lifiBodyMediumStrong'}
-                      component={'span'}
-                      mr={'8px'}
-                      sx={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        maxWidth: 208,
-                        [theme.breakpoints.up('sm' as Breakpoint)]: {
-                          maxWidth: 168,
-                        },
-                      }}
+                {buttonTitles.map((_, i: number) => {
+                  return (
+                    <InstructionsAccordionButtonMainBox
+                      typography={
+                        variant === 'superfest'
+                          ? sora.style.fontFamily
+                          : undefined
+                      }
+                      key={`external-link-${i}`}
                     >
-                      {buttonText}
-                    </Typography>
-                    <ArrowForwardIcon />
-                  </Box>
-                </a>
+                      <a
+                        href={buttonLinks[i]}
+                        target="_blank"
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                      >
+                        <InstructionsAccordionLinkBox>
+                          <Typography
+                            variant={'lifiBodyMediumStrong'}
+                            component={'span'}
+                            mr={'8px'}
+                            sx={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              maxWidth: 208,
+                              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                                maxWidth: 168,
+                              },
+                            }}
+                          >
+                            {buttonTitles[i]}
+                          </Typography>
+                          <ArrowForwardIcon />
+                        </InstructionsAccordionLinkBox>
+                      </a>
+                    </InstructionsAccordionButtonMainBox>
+                  );
+                })}
               </Box>
             ) : null}
           </>

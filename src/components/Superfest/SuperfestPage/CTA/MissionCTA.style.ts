@@ -61,3 +61,19 @@ export const CTABox = styled(Box)(({ theme }) => ({
   alignContent: 'center',
   alignItems: 'center',
 }));
+
+export const SeveralCTABox = styled(Box)(({ theme }) => ({
+  width: '80%',
+  display: 'flex',
+  alignContent: 'center',
+  alignItems: 'center',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+}));

@@ -1,4 +1,3 @@
-import { useTheme } from '@mui/material';
 import { SuperfestContainer } from '../Superfest.style';
 import { SuperfestPageMainBox } from './SuperfestMissionPage.style';
 import generateKey from 'src/app/lib/generateKey';
@@ -19,9 +18,8 @@ export const SuperfestMissionPage = ({
   quest,
   baseUrl,
 }: SuperfestMissionPageVar) => {
-  const theme = useTheme();
-
   const attributes = quest?.attributes;
+  const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
 
   return (
     <SuperfestContainer className="superfest">
@@ -44,6 +42,7 @@ export const SuperfestMissionPage = ({
           title={attributes.Title}
           url={attributes.Link}
           key={generateKey('cta')}
+          CTAs={CTAs}
         />
       </SuperfestPageMainBox>
     </SuperfestContainer>

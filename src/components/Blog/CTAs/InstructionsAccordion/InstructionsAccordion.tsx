@@ -5,13 +5,19 @@ interface InstructionsItemLink {
   label: string;
   url: string;
 }
+
+interface ButtonInfoStruct {
+  link: string;
+  text: string;
+}
+
 export interface InstructionItemProps {
   title: string;
   step?: string;
   link?: InstructionsItemLink;
   url?: string;
-  buttonText?: string;
-  buttonLink?: string;
+  buttonTitles?: string[];
+  buttonLinks?: string[];
   activeTheme?: ThemeModesSupported;
   variant?: string;
 }
@@ -40,8 +46,8 @@ export const InstructionsAccordion = ({
           title={el.title}
           step={el.step}
           link={el.link}
-          buttonText={el.buttonText}
-          buttonLink={el.buttonLink}
+          buttonTitles={el.buttonTitles}
+          buttonLinks={el.buttonLinks}
           activeTheme={activeTheme}
           variant={variant}
         />
