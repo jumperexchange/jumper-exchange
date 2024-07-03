@@ -1,5 +1,6 @@
 'use client';
 import { type CSSObject } from '@mui/material';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
@@ -8,8 +9,6 @@ import {
 } from '.';
 import { SirBridgeLot } from '../illustrations/SirBridgeLot';
 import { FixBoxWithNoOverflow, MovingBox } from './MovingBox.style';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
-import Image from 'next/image';
 
 interface BackgroundGradientProps {
   styles?: CSSObject;
