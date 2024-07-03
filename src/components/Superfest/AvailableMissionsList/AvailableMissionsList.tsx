@@ -10,8 +10,43 @@ import {
   AvailableMissionsTitle,
 } from './AvailableMissionsList.style';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
-import { Box } from '@mui/material';
+import { Box, Theme, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import ListItemText from '@mui/material/ListItemText';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
+import { SoraTypography } from '../Superfest.style';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+      backgroundColor: '#fff0ca',
+    },
+  },
+};
+
+const chains = ['Optimism', 'Base', 'Mode', 'Fraxtal'];
+
+const Rewards_list = ['OP Rewards', 'No OP Rewards'];
+
+const category = ['Lending', 'Liquidity Pool', 'Staking', 'Stablecoins'];
+
+function getStyles(name: string, personName: readonly string[], theme: Theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
 
 interface QuestCompletedListProps {
   quests?: Quest[];
@@ -22,6 +57,7 @@ export const AvailableMissionsList = ({
   quests,
   loading,
 }: QuestCompletedListProps) => {
+  const theme = useTheme();
   const [chainsFilter, setChainsFilter] = useState<string[]>([]);
   const [rewardsFilter, setRewardsFilter] = useState<boolean | undefined>(
     undefined,
@@ -30,6 +66,18 @@ export const AvailableMissionsList = ({
   const [filteredQuests, setFilteredQuests] = useState<Quest[]>([]);
   const [filterLoading, setFiltedLoading] = useState<boolean>(false);
   const { url } = useOngoingFestMissions();
+
+  const [personName, setPersonName] = useState<string[]>([]);
+
+  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
 
   useEffect(() => {
     // setFiltedLoading(true);
@@ -41,7 +89,95 @@ export const AvailableMissionsList = ({
     <AvailableMissionsContainer>
       <AvailableMissionsHeader>
         <AvailableMissionsTitle>{'Available Missions'}</AvailableMissionsTitle>
-        <Box>Filters</Box>
+        <Box>
+          <FormControl sx={{ width: 120 }}>
+            <Select
+              multiple
+              displayEmpty
+              value={personName}
+              onChange={handleChange}
+              input={<OutlinedInput />}
+              renderValue={(selected) => {
+                if (selected.length === 0) {
+                  return <SoraTypography>Chains</SoraTypography>;
+                }
+
+                return selected.join(', ');
+              }}
+              MenuProps={MenuProps}
+              inputProps={{ 'aria-label': 'Without label' }}
+            >
+              {chains.map((name) => (
+                <MenuItem
+                  key={name}
+                  value={name}
+                  style={getStyles(name, personName, theme)}
+                >
+                  <Checkbox checked={personName.indexOf(name) > -1} />
+                  <ListItemText primary={name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ width: 120, ml: '4px' }}>
+            <Select
+              multiple
+              displayEmpty
+              value={personName}
+              onChange={handleChange}
+              input={<OutlinedInput />}
+              renderValue={(selected) => {
+                if (selected.length === 0) {
+                  return <SoraTypography>Rewards</SoraTypography>;
+                }
+
+                return selected.join(', ');
+              }}
+              MenuProps={MenuProps}
+              inputProps={{ 'aria-label': 'Without label' }}
+            >
+              {Rewards_list.map((name) => (
+                <MenuItem
+                  key={name}
+                  value={name}
+                  style={getStyles(name, personName, theme)}
+                >
+                  <Checkbox checked={personName.indexOf(name) > -1} />
+                  <ListItemText primary={name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ width: 120, ml: '4px' }}>
+            <Select
+              multiple
+              displayEmpty
+              value={personName}
+              onChange={handleChange}
+              input={<OutlinedInput />}
+              renderValue={(selected) => {
+                if (selected.length === 0) {
+                  return <SoraTypography>Category</SoraTypography>;
+                }
+
+                return selected.join(', ');
+              }}
+              MenuProps={MenuProps}
+              inputProps={{ 'aria-label': 'Without label' }}
+            >
+              {category.map((name) => (
+                <MenuItem
+                  key={name}
+                  value={name}
+                  style={getStyles(name, personName, theme)}
+                >
+                  <Checkbox checked={personName.indexOf(name) > -1} />
+                  <ListItemText primary={name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
       </AvailableMissionsHeader>
       <AvailableMissionsStack
         direction={'row'}

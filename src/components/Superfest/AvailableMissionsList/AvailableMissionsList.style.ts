@@ -34,6 +34,8 @@ export const AvailableMissionsHeader = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<BoxProps>(({ theme }) => ({
   display: 'flex',
+  alignItems: 'center',
+  alignContent: 'center',
   ...(theme.palette.mode === 'dark' && {
     color: theme.palette.white.main,
   }),
