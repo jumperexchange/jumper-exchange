@@ -13,17 +13,17 @@ interface RewardBoxProps {
 export const RewardBox = ({ logo, title, value }: RewardBoxProps) => {
   return (
     <RewardTopBox>
-      <Image
-        src={logo}
-        style={{ borderRadius: '100%' }}
-        alt="base"
-        width="48"
-        height="48"
-      />
-      <RewardLeftBox marginLeft={'20px'}>
-        <SoraTypography fontSize={'16px'} fontWeight={700} color={'#525252'}>
-          {title}
-        </SoraTypography>
+      <SoraTypography fontSize={'12px'} fontWeight={700} color={'#525252'}>
+        {title}
+      </SoraTypography>
+      <RewardLeftBox>
+        <Image
+          src={logo}
+          style={{ borderRadius: '100%' }}
+          alt="base"
+          width="48"
+          height="48"
+        />
         <SoraTypography fontSize={'18px'} fontWeight={800}>
           {value}
         </SoraTypography>

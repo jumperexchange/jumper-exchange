@@ -113,15 +113,16 @@ export const SupportedChainsBox = styled(Box)(() => ({
 
 export const RewardLeftBox = styled(Box)(() => ({
   display: 'flex',
-  flexDirection: 'column',
-  textAlign: 'left',
+  flexDirection: 'row',
+  textAlign: 'center',
   alignContent: 'center',
+  alignItems: 'center',
   ml: '20px',
 }));
 
 export const RewardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'space-around',
+  justifyContent: 'space-between',
   marginTop: '16px',
   [theme.breakpoints.down('md' as Breakpoint)]: {
     gap: '16px',

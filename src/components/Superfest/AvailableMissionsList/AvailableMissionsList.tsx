@@ -81,6 +81,7 @@ export const AvailableMissionsList = ({
     const {
       target: { value },
     } = event;
+    console.log(value);
     setCategoryFilter(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
@@ -110,14 +111,14 @@ export const AvailableMissionsList = ({
               onChange={handleChainChange}
               input={<OutlinedInput />}
               renderValue={(selected) => {
-                if (selected.length === 0) {
-                  return <SoraTypography>Chains</SoraTypography>;
-                }
-
-                return selected.join(', ');
+                return <SoraTypography fontWeight={700}>Chains</SoraTypography>;
               }}
               MenuProps={MenuProps}
               inputProps={{ 'aria-label': 'Without label' }}
+              onClose={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+              }}
             >
               {chains.map((name) => (
                 <MenuItem
@@ -147,14 +148,16 @@ export const AvailableMissionsList = ({
               onChange={handleRewardChange}
               input={<OutlinedInput />}
               renderValue={(selected) => {
-                if (selected.length === 0) {
-                  return <SoraTypography>Rewards</SoraTypography>;
-                }
-
-                return selected.join(', ');
+                return (
+                  <SoraTypography fontWeight={700}>Rewards</SoraTypography>
+                );
               }}
               MenuProps={MenuProps}
               inputProps={{ 'aria-label': 'Without label' }}
+              onClose={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+              }}
             >
               {Rewards_list.map((name) => (
                 <MenuItem
@@ -176,14 +179,16 @@ export const AvailableMissionsList = ({
               onChange={handleCategoryChange}
               input={<OutlinedInput />}
               renderValue={(selected) => {
-                if (selected.length === 0) {
-                  return <SoraTypography>Category</SoraTypography>;
-                }
-
-                return selected.join(', ');
+                return (
+                  <SoraTypography fontWeight={700}>Category</SoraTypography>
+                );
               }}
               MenuProps={MenuProps}
               inputProps={{ 'aria-label': 'Without label' }}
+              onClose={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+              }}
             >
               {category.map((name) => (
                 <MenuItem
@@ -250,11 +255,21 @@ export const AvailableMissionsList = ({
                   return undefined;
                 }
               }
+              console.log('---------');
+              console.log(categoryFilter);
+              console.log(quest.attributes.Category);
+              console.log(
+                categoryFilter &&
+                  categoryFilter.length > 0 &&
+                  quest.attributes.Category &&
+                  !categoryFilter.includes(quest.attributes.Category),
+              );
               if (
                 categoryFilter &&
                 categoryFilter.length > 0 &&
-                quest.attributes.Category &&
-                !categoryFilter.includes(quest.attributes.Category)
+                (!quest.attributes.Category ||
+                  (quest.attributes.Category &&
+                    !categoryFilter.includes(quest.attributes.Category)))
               ) {
                 return undefined;
               }

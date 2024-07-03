@@ -58,16 +58,16 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
       <BannerBottomBox>
         {/* date + chains */}
         <DateChainBox>
-          <QuestDatesBox>
-            <CenteredBox>
+          {/*<QuestDatesBox>
+             <CenteredBox>
               <DateRangeRoundedIcon sx={{ height: '16px' }} />
             </CenteredBox>
             <SoraTypography fontSize={'12px'} lineHeight={'16px'}>
-              July-Aug
-            </SoraTypography>
-            {/* {getStringDateFormatted(startDate, endDate)} */}
-          </QuestDatesBox>
-          <FlexCenterRowBox>
+              July-Aug */}
+          {/* </SoraTypography> */}
+          {/* {getStringDateFormatted(startDate, endDate)} */}
+          {/* </QuestDatesBox> */}
+          {/* <FlexCenterRowBox>
             <SoraTypography
               fontSize={'16px'}
               fontWeight={700}
@@ -92,12 +92,28 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
                 );
               })}
             </SupportedChainsBox>
-          </FlexCenterRowBox>
+          </FlexCenterRowBox> */}
         </DateChainBox>
         <BannerTitleBox>
           <BannerTitleTypography>{attributes.Title}</BannerTitleTypography>
         </BannerTitleBox>
         <RewardMainBox>
+          {/* chains  */}
+          {partner && partner.logo ? (
+            <RewardBox
+              logo={partner.logo}
+              title={'Supported Chains'}
+              value={'optimism'}
+            />
+          ) : undefined}
+          {/* partner  */}
+          {partner && partner.logo ? (
+            <RewardBox
+              logo={partner.logo}
+              title={'Sponsored by'}
+              value={partner.name}
+            />
+          ) : undefined}
           {/* rewards  */}
           {rewards && rewards.amount ? (
             <RewardBox
@@ -112,14 +128,6 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
               logo={'https://strapi.li.finance/uploads/xp_cfcff186e5.png'}
               title={'Points'}
               value={String(attributes.Points)}
-            />
-          ) : undefined}
-          {/* partner  */}
-          {partner && partner.logo ? (
-            <RewardBox
-              logo={partner.logo}
-              title={'Sponsored by'}
-              value={partner.name}
             />
           ) : undefined}
         </RewardMainBox>
