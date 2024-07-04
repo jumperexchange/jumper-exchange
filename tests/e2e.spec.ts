@@ -23,7 +23,7 @@ test.describe('Jumper full e2e flow', () => {
     await page.getByRole('tab', { name: 'Gas' }).click();
     await expect(page.locator('#tab-Gas-1')).toBeVisible();
     await page.getByRole('tab', { name: 'Buy' }).click();
-    await expect(buyETHButton).toBeEnabled({ timeout: 40000 });
+    await expect(buyETHButton).toBeEnabled();
     await expect(
       page
         .frameLocator('iframe[title="Onramper widget"]')
