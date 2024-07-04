@@ -1,7 +1,8 @@
 'use client';
 
 export const PixelBg = () => {
-  return (
+  return <></>;
+  /*  return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src="https://jumper.exchange/static/media/logo.gif"
@@ -9,5 +10,5 @@ export const PixelBg = () => {
       style={{ opacity: 0 }}
       alt="bg-pixel"
     />
-  );
+  );*/
 };
