@@ -61,12 +61,14 @@ export const InstructionsAccordionItem = ({
     step && setOpen((prev) => !prev);
   };
 
+  const isSuperfest = variant === 'superfest';
+
   return (
     <InstructionsAccordionItemContainer
       sx={{
-        typograpy: variant === 'superfest' ? sora.style.fontFamily : undefined,
-        border: variant === 'superfest' ? '2px dotted' : undefined,
-        borderColor: variant === 'superfest' ? '#000000' : undefined,
+        typograpy: isSuperfest ? sora.style.fontFamily : undefined,
+        border: isSuperfest ? '2px dotted' : undefined,
+        borderColor: isSuperfest ? theme.palette.black.main : undefined,
       }}
     >
       <InstructionsAccordionItemMain onClick={(e) => handleOpen(e)}>

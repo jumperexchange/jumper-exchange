@@ -9,7 +9,7 @@ import {
 import {
   DISCORD_URL,
   EXPLORER_URL,
-  JUMPER_FEST,
+  JUMPER_FEST_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   X_URL,
@@ -172,7 +172,7 @@ export const useMainMenuContent = () => {
           ],
         });
         closeAllMenus();
-        router.push(JUMPER_FEST);
+        router.push(JUMPER_FEST_PATH);
       },
     },
     {

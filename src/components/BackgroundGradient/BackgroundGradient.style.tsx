@@ -42,9 +42,6 @@ export const SuperfestBackgroundContainer = styled('div')(({ theme }) => ({
   right: 0,
   top: 0,
   zIndex: -1,
-  // [theme.breakpoints.up('sm' as Breakpoint)]: {
-  //   background: '#b7e9fb',
-  // },
 }));
 
 export const BackgroundGradients = styled('span')(({ theme }) => ({

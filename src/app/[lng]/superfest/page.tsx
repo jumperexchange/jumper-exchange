@@ -3,8 +3,8 @@ import { type Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Jumper - Superfest',
-    description: 'Page where you can join the Superfest.',
+    title: 'Jumper | Superfest',
+    description: 'Dive into the Superchain DeFi Festival!',
   };
 }
 

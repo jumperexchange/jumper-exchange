@@ -64,20 +64,6 @@ export const useThemeSwitchTabs = () => {
   let darkModeEnabled = false;
   let systemModeEnabled = false;
 
-  // if (activeUid) {
-  // if (availableWidgetTheme === 'system') {
-  //   systemModeEnabled = true;
-  //   lightModeEnabled = true;
-  //   darkModeEnabled = true;
-  // } else {
-  //   if (availableWidgetTheme === 'light') {
-  //     lightModeEnabled = true;
-  //   }
-  //   if (availableWidgetTheme === 'dark') {
-  //     darkModeEnabled = true;
-  //   }
-  // }
-  // } else
   if (isSuperfest) {
     lightModeEnabled = true;
   } else {

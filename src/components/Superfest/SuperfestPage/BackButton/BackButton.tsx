@@ -1,7 +1,7 @@
 import { Button } from 'src/components/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/navigation';
-import { JUMPER_FEST } from 'src/const/urls';
+import { JUMPER_FEST_PATH } from 'src/const/urls';
 import { BackButtonMainBox, ButtonTypography } from './BackButton.style';
 
 export const BackButton = () => {
@@ -12,7 +12,7 @@ export const BackButton = () => {
       <Button
         size={'small'}
         onClick={() => {
-          router.push(JUMPER_FEST);
+          router.push(JUMPER_FEST_PATH);
         }}
       >
         <ArrowBackIcon

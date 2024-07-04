@@ -107,7 +107,7 @@ export const InstructionsAccordionLinkBox = styled(Box)(({ theme }) => ({
   textAlign: 'left',
   alignItems: 'center',
   alignContent: 'center',
-  color: '#000000',
+  color: theme.palette.black.main,
   '&:hover': {
     color: theme.palette.primary.main,
   },

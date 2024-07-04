@@ -2,7 +2,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 
 import {
-  JUMPER_FEST,
+  JUMPER_FEST_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
 } from '@/const/urls';
@@ -20,7 +20,7 @@ export const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const isLearnPage = pathname?.includes(JUMPER_LEARN_PATH);
-  const isSuperFest = pathname?.includes(JUMPER_FEST);
+  const isSuperFest = pathname?.includes(JUMPER_FEST_PATH);
   const isLoyaltyPage = pathname?.includes(JUMPER_LOYALTY_PATH);
   const { setWelcomeScreenClosed } = useWelcomeScreen();
   const { closeAllMenus } = useMenuStore((state) => state);
@@ -37,15 +37,7 @@ export const Navbar = () => {
 
   return (
     <Container>
-      <LogoLink
-        id="jumper-logo"
-        onClick={handleClick}
-        sx={{
-          height: '32px',
-          display: 'flex',
-          alignContent: 'center',
-        }}
-      >
+      <LogoLink id="jumper-logo" onClick={handleClick}>
         <Logo
           variant={
             isLearnPage ? 'learn' : isSuperFest ? 'superfest' : 'default'

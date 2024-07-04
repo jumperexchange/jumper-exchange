@@ -47,7 +47,7 @@ export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
 
   return (
     <>
-      {CTAs && CTAs.length ? (
+      {CTAs && CTAs.length > 0 ? (
         <SeveralCTABox>
           {CTAs.map((CTA: CTALinkInt, i: number) => {
             return (
@@ -93,7 +93,7 @@ export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
           target="_blank"
         >
           <MissionCtaContainer onClick={handleClick}>
-            <MissionCtaTitle>{title ?? t('blog.jumperCta')}</MissionCtaTitle>
+            <MissionCtaTitle>{title ?? 'Go to Protocol Page'}</MissionCtaTitle>
             <IconButtonPrimary onClick={handleClick}>
               <ArrowForwardIcon
                 sx={{

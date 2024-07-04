@@ -13,5 +13,5 @@ export const InformationBox = styled(Box)(({ theme }) => ({
   border: '2px solid',
   padding: '32px',
   borderRadius: '24px',
-  borderColor: '#000000',
+  borderColor: theme.palette.black.main,
 }));

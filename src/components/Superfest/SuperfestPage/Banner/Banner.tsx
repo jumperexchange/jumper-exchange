@@ -26,9 +26,6 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
   const chains = attributes?.CustomInformation?.['chains'];
   const partners = attributes?.CustomInformation?.['partner'];
 
-  console.log('---------');
-  console.log(partners);
-
   return (
     <BannerMainBox>
       <BannerImageBox>

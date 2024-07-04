@@ -66,7 +66,7 @@ export const SeveralMissionCtaContainer = styled(Box)<BoxProps>(
 export const MissionCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   fontFamily: sora.style.fontFamily,
   fontWeight: 700,
-  color: '#000000',
+  color: theme.palette.black.main,
   fontSize: '32px',
   lineHeight: '38px',
   userSelect: 'none',
