@@ -33,7 +33,6 @@ export const useCheckFestNFTAvailability = ({
   userAddress,
 }: UseCheckFestNFTAvailabilityProps): UseCheckFestNFTAvailabilityRes => {
   const { address } = useAccount();
-
   const CID = 'GC2MEtgCz4';
 
   // state
@@ -81,7 +80,6 @@ export const useCheckFestNFTAvailability = ({
   };
 
   // Call to get the available rewards
-
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['festNFT'],
     queryFn: async () => {
@@ -95,38 +93,6 @@ export const useCheckFestNFTAvailability = ({
         {},
       );
       return res;
-
-      //   if (res && account?.address) {
-      //     let points = 0;
-      //     let tier = '';
-      //     const { issuedPDAs: pdas } = res as IGatewayAPI;
-      //     // filter to remove loyalty pass from pda
-      //     const pdasWithoutLoyalty = pdas.filter((pda: PDA) => {
-      //       if (pda.dataAsset.title === 'LI.FI Loyalty Pass') {
-      //         points = pda.dataAsset.claim.points;
-      //         tier = pda.dataAsset.claim.tier;
-      //         return false;
-      //       }
-      //       return true;
-      //     });
-
-      //     setLoyaltyPassData(
-      //       account.address,
-      //       points,
-      //       tier,
-      //       pdasWithoutLoyalty,
-      //       t,
-      //     );
-
-      //     return {
-      //       address: account.address,
-      //       points: points,
-      //       tier: tier,
-      //       pdas: pdasWithoutLoyalty,
-      //     };
-      //   } else {
-      //     return undefined;
-      //   }
     },
     enabled: !!address,
     refetchInterval: 1000 * 60 * 60,

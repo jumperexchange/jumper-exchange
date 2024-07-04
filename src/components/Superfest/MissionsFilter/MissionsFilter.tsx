@@ -6,7 +6,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { SoraTypography } from '../Superfest.style';
-import Image from 'next/image';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -69,14 +68,6 @@ export const MissionsFilter = ({
             style={getStyles(name, activeChoices, theme)}
           >
             <Checkbox checked={activeChoices.indexOf(name) > -1} />
-            {/* <Image
-              src={`https://strapi.li.finance/uploads/fraxtal_bbaa1cb0cd.png`}
-              alt="Effigy Wallet Icon"
-              width={16}
-              height={16}
-              priority={false}
-              style={{ marginRight: '4px' }}
-            /> */}
             <ListItemText primary={name} />
           </MenuItem>
         ))}

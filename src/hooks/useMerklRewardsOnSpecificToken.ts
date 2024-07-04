@@ -31,7 +31,6 @@ export const useMerklRewards = ({
   let userTVL = 0;
   let rewardsToClaim = [];
   const activeCampaigns = [];
-  // const addr = '0x55048E0d46f66FA00cae12905f125194CD961581';
 
   // Call to get the active positions
   // To do -> use the label to get only
@@ -66,8 +65,6 @@ export const useMerklRewards = ({
   }
 
   // check the user positions for the interesting campaign
-
-  // Call to get the available rewards
   const MERKL_REWARDS_API = `${MERKL_API}/rewards?chainIds=${rewardChainId}&user=${userAddress}`;
   const {
     data: rewardsData,
@@ -77,19 +74,14 @@ export const useMerklRewards = ({
     queryKey: ['MerklRewards'],
 
     queryFn: async () => {
-      const response = await fetch(MERKL_REWARDS_API, {
-        // headers: {
-        //   Authorization: `Bearer ${apiAccesToken}`,
-        // },
-      });
+      const response = await fetch(MERKL_REWARDS_API, {});
       const result = await response.json();
       return result;
     },
     enabled: !!userAddress,
     refetchInterval: 1000 * 60 * 60,
   });
-  // transform the rewards to get the total in the token that we want // OP
-  // transform the result to know what is coming from Jumper campaigns
+
   // transform to know what is not coming from Jumper campaigns
   if (rewardsData) {
     const tokenData = rewardsData[rewardChainId]?.tokenData;

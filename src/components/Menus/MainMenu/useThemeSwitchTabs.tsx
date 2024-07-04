@@ -23,7 +23,6 @@ export const useThemeSwitchTabs = () => {
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
     : 'light';
-  // const { availableWidgetTheme, activeUid } = usePartnerTheme();
   const [themeMode, setThemeMode] = useSettingsStore((state) => [
     state.themeMode,
     state.setThemeMode,

@@ -28,8 +28,6 @@ export const HeroBox = () => {
               color: '#ffffff',
               alignItems: 'center',
               minWidth: '400px',
-              // backgroundColor: 'transparent',
-              // border: '2px dotted',
               padding: '16px',
             }}
           >

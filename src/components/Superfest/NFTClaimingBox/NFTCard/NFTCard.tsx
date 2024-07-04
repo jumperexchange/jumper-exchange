@@ -65,15 +65,7 @@ export const NFTCard = ({
             claimInfo.cap,
             address,
             claimInfo.signature,
-          ],
-          //       function claimCapped(uint256 _cid,       // Campaign number id
-          //         address _starNFT,   // NFT contract address
-          //         uint256 _dummyId,   // Unique id
-          //         uint256 _powah,     // Reserved field, currently is campaign id
-          //         uint256 _cap,       // Campaign cap
-          //         address _mintTo,    // NFG owner
-          //         bytes calldata _signature  // Claim signature
-          // )
+          ], // function claimCapped(uint256 _cid, address _starNFT, uint256 _dummyId, uint256 _powah, uint256 _cap, address _mintTo, bytes calldata _signature)
         });
       }
     } catch (err) {
