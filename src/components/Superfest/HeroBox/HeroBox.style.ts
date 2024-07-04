@@ -1,4 +1,4 @@
-import { Box, Breakpoint, styled } from '@mui/material';
+import { Box, type Breakpoint, styled } from '@mui/material';
 
 export const HeroMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',

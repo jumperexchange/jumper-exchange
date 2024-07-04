@@ -1,6 +1,6 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Typography, alpha, styled } from '@mui/material';
-import { sequel65, sequel85 } from 'src/fonts/fonts';
+import { sequel65 } from 'src/fonts/fonts';
 
 export const BannerMainBox = styled(Box)(({ theme }) => ({
   width: '80%',

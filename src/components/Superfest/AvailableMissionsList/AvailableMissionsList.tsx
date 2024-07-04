@@ -10,10 +10,9 @@ import {
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import {
   Box,
-  SelectChangeEvent,
-  Theme,
+  type SelectChangeEvent,
+  type Theme,
   useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import { useState } from 'react';
 import { MissionsFilter } from '../MissionsFilter/MissionsFilter';

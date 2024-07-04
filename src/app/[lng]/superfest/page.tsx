@@ -1,5 +1,5 @@
 import Superfest from 'src/app/ui/superfest/Superfest';
-import { Metadata } from 'next';
+import { type Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

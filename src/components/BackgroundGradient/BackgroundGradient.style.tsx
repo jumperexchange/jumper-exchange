@@ -1,7 +1,6 @@
 'use client';
 import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, styled } from '@mui/material/styles';
-import BG from '../illustrations/spbg.svg';
 export interface BackgroundGradientContainerProps
   extends Omit<HTMLDivElement, 'children'> {
   children?: JSX.Element | JSX.Element[] | React.ReactNode;

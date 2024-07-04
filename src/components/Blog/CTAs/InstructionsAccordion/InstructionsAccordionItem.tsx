@@ -16,7 +16,6 @@ import {
   InstructionsAccordionLinkBox,
   InstructionsAccordionToggle,
 } from '.';
-import { Button } from 'src/components/Button';
 import { sora } from 'src/fonts/fonts';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
@@ -132,6 +131,7 @@ export const InstructionsAccordionItem = ({
                       <a
                         href={buttonLinks[i]}
                         target="_blank"
+                        rel="noreferrer"
                         style={{ textDecoration: 'none', color: 'inherit' }}
                       >
                         <InstructionsAccordionLinkBox>

@@ -3,10 +3,10 @@ import { HeroButtonBox, HeroMainBox } from './HeroBox.style';
 import { Button } from 'src/components/Button';
 import { SoraTypography } from '../Superfest.style';
 import Link from 'next/link';
-import { Theme, useMediaQuery } from '@mui/material';
+import { type Theme, useMediaQuery } from '@mui/material';
 import { SuperfestPresentedBy } from 'src/components/illustrations/SuperfestPresentedBy';
 
-export const HeroBox = ({}) => {
+export const HeroBox = () => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );

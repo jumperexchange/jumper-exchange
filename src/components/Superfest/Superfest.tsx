@@ -1,6 +1,4 @@
 import { useAccounts } from '@/hooks/useAccounts';
-import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
-import { Box, Stack } from '@mui/material';
 import { SuperfestContainer, SuperfestMainBox } from './Superfest.style';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
 import { NFTClaimingBox } from './NFTClaimingBox/NFTClaimingBox';

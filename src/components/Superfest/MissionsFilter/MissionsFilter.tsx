@@ -1,9 +1,9 @@
-import { Theme, useTheme } from '@mui/material';
+import { type Theme, useTheme } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { SoraTypography } from '../Superfest.style';
 import Image from 'next/image';

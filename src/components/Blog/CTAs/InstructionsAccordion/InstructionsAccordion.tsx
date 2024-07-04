@@ -1,14 +1,9 @@
-import { ThemeModesSupported } from 'src/types/settings';
+import { type ThemeModesSupported } from 'src/types/settings';
 import { InstructionsAccordionContainer, InstructionsAccordionItem } from '.';
 
 interface InstructionsItemLink {
   label: string;
   url: string;
-}
-
-interface ButtonInfoStruct {
-  link: string;
-  text: string;
 }
 
 export interface InstructionItemProps {

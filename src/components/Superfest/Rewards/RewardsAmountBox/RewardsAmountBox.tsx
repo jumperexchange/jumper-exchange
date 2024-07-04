@@ -1,4 +1,4 @@
-import { Box, Theme, useMediaQuery } from '@mui/material';
+import { Box, type Theme, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import { FlexCenterRowBox } from '../../SuperfestPage/SuperfestMissionPage.style';
 import { SoraTypography } from '../../Superfest.style';

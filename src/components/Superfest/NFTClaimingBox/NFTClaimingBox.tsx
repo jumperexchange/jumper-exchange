@@ -1,4 +1,4 @@
-import { Box, Typography, Divider } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   NFTClaimingContainer,
   NFTClaimingDescription,
@@ -7,7 +7,7 @@ import {
   NFTDisplayBox,
 } from './NFTClaimingBox.style';
 import { NFTCard } from './NFTCard/NFTCard';
-import { NFTInfo } from 'src/hooks/useCheckFestNFTAvailability';
+import { type NFTInfo } from 'src/hooks/useCheckFestNFTAvailability';
 
 const NFT_ARRAY = [
   {

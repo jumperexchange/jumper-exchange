@@ -7,7 +7,6 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { EventTrackingTool } from '@/types/userTracking';
 import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   CarouselContainerBox,
   CarouselHeader,
@@ -33,7 +32,6 @@ export const CarouselContainer = ({
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const carouselContainerRef = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation();
 
   const handleChange = useCallback(
     (direction: 'next' | 'prev') => {

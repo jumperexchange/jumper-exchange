@@ -1,4 +1,4 @@
-import { Box, Breakpoint, Typography, alpha, styled } from '@mui/material';
+import { Box, type Breakpoint, Typography, styled } from '@mui/material';
 import { sequel85 } from 'src/fonts/fonts';
 
 export const BackButtonMainBox = styled(Box)(({ theme }) => ({

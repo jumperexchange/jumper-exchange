@@ -2,7 +2,7 @@ import { SuperfestContainer } from '../Superfest.style';
 import { SuperfestPageMainBox } from './SuperfestMissionPage.style';
 import generateKey from 'src/app/lib/generateKey';
 import { MissionCTA } from './CTA/MissionCTA';
-import { Quest } from 'src/types/loyaltyPass';
+import { type Quest } from 'src/types/loyaltyPass';
 import { BackButton } from './BackButton/BackButton';
 import { BannerBox } from './Banner/Banner';
 import { DescriptionBox } from './DescriptionBox/DescriptionBox';

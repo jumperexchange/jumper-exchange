@@ -1,4 +1,3 @@
-import type { TypographyProps } from '@mui/material';
 import { Box, Container, Typography, alpha, styled } from '@mui/material';
 
 export const ProfilePageContainer = styled(Container)(() => ({

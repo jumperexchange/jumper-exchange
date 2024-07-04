@@ -1,7 +1,4 @@
 'use client';
-import { MercleNFTABI } from '../const/abi/mercleNftABI';
-import { base } from 'wagmi/chains';
-import { useReadContract } from 'wagmi';
 import { useQuery } from '@tanstack/react-query';
 
 export interface UseMerklRes {

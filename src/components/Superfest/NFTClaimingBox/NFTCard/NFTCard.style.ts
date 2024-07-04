@@ -1,5 +1,4 @@
-import { Box, Breakpoint, Typography, alpha, styled } from '@mui/material';
-import { sequel85 } from 'src/fonts/fonts';
+import { Box, styled } from '@mui/material';
 
 export const NFTCardMainBox = styled(Box)(({ theme }) => ({
   width: '256px',

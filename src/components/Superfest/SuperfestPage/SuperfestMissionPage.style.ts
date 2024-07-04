@@ -1,5 +1,4 @@
-import type { BoxProps } from '@mui/material';
-import { Box, alpha, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 export const SuperfestPageElementContainer = styled(Box)(({ theme }) => ({
   width: '80%',

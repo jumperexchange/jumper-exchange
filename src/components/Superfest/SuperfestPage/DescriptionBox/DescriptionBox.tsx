@@ -2,7 +2,7 @@ import {
   LeftTextBox,
   SuperfestPageElementContainer,
 } from '../SuperfestMissionPage.style';
-import { Sequel85Typography, SoraTypography } from '../../Superfest.style';
+import { SoraTypography } from '../../Superfest.style';
 import { DescriptionTitleTypography } from './DescriptionBox.style';
 
 interface DescriptionBox {

@@ -3,7 +3,7 @@ import {
   SuperfestPageElementContainer,
 } from '../SuperfestMissionPage.style';
 import { CustomRichBlocks } from 'src/components/Blog';
-import { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { DescriptionTitleTypography } from '../DescriptionBox/DescriptionBox.style';
 
 interface StepsBoxProps {

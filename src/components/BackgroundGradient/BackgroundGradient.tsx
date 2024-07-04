@@ -11,7 +11,6 @@ import { SirBridgeLot } from '../illustrations/SirBridgeLot';
 import { FixBoxWithNoOverflow, MovingBox } from './MovingBox.style';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 
 interface BackgroundGradientProps {
   styles?: CSSObject;

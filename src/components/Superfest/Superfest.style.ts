@@ -1,4 +1,4 @@
-import { Box, Container, Typography, alpha, styled } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import { sequel65, sequel85, sora } from 'src/fonts/fonts';
 
 export const SuperfestContainer = styled(Box)(() => ({

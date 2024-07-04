@@ -1,4 +1,3 @@
-import type { Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/material';
 
 export const RewardTopBox = styled(Box)(({ theme }) => ({

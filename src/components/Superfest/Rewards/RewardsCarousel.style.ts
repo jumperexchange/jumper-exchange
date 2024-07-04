@@ -1,13 +1,11 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import {
   Box,
-  Stack,
   Typography,
-  alpha,
   styled,
   IconButton as MuiIconButton,
 } from '@mui/material';
-import { sequel65, sequel85 } from 'src/fonts/fonts';
+import { sequel65 } from 'src/fonts/fonts';
 import { getContrastAlphaColor } from '@/utils/colors';
 import type { IconButtonProps } from '@mui/material';
 

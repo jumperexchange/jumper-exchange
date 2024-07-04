@@ -1,4 +1,4 @@
-import { sequel65, sequel85, sora, urbanist } from '@/fonts/fonts';
+import { sora } from '@/fonts/fonts';
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, alpha, darken } from '@mui/material';
 import { styled } from '@mui/material/styles';

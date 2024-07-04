@@ -1,5 +1,5 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, alpha, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import { ButtonPrimary } from '../../Button';
 
 export const SuperfestCarouselContainer = styled(Box)(({ theme }) => ({

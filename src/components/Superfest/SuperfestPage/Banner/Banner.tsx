@@ -1,26 +1,13 @@
-import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
 import Image from 'next/image';
-import { Quest } from 'src/types/loyaltyPass';
+import { type Quest } from 'src/types/loyaltyPass';
 import {
   BannerImageBox,
-  DateChainBox,
-  SupportedChainsBox,
   BannerBottomBox,
   BannerMainBox,
-  QuestDatesBox,
   BannerTitleBox,
   RewardMainBox,
   BannerTitleTypography,
 } from './Banner.style';
-import {
-  FlexCenterRowBox,
-  FlexCenterSpaceRowBox,
-} from '../SuperfestMissionPage.style';
-import {
-  CenteredBox,
-  Sequel85Typography,
-  SoraTypography,
-} from '../../Superfest.style';
 import { RewardBox } from './Rewards/RewardBox';
 
 interface SuperfestMissionPageVar {

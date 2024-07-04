@@ -9,7 +9,7 @@ import {
   SeveralCTABox,
   SeveralMissionCtaContainer,
 } from './MissionCTA.style';
-import { Box, Breakpoint, Theme, useMediaQuery } from '@mui/material';
+import { type Theme, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import { SoraTypography } from '../../Superfest.style';
 

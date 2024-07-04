@@ -1,9 +1,3 @@
-import { getArticleBySlug } from '@/app/lib/getArticleBySlug';
-import { getArticlesByTag } from '@/app/lib/getArticlesByTag';
-import { getCookies } from '@/app/lib/getCookies';
-import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
-import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
-import type { Metadata } from 'next';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import SuperfestPage from 'src/app/ui/superfest/SuperfestMissionPage';
 

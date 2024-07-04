@@ -1,5 +1,5 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, Stack, Typography, alpha, styled } from '@mui/material';
+import { Box, Stack, Typography, styled } from '@mui/material';
 
 export const AvailableMissionsContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#fdfbef',

@@ -1,6 +1,5 @@
 import { CarouselContainer } from '@/components/Blog/BlogCarousel/CarouselContainer';
 import type { Quest } from '@/types/loyaltyPass';
-import { useTranslation } from 'react-i18next';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
@@ -31,7 +30,6 @@ export const ActiveSuperfestMissionsCarousel = ({
   activeCampaigns,
 }: QuestCarouselProps) => {
   const { url } = useOngoingFestMissions();
-  const { t } = useTranslation();
 
   const isNotLive = !loading && (!quests || quests.length === 0);
   return (
