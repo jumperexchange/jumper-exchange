@@ -184,7 +184,7 @@ export const CustomRichBlocks = ({
         return (
           <BlogParagraphContainer>
             {children.map((el: any, index: number) => {
-              if (el.props.text && el.props.text !== '') {
+              if (el.props.text || el.props.text !== '') {
                 if (el.props.content?.type === 'link') {
                   return (
                     <BlogLink
@@ -195,18 +195,41 @@ export const CustomRichBlocks = ({
                     </BlogLink>
                   );
                 } else {
-                  return (
-                    <BlogParagraph
-                      italic={el.props.italic}
-                      strikethrough={el.props.strikethrough}
-                      underline={el.props.underline}
-                      bold={el.props.bold}
-                      key={`blog-paragraph-${index}`}
-                    >
-                      {el.props.text}
-                    </BlogParagraph>
-                  );
+                  if (el.props.text.indexOf('\n') === -1) {
+                    return (
+                      <BlogParagraph
+                        italic={el.props.italic}
+                        strikethrough={el.props.strikethrough}
+                        underline={el.props.underline}
+                        bold={el.props.bold}
+                        key={`blog-paragraph-${index}`}
+                      >
+                        {el.props.text}
+                      </BlogParagraph>
+                    );
+                  } else {
+                    return el.props.text
+                      .split('\n')
+                      .map((line: string, lineIndex: number) => {
+                        if (line === '') {
+                          return <></>;
+                        }
+                        return (
+                          <BlogParagraph
+                            italic={el.props.italic}
+                            strikethrough={el.props.strikethrough}
+                            underline={el.props.underline}
+                            bold={el.props.bold}
+                            key={`blog-paragraph-line-${index}-${lineIndex}`}
+                          >
+                            {line}
+                          </BlogParagraph>
+                        );
+                      });
+                  }
                 }
+              } else {
+                return <></>;
               }
             })}
           </BlogParagraphContainer>
