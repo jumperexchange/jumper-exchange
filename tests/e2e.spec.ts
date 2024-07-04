@@ -93,7 +93,7 @@ test.describe('Jumper full e2e flow', () => {
     await itemInMenu(page, 'LI.FI Explorer');
     const newPage = await page.waitForEvent('popup', { timeout: 15000 });
     expect(newPage.url()).toBe(
-      'https://explorer.li.fi/?utm_source=jumper&utm_campaign=jumper_to_explorer&utm_medium=menu',
+      'https://scan.li.fi/?utm_source=jumper&utm_campaign=jumper_to_explorer&utm_medium=menu',
     );
   });
 
