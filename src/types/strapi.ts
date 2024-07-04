@@ -191,7 +191,7 @@ export interface PartnerThemesData {
 }
 
 export interface Customization {
-  palette: { [colorName: string]: string };
+  palette: { [colorName: string]: { main: string } };
   logoName?: string;
   footerBannerUrl?: string;
   typography?: string;

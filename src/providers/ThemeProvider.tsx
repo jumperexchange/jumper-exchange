@@ -74,39 +74,49 @@ export const ThemeProvider: React.FC<
         },
         palette: {
           primary: {
-            main: currentCustomizedTheme.palette?.primary
-              ? currentCustomizedTheme.palette.primary
-              : currentTheme.palette.primary.main,
+            main:
+              typeof currentCustomizedTheme.palette?.primary?.main === 'string'
+                ? currentCustomizedTheme.palette.primary.main
+                : currentTheme.palette.primary.main,
           },
           secondary: {
-            main: currentCustomizedTheme.palette?.secondary
-              ? currentCustomizedTheme.palette.secondary
-              : currentTheme.palette.secondary.main,
+            main:
+              typeof currentCustomizedTheme.palette?.secondary?.main ===
+              'string'
+                ? currentCustomizedTheme.palette.secondary.main
+                : currentTheme.palette.secondary.main,
           },
           accent1: {
-            main: currentCustomizedTheme.palette?.accent1
-              ? currentCustomizedTheme.palette.accent1
-              : currentTheme.palette.surface1.main,
+            main:
+              typeof currentCustomizedTheme.palette?.accent1?.main === 'string'
+                ? currentCustomizedTheme.palette.accent1.main
+                : currentTheme.palette.surface1.main,
           },
           accent1Alt: {
-            main: currentCustomizedTheme.palette?.accent1Alt
-              ? currentCustomizedTheme.palette.accent1Alt
-              : currentTheme.palette.surface1.main,
+            main:
+              typeof currentCustomizedTheme.palette?.accent1Alt?.main ===
+              'string'
+                ? currentCustomizedTheme.palette.accent1Alt.main
+                : currentTheme.palette.surface1.main,
           },
           accent2: {
-            main: currentCustomizedTheme.palette?.accent2
-              ? currentCustomizedTheme.palette.accent2
-              : currentTheme.palette.surface1.main,
+            main:
+              typeof currentCustomizedTheme.palette?.accent2?.main === 'string'
+                ? currentCustomizedTheme.palette.accent2.main
+                : currentTheme.palette.surface1.main,
           },
           surface1: {
-            main: currentCustomizedTheme.palette?.surface1
-              ? currentCustomizedTheme.palette.surface1
-              : currentTheme.palette.surface1.main,
+            main:
+              typeof currentCustomizedTheme.palette?.surface1?.main === 'string'
+                ? currentCustomizedTheme.palette.surface1.main
+                : currentTheme.palette.surface1.main,
           },
           surface2: {
-            main: currentCustomizedTheme?.palette?.surface2
-              ? currentCustomizedTheme?.palette.surface2
-              : currentTheme.palette.surface2.main,
+            main:
+              typeof currentCustomizedTheme?.palette?.surface2?.main ===
+              'string'
+                ? currentCustomizedTheme?.palette.surface2.main
+                : currentTheme.palette.surface2.main,
           },
         },
         // typography: currentCustomizedTheme.typography
