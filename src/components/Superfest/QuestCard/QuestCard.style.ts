@@ -21,6 +21,8 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   flexGrow: 1,
   padding: '16px',
   backgroundColor: '#fff0ca',
+  borderBottomLeftRadius: '8px',
+  borderBottomRightRadius: '8px',
 }));
 
 export const QuestCardTitleBox = styled(Box)(() => ({
@@ -28,7 +30,6 @@ export const QuestCardTitleBox = styled(Box)(() => ({
   alignItems: 'center',
   alignContent: 'center',
   textAlign: 'left',
-  minHeight: '48px',
 }));
 
 export interface QuestCardInfoBoxProps extends Omit<BoxProps, 'component'> {
@@ -85,14 +86,19 @@ export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {
 export const XPDisplayBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active',
 })<XPDisplayBoxProps>(({ active }) => ({
-  width: '54px',
   marginRight: active ? '8px' : undefined,
   display: 'flex',
   height: '24px',
   alignContent: 'center',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
   alignItems: 'center',
   borderRadius: '128px',
   padding: '8px',
   backgroundColor: '#ff0420',
+}));
+
+export const XPIconBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignContent: 'flex-end',
+  justifyContent: 'flex-end',
 }));

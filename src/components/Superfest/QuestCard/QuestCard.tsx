@@ -16,6 +16,7 @@ import {
   QuestCardMainBox,
   QuestCardTitleBox,
   XPDisplayBox,
+  XPIconBox,
 } from './QuestCard.style';
 import { OPBadge } from 'src/components/illustrations/OPBadge';
 import { Box } from '@mui/material';
@@ -75,6 +76,7 @@ export const QuestCard = ({
           sx={{
             position: 'relative',
             marginLeft: '-32px',
+            maringTop: '-16px',
           }}
         >
           {rewards?.amount && <OPBadge />}
@@ -82,11 +84,10 @@ export const QuestCard = ({
       </Box>
       <QuestCardBottomBox>
         <QuestCardTitleBox>
-          <SoraTypography fontSize="18px" lineHeight="24px" fontWeight={700}>
-            {title}
+          <SoraTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
+            {title && title.length > 25 ? `${title.slice(0, 24)}...` : title}
           </SoraTypography>
         </QuestCardTitleBox>
-
         <FlexSpaceBetweenBox marginBottom={'8px'} marginTop={'8px'}>
           <FlexCenterRowBox>
             {chains?.map((elem: Chain, i: number) => {
@@ -99,8 +100,8 @@ export const QuestCard = ({
                     zIndex: 100 - i,
                   }}
                   alt={elem.name}
-                  width="32"
-                  height="32"
+                  width="24"
+                  height="24"
                 />
               );
             })}
@@ -116,9 +117,9 @@ export const QuestCard = ({
                 >
                   {`+${points}`}
                 </SoraTypography>
-                <CenteredBox sx={{ marginLeft: '4px' }}>
+                <XPIconBox marginLeft="4px">
                   <SuperfestXPIcon size={16} />
-                </CenteredBox>
+                </XPIconBox>
               </XPDisplayBox>
             </FlexCenterRowBox>
           ) : undefined}

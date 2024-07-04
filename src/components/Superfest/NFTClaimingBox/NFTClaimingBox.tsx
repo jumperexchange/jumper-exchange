@@ -62,7 +62,7 @@ export const NFTClaimingBox = ({
         <Box marginTop="32px" marginBottom="32px">
           <NFTClaimingDescription>
             {
-              'Explore the Superchain Festival and vibe at the sound of 1.5M OP rewards. Feel the music, complete the tasksand get ready to experience rewards like never before.'
+              'Explore the Superchain Festival and vibe at the sound of 1.5M OP rewards. Feel the music, complete the tasks and get ready to experience rewards like never before.'
             }
           </NFTClaimingDescription>
         </Box>

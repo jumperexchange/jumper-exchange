@@ -63,6 +63,6 @@ export const AvailableMissionsStack = styled(Stack)(() => ({
   marginTop: 32,
   alignItems: 'center',
   display: 'flex',
-  justifyContent: 'flex-start',
+  justifyContent: 'center',
   marginLeft: 32,
 }));

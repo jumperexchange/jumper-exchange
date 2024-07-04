@@ -20,7 +20,7 @@ import { MissionsFilter } from '../MissionsFilter/MissionsFilter';
 
 const chains = ['Optimism', 'Base', 'Mode', 'Fraxtal'];
 
-const rewards_list = ['OP Rewards', 'No OP Rewards'];
+const rewards_list = ['OP Rewards'];
 
 const category = ['Lending', 'Liquidity Pool', 'Staking', 'Stablecoins'];
 
@@ -108,7 +108,7 @@ export const AvailableMissionsList = ({
       </AvailableMissionsHeader>
       <AvailableMissionsStack
         direction={'row'}
-        spacing={{ xs: 2, sm: 4 }}
+        spacing={{ xs: 2, sm: '48px' }}
         useFlexGap
         flexWrap="wrap"
       >
@@ -125,12 +125,6 @@ export const AvailableMissionsList = ({
                 if (
                   rewardsFilter.includes('OP Rewards') &&
                   (!rewardsAmount || rewardsAmount === 0)
-                ) {
-                  return undefined;
-                } else if (
-                  rewardsFilter.includes('No OP Rewards') &&
-                  rewardsAmount &&
-                  rewardsAmount > 0
                 ) {
                   return undefined;
                 }
