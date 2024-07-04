@@ -4,6 +4,7 @@ import { sequel65, sequel85 } from 'src/fonts/fonts';
 
 export const BannerMainBox = styled(Box)(({ theme }) => ({
   width: '80%',
+  maxWidth: '1210px',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -104,20 +105,19 @@ export const DateChainBox = styled(Box)(({ theme }) => ({
 }));
 
 export const SupportedChainsBox = styled(Box)(() => ({
-  marginLeft: '8px',
   display: 'flex',
-  alignContent: 'center',
-  justifyContent: 'center',
+  alignContent: 'flex-start',
+  justifyContent: 'flex-start',
   alignItems: 'center',
 }));
 
-export const RewardLeftBox = styled(Box)(() => ({
+export const RewardBottomBox = styled(Box)(() => ({
+  marginTop: '8px',
   display: 'flex',
   flexDirection: 'row',
   textAlign: 'center',
   alignContent: 'center',
   alignItems: 'center',
-  ml: '20px',
 }));
 
 export const RewardMainBox = styled(Box)(({ theme }) => ({

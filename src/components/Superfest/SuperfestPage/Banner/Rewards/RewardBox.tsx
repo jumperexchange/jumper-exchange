@@ -1,33 +1,60 @@
 import Image from 'next/image';
-import { RewardLeftBox } from '../Banner.style';
-import { FlexCenterRowBox } from '../../SuperfestMissionPage.style';
+import { RewardBottomBox, SupportedChainsBox } from '../Banner.style';
 import { SoraTypography } from 'src/components/Superfest/Superfest.style';
-import { RewardTopBox } from './RewardBox.style';
+import { RewardTopBox, RewardSubtitleBox } from './RewardBox.style';
 
 interface RewardBoxProps {
-  logo: string;
   title: string;
+  logos: string[];
   value: string;
 }
 
-export const RewardBox = ({ logo, title, value }: RewardBoxProps) => {
+export const RewardBox = ({ title, logos, value }: RewardBoxProps) => {
   return (
     <RewardTopBox>
-      <SoraTypography fontSize={'12px'} fontWeight={700} color={'#525252'}>
-        {title}
-      </SoraTypography>
-      <RewardLeftBox>
-        <Image
-          src={logo}
-          style={{ borderRadius: '100%' }}
-          alt="base"
-          width="48"
-          height="48"
-        />
-        <SoraTypography fontSize={'18px'} fontWeight={800}>
-          {value}
+      <RewardSubtitleBox>
+        <SoraTypography fontSize={'12px'} fontWeight={700} color={'#525252'}>
+          {title}
         </SoraTypography>
-      </RewardLeftBox>
+      </RewardSubtitleBox>
+      <RewardBottomBox>
+        {logos.length > 1 ? (
+          <SupportedChainsBox>
+            {logos.map((logo: string, i: number) => {
+              return (
+                <Image
+                  key={`chain-logos-${i}`}
+                  src={logo}
+                  style={{
+                    marginLeft: i === 0 ? '' : '-8px',
+                    zIndex: 100 - i,
+                  }}
+                  alt={'logo name'}
+                  width="32"
+                  height="32"
+                />
+              );
+            })}
+          </SupportedChainsBox>
+        ) : (
+          <>
+            <Image
+              src={logos[0]}
+              style={{ borderRadius: '100%' }}
+              alt="logos-reward"
+              width="40"
+              height="40"
+            />
+            <SoraTypography
+              fontSize={'18px'}
+              fontWeight={800}
+              marginLeft={'12px'}
+            >
+              {value}
+            </SoraTypography>
+          </>
+        )}
+      </RewardBottomBox>
     </RewardTopBox>
   );
 };

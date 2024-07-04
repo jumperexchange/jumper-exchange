@@ -22,18 +22,15 @@ export const HeroBox = ({}) => {
         <HeroButtonBox>
           <Button
             disabled={false}
-            variant="secondary"
+            variant="primary"
             size="large"
             styles={{
+              color: '#ffffff',
               alignItems: 'center',
               minWidth: '400px',
-              backgroundColor: 'transparent',
-              border: '2px dotted',
+              // backgroundColor: 'transparent',
+              // border: '2px dotted',
               padding: '16px',
-              '&:hover': {
-                color: '#FFFFFF',
-                backgroundColor: '#ff0420',
-              },
             }}
           >
             <SoraTypography fontSize="16px" lineHeight="18px" fontWeight={600}>

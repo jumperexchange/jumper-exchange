@@ -3,6 +3,7 @@ import { sequel85 } from 'src/fonts/fonts';
 
 export const BackButtonMainBox = styled(Box)(({ theme }) => ({
   width: '80%',
+  maxWidth: '1210px',
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'left',

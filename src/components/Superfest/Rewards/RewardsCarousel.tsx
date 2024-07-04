@@ -98,18 +98,12 @@ export const RewardsCarousel = ({
             <ClaimButtonBox>
               <Button
                 disabled={isPending || isConfirming || isConfirmed}
-                variant="secondary"
+                variant="primary"
                 size="large"
                 styles={{
                   alignItems: 'center',
-                  backgroundColor: 'transparent',
-                  border: '2px dotted',
                   padding: '16px',
                   width: '100%',
-                  '&:hover': {
-                    color: '#FFFFFF',
-                    backgroundColor: '#ff0420',
-                  },
                 }}
                 onClick={() => handleClick()}
               >

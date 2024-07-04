@@ -2,6 +2,7 @@ import { Box, styled } from '@mui/material';
 
 export const InformationBox = styled(Box)(({ theme }) => ({
   width: '80%',
+  maxWidth: '960px',
   display: 'flex',
   marginTop: '32px',
   flexDirection: 'row',

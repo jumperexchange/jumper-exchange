@@ -48,6 +48,7 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
             baseUrl,
           )}`}
           fill
+          objectFit="cover"
           alt="Banner Image"
           style={{
             borderTopLeftRadius: '8px',
@@ -56,44 +57,6 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
         />
       </BannerImageBox>
       <BannerBottomBox>
-        {/* date + chains */}
-        <DateChainBox>
-          {/*<QuestDatesBox>
-             <CenteredBox>
-              <DateRangeRoundedIcon sx={{ height: '16px' }} />
-            </CenteredBox>
-            <SoraTypography fontSize={'12px'} lineHeight={'16px'}>
-              July-Aug */}
-          {/* </SoraTypography> */}
-          {/* {getStringDateFormatted(startDate, endDate)} */}
-          {/* </QuestDatesBox> */}
-          {/* <FlexCenterRowBox>
-            <SoraTypography
-              fontSize={'16px'}
-              fontWeight={700}
-              lineHeight={'20px'}
-            >
-              Supported chains
-            </SoraTypography>
-            <SupportedChainsBox>
-              {chains.map((elem: Chain, i: number) => {
-                return (
-                  <Image
-                    key={`chain-logo-${i}`}
-                    src={elem.logo}
-                    style={{
-                      marginLeft: i === 0 ? '' : '-8px',
-                      zIndex: 100 - i,
-                    }}
-                    alt={elem.name}
-                    width="32"
-                    height="32"
-                  />
-                );
-              })}
-            </SupportedChainsBox>
-          </FlexCenterRowBox> */}
-        </DateChainBox>
         <BannerTitleBox>
           <BannerTitleTypography>{attributes.Title}</BannerTitleTypography>
         </BannerTitleBox>
@@ -101,15 +64,15 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           {/* chains  */}
           {partner && partner.logo ? (
             <RewardBox
-              logo={partner.logo}
+              logos={chains.map((chain: Chain) => chain.logo)}
               title={'Supported Chains'}
-              value={'optimism'}
+              value={chains.length > 0 ? chains[0] : ''}
             />
           ) : undefined}
           {/* partner  */}
           {partner && partner.logo ? (
             <RewardBox
-              logo={partner.logo}
+              logos={[partner.logo]}
               title={'Sponsored by'}
               value={partner.name}
             />
@@ -117,7 +80,7 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           {/* rewards  */}
           {rewards && rewards.amount ? (
             <RewardBox
-              logo={rewards.logo}
+              logos={[rewards.logo]}
               title={'Rewards'}
               value={`${rewards.amount} ${rewards.name}`}
             />
@@ -125,7 +88,7 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           {/* Points  */}
           {attributes && attributes.Points ? (
             <RewardBox
-              logo={'https://strapi.li.finance/uploads/xp_cfcff186e5.png'}
+              logos={['https://strapi.li.finance/uploads/xp_cfcff186e5.png']}
               title={'Points'}
               value={String(attributes.Points)}
             />

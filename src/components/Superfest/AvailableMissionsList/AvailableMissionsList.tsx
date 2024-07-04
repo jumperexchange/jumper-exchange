@@ -80,7 +80,6 @@ export const AvailableMissionsList = ({
             />
           ) : (
             <>
-              {' '}
               <MissionsFilter
                 title="Chains"
                 options={chains}

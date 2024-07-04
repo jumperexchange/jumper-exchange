@@ -54,6 +54,7 @@ export const MissionCtaButton = styled(IconButtonPrimary)(({ theme }) => ({
 
 export const CTABox = styled(Box)(({ theme }) => ({
   width: '80%',
+  maxWidth: '1210px',
   display: 'flex',
   marginTop: '32px',
   flexDirection: 'row',
@@ -64,6 +65,8 @@ export const CTABox = styled(Box)(({ theme }) => ({
 
 export const SeveralCTABox = styled(Box)(({ theme }) => ({
   width: '80%',
+
+  maxWidth: '1210px',
   display: 'flex',
   alignContent: 'center',
   alignItems: 'center',
