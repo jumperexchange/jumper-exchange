@@ -60,15 +60,15 @@ export const ThemeProvider: React.FC<
 
   const activeTheme = useMemo(() => {
     let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
-
     if (activeUid && currentCustomizedTheme) {
+      console.log('currentCustomizedTheme', currentCustomizedTheme);
       // Merge partner theme attributes into the base theme
       const mergedTheme = deepmerge(currentTheme, {
         typography: {
           fontFamily:
-            currentCustomizedTheme.typography &&
-            currentTheme.typography.fontFamily &&
-            currentCustomizedTheme.typography.includes('Sora')
+            currentCustomizedTheme?.typography &&
+            currentTheme.typography?.fontFamily &&
+            currentCustomizedTheme.typography.fontFamily?.includes('Sora')
               ? sora.style.fontFamily.concat(currentTheme.typography.fontFamily)
               : currentTheme.typography.fontFamily,
         },
