@@ -4,7 +4,7 @@ import {
 } from '../SuperfestMissionPage.style';
 import { CustomRichBlocks } from 'src/components/Blog';
 import { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import { Sequel65Typography } from '../../Superfest.style';
+import { DescriptionTitleTypography } from '../DescriptionBox/DescriptionBox.style';
 
 interface StepsBoxProps {
   steps?: RootNode[];
@@ -15,9 +15,9 @@ export const StepsBox = ({ steps, baseUrl }: StepsBoxProps) => {
   return (
     <SuperfestPageElementContainer>
       <LeftTextBox>
-        <Sequel65Typography fontSize={'48px'} fontWeight={700}>
+        <DescriptionTitleTypography>
           Steps to complete the mission
-        </Sequel65Typography>
+        </DescriptionTitleTypography>
       </LeftTextBox>
       <>
         <CustomRichBlocks

@@ -7,6 +7,7 @@ import {
   MissionCtaContainer,
   MissionCtaTitle,
   SeveralCTABox,
+  SeveralMissionCtaContainer,
 } from './MissionCTA.style';
 import { Box, Breakpoint, Theme, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
@@ -54,17 +55,19 @@ export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
                 key={`cta-mission-${i}`}
                 style={{
                   textDecoration: 'none',
-                  width: isMobile ? '100%' : '45%',
+                  width: isMobile ? '100%' : '49%',
+                  color: 'inherit',
+                  marginBottom: '16px',
                 }}
                 href={CTA.link || '/'}
                 target="_blank"
               >
-                <MissionCtaContainer onClick={handleClick}>
+                <SeveralMissionCtaContainer onClick={handleClick}>
                   <Image
                     src={CTA.logo}
                     alt={`Image for ${CTA.logo}`}
-                    width={44}
-                    height={44}
+                    width={48}
+                    height={48}
                     priority={false}
                   />
                   <SoraTypography fontSize={'22px'} fontWeight={700}>
@@ -78,14 +81,14 @@ export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
                       }}
                     />
                   </IconButtonPrimary>
-                </MissionCtaContainer>
+                </SeveralMissionCtaContainer>
               </Link>
             );
           })}
         </SeveralCTABox>
       ) : (
         <Link
-          style={{ textDecoration: 'none', width: '80%' }}
+          style={{ textDecoration: 'none', width: '80%', color: 'inherit' }}
           href={url || '/'}
           target="_blank"
         >

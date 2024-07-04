@@ -31,7 +31,7 @@ export const BannerBottomBox = styled(Box)(({ theme }) => ({
   padding: '32px',
   backgroundColor: '#fdfbef',
   [theme.breakpoints.down('md' as Breakpoint)]: {
-    height: '60%',
+    height: '55%',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     height: '40%',

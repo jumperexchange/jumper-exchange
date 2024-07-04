@@ -84,8 +84,8 @@ export const QuestCard = ({
       </Box>
       <QuestCardBottomBox>
         <QuestCardTitleBox>
-          <SoraTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
-            {title && title.length > 25 ? `${title.slice(0, 24)}...` : title}
+          <SoraTypography fontSize="18px" lineHeight="18px" fontWeight={600}>
+            {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
           </SoraTypography>
         </QuestCardTitleBox>
         <FlexSpaceBetweenBox marginBottom={'8px'} marginTop={'8px'}>
@@ -100,8 +100,8 @@ export const QuestCard = ({
                     zIndex: 100 - i,
                   }}
                   alt={elem.name}
-                  width="24"
-                  height="24"
+                  width="28"
+                  height="28"
                 />
               );
             })}

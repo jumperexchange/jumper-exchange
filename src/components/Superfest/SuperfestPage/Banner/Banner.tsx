@@ -37,7 +37,10 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
   const attributes = quest?.attributes;
   const rewards = attributes?.CustomInformation?.['rewards'];
   const chains = attributes?.CustomInformation?.['chains'];
-  const partner = attributes?.CustomInformation?.['partner'];
+  const partners = attributes?.CustomInformation?.['partner'];
+
+  console.log('---------');
+  console.log(partners);
 
   return (
     <BannerMainBox>
@@ -62,19 +65,19 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
         </BannerTitleBox>
         <RewardMainBox>
           {/* chains  */}
-          {partner && partner.logo ? (
+          {chains && chains.length > 0 ? (
             <RewardBox
               logos={chains.map((chain: Chain) => chain.logo)}
               title={'Supported Chains'}
-              value={chains.length > 0 ? chains[0] : ''}
+              value={chains.length > 0 ? chains[0].name : ''}
             />
           ) : undefined}
           {/* partner  */}
-          {partner && partner.logo ? (
+          {partners && partners.length > 0 ? (
             <RewardBox
-              logos={[partner.logo]}
+              logos={partners.map((partner: Chain) => partner.logo)}
               title={'Sponsored by'}
-              value={partner.name}
+              value={partners.length > 0 ? partners[0].name : ''}
             />
           ) : undefined}
           {/* rewards  */}

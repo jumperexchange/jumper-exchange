@@ -8,7 +8,7 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '#FFFFFF'
       : alpha(theme.palette.white.main, 0.08),
-  height: '432px',
+  height: '416px',
   width: '256px',
   textAlign: 'center',
   borderRadius: '8px',
@@ -19,7 +19,10 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'space-between',
   flexGrow: 1,
-  padding: '16px',
+  paddingTop: '16px',
+  paddingBottom: '24px',
+  paddingLeft: '16px',
+  paddingRight: '16px',
   backgroundColor: '#fff0ca',
   borderBottomLeftRadius: '8px',
   borderBottomRightRadius: '8px',
@@ -62,21 +65,6 @@ export const QuestPlatformMainBox = styled(Box, {
   display: 'flex',
   justifyContent: platformName ? 'space-between' : 'flex-end',
   alignItems: 'center',
-}));
-
-export const QuestDatesBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.black.main, 0.04)
-      : theme.palette.alphaLight300.main,
-  paddingTop: '4px',
-  paddingBottom: '4px',
-  paddingLeft: '8px',
-  paddingRight: '8px',
-  borderRadius: '128px',
-  justifyContent: 'center',
 }));
 
 export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {

@@ -28,6 +28,7 @@ export const RewardBox = ({ title, logos, value }: RewardBoxProps) => {
                   style={{
                     marginLeft: i === 0 ? '' : '-8px',
                     zIndex: 100 - i,
+                    borderRadius: '100%',
                   }}
                   alt={'logo name'}
                   width="32"

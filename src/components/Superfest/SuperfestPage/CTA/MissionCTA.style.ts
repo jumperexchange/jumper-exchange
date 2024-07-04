@@ -31,6 +31,38 @@ export const MissionCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
+export const SeveralMissionCtaContainer = styled(Box)<BoxProps>(
+  ({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    mardingBottom: '16px',
+    gap: theme.spacing(1.5),
+    cursor: 'pointer',
+    overflow: 'hidden',
+    textAlign: 'center',
+    transition: 'background-color 250ms',
+    borderRadius: '16px',
+    backgroundColor: '#69d7ff',
+    '&:hover': {
+      cursor: 'pointer',
+      backgroundColor:
+        theme.palette.mode === 'light'
+          ? darken('#69d7ff', 0.02) //todo: add to theme
+          : alpha('#69d7ff', 0.16),
+    },
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      gap: theme.spacing(4),
+      flexDirection: 'row',
+    },
+  }),
+);
+
 export const MissionCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   fontFamily: sora.style.fontFamily,
   fontWeight: 700,
@@ -65,11 +97,11 @@ export const CTABox = styled(Box)(({ theme }) => ({
 
 export const SeveralCTABox = styled(Box)(({ theme }) => ({
   width: '80%',
-
   maxWidth: '1210px',
   display: 'flex',
   alignContent: 'center',
   alignItems: 'center',
+  marginTop: '64px',
   [theme.breakpoints.down('md' as Breakpoint)]: {
     flexDirection: 'column',
     justifyContent: 'center',
