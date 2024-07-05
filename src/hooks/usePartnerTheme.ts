@@ -23,7 +23,6 @@ interface usePartnerThemeProps {
   currentWidgetTheme?: PartnerTheme;
   logoUrl?: URL;
   logo?: MediaAttributes;
-  activeUid?: string;
   imgUrl?: URL;
 }
 
