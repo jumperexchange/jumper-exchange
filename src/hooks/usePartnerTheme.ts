@@ -37,18 +37,6 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   // check the list of bridge that we suport the name that we use
   const { bridgesKeys, exchangesKeys } = useDexsAndBridgesKeys();
 
-  if (pathname?.includes('memecoins')) {
-    hasTheme = true;
-    partnerName = 'memecoins';
-    return {
-      isSuccess: true,
-      hasTheme,
-      isBridgeFiltered,
-      isDexFiltered,
-      partnerName,
-    };
-  }
-
   const pathnameSplit = pathname && pathname.split('/');
   const pathnameKey =
     pathnameSplit && pathnameSplit[pathnameSplit.length - 2].toLowerCase();
@@ -81,6 +69,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
       : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+
   const { data, isSuccess } = useQuery({
     queryKey: ['partnerTheme'],
 
@@ -186,6 +175,18 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     currentCustomizedTheme = data?.lightConfig?.customization;
   } else {
     currentCustomizedTheme = undefined;
+  }
+
+  if (pathname?.includes('memecoins')) {
+    hasTheme = true;
+    partnerName = 'memecoins';
+    return {
+      isSuccess: true,
+      hasTheme,
+      isBridgeFiltered,
+      isDexFiltered,
+      partnerName,
+    };
   }
 
   return {
