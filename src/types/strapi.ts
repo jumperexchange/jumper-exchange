@@ -1,4 +1,4 @@
-import { WidgetConfig } from '@lifi/widget';
+import type { WidgetConfig } from '@lifi/widget';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 
 /* Strapi */

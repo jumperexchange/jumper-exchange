@@ -1,6 +1,12 @@
 import { usePathname } from 'next/navigation';
 import { useDexsAndBridgesKeys } from './useDexsAndBridgesKeys';
 import { useQuery } from '@tanstack/react-query';
+import {
+  MediaAttributes,
+  PartnerTheme,
+  PartnerThemesData,
+} from 'src/types/strapi';
+import { useTheme } from '@mui/material';
 
 interface usePartnerThemeProps {
   isSuccess: boolean;
@@ -8,10 +14,22 @@ interface usePartnerThemeProps {
   isBridgeFiltered: boolean;
   isDexFiltered: boolean;
   partnerName: string;
+  partnerTheme?: PartnerThemesData;
+  backgroundColor?: string;
+  currentCustomizedTheme?: any;
+  footerImageUrl?: URL;
+  footerUrl?: URL;
+  availableWidgetThemeMode?: string;
+  currentWidgetTheme?: PartnerTheme;
+  logoUrl?: URL;
+  logo?: MediaAttributes;
+  activeUid?: string;
+  imgUrl?: URL;
 }
 
 export const usePartnerTheme = (): usePartnerThemeProps => {
   const pathname = usePathname();
+  const theme = useTheme();
   let hasTheme = false;
   let isBridgeFiltered = false;
   let isDexFiltered = false;
@@ -24,6 +42,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     hasTheme = true;
     partnerName = 'memecoins';
     return {
+      isSuccess: true,
       hasTheme,
       isBridgeFiltered,
       isDexFiltered,
@@ -80,123 +99,99 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   });
   console.log(data);
 
-  // let imageUrl: URL | undefined = undefined;
-  // if (
-  //   (partnerPageThemeUid || partnerThemeUid) &&
-  //   partnerThemes?.length > 0 &&
-  //   isSuccess &&
-  //   (partnerThemes[0].attributes.BackgroundImageLight.data?.attributes.url ||
-  //     partnerThemes[0].attributes.BackgroundImageDark.data?.attributes.url)
-  // ) {
-  //   if (theme.palette.mode === 'light') {
-  //     imageUrl = new URL(
-  //       partnerThemes[0].attributes.BackgroundImageLight.data?.attributes.url,
-  //       url.origin,
-  //     );
-  //   } else {
-  //     imageUrl = new URL(
-  //       partnerThemes[0].attributes.BackgroundImageDark.data?.attributes.url,
-  //       url.origin,
-  //     );
-  //   }
-  // } else {
-  //   imageUrl = undefined;
-  // }
+  let imageUrl: URL | undefined = undefined;
+  if (
+    pathnameKey &&
+    isSuccess &&
+    (data.BackgroundImageLight.data?.attributes.url ||
+      data.BackgroundImageDark.data?.attributes.url)
+  ) {
+    if (theme.palette.mode === 'light') {
+      imageUrl = new URL(
+        data.BackgroundImageLight.data?.attributes.url,
+        url.origin,
+      );
+    } else {
+      imageUrl = new URL(
+        data.BackgroundImageDark.data?.attributes.url,
+        url.origin,
+      );
+    }
+  } else {
+    imageUrl = undefined;
+  }
 
-  // let logoUrl;
-  // let logo;
-  // if (
-  //   partnerThemeUid &&
-  //   partnerThemes?.length > 0 &&
-  //   isSuccess &&
-  //   (partnerThemes[0].attributes.LogoLight.data?.attributes.url ||
-  //     partnerThemes[0].attributes.LogoDark.data?.attributes.url)
-  // ) {
-  //   if (theme.palette.mode === 'light') {
-  //     logoUrl = new URL(
-  //       partnerThemes[0].attributes.LogoLight.data?.attributes.url,
-  //       url.origin,
-  //     );
-  //     logo = partnerThemes[0].attributes.LogoLight.data?.attributes;
-  //   } else {
-  //     logoUrl = new URL(
-  //       partnerThemes[0].attributes.LogoDark.data?.attributes.url,
-  //       url.origin,
-  //     );
-  //     logo = partnerThemes[0].attributes.LogoDark.data?.attributes;
-  //   }
-  // } else {
-  //   logoUrl = undefined;
-  // }
+  let backgroundColor;
+  if (pathnameKey && isSuccess) {
+    if (theme.palette.mode === 'light') {
+      backgroundColor = data.BackgroundColorLight;
+    } else {
+      backgroundColor = data.BackgroundColorDark;
+    }
+  } else {
+    backgroundColor = undefined;
+  }
 
-  // let backgroundColor;
-  // if (
-  //   (partnerPageThemeUid || partnerThemeUid) &&
-  //   partnerThemes?.length > 0 &&
-  //   isSuccess
-  // ) {
-  //   if (theme.palette.mode === 'light') {
-  //     backgroundColor = partnerThemes[0].attributes.BackgroundColorLight;
-  //   } else {
-  //     backgroundColor = partnerThemes[0].attributes.BackgroundColorDark;
-  //   }
-  // } else {
-  //   backgroundColor = undefined;
-  // }
+  let logoUrl;
+  let logo;
+  if (
+    pathnameKey &&
+    isSuccess &&
+    (data.LogoLight.data?.attributes.url || data.LogoDark.data?.attributes.url)
+  ) {
+    if (theme.palette.mode === 'light') {
+      logoUrl = new URL(data.LogoLight.data?.attributes.url, url.origin);
+      logo = data.LogoLight.data?.attributes;
+    } else {
+      logoUrl = new URL(data.LogoDark.data?.attributes.url, url.origin);
+      logo = data.LogoDark.data?.attributes;
+    }
+  } else {
+    logoUrl = undefined;
+  }
 
-  // let availableWidgetThemeMode;
-  // if (
-  //   (partnerPageThemeUid || partnerThemeUid) &&
-  //   partnerThemes?.length > 0 &&
-  //   isSuccess
-  // ) {
-  //   if (
-  //     partnerThemes[0].attributes.lightConfig &&
-  //     partnerThemes[0].attributes.darkConfig
-  //   ) {
-  //     availableWidgetThemeMode = 'system';
-  //   } else if (partnerThemes[0].attributes.darkConfig) {
-  //     setThemeMode('dark');
-  //     availableWidgetThemeMode = 'dark';
-  //   } else {
-  //     setThemeMode('light');
-  //     availableWidgetThemeMode = 'light';
-  //   }
-  // }
+  let availableWidgetThemeMode;
+  if (pathnameKey && isSuccess) {
+    if (data.lightConfig && data.darkConfig) {
+      availableWidgetThemeMode = 'system';
+    } else if (data.attributes.darkConfig) {
+      // setThemeMode('dark');
+      availableWidgetThemeMode = 'dark';
+    } else {
+      // setThemeMode('light');
+      availableWidgetThemeMode = 'light';
+    }
+  }
 
-  // let currentWidgetTheme;
-  // if (availableWidgetThemeMode === 'system') {
-  //   if (theme.palette.mode === 'light') {
-  //     currentWidgetTheme = partnerThemes[0].attributes.lightConfig;
-  //   } else {
-  //     currentWidgetTheme = partnerThemes[0].attributes.darkConfig;
-  //   }
-  // } else if (availableWidgetThemeMode === 'dark') {
-  //   currentWidgetTheme = partnerThemes[0].attributes.darkConfig;
-  // } else if (availableWidgetThemeMode === 'light') {
-  //   currentWidgetTheme = partnerThemes[0].attributes.lightConfig;
-  // } else {
-  //   currentWidgetTheme = undefined;
-  // }
+  let currentWidgetTheme;
+  if (availableWidgetThemeMode === 'system') {
+    if (theme.palette.mode === 'light') {
+      currentWidgetTheme = data.lightConfig;
+    } else {
+      currentWidgetTheme = data.darkConfig;
+    }
+  } else if (availableWidgetThemeMode === 'dark') {
+    currentWidgetTheme = data.darkConfig;
+  } else if (availableWidgetThemeMode === 'light') {
+    currentWidgetTheme = data.lightConfig;
+  } else {
+    currentWidgetTheme = undefined;
+  }
 
-  // let currentCustomizedTheme;
-  // if (availableWidgetThemeMode === 'system') {
-  //   if (theme.palette.mode === 'light') {
-  //     currentCustomizedTheme =
-  //       partnerThemes[0].attributes.lightConfig?.customization;
-  //   } else {
-  //     currentCustomizedTheme =
-  //       partnerThemes[0].attributes.darkConfig?.customization;
-  //   }
-  // } else if (availableWidgetThemeMode === 'dark') {
-  //   currentCustomizedTheme =
-  //     partnerThemes[0].attributes.darkConfig?.customization;
-  // } else if (availableWidgetThemeMode === 'light') {
-  //   currentCustomizedTheme =
-  //     partnerThemes[0].attributes.lightConfig?.customization;
-  // } else {
-  //   currentCustomizedTheme = undefined;
-  // }
+  let currentCustomizedTheme;
+  if (availableWidgetThemeMode === 'system') {
+    if (theme.palette.mode === 'light') {
+      currentCustomizedTheme = data.lightConfig?.customization;
+    } else {
+      currentCustomizedTheme = data.darkConfig?.customization;
+    }
+  } else if (availableWidgetThemeMode === 'dark') {
+    currentCustomizedTheme = data.darkConfig?.customization;
+  } else if (availableWidgetThemeMode === 'light') {
+    currentCustomizedTheme = data.lightConfig?.customization;
+  } else {
+    currentCustomizedTheme = undefined;
+  }
 
   return {
     isSuccess: !!pathnameKey && isSuccess,
@@ -204,16 +199,12 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     isBridgeFiltered,
     isDexFiltered,
     partnerName,
-    // partnerTheme:
-    // backgroundColor: isDapp && backgroundColor ? backgroundColor : undefined,
-    // currentCustomizedTheme:
-    //   isDapp && currentCustomizedTheme ? currentCustomizedTheme : undefined,
-    // availableWidgetThemeMode:
-    //   isDapp && availableWidgetThemeMode ? availableWidgetThemeMode : undefined,
-    // currentWidgetTheme:
-    //   isDapp && currentWidgetTheme ? currentWidgetTheme : undefined,
-    // logoUrl: isDapp && logoUrl ? logoUrl : undefined,
-    // logo: isDapp && logo ? logo : undefined,
-    // imgUrl: isDapp && imageUrl ? imageUrl : undefined,
+    backgroundColor: backgroundColor,
+    currentCustomizedTheme: currentCustomizedTheme,
+    availableWidgetThemeMode: availableWidgetThemeMode,
+    currentWidgetTheme: currentWidgetTheme,
+    logoUrl: logoUrl,
+    logo: logo,
+    imgUrl: imageUrl,
   };
 };
