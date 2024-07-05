@@ -109,12 +109,12 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     if (theme.palette.mode === 'light') {
       imageUrl = new URL(
         data.BackgroundImageLight.data?.attributes.url,
-        url.origin,
+        apiUrl.origin,
       );
     } else {
       imageUrl = new URL(
         data.BackgroundImageDark.data?.attributes.url,
-        url.origin,
+        apiUrl.origin,
       );
     }
   } else {
@@ -140,10 +140,10 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     (data.LogoLight.data?.attributes.url || data.LogoDark.data?.attributes.url)
   ) {
     if (theme.palette.mode === 'light') {
-      logoUrl = new URL(data.LogoLight.data?.attributes.url, url.origin);
+      logoUrl = new URL(data.LogoLight.data?.attributes.url, apiUrl.origin);
       logo = data.LogoLight.data?.attributes;
     } else {
-      logoUrl = new URL(data.LogoDark.data?.attributes.url, url.origin);
+      logoUrl = new URL(data.LogoDark.data?.attributes.url, apiUrl.origin);
       logo = data.LogoDark.data?.attributes;
     }
   } else {
