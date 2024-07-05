@@ -96,7 +96,6 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     enabled: !!pathnameKey,
     refetchInterval: 1000 * 60 * 60,
   });
-  console.log(data);
 
   let imageUrl: URL | undefined = undefined;
   if (
