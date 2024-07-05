@@ -1,3 +1,4 @@
+import { WidgetConfig } from '@lifi/widget';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 
 /* Strapi */
@@ -210,6 +211,16 @@ export interface PartnerThemesData {
   id: number;
   attributes: PartnerThemesAttributes;
 }
+
+export interface Customization {
+  palette: { [colorName: string]: { main: string } };
+  logoName?: string;
+  footerBannerUrl?: string;
+  typography?: string;
+}
+
+type WidgetConfigProps = Omit<WidgetConfig, 'integrator'>;
+
 export interface PartnerTheme {
   config: WidgetConfigProps;
   customization?: Customization;
