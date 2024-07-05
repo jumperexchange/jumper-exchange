@@ -151,13 +151,9 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
 
   let availableWidgetThemeMode;
   if (pathnameKey && isSuccess) {
-    if (data?.lightConfig && data?.darkConfig) {
-      availableWidgetThemeMode = 'system';
-    } else if (data?.darkConfig) {
-      // setThemeMode('dark');
+    if (data?.darkConfig) {
       availableWidgetThemeMode = 'dark';
     } else {
-      // setThemeMode('light');
       availableWidgetThemeMode = 'light';
     }
   }

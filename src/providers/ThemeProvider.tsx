@@ -36,7 +36,8 @@ export const ThemeProvider: React.FC<
   );
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
-  const { hasTheme, currentCustomizedTheme } = usePartnerTheme();
+  const { hasTheme, currentCustomizedTheme, availableWidgetThemeMode } =
+    usePartnerTheme();
   const isDarkMode = useDetectDarkModePreference();
 
   useEffect(() => {
@@ -48,7 +49,9 @@ export const ThemeProvider: React.FC<
 
   // Update the theme whenever themeMode changes
   useEffect(() => {
-    if (themeMode === 'auto') {
+    if (!!hasTheme && availableWidgetThemeMode) {
+      setTheme(availableWidgetThemeMode === 'dark' ? 'dark' : 'light');
+    } else if (themeMode === 'auto') {
       setTheme(isDarkMode ? 'dark' : 'light');
       setCookie('theme', isDarkMode ? 'dark' : 'light', {
         path: '/',
@@ -61,7 +64,7 @@ export const ThemeProvider: React.FC<
       });
       setTheme(themeMode === 'dark' ? 'dark' : 'light');
     }
-  }, [themeMode, isDarkMode, setCookie]);
+  }, [themeMode, isDarkMode, setCookie, availableWidgetThemeMode]);
 
   const activeTheme = useMemo(() => {
     let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
