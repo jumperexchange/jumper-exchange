@@ -67,7 +67,6 @@ export const ThemeProvider: React.FC<
     let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
 
     if (!!hasTheme && currentCustomizedTheme) {
-      console.log('currentCustomizedTheme', currentCustomizedTheme);
       // Merge partner theme attributes into the base theme
       const mergedTheme = deepmerge(currentTheme, {
         typography: {
