@@ -159,11 +159,7 @@ export const AvailableMissionsList = ({
                   key={`available-mission-${index}`}
                   active={true}
                   title={quest?.attributes.Title}
-                  image={`
-                    ${new URL(
-                      quest.attributes.Image?.data?.attributes?.url,
-                      url.origin,
-                    )}`}
+                  image={`${imgURL}`}
                   points={quest?.attributes.Points}
                   link={quest?.attributes.Link}
                   startDate={quest?.attributes.StartDate}
@@ -171,7 +167,6 @@ export const AvailableMissionsList = ({
                   platformName={
                     quest?.attributes.quests_platform?.data?.attributes?.Name
                   }
-                  platformImage={`${imgURL}`}
                   slug={quest?.attributes.Slug}
                   chains={chains}
                   rewards={rewards}

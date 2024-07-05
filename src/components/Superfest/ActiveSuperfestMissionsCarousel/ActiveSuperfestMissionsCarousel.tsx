@@ -58,11 +58,7 @@ export const ActiveSuperfestMissionsCarousel = ({
                       key={`active-superfest-mission-${index}`}
                       active={true}
                       title={quest?.attributes.Title}
-                      image={`
-                    ${new URL(
-                      quest.attributes.Image?.data?.attributes?.url,
-                      url.origin,
-                    )}`}
+                      image={`${imgURL}`}
                       points={quest?.attributes.Points}
                       link={quest?.attributes.Link}
                       startDate={quest?.attributes.StartDate}
@@ -71,7 +67,6 @@ export const ActiveSuperfestMissionsCarousel = ({
                         quest?.attributes.quests_platform?.data?.attributes
                           ?.Name
                       }
-                      platformImage={`${imgURL}`}
                       slug={quest?.attributes.Slug}
                       chains={quest.attributes.CustomInformation?.['chains']}
                     />
