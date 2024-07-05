@@ -11,9 +11,10 @@ export const useWidgetTheme = (): PartnerTheme => {
     config: {
       appearance: theme.palette.mode,
       theme: {
-        typography: {
-          fontFamily: theme.typography.fontFamily,
-        },
+        //todo: fix typography
+        // typography: {
+        //   fontFamily: theme.typography,
+        // },
         container: {
           borderRadius: '12px',
           maxWidth: '100%',
