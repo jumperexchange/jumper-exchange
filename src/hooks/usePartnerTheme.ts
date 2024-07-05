@@ -102,17 +102,17 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   if (
     pathnameKey &&
     isSuccess &&
-    (data?.BackgroundImageLight.data?.attributes.url ||
-      data?.BackgroundImageDark.data?.attributes.url)
+    (data?.BackgroundImageLight.data?.attributes?.url ||
+      data?.BackgroundImageDark.data?.attributes?.url)
   ) {
     if (theme.palette.mode === 'light') {
       imageUrl = new URL(
-        data?.BackgroundImageLight.data?.attributes.url,
+        data?.BackgroundImageLight.data?.attributes?.url,
         apiUrl.origin,
       );
     } else {
       imageUrl = new URL(
-        data?.BackgroundImageDark.data?.attributes.url,
+        data?.BackgroundImageDark.data?.attributes?.url,
         apiUrl.origin,
       );
     }
@@ -136,14 +136,14 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   if (
     pathnameKey &&
     isSuccess &&
-    (data?.LogoLight.data?.attributes.url ||
-      data?.LogoDark.data?.attributes.url)
+    (data?.LogoLight.data?.attributes?.url ||
+      data?.LogoDark.data?.attributes?.url)
   ) {
     if (theme.palette.mode === 'light') {
-      logoUrl = new URL(data?.LogoLight.data?.attributes.url, apiUrl.origin);
+      logoUrl = new URL(data?.LogoLight.data?.attributes?.url, apiUrl.origin);
       logo = data?.LogoLight.data?.attributes;
     } else {
-      logoUrl = new URL(data?.LogoDark.data?.attributes.url, apiUrl.origin);
+      logoUrl = new URL(data?.LogoDark.data?.attributes?.url, apiUrl.origin);
       logo = data?.LogoDark.data?.attributes;
     }
   } else {
@@ -154,7 +154,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   if (pathnameKey && isSuccess) {
     if (data?.lightConfig && data?.darkConfig) {
       availableWidgetThemeMode = 'system';
-    } else if (data?.attributes.darkConfig) {
+    } else if (data?.darkConfig) {
       // setThemeMode('dark');
       availableWidgetThemeMode = 'dark';
     } else {
