@@ -1,4 +1,5 @@
 import { usePathname } from 'next/navigation';
+import { usePartnerTheme } from './usePartnerTheme';
 
 interface useMainPathsProps {
   isMainPaths: boolean;
@@ -6,6 +7,7 @@ interface useMainPathsProps {
 
 export const useMainPaths = (): useMainPathsProps => {
   const pathname = usePathname();
+  const { hasTheme } = usePartnerTheme();
 
   const isGas = pathname?.includes('/gas');
   const isBuy = pathname?.includes('/buy');
@@ -16,6 +18,6 @@ export const useMainPaths = (): useMainPathsProps => {
     pathname.split('/').length === 2;
 
   return {
-    isMainPaths: isGas || isBuy || isExchange,
+    isMainPaths: !hasTheme && (isGas || isBuy || isExchange),
   };
 };

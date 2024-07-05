@@ -1,5 +1,6 @@
 import { usePathname } from 'next/navigation';
 import { useDexsAndBridgesKeys } from './useDexsAndBridgesKeys';
+import { useQuery } from '@tanstack/react-query';
 
 interface usePartnerThemeProps {
   hasTheme: boolean;
@@ -43,6 +44,41 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
       partnerName = pathnameKey;
     }
   }
+
+  //fetch theme if partner-url
+  const apiBaseUrl =
+    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
+      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
+      : process.env.NEXT_PUBLIC_STRAPI_URL;
+  const apiUrl = new URL(`${apiBaseUrl}/${'partner-themes'}`);
+  apiUrl.searchParams.set('populate[0]', 'BackgroundImageDark');
+  apiUrl.searchParams.set('populate[1]', 'BackgroundImageLight');
+  apiUrl.searchParams.set('populate[2]', 'LogoLight');
+  apiUrl.searchParams.set('populate[3]', 'LogoDark');
+  apiUrl.searchParams.set('filters[uid][$eq]', pathnameKey);
+  process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
+    apiUrl.searchParams.set('publicationState', 'preview');
+  const apiAccesToken =
+    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
+      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
+      : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+  const { data, isSuccess } = useQuery({
+    queryKey: ['partnerTheme'],
+
+    queryFn: async () => {
+      const response = await fetch(decodeURIComponent(apiUrl.href), {
+        headers: {
+          Authorization: `Bearer ${apiAccesToken}`,
+        },
+      });
+      const result = await response.json();
+      return result?.data?.[0]?.attributes;
+    },
+    enabled: !!pathnameKey,
+    refetchInterval: 1000 * 60 * 60,
+  });
+  console.log(data);
+  // const featureCards = data?.[0]?.attributes?.feature_cards.data;
 
   return {
     hasTheme,
