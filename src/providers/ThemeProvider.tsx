@@ -10,6 +10,7 @@ import { darkTheme, lightTheme } from 'src/theme/theme';
 import { deepmerge } from '@mui/utils';
 import { sora } from 'src/fonts/fonts';
 import { useSuperfest } from 'src/hooks/useSuperfest';
+import { useMainPaths } from 'src/hooks/useMainPaths';
 
 export const useDetectDarkModePreference = () => {
   const themeMode = useSettingsStore((state) => state.themeMode);
@@ -33,6 +34,7 @@ export const ThemeProvider: React.FC<
     themeProp,
   );
   const { isSuperfest } = useSuperfest();
+  const { isMainPaths } = useMainPaths();
   const isDarkMode = useDetectDarkModePreference();
 
   useEffect(() => {
@@ -62,7 +64,7 @@ export const ThemeProvider: React.FC<
   const activeTheme = useMemo(() => {
     let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
 
-    if (isSuperfest) {
+    if (isSuperfest || isMainPaths) {
       currentTheme = lightTheme;
       // Merge partner theme attributes into the base theme
       const mergedTheme = deepmerge(currentTheme, {

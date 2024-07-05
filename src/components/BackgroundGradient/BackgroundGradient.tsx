@@ -11,6 +11,8 @@ import { SirBridgeLot } from '../illustrations/SirBridgeLot';
 import { FixBoxWithNoOverflow, MovingBox } from './MovingBox.style';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { usePathname } from 'next/navigation';
+import { useSuperfest } from 'src/hooks/useSuperfest';
+import { useMainPaths } from 'src/hooks/useMainPaths';
 
 interface BackgroundGradientProps {
   styles?: CSSObject;
@@ -19,6 +21,12 @@ interface BackgroundGradientProps {
 export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   const { partnerName } = usePartnerTheme();
   const pathname = usePathname();
+  const { isSuperfest } = useSuperfest();
+  const { isMainPaths } = useMainPaths();
+
+  if (isSuperfest || isMainPaths) {
+    return <SuperfestBackgroundContainer sx={styles} />;
+  }
 
   if (partnerName.includes('memecoins')) {
     return (
@@ -36,13 +44,11 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
       </>
     );
   }
-  return !pathname?.includes('superfest') ? (
+  return (
     <BackgroundGradientContainer sx={styles}>
       <BackgroundGradientBottomLeft />
       <BackgroundGradientBottomRight />
       <BackgroundGradientTopCenter />
     </BackgroundGradientContainer>
-  ) : (
-    <SuperfestBackgroundContainer sx={styles} />
   );
 };

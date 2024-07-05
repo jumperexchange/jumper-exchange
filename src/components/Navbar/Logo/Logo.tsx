@@ -1,6 +1,7 @@
 import { JumperLearnLogo, JumperLogo } from '@/components/illustrations';
 import { LogoWrapper } from '@/components/illustrations/Logo.style';
 import { JumperLogoBlack } from 'src/components/illustrations/JumperLogoBlack';
+import { useMainPaths } from 'src/hooks/useMainPaths';
 
 type LogoProps = {
   variant: 'default' | 'learn' | 'superfest';
@@ -8,6 +9,7 @@ type LogoProps = {
 
 export const Logo = ({ variant }: LogoProps) => {
   let logo = <JumperLogo />;
+
   if (variant === 'learn') {
     logo = <JumperLearnLogo />;
   } else if (variant === 'superfest') {

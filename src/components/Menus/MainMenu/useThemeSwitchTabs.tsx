@@ -13,6 +13,7 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
+import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 
 export const useThemeSwitchTabs = () => {
@@ -20,6 +21,7 @@ export const useThemeSwitchTabs = () => {
   const { trackEvent } = useUserTracking();
   const [, setCookie] = useCookies(['theme']);
   const { isSuperfest } = useSuperfest();
+  const { isMainPaths } = useMainPaths();
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
     : 'light';
@@ -44,17 +46,17 @@ export const useThemeSwitchTabs = () => {
   // tooltips:
   const lightModeTooltip =
     // activeUid && availableWidgetTheme !== 'system'
-    isSuperfest
+    isSuperfest || isMainPaths
       ? t('navbar.themes.lightModeDisabled')
       : t('navbar.themes.switchToLight');
   const darkModeTooltip =
     // activeUid && availableWidgetTheme !== 'system'
-    isSuperfest
+    isSuperfest || isMainPaths
       ? t('navbar.themes.darkModeDisabled')
       : t('navbar.themes.switchToDark');
   const systemModeTooltip =
     // activeUid && availableWidgetTheme !== 'system'
-    isSuperfest
+    isSuperfest || isMainPaths
       ? t('navbar.themes.systemModeDisabled')
       : t('navbar.themes.switchToSystem');
 
@@ -63,7 +65,7 @@ export const useThemeSwitchTabs = () => {
   let darkModeEnabled = false;
   let systemModeEnabled = false;
 
-  if (isSuperfest) {
+  if (isSuperfest || isMainPaths) {
     lightModeEnabled = true;
   } else {
     systemModeEnabled = true;

@@ -15,13 +15,16 @@ import {
   NavbarButtons,
   NavbarTabs,
 } from '.';
+import { useSuperfest } from 'src/hooks/useSuperfest';
+import { useMainPaths } from 'src/hooks/useMainPaths';
 
 export const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const isLearnPage = pathname?.includes(JUMPER_LEARN_PATH);
-  const isSuperFest = pathname?.includes(JUMPER_FEST_PATH);
   const isLoyaltyPage = pathname?.includes(JUMPER_LOYALTY_PATH);
+  const { isSuperfest } = useSuperfest();
+  const { isMainPaths } = useMainPaths();
   const { setWelcomeScreenClosed } = useWelcomeScreen();
   const { closeAllMenus } = useMenuStore((state) => state);
   const handleClick = () => {
@@ -40,12 +43,16 @@ export const Navbar = () => {
       <LogoLink id="jumper-logo" onClick={handleClick}>
         <Logo
           variant={
-            isLearnPage ? 'learn' : isSuperFest ? 'superfest' : 'default'
+            isLearnPage
+              ? 'learn'
+              : isSuperfest || isMainPaths
+                ? 'superfest'
+                : 'default'
           }
         />
       </LogoLink>
       {!isLearnPage ? (
-        <NavbarTabs navbarPageReload={isLoyaltyPage || isSuperFest} />
+        <NavbarTabs navbarPageReload={isLoyaltyPage || isSuperfest} />
       ) : null}
       <NavbarButtons />
     </Container>
