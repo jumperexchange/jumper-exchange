@@ -205,3 +205,33 @@ export interface BlogArticleAttributes {
     data: any[];
   };
 }
+
+export interface PartnerThemesData {
+  id: number;
+  attributes: PartnerThemesAttributes;
+}
+export interface PartnerTheme {
+  config: WidgetConfigProps;
+  customization?: Customization;
+}
+
+export interface PartnerThemesAttributes {
+  PartnerName: string;
+  lightConfig?: PartnerTheme;
+  darkConfig?: PartnerTheme;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+  darkModeEnabled: boolean;
+  uid: string;
+  SelectableInMenu?: boolean;
+  PartnerURL?: URL;
+  BackgroundImageLight: StrapiImageData;
+  BackgroundImageDark: StrapiImageData;
+  FooterImageLight: StrapiImageData;
+  FooterImageDark: StrapiImageData;
+  LogoLight: StrapiImageData;
+  LogoDark: StrapiImageData;
+  BackgroundColorLight?: string;
+  BackgroundColorDark?: string;
+}
