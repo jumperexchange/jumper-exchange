@@ -103,17 +103,17 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   if (
     pathnameKey &&
     isSuccess &&
-    (data.BackgroundImageLight.data?.attributes.url ||
-      data.BackgroundImageDark.data?.attributes.url)
+    (data?.BackgroundImageLight.data?.attributes.url ||
+      data?.BackgroundImageDark.data?.attributes.url)
   ) {
     if (theme.palette.mode === 'light') {
       imageUrl = new URL(
-        data.BackgroundImageLight.data?.attributes.url,
+        data?.BackgroundImageLight.data?.attributes.url,
         apiUrl.origin,
       );
     } else {
       imageUrl = new URL(
-        data.BackgroundImageDark.data?.attributes.url,
+        data?.BackgroundImageDark.data?.attributes.url,
         apiUrl.origin,
       );
     }
@@ -124,9 +124,9 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   let backgroundColor;
   if (pathnameKey && isSuccess) {
     if (theme.palette.mode === 'light') {
-      backgroundColor = data.BackgroundColorLight;
+      backgroundColor = data?.BackgroundColorLight;
     } else {
-      backgroundColor = data.BackgroundColorDark;
+      backgroundColor = data?.BackgroundColorDark;
     }
   } else {
     backgroundColor = undefined;
@@ -137,14 +137,15 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   if (
     pathnameKey &&
     isSuccess &&
-    (data.LogoLight.data?.attributes.url || data.LogoDark.data?.attributes.url)
+    (data?.LogoLight.data?.attributes.url ||
+      data?.LogoDark.data?.attributes.url)
   ) {
     if (theme.palette.mode === 'light') {
-      logoUrl = new URL(data.LogoLight.data?.attributes.url, apiUrl.origin);
-      logo = data.LogoLight.data?.attributes;
+      logoUrl = new URL(data?.LogoLight.data?.attributes.url, apiUrl.origin);
+      logo = data?.LogoLight.data?.attributes;
     } else {
-      logoUrl = new URL(data.LogoDark.data?.attributes.url, apiUrl.origin);
-      logo = data.LogoDark.data?.attributes;
+      logoUrl = new URL(data?.LogoDark.data?.attributes.url, apiUrl.origin);
+      logo = data?.LogoDark.data?.attributes;
     }
   } else {
     logoUrl = undefined;
@@ -152,9 +153,9 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
 
   let availableWidgetThemeMode;
   if (pathnameKey && isSuccess) {
-    if (data.lightConfig && data.darkConfig) {
+    if (data?.lightConfig && data?.darkConfig) {
       availableWidgetThemeMode = 'system';
-    } else if (data.attributes.darkConfig) {
+    } else if (data?.attributes.darkConfig) {
       // setThemeMode('dark');
       availableWidgetThemeMode = 'dark';
     } else {
@@ -166,14 +167,14 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   let currentWidgetTheme;
   if (availableWidgetThemeMode === 'system') {
     if (theme.palette.mode === 'light') {
-      currentWidgetTheme = data.lightConfig;
+      currentWidgetTheme = data?.lightConfig;
     } else {
-      currentWidgetTheme = data.darkConfig;
+      currentWidgetTheme = data?.darkConfig;
     }
   } else if (availableWidgetThemeMode === 'dark') {
-    currentWidgetTheme = data.darkConfig;
+    currentWidgetTheme = data?.darkConfig;
   } else if (availableWidgetThemeMode === 'light') {
-    currentWidgetTheme = data.lightConfig;
+    currentWidgetTheme = data?.lightConfig;
   } else {
     currentWidgetTheme = undefined;
   }
@@ -181,14 +182,14 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   let currentCustomizedTheme;
   if (availableWidgetThemeMode === 'system') {
     if (theme.palette.mode === 'light') {
-      currentCustomizedTheme = data.lightConfig?.customization;
+      currentCustomizedTheme = data?.lightConfig?.customization;
     } else {
-      currentCustomizedTheme = data.darkConfig?.customization;
+      currentCustomizedTheme = data?.darkConfig?.customization;
     }
   } else if (availableWidgetThemeMode === 'dark') {
-    currentCustomizedTheme = data.darkConfig?.customization;
+    currentCustomizedTheme = data?.darkConfig?.customization;
   } else if (availableWidgetThemeMode === 'light') {
-    currentCustomizedTheme = data.lightConfig?.customization;
+    currentCustomizedTheme = data?.lightConfig?.customization;
   } else {
     currentCustomizedTheme = undefined;
   }
