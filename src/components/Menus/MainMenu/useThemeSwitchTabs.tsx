@@ -11,18 +11,22 @@ import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
+import { useSuperfest } from 'src/hooks/useSuperfest';
 
 export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const [, setCookie] = useCookies(['theme']);
+  const { isSuperfest } = useSuperfest();
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
     : 'light';
-
-  const setThemeMode = useSettingsStore((state) => state.setThemeMode);
+  const [themeMode, setThemeMode] = useSettingsStore((state) => [
+    state.themeMode,
+    state.setThemeMode,
+  ]);
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     trackEvent({
       category: TrackingCategory.ThemeSection,
@@ -37,10 +41,41 @@ export const useThemeSwitchTabs = () => {
     setThemeMode(mode);
   };
 
+  // tooltips:
+  const lightModeTooltip =
+    // activeUid && availableWidgetTheme !== 'system'
+    isSuperfest
+      ? t('navbar.themes.lightModeDisabled')
+      : t('navbar.themes.switchToLight');
+  const darkModeTooltip =
+    // activeUid && availableWidgetTheme !== 'system'
+    isSuperfest
+      ? t('navbar.themes.darkModeDisabled')
+      : t('navbar.themes.switchToDark');
+  const systemModeTooltip =
+    // activeUid && availableWidgetTheme !== 'system'
+    isSuperfest
+      ? t('navbar.themes.systemModeDisabled')
+      : t('navbar.themes.switchToSystem');
+
+  // handlers:
+  let lightModeEnabled = false;
+  let darkModeEnabled = false;
+  let systemModeEnabled = false;
+
+  if (isSuperfest) {
+    lightModeEnabled = true;
+  } else {
+    systemModeEnabled = true;
+    lightModeEnabled = true;
+    darkModeEnabled = true;
+  }
+
   const output = [
     {
-      tooltip: t('navbar.themes.switchToLight'),
+      tooltip: themeMode !== 'light' ? lightModeTooltip : undefined,
       value: 0,
+      blur: !lightModeEnabled,
       icon: (
         <LightModeIcon
           sx={{
@@ -49,12 +84,13 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        handleSwitchMode('light');
+        lightModeEnabled && themeMode !== 'light' && handleSwitchMode('light');
       },
     },
     {
-      tooltip: t('navbar.themes.switchToDark'),
+      tooltip: themeMode !== 'dark' ? darkModeTooltip : undefined,
       value: 1,
+      blur: !darkModeEnabled,
       icon: (
         <NightlightIcon
           sx={{
@@ -63,12 +99,13 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        handleSwitchMode('dark');
+        darkModeEnabled && themeMode !== 'dark' && handleSwitchMode('dark');
       },
     },
     {
-      tooltip: t('navbar.themes.switchToSystem'),
+      tooltip: themeMode !== 'auto' ? systemModeTooltip : undefined,
       value: 2,
+      blur: !systemModeEnabled,
       icon: (
         <BrightnessAutoIcon
           sx={{
@@ -77,7 +114,7 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        handleSwitchMode('auto');
+        systemModeEnabled && themeMode !== 'auto' && handleSwitchMode('auto');
       },
     },
   ];

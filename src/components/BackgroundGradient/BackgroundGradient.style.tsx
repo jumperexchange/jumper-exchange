@@ -29,6 +29,21 @@ const BackgroundGradient = styled('span')(() => ({
   opacity: '0.12',
 }));
 
+export const SuperfestBackgroundContainer = styled('div')(({ theme }) => ({
+  position: 'fixed',
+  backgroundRepeat: 'repeat',
+  width: '100%',
+  height: '100%',
+  backgroundImage: `url(https://strapi.li.finance/uploads/Superfest_OP_9e52e7917e.svg)`,
+  overflow: 'hidden',
+  pointerEvents: 'none',
+  left: 0,
+  bottom: 0,
+  right: 0,
+  top: 0,
+  zIndex: -1,
+}));
+
 export const BackgroundGradients = styled('span')(({ theme }) => ({
   width: theme.palette.mode === 'dark' ? '100vw' : '100vh',
   height: theme.palette.mode === 'dark' ? '100vw' : '100vh',

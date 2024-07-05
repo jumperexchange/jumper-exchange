@@ -32,14 +32,14 @@ export interface ContentWrapperProps extends Omit<BoxProps, 'component'> {
   showWelcome?: boolean;
 }
 
-const fadeOut = keyframes`
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-`;
+// const fadeOut = keyframes`
+//   from {
+//     opacity: 1;
+//   }
+//   to {
+//     opacity: 0;
+//   }
+// `;
 
 export const ContentWrapper = styled(
   Box,
