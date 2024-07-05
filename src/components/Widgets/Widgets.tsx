@@ -7,6 +7,7 @@ import type { StarterVariantType } from '@/types/internal';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import type { ThemeModesSupported } from 'src/types/settings';
 import { WidgetEvents } from './WidgetEvents';
+import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
@@ -66,6 +67,7 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
   return (
     <>
       <ChainAlert />
+      <PartnerThemeFooterImage />
       <WidgetEvents />
     </>
   );
