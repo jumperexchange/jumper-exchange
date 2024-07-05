@@ -8,9 +8,28 @@ interface TokenData {
   symbol: string;
   unclaimed: string;
 }
+interface UserPosition {
+  balance: number;
+  token: string;
+  origin: string;
+  totalSupply: number;
+  tvl: number;
+}
 
-interface TokenDataMap {
-  [address: string]: TokenData;
+interface TokenDataPosition {
+  userPositions: UserPosition[];
+  symbol?: string;
+  decimals: number;
+  token: string;
+  userTVL: number;
+  totalSupply?: number;
+  tvl?: number;
+}
+
+interface MerklPositionData {
+  [key: string]: {
+    [key: string]: TokenDataPosition;
+  };
 }
 
 interface AvailableRewards {
@@ -29,7 +48,7 @@ export interface UseMerklRes {
   userTVL: number;
   activeCampaigns: string[];
   availableRewards: AvailableRewards[];
-  // activePosition?: any[];
+  // activePosition?: {}[];
 }
 
 export interface UseMerklRewardsProps {
@@ -69,7 +88,7 @@ export const useMerklRewards = ({
     queryFn: async () => {
       const response = await fetch(MERKL_POSITIONS_API, {});
       const result = await response.json();
-      return result;
+      return result as MerklPositionData;
     },
     enabled: !!userAddress,
     refetchInterval: 1000 * 60 * 60,
@@ -79,20 +98,15 @@ export const useMerklRewards = ({
   if (positionsData) {
     for (const chain of ACTIVE_CHAINS) {
       if (positionsData[chain]) {
-        console.log(positionsData[chain]);
         for (const [key, data] of Object.entries(positionsData[chain])) {
           activeCampaigns.push(key);
-          if (
-            JUMPER_QUEST_ID.includes(key.split('_')[1]) &&
-            (data as any)?.userTVL
-          ) {
-            userTVL += (data as any)?.userTVL;
+          if (JUMPER_QUEST_ID.includes(key.split('_')[1]) && data?.userTVL) {
+            userTVL += data?.userTVL;
           }
         }
       }
     }
   }
-  console.log(activeCampaigns);
 
   // check the user positions for the interesting campaign
   const MERKL_REWARDS_API = `${MERKL_API}/rewards?chainIds=${rewardChainId}&user=${userAddress}`;
@@ -118,7 +132,6 @@ export const useMerklRewards = ({
     if (tokenData) {
       rewardsToClaim = Object.entries(tokenData).map(
         (elem): AvailableRewards => {
-          console.log(elem);
           const key = elem[0];
           const value = elem[1] as TokenData;
           return {
@@ -126,8 +139,8 @@ export const useMerklRewards = ({
             address: key,
             symbol: value.symbol,
             accumulatedAmountForContractBN: value.accumulated,
-            amountToClaim: (value.unclaimed as any) / 10 ** value.decimals,
-            amountAccumulated: (value.unclaimed as any) / 10 ** value.decimals,
+            amountToClaim: (value.unclaimed as any) / 10 ** value.decimals, //todo: need to be typed with big int
+            amountAccumulated: (value.unclaimed as any) / 10 ** value.decimals, //todo: need to be typed with big int
             proof: value.proof,
           };
         },

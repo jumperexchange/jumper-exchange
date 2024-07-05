@@ -25,7 +25,7 @@ interface RewardsCarouselProps {
   rewardAmount: number;
   accumulatedAmountForContractBN: string;
   isMerklSuccess: boolean;
-  proof: any;
+  proof: string[];
 }
 
 const CLAIMING_CONTRACT_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae';
