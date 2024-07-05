@@ -70,7 +70,7 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
       backgroundImageUrl={!!hasTheme ? bgImg : undefined}
       backgroundColor={!!hasTheme ? (bgCol as string) : undefined}
     >
-      {!!hasTheme && (
+      {!hasTheme && (
         <>
           <BackgroundGradientBottomLeft />
           <BackgroundGradientBottomRight />
