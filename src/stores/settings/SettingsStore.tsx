@@ -11,68 +11,68 @@ import { createWithEqualityFn } from 'zustand/traditional';
 
 // ----------------------------------------------------------------------
 
-/*--  Use Zustand  --*/
+/*-- Use Zustand --*/
 
-export const useSettingsStore = createWithEqualityFn(
-  persist(
-    (set, get) => ({
-      ...defaultSettings,
+const createSettingsStore = (set: any, get: any) => ({
+  ...defaultSettings,
 
-      // Mode
-      setThemeMode: (mode: ThemeModesSupported) => {
-        set({
-          themeMode: mode,
-        });
-      },
-      // Installed Wallets
-      setClientWallets: (wallet: string) => {
-        const clientWallets = (get() as SettingsProps)?.clientWallets;
-        !clientWallets.includes(wallet) &&
-          set({
-            clientWallets: [...clientWallets, wallet],
-          });
-      },
+  // Mode
+  setThemeMode: (mode: ThemeModesSupported) => {
+    set({
+      themeMode: mode,
+    });
+  },
+  // Installed Wallets
+  setClientWallets: (wallet: string) => {
+    const clientWallets = (get() as SettingsProps)?.clientWallets;
+    !clientWallets.includes(wallet) &&
+      set({
+        clientWallets: [...clientWallets, wallet],
+      });
+  },
 
-      setPartnerThemeUid: (partnerThemeUid: string) => {
-        set({
-          partnerThemeUid: partnerThemeUid,
-        });
-      },
+  setPartnerThemeUid: (partnerThemeUid: string) => {
+    set({
+      partnerThemeUid: partnerThemeUid,
+    });
+  },
 
-      setPartnerPageThemeUid: (partnerPageThemeUid: string) => {
-        set({
-          partnerPageThemeUid: partnerPageThemeUid,
-        });
-      },
+  setPartnerPageThemeUid: (partnerPageThemeUid: string) => {
+    set({
+      partnerPageThemeUid: partnerPageThemeUid,
+    });
+  },
 
-      // Disable Feature Card
-      setDisabledFeatureCard: (id: string) => {
-        const disabledFeatureCards = (get() as SettingsProps)
-          ?.disabledFeatureCards;
-        id &&
-          !disabledFeatureCards.includes(id) &&
-          set({
-            disabledFeatureCards: [...disabledFeatureCards, id],
-          });
-      },
+  // Disable Feature Card
+  setDisabledFeatureCard: (id: string) => {
+    const disabledFeatureCards = (get() as SettingsProps)?.disabledFeatureCards;
+    id &&
+      !disabledFeatureCards.includes(id) &&
+      set({
+        disabledFeatureCards: [...disabledFeatureCards, id],
+      });
+  },
 
-      // Welcome Screen
-      setWelcomeScreenClosed: (shown: boolean) => {
-        set({
-          welcomeScreenClosed: shown,
-        });
-      },
+  // Welcome Screen
+  setWelcomeScreenClosed: (shown: boolean) => {
+    set({
+      welcomeScreenClosed: shown,
+    });
+  },
 
-      // Reset
-      setDefaultSettings: () => {
-        set({
-          themeMode:
-            defaultSettings.themeMode || ('auto' as ThemeModesSupported),
-          disabledFeatureCards: defaultSettings.disabledFeatureCards || [],
-        });
-      },
-    }),
-    {
+  // Reset
+  setDefaultSettings: () => {
+    set({
+      themeMode: defaultSettings.themeMode || ('auto' as ThemeModesSupported),
+      disabledFeatureCards: defaultSettings.disabledFeatureCards || [],
+    });
+  },
+});
+
+const isClient = typeof window !== 'undefined' && window.localStorage;
+
+const persistedStore = isClient
+  ? persist(createSettingsStore, {
       name: 'jumper-store', // name of the item in the storage (must be unique)
       version: 2,
       migrate: (persistedState: any, version: number) => {
@@ -86,7 +86,15 @@ export const useSettingsStore = createWithEqualityFn(
         return { ...persistedState, partnerThemeUid: 'OP' };
       },
       // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
-    },
-  ) as unknown as StateCreator<SettingsState, [], [], SettingsState>,
+    })
+  : createSettingsStore;
+
+export const useSettingsStore = createWithEqualityFn(
+  persistedStore as unknown as StateCreator<
+    SettingsState,
+    [],
+    [],
+    SettingsState
+  >,
   shallow,
 );
