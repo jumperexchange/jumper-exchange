@@ -7,7 +7,8 @@ interface GetStrapiBaseUrlProps {
     | 'faq-items'
     | 'tags'
     | 'jumper-users'
-    | 'partner-themes';
+    | 'partner-themes'
+    | 'quests';
 }
 
 interface PaginationProps {
@@ -104,6 +105,22 @@ class ArticleParams {
   }
 }
 
+class QuestParams {
+  private apiUrl: URL;
+
+  constructor(apiUrl: URL) {
+    this.apiUrl = apiUrl;
+  }
+
+  addParams(): URL {
+    this.apiUrl.searchParams.set('populate[0]', 'Image');
+    this.apiUrl.searchParams.set('populate[1]', 'quests_platform');
+    this.apiUrl.searchParams.set('populate[2]', 'quests_platform.Logo');
+    this.apiUrl.searchParams.set('populate[3]]', 'BannerImage');
+    return this.apiUrl;
+  }
+}
+
 class ArticleStrapiApi extends StrapiApi {
   constructor() {
     super({ contentType: 'blog-articles' }); // Set content type to "blog-articles" automatically
@@ -137,6 +154,24 @@ class ArticleStrapiApi extends StrapiApi {
 
   filterByFeatured(): this {
     this.apiUrl.searchParams.set('filters[featured][$eq]', 'true');
+    return this;
+  }
+}
+
+class QuestStrapiApi extends StrapiApi {
+  constructor() {
+    super({ contentType: 'quests' }); // Set content type to "blog-articles" automatically
+    const questParams = new QuestParams(this.apiUrl);
+    this.apiUrl = questParams.addParams();
+  }
+
+  sort(order: 'asc' | 'desc'): this {
+    this.apiUrl.searchParams.set('sort', `createdAt:${order.toUpperCase()}`);
+    return this;
+  }
+
+  filterBySlug(filterSlug: string): this {
+    this.apiUrl.searchParams.set('filters[Slug][$eq]', filterSlug);
     return this;
   }
 }
@@ -234,5 +269,6 @@ export {
   FeatureCardStrapiApi,
   JumperUserStrapiApi,
   PartnerThemeStrapiApi,
+  QuestStrapiApi,
   StrapiApi,
 };

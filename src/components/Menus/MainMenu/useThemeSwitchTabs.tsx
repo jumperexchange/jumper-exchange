@@ -14,15 +14,18 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import { useSuperfest } from 'src/hooks/useSuperfest';
 
 export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const [, setCookie] = useCookies(['theme']);
+  const { isSuperfest } = useSuperfest();
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
     : 'light';
   const { availableWidgetThemeMode, activeUid } = usePartnerTheme();
+
   const [themeMode, setThemeMode] = useSettingsStore((state) => [
     state.themeMode,
     state.setThemeMode,
@@ -43,15 +46,15 @@ export const useThemeSwitchTabs = () => {
 
   // tooltips:
   const lightModeTooltip =
-    activeUid && availableWidgetThemeMode === 'dark'
+    (activeUid && availableWidgetThemeMode === 'dark') || isSuperfest
       ? t('navbar.themes.lightModeDisabled')
       : t('navbar.themes.switchToLight');
   const darkModeTooltip =
-    activeUid && availableWidgetThemeMode === 'light'
+    (activeUid && availableWidgetThemeMode === 'light') || isSuperfest
       ? t('navbar.themes.darkModeDisabled')
       : t('navbar.themes.switchToDark');
   const systemModeTooltip =
-    activeUid && availableWidgetThemeMode !== 'system'
+    (activeUid && availableWidgetThemeMode !== 'system') || isSuperfest
       ? t('navbar.themes.systemModeDisabled')
       : t('navbar.themes.switchToSystem');
 
@@ -73,6 +76,10 @@ export const useThemeSwitchTabs = () => {
         darkModeEnabled = true;
       }
     }
+  }
+
+  if (isSuperfest) {
+    lightModeEnabled = true;
   } else {
     systemModeEnabled = true;
     lightModeEnabled = true;

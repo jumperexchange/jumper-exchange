@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { sora } from 'src/fonts/fonts';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import { useSuperfest } from 'src/hooks/useSuperfest';
 import { darkTheme, lightTheme } from 'src/theme/theme';
 
 export const useDetectDarkModePreference = () => {
@@ -32,6 +33,7 @@ export const ThemeProvider: React.FC<
   const [theme, setTheme] = useState<ThemeModesSupported | undefined>(
     themeProp,
   );
+  const { isSuperfest } = useSuperfest();
   const isDarkMode = useDetectDarkModePreference();
   const { activeUid, currentCustomizedTheme } = usePartnerTheme();
   useEffect(() => {
@@ -119,6 +121,32 @@ export const ThemeProvider: React.FC<
                 : currentTheme.palette.surface2.main,
           },
         },
+      });
+      return mergedTheme;
+    } else if (isSuperfest) {
+      currentTheme = lightTheme;
+      // Merge partner theme attributes into the base theme
+      const mergedTheme = deepmerge(currentTheme, {
+        typography: {
+          fontFamily: sora.style.fontFamily,
+        },
+        palette: {
+          primary: {
+            main: '#ff0420',
+          },
+          accent1: {
+            main: '#ff0420',
+          },
+          accent1Alt: {
+            main: '#ff0420',
+          },
+          secondary: {
+            main: '#FDFBEF',
+          },
+          surface1: {
+            main: '#FDFBEF',
+          },
+        },
         // typography: currentCustomizedTheme.typography
         //   ? currentCustomizedTheme.typography
         //   : currentTheme.typography,
@@ -127,9 +155,8 @@ export const ThemeProvider: React.FC<
     } else {
       return currentTheme;
     }
-  }, [activeUid, currentCustomizedTheme, theme]);
+  }, [activeUid, currentCustomizedTheme, isSuperfest, theme]);
 
-  // Render children only when the theme is determined
   return (
     <MuiThemeProvider theme={activeTheme}>
       <CssBaseline />

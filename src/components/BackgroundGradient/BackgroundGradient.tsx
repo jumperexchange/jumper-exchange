@@ -1,5 +1,6 @@
 'use client';
 import { useTheme, type CSSObject } from '@mui/material';
+import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { usePartnerFilter } from 'src/hooks/usePartnerFilter';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
@@ -8,6 +9,7 @@ import {
   BackgroundGradientBottomRight,
   BackgroundGradientContainer,
   BackgroundGradientTopCenter,
+  SuperfestBackgroundContainer,
 } from '.';
 import { SirBridgeLot } from '../illustrations/SirBridgeLot';
 import { FixBoxWithNoOverflow, MovingBox } from './MovingBox.style';
@@ -18,6 +20,7 @@ interface BackgroundGradientProps {
 
 export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   const { partnerName } = usePartnerFilter();
+  const pathname = usePathname();
   const { partnerTheme, activeUid, backgroundColor, imgUrl } =
     usePartnerTheme();
   const theme = useTheme();
@@ -40,7 +43,7 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
     theme.palette.mode,
   ]);
 
-  if (partnerName === 'memecoins') {
+  if (partnerName.includes('memecoins')) {
     return (
       <>
         <FixBoxWithNoOverflow>
@@ -56,7 +59,7 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
       </>
     );
   }
-  return (
+  return !pathname?.includes('superfest') ? (
     <BackgroundGradientContainer
       sx={styles}
       backgroundImageUrl={activeUid ? bgImg : undefined}
@@ -70,5 +73,7 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
         </>
       )}
     </BackgroundGradientContainer>
+  ) : (
+    <SuperfestBackgroundContainer sx={styles} />
   );
 };

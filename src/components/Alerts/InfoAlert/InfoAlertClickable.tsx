@@ -7,8 +7,8 @@ import InfoIcon from '@mui/icons-material/Info';
 import { Slide, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import {
-  InfoAlertButton,
   ButtonInfoAlertClickable,
+  InfoAlertButton,
   InfoAlertContainer,
 } from '.';
 
@@ -51,8 +51,8 @@ export const InfoAlertClickable = ({
         <a
           href="https://app.sei.io/"
           target="_blank"
-          style={{ textDecoration: 'none', color: 'inherit' }}
           rel="noreferrer"
+          style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <InfoMessageCardClickable>
             <InfoAlertButton onClick={(e) => handleClose(e)}>

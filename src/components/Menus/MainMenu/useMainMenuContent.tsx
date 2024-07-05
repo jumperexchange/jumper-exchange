@@ -9,6 +9,7 @@ import {
 import {
   DISCORD_URL,
   EXPLORER_URL,
+  JUMPER_FEST_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   X_URL,
@@ -33,6 +34,7 @@ import { useTranslation } from 'react-i18next';
 import { useIsDapp } from 'src/hooks/useIsDapp';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
+import { OPLogo } from 'src/components/illustrations/OPLogo';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -175,6 +177,26 @@ export const useMainMenuContent = () => {
             EventTrackingTool.Cookie3,
           ],
         });
+      },
+    },
+    {
+      label: t('navbar.navbarMenu.fest'),
+      prefixIcon: <OPLogo />,
+      showMoreIcon: false,
+      link: { url: '/superfest' },
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-jumper-fest-link',
+          action: TrackingAction.ClickJumperProfileLink,
+          data: { [TrackingEventParameter.Menu]: 'fest' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
+        });
+        closeAllMenus();
+        router.push(JUMPER_FEST_PATH);
       },
     },
     {
