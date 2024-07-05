@@ -1,13 +1,54 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 
+interface TokenData {
+  accumulated: string;
+  decimals: number;
+  proof: string[];
+  symbol: string;
+  unclaimed: string;
+}
+interface UserPosition {
+  balance: number;
+  token: string;
+  origin: string;
+  totalSupply: number;
+  tvl: number;
+}
+
+interface TokenDataPosition {
+  userPositions: UserPosition[];
+  symbol?: string;
+  decimals: number;
+  token: string;
+  userTVL: number;
+  totalSupply?: number;
+  tvl?: number;
+}
+
+interface MerklPositionData {
+  [key: string]: {
+    [key: string]: TokenDataPosition;
+  };
+}
+
+interface AvailableRewards {
+  chainId: number;
+  address: string;
+  symbol: string;
+  accumulatedAmountForContractBN: string;
+  amountToClaim: number;
+  amountAccumulated: number;
+  proof: string[];
+}
+
 export interface UseMerklRes {
   isSuccess: boolean;
   isLoading: boolean;
   userTVL: number;
   activeCampaigns: string[];
-  activePosition: any[];
-  availableRewards: any[];
+  availableRewards: AvailableRewards[];
+  // activePosition?: {}[];
 }
 
 export interface UseMerklRewardsProps {
@@ -18,9 +59,11 @@ export interface UseMerklRewardsProps {
 
 const JUMPER_QUEST_ID = ['0x1C6A6Ee7D2e0aC0D2E3de4a69433553e0cb52777'];
 
-const ACTIVE_CHAINS = ['10', '42161', '8453', '34443'];
+const ACTIVE_CHAINS = ['10', '252', '8453', '34443'];
 
 const MERKL_API = 'https://api.merkl.xyz/v3';
+
+const CREATOR_TAG = 'jumper-test';
 
 export const useMerklRewards = ({
   userAddress,
@@ -29,12 +72,12 @@ export const useMerklRewards = ({
 }: UseMerklRewardsProps): UseMerklRes => {
   // state
   let userTVL = 0;
-  let rewardsToClaim = [];
+  let rewardsToClaim: AvailableRewards[] = [];
   const activeCampaigns = [];
 
   // Call to get the active positions
   // To do -> use the label to get only
-  const MERKL_POSITIONS_API = `${MERKL_API}/positions?chainId=${ACTIVE_CHAINS.join(',')}&user=${userAddress}`;
+  const MERKL_POSITIONS_API = `${MERKL_API}/multiChainPositions?chainIds=${ACTIVE_CHAINS.join(',')}&user=${userAddress}&creatorTag=${CREATOR_TAG}`;
   const {
     data: positionsData,
     isSuccess: positionsIsSuccess,
@@ -45,7 +88,7 @@ export const useMerklRewards = ({
     queryFn: async () => {
       const response = await fetch(MERKL_POSITIONS_API, {});
       const result = await response.json();
-      return result;
+      return result as MerklPositionData;
     },
     enabled: !!userAddress,
     refetchInterval: 1000 * 60 * 60,
@@ -53,13 +96,14 @@ export const useMerklRewards = ({
 
   // loop through the position and sum the TVL USD
   if (positionsData) {
-    for (const [key, data] of Object.entries(positionsData)) {
-      activeCampaigns.push(key);
-      if (
-        JUMPER_QUEST_ID.includes(key.split('_')[1]) &&
-        (data as any)?.userTVL
-      ) {
-        userTVL += (data as any)?.userTVL;
+    for (const chain of ACTIVE_CHAINS) {
+      if (positionsData[chain]) {
+        for (const [key, data] of Object.entries(positionsData[chain])) {
+          activeCampaigns.push(key);
+          if (JUMPER_QUEST_ID.includes(key.split('_')[1]) && data?.userTVL) {
+            userTVL += data?.userTVL;
+          }
+        }
       }
     }
   }
@@ -86,19 +130,21 @@ export const useMerklRewards = ({
   if (rewardsData) {
     const tokenData = rewardsData[rewardChainId]?.tokenData;
     if (tokenData) {
-      rewardsToClaim = Object.entries(tokenData).map((elem): any => {
-        const key = elem[0];
-        const value = elem[1] as any;
-        return {
-          chainId: rewardChainId,
-          address: key,
-          symbol: value.symbol,
-          accumulatedAmountForContractBN: value.accumulated,
-          amountToClaim: value.unclaimed / 10 ** value.decimals,
-          amountAccumulated: value.accumulated / 10 ** value.decimals,
-          proof: value.proof,
-        };
-      });
+      rewardsToClaim = Object.entries(tokenData).map(
+        (elem): AvailableRewards => {
+          const key = elem[0];
+          const value = elem[1] as TokenData;
+          return {
+            chainId: rewardChainId,
+            address: key,
+            symbol: value.symbol,
+            accumulatedAmountForContractBN: value.accumulated,
+            amountToClaim: (value.unclaimed as any) / 10 ** value.decimals, //todo: need to be typed with big int
+            amountAccumulated: (value.unclaimed as any) / 10 ** value.decimals, //todo: need to be typed with big int
+            proof: value.proof,
+          };
+        },
+      );
     }
   }
 
@@ -106,8 +152,8 @@ export const useMerklRewards = ({
     isLoading: positionsIsLoading && rewardsIsLoading,
     isSuccess: positionsIsSuccess && rewardsIsSuccess,
     userTVL: userTVL,
-    activePosition: [],
     activeCampaigns: activeCampaigns,
     availableRewards: rewardsToClaim,
+    // activePosition: [],
   };
 };
