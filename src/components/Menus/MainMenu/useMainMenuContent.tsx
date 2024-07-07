@@ -31,10 +31,11 @@ import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { OPLogo } from 'src/components/illustrations/OPLogo';
 import { useIsDapp } from 'src/hooks/useIsDapp';
+import { usePartnerFilter } from 'src/hooks/usePartnerFilter';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
-import { OPLogo } from 'src/components/illustrations/OPLogo';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -43,7 +44,7 @@ export const useMainMenuContent = () => {
   const theme = useTheme();
   const isDapp = useIsDapp();
   const { activeUid } = usePartnerTheme();
-  const { partnerPageThemeUid } = useSettingsStore((state) => state);
+  const { hasTheme, partnerName } = usePartnerFilter();
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
@@ -114,11 +115,11 @@ export const useMainMenuContent = () => {
     {
       label: t('navbar.navbarMenu.theme'),
       prefixIcon: <PaletteIcon />,
-      triggerSubMenu: !partnerPageThemeUid ? MenuKeysEnum.Theme : undefined,
-      showMoreIcon: !partnerPageThemeUid,
-      suffixIcon: activeUid ?? undefined,
+      triggerSubMenu: !hasTheme ? MenuKeysEnum.Theme : undefined,
+      showMoreIcon: !hasTheme,
+      suffixIcon: (partnerName || activeUid) ?? undefined,
       onClick: () => {
-        if (!partnerPageThemeUid) {
+        if (!hasTheme) {
           setSubMenuState(MenuKeysEnum.Theme);
           trackEvent({
             category: TrackingCategory.MainMenu,

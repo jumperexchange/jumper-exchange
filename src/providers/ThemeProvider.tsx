@@ -63,7 +63,6 @@ export const ThemeProvider: React.FC<
   const activeTheme = useMemo(() => {
     let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
     if (activeUid && currentCustomizedTheme) {
-      console.log('currentCustomizedTheme', currentCustomizedTheme);
       // Merge partner theme attributes into the base theme
       const mergedTheme = deepmerge(currentTheme, {
         typography: {

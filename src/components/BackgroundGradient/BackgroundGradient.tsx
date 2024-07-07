@@ -2,7 +2,6 @@
 import { useTheme, type CSSObject } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
-import { usePartnerFilter } from 'src/hooks/usePartnerFilter';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import {
   BackgroundGradientBottomLeft,
@@ -19,7 +18,6 @@ interface BackgroundGradientProps {
 }
 
 export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
-  const { partnerName } = usePartnerFilter();
   const pathname = usePathname();
   const { partnerTheme, activeUid, backgroundColor, imgUrl } =
     usePartnerTheme();
@@ -43,7 +41,7 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
     theme.palette.mode,
   ]);
 
-  if (partnerName.includes('memecoins')) {
+  if (pathname?.includes('memecoins')) {
     return (
       <>
         <FixBoxWithNoOverflow>

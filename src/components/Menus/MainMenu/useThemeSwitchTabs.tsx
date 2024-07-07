@@ -25,7 +25,8 @@ export const useThemeSwitchTabs = () => {
     ? 'dark'
     : 'light';
   const { availableWidgetThemeMode, activeUid } = usePartnerTheme();
-
+  console.log('USE THEME SWITCH', activeUid);
+  console.log('availableWidgetThemeMode', availableWidgetThemeMode);
   const [themeMode, setThemeMode] = useSettingsStore((state) => [
     state.themeMode,
     state.setThemeMode,
@@ -46,15 +47,15 @@ export const useThemeSwitchTabs = () => {
 
   // tooltips:
   const lightModeTooltip =
-    (activeUid && availableWidgetThemeMode === 'dark') || isSuperfest
+    (!!activeUid && availableWidgetThemeMode === 'dark') || isSuperfest
       ? t('navbar.themes.lightModeDisabled')
       : t('navbar.themes.switchToLight');
   const darkModeTooltip =
-    (activeUid && availableWidgetThemeMode === 'light') || isSuperfest
+    (!!activeUid && availableWidgetThemeMode === 'light') || isSuperfest
       ? t('navbar.themes.darkModeDisabled')
       : t('navbar.themes.switchToDark');
   const systemModeTooltip =
-    (activeUid && availableWidgetThemeMode !== 'system') || isSuperfest
+    (!!activeUid && availableWidgetThemeMode !== 'system') || isSuperfest
       ? t('navbar.themes.systemModeDisabled')
       : t('navbar.themes.switchToSystem');
 
@@ -63,28 +64,39 @@ export const useThemeSwitchTabs = () => {
   let darkModeEnabled = false;
   let systemModeEnabled = false;
 
-  if (activeUid) {
+  if (!!activeUid) {
     if (availableWidgetThemeMode === 'system') {
+      console.log('system mode enabled');
       systemModeEnabled = true;
       lightModeEnabled = true;
       darkModeEnabled = true;
     } else {
       if (availableWidgetThemeMode === 'light') {
+        console.log(' light enabled');
         lightModeEnabled = true;
       }
       if (availableWidgetThemeMode === 'dark') {
+        console.log(' dark enabled');
+
         darkModeEnabled = true;
       }
     }
-  }
-
-  if (isSuperfest) {
+  } else if (isSuperfest) {
+    console.log('isSuperfest');
+    systemModeEnabled = false;
     lightModeEnabled = true;
+    darkModeEnabled = false;
   } else {
     systemModeEnabled = true;
     lightModeEnabled = true;
     darkModeEnabled = true;
   }
+
+  console.log('CHECK IT!', {
+    systemModeEnabled,
+    lightModeEnabled,
+    darkModeEnabled,
+  });
 
   const output = [
     {

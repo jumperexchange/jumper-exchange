@@ -20,11 +20,17 @@ export const Logo = ({ variant }: LogoProps) => {
     logo = <JumperLogoBlack />;
   }
 
-  const { logoUrl, activeUid, logo: partnerLogo } = usePartnerTheme();
+  const { logo: partnerLogo, activeUid } = usePartnerTheme();
   const theme = useTheme();
+
+  console.log({
+    link: partnerLogo && partnerLogo?.logoUrl?.href,
+    width: partnerLogo?.logoObj?.width,
+    height: partnerLogo?.logoObj?.height,
+  });
   return (
     <LogoWrapper>
-      {activeUid && logoUrl && partnerLogo ? (
+      {activeUid && partnerLogo?.logoUrl && partnerLogo.logoObj ? (
         <>
           {logo}
           <ClearIcon
@@ -43,9 +49,9 @@ export const Logo = ({ variant }: LogoProps) => {
           />
           <Image
             alt="jumper-partner-logo"
-            src={logoUrl.href}
-            width={partnerLogo?.width}
-            height={partnerLogo?.height}
+            src={partnerLogo?.logoUrl.href}
+            width={partnerLogo?.logoObj?.width}
+            height={partnerLogo?.logoObj?.height}
           />
         </>
       ) : (

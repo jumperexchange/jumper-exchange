@@ -3,6 +3,7 @@
 import { useIsDapp } from '@/hooks/useIsDapp';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useTheme } from '@mui/material';
+import { useEffect, useMemo } from 'react';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import { useSettingsStore } from 'src/stores/settings';
 import type {
@@ -11,7 +12,12 @@ import type {
   PartnerThemesData,
 } from 'src/types/strapi';
 import { shallow } from 'zustand/shallow';
+import { usePartnerFilter } from './usePartnerFilter';
 
+interface Logo {
+  logoUrl?: URL;
+  logoObj?: MediaAttributes;
+}
 interface usePartnerThemeProps {
   partnerTheme?: PartnerThemesData;
   backgroundColor?: string;
@@ -20,8 +26,7 @@ interface usePartnerThemeProps {
   footerUrl?: URL;
   availableWidgetThemeMode?: string;
   currentWidgetTheme?: PartnerTheme;
-  logoUrl?: URL;
-  logo?: MediaAttributes;
+  logo?: Logo;
   activeUid?: string;
   imgUrl?: URL;
   isSuccess?: boolean;
@@ -30,12 +35,10 @@ interface usePartnerThemeProps {
 export const usePartnerTheme = (): usePartnerThemeProps => {
   const theme = useTheme();
   const isDapp = useIsDapp();
-  const [partnerThemeUid, partnerPageThemeUid, setThemeMode] = useSettingsStore(
-    (state) => [
-      state.partnerThemeUid,
-      state.partnerPageThemeUid,
-      state.setThemeMode,
-    ],
+  const { partnerName, hasTheme } = usePartnerFilter();
+
+  const [partnerThemeUid, setThemeMode] = useSettingsStore(
+    (state) => [state.partnerThemeUid, state.setThemeMode],
     shallow,
   );
 
@@ -45,162 +48,203 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
     url,
   } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
-    queryKey: ['partner-themes-filter', partnerPageThemeUid || partnerThemeUid],
-    filterUid: partnerPageThemeUid || partnerThemeUid,
+    queryKey: ['partner-themes-filter', partnerName || partnerThemeUid],
+    filterUid: partnerName || partnerThemeUid,
   });
 
-  let imageUrl: URL | undefined = undefined;
-  if (
-    (partnerPageThemeUid || partnerThemeUid) &&
-    partnerThemes?.length > 0 &&
-    isSuccess &&
-    (partnerThemes[0].attributes.BackgroundImageLight.data?.attributes.url ||
-      partnerThemes[0].attributes.BackgroundImageDark.data?.attributes.url)
-  ) {
-    if (theme.palette.mode === 'light') {
-      imageUrl = new URL(
-        partnerThemes[0].attributes.BackgroundImageLight.data?.attributes.url,
-        url.origin,
-      );
-    } else {
-      imageUrl = new URL(
-        partnerThemes[0].attributes.BackgroundImageDark.data?.attributes.url,
-        url.origin,
-      );
-    }
-  } else {
-    imageUrl = undefined;
-  }
-
-  let footerImageUrl;
-  if (
-    (partnerPageThemeUid || partnerThemeUid) &&
-    partnerThemes?.length > 0 &&
-    isSuccess &&
-    (partnerThemes[0].attributes.FooterImageLight.data?.attributes.url ||
-      partnerThemes[0].attributes.FooterImageDark.data?.attributes.url)
-  ) {
-    if (theme.palette.mode === 'light') {
-      footerImageUrl = new URL(
-        partnerThemes[0].attributes.FooterImageLight.data?.attributes.url,
-        url.origin,
-      );
-    } else {
-      footerImageUrl = new URL(
-        partnerThemes[0].attributes.FooterImageDark.data?.attributes.url,
-        url.origin,
-      );
-    }
-  } else {
-    footerImageUrl = undefined;
-  }
-
-  let footerUrl;
-  if (
-    (partnerPageThemeUid || partnerThemeUid) &&
-    partnerThemes?.length > 0 &&
-    isSuccess &&
-    partnerThemes[0].attributes.PartnerURL
-  ) {
-    footerUrl = new URL(partnerThemes[0].attributes.PartnerURL, url.origin);
-  } else {
-    footerImageUrl = undefined;
-  }
-
-  let logoUrl;
-  let logo;
-  if (
-    partnerThemeUid &&
-    partnerThemes?.length > 0 &&
-    isSuccess &&
-    (partnerThemes[0].attributes.LogoLight.data?.attributes.url ||
-      partnerThemes[0].attributes.LogoDark.data?.attributes.url)
-  ) {
-    if (theme.palette.mode === 'light') {
-      logoUrl = new URL(
-        partnerThemes[0].attributes.LogoLight.data?.attributes.url,
-        url.origin,
-      );
-      logo = partnerThemes[0].attributes.LogoLight.data?.attributes;
-    } else {
-      logoUrl = new URL(
-        partnerThemes[0].attributes.LogoDark.data?.attributes.url,
-        url.origin,
-      );
-      logo = partnerThemes[0].attributes.LogoDark.data?.attributes;
-    }
-  } else {
-    logoUrl = undefined;
-  }
-
-  let backgroundColor;
-  if (
-    (partnerPageThemeUid || partnerThemeUid) &&
-    partnerThemes?.length > 0 &&
-    isSuccess
-  ) {
-    if (theme.palette.mode === 'light') {
-      backgroundColor = partnerThemes[0].attributes.BackgroundColorLight;
-    } else {
-      backgroundColor = partnerThemes[0].attributes.BackgroundColorDark;
-    }
-  } else {
-    backgroundColor = undefined;
-  }
-
-  let availableWidgetThemeMode;
-  if (
-    (partnerPageThemeUid || partnerThemeUid) &&
-    partnerThemes?.length > 0 &&
-    isSuccess
-  ) {
+  const imageUrl: URL | undefined = useMemo(() => {
     if (
-      partnerThemes[0].attributes.lightConfig &&
-      partnerThemes[0].attributes.darkConfig
+      (hasTheme || partnerThemeUid) &&
+      partnerThemes?.length > 0 &&
+      isSuccess &&
+      (partnerThemes[0].attributes.BackgroundImageLight.data?.attributes.url ||
+        partnerThemes[0].attributes.BackgroundImageDark.data?.attributes.url)
     ) {
-      availableWidgetThemeMode = 'system';
-    } else if (partnerThemes[0].attributes.darkConfig) {
-      setThemeMode('dark');
-      availableWidgetThemeMode = 'dark';
+      if (theme.palette.mode === 'light') {
+        return new URL(
+          partnerThemes[0].attributes.BackgroundImageLight.data?.attributes.url,
+          url.origin,
+        );
+      } else {
+        return new URL(
+          partnerThemes[0].attributes.BackgroundImageDark.data?.attributes.url,
+          url.origin,
+        );
+      }
     } else {
-      setThemeMode('light');
-      availableWidgetThemeMode = 'light';
+      return undefined;
     }
-  }
+  }, [
+    hasTheme,
+    isSuccess,
+    partnerThemeUid,
+    partnerThemes,
+    theme.palette.mode,
+    url.origin,
+  ]);
 
-  let currentWidgetTheme;
-  if (availableWidgetThemeMode === 'system') {
-    if (theme.palette.mode === 'light') {
-      currentWidgetTheme = partnerThemes[0].attributes.lightConfig;
+  const footerImageUrl = useMemo(() => {
+    if (
+      (hasTheme || partnerThemeUid) &&
+      partnerThemes?.length > 0 &&
+      isSuccess &&
+      (partnerThemes[0].attributes.FooterImageLight.data?.attributes.url ||
+        partnerThemes[0].attributes.FooterImageDark.data?.attributes.url)
+    ) {
+      if (theme.palette.mode === 'light') {
+        return new URL(
+          partnerThemes[0].attributes.FooterImageLight.data?.attributes.url,
+          url.origin,
+        );
+      } else {
+        return new URL(
+          partnerThemes[0].attributes.FooterImageDark.data?.attributes.url,
+          url.origin,
+        );
+      }
     } else {
-      currentWidgetTheme = partnerThemes[0].attributes.darkConfig;
+      return undefined;
     }
-  } else if (availableWidgetThemeMode === 'dark') {
-    currentWidgetTheme = partnerThemes[0].attributes.darkConfig;
-  } else if (availableWidgetThemeMode === 'light') {
-    currentWidgetTheme = partnerThemes[0].attributes.lightConfig;
-  } else {
-    currentWidgetTheme = undefined;
-  }
+  }, [
+    hasTheme,
+    isSuccess,
+    partnerThemeUid,
+    partnerThemes,
+    theme.palette.mode,
+    url.origin,
+  ]);
 
-  let currentCustomizedTheme;
-  if (availableWidgetThemeMode === 'system') {
-    if (theme.palette.mode === 'light') {
-      currentCustomizedTheme =
-        partnerThemes[0].attributes.lightConfig?.customization;
+  const footerUrl = useMemo(() => {
+    if (
+      (hasTheme || partnerThemeUid) &&
+      partnerThemes?.length > 0 &&
+      isSuccess &&
+      partnerThemes[0].attributes.PartnerURL
+    ) {
+      return new URL(partnerThemes[0].attributes.PartnerURL, url.origin);
     } else {
-      currentCustomizedTheme =
-        partnerThemes[0].attributes.darkConfig?.customization;
+      return undefined;
     }
-  } else if (availableWidgetThemeMode === 'dark') {
-    currentCustomizedTheme =
-      partnerThemes[0].attributes.darkConfig?.customization;
-  } else if (availableWidgetThemeMode === 'light') {
-    currentCustomizedTheme =
-      partnerThemes[0].attributes.lightConfig?.customization;
-  } else {
-    currentCustomizedTheme = undefined;
-  }
+  }, [hasTheme, isSuccess, partnerThemeUid, partnerThemes, url.origin]);
+
+  const logo: Logo = useMemo(() => {
+    let logoUrl;
+    let logoObj;
+    if (
+      partnerThemeUid &&
+      partnerThemes?.length > 0 &&
+      isSuccess &&
+      (partnerThemes[0].attributes.LogoLight.data?.attributes.url ||
+        partnerThemes[0].attributes.LogoDark.data?.attributes.url)
+    ) {
+      if (theme.palette.mode === 'light') {
+        console.log(
+          'TEST light ',
+          partnerThemes[0].attributes.LogoLight.data?.attributes.url,
+        );
+        logoUrl = new URL(
+          partnerThemes[0].attributes.LogoLight.data?.attributes.url,
+          url.origin,
+        );
+        logoObj = partnerThemes[0].attributes.LogoLight.data?.attributes;
+      } else {
+        console.log(
+          'TEST dark',
+          partnerThemes[0].attributes.LogoDark.data?.attributes.url,
+        );
+        logoUrl = new URL(
+          partnerThemes[0].attributes.LogoDark.data?.attributes.url,
+          url.origin,
+        );
+        logoObj = partnerThemes[0].attributes.LogoDark.data?.attributes;
+      }
+    }
+    return { logoUrl, logoObj };
+  }, [
+    isSuccess,
+    partnerThemeUid,
+    partnerThemes,
+    theme.palette.mode,
+    url.origin,
+  ]);
+
+  const backgroundColor = useMemo(() => {
+    if (
+      (hasTheme || partnerThemeUid) &&
+      partnerThemes?.length > 0 &&
+      isSuccess
+    ) {
+      if (theme.palette.mode === 'light') {
+        return partnerThemes[0].attributes.BackgroundColorLight;
+      } else {
+        return partnerThemes[0].attributes.BackgroundColorDark;
+      }
+    } else {
+      return undefined;
+    }
+  }, [hasTheme, isSuccess, partnerThemeUid, partnerThemes, theme.palette.mode]);
+
+  const availableWidgetThemeMode = useMemo(() => {
+    if (
+      (hasTheme || partnerThemeUid) &&
+      partnerThemes?.length > 0 &&
+      isSuccess
+    ) {
+      if (
+        partnerThemes[0].attributes.lightConfig &&
+        partnerThemes[0].attributes.darkConfig
+      ) {
+        return 'system';
+      } else if (partnerThemes[0].attributes.darkConfig) {
+        return 'dark';
+      } else {
+        return 'light';
+      }
+    }
+  }, [hasTheme, isSuccess, partnerThemeUid, partnerThemes]);
+
+  // Move the state update to useEffect
+  useEffect(() => {
+    if (availableWidgetThemeMode) {
+      if (availableWidgetThemeMode === 'dark') {
+        setThemeMode('dark');
+      } else if (availableWidgetThemeMode === 'light') {
+        setThemeMode('light');
+      }
+    }
+  }, [availableWidgetThemeMode, setThemeMode]);
+
+  const currentWidgetTheme = useMemo(() => {
+    if (availableWidgetThemeMode === 'system') {
+      if (theme.palette.mode === 'light') {
+        return partnerThemes[0].attributes.lightConfig;
+      } else {
+        return partnerThemes[0].attributes.darkConfig;
+      }
+    } else if (availableWidgetThemeMode === 'dark') {
+      return partnerThemes[0].attributes.darkConfig;
+    } else if (availableWidgetThemeMode === 'light') {
+      return partnerThemes[0].attributes.lightConfig;
+    } else {
+      return undefined;
+    }
+  }, [availableWidgetThemeMode, partnerThemes, theme.palette.mode]);
+
+  const currentCustomizedTheme = useMemo(() => {
+    if (availableWidgetThemeMode === 'system') {
+      if (theme.palette.mode === 'light') {
+        return partnerThemes[0].attributes.lightConfig?.customization;
+      } else {
+        return partnerThemes[0].attributes.darkConfig?.customization;
+      }
+    } else if (availableWidgetThemeMode === 'dark') {
+      return partnerThemes[0].attributes.darkConfig?.customization;
+    } else if (availableWidgetThemeMode === 'light') {
+      return partnerThemes[0].attributes.lightConfig?.customization;
+    } else {
+      return undefined;
+    }
+  }, [availableWidgetThemeMode, partnerThemes, theme.palette.mode]);
 
   return {
     partnerTheme:
@@ -214,12 +258,9 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
       isDapp && availableWidgetThemeMode ? availableWidgetThemeMode : undefined,
     currentWidgetTheme:
       isDapp && currentWidgetTheme ? currentWidgetTheme : undefined,
-    logoUrl: isDapp && logoUrl ? logoUrl : undefined,
     logo: isDapp && logo ? logo : undefined,
     activeUid:
-      (isDapp && partnerPageThemeUid) ||
-      (isDapp && partnerThemeUid) ||
-      undefined,
+      (isDapp && partnerName) || (isDapp && partnerThemeUid) || undefined,
     imgUrl: isDapp && imageUrl ? imageUrl : undefined,
     isSuccess: isDapp && isSuccess,
   };

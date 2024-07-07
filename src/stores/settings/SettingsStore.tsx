@@ -18,9 +18,10 @@ const createSettingsStore = (set: any, get: any) => ({
 
   // Mode
   setThemeMode: (mode: ThemeModesSupported) => {
-    set({
+    set((state: SettingsState) => ({
+      ...state,
       themeMode: mode,
-    });
+    }));
   },
   // Installed Wallets
   setClientWallets: (wallet: string) => {
@@ -32,15 +33,10 @@ const createSettingsStore = (set: any, get: any) => ({
   },
 
   setPartnerThemeUid: (partnerThemeUid: string) => {
-    set({
+    set((state: SettingsState) => ({
+      ...state,
       partnerThemeUid: partnerThemeUid,
-    });
-  },
-
-  setPartnerPageThemeUid: (partnerPageThemeUid: string) => {
-    set({
-      partnerPageThemeUid: partnerPageThemeUid,
-    });
+    }));
   },
 
   // Disable Feature Card
@@ -73,19 +69,14 @@ const isClient = typeof window !== 'undefined' && window.localStorage;
 
 const persistedStore = isClient
   ? persist(createSettingsStore, {
-      name: 'jumper-store', // name of the item in the storage (must be unique)
+      name: 'jumper-store',
       version: 2,
       migrate: (persistedState: any, version: number) => {
         if (version > 1) {
-          const newStore = { ...persistedState };
-          Object.keys(persistedState)
-            .filter((el) => !(el in defaultSettings))
-            .forEach((el) => delete newStore[el]);
-          return newStore;
+          // Migration logic if needed
         }
-        return { ...persistedState, partnerThemeUid: 'OP' };
+        return persistedState;
       },
-      // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     })
   : createSettingsStore;
 
