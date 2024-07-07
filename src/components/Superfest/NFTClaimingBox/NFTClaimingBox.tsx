@@ -57,7 +57,7 @@ export const NFTClaimingBox = ({
     <NFTClaimingContainer>
       <NFTClaimingHeader>
         <NFTClaimingTitle>
-          {String('Enter the liquidity festival').toUpperCase()}
+          {String('Enter the DeFi festival').toUpperCase()}
         </NFTClaimingTitle>
         <Box marginTop="32px" marginBottom="32px">
           <NFTClaimingDescription>
