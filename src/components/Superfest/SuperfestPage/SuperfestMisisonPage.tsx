@@ -34,7 +34,9 @@ export const SuperfestMissionPage = ({
           description={attributes.Description}
         />
         {/* Steps */}
-        <StepsBox steps={attributes.Steps} baseUrl={baseUrl} />
+        {attributes?.Steps && attributes?.Steps?.length > 0 ? (
+          <StepsBox steps={attributes.Steps} baseUrl={baseUrl} />
+        ) : undefined}
         {/* Additional Info */}
         <InformationAlertBox information={attributes.Information} />
         {/* Big CTA */}

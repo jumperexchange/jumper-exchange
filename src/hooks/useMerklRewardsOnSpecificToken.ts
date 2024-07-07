@@ -65,6 +65,9 @@ const MERKL_API = 'https://api.merkl.xyz/v3';
 
 const CREATOR_TAG = 'jumper-test';
 
+// const TOKEN = '0x4200000000000000000000000000000000000042'
+const TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
+
 export const useMerklRewards = ({
   userAddress,
   rewardChainId,
@@ -130,8 +133,8 @@ export const useMerklRewards = ({
   if (rewardsData) {
     const tokenData = rewardsData[rewardChainId]?.tokenData;
     if (tokenData) {
-      rewardsToClaim = Object.entries(tokenData).map(
-        (elem): AvailableRewards => {
+      rewardsToClaim = Object.entries(tokenData)
+        .map((elem): AvailableRewards => {
           const key = elem[0];
           const value = elem[1] as TokenData;
           return {
@@ -143,8 +146,10 @@ export const useMerklRewards = ({
             amountAccumulated: (value.unclaimed as any) / 10 ** value.decimals, //todo: need to be typed with big int
             proof: value.proof,
           };
-        },
-      );
+        })
+        .filter(
+          (elem) => elem.address.toLowerCase() === String(TOKEN).toLowerCase(),
+        );
     }
   }
 
