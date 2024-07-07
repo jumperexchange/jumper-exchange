@@ -31,7 +31,6 @@ export const usePartnerFilter = (): usePartnerFilterProps => {
   } else {
     partnerName = pathnameSplit && pathnameSplit[0]?.toLowerCase();
   }
-  console.log('partnerName', partnerName);
 
   if (pathname?.includes('memecoins')) {
     hasTheme = true;

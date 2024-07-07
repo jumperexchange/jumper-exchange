@@ -138,20 +138,12 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
         partnerThemes[0].attributes.LogoDark.data?.attributes.url)
     ) {
       if (theme.palette.mode === 'light') {
-        console.log(
-          'TEST light ',
-          partnerThemes[0].attributes.LogoLight.data?.attributes.url,
-        );
         logoUrl = new URL(
           partnerThemes[0].attributes.LogoLight.data?.attributes.url,
           url.origin,
         );
         logoObj = partnerThemes[0].attributes.LogoLight.data?.attributes;
       } else {
-        console.log(
-          'TEST dark',
-          partnerThemes[0].attributes.LogoDark.data?.attributes.url,
-        );
         logoUrl = new URL(
           partnerThemes[0].attributes.LogoDark.data?.attributes.url,
           url.origin,

@@ -23,11 +23,6 @@ export const Logo = ({ variant }: LogoProps) => {
   const { logo: partnerLogo, activeUid } = usePartnerTheme();
   const theme = useTheme();
 
-  console.log({
-    link: partnerLogo && partnerLogo?.logoUrl?.href,
-    width: partnerLogo?.logoObj?.width,
-    height: partnerLogo?.logoObj?.height,
-  });
   return (
     <LogoWrapper>
       {activeUid && partnerLogo?.logoUrl && partnerLogo.logoObj ? (

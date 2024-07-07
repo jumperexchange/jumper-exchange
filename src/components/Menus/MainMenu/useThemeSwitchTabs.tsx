@@ -25,8 +25,6 @@ export const useThemeSwitchTabs = () => {
     ? 'dark'
     : 'light';
   const { availableWidgetThemeMode, activeUid } = usePartnerTheme();
-  console.log('USE THEME SWITCH', activeUid);
-  console.log('availableWidgetThemeMode', availableWidgetThemeMode);
   const [themeMode, setThemeMode] = useSettingsStore((state) => [
     state.themeMode,
     state.setThemeMode,
@@ -66,23 +64,18 @@ export const useThemeSwitchTabs = () => {
 
   if (!!activeUid) {
     if (availableWidgetThemeMode === 'system') {
-      console.log('system mode enabled');
       systemModeEnabled = true;
       lightModeEnabled = true;
       darkModeEnabled = true;
     } else {
       if (availableWidgetThemeMode === 'light') {
-        console.log(' light enabled');
         lightModeEnabled = true;
       }
       if (availableWidgetThemeMode === 'dark') {
-        console.log(' dark enabled');
-
         darkModeEnabled = true;
       }
     }
   } else if (isSuperfest) {
-    console.log('isSuperfest');
     systemModeEnabled = false;
     lightModeEnabled = true;
     darkModeEnabled = false;
@@ -91,12 +84,6 @@ export const useThemeSwitchTabs = () => {
     lightModeEnabled = true;
     darkModeEnabled = true;
   }
-
-  console.log('CHECK IT!', {
-    systemModeEnabled,
-    lightModeEnabled,
-    darkModeEnabled,
-  });
 
   const output = [
     {
