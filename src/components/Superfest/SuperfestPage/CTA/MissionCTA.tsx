@@ -45,8 +45,6 @@ export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
     // });
   };
 
-  console.log(CTAs);
-
   return (
     <>
       {CTAs && CTAs.length > 1 ? (
