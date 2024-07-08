@@ -7,6 +7,8 @@ import {
   SeveralCTABox,
   StartedTitleTypography,
   SeveralMissionCtaContainer,
+  StartedTitleBox,
+  CTAMainBox,
 } from './MissionCTA.style';
 import { type Theme, useMediaQuery, Box } from '@mui/material';
 import Image from 'next/image';
@@ -26,7 +28,7 @@ interface MissionCtaProps {
   CTAs: CTALinkInt[];
 }
 
-export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
+export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const isMobile = useMediaQuery((theme: Theme) =>
@@ -46,27 +48,10 @@ export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '80%',
-        maxWidth: '1210px',
-        marginTop: '64px',
-        borderRadius: '8px',
-        padding: '32px',
-        backgroundColor: '#fdfbef',
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          textAlign: 'left',
-        }}
-      >
+    <CTAMainBox>
+      <StartedTitleBox>
         <StartedTitleTypography>Get Started</StartedTitleTypography>
-      </Box>
+      </StartedTitleBox>
       <SeveralCTABox>
         {CTAs.map((CTA: CTALinkInt, i: number) => {
           return (
@@ -111,6 +96,6 @@ export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
           );
         })}
       </SeveralCTABox>
-    </Box>
+    </CTAMainBox>
   );
 };

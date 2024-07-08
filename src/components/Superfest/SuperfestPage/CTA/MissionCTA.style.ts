@@ -119,3 +119,20 @@ export const StartedTitleTypography = styled(Typography)(({ theme }) => ({
     lineHeight: '24px',
   },
 }));
+
+export const StartedTitleBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'flex-start',
+  textAlign: 'left',
+}));
+
+export const CTAMainBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '80%',
+  maxWidth: '1210px',
+  marginTop: '64px',
+  borderRadius: '8px',
+  padding: '32px',
+  backgroundColor: '#fdfbef',
+}));
