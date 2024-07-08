@@ -113,10 +113,10 @@ export const RewardsCarousel = ({
                   fontWeight={600}
                 >
                   {isPending || isConfirming
-                    ? 'Claiming...'
+                    ? 'CLAIMING...'
                     : isConfirmed
-                      ? 'Claimed'
-                      : 'Claim Rewards'}
+                      ? 'CLAIMED'
+                      : 'CLAIM REWARDS'}
                 </SoraTypography>
               </Button>
             </ClaimButtonBox>
