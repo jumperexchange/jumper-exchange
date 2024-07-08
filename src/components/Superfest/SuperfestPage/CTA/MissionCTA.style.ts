@@ -107,16 +107,16 @@ export const SeveralCTABox = styled(Box)(({ theme }) => ({
 }));
 
 export const StartedTitleTypography = styled(Typography)(({ theme }) => ({
-  typography: sequel65.style.fontFamily,
+  fontFamily: sequel65.style.fontFamily,
   [theme.breakpoints.down('md' as Breakpoint)]: {
     fontSize: '18px',
-    fontWeight: 700,
+    fontWeight: 600,
     lineHeight: '18px',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    fontSize: '24px',
-    fontWeight: 700,
-    lineHeight: '24px',
+    fontSize: '20px',
+    fontWeight: 600,
+    lineHeight: '20px',
   },
 }));
 

@@ -17,7 +17,7 @@ import {
 import { useState } from 'react';
 import { MissionsFilter } from '../MissionsFilter/MissionsFilter';
 
-const chains = ['Optimism', 'Base', 'Mode', 'Fraxtal'];
+const chains = ['OP', 'Base', 'Mode', 'Fraxtal'];
 
 const rewards_list = ['OP Rewards'];
 
@@ -128,13 +128,14 @@ export const AvailableMissionsList = ({
                   return undefined;
                 }
               }
+
               if (chainsFilter && chainsFilter.length > 0) {
                 let included = false;
                 for (const chain of chains) {
                   if (
                     chainsFilter
-                      .map((chain) => chain.toLowerCase())
-                      .includes(chain.name)
+                      .map((elemChain) => elemChain.toLowerCase())
+                      .includes(chain.name.toLowerCase())
                   ) {
                     included = true;
                     break;

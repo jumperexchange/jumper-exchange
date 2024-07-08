@@ -20,7 +20,7 @@ export const SuperfestPresentedByBox = () => {
           <a
             className={'link-superfest'}
             onClick={handleClick}
-            href={'https://www.optimism.io/'}
+            href={'https://superfest.optimism.io/'}
             target={'_blank'}
             rel="noreferrer"
           >

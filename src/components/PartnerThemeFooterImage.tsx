@@ -27,7 +27,11 @@ export const PartnerThemeFooterImage = () => {
     !activeChainAlert &&
     !isMobile &&
     (isMainPaths || !!hasTheme) && (
-      <Link href={'https://li.fi'} target="_blank" style={{ zIndex: 1 }}>
+      <Link
+        href={'https://superfest.optimism.io/'}
+        target="_blank"
+        style={{ zIndex: 1 }}
+      >
         <BackgroundFooterImage
           alt="footer-image"
           src={
