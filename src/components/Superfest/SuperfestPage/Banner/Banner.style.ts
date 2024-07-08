@@ -17,7 +17,7 @@ export const BannerMainBox = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   borderRadius: '8px',
   [theme.breakpoints.down('md' as Breakpoint)]: {
-    height: '850px',
+    height: '900px',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     height: '620px',

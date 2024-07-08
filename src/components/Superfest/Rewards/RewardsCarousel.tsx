@@ -21,7 +21,7 @@ import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 interface RewardsCarouselProps {
-  showComponent: boolean;
+  hideComponent: boolean;
   rewardAmount: number;
   accumulatedAmountForContractBN: string;
   isMerklSuccess: boolean;
@@ -34,7 +34,7 @@ const CLAIMING_CONTRACT_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae';
 const TEST_TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
 export const RewardsCarousel = ({
-  showComponent,
+  hideComponent,
   rewardAmount,
   accumulatedAmountForContractBN,
   isMerklSuccess,
@@ -83,7 +83,7 @@ export const RewardsCarousel = ({
 
   return (
     <>
-      {showComponent || rewardAmount === 0 ? undefined : (
+      {!hideComponent && rewardAmount && rewardAmount > 0 ? (
         <RewardsCarouselContainer>
           <RewardsCarouselMainBox>
             <FlexCenterRowBox>
@@ -138,7 +138,7 @@ export const RewardsCarousel = ({
             ) : undefined}
           </RewardsCarouselMainBox>
         </RewardsCarouselContainer>
-      )}
+      ) : undefined}
     </>
   );
 };
