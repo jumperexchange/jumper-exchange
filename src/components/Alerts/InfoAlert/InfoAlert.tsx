@@ -39,14 +39,6 @@ export const InfoAlert = ({ title, subtitle, active }: InfoAlertProps) => {
     >
       <InfoAlertContainer>
         <InfoMessageCard mt={theme.spacing(4)} mb={theme.spacing(4)}>
-          <InfoAlertButton onClick={(e) => handleClose(e)}>
-            <CloseIcon
-              sx={{
-                width: 16,
-                height: 16,
-              }}
-            />
-          </InfoAlertButton>
           <InfoMessageCardTitle
             display="flex"
             alignItems="center"
