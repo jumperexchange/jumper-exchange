@@ -16,8 +16,8 @@ export const useMainPaths = (): useMainPathsProps => {
     !pathname?.includes('/profile') &&
     !pathname?.includes('/learn') &&
     (pathname === '/' ||
-      pathname.split('/').length === 3 ||
-      pathname.split('/').length === 2);
+      pathname?.split('/').length === 3 ||
+      pathname?.split('/').length === 2);
 
   return {
     isMainPaths: !hasTheme && (isGas || isBuy || isExchange),
