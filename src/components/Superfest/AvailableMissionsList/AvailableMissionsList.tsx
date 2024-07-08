@@ -137,7 +137,6 @@ export const AvailableMissionsList = ({
                       .map((elemChain) => elemChain.toLowerCase())
                       .includes(chain.name.toLowerCase())
                   ) {
-                    console.log('hereee');
                     included = true;
                     break;
                   }
