@@ -11,6 +11,10 @@ export const BackButton = () => {
     <BackButtonMainBox>
       <Button
         size={'small'}
+        styles={{
+          paddingLeft: '16px',
+          paddingRight: '16px',
+        }}
         onClick={() => {
           router.push(JUMPER_FEST_PATH);
         }}
@@ -18,7 +22,7 @@ export const BackButton = () => {
         <ArrowBackIcon
           sx={{ color: '#FFFFFF', width: '16px', height: '16px' }}
         />
-        <ButtonTypography>{'Back to Superfest'}</ButtonTypography>
+        <ButtonTypography>{'SUPERFEST'}</ButtonTypography>
       </Button>
     </BackButtonMainBox>
   );
