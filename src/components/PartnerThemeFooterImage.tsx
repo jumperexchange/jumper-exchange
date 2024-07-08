@@ -26,7 +26,7 @@ export const PartnerThemeFooterImage = () => {
   return (
     !activeChainAlert &&
     !isMobile &&
-    (isMainPaths || !!hasTheme) && (
+    isMainPaths && (
       <Link
         href={'https://superfest.optimism.io/'}
         target="_blank"
@@ -35,9 +35,7 @@ export const PartnerThemeFooterImage = () => {
         <BackgroundFooterImage
           alt="footer-image"
           src={
-            !!hasTheme && availableWidgetThemeMode === 'dark'
-              ? 'https://strapi.li.finance/uploads/superfest_light_sponsor_card_f92597365f.svg'
-              : 'https://strapi.li.finance/uploads/Superfest_sponsor_card_f3996bea6c.svg'
+            'https://strapi.li.finance/uploads/Superfest_sponsor_card_f3996bea6c.svg'
           }
           width={300}
           height={200}
