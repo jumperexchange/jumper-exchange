@@ -12,7 +12,7 @@
     "@emotion/styled": "^11.11.5",
     "@lifi/sdk": "^3.0.0",
     "@lifi/wallet-management": "^3.0.0",
-    "@lifi/widget": "^3.0.0",
+    "@lifi/widget": "^3.0.2",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
     "@mui/material-nextjs": "^5.15.11",
