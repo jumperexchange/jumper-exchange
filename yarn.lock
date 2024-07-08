@@ -2292,9 +2292,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@lifi/widget@npm:3.0.0"
+"@lifi/widget@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@lifi/widget@npm:3.0.2"
   dependencies:
     "@emotion/react": "npm:^11.11.4"
     "@emotion/styled": "npm:^11.11.5"
@@ -2344,7 +2344,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10/d50f300e4db934a398e3bb0aa93cb7a44eeddec7d4fe9a84e4f4e4738a656c29f457934756a9c605dc81e55bb7db2e40ced07edc8c35b601d1a6c2cd6a991473
+  checksum: 10/f22706b48cb03542476ec1f91df3a15a4ffbfa65bcbbda56a8557b053bbda9d02e59478eccaf096cd13031ef1e132124e6af2cebca7f2983259a15a1d3f9fab5
   languageName: node
   linkType: hard
 
@@ -9655,7 +9655,7 @@ __metadata:
     "@eslint/eslintrc": "npm:^3.1.0"
     "@lifi/sdk": "npm:^3.0.0"
     "@lifi/wallet-management": "npm:^3.0.0"
-    "@lifi/widget": "npm:^3.0.0"
+    "@lifi/widget": "npm:^3.0.2"
     "@mui/icons-material": "npm:^5.15.20"
     "@mui/material": "npm:^5.15.20"
     "@mui/material-nextjs": "npm:^5.15.11"
