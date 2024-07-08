@@ -20,6 +20,7 @@ export const useMainPaths = (): useMainPathsProps => {
       pathname?.split('/').length === 2);
 
   return {
-    isMainPaths: !hasTheme && (isGas || isBuy || isExchange),
+    isMainPaths: false,
+    // !hasTheme && (isGas || isBuy || isExchange),
   };
 };
