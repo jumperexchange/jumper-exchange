@@ -34,7 +34,10 @@ export const SuperfestMissionPage = ({
           description={attributes.Description}
         />
         {/* Steps */}
-        <StepsBox steps={attributes.Steps} baseUrl={baseUrl} />
+        {/* Todo: remove the check for steps */}
+        {attributes?.Steps && attributes?.Steps?.length > 1 ? (
+          <StepsBox steps={attributes.Steps} baseUrl={baseUrl} />
+        ) : undefined}
         {/* Additional Info */}
         <InformationAlertBox information={attributes.Information} />
         {/* Big CTA */}

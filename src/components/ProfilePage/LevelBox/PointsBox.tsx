@@ -19,7 +19,9 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
             : theme.palette.white.main
         }
         fontWeight={700}
-        fontSize={{ xs: 12, sm: 18 }}
+        sx={{
+          fontSize: { xs: 48, sm: 80 },
+        }}
       >
         {points ?? 0}
       </NoSelectTypography>
