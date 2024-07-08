@@ -34,7 +34,8 @@ export const useWelcomeScreen = (
   };
 
   return {
-    welcomeScreenClosed: state || sessionWelcomeScreenClosed,
+    // welcomeScreenClosed: state || sessionWelcomeScreenClosed,
+    welcomeScreenClosed: true, // todo: adapt to get back the welcome screen
     setWelcomeScreenClosed: updateState,
   };
 };

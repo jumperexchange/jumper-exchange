@@ -10,6 +10,8 @@ import { darkTheme, lightTheme } from 'src/theme/theme';
 import { deepmerge } from '@mui/utils';
 import { sora } from 'src/fonts/fonts';
 import { useSuperfest } from 'src/hooks/useSuperfest';
+import { useMainPaths } from 'src/hooks/useMainPaths';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 
 export const useDetectDarkModePreference = () => {
   const themeMode = useSettingsStore((state) => state.themeMode);
@@ -33,6 +35,9 @@ export const ThemeProvider: React.FC<
     themeProp,
   );
   const { isSuperfest } = useSuperfest();
+  const { isMainPaths } = useMainPaths();
+  const { hasTheme, currentCustomizedTheme, availableWidgetThemeMode } =
+    usePartnerTheme();
   const isDarkMode = useDetectDarkModePreference();
 
   useEffect(() => {
@@ -44,7 +49,9 @@ export const ThemeProvider: React.FC<
 
   // Update the theme whenever themeMode changes
   useEffect(() => {
-    if (themeMode === 'auto') {
+    if (!!hasTheme && availableWidgetThemeMode) {
+      setTheme(availableWidgetThemeMode === 'dark' ? 'dark' : 'light');
+    } else if (themeMode === 'auto') {
       setTheme(isDarkMode ? 'dark' : 'light');
       setCookie('theme', isDarkMode ? 'dark' : 'light', {
         path: '/',
@@ -57,12 +64,75 @@ export const ThemeProvider: React.FC<
       });
       setTheme(themeMode === 'dark' ? 'dark' : 'light');
     }
-  }, [themeMode, isDarkMode, setCookie]);
+  }, [themeMode, isDarkMode, setCookie, availableWidgetThemeMode]);
 
   const activeTheme = useMemo(() => {
     let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
 
-    if (isSuperfest) {
+    if (!!hasTheme && currentCustomizedTheme) {
+      // Merge partner theme attributes into the base theme
+      const mergedTheme = deepmerge(currentTheme, {
+        typography: {
+          fontFamily:
+            currentCustomizedTheme?.typography &&
+            currentTheme.typography?.fontFamily &&
+            currentCustomizedTheme.typography.fontFamily?.includes('Sora')
+              ? sora.style.fontFamily.concat(currentTheme.typography.fontFamily)
+              : currentTheme.typography.fontFamily,
+        },
+        palette: {
+          primary: {
+            main:
+              typeof currentCustomizedTheme.palette?.primary?.main === 'string'
+                ? currentCustomizedTheme.palette.primary.main
+                : currentTheme.palette.primary.main,
+          },
+          secondary: {
+            main:
+              typeof currentCustomizedTheme.palette?.secondary?.main ===
+              'string'
+                ? currentCustomizedTheme.palette.secondary.main
+                : currentTheme.palette.secondary.main,
+          },
+          accent1: {
+            main:
+              typeof currentCustomizedTheme.palette?.accent1?.main === 'string'
+                ? currentCustomizedTheme.palette.accent1.main
+                : currentTheme.palette.surface1.main,
+          },
+          accent1Alt: {
+            main:
+              typeof currentCustomizedTheme.palette?.accent1Alt?.main ===
+              'string'
+                ? currentCustomizedTheme.palette.accent1Alt.main
+                : currentTheme.palette.surface1.main,
+          },
+          accent2: {
+            main:
+              typeof currentCustomizedTheme.palette?.accent2?.main === 'string'
+                ? currentCustomizedTheme.palette.accent2.main
+                : currentTheme.palette.surface1.main,
+          },
+          surface1: {
+            main:
+              typeof currentCustomizedTheme.palette?.surface1?.main === 'string'
+                ? currentCustomizedTheme.palette.surface1.main
+                : currentTheme.palette.surface1.main,
+          },
+          surface2: {
+            main:
+              typeof currentCustomizedTheme?.palette?.surface2?.main ===
+              'string'
+                ? currentCustomizedTheme?.palette.surface2.main
+                : currentTheme.palette.surface2.main,
+          },
+        },
+        // typography: currentCustomizedTheme.typography
+        //   ? currentCustomizedTheme.typography
+        //   : currentTheme.typography,
+      });
+      return mergedTheme;
+    } else if (isSuperfest || isMainPaths) {
       currentTheme = lightTheme;
       // Merge partner theme attributes into the base theme
       const mergedTheme = deepmerge(currentTheme, {
@@ -94,7 +164,7 @@ export const ThemeProvider: React.FC<
     } else {
       return currentTheme;
     }
-  }, [isSuperfest, theme]);
+  }, [isSuperfest, isMainPaths, hasTheme, currentCustomizedTheme, theme]);
 
   // Render children only when the theme is determined
   return (
