@@ -21,9 +21,6 @@ export const SuperfestMissionPage = ({
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
 
-  console.log('------------');
-  console.log(attributes.Steps);
-
   return (
     <SuperfestContainer className="superfest">
       <SuperfestPageMainBox>
