@@ -9,6 +9,7 @@ import type { ThemeModesSupported } from 'src/types/settings';
 import { WidgetEvents } from './WidgetEvents';
 import { useMetaMask } from 'src/hooks/useMetaMask';
 import { WalletAlert } from '../Alerts/WalletAlert/WalletAlert';
+import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
@@ -69,6 +70,7 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
   return (
     <>
       {isMetaMaskConnector ? <WalletAlert /> : <ChainAlert />}
+      <PartnerThemeFooterImage />
       <WidgetEvents />
     </>
   );

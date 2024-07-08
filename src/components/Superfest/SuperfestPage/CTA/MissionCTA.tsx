@@ -15,7 +15,7 @@ import { SoraTypography } from '../../Superfest.style';
 
 interface CTALinkInt {
   logo: string;
-  title: string;
+  text: string;
   link: string;
 }
 
@@ -47,7 +47,7 @@ export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
 
   return (
     <>
-      {CTAs && CTAs.length > 0 ? (
+      {CTAs && CTAs.length > 1 ? (
         <SeveralCTABox>
           {CTAs.map((CTA: CTALinkInt, i: number) => {
             return (
@@ -71,7 +71,7 @@ export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
                     priority={false}
                   />
                   <SoraTypography fontSize={'22px'} fontWeight={700}>
-                    {CTA.title ?? t('blog.jumperCta')}
+                    {CTA.text ?? 'Go to Protocol Page'}
                   </SoraTypography>
                   <IconButtonPrimary onClick={handleClick}>
                     <ArrowForwardIcon
@@ -89,11 +89,14 @@ export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
       ) : (
         <Link
           style={{ textDecoration: 'none', width: '80%', color: 'inherit' }}
-          href={url || '/'}
+          href={(CTAs?.length === 1 && CTAs[0].link) || url || '/'}
           target="_blank"
         >
           <MissionCtaContainer onClick={handleClick}>
-            <MissionCtaTitle>{title ?? 'Go to Protocol Page'}</MissionCtaTitle>
+            <MissionCtaTitle>
+              {((CTAs?.length === 1 && CTAs[0].text) || title) ??
+                'Go to Protocol Page'}
+            </MissionCtaTitle>
             <IconButtonPrimary onClick={handleClick}>
               <ArrowForwardIcon
                 sx={{
