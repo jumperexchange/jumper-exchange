@@ -21,6 +21,9 @@ export const SuperfestMissionPage = ({
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
 
+  console.log('------------');
+  console.log(attributes.Steps);
+
   return (
     <SuperfestContainer className="superfest">
       <SuperfestPageMainBox>
@@ -34,7 +37,8 @@ export const SuperfestMissionPage = ({
           description={attributes.Description}
         />
         {/* Steps */}
-        {attributes?.Steps && attributes?.Steps?.length > 0 ? (
+        {/* Todo: remove the check */}
+        {attributes?.Steps && attributes?.Steps?.length > 1 ? (
           <StepsBox steps={attributes.Steps} baseUrl={baseUrl} />
         ) : undefined}
         {/* Additional Info */}
