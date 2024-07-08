@@ -13,6 +13,8 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
+import { useMainPaths } from 'src/hooks/useMainPaths';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 
 export const useThemeSwitchTabs = () => {
@@ -20,9 +22,11 @@ export const useThemeSwitchTabs = () => {
   const { trackEvent } = useUserTracking();
   const [, setCookie] = useCookies(['theme']);
   const { isSuperfest } = useSuperfest();
+  const { isMainPaths } = useMainPaths();
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
     : 'light';
+  const { availableWidgetThemeMode, hasTheme } = usePartnerTheme();
   const [themeMode, setThemeMode] = useSettingsStore((state) => [
     state.themeMode,
     state.setThemeMode,
@@ -43,18 +47,15 @@ export const useThemeSwitchTabs = () => {
 
   // tooltips:
   const lightModeTooltip =
-    // activeUid && availableWidgetTheme !== 'system'
-    isSuperfest
+    !!hasTheme && availableWidgetThemeMode === 'dark'
       ? t('navbar.themes.lightModeDisabled')
       : t('navbar.themes.switchToLight');
   const darkModeTooltip =
-    // activeUid && availableWidgetTheme !== 'system'
-    isSuperfest
+    !!hasTheme && availableWidgetThemeMode === 'light'
       ? t('navbar.themes.darkModeDisabled')
       : t('navbar.themes.switchToDark');
   const systemModeTooltip =
-    // activeUid && availableWidgetTheme !== 'system'
-    isSuperfest
+    !!hasTheme && availableWidgetThemeMode !== 'system'
       ? t('navbar.themes.systemModeDisabled')
       : t('navbar.themes.switchToSystem');
 
@@ -63,8 +64,21 @@ export const useThemeSwitchTabs = () => {
   let darkModeEnabled = false;
   let systemModeEnabled = false;
 
-  if (isSuperfest) {
+  if (isSuperfest || isMainPaths) {
     lightModeEnabled = true;
+  } else if (!!hasTheme) {
+    if (availableWidgetThemeMode === 'system') {
+      systemModeEnabled = true;
+      lightModeEnabled = true;
+      darkModeEnabled = true;
+    } else {
+      if (availableWidgetThemeMode === 'light') {
+        lightModeEnabled = true;
+      }
+      if (availableWidgetThemeMode === 'dark') {
+        darkModeEnabled = true;
+      }
+    }
   } else {
     systemModeEnabled = true;
     lightModeEnabled = true;

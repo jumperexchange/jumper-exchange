@@ -1,5 +1,5 @@
 'use client';
-import { type CSSObject } from '@mui/material';
+import { useTheme, type CSSObject } from '@mui/material';
 import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
@@ -11,6 +11,9 @@ import { SirBridgeLot } from '../illustrations/SirBridgeLot';
 import { FixBoxWithNoOverflow, MovingBox } from './MovingBox.style';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { usePathname } from 'next/navigation';
+import { useSuperfest } from 'src/hooks/useSuperfest';
+import { useMainPaths } from 'src/hooks/useMainPaths';
+import { useMemo } from 'react';
 
 interface BackgroundGradientProps {
   styles?: CSSObject;
@@ -18,7 +21,32 @@ interface BackgroundGradientProps {
 
 export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   const { partnerName } = usePartnerTheme();
-  const pathname = usePathname();
+  const { isSuperfest } = useSuperfest();
+  const { isMainPaths } = useMainPaths();
+  const { partnerTheme, hasTheme, backgroundColor, imgUrl } = usePartnerTheme();
+  const theme = useTheme();
+  const bgImg = useMemo(() => {
+    return imgUrl;
+  }, [imgUrl]);
+  const bgCol = useMemo(() => {
+    return (
+      backgroundColor ||
+      (theme.palette.mode === 'light'
+        ? partnerTheme?.attributes.lightConfig?.customization?.palette
+            .background
+        : partnerTheme?.attributes.darkConfig?.customization?.palette
+            .background)
+    );
+  }, [
+    backgroundColor,
+    partnerTheme?.attributes.darkConfig,
+    partnerTheme?.attributes.lightConfig,
+    theme.palette.mode,
+  ]);
+
+  if (isSuperfest || isMainPaths) {
+    return <SuperfestBackgroundContainer sx={styles} />;
+  }
 
   if (partnerName.includes('memecoins')) {
     return (
@@ -36,13 +64,19 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
       </>
     );
   }
-  return !pathname?.includes('superfest') ? (
-    <BackgroundGradientContainer sx={styles}>
-      <BackgroundGradientBottomLeft />
-      <BackgroundGradientBottomRight />
-      <BackgroundGradientTopCenter />
+  return (
+    <BackgroundGradientContainer
+      sx={styles}
+      backgroundImageUrl={!!hasTheme ? bgImg : undefined}
+      backgroundColor={!!hasTheme ? (bgCol as string) : undefined}
+    >
+      {!hasTheme && (
+        <>
+          <BackgroundGradientBottomLeft />
+          <BackgroundGradientBottomRight />
+          <BackgroundGradientTopCenter />
+        </>
+      )}
     </BackgroundGradientContainer>
-  ) : (
-    <SuperfestBackgroundContainer sx={styles} />
   );
 };
