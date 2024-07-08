@@ -1,12 +1,12 @@
-import { usePathname } from 'next/navigation';
-import { useDexsAndBridgesKeys } from './useDexsAndBridgesKeys';
+import { useTheme } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import {
+import { usePathname } from 'next/navigation';
+import type {
   MediaAttributes,
   PartnerTheme,
   PartnerThemesData,
 } from 'src/types/strapi';
-import { useTheme } from '@mui/material';
+import { useDexsAndBridgesKeys } from './useDexsAndBridgesKeys';
 
 interface usePartnerThemeProps {
   isSuccess: boolean;
@@ -62,7 +62,7 @@ export const usePartnerTheme = (): usePartnerThemeProps => {
   apiUrl.searchParams.set('populate[1]', 'BackgroundImageLight');
   apiUrl.searchParams.set('populate[2]', 'LogoLight');
   apiUrl.searchParams.set('populate[3]', 'LogoDark');
-  apiUrl.searchParams.set('filters[uid][$eq]', pathnameKey);
+  pathnameKey && apiUrl.searchParams.set('filters[uid][$eq]', pathnameKey);
   process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('publicationState', 'preview');
   const apiAccesToken =
