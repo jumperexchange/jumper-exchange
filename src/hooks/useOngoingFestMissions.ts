@@ -31,7 +31,7 @@ export const useOngoingFestMissions = (): UseQuestsProps => {
   apiUrl.searchParams.set('populate[1]', 'quests_platform');
   apiUrl.searchParams.set('populate[2]', 'quests_platform.Logo');
   //sort url
-  apiUrl.searchParams.set('sort[0]', 'id:desc');
+  apiUrl.searchParams.set('sort[0]', 'Title:asc');
   //filter url
   apiUrl.searchParams.set('filters[Label][$eq]', 'superfest');
   const currentDate = new Date(Date.now()).toISOString().split('T')[0];

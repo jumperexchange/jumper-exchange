@@ -21,7 +21,7 @@ const chains = ['Optimism', 'Base', 'Mode', 'Fraxtal'];
 
 const rewards_list = ['OP Rewards'];
 
-const category = ['Lending', 'Liquidity Pool', 'Staking', 'Stablecoins'];
+const category = ['AMM', 'Money Market', 'LRT', 'LST', 'Derivatives', 'Yield'];
 
 interface QuestCompletedListProps {
   quests?: Quest[];
