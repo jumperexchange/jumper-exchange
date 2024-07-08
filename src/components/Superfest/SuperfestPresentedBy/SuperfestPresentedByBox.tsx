@@ -16,7 +16,7 @@ export const SuperfestPresentedByBox = () => {
   return (
     <>
       {isSuperfest ? (
-        <SuperFestPoweredContainer fixedPosition={false}>
+        <SuperFestPoweredContainer>
           <a
             className={'link-superfest'}
             onClick={handleClick}
