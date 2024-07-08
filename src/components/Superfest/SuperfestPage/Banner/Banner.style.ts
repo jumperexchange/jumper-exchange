@@ -34,7 +34,7 @@ export const BannerBottomBox = styled(Box)(({ theme }) => ({
     height: '55%',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    height: '40%',
+    height: '35%',
   },
 }));
 
@@ -123,7 +123,7 @@ export const RewardBottomBox = styled(Box)(() => ({
 export const RewardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  marginTop: '16px',
+  marginTop: '8px',
   [theme.breakpoints.down('md' as Breakpoint)]: {
     gap: '16px',
     alignItems: 'left',
@@ -138,15 +138,15 @@ export const RewardMainBox = styled(Box)(({ theme }) => ({
 }));
 
 export const BannerTitleTypography = styled(Typography)(({ theme }) => ({
-  typography: sequel65.style.fontFamily,
+  fontFamily: sequel65.style.fontFamily,
   [theme.breakpoints.down('md' as Breakpoint)]: {
-    fontSize: '48px',
+    fontSize: '28px',
     fontWeight: 700,
-    lineHeight: '48px',
+    lineHeight: '32px',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    fontSize: '56px',
+    fontSize: '40px',
     fontWeight: 700,
-    lineHeight: '96px',
+    lineHeight: '48px',
   },
 }));
