@@ -1,6 +1,6 @@
-import { sora } from '@/fonts/fonts';
+import { sequel65, sora } from '@/fonts/fonts';
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, alpha, darken } from '@mui/material';
+import { Box, Typography, alpha, darken } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { IconButtonPrimary } from 'src/components/IconButton';
 
@@ -33,14 +33,15 @@ export const MissionCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
 
 export const SeveralMissionCtaContainer = styled(Box)<BoxProps>(
   ({ theme }) => ({
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
     mardingBottom: '16px',
     gap: theme.spacing(1.5),
     cursor: 'pointer',
@@ -48,13 +49,13 @@ export const SeveralMissionCtaContainer = styled(Box)<BoxProps>(
     textAlign: 'center',
     transition: 'background-color 250ms',
     borderRadius: '16px',
-    backgroundColor: '#69d7ff',
+    backgroundColor: '#fff0ca',
     '&:hover': {
       cursor: 'pointer',
       backgroundColor:
         theme.palette.mode === 'light'
-          ? darken('#69d7ff', 0.02) //todo: add to theme
-          : alpha('#69d7ff', 0.16),
+          ? darken('#fff0ca', 0.02) //todo: add to theme
+          : alpha('#fff0ca', 0.16),
     },
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       gap: theme.spacing(4),
@@ -96,19 +97,25 @@ export const CTABox = styled(Box)(({ theme }) => ({
 }));
 
 export const SeveralCTABox = styled(Box)(({ theme }) => ({
-  width: '80%',
-  maxWidth: '1210px',
+  width: '100%',
   display: 'flex',
   alignContent: 'center',
   alignItems: 'center',
-  marginTop: '64px',
+  marginTop: '32px',
+  flexDirection: 'column',
+  justifyContent: 'center',
+}));
+
+export const StartedTitleTypography = styled(Typography)(({ theme }) => ({
+  typography: sequel65.style.fontFamily,
   [theme.breakpoints.down('md' as Breakpoint)]: {
-    flexDirection: 'column',
-    justifyContent: 'center',
+    fontSize: '18px',
+    fontWeight: 700,
+    lineHeight: '18px',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    justifyContent: 'space-around',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    fontSize: '24px',
+    fontWeight: 700,
+    lineHeight: '24px',
   },
 }));

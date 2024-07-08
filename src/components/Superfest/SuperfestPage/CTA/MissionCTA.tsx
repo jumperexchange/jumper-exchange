@@ -4,14 +4,14 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import {
-  MissionCtaContainer,
-  MissionCtaTitle,
   SeveralCTABox,
+  StartedTitleTypography,
   SeveralMissionCtaContainer,
 } from './MissionCTA.style';
-import { type Theme, useMediaQuery } from '@mui/material';
+import { type Theme, useMediaQuery, Box } from '@mui/material';
 import Image from 'next/image';
 import { SoraTypography } from '../../Superfest.style';
+import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
 
 interface CTALinkInt {
   logo: string;
@@ -23,7 +23,7 @@ interface MissionCtaProps {
   title?: string;
   url?: string;
   id?: number;
-  CTAs?: CTALinkInt[];
+  CTAs: CTALinkInt[];
 }
 
 export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
@@ -46,23 +46,43 @@ export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
   };
 
   return (
-    <>
-      {CTAs && CTAs.length > 1 ? (
-        <SeveralCTABox>
-          {CTAs.map((CTA: CTALinkInt, i: number) => {
-            return (
-              <Link
-                key={`cta-mission-${i}`}
-                style={{
-                  textDecoration: 'none',
-                  width: isMobile ? '100%' : '49%',
-                  color: 'inherit',
-                  marginBottom: '16px',
-                }}
-                href={CTA.link || '/'}
-                target="_blank"
-              >
-                <SeveralMissionCtaContainer onClick={handleClick}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '80%',
+        maxWidth: '1210px',
+        marginTop: '64px',
+        borderRadius: '8px',
+        padding: '32px',
+        backgroundColor: '#fdfbef',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-start',
+          textAlign: 'left',
+        }}
+      >
+        <StartedTitleTypography>Get Started</StartedTitleTypography>
+      </Box>
+      <SeveralCTABox>
+        {CTAs.map((CTA: CTALinkInt, i: number) => {
+          return (
+            <Link
+              key={`cta-mission-${i}`}
+              style={{
+                textDecoration: 'none',
+                width: '100%',
+                color: 'inherit',
+                marginBottom: '16px',
+              }}
+              href={CTA.link || '/'}
+              target="_blank"
+            >
+              <SeveralMissionCtaContainer onClick={handleClick}>
+                <FlexCenterRowBox>
                   <Image
                     src={CTA.logo}
                     alt={`Image for ${CTA.logo}`}
@@ -70,44 +90,27 @@ export const MissionCTA = ({ title, url, id, CTAs }: MissionCtaProps) => {
                     height={48}
                     priority={false}
                   />
-                  <SoraTypography fontSize={'22px'} fontWeight={700}>
+                  <SoraTypography
+                    fontSize={'22px'}
+                    fontWeight={700}
+                    marginLeft={'16px'}
+                  >
                     {CTA.text ?? 'Go to Protocol Page'}
                   </SoraTypography>
-                  <IconButtonPrimary onClick={handleClick}>
-                    <ArrowForwardIcon
-                      sx={{
-                        width: '28px',
-                        height: '28px',
-                      }}
-                    />
-                  </IconButtonPrimary>
-                </SeveralMissionCtaContainer>
-              </Link>
-            );
-          })}
-        </SeveralCTABox>
-      ) : (
-        <Link
-          style={{ textDecoration: 'none', width: '80%', color: 'inherit' }}
-          href={(CTAs?.length === 1 && CTAs[0].link) || url || '/'}
-          target="_blank"
-        >
-          <MissionCtaContainer onClick={handleClick}>
-            <MissionCtaTitle>
-              {((CTAs?.length === 1 && CTAs[0].text) || title) ??
-                'Go to Protocol Page'}
-            </MissionCtaTitle>
-            <IconButtonPrimary onClick={handleClick}>
-              <ArrowForwardIcon
-                sx={{
-                  width: '28px',
-                  height: '28px',
-                }}
-              />
-            </IconButtonPrimary>
-          </MissionCtaContainer>
-        </Link>
-      )}
-    </>
+                </FlexCenterRowBox>
+                <IconButtonPrimary onClick={handleClick}>
+                  <ArrowForwardIcon
+                    sx={{
+                      width: '28px',
+                      height: '28px',
+                    }}
+                  />
+                </IconButtonPrimary>
+              </SeveralMissionCtaContainer>
+            </Link>
+          );
+        })}
+      </SeveralCTABox>
+    </Box>
   );
 };
