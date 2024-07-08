@@ -25,7 +25,7 @@ export const Logo = ({ variant }: LogoProps) => {
 
   return (
     <LogoWrapper>
-      {!!hasTheme && !!isMobile && logoUrl && partnerLogo ? (
+      {!!hasTheme && !isMobile && logoUrl && partnerLogo ? (
         <>
           {logo}
           <ClearIcon
