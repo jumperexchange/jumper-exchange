@@ -14,9 +14,9 @@ export const metadata: Metadata = {
     siteName,
     images: [
       {
-        url: 'https://jumper.exchange/preview.png', // Default image
-        width: 900,
-        height: 450,
+        url: 'https://jumper.exchange/og-jumper-exchange.jpg', // Default image
+        width: 800,
+        height: 420,
       },
     ],
     type: 'website', // Override type
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     site: '@JumperExchange',
     title: 'Jumper.Exchange', // Twitter title
     description,
-    images: 'https://jumper.exchange/preview.png', // Twitter image
+    images: 'https://jumper.exchange/og-jumper-exchange.jpg', // Twitter image
   },
   icons: {
     // Icons metadata

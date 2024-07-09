@@ -4,9 +4,23 @@ import LearnPage from '@/app/ui/learn/LearnPage';
 import type { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
+  const title = 'Jumper Learn';
+  const description = 'Jumper Learn is the blog of Jumper Exchange.';
   return {
-    title: 'Jumper Learn',
-    description: 'Jumper Learn is the blog of Jumper Exchange.',
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [
+        {
+          url: 'https://jumper.exchange/og-jumper-learn.jpg', // Default image
+          width: 800,
+          height: 420,
+        },
+      ],
+      type: 'website', // Override type
+    },
   };
 }
 
