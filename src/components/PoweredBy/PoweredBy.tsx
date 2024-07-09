@@ -11,6 +11,7 @@ import type { CSSObject } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { Trans } from 'react-i18next/TransWithoutContext';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { Container } from './PoweredBy.style';
 
 const lifiUrl = appendUTMParametersToLink(LIFI_URL, {
@@ -38,6 +39,7 @@ export const PoweredBy = ({ styles, fixedPosition }: PoweredByProps) => {
   const isApp = Object.values(LinkMap).some((page) =>
     result?.includes(`/${page}`),
   );
+  const { partnerName } = usePartnerTheme();
 
   const handleClick = () => {
     trackPageload({
@@ -58,7 +60,9 @@ export const PoweredBy = ({ styles, fixedPosition }: PoweredByProps) => {
 
   return (
     <Container
-      fixedPosition={fixedPosition || isRoot || isApp || isMemeCoinPage}
+      fixedPosition={
+        !!partnerName || fixedPosition || isRoot || isApp || isMemeCoinPage
+      }
       sx={styles}
       isArticlePage={isArticle}
     >

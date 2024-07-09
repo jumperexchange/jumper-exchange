@@ -1,12 +1,12 @@
 import { usePartnerTheme } from '@/hooks/usePartnerTheme';
 import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
-import { darkTheme } from 'src/theme';
 import type { PartnerTheme } from 'src/types/strapi';
 
 export const useWidgetTheme = (): PartnerTheme => {
   const theme = useTheme();
   const { hasTheme, isSuccess, currentWidgetTheme } = usePartnerTheme();
+
   const defaultWidgetTheme = {
     config: {
       appearance: theme.palette.mode,
@@ -42,7 +42,7 @@ export const useWidgetTheme = (): PartnerTheme => {
           },
           secondary: {
             // FIXME: we need to find out how to use the correct color from the main theme config
-            main: darkTheme.palette.accent2.main,
+            main: '#ff0420', // darkTheme.palette.accent2.main,
           },
           grey: theme.palette.grey,
         },

@@ -3,15 +3,15 @@ import { useSettingsStore } from '@/stores/settings';
 import type { ThemeModesSupported } from '@/types/settings';
 import { CssBaseline, useMediaQuery } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { deepmerge } from '@mui/utils';
 import type { PropsWithChildren } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { darkTheme, lightTheme } from 'src/theme/theme';
-import { deepmerge } from '@mui/utils';
 import { sora } from 'src/fonts/fonts';
-import { useSuperfest } from 'src/hooks/useSuperfest';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import { useSuperfest } from 'src/hooks/useSuperfest';
+import { darkTheme, lightTheme } from 'src/theme/theme';
 
 export const useDetectDarkModePreference = () => {
   const themeMode = useSettingsStore((state) => state.themeMode);
@@ -64,11 +64,10 @@ export const ThemeProvider: React.FC<
       });
       setTheme(themeMode === 'dark' ? 'dark' : 'light');
     }
-  }, [themeMode, isDarkMode, setCookie, availableWidgetThemeMode]);
+  }, [themeMode, isDarkMode, setCookie, availableWidgetThemeMode, hasTheme]);
 
   const activeTheme = useMemo(() => {
     let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
-
     if (!!hasTheme && currentCustomizedTheme) {
       // Merge partner theme attributes into the base theme
       const mergedTheme = deepmerge(currentTheme, {
@@ -98,20 +97,20 @@ export const ThemeProvider: React.FC<
             main:
               typeof currentCustomizedTheme.palette?.accent1?.main === 'string'
                 ? currentCustomizedTheme.palette.accent1.main
-                : currentTheme.palette.surface1.main,
+                : currentTheme.palette.accent1.main,
           },
           accent1Alt: {
             main:
               typeof currentCustomizedTheme.palette?.accent1Alt?.main ===
               'string'
                 ? currentCustomizedTheme.palette.accent1Alt.main
-                : currentTheme.palette.surface1.main,
+                : currentTheme.palette.accent1Alt.main,
           },
           accent2: {
             main:
               typeof currentCustomizedTheme.palette?.accent2?.main === 'string'
                 ? currentCustomizedTheme.palette.accent2.main
-                : currentTheme.palette.surface1.main,
+                : currentTheme.palette.accent2.main,
           },
           surface1: {
             main:
@@ -125,6 +124,53 @@ export const ThemeProvider: React.FC<
               'string'
                 ? currentCustomizedTheme?.palette.surface2.main
                 : currentTheme.palette.surface2.main,
+          },
+          grey: {
+            100:
+              typeof currentCustomizedTheme?.palette?.grey === 'object' &&
+              Object.keys(currentCustomizedTheme?.palette?.grey).includes('100')
+                ? currentCustomizedTheme?.palette.grey[100]
+                : currentTheme.palette.grey[100],
+            200:
+              typeof currentCustomizedTheme?.palette?.grey === 'object' &&
+              Object.keys(currentCustomizedTheme?.palette?.grey).includes('200')
+                ? currentCustomizedTheme?.palette.grey[200]
+                : currentTheme.palette.grey[200],
+            300:
+              typeof currentCustomizedTheme?.palette?.grey === 'object' &&
+              Object.keys(currentCustomizedTheme?.palette?.grey).includes('300')
+                ? currentCustomizedTheme?.palette.grey[300]
+                : currentTheme.palette.grey[300],
+            400:
+              typeof currentCustomizedTheme?.palette?.grey === 'object' &&
+              Object.keys(currentCustomizedTheme?.palette?.grey).includes('400')
+                ? currentCustomizedTheme?.palette.grey[400]
+                : currentTheme.palette.grey[400],
+            500:
+              typeof currentCustomizedTheme?.palette?.grey === 'object' &&
+              Object.keys(currentCustomizedTheme?.palette?.grey).includes('500')
+                ? currentCustomizedTheme?.palette.grey[500]
+                : currentTheme.palette.grey[500],
+            600:
+              typeof currentCustomizedTheme?.palette?.grey === 'object' &&
+              Object.keys(currentCustomizedTheme?.palette?.grey).includes('600')
+                ? currentCustomizedTheme?.palette.grey[600]
+                : currentTheme.palette.grey[600],
+            700:
+              typeof currentCustomizedTheme?.palette?.grey === 'object' &&
+              Object.keys(currentCustomizedTheme?.palette?.grey).includes('700')
+                ? currentCustomizedTheme?.palette.grey[700]
+                : currentTheme.palette.grey[700],
+            800:
+              typeof currentCustomizedTheme?.palette?.grey === 'object' &&
+              Object.keys(currentCustomizedTheme?.palette?.grey).includes('800')
+                ? currentCustomizedTheme?.palette.grey[800]
+                : currentTheme.palette.grey[800],
+            900:
+              typeof currentCustomizedTheme?.palette?.grey === 'object' &&
+              Object.keys(currentCustomizedTheme?.palette?.grey).includes('900')
+                ? currentCustomizedTheme?.palette.grey[900]
+                : currentTheme.palette.grey[900],
           },
         },
         // typography: currentCustomizedTheme.typography

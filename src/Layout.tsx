@@ -1,5 +1,4 @@
 import { Box } from '@mui/material';
-import Image from 'next/image';
 import type { PropsWithChildren } from 'react';
 import { BackgroundGradient } from './components/BackgroundGradient/BackgroundGradient';
 import { Navbar } from './components/Navbar/Navbar';
@@ -28,7 +27,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
           display: 'flex',
           flexDirection: 'row-reverse',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           alignContent: 'center',
         }}
       >

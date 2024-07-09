@@ -1,12 +1,12 @@
-import React from 'react';
 import { FeatureCards } from '@/components/FeatureCards';
+import React from 'react';
 
 export default async function MainLayout({
   children,
-  params: { lng },
+  params: { lng, partnerTheme },
 }: {
   children: React.ReactNode;
-  params: { lng: string };
+  params: { lng: string; partnerTheme?: string };
 }) {
   return (
     <>
