@@ -42,8 +42,8 @@ export const useWidgetTheme = (): PartnerTheme => {
           },
           secondary: {
             // FIXME: we need to find out how to use the correct color from the main theme config
-            // main: darkTheme.palette.accent2.main,
-            main: '#ff0420',
+            main: darkTheme.palette.accent2.main,
+            // main: theme.palette.secondary.main,
           },
           grey: theme.palette.grey,
         },
