@@ -12,25 +12,23 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import type { Breakpoint } from '@mui/material/styles';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
+import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { darkTheme } from 'src/theme/theme';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
-import { useMediaQuery } from '@mui/material';
-import type { Theme } from '@mui/material';
-import { publicRPCList } from 'src/const/rpcList';
-import { useRouter } from 'next/navigation';
-import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useWidgetTheme } from './useWidgetTheme';
 
 export function Widget({
@@ -98,7 +96,7 @@ export function Widget({
     }
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
+  }, [widgetIntegrator, isGasVariant]) as string;
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -196,23 +194,13 @@ export function Widget({
     multisigWidget,
     setWalletSelectMenuState,
     starterVariant,
-    theme.breakpoints,
-    theme.palette.accent1.main,
-    theme.palette.grey,
-    theme.palette.mode,
-    theme.palette.surface1.main,
-    theme.palette.surface2.main,
-    theme.typography.fontFamily,
-    themeMode,
     toChain,
     toToken,
     tokens,
     wagmiConfig,
-    widgetIntegrator,
     partnerName,
     isDexFiltered,
     isBridgeFiltered,
-    integratorStringByType,
     widgetTheme,
   ]);
 
