@@ -3,15 +3,15 @@ import { useSettingsStore } from '@/stores/settings';
 import type { ThemeModesSupported } from '@/types/settings';
 import { CssBaseline, useMediaQuery } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { deepmerge } from '@mui/utils';
 import type { PropsWithChildren } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { darkTheme, lightTheme } from 'src/theme/theme';
-import { deepmerge } from '@mui/utils';
 import { sora } from 'src/fonts/fonts';
-import { useSuperfest } from 'src/hooks/useSuperfest';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import { useSuperfest } from 'src/hooks/useSuperfest';
+import { darkTheme, lightTheme } from 'src/theme/theme';
 
 export const useDetectDarkModePreference = () => {
   const themeMode = useSettingsStore((state) => state.themeMode);
@@ -64,7 +64,7 @@ export const ThemeProvider: React.FC<
       });
       setTheme(themeMode === 'dark' ? 'dark' : 'light');
     }
-  }, [themeMode, isDarkMode, setCookie, availableWidgetThemeMode]);
+  }, [themeMode, isDarkMode, setCookie, availableWidgetThemeMode, hasTheme]);
 
   const activeTheme = useMemo(() => {
     let currentTheme = theme === 'dark' ? darkTheme : lightTheme;
