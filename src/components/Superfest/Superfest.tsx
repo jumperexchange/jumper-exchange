@@ -42,6 +42,7 @@ export const Superfest = () => {
       <SuperfestMainBox>
         {!account?.address ||
         isQuestLoading ||
+        !activeCampaigns ||
         activeCampaigns.length === 0 ? undefined : (
           <ActiveSuperfestMissionsCarousel
             quests={quests}
