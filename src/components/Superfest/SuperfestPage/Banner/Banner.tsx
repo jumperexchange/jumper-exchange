@@ -68,7 +68,7 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           {rewards && rewards.amount ? (
             <RewardBox
               logos={[rewards.logo]}
-              title={'Rewards'}
+              title={'Total Rewards'}
               value={`${rewards.amount} ${rewards.name}`}
             />
           ) : undefined}
@@ -76,7 +76,7 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           {attributes && attributes?.Points ? (
             <RewardBox
               logos={['https://strapi.li.finance/uploads/xp_cfcff186e5.png']}
-              title={'Points'}
+              title={'Jumper XP'}
               value={String(attributes?.Points)}
             />
           ) : undefined}
