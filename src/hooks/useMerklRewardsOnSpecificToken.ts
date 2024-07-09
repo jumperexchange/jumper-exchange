@@ -65,8 +65,9 @@ const MERKL_API = 'https://api.merkl.xyz/v3';
 
 const CREATOR_TAG = 'jumper-test';
 
-// const TOKEN = '0x4200000000000000000000000000000000000042'
-const TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
+const TOKEN = '0x4200000000000000000000000000000000000042';
+// TESTING
+// const TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
 export const useMerklRewards = ({
   userAddress,
@@ -79,7 +80,6 @@ export const useMerklRewards = ({
   const activeCampaigns = [];
 
   // Call to get the active positions
-  // To do -> use the label to get only
   const MERKL_POSITIONS_API = `${MERKL_API}/multiChainPositions?chainIds=${ACTIVE_CHAINS.join(',')}&user=${userAddress}&creatorTag=${CREATOR_TAG}`;
   const {
     data: positionsData,
