@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { ProfilePageTypography } from '../ProfilePage.style';
+import { NoSelectTypography } from '../ProfilePage.style';
 import {
   AddressBoxContainer,
   AddressDisplayBox,
@@ -68,6 +68,7 @@ export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
           width={128}
           height={128}
           priority={false}
+          unoptimized={true}
           style={{
             backgroundColor: imageLink
               ? theme.palette.mode === 'light'
@@ -83,16 +84,15 @@ export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
         />
       </PassImageBox>
       <AddressDisplayBox>
-        <ProfilePageTypography
+        <NoSelectTypography
+          fontWeight={700}
           fontSize={20}
           lineHeight={'32px'}
-          sx={{
-            width: '100%',
-            textAlign: 'center',
-          }}
+          width={'100%'}
+          textAlign={'center'}
         >
           {getAddressOrENSString()}
-        </ProfilePageTypography>
+        </NoSelectTypography>
         <ProfileIconButton onClick={() => handleCopyButton()}>
           <ContentCopyIcon sx={{ height: '16px' }} />
         </ProfileIconButton>

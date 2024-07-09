@@ -1,19 +1,23 @@
 import { getContrastAlphaColor } from '@/utils/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
 import type { InstructionItemProps } from '.';
 import {
+  InstructionsAccordionButtonMainBox,
   InstructionsAccordionItemContainer,
   InstructionsAccordionItemHeader,
   InstructionsAccordionItemIndex,
   InstructionsAccordionItemLabel,
   InstructionsAccordionItemMain,
   InstructionsAccordionItemMore,
+  InstructionsAccordionLinkBox,
   InstructionsAccordionToggle,
 } from '.';
+import { sora } from 'src/fonts/fonts';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 interface InstructionsAccordionItemProps extends InstructionItemProps {
   index: number;
@@ -42,6 +46,10 @@ export const InstructionsAccordionItem = ({
   link,
   index,
   url,
+  buttonTitles,
+  buttonLinks,
+  activeTheme,
+  variant,
 }: InstructionsAccordionItemProps) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
@@ -52,8 +60,17 @@ export const InstructionsAccordionItem = ({
     e.stopPropagation();
     step && setOpen((prev) => !prev);
   };
+
+  const isSuperfest = variant === 'superfest';
+
   return (
-    <InstructionsAccordionItemContainer>
+    <InstructionsAccordionItemContainer
+      sx={{
+        typograpy: isSuperfest ? sora.style.fontFamily : undefined,
+        border: isSuperfest ? '2px dotted' : undefined,
+        borderColor: isSuperfest ? theme.palette.black.main : undefined,
+      }}
+    >
       <InstructionsAccordionItemMain onClick={(e) => handleOpen(e)}>
         <InstructionsAccordionItemHeader>
           <InstructionsAccordionItemIndex>
@@ -90,7 +107,61 @@ export const InstructionsAccordionItem = ({
       </InstructionsAccordionItemMain>
 
       {open ? (
-        <InstructionsAccordionItemMore>{step}</InstructionsAccordionItemMore>
+        <InstructionsAccordionItemMore>
+          <>
+            <Typography>{step}</Typography>
+            {buttonLinks && buttonTitles && buttonTitles.length > 0 ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignContent: 'center',
+                  justifyContent: 'flex-start',
+                  mt: '8px',
+                }}
+              >
+                {buttonTitles.map((_, i: number) => {
+                  return (
+                    <InstructionsAccordionButtonMainBox
+                      typography={
+                        variant === 'superfest'
+                          ? sora.style.fontFamily
+                          : undefined
+                      }
+                      key={`external-link-${i}`}
+                    >
+                      <a
+                        href={buttonLinks[i]}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                      >
+                        <InstructionsAccordionLinkBox>
+                          <Typography
+                            variant={'lifiBodyMediumStrong'}
+                            component={'span'}
+                            mr={'8px'}
+                            sx={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              maxWidth: 208,
+                              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                                maxWidth: 168,
+                              },
+                            }}
+                          >
+                            {buttonTitles[i]}
+                          </Typography>
+                          <ArrowForwardIcon />
+                        </InstructionsAccordionLinkBox>
+                      </a>
+                    </InstructionsAccordionButtonMainBox>
+                  );
+                })}
+              </Box>
+            ) : null}
+          </>
+        </InstructionsAccordionItemMore>
       ) : null}
     </InstructionsAccordionItemContainer>
   );

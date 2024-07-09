@@ -27,7 +27,9 @@ const MENU_LABEL_HEIGHT = 64;
 export const MenuPopper = styled(Popper)<PopperProps>(({ theme }) => ({
   zIndex: 1600,
   top: '16px !important',
+  position: 'fixed',
 }));
+
 export interface MenuListProps extends Omit<MuiMenuListProps, 'component'> {
   component?: string;
   isOpenSubMenu?: boolean;

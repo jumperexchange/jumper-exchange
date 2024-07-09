@@ -42,6 +42,7 @@ interface Resources {
         aboutLIFI: 'About LI.FI';
         support: 'Support';
         profile: 'Jumper Profile';
+        fest: 'Superfest Festival';
       };
       walletMenu: {
         disconnect: 'Disconnect';
@@ -54,9 +55,13 @@ interface Resources {
         connectAnotherWallet: 'Connect another wallet';
       };
       themes: {
-        switchToLight: 'Switch to Light Theme';
-        switchToDark: 'Switch to Dark Theme';
+        switchToLight: 'Switch to Light mode';
+        switchToDark: 'Switch to Dark mode';
         switchToSystem: 'Switch to System';
+        lightModeDisabled: 'Light mode is disabled for this theme';
+        darkModeDisabled: 'Dark mode is disabled for this theme';
+        systemModeDisabled: 'System mode is disabled for this theme';
+        default: 'Default';
       };
       developers: {
         github: 'GitHub';
@@ -89,6 +94,11 @@ interface Resources {
     solanaAlert: {
       title: 'Limited Solana token support';
       subtitle: 'Currently only USDC and USDT can be bridged to and from Solana.';
+    };
+    seiAlert: {
+      title: 'Linking of SEI EVM wallet required';
+      subtitle: 'To use SEI EVM, you need to link your wallet address to the SEI ecosystem.';
+      buttonText: 'Link Wallet';
     };
     featureCard: {
       learnMore: 'Learn more';

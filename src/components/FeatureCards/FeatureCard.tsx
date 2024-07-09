@@ -179,6 +179,12 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         <FeatureCardContent>
           <FeatureCardCloseButton
             disableRipple={true}
+            aria-label="close"
+            sx={{
+              position: 'absolute',
+              right: 1,
+              top: 1,
+            }}
             onClick={(e) => handleClose(e)}
           >
             <CloseIcon

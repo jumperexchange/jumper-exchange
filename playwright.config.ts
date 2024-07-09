@@ -18,8 +18,10 @@ import { url } from 'inspector';
 // const baseURL = `http://localhost:${PORT}`;
 
 export default defineConfig({
-  timeout: 30 * 1000,
-
+  timeout: 60 * 1000,
+  expect: {
+    timeout: 40 * 1000,
+  },
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -43,7 +45,7 @@ export default defineConfig({
   webServer: {
     command: 'yarn run dev',
     url: 'http://localhost:3000',
-    timeout: 120 * 1000,
+    timeout: 200 * 1000,
     reuseExistingServer: !process.env.CI,
   },
 

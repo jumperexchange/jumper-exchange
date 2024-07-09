@@ -94,3 +94,21 @@ export const InstructionsAccordionItemLabel = styled(Box)(({ theme }) => ({
     marginLeft: theme.spacing(3),
   },
 }));
+
+export const InstructionsAccordionButtonMainBox = styled(Box)(() => ({
+  display: 'flex',
+  alignContent: 'center',
+  justifyContent: 'flex-start',
+  mt: '8px',
+}));
+
+export const InstructionsAccordionLinkBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  textAlign: 'left',
+  alignItems: 'center',
+  alignContent: 'center',
+  color: theme.palette.black.main,
+  '&:hover': {
+    color: theme.palette.primary.main,
+  },
+}));

@@ -9,6 +9,7 @@ import {
 import {
   DISCORD_URL,
   EXPLORER_URL,
+  JUMPER_FEST_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   X_URL,
@@ -28,13 +29,20 @@ import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { OPLogo } from 'src/components/illustrations/OPLogo';
+import { useMainPaths } from 'src/hooks/useMainPaths';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import { useSuperfest } from 'src/hooks/useSuperfest';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const { hasTheme } = usePartnerTheme();
   const router = useRouter();
   const theme = useTheme();
+  const { isSuperfest } = useSuperfest();
+  const { isMainPaths } = useMainPaths();
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
@@ -66,6 +74,210 @@ export const useMainMenuContent = () => {
     minWidth: 'unset',
     borderRadius: '18px',
   };
+
+  //Todo: to generate on the server side
+  if (!!hasTheme || isSuperfest || isMainPaths) {
+    return [
+      {
+        label: t('language.key', { ns: 'language' }),
+        prefixIcon: <LanguageIcon />,
+        suffixIcon: (
+          <Typography
+            variant="lifiBodyMedium"
+            textTransform={'uppercase'}
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              maxWidth: 38,
+            }}
+          >
+            {i18n.language}
+          </Typography>
+        ),
+        showMoreIcon: true,
+        triggerSubMenu: MenuKeysEnum.Language,
+        onClick: () => {
+          setSubMenuState(MenuKeysEnum.Language);
+          trackEvent({
+            category: TrackingCategory.MainMenu,
+            action: TrackingAction.OpenMenu,
+            label: `open_submenu_${MenuKeysEnum.Language.toLowerCase()}`,
+            data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Language },
+          });
+        },
+      },
+      {
+        label: t('navbar.navbarMenu.developers'),
+        prefixIcon: <DeveloperModeIcon />,
+        triggerSubMenu: MenuKeysEnum.Devs,
+        onClick: () => {
+          setSubMenuState(MenuKeysEnum.Devs);
+          trackEvent({
+            category: TrackingCategory.MainMenu,
+            action: TrackingAction.OpenMenu,
+            label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
+            data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
+          });
+        },
+      },
+      {
+        label: t('navbar.navbarMenu.fest'),
+        prefixIcon: <OPLogo />,
+        showMoreIcon: false,
+        link: { url: '/superfest' },
+        onClick: () => {
+          trackEvent({
+            category: TrackingCategory.Menu,
+            label: 'click-jumper-fest-link',
+            action: TrackingAction.ClickJumperProfileLink,
+            data: { [TrackingEventParameter.Menu]: 'fest' },
+          });
+          closeAllMenus();
+          router.push(JUMPER_FEST_PATH);
+        },
+      },
+      {
+        label: t('navbar.navbarMenu.profile'),
+        prefixIcon: <AccountCircleIcon />,
+        showMoreIcon: false,
+        link: { url: '/profile' },
+        onClick: () => {
+          trackEvent({
+            category: TrackingCategory.Menu,
+            label: 'click-jumper-pass-link',
+            action: TrackingAction.ClickJumperProfileLink,
+            data: { [TrackingEventParameter.Menu]: 'pass' },
+          });
+          closeAllMenus();
+          router.push(JUMPER_LOYALTY_PATH);
+        },
+      },
+      {
+        label: 'Jumper Learn',
+        prefixIcon: <SchoolIcon />,
+        showMoreIcon: false,
+        link: { url: '/learn' },
+        onClick: () => {
+          trackEvent({
+            category: TrackingCategory.Menu,
+            label: 'click-jumper-learn-link',
+            action: TrackingAction.ClickJumperLearnLink,
+            data: { [TrackingEventParameter.Menu]: 'jumper_learn' },
+          });
+          closeAllMenus();
+          router.push(JUMPER_LEARN_PATH);
+        },
+      },
+      {
+        label: t('navbar.navbarMenu.lifiExplorer'),
+        prefixIcon: <SearchOutlinedIcon />,
+        showMoreIcon: false,
+        link: { url: explorerUrl, external: true },
+        onClick: () => {
+          trackEvent({
+            category: TrackingCategory.Menu,
+            label: 'open-lifi-explorer',
+            action: TrackingAction.ClickLifiExplorerLink,
+            data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
+          });
+          trackEvent({
+            category: TrackingCategory.Pageload,
+            action: TrackingAction.PageLoad,
+            label: 'lifi-explorer',
+            data: {
+              [TrackingEventParameter.PageloadSource]:
+                TrackingCategory.MainMenu,
+              [TrackingEventParameter.PageloadDestination]: 'lifi-explorer',
+              [TrackingEventParameter.PageloadURL]: explorerUrl,
+              [TrackingEventParameter.PageloadExternal]: true,
+            },
+          });
+        },
+      },
+      {
+        label: 'X',
+        prefixIcon: <XIcon />,
+        showMoreIcon: false,
+        onClick: () => {
+          trackEvent({
+            category: TrackingCategory.Menu,
+            label: 'click-x-link',
+            action: TrackingAction.ClickXLink,
+            data: { [TrackingEventParameter.Menu]: 'lifi_x' },
+          });
+          trackEvent({
+            category: TrackingCategory.Pageload,
+            action: TrackingAction.PageLoad,
+            label: 'lifi-explorer',
+            data: {
+              [TrackingEventParameter.PageloadSource]:
+                TrackingCategory.MainMenu,
+              [TrackingEventParameter.PageloadDestination]: 'x-jumper',
+              [TrackingEventParameter.PageloadURL]: X_URL,
+              [TrackingEventParameter.PageloadExternal]: true,
+            },
+          });
+        },
+        link: { url: X_URL, external: true },
+      },
+      {
+        label: 'Discord',
+        prefixIcon: (
+          <Discord
+            color={
+              theme.palette.mode === 'dark'
+                ? theme.palette.white.main
+                : theme.palette.black.main
+            }
+          />
+        ),
+        showMoreIcon: false,
+        onClick: () => {
+          trackEvent({
+            category: TrackingCategory.Menu,
+            label: 'click-discord-link',
+            action: TrackingAction.ClickDiscordLink,
+            data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+          });
+          trackEvent({
+            category: TrackingCategory.Pageload,
+            action: TrackingAction.PageLoad,
+            label: 'discord-lifi',
+            data: {
+              [TrackingEventParameter.PageloadSource]:
+                TrackingCategory.MainMenu,
+              [TrackingEventParameter.PageloadDestination]: 'discord-lifi',
+              [TrackingEventParameter.PageloadURL]: DISCORD_URL,
+              [TrackingEventParameter.PageloadExternal]: true,
+            },
+          });
+        },
+        link: { url: DISCORD_URL, external: true },
+      },
+      {
+        label: t('navbar.navbarMenu.support'),
+        prefixIcon: (
+          <Discord
+            color={
+              theme.palette.mode === 'light'
+                ? theme.palette.primary.main
+                : theme.palette.white.main
+            }
+          />
+        ),
+        onClick: () => {
+          trackEvent({
+            category: TrackingCategory.Menu,
+            label: 'open-support-modal',
+            action: TrackingAction.OpenMenu,
+            data: { [TrackingEventParameter.Menu]: 'support_modal' },
+          });
+          setSupportModalState(true);
+        },
+        showButton: true,
+      },
+    ];
+  }
 
   return [
     {
@@ -142,6 +354,22 @@ export const useMainMenuContent = () => {
           label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
           data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
         });
+      },
+    },
+    {
+      label: t('navbar.navbarMenu.fest'),
+      prefixIcon: <OPLogo />,
+      showMoreIcon: false,
+      link: { url: '/superfest' },
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-jumper-fest-link',
+          action: TrackingAction.ClickJumperProfileLink,
+          data: { [TrackingEventParameter.Menu]: 'fest' },
+        });
+        closeAllMenus();
+        router.push(JUMPER_FEST_PATH);
       },
     },
     {

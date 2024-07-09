@@ -12,20 +12,21 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('should navigate to the homepage and change tabs', async ({ page }) => {
+    const buyETHButton = page
+      .frameLocator('iframe[title="Onramper widget"]')
+      .locator('button:has-text("Buy ETH")');
     await closeWelcomeScreen(page);
     await page.getByRole('tab', { name: 'Exchange' }).click();
     await expect(
       page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
     ).toBeVisible();
     await page.getByRole('tab', { name: 'Gas' }).click();
-    await expect(
-      page.locator('[id="widget-header-\\:r4\\:"]').getByText('Gas'),
-    ).toBeVisible();
+    await expect(page.locator('#tab-Gas-1')).toBeVisible();
     await page.getByRole('tab', { name: 'Buy' }).click();
+    await expect(buyETHButton).toBeEnabled();
     await expect(
       page
         .frameLocator('iframe[title="Onramper widget"]')
-        .getByText('Buy crypto')
         .getByText('Buy crypto'),
     ).toBeVisible();
   });
@@ -58,7 +59,7 @@ test.describe('Jumper full e2e flow', () => {
     await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
-    await expect(page.getByRole('menuitem')).toHaveCount(9);
+    await expect(page.getByRole('menuitem')).toHaveCount(10);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
@@ -92,7 +93,7 @@ test.describe('Jumper full e2e flow', () => {
     await itemInMenu(page, 'LI.FI Explorer');
     const newPage = await page.waitForEvent('popup', { timeout: 15000 });
     expect(newPage.url()).toBe(
-      'https://explorer.li.fi/?utm_source=jumper&utm_campaign=jumper_to_explorer&utm_medium=menu',
+      'https://scan.li.fi/?utm_source=jumper&utm_campaign=jumper_to_explorer&utm_medium=menu',
     );
   });
 
