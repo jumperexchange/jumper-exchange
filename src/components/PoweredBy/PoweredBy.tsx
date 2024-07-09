@@ -19,11 +19,11 @@ const lifiUrl = appendUTMParametersToLink(LIFI_URL, {
 });
 
 interface PoweredByProps {
-  fixedPosition?: boolean;
   styles?: CSSObject;
+  fixedPosition?: boolean;
 }
 
-export const PoweredBy = ({ styles }: PoweredByProps) => {
+export const PoweredBy = ({ styles, fixedPosition }: PoweredByProps) => {
   const theme = useTheme();
   const { trackPageload, trackEvent } = useUserTracking();
   const currentPath = usePathname();
@@ -34,7 +34,7 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
 
   //Todo: logic to review
   const isRoot = result === '/' || result === '';
-  const isThemePage = result === JUMPER_MEMECOIN_PATH;
+  const isMemeCoinPage = result === JUMPER_MEMECOIN_PATH;
   const isApp = Object.values(LinkMap).some((page) =>
     result?.includes(`/${page}`),
   );
@@ -58,7 +58,7 @@ export const PoweredBy = ({ styles }: PoweredByProps) => {
 
   return (
     <Container
-      fixedPosition={isRoot || isApp || isThemePage}
+      fixedPosition={fixedPosition || isRoot || isApp || isMemeCoinPage}
       sx={styles}
       isArticlePage={isArticle}
     >

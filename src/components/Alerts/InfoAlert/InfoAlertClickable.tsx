@@ -51,6 +51,7 @@ export const InfoAlertClickable = ({
         <a
           href="https://app.sei.io/"
           target="_blank"
+          rel="noreferrer"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <InfoMessageCardClickable>
