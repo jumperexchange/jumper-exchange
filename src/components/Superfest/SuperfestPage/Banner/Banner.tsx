@@ -68,7 +68,7 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           {rewards && rewards.amount ? (
             <RewardBox
               logos={[rewards.logo]}
-              title={'Rewards'}
+              title={'Total Rewards'}
               value={`${rewards.amount} ${rewards.name}`}
             />
           ) : undefined}
