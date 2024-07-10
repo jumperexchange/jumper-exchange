@@ -45,8 +45,8 @@ export const PartnerThemeFooterImage = () => {
           alt="footer-image"
           src={
             !!hasTheme && availableWidgetThemeMode === 'dark'
-              ? ''
-              : 'https://strapi.li.finance/uploads/Superfest_sponsor_card_f3996bea6c.svg'
+              ? 'https://strapi.li.finance/uploads/sponsorcard_superfest_dark_befdd19bcf.svg'
+              : 'https://strapi.li.finance/uploads/Superfest_OP_3_575f5ddd10.svg'
           }
           width={300}
           height={200}
