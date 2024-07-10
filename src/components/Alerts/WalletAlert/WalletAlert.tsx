@@ -14,7 +14,7 @@ export const WalletAlert = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { isMetaMaskConnector } = useMetaMask();
 
-  const title = 'Metamask update is required ⚠️';
+  const title = 'Metamask update is required';
   const subtitle =
     'Please update MetaMask to the latest version. This update solves a bug present in older versions.';
   const isMobile = useMediaQuery((theme: Theme) =>
