@@ -49,7 +49,7 @@ interface BlogArticleProps {
   createdAt?: string;
   image?: StrapiImageData;
   baseUrl?: string;
-  activeTheme?: ThemeModesSupported;
+  activeThemeMode?: ThemeModesSupported;
   id?: number;
 }
 
@@ -66,7 +66,7 @@ export const BlogArticle = ({
   slug,
   image,
   baseUrl,
-  activeTheme,
+  activeThemeMode,
 }: BlogArticleProps) => {
   const theme = useTheme();
   const minRead = readingTime(content);
@@ -152,7 +152,7 @@ export const BlogArticle = ({
               id={id}
               baseUrl={baseUrl}
               content={content}
-              activeTheme={activeTheme}
+              activeThemeMode={activeThemeMode}
             />
           ) : (
             <BlogArticleContentSkeleton variant="text" />

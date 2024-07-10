@@ -32,5 +32,5 @@ export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   allowChains?: number[];
   widgetIntegrator?: string;
   starterVariant: StarterVariantType;
-  activeTheme?: ThemeModesSupported;
+  activeThemeMode?: ThemeModesSupported;
 }

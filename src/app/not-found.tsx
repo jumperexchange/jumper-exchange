@@ -15,7 +15,7 @@ import RouterLink from 'next/link';
 import { defaultNS, namespaces } from 'src/i18n';
 
 export default async function NotFound() {
-  const { activeTheme } = getCookies();
+  const { activeThemeMode } = getCookies();
   const cookiesHandler = cookies();
   const locale = cookiesHandler.get('NEXT_LOCALE')?.value ?? 'en';
 
@@ -24,7 +24,7 @@ export default async function NotFound() {
   return (
     <>
       <AppRouterCacheProvider>
-        <ThemeProvider theme={activeTheme}>
+        <ThemeProvider themeMode={activeThemeMode} activeTheme="jumper">
           <TranslationsProvider
             namespaces={[defaultNS]}
             locale={locale}

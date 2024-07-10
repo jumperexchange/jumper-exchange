@@ -5,18 +5,18 @@ import { getCookies } from '@/app/lib/getCookies';
 
 export default function Page() {
   const variant = 'default'; // exchange
-  const { activeTheme, welcomeScreenClosed } = getCookies();
+  const { activeThemeMode, welcomeScreenClosed } = getCookies();
   const isWelcomeScreenClosed = welcomeScreenClosed === 'true';
 
   return (
     <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>
       <WidgetContainer welcomeScreenClosed={true}>
         <Widgets
-          activeTheme={activeTheme}
+          activeThemeMode={activeThemeMode}
           closedWelcomeScreen={isWelcomeScreenClosed}
           widgetVariant={variant}
         />
-        <Widget starterVariant={variant} activeTheme={activeTheme} />
+        <Widget starterVariant={variant} activeThemeMode={activeThemeMode} />
       </WidgetContainer>
     </App>
   );

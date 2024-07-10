@@ -16,10 +16,10 @@ export const AppProvider: React.FC<
   PropsWithChildren<AppProviderProps>
 > = async ({ children, lang }) => {
   const { resources } = await initTranslations(lang || fallbackLng, namespaces);
-  const { activeTheme } = getCookies();
+  const { activeThemeMode } = getCookies();
 
   return (
-    <ThemeProvider theme={activeTheme}>
+    <ThemeProvider themeMode={activeThemeMode}>
       <TrackingProvider>
         <TranslationsProvider
           namespaces={[defaultNS]}

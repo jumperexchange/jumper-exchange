@@ -4,6 +4,7 @@ export type ThemeModesSupported = 'light' | 'dark' | 'auto';
 export type WalletConnected = string;
 
 export interface SettingsProps {
+  activeTheme: any;
   themeMode: ThemeModesSupported;
   clientWallets: string[];
   disabledFeatureCards: string[];
@@ -15,6 +16,9 @@ export interface SettingsState extends SettingsProps {
 
   // Mode
   setThemeMode: (mode: ThemeModesSupported) => void;
+
+  // Mode
+  setActiveTheme: (activeTheme: any) => void;
 
   // Installed Wallets
   setClientWallets: (wallet: string) => void;

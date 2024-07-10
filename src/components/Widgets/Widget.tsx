@@ -42,7 +42,7 @@ export function Widget({
   fromAmount,
   allowChains,
   widgetIntegrator,
-  activeTheme,
+  activeThemeMode,
 }: WidgetProps) {
   const theme = useTheme();
   const widgetTheme = useWidgetTheme();
@@ -224,7 +224,7 @@ export function Widget({
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly
         fallback={
-          <WidgetSkeleton config={{ ...config, appearance: activeTheme }} />
+          <WidgetSkeleton config={{ ...config, appearance: activeThemeMode }} />
         }
       >
         <LiFiWidget integrator={config.integrator} config={config} />

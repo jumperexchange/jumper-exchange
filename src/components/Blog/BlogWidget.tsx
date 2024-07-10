@@ -10,7 +10,7 @@ export interface BlogWidgetProps {
   toToken?: string;
   fromAmount?: string;
   allowChains?: string;
-  activeTheme?: ThemeModesSupported;
+  activeThemeMode?: ThemeModesSupported;
 }
 
 export const BlogWidget = ({
@@ -20,7 +20,7 @@ export const BlogWidget = ({
   toToken,
   fromAmount,
   allowChains,
-  activeTheme,
+  activeThemeMode,
 }: BlogWidgetProps) => {
   const allowChainsArray = (allowChains || '')
     .split(',')
@@ -41,7 +41,7 @@ export const BlogWidget = ({
         toToken={toToken}
         allowChains={allowChainsArray}
         widgetIntegrator={process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_BLOG}
-        activeTheme={activeTheme}
+        activeThemeMode={activeThemeMode}
       />
     </>
   );

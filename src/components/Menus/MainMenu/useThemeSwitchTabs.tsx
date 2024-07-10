@@ -20,7 +20,7 @@ import { useSuperfest } from 'src/hooks/useSuperfest';
 export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const [, setCookie] = useCookies(['theme']);
+  const [, setCookie] = useCookies(['themeMode']);
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
@@ -41,7 +41,7 @@ export const useThemeSwitchTabs = () => {
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    setCookie('theme', mode === 'auto' ? browserTheme : mode, { path: '/' });
+    setCookie('themeMode', mode === 'auto' ? browserTheme : mode, { path: '/' });
     setThemeMode(mode);
   };
 

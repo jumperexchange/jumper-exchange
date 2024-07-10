@@ -51,7 +51,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const article = await getArticleBySlug(params.slug);
-  const { activeTheme } = getCookies();
+  const { activeThemeMode } = getCookies();
 
   const currentTags = (
     article.data as BlogArticleData
@@ -67,7 +67,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       article={article.data.data}
       url={article.url}
       articles={relatedArticles.data}
-      activeTheme={activeTheme}
+      activeThemeMode={activeThemeMode}
     />
   );
 }

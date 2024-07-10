@@ -17,14 +17,14 @@ interface LearnArticlePageProps {
   article: BlogArticleData[];
   articles: BlogArticleData[];
   url: string;
-  activeTheme?: ThemeModesSupported;
+  activeThemeMode?: ThemeModesSupported;
 }
 
 const LearnArticlePage = ({
   article,
   articles,
   url,
-  activeTheme,
+  activeThemeMode,
 }: LearnArticlePageProps) => {
   const { t } = useTranslation();
 
@@ -45,7 +45,7 @@ const LearnArticlePage = ({
           tags={article[0]?.attributes.tags}
           image={article[0]?.attributes.Image}
           baseUrl={url}
-          activeTheme={activeTheme}
+          activeThemeMode={activeThemeMode}
         />
       </BlogArticleWrapper>
       <BlogArticleSection>
