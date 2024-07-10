@@ -6,6 +6,7 @@ import { SuperfestXPIcon } from '../../illustrations/XPIcon';
 import { FlexSpaceBetweenBox, SoraTypography } from '../Superfest.style';
 import type { Chain } from '../SuperfestPage/Banner/Banner';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
+import Link from 'next/link';
 import {
   QuestCardBottomBox,
   QuestCardInfoBox,
@@ -55,32 +56,34 @@ export const QuestCard = ({
 
   return (
     <QuestCardMainBox>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        {image && (
-          <Image
-            src={image}
-            alt="Quest Card Image"
-            width={256}
-            height={256}
-            style={{
-              borderTopLeftRadius: '8px',
-              borderTopRightRadius: '8px',
+      <Link href={`/superfest/${slug}`}>
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          {image && (
+            <Image
+              src={image}
+              alt="Quest Card Image"
+              width={320}
+              height={320}
+              style={{
+                borderTopLeftRadius: '8px',
+                borderTopRightRadius: '8px',
+              }}
+            />
+          )}
+          <Box
+            sx={{
+              position: 'relative',
+              marginLeft: '-32px',
+              maringTop: '-16px',
             }}
-          />
-        )}
-        <Box
-          sx={{
-            position: 'relative',
-            marginLeft: '-32px',
-            maringTop: '-16px',
-          }}
-        >
-          {rewards?.amount && <OPBadge />}
+          >
+            {rewards?.amount && <OPBadge />}
+          </Box>
         </Box>
-      </Box>
+      </Link>
       <QuestCardBottomBox>
         <QuestCardTitleBox>
-          <SoraTypography fontSize="18px" lineHeight="18px" fontWeight={600}>
+          <SoraTypography fontSize="20px" lineHeight="20px" fontWeight={600}>
             {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
           </SoraTypography>
         </QuestCardTitleBox>
