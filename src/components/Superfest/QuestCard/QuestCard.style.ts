@@ -8,8 +8,8 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '#FFFFFF'
       : alpha(theme.palette.white.main, 0.08),
-  height: '450px',
-  width: '288px',
+  height: 450,
+  width: 288,
   textAlign: 'center',
   borderRadius: '8px',
 }));
