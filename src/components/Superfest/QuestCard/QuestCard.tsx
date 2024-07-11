@@ -62,8 +62,8 @@ export const QuestCard = ({
             <Image
               src={image}
               alt="Quest Card Image"
-              width={320}
-              height={320}
+              width={288}
+              height={288}
               style={{
                 borderTopLeftRadius: '8px',
                 borderTopRightRadius: '8px',
