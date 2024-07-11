@@ -11,7 +11,7 @@ acceptLanguage.languages(locales);
 export function middleware(request: NextRequest) {
   const response = i18nRouter(request, i18nConfig);
 
-  cookiesMiddleware(response)
+  // cookiesMiddleware(response)
 
   return response;
 }

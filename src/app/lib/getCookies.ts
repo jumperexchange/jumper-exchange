@@ -7,10 +7,14 @@ export function getCookies() {
   const activeThemeMode = cookieHandler.get('themeMode')?.value as
     | ThemeModesSupported
     | undefined;
+  const activeTheme = cookieHandler.get('theme')?.value as
+    | string
+    | undefined;
   const welcomeScreenClosed = cookieHandler.get('welcomeScreenClosed')
     ?.value as 'false' | 'true' | undefined;
 
   return {
+    activeTheme,
     activeThemeMode,
     welcomeScreenClosed,
   };

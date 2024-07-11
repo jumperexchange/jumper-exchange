@@ -12,6 +12,7 @@ export const MenuKeys = {
 
 export enum MenuKeysEnum {
   Main = 'Main',
+  Theme = 'Theme',
   WalletSelect = 'WalletSelect',
   WalletSelectMore = 'WalletSelectMore',
   Wallet = 'Wallet',

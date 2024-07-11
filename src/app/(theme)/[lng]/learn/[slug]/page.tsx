@@ -1,6 +1,6 @@
-import { getArticleBySlug } from '@/app/lib/getArticleBySlug';
-import { getArticlesByTag } from '@/app/lib/getArticlesByTag';
-import { getCookies } from '@/app/lib/getCookies';
+import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
+import { getArticlesByTag } from '../../../../lib/getArticlesByTag';
+import { getCookies } from '../../../../lib/getCookies';
 import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
 import type { Metadata } from 'next';

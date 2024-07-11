@@ -1,14 +1,13 @@
-import { usePathname } from 'next/navigation';
-import { JUMPER_FEST_PATH } from 'src/const/urls';
+import { useSelectedLayoutSegment } from 'next/navigation';
 
 interface useSuperfestProps {
   isSuperfest: boolean;
 }
 
 export const useSuperfest = (): useSuperfestProps => {
-  const pathname = usePathname();
+  const segment = useSelectedLayoutSegment();
 
   return {
-    isSuperfest: pathname?.includes(JUMPER_FEST_PATH) ?? false,
+    isSuperfest: segment === 'superfest',
   };
 };

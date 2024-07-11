@@ -1,12 +1,11 @@
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import Script from 'next/script';
 import type { Viewport } from 'next/types';
 import React from 'react';
 import { fallbackLng } from 'src/i18n';
 import { metadata as JumperMetadata } from './lib/metadata';
-import { cookies } from 'next/headers';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 
 export const metadata = JumperMetadata;
 
@@ -20,11 +19,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const cookiesHandler = cookies();
-  console.log('cookiesHandler', cookiesHandler);
-
   return (
-    <html lang={fallbackLng}>
+    <html lang={fallbackLng} suppressHydrationWarning>
     <head>
       <link rel="icon" href="/favicon.ico" sizes="any" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -60,11 +56,13 @@ export default async function RootLayout({
     </head>
 
     <body suppressHydrationWarning>
-    <AppRouterCacheProvider>
-      <ReactQueryProvider>
-        <WalletProvider>{children}</WalletProvider>
-      </ReactQueryProvider>
-    </AppRouterCacheProvider>
+      <AppRouterCacheProvider>
+        <ReactQueryProvider>
+          <WalletProvider>
+            {children}
+          </WalletProvider>
+        </ReactQueryProvider>
+      </AppRouterCacheProvider>
     </body>
     </html>
   );

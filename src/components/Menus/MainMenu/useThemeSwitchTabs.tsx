@@ -16,9 +16,11 @@ import { useTranslation } from 'react-i18next';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useSuperfest } from 'src/hooks/useSuperfest';
+import { useTheme } from 'next-themes';
 
 export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
+  const { setTheme } = useTheme();
   const { trackEvent } = useUserTracking();
   const [, setCookie] = useCookies(['themeMode']);
   const { isSuperfest } = useSuperfest();
@@ -43,6 +45,8 @@ export const useThemeSwitchTabs = () => {
     });
     setCookie('themeMode', mode === 'auto' ? browserTheme : mode, { path: '/' });
     setThemeMode(mode);
+    console.log(`change theme to mode ${mode}`)
+    setTheme(mode);
   };
 
   // tooltips:
@@ -84,6 +88,10 @@ export const useThemeSwitchTabs = () => {
     lightModeEnabled = true;
     darkModeEnabled = true;
   }
+
+  lightModeEnabled = true;
+  darkModeEnabled = true;
+  systemModeEnabled = true;
 
   const output = [
     {

@@ -24,7 +24,7 @@ export default async function NotFound() {
   return (
     <>
       <AppRouterCacheProvider>
-        <ThemeProvider themeMode={activeThemeMode} activeTheme="jumper">
+        {/*<ThemeProvider themeMode={activeThemeMode} activeTheme="jumper">*/}
           <TranslationsProvider
             namespaces={[defaultNS]}
             locale={locale}
@@ -41,7 +41,7 @@ export default async function NotFound() {
             <NotFoundComponent />
             <PoweredBy fixedPosition={true} />
           </TranslationsProvider>
-        </ThemeProvider>
+        {/*</ThemeProvider>*/}
       </AppRouterCacheProvider>
     </>
   );

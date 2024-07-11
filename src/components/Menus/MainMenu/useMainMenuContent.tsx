@@ -1,6 +1,7 @@
 import { Tabs } from '@/components/Tabs/Tabs';
 import { Discord } from '@/components/illustrations/Discord';
 import { MenuKeysEnum } from '@/const/menuKeys';
+import PaletteIcon from '@mui/icons-material/Palette';
 import {
   TrackingAction,
   TrackingCategory,
@@ -28,6 +29,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useTheme as useNextTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
@@ -35,6 +37,7 @@ import { OPLogo } from 'src/components/illustrations/OPLogo';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 import { useMainPaths } from 'src/hooks/useMainPaths';
+import { usePartnerThemeV2 } from '@/hooks/usePartnerThemeV2';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -42,6 +45,8 @@ export const useMainMenuContent = () => {
   const { trackPageload, trackEvent } = useUserTracking();
   const router = useRouter();
   const theme = useTheme();
+  const { setTheme } = useNextTheme();
+  // const { setActiveTheme, setActiveThemeMode } = usePartnerThemeV2();
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
@@ -80,6 +85,73 @@ export const useMainMenuContent = () => {
   if (!!hasTheme || isSuperfest || isMainPaths) {
     return [
       {
+        children: (
+          <Tabs
+            data={themeSwitchTabs}
+            value={themeMode === 'light' ? 0 : themeMode === 'dark' ? 1 : 2}
+            ariaLabel="theme-switch-tabs"
+            containerStyles={containerStyles}
+            tabStyles={tabStyles}
+          />
+        ),
+        styles: {
+          width: 'auto',
+          margin: theme.spacing(1.5),
+          gap: '8px',
+          backgroundColor: 'transparent',
+          borderRadius: '24px',
+          '&:hover': {
+            backgroundColor: 'transparent',
+          },
+          paddingTop: `${theme.spacing(0.5)} !important`,
+          padding: theme.spacing(0.5),
+          '> button:hover': {
+            backgroundColor: getContrastAlphaColor(theme, '4%'),
+          },
+          '> button:hover svg': {
+            fill:
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[700]
+                : theme.palette.grey[300],
+          },
+        },
+        showMoreIcon: false,
+        disableRipple: true,
+      },
+      {
+        label: t('navbar.navbarMenu.theme'),
+        prefixIcon: <PaletteIcon />,
+        triggerSubMenu: !hasTheme ? MenuKeysEnum.Theme : undefined,
+        showMoreIcon: !hasTheme,
+        suffixIcon:
+          // activeUid !== 'undefined' ? (
+          true !== 'undefined' ? (
+            <Typography
+              variant="lifiBodyMedium"
+              textTransform={'uppercase'}
+              sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                maxWidth: 38,
+              }}
+            >
+              TOTO
+              {/*{activeUid}*/}
+            </Typography>
+          ) : undefined,
+        onClick: () => {
+          if (!hasTheme) {
+            setSubMenuState(MenuKeysEnum.Theme);
+            trackEvent({
+              category: TrackingCategory.MainMenu,
+              action: TrackingAction.OpenMenu,
+              label: `open_submenu_${MenuKeysEnum.Theme.toLowerCase()}`,
+              data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Theme },
+            });
+          }
+        },
+      },
+      {
         label: t('language.key', { ns: 'language' }),
         prefixIcon: <LanguageIcon />,
         suffixIcon: (
@@ -109,6 +181,49 @@ export const useMainMenuContent = () => {
               EventTrackingTool.Cookie3,
             ],
           });
+        },
+      },
+      {
+        label: t('Go back to jumper'),
+        prefixIcon: <OPLogo />,
+        showMoreIcon: false,
+        link: { url: '' },
+        onClick: () => {
+          // trackEvent({
+          //   category: TrackingCategory.Menu,
+          //   label: 'click-jumper-fest-link',
+          //   action: TrackingAction.ClickJumperProfileLink,
+          //   data: { [TrackingEventParameter.Menu]: 'fest' },
+          //   disableTrackingTool: [
+          //     EventTrackingTool.ARCx,
+          //     EventTrackingTool.Cookie3,
+          //   ],
+          // });
+          closeAllMenus();
+          setTheme('jumper')
+          // router.push(JUMPER_FEST_PATH);
+        },
+      },
+      {
+        label: t('Go back to superfest'),
+        prefixIcon: <OPLogo />,
+        showMoreIcon: false,
+        link: { url: '' },
+        onClick: () => {
+          // trackEvent({
+          //   category: TrackingCategory.Menu,
+          //   label: 'click-jumper-fest-link',
+          //   action: TrackingAction.ClickJumperProfileLink,
+          //   data: { [TrackingEventParameter.Menu]: 'fest' },
+          //   disableTrackingTool: [
+          //     EventTrackingTool.ARCx,
+          //     EventTrackingTool.Cookie3,
+          //   ],
+          // });
+          closeAllMenus();
+          // setActiveTheme();
+          // setActiveThemeMode();
+          // router.push(JUMPER_FEST_PATH);
         },
       },
       {

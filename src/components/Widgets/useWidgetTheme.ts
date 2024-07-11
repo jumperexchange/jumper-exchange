@@ -1,12 +1,22 @@
 import { usePartnerTheme } from '@/hooks/usePartnerTheme';
 import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
-import { darkTheme } from 'src/theme';
+import { useTheme as useNextTheme } from 'next-themes';
+import { darkTheme, lightTheme } from 'src/theme';
 import type { PartnerTheme } from 'src/types/strapi';
+import { useEffect, useState } from 'react';
+import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
+import { formatTheme, getAvailableThemeMode } from '@/hooks/usePartnerThemeV2';
+import { deepmerge } from '@mui/utils';
 
 export const useWidgetTheme = (): PartnerTheme => {
   const theme = useTheme();
-  const { hasTheme, isSuccess, currentWidgetTheme } = usePartnerTheme();
+  const { resolvedTheme } = useNextTheme();
+  const [activeTheme, setActiveTheme] = useState();
+  // const { hasTheme, isSuccess, currentWidgetTheme } = usePartnerTheme();
+
+  console.log('resolve', resolvedTheme)
+
   const defaultWidgetTheme = {
     config: {
       appearance: theme.palette.mode,
@@ -51,8 +61,42 @@ export const useWidgetTheme = (): PartnerTheme => {
     },
   };
 
-  if (!!hasTheme && isSuccess && !!currentWidgetTheme) {
-    return currentWidgetTheme;
+  useEffect(() => {
+    console.log('widget resolved theme', resolvedTheme)
+
+    if (['light', 'dark'].includes(resolvedTheme)) {
+      console.log('set back to default', defaultWidgetTheme)
+      setActiveTheme();
+      return;
+    }
+
+    getPartnerThemes()
+      .then((data) => {
+        const theme = data.data.find((d) => d.attributes.uid === resolvedTheme)
+
+        if (!theme) {
+          return;
+        }
+
+        const formattedTheme = formatTheme(theme.attributes)
+        const baseTheme = getAvailableThemeMode(theme.attributes) === 'light' ? lightTheme : darkTheme
+        console.log("----trgedsf", formattedTheme, { ...defaultWidgetTheme, config: {
+            theme: deepmerge(defaultWidgetTheme.config.theme, formattedTheme.activeWidgetTheme)
+          }
+        })
+
+        setActiveTheme({ ...defaultWidgetTheme, config: {
+          theme: deepmerge(defaultWidgetTheme.config.theme, formattedTheme.activeWidgetTheme)
+          }
+        })
+      })
+  }, [resolvedTheme]);
+
+
+  console.log('sgessusewidgettheme', activeTheme, defaultWidgetTheme)
+
+  if (!!activeTheme) {
+    return activeTheme;
   } else {
     return defaultWidgetTheme;
   }

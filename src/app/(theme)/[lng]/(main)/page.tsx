@@ -1,26 +1,22 @@
-import App from '@/app/ui/app/App';
+import App from '../../../ui/app/App';
 import { WidgetContainer, Widgets } from '@/components/Widgets';
-import { OnRamper } from '@/components/OnRamper';
+import { Widget } from '@/components/Widgets/Widget';
 import { getCookies } from '@/app/lib/getCookies';
 
-const Page = () => {
-  const variant = 'buy';
-  const { activeThemeMode, welcomeScreenClosed } = getCookies();
+export default function Page() {
+  const variant = 'default'; // exchange
+  const { activeThemeMode, activeTheme, welcomeScreenClosed } = getCookies();
   const isWelcomeScreenClosed = welcomeScreenClosed === 'true';
 
   return (
     <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>
       <WidgetContainer welcomeScreenClosed={true}>
         <Widgets
-          activeThemeMode={activeThemeMode}
-          closedWelcomeScreen={!!welcomeScreenClosed}
+          closedWelcomeScreen={isWelcomeScreenClosed}
           widgetVariant={variant}
         />
-
-        <OnRamper />
+        <Widget starterVariant={variant} activeTheme={activeTheme} activeThemeMode={activeThemeMode} />
       </WidgetContainer>
     </App>
   );
-};
-
-export default Page;
+}

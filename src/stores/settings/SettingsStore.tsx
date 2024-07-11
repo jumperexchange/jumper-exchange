@@ -19,6 +19,12 @@ export const useSettingsStore = createWithEqualityFn(
       ...defaultSettings,
 
       // Mode
+      setActiveTheme: (activeTheme: any) => {
+        set({
+          activeTheme: activeTheme,
+        });
+      },
+      // Mode
       setThemeMode: (mode: ThemeModesSupported) => {
         set({
           themeMode: mode,

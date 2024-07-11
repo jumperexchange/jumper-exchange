@@ -13,7 +13,6 @@ import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
-  activeThemeMode: ThemeModesSupported | undefined;
   closedWelcomeScreen: boolean;
 }
 

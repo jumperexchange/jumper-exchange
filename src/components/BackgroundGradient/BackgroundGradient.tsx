@@ -13,6 +13,7 @@ import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useMemo } from 'react';
+import Background from '@/components/Background';
 
 interface BackgroundGradientProps {
   styles?: CSSObject;
@@ -42,6 +43,9 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
     partnerTheme?.attributes.lightConfig,
     theme.palette.mode,
   ]);
+
+  // return <>bg</>
+  return <Background />
 
   if (isSuperfest || isMainPaths) {
     return <SuperfestBackgroundContainer sx={styles} />;

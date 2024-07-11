@@ -1,10 +1,10 @@
-import App from '../../ui/app/App';
+import App from '@/app/ui/app/App';
 import { WidgetContainer, Widgets } from '@/components/Widgets';
-import { Widget } from '@/components/Widgets/Widget';
+import { OnRamper } from '@/components/OnRamper';
 import { getCookies } from '@/app/lib/getCookies';
 
-export default function Page() {
-  const variant = 'default'; // exchange
+const Page = () => {
+  const variant = 'buy';
   const { activeThemeMode, welcomeScreenClosed } = getCookies();
   const isWelcomeScreenClosed = welcomeScreenClosed === 'true';
 
@@ -12,12 +12,14 @@ export default function Page() {
     <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>
       <WidgetContainer welcomeScreenClosed={true}>
         <Widgets
-          activeThemeMode={activeThemeMode}
-          closedWelcomeScreen={isWelcomeScreenClosed}
+          closedWelcomeScreen={!!welcomeScreenClosed}
           widgetVariant={variant}
         />
-        <Widget starterVariant={variant} activeThemeMode={activeThemeMode} />
+
+        <OnRamper />
       </WidgetContainer>
     </App>
   );
-}
+};
+
+export default Page;

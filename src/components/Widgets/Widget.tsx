@@ -14,6 +14,7 @@ import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
+import { useTheme as useNextTheme } from 'next-themes';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -32,6 +33,8 @@ import { publicRPCList } from 'src/const/rpcList';
 import { useRouter } from 'next/navigation';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useWidgetTheme } from './useWidgetTheme';
+import { useThemeMode } from '@/hooks/useThemeMode';
+import { usePartnerThemeV2 } from '@/hooks/usePartnerThemeV2';
 
 export function Widget({
   starterVariant,
@@ -43,10 +46,11 @@ export function Widget({
   allowChains,
   widgetIntegrator,
   activeThemeMode,
+  activeTheme: activeThemeProp,
 }: WidgetProps) {
   const theme = useTheme();
   const widgetTheme = useWidgetTheme();
-  const themeMode = useSettingsStore((state) => state.themeMode);
+  const { resolvedTheme } = useNextTheme();
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
@@ -113,6 +117,8 @@ export function Widget({
         console.warn('Parsing custom rpcs failed', e);
       }
     }
+
+    console.log("WIDGETTHEME", widgetTheme)
 
     return {
       ...widgetConfig,
@@ -203,7 +209,7 @@ export function Widget({
     theme.palette.surface1.main,
     theme.palette.surface2.main,
     theme.typography.fontFamily,
-    themeMode,
+    resolvedTheme,
     toChain,
     toToken,
     tokens,
@@ -224,7 +230,7 @@ export function Widget({
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly
         fallback={
-          <WidgetSkeleton config={{ ...config, appearance: activeThemeMode }} />
+          <WidgetSkeleton config={{ ...config, appearance: widgetTheme.config.appearance }} />
         }
       >
         <LiFiWidget integrator={config.integrator} config={config} />

@@ -12,7 +12,6 @@ const Page = () => {
     <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>
       <WidgetContainer welcomeScreenClosed={true}>
         <Widgets
-          activeThemeMode={activeThemeMode}
           closedWelcomeScreen={!!welcomeScreenClosed}
           widgetVariant={variant}
         />

@@ -34,7 +34,6 @@ export default function Page() {
     <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>
       <WidgetContainer welcomeScreenClosed={true}>
         <Widgets
-          activeThemeMode={activeThemeMode}
           closedWelcomeScreen={isWelcomeScreenClosed}
           widgetVariant={variant}
         />

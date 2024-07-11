@@ -1,11 +1,15 @@
 import { ThemeProvider } from '@/providers/ThemeProvider';
-import { type PropsWithChildren } from 'react';
+import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
+import { type PropsWithChildren, useEffect, useState } from 'react';
 import { Layout } from 'src/Layout';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { TrackingProvider } from './TrackingProvider';
 import TranslationsProvider from './TranslationProvider';
 import initTranslations from '@/app/i18n';
 import { getCookies } from '@/app/lib/getCookies';
+import ThemeToggles from '@/components/ThemeToggles';
+import { cookies } from 'next/headers';
+import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 
 interface AppProviderProps {
   children: React.ReactNode | JSX.Element;
@@ -17,9 +21,13 @@ export const AppProvider: React.FC<
 > = async ({ children, lang }) => {
   const { resources } = await initTranslations(lang || fallbackLng, namespaces);
   const { activeThemeMode } = getCookies();
+  const s = await getPartnerThemes()
+  const cookies1 = cookies();
 
   return (
-    <ThemeProvider themeMode={activeThemeMode}>
+    <ThemeProviderV2 activeTheme={cookies1.get('tototheme')?.value} themes={s.data}>
+      {/*<ThemeProvider themeMode={activeThemeMode}>*/}
+      <ThemeToggles />
       <TrackingProvider>
         <TranslationsProvider
           namespaces={[defaultNS]}
@@ -29,6 +37,7 @@ export const AppProvider: React.FC<
           <Layout>{children}</Layout>
         </TranslationsProvider>
       </TrackingProvider>
-    </ThemeProvider>
+      {/*</ThemeProvider>*/}
+    </ThemeProviderV2>
   );
 };
