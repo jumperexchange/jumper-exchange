@@ -70,6 +70,7 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
   return (
     <>
       {isMetaMaskConnector ? <WalletAlert /> : <ChainAlert />}
+      {isMetaMaskConnector ? undefined : <PartnerThemeFooterImage />}
       <WidgetEvents />
     </>
   );

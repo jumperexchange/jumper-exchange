@@ -19,8 +19,8 @@ export const PartnerThemeFooterImage = () => {
   const { hasTheme, availableWidgetThemeMode } = usePartnerTheme();
   const { isMetaMaskConnector } = useMetaMask();
 
-  const isMobile = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down('md'),
+  const isSmallScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('lg'),
   );
 
   const activeChainAlert =
@@ -31,14 +31,17 @@ export const PartnerThemeFooterImage = () => {
 
   const showBasedOnURL = isSuperfest || isMainPaths || !!hasTheme;
   const showFooterLogo =
-    !activeChainAlert && !isMobile && showBasedOnURL && !isMetaMaskConnector;
+    !activeChainAlert &&
+    !isSmallScreen &&
+    showBasedOnURL &&
+    !isMetaMaskConnector;
 
   return (
     showFooterLogo && (
       <Link
         href={'https://superfest.optimism.io/'}
         target="_blank"
-        style={{ zIndex: 9999 }}
+        style={{ zIndex: 100 }}
       >
         <BackgroundFooterImage
           style={{ position: isSuperfest ? 'relative' : 'absolute' }}
