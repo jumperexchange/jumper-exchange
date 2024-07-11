@@ -33,9 +33,7 @@ export const BannerBox = ({
   const chains = attributes?.CustomInformation?.['chains'];
   const partners = attributes?.CustomInformation?.['partner'];
 
-  console.log('hereee');
   let completed = false;
-  console.log(pastCampaigns);
   if (claimingIds && pastCampaigns) {
     completed = checkInclusion(pastCampaigns, claimingIds);
   }
