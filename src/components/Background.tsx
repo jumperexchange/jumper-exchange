@@ -15,7 +15,7 @@ export interface BackgroundContainerProps {
 const BackgroundContainer = styled('div', {
   name: 'Background', // The component name
   slot: 'root', // The slot name
-})<>(({ theme }) => ({}));
+})(({ theme }) => ({}));
 
 // const StatValue = styled('div', {
 //   name: 'Background',
@@ -32,7 +32,7 @@ const BackgroundContainer = styled('div', {
 //   color: theme.palette.text.secondary,
 // }));
 
-function Background(props) {
+function Background() {
   return (
     <>
       <BackgroundContainer>

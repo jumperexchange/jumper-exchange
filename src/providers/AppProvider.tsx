@@ -1,4 +1,3 @@
-import { ThemeProvider } from '@/providers/ThemeProvider';
 import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
 import { type PropsWithChildren, useEffect, useState } from 'react';
 import { Layout } from 'src/Layout';

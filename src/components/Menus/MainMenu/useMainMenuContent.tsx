@@ -125,7 +125,8 @@ export const useMainMenuContent = () => {
         showMoreIcon: !hasTheme,
         suffixIcon:
           // activeUid !== 'undefined' ? (
-          true !== 'undefined' ? (
+        //disabled
+          false ? (
             <Typography
               variant="lifiBodyMedium"
               textTransform={'uppercase'}
@@ -181,49 +182,6 @@ export const useMainMenuContent = () => {
               EventTrackingTool.Cookie3,
             ],
           });
-        },
-      },
-      {
-        label: t('Go back to jumper'),
-        prefixIcon: <OPLogo />,
-        showMoreIcon: false,
-        link: { url: '' },
-        onClick: () => {
-          // trackEvent({
-          //   category: TrackingCategory.Menu,
-          //   label: 'click-jumper-fest-link',
-          //   action: TrackingAction.ClickJumperProfileLink,
-          //   data: { [TrackingEventParameter.Menu]: 'fest' },
-          //   disableTrackingTool: [
-          //     EventTrackingTool.ARCx,
-          //     EventTrackingTool.Cookie3,
-          //   ],
-          // });
-          closeAllMenus();
-          setTheme('jumper')
-          // router.push(JUMPER_FEST_PATH);
-        },
-      },
-      {
-        label: t('Go back to superfest'),
-        prefixIcon: <OPLogo />,
-        showMoreIcon: false,
-        link: { url: '' },
-        onClick: () => {
-          // trackEvent({
-          //   category: TrackingCategory.Menu,
-          //   label: 'click-jumper-fest-link',
-          //   action: TrackingAction.ClickJumperProfileLink,
-          //   data: { [TrackingEventParameter.Menu]: 'fest' },
-          //   disableTrackingTool: [
-          //     EventTrackingTool.ARCx,
-          //     EventTrackingTool.Cookie3,
-          //   ],
-          // });
-          closeAllMenus();
-          // setActiveTheme();
-          // setActiveThemeMode();
-          // router.push(JUMPER_FEST_PATH);
         },
       },
       {

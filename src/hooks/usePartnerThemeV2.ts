@@ -77,6 +77,7 @@ function formatConfig(theme: PartnerThemesAttributes) {
 export function formatTheme(theme: PartnerThemesAttributes) {
   const config = formatConfig(theme);
   const formattedMUITheme = {
+    // @ts-expect-error
     ...(theme.lightConfig || theme.darkConfig).customization,
     components: {
       Background: {
@@ -102,6 +103,7 @@ export function formatTheme(theme: PartnerThemesAttributes) {
     },
   }
 
+  // @ts-expect-error
   const formattedWidgetTheme = (theme.lightConfig || theme.darkConfig).config.theme
 
   // console.log('TEST', { config, activeMUITheme: formattedMUITheme, activeWidgetTheme: formattedWidgetTheme, themeName: theme.uid })

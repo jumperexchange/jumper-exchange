@@ -11,8 +11,6 @@ import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import { formatTheme, getAvailableThemeMode } from '@/hooks/usePartnerThemeV2';
 import { deepmerge } from '@mui/utils';
 
-type ThemeProviderProps = Parameters<typeof NextThemesProvider>[0]
-
 function getTheme(themes: any[], activeTheme: string) {
   if (activeTheme === 'dark') {
     return darkTheme;
@@ -37,7 +35,7 @@ function getTheme(themes: any[], activeTheme: string) {
  * Your app's theme provider component.
  * 'use client' is essential for next-themes to work with app-dir.
  */
-export function ThemeProviderV2({ children, activeTheme, themes, ...props }: ThemeProviderProps) {
+export function ThemeProviderV2({ children, activeTheme, themes, ...props }: any) {
   const { resolvedTheme, forcedTheme, ...props2 } = useTheme();
   const [cookie, setCookie] = useCookies(['tototheme']);
   const [currentTheme, setCurrentTheme] = useState(getTheme(themes, forcedTheme || resolvedTheme || activeTheme));

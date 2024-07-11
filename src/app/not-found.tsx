@@ -6,7 +6,6 @@ import { NavbarContainer } from '@/components/Navbar/Navbar.style';
 import { NavbarButtons } from '@/components/Navbar/NavbarButtons';
 import { NotFoundComponent } from '@/components/NotFound/NotFound';
 import { PoweredBy } from '@/components/PoweredBy';
-import { ThemeProvider } from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { Link } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';

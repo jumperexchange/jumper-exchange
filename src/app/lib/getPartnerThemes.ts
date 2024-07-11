@@ -6,7 +6,7 @@ export interface GetPartnerThemeResponse
   url: string;
 }
 
-export async function getPartnerThemes(): Promise<GetPartnerThemeResponse | void> {
+export async function getPartnerThemes(): Promise<GetPartnerThemeResponse> {
   // console.log('GET PARTNER THEMES');
 
   const urlParams = new PartnerThemeStrapiApi()

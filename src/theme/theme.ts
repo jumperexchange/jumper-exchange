@@ -1,6 +1,6 @@
 'use client';
 import type { Breakpoint } from '@mui/material/styles';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, Theme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
@@ -685,7 +685,7 @@ export const darkTheme = createTheme(
       Background: {
         styleOverrides: {
           // functions cannot merged because of mui... I know it's bad :(
-          root: ({ theme }) => ({
+          root: ({ theme }: {theme: Theme }) => ({
             position: 'fixed',
             left: 0,
             bottom: 0,

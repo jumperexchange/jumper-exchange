@@ -33,11 +33,13 @@ export const useThemeMode = (
 
   useEffect(() => {
     if (!cookie.themeMode) {
+      // @ts-expect-error
       updateThemeMode(initialThemeMode);
     }
   }, []);
 
   return {
+    // @ts-expect-error
     themeMode: themeMode,
     setThemeMode: updateThemeMode,
   };

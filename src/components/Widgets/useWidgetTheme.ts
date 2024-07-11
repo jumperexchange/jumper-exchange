@@ -66,8 +66,10 @@ export const useWidgetTheme = (): PartnerTheme => {
   useEffect(() => {
     // console.log('widget resolved theme', resolvedTheme)
 
+    // @ts-expect-error
     if (['light', 'dark'].includes(activeNextTheme)) {
       // console.log('set back to default', defaultWidgetTheme)
+    // @ts-expect-error
       setActiveTheme();
       return;
     }
@@ -82,6 +84,7 @@ export const useWidgetTheme = (): PartnerTheme => {
 
         const formattedTheme = formatTheme(theme.attributes)
 
+        // @ts-expect-error
         setActiveTheme({ ...defaultWidgetTheme, config: {
           theme: deepmerge(defaultWidgetTheme.config.theme, formattedTheme.activeWidgetTheme)
           }

@@ -26,7 +26,7 @@ export const useThemeMenuContent = () => {
     queryKey: ['partner-themes'],
   });
 
-  const handleThemeSwitch = (theme: PartnerThemesData | undefined) => {
+  const handleThemeSwitch = (theme: string) => {
     trackEvent({
       category: TrackingCategory.ThemesMenu,
       action: TrackingAction.SwitchThemeTemplate,

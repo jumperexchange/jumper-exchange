@@ -1,5 +1,6 @@
 export const MenuKeys = {
   Main: 'Main',
+  Theme: 'Theme',
   WalletSelect: 'WalletSelect',
   WalletSelectMore: 'WalletSelectMore',
   Wallet: 'Wallet',
@@ -49,6 +50,7 @@ export const MenuMain: MenuMainType = {
 
 export const MenuSub: MenuSubType = {
   [MenuKeysEnum.Devs]: MenuKeysEnum.Devs,
+  [MenuKeysEnum.Theme]: MenuKeysEnum.Theme,
   [MenuKeysEnum.Language]: MenuKeysEnum.Language,
   [MenuKeysEnum.WalletSelectMore]: MenuKeysEnum.WalletSelectMore,
   [MenuKeysEnum.None]: MenuKeysEnum.None,
