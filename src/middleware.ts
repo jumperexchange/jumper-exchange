@@ -1,7 +1,7 @@
 // middleware.ts
 import acceptLanguage from 'accept-language';
 import { i18nRouter } from 'next-i18n-router';
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 import i18nConfig from '../i18nconfig';
 import { locales } from './i18n/i18next-locales';
 import { cookiesMiddleware } from 'src/cookiesMiddleware';

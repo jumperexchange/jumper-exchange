@@ -2,11 +2,11 @@ import { useCookies } from 'react-cookie';
 import { useSettingsStore } from 'src/stores/settings';
 import type { PartnerTheme } from 'src/types/strapi';
 import { useEffect } from 'react';
-import { ThemeModesSupported } from '@/types/settings';
+import type { ThemeModesSupported } from '@/types/settings';
 import { useMediaQuery } from '@mui/material';
 
 interface useThemeModeReturn {
-  themeMode: PartnerTheme,
+  themeMode: PartnerTheme;
   setThemeMode: (themeMode: ThemeModesSupported) => void;
 }
 
@@ -14,12 +14,12 @@ export const useThemeMode = (
   initialThemeMode?: ThemeModesSupported,
 ): useThemeModeReturn => {
   // const [activeTheme, setActiveTheme] = useState(initialTheme);
-  const [cookie, setCookie] = useCookies([
-    'themeMode',
-  ]);
+  const [cookie, setCookie] = useCookies(['themeMode']);
 
-  const [themeMode, setThemeMode] =
-    useSettingsStore((state) => [state.themeMode, state.setThemeMode]);
+  const [themeMode, setThemeMode] = useSettingsStore((state) => [
+    state.themeMode,
+    state.setThemeMode,
+  ]);
 
   const updateThemeMode = (themeMode: ThemeModesSupported) => {
     // console.log('UPDATETHEMEMODE', themeMode)

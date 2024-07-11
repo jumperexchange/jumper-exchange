@@ -19,13 +19,16 @@ export const AppProvider: React.FC<
   PropsWithChildren<AppProviderProps>
 > = async ({ children, lang }) => {
   const { activeThemeMode } = getCookies();
-  const s = await getPartnerThemes()
+  const s = await getPartnerThemes();
   const cookies1 = cookies();
 
   return (
-    <ThemeProviderV2 activeTheme={cookies1.get('tototheme')?.value} themes={s.data}>
+    <ThemeProviderV2
+      activeTheme={cookies1.get('tototheme')?.value}
+      themes={s.data}
+    >
       {/*<ThemeProvider themeMode={activeThemeMode}>*/}
-          {children}
+      {children}
       {/*</ThemeProvider>*/}
     </ThemeProviderV2>
   );

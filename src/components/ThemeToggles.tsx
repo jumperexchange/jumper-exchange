@@ -1,30 +1,32 @@
-'use client'
+'use client';
 
-import { useTheme } from 'next-themes'
-import { useEffect, useState } from 'react'
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 import { Box } from '@mui/system';
 
 function ThemeToggles() {
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   // The active theme is not available on the server.
   // If you have styling that is conditionally applied based on the active-theme,
   // you have to await the mounted state before rendering the active theme.
-  useEffect(() => setMounted(true), [])
+  useEffect(() => setMounted(true), []);
 
   const themeMapping: Record<string, string> = {
     light: 'Default',
-    'dark': 'Dark',
-  }
+    dark: 'Dark',
+  };
 
-  return <></>
+  return <></>;
 
   return (
-    <Box sx={{
-      background: (theme) => theme.palette.primary.main,
-      width: 500,
-      height: 500
-    }}>
+    <Box
+      sx={{
+        background: (theme) => theme.palette.primary.main,
+        width: 500,
+        height: 500,
+      }}
+    >
       <div className="mt-16 grid grid-cols-3 grid-rows-2 grid-flow-col gap-4">
         {Object.entries(themeMapping).map(([key, value]) => (
           <button
@@ -36,8 +38,8 @@ function ThemeToggles() {
                 : 'bg-primary text-primary-foreground'
             }`}
             onClick={() => {
-              console.log(`setting theme to ${key}`)
-              setTheme(key)
+              console.log(`setting theme to ${key}`);
+              setTheme(key);
             }}
           >
             {value}
@@ -45,7 +47,7 @@ function ThemeToggles() {
         ))}
       </div>
     </Box>
-  )
+  );
 }
 
-export default ThemeToggles
+export default ThemeToggles;

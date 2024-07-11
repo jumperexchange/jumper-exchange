@@ -18,42 +18,50 @@ function getTheme(themes: any[], activeTheme: string) {
     return lightTheme;
   }
 
-  const theme = themes.find((d) => d.attributes.uid === activeTheme)
+  const theme = themes.find((d) => d.attributes.uid === activeTheme);
 
   if (!theme) {
     return lightTheme;
   }
 
-  const formattedTheme = formatTheme(theme.attributes)
-  const baseTheme = getAvailableThemeMode(theme.attributes) === 'light' ? lightTheme : darkTheme
-  console.log("----trgedsf", formattedTheme)
+  const formattedTheme = formatTheme(theme.attributes);
+  const baseTheme =
+    getAvailableThemeMode(theme.attributes) === 'light'
+      ? lightTheme
+      : darkTheme;
+  console.log('----trgedsf', formattedTheme);
 
-  return deepmerge(baseTheme, formattedTheme.activeMUITheme)
+  return deepmerge(baseTheme, formattedTheme.activeMUITheme);
 }
 
 /**
  * Your app's theme provider component.
  * 'use client' is essential for next-themes to work with app-dir.
  */
-export function ThemeProviderV2({ children, activeTheme, themes, ...props }: any) {
+export function ThemeProviderV2({
+  children,
+  activeTheme,
+  themes,
+  ...props
+}: any) {
   const { resolvedTheme, forcedTheme, ...props2 } = useTheme();
   const [cookie, setCookie] = useCookies(['tototheme']);
-  const [currentTheme, setCurrentTheme] = useState(getTheme(themes, forcedTheme || resolvedTheme || activeTheme));
+  const [currentTheme, setCurrentTheme] = useState(
+    getTheme(themes, forcedTheme || resolvedTheme || activeTheme),
+  );
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  console.log('INTHEMEPROVIDERV2', resolvedTheme, activeTheme, props, props2)
+  console.log('INTHEMEPROVIDERV2', resolvedTheme, activeTheme, props, props2);
 
   useEffect(() => {
-    console.log('TRIGGERME PLEASEEEE', resolvedTheme)
-    const themeToUse = forcedTheme || resolvedTheme || activeTheme
-    console.log('themeToUse', themeToUse)
+    console.log('TRIGGERME PLEASEEEE', resolvedTheme);
+    const themeToUse = forcedTheme || resolvedTheme || activeTheme;
+    console.log('themeToUse', themeToUse);
 
-    setCurrentTheme(getTheme(themes, themeToUse))
-    setCookie('tototheme', resolvedTheme)
-
-
+    setCurrentTheme(getTheme(themes, themeToUse));
+    setCookie('tototheme', resolvedTheme);
   }, [resolvedTheme]);
 
   // console.log('--', currentTheme.palette.mode)
@@ -61,9 +69,7 @@ export function ThemeProviderV2({ children, activeTheme, themes, ...props }: any
   return (
     <>
       <CssBaseline />
-      <MuiThemeProvider theme={currentTheme}>
-      {children}
-      </MuiThemeProvider>
+      <MuiThemeProvider theme={currentTheme}>{children}</MuiThemeProvider>
     </>
   );
 }

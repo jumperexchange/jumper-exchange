@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 
 import { useMainPaths } from 'src/hooks/useMainPaths';
-import { Theme, useMediaQuery } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { BackgroundFooterImage } from './Widgets';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 

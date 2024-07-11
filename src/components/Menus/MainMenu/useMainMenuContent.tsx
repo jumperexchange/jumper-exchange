@@ -125,7 +125,7 @@ export const useMainMenuContent = () => {
         showMoreIcon: !hasTheme,
         suffixIcon:
           // activeUid !== 'undefined' ? (
-        //disabled
+          //disabled
           false ? (
             <Typography
               variant="lifiBodyMedium"

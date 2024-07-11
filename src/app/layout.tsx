@@ -23,23 +23,23 @@ export default async function RootLayout({
 }) {
   return (
     <html lang={fallbackLng} suppressHydrationWarning>
-    <head>
-      <link rel="icon" href="/favicon.ico" sizes="any" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <Script
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
-      />
-      <Script id="google-analytics">
-        {`
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <Script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
+        />
+        <Script id="google-analytics">
+          {`
               window.dataLayer = window.dataLayer || [];
               function gtag() { dataLayer.push(arguments); }
               gtag('js', new Date());
               gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}');
           `}
-      </Script>
-      <Script id="addressable-tracker">
-        {`
+        </Script>
+        <Script id="addressable-tracker">
+          {`
             !function(w, d){
               w.__adrsbl = {
                   queue: [],
@@ -54,20 +54,20 @@ export default async function RootLayout({
               b.parentNode.insertBefore(s, b);
             }(window, document);
           `}
-      </Script>
-    </head>
+        </Script>
+      </head>
 
-    <body suppressHydrationWarning>
-      <AppRouterCacheProvider>
-        <ReactQueryProvider>
-          <WalletProvider>
-            {children}
-            <Snackbar />
-            <PixelBg />
-          </WalletProvider>
-        </ReactQueryProvider>
-      </AppRouterCacheProvider>
-    </body>
+      <body suppressHydrationWarning>
+        <AppRouterCacheProvider>
+          <ReactQueryProvider>
+            <WalletProvider>
+              {children}
+              <Snackbar />
+              <PixelBg />
+            </WalletProvider>
+          </ReactQueryProvider>
+        </AppRouterCacheProvider>
+      </body>
     </html>
   );
 }

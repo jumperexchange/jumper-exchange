@@ -15,7 +15,7 @@ export const useWidgetTheme = (): PartnerTheme => {
   const [activeTheme, setActiveTheme] = useState();
   // const { hasTheme, isSuccess, currentWidgetTheme } = usePartnerTheme();
 
-  const activeNextTheme = forcedTheme || resolvedTheme
+  const activeNextTheme = forcedTheme || resolvedTheme;
 
   // console.log('resolve', resolvedTheme)
 
@@ -69,29 +69,32 @@ export const useWidgetTheme = (): PartnerTheme => {
     // @ts-expect-error
     if (['light', 'dark'].includes(activeNextTheme)) {
       // console.log('set back to default', defaultWidgetTheme)
-    // @ts-expect-error
+      // @ts-expect-error
       setActiveTheme();
       return;
     }
 
-    getPartnerThemes()
-      .then((data) => {
-        const theme = data.data.find((d) => d.attributes.uid === activeNextTheme)
+    getPartnerThemes().then((data) => {
+      const theme = data.data.find((d) => d.attributes.uid === activeNextTheme);
 
-        if (!theme) {
-          return;
-        }
+      if (!theme) {
+        return;
+      }
 
-        const formattedTheme = formatTheme(theme.attributes)
+      const formattedTheme = formatTheme(theme.attributes);
 
-        // @ts-expect-error
-        setActiveTheme({ ...defaultWidgetTheme, config: {
-          theme: deepmerge(defaultWidgetTheme.config.theme, formattedTheme.activeWidgetTheme)
-          }
-        })
-      })
+      // @ts-expect-error
+      setActiveTheme({
+        ...defaultWidgetTheme,
+        config: {
+          theme: deepmerge(
+            defaultWidgetTheme.config.theme,
+            formattedTheme.activeWidgetTheme,
+          ),
+        },
+      });
+    });
   }, [activeNextTheme]);
-
 
   // console.log('sgessusewidgettheme', activeTheme, defaultWidgetTheme)
 

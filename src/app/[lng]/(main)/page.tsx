@@ -15,7 +15,11 @@ export default function Page() {
           closedWelcomeScreen={isWelcomeScreenClosed}
           widgetVariant={variant}
         />
-        <Widget starterVariant={variant} activeTheme={activeTheme} activeThemeMode={activeThemeMode} />
+        <Widget
+          starterVariant={variant}
+          activeTheme={activeTheme}
+          activeThemeMode={activeThemeMode}
+        />
       </WidgetContainer>
     </App>
   );

@@ -18,7 +18,7 @@ export const useThemeMenuContent = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const segment = useSelectedLayoutSegment();
-  const { resolvedTheme, setTheme } = useTheme()
+  const { resolvedTheme, setTheme } = useTheme();
 
   const [cookie] = useCookies(['partnerThemeUid']);
   const { data: partnerThemes, isSuccess } = useStrapi<PartnerThemesData>({
@@ -32,12 +32,11 @@ export const useThemeMenuContent = () => {
       action: TrackingAction.SwitchThemeTemplate,
       label: `theme_${theme ?? 'default'}`,
       data: {
-        [TrackingEventParameter.SwitchedTemplate]:
-        theme,
+        [TrackingEventParameter.SwitchedTemplate]: theme,
       },
     });
     // console.log('CHECK HANDLE THEME SWITCH', theme);
-    setTheme(theme)
+    setTheme(theme);
     // setActiveTheme(theme?.attributes.uid);
   };
 
@@ -48,7 +47,9 @@ export const useThemeMenuContent = () => {
         handleThemeSwitch('system');
       },
       checkIcon:
-      resolvedTheme === 'dark' || resolvedTheme === 'light' || resolvedTheme === undefined,
+        resolvedTheme === 'dark' ||
+        resolvedTheme === 'light' ||
+        resolvedTheme === undefined,
     },
   ];
 

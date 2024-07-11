@@ -15,23 +15,28 @@ export default async function MainLayout({
   params: { lng: string };
 }) {
   const { activeThemeMode } = getCookies();
-  const partnerThemes = await getPartnerThemes()
+  const partnerThemes = await getPartnerThemes();
   const cookies1 = cookies();
 
-  const defaultTheme = 'op2testseb'
+  const defaultTheme = 'op2testseb';
 
   return (
     <ThemeProvider
-      themes={['dark', 'light', ...partnerThemes.data.map((d) => d.attributes.uid)]}
+      themes={[
+        'dark',
+        'light',
+        ...partnerThemes.data.map((d) => d.attributes.uid),
+      ]}
       defaultTheme={defaultTheme}
       enableSystem
       enableColorScheme
     >
-      <ThemeProviderV2 activeTheme={cookies1.get('tototheme')?.value || defaultTheme} themes={partnerThemes.data}>
-        <Layout>
-      {children}
-        </Layout>
-      <FeatureCards />
+      <ThemeProviderV2
+        activeTheme={cookies1.get('tototheme')?.value || defaultTheme}
+        themes={partnerThemes.data}
+      >
+        <Layout>{children}</Layout>
+        <FeatureCards />
       </ThemeProviderV2>
     </ThemeProvider>
   );

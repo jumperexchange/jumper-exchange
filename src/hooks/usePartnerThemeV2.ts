@@ -4,9 +4,13 @@ import { getStrapiUrl, useStrapi } from '@/hooks/useStrapi';
 import { useCookies } from 'react-cookie';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import { useSettingsStore } from 'src/stores/settings';
-import type { PartnerTheme, PartnerThemesAttributes, PartnerThemesData } from 'src/types/strapi';
+import type {
+  PartnerTheme,
+  PartnerThemesAttributes,
+  PartnerThemesData,
+} from 'src/types/strapi';
 import { useEffect } from 'react';
-import { ThemeModesSupported } from '@/types/settings';
+import type { ThemeModesSupported } from '@/types/settings';
 import { useThemeMode } from '@/hooks/useThemeMode';
 
 const defaultResponse = { data: undefined, isSuccess: false, url: undefined };
@@ -28,12 +32,16 @@ const useFetchPartnerThemes = (queryKey: string) => {
   };
 };
 
-function getImageUrl(theme: PartnerThemesAttributes, imageType: 'BackgroundImage' | 'FooterImage' | 'Logo'): URL | null {
-  const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES)
+function getImageUrl(
+  theme: PartnerThemesAttributes,
+  imageType: 'BackgroundImage' | 'FooterImage' | 'Logo',
+): URL | null {
+  const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES);
 
   const imageLight = theme[`${imageType}Light`];
   const imageDark = theme[`${imageType}Dark`];
-  const imageUrl = imageLight?.data?.attributes.url || imageDark?.data?.attributes.url;
+  const imageUrl =
+    imageLight?.data?.attributes.url || imageDark?.data?.attributes.url;
 
   return imageUrl ? new URL(imageUrl, baseStrapiUrl) : null;
 }
@@ -43,14 +51,14 @@ export function getAvailableThemeMode(theme: PartnerThemesAttributes) {
 }
 
 function getLogoData(theme: PartnerThemesAttributes) {
-  const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES)
+  const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES);
   const logo = theme.LogoDark || theme.LogoLight || null;
 
   if (!logo || !logo.data) {
     return;
   }
 
-  const attr = logo.data.attributes
+  const attr = logo.data.attributes;
 
   return {
     url: new URL(attr.url, baseStrapiUrl),
@@ -62,7 +70,8 @@ function getLogoData(theme: PartnerThemesAttributes) {
 function formatConfig(theme: PartnerThemesAttributes) {
   return {
     availableThemeMode: getAvailableThemeMode(theme),
-    backgroundColor: theme.BackgroundColorDark || theme.BackgroundColorLight || null,
+    backgroundColor:
+      theme.BackgroundColorDark || theme.BackgroundColorLight || null,
     backgroundImageUrl: getImageUrl(theme, 'BackgroundImage'),
     footerImageUrl: getImageUrl(theme, 'FooterImage'),
     logo: getLogoData(theme),
@@ -95,20 +104,30 @@ export function formatTheme(theme: PartnerThemesAttributes) {
 
             // background: '#000000',
             // backgroundColor: 'red',
-            ...(config.backgroundColor && { backgroundColor: config.backgroundColor }),
-            ...(config.backgroundImageUrl && { background: `url('${config.backgroundImageUrl}')` }),
+            ...(config.backgroundColor && {
+              backgroundColor: config.backgroundColor,
+            }),
+            ...(config.backgroundImageUrl && {
+              background: `url('${config.backgroundImageUrl}')`,
+            }),
           },
         },
       },
     },
-  }
+  };
 
   // @ts-expect-error
-  const formattedWidgetTheme = (theme.lightConfig || theme.darkConfig).config.theme
+  const formattedWidgetTheme = (theme.lightConfig || theme.darkConfig).config
+    .theme;
 
   // console.log('TEST', { config, activeMUITheme: formattedMUITheme, activeWidgetTheme: formattedWidgetTheme, themeName: theme.uid })
 
-  return { config, activeMUITheme: formattedMUITheme, activeWidgetTheme: formattedWidgetTheme, themeName: theme.uid };
+  return {
+    config,
+    activeMUITheme: formattedMUITheme,
+    activeWidgetTheme: formattedWidgetTheme,
+    themeName: theme.uid,
+  };
 }
 
 export const usePartnerThemeV2 = (
@@ -119,17 +138,18 @@ export const usePartnerThemeV2 = (
   const [cookie, setCookie, removeCookie] = useCookies([
     'partnerThemeUid',
     'themeMode',
-    'theme'
+    'theme',
   ]);
   // console.log('overrideTheme', overrideThemeKey, cookie);
   const { themeMode, setThemeMode } = useThemeMode();
-  const [activeTheme, setActiveTheme] = useSettingsStore((state) => [state.activeTheme, state.setActiveTheme]);
+  const [activeTheme, setActiveTheme] = useSettingsStore((state) => [
+    state.activeTheme,
+    state.setActiveTheme,
+  ]);
 
-  const {
-    data,
-    isSuccess,
-    url,
-  } = useFetchPartnerThemes(activeTheme || overrideThemeKey);
+  const { data, isSuccess, url } = useFetchPartnerThemes(
+    activeTheme || overrideThemeKey,
+  );
 
   const updateActiveTheme = (themeUid?: string) => {
     setActiveTheme(themeUid);
@@ -167,7 +187,7 @@ export const usePartnerThemeV2 = (
       return;
     }
 
-    updateActiveTheme(overrideThemeKey)
+    updateActiveTheme(overrideThemeKey);
 
     // updateThemeMode(getAvailableThemeMode(overrideTheme));
   }, []);
@@ -181,11 +201,11 @@ export const usePartnerThemeV2 = (
     activeThemeMode: themeMode,
     activeThemeKey: activeTheme || undefined,
     activeTheme: data || undefined,
-  }
+  };
 
   // console.log('JUST BEFORE IFF', activeTheme, data)
 
-/*  if (overrideTheme) {
+  /*  if (overrideTheme) {
     console.log('sss===sss', formatTheme(overrideTheme), result, {
       ...result,
       ...formatTheme(overrideTheme)
@@ -200,7 +220,7 @@ export const usePartnerThemeV2 = (
   if (data) {
     return {
       ...result,
-      ...formatTheme(data.attributes)
+      ...formatTheme(data.attributes),
     };
   }
 

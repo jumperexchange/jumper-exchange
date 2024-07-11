@@ -118,7 +118,7 @@ export function Widget({
       }
     }
 
-    console.log("WIDGETTHEME", widgetTheme)
+    console.log('WIDGETTHEME', widgetTheme);
 
     return {
       ...widgetConfig,
@@ -230,7 +230,9 @@ export function Widget({
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly
         fallback={
-          <WidgetSkeleton config={{ ...config, appearance: widgetTheme.config.appearance }} />
+          <WidgetSkeleton
+            config={{ ...config, appearance: widgetTheme.config.appearance }}
+          />
         }
       >
         <LiFiWidget integrator={config.integrator} config={config} />

@@ -45,7 +45,7 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   ]);
 
   // return <>bg</>
-  return <Background />
+  return <Background />;
 
   if (isSuperfest || isMainPaths) {
     return <SuperfestBackgroundContainer sx={styles} />;

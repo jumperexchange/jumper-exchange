@@ -18,21 +18,23 @@ export default async function PartnerThemeLayout({
   const partnerThemes = await getPartnerThemes();
   const cookies1 = cookies();
 
-  console.log('forcedTheme', partnerTheme)
+  console.log('forcedTheme', partnerTheme);
 
   return (
-      <ThemeProvider
-        themes={['dark', 'light', ...partnerThemes.data.map((d) => d.attributes.uid)]}
-        forcedTheme={'op2testseb'}
-        enableSystem
-        enableColorScheme
-      >
+    <ThemeProvider
+      themes={[
+        'dark',
+        'light',
+        ...partnerThemes.data.map((d) => d.attributes.uid),
+      ]}
+      forcedTheme={'op2testseb'}
+      enableSystem
+      enableColorScheme
+    >
       <ThemeProviderV2 themes={partnerThemes.data}>
-        <Layout>
-          {children}
-        </Layout>
+        <Layout>{children}</Layout>
         <FeatureCards />
       </ThemeProviderV2>
-      </ThemeProvider>
+    </ThemeProvider>
   );
 }

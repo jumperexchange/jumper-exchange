@@ -43,9 +43,11 @@ export const useThemeSwitchTabs = () => {
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    setCookie('themeMode', mode === 'auto' ? browserTheme : mode, { path: '/' });
+    setCookie('themeMode', mode === 'auto' ? browserTheme : mode, {
+      path: '/',
+    });
     setThemeMode(mode);
-    console.log(`change theme to mode ${mode}`)
+    console.log(`change theme to mode ${mode}`);
     setTheme(mode);
   };
 

@@ -43,13 +43,7 @@ export const Navbar = () => {
   return (
     <Container>
       <LogoLink id="jumper-logo" onClick={handleClick}>
-        <Logo
-          variant={
-            isLearnPage
-              ? 'learn'
-              : 'default'
-          }
-        />
+        <Logo variant={isLearnPage ? 'learn' : 'default'} />
       </LogoLink>
       {!isLearnPage && !hasTheme ? (
         <NavbarTabs navbarPageReload={isLoyaltyPage || isSuperfest} />

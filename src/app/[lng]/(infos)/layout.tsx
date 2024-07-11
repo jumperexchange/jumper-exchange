@@ -15,18 +15,16 @@ export default async function PartnerThemeLayout({
   params: { partnerTheme: string };
 }) {
   return (
-      <ThemeProvider
-        themes={[]}
-        defaultTheme={'system'}
-        enableSystem
-        enableColorScheme
-      >
+    <ThemeProvider
+      themes={[]}
+      defaultTheme={'system'}
+      enableSystem
+      enableColorScheme
+    >
       <ThemeProviderV2 themes={[]}>
-        <Layout>
-          {children}
-        </Layout>
+        <Layout>{children}</Layout>
         <FeatureCards />
       </ThemeProviderV2>
-      </ThemeProvider>
+    </ThemeProvider>
   );
 }

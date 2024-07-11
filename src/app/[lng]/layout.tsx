@@ -24,7 +24,7 @@ export default async function RootLayout({
     >
       <TrackingProvider>
         {/*<AppProvider lang={lng}>*/}
-            {children}
+        {children}
         {/*</AppProvider>*/}
       </TrackingProvider>
     </TranslationsProvider>

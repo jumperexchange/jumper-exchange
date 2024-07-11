@@ -1,11 +1,11 @@
 'use client';
-import type { Breakpoint } from '@mui/material/styles';
-import { createTheme, Theme } from '@mui/material/styles';
+import type { Breakpoint, Theme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
-import { BackgroundContainerProps } from '@/components/Background';
-import { ComponentsOverrides, ComponentsVariants } from '@mui/material';
+import type { BackgroundContainerProps } from '@/components/Background';
+import type { ComponentsOverrides, ComponentsVariants } from '@mui/material';
 
 declare module '@mui/material/styles' {
   interface ComponentNameToClassKey {
@@ -685,7 +685,7 @@ export const darkTheme = createTheme(
       Background: {
         styleOverrides: {
           // functions cannot merged because of mui... I know it's bad :(
-          root: ({ theme }: {theme: Theme }) => ({
+          root: ({ theme }: { theme: Theme }) => ({
             position: 'fixed',
             left: 0,
             bottom: 0,
@@ -694,16 +694,16 @@ export const darkTheme = createTheme(
             zIndex: -1,
             overflow: 'hidden',
             pointerEvents: 'none',
-            backgroundColor:  theme.palette.surface1.main,
+            backgroundColor: theme.palette.surface1.main,
             // typed-safe access to the `variant` prop
 
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               backgroundRepeat: 'no-repeat',
               backgroundSize: 'cover',
             },
-          })
-        }
-      }
+          }),
+        },
+      },
     },
     palette: {
       mode: 'dark',

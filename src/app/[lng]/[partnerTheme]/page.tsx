@@ -23,7 +23,10 @@ export async function generateStaticParams() {
   }
   const res = filteredBridges.concat(filteredDexes);
   const path = res.map((partnerTheme) => ({ partnerTheme }));
-  const customPath = [{ partnerTheme: 'memecoins' }, { partnerTheme: 'op2testseb' }];
+  const customPath = [
+    { partnerTheme: 'memecoins' },
+    { partnerTheme: 'op2testseb' },
+  ];
   return [...path, ...customPath];
 }
 

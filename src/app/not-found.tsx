@@ -24,22 +24,22 @@ export default async function NotFound() {
     <>
       <AppRouterCacheProvider>
         {/*<ThemeProvider themeMode={activeThemeMode} activeTheme="jumper">*/}
-          <TranslationsProvider
-            namespaces={[defaultNS]}
-            locale={locale}
-            resources={resources}
-          >
-            <BackgroundGradient />
+        <TranslationsProvider
+          namespaces={[defaultNS]}
+          locale={locale}
+          resources={resources}
+        >
+          <BackgroundGradient />
 
-            <NavbarContainer>
-              <Link component={RouterLink} href="/">
-                <Logo variant="default" />
-              </Link>
-              <NavbarButtons />
-            </NavbarContainer>
-            <NotFoundComponent />
-            <PoweredBy fixedPosition={true} />
-          </TranslationsProvider>
+          <NavbarContainer>
+            <Link component={RouterLink} href="/">
+              <Logo variant="default" />
+            </Link>
+            <NavbarButtons />
+          </NavbarContainer>
+          <NotFoundComponent />
+          <PoweredBy fixedPosition={true} />
+        </TranslationsProvider>
         {/*</ThemeProvider>*/}
       </AppRouterCacheProvider>
     </>

@@ -9,7 +9,7 @@ export interface GetPartnerThemeResponse
 export async function getPartnerThemes(): Promise<GetPartnerThemeResponse> {
   // console.log('GET PARTNER THEMES');
 
-  const urlParams = new PartnerThemeStrapiApi()
+  const urlParams = new PartnerThemeStrapiApi();
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.getApiAccessToken();
