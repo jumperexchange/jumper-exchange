@@ -4,7 +4,6 @@ import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAler
 import { widgetConfig } from '@/config/widgetConfig';
 import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
-import { useActiveTabStore } from '@/stores/activeTab/ActiveTabStore';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
 import type { LanguageKey } from '@/types/i18n';
@@ -12,31 +11,27 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import type { Breakpoint } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
+import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
+import { useIntegrator } from 'src/hooks/useIntegrator';
 import { useMemelist } from 'src/hooks/useMemelist';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useUserTracking } from 'src/hooks/userTracking';
-import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
-import { useMediaQuery } from '@mui/material';
-import type { Theme } from '@mui/material';
-import { publicRPCList } from 'src/const/rpcList';
-import { useRouter } from 'next/navigation';
-import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useWidgetTheme } from './useWidgetTheme';
 
 export function Widget({
@@ -50,16 +45,12 @@ export function Widget({
   widgetIntegrator,
   activeTheme,
 }: WidgetProps) {
-  const theme = useTheme();
   const widgetTheme = useWidgetTheme();
-  const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
-  const { activeTab } = useActiveTabStore();
   const { trackEvent } = useUserTracking();
   const { tokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
@@ -73,7 +64,6 @@ export function Widget({
     router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
 
-  const isGasVariant = activeTab === TabsMap.Refuel.index;
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
@@ -91,22 +81,7 @@ export function Widget({
     [starterVariant, partnerName],
   );
 
-  const integratorStringByType = useMemo(() => {
-    if (widgetIntegrator) {
-      return widgetIntegrator;
-    }
-    // all the trafic from mobile (including "/gas")
-    // if (!isDesktop) {
-    //   return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
-    // }
-    // all the trafic from web on "/gas"
-    if (isGasVariant) {
-      return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
-    }
-
-    return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
-
+  const integratorStringByType = useIntegrator(widgetIntegrator);
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
@@ -193,42 +168,35 @@ export function Widget({
       },
       buildUrl: true,
       insurance: true,
-      integrator: integratorStringByType,
+      integrator:
+        integratorStringByType || process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
       tokens:
         partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
   }, [
-    allowChains,
-    allowedChainsByVariant,
-    fromAmount,
+    starterVariant,
+    partnerName,
     fromChain,
     fromToken,
-    i18n.language,
-    i18n.languages,
-    integratorStringByType,
-    isMultisigSigner,
-    multisigSdkConfig,
-    multisigWidget,
-    setWalletSelectMenuState,
-    starterVariant,
-    theme.breakpoints,
-    theme.palette.accent1.main,
-    theme.palette.grey,
-    theme.palette.mode,
-    theme.palette.surface1.main,
-    theme.palette.surface2.main,
-    theme.typography.fontFamily,
-    themeMode,
     toChain,
     toToken,
-    tokens,
-    wagmiConfig,
-    widgetIntegrator,
-    partnerName,
-    isDexFiltered,
+    fromAmount,
+    allowChains,
+    allowedChainsByVariant,
     isBridgeFiltered,
+    isDexFiltered,
+    i18n.language,
+    i18n.languages,
+    widgetTheme.config.appearance,
+    widgetTheme.config.theme,
+    multisigWidget,
+    isMultisigSigner,
+    multisigSdkConfig,
     integratorStringByType,
-    widgetTheme,
+    tokens,
+    setWalletSelectMenuState,
+    wagmiConfig,
+    trackEvent,
   ]);
 
   return (

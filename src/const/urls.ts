@@ -16,6 +16,10 @@ export const JUMPER_LOYALTY_PATH = '/profile';
 export const JUMPER_FEST_PATH = '/superfest';
 export const JUMPER_MEMECOIN_PATH = '/memecoins';
 
+// jumper api endpoints
+export const JUMPER_ANALYTICS_EVENT = '/analytics/event';
+export const JUMPER_ANALYTICS_TRANSACTION = '/analytics/transaction';
+
 // prepare sitemap
 export const pages: SitemapPage[] = [
   { path: '', priority: 1 },

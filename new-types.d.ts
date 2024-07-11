@@ -31,5 +31,7 @@ declare namespace NodeJS {
     NEXT_PUBLIC_GATEWAY_URL: string;
     NEXT_PUBLIC_GATEWAY_API_KEY: string;
     NEXT_PUBLIC_GATEWAY_API_TOKEN: string;
+    NEXT_PUBLIC_LIFI_API_KEY: string;
+    NEXT_PUBLIC_JUMPER_API: string;
   }
 }
