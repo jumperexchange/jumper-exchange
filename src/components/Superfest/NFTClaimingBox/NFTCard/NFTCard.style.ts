@@ -1,7 +1,7 @@
 import { Box, styled } from '@mui/material';
 
 export const NFTCardMainBox = styled(Box)(({ theme }) => ({
-  width: '256px',
+  width: '288px',
   height: '344px',
   justifyContent: 'center',
   alignContent: 'center',

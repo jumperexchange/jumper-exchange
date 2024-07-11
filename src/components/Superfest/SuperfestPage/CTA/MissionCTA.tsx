@@ -9,6 +9,7 @@ import {
   SeveralMissionCtaContainer,
   StartedTitleBox,
   CTAMainBox,
+  CTAExplanationBox,
 } from './MissionCTA.style';
 import { type Theme, useMediaQuery, Box } from '@mui/material';
 import Image from 'next/image';
@@ -51,6 +52,16 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
     <CTAMainBox>
       <StartedTitleBox>
         <StartedTitleTypography>Get Started</StartedTitleTypography>
+        <Box marginTop="32px">
+          <SoraTypography
+            fontSize={{ xs: '14px', md: '18px' }}
+            lineHeight={{ xs: '14px', md: '18px' }}
+            fontWeight={400}
+          >
+            Completing any mission below makes you eligible for OP rewards and
+            XP.
+          </SoraTypography>
+        </Box>
       </StartedTitleBox>
       <SeveralCTABox>
         {CTAs.map((CTA: CTALinkInt, i: number) => {
@@ -67,7 +78,7 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
               target="_blank"
             >
               <SeveralMissionCtaContainer onClick={handleClick}>
-                <FlexCenterRowBox>
+                <CTAExplanationBox>
                   <Image
                     src={CTA.logo}
                     alt={`Image for ${CTA.logo}`}
@@ -76,21 +87,23 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                     priority={false}
                   />
                   <SoraTypography
-                    fontSize={'22px'}
+                    fontSize={{ xs: '16px', sm: '22px' }}
                     fontWeight={700}
                     marginLeft={'16px'}
                   >
                     {CTA.text ?? 'Go to Protocol Page'}
                   </SoraTypography>
-                </FlexCenterRowBox>
-                <IconButtonPrimary onClick={handleClick}>
-                  <ArrowForwardIcon
-                    sx={{
-                      width: '28px',
-                      height: '28px',
-                    }}
-                  />
-                </IconButtonPrimary>
+                </CTAExplanationBox>
+                {isMobile ? undefined : (
+                  <IconButtonPrimary onClick={handleClick}>
+                    <ArrowForwardIcon
+                      sx={{
+                        width: '28px',
+                        height: '28px',
+                      }}
+                    />
+                  </IconButtonPrimary>
+                )}
               </SeveralMissionCtaContainer>
             </Link>
           );

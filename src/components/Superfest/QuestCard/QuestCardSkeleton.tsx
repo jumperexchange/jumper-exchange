@@ -7,8 +7,8 @@ export const QuestCardSkeleton = () => {
       <Skeleton
         variant="rectangular"
         sx={{
-          height: '416px',
-          width: '256px',
+          height: '450px',
+          width: '288px',
           textAlign: 'center',
           borderRadius: '8px',
           transform: 'unset',
