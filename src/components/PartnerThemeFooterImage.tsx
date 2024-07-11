@@ -19,8 +19,8 @@ export const PartnerThemeFooterImage = () => {
   const { hasTheme, availableWidgetThemeMode } = usePartnerTheme();
   const { isMetaMaskConnector } = useMetaMask();
 
-  const isMobile = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down('md'),
+  const isSmallScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('lg'),
   );
 
   const activeChainAlert =
@@ -31,7 +31,10 @@ export const PartnerThemeFooterImage = () => {
 
   const showBasedOnURL = isSuperfest || isMainPaths || !!hasTheme;
   const showFooterLogo =
-    !activeChainAlert && !isMobile && showBasedOnURL && !isMetaMaskConnector;
+    !activeChainAlert &&
+    !isSmallScreen &&
+    showBasedOnURL &&
+    !isMetaMaskConnector;
 
   return (
     showFooterLogo && (
