@@ -29,9 +29,9 @@ export const PartnerThemeFooterImage = () => {
     sourceChainToken?.chainId === ChainId.SOL ||
     destinationChainToken?.chainId === ChainId.SOL;
 
-  const showBasedOnURL = isSuperfest || isMainPaths || !!hasTheme;
-  const showFooterLogo =
-    !activeChainAlert && !isMobile && showBasedOnURL && !isMetaMaskConnector;
+  const showBasedOnURL =
+    isSuperfest || ((isMainPaths || !!hasTheme) && !isMetaMaskConnector);
+  const showFooterLogo = !activeChainAlert && !isMobile && showBasedOnURL;
 
   return (
     showFooterLogo && (
