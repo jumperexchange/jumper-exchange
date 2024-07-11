@@ -83,9 +83,9 @@ export const useWidgetTheme = (): PartnerTheme => {
 
       const formattedTheme = formatTheme(theme.attributes);
 
-      // @ts-expect-error
       setActiveTheme({
         ...defaultWidgetTheme,
+        // @ts-expect-error
         config: {
           theme: deepmerge(
             defaultWidgetTheme.config.theme,
