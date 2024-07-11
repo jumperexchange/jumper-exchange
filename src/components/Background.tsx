@@ -15,23 +15,7 @@ export interface BackgroundContainerProps {
 const BackgroundContainer = styled('div', {
   name: 'Background', // The component name
   slot: 'root', // The slot name
-})<{ ownerState: BackgroundContainerProps }>(({ theme, ownerState }) => ({
-  // overflow: 'hidden',
-  // pointerEvents: 'none',
-  // // background: ownerState.backgroundImageUrl
-  // //   ? `url(${ownerState.backgroundImageUrl.href})`
-  // //   : 'unset',
-  // // backgroundColor: ownerState.backgroundColor || theme.palette.bg.main,
-  // // typed-safe access to the `variant` prop
-  // ...(ownerState.variant === 'outlined' && {
-  //   border: `2px solid ${theme.palette.divider}`,
-  //   boxShadow: 'none',
-  //   [theme.breakpoints.up('sm' as Breakpoint)]: {
-  //     backgroundRepeat: 'no-repeat',
-  //     backgroundSize: 'cover',
-  //   },
-  // }),
-}));
+})<>(({ theme }) => ({}));
 
 // const StatValue = styled('div', {
 //   name: 'Background',
@@ -48,20 +32,16 @@ const BackgroundContainer = styled('div', {
 //   color: theme.palette.text.secondary,
 // }));
 
-const Background = React.forwardRef<HTMLDivElement>(
-  function Background(props, ref) {
-    const ownerState = { ...props };
-    console.log('OWNERSTATE', ownerState);
-    return (
-      <>
-        <BackgroundContainer ref={ref} ownerState={ownerState}>
-          <BackgroundGradientBottomLeft />
-          <BackgroundGradientBottomRight />
-          <BackgroundGradientTopCenter />
-        </BackgroundContainer>
-      </>
-    );
-  },
-);
+function Background(props) {
+  return (
+    <>
+      <BackgroundContainer>
+        <BackgroundGradientBottomLeft />
+        <BackgroundGradientBottomRight />
+        <BackgroundGradientTopCenter />
+      </BackgroundContainer>
+    </>
+  );
+}
 
 export default Background;

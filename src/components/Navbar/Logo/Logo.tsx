@@ -13,15 +13,17 @@ type LogoProps = {
 
 export const Logo = ({ variant }: LogoProps) => {
   const logo = variant === 'default' ? <JumperLogo /> : <JumperLearnLogo />;
-  const { logoUrl, hasTheme, logo: partnerLogo } = usePartnerTheme();
+  const { logoUrl, hasTheme, logo: partnerLogo, ...props } = usePartnerTheme();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
   const theme = useTheme();
 
-  if (variant === 'superfest') {
-    return <JumperLogoBlack />;
-  }
+  console.log('gtefds', logoUrl, hasTheme, partnerLogo, props)
+
+  // if (variant === 'superfest') {
+  //   return <JumperLogoBlack />;
+  // }
 
   return (
     <LogoWrapper>

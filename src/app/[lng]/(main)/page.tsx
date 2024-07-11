@@ -1,4 +1,4 @@
-import App from '../../../ui/app/App';
+import App from '../../ui/app/App';
 import { WidgetContainer, Widgets } from '@/components/Widgets';
 import { Widget } from '@/components/Widgets/Widget';
 import { getCookies } from '@/app/lib/getCookies';

@@ -35,7 +35,7 @@ export const ThemeProvider: React.FC<
   const [themeMode, setThemeMode] = useState<ThemeModesSupported | undefined>(
     themeProp,
   );
-  console.log('themeprovider', themeMode)
+  // console.log('themeprovider', themeMode)
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
   const { hasTheme, currentCustomizedTheme, availableWidgetThemeMode } =
@@ -73,7 +73,7 @@ export const ThemeProvider: React.FC<
   const activeTheme = useMemo(() => {
     let currentTheme = themeMode === 'dark' ? darkTheme : lightTheme;
 
-    console.log('activethemv2', activeThemeV2, isSuperfest)
+    // console.log('activethemv2', activeThemeV2, isSuperfest)
 
     if (isSuperfest) {
       currentTheme = lightTheme;
@@ -124,7 +124,7 @@ export const ThemeProvider: React.FC<
         //   : currentTheme.typography,
       });
 
-      console.log('mergedtheme', mergedTheme?.components?.Background)
+      // console.log('mergedtheme', mergedTheme?.components?.Background)
 
       return mergedTheme;
     }
@@ -247,7 +247,7 @@ export const ThemeProvider: React.FC<
         //   : currentTheme.typography,
       });
 
-      console.log('mergedtheme', mergedTheme?.components?.Background)
+      // console.log('mergedtheme', mergedTheme?.components?.Background)
 
       return mergedTheme;
     } else {

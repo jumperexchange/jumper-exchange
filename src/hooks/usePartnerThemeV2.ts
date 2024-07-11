@@ -81,11 +81,21 @@ export function formatTheme(theme: PartnerThemesAttributes) {
     components: {
       Background: {
         styleOverrides: {
+          // functions cannot merged because of mui... I know it's bad :(
           root: {
+            position: 'fixed',
+            left: 0,
+            bottom: 0,
+            right: 0,
+            top: 0,
+            zIndex: -1,
+            overflow: 'hidden',
+            pointerEvents: 'none',
+
             // background: '#000000',
             // backgroundColor: 'red',
             ...(config.backgroundColor && { backgroundColor: config.backgroundColor }),
-            ...(config.backgroundImageUrl && { backgroundImage: `url('${config.backgroundImageUrl}')` }),
+            ...(config.backgroundImageUrl && { background: `url('${config.backgroundImageUrl}')` }),
           },
         },
       },
@@ -94,7 +104,7 @@ export function formatTheme(theme: PartnerThemesAttributes) {
 
   const formattedWidgetTheme = (theme.lightConfig || theme.darkConfig).config.theme
 
-  console.log('TEST', { config, activeMUITheme: formattedMUITheme, activeWidgetTheme: formattedWidgetTheme, themeName: theme.uid })
+  // console.log('TEST', { config, activeMUITheme: formattedMUITheme, activeWidgetTheme: formattedWidgetTheme, themeName: theme.uid })
 
   return { config, activeMUITheme: formattedMUITheme, activeWidgetTheme: formattedWidgetTheme, themeName: theme.uid };
 }

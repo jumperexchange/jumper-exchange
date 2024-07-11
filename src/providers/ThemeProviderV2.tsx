@@ -38,10 +38,9 @@ function getTheme(themes: any[], activeTheme: string) {
  * 'use client' is essential for next-themes to work with app-dir.
  */
 export function ThemeProviderV2({ children, activeTheme, themes, ...props }: ThemeProviderProps) {
-  const { resolvedTheme, ...props2 } = useTheme();
+  const { resolvedTheme, forcedTheme, ...props2 } = useTheme();
   const [cookie, setCookie] = useCookies(['tototheme']);
-  console.log('resolvedTheme', resolvedTheme, activeTheme)
-  const [currentTheme, setCurrentTheme] = useState(getTheme(themes, resolvedTheme || activeTheme));
+  const [currentTheme, setCurrentTheme] = useState(getTheme(themes, forcedTheme || resolvedTheme || activeTheme));
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -50,7 +49,7 @@ export function ThemeProviderV2({ children, activeTheme, themes, ...props }: The
 
   useEffect(() => {
     console.log('TRIGGERME PLEASEEEE', resolvedTheme)
-    const themeToUse = resolvedTheme || activeTheme
+    const themeToUse = forcedTheme || resolvedTheme || activeTheme
     console.log('themeToUse', themeToUse)
 
     setCurrentTheme(getTheme(themes, themeToUse))
@@ -59,7 +58,7 @@ export function ThemeProviderV2({ children, activeTheme, themes, ...props }: The
 
   }, [resolvedTheme]);
 
-  console.log('--', currentTheme.palette.mode)
+  // console.log('--', currentTheme.palette.mode)
 
   return (
     <>

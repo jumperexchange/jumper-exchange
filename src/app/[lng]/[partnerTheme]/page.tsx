@@ -1,7 +1,9 @@
-import App from '../../../ui/app/App';
+import App from '../../ui/app/App';
 import { WidgetContainer, Widgets } from '@/components/Widgets';
 import { Widget } from '@/components/Widgets/Widget';
 import { getCookies } from '@/app/lib/getCookies';
+import { useTheme } from 'next-themes';
+import { cookies } from 'next/headers';
 
 export const dynamicParams = false;
 
@@ -21,7 +23,7 @@ export async function generateStaticParams() {
   }
   const res = filteredBridges.concat(filteredDexes);
   const path = res.map((partnerTheme) => ({ partnerTheme }));
-  const customPath = [{ partnerTheme: 'memecoins' }];
+  const customPath = [{ partnerTheme: 'memecoins' }, { partnerTheme: 'op2testseb' }];
   return [...path, ...customPath];
 }
 

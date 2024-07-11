@@ -6,6 +6,8 @@ import React from 'react';
 import { fallbackLng } from 'src/i18n';
 import { metadata as JumperMetadata } from './lib/metadata';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import { Snackbar } from '@/components/Snackbar';
+import { PixelBg } from '@/components/illustrations/PixelBg';
 
 export const metadata = JumperMetadata;
 
@@ -60,6 +62,8 @@ export default async function RootLayout({
         <ReactQueryProvider>
           <WalletProvider>
             {children}
+            <Snackbar />
+            <PixelBg />
           </WalletProvider>
         </ReactQueryProvider>
       </AppRouterCacheProvider>

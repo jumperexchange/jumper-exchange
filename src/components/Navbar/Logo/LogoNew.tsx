@@ -17,7 +17,7 @@ function LogoNew(inprops) {
 
   const props = useThemeProps({ props: inprops, name: 'Logo' });
 
-  console.log('ABCDEODK', props)
+  // console.log('ABCDEODK', props)
 
   const theme = useTheme();
   // console.log('OWNERSTATELOGO', theme);

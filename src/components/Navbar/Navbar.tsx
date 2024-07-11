@@ -47,9 +47,7 @@ export const Navbar = () => {
           variant={
             isLearnPage
               ? 'learn'
-              : isSuperfest || isMainPaths
-                ? 'superfest'
-                : 'default'
+              : 'default'
           }
         />
       </LogoLink>

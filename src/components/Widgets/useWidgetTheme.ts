@@ -11,11 +11,13 @@ import { deepmerge } from '@mui/utils';
 
 export const useWidgetTheme = (): PartnerTheme => {
   const theme = useTheme();
-  const { resolvedTheme } = useNextTheme();
+  const { resolvedTheme, forcedTheme } = useNextTheme();
   const [activeTheme, setActiveTheme] = useState();
   // const { hasTheme, isSuccess, currentWidgetTheme } = usePartnerTheme();
 
-  console.log('resolve', resolvedTheme)
+  const activeNextTheme = forcedTheme || resolvedTheme
+
+  // console.log('resolve', resolvedTheme)
 
   const defaultWidgetTheme = {
     config: {
@@ -62,38 +64,33 @@ export const useWidgetTheme = (): PartnerTheme => {
   };
 
   useEffect(() => {
-    console.log('widget resolved theme', resolvedTheme)
+    // console.log('widget resolved theme', resolvedTheme)
 
-    if (['light', 'dark'].includes(resolvedTheme)) {
-      console.log('set back to default', defaultWidgetTheme)
+    if (['light', 'dark'].includes(activeNextTheme)) {
+      // console.log('set back to default', defaultWidgetTheme)
       setActiveTheme();
       return;
     }
 
     getPartnerThemes()
       .then((data) => {
-        const theme = data.data.find((d) => d.attributes.uid === resolvedTheme)
+        const theme = data.data.find((d) => d.attributes.uid === activeNextTheme)
 
         if (!theme) {
           return;
         }
 
         const formattedTheme = formatTheme(theme.attributes)
-        const baseTheme = getAvailableThemeMode(theme.attributes) === 'light' ? lightTheme : darkTheme
-        console.log("----trgedsf", formattedTheme, { ...defaultWidgetTheme, config: {
-            theme: deepmerge(defaultWidgetTheme.config.theme, formattedTheme.activeWidgetTheme)
-          }
-        })
 
         setActiveTheme({ ...defaultWidgetTheme, config: {
           theme: deepmerge(defaultWidgetTheme.config.theme, formattedTheme.activeWidgetTheme)
           }
         })
       })
-  }, [resolvedTheme]);
+  }, [activeNextTheme]);
 
 
-  console.log('sgessusewidgettheme', activeTheme, defaultWidgetTheme)
+  // console.log('sgessusewidgettheme', activeTheme, defaultWidgetTheme)
 
   if (!!activeTheme) {
     return activeTheme;

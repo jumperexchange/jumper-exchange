@@ -19,7 +19,6 @@ interface AppProviderProps {
 export const AppProvider: React.FC<
   PropsWithChildren<AppProviderProps>
 > = async ({ children, lang }) => {
-  const { resources } = await initTranslations(lang || fallbackLng, namespaces);
   const { activeThemeMode } = getCookies();
   const s = await getPartnerThemes()
   const cookies1 = cookies();
@@ -27,16 +26,7 @@ export const AppProvider: React.FC<
   return (
     <ThemeProviderV2 activeTheme={cookies1.get('tototheme')?.value} themes={s.data}>
       {/*<ThemeProvider themeMode={activeThemeMode}>*/}
-      <ThemeToggles />
-      <TrackingProvider>
-        <TranslationsProvider
-          namespaces={[defaultNS]}
-          locale={lang}
-          resources={resources}
-        >
-          <Layout>{children}</Layout>
-        </TranslationsProvider>
-      </TrackingProvider>
+          {children}
       {/*</ThemeProvider>*/}
     </ThemeProviderV2>
   );

@@ -22,7 +22,7 @@ export const useThemeMode = (
     useSettingsStore((state) => [state.themeMode, state.setThemeMode]);
 
   const updateThemeMode = (themeMode: ThemeModesSupported) => {
-    console.log('UPDATETHEMEMODE', themeMode)
+    // console.log('UPDATETHEMEMODE', themeMode)
     setThemeMode(themeMode);
     setCookie('themeMode', themeMode, {
       path: '/', // Cookie available across the entire website

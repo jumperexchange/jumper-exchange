@@ -4,7 +4,7 @@ import { getCookies } from '../../../../lib/getCookies';
 import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
 import type { Metadata } from 'next';
-import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
+import { sliceStrToXChar } from '@/utils/splitStringToXChar';
 
 export async function generateMetadata({
   params,

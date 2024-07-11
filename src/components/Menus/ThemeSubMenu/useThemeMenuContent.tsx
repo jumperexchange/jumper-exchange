@@ -36,7 +36,7 @@ export const useThemeMenuContent = () => {
         theme,
       },
     });
-    console.log('CHECK HANDLE THEME SWITCH', theme);
+    // console.log('CHECK HANDLE THEME SWITCH', theme);
     setTheme(theme)
     // setActiveTheme(theme?.attributes.uid);
   };
