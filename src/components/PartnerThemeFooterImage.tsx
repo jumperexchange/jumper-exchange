@@ -38,7 +38,7 @@ export const PartnerThemeFooterImage = () => {
       <Link
         href={'https://superfest.optimism.io/'}
         target="_blank"
-        style={{ zIndex: 1000 }}
+        style={{ zIndex: 9999 }}
       >
         <BackgroundFooterImage
           style={{ position: isSuperfest ? 'relative' : 'absolute' }}
