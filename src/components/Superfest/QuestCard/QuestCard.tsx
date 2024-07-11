@@ -17,6 +17,7 @@ import {
 } from './QuestCard.style';
 import { OPBadge } from 'src/components/illustrations/OPBadge';
 import { Box } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export interface RewardsInterface {
   logo: string;
@@ -37,6 +38,7 @@ interface QuestCardProps {
   slug?: string;
   chains?: Chain[];
   rewards?: RewardsInterface;
+  completed?: boolean;
 }
 
 export const QuestCard = ({
@@ -50,6 +52,7 @@ export const QuestCard = ({
   slug,
   chains,
   rewards,
+  completed,
 }: QuestCardProps) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -107,7 +110,10 @@ export const QuestCard = ({
           </FlexCenterRowBox>
           {points ? (
             <FlexCenterRowBox>
-              <XPDisplayBox active={active}>
+              <XPDisplayBox
+                active={active}
+                bgcolor={!true ? '#ff0420' : '#42B852'}
+              >
                 <SoraTypography
                   fontSize="14px"
                   fontWeight={700}
@@ -117,7 +123,11 @@ export const QuestCard = ({
                   {`+${points}`}
                 </SoraTypography>
                 <XPIconBox marginLeft="4px">
-                  <SuperfestXPIcon size={16} />
+                  {!true ? (
+                    <SuperfestXPIcon size={16} />
+                  ) : (
+                    <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
+                  )}
                 </XPIconBox>
               </XPDisplayBox>
             </FlexCenterRowBox>

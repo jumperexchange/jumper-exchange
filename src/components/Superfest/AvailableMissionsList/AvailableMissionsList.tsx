@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { MissionsFilter } from '../MissionsFilter/MissionsFilter';
+import { checkInclusion } from '../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 
 const chains = ['Optimism', 'Base', 'Mode', 'Fraxtal'];
 
@@ -27,15 +28,17 @@ const category = [
   'Yield',
 ];
 
-interface QuestCompletedListProps {
+interface AvailableMissionsListProps {
   quests?: Quest[];
+  pastCampaigns?: string[];
   loading: boolean;
 }
 
 export const AvailableMissionsList = ({
   quests,
+  pastCampaigns,
   loading,
-}: QuestCompletedListProps) => {
+}: AvailableMissionsListProps) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
@@ -103,7 +106,8 @@ export const AvailableMissionsList = ({
               const imgURL = new URL(baseURL, url.origin);
               const rewards = quest.attributes.CustomInformation?.['rewards'];
               const chains = quest.attributes.CustomInformation?.['chains'];
-              const rewardsAmount = rewards?.amount;
+              const claimingIds =
+                quest.attributes?.CustomInformation?.['claimingIds'];
 
               //todo: exclude in a dedicated helper function
               if (chainsFilter && chainsFilter.length > 0) {
@@ -132,6 +136,11 @@ export const AvailableMissionsList = ({
                 return undefined;
               }
 
+              let completed = false;
+              if (claimingIds && pastCampaigns) {
+                completed = checkInclusion(pastCampaigns, claimingIds);
+              }
+
               return (
                 <QuestCard
                   key={`available-mission-${index}`}
@@ -148,6 +157,7 @@ export const AvailableMissionsList = ({
                   slug={quest?.attributes.Slug}
                   chains={chains}
                   rewards={rewards}
+                  completed={completed}
                 />
               );
             })
