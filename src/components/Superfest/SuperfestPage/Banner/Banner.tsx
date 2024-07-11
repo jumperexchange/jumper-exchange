@@ -9,10 +9,12 @@ import {
   BannerTitleTypography,
 } from './Banner.style';
 import { RewardBox } from './Rewards/RewardBox';
+import { checkInclusion } from '../../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 
 interface SuperfestMissionPageVar {
   quest: Quest;
   baseUrl: string;
+  pastCampaigns: string[];
 }
 
 export interface Chain {
@@ -20,11 +22,23 @@ export interface Chain {
   name: string;
 }
 
-export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
+export const BannerBox = ({
+  quest,
+  baseUrl,
+  pastCampaigns,
+}: SuperfestMissionPageVar) => {
   const attributes = quest?.attributes;
+  const claimingIds = quest.attributes?.CustomInformation?.['claimingIds'];
   const rewards = attributes?.CustomInformation?.['rewards'];
   const chains = attributes?.CustomInformation?.['chains'];
   const partners = attributes?.CustomInformation?.['partner'];
+
+  console.log('hereee');
+  let completed = false;
+  console.log(pastCampaigns);
+  if (claimingIds && pastCampaigns) {
+    completed = checkInclusion(pastCampaigns, claimingIds);
+  }
 
   return (
     <BannerMainBox>
@@ -76,7 +90,7 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           {attributes && attributes?.Points ? (
             <RewardBox
               logos={
-                true
+                completed
                   ? [
                       'https://strapi.li.finance/uploads/avatar_checkmark_circle_03172fb9d6.svg',
                     ]
