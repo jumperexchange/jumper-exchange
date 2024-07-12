@@ -80,6 +80,7 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
         alignItems="start"
         spacing={4}
         paddingTop={3.5}
+        useFlexGap
       >
         {!isLearnPage && !hasTheme ? (
           <NavbarTabs navbarPageReload={isLoyaltyPage || isSuperfest} />

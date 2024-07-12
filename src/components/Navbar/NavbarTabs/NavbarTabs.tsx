@@ -20,6 +20,7 @@ export const NavbarTabs = ({ navbarPageReload }: NavbarTabsProps) => {
   const navbarTabs = useNavbarTabs({ navbarPageReload });
 
   const containerStyles = {
+    marginLeft: 'calc(-56px - 32px)', // negative margin; width of navbar + spacing
     display: 'none',
     borderRadius: 28,
     padding: 0,
