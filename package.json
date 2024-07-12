@@ -2,7 +2,7 @@
   "name": "jumper.exchange",
   "version": "1.0.0",
   "private": true,
-  "repository": "https://github.com/lifinance/jumper.exchange",
+  "repository": "https://github.com/jumperexchange/jumper-exchange",
   "packageManager": "yarn@4.3.1",
   "dependencies": {
     "@arcxmoney/analytics": "^2.1.0",
