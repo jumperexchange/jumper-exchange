@@ -27,15 +27,9 @@ const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
 export const ButtonPrimary = styled(ButtonBase)<MuiButtonProps>(
   ({ theme }) => ({
     color: theme.palette.white.main,
-    backgroundColor:
-      theme.palette.mode === 'dark'
-        ? theme.palette.primary.main
-        : theme.palette.accent1.main,
+    backgroundColor: theme.palette.primary.main,
     ':hover': {
-      backgroundColor:
-        theme.palette.mode === 'dark'
-          ? darken(theme.palette.primary.main, 0.16)
-          : darken(theme.palette.accent1.main, 0.16),
+      backgroundColor: darken(theme.palette.primary.main, 0.16),
     },
   }),
 );

@@ -1,4 +1,4 @@
-import { WallettButtons } from '../Navbar/WalletButton';
+import { WalletButtons } from '../Navbar/WalletButton';
 import { Widget } from '../Widgets/Widget';
 import { BlogWidgetHeader } from './BlogWidget.style';
 import type { ThemeModesSupported } from '@/types/settings';
@@ -30,7 +30,7 @@ export const BlogWidget = ({
   return (
     <>
       <BlogWidgetHeader>
-        <WallettButtons />
+        <WalletButtons />
       </BlogWidgetHeader>
       <Widget
         starterVariant="default"
