@@ -20,6 +20,7 @@ export const SuperfestMissionPage = ({
 }: SuperfestMissionPageVar) => {
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
+  const signature = quest?.attributes?.CustomInformation?.['signature'];
 
   return (
     <SuperfestContainer className="superfest">

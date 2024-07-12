@@ -14,7 +14,7 @@ import {
 import { type Theme, useMediaQuery, Box } from '@mui/material';
 import Image from 'next/image';
 import { SoraTypography } from '../../Superfest.style';
-import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
+import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 
 interface CTALinkInt {
   logo: string;
@@ -22,19 +22,27 @@ interface CTALinkInt {
   link: string;
 }
 
+interface SignatureInt {
+  isLive: boolean;
+  message: string;
+}
+
 interface MissionCtaProps {
   title?: string;
   url?: string;
   id?: number;
   CTAs: CTALinkInt[];
+  signature?: SignatureInt;
 }
 
-export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
+export const MissionCTA = ({ CTAs, signature }: MissionCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
+
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
+
   const handleClick = () => {
     // trackEvent({
     //   category: TrackingCategory.BlogArticle,
@@ -58,12 +66,14 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
             lineHeight={{ xs: '14px', md: '18px' }}
             fontWeight={400}
           >
-            Completing any mission below makes you eligible for OP rewards and
-            XP.
+            {signature?.isLive
+              ? undefined
+              : 'Completing any mission below makes you eligible for OP rewards and XP.'}
           </SoraTypography>
         </Box>
       </StartedTitleBox>
       <SeveralCTABox>
+        {signature?.isLive ? <SignatureCTA /> : undefined}
         {CTAs.map((CTA: CTALinkInt, i: number) => {
           return (
             <Link
