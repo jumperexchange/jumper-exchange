@@ -47,14 +47,16 @@ export const ActiveSuperfestMissionsCarousel = ({
               quests?.map((quest: Quest, index: number) => {
                 const claimingIds =
                   quest.attributes?.CustomInformation?.['claimingIds'];
+                const rewardsIds =
+                  quest.attributes?.CustomInformation?.['rewardsIds'];
                 let included = false;
                 let completed = false;
                 if (claimingIds && activeCampaigns) {
                   included = checkInclusion(activeCampaigns, claimingIds);
                 }
 
-                if (claimingIds && pastCampaigns) {
-                  completed = checkInclusion(pastCampaigns, claimingIds);
+                if (rewardsIds && pastCampaigns) {
+                  completed = checkInclusion(pastCampaigns, rewardsIds);
                 }
 
                 const baseURL = quest.attributes.Image?.data?.attributes?.url;

@@ -28,14 +28,14 @@ export const BannerBox = ({
   pastCampaigns,
 }: SuperfestMissionPageVar) => {
   const attributes = quest?.attributes;
-  const claimingIds = quest.attributes?.CustomInformation?.['claimingIds'];
+  const rewardsIds = quest.attributes?.CustomInformation?.['rewardsIds'];
   const rewards = attributes?.CustomInformation?.['rewards'];
   const chains = attributes?.CustomInformation?.['chains'];
   const partners = attributes?.CustomInformation?.['partner'];
 
   let completed = false;
-  if (claimingIds && pastCampaigns) {
-    completed = checkInclusion(pastCampaigns, claimingIds);
+  if (rewardsIds && pastCampaigns) {
+    completed = checkInclusion(pastCampaigns, rewardsIds);
   }
 
   return (

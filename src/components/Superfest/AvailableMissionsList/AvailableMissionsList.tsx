@@ -108,6 +108,8 @@ export const AvailableMissionsList = ({
               const chains = quest.attributes.CustomInformation?.['chains'];
               const claimingIds =
                 quest.attributes?.CustomInformation?.['claimingIds'];
+              const rewardsIds =
+                quest.attributes?.CustomInformation?.['rewardsIds'];
 
               //todo: exclude in a dedicated helper function
               if (chainsFilter && chainsFilter.length > 0) {
@@ -137,8 +139,8 @@ export const AvailableMissionsList = ({
               }
 
               let completed = false;
-              if (claimingIds && pastCampaigns) {
-                completed = checkInclusion(pastCampaigns, claimingIds);
+              if (rewardsIds && pastCampaigns) {
+                completed = checkInclusion(pastCampaigns, rewardsIds);
               }
 
               return (

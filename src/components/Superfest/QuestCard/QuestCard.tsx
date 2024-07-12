@@ -112,7 +112,7 @@ export const QuestCard = ({
             <FlexCenterRowBox>
               <XPDisplayBox
                 active={active}
-                bgcolor={!true ? '#ff0420' : '#42B852'}
+                bgcolor={!completed ? '#ff0420' : '#42B852'}
               >
                 <SoraTypography
                   fontSize="14px"
@@ -123,7 +123,7 @@ export const QuestCard = ({
                   {`+${points}`}
                 </SoraTypography>
                 <XPIconBox marginLeft="4px">
-                  {!true ? (
+                  {!completed ? (
                     <SuperfestXPIcon size={16} />
                   ) : (
                     <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
