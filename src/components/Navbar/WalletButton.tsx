@@ -12,7 +12,7 @@ import { EventTrackingTool } from '@/types/userTracking';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/types';
 import { getConnectorIcon } from '@lifi/wallet-management';
-import { IconButton, Stack, Typography, alpha, useTheme } from '@mui/material';
+import { Stack, Typography, alpha, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
@@ -23,7 +23,10 @@ import {
   WalletMgmtChainAvatar,
   WalletMgmtWalletAvatar,
 } from '.';
-import { getContrastAlphaColor } from 'src/utils/colors';
+import { XPIcon } from '../illustrations/XPIcon';
+import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
+import { useRouter } from 'next/navigation';
 
 export const WallettButtons = () => {
   const { chains } = useChains();
@@ -32,6 +35,8 @@ export const WallettButtons = () => {
   const { t } = useTranslation();
   const { isSuccess } = useChains();
   const theme = useTheme();
+  const { points } = useLoyaltyPass();
+  const router = useRouter();
 
   const {
     openWalletSelectMenu,
@@ -80,6 +85,17 @@ export const WallettButtons = () => {
     setWalletMenuState(!openWalletMenu);
   };
 
+  const handleXPClick = () => {
+    trackEvent({
+      category: TrackingCategory.Menu,
+      label: 'click-jumper-pass-link',
+      action: TrackingAction.ClickJumperProfileLink,
+      data: { [TrackingEventParameter.Menu]: 'pass' },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
+    router.push(JUMPER_LOYALTY_PATH);
+  };
+
   return (
     <>
       {!account?.address ? (
@@ -106,15 +122,12 @@ export const WallettButtons = () => {
         </ConnectButton>
       ) : (
         <Stack direction="row" spacing={2}>
-          <WalletMenuButton
-            id="wallet-digest-button"
-            onClick={handleWalletMenuClick}
-          >
+          <WalletMenuButton id="wallet-digest-button" onClick={handleXPClick}>
             <Image
               src={`https://effigy.im/a/${account?.address ?? 'jumper.eth'}.png`}
               alt="Effigy Wallet Icon"
-              width={44}
-              height={44}
+              width={28}
+              height={28}
               priority={false}
               unoptimized={true}
               style={{
@@ -130,30 +143,12 @@ export const WallettButtons = () => {
             <Typography
               variant={'lifiBodyMediumStrong'}
               width={'auto'}
-              marginRight={1}
+              marginRight={1.1}
               marginLeft={1}
             >
-              228
+              {points || 0}
             </Typography>
-            <IconButton
-              size="medium"
-              aria-label="settings"
-              edge="start"
-              sx={{
-                marginLeft: 0,
-                color: theme.palette.white.main,
-                backgroundColor: theme.palette.accent1.main,
-              }}
-            >
-              <Typography
-                variant={'lifiBodySmallStrong'}
-                width={'auto'}
-                marginRight={0.25}
-                marginLeft={0.25}
-              >
-                XP
-              </Typography>
-            </IconButton>
+            <XPIcon size={28} />
           </WalletMenuButton>
           <WalletMenuButton
             id="wallet-digest-button"
