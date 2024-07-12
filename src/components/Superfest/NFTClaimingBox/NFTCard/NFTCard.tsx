@@ -88,8 +88,8 @@ export const NFTCard = ({
           }}
           src={image}
           alt={chain}
-          width="256"
-          height="256"
+          width="288"
+          height="288"
         />
         <NFTCardBotomBox>
           <Button

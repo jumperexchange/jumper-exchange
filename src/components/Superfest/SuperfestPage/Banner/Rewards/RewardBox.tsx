@@ -13,7 +13,7 @@ export const RewardBox = ({ title, logos, value }: RewardBoxProps) => {
   return (
     <RewardTopBox>
       <RewardSubtitleBox>
-        <SoraTypography fontSize={'12px'} fontWeight={700} color={'#525252'}>
+        <SoraTypography fontSize={'14px'} fontWeight={700} color={'#525252'}>
           {title}
         </SoraTypography>
       </RewardSubtitleBox>
@@ -31,8 +31,8 @@ export const RewardBox = ({ title, logos, value }: RewardBoxProps) => {
                     borderRadius: '100%',
                   }}
                   alt={'logo name'}
-                  width="32"
-                  height="32"
+                  width="48"
+                  height="48"
                 />
               );
             })}
@@ -43,12 +43,12 @@ export const RewardBox = ({ title, logos, value }: RewardBoxProps) => {
               src={logos[0]}
               style={{ borderRadius: '100%' }}
               alt="logos-reward"
-              width="40"
-              height="40"
+              width="48"
+              height="48"
             />
             <SoraTypography
-              fontSize={'18px'}
-              fontWeight={800}
+              fontSize={'24px'}
+              fontWeight={700}
               marginLeft={'12px'}
             >
               {value}
