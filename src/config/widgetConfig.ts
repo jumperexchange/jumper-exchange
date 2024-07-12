@@ -1,9 +1,14 @@
+import { publicRPCList } from './../const/rpcList';
 import { ChainId, createConfig } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 
 createConfig({
   apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
   integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+  rpcUrls: {
+    ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
+    ...publicRPCList,
+  },
 });
 
 export const widgetConfig: Partial<WidgetConfig> = {
