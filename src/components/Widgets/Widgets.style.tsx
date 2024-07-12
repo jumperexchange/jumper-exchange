@@ -143,7 +143,6 @@ export const WidgetContainer = styled(Box, {
 );
 
 export const BackgroundFooterImage = styled(Image)(({ theme }) => ({
-  position: 'absolute',
   width: 200,
   height: 'auto',
   bottom: 0,

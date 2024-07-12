@@ -39,7 +39,6 @@ export default async function NotFound() {
               <NavbarButtons />
             </NavbarContainer>
             <NotFoundComponent />
-            <PoweredBy fixedPosition={true} />
           </TranslationsProvider>
         </ThemeProvider>
       </AppRouterCacheProvider>
