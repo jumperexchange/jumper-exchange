@@ -95,20 +95,22 @@ export const QuestCard = ({
                 </NoSelectTypography>
               </CenteredBox>
             ) : null}
-            {startDate && endDate ? (
-              <QuestDatesBox>
-                <CenteredBox>
-                  <DateRangeRoundedIcon sx={{ height: '16px' }} />
-                </CenteredBox>
-                <NoSelectTypography
-                  fontSize={'12px'}
-                  lineHeight={'16px'}
-                  fontWeight={700}
-                >
-                  {getStringDateFormatted(startDate, endDate)}
-                </NoSelectTypography>
-              </QuestDatesBox>
-            ) : null}
+            {startDate && endDate
+              ? //Todo: to keep when we'll have quests with timing again
+                // <QuestDatesBox>
+                //   <CenteredBox>
+                //     <DateRangeRoundedIcon sx={{ height: '16px' }} />
+                //   </CenteredBox>
+                //   <NoSelectTypography
+                //     fontSize={'12px'}
+                //     lineHeight={'16px'}
+                //     fontWeight={700}
+                //   >
+                //     {getStringDateFormatted(startDate, endDate)}
+                //   </NoSelectTypography>
+                // </QuestDatesBox>
+                undefined
+              : null}
           </QuestPlatformMainBox>
         ) : (
           <CompletedBox>
