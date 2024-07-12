@@ -7,7 +7,6 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { darkTheme, lightTheme } from 'src/theme';
 import { useCookies } from 'react-cookie';
-import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import { formatTheme, getAvailableThemeMode } from '@/hooks/usePartnerThemeV2';
 import { deepmerge } from '@mui/utils';
 

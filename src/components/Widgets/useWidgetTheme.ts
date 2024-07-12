@@ -1,12 +1,10 @@
-import { usePartnerTheme } from '@/hooks/usePartnerTheme';
 import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { useTheme as useNextTheme } from 'next-themes';
-import { darkTheme, lightTheme } from 'src/theme';
 import type { PartnerTheme } from 'src/types/strapi';
 import { useEffect, useState } from 'react';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
-import { formatTheme, getAvailableThemeMode } from '@/hooks/usePartnerThemeV2';
+import { formatTheme } from '@/hooks/usePartnerThemeV2';
 import { deepmerge } from '@mui/utils';
 
 export const useWidgetTheme = (): PartnerTheme => {

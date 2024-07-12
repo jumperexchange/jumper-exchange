@@ -1,6 +1,5 @@
 import React from 'react';
 import { FeatureCards } from '@/components/FeatureCards';
-import { getCookies } from '@/app/lib/getCookies';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import { cookies } from 'next/headers';
 import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
@@ -14,7 +13,6 @@ export default async function MainLayout({
   children: React.ReactNode;
   params: { lng: string };
 }) {
-  const { activeThemeMode } = getCookies();
   const partnerThemes = await getPartnerThemes();
   const cookies1 = cookies();
 
