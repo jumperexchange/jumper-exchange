@@ -66,6 +66,8 @@ export const RewardsCarousel = ({
           address: CLAIMING_CONTRACT_ADDRESS,
           abi: MerklDistribABI,
           functionName: 'claim',
+          // args: [[address], [OP_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
+          // TESTING
           args: [
             [address],
             [OP_TOKEN],
