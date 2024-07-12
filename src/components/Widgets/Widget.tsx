@@ -103,6 +103,15 @@ export function Widget({
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
 
+  const partnerNameArray = useMemo(() => {
+    if (partnerName) {
+      return partnerName === 'stargate'
+        ? ['stargate', 'stargateV2']
+        : [partnerName];
+    }
+    return undefined;
+  }, [partnerName]);
+
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
@@ -139,10 +148,10 @@ export function Widget({
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
-        allow: isBridgeFiltered && partnerName ? [partnerName] : undefined,
+        allow: isBridgeFiltered && partnerName ? partnerNameArray : undefined,
       },
       exchanges: {
-        allow: isDexFiltered && partnerName ? [partnerName] : undefined,
+        allow: isDexFiltered && partnerName ? partnerNameArray : undefined,
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -212,7 +221,7 @@ export function Widget({
     tokens,
     wagmiConfig,
     widgetIntegrator,
-    partnerName,
+    partnerNameArray,
     isDexFiltered,
     isBridgeFiltered,
     integratorStringByType,
