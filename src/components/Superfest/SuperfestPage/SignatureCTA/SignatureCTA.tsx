@@ -83,27 +83,28 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
 
   return (
     <>
-      {signature?.isLive ? (
-        <SeveralMissionCtaContainer onClick={handleSignatureClick}>
-          <CTAExplanationBox>
-            <Image
-              src={
-                'https://pbs.twimg.com/profile_images/1769392206371028992/HPxURAyE_400x400.jpg'
-              }
-              alt={`logo image`}
-              width={48}
-              height={48}
-              priority={false}
-            />
-            <SoraTypography
-              fontSize={{ xs: '16px', sm: '22px' }}
-              fontWeight={700}
-              marginLeft={'16px'}
-            >
-              {signature.message ?? 'Sign Message'}
-            </SoraTypography>
-          </CTAExplanationBox>
-        </SeveralMissionCtaContainer>
+      {true ? (
+        <Box sx={{ width: '100%', marginBottom: '16px' }}>
+          <SeveralMissionCtaContainer onClick={handleSignatureClick}>
+            <CTAExplanationBox>
+              <Image
+                src={'https://strapi.li.finance/uploads/turtle_ef319715fe.jpg'}
+                alt={`logo image`}
+                width={48}
+                height={48}
+                style={{ borderRadius: 100 }}
+                priority={false}
+              />
+              <SoraTypography
+                fontSize={{ xs: '16px', sm: '22px' }}
+                fontWeight={700}
+                marginLeft={'16px'}
+              >
+                {signature?.message ?? 'Sign Message'}
+              </SoraTypography>
+            </CTAExplanationBox>
+          </SeveralMissionCtaContainer>
+        </Box>
       ) : undefined}
     </>
   );
