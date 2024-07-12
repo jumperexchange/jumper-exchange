@@ -23,10 +23,7 @@ export const AppProvider: React.FC<
   const cookies1 = cookies();
 
   return (
-    <ThemeProviderV2
-      activeTheme={cookies1.get('tototheme')?.value}
-      themes={s.data}
-    >
+    <ThemeProviderV2 activeTheme={cookies1.get('theme')?.value} themes={s.data}>
       {/*<ThemeProvider themeMode={activeThemeMode}>*/}
       {children}
       {/*</ThemeProvider>*/}

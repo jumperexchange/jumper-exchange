@@ -47,7 +47,6 @@ export const useThemeSwitchTabs = () => {
       path: '/',
     });
     setThemeMode(mode);
-    console.log(`change theme to mode ${mode}`);
     setTheme(mode);
   };
 
@@ -108,7 +107,7 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        lightModeEnabled && themeMode !== 'light' && handleSwitchMode('light');
+        handleSwitchMode('light');
       },
     },
     {
@@ -123,7 +122,7 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        darkModeEnabled && themeMode !== 'dark' && handleSwitchMode('dark');
+        handleSwitchMode('dark');
       },
     },
     {
@@ -138,7 +137,7 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        systemModeEnabled && themeMode !== 'auto' && handleSwitchMode('auto');
+        handleSwitchMode('auto');
       },
     },
   ];

@@ -30,7 +30,7 @@ export default async function MainLayout({
       enableColorScheme
     >
       <ThemeProviderV2
-        activeTheme={cookies1.get('tototheme')?.value || defaultTheme}
+        activeTheme={cookies1.get('theme')?.value || defaultTheme}
         themes={partnerThemes.data}
       >
         <Layout>{children}</Layout>

@@ -50,7 +50,7 @@ export function ThemeProviderV2({
   ...props
 }: any) {
   const { resolvedTheme, forcedTheme, ...props2 } = useTheme();
-  const [cookie, setCookie] = useCookies(['tototheme']);
+  const [cookie, setCookie] = useCookies(['theme']);
   const [partnerThemes, setPartnerThemes] = useSettingsStore((state) => [
     state.partnerThemes,
     state.setPartnerThemes,
@@ -79,7 +79,7 @@ export function ThemeProviderV2({
 
     setCurrentTheme(getMuiTheme(themes, themeToUse));
     setConfigTheme(formatConfig(getPartnerTheme(themes, themeToUse)));
-    setCookie('tototheme', themeToUse);
+    setCookie('theme', themeToUse);
   }, [resolvedTheme]);
 
   return (
