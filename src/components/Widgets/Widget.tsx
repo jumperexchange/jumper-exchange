@@ -33,8 +33,6 @@ import { publicRPCList } from 'src/const/rpcList';
 import { useRouter } from 'next/navigation';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useWidgetTheme } from './useWidgetTheme';
-import { useThemeMode } from '@/hooks/useThemeMode';
-import { usePartnerThemeV2 } from '@/hooks/usePartnerThemeV2';
 
 export function Widget({
   starterVariant,
@@ -55,6 +53,7 @@ export function Widget({
   const wagmiConfig = useConfig();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
+  // To be updated
   const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
@@ -117,8 +116,6 @@ export function Widget({
         console.warn('Parsing custom rpcs failed', e);
       }
     }
-
-    console.log('WIDGETTHEME', widgetTheme);
 
     return {
       ...widgetConfig,

@@ -1,10 +1,16 @@
 // ----------------------------------------------------------------------
 
+import type { PartnerThemesData } from '@/types/strapi';
+import { PartnerTheme, PartnerThemesAttributes } from '@/types/strapi';
+
 export type ThemeModesSupported = 'light' | 'dark' | 'auto';
 export type WalletConnected = string;
 
 export interface SettingsProps {
+  partnerThemes: PartnerThemesData[];
   activeTheme: any;
+  widgetTheme: any;
+  configTheme: any;
   themeMode: ThemeModesSupported;
   clientWallets: string[];
   disabledFeatureCards: string[];
@@ -17,8 +23,9 @@ export interface SettingsState extends SettingsProps {
   // Mode
   setThemeMode: (mode: ThemeModesSupported) => void;
 
-  // Mode
   setActiveTheme: (activeTheme: any) => void;
+  setConfigTheme: (configTheme: any) => void;
+  setWidgetTheme: (widgetTheme: any) => void;
 
   // Installed Wallets
   setClientWallets: (wallet: string) => void;
@@ -31,4 +38,6 @@ export interface SettingsState extends SettingsProps {
 
   // Welcome Screen
   setWelcomeScreenClosed: (shown: boolean) => void;
+
+  setPartnerThemes: (themes: PartnerThemesData[]) => void;
 }

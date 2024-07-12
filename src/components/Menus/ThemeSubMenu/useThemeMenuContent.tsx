@@ -8,10 +8,8 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useStrapi } from 'src/hooks/useStrapi';
 import type { PartnerThemesData } from 'src/types/strapi';
-import { usePartnerThemeV2 } from '@/hooks/usePartnerThemeV2';
 import { useTheme } from 'next-themes';
 
 export const useThemeMenuContent = () => {

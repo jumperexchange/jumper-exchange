@@ -5,7 +5,6 @@ import { useCookies } from 'react-cookie';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import { useSettingsStore } from 'src/stores/settings';
 import type {
-  PartnerTheme,
   PartnerThemesAttributes,
   PartnerThemesData,
 } from 'src/types/strapi';
@@ -47,6 +46,10 @@ function getImageUrl(
 }
 
 export function getAvailableThemeMode(theme: PartnerThemesAttributes) {
+  if (!theme) {
+    return 'light';
+  }
+
   return theme.darkConfig ? (theme.lightConfig ? 'auto' : 'dark') : 'light';
 }
 
@@ -67,7 +70,16 @@ function getLogoData(theme: PartnerThemesAttributes) {
   };
 }
 
-function formatConfig(theme: PartnerThemesAttributes) {
+export function formatConfig(theme: PartnerThemesAttributes) {
+  if (!theme) {
+    return {
+      uid: 'default',
+      availableThemeMode: getAvailableThemeMode(theme),
+      hasThemeModeSwitch: true,
+      hasBackgroundGradient: true,
+    };
+  }
+
   return {
     availableThemeMode: getAvailableThemeMode(theme),
     backgroundColor:
@@ -80,6 +92,8 @@ function formatConfig(theme: PartnerThemesAttributes) {
     selectableInMenu: theme.SelectableInMenu,
     createdAt: theme.createdAt,
     uid: theme.uid,
+    hasThemeModeSwitch: false,
+    hasBackgroundGradient: false,
   };
 }
 

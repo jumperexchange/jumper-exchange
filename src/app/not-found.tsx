@@ -1,6 +1,5 @@
 import initTranslations from '@/app/i18n';
 import { getCookies } from '@/app/lib/getCookies';
-import { BackgroundGradient } from '@/components/BackgroundGradient';
 import { Logo } from '@/components/Navbar/Logo/Logo';
 import { NavbarContainer } from '@/components/Navbar/Navbar.style';
 import { NavbarButtons } from '@/components/Navbar/NavbarButtons';
@@ -12,6 +11,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { cookies } from 'next/headers';
 import RouterLink from 'next/link';
 import { defaultNS, namespaces } from 'src/i18n';
+import Background from '@/components/Background';
 
 export default async function NotFound() {
   const { activeThemeMode } = getCookies();
@@ -29,7 +29,7 @@ export default async function NotFound() {
           locale={locale}
           resources={resources}
         >
-          <BackgroundGradient />
+          <Background />
 
           <NavbarContainer>
             <Link component={RouterLink} href="/">

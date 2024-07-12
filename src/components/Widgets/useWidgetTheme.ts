@@ -2,20 +2,19 @@ import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { useTheme as useNextTheme } from 'next-themes';
 import type { PartnerTheme } from 'src/types/strapi';
-import { useEffect, useState } from 'react';
-import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
+import { useEffect } from 'react';
 import { formatTheme } from '@/hooks/usePartnerThemeV2';
 import { deepmerge } from '@mui/utils';
+import { useSettingsStore } from '@/stores/settings';
 
 export const useWidgetTheme = (): PartnerTheme => {
   const theme = useTheme();
   const { resolvedTheme, forcedTheme } = useNextTheme();
-  const [activeTheme, setActiveTheme] = useState();
-  // const { hasTheme, isSuccess, currentWidgetTheme } = usePartnerTheme();
+  const [widgetTheme, setWidgetTheme, partnerThemes] = useSettingsStore(
+    (state) => [state.widgetTheme, state.setWidgetTheme, state.partnerThemes],
+  );
 
   const activeNextTheme = forcedTheme || resolvedTheme;
-
-  // console.log('resolve', resolvedTheme)
 
   const defaultWidgetTheme = {
     config: {
@@ -62,43 +61,27 @@ export const useWidgetTheme = (): PartnerTheme => {
   };
 
   useEffect(() => {
-    // console.log('widget resolved theme', resolvedTheme)
+    const theme = partnerThemes?.find(
+      (d) => d.attributes.uid === activeNextTheme,
+    );
 
-    // @ts-expect-error
-    if (['light', 'dark'].includes(activeNextTheme)) {
-      // console.log('set back to default', defaultWidgetTheme)
-      // @ts-expect-error
-      setActiveTheme();
+    if (!theme) {
+      setWidgetTheme(defaultWidgetTheme);
       return;
     }
 
-    getPartnerThemes().then((data) => {
-      const theme = data.data.find((d) => d.attributes.uid === activeNextTheme);
+    const formattedTheme = formatTheme(theme.attributes);
 
-      if (!theme) {
-        return;
-      }
-
-      const formattedTheme = formatTheme(theme.attributes);
-
-      setActiveTheme({
-        ...defaultWidgetTheme,
-        // @ts-expect-error
-        config: {
-          theme: deepmerge(
-            defaultWidgetTheme.config.theme,
-            formattedTheme.activeWidgetTheme,
-          ),
-        },
-      });
+    setWidgetTheme({
+      ...defaultWidgetTheme,
+      config: {
+        theme: deepmerge(
+          defaultWidgetTheme.config.theme,
+          formattedTheme.activeWidgetTheme,
+        ),
+      },
     });
-  }, [activeNextTheme]);
+  }, [activeNextTheme, partnerThemes, theme]);
 
-  // console.log('sgessusewidgettheme', activeTheme, defaultWidgetTheme)
-
-  if (!!activeTheme) {
-    return activeTheme;
-  } else {
-    return defaultWidgetTheme;
-  }
+  return widgetTheme || defaultWidgetTheme;
 };

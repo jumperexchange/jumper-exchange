@@ -2,7 +2,6 @@ import { Menu } from '@/components/Menu/Menu';
 import { MenuItem } from '@/components/Menu/MenuItem';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
-import type { JsxElement } from 'typescript';
 import { DevelopersSubmenu, LanguagesSubmenu, useMainMenuContent } from '..';
 import { ThemeSubmenu } from '@/components/Menus/ThemeSubMenu/ThemeSubMenu';
 
@@ -33,7 +32,7 @@ export const MainMenu = ({ anchorEl }: MenuProps) => {
             prefixIcon={el.prefixIcon}
             link={el.link}
             styles={el.styles}
-            children={el.children as unknown as JsxElement}
+            children={el.children}
             triggerSubMenu={el.triggerSubMenu}
             showButton={el.showButton}
             disableRipple={el.disableRipple}

@@ -1,3 +1,4 @@
+'use client';
 import { styled } from '@mui/material/styles';
 import React from 'react';
 import {
@@ -5,6 +6,7 @@ import {
   BackgroundGradientBottomRight,
   BackgroundGradientTopCenter,
 } from './BackgroundGradient';
+import { useSettingsStore } from '@/stores/settings';
 
 export interface BackgroundContainerProps {
   variant?: 'outlined';
@@ -17,30 +19,19 @@ const BackgroundContainer = styled('div', {
   slot: 'root', // The slot name
 })(({ theme }) => ({}));
 
-// const StatValue = styled('div', {
-//   name: 'Background',
-//   slot: 'value',
-// })(({ theme }) => ({
-//   ...theme.typography.h3,
-// }));
-
-// const StatUnit = styled('div', {
-//   name: 'Background',
-//   slot: 'unit',
-// })(({ theme }) => ({
-//   ...theme.typography.body2,
-//   color: theme.palette.text.secondary,
-// }));
-
 function Background() {
+  const configTheme = useSettingsStore((state) => state.configTheme);
+
   return (
-    <>
-      <BackgroundContainer>
-        <BackgroundGradientBottomLeft />
-        <BackgroundGradientBottomRight />
-        <BackgroundGradientTopCenter />
-      </BackgroundContainer>
-    </>
+    <BackgroundContainer>
+      {configTheme?.hasBackgroundGradient && (
+        <>
+          <BackgroundGradientBottomLeft />
+          <BackgroundGradientBottomRight />
+          <BackgroundGradientTopCenter />
+        </>
+      )}
+    </BackgroundContainer>
   );
 }
 

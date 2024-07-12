@@ -14,11 +14,7 @@ export default async function PartnerThemeLayout({
   children: React.ReactNode;
   params: { partnerTheme: string };
 }) {
-  const { activeThemeMode } = getCookies();
   const partnerThemes = await getPartnerThemes();
-  const cookies1 = cookies();
-
-  console.log('forcedTheme', partnerTheme);
 
   return (
     <ThemeProvider

@@ -1,12 +1,12 @@
 'use client';
 import { JumperLearnLogo, JumperLogo } from '@/components/illustrations';
 import { LogoWrapper } from '@/components/illustrations/Logo.style';
-import { usePartnerTheme } from '@/hooks/usePartnerTheme';
 import ClearIcon from '@mui/icons-material/Clear';
 import type { Theme } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { JumperLogoBlack } from 'src/components/illustrations/JumperLogoBlack';
+import { useSettingsStore } from '@/stores/settings';
 
 type LogoProps = {
   variant: 'default' | 'learn' | 'superfest';
@@ -14,13 +14,11 @@ type LogoProps = {
 
 export const Logo = ({ variant }: LogoProps) => {
   const logo = variant === 'default' ? <JumperLogo /> : <JumperLearnLogo />;
-  const { logoUrl, hasTheme, logo: partnerLogo, ...props } = usePartnerTheme();
+  const configTheme = useSettingsStore((state) => state.configTheme);
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
   const theme = useTheme();
-
-  console.log('gtefds', logoUrl, hasTheme, partnerLogo, props);
 
   // if (variant === 'superfest') {
   //   return <JumperLogoBlack />;
@@ -28,7 +26,7 @@ export const Logo = ({ variant }: LogoProps) => {
 
   return (
     <LogoWrapper>
-      {!!hasTheme && !isMobile && logoUrl && partnerLogo ? (
+      {!isMobile && configTheme?.logo ? (
         <>
           {logo}
           <ClearIcon
@@ -47,9 +45,9 @@ export const Logo = ({ variant }: LogoProps) => {
           />
           <Image
             alt="jumper-partner-logo"
-            src={logoUrl.href}
-            width={partnerLogo?.width}
-            height={partnerLogo?.height}
+            src={configTheme.logo?.url.href}
+            width={configTheme.logo?.width}
+            height={configTheme.logo?.height}
           />
         </>
       ) : (

@@ -1,5 +1,10 @@
 'use client';
-import { usePathname, useRouter } from 'next/navigation';
+import {
+  usePathname,
+  useRouter,
+  useSelectedLayoutSegment,
+  useSelectedLayoutSegments,
+} from 'next/navigation';
 
 import {
   JUMPER_FEST_PATH,
@@ -17,7 +22,7 @@ import {
 } from '.';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 import { useMainPaths } from 'src/hooks/useMainPaths';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import { useSettingsStore } from '@/stores/settings';
 
 export const Navbar = () => {
   const router = useRouter();
@@ -26,8 +31,9 @@ export const Navbar = () => {
   const isLoyaltyPage = pathname?.includes(JUMPER_LOYALTY_PATH);
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
-  const { hasTheme } = usePartnerTheme();
+  const configTheme = useSettingsStore((state) => state.configTheme);
   const { setWelcomeScreenClosed } = useWelcomeScreen();
+
   const { closeAllMenus } = useMenuStore((state) => state);
   const handleClick = () => {
     closeAllMenus();
@@ -45,7 +51,7 @@ export const Navbar = () => {
       <LogoLink id="jumper-logo" onClick={handleClick}>
         <Logo variant={isLearnPage ? 'learn' : 'default'} />
       </LogoLink>
-      {!isLearnPage && !hasTheme ? (
+      {!isLearnPage ? (
         <NavbarTabs navbarPageReload={isLoyaltyPage || isSuperfest} />
       ) : null}
       <NavbarButtons />

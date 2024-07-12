@@ -203,6 +203,10 @@ class PartnerThemeStrapiApi extends StrapiApi {
     // populate images on feature card query
     this.apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
     this.apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
+    this.apiUrl.searchParams.set('populate[2]', 'LogoLight');
+    this.apiUrl.searchParams.set('populate[3]', 'LogoDark');
+    this.apiUrl.searchParams.set('populate[4]', 'FooterImageLight');
+    this.apiUrl.searchParams.set('populate[5]', 'FooterImageDark');
   }
 
   filterUid(uid: string) {

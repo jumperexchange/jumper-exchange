@@ -1,34 +1,40 @@
 'use client';
 
 import * as React from 'react';
-import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
-import { CssBaseline, useMediaQuery } from '@mui/material';
+import { useTheme } from 'next-themes';
+import { CssBaseline } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { darkTheme, lightTheme } from 'src/theme';
 import { useCookies } from 'react-cookie';
-import { formatTheme, getAvailableThemeMode } from '@/hooks/usePartnerThemeV2';
+import {
+  formatConfig,
+  formatTheme,
+  getAvailableThemeMode,
+} from '@/hooks/usePartnerThemeV2';
 import { deepmerge } from '@mui/utils';
+import { useSettingsStore } from '@/stores/settings';
 
-function getTheme(themes: any[], activeTheme: string) {
-  if (activeTheme === 'dark') {
+function getPartnerTheme(themes: any[], activeTheme: string) {
+  return themes?.find((d) => d.attributes.uid === activeTheme)?.attributes;
+}
+
+function getMuiTheme(themes: any[], activeTheme: string) {
+  if (['dark', 'system'].includes(activeTheme)) {
     return darkTheme;
   } else if (activeTheme === 'light') {
     return lightTheme;
   }
 
-  const theme = themes.find((d) => d.attributes.uid === activeTheme);
+  const partnerTheme = getPartnerTheme(themes, activeTheme);
 
-  if (!theme) {
+  if (!partnerTheme) {
     return lightTheme;
   }
 
-  const formattedTheme = formatTheme(theme.attributes);
+  const formattedTheme = formatTheme(partnerTheme);
   const baseTheme =
-    getAvailableThemeMode(theme.attributes) === 'light'
-      ? lightTheme
-      : darkTheme;
-  console.log('----trgedsf', formattedTheme);
+    getAvailableThemeMode(partnerTheme) === 'light' ? lightTheme : darkTheme;
 
   return deepmerge(baseTheme, formattedTheme.activeMUITheme);
 }
@@ -45,25 +51,36 @@ export function ThemeProviderV2({
 }: any) {
   const { resolvedTheme, forcedTheme, ...props2 } = useTheme();
   const [cookie, setCookie] = useCookies(['tototheme']);
+  const [partnerThemes, setPartnerThemes] = useSettingsStore((state) => [
+    state.partnerThemes,
+    state.setPartnerThemes,
+    state.setActiveTheme,
+  ]);
+  const [configTheme, setConfigTheme] = useSettingsStore((state) => [
+    state.configTheme,
+    state.setConfigTheme,
+  ]);
+
   const [currentTheme, setCurrentTheme] = useState(
-    getTheme(themes, forcedTheme || resolvedTheme || activeTheme),
+    getMuiTheme(themes, forcedTheme || resolvedTheme || activeTheme),
   );
 
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+    setPartnerThemes(themes);
+  }, []);
 
-  console.log('INTHEMEPROVIDERV2', resolvedTheme, activeTheme, props, props2);
+  // console.log('INTHEMEPROVIDERV2', resolvedTheme, activeTheme, currentTheme, themes);
 
   useEffect(() => {
-    console.log('TRIGGERME PLEASEEEE', resolvedTheme);
     const themeToUse = forcedTheme || resolvedTheme || activeTheme;
-    console.log('themeToUse', themeToUse);
+    console.log('themeToUse', themeToUse, getMuiTheme(themes, themeToUse));
 
-    setCurrentTheme(getTheme(themes, themeToUse));
-    setCookie('tototheme', resolvedTheme);
+    setCurrentTheme(getMuiTheme(themes, themeToUse));
+    setConfigTheme(formatConfig(getPartnerTheme(themes, themeToUse)));
+    setCookie('tototheme', themeToUse);
   }, [resolvedTheme]);
-
-  // console.log('--', currentTheme.palette.mode)
 
   return (
     <>

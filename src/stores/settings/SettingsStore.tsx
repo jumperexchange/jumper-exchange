@@ -8,6 +8,7 @@ import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
+import type { PartnerThemesData } from '@/types/strapi';
 
 // ----------------------------------------------------------------------
 
@@ -22,6 +23,16 @@ export const useSettingsStore = createWithEqualityFn(
       setActiveTheme: (activeTheme: any) => {
         set({
           activeTheme: activeTheme,
+        });
+      },
+      setConfigTheme: (configTheme: any) => {
+        set({
+          configTheme,
+        });
+      },
+      setWidgetTheme: (widgetTheme: any) => {
+        set({
+          widgetTheme,
         });
       },
       // Mode
@@ -54,6 +65,13 @@ export const useSettingsStore = createWithEqualityFn(
       setWelcomeScreenClosed: (shown: boolean) => {
         set({
           welcomeScreenClosed: shown,
+        });
+      },
+
+      // SetPartnerThemes
+      setPartnerThemes: (partnerThemes: PartnerThemesData[]) => {
+        set({
+          partnerThemes,
         });
       },
 

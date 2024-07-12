@@ -14,7 +14,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useMainPaths } from 'src/hooks/useMainPaths';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 import { useTheme } from 'next-themes';
 
@@ -28,11 +27,12 @@ export const useThemeSwitchTabs = () => {
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
     : 'light';
-  const { availableWidgetThemeMode, hasTheme } = usePartnerTheme();
+  // const { availableWidgetThemeMode, hasTheme } = usePartnerTheme();
   const [themeMode, setThemeMode] = useSettingsStore((state) => [
     state.themeMode,
     state.setThemeMode,
   ]);
+  const configTheme = useSettingsStore((state) => state.configTheme);
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     trackEvent({
       category: TrackingCategory.ThemeSection,
@@ -53,15 +53,15 @@ export const useThemeSwitchTabs = () => {
 
   // tooltips:
   const lightModeTooltip =
-    !!hasTheme && availableWidgetThemeMode === 'dark'
+    configTheme?.availableThemeMode === 'dark'
       ? t('navbar.themes.lightModeDisabled')
       : t('navbar.themes.switchToLight');
   const darkModeTooltip =
-    !!hasTheme && availableWidgetThemeMode === 'light'
+    configTheme?.availableThemeMode === 'light'
       ? t('navbar.themes.darkModeDisabled')
       : t('navbar.themes.switchToDark');
   const systemModeTooltip =
-    !!hasTheme && availableWidgetThemeMode !== 'system'
+    configTheme?.availableThemeMode !== 'system'
       ? t('navbar.themes.systemModeDisabled')
       : t('navbar.themes.switchToSystem');
 
@@ -72,16 +72,16 @@ export const useThemeSwitchTabs = () => {
 
   if (isSuperfest || isMainPaths) {
     lightModeEnabled = true;
-  } else if (!!hasTheme) {
-    if (availableWidgetThemeMode === 'system') {
+  } else if (!!configTheme) {
+    if (configTheme.availableThemeMode === 'system') {
       systemModeEnabled = true;
       lightModeEnabled = true;
       darkModeEnabled = true;
     } else {
-      if (availableWidgetThemeMode === 'light') {
+      if (configTheme.availableThemeMode === 'light') {
         lightModeEnabled = true;
       }
-      if (availableWidgetThemeMode === 'dark') {
+      if (configTheme.availableThemeMode === 'dark') {
         darkModeEnabled = true;
       }
     }
