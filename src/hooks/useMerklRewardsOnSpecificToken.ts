@@ -80,6 +80,7 @@ export const useMerklRewards = ({
   const activeCampaigns = [];
 
   // Call to get the active positions
+  // To do -> use the label to get only
   const MERKL_POSITIONS_API = `${MERKL_API}/multiChainPositions?chainIds=${ACTIVE_CHAINS.join(',')}&user=${userAddress}&creatorTag=${CREATOR_TAG}`;
   const {
     data: positionsData,

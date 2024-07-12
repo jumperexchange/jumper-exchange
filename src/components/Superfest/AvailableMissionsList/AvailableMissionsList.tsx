@@ -17,7 +17,7 @@ import {
 import { useState } from 'react';
 import { MissionsFilter } from '../MissionsFilter/MissionsFilter';
 
-const chains = ['Optimism', 'Base', 'Mode', 'Fraxtal'];
+const chains = ['OP', 'Base', 'Mode', 'Fraxtal'];
 
 const category = [
   'AMM',
