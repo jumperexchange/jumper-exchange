@@ -106,8 +106,6 @@ export const AvailableMissionsList = ({
               const imgURL = new URL(baseURL, url.origin);
               const rewards = quest.attributes.CustomInformation?.['rewards'];
               const chains = quest.attributes.CustomInformation?.['chains'];
-              const claimingIds =
-                quest.attributes?.CustomInformation?.['claimingIds'];
               const rewardsIds =
                 quest.attributes?.CustomInformation?.['rewardsIds'];
 
