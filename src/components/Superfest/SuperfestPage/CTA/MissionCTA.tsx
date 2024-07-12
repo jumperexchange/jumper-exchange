@@ -73,7 +73,7 @@ export const MissionCTA = ({ CTAs, signature }: MissionCtaProps) => {
         </Box>
       </StartedTitleBox>
       <SeveralCTABox>
-        {signature?.isLive ? <SignatureCTA /> : undefined}
+        {true ? <SignatureCTA /> : undefined}
         {CTAs.map((CTA: CTALinkInt, i: number) => {
           return (
             <Link

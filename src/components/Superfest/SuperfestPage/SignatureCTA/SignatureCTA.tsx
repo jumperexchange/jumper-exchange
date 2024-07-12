@@ -66,12 +66,16 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
 
   useEffect(() => {
     async function fetchMessage() {
-      const GET_ENDPOINT = 'https://points.turtle.club/user/siwe_message';
-      const response = await fetch(`${GET_ENDPOINT}`);
-      const message = await response.json();
-      if (message) {
-        console.log(message);
-        setSignMessage(message);
+      try {
+        const GET_ENDPOINT = 'https://points.turtle.club/user/siwe_message';
+        const response = await fetch(`${GET_ENDPOINT}`);
+        const message = await response.json();
+        if (message) {
+          console.log(message);
+          setSignMessage(message);
+        }
+      } catch (err) {
+        console.log(err);
       }
     }
     fetchMessage();
