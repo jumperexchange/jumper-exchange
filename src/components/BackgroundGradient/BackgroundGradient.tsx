@@ -10,7 +10,6 @@ import {
 import { SirBridgeLot } from '../illustrations/SirBridgeLot';
 import { FixBoxWithNoOverflow, MovingBox } from './MovingBox.style';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
-import { usePathname } from 'next/navigation';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useMemo } from 'react';

@@ -7,11 +7,13 @@ import { styled } from '@mui/material/styles';
 
 export const MultisigConfirmationModalContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
-  top: 64,
   left: '50%',
   transform: 'translateX(-50%)',
   width: 416,
-  [theme.breakpoints.up('sm' as Breakpoint)]: { top: 72 },
+  top: 200,
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    top: '50%',
+  },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     top: '50%',
     transform: 'translate(-50%, -50%)',
