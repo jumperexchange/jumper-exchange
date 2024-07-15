@@ -2,22 +2,24 @@ import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box } from '@mui/material';
 
 import { darken, lighten, styled } from '@mui/material/styles';
+import { ButtonPrimary } from 'src/components/Button';
 import { IconButtonAlpha } from 'src/components/IconButton';
 import { getContrastAlphaColor } from 'src/utils/colors';
 import { InfoMessageCard } from '../../MessageCard/';
-import { ButtonPrimary } from 'src/components/Button';
 
 export const InfoAlertContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   width: '100%',
   flexDirection: 'row',
   justifyContent: 'flex-start',
-  position: 'fixed',
   left: 0,
   padding: theme.spacing(1.5),
+  marginTop: theme.spacing(3),
   bottom: 0,
   zIndex: 2,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    marginTop: 0,
+    position: 'fixed',
     width: 'auto',
   },
 }));

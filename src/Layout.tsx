@@ -1,11 +1,8 @@
 import type { PropsWithChildren } from 'react';
 import { BackgroundGradient } from './components/BackgroundGradient/BackgroundGradient';
 import { Navbar } from './components/Navbar/Navbar';
-import { PoweredBy } from './components/PoweredBy/PoweredBy';
 import { Snackbar } from './components/Snackbar/Snackbar';
-import { SuperfestPresentedByBox } from './components/Superfest/SuperfestPresentedBy/SuperfestPresentedByBox';
 import { SupportModal } from './components/SupportModal/SupportModal';
-import { PartnerThemeFooterImage } from './components/PartnerThemeFooterImage';
 
 interface LayoutProps {
   fixedPoweredBy?: boolean | undefined;
@@ -22,7 +19,6 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
       {children}
       <SupportModal />
       <Snackbar />
-      <PartnerThemeFooterImage />
     </>
   );
 };

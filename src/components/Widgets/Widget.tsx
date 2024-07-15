@@ -12,25 +12,20 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import type { Breakpoint } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
+import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { darkTheme } from 'src/theme/theme';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
-import { useMediaQuery } from '@mui/material';
-import type { Theme } from '@mui/material';
-import { publicRPCList } from 'src/const/rpcList';
-import { useRouter } from 'next/navigation';
-import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useWidgetTheme } from './useWidgetTheme';
 
 export function Widget({
@@ -44,12 +39,9 @@ export function Widget({
   widgetIntegrator,
   activeTheme,
 }: WidgetProps) {
-  const theme = useTheme();
   const widgetTheme = useWidgetTheme();
-  const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
@@ -98,7 +90,7 @@ export function Widget({
     }
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
+  }, [widgetIntegrator, isGasVariant]) as string;
 
   const partnerNameArray = useMemo(() => {
     if (partnerName) {
@@ -192,37 +184,29 @@ export function Widget({
         partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
   }, [
-    allowChains,
-    allowedChainsByVariant,
-    fromAmount,
+    starterVariant,
+    partnerName,
     fromChain,
     fromToken,
-    i18n.language,
-    i18n.languages,
-    integratorStringByType,
-    isMultisigSigner,
-    multisigSdkConfig,
-    multisigWidget,
-    setWalletSelectMenuState,
-    starterVariant,
-    theme.breakpoints,
-    theme.palette.accent1.main,
-    theme.palette.grey,
-    theme.palette.mode,
-    theme.palette.surface1.main,
-    theme.palette.surface2.main,
-    theme.typography.fontFamily,
-    themeMode,
     toChain,
     toToken,
-    tokens,
-    wagmiConfig,
-    widgetIntegrator,
+    fromAmount,
+    allowChains,
+    allowedChainsByVariant,
+    isBridgeFiltered,
     partnerNameArray,
     isDexFiltered,
-    isBridgeFiltered,
+    i18n.language,
+    i18n.languages,
+    widgetTheme.config.appearance,
+    widgetTheme.config.theme,
+    multisigWidget,
+    isMultisigSigner,
+    multisigSdkConfig,
     integratorStringByType,
-    widgetTheme,
+    tokens,
+    setWalletSelectMenuState,
+    wagmiConfig,
   ]);
 
   return (

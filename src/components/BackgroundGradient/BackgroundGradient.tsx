@@ -1,18 +1,18 @@
 'use client';
 import { useTheme, type CSSObject } from '@mui/material';
+import { useMemo } from 'react';
+import { useMainPaths } from 'src/hooks/useMainPaths';
+import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import { useSuperfest } from 'src/hooks/useSuperfest';
 import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
   BackgroundGradientContainer,
   BackgroundGradientTopCenter,
-  SuperfestBackgroundContainer,
 } from '.';
 import { SirBridgeLot } from '../illustrations/SirBridgeLot';
 import { FixBoxWithNoOverflow, MovingBox } from './MovingBox.style';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
-import { useSuperfest } from 'src/hooks/useSuperfest';
-import { useMainPaths } from 'src/hooks/useMainPaths';
-import { useMemo } from 'react';
+import SuperfestBackground from './SuperfestBackground';
 
 interface BackgroundGradientProps {
   styles?: CSSObject;
@@ -44,7 +44,7 @@ export const BackgroundGradient = ({ styles }: BackgroundGradientProps) => {
   ]);
 
   if (isSuperfest || isMainPaths) {
-    return <SuperfestBackgroundContainer sx={styles} />;
+    return <SuperfestBackground />;
   }
 
   if (partnerName.includes('memecoins')) {

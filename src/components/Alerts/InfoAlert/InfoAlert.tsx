@@ -2,11 +2,10 @@ import {
   InfoMessageCard,
   InfoMessageCardTitle,
 } from '@/components/MessageCard';
-import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import { Slide, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { InfoAlertButton, InfoAlertContainer } from '.';
+import { InfoAlertContainer } from '.';
 
 export interface InfoAlertProps {
   title: string;
@@ -17,12 +16,13 @@ export interface InfoAlertProps {
 export const InfoAlert = ({ title, subtitle, active }: InfoAlertProps) => {
   const [closed, setClosed] = useState(false);
   const theme = useTheme();
-  const handleClose = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.stopPropagation();
-    setClosed(true);
-  };
+
+  // const handleClose = (
+  //   event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  // ) => {
+  //   event.stopPropagation();
+  //   setClosed(true);
+  // };
 
   useEffect(() => {
     active && setClosed(false);
