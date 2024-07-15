@@ -12,7 +12,7 @@ import { EventTrackingTool } from '@/types/userTracking';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/types';
 import { getConnectorIcon } from '@lifi/wallet-management';
-import { Stack, Typography, alpha, useTheme } from '@mui/material';
+import { Skeleton, Stack, Typography, alpha, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
@@ -140,14 +140,26 @@ export const WallettButtons = () => {
                     : alpha(theme.palette.white.main, 0.08),
               }}
             />
-            <Typography
-              variant={'lifiBodyMediumStrong'}
-              width={'auto'}
-              marginRight={1.1}
-              marginLeft={1}
-            >
-              {points || 0}
-            </Typography>
+            {points === undefined ? (
+              <Skeleton
+                variant="text"
+                sx={{
+                  fontSize: { xs: 24, sm: 24 },
+                  minWidth: 25,
+                  marginRight: 1.1,
+                  marginLeft: 1.1,
+                }}
+              />
+            ) : (
+              <Typography
+                variant={'lifiBodyMediumStrong'}
+                width={'auto'}
+                marginRight={1.1}
+                marginLeft={1}
+              >
+                {points}
+              </Typography>
+            )}
             <XPIcon size={28} />
           </WalletMenuButton>
           <WalletMenuButton
