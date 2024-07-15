@@ -10,6 +10,7 @@
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@lifi/explorer": "^0.0.1-alpha.12",
     "@lifi/sdk": "^3.0.0",
     "@lifi/wallet-management": "^3.0.0",
     "@lifi/widget": "^3.0.2",
