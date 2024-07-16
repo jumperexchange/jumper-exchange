@@ -1,18 +1,21 @@
 import { useAccounts } from '@/hooks/useAccounts';
-import { SuperfestContainer, SuperfestMainBox } from './Superfest.style';
-import { RewardsCarousel } from './Rewards/RewardsCarousel';
-import { NFTClaimingBox } from './NFTClaimingBox/NFTClaimingBox';
-import { HeroBox } from './HeroBox/HeroBox';
-import { AvailableMissionsList } from './AvailableMissionsList/AvailableMissionsList';
-import { ActiveSuperfestMissionsCarousel } from './ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
-import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useCheckFestNFTAvailability } from 'src/hooks/useCheckFestNFTAvailability';
+import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
+import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
+import { useSuperfest } from 'src/hooks/useSuperfest';
+import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
+import { ActiveSuperfestMissionsCarousel } from './ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
+import { AvailableMissionsList } from './AvailableMissionsList/AvailableMissionsList';
+import { HeroBox } from './HeroBox/HeroBox';
+import { NFTClaimingBox } from './NFTClaimingBox/NFTClaimingBox';
+import { RewardsCarousel } from './Rewards/RewardsCarousel';
+import { SuperfestContainer, SuperfestMainBox } from './Superfest.style';
 
 export const Superfest = () => {
   //HOOKS
   const { account } = useAccounts();
   const { quests, isQuestLoading } = useOngoingFestMissions();
+  const isSuperfest = useSuperfest();
   const {
     availableRewards,
     activeCampaigns,
@@ -57,6 +60,7 @@ export const Superfest = () => {
           infoSuccess={isSuccess}
         />
       </SuperfestMainBox>
+      {isSuperfest && <PartnerThemeFooterImage />}
     </SuperfestContainer>
   );
 };
