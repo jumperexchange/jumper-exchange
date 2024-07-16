@@ -3,9 +3,9 @@ import { useTheme } from '@mui/material';
 import { useTheme as useNextTheme } from 'next-themes';
 import type { PartnerTheme } from 'src/types/strapi';
 import { useEffect } from 'react';
-import { formatTheme } from '@/hooks/usePartnerThemeV2';
 import { deepmerge } from '@mui/utils';
 import { useSettingsStore } from '@/stores/settings';
+import { formatTheme } from '@/utils/formatTheme';
 
 export const useWidgetTheme = (): PartnerTheme => {
   const theme = useTheme();
@@ -73,13 +73,10 @@ export const useWidgetTheme = (): PartnerTheme => {
     const formattedTheme = formatTheme(theme.attributes);
 
     setWidgetTheme({
-      ...defaultWidgetTheme,
-      config: {
-        theme: deepmerge(
-          defaultWidgetTheme.config.theme,
-          formattedTheme.activeWidgetTheme,
-        ),
-      },
+      config: deepmerge(
+        defaultWidgetTheme.config,
+        formattedTheme.activeWidgetTheme,
+      ),
     });
   }, [activeNextTheme, partnerThemes, theme]);
 

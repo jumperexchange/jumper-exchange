@@ -23,7 +23,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang={fallbackLng} suppressHydrationWarning className={fonts.map((f) => f.variable).join(' ')}>
+    <html
+      lang={fallbackLng}
+      suppressHydrationWarning
+      className={fonts.map((f) => f.variable).join(' ')}
+    >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -8,7 +8,6 @@ import { useMainPaths } from 'src/hooks/useMainPaths';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { BackgroundFooterImage } from './Widgets';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 import { useSettingsStore } from '@/stores/settings';
 

@@ -13,7 +13,6 @@ export default async function PartnerThemeLayout({
   params: { partnerTheme: string };
 }) {
   const partnerThemes = await getPartnerThemes();
-
   return (
     <ThemeProvider
       themes={[

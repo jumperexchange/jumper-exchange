@@ -1,10 +1,16 @@
-import { Inter, Sora, Urbanist } from 'next/font/google';
+import { Inter, Manrope, Sora, Urbanist } from 'next/font/google';
 import localFont from 'next/font/local';
 
 export const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
+});
+
+export const manrope = Manrope({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-manrope',
 });
 
 export const urbanist = Urbanist({
@@ -29,10 +35,4 @@ export const sequel85 = localFont({
   variable: '--font-sequel-85',
 });
 
-export const fonts = [
-  inter,
-  urbanist,
-  sora,
-  sequel65,
-  sequel85,
-];
+export const fonts = [inter, urbanist, sora, sequel65, sequel85, manrope];

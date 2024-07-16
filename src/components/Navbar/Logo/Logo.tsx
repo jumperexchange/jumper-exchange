@@ -20,8 +20,6 @@ export const Logo = ({ variant }: LogoProps) => {
   );
   const theme = useTheme();
 
-  console.log('logo', configTheme);
-
   // if (variant === 'superfest') {
   //   return <JumperLogoBlack />;
   // }

@@ -25,17 +25,16 @@ export async function generateStaticParams() {
 
   const partnerThemes = await getPartnerThemes();
 
-  const customPath = [
+  let customPath = [
     { partnerTheme: 'memecoins' },
     { partnerTheme: 'op2testseb' },
-    { partnerTheme: 'across' },
-    // ...partnerThemes.data.map((d) => d.attributes.uid),
+    ...partnerThemes.data.map((d) => ({ partnerTheme: d.attributes.uid })),
   ];
 
-  return customPath;
+  // Temporary as this theme is blocking the build (not compatible with new version)
+  customPath = customPath.filter((s) => s.partnerTheme !== 'OP');
 
-  // Enable back later
-  // return [...path, ...customPath];
+  return customPath;
 }
 
 export default function Page() {

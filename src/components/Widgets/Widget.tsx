@@ -12,21 +12,17 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
-import { useTheme as useNextTheme } from 'next-themes';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useMediaQuery } from '@mui/material';
 import type { Theme } from '@mui/material';
 import { publicRPCList } from 'src/const/rpcList';
@@ -53,9 +49,9 @@ export function Widget({
   const wagmiConfig = useConfig();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
-  const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
+  const partnerName = configTheme.uid;
   const { tokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
@@ -102,15 +98,6 @@ export function Widget({
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
 
-  const partnerNameArray = useMemo(() => {
-    if (partnerName) {
-      return partnerName === 'stargate'
-        ? ['stargate', 'stargateV2']
-        : [partnerName];
-    }
-    return undefined;
-  }, [partnerName]);
-
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
@@ -148,11 +135,9 @@ export function Widget({
       },
       bridges: {
         allow: configTheme?.allowedBridges,
-        // allow: isBridgeFiltered && partnerName ? partnerNameArray : undefined,
       },
       exchanges: {
-        allow: configTheme?.allowedExchanges
-        // allow: isDexFiltered && partnerName ? partnerNameArray : undefined,
+        allow: configTheme?.allowedExchanges,
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -222,9 +207,6 @@ export function Widget({
     tokens,
     wagmiConfig,
     widgetIntegrator,
-    partnerNameArray,
-    isDexFiltered,
-    isBridgeFiltered,
     integratorStringByType,
     widgetTheme,
   ]);

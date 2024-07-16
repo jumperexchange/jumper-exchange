@@ -11,7 +11,7 @@ import {
   formatConfig,
   formatTheme,
   getAvailableThemeMode,
-} from '@/hooks/usePartnerThemeV2';
+} from '@/utils/formatTheme';
 import { deepmerge } from '@mui/utils';
 import { useSettingsStore } from '@/stores/settings';
 
@@ -75,7 +75,6 @@ export function ThemeProviderV2({
 
   useEffect(() => {
     const themeToUse = forcedTheme || resolvedTheme || activeTheme;
-    console.log('themeToUse', themeToUse, getMuiTheme(themes, themeToUse));
 
     setCurrentTheme(getMuiTheme(themes, themeToUse));
     setConfigTheme(formatConfig(getPartnerTheme(themes, themeToUse)));
