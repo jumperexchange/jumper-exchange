@@ -21,8 +21,18 @@ export const sora = Sora({
 
 export const sequel65 = localFont({
   src: './customFonts/Sequel100Wide-65.woff2',
+  variable: '--font-sequel-65',
 });
 
 export const sequel85 = localFont({
   src: './customFonts/Sequel100Wide-85.woff2',
+  variable: '--font-sequel-85',
 });
+
+export const fonts = [
+  inter,
+  urbanist,
+  sora,
+  sequel65,
+  sequel85,
+];
