@@ -94,6 +94,8 @@ export function formatConfig(theme: PartnerThemesAttributes) {
     uid: theme.uid,
     hasThemeModeSwitch: false,
     hasBackgroundGradient: false,
+    allowedBridges: theme.Bridges?.map((i) => i.key),
+    allowedExchanges: theme.Exchanges?.map((i) => i.key),
   };
 }
 
@@ -130,9 +132,7 @@ export function formatTheme(theme: PartnerThemesAttributes) {
     },
   };
 
-  // @ts-expect-error
-  const formattedWidgetTheme = (theme.lightConfig || theme.darkConfig).config
-    .theme;
+  const formattedWidgetTheme = (theme.lightConfig || theme.darkConfig)?.config?.theme ?? {};
 
   // console.log('TEST', { config, activeMUITheme: formattedMUITheme, activeWidgetTheme: formattedWidgetTheme, themeName: theme.uid })
 

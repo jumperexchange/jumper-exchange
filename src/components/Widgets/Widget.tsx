@@ -43,17 +43,16 @@ export function Widget({
   fromAmount,
   allowChains,
   widgetIntegrator,
-  activeThemeMode,
-  activeTheme: activeThemeProp,
+  activeTheme,
 }: WidgetProps) {
   const theme = useTheme();
   const widgetTheme = useWidgetTheme();
-  const { resolvedTheme } = useNextTheme();
+  const themeMode = useSettingsStore((state) => state.themeMode);
+  const configTheme = useSettingsStore((state) => state.configTheme);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
-  // To be updated
   const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
@@ -148,10 +147,12 @@ export function Widget({
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
-        allow: isBridgeFiltered && partnerName ? partnerNameArray : undefined,
+        allow: configTheme?.allowedBridges,
+        // allow: isBridgeFiltered && partnerName ? partnerNameArray : undefined,
       },
       exchanges: {
-        allow: isDexFiltered && partnerName ? partnerNameArray : undefined,
+        allow: configTheme?.allowedExchanges
+        // allow: isDexFiltered && partnerName ? partnerNameArray : undefined,
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -215,7 +216,7 @@ export function Widget({
     theme.palette.surface1.main,
     theme.palette.surface2.main,
     theme.typography.fontFamily,
-    resolvedTheme,
+    themeMode,
     toChain,
     toToken,
     tokens,
@@ -236,9 +237,7 @@ export function Widget({
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly
         fallback={
-          <WidgetSkeleton
-            config={{ ...config, appearance: widgetTheme.config.appearance }}
-          />
+          <WidgetSkeleton config={{ ...config, appearance: activeTheme }} />
         }
       >
         <LiFiWidget integrator={config.integrator} config={config} />

@@ -207,6 +207,8 @@ class PartnerThemeStrapiApi extends StrapiApi {
     this.apiUrl.searchParams.set('populate[3]', 'LogoDark');
     this.apiUrl.searchParams.set('populate[4]', 'FooterImageLight');
     this.apiUrl.searchParams.set('populate[5]', 'FooterImageDark');
+    this.apiUrl.searchParams.set('populate[6]', 'Bridges');
+    this.apiUrl.searchParams.set('populate[7]', 'Exchanges');
   }
 
   filterUid(uid: string) {
