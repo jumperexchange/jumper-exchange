@@ -16,12 +16,24 @@ function getImageUrl(
   return imageUrl ? new URL(imageUrl, baseStrapiUrl) : null;
 }
 
-export function getAvailableThemeMode(theme: PartnerThemesAttributes) {
+export function getAvailableThemeModes(
+  theme?: PartnerThemesAttributes,
+): string[] {
+  const result: string[] = [];
+
+  // Means it is default jumper theme
   if (!theme) {
-    return 'light';
+    return ['light', 'dark'];
   }
 
-  return theme.darkConfig ? (theme.lightConfig ? 'auto' : 'dark') : 'light';
+  if (theme.darkConfig) {
+    result.push('dark');
+  }
+  if (theme.lightConfig) {
+    result.push('light');
+  }
+
+  return result;
 }
 
 function getLogoData(theme: PartnerThemesAttributes) {
@@ -45,14 +57,14 @@ export function formatConfig(theme: PartnerThemesAttributes) {
   if (!theme) {
     return {
       uid: 'default',
-      availableThemeMode: getAvailableThemeMode(theme),
+      availableThemeModes: getAvailableThemeModes(theme),
       hasThemeModeSwitch: true,
       hasBackgroundGradient: true,
     };
   }
 
   return {
-    availableThemeMode: getAvailableThemeMode(theme),
+    availableThemeModes: getAvailableThemeModes(theme),
     backgroundColor:
       theme.BackgroundColorDark || theme.BackgroundColorLight || null,
     backgroundImageUrl: getImageUrl(theme, 'BackgroundImage'),
@@ -88,14 +100,11 @@ export function formatTheme(theme: PartnerThemesAttributes) {
             zIndex: -1,
             overflow: 'hidden',
             pointerEvents: 'none',
-
-            // background: '#000000',
-            // backgroundColor: 'red',
             ...(config.backgroundColor && {
               backgroundColor: config.backgroundColor,
             }),
             ...(config.backgroundImageUrl && {
-              background: `url('${config.backgroundImageUrl}')`,
+              background: `url('${config.backgroundImageUrl}') ${config.backgroundColor ?? ''}`,
             }),
           },
         },
@@ -105,8 +114,6 @@ export function formatTheme(theme: PartnerThemesAttributes) {
 
   const formattedWidgetTheme =
     (theme.lightConfig || theme.darkConfig)?.config ?? {};
-
-  // console.log('TEST', { config, activeMUITheme: formattedMUITheme, activeWidgetTheme: formattedWidgetTheme, themeName: theme.uid })
 
   return {
     config,

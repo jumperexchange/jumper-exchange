@@ -22,11 +22,7 @@ export default async function RootLayout({
       locale={lng}
       resources={resources}
     >
-      <TrackingProvider>
-        {/*<AppProvider lang={lng}>*/}
-        {children}
-        {/*</AppProvider>*/}
-      </TrackingProvider>
+      <TrackingProvider>{children}</TrackingProvider>
     </TranslationsProvider>
   );
 }

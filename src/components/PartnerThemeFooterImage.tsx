@@ -37,7 +37,8 @@ export const PartnerThemeFooterImage = () => {
   const showFooterLogo = !activeChainAlert && !isSmallScreen && showBasedOnURL;
 
   return (
-    showFooterLogo && (
+    showFooterLogo &&
+    configTheme?.footerImageUrl && (
       <Link
         href={'https://superfest.optimism.io/'}
         target="_blank"

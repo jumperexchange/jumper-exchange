@@ -217,11 +217,7 @@ export function Widget({
       welcomeScreenClosed={welcomeScreenClosed}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
-      <ClientOnly
-        fallback={
-          <WidgetSkeleton config={{ ...config, appearance: activeTheme }} />
-        }
-      >
+      <ClientOnly fallback={<WidgetSkeleton config={config} />}>
         <LiFiWidget integrator={config.integrator} config={config} />
       </ClientOnly>
     </WidgetWrapper>

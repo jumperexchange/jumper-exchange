@@ -44,22 +44,21 @@ export const useThemeSwitchTabs = () => {
     });
     setCookie('themeMode', mode === 'auto' ? browserTheme : mode, {
       path: '/',
+      sameSite: true,
     });
     setThemeMode(mode);
     setTheme(mode);
   };
 
   // tooltips:
-  const lightModeTooltip =
-    configTheme?.availableThemeMode === 'dark'
-      ? t('navbar.themes.lightModeDisabled')
-      : t('navbar.themes.switchToLight');
-  const darkModeTooltip =
-    configTheme?.availableThemeMode === 'light'
-      ? t('navbar.themes.darkModeDisabled')
-      : t('navbar.themes.switchToDark');
+  const lightModeTooltip = configTheme?.availableThemeModes.includes('dark')
+    ? t('navbar.themes.lightModeDisabled')
+    : t('navbar.themes.switchToLight');
+  const darkModeTooltip = configTheme?.availableThemeModes.includes('light')
+    ? t('navbar.themes.darkModeDisabled')
+    : t('navbar.themes.switchToDark');
   const systemModeTooltip =
-    configTheme?.availableThemeMode !== 'system'
+    !lightModeTooltip && !darkModeTooltip
       ? t('navbar.themes.systemModeDisabled')
       : t('navbar.themes.switchToSystem');
 
@@ -71,15 +70,18 @@ export const useThemeSwitchTabs = () => {
   if (isSuperfest || isMainPaths) {
     lightModeEnabled = true;
   } else if (!!configTheme) {
-    if (configTheme.availableThemeMode === 'system') {
+    if (
+      configTheme.availableThemeModes.includes('light') &&
+      configTheme.availableThemeModes.includes('dark')
+    ) {
       systemModeEnabled = true;
       lightModeEnabled = true;
       darkModeEnabled = true;
     } else {
-      if (configTheme.availableThemeMode === 'light') {
+      if (configTheme.availableThemeModes.includes('light')) {
         lightModeEnabled = true;
       }
-      if (configTheme.availableThemeMode === 'dark') {
+      if (configTheme.availableThemeModes.includes('dark')) {
         darkModeEnabled = true;
       }
     }

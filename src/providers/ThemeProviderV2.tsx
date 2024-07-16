@@ -10,7 +10,7 @@ import { useCookies } from 'react-cookie';
 import {
   formatConfig,
   formatTheme,
-  getAvailableThemeMode,
+  getAvailableThemeModes,
 } from '@/utils/formatTheme';
 import { deepmerge } from '@mui/utils';
 import { useSettingsStore } from '@/stores/settings';
@@ -33,8 +33,9 @@ function getMuiTheme(themes: any[], activeTheme: string) {
   }
 
   const formattedTheme = formatTheme(partnerTheme);
-  const baseTheme =
-    getAvailableThemeMode(partnerTheme) === 'light' ? lightTheme : darkTheme;
+  const baseTheme = getAvailableThemeModes(partnerTheme).includes('light')
+    ? lightTheme
+    : darkTheme;
 
   return deepmerge(baseTheme, formattedTheme.activeMUITheme);
 }
@@ -78,7 +79,7 @@ export function ThemeProviderV2({
 
     setCurrentTheme(getMuiTheme(themes, themeToUse));
     setConfigTheme(formatConfig(getPartnerTheme(themes, themeToUse)));
-    setCookie('theme', themeToUse);
+    setCookie('theme', themeToUse, { path: '/', sameSite: true });
   }, [resolvedTheme]);
 
   return (
