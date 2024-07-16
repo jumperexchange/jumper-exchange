@@ -1,3 +1,4 @@
+'use client';
 import { TrackingAction, TrackingEventParameter } from '@/const/trackingKeys';
 import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';

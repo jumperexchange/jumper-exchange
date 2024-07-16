@@ -1,39 +1,42 @@
-import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
-import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
+import type { BlogArticleData } from 'src/types/strapi';
+import { strapi } from 'src/utils/strapi/StrapiInitSDK';
+import type { StrapiResponse } from 'strapi-sdk-js';
 
-export interface GetArticlesResponse extends StrapiResponse<BlogArticleData> {
-  url: string; // Define the shape of the URL
-}
+// export interface GetArticlesResponse extends StrapiResponse<BlogArticleData[]> {
+//   url: string; // Define the shape of the URL
+// }
 
-export async function getArticles(
-  excludeId?: number,
-): Promise<GetArticlesResponse> {
-  const urlParams = new ArticleStrapiApi()
-    .sort('desc')
-    .addPaginationParams({ page: 1, pageSize: 20, withCount: false });
-  const apiBaseUrl = urlParams.getApiBaseUrl();
-  const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.getApiAccessToken();
-  const res = await fetch(decodeURIComponent(apiUrl), {
-    cache: 'force-cache',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
+export async function getArticles(excludeId?: number) {
+  // const res = await strapi.find('blog-articles', { filters: { slug } });
+  const res: StrapiResponse<BlogArticleData[]> = await strapi.find(
+    'blog-articles',
+    {
+      filters: { id: { $ne: excludeId } },
+      populate: ['Image', 'tags', 'author.Avatar', 'faq_items'],
+      publicationState:
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'development'
+          ? 'preview'
+          : 'live',
     },
-  });
+  );
+  // const urlParams = new ArticleStrapiApi().filterBySlug(slug);
+  // const apiBaseUrl = urlParams.getApiBaseUrl();
+  // const apiUrl = urlParams.getApiUrl();
+  // const accessToken = urlParams.getApiAccessToken();
+  // const res = await fetch(decodeURIComponent(apiUrl), {
+  //   cache: 'force-cache',
+  //   headers: {
+  //     Authorization: `Bearer ${accessToken}`,
+  //   },
+  // });
 
-  if (!res.ok) {
+  if (!res) {
     throw new Error('Failed to fetch data');
   }
 
-  const data = await res.json().then((output) =>
-    // filter out given excludeId
-    {
-      return {
-        meta: output.meta,
-        data: output.data.filter((el: BlogArticleData) => el.id !== excludeId),
-      };
-    },
-  ); // Extract data from the response
-
-  return { ...data, url: apiBaseUrl }; // Return a plain object
+  return {
+    data: res.data,
+    meta: res.meta,
+    url: 'https://strapi.li.finance' as string,
+  }; // Return a plain object
 }

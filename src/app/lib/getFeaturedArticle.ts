@@ -1,22 +1,30 @@
-import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
+import type { BlogArticleData } from 'src/types/strapi';
+import { strapi } from 'src/utils/strapi/StrapiInitSDK';
+import type { StrapiResponse } from 'strapi-sdk-js';
+// interface BlogArticleResponse extends StrapiResponse<BlogArticleData[]> {
+//   url: string;
+// }
 
 export async function getFeaturedArticle() {
-  const urlParams = new ArticleStrapiApi().sort('desc').filterByFeatured();
-  const apiBaseUrl = urlParams.getApiBaseUrl();
-  const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.getApiAccessToken();
-  const res = await fetch(decodeURIComponent(apiUrl), {
-    cache: 'force-cache',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
+  const res: StrapiResponse<BlogArticleData[]> = await strapi.find(
+    'blog-articles',
+    {
+      filters: { featured: true },
+      populate: ['Image', 'tags', 'author.Avatar', 'faq_items'],
+      publicationState:
+        process.env.NEXT_PUBLIC_ENVIRONMENT === 'development'
+          ? 'preview'
+          : 'live',
     },
-  });
+  );
 
-  if (!res.ok) {
+  if (!res) {
     throw new Error('Failed to fetch data');
   }
 
-  const data = await res.json(); // Extract data from the response
-
-  return { data, url: apiBaseUrl }; // Return a plain object
+  return {
+    data: res.data,
+    meta: res.meta,
+    url: 'https://strapi.li.finance',
+  }; // Return a plain object
 }

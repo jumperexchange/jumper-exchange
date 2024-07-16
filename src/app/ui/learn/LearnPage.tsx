@@ -1,12 +1,13 @@
-import type { GetArticlesResponse } from '@/app/lib/getArticles';
+// import type { GetArticlesResponse } from '@/app/lib/getArticles';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { FeaturedArticle } from '@/components/Blog/FeaturedArticle/FeaturedArticle';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
-import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
+import type { BlogArticleData } from '@/types/strapi';
+import type { StrapiResponse } from 'strapi-sdk-js';
 
 interface LearnPageProps {
-  carouselArticles: GetArticlesResponse;
-  featuredArticle: StrapiResponse<BlogArticleData>;
+  carouselArticles: StrapiResponse<BlogArticleData[]>;
+  featuredArticle: StrapiResponse<BlogArticleData[]>;
   url: string;
 }
 

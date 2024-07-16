@@ -7,7 +7,7 @@ import { EventTrackingTool } from '@/types/userTracking';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { CarouselContainer } from '.';
-import { BlogArticleCard } from '../BlogArticleCard/BlogArticleCard';
+import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
 import {
   BlogCarouselContainer,

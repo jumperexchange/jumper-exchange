@@ -27,7 +27,6 @@ const LearnArticlePage = ({
   activeTheme,
 }: LearnArticlePageProps) => {
   const { t } = useTranslation();
-
   return (
     <>
       <BlogArticleWrapper>

@@ -1,9 +1,8 @@
 import { getArticleBySlug } from '@/app/lib/getArticleBySlug';
-import { getArticlesByTag } from '@/app/lib/getArticlesByTag';
 import { getCookies } from '@/app/lib/getCookies';
-import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
-import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
 import type { Metadata } from 'next';
+import { getArticlesByTag } from 'src/app/lib/getArticlesByTag';
+import LearnArticlePage from 'src/app/ui/learn/LearnArticlePage';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 
 export async function generateMetadata({
@@ -13,13 +12,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   try {
     const article = await getArticleBySlug(params.slug);
-
-    if (!article.data || !article.data.data?.[0]) {
+    if (!article.data) {
       throw new Error();
     }
 
-    const articleData = article.data.data?.[0]
-      .attributes as BlogArticleAttributes;
+    const articleData = article.data[0].attributes;
 
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
@@ -52,11 +49,9 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: { slug: string } }) {
   const article = await getArticleBySlug(params.slug);
   const { activeTheme } = getCookies();
-
-  const currentTags = (
-    article.data as BlogArticleData
-  ).attributes?.tags.data.map((el) => el?.id);
-
+  const currentTags = article.data[0].attributes?.tags.data.map(
+    (tag) => tag?.id,
+  );
   const relatedArticles = await getArticlesByTag(
     article.data[0]?.id,
     currentTags,
@@ -64,7 +59,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <LearnArticlePage
-      article={article.data.data}
+      article={article.data}
       url={article.url}
       articles={relatedArticles.data}
       activeTheme={activeTheme}
