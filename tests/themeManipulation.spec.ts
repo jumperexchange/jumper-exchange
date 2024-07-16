@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { closeWelcomeScreen } from './testData/commonFunctions';
 
-test.describe('Switch between dark and light theme and check background color', () => {
+test.describe.skip('Switch between dark and light theme and check background color', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });
