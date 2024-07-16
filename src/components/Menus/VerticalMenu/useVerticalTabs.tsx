@@ -10,15 +10,15 @@ import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
 
-interface useNavbarTabsProps {
-  navbarPageReload?: boolean;
+interface useVerticalTabsProps {
+  verticalPageReload?: boolean;
 }
 
-export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
+export const useVerticalTabs = ({
+  verticalPageReload,
+}: useVerticalTabsProps) => {
   const { trackEvent } = useUserTracking();
-  const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
 
@@ -54,7 +54,7 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
 
   const output = [
     {
-      label: t('navbar.links.exchange'),
+      onClick: handleClickTab(''),
       value: 0,
       icon: (
         <SwapHorizIcon
@@ -68,10 +68,8 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
           }}
         />
       ),
-      onClick: handleClickTab(''),
     },
     {
-      label: t('navbar.links.refuel'),
       onClick: handleClickTab('gas/'),
       value: 1,
       icon: (
@@ -88,7 +86,6 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
       ),
     },
     {
-      label: t('navbar.links.buy'),
       onClick: handleClickTab('buy/'),
       value: 2,
       icon: (

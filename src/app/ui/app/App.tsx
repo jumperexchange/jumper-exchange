@@ -10,10 +10,10 @@ import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking';
 import { Box, Stack } from '@mui/material';
 import { StyledSlide } from './App.style';
-import { NavbarTabs } from 'src/components/Navbar';
 import { JUMPER_LEARN_PATH, JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useSuperfest } from 'src/hooks/useSuperfest';
+import { VerticalTabs } from 'src/components/Menus/VerticalMenu';
 
 export interface AppProps {
   starterVariant: StarterVariantType;
@@ -83,7 +83,7 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
         useFlexGap
       >
         {!isLearnPage && !hasTheme ? (
-          <NavbarTabs navbarPageReload={isLoyaltyPage || isSuperfest} />
+          <VerticalTabs verticalPageReload={isLoyaltyPage || isSuperfest} />
         ) : null}
         <WidgetContainer
           welcomeScreenClosed={welcomeScreen.welcomeScreenClosed!}

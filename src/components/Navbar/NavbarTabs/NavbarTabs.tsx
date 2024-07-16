@@ -20,45 +20,26 @@ export const NavbarTabs = ({ navbarPageReload }: NavbarTabsProps) => {
   const navbarTabs = useNavbarTabs({ navbarPageReload });
 
   const containerStyles = {
-    marginLeft: 'calc(-56px - 32px)', // negative margin; width of navbar + spacing
     display: 'none',
+    minWidth: 416,
     borderRadius: 28,
-    padding: 0,
     [theme.breakpoints.up('lg')]: {
       display: 'flex',
     },
+    div: {
+      height: 56,
+    },
     '.MuiTabs-indicator': {
-      position: 'absolute',
-      top: '4px',
-      left: '4px',
-      height: '48px',
-      width: '48px',
-      borderRadius: '28px',
-      transform: 'translateY(0) scaleY(0.98)',
-      backgroundColor:
-        theme.palette.mode === 'dark'
-          ? theme.palette.alphaLight300.main
-          : theme.palette.white.main,
-      zIndex: '-1',
+      height: 48,
+      zIndex: -1,
+      borderRadius: 24,
     },
   };
 
   const tabStyles = {
     height: 48,
-    width: 48,
-    padding: 0,
-    minWidth: 48,
-    margin: 0.5,
+    width: 142,
     borderRadius: '24px',
-    '&.Mui-selected': {
-      pointerEvents: 'none',
-    },
-    ':not(.Mui-selected) > svg': {
-      opacity: 0.5,
-    },
-    '> svg': {
-      margin: 0,
-    },
   };
 
   return (
@@ -69,7 +50,6 @@ export const NavbarTabs = ({ navbarPageReload }: NavbarTabsProps) => {
       ariaLabel="navbar-tabs"
       containerStyles={containerStyles}
       tabStyles={tabStyles}
-      orientation="vertical"
     />
   );
 };
