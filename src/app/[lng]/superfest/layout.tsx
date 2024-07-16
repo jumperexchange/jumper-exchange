@@ -23,7 +23,7 @@ export default async function PartnerThemeLayout({
         'light',
         ...partnerThemes.data.map((d) => d.attributes.uid),
       ]}
-      forcedTheme={'op2testseb'}
+      forcedTheme={'op'}
       enableSystem
       enableColorScheme
     >

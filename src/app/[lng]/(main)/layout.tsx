@@ -16,7 +16,7 @@ export default async function MainLayout({
   const partnerThemes = await getPartnerThemes();
   const cookies1 = cookies();
 
-  const defaultTheme = 'op2testseb';
+  const defaultTheme = 'op';
 
   return (
     <ThemeProvider

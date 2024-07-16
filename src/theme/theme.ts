@@ -303,11 +303,6 @@ const themeCustomized = createTheme({
       },
     },
     MuiTypography: {
-      styleOverrides: {
-        root: ({ theme }) => ({
-          color: theme.palette.text.primary, // Apply primary text color
-        }),
-      },
       defaultProps: {
         variantMapping: {
           lifiHeaderDisplay: 'p',
