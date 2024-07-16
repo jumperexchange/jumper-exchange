@@ -51,7 +51,7 @@ export function Widget({
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
-  const partnerName = configTheme.uid;
+  const partnerName = configTheme?.uid ?? 'default';
   const { tokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
