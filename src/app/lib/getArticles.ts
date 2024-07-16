@@ -11,7 +11,7 @@ export async function getArticles(excludeId?: number) {
   const res: StrapiResponse<BlogArticleData[]> = await strapi.find(
     'blog-articles',
     {
-      filters: { id: { $ne: excludeId } },
+      ...(excludeId && { filters: { id: { $ne: excludeId } } }),
       populate: ['Image', 'tags', 'author.Avatar', 'faq_items'],
       publicationState:
         process.env.NEXT_PUBLIC_ENVIRONMENT === 'development'
