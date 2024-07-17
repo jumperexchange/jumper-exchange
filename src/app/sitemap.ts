@@ -1,8 +1,7 @@
 import { JUMPER_LEARN_PATH, JUMPER_URL, pages } from '@/const/urls';
 import type { ChangeFrequency, SitemapPage } from '@/types/sitemap';
-import type { BlogArticleData } from '@/types/strapi';
+import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import type { MetadataRoute } from 'next';
-import type { StrapiResponse } from 'strapi-sdk-js';
 import { getArticles } from './lib/getArticles';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -27,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // articles by slug
   const articles = await getArticles().then(
-    (article: StrapiResponse<BlogArticleData[]>) =>
+    (article: StrapiResponse<BlogArticleData>) =>
       article.data.map((el) => ({
         url: `${JUMPER_URL}${JUMPER_LEARN_PATH}/${el.attributes.Slug}`,
         lastModified: new Date(

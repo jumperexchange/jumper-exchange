@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { getArticles } from 'src/app/lib/getArticles';
 import { getFeaturedArticle } from 'src/app/lib/getFeaturedArticle';
+import { getStrapiArticles } from 'src/app/lib/getStrapiArticles';
 import LearnPage from 'src/app/ui/learn/LearnPage';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Page() {
   // TODO: make this component client side by removing async, a hook should do the job, will permit us to pre-render the pages
   const featuredArticle = await getFeaturedArticle();
-  const carouselArticles = await getArticles(); //featuredArticle.data[0].id
+  const carouselArticles = await getStrapiArticles(); //featuredArticle.data[0].id
   return (
     // <p>page---</p>
     <LearnPage
@@ -28,7 +28,7 @@ export default async function Page() {
 // Prerendering, does not work until the component is client side
 // export async function generateStaticParams() {
 //   const featuredArticle = await getFeaturedArticle();
-//   const articles = await getArticles(featuredArticle.data.id);
+//   const articles = await getStrapiArticles(featuredArticle.data.id);
 
 //   const data = articles.data
 //     .filter((article) => article.id !== featuredArticle.data.id)
