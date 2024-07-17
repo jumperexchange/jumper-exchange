@@ -72,7 +72,7 @@ export const BannerBox = ({
           {partners && partners.length > 0 ? (
             <RewardBox
               logos={partners.map((partner: Chain) => partner.logo)}
-              title={'Sponsored by'}
+              title={'Applications'}
               value={partners.length > 0 ? partners[0].name : ''}
             />
           ) : undefined}
