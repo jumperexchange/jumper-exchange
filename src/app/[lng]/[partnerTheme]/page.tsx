@@ -7,31 +7,12 @@ import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const apiUrl = process.env.NEXT_PUBLIC_LIFI_API_URL;
-  const response = await fetch(`${apiUrl}/tools`);
-  const result = await response.json();
-  const bridges = result?.bridges;
-  const exchanges = result?.exchanges;
-  let filteredBridges = [];
-  let filteredDexes = [];
-  if (bridges) {
-    filteredBridges = Object.values(bridges).map((elem: any) => elem.key);
-  }
-  if (exchanges) {
-    filteredDexes = Object.values(exchanges).map((elem: any) => elem.key);
-  }
-  const res = filteredBridges.concat(filteredDexes);
-  const path = res.map((partnerTheme) => ({ partnerTheme }));
-
   const partnerThemes = await getPartnerThemes();
 
   let customPath = [
     { partnerTheme: 'memecoins' },
     ...partnerThemes.data.map((d) => ({ partnerTheme: d.attributes.uid })),
   ];
-
-  // Temporary as this theme is blocking the build (not compatible with new version)
-  // customPath = customPath.filter((s) => s.partnerTheme !== 'OP');
 
   return customPath;
 }

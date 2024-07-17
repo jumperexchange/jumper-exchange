@@ -13,6 +13,7 @@ export default async function PartnerThemeLayout({
   params: { partnerTheme: string };
 }) {
   const partnerThemes = await getPartnerThemes();
+
   return (
     <ThemeProvider
       themes={[
@@ -25,7 +26,7 @@ export default async function PartnerThemeLayout({
       enableColorScheme
     >
       <ThemeProviderV2 themes={partnerThemes.data}>
-        <Layout>{children}</Layout>
+        <Layout disableNavbar={true}>{children}</Layout>
         <FeatureCards />
       </ThemeProviderV2>
     </ThemeProvider>

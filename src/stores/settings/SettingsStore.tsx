@@ -9,6 +9,8 @@ import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 import type { PartnerThemesData } from '@/types/strapi';
+import type { WidgetConfig } from '@lifi/widget';
+import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 
 // ----------------------------------------------------------------------
 
@@ -20,17 +22,17 @@ export const useSettingsStore = createWithEqualityFn(
       ...defaultSettings,
 
       // Mode
-      setActiveTheme: (activeTheme: any) => {
+      setActiveTheme: (activeTheme: string) => {
         set({
           activeTheme: activeTheme,
         });
       },
-      setConfigTheme: (configTheme: any) => {
+      setConfigTheme: (configTheme: PartnerThemeConfig) => {
         set({
           configTheme,
         });
       },
-      setWidgetTheme: (widgetTheme: any) => {
+      setWidgetTheme: (widgetTheme: { config: Partial<WidgetConfig> }) => {
         set({
           widgetTheme,
         });

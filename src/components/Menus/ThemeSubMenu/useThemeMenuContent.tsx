@@ -33,9 +33,7 @@ export const useThemeMenuContent = () => {
         [TrackingEventParameter.SwitchedTemplate]: theme,
       },
     });
-    // console.log('CHECK HANDLE THEME SWITCH', theme);
     setTheme(theme);
-    // setActiveTheme(theme?.attributes.uid);
   };
 
   const themes: any = [

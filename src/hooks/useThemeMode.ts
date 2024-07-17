@@ -13,7 +13,6 @@ interface useThemeModeReturn {
 export const useThemeMode = (
   initialThemeMode?: ThemeModesSupported,
 ): useThemeModeReturn => {
-  // const [activeTheme, setActiveTheme] = useState(initialTheme);
   const [cookie, setCookie] = useCookies(['themeMode']);
 
   const [themeMode, setThemeMode] = useSettingsStore((state) => [
@@ -22,7 +21,6 @@ export const useThemeMode = (
   ]);
 
   const updateThemeMode = (themeMode: ThemeModesSupported) => {
-    // console.log('UPDATETHEMEMODE', themeMode)
     setThemeMode(themeMode);
     setCookie('themeMode', themeMode, {
       path: '/', // Cookie available across the entire website

@@ -12,7 +12,7 @@ export default async function PartnerThemeLayout({
   children: React.ReactNode;
   params: { partnerTheme: string };
 }) {
-  const cookies1 = cookies();
+  const cookiesHandler = cookies();
 
   return (
     <ThemeProvider
@@ -23,7 +23,7 @@ export default async function PartnerThemeLayout({
     >
       <ThemeProviderV2
         themes={[]}
-        activeTheme={cookies1.get('theme')?.value || 'system'}
+        activeTheme={cookiesHandler.get('theme')?.value || 'system'}
       >
         <Layout>{children}</Layout>
         <FeatureCards />

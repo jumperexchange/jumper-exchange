@@ -2,15 +2,17 @@
 
 import type { PartnerThemesData } from '@/types/strapi';
 import { PartnerTheme, PartnerThemesAttributes } from '@/types/strapi';
+import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
+import type { WidgetConfig } from '@lifi/widget';
 
 export type ThemeModesSupported = 'light' | 'dark' | 'auto';
 export type WalletConnected = string;
 
 export interface SettingsProps {
   partnerThemes: PartnerThemesData[];
-  activeTheme: any;
-  widgetTheme: any;
-  configTheme: any;
+  activeTheme: string;
+  widgetTheme: { config: Partial<WidgetConfig> };
+  configTheme: PartnerThemeConfig;
   themeMode: ThemeModesSupported;
   clientWallets: string[];
   disabledFeatureCards: string[];

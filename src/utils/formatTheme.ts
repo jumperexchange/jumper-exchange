@@ -1,6 +1,7 @@
 import type { PartnerThemesAttributes } from '@/types/strapi';
 import { getStrapiUrl } from '@/hooks/useStrapi';
 import { STRAPI_PARTNER_THEMES } from '@/const/strapiContentKeys';
+import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 
 function getImageUrl(
   theme: PartnerThemesAttributes,
@@ -56,7 +57,9 @@ function getLogoData(theme: PartnerThemesAttributes) {
   };
 }
 
-export function formatConfig(theme: PartnerThemesAttributes) {
+export function formatConfig(
+  theme: PartnerThemesAttributes,
+): Partial<PartnerThemeConfig> {
   if (!theme) {
     return {
       uid: 'default',
@@ -67,8 +70,7 @@ export function formatConfig(theme: PartnerThemesAttributes) {
   }
 
   const defaultMode = theme.lightConfig ? 'light' : 'dark';
-
-  return {
+  const result = {
     availableThemeModes: getAvailableThemeModes(theme),
     backgroundColor:
       theme.BackgroundColorDark || theme.BackgroundColorLight || null,
@@ -77,7 +79,7 @@ export function formatConfig(theme: PartnerThemesAttributes) {
     logo: getLogoData(theme),
     partnerName: theme.PartnerName,
     partnerUrl: theme.PartnerURL,
-    selectableInMenu: theme.SelectableInMenu,
+    selectableInMenu: theme.SelectableInMenu || false,
     createdAt: theme.createdAt,
     uid: theme.uid,
     hasThemeModeSwitch: false,
@@ -85,6 +87,8 @@ export function formatConfig(theme: PartnerThemesAttributes) {
     allowedBridges: theme.Bridges?.map((i) => i.key),
     allowedExchanges: theme.Exchanges?.map((i) => i.key),
   };
+
+  return result;
 }
 
 export function formatTheme(theme: PartnerThemesAttributes) {

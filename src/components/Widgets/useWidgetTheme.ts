@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { deepmerge } from '@mui/utils';
 import { useSettingsStore } from '@/stores/settings';
 import { formatTheme } from '@/utils/formatTheme';
+import type { WidgetConfig } from '@lifi/widget';
 
 export const useWidgetTheme = (): PartnerTheme => {
   const theme = useTheme();
@@ -16,7 +17,7 @@ export const useWidgetTheme = (): PartnerTheme => {
 
   const activeNextTheme = forcedTheme || resolvedTheme;
 
-  const defaultWidgetTheme = {
+  const defaultWidgetTheme: { config: Partial<WidgetConfig> } = {
     config: {
       appearance: theme.palette.mode,
       theme: {

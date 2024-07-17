@@ -14,7 +14,8 @@ export default async function MainLayout({
   params: { lng: string };
 }) {
   const partnerThemes = await getPartnerThemes();
-  const cookies1 = cookies();
+
+  const cookiesHandler = cookies();
 
   const defaultTheme = 'op';
 
@@ -30,7 +31,7 @@ export default async function MainLayout({
       enableColorScheme
     >
       <ThemeProviderV2
-        activeTheme={cookies1.get('theme')?.value || defaultTheme}
+        activeTheme={cookiesHandler.get('theme')?.value || defaultTheme}
         themes={partnerThemes.data}
       >
         <Layout>{children}</Layout>

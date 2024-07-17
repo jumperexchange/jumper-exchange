@@ -1,16 +1,7 @@
 'use client';
-import {
-  usePathname,
-  useRouter,
-  useSelectedLayoutSegment,
-  useSelectedLayoutSegments,
-} from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
-import {
-  JUMPER_FEST_PATH,
-  JUMPER_LEARN_PATH,
-  JUMPER_LOYALTY_PATH,
-} from '@/const/urls';
+import { JUMPER_LEARN_PATH, JUMPER_LOYALTY_PATH } from '@/const/urls';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useMenuStore } from '@/stores/menu';
 import {
@@ -21,17 +12,13 @@ import {
   NavbarTabs,
 } from '.';
 import { useSuperfest } from 'src/hooks/useSuperfest';
-import { useMainPaths } from 'src/hooks/useMainPaths';
-import { useSettingsStore } from '@/stores/settings';
 
-export const Navbar = () => {
+export const Navbar = ({ disableNavbar = false }) => {
   const router = useRouter();
   const pathname = usePathname();
   const isLearnPage = pathname?.includes(JUMPER_LEARN_PATH);
   const isLoyaltyPage = pathname?.includes(JUMPER_LOYALTY_PATH);
   const { isSuperfest } = useSuperfest();
-  const { isMainPaths } = useMainPaths();
-  const configTheme = useSettingsStore((state) => state.configTheme);
   const { setWelcomeScreenClosed } = useWelcomeScreen();
 
   const { closeAllMenus } = useMenuStore((state) => state);
@@ -51,9 +38,9 @@ export const Navbar = () => {
       <LogoLink id="jumper-logo" onClick={handleClick}>
         <Logo variant={isLearnPage ? 'learn' : 'default'} />
       </LogoLink>
-      {!isLearnPage ? (
+      {!isLearnPage && !disableNavbar && (
         <NavbarTabs navbarPageReload={isLoyaltyPage || isSuperfest} />
-      ) : null}
+      )}
       <NavbarButtons />
     </Container>
   );

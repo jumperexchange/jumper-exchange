@@ -7,16 +7,18 @@ import { PartnerThemeFooterImage } from './components/PartnerThemeFooterImage';
 
 interface LayoutProps {
   fixedPoweredBy?: boolean | undefined;
+  disableNavbar?: boolean;
 }
 
 export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
   children,
+  disableNavbar = false,
   fixedPoweredBy,
 }) => {
   return (
     <>
       <Background />
-      <Navbar />
+      <Navbar disableNavbar={disableNavbar} />
       {children}
       <SupportModal />
       <Snackbar />

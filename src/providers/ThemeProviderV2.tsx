@@ -44,12 +44,7 @@ function getMuiTheme(themes: any[], activeTheme: string) {
  * Your app's theme provider component.
  * 'use client' is essential for next-themes to work with app-dir.
  */
-export function ThemeProviderV2({
-  children,
-  activeTheme,
-  themes,
-  ...props
-}: any) {
+export function ThemeProviderV2({ children, activeTheme, themes }: any) {
   const { resolvedTheme, forcedTheme, ...props2 } = useTheme();
   const [cookie, setCookie] = useCookies(['theme']);
   const [partnerThemes, setPartnerThemes] = useSettingsStore((state) => [
@@ -71,8 +66,6 @@ export function ThemeProviderV2({
     setMounted(true);
     setPartnerThemes(themes);
   }, []);
-
-  // console.log('INTHEMEPROVIDERV2', resolvedTheme, activeTheme, currentTheme, themes);
 
   useEffect(() => {
     const themeToUse = forcedTheme || resolvedTheme || activeTheme;

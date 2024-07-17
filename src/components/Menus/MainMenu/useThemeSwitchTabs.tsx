@@ -51,10 +51,10 @@ export const useThemeSwitchTabs = () => {
   };
 
   // tooltips:
-  const lightModeTooltip = configTheme?.availableThemeModes.includes('dark')
+  const lightModeTooltip = !configTheme?.availableThemeModes.includes('dark')
     ? t('navbar.themes.lightModeDisabled')
     : t('navbar.themes.switchToLight');
-  const darkModeTooltip = configTheme?.availableThemeModes.includes('light')
+  const darkModeTooltip = !configTheme?.availableThemeModes.includes('light')
     ? t('navbar.themes.darkModeDisabled')
     : t('navbar.themes.switchToDark');
   const systemModeTooltip =
