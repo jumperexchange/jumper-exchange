@@ -5,7 +5,7 @@ import { PartnerTheme, PartnerThemesAttributes } from '@/types/strapi';
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 import type { WidgetConfig } from '@lifi/widget';
 
-export type ThemeModesSupported = 'light' | 'dark' | 'auto';
+export type ThemeModesSupported = 'light' | 'dark' | 'system';
 export type WalletConnected = string;
 
 export interface SettingsProps {

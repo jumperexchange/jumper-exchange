@@ -36,8 +36,6 @@ import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 import { OPLogo } from 'src/components/illustrations/OPLogo';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 import { useMainPaths } from 'src/hooks/useMainPaths';
-import { MenuItemProps } from '@/components/Menu';
-import { MenuListItem } from '@/types/internal';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -121,7 +119,7 @@ export const useMainMenuContent = () => {
     });
   }
 
-  if (!forcedTheme) {
+  if (!forcedTheme && isMainPaths) {
     mainMenu.push({
       label: t('navbar.navbarMenu.theme'),
       prefixIcon: <PaletteIcon />,

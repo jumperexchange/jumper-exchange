@@ -42,7 +42,7 @@ export const useThemeSwitchTabs = () => {
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    setCookie('themeMode', mode === 'auto' ? browserTheme : mode, {
+    setCookie('themeMode', mode === 'system' ? browserTheme : mode, {
       path: '/',
       sameSite: true,
     });
@@ -127,7 +127,7 @@ export const useThemeSwitchTabs = () => {
       },
     },
     {
-      tooltip: themeMode !== 'auto' ? systemModeTooltip : undefined,
+      tooltip: themeMode !== 'system' ? systemModeTooltip : undefined,
       value: 2,
       blur: !systemModeEnabled,
       icon: (
@@ -138,7 +138,7 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        handleSwitchMode('auto');
+        handleSwitchMode('system');
       },
     },
   ];

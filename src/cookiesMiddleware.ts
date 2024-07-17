@@ -20,7 +20,7 @@ export function cookiesMiddleware(response: NextResponse) {
   }
 
   // Migrating themeMode to the correct cookie
-  if (['dark', 'light', 'auto'].includes(themeCookie?.value as string)) {
+  if (['dark', 'light', 'system'].includes(themeCookie?.value as string)) {
     response.cookies.set('themeMode', themeCookie?.value as string);
     response.cookies.set('theme', defaultTheme);
   }

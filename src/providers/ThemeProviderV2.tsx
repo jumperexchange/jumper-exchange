@@ -14,6 +14,7 @@ import {
 } from '@/utils/formatTheme';
 import { deepmerge } from '@mui/utils';
 import { useSettingsStore } from '@/stores/settings';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function getPartnerTheme(themes: any[], activeTheme: string) {
   return themes?.find((d) => d.attributes.uid === activeTheme)?.attributes;
@@ -57,8 +58,17 @@ export function ThemeProviderV2({ children, activeTheme, themes }: any) {
     state.setConfigTheme,
   ]);
 
+  const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
+    ? 'dark'
+    : 'light';
+
+  const themeToUse =
+    forcedTheme || resolvedTheme === 'system'
+      ? browserTheme
+      : resolvedTheme || activeTheme;
+
   const [currentTheme, setCurrentTheme] = useState(
-    getMuiTheme(themes, forcedTheme || resolvedTheme || activeTheme),
+    getMuiTheme(themes, themeToUse),
   );
 
   const [mounted, setMounted] = useState(false);

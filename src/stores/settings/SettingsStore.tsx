@@ -81,7 +81,7 @@ export const useSettingsStore = createWithEqualityFn(
       setDefaultSettings: () => {
         set({
           themeMode:
-            defaultSettings.themeMode || ('auto' as ThemeModesSupported),
+            defaultSettings.themeMode || ('system' as ThemeModesSupported),
           disabledFeatureCards: defaultSettings.disabledFeatureCards || [],
         });
       },
