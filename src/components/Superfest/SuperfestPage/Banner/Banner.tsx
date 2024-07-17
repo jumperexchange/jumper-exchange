@@ -10,6 +10,7 @@ import {
 } from './Banner.style';
 import { RewardBox } from './Rewards/RewardBox';
 import { checkInclusion } from '../../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
+import { Theme, useMediaQuery } from '@mui/material';
 
 interface SuperfestMissionPageVar {
   quest: Quest;
@@ -27,11 +28,18 @@ export const BannerBox = ({
   baseUrl,
   pastCampaigns,
 }: SuperfestMissionPageVar) => {
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
+  );
   const attributes = quest?.attributes;
   const rewardsIds = quest.attributes?.CustomInformation?.['rewardsIds'];
   const rewards = attributes?.CustomInformation?.['rewards'];
   const chains = attributes?.CustomInformation?.['chains'];
   const partners = attributes?.CustomInformation?.['partner'];
+  const bannerImageURL = isMobile
+    ? attributes.Image?.data?.attributes?.url
+    : attributes?.BannerImage?.data[0]?.attributes?.url;
+  const imgURL = new URL(bannerImageURL, baseUrl);
 
   let completed = false;
   if (rewardsIds && pastCampaigns) {
@@ -42,10 +50,7 @@ export const BannerBox = ({
     <BannerMainBox>
       <BannerImageBox>
         <Image
-          src={`${new URL(
-            attributes?.BannerImage?.data[0]?.attributes?.url,
-            baseUrl,
-          )}`}
+          src={`${imgURL}`}
           fill
           objectFit="cover"
           alt="Banner Image"
