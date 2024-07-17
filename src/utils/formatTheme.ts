@@ -5,13 +5,16 @@ import { STRAPI_PARTNER_THEMES } from '@/const/strapiContentKeys';
 function getImageUrl(
   theme: PartnerThemesAttributes,
   imageType: 'BackgroundImage' | 'FooterImage' | 'Logo',
+  defaultMode: 'light' | 'dark' = 'light',
 ): URL | null {
   const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES);
 
   const imageLight = theme[`${imageType}Light`];
   const imageDark = theme[`${imageType}Dark`];
   const imageUrl =
-    imageLight?.data?.attributes.url || imageDark?.data?.attributes.url;
+    defaultMode === 'light'
+      ? imageLight?.data?.attributes.url
+      : imageDark?.data?.attributes.url;
 
   return imageUrl ? new URL(imageUrl, baseStrapiUrl) : null;
 }
@@ -63,12 +66,14 @@ export function formatConfig(theme: PartnerThemesAttributes) {
     };
   }
 
+  const defaultMode = theme.lightConfig ? 'light' : 'dark';
+
   return {
     availableThemeModes: getAvailableThemeModes(theme),
     backgroundColor:
       theme.BackgroundColorDark || theme.BackgroundColorLight || null,
-    backgroundImageUrl: getImageUrl(theme, 'BackgroundImage'),
-    footerImageUrl: getImageUrl(theme, 'FooterImage'),
+    backgroundImageUrl: getImageUrl(theme, 'BackgroundImage', defaultMode),
+    footerImageUrl: getImageUrl(theme, 'FooterImage', defaultMode),
     logo: getLogoData(theme),
     partnerName: theme.PartnerName,
     partnerUrl: theme.PartnerURL,
