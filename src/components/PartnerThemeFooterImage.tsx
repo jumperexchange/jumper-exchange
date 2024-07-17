@@ -9,7 +9,6 @@ import { Theme, useMediaQuery } from '@mui/material';
 import { BackgroundFooterImage } from './Widgets';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useSuperfest } from 'src/hooks/useSuperfest';
-import { useMetaMask } from 'src/hooks/useMetaMask';
 
 export const PartnerThemeFooterImage = () => {
   const { sourceChainToken, destinationChainToken } =
@@ -17,7 +16,6 @@ export const PartnerThemeFooterImage = () => {
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
   const { hasTheme, availableWidgetThemeMode } = usePartnerTheme();
-  const { isMetaMaskConnector } = useMetaMask();
 
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('lg'),
@@ -30,11 +28,7 @@ export const PartnerThemeFooterImage = () => {
     destinationChainToken?.chainId === ChainId.SOL;
 
   const showBasedOnURL = isSuperfest || isMainPaths || !!hasTheme;
-  const showFooterLogo =
-    !activeChainAlert &&
-    !isSmallScreen &&
-    showBasedOnURL &&
-    !isMetaMaskConnector;
+  const showFooterLogo = !activeChainAlert && !isSmallScreen && showBasedOnURL;
 
   return (
     showFooterLogo && (
