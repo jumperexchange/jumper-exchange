@@ -88,7 +88,7 @@ export const NFTDisplayBox = styled(Box)(({ theme }) => ({
   flexWrap: 'wrap',
   justifyContent: 'center',
   alignContent: 'center',
-  gap: '48px',
+  gap: '16px',
   [theme.breakpoints.down('md' as Breakpoint)]: {
     flexDirection: 'column',
     alignItems: 'center',
