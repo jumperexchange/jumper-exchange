@@ -3,7 +3,7 @@ import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
 import { SuperfestBackgroundContainer } from './BackgroundGradient.style';
 
 const SuperfestBackground = () => {
-  const isSuperfest = useSuperfest();
+  const { isSuperfest } = useSuperfest();
   return (
     <SuperfestBackgroundContainer>
       {!isSuperfest && <PartnerThemeFooterImage />}

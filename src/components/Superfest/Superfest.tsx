@@ -60,7 +60,7 @@ export const Superfest = () => {
           infoSuccess={isSuccess}
         />
       </SuperfestMainBox>
-      {isSuperfest && <PartnerThemeFooterImage />}
+      <PartnerThemeFooterImage />
     </SuperfestContainer>
   );
 };
