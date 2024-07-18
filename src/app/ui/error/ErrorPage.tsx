@@ -4,7 +4,11 @@ import { useTheme } from '@mui/material';
 import { Discord } from '@/components/illustrations/Discord';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 
-import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 import { DISCORD_URL } from '@/const/urls';
 import { getContrastAlphaColor } from '@/utils/colors';
 import { openInNewTab } from '@/utils/openInNewTab';
@@ -35,6 +39,18 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
             category: TrackingCategory.ErrorPage,
             label: 'click-discord-support',
             action: TrackingAction.OpenDiscordSupport,
+          });
+          trackEvent({
+            category: TrackingCategory.Pageload,
+            action: TrackingAction.PageLoad,
+            label: 'pageload-discord-support',
+            data: {
+              [TrackingEventParameter.PageloadSource]:
+                TrackingCategory.ErrorPage,
+              [TrackingEventParameter.PageloadDestination]: 'discord-support',
+              [TrackingEventParameter.PageloadURL]: DISCORD_URL,
+              [TrackingEventParameter.PageloadExternal]: true,
+            },
           });
           openInNewTab(DISCORD_URL);
         }}
