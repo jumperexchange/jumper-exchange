@@ -12,6 +12,9 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
@@ -39,9 +42,12 @@ export function Widget({
   widgetIntegrator,
   activeTheme,
 }: WidgetProps) {
+  const theme = useTheme();
   const widgetTheme = useWidgetTheme();
+  const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
@@ -90,7 +96,16 @@ export function Widget({
     }
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [widgetIntegrator, isGasVariant]) as string;
+  }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
+
+  const partnerNameArray = useMemo(() => {
+    if (partnerName) {
+      return partnerName === 'stargate'
+        ? ['stargate', 'stargateV2']
+        : [partnerName];
+    }
+    return undefined;
+  }, [partnerName]);
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -128,10 +143,10 @@ export function Widget({
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
-        allow: isBridgeFiltered && partnerName ? [partnerName] : undefined,
+        allow: isBridgeFiltered && partnerName ? partnerNameArray : undefined,
       },
       exchanges: {
-        allow: isDexFiltered && partnerName ? [partnerName] : undefined,
+        allow: isDexFiltered && partnerName ? partnerNameArray : undefined,
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -169,7 +184,6 @@ export function Widget({
           : undefined,
       },
       buildUrl: true,
-      insurance: true,
       integrator: integratorStringByType,
       tokens:
         partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
@@ -188,13 +202,23 @@ export function Widget({
     multisigWidget,
     setWalletSelectMenuState,
     starterVariant,
+    theme.breakpoints,
+    theme.palette.accent1.main,
+    theme.palette.grey,
+    theme.palette.mode,
+    theme.palette.surface1.main,
+    theme.palette.surface2.main,
+    theme.typography.fontFamily,
+    themeMode,
     toChain,
     toToken,
     tokens,
     wagmiConfig,
-    partnerName,
+    widgetIntegrator,
+    partnerNameArray,
     isDexFiltered,
     isBridgeFiltered,
+    integratorStringByType,
     widgetTheme,
   ]);
 
