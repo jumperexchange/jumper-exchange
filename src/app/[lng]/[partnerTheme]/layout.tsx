@@ -25,7 +25,7 @@ export default async function PartnerThemeLayout({
       enableSystem
       enableColorScheme
     >
-      <ThemeProviderV2 themes={partnerThemes.data}>
+      <ThemeProviderV2 themes={partnerThemes.data} activeTheme={partnerTheme}>
         <Layout disableNavbar={true}>{children}</Layout>
         <FeatureCards />
       </ThemeProviderV2>

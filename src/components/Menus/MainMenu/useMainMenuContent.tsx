@@ -85,9 +85,7 @@ export const useMainMenuContent = () => {
       children: (
         <Tabs
           data={themeSwitchTabs}
-          value={
-            resolvedTheme === 'light' ? 0 : resolvedTheme === 'dark' ? 1 : 2
-          }
+          value={themeMode === 'light' ? 0 : themeMode === 'dark' ? 1 : 2}
           ariaLabel="theme-switch-tabs"
           containerStyles={containerStyles}
           tabStyles={tabStyles}

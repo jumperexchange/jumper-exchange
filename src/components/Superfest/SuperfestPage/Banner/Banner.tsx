@@ -10,7 +10,8 @@ import {
 } from './Banner.style';
 import { RewardBox } from './Rewards/RewardBox';
 import { checkInclusion } from '../../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
-import { Theme, useMediaQuery } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 
 interface SuperfestMissionPageVar {
   quest: Quest;

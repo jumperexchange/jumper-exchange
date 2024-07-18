@@ -58,14 +58,7 @@ export function ThemeProviderV2({ children, activeTheme, themes }: any) {
     state.setConfigTheme,
   ]);
 
-  const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
-    ? 'dark'
-    : 'light';
-
-  const themeToUse =
-    forcedTheme || resolvedTheme === 'system'
-      ? browserTheme
-      : resolvedTheme || activeTheme;
+  const themeToUse = forcedTheme || activeTheme;
 
   const [currentTheme, setCurrentTheme] = useState(
     getMuiTheme(themes, themeToUse),

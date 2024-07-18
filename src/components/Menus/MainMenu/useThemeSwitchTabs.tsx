@@ -42,7 +42,7 @@ export const useThemeSwitchTabs = () => {
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    setCookie('themeMode', mode === 'system' ? browserTheme : mode, {
+    setCookie('themeMode', mode, {
       path: '/',
       sameSite: true,
     });
