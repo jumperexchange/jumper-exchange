@@ -12,9 +12,6 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import type { Theme } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
@@ -42,12 +39,9 @@ export function Widget({
   widgetIntegrator,
   activeTheme,
 }: WidgetProps) {
-  const theme = useTheme();
   const widgetTheme = useWidgetTheme();
-  const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
@@ -184,43 +178,34 @@ export function Widget({
           : undefined,
       },
       buildUrl: true,
-      insurance: true,
       integrator: integratorStringByType,
       tokens:
         partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
   }, [
-    allowChains,
-    allowedChainsByVariant,
-    fromAmount,
+    starterVariant,
+    partnerName,
     fromChain,
     fromToken,
-    i18n.language,
-    i18n.languages,
-    integratorStringByType,
-    isMultisigSigner,
-    multisigSdkConfig,
-    multisigWidget,
-    setWalletSelectMenuState,
-    starterVariant,
-    theme.breakpoints,
-    theme.palette.accent1.main,
-    theme.palette.grey,
-    theme.palette.mode,
-    theme.palette.surface1.main,
-    theme.palette.surface2.main,
-    theme.typography.fontFamily,
-    themeMode,
     toChain,
     toToken,
-    tokens,
-    wagmiConfig,
-    widgetIntegrator,
+    fromAmount,
+    allowChains,
+    allowedChainsByVariant,
+    isBridgeFiltered,
     partnerNameArray,
     isDexFiltered,
-    isBridgeFiltered,
+    i18n.language,
+    i18n.languages,
+    widgetTheme.config.appearance,
+    widgetTheme.config.theme,
+    multisigWidget,
+    isMultisigSigner,
+    multisigSdkConfig,
     integratorStringByType,
-    widgetTheme,
+    tokens,
+    setWalletSelectMenuState,
+    wagmiConfig,
   ]);
 
   return (
