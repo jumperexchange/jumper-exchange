@@ -1,6 +1,6 @@
-import { publicRPCList } from './../const/rpcList';
 import { ChainId, createConfig } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
+import { publicRPCList } from './../const/rpcList';
 
 createConfig({
   apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
@@ -9,6 +9,7 @@ createConfig({
     ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
     ...publicRPCList,
   },
+  preloadChains: false,
 });
 
 export const widgetConfig: Partial<WidgetConfig> = {
