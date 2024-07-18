@@ -1,4 +1,3 @@
-import type { TypographyProps } from '@mui/material';
 import { Box, Container, Typography, alpha, styled } from '@mui/material';
 
 export const ProfilePageContainer = styled(Container)(() => ({
@@ -23,17 +22,8 @@ export const ProfilePageHeaderBox = styled(Box)(({ theme }) => ({
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
 }));
 
-export interface ProfilePageTypographyProps
-  extends Omit<TypographyProps, 'component'> {
-  lineHeight?: string;
-  fontWeight?: number;
-}
-
-export const ProfilePageTypography = styled(
-  Typography,
-)<ProfilePageTypographyProps>(() => ({
+export const NoSelectTypography = styled(Typography)(() => ({
   userSelect: 'none',
-  fontWeight: 700,
 }));
 
 export const CenteredBox = styled(Box)(() => ({
