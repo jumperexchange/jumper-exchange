@@ -1,2 +1,2 @@
 export * from './InfoAlert';
-export * from './SolanaAlert';
+export * from './ChainAlert';

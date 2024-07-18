@@ -1,3 +1,4 @@
+'use client';
 import { WidgetWrapper } from '@/components/Widgets';
 import { useSettingsStore } from '@/stores/settings';
 import { removeHash } from '@/utils/removeHash';
@@ -43,7 +44,7 @@ export const OnRamper = () => {
       welcomeScreenClosed={welcomeScreenClosed}
       className="widget-wrapper"
     >
-      <div>
+      <div style={{ textAlign: 'center' }}>
         <OnRamperIFrame
           src={onRamperSrc}
           height="630px"

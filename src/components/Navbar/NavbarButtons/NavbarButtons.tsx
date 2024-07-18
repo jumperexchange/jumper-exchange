@@ -56,6 +56,7 @@ export const NavbarButtons = () => {
         <MenuToggle
           ref={mainMenuAnchor}
           id="main-burger-menu-button"
+          aria-label="Main Menu"
           aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
           aria-expanded={openMainMenu ? 'true' : undefined}
           aria-haspopup="true"

@@ -1,6 +1,6 @@
 'use client';
 
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { BoxProps } from '@mui/material';
 import { Box, styled } from '@mui/material';
 
 export interface WidgetWrapperProps extends Omit<BoxProps, 'component'> {
@@ -19,9 +19,9 @@ export const WidgetWrapper = styled(Box, {
     },
   }),
   zIndex: 2,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxWidth: 416,
-  },
+  // [theme.breakpoints.up('sm' as Breakpoint)]: {
+  //   maxWidth: 416,
+  // },
 }));
 
 export const GlowBackground = styled('span')(({ theme }) => ({

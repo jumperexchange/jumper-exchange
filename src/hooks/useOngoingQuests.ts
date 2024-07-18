@@ -15,6 +15,13 @@ export const useOngoingQuests = (): UseQuestsProps => {
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
       : process.env.NEXT_PUBLIC_STRAPI_URL;
   const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
+
+  //selected needed field
+  apiUrl.searchParams.set('fields[0]', 'Title'); // title
+  apiUrl.searchParams.set('fields[1]', 'Points'); // points
+  apiUrl.searchParams.set('fields[2]', 'Link'); // link
+  apiUrl.searchParams.set('fields[3]', 'StartDate'); // startDate
+  apiUrl.searchParams.set('fields[4]', 'EndDate'); // endDate
   //populate url
   apiUrl.searchParams.set('populate[0]', 'Image');
   apiUrl.searchParams.set('populate[1]', 'quests_platform');
@@ -22,6 +29,8 @@ export const useOngoingQuests = (): UseQuestsProps => {
   //sort url
   apiUrl.searchParams.set('sort[0]', 'id:desc');
   //filter url
+  apiUrl.searchParams.set('pagination[pageSize]', '50');
+  apiUrl.searchParams.set('filters[Points][$gte]', '0');
   const currentDate = new Date(Date.now()).toISOString().split('T')[0];
   apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
   apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);

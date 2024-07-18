@@ -8,7 +8,7 @@ import {
 interface ToolCardProps {
   number: string;
   title: string;
-  handleClick: () => void;
+  handleClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export const ToolCard = ({ number, title, handleClick }: ToolCardProps) => {

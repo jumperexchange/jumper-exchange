@@ -18,7 +18,7 @@ interface StatsDataProps {
   data: DataItem[];
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  handleOnClick: () => void;
+  handleOnClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 interface ToolCardsProps {
@@ -54,7 +54,9 @@ export const ToolCards = ({
       data: sortByName(chains),
       open: openChainsToolModal,
       setOpen: setOpenChainsToolModal,
-      handleOnClick: () => {
+      handleOnClick: (e) => {
+        e.stopPropagation();
+
         trackEvent({
           category: TrackingCategory.WelcomeScreen,
           action: TrackingAction.OpenToolModal,
@@ -70,7 +72,9 @@ export const ToolCards = ({
       data: sortByName(bridges),
       open: openBridgesToolModal,
       setOpen: setOpenBridgesToolModal,
-      handleOnClick: () => {
+      handleOnClick: (e) => {
+        e.stopPropagation();
+
         trackEvent({
           category: TrackingCategory.WelcomeScreen,
           action: TrackingAction.OpenToolModal,
@@ -86,7 +90,9 @@ export const ToolCards = ({
       data: sortByName(exchanges),
       open: openDexsToolModal,
       setOpen: setOpenDexsToolModal,
-      handleOnClick: () => {
+      handleOnClick: (e) => {
+        e.stopPropagation();
+
         trackEvent({
           category: TrackingCategory.WelcomeScreen,
           action: TrackingAction.OpenToolModal,
