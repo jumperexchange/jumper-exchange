@@ -104,14 +104,20 @@ export const SeveralCTABox = styled(Box)(({ theme }) => ({
   marginTop: '32px',
   flexDirection: 'column',
   justifyContent: 'center',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    justifyContent: 'flex-start',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    justifyContent: 'center',
+  },
 }));
 
 export const StartedTitleTypography = styled(Typography)(({ theme }) => ({
   fontFamily: sequel65.style.fontFamily,
   [theme.breakpoints.down('md' as Breakpoint)]: {
-    fontSize: '18px',
+    fontSize: '16px',
     fontWeight: 600,
-    lineHeight: '18px',
+    lineHeight: '14px',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     fontSize: '20px',
@@ -122,6 +128,7 @@ export const StartedTitleTypography = styled(Typography)(({ theme }) => ({
 
 export const StartedTitleBox = styled(Box)(({ theme }) => ({
   display: 'flex',
+  flexDirection: 'column',
   justifyContent: 'flex-start',
   textAlign: 'left',
 }));
@@ -135,4 +142,19 @@ export const CTAMainBox = styled(Box)(({ theme }) => ({
   borderRadius: '8px',
   padding: '32px',
   backgroundColor: '#fdfbef',
+}));
+
+export const CTAExplanationBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    justifyContent: 'flex-start',
+    alignContent: 'flex-start',
+    textAlign: 'left',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
 }));

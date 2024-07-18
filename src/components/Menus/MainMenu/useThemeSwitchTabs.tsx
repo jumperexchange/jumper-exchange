@@ -13,23 +13,24 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useMainPaths } from 'src/hooks/useMainPaths';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useSuperfest } from 'src/hooks/useSuperfest';
+import { useTheme } from 'next-themes';
 
 export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
+  const { setTheme } = useTheme();
   const { trackEvent } = useUserTracking();
-  const [, setCookie] = useCookies(['theme']);
+  const [, setCookie] = useCookies(['themeMode']);
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
     : 'light';
-  const { availableWidgetThemeMode, hasTheme } = usePartnerTheme();
   const [themeMode, setThemeMode] = useSettingsStore((state) => [
     state.themeMode,
     state.setThemeMode,
   ]);
+  const configTheme = useSettingsStore((state) => state.configTheme);
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     trackEvent({
       category: TrackingCategory.ThemeSection,
@@ -39,21 +40,23 @@ export const useThemeSwitchTabs = () => {
         [TrackingEventParameter.SwitchedTheme]: mode,
       },
     });
-    setCookie('theme', mode === 'auto' ? browserTheme : mode, { path: '/' });
+    setCookie('themeMode', mode === 'system' ? browserTheme : mode, {
+      path: '/',
+      sameSite: true,
+    });
     setThemeMode(mode);
+    setTheme(mode);
   };
 
   // tooltips:
-  const lightModeTooltip =
-    !!hasTheme && availableWidgetThemeMode === 'dark'
-      ? t('navbar.themes.lightModeDisabled')
-      : t('navbar.themes.switchToLight');
-  const darkModeTooltip =
-    !!hasTheme && availableWidgetThemeMode === 'light'
-      ? t('navbar.themes.darkModeDisabled')
-      : t('navbar.themes.switchToDark');
+  const lightModeTooltip = !configTheme?.availableThemeModes.includes('dark')
+    ? t('navbar.themes.lightModeDisabled')
+    : t('navbar.themes.switchToLight');
+  const darkModeTooltip = !configTheme?.availableThemeModes.includes('light')
+    ? t('navbar.themes.darkModeDisabled')
+    : t('navbar.themes.switchToDark');
   const systemModeTooltip =
-    !!hasTheme && availableWidgetThemeMode !== 'system'
+    !lightModeTooltip && !darkModeTooltip
       ? t('navbar.themes.systemModeDisabled')
       : t('navbar.themes.switchToSystem');
 
@@ -64,16 +67,19 @@ export const useThemeSwitchTabs = () => {
 
   if (isSuperfest || isMainPaths) {
     lightModeEnabled = true;
-  } else if (!!hasTheme) {
-    if (availableWidgetThemeMode === 'system') {
+  } else if (!!configTheme) {
+    if (
+      configTheme.availableThemeModes.includes('light') &&
+      configTheme.availableThemeModes.includes('dark')
+    ) {
       systemModeEnabled = true;
       lightModeEnabled = true;
       darkModeEnabled = true;
     } else {
-      if (availableWidgetThemeMode === 'light') {
+      if (configTheme.availableThemeModes.includes('light')) {
         lightModeEnabled = true;
       }
-      if (availableWidgetThemeMode === 'dark') {
+      if (configTheme.availableThemeModes.includes('dark')) {
         darkModeEnabled = true;
       }
     }
@@ -82,6 +88,10 @@ export const useThemeSwitchTabs = () => {
     lightModeEnabled = true;
     darkModeEnabled = true;
   }
+
+  lightModeEnabled = true;
+  darkModeEnabled = true;
+  systemModeEnabled = true;
 
   const output = [
     {
@@ -96,7 +106,7 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        lightModeEnabled && themeMode !== 'light' && handleSwitchMode('light');
+        handleSwitchMode('light');
       },
     },
     {
@@ -111,11 +121,11 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        darkModeEnabled && themeMode !== 'dark' && handleSwitchMode('dark');
+        handleSwitchMode('dark');
       },
     },
     {
-      tooltip: themeMode !== 'auto' ? systemModeTooltip : undefined,
+      tooltip: themeMode !== 'system' ? systemModeTooltip : undefined,
       value: 2,
       blur: !systemModeEnabled,
       icon: (
@@ -126,7 +136,7 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        systemModeEnabled && themeMode !== 'auto' && handleSwitchMode('auto');
+        handleSwitchMode('system');
       },
     },
   ];

@@ -48,6 +48,7 @@ export interface UseMerklRes {
   userTVL: number;
   activeCampaigns: string[];
   availableRewards: AvailableRewards[];
+  pastCampaigns: string[];
   // activePosition?: {}[];
 }
 
@@ -57,16 +58,15 @@ export interface UseMerklRewardsProps {
   rewardToken?: string;
 }
 
-const JUMPER_QUEST_ID = ['0x1C6A6Ee7D2e0aC0D2E3de4a69433553e0cb52777'];
-
 const ACTIVE_CHAINS = ['10', '252', '8453', '34443'];
 
 const MERKL_API = 'https://api.merkl.xyz/v3';
 
-const CREATOR_TAG = 'jumper-test';
+const CREATOR_TAG = 'superfest';
 
-// const TOKEN = '0x4200000000000000000000000000000000000042'
-const TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
+const TOKEN = '0x4200000000000000000000000000000000000042';
+// TESTING
+// const TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
 export const useMerklRewards = ({
   userAddress,
@@ -76,7 +76,8 @@ export const useMerklRewards = ({
   // state
   let userTVL = 0;
   let rewardsToClaim: AvailableRewards[] = [];
-  const activeCampaigns = [];
+  const activeCampaigns = [] as string[];
+  const pastCampaigns = [] as string[];
 
   // Call to get the active positions
   // To do -> use the label to get only
@@ -97,15 +98,12 @@ export const useMerklRewards = ({
     refetchInterval: 1000 * 60 * 60,
   });
 
-  // loop through the position and sum the TVL USD
+  // loop through the chains and positions
   if (positionsData) {
     for (const chain of ACTIVE_CHAINS) {
       if (positionsData[chain]) {
         for (const [key, data] of Object.entries(positionsData[chain])) {
           activeCampaigns.push(key);
-          if (JUMPER_QUEST_ID.includes(key.split('_')[1]) && data?.userTVL) {
-            userTVL += data?.userTVL;
-          }
         }
       }
     }
@@ -151,6 +149,15 @@ export const useMerklRewards = ({
           (elem) => elem.address.toLowerCase() === String(TOKEN).toLowerCase(),
         );
     }
+
+    for (const chain of ACTIVE_CHAINS) {
+      const campaignData = rewardsData[chain]?.campaignData;
+      if (campaignData) {
+        for (const [key, _] of Object.entries(campaignData)) {
+          pastCampaigns.push(key);
+        }
+      }
+    }
   }
 
   return {
@@ -159,6 +166,7 @@ export const useMerklRewards = ({
     userTVL: userTVL,
     activeCampaigns: activeCampaigns,
     availableRewards: rewardsToClaim,
+    pastCampaigns: pastCampaigns,
     // activePosition: [],
   };
 };

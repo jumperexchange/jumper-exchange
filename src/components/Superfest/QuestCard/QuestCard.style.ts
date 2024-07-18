@@ -8,8 +8,8 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '#FFFFFF'
       : alpha(theme.palette.white.main, 0.08),
-  height: '416px',
-  width: '256px',
+  height: 450,
+  width: 288,
   textAlign: 'center',
   borderRadius: '8px',
 }));
@@ -82,7 +82,6 @@ export const XPDisplayBox = styled(Box, {
   alignItems: 'center',
   borderRadius: '128px',
   padding: '8px',
-  backgroundColor: '#ff0420',
 }));
 
 export const XPIconBox = styled(Box)(({ theme }) => ({

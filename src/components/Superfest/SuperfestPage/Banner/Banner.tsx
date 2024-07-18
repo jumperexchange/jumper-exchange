@@ -9,10 +9,14 @@ import {
   BannerTitleTypography,
 } from './Banner.style';
 import { RewardBox } from './Rewards/RewardBox';
+import { checkInclusion } from '../../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 
 interface SuperfestMissionPageVar {
   quest: Quest;
   baseUrl: string;
+  pastCampaigns: string[];
 }
 
 export interface Chain {
@@ -20,20 +24,34 @@ export interface Chain {
   name: string;
 }
 
-export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
+export const BannerBox = ({
+  quest,
+  baseUrl,
+  pastCampaigns,
+}: SuperfestMissionPageVar) => {
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
+  );
   const attributes = quest?.attributes;
+  const rewardsIds = quest.attributes?.CustomInformation?.['rewardsIds'];
   const rewards = attributes?.CustomInformation?.['rewards'];
   const chains = attributes?.CustomInformation?.['chains'];
   const partners = attributes?.CustomInformation?.['partner'];
+  const bannerImageURL = isMobile
+    ? attributes.Image?.data?.attributes?.url
+    : attributes?.BannerImage?.data[0]?.attributes?.url;
+  const imgURL = new URL(bannerImageURL, baseUrl);
+
+  let completed = false;
+  if (rewardsIds && pastCampaigns) {
+    completed = checkInclusion(pastCampaigns, rewardsIds);
+  }
 
   return (
     <BannerMainBox>
       <BannerImageBox>
         <Image
-          src={`${new URL(
-            attributes?.BannerImage?.data[0]?.attributes?.url,
-            baseUrl,
-          )}`}
+          src={`${imgURL}`}
           fill
           objectFit="cover"
           alt="Banner Image"
@@ -60,7 +78,7 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           {partners && partners.length > 0 ? (
             <RewardBox
               logos={partners.map((partner: Chain) => partner.logo)}
-              title={'Sponsored by'}
+              title={'Applications'}
               value={partners.length > 0 ? partners[0].name : ''}
             />
           ) : undefined}
@@ -68,16 +86,26 @@ export const BannerBox = ({ quest, baseUrl }: SuperfestMissionPageVar) => {
           {rewards && rewards.amount ? (
             <RewardBox
               logos={[rewards.logo]}
-              title={'Rewards'}
+              title={'Total Rewards'}
               value={`${rewards.amount} ${rewards.name}`}
             />
           ) : undefined}
           {/* Points  */}
           {attributes && attributes?.Points ? (
             <RewardBox
-              logos={['https://strapi.li.finance/uploads/xp_cfcff186e5.png']}
-              title={'Points'}
-              value={String(attributes?.Points)}
+              logos={
+                completed
+                  ? [
+                      'https://strapi.li.finance/uploads/avatar_checkmark_circle_03172fb9d6.svg',
+                    ]
+                  : ['https://strapi.li.finance/uploads/xp_cfcff186e5.png']
+              }
+              title={'Jumper XP'}
+              value={
+                true
+                  ? `+${String(attributes?.Points)}`
+                  : String(attributes?.Points)
+              }
             />
           ) : undefined}
         </RewardMainBox>

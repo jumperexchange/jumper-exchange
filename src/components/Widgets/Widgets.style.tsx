@@ -17,7 +17,7 @@ export const WidgetContainer = styled(Box, {
     display: 'flex',
     margin: '0 auto 24px',
     overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
-    width: 'auto',
+    width: '100%',
     minHeight: '50vh',
     transitionProperty: 'max-height',
     transitionDuration: '.3s',
@@ -143,7 +143,6 @@ export const WidgetContainer = styled(Box, {
 );
 
 export const BackgroundFooterImage = styled(Image)(({ theme }) => ({
-  position: 'absolute',
   width: 200,
   height: 'auto',
   bottom: 0,

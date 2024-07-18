@@ -22,7 +22,7 @@ import {
   WalletMgmtWalletAvatar,
 } from '.';
 
-export const WallettButtons = () => {
+export const WalletButtons = () => {
   const { chains } = useChains();
   const { trackEvent } = useUserTracking();
   const { account } = useAccounts();

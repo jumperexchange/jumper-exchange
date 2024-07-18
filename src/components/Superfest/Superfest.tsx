@@ -16,6 +16,7 @@ export const Superfest = () => {
   const {
     availableRewards,
     activeCampaigns,
+    pastCampaigns,
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,
   } = useMerklRewards({
@@ -42,14 +43,20 @@ export const Superfest = () => {
       <SuperfestMainBox>
         {!account?.address ||
         isQuestLoading ||
+        !activeCampaigns ||
         activeCampaigns.length === 0 ? undefined : (
           <ActiveSuperfestMissionsCarousel
             quests={quests}
             loading={isQuestLoading}
             activeCampaigns={activeCampaigns}
+            pastCampaigns={pastCampaigns}
           />
         )}
-        <AvailableMissionsList quests={quests} loading={isQuestLoading} />
+        <AvailableMissionsList
+          quests={quests}
+          loading={isQuestLoading}
+          pastCampaigns={pastCampaigns}
+        />
         <NFTClaimingBox
           claimInfos={claimInfo}
           infoLoading={isLoading}

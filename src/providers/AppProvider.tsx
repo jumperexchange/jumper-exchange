@@ -1,10 +1,7 @@
-import initTranslations from '@/app/i18n';
-import { getCookies } from '@/app/lib/getCookies';
-import { ThemeProvider } from '@/providers/ThemeProvider';
+import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
+import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
+import { cookies } from 'next/headers';
 import { type PropsWithChildren } from 'react';
-import { Layout } from 'src/Layout';
-import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
-import TranslationsProvider from './TranslationProvider';
 
 interface AppProviderProps {
   children: React.ReactNode | JSX.Element;
@@ -14,18 +11,15 @@ interface AppProviderProps {
 export const AppProvider: React.FC<
   PropsWithChildren<AppProviderProps>
 > = async ({ children, lang }) => {
-  const { resources } = await initTranslations(lang || fallbackLng, namespaces);
-  const { activeTheme } = getCookies();
+  const s = await getPartnerThemes();
+  const cookiesHandler = cookies();
 
   return (
-    <ThemeProvider theme={activeTheme}>
-      <TranslationsProvider
-        namespaces={[defaultNS]}
-        locale={lang}
-        resources={resources}
-      >
-        <Layout>{children}</Layout>
-      </TranslationsProvider>
-    </ThemeProvider>
+    <ThemeProviderV2
+      activeTheme={cookiesHandler.get('theme')?.value}
+      themes={s.data}
+    >
+      {children}
+    </ThemeProviderV2>
   );
 };

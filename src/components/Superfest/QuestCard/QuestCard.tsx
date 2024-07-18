@@ -6,6 +6,7 @@ import { SuperfestXPIcon } from '../../illustrations/XPIcon';
 import { FlexSpaceBetweenBox, SoraTypography } from '../Superfest.style';
 import type { Chain } from '../SuperfestPage/Banner/Banner';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
+import Link from 'next/link';
 import {
   QuestCardBottomBox,
   QuestCardInfoBox,
@@ -16,6 +17,7 @@ import {
 } from './QuestCard.style';
 import { OPBadge } from 'src/components/illustrations/OPBadge';
 import { Box } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export interface RewardsInterface {
   logo: string;
@@ -36,6 +38,7 @@ interface QuestCardProps {
   slug?: string;
   chains?: Chain[];
   rewards?: RewardsInterface;
+  completed?: boolean;
 }
 
 export const QuestCard = ({
@@ -49,38 +52,41 @@ export const QuestCard = ({
   slug,
   chains,
   rewards,
+  completed,
 }: QuestCardProps) => {
   const { t } = useTranslation();
   const router = useRouter();
 
   return (
     <QuestCardMainBox>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        {image && (
-          <Image
-            src={image}
-            alt="Quest Card Image"
-            width={256}
-            height={256}
-            style={{
-              borderTopLeftRadius: '8px',
-              borderTopRightRadius: '8px',
+      <Link href={`/superfest/${slug}`}>
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          {image && (
+            <Image
+              src={image}
+              alt="Quest Card Image"
+              width={288}
+              height={288}
+              style={{
+                borderTopLeftRadius: '8px',
+                borderTopRightRadius: '8px',
+              }}
+            />
+          )}
+          <Box
+            sx={{
+              position: 'relative',
+              marginLeft: '-32px',
+              maringTop: '-16px',
             }}
-          />
-        )}
-        <Box
-          sx={{
-            position: 'relative',
-            marginLeft: '-32px',
-            maringTop: '-16px',
-          }}
-        >
-          {rewards?.amount && <OPBadge />}
+          >
+            {rewards?.amount && <OPBadge />}
+          </Box>
         </Box>
-      </Box>
+      </Link>
       <QuestCardBottomBox>
         <QuestCardTitleBox>
-          <SoraTypography fontSize="18px" lineHeight="18px" fontWeight={600}>
+          <SoraTypography fontSize="20px" lineHeight="20px" fontWeight={600}>
             {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
           </SoraTypography>
         </QuestCardTitleBox>
@@ -104,7 +110,10 @@ export const QuestCard = ({
           </FlexCenterRowBox>
           {points ? (
             <FlexCenterRowBox>
-              <XPDisplayBox active={active}>
+              <XPDisplayBox
+                active={active}
+                bgcolor={!completed ? '#ff0420' : '#42B852'}
+              >
                 <SoraTypography
                   fontSize="14px"
                   fontWeight={700}
@@ -114,7 +123,11 @@ export const QuestCard = ({
                   {`+${points}`}
                 </SoraTypography>
                 <XPIconBox marginLeft="4px">
-                  <SuperfestXPIcon size={16} />
+                  {!completed ? (
+                    <SuperfestXPIcon size={16} />
+                  ) : (
+                    <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
+                  )}
                 </XPIconBox>
               </XPDisplayBox>
             </FlexCenterRowBox>

@@ -1,11 +1,15 @@
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import Script from 'next/script';
 import type { Viewport } from 'next/types';
 import React from 'react';
 import { fallbackLng } from 'src/i18n';
 import { metadata as JumperMetadata } from './lib/metadata';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import { Snackbar } from '@/components/Snackbar';
+import { PixelBg } from '@/components/illustrations/PixelBg';
+import { fonts } from '@/fonts/fonts';
+
 export const metadata = JumperMetadata;
 
 export const viewport: Viewport = {
@@ -19,7 +23,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang={fallbackLng}>
+    <html
+      lang={fallbackLng}
+      suppressHydrationWarning
+      className={fonts.map((f) => f.variable).join(' ')}
+    >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -57,7 +65,11 @@ export default async function RootLayout({
       <body suppressHydrationWarning>
         <AppRouterCacheProvider>
           <ReactQueryProvider>
-            <WalletProvider>{children}</WalletProvider>
+            <WalletProvider>
+              {children}
+              <Snackbar />
+              <PixelBg />
+            </WalletProvider>
           </ReactQueryProvider>
         </AppRouterCacheProvider>
       </body>

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { uuidv7 } from 'uuidv7';
+import { v7 as uuidv7 } from 'uuid';
 
 export const useSession = (): string | undefined => {
   const [session, setSession] = useState<string | undefined>(() => {

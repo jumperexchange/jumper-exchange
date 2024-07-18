@@ -25,7 +25,6 @@ import {
 } from 'src/const/trackingKeys';
 import { useIntegrator } from 'src/hooks/useIntegrator';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
@@ -46,12 +45,13 @@ export function Widget({
   activeTheme,
 }: WidgetProps) {
   const widgetTheme = useWidgetTheme();
+  const configTheme = useSettingsStore((state) => state.configTheme);
   const { i18n } = useTranslation();
+  const { trackEvent } = useUserTracking();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
-  const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
-  const { trackEvent } = useUserTracking();
+  const partnerName = configTheme?.uid ?? 'default';
   const { tokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
@@ -118,10 +118,10 @@ export function Widget({
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
-        allow: isBridgeFiltered && partnerName ? [partnerName] : undefined,
+        allow: configTheme?.allowedBridges,
       },
       exchanges: {
-        allow: isDexFiltered && partnerName ? [partnerName] : undefined,
+        allow: configTheme?.allowedExchanges,
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -167,7 +167,6 @@ export function Widget({
           : undefined,
       },
       buildUrl: true,
-      insurance: true,
       integrator:
         integratorStringByType || process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
       tokens:
@@ -183,8 +182,8 @@ export function Widget({
     fromAmount,
     allowChains,
     allowedChainsByVariant,
-    isBridgeFiltered,
-    isDexFiltered,
+    configTheme?.allowedBridges,
+    configTheme?.allowedExchanges,
     i18n.language,
     i18n.languages,
     widgetTheme.config.appearance,
@@ -205,11 +204,7 @@ export function Widget({
       welcomeScreenClosed={welcomeScreenClosed}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
-      <ClientOnly
-        fallback={
-          <WidgetSkeleton config={{ ...config, appearance: activeTheme }} />
-        }
-      >
+      <ClientOnly fallback={<WidgetSkeleton config={config} />}>
         <LiFiWidget integrator={config.integrator} config={config} />
       </ClientOnly>
     </WidgetWrapper>
