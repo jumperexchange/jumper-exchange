@@ -1,3 +1,5 @@
+'use client';
+
 import { useTheme } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';

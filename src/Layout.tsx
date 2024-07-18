@@ -3,10 +3,9 @@ import { BackgroundGradient } from './components/BackgroundGradient/BackgroundGr
 import { Navbar } from './components/Navbar/Navbar';
 import { PoweredBy } from './components/PoweredBy/PoweredBy';
 import { Snackbar } from './components/Snackbar/Snackbar';
-import { SupportModal } from './components/SupportModal/SupportModal';
-import Image from 'next/image';
 import { SuperfestPresentedByBox } from './components/Superfest/SuperfestPresentedBy/SuperfestPresentedByBox';
-import { Box } from '@mui/material';
+import { SupportModal } from './components/SupportModal/SupportModal';
+import { PartnerThemeFooterImage } from './components/PartnerThemeFooterImage';
 
 interface LayoutProps {
   fixedPoweredBy?: boolean | undefined;
@@ -23,18 +22,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
       {children}
       <SupportModal />
       <Snackbar />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          alignContent: 'center',
-        }}
-      >
-        <SuperfestPresentedByBox />
-        <PoweredBy fixedPosition={fixedPoweredBy} />
-      </Box>
+      <PartnerThemeFooterImage />
     </>
   );
 };

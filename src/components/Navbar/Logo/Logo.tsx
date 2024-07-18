@@ -3,7 +3,8 @@ import { JumperLearnLogo, JumperLogo } from '@/components/illustrations';
 import { LogoWrapper } from '@/components/illustrations/Logo.style';
 import { usePartnerTheme } from '@/hooks/usePartnerTheme';
 import ClearIcon from '@mui/icons-material/Clear';
-import { useTheme } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { JumperLogoBlack } from 'src/components/illustrations/JumperLogoBlack';
 
@@ -14,6 +15,9 @@ type LogoProps = {
 export const Logo = ({ variant }: LogoProps) => {
   const logo = variant === 'default' ? <JumperLogo /> : <JumperLearnLogo />;
   const { logoUrl, hasTheme, logo: partnerLogo } = usePartnerTheme();
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
+  );
   const theme = useTheme();
 
   if (variant === 'superfest') {
@@ -22,7 +26,7 @@ export const Logo = ({ variant }: LogoProps) => {
 
   return (
     <LogoWrapper>
-      {!!hasTheme && logoUrl && partnerLogo ? (
+      {!!hasTheme && !isMobile && logoUrl && partnerLogo ? (
         <>
           {logo}
           <ClearIcon

@@ -63,10 +63,11 @@ const ACTIVE_CHAINS = ['10', '252', '8453', '34443'];
 
 const MERKL_API = 'https://api.merkl.xyz/v3';
 
-const CREATOR_TAG = 'jumper-test';
+const CREATOR_TAG = 'superfest';
 
-// const TOKEN = '0x4200000000000000000000000000000000000042'
-const TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
+const TOKEN = '0x4200000000000000000000000000000000000042';
+// TESTING
+// const TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
 export const useMerklRewards = ({
   userAddress,

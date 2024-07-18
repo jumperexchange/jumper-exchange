@@ -150,7 +150,7 @@ export const ThemeProvider: React.FC<
             main: '#ff0420',
           },
           secondary: {
-            main: '#FDFBEF',
+            main: '#ff0420',
           },
           surface1: {
             main: '#FDFBEF',

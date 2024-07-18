@@ -21,7 +21,7 @@ import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 interface RewardsCarouselProps {
-  showComponent: boolean;
+  hideComponent: boolean;
   rewardAmount: number;
   accumulatedAmountForContractBN: string;
   isMerklSuccess: boolean;
@@ -29,12 +29,12 @@ interface RewardsCarouselProps {
 }
 
 const CLAIMING_CONTRACT_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae';
-// const OP_TOKEN = '0x4200000000000000000000000000000000000042';
+const OP_TOKEN = '0x4200000000000000000000000000000000000042';
 //TESTING
-const TEST_TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
+// const TEST_TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
 export const RewardsCarousel = ({
-  showComponent,
+  hideComponent,
   rewardAmount,
   accumulatedAmountForContractBN,
   isMerklSuccess,
@@ -70,10 +70,17 @@ export const RewardsCarousel = ({
           // TESTING
           args: [
             [address],
-            [TEST_TOKEN],
+            [OP_TOKEN],
             [accumulatedAmountForContractBN],
             [proof],
           ], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
+          // TESTING
+          // args: [
+          //   [address],
+          //   [TEST_TOKEN],
+          //   [accumulatedAmountForContractBN],
+          //   [proof],
+          // ], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
         });
       }
     } catch (err) {
@@ -83,7 +90,7 @@ export const RewardsCarousel = ({
 
   return (
     <>
-      {showComponent || rewardAmount === 0 ? undefined : (
+      {!hideComponent && rewardAmount && rewardAmount > 0 ? (
         <RewardsCarouselContainer>
           <RewardsCarouselMainBox>
             <FlexCenterRowBox>
@@ -113,10 +120,10 @@ export const RewardsCarousel = ({
                   fontWeight={600}
                 >
                   {isPending || isConfirming
-                    ? 'Claiming...'
+                    ? 'CLAIMING...'
                     : isConfirmed
-                      ? 'Claimed'
-                      : 'Claim Rewards'}
+                      ? 'CLAIMED'
+                      : 'CLAIM REWARDS'}
                 </SoraTypography>
               </Button>
             </ClaimButtonBox>
@@ -138,7 +145,7 @@ export const RewardsCarousel = ({
             ) : undefined}
           </RewardsCarouselMainBox>
         </RewardsCarouselContainer>
-      )}
+      ) : undefined}
     </>
   );
 };
