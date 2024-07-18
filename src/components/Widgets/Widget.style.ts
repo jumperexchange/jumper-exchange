@@ -24,8 +24,8 @@ export const WidgetWrapper = styled(Box, {
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     ...(!isExpanded && {
-      '& + div': {
-        height: 496,
+      '& > div': {
+        height: 616,
       },
     }),
   },

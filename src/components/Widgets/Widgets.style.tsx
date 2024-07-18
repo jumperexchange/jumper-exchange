@@ -39,7 +39,6 @@ export const WidgetContainer = styled(Box, {
       },
 
       [theme.breakpoints.up('sm' as Breakpoint)]: {
-        height: 496,
         marginTop: !welcomeScreenClosed ? '24px' : theme.spacing(3.5),
         [`@media screen and (min-height: 700px)`]: {
           marginTop: !welcomeScreenClosed
