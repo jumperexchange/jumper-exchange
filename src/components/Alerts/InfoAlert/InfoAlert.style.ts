@@ -12,14 +12,12 @@ export const InfoAlertContainer = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
   flexDirection: 'row',
   justifyContent: 'flex-start',
+  position: 'fixed',
   left: 0,
   padding: theme.spacing(1.5),
-  marginTop: theme.spacing(3),
   bottom: 0,
   zIndex: 2,
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    marginTop: 0,
-    position: 'fixed',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: 'auto',
   },
 }));
