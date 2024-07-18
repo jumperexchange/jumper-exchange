@@ -178,7 +178,6 @@ export function Widget({
           : undefined,
       },
       buildUrl: true,
-      insurance: true,
       integrator: integratorStringByType,
       tokens:
         partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
