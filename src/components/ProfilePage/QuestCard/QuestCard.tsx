@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../Button';
 import { XPIcon } from '../../illustrations/XPIcon';
-import { CenteredBox, ProfilePageTypography } from '../ProfilePage.style';
+import { CenteredBox, NoSelectTypography } from '../ProfilePage.style';
 import {
   CompletedBox,
   QuestCardBottomBox,
@@ -86,54 +86,69 @@ export const QuestCard = ({
                     />
                   )}
                 </CenteredBox>
-                <ProfilePageTypography fontSize={'12px'} lineHeight={'16px'}>
+                <NoSelectTypography
+                  fontSize={'12px'}
+                  lineHeight={'16px'}
+                  fontWeight={700}
+                >
                   {platformName}
-                </ProfilePageTypography>
+                </NoSelectTypography>
               </CenteredBox>
             ) : null}
-            {startDate && endDate ? (
-              <QuestDatesBox>
-                <CenteredBox>
-                  <DateRangeRoundedIcon sx={{ height: '16px' }} />
-                </CenteredBox>
-                <ProfilePageTypography fontSize={'12px'} lineHeight={'16px'}>
-                  {getStringDateFormatted(startDate, endDate)}
-                </ProfilePageTypography>
-              </QuestDatesBox>
-            ) : null}
+            {startDate && endDate
+              ? //Todo: to keep when we'll have quests with timing again
+                // <QuestDatesBox>
+                //   <CenteredBox>
+                //     <DateRangeRoundedIcon sx={{ height: '16px' }} />
+                //   </CenteredBox>
+                //   <NoSelectTypography
+                //     fontSize={'12px'}
+                //     lineHeight={'16px'}
+                //     fontWeight={700}
+                //   >
+                //     {getStringDateFormatted(startDate, endDate)}
+                //   </NoSelectTypography>
+                // </QuestDatesBox>
+                undefined
+              : null}
           </QuestPlatformMainBox>
         ) : (
           <CompletedBox>
             <DoneIcon sx={{ height: '16px', color: '#00B849' }} />
-            <ProfilePageTypography
+            <NoSelectTypography
               fontSize="12px"
               lineHeight="16px"
               color="#00B849"
+              fontWeight={700}
             >
               {t('questCard.completed')}
-            </ProfilePageTypography>
+            </NoSelectTypography>
           </CompletedBox>
         )}
         <QuestCardTitleBox>
-          <ProfilePageTypography fontSize="18px" lineHeight="24px">
+          <NoSelectTypography
+            fontSize="18px"
+            lineHeight="24px"
+            fontWeight={700}
+          >
             {title}
-          </ProfilePageTypography>
+          </NoSelectTypography>
         </QuestCardTitleBox>
         <QuestCardInfoBox points={points}>
           {points ? (
             <XPDisplayBox active={active}>
-              <ProfilePageTypography
+              <NoSelectTypography
+                fontWeight={700}
                 fontSize="14px"
                 lineHeight="18px"
-                sx={{
-                  color:
-                    theme.palette.mode === 'light'
-                      ? theme.palette.primary.main
-                      : '#BEA0EB',
-                }}
+                color={
+                  theme.palette.mode === 'light'
+                    ? theme.palette.primary.main
+                    : '#BEA0EB'
+                }
               >
                 {`+${points}`}
-              </ProfilePageTypography>
+              </NoSelectTypography>
               <CenteredBox sx={{ marginLeft: '8px' }}>
                 <XPIcon size={24} />
               </CenteredBox>
@@ -151,13 +166,13 @@ export const QuestCard = ({
                 size="medium"
                 styles={{ alignItems: 'center', width: '100%' }}
               >
-                <ProfilePageTypography
+                <NoSelectTypography
                   fontSize="16px"
                   lineHeight="18px"
                   fontWeight={600}
                 >
                   {t('questCard.join')}
-                </ProfilePageTypography>
+                </NoSelectTypography>
               </Button>
             </a>
           ) : null}

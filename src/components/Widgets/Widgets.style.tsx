@@ -1,7 +1,8 @@
 'use client';
 
 import type { Breakpoint } from '@mui/material';
-import { Box, styled } from '@mui/material';
+import { Box, alpha, styled } from '@mui/material';
+import Image from 'next/image';
 
 export interface WidgetContainerProps {
   isActive?: boolean;
@@ -16,7 +17,7 @@ export const WidgetContainer = styled(Box, {
     display: 'flex',
     margin: '0 auto 24px',
     overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
-    width: 'auto',
+    width: '100%',
     minHeight: '50vh',
     transitionProperty: 'max-height',
     transitionDuration: '.3s',
@@ -140,3 +141,24 @@ export const WidgetContainer = styled(Box, {
     },
   }),
 );
+
+export const BackgroundFooterImage = styled(Image)(({ theme }) => ({
+  width: 200,
+  height: 'auto',
+  bottom: 0,
+  objectFit: 'contain',
+  left: 0,
+  cursor: 'pointer',
+  margin: theme.spacing(2),
+  transition: 'background-color 0.3s ease-in',
+  borderRadius: '12px',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    margin: theme.spacing(4),
+    width: 400,
+    height: 'auto',
+  },
+
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.black.main, 0.04),
+  },
+}));

@@ -31,6 +31,7 @@ import type { Theme } from '@mui/material';
 import { publicRPCList } from 'src/const/rpcList';
 import { useRouter } from 'next/navigation';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
+import { useWidgetTheme } from './useWidgetTheme';
 
 export function Widget({
   starterVariant,
@@ -44,6 +45,7 @@ export function Widget({
   activeTheme,
 }: WidgetProps) {
   const theme = useTheme();
+  const widgetTheme = useWidgetTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
@@ -98,6 +100,15 @@ export function Widget({
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
 
+  const partnerNameArray = useMemo(() => {
+    if (partnerName) {
+      return partnerName === 'stargate'
+        ? ['stargate', 'stargateV2']
+        : [partnerName];
+    }
+    return undefined;
+  }, [partnerName]);
+
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
@@ -134,59 +145,23 @@ export function Widget({
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
-        allow: isBridgeFiltered && partnerName ? [partnerName] : undefined,
+        allow: isBridgeFiltered && partnerName ? partnerNameArray : undefined,
       },
       exchanges: {
-        allow: isDexFiltered && partnerName ? [partnerName] : undefined,
+        allow: isDexFiltered && partnerName ? partnerNameArray : undefined,
       },
       languages: {
         default: i18n.language as LanguageKey,
         allow: i18n.languages as LanguageKey[],
       },
-      appearance: themeMode,
       hiddenUI: [
         HiddenUI.Appearance,
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
-      theme: {
-        // @ts-expect-error
-        typography: {
-          fontFamily: theme.typography.fontFamily,
-        },
-        container: {
-          borderRadius: '12px',
-          maxWidth: '100%',
-          [theme.breakpoints.up('sm' as Breakpoint)]: {
-            borderRadius: '12px',
-            maxWidth: 416,
-            minWidth: 416,
-            boxShadow:
-              theme.palette.mode === 'light'
-                ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-                : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-          },
-        },
-        shape: {
-          borderRadius: 12,
-          borderRadiusSecondary: 24,
-        },
-        palette: {
-          background: {
-            paper: theme.palette.surface2.main,
-            default: theme.palette.surface1.main,
-          },
-          primary: {
-            main: theme.palette.accent1.main,
-          },
-          secondary: {
-            // FIXME: we need to find out how to use the correct color from the main theme config
-            main: darkTheme.palette.accent2.main,
-          },
-          grey: theme.palette.grey,
-        },
-      },
+      appearance: widgetTheme.config.appearance,
+      theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
       ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
@@ -243,10 +218,11 @@ export function Widget({
     tokens,
     wagmiConfig,
     widgetIntegrator,
-    partnerName,
+    partnerNameArray,
     isDexFiltered,
     isBridgeFiltered,
     integratorStringByType,
+    widgetTheme,
   ]);
 
   return (
