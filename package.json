@@ -2,7 +2,7 @@
   "name": "jumper.exchange",
   "version": "1.0.0",
   "private": true,
-  "repository": "https://github.com/lifinance/jumper.exchange",
+  "repository": "https://github.com/jumperexchange/jumper-exchange",
   "packageManager": "yarn@4.3.1",
   "dependencies": {
     "@arcxmoney/analytics": "^2.1.0",
@@ -39,6 +39,7 @@
     "next": "^14.2.5",
     "next-i18n-router": "^5.5.1",
     "next-sitemap": "^4.2.3",
+    "next-themes": "^0.3.0",
     "react": "^18.3.1",
     "react-cookie": "^7.1.4",
     "react-dom": "^18.3.1",

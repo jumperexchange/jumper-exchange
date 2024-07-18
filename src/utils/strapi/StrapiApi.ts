@@ -7,6 +7,7 @@ interface GetStrapiBaseUrlProps {
     | 'faq-items'
     | 'tags'
     | 'jumper-users'
+    | 'partner-themes'
     | 'quests';
 }
 
@@ -192,6 +193,30 @@ class FeatureCardStrapiApi extends StrapiApi {
   }
 }
 
+class PartnerThemeStrapiApi extends StrapiApi {
+  constructor() {
+    super({ contentType: 'partner-themes' }); // Set content type to "feature-cards" automatically
+    this.addPartnerThemeParams(); // Add specific parameters for feature cards
+  }
+
+  private addPartnerThemeParams(): void {
+    // populate images on feature card query
+    this.apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
+    this.apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
+    this.apiUrl.searchParams.set('populate[2]', 'LogoLight');
+    this.apiUrl.searchParams.set('populate[3]', 'LogoDark');
+    this.apiUrl.searchParams.set('populate[4]', 'FooterImageLight');
+    this.apiUrl.searchParams.set('populate[5]', 'FooterImageDark');
+    this.apiUrl.searchParams.set('populate[6]', 'Bridges');
+    this.apiUrl.searchParams.set('populate[7]', 'Exchanges');
+  }
+
+  filterUid(uid: string) {
+    this.apiUrl.searchParams.set('filters[uid][$eq]', uid);
+    return this;
+  }
+}
+
 interface FilterPerrsonalFeatureCardsProps {
   account: Account | undefined;
 }
@@ -254,6 +279,7 @@ export {
   BlogFaqStrapiApi,
   FeatureCardStrapiApi,
   JumperUserStrapiApi,
+  PartnerThemeStrapiApi,
   StrapiApi,
   QuestStrapiApi,
 };
