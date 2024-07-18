@@ -11,7 +11,7 @@ import { cookies } from 'next/headers';
 import RouterLink from 'next/link';
 import { defaultNS, namespaces } from 'src/i18n';
 import Background from '@/components/Background';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
 
 export default async function NotFound() {
@@ -23,7 +23,7 @@ export default async function NotFound() {
   return (
     <>
       <AppRouterCacheProvider>
-        <ThemeProvider
+        <NextThemeProvider
           themes={['dark', 'light']}
           forcedTheme={'light'}
           enableSystem
@@ -45,7 +45,7 @@ export default async function NotFound() {
               <NotFoundComponent />
             </TranslationsProvider>
           </ThemeProviderV2>
-        </ThemeProvider>
+        </NextThemeProvider>
       </AppRouterCacheProvider>
     </>
   );

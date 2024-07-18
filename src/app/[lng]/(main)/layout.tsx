@@ -4,7 +4,7 @@ import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import { cookies } from 'next/headers';
 import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
 import { Layout } from 'src/Layout';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider as NextThemeProvider } from 'next-themes';
 
 export default async function MainLayout({
   children,
@@ -20,7 +20,7 @@ export default async function MainLayout({
   const defaultTheme = 'op';
 
   return (
-    <ThemeProvider
+    <NextThemeProvider
       themes={[
         'dark',
         'light',
@@ -37,6 +37,6 @@ export default async function MainLayout({
         <Layout>{children}</Layout>
         <FeatureCards />
       </ThemeProviderV2>
-    </ThemeProvider>
+    </NextThemeProvider>
   );
 }

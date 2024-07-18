@@ -2,7 +2,7 @@ import React from 'react';
 import { FeatureCards } from '@/components/FeatureCards';
 import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
 import { Layout } from 'src/Layout';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import { cookies } from 'next/headers';
 
 export default async function PartnerThemeLayout({
@@ -15,7 +15,7 @@ export default async function PartnerThemeLayout({
   const cookiesHandler = cookies();
 
   return (
-    <ThemeProvider
+    <NextThemeProvider
       themes={['light', 'dark']}
       defaultTheme={'system'}
       enableSystem
@@ -28,6 +28,6 @@ export default async function PartnerThemeLayout({
         <Layout>{children}</Layout>
         <FeatureCards />
       </ThemeProviderV2>
-    </ThemeProvider>
+    </NextThemeProvider>
   );
 }

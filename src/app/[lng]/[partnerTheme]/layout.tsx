@@ -3,7 +3,7 @@ import { FeatureCards } from '@/components/FeatureCards';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
 import { Layout } from 'src/Layout';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider as NextThemeProvider } from 'next-themes';
 
 export default async function PartnerThemeLayout({
   children,
@@ -15,7 +15,7 @@ export default async function PartnerThemeLayout({
   const partnerThemes = await getPartnerThemes();
 
   return (
-    <ThemeProvider
+    <NextThemeProvider
       themes={[
         'dark',
         'light',
@@ -29,6 +29,6 @@ export default async function PartnerThemeLayout({
         <Layout disableNavbar={true}>{children}</Layout>
         <FeatureCards />
       </ThemeProviderV2>
-    </ThemeProvider>
+    </NextThemeProvider>
   );
 }

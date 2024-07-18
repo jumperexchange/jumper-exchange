@@ -1,7 +1,7 @@
 'use client'; // Error components must be Client Components
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
 
 const ErrorPage = dynamic(() => import('../ui/error/ErrorPage'), {
@@ -21,7 +21,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <ThemeProvider
+    <NextThemeProvider
       themes={['dark', 'light']}
       forcedTheme={'light'}
       enableSystem
@@ -30,6 +30,6 @@ export default function Error({
       <ThemeProviderV2 themes={[]}>
         <ErrorPage reset={reset} />
       </ThemeProviderV2>
-    </ThemeProvider>
+    </NextThemeProvider>
   );
 }
