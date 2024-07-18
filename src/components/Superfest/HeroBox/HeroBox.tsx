@@ -16,7 +16,7 @@ export const HeroBox = () => {
       <>{isMobile ? <SuperfestPresentedBy /> : <SuperfestLogo />}</>
       <Link
         style={{ textDecoration: 'none' }}
-        href={'https://www.superchain.eco/'}
+        href={'https://superfest.optimism.io/'}
         target="_blank"
       >
         <HeroButtonBox>
@@ -27,7 +27,7 @@ export const HeroBox = () => {
             styles={{
               color: '#ffffff',
               alignItems: 'center',
-              minWidth: '400px',
+              minWidth: { xs: '300px', md: '400px' },
               padding: '16px',
             }}
           >

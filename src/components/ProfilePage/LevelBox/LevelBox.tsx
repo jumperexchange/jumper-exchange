@@ -16,7 +16,7 @@ export const LevelBox = ({ level, loading }: LevelBoxProps) => {
           sx={{ fontSize: { xs: 18, sm: 22 }, minWidth: 60 }}
         />
       ) : (
-        <NoSelectTypography fontSize={{ xs: 12, sm: 18 }}>
+        <NoSelectTypography fontSize={{ xs: 12, sm: 18 }} fontWeight={700}>
           {`LEVEL ${level}`}
         </NoSelectTypography>
       )}

@@ -28,22 +28,25 @@ export const SuperfestMissionPage = ({
         <BackButton />
         {/* big component with the main information */}
         <BannerBox quest={quest} baseUrl={baseUrl} />
-        {/* Subtitle and description */}
-        <DescriptionBox
-          longTitle={attributes.Subtitle}
-          description={attributes.Description}
-        />
-        {/* Steps */}
-        <StepsBox steps={attributes.Steps} baseUrl={baseUrl} />
-        {/* Additional Info */}
-        <InformationAlertBox information={attributes.Information} />
         {/* Big CTA */}
         <MissionCTA
-          title={attributes.Title}
-          url={attributes.Link}
+          title={attributes?.Title}
+          url={attributes?.Link}
           key={generateKey('cta')}
           CTAs={CTAs}
         />
+        {/* Subtitle and description */}
+        <DescriptionBox
+          longTitle={attributes?.Subtitle}
+          description={attributes?.Description}
+        />
+        {/* Steps */}
+        {/* Todo: remove the check for steps */}
+        {attributes?.Steps && attributes?.Steps?.length > 1 ? (
+          <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
+        ) : undefined}
+        {/* Additional Info */}
+        <InformationAlertBox information={attributes?.Information} />
       </SuperfestPageMainBox>
     </SuperfestContainer>
   );

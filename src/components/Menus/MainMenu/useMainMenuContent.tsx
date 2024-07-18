@@ -33,6 +33,8 @@ import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 import { OPLogo } from 'src/components/illustrations/OPLogo';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
+import { useSuperfest } from 'src/hooks/useSuperfest';
+import { useMainPaths } from 'src/hooks/useMainPaths';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -40,6 +42,8 @@ export const useMainMenuContent = () => {
   const { trackPageload, trackEvent } = useUserTracking();
   const router = useRouter();
   const theme = useTheme();
+  const { isSuperfest } = useSuperfest();
+  const { isMainPaths } = useMainPaths();
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
@@ -73,7 +77,7 @@ export const useMainMenuContent = () => {
   };
 
   //Todo: to generate on the server side
-  if (!!hasTheme) {
+  if (!!hasTheme || isSuperfest || isMainPaths) {
     return [
       {
         label: t('language.key', { ns: 'language' }),

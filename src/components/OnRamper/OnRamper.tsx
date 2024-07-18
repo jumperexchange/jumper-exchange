@@ -44,7 +44,7 @@ export const OnRamper = () => {
       welcomeScreenClosed={welcomeScreenClosed}
       className="widget-wrapper"
     >
-      <div>
+      <div style={{ textAlign: 'center' }}>
         <OnRamperIFrame
           src={onRamperSrc}
           height="630px"

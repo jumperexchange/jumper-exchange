@@ -19,9 +19,13 @@ import { MissionsFilter } from '../MissionsFilter/MissionsFilter';
 
 const chains = ['Optimism', 'Base', 'Mode', 'Fraxtal'];
 
-const rewards_list = ['OP Rewards'];
-
-const category = ['Lending', 'Liquidity Pool', 'Staking', 'Stablecoins'];
+const category = [
+  'AMM',
+  'Money Market',
+  'Liquid Staking',
+  'Derivatives',
+  'Yield',
+];
 
 interface QuestCompletedListProps {
   quests?: Quest[];
@@ -36,7 +40,6 @@ export const AvailableMissionsList = ({
     theme.breakpoints.down('md'),
   );
   const [chainsFilter, setChainsFilter] = useState<string[]>([]);
-  const [rewardsFilter, setRewardsFilter] = useState<string[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
   const { url } = useOngoingFestMissions();
 
@@ -54,15 +57,6 @@ export const AvailableMissionsList = ({
       target: { value },
     } = event;
     setCategoryFilter(typeof value === 'string' ? value.split(',') : value);
-  };
-
-  const handleRewardChange = (
-    event: SelectChangeEvent<typeof rewardsFilter>,
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setRewardsFilter(typeof value === 'string' ? value.split(',') : value);
   };
 
   return (
@@ -85,14 +79,6 @@ export const AvailableMissionsList = ({
                 activeChoices={chainsFilter}
                 handleChange={handleChainChange}
               />
-              <Box marginLeft={'4px'}>
-                <MissionsFilter
-                  title="Rewards"
-                  options={rewards_list}
-                  activeChoices={rewardsFilter}
-                  handleChange={handleRewardChange}
-                />
-              </Box>
               <Box marginLeft={'4px'}>
                 <MissionsFilter
                   title="Category"
@@ -120,21 +106,13 @@ export const AvailableMissionsList = ({
               const rewardsAmount = rewards?.amount;
 
               //todo: exclude in a dedicated helper function
-              if (rewardsFilter.length === 1) {
-                if (
-                  rewardsFilter.includes('OP Rewards') &&
-                  (!rewardsAmount || rewardsAmount === 0)
-                ) {
-                  return undefined;
-                }
-              }
               if (chainsFilter && chainsFilter.length > 0) {
                 let included = false;
                 for (const chain of chains) {
                   if (
                     chainsFilter
-                      .map((chain) => chain.toLowerCase())
-                      .includes(chain.name)
+                      .map((elemChain) => elemChain.toLowerCase())
+                      .includes(chain.name.toLowerCase())
                   ) {
                     included = true;
                     break;
