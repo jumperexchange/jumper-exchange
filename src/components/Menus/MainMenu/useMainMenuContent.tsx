@@ -205,7 +205,7 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.fest'),
       prefixIcon: <OPLogo />,
       showMoreIcon: false,
-      link: { url: '/superfest' },
+      link: { url: '/superfest/' },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
