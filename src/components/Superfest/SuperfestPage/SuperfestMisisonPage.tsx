@@ -8,6 +8,8 @@ import { BannerBox } from './Banner/Banner';
 import { DescriptionBox } from './DescriptionBox/DescriptionBox';
 import { StepsBox } from './StepsBox/StepsBox';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
+import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
+import { useAccounts } from '@/hooks/useAccounts';
 
 interface SuperfestMissionPageVar {
   quest: Quest;
@@ -21,13 +23,23 @@ export const SuperfestMissionPage = ({
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
 
+  const { account } = useAccounts();
+  const { pastCampaigns } = useMerklRewards({
+    rewardChainId: 10,
+    userAddress: account?.address,
+  });
+
   return (
     <SuperfestContainer className="superfest">
       <SuperfestPageMainBox>
         {/* button to go back */}
         <BackButton />
         {/* big component with the main information */}
-        <BannerBox quest={quest} baseUrl={baseUrl} />
+        <BannerBox
+          quest={quest}
+          baseUrl={baseUrl}
+          pastCampaigns={pastCampaigns}
+        />
         {/* Big CTA */}
         <MissionCTA
           title={attributes?.Title}

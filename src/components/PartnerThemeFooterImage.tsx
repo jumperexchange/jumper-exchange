@@ -5,21 +5,26 @@ import Link from 'next/link';
 import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 
 import { useMainPaths } from 'src/hooks/useMainPaths';
-import { Theme, useMediaQuery } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { BackgroundFooterImage } from './Widgets';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useSuperfest } from 'src/hooks/useSuperfest';
+import { useSettingsStore } from '@/stores/settings';
 
 export const PartnerThemeFooterImage = () => {
   const { sourceChainToken, destinationChainToken } =
     useChainTokenSelectionStore();
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
-  const { hasTheme, availableWidgetThemeMode } = usePartnerTheme();
+  const configTheme = useSettingsStore((state) => state.configTheme);
 
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('lg'),
   );
+
+  if (!configTheme?.footerImageUrl) {
+    return;
+  }
 
   const activeChainAlert =
     sourceChainToken?.chainId === ChainId.SEI ||
@@ -27,11 +32,13 @@ export const PartnerThemeFooterImage = () => {
     sourceChainToken?.chainId === ChainId.SOL ||
     destinationChainToken?.chainId === ChainId.SOL;
 
-  const showBasedOnURL = isSuperfest || isMainPaths || !!hasTheme;
+  const showBasedOnURL =
+    isSuperfest || isMainPaths || !!configTheme?.footerImageUrl;
   const showFooterLogo = !activeChainAlert && !isSmallScreen && showBasedOnURL;
 
   return (
-    showFooterLogo && (
+    showFooterLogo &&
+    configTheme?.footerImageUrl && (
       <Link
         href={'https://superfest.optimism.io/'}
         target="_blank"
@@ -40,11 +47,7 @@ export const PartnerThemeFooterImage = () => {
         <BackgroundFooterImage
           style={{ position: isSuperfest ? 'relative' : 'absolute' }}
           alt="footer-image"
-          src={
-            !!hasTheme && availableWidgetThemeMode === 'dark'
-              ? 'https://strapi.li.finance/uploads/sponsorcard_superfest_dark_befdd19bcf.svg'
-              : 'https://strapi.li.finance/uploads/Superfest_OP_3_575f5ddd10.svg'
-          }
+          src={configTheme?.footerImageUrl?.href}
           width={300}
           height={200}
         />
