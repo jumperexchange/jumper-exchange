@@ -25,13 +25,6 @@ export const ChainAlert = () => {
       setTitle(t('seiAlert.title'));
       setSubtitle(t('seiAlert.subtitle'));
       setButtontext(t('seiAlert.buttonText'));
-    } else if (
-      sourceChainToken?.chainId === ChainId.SOL ||
-      destinationChainToken?.chainId === ChainId.SOL
-    ) {
-      setChainId(ChainId.SOL);
-      setTitle(t('solanaAlert.title'));
-      setSubtitle(t('solanaAlert.subtitle'));
     } else {
       setIsClickable(false);
       setChainId(0);
