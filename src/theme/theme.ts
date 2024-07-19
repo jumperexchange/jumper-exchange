@@ -621,9 +621,9 @@ export const lightTheme = createTheme(
         dark: '#290066',
       },
       secondary: {
-        light: '#E9E1F5',
-        main: '#E9E1F5',
-        dark: '#E9E1F5',
+        light: '#8700B8',
+        main: '#8700B8',
+        dark: '#8700B8',
       },
       tertiary: {
         light: '#FCEBFF',
@@ -733,9 +733,9 @@ export const darkTheme = createTheme(
         dark: '#543188',
       },
       secondary: {
-        light: '#321D52',
-        main: '#321D52',
-        dark: '#321D52',
+        light: '#D35CFF',
+        main: '#D35CFF',
+        dark: '#D35CFF',
       },
       tertiary: {
         light: '#33163D',
