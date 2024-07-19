@@ -1,10 +1,10 @@
-import { getArticleBySlug } from '@/app/lib/getArticleBySlug';
-import { getArticlesByTag } from '@/app/lib/getArticlesByTag';
-import { getCookies } from '@/app/lib/getCookies';
+import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
+import { getArticlesByTag } from '../../../../lib/getArticlesByTag';
+import { getCookies } from '../../../../lib/getCookies';
 import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
 import type { Metadata } from 'next';
-import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
+import { sliceStrToXChar } from '@/utils/splitStringToXChar';
 
 export async function generateMetadata({
   params,
@@ -51,7 +51,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const article = await getArticleBySlug(params.slug);
-  const { activeTheme } = getCookies();
+  const { activeThemeMode } = getCookies();
 
   const currentTags = (
     article.data as BlogArticleData
@@ -67,7 +67,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       article={article.data.data}
       url={article.url}
       articles={relatedArticles.data}
-      activeTheme={activeTheme}
+      activeThemeMode={activeThemeMode}
     />
   );
 }

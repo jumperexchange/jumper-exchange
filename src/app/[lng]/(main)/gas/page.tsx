@@ -5,18 +5,17 @@ import { getCookies } from '@/app/lib/getCookies';
 
 const Page = () => {
   const variant = 'refuel';
-  const { activeTheme, welcomeScreenClosed } = getCookies();
+  const { activeThemeMode, welcomeScreenClosed } = getCookies();
   const isWelcomeScreenClosed = welcomeScreenClosed === 'true';
 
   return (
     <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>
       <WidgetContainer welcomeScreenClosed={true}>
         <Widgets
-          activeTheme={activeTheme}
           closedWelcomeScreen={!!welcomeScreenClosed}
           widgetVariant={variant}
         />
-        <Widget starterVariant={variant} activeTheme={activeTheme} />
+        <Widget starterVariant={variant} activeThemeMode={activeThemeMode} />
       </WidgetContainer>
     </App>
   );
