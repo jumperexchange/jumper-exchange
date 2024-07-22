@@ -1,20 +1,19 @@
 import { IconButtonPrimary } from '@/components/IconButton.style';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box, type Theme, useMediaQuery, useTheme } from '@mui/material';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { SoraTypography } from '../../Superfest.style';
 import {
+  CTAExplanationBox,
+  CTAMainBox,
   SeveralCTABox,
-  StartedTitleTypography,
   SeveralMissionCtaContainer,
   StartedTitleBox,
-  CTAMainBox,
-  CTAExplanationBox,
+  StartedTitleTypography,
 } from './MissionCTA.style';
-import { type Theme, useMediaQuery, Box } from '@mui/material';
-import Image from 'next/image';
-import { SoraTypography } from '../../Superfest.style';
-import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
 
 interface CTALinkInt {
   logo: string;
@@ -32,6 +31,7 @@ interface MissionCtaProps {
 export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const theme = useTheme();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
@@ -95,7 +95,10 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                   </SoraTypography>
                 </CTAExplanationBox>
                 {isMobile ? undefined : (
-                  <IconButtonPrimary onClick={handleClick}>
+                  <IconButtonPrimary
+                    onClick={handleClick}
+                    sx={{ backgroundColor: theme.palette.primary.main }}
+                  >
                     <ArrowForwardIcon
                       sx={{
                         width: '28px',
