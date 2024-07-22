@@ -1,4 +1,3 @@
-import { IconButtonPrimary } from '@/components/IconButton.style';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Box, type Theme, useMediaQuery, useTheme } from '@mui/material';
@@ -9,6 +8,7 @@ import { SoraTypography } from '../../Superfest.style';
 import {
   CTAExplanationBox,
   CTAMainBox,
+  MissionCtaButton,
   SeveralCTABox,
   SeveralMissionCtaContainer,
   StartedTitleBox,
@@ -95,17 +95,14 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                   </SoraTypography>
                 </CTAExplanationBox>
                 {isMobile ? undefined : (
-                  <IconButtonPrimary
-                    onClick={handleClick}
-                    sx={{ backgroundColor: theme.palette.primary.main }}
-                  >
+                  <MissionCtaButton onClick={handleClick}>
                     <ArrowForwardIcon
                       sx={{
                         width: '28px',
                         height: '28px',
                       }}
                     />
-                  </IconButtonPrimary>
+                  </MissionCtaButton>
                 )}
               </SeveralMissionCtaContainer>
             </Link>
