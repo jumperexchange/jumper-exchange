@@ -17,8 +17,6 @@ export const useMissionsMaxAPY = (
 ): useMissionsAPYRes => {
   const MERKL_CAMPAIGN_API = `${MERKL_API}/campaigns?chainIds=${ACTIVE_CHAINS.join(',')}&creatorTag=${CREATOR_TAG}`;
 
-  console.log(claimingIds);
-
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['accountCampaignInfo'],
     queryFn: async () => {
@@ -56,9 +54,6 @@ export const useMissionsMaxAPY = (
       }
     }
   }
-
-  console.log('-------------');
-  console.log(apy);
 
   return {
     apy,

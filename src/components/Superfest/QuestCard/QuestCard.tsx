@@ -113,9 +113,11 @@ export const QuestCard = ({
             })}
           </FlexCenterRowBox>
           <FlexCenterRowBox sx={{ backgroundColor: '#FF0420' }}>
-            <SoraTypography sx={{ color: '#ffffff' }}>
-              {isLoading ? '...' : (`${Number(apy).toFixed(2)}%` ?? '...')}
-            </SoraTypography>
+            {isLoading || !isSuccess || apy === 0 ? undefined : (
+              <SoraTypography sx={{ color: '#ffffff' }}>
+                {`${Number(apy).toFixed(2)}%`}
+              </SoraTypography>
+            )}
           </FlexCenterRowBox>
           {points ? (
             <FlexCenterRowBox>
