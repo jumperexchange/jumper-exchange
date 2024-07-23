@@ -18,6 +18,7 @@ import {
 import { OPBadge } from 'src/components/illustrations/OPBadge';
 import { Box } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 
 export interface RewardsInterface {
   logo: string;
@@ -39,6 +40,7 @@ interface QuestCardProps {
   chains?: Chain[];
   rewards?: RewardsInterface;
   completed?: boolean;
+  claimingIds?: string[];
 }
 
 export const QuestCard = ({
@@ -53,9 +55,11 @@ export const QuestCard = ({
   chains,
   rewards,
   completed,
+  claimingIds,
 }: QuestCardProps) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const { apy, isLoading, isSuccess } = useMissionsMaxAPY(claimingIds);
 
   return (
     <QuestCardMainBox>
@@ -107,6 +111,11 @@ export const QuestCard = ({
                 />
               );
             })}
+          </FlexCenterRowBox>
+          <FlexCenterRowBox sx={{ backgroundColor: '#FF0420' }}>
+            <SoraTypography sx={{ color: '#ffffff' }}>
+              {isLoading ? '...' : (`${Number(apy).toFixed(2)}%` ?? '...')}
+            </SoraTypography>
           </FlexCenterRowBox>
           {points ? (
             <FlexCenterRowBox>

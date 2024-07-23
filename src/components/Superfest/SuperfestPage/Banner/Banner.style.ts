@@ -46,6 +46,7 @@ export const BannerTitleBox = styled(Box)(({ theme }) => ({
     marginTop: '16px',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
+    justifyContent: 'space-between',
     textAlign: 'left',
   },
 }));

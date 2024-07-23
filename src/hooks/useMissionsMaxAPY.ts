@@ -9,14 +9,18 @@ const CREATOR_TAG = 'superfest';
 interface useMissionsAPYRes {
   isLoading: boolean;
   isSuccess: boolean;
-  CTAsWithAPYs: CTALinkInt[];
+  apy: number;
 }
 
-export const useMissionsAPY = (CTAs: CTALinkInt[]): useMissionsAPYRes => {
+export const useMissionsMaxAPY = (
+  claimingIds: string[] | undefined,
+): useMissionsAPYRes => {
   const MERKL_CAMPAIGN_API = `${MERKL_API}/campaigns?chainIds=${ACTIVE_CHAINS.join(',')}&creatorTag=${CREATOR_TAG}`;
 
+  console.log(claimingIds);
+
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['campaignInfo'],
+    queryKey: ['accountCampaignInfo'],
     queryFn: async () => {
       try {
         const response = await fetch(MERKL_CAMPAIGN_API);
@@ -26,36 +30,38 @@ export const useMissionsAPY = (CTAs: CTALinkInt[]): useMissionsAPYRes => {
         console.log(err);
       }
     },
-    enabled: CTAs.length > 0,
+    enabled: claimingIds && claimingIds.length > 0,
     refetchInterval: 1000 * 60 * 60,
   });
 
-  const CTAsWithAPYs = CTAs.map((CTA: CTALinkInt) => {
-    for (const id of ACTIVE_CHAINS) {
-      const chainCampaignData = data?.[id];
-      if (chainCampaignData && chainCampaignData[CTA.claimingId]) {
-        for (const [key, data] of Object.entries(
-          chainCampaignData[CTA.claimingId],
-        )) {
-          const timestamp = Date.now() / 1000;
-          if (
-            data &&
-            (data as any).apr &&
-            (data as any).endTimestamp > timestamp
-          ) {
-            return {
-              ...CTA,
-              apy: (data as any).apr,
-            };
+  let apy = 0;
+
+  if (claimingIds) {
+    for (const id of claimingIds) {
+      for (const chainId of ACTIVE_CHAINS) {
+        const chainCampaignData = data?.[chainId];
+        if (chainCampaignData && chainCampaignData[id]) {
+          for (const [key, data] of Object.entries(chainCampaignData[id])) {
+            const timestamp = Date.now() / 1000;
+            if (
+              data &&
+              (data as any).apr &&
+              (data as any).endTimestamp > timestamp &&
+              (data as any).apr > apy
+            ) {
+              apy = (data as any).apr;
+            }
           }
         }
       }
     }
-    return CTA;
-  });
+  }
+
+  console.log('-------------');
+  console.log(apy);
 
   return {
-    CTAsWithAPYs,
+    apy,
     isLoading,
     isSuccess,
   };
