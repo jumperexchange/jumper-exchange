@@ -75,19 +75,29 @@ export function useUserTracking() {
           );
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
-        const eventData = {
-          category,
-          action,
-          label,
-          value: data?.value as string,
-          data,
-          isConnected: account?.isConnected,
-          walletAddress: account?.address,
-          browserFingerprint: undefined,
-          isMobile: !isDesktop,
-          sessionId,
-        };
-        jumperTrackEvent(eventData);
+        try {
+          const eventData = {
+            category,
+            value: typeof value === 'number' ? value : 0,
+            action,
+            label,
+            data: data,
+            isConnected: account?.isConnected,
+            walletAddress: account?.address,
+            browserFingerprint: undefined,
+            isMobile: !isDesktop,
+            sessionId,
+          };
+
+          console.log(
+            'Event Data before sending:',
+            JSON.stringify(eventData, null, 2),
+          );
+
+          await jumperTrackEvent(eventData);
+        } catch (error) {
+          console.error('Error in tracking event:', error);
+        }
       }
     },
     [
@@ -150,7 +160,7 @@ export function useUserTracking() {
           // insuranceFeeAmountUSD:
           //   data[TrackingEventParameter.InsuranceFeeAmountUSD],
         };
-        jumperTrackTransaction(transactionData);
+        await jumperTrackTransaction(transactionData);
       }
 
       if (enableAddressable) {

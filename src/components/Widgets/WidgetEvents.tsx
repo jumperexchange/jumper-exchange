@@ -19,11 +19,17 @@ import { useMultisigStore } from '@/stores/multisig';
 import type {
   ChainTokenSelected,
   ContactSupport,
+  Execution,
+  LiFiStep,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
+
+interface LifiStepProps extends LiFiStep {
+  execution: Execution;
+}
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -51,24 +57,30 @@ export function WidgetEvents() {
   useEffect(() => {
     const onRouteExecutionStarted = async (route: Route) => {
       if (!!route.id) {
+        console.log('ROUTE STARTED DATA IN', route);
         trackTransaction({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionStarted,
           label: 'execution_start',
           value: parseFloat(route.fromAmountUSD),
           data: {
-            [TrackingEventParameter.Type]: undefined, // ?
-            [TrackingEventParameter.TransactionId]: route.id, // ?
-            [TrackingEventParameter.RouteId]: route.id, // ?
-            [TrackingEventParameter.TransactionHash]: undefined, // ?
-            [TrackingEventParameter.TransactionLink]: undefined, // ?
-            [TrackingEventParameter.Exchange]: undefined, // ?
-            [TrackingEventParameter.StepNumber]: route.steps.length, // ?
-            [TrackingEventParameter.GasCost]: undefined, // ?
+            [TrackingEventParameter.Type]: undefined,
+            [TrackingEventParameter.TransactionId]: route.id,
+            [TrackingEventParameter.RouteId]: (
+              route.steps[route.steps.length - 1] as LifiStepProps
+            ).id,
+            [TrackingEventParameter.TransactionHash]: undefined,
+            [TrackingEventParameter.TransactionLink]: undefined,
+            [TrackingEventParameter.Exchange]:
+              route.steps[route.steps.length - 1].estimate?.tool,
+            [TrackingEventParameter.StepNumber]: route.steps.length,
+            [TrackingEventParameter.GasCost]: undefined,
             [TrackingEventParameter.GasCostUSD]: route.gasCostUSD,
-            [TrackingEventParameter.ErrorCode]: undefined, // ?
-            [TrackingEventParameter.ErrorMessage]: undefined, // ?
-            [TrackingEventParameter.Status]: 'started',
+            [TrackingEventParameter.ErrorCode]: undefined,
+            [TrackingEventParameter.ErrorMessage]: undefined,
+            [TrackingEventParameter.Status]: (
+              route.steps[route.steps.length - 1] as LifiStepProps
+            ).execution?.status,
             [TrackingEventParameter.IsFinal]: false,
             [TrackingEventParameter.InsuranceFeeAmountUSD]:
               route.insurance?.feeAmountUsd,
@@ -80,7 +92,7 @@ export function WidgetEvents() {
             [TrackingEventParameter.FromAmount]: route.fromAmount,
             [TrackingEventParameter.ToAmount]: route.toAmount,
             [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
-            // [TrackingEventParameter.NonInteraction]: route.non,
+            // [TrackingEventParameter.NonInteraction]: undefined,
             [TrackingEventParameter.FromAmountUSD]: route.fromAmountUSD,
             [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
             [TrackingEventParameter.Variant]: Object.values(TabsMap).filter(
@@ -103,6 +115,7 @@ export function WidgetEvents() {
       }
 
       if (!!update.process && !!update.route) {
+        console.log('ROUTE UPDATED DATA IN', update);
         if (update.process.txHash !== lastTxHashRef.current) {
           lastTxHashRef.current = update.process.txHash;
           trackTransaction({
@@ -123,8 +136,14 @@ export function WidgetEvents() {
               [TrackingEventParameter.FromChainId]: update.route.fromChainId,
               [TrackingEventParameter.ToChainId]: update.route.toChainId,
               [TrackingEventParameter.RouteId]: `${update.route.id}`,
-              [TrackingEventParameter.Status]: update.process.status,
-              [TrackingEventParameter.TransactionId]: undefined,
+              [TrackingEventParameter.Status]:
+                (
+                  update.route?.steps &&
+                  (update.route.steps[
+                    update.route.steps.length - 1
+                  ] as LifiStepProps)
+                ).execution?.status || update.process.status,
+              [TrackingEventParameter.TransactionId]: update.process.txHash,
               [TrackingEventParameter.TransactionHash]:
                 update.process.txHash || '',
               [TrackingEventParameter.TransactionLink]:
@@ -152,6 +171,7 @@ export function WidgetEvents() {
     };
     const onRouteExecutionCompleted = async (route: Route) => {
       if (!!route.id) {
+        console.log('ROUTE COMPLETED DATA IN', route);
         trackTransaction({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionCompleted,
@@ -179,6 +199,8 @@ export function WidgetEvents() {
       }
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
+      console.log('ROUTE FAILED DATA IN', update);
+
       trackTransaction({
         category: TrackingCategory.WidgetEvent,
         action: TrackingAction.OnRouteExecutionFailed,

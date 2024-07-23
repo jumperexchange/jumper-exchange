@@ -13,7 +13,7 @@ export interface TrackEventProps {
   action: string;
   category: string;
   label: string;
-  value?: number | string;
+  value?: number;
   data?: { [key: string]: string | number | boolean };
   disableTrackingTool?: EventTrackingTool[];
   enableAddressable?: boolean;
