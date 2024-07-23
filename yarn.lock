@@ -4630,6 +4630,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/clientjs@npm:^0":
+  version: 0.2.2
+  resolution: "@types/clientjs@npm:0.2.2"
+  checksum: 10/7ef50a7f72634cad9146be905f7c4301859802de3cde8b8678dacd8f1a37acd7e9c6c14e1063b6bd3d9af4b0662d764b6f291b43ced890d6252e95b0c3f11e6a
+  languageName: node
+  linkType: hard
+
 "@types/connect@npm:3.4.36":
   version: 3.4.36
   resolution: "@types/connect@npm:3.4.36"
@@ -6303,6 +6310,18 @@ __metadata:
   version: 0.0.1
   resolution: "client-only@npm:0.0.1"
   checksum: 10/0c16bf660dadb90610553c1d8946a7fdfb81d624adea073b8440b7d795d5b5b08beb3c950c6a2cf16279365a3265158a236876d92bce16423c485c322d7dfaf8
+  languageName: node
+  linkType: hard
+
+"clientjs@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "clientjs@npm:0.2.1"
+  dependencies:
+    globalthis: "npm:^1.0.2"
+    inherits: "npm:^2.0.4"
+    murmurhash-js: "npm:^1.0.0"
+    ua-parser-js: "npm:^0.7.30"
+  checksum: 10/5445728590a955da426dcb52bcebd150ccad4b4e860152533ebfff660fc953ae2c7e37c5b60a1a4179d3c7018068b809e8441feb13e562a76e266de3e3350d4c
   languageName: node
   linkType: hard
 
@@ -8209,7 +8228,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globalthis@npm:^1.0.3":
+"globalthis@npm:^1.0.2, globalthis@npm:^1.0.3":
   version: 1.0.4
   resolution: "globalthis@npm:1.0.4"
   dependencies:
@@ -9325,6 +9344,7 @@ __metadata:
     "@solana/web3.js": "npm:^1.95.0"
     "@strapi/blocks-react-renderer": "npm:^1.0.1"
     "@tanstack/react-query": "npm:^5.51.1"
+    "@types/clientjs": "npm:^0"
     "@types/gtag.js": "npm:^0.0.20"
     "@types/node": "npm:^20.14.10"
     "@types/react": "npm:^18.3.3"
@@ -9332,6 +9352,7 @@ __metadata:
     "@types/uuid": "npm:^10.0.0"
     "@widgetbot/react-embed": "npm:^1.9.0"
     accept-language: "npm:^3.0.18"
+    clientjs: "npm:^0.2.1"
     dotenv-cli: "npm:^7.4.2"
     eslint: "npm:^8.57.0"
     eslint-config-prettier: "npm:^9.1.0"
@@ -9979,6 +10000,13 @@ __metadata:
   version: 9.9.0
   resolution: "multiformats@npm:9.9.0"
   checksum: 10/ad55c7d480d22f4258a68fd88aa2aab744fe0cb1e68d732fc886f67d858b37e3aa6c2cec12b2960ead7730d43be690931485238569952d8a3d7f90fdc726c652
+  languageName: node
+  linkType: hard
+
+"murmurhash-js@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "murmurhash-js@npm:1.0.0"
+  checksum: 10/875a24e0dd7870e51a7f73906e158fb06de50478669629746a35955cb0a00b6bb797f6b5a2884ee4ec4feefb9c5c27b74190f561eb72530ffc1c5d7c5429f49a
   languageName: node
   linkType: hard
 
@@ -12480,6 +12508,13 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/7cf7acb78a80f749b82842f2ffe01e90e7b3e709a6f4268588e0b7599c41dca1059be217f47778fe1a380bfaf60933021ef20d002c426d4d7745e1b36c11467b
+  languageName: node
+  linkType: hard
+
+"ua-parser-js@npm:^0.7.30":
+  version: 0.7.38
+  resolution: "ua-parser-js@npm:0.7.38"
+  checksum: 10/011609d0176952abc60b7a20e0af266a899b34f4c49a6f5097d6af763da27eacaa3752b710ae4d930d7b99508bb8c0b34ebe8042e1d9fdc4056d051b209b0842
   languageName: node
   linkType: hard
 
