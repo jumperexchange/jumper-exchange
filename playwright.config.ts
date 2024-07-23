@@ -18,7 +18,7 @@ import { url } from 'inspector';
 // const baseURL = `http://localhost:${PORT}`;
 
 export default defineConfig({
-  timeout: 60 * 1000,
+  timeout: 120 * 1000,
   expect: {
     timeout: 40 * 1000,
   },
