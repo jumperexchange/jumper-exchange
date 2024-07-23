@@ -11,15 +11,18 @@ import {
   CTAMainBox,
   CTAExplanationBox,
 } from './MissionCTA.style';
-import { type Theme, useMediaQuery, Box } from '@mui/material';
+import { type Theme, useMediaQuery, Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import { SoraTypography } from '../../Superfest.style';
 import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
 
-interface CTALinkInt {
+export interface CTALinkInt {
   logo: string;
   text: string;
   link: string;
+  claimingId: string;
+  rewardId?: string;
+  apy?: number;
 }
 
 interface MissionCtaProps {
@@ -94,16 +97,25 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                     {CTA.text ?? 'Go to Protocol Page'}
                   </SoraTypography>
                 </CTAExplanationBox>
-                {isMobile ? undefined : (
-                  <IconButtonPrimary onClick={handleClick}>
-                    <ArrowForwardIcon
-                      sx={{
-                        width: '28px',
-                        height: '28px',
-                      }}
-                    />
-                  </IconButtonPrimary>
-                )}
+                <Box>
+                  {CTA.apy ? (
+                    <Box sx={{ backgroundColor: '#FF0420' }}>
+                      <Typography sx={{ color: '#ffffff' }}>
+                        {Number(CTA.apy).toFixed(2)}
+                      </Typography>
+                    </Box>
+                  ) : undefined}
+                  {isMobile ? undefined : (
+                    <IconButtonPrimary onClick={handleClick}>
+                      <ArrowForwardIcon
+                        sx={{
+                          width: '28px',
+                          height: '28px',
+                        }}
+                      />
+                    </IconButtonPrimary>
+                  )}
+                </Box>
               </SeveralMissionCtaContainer>
             </Link>
           );
