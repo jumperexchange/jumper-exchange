@@ -115,7 +115,7 @@ export const QuestCard = ({
           </FlexCenterRowBox>
           {points ? (
             <FlexCenterRowBox>
-              {apy > 0 ? (
+              {apy > 0 && (
                 <XPDisplayBox active={active} bgcolor={'#ff0420'}>
                   <SoraTypography
                     fontSize="14px"
@@ -129,7 +129,7 @@ export const QuestCard = ({
                     <APYIcon size={20} />
                   </XPIconBox>
                 </XPDisplayBox>
-              ) : undefined}
+              )}
               <XPDisplayBox
                 active={active}
                 bgcolor={!completed ? '#31007A' : '#42B852'}

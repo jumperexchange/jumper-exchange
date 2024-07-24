@@ -41,15 +41,11 @@ export const useMissionsMaxAPY = (
       for (const chainId of ACTIVE_CHAINS) {
         const chainCampaignData = data?.[chainId];
         if (chainCampaignData && chainCampaignData[id]) {
-          for (const [, apyData] of Object.entries(chainCampaignData[id]) as [
+          for (const [, data] of Object.entries(chainCampaignData[id]) as [
             string,
             MerklApyRes,
           ][]) {
-            if (
-              apyData?.apr &&
-              data.endTimestamp > timestamp &&
-              data.apr > apy
-            ) {
+            if (data?.apr && data.endTimestamp > timestamp && data.apr > apy) {
               apy = data.apr;
             }
           }
