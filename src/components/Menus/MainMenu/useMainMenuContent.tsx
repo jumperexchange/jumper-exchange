@@ -1,7 +1,6 @@
 import { Tabs } from '@/components/Tabs/Tabs';
 import { Discord } from '@/components/illustrations/Discord';
 import { MenuKeysEnum } from '@/const/menuKeys';
-import PaletteIcon from '@mui/icons-material/Palette';
 import {
   TrackingAction,
   TrackingCategory,
@@ -9,7 +8,6 @@ import {
 } from '@/const/trackingKeys';
 import {
   DISCORD_URL,
-  EXPLORER_URL,
   JUMPER_FEST_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
@@ -19,11 +17,11 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
 import { EventTrackingTool } from '@/types/userTracking';
-import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
+import PaletteIcon from '@mui/icons-material/Palette';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
@@ -32,10 +30,9 @@ import { useTheme } from '@mui/material/styles';
 import { useTheme as useNextTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 import { OPLogo } from 'src/components/illustrations/OPLogo';
-import { useSuperfest } from 'src/hooks/useSuperfest';
 import { useMainPaths } from 'src/hooks/useMainPaths';
+import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -43,17 +40,12 @@ export const useMainMenuContent = () => {
   const router = useRouter();
   const theme = useTheme();
   const configTheme = useSettingsStore((state) => state.configTheme);
-  const { resolvedTheme, forcedTheme } = useNextTheme();
-  const { isSuperfest } = useSuperfest();
+  const { forcedTheme } = useNextTheme();
   const { isMainPaths } = useMainPaths();
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
   const themeMode = useSettingsStore((state) => state.themeMode);
-  const explorerUrl = appendUTMParametersToLink(EXPLORER_URL, {
-    utm_campaign: 'jumper_to_explorer',
-    utm_medium: 'menu',
-  });
 
   const themeSwitchTabs = useThemeSwitchTabs();
 
@@ -262,27 +254,20 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: t('navbar.navbarMenu.lifiExplorer'),
+      label: 'Jumper Scan',
       prefixIcon: <SearchOutlinedIcon />,
       showMoreIcon: false,
-      link: { url: explorerUrl, external: true },
+      link: { url: '/scan', external: false },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
-          label: 'open-lifi-explorer',
-          action: TrackingAction.ClickLifiExplorerLink,
-          data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
+          label: 'open-jumper-scan',
+          action: TrackingAction.ClickJumperScanLink,
+          data: { [TrackingEventParameter.Menu]: 'jumper_scan' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
-        });
-        trackPageload({
-          source: TrackingCategory.Menu,
-          destination: 'lifi-explorer',
-          url: explorerUrl,
-          pageload: true,
-          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
       },
     },
@@ -533,7 +518,7 @@ export const useMainMenuContent = () => {
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'open-lifi-explorer',
-          action: TrackingAction.ClickLifiExplorerLink,
+          action: TrackingAction.ClickJumperScanLink,
           data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,

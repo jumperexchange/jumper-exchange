@@ -47,7 +47,7 @@ export enum TrackingAction {
   ClickDiscordLink = 'action_click_discord_link',
   ClickJumperLearnLink = 'action_click_jumper_learn_link',
   ClickJumperProfileLink = 'action_click_jumper_profile_link',
-  ClickLifiExplorerLink = 'action_click_lifi_explorer_link',
+  ClickJumperScanLink = 'action_click_jumper-scan_link',
 
   // Blog
   SeeAllPosts = 'action_see_all_posts',

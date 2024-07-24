@@ -1,6 +1,6 @@
 'use client';
 import { LiFiExplorer } from '@lifi/explorer';
-import { Box, useTheme } from '@mui/material';
+import { alpha, Box, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
 
@@ -13,16 +13,21 @@ export default function Page() {
   const explorerConfig = useMemo(
     () => ({
       appearance: theme.palette.mode, // This controls light and dark mode
-      integrator: 'jumper.exchange', // TODO: change as needed
+      integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR, // TODO: change as needed
       base: '/scan', // Important for the routing and having everything served under /scan. Do not remove!
       theme: {
         // These colors and values correspond to the figma design
         shape: { borderRadiusSecondary: 900, borderRadius: 12 },
         palette: {
           background: {
-            default: '#F9F5FF',
-            secondary: 'rgba(0, 0, 0, 0.04)',
-            paper: '#fff',
+            default:
+              theme.palette.mode === 'light'
+                ? alpha(theme.palette.white.main, 0.8)
+                : alpha(theme.palette.white.main, 0.2),
+            paper:
+              theme.palette.mode === 'light'
+                ? alpha(theme.palette.white.main, 0.8)
+                : alpha(theme.palette.white.main, 0.2),
           },
         },
       },
