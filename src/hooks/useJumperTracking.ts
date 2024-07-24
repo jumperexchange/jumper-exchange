@@ -4,7 +4,6 @@ import {
   JUMPER_ANALYTICS_EVENT,
   JUMPER_ANALYTICS_TRANSACTION,
 } from 'src/const/urls';
-import { useFingerprint } from './useFingerprint';
 interface JumperDataTrackEventProps {
   category: string;
   action: string;
@@ -66,7 +65,6 @@ export interface JumperDataTrackTransactionProps {
 
 export const useJumperTracking = () => {
   const pathname = usePathname();
-  const fingerprint = useFingerprint();
   const trackEvent = async (data: JumperDataTrackEventProps) => {
     console.log('TRACK EVENT', data);
     const response = await getResponse(
@@ -78,7 +76,7 @@ export const useJumperTracking = () => {
         sessionId: data.sessionId,
         data: data.data,
         walletAddress: data.walletAddress,
-        browserFingerprint: fingerprint,
+        browserFingerprint: 'test fingerprint',
         isMobile: false,
         url: `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
       },
@@ -105,7 +103,7 @@ export const useJumperTracking = () => {
       gasCost: data.gasCost,
       gasCostUSD: data.gasCostUSD,
       fromAmount: data.fromAmount,
-      browserFingerprint: fingerprint,
+      browserFingerprint: 'test fingerprint',
       toAmount: data.toAmount,
       transactionHash: data.transactionHash,
       transactionStatus: data.transactionStatus,
