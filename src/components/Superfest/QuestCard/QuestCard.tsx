@@ -115,23 +115,21 @@ export const QuestCard = ({
           </FlexCenterRowBox>
           {points ? (
             <FlexCenterRowBox>
-              {apy > 0 ?
-              <XPDisplayBox
-                active={active}
-                bgcolor={'#ff0420'}
-              >
-                <SoraTypography
-                  fontSize="14px"
-                  fontWeight={700}
-                  lineHeight="18px"
-                  color={'#ffffff'}
-                >
-                  {`${Number(apy).toFixed(1)}%`}
-                </SoraTypography>
-                <XPIconBox marginLeft="4px">
+              {apy > 0 ? (
+                <XPDisplayBox active={active} bgcolor={'#ff0420'}>
+                  <SoraTypography
+                    fontSize="14px"
+                    fontWeight={700}
+                    lineHeight="18px"
+                    color={'#ffffff'}
+                  >
+                    {`${Number(apy).toFixed(1)}%`}
+                  </SoraTypography>
+                  <XPIconBox marginLeft="4px">
                     <APYIcon size={20} />
-                </XPIconBox>
-              </XPDisplayBox> : undefined}
+                  </XPIconBox>
+                </XPDisplayBox>
+              ) : undefined}
               <XPDisplayBox
                 active={active}
                 bgcolor={!completed ? '#31007A' : '#42B852'}
