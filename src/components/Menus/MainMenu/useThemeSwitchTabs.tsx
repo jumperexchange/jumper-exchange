@@ -40,7 +40,7 @@ export const useThemeSwitchTabs = () => {
         [TrackingEventParameter.SwitchedTheme]: mode,
       },
     });
-    setCookie('themeMode', mode === 'system' ? browserTheme : mode, {
+    setCookie('themeMode', mode, {
       path: '/',
       sameSite: true,
     });

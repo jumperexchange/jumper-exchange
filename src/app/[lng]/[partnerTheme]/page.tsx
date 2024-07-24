@@ -14,8 +14,6 @@ export async function generateStaticParams() {
     ...partnerThemes.data.map((d) => ({ partnerTheme: d.attributes.uid })),
   ];
 
-  console.log('customPath', customPath);
-
   return customPath;
 }
 
