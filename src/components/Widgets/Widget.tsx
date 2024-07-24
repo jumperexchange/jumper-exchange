@@ -20,7 +20,6 @@ import { useTranslation } from 'react-i18next';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
@@ -40,12 +39,13 @@ export function Widget({
   activeTheme,
 }: WidgetProps) {
   const widgetTheme = useWidgetTheme();
+  const configTheme = useSettingsStore((state) => state.configTheme);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
-  const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
+  const partnerName = configTheme?.uid ?? 'default';
   const { tokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
@@ -92,15 +92,6 @@ export function Widget({
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [widgetIntegrator, isGasVariant]) as string;
 
-  const partnerNameArray = useMemo(() => {
-    if (partnerName) {
-      return partnerName === 'stargate'
-        ? ['stargate', 'stargateV2']
-        : [partnerName];
-    }
-    return undefined;
-  }, [partnerName]);
-
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
@@ -137,10 +128,10 @@ export function Widget({
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
-        allow: isBridgeFiltered && partnerName ? partnerNameArray : undefined,
+        allow: configTheme?.allowedBridges,
       },
       exchanges: {
-        allow: isDexFiltered && partnerName ? partnerNameArray : undefined,
+        allow: configTheme?.allowedExchanges,
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -168,7 +159,7 @@ export function Widget({
           ? [
               EVM({
                 getWalletClient: () => getWalletClient(wagmiConfig),
-                switchChain: async (chainId) => {
+                switchChain: async (chainId: any) => {
                   const chain = await switchChain(wagmiConfig, { chainId });
                   return getWalletClient(wagmiConfig, { chainId: chain.id });
                 },
@@ -192,9 +183,8 @@ export function Widget({
     fromAmount,
     allowChains,
     allowedChainsByVariant,
-    isBridgeFiltered,
-    partnerNameArray,
-    isDexFiltered,
+    configTheme?.allowedBridges,
+    configTheme?.allowedExchanges,
     i18n.language,
     i18n.languages,
     widgetTheme.config.appearance,
@@ -214,11 +204,7 @@ export function Widget({
       welcomeScreenClosed={welcomeScreenClosed}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
-      <ClientOnly
-        fallback={
-          <WidgetSkeleton config={{ ...config, appearance: activeTheme }} />
-        }
-      >
+      <ClientOnly fallback={<WidgetSkeleton config={config} />}>
         <LiFiWidget integrator={config.integrator} config={config} />
       </ClientOnly>
     </WidgetWrapper>

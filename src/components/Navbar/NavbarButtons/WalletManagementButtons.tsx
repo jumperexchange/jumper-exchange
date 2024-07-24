@@ -10,7 +10,7 @@ import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { EventTrackingTool } from 'src/types/userTracking';
-import { WallettButtons } from '../WalletButton';
+import { WalletButtons } from '../WalletButton';
 import { ConnectButton } from './WalletManagementButtons.style';
 
 export const WalletManagementButtons = () => {
@@ -54,7 +54,7 @@ export const WalletManagementButtons = () => {
             </Typography>
           </ConnectButton>
         ) : (
-          <WallettButtons />
+          <WalletButtons />
         )}
       </Box>
       <WalletMenu anchorEl={walletManagementButtonsRef.current ?? undefined} />

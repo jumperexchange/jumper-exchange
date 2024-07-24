@@ -82,7 +82,6 @@ export const XPDisplayBox = styled(Box, {
   alignItems: 'center',
   borderRadius: '128px',
   padding: '8px',
-  backgroundColor: '#ff0420',
 }));
 
 export const XPIconBox = styled(Box)(({ theme }) => ({

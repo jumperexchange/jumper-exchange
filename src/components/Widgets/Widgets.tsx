@@ -6,12 +6,11 @@ import { useActiveTabStore } from '@/stores/activeTab';
 import type { StarterVariantType } from '@/types/internal';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { useMetaMask } from 'src/hooks/useMetaMask';
-import type { ThemeModesSupported } from 'src/types/settings';
+import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
 import { WidgetEvents } from './WidgetEvents';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
-  activeTheme: ThemeModesSupported | undefined;
   closedWelcomeScreen: boolean;
 }
 
@@ -69,6 +68,7 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
     <>
       <ChainAlert />
       <WidgetEvents />
+      <PartnerThemeFooterImage />
     </>
   );
 }
