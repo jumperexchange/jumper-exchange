@@ -88,12 +88,6 @@ export function useUserTracking() {
             isMobile: !isDesktop,
             sessionId,
           };
-
-          console.log(
-            'Event Data before sending:',
-            JSON.stringify(eventData, null, 2),
-          );
-
           await jumperTrackEvent(eventData);
         } catch (error) {
           console.error('Error in tracking event:', error);
