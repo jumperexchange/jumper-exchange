@@ -151,3 +151,11 @@ export const BannerTitleTypography = styled(Typography)(({ theme }) => ({
     lineHeight: '48px',
   },
 }));
+
+
+export const BannerLabelBox = styled(Box)(({ theme }) => ({
+  border: '2px dotted',
+  borderColor: '#000000',
+  borderRadius: '8px',
+  padding: '8px',
+}));
