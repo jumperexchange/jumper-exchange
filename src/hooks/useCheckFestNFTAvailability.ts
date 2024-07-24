@@ -1,5 +1,5 @@
 'use client';
-import {  useQueries, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import request from 'graphql-request';
 import { availableNFT } from './querries/superfestNFT';
 import { useAccount } from 'wagmi';
@@ -20,12 +20,18 @@ export interface UseCheckFestNFTAvailabilityRes {
   claimInfo: {
     [key: string]: NFTInfo;
   };
-  isLoading: boolean;
-  isSuccess: boolean;
+  isLoading?: boolean;
+  isSuccess?: boolean;
 }
 
 export interface UseCheckFestNFTAvailabilityProps {
   userAddress?: string;
+}
+
+interface prepareParticipateObj {}
+
+interface GalxeGraphqlRes {
+  prepareParticipate: prepareParticipateObj;
 }
 
 const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
@@ -72,7 +78,6 @@ const claimInfo = {
   // },
 };
 
-
 export const useCheckFestNFTAvailability = ({
   userAddress,
 }: UseCheckFestNFTAvailabilityProps): UseCheckFestNFTAvailabilityRes => {
@@ -96,23 +101,32 @@ export const useCheckFestNFTAvailability = ({
       enabled: !!address,
       refetchInterval: 1000 * 60 * 60,
     });
-    if (data && (data as any).prepareParticipate && (data as any).prepareParticipate.allow) {
+    if (
+      data &&
+      (data as any).prepareParticipate &&
+      (data as any).prepareParticipate.allow
+    ) {
       // cap: 0, -> check for the CAP
       (claimInfo[chainName as string] as any).isClaimable = true;
-      (claimInfo[chainName as string] as any).verifyIds = (data as any).prepareParticipate.mintFuncInfo.verifyIDs?.[0];
-      (claimInfo[chainName as string] as any).powahs = (data as any).prepareParticipate.mintFuncInfo.powahs?.[0];
-      (claimInfo[chainName as string] as any).signature = (data as any).prepareParticipate.signature;
-      (claimInfo[chainName as string] as any).claimingAddress = (data as any).prepareParticipate.spaceStation;
-      (claimInfo[chainName as string] as any).NFTAddress = (data as any).prepareParticipate.mintFuncInfo.nftCoreAddress;
-    }  
+      (claimInfo[chainName as string] as any).verifyIds = (
+        data as any
+      ).prepareParticipate.mintFuncInfo.verifyIDs?.[0];
+      (claimInfo[chainName as string] as any).powahs = (
+        data as any
+      ).prepareParticipate.mintFuncInfo.powahs?.[0];
+      (claimInfo[chainName as string] as any).signature = (
+        data as any
+      ).prepareParticipate.signature;
+      (claimInfo[chainName as string] as any).claimingAddress = (
+        data as any
+      ).prepareParticipate.spaceStation;
+      (claimInfo[chainName as string] as any).NFTAddress = (
+        data as any
+      ).prepareParticipate.mintFuncInfo.nftCoreAddress;
+    }
   }
-
-  console.log('--------------')
-  console.log(claimInfo)
 
   return {
     claimInfo: claimInfo,
-    isLoading: false,
-    isSuccess: true,
   };
 };

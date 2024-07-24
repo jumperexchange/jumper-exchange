@@ -11,8 +11,6 @@ import { ChainId } from '@lifi/sdk';
 import type { NFTInfo } from 'src/hooks/useCheckFestNFTAvailability';
 import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';
 
-// const NOT_LIVE = true;
-
 interface NFTCardProps {
   image: string;
   chain: string;
@@ -45,20 +43,17 @@ export const NFTCard = ({
       const { id } = await switchChainAsync({
         chainId: ChainId.OPT,
       });
-      console.log(claimInfo)
+
       if (
         !isLoading &&
         isSuccess &&
-        id === ChainId.OPT && 
-        claimInfo && 
-        claimInfo.NFTAddress && 
+        id === ChainId.OPT &&
         address &&
+        claimInfo?.NFTAddress &&
         claimInfo.verifyIds &&
         claimInfo.isClaimable &&
         claimInfo.signature
       ) {
-        console.log('CLAIMINNNNG')
-        console.log(claimInfo)
         try {
           writeContract({
             address: claimInfo.claimingAddress as `0x${string}`,
@@ -72,17 +67,17 @@ export const NFTCard = ({
               address,
               claimInfo.signature,
             ],
-          }); 
-            // function claim(
-            //   uint256 _cid,      // Campaign number id
-            //   address _starNFT,  // NFT contract address
-            //   uint256 _dummyId,  // Unique id
-            //   uint256 _powah,    // Reserved field, currently is campaign number id
-            //   address _mintTo,   // NFT owner
-            //   bytes calldata _signature // Claim signature
-            // )
+          });
+          // function claim(
+          //   uint256 _cid,      // Campaign number id
+          //   address _starNFT,  // NFT contract address
+          //   uint256 _dummyId,  // Unique id
+          //   uint256 _powah,    // Reserved field, currently is campaign number id
+          //   address _mintTo,   // NFT owner
+          //   bytes calldata _signature // Claim signature
+          // )
         } catch (err) {
-          console.log(err)
+          console.log(err);
         }
       }
     } catch (err) {
@@ -90,7 +85,7 @@ export const NFTCard = ({
     }
   }
 
-  if (claimInfo && claimInfo.isClaimable) {
+  if (claimInfo?.isClaimable) {
     return (
       <NFTCardMainBox>
         <Image
@@ -101,8 +96,8 @@ export const NFTCard = ({
           }}
           src={image}
           alt={chain}
-        width="288"
-        height="288"
+          width="288"
+          height="288"
         />
         <NFTCardBotomBox>
           <Button
@@ -127,7 +122,7 @@ export const NFTCard = ({
       </NFTCardMainBox>
     );
   }
-  if (claimInfo && claimInfo.isClaimed || isConfirmed) {
+  if (claimInfo?.isClaimed || isConfirmed) {
     return (
       <NFTCardMainBox
         sx={{
@@ -160,7 +155,7 @@ export const NFTCard = ({
               },
             }}
           >
-            Claimed
+            CLAIMED
           </Button>
         </NFTCardBotomBox>
       </NFTCardMainBox>
@@ -229,7 +224,7 @@ export const NFTCard = ({
           styles={{
             backgroundColor: 'transparent',
             border: '2px dotted',
-            borderColor: '#C5B99C',
+            borderColor: '#000000',
             width: '75%',
             '&:hover': {
               backgroundColor: bgColor,
