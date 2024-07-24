@@ -1,5 +1,6 @@
 'use client';
 import { useChains } from '@/hooks/useChains';
+import type { ExtendedChain } from '@lifi/sdk';
 import {
   createDefaultWagmiConfig,
   safe,
@@ -24,7 +25,7 @@ const { config, connectors } = createDefaultWagmiConfig({
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
   const { chains } = useChains();
 
-  useSyncWagmiConfig(config, connectors, chains);
+  useSyncWagmiConfig(config, connectors, chains as ExtendedChain[]);
 
   return (
     <WagmiProvider config={config} reconnectOnMount={false}>

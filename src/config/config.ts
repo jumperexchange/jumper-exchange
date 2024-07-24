@@ -19,7 +19,7 @@ interface DefaultSettingsType {
 }
 
 export const defaultSettings: DefaultSettingsType = {
-  themeMode: 'auto',
+  themeMode: 'system',
   clientWallets: [],
   disabledFeatureCards: [],
   welcomeScreenClosed: false,

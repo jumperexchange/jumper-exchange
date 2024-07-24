@@ -1,4 +1,4 @@
-import { WallettButtons } from '../Navbar/WalletButton';
+import { WalletButtons } from '../Navbar/WalletButton';
 import { Widget } from '../Widgets/Widget';
 import { BlogWidgetHeader } from './BlogWidget.style';
 import type { ThemeModesSupported } from '@/types/settings';
@@ -10,7 +10,7 @@ export interface BlogWidgetProps {
   toToken?: string;
   fromAmount?: string;
   allowChains?: string;
-  activeTheme?: ThemeModesSupported;
+  activeThemeMode?: ThemeModesSupported;
 }
 
 export const BlogWidget = ({
@@ -20,7 +20,7 @@ export const BlogWidget = ({
   toToken,
   fromAmount,
   allowChains,
-  activeTheme,
+  activeThemeMode,
 }: BlogWidgetProps) => {
   const allowChainsArray = (allowChains || '')
     .split(',')
@@ -30,7 +30,7 @@ export const BlogWidget = ({
   return (
     <>
       <BlogWidgetHeader>
-        <WallettButtons />
+        <WalletButtons />
       </BlogWidgetHeader>
       <Widget
         starterVariant="default"
@@ -41,7 +41,7 @@ export const BlogWidget = ({
         toToken={toToken}
         allowChains={allowChainsArray}
         widgetIntegrator={process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_BLOG}
-        activeTheme={activeTheme}
+        activeThemeMode={activeThemeMode}
       />
     </>
   );
