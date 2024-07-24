@@ -94,6 +94,7 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                     priority={false}
                   />
                   <SoraTypography
+                    marginTop={{ xs: '16px', md: '0px' }}
                     fontSize={{ xs: '16px', sm: '22px' }}
                     fontWeight={700}
                     marginLeft={'16px'}
@@ -106,7 +107,7 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                 <XPDisplayBox
                 bgcolor={'#ff0420'}
                 marginRight={'16px'}
-                minWidth={'96px'}
+                minWidth={"96px"}
                 >
                   <SoraTypography
                     fontSize="14px"
@@ -125,6 +126,7 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                   <MissionCtaButton onClick={handleClick}>
                     <ArrowForwardIcon
                       sx={{
+                        color: '#000000',
                         width: '28px',
                         height: '28px',
                       }}
