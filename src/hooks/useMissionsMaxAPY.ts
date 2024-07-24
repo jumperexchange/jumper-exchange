@@ -45,8 +45,8 @@ export const useMissionsMaxAPY = (
             if (
               data &&
               data.apr &&
-              data .endTimestamp > timestamp &&
-              data .apr > apy
+              data.endTimestamp > timestamp &&
+              data.apr > apy
             ) {
               apy = data.apr;
             }
