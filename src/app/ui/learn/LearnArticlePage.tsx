@@ -1,7 +1,6 @@
 'use client';
 
 import { BlogBackgroundGradient } from '@/components/BackgroundGradient';
-import { BackgroundGradient } from '@/components/BackgroundGradient/BackgroundGradient';
 import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
@@ -12,19 +11,21 @@ import {
   BlogArticleSection,
   BlogArticleWrapper,
 } from './LearnArticlePage.style';
+import Background from '@/components/Background';
+import { Box } from '@mui/material';
 
 interface LearnArticlePageProps {
   article: BlogArticleData[];
   articles: BlogArticleData[];
   url: string;
-  activeTheme?: ThemeModesSupported;
+  activeThemeMode?: ThemeModesSupported;
 }
 
 const LearnArticlePage = ({
   article,
   articles,
   url,
-  activeTheme,
+  activeThemeMode,
 }: LearnArticlePageProps) => {
   const { t } = useTranslation();
 
@@ -45,11 +46,11 @@ const LearnArticlePage = ({
           tags={article[0]?.attributes.tags}
           image={article[0]?.attributes.Image}
           baseUrl={url}
-          activeTheme={activeTheme}
+          activeThemeMode={activeThemeMode}
         />
       </BlogArticleWrapper>
       <BlogArticleSection>
-        <BackgroundGradient styles={{ position: 'absolute' }} />
+        <Box component={Background} sx={{ position: 'absolute' }} />
         {articles.length > 2 && (
           <BlogCarousel
             title={t('blog.similarPosts')}

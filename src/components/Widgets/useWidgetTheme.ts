@@ -1,13 +1,23 @@
-import { usePartnerTheme } from '@/hooks/usePartnerTheme';
 import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
-import { darkTheme } from 'src/theme';
+import { useTheme as useNextTheme } from 'next-themes';
 import type { PartnerTheme } from 'src/types/strapi';
+import { useEffect } from 'react';
+import { deepmerge } from '@mui/utils';
+import { useSettingsStore } from '@/stores/settings';
+import { formatTheme } from '@/utils/formatTheme';
+import type { WidgetConfig } from '@lifi/widget';
 
 export const useWidgetTheme = (): PartnerTheme => {
   const theme = useTheme();
-  const { hasTheme, isSuccess, currentWidgetTheme } = usePartnerTheme();
-  const defaultWidgetTheme = {
+  const { resolvedTheme, forcedTheme } = useNextTheme();
+  const [widgetTheme, setWidgetTheme, partnerThemes] = useSettingsStore(
+    (state) => [state.widgetTheme, state.setWidgetTheme, state.partnerThemes],
+  );
+
+  const activeNextTheme = forcedTheme || resolvedTheme;
+
+  const defaultWidgetTheme: { config: Partial<WidgetConfig> } = {
     config: {
       appearance: theme.palette.mode,
       theme: {
@@ -41,9 +51,7 @@ export const useWidgetTheme = (): PartnerTheme => {
             main: theme.palette.accent1.main,
           },
           secondary: {
-            // FIXME: we need to find out how to use the correct color from the main theme config
-            // main: darkTheme.palette.accent2.main,
-            main: theme.palette.secondary.main,
+            main: theme.palette.accent2.main,
           },
           grey: theme.palette.grey,
         },
@@ -51,9 +59,25 @@ export const useWidgetTheme = (): PartnerTheme => {
     },
   };
 
-  if (!!hasTheme && isSuccess && !!currentWidgetTheme) {
-    return currentWidgetTheme;
-  } else {
-    return defaultWidgetTheme;
-  }
+  useEffect(() => {
+    const theme = partnerThemes?.find(
+      (d) => d.attributes.uid === activeNextTheme,
+    );
+
+    if (!theme) {
+      setWidgetTheme(defaultWidgetTheme);
+      return;
+    }
+
+    const formattedTheme = formatTheme(theme.attributes);
+
+    setWidgetTheme({
+      config: deepmerge(
+        defaultWidgetTheme.config,
+        formattedTheme.activeWidgetTheme,
+      ),
+    });
+  }, [activeNextTheme, partnerThemes, theme]);
+
+  return widgetTheme || defaultWidgetTheme;
 };
