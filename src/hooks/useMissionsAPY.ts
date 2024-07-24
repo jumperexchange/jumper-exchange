@@ -12,6 +12,11 @@ interface useMissionsAPYRes {
   CTAsWithAPYs: CTALinkInt[];
 }
 
+export interface MerklApyRes {
+  apr: number;
+  endTimestamp: number;
+}
+
 export const useMissionsAPY = (CTAs: CTALinkInt[]): useMissionsAPYRes => {
   const MERKL_CAMPAIGN_API = `${MERKL_API}/campaigns?chainIds=${ACTIVE_CHAINS.join(',')}&creatorTag=${CREATOR_TAG}`;
 
@@ -36,16 +41,16 @@ export const useMissionsAPY = (CTAs: CTALinkInt[]): useMissionsAPYRes => {
       if (chainCampaignData && chainCampaignData[CTA.claimingId]) {
         for (const [key, data] of Object.entries(
           chainCampaignData[CTA.claimingId],
-        )) {
+        ) as [string, MerklApyRes][]) {
           const timestamp = Date.now() / 1000;
           if (
             data &&
-            (data as any).apr &&
-            (data as any).endTimestamp > timestamp
+            data.apr &&
+            data.endTimestamp > timestamp
           ) {
             return {
               ...CTA,
-              apy: (data as any).apr,
+              apy: data.apr,
             };
           }
         }

@@ -1,6 +1,7 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { CTALinkInt } from 'src/components/Superfest/SuperfestPage/CTA/MissionCTA';
+import { MerklApyRes } from './useMissionsAPY';
 
 const ACTIVE_CHAINS = ['10', '8453', '252', '34443'];
 const MERKL_API = 'https://api.merkl.xyz/v3';
@@ -39,15 +40,15 @@ export const useMissionsMaxAPY = (
       for (const chainId of ACTIVE_CHAINS) {
         const chainCampaignData = data?.[chainId];
         if (chainCampaignData && chainCampaignData[id]) {
-          for (const [key, data] of Object.entries(chainCampaignData[id])) {
+          for (const [key, data] of Object.entries(chainCampaignData[id]) as [string, MerklApyRes][]) {
             const timestamp = Date.now() / 1000;
             if (
               data &&
-              (data as any).apr &&
-              (data as any).endTimestamp > timestamp &&
-              (data as any).apr > apy
+              data.apr &&
+              data .endTimestamp > timestamp &&
+              data .apr > apy
             ) {
-              apy = (data as any).apr;
+              apy = data.apr;
             }
           }
         }
