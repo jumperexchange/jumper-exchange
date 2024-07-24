@@ -1,6 +1,5 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import { CTALinkInt } from 'src/components/Superfest/SuperfestPage/CTA/MissionCTA';
 import { MerklApyRes } from './useMissionsAPY';
 
 const ACTIVE_CHAINS = ['10', '8453', '252', '34443'];
@@ -40,7 +39,10 @@ export const useMissionsMaxAPY = (
       for (const chainId of ACTIVE_CHAINS) {
         const chainCampaignData = data?.[chainId];
         if (chainCampaignData && chainCampaignData[id]) {
-          for (const [key, data] of Object.entries(chainCampaignData[id]) as [string, MerklApyRes][]) {
+          for (const [_, data] of Object.entries(chainCampaignData[id]) as [
+            string,
+            MerklApyRes,
+          ][]) {
             const timestamp = Date.now() / 1000;
             if (
               data &&

@@ -43,11 +43,7 @@ export const useMissionsAPY = (CTAs: CTALinkInt[]): useMissionsAPYRes => {
           chainCampaignData[CTA.claimingId],
         ) as [string, MerklApyRes][]) {
           const timestamp = Date.now() / 1000;
-          if (
-            data &&
-            data.apr &&
-            data.endTimestamp > timestamp
-          ) {
+          if (data && data.apr && data.endTimestamp > timestamp) {
             return {
               ...CTA,
               apy: data.apr,
