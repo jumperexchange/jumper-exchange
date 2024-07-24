@@ -3,19 +3,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Slide, useTheme } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 
-import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { useStrapi } from '@/hooks/useStrapi';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import type { FeatureCardData } from '@/types/strapi';
 import { EventTrackingTool } from '@/types/userTracking';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { useTranslation } from 'react-i18next';
+import { createFeatureCardStrapiApi } from 'src/utils/strapi/generateStrapiUrl';
 import {
   FCard as Card,
   FeatureCardActions,
@@ -35,9 +34,7 @@ interface FeatureCardProps {
 export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   const [open, setOpen] = useState(true);
   const { t } = useTranslation();
-  const { url } = useStrapi<FeatureCardData>({
-    contentType: STRAPI_FEATURE_CARDS,
-  });
+  const url = createFeatureCardStrapiApi().getApiUrl();
   const { trackEvent } = useUserTracking();
   const [setDisabledFeatureCard] = useSettingsStore((state) => [
     state.setDisabledFeatureCard,
@@ -103,14 +100,8 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
 
   const imageUrl =
     mode === 'dark'
-      ? new URL(
-          data.attributes.BackgroundImageDark.data?.attributes.url,
-          url.origin,
-        )
-      : new URL(
-          data.attributes.BackgroundImageLight.data?.attributes.url,
-          url.origin,
-        );
+      ? new URL(data.attributes.BackgroundImageDark.data?.attributes.url, url)
+      : new URL(data.attributes.BackgroundImageLight.data?.attributes.url, url);
 
   const handleClose = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,

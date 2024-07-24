@@ -1,20 +1,19 @@
 import { IconButtonPrimary } from '@/components/IconButton.style';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box, type Theme, useMediaQuery } from '@mui/material';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { SoraTypography } from '../../Superfest.style';
 import {
+  CTAExplanationBox,
+  CTAMainBox,
   SeveralCTABox,
-  StartedTitleTypography,
   SeveralMissionCtaContainer,
   StartedTitleBox,
-  CTAMainBox,
-  CTAExplanationBox,
+  StartedTitleTypography,
 } from './MissionCTA.style';
-import { type Theme, useMediaQuery, Box } from '@mui/material';
-import Image from 'next/image';
-import { SoraTypography } from '../../Superfest.style';
-import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
 
 interface CTALinkInt {
   logo: string;
@@ -64,7 +63,7 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
         </Box>
       </StartedTitleBox>
       <SeveralCTABox>
-        {CTAs.map((CTA: CTALinkInt, i: number) => {
+        {CTAs?.map((CTA: CTALinkInt, i: number) => {
           return (
             <Link
               key={`cta-mission-${i}`}

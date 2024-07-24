@@ -4,16 +4,20 @@ import {
   STRAPI_JUMPER_USERS,
 } from '@/const/strapiContentKeys';
 import { useAccounts } from '@/hooks/useAccounts';
-import { useStrapi } from '@/hooks/useStrapi';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
-import type { FeatureCardData, JumperUserData } from '@/types/strapi';
+import type { FeatureCardData } from '@/types/strapi';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { usePersonalizedFeatureOnLevel } from 'src/hooks/usePersonalizedFeatureOnLevel';
+import {
+  createFeatureCardStrapiApi,
+  createJumperUserStrapiApi,
+} from 'src/utils/strapi/generateStrapiUrl';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
 
@@ -29,18 +33,43 @@ export const FeatureCards = () => {
   const { account } = useAccounts();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
-  const { data: cards, isSuccess } = useStrapi<FeatureCardData>({
-    contentType: STRAPI_FEATURE_CARDS,
-    queryKey: ['feature-cards'],
+  const featureCardsUrl = createFeatureCardStrapiApi();
+
+  const { data: cards, isSuccess } = useQuery({
+    queryKey: [STRAPI_FEATURE_CARDS],
+    queryFn: async () => {
+      const response = await fetch(
+        decodeURIComponent(featureCardsUrl.apiUrl.href),
+        {
+          headers: {
+            Authorization: `Bearer ${featureCardsUrl.getApiAccessToken()}`,
+          },
+        },
+      );
+      const result = await response.json();
+      return result;
+    },
+    refetchInterval: 1000 * 60 * 60,
   });
 
-  const { data: jumperUser } = useStrapi<JumperUserData>({
-    contentType: STRAPI_JUMPER_USERS,
-    filterPersonalFeatureCards: {
-      enabled: true,
-      account: account,
+  const jumperUsersUrl =
+    createJumperUserStrapiApi().addJumperUsersPersonalizedFCParams(account);
+  const { data: jumperUser } = useQuery({
+    queryKey: [STRAPI_JUMPER_USERS],
+    queryFn: async () => {
+      const response = await fetch(
+        decodeURIComponent(jumperUsersUrl.apiUrl.href),
+        {
+          headers: {
+            Authorization: `Bearer ${featureCardsUrl.getApiAccessToken()}`,
+          },
+        },
+      );
+      const result = await response.json();
+      return result;
     },
-    queryKey: ['personalized-feature-cards'],
+    enabled: account?.isConnected,
+    refetchInterval: 1000 * 60 * 60,
   });
 
   const { featureCards: featureCardsLevel } = usePersonalizedFeatureOnLevel({
@@ -74,8 +103,8 @@ export const FeatureCards = () => {
   }
 
   const slicedFeatureCards = useMemo(() => {
-    if (Array.isArray(cards) && !!cards.length) {
-      return cards
+    if (Array.isArray(cards?.data) && !!cards?.data.length) {
+      return (cards.data as FeatureCardData[])
         ?.filter(excludedFeatureCardsFilter)
         ?.filter(
           (el, index) =>

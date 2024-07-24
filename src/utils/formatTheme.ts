@@ -1,7 +1,7 @@
-import type { PartnerThemesAttributes } from '@/types/strapi';
-import { getStrapiUrl } from '@/hooks/useStrapi';
 import { STRAPI_PARTNER_THEMES } from '@/const/strapiContentKeys';
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
+import type { PartnerThemesAttributes } from '@/types/strapi';
+import { getStrapiUrl } from './strapi/generateStrapiUrl';
 
 function getImageUrl(
   theme: PartnerThemesAttributes,

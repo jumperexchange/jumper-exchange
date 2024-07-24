@@ -1,16 +1,17 @@
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import { type Quest } from 'src/types/loyaltyPass';
+import { checkInclusion } from '../../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 import {
-  BannerImageBox,
   BannerBottomBox,
+  BannerImageBox,
   BannerMainBox,
   BannerTitleBox,
-  RewardMainBox,
   BannerTitleTypography,
+  RewardMainBox,
 } from './Banner.style';
 import { RewardBox } from './Rewards/RewardBox';
-import { checkInclusion } from '../../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
-import { Theme, useMediaQuery } from '@mui/material';
 
 interface SuperfestMissionPageVar {
   quest: Quest;

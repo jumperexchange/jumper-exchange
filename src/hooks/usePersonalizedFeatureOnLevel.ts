@@ -1,7 +1,7 @@
 import type { FeatureCardData } from '@/types/strapi';
 import { useQuery } from '@tanstack/react-query';
-import { useAccounts } from './useAccounts';
 import { getLevelBasedOnPoints } from 'src/components/ProfilePage/LevelBox/TierBox';
+import { useAccounts } from './useAccounts';
 
 export interface UsePersonalizedFeatureOnLevelProps {
   featureCards: FeatureCardData[] | undefined;
