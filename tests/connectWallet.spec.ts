@@ -24,6 +24,6 @@ test('should connect wallet to Jumper', async ({
   await connectWalletButton.click();
   await page.locator('(//img[@alt="io.metamask-wallet-logo"])[1]').click();
   await page.locator('xpath=(//button[@type="button"])[2]').click();
-  // await metamask.connectToDapp(['Account 1']);
+  await metamask.connectToDapp(['Account 2']);
   await expect(connectedWalletButton).not.toHaveText('Connect');
 });
