@@ -118,7 +118,7 @@ export const QuestCard = ({
               {apy > 0 ?
               <XPDisplayBox
                 active={active}
-                bgcolor={!completed ? '#ff0420' : '#42B852'}
+                bgcolor={'#ff0420'}
               >
                 <SoraTypography
                   fontSize="14px"

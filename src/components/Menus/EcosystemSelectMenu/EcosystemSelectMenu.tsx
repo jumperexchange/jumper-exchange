@@ -57,7 +57,7 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
           </Typography>
         </MenuHeaderAppBar>
       </MenuHeaderAppWrapper>
-      <ConnectButtonContainer>
+      <ConnectButtonContainer as="li">
         <EVMConnectButton
           walletIcon={
             getConnectorIcon(openEcosystemSelect.combinedWallet?.evm) ||
