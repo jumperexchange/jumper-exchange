@@ -19,6 +19,7 @@ export const availableNFT = gql`
         powahs # Reserved field, currently is campaign id
         verifyIDs # Unique id
         nftCoreAddress # NFT contract address
+        funcName # Function name
       }
     }
   }

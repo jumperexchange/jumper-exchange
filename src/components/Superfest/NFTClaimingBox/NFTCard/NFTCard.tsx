@@ -68,7 +68,7 @@ export const NFTCard = ({
               claimInfo.cid,
               claimInfo.NFTAddress,
               claimInfo.verifyIds,
-              claimInfo.cid,
+              claimInfo.powahs,
               address,
               claimInfo.signature,
             ],

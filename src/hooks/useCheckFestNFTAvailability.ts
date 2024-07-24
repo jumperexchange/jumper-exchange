@@ -12,6 +12,7 @@ export interface NFTInfo {
   signature?: string;
   cap?: number;
   verifyIds?: number;
+  powahs?: number;
   NFTAddress?: string;
 }
 
@@ -95,13 +96,11 @@ export const useCheckFestNFTAvailability = ({
       enabled: !!address,
       refetchInterval: 1000 * 60 * 60,
     });
-    console.log(data)
-    console.log((data as any)?.prepareParticipate)
-    console.log((data as any)?.prepareParticipate?.allow)
     if (data && (data as any).prepareParticipate && (data as any).prepareParticipate.allow) {
       // cap: 0, -> check for the CAP
       (claimInfo[chainName as string] as any).isClaimable = true;
       (claimInfo[chainName as string] as any).verifyIds = (data as any).prepareParticipate.mintFuncInfo.verifyIDs?.[0];
+      (claimInfo[chainName as string] as any).powahs = (data as any).prepareParticipate.mintFuncInfo.powahs?.[0];
       (claimInfo[chainName as string] as any).signature = (data as any).prepareParticipate.signature;
       (claimInfo[chainName as string] as any).claimingAddress = (data as any).prepareParticipate.spaceStation;
       (claimInfo[chainName as string] as any).NFTAddress = (data as any).prepareParticipate.mintFuncInfo.nftCoreAddress;
