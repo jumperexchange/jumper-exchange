@@ -3,7 +3,6 @@ import type { MenuKeysEnum } from '@/const/menuKeys';
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
-import type { JsxElement } from 'typescript';
 import { MenuItemContainer, MenuItemLink } from '.';
 import { MenuItemLabel } from './MenuItemLabel';
 
@@ -14,7 +13,7 @@ export interface MenuItemLinkType {
 interface MenuItemProps {
   open: boolean;
   showButton: boolean | undefined;
-  children?: Element | JsxElement | undefined;
+  children?: Element | JSX.Element | undefined;
   disableRipple?: boolean | undefined;
   autoFocus?: boolean;
   showMoreIcon?: boolean;
