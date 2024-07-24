@@ -9,7 +9,7 @@ import {
 } from 'wagmi';
 import { ChainId } from '@lifi/sdk';
 import { MerklDistribABI } from 'src/const/abi/merklABI';
-import { NFTInfo } from 'src/hooks/useCheckFestNFTAvailability';
+import type { NFTInfo } from 'src/hooks/useCheckFestNFTAvailability';
 
 const NOT_LIVE = true;
 

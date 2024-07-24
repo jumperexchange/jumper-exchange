@@ -22,8 +22,9 @@ export const ProfilePageHeaderBox = styled(Box)(({ theme }) => ({
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
 }));
 
-export const NoSelectTypography = styled(Typography)(() => ({
+export const NoSelectTypography = styled(Typography)(({ theme }) => ({
   userSelect: 'none',
+  color: theme.palette.text.primary,
 }));
 
 export const CenteredBox = styled(Box)(() => ({

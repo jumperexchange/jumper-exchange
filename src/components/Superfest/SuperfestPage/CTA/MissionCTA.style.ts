@@ -80,6 +80,10 @@ export const MissionCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 export const MissionCtaButton = styled(IconButtonPrimary)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  ':hover': {
+    backgroundColor: darken(theme.palette.primary.main, 0.16),
+  },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     display: 'flex',
   },
