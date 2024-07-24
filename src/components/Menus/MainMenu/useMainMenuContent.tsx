@@ -9,6 +9,7 @@ import {
 import {
   DISCORD_URL,
   EXPLORER_URL,
+  JUMPER_FEST_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   X_URL,
@@ -21,13 +22,17 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
+import PaletteIcon from '@mui/icons-material/Palette';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useTheme as useNextTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { OPLogo } from 'src/components/illustrations/OPLogo';
+import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
@@ -35,6 +40,9 @@ export const useMainMenuContent = () => {
   const { trackEvent } = useUserTracking();
   const router = useRouter();
   const theme = useTheme();
+  const configTheme = useSettingsStore((state) => state.configTheme);
+  const { forcedTheme } = useNextTheme();
+  const { isMainPaths } = useMainPaths();
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
@@ -66,6 +74,283 @@ export const useMainMenuContent = () => {
     minWidth: 'unset',
     borderRadius: '18px',
   };
+
+  let mainMenu: any[] = [];
+
+  if (configTheme?.hasThemeModeSwitch) {
+    mainMenu.push({
+      children: (
+        <Tabs
+          data={themeSwitchTabs}
+          value={themeMode === 'light' ? 0 : themeMode === 'dark' ? 1 : 2}
+          ariaLabel="theme-switch-tabs"
+          containerStyles={containerStyles}
+          tabStyles={tabStyles}
+        />
+      ),
+      styles: {
+        width: 'auto',
+        margin: theme.spacing(1.5),
+        gap: '8px',
+        backgroundColor: 'transparent',
+        borderRadius: '24px',
+        '&:hover': {
+          backgroundColor: 'transparent',
+        },
+        paddingTop: `${theme.spacing(0.5)} !important`,
+        padding: theme.spacing(0.5),
+        '> button:hover': {
+          backgroundColor: getContrastAlphaColor(theme, '4%'),
+        },
+        '> button:hover svg': {
+          fill:
+            theme.palette.mode === 'light'
+              ? theme.palette.grey[700]
+              : theme.palette.grey[300],
+        },
+      },
+      showMoreIcon: false,
+      disableRipple: true,
+    });
+  }
+
+  if (!forcedTheme && isMainPaths) {
+    mainMenu.push({
+      label: t('navbar.navbarMenu.theme'),
+      prefixIcon: <PaletteIcon />,
+      triggerSubMenu: !['dark', 'light'].includes(configTheme?.uid)
+        ? MenuKeysEnum.Theme
+        : undefined,
+      showMoreIcon: !['dark', 'light'].includes(configTheme?.uid),
+      suffixIcon: configTheme?.uid && (
+        <Typography
+          variant="lifiBodyMedium"
+          textTransform={'uppercase'}
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: 38,
+          }}
+        >
+          {configTheme.uid}
+        </Typography>
+      ),
+      onClick: () => {
+        setSubMenuState(MenuKeysEnum.Theme);
+        trackEvent({
+          category: TrackingCategory.MainMenu,
+          action: TrackingAction.OpenMenu,
+          label: `open_submenu_${MenuKeysEnum.Theme.toLowerCase()}`,
+          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Theme },
+        });
+      },
+    });
+  }
+
+  mainMenu = mainMenu.concat([
+    {
+      label: t('language.key', { ns: 'language' }),
+      prefixIcon: <LanguageIcon />,
+      suffixIcon: (
+        <Typography
+          variant="lifiBodyMedium"
+          textTransform={'uppercase'}
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: 38,
+          }}
+        >
+          {i18n.language}
+        </Typography>
+      ),
+      showMoreIcon: true,
+      triggerSubMenu: MenuKeysEnum.Language,
+      onClick: () => {
+        setSubMenuState(MenuKeysEnum.Language);
+        trackEvent({
+          category: TrackingCategory.MainMenu,
+          action: TrackingAction.OpenMenu,
+          label: `open_submenu_${MenuKeysEnum.Language.toLowerCase()}`,
+          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Language },
+        });
+      },
+    },
+    {
+      label: t('navbar.navbarMenu.developers'),
+      prefixIcon: <DeveloperModeIcon />,
+      triggerSubMenu: MenuKeysEnum.Devs,
+      onClick: () => {
+        setSubMenuState(MenuKeysEnum.Devs);
+        trackEvent({
+          category: TrackingCategory.MainMenu,
+          action: TrackingAction.OpenMenu,
+          label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
+          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
+        });
+      },
+    },
+    {
+      label: t('navbar.navbarMenu.fest'),
+      prefixIcon: <OPLogo />,
+      showMoreIcon: false,
+      link: { url: '/superfest' },
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-jumper-fest-link',
+          action: TrackingAction.ClickJumperProfileLink,
+          data: { [TrackingEventParameter.Menu]: 'fest' },
+        });
+        closeAllMenus();
+        router.push(JUMPER_FEST_PATH);
+      },
+    },
+    {
+      label: t('navbar.navbarMenu.profile'),
+      prefixIcon: <AccountCircleIcon />,
+      showMoreIcon: false,
+      link: { url: '/profile' },
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-jumper-pass-link',
+          action: TrackingAction.ClickJumperProfileLink,
+          data: { [TrackingEventParameter.Menu]: 'pass' },
+        });
+        closeAllMenus();
+        router.push(JUMPER_LOYALTY_PATH);
+      },
+    },
+    {
+      label: 'Jumper Learn',
+      prefixIcon: <SchoolIcon />,
+      showMoreIcon: false,
+      link: { url: '/learn' },
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-jumper-learn-link',
+          action: TrackingAction.ClickJumperLearnLink,
+          data: { [TrackingEventParameter.Menu]: 'jumper_learn' },
+        });
+        closeAllMenus();
+        router.push(JUMPER_LEARN_PATH);
+      },
+    },
+    {
+      label: t('navbar.navbarMenu.lifiExplorer'),
+      prefixIcon: <SearchOutlinedIcon />,
+      showMoreIcon: false,
+      link: { url: explorerUrl, external: true },
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'open-lifi-explorer',
+          action: TrackingAction.ClickLifiExplorerLink,
+          data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
+        });
+        trackEvent({
+          category: TrackingCategory.Pageload,
+          action: TrackingAction.PageLoad,
+          label: 'pageload-explorer',
+          data: {
+            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
+            [TrackingEventParameter.PageloadDestination]: 'lifi-explorer',
+            [TrackingEventParameter.PageloadURL]: explorerUrl,
+            [TrackingEventParameter.PageloadExternal]: true,
+          },
+        });
+      },
+    },
+    {
+      label: 'X',
+      prefixIcon: <XIcon />,
+      showMoreIcon: false,
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-x-link',
+          action: TrackingAction.ClickXLink,
+          data: { [TrackingEventParameter.Menu]: 'x-jumper' },
+        });
+        trackEvent({
+          category: TrackingCategory.Pageload,
+          action: TrackingAction.PageLoad,
+          label: 'pageload-x_jumper',
+          data: {
+            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
+            [TrackingEventParameter.PageloadDestination]: 'x-jumper',
+            [TrackingEventParameter.PageloadURL]: X_URL,
+            [TrackingEventParameter.PageloadExternal]: true,
+          },
+        });
+      },
+      link: { url: X_URL, external: true },
+    },
+    {
+      label: 'Discord',
+      prefixIcon: (
+        <Discord
+          color={
+            theme.palette.mode === 'dark'
+              ? theme.palette.white.main
+              : theme.palette.black.main
+          }
+        />
+      ),
+      showMoreIcon: false,
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-discord-link',
+          action: TrackingAction.ClickDiscordLink,
+          data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+        });
+        trackEvent({
+          category: TrackingCategory.Pageload,
+          action: TrackingAction.PageLoad,
+          label: 'pageload-discord',
+          data: {
+            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
+            [TrackingEventParameter.PageloadDestination]: 'lifi-discord',
+            [TrackingEventParameter.PageloadURL]: DISCORD_URL,
+            [TrackingEventParameter.PageloadExternal]: true,
+          },
+        });
+      },
+      link: { url: DISCORD_URL, external: true },
+    },
+    {
+      label: t('navbar.navbarMenu.support'),
+      prefixIcon: (
+        <Discord
+          color={
+            theme.palette.mode === 'light'
+              ? theme.palette.primary.main
+              : theme.palette.white.main
+          }
+        />
+      ),
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'open-support-modal',
+          action: TrackingAction.OpenMenu,
+          data: { [TrackingEventParameter.Menu]: 'support_modal' },
+        });
+        setSupportModalState(true);
+      },
+      showButton: true,
+    },
+  ]);
+
+  return mainMenu;
+  /*
+  //Todo: to generate on the server side
+  if (!!hasTheme || isSuperfest || isMainPaths) {
+    return ;
+  }
 
   return [
     {
@@ -281,5 +566,5 @@ export const useMainMenuContent = () => {
       },
       showButton: true,
     },
-  ];
+  ];*/
 };

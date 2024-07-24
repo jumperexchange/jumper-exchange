@@ -1,7 +1,7 @@
 export const UTM_SOURCE = 'jumper';
 
 /*
-  Name of an action that a user makes on the site. 
+  Name of an action that a user makes on the site.
   GA: in GA this is the name of the event that is fired
 */
 export enum TrackingAction {
@@ -41,6 +41,7 @@ export enum TrackingAction {
   SwitchLanguage = 'action_switch_language',
   SwitchTab = 'action_switch_tab',
   SwitchTheme = 'action_switch_theme',
+  SwitchThemeTemplate = 'action_switch_theme_template',
   DownloadBrandAssets = 'action_dl_brand_assets',
   ClickConnectToWidget = 'action_click_connect_to_jumper',
   ClickXLink = 'action_click_x_link',
@@ -76,6 +77,8 @@ export enum TrackingCategory {
   FeatureCard = 'cat_feature_card',
   Navigation = 'cat_navigation',
   LanguageMenu = 'cat_language_menu',
+  ThemesMenu = 'cat_themes_menu',
+  SubMenu = 'cat_submenu',
   ThemeSection = 'cat_theme_section',
   DiscordBanner = 'cat_discord_banner',
   Wallet = 'cat_wallet',
@@ -104,6 +107,7 @@ export enum TrackingEventParameter {
   WelcomeMessageLink = 'param_welcome_message_link',
   SwitchedChain = 'param_switched_chain',
   SwitchedTheme = 'param_switched_theme',
+  SwitchedTemplate = 'param_switched_template',
   SwitchedLanguage = 'param_switched_language',
   Wallet = 'param_wallet',
   WalletAddress = 'param_wallet_address',

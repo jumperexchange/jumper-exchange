@@ -28,14 +28,13 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
+import { useWidgetTheme } from './useWidgetTheme';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { useWidgetTheme } from './useWidgetTheme';
 
 export function Widget({
   starterVariant,
@@ -51,14 +50,15 @@ export function Widget({
   const theme = useTheme();
   const widgetTheme = useWidgetTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
+  const configTheme = useSettingsStore((state) => state.configTheme);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
-  const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
   const { trackEvent } = useUserTracking();
+  const partnerName = configTheme?.uid ?? 'default';
   const { tokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
@@ -103,16 +103,7 @@ export function Widget({
     }
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
-
-  const partnerNameArray = useMemo(() => {
-    if (partnerName) {
-      return partnerName === 'stargate'
-        ? ['stargate', 'stargateV2']
-        : [partnerName];
-    }
-    return undefined;
-  }, [partnerName]);
+  }, [widgetIntegrator, isGasVariant]) as string;
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -150,10 +141,10 @@ export function Widget({
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
-        allow: isBridgeFiltered && partnerName ? partnerNameArray : undefined,
+        allow: configTheme?.allowedBridges,
       },
       exchanges: {
-        allow: isDexFiltered && partnerName ? partnerNameArray : undefined,
+        allow: configTheme?.allowedExchanges,
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -214,9 +205,8 @@ export function Widget({
     fromAmount,
     allowChains,
     allowedChainsByVariant,
-    isBridgeFiltered,
-    partnerNameArray,
-    isDexFiltered,
+    configTheme?.allowedBridges,
+    configTheme?.allowedExchanges,
     i18n.language,
     i18n.languages,
     widgetTheme.config.appearance,
@@ -237,11 +227,7 @@ export function Widget({
       welcomeScreenClosed={welcomeScreenClosed}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
-      <ClientOnly
-        fallback={
-          <WidgetSkeleton config={{ ...config, appearance: activeTheme }} />
-        }
-      >
+      <ClientOnly fallback={<WidgetSkeleton config={config} />}>
         <LiFiWidget integrator={config.integrator} config={config} />
       </ClientOnly>
     </WidgetWrapper>

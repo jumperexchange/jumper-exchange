@@ -8,7 +8,9 @@ import { locales } from './i18n/i18next-locales';
 acceptLanguage.languages(locales);
 
 export function middleware(request: NextRequest) {
-  return i18nRouter(request, i18nConfig);
+  const response = i18nRouter(request, i18nConfig);
+
+  return response;
 }
 
 // Applies this middleware only to specific paths
