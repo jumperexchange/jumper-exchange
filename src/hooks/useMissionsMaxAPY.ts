@@ -36,17 +36,17 @@ export const useMissionsMaxAPY = (
 
   if (claimingIds) {
     for (const id of claimingIds) {
+      const timestamp = Date.now() / 1000;
+
       for (const chainId of ACTIVE_CHAINS) {
         const chainCampaignData = data?.[chainId];
         if (chainCampaignData && chainCampaignData[id]) {
-          for (const [_, data] of Object.entries(chainCampaignData[id]) as [
+          for (const [, apyData] of Object.entries(chainCampaignData[id]) as [
             string,
             MerklApyRes,
           ][]) {
-            const timestamp = Date.now() / 1000;
             if (
-              data &&
-              data.apr &&
+              apyData?.apr &&
               data.endTimestamp > timestamp &&
               data.apr > apy
             ) {

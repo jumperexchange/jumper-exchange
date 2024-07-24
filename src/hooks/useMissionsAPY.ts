@@ -36,14 +36,15 @@ export const useMissionsAPY = (CTAs: CTALinkInt[]): useMissionsAPYRes => {
   });
 
   const CTAsWithAPYs = CTAs.map((CTA: CTALinkInt) => {
+    const timestamp = Date.now() / 1000;
+
     for (const id of ACTIVE_CHAINS) {
       const chainCampaignData = data?.[id];
       if (chainCampaignData && chainCampaignData[CTA.claimingId]) {
-        for (const [key, data] of Object.entries(
+        for (const [, data] of Object.entries(
           chainCampaignData[CTA.claimingId],
         ) as [string, MerklApyRes][]) {
-          const timestamp = Date.now() / 1000;
-          if (data && data.apr && data.endTimestamp > timestamp) {
+          if (data?.apr && data.endTimestamp > timestamp) {
             return {
               ...CTA,
               apy: data.apr,
