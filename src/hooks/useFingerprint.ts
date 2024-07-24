@@ -1,5 +1,5 @@
 'use client';
-import { ClientJS } from 'clientjs';
+import getBrowserFingerprint from 'get-browser-fingerprint';
 import { useEffect, useState } from 'react';
 
 export const useFingerprint = () => {
@@ -8,8 +8,8 @@ export const useFingerprint = () => {
 
   useEffect(() => {
     // Get the client's fingerprint id
-    const client = new ClientJS();
-    const fingerprint = client.getFingerprint();
+    const fingerprint = getBrowserFingerprint({});
+    console.log(fingerprint);
     setFingerprint(`${fingerprint}`);
   }, []);
 
