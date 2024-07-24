@@ -103,36 +103,36 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                   </SoraTypography>
                 </CTAExplanationBox>
                 <FlexCenterRowBox>
-                {CTA.apy ? (
-                <XPDisplayBox
-                bgcolor={'#ff0420'}
-                marginRight={'16px'}
-                minWidth={"96px"}
-                >
-                  <SoraTypography
-                    fontSize="14px"
-                    fontWeight={700}
-                    lineHeight="18px"
-                    color={'#ffffff'}
-                  >
-                    {`${Number(CTA.apy).toFixed(1)}%`}
-                  </SoraTypography>
-                  <XPIconBox marginLeft="4px">
-                      <APYIcon size={20} />
-                  </XPIconBox>
-                </XPDisplayBox>
-                  ) : undefined}
-                {isMobile ? undefined : (
-                  <MissionCtaButton onClick={handleClick}>
-                    <ArrowForwardIcon
-                      sx={{
-                        color: '#000000',
-                        width: '28px',
-                        height: '28px',
-                      }}
-                    />
-                  </MissionCtaButton>
-                )}
+                  {CTA.apy && (
+                    <XPDisplayBox
+                      bgcolor={'#ff0420'}
+                      marginRight={'16px'}
+                      minWidth={'96px'}
+                    >
+                      <SoraTypography
+                        fontSize="14px"
+                        fontWeight={700}
+                        lineHeight="18px"
+                        color={'#ffffff'}
+                      >
+                        {`${Number(CTA.apy).toFixed(1)}%`}
+                      </SoraTypography>
+                      <XPIconBox marginLeft="4px">
+                        <APYIcon size={20} />
+                      </XPIconBox>
+                    </XPDisplayBox>
+                  )}
+                  {!isMobile && (
+                    <MissionCtaButton onClick={handleClick}>
+                      <ArrowForwardIcon
+                        sx={{
+                          color: '#000000',
+                          width: '28px',
+                          height: '28px',
+                        }}
+                      />
+                    </MissionCtaButton>
+                  )}
                 </FlexCenterRowBox>
               </SeveralMissionCtaContainer>
             </Link>
