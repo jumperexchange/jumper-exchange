@@ -23,7 +23,7 @@ export const Superfest = () => {
     rewardChainId: 10,
     userAddress: account?.address,
   });
-  // HookToCheckNFT eligibility
+  // Hook to check NFT eligibility
   const { claimInfo, isLoading, isSuccess } = useCheckFestNFTAvailability({
     userAddress: account?.address,
   });

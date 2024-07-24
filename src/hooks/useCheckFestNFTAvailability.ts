@@ -1,5 +1,5 @@
 'use client';
-import { useQuery } from '@tanstack/react-query';
+import {  useQueries, useQuery } from '@tanstack/react-query';
 import request from 'graphql-request';
 import { availableNFT } from './querries/superfestNFT';
 import { useAccount } from 'wagmi';
@@ -28,79 +28,92 @@ export interface UseCheckFestNFTAvailabilityProps {
 }
 
 const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
+const claimInfo = {
+  mode: {
+    isClaimable: false,
+    isClaimed: false,
+    claimingAddress: `0x1`,
+    cid: 'GCaA9tkNSX',
+    signature: '',
+    cap: 0,
+    verifyIds: 0,
+    NFTAddress: `0x1`,
+  },
+  optimism: {
+    isClaimable: false,
+    isClaimed: false,
+    claimingAddress: `0x1`,
+    cid: 'GCG29tkzgi',
+    signature: '',
+    cap: 0,
+    verifyIds: 0,
+    NFTAddress: `0x1`,
+  },
+  base: {
+    isClaimable: false,
+    isClaimed: false,
+    claimingAddress: `0x1`,
+    cid: 'GCP49tkWyM',
+    signature: '',
+    cap: 0,
+    verifyIds: 0,
+    NFTAddress: `0x1`,
+  },
+  // fraxtal: {
+  //   isClaimable: false,
+  //   isClaimed: false,
+  //   claimingAddress: `0x1`,
+  //   cid: CID,
+  //   signature: '',
+  //   cap: 0,
+  //   verifyIds: 0,
+  //   NFTAddress: `0x1`,
+  // },
+};
+
 
 export const useCheckFestNFTAvailability = ({
   userAddress,
 }: UseCheckFestNFTAvailabilityProps): UseCheckFestNFTAvailabilityRes => {
   const { address } = useAccount();
-  const CID = 'GC2MEtgCz4';
 
-  // state
-  let claimInfo = {
-    mode: {
-      isClaimable: false,
-      isClaimed: false,
-      claimingAddress: `0x1`,
-      cid: CID,
-      signature: '',
-      cap: 0,
-      verifyIds: 0,
-      NFTAddress: `0x1`,
-    },
-    optimism: {
-      isClaimable: false,
-      isClaimed: false,
-      claimingAddress: `0x1`,
-      cid: CID,
-      signature: '',
-      cap: 0,
-      verifyIds: 0,
-      NFTAddress: `0x1`,
-    },
-    base: {
-      isClaimable: false,
-      isClaimed: false,
-      claimingAddress: `0x1`,
-      cid: CID,
-      signature: '',
-      cap: 0,
-      verifyIds: 0,
-      NFTAddress: `0x1`,
-    },
-    fraxtal: {
-      isClaimable: false,
-      isClaimed: false,
-      claimingAddress: `0x1`,
-      cid: CID,
-      signature: '',
-      cap: 0,
-      verifyIds: 0,
-      NFTAddress: `0x1`,
-    },
-  };
+  for (const [chainName, chainInfo] of Object.entries(claimInfo)) {
+    const { data, isSuccess, isLoading } = useQuery({
+      queryKey: ['festNFT' + chainName],
+      queryFn: async () => {
+        const res = await request(
+          GALXE_ENDPOINT,
+          availableNFT,
+          {
+            campaignID: chainInfo.cid,
+            address: address,
+          },
+          {},
+        );
+        return res;
+      },
+      enabled: !!address,
+      refetchInterval: 1000 * 60 * 60,
+    });
+    console.log(data)
+    console.log((data as any)?.prepareParticipate)
+    console.log((data as any)?.prepareParticipate?.allow)
+    if (data && (data as any).prepareParticipate && (data as any).prepareParticipate.allow) {
+      // cap: 0, -> check for the CAP
+      (claimInfo[chainName as string] as any).isClaimable = true;
+      (claimInfo[chainName as string] as any).verifyIds = (data as any).prepareParticipate.mintFuncInfo.verifyIDs?.[0];
+      (claimInfo[chainName as string] as any).signature = (data as any).prepareParticipate.signature;
+      (claimInfo[chainName as string] as any).claimingAddress = (data as any).prepareParticipate.spaceStation;
+      (claimInfo[chainName as string] as any).NFTAddress = (data as any).prepareParticipate.mintFuncInfo.nftCoreAddress;
+    }  
+  }
 
-  // Call to get the available rewards
-  const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['festNFT'],
-    queryFn: async () => {
-      const res = await request(
-        GALXE_ENDPOINT,
-        availableNFT,
-        {
-          campaignID: CID,
-          address: address,
-        },
-        {},
-      );
-      return res;
-    },
-    enabled: !!address,
-    refetchInterval: 1000 * 60 * 60,
-  });
+  console.log('--------------')
+  console.log(claimInfo)
 
   return {
     claimInfo: claimInfo,
-    isLoading: isLoading,
-    isSuccess: isSuccess,
+    isLoading: false,
+    isSuccess: true,
   };
 };

@@ -8,10 +8,10 @@ import {
   useSwitchChain,
 } from 'wagmi';
 import { ChainId } from '@lifi/sdk';
-import { MerklDistribABI } from 'src/const/abi/merklABI';
 import type { NFTInfo } from 'src/hooks/useCheckFestNFTAvailability';
+import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';
 
-const NOT_LIVE = true;
+// const NOT_LIVE = true;
 
 interface NFTCardProps {
   image: string;
@@ -45,41 +45,54 @@ export const NFTCard = ({
       const { id } = await switchChainAsync({
         chainId: ChainId.OPT,
       });
+      console.log(claimInfo)
       if (
         !isLoading &&
         isSuccess &&
-        id === ChainId.OPT &&
+        id === ChainId.OPT && 
+        claimInfo && 
+        claimInfo.NFTAddress && 
         address &&
+        claimInfo.verifyIds &&
         claimInfo.isClaimable &&
         claimInfo.signature
       ) {
-        writeContract({
-          address: claimInfo.claimingAddress as `0x${string}`,
-          abi: MerklDistribABI,
-          functionName: 'claimCapped',
-          args: [
-            claimInfo.cid,
-            claimInfo.NFTAddress,
-            claimInfo.verifyIds,
-            claimInfo.cid,
-            claimInfo.cap,
-            address,
-            claimInfo.signature,
-          ], // function claimCapped(uint256 _cid, address _starNFT, uint256 _dummyId, uint256 _powah, uint256 _cap, address _mintTo, bytes calldata _signature)
-        });
+        console.log('CLAIMINNNNG')
+        console.log(claimInfo)
+        try {
+          writeContract({
+            address: claimInfo.claimingAddress as `0x${string}`,
+            abi: GalxeNFTABI,
+            functionName: 'claim',
+            args: [
+              claimInfo.cid,
+              claimInfo.NFTAddress,
+              claimInfo.verifyIds,
+              claimInfo.cid,
+              address,
+              claimInfo.signature,
+            ],
+          }); 
+            // function claim(
+            //   uint256 _cid,      // Campaign number id
+            //   address _starNFT,  // NFT contract address
+            //   uint256 _dummyId,  // Unique id
+            //   uint256 _powah,    // Reserved field, currently is campaign number id
+            //   address _mintTo,   // NFT owner
+            //   bytes calldata _signature // Claim signature
+            // )
+        } catch (err) {
+          console.log(err)
+        }
       }
     } catch (err) {
       console.log(err);
     }
   }
 
-  if (NOT_LIVE) {
+  if (claimInfo && claimInfo.isClaimable) {
     return (
-      <NFTCardMainBox
-        sx={{
-          cursor: 'not-allowed',
-        }}
-      >
+      <NFTCardMainBox>
         <Image
           style={{
             borderTopRightRadius: '8px',
@@ -88,31 +101,33 @@ export const NFTCard = ({
           }}
           src={image}
           alt={chain}
-          width="288"
-          height="288"
+        width="288"
+        height="288"
         />
         <NFTCardBotomBox>
           <Button
+            disabled={isConfirming}
             size="medium"
-            disabled={true}
             styles={{
               backgroundColor: 'transparent',
               border: '2px dotted',
-              borderColor: '#C5B99C',
+              borderColor: '#000000',
+              color: '#000000',
               width: '75%',
               '&:hover': {
                 backgroundColor: bgColor,
                 color: typoColor,
               },
             }}
+            onClick={() => handleClick()}
           >
-            COMING SOON
+            {isConfirming ? 'MINTING...' : 'MINT'}
           </Button>
         </NFTCardBotomBox>
       </NFTCardMainBox>
     );
   }
-  if (claimInfo.isClaimed || isConfirmed) {
+  if (claimInfo && claimInfo.isClaimed || isConfirmed) {
     return (
       <NFTCardMainBox
         sx={{
@@ -151,7 +166,7 @@ export const NFTCard = ({
       </NFTCardMainBox>
     );
   }
-  if (isLoading || !isSuccess) {
+  if (isLoading) {
     return (
       <NFTCardMainBox
         sx={{
@@ -191,7 +206,11 @@ export const NFTCard = ({
     );
   }
   return (
-    <NFTCardMainBox>
+    <NFTCardMainBox
+      sx={{
+        cursor: 'not-allowed',
+      }}
+    >
       <Image
         style={{
           borderTopRightRadius: '8px',
@@ -200,26 +219,25 @@ export const NFTCard = ({
         }}
         src={image}
         alt={chain}
-        width="256"
-        height="256"
+        width="288"
+        height="288"
       />
       <NFTCardBotomBox>
         <Button
-          disabled={isConfirming}
           size="medium"
+          disabled={true}
           styles={{
             backgroundColor: 'transparent',
             border: '2px dotted',
-            borderColor: '#000000',
+            borderColor: '#C5B99C',
             width: '75%',
             '&:hover': {
               backgroundColor: bgColor,
               color: typoColor,
             },
           }}
-          onClick={() => handleClick()}
         >
-          {isConfirming ? 'Minting...' : 'Mint'}
+          UNAVAILABLE
         </Button>
       </NFTCardBotomBox>
     </NFTCardMainBox>
