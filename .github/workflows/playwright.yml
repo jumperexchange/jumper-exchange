@@ -12,6 +12,8 @@ jobs:
         node-version: 20
     - name: Install dependencies
       run: yarn install
+    - name: Build app
+      run: yarn dev
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
     - name: Build synpress cache
