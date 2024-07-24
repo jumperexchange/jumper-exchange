@@ -4,8 +4,10 @@ import { ChainId } from '@lifi/sdk';
 import Link from 'next/link';
 import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 
+import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useSuperfest } from 'src/hooks/useSuperfest';
@@ -17,10 +19,21 @@ export const PartnerThemeFooterImage = () => {
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
   const { hasTheme, availableWidgetThemeMode } = usePartnerTheme();
-
+  const [widgetExpanded, setWidgetExpanded] = useState(false);
+  const widgetEvents = useWidgetEvents();
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('lg'),
   );
+
+  useEffect(() => {
+    const handleWidgetExpanded = async (expanded: boolean) => {
+      setWidgetExpanded(expanded);
+    };
+    widgetEvents.on(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
+
+    return () =>
+      widgetEvents.off(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
+  }, [widgetEvents, widgetExpanded]);
 
   const activeChainAlert =
     sourceChainToken?.chainId === ChainId.SEI ||
@@ -32,7 +45,8 @@ export const PartnerThemeFooterImage = () => {
   const showFooterLogo = !activeChainAlert && !isSmallScreen && showBasedOnURL;
 
   return (
-    showFooterLogo && (
+    showFooterLogo &&
+    !widgetExpanded && (
       <Link
         href={'https://superfest.optimism.io/'}
         target="_blank"
