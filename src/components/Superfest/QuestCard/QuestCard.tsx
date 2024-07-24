@@ -19,6 +19,7 @@ import { OPBadge } from 'src/components/illustrations/OPBadge';
 import { Box } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import { APYIcon } from 'src/components/illustrations/APYIcon';
 
 export interface RewardsInterface {
   logo: string;
@@ -112,15 +113,9 @@ export const QuestCard = ({
               );
             })}
           </FlexCenterRowBox>
-          <FlexCenterRowBox sx={{ backgroundColor: '#FF0420' }}>
-            {isLoading || !isSuccess || apy === 0 ? undefined : (
-              <SoraTypography sx={{ color: '#ffffff' }}>
-                {`${Number(apy).toFixed(2)}%`}
-              </SoraTypography>
-            )}
-          </FlexCenterRowBox>
           {points ? (
             <FlexCenterRowBox>
+              {apy > 0 ?
               <XPDisplayBox
                 active={active}
                 bgcolor={!completed ? '#ff0420' : '#42B852'}
@@ -131,7 +126,23 @@ export const QuestCard = ({
                   lineHeight="18px"
                   color={'#ffffff'}
                 >
-                  {`+${points}`}
+                  {`${Number(apy).toFixed(1)}%`}
+                </SoraTypography>
+                <XPIconBox marginLeft="4px">
+                    <APYIcon size={20} />
+                </XPIconBox>
+              </XPDisplayBox> : undefined}
+              <XPDisplayBox
+                active={active}
+                bgcolor={!completed ? '#31007A' : '#42B852'}
+              >
+                <SoraTypography
+                  fontSize="14px"
+                  fontWeight={700}
+                  lineHeight="18px"
+                  color={'#ffffff'}
+                >
+                  {`${points}`}
                 </SoraTypography>
                 <XPIconBox marginLeft="4px">
                   {!completed ? (
