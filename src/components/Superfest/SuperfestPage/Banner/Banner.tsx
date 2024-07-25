@@ -115,7 +115,7 @@ export const BannerBox = ({
               title={'Jumper XP'}
               value={
                 true
-                  ? `+${String(attributes?.Points)}`
+                  ? `${String(attributes?.Points)}`
                   : String(attributes?.Points)
               }
             />
