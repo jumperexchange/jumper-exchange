@@ -81,8 +81,8 @@ export const QuestCard = ({
           <Box
             sx={{
               position: 'relative',
-              marginLeft: '-32px',
-              maringTop: '-16px',
+              bottom: '16px',
+              right: '32px',
             }}
           >
             {rewards?.amount && <OPBadge />}
@@ -107,8 +107,8 @@ export const QuestCard = ({
                     zIndex: 100 - i,
                   }}
                   alt={elem.name}
-                  width="28"
-                  height="28"
+                  width="32"
+                  height="32"
                 />
               );
             })}
