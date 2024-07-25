@@ -9,6 +9,7 @@ export interface NFTInfo {
   isClaimed: boolean;
   claimingAddress: string;
   cid: string;
+  numberId: number;
   signature?: string;
   cap?: number;
   verifyIds?: number;
@@ -41,6 +42,7 @@ const claimInfo = {
     isClaimed: false,
     claimingAddress: `0x1`,
     cid: 'GCaA9tkNSX',
+    numberId: 306585,
     signature: '',
     cap: 0,
     verifyIds: 0,
@@ -51,6 +53,7 @@ const claimInfo = {
     isClaimed: false,
     claimingAddress: `0x1`,
     cid: 'GCG29tkzgi',
+    numberId: 306532,
     signature: '',
     cap: 0,
     verifyIds: 0,
@@ -61,6 +64,7 @@ const claimInfo = {
     isClaimed: false,
     claimingAddress: `0x1`,
     cid: 'GCP49tkWyM',
+    numberId: 306586,
     signature: '',
     cap: 0,
     verifyIds: 0,
@@ -76,7 +80,7 @@ const claimInfo = {
   //   verifyIds: 0,
   //   NFTAddress: `0x1`,
   // },
-};
+} as { [key: string]: NFTInfo };
 
 export const useCheckFestNFTAvailability = ({
   userAddress,
@@ -107,20 +111,20 @@ export const useCheckFestNFTAvailability = ({
       (data as any).prepareParticipate.allow
     ) {
       // cap: 0, -> check for the CAP
-      (claimInfo[chainName as string] as any).isClaimable = true;
-      (claimInfo[chainName as string] as any).verifyIds = (
+      claimInfo[chainName].isClaimable = true;
+      claimInfo[chainName].verifyIds = (
         data as any
       ).prepareParticipate.mintFuncInfo.verifyIDs?.[0];
-      (claimInfo[chainName as string] as any).powahs = (
+      claimInfo[chainName].powahs = (
         data as any
       ).prepareParticipate.mintFuncInfo.powahs?.[0];
-      (claimInfo[chainName as string] as any).signature = (
+      claimInfo[chainName].signature = (
         data as any
       ).prepareParticipate.signature;
-      (claimInfo[chainName as string] as any).claimingAddress = (
+      claimInfo[chainName].claimingAddress = (
         data as any
       ).prepareParticipate.spaceStation;
-      (claimInfo[chainName as string] as any).NFTAddress = (
+      claimInfo[chainName].NFTAddress = (
         data as any
       ).prepareParticipate.mintFuncInfo.nftCoreAddress;
     }

@@ -44,9 +44,9 @@ export const NFTCard = ({
         chainId: ChainId.OPT,
       });
 
+      console.log('clicking');
+
       if (
-        !isLoading &&
-        isSuccess &&
         id === ChainId.OPT &&
         address &&
         claimInfo?.NFTAddress &&
@@ -55,15 +55,17 @@ export const NFTCard = ({
         claimInfo.signature
       ) {
         try {
+          console.log('--------');
+          console.log(claimInfo);
           writeContract({
             address: claimInfo.claimingAddress as `0x${string}`,
             abi: GalxeNFTABI,
             functionName: 'claim',
             args: [
-              claimInfo.cid,
+              claimInfo.numberId,
               claimInfo.NFTAddress,
               claimInfo.verifyIds,
-              claimInfo.powahs,
+              claimInfo.numberId,
               address,
               claimInfo.signature,
             ],
