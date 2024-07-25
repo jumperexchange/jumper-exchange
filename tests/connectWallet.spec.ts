@@ -20,14 +20,10 @@ test('should connect wallet to Jumper', async ({
   );
   const connectWalletButton = page.locator('#connect-wallet-button');
   const connectedWalletButton = page.locator('#wallet-digest-button');
-  expect(connectWalletButton).toBeEnabled()
+  expect(connectWalletButton).toBeEnabled();
   await connectWalletButton.click();
-  await page.screenshot();
   await page.locator('(//img[@alt="io.metamask-wallet-logo"])[1]').click();
-  await page.screenshot();
   await page.locator('xpath=(//button[@type="button"])[2]').click();
-  await page.screenshot();
-  await metamask.connectToDapp(['Account 2']);
-  await page.screenshot();
+  await metamask.connectToDapp(['']);
   await expect(connectedWalletButton).not.toHaveText('Connect');
 });
