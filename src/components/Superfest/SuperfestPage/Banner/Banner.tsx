@@ -8,6 +8,9 @@ import {
   RewardMainBox,
   BannerTitleTypography,
   BannerLabelBox,
+  RotatingBox,
+  BadgeRelativeBox,
+  BadgeMainBox,
 } from './Banner.style';
 import { RewardBox } from './Rewards/RewardBox';
 import { checkInclusion } from '../../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
@@ -55,45 +58,17 @@ export const BannerBox = ({
 
   return (
     <>
-      <Box
-        sx={{
-          height: '1px',
-          width: '80%',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          top: '32px',
-          left: '32px',
-          zIndex: 500,
-        }}
-      >
-        <Box
-          sx={{
-            position: 'relative',
-            bottom: '42px',
-            left: '42px',
-          }}
-        >
-          <Box
-            sx={{
-              animation: 'spin 120s linear infinite',
-              '@keyframes spin': {
-                '0%': {
-                  transform: 'rotate(0deg)',
-                },
-                '100%': {
-                  transform: 'rotate(360deg)',
-                },
-              },
-            }}
-          >
+      <BadgeMainBox>
+        <BadgeRelativeBox>
+          <RotatingBox>
             {rewardType === 'weekly' ? (
               <SuperfestWeeklyRewards />
             ) : (
               <SuperfestDailyRewards />
             )}
-          </Box>
-        </Box>
-      </Box>
+          </RotatingBox>
+        </BadgeRelativeBox>
+      </BadgeMainBox>
       <BannerMainBox>
         <BannerImageBox>
           <Image

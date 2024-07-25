@@ -169,3 +169,31 @@ export const BannerLabelBox = styled(Box)(({ theme }) => ({
     },
   },
 }));
+
+export const RotatingBox = styled(Box)(() => ({
+  animation: 'spin 120s linear infinite',
+  '@keyframes spin': {
+    '0%': {
+      transform: 'rotate(0deg)',
+    },
+    '100%': {
+      transform: 'rotate(360deg)',
+    },
+  },
+}));
+
+export const BadgeRelativeBox = styled(Box)(() => ({
+  position: 'relative',
+  bottom: '42px',
+  left: '42px',
+}));
+
+export const BadgeMainBox = styled(Box)(() => ({
+  height: '1px',
+  width: '80%',
+  display: 'flex',
+  justifyContent: 'flex-end',
+  top: '32px',
+  left: '32px',
+  zIndex: 500,
+}));
