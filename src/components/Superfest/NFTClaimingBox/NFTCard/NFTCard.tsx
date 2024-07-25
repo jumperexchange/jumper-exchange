@@ -88,8 +88,7 @@ export const NFTCard = ({
     }
   }
 
-  // if (claimInfo?.isClaimed || isConfirmed)
-  if (true) {
+  if (claimInfo?.isClaimed || isConfirmed) {
     return (
       <NFTCardMainBox
         sx={{
