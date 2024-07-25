@@ -10,6 +10,7 @@ import { StepsBox } from './StepsBox/StepsBox';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useAccounts } from '@/hooks/useAccounts';
+import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 
 interface SuperfestMissionPageVar {
   quest: Quest;
@@ -29,6 +30,8 @@ export const SuperfestMissionPage = ({
     userAddress: account?.address,
   });
 
+  const { isLoading, isSuccess, CTAsWithAPYs } = useMissionsAPY(CTAs);
+
   return (
     <SuperfestContainer className="superfest">
       <SuperfestPageMainBox>
@@ -45,7 +48,7 @@ export const SuperfestMissionPage = ({
           title={attributes?.Title}
           url={attributes?.Link}
           key={generateKey('cta')}
-          CTAs={CTAs}
+          CTAs={CTAsWithAPYs}
         />
         {/* Subtitle and description */}
         <DescriptionBox
