@@ -90,7 +90,7 @@ test.describe('Jumper full e2e flow', () => {
     // await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await expect(page.getByRole('menu')).toBeVisible();
-    await itemInMenu(page, 'LI.FI Explorer');
+    await itemInMenu(page, 'LI.FI Scan');
     const newPage = await page.waitForEvent('popup', { timeout: 15000 });
     expect(newPage.url()).toBe(
       'https://scan.li.fi/?utm_source=jumper&utm_campaign=jumper_to_explorer&utm_medium=menu',

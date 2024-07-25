@@ -107,18 +107,19 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                     <XPDisplayBox
                       bgcolor={'#ff0420'}
                       marginRight={'16px'}
-                      minWidth={'96px'}
+                      height={'32px'}
+                      minWidth={'88px'}
                     >
                       <SoraTypography
-                        fontSize="14px"
+                        fontSize="16px"
                         fontWeight={700}
-                        lineHeight="18px"
+                        lineHeight="20px"
                         color={'#ffffff'}
                       >
                         {`${Number(CTA.apy).toFixed(1)}%`}
                       </SoraTypography>
                       <XPIconBox marginLeft="4px">
-                        <APYIcon size={20} />
+                        <APYIcon size={24} />
                       </XPIconBox>
                     </XPDisplayBox>
                   )}
@@ -127,8 +128,8 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                       <ArrowForwardIcon
                         sx={{
                           color: '#000000',
-                          width: '28px',
-                          height: '28px',
+                          width: '20px',
+                          height: '20px',
                         }}
                       />
                     </MissionCtaButton>

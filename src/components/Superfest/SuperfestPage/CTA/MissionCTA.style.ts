@@ -81,6 +81,8 @@ export const MissionCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
 
 export const MissionCtaButton = styled(IconButtonPrimary)(({ theme }) => ({
   backgroundColor: 'transparent',
+  width: '32px',
+  height: '32px',
   border: '2px dotted',
   borderColor: '#000000',
   ':hover': {
