@@ -18,8 +18,8 @@ interface NFTCardProps {
   bgColor: string;
   typoColor: string;
   claimInfo: NFTInfo;
-  isLoading: boolean;
-  isSuccess: boolean;
+  isLoading?: boolean;
+  isSuccess?: boolean;
 }
 
 export const NFTCard = ({
@@ -147,10 +147,12 @@ export const NFTCard = ({
               size="medium"
               disabled={true}
               styles={{
-                backgroundColor: 'transparent',
+                // backgroundColor: 'transparent',
                 border: '2px dotted',
-                borderColor: '#C5B99C',
+                borderColor: '#000000',
                 width: '75%',
+                backgroundColor: bgColor,
+                color: typoColor,
                 '&:hover': {
                   backgroundColor: bgColor,
                   color: typoColor,
@@ -234,7 +236,7 @@ export const NFTCard = ({
           styles={{
             backgroundColor: 'transparent',
             border: '2px dotted',
-            borderColor: '#000000',
+            borderColor: '#C5B99C',
             width: '75%',
             '&:hover': {
               backgroundColor: bgColor,

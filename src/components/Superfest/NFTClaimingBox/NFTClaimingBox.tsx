@@ -44,8 +44,8 @@ interface NFTClaimBoxProps {
   claimInfos: {
     [key: string]: NFTInfo;
   };
-  infoLoading: boolean;
-  infoSuccess: boolean;
+  infoLoading?: boolean;
+  infoSuccess?: boolean;
 }
 
 export const NFTClaimingBox = ({
