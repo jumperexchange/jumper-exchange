@@ -76,7 +76,7 @@ export const XPDisplayBox = styled(Box, {
 })<XPDisplayBoxProps>(({ active }) => ({
   marginRight: active ? '8px' : undefined,
   display: 'flex',
-  height: '24px',
+  height: '28px',
   alignContent: 'center',
   justifyContent: 'space-between',
   alignItems: 'center',

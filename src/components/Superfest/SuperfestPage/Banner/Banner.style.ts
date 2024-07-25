@@ -46,6 +46,7 @@ export const BannerTitleBox = styled(Box)(({ theme }) => ({
     marginTop: '16px',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
+    justifyContent: 'space-between',
     textAlign: 'left',
   },
 }));
@@ -149,4 +150,11 @@ export const BannerTitleTypography = styled(Typography)(({ theme }) => ({
     fontWeight: 700,
     lineHeight: '48px',
   },
+}));
+
+export const BannerLabelBox = styled(Box)(({ theme }) => ({
+  border: '2px dotted',
+  borderColor: '#000000',
+  borderRadius: '8px',
+  padding: '8px',
 }));
