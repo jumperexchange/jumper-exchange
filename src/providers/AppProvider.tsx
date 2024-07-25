@@ -1,6 +1,5 @@
 import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
 import { type PropsWithChildren } from 'react';
-import { getCookies } from '@/app/lib/getCookies';
 import { cookies } from 'next/headers';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 
