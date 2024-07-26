@@ -8,6 +8,7 @@ import type { Chain } from '../SuperfestPage/Banner/Banner';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
 import Link from 'next/link';
 import {
+  OPBadgeRelativeBox,
   QuestCardBottomBox,
   QuestCardInfoBox,
   QuestCardMainBox,
@@ -78,15 +79,10 @@ export const QuestCard = ({
               }}
             />
           )}
-          <Box
-            sx={{
-              position: 'relative',
-              marginLeft: '-32px',
-              maringTop: '-16px',
-            }}
-          >
+
+          <OPBadgeRelativeBox>
             {rewards?.amount && <OPBadge />}
-          </Box>
+          </OPBadgeRelativeBox>
         </Box>
       </Link>
       <QuestCardBottomBox>
@@ -107,8 +103,8 @@ export const QuestCard = ({
                     zIndex: 100 - i,
                   }}
                   alt={elem.name}
-                  width="28"
-                  height="28"
+                  width="32"
+                  height="32"
                 />
               );
             })}
