@@ -167,6 +167,8 @@ export const useCheckFestNFTAvailability = ({
             },
             {},
           )) as GalxeGraphqlCheckRes;
+          console.log('inside already claimed query function');
+          console.log(res);
           const alreadyClaimed =
             res?.campaign?.participationStatus?.toLowerCase() === 'success';
           if (alreadyClaimed) {
@@ -194,6 +196,8 @@ export const useCheckFestNFTAvailability = ({
           },
           {},
         )) as GalxeGraphqlRes;
+        console.log('inside claiming query function');
+        console.log(res);
         if (res?.prepareParticipate && res.prepareParticipate.allow) {
           // cap: 0, -> check for the CAP
           setClaimInfo({

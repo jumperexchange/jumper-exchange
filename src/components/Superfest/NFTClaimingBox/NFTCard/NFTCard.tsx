@@ -11,29 +11,22 @@ import { ChainId } from '@lifi/sdk';
 import type { NFTInfo } from 'src/hooks/useCheckFestNFTAvailability';
 import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';
 import { SoraTypography } from '../../Superfest.style';
+import { useCheckNFTAvailability } from 'src/hooks/useCheckNFTAvailability';
 
 interface NFTCardProps {
   image: string;
   chain: string;
   bgColor: string;
   typoColor: string;
-  claimInfo: NFTInfo;
-  isAlreadyClaimed: boolean;
   isLoading?: boolean;
   isSuccess?: boolean;
 }
 
-export const NFTCard = ({
-  image,
-  chain,
-  bgColor,
-  typoColor,
-  claimInfo,
-  isAlreadyClaimed,
-  isLoading,
-  isSuccess,
-}: NFTCardProps) => {
+export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
   const { address } = useAccount();
+  const { claimInfo, isLoading, isSuccess } = useCheckNFTAvailability({
+    chain,
+  });
   const { switchChainAsync } = useSwitchChain();
   const { data: hash, isPending, writeContract } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -46,20 +39,16 @@ export const NFTCard = ({
       const { id } = await switchChainAsync({
         chainId: ChainId.OPT,
       });
-
-      console.log('clicking');
-
       if (
         id === ChainId.OPT &&
         address &&
         claimInfo?.NFTAddress &&
         claimInfo.verifyIds &&
         claimInfo.isClaimable &&
+        !claimInfo.isClaimed &&
         claimInfo.signature
       ) {
         try {
-          console.log('--------');
-          console.log(claimInfo);
           writeContract({
             address: claimInfo.claimingAddress as `0x${string}`,
             abi: GalxeNFTABI,
@@ -73,8 +62,8 @@ export const NFTCard = ({
               claimInfo.signature,
             ],
           });
-          // function claim(
-          //   uint256 _cid,      // Campaign number id
+          // FYI: smart contract function
+          // function claim(uint256 _cid,      // Campaign number id
           //   address _starNFT,  // NFT contract address
           //   uint256 _dummyId,  // Unique id
           //   uint256 _powah,    // Reserved field, currently is campaign number id
@@ -90,7 +79,7 @@ export const NFTCard = ({
     }
   }
 
-  if (isAlreadyClaimed || isConfirmed) {
+  if (claimInfo.isClaimed || isConfirmed) {
     return (
       <NFTCardMainBox
         sx={{
@@ -149,7 +138,6 @@ export const NFTCard = ({
               size="medium"
               disabled={true}
               styles={{
-                // backgroundColor: 'transparent',
                 border: '2px dotted',
                 borderColor: '#000000',
                 width: '75%',

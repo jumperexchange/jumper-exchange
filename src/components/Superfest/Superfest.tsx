@@ -23,11 +23,6 @@ export const Superfest = () => {
     rewardChainId: 10,
     userAddress: account?.address,
   });
-  // Hook to check NFT eligibility
-  const { claimInfo, alreadyClaimedInfo, isLoading, isSuccess } =
-    useCheckFestNFTAvailability({
-      userAddress: account?.address,
-    });
 
   return (
     <SuperfestContainer className="superfest">
@@ -58,12 +53,7 @@ export const Superfest = () => {
           loading={isQuestLoading}
           pastCampaigns={pastCampaigns}
         />
-        <NFTClaimingBox
-          alreadyClaimedInfo={alreadyClaimedInfo}
-          claimInfos={claimInfo}
-          infoLoading={isLoading}
-          infoSuccess={isSuccess}
-        />
+        <NFTClaimingBox />
       </SuperfestMainBox>
     </SuperfestContainer>
   );

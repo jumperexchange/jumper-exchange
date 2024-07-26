@@ -40,23 +40,7 @@ const NFT_ARRAY = [
   },
 ];
 
-interface NFTClaimBoxProps {
-  alreadyClaimedInfo: {
-    [key: string]: boolean;
-  };
-  claimInfos: {
-    [key: string]: NFTInfo;
-  };
-  infoLoading?: boolean;
-  infoSuccess?: boolean;
-}
-
-export const NFTClaimingBox = ({
-  alreadyClaimedInfo,
-  claimInfos,
-  infoLoading,
-  infoSuccess,
-}: NFTClaimBoxProps) => {
+export const NFTClaimingBox = () => {
   return (
     <NFTClaimingContainer>
       <NFTClaimingHeader>
@@ -65,9 +49,9 @@ export const NFTClaimingBox = ({
         </NFTClaimingTitle>
         <Box marginTop="32px" marginBottom="32px">
           <NFTClaimingDescription>
-            {
-              'Explore the Superchain Festival and vibe at the sound of 1.5M OP rewards. When you claim OP rewards from a chain, you are eligible to mint a unique Superchain wristband.'
-            }
+            Explore the Superchain Festival and vibe at the sound of 1.5M OP
+            rewards. When you claim OP rewards from a chain, you are eligible to
+            mint a unique Superchain wristband.
           </NFTClaimingDescription>
         </Box>
       </NFTClaimingHeader>
@@ -80,10 +64,6 @@ export const NFTClaimingBox = ({
               chain={elem.chain}
               bgColor={elem.bgColor}
               typoColor={elem.typoColor}
-              claimInfo={claimInfos[elem.chain]}
-              isAlreadyClaimed={alreadyClaimedInfo[elem.chain]}
-              isLoading={infoLoading}
-              isSuccess={infoSuccess}
             />
           );
         })}
@@ -95,29 +75,18 @@ export const NFTClaimingBox = ({
           </NFTClaimingTitle>
           <Box marginTop="32px" marginBottom="32px">
             <NFTClaimingDescription>
-              {
-                'When you mint all Superchain wristbands, you become eligible to mint a unique Superchain Mystery Box.'
-              }
+              When you mint all Superchain wristbands, you become eligible to
+              mint a unique Superchain Mystery Box.
             </NFTClaimingDescription>
           </Box>
         </NFTClaimingHeader>
         <NFTDisplayBox>
           <NFTCard
-            isAlreadyClaimed={false}
             key={`nft-card-${42}`}
             chain={'box'}
             image={'https://strapi.li.finance/uploads/nft_7d22cbd21c.png'}
             bgColor={'#69d7ff'}
             typoColor={'#000000'}
-            claimInfo={{
-              isClaimable: false,
-              isClaimed: false,
-              cid: '',
-              numberId: 0,
-              claimingAddress: '0x',
-            }}
-            isLoading={infoLoading}
-            isSuccess={infoSuccess}
           />
         </NFTDisplayBox>
       </Box>
