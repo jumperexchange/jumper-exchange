@@ -4,7 +4,8 @@ import request from 'graphql-request';
 import { availableNFT } from './querries/superfestNFT';
 import { useAccount } from 'wagmi';
 import { superfestNFTCheck } from './querries/superfestNFTCheck';
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSuperfestNFTStore } from 'src/stores/superfestNFT';
 
 export interface NFTInfo {
   isClaimable: boolean;
@@ -22,6 +23,9 @@ export interface NFTInfo {
 export interface UseCheckFestNFTAvailabilityRes {
   claimInfo: {
     [key: string]: NFTInfo;
+  };
+  alreadyClaimedInfo: {
+    [key: string]: boolean;
   };
   isLoading?: boolean;
   isSuccess?: boolean;
@@ -57,170 +61,163 @@ interface GalxeGraphqlCheckRes {
   };
 }
 
-// const claimInfo = {
-//   mode: {
-//     isClaimable: false,
-//     isClaimed: false,
-//     claimingAddress: `0x1`,
-//     cid: 'GCaA9tkNSX',
-//     numberId: 306585,
-//     signature: '',
-//     cap: 0,
-//     verifyIds: 0,
-//     NFTAddress: `0x1`,
-//   },
-//   optimism: {
-//     isClaimable: false,
-//     isClaimed: false,
-//     claimingAddress: `0x1`,
-//     cid: 'GCG29tkzgi',
-//     numberId: 306532,
-//     signature: '',
-//     cap: 0,
-//     verifyIds: 0,
-//     NFTAddress: `0x1`,
-//   },
-//   base: {
-//     isClaimable: false,
-//     isClaimed: false,
-//     claimingAddress: `0x1`,
-//     cid: 'GCP49tkWyM',
-//     numberId: 306586,
-//     signature: '',
-//     cap: 0,
-//     verifyIds: 0,
-//     NFTAddress: `0x1`,
-//   },
-//   // fraxtal: {
-//   //   isClaimable: false,
-//   //   isClaimed: false,
-//   //   claimingAddress: `0x1`,
-//   //   cid: CID,
-//   //   signature: '',
-//   //   cap: 0,
-//   //   verifyIds: 0,
-//   //   NFTAddress: `0x1`,
-//   // },
-// } as { [key: string]: NFTInfo };
-
 const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
+const SECONDS_IN_A_DAY = 86400;
+const initialClaimInfo = {
+  mode: {
+    isClaimable: false,
+    isClaimed: false,
+    claimingAddress: `0x1`,
+    cid: 'GCaA9tkNSX',
+    numberId: 306585,
+    signature: '',
+    cap: 0,
+    verifyIds: 0,
+    NFTAddress: `0x1`,
+  },
+  optimism: {
+    isClaimable: false,
+    isClaimed: false,
+    claimingAddress: `0x1`,
+    cid: 'GCG29tkzgi',
+    numberId: 306532,
+    signature: '',
+    cap: 0,
+    verifyIds: 0,
+    NFTAddress: `0x1`,
+  },
+  base: {
+    isClaimable: false,
+    isClaimed: false,
+    claimingAddress: `0x1`,
+    cid: 'GCP49tkWyM',
+    numberId: 306586,
+    signature: '',
+    cap: 0,
+    verifyIds: 0,
+    NFTAddress: `0x1`,
+  },
+  // fraxtal: {
+  //   isClaimable: false,
+  //   isClaimed: false,
+  //   claimingAddress: `0x1`,
+  //   cid: CID,
+  //   signature: '',
+  //   cap: 0,
+  //   verifyIds: 0,
+  //   NFTAddress: `0x1`,
+  // },
+} as { [key: string]: NFTInfo };
+
+const inititalAlreadyClaimInfo = {
+  mode: false,
+  optimism: false,
+  base: false,
+  fraxtal: false,
+} as { [key: string]: boolean };
 
 export const useCheckFestNFTAvailability = ({
   userAddress,
 }: UseCheckFestNFTAvailabilityProps): UseCheckFestNFTAvailabilityRes => {
-  const [claimInfo, setClaimInfo] = useState<{ [key: string]: NFTInfo }>({
-    mode: {
-      isClaimable: false,
-      isClaimed: false,
-      claimingAddress: `0x1`,
-      cid: 'GCaA9tkNSX',
-      numberId: 306585,
-      signature: '',
-      cap: 0,
-      verifyIds: 0,
-      NFTAddress: `0x1`,
-    },
-    optimism: {
-      isClaimable: false,
-      isClaimed: false,
-      claimingAddress: `0x1`,
-      cid: 'GCG29tkzgi',
-      numberId: 306532,
-      signature: '',
-      cap: 0,
-      verifyIds: 0,
-      NFTAddress: `0x1`,
-    },
-    base: {
-      isClaimable: false,
-      isClaimed: false,
-      claimingAddress: `0x1`,
-      cid: 'GCP49tkWyM',
-      numberId: 306586,
-      signature: '',
-      cap: 0,
-      verifyIds: 0,
-      NFTAddress: `0x1`,
-    },
-    // fraxtal: {
-    //   isClaimable: false,
-    //   isClaimed: false,
-    //   claimingAddress: `0x1`,
-    //   cid: CID,
-    //   signature: '',
-    //   cap: 0,
-    //   verifyIds: 0,
-    //   NFTAddress: `0x1`,
-    // },
-  });
+  // const {
+  //   address: storedAddress,
+  //   claimInfo: storedClaimInfo,
+  //   timestamp,
+  //   setNFTCheckData,
+  // } = useSuperfestNFTStore((state) => state);
+  // //we store the data during 8hours to avoid querying too much our partner API.
+  // const t = Date.now() / 1000;
+  // const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_A_DAY / 3;
 
-  console.log('entering');
-  console.log(claimInfo);
+  const [claimInfo, setClaimInfo] = useState<{ [key: string]: NFTInfo }>(
+    initialClaimInfo,
+  );
+  const [alreadyClaimedInfo, setAlreadyClaimedInfo] = useState<{
+    [key: string]: boolean;
+  }>(inititalAlreadyClaimInfo);
+
+  useEffect(() => {
+    setClaimInfo(initialClaimInfo);
+    setAlreadyClaimedInfo(inititalAlreadyClaimInfo);
+  }, [userAddress]);
+
+  console.log('entering ------------- BEGINNING');
+  console.log(userAddress);
   console.log('-------------');
 
-  for (const [chainName, chainInfo] of Object.entries(claimInfo)) {
+  for (const [chainName] of Object.entries(initialClaimInfo)) {
+    console.log(chainName);
+
     const {
       data: dataCheckClaim,
       isSuccess: IsCheckClaimSuccess,
       isLoading: IsCheckClaimLoading,
     } = useQuery({
-      queryKey: ['checkFestNFT' + chainName],
+      queryKey: ['checkFestNFT' + chainName + userAddress],
       queryFn: async () => {
-        const res = await request(
+        console.log('entering there');
+        const res = (await request(
           GALXE_ENDPOINT,
           superfestNFTCheck,
           {
-            id: chainInfo.cid,
+            id: initialClaimInfo[chainName].cid,
             address: userAddress,
           },
           {},
-        );
+        )) as GalxeGraphqlCheckRes;
+        const alreadyClaimed =
+          res?.campaign?.participationStatus?.toLowerCase() === 'success';
+        if (alreadyClaimed) {
+          setAlreadyClaimedInfo({
+            [chainName]: true,
+          });
+        }
+
         return res as GalxeGraphqlCheckRes;
       },
       enabled: !!userAddress,
       refetchInterval: 1000 * 60 * 60,
     });
 
-    const alreadyClaimed =
-      dataCheckClaim?.campaign?.participationStatus?.toLowerCase() ===
-      'success';
-    if (alreadyClaimed) {
-      claimInfo[chainName].isClaimed = true;
-    }
-
     const { data, isSuccess, isLoading } = useQuery({
-      queryKey: ['festNFT' + chainName],
+      queryKey: ['festNFT' + chainName + userAddress],
       queryFn: async () => {
-        const res = await request(
+        const res = (await request(
           GALXE_ENDPOINT,
           availableNFT,
           {
-            campaignID: chainInfo.cid,
+            campaignID: initialClaimInfo[chainName].cid,
             address: userAddress,
           },
           {},
-        );
+        )) as GalxeGraphqlRes;
+        if (res?.prepareParticipate && res.prepareParticipate.allow) {
+          // cap: 0, -> check for the CAP
+          setClaimInfo({
+            ...claimInfo,
+            [chainName]: {
+              ...claimInfo[chainName],
+              isClaimable: true,
+              verifyIds: res.prepareParticipate.mintFuncInfo.verifyIDs?.[0],
+              powahs: res.prepareParticipate.mintFuncInfo.powahs?.[0],
+              signature: res.prepareParticipate.signature,
+              claimingAddress: res.prepareParticipate.spaceStation,
+              NFTAddress: res.prepareParticipate.mintFuncInfo.nftCoreAddress,
+            },
+          });
+        }
         return res as GalxeGraphqlRes;
       },
-      enabled: !!userAddress && !alreadyClaimed,
+      enabled: !!userAddress,
       refetchInterval: 1000 * 60 * 60,
     });
-    if (data?.prepareParticipate && data.prepareParticipate.allow) {
-      // cap: 0, -> check for the CAP
-      claimInfo[chainName].isClaimable = true;
-      claimInfo[chainName].verifyIds =
-        data.prepareParticipate.mintFuncInfo.verifyIDs?.[0];
-      claimInfo[chainName].powahs =
-        data.prepareParticipate.mintFuncInfo.powahs?.[0];
-      claimInfo[chainName].signature = data.prepareParticipate.signature;
-      claimInfo[chainName].claimingAddress =
-        data.prepareParticipate.spaceStation;
-      claimInfo[chainName].NFTAddress =
-        data.prepareParticipate.mintFuncInfo.nftCoreAddress;
-    }
   }
+
+  console.log(claimInfo);
+  console.log('----------------- END');
 
   return {
     claimInfo: claimInfo,
+    alreadyClaimedInfo: alreadyClaimedInfo,
   };
 };

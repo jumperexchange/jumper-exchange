@@ -18,6 +18,7 @@ interface NFTCardProps {
   bgColor: string;
   typoColor: string;
   claimInfo: NFTInfo;
+  isAlreadyClaimed: boolean;
   isLoading?: boolean;
   isSuccess?: boolean;
 }
@@ -28,6 +29,7 @@ export const NFTCard = ({
   bgColor,
   typoColor,
   claimInfo,
+  isAlreadyClaimed,
   isLoading,
   isSuccess,
 }: NFTCardProps) => {
@@ -88,7 +90,7 @@ export const NFTCard = ({
     }
   }
 
-  if (claimInfo?.isClaimed || isConfirmed) {
+  if (isAlreadyClaimed || isConfirmed) {
     return (
       <NFTCardMainBox
         sx={{

@@ -41,6 +41,9 @@ const NFT_ARRAY = [
 ];
 
 interface NFTClaimBoxProps {
+  alreadyClaimedInfo: {
+    [key: string]: boolean;
+  };
   claimInfos: {
     [key: string]: NFTInfo;
   };
@@ -49,6 +52,7 @@ interface NFTClaimBoxProps {
 }
 
 export const NFTClaimingBox = ({
+  alreadyClaimedInfo,
   claimInfos,
   infoLoading,
   infoSuccess,
@@ -77,6 +81,7 @@ export const NFTClaimingBox = ({
               bgColor={elem.bgColor}
               typoColor={elem.typoColor}
               claimInfo={claimInfos[elem.chain]}
+              isAlreadyClaimed={alreadyClaimedInfo[elem.chain]}
               isLoading={infoLoading}
               isSuccess={infoSuccess}
             />
