@@ -1,6 +1,6 @@
 'use client';
 
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { alpha, darken, lighten, styled } from '@mui/material/styles';
 
 const MessageCard = styled(Box)(({ theme }) => ({
@@ -53,4 +53,8 @@ export const InfoMessageCardClickable = styled(MessageCard)(({ theme }) => ({
       ? alpha(theme.palette.info.main, 0.12)
       : alpha(theme.palette.info.main, 0.16),
   cursor: 'pointer',
+}));
+
+export const InfoMessageCardSubtitle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.black.main,
 }));

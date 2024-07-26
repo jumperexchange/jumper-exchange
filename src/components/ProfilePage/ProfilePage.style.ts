@@ -27,6 +27,10 @@ export const NoSelectTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
+export const CompletedTypography = styled(NoSelectTypography)(({ theme }) => ({
+  color: '#000000',
+}));
+
 export const CenteredBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
