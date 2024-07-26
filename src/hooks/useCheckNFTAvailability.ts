@@ -100,25 +100,23 @@ export const useCheckNFTAvailability = ({
     data: dataCheckClaim,
     isSuccess: IsCheckClaimSuccess,
     isLoading: IsCheckClaimLoading,
-  } =
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useQuery({
-      queryKey: ['checkFestNFT' + chain + account?.address],
-      queryFn: async () => {
-        const res = (await request(
-          GALXE_ENDPOINT,
-          superfestNFTCheck,
-          {
-            id: NFTInfo[chain].cid,
-            address: account?.address,
-          },
-          {},
-        )) as GalxeGraphqlCheckRes;
-        return res as GalxeGraphqlCheckRes;
-      },
-      enabled: !!account?.address,
-      refetchInterval: 1000 * 60 * 60,
-    });
+  } = useQuery({
+    queryKey: ['checkFestNFT' + chain + account?.address],
+    queryFn: async () => {
+      const res = (await request(
+        GALXE_ENDPOINT,
+        superfestNFTCheck,
+        {
+          id: NFTInfo[chain].cid,
+          address: account?.address,
+        },
+        {},
+      )) as GalxeGraphqlCheckRes;
+      return res as GalxeGraphqlCheckRes;
+    },
+    enabled: !!account?.address,
+    refetchInterval: 1000 * 60 * 60,
+  });
 
   const alreadyClaimed =
     dataCheckClaim?.campaign?.participationStatus?.toLowerCase() === 'success';
@@ -126,7 +124,6 @@ export const useCheckNFTAvailability = ({
     claimInfo.isClaimed = true;
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['festNFT' + chain + account?.address],
     queryFn: async () => {
@@ -146,13 +143,17 @@ export const useCheckNFTAvailability = ({
     refetchInterval: 1000 * 60 * 60,
   });
 
-  if (data?.prepareParticipate && data.prepareParticipate.allow) {
+  if (data?.prepareParticipate?.allow) {
+    const { signature, spaceStation } = data.prepareParticipate;
+    const { verifyIDs, powahs, nftCoreAddress } =
+      data.prepareParticipate.mintFuncInfo;
+
     claimInfo.isClaimable = true;
-    claimInfo.verifyIds = data.prepareParticipate.mintFuncInfo.verifyIDs?.[0];
-    claimInfo.powahs = data.prepareParticipate.mintFuncInfo.powahs?.[0];
-    claimInfo.signature = data.prepareParticipate.signature;
-    claimInfo.claimingAddress = data.prepareParticipate.spaceStation;
-    claimInfo.NFTAddress = data.prepareParticipate.mintFuncInfo.nftCoreAddress;
+    claimInfo.verifyIds = verifyIDs?.[0];
+    claimInfo.powahs = powahs?.[0];
+    claimInfo.signature = signature;
+    claimInfo.claimingAddress = spaceStation;
+    claimInfo.NFTAddress = nftCoreAddress;
   }
 
   return {
