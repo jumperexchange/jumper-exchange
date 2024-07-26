@@ -152,33 +152,36 @@ export const useCheckFestNFTAvailability = ({
       data: dataCheckClaim,
       isSuccess: IsCheckClaimSuccess,
       isLoading: IsCheckClaimLoading,
-    } = useQuery({
-      queryKey: ['checkFestNFT' + chainName + userAddress],
-      queryFn: async () => {
-        console.log('entering there');
-        const res = (await request(
-          GALXE_ENDPOINT,
-          superfestNFTCheck,
-          {
-            id: initialClaimInfo[chainName].cid,
-            address: userAddress,
-          },
-          {},
-        )) as GalxeGraphqlCheckRes;
-        const alreadyClaimed =
-          res?.campaign?.participationStatus?.toLowerCase() === 'success';
-        if (alreadyClaimed) {
-          setAlreadyClaimedInfo({
-            [chainName]: true,
-          });
-        }
+    } =
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useQuery({
+        queryKey: ['checkFestNFT' + chainName + userAddress],
+        queryFn: async () => {
+          console.log('entering there');
+          const res = (await request(
+            GALXE_ENDPOINT,
+            superfestNFTCheck,
+            {
+              id: initialClaimInfo[chainName].cid,
+              address: userAddress,
+            },
+            {},
+          )) as GalxeGraphqlCheckRes;
+          const alreadyClaimed =
+            res?.campaign?.participationStatus?.toLowerCase() === 'success';
+          if (alreadyClaimed) {
+            setAlreadyClaimedInfo({
+              [chainName]: true,
+            });
+          }
 
-        return res as GalxeGraphqlCheckRes;
-      },
-      enabled: !!userAddress,
-      refetchInterval: 1000 * 60 * 60,
-    });
+          return res as GalxeGraphqlCheckRes;
+        },
+        enabled: !!userAddress,
+        refetchInterval: 1000 * 60 * 60,
+      });
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { data, isSuccess, isLoading } = useQuery({
       queryKey: ['festNFT' + chainName + userAddress],
       queryFn: async () => {

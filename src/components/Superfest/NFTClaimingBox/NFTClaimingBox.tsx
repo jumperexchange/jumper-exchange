@@ -103,6 +103,7 @@ export const NFTClaimingBox = ({
         </NFTClaimingHeader>
         <NFTDisplayBox>
           <NFTCard
+            isAlreadyClaimed={false}
             key={`nft-card-${42}`}
             chain={'box'}
             image={'https://strapi.li.finance/uploads/nft_7d22cbd21c.png'}
