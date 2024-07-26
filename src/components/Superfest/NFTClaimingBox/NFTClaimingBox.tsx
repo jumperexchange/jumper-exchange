@@ -83,6 +83,38 @@ export const NFTClaimingBox = ({
           );
         })}
       </NFTDisplayBox>
+      <Box marginTop={'64px'}>
+        <NFTClaimingHeader>
+          <NFTClaimingTitle>
+            {String('unlock the mystery box').toUpperCase()}
+          </NFTClaimingTitle>
+          <Box marginTop="32px" marginBottom="32px">
+            <NFTClaimingDescription>
+              {
+                'When you mint all Superchain wristbands, you become eligible to mint a unique Superchain Mystery Box.'
+              }
+            </NFTClaimingDescription>
+          </Box>
+        </NFTClaimingHeader>
+        <NFTDisplayBox>
+          <NFTCard
+            key={`nft-card-${42}`}
+            chain={'box'}
+            image={'https://strapi.li.finance/uploads/nft_7d22cbd21c.png'}
+            bgColor={'#69d7ff'}
+            typoColor={'#000000'}
+            claimInfo={{
+              isClaimable: false,
+              isClaimed: false,
+              cid: '',
+              numberId: 0,
+              claimingAddress: '0x',
+            }}
+            isLoading={infoLoading}
+            isSuccess={infoSuccess}
+          />
+        </NFTDisplayBox>
+      </Box>
     </NFTClaimingContainer>
   );
 };
