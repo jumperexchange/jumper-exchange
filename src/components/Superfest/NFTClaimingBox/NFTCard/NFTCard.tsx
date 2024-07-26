@@ -152,6 +152,7 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
               <SoraTypography
                 fontSize="16px"
                 lineHeight="18px"
+                color={typoColor}
                 fontWeight={600}
               >
                 MINTED
