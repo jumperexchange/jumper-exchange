@@ -11,7 +11,7 @@ export const BackButton = () => {
   return (
     <BackButtonMainBox>
       <Button
-        size={'small'}
+        size={'large'}
         styles={{
           paddingLeft: '16px',
           paddingRight: '16px',
