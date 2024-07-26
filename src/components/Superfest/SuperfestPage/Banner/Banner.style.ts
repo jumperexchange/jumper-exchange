@@ -182,15 +182,16 @@ export const RotatingBox = styled(Box)(() => ({
   },
 }));
 
-export const BadgeRelativeBox = styled(Box)(() => ({
+export const BadgeRelativeBox = styled(Box)(({ theme }) => ({
   position: 'relative',
+  left: '5%',
   bottom: '42px',
-  left: '42px',
 }));
 
 export const BadgeMainBox = styled(Box)(() => ({
   height: '1px',
   width: '80%',
+  maxWidth: '1210px',
   display: 'flex',
   justifyContent: 'flex-end',
   top: '32px',

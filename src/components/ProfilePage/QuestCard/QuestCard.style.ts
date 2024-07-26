@@ -91,9 +91,6 @@ export const XPDisplayBox = styled(Box, {
   height: '40px',
   alignItems: 'center',
   borderRadius: '128px',
-  borderStyle: 'solid',
   padding: '6px',
-  borderWidth: '1px',
-  borderColor: '#e7d6ff',
   justifyContent: 'center',
 }));
