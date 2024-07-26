@@ -89,3 +89,9 @@ export const XPIconBox = styled(Box)(({ theme }) => ({
   alignContent: 'flex-end',
   justifyContent: 'flex-end',
 }));
+
+export const OPBadgeRelativeBox = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  bottom: '16px',
+  right: '32px',
+}));
