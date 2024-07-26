@@ -76,7 +76,7 @@ export const NFTClaimingBox = () => {
           <Box marginTop="32px" marginBottom="32px">
             <NFTClaimingDescription>
               When you mint all Superchain wristbands, you become eligible to
-              mint a unique Superchain Mystery Box.
+              mint a super special NFT within the Superchain Mystery Box.
             </NFTClaimingDescription>
           </Box>
         </NFTClaimingHeader>
