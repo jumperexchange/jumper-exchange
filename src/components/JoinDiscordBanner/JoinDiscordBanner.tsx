@@ -27,7 +27,7 @@ export const JoinDiscordBanner = () => {
 
   return (
     <DiscordBannerLink
-      href={'https://discord.com/invite/lifi'}
+      href={'https://discord.com/invite/jumperexchange'}
       onClick={(e) => handleClick(e)}
       isArticlePage={isArticle}
     >
