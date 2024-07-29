@@ -58,7 +58,7 @@ export const BannerBox = ({
 
   return (
     <>
-      {attributes && attributes?.Points ? (
+      {attributes && rewards && rewards.amount ? (
         <BadgeMainBox>
           <BadgeRelativeBox>
             <RotatingBox>
