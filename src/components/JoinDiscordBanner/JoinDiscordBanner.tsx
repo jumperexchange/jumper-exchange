@@ -7,6 +7,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { DiscordBannerButton, DiscordBannerLabel, DiscordBannerLink } from '.';
+import { DISCORD_URL_INVITE } from 'src/const/urls';
 
 export const JoinDiscordBanner = () => {
   const { t } = useTranslation();
@@ -27,7 +28,7 @@ export const JoinDiscordBanner = () => {
 
   return (
     <DiscordBannerLink
-      href={'https://discord.com/invite/lifi'}
+      href={DISCORD_URL_INVITE}
       onClick={(e) => handleClick(e)}
       isArticlePage={isArticle}
     >
