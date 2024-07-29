@@ -5,7 +5,11 @@ import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../Button';
 import { XPIcon } from '../../illustrations/XPIcon';
-import { CenteredBox, NoSelectTypography } from '../ProfilePage.style';
+import {
+  CenteredBox,
+  CompletedTypography,
+  NoSelectTypography,
+} from '../ProfilePage.style';
 import {
   CompletedBox,
   QuestCardBottomBox,
@@ -115,14 +119,13 @@ export const QuestCard = ({
         ) : (
           <CompletedBox>
             <DoneIcon sx={{ height: '16px', color: '#00B849' }} />
-            <NoSelectTypography
+            <CompletedTypography
               fontSize="12px"
               lineHeight="16px"
-              color="#00B849"
               fontWeight={700}
             >
               {t('questCard.completed')}
-            </NoSelectTypography>
+            </CompletedTypography>
           </CompletedBox>
         )}
         <QuestCardTitleBox>

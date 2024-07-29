@@ -17,7 +17,7 @@ export default async function MainLayout({
 
   const cookiesHandler = cookies();
 
-  const defaultTheme = 'op';
+  const defaultTheme = 'default';
 
   return (
     <NextThemeProvider
