@@ -107,7 +107,7 @@ test.describe('Jumper full e2e flow', () => {
     expect(newPage.url()).toBe(xUrl);
   });
   test('should be able to navigate to Discord', async ({ page, context }) => {
-    let discordUrl = 'https://discord.com/invite/lifi';
+    let discordUrl = 'https://discord.com/invite/jumperexchange';
     // await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await expect(page.getByRole('menu')).toBeVisible();
