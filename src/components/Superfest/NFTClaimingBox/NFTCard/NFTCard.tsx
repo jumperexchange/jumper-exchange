@@ -236,7 +236,7 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
           }}
         >
           <SoraTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
-            {chain === 'box' ? 'LOCKED' : 'UNAVAILABLE'}
+            {chain === 'box' ? 'COMING SOON' : 'UNAVAILABLE'}
           </SoraTypography>
         </Button>
       </NFTCardBotomBox>

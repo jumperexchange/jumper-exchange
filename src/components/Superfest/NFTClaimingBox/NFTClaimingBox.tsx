@@ -51,7 +51,7 @@ export const NFTClaimingBox = () => {
           <NFTClaimingDescription>
             Explore the Superchain Festival and vibe at the sound of 1.5M OP
             rewards. When you claim OP rewards from a chain, you are eligible to
-            mint a unique Superchain wristband.
+            mint a unique Superchain wristband on the OP Mainnet.
           </NFTClaimingDescription>
         </Box>
       </NFTClaimingHeader>
