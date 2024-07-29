@@ -7,7 +7,6 @@ import { AvailableMissionsList } from './AvailableMissionsList/AvailableMissions
 import { ActiveSuperfestMissionsCarousel } from './ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
-import { useCheckFestNFTAvailability } from 'src/hooks/useCheckFestNFTAvailability';
 
 export const Superfest = () => {
   //HOOKS

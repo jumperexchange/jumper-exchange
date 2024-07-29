@@ -7,7 +7,6 @@ import {
   NFTDisplayBox,
 } from './NFTClaimingBox.style';
 import { NFTCard } from './NFTCard/NFTCard';
-import { type NFTInfo } from 'src/hooks/useCheckFestNFTAvailability';
 
 const NFT_ARRAY = [
   {

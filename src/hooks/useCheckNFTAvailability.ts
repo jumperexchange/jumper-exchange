@@ -61,20 +61,20 @@ const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
 const SECONDS_IN_A_DAY = 86400;
 const NFTInfo = {
   mode: {
-    cid: 'GCaA9tkNSX',
-    numberId: 306585,
+    cid: 'GCrKqtkcEs',
+    numberId: 307092,
   },
   optimism: {
-    cid: 'GCG29tkzgi',
-    numberId: 306532,
+    cid: 'GCRvqtkGne',
+    numberId: 307088,
   },
   base: {
-    cid: 'GCP49tkWyM',
-    numberId: 306586,
+    cid: 'GCQHCtkVUa',
+    numberId: 307083,
   },
   fraxtal: {
-    cid: '',
-    numberId: 0,
+    cid: 'GCSUCtkvFs',
+    numberId: 307084,
   },
 } as { [key: string]: { cid: string; numberId: number } };
 

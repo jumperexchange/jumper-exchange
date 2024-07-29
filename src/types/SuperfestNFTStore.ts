@@ -1,4 +1,4 @@
-import { NFTInfo } from 'src/hooks/useCheckFestNFTAvailability';
+import { NFTInfo } from 'src/hooks/useCheckNFTAvailability';
 
 export interface SuperfestNFTStoreProps {
   address?: string;

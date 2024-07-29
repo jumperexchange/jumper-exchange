@@ -8,7 +8,6 @@ import {
   useSwitchChain,
 } from 'wagmi';
 import { ChainId } from '@lifi/sdk';
-import type { NFTInfo } from 'src/hooks/useCheckFestNFTAvailability';
 import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';
 import { SoraTypography } from '../../Superfest.style';
 import { useCheckNFTAvailability } from 'src/hooks/useCheckNFTAvailability';
