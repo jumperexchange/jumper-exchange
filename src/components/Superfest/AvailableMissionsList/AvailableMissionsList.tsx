@@ -104,6 +104,8 @@ export const AvailableMissionsList = ({
           ? quests?.map((quest: Quest, index: number) => {
               const baseURL = quest.attributes.Image?.data?.attributes?.url;
               const imgURL = new URL(baseURL, url.origin);
+              const rewardType =
+                quest.attributes?.CustomInformation?.['rewardType'];
               const rewards = quest.attributes.CustomInformation?.['rewards'];
               const chains = quest.attributes.CustomInformation?.['chains'];
               const claimingIds =
@@ -161,6 +163,9 @@ export const AvailableMissionsList = ({
                   rewards={rewards}
                   completed={completed}
                   claimingIds={claimingIds}
+                  variableWeeklyAPY={
+                    rewardType === 'weekly' && quest?.attributes.Points
+                  }
                 />
               );
             })
