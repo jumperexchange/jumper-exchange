@@ -164,7 +164,7 @@ export const AvailableMissionsList = ({
                   completed={completed}
                   claimingIds={claimingIds}
                   variableWeeklyAPY={
-                    rewardType === 'weekly' && quest?.attributes.Points
+                    rewardType === 'weekly' && rewards && rewards.amount > 0
                   }
                 />
               );
