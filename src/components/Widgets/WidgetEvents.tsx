@@ -117,10 +117,6 @@ export function WidgetEvents() {
                 update.process.error?.code || '',
               [TrackingEventParameter.ErrorMessage]:
                 update.process.error?.message || '',
-              [TrackingEventParameter.InsuranceFeeAmountUSD]:
-                update.route.insurance.feeAmountUsd,
-              [TrackingEventParameter.InsuranceState]:
-                update.route.insurance?.state,
               nonInteraction: true,
             },
           });

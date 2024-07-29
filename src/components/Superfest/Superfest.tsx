@@ -1,8 +1,6 @@
 import { useAccounts } from '@/hooks/useAccounts';
-import { useCheckFestNFTAvailability } from 'src/hooks/useCheckFestNFTAvailability';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
-import { useSuperfest } from 'src/hooks/useSuperfest';
 import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
 import { ActiveSuperfestMissionsCarousel } from './ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 import { AvailableMissionsList } from './AvailableMissionsList/AvailableMissionsList';
@@ -15,7 +13,6 @@ export const Superfest = () => {
   //HOOKS
   const { account } = useAccounts();
   const { quests, isQuestLoading } = useOngoingFestMissions();
-  const isSuperfest = useSuperfest();
   const {
     availableRewards,
     activeCampaigns,
@@ -24,10 +21,6 @@ export const Superfest = () => {
     isSuccess: isRewardSuccess,
   } = useMerklRewards({
     rewardChainId: 10,
-    userAddress: account?.address,
-  });
-  // HookToCheckNFT eligibility
-  const { claimInfo, isLoading, isSuccess } = useCheckFestNFTAvailability({
     userAddress: account?.address,
   });
 
@@ -60,11 +53,7 @@ export const Superfest = () => {
           loading={isQuestLoading}
           pastCampaigns={pastCampaigns}
         />
-        <NFTClaimingBox
-          claimInfos={claimInfo}
-          infoLoading={isLoading}
-          infoSuccess={isSuccess}
-        />
+        <NFTClaimingBox />
       </SuperfestMainBox>
       <PartnerThemeFooterImage />
     </SuperfestContainer>

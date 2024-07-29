@@ -16,7 +16,7 @@ export const InfoAlertContainer = styled(Box)<BoxProps>(({ theme }) => ({
   left: 0,
   padding: theme.spacing(1.5),
   bottom: 0,
-  zIndex: 2,
+  zIndex: 2000,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: 'auto',
   },
