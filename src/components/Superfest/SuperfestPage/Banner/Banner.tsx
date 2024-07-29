@@ -58,17 +58,19 @@ export const BannerBox = ({
 
   return (
     <>
-      <BadgeMainBox>
-        <BadgeRelativeBox>
-          <RotatingBox>
-            {rewardType === 'weekly' ? (
-              <SuperfestWeeklyRewards />
-            ) : (
-              <SuperfestDailyRewards />
-            )}
-          </RotatingBox>
-        </BadgeRelativeBox>
-      </BadgeMainBox>
+      {rewards && rewards.amount && (
+        <BadgeMainBox>
+          <BadgeRelativeBox>
+            <RotatingBox>
+              {rewardType === 'weekly' ? (
+                <SuperfestWeeklyRewards />
+              ) : (
+                <SuperfestDailyRewards />
+              )}
+            </RotatingBox>
+          </BadgeRelativeBox>
+        </BadgeMainBox>
+      )}
       <BannerMainBox>
         <BannerImageBox>
           <Image
