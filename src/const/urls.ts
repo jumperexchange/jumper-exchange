@@ -17,6 +17,8 @@ export const JUMPER_LOYALTY_PATH = '/profile';
 export const JUMPER_FEST_PATH = '/superfest';
 export const JUMPER_MEMECOIN_PATH = '/memecoins';
 
+export const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
+
 // prepare sitemap
 export const pages: SitemapPage[] = [
   { path: '', priority: 1 },
