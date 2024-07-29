@@ -5950,6 +5950,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@viem/anvil@npm:0.0.7":
+  version: 0.0.7
+  resolution: "@viem/anvil@npm:0.0.7"
+  dependencies:
+    execa: "npm:^7.1.1"
+    get-port: "npm:^6.1.2"
+    http-proxy: "npm:^1.18.1"
+    ws: "npm:^8.13.0"
+  checksum: 10/5e2b4c127e3b6465a1bc899f561156f0e8fdfe478883f4a93dab1eeafa6aa040fb2dce76993f3982176e648ddbeea05bc97a0b319c2cab6e5743416db88d76e5
+  languageName: node
+  linkType: hard
+
 "@wagmi/connectors@npm:5.1.0":
   version: 5.1.0
   resolution: "@wagmi/connectors@npm:5.1.0"
@@ -10743,6 +10755,7 @@ __metadata:
     "@lifi/sdk": "npm:^3.1.3"
     "@lifi/wallet-management": "npm:^3.0.5"
     "@lifi/widget": "npm:^3.2.2"
+    "@metamask/test-dapp": "npm:8.2.0"
     "@mui/icons-material": "npm:^5.16.4"
     "@mui/material": "npm:^5.16.4"
     "@mui/material-nextjs": "npm:^5.16.4"
@@ -14634,6 +14647,27 @@ __metadata:
     react:
       optional: true
   checksum: 10/a259f5af204b801668e019855813a8f702c9558961395bb5847f583119428b997efb9b0e6feb5d6e48a76a9b541173a10fdfdb1527a7bd14477a0e0c5beba914
+  languageName: node
+  linkType: hard
+
+"viem@npm:2.9.9":
+  version: 2.9.9
+  resolution: "viem@npm:2.9.9"
+  dependencies:
+    "@adraffy/ens-normalize": "npm:1.10.0"
+    "@noble/curves": "npm:1.2.0"
+    "@noble/hashes": "npm:1.3.2"
+    "@scure/bip32": "npm:1.3.2"
+    "@scure/bip39": "npm:1.2.1"
+    abitype: "npm:1.0.0"
+    isows: "npm:1.0.3"
+    ws: "npm:8.13.0"
+  peerDependencies:
+    typescript: ">=5.0.4"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10/ceaa914576a1bd9404d681955f5ef251a82c330dff86493de449c8ba80513e12e6c204882be4244c96e43d5c0cbc9076aa937f2f85f2b37c3ba31cf5ab22a5d3
   languageName: node
   linkType: hard
 
