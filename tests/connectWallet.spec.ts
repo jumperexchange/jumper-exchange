@@ -18,6 +18,7 @@ test('should connect wallet to Jumper', async ({
     basicSetup.walletPassword,
     extensionId,
   );
+  await page.goto('/')
   const connectWalletButton = page.locator('#connect-wallet-button');
   const connectedWalletButton = page.locator('#wallet-digest-button');
   expect(connectWalletButton).toBeEnabled();
