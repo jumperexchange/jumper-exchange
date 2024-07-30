@@ -43,6 +43,7 @@ interface QuestCardProps {
   rewards?: RewardsInterface;
   completed?: boolean;
   claimingIds?: string[];
+  variableWeeklyAPY?: boolean;
 }
 
 export const QuestCard = ({
@@ -58,6 +59,7 @@ export const QuestCard = ({
   rewards,
   completed,
   claimingIds,
+  variableWeeklyAPY,
 }: QuestCardProps) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -111,7 +113,7 @@ export const QuestCard = ({
           </FlexCenterRowBox>
           {points ? (
             <FlexCenterRowBox>
-              {apy > 0 && (
+              {apy > 0 && !variableWeeklyAPY && (
                 <XPDisplayBox active={active} bgcolor={'#ff0420'}>
                   <SoraTypography
                     fontSize="14px"
@@ -120,6 +122,21 @@ export const QuestCard = ({
                     color={'#ffffff'}
                   >
                     {`${Number(apy).toFixed(1)}%`}
+                  </SoraTypography>
+                  <XPIconBox marginLeft="4px">
+                    <APYIcon size={20} />
+                  </XPIconBox>
+                </XPDisplayBox>
+              )}
+              {variableWeeklyAPY && (
+                <XPDisplayBox active={active} bgcolor={'#ff0420'}>
+                  <SoraTypography
+                    fontSize="14px"
+                    fontWeight={700}
+                    lineHeight="18px"
+                    color={'#ffffff'}
+                  >
+                    {`VAR.%`}
                   </SoraTypography>
                   <XPIconBox marginLeft="4px">
                     <APYIcon size={20} />

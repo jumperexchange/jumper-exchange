@@ -33,9 +33,10 @@ interface MissionCtaProps {
   url?: string;
   id?: number;
   CTAs: CTALinkInt[];
+  variableWeeklyAPY?: boolean;
 }
 
-export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
+export const MissionCTA = ({ CTAs, variableWeeklyAPY }: MissionCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
@@ -103,7 +104,7 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                   </SoraTypography>
                 </CTAExplanationBox>
                 <FlexCenterRowBox>
-                  {CTA.apy && (
+                  {CTA.apy && !variableWeeklyAPY && (
                     <XPDisplayBox
                       bgcolor={'#ff0420'}
                       marginRight={'16px'}
@@ -117,6 +118,26 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                         color={'#ffffff'}
                       >
                         {`${Number(CTA.apy).toFixed(1)}%`}
+                      </SoraTypography>
+                      <XPIconBox marginLeft="4px">
+                        <APYIcon size={24} />
+                      </XPIconBox>
+                    </XPDisplayBox>
+                  )}
+                  {variableWeeklyAPY && (
+                    <XPDisplayBox
+                      bgcolor={'#ff0420'}
+                      marginRight={'16px'}
+                      height={'32px'}
+                      minWidth={'88px'}
+                    >
+                      <SoraTypography
+                        fontSize="16px"
+                        fontWeight={700}
+                        lineHeight="20px"
+                        color={'#ffffff'}
+                      >
+                        {`VAR.%`}
                       </SoraTypography>
                       <XPIconBox marginLeft="4px">
                         <APYIcon size={24} />
