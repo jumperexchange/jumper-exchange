@@ -13,9 +13,13 @@ import { walletDigest } from '@/utils/walletDigest';
 import { getConnectorIcon } from '@lifi/wallet-management';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { Skeleton, Stack, Typography } from '@mui/material';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { JUMPER_SCAN_PATH } from 'src/const/urls';
 import {
   WalletAvatar,
   WalletCardBadge,
@@ -34,6 +38,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   const { chains } = useChains();
   const { checkMultisigEnvironment } = useMultisig();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
+  const router = useRouter();
 
   const activeChain = useMemo(
     () => chains?.find((chainEl) => chainEl.id === account.chainId),
@@ -74,6 +79,19 @@ export const WalletCard = ({ account }: WalletCardProps) => {
     }
   };
 
+  const handleScanButton = () => {
+    account.chainId && closeAllMenus();
+    const url = `${JUMPER_SCAN_PATH}/wallet/${account.address}`;
+
+    trackEvent({
+      category: TrackingCategory.WalletMenu,
+      action: TrackingAction.OpenJumperScan,
+      label: 'open-jumper-scan-wallet',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
+    router.push(url);
+  };
+
   const handleCopyButton = () => {
     if (isMultisigEnvironment) {
       return;
@@ -95,7 +113,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
 
   return (
     <WalletCardContainer>
-      <Stack direction={'row'} spacing={4} sx={{ margin: 'auto' }}>
+      <Stack direction={'row'} spacing={4} sx={{ margin: 'auto', flexGrow: 1 }}>
         <WalletCardBadge
           overlap="circular"
           className="badge"
@@ -121,7 +139,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             variant="transparent"
             size="medium"
             disabled={isMultisigEnvironment}
-            styles={{ width: '100%', gridColumn: '1/3', gridRow: '1/2' }}
+            styles={{ width: '100%', gridColumn: '1/4', gridRow: '1/2' }}
             onClick={() => handleCopyButton()}
           >
             <Typography variant="lifiBodySmallStrong">
@@ -133,16 +151,32 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             size="medium"
             onClick={() => handleExploreButton()}
             styles={{
-              gridColumn: '1/2',
-              gridRow: '2/3',
+              gridRow: '2/2',
+              gridColumn: '0/3',
             }}
           >
             <OpenInNewIcon sx={{ height: '20px' }} />
           </Button>
+          <Link
+            href={`${JUMPER_SCAN_PATH}/wallet/${account.address}`}
+            style={{
+              gridColumn: '2/3',
+              gridRow: '2/2',
+            }}
+            onClick={() => handleScanButton()}
+          >
+            <Button variant="transparent" size="medium">
+              <ReceiptLongIcon sx={{ height: '20px' }} />
+            </Button>
+          </Link>
           <Button
             variant="secondary"
             size="medium"
             onClick={() => handleDisconnect()}
+            styles={{
+              gridColumn: '3/3',
+              gridRow: '2/2',
+            }}
           >
             <PowerSettingsNewIcon sx={{ height: '20px' }} />
           </Button>

@@ -47,6 +47,8 @@ export interface TrackChainSwitchProps {
 type destinations =
   | 'discord-lifi'
   | 'lifi-explorer'
+  | 'jumper-scan'
+  | 'jumper-scan-wallet'
   | 'lifi-website'
   | 'docs-sc-audits'
   | 'lifi-github'
