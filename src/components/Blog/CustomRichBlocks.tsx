@@ -9,7 +9,8 @@ import type { ThemeModesSupported } from '@/types/settings';
 import type { MediaAttributes } from '@/types/strapi';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import type { JSX } from 'react';
+import { isValidElement, type JSX, type ReactElement } from 'react';
+import nl2br from 'react-nl2br';
 import { BlogParagraphContainer } from './BlogArticle/BlogArticle.style';
 import type { BlogWidgetProps } from './BlogWidget';
 import { BlogWidget } from './BlogWidget';
@@ -199,38 +200,29 @@ export const CustomRichBlocks = ({
                     </BlogLink>
                   );
                 } else {
-                  if (el.props.text.indexOf('\n') === -1) {
+                  const nl2brText: Array<ReactElement | string> = nl2br(
+                    el.props.text,
+                  );
+                  return nl2brText.map((line, lineIndex: number) => {
+                    if (line === '') {
+                      return <></>;
+                    }
+                    if (isValidElement(line) && line.type === 'br') {
+                      // adds <br> from nl2br
+                      return line;
+                    }
                     return (
                       <BlogParagraph
                         italic={el.props.italic}
                         strikethrough={el.props.strikethrough}
                         underline={el.props.underline}
                         bold={el.props.bold}
-                        key={`blog-paragraph-${index}`}
+                        key={`blog-paragraph-line-${index}-${lineIndex}`}
                       >
-                        {el.props.text}
+                        {line}
                       </BlogParagraph>
                     );
-                  } else {
-                    return el.props.text
-                      .split('\n')
-                      .map((line: string, lineIndex: number) => {
-                        if (line === '') {
-                          return <></>;
-                        }
-                        return (
-                          <BlogParagraph
-                            italic={el.props.italic}
-                            strikethrough={el.props.strikethrough}
-                            underline={el.props.underline}
-                            bold={el.props.bold}
-                            key={`blog-paragraph-line-${index}-${lineIndex}`}
-                          >
-                            {line}
-                          </BlogParagraph>
-                        );
-                      });
-                  }
+                  });
                 }
               } else {
                 return <></>;
