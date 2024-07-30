@@ -14,7 +14,6 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { Skeleton, Stack, Typography } from '@mui/material';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -89,11 +88,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
       label: 'open-jumper-scan-wallet',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    // window.open(url, '_self');
-    // router.refresh();
-    // router.push(url);
-    // router.replace(url);
-    // openInNewTab(url);
+    window.open(url, '_self');
   };
 
   const handleCopyButton = () => {
@@ -159,26 +154,16 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           >
             <OpenInNewIcon sx={{ height: '20px' }} />
           </ButtonTransparent>
-          <Link
-            target="_blank"
-            href={`/scan/wallet/${account.address}`}
-            onClick={() => handleScanButton()}
-            style={{
+          <ButtonTransparent
+            size="medium"
+            sx={{
               gridColumn: '2/3',
               gridRow: '2/2',
             }}
+            onClick={() => handleScanButton()}
           >
-            <ButtonTransparent
-              size="medium"
-              sx={{
-                gridColumn: '2/3',
-                gridRow: '2/2',
-              }}
-              // onClick={() => handleScanButton()}
-            >
-              <ReceiptLongIcon sx={{ height: '20px' }} />
-            </ButtonTransparent>
-          </Link>
+            <ReceiptLongIcon sx={{ height: '20px' }} />
+          </ButtonTransparent>
           <ButtonSecondary
             size="medium"
             onClick={() => handleDisconnect()}
