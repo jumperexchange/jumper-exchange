@@ -28,7 +28,9 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const { account } = useAccounts();
-  const [signMessage, setSignMessage] = useState(undefined);
+  const [messageToSign, setMessageToSign] = useState<string | undefined>(
+    undefined,
+  );
   const [isTurtleLoading, setIsTurtleLoading] = useState(false);
   const [isTurtleSuccess, setIsTurtleSuccess] = useState(false);
   const [isTurtleFailure, setIsTurtleFailure] = useState(false);
@@ -37,20 +39,24 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
   const handleSignatureClick = async () => {
     try {
       const POST_ENDPOINT = 'https://points.turtle.club/user/verify_siwe';
-      if (signMessage && account && account.address) {
+      if (messageToSign && account && account.address) {
         const sig = await signMessageAsync({
           account: account.address as `0x${string}`,
-          message: signMessage,
+          message: messageToSign,
         });
         console.log(sig);
         const payload = {
-          message: signMessage, // same message as from before
+          message: messageToSign, // same message as from before
           signature: sig, // hex signature
-          referral: 'JUMPER', // referral you or us create
+          referral: 'JUMPER', // referral string
         };
+        console.log(payload);
         const res = await fetch(POST_ENDPOINT, {
           body: JSON.stringify(payload),
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
         if (!res.ok) {
           throw new Error(`Response status: ${res.status}`);
@@ -69,10 +75,9 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
       try {
         const GET_ENDPOINT = 'https://points.turtle.club/user/siwe_message';
         const response = await fetch(`${GET_ENDPOINT}`);
-        const message = await response.json();
+        const message = await response.text();
         if (message) {
-          console.log(message);
-          setSignMessage(message);
+          setMessageToSign(message);
         }
       } catch (err) {
         console.log(err);
