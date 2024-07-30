@@ -7,7 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
-import { JUMPER_LEARN_PATH } from 'src/const/urls';
+import { JUMPER_LEARN_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { EventTrackingTool } from 'src/types/userTracking';
 import { WalletButtons } from '../WalletButton';
@@ -20,8 +20,9 @@ export const WalletManagementButtons = () => {
   const { trackEvent } = useUserTracking();
 
   const pathname = usePathname();
-  const redirectToApp = pathname?.includes(JUMPER_LEARN_PATH);
-
+  const redirectToApp =
+    pathname?.includes(JUMPER_LEARN_PATH) ||
+    pathname?.includes(JUMPER_SCAN_PATH);
   const handleLearnButton = () => {
     router.push('/');
     trackEvent({
