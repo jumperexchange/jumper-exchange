@@ -129,6 +129,7 @@ export enum TrackingEventParameter {
   Error = 'param_error',
   Message = 'param_message',
   GasCostUSD = 'param_gas_cost_usd',
+  FeeCostUSD = 'param_fee_cost_usd',
   TxHash = 'param_tx_hash',
   TxLink = 'param_tx_link',
   ToChainId = 'param_to_chain_id',
