@@ -54,31 +54,31 @@ export const useDevelopersContent = () => {
       },
       link: { url: GITHUB_URL, external: true },
     },
-    {
-      label: t('navbar.developers.documentation'),
-      prefixIcon: <DescriptionOutlinedIcon />,
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'open-lifi-docs',
-          action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'lifi_docs' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
-        });
-        trackPageload({
-          source: TrackingCategory.Menu,
-          destination: 'lifi-docs',
-          url: DOCS_URL,
-          pageload: true,
-          disableTrackingTool: [EventTrackingTool.Cookie3],
-        });
-        closeAllMenus();
-      },
-      link: { url: DOCS_URL, external: true },
-    },
+    // {
+    //   label: t('navbar.developers.documentation'),
+    //   prefixIcon: <DescriptionOutlinedIcon />,
+    //   onClick: () => {
+    //     trackEvent({
+    //       category: TrackingCategory.Menu,
+    //       label: 'open-lifi-docs',
+    //       action: TrackingAction.OpenMenu,
+    //       data: { [TrackingEventParameter.Menu]: 'lifi_docs' },
+    //       disableTrackingTool: [
+    //         EventTrackingTool.ARCx,
+    //         EventTrackingTool.Cookie3,
+    //       ],
+    //     });
+    //     trackPageload({
+    //       source: TrackingCategory.Menu,
+    //       destination: 'lifi-docs',
+    //       url: DOCS_URL,
+    //       pageload: true,
+    //       disableTrackingTool: [EventTrackingTool.Cookie3],
+    //     });
+    //     closeAllMenus();
+    //   },
+    //   link: { url: DOCS_URL, external: true },
+    // },
     {
       label: t('navbar.navbarMenu.brandAssets'),
       prefixIcon: <FolderZipOutlinedIcon />,
