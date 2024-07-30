@@ -1,9 +1,17 @@
 // ----------------------------------------------------------------------
 
-export type ThemeModesSupported = 'light' | 'dark' | 'auto';
+import type { PartnerThemesData } from '@/types/strapi';
+import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
+import type { WidgetConfig } from '@lifi/widget';
+
+export type ThemeModesSupported = 'light' | 'dark' | 'system';
 export type WalletConnected = string;
 
 export interface SettingsProps {
+  partnerThemes: PartnerThemesData[];
+  activeTheme: string;
+  widgetTheme: { config: Partial<WidgetConfig> };
+  configTheme: PartnerThemeConfig;
   themeMode: ThemeModesSupported;
   clientWallets: string[];
   disabledFeatureCards: string[];
@@ -16,6 +24,10 @@ export interface SettingsState extends SettingsProps {
   // Mode
   setThemeMode: (mode: ThemeModesSupported) => void;
 
+  setActiveTheme: (activeTheme: any) => void;
+  setConfigTheme: (configTheme: any) => void;
+  setWidgetTheme: (widgetTheme: any) => void;
+
   // Installed Wallets
   setClientWallets: (wallet: string) => void;
 
@@ -27,4 +39,6 @@ export interface SettingsState extends SettingsProps {
 
   // Welcome Screen
   setWelcomeScreenClosed: (shown: boolean) => void;
+
+  setPartnerThemes: (themes: PartnerThemesData[]) => void;
 }

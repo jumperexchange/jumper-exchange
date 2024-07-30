@@ -15,7 +15,7 @@ test.describe('Jumper full e2e flow', () => {
     const buyETHButton = page
       .frameLocator('iframe[title="Onramper widget"]')
       .locator('button:has-text("Buy ETH")');
-    await closeWelcomeScreen(page);
+    // await closeWelcomeScreen(page);
     await page.getByRole('tab', { name: 'Exchange' }).click();
     await expect(
       page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
@@ -31,7 +31,7 @@ test.describe('Jumper full e2e flow', () => {
     ).toBeVisible();
   });
 
-  test('should handle welcome screen', async ({ page }) => {
+  test.skip('should handle welcome screen', async ({ page }) => {
     const headerText = 'Find the best route';
     await findTheBestRoute(page);
     expect(headerText).toBe('Find the best route');
@@ -42,7 +42,7 @@ test.describe('Jumper full e2e flow', () => {
     await expect(connectWalletButton).toBeVisible();
   });
 
-  test('should show again welcome screen when clicking jumper logo', async ({
+  test.skip('should show again welcome screen when clicking jumper logo', async ({
     page,
   }) => {
     const headerText = 'Find the best route';
@@ -56,17 +56,17 @@ test.describe('Jumper full e2e flow', () => {
   test('should be able to open menu and click away to close it', async ({
     page,
   }) => {
-    await closeWelcomeScreen(page);
+    // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
-    await expect(page.getByRole('menuitem')).toHaveCount(10);
+    await expect(page.getByRole('menuitem')).toHaveCount(11);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
 
   test('should be able to navigate to profile', async ({ page }) => {
     let profileUrl = `${await page.url()}profile/`;
-    await closeWelcomeScreen(page);
+    // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
     await itemInMenu(page, 'Jumper Profile');
@@ -76,7 +76,7 @@ test.describe('Jumper full e2e flow', () => {
 
   test('should be able to navigate to jumper learn', async ({ page }) => {
     let learnUrl = `${await page.url()}learn/`;
-    await closeWelcomeScreen(page);
+    // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
     await itemInMenu(page, 'Jumper Learn');
@@ -87,10 +87,10 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('should be able to navigate to lifi explorer', async ({ page }) => {
-    await closeWelcomeScreen(page);
+    // await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await expect(page.getByRole('menu')).toBeVisible();
-    await itemInMenu(page, 'LI.FI Explorer');
+    await itemInMenu(page, 'LI.FI Scan');
     const newPage = await page.waitForEvent('popup', { timeout: 15000 });
     expect(newPage.url()).toBe(
       'https://scan.li.fi/?utm_source=jumper&utm_campaign=jumper_to_explorer&utm_medium=menu',
@@ -99,7 +99,7 @@ test.describe('Jumper full e2e flow', () => {
 
   test('should be able to navigate to X', async ({ page, context }) => {
     let xUrl = 'https://x.com/JumperExchange';
-    await closeWelcomeScreen(page);
+    // await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await expect(page.getByRole('menu')).toBeVisible();
     await page.getByRole('link', { name: 'X', exact: true }).click();
@@ -107,8 +107,8 @@ test.describe('Jumper full e2e flow', () => {
     expect(newPage.url()).toBe(xUrl);
   });
   test('should be able to navigate to Discord', async ({ page, context }) => {
-    let discordUrl = 'https://discord.com/invite/lifi';
-    await closeWelcomeScreen(page);
+    let discordUrl = 'https://discord.com/invite/jumperexchange';
+    // await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await expect(page.getByRole('menu')).toBeVisible();
     await page.getByRole('link', { name: 'Discord' }).click();

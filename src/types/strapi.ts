@@ -226,6 +226,12 @@ export interface PartnerTheme {
   customization?: Customization;
 }
 
+// TODO: Make it dynamic
+interface RepeatableComponent {
+  id: number;
+  key: string;
+}
+
 export interface PartnerThemesAttributes {
   PartnerName: string;
   lightConfig?: PartnerTheme;
@@ -245,4 +251,6 @@ export interface PartnerThemesAttributes {
   LogoDark: StrapiImageData;
   BackgroundColorLight?: string;
   BackgroundColorDark?: string;
+  Bridges: RepeatableComponent[];
+  Exchanges: RepeatableComponent[];
 }

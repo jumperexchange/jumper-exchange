@@ -8,6 +8,7 @@ import type { Chain } from '../SuperfestPage/Banner/Banner';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
 import Link from 'next/link';
 import {
+  OPBadgeRelativeBox,
   QuestCardBottomBox,
   QuestCardInfoBox,
   QuestCardMainBox,
@@ -17,6 +18,9 @@ import {
 } from './QuestCard.style';
 import { OPBadge } from 'src/components/illustrations/OPBadge';
 import { Box } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import { APYIcon } from 'src/components/illustrations/APYIcon';
 
 export interface RewardsInterface {
   logo: string;
@@ -37,6 +41,9 @@ interface QuestCardProps {
   slug?: string;
   chains?: Chain[];
   rewards?: RewardsInterface;
+  completed?: boolean;
+  claimingIds?: string[];
+  variableWeeklyAPY?: boolean;
 }
 
 export const QuestCard = ({
@@ -50,9 +57,13 @@ export const QuestCard = ({
   slug,
   chains,
   rewards,
+  completed,
+  claimingIds,
+  variableWeeklyAPY,
 }: QuestCardProps) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const { apy, isLoading, isSuccess } = useMissionsMaxAPY(claimingIds);
 
   return (
     <QuestCardMainBox>
@@ -70,15 +81,10 @@ export const QuestCard = ({
               }}
             />
           )}
-          <Box
-            sx={{
-              position: 'relative',
-              marginLeft: '-32px',
-              maringTop: '-16px',
-            }}
-          >
+
+          <OPBadgeRelativeBox>
             {rewards?.amount && <OPBadge />}
-          </Box>
+          </OPBadgeRelativeBox>
         </Box>
       </Link>
       <QuestCardBottomBox>
@@ -99,25 +105,62 @@ export const QuestCard = ({
                     zIndex: 100 - i,
                   }}
                   alt={elem.name}
-                  width="28"
-                  height="28"
+                  width="32"
+                  height="32"
                 />
               );
             })}
           </FlexCenterRowBox>
           {points ? (
             <FlexCenterRowBox>
-              <XPDisplayBox active={active}>
+              {apy > 0 && !variableWeeklyAPY && (
+                <XPDisplayBox active={active} bgcolor={'#ff0420'}>
+                  <SoraTypography
+                    fontSize="14px"
+                    fontWeight={700}
+                    lineHeight="18px"
+                    color={'#ffffff'}
+                  >
+                    {`${Number(apy).toFixed(1)}%`}
+                  </SoraTypography>
+                  <XPIconBox marginLeft="4px">
+                    <APYIcon size={20} />
+                  </XPIconBox>
+                </XPDisplayBox>
+              )}
+              {variableWeeklyAPY && (
+                <XPDisplayBox active={active} bgcolor={'#ff0420'}>
+                  <SoraTypography
+                    fontSize="14px"
+                    fontWeight={700}
+                    lineHeight="18px"
+                    color={'#ffffff'}
+                  >
+                    {`VAR.%`}
+                  </SoraTypography>
+                  <XPIconBox marginLeft="4px">
+                    <APYIcon size={20} />
+                  </XPIconBox>
+                </XPDisplayBox>
+              )}
+              <XPDisplayBox
+                active={active}
+                bgcolor={!completed ? '#31007A' : '#42B852'}
+              >
                 <SoraTypography
                   fontSize="14px"
                   fontWeight={700}
                   lineHeight="18px"
                   color={'#ffffff'}
                 >
-                  {`+${points}`}
+                  {`${points}`}
                 </SoraTypography>
                 <XPIconBox marginLeft="4px">
-                  <SuperfestXPIcon size={16} />
+                  {!completed ? (
+                    <SuperfestXPIcon size={16} />
+                  ) : (
+                    <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
+                  )}
                 </XPIconBox>
               </XPDisplayBox>
             </FlexCenterRowBox>

@@ -76,7 +76,11 @@ export const InfoAlertClickable = ({
               />
               <Typography variant={'lifiHeaderXSmall'}>{title}</Typography>
             </InfoMessageCardTitle>
-            <Typography variant={'lifiBodySmall'} pt={theme.spacing(1.5)}>
+            <Typography
+              variant={'lifiBodySmall'}
+              pt={theme.spacing(1.5)}
+              color={theme.palette.mode === 'light' ? '#000000' : '#ffffff'}
+            >
               {subtitle}
             </Typography>
             <ButtonInfoAlertClickable size="small">

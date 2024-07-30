@@ -76,17 +76,22 @@ export const XPDisplayBox = styled(Box, {
 })<XPDisplayBoxProps>(({ active }) => ({
   marginRight: active ? '8px' : undefined,
   display: 'flex',
-  height: '24px',
+  height: '28px',
   alignContent: 'center',
   justifyContent: 'space-between',
   alignItems: 'center',
   borderRadius: '128px',
   padding: '8px',
-  backgroundColor: '#ff0420',
 }));
 
 export const XPIconBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignContent: 'flex-end',
   justifyContent: 'flex-end',
+}));
+
+export const OPBadgeRelativeBox = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  bottom: '16px',
+  right: '32px',
 }));

@@ -5,7 +5,7 @@ import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { SuperfestCarouselContainer } from './ActiveSuperfestMissionsCarousel.style';
 
-function checkInclusion(
+export function checkInclusion(
   activeCampaigns: string[],
   claimingIds: string[],
 ): boolean {
@@ -22,12 +22,14 @@ interface QuestCarouselProps {
   quests?: Quest[];
   loading: boolean;
   activeCampaigns: string[];
+  pastCampaigns?: string[];
 }
 
 export const ActiveSuperfestMissionsCarousel = ({
   quests,
   loading,
   activeCampaigns,
+  pastCampaigns,
 }: QuestCarouselProps) => {
   const { url } = useOngoingFestMissions();
 
@@ -45,9 +47,18 @@ export const ActiveSuperfestMissionsCarousel = ({
               quests?.map((quest: Quest, index: number) => {
                 const claimingIds =
                   quest.attributes?.CustomInformation?.['claimingIds'];
+                const rewardsIds =
+                  quest.attributes?.CustomInformation?.['rewardsIds'];
+                const rewardType =
+                  quest.attributes?.CustomInformation?.['rewardType'];
                 let included = false;
+                let completed = false;
                 if (claimingIds && activeCampaigns) {
                   included = checkInclusion(activeCampaigns, claimingIds);
+                }
+
+                if (rewardsIds && pastCampaigns) {
+                  completed = checkInclusion(pastCampaigns, rewardsIds);
                 }
 
                 const baseURL = quest.attributes.Image?.data?.attributes?.url;
@@ -70,6 +81,10 @@ export const ActiveSuperfestMissionsCarousel = ({
                       }
                       slug={quest?.attributes.Slug}
                       chains={quest.attributes.CustomInformation?.['chains']}
+                      completed={completed}
+                      variableWeeklyAPY={
+                        quest?.attributes.Points > 0 && rewardType === 'weekly'
+                      }
                     />
                   );
                 }

@@ -8,6 +8,9 @@ import { BannerBox } from './Banner/Banner';
 import { DescriptionBox } from './DescriptionBox/DescriptionBox';
 import { StepsBox } from './StepsBox/StepsBox';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
+import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
+import { useAccounts } from '@/hooks/useAccounts';
+import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 
 interface SuperfestMissionPageVar {
   quest: Quest;
@@ -20,7 +23,17 @@ export const SuperfestMissionPage = ({
 }: SuperfestMissionPageVar) => {
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
-  const signature = quest?.attributes?.CustomInformation?.['signature'];
+  const signature = quest?.attributes?.CustomInformation?.['missionType'];
+  const rewardType = attributes?.CustomInformation?.['rewardType'];
+  const points = quest?.attributes?.Points;
+
+  const { account } = useAccounts();
+  const { pastCampaigns } = useMerklRewards({
+    rewardChainId: 10,
+    userAddress: account?.address,
+  });
+
+  const { isLoading, isSuccess, CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
     <SuperfestContainer className="superfest">
@@ -28,13 +41,18 @@ export const SuperfestMissionPage = ({
         {/* button to go back */}
         <BackButton />
         {/* big component with the main information */}
-        <BannerBox quest={quest} baseUrl={baseUrl} />
+        <BannerBox
+          quest={quest}
+          baseUrl={baseUrl}
+          pastCampaigns={pastCampaigns}
+        />
         {/* Big CTA */}
         <MissionCTA
           title={attributes?.Title}
           url={attributes?.Link}
           key={generateKey('cta')}
-          CTAs={CTAs}
+          CTAs={CTAsWithAPYs}
+          variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
         />
         {/* Subtitle and description */}
         <DescriptionBox

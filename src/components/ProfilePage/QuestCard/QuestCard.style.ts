@@ -48,7 +48,7 @@ export const CompletedBox = styled(Box)(() => ({
   backgroundColor: '#d6ffe7',
   borderRadius: '128px',
   padding: '4px',
-  width: '50%',
+  width: '110px',
 }));
 
 export interface QuestPlatformMainBoxProps extends Omit<BoxProps, 'component'> {
@@ -91,9 +91,6 @@ export const XPDisplayBox = styled(Box, {
   height: '40px',
   alignItems: 'center',
   borderRadius: '128px',
-  borderStyle: 'solid',
   padding: '6px',
-  borderWidth: '1px',
-  borderColor: '#e7d6ff',
   justifyContent: 'center',
 }));

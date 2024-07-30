@@ -12,26 +12,23 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
+import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { darkTheme } from 'src/theme/theme';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
+import { useWidgetTheme } from './useWidgetTheme';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { usePartnerTheme } from 'src/hooks/usePartnerTheme';
 import { useMediaQuery } from '@mui/material';
 import type { Theme } from '@mui/material';
-import { publicRPCList } from 'src/const/rpcList';
-import { useRouter } from 'next/navigation';
-import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
-import { useWidgetTheme } from './useWidgetTheme';
 
 export function Widget({
   starterVariant,
@@ -47,13 +44,14 @@ export function Widget({
   const theme = useTheme();
   const widgetTheme = useWidgetTheme();
   const themeMode = useSettingsStore((state) => state.themeMode);
+  const configTheme = useSettingsStore((state) => state.configTheme);
   const { i18n } = useTranslation();
   const wagmiConfig = useConfig();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
-  const { isBridgeFiltered, isDexFiltered, partnerName } = usePartnerTheme();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
+  const partnerName = configTheme?.uid ?? 'default';
   const { tokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
@@ -100,15 +98,6 @@ export function Widget({
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
 
-  const partnerNameArray = useMemo(() => {
-    if (partnerName) {
-      return partnerName === 'stargate'
-        ? ['stargate', 'stargateV2']
-        : [partnerName];
-    }
-    return undefined;
-  }, [partnerName]);
-
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
@@ -145,10 +134,10 @@ export function Widget({
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
-        allow: isBridgeFiltered && partnerName ? partnerNameArray : undefined,
+        allow: configTheme?.allowedBridges,
       },
       exchanges: {
-        allow: isDexFiltered && partnerName ? partnerNameArray : undefined,
+        allow: configTheme?.allowedExchanges,
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -186,7 +175,6 @@ export function Widget({
           : undefined,
       },
       buildUrl: true,
-      insurance: true,
       integrator: integratorStringByType,
       tokens:
         partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
@@ -218,9 +206,6 @@ export function Widget({
     tokens,
     wagmiConfig,
     widgetIntegrator,
-    partnerNameArray,
-    isDexFiltered,
-    isBridgeFiltered,
     integratorStringByType,
     widgetTheme,
   ]);
@@ -231,11 +216,7 @@ export function Widget({
       welcomeScreenClosed={welcomeScreenClosed}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
-      <ClientOnly
-        fallback={
-          <WidgetSkeleton config={{ ...config, appearance: activeTheme }} />
-        }
-      >
+      <ClientOnly fallback={<WidgetSkeleton config={config} />}>
         <LiFiWidget integrator={config.integrator} config={config} />
       </ClientOnly>
     </WidgetWrapper>

@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { MissionsFilter } from '../MissionsFilter/MissionsFilter';
+import { checkInclusion } from '../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 
 const chains = ['Optimism', 'Base', 'Mode', 'Fraxtal'];
 
@@ -27,15 +28,17 @@ const category = [
   'Yield',
 ];
 
-interface QuestCompletedListProps {
+interface AvailableMissionsListProps {
   quests?: Quest[];
+  pastCampaigns?: string[];
   loading: boolean;
 }
 
 export const AvailableMissionsList = ({
   quests,
+  pastCampaigns,
   loading,
-}: QuestCompletedListProps) => {
+}: AvailableMissionsListProps) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
@@ -102,8 +105,13 @@ export const AvailableMissionsList = ({
               const baseURL = quest.attributes.Image?.data?.attributes?.url;
               const imgURL = new URL(baseURL, url.origin);
               const rewards = quest.attributes.CustomInformation?.['rewards'];
+              const rewardType =
+                quest.attributes?.CustomInformation?.['rewardType'];
               const chains = quest.attributes.CustomInformation?.['chains'];
-              const rewardsAmount = rewards?.amount;
+              const claimingIds =
+                quest.attributes?.CustomInformation?.['claimingIds'];
+              const rewardsIds =
+                quest.attributes?.CustomInformation?.['rewardsIds'];
 
               //todo: exclude in a dedicated helper function
               if (chainsFilter && chainsFilter.length > 0) {
@@ -132,6 +140,11 @@ export const AvailableMissionsList = ({
                 return undefined;
               }
 
+              let completed = false;
+              if (rewardsIds && pastCampaigns) {
+                completed = checkInclusion(pastCampaigns, rewardsIds);
+              }
+
               return (
                 <QuestCard
                   key={`available-mission-${index}`}
@@ -148,6 +161,11 @@ export const AvailableMissionsList = ({
                   slug={quest?.attributes.Slug}
                   chains={chains}
                   rewards={rewards}
+                  completed={completed}
+                  claimingIds={claimingIds}
+                  variableWeeklyAPY={
+                    quest?.attributes.Points > 0 && rewardType === 'weekly'
+                  }
                 />
               );
             })
