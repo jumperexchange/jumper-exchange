@@ -1,5 +1,4 @@
 import { Avatar } from '@/components/Avatar/Avatar';
-import { Button } from '@/components/Button/Button';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import type { Account } from '@/hooks/useAccounts';
 import { useAccountDisconnect } from '@/hooks/useAccounts';
@@ -15,10 +14,10 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { Skeleton, Stack, Typography } from '@mui/material';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
 import { JUMPER_SCAN_PATH } from 'src/const/urls';
 import {
   WalletAvatar,
@@ -89,7 +88,11 @@ export const WalletCard = ({ account }: WalletCardProps) => {
       label: 'open-jumper-scan-wallet',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    router.push(url);
+    window.open(url, '_self');
+    // router.refresh();
+    // router.push(url);
+    // router.replace(url);
+    // openInNewTab(url);
   };
 
   const handleCopyButton = () => {
@@ -135,51 +138,55 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           <WalletAvatar src={getConnectorIcon(account.connector)} />
         </WalletCardBadge>
         <WalletCardButtonContainer>
-          <Button
-            variant="transparent"
+          <ButtonTransparent
             size="medium"
             disabled={isMultisigEnvironment}
-            styles={{ width: '100%', gridColumn: '1/4', gridRow: '1/2' }}
+            sx={{ width: '100%', gridColumn: '1/4', gridRow: '1/2' }}
             onClick={() => handleCopyButton()}
           >
             <Typography variant="lifiBodySmallStrong">
               {walletDigest(account.address)}
             </Typography>
-          </Button>
-          <Button
-            variant="transparent"
+          </ButtonTransparent>
+          <ButtonTransparent
             size="medium"
             onClick={() => handleExploreButton()}
-            styles={{
+            sx={{
               gridRow: '2/2',
               gridColumn: '0/3',
             }}
           >
             <OpenInNewIcon sx={{ height: '20px' }} />
-          </Button>
-          <Link
-            href={`${JUMPER_SCAN_PATH}/wallet/${account.address}`}
+          </ButtonTransparent>
+          {/* <Link
+            href={`/scan/wallet/${account.address}`}
+            onClick={() => handleScanButton()}
             style={{
+              gridColumn: '2/3',
+              gridRow: '2/2',
+            }}
+          > */}
+          <ButtonTransparent
+            size="medium"
+            sx={{
               gridColumn: '2/3',
               gridRow: '2/2',
             }}
             onClick={() => handleScanButton()}
           >
-            <Button variant="transparent" size="medium">
-              <ReceiptLongIcon sx={{ height: '20px' }} />
-            </Button>
-          </Link>
-          <Button
-            variant="secondary"
+            <ReceiptLongIcon sx={{ height: '20px' }} />
+          </ButtonTransparent>
+          {/* </Link> */}
+          <ButtonSecondary
             size="medium"
             onClick={() => handleDisconnect()}
-            styles={{
+            sx={{
               gridColumn: '3/3',
               gridRow: '2/2',
             }}
           >
             <PowerSettingsNewIcon sx={{ height: '20px' }} />
-          </Button>
+          </ButtonSecondary>
         </WalletCardButtonContainer>
       </Stack>
     </WalletCardContainer>
