@@ -14,6 +14,7 @@ import {
   CTAExplanationBox,
   SeveralMissionCtaContainer,
 } from '../CTA/MissionCTA.style';
+import { useTurtleMember } from 'src/hooks/useTurtleMember';
 
 interface SignatureInt {
   isLive: boolean;
@@ -35,6 +36,13 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
   const [isTurtleSuccess, setIsTurtleSuccess] = useState(false);
   const [isTurtleFailure, setIsTurtleFailure] = useState(false);
   const { data, isError, isSuccess, signMessageAsync } = useSignMessage();
+  const {
+    isMember,
+    isLoading: isMemberCheckLoading,
+    isSuccess: isMemberCheckSuccess,
+  } = useTurtleMember({
+    userAddress: account?.address,
+  });
 
   const handleSignatureClick = async () => {
     try {
