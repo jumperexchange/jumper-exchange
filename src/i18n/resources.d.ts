@@ -38,7 +38,7 @@ interface Resources {
         brandAssets: 'Brand Assets';
         theme: 'Theme';
         developers: 'Developers';
-        lifiExplorer: 'LI.FI Explorer';
+        lifiExplorer: 'LI.FI Scan';
         aboutLIFI: 'About LI.FI';
         support: 'Support';
         profile: 'Jumper Profile';

@@ -1,6 +1,6 @@
 import { sequel65, sora } from '@/fonts/fonts';
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, Typography, alpha, darken } from '@mui/material';
+import { Box, Typography, alpha, lighten, darken } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { IconButtonPrimary } from 'src/components/IconButton';
 
@@ -80,6 +80,14 @@ export const MissionCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 export const MissionCtaButton = styled(IconButtonPrimary)(({ theme }) => ({
+  backgroundColor: 'transparent',
+  width: '32px',
+  height: '32px',
+  border: '2px dotted',
+  borderColor: '#000000',
+  ':hover': {
+    backgroundColor: darken('#f9ebc5', 0.02),
+  },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     display: 'flex',
   },
@@ -146,14 +154,15 @@ export const CTAMainBox = styled(Box)(({ theme }) => ({
 
 export const CTAExplanationBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'row',
   alignItems: 'center',
   [theme.breakpoints.down('md' as Breakpoint)]: {
+    flexDirection: 'column',
     justifyContent: 'flex-start',
     alignContent: 'flex-start',
     textAlign: 'left',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignContent: 'center',
   },

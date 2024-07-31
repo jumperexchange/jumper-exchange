@@ -1,25 +1,31 @@
-import { IconButtonPrimary } from '@/components/IconButton.style';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box, type Theme, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import {
+  CTAExplanationBox,
+  CTAMainBox,
+  MissionCtaButton,
   SeveralCTABox,
-  StartedTitleTypography,
   SeveralMissionCtaContainer,
   StartedTitleBox,
-  CTAMainBox,
-  CTAExplanationBox,
+  StartedTitleTypography,
 } from './MissionCTA.style';
-import { type Theme, useMediaQuery, Box } from '@mui/material';
 import Image from 'next/image';
 import { SoraTypography } from '../../Superfest.style';
 import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
+import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
+import { XPIconBox } from '../../QuestCard/QuestCard.style';
+import { APYIcon } from 'src/components/illustrations/APYIcon';
 
-interface CTALinkInt {
+export interface CTALinkInt {
   logo: string;
   text: string;
   link: string;
+  claimingId: string;
+  rewardId?: string;
+  apy?: number;
 }
 
 interface MissionCtaProps {
@@ -27,11 +33,13 @@ interface MissionCtaProps {
   url?: string;
   id?: number;
   CTAs: CTALinkInt[];
+  variableWeeklyAPY?: boolean;
 }
 
-export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
+export const MissionCTA = ({ CTAs, variableWeeklyAPY }: MissionCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const theme = useTheme();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
@@ -87,6 +95,7 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                     priority={false}
                   />
                   <SoraTypography
+                    marginTop={{ xs: '16px', md: '0px' }}
                     fontSize={{ xs: '16px', sm: '22px' }}
                     fontWeight={700}
                     marginLeft={'16px'}
@@ -94,16 +103,59 @@ export const MissionCTA = ({ CTAs }: MissionCtaProps) => {
                     {CTA.text ?? 'Go to Protocol Page'}
                   </SoraTypography>
                 </CTAExplanationBox>
-                {isMobile ? undefined : (
-                  <IconButtonPrimary onClick={handleClick}>
-                    <ArrowForwardIcon
-                      sx={{
-                        width: '28px',
-                        height: '28px',
-                      }}
-                    />
-                  </IconButtonPrimary>
-                )}
+                <FlexCenterRowBox>
+                  {CTA.apy && !variableWeeklyAPY && (
+                    <XPDisplayBox
+                      bgcolor={'#ff0420'}
+                      marginRight={'16px'}
+                      height={'32px'}
+                      minWidth={'88px'}
+                    >
+                      <SoraTypography
+                        fontSize="16px"
+                        fontWeight={700}
+                        lineHeight="20px"
+                        color={'#ffffff'}
+                      >
+                        {`${Number(CTA.apy).toFixed(1)}%`}
+                      </SoraTypography>
+                      <XPIconBox marginLeft="4px">
+                        <APYIcon size={24} />
+                      </XPIconBox>
+                    </XPDisplayBox>
+                  )}
+                  {variableWeeklyAPY && (
+                    <XPDisplayBox
+                      bgcolor={'#ff0420'}
+                      marginRight={'16px'}
+                      height={'32px'}
+                      minWidth={'88px'}
+                    >
+                      <SoraTypography
+                        fontSize="16px"
+                        fontWeight={700}
+                        lineHeight="20px"
+                        color={'#ffffff'}
+                      >
+                        {`VAR.%`}
+                      </SoraTypography>
+                      <XPIconBox marginLeft="4px">
+                        <APYIcon size={24} />
+                      </XPIconBox>
+                    </XPDisplayBox>
+                  )}
+                  {!isMobile && (
+                    <MissionCtaButton onClick={handleClick}>
+                      <ArrowForwardIcon
+                        sx={{
+                          color: '#000000',
+                          width: '20px',
+                          height: '20px',
+                        }}
+                      />
+                    </MissionCtaButton>
+                  )}
+                </FlexCenterRowBox>
               </SeveralMissionCtaContainer>
             </Link>
           );
