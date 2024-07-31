@@ -100,7 +100,7 @@ test.describe('Jumper full e2e flow', () => {
     await openMainMenu(page);
     await itemInMenu(page, 'Superfest Festival');
     await expect(learnMoreButton).toBeVisible();
-    await expect(page).toHaveURL('http://localhost:3000/superfest/')
+    await expect(page).toHaveURL('http://localhost:3000/superfest/');
   });
   test('should be able to navigate to X', async ({ page, context }) => {
     let xUrl = 'https://x.com/JumperExchange';
