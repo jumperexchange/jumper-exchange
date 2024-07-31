@@ -141,6 +141,8 @@ export enum TrackingEventParameter {
   Type = 'param_type',
   ErrorCode = 'param_error_code',
   ErrorMessage = 'param_error_message',
+  InsuranceState = 'param_insurance_state',
+  InsuranceFeeAmountUSD = 'param_insurance_fee_amount_usd',
   ValueLoss = 'param_value_loss',
   AvailableRoutesCount = 'param_available_routes_count',
 

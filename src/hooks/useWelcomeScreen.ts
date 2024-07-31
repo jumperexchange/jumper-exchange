@@ -10,13 +10,14 @@ interface useWelcomeScreenProps {
 export const useWelcomeScreen = (
   initialState?: boolean,
 ): useWelcomeScreenProps => {
-  const [, setState] = useState(initialState);
+  const [state, setState] = useState(initialState);
   const [cookie, setCookie] = useCookies(['welcomeScreenClosed']);
 
-  const [, sessionSetWelcomeScreenClosed] = useSettingsStore((state) => [
-    state.welcomeScreenClosed,
-    state.setWelcomeScreenClosed,
-  ]);
+  const [sessionWelcomeScreenClosed, sessionSetWelcomeScreenClosed] =
+    useSettingsStore((state) => [
+      state.welcomeScreenClosed,
+      state.setWelcomeScreenClosed,
+    ]);
 
   useEffect(() => {
     setState(cookie.welcomeScreenClosed);

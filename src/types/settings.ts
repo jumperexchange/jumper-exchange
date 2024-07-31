@@ -1,6 +1,7 @@
 // ----------------------------------------------------------------------
 
 import type { PartnerThemesData } from '@/types/strapi';
+import { PartnerTheme, PartnerThemesAttributes } from '@/types/strapi';
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 import type { WidgetConfig } from '@lifi/widget';
 

@@ -7,6 +7,7 @@ import {
   NFTDisplayBox,
 } from './NFTClaimingBox.style';
 import { NFTCard } from './NFTCard/NFTCard';
+import { type NFTInfo } from 'src/hooks/useCheckFestNFTAvailability';
 
 const NFT_ARRAY = [
   {
@@ -39,7 +40,19 @@ const NFT_ARRAY = [
   },
 ];
 
-export const NFTClaimingBox = () => {
+interface NFTClaimBoxProps {
+  claimInfos: {
+    [key: string]: NFTInfo;
+  };
+  infoLoading: boolean;
+  infoSuccess: boolean;
+}
+
+export const NFTClaimingBox = ({
+  claimInfos,
+  infoLoading,
+  infoSuccess,
+}: NFTClaimBoxProps) => {
   return (
     <NFTClaimingContainer>
       <NFTClaimingHeader>
@@ -48,9 +61,9 @@ export const NFTClaimingBox = () => {
         </NFTClaimingTitle>
         <Box marginTop="32px" marginBottom="32px">
           <NFTClaimingDescription>
-            Explore the Superchain Festival and vibe at the sound of 1.5M OP
-            rewards. When you claim OP rewards from a chain, you are eligible to
-            mint a unique Superchain wristband on the OP Mainnet.
+            {
+              'Explore the Superchain Festival and vibe at the sound of 1.5M OP rewards. When you claim OP rewards from a chain, you are eligible to mint a unique Superchain wristband.'
+            }
           </NFTClaimingDescription>
         </Box>
       </NFTClaimingHeader>
@@ -63,32 +76,13 @@ export const NFTClaimingBox = () => {
               chain={elem.chain}
               bgColor={elem.bgColor}
               typoColor={elem.typoColor}
+              claimInfo={claimInfos[elem.chain]}
+              isLoading={infoLoading}
+              isSuccess={infoSuccess}
             />
           );
         })}
       </NFTDisplayBox>
-      <Box marginTop={'64px'}>
-        <NFTClaimingHeader>
-          <NFTClaimingTitle>
-            {String('unlock the mystery box').toUpperCase()}
-          </NFTClaimingTitle>
-          <Box marginTop="32px" marginBottom="32px">
-            <NFTClaimingDescription>
-              When you mint all Superchain wristbands, you become eligible to
-              mint a super special NFT within the Superchain Mystery Box.
-            </NFTClaimingDescription>
-          </Box>
-        </NFTClaimingHeader>
-        <NFTDisplayBox>
-          <NFTCard
-            key={`nft-card-${42}`}
-            chain={'box'}
-            image={'https://strapi.li.finance/uploads/nft_7d22cbd21c.png'}
-            bgColor={'#69d7ff'}
-            typoColor={'#000000'}
-          />
-        </NFTDisplayBox>
-      </Box>
     </NFTClaimingContainer>
   );
 };
