@@ -1,9 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import {
   findTheBestRoute,
-  openMainMenu,
   itemInMenu,
-  closeWelcomeScreen,
+  openMainMenu,
 } from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {

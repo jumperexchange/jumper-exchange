@@ -49,7 +49,7 @@ export const WalletManagementButtons = () => {
             }}
           >
             <Typography
-              variant={'lifiBodyMediumStrong'}
+              variant={'bodyMediumStrong'}
               sx={{
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',

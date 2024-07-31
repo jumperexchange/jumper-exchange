@@ -119,7 +119,7 @@ export const useMainMenuContent = () => {
       showMoreIcon: !['dark', 'light'].includes(configTheme?.uid),
       suffixIcon: configTheme?.uid && (
         <Typography
-          variant="lifiBodyMedium"
+          variant="bodyMedium"
           textTransform={'uppercase'}
           sx={{
             overflow: 'hidden',
@@ -148,7 +148,7 @@ export const useMainMenuContent = () => {
       prefixIcon: <LanguageIcon />,
       suffixIcon: (
         <Typography
-          variant="lifiBodyMedium"
+          variant="bodyMedium"
           textTransform={'uppercase'}
           sx={{
             overflow: 'hidden',
@@ -313,7 +313,7 @@ export const useMainMenuContent = () => {
           category: TrackingCategory.Menu,
           label: 'click-discord-link',
           action: TrackingAction.ClickDiscordLink,
-          data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+          data: { [TrackingEventParameter.Menu]: 'jumper_discord' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
@@ -321,7 +321,7 @@ export const useMainMenuContent = () => {
         });
         trackPageload({
           source: TrackingCategory.Menu,
-          destination: 'discord-lifi',
+          destination: 'discord-jumper',
           url: DISCORD_URL,
           pageload: true,
           disableTrackingTool: [EventTrackingTool.Cookie3],
@@ -404,7 +404,7 @@ export const useMainMenuContent = () => {
       prefixIcon: <LanguageIcon />,
       suffixIcon: (
         <Typography
-          variant="lifiBodyMedium"
+          variant="bodyMedium"
           textTransform={'uppercase'}
           sx={{
             overflow: 'hidden',
@@ -517,7 +517,7 @@ export const useMainMenuContent = () => {
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
-          label: 'open-lifi-explorer',
+          label: 'open-jumper-explorer',
           action: TrackingAction.ClickJumperScanLink,
           data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
           disableTrackingTool: [
@@ -527,7 +527,7 @@ export const useMainMenuContent = () => {
         });
         trackPageload({
           source: TrackingCategory.Menu,
-          destination: 'lifi-explorer',
+          destination: 'jumper-explorer',
           url: explorerUrl,
           pageload: true,
           disableTrackingTool: [EventTrackingTool.Cookie3],
@@ -576,7 +576,7 @@ export const useMainMenuContent = () => {
           category: TrackingCategory.Menu,
           label: 'click-discord-link',
           action: TrackingAction.ClickDiscordLink,
-          data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+          data: { [TrackingEventParameter.Menu]: 'jumper_discord' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,

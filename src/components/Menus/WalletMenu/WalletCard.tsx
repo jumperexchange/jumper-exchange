@@ -140,7 +140,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             sx={{ width: '100%', gridColumn: '1/4', gridRow: '1/2' }}
             onClick={() => handleCopyButton()}
           >
-            <Typography variant="lifiBodySmallStrong">
+            <Typography variant="bodySmallStrong">
               {walletDigest(account.address)}
             </Typography>
           </ButtonTransparent>
