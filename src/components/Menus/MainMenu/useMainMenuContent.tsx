@@ -28,7 +28,7 @@ import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTheme as useNextTheme } from 'next-themes';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { OPLogo } from 'src/components/illustrations/OPLogo';
 import { useMainPaths } from 'src/hooks/useMainPaths';
@@ -45,6 +45,8 @@ export const useMainMenuContent = () => {
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
+  const pathname = usePathname();
+  const disabledThemeModeSwitch = pathname?.includes('/scan');
   const themeMode = useSettingsStore((state) => state.themeMode);
 
   const themeSwitchTabs = useThemeSwitchTabs();
@@ -72,7 +74,7 @@ export const useMainMenuContent = () => {
 
   let mainMenu: any[] = [];
 
-  if (configTheme?.hasThemeModeSwitch) {
+  if (configTheme?.hasThemeModeSwitch && !disabledThemeModeSwitch) {
     mainMenu.push({
       children: (
         <Tabs
