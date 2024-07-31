@@ -88,7 +88,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
       label: 'open-jumper-scan-wallet',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    window.open(url, '_self');
+    router.push(JUMPER_SCAN_PATH);
   };
 
   const handleCopyButton = () => {
