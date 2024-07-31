@@ -1,5 +1,6 @@
 'use client';
 import { LiFiExplorer } from '@lifi/explorer';
+import type { PaletteMode } from '@mui/material';
 import { alpha, Box, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
@@ -18,7 +19,7 @@ export default function Page({
 
   const explorerConfig = useMemo(
     () => ({
-      appearance: theme.palette.mode, // This controls light and dark mode
+      appearance: 'light' as PaletteMode, //theme.palette.mode, // This controls light and dark mode
       integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR, // TODO: change as needed
       base: lng !== fallbackLng ? `${lng}/scan` : '/scan', // Important for the routing and having everything served under /scan. Do not remove!
       theme: {
