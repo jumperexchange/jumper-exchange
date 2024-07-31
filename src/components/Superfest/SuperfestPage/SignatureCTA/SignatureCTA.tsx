@@ -32,9 +32,6 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
   const [messageToSign, setMessageToSign] = useState<string | undefined>(
     undefined,
   );
-  const [isTurtleLoading, setIsTurtleLoading] = useState(false);
-  const [isTurtleSuccess, setIsTurtleSuccess] = useState(false);
-  const [isTurtleFailure, setIsTurtleFailure] = useState(false);
   const { data, isError, isSuccess, signMessageAsync } = useSignMessage();
   const {
     isMember,
