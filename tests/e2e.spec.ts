@@ -92,7 +92,7 @@ test.describe('Jumper full e2e flow', () => {
     await itemInMenu(page, 'Jumper Scan');
     const newPage = await page.waitForEvent('popup', { timeout: 15000 });
     expect(newPage.url()).toBe(
-      'https://scan.li.fi/?utm_source=jumper&utm_campaign=jumper_to_explorer&utm_medium=menu',
+      'http://localhost:3000/scan/',
     );
   });
   test('should be able to navigate to supefest', async ({ page }) => {
