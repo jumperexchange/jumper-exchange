@@ -114,7 +114,7 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
         >
           <WelcomeScreenButtonLabel
             aria-label="Close welcome screen"
-            variant={'lifiBodyMediumStrong'}
+            variant={'bodyMediumStrong'}
           >
             {t('navbar.welcome.cta')}
           </WelcomeScreenButtonLabel>
