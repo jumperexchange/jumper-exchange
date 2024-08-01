@@ -28,7 +28,7 @@ import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTheme as useNextTheme } from 'next-themes';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { OPLogo } from 'src/components/illustrations/OPLogo';
 import { useMainPaths } from 'src/hooks/useMainPaths';
@@ -45,8 +45,6 @@ export const useMainMenuContent = () => {
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
-  const pathname = usePathname();
-  const disabledThemeModeSwitch = pathname?.includes('/scan');
   const themeMode = useSettingsStore((state) => state.themeMode);
 
   const themeSwitchTabs = useThemeSwitchTabs();
@@ -74,7 +72,7 @@ export const useMainMenuContent = () => {
 
   let mainMenu: any[] = [];
 
-  if (configTheme?.hasThemeModeSwitch && !disabledThemeModeSwitch) {
+  if (configTheme?.hasThemeModeSwitch) {
     mainMenu.push({
       children: (
         <Tabs
@@ -199,7 +197,7 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.fest'),
       prefixIcon: <OPLogo />,
       showMoreIcon: false,
-      link: { url: '/superfest' },
+      link: { url: '/superfest/' },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -219,7 +217,7 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.profile'),
       prefixIcon: <AccountCircleIcon />,
       showMoreIcon: false,
-      link: { url: '/profile' },
+      link: { url: '/profile/' },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -239,7 +237,7 @@ export const useMainMenuContent = () => {
       label: 'Jumper Learn',
       prefixIcon: <SchoolIcon />,
       showMoreIcon: false,
-      link: { url: '/learn' },
+      link: { url: '/learn/' },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -259,7 +257,7 @@ export const useMainMenuContent = () => {
       label: 'Jumper Scan',
       prefixIcon: <SearchOutlinedIcon />,
       showMoreIcon: false,
-      link: { url: '/scan', external: false },
+      link: { url: '/scan/', external: false },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,

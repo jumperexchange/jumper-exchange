@@ -6,9 +6,6 @@ import { useMemo } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { fallbackLng } from 'src/i18n';
 
-// TODO: add new button in the wallet card in wallet menu that navigates to /scan/wallet/<address>
-// TODO: Add button (jumper scan logo) that navigates to home screen of the explorer (/scan)
-
 export default function Page({
   params: { lng },
 }: {
@@ -28,7 +25,7 @@ export default function Page({
         palette: {
           background: {
             default: alpha(theme.palette.white.main, 0.8),
-            paper: alpha(theme.palette.white.main, 0.8)
+            paper: alpha(theme.palette.white.main, 0.8),
           },
         },
       },

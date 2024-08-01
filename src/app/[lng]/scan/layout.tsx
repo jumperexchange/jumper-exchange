@@ -12,7 +12,6 @@ export default async function PartnerThemeLayout({
     <NextThemeProvider
       themes={['light']}
       forcedTheme={'light'}
-      enableSystem
       enableColorScheme
     >
       <ThemeProviderV2>
