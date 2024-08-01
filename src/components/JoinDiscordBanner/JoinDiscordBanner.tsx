@@ -6,8 +6,8 @@ import { isArticlePage } from '@/utils/isArticlePage';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { DiscordBannerButton, DiscordBannerLabel, DiscordBannerLink } from '.';
 import { DISCORD_URL_INVITE } from 'src/const/urls';
+import { DiscordBannerButton, DiscordBannerLabel, DiscordBannerLink } from '.';
 
 export const JoinDiscordBanner = () => {
   const { t } = useTranslation();
@@ -32,7 +32,7 @@ export const JoinDiscordBanner = () => {
       onClick={(e) => handleClick(e)}
       isArticlePage={isArticle}
     >
-      <DiscordBannerLabel variant="lifiHeaderMedium">
+      <DiscordBannerLabel variant="headerMedium">
         {t('discordBanner.ctaHeadline')}
       </DiscordBannerLabel>
       <DiscordBannerButton

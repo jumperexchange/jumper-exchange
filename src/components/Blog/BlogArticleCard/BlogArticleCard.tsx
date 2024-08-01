@@ -97,20 +97,20 @@ export const BlogArticleCard = ({
         )}
 
         <BlogArticleCardContent>
-          <BlogArticleCardTitle variant="lifiBodyLarge">
+          <BlogArticleCardTitle variant="bodyLarge">
             {title}
           </BlogArticleCardTitle>
           <BlogArticleCardDetails>
             {tags?.data.slice(0, 1).map((tag, index) => (
-              <BlogArticleCardTag key={index} variant="lifiBodyXSmall" as="h3">
+              <BlogArticleCardTag key={index} variant="bodyXSmall" as="h3">
                 {tag.attributes.Title}
               </BlogArticleCardTag>
             ))}
             <BlogArticleCardMetaContainer>
-              <BlogArticleMetaDate variant="lifiBodyXSmall" as="span">
+              <BlogArticleMetaDate variant="bodyXSmall" as="span">
                 {formatDate(publishedAt || createdAt)}
               </BlogArticleMetaDate>
-              <BlogArticleMetaReadingTime variant="lifiBodyXSmall" as="span">
+              <BlogArticleMetaReadingTime variant="bodyXSmall" as="span">
                 {t('blog.minRead', { minRead: minRead })}
               </BlogArticleMetaReadingTime>
             </BlogArticleCardMetaContainer>
