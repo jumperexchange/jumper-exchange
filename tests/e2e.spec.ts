@@ -85,11 +85,11 @@ test.describe('Jumper full e2e flow', () => {
     await page.locator('.learn-page').isVisible();
   });
 
-  test('should be able to navigate to lifi explorer', async ({ page }) => {
+  test('should be able to navigate to Jumper Scan', async ({ page }) => {
     // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
-    await itemInMenu(page, 'LI.FI Scan');
+    await itemInMenu(page, 'Jumper Scan');
     const newPage = await page.waitForEvent('popup', { timeout: 15000 });
     expect(newPage.url()).toBe(
       'https://scan.li.fi/?utm_source=jumper&utm_campaign=jumper_to_explorer&utm_medium=menu',
