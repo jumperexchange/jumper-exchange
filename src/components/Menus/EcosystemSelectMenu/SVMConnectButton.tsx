@@ -55,7 +55,7 @@ export const SVMConnectButton = ({
               : theme.palette.black.main,
           marginTop: 1.5,
         }}
-        variant={'lifiBodySmallStrong'}
+        variant={'bodySmallStrong'}
       >
         Solana
       </Typography>

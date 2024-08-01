@@ -10,6 +10,7 @@ export enum TrackingAction {
   CopyAddressToClipboard = 'action_copy_addr_to_clipboard',
   DisconnectWallet = 'action_disconnect_wallet',
   OpenBlockchainExplorer = 'action_open_blockchain_explorer',
+  OpenJumperScan = 'action_open_jumper_scan',
   SwitchChain = 'action_switch_chain',
 
   // Widget
@@ -47,7 +48,7 @@ export enum TrackingAction {
   ClickDiscordLink = 'action_click_discord_link',
   ClickJumperLearnLink = 'action_click_jumper_learn_link',
   ClickJumperProfileLink = 'action_click_jumper_profile_link',
-  ClickLifiExplorerLink = 'action_click_lifi_explorer_link',
+  ClickJumperScanLink = 'action_click_jumper-scan_link',
 
   // Blog
   SeeAllPosts = 'action_see_all_posts',
