@@ -21,7 +21,7 @@ export const HeroBox = () => {
       >
         <HeroButtonBox>
           <Button
-            id="learn-more-button" 
+            id="learn-more-button"
             disabled={false}
             variant="primary"
             size="large"
