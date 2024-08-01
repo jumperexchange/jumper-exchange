@@ -44,31 +44,31 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
   const handleSignatureClick = async () => {
     try {
       const POST_ENDPOINT = 'https://points.turtle.club/user/verify_siwe';
-      if (messageToSign && account && account.address) {
-        const scheme = window.location.protocol.slice(0, -1);
-        const domain = window.location.host;
-        const origin = window.location.origin;
+      if (messageToSign && account?.address) {
+        const domain = 'jumper.exchange';
+        const origin = 'https://jumper.exchange';
+        const nonce = generateNonce();
+
         const siweMess = new SiweMessage({
-          scheme,
-          domain,
-          address: account.address,
-          statement: messageToSign,
-          uri: origin,
           version: '1',
-          chainId: account.chainId,
-        }).prepareMessage();
+          domain,
+          uri: origin,
+          address: account.address,
+          // chainId: account.chainId,
+          chainId: 1,
+          statement: messageToSign,
+          nonce,
+        }).toMessage();
 
         const sig = await signMessageAsync({
           account: account.address as `0x${string}`,
-          message: siweMess,
+          message: String(siweMess),
         });
-        console.log(sig);
         const payload = {
           message: siweMess, // same message as from before
           signature: sig, // hex signature
           referral: 'JUMPER', // referral string
         };
-        console.log(payload);
         const res = await fetch(POST_ENDPOINT, {
           body: JSON.stringify(payload),
           method: 'POST',
@@ -81,7 +81,6 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
         }
 
         const json = await res.json();
-        console.log(json);
       }
     } catch (err) {
       console.log(err);
