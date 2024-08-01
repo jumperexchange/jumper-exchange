@@ -8,6 +8,9 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/`,
+  },
   openGraph: {
     title: 'Jumper.Exchange',
     description,

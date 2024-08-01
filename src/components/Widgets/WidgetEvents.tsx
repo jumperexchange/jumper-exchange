@@ -171,9 +171,10 @@ export function WidgetEvents() {
         category: TrackingCategory.WidgetEvent,
         label: 'click_high_value_loss_accepted',
         data: {
-          [TrackingEventParameter.FromAmountUSD]: update.fromAmountUsd,
+          [TrackingEventParameter.FromAmountUSD]: update.fromAmountUSD,
           [TrackingEventParameter.ToAmountUSD]: update.toAmountUSD,
           [TrackingEventParameter.GasCostUSD]: update.gasCostUSD || '',
+          [TrackingEventParameter.FeeCostUSD]: update.feeCostUSD || '',
           [TrackingEventParameter.ValueLoss]: update.valueLoss,
           [TrackingEventParameter.Timestamp]: Date.now(),
         },
