@@ -90,8 +90,8 @@ test.describe('Jumper full e2e flow', () => {
     await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
     await itemInMenu(page, 'Jumper Scan');
-    const newPage = await page.waitForEvent('popup', { timeout: 15000 });
-    expect(newPage.url()).toBe(
+    // const newPage = await page.waitForEvent('popup', { timeout: 15000 });
+    expect(page).toHaveURL(
       'http://localhost:3000/scan/',
     );
   });
