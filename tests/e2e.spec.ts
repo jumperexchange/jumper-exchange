@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { findTheBestRoute, itemInMenu } from './testData/commonFunctions';
+import {
+  findTheBestRoute,
+  itemInMenu,
+  openMainMenu,
+} from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {
   test.beforeEach(async ({ page }) => {
