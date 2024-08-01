@@ -71,7 +71,7 @@ export const MenuMobile = ({
             <MenuHeaderAppWrapper>
               <MenuHeaderAppBar component="div" elevation={0}>
                 <Typography
-                  variant={'lifiBodyMediumStrong'}
+                  variant={'bodyMediumStrong'}
                   width={'100%'}
                   align={'center'}
                   flex={1}

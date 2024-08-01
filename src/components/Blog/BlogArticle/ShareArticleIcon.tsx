@@ -30,7 +30,7 @@ export const ShareArticleIcon = ({
       <ShareButton onClick={handleShare} expanded={showMsgActive}>
         {icon}
         {showMsgActive && (
-          <Typography variant="lifiBodySmall" marginLeft={1} marginRight={1}>
+          <Typography variant="bodySmall" marginLeft={1} marginRight={1}>
             {showMsg}
           </Typography>
         )}
