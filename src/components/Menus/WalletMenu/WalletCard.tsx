@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
-import { JUMPER_SCAN_PATH } from 'src/const/urls';
+import { JUMPER_SCAN_PATH, JUMPER_WALLET_PATH } from 'src/const/urls';
 import {
   WalletAvatar,
   WalletCardBadge,
@@ -80,7 +80,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
 
   const handleScanButton = () => {
     account.chainId && closeAllMenus();
-    const url = `${JUMPER_SCAN_PATH}/wallet/${account.address}`;
+    const url = `${JUMPER_WALLET_PATH}/${account.address}`;
 
     trackEvent({
       category: TrackingCategory.WalletMenu,
