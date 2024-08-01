@@ -72,7 +72,7 @@ export const useMainMenuContent = () => {
 
   let mainMenu: any[] = [];
 
-  if (!!forcedTheme && configTheme?.hasThemeModeSwitch) {
+  if (!forcedTheme && configTheme?.hasThemeModeSwitch) {
     mainMenu.push({
       children: (
         <Tabs
