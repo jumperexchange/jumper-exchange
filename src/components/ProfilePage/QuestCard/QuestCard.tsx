@@ -163,6 +163,7 @@ export const QuestCard = ({
               rel="noreferrer"
             >
               <Button
+                aria-label={`Open ${t('questCard.join')}`}
                 variant="secondary"
                 size="medium"
                 styles={{ alignItems: 'center', width: '100%' }}

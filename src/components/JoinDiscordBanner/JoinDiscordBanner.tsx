@@ -35,7 +35,10 @@ export const JoinDiscordBanner = () => {
       <DiscordBannerLabel variant="headerMedium">
         {t('discordBanner.ctaHeadline')}
       </DiscordBannerLabel>
-      <DiscordBannerButton onClick={(e) => handleClick(e)}>
+      <DiscordBannerButton
+        aria-label="Open discord link"
+        onClick={(e) => handleClick(e)}
+      >
         <ArrowForwardIcon sx={{ width: '28px', height: '28px' }} />
       </DiscordBannerButton>
     </DiscordBannerLink>

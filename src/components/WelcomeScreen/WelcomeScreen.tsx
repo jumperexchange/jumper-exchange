@@ -107,8 +107,15 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
           openDexsToolModal={openDexsToolModal}
           setOpenDexsToolModal={setOpenDexsToolModal}
         />
-        <WelcomeScreenButton onClick={handleGetStarted} id="get-started-button">
-          <WelcomeScreenButtonLabel variant={'bodyMediumStrong'}>
+        <WelcomeScreenButton
+          aria-label="Open welcome screen"
+          onClick={handleGetStarted}
+          id="get-started-button"
+        >
+          <WelcomeScreenButtonLabel
+            aria-label="Close welcome screen"
+            variant={'bodyMediumStrong'}
+          >
             {t('navbar.welcome.cta')}
           </WelcomeScreenButtonLabel>
         </WelcomeScreenButton>
