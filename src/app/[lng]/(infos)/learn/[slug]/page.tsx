@@ -38,6 +38,9 @@ export async function generateMetadata({
     return {
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
       description: articleData.Subtitle,
+      alternates: {
+        canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/${params.slug}/`,
+      },
       twitter: openGraph,
       openGraph,
     };
