@@ -34,7 +34,7 @@ export const AccordionFAQ = ({ content }: AccordionFAQProps) => {
         <Typography variant="lifiHeaderMedium" m={theme.spacing(2, 0)}>
           {t('blog.faq')}
         </Typography>
-        <AccordionToggleButton onClick={handleShowMore}>
+        <AccordionToggleButton aria-label="Show more" onClick={handleShowMore}>
           <ExpandMoreIcon sx={{ width: 24, height: 24 }} />
         </AccordionToggleButton>
       </AccordionHeader>
