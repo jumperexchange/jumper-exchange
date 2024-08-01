@@ -1,7 +1,6 @@
 'use client';
 
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-
 import { useTranslation } from 'react-i18next';
 import { type Theme, useMediaQuery, Box } from '@mui/material';
 import Image from 'next/image';
@@ -15,6 +14,7 @@ import {
   SeveralMissionCtaContainer,
 } from '../CTA/MissionCTA.style';
 import { useTurtleMember } from 'src/hooks/useTurtleMember';
+import { SiweMessage, generateNonce } from 'siwe';
 
 interface SignatureInt {
   isLive: boolean;
@@ -45,13 +45,26 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
     try {
       const POST_ENDPOINT = 'https://points.turtle.club/user/verify_siwe';
       if (messageToSign && account && account.address) {
+        const scheme = window.location.protocol.slice(0, -1);
+        const domain = window.location.host;
+        const origin = window.location.origin;
+        const siweMess = new SiweMessage({
+          scheme,
+          domain,
+          address: account.address,
+          statement: messageToSign,
+          uri: origin,
+          version: '1',
+          chainId: account.chainId,
+        }).prepareMessage();
+
         const sig = await signMessageAsync({
           account: account.address as `0x${string}`,
-          message: messageToSign,
+          message: siweMess,
         });
         console.log(sig);
         const payload = {
-          message: messageToSign, // same message as from before
+          message: siweMess, // same message as from before
           signature: sig, // hex signature
           referral: 'JUMPER', // referral string
         };
@@ -93,7 +106,32 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
 
   return (
     <>
-      {true ? (
+      {true && isMember ? (
+        <Box sx={{ width: '100%', marginBottom: '16px' }}>
+          <SeveralMissionCtaContainer
+            sx={{ cursor: 'not-allowed', '&:hover': { cursor: 'not-allowed' } }}
+          >
+            <CTAExplanationBox>
+              <Image
+                src={'https://strapi.li.finance/uploads/turtle_ef319715fe.jpg'}
+                alt={`logo image`}
+                width={48}
+                height={48}
+                style={{ borderRadius: 100 }}
+                priority={false}
+              />
+              <SoraTypography
+                fontSize={{ xs: '16px', sm: '22px' }}
+                fontWeight={700}
+                marginLeft={'16px'}
+              >
+                {'You are a turtle club member.'}
+              </SoraTypography>
+            </CTAExplanationBox>
+          </SeveralMissionCtaContainer>
+        </Box>
+      ) : undefined}
+      {true && !isMember ? (
         <Box sx={{ width: '100%', marginBottom: '16px' }}>
           <SeveralMissionCtaContainer onClick={handleSignatureClick}>
             <CTAExplanationBox>
@@ -110,7 +148,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
                 fontWeight={700}
                 marginLeft={'16px'}
               >
-                {signature?.message ?? 'Sign Message'}
+                {'Click to sign the agreement to become part of the club.'}
               </SoraTypography>
             </CTAExplanationBox>
           </SeveralMissionCtaContainer>
