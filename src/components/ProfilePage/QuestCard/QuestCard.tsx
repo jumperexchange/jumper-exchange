@@ -1,4 +1,3 @@
-import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
 import DoneIcon from '@mui/icons-material/Done';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
@@ -16,7 +15,6 @@ import {
   QuestCardInfoBox,
   QuestCardMainBox,
   QuestCardTitleBox,
-  QuestDatesBox,
   QuestPlatformMainBox,
   XPDisplayBox,
 } from './QuestCard.style';

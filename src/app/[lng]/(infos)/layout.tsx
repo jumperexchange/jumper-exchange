@@ -1,9 +1,8 @@
-import React from 'react';
-import { FeatureCards } from '@/components/FeatureCards';
 import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
-import { Layout } from 'src/Layout';
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import { cookies } from 'next/headers';
+import React from 'react';
+import { Layout } from 'src/Layout';
 
 export default async function PartnerThemeLayout({
   children,
@@ -26,7 +25,6 @@ export default async function PartnerThemeLayout({
         activeTheme={cookiesHandler.get('theme')?.value || 'system'}
       >
         <Layout>{children}</Layout>
-        <FeatureCards />
       </ThemeProviderV2>
     </NextThemeProvider>
   );
