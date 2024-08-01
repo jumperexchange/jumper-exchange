@@ -80,7 +80,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
 
   const handleScanButton = () => {
     account.chainId && closeAllMenus();
-    const url = `${JUMPER_WALLET_PATH}/${account.address}`;
+    const url = `${JUMPER_SCAN_PATH}/wallet/${account.address}`;
 
     trackEvent({
       category: TrackingCategory.WalletMenu,
