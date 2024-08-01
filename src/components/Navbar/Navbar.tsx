@@ -42,7 +42,8 @@ export const Navbar = ({ disableNavbar = false }) => {
     if (isLearnPage) {
       router.push(JUMPER_LEARN_PATH);
     } else if (isScanPage) {
-      router.push(JUMPER_SCAN_PATH);
+      // router.push(JUMPER_SCAN_PATH);
+      window.open(JUMPER_SCAN_PATH, '_self');
     } else {
       router.push('/');
     }
