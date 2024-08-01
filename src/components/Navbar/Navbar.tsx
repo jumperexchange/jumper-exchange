@@ -5,6 +5,8 @@ import {
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
+  JUMPER_TX_PATH,
+  JUMPER_WALLET_PATH,
 } from '@/const/urls';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useMenuStore } from '@/stores/menu';
@@ -22,7 +24,10 @@ export const Navbar = ({ disableNavbar = false }) => {
   const pathname = usePathname();
   const isLearnPage = pathname?.includes(JUMPER_LEARN_PATH);
   const isLoyaltyPage = pathname?.includes(JUMPER_LOYALTY_PATH);
-  const isScanPage = pathname?.includes(JUMPER_SCAN_PATH);
+  const isScanPage =
+    pathname?.includes(JUMPER_SCAN_PATH) ||
+    pathname?.includes(JUMPER_TX_PATH) ||
+    pathname?.includes(JUMPER_WALLET_PATH);
   const { isSuperfest } = useSuperfest();
   const { setWelcomeScreenClosed } = useWelcomeScreen();
 
