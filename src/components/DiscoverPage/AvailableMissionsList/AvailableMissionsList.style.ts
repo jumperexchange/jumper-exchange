@@ -2,7 +2,7 @@ import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, styled } from '@mui/material';
 
 export const AvailableMissionsContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: '#fdfbef',
+  backgroundColor: '#323232',
   padding: theme.spacing(2),
   borderRadius: '12px',
   width: '90%',

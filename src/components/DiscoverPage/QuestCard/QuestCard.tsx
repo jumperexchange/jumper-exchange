@@ -92,7 +92,12 @@ export const QuestCard = ({
       </Link>
       <QuestCardBottomBox>
         <QuestCardTitleBox>
-          <SoraTypography fontSize="20px" lineHeight="20px" fontWeight={600}>
+          <SoraTypography
+            fontSize="20px"
+            lineHeight="20px"
+            fontWeight={600}
+            color={'#ffffff'}
+          >
             {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
           </SoraTypography>
         </QuestCardTitleBox>
