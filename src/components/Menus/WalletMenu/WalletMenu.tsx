@@ -74,7 +74,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
                 ? theme.palette.white.main
                 : theme.palette.black.main,
             }}
-            variant="lifiBodySmallStrong"
+            variant="bodySmallStrong"
           >
             {t('navbar.walletMenu.connectAnotherWallet')}
           </Typography>

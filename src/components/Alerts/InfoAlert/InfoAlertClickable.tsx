@@ -7,8 +7,8 @@ import InfoIcon from '@mui/icons-material/Info';
 import { Slide, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import {
-  InfoAlertButton,
   ButtonInfoAlertClickable,
+  InfoAlertButton,
   InfoAlertContainer,
 } from '.';
 
@@ -74,17 +74,17 @@ export const InfoAlertClickable = ({
                   marginRight: 1,
                 }}
               />
-              <Typography variant={'lifiHeaderXSmall'}>{title}</Typography>
+              <Typography variant={'headerXSmall'}>{title}</Typography>
             </InfoMessageCardTitle>
             <Typography
-              variant={'lifiBodySmall'}
+              variant={'bodySmall'}
               pt={theme.spacing(1.5)}
               color={theme.palette.mode === 'light' ? '#000000' : '#ffffff'}
             >
               {subtitle}
             </Typography>
             <ButtonInfoAlertClickable size="small">
-              <Typography variant={'lifiBodySmall'}>{buttonText}</Typography>
+              <Typography variant={'bodySmall'}>{buttonText}</Typography>
             </ButtonInfoAlertClickable>
           </InfoMessageCardClickable>
         </a>

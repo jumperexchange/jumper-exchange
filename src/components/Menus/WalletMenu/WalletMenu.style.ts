@@ -71,7 +71,7 @@ export const WalletCardContainer = styled(Container)(({ theme }) => ({
 export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
   display: 'grid',
   gridTemplateRows: 'repeat(2, auto)',
-  gridTemplateColumns: 'repeat(2, auto)',
+  gridTemplateColumns: '1fr 1fr 1fr',
   gridGap: '12px',
   justifyItems: 'center',
   alignItems: 'center',

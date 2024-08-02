@@ -81,7 +81,7 @@ export const BlogArticle = ({
               color={tags.data[0]?.attributes.TextColor}
               backgroundColor={tags.data[0]?.attributes.BackgroundColor}
               component="span"
-              variant="lifiBodyMediumStrong"
+              variant="bodyMediumStrong"
               key={`blog-article-tag-${tags.data[0]?.id}`}
             >
               {tags.data[0].attributes?.Title}
@@ -91,7 +91,7 @@ export const BlogArticle = ({
           )}
           {!!createdAt ? (
             <BlogArticleHeaderMeta>
-              <BlogArticleHeaderMetaDate variant="lifiBodyXSmall" as="span">
+              <BlogArticleHeaderMetaDate variant="bodyXSmall" as="span">
                 {formatDate(publishedAt || createdAt)}
               </BlogArticleHeaderMetaDate>
               <span>{t('blog.minRead', { minRead: minRead })}</span>
@@ -116,10 +116,7 @@ export const BlogArticle = ({
               <BlogAuthorAvatarSkeleton variant="rounded" />
             )}
             {author?.data ? (
-              <BlogArticlAuthorName
-                variant="lifiBodyXSmallStrong"
-                component="span"
-              >
+              <BlogArticlAuthorName variant="bodyXSmallStrong" component="span">
                 {author.data?.attributes.Name}
               </BlogArticlAuthorName>
             ) : (
@@ -141,7 +138,7 @@ export const BlogArticle = ({
       <BlogArticleContainer>
         <BlogArticleContentContainer>
           {subtitle ? (
-            <BlogArticleSubtitle variant="lifiHeaderMedium" as="h4">
+            <BlogArticleSubtitle variant="headerMedium" as="h4">
               {subtitle}
             </BlogArticleSubtitle>
           ) : (
@@ -181,7 +178,7 @@ export const BlogArticle = ({
                 <BlogArticlAuthorNameSkeleton variant="text" />
               )}
               {author?.data ? (
-                <BlogArticlAuthorRole variant="lifiBodyXSmall" component="span">
+                <BlogArticlAuthorRole variant="bodyXSmall" component="span">
                   {author.data.attributes?.Role}
                 </BlogArticlAuthorRole>
               ) : (
