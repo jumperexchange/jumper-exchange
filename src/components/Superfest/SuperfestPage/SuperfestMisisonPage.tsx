@@ -66,7 +66,9 @@ export const SuperfestMissionPage = ({
           <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
         ) : undefined}
         {/* Additional Info */}
-        <InformationAlertBox information={attributes?.Information} />
+        {attributes?.Information && (
+          <InformationAlertBox information={attributes?.Information} />
+        )}
       </SuperfestPageMainBox>
     </SuperfestContainer>
   );
