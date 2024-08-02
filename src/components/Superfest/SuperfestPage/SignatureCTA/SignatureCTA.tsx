@@ -80,9 +80,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
         if (!res.ok) {
           throw new Error(`Response status: ${res.status}`);
         }
-
-        const json = await res.json();
-        if (res.status === 200 && json) {
+        if (res.status === 200) {
           setMessagedHasBeenSigned(true);
         }
       }
