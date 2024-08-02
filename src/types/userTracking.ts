@@ -45,12 +45,14 @@ export interface TrackChainSwitchProps {
 }
 
 type destinations =
-  | 'discord-lifi'
-  | 'lifi-explorer'
-  | 'lifi-website'
+  | 'discord-jumper'
+  | 'jumper-explorer'
+  | 'jumper-scan'
+  | 'jumper-scan-wallet'
+  | 'jumper-website'
   | 'docs-sc-audits'
-  | 'lifi-github'
-  | 'lifi-docs'
+  | 'jumper-github'
+  | 'jumper-docs'
   | 'x-jumper'
   | 'blokchain-explorer';
 

@@ -79,20 +79,17 @@ export const FeaturedArticle = ({
               .map((el, index) => (
                 <Tag
                   key={`blog-highlights-tag-${index}`}
-                  variant="lifiBodyMediumStrong"
+                  variant="bodyMediumStrong"
                 >
                   {el.attributes.Title}
                 </Tag>
               ))}
             <FeaturedArticleMetaContainer>
-              <FeaturedArticleMetaDate
-                variant="lifiBodyXSmall"
-                component="span"
-              >
+              <FeaturedArticleMetaDate variant="bodyXSmall" component="span">
                 {formatedDate}
               </FeaturedArticleMetaDate>
               <Typography
-                variant="lifiBodyXSmall"
+                variant="bodyXSmall"
                 component="span"
                 fontSize={'inherit'}
               >
@@ -101,7 +98,7 @@ export const FeaturedArticle = ({
             </FeaturedArticleMetaContainer>
           </FeaturedArticleDetails>
           <Box>
-            <FeaturedArticleTitle variant="lifiHeaderMedium" as="h2">
+            <FeaturedArticleTitle variant="headerMedium" as="h2">
               {featuredArticle[0].attributes.Title}
             </FeaturedArticleTitle>
           </Box>

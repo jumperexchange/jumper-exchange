@@ -1,7 +1,7 @@
 {
   "short_name": "Jumper Exchange",
   "name": "Jumper Exchange",
-  "description": "Multi-Chain Bridging & Swapping (powered by LI.FI)",
+  "description": "Multi-Chain Bridging & Swapping",
   "icons": [
     {
       "src": "logo-16x16.svg",
@@ -36,21 +36,36 @@
       "short_name": "swap/bridge",
       "description": "Swap/bridge via Jumper",
       "url": "/?source=pwa",
-      "icons": [{ "src": "/shortcut-icon.png", "sizes": "97x96" }]
+      "icons": [
+        {
+          "src": "/shortcut-icon.png",
+          "sizes": "97x96"
+        }
+      ]
     },
     {
       "name": "Gas",
       "short_name": "Gas",
       "description": "Gas via Jumper",
       "url": "/gas?source=pwa",
-      "icons": [{ "src": "/shortcut-icon.png", "sizes": "97x96" }]
+      "icons": [
+        {
+          "src": "/shortcut-icon.png",
+          "sizes": "97x96"
+        }
+      ]
     },
     {
       "name": "Buy",
       "short_name": "Buy",
       "description": "Buy on Jumper",
       "url": "/buy?source=pwa",
-      "icons": [{ "src": "/shortcut-icon.png", "sizes": "97x96" }]
+      "icons": [
+        {
+          "src": "/shortcut-icon.png",
+          "sizes": "97x96"
+        }
+      ]
     }
   ],
   "start_url": ".",

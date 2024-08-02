@@ -33,6 +33,7 @@ export const MultisigConnectedAlert: React.FC<{
           {t('multisig.connected.description')}
         </Typography>
         <Button
+          aria-label="Close"
           variant="primary"
           onClick={onClose}
           styles={{

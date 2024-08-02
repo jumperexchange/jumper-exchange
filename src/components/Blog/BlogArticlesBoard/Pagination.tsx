@@ -112,10 +112,7 @@ export const BlogArticlesBoardPagination = ({
               onClick={() => handlePage(actualPage)}
               active={actualPage === page}
             >
-              <Typography
-                variant="lifiBodySmallStrong"
-                sx={{ lineHeight: '18px' }}
-              >
+              <Typography variant="bodySmallStrong" sx={{ lineHeight: '18px' }}>
                 {actualPage}
               </Typography>
             </PaginationIndexButton>
