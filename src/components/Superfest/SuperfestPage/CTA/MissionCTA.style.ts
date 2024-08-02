@@ -64,39 +64,6 @@ export const SeveralMissionCtaContainer = styled(Box)<BoxProps>(
   }),
 );
 
-export const SeveralMissionCtaContainerNotAllowed = styled(Box)<BoxProps>(
-  ({ theme }) => ({
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-    paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4),
-    mardingBottom: '16px',
-    gap: theme.spacing(1.5),
-    cursor: 'not-allowed',
-    overflow: 'hidden',
-    textAlign: 'center',
-    transition: 'background-color 250ms',
-    borderRadius: '16px',
-    backgroundColor: '#fff0ca',
-    '&:hover': {
-      cursor: 'not-allowed',
-      backgroundColor:
-        theme.palette.mode === 'light'
-          ? darken('#fff0ca', 0.02) //todo: add to theme
-          : alpha('#fff0ca', 0.16),
-    },
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      gap: theme.spacing(4),
-      flexDirection: 'row',
-    },
-  }),
-);
-
 export const MissionCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   fontFamily: sora.style.fontFamily,
   fontWeight: 700,
