@@ -49,6 +49,8 @@ export const ActiveSuperfestMissionsCarousel = ({
                   quest.attributes?.CustomInformation?.['claimingIds'];
                 const rewardsIds =
                   quest.attributes?.CustomInformation?.['rewardsIds'];
+                const rewardType =
+                  quest.attributes?.CustomInformation?.['rewardType'];
                 let included = false;
                 let completed = false;
                 if (claimingIds && activeCampaigns) {
@@ -80,6 +82,9 @@ export const ActiveSuperfestMissionsCarousel = ({
                       slug={quest?.attributes.Slug}
                       chains={quest.attributes.CustomInformation?.['chains']}
                       completed={completed}
+                      variableWeeklyAPY={
+                        quest?.attributes.Points > 0 && rewardType === 'weekly'
+                      }
                     />
                   );
                 }

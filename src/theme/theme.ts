@@ -1,11 +1,11 @@
 'use client';
+import type { BackgroundContainerProps } from '@/components/Background';
+import type { ComponentsOverrides, ComponentsVariants } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
-import type { BackgroundContainerProps } from '@/components/Background';
-import type { ComponentsOverrides, ComponentsVariants } from '@mui/material';
 
 declare module '@mui/material/styles' {
   interface ComponentNameToClassKey {
@@ -100,50 +100,44 @@ declare module '@mui/material/styles' {
     alphaLight800?: PaletteOptions['primary'];
   }
   interface TypographyVariants {
-    lifiHeaderDisplay: React.CSSProperties;
-    lifiHeaderXLarge: React.CSSProperties;
-    lifiHeaderLarge: React.CSSProperties;
-    lifiHeaderMedium: React.CSSProperties;
-    lifiHeaderSmall: React.CSSProperties;
-    lifiHeaderXSmall: React.CSSProperties;
-    lifiBodyXLargeStrong: React.CSSProperties;
-    lifiBodyXLarge: React.CSSProperties;
-    lifiBodyLargeStrong: React.CSSProperties;
-    lifiBodyLarge: React.CSSProperties;
-    lifiBodyMediumStrong: React.CSSProperties;
-    lifiBodyMedium: React.CSSProperties;
-    lifiBodySmallStrong: React.CSSProperties;
-    lifiBodySmall: React.CSSProperties;
-    lifiBodyXSmallStrong: React.CSSProperties;
-    lifiBodyXSmall: React.CSSProperties;
-    lifiBrandHeaderXLarge: React.CSSProperties;
+    headerDisplay: React.CSSProperties;
+    headerXLarge: React.CSSProperties;
+    headerLarge: React.CSSProperties;
+    headerMedium: React.CSSProperties;
+    headerSmall: React.CSSProperties;
+    headerXSmall: React.CSSProperties;
+    bodyXLargeStrong: React.CSSProperties;
+    bodyXLarge: React.CSSProperties;
+    bodyLargeStrong: React.CSSProperties;
+    bodyLarge: React.CSSProperties;
+    bodyMediumStrong: React.CSSProperties;
+    bodyMedium: React.CSSProperties;
+    bodySmallStrong: React.CSSProperties;
+    bodySmall: React.CSSProperties;
+    bodyXSmallStrong: React.CSSProperties;
+    bodyXSmall: React.CSSProperties;
+    brandHeaderXLarge: React.CSSProperties;
   }
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
-    // lifiBrandBodyMedium: React.CSSProperties;
-    // lifiBrandBodyLarge: React.CSSProperties;
-    // lifiBrandBodyXLarge: React.CSSProperties;
-    // lifiBrandBodySmall: React.CSSProperties;
-    // lifiBrandHeaderMedium: React.CSSProperties;
-    // lifiBrandHeaderLarge: React.CSSProperties;
-    lifiBrandHeaderXLarge: React.CSSProperties;
-    lifiHeaderDisplay?: React.CSSProperties;
-    lifiHeaderXLarge?: React.CSSProperties;
-    lifiHeaderLarge?: React.CSSProperties;
-    lifiHeaderMedium?: React.CSSProperties;
-    lifiHeaderSmall?: React.CSSProperties;
-    lifiHeaderXSmall?: React.CSSProperties;
-    lifiBodyXLargeStrong?: React.CSSProperties;
-    lifiBodyXLarge: React.CSSProperties;
-    lifiBodyLargeStrong: React.CSSProperties;
-    lifiBodyLarge: React.CSSProperties;
-    lifiBodyMediumStrong: React.CSSProperties;
-    lifiBodyMedium: React.CSSProperties;
-    lifiBodySmallStrong: React.CSSProperties;
-    lifiBodySmall: React.CSSProperties;
-    lifiBodyXSmallStrong: React.CSSProperties;
-    lifiBodyXSmall: React.CSSProperties;
+    brandHeaderXLarge: React.CSSProperties;
+    headerDisplay?: React.CSSProperties;
+    headerXLarge?: React.CSSProperties;
+    headerLarge?: React.CSSProperties;
+    headerMedium?: React.CSSProperties;
+    headerSmall?: React.CSSProperties;
+    headerXSmall?: React.CSSProperties;
+    bodyXLargeStrong?: React.CSSProperties;
+    bodyXLarge: React.CSSProperties;
+    bodyLargeStrong: React.CSSProperties;
+    bodyLarge: React.CSSProperties;
+    bodyMediumStrong: React.CSSProperties;
+    bodyMedium: React.CSSProperties;
+    bodySmallStrong: React.CSSProperties;
+    bodySmall: React.CSSProperties;
+    bodyXSmallStrong: React.CSSProperties;
+    bodyXSmall: React.CSSProperties;
   }
 }
 declare module '@mui/material/Button' {
@@ -184,23 +178,23 @@ declare module '@mui/material/Button' {
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     '@supports (font-variation-settings: normal)': true;
-    lifiHeaderDisplay: true;
-    lifiHeaderXLarge: true;
-    lifiHeaderLarge: true;
-    lifiHeaderMedium: true;
-    lifiHeaderSmall: true;
-    lifiHeaderXSmall: true;
-    lifiBodyXLargeStrong: true;
-    lifiBodyXLarge: true;
-    lifiBodyLargeStrong: true;
-    lifiBodyLarge: true;
-    lifiBodyMediumStrong: true;
-    lifiBodyMedium: true;
-    lifiBodySmallStrong: true;
-    lifiBodySmall: true;
-    lifiBodyXSmallStrong: true;
-    lifiBodyXSmall: true;
-    lifiBrandHeaderXLarge: true;
+    headerDisplay: true;
+    headerXLarge: true;
+    headerLarge: true;
+    headerMedium: true;
+    headerSmall: true;
+    headerXSmall: true;
+    bodyXLargeStrong: true;
+    bodyXLarge: true;
+    bodyLargeStrong: true;
+    bodyLarge: true;
+    bodyMediumStrong: true;
+    bodyMedium: true;
+    bodySmallStrong: true;
+    bodySmall: true;
+    bodyXSmallStrong: true;
+    bodyXSmall: true;
+    brandHeaderXLarge: true;
   }
 }
 
@@ -305,23 +299,23 @@ const themeCustomized = createTheme({
     MuiTypography: {
       defaultProps: {
         variantMapping: {
-          lifiHeaderDisplay: 'p',
-          lifiHeaderXLarge: 'p',
-          lifiHeaderLarge: 'p',
-          lifiHeaderMedium: 'p',
-          lifiHeaderSmall: 'p',
-          lifiHeaderXSmall: 'p',
-          lifiBodyXLargeStrong: 'p',
-          lifiBodyXLarge: 'p',
-          lifiBodyLargeStrong: 'p',
-          lifiBodyLarge: 'p',
-          lifiBodyMediumStrong: 'p',
-          lifiBodyMedium: 'p',
-          lifiBodySmallStrong: 'p',
-          lifiBodySmall: 'p',
-          lifiBodyXSmallStrong: 'p',
-          lifiBodyXSmall: 'p',
-          lifiBrandHeaderXLarge: 'h1',
+          headerDisplay: 'p',
+          headerXLarge: 'p',
+          headerLarge: 'p',
+          headerMedium: 'p',
+          headerSmall: 'p',
+          headerXSmall: 'p',
+          bodyXLargeStrong: 'p',
+          bodyXLarge: 'p',
+          bodyLargeStrong: 'p',
+          bodyLarge: 'p',
+          bodyMediumStrong: 'p',
+          bodyMedium: 'p',
+          bodySmallStrong: 'p',
+          bodySmall: 'p',
+          bodyXSmallStrong: 'p',
+          bodyXSmall: 'p',
+          brandHeaderXLarge: 'h1',
         },
       },
     },
@@ -427,118 +421,118 @@ const themeCustomized = createTheme({
       'Helvetica Neue',
       'sans-serif',
     ].join(','),
-    lifiHeaderDisplay: {
+    headerDisplay: {
       fontStyle: 'normal',
       fontSize: '96px',
       lineHeight: '128px',
       fontWeight: 700,
     },
-    lifiHeaderXLarge: {
+    headerXLarge: {
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '64px',
       lineHeight: '96px',
       letterSpacing: 0,
     },
-    lifiHeaderLarge: {
+    headerLarge: {
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '48px',
       lineHeight: '64px',
       letterSpacing: 0,
     },
-    lifiHeaderMedium: {
+    headerMedium: {
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '32px',
       lineHeight: '40px',
       letterSpacing: 0,
     },
-    lifiHeaderSmall: {
+    headerSmall: {
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
       lineHeight: '24px',
       letterSpacing: 0,
     },
-    lifiHeaderXSmall: {
+    headerXSmall: {
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
       lineHeight: '24px',
       letterSpacing: 0,
     },
-    lifiBodyXLargeStrong: {
+    bodyXLargeStrong: {
       fontStyle: 'normal',
       fontWeight: 800,
       fontSize: '24px',
       lineHeight: '32px',
       letterSpacing: 0,
     },
-    lifiBodyXLarge: {
+    bodyXLarge: {
       fontStyle: 'normal',
       fontWeight: 400,
       fontSize: '24px',
       lineHeight: '32px',
       letterSpacing: 0,
     },
-    lifiBodyLargeStrong: {
+    bodyLargeStrong: {
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
       lineHeight: '24px',
       letterSpacing: 0,
     },
-    lifiBodyLarge: {
+    bodyLarge: {
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '18px',
       lineHeight: '24px',
       letterSpacing: 0,
     },
-    lifiBodyMediumStrong: {
+    bodyMediumStrong: {
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '16px',
       lineHeight: '20px',
       letterSpacing: 0,
     },
-    lifiBodyMedium: {
+    bodyMedium: {
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '16px',
       lineHeight: '20px',
       letterSpacing: 0,
     },
-    lifiBodySmallStrong: {
+    bodySmallStrong: {
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '14px',
       lineHeight: '20px',
       letterSpacing: 0,
     },
-    lifiBodySmall: {
+    bodySmall: {
       fontStyle: 'normal',
       fontWeight: 400,
       fontSize: '14px',
       lineHeight: '20px',
       letterSpacing: 0,
     },
-    lifiBodyXSmallStrong: {
+    bodyXSmallStrong: {
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '12px',
       lineHeight: '16px',
       letterSpacing: 0,
     },
-    lifiBodyXSmall: {
+    bodyXSmall: {
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '12px',
       lineHeight: '16px',
       letterSpacing: 0,
     },
-    lifiBrandHeaderXLarge: {
+    brandHeaderXLarge: {
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '64px',

@@ -1,6 +1,7 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import generateKey from 'src/app/lib/generateKey';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
+import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
 import { SuperfestContainer } from '../Superfest.style';
 import { BackButton } from './BackButton/BackButton';
@@ -22,11 +23,16 @@ export const SuperfestMissionPage = ({
 }: SuperfestMissionPageVar) => {
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
+  const rewardType = attributes?.CustomInformation?.['rewardType'];
+  const points = quest?.attributes?.Points;
+
   const { account } = useAccounts();
   const { pastCampaigns } = useMerklRewards({
     rewardChainId: 10,
     userAddress: account?.address,
   });
+
+  const { CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
     <SuperfestContainer className="superfest">
@@ -44,7 +50,8 @@ export const SuperfestMissionPage = ({
           title={attributes?.Title}
           url={attributes?.Link}
           key={generateKey('cta')}
-          CTAs={CTAs}
+          CTAs={CTAsWithAPYs}
+          variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
         />
         {/* Subtitle and description */}
         <DescriptionBox

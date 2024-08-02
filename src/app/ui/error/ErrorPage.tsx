@@ -30,9 +30,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
   const { t } = useTranslation();
   return (
     <CenteredContainer>
-      <ErrorMessage variant={'lifiBodyLarge'}>
-        {t('error.message')}
-      </ErrorMessage>
+      <ErrorMessage variant={'bodyLarge'}>{t('error.message')}</ErrorMessage>
       <Button
         variant="primary"
         onClick={() => {
@@ -40,7 +38,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
             category: TrackingCategory.Menu,
             label: 'click-discord-link',
             action: TrackingAction.OpenMenu,
-            data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+            data: { [TrackingEventParameter.Menu]: 'jumper_discord' },
             disableTrackingTool: [
               EventTrackingTool.ARCx,
               EventTrackingTool.Cookie3,
@@ -48,7 +46,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
           });
           trackPageload({
             source: TrackingCategory.Menu,
-            destination: 'discord-lifi',
+            destination: 'discord-jumper',
             url: DISCORD_URL,
             pageload: true,
             disableTrackingTool: [EventTrackingTool.Cookie3],
@@ -80,7 +78,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
               : theme.palette.black.main
           }
         />
-        <SupportMessage variant="lifiBodyMediumStrong" component="span">
+        <SupportMessage variant="bodyMediumStrong" component="span">
           {t('navbar.navbarMenu.support')}
         </SupportMessage>
       </Button>

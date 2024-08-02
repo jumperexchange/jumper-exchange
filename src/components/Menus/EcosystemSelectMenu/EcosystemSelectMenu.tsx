@@ -47,7 +47,7 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
       >
         <MenuHeaderAppBar component="div" elevation={0}>
           <Typography
-            variant="lifiBodyMediumStrong"
+            variant="bodyMediumStrong"
             width={'auto'}
             align={'center'}
             flex={1}
@@ -57,7 +57,7 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
           </Typography>
         </MenuHeaderAppBar>
       </MenuHeaderAppWrapper>
-      <ConnectButtonContainer>
+      <ConnectButtonContainer as="li">
         <EVMConnectButton
           walletIcon={
             getConnectorIcon(openEcosystemSelect.combinedWallet?.evm) ||

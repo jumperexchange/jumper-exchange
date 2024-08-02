@@ -1,9 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import {
   findTheBestRoute,
-  openMainMenu,
   itemInMenu,
-  closeWelcomeScreen,
+  openMainMenu,
 } from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {
@@ -59,7 +58,7 @@ test.describe('Jumper full e2e flow', () => {
     // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
-    await expect(page.getByRole('menuitem')).toHaveCount(10);
+    await expect(page.getByRole('menuitem')).toHaveCount(11);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
@@ -86,30 +85,34 @@ test.describe('Jumper full e2e flow', () => {
     await page.locator('.learn-page').isVisible();
   });
 
-  test('should be able to navigate to lifi explorer', async ({ page }) => {
+  test('should be able to navigate to Jumper Scan', async ({ page }) => {
     // await closeWelcomeScreen(page);
-    await page.locator('#main-burger-menu-button').click();
+    await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
-    await itemInMenu(page, 'LI.FI Explorer');
-    const newPage = await page.waitForEvent('popup', { timeout: 15000 });
-    expect(newPage.url()).toBe(
-      'https://scan.li.fi/?utm_source=jumper&utm_campaign=jumper_to_explorer&utm_medium=menu',
-    );
+    await itemInMenu(page, 'Jumper Scan');
+    // const newPage = await page.waitForEvent('popup', { timeout: 15000 });
+    expect(page).toHaveURL('http://localhost:3000/scan/');
   });
-
+  test('should be able to navigate to supefest', async ({ page }) => {
+    const learnMoreButton = page.locator('#learn-more-button');
+    await openMainMenu(page);
+    await itemInMenu(page, 'Superfest Festival');
+    await expect(learnMoreButton).toBeVisible();
+    await expect(page).toHaveURL('http://localhost:3000/superfest/');
+  });
   test('should be able to navigate to X', async ({ page, context }) => {
     let xUrl = 'https://x.com/JumperExchange';
     // await closeWelcomeScreen(page);
-    await page.locator('#main-burger-menu-button').click();
+    await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
     await page.getByRole('link', { name: 'X', exact: true }).click();
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(xUrl);
   });
   test('should be able to navigate to Discord', async ({ page, context }) => {
-    let discordUrl = 'https://discord.com/invite/lifi';
+    let discordUrl = 'https://discord.com/invite/jumperexchange';
     // await closeWelcomeScreen(page);
-    await page.locator('#main-burger-menu-button').click();
+    await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
     await page.getByRole('link', { name: 'Discord' }).click();
     const newPage = await context.waitForEvent('page');
