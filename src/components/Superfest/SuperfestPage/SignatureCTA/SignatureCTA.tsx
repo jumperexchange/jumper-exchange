@@ -32,7 +32,9 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
   const [messageToSign, setMessageToSign] = useState<string | undefined>(
     undefined,
   );
-  const { data, isError, isSuccess, signMessageAsync } = useSignMessage();
+  const [messagedHasBeenSigned, setMessagedHasBeenSigned] =
+    useState<boolean>(false);
+  const { signMessageAsync } = useSignMessage();
   const {
     isMember,
     isLoading: isMemberCheckLoading,
@@ -54,7 +56,6 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
           domain,
           uri: origin,
           address: account.address,
-          // chainId: account.chainId,
           chainId: 1,
           statement: messageToSign,
           nonce,
@@ -81,6 +82,9 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
         }
 
         const json = await res.json();
+        if (res.status === 200 && json) {
+          setMessagedHasBeenSigned(true);
+        }
       }
     } catch (err) {
       console.log(err);
@@ -105,7 +109,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
 
   return (
     <>
-      {true && isMember ? (
+      {(messagedHasBeenSigned || isMember) && (
         <Box sx={{ width: '100%', marginBottom: '16px' }}>
           <SeveralMissionCtaContainer
             sx={{ cursor: 'not-allowed', '&:hover': { cursor: 'not-allowed' } }}
@@ -129,8 +133,8 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
             </CTAExplanationBox>
           </SeveralMissionCtaContainer>
         </Box>
-      ) : undefined}
-      {true && !isMember ? (
+      )}
+      {!messagedHasBeenSigned && !isMember && (
         <Box sx={{ width: '100%', marginBottom: '16px' }}>
           <SeveralMissionCtaContainer onClick={handleSignatureClick}>
             <CTAExplanationBox>
@@ -152,7 +156,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
             </CTAExplanationBox>
           </SeveralMissionCtaContainer>
         </Box>
-      ) : undefined}
+      )}
     </>
   );
 };

@@ -29,18 +29,13 @@ export interface CTALinkInt {
   apy?: number;
 }
 
-interface SignatureInt {
-  isLive: boolean;
-  message: string;
-}
-
 interface MissionCtaProps {
   title?: string;
   url?: string;
   id?: number;
   CTAs: CTALinkInt[];
   variableWeeklyAPY?: boolean;
-  signature?: SignatureInt;
+  signature?: boolean;
 }
 
 export const MissionCTA = ({
@@ -78,14 +73,13 @@ export const MissionCTA = ({
             lineHeight={{ xs: '14px', md: '18px' }}
             fontWeight={400}
           >
-            {signature?.isLive
-              ? undefined
-              : 'Completing any mission below makes you eligible for OP rewards and XP.'}
+            {!signature &&
+              'Completing any mission below makes you eligible for OP rewards and XP.'}
           </SoraTypography>
         </Box>
       </StartedTitleBox>
       <SeveralCTABox>
-        {true ? <SignatureCTA /> : undefined}
+        {signature && <SignatureCTA />}
         {CTAs.map((CTA: CTALinkInt, i: number) => {
           return (
             <Link
