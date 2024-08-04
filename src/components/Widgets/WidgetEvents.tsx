@@ -117,10 +117,6 @@ export function WidgetEvents() {
                 update.process.error?.code || '',
               [TrackingEventParameter.ErrorMessage]:
                 update.process.error?.message || '',
-              [TrackingEventParameter.InsuranceFeeAmountUSD]:
-                update.route.insurance.feeAmountUsd,
-              [TrackingEventParameter.InsuranceState]:
-                update.route.insurance?.state,
               nonInteraction: true,
             },
           });
@@ -175,9 +171,10 @@ export function WidgetEvents() {
         category: TrackingCategory.WidgetEvent,
         label: 'click_high_value_loss_accepted',
         data: {
-          [TrackingEventParameter.FromAmountUSD]: update.fromAmountUsd,
+          [TrackingEventParameter.FromAmountUSD]: update.fromAmountUSD,
           [TrackingEventParameter.ToAmountUSD]: update.toAmountUSD,
           [TrackingEventParameter.GasCostUSD]: update.gasCostUSD || '',
+          [TrackingEventParameter.FeeCostUSD]: update.feeCostUSD || '',
           [TrackingEventParameter.ValueLoss]: update.valueLoss,
           [TrackingEventParameter.Timestamp]: Date.now(),
         },

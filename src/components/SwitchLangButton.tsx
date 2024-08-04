@@ -20,6 +20,7 @@ const SwitchLangButton = ({ lang }: SwitchLangButtonProps) => {
 
   return (
     <Button
+      aria-label={`Switch to locale ${lang}`}
       onClick={() => {
         switchLocale(lang);
       }}
