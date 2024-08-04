@@ -168,7 +168,7 @@ export const FeatureCards = () => {
 
   return (
     isDesktop &&
-    cookie.welcomeScreenClosed &&
+    // cookie.welcomeScreenClosed &&
     !widgetExpanded && (
       <FeatureCardsContainer>
         {slicedPersonalizedFeatureCards?.map((cardData, index) => {
