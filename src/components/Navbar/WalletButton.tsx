@@ -80,7 +80,7 @@ export const WalletButtons = () => {
           }}
         >
           <Typography
-            variant={'lifiBodyMediumStrong'}
+            variant={'bodyMediumStrong'}
             sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -117,7 +117,7 @@ export const WalletButtons = () => {
             </WalletMgmtBadge>
           ) : null}
           <Typography
-            variant={'lifiBodyMediumStrong'}
+            variant={'bodyMediumStrong'}
             width={'auto'}
             marginRight={0.25}
             marginLeft={0.75}

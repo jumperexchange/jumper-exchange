@@ -8,7 +8,6 @@ import {
 } from '@/const/trackingKeys';
 import {
   DISCORD_URL,
-  EXPLORER_URL,
   JUMPER_FEST_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
@@ -17,7 +16,6 @@ import {
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
-import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
@@ -47,10 +45,6 @@ export const useMainMenuContent = () => {
     (state) => state,
   );
   const themeMode = useSettingsStore((state) => state.themeMode);
-  const explorerUrl = appendUTMParametersToLink(EXPLORER_URL, {
-    utm_campaign: 'jumper_to_explorer',
-    utm_medium: 'menu',
-  });
 
   const themeSwitchTabs = useThemeSwitchTabs();
 
@@ -77,7 +71,7 @@ export const useMainMenuContent = () => {
 
   let mainMenu: any[] = [];
 
-  if (configTheme?.hasThemeModeSwitch) {
+  if (!forcedTheme && configTheme?.hasThemeModeSwitch) {
     mainMenu.push({
       children: (
         <Tabs
@@ -124,7 +118,7 @@ export const useMainMenuContent = () => {
       showMoreIcon: !['dark', 'light'].includes(configTheme?.uid),
       suffixIcon: configTheme?.uid && (
         <Typography
-          variant="lifiBodyMedium"
+          variant="bodyMedium"
           textTransform={'uppercase'}
           sx={{
             overflow: 'hidden',
@@ -153,7 +147,7 @@ export const useMainMenuContent = () => {
       prefixIcon: <LanguageIcon />,
       suffixIcon: (
         <Typography
-          variant="lifiBodyMedium"
+          variant="bodyMedium"
           textTransform={'uppercase'}
           sx={{
             overflow: 'hidden',
@@ -194,7 +188,7 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.fest'),
       prefixIcon: <OPLogo />,
       showMoreIcon: false,
-      link: { url: '/superfest' },
+      link: { url: '/superfest/' },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -210,7 +204,7 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.profile'),
       prefixIcon: <AccountCircleIcon />,
       showMoreIcon: false,
-      link: { url: '/profile' },
+      link: { url: '/profile/' },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -226,7 +220,7 @@ export const useMainMenuContent = () => {
       label: 'Jumper Learn',
       prefixIcon: <SchoolIcon />,
       showMoreIcon: false,
-      link: { url: '/learn' },
+      link: { url: '/learn/' },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -239,16 +233,16 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: t('navbar.navbarMenu.lifiExplorer'),
+      label: 'Jumper Scan',
       prefixIcon: <SearchOutlinedIcon />,
       showMoreIcon: false,
-      link: { url: explorerUrl, external: true },
+      link: { url: '/scan/', external: false },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
-          label: 'open-lifi-explorer',
-          action: TrackingAction.ClickLifiExplorerLink,
-          data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
+          label: 'open-jumper-scan',
+          action: TrackingAction.ClickJumperScanLink,
+          data: { [TrackingEventParameter.Menu]: 'jumper_scan' },
         });
         trackEvent({
           category: TrackingCategory.Pageload,
@@ -256,9 +250,8 @@ export const useMainMenuContent = () => {
           label: 'pageload-explorer',
           data: {
             [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'lifi-explorer',
-            [TrackingEventParameter.PageloadURL]: explorerUrl,
-            [TrackingEventParameter.PageloadExternal]: true,
+            [TrackingEventParameter.PageloadDestination]: 'jumper_scan',
+            [TrackingEventParameter.PageloadExternal]: false,
           },
         });
       },
@@ -305,7 +298,7 @@ export const useMainMenuContent = () => {
           category: TrackingCategory.Menu,
           label: 'click-discord-link',
           action: TrackingAction.ClickDiscordLink,
-          data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+          data: { [TrackingEventParameter.Menu]: 'jumper_discord' },
         });
         trackEvent({
           category: TrackingCategory.Pageload,
@@ -313,7 +306,7 @@ export const useMainMenuContent = () => {
           label: 'pageload-discord',
           data: {
             [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'lifi-discord',
+            [TrackingEventParameter.PageloadDestination]: 'jumper_discord',
             [TrackingEventParameter.PageloadURL]: DISCORD_URL,
             [TrackingEventParameter.PageloadExternal]: true,
           },
@@ -392,7 +385,7 @@ export const useMainMenuContent = () => {
       prefixIcon: <LanguageIcon />,
       suffixIcon: (
         <Typography
-          variant="lifiBodyMedium"
+          variant="bodyMedium"
           textTransform={'uppercase'}
           sx={{
             overflow: 'hidden',
@@ -469,17 +462,17 @@ export const useMainMenuContent = () => {
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
-          label: 'open-lifi-explorer',
-          action: TrackingAction.ClickLifiExplorerLink,
-          data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
+          label: 'open-jumper-scan',
+          action: TrackingAction.ClickJumperScanLink,
+          data: { [TrackingEventParameter.Menu]: 'jumper_scan' },
         });
         trackEvent({
           category: TrackingCategory.Pageload,
           action: TrackingAction.PageLoad,
-          label: 'pageload-explorer',
+          label: 'pageload-jumper-scan',
           data: {
             [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'lifi-explorer',
+            [TrackingEventParameter.PageloadDestination]: 'jumper-scan',
             [TrackingEventParameter.PageloadURL]: explorerUrl,
             [TrackingEventParameter.PageloadExternal]: true,
           },
@@ -528,7 +521,7 @@ export const useMainMenuContent = () => {
           category: TrackingCategory.Menu,
           label: 'click-discord-link',
           action: TrackingAction.ClickDiscordLink,
-          data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+          data: { [TrackingEventParameter.Menu]: 'jumper_discord' },
         });
         trackEvent({
           category: TrackingCategory.Pageload,
@@ -536,7 +529,7 @@ export const useMainMenuContent = () => {
           label: 'pageload-discord',
           data: {
             [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'discord-lifi',
+            [TrackingEventParameter.PageloadDestination]: 'discord-jumper',
             [TrackingEventParameter.PageloadURL]: DISCORD_URL,
             [TrackingEventParameter.PageloadExternal]: true,
           },

@@ -29,9 +29,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
   const { t } = useTranslation();
   return (
     <CenteredContainer>
-      <ErrorMessage variant={'lifiBodyLarge'}>
-        {t('error.message')}
-      </ErrorMessage>
+      <ErrorMessage variant={'bodyLarge'}>{t('error.message')}</ErrorMessage>
       <Button
         variant="primary"
         onClick={() => {
@@ -47,7 +45,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
             data: {
               [TrackingEventParameter.PageloadSource]:
                 TrackingCategory.ErrorPage,
-              [TrackingEventParameter.PageloadDestination]: 'discord-support',
+              [TrackingEventParameter.PageloadDestination]: 'discord-jumper',
               [TrackingEventParameter.PageloadURL]: DISCORD_URL,
               [TrackingEventParameter.PageloadExternal]: true,
             },
@@ -79,7 +77,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
               : theme.palette.black.main
           }
         />
-        <SupportMessage variant="lifiBodyMediumStrong" component="span">
+        <SupportMessage variant="bodyMediumStrong" component="span">
           {t('navbar.navbarMenu.support')}
         </SupportMessage>
       </Button>

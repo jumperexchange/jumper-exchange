@@ -46,7 +46,7 @@ export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
         <ModalHeaderAppBar>
           <ToolModalTitle
             id="modal-modal-title"
-            variant={'lifiHeaderXSmall'}
+            variant={'headerXSmall'}
             as="h3"
           >
             {title}
@@ -63,7 +63,7 @@ export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
             return (
               <ToolModalGrid item key={`${title}-item-${index}`}>
                 <ToolModalAvatar src={el.logoURI} />
-                <ToolModaItemlTitle variant={'lifiBodyXSmall'}>
+                <ToolModaItemlTitle variant={'bodyXSmall'}>
                   {el.name}
                 </ToolModaItemlTitle>
               </ToolModalGrid>

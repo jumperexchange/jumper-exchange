@@ -11,6 +11,7 @@ export enum TrackingAction {
   CopyAddressToClipboard = 'action_copy_addr_to_clipboard',
   DisconnectWallet = 'action_disconnect_wallet',
   OpenBlockchainExplorer = 'action_open_blockchain_explorer',
+  OpenJumperScan = 'action_open_jumper_scan',
   SwitchChain = 'action_switch_chain',
 
   // Widget
@@ -48,7 +49,7 @@ export enum TrackingAction {
   ClickDiscordLink = 'action_click_discord_link',
   ClickJumperLearnLink = 'action_click_jumper_learn_link',
   ClickJumperProfileLink = 'action_click_jumper_profile_link',
-  ClickLifiExplorerLink = 'action_click_lifi_explorer_link',
+  ClickJumperScanLink = 'action_click_jumper-scan_link',
 
   // Blog
   SeeAllPosts = 'action_see_all_posts',
@@ -135,6 +136,7 @@ export enum TrackingEventParameter {
   Error = 'param_error',
   Message = 'param_message',
   GasCostUSD = 'param_gas_cost_usd',
+  FeeCostUSD = 'param_fee_cost_usd',
   TxHash = 'param_tx_hash',
   TxLink = 'param_tx_link',
   ToChainId = 'param_to_chain_id',
@@ -147,8 +149,6 @@ export enum TrackingEventParameter {
   Type = 'param_type',
   ErrorCode = 'param_error_code',
   ErrorMessage = 'param_error_message',
-  InsuranceState = 'param_insurance_state',
-  InsuranceFeeAmountUSD = 'param_insurance_fee_amount_usd',
   ValueLoss = 'param_value_loss',
   AvailableRoutesCount = 'param_available_routes_count',
 

@@ -1,5 +1,4 @@
 import { useMenuStore } from '@/stores/menu';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FolderZipOutlinedIcon from '@mui/icons-material/FolderZipOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useTheme } from '@mui/material/styles';
@@ -9,7 +8,7 @@ import {
   TrackingEventParameter,
 } from '../../../const/trackingKeys';
 
-import { DOCS_URL, GITHUB_URL } from '@/const/urls';
+import { GITHUB_URL } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useTranslation } from 'react-i18next';
 export const useDevelopersContent = () => {
@@ -34,17 +33,17 @@ export const useDevelopersContent = () => {
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
-          label: 'open-lifi-github',
+          label: 'open-jumper-github',
           action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'lifi_github' },
+          data: { [TrackingEventParameter.Menu]: 'jumper_github' },
         });
         trackEvent({
           category: TrackingCategory.Pageload,
           action: TrackingAction.PageLoad,
-          label: 'pageload-lifi-github',
+          label: 'pageload-jumper-github',
           data: {
             [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'lifi-github',
+            [TrackingEventParameter.PageloadDestination]: 'jumper-github',
             [TrackingEventParameter.PageloadURL]: GITHUB_URL,
             [TrackingEventParameter.PageloadExternal]: true,
           },
@@ -52,31 +51,6 @@ export const useDevelopersContent = () => {
         closeAllMenus();
       },
       link: { url: GITHUB_URL, external: true },
-    },
-    {
-      label: t('navbar.developers.documentation'),
-      prefixIcon: <DescriptionOutlinedIcon />,
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'open-lifi-docs',
-          action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'lifi_docs' },
-        });
-        trackEvent({
-          category: TrackingCategory.Pageload,
-          action: TrackingAction.PageLoad,
-          label: 'pageload-lifi_docs',
-          data: {
-            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'lifi-docs',
-            [TrackingEventParameter.PageloadURL]: DOCS_URL,
-            [TrackingEventParameter.PageloadExternal]: true,
-          },
-        });
-        closeAllMenus();
-      },
-      link: { url: DOCS_URL, external: true },
     },
     {
       label: t('navbar.navbarMenu.brandAssets'),

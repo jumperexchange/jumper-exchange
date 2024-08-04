@@ -87,9 +87,7 @@ export const CarouselContainer = ({
   return (
     <Box>
       <CarouselHeader>
-        {title && (
-          <CarouselTitle variant="lifiHeaderMedium">{title}</CarouselTitle>
-        )}
+        {title && <CarouselTitle variant="headerMedium">{title}</CarouselTitle>}
         {Array.isArray(children) && children?.length > 1 && (
           <CarouselNavigationContainer hide={children?.length < 4}>
             <CarouselNavigationButton onClick={() => handleChange('prev')}>

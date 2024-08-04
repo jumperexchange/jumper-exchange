@@ -1,17 +1,13 @@
 'use client';
 import { CustomColor } from '@/components/CustomColorTypography.style';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
+import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { appendUTMParametersToLink } from '@/utils/append-utm-params-to-link';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next/TransWithoutContext';
+import { JUMPER_URL } from 'src/const/urls';
 import { ToolCards } from './ToolCard/ToolCards';
 import {
   ContentWrapper,
@@ -20,18 +16,6 @@ import {
   WelcomeScreenButtonLabel,
   WelcomeScreenSubtitle,
 } from './WelcomeScreen.style';
-
-const auditsWelcomeUrl = appendUTMParametersToLink(
-  'https://docs.li.fi/smart-contracts/audits',
-  {
-    utm_campaign: 'jumper_to_docs',
-    utm_medium: 'welcome_screen',
-  },
-);
-const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
-  utm_campaign: 'jumper_to_lifi',
-  utm_medium: 'welcome_screen',
-});
 
 interface WelcomeScreenProps {
   closed: boolean;
@@ -55,51 +39,11 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
     }
   }, [trackEvent, welcomeScreenClosed]);
 
-  const handleAuditClick = () => {
-    trackEvent({
-      category: TrackingCategory.WelcomeScreen,
-      label: 'open-welcome-message-link',
-      action: TrackingAction.OpenWelcomeMessageLink,
-      data: { [TrackingEventParameter.WelcomeMessageLink]: '4x_audited' },
-    });
-    trackEvent({
-      category: TrackingCategory.Pageload,
-      action: TrackingAction.PageLoad,
-      label: 'pageload-audits',
-      data: {
-        [TrackingEventParameter.PageloadSource]: TrackingCategory.WelcomeScreen,
-        [TrackingEventParameter.PageloadDestination]: '4x_audited',
-        [TrackingEventParameter.PageloadURL]: auditsWelcomeUrl,
-        [TrackingEventParameter.PageloadExternal]: true,
-      },
-    });
-  };
-
-  const handleLIFIClick = () => {
-    trackEvent({
-      category: TrackingCategory.WelcomeScreen,
-      label: 'open-welcome-message-link',
-      action: TrackingAction.OpenWelcomeMessageLink,
-      data: { [TrackingEventParameter.WelcomeMessageLink]: 'LIFI' },
-    });
-    trackEvent({
-      category: TrackingCategory.Pageload,
-      action: TrackingAction.PageLoad,
-      label: 'pageload-lifi-website',
-      data: {
-        [TrackingEventParameter.PageloadSource]: TrackingCategory.WelcomeScreen,
-        [TrackingEventParameter.PageloadDestination]: 'lifi-website',
-        [TrackingEventParameter.PageloadURL]: lifiWelcomeUrl,
-        [TrackingEventParameter.PageloadExternal]: true,
-      },
-    });
-  };
-
   const handleGetStarted: MouseEventHandler<HTMLButtonElement> = (event) => {
     const classList = (event.target as HTMLElement).classList;
     if (
       classList.contains?.('stats-card') ||
-      classList.contains?.('link-lifi')
+      classList.contains?.('link-jumper')
     ) {
       return;
     } else {
@@ -119,27 +63,27 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
   return (
     <ContentWrapper>
       <WelcomeContent>
-        <CustomColor as="h1" variant={'lifiHeaderMedium'}>
+        <CustomColor as="h1" variant={'headerMedium'}>
           {t('navbar.welcome.title')}
         </CustomColor>
-        <WelcomeScreenSubtitle variant={'lifiBodyLarge'}>
+        <WelcomeScreenSubtitle variant={'bodyLarge'}>
           <Trans
             i18nKey={'navbar.welcome.subtitle' as string & never[]}
             components={[
               // fix: allow component with "no content"
               // eslint-disable-next-line jsx-a11y/anchor-has-content
               <a
-                className={'link-lifi'}
-                href={auditsWelcomeUrl}
+                className={'link-jumper'}
+                href={JUMPER_URL}
                 target={'_blank'}
                 rel="noreferrer"
-                onClick={handleAuditClick}
+                // onClick={handleAuditClick}
               />,
               // eslint-disable-next-line jsx-a11y/anchor-has-content
               <a
-                className={'link-lifi'}
-                href={lifiWelcomeUrl}
-                onClick={handleLIFIClick}
+                className={'link-jumper'}
+                href={JUMPER_URL}
+                // onClick={handleLIFIClick}
                 target={'_blank'}
                 rel="noreferrer"
               />,
@@ -154,8 +98,15 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
           openDexsToolModal={openDexsToolModal}
           setOpenDexsToolModal={setOpenDexsToolModal}
         />
-        <WelcomeScreenButton onClick={handleGetStarted} id="get-started-button">
-          <WelcomeScreenButtonLabel variant={'lifiBodyMediumStrong'}>
+        <WelcomeScreenButton
+          aria-label="Open welcome screen"
+          onClick={handleGetStarted}
+          id="get-started-button"
+        >
+          <WelcomeScreenButtonLabel
+            aria-label="Close welcome screen"
+            variant={'bodyMediumStrong'}
+          >
             {t('navbar.welcome.cta')}
           </WelcomeScreenButtonLabel>
         </WelcomeScreenButton>
