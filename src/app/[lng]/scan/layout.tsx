@@ -15,15 +15,12 @@ export default async function PartnerThemeLayout({
 
   return (
     <NextThemeProvider
-      themes={['light', 'dark']}
-      defaultTheme={'system'}
+      themes={['light']}
+      forcedTheme={'light'}
       enableSystem
       enableColorScheme
     >
-      <ThemeProviderV2
-        themes={[]}
-        activeTheme={cookiesHandler.get('theme')?.value || 'system'}
-      >
+      <ThemeProviderV2>
         <Layout>{children}</Layout>
       </ThemeProviderV2>
     </NextThemeProvider>

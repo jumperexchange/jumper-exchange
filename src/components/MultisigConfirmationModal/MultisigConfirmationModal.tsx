@@ -34,6 +34,7 @@ export const MultisigConfirmationModal: React.FC<{
           {t('multisig.transactionInitiated.description')}
         </Typography>
         <Button
+          aria-label={t('multisig.transactionInitiated.description')}
           variant="primary"
           muiVariant="contained"
           styles={{

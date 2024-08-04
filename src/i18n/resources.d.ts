@@ -9,10 +9,9 @@ interface Resources {
     navbar: {
       welcome: {
         title: 'Find the best route';
-        subtitle: '<0>4x audited</0> multi-chain liquidity aggregator powered by <1>LI.FI</1>';
+        subtitle: '<0>4x audited</0> multi-chain liquidity aggregator';
         cta: 'Get started';
       };
-      poweredByLifi: '<0>Powered by </0><1>LI.FI</1>';
       links: {
         exchange: 'Exchange';
         dashboard: 'Dashboard';
@@ -38,8 +37,6 @@ interface Resources {
         brandAssets: 'Brand Assets';
         theme: 'Theme';
         developers: 'Developers';
-        lifiExplorer: 'LI.FI Scan';
-        aboutLIFI: 'About LI.FI';
         support: 'Support';
         profile: 'Jumper Profile';
         fest: 'Superfest Festival';
@@ -55,9 +52,9 @@ interface Resources {
         connectAnotherWallet: 'Connect another wallet';
       };
       themes: {
-        switchToLight: 'Switch to Light mode';
-        switchToDark: 'Switch to Dark mode';
-        switchToSystem: 'Switch to System';
+        switchToLight: 'Switch to light mode';
+        switchToDark: 'Switch to dark mode';
+        switchToSystem: 'Switch to system mode';
         lightModeDisabled: 'Light mode is disabled for this theme';
         darkModeDisabled: 'Dark mode is disabled for this theme';
         systemModeDisabled: 'System mode is disabled for this theme';

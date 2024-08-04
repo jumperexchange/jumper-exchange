@@ -1,9 +1,11 @@
 import { getContrastAlphaColor } from '@/utils/colors';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
+import { sora } from 'src/fonts/fonts';
 import type { InstructionItemProps } from '.';
 import {
   InstructionsAccordionButtonMainBox,
@@ -16,8 +18,6 @@ import {
   InstructionsAccordionLinkBox,
   InstructionsAccordionToggle,
 } from '.';
-import { sora } from 'src/fonts/fonts';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 interface InstructionsAccordionItemProps extends InstructionItemProps {
   index: number;
@@ -138,7 +138,7 @@ export const InstructionsAccordionItem = ({
                       >
                         <InstructionsAccordionLinkBox>
                           <Typography
-                            variant={'lifiBodyMediumStrong'}
+                            variant={'bodyMediumStrong'}
                             component={'span'}
                             mr={'8px'}
                             sx={{

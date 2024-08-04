@@ -24,6 +24,8 @@ export const SuperfestMissionPage = ({
 }: SuperfestMissionPageVar) => {
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
+  const rewardType = attributes?.CustomInformation?.['rewardType'];
+  const points = quest?.attributes?.Points;
 
   const { account } = useAccounts();
   const { pastCampaigns } = useMerklRewards({
@@ -50,6 +52,7 @@ export const SuperfestMissionPage = ({
           url={attributes?.Link}
           key={generateKey('cta')}
           CTAs={CTAsWithAPYs}
+          variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
         />
         {/* Subtitle and description */}
         <DescriptionBox

@@ -1,19 +1,26 @@
 'use client';
 import { JumperLearnLogo, JumperLogo } from '@/components/illustrations';
 import { LogoWrapper } from '@/components/illustrations/Logo.style';
+import { useSettingsStore } from '@/stores/settings';
 import ClearIcon from '@mui/icons-material/Clear';
 import type { Theme } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
-import { JumperLogoBlack } from 'src/components/illustrations/JumperLogoBlack';
-import { useSettingsStore } from '@/stores/settings';
+import { JumperScanLogo } from 'src/components/illustrations/JumperScanLogo';
 
 type LogoProps = {
-  variant: 'default' | 'learn' | 'superfest';
+  variant: 'default' | 'learn' | 'scan' | 'superfest';
 };
 
 export const Logo = ({ variant }: LogoProps) => {
-  const logo = variant === 'default' ? <JumperLogo /> : <JumperLearnLogo />;
+  const logo =
+    variant === 'scan' ? (
+      <JumperScanLogo />
+    ) : variant === 'default' ? (
+      <JumperLogo />
+    ) : (
+      <JumperLearnLogo />
+    );
   const configTheme = useSettingsStore((state) => state.configTheme);
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),

@@ -49,9 +49,9 @@ export const InfoAlert = ({ title, subtitle, active }: InfoAlertProps) => {
                 marginRight: 1,
               }}
             />
-            <Typography variant={'lifiHeaderXSmall'}>{title}</Typography>
+            <Typography variant={'headerXSmall'}>{title}</Typography>
           </InfoMessageCardTitle>
-          <Typography variant={'lifiBodySmall'} pt={theme.spacing(1.5)}>
+          <Typography variant={'bodySmall'} pt={theme.spacing(1.5)}>
             {subtitle}
           </Typography>
         </InfoMessageCard>

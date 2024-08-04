@@ -106,6 +106,7 @@ export const RewardsCarousel = ({
               <Button
                 disabled={isPending || isConfirming || isConfirmed}
                 variant="primary"
+                aria-label="Claim rewards"
                 size="large"
                 styles={{
                   alignItems: 'center',
