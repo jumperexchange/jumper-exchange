@@ -62,7 +62,7 @@ export const MenuItem = ({
           <ButtonSecondary fullWidth>
             {prefixIcon}
             <Typography
-              variant={'lifiBodyMediumStrong'}
+              variant={'bodyMediumStrong'}
               component={'span'}
               ml={!!prefixIcon ? '9.5px' : 'inherit'}
               mr={!!prefixIcon ? '9.5px' : 'inherit'}

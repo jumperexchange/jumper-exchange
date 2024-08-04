@@ -105,7 +105,11 @@ export const AvailableMissionsList = ({
               const baseURL = quest.attributes.Image?.data?.attributes?.url;
               const imgURL = new URL(baseURL, url.origin);
               const rewards = quest.attributes.CustomInformation?.['rewards'];
+              const rewardType =
+                quest.attributes?.CustomInformation?.['rewardType'];
               const chains = quest.attributes.CustomInformation?.['chains'];
+              const claimingIds =
+                quest.attributes?.CustomInformation?.['claimingIds'];
               const rewardsIds =
                 quest.attributes?.CustomInformation?.['rewardsIds'];
 
@@ -158,6 +162,10 @@ export const AvailableMissionsList = ({
                   chains={chains}
                   rewards={rewards}
                   completed={completed}
+                  claimingIds={claimingIds}
+                  variableWeeklyAPY={
+                    quest?.attributes.Points > 0 && rewardType === 'weekly'
+                  }
                 />
               );
             })

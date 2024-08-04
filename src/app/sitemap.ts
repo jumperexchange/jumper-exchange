@@ -3,24 +3,30 @@ import type { ChangeFrequency, SitemapPage } from '@/types/sitemap';
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import type { MetadataRoute } from 'next';
 import { getArticles } from './lib/getArticles';
+import { locales } from 'src/i18n';
+
+function withTrallingSlash(url: string) {
+  return url.endsWith('/') ? url : `${url}/`;
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // paths
   const routes = pages.map((route: SitemapPage) => ({
-    url: `${JUMPER_URL}${route.path}`,
+    url: withTrallingSlash(`${JUMPER_URL}${route.path}`),
     lastModified: new Date().toISOString().split('T')[0],
     changeFrequency: 'weekly' as ChangeFrequency,
     // todo: enable alternates once xml formatting is fixed
-    // alternates: {
-    //   languages: locales.reduce(
-    //     (acc, locale) => ({
-    //       ...acc,
-    //       [locale !== 'en' ? locale : 'x-default']:
-    //         `${process.env.NEXT_PUBLIC_SITE_URL}/${locale !== 'en' ? locale : ''}${locale === 'en' ? route.path.slice(1) : route.path}`,
-    //     }),
-    //     {},
-    //   ),
-    // },
+    alternates: {
+      languages: locales.reduce(
+        (acc, locale) => ({
+          ...acc,
+          [locale !== 'en' ? locale : 'x-default']: withTrallingSlash(
+            `${process.env.NEXT_PUBLIC_SITE_URL}/${locale !== 'en' ? locale : ''}${locale === 'en' ? route.path.slice(1) : route.path}`,
+          ),
+        }),
+        {},
+      ),
+    },
     priority: route.priority,
   }));
 
@@ -28,7 +34,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articles = await getArticles().then(
     (article: StrapiResponse<BlogArticleData>) =>
       article.data.map((el) => ({
-        url: `${JUMPER_URL}${JUMPER_LEARN_PATH}/${el.attributes.Slug}`,
+        url: withTrallingSlash(
+          `${JUMPER_URL}${JUMPER_LEARN_PATH}/${el.attributes.Slug}`,
+        ),
         lastModified: new Date(
           el.attributes.updatedAt || el.attributes.publishedAt || Date.now(),
         )
@@ -36,15 +44,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           .split('T')[0],
         changeFrequency: 'weekly' as ChangeFrequency,
         // todo: enable alternates once xml formatting is fixed
-        // alternates: {
-        //   languages: locales.reduce((acc, locale) => {
-        //     return {
-        //       ...acc,
-        //       [locale !== 'en' ? locale : 'x-default']:
-        //         `${process.env.NEXT_PUBLIC_SITE_URL}/${locale !== 'en' ? locale : ''}/${el.attributes.Slug}`,
-        //     };
-        //   }, {}),
-        // },
+        alternates: {
+          languages: locales.reduce((acc, locale) => {
+            return {
+              ...acc,
+              [locale !== 'en' ? locale : 'x-default']: withTrallingSlash(
+                `${process.env.NEXT_PUBLIC_SITE_URL}/${locale !== 'en' ? locale : ''}/${el.attributes.Slug}`,
+              ),
+            };
+          }, {}),
+        },
         priority: 0.8,
       })),
   );
