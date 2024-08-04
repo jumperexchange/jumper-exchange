@@ -6,6 +6,7 @@ import {
   STRAPI_PARTNER_THEMES,
   STRAPI_QUESTS,
 } from 'src/const/strapiContentKeys';
+
 interface GetStrapiBaseUrlProps {
   contentType:
     | 'feature-cards'
@@ -24,18 +25,21 @@ interface PaginationProps {
 }
 
 export function getBaseUrl(): string {
+  const localUrl = process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL;
+  const remoteUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+
   if (process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true') {
-    if (!process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL) {
+    if (!localUrl) {
       console.error('Local Strapi URL is not provided.');
       throw new Error('Local Strapi URL is not provided.');
     }
-    return process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL;
+    return localUrl;
   } else {
-    if (!process.env.NEXT_PUBLIC_STRAPI_URL) {
+    if (!remoteUrl) {
       console.error('Strapi URL is not provided.');
       throw new Error('Strapi URL is not provided.');
     }
-    return process.env.NEXT_PUBLIC_STRAPI_URL;
+    return remoteUrl;
   }
 }
 
@@ -44,7 +48,7 @@ export function getStrapiUrl(contentType: string): URL {
   return new URL(`${apiBaseUrl}/${contentType}`);
 }
 
-const initStrapiApi = ({ contentType }: GetStrapiBaseUrlProps) => {
+function initStrapiApi({ contentType }: GetStrapiBaseUrlProps) {
   const baseUrl = getBaseUrl();
   const apiUrl = getStrapiUrl(contentType);
 
@@ -56,11 +60,11 @@ const initStrapiApi = ({ contentType }: GetStrapiBaseUrlProps) => {
     baseUrl,
     apiUrl,
     getApiAccessToken() {
-      if (process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true') {
-        return process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN || '';
-      } else {
-        return process.env.NEXT_PUBLIC_STRAPI_API_TOKEN || '';
-      }
+      const localToken = process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN;
+      const remoteToken = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+      return process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
+        ? localToken || ''
+        : remoteToken || '';
     },
     sort(order: 'asc' | 'desc') {
       this.apiUrl.searchParams.set('sort', `createdAt:${order.toUpperCase()}`);
@@ -79,9 +83,9 @@ const initStrapiApi = ({ contentType }: GetStrapiBaseUrlProps) => {
       return this.apiUrl.origin;
     },
   };
-};
+}
 
-const createArticleStrapiApi = () => {
+function createArticleStrapiApi() {
   const strapiApi = initStrapiApi({ contentType: STRAPI_BLOG_ARTICLES });
   strapiApi.apiUrl.searchParams.set('populate[0]', 'Image');
   strapiApi.apiUrl.searchParams.set('populate[1]', 'tags');
@@ -112,28 +116,23 @@ const createArticleStrapiApi = () => {
       return this;
     },
   };
-};
+}
 
-const createQuestStrapiApi = () => {
+function createQuestStrapiApi() {
   const strapiApi = initStrapiApi({ contentType: STRAPI_QUESTS });
-  //selected needed field
-  strapiApi.apiUrl.searchParams.set('fields[0]', 'Title'); // title
-  strapiApi.apiUrl.searchParams.set('fields[1]', 'Points'); // points
-  strapiApi.apiUrl.searchParams.set('fields[2]', 'Link'); // link
-  strapiApi.apiUrl.searchParams.set('fields[3]', 'StartDate'); // startDate
-  strapiApi.apiUrl.searchParams.set('fields[4]', 'EndDate'); // endDate
-  //populate url
+  const currentDate = new Date(Date.now()).toISOString().split('T')[0];
+  strapiApi.apiUrl.searchParams.set('fields[0]', 'Title');
+  strapiApi.apiUrl.searchParams.set('fields[1]', 'Points');
+  strapiApi.apiUrl.searchParams.set('fields[2]', 'Link');
+  strapiApi.apiUrl.searchParams.set('fields[3]', 'StartDate');
+  strapiApi.apiUrl.searchParams.set('fields[4]', 'EndDate');
   strapiApi.apiUrl.searchParams.set('populate[0]', 'Image');
   strapiApi.apiUrl.searchParams.set('populate[1]', 'quests_platform');
   strapiApi.apiUrl.searchParams.set('populate[2]', 'quests_platform.Logo');
-  strapiApi.apiUrl.searchParams.set('populate[3]]', 'BannerImage');
-  strapiApi.apiUrl.searchParams.set('populate[4]]', 'CustomInformation');
-  // //sort url
-  // strapiApi.apiUrl.searchParams.set('sort[0]', 'id:desc');
-  //filter url
+  strapiApi.apiUrl.searchParams.set('populate[3]', 'BannerImage');
+  strapiApi.apiUrl.searchParams.set('populate[4]', 'CustomInformation');
   strapiApi.apiUrl.searchParams.set('pagination[pageSize]', '50');
   strapiApi.apiUrl.searchParams.set('filters[Points][$gte]', '0');
-  const currentDate = new Date(Date.now()).toISOString().split('T')[0];
   strapiApi.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
   strapiApi.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
   return {
@@ -143,9 +142,9 @@ const createQuestStrapiApi = () => {
       return this;
     },
   };
-};
+}
 
-const createPersonalizedFeatureOnLevel = (level: number) => {
+function createPersonalizedFeatureOnLevel(level: number) {
   const strapiApi = initStrapiApi({ contentType: STRAPI_FEATURE_CARDS });
   strapiApi.apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
   strapiApi.apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
@@ -157,29 +156,24 @@ const createPersonalizedFeatureOnLevel = (level: number) => {
     'filters[PersonalizedFeatureCard][$nei]',
     'false',
   );
-  // filter to get only the personalized feature cards that have the correct levels setup
   strapiApi.apiUrl.searchParams.set('filters[minlevel][$lte]', `${level}`);
   strapiApi.apiUrl.searchParams.set('filters[maxLevel][$gte]', `${level}`);
-
   return strapiApi;
-};
+}
 
-const createFeatureCardStrapiApi = () => {
+function createFeatureCardStrapiApi() {
   const strapiApi = initStrapiApi({ contentType: STRAPI_FEATURE_CARDS });
-
   strapiApi.apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
   strapiApi.apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
   strapiApi.apiUrl.searchParams.set(
     'filters[PersonalizedFeatureCard][$nei]',
     'true',
   );
-
   return strapiApi;
-};
+}
 
-const createPersonalFeatureCardStrapiApi = (account?: Account | null) => {
+function createPersonalFeatureCardStrapiApi(account?: Account | null) {
   const strapiApi = initStrapiApi({ contentType: STRAPI_JUMPER_USERS });
-
   strapiApi.apiUrl.searchParams.set('populate[0]', 'feature_cards');
   strapiApi.apiUrl.searchParams.set(
     'populate[feature_cards][populate][0]',
@@ -199,13 +193,11 @@ const createPersonalFeatureCardStrapiApi = (account?: Account | null) => {
       account?.address,
     );
   }
-
   return strapiApi;
-};
+}
 
-const createPartnerThemeStrapiApi = () => {
+function createPartnerThemeStrapiApi() {
   const strapiApi = initStrapiApi({ contentType: STRAPI_PARTNER_THEMES });
-
   strapiApi.apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
   strapiApi.apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
   strapiApi.apiUrl.searchParams.set('populate[2]', 'LogoLight');
@@ -222,11 +214,10 @@ const createPartnerThemeStrapiApi = () => {
       return this;
     },
   };
-};
+}
 
-const createJumperUserStrapiApi = () => {
+function createJumperUserStrapiApi() {
   const strapiApi = initStrapiApi({ contentType: STRAPI_JUMPER_USERS });
-
   strapiApi.apiUrl.searchParams.set('populate[0]', 'feature_cards');
   strapiApi.apiUrl.searchParams.set(
     'populate[feature_cards][populate][0]',
@@ -249,16 +240,14 @@ const createJumperUserStrapiApi = () => {
       return this;
     },
   };
-};
+}
 
-const createBlogFaqStrapiApi = () => {
+function createBlogFaqStrapiApi() {
   const strapiApi = initStrapiApi({ contentType: STRAPI_BLOG_ARTICLES });
-
   strapiApi.apiUrl.searchParams.set('populate[0]', 'faqItems');
   strapiApi.apiUrl.searchParams.set('filters[faqItems][featured][$eq]', 'true');
-
   return strapiApi;
-};
+}
 
 export {
   createArticleStrapiApi,
