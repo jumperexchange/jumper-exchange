@@ -205,7 +205,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
           </FeatureCardCloseButton>
           {!!data?.attributes.Title && (
             <FeatureCardTitle
-              variant="lifiHeaderSmall"
+              variant="headerSmall"
               data={data}
               typographyColor={data.attributes.TitleColor || typographyColor}
               gutterBottom
@@ -215,7 +215,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
           )}
           {!!data?.attributes.Subtitle && (
             <FeatureCardSubtitle
-              variant="lifiBodySmall"
+              variant="bodySmall"
               typographyColor={typographyColor}
             >
               {data?.attributes.Subtitle}
@@ -230,7 +230,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
               data={data}
             >
               <FeatureCardCtaLabel
-                variant="lifiBodySmallStrong"
+                variant="bodySmallStrong"
                 data={data}
                 typographyColor={data.attributes.CTAColor || typographyColor}
               >
