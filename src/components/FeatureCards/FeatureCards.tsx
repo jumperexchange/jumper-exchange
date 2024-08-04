@@ -13,13 +13,14 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import { usePersonalizedFeatureOnLevel } from 'src/hooks/usePersonalizedFeatureOnLevel';
 import {
   createFeatureCardStrapiApi,
   createJumperUserStrapiApi,
+  createPersonalizedFeatureOnLevel,
 } from 'src/utils/strapi/generateStrapiUrl';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
+import { getLevelBasedOnPoints } from '../ProfilePage/LevelBox/TierBox';
 
 export const FeatureCards = () => {
   const [disabledFeatureCards] = useSettingsStore(
@@ -33,8 +34,8 @@ export const FeatureCards = () => {
   const { account } = useAccounts();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
+  // fetch feature-cards
   const featureCardsUrl = createFeatureCardStrapiApi();
-
   const { data: cards, isSuccess } = useQuery({
     queryKey: [STRAPI_FEATURE_CARDS],
     queryFn: async () => {
@@ -52,6 +53,7 @@ export const FeatureCards = () => {
     refetchInterval: 1000 * 60 * 60,
   });
 
+  // fetch personalized feature-cards
   const jumperUsersUrl =
     createJumperUserStrapiApi().addJumperUsersPersonalizedFCParams(account);
   const { data: jumperUser } = useQuery({
@@ -72,9 +74,32 @@ export const FeatureCards = () => {
     refetchInterval: 1000 * 60 * 60,
   });
 
-  const { featureCards: featureCardsLevel } = usePersonalizedFeatureOnLevel({
-    points: points,
-    enabled: !!points && (!jumperUser || jumperUser?.length === 0),
+  // fetch personalized feature-cards based on points
+  const levelData = getLevelBasedOnPoints(points);
+  const personalizedFeatureOnLevel = createPersonalizedFeatureOnLevel(
+    levelData.level,
+  );
+  const { data: featureCardsLevel } = useQuery({
+    queryKey: ['personalizedFeatureCardsOnLevel'],
+
+    queryFn: async () => {
+      const response = await fetch(
+        decodeURIComponent(personalizedFeatureOnLevel.apiUrl.href),
+        {
+          headers: {
+            Authorization: `Bearer ${personalizedFeatureOnLevel.getApiAccessToken()}`,
+          },
+        },
+      );
+      const result = await response.json();
+      return result.data;
+    },
+    enabled:
+      !!account?.address &&
+      account.chainType === 'EVM' &&
+      !!points &&
+      (!jumperUser || jumperUser?.length === 0),
+    refetchInterval: 1000 * 60 * 60,
   });
 
   useEffect(() => {

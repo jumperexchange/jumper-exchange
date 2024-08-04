@@ -44,7 +44,7 @@ export function getStrapiUrl(contentType: string): URL {
   return new URL(`${apiBaseUrl}/${contentType}`);
 }
 
-const createStrapiApi = ({ contentType }: GetStrapiBaseUrlProps) => {
+const initStrapiApi = ({ contentType }: GetStrapiBaseUrlProps) => {
   const baseUrl = getBaseUrl();
   const apiUrl = getStrapiUrl(contentType);
 
@@ -82,7 +82,7 @@ const createStrapiApi = ({ contentType }: GetStrapiBaseUrlProps) => {
 };
 
 const createArticleStrapiApi = () => {
-  const strapiApi = createStrapiApi({ contentType: STRAPI_BLOG_ARTICLES });
+  const strapiApi = initStrapiApi({ contentType: STRAPI_BLOG_ARTICLES });
   strapiApi.apiUrl.searchParams.set('populate[0]', 'Image');
   strapiApi.apiUrl.searchParams.set('populate[1]', 'tags');
   strapiApi.apiUrl.searchParams.set('populate[2]', 'author.Avatar');
@@ -115,7 +115,7 @@ const createArticleStrapiApi = () => {
 };
 
 const createQuestStrapiApi = () => {
-  const strapiApi = createStrapiApi({ contentType: STRAPI_QUESTS });
+  const strapiApi = initStrapiApi({ contentType: STRAPI_QUESTS });
   //selected needed field
   strapiApi.apiUrl.searchParams.set('fields[0]', 'Title'); // title
   strapiApi.apiUrl.searchParams.set('fields[1]', 'Points'); // points
@@ -145,8 +145,27 @@ const createQuestStrapiApi = () => {
   };
 };
 
+const createPersonalizedFeatureOnLevel = (level: number) => {
+  const strapiApi = initStrapiApi({ contentType: STRAPI_FEATURE_CARDS });
+  strapiApi.apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
+  strapiApi.apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
+  strapiApi.apiUrl.searchParams.set(
+    'populate[featureCardsExclusions][fields][0]',
+    'uid',
+  );
+  strapiApi.apiUrl.searchParams.set(
+    'filters[PersonalizedFeatureCard][$nei]',
+    'false',
+  );
+  // filter to get only the personalized feature cards that have the correct levels setup
+  strapiApi.apiUrl.searchParams.set('filters[minlevel][$lte]', `${level}`);
+  strapiApi.apiUrl.searchParams.set('filters[maxLevel][$gte]', `${level}`);
+
+  return strapiApi;
+};
+
 const createFeatureCardStrapiApi = () => {
-  const strapiApi = createStrapiApi({ contentType: STRAPI_FEATURE_CARDS });
+  const strapiApi = initStrapiApi({ contentType: STRAPI_FEATURE_CARDS });
 
   strapiApi.apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
   strapiApi.apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
@@ -159,7 +178,7 @@ const createFeatureCardStrapiApi = () => {
 };
 
 const createPersonalFeatureCardStrapiApi = (account?: Account | null) => {
-  const strapiApi = createStrapiApi({ contentType: STRAPI_JUMPER_USERS });
+  const strapiApi = initStrapiApi({ contentType: STRAPI_JUMPER_USERS });
 
   strapiApi.apiUrl.searchParams.set('populate[0]', 'feature_cards');
   strapiApi.apiUrl.searchParams.set(
@@ -185,7 +204,7 @@ const createPersonalFeatureCardStrapiApi = (account?: Account | null) => {
 };
 
 const createPartnerThemeStrapiApi = () => {
-  const strapiApi = createStrapiApi({ contentType: STRAPI_PARTNER_THEMES });
+  const strapiApi = initStrapiApi({ contentType: STRAPI_PARTNER_THEMES });
 
   strapiApi.apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
   strapiApi.apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
@@ -206,7 +225,7 @@ const createPartnerThemeStrapiApi = () => {
 };
 
 const createJumperUserStrapiApi = () => {
-  const strapiApi = createStrapiApi({ contentType: STRAPI_JUMPER_USERS });
+  const strapiApi = initStrapiApi({ contentType: STRAPI_JUMPER_USERS });
 
   strapiApi.apiUrl.searchParams.set('populate[0]', 'feature_cards');
   strapiApi.apiUrl.searchParams.set(
@@ -233,7 +252,7 @@ const createJumperUserStrapiApi = () => {
 };
 
 const createBlogFaqStrapiApi = () => {
-  const strapiApi = createStrapiApi({ contentType: STRAPI_BLOG_ARTICLES });
+  const strapiApi = initStrapiApi({ contentType: STRAPI_BLOG_ARTICLES });
 
   strapiApi.apiUrl.searchParams.set('populate[0]', 'faqItems');
   strapiApi.apiUrl.searchParams.set('filters[faqItems][featured][$eq]', 'true');
@@ -248,6 +267,7 @@ export {
   createJumperUserStrapiApi,
   createPartnerThemeStrapiApi,
   createPersonalFeatureCardStrapiApi,
+  createPersonalizedFeatureOnLevel,
   createQuestStrapiApi,
-  createStrapiApi,
+  initStrapiApi,
 };
