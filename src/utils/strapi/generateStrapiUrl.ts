@@ -24,7 +24,7 @@ interface PaginationProps {
   withCount?: boolean;
 }
 
-export function getBaseUrl(): string {
+export function createStrapiBaseUrl(): string {
   const localUrl = process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL;
   const remoteUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
@@ -43,14 +43,14 @@ export function getBaseUrl(): string {
   }
 }
 
-export function getStrapiUrl(contentType: string): URL {
-  const apiBaseUrl = getBaseUrl();
+export function createStrapiContentTypeUrl(contentType: string): URL {
+  const apiBaseUrl = createStrapiBaseUrl();
   return new URL(`${apiBaseUrl}/${contentType}`);
 }
 
 function initStrapiApi({ contentType }: GetStrapiBaseUrlProps) {
-  const baseUrl = getBaseUrl();
-  const apiUrl = getStrapiUrl(contentType);
+  const baseUrl = createStrapiBaseUrl();
+  const apiUrl = createStrapiContentTypeUrl(contentType);
 
   if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'development') {
     apiUrl.searchParams.set('publicationState', 'preview');
@@ -85,6 +85,7 @@ function initStrapiApi({ contentType }: GetStrapiBaseUrlProps) {
   };
 }
 
+// blog-articles
 function createArticleStrapiApi() {
   const strapiApi = initStrapiApi({ contentType: STRAPI_BLOG_ARTICLES });
   strapiApi.apiUrl.searchParams.set('populate[0]', 'Image');
@@ -118,6 +119,7 @@ function createArticleStrapiApi() {
   };
 }
 
+// quests
 function createQuestStrapiApi() {
   const strapiApi = initStrapiApi({ contentType: STRAPI_QUESTS });
   const currentDate = new Date(Date.now()).toISOString().split('T')[0];
@@ -144,6 +146,7 @@ function createQuestStrapiApi() {
   };
 }
 
+// personalized feature-cards by level
 function createPersonalizedFeatureOnLevel(level: number) {
   const strapiApi = initStrapiApi({ contentType: STRAPI_FEATURE_CARDS });
   strapiApi.apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
@@ -161,6 +164,7 @@ function createPersonalizedFeatureOnLevel(level: number) {
   return strapiApi;
 }
 
+// feature-cards
 function createFeatureCardStrapiApi() {
   const strapiApi = initStrapiApi({ contentType: STRAPI_FEATURE_CARDS });
   strapiApi.apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
@@ -172,7 +176,8 @@ function createFeatureCardStrapiApi() {
   return strapiApi;
 }
 
-function createPersonalFeatureCardStrapiApi(account?: Account | null) {
+// personalized feature-cards by jumper-users
+function createJumperUserStrapiApi(account?: Account | null) {
   const strapiApi = initStrapiApi({ contentType: STRAPI_JUMPER_USERS });
   strapiApi.apiUrl.searchParams.set('populate[0]', 'feature_cards');
   strapiApi.apiUrl.searchParams.set(
@@ -193,9 +198,21 @@ function createPersonalFeatureCardStrapiApi(account?: Account | null) {
       account?.address,
     );
   }
-  return strapiApi;
+  return {
+    ...strapiApi,
+    addJumperUsersPersonalizedFCParams(account: Account | undefined) {
+      if (account?.address && account?.chainType === 'EVM') {
+        this.apiUrl.searchParams.set(
+          'filters[EvmWalletAddress][$eqi]',
+          account?.address,
+        );
+      }
+      return this;
+    },
+  };
 }
 
+// partner-themes
 function createPartnerThemeStrapiApi() {
   const strapiApi = initStrapiApi({ contentType: STRAPI_PARTNER_THEMES });
   strapiApi.apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
@@ -216,46 +233,18 @@ function createPartnerThemeStrapiApi() {
   };
 }
 
-function createJumperUserStrapiApi() {
-  const strapiApi = initStrapiApi({ contentType: STRAPI_JUMPER_USERS });
-  strapiApi.apiUrl.searchParams.set('populate[0]', 'feature_cards');
-  strapiApi.apiUrl.searchParams.set(
-    'populate[feature_cards][populate][0]',
-    'BackgroundImageLight',
-  );
-  strapiApi.apiUrl.searchParams.set(
-    'populate[feature_cards][populate][1]',
-    'BackgroundImageDark',
-  );
-
-  return {
-    ...strapiApi,
-    addJumperUsersPersonalizedFCParams(account: Account | undefined) {
-      if (account?.address && account?.chainType === 'EVM') {
-        this.apiUrl.searchParams.set(
-          'filters[EvmWalletAddress][$eqi]',
-          account?.address,
-        );
-      }
-      return this;
-    },
-  };
-}
-
-function createBlogFaqStrapiApi() {
-  const strapiApi = initStrapiApi({ contentType: STRAPI_BLOG_ARTICLES });
-  strapiApi.apiUrl.searchParams.set('populate[0]', 'faqItems');
-  strapiApi.apiUrl.searchParams.set('filters[faqItems][featured][$eq]', 'true');
-  return strapiApi;
-}
+// function createBlogFaqStrapiApi() {
+//   const strapiApi = initStrapiApi({ contentType: STRAPI_BLOG_ARTICLES });
+//   strapiApi.apiUrl.searchParams.set('populate[0]', 'faqItems');
+//   strapiApi.apiUrl.searchParams.set('filters[faqItems][featured][$eq]', 'true');
+//   return strapiApi;
+// }
 
 export {
   createArticleStrapiApi,
-  createBlogFaqStrapiApi,
   createFeatureCardStrapiApi,
   createJumperUserStrapiApi,
   createPartnerThemeStrapiApi,
-  createPersonalFeatureCardStrapiApi,
   createPersonalizedFeatureOnLevel,
   createQuestStrapiApi,
   initStrapiApi,

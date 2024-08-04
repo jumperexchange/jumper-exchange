@@ -1,6 +1,6 @@
 import type { FeatureCardData } from '@/types/strapi';
 import { useQuery } from '@tanstack/react-query';
-import { createPersonalFeatureCardStrapiApi } from 'src/utils/strapi/generateStrapiUrl';
+import { createJumperUserStrapiApi } from 'src/utils/strapi/generateStrapiUrl';
 import { useAccounts } from './useAccounts';
 
 export interface UsePersonalizedFeatureCardsProps {
@@ -12,7 +12,7 @@ export interface UsePersonalizedFeatureCardsProps {
 export const usePersonalizedFeatureCards =
   (): UsePersonalizedFeatureCardsProps => {
     const { account } = useAccounts();
-    const personalizedFeatureCard = createPersonalFeatureCardStrapiApi(account);
+    const personalizedFeatureCard = createJumperUserStrapiApi(account);
     const apiUrl = personalizedFeatureCard.getApiUrl();
     const apiAccesToken = personalizedFeatureCard.getApiAccessToken();
     const { data, isSuccess } = useQuery({

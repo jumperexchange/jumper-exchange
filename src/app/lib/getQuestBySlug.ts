@@ -1,4 +1,4 @@
-import { createQuestStrapiApi } from 'src/utils/strapi/generateStrapiUrl';
+import { createQuestStrapiApi } from '@/utils/strapi/generateStrapiUrl';
 
 export async function getQuestBySlug(slug: string) {
   const urlParams = createQuestStrapiApi().filterBySlug(slug);
