@@ -79,7 +79,7 @@ export const BlogArticlesBoard = ({
 
   return (
     <BlogArticlesBoardContainer id="see-all">
-      <BlogArticlesBoardTitle variant="lifiHeaderMedium">
+      <BlogArticlesBoardTitle variant="headerMedium">
         {t('blog.categories')}
       </BlogArticlesBoardTitle>
       {filteredTags ? (

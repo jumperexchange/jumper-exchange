@@ -42,8 +42,6 @@ export interface TrackTransactionDataProps {
   [TrackingEventParameter.ToAmount]?: string;
   [TrackingEventParameter.ToAmountMin]?: string;
   [TrackingEventParameter.ToAmountUSD]?: string;
-  [TrackingEventParameter.InsuranceFeeAmountUSD]?: string;
-  [TrackingEventParameter.InsuranceState]?: string;
   [TrackingEventParameter.ErrorCode]?: string | number;
   [TrackingEventParameter.ErrorMessage]?: string;
   [TrackingEventParameter.Variant]?: string;
@@ -61,15 +59,3 @@ export interface TrackTransactionProps {
   data: TrackTransactionDataProps;
   isConversion?: boolean;
 }
-
-// type destinations =
-//   | 'discord-lifi'
-//   | 'lifi-explorer'
-//   | 'lifi-website'
-//   | 'docs-sc-audits'
-//   | 'lifi-github'
-//   | 'lifi-docs'
-//   | 'x-jumper'
-//   | 'blokchain-explorer';
-
-// type source = TrackingCategory;

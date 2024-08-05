@@ -24,7 +24,7 @@ export const SuperFestPoweredContainer = styled('div', {
 
     zIndex: 1,
 
-    '.link-lifi': {
+    '.link-jumper': {
       fontWeight: '700',
       color:
         theme.palette.mode === 'light'

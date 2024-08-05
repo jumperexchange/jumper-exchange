@@ -32,7 +32,7 @@ export const MenuItemLabel = ({
         {prefixIcon ?? null}
         {label ? (
           <Typography
-            variant={'lifiBodyMedium'}
+            variant={'bodyMedium'}
             ml={theme.spacing(1.5)}
             sx={{
               overflow: 'hidden',

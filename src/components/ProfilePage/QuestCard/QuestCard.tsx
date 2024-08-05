@@ -1,18 +1,20 @@
-import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
 import DoneIcon from '@mui/icons-material/Done';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../Button';
 import { XPIcon } from '../../illustrations/XPIcon';
-import { CenteredBox, NoSelectTypography } from '../ProfilePage.style';
+import {
+  CenteredBox,
+  CompletedTypography,
+  NoSelectTypography,
+} from '../ProfilePage.style';
 import {
   CompletedBox,
   QuestCardBottomBox,
   QuestCardInfoBox,
   QuestCardMainBox,
   QuestCardTitleBox,
-  QuestDatesBox,
   QuestPlatformMainBox,
   XPDisplayBox,
 } from './QuestCard.style';
@@ -115,14 +117,13 @@ export const QuestCard = ({
         ) : (
           <CompletedBox>
             <DoneIcon sx={{ height: '16px', color: '#00B849' }} />
-            <NoSelectTypography
+            <CompletedTypography
               fontSize="12px"
               lineHeight="16px"
-              color="#00B849"
               fontWeight={700}
             >
               {t('questCard.completed')}
-            </NoSelectTypography>
+            </CompletedTypography>
           </CompletedBox>
         )}
         <QuestCardTitleBox>
@@ -162,6 +163,7 @@ export const QuestCard = ({
               rel="noreferrer"
             >
               <Button
+                aria-label={`Open ${t('questCard.join')}`}
                 variant="secondary"
                 size="medium"
                 styles={{ alignItems: 'center', width: '100%' }}

@@ -82,9 +82,6 @@ export function WidgetEvents() {
               route.steps[route.steps.length - 1] as LifiStepProps
             ).execution?.status,
             [TrackingEventParameter.IsFinal]: false,
-            [TrackingEventParameter.InsuranceFeeAmountUSD]:
-              route.insurance?.feeAmountUsd,
-            [TrackingEventParameter.InsuranceState]: route.insurance?.state,
             [TrackingEventParameter.FromToken]: route.fromToken.address,
             [TrackingEventParameter.ToToken]: route.toToken.address,
             [TrackingEventParameter.FromChainId]: route.fromToken.chainId,
@@ -155,10 +152,6 @@ export function WidgetEvents() {
                 update.process.error?.code || '',
               [TrackingEventParameter.ErrorMessage]:
                 update.process.error?.message || '',
-              [TrackingEventParameter.InsuranceFeeAmountUSD]:
-                update.route.insurance?.feeAmountUsd,
-              [TrackingEventParameter.InsuranceState]:
-                update.route.insurance?.state,
               [TrackingEventParameter.NonInteraction]: true,
               [TrackingEventParameter.IsFinal]: false,
               [TrackingEventParameter.Variant]: Object.values(TabsMap).filter(
@@ -189,9 +182,6 @@ export function WidgetEvents() {
             [TrackingEventParameter.ToAmount]: route.toAmount,
             [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
             [TrackingEventParameter.ToToken]: route.toToken.address,
-            [TrackingEventParameter.InsuranceFeeAmountUSD]:
-              route.insurance?.feeAmountUsd,
-            [TrackingEventParameter.InsuranceState]: route.insurance?.state,
           },
           enableAddressable: true,
           isConversion: true,
@@ -226,9 +216,10 @@ export function WidgetEvents() {
         category: TrackingCategory.WidgetEvent,
         label: 'click_high_value_loss_accepted',
         data: {
-          [TrackingEventParameter.FromAmountUSD]: update.fromAmountUsd,
+          [TrackingEventParameter.FromAmountUSD]: update.fromAmountUSD,
           [TrackingEventParameter.ToAmountUSD]: update.toAmountUSD,
           [TrackingEventParameter.GasCostUSD]: update.gasCostUSD || '',
+          [TrackingEventParameter.FeeCostUSD]: update.feeCostUSD || '',
           [TrackingEventParameter.ValueLoss]: update.valueLoss,
           [TrackingEventParameter.Timestamp]: new Date(
             Date.now(),
