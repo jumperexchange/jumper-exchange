@@ -24,6 +24,7 @@ export async function generateMetadata({
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
       description: `${sliceStrToXChar(articleData.Subtitle, 60)}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/learn/${params.slug}/`,
       images: [
         {
           url: `${article.url}${articleData.Image.data.attributes?.url}`,
