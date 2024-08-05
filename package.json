@@ -113,5 +113,8 @@
     "**/*.(md|json)": [
       "yarn prettier --write"
     ]
+  },
+  "resolutions": {
+    "@lifi/explorer": "portal:/Users/adrianweniger/Documents/01 Work/LiFi/lifi-explorer/packages/explorer"
   }
 }
