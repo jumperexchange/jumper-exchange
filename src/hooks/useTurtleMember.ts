@@ -21,7 +21,6 @@ export const useTurtleMember = ({
       try {
         const response = await fetch(TURTLE_CHECK_API);
         const result = await response.text();
-        console.log(result);
         if (result) {
           return result === 'true';
         }
