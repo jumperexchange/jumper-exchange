@@ -1,7 +1,11 @@
+'use server';
 import { getArticles } from '@/app/lib/getArticles';
 import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
 import LearnPage from '@/app/ui/learn/LearnPage';
 import type { Metadata } from 'next';
+import { revalidatePath } from 'next/cache';
+
+// revalidatePath('/learn', 'page');
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -15,6 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 // `app/ui/learn/page.tsx` is the UI for the `/learn` URL
 export default async function Page() {
+  revalidatePath('/[lng]/(infos)/learn', 'page');
   // TODO: make this component client side by removing async, a hook should do the job, will permit us to pre-render the pages
   const featuredArticle = await getFeaturedArticle();
   const carouselArticles = await getArticles(featuredArticle.data.id);
