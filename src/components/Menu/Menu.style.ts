@@ -61,7 +61,7 @@ export const MenuList = styled(MuiMenuList, {
 }));
 
 export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
-  ...theme.typography.lifiBodyMediumStrong,
+  ...theme.typography.bodyMediumStrong,
   width: '100%',
   overflow: 'hidden',
   textOverflow: 'ellipsis',

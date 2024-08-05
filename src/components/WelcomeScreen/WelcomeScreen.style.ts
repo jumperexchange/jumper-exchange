@@ -1,6 +1,6 @@
 'use client';
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, Typography, keyframes, styled } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import { ButtonPrimary } from '../Button';
 
 export interface WrapperProps extends Omit<BoxProps, 'component'> {
@@ -77,7 +77,7 @@ export const WelcomeScreenSubtitle = styled(Typography)(({ theme }) => ({
     theme.palette.mode === 'dark'
       ? theme.palette.accent1Alt.main
       : theme.palette.primary.main,
-  '& > .link-lifi': {
+  '& > .link-jumper': {
     fontWeight: 700,
     color: 'inherit',
     textDecoration: 'none',
