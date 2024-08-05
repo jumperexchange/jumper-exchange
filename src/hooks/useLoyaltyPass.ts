@@ -41,26 +41,30 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     queryFn: async () => {
       const res = await fetch(`${apiBaseUrl}/users/${account?.address}`);
 
-      const data = await res.json();
-
-      if (data && account?.address) {
-        setLoyaltyPassData(
-          account.address,
-          data.sum,
-          data.currentLevel,
-          data.walletRewards,
-          t,
-        );
-
-        return {
-          address: account.address,
-          points: data.sum,
-          tier: data.currentLevel,
-          pdas: data.walletRewards,
-        };
-      } else {
+      if (!res.ok) {
         return undefined;
       }
+
+      const data = await res.json();
+
+      if (!data || !account?.address) {
+        return undefined;
+      }
+
+      setLoyaltyPassData(
+        account.address,
+        data.sum,
+        data.currentLevel,
+        data.walletRewards,
+        t,
+      );
+
+      return {
+        address: account.address,
+        points: data.sum,
+        tier: data.currentLevel,
+        pdas: data.walletRewards,
+      };
     },
     enabled: queryIsEnabled,
     refetchInterval: 1000 * 60 * 60,
