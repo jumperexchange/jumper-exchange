@@ -196,6 +196,10 @@ export function Widget({
       // insurance: true,
       integrator: integratorStringByType,
       fee: deductedAmount,
+      feeTool: {
+        name: 'Jumper',
+        logoURI: '',
+      },
       tokens:
         partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
