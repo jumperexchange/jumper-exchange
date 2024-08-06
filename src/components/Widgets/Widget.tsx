@@ -35,6 +35,7 @@ import { useWidgetTheme } from './useWidgetTheme';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import { useDeductedAmount } from 'src/hooks/useDeductedAmount';
 
 export function Widget({
   starterVariant,
@@ -57,6 +58,7 @@ export function Widget({
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
+  const { deductedAmount } = useDeductedAmount();
   const { trackEvent } = useUserTracking();
   const partnerName = configTheme?.uid ?? 'default';
   const { tokens } = useMemelist({
@@ -155,6 +157,7 @@ export function Widget({
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
+        HiddenUI.IntegratorStepDetails,
       ],
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
@@ -192,6 +195,7 @@ export function Widget({
       buildUrl: true,
       // insurance: true,
       integrator: integratorStringByType,
+      fee: deductedAmount,
       tokens:
         partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
@@ -219,6 +223,7 @@ export function Widget({
     setWalletSelectMenuState,
     wagmiConfig,
     trackEvent,
+    deductedAmount,
   ]);
 
   return (
