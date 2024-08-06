@@ -35,8 +35,12 @@ export const useDeductedAmount = (): ChainProps => {
       return data;
     },
     enabled: queryIsEnabled,
-    refetchInterval: 1000 * 60 * 60 * 7,
+    refetchInterval: 1000 * 60 * 60,
   });
+
+  if (data) {
+    amount = data;
+  }
 
   return {
     deductedAmount: amount,
