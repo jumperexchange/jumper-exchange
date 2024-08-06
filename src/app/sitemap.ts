@@ -2,6 +2,7 @@ import { JUMPER_LEARN_PATH, JUMPER_URL, pages } from '@/const/urls';
 import type { ChangeFrequency, SitemapPage } from '@/types/sitemap';
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import type { MetadataRoute } from 'next';
+import util from 'util';
 import { getArticles } from './lib/getArticles';
 import { locales } from 'src/i18n';
 
@@ -11,7 +12,40 @@ function withTrallingSlash(url: string) {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // paths
-  const routes = pages.map((route: SitemapPage) => ({
+  const routes = pages
+    .filter((s) => s.priority === 1)
+    .flatMap((route: SitemapPage) => {
+      return locales.map((locale) => {
+        const url = withTrallingSlash(
+          `${process.env.NEXT_PUBLIC_SITE_URL}${locale !== 'en' ? `/${locale}` : ''}${route.path}`,
+        );
+        return {
+          url,
+          lastModified: new Date().toISOString().split('T')[0],
+          changeFrequency: 'weekly' as ChangeFrequency,
+          alternates: {
+            languages: locales.reduce(
+              (acc, loc) => ({
+                ...acc,
+                [loc !== 'en' ? loc : 'x-default']: withTrallingSlash(
+                  `${process.env.NEXT_PUBLIC_SITE_URL}${loc !== 'en' ? `/${loc}` : ''}${route.path}`,
+                ),
+              }),
+              {},
+            ),
+          },
+          priority: route.priority,
+        };
+      });
+    });
+
+  console.log('dd', util.inspect(routes, false, 3));
+
+  return [...routes];
+  /*
+
+  // paths
+  const routes = pages.filter((s) => s.priority === 1).map((route: SitemapPage) => ({
     url: withTrallingSlash(`${process.env.NEXT_PUBLIC_SITE_URL}${route.path}`),
     lastModified: new Date().toISOString().split('T')[0],
     changeFrequency: 'weekly' as ChangeFrequency,
@@ -29,6 +63,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     priority: route.priority,
   }));
+
+  console.log('dd', util.inspect(routes, false, 3))
 
   // articles by slug
   const articles = await getArticles().then(
@@ -57,6 +93,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
       })),
   );
+*/
 
-  return [...routes, ...articles];
+  // return [...routes, ...articles];
+  // return [...routes];
 }
