@@ -29,10 +29,15 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_A_DAY;
 
   const queryIsEnabled =
-    !!account?.address &&
-    account?.chainType === 'EVM' &&
-    (storeNeedsRefresh ||
-      account?.address?.toLowerCase() !== storedAddress?.toLowerCase());
+    (!!account?.address &&
+      account?.chainType === 'EVM' &&
+      (storeNeedsRefresh ||
+        account?.address?.toLowerCase() !== storedAddress?.toLowerCase())) ||
+    (!!account?.address &&
+      storedPdas &&
+      storedPdas.length > 0 &&
+      storedPdas[0] &&
+      (storedPdas[0] as any)['ownerHash']);
 
   // query
   const apiBaseUrl = process.env.NEXT_PUBLIC_JUMPER_API;
