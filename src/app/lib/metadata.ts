@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: 'Jumper.Exchange',
     description,
     siteName,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/`,
     images: [
       {
         url: 'https://jumper.exchange/preview.png', // Default image
