@@ -22,9 +22,9 @@ export async function generateMetadata({
       .attributes as BlogArticleAttributes;
 
     const openGraph: Metadata['openGraph'] = {
-      title: sliceStrToXChar(articleData.Title, 45),
+      title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
       description: `${sliceStrToXChar(articleData.Subtitle, 60)}`,
-      siteName: 'Jumper Learn',
+      siteName: siteNam,
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/learn/${params.slug}/`,
       images: [
         {
