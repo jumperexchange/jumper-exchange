@@ -20,7 +20,11 @@ export const useDeductedAmount = (): DeducProps => {
       destinationChainToken.chainId === ChainId.SOL);
   const apiBaseUrl = process.env.NEXT_PUBLIC_JUMPER_API;
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['checkDeductedAmount'],
+    queryKey: [
+      'checkDeductedAmount' +
+        sourceChainToken.tokenAddress +
+        destinationChainToken.tokenAddress,
+    ],
     queryFn: async () => {
       const res = await fetch(
         `${apiBaseUrl}/solana/deduct_amount?srcChainId=${sourceChainToken.chainId}&srcTokenAddress=${sourceChainToken.tokenAddress}&dstChainId=${destinationChainToken.chainId}&dstTokenAddress=${destinationChainToken.tokenAddress}'`,
