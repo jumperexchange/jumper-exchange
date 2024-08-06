@@ -2,12 +2,17 @@
 import { EcosystemSelectMenu } from '@/components/Menus/EcosystemSelectMenu';
 import { WalletMenu } from '@/components/Menus/WalletMenu';
 import { WalletSelectMenu } from '@/components/Menus/WalletSelectMenu';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
-import { JUMPER_LEARN_PATH } from 'src/const/urls';
+import {
+  JUMPER_LEARN_PATH,
+  JUMPER_SCAN_PATH,
+  JUMPER_TX_PATH,
+  JUMPER_WALLET_PATH,
+} from 'src/const/urls';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { EventTrackingTool } from 'src/types/userTracking';
 import { WalletButtons } from '../WalletButton';
@@ -18,11 +23,18 @@ export const WalletManagementButtons = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { trackEvent } = useUserTracking();
+  const theme = useTheme();
 
   const pathname = usePathname();
-  const redirectToApp = pathname?.includes(JUMPER_LEARN_PATH);
+  const redirectToApp =
+    pathname?.includes(JUMPER_LEARN_PATH) ||
+    pathname?.includes(JUMPER_SCAN_PATH) ||
+    pathname?.includes(JUMPER_TX_PATH) ||
+    pathname?.includes(JUMPER_WALLET_PATH);
 
-  const handleLearnButton = () => {
+  const hideConnectButton = pathname?.includes(JUMPER_LEARN_PATH);
+
+  const handleOpenApp = () => {
     router.push('/');
     trackEvent({
       category: TrackingCategory.WalletSelectMenu,
@@ -35,13 +47,16 @@ export const WalletManagementButtons = () => {
   return (
     <>
       <Box ref={walletManagementButtonsRef}>
-        {redirectToApp ? (
+        {redirectToApp && (
           <ConnectButton
             // Used in the widget
-            onClick={handleLearnButton}
+            onClick={handleOpenApp}
+            sx={{
+              ...(!hideConnectButton && { marginRight: theme.spacing(1) }),
+            }}
           >
             <Typography
-              variant={'lifiBodyMediumStrong'}
+              variant={'bodyMediumStrong'}
               sx={{
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -53,9 +68,8 @@ export const WalletManagementButtons = () => {
               {t('blog.openApp')}
             </Typography>
           </ConnectButton>
-        ) : (
-          <WalletButtons />
         )}
+        {!hideConnectButton && <WalletButtons />}
       </Box>
       <WalletMenu anchorEl={walletManagementButtonsRef.current ?? undefined} />
       <WalletSelectMenu

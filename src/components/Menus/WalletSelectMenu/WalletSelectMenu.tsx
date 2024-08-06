@@ -80,7 +80,7 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
                   ? theme.palette.white.main
                   : theme.palette.black.main,
               }}
-              variant={'lifiBodyMediumStrong'}
+              variant={'bodyMediumStrong'}
               width={'100%'}
               align={'center'}
               flex={1}
@@ -163,7 +163,7 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
             }}
             prefixIcon={
               <Typography
-                variant={'lifiBodySmallStrong'}
+                variant={'bodySmallStrong'}
                 sx={{
                   color: isDarkMode
                     ? theme.palette.white.main

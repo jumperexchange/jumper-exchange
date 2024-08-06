@@ -71,8 +71,6 @@ Thank you for your support!
 
 provider for the theme context, it is used to provide the theme to the whole app, must be into the layout.tsx or page.tsx.
 
-
 ### ThemeProviderV2
 
 provider for the MUI theme context, mainly setting up the MUI provider, very linked to the next-theme provider
-

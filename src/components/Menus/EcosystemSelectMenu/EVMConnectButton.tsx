@@ -46,7 +46,7 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
         />
       </EcoSystemSelectBadge>
       <Typography
-        variant={'lifiBodySmallStrong'}
+        variant={'bodySmallStrong'}
         sx={{
           color:
             theme.palette.mode === 'dark'
