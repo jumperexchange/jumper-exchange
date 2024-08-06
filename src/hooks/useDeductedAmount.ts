@@ -3,11 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { ChainType, getChains } from '@lifi/sdk';
 import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 
-interface ChainProps {
+interface DeducProps {
   deductedAmount: number | undefined;
 }
 
-export const useDeductedAmount = (): ChainProps => {
+export const useDeductedAmount = (): DeducProps => {
   let amount = undefined;
   const { sourceChainToken, destinationChainToken } =
     useChainTokenSelectionStore();
@@ -32,14 +32,14 @@ export const useDeductedAmount = (): ChainProps => {
 
       const data = await res.json();
 
-      return data;
+      return data as DeducProps;
     },
     enabled: queryIsEnabled,
     refetchInterval: 1000 * 60 * 60,
   });
 
-  if (data) {
-    amount = data;
+  if (data?.deductedAmount) {
+    amount = data.deductedAmount;
   }
 
   return {
