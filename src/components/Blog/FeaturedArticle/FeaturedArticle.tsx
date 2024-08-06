@@ -10,7 +10,6 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData } from '@/types/strapi';
-import { EventTrackingTool } from '@/types/userTracking';
 import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import { JUMPER_LEARN_PATH } from 'src/const/urls';
@@ -44,7 +43,6 @@ export const FeaturedArticle = ({
       label: 'click-featured-article',
       action: TrackingAction.ClickFeaturedArticle,
       data: { [TrackingEventParameter.ArticleID]: featuredArticle[0]?.id },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
   };
 
@@ -79,20 +77,17 @@ export const FeaturedArticle = ({
               .map((el, index) => (
                 <Tag
                   key={`blog-highlights-tag-${index}`}
-                  variant="lifiBodyMediumStrong"
+                  variant="bodyMediumStrong"
                 >
                   {el.attributes.Title}
                 </Tag>
               ))}
             <FeaturedArticleMetaContainer>
-              <FeaturedArticleMetaDate
-                variant="lifiBodyXSmall"
-                component="span"
-              >
+              <FeaturedArticleMetaDate variant="bodyXSmall" component="span">
                 {formatedDate}
               </FeaturedArticleMetaDate>
               <Typography
-                variant="lifiBodyXSmall"
+                variant="bodyXSmall"
                 component="span"
                 fontSize={'inherit'}
               >
@@ -101,7 +96,7 @@ export const FeaturedArticle = ({
             </FeaturedArticleMetaContainer>
           </FeaturedArticleDetails>
           <Box>
-            <FeaturedArticleTitle variant="lifiHeaderMedium" as="h2">
+            <FeaturedArticleTitle variant="headerMedium" as="h2">
               {featuredArticle[0].attributes.Title}
             </FeaturedArticleTitle>
           </Box>

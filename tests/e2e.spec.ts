@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import {
   findTheBestRoute,
-  openMainMenu,
   itemInMenu,
   tabInHeader,
+  openMainMenu
 } from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {
@@ -94,11 +94,16 @@ test.describe('Jumper full e2e flow', () => {
     // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expect(page.getByRole('menu')).toBeVisible();
-    await itemInMenu(page, 'LI.FI Scan');
-    const newPage = await page.waitForEvent('popup', { timeout: 15000 });
-    expect(newPage.url()).toBe(
-      'https://scan.li.fi/?utm_source=jumper&utm_campaign=jumper_to_explorer&utm_medium=menu',
-    );
+    await itemInMenu(page, 'Jumper Scan');
+    // const newPage = await page.waitForEvent('popup', { timeout: 15000 });
+    expect(page).toHaveURL('http://localhost:3000/scan/');
+  });
+  test('should be able to navigate to supefest', async ({ page }) => {
+    const learnMoreButton = page.locator('#learn-more-button');
+    await openMainMenu(page);
+    await itemInMenu(page, 'Superfest Festival');
+    await expect(learnMoreButton).toBeVisible();
+    await expect(page).toHaveURL('http://localhost:3000/superfest/');
   });
 
   test('Should be able to navigate to X', async ({ page, context }) => {

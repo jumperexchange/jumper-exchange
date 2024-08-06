@@ -3,7 +3,6 @@ import { useTheme } from '@mui/material';
 
 import { Discord } from '@/components/illustrations/Discord';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { EventTrackingTool } from '@/types/userTracking';
 
 import {
   TrackingAction,
@@ -25,33 +24,31 @@ interface FallbackErrorProps {
 }
 
 const ErrorPage = ({ reset }: FallbackErrorProps) => {
-  const { trackPageload, trackEvent } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const { t } = useTranslation();
   return (
     <CenteredContainer>
-      <ErrorMessage variant={'lifiBodyLarge'}>
-        {t('error.message')}
-      </ErrorMessage>
+      <ErrorMessage variant={'bodyLarge'}>{t('error.message')}</ErrorMessage>
       <Button
         variant="primary"
         onClick={() => {
           trackEvent({
-            category: TrackingCategory.Menu,
-            label: 'click-discord-link',
-            action: TrackingAction.OpenMenu,
-            data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Cookie3,
-            ],
+            category: TrackingCategory.ErrorPage,
+            label: 'click-discord-support',
+            action: TrackingAction.OpenDiscordSupport,
           });
-          trackPageload({
-            source: TrackingCategory.Menu,
-            destination: 'discord-lifi',
-            url: DISCORD_URL,
-            pageload: true,
-            disableTrackingTool: [EventTrackingTool.Cookie3],
+          trackEvent({
+            category: TrackingCategory.Pageload,
+            action: TrackingAction.PageLoad,
+            label: 'pageload-discord-support',
+            data: {
+              [TrackingEventParameter.PageloadSource]:
+                TrackingCategory.ErrorPage,
+              [TrackingEventParameter.PageloadDestination]: 'discord-jumper',
+              [TrackingEventParameter.PageloadURL]: DISCORD_URL,
+              [TrackingEventParameter.PageloadExternal]: true,
+            },
           });
           openInNewTab(DISCORD_URL);
         }}
@@ -80,7 +77,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
               : theme.palette.black.main
           }
         />
-        <SupportMessage variant="lifiBodyMediumStrong" component="span">
+        <SupportMessage variant="bodyMediumStrong" component="span">
           {t('navbar.navbarMenu.support')}
         </SupportMessage>
       </Button>

@@ -47,7 +47,7 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
       >
         <MenuHeaderAppBar component="div" elevation={0}>
           <Typography
-            variant="lifiBodyMediumStrong"
+            variant="bodyMediumStrong"
             width={'auto'}
             align={'center'}
             flex={1}

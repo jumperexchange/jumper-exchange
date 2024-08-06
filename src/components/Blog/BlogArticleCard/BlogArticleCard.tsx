@@ -3,7 +3,6 @@ import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu/MenuStore';
 import type { StrapiImageData, TagData } from '@/types/strapi';
-import { EventTrackingTool } from '@/types/userTracking';
 import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import type { CSSObject } from '@mui/material';
@@ -60,7 +59,6 @@ export const BlogArticleCard = ({
       category: trackingCategory,
       action: TrackingAction.ClickArticleCard,
       label: 'click-blog-article-card',
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
         [TrackingEventParameter.ArticleTitle]: title,
         [TrackingEventParameter.ArticleCardId]: id,
@@ -97,20 +95,20 @@ export const BlogArticleCard = ({
         )}
 
         <BlogArticleCardContent>
-          <BlogArticleCardTitle variant="lifiBodyLarge">
+          <BlogArticleCardTitle variant="bodyLarge">
             {title}
           </BlogArticleCardTitle>
           <BlogArticleCardDetails>
             {tags?.data.slice(0, 1).map((tag, index) => (
-              <BlogArticleCardTag key={index} variant="lifiBodyXSmall" as="h3">
+              <BlogArticleCardTag key={index} variant="bodyXSmall" as="h3">
                 {tag.attributes.Title}
               </BlogArticleCardTag>
             ))}
             <BlogArticleCardMetaContainer>
-              <BlogArticleMetaDate variant="lifiBodyXSmall" as="span">
+              <BlogArticleMetaDate variant="bodyXSmall" as="span">
                 {formatDate(publishedAt || createdAt)}
               </BlogArticleMetaDate>
-              <BlogArticleMetaReadingTime variant="lifiBodyXSmall" as="span">
+              <BlogArticleMetaReadingTime variant="bodyXSmall" as="span">
                 {t('blog.minRead', { minRead: minRead })}
               </BlogArticleMetaReadingTime>
             </BlogArticleCardMetaContainer>

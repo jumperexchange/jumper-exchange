@@ -31,10 +31,10 @@ export const AccordionFAQ = ({ content }: AccordionFAQProps) => {
   return !!content?.length ? (
     <Container>
       <AccordionHeader onClick={() => setShow(!show)}>
-        <Typography variant="lifiHeaderMedium" m={theme.spacing(2, 0)}>
+        <Typography variant="headerMedium" m={theme.spacing(2, 0)}>
           {t('blog.faq')}
         </Typography>
-        <AccordionToggleButton onClick={handleShowMore}>
+        <AccordionToggleButton aria-label="Show more" onClick={handleShowMore}>
           <ExpandMoreIcon sx={{ width: 24, height: 24 }} />
         </AccordionToggleButton>
       </AccordionHeader>
@@ -45,7 +45,7 @@ export const AccordionFAQ = ({ content }: AccordionFAQProps) => {
             aria-controls={`panel${index}a-content`}
             id={`panel${index}a-header`}
           >
-            <Typography variant="lifiBodyMediumStrong">
+            <Typography variant="bodyMediumStrong">
               {el.attributes.Question}
             </Typography>
           </AccordionSummary>

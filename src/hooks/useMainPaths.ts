@@ -1,5 +1,4 @@
 import { usePathname } from 'next/navigation';
-import { useSettingsStore } from 'src/stores/settings/SettingsStore';
 
 interface useMainPathsProps {
   isMainPaths: boolean;
@@ -14,6 +13,7 @@ export const useMainPaths = (): useMainPathsProps => {
   const isExchange =
     !pathname?.includes('/profile') &&
     !pathname?.includes('/learn') &&
+    !pathname?.includes('/scan') &&
     (pathname === '/' ||
       pathname?.split('/').length === 3 ||
       pathname?.split('/').length === 2);

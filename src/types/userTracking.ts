@@ -1,13 +1,9 @@
-import type { TrackingCategory } from '@/const/trackingKeys';
-import type { Account } from '@/hooks/useAccounts';
-import type { ChainID } from '@arcxmoney/analytics';
-import type { ChainType } from '@lifi/types';
+import type { ChainType } from '@lifi/sdk';
+import type { TrackingCategory } from 'src/const/trackingKeys';
+import type { Account } from 'src/hooks/useAccounts';
 
 export enum EventTrackingTool {
-  ARCx,
   GA,
-  Hotjar,
-  Cookie3,
 }
 
 export interface InitTrackingProps {
@@ -25,32 +21,15 @@ export interface TrackEventProps {
   isConversion?: boolean;
 }
 
-export interface TrackTransactionProps {
-  action: string;
-  category: string;
-  chain: ChainID;
-  value?: number;
-  disableTrackingTool?: EventTrackingTool[];
-  data: Record<string, unknown>;
-  txhash: string;
-}
-export interface TrackChainSwitchProps {
-  account?: Account;
-  disableTrackingTool?: EventTrackingTool[];
-  action: string;
-  category?: string;
-  label?: string;
-  value?: number;
-  data?: { [key: string]: string | number | boolean };
-}
-
 type destinations =
-  | 'discord-lifi'
-  | 'lifi-explorer'
-  | 'lifi-website'
+  | 'discord-jumper'
+  | 'jumper-explorer'
+  | 'jumper-scan'
+  | 'jumper-scan-wallet'
+  | 'jumper-website'
   | 'docs-sc-audits'
-  | 'lifi-github'
-  | 'lifi-docs'
+  | 'jumper-github'
+  | 'jumper-docs'
   | 'x-jumper'
   | 'blokchain-explorer';
 

@@ -1,6 +1,4 @@
 import { useMenuStore } from '@/stores/menu';
-import { EventTrackingTool } from '@/types/userTracking';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FolderZipOutlinedIcon from '@mui/icons-material/FolderZipOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useTheme } from '@mui/material/styles';
@@ -10,12 +8,12 @@ import {
   TrackingEventParameter,
 } from '../../../const/trackingKeys';
 
-import { DOCS_URL, GITHUB_URL } from '@/const/urls';
+import { GITHUB_URL } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useTranslation } from 'react-i18next';
 export const useDevelopersContent = () => {
   const { t } = useTranslation();
-  const { trackPageload, trackEvent } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const closeAllMenus = useMenuStore((state) => state.closeAllMenus);
@@ -35,50 +33,25 @@ export const useDevelopersContent = () => {
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
-          label: 'open-lifi-github',
+          label: 'open-jumper-github',
           action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'lifi_github' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
+          data: { [TrackingEventParameter.Menu]: 'jumper_github' },
         });
-        trackPageload({
-          source: TrackingCategory.Menu,
-          destination: 'lifi-github',
-          url: GITHUB_URL,
-          pageload: true,
-          disableTrackingTool: [EventTrackingTool.Cookie3],
+        trackEvent({
+          category: TrackingCategory.Pageload,
+          action: TrackingAction.PageLoad,
+          label: 'pageload-jumper-github',
+          data: {
+            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
+            [TrackingEventParameter.PageloadDestination]: 'jumper-github',
+            [TrackingEventParameter.PageloadURL]: GITHUB_URL,
+            [TrackingEventParameter.PageloadExternal]: true,
+          },
         });
         closeAllMenus();
       },
       link: { url: GITHUB_URL, external: true },
     },
-    // {
-    //   label: t('navbar.developers.documentation'),
-    //   prefixIcon: <DescriptionOutlinedIcon />,
-    //   onClick: () => {
-    //     trackEvent({
-    //       category: TrackingCategory.Menu,
-    //       label: 'open-lifi-docs',
-    //       action: TrackingAction.OpenMenu,
-    //       data: { [TrackingEventParameter.Menu]: 'lifi_docs' },
-    //       disableTrackingTool: [
-    //         EventTrackingTool.ARCx,
-    //         EventTrackingTool.Cookie3,
-    //       ],
-    //     });
-    //     trackPageload({
-    //       source: TrackingCategory.Menu,
-    //       destination: 'lifi-docs',
-    //       url: DOCS_URL,
-    //       pageload: true,
-    //       disableTrackingTool: [EventTrackingTool.Cookie3],
-    //     });
-    //     closeAllMenus();
-    //   },
-    //   link: { url: DOCS_URL, external: true },
-    // },
     {
       label: t('navbar.navbarMenu.brandAssets'),
       prefixIcon: <FolderZipOutlinedIcon />,
@@ -89,10 +62,6 @@ export const useDevelopersContent = () => {
           label: 'click-brand-assets',
           action: TrackingAction.DownloadBrandAssets,
           data: { [TrackingEventParameter.Menu]: 'brand_assets' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         closeAllMenus();
       },
