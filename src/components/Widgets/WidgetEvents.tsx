@@ -64,7 +64,7 @@ export function WidgetEvents() {
           label: 'execution_start',
           value: parseFloat(route.fromAmountUSD),
           data: {
-            [TrackingEventParameter.Type]: undefined,
+            [TrackingEventParameter.Type]: 'started',
             [TrackingEventParameter.TransactionId]: route.id,
             [TrackingEventParameter.RouteId]: (
               route.steps[route.steps.length - 1] as LifiStepProps

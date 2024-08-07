@@ -154,6 +154,7 @@ export function useUserTracking() {
           // insuranceFeeAmountUSD:
           //   data[TrackingEventParameter.InsuranceFeeAmountUSD],
         };
+        console.log('transactionData test', transactionData);
         await jumperTrackTransaction(transactionData);
       }
 

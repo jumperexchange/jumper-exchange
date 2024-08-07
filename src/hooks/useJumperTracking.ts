@@ -22,7 +22,7 @@ const getResponse = async (
   type: 'event' | 'transaction' = 'event',
 ) => {
   let result;
-  const response = await fetch(
+  await fetch(
     `${process.env.NEXT_PUBLIC_JUMPER_API}${type !== 'event' ? JUMPER_ANALYTICS_TRANSACTION : JUMPER_ANALYTICS_EVENT}`,
     {
       method: 'POST',
@@ -32,9 +32,6 @@ const getResponse = async (
       body: JSON.stringify(data),
     },
   );
-  if (response) {
-    result = await response.json();
-  }
   return result;
 };
 
@@ -67,7 +64,7 @@ export const useJumperTracking = () => {
   const pathname = usePathname();
   const trackEvent = async (data: JumperDataTrackEventProps) => {
     console.log('TRACK EVENT', data);
-    const response = await getResponse(
+    await getResponse(
       {
         category: data.category,
         action: data.action,
@@ -82,9 +79,6 @@ export const useJumperTracking = () => {
       },
       'event',
     );
-
-    console.log('RESPONSE', response);
-    return response;
   };
 
   const trackTransaction = async (data: JumperDataTrackTransactionProps) => {
@@ -109,9 +103,7 @@ export const useJumperTracking = () => {
       transactionStatus: data.transactionStatus,
     };
     console.log('TRACK TRANSACTION DATA', transactionData);
-    const response = await getResponse(transactionData, 'transaction');
-    console.log('TRACK TRANSACTION RESPONSE', response);
-    return response;
+    await getResponse(transactionData, 'transaction');
   };
 
   return { trackTransaction, trackEvent };
