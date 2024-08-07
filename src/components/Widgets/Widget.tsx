@@ -12,6 +12,8 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
@@ -20,15 +22,20 @@ import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 import { useMemelist } from 'src/hooks/useMemelist';
+import { useUserTracking } from 'src/hooks/userTracking';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import { useWidgetTheme } from './useWidgetTheme';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { useMediaQuery } from '@mui/material';
-import type { Theme } from '@mui/material';
+import { useDeductedAmount } from 'src/hooks/useDeductedAmount';
 
 export function Widget({
   starterVariant,
@@ -51,6 +58,8 @@ export function Widget({
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
+  const { deductedAmount } = useDeductedAmount();
+  const { trackEvent } = useUserTracking();
   const partnerName = configTheme?.uid ?? 'default';
   const { tokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
@@ -96,7 +105,7 @@ export function Widget({
     }
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
+  }, [widgetIntegrator, isGasVariant]) as string;
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -148,6 +157,7 @@ export function Widget({
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
+        HiddenUI.IntegratorStepDetails,
       ],
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
@@ -167,6 +177,14 @@ export function Widget({
                 getWalletClient: () => getWalletClient(wagmiConfig),
                 switchChain: async (chainId) => {
                   const chain = await switchChain(wagmiConfig, { chainId });
+                  trackEvent({
+                    category: TrackingCategory.Widget,
+                    action: TrackingAction.SwitchChain,
+                    label: 'switch-chain',
+                    data: {
+                      [TrackingEventParameter.ChainId]: chainId,
+                    },
+                  });
                   return getWalletClient(wagmiConfig, { chainId: chain.id });
                 },
                 multisig: multisigSdkConfig,
@@ -175,39 +193,41 @@ export function Widget({
           : undefined,
       },
       buildUrl: true,
+      // insurance: true,
       integrator: integratorStringByType,
+      fee: deductedAmount,
+      feeTool: {
+        name: 'Jumper',
+        logoURI: '',
+      },
       tokens:
         partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
   }, [
-    allowChains,
-    allowedChainsByVariant,
-    fromAmount,
+    starterVariant,
+    partnerName,
     fromChain,
     fromToken,
-    i18n.language,
-    i18n.languages,
-    integratorStringByType,
-    isMultisigSigner,
-    multisigSdkConfig,
-    multisigWidget,
-    setWalletSelectMenuState,
-    starterVariant,
-    theme.breakpoints,
-    theme.palette.accent1.main,
-    theme.palette.grey,
-    theme.palette.mode,
-    theme.palette.surface1.main,
-    theme.palette.surface2.main,
-    theme.typography.fontFamily,
-    themeMode,
     toChain,
     toToken,
-    tokens,
-    wagmiConfig,
-    widgetIntegrator,
+    fromAmount,
+    allowChains,
+    allowedChainsByVariant,
+    configTheme?.allowedBridges,
+    configTheme?.allowedExchanges,
+    i18n.language,
+    i18n.languages,
+    widgetTheme.config.appearance,
+    widgetTheme.config.theme,
+    multisigWidget,
+    isMultisigSigner,
+    multisigSdkConfig,
     integratorStringByType,
-    widgetTheme,
+    tokens,
+    setWalletSelectMenuState,
+    wagmiConfig,
+    trackEvent,
+    deductedAmount,
   ]);
 
   return (
