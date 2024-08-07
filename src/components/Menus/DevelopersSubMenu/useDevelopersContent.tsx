@@ -1,5 +1,4 @@
 import { useMenuStore } from '@/stores/menu';
-import { EventTrackingTool } from '@/types/userTracking';
 import FolderZipOutlinedIcon from '@mui/icons-material/FolderZipOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useTheme } from '@mui/material/styles';
@@ -14,7 +13,7 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useTranslation } from 'react-i18next';
 export const useDevelopersContent = () => {
   const { t } = useTranslation();
-  const { trackPageload, trackEvent } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const closeAllMenus = useMenuStore((state) => state.closeAllMenus);
@@ -36,18 +35,18 @@ export const useDevelopersContent = () => {
           category: TrackingCategory.Menu,
           label: 'open-jumper-github',
           action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'lifi_github' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
+          data: { [TrackingEventParameter.Menu]: 'jumper_github' },
         });
-        trackPageload({
-          source: TrackingCategory.Menu,
-          destination: 'jumper-github',
-          url: GITHUB_URL,
-          pageload: true,
-          disableTrackingTool: [EventTrackingTool.Cookie3],
+        trackEvent({
+          category: TrackingCategory.Pageload,
+          action: TrackingAction.PageLoad,
+          label: 'pageload-jumper-github',
+          data: {
+            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
+            [TrackingEventParameter.PageloadDestination]: 'jumper-github',
+            [TrackingEventParameter.PageloadURL]: GITHUB_URL,
+            [TrackingEventParameter.PageloadExternal]: true,
+          },
         });
         closeAllMenus();
       },
@@ -63,10 +62,6 @@ export const useDevelopersContent = () => {
           label: 'click-brand-assets',
           action: TrackingAction.DownloadBrandAssets,
           data: { [TrackingEventParameter.Menu]: 'brand_assets' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         closeAllMenus();
       },
