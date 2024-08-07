@@ -7,6 +7,7 @@ export const UTM_SOURCE = 'jumper';
 export enum TrackingAction {
   // WalletMenu
   ConnectWallet = 'action_connect_wallet',
+  ClickConnectWallet = 'action_click_connect_wallet',
   CopyAddressToClipboard = 'action_copy_addr_to_clipboard',
   DisconnectWallet = 'action_disconnect_wallet',
   OpenBlockchainExplorer = 'action_open_blockchain_explorer',
@@ -66,13 +67,14 @@ export enum TrackingAction {
 
   // Discord
   JoinDiscordCommunity = 'action_join_discord_community',
-
+  OpenDiscordSupport = 'action_open_discord_support',
   PoweredBy = 'action_click_powered_by',
 }
 
 export enum TrackingCategory {
   MainMenu = 'cat_main_menu',
   Menu = 'cat_menu',
+  ErrorPage = 'cat_error_page',
   FeatureCard = 'cat_feature_card',
   Navigation = 'cat_navigation',
   LanguageMenu = 'cat_language_menu',
@@ -82,6 +84,8 @@ export enum TrackingCategory {
   DiscordBanner = 'cat_discord_banner',
   Wallet = 'cat_wallet',
   WalletMenu = 'cat_wallet_menu',
+  Connect = 'cat_connect_wallet',
+  Pageload = 'cat_pageload',
   WalletSelectMenu = 'cat_wallet_select_menu',
   WelcomeScreen = 'cat_welcome_screen',
   Widget = 'cat_widget',
@@ -98,10 +102,7 @@ export enum TrackingEventParameter {
   FeatureCardTitle = 'param_feature_card_title',
   FeatureCardId = 'param_feature_card_id',
   Tab = 'param_tab',
-  PrevMenu = 'param_prev_menu',
   ChainId = 'param_chain_id',
-  ChainName = 'param_chain_name',
-  ChainIdAdded = 'param_chain_added',
   Menu = 'param_menu',
   ToolModal = 'param_stats_modal',
   WelcomeMessageLink = 'param_welcome_message_link',
@@ -109,9 +110,8 @@ export enum TrackingEventParameter {
   SwitchedTheme = 'param_switched_theme',
   SwitchedTemplate = 'param_switched_template',
   SwitchedLanguage = 'param_switched_language',
-  AddedTokenAddress = 'param_added_token_address',
-  AddedTokenName = 'param_added_token_name',
   Wallet = 'param_wallet',
+  WalletAddress = 'param_wallet_address',
   Ecosystem = 'param_ecosystem',
 
   // Widget:
@@ -119,6 +119,12 @@ export enum TrackingEventParameter {
   SourceTokenSelection = 'param_source_token',
   DestinationChainSelection = 'param_destination_chain',
   DestinationTokenSelection = 'param_destination_token',
+
+  // Pageload:
+  PageloadSource = 'param_pageload_source',
+  PageloadURL = 'param_pageload_url',
+  PageloadDestination = 'param_pageload_destination',
+  PageloadExternal = 'param_pageload_external',
 
   // Transaction:
   RouteId = 'param_route_id',
@@ -147,7 +153,6 @@ export enum TrackingEventParameter {
   AvailableRoutesCount = 'param_available_routes_count',
 
   // Blog
-  ArticleCardTitle = 'param_article_card_title',
   ArticleCardId = 'param_article_card_id',
   SwipeDirection = 'param_swipe_direction',
   ArticleTitle = 'param_article_title',
