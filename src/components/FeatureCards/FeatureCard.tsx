@@ -11,7 +11,6 @@ import {
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import type { FeatureCardData } from '@/types/strapi';
-import { EventTrackingTool } from '@/types/userTracking';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { useTranslation } from 'react-i18next';
 import { createFeatureCardStrapiApi } from 'src/utils/strapi/generateStrapiUrl';
@@ -82,10 +81,6 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
           [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
           url: data.attributes.URL,
         },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
       });
     }
   }, [
@@ -119,7 +114,6 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         [TrackingEventParameter.FeatureCardTitle]: data?.attributes.Title,
         [TrackingEventParameter.FeatureCardId]: data?.attributes.uid,
       },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
   };
 
@@ -139,7 +133,6 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
         url: data.attributes.URL,
       },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
   };
 
@@ -157,7 +150,6 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
         url: data.attributes.URL,
       },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
   };
 

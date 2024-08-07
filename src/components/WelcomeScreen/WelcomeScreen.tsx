@@ -3,7 +3,6 @@ import { CustomColor } from '@/components/CustomColorTypography.style';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { EventTrackingTool } from '@/types/userTracking';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -36,10 +35,6 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
         category: TrackingCategory.WelcomeScreen,
         label: 'open-welcome-screen',
         action: TrackingAction.ShowWelcomeMessageScreen,
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
       });
     }
   }, [trackEvent, welcomeScreenClosed]);
@@ -59,10 +54,6 @@ export const WelcomeScreen = ({ closed }: WelcomeScreenProps) => {
           category: TrackingCategory.WelcomeScreen,
           action: TrackingAction.CloseWelcomeScreen,
           label: 'enter_welcome_screen',
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
           enableAddressable: true,
         });
       }

@@ -30,11 +30,20 @@ type DataAsset = {
   owner: Owner;
 };
 
+export interface Reward {
+  description: string;
+  image: string;
+  id: number;
+  name: string;
+  type: string;
+}
+
 export interface PDA {
   id: string;
-  status: string;
-  ownerHash: string;
-  dataAsset: DataAsset;
+  points: number;
+  subValue: number;
+  timestamp: Date;
+  reward: Reward;
 }
 
 // Quest Type

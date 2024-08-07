@@ -6,6 +6,7 @@ import { APYIcon } from 'src/components/illustrations/APYIcon';
 import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
 import { XPIconBox } from '../../QuestCard/QuestCard.style';
 import { SoraTypography } from '../../Superfest.style';
+import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
 import {
   CTAExplanationBox,
@@ -32,12 +33,18 @@ interface MissionCtaProps {
   id?: number;
   CTAs: CTALinkInt[];
   variableWeeklyAPY?: boolean;
+  signature?: boolean;
 }
 
-export const MissionCTA = ({ CTAs, variableWeeklyAPY }: MissionCtaProps) => {
+export const MissionCTA = ({
+  CTAs,
+  variableWeeklyAPY,
+  signature,
+}: MissionCtaProps) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
+
   const handleClick = () => {
     // trackEvent({
     //   category: TrackingCategory.BlogArticle,
@@ -61,13 +68,14 @@ export const MissionCTA = ({ CTAs, variableWeeklyAPY }: MissionCtaProps) => {
             lineHeight={{ xs: '14px', md: '18px' }}
             fontWeight={400}
           >
-            Completing any mission below makes you eligible for OP rewards and
-            XP.
+            {!signature &&
+              'Completing any mission below makes you eligible for OP rewards and XP.'}
           </SoraTypography>
         </Box>
       </StartedTitleBox>
       <SeveralCTABox>
-        {CTAs?.map((CTA: CTALinkInt, i: number) => {
+        {signature && <SignatureCTA />}
+        {CTAs.map((CTA: CTALinkInt, i: number) => {
           return (
             <Link
               key={`cta-mission-${i}`}
