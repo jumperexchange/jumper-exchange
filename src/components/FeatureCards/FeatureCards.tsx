@@ -6,6 +6,11 @@ import {
 import { useAccounts } from '@/hooks/useAccounts';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import type { FeatureCardData } from '@/types/strapi';
+import {
+  createFeatureCardStrapiApi,
+  createJumperUserStrapiApi,
+  createPersonalizedFeatureOnLevel,
+} from '@/utils/strapi/generateStrapiUrl';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
@@ -13,11 +18,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import {
-  createFeatureCardStrapiApi,
-  createJumperUserStrapiApi,
-  createPersonalizedFeatureOnLevel,
-} from 'src/utils/strapi/generateStrapiUrl';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
 import { getLevelBasedOnPoints } from '../ProfilePage/LevelBox/TierBox';

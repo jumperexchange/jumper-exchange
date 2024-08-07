@@ -12,8 +12,8 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import type { FeatureCardData } from '@/types/strapi';
 import { openInNewTab } from '@/utils/openInNewTab';
+import { createFeatureCardStrapiApi } from '@/utils/strapi/generateStrapiUrl';
 import { useTranslation } from 'react-i18next';
-import { createFeatureCardStrapiApi } from 'src/utils/strapi/generateStrapiUrl';
 import {
   FCard as Card,
   FeatureCardActions,

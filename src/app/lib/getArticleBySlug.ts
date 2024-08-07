@@ -1,4 +1,4 @@
-import { createArticleStrapiApi } from 'src/utils/strapi/generateStrapiUrl';
+import { createArticleStrapiApi } from '@/utils/strapi/generateStrapiUrl';
 
 export async function getArticleBySlug(slug: string) {
   const articleUrl = createArticleStrapiApi().filterBySlug(slug);

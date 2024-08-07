@@ -1,6 +1,6 @@
 import type { Quest } from '@/types/loyaltyPass';
+import { createQuestStrapiApi } from '@/utils/strapi/generateStrapiUrl';
 import { useQuery } from '@tanstack/react-query';
-import { createQuestStrapiApi } from 'src/utils/strapi/generateStrapiUrl';
 
 export interface UseQuestsProps {
   quests: Quest[] | undefined;

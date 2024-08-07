@@ -1,5 +1,5 @@
 import type { BlogArticleData } from '@/types/strapi';
-import { createArticleStrapiApi } from 'src/utils/strapi/generateStrapiUrl';
+import { createArticleStrapiApi } from '@/utils/strapi/generateStrapiUrl';
 
 export async function getArticlesByTag(
   excludeId: number,

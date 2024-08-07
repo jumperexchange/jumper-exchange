@@ -1,4 +1,5 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { createPartnerThemeStrapiApi } from '@/utils/strapi/generateStrapiUrl';
 import { useQuery } from '@tanstack/react-query';
 import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +10,6 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import type { PartnerThemesData } from 'src/types/strapi';
-import { createPartnerThemeStrapiApi } from 'src/utils/strapi/generateStrapiUrl';
 
 export const useThemeMenuContent = () => {
   const { t } = useTranslation();

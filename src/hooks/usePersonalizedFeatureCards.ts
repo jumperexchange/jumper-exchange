@@ -1,6 +1,6 @@
 import type { FeatureCardData } from '@/types/strapi';
+import { createJumperUserStrapiApi } from '@/utils/strapi/generateStrapiUrl';
 import { useQuery } from '@tanstack/react-query';
-import { createJumperUserStrapiApi } from 'src/utils/strapi/generateStrapiUrl';
 import { useAccounts } from './useAccounts';
 
 export interface UsePersonalizedFeatureCardsProps {

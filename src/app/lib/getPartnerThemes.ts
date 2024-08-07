@@ -1,5 +1,5 @@
 import type { PartnerThemesData, StrapiResponse } from '@/types/strapi';
-import { createPartnerThemeStrapiApi } from 'src/utils/strapi/generateStrapiUrl';
+import { createPartnerThemeStrapiApi } from '@/utils/strapi/generateStrapiUrl';
 
 export interface GetPartnerThemeResponse
   extends StrapiResponse<PartnerThemesData> {
