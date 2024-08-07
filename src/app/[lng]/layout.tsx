@@ -1,8 +1,9 @@
-import initTranslations from '@/app/i18n';
-import TranslationsProvider from '@/providers/TranslationProvider';
 import i18nConfig from 'i18nconfig';
 import React from 'react';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
+import TranslationsProvider from '@/providers/TranslationProvider';
+import initTranslations from '@/app/i18n';
+import { TrackingProvider } from '@/providers/TrackingProvider';
 
 export default async function RootLayout({
   children,
@@ -19,7 +20,7 @@ export default async function RootLayout({
       locale={lng}
       resources={resources}
     >
-      {children}
+      <TrackingProvider>{children}</TrackingProvider>
     </TranslationsProvider>
   );
 }

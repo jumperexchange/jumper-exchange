@@ -5,6 +5,7 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { EventTrackingTool } from '@/types/userTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +25,7 @@ export const BlogCTA = ({ title, url, id }: BlogCTAProps) => {
       category: TrackingCategory.BlogArticle,
       action: TrackingAction.ClickBlogCTA,
       label: 'click-blog-cta',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
         [TrackingEventParameter.ArticleTitle]: title || '',
         [TrackingEventParameter.ArticleID]: id || '',

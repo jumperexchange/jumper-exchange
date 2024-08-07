@@ -14,7 +14,3 @@ export async function itemInMenu(page, option: string) {
 export async function closeWelcomeScreen(page: Page) {
   return page.locator('#get-started-button').click();
 }
-
-export async function tabInHeader(page, name: string) {
-  await page.getByRole('tab', { name }).click();
-}

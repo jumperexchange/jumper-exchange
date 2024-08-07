@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useSettingsStore } from '@/stores/settings';
-import { useMultisig } from './useMultisig';
 
 interface useWelcomeScreenProps {
   welcomeScreenClosed: boolean | undefined;
@@ -13,7 +12,6 @@ export const useWelcomeScreen = (
 ): useWelcomeScreenProps => {
   const [, setState] = useState(initialState);
   const [cookie, setCookie] = useCookies(['welcomeScreenClosed']);
-  const { isMultisigSigner } = useMultisig();
 
   const [, sessionSetWelcomeScreenClosed] = useSettingsStore((state) => [
     state.welcomeScreenClosed,
@@ -21,12 +19,8 @@ export const useWelcomeScreen = (
   ]);
 
   useEffect(() => {
-    if (isMultisigSigner) {
-      setState(true);
-    } else {
-      setState(cookie.welcomeScreenClosed);
-    }
-  }, [cookie.welcomeScreenClosed, isMultisigSigner]);
+    setState(cookie.welcomeScreenClosed);
+  }, [cookie.welcomeScreenClosed]);
 
   const updateState = (closed: boolean) => {
     setState(closed);
