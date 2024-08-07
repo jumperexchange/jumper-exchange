@@ -1,4 +1,4 @@
-// API call: /meta/_health
+// API call: /revalidate/?pathname=%2Flearn&secret=password
 
 import { revalidatePath } from 'next/cache';
 import type { NextRequest } from 'next/server';
