@@ -6,6 +6,7 @@ import {
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useSettingsStore } from '@/stores/settings';
 import type { ThemeModesSupported } from '@/types/settings';
+import { EventTrackingTool } from '@/types/userTracking';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
@@ -39,6 +40,7 @@ export const useThemeSwitchTabs = () => {
       data: {
         [TrackingEventParameter.SwitchedTheme]: mode,
       },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     setCookie('themeMode', mode, {
       path: '/',

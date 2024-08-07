@@ -3,6 +3,7 @@ import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu/MenuStore';
 import type { StrapiImageData, TagData } from '@/types/strapi';
+import { EventTrackingTool } from '@/types/userTracking';
 import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import type { CSSObject } from '@mui/material';
@@ -59,6 +60,7 @@ export const BlogArticleCard = ({
       category: trackingCategory,
       action: TrackingAction.ClickArticleCard,
       label: 'click-blog-article-card',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
         [TrackingEventParameter.ArticleTitle]: title,
         [TrackingEventParameter.ArticleCardId]: id,

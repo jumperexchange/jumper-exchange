@@ -1,4 +1,5 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { EventTrackingTool } from '@/types/userTracking';
 import { openInNewTab } from '@/utils/openInNewTab';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkIcon from '@mui/icons-material/Link';
@@ -47,6 +48,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       category: TrackingCategory.BlogArticle,
       action: TrackingAction.ClickShareArticleLink,
       label: 'click-share-blog-article-link',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
         [TrackingEventParameter.ArticleTitle]: title || '',
         [TrackingEventParameter.ArticleCardId]: slug || '',
@@ -75,6 +77,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       category: TrackingCategory.BlogArticle,
       action: TrackingAction.ClickShareArticleX,
       label: 'click-share-blog-article-x',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
         [TrackingEventParameter.ArticleTitle]: title || '',
         [TrackingEventParameter.ArticleCardId]: slug || '',
@@ -97,6 +100,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       category: TrackingCategory.BlogArticle,
       action: TrackingAction.ClickShareArticleFB,
       label: 'click-share-blog-article-fb',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
         [TrackingEventParameter.ArticleTitle]: title || '',
         [TrackingEventParameter.ArticleCardId]: slug || '',
@@ -120,6 +124,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       category: TrackingCategory.BlogArticle,
       action: TrackingAction.ClickShareArticleLinkedIn,
       label: 'click-share-blog-article-linkedin',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
       data: {
         [TrackingEventParameter.ArticleTitle]: title || '',
         [TrackingEventParameter.ArticleCardId]: slug || '',
