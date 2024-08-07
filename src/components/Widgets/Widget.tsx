@@ -23,9 +23,9 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
-import { useIntegrator } from 'src/hooks/useIntegrator';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useUserTracking } from 'src/hooks/userTracking';
+import { useActiveTabStore } from 'src/stores/activeTab';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
@@ -51,6 +51,7 @@ export function Widget({
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
+  const { activeTab } = useActiveTabStore();
   const partnerName = configTheme?.uid ?? 'default';
   const { tokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
@@ -71,6 +72,7 @@ export function Widget({
     (state: MenuState) => state.setWalletSelectMenuState,
   );
 
+  const isGasVariant = activeTab === TabsMap.Refuel.index;
   const allowedChainsByVariant = useMemo(
     () =>
       starterVariant === TabsMap.Refuel.variant
@@ -81,7 +83,22 @@ export function Widget({
     [starterVariant, partnerName],
   );
 
-  const integratorStringByType = useIntegrator(widgetIntegrator);
+  const integratorStringByType = useMemo(() => {
+    if (widgetIntegrator) {
+      return widgetIntegrator;
+    }
+    // all the trafic from mobile (including "/gas")
+    // if (!isDesktop) {
+    //   return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+    // }
+    // all the trafic from web on "/gas"
+    if (isGasVariant) {
+      return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
+    }
+
+    return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
+  }, [widgetIntegrator, isGasVariant]) as string;
+
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
@@ -167,8 +184,8 @@ export function Widget({
           : undefined,
       },
       buildUrl: true,
-      integrator:
-        integratorStringByType || process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+      // insurance: true,
+      integrator: integratorStringByType,
       tokens:
         partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };

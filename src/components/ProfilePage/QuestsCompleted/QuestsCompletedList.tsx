@@ -44,9 +44,9 @@ export const QuestCompletedList = ({
                 <QuestCard
                   key={`completed-mission-${index}`}
                   active={false}
-                  title={pda?.dataAsset.title}
-                  image={pda?.dataAsset.image}
-                  points={pda?.dataAsset.claim.points}
+                  title={pda?.reward.name}
+                  image={pda?.reward.image}
+                  points={pda?.points}
                 />
               );
             })

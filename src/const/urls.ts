@@ -20,6 +20,8 @@ export const JUMPER_MEMECOIN_PATH = '/memecoins/';
 export const JUMPER_ANALYTICS_EVENT = '/analytics/event';
 export const JUMPER_ANALYTICS_TRANSACTION = '/analytics/transaction';
 
+export const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
+
 // prepare sitemap
 export const pages: SitemapPage[] = [
   { path: '', priority: 1 },

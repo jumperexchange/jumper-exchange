@@ -83,7 +83,7 @@ export const QuestCard = ({
           )}
 
           <OPBadgeRelativeBox>
-            {rewards?.amount && <OPBadge />}
+            {rewards && rewards?.amount > 0 ? <OPBadge /> : undefined}
           </OPBadgeRelativeBox>
         </Box>
       </Link>

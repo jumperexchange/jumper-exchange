@@ -35,7 +35,7 @@ export const useDevelopersContent = () => {
           category: TrackingCategory.Menu,
           label: 'open-jumper-github',
           action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'lifi_github' },
+          data: { [TrackingEventParameter.Menu]: 'jumper_github' },
         });
         trackEvent({
           category: TrackingCategory.Pageload,

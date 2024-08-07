@@ -47,6 +47,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
               [TrackingEventParameter.PageloadSource]:
                 TrackingCategory.ErrorPage,
               [TrackingEventParameter.PageloadDestination]: 'discord-jumper',
+              [TrackingEventParameter.PageloadURL]: DISCORD_URL,
               [TrackingEventParameter.PageloadExternal]: true,
             },
           });

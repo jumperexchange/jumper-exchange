@@ -36,7 +36,7 @@ export function WidgetEvents() {
   const { activeTab } = useActiveTabStore();
   const { setDestinationChainToken, setSourceChainToken } =
     useChainTokenSelectionStore();
-  const { trackEvent, trackTransaction } = useUserTracking();
+  const { trackTransaction, trackEvent } = useUserTracking();
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
   ]);
@@ -363,7 +363,6 @@ export function WidgetEvents() {
     setSupportModalState,
     shouldOpenMultisigSignatureModal,
     trackEvent,
-    trackTransaction,
     widgetEvents,
   ]);
 
