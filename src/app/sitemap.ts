@@ -2,12 +2,29 @@ import { JUMPER_LEARN_PATH, pages } from '@/const/urls';
 import type { ChangeFrequency, SitemapPage } from '@/types/sitemap';
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import type { MetadataRoute } from 'next';
-import util from 'util';
 import { getArticles } from './lib/getArticles';
 import { locales } from 'src/i18n';
 
-function withTrallingSlash(url: string) {
+function withTrailingSlash(url: string) {
   return url.endsWith('/') ? url : `${url}/`;
+}
+
+function generateAlternates(path: string) {
+  return {
+    languages: {
+      ...locales.reduce((acc, loc) => {
+        return {
+          ...acc,
+          [loc]: withTrailingSlash(
+            `${process.env.NEXT_PUBLIC_SITE_URL}${loc !== 'en' ? `/${loc}` : ''}${path}`,
+          ),
+        };
+      }, {}),
+      'x-default': withTrailingSlash(
+        `${process.env.NEXT_PUBLIC_SITE_URL}${path}`,
+      ),
+    },
+  };
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -15,33 +32,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = pages.flatMap((route: SitemapPage) => {
     return locales.map((locale) => {
       return {
-        url: withTrallingSlash(
+        url: withTrailingSlash(
           `${process.env.NEXT_PUBLIC_SITE_URL}${locale !== 'en' ? `/${locale}` : ''}${route.path}`,
         ),
         lastModified: new Date().toISOString().split('T')[0],
         changeFrequency: 'weekly' as ChangeFrequency,
-        alternates: {
-          languages: {
-            ...locales.reduce(
-              (acc, loc) => ({
-                ...acc,
-                [loc]: withTrallingSlash(
-                  `${process.env.NEXT_PUBLIC_SITE_URL}${loc !== 'en' ? `/${loc}` : ''}${route.path}`,
-                ),
-              }),
-              {},
-            ),
-            'x-default': withTrallingSlash(
-              `${process.env.NEXT_PUBLIC_SITE_URL}${route.path}`,
-            ),
-          },
-        },
+        alternates: generateAlternates(route.path),
         priority: route.priority,
       };
     });
   });
-
-  console.log('dd', util.inspect(routes, false, 3));
 
   // articles by slug
   const articles = await getArticles().then(
@@ -49,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       return locales.flatMap((locale) => {
         return article.data.map((el) => {
           return {
-            url: withTrallingSlash(
+            url: withTrailingSlash(
               `${process.env.NEXT_PUBLIC_SITE_URL}${locale !== 'en' ? `/${locale}` : ''}${JUMPER_LEARN_PATH}${el.attributes.Slug}`,
             ),
             lastModified: new Date(
@@ -60,21 +60,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
               .toISOString()
               .split('T')[0],
             changeFrequency: 'weekly' as ChangeFrequency,
-            alternates: {
-              languages: {
-                ...locales.reduce((acc, loc) => {
-                  return {
-                    ...acc,
-                    [loc]: withTrallingSlash(
-                      `${process.env.NEXT_PUBLIC_SITE_URL}${loc !== 'en' ? `/${loc}` : ''}${JUMPER_LEARN_PATH}${el.attributes.Slug}`,
-                    ),
-                  };
-                }, {}),
-                'x-default': withTrallingSlash(
-                  `${process.env.NEXT_PUBLIC_SITE_URL}${JUMPER_LEARN_PATH}${el.attributes.Slug}`,
-                ),
-              },
-            },
+            alternates: generateAlternates(
+              `${JUMPER_LEARN_PATH}${el.attributes.Slug}`,
+            ),
             priority: 0.8,
           };
         });
