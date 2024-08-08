@@ -2,6 +2,7 @@ import { useLoyaltyPassStore } from '@/stores/loyaltyPass';
 import type { PDA } from '@/types/loyaltyPass';
 import { useQuery } from '@tanstack/react-query';
 import { useAccounts } from './useAccounts';
+import { useEffect } from 'react';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
@@ -22,7 +23,20 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     pdas: storedPdas,
     timestamp,
     setLoyaltyPassData,
+    reset
   } = useLoyaltyPassStore((state) => state);
+
+  useEffect(() => {
+    if (!account || !storedAddress) {
+      return;
+    }
+
+    if (account.address === storedAddress) {
+      return;
+    }
+
+    reset();
+  }, [account, storedAddress]);
 
   //we store the data during 24hours to avoid querying too much our partner API.
   const t = Date.now() / 1000;
@@ -37,7 +51,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   // query
   const apiBaseUrl = process.env.NEXT_PUBLIC_JUMPER_API;
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['loyalty-pass'],
+    queryKey: ['loyalty-pass', account?.address],
     queryFn: async () => {
       const res = await fetch(`${apiBaseUrl}/users/${account?.address}`);
 
