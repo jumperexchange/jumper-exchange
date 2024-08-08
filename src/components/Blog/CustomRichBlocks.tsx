@@ -204,9 +204,6 @@ export const CustomRichBlocks = ({
                     el.props.text,
                   );
                   return nl2brText.map((line, lineIndex: number) => {
-                    if (line === '') {
-                      return <></>;
-                    }
                     if (isValidElement(line) && line.type === 'br') {
                       // adds <br> from nl2br
                       return line;
