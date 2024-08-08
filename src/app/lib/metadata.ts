@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
-const siteName = 'Jumper.Exchange';
-const title = 'Jumper | Multi-Chain Bridging & Swapping';
+export const siteName = 'Jumper.Exchange';
+export const title = 'Jumper | Multi-Chain Bridging & Swapping';
 const description =
   'Jumper is Crypto’s Everything Exchange, enabling seamless swap and bridge transactions across 25 blockchains. By aggregating all of DeFi liquidity, Jumper ensures the best routes for any token transaction.';
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/`,
   },
   openGraph: {
-    title: 'Jumper.Exchange',
+    title: title,
     description,
     siteName,
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/`,
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     // Twitter metadata
     // cardType: 'summary_large_image',
     site: '@JumperExchange',
-    title: 'Jumper.Exchange', // Twitter title
+    title: title, // Twitter title
     description,
     images: 'https://jumper.exchange/preview.png', // Twitter image
   },
