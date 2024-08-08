@@ -22,7 +22,10 @@ export const ProfilePage = () => {
   return (
     <ProfilePageContainer className="profile-page">
       <Grid container>
-      <Grid xs={4} paddingRight={4}>
+      <Grid xs={12} md={4} sx={{
+        paddingRight: { xs: 0, md: 4 },
+        paddingBottom: { xs: 4, md: 0 },
+      }}>
           <AddressBox
             address={account?.address}
             isEVM={account?.chainType === 'EVM'}
@@ -30,7 +33,7 @@ export const ProfilePage = () => {
           />
           <Leaderboard />
       </Grid>
-      <Grid xs={8}>
+      <Grid xs={12} md={8}>
         <Stack
           spacing={{ xs: 2, sm: 4 }}
         >
