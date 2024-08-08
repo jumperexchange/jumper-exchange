@@ -94,8 +94,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
       action: TrackingAction.OpenJumperScan,
       label: 'open-jumper-scan-wallet',
     });
-    window.open(url, '_self');
-    // router.push(url);
+    router.push(url);
   };
 
   const handleCopyButton = () => {
