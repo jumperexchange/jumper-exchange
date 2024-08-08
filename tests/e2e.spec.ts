@@ -125,13 +125,14 @@ test.describe('Jumper full e2e flow', () => {
     expect(newPage.url()).toBe(discordUrl);
   });
   test('API test - Feature Cards', async ({ request }) => {
-    const apiURL = process.env.NEXT_PUBLIC_STRAPI_URL
+    const apiURL = 'https://strapi.li.finance/api/feature-cards'
+    const bearerToken = 'Bearer 2350647febb39fe14dea85ee80e0f90384266c8dce548cf7d1d8190159b6b820fd1fbab76603abb7724293f76bf42b0f02b4a12f599eec0d0fcd1519d767ccb0a37380142e0223d7272c488f31614976a84ed424050516081b73b68776dcdaa265f6a200dca33c9d8b85840913b9a54053c6fb2cc8203bb3b0eea6c705f1b2b0'
     const response = await request.get(
-      'https://strapi.li.finance/api/feature-cards',
+      apiURL,
       {
         headers: {
           Authorization:
-            'Bearer 2350647febb39fe14dea85ee80e0f90384266c8dce548cf7d1d8190159b6b820fd1fbab76603abb7724293f76bf42b0f02b4a12f599eec0d0fcd1519d767ccb0a37380142e0223d7272c488f31614976a84ed424050516081b73b68776dcdaa265f6a200dca33c9d8b85840913b9a54053c6fb2cc8203bb3b0eea6c705f1b2b0',
+           bearerToken
         },
         params: {
           'populate[BackgroundImageLight]': '*',
