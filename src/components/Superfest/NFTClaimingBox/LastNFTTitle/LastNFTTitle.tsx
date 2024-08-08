@@ -17,13 +17,13 @@ export const LastNFTTitle = () => {
     <NFTClaimingHeader>
       <NFTClaimingTitle>
         {canClaim
-          ? String('Get your superfest ring').toUpperCase()
+          ? String('GET the VIP Wristband').toUpperCase()
           : String('unlock the mystery box').toUpperCase()}
       </NFTClaimingTitle>
       <Box marginTop="32px" marginBottom="32px">
         <NFTClaimingDescription>
           {canClaim
-            ? 'By minting this NFT, you gain future access to the SuperFest ring in the coming weeks.'
+            ? 'The VIP wristband represents your status as a Superchain power user. This status can be leveraged as an onchain credential by application developers who choose to set aside special features for Superchain power users with this NFT in their wallet.'
             : 'When you mint all Superchain wristbands, you become eligible to mint a super special NFT within the Superchain Mystery Box.'}
         </NFTClaimingDescription>
       </Box>

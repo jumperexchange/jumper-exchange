@@ -77,8 +77,8 @@ const NFTInfo = {
     numberId: 307084,
   },
   box: {
-    cid: '',
-    numberId: 0,
+    cid: 'GCwbetvgWp',
+    numberId: 309901,
   },
 } as { [key: string]: { cid: string; numberId: number } };
 
