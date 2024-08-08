@@ -3,7 +3,7 @@ import {
   findTheBestRoute,
   itemInMenu,
   tabInHeader,
-  openMainMenu
+  openMainMenu,
 } from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {
@@ -123,5 +123,33 @@ test.describe('Jumper full e2e flow', () => {
     await page.getByRole('link', { name: 'Discord' }).click();
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(discordUrl);
+  });
+  test('API test - Feature Cards', async ({ request }) => {
+    const apiURL = 'https://strapi.li.finance/api/feature-cards'
+    const bearerToken = 'Bearer 2350647febb39fe14dea85ee80e0f90384266c8dce548cf7d1d8190159b6b820fd1fbab76603abb7724293f76bf42b0f02b4a12f599eec0d0fcd1519d767ccb0a37380142e0223d7272c488f31614976a84ed424050516081b73b68776dcdaa265f6a200dca33c9d8b85840913b9a54053c6fb2cc8203bb3b0eea6c705f1b2b0'
+    const response = await request.get(
+      apiURL,
+      {
+        headers: {
+          Authorization:
+           bearerToken
+        },
+        params: {
+          'populate[BackgroundImageLight]': '*',
+          'populate[BackgroundImageDark]': '*',
+          'populate[featureCardsExclusions][fields][0]': 'uid',
+          'filters[PersonalizedFeatureCard][%24nei]': 'false',
+          'filters[minlevel][%24lte]': '4',
+          'filters[maxLevel][%24gte]': '4',
+        },
+      },
+    );
+    expect(response.ok()).toBeTruthy();
+    const responseBody = await response.json();
+    expect(responseBody).toHaveProperty('meta');
+    expect(responseBody.meta).toHaveProperty('pagination');
+    expect(responseBody.meta.pagination).toMatchObject({
+      pageSize: 25,
+    });
   });
 });
