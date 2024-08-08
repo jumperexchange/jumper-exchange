@@ -4,6 +4,7 @@ import {
   JUMPER_ANALYTICS_EVENT,
   JUMPER_ANALYTICS_TRANSACTION,
 } from 'src/const/urls';
+import { useFingerprint } from './useFingerprint';
 interface JumperDataTrackEventProps {
   category: string;
   action: string;
@@ -17,10 +18,7 @@ interface JumperDataTrackEventProps {
   sessionId?: string;
 }
 
-const getResponse = async (
-  data: object,
-  type: 'event' | 'transaction' = 'event',
-) => {
+const track = async (data: object, type: 'event' | 'transaction' = 'event') => {
   let result;
   await fetch(
     `${process.env.NEXT_PUBLIC_JUMPER_API}${type !== 'event' ? JUMPER_ANALYTICS_TRANSACTION : JUMPER_ANALYTICS_EVENT}`,
@@ -62,9 +60,11 @@ export interface JumperDataTrackTransactionProps {
 
 export const useJumperTracking = () => {
   const pathname = usePathname();
+  const fp = useFingerprint();
+  console.log('fp jumper-tracking', fp);
   const trackEvent = async (data: JumperDataTrackEventProps) => {
     console.log('TRACK EVENT', data);
-    await getResponse(
+    await track(
       {
         category: data.category,
         action: data.action,
@@ -103,7 +103,7 @@ export const useJumperTracking = () => {
       transactionStatus: data.transactionStatus,
     };
     console.log('TRACK TRANSACTION DATA', transactionData);
-    await getResponse(transactionData, 'transaction');
+    await track(transactionData, 'transaction');
   };
 
   return { trackTransaction, trackEvent };
