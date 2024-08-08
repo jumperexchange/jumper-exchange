@@ -17,6 +17,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { Skeleton, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
@@ -39,7 +40,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   const { chains } = useChains();
   const { checkMultisigEnvironment } = useMultisig();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
-
+  const router = useRouter();
   const activeChain = useMemo(
     () => chains?.find((chainEl) => chainEl.id === account.chainId),
     [chains, account.chainId],
@@ -92,8 +93,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
       action: TrackingAction.OpenJumperScan,
       label: 'open-jumper-scan-wallet',
     });
-    window.open(url, '_self');
-    // router.push(url);
+    router.push(url);
   };
 
   const handleCopyButton = () => {

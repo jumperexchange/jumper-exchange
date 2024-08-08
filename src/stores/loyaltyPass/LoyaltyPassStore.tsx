@@ -13,6 +13,16 @@ export const useLoyaltyPassStore = createWithEqualityFn(
       pdas: [],
       timestamp: undefined,
 
+      reset: () => {
+        set({
+          address: undefined,
+          points: undefined,
+          tier: undefined,
+          pdas: [],
+          timestamp: undefined,
+        });
+      },
+
       // Loyalty Pass Information
       setLoyaltyPassData: (
         address: string,
