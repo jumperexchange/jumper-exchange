@@ -23,7 +23,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     pdas: storedPdas,
     timestamp,
     setLoyaltyPassData,
-    reset
+    reset,
   } = useLoyaltyPassStore((state) => state);
 
   useEffect(() => {
