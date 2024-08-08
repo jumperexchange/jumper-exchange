@@ -6,7 +6,6 @@ import {
   openMainMenu,
 } from './testData/commonFunctions';
 
-
 test.describe('Jumper full e2e flow', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
@@ -144,7 +143,6 @@ test.describe('Jumper full e2e flow', () => {
         },
       },
     );
-    console.log('Status:', response.statusText());
     expect(response.ok()).toBeTruthy();
     const responseBody = await response.json();
     expect(responseBody).toHaveProperty('meta');
