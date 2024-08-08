@@ -21,6 +21,9 @@ interface NFTCardProps {
   isSuccess?: boolean;
 }
 
+const LAST_NFT_IMAGE =
+  'https://strapi.li.finance/uploads/supernft_163c0f663b.jpg';
+
 export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
   const { address } = useAccount();
   const { claimInfo, isLoading, isSuccess } = useCheckNFTAvailability({
@@ -34,9 +37,8 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
     });
 
   const NFTimage =
-    chain === 'box' && true
-      ? // (claimInfo.isClaimable || claimInfo.isClaimed)
-        'https://strapi.li.finance/uploads/supernft_163c0f663b.jpg'
+    chain === 'box' && (claimInfo.isClaimable || claimInfo.isClaimed)
+      ? LAST_NFT_IMAGE
       : image;
 
   async function handleClick() {
