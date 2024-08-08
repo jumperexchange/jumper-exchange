@@ -24,6 +24,7 @@ export const SuperfestMissionPage = ({
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
   const rewardType = attributes?.CustomInformation?.['rewardType'];
+  const rewards = quest.attributes.CustomInformation?.['rewards'];
   const points = quest?.attributes?.Points;
 
   const { account } = useAccounts();
@@ -49,6 +50,7 @@ export const SuperfestMissionPage = ({
         <MissionCTA
           title={attributes?.Title}
           url={attributes?.Link}
+          rewards={rewards}
           key={generateKey('cta')}
           CTAs={CTAsWithAPYs}
           variableWeeklyAPY={points > 0 && rewardType === 'weekly'}

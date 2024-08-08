@@ -31,12 +31,17 @@ export interface CTALinkInt {
 interface MissionCtaProps {
   title?: string;
   url?: string;
+  rewards?: number;
   id?: number;
   CTAs: CTALinkInt[];
   variableWeeklyAPY?: boolean;
 }
 
-export const MissionCTA = ({ CTAs, variableWeeklyAPY }: MissionCtaProps) => {
+export const MissionCTA = ({
+  CTAs,
+  rewards,
+  variableWeeklyAPY,
+}: MissionCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
@@ -60,16 +65,18 @@ export const MissionCTA = ({ CTAs, variableWeeklyAPY }: MissionCtaProps) => {
     <CTAMainBox>
       <StartedTitleBox>
         <StartedTitleTypography>Get Started</StartedTitleTypography>
-        <Box marginTop="32px">
-          <SoraTypography
-            fontSize={{ xs: '14px', md: '18px' }}
-            lineHeight={{ xs: '14px', md: '18px' }}
-            fontWeight={400}
-          >
-            Completing any mission below makes you eligible for OP rewards and
-            XP.
-          </SoraTypography>
-        </Box>
+        {rewards ? (
+          <Box marginTop="32px">
+            <SoraTypography
+              fontSize={{ xs: '14px', md: '18px' }}
+              lineHeight={{ xs: '14px', md: '18px' }}
+              fontWeight={400}
+            >
+              Completing any mission below makes you eligible for OP rewards and
+              XP.
+            </SoraTypography>
+          </Box>
+        ) : undefined}
       </StartedTitleBox>
       <SeveralCTABox>
         {CTAs.map((CTA: CTALinkInt, i: number) => {
