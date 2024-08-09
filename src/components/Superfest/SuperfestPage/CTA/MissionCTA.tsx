@@ -27,6 +27,7 @@ export interface CTALinkInt {
   claimingId: string;
   rewardId?: string;
   apy?: number;
+  weeklyApy?: string;
 }
 
 interface MissionCtaProps {
@@ -151,7 +152,11 @@ export const MissionCTA = ({
                         lineHeight="20px"
                         color={'#ffffff'}
                       >
-                        {rewardRange ? rewardRange : `VAR.%`}
+                        {CTA?.weeklyApy
+                          ? CTA?.weeklyApy
+                          : rewardRange
+                            ? rewardRange
+                            : `VAR.%`}
                       </SoraTypography>
                       <XPIconBox marginLeft="4px">
                         <APYIcon size={24} />
