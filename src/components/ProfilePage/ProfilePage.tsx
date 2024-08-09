@@ -31,7 +31,7 @@ export const ProfilePage = () => {
             isEVM={account?.chainType === 'EVM'}
             imageLink={imageLink}
           />
-          <Leaderboard />
+          <Leaderboard address={account?.address} />
       </Grid>
       <Grid xs={12} md={8}>
         <Stack

@@ -2,13 +2,17 @@ import { Box, Pagination, Stack, useTheme } from '@mui/material';
 import { NoSelectTypography } from '../ProfilePage.style';
 import { LeaderboardContainer } from './Leaderboard.style';
 import { XPIcon } from '../../../components/illustrations/XPIcon';
-import { useLeaderboard } from 'src/hooks/useLeaderboard';
+import { useLeaderboardList, useLeaderboardUser } from 'src/hooks/useLeaderboard';
+import { Button } from '../../../components/Button';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
 
 
-export const Leaderboard = () => {
+export const Leaderboard = ({ address }: { address?: string }) => {
   const theme = useTheme();
   
-  const { data: leaderboardData }: any = useLeaderboard();
+  const { data: leaderboardListData }: any = useLeaderboardList(1,25);
+  const { data: leaderboardUserData }: any = useLeaderboardUser('0xdbb6d1b6bceba6afc0dfdc44fb2d8afb0ce21c41');
 
   return (
     <LeaderboardContainer>
@@ -30,11 +34,11 @@ export const Leaderboard = () => {
           fontSize: { xs: 28, sm: 48 },
         }}
       >
-        216,123
+        {leaderboardUserData ? leaderboardUserData.position : '-'}
       </NoSelectTypography>
       <Stack direction={'column'} sx={{ margin: '20px 0' }}>
-        {leaderboardData ?
-        leaderboardData.map((entry: any, index: number) => (
+        {leaderboardListData ?
+        leaderboardListData.map((entry: any, index: number) => (
           <Box key={index} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ width: '100%', margin: '10px 0' }}>
             <NoSelectTypography
               fontSize="18px"
@@ -68,21 +72,22 @@ export const Leaderboard = () => {
         : 'Loading...'}
       </Stack>
       <Box>
-      <Pagination count={5} />
-      {/* <Button
+      <Button
         aria-label={'1'}
         variant="secondary"
         size="medium"
-        styles={{ alignItems: 'center', width: '100%' }}
+        styles={{ alignItems: 'center', width: '100%', display: 'flex', justifyContent: 'space-between', pointerEvents: 'none' }}
       >
+        <ChevronLeft sx={{ pointerEvents: 'auto' }} />
         <NoSelectTypography
           fontSize="16px"
           lineHeight="18px"
           fontWeight={600}
         >
-          1
+          1/24
         </NoSelectTypography>
-      </Button> */}
+        <ChevronRight sx={{ pointerEvents: 'auto' }} />
+      </Button>
       </Box>
     </LeaderboardContainer>
   );
