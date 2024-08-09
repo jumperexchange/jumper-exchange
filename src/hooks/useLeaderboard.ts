@@ -3,15 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 
 const LEADERBOARD_ENDPOINT = `${process.env.NEXT_PUBLIC_BACKEND_URL}/leaderboard`;
 
-// interface useMissionsAPYRes {
-//   isLoading: boolean;
-//   isSuccess: boolean;
-// }
-
 export const useLeaderboardList = (page: number, limit: number): any => {
 
   const { data: leaderboardListData, isSuccess, isLoading } = useQuery({
-    queryKey: ['leaderboard'],
+    queryKey: [`leaderboard-${page}-${limit}`],
     queryFn: async () => {
       try {
         const response = await fetch(`${LEADERBOARD_ENDPOINT}?page=${page}&limit=${limit}`);
@@ -24,9 +19,11 @@ export const useLeaderboardList = (page: number, limit: number): any => {
   });
 
   const data = leaderboardListData?.data;
+  const meta = leaderboardListData?.meta;
 
   return {
     data,
+    meta,
     isLoading,
     isSuccess,
   };
@@ -43,7 +40,7 @@ export const useLeaderboardUser = (walletAddress?: string): any => {
   }
 
   const { data: leaderboardUserData, isSuccess, isLoading } = useQuery({
-    queryKey: ['leaderboardUser'],
+    queryKey: [`leaderboard-user-${walletAddress}`],
     queryFn: async () => {
       try {
         const response = await fetch(`${LEADERBOARD_ENDPOINT}/${walletAddress}`);
