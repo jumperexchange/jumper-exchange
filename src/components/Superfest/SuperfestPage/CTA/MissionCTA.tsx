@@ -14,6 +14,7 @@ import {
 } from './MissionCTA.style';
 import Image from 'next/image';
 import { SoraTypography } from '../../Superfest.style';
+import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
 import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
 import { XPIconBox } from '../../QuestCard/QuestCard.style';
@@ -35,12 +36,14 @@ interface MissionCtaProps {
   id?: number;
   CTAs: CTALinkInt[];
   variableWeeklyAPY?: boolean;
+  signature?: boolean;
 }
 
 export const MissionCTA = ({
   CTAs,
   rewards,
   variableWeeklyAPY,
+  signature,
 }: MissionCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
@@ -48,6 +51,7 @@ export const MissionCTA = ({
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
+
   const handleClick = () => {
     // trackEvent({
     //   category: TrackingCategory.BlogArticle,
@@ -65,7 +69,7 @@ export const MissionCTA = ({
     <CTAMainBox>
       <StartedTitleBox>
         <StartedTitleTypography>Get Started</StartedTitleTypography>
-        {rewards ? (
+        {!signature && rewards ? (
           <Box marginTop="32px">
             <SoraTypography
               fontSize={{ xs: '14px', md: '18px' }}
@@ -79,6 +83,7 @@ export const MissionCTA = ({
         ) : undefined}
       </StartedTitleBox>
       <SeveralCTABox>
+        {signature && <SignatureCTA />}
         {CTAs.map((CTA: CTALinkInt, i: number) => {
           return (
             <Link
