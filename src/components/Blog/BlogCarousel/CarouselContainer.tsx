@@ -4,7 +4,6 @@ import { Box, useTheme, type CSSObject } from '@mui/material';
 
 import { TrackingAction, TrackingEventParameter } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { EventTrackingTool } from '@/types/userTracking';
 import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
 import {
@@ -52,10 +51,6 @@ export const CarouselContainer = ({
               data: {
                 [TrackingEventParameter.SwipeDirection]: 'left',
               },
-              disableTrackingTool: [
-                EventTrackingTool.ARCx,
-                EventTrackingTool.Cookie3,
-              ],
             });
             if (scrollLeftPos + swipeDistance < scrollWidth) {
               scrollPos = scrollLeftPos + swipeDistance;
@@ -71,10 +66,6 @@ export const CarouselContainer = ({
               data: {
                 [TrackingEventParameter.SwipeDirection]: 'right',
               },
-              disableTrackingTool: [
-                EventTrackingTool.ARCx,
-                EventTrackingTool.Cookie3,
-              ],
             });
             if (scrollLeftPos - swipeDistance > 0) {
               scrollPos = scrollLeftPos - swipeDistance;

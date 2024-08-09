@@ -73,6 +73,10 @@ const NFTInfo = {
     cid: 'GCSUCtkvFs',
     numberId: 307084,
   },
+  box: {
+    cid: 'GCwbetvgWp',
+    numberId: 309901,
+  },
 } as { [key: string]: { cid: string; numberId: number } };
 
 export const useCheckNFTAvailability = ({
@@ -145,12 +149,12 @@ export const useCheckNFTAvailability = ({
     const { verifyIDs, powahs, nftCoreAddress } =
       data.prepareParticipate.mintFuncInfo;
 
-    claimInfo.isClaimable = true;
     claimInfo.verifyIds = verifyIDs?.[0];
     claimInfo.powahs = powahs?.[0];
     claimInfo.signature = signature;
     claimInfo.claimingAddress = spaceStation;
     claimInfo.NFTAddress = nftCoreAddress;
+    claimInfo.isClaimable = true;
   }
 
   return {

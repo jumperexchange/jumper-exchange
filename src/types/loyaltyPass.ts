@@ -155,6 +155,7 @@ export interface LoyaltyPassState extends LoyaltyPassProps {
     pdas: PDA[],
     time: number,
   ) => void;
+  reset: () => void;
 }
 
 export interface LevelData {

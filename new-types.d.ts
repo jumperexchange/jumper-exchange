@@ -9,11 +9,8 @@ declare namespace NodeJS {
     SSR: boolean;
     NEXT_PUBLIC_ENVIRONMENT: string;
     NEXT_PUBLIC_SITE_URL: string;
-    NEXT_PUBLIC_ARCX_API_KEY: string;
     NEXT_PUBLIC_ADDRESSABLE_TID: string;
     NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: string;
-    NEXT_PUBLIC_HOTJAR_ID: number;
-    NEXT_PUBLIC_HOTJAR_SNIPPET_VERSION: number;
     SENTRY_AUTH_TOKEN: string;
     NEXT_PUBLIC_CUSTOM_RPCS: string;
     NEXT_PUBLIC_DKEY: string;
@@ -23,7 +20,6 @@ declare namespace NodeJS {
     NEXT_PUBLIC_LIFI_API_URL: string;
     NEXT_PUBLIC_ONRAMPER_ENABLED: string;
     NEXT_PUBLIC_ONRAMPER_API_KEY: string;
-    NEXT_PUBLIC_COOKIE3_SITEID: string;
     NEXT_PUBLIC_STRAPI_DEVELOP: string;
     NEXT_PUBLIC_STRAPI_URL: string;
     NEXT_PUBLIC_STRAPI_API_TOKEN: string;

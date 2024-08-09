@@ -1,7 +1,7 @@
-import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
-import { type PropsWithChildren } from 'react';
-import { cookies } from 'next/headers';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
+import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
+import { cookies } from 'next/headers';
+import { type PropsWithChildren } from 'react';
 
 interface AppProviderProps {
   children: React.ReactNode | JSX.Element;
