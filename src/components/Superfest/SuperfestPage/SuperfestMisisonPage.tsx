@@ -25,6 +25,7 @@ export const SuperfestMissionPage = ({
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
   const missionType = quest?.attributes?.CustomInformation?.['missionType'];
   const rewardType = attributes?.CustomInformation?.['rewardType'];
+  const rewardRange = attributes?.CustomInformation?.['rewardRange'];
   const rewards = quest.attributes.CustomInformation?.['rewards'];
   const points = quest?.attributes?.Points;
 
@@ -56,6 +57,7 @@ export const SuperfestMissionPage = ({
           CTAs={CTAsWithAPYs}
           variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
           signature={missionType === 'turtle_signature'}
+          rewardRange={rewardRange}
         />
         {/* Subtitle and description */}
         <DescriptionBox

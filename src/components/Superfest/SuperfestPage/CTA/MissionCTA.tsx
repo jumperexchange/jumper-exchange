@@ -37,6 +37,7 @@ interface MissionCtaProps {
   CTAs: CTALinkInt[];
   variableWeeklyAPY?: boolean;
   signature?: boolean;
+  rewardRange?: string;
 }
 
 export const MissionCTA = ({
@@ -44,6 +45,7 @@ export const MissionCTA = ({
   rewards,
   variableWeeklyAPY,
   signature,
+  rewardRange,
 }: MissionCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
@@ -149,7 +151,7 @@ export const MissionCTA = ({
                         lineHeight="20px"
                         color={'#ffffff'}
                       >
-                        {`VAR.%`}
+                        {rewardRange ? rewardRange : `VAR.%`}
                       </SoraTypography>
                       <XPIconBox marginLeft="4px">
                         <APYIcon size={24} />
