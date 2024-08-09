@@ -75,7 +75,7 @@ export const NFTClaimingBox = () => {
             key={`nft-card-${42}`}
             chain={'box'}
             image={'https://strapi.li.finance/uploads/nft_7d22cbd21c.png'}
-            bgColor={'#69d7ff'}
+            bgColor={'#B6E9FB'}
             typoColor={'#000000'}
           />
         </NFTDisplayBox>
