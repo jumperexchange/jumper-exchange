@@ -1,7 +1,7 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { useOngoingQuests } from '@/hooks/useOngoingQuests';
-import { Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { AddressBox } from './AddressBox/AddressBox';
 import { TierBox } from './LevelBox/TierBox';
@@ -31,7 +31,9 @@ export const ProfilePage = () => {
             isEVM={account?.chainType === 'EVM'}
             imageLink={imageLink}
           />
-          <Leaderboard address={account?.address} />
+          <Box display={{ xs: 'none', md: 'block' }}>
+            <Leaderboard address={account?.address} />
+          </Box>
       </Grid>
       <Grid xs={12} md={8}>
         <Stack

@@ -13,7 +13,7 @@ export const useLeaderboardList = (page: number, limit: number): any => {
         const result = await response.json();
         return result;
       } catch (err) {
-        console.log(err);
+        console.log('err', err);
       }
     },
   });
@@ -31,17 +31,16 @@ export const useLeaderboardList = (page: number, limit: number): any => {
 
 export const useLeaderboardUser = (walletAddress?: string): any => {
 
-  if (!walletAddress) {
-    return {
-      data: null,
-      isLoading: false,
-      isSuccess: false,
-    };
-  }
-
   const { data: leaderboardUserData, isSuccess, isLoading } = useQuery({
     queryKey: [`leaderboard-user-${walletAddress}`],
     queryFn: async () => {
+      if (!walletAddress) {
+        return {
+          data: null,
+          isLoading: false,
+          isSuccess: false,
+        };
+      }
       try {
         const response = await fetch(`${LEADERBOARD_ENDPOINT}/${walletAddress}`);
         const result = await response.json();

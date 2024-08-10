@@ -1,4 +1,4 @@
-import { Box, Skeleton, Stack, useTheme } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import { NoSelectTypography } from '../ProfilePage.style';
 import { LeaderboardContainer } from './Leaderboard.style';
 import { XPIcon } from '../../../components/illustrations/XPIcon';
@@ -18,27 +18,18 @@ export const Leaderboard = ({ address }: { address?: string }) => {
   const { data: leaderboardData, isLoading, meta } = useLeaderboardList(currentPage, LEADERBOARD_LENGTH);
   const { data: leaderboardUserData } = useLeaderboardUser(address);
 
-  console.log(meta);
+  const leaderboardListLength = meta?.pagination?.pagesLength || LEADERBOARD_LENGTH;
 
-  const leaderboardListLength = meta?.pagination?.pagesLength;
-
-  // Adjust current page based on data availability or conditions
   useEffect(() => {
-    // Automatically adjust if currentPage is out of bounds, rare edge case handling
-    if (currentPage > leaderboardListLength) {
-      setCurrentPage(leaderboardListLength);
-    }
-    if (currentPage < 1) {
-      setCurrentPage(1);
-    }
-  }, [currentPage, leaderboardListLength]);
+    setCurrentPage(current => Math.min(Math.max(current, 1), leaderboardListLength));
+  }, [leaderboardListLength]);
 
   const nextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, leaderboardListLength));
+    setCurrentPage(current => Math.min(current + 1, leaderboardListLength));
   };
   
   const previousPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    setCurrentPage(current => Math.max(current - 1, 1));
   };
 
   return (
@@ -54,37 +45,36 @@ export const Leaderboard = ({ address }: { address?: string }) => {
         {leaderboardUserData ? leaderboardUserData.position : '-'}
       </NoSelectTypography>
       <Stack direction={'column'} sx={{ margin: '20px 0' }}>
-        {isLoading ? 
-          <LeaderboardSkeleton />
-        : leaderboardData.map((entry: any, index: number) => (
-          <Box key={index} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ width: '100%', margin: '10px 0' }}>
-            <NoSelectTypography fontSize="18px" lineHeight="18px" fontWeight={500} sx={{ opacity: '0.5', width: '25px' }}>
-              {entry.position}.
-            </NoSelectTypography>
-            <NoSelectTypography fontSize="18px" lineHeight="18px" fontWeight={600} sx={{ width: '110px' }}>
-              {entry.walletAddress}
-            </NoSelectTypography>
-            <Box display={'flex'} alignItems={'center'}>
-              <NoSelectTypography fontSize="18px" lineHeight="18px" fontWeight={600} marginRight={'5px'}>
-                {entry.points}
+        {isLoading ? <LeaderboardSkeleton />
+          : leaderboardData?.map((entry: any, index: number) => (
+            <Box key={index} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ width: '100%', margin: '10px 0' }}>
+              <NoSelectTypography fontSize="18px" lineHeight="18px" fontWeight={500} sx={{ opacity: '0.5', width: '25px' }}>
+                {entry.position}.
               </NoSelectTypography>
-              <XPIcon size={24} />
+              <NoSelectTypography fontSize="18px" lineHeight="18px" fontWeight={600} sx={{ width: '110px' }}>
+                {entry.walletAddress}
+              </NoSelectTypography>
+              <Box display={'flex'} alignItems={'center'}>
+                <NoSelectTypography fontSize="18px" lineHeight="18px" fontWeight={600} marginRight={'5px'}>
+                  {entry.points}
+                </NoSelectTypography>
+                <XPIcon size={24} />
+              </Box>
             </Box>
-          </Box>
-        ))}
+          ))}
       </Stack>
-      {leaderboardListLength && <Box>
+      {leaderboardListLength > 1 && <Box>
         <Button
           aria-label="Page Navigation"
           variant="secondary"
           size="medium"
           styles={{ alignItems: 'center', width: '100%', display: 'flex', justifyContent: 'space-between', pointerEvents: 'none' }}
         >
-          <ChevronLeft onClick={previousPage} sx={{ pointerEvents: 'auto', cursor: 'pointer' }} />
+          <ChevronLeft onClick={previousPage} sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
           <NoSelectTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
             {currentPage}/{leaderboardListLength}
           </NoSelectTypography>
-          <ChevronRight onClick={nextPage} sx={{ pointerEvents: 'auto', cursor: 'pointer' }} />
+          <ChevronRight onClick={nextPage} sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
         </Button>
       </Box>}
     </LeaderboardContainer>
