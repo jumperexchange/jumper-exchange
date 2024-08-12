@@ -9,12 +9,61 @@ import { useJumperTracking } from '@/hooks/useJumperTracking';
 import { useSession } from '@/hooks/useSession';
 import type {
   TrackEventProps,
+  TrackTransactionDataProps,
   TrackTransactionProps,
 } from '@/types/userTracking';
 import { EventTrackingTool } from '@/types/userTracking';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useCallback, useEffect } from 'react';
+
+const googleEvent = ({
+  action,
+  category,
+  data,
+}: {
+  action: string;
+  category: string;
+  data?:
+    | TrackTransactionDataProps
+    | { [key: string]: string | number | boolean };
+}) => {
+  typeof window !== 'undefined' &&
+    window?.gtag('event', action, {
+      category: category,
+      ...data,
+    });
+};
+
+const addressableEvent = ({
+  action,
+  label,
+  data,
+  isConversion,
+}: {
+  action: string;
+  label: string;
+  data: any;
+  isConversion?: boolean;
+}) => {
+  const dataArray = [];
+  if (label) {
+    dataArray.push({ name: 'label', value: label });
+  }
+
+  typeof window !== 'undefined' &&
+    data &&
+    window.__adrsbl.run(
+      action,
+      isConversion ?? false,
+      dataArray.concat(
+        Object.entries(data).map(([key, value]) => ({
+          name: `${key}`,
+          value: `${value}`,
+        })),
+      ),
+    );
+};
 
 export function useUserTracking() {
   const { account } = useAccounts();
@@ -47,11 +96,7 @@ export function useUserTracking() {
       isConversion,
     }: TrackEventProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        typeof window !== 'undefined' &&
-          window?.gtag('event', action, {
-            category: category,
-            ...data,
-          });
+        googleEvent({ action, category, data });
       }
       if (enableAddressable) {
         const dataArray = [];
@@ -114,11 +159,7 @@ export function useUserTracking() {
       enableAddressable,
     }: TrackTransactionProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        typeof window !== 'undefined' &&
-          window?.gtag('event', action, {
-            category,
-            ...data,
-          });
+        googleEvent({ action, category, data });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
         const transactionData = {
@@ -145,6 +186,7 @@ export function useUserTracking() {
           toAmountUSD: data[TrackingEventParameter.ToAmount],
           errorCode: data[TrackingEventParameter.ErrorCode],
           errorMessage: data[TrackingEventParameter.ErrorMessage],
+          action: data[TrackingEventParameter.Action],
           // transactionLink: data[TrackingEventParameter.TransactionLink],
           // insuranceState: data[TrackingEventParameter.InsuranceState],
           // insuranceFeeAmountUSD:
@@ -155,21 +197,12 @@ export function useUserTracking() {
       }
 
       if (enableAddressable) {
-        const dataArray = [];
-        dataArray.push({ name: 'label', value: 'transaction' });
-
-        typeof window !== 'undefined' &&
-          data &&
-          window.__adrsbl.run(
-            action,
-            true,
-            dataArray.concat(
-              Object.entries(data).map(([key, value]) => ({
-                name: `${key}`,
-                value: `${value}`,
-              })),
-            ),
-          );
+        addressableEvent({
+          action,
+          label: 'transaction',
+          data,
+          isConversion: true,
+        });
       }
     },
     [account?.address, jumperTrackTransaction, sessionId],

@@ -24,6 +24,7 @@ export interface TrackTransactionDataProps {
   [TrackingEventParameter.Type]?: string;
   [TrackingEventParameter.RouteId]: string;
   [TrackingEventParameter.Status]?: string;
+  [TrackingEventParameter.Action]: string;
   [TrackingEventParameter.TransactionId]?: string;
   [TrackingEventParameter.TransactionHash]?: string;
   [TrackingEventParameter.TransactionLink]?: string;

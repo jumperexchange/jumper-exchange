@@ -128,6 +128,7 @@ export enum TrackingEventParameter {
   PageloadExternal = 'param_pageload_external',
 
   // Transaction:
+  Action = 'param_action',
   RouteId = 'param_route_id',
   TransactionId = 'param_transaction_id',
   SessionId = 'param_session_id',

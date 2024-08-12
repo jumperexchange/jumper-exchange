@@ -6,7 +6,6 @@ import {
   JUMPER_ANALYTICS_TRANSACTION,
 } from 'src/const/abi/jumperApiUrls';
 import { useFingerprint } from './useFingerprint';
-import { useIntegrator } from './useIntegrator';
 interface JumperDataTrackEventProps {
   category: string;
   action: string;
@@ -39,6 +38,7 @@ export interface JumperDataTrackTransactionProps {
   sessionId?: string;
   wallet?: string;
   type?: string;
+  action: string;
   transactionHash?: string;
   transactionStatus?: string;
   fromChainId?: number;
@@ -63,7 +63,6 @@ export interface JumperDataTrackTransactionProps {
 export const useJumperTracking = () => {
   const pathname = usePathname();
   const fp = useFingerprint();
-  const integratorString = useIntegrator();
   console.log('fp jumper-tracking', fp);
   const trackEvent = async (data: JumperDataTrackEventProps) => {
     console.log('TRACK EVENT', data);
@@ -86,9 +85,10 @@ export const useJumperTracking = () => {
 
   const trackTransaction = async (data: JumperDataTrackTransactionProps) => {
     const transactionData = {
-      walletAddress: data.wallet,
+      wallet: data.wallet,
       sessionId: data.sessionId,
-      integrator: integratorString,
+      integrator: data.integrator,
+      action: data.action,
       type: data.type,
       fromChain: data.fromChainId,
       toChain: data.toChainId,

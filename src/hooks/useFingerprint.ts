@@ -14,23 +14,14 @@ export const useFingerprint = () => {
   });
 
   useEffect(() => {
-    let active = true;
-    load();
-    return () => {
-      active = false;
-    };
-
     async function load() {
       const fp = await FingerprintJS.load();
       const response = await fp.get().then((el) => el);
-      if (!active) {
-        console.log('return');
-        return;
-      }
       setFingerprint(response.visitorId);
-
       sessionStorage.setItem('fpId', response.visitorId);
     }
+
+    load();
   }, []);
 
   return fingerprint;
