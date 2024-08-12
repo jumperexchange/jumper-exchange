@@ -15,13 +15,11 @@ import { EventTrackingTool } from '@/types/userTracking';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useCallback, useEffect } from 'react';
-import { useIntegrator } from '../useIntegrator';
 
 export function useUserTracking() {
   const { account } = useAccounts();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const sessionId = useSession();
-  const integratorString = useIntegrator();
   const {
     trackEvent: jumperTrackEvent,
     trackTransaction: jumperTrackTransaction,
@@ -139,8 +137,6 @@ export function useUserTracking() {
           exchange: data[TrackingEventParameter.Exchange],
           stepNumber: data[TrackingEventParameter.StepNumber],
           isFinal: data[TrackingEventParameter.IsFinal],
-          integrator:
-            integratorString || process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
           gasCost: data[TrackingEventParameter.GasCost],
           gasCostUSD: data[TrackingEventParameter.GasCostUSD],
           fromAmount: data[TrackingEventParameter.FromAmount],
@@ -176,7 +172,7 @@ export function useUserTracking() {
           );
       }
     },
-    [account?.address, integratorString, jumperTrackTransaction, sessionId],
+    [account?.address, jumperTrackTransaction, sessionId],
   );
 
   return {

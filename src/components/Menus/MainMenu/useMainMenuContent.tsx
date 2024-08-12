@@ -253,9 +253,9 @@ export const useMainMenuContent = () => {
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
-          label: 'click-jumper-x',
+          label: 'click-x-link',
           action: TrackingAction.ClickXLink,
-          data: { [TrackingEventParameter.Menu]: 'jumper-x' },
+          data: { [TrackingEventParameter.Menu]: 'x-jumper' },
         });
         trackEvent({
           category: TrackingCategory.Pageload,
@@ -263,7 +263,7 @@ export const useMainMenuContent = () => {
           label: 'pageload-x_jumper',
           data: {
             [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'jumper-x',
+            [TrackingEventParameter.PageloadDestination]: 'x-jumper',
             [TrackingEventParameter.PageloadURL]: X_URL,
             [TrackingEventParameter.PageloadExternal]: true,
           },

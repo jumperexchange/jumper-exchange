@@ -1,10 +1,12 @@
 'use client';
 import { usePathname } from 'next/navigation';
+
 import {
   JUMPER_ANALYTICS_EVENT,
   JUMPER_ANALYTICS_TRANSACTION,
-} from 'src/const/urls';
+} from 'src/const/abi/jumperApiUrls';
 import { useFingerprint } from './useFingerprint';
+import { useIntegrator } from './useIntegrator';
 interface JumperDataTrackEventProps {
   category: string;
   action: string;
@@ -45,8 +47,8 @@ export interface JumperDataTrackTransactionProps {
   toToken?: string;
   exchange?: string;
   stepNumber?: number;
+  integrator?: string;
   isFinal: boolean;
-  integrator: string;
   gasCost?: string;
   gasCostUSD?: string;
   fromAmount?: string;
@@ -61,6 +63,7 @@ export interface JumperDataTrackTransactionProps {
 export const useJumperTracking = () => {
   const pathname = usePathname();
   const fp = useFingerprint();
+  const integratorString = useIntegrator();
   console.log('fp jumper-tracking', fp);
   const trackEvent = async (data: JumperDataTrackEventProps) => {
     console.log('TRACK EVENT', data);
@@ -73,7 +76,7 @@ export const useJumperTracking = () => {
         sessionId: data.sessionId,
         data: data.data,
         walletAddress: data.walletAddress,
-        browserFingerprint: 'test fingerprint',
+        browserFingerprint: fp,
         isMobile: false,
         url: `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
       },
@@ -85,7 +88,7 @@ export const useJumperTracking = () => {
     const transactionData = {
       walletAddress: data.wallet,
       sessionId: data.sessionId,
-      integrator: data.integrator,
+      integrator: integratorString,
       type: data.type,
       fromChain: data.fromChainId,
       toChain: data.toChainId,
@@ -97,7 +100,7 @@ export const useJumperTracking = () => {
       gasCost: data.gasCost,
       gasCostUSD: data.gasCostUSD,
       fromAmount: data.fromAmount,
-      browserFingerprint: 'test fingerprint',
+      browserFingerprint: fp,
       toAmount: data.toAmount,
       transactionHash: data.transactionHash,
       transactionStatus: data.transactionStatus,

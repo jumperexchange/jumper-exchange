@@ -1,4 +1,5 @@
 'use client';
+import type { Process, RouteExtended, Step } from '@lifi/sdk';
 import { type Route } from '@lifi/sdk';
 
 import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
@@ -19,6 +20,7 @@ import { useMultisigStore } from '@/stores/multisig';
 import type {
   ChainTokenSelected,
   ContactSupport,
+  Estimate,
   Execution,
   LiFiStep,
   RouteExecutionUpdate,
@@ -29,7 +31,54 @@ import { useEffect, useRef, useState } from 'react';
 
 interface LifiStepProps extends LiFiStep {
   execution: Execution;
+  estimate: Estimate;
 }
+
+const getStepData = (route: RouteExtended) => {
+  let currentStep = {};
+  route.steps.map((step) =>
+    step.execution?.process.map(
+      (process) =>
+        process.status !== 'DONE' &&
+        step.includedSteps?.forEach((includeStep: Step) => {
+          currentStep = {
+            [TrackingEventParameter.RouteId]: step.id,
+            [TrackingEventParameter.TransactionId]: includeStep.id,
+            [TrackingEventParameter.Type]: includeStep.type,
+            [TrackingEventParameter.Exchange]: includeStep.tool,
+            [TrackingEventParameter.FromToken]:
+              includeStep.action.fromToken.address,
+            [TrackingEventParameter.ToToken]:
+              includeStep.action.toToken.address,
+            [TrackingEventParameter.FromChainId]:
+              includeStep.action.fromChainId,
+            [TrackingEventParameter.ToChainId]: includeStep.action.toChainId,
+            [TrackingEventParameter.FromAmount]:
+              includeStep.estimate.fromAmount,
+            [TrackingEventParameter.FromAmountUSD]:
+              includeStep.estimate.fromAmountUSD,
+            [TrackingEventParameter.ToAmount]: includeStep.estimate.toAmount,
+            [TrackingEventParameter.ToAmountUSD]:
+              includeStep.estimate.toAmountUSD,
+            [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
+            [TrackingEventParameter.Status]: process.status,
+            [TrackingEventParameter.TransactionHash]:
+              process.map((el: Process) => el.status !== 'DONE' && el.txHash) ||
+              '',
+            [TrackingEventParameter.TransactionLink]:
+              process.map((el: Process) => el.status !== 'DONE' && el.txLink) ||
+              '',
+            [TrackingEventParameter.GasCostUSD]: route.gasCostUSD || '',
+            [TrackingEventParameter.ErrorCode]: process.error?.code || '',
+            [TrackingEventParameter.ErrorMessage]: process.error?.message || '',
+            [TrackingEventParameter.NonInteraction]: true,
+            [TrackingEventParameter.IsFinal]: false,
+          };
+        }),
+    ),
+  );
+  return currentStep;
+};
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -55,8 +104,8 @@ export function WidgetEvents() {
     useState(false);
 
   useEffect(() => {
-    const onRouteExecutionStarted = async (route: Route) => {
-      if (!!route.id) {
+    const onRouteExecutionStarted = async (route: RouteExtended) => {
+      if (route.id) {
         console.log('ROUTE STARTED DATA IN', route);
         trackTransaction({
           category: TrackingCategory.WidgetEvent,
@@ -66,18 +115,9 @@ export function WidgetEvents() {
           data: {
             [TrackingEventParameter.Type]: 'started',
             [TrackingEventParameter.TransactionId]: route.id,
-            [TrackingEventParameter.RouteId]: (
-              route.steps[route.steps.length - 1] as LifiStepProps
-            ).id,
-            [TrackingEventParameter.TransactionHash]: undefined,
-            [TrackingEventParameter.TransactionLink]: undefined,
-            [TrackingEventParameter.Exchange]:
-              route.steps[route.steps.length - 1].estimate?.tool,
-            [TrackingEventParameter.StepNumber]: route.steps.length,
-            [TrackingEventParameter.GasCost]: undefined,
+            [TrackingEventParameter.RouteId]: route.steps[0].id,
+            [TrackingEventParameter.Exchange]: route.steps[0].estimate?.tool,
             [TrackingEventParameter.GasCostUSD]: route.gasCostUSD,
-            [TrackingEventParameter.ErrorCode]: undefined,
-            [TrackingEventParameter.ErrorMessage]: undefined,
             [TrackingEventParameter.Status]: (
               route.steps[route.steps.length - 1] as LifiStepProps
             ).execution?.status,
@@ -89,17 +129,23 @@ export function WidgetEvents() {
             [TrackingEventParameter.FromAmount]: route.fromAmount,
             [TrackingEventParameter.ToAmount]: route.toAmount,
             [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
-            // [TrackingEventParameter.NonInteraction]: undefined,
             [TrackingEventParameter.FromAmountUSD]: route.fromAmountUSD,
             [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
             [TrackingEventParameter.Variant]: Object.values(TabsMap).filter(
               (el) => el.index === activeTab,
             )[0].variant,
+            [TrackingEventParameter.TransactionHash]: undefined,
+            [TrackingEventParameter.TransactionLink]: undefined,
+            [TrackingEventParameter.ErrorCode]: undefined,
+            [TrackingEventParameter.ErrorMessage]: undefined,
+
+            // [TrackingEventParameter.NonInteraction]: undefined,
           },
           enableAddressable: true,
         });
       }
     };
+
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
       // check if multisig and open the modal
 
@@ -115,45 +161,14 @@ export function WidgetEvents() {
         console.log('ROUTE UPDATED DATA IN', update);
         if (update.process.txHash !== lastTxHashRef.current) {
           lastTxHashRef.current = update.process.txHash;
+          const stepData = getStepData(update.route);
           trackTransaction({
             category: TrackingCategory.WidgetEvent,
             action: TrackingAction.OnRouteExecutionUpdated,
             label: 'execution_update',
             value: parseFloat(update.route.fromAmountUSD),
             data: {
-              [TrackingEventParameter.FromAmountUSD]:
-                update.route.fromAmountUSD,
-              [TrackingEventParameter.ToAmountUSD]: update.route.toAmountUSD,
-              [TrackingEventParameter.FromAmount]: update.route.fromAmount,
-              [TrackingEventParameter.ToAmount]: update.route.toAmount,
-              [TrackingEventParameter.ToAmountMin]: update.route.toAmountMin,
-              [TrackingEventParameter.FromToken]:
-                update.route.fromToken.address,
-              [TrackingEventParameter.ToToken]: update.route.toToken.address,
-              [TrackingEventParameter.FromChainId]: update.route.fromChainId,
-              [TrackingEventParameter.ToChainId]: update.route.toChainId,
-              [TrackingEventParameter.RouteId]: `${update.route.id}`,
-              [TrackingEventParameter.Status]:
-                (
-                  update.route?.steps &&
-                  (update.route.steps[
-                    update.route.steps.length - 1
-                  ] as LifiStepProps)
-                ).execution?.status || update.process.status,
-              [TrackingEventParameter.TransactionId]: update.process.txHash,
-              [TrackingEventParameter.TransactionHash]:
-                update.process.txHash || '',
-              [TrackingEventParameter.TransactionLink]:
-                update.process.txLink || '',
-              [TrackingEventParameter.Type]: update.process.type,
-              [TrackingEventParameter.GasCostUSD]:
-                update.route.gasCostUSD || '',
-              [TrackingEventParameter.ErrorCode]:
-                update.process.error?.code || '',
-              [TrackingEventParameter.ErrorMessage]:
-                update.process.error?.message || '',
-              [TrackingEventParameter.NonInteraction]: true,
-              [TrackingEventParameter.IsFinal]: false,
+              ...stepData,
               [TrackingEventParameter.Variant]: Object.values(TabsMap).filter(
                 (el) => el.index === activeTab,
               )[0].variant,
@@ -163,7 +178,7 @@ export function WidgetEvents() {
       }
     };
     const onRouteExecutionCompleted = async (route: Route) => {
-      if (!!route.id) {
+      if (route.id) {
         console.log('ROUTE COMPLETED DATA IN', route);
         trackTransaction({
           category: TrackingCategory.WidgetEvent,
@@ -363,6 +378,7 @@ export function WidgetEvents() {
     setSupportModalState,
     shouldOpenMultisigSignatureModal,
     trackEvent,
+    trackTransaction,
     widgetEvents,
   ]);
 

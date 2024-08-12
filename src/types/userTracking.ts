@@ -29,6 +29,7 @@ export interface TrackTransactionDataProps {
   [TrackingEventParameter.TransactionLink]?: string;
   [TrackingEventParameter.FromChainId]?: number;
   [TrackingEventParameter.ToChainId]?: number;
+  [TrackingEventParameter.Integrator]?: string;
   [TrackingEventParameter.FromToken]?: string;
   [TrackingEventParameter.ToToken]?: string;
   [TrackingEventParameter.Exchange]?: string;
