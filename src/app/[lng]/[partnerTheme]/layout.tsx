@@ -4,6 +4,7 @@ import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
 import { Layout } from 'src/Layout';
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
+import { notFound } from 'next/navigation';
 
 export default async function PartnerThemeLayout({
   children,
@@ -13,6 +14,10 @@ export default async function PartnerThemeLayout({
   params: { partnerTheme: string };
 }) {
   const partnerThemes = await getPartnerThemes();
+
+  if (!partnerThemes.data?.find((d) => d.attributes.uid === partnerTheme)) {
+    return notFound();
+  }
 
   return (
     <NextThemeProvider
