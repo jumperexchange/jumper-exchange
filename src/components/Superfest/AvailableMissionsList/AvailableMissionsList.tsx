@@ -107,6 +107,8 @@ export const AvailableMissionsList = ({
               const rewards = quest.attributes.CustomInformation?.['rewards'];
               const rewardType =
                 quest.attributes?.CustomInformation?.['rewardType'];
+              const rewardRange =
+                quest.attributes?.CustomInformation?.['rewardRange'];
               const chains = quest.attributes.CustomInformation?.['chains'];
               const claimingIds =
                 quest.attributes?.CustomInformation?.['claimingIds'];
@@ -166,6 +168,7 @@ export const AvailableMissionsList = ({
                   variableWeeklyAPY={
                     quest?.attributes.Points > 0 && rewardType === 'weekly'
                   }
+                  rewardRange={rewardRange}
                 />
               );
             })
