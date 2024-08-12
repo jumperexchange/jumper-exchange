@@ -11,12 +11,29 @@ import { LeaderboardSkeleton } from './LeaderboardSkeleton';
 
 const LEADERBOARD_LENGTH = 25;
 
+interface LeaderboardEntry {
+  position: number;
+  walletAddress: string;
+  points: number;
+}
+
+interface LeaderboardUserData {
+  position: number;
+  points: number;
+}
+
+interface LeaderboardMeta {
+  pagination: {
+    pagesLength: number;
+  };
+}
+
 export const Leaderboard = ({ address }: { address?: string }) => {
   const theme = useTheme();
   
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: leaderboardData, meta } = useLeaderboardList(currentPage, LEADERBOARD_LENGTH);
-  const { data: leaderboardUserData } = useLeaderboardUser(address);
+  const { data: leaderboardData, meta }: { data: LeaderboardEntry[], meta: LeaderboardMeta } = useLeaderboardList(currentPage, LEADERBOARD_LENGTH);
+  const { data: leaderboardUserData }: { data: LeaderboardUserData } = useLeaderboardUser(address);
 
   const leaderboardListLength = meta?.pagination?.pagesLength || LEADERBOARD_LENGTH;
 
@@ -42,11 +59,11 @@ export const Leaderboard = ({ address }: { address?: string }) => {
         fontWeight={700}
         sx={{ fontSize: { xs: 28, sm: 48 } }}
       >
-        {leaderboardUserData ? leaderboardUserData.position : '-'}
+        {leaderboardUserData?.position ?? '-'}
       </NoSelectTypography>
       <Stack direction={'column'} sx={{ margin: '20px 0' }}>
         {!leaderboardData?.length ? <LeaderboardSkeleton />
-          : leaderboardData?.map((entry: any, index: number) => (
+          : leaderboardData?.map((entry: LeaderboardEntry, index: number) => (
             <Box key={index} display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ width: '100%', margin: '10px 0' }}>
               <NoSelectTypography fontSize="18px" lineHeight="18px" fontWeight={500} sx={{ opacity: '0.5', width: '25px' }}>
                 {entry.position}.
