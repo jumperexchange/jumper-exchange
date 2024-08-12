@@ -49,7 +49,7 @@ export interface JumperDataTrackTransactionProps {
   stepNumber?: number;
   integrator?: string;
   isFinal: boolean;
-  gasCost?: string;
+  gasCost?: number;
   gasCostUSD?: string;
   fromAmount?: string;
   fromAmountUSD?: string;
@@ -85,8 +85,9 @@ export const useJumperTracking = () => {
 
   const trackTransaction = async (data: JumperDataTrackTransactionProps) => {
     const transactionData = {
-      wallet: data.wallet,
+      walletAddress: data.wallet,
       sessionId: data.sessionId,
+      routeId: data.routeId,
       integrator: data.integrator,
       action: data.action,
       type: data.type,
@@ -94,16 +95,22 @@ export const useJumperTracking = () => {
       toChain: data.toChainId,
       fromToken: data.fromToken,
       toToken: data.toToken,
-      exchange: data.exchange,
       stepNumber: data.stepNumber,
-      isFinal: data.isFinal,
-      gasCost: data.gasCost,
-      gasCostUSD: data.gasCostUSD,
-      fromAmount: data.fromAmount,
-      browserFingerprint: fp,
-      toAmount: data.toAmount,
-      transactionHash: data.transactionHash,
+      exchange: data.exchange,
       transactionStatus: data.transactionStatus,
+      isFinal: data.isFinal,
+      gasCost: data.gasCost || -1,
+      gasCostUSD: (data.gasCostUSD && parseFloat(data.gasCostUSD)) || -1,
+      fromAmountUSD:
+        (data.fromAmountUSD && parseFloat(data.fromAmountUSD)) || undefined,
+      toAmountUSD:
+        (data.toAmountUSD && parseFloat(data.toAmountUSD)) || undefined,
+      fromAmount: (data.fromAmount && parseFloat(data.fromAmount)) || undefined,
+      fromChainId: data.fromChainId,
+      browserFingerprint: fp,
+      toAmount: data.toAmount && parseFloat(data.toAmount),
+      toChainId: data.toChainId,
+      transactionHash: data.transactionHash,
     };
     console.log('TRACK TRANSACTION DATA', transactionData);
     await track(transactionData, 'transaction');

@@ -31,13 +31,14 @@ export interface TrackTransactionDataProps {
   [TrackingEventParameter.FromChainId]?: number;
   [TrackingEventParameter.ToChainId]?: number;
   [TrackingEventParameter.Integrator]?: string;
+  [TrackingEventParameter.TransactionStatus]?: string;
   [TrackingEventParameter.FromToken]?: string;
   [TrackingEventParameter.ToToken]?: string;
   [TrackingEventParameter.Exchange]?: string;
   [TrackingEventParameter.StepNumber]?: number;
   [TrackingEventParameter.TxHash]?: string;
   [TrackingEventParameter.IsFinal]: boolean;
-  [TrackingEventParameter.GasCost]?: string;
+  [TrackingEventParameter.GasCost]?: number;
   [TrackingEventParameter.GasCostUSD]?: string;
   [TrackingEventParameter.FromAmount]?: string;
   [TrackingEventParameter.FromAmountUSD]?: string;

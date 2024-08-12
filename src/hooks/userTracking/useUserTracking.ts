@@ -169,10 +169,11 @@ export function useUserTracking() {
           routeId: data[TrackingEventParameter.RouteId],
           transactionHash:
             data[TrackingEventParameter.TransactionHash] || undefined,
-          transactionStatus: data[TrackingEventParameter.Status],
+          transactionStatus: data[TrackingEventParameter.TransactionStatus],
           transactionId: data[TrackingEventParameter.TransactionId],
           fromChainId: data[TrackingEventParameter.FromChainId],
           toChainId: data[TrackingEventParameter.ToChainId],
+          integrator: data[TrackingEventParameter.Integrator],
           fromToken: data[TrackingEventParameter.FromToken],
           toToken: data[TrackingEventParameter.ToToken],
           exchange: data[TrackingEventParameter.Exchange],

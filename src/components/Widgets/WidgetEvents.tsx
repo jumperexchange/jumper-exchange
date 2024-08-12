@@ -40,7 +40,7 @@ const getStepData = (
   activeTab?: number | boolean,
 ): TrackTransactionDataProps => {
   let currentStep = {};
-  route.steps.forEach((step) =>
+  route.steps.forEach((step, index) =>
     step.execution?.process.forEach((process) => {
       if (process.status !== 'DONE') {
         currentStep = {
@@ -54,21 +54,30 @@ const getStepData = (
           [TrackingEventParameter.FromToken]: step.action.fromToken.address,
           [TrackingEventParameter.ToToken]: step.action.toToken.address,
           [TrackingEventParameter.FromChainId]: step.action.fromChainId,
+          [TrackingEventParameter.Integrator]: step.integrator,
+          [TrackingEventParameter.StepNumber]: index + 1,
           [TrackingEventParameter.ToChainId]: step.action.toChainId,
           [TrackingEventParameter.FromAmount]: step.estimate.fromAmount,
           [TrackingEventParameter.FromAmountUSD]: step.estimate.fromAmountUSD,
           [TrackingEventParameter.ToAmount]: step.estimate.toAmount,
           [TrackingEventParameter.ToAmountUSD]: step.estimate.toAmountUSD,
           [TrackingEventParameter.ToAmountMin]: step.estimate.toAmountMin,
-          [TrackingEventParameter.Status]: process.status,
+          // [TrackingEventParameter.Status]: process.status,
+          [TrackingEventParameter.TransactionStatus]: process.status,
           [TrackingEventParameter.TransactionHash]: process.txHash || '',
           [TrackingEventParameter.TransactionLink]: process.txLink || '',
-          [TrackingEventParameter.GasCostUSD]: `${step.execution?.gasCosts?.reduce(
+          [TrackingEventParameter.GasCost]: step.estimate.gasCosts?.reduce(
+            (accumulator: number, currentValue: any) => {
+              return accumulator + currentValue.amount;
+            },
+            0,
+          ),
+          [TrackingEventParameter.GasCostUSD]: step.execution?.gasCosts?.reduce(
             (accumulator: number, currentValue: any) => {
               return accumulator + currentValue.amountUSD;
             },
             0,
-          )}`,
+          ),
           [TrackingEventParameter.ErrorCode]: process.error?.code || '',
           [TrackingEventParameter.ErrorMessage]: process.error?.message || '',
           [TrackingEventParameter.NonInteraction]: true,
@@ -120,13 +129,25 @@ export function WidgetEvents() {
             [TrackingEventParameter.RouteId]: route.steps[0].id,
             [TrackingEventParameter.Exchange]: route.steps[0].estimate?.tool,
             [TrackingEventParameter.GasCostUSD]: route.gasCostUSD,
-            [TrackingEventParameter.Status]: (route.steps[0] as LifiStepProps)
-              .execution?.status,
+            [TrackingEventParameter.TransactionStatus]:
+              (route.steps[0] as LifiStepProps).execution?.status || 'PENDING',
+            [TrackingEventParameter.Integrator]:
+              route.steps[0]?.integrator || 'undefined',
+            [TrackingEventParameter.Type]: route.containsSwitchChain
+              ? 'bridge'
+              : 'swap',
             [TrackingEventParameter.IsFinal]: false,
             [TrackingEventParameter.FromToken]: route.fromToken.address,
             [TrackingEventParameter.ToToken]: route.toToken.address,
             [TrackingEventParameter.FromChainId]: route.fromToken.chainId,
             [TrackingEventParameter.ToChainId]: route.toToken.chainId,
+            [TrackingEventParameter.StepNumber]: 0,
+            [TrackingEventParameter.GasCost]: route.steps.reduce(
+              (accumulator: number, currentValue: any) => {
+                return accumulator + currentValue.amount;
+              },
+              0,
+            ),
             [TrackingEventParameter.FromAmount]: route.fromAmount,
             [TrackingEventParameter.ToAmount]: route.toAmount,
             [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
@@ -170,9 +191,6 @@ export function WidgetEvents() {
             value: parseFloat(update.route.fromAmountUSD),
             data: {
               ...stepData,
-              [TrackingEventParameter.Variant]: Object.values(TabsMap).filter(
-                (el) => el.index === activeTab,
-              )[0].variant,
             },
           });
         }
