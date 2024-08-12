@@ -1,10 +1,10 @@
-import React from 'react';
-import { FeatureCards } from '@/components/FeatureCards';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
+import { FeatureCards } from '@/components/FeatureCards';
 import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
-import { Layout } from 'src/Layout';
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import { notFound } from 'next/navigation';
+import React from 'react';
+import { Layout } from 'src/Layout';
 
 export default async function PartnerThemeLayout({
   children,
@@ -15,7 +15,10 @@ export default async function PartnerThemeLayout({
 }) {
   const partnerThemes = await getPartnerThemes();
 
-  if (!partnerThemes.data?.find((d) => d.attributes.uid === partnerTheme)) {
+  const partnerThemesData = partnerThemes.data?.find(
+    (d) => d.attributes.uid === partnerTheme,
+  );
+  if (!partnerThemesData) {
     return notFound();
   }
 
@@ -26,11 +29,14 @@ export default async function PartnerThemeLayout({
         'light',
         ...partnerThemes.data.map((d) => d.attributes.uid),
       ]}
-      forcedTheme={partnerTheme}
+      forcedTheme={partnerThemesData.attributes.uid}
       enableSystem
       enableColorScheme
     >
-      <ThemeProviderV2 themes={partnerThemes.data} activeTheme={partnerTheme}>
+      <ThemeProviderV2
+        themes={partnerThemes.data}
+        activeTheme={partnerThemesData.attributes.uid}
+      >
         <Layout disableNavbar={true}>{children}</Layout>
         <FeatureCards />
       </ThemeProviderV2>
