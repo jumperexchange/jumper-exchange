@@ -47,6 +47,7 @@ export const BlogParagraph = styled(Typography, {
     margin: theme.spacing(2, 0),
     ...(quote && {
       paddingLeft: theme.spacing(1),
+      position: 'relative',
       ':before': {
         content: '" "',
         position: 'absolute',
