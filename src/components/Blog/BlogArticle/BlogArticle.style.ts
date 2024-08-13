@@ -33,6 +33,7 @@ export const BlogArticleTopHeader = styled(Box)(({ theme }) => ({
   fontSize: '16px',
   fontWeight: 400,
   lineHeight: '32px',
+  marginTop: theme.spacing(3),
   color:
     theme.palette.mode === 'light'
       ? theme.palette.grey[800]
