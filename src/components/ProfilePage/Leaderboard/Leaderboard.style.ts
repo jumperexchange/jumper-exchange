@@ -7,7 +7,7 @@ export const LeaderboardContainer = styled(Box)(({ theme }) => ({
       ? alpha(theme.palette.white.main, 0.48)
       : alpha(theme.palette.white.main, 0.12),
   borderRadius: '32px',
-  width:'100%',
+  width: '100%',
   padding: theme.spacing(4),
   margin: theme.spacing(4, 0, 0),
   boxShadow:

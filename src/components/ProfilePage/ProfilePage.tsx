@@ -22,10 +22,14 @@ export const ProfilePage = () => {
   return (
     <ProfilePageContainer className="profile-page">
       <Grid container>
-      <Grid xs={12} md={4} sx={{
-        paddingRight: { xs: 0, md: 4 },
-        paddingBottom: { xs: 4, md: 0 },
-      }}>
+        <Grid
+          xs={12}
+          md={4}
+          sx={{
+            paddingRight: { xs: 0, md: 4 },
+            paddingBottom: { xs: 4, md: 0 },
+          }}
+        >
           <AddressBox
             address={account?.address}
             isEVM={account?.chainType === 'EVM'}
@@ -34,21 +38,19 @@ export const ProfilePage = () => {
           <Box display={{ xs: 'none', md: 'block' }}>
             <Leaderboard address={account?.address} />
           </Box>
-      </Grid>
-      <Grid xs={12} md={8}>
-        <Stack
-          spacing={{ xs: 2, sm: 4 }}
-        >
-          <ProfilePageHeaderBox
-            sx={{ display: 'flex', flex: 2, padding: { xs: 0, sm: 3 } }}
-          >
-            <TierBox points={points} tier={tier} loading={isLoading} />
-          </ProfilePageHeaderBox>
+        </Grid>
+        <Grid xs={12} md={8}>
+          <Stack spacing={{ xs: 2, sm: 4 }}>
+            <ProfilePageHeaderBox
+              sx={{ display: 'flex', flex: 2, padding: { xs: 0, sm: 3 } }}
+            >
+              <TierBox points={points} tier={tier} loading={isLoading} />
+            </ProfilePageHeaderBox>
 
-          <QuestCarousel quests={quests} loading={isQuestLoading} />
-          <QuestCompletedList pdas={pdas} loading={isLoading} />
-        </Stack>
-      </Grid>
+            <QuestCarousel quests={quests} loading={isQuestLoading} />
+            <QuestCompletedList pdas={pdas} loading={isLoading} />
+          </Stack>
+        </Grid>
       </Grid>
     </ProfilePageContainer>
   );
