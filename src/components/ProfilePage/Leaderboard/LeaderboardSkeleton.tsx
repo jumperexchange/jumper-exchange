@@ -1,11 +1,11 @@
 import { Skeleton } from '@mui/material';
 
-export const LeaderboardSkeleton = () => {
+export const LeaderboardSkeleton = ({ length }: { length: number }) => {
   return (
     <Skeleton
       variant="rectangular"
       sx={{
-        height: '24px',
+        height: `${length * 44}px`,
         width: '288px',
         textAlign: 'center',
         borderRadius: '8px',
