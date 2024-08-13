@@ -102,6 +102,15 @@ export const CustomRichBlocks = ({
           );
       }
     },
+    quote: ({ children }: any) => {
+      return children.map((quote: any) => {
+        return (
+          <BlogParagraphContainer>
+            <BlogParagraph quote={true}>{quote.props.text}</BlogParagraph>
+          </BlogParagraphContainer>
+        );
+      });
+    },
     paragraph: ({ children }: any) => {
       if (children[0].props.text.includes('<JUMPER_CTA')) {
         try {
