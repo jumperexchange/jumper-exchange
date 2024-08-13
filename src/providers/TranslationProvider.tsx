@@ -23,10 +23,8 @@ export default function TranslationsProvider({
 
   initTranslations(locale || fallbackLng, namespaces, i18n, resources);
 
-  console.log('initlanguage');
   useEffect(() => {
     const i18nLanguageChangedListener = function (lng: string) {
-      console.log('languageChanged', lng);
       document.documentElement.setAttribute('lang', lng); //set the lang here
     };
 

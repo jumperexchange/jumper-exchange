@@ -17,7 +17,7 @@ export interface MerklApyRes {
   endTimestamp: number;
 }
 
-export const useMissionsAPY = (CTAs: CTALinkInt[]): useMissionsAPYRes => {
+export const useMissionsAPY = (CTAs: CTALinkInt[] = []): useMissionsAPYRes => {
   const MERKL_CAMPAIGN_API = `${MERKL_API}/campaigns?chainIds=${ACTIVE_CHAINS.join(',')}&creatorTag=${CREATOR_TAG}`;
 
   const { data, isSuccess, isLoading } = useQuery({
