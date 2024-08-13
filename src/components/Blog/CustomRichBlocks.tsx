@@ -223,7 +223,7 @@ export const CustomRichBlocks = ({
                         strikethrough={el.props.strikethrough}
                         underline={el.props.underline}
                         bold={el.props.bold}
-                        key={`blog-paragraph-line-${index}-${lineIndex}`}
+                        key={generateKey('blog-paragraph-line')}
                       >
                         {line}
                       </BlogParagraph>
