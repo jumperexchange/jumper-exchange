@@ -126,7 +126,9 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
                 fontWeight={700}
                 marginLeft={'16px'}
               >
-                {'You are a turtle club member.'}
+                {
+                  'Congrats, you are a Turtle Club member now. Pour some whisky and enjoy the boosted yields on your existing DeFi positions.'
+                }
               </SoraTypography>
             </CTAExplanationBox>
           </SeveralMissionCtaContainer>
