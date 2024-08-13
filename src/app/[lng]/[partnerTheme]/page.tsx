@@ -4,8 +4,6 @@ import { Widget } from '@/components/Widgets/Widget';
 import { getCookies } from '@/app/lib/getCookies';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 
-export const dynamicParams = false;
-
 export async function generateStaticParams() {
   const partnerThemes = await getPartnerThemes();
 

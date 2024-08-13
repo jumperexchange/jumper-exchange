@@ -80,7 +80,7 @@ export const Leaderboard = ({ address }: { address?: string }) => {
       </NoSelectTypography>
       <Stack direction={'column'} sx={{ margin: '20px 0' }}>
         {!leaderboardData?.length ? (
-          <LeaderboardSkeleton />
+          <LeaderboardSkeleton length={LEADERBOARD_LENGTH} />
         ) : (
           leaderboardData?.map((entry: LeaderboardEntry, index: number) => (
             <Box
