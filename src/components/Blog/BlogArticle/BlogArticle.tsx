@@ -84,11 +84,6 @@ export const BlogArticle = ({
       </BlogArticleImageContainer>
       <BlogArticleContainer>
         <BlogArticleContentContainer>
-          {title ? (
-            <BlogArticleTitle variant="h1">{title}</BlogArticleTitle>
-          ) : (
-            <BlogArticleTitleSkeleton />
-          )}
           <BlogMetaContainer>
             <BlogAuthorContainer>
               {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
@@ -137,6 +132,11 @@ export const BlogArticle = ({
               <BlogArticleMetaSkeleton variant="text" />
             )}
           </BlogArticleTopHeader>
+          {title ? (
+            <BlogArticleTitle variant="h1">{title}</BlogArticleTitle>
+          ) : (
+            <BlogArticleTitleSkeleton />
+          )}
           {subtitle ? (
             <BlogArticleSubtitle variant="headerMedium" as="h4">
               {subtitle}
