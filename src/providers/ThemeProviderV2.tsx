@@ -14,7 +14,7 @@ import {
 } from '@/utils/formatTheme';
 import { deepmerge } from '@mui/utils';
 import { useSettingsStore } from '@/stores/settings';
-import { PartnerThemesData } from '@/types/strapi';
+import type { PartnerThemesData } from '@/types/strapi';
 
 function getPartnerTheme(themes: PartnerThemesData[], activeTheme?: string) {
   return themes?.find((d) => d.attributes.uid === activeTheme)?.attributes;
@@ -51,7 +51,11 @@ interface ThemeProviderV2Props {
  * Your app's theme provider component.
  * 'use client' is essential for next-themes to work with app-dir.
  */
-export function ThemeProviderV2({ children, activeTheme, themes }: ThemeProviderV2Props) {
+export function ThemeProviderV2({
+  children,
+  activeTheme,
+  themes,
+}: ThemeProviderV2Props) {
   const { resolvedTheme, forcedTheme, ...props2 } = useTheme();
   const [cookie, setCookie] = useCookies(['theme']);
   const [partnerThemes, setPartnerThemes] = useSettingsStore((state) => [
