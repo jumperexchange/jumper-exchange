@@ -5,8 +5,8 @@ import { useCombinedWallets } from '@/hooks/useCombinedWallets';
 import { useMenuStore } from '@/stores/menu';
 import type { MenuListItem } from '@/types/internal';
 import { getContrastAlphaColor } from '@/utils/colors';
+import type { CreateConnectorFnExtended } from '@lifi/wallet-management';
 import {
-  CreateConnectorFnExtended,
   getConnectorIcon,
   isWalletInstalled,
   isWalletInstalledAsync,
