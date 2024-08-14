@@ -2,6 +2,7 @@ import { useAccountConnect } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
 import { ChainId } from '@lifi/types';
+import type { CreateConnectorFnExtended } from '@lifi/wallet-management';
 import { Avatar, Typography, useTheme } from '@mui/material';
 import { type Connector } from 'wagmi';
 import {
@@ -11,7 +12,7 @@ import {
 
 interface EvmConnectButton {
   walletIcon?: string;
-  evm: Connector;
+  evm: Connector | CreateConnectorFnExtended;
 }
 
 export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {

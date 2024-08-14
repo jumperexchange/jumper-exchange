@@ -1,5 +1,12 @@
 'use client';
+import { defaultCoinbaseConfig } from '@/config/coinbase';
+import { defaultMetaMaskConfig } from '@/config/metaMask';
+import { defaultWalletConnectConfig } from '@/config/walletConnect';
+import type { CreateConnectorFnExtended } from '@lifi/wallet-management';
 import {
+  createCoinbaseConnector,
+  createMetaMaskConnector,
+  createWalletConnectConnector,
   isWalletInstalled,
   isWalletInstalledAsync,
 } from '@lifi/wallet-management';
@@ -14,12 +21,12 @@ import {
 } from 'wagmi';
 
 export interface CombinedWallet {
-  evm?: Connector;
+  evm?: CreateConnectorFnExtended | Connector;
   svm?: Wallet;
 }
 
 const combineWalletLists = (
-  evmConnectorList: Connector[],
+  evmConnectorList: (CreateConnectorFnExtended | Connector)[],
   svmWalletList: Wallet[],
 ): CombinedWallet[] => {
   const combined: CombinedWallet[] = evmConnectorList.map((evm) => {
@@ -57,7 +64,34 @@ export const useCombinedWallets = () => {
 
   // combine installed wallets
   useEffect(() => {
-    const evmInstalled = connectors.filter(
+    const evmConnectors: (CreateConnectorFnExtended | Connector)[] =
+      Array.from(connectors);
+    if (
+      !connectors.some((connector) =>
+        connector.id.toLowerCase().includes('walletconnect'),
+      )
+    ) {
+      evmConnectors.unshift(
+        createWalletConnectConnector(defaultWalletConnectConfig),
+      );
+    }
+    if (
+      !connectors.some((connector) =>
+        connector.id.toLowerCase().includes('coinbase'),
+      ) &&
+      !isWalletInstalled('coinbase')
+    ) {
+      evmConnectors.unshift(createCoinbaseConnector(defaultCoinbaseConfig));
+    }
+    if (
+      !connectors.some((connector) =>
+        connector.id.toLowerCase().includes('metamask'),
+      ) &&
+      !isWalletInstalled('metaMask')
+    ) {
+      evmConnectors.unshift(createMetaMaskConnector(defaultMetaMaskConfig));
+    }
+    const evmInstalled = evmConnectors.filter(
       (connector) =>
         isWalletInstalled(connector.id) &&
         // We should not show already connected connectors
@@ -70,9 +104,23 @@ export const useCombinedWallets = () => {
         // We should not show already connected connectors
         !connector.adapter.connected,
     );
-    const combined = combineWalletLists(evmInstalled, svmInstalled);
+    const installedWallets = combineWalletLists(evmInstalled, svmInstalled);
 
-    setCombinedInstalledWallets(combined);
+    const evmNotDetected = evmConnectors.filter(
+      (connector) => !isWalletInstalled(connector.id),
+    );
+
+    const svmNotDetected = solanaWallets?.filter(
+      (connector) =>
+        connector.adapter.readyState !== WalletReadyState.Installed,
+    );
+    const notDetectedWallets = combineWalletLists(
+      evmNotDetected,
+      svmNotDetected,
+    );
+
+    setCombinedInstalledWallets(installedWallets);
+    setCombinedNotDetectedWallets(notDetectedWallets);
   }, [connectors, account.connector, solanaWallets]);
 
   // check for multisig wallets
@@ -83,9 +131,7 @@ export const useCombinedWallets = () => {
       );
       if (await isWalletInstalledAsync(safeWallet?.id || '')) {
         setCombinedInstalledWallets((oldCombined) => {
-          if (
-            !oldCombined.find((oldC) => oldC.evm?.name === safeWallet?.name)
-          ) {
+          if (!oldCombined.find((oldC) => oldC.evm?.id === safeWallet?.id)) {
             return [...oldCombined, { evm: safeWallet }];
           } else {
             return oldCombined;
@@ -95,20 +141,6 @@ export const useCombinedWallets = () => {
     };
     multiSigInstalled();
   }, [connectors]);
-
-  // combine undetected wallets
-  useEffect(() => {
-    const evmNotDetected = connectors.filter(
-      (connector) => !isWalletInstalled(connector.id),
-    );
-
-    const svmNotDetected = solanaWallets?.filter(
-      (connector) =>
-        connector.adapter.readyState !== WalletReadyState.Installed,
-    );
-    const combined = combineWalletLists(evmNotDetected, svmNotDetected);
-    setCombinedNotDetectedWallets(combined);
-  }, [connectors, account.connector, solanaWallets]);
 
   return { combinedInstalledWallets, combinedNotDetectedWallets };
 };

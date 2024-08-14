@@ -6,6 +6,7 @@ import { useMenuStore } from '@/stores/menu';
 import type { MenuListItem } from '@/types/internal';
 import { getContrastAlphaColor } from '@/utils/colors';
 import {
+  CreateConnectorFnExtended,
   getConnectorIcon,
   isWalletInstalled,
   isWalletInstalledAsync,
@@ -18,6 +19,7 @@ import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
+import { type Connector } from 'wagmi';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();
@@ -98,17 +100,19 @@ export const useWalletSelectContent = () => {
     };
 
     const output = availableWallets.map((combinedWallet) => {
+      const walletDisplayName =
+        (combinedWallet.evm as CreateConnectorFnExtended)?.displayName ||
+        (combinedWallet.evm as Connector)?.name ||
+        combinedWallet.svm?.adapter.name ||
+        '';
       return {
-        label:
-          (combinedWallet.evm?.name || combinedWallet.svm?.adapter.name) ?? '',
+        label: walletDisplayName,
         prefixIcon: (
           <Avatar
             className="wallet-select-avatar"
-            src={
-              getConnectorIcon(combinedWallet.evm) ||
-              combinedWallet.evm?.icon ||
-              combinedWallet.svm?.adapter.icon
-            }
+            src={getConnectorIcon(
+              (combinedWallet.evm as Connector) || combinedWallet.svm?.adapter,
+            )}
             alt={`${
               combinedWallet.evm?.id || combinedWallet.svm?.adapter.name
             }-wallet-logo`}
@@ -127,10 +131,7 @@ export const useWalletSelectContent = () => {
             action: TrackingAction.ClickConnectWallet,
             label: 'click_connect_wallet',
             data: {
-              wallet:
-                (combinedWallet.evm?.name ||
-                  combinedWallet.svm?.adapter.name) ??
-                '',
+              wallet: walletDisplayName,
             },
             enableAddressable: true,
           });

@@ -1,4 +1,7 @@
 'use client';
+import { defaultCoinbaseConfig } from '@/config/coinbase';
+import { defaultMetaMaskConfig } from '@/config/metaMask';
+import { defaultWalletConnectConfig } from '@/config/walletConnect';
 import { useChains } from '@/hooks/useChains';
 import type { ExtendedChain } from '@lifi/sdk';
 import {
@@ -8,19 +11,13 @@ import {
 } from '@lifi/wallet-management';
 import { type FC, type PropsWithChildren } from 'react';
 import { WagmiProvider } from 'wagmi';
-import { siteName } from '@/app/lib/metadata';
-
-const JUMPER_LOGO_URL = 'https://jumper.exchange/logo-144x144.svg';
 
 const { config, connectors } = createDefaultWagmiConfig({
-  walletConnect: {
-    projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
-  },
-  coinbase: {
-    appName: siteName,
-    appLogoUrl: JUMPER_LOGO_URL,
-  },
+  coinbase: defaultCoinbaseConfig,
+  metaMask: defaultMetaMaskConfig,
+  walletConnect: defaultWalletConnectConfig,
   connectors: [safe],
+  lazy: true,
 });
 
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
