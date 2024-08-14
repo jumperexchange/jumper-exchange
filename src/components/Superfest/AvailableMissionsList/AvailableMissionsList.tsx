@@ -116,7 +116,7 @@ export const AvailableMissionsList = ({
                 quest.attributes?.CustomInformation?.['rewardsIds'];
 
               //todo: exclude in a dedicated helper function
-              if (chainsFilter && chainsFilter.length > 0) {
+              if (chains && chainsFilter && chainsFilter.length > 0) {
                 let included = false;
                 for (const chain of chains) {
                   if (
