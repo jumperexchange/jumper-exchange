@@ -29,6 +29,8 @@ import type {
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import {
+  getGasFees,
+  getRouteType,
   getSourceTxHash,
   getSourceTxLink,
   getStepData,
@@ -64,7 +66,9 @@ export function WidgetEvents() {
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: RouteExtended) => {
+      const gasCost = getGasFees(route);
       if (route.id) {
+        const type = getRouteType(route);
         trackTransaction({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionStarted,
@@ -80,22 +84,14 @@ export function WidgetEvents() {
               (route.steps[0] as LifiStepProps).execution?.status || 'STARTED',
             [TrackingEventParameter.Integrator]:
               route.steps[0]?.integrator || 'undefined',
-            [TrackingEventParameter.Type]: route.containsSwitchChain
-              ? 'bridge'
-              : 'swap',
+            [TrackingEventParameter.Type]: type,
             [TrackingEventParameter.IsFinal]: false,
             [TrackingEventParameter.FromToken]: route.fromToken.address,
             [TrackingEventParameter.ToToken]: route.toToken.address,
             [TrackingEventParameter.FromChainId]: route.fromToken.chainId,
             [TrackingEventParameter.ToChainId]: route.toToken.chainId,
             [TrackingEventParameter.StepNumber]: 0,
-            [TrackingEventParameter.GasCost]: -1, //todo: implement
-            // route.steps.reduce(
-            //   (accumulator: number, currentValue: any) => {
-            //     return accumulator + currentValue.amount;
-            //   },
-            //   0,
-            // ),
+            [TrackingEventParameter.GasCost]: gasCost,
             [TrackingEventParameter.FromAmount]: route.fromAmount,
             [TrackingEventParameter.ToAmount]: route.toAmount,
             [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
@@ -143,6 +139,7 @@ export function WidgetEvents() {
     };
     const onRouteExecutionCompleted = async (route: Route) => {
       if (route.id) {
+        const type = getRouteType(route);
         trackTransaction({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionCompleted,
@@ -152,9 +149,7 @@ export function WidgetEvents() {
             [TrackingEventParameter.RouteId]: route.id,
             [TrackingEventParameter.Action]: 'execution_completed',
             [TrackingEventParameter.IsFinal]: true,
-            [TrackingEventParameter.Type]: route.containsSwitchChain
-              ? 'bridge'
-              : 'swap',
+            [TrackingEventParameter.Type]: type,
             [TrackingEventParameter.TransactionStatus]: 'COMPLETED',
             [TrackingEventParameter.Integrator]: route.steps[0].integrator,
             [TrackingEventParameter.FromChainId]: route.fromChainId,
@@ -166,7 +161,8 @@ export function WidgetEvents() {
             [TrackingEventParameter.ToAmount]: route.toAmount,
             [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
             [TrackingEventParameter.ToToken]: route.toToken.address,
-            [TrackingEventParameter.TxHash]: getSourceTxHash(route),
+            [TrackingEventParameter.TxHash]:
+              getSourceTxHash(route) || lastTxHashRef.current,
             [TrackingEventParameter.TransactionLink]: getSourceTxLink(route),
           },
           enableAddressable: true,
@@ -183,8 +179,13 @@ export function WidgetEvents() {
         data: {
           [TrackingEventParameter.Action]: 'execution_failed',
           [TrackingEventParameter.RouteId]: update.route.id,
-          [TrackingEventParameter.TxHash]: update.process.txHash || '',
+          [TrackingEventParameter.TxHash]:
+            update.process.txHash ||
+            getSourceTxHash(update.route) ||
+            lastTxHashRef.current ||
+            'unknown',
           [TrackingEventParameter.Status]: update.process.status,
+          [TrackingEventParameter.Type]: update.process.type,
           [TrackingEventParameter.Message]: update.process.message || '',
           [TrackingEventParameter.ErrorMessage]:
             update.process.error?.message || '',
@@ -200,6 +201,9 @@ export function WidgetEvents() {
           [TrackingEventParameter.FromAmountUSD]: update.route.toAmountUSD,
           [TrackingEventParameter.ToAmountUSD]: update.route.toAmountUSD,
           [TrackingEventParameter.Integrator]: update.route.steps[0].integrator,
+          [TrackingEventParameter.TransactionLink]: getSourceTxLink(
+            update.route,
+          ),
         },
         enableAddressable: true,
       });

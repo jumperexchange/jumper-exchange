@@ -21,6 +21,7 @@ interface JumperDataTrackEventProps {
 
 const track = async (data: object, path: string) => {
   try {
+    console.log('NEXT_PUBLIC_BACKEND_URL', process.env.NEXT_PUBLIC_BACKEND_URL);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}${path}`,
       {
@@ -79,7 +80,7 @@ export const useJumperTracking = () => {
         value: data.value,
         isConnected: data.isConnected,
         sessionId: data.sessionId,
-        data: data.data,
+        data: data.data || {},
         walletAddress: data.walletAddress || '',
         browserFingerprint: fp,
         isMobile: data.isMobile,
@@ -99,7 +100,7 @@ export const useJumperTracking = () => {
       fromToken: data.fromToken,
       toToken: data.toToken,
       stepNumber: data.stepNumber,
-      exchange: data.exchange || '',
+      exchange: data.exchange || 'unknown',
       transactionStatus: data.transactionStatus,
       isFinal: data.isFinal,
       gasCost: data.gasCost || -1,

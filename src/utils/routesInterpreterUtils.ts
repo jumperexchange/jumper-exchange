@@ -7,7 +7,9 @@ export const getStepData = (
   route: RouteExtended,
   activeTab?: number | boolean,
 ): TrackTransactionDataProps => {
+  const gasCost = getGasFees(route);
   let currentStep = {};
+  const type = getRouteType(route);
   route.steps.forEach((step, index) =>
     step.execution?.process.forEach((process) => {
       const routeStatus = getRouteStatus(route);
@@ -18,7 +20,7 @@ export const getStepData = (
           [TrackingEventParameter.Action]: 'execution_updated',
           [TrackingEventParameter.TransactionId]:
             step.includedSteps[step.includedSteps.length - 1].id,
-          [TrackingEventParameter.Type]: step.type,
+          [TrackingEventParameter.Type]: type,
           [TrackingEventParameter.Exchange]: step.tool,
           [TrackingEventParameter.FromToken]: step.action.fromToken.address,
           [TrackingEventParameter.ToToken]: step.action.toToken.address,
@@ -31,18 +33,11 @@ export const getStepData = (
           [TrackingEventParameter.ToAmount]: step.estimate.toAmount,
           [TrackingEventParameter.ToAmountUSD]: step.estimate.toAmountUSD,
           [TrackingEventParameter.ToAmountMin]: step.estimate.toAmountMin,
-          // [TrackingEventParameter.Status]: process.status,
           [TrackingEventParameter.TransactionStatus]:
             routeStatus || process.status,
           [TrackingEventParameter.TransactionHash]: process.txHash || '',
           [TrackingEventParameter.TransactionLink]: process.txLink || '',
-          [TrackingEventParameter.GasCost]: -1, //todo fix
-          // step.estimate.gasCosts?.reduce(
-          //   (accumulator: number, currentValue: any) => {
-          //     return accumulator + currentValue.amount;
-          //   },
-          //   0,
-          // )
+          [TrackingEventParameter.GasCost]: gasCost,
           [TrackingEventParameter.GasCostUSD]: route.gasCostUSD,
           [TrackingEventParameter.ErrorCode]: process.error?.code || '',
           [TrackingEventParameter.ErrorMessage]: process.error?.message || '',
@@ -63,6 +58,13 @@ export const isRouteDone = (route: RouteExtended) => {
 
 export const isRouteFailed = (route: RouteExtended) => {
   return route.steps.some((step) => step.execution?.status === 'FAILED');
+};
+
+export const getRouteType = (route: RouteExtended) => {
+  if (!route) {
+    return 'unknown';
+  }
+  return route.fromChainId !== route.toChainId ? 'CROSS_CHAIN' : 'SWAP';
 };
 
 export const getRouteStatus = (route?: RouteExtended) => {
@@ -93,4 +95,21 @@ export const getSourceTxLink = (route?: RouteExtended) => {
   return route?.steps[0].execution?.process
     .filter((process) => process.type !== 'TOKEN_ALLOWANCE')
     .find((process) => process.txHash)?.txLink;
+};
+
+export const getGasFees = (route?: RouteExtended) => {
+  if (!route) {
+    return 0;
+  }
+
+  return route.steps.reduce((sum, step) => {
+    const gasFees = step.execution?.gasCosts || step.estimate?.gasCosts;
+    const innerSum =
+      gasFees?.reduce((innerSum, innerItem) => {
+        return innerSum + parseFloat(innerItem.amount || '0');
+      }, 0) || 0;
+
+    // Add the innerSum to the total sum
+    return sum + innerSum;
+  }, 0);
 };
