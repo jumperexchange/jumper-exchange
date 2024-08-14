@@ -502,7 +502,7 @@ export const useMainMenuContent = () => {
           label: 'pageload-x_jumper',
           data: {
             [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'jumper-x',
+            [TrackingEventParameter.PageloadDestination]: 'x-jumper',
             [TrackingEventParameter.PageloadURL]: X_URL,
             [TrackingEventParameter.PageloadExternal]: true,
           },

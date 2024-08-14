@@ -28,72 +28,20 @@ import type {
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
-import type { TrackTransactionDataProps } from 'src/types/userTracking';
+import {
+  getStepData,
+  getUpdatedProcess,
+} from 'src/utils/routesInterpreterUtils';
 
 interface LifiStepProps extends LiFiStep {
   execution: Execution;
   estimate: Estimate;
 }
 
-const getStepData = (
-  route: RouteExtended,
-  activeTab?: number | boolean,
-): TrackTransactionDataProps => {
-  let currentStep = {};
-  route.steps.forEach((step, index) =>
-    step.execution?.process.forEach((process) => {
-      if (process.status !== 'DONE') {
-        currentStep = {
-          [TrackingEventParameter.RouteId]: step.id,
-          [TrackingEventParameter.IsFinal]: false,
-          [TrackingEventParameter.Action]: 'execution_updated',
-          [TrackingEventParameter.TransactionId]:
-            step.includedSteps[step.includedSteps.length - 1].id,
-          [TrackingEventParameter.Type]: step.type,
-          [TrackingEventParameter.Exchange]: step.tool,
-          [TrackingEventParameter.FromToken]: step.action.fromToken.address,
-          [TrackingEventParameter.ToToken]: step.action.toToken.address,
-          [TrackingEventParameter.FromChainId]: step.action.fromChainId,
-          [TrackingEventParameter.Integrator]: step.integrator,
-          [TrackingEventParameter.StepNumber]: index + 1,
-          [TrackingEventParameter.ToChainId]: step.action.toChainId,
-          [TrackingEventParameter.FromAmount]: step.estimate.fromAmount,
-          [TrackingEventParameter.FromAmountUSD]: step.estimate.fromAmountUSD,
-          [TrackingEventParameter.ToAmount]: step.estimate.toAmount,
-          [TrackingEventParameter.ToAmountUSD]: step.estimate.toAmountUSD,
-          [TrackingEventParameter.ToAmountMin]: step.estimate.toAmountMin,
-          // [TrackingEventParameter.Status]: process.status,
-          [TrackingEventParameter.TransactionStatus]: process.status,
-          [TrackingEventParameter.TransactionHash]: process.txHash || '',
-          [TrackingEventParameter.TransactionLink]: process.txLink || '',
-          [TrackingEventParameter.GasCost]: step.estimate.gasCosts?.reduce(
-            (accumulator: number, currentValue: any) => {
-              return accumulator + currentValue.amount;
-            },
-            0,
-          ),
-          [TrackingEventParameter.GasCostUSD]: step.execution?.gasCosts?.reduce(
-            (accumulator: number, currentValue: any) => {
-              return accumulator + currentValue.amountUSD;
-            },
-            0,
-          ),
-          [TrackingEventParameter.ErrorCode]: process.error?.code || '',
-          [TrackingEventParameter.ErrorMessage]: process.error?.message || '',
-          [TrackingEventParameter.NonInteraction]: true,
-          [TrackingEventParameter.Variant]:
-            Object.values(TabsMap).find((el) => el.index === activeTab)
-              ?.variant || '',
-        };
-      }
-    }),
-  );
-  return currentStep as TrackTransactionDataProps;
-};
-
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { activeTab } = useActiveTabStore();
+  const [activeRoute, setActiveRoute] = useState<RouteExtended>();
   const { setDestinationChainToken, setSourceChainToken } =
     useChainTokenSelectionStore();
   const { trackTransaction, trackEvent } = useUserTracking();
@@ -130,7 +78,7 @@ export function WidgetEvents() {
             [TrackingEventParameter.Exchange]: route.steps[0].estimate?.tool,
             [TrackingEventParameter.GasCostUSD]: route.gasCostUSD,
             [TrackingEventParameter.TransactionStatus]:
-              (route.steps[0] as LifiStepProps).execution?.status || 'PENDING',
+              (route.steps[0] as LifiStepProps).execution?.status || 'STARTED',
             [TrackingEventParameter.Integrator]:
               route.steps[0]?.integrator || 'undefined',
             [TrackingEventParameter.Type]: route.containsSwitchChain
@@ -142,12 +90,13 @@ export function WidgetEvents() {
             [TrackingEventParameter.FromChainId]: route.fromToken.chainId,
             [TrackingEventParameter.ToChainId]: route.toToken.chainId,
             [TrackingEventParameter.StepNumber]: 0,
-            [TrackingEventParameter.GasCost]: route.steps.reduce(
-              (accumulator: number, currentValue: any) => {
-                return accumulator + currentValue.amount;
-              },
-              0,
-            ),
+            [TrackingEventParameter.GasCost]: -1, //todo: implement
+            // route.steps.reduce(
+            //   (accumulator: number, currentValue: any) => {
+            //     return accumulator + currentValue.amount;
+            //   },
+            //   0,
+            // ),
             [TrackingEventParameter.FromAmount]: route.fromAmount,
             [TrackingEventParameter.ToAmount]: route.toAmount,
             [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
@@ -169,6 +118,7 @@ export function WidgetEvents() {
 
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
       // check if multisig and open the modal
+      const clonedUpdatedRoute = structuredClone(update.route);
 
       const isMultisigRouteActive = shouldOpenMultisigSignatureModal(
         update.route,
@@ -178,7 +128,12 @@ export function WidgetEvents() {
         setIsMultiSigConfirmationModalOpen(true);
       }
 
-      if (!!update.process && !!update.route) {
+      setActiveRoute(clonedUpdatedRoute);
+      if (activeRoute) {
+        const process = getUpdatedProcess(activeRoute, clonedUpdatedRoute);
+        console.log('PROCESS', process);
+      }
+      if (update.process && update.route) {
         console.log('ROUTE UPDATED DATA IN', update);
         if (update.process.txHash !== lastTxHashRef.current) {
           lastTxHashRef.current = update.process.txHash;
@@ -211,6 +166,8 @@ export function WidgetEvents() {
             [TrackingEventParameter.Type]: route.containsSwitchChain
               ? 'bridge'
               : 'swap',
+            [TrackingEventParameter.TransactionStatus]: 'COMPLETED',
+            [TrackingEventParameter.Integrator]: route.steps[0].integrator,
             [TrackingEventParameter.FromChainId]: route.fromChainId,
             [TrackingEventParameter.FromAmountUSD]: route.fromAmountUSD,
             [TrackingEventParameter.FromAmount]: route.fromAmount,
@@ -244,6 +201,16 @@ export function WidgetEvents() {
             update.process.error?.message || '',
           [TrackingEventParameter.IsFinal]: false,
           [TrackingEventParameter.ErrorCode]: update.process.error?.code || '',
+          [TrackingEventParameter.TransactionStatus]: 'FAILED',
+          [TrackingEventParameter.FromChainId]: update.route.fromChainId,
+          [TrackingEventParameter.ToChainId]: update.route.toChainId,
+          [TrackingEventParameter.FromToken]: update.route.fromToken.address,
+          [TrackingEventParameter.ToToken]: update.route.toToken.address,
+          [TrackingEventParameter.FromAmount]: update.route.fromAmount,
+          [TrackingEventParameter.ToAmount]: update.route.toAmount,
+          [TrackingEventParameter.FromAmountUSD]: update.route.toAmountUSD,
+          [TrackingEventParameter.ToAmountUSD]: update.route.toAmountUSD,
+          [TrackingEventParameter.Integrator]: update.route.steps[0].integrator,
         },
         enableAddressable: true,
       });
@@ -303,6 +270,7 @@ export function WidgetEvents() {
           action: TrackingAction.OnWidgetExpanded,
           label: `widget_expanded`,
           enableAddressable: true,
+          data: {},
         });
     };
 

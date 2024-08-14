@@ -126,7 +126,7 @@ export function useUserTracking() {
             label,
             data: data,
             isConnected: account?.isConnected,
-            walletAddress: account?.address,
+            walletAddress: account?.address || 'not_connected',
             browserFingerprint: undefined,
             isMobile: !isDesktop,
             sessionId,
@@ -164,7 +164,7 @@ export function useUserTracking() {
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
         const transactionData = {
           sessionId,
-          wallet: account?.address,
+          wallet: account?.address || '',
           type: data[TrackingEventParameter.Type],
           routeId: data[TrackingEventParameter.RouteId],
           transactionHash:

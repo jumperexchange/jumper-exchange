@@ -19,24 +19,31 @@ interface JumperDataTrackEventProps {
   sessionId?: string;
 }
 
-const track = async (data: object, type: 'event' | 'transaction' = 'event') => {
-  let result;
-  await fetch(
-    `${process.env.NEXT_PUBLIC_JUMPER_API}${type !== 'event' ? JUMPER_ANALYTICS_TRANSACTION : JUMPER_ANALYTICS_EVENT}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+const track = async (data: object, path: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_JUMPER_API}${path}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    },
-  );
-  return result;
+    );
+    if (!response.ok && process.env.MODE !== 'production') {
+      console.error('Tracking failed', response.statusText);
+    }
+  } catch (error) {
+    if (process.env.MODE === 'development') {
+      console.error('Tracking error', error);
+    }
+  }
 };
 
 export interface JumperDataTrackTransactionProps {
   sessionId?: string;
-  wallet?: string;
+  wallet: string;
   type?: string;
   action: string;
   transactionHash?: string;
@@ -65,38 +72,53 @@ export const useJumperTracking = () => {
   const fp = useFingerprint();
   console.log('fp jumper-tracking', fp);
   const trackEvent = async (data: JumperDataTrackEventProps) => {
-    console.log('TRACK EVENT', data);
+    console.log('TRACK EVENT', {
+      category: data.category,
+      action: data.action,
+      label: data.label,
+      value: data.value,
+      isConnected: data.isConnected,
+      sessionId: data.sessionId,
+      data: data.data,
+      walletAddress: data.walletAddress || 'empty',
+      browserFingerprint: fp,
+      isMobile: data.isMobile,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
+    });
     await track(
       {
         category: data.category,
         action: data.action,
         label: data.label,
         value: data.value,
+        isConnected: data.isConnected,
         sessionId: data.sessionId,
         data: data.data,
-        walletAddress: data.walletAddress,
+        walletAddress: data.walletAddress || '',
         browserFingerprint: fp,
-        isMobile: false,
+        isMobile: data.isMobile,
         url: `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
       },
-      'event',
+      JUMPER_ANALYTICS_EVENT,
     );
   };
 
   const trackTransaction = async (data: JumperDataTrackTransactionProps) => {
+    console.log('DATA', data);
     const transactionData = {
-      walletAddress: data.wallet,
       sessionId: data.sessionId,
       routeId: data.routeId,
       integrator: data.integrator,
       action: data.action,
       type: data.type,
-      fromChain: data.fromChainId,
-      toChain: data.toChainId,
+      // walletAddress: data.wallet,
+      // fromChain: data.fromChainId,
+      // toChain: data.toChainId,
+      // browserFingerprint: fp,
       fromToken: data.fromToken,
       toToken: data.toToken,
       stepNumber: data.stepNumber,
-      exchange: data.exchange,
+      exchange: data.exchange || '',
       transactionStatus: data.transactionStatus,
       isFinal: data.isFinal,
       gasCost: data.gasCost || -1,
@@ -107,13 +129,13 @@ export const useJumperTracking = () => {
         (data.toAmountUSD && parseFloat(data.toAmountUSD)) || undefined,
       fromAmount: (data.fromAmount && parseFloat(data.fromAmount)) || undefined,
       fromChainId: data.fromChainId,
-      browserFingerprint: fp,
       toAmount: data.toAmount && parseFloat(data.toAmount),
       toChainId: data.toChainId,
-      transactionHash: data.transactionHash,
+      transactionHash: data.transactionHash || '',
+      wallet: data.wallet,
     };
     console.log('TRACK TRANSACTION DATA', transactionData);
-    await track(transactionData, 'transaction');
+    await track(transactionData, JUMPER_ANALYTICS_TRANSACTION);
   };
 
   return { trackTransaction, trackEvent };

@@ -1,28 +1,24 @@
 'use client';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 export const useFingerprint = () => {
-  const [fingerprint, setFingerprint] = useState<string | undefined>(() => {
-    if (
-      typeof window !== 'undefined' &&
-      typeof sessionStorage !== 'undefined'
-    ) {
-      return sessionStorage.getItem('fpId') || undefined;
-    }
-    return undefined;
-  });
-
+  const loadedRef = useRef(sessionStorage.getItem('fpId') || false);
+  console.log('useFingerPrint');
   useEffect(() => {
     async function load() {
-      const fp = await FingerprintJS.load();
-      const response = await fp.get().then((el) => el);
-      setFingerprint(response.visitorId);
-      sessionStorage.setItem('fpId', response.visitorId);
+      if (!loadedRef.current) {
+        const fp = await FingerprintJS.load();
+        const response = await fp.get();
+        loadedRef.current = response.visitorId;
+        sessionStorage.setItem('fpId', response.visitorId);
+      }
     }
 
-    load();
+    if (!loadedRef.current) {
+      load();
+    }
   }, []);
 
-  return fingerprint;
+  return useMemo(() => loadedRef.current, []);
 };

@@ -1,3 +1,3 @@
 // jumper api endpoints
-export const JUMPER_ANALYTICS_EVENT = '/analytics/event';
-export const JUMPER_ANALYTICS_TRANSACTION = '/analytics/transaction';
+export const JUMPER_ANALYTICS_EVENT = '/v1/users/events';
+export const JUMPER_ANALYTICS_TRANSACTION = '/v1/wallets/transactions';

@@ -37,6 +37,7 @@
     "i18next": "^23.12.2",
     "i18next-resources-for-ts": "^1.5.0",
     "i18next-resources-to-backend": "^1.2.1",
+    "microdiff": "^1.4.0",
     "next": "^14.2.5",
     "next-i18n-router": "^5.5.1",
     "next-sitemap": "^4.2.3",
