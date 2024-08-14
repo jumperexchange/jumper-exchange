@@ -102,8 +102,8 @@ export const useJumperTracking = () => {
       exchange: data.exchange || 'unknown',
       transactionStatus: data.transactionStatus,
       isFinal: data.isFinal,
-      gasCost: data.gasCost || -1,
-      gasCostUSD: (data.gasCostUSD && parseFloat(data.gasCostUSD)) || -1,
+      gasCost: data.gasCost || 0,
+      gasCostUSD: (data.gasCostUSD && parseFloat(data.gasCostUSD)) || 0,
       fromAmountUSD:
         (data.fromAmountUSD && parseFloat(data.fromAmountUSD)) || undefined,
       toAmountUSD:
