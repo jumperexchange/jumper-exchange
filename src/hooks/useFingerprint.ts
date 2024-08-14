@@ -1,27 +1,22 @@
 'use client';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { DEFAULT_FP } from 'src/config/config';
+import { useFpStore } from 'src/stores/fp';
 
 export const useFingerprint = () => {
-  const [fingerprint, setFingerprint] = useState<string | undefined>(() => {
-    if (
-      typeof window !== 'undefined' &&
-      typeof sessionStorage !== 'undefined'
-    ) {
-      return sessionStorage.getItem('fpId') || undefined;
-    }
-    return 'unknown';
-  });
+  const [fp, setFp] = useFpStore((state) => [state.fp, state.setFp]);
 
   useEffect(() => {
     async function load() {
       const fp = await FingerprintJS.load();
-      const response = await fp.get().then((el) => el);
-      setFingerprint(response.visitorId);
-      sessionStorage.setItem('fpId', response.visitorId);
+      const response = await fp.get();
+      setFp(response.visitorId);
     }
-    load();
-  }, []);
+    if (fp === DEFAULT_FP) {
+      load();
+    }
+  }, [fp, setFp]);
 
-  return fingerprint;
+  return fp;
 };
