@@ -1,10 +1,9 @@
 'use client';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 export const useFingerprint = () => {
   const loadedRef = useRef(sessionStorage.getItem('fpId') || false);
-  console.log('useFingerPrint');
   useEffect(() => {
     async function load() {
       if (!loadedRef.current) {
@@ -20,5 +19,5 @@ export const useFingerprint = () => {
     }
   }, []);
 
-  return useMemo(() => loadedRef.current, []);
+  return loadedRef.current;
 };

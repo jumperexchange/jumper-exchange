@@ -1,5 +1,4 @@
-import type { Process, RouteExtended } from '@lifi/sdk';
-import microdiff from 'microdiff';
+import type { RouteExtended } from '@lifi/sdk';
 import { TabsMap } from 'src/const/tabsMap';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
 import type { TrackTransactionDataProps } from 'src/types/userTracking';
@@ -11,6 +10,7 @@ export const getStepData = (
   let currentStep = {};
   route.steps.forEach((step, index) =>
     step.execution?.process.forEach((process) => {
+      const routeStatus = getRouteStatus(route);
       if (process.status !== 'DONE') {
         currentStep = {
           [TrackingEventParameter.RouteId]: step.id,
@@ -32,7 +32,8 @@ export const getStepData = (
           [TrackingEventParameter.ToAmountUSD]: step.estimate.toAmountUSD,
           [TrackingEventParameter.ToAmountMin]: step.estimate.toAmountMin,
           // [TrackingEventParameter.Status]: process.status,
-          [TrackingEventParameter.TransactionStatus]: process.status,
+          [TrackingEventParameter.TransactionStatus]:
+            routeStatus || process.status,
           [TrackingEventParameter.TransactionHash]: process.txHash || '',
           [TrackingEventParameter.TransactionLink]: process.txLink || '',
           [TrackingEventParameter.GasCost]: -1, //todo fix
@@ -64,16 +65,6 @@ export const isRouteFailed = (route: RouteExtended) => {
   return route.steps.some((step) => step.execution?.status === 'FAILED');
 };
 
-export const isRouteActive = (route?: RouteExtended) => {
-  if (!route) {
-    return false;
-  }
-  const isDone = isRouteDone(route);
-  const isFailed = isRouteFailed(route);
-  const alreadyStarted = route.steps.some((step) => step.execution);
-  return !isDone && !isFailed && alreadyStarted;
-};
-
 export const getRouteStatus = (route?: RouteExtended) => {
   if (!route) {
     return false;
@@ -87,36 +78,19 @@ export const getRouteStatus = (route?: RouteExtended) => {
     } else if (isDone) {
       return 'DONE';
     } else {
-      return 'ACTIVE';
+      return 'PENDING';
     }
   }
-};
-
-export const getUpdatedProcess = (
-  currentRoute: RouteExtended,
-  updatedRoute: RouteExtended,
-): Process | undefined => {
-  const processDiff = microdiff(currentRoute, updatedRoute).find((diff) =>
-    diff.path.includes('process'),
-  );
-  if (!processDiff) {
-    return undefined;
-  }
-  // Find process index in the diff array so we can slice the complete rpocess object
-  // e.g. ['steps', 0, 'execution', 'process', 0, 'message']
-  const processDiffIndex =
-    processDiff.path.findIndex((path) => path === 'process') + 2;
-  const processPathSlice = processDiff.path.slice(0, processDiffIndex);
-  // Reduce updated route using the diff path to get updated process
-  const process = processPathSlice.reduce(
-    (obj, path) => obj[path],
-    updatedRoute as any,
-  ) as Process;
-  return process;
 };
 
 export const getSourceTxHash = (route?: RouteExtended) => {
   return route?.steps[0].execution?.process
     .filter((process) => process.type !== 'TOKEN_ALLOWANCE')
     .find((process) => process.txHash)?.txHash;
+};
+
+export const getSourceTxLink = (route?: RouteExtended) => {
+  return route?.steps[0].execution?.process
+    .filter((process) => process.type !== 'TOKEN_ALLOWANCE')
+    .find((process) => process.txHash)?.txLink;
 };

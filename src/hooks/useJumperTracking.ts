@@ -70,21 +70,7 @@ export interface JumperDataTrackTransactionProps {
 export const useJumperTracking = () => {
   const pathname = usePathname();
   const fp = useFingerprint();
-  console.log('fp jumper-tracking', fp);
   const trackEvent = async (data: JumperDataTrackEventProps) => {
-    console.log('TRACK EVENT', {
-      category: data.category,
-      action: data.action,
-      label: data.label,
-      value: data.value,
-      isConnected: data.isConnected,
-      sessionId: data.sessionId,
-      data: data.data,
-      walletAddress: data.walletAddress || 'empty',
-      browserFingerprint: fp,
-      isMobile: data.isMobile,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
-    });
     await track(
       {
         category: data.category,
@@ -104,17 +90,12 @@ export const useJumperTracking = () => {
   };
 
   const trackTransaction = async (data: JumperDataTrackTransactionProps) => {
-    console.log('DATA', data);
     const transactionData = {
       sessionId: data.sessionId,
       routeId: data.routeId,
       integrator: data.integrator,
       action: data.action,
       type: data.type,
-      // walletAddress: data.wallet,
-      // fromChain: data.fromChainId,
-      // toChain: data.toChainId,
-      // browserFingerprint: fp,
       fromToken: data.fromToken,
       toToken: data.toToken,
       stepNumber: data.stepNumber,
@@ -134,7 +115,6 @@ export const useJumperTracking = () => {
       transactionHash: data.transactionHash || '',
       wallet: data.wallet,
     };
-    console.log('TRACK TRANSACTION DATA', transactionData);
     await track(transactionData, JUMPER_ANALYTICS_TRANSACTION);
   };
 

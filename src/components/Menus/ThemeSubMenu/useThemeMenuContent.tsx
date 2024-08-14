@@ -25,7 +25,6 @@ export const useThemeMenuContent = () => {
   });
 
   const handleThemeSwitch = (theme: string) => {
-    console.log('handleThemeSwitch', theme);
     trackEvent({
       category: TrackingCategory.ThemesMenu,
       action: TrackingAction.SwitchThemeTemplate,

@@ -29,8 +29,9 @@ import type {
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import {
+  getSourceTxHash,
+  getSourceTxLink,
   getStepData,
-  getUpdatedProcess,
 } from 'src/utils/routesInterpreterUtils';
 
 interface LifiStepProps extends LiFiStep {
@@ -41,7 +42,6 @@ interface LifiStepProps extends LiFiStep {
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { activeTab } = useActiveTabStore();
-  const [activeRoute, setActiveRoute] = useState<RouteExtended>();
   const { setDestinationChainToken, setSourceChainToken } =
     useChainTokenSelectionStore();
   const { trackTransaction, trackEvent } = useUserTracking();
@@ -65,7 +65,6 @@ export function WidgetEvents() {
   useEffect(() => {
     const onRouteExecutionStarted = async (route: RouteExtended) => {
       if (route.id) {
-        console.log('ROUTE STARTED DATA IN', route);
         trackTransaction({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionStarted,
@@ -109,7 +108,6 @@ export function WidgetEvents() {
             [TrackingEventParameter.TransactionLink]: undefined,
             [TrackingEventParameter.ErrorCode]: undefined,
             [TrackingEventParameter.ErrorMessage]: undefined,
-            // [TrackingEventParameter.NonInteraction]: undefined,
           },
           enableAddressable: true,
         });
@@ -118,7 +116,6 @@ export function WidgetEvents() {
 
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
       // check if multisig and open the modal
-      const clonedUpdatedRoute = structuredClone(update.route);
 
       const isMultisigRouteActive = shouldOpenMultisigSignatureModal(
         update.route,
@@ -128,17 +125,10 @@ export function WidgetEvents() {
         setIsMultiSigConfirmationModalOpen(true);
       }
 
-      setActiveRoute(clonedUpdatedRoute);
-      if (activeRoute) {
-        const process = getUpdatedProcess(activeRoute, clonedUpdatedRoute);
-        console.log('PROCESS', process);
-      }
       if (update.process && update.route) {
-        console.log('ROUTE UPDATED DATA IN', update);
         if (update.process.txHash !== lastTxHashRef.current) {
           lastTxHashRef.current = update.process.txHash;
           const stepData = getStepData(update.route);
-          console.log('STEPDATA', stepData);
           trackTransaction({
             category: TrackingCategory.WidgetEvent,
             action: TrackingAction.OnRouteExecutionUpdated,
@@ -153,7 +143,6 @@ export function WidgetEvents() {
     };
     const onRouteExecutionCompleted = async (route: Route) => {
       if (route.id) {
-        console.log('ROUTE COMPLETED DATA IN', route);
         trackTransaction({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionCompleted,
@@ -177,6 +166,8 @@ export function WidgetEvents() {
             [TrackingEventParameter.ToAmount]: route.toAmount,
             [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
             [TrackingEventParameter.ToToken]: route.toToken.address,
+            [TrackingEventParameter.TxHash]: getSourceTxHash(route),
+            [TrackingEventParameter.TransactionLink]: getSourceTxLink(route),
           },
           enableAddressable: true,
           isConversion: true,
@@ -184,8 +175,6 @@ export function WidgetEvents() {
       }
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
-      console.log('ROUTE FAILED DATA IN', update);
-
       trackTransaction({
         category: TrackingCategory.WidgetEvent,
         action: TrackingAction.OnRouteExecutionFailed,

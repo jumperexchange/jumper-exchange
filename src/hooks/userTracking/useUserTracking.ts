@@ -188,12 +188,7 @@ export function useUserTracking() {
           errorCode: data[TrackingEventParameter.ErrorCode],
           errorMessage: data[TrackingEventParameter.ErrorMessage],
           action: data[TrackingEventParameter.Action],
-          // transactionLink: data[TrackingEventParameter.TransactionLink],
-          // insuranceState: data[TrackingEventParameter.InsuranceState],
-          // insuranceFeeAmountUSD:
-          //   data[TrackingEventParameter.InsuranceFeeAmountUSD],
         };
-        console.log('transactionData test', transactionData);
         await jumperTrackTransaction(transactionData);
       }
 
