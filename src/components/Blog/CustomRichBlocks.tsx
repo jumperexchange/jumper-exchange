@@ -106,7 +106,9 @@ export const CustomRichBlocks = ({
       return children.map((quote: any) => {
         return (
           <BlogParagraphContainer>
-            <BlogParagraph quote={true}>{quote.props.text}</BlogParagraph>
+            <BlogParagraph quote={true} as="q">
+              {quote.props.text}
+            </BlogParagraph>
           </BlogParagraphContainer>
         );
       });

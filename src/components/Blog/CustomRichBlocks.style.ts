@@ -46,23 +46,8 @@ export const BlogParagraph = styled(Typography, {
     lineHeight: '32px',
     margin: theme.spacing(2, 0),
     ...(quote && {
-      paddingLeft: theme.spacing(1),
-      position: 'relative',
-      ':before': {
-        content: '" "',
-        position: 'absolute',
-        width: '4px',
-        top: 0,
-        bottom: 0,
-        height: '100%',
-        left: 0,
-        background: alpha(
-          theme.palette.mode === 'light'
-            ? theme.palette.black.main
-            : theme.palette.white.main,
-          0.75,
-        ),
-      },
+      fontSize: '20px',
+      fontStyle: 'italic',
     }),
   };
 });
