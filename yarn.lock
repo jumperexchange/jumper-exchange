@@ -2292,9 +2292,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@lifi/wallet-management@npm:3.1.0"
+"@lifi/wallet-management@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "@lifi/wallet-management@npm:3.1.2"
   dependencies:
     "@lifi/sdk": "npm:^3.1.5"
     "@solana/wallet-adapter-base": "npm:^0.9.23"
@@ -2308,18 +2308,18 @@ __metadata:
     react-dom: ">=18"
     viem: ^2.17.0
     wagmi: ^2.11.0
-  checksum: 10/662c333c7597e3357bdd023e5bf46edcefc093541cf92f0e8f9224bb4dd2d1a1d6fcd8870eb87970b4fd6ce1a2093b2530690bc07802f317cc56fac70b60f192
+  checksum: 10/3109bf34153bc0cf65e3c59ff970ef246b85d3f36d0a704067dbad18a196f4a281319cf2678ee0c6b0b9f032030398938358efc24c1b8c5b6f002cf10bea586b
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^3.4.0":
-  version: 3.4.0
-  resolution: "@lifi/widget@npm:3.4.0"
+"@lifi/widget@npm:^3.4.2":
+  version: 3.4.2
+  resolution: "@lifi/widget@npm:3.4.2"
   dependencies:
     "@emotion/react": "npm:^11.13.0"
     "@emotion/styled": "npm:^11.13.0"
     "@lifi/sdk": "npm:^3.1.5"
-    "@lifi/wallet-management": "npm:^3.1.0"
+    "@lifi/wallet-management": "npm:^3.1.2"
     "@mui/icons-material": "npm:^5.16.7"
     "@mui/lab": "npm:^5.0.0-alpha.173"
     "@mui/material": "npm:^5.16.7"
@@ -2358,7 +2358,7 @@ __metadata:
     viem: ^2.17.0
     wagmi: ^2.11.0
     zustand: ^4.5.0
-  checksum: 10/6eebb58781133f1a44644aedabd89a38eb72ac46cd2e3bf61d3063fef7cd9f8b624275a5a0222febddf5f8e4ade5d6adbe5acabdc25ae811b9dfd5c355c39d31
+  checksum: 10/4e7492be9ffe47b82866073a7712e8ace266cbeeb6ba15abcb743e94edc36b6c1a4f366427d2365a8b7c1a90d7239a4f65569f2a96220cdc0454c8fdf21d95d7
   languageName: node
   linkType: hard
 
@@ -9484,8 +9484,8 @@ __metadata:
     "@eslint/eslintrc": "npm:^3.1.0"
     "@lifi/explorer": "npm:^0.0.1-alpha.14"
     "@lifi/sdk": "npm:^3.1.5"
-    "@lifi/wallet-management": "npm:^3.1.0"
-    "@lifi/widget": "npm:^3.4.0"
+    "@lifi/wallet-management": "npm:^3.1.2"
+    "@lifi/widget": "npm:^3.4.2"
     "@mui/icons-material": "npm:^5.16.7"
     "@mui/material": "npm:^5.16.7"
     "@mui/material-nextjs": "npm:^5.16.6"
