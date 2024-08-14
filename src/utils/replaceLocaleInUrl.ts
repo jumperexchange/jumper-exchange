@@ -26,7 +26,7 @@ export const replaceLocaleInUrl = (currentPath: string, newLocale: string) => {
   updatedUrl = updatedUrl.replace(/^\/+/, ''); // Remove leading slashes
 
   // Ensure the URL ends with a single slash
-  if (!updatedUrl.endsWith('/')) {
+  if (!updatedUrl.endsWith('/') && updatedUrl !== '') {
     updatedUrl += '/';
   }
 
