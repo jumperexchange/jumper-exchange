@@ -8,9 +8,9 @@ export const useFingerprint = () => {
       typeof window !== 'undefined' &&
       typeof sessionStorage !== 'undefined'
     ) {
-      return sessionStorage.getItem('fpId') || false;
+      return sessionStorage.getItem('fpId') || 'unknown';
     }
-    return false;
+    return 'unknown';
   });
   useEffect(() => {
     async function load() {
