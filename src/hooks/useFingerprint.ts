@@ -3,13 +3,21 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { useEffect, useRef } from 'react';
 
 export const useFingerprint = () => {
-  const loadedRef = useRef(sessionStorage.getItem('fpId') || false);
+  const loadedRef = useRef(() => {
+    if (
+      typeof window !== 'undefined' &&
+      typeof sessionStorage !== 'undefined'
+    ) {
+      return sessionStorage.getItem('fpId') || false;
+    }
+    return false;
+  });
   useEffect(() => {
     async function load() {
-      if (!loadedRef.current) {
+      if (!loadedRef.current()) {
         const fp = await FingerprintJS.load();
         const response = await fp.get();
-        loadedRef.current = response.visitorId;
+        loadedRef.current = () => response.visitorId;
         sessionStorage.setItem('fpId', response.visitorId);
       }
     }
@@ -18,6 +26,5 @@ export const useFingerprint = () => {
       load();
     }
   }, []);
-
-  return loadedRef.current;
+  return loadedRef.current();
 };
