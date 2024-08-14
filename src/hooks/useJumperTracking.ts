@@ -22,7 +22,7 @@ interface JumperDataTrackEventProps {
 const track = async (data: object, path: string) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_JUMPER_BE_API}${path}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}${path}`,
       {
         method: 'POST',
         headers: {
