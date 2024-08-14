@@ -4,8 +4,6 @@ import { WidgetContainer, Widgets } from '@/components/Widgets';
 import { Widget } from '@/components/Widgets/Widget';
 import App from '../../ui/app/App';
 
-export const dynamicParams = false;
-
 export async function generateStaticParams() {
   const partnerThemes = await getPartnerThemes();
 

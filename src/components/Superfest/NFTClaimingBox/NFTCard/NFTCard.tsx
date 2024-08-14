@@ -21,6 +21,9 @@ interface NFTCardProps {
   isSuccess?: boolean;
 }
 
+const LAST_NFT_IMAGE =
+  'https://strapi.li.finance/uploads/supernft_163c0f663b.jpg';
+
 export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
   const { address } = useAccount();
   const { claimInfo, isLoading, isSuccess } = useCheckNFTAvailability({
@@ -32,6 +35,11 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
     useWaitForTransactionReceipt({
       hash,
     });
+
+  const NFTimage =
+    chain === 'box' && (claimInfo.isClaimable || claimInfo.isClaimed)
+      ? LAST_NFT_IMAGE
+      : image;
 
   async function handleClick() {
     try {
@@ -91,7 +99,7 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
             borderTopLeftRadius: '8px',
             marginBottom: '0px',
           }}
-          src={image}
+          src={NFTimage}
           alt={chain}
           width="288"
           height="288"
@@ -172,7 +180,7 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
             borderTopLeftRadius: '8px',
             marginBottom: '0px',
           }}
-          src={image}
+          src={NFTimage}
           alt={chain}
           width="288"
           height="288"
@@ -214,7 +222,7 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
           borderTopLeftRadius: '8px',
           marginBottom: '0px',
         }}
-        src={image}
+        src={NFTimage}
         alt={chain}
         width="288"
         height="288"
@@ -235,7 +243,7 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
           }}
         >
           <SoraTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
-            {chain === 'box' ? 'COMING SOON' : 'UNAVAILABLE'}
+            {chain === 'box' ? 'LOCKED' : 'UNAVAILABLE'}
           </SoraTypography>
         </Button>
       </NFTCardBotomBox>
