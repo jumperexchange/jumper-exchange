@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "repository": "https://github.com/jumperexchange/jumper-exchange",
-  "packageManager": "yarn@4.3.1",
+  "packageManager": "yarn@4.4.0",
   "dependencies": {
     "@arcxmoney/analytics": "^2.2.2",
     "@cookie3/analytics": "^0.6.0",
