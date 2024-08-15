@@ -26,13 +26,13 @@ export const SuperfestMissionPage = ({
     return notFound();
   }
 
-  const attributes = quest?.attributes;
-  const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
-  const missionType = quest?.attributes?.CustomInformation?.['missionType'];
+  const attributes = quest.attributes;
+  const CTAs = quest.attributes?.CustomInformation?.['CTA'];
+  const missionType = quest.attributes?.CustomInformation?.['missionType'];
   const rewardType = attributes?.CustomInformation?.['rewardType'];
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
-  const rewards = quest?.attributes.CustomInformation?.['rewards'];
-  const points = quest?.attributes?.Points;
+  const rewards = quest.attributes.CustomInformation?.['rewards'];
+  const points = quest.attributes?.Points;
 
   const { account } = useAccounts();
   const { pastCampaigns } = useMerklRewards({
