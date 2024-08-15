@@ -4,7 +4,6 @@ import { type Route } from '@lifi/sdk';
 
 import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '@/components/MultisigConnectedAlert';
-import { TabsMap } from '@/const/tabsMap';
 import {
   TrackingAction,
   TrackingCategory,
@@ -20,26 +19,12 @@ import { useMultisigStore } from '@/stores/multisig';
 import type {
   ChainTokenSelected,
   ContactSupport,
-  Estimate,
-  Execution,
-  LiFiStep,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
-import {
-  getGasFees,
-  getRouteType,
-  getSourceTxHash,
-  getSourceTxLink,
-  getStepData,
-} from 'src/utils/routesInterpreterUtils';
-
-interface LifiStepProps extends LiFiStep {
-  execution: Execution;
-  estimate: Estimate;
-}
+import { getData as handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -66,45 +51,17 @@ export function WidgetEvents() {
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: RouteExtended) => {
-      const gasCost = getGasFees(route);
+      const data = handleTransactionDetails(route, {
+        [TrackingEventParameter.Action]: 'execution_start',
+        [TrackingEventParameter.TransactionStatus]: 'STARTED',
+      });
       if (route.id) {
-        const type = getRouteType(route);
         trackTransaction({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionStarted,
           label: 'execution_start',
           value: parseFloat(route.fromAmountUSD),
-          data: {
-            [TrackingEventParameter.Action]: 'execution_start',
-            [TrackingEventParameter.TransactionId]: route.id,
-            [TrackingEventParameter.RouteId]: route.steps[0].id,
-            [TrackingEventParameter.Exchange]: route.steps[0].estimate?.tool,
-            [TrackingEventParameter.GasCostUSD]: route.gasCostUSD,
-            [TrackingEventParameter.TransactionStatus]:
-              (route.steps[0] as LifiStepProps).execution?.status || 'STARTED',
-            [TrackingEventParameter.Integrator]:
-              route.steps[0]?.integrator || 'undefined',
-            [TrackingEventParameter.Type]: type,
-            [TrackingEventParameter.IsFinal]: false,
-            [TrackingEventParameter.FromToken]: route.fromToken.address,
-            [TrackingEventParameter.ToToken]: route.toToken.address,
-            [TrackingEventParameter.FromChainId]: route.fromToken.chainId,
-            [TrackingEventParameter.ToChainId]: route.toToken.chainId,
-            [TrackingEventParameter.StepNumber]: 0,
-            [TrackingEventParameter.GasCost]: gasCost,
-            [TrackingEventParameter.FromAmount]: route.fromAmount,
-            [TrackingEventParameter.ToAmount]: route.toAmount,
-            [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
-            [TrackingEventParameter.FromAmountUSD]: route.fromAmountUSD,
-            [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
-            [TrackingEventParameter.Variant]: Object.values(TabsMap).filter(
-              (el) => el.index === activeTab,
-            )[0].variant,
-            [TrackingEventParameter.TransactionHash]: undefined,
-            [TrackingEventParameter.TransactionLink]: undefined,
-            [TrackingEventParameter.ErrorCode]: undefined,
-            [TrackingEventParameter.ErrorMessage]: undefined,
-          },
+          data,
           enableAddressable: true,
         });
       }
@@ -112,7 +69,9 @@ export function WidgetEvents() {
 
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
       // check if multisig and open the modal
-
+      const data = handleTransactionDetails(update.route, {
+        [TrackingEventParameter.Action]: 'execution_updated',
+      });
       const isMultisigRouteActive = shouldOpenMultisigSignatureModal(
         update.route,
       );
@@ -124,87 +83,44 @@ export function WidgetEvents() {
       if (update.process && update.route) {
         if (update.process.txHash !== lastTxHashRef.current) {
           lastTxHashRef.current = update.process.txHash;
-          const stepData = getStepData(update.route);
           trackTransaction({
             category: TrackingCategory.WidgetEvent,
             action: TrackingAction.OnRouteExecutionUpdated,
             label: 'execution_update',
             value: parseFloat(update.route.fromAmountUSD),
-            data: {
-              ...stepData,
-            },
+            data,
           });
         }
       }
     };
     const onRouteExecutionCompleted = async (route: Route) => {
       if (route.id) {
-        const type = getRouteType(route);
+        const data = handleTransactionDetails(route, {
+          [TrackingEventParameter.Action]: 'execution_completed',
+          [TrackingEventParameter.TransactionStatus]: 'COMPLETED',
+        });
         trackTransaction({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionCompleted,
           label: 'execution_success',
           value: parseFloat(route.fromAmountUSD),
-          data: {
-            [TrackingEventParameter.RouteId]: route.id,
-            [TrackingEventParameter.Action]: 'execution_completed',
-            [TrackingEventParameter.IsFinal]: true,
-            [TrackingEventParameter.Type]: type,
-            [TrackingEventParameter.TransactionStatus]: 'COMPLETED',
-            [TrackingEventParameter.Integrator]: route.steps[0].integrator,
-            [TrackingEventParameter.FromChainId]: route.fromChainId,
-            [TrackingEventParameter.FromAmountUSD]: route.fromAmountUSD,
-            [TrackingEventParameter.FromAmount]: route.fromAmount,
-            [TrackingEventParameter.FromToken]: route.fromToken.address,
-            [TrackingEventParameter.ToChainId]: route.toChainId,
-            [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
-            [TrackingEventParameter.ToAmount]: route.toAmount,
-            [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
-            [TrackingEventParameter.ToToken]: route.toToken.address,
-            [TrackingEventParameter.TxHash]:
-              getSourceTxHash(route) || lastTxHashRef.current,
-            [TrackingEventParameter.TransactionLink]: getSourceTxLink(route),
-          },
+          data,
           enableAddressable: true,
           isConversion: true,
         });
       }
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
+      const data = handleTransactionDetails(update.route, {
+        [TrackingEventParameter.Action]: 'execution_failed',
+        [TrackingEventParameter.TransactionStatus]: 'FAILED',
+      });
       trackTransaction({
         category: TrackingCategory.WidgetEvent,
         action: TrackingAction.OnRouteExecutionFailed,
         label: 'execution_error',
         value: -1,
-        data: {
-          [TrackingEventParameter.Action]: 'execution_failed',
-          [TrackingEventParameter.RouteId]: update.route.id,
-          [TrackingEventParameter.TxHash]:
-            update.process.txHash ||
-            getSourceTxHash(update.route) ||
-            lastTxHashRef.current ||
-            'unknown',
-          [TrackingEventParameter.Status]: update.process.status,
-          [TrackingEventParameter.Type]: update.process.type,
-          [TrackingEventParameter.Message]: update.process.message || '',
-          [TrackingEventParameter.ErrorMessage]:
-            update.process.error?.message || '',
-          [TrackingEventParameter.IsFinal]: false,
-          [TrackingEventParameter.ErrorCode]: update.process.error?.code || '',
-          [TrackingEventParameter.TransactionStatus]: 'FAILED',
-          [TrackingEventParameter.FromChainId]: update.route.fromChainId,
-          [TrackingEventParameter.ToChainId]: update.route.toChainId,
-          [TrackingEventParameter.FromToken]: update.route.fromToken.address,
-          [TrackingEventParameter.ToToken]: update.route.toToken.address,
-          [TrackingEventParameter.FromAmount]: update.route.fromAmount,
-          [TrackingEventParameter.ToAmount]: update.route.toAmount,
-          [TrackingEventParameter.FromAmountUSD]: update.route.toAmountUSD,
-          [TrackingEventParameter.ToAmountUSD]: update.route.toAmountUSD,
-          [TrackingEventParameter.Integrator]: update.route.steps[0].integrator,
-          [TrackingEventParameter.TransactionLink]: getSourceTxLink(
-            update.route,
-          ),
-        },
+        data,
         enableAddressable: true,
       });
     };
