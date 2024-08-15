@@ -86,9 +86,9 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
             )}
           </div>
           <div>
-            {Object.keys(anyWidnow?.ethereum).map((k) => (
-              <span>{k} </span>
-            ))}
+            {anyWidnow?.ethereum
+              ? Object.keys(anyWidnow?.ethereum).map((k) => <span>{k} </span>)
+              : null}
           </div>
         </div>
       )}
