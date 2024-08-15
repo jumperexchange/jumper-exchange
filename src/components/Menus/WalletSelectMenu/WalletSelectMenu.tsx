@@ -1,16 +1,14 @@
 import { Menu } from '@/components/Menu/Menu';
-import {
-  MenuHeaderAppBar,
-  MenuHeaderAppWrapper,
-} from '@/components/Menu/Menu.style';
 import { MenuItem } from '@/components/Menu/MenuItem';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
 import { getContrastAlphaColor } from '@/utils/colors';
+import { isWalletInstalled } from '@lifi/wallet-management';
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, darken } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
+import { useConnect } from 'wagmi';
 import { WalletSelectMoreSubMenu } from '../WalletSelectMoreSubMenu';
 import { useWalletSelectContent } from './useWalletSelectContent';
 
@@ -21,6 +19,7 @@ interface MenuProps {
 const NUMBER_OF_WALLETS_DISPLAYED = 9;
 
 export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
+  const { connectors } = useConnect();
   const { t } = useTranslation();
   const theme = useTheme();
   const walletSelectMenuItems = useWalletSelectContent();
@@ -48,49 +47,56 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
       height: 72,
     },
   };
-
+  const anyWidnow = typeof window !== 'undefined' ? (window as any) : undefined;
   return (
     <Menu
       open={openWalletSelectMenu}
       cardsLayout={openSubMenu === MenuKeysEnum.WalletSelectMore ? false : true}
       styles={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr 1fr',
-        justifyItems: 'center',
-        ul: {
-          gridColumnStart: 1,
-          gridColumnEnd: 4,
-        },
+        display: 'flex',
       }}
       setOpen={setWalletSelectMenuState}
       isOpenSubMenu={openSubMenu === MenuKeysEnum.WalletSelectMore}
       anchorEl={anchorEl}
     >
       {openSubMenu === MenuKeysEnum.None && (
-        <MenuHeaderAppWrapper
-          sx={{
-            gridColumn: 'span 3',
-            marginBottom: '-12px',
-          }}
-        >
-          <MenuHeaderAppBar component="div" elevation={0}>
-            <Typography
-              sx={{
-                color: isDarkMode
-                  ? theme.palette.white.main
-                  : theme.palette.black.main,
-              }}
-              variant={'bodyMediumStrong'}
-              width={'100%'}
-              align={'center'}
-              flex={1}
-              noWrap
-            >
-              {t('navbar.walletSelectMenu.connectWallet')}
-            </Typography>
-          </MenuHeaderAppBar>
-        </MenuHeaderAppWrapper>
+        <div style={{ flex: 1, width: '300px', height: '400px' }}>
+          <Typography
+            sx={{
+              color: isDarkMode
+                ? theme.palette.white.main
+                : theme.palette.black.main,
+            }}
+            variant={'bodyMediumStrong'}
+            width={'100%'}
+            align={'center'}
+            flex={1}
+            noWrap
+          >
+            {t('navbar.walletSelectMenu.connectWallet')}
+          </Typography>
+          {`isWalletInstalled: ${isWalletInstalled('coinbase')}`}
+          <div>{`${anyWidnow?.ethereum?.isCoinbaseWallet}`}</div>
+          <div>{`${anyWidnow?.coinbaseWalletExtension?.isCoinbaseWallet}`}</div>
+          <div>
+            {anyWidnow?.ethereum?.providers?.map((provider: any) =>
+              Object.keys(provider)
+                .filter((key) => key.toLowerCase().includes('coinbase'))
+                .map((k) => <span>{`${k} ${provider[k]} `}</span>),
+            )}
+          </div>
+          <div>
+            {Object.keys(anyWidnow?.ethereum).map((k) => (
+              <span>{k} </span>
+            ))}
+          </div>
+        </div>
       )}
+      {connectors.map((c) => (
+        <span>
+          {c.id} {c.name}{' '}
+        </span>
+      ))}
       {openSubMenu === MenuKeysEnum.None &&
         filteredWalletSelectMenuItems.map((el, index) => (
           <MenuItem
