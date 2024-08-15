@@ -11,6 +11,7 @@ import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
+import { notFound } from 'next/navigation';
 
 interface SuperfestMissionPageVar {
   quest: Quest;
@@ -21,12 +22,16 @@ export const SuperfestMissionPage = ({
   quest,
   baseUrl,
 }: SuperfestMissionPageVar) => {
+  if (!quest) {
+    return notFound();
+  }
+
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
   const missionType = quest?.attributes?.CustomInformation?.['missionType'];
   const rewardType = attributes?.CustomInformation?.['rewardType'];
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
-  const rewards = quest.attributes.CustomInformation?.['rewards'];
+  const rewards = quest?.attributes.CustomInformation?.['rewards'];
   const points = quest?.attributes?.Points;
 
   const { account } = useAccounts();
