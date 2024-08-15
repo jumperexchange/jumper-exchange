@@ -90,6 +90,15 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
               ? Object.keys(anyWidnow?.ethereum).map((k) => <span>{k} </span>)
               : null}
           </div>
+          <div>
+            {anyWidnow?.ethereum
+              ? Object.keys(anyWidnow?.ethereum)
+                  .filter((key) => key.toLowerCase().includes('coinbase'))
+                  .map((k) => (
+                    <span>{`${k} ${anyWidnow?.ethereum?.[k]} `}</span>
+                  ))
+              : null}
+          </div>
         </div>
       )}
       {connectors.map((c) => (
