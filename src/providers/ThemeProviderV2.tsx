@@ -43,7 +43,7 @@ function getMuiTheme(themes: any[], activeTheme: string) {
 
 /**
  * Your app's theme provider component.
- * 'use client' is essential for next-themes to work with app-dir.
+ * provider for the MUI theme context, mainly setting up the MUI provider, very linked to the next-theme provider
  */
 export function ThemeProviderV2({ children, activeTheme, themes }: any) {
   const { resolvedTheme, forcedTheme, ...props2 } = useTheme();
