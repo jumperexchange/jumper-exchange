@@ -22,25 +22,26 @@ export const SuperfestMissionPage = ({
   quest,
   baseUrl,
 }: SuperfestMissionPageVar) => {
-  if (!quest) {
-    return notFound();
-  }
-
-  const attributes = quest.attributes;
-  const CTAs = quest.attributes?.CustomInformation?.['CTA'];
-  const missionType = quest.attributes?.CustomInformation?.['missionType'];
-  const rewardType = attributes?.CustomInformation?.['rewardType'];
-  const rewardRange = attributes?.CustomInformation?.['rewardRange'];
-  const rewards = quest.attributes.CustomInformation?.['rewards'];
-  const points = quest.attributes?.Points;
-
   const { account } = useAccounts();
   const { pastCampaigns } = useMerklRewards({
     rewardChainId: 10,
     userAddress: account?.address,
   });
 
+  const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
+
   const { isLoading, isSuccess, CTAsWithAPYs } = useMissionsAPY(CTAs);
+
+  if (!quest) {
+    return notFound();
+  }
+
+  const attributes = quest.attributes;
+  const missionType = quest.attributes?.CustomInformation?.['missionType'];
+  const rewardType = attributes?.CustomInformation?.['rewardType'];
+  const rewardRange = attributes?.CustomInformation?.['rewardRange'];
+  const rewards = quest.attributes.CustomInformation?.['rewards'];
+  const points = quest.attributes?.Points;
 
   return (
     <SuperfestContainer className="superfest">
