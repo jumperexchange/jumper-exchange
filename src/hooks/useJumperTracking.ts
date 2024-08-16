@@ -1,6 +1,7 @@
 'use client';
 
 import * as Sentry from '@sentry/nextjs';
+
 import {
   JUMPER_ANALYTICS_EVENT,
   JUMPER_ANALYTICS_TRANSACTION,
@@ -34,9 +35,11 @@ const track = async (data: object, path: string) => {
       },
     );
     if (!response.ok) {
+      console.error(response.statusText);
       Sentry.captureException(response.statusText);
     }
   } catch (error) {
+    console.error(error);
     Sentry.captureException(error);
   }
 };
