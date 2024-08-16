@@ -22,9 +22,9 @@ export interface TrackEventProps {
 
 export interface TrackTransactionDataProps {
   [TrackingEventParameter.Type]?: string;
-  [TrackingEventParameter.RouteId]: string;
+  [TrackingEventParameter.RouteId]?: string;
   [TrackingEventParameter.Status]?: string;
-  [TrackingEventParameter.Action]: string;
+  [TrackingEventParameter.Action]?: string;
   [TrackingEventParameter.TransactionId]?: string;
   [TrackingEventParameter.TransactionHash]?: string;
   [TrackingEventParameter.TransactionLink]?: string;
@@ -37,7 +37,7 @@ export interface TrackTransactionDataProps {
   [TrackingEventParameter.Exchange]?: string;
   [TrackingEventParameter.StepNumber]?: number;
   [TrackingEventParameter.TxHash]?: string;
-  [TrackingEventParameter.IsFinal]: boolean;
+  [TrackingEventParameter.IsFinal]?: boolean;
   [TrackingEventParameter.GasCost]?: number;
   [TrackingEventParameter.GasCostUSD]?: string;
   [TrackingEventParameter.FromAmount]?: string;
@@ -47,7 +47,6 @@ export interface TrackTransactionDataProps {
   [TrackingEventParameter.ToAmountUSD]?: string;
   [TrackingEventParameter.ErrorCode]?: string | number;
   [TrackingEventParameter.ErrorMessage]?: string;
-  [TrackingEventParameter.Variant]?: string;
   [TrackingEventParameter.Message]?: string;
 }
 

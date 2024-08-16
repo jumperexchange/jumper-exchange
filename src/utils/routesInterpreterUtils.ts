@@ -54,9 +54,6 @@ export const filterRoutesObject = (
     [TrackingEventParameter.TransactionStatus]: routeStatus,
     [TrackingEventParameter.GasCost]: gasCost,
     [TrackingEventParameter.GasCostUSD]: route.gasCostUSD,
-    // [TrackingEventParameter.Variant]:
-    //     Object.values(TabsMap).find((el) => el.index === activeTab)?.variant ||
-    //     '',
   };
   let stepData = {};
   let processData = {};

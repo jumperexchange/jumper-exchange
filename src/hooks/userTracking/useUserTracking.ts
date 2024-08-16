@@ -15,7 +15,6 @@ import type {
 import { EventTrackingTool } from '@/types/userTracking';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
-import { usePathname } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import { useFingerprint } from '../useFingerprint';
 
@@ -45,7 +44,7 @@ const addressableEvent = ({
 }: {
   action: string;
   label: string;
-  data: object;
+  data: TrackTransactionDataProps;
   isConversion?: boolean;
 }) => {
   const dataArray = [];
@@ -71,7 +70,6 @@ export function useUserTracking() {
   const { account } = useAccounts();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const sessionId = useSession();
-  const pathname = usePathname();
   const fp = useFingerprint();
 
   const {
@@ -109,18 +107,7 @@ export function useUserTracking() {
           dataArray.push({ name: 'label', value: label });
         }
 
-        typeof window !== 'undefined' &&
-          data &&
-          window.__adrsbl.run(
-            action,
-            isConversion ?? false,
-            dataArray.concat(
-              Object.entries(data).map(([key, value]) => ({
-                name: `${key}`,
-                value: `${value}`,
-              })),
-            ),
-          );
+        addressableEvent({ action, label, data: data || {}, isConversion });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
         try {
@@ -136,7 +123,6 @@ export function useUserTracking() {
             isMobile: !isDesktop,
             sessionId: sessionId || 'unknown',
             url: process.env.NEXT_PUBLIC_SITE_URL,
-            location: pathname,
           };
           await jumperTrackEvent(eventData);
         } catch (error) {
@@ -150,7 +136,6 @@ export function useUserTracking() {
       fp,
       isDesktop,
       jumperTrackEvent,
-      pathname,
       sessionId,
     ],
   );
@@ -175,7 +160,7 @@ export function useUserTracking() {
           sessionId: sessionId || '',
           wallet: account?.address || '',
           type: data[TrackingEventParameter.Type] || '',
-          routeId: data[TrackingEventParameter.RouteId],
+          routeId: data[TrackingEventParameter.RouteId] || '',
           transactionHash: data[TrackingEventParameter.TransactionHash] || '',
           transactionStatus:
             data[TrackingEventParameter.TransactionStatus] || '',
@@ -187,7 +172,7 @@ export function useUserTracking() {
           toToken: data[TrackingEventParameter.ToToken] || 'unknown',
           exchange: data[TrackingEventParameter.Exchange],
           stepNumber: data[TrackingEventParameter.StepNumber],
-          isFinal: data[TrackingEventParameter.IsFinal],
+          isFinal: data[TrackingEventParameter.IsFinal] || false,
           gasCost: data[TrackingEventParameter.GasCost] || 0,
           gasCostUSD:
             (data[TrackingEventParameter.GasCostUSD] &&
@@ -211,7 +196,7 @@ export function useUserTracking() {
             0,
           errorCode: data[TrackingEventParameter.ErrorCode],
           errorMessage: data[TrackingEventParameter.ErrorMessage],
-          action: data[TrackingEventParameter.Action],
+          action: data[TrackingEventParameter.Action] || '',
         };
         await jumperTrackTransaction(transactionData);
       }
@@ -220,7 +205,7 @@ export function useUserTracking() {
         addressableEvent({
           action,
           label: 'transaction',
-          data,
+          data: data || {},
           isConversion: true,
         });
       }

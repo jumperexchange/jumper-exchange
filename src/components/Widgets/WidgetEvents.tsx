@@ -87,6 +87,7 @@ export function WidgetEvents() {
             action: TrackingAction.OnRouteExecutionUpdated,
             label: 'execution_update',
             data,
+            enableAddressable: true,
           });
         }
       }

@@ -15,7 +15,6 @@ interface JumperDataTrackEventProps {
   ip?: string;
   walletAddress?: string;
   browserFingerprint: string;
-  location: string;
   sessionId: string;
   browserUserAgent?: string;
   isMobile: boolean;
@@ -57,7 +56,7 @@ export interface JumperDataTrackTransactionProps {
   exchange?: string;
   stepNumber?: number;
   integrator?: string;
-  isFinal?: boolean;
+  isFinal: boolean;
   gasCost?: number;
   gasCostUSD?: number;
   fromAmount: number;
@@ -85,7 +84,6 @@ export const useJumperTracking = () => {
         browserFingerprint: data.browserFingerprint,
         isMobile: data.isMobile,
         url: data.url,
-        location: data.location,
       },
       JUMPER_ANALYTICS_EVENT,
     );
@@ -116,6 +114,7 @@ export const useJumperTracking = () => {
       wallet: data.wallet,
       errorMessage: data.errorMessage,
       errorCode: data.errorCode,
+      pathname: data.pathname,
     };
     await track(transactionData, JUMPER_ANALYTICS_TRANSACTION);
   };
