@@ -60,7 +60,6 @@ export function WidgetEvents() {
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionStarted,
           label: 'execution_start',
-          value: parseFloat(route.fromAmountUSD),
           data,
           enableAddressable: true,
         });
@@ -87,7 +86,6 @@ export function WidgetEvents() {
             category: TrackingCategory.WidgetEvent,
             action: TrackingAction.OnRouteExecutionUpdated,
             label: 'execution_update',
-            value: parseFloat(update.route.fromAmountUSD),
             data,
           });
         }
@@ -103,7 +101,6 @@ export function WidgetEvents() {
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionCompleted,
           label: 'execution_success',
-          value: parseFloat(route.fromAmountUSD),
           data,
           enableAddressable: true,
           isConversion: true,
@@ -124,7 +121,6 @@ export function WidgetEvents() {
         category: TrackingCategory.WidgetEvent,
         action: TrackingAction.OnRouteExecutionFailed,
         label: 'execution_error',
-        value: -1,
         data,
         enableAddressable: true,
       });

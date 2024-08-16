@@ -55,7 +55,6 @@ export interface TrackTransactionProps {
   action: string;
   category: string;
   label: string;
-  value: number;
   disableTrackingTool?: EventTrackingTool[];
   enableAddressable?: boolean;
   data: TrackTransactionDataProps;
