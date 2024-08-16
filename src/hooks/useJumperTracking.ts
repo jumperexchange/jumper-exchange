@@ -37,9 +37,7 @@ const track = async (data: object, path: string) => {
       Sentry.captureException(response.statusText);
     }
   } catch (error) {
-    if (process.env.MODE === 'development') {
-      Sentry.captureException(error);
-    }
+    Sentry.captureException(error);
   }
 };
 
