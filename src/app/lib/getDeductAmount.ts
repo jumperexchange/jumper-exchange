@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
 
-import { ChainId } from '@lifi/types';
+import type { ChainId } from '@lifi/types';
 
 interface ITokenInfo {
   chainId?: ChainId;
