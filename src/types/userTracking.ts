@@ -48,7 +48,6 @@ export interface TrackTransactionDataProps {
   [TrackingEventParameter.ErrorCode]?: string | number;
   [TrackingEventParameter.ErrorMessage]?: string;
   [TrackingEventParameter.Variant]?: string;
-  [TrackingEventParameter.NonInteraction]?: boolean;
   [TrackingEventParameter.Message]?: string;
 }
 

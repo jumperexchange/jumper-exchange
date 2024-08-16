@@ -24,7 +24,7 @@ import type {
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
-import { getData as handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
+import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -114,6 +114,11 @@ export function WidgetEvents() {
       const data = handleTransactionDetails(update.route, {
         [TrackingEventParameter.Action]: 'execution_failed',
         [TrackingEventParameter.TransactionStatus]: 'FAILED',
+        [TrackingEventParameter.Message]: update.process.message || '',
+        [TrackingEventParameter.ErrorMessage]:
+          update.process.error?.message || '',
+        [TrackingEventParameter.IsFinal]: true,
+        [TrackingEventParameter.ErrorCode]: update.process.error?.code || '',
       });
       trackTransaction({
         category: TrackingCategory.WidgetEvent,

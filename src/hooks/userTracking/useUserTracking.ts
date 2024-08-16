@@ -15,7 +15,9 @@ import type {
 import { EventTrackingTool } from '@/types/userTracking';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
+import { usePathname } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
+import { useFingerprint } from '../useFingerprint';
 
 const googleEvent = ({
   action,
@@ -43,7 +45,7 @@ const addressableEvent = ({
 }: {
   action: string;
   label: string;
-  data: any;
+  data: object;
   isConversion?: boolean;
 }) => {
   const dataArray = [];
@@ -69,6 +71,9 @@ export function useUserTracking() {
   const { account } = useAccounts();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const sessionId = useSession();
+  const pathname = usePathname();
+  const fp = useFingerprint();
+
   const {
     trackEvent: jumperTrackEvent,
     trackTransaction: jumperTrackTransaction,
@@ -124,12 +129,14 @@ export function useUserTracking() {
             value: typeof value === 'number' ? value : 0,
             action,
             label,
-            data: data,
-            isConnected: account?.isConnected,
+            data: data || {},
+            isConnected: account?.isConnected || false,
             walletAddress: account?.address || 'not_connected',
-            browserFingerprint: undefined,
+            browserFingerprint: fp,
             isMobile: !isDesktop,
-            sessionId,
+            sessionId: sessionId || 'unknown',
+            url: process.env.NEXT_PUBLIC_SITE_URL,
+            location: pathname,
           };
           await jumperTrackEvent(eventData);
         } catch (error) {
@@ -140,8 +147,10 @@ export function useUserTracking() {
     [
       account?.address,
       account?.isConnected,
+      fp,
       isDesktop,
       jumperTrackEvent,
+      pathname,
       sessionId,
     ],
   );
@@ -163,28 +172,43 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
         const transactionData = {
-          sessionId,
+          sessionId: sessionId || '',
           wallet: account?.address || '',
-          type: data[TrackingEventParameter.Type],
+          type: data[TrackingEventParameter.Type] || '',
           routeId: data[TrackingEventParameter.RouteId],
-          transactionHash:
-            data[TrackingEventParameter.TransactionHash] || undefined,
-          transactionStatus: data[TrackingEventParameter.TransactionStatus],
+          transactionHash: data[TrackingEventParameter.TransactionHash] || '',
+          transactionStatus:
+            data[TrackingEventParameter.TransactionStatus] || '',
           transactionId: data[TrackingEventParameter.TransactionId],
-          fromChainId: data[TrackingEventParameter.FromChainId],
-          toChainId: data[TrackingEventParameter.ToChainId],
+          fromChainId: data[TrackingEventParameter.FromChainId] || 0,
+          toChainId: data[TrackingEventParameter.ToChainId] || 0,
           integrator: data[TrackingEventParameter.Integrator],
-          fromToken: data[TrackingEventParameter.FromToken],
-          toToken: data[TrackingEventParameter.ToToken],
+          fromToken: data[TrackingEventParameter.FromToken] || 'unknown',
+          toToken: data[TrackingEventParameter.ToToken] || 'unknown',
           exchange: data[TrackingEventParameter.Exchange],
           stepNumber: data[TrackingEventParameter.StepNumber],
           isFinal: data[TrackingEventParameter.IsFinal],
-          gasCost: data[TrackingEventParameter.GasCost],
-          gasCostUSD: data[TrackingEventParameter.GasCostUSD],
-          fromAmount: data[TrackingEventParameter.FromAmount],
-          fromAmountUSD: data[TrackingEventParameter.FromAmountUSD],
-          toAmount: data[TrackingEventParameter.ToAmountUSD],
-          toAmountUSD: data[TrackingEventParameter.ToAmount],
+          gasCost: data[TrackingEventParameter.GasCost] || 0,
+          gasCostUSD:
+            (data[TrackingEventParameter.GasCostUSD] &&
+              parseFloat(data[TrackingEventParameter.GasCostUSD])) ||
+            0,
+          fromAmount:
+            (data[TrackingEventParameter.FromAmount] &&
+              parseFloat(data[TrackingEventParameter.FromAmount])) ||
+            0,
+          fromAmountUSD:
+            (data[TrackingEventParameter.FromAmountUSD] &&
+              parseFloat(data[TrackingEventParameter.FromAmountUSD])) ||
+            0,
+          toAmount:
+            (data[TrackingEventParameter.ToAmount] &&
+              parseFloat(data[TrackingEventParameter.ToAmount])) ||
+            0,
+          toAmountUSD:
+            (data[TrackingEventParameter.ToAmountUSD] &&
+              parseFloat(data[TrackingEventParameter.ToAmountUSD])) ||
+            0,
           errorCode: data[TrackingEventParameter.ErrorCode],
           errorMessage: data[TrackingEventParameter.ErrorMessage],
           action: data[TrackingEventParameter.Action],

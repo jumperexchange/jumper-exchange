@@ -161,7 +161,6 @@ export enum TrackingEventParameter {
   ErrorMessage = 'param_error_message',
   ValueLoss = 'param_value_loss',
   AvailableRoutesCount = 'param_available_routes_count',
-  NonInteraction = 'param_non_interaction',
   TransactionStatus = 'param_transaction_status',
 
   // Blog

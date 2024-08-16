@@ -4,11 +4,13 @@ import type {
   Route,
   RouteExtended,
 } from '@lifi/sdk';
-import { TabsMap } from 'src/const/tabsMap';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
 import type { TrackTransactionDataProps } from 'src/types/userTracking';
 
-export const getData = (route: RouteExtended, customData: object) => {
+export const handleTransactionDetails = (
+  route: RouteExtended,
+  customData: object,
+) => {
   const routesData = filterRoutesObject(route);
   const sourceTxHash = getSourceTxHash(route);
   const sourceTxLink = getSourceTxLink(route);
@@ -28,12 +30,14 @@ export const getData = (route: RouteExtended, customData: object) => {
 
 export const filterRoutesObject = (
   route: RouteExtended | Route,
-  activeTab?: number | boolean,
+  // activeTab?: number | boolean,
 ): TrackTransactionDataProps => {
   const gasCost = getGasFees(route);
   const routeStatus = getRouteStatus(route);
+  const action = getAction(route)?.message;
   const type = getRouteType(route);
   const routeData = {
+    ...(action && { [TrackingEventParameter.Action]: action }),
     [TrackingEventParameter.RouteId]: route.id,
     [TrackingEventParameter.FromToken]: route.fromToken.address,
     [TrackingEventParameter.IsFinal]: isRouteDone(route),
@@ -50,6 +54,9 @@ export const filterRoutesObject = (
     [TrackingEventParameter.TransactionStatus]: routeStatus,
     [TrackingEventParameter.GasCost]: gasCost,
     [TrackingEventParameter.GasCostUSD]: route.gasCostUSD,
+    // [TrackingEventParameter.Variant]:
+    //     Object.values(TabsMap).find((el) => el.index === activeTab)?.variant ||
+    //     '',
   };
   let stepData = {};
   let processData = {};
@@ -71,10 +78,6 @@ export const filterRoutesObject = (
       [TrackingEventParameter.ToAmount]: step.estimate.toAmount,
       [TrackingEventParameter.ToAmountUSD]: step.estimate.toAmountUSD,
       [TrackingEventParameter.ToAmountMin]: step.estimate.toAmountMin,
-      [TrackingEventParameter.NonInteraction]: true,
-      [TrackingEventParameter.Variant]:
-        Object.values(TabsMap).find((el) => el.index === activeTab)?.variant ||
-        '',
     };
 
     // Check if the step is of type LiFiStepExtended by checking the presence of the 'execution' property
@@ -86,11 +89,12 @@ export const filterRoutesObject = (
       detailInformation.process.forEach((process) => {
         if (process.status !== 'DONE') {
           processData = {
-            [TrackingEventParameter.ErrorCode]: process.error?.code || '',
-            [TrackingEventParameter.ErrorMessage]: process.error?.message || '',
+            [TrackingEventParameter.Exchange]: step.estimate.tool,
+            [TrackingEventParameter.ErrorCode]: process.error?.code,
+            [TrackingEventParameter.ErrorMessage]: process.error?.message,
             [TrackingEventParameter.TransactionStatus]: process.status,
-            [TrackingEventParameter.TransactionHash]: process.txHash || '',
-            [TrackingEventParameter.TransactionLink]: process.txLink || '',
+            [TrackingEventParameter.TransactionHash]: process.txHash,
+            [TrackingEventParameter.TransactionLink]: process.txLink,
           };
         }
       });
@@ -120,7 +124,7 @@ export const getRouteType = (route: RouteExtended) => {
 
 export const getRouteStatus = (route?: RouteExtended) => {
   if (!route) {
-    return false;
+    return 'unknown';
   }
   const isDone = isRouteDone(route);
   const isFailed = isRouteFailed(route);
@@ -146,6 +150,21 @@ export const getSourceTxLink = (route?: RouteExtended) => {
   return route?.steps[0].execution?.process
     .filter((process) => process.type !== 'TOKEN_ALLOWANCE')
     .find((process) => process.txHash)?.txLink;
+};
+
+export const getAction = (route?: RouteExtended) => {
+  if (!route) {
+    return null;
+  } // Return null or a default value if no route is provided.
+
+  for (const step of route.steps) {
+    return step.execution?.process.find(
+      (process) =>
+        process.status === 'PENDING' || process.status === 'ACTION_REQUIRED',
+    );
+  }
+
+  return null;
 };
 
 export const getGasFees = (route?: RouteExtended) => {
