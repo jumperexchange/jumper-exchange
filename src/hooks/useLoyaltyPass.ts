@@ -53,7 +53,9 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['loyalty-pass', account?.address],
     queryFn: async () => {
-      const res = await fetch(`${apiBaseUrl}/wallets/${account?.address}/rewards`);
+      const res = await fetch(
+        `${apiBaseUrl}/wallets/${account?.address}/rewards`,
+      );
 
       if (!res.ok) {
         return undefined;
@@ -65,7 +67,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
         return undefined;
       }
 
-      const { data } = jsonResponse
+      const { data } = jsonResponse;
 
       setLoyaltyPassData(
         account.address,
