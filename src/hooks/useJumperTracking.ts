@@ -35,15 +35,13 @@ const track = async (data: object, path: string) => {
       },
     );
     if (!response.ok) {
-      console.error(response.statusText);
-      Sentry.captureException(response.statusText);
+      throw new Error(response.statusText);
     }
   } catch (error) {
     console.error(error);
     Sentry.captureException(error);
   }
 };
-
 export interface JumperDataTrackTransactionProps {
   sessionId: string;
   wallet: string;
