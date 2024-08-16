@@ -66,19 +66,20 @@ export const NFTClaimingTitle = styled(Typography, {
 export const NFTClaimingDescription = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
 })(({ theme }) => ({
+  maxWidth: '600px',
   marginTop: theme.spacing(4),
   fontWeight: 500,
   fontSize: '16px',
   lineHeight: '24px',
   typography: sora.style.fontFamily,
   color: 'inherit',
-  margin: theme.spacing(3, 1.5, 0),
+  margin: theme.spacing(3, 'auto'),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(0, 1.5, 0),
+    margin: theme.spacing(0, 'auto'),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     justifyContent: 'flex-start',
-    margin: 0,
+    margin: '0 auto',
   },
 }));
 
