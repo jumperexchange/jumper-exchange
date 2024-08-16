@@ -29,6 +29,7 @@ export const LastNFTTitle = () => {
               When you mint all Superchain wristbands, you become eligible to
               mint a super special NFT within the Superchain Mystery Box.
               <br />
+              <br />
               <i>
                 Updates to the NFT allowlist happens every Friday. If you claim
                 the OP on Monday, Tuesday, Wednesday, or Thursday, you need to
