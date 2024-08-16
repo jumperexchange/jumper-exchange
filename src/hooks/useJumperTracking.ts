@@ -14,11 +14,9 @@ interface JumperDataTrackEventProps {
   value: number;
   data?: { [key: string]: string | number | boolean };
   isConnected: boolean;
-  ip?: string;
   walletAddress?: string;
   browserFingerprint: string;
   sessionId: string;
-  browserUserAgent?: string;
   isMobile: boolean;
 }
 
