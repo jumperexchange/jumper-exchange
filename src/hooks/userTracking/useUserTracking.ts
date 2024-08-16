@@ -44,7 +44,9 @@ const addressableEvent = ({
 }: {
   action: string;
   label: string;
-  data: TrackTransactionDataProps;
+  data:
+    | TrackTransactionDataProps
+    | { [key: string]: string | number | boolean };
   isConversion?: boolean;
 }) => {
   const dataArray = [];
