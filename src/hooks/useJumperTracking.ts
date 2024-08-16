@@ -1,5 +1,6 @@
 'use client';
 
+import * as Sentry from '@sentry/nextjs';
 import {
   JUMPER_ANALYTICS_EVENT,
   JUMPER_ANALYTICS_TRANSACTION,
@@ -32,12 +33,12 @@ const track = async (data: object, path: string) => {
         body: JSON.stringify(data),
       },
     );
-    if (!response.ok && process.env.MODE !== 'production') {
-      console.error('Tracking failed', response.statusText);
+    if (!response.ok) {
+      Sentry.captureException(response.statusText);
     }
   } catch (error) {
     if (process.env.MODE === 'development') {
-      console.error('Tracking error', error);
+      Sentry.captureException(error);
     }
   }
 };
