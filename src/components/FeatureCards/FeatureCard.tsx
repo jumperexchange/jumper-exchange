@@ -1,7 +1,7 @@
 'use client';
 import CloseIcon from '@mui/icons-material/Close';
 import { Slide, useTheme } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
 import {
@@ -33,6 +33,8 @@ interface FeatureCardProps {
 
 export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   const [open, setOpen] = useState(true);
+  const eventFired = useRef(false);
+
   const { t } = useTranslation();
   const { url } = useStrapi<FeatureCardData>({
     contentType: STRAPI_FEATURE_CARDS,
@@ -74,7 +76,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   ]);
 
   useEffect(() => {
-    if (open) {
+    if (!eventFired.current && open) {
       trackEvent({
         category: TrackingCategory.FeatureCard,
         action: TrackingAction.DisplayFeatureCard,
@@ -85,6 +87,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
           url: data.attributes.URL,
         },
       });
+      eventFired.current = true;
     }
   }, [
     data.attributes.uid,
