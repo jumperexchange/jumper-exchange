@@ -74,6 +74,59 @@ export const BlogArticle = ({
 
   return (
     <>
+      <BlogArticleContainer>
+        <BlogArticleTopHeader>
+          {!!tags?.data[0]?.attributes.Title ? (
+            <Tag
+              color={tags.data[0]?.attributes.TextColor}
+              backgroundColor={tags.data[0]?.attributes.BackgroundColor}
+              component="span"
+              variant="bodyMediumStrong"
+              key={`blog-article-tag-${tags.data[0]?.id}`}
+            >
+              {tags.data[0].attributes?.Title}
+            </Tag>
+          ) : (
+            <BlogArticleHeaderTagSkeleton variant="rectangular" />
+          )}
+          {!!createdAt ? (
+            <BlogArticleHeaderMeta>
+              <BlogArticleHeaderMetaDate variant="bodyXSmall" as="span">
+                {formatDate(publishedAt || createdAt)}
+              </BlogArticleHeaderMetaDate>
+              <span>{t('blog.minRead', { minRead: minRead })}</span>
+            </BlogArticleHeaderMeta>
+          ) : (
+            <BlogArticleMetaSkeleton variant="text" />
+          )}
+        </BlogArticleTopHeader>
+        {title ? (
+          <BlogArticleTitle variant="h1">{title}</BlogArticleTitle>
+        ) : (
+          <BlogArticleTitleSkeleton />
+        )}
+        <BlogMetaContainer>
+          <BlogAuthorContainer>
+            {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
+              <BlogAuthorAvatar
+                src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
+                alt="author-avatar"
+              />
+            ) : (
+              <BlogAuthorAvatarSkeleton variant="rounded" />
+            )}
+            {author?.data ? (
+              <BlogArticlAuthorName variant="bodyXSmallStrong" component="span">
+                {author.data?.attributes.Name}
+              </BlogArticlAuthorName>
+            ) : (
+              <BlogArticlAuthorNameSkeleton variant="text" />
+            )}
+          </BlogAuthorContainer>
+          <ShareArticleIcons title={title} slug={slug} />
+        </BlogMetaContainer>
+      </BlogArticleContainer>
+
       <BlogArticleImageContainer>
         {image?.data && (
           <BlogArticleImage
@@ -83,60 +136,7 @@ export const BlogArticle = ({
         )}
       </BlogArticleImageContainer>
       <BlogArticleContainer>
-        <BlogArticleContentContainer sx={{ marginTop: 0 }}>
-          <BlogMetaContainer>
-            <BlogAuthorContainer>
-              {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
-                <BlogAuthorAvatar
-                  src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
-                  alt="author-avatar"
-                />
-              ) : (
-                <BlogAuthorAvatarSkeleton variant="rounded" />
-              )}
-              {author?.data ? (
-                <BlogArticlAuthorName
-                  variant="bodyXSmallStrong"
-                  component="span"
-                >
-                  {author.data?.attributes.Name}
-                </BlogArticlAuthorName>
-              ) : (
-                <BlogArticlAuthorNameSkeleton variant="text" />
-              )}
-            </BlogAuthorContainer>
-            <ShareArticleIcons title={title} slug={slug} />
-          </BlogMetaContainer>
-          <BlogArticleTopHeader>
-            {!!tags?.data[0]?.attributes.Title ? (
-              <Tag
-                color={tags.data[0]?.attributes.TextColor}
-                backgroundColor={tags.data[0]?.attributes.BackgroundColor}
-                component="span"
-                variant="bodyMediumStrong"
-                key={`blog-article-tag-${tags.data[0]?.id}`}
-              >
-                {tags.data[0].attributes?.Title}
-              </Tag>
-            ) : (
-              <BlogArticleHeaderTagSkeleton variant="rectangular" />
-            )}
-            {!!createdAt ? (
-              <BlogArticleHeaderMeta>
-                <BlogArticleHeaderMetaDate variant="bodyXSmall" as="span">
-                  {formatDate(publishedAt || createdAt)}
-                </BlogArticleHeaderMetaDate>
-                <span>{t('blog.minRead', { minRead: minRead })}</span>
-              </BlogArticleHeaderMeta>
-            ) : (
-              <BlogArticleMetaSkeleton variant="text" />
-            )}
-          </BlogArticleTopHeader>
-          {title ? (
-            <BlogArticleTitle variant="h1">{title}</BlogArticleTitle>
-          ) : (
-            <BlogArticleTitleSkeleton />
-          )}
+        <BlogArticleContentContainer>
           {subtitle ? (
             <BlogArticleSubtitle variant="headerMedium" as="h4">
               {subtitle}
@@ -144,7 +144,6 @@ export const BlogArticle = ({
           ) : (
             <BlogArticleSubtitleSkeleton variant="text" />
           )}
-
           {content ? (
             <CustomRichBlocks
               id={id}
