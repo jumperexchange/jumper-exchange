@@ -1,19 +1,32 @@
-'use client';
-
-import { ButtonPrimary, ButtonTransparent } from '@/components/Button';
-import { avatarMask12 } from '@/components/Mask.style';
-import { getContrastAlphaColor } from '@/utils/colors';
-import { Avatar, Badge } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
-export const WalletMgmtAvatarContainer = styled('div')(({ theme }) => ({
-  position: 'relative',
-  marginRight: theme.spacing(1.5),
-}));
+import { ButtonPrimary } from '@/components/Button';
+import { Avatar, Badge, styled } from '@mui/material';
+import { getContrastAlphaColor } from 'src/utils/colors';
+import { ButtonTransparent } from '../Button';
+import { avatarMask12 } from '../Mask.style';
 
 export const WalletMgmtWalletAvatar = styled(Avatar)(() => ({
   height: 32,
   width: 32,
+}));
+
+export const WalletMgmtChainAvatar = styled(Avatar)(() => ({
+  width: 16,
+  height: 16,
+  border: '2px solid transparent',
+  background: 'transparent',
+  left: 2.5,
+  top: 2.5,
+  img: {
+    borderRadius: '50%',
+  },
+}));
+
+export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
+  borderRadius: '50%',
+  // overflow: 'hidden',
+  '> .MuiAvatar-root': {
+    mask: avatarMask12,
+  },
 }));
 
 export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
@@ -43,25 +56,5 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
     left: 0,
     transition: 'background-color 250ms',
     background: getContrastAlphaColor(theme, '4%'),
-  },
-}));
-
-export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
-  borderRadius: '50%',
-  // overflow: 'hidden',
-  '> .MuiAvatar-root': {
-    mask: avatarMask12,
-  },
-}));
-
-export const WalletMgmtChainAvatar = styled(Avatar)(({ theme }) => ({
-  width: 16,
-  height: 16,
-  border: '2px solid transparent',
-  background: 'transparent',
-  left: 2.5,
-  top: 2.5,
-  img: {
-    borderRadius: '50%',
   },
 }));

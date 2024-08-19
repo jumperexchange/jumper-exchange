@@ -20,7 +20,7 @@ import {
   WalletMgmtBadge,
   WalletMgmtChainAvatar,
   WalletMgmtWalletAvatar,
-} from '.';
+} from './WalletButton.style';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
