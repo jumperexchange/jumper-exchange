@@ -83,7 +83,7 @@ export const BlogArticle = ({
         )}
       </BlogArticleImageContainer>
       <BlogArticleContainer>
-        <BlogArticleContentContainer>
+        <BlogArticleContentContainer sx={{ marginTop: 0 }}>
           <BlogMetaContainer>
             <BlogAuthorContainer>
               {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
