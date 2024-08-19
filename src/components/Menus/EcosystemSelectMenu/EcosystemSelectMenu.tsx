@@ -9,6 +9,7 @@ import {
 } from '@/components/Menu/Menu.style';
 import { getConnectorIcon } from '@lifi/wallet-management';
 import { useTranslation } from 'react-i18next';
+import type { Connector } from 'wagmi';
 import { EVMConnectButton } from './EVMConnectButton';
 import { ConnectButtonContainer } from './EcosystemSelectMenu.style';
 import { SVMConnectButton } from './SVMConnectButton';
@@ -59,19 +60,16 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
       </MenuHeaderAppWrapper>
       <ConnectButtonContainer as="li">
         <EVMConnectButton
-          walletIcon={
-            getConnectorIcon(openEcosystemSelect.combinedWallet?.evm) ||
-            openEcosystemSelect.combinedWallet?.evm?.icon ||
-            openEcosystemSelect.combinedWallet?.svm?.adapter.icon
-          }
+          walletIcon={getConnectorIcon(
+            openEcosystemSelect.combinedWallet?.evm as Connector,
+          )}
           evm={openEcosystemSelect.combinedWallet?.evm!}
         />
         <SVMConnectButton
-          walletIcon={
-            getConnectorIcon(openEcosystemSelect.combinedWallet?.evm) ||
-            openEcosystemSelect.combinedWallet?.evm?.icon ||
-            openEcosystemSelect.combinedWallet?.svm?.adapter.icon
-          }
+          walletIcon={getConnectorIcon(
+            (openEcosystemSelect.combinedWallet?.evm as Connector) ||
+              openEcosystemSelect.combinedWallet?.svm?.adapter,
+          )}
           svm={openEcosystemSelect.combinedWallet?.svm!}
         />
       </ConnectButtonContainer>
