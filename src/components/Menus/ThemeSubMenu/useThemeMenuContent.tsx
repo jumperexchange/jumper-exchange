@@ -1,4 +1,5 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useTheme } from 'next-themes';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +11,6 @@ import {
 } from 'src/const/trackingKeys';
 import { useStrapi } from 'src/hooks/useStrapi';
 import type { PartnerThemesData } from 'src/types/strapi';
-import { useTheme } from 'next-themes';
 
 export const useThemeMenuContent = () => {
   const { t } = useTranslation();
