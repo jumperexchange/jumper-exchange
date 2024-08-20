@@ -5,6 +5,7 @@ import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
 import type { Metadata } from 'next';
 import { sliceStrToXChar } from '@/utils/splitStringToXChar';
+import { siteName } from '@/app/lib/metadata';
 
 export async function generateMetadata({
   params,
@@ -24,6 +25,8 @@ export async function generateMetadata({
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
       description: `${sliceStrToXChar(articleData.Subtitle, 60)}`,
+      siteName: siteName,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/learn/${params.slug}/`,
       images: [
         {
           url: `${article.url}${articleData.Image.data.attributes?.url}`,

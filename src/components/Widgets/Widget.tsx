@@ -4,7 +4,6 @@ import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAler
 import { widgetConfig } from '@/config/widgetConfig';
 import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
-import { useActiveTabStore } from '@/stores/activeTab/ActiveTabStore';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
 import type { LanguageKey } from '@/types/i18n';
@@ -12,8 +11,6 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import type { Theme } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
@@ -21,14 +18,21 @@ import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useWidgetExpanded } from 'src/hooks/useWidgetExpanded';
+import { useUserTracking } from 'src/hooks/userTracking';
+import { useActiveTabStore } from 'src/stores/activeTab';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
-import { useWidgetTheme } from './useWidgetTheme';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import { useWidgetTheme } from './useWidgetTheme';
 
 export function Widget({
   starterVariant,
@@ -45,8 +49,8 @@ export function Widget({
   const widgetExpanded = useWidgetExpanded();
   const configTheme = useSettingsStore((state) => state.configTheme);
   const { i18n } = useTranslation();
+  const { trackEvent } = useUserTracking();
   const wagmiConfig = useConfig();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
@@ -63,7 +67,6 @@ export function Widget({
     router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
 
-  const isGasVariant = activeTab === TabsMap.Refuel.index;
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
@@ -71,6 +74,7 @@ export function Widget({
     (state: MenuState) => state.setWalletSelectMenuState,
   );
 
+  const isGasVariant = activeTab === TabsMap.Refuel.index;
   const allowedChainsByVariant = useMemo(
     () =>
       starterVariant === TabsMap.Refuel.variant
@@ -95,7 +99,7 @@ export function Widget({
     }
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [widgetIntegrator, isGasVariant, isDesktop]) as string;
+  }, [widgetIntegrator, isGasVariant]) as string;
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -166,6 +170,14 @@ export function Widget({
                 getWalletClient: () => getWalletClient(wagmiConfig),
                 switchChain: async (chainId) => {
                   const chain = await switchChain(wagmiConfig, { chainId });
+                  trackEvent({
+                    category: TrackingCategory.Widget,
+                    action: TrackingAction.SwitchChain,
+                    label: 'switch-chain',
+                    data: {
+                      [TrackingEventParameter.ChainId]: chainId,
+                    },
+                  });
                   return getWalletClient(wagmiConfig, { chainId: chain.id });
                 },
                 multisig: multisigSdkConfig,
@@ -174,6 +186,7 @@ export function Widget({
           : undefined,
       },
       buildUrl: true,
+      // insurance: true,
       integrator: integratorStringByType,
       tokens:
         partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
@@ -201,6 +214,7 @@ export function Widget({
     tokens,
     setWalletSelectMenuState,
     wagmiConfig,
+    trackEvent,
   ]);
 
   return (

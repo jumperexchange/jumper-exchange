@@ -10,7 +10,6 @@ import type { FeatureCardData, JumperUserData } from '@/types/strapi';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useMemo } from 'react';
-import { useCookies } from 'react-cookie';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { usePersonalizedFeatureOnLevel } from 'src/hooks/usePersonalizedFeatureOnLevel';
 import { useWidgetExpanded } from 'src/hooks/useWidgetExpanded';
@@ -23,7 +22,6 @@ export const FeatureCards = () => {
     shallow,
   );
   const { points } = useLoyaltyPass();
-  const [cookie] = useCookies(['welcomeScreenClosed']);
   const widgetExpanded = useWidgetExpanded();
   const { account } = useAccounts();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));

@@ -13,6 +13,16 @@ export const useLoyaltyPassStore = createWithEqualityFn(
       pdas: [],
       timestamp: undefined,
 
+      reset: () => {
+        set({
+          address: undefined,
+          points: undefined,
+          tier: undefined,
+          pdas: [],
+          timestamp: undefined,
+        });
+      },
+
       // Loyalty Pass Information
       setLoyaltyPassData: (
         address: string,
@@ -32,7 +42,15 @@ export const useLoyaltyPassStore = createWithEqualityFn(
     }),
     {
       name: 'jumper-loyalty-pass', // name of the item in the storage (must be unique)
-      version: 1,
+      version: 2,
+      migrate: (persistedState, version) => {
+        if (version === 1) {
+          // if the stored value is in version 1, we clear the storage
+          persistedState = {};
+        }
+
+        return persistedState;
+      },
     },
   ) as unknown as StateCreator<LoyaltyPassState, [], [], LoyaltyPassState>,
   shallow,

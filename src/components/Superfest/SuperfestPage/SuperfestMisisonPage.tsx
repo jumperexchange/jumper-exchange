@@ -23,7 +23,10 @@ export const SuperfestMissionPage = ({
 }: SuperfestMissionPageVar) => {
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
+  const missionType = quest?.attributes?.CustomInformation?.['missionType'];
   const rewardType = attributes?.CustomInformation?.['rewardType'];
+  const rewardRange = attributes?.CustomInformation?.['rewardRange'];
+  const rewards = quest.attributes.CustomInformation?.['rewards'];
   const points = quest?.attributes?.Points;
 
   const { account } = useAccounts();
@@ -49,9 +52,12 @@ export const SuperfestMissionPage = ({
         <MissionCTA
           title={attributes?.Title}
           url={attributes?.Link}
+          rewards={rewards}
           key={generateKey('cta')}
           CTAs={CTAsWithAPYs}
           variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
+          signature={missionType === 'turtle_signature'}
+          rewardRange={rewardRange}
         />
         {/* Subtitle and description */}
         <DescriptionBox
@@ -64,7 +70,9 @@ export const SuperfestMissionPage = ({
           <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
         ) : undefined}
         {/* Additional Info */}
-        <InformationAlertBox information={attributes?.Information} />
+        {attributes?.Information && (
+          <InformationAlertBox information={attributes?.Information} />
+        )}
       </SuperfestPageMainBox>
     </SuperfestContainer>
   );

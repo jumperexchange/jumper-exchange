@@ -7,6 +7,7 @@ import {
   NFTDisplayBox,
 } from './NFTClaimingBox.style';
 import { NFTCard } from './NFTCard/NFTCard';
+import { LastNFTTitle } from './LastNFTTitle/LastNFTTitle';
 
 const NFT_ARRAY = [
   {
@@ -68,23 +69,13 @@ export const NFTClaimingBox = () => {
         })}
       </NFTDisplayBox>
       <Box marginTop={'64px'}>
-        <NFTClaimingHeader>
-          <NFTClaimingTitle>
-            {String('unlock the mystery box').toUpperCase()}
-          </NFTClaimingTitle>
-          <Box marginTop="32px" marginBottom="32px">
-            <NFTClaimingDescription>
-              When you mint all Superchain wristbands, you become eligible to
-              mint a super special NFT within the Superchain Mystery Box.
-            </NFTClaimingDescription>
-          </Box>
-        </NFTClaimingHeader>
+        <LastNFTTitle />
         <NFTDisplayBox>
           <NFTCard
             key={`nft-card-${42}`}
             chain={'box'}
             image={'https://strapi.li.finance/uploads/nft_7d22cbd21c.png'}
-            bgColor={'#69d7ff'}
+            bgColor={'#B6E9FB'}
             typoColor={'#000000'}
           />
         </NFTDisplayBox>

@@ -1,9 +1,15 @@
 'use client';
 import { ChainId, ChainType } from '@lifi/sdk';
+import type { CreateConnectorFnExtended } from '@lifi/wallet-management';
 import type { WalletAdapter } from '@solana/wallet-adapter-base';
 import type { Wallet } from '@solana/wallet-adapter-react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useMemo } from 'react';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 import type { Chain } from 'viem';
 import type { Connector } from 'wagmi';
 import {
@@ -47,7 +53,7 @@ export interface AccountResult {
   accounts: Account[];
 }
 
-let lastConnectedAccount: Wallet | Connector;
+let lastConnectedAccount: Wallet | Connector | CreateConnectorFnExtended;
 
 export const useAccounts = (): AccountResult => {
   const account = useWagmiAccount();
@@ -97,7 +103,7 @@ export const useAccounts = (): AccountResult => {
         svm.status === 'connected' &&
         lastConnectedAccount
       ) {
-        if ((lastConnectedAccount as Connector)?.name === evm.connector?.name) {
+        if ((lastConnectedAccount as Connector)?.id === evm.connector?.id) {
           return evm;
         } else {
           return svm;
@@ -134,29 +140,48 @@ export const useAccountConnect = () => {
   const { connectAsync } = useConnect();
   const { disconnect: wagmiDisconnect } = useDisconnect();
   const { select, disconnect, connected } = useWallet();
-  const { trackConnectWallet } = useUserTracking();
+  const { trackEvent } = useUserTracking();
 
   return async (combinedWallet: CombinedWallet) => {
     if (combinedWallet.evm) {
       wagmiDisconnect();
       lastConnectedAccount = combinedWallet.evm;
-      await connectAsync({ connector: combinedWallet.evm! });
-      trackConnectWallet({
-        walletName: combinedWallet.evm.name,
-        chainType: ChainType.EVM,
-        chainId: await combinedWallet.evm.getChainId(),
-        address: `${(await combinedWallet.evm.getAccounts())?.[0]}`,
-      });
+      const walletDisplayName =
+        (combinedWallet.evm as CreateConnectorFnExtended)?.displayName ||
+        (combinedWallet.evm as Connector)?.name;
+      await connectAsync(
+        { connector: combinedWallet.evm! },
+        {
+          onSuccess(data) {
+            trackEvent({
+              category: TrackingCategory.Connect,
+              action: TrackingAction.ConnectWallet,
+              label: 'connect-wallet',
+              data: {
+                [TrackingEventParameter.Wallet]: walletDisplayName,
+                [TrackingEventParameter.Ecosystem]: ChainType.EVM,
+                [TrackingEventParameter.ChainId]: data.chainId,
+                [TrackingEventParameter.WalletAddress]: `${data.accounts?.[0]}`,
+              },
+            });
+          },
+        },
+      );
     } else if (combinedWallet.svm) {
       if (connected) {
         disconnect();
       }
       lastConnectedAccount = combinedWallet.svm;
       select(combinedWallet.svm.adapter.name);
-      trackConnectWallet({
-        walletName: combinedWallet.svm.adapter.name,
-        chainType: ChainType.SVM,
-        chainId: ChainId.SOL,
+      trackEvent({
+        category: TrackingCategory.Connect,
+        action: TrackingAction.ConnectWallet,
+        label: 'connect-wallet',
+        data: {
+          [TrackingEventParameter.Wallet]: combinedWallet.svm.adapter.name,
+          [TrackingEventParameter.Ecosystem]: ChainType.SVM,
+          [TrackingEventParameter.ChainId]: ChainId.SOL,
+        },
       });
     }
   };

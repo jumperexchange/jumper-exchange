@@ -51,6 +51,8 @@ export const ActiveSuperfestMissionsCarousel = ({
                   quest.attributes?.CustomInformation?.['rewardsIds'];
                 const rewardType =
                   quest.attributes?.CustomInformation?.['rewardType'];
+                const rewardRange =
+                  quest.attributes?.CustomInformation?.['rewardRange'];
                 let included = false;
                 let completed = false;
                 if (claimingIds && activeCampaigns) {
@@ -85,6 +87,7 @@ export const ActiveSuperfestMissionsCarousel = ({
                       variableWeeklyAPY={
                         quest?.attributes.Points > 0 && rewardType === 'weekly'
                       }
+                      rewardRange={rewardRange}
                     />
                   );
                 }
