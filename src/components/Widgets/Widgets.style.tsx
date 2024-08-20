@@ -23,6 +23,10 @@ export const WidgetContainer = styled(Box, {
   transitionTimingFunction: 'ease-in-out',
   maxHeight: 'inherit',
 
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    margin: theme.spacing(0, 'auto', 3),
+  },
+
   // setting hover animations on widget wrappers
   '& > .widget-wrapper > div': {
     transitionProperty: 'margin-top',
