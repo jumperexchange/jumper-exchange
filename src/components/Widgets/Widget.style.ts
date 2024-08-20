@@ -15,11 +15,6 @@ export const WidgetWrapper = styled(Box, {
   width: '100%',
   position: 'relative',
   margin: theme.spacing(0, 'auto'),
-  ...(!welcomeScreenClosed && {
-    '&:hover': {
-      marginTop: 0,
-    },
-  }),
   zIndex: 2,
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -29,6 +24,12 @@ export const WidgetWrapper = styled(Box, {
       },
     }),
   },
+
+  ...(!welcomeScreenClosed && {
+    '&:hover': {
+      marginTop: 0,
+    },
+  }),
 }));
 
 export const GlowBackground = styled('span')(({ theme }) => ({
