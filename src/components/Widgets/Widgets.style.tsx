@@ -14,7 +14,7 @@ export const WidgetContainer = styled(Box, {
 })<WidgetContainerProps>(({ theme, welcomeScreenClosed = false }) => ({
   display: 'flex',
   flexDirection: 'column',
-  margin: theme.spacing(2, 'auto', 3),
+  margin: theme.spacing(0, 'auto', 3),
   overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
   width: '100%',
   minHeight: '50vh',
@@ -22,10 +22,6 @@ export const WidgetContainer = styled(Box, {
   transitionDuration: '.3s',
   transitionTimingFunction: 'ease-in-out',
   maxHeight: 'inherit',
-
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginTop: 0,
-  },
 
   // radial shadow glow -> animation
   '&:hover:before': {
