@@ -44,6 +44,23 @@ interface WidgetRouteSettings
   toChain?: string;
 }
 
+interface ParagraphProps {
+  text: string;
+  [key: string]: any;
+}
+
+interface ParagraphElement {
+  key: string | null;
+  props: ParagraphProps;
+  ref: any;
+  [key: string]: any;
+}
+type QuoteElement = ParagraphElement;
+
+interface ParagraphElement {
+  children: ParagraphElement[];
+}
+
 export const CustomRichBlocks = ({
   id,
   baseUrl,
@@ -102,10 +119,10 @@ export const CustomRichBlocks = ({
           );
       }
     },
-    quote: ({ children }: any) => {
-      return children.map((quote: any) => {
+    quote: ({ children }: QuoteElement) => {
+      return children.map((quote) => {
         return (
-          <BlogParagraphContainer>
+          <BlogParagraphContainer key={generateKey('quote')}>
             <BlogParagraph quote={true} as="q">
               {quote.props.text}
             </BlogParagraph>
@@ -113,7 +130,7 @@ export const CustomRichBlocks = ({
         );
       });
     },
-    paragraph: ({ children }: any) => {
+    paragraph: ({ children }: ParagraphElement) => {
       if (children[0].props.text.includes('<JUMPER_CTA')) {
         try {
           const htmlString = children[0].props.text;
@@ -199,7 +216,7 @@ export const CustomRichBlocks = ({
       } else {
         return (
           <BlogParagraphContainer>
-            {children.map((el: any, index: number) => {
+            {children.map((el, index: number) => {
               if (el.props.text || el.props.text !== '') {
                 if (el.props.content?.type === 'link') {
                   return (
