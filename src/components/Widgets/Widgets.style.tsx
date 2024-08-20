@@ -24,7 +24,15 @@ export const WidgetContainer = styled(Box, {
   maxHeight: 'inherit',
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(0, 'auto', 3),
+    marginTop: 0,
+  },
+
+  // radial shadow glow -> animation
+  '&:hover:before': {
+    ...(!welcomeScreenClosed && {
+      opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
+      top: '45%',
+    }),
   },
 
   // setting hover animations on widget wrappers
@@ -133,14 +141,6 @@ export const WidgetContainer = styled(Box, {
         : !welcomeScreenClosed && theme.palette.mode === 'light'
           ? 0.12
           : 0,
-  },
-
-  // radial shadow glow -> animation
-  '&:hover:before': {
-    ...(!welcomeScreenClosed && {
-      opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
-      top: '45%',
-    }),
   },
 }));
 
