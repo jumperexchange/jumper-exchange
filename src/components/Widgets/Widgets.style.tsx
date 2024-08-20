@@ -13,8 +13,8 @@ export const WidgetContainer = styled(Box, {
     prop !== 'isActive' && prop !== 'welcomeScreenClosed',
 })<WidgetContainerProps>(({ theme, welcomeScreenClosed = false }) => ({
   display: 'flex',
-  flexDirection: 'column-reverse',
-  margin: '0 auto 24px',
+  flexDirection: 'column',
+  margin: theme.spacing(2, 'auto', 3),
   overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
   width: '100%',
   minHeight: '50vh',
