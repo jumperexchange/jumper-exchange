@@ -72,7 +72,9 @@ export const BlogArticleCardImage = styled('img')(({ theme }) => ({
   width: '100%',
   height: 'auto',
   borderRadius: '16px',
-  objectFit: 'contain',
+  objectFit: 'cover',
+  aspectRatio: 1.6,
+  objectPosition: 'left',
 }));
 
 export const BlogArticleCardImageSkeleton = styled(Skeleton)(({ theme }) => ({

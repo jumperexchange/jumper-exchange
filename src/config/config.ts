@@ -24,3 +24,12 @@ export const defaultSettings: DefaultSettingsType = {
   disabledFeatureCards: [],
   welcomeScreenClosed: false,
 };
+
+interface DefaultFpType {
+  fp: string;
+}
+
+export const DEFAULT_FP = 'unknown';
+export const defaultFp: DefaultFpType = {
+  fp: DEFAULT_FP,
+};

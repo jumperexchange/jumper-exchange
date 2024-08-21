@@ -41,10 +41,10 @@ export const useMainMenuContent = () => {
   const configTheme = useSettingsStore((state) => state.configTheme);
   const { forcedTheme } = useNextTheme();
   const { isMainPaths } = useMainPaths();
+  const themeMode = useSettingsStore((state) => state.themeMode);
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
-  const themeMode = useSettingsStore((state) => state.themeMode);
 
   const themeSwitchTabs = useThemeSwitchTabs();
 
@@ -244,16 +244,6 @@ export const useMainMenuContent = () => {
           action: TrackingAction.ClickJumperScanLink,
           data: { [TrackingEventParameter.Menu]: 'jumper_scan' },
         });
-        trackEvent({
-          category: TrackingCategory.Pageload,
-          action: TrackingAction.PageLoad,
-          label: 'pageload-explorer',
-          data: {
-            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'jumper_scan',
-            [TrackingEventParameter.PageloadExternal]: false,
-          },
-        });
       },
     },
     {
@@ -305,7 +295,7 @@ export const useMainMenuContent = () => {
           action: TrackingAction.PageLoad,
           label: 'pageload-discord',
           data: {
-            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
+            [TrackingEventParameter.PageloadSource]: TrackingCategory.MainMenu,
             [TrackingEventParameter.PageloadDestination]: 'jumper_discord',
             [TrackingEventParameter.PageloadURL]: DISCORD_URL,
             [TrackingEventParameter.PageloadExternal]: true,

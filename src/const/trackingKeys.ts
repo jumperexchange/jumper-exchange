@@ -113,6 +113,7 @@ export enum TrackingEventParameter {
   Wallet = 'param_wallet',
   WalletAddress = 'param_wallet_address',
   Ecosystem = 'param_ecosystem',
+  Integrator = 'param_integrator',
 
   // Widget:
   SourceChainSelection = 'param_source_chain',
@@ -127,19 +128,28 @@ export enum TrackingEventParameter {
   PageloadExternal = 'param_pageload_external',
 
   // Transaction:
+  Action = 'param_action',
   RouteId = 'param_route_id',
+  TransactionId = 'param_transaction_id',
+  SessionId = 'param_session_id',
+  TransactionHash = 'param_transaction_hash',
+  TransactionLink = 'param_transaction_link',
   FromToken = 'param_from_token',
   FromChainId = 'param_from_chain_id',
   ToToken = 'param_to_token',
+  ToChainId = 'param_to_chain_id',
   Timestamp = 'param_timestamp',
   Status = 'param_status',
   Error = 'param_error',
+  Exchange = 'param_exchange',
+  StepNumber = 'param_step_number',
+  IsFinal = 'param_is_final',
   Message = 'param_message',
+  GasCost = 'param_gas_cost',
   GasCostUSD = 'param_gas_cost_usd',
   FeeCostUSD = 'param_fee_cost_usd',
   TxHash = 'param_tx_hash',
   TxLink = 'param_tx_link',
-  ToChainId = 'param_to_chain_id',
   FromAmount = 'param_from_amount',
   ToAmount = 'param_to_amount',
   ToAmountUSD = 'param_to_amount_usd',
@@ -151,6 +161,7 @@ export enum TrackingEventParameter {
   ErrorMessage = 'param_error_message',
   ValueLoss = 'param_value_loss',
   AvailableRoutesCount = 'param_available_routes_count',
+  TransactionStatus = 'param_transaction_status',
 
   // Blog
   ArticleCardId = 'param_article_card_id',
