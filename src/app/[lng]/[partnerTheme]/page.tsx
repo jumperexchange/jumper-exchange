@@ -1,8 +1,8 @@
-import App from '../../ui/app/App';
-import { WidgetContainer, Widgets } from '@/components/Widgets';
-import { Widget } from '@/components/Widgets/Widget';
 import { getCookies } from '@/app/lib/getCookies';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
+import { WidgetContainer, Widgets } from '@/components/Widgets';
+import { Widget } from '@/components/Widgets/Widget';
+import App from '../../ui/app/App';
 
 export async function generateStaticParams() {
   const partnerThemes = await getPartnerThemes();
@@ -23,11 +23,11 @@ export default function Page() {
   return (
     <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>
       <WidgetContainer welcomeScreenClosed={true}>
+        <Widget starterVariant={variant} activeThemeMode={activeThemeMode} />
         <Widgets
           closedWelcomeScreen={isWelcomeScreenClosed}
           widgetVariant={variant}
         />
-        <Widget starterVariant={variant} activeThemeMode={activeThemeMode} />
       </WidgetContainer>
     </App>
   );

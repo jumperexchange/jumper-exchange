@@ -31,6 +31,7 @@ export const InfoAlertClickable = ({
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.stopPropagation();
+    event.preventDefault();
     setClosed(true);
   };
 
