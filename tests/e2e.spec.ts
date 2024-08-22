@@ -4,6 +4,8 @@ import {
   itemInMenu,
   tabInHeader,
   openMainMenu,
+  itemInSettingsMenu,
+  itemInSettingsMenuToBeVisible,
 } from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {
@@ -33,6 +35,32 @@ test.describe('Jumper full e2e flow', () => {
         .getByText('Buy crypto'),
     ).toBeVisible();
     await expect(featureCard).toBeVisible();
+  });
+  test('Should open Settings menu', async ({ page }) => {
+    const settingsTitle = page.locator('xpath=//p[normalize-space(text())="Settings"]')
+    const bestReturnButton = page.locator(
+      'xpath=//button[normalize-space(text())="Best Return"]',
+    );
+    const fastestButton = page.locator(
+      'xpath=//button[normalize-space(text())="Fastest"]',
+    );
+    const slowGasPrice = page.locator('xpath=//button[normalize-space(text())="Slow"]')
+    const fastGasPrice = page.locator('xpath=//button[normalize-space(text())="Fast"]')
+    const customSlippage = page.locator('xpath=//input[@placeholder="Custom"]');
+    await tabInHeader(page, 'Exchange');
+    await page.locator('xpath=//div[@class="MuiBox-root mui-afg6ra"]').click();
+    await expect(settingsTitle).toBeVisible();
+    itemInSettingsMenu(page, 'Route priority');
+    await expect(bestReturnButton).toBeEnabled();
+    itemInSettingsMenuToBeVisible(page, 'Fastest')
+    await fastestButton.click();
+    itemInSettingsMenuToBeVisible(page, 'Reset settings');
+    itemInSettingsMenu(page, 'Gas price');
+    expect(slowGasPrice).toBeEnabled();
+    expect(fastGasPrice).toBeEnabled();
+    itemInSettingsMenu(page, 'Max. slippage');
+    itemInSettingsMenuToBeVisible(page, '0.5');
+    await expect(customSlippage).toBeVisible();
   });
 
   test.skip('Should handle welcome screen', async ({ page }) => {
