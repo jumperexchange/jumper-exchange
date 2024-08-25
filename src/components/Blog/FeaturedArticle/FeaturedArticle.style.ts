@@ -11,10 +11,7 @@ export const FeaturedArticleLink = styled(Link, {
   borderRadius: 32,
   backgroundColor: theme.palette.bgSecondary.main,
   transition: 'background-color 250ms',
-  boxShadow:
-    theme.palette.mode === 'dark'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+  boxShadow: theme.palette.shadow.main,
   display: 'grid',
   gridTemplateRows: '1fr',
   textDecoration: 'none',

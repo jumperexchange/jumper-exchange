@@ -724,9 +724,7 @@ export const darkTheme = createTheme(
         main: alpha(themeCustomized.palette.white.main, 0.12),
       },
       shadow: {
-        light: '#F3EBFF',
-        main: '#F3EBFF',
-        dark: '#F3EBFF',
+        main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
       },
       primary: {
         light: '#653BA3',
