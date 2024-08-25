@@ -1,12 +1,9 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, alpha, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import { ButtonPrimary } from '../../Button';
 
 export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.white.main, 0.48)
-      : alpha(theme.palette.white.main, 0.12),
+  backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '32px',
   padding: theme.spacing(2),
   margin: theme.spacing(6, 2, 0),
