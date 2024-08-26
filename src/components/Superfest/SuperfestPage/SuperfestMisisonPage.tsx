@@ -11,6 +11,7 @@ import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
+import { useTurtleMember } from 'src/hooks/useTurtleMember';
 
 interface SuperfestMissionPageVar {
   quest: Quest;
@@ -34,7 +35,13 @@ export const SuperfestMissionPage = ({
     rewardChainId: 10,
     userAddress: account?.address,
   });
-
+  const {
+    isMember,
+    isJumperMember,
+    isSuccess: isMemberCheckSuccess,
+  } = useTurtleMember({
+    userAddress: account?.address,
+  });
   const { isLoading, isSuccess, CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
@@ -47,6 +54,12 @@ export const SuperfestMissionPage = ({
           quest={quest}
           baseUrl={baseUrl}
           pastCampaigns={pastCampaigns}
+          isRewardCompleted={
+            missionType === 'turtle_signature' &&
+            isMemberCheckSuccess &&
+            isMember &&
+            isJumperMember
+          }
         />
         {/* Big CTA */}
         <MissionCTA
