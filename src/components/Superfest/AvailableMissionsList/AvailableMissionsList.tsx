@@ -1,4 +1,14 @@
 import type { Quest } from '@/types/loyaltyPass';
+import {
+  Box,
+  type SelectChangeEvent,
+  type Theme,
+  useMediaQuery,
+} from '@mui/material';
+import { useState } from 'react';
+import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
+import { checkInclusion } from '../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
+import { MissionsFilter } from '../MissionsFilter/MissionsFilter';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import {
@@ -7,16 +17,6 @@ import {
   AvailableMissionsStack,
   AvailableMissionsTitle,
 } from './AvailableMissionsList.style';
-import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
-import {
-  Box,
-  type SelectChangeEvent,
-  type Theme,
-  useMediaQuery,
-} from '@mui/material';
-import { useState } from 'react';
-import { MissionsFilter } from '../MissionsFilter/MissionsFilter';
-import { checkInclusion } from '../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 
 const chains = ['Optimism', 'Base', 'Mode', 'Fraxtal'];
 
@@ -32,12 +32,16 @@ interface AvailableMissionsListProps {
   quests?: Quest[];
   pastCampaigns?: string[];
   loading: boolean;
+  path: string;
+  activeCampaign?: 'superfest';
 }
 
 export const AvailableMissionsList = ({
   quests,
   pastCampaigns,
   loading,
+  path,
+  activeCampaign,
 }: AvailableMissionsListProps) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
@@ -152,6 +156,8 @@ export const AvailableMissionsList = ({
                   key={`available-mission-${index}`}
                   active={true}
                   title={quest?.attributes.Title}
+                  path={path}
+                  activeCampaign={activeCampaign}
                   image={String(imgURL)}
                   points={quest?.attributes.Points}
                   link={quest?.attributes.Link}

@@ -4,6 +4,7 @@ export const InformationBox = styled(Box)(({ theme }) => ({
   width: '80%',
   maxWidth: '960px',
   display: 'flex',
+  color: theme.palette.text.primary,
   marginTop: '32px',
   flexDirection: 'row',
   justifyContent: 'center',
@@ -13,5 +14,5 @@ export const InformationBox = styled(Box)(({ theme }) => ({
   border: '2px solid',
   padding: '32px',
   borderRadius: '24px',
-  borderColor: theme.palette.black.main,
+  borderColor: theme.palette.text.primary,
 }));

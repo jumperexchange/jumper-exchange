@@ -25,12 +25,7 @@ export const BlogParagraph = styled(Typography, {
   return {
     display: 'inline',
     fontWeight: bold ? 700 : 400,
-    color: alpha(
-      theme.palette.mode === 'light'
-        ? theme.palette.black.main
-        : theme.palette.white.main,
-      0.75,
-    ),
+    color: theme.palette.text.secondary,
     textDecoration: textDecoration,
     fontStyle: italic ? 'italic' : 'normal',
     fontSize: '18px',

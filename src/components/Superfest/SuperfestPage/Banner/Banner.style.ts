@@ -28,8 +28,9 @@ export const BannerBottomBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  color: theme.palette.text.primary,
   padding: '32px',
-  backgroundColor: '#fdfbef',
+  backgroundColor: theme.palette.bgSecondary.main,
   [theme.breakpoints.down('md' as Breakpoint)]: {
     height: '55%',
   },

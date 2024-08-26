@@ -1,6 +1,6 @@
 import { sequel65, sora } from '@/fonts/fonts';
 import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, Typography, alpha, lighten, darken } from '@mui/material';
+import { Box, Typography, alpha, darken } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { IconButtonPrimary } from 'src/components/IconButton';
 
@@ -49,13 +49,13 @@ export const SeveralMissionCtaContainer = styled(Box)<BoxProps>(
     textAlign: 'center',
     transition: 'background-color 250ms',
     borderRadius: '16px',
-    backgroundColor: '#fff0ca',
+    backgroundColor: theme.palette.bgTertiary.main,
     '&:hover': {
       cursor: 'pointer',
       backgroundColor:
         theme.palette.mode === 'light'
-          ? darken('#fff0ca', 0.02) //todo: add to theme
-          : alpha('#fff0ca', 0.16),
+          ? darken(theme.palette.bgTertiary.main, 0.02) //todo: add to theme
+          : alpha(theme.palette.bgTertiary.main, 0.16),
     },
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       gap: theme.spacing(4),
@@ -79,12 +79,12 @@ export const MissionCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-export const MissionCtaButton = styled(IconButtonPrimary)(({ theme }) => ({
+export const MissionCtaButtonSF = styled(IconButtonPrimary)(({ theme }) => ({
   backgroundColor: 'transparent',
-  width: '32px',
-  height: '32px',
   border: '2px dotted',
   borderColor: '#000000',
+  width: '32px',
+  height: '32px',
   ':hover': {
     backgroundColor: darken('#f9ebc5', 0.02),
   },
@@ -143,13 +143,14 @@ export const StartedTitleBox = styled(Box)(({ theme }) => ({
 
 export const CTAMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
+  color: theme.palette.text.primary,
   flexDirection: 'column',
   width: '80%',
   maxWidth: '1210px',
   marginTop: '64px',
   borderRadius: '8px',
   padding: '32px',
-  backgroundColor: '#fdfbef',
+  backgroundColor: theme.palette.bgSecondary.main, //'#fdfbef',
 }));
 
 export const CTAExplanationBox = styled(Box)(({ theme }) => ({

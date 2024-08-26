@@ -1,30 +1,27 @@
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import { type Quest } from 'src/types/loyaltyPass';
+import { checkInclusion } from '../../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 import {
-  BannerImageBox,
+  BadgeMainBox,
+  BadgeRelativeBox,
   BannerBottomBox,
+  BannerImageBox,
   BannerMainBox,
   BannerTitleBox,
-  RewardMainBox,
   BannerTitleTypography,
-  BannerLabelBox,
+  RewardMainBox,
   RotatingBox,
-  BadgeRelativeBox,
-  BadgeMainBox,
 } from './Banner.style';
 import { RewardBox } from './Rewards/RewardBox';
-import { checkInclusion } from '../../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
-import type { Theme } from '@mui/material';
-import { Box, useMediaQuery } from '@mui/material';
-import { SoraTypography } from '../../Superfest.style';
-import { OPBadge } from 'src/components/illustrations/OPBadge';
-import { SuperfestDailyRewards } from 'src/components/illustrations/SuperfestDailyRewards';
-import { SuperfestWeeklyRewards } from 'src/components/illustrations/SuperfestWeeklyRewards';
 
 interface SuperfestMissionPageVar {
   quest: Quest;
   baseUrl: string;
   pastCampaigns: string[];
+  activeCampaign?: 'superfest';
+  rotatingBadge?: JSX.Element;
 }
 
 export interface Chain {
@@ -36,6 +33,7 @@ export const BannerBox = ({
   quest,
   baseUrl,
   pastCampaigns,
+  rotatingBadge,
 }: SuperfestMissionPageVar) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
@@ -58,16 +56,10 @@ export const BannerBox = ({
 
   return (
     <>
-      {rewards && rewards.amount && (
+      {rotatingBadge && rewards && rewards.amount && (
         <BadgeMainBox>
           <BadgeRelativeBox>
-            <RotatingBox>
-              {rewardType === 'weekly' ? (
-                <SuperfestWeeklyRewards />
-              ) : (
-                <SuperfestDailyRewards />
-              )}
-            </RotatingBox>
+            <RotatingBox>{rotatingBadge}</RotatingBox>
           </BadgeRelativeBox>
         </BadgeMainBox>
       )}

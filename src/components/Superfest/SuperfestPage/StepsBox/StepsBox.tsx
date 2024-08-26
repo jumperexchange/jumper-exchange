@@ -1,10 +1,10 @@
+import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { CustomRichBlocks } from 'src/components/Blog';
+import { DescriptionTitleTypography } from '../DescriptionBox/DescriptionBox.style';
 import {
   LeftTextBox,
   SuperfestPageElementContainer,
 } from '../SuperfestMissionPage.style';
-import { CustomRichBlocks } from 'src/components/Blog';
-import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import { DescriptionTitleTypography } from '../DescriptionBox/DescriptionBox.style';
 
 interface StepsBoxProps {
   steps?: RootNode[];
@@ -19,14 +19,12 @@ export const StepsBox = ({ steps, baseUrl }: StepsBoxProps) => {
           Steps to complete the mission
         </DescriptionTitleTypography>
       </LeftTextBox>
-      <>
-        <CustomRichBlocks
-          id={1}
-          baseUrl={baseUrl}
-          content={steps}
-          variant={'superfest'}
-        />
-      </>
+      <CustomRichBlocks
+        id={1}
+        baseUrl={baseUrl}
+        content={steps}
+        variant={'superfest'}
+      />
     </SuperfestPageElementContainer>
   );
 };

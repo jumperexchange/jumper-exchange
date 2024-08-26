@@ -23,6 +23,7 @@ interface QuestCarouselProps {
   loading: boolean;
   activeCampaigns: string[];
   pastCampaigns?: string[];
+  path: string;
 }
 
 export const ActiveSuperfestMissionsCarousel = ({
@@ -30,6 +31,7 @@ export const ActiveSuperfestMissionsCarousel = ({
   loading,
   activeCampaigns,
   pastCampaigns,
+  path,
 }: QuestCarouselProps) => {
   const { url } = useOngoingFestMissions();
 
@@ -71,6 +73,7 @@ export const ActiveSuperfestMissionsCarousel = ({
                     <QuestCard
                       key={`active-superfest-mission-${index}`}
                       active={true}
+                      path={path}
                       title={quest?.attributes.Title}
                       image={String(imgURL)}
                       points={quest?.attributes.Points}

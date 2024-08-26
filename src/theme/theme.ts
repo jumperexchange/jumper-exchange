@@ -49,6 +49,7 @@ declare module '@mui/material/styles' {
     dataOutline: Palette['primary'];
     bg: Palette['primary'];
     bgSecondary: Palette['primary'];
+    bgTertiary: Palette['primary'];
     shadow: Palette['primary'];
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
@@ -83,6 +84,7 @@ declare module '@mui/material/styles' {
     dataOutline?: Palette['primary'];
     bg?: PaletteOptions['primary'];
     bgSecondary?: PaletteOptions['primary'];
+    bgTertiary?: PaletteOptions['primary'];
     shadow?: PaletteOptions['primary'];
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
@@ -159,6 +161,7 @@ declare module '@mui/material/Button' {
     dataOutline: true;
     bg: true;
     bgSecondary: true;
+    bgTertiary: true;
     shadow: true;
     alphaDark100: true;
     alphaDark200: true;
@@ -598,6 +601,7 @@ export const lightTheme = createTheme(
       },
       text: {
         primary: '#000',
+        secondary: alpha(themeCustomized.palette.black.main, 0.75),
       },
       grey: {
         300: '#E5E1EB',
@@ -609,6 +613,9 @@ export const lightTheme = createTheme(
       },
       bgSecondary: {
         main: alpha(themeCustomized.palette.white.main, 0.48),
+      },
+      bgTertiary: {
+        main: themeCustomized.palette.white.main,
       },
       shadow: {
         main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
@@ -711,6 +718,7 @@ export const darkTheme = createTheme(
       },
       text: {
         primary: '#fff',
+        secondary: alpha(themeCustomized.palette.white.main, 0.75),
       },
       grey: {
         800: '#302B52',
@@ -722,6 +730,9 @@ export const darkTheme = createTheme(
       },
       bgSecondary: {
         main: alpha(themeCustomized.palette.white.main, 0.12),
+      },
+      bgTertiary: {
+        main: themeCustomized.palette.alphaLight200.main,
       },
       shadow: {
         main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',

@@ -1,23 +1,14 @@
 import { type Theme, useTheme } from '@mui/material';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import OutlinedInput from '@mui/material/OutlinedInput';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
-import Checkbox from '@mui/material/Checkbox';
 import { SoraTypography } from '../Superfest.style';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-      backgroundColor: '#fff0ca',
-    },
-  },
-};
 
 function getStyles(name: string, personName: readonly string[], theme: Theme) {
   return {
@@ -43,6 +34,16 @@ export const MissionsFilter = ({
 }: MissionsFilterProps) => {
   const theme = useTheme();
 
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+        backgroundColor: theme.palette.bgTertiary.main, //'#fff0ca',
+      },
+    },
+  };
+
   return (
     <FormControl sx={{ width: 120 }}>
       <Select
@@ -67,7 +68,12 @@ export const MissionsFilter = ({
             value={name}
             style={getStyles(name, activeChoices, theme)}
           >
-            <Checkbox checked={activeChoices.indexOf(name) > -1} />
+            <Checkbox
+              checked={activeChoices.indexOf(name) > -1}
+              sx={{
+                color: theme.palette.text.primary,
+              }}
+            />
             <ListItemText primary={name} />
           </MenuItem>
         ))}

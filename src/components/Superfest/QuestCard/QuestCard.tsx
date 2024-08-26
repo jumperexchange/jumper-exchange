@@ -1,12 +1,17 @@
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { Button } from '../../Button';
+import { APYIcon } from 'src/components/illustrations/APYIcon';
+import { OPBadge } from 'src/components/illustrations/OPBadge';
+import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import { ButtonSecondary } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
 import { FlexSpaceBetweenBox, SoraTypography } from '../Superfest.style';
 import type { Chain } from '../SuperfestPage/Banner/Banner';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
-import Link from 'next/link';
 import {
   OPBadgeRelativeBox,
   QuestCardBottomBox,
@@ -16,11 +21,6 @@ import {
   XPDisplayBox,
   XPIconBox,
 } from './QuestCard.style';
-import { OPBadge } from 'src/components/illustrations/OPBadge';
-import { Box } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
-import { APYIcon } from 'src/components/illustrations/APYIcon';
 
 export interface RewardsInterface {
   logo: string;
@@ -28,11 +28,25 @@ export interface RewardsInterface {
   amount: number;
 }
 
+const superfestJoinButton = {
+  alignItems: 'center',
+  width: '100%',
+  backgroundColor: 'transparent',
+  border: '2px dotted',
+  padding: '16px',
+  '&:hover': {
+    color: '#FFFFFF',
+    backgroundColor: '#ff0420',
+  },
+};
+
 interface QuestCardProps {
   active?: boolean;
   title?: string;
   image?: string;
   points?: number;
+  activeCampaign?: 'superfest';
+  path: string;
   link?: string;
   startDate?: string;
   endDate?: string;
@@ -52,6 +66,8 @@ export const QuestCard = ({
   title,
   image,
   points,
+  activeCampaign,
+  path,
   link,
   startDate,
   endDate,
@@ -65,11 +81,10 @@ export const QuestCard = ({
 }: QuestCardProps) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { apy, isLoading, isSuccess } = useMissionsMaxAPY(claimingIds);
-
+  const { apy } = useMissionsMaxAPY(claimingIds);
   return (
     <QuestCardMainBox>
-      <Link href={`/superfest/${slug}`}>
+      <Link href={`${path}${slug}`}>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           {image && (
             <Image
@@ -83,17 +98,18 @@ export const QuestCard = ({
               }}
             />
           )}
-
-          <OPBadgeRelativeBox>
-            {rewards && rewards?.amount > 0 ? <OPBadge /> : undefined}
-          </OPBadgeRelativeBox>
+          {activeCampaign === 'superfest' && (
+            <OPBadgeRelativeBox>
+              {rewards && rewards?.amount > 0 ? <OPBadge /> : undefined}
+            </OPBadgeRelativeBox>
+          )}
         </Box>
       </Link>
       <QuestCardBottomBox>
         <QuestCardTitleBox>
-          <SoraTypography fontSize="20px" lineHeight="20px" fontWeight={600}>
+          <Typography fontSize="20px" lineHeight="20px" fontWeight={600}>
             {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
-          </SoraTypography>
+          </Typography>
         </QuestCardTitleBox>
         <FlexSpaceBetweenBox marginBottom={'8px'} marginTop={'8px'}>
           <FlexCenterRowBox>
@@ -170,31 +186,18 @@ export const QuestCard = ({
         </FlexSpaceBetweenBox>
         <QuestCardInfoBox points={points}>
           {active && slug ? (
-            <Button
+            <ButtonSecondary
               disabled={false}
-              variant="secondary"
               size="medium"
-              styles={{
-                alignItems: 'center',
-                width: '100%',
-                backgroundColor: 'transparent',
-                border: '2px dotted',
-                padding: '16px',
-                '&:hover': {
-                  color: '#FFFFFF',
-                  backgroundColor: '#ff0420',
-                },
+              sx={{
+                ...(activeCampaign === 'superfest' && superfestJoinButton),
               }}
               onClick={() => router.push(slug)}
             >
-              <SoraTypography
-                fontSize="16px"
-                lineHeight="18px"
-                fontWeight={600}
-              >
+              <Typography fontSize="16px" lineHeight="18px" fontWeight={600}>
                 {String(t('questCard.join')).toUpperCase()}
-              </SoraTypography>
-            </Button>
+              </Typography>
+            </ButtonSecondary>
           ) : null}
         </QuestCardInfoBox>
       </QuestCardBottomBox>

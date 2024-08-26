@@ -1,15 +1,16 @@
 import { useAccounts } from '@/hooks/useAccounts';
-import { JUMPER_FEST_PATH } from 'src/const/urls';
+import { JUMPER_QUESTS_PATH } from 'src/const/urls';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
-import { ActiveSuperfestMissionsCarousel } from './ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
-import { AvailableMissionsList } from './AvailableMissionsList/AvailableMissionsList';
-import { HeroBox } from './HeroBox/HeroBox';
-import { NFTClaimingBox } from './NFTClaimingBox/NFTClaimingBox';
-import { RewardsCarousel } from './Rewards/RewardsCarousel';
-import { SuperfestContainer, SuperfestMainBox } from './Superfest.style';
+import { ActiveSuperfestMissionsCarousel } from '../Superfest/ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
+import { AvailableMissionsList } from '../Superfest/AvailableMissionsList/AvailableMissionsList';
+import { RewardsCarousel } from '../Superfest/Rewards/RewardsCarousel';
+import {
+  SuperfestContainer,
+  SuperfestMainBox,
+} from '../Superfest/Superfest.style';
 
-export const Superfest = () => {
+export const Quests = () => {
   //HOOKS
   const { account } = useAccounts();
   const { quests, isQuestLoading } = useOngoingFestMissions();
@@ -25,7 +26,7 @@ export const Superfest = () => {
   });
 
   return (
-    <SuperfestContainer className="superfest">
+    <SuperfestContainer>
       <RewardsCarousel
         hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
         rewardAmount={availableRewards?.[0]?.amountToClaim as number}
@@ -35,14 +36,13 @@ export const Superfest = () => {
         proof={availableRewards?.[0]?.proof}
         isMerklSuccess={isRewardSuccess}
       />
-      <HeroBox />
       <SuperfestMainBox>
         {!account?.address ||
         isQuestLoading ||
         !activeCampaigns ||
         activeCampaigns.length === 0 ? undefined : (
           <ActiveSuperfestMissionsCarousel
-            path={JUMPER_FEST_PATH}
+            path={JUMPER_QUESTS_PATH}
             quests={quests}
             loading={isQuestLoading}
             activeCampaigns={activeCampaigns}
@@ -50,13 +50,11 @@ export const Superfest = () => {
           />
         )}
         <AvailableMissionsList
-          activeCampaign={'superfest'}
-          path={JUMPER_FEST_PATH}
+          path={JUMPER_QUESTS_PATH}
           quests={quests}
           loading={isQuestLoading}
           pastCampaigns={pastCampaigns}
         />
-        <NFTClaimingBox />
       </SuperfestMainBox>
     </SuperfestContainer>
   );
