@@ -1,0 +1,82 @@
+name: Build docker
+
+on:
+  push:
+    branches:
+      - develop
+      - staging
+      - main
+
+env:
+  IMAGE_NAME: europe-docker.pkg.dev/jumper-g-artifacts/docker-jumper-exchange/jumpex
+
+jobs:
+  build-docker:
+    runs-on: ubuntu-latest
+
+    # id token
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - # check out the repository
+        name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set current date as env variable
+        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: |
+            /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Authenticate to Google Cloud
+        id: gcpauth
+        uses: google-github-actions/auth@v2
+        with:
+          create_credentials_file: 'true'
+          workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
+          service_account: 'artifact-deployer@jumper-g-management.iam.gserviceaccount.com'
+
+      - # login to gcp
+        name: login
+        run: |-
+          gcloud auth login --brief --cred-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
+          gcloud auth configure-docker europe-docker.pkg.dev
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: |
+            type=local,src=/tmp/.buildx-cache
+          cache-to: |
+            type=local,dest=/tmp/.buildx-cache
+          build-args: |
+            ENV_FILE=${{ env.BRANCH_NAME == 'main' && '.env.production' || env.BRANCH_NAME == 'develop' && '.env.development' || format('.env.{0}', env.BRANCH_NAME) }}
+            ENV_NAME=${{ env.BRANCH_NAME == 'main' && 'prod' || env.BRANCH_NAME }}
