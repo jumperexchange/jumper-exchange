@@ -22,7 +22,7 @@ jobs:
     steps:
       - # check out the repository
         name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Set current date as env variable
         run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
@@ -60,7 +60,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
             type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
@@ -78,5 +78,5 @@ jobs:
           cache-to: |
             type=local,dest=/tmp/.buildx-cache
           build-args: |
-            ENV_FILE=${{ env.BRANCH_NAME == 'main' && '.env.production' || env.BRANCH_NAME == 'develop' && '.env.development' || format('.env.{0}', env.BRANCH_NAME) }}
-            ENV_NAME=${{ env.BRANCH_NAME == 'main' && 'prod' || env.BRANCH_NAME }}
+            ENV_FILE=${{ github.ref_name == 'main' && '.env.production' || github.ref_name == 'develop' && '.env.development' || format('.env.{0}', github.ref_name) }}
+            ENV_NAME=${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
