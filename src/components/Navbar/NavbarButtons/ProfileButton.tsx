@@ -10,10 +10,12 @@ export const ProfileButton = () => {
   const theme = useTheme();
   const { account } = useAccounts();
 
+  const imageSrc = account?.address ? `https://effigy.im/a/${account?.address}.png` : '/default_effigy.svg';
+
   return (
     <ProfileButtonBox onClick={() => navigate(JUMPER_LOYALTY_PATH)}>
       <Image
-        src={`https://effigy.im/a/${account?.address ?? 'jumper.eth'}.png`}
+        src={imageSrc}
         alt="Effigy Wallet Icon"
         width={44}
         height={44}

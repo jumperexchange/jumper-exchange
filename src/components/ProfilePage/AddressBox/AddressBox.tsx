@@ -52,12 +52,12 @@ export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
     ? imageLink
     : address && isEVM
       ? `https://effigy.im/a/${address}.png`
-      : `https://effigy.im/a/${'jumper.eth'}.png`;
+      : '/default_effigy.svg';
 
   const effigyLink =
     address && isEVM
       ? `https://effigy.im/a/${address}.png`
-      : `https://effigy.im/a/${'jumper.eth'}.png`;
+      : '/default_effigy.svg';
 
   return (
     <AddressBoxContainer imgUrl={effigyLink}>
