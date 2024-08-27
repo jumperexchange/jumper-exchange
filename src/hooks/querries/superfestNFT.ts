@@ -7,6 +7,7 @@ export const availableNFT = gql`
         signature: "" # provide a test signature
         campaignID: $campaignID # campaign hash id
         address: $address # user address
+        mintCount: 1
       }
     ) {
       allow # Is allow user claim nft

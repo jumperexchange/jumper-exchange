@@ -7,6 +7,7 @@ import { AvailableMissionsList } from './AvailableMissionsList/AvailableMissions
 import { ActiveSuperfestMissionsCarousel } from './ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
+import { useTurtleMember } from 'src/hooks/useTurtleMember';
 
 export const Superfest = () => {
   //HOOKS
@@ -20,6 +21,13 @@ export const Superfest = () => {
     isSuccess: isRewardSuccess,
   } = useMerklRewards({
     rewardChainId: 10,
+    userAddress: account?.address,
+  });
+  const {
+    isMember,
+    isJumperMember,
+    isSuccess: isMemberCheckSuccess,
+  } = useTurtleMember({
     userAddress: account?.address,
   });
 
@@ -51,6 +59,9 @@ export const Superfest = () => {
           quests={quests}
           loading={isQuestLoading}
           pastCampaigns={pastCampaigns}
+          isJumperTurtleMember={
+            isMember && isJumperMember && isMemberCheckSuccess
+          }
         />
         <NFTClaimingBox />
       </SuperfestMainBox>
