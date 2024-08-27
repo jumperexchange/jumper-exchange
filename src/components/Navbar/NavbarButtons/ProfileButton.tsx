@@ -10,7 +10,9 @@ export const ProfileButton = () => {
   const theme = useTheme();
   const { account } = useAccounts();
 
-  const imageSrc = account?.address ? `https://effigy.im/a/${account?.address}.png` : '/default_effigy.svg';
+  const imageSrc = account?.address
+    ? `https://effigy.im/a/${account?.address}.png`
+    : '/default_effigy.svg';
 
   return (
     <ProfileButtonBox onClick={() => navigate(JUMPER_LOYALTY_PATH)}>
