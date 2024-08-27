@@ -126,7 +126,10 @@ export const QuestCardDetailled = ({
           {points ? (
             <FlexCenterRowBox>
               {apy > 0 && !variableWeeklyAPY && (
-                <XPDisplayBox active={active} bgcolor={'#ff0420'}>
+                <XPDisplayBox
+                  active={active}
+                  bgcolor={PROFILE_CAMPAIGN_LIGHT_COLOR}
+                >
                   <Typography
                     fontSize="14px"
                     fontWeight={700}
@@ -141,7 +144,10 @@ export const QuestCardDetailled = ({
                 </XPDisplayBox>
               )}
               {variableWeeklyAPY && (
-                <XPDisplayBox active={active} bgcolor={'#ff0420'}>
+                <XPDisplayBox
+                  active={active}
+                  bgcolor={PROFILE_CAMPAIGN_LIGHT_COLOR}
+                >
                   <Typography
                     fontSize="14px"
                     fontWeight={700}

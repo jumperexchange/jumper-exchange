@@ -3,10 +3,10 @@ import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import type { Quest } from '@/types/loyaltyPass';
 import { useTranslation } from 'react-i18next';
 import { QuestCard } from '../QuestCard/QuestCard';
-import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { QuestCarouselContainer } from './QuestCarousel.style';
 import { TempTitle } from './TempTitle/TempTitle';
 import { QuestCardDetailled } from '../QuestCardDetailled/QuestCardDetailled';
+import { QuestCardSkeleton } from '../QuestCardDetailled/QuestCardSkeleton';
 
 interface QuestCarouselProps {
   quests?: Quest[];
