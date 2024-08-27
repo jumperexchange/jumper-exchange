@@ -30,6 +30,8 @@ export const SuperfestMissionPage = ({
   const rewards = quest.attributes.CustomInformation?.['rewards'];
   const points = quest?.attributes?.Points;
 
+  console.log(attributes?.Steps);
+
   const { account } = useAccounts();
   const { pastCampaigns } = useMerklRewards({
     rewardChainId: 10,
@@ -62,16 +64,18 @@ export const SuperfestMissionPage = ({
           }
         />
         {/* Big CTA */}
-        <MissionCTA
-          title={attributes?.Title}
-          url={attributes?.Link}
-          rewards={rewards}
-          key={generateKey('cta')}
-          CTAs={CTAsWithAPYs}
-          variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
-          signature={missionType === 'turtle_signature'}
-          rewardRange={rewardRange}
-        />
+        {CTAsWithAPYs?.length > 0 && (
+          <MissionCTA
+            title={attributes?.Title}
+            url={attributes?.Link}
+            rewards={rewards}
+            key={generateKey('cta')}
+            CTAs={CTAsWithAPYs}
+            variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
+            signature={missionType === 'turtle_signature'}
+            rewardRange={rewardRange}
+          />
+        )}
         {/* Subtitle and description */}
         <DescriptionBox
           longTitle={attributes?.Subtitle}
@@ -79,9 +83,9 @@ export const SuperfestMissionPage = ({
         />
         {/* Steps */}
         {/* Todo: remove the check for steps */}
-        {attributes?.Steps && attributes?.Steps?.length > 1 ? (
+        {attributes?.Steps && attributes?.Steps?.length > 0 && (
           <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
-        ) : undefined}
+        )}
         {/* Additional Info */}
         {attributes?.Information && (
           <InformationAlertBox information={attributes?.Information} />

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { QuestCarouselContainer } from './QuestCarousel.style';
+import { TempTitle } from './TempTitle/TempTitle';
 
 interface QuestCarouselProps {
   quests?: Quest[];
@@ -21,6 +22,7 @@ export const QuestCarousel = ({ quests, loading }: QuestCarouselProps) => {
     <>
       {!isNotLive ? (
         <QuestCarouselContainer>
+          <TempTitle />
           <CarouselContainer title={t('missions.available')}>
             {!loading
               ? quests?.map((quest: Quest, index: number) => {
