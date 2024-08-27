@@ -1,6 +1,6 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import generateKey from 'src/app/lib/generateKey';
-import { JUMPER_QUESTS_PATH } from 'src/const/urls';
+import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
@@ -16,14 +16,9 @@ import { SuperfestPageMainBox } from '../Superfest/SuperfestPage/SuperfestMissio
 interface QuestsMissionPageVar {
   quest: Quest;
   baseUrl: string;
-  activeCampaign?: string;
 }
 
-export const QuestsMissionPage = ({
-  quest,
-  baseUrl,
-  activeCampaign,
-}: QuestsMissionPageVar) => {
+export const QuestsMissionPage = ({ quest, baseUrl }: QuestsMissionPageVar) => {
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
   const missionType = quest?.attributes?.CustomInformation?.['missionType'];
@@ -44,7 +39,7 @@ export const QuestsMissionPage = ({
     <SuperfestContainer>
       <SuperfestPageMainBox>
         {/* button to go back */}
-        <BackButton title={'Quests'} path={JUMPER_QUESTS_PATH} />
+        <BackButton title={'Profile'} path={JUMPER_LOYALTY_PATH} />
         {/* big component with the main information */}
         <BannerBox
           quest={quest}
