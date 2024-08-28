@@ -199,6 +199,7 @@ export function useUserTracking() {
           errorCode: data[TrackingEventParameter.ErrorCode],
           errorMessage: data[TrackingEventParameter.ErrorMessage],
           action: data[TrackingEventParameter.Action] || '',
+          url: window?.location?.href,
         };
         await jumperTrackTransaction(transactionData);
       }
