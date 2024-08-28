@@ -124,7 +124,7 @@ export function useUserTracking() {
             browserFingerprint: fp,
             isMobile: !isDesktop,
             sessionId: sessionId || 'unknown',
-            url: process.env.NEXT_PUBLIC_SITE_URL,
+            url: window?.location?.href,
           };
           await jumperTrackEvent(eventData);
         } catch (error) {
@@ -199,6 +199,8 @@ export function useUserTracking() {
           errorCode: data[TrackingEventParameter.ErrorCode],
           errorMessage: data[TrackingEventParameter.ErrorMessage],
           action: data[TrackingEventParameter.Action] || '',
+          url: window?.location?.href,
+          browserFingerprint: fp,
         };
         await jumperTrackTransaction(transactionData);
       }
