@@ -4,6 +4,7 @@ import {
   Typography,
   styled,
   IconButton as MuiIconButton,
+  alpha,
 } from '@mui/material';
 import { sequel65 } from 'src/fonts/fonts';
 import { getContrastAlphaColor } from '@/utils/colors';
@@ -14,7 +15,11 @@ import {
 } from 'src/const/partnerTheme';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#322153' : '#F6F5FA',
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? '#FFFFFF'
+      : alpha(theme.palette.white.main, 0.08),
+  // backgroundColor: theme.palette.mode === 'dark' ? '#322153' : '#F6F5FA',
   // backgroundColor:
   //   theme.palette.mode === 'dark'
   //     ? PROFILE_CAMPAIGN_DARK_COLOR
