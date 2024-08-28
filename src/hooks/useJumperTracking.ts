@@ -66,6 +66,7 @@ export interface JumperDataTrackTransactionProps {
   errorMessage?: string;
   pathname?: string;
   url: string;
+  browserFingerprint: string;
 }
 
 export const useJumperTracking = () => {
@@ -115,6 +116,7 @@ export const useJumperTracking = () => {
       errorCode: data.errorCode,
       pathname: data.pathname,
       url: data.url,
+      browserFingerprint: data.browserFingerprint,
     };
     await track(transactionData, JUMPER_ANALYTICS_TRANSACTION);
   };

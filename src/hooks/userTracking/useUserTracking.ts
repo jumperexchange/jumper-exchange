@@ -200,6 +200,7 @@ export function useUserTracking() {
           errorMessage: data[TrackingEventParameter.ErrorMessage],
           action: data[TrackingEventParameter.Action] || '',
           url: window?.location?.href,
+          browserFingerprint: fp,
         };
         await jumperTrackTransaction(transactionData);
       }
