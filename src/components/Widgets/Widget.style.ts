@@ -20,7 +20,7 @@ export const WidgetWrapper = styled(Box, {
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     ...(!isExpanded && {
       '& > div': {
-        height: 616,
+        height: 'auto',
       },
     }),
   },
