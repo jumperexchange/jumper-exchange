@@ -8,6 +8,7 @@ interface BlogParagraphProps extends TypographyProps {
   underline?: boolean;
   strikethrough?: boolean;
   italic?: boolean;
+  quote?: boolean;
 }
 
 export const BlogParagraph = styled(Typography, {
@@ -15,8 +16,16 @@ export const BlogParagraph = styled(Typography, {
     prop !== 'bold' &&
     prop !== 'underline' &&
     prop !== 'italic' &&
-    prop !== 'strikethrough',
-})<BlogParagraphProps>(({ theme, bold, underline, strikethrough, italic }) => {
+    prop !== 'strikethrough' &&
+    prop !== 'quote',
+})<BlogParagraphProps>(({
+  theme,
+  bold,
+  underline,
+  strikethrough,
+  italic,
+  quote,
+}) => {
   const textDecoration = underline
     ? 'underline'
     : strikethrough
@@ -36,6 +45,10 @@ export const BlogParagraph = styled(Typography, {
     fontSize: '18px',
     lineHeight: '32px',
     margin: theme.spacing(2, 0),
+    ...(quote && {
+      fontSize: '20px',
+      fontStyle: 'italic',
+    }),
   };
 });
 

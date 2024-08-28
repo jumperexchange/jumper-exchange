@@ -32,12 +32,14 @@ interface AvailableMissionsListProps {
   quests?: Quest[];
   pastCampaigns?: string[];
   loading: boolean;
+  isJumperTurtleMember?: boolean;
 }
 
 export const AvailableMissionsList = ({
   quests,
   pastCampaigns,
   loading,
+  isJumperTurtleMember,
 }: AvailableMissionsListProps) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
@@ -107,6 +109,8 @@ export const AvailableMissionsList = ({
               const rewards = quest.attributes.CustomInformation?.['rewards'];
               const rewardType =
                 quest.attributes?.CustomInformation?.['rewardType'];
+              const missionType =
+                quest?.attributes?.CustomInformation?.['missionType'];
               const rewardRange =
                 quest.attributes?.CustomInformation?.['rewardRange'];
               const chains = quest.attributes.CustomInformation?.['chains'];
@@ -145,6 +149,13 @@ export const AvailableMissionsList = ({
               let completed = false;
               if (rewardsIds && pastCampaigns) {
                 completed = checkInclusion(pastCampaigns, rewardsIds);
+              }
+              if (
+                missionType &&
+                missionType === 'turtle_signature' &&
+                isJumperTurtleMember
+              ) {
+                completed = true;
               }
 
               return (
