@@ -3,21 +3,25 @@ import Image from 'next/image';
 import { EarnedTypography } from '../../Rewards/RewardsCarousel.style';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import {
+  PROFILE_CAMPAIGN_DARK_CHAIN,
   PROFILE_CAMPAIGN_DARK_COLOR,
+  PROFILE_CAMPAIGN_LIGHT_CHAIN,
   PROFILE_CAMPAIGN_LIGHT_COLOR,
 } from 'src/const/partnerTheme';
 
-const LOGO =
-  'https://strapi.li.finance/uploads/Sei_Symbol_Gradient_2b107fa812.svg';
-
 export const TempTitle = () => {
   const theme = useTheme();
+
+  const IMAGE_LOGO =
+    theme.palette.mode === 'dark'
+      ? PROFILE_CAMPAIGN_DARK_CHAIN
+      : PROFILE_CAMPAIGN_LIGHT_CHAIN;
 
   return (
     <FlexCenterRowBox marginBottom={'16px'}>
       <Box marginRight="8px">
         <Image
-          src={LOGO}
+          src={IMAGE_LOGO}
           alt="token image"
           width={48}
           height={44}
@@ -33,7 +37,7 @@ export const TempTitle = () => {
             : PROFILE_CAMPAIGN_LIGHT_COLOR
         }
       >
-        SEI Rewards Week
+        Super SEIyan Week
       </EarnedTypography>
     </FlexCenterRowBox>
   );
