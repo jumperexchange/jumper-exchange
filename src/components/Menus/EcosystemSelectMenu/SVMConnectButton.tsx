@@ -19,14 +19,15 @@ export const SVMConnectButton = ({
   svm,
 }: SVMConnectButtonProps) => {
   const theme = useTheme();
-  const { closeAllMenus } = useMenuStore((state) => state);
+  const { setWalletSelectMenuState } = useMenuStore((state) => state);
   const connect = useAccountConnect();
   const { chains } = useChains();
   const solanaChain = chains.find((chain) => chain.id === ChainId.SOL);
 
   const connectHandler = async () => {
     connect({ svm });
-    closeAllMenus();
+    setWalletSelectMenuState(false);
+    // closeAllMenus();
   };
   return (
     <ConnectButton onClick={() => connectHandler()}>

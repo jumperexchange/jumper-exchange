@@ -44,7 +44,8 @@
       "explore": "Explorar",
       "copiedMsg": "Endereço da carteira copiado",
       "walletNotInstalled": "{{wallet}} não está instalada",
-      "connectAnotherWallet": "Conectar outra carteira"
+      "connectAnotherWallet": "Conectar outra carteira",
+      "refreshBalances": ""
     },
     "themes": {
       "switchToLight": "Mudar para o Modo Claro",

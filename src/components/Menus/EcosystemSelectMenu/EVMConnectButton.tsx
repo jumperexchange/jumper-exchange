@@ -21,11 +21,11 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
   const { chains } = useChains();
   const ethereumChain = chains.find((chain) => chain.id === ChainId.ETH);
 
-  const { closeAllMenus } = useMenuStore((state) => state);
+  const { setWalletSelectMenuState } = useMenuStore((state) => state);
 
   const connectHandler = async () => {
     connect({ evm });
-    closeAllMenus();
+    setWalletSelectMenuState(false);
   };
   return (
     <ConnectButton onClick={() => connectHandler()}>

@@ -1,7 +1,9 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
 import type { ComponentsOverrides, ComponentsVariants } from '@mui/material';
+import { darken } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
+import { lighten } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
@@ -595,6 +597,7 @@ export const lightTheme = createTheme(
       },
       text: {
         primary: '#000',
+        secondary: lighten('#000', 0.6),
       },
       grey: {
         300: '#E5E1EB',
@@ -707,6 +710,7 @@ export const darkTheme = createTheme(
       },
       text: {
         primary: '#fff',
+        secondary: darken('#fff', 0.6),
       },
       grey: {
         800: '#302B52',

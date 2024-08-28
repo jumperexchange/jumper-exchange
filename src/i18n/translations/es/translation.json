@@ -44,7 +44,8 @@
       "explore": "Explorar",
       "copiedMsg": "Dirección de billetera copiada",
       "walletNotInstalled": "{{wallet}} no está instalado",
-      "connectAnotherWallet": "Conectar otra billetera"
+      "connectAnotherWallet": "Conectar otra billetera",
+      "refreshBalances": ""
     },
     "themes": {
       "switchToLight": "Cambiar a tema claro",

@@ -16,16 +16,18 @@ interface DefaultMenuType {
   openSubMenu: keyof typeof MenuKeys;
   openSupportModal: boolean;
   openSnackbar: SnackbarProps;
+  isPopper: boolean;
 }
 
 export const defaultMenu: DefaultMenuType = {
   openMainMenu: false,
   openWalletMenu: false,
   openWalletSelectMenu: false,
-  openEcosystemSelect: { open: false },
+  openEcosystemSelect: {},
   openSubMenu: MenuKeysEnum.None,
   openSupportModal: false,
   openSnackbar: { open: false },
+  isPopper: true,
 };
 
 export const useMenuStore = createWithEqualityFn<MenuState>(
@@ -36,7 +38,7 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       const menuState = get();
       return (
         menuState.openMainMenu ||
-        menuState.openEcosystemSelect.open ||
+        // menuState.openEcosystemSelect.open ||
         menuState.openSubMenu !== MenuKeys.None ||
         menuState.openSupportModal ||
         menuState.openWalletSelectMenu ||
@@ -45,16 +47,16 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       // Add your desired functionality here
     },
 
-    // Close ALL Navbar Menus
+    // Close ALL Navbar Menus BUT the wallet menu
     closeAllMenus: () => {
-      set({
+      set((state) => ({
         openMainMenu: false,
         openWalletSelectMenu: false,
-        openWalletMenu: false,
+        openWalletMenu: state.openWalletMenu,
         openSubMenu: MenuKeysEnum.None,
         openSupportModal: false,
-        openEcosystemSelect: { open: false },
-      });
+        openEcosystemSelect: {},
+      }));
     },
 
     // Toggle Navbar Main Menu
@@ -69,14 +71,15 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     },
 
     // Toggle Navbar Wallet Menu
-    setWalletSelectMenuState: (open) => {
-      set({
+    setWalletSelectMenuState: (open, isPopper = true) => {
+      set((state) => ({
         openWalletSelectMenu: open,
         openSubMenu: MenuKeysEnum.None,
         openMainMenu: false,
-        openWalletMenu: false,
+        isPopper: isPopper,
+        openWalletMenu: state.openWalletMenu,
         openSupportModal: false,
-      });
+      }));
     },
 
     // Toggle Navbar Connected Menu
@@ -91,9 +94,9 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     },
 
     // Toggle Wallet Ecosystem Selection Menu
-    setEcosystemSelectMenuState: (open, combinedWallet) => {
+    setEcosystemSelectMenuState: (combinedWallet) => {
       set({
-        openEcosystemSelect: { open, combinedWallet },
+        openEcosystemSelect: { combinedWallet },
         openWalletSelectMenu: false,
         openSubMenu: MenuKeysEnum.None,
         openMainMenu: false,
@@ -103,10 +106,11 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     },
 
     // Toggle Navbar Sub Menu
-    setSubMenuState: (subMenu) => {
-      set({
+    setSubMenuState: (subMenu, combinedWallet?) => {
+      set((state) => ({
         openSubMenu: subMenu,
-      });
+        openEcosystemSelect: { ...state.openEcosystemSelect, combinedWallet },
+      }));
     },
 
     // Open Snackbar and set label

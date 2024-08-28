@@ -11,8 +11,8 @@ import { useMenuStore } from '@/stores/menu';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/types';
 import { getConnectorIcon } from '@lifi/wallet-management';
-import { Typography } from '@mui/material';
-import { useMemo } from 'react';
+import { Drawer, Typography } from '@mui/material';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ConnectButton,
@@ -28,6 +28,7 @@ export const WalletButtons = () => {
   const { account } = useAccounts();
   const { t } = useTranslation();
   const { isSuccess } = useChains();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const {
     openWalletSelectMenu,
@@ -58,6 +59,8 @@ export const WalletButtons = () => {
   };
 
   const handleWalletMenuClick = () => {
+    // setIsDrawerOpen(true);
+
     openWalletMenu &&
       trackEvent({
         category: TrackingCategory.WalletMenu,

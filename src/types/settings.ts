@@ -28,6 +28,8 @@ export interface SettingsState extends SettingsProps {
   setConfigTheme: (configTheme: any) => void;
   setWidgetTheme: (widgetTheme: any) => void;
 
+  setPortfolioLastValue: (portfolioLastValue: number) => void;
+
   // Installed Wallets
   setClientWallets: (wallet: string) => void;
 

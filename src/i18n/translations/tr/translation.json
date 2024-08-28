@@ -44,7 +44,8 @@
       "explore": "Keşfet",
       "copiedMsg": "Cüzdan Adresi kopyalandı",
       "walletNotInstalled": "{{wallet}} kurulu değil",
-      "connectAnotherWallet": "Başka bir cüzdana bağlan"
+      "connectAnotherWallet": "Başka bir cüzdana bağlan",
+      "refreshBalances": ""
     },
     "themes": {
       "switchToLight": "Açık temaya geç",

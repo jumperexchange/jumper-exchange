@@ -12,11 +12,12 @@ export interface SnackbarProps {
 }
 
 export interface EcosystemSelectMenuProps {
-  open: boolean;
+  // open: boolean;
   combinedWallet?: CombinedWallet;
 }
 
 export type MenuProps = {
+  isPopper: boolean;
   openedMenu: () => boolean;
   openMainMenu: boolean;
   openWalletSelectMenu: boolean;
@@ -35,15 +36,18 @@ export interface MenuState extends MenuProps {
   // Toggle Wallet Menu
   setWalletMenuState: (open: boolean) => void;
   // Toggle Wallet Selection Menu
-  setWalletSelectMenuState: (open: boolean) => void;
+  setWalletSelectMenuState: (open: boolean, isPopper?: boolean) => void;
   // Toggle Ecosystem Select Menu
   setEcosystemSelectMenuState: (
-    open: boolean,
+    // open: boolean,
     combinedWallet?: CombinedWallet,
   ) => void;
 
   // Toggle Sub Menu
-  setSubMenuState: (subMenu: keyof typeof MenuKeys) => void;
+  setSubMenuState: (
+    subMenu: keyof typeof MenuKeys,
+    combinedWallet?: CombinedWallet,
+  ) => void;
 
   // Open Snackbar and set label
   setSnackbarState: (

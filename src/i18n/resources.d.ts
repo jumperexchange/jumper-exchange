@@ -50,6 +50,7 @@ interface Resources {
         copiedMsg: 'Wallet address copied';
         walletNotInstalled: '{{wallet}} is not installed';
         connectAnotherWallet: 'Connect another wallet';
+        refreshBalances: 'Refresh balances';
       };
       themes: {
         switchToLight: 'Switch to light mode';

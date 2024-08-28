@@ -13,6 +13,7 @@ import type { Connector } from 'wagmi';
 import { EVMConnectButton } from './EVMConnectButton';
 import { ConnectButtonContainer } from './EcosystemSelectMenu.style';
 import { SVMConnectButton } from './SVMConnectButton';
+import { Box } from '@mui/system';
 
 interface MenuProps {
   anchorEl?: HTMLAnchorElement;
@@ -20,26 +21,10 @@ interface MenuProps {
 
 export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
   const { t } = useTranslation();
-  const theme = useTheme();
-  const { openEcosystemSelect, setEcosystemSelectMenuState } = useMenuStore(
-    (state) => state,
-  );
+  const { openEcosystemSelect } = useMenuStore((state) => state);
 
-  const handleEcoSystemSelectClose = () =>
-    setEcosystemSelectMenuState(
-      openEcosystemSelect.open,
-      openEcosystemSelect.combinedWallet,
-    );
   return (
-    <Menu
-      open={openEcosystemSelect.open}
-      width="100%"
-      styles={{
-        background: theme.palette.surface1.main,
-      }}
-      setOpen={handleEcoSystemSelectClose}
-      anchorEl={anchorEl}
-    >
+    <>
       <MenuHeaderAppWrapper
         sx={{
           gridColumn: 'span 3',
@@ -65,6 +50,8 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
           )}
           evm={openEcosystemSelect.combinedWallet?.evm!}
         />
+      </ConnectButtonContainer>
+      <ConnectButtonContainer as="li">
         <SVMConnectButton
           walletIcon={getConnectorIcon(
             (openEcosystemSelect.combinedWallet?.evm as Connector) ||
@@ -73,6 +60,12 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
           svm={openEcosystemSelect.combinedWallet?.svm!}
         />
       </ConnectButtonContainer>
-    </Menu>
+      <Box
+        sx={{
+          gridColumn: 'span 3',
+          marginBottom: '10px',
+        }}
+      />
+    </>
   );
 };

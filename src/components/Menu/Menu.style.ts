@@ -44,6 +44,7 @@ export const MenuList = styled(MuiMenuList, {
 })<MenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => ({
   marginTop: 0,
   display: cardsLayout ? 'flex' : 'block',
+  flexDirection: cardsLayout ? 'column' : 'unset',
   justifyContent: cardsLayout ? 'center' : 'unset',
   flexWrap: cardsLayout ? 'wrap' : 'inherit',
   padding: cardsLayout ? theme.spacing(0, 3) : 0,
@@ -127,7 +128,8 @@ export const MenuPaper = styled(Paper, {
     transformOrigin: 'inherit',
     maxHeight: 'calc( 100vh - 80px - 12px )',
     borderRadius: '12px !important',
-    width: width ?? 288,
+    width: '100%',
+    // width: width ?? 288,
     marginTop: -2,
   },
 }));

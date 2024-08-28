@@ -73,9 +73,6 @@ export const WalletManagementButtons = () => {
       <WalletSelectMenu
         anchorEl={walletManagementButtonsRef.current || undefined}
       />
-      <EcosystemSelectMenu
-        anchorEl={walletManagementButtonsRef?.current || undefined}
-      />
     </>
   );
 };

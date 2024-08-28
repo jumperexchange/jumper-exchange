@@ -44,7 +44,8 @@
       "explore": "Jelajah",
       "copiedMsg": "Alamat dompet disalin",
       "walletNotInstalled": "{{wallet}} belum terinstall",
-      "connectAnotherWallet": "Hubungkan dompet yang lain"
+      "connectAnotherWallet": "Hubungkan dompet yang lain",
+      "refreshBalances": ""
     },
     "themes": {
       "switchToLight": "Beralih ke Tema Terang",

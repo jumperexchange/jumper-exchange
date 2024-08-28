@@ -44,7 +44,8 @@
       "explore": "Переглянути",
       "copiedMsg": "Адреса гаманця скопійована",
       "walletNotInstalled": "{{wallet}} не встановлено",
-      "connectAnotherWallet": "Під'єднати інший гаманець"
+      "connectAnotherWallet": "Під'єднати інший гаманець",
+      "refreshBalances": ""
     },
     "themes": {
       "switchToLight": "Увімкнути світлу тему",

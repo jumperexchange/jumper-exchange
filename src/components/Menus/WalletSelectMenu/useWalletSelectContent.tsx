@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { type Connector } from 'wagmi';
+import { MenuKeysEnum } from '@/const/menuKeys';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();
@@ -33,8 +34,12 @@ export const useWalletSelectContent = () => {
   const connect = useAccountConnect();
   const [, setCookie] = useCookies(['welcomeScreenClosed']);
 
-  const { setSnackbarState, closeAllMenus, setEcosystemSelectMenuState } =
-    useMenuStore((state) => state);
+  const {
+    setSnackbarState,
+    closeAllMenus,
+    setEcosystemSelectMenuState,
+    setSubMenuState,
+  } = useMenuStore((state) => state);
 
   const availableWallets = useMemo(() => {
     let allowedWallets = combinedInstalledWallets.slice(0, 7);
@@ -52,7 +57,7 @@ export const useWalletSelectContent = () => {
   const connectWallet = useCallback(
     async (combinedWallet: CombinedWallet) => {
       if (combinedWallet.evm && combinedWallet.svm) {
-        setEcosystemSelectMenuState(true, combinedWallet);
+        setSubMenuState(MenuKeysEnum.EcosystemSelect, combinedWallet);
         return;
       } else if (combinedWallet.evm || combinedWallet.svm) {
         await connect(combinedWallet);
