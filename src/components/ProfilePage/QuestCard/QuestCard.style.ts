@@ -1,5 +1,5 @@
 import type { BoxProps } from '@mui/material';
-import { Box, alpha, styled } from '@mui/material';
+import { Box, alpha, darken, styled } from '@mui/material';
 
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -13,6 +13,14 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   borderRadius: '24px',
   textAlign: 'center',
   padding: theme.spacing(2),
+  transition: 'background-color 250ms',
+  '&:hover': {
+    cursor: 'pointer',
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? darken(theme.palette.white.main, 0.04)
+        : theme.palette.alphaLight300.main,
+  },
 }));
 
 export const QuestCardBottomBox = styled(Box)(({ theme }) => ({

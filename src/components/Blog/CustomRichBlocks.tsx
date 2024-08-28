@@ -44,6 +44,30 @@ interface WidgetRouteSettings
   toChain?: string;
 }
 
+interface ParagraphProps {
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  strikethrough?: boolean;
+  [key: string]: any;
+}
+
+interface QuoteProps {
+  text: string;
+  [key: string]: any;
+}
+
+interface RichElement<T> {
+  key: string | null;
+  props: T;
+  ref: any;
+  [key: string]: any;
+}
+
+type ParagraphElement = RichElement<ParagraphProps>;
+type QuoteElement = RichElement<QuoteProps>;
+
 export const CustomRichBlocks = ({
   id,
   baseUrl,
@@ -56,6 +80,7 @@ export const CustomRichBlocks = ({
       baseUrl ? (
         <Lightbox imageData={data.image} baseUrl={baseUrl} />
       ) : undefined,
+
     heading: ({
       children,
       level,
@@ -102,7 +127,21 @@ export const CustomRichBlocks = ({
           );
       }
     },
-    paragraph: ({ children }: any) => {
+
+    quote: ({ children }: { children: QuoteElement[] }) => {
+      return children.map((quote) => {
+        return (
+          <BlogParagraphContainer key={generateKey('quote')}>
+            <BlogParagraph quote={true} as="q">
+              {quote.props.text}
+            </BlogParagraph>
+          </BlogParagraphContainer>
+        );
+      });
+    },
+
+    paragraph: ({ children }: ParagraphElement) => {
+      console.log('PARAGRAPH', children);
       if (children[0].props.text.includes('<JUMPER_CTA')) {
         try {
           const htmlString = children[0].props.text;
@@ -188,7 +227,7 @@ export const CustomRichBlocks = ({
       } else {
         return (
           <BlogParagraphContainer>
-            {children.map((el: any, index: number) => {
+            {children.map((el: ParagraphElement, index: number) => {
               if (el.props.text || el.props.text !== '') {
                 if (el.props.content?.type === 'link') {
                   return (
