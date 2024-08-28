@@ -32,7 +32,6 @@ function getMuiTheme(themes: any[], activeTheme: string) {
   }
 
   const formattedTheme = formatTheme(partnerTheme);
-  console.log('FORMATTED THEME', formattedTheme);
   const baseTheme = getAvailableThemeModes(partnerTheme).includes('light')
     ? lightTheme
     : darkTheme;

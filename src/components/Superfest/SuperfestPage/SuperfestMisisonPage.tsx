@@ -9,7 +9,7 @@ import { SuperfestContainer } from '../Superfest.style';
 import { BackButton } from './BackButton/BackButton';
 import { BannerBox } from './Banner/Banner';
 import { MissionCTA } from './CTA/MissionCTA';
-import { DescriptionBox } from './DescriptionBox/DescriptionBox';
+import { DescriptionBoxSF } from './DescriptionBoxSF/DescriptionBoxSF';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { StepsBox } from './StepsBox/StepsBox';
 import { SuperfestPageMainBox } from './SuperfestMissionPage.style';
@@ -40,8 +40,7 @@ export const SuperfestMissionPage = ({
     rewardChainId: 10,
     userAddress: account?.address,
   });
-  console.log('ACTIVE CAMPAIGN!!!!', activeCampaign);
-  const { isLoading, isSuccess, CTAsWithAPYs } = useMissionsAPY(CTAs);
+  const { CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
     <SuperfestContainer className="superfest">
@@ -74,7 +73,7 @@ export const SuperfestMissionPage = ({
           rewardRange={rewardRange}
         />
         {/* Subtitle and description */}
-        <DescriptionBox
+        <DescriptionBoxSF
           longTitle={attributes?.Subtitle}
           description={attributes?.Description}
         />

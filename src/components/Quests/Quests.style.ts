@@ -1,7 +1,6 @@
-import { Box, Typography, styled } from '@mui/material';
-import { sora } from 'src/fonts/fonts';
+import { Box, styled } from '@mui/material';
 
-export const SuperfestContainer = styled(Box)(() => ({
+export const QuestsContainer = styled(Box)(() => ({
   background: 'transparent',
   position: 'relative',
   width: '100% !important',
@@ -20,15 +19,11 @@ export const FlexSpaceBetweenBox = styled(Box)(() => ({
   justifyContent: 'space-between',
 }));
 
-export const SuperfestMainBox = styled(Box)(() => ({
+export const QuestPageMainBox = styled(Box)(() => ({
   minWidth: '100%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
   alignContent: 'center',
-}));
-
-export const SoraTypography = styled(Typography)(() => ({
-  fontFamily: sora.style.fontFamily,
 }));

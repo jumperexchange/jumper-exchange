@@ -1,24 +1,29 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import generateKey from 'src/app/lib/generateKey';
-import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
-import { SuperfestContainer } from '../Superfest/Superfest.style';
-import { BackButton } from '../Superfest/SuperfestPage/BackButton/BackButton';
-import { BannerBox } from '../Superfest/SuperfestPage/Banner/Banner';
-import { MissionCTA } from '../Superfest/SuperfestPage/CTA/MissionCTA';
-import { DescriptionBox } from '../Superfest/SuperfestPage/DescriptionBox/DescriptionBox';
-import { InformationAlertBox } from '../Superfest/SuperfestPage/InformationBox/InformationAlertBox';
-import { StepsBox } from '../Superfest/SuperfestPage/StepsBox/StepsBox';
-import { SuperfestPageMainBox } from '../Superfest/SuperfestPage/SuperfestMissionPage.style';
+import { QuestPageMainBox, QuestsContainer } from '../Quests.style';
+import { BackButton } from './BackButton/BackButton';
+import { BannerBox } from './Banner/Banner';
+import { MissionCTA } from './CTA/MissionCTA';
+import { DescriptionBox } from './DescriptionBox/DescriptionBox';
+import { InformationAlertBox } from './InformationBox/InformationAlertBox';
+import { StepsBox } from './StepsBox/StepsBox';
 
 interface QuestsMissionPageVar {
   quest: Quest;
   baseUrl: string;
+  activeCampaign?: string;
+  path: string;
 }
 
-export const QuestsMissionPage = ({ quest, baseUrl }: QuestsMissionPageVar) => {
+export const QuestsMissionPage = ({
+  quest,
+  baseUrl,
+  activeCampaign,
+  path,
+}: QuestsMissionPageVar) => {
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
   const missionType = quest?.attributes?.CustomInformation?.['missionType'];
@@ -32,24 +37,31 @@ export const QuestsMissionPage = ({ quest, baseUrl }: QuestsMissionPageVar) => {
     rewardChainId: 10,
     userAddress: account?.address,
   });
-
   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
-    <SuperfestContainer>
-      <SuperfestPageMainBox>
+    <QuestsContainer>
+      <QuestPageMainBox>
         {/* button to go back */}
-        <BackButton title={'Profile'} path={JUMPER_LOYALTY_PATH} />
+        <BackButton path={path} title={activeCampaign} />
         {/* big component with the main information */}
         <BannerBox
           quest={quest}
           baseUrl={baseUrl}
           pastCampaigns={pastCampaigns}
+          // rotatingBadge={
+          //   rewardType === 'weekly' ? (
+          //     <SuperfestWeeklyRewards />
+          //   ) : (
+          //     <SuperfestDailyRewards />
+          //   )
+          // }
         />
         {/* Big CTA */}
         <MissionCTA
           title={attributes?.Title}
           url={attributes?.Link}
+          activeCampaign={activeCampaign}
           rewards={rewards}
           key={generateKey('cta')}
           CTAs={CTAsWithAPYs}
@@ -71,7 +83,7 @@ export const QuestsMissionPage = ({ quest, baseUrl }: QuestsMissionPageVar) => {
         {attributes?.Information && (
           <InformationAlertBox information={attributes?.Information} />
         )}
-      </SuperfestPageMainBox>
-    </SuperfestContainer>
+      </QuestPageMainBox>
+    </QuestsContainer>
   );
 };
