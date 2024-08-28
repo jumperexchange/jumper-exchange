@@ -2,6 +2,7 @@ import { useAccounts } from '@/hooks/useAccounts';
 import generateKey from 'src/app/lib/generateKey';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
+import { useTurtleMember } from 'src/hooks/useTurtleMember';
 import { type Quest } from 'src/types/loyaltyPass';
 import { SuperfestContainer } from '../Superfest.style';
 import { BackButton } from './BackButton/BackButton';
@@ -33,8 +34,14 @@ export const SuperfestMissionPage = ({
     rewardChainId: 10,
     userAddress: account?.address,
   });
-
-  const { isLoading, isSuccess, CTAsWithAPYs } = useMissionsAPY(CTAs);
+  const {
+    isMember,
+    isJumperMember,
+    isSuccess: isMemberCheckSuccess,
+  } = useTurtleMember({
+    userAddress: account?.address,
+  });
+  const { CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
     <SuperfestContainer className="superfest">
@@ -46,6 +53,12 @@ export const SuperfestMissionPage = ({
           quest={quest}
           baseUrl={baseUrl}
           pastCampaigns={pastCampaigns}
+          isRewardCompleted={
+            missionType === 'turtle_signature' &&
+            isMemberCheckSuccess &&
+            isMember &&
+            isJumperMember
+          }
         />
         {/* Big CTA */}
         <MissionCTA
@@ -56,6 +69,7 @@ export const SuperfestMissionPage = ({
           CTAs={CTAsWithAPYs}
           variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
           signature={missionType === 'turtle_signature'}
+          isTurtleMember={isMember}
           rewardRange={rewardRange}
         />
         {/* Subtitle and description */}

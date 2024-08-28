@@ -38,6 +38,7 @@ interface MissionCtaProps {
   variableWeeklyAPY?: boolean;
   signature?: boolean;
   rewardRange?: string;
+  isTurtleMember?: boolean;
 }
 
 export const MissionCTA = ({
@@ -46,6 +47,7 @@ export const MissionCTA = ({
   variableWeeklyAPY,
   signature,
   rewardRange,
+  isTurtleMember,
 }: MissionCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
@@ -83,7 +85,7 @@ export const MissionCTA = ({
         ) : undefined}
       </StartedTitleBox>
       <SeveralCTABox>
-        {signature && <SignatureCTA />}
+        {signature && <SignatureCTA isTurtleMember={isTurtleMember} />}
         {CTAs.map((CTA: CTALinkInt, i: number) => {
           return (
             <Link

@@ -22,6 +22,7 @@ interface SuperfestMissionPageVar {
   quest: Quest;
   baseUrl: string;
   pastCampaigns: string[];
+  isRewardCompleted?: boolean;
 }
 
 export interface Chain {
@@ -32,6 +33,7 @@ export const BannerBox = ({
   quest,
   baseUrl,
   pastCampaigns,
+  isRewardCompleted,
 }: SuperfestMissionPageVar) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
@@ -49,6 +51,9 @@ export const BannerBox = ({
   let completed = false;
   if (rewardsIds && pastCampaigns) {
     completed = checkInclusion(pastCampaigns, rewardsIds);
+  }
+  if (isRewardCompleted) {
+    completed = true;
   }
 
   return (

@@ -1,6 +1,6 @@
 import { getContrastAlphaColor } from '@/utils/colors';
 import type { Breakpoint } from '@mui/material';
-import { Box, Typography, styled } from '@mui/material';
+import { Box, Typography, alpha, styled } from '@mui/material';
 import { IconButtonTertiary } from 'src/components/IconButton.style';
 
 export const InstructionsAccordionItemContainer = styled(Box)(({ theme }) => ({
@@ -77,6 +77,12 @@ export const InstructionsAccordionToggle = styled(IconButtonTertiary)(
 
 export const InstructionsAccordionItemLabel = styled(Box)(({ theme }) => ({
   marginLeft: theme.spacing(2),
+  color: alpha(
+    theme.palette.mode === 'light'
+      ? theme.palette.black.main
+      : theme.palette.white.main,
+    0.75,
+  ),
   fontWeight: 600,
   fontSize: '18px',
   lineHeight: '32px',
