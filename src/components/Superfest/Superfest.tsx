@@ -22,6 +22,7 @@ export const Superfest = () => {
     rewardChainId: 10,
     userAddress: account?.address,
   });
+
   return (
     <SuperfestContainer className="superfest">
       <RewardsCarousel

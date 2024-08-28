@@ -9,6 +9,15 @@ import { SoraTypography } from '../Superfest.style';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+      backgroundColor: '#fff0ca',
+    },
+  },
+};
 
 function getStyles(name: string, personName: readonly string[], theme: Theme) {
   return {
@@ -18,14 +27,12 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
         : theme.typography.fontWeightMedium,
   };
 }
-
 interface MissionsFilterProps {
   title: string;
   options: string[];
   activeChoices: string[];
   handleChange: (event: SelectChangeEvent<string[]>) => void;
 }
-
 export const MissionsFilter = ({
   title,
   options,
@@ -33,16 +40,6 @@ export const MissionsFilter = ({
   handleChange,
 }: MissionsFilterProps) => {
   const theme = useTheme();
-
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-        backgroundColor: theme.palette.bgTertiary.main, //'#fff0ca',
-      },
-    },
-  };
 
   return (
     <FormControl sx={{ width: 120 }}>
@@ -68,12 +65,7 @@ export const MissionsFilter = ({
             value={name}
             style={getStyles(name, activeChoices, theme)}
           >
-            <Checkbox
-              checked={activeChoices.indexOf(name) > -1}
-              sx={{
-                color: theme.palette.text.primary,
-              }}
-            />
+            <Checkbox checked={activeChoices.indexOf(name) > -1} />
             <ListItemText primary={name} />
           </MenuItem>
         ))}
