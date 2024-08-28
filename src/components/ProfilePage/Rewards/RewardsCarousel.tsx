@@ -18,6 +18,7 @@ import { ChainId } from '@lifi/types';
 import { MerklDistribABI } from '../../../const/abi/merklABI';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
+import { PROFILE_CAMPAIGN_SCANNER } from 'src/const/partnerTheme';
 
 interface RewardsCarouselProps {
   hideComponent: boolean;
@@ -130,7 +131,7 @@ export const RewardsCarousel = ({
             </ClaimButtonBox>
             {hash ? (
               <a
-                href={`https://optimistic.etherscan.io/tx/${hash}`}
+                href={`${PROFILE_CAMPAIGN_SCANNER}/tx/${hash}`}
                 target="_blank"
                 style={{
                   textDecoration: 'none',

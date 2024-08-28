@@ -8,9 +8,17 @@ import {
 import { sequel65 } from 'src/fonts/fonts';
 import { getContrastAlphaColor } from '@/utils/colors';
 import type { IconButtonProps } from '@mui/material';
+import {
+  PROFILE_CAMPAIGN_DARK_COLOR,
+  PROFILE_CAMPAIGN_LIGHT_COLOR,
+} from 'src/const/partnerTheme';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#322153' : '#F6F5FA',
+  // backgroundColor:
+  //   theme.palette.mode === 'dark'
+  //     ? PROFILE_CAMPAIGN_DARK_COLOR
+  //     : PROFILE_CAMPAIGN_LIGHT_COLOR,
   display: 'flex',
   width: '100%',
   flexDirection: 'row',

@@ -7,11 +7,12 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
-
-const REWARD_CHAIN_LOGO =
-  'https://strapi.li.finance/uploads/Sei_Symbol_Gradient_2b107fa812.svg';
-const REWARD_TOKEN_LOGO =
-  'https://strapi.li.finance/uploads/Sei_Symbol_Gradient_2b107fa812.svg';
+import {
+  PROFILE_CAMPAIGN_DARK_CHAIN,
+  PROFILE_CAMPAIGN_DARK_TOKEN,
+  PROFILE_CAMPAIGN_LIGHT_CHAIN,
+  PROFILE_CAMPAIGN_LIGHT_TOKEN,
+} from 'src/const/partnerTheme';
 
 export const RewardsAmountBox = ({
   rewardAmount,
@@ -24,6 +25,15 @@ export const RewardsAmountBox = ({
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
+
+  const REWARD_CHAIN_LOGO =
+    theme.palette.mode === 'dark'
+      ? PROFILE_CAMPAIGN_DARK_CHAIN
+      : PROFILE_CAMPAIGN_LIGHT_CHAIN;
+  const REWARD_TOKEN_LOGO =
+    theme.palette.mode === 'dark'
+      ? PROFILE_CAMPAIGN_DARK_TOKEN
+      : PROFILE_CAMPAIGN_LIGHT_TOKEN;
 
   return (
     <FlexCenterRowBox>
