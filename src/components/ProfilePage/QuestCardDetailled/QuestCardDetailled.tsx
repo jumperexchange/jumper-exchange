@@ -74,7 +74,10 @@ export const QuestCardDetailled = ({
 
   return (
     <QuestCardMainBox>
-      <Link href={`/quests/${slug}`}>
+      <Link
+        href={link || `/quests/${slug}`}
+        style={{ textDecoration: 'inherit' }}
+      >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           {image && (
             <Image
@@ -89,107 +92,104 @@ export const QuestCardDetailled = ({
             />
           )}
         </Box>
-      </Link>
-      <QuestCardBottomBox>
-        <QuestCardTitleBox>
-          <Typography
-            fontSize="20px"
-            lineHeight="20px"
-            fontWeight={600}
-            color={
-              theme.palette.mode === 'dark'
-                ? PROFILE_CAMPAIGN_DARK_COLOR
-                : PROFILE_CAMPAIGN_LIGHT_COLOR
-            }
-          >
-            {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
-          </Typography>
-        </QuestCardTitleBox>
-        <FlexSpaceBetweenBox marginBottom={'8px'} marginTop={'8px'}>
-          <FlexCenterRowBox>
-            {chains?.map((elem: Chain, i: number) => {
-              return (
-                <Image
-                  key={elem.name + '-' + i}
-                  src={elem.logo}
-                  style={{
-                    marginLeft: i === 0 ? '' : '-8px',
-                    zIndex: 100 - i,
-                  }}
-                  alt={elem.name}
-                  width="32"
-                  height="32"
-                />
-              );
-            })}
-          </FlexCenterRowBox>
-          {points ? (
-            <FlexCenterRowBox>
-              {apy > 0 && !variableWeeklyAPY && (
-                <XPDisplayBox
-                  active={active}
-                  bgcolor={PROFILE_CAMPAIGN_LIGHT_COLOR}
-                >
-                  <Typography
-                    fontSize="14px"
-                    fontWeight={700}
-                    lineHeight="18px"
-                    color={'#ffffff'}
-                  >
-                    {`${Number(apy).toFixed(1)}%`}
-                  </Typography>
-                  <XPIconBox marginLeft="4px">
-                    <APYIcon size={20} />
-                  </XPIconBox>
-                </XPDisplayBox>
-              )}
-              {variableWeeklyAPY && (
-                <XPDisplayBox
-                  active={active}
-                  bgcolor={PROFILE_CAMPAIGN_LIGHT_COLOR}
-                >
-                  <Typography
-                    fontSize="14px"
-                    fontWeight={700}
-                    lineHeight="18px"
-                    color={'#ffffff'}
-                  >
-                    {rewardRange ? rewardRange : `VAR.%`}
-                  </Typography>
-                  <XPIconBox marginLeft="4px">
-                    <APYIcon size={20} />
-                  </XPIconBox>
-                </XPDisplayBox>
-              )}
-              <XPDisplayBox
-                active={active}
-                bgcolor={!completed ? '#31007A' : '#42B852'}
-              >
-                <Typography
-                  fontSize="14px"
-                  fontWeight={700}
-                  lineHeight="18px"
-                  color={'#ffffff'}
-                >
-                  {`${points}`}
-                </Typography>
-                <XPIconBox marginLeft="4px">
-                  {!completed ? (
-                    <SuperfestXPIcon size={16} />
-                  ) : (
-                    <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
-                  )}
-                </XPIconBox>
-              </XPDisplayBox>
-            </FlexCenterRowBox>
-          ) : undefined}
-        </FlexSpaceBetweenBox>
-        <QuestCardInfoBox points={points}>
-          {active && slug ? (
-            <Link
-              href={`/quests/${slug}`}
-              style={{ textDecoration: 'inherit' }}
+        <QuestCardBottomBox>
+          <QuestCardTitleBox>
+            <Typography
+              fontSize="20px"
+              lineHeight="20px"
+              fontWeight={600}
+              color={
+                theme.palette.mode === 'dark'
+                  ? PROFILE_CAMPAIGN_DARK_COLOR
+                  : PROFILE_CAMPAIGN_LIGHT_COLOR
+              }
             >
+              {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
+            </Typography>
+          </QuestCardTitleBox>
+          <FlexSpaceBetweenBox marginBottom={'8px'} marginTop={'8px'}>
+            <FlexCenterRowBox>
+              {chains?.map((elem: Chain, i: number) => {
+                return (
+                  <Image
+                    key={elem.name + '-' + i}
+                    src={elem.logo}
+                    style={{
+                      marginLeft: i === 0 ? '' : '-8px',
+                      zIndex: 100 - i,
+                    }}
+                    alt={elem.name}
+                    width="32"
+                    height="32"
+                  />
+                );
+              })}
+            </FlexCenterRowBox>
+            {points ? (
+              <FlexCenterRowBox>
+                {apy > 0 && !variableWeeklyAPY && (
+                  <XPDisplayBox
+                    active={active}
+                    bgcolor={PROFILE_CAMPAIGN_LIGHT_COLOR}
+                  >
+                    <Typography
+                      fontSize="14px"
+                      fontWeight={700}
+                      lineHeight="18px"
+                      color={'#ffffff'}
+                    >
+                      {`${Number(apy).toFixed(1)}%`}
+                    </Typography>
+                    <XPIconBox marginLeft="4px">
+                      <APYIcon size={20} />
+                    </XPIconBox>
+                  </XPDisplayBox>
+                )}
+                {variableWeeklyAPY && (
+                  <XPDisplayBox
+                    active={active}
+                    bgcolor={PROFILE_CAMPAIGN_LIGHT_COLOR}
+                  >
+                    <Typography
+                      fontSize="14px"
+                      fontWeight={700}
+                      lineHeight="18px"
+                      color={'#ffffff'}
+                    >
+                      {rewardRange ? rewardRange : `VAR.%`}
+                    </Typography>
+                    <XPIconBox marginLeft="4px">
+                      <APYIcon size={20} />
+                    </XPIconBox>
+                  </XPDisplayBox>
+                )}
+                <XPDisplayBox
+                  active={active}
+                  bgcolor={!completed ? '#31007A' : '#42B852'}
+                >
+                  <Typography
+                    fontSize="14px"
+                    fontWeight={700}
+                    lineHeight="18px"
+                    color={'#ffffff'}
+                  >
+                    {`${points}`}
+                  </Typography>
+                  <XPIconBox marginLeft="4px">
+                    {!completed ? (
+                      <SuperfestXPIcon size={16} />
+                    ) : (
+                      <CheckCircleIcon
+                        sx={{ width: '16px', color: '#ffffff' }}
+                      />
+                    )}
+                  </XPIconBox>
+                </XPDisplayBox>
+              </FlexCenterRowBox>
+            ) : undefined}
+          </FlexSpaceBetweenBox>
+          <QuestCardInfoBox points={points}>
+            {active && slug ? (
               <Button
                 disabled={false}
                 variant="secondary"
@@ -207,10 +207,10 @@ export const QuestCardDetailled = ({
                   {String(t('questCard.join')).toUpperCase()}
                 </Typography>
               </Button>
-            </Link>
-          ) : null}
-        </QuestCardInfoBox>
-      </QuestCardBottomBox>
+            ) : null}
+          </QuestCardInfoBox>
+        </QuestCardBottomBox>
+      </Link>
     </QuestCardMainBox>
   );
 };
