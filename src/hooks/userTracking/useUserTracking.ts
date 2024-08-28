@@ -124,7 +124,7 @@ export function useUserTracking() {
             browserFingerprint: fp,
             isMobile: !isDesktop,
             sessionId: sessionId || 'unknown',
-            url: process.env.NEXT_PUBLIC_SITE_URL,
+            url: window?.location?.href,
           };
           await jumperTrackEvent(eventData);
         } catch (error) {
