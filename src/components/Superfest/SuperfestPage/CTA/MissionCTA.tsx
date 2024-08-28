@@ -1,8 +1,9 @@
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Box, type Theme, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IconButtonPrimary } from 'src/components/IconButton';
+import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
 import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
 import { XPIconBox } from '../../QuestCard/QuestCard.style';
@@ -12,41 +13,12 @@ import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
 import {
   CTAExplanationBox,
   CTAMainBox,
-  MissionCtaButtonSF,
+  MissionCtaButton,
   SeveralCTABox,
   SeveralMissionCtaContainer,
   StartedTitleBox,
   StartedTitleTypography,
 } from './MissionCTA.style';
-
-const MissionCTAButton = ({
-  activeCampaign,
-  onClick,
-}: {
-  activeCampaign?: 'superfest';
-  onClick: () => void;
-}) => {
-  const theme = useTheme();
-  if (activeCampaign === 'superfest') {
-    return (
-      <MissionCtaButtonSF onClick={onClick}>
-        <ArrowForwardIcon
-          sx={{
-            color: theme.palette.text.primary,
-            width: '20px',
-            height: '20px',
-          }}
-        />
-      </MissionCtaButtonSF>
-    );
-  } else {
-    return (
-      <IconButtonPrimary onClick={onClick}>
-        <ArrowForwardIcon sx={{ width: '28px', height: '28px' }} />
-      </IconButtonPrimary>
-    );
-  }
-};
 
 export interface CTALinkInt {
   logo: string;
@@ -57,7 +29,6 @@ export interface CTALinkInt {
   apy?: number;
   weeklyApy?: string;
 }
-
 interface MissionCtaProps {
   title?: string;
   url?: string;
@@ -67,7 +38,6 @@ interface MissionCtaProps {
   variableWeeklyAPY?: boolean;
   signature?: boolean;
   rewardRange?: string;
-  activeCampaign?: 'superfest';
 }
 
 export const MissionCTA = ({
@@ -76,13 +46,13 @@ export const MissionCTA = ({
   variableWeeklyAPY,
   signature,
   rewardRange,
-  activeCampaign,
 }: MissionCtaProps) => {
-  // const { trackEvent } = useUserTracking();
+  const { t } = useTranslation();
+  const { trackEvent } = useUserTracking();
+  const theme = useTheme();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-
   const handleClick = () => {
     // trackEvent({
     //   category: TrackingCategory.BlogArticle,
@@ -95,7 +65,6 @@ export const MissionCTA = ({
     //   },
     // });
   };
-
   return (
     <CTAMainBox>
       <StartedTitleBox>
@@ -192,10 +161,15 @@ export const MissionCTA = ({
                     </XPDisplayBox>
                   )}
                   {!isMobile && (
-                    <MissionCTAButton
-                      onClick={handleClick}
-                      activeCampaign={activeCampaign}
-                    />
+                    <MissionCtaButton onClick={handleClick}>
+                      <ArrowForwardIcon
+                        sx={{
+                          color: '#000000',
+                          width: '20px',
+                          height: '20px',
+                        }}
+                      />
+                    </MissionCtaButton>
                   )}
                 </FlexCenterRowBox>
               </SeveralMissionCtaContainer>

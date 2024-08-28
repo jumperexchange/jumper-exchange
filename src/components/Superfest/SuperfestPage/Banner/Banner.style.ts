@@ -30,7 +30,7 @@ export const BannerBottomBox = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   color: theme.palette.text.primary,
   padding: '32px',
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: theme.palette.bgSecondary.main, // backgroundColor: '#fdfbef',
   [theme.breakpoints.down('md' as Breakpoint)]: {
     height: '55%',
   },

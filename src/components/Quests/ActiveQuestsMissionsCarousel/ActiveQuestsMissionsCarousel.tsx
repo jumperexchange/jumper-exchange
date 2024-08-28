@@ -26,7 +26,7 @@ interface QuestCarouselProps {
   path: string;
 }
 
-export const ActiveSuperfestMissionsCarousel = ({
+export const ActiveQuestsMissionsCarousel = ({
   quests,
   loading,
   activeCampaigns,

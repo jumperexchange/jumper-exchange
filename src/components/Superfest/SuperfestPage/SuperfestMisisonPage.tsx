@@ -1,7 +1,5 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import generateKey from 'src/app/lib/generateKey';
-import { SuperfestDailyRewards } from 'src/components/illustrations/SuperfestDailyRewards';
-import { SuperfestWeeklyRewards } from 'src/components/illustrations/SuperfestWeeklyRewards';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
@@ -17,15 +15,11 @@ import { SuperfestPageMainBox } from './SuperfestMissionPage.style';
 interface SuperfestMissionPageVar {
   quest: Quest;
   baseUrl: string;
-  activeCampaign: 'superfest';
-  path: string;
 }
 
 export const SuperfestMissionPage = ({
   quest,
   baseUrl,
-  activeCampaign,
-  path,
 }: SuperfestMissionPageVar) => {
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
@@ -34,37 +28,29 @@ export const SuperfestMissionPage = ({
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
   const rewards = quest.attributes.CustomInformation?.['rewards'];
   const points = quest?.attributes?.Points;
-
   const { account } = useAccounts();
   const { pastCampaigns } = useMerklRewards({
     rewardChainId: 10,
     userAddress: account?.address,
   });
-  const { CTAsWithAPYs } = useMissionsAPY(CTAs);
+
+  const { isLoading, isSuccess, CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
     <SuperfestContainer className="superfest">
       <SuperfestPageMainBox>
         {/* button to go back */}
-        <BackButton path={path} title={activeCampaign} />
+        <BackButton />
         {/* big component with the main information */}
         <BannerBox
           quest={quest}
           baseUrl={baseUrl}
           pastCampaigns={pastCampaigns}
-          rotatingBadge={
-            rewardType === 'weekly' ? (
-              <SuperfestWeeklyRewards />
-            ) : (
-              <SuperfestDailyRewards />
-            )
-          }
         />
         {/* Big CTA */}
         <MissionCTA
           title={attributes?.Title}
           url={attributes?.Link}
-          activeCampaign={activeCampaign}
           rewards={rewards}
           key={generateKey('cta')}
           CTAs={CTAsWithAPYs}

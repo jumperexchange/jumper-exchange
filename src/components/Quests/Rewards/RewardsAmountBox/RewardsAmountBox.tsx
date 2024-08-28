@@ -1,6 +1,6 @@
 import { Box, type Theme, Typography, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
-import { FlexCenterRowBox } from '../../SuperfestPage/SuperfestMissionPage.style';
+import { FlexCenterRowBox } from '../../QuestPage/QuestsMissionPage.style';
 
 export const RewardsAmountBox = ({
   rewardAmount,

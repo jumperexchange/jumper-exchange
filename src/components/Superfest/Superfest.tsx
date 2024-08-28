@@ -1,5 +1,4 @@
 import { useAccounts } from '@/hooks/useAccounts';
-import { JUMPER_FEST_PATH } from 'src/const/urls';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { ActiveSuperfestMissionsCarousel } from './ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
@@ -23,7 +22,6 @@ export const Superfest = () => {
     rewardChainId: 10,
     userAddress: account?.address,
   });
-
   return (
     <SuperfestContainer className="superfest">
       <RewardsCarousel
@@ -42,7 +40,6 @@ export const Superfest = () => {
         !activeCampaigns ||
         activeCampaigns.length === 0 ? undefined : (
           <ActiveSuperfestMissionsCarousel
-            path={JUMPER_FEST_PATH}
             quests={quests}
             loading={isQuestLoading}
             activeCampaigns={activeCampaigns}
@@ -50,8 +47,6 @@ export const Superfest = () => {
           />
         )}
         <AvailableMissionsList
-          activeCampaign={'superfest'}
-          path={JUMPER_FEST_PATH}
           quests={quests}
           loading={isQuestLoading}
           pastCampaigns={pastCampaigns}

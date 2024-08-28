@@ -1,15 +1,11 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/navigation';
 import { Button } from 'src/components/Button';
+import { JUMPER_FEST_PATH } from 'src/const/urls';
 import { SoraTypography } from '../../Superfest.style';
 import { BackButtonMainBox } from './BackButton.style';
 
-interface BackButtonProps {
-  path: string;
-  title: string;
-}
-
-export const BackButton = ({ path, title }: BackButtonProps) => {
+export const BackButton = () => {
   const router = useRouter();
 
   return (
@@ -21,7 +17,7 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
           paddingRight: '16px',
         }}
         onClick={() => {
-          router.push(path);
+          router.push(JUMPER_FEST_PATH);
         }}
       >
         <ArrowBackIcon
@@ -33,7 +29,7 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
           fontWeight={500}
           marginLeft={'8px'}
         >
-          {String(title).toUpperCase()}
+          {String('SUPERFEST').toUpperCase()}
         </SoraTypography>
       </Button>
     </BackButtonMainBox>

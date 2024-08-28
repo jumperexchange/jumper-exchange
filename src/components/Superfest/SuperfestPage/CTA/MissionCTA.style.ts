@@ -30,7 +30,6 @@ export const MissionCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
     flexDirection: 'row',
   },
 }));
-
 export const SeveralMissionCtaContainer = styled(Box)<BoxProps>(
   ({ theme }) => ({
     width: '100%',
@@ -49,13 +48,17 @@ export const SeveralMissionCtaContainer = styled(Box)<BoxProps>(
     textAlign: 'center',
     transition: 'background-color 250ms',
     borderRadius: '16px',
-    backgroundColor: theme.palette.bgTertiary.main,
+    backgroundColor: theme.palette.bgTertiary.main, // backgroundColor: '#fff0ca',
     '&:hover': {
       cursor: 'pointer',
       backgroundColor:
         theme.palette.mode === 'light'
           ? darken(theme.palette.bgTertiary.main, 0.02) //todo: add to theme
           : alpha(theme.palette.bgTertiary.main, 0.16),
+      // backgroundColor:
+      //   theme.palette.mode === 'light'
+      //     ? darken('#fff0ca', 0.02) //todo: add to theme
+      //     : alpha('#fff0ca', 0.16),
     },
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       gap: theme.spacing(4),
@@ -63,7 +66,6 @@ export const SeveralMissionCtaContainer = styled(Box)<BoxProps>(
     },
   }),
 );
-
 export const MissionCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   fontFamily: sora.style.fontFamily,
   fontWeight: 700,
@@ -71,7 +73,6 @@ export const MissionCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   fontSize: '32px',
   lineHeight: '38px',
   userSelect: 'none',
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     fontSize: '40px',
     lineHeight: '56px',
@@ -79,12 +80,12 @@ export const MissionCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-export const MissionCtaButtonSF = styled(IconButtonPrimary)(({ theme }) => ({
+export const MissionCtaButton = styled(IconButtonPrimary)(({ theme }) => ({
   backgroundColor: 'transparent',
-  border: '2px dotted',
-  borderColor: '#000000',
   width: '32px',
   height: '32px',
+  border: '2px dotted',
+  borderColor: '#000000',
   ':hover': {
     backgroundColor: darken('#f9ebc5', 0.02),
   },
@@ -92,7 +93,6 @@ export const MissionCtaButtonSF = styled(IconButtonPrimary)(({ theme }) => ({
     display: 'flex',
   },
 }));
-
 export const CTABox = styled(Box)(({ theme }) => ({
   width: '80%',
   maxWidth: '1210px',
@@ -103,7 +103,6 @@ export const CTABox = styled(Box)(({ theme }) => ({
   alignContent: 'center',
   alignItems: 'center',
 }));
-
 export const SeveralCTABox = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',
@@ -119,7 +118,6 @@ export const SeveralCTABox = styled(Box)(({ theme }) => ({
     justifyContent: 'center',
   },
 }));
-
 export const StartedTitleTypography = styled(Typography)(({ theme }) => ({
   fontFamily: sequel65.style.fontFamily,
   [theme.breakpoints.down('md' as Breakpoint)]: {
@@ -133,7 +131,6 @@ export const StartedTitleTypography = styled(Typography)(({ theme }) => ({
     lineHeight: '20px',
   },
 }));
-
 export const StartedTitleBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -143,7 +140,6 @@ export const StartedTitleBox = styled(Box)(({ theme }) => ({
 
 export const CTAMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
   flexDirection: 'column',
   width: '80%',
   maxWidth: '1210px',

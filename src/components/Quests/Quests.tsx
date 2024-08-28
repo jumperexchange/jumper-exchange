@@ -2,13 +2,13 @@ import { useAccounts } from '@/hooks/useAccounts';
 import { JUMPER_QUESTS_PATH } from 'src/const/urls';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
-import { ActiveSuperfestMissionsCarousel } from '../Superfest/ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
-import { AvailableMissionsList } from '../Superfest/AvailableMissionsList/AvailableMissionsList';
-import { RewardsCarousel } from '../Superfest/Rewards/RewardsCarousel';
 import {
   SuperfestContainer,
   SuperfestMainBox,
 } from '../Superfest/Superfest.style';
+import { ActiveQuestsMissionsCarousel } from './ActiveQuestsMissionsCarousel/ActiveQuestsMissionsCarousel';
+import { AvailableMissionsList } from './AvailableMissionsList/AvailableMissionsList';
+import { RewardsCarousel } from './Rewards/RewardsCarousel';
 
 export const Quests = () => {
   //HOOKS
@@ -41,7 +41,7 @@ export const Quests = () => {
         isQuestLoading ||
         !activeCampaigns ||
         activeCampaigns.length === 0 ? undefined : (
-          <ActiveSuperfestMissionsCarousel
+          <ActiveQuestsMissionsCarousel
             path={JUMPER_QUESTS_PATH}
             quests={quests}
             loading={isQuestLoading}

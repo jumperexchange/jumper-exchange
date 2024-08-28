@@ -24,7 +24,7 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   paddingBottom: '24px',
   paddingLeft: '16px',
   paddingRight: '16px',
-  backgroundColor: theme.palette.bgTertiary.main,
+  backgroundColor: theme.palette.bgTertiary.main, // backgroundColor: '#fff0ca',
   borderBottomLeftRadius: '8px',
   borderBottomRightRadius: '8px',
 }));
