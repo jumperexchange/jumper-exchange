@@ -13,6 +13,7 @@ import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { Leaderboard } from './Leaderboard/Leaderboard';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
+import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 
 export const ProfilePage = () => {
   const { account } = useAccounts();
@@ -20,14 +21,29 @@ export const ProfilePage = () => {
   const { imageLink } = useMercleNft({ userAddress: account?.address });
   const { quests, isQuestLoading } = useOngoingQuests();
 
+  const {
+    availableRewards,
+    activeCampaigns,
+    pastCampaigns,
+    isLoading: isRewardLoading,
+    isSuccess: isRewardSuccess,
+  } = useMerklRewards({
+    rewardChainId: 10,
+    userAddress: account?.address,
+  });
+
   return (
     <>
       <RewardsCarousel
         hideComponent={false}
         rewardAmount={10}
-        accumulatedAmountForContractBN={'10'}
-        proof={['']}
-        isMerklSuccess={true}
+        // hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
+        // rewardAmount={availableRewards?.[0]?.amountToClaim as number}
+        accumulatedAmountForContractBN={
+          availableRewards?.[0]?.accumulatedAmountForContractBN
+        }
+        proof={availableRewards?.[0]?.proof}
+        isMerklSuccess={isRewardSuccess}
       />
       <ProfilePageContainer className="profile-page">
         <Grid container>
@@ -56,7 +72,11 @@ export const ProfilePage = () => {
                 <TierBox points={points} tier={tier} loading={isLoading} />
               </ProfilePageHeaderBox>
 
-              <QuestCarousel quests={quests} loading={isQuestLoading} />
+              <QuestCarousel
+                quests={quests}
+                loading={isQuestLoading}
+                pastCampaigns={pastCampaigns}
+              />
               <QuestCompletedList pdas={pdas} loading={isLoading} />
             </Stack>
           </Grid>

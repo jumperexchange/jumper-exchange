@@ -7,13 +7,19 @@ import { QuestCarouselContainer } from './QuestCarousel.style';
 import { TempTitle } from './TempTitle/TempTitle';
 import { QuestCardDetailled } from '../QuestCardDetailled/QuestCardDetailled';
 import { QuestCardSkeleton } from '../QuestCardDetailled/QuestCardSkeleton';
+import { checkInclusion } from 'src/components/Superfest/ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 
 interface QuestCarouselProps {
   quests?: Quest[];
   loading: boolean;
+  pastCampaigns?: string[];
 }
 
-export const QuestCarousel = ({ quests, loading }: QuestCarouselProps) => {
+export const QuestCarousel = ({
+  quests,
+  loading,
+  pastCampaigns,
+}: QuestCarouselProps) => {
   const { url } = useOngoingQuests();
   const { t } = useTranslation();
 
@@ -42,11 +48,10 @@ export const QuestCarousel = ({ quests, loading }: QuestCarouselProps) => {
                     quest.attributes?.CustomInformation?.['rewardsIds'];
 
                   //todo: exclude in a dedicated helper function
-
                   let completed = false;
-                  // if (rewardsIds && pastCampaigns) {
-                  //   completed = checkInclusion(pastCampaigns, rewardsIds);
-                  // }
+                  if (rewardsIds && pastCampaigns) {
+                    completed = checkInclusion(pastCampaigns, rewardsIds);
+                  }
 
                   return (
                     // <QuestCard
