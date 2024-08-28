@@ -31,6 +31,7 @@ export const useTurtleMember = ({
         return false;
       } catch (err) {
         console.log(err);
+        return false;
       }
     },
     enabled: !!userAddress,
@@ -53,10 +54,11 @@ export const useTurtleMember = ({
         return false;
       } catch (err) {
         console.log(err);
+        return false;
       }
     },
     enabled: !!userAddress,
-    refetchInterval: 1000 * 60 * 60,
+    refetchInterval: 1000 * 60 * 60 * 2,
   });
 
   return {

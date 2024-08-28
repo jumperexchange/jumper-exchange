@@ -70,6 +70,7 @@ export const SuperfestMissionPage = ({
           CTAs={CTAsWithAPYs}
           variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
           signature={missionType === 'turtle_signature'}
+          isTurtleMember={isMember}
           rewardRange={rewardRange}
         />
         {/* Subtitle and description */}

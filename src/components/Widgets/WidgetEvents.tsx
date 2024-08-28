@@ -82,13 +82,13 @@ export function WidgetEvents() {
       if (update.process && update.route) {
         if (update.process.txHash !== lastTxHashRef.current) {
           lastTxHashRef.current = update.process.txHash;
-          trackTransaction({
-            category: TrackingCategory.WidgetEvent,
-            action: TrackingAction.OnRouteExecutionUpdated,
-            label: 'execution_update',
-            data,
-            enableAddressable: true,
-          });
+          // trackTransaction({
+          //   category: TrackingCategory.WidgetEvent,
+          //   action: TrackingAction.OnRouteExecutionUpdated,
+          //   label: 'execution_update',
+          //   data,
+          //   enableAddressable: true,
+          // });
         }
       }
     };
