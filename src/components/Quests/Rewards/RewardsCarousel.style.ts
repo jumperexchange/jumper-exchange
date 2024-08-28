@@ -1,13 +1,12 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import { getContrastAlphaColor } from '@/utils/colors';
+import type { BoxProps, Breakpoint, IconButtonProps } from '@mui/material';
 import {
   Box,
+  IconButton as MuiIconButton,
   Typography,
   styled,
-  IconButton as MuiIconButton,
 } from '@mui/material';
-import { sequel65 } from 'src/fonts/fonts';
-import { getContrastAlphaColor } from '@/utils/colors';
-import type { IconButtonProps } from '@mui/material';
+import { urbanist } from 'src/fonts/fonts';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#fdfbef',
@@ -80,7 +79,7 @@ export const ClaimButtonBox = styled(Box)(({ theme }) => ({
 }));
 
 export const EarnedTypography = styled(Typography)(({ theme }) => ({
-  typography: sequel65.style.fontFamily,
+  typography: urbanist.style.fontFamily,
   [theme.breakpoints.down('md' as Breakpoint)]: {
     fontSize: '32px',
     lineHeight: '32px',
