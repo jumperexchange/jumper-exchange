@@ -1,13 +1,8 @@
-import type { TrackingCategory } from '@/const/trackingKeys';
-import type { Account } from '@/hooks/useAccounts';
-import type { ChainID } from '@arcxmoney/analytics';
-import type { ChainType } from '@lifi/types';
+import type { TrackingEventParameter } from 'src/const/trackingKeys';
 
 export enum EventTrackingTool {
-  ARCx,
   GA,
-  Hotjar,
-  Cookie3,
+  JumperTracking,
 }
 
 export interface InitTrackingProps {
@@ -25,62 +20,42 @@ export interface TrackEventProps {
   isConversion?: boolean;
 }
 
+export interface TrackTransactionDataProps {
+  [TrackingEventParameter.Type]?: string;
+  [TrackingEventParameter.RouteId]?: string;
+  [TrackingEventParameter.Status]?: string;
+  [TrackingEventParameter.Action]?: string;
+  [TrackingEventParameter.TransactionId]?: string;
+  [TrackingEventParameter.TransactionHash]?: string;
+  [TrackingEventParameter.TransactionLink]?: string;
+  [TrackingEventParameter.FromChainId]?: number;
+  [TrackingEventParameter.ToChainId]?: number;
+  [TrackingEventParameter.Integrator]?: string;
+  [TrackingEventParameter.TransactionStatus]?: string;
+  [TrackingEventParameter.FromToken]?: string;
+  [TrackingEventParameter.ToToken]?: string;
+  [TrackingEventParameter.Exchange]?: string;
+  [TrackingEventParameter.StepNumber]?: number;
+  [TrackingEventParameter.TxHash]?: string;
+  [TrackingEventParameter.IsFinal]?: boolean;
+  [TrackingEventParameter.GasCost]?: number;
+  [TrackingEventParameter.GasCostUSD]?: string;
+  [TrackingEventParameter.FromAmount]?: string;
+  [TrackingEventParameter.FromAmountUSD]?: string;
+  [TrackingEventParameter.ToAmount]?: string;
+  [TrackingEventParameter.ToAmountMin]?: string;
+  [TrackingEventParameter.ToAmountUSD]?: string;
+  [TrackingEventParameter.ErrorCode]?: string | number;
+  [TrackingEventParameter.ErrorMessage]?: string;
+  [TrackingEventParameter.Message]?: string;
+}
+
 export interface TrackTransactionProps {
   action: string;
   category: string;
-  chain: ChainID;
-  value?: number;
+  label: string;
   disableTrackingTool?: EventTrackingTool[];
-  data: Record<string, unknown>;
-  txhash: string;
-}
-export interface TrackChainSwitchProps {
-  account?: Account;
-  disableTrackingTool?: EventTrackingTool[];
-  action: string;
-  category?: string;
-  label?: string;
-  value?: number;
-  data?: { [key: string]: string | number | boolean };
-}
-
-type destinations =
-  | 'discord-jumper'
-  | 'jumper-explorer'
-  | 'jumper-scan'
-  | 'jumper-scan-wallet'
-  | 'jumper-website'
-  | 'docs-sc-audits'
-  | 'jumper-github'
-  | 'jumper-docs'
-  | 'x-jumper'
-  | 'blokchain-explorer';
-
-type source = TrackingCategory;
-
-export interface trackPageloadProps {
-  destination: destinations;
-  source: source;
-  data?: { [key: string]: string | number | boolean };
-  pageload: boolean;
-  disableTrackingTool?: EventTrackingTool[];
-  url: string;
-}
-
-export interface TrackConnectWalletProps {
-  account?: Account;
-  walletName?: string;
-  chainType?: ChainType;
-  chainId: number;
-  address?: string;
-}
-
-export interface TrackDisconnectWalletProps {
-  account?: Account;
-  data?: { [key: string]: string | number | boolean };
-  disableTrackingTool?: EventTrackingTool[];
-}
-export interface TrackAttributeProps {
-  data?: { [key: string]: string | number | boolean };
-  disableTrackingTool?: EventTrackingTool[];
+  enableAddressable?: boolean;
+  data: TrackTransactionDataProps;
+  isConversion?: boolean;
 }

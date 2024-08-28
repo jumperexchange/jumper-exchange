@@ -5,7 +5,6 @@ import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking';
 import type { StarterVariantType } from '@/types/internal';
-import { EventTrackingTool } from '@/types/userTracking';
 import { Box } from '@mui/material';
 import { StyledSlide } from './App.style';
 
@@ -29,10 +28,6 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
         action: TrackingAction.CloseWelcomeScreen,
         label: 'enter_welcome_screen_on_widget-click',
         data: { widgetVariant: starterVariant },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
         enableAddressable: true,
       });
     }

@@ -236,6 +236,12 @@ export const Divider = styled(MuiDivider)(({ theme }) => ({
 // Typography:
 
 export const BlogArticleTitle = styled(Typography)(({ theme }) => ({
+  color: alpha(
+    theme.palette.mode === 'light'
+      ? theme.palette.black.main
+      : theme.palette.white.main,
+    0.88,
+  ),
   marginTop: theme.spacing(4),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: theme.spacing(8),
@@ -262,6 +268,12 @@ export const BlogArticleTitleSkeleton = styled(Skeleton)<SkeletonProps>(
 export const BlogArticleSubtitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'variant',
 })<TypographyProps>(({ theme }) => ({
+  color: alpha(
+    theme.palette.mode === 'light'
+      ? theme.palette.black.main
+      : theme.palette.white.main,
+    0.88,
+  ),
   marginTop: theme.spacing(8),
   marginBottom: theme.spacing(6),
   fontWeight: 700,

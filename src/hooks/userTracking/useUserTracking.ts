@@ -5,156 +5,103 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useAccounts } from '@/hooks/useAccounts';
+import { useJumperTracking } from '@/hooks/useJumperTracking';
+import { useSession } from '@/hooks/useSession';
 import type {
-  TrackAttributeProps,
-  TrackChainSwitchProps,
-  TrackConnectWalletProps,
-  TrackDisconnectWalletProps,
   TrackEventProps,
+  TrackTransactionDataProps,
   TrackTransactionProps,
-  trackPageloadProps,
 } from '@/types/userTracking';
 import { EventTrackingTool } from '@/types/userTracking';
-import { useArcxAnalytics } from '@arcxmoney/analytics';
-import { ChainType } from '@lifi/sdk';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { useCallback, useEffect } from 'react';
-import { hotjar } from 'react-hotjar';
-import { useCookie3 } from './useCookie3';
+import { useFingerprint } from '../useFingerprint';
+
+const googleEvent = ({
+  action,
+  category,
+  data,
+}: {
+  action: string;
+  category: string;
+  data?:
+    | TrackTransactionDataProps
+    | { [key: string]: string | number | boolean };
+}) => {
+  typeof window !== 'undefined' &&
+    window?.gtag('event', action, {
+      category: category,
+      ...data,
+    });
+};
+
+const addressableEvent = ({
+  action,
+  label,
+  data,
+  isConversion,
+}: {
+  action: string;
+  label: string;
+  data:
+    | TrackTransactionDataProps
+    | { [key: string]: string | number | boolean };
+  isConversion?: boolean;
+}) => {
+  const dataArray = [];
+  if (label) {
+    dataArray.push({ name: 'label', value: label });
+  }
+
+  typeof window !== 'undefined' &&
+    data &&
+    window.__adrsbl.run(
+      action,
+      isConversion ?? false,
+      dataArray.concat(
+        Object.entries(data).map(([key, value]) => ({
+          name: `${key}`,
+          value: `${value}`,
+        })),
+      ),
+    );
+};
 
 export function useUserTracking() {
-  const arcx = useArcxAnalytics();
   const { account } = useAccounts();
-  const cookie3 = useCookie3();
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const sessionId = useSession();
+  const fp = useFingerprint();
+
+  const {
+    trackEvent: jumperTrackEvent,
+    trackTransaction: jumperTrackTransaction,
+  } = useJumperTracking();
 
   useEffect(() => {
     if (account?.chainId) {
-      arcx?.chain({
-        account: `${account?.address}`,
-        chainId: `${account?.chainId}`,
-      });
       typeof window !== 'undefined' &&
         window?.gtag('event', TrackingAction.SwitchChain, {
           category: TrackingCategory.Wallet,
           [TrackingEventParameter.SwitchedChain]: account?.chainId,
         });
     }
-  }, [account?.address, account?.chainId, arcx]);
-
-  const trackConnectWallet = useCallback(
-    /**
-     * Track Wallet Connect with HJ, GA and ARCx
-     *
-     */
-
-    ({ walletName, chainType, chainId, address }: TrackConnectWalletProps) => {
-      if (chainType === ChainType.EVM) {
-        arcx?.wallet({
-          account: address || '',
-          chainId: chainId,
-        });
-      }
-
-      hotjar.identify(address || null, {
-        [TrackingEventParameter.Wallet]: walletName,
-        [TrackingEventParameter.Ecosystem]: chainType,
-      });
-      hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
-      typeof window !== 'undefined' &&
-        window?.gtag('event', TrackingAction.ConnectWallet, {
-          [TrackingEventParameter.Wallet]: walletName,
-          [TrackingEventParameter.Ecosystem]: chainType,
-        });
-    },
-    [arcx],
-  );
-
-  const trackAttribute = useCallback(
-    /**
-     * Track Attributes with GA, HJ and ARCx
-     *
-     */
-    async ({ data, disableTrackingTool }: TrackAttributeProps) => {
-      if (
-        !!account?.address &&
-        data &&
-        !disableTrackingTool?.includes(EventTrackingTool.Hotjar)
-      ) {
-        hotjar.initialized() &&
-          hotjar.identify(account?.address, {
-            ...data,
-          });
-      }
-      if (data && !disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        data &&
-          typeof window !== 'undefined' &&
-          window?.gtag('set', 'user_properties', data);
-      }
-    },
-    [account?.address],
-  );
-
-  const trackDisconnectWallet = useCallback(
-    ({ account, data, disableTrackingTool }: TrackDisconnectWalletProps) => {
-      if (
-        account?.address &&
-        !disableTrackingTool?.includes(EventTrackingTool.Hotjar)
-      ) {
-        hotjar.identify(account?.address, {
-          ...data,
-        });
-        hotjar.initialized() && hotjar.event(TrackingAction.DisconnectWallet);
-      }
-      if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        typeof window !== 'undefined' &&
-          window?.gtag('event', TrackingAction.DisconnectWallet, {
-            ...data,
-          });
-      }
-      if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-        arcx?.disconnection({
-          account: `${account?.address}`, // optional(string) - The account? that got disconnected
-          chainId: `${account?.chainId}`, // optional(string | number) - The chain ID from which the wallet disconnected
-        });
-      }
-    },
-    [arcx],
-  );
+  }, [account, account?.chainId]);
 
   const trackEvent = useCallback(
     async ({
       action,
       category,
       label,
-      value,
       data,
+      value,
       disableTrackingTool,
       enableAddressable,
       isConversion,
     }: TrackEventProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
-        hotjar.initialized() &&
-          hotjar.event(`${action}-${category}-${label ?? '-' + label}`);
-      }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        typeof window !== 'undefined' &&
-          window?.gtag('event', action, {
-            category: category,
-            ...data,
-          });
-      }
-      if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-        arcx?.event(action, {
-          category: category,
-          ...data,
-        });
-      }
-      if (!disableTrackingTool?.includes(EventTrackingTool.Cookie3)) {
-        cookie3?.trackEvent({
-          category,
-          action,
-          name: label,
-          value,
-        });
+        googleEvent({ action, category, data });
       }
       if (enableAddressable) {
         const dataArray = [];
@@ -162,53 +109,37 @@ export function useUserTracking() {
           dataArray.push({ name: 'label', value: label });
         }
 
-        typeof window !== 'undefined' &&
-          data &&
-          window.__adrsbl.run(
+        addressableEvent({ action, label, data: data || {}, isConversion });
+      }
+      if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
+        try {
+          const eventData = {
+            category,
+            value: typeof value === 'number' ? value : 0,
             action,
-            isConversion ?? false,
-            dataArray.concat(
-              Object.entries(data).map(([key, value]) => ({
-                name: `${key}`,
-                value: `${value}`,
-              })),
-            ),
-          );
+            label,
+            data: data || {},
+            isConnected: account?.isConnected || false,
+            walletAddress: account?.address || 'not_connected',
+            browserFingerprint: fp,
+            isMobile: !isDesktop,
+            sessionId: sessionId || 'unknown',
+            url: process.env.NEXT_PUBLIC_SITE_URL,
+          };
+          await jumperTrackEvent(eventData);
+        } catch (error) {
+          console.error('Error in tracking event:', error);
+        }
       }
     },
-    [arcx, cookie3],
-  );
-
-  const trackPageload = useCallback(
-    /**
-     * Track PageLoad with GA, HJ and ARCx
-     *
-     */
-    async ({
-      destination,
-      source,
-      data,
-      pageload, // requires page load? -> true
-      disableTrackingTool,
-      url,
-    }: trackPageloadProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
-        hotjar.initialized() && pageload
-          ? hotjar.stateChange(url)
-          : hotjar.event(`pageload${destination && '-' + destination}`);
-      }
-      if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        typeof window !== 'undefined' &&
-          window?.gtag('event', TrackingAction.PageLoad, {
-            category: pageload ? 'external' : 'internal',
-            url,
-            source,
-            destination,
-            ...data,
-          });
-      }
-    },
-    [],
+    [
+      account?.address,
+      account?.isConnected,
+      fp,
+      isDesktop,
+      jumperTrackEvent,
+      sessionId,
+    ],
   );
 
   const trackTransaction = useCallback(
@@ -217,75 +148,75 @@ export function useUserTracking() {
      *
      */
     async ({
+      data,
       action,
       category,
-      chain,
-      value,
-      data,
       disableTrackingTool,
-      txhash,
+      enableAddressable,
     }: TrackTransactionProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
-        hotjar.initialized() && hotjar.event(`${category}-${action}`);
-      }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        typeof window !== 'undefined' &&
-          window?.gtag('event', action, {
-            category,
-            ...data,
-          });
+        googleEvent({ action, category, data });
       }
-      if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-        arcx?.transaction({
-          chainId: chain,
-          transactionHash: txhash,
-          metadata: { ...data, category, action }, // optional(object) - additional information about the transaction
-        });
+      if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
+        const transactionData = {
+          sessionId: sessionId || '',
+          wallet: account?.address || '',
+          type: data[TrackingEventParameter.Type] || '',
+          routeId: data[TrackingEventParameter.RouteId] || '',
+          transactionHash: data[TrackingEventParameter.TransactionHash] || '',
+          transactionStatus:
+            data[TrackingEventParameter.TransactionStatus] || '',
+          transactionId: data[TrackingEventParameter.TransactionId],
+          fromChainId: data[TrackingEventParameter.FromChainId] || 0,
+          toChainId: data[TrackingEventParameter.ToChainId] || 0,
+          integrator: data[TrackingEventParameter.Integrator],
+          fromToken: data[TrackingEventParameter.FromToken] || 'unknown',
+          toToken: data[TrackingEventParameter.ToToken] || 'unknown',
+          exchange: data[TrackingEventParameter.Exchange],
+          stepNumber: data[TrackingEventParameter.StepNumber],
+          isFinal: data[TrackingEventParameter.IsFinal] || false,
+          gasCost: data[TrackingEventParameter.GasCost] || 0,
+          gasCostUSD:
+            (data[TrackingEventParameter.GasCostUSD] &&
+              parseFloat(data[TrackingEventParameter.GasCostUSD])) ||
+            0,
+          fromAmount:
+            (data[TrackingEventParameter.FromAmount] &&
+              parseFloat(data[TrackingEventParameter.FromAmount])) ||
+            0,
+          fromAmountUSD:
+            (data[TrackingEventParameter.FromAmountUSD] &&
+              parseFloat(data[TrackingEventParameter.FromAmountUSD])) ||
+            0,
+          toAmount:
+            (data[TrackingEventParameter.ToAmount] &&
+              parseFloat(data[TrackingEventParameter.ToAmount])) ||
+            0,
+          toAmountUSD:
+            (data[TrackingEventParameter.ToAmountUSD] &&
+              parseFloat(data[TrackingEventParameter.ToAmountUSD])) ||
+            0,
+          errorCode: data[TrackingEventParameter.ErrorCode],
+          errorMessage: data[TrackingEventParameter.ErrorMessage],
+          action: data[TrackingEventParameter.Action] || '',
+        };
+        await jumperTrackTransaction(transactionData);
       }
-      if (!disableTrackingTool?.includes(EventTrackingTool.Cookie3)) {
-        cookie3?.trackEvent({
-          category,
-          action,
-          name: 'transaction',
-          value: value,
-        });
-      }
-    },
-    [arcx, cookie3],
-  );
 
-  const trackChainSwitch = useCallback(
-    async ({
-      account,
-      disableTrackingTool,
-      action,
-      category,
-      data,
-    }: TrackChainSwitchProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-        arcx?.chain({
-          account: `${account?.address}`,
-          chainId: `${account?.chainId}`,
+      if (enableAddressable) {
+        addressableEvent({
+          action,
+          label: 'transaction',
+          data: data || {},
+          isConversion: true,
         });
       }
-      if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        typeof window !== 'undefined' &&
-          window?.gtag('event', action, {
-            category: category,
-            ...data,
-          });
-      }
     },
-    [arcx],
+    [account?.address, jumperTrackTransaction, sessionId],
   );
 
   return {
-    trackAttribute,
-    trackDisconnectWallet,
-    trackConnectWallet,
     trackEvent,
-    trackPageload,
     trackTransaction,
-    trackChainSwitch,
   };
 }

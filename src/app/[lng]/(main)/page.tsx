@@ -11,14 +11,14 @@ export default function Page() {
   return (
     <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>
       <WidgetContainer welcomeScreenClosed={true}>
-        <Widgets
-          closedWelcomeScreen={isWelcomeScreenClosed}
-          widgetVariant={variant}
-        />
         <Widget
           starterVariant={variant}
           activeTheme={activeTheme}
           activeThemeMode={activeThemeMode}
+        />
+        <Widgets
+          closedWelcomeScreen={isWelcomeScreenClosed}
+          widgetVariant={variant}
         />
       </WidgetContainer>
     </App>

@@ -14,6 +14,7 @@ import {
 } from './MissionCTA.style';
 import Image from 'next/image';
 import { SoraTypography } from '../../Superfest.style';
+import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
 import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
 import { XPIconBox } from '../../QuestCard/QuestCard.style';
@@ -26,23 +27,36 @@ export interface CTALinkInt {
   claimingId: string;
   rewardId?: string;
   apy?: number;
+  weeklyApy?: string;
 }
 
 interface MissionCtaProps {
   title?: string;
   url?: string;
+  rewards?: number;
   id?: number;
   CTAs: CTALinkInt[];
   variableWeeklyAPY?: boolean;
+  signature?: boolean;
+  rewardRange?: string;
+  isTurtleMember?: boolean;
 }
 
-export const MissionCTA = ({ CTAs, variableWeeklyAPY }: MissionCtaProps) => {
+export const MissionCTA = ({
+  CTAs,
+  rewards,
+  variableWeeklyAPY,
+  signature,
+  rewardRange,
+  isTurtleMember,
+}: MissionCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
+
   const handleClick = () => {
     // trackEvent({
     //   category: TrackingCategory.BlogArticle,
@@ -60,18 +74,21 @@ export const MissionCTA = ({ CTAs, variableWeeklyAPY }: MissionCtaProps) => {
     <CTAMainBox>
       <StartedTitleBox>
         <StartedTitleTypography>Get Started</StartedTitleTypography>
-        <Box marginTop="32px">
-          <SoraTypography
-            fontSize={{ xs: '14px', md: '18px' }}
-            lineHeight={{ xs: '14px', md: '18px' }}
-            fontWeight={400}
-          >
-            Completing any mission below makes you eligible for OP rewards and
-            XP.
-          </SoraTypography>
-        </Box>
+        {!signature && rewards ? (
+          <Box marginTop="32px">
+            <SoraTypography
+              fontSize={{ xs: '14px', md: '18px' }}
+              lineHeight={{ xs: '14px', md: '18px' }}
+              fontWeight={400}
+            >
+              Completing any mission below makes you eligible for OP rewards and
+              XP.
+            </SoraTypography>
+          </Box>
+        ) : undefined}
       </StartedTitleBox>
       <SeveralCTABox>
+        {signature && <SignatureCTA isTurtleMember={isTurtleMember} />}
         {CTAs.map((CTA: CTALinkInt, i: number) => {
           return (
             <Link
@@ -137,7 +154,11 @@ export const MissionCTA = ({ CTAs, variableWeeklyAPY }: MissionCtaProps) => {
                         lineHeight="20px"
                         color={'#ffffff'}
                       >
-                        {`VAR.%`}
+                        {CTA?.weeklyApy
+                          ? CTA?.weeklyApy
+                          : rewardRange
+                            ? rewardRange
+                            : `VAR.%`}
                       </SoraTypography>
                       <XPIconBox marginLeft="4px">
                         <APYIcon size={24} />

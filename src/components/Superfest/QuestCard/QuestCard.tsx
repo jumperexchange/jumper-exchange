@@ -44,6 +44,7 @@ interface QuestCardProps {
   completed?: boolean;
   claimingIds?: string[];
   variableWeeklyAPY?: boolean;
+  rewardRange?: string;
 }
 
 export const QuestCard = ({
@@ -60,6 +61,7 @@ export const QuestCard = ({
   completed,
   claimingIds,
   variableWeeklyAPY,
+  rewardRange,
 }: QuestCardProps) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -83,7 +85,7 @@ export const QuestCard = ({
           )}
 
           <OPBadgeRelativeBox>
-            {rewards?.amount && <OPBadge />}
+            {rewards && rewards?.amount > 0 ? <OPBadge /> : undefined}
           </OPBadgeRelativeBox>
         </Box>
       </Link>
@@ -136,7 +138,7 @@ export const QuestCard = ({
                     lineHeight="18px"
                     color={'#ffffff'}
                   >
-                    {`VAR.%`}
+                    {rewardRange ? rewardRange : `VAR.%`}
                   </SoraTypography>
                   <XPIconBox marginLeft="4px">
                     <APYIcon size={20} />

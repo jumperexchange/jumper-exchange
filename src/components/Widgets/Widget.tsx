@@ -4,7 +4,6 @@ import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAler
 import { widgetConfig } from '@/config/widgetConfig';
 import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
-import { useActiveTabStore } from '@/stores/activeTab/ActiveTabStore';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
 import type { LanguageKey } from '@/types/i18n';
@@ -19,7 +18,14 @@ import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 import { useMemelist } from 'src/hooks/useMemelist';
+import { useUserTracking } from 'src/hooks/userTracking';
+import { useActiveTabStore } from 'src/stores/activeTab';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
@@ -41,6 +47,7 @@ export function Widget({
   const widgetTheme = useWidgetTheme();
   const configTheme = useSettingsStore((state) => state.configTheme);
   const { i18n } = useTranslation();
+  const { trackEvent } = useUserTracking();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
@@ -58,7 +65,6 @@ export function Widget({
     router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
 
-  const isGasVariant = activeTab === TabsMap.Refuel.index;
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
@@ -66,6 +72,7 @@ export function Widget({
     (state: MenuState) => state.setWalletSelectMenuState,
   );
 
+  const isGasVariant = activeTab === TabsMap.Refuel.index;
   const allowedChainsByVariant = useMemo(
     () =>
       starterVariant === TabsMap.Refuel.variant
@@ -161,6 +168,14 @@ export function Widget({
                 getWalletClient: () => getWalletClient(wagmiConfig),
                 switchChain: async (chainId: any) => {
                   const chain = await switchChain(wagmiConfig, { chainId });
+                  trackEvent({
+                    category: TrackingCategory.Widget,
+                    action: TrackingAction.SwitchChain,
+                    label: 'switch-chain',
+                    data: {
+                      [TrackingEventParameter.ChainId]: chainId,
+                    },
+                  });
                   return getWalletClient(wagmiConfig, { chainId: chain.id });
                 },
                 multisig: multisigSdkConfig,
@@ -169,33 +184,35 @@ export function Widget({
           : undefined,
       },
       buildUrl: true,
+      // insurance: true,
       integrator: integratorStringByType,
       tokens:
         partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
     };
   }, [
-    starterVariant,
-    partnerName,
-    fromChain,
-    fromToken,
-    toChain,
-    toToken,
-    fromAmount,
     allowChains,
     allowedChainsByVariant,
     configTheme?.allowedBridges,
     configTheme?.allowedExchanges,
+    fromAmount,
+    fromChain,
+    fromToken,
     i18n.language,
     i18n.languages,
-    widgetTheme.config.appearance,
-    widgetTheme.config.theme,
-    multisigWidget,
+    integratorStringByType,
     isMultisigSigner,
     multisigSdkConfig,
-    integratorStringByType,
-    tokens,
+    multisigWidget,
+    partnerName,
     setWalletSelectMenuState,
+    starterVariant,
+    toChain,
+    toToken,
+    tokens,
+    trackEvent,
     wagmiConfig,
+    widgetTheme.config.appearance,
+    widgetTheme.config.theme,
   ]);
 
   return (

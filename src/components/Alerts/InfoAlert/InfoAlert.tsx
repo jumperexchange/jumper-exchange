@@ -16,12 +16,12 @@ export interface InfoAlertProps {
 export const InfoAlert = ({ title, subtitle, active }: InfoAlertProps) => {
   const [closed, setClosed] = useState(false);
   const theme = useTheme();
-  const handleClose = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.stopPropagation();
-    setClosed(true);
-  };
+  // const handleClose = (
+  //   event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  // ) => {
+  //   event.stopPropagation();
+  //   setClosed(true);
+  // };
 
   useEffect(() => {
     active && setClosed(false);

@@ -8,7 +8,6 @@ import { useChains } from '@/hooks/useChains';
 import { useDexsAndBridges } from '@/hooks/useDexsAndBridges';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { DataItem } from '@/types/internal';
-import { EventTrackingTool } from '@/types/userTracking';
 import { sortByName } from '@/utils/sortByName';
 import type { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -63,10 +62,6 @@ export const ToolCards = ({
           action: TrackingAction.OpenToolModal,
           label: 'chains_stats',
           data: { [TrackingEventParameter.ToolModal]: 'chains_stats' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         setOpenChainsToolModal(!openChainsToolModal);
       },
@@ -85,10 +80,6 @@ export const ToolCards = ({
           action: TrackingAction.OpenToolModal,
           label: 'bridges_stats',
           data: { [TrackingEventParameter.ToolModal]: 'bridges_stats' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         setOpenBridgesToolModal(!openBridgesToolModal);
       },
@@ -107,10 +98,6 @@ export const ToolCards = ({
           action: TrackingAction.OpenToolModal,
           label: 'dexes_stats',
           data: { [TrackingEventParameter.ToolModal]: 'dexes_stats' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
         });
         setOpenDexsToolModal(!openDexsToolModal);
       },

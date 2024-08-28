@@ -11,14 +11,17 @@ export const InfoAlertContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
   width: '100%',
   flexDirection: 'row',
-  justifyContent: 'flex-start',
-  position: 'fixed',
+  justifyContent: 'center',
   left: 0,
   padding: theme.spacing(1.5),
+  marginTop: theme.spacing(3),
   bottom: 0,
-  zIndex: 2000,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  zIndex: 2,
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    marginTop: 0,
     width: 'auto',
+    justifyContent: 'flex-start',
+    position: 'fixed',
   },
 }));
 

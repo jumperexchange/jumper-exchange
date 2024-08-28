@@ -3,6 +3,7 @@ import generateKey from 'src/app/lib/generateKey';
 import { PartnerThemeFooterImage } from 'src/components/PartnerThemeFooterImage';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
+import { useTurtleMember } from 'src/hooks/useTurtleMember';
 import { type Quest } from 'src/types/loyaltyPass';
 import { SuperfestContainer } from '../Superfest.style';
 import { BackButton } from './BackButton/BackButton';
@@ -24,7 +25,10 @@ export const SuperfestMissionPage = ({
 }: SuperfestMissionPageVar) => {
   const attributes = quest?.attributes;
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
+  const missionType = quest?.attributes?.CustomInformation?.['missionType'];
   const rewardType = attributes?.CustomInformation?.['rewardType'];
+  const rewardRange = attributes?.CustomInformation?.['rewardRange'];
+  const rewards = quest.attributes.CustomInformation?.['rewards'];
   const points = quest?.attributes?.Points;
 
   const { account } = useAccounts();
@@ -32,7 +36,13 @@ export const SuperfestMissionPage = ({
     rewardChainId: 10,
     userAddress: account?.address,
   });
-
+  const {
+    isMember,
+    isJumperMember,
+    isSuccess: isMemberCheckSuccess,
+  } = useTurtleMember({
+    userAddress: account?.address,
+  });
   const { isLoading, isSuccess, CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
@@ -45,14 +55,24 @@ export const SuperfestMissionPage = ({
           quest={quest}
           baseUrl={baseUrl}
           pastCampaigns={pastCampaigns}
+          isRewardCompleted={
+            missionType === 'turtle_signature' &&
+            isMemberCheckSuccess &&
+            isMember &&
+            isJumperMember
+          }
         />
         {/* Big CTA */}
         <MissionCTA
           title={attributes?.Title}
           url={attributes?.Link}
+          rewards={rewards}
           key={generateKey('cta')}
           CTAs={CTAsWithAPYs}
           variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
+          signature={missionType === 'turtle_signature'}
+          isTurtleMember={isMember}
+          rewardRange={rewardRange}
         />
         {/* Subtitle and description */}
         <DescriptionBox
@@ -65,7 +85,9 @@ export const SuperfestMissionPage = ({
           <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
         ) : undefined}
         {/* Additional Info */}
-        <InformationAlertBox information={attributes?.Information} />
+        {attributes?.Information && (
+          <InformationAlertBox information={attributes?.Information} />
+        )}
       </SuperfestPageMainBox>
       <PartnerThemeFooterImage />
     </SuperfestContainer>

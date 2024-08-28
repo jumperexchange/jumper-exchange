@@ -11,6 +11,7 @@ import { ChainId } from '@lifi/sdk';
 import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';
 import { SoraTypography } from '../../Superfest.style';
 import { useCheckNFTAvailability } from 'src/hooks/useCheckNFTAvailability';
+import Link from 'next/link';
 
 interface NFTCardProps {
   image: string;
@@ -20,6 +21,9 @@ interface NFTCardProps {
   isLoading?: boolean;
   isSuccess?: boolean;
 }
+
+const LAST_NFT_IMAGE =
+  'https://strapi.li.finance/uploads/supernft_163c0f663b.jpg';
 
 export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
   const { address } = useAccount();
@@ -32,6 +36,13 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
     useWaitForTransactionReceipt({
       hash,
     });
+
+  const NFTimage =
+    chain === 'box' && claimInfo.isClaimed ? LAST_NFT_IMAGE : image;
+
+  // chain === 'box' && (claimInfo.isClaimable || claimInfo.isClaimed)
+  //   ? LAST_NFT_IMAGE
+  //   : image;
 
   async function handleClick() {
     try {
@@ -91,7 +102,7 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
             borderTopLeftRadius: '8px',
             marginBottom: '0px',
           }}
-          src={image}
+          src={NFTimage}
           alt={chain}
           width="288"
           height="288"
@@ -163,50 +174,91 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
     );
   }
 
-  if (claimInfo?.isClaimable) {
-    return (
-      <NFTCardMainBox>
-        <Image
-          style={{
-            borderTopRightRadius: '8px',
-            borderTopLeftRadius: '8px',
-            marginBottom: '0px',
-          }}
-          src={image}
-          alt={chain}
-          width="288"
-          height="288"
-        />
-        <NFTCardBotomBox>
-          <Button
-            disabled={isConfirming}
-            size="medium"
-            styles={{
-              backgroundColor: 'transparent',
-              border: '2px dotted',
-              borderColor: '#000000',
-              color: '#000000',
-              width: '75%',
-              '&:hover': {
-                backgroundColor: bgColor,
-                color: typoColor,
-              },
-            }}
-            onClick={() => handleClick()}
-          >
-            <SoraTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
-              {isConfirming ? 'MINTING...' : 'MINT'}
-            </SoraTypography>
-          </Button>
-        </NFTCardBotomBox>
-      </NFTCardMainBox>
-    );
-  }
+  // if (claimInfo?.isClaimable) {
+  //   return (
+  //     <NFTCardMainBox>
+  //       <Image
+  //         style={{
+  //           borderTopRightRadius: '8px',
+  //           borderTopLeftRadius: '8px',
+  //           marginBottom: '0px',
+  //         }}
+  //         src={NFTimage}
+  //         alt={chain}
+  //         width="288"
+  //         height="288"
+  //       />
+  //       <NFTCardBotomBox>
+  //         <Button
+  //           disabled={isConfirming}
+  //           size="medium"
+  //           styles={{
+  //             backgroundColor: 'transparent',
+  //             border: '2px dotted',
+  //             borderColor: '#000000',
+  //             color: '#000000',
+  //             width: '75%',
+  //             '&:hover': {
+  //               backgroundColor: bgColor,
+  //               color: typoColor,
+  //             },
+  //           }}
+  //           onClick={() => handleClick()}
+  //         >
+  //           <SoraTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
+  //             {isConfirming ? 'MINTING...' : 'MINT'}
+  //           </SoraTypography>
+  //         </Button>
+  //       </NFTCardBotomBox>
+  //     </NFTCardMainBox>
+  //   );
+  // }
+  // return (
+  //   <NFTCardMainBox
+  //     sx={{
+  //       cursor: 'not-allowed',
+  //     }}
+  //   >
+  //     <Image
+  //       style={{
+  //         borderTopRightRadius: '8px',
+  //         borderTopLeftRadius: '8px',
+  //         marginBottom: '0px',
+  //       }}
+  //       src={NFTimage}
+  //       alt={chain}
+  //       width="288"
+  //       height="288"
+  //     />
+  //     <NFTCardBotomBox>
+  //       <Button
+  //         size="medium"
+  //         disabled={true}
+  //         styles={{
+  //           backgroundColor: 'transparent',
+  //           border: '2px dotted',
+  //           borderColor: '#C5B99C',
+  //           width: '75%',
+  //           '&:hover': {
+  //             backgroundColor: bgColor,
+  //             color: typoColor,
+  //           },
+  //         }}
+  //       >
+  //         <SoraTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
+  //           {chain === 'box' ? 'LOCKED' : 'UNAVAILABLE'}
+  //         </SoraTypography>
+  //       </Button>
+  //     </NFTCardBotomBox>
+  //   </NFTCardMainBox>
+  // );
+
+  // temporary fix
   return (
     <NFTCardMainBox
-      sx={{
-        cursor: 'not-allowed',
-      }}
+    // sx={{
+    //   cursor: 'not-allowed',
+    // }}
     >
       <Image
         style={{
@@ -214,30 +266,37 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
           borderTopLeftRadius: '8px',
           marginBottom: '0px',
         }}
-        src={image}
+        src={NFTimage}
         alt={chain}
         width="288"
         height="288"
       />
       <NFTCardBotomBox>
-        <Button
-          size="medium"
-          disabled={true}
-          styles={{
-            backgroundColor: 'transparent',
-            border: '2px dotted',
-            borderColor: '#C5B99C',
-            width: '75%',
-            '&:hover': {
-              backgroundColor: bgColor,
-              color: typoColor,
-            },
-          }}
+        <Link
+          href={`https://app.galxe.com/quest/JumperExchange/${claimInfo.cid}`}
+          target={'_blank'}
+          style={{ textDecoration: 'inherit' }}
         >
-          <SoraTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
-            {chain === 'box' ? 'COMING SOON' : 'UNAVAILABLE'}
-          </SoraTypography>
-        </Button>
+          <Button
+            size="medium"
+            // disabled={false}
+            styles={{
+              backgroundColor: 'transparent',
+              border: '2px dotted',
+              color: '#000000',
+              borderColor: '#C5B99C',
+              width: '75%',
+              '&:hover': {
+                backgroundColor: bgColor,
+                color: typoColor,
+              },
+            }}
+          >
+            <SoraTypography fontSize="14px" lineHeight="18px" fontWeight={600}>
+              {'CHECK AVAILABILITY'}
+            </SoraTypography>
+          </Button>
+        </Link>
       </NFTCardBotomBox>
     </NFTCardMainBox>
   );

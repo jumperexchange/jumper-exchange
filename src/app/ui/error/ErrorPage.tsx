@@ -3,7 +3,6 @@ import { useTheme } from '@mui/material';
 
 import { Discord } from '@/components/illustrations/Discord';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { EventTrackingTool } from '@/types/userTracking';
 
 import {
   TrackingAction,
@@ -25,7 +24,7 @@ interface FallbackErrorProps {
 }
 
 const ErrorPage = ({ reset }: FallbackErrorProps) => {
-  const { trackPageload, trackEvent } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const { t } = useTranslation();
   return (
@@ -35,21 +34,22 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
         variant="primary"
         onClick={() => {
           trackEvent({
-            category: TrackingCategory.Menu,
-            label: 'click-discord-link',
+            category: TrackingCategory.ErrorPage,
+            label: 'error-click-discord-link',
             action: TrackingAction.OpenMenu,
             data: { [TrackingEventParameter.Menu]: 'jumper_discord' },
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Cookie3,
-            ],
           });
-          trackPageload({
-            source: TrackingCategory.Menu,
-            destination: 'discord-jumper',
-            url: DISCORD_URL,
-            pageload: true,
-            disableTrackingTool: [EventTrackingTool.Cookie3],
+          trackEvent({
+            category: TrackingCategory.Pageload,
+            action: TrackingAction.PageLoad,
+            label: 'error-discord-jumper',
+            data: {
+              [TrackingEventParameter.PageloadSource]:
+                TrackingCategory.ErrorPage,
+              [TrackingEventParameter.PageloadDestination]: 'discord-jumper',
+              [TrackingEventParameter.PageloadURL]: DISCORD_URL,
+              [TrackingEventParameter.PageloadExternal]: true,
+            },
           });
           openInNewTab(DISCORD_URL);
         }}
