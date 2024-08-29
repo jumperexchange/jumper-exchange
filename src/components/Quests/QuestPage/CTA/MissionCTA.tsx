@@ -115,7 +115,7 @@ export const MissionCTA = ({
               lineHeight={{ xs: '14px', md: '18px' }}
               fontWeight={400}
             >
-              Completing any mission below makes you eligible for OP rewards and
+              Completing any mission below makes you eligible for rewards and
               XP.
             </Typography>
           </Box>
