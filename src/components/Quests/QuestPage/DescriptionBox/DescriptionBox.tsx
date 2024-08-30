@@ -1,8 +1,8 @@
+import { Typography } from '@mui/material';
 import {
   LeftTextBox,
-  SuperfestPageElementContainer,
-} from '../SuperfestMissionPage.style';
-import { SoraTypography } from '../../Superfest.style';
+  QuestsPageElementContainer,
+} from '../QuestsMissionPage.style';
 import { DescriptionTitleTypography } from './DescriptionBox.style';
 
 interface DescriptionBox {
@@ -12,13 +12,13 @@ interface DescriptionBox {
 
 export const DescriptionBox = ({ longTitle, description }: DescriptionBox) => {
   return (
-    <SuperfestPageElementContainer>
+    <QuestsPageElementContainer>
       <DescriptionTitleTypography>{longTitle}</DescriptionTitleTypography>
       <LeftTextBox marginTop={'32px'}>
-        <SoraTypography fontSize={'18px'} fontWeight={500} lineHeight={'32px'}>
+        <Typography fontSize={'18px'} fontWeight={500} lineHeight={'32px'}>
           {description}
-        </SoraTypography>
+        </Typography>
       </LeftTextBox>
-    </SuperfestPageElementContainer>
+    </QuestsPageElementContainer>
   );
 };

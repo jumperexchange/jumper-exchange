@@ -1,9 +1,9 @@
-import { Button } from 'src/components/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/navigation';
+import { Button } from 'src/components/Button';
 import { JUMPER_FEST_PATH } from 'src/const/urls';
-import { BackButtonMainBox } from './BackButton.style';
 import { SoraTypography } from '../../Superfest.style';
+import { BackButtonMainBox } from './BackButton.style';
 
 export const BackButton = () => {
   const router = useRouter();

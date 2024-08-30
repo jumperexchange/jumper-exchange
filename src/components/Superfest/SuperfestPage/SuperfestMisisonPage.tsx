@@ -1,17 +1,17 @@
-import { SuperfestContainer } from '../Superfest.style';
-import { SuperfestPageMainBox } from './SuperfestMissionPage.style';
-import generateKey from 'src/app/lib/generateKey';
-import { MissionCTA } from './CTA/MissionCTA';
-import { type Quest } from 'src/types/loyaltyPass';
-import { BackButton } from './BackButton/BackButton';
-import { BannerBox } from './Banner/Banner';
-import { DescriptionBox } from './DescriptionBox/DescriptionBox';
-import { StepsBox } from './StepsBox/StepsBox';
-import { InformationAlertBox } from './InformationBox/InformationAlertBox';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useAccounts } from '@/hooks/useAccounts';
+import generateKey from 'src/app/lib/generateKey';
+import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { useTurtleMember } from 'src/hooks/useTurtleMember';
+import { type Quest } from 'src/types/loyaltyPass';
+import { SuperfestContainer } from '../Superfest.style';
+import { BackButton } from './BackButton/BackButton';
+import { BannerBox } from './Banner/Banner';
+import { MissionCTA } from './CTA/MissionCTA';
+import { DescriptionBoxSF } from './DescriptionBoxSF/DescriptionBoxSF';
+import { InformationAlertBox } from './InformationBox/InformationAlertBox';
+import { StepsBox } from './StepsBox/StepsBox';
+import { SuperfestPageMainBox } from './SuperfestMissionPage.style';
 
 interface SuperfestMissionPageVar {
   quest: Quest;
@@ -29,7 +29,6 @@ export const SuperfestMissionPage = ({
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
   const rewards = quest.attributes.CustomInformation?.['rewards'];
   const points = quest?.attributes?.Points;
-
   const { account } = useAccounts();
   const { pastCampaigns } = useMerklRewards({
     rewardChainId: 10,
@@ -42,7 +41,7 @@ export const SuperfestMissionPage = ({
   } = useTurtleMember({
     userAddress: account?.address,
   });
-  const { isLoading, isSuccess, CTAsWithAPYs } = useMissionsAPY(CTAs);
+  const { CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
     <SuperfestContainer className="superfest">
@@ -74,7 +73,7 @@ export const SuperfestMissionPage = ({
           rewardRange={rewardRange}
         />
         {/* Subtitle and description */}
-        <DescriptionBox
+        <DescriptionBoxSF
           longTitle={attributes?.Subtitle}
           description={attributes?.Description}
         />
