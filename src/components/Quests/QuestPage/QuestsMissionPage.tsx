@@ -72,10 +72,12 @@ export const QuestsMissionPage = ({
           />
         )}
         {/* Subtitle and description */}
-        <DescriptionBox
-          longTitle={attributes?.Subtitle}
-          description={attributes?.Description}
-        />
+        {attributes?.Subtitle && (
+          <DescriptionBox
+            longTitle={attributes?.Subtitle}
+            description={attributes?.Description}
+          />
+        )}
         {/* Steps */}
         {/* Todo: remove the check for steps */}
         {attributes?.Steps && attributes?.Steps?.length > 0 ? (
