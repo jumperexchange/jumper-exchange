@@ -12,20 +12,27 @@ import {
   PROFILE_CAMPAIGN_DARK_TOKEN,
   PROFILE_CAMPAIGN_LIGHT_CHAIN,
   PROFILE_CAMPAIGN_LIGHT_TOKEN,
+  REWARDS_DECIMALS,
 } from 'src/const/partnerTheme';
+import { useAccounts } from 'src/hooks/useAccounts';
 
 export const RewardsAmountBox = ({
-  rewardAmount,
+  isSuccess,
   isConfirmed,
+  rewardAmount,
 }: {
-  rewardAmount: number;
+  isSuccess: boolean;
   isConfirmed: boolean;
+  rewardAmount: number;
 }) => {
+  //HOOKS
+  const { account } = useAccounts();
   const theme = useTheme();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
 
+  //CONST
   const REWARD_CHAIN_LOGO =
     theme.palette.mode === 'dark'
       ? PROFILE_CAMPAIGN_DARK_CHAIN
@@ -70,7 +77,11 @@ export const RewardsAmountBox = ({
           fontWeight={700}
           color={theme.palette.mode === 'dark' ? '#ffffff' : '#000000'}
         >
-          {isConfirmed ? '0' : rewardAmount ? rewardAmount : '...'}
+          {!account?.address || (isSuccess && rewardAmount === 0) || isConfirmed
+            ? '0'
+            : rewardAmount
+              ? rewardAmount.toFixed(REWARDS_DECIMALS)
+              : '...'}
         </Typography>
       </Box>
     </FlexCenterRowBox>

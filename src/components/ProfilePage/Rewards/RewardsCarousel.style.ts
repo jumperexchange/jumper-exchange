@@ -5,6 +5,7 @@ import {
   styled,
   IconButton as MuiIconButton,
   alpha,
+  darken,
 } from '@mui/material';
 import { sequel65 } from 'src/fonts/fonts';
 import { getContrastAlphaColor } from '@/utils/colors';
@@ -108,13 +109,13 @@ export const EarnedTypography = styled(Typography)(({ theme }) => ({
 export const RewardsOpenIconButton = styled(MuiIconButton, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<IconButtonProps>(({ theme }) => ({
-  color: getContrastAlphaColor(theme, '84%'),
+  color: theme.palette.white.main,
   transition: 'background 0.3s',
   width: '48px',
   height: '48px',
-  backgroundColor: '#fef0ca',
-  '&:hover': {
+  backgroundColor: theme.palette.primary.main,
+  ':hover': {
     color: '#ffffff',
-    backgroundColor: '#FF0420',
+    backgroundColor: darken(theme.palette.primary.main, 0.16),
   },
 }));

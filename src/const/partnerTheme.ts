@@ -12,3 +12,5 @@ export const PROFILE_CAMPAIGN_LIGHT_CHAIN =
   'https://strapi.li.finance/uploads/Sei_Symbol_Gradient_127605e2de.png';
 
 export const PROFILE_CAMPAIGN_SCANNER = 'https://optimistic.etherscan.io';
+
+export const REWARDS_DECIMALS = 1;

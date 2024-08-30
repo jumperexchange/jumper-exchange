@@ -91,7 +91,8 @@ export const RewardsCarousel = ({
 
   return (
     <>
-      {!hideComponent && rewardAmount && rewardAmount > 0 ? (
+      {!hideComponent ? (
+        // && rewardAmount && rewardAmount > 0
         <RewardsCarouselContainer>
           <RewardsCarouselMainBox>
             <FlexCenterRowBox>
@@ -103,6 +104,7 @@ export const RewardsCarousel = ({
                 </EarnedTypography>
               </Box>
               <RewardsAmountBox
+                isSuccess={isMerklSuccess}
                 rewardAmount={rewardAmount}
                 isConfirmed={isConfirmed}
               />
@@ -120,7 +122,12 @@ export const RewardsCarousel = ({
                 }}
                 onClick={() => handleClick()}
               >
-                <Typography fontSize="16px" lineHeight="18px" fontWeight={600}>
+                <Typography
+                  fontSize="16px"
+                  lineHeight="18px"
+                  fontWeight={600}
+                  color={theme.palette.white.main}
+                >
                   {isPending || isConfirming
                     ? 'CLAIMING...'
                     : isConfirmed
@@ -141,7 +148,9 @@ export const RewardsCarousel = ({
                 rel="noreferrer"
               >
                 <RewardsOpenIconButton>
-                  <OpenInNewIcon sx={{ height: '32px' }} />
+                  <OpenInNewIcon
+                    sx={{ height: '32px', color: theme.palette.white.main }}
+                  />
                 </RewardsOpenIconButton>
               </a>
             ) : undefined}

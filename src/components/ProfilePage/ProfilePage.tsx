@@ -36,9 +36,9 @@ export const ProfilePage = () => {
     <>
       <RewardsCarousel
         hideComponent={false}
-        rewardAmount={10}
+        // rewardAmount={10}
         // hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
-        // rewardAmount={availableRewards?.[0]?.amountToClaim as number}
+        rewardAmount={availableRewards?.[0]?.amountToClaim as number}
         accumulatedAmountForContractBN={
           availableRewards?.[0]?.accumulatedAmountForContractBN
         }
