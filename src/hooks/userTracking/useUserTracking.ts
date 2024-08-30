@@ -121,10 +121,10 @@ export function useUserTracking() {
             data: data || {},
             isConnected: account?.isConnected || false,
             walletAddress: account?.address || 'not_connected',
-            browserFingerprint: fp,
+            browserFingerprint: fp || 'unknown',
             isMobile: !isDesktop,
             sessionId: sessionId || 'unknown',
-            url: process.env.NEXT_PUBLIC_SITE_URL,
+            url: window?.location?.href || process.env.NEXT_PUBLIC_SITE_URL,
           };
           await jumperTrackEvent(eventData);
         } catch (error) {
@@ -199,6 +199,8 @@ export function useUserTracking() {
           errorCode: data[TrackingEventParameter.ErrorCode],
           errorMessage: data[TrackingEventParameter.ErrorMessage],
           action: data[TrackingEventParameter.Action] || '',
+          url: window?.location?.href || process.env.NEXT_PUBLIC_SITE_URL,
+          browserFingerprint: fp || 'unknown',
         };
         await jumperTrackTransaction(transactionData);
       }
@@ -212,7 +214,7 @@ export function useUserTracking() {
         });
       }
     },
-    [account?.address, jumperTrackTransaction, sessionId],
+    [account?.address, fp, jumperTrackTransaction, sessionId],
   );
 
   return {

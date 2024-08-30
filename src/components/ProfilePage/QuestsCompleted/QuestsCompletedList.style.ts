@@ -8,10 +8,7 @@ export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
       : alpha(theme.palette.white.main, 0.08),
   padding: theme.spacing(2),
   borderRadius: '32px',
-  boxShadow:
-    theme.palette.mode === 'dark'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+  boxShadow: theme.palette.shadow.main,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(8, 8, 0),
     padding: theme.spacing(6, 3),
