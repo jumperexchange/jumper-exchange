@@ -7,7 +7,7 @@ import {
   PROFILE_CAMPAIGN_DARK_COLOR,
   PROFILE_CAMPAIGN_LIGHT_CHAIN,
   PROFILE_CAMPAIGN_LIGHT_COLOR,
-} from 'src/const/partnerTheme';
+} from 'src/const/partnerRewardsTheme';
 
 export const TempTitle = () => {
   const theme = useTheme();

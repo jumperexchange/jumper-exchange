@@ -13,7 +13,7 @@ import {
   PROFILE_CAMPAIGN_LIGHT_CHAIN,
   PROFILE_CAMPAIGN_LIGHT_TOKEN,
   REWARDS_DECIMALS,
-} from 'src/const/partnerTheme';
+} from 'src/const/partnerRewardsTheme';
 import { useAccounts } from 'src/hooks/useAccounts';
 
 export const RewardsAmountBox = ({

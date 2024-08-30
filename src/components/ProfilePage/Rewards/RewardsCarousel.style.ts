@@ -13,7 +13,7 @@ import type { IconButtonProps } from '@mui/material';
 import {
   PROFILE_CAMPAIGN_DARK_COLOR,
   PROFILE_CAMPAIGN_LIGHT_COLOR,
-} from 'src/const/partnerTheme';
+} from 'src/const/partnerRewardsTheme';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor:

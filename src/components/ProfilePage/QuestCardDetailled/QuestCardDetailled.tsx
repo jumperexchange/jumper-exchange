@@ -24,7 +24,7 @@ import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/Superfe
 import {
   PROFILE_CAMPAIGN_DARK_COLOR,
   PROFILE_CAMPAIGN_LIGHT_COLOR,
-} from 'src/const/partnerTheme';
+} from 'src/const/partnerRewardsTheme';
 
 export interface RewardsInterface {
   logo: string;
