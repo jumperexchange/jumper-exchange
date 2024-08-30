@@ -58,17 +58,19 @@ export const QuestsMissionPage = ({
           // }
         />
         {/* Big CTA */}
-        <MissionCTA
-          title={attributes?.Title}
-          url={attributes?.Link}
-          activeCampaign={activeCampaign}
-          rewards={rewards}
-          key={generateKey('cta')}
-          CTAs={CTAsWithAPYs}
-          variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
-          signature={missionType === 'turtle_signature'}
-          rewardRange={rewardRange}
-        />
+        {CTAsWithAPYs?.length > 0 && (
+          <MissionCTA
+            title={attributes?.Title}
+            url={attributes?.Link}
+            activeCampaign={activeCampaign}
+            rewards={rewards}
+            key={generateKey('cta')}
+            CTAs={CTAsWithAPYs}
+            variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
+            signature={missionType === 'turtle_signature'}
+            rewardRange={rewardRange}
+          />
+        )}
         {/* Subtitle and description */}
         <DescriptionBox
           longTitle={attributes?.Subtitle}
@@ -76,7 +78,7 @@ export const QuestsMissionPage = ({
         />
         {/* Steps */}
         {/* Todo: remove the check for steps */}
-        {attributes?.Steps && attributes?.Steps?.length > 1 ? (
+        {attributes?.Steps && attributes?.Steps?.length > 0 ? (
           <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
         ) : undefined}
         {/* Additional Info */}
