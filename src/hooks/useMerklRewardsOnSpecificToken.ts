@@ -1,5 +1,10 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
+import {
+  MERKL_CREATOR_TAG,
+  REWARD_TOKEN_ADDRESS,
+  REWARDS_CHAIN_IDS,
+} from 'src/const/partnerRewardsTheme';
 
 interface TokenData {
   accumulated: string;
@@ -58,13 +63,12 @@ export interface UseMerklRewardsProps {
   rewardToken?: string;
 }
 
-const ACTIVE_CHAINS = ['10', '252', '8453', '34443'];
+const ACTIVE_CHAINS = REWARDS_CHAIN_IDS;
+const CREATOR_TAG = MERKL_CREATOR_TAG;
+const TOKEN = REWARD_TOKEN_ADDRESS;
 
 const MERKL_API = 'https://api.merkl.xyz/v3';
 
-const CREATOR_TAG = 'superfest';
-
-const TOKEN = '0x4200000000000000000000000000000000000042';
 // TESTING
 // const TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
