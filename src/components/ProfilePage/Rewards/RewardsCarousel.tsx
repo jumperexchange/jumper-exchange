@@ -18,7 +18,11 @@ import { ChainId } from '@lifi/types';
 import { MerklDistribABI } from '../../../const/abi/merklABI';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
-import { PROFILE_CAMPAIGN_SCANNER } from 'src/const/partnerTheme';
+import {
+  PROFILE_CAMPAIGN_SCANNER,
+  REWARD_CLAIMING_ADDRESS,
+  REWARD_TOKEN_ADDRESS,
+} from 'src/const/partnerRewardsTheme';
 
 interface RewardsCarouselProps {
   hideComponent: boolean;
@@ -28,8 +32,8 @@ interface RewardsCarouselProps {
   proof: string[];
 }
 
-const CLAIMING_CONTRACT_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae';
-const OP_TOKEN = '0x4200000000000000000000000000000000000042';
+const CLAIMING_CONTRACT_ADDRESS = REWARD_CLAIMING_ADDRESS;
+const OP_TOKEN = REWARD_TOKEN_ADDRESS;
 //TESTING
 // const TEST_TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
