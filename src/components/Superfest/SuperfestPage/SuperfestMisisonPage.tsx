@@ -30,7 +30,6 @@ export const SuperfestMissionPage = ({
   const rewards = quest.attributes.CustomInformation?.['rewards'];
   const points = quest?.attributes?.Points;
 
-
   const { account } = useAccounts();
   const { pastCampaigns } = useMerklRewards({
     rewardChainId: 10,
@@ -63,7 +62,6 @@ export const SuperfestMissionPage = ({
           }
         />
         {/* Big CTA */}
-<<<<<<< HEAD
         {CTAsWithAPYs?.length > 0 && (
           <MissionCTA
             title={attributes?.Title}
@@ -76,19 +74,6 @@ export const SuperfestMissionPage = ({
             rewardRange={rewardRange}
           />
         )}
-=======
-        <MissionCTA
-          title={attributes?.Title}
-          url={attributes?.Link}
-          rewards={rewards}
-          key={generateKey('cta')}
-          CTAs={CTAsWithAPYs}
-          variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
-          signature={missionType === 'turtle_signature'}
-          isTurtleMember={isMember}
-          rewardRange={rewardRange}
-        />
->>>>>>> develop
         {/* Subtitle and description */}
         <DescriptionBoxSF
           longTitle={attributes?.Subtitle}
