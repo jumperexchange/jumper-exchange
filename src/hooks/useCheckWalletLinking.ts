@@ -49,9 +49,9 @@ export const useCheckWalletLinking = ({
       if (!res.ok) {
         return false;
       }
-      const data = await res.json();
 
-      const errorReason = data?.unavailableRoutes?.filteredOut?.[0].reason;
+      const data = await res.json();
+      const errorReason = data?.unavailableRoutes?.filteredOut?.[0]?.reason;
       const isSeiErrorMessage = String(errorReason).includes(
         'wallet is not linked to the original SEI address, please go to https://app.sei.io/',
       );
