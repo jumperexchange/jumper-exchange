@@ -25,9 +25,9 @@ test.describe('Jumper full e2e flow', () => {
     await expect(
       page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
     ).toBeVisible();
-    await tabInHeader(page, 'Gas');
-    await expect(page.locator('#tab-Gas-1')).toBeVisible();
-    await tabInHeader(page, 'Buy');
+    await page.locator('#tab-key-1').click();
+    await expect(page.locator('xpath=//p[text()="Gas"]')).toBeVisible();
+    await page.locator('#tab-key-2').click();
     await expect(buyETHButton).toBeEnabled();
     await expect(
       page
@@ -71,7 +71,8 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('Should be able to navigate to profile and open Explore Fluid Mission', async ({
-    page,context
+    page,
+    context,
   }) => {
     let profileUrl = `${await page.url()}profile/`;
     // await closeWelcomeScreen(page);
@@ -83,8 +84,8 @@ test.describe('Jumper full e2e flow', () => {
     await page
       .locator('xpath=//p[normalize-space(text())="Explore Fluid"]')
       .click();
-      const newPage = await context.waitForEvent('page');
-      expect(newPage.url()).toBe(values.exploreFluidURL);
+    const newPage = await context.waitForEvent('page');
+    expect(newPage.url()).toBe(values.exploreFluidURL);
   });
 
   test('Should be able to navigate to jumper learn', async ({ page }) => {
