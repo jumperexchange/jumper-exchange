@@ -22,6 +22,7 @@ export const Superfest = () => {
   } = useMerklRewards({
     rewardChainId: 10,
     userAddress: account?.address,
+    rewardToken: '0x4200000000000000000000000000000000000042', // OP
   });
   const {
     isMember,

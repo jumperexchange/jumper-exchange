@@ -14,6 +14,11 @@ import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { Leaderboard } from './Leaderboard/Leaderboard';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
+import {
+  REWARD_TOKEN_ADDRESS,
+  REWARD_TOKEN_CHAINID,
+  REWARDS_CHAIN_IDS,
+} from 'src/const/partnerRewardsTheme';
 
 export const ProfilePage = () => {
   const { account } = useAccounts();
@@ -28,8 +33,9 @@ export const ProfilePage = () => {
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,
   } = useMerklRewards({
-    rewardChainId: 10,
+    rewardChainId: REWARD_TOKEN_CHAINID,
     userAddress: account?.address,
+    rewardToken: REWARD_TOKEN_ADDRESS,
   });
 
   return (

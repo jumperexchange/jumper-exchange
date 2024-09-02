@@ -10,6 +10,10 @@ import { MissionCTA } from './CTA/MissionCTA';
 import { DescriptionBox } from './DescriptionBox/DescriptionBox';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { StepsBox } from './StepsBox/StepsBox';
+import {
+  REWARD_TOKEN_ADDRESS,
+  REWARD_TOKEN_CHAINID,
+} from 'src/const/partnerRewardsTheme';
 
 interface QuestsMissionPageVar {
   quest: Quest;
@@ -34,8 +38,9 @@ export const QuestsMissionPage = ({
 
   const { account } = useAccounts();
   const { pastCampaigns } = useMerklRewards({
-    rewardChainId: 10,
+    rewardChainId: REWARD_TOKEN_CHAINID,
     userAddress: account?.address,
+    rewardToken: REWARD_TOKEN_ADDRESS,
   });
   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
 

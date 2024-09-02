@@ -65,7 +65,6 @@ export interface UseMerklRewardsProps {
 
 const ACTIVE_CHAINS = REWARDS_CHAIN_IDS;
 const CREATOR_TAG = MERKL_CREATOR_TAG;
-const TOKEN = REWARD_TOKEN_ADDRESS;
 
 const MERKL_API = 'https://api.merkl.xyz/v3';
 
@@ -150,7 +149,8 @@ export const useMerklRewards = ({
           };
         })
         .filter(
-          (elem) => elem.address.toLowerCase() === String(TOKEN).toLowerCase(),
+          (elem) =>
+            elem.address.toLowerCase() === String(rewardToken).toLowerCase(),
         );
     }
 
