@@ -18,6 +18,7 @@ import {
   RewardsCarouselMainBox,
   RewardsOpenIconButton,
 } from './RewardsCarousel.style';
+import { PROFILE_CAMPAIGN_SCANNER } from 'src/const/partnerRewardsTheme';
 
 interface RewardsCarouselProps {
   hideComponent: boolean;
@@ -125,7 +126,7 @@ export const RewardsCarousel = ({
             </ClaimButtonBox>
             {hash ? (
               <a
-                href={`https://optimistic.etherscan.io/tx/${hash}`}
+                href={`${PROFILE_CAMPAIGN_SCANNER}/tx/${hash}`}
                 target="_blank"
                 style={{
                   textDecoration: 'none',
