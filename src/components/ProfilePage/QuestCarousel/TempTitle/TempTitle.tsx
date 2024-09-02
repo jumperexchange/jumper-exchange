@@ -48,7 +48,7 @@ export const TempTitle = () => {
         >
           Super SEIyan Week
         </EarnedTypography>
-        <Typography
+        {/* <Typography
           marginTop={'4px'}
           fontSize={'18px'}
           lineHeight={'18px'}
@@ -60,7 +60,7 @@ export const TempTitle = () => {
           }
         >
           $300,000 SEI rewards to win
-        </Typography>
+        </Typography> */}
       </Box>
     </FlexCenterRowBox>
   );
