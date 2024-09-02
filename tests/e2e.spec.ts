@@ -71,7 +71,8 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('Should be able to navigate to profile and open Explore Fluid Mission', async ({
-    page,context
+    page,
+    context,
   }) => {
     let profileUrl = `${await page.url()}profile/`;
     // await closeWelcomeScreen(page);
@@ -83,8 +84,8 @@ test.describe('Jumper full e2e flow', () => {
     await page
       .locator('xpath=//p[normalize-space(text())="Explore Fluid"]')
       .click();
-      const newPage = await context.waitForEvent('page');
-      expect(newPage.url()).toBe(values.exploreFluidURL);
+    const newPage = await page.waitForEvent('load');
+    expect(newPage.url()).toBe(values.exploreFluidURL);
   });
 
   test('Should be able to navigate to jumper learn', async ({ page }) => {
