@@ -24,6 +24,7 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useMemelist } from 'src/hooks/useMemelist';
+import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useConfig } from 'wagmi';
@@ -42,7 +43,7 @@ export function Widget({
   fromAmount,
   allowChains,
   widgetIntegrator,
-  activeTheme,
+  isWelcomeScreenClosed,
 }: WidgetProps) {
   const widgetTheme = useWidgetTheme();
   const configTheme = useSettingsStore((state) => state.configTheme);
@@ -65,9 +66,7 @@ export function Widget({
     router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
 
-  const welcomeScreenClosed = useSettingsStore(
-    (state) => state.welcomeScreenClosed,
-  );
+  const { welcomeScreenClosed } = useWelcomeScreen(isWelcomeScreenClosed);
   const setWalletSelectMenuState = useMenuStore(
     (state: MenuState) => state.setWalletSelectMenuState,
   );
@@ -214,6 +213,8 @@ export function Widget({
     wagmiConfig,
     trackEvent,
   ]);
+
+  console.log('welcomeScreenClosed', welcomeScreenClosed);
 
   return (
     <WidgetWrapper

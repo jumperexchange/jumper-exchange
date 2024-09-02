@@ -7,14 +7,18 @@ export default function Page() {
   const variant = 'default'; // exchange
   const { activeThemeMode, activeTheme, welcomeScreenClosed } = getCookies();
   const isWelcomeScreenClosed = welcomeScreenClosed === 'true';
-
+  console.log('activeTheme', activeTheme);
   return (
-    <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>
-      <WidgetContainer welcomeScreenClosed={true}>
+    <App
+      starterVariant={variant}
+      isWelcomeScreenClosed={isWelcomeScreenClosed}
+      activeTheme={activeTheme}
+    >
+      <WidgetContainer welcomeScreenClosed={isWelcomeScreenClosed}>
         <Widget
           starterVariant={variant}
-          activeTheme={activeTheme}
           activeThemeMode={activeThemeMode}
+          isWelcomeScreenClosed={isWelcomeScreenClosed}
         />
         <Widgets
           closedWelcomeScreen={isWelcomeScreenClosed}

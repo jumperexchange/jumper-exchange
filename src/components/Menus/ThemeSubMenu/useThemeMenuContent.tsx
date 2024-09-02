@@ -34,6 +34,8 @@ export const useThemeMenuContent = () => {
       },
     });
     setTheme(theme);
+    console.log('RESOLVED THEME', resolvedTheme);
+    console.log('theme', theme);
   };
 
   const themes: any = [

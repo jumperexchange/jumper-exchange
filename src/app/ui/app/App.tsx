@@ -13,16 +13,25 @@ export interface AppProps {
   starterVariant: StarterVariantType;
   children: React.ReactNode;
   isWelcomeScreenClosed: boolean;
+  activeTheme?: string;
 }
 
-const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
+const App = ({
+  starterVariant,
+  isWelcomeScreenClosed,
+  activeTheme,
+  children,
+}: AppProps) => {
   const { trackEvent } = useUserTracking();
 
-  const welcomeScreen = useWelcomeScreen(isWelcomeScreenClosed);
+  const { welcomeScreenClosed, setWelcomeScreenClosed } = useWelcomeScreen(
+    isWelcomeScreenClosed,
+    activeTheme,
+  );
 
   const handleWelcomeScreenEnter = () => {
-    if (!welcomeScreen.welcomeScreenClosed) {
-      welcomeScreen.setWelcomeScreenClosed(true);
+    if (!welcomeScreenClosed) {
+      setWelcomeScreenClosed(true);
 
       trackEvent({
         category: TrackingCategory.WelcomeScreen,
@@ -38,7 +47,8 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
     <Box onClick={handleWelcomeScreenEnter}>
       <StyledSlide
         direction="up"
-        in={!welcomeScreen.welcomeScreenClosed}
+        welcomeScreenClosed={welcomeScreenClosed}
+        in={!welcomeScreenClosed}
         appear={false}
         timeout={400}
         className="welcome-screen-container"
@@ -54,11 +64,11 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
             right: 0,
           }}
         >
-          <WelcomeScreen closed={welcomeScreen.welcomeScreenClosed!} />
+          <WelcomeScreen closed={welcomeScreenClosed!} />
         </Box>
       </StyledSlide>
       <WidgetContainer
-        welcomeScreenClosed={welcomeScreen.welcomeScreenClosed!}
+        welcomeScreenClosed={welcomeScreenClosed!}
         className="widget-container"
       >
         {children}

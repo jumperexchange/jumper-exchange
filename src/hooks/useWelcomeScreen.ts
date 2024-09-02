@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
 import { useSettingsStore } from '@/stores/settings';
+import { useEffect, useMemo, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { useMultisig } from './useMultisig';
 
 interface useWelcomeScreenProps {
@@ -10,8 +10,9 @@ interface useWelcomeScreenProps {
 
 export const useWelcomeScreen = (
   initialState?: boolean,
+  activeTheme?: string,
 ): useWelcomeScreenProps => {
-  const [, setState] = useState(initialState);
+  const [state, setState] = useState(initialState);
   const [cookie, setCookie] = useCookies(['welcomeScreenClosed']);
   const { isMultisigSigner } = useMultisig();
 
@@ -19,6 +20,11 @@ export const useWelcomeScreen = (
     state.welcomeScreenClosed,
     state.setWelcomeScreenClosed,
   ]);
+
+  const enableWelcomeScreen = useMemo(
+    () => !activeTheme || activeTheme === 'light' || activeTheme === 'dark',
+    [activeTheme],
+  );
 
   useEffect(() => {
     if (isMultisigSigner) {
@@ -38,9 +44,15 @@ export const useWelcomeScreen = (
     });
   };
 
+  console.log('CHECK', {
+    activeTheme,
+    enableWelcomeScreen,
+    welcomeScreenClosed: enableWelcomeScreen ? state : true,
+    setWelcomeScreenClosed: enableWelcomeScreen ? updateState : () => {},
+  });
+
   return {
-    // welcomeScreenClosed: state || sessionWelcomeScreenClosed,
-    welcomeScreenClosed: true, // todo: adapt to get back the welcome screen
-    setWelcomeScreenClosed: updateState,
+    welcomeScreenClosed: enableWelcomeScreen ? state : true,
+    setWelcomeScreenClosed: enableWelcomeScreen ? updateState : () => {},
   };
 };

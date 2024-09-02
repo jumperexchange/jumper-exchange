@@ -5,15 +5,23 @@ import { Widget } from '@/components/Widgets/Widget';
 
 const Page = () => {
   const variant = 'refuel';
-  const { activeThemeMode, welcomeScreenClosed } = getCookies();
+  const { activeThemeMode, welcomeScreenClosed, activeTheme } = getCookies();
   const isWelcomeScreenClosed = welcomeScreenClosed === 'true';
 
   return (
-    <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>
-      <WidgetContainer welcomeScreenClosed={true}>
-        <Widget starterVariant={variant} activeThemeMode={activeThemeMode} />
+    <App
+      starterVariant={variant}
+      isWelcomeScreenClosed={isWelcomeScreenClosed}
+      activeTheme={activeTheme}
+    >
+      <WidgetContainer welcomeScreenClosed={isWelcomeScreenClosed}>
+        <Widget
+          starterVariant={variant}
+          activeThemeMode={activeThemeMode}
+          isWelcomeScreenClosed={isWelcomeScreenClosed}
+        />
         <Widgets
-          closedWelcomeScreen={!!welcomeScreenClosed}
+          closedWelcomeScreen={isWelcomeScreenClosed}
           widgetVariant={variant}
         />
       </WidgetContainer>
