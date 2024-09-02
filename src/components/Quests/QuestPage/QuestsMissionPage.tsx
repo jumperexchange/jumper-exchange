@@ -54,13 +54,6 @@ export const QuestsMissionPage = ({
           quest={quest}
           baseUrl={baseUrl}
           pastCampaigns={pastCampaigns}
-          // rotatingBadge={
-          //   rewardType === 'weekly' ? (
-          //     <SuperfestWeeklyRewards />
-          //   ) : (
-          //     <SuperfestDailyRewards />
-          //   )
-          // }
         />
         {/* Big CTA */}
         {CTAsWithAPYs?.length > 0 && (
@@ -84,7 +77,6 @@ export const QuestsMissionPage = ({
           />
         )}
         {/* Steps */}
-        {/* Todo: remove the check for steps */}
         {attributes?.Steps && attributes?.Steps?.length > 0 ? (
           <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
         ) : undefined}
