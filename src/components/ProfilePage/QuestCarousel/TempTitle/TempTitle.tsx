@@ -19,7 +19,15 @@ export const TempTitle = () => {
 
   return (
     <FlexCenterRowBox marginBottom={'16px'}>
-      <Box marginRight="8px">
+      <Box
+        marginRight="8px"
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Image
           src={IMAGE_LOGO}
           alt="token image"
