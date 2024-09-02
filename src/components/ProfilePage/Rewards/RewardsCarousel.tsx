@@ -22,6 +22,7 @@ import {
   PROFILE_CAMPAIGN_SCANNER,
   REWARD_CLAIMING_ADDRESS,
   REWARD_TOKEN_ADDRESS,
+  REWARD_TOKEN_CHAINID,
 } from 'src/const/partnerRewardsTheme';
 
 interface RewardsCarouselProps {
@@ -56,11 +57,11 @@ export const RewardsCarousel = ({
   async function handleClick() {
     try {
       const { id } = await switchChainAsync({
-        chainId: ChainId.OPT,
+        chainId: REWARD_TOKEN_CHAINID,
       });
 
       const canClaim =
-        id === ChainId.OPT &&
+        id === REWARD_TOKEN_CHAINID &&
         address &&
         isMerklSuccess &&
         proof &&
