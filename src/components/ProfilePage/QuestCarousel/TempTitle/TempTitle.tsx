@@ -38,15 +38,7 @@ export const TempTitle = () => {
           }}
         />
       </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <Box>
         <EarnedTypography
           color={
             theme.palette.mode === 'dark'
