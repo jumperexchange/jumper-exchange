@@ -34,7 +34,7 @@ interface RewardsCarouselProps {
 }
 
 const CLAIMING_CONTRACT_ADDRESS = REWARD_CLAIMING_ADDRESS;
-const OP_TOKEN = REWARD_TOKEN_ADDRESS;
+const REWARD_TOKEN = REWARD_TOKEN_ADDRESS;
 //TESTING
 // const TEST_TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
@@ -72,11 +72,11 @@ export const RewardsCarousel = ({
           address: CLAIMING_CONTRACT_ADDRESS,
           abi: MerklDistribABI,
           functionName: 'claim',
-          // args: [[address], [OP_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
+          // args: [[address], [REWARD_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
           // TESTING
           args: [
             [address],
-            [OP_TOKEN],
+            [REWARD_TOKEN],
             [accumulatedAmountForContractBN],
             [proof],
           ], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
