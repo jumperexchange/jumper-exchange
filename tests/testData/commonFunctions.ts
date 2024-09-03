@@ -16,7 +16,7 @@ export async function closeWelcomeScreen(page: Page) {
 }
 
 export async function tabInHeader(page, name: string) {
-  await page.getByRole('tab', { name }).click();
+  await page.locator(`xpath=(//button[@id="${name}"])[1]`).click();
 }
 
 export async function expectMenuToBeVisible(page){
