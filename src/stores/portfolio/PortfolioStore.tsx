@@ -7,7 +7,7 @@ import type { PortfolioState } from '@/types/portfolio';
 // ----------------------------------------------------------------------
 
 const defaultSettings = {
-  lastAddress: undefined,
+  lastAddresses: undefined,
   lastTotalValue: 0,
 };
 
@@ -23,9 +23,9 @@ export const usePortfolioStore = createWithEqualityFn(
           lastTotalValue: portfolioLastValue,
         });
       },
-      setLastAddress: (lastAddress: string) => {
+      setLastAddresses: (lastAddresses: string[]) => {
         set({
-          lastAddress: lastAddress,
+          lastAddresses: lastAddresses,
         });
       },
     }),

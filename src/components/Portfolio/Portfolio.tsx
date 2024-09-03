@@ -17,7 +17,7 @@ import index from '@/utils/getTokens';
 import { usePortfolioStore } from '@/stores/portfolio';
 import { useAccounts } from '@/hooks/useAccounts';
 import PortfolioSkeleton from '@/components/Portfolio/PortfolioSkeleton';
-import { useQuery } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -34,6 +34,7 @@ import {
   TypographySecondary,
   VariationValue,
 } from '@/components/Portfolio/Portfolio.styles';
+import { useTokenBalances } from '@/hooks/useTokenBalances';
 
 function buildUrl(chain: ExtendedChain, token: ExtendedTokenAmount) {
   return {
@@ -45,47 +46,20 @@ function buildUrl(chain: ExtendedChain, token: ExtendedTokenAmount) {
 function Portfolio() {
   const { t } = useTranslation();
   const portfolio = usePortfolioStore((state) => state);
-  const { account } = useAccounts();
+  const { accounts } = useAccounts();
   const theme = useTheme();
 
-  const { data, isSuccess, isRefetching, isLoading, refetch } = useQuery({
-    queryKey: ['accountPortfolio', account?.address],
-    queryFn: async () => {
-      try {
-        if (!account?.address) {
-          return;
-        }
-
-        let portfolioValue = 0;
-        const tokens = await index(account?.address);
-        portfolioValue =
-          tokens?.reduce(
-            (acc, token) => acc + Number(token.totalPriceUSD),
-            0,
-          ) ?? 0;
-        portfolio.setLastTotalValue(portfolioValue);
-        portfolio.setLastAddress(account.address);
-
-        return {
-          tokens,
-          totalValue: portfolioValue,
-        };
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    enabled: !!account?.address,
-    refetchInterval: 1000 * 60 * 60,
-  });
+  const { isLoading, isRefetching, refetch, data, totalValue } =
+    useTokenBalances(accounts);
 
   if (isLoading || isRefetching) {
     return <PortfolioSkeleton />;
   }
 
-  const differenceValue = (data?.totalValue || 0) - portfolio.lastTotalValue;
+  const differenceValue = totalValue - portfolio.lastTotalValue;
   const differencePercent =
     portfolio.lastTotalValue !== 0
-      ? (((data?.totalValue || 0) - portfolio.lastTotalValue) /
+      ? ((totalValue - portfolio.lastTotalValue) /
           Math.abs(portfolio.lastTotalValue)) *
         100
       : 0;
@@ -99,7 +73,7 @@ function Portfolio() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <TotalValue>${data?.totalValue?.toFixed(2)}</TotalValue>
+          <TotalValue>${totalValue.toFixed(2)}</TotalValue>
           <Tooltip title={t('navbar.walletMenu.refreshBalances')}>
             <IconButton
               aria-label="Refresh"
@@ -144,7 +118,7 @@ function Portfolio() {
         </Stack>
       </Stack>
       <Stack spacing={2}>
-        {(data?.tokens || []).map((token) => (
+        {(data || []).map((token) => (
           <CustomAccordion key={generateKey(token.symbol)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Grid container alignItems="flext-start">
