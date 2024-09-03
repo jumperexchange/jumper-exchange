@@ -2,8 +2,8 @@ import { expect, test } from '@playwright/test';
 import {
   findTheBestRoute,
   itemInMenu,
-  tabInHeader,
   openMainMenu,
+  tabInHeader,
   expectMenuToBeVisible,
 } from './testData/commonFunctions';
 import values from '../tests/testData/values.json';
@@ -21,13 +21,12 @@ test.describe('Jumper full e2e flow', () => {
     const featureCard = page.locator(
       'xpath=//div[@class="MuiBox-root mui-1393eub"]',
     );
-    await tabInHeader(page, 'Exchange');
     await expect(
       page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
     ).toBeVisible();
-    await page.locator('#tab-key-1').click();
+    await tabInHeader(page, "tab-key-1");
     await expect(page.locator('xpath=//p[text()="Gas"]')).toBeVisible();
-    await page.locator('#tab-key-2').click();
+    await tabInHeader(page, "tab-key-2");
     await expect(buyETHButton).toBeEnabled();
     await expect(
       page
