@@ -73,6 +73,12 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: '*.etherscan.io',
+        port: '',
+        pathname: '/token/images/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'resolve.mercle.xyz',
         port: '',
         pathname: '/**',
