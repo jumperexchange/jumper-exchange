@@ -22,3 +22,7 @@ export async function tabInHeader(page, name: string) {
 export async function expectMenuToBeVisible(page){
   await expect(page.getByRole('menu')).toBeVisible();
 }
+export async function expectBackgroundColorToHaveCss(page, rgb: string){
+  const backgroundColor = await page.locator('xpath=/html/body/div[1]');
+  expect(backgroundColor).toHaveCSS(`background-color`, rgb);
+}
