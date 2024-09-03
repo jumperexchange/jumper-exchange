@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { WalletButton } from '.';
 import { WalletCard } from './WalletCard';
 import Portfolio from '@/components/Portfolio/Portfolio';
-import { WalletSelectMenu } from '@/components/Menus';
 import WalletSelectMenuContent from '@/components/Menus/WalletSelectMenu/WalletSelectMenuContent';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { Box } from '@mui/system';

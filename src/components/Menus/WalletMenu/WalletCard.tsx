@@ -121,7 +121,11 @@ export const WalletCard = ({ account }: WalletCardProps) => {
 
   return (
     <WalletCardContainer>
-      <Stack direction="row" justifyContent="space-between" sx={{ flexGrow: 1 }}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        sx={{ flexGrow: 1 }}
+      >
         <WalletCardBadge
           overlap="circular"
           className="badge"
