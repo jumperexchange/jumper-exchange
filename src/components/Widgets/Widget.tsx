@@ -66,7 +66,9 @@ export function Widget({
     router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
 
-  const { welcomeScreenClosed } = useWelcomeScreen(isWelcomeScreenClosed);
+  const { welcomeScreenClosed, enabled } = useWelcomeScreen(
+    isWelcomeScreenClosed,
+  );
   const setWalletSelectMenuState = useMenuStore(
     (state: MenuState) => state.setWalletSelectMenuState,
   );
@@ -214,12 +216,12 @@ export function Widget({
     trackEvent,
   ]);
 
-  console.log('welcomeScreenClosed', welcomeScreenClosed);
+  console.log('welcomeScreenClosed', { welcomeScreenClosed, enabled });
 
   return (
     <WidgetWrapper
       className="widget-wrapper"
-      welcomeScreenClosed={welcomeScreenClosed}
+      welcomeScreenClosed={welcomeScreenClosed || !enabled}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly fallback={<WidgetSkeleton config={config} />}>

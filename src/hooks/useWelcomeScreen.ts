@@ -6,6 +6,7 @@ import { useMultisig } from './useMultisig';
 interface useWelcomeScreenProps {
   welcomeScreenClosed: boolean | undefined;
   setWelcomeScreenClosed: (closed: boolean) => void;
+  enabled: boolean;
 }
 
 export const useWelcomeScreen = (
@@ -13,7 +14,7 @@ export const useWelcomeScreen = (
   activeTheme?: string,
 ): useWelcomeScreenProps => {
   const [state, setState] = useState(initialState);
-  const [cookie, setCookie] = useCookies(['welcomeScreenClosed']);
+  const [cookie, setCookie] = useCookies(['welcomeScreenClosed', 'theme']);
   const { isMultisigSigner } = useMultisig();
 
   const [, sessionSetWelcomeScreenClosed] = useSettingsStore((state) => [
@@ -21,9 +22,16 @@ export const useWelcomeScreen = (
     state.setWelcomeScreenClosed,
   ]);
 
-  const enableWelcomeScreen = useMemo(
-    () => !activeTheme || activeTheme === 'light' || activeTheme === 'dark',
-    [activeTheme],
+  const enabled = useMemo(
+    () =>
+      activeTheme === 'light' ||
+      activeTheme === 'dark' ||
+      activeTheme === 'system' ||
+      cookie.theme === 'light' ||
+      cookie.theme === 'dark' ||
+      cookie.theme === 'system' ||
+      !cookie.theme,
+    [activeTheme, cookie],
   );
 
   useEffect(() => {
@@ -35,6 +43,9 @@ export const useWelcomeScreen = (
   }, [cookie.welcomeScreenClosed, isMultisigSigner]);
 
   const updateState = (closed: boolean) => {
+    if (!enabled) {
+      return;
+    }
     setState(closed);
     sessionSetWelcomeScreenClosed(closed);
     setCookie('welcomeScreenClosed', closed, {
@@ -46,13 +57,15 @@ export const useWelcomeScreen = (
 
   console.log('CHECK', {
     activeTheme,
-    enableWelcomeScreen,
-    welcomeScreenClosed: enableWelcomeScreen ? state : true,
-    setWelcomeScreenClosed: enableWelcomeScreen ? updateState : () => {},
+    cookieTheme: cookie.theme,
+    enabled,
+    welcomeScreenClosed: state,
+    setWelcomeScreenClosed: updateState,
   });
 
   return {
-    welcomeScreenClosed: enableWelcomeScreen ? state : true,
-    setWelcomeScreenClosed: enableWelcomeScreen ? updateState : () => {},
+    welcomeScreenClosed: state,
+    setWelcomeScreenClosed: updateState,
+    enabled,
   };
 };

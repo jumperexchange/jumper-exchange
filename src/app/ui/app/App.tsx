@@ -6,8 +6,7 @@ import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking';
 import type { StarterVariantType } from '@/types/internal';
-import { Box } from '@mui/material';
-import { StyledSlide } from './App.style';
+import { Box, Slide } from '@mui/material';
 
 export interface AppProps {
   starterVariant: StarterVariantType;
@@ -24,13 +23,11 @@ const App = ({
 }: AppProps) => {
   const { trackEvent } = useUserTracking();
 
-  const { welcomeScreenClosed, setWelcomeScreenClosed } = useWelcomeScreen(
-    isWelcomeScreenClosed,
-    activeTheme,
-  );
+  const { welcomeScreenClosed, setWelcomeScreenClosed, enabled } =
+    useWelcomeScreen(isWelcomeScreenClosed, activeTheme);
 
   const handleWelcomeScreenEnter = () => {
-    if (!welcomeScreenClosed) {
+    if (enabled && !welcomeScreenClosed) {
       setWelcomeScreenClosed(true);
 
       trackEvent({
@@ -43,12 +40,16 @@ const App = ({
     }
   };
 
+  console.log('TEST!!!!!!!!', {
+    enabled,
+    welcomeScreenClosed: welcomeScreenClosed,
+  });
+
   return (
     <Box onClick={handleWelcomeScreenEnter}>
-      <StyledSlide
+      <Slide
         direction="up"
-        welcomeScreenClosed={welcomeScreenClosed}
-        in={!welcomeScreenClosed}
+        in={enabled && !welcomeScreenClosed}
         appear={false}
         timeout={400}
         className="welcome-screen-container"
@@ -64,11 +65,11 @@ const App = ({
             right: 0,
           }}
         >
-          <WelcomeScreen closed={welcomeScreenClosed!} />
+          <WelcomeScreen closed={!enabled || welcomeScreenClosed!} />
         </Box>
-      </StyledSlide>
+      </Slide>
       <WidgetContainer
-        welcomeScreenClosed={welcomeScreenClosed!}
+        welcomeScreenClosed={!enabled || welcomeScreenClosed!}
         className="widget-container"
       >
         {children}
