@@ -48,6 +48,7 @@ interface MissionCtaProps {
 export const MissionCTA = ({
   CTAs,
   rewards,
+  id,
   variableWeeklyAPY,
   signature,
   rewardRange,
@@ -60,10 +61,12 @@ export const MissionCTA = ({
   const handleClick = ({
     rewardId,
     id,
+    claimingId,
     title,
   }: {
     rewardId?: string;
-    id: string;
+    id?: number;
+    claimingId: string;
     title?: string;
   }) => {
     trackEvent({
@@ -72,8 +75,9 @@ export const MissionCTA = ({
       label: `click-mission-cta-${id}`,
       data: {
         [TrackingEventParameter.MissionCtaRewardId]: rewardId || '',
-        [TrackingEventParameter.MissionCtaId]: id || '',
+        [TrackingEventParameter.MissionCtaClaimingId]: claimingId || '',
         [TrackingEventParameter.MissionCtaTitle]: title || '',
+        [TrackingEventParameter.MissionCtaPartnerId]: id || '',
       },
     });
   };
@@ -112,8 +116,9 @@ export const MissionCTA = ({
               <SeveralMissionCtaContainer
                 onClick={() =>
                   handleClick({
+                    id,
                     rewardId: CTA.rewardId,
-                    id: CTA.claimingId,
+                    claimingId: CTA.claimingId,
                     title: CTA.text,
                   })
                 }
@@ -184,9 +189,10 @@ export const MissionCTA = ({
                     <MissionCtaButton
                       onClick={() =>
                         handleClick({
+                          id,
                           rewardId: CTA.rewardId,
-                          id: CTA.claimingId,
                           title: CTA.text,
+                          claimingId: CTA.claimingId,
                         })
                       }
                     >

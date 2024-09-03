@@ -74,6 +74,7 @@ export const ActiveQuestsMissionsCarousel = ({
                       key={`active-superfest-mission-${index}`}
                       active={true}
                       path={path}
+                      id={quest?.id}
                       title={quest?.attributes.Title}
                       image={String(imgURL)}
                       points={quest?.attributes.Points}

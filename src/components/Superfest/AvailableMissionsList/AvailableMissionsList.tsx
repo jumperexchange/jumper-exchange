@@ -158,6 +158,7 @@ export const AvailableMissionsList = ({
                   active={true}
                   title={quest?.attributes.Title}
                   image={String(imgURL)}
+                  id={quest.id}
                   points={quest?.attributes.Points}
                   link={quest?.attributes.Link}
                   startDate={quest?.attributes.StartDate}

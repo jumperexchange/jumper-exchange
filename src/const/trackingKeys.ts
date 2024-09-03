@@ -182,7 +182,9 @@ export enum TrackingEventParameter {
   // Quests
   QuestCardTitle = 'param_quest_card_title',
   QuestCardId = 'param_quest_card_id',
+  QuestCardPlatform = 'param_quest_card_platform',
   MissionCtaRewardId = 'param_mission_cta_reward_id',
-  MissionCtaId = 'param_mission_cta_id',
+  MissionCtaClaimingId = 'param_mission_cta_claiming_id',
   MissionCtaTitle = 'param_mission_cta_title',
+  MissionCtaPartnerId = 'param_mission_cta_partner_id',
 }

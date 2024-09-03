@@ -62,6 +62,7 @@ export const QuestsMissionPage = ({
           title={attributes?.Title}
           url={attributes?.Link}
           activeCampaign={activeCampaign}
+          id={quest.id}
           rewards={rewards}
           key={generateKey('cta')}
           CTAs={CTAsWithAPYs}
