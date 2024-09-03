@@ -33,7 +33,6 @@ export const BlogArticleTopHeader = styled(Box)(({ theme }) => ({
   fontSize: '16px',
   fontWeight: 400,
   lineHeight: '32px',
-  marginTop: theme.spacing(5),
   color:
     theme.palette.mode === 'light'
       ? theme.palette.grey[800]
@@ -43,7 +42,6 @@ export const BlogArticleTopHeader = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: theme.spacing(3),
   },
 }));
 
@@ -172,11 +170,11 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(4, 'auto'),
+    margin: theme.spacing(0, 'auto'),
     maxWidth: '100%',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    margin: theme.spacing(8, 'auto'),
+    margin: theme.spacing(0, 'auto'),
     maxWidth: '100%',
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {

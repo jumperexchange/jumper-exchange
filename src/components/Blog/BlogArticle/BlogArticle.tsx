@@ -74,39 +74,8 @@ export const BlogArticle = ({
 
   return (
     <>
-      <BlogArticleImageContainer>
-        {image?.data && (
-          <BlogArticleImage
-            src={`${baseUrl}${image.data.attributes?.url}`}
-            alt={image?.data.attributes?.alternativeText}
-          />
-        )}
-      </BlogArticleImageContainer>
       <BlogArticleContainer>
         <BlogArticleContentContainer sx={{ marginTop: 0 }}>
-          <BlogMetaContainer>
-            <BlogAuthorContainer>
-              {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
-                <BlogAuthorAvatar
-                  src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
-                  alt="author-avatar"
-                />
-              ) : (
-                <BlogAuthorAvatarSkeleton variant="rounded" />
-              )}
-              {author?.data ? (
-                <BlogArticlAuthorName
-                  variant="bodyXSmallStrong"
-                  component="span"
-                >
-                  {author.data?.attributes.Name}
-                </BlogArticlAuthorName>
-              ) : (
-                <BlogArticlAuthorNameSkeleton variant="text" />
-              )}
-            </BlogAuthorContainer>
-            <ShareArticleIcons title={title} slug={slug} />
-          </BlogMetaContainer>
           <BlogArticleTopHeader>
             {!!tags?.data[0]?.attributes.Title ? (
               <Tag
@@ -132,11 +101,13 @@ export const BlogArticle = ({
               <BlogArticleMetaSkeleton variant="text" />
             )}
           </BlogArticleTopHeader>
+
           {title ? (
             <BlogArticleTitle variant="h1">{title}</BlogArticleTitle>
           ) : (
             <BlogArticleTitleSkeleton />
           )}
+
           {subtitle ? (
             <BlogArticleSubtitle variant="headerMedium" as="h4">
               {subtitle}
@@ -145,6 +116,41 @@ export const BlogArticle = ({
             <BlogArticleSubtitleSkeleton variant="text" />
           )}
 
+          <BlogMetaContainer>
+            <BlogAuthorContainer>
+              {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
+                <BlogAuthorAvatar
+                  src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
+                  alt="author-avatar"
+                />
+              ) : (
+                <BlogAuthorAvatarSkeleton variant="rounded" />
+              )}
+              {author?.data ? (
+                <BlogArticlAuthorName
+                  variant="bodyXSmallStrong"
+                  component="span"
+                >
+                  {author.data?.attributes.Name}
+                </BlogArticlAuthorName>
+              ) : (
+                <BlogArticlAuthorNameSkeleton variant="text" />
+              )}
+            </BlogAuthorContainer>
+            <ShareArticleIcons title={title} slug={slug} />
+          </BlogMetaContainer>
+        </BlogArticleContentContainer>
+      </BlogArticleContainer>
+      <BlogArticleImageContainer>
+        {image?.data && (
+          <BlogArticleImage
+            src={`${baseUrl}${image.data.attributes?.url}`}
+            alt={image?.data.attributes?.alternativeText}
+          />
+        )}
+      </BlogArticleImageContainer>
+      <BlogArticleContainer>
+        <BlogArticleContentContainer>
           {content ? (
             <CustomRichBlocks
               id={id}
