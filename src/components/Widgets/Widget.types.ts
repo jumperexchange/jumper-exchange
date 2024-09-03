@@ -34,4 +34,5 @@ export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   starterVariant: StarterVariantType;
   activeThemeMode?: ThemeModesSupported;
   isWelcomeScreenClosed?: boolean;
+  activeTheme?: string;
 }

@@ -42,6 +42,9 @@ export const WelcomeScreen = ({ closed, activeTheme }: WelcomeScreenProps) => {
     }
   }, [trackEvent, welcomeScreenClosed]);
 
+  console.log('_____closed', closed);
+  console.log('welcomeScreenClosed', welcomeScreenClosed);
+
   const handleGetStarted: MouseEventHandler<HTMLButtonElement> = (event) => {
     const classList = (event.target as HTMLElement).classList;
     if (

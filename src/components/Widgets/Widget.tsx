@@ -44,6 +44,7 @@ export function Widget({
   allowChains,
   widgetIntegrator,
   isWelcomeScreenClosed,
+  activeTheme,
 }: WidgetProps) {
   const widgetTheme = useWidgetTheme();
   const configTheme = useSettingsStore((state) => state.configTheme);
@@ -68,6 +69,7 @@ export function Widget({
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(
     isWelcomeScreenClosed,
+    activeTheme,
   );
   const setWalletSelectMenuState = useMenuStore(
     (state: MenuState) => state.setWalletSelectMenuState,

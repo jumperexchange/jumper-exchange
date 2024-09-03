@@ -17,6 +17,7 @@ export default function Page() {
     >
       <WidgetContainer welcomeScreenClosed={isWelcomeScreenClosed}>
         <Widget
+          activeTheme={activeTheme}
           starterVariant={variant}
           activeThemeMode={activeThemeMode}
           isWelcomeScreenClosed={isWelcomeScreenClosed}

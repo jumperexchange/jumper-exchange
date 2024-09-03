@@ -18,7 +18,10 @@ export const useThemeMenuContent = () => {
   const segment = useSelectedLayoutSegment();
   const { resolvedTheme, setTheme } = useTheme();
 
-  const [cookie] = useCookies(['partnerThemeUid']);
+  const [cookie, setCookie] = useCookies([
+    'partnerThemeUid',
+    'welcomeScreenClosed',
+  ]);
   const { data: partnerThemes, isSuccess } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
     queryKey: ['partner-themes'],
@@ -33,6 +36,12 @@ export const useThemeMenuContent = () => {
         [TrackingEventParameter.SwitchedTemplate]: theme,
       },
     });
+    if (!(theme === 'system' || theme === 'light' || theme === 'dark')) {
+      setCookie('welcomeScreenClosed', true, {
+        path: '/',
+        sameSite: true,
+      });
+    }
     setTheme(theme);
     console.log('RESOLVED THEME', resolvedTheme);
     console.log('theme', theme);
