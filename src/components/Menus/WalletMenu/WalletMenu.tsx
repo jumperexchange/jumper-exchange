@@ -56,6 +56,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
       }}
       PaperProps={{
         sx: (theme) => ({
+          width: '100%',
           padding: '1.25rem',
           gap: '32px',
           maxWidth: 450,

@@ -2,7 +2,7 @@
 
 import { ButtonSecondary, ButtonTransparent } from '@/components/Button';
 import { avatarMask32 } from '@/components/Mask.style';
-import type { ButtonProps } from '@mui/material';
+import type { Breakpoint, ButtonProps } from '@mui/material';
 import { Avatar, Badge, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -66,6 +66,9 @@ export const WalletCardContainer = styled(Container)(({ theme }) => ({
   display: 'flex',
   background: theme.palette.surface2.main,
   borderRadius: '16px',
+  [theme.breakpoints.down('sm' as Breakpoint)]: {
+    padding: '10px',
+  },
 }));
 
 export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
@@ -77,6 +80,7 @@ export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
   alignItems: 'center',
   width: 'fit-content',
   padding: '0 !important',
+  margin: 0,
 }));
 
 export const WalletCardBadge = styled(Badge)(({ theme }) => ({
