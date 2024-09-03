@@ -187,4 +187,5 @@ export enum TrackingEventParameter {
   MissionCtaClaimingId = 'param_mission_cta_claiming_id',
   MissionCtaTitle = 'param_mission_cta_title',
   MissionCtaPartnerId = 'param_mission_cta_partner_id',
+  MissionCtaCampaign = 'param_mission_cta_campaign',
 }
