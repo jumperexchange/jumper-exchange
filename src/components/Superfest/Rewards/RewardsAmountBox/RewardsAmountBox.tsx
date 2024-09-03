@@ -1,7 +1,7 @@
 import { Box, type Theme, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
-import { FlexCenterRowBox } from '../../SuperfestPage/SuperfestMissionPage.style';
 import { SoraTypography } from '../../Superfest.style';
+import { FlexCenterRowBox } from '../../SuperfestPage/SuperfestMissionPage.style';
 
 export const RewardsAmountBox = ({
   rewardAmount,
@@ -13,7 +13,6 @@ export const RewardsAmountBox = ({
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-
   return (
     <FlexCenterRowBox>
       <Box marginLeft="32px">

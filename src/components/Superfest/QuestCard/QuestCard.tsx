@@ -1,12 +1,17 @@
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Box } from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { APYIcon } from 'src/components/illustrations/APYIcon';
+import { OPBadge } from 'src/components/illustrations/OPBadge';
+import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
 import { FlexSpaceBetweenBox, SoraTypography } from '../Superfest.style';
 import type { Chain } from '../SuperfestPage/Banner/Banner';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
-import Link from 'next/link';
 import {
   OPBadgeRelativeBox,
   QuestCardBottomBox,
@@ -16,11 +21,6 @@ import {
   XPDisplayBox,
   XPIconBox,
 } from './QuestCard.style';
-import { OPBadge } from 'src/components/illustrations/OPBadge';
-import { Box } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
-import { APYIcon } from 'src/components/illustrations/APYIcon';
 
 export interface RewardsInterface {
   logo: string;
@@ -46,7 +46,6 @@ interface QuestCardProps {
   variableWeeklyAPY?: boolean;
   rewardRange?: string;
 }
-
 export const QuestCard = ({
   active,
   title,

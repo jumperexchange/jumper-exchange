@@ -2,6 +2,7 @@ import { Box, styled } from '@mui/material';
 
 export const SuperfestPageElementContainer = styled(Box)(({ theme }) => ({
   width: '80%',
+  color: theme.palette.text.primary,
   maxWidth: '960px',
   display: 'flex',
   marginTop: '64px',

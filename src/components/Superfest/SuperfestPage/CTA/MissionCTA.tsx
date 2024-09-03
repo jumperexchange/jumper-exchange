@@ -1,8 +1,15 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Box, type Theme, useMediaQuery, useTheme } from '@mui/material';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { APYIcon } from 'src/components/illustrations/APYIcon';
+import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
+import { XPIconBox } from '../../QuestCard/QuestCard.style';
+import { SoraTypography } from '../../Superfest.style';
+import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
+import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
 import {
   CTAExplanationBox,
   CTAMainBox,
@@ -12,13 +19,6 @@ import {
   StartedTitleBox,
   StartedTitleTypography,
 } from './MissionCTA.style';
-import Image from 'next/image';
-import { SoraTypography } from '../../Superfest.style';
-import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
-import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
-import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
-import { XPIconBox } from '../../QuestCard/QuestCard.style';
-import { APYIcon } from 'src/components/illustrations/APYIcon';
 
 export interface CTALinkInt {
   logo: string;
@@ -29,7 +29,6 @@ export interface CTALinkInt {
   apy?: number;
   weeklyApy?: string;
 }
-
 interface MissionCtaProps {
   title?: string;
   url?: string;
@@ -39,6 +38,7 @@ interface MissionCtaProps {
   variableWeeklyAPY?: boolean;
   signature?: boolean;
   rewardRange?: string;
+  isTurtleMember?: boolean;
 }
 
 export const MissionCTA = ({
@@ -47,6 +47,7 @@ export const MissionCTA = ({
   variableWeeklyAPY,
   signature,
   rewardRange,
+  isTurtleMember,
 }: MissionCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
@@ -54,7 +55,6 @@ export const MissionCTA = ({
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-
   const handleClick = () => {
     // trackEvent({
     //   category: TrackingCategory.BlogArticle,
@@ -67,7 +67,6 @@ export const MissionCTA = ({
     //   },
     // });
   };
-
   return (
     <CTAMainBox>
       <StartedTitleBox>
@@ -86,7 +85,7 @@ export const MissionCTA = ({
         ) : undefined}
       </StartedTitleBox>
       <SeveralCTABox>
-        {signature && <SignatureCTA />}
+        {signature && <SignatureCTA isTurtleMember={isTurtleMember} />}
         {CTAs.map((CTA: CTALinkInt, i: number) => {
           return (
             <Link
