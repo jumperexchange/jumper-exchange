@@ -1,11 +1,15 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Box, type Theme, useMediaQuery, useTheme } from '@mui/material';
+import { Box, type Theme, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
 import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 import { XPIconBox } from '../../QuestCard/QuestCard.style';
 import { SoraTypography } from '../../Superfest.style';
 import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
@@ -49,23 +53,29 @@ export const MissionCTA = ({
   rewardRange,
   isTurtleMember,
 }: MissionCtaProps) => {
-  const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const theme = useTheme();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-  const handleClick = () => {
-    // trackEvent({
-    //   category: TrackingCategory.BlogArticle,
-    //   //   action: TrackingAction.ClickMissionCta,
-    //   label: 'click-blog-cta',
-    //   disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
-    //   data: {
-    //     [TrackingEventParameter.ArticleTitle]: title || '',
-    //     [TrackingEventParameter.ArticleID]: id || '',
-    //   },
-    // });
+  const handleClick = ({
+    rewardId,
+    id,
+    title,
+  }: {
+    rewardId?: string;
+    id: string;
+    title?: string;
+  }) => {
+    trackEvent({
+      category: TrackingCategory.Missions,
+      action: TrackingAction.ClickMissionCta,
+      label: `click-mission-cta-${id}`,
+      data: {
+        [TrackingEventParameter.MissionCtaRewardId]: rewardId || '',
+        [TrackingEventParameter.MissionCtaId]: id || '',
+        [TrackingEventParameter.MissionCtaTitle]: title || '',
+      },
+    });
   };
   return (
     <CTAMainBox>
@@ -99,7 +109,15 @@ export const MissionCTA = ({
               href={CTA.link || '/'}
               target="_blank"
             >
-              <SeveralMissionCtaContainer onClick={handleClick}>
+              <SeveralMissionCtaContainer
+                onClick={() =>
+                  handleClick({
+                    rewardId: CTA.rewardId,
+                    id: CTA.claimingId,
+                    title: CTA.text,
+                  })
+                }
+              >
                 <CTAExplanationBox>
                   <Image
                     src={CTA.logo}
@@ -163,7 +181,15 @@ export const MissionCTA = ({
                     </XPDisplayBox>
                   )}
                   {!isMobile && (
-                    <MissionCtaButton onClick={handleClick}>
+                    <MissionCtaButton
+                      onClick={() =>
+                        handleClick({
+                          rewardId: CTA.rewardId,
+                          id: CTA.claimingId,
+                          title: CTA.text,
+                        })
+                      }
+                    >
                       <ArrowForwardIcon
                         sx={{
                           color: '#000000',

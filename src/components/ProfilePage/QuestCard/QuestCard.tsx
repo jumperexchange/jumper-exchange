@@ -3,6 +3,12 @@ import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
+import { useUserTracking } from 'src/hooks/userTracking';
 import { Button } from '../../Button';
 import { XPIcon } from '../../illustrations/XPIcon';
 import {
@@ -22,7 +28,8 @@ import {
 
 interface QuestCardProps {
   active?: boolean;
-  title?: string;
+  title: string;
+  id?: number | string;
   image?: string;
   points?: number;
   link?: string;
@@ -43,6 +50,7 @@ function getStringDateFormatted(startDate: string, endDate: string): string {
 export const QuestCard = ({
   active,
   title,
+  id,
   image,
   points,
   link,
@@ -54,11 +62,25 @@ export const QuestCard = ({
   const theme = useTheme();
   const { t } = useTranslation();
 
+  const { trackEvent } = useUserTracking();
+  const handleClick = () => {
+    trackEvent({
+      category: TrackingCategory.Quests,
+      action: TrackingAction.ClickQuestCard,
+      label: 'click-quest-card',
+      data: {
+        [TrackingEventParameter.QuestCardTitle]: title,
+        [TrackingEventParameter.QuestCardId]: id || '',
+      },
+    });
+  };
+
   return (
     <Link
       href={link || '#'}
       target={'_blank'}
       style={{ textDecoration: 'inherit' }}
+      onClick={handleClick}
     >
       <QuestCardMainBox>
         {image && (
@@ -162,27 +184,20 @@ export const QuestCard = ({
               </XPDisplayBox>
             ) : null}
             {active && link ? (
-              <a
-                href={link}
-                target="_blank"
-                style={{ textDecoration: 'none', width: '50%' }}
-                rel="noreferrer"
+              <Button
+                aria-label={`Open ${t('questCard.join')}`}
+                variant="secondary"
+                size="medium"
+                styles={{ alignItems: 'center', width: '100%' }}
               >
-                <Button
-                  aria-label={`Open ${t('questCard.join')}`}
-                  variant="secondary"
-                  size="medium"
-                  styles={{ alignItems: 'center', width: '100%' }}
+                <NoSelectTypography
+                  fontSize="16px"
+                  lineHeight="18px"
+                  fontWeight={600}
                 >
-                  <NoSelectTypography
-                    fontSize="16px"
-                    lineHeight="18px"
-                    fontWeight={600}
-                  >
-                    {t('questCard.join')}
-                  </NoSelectTypography>
-                </Button>
-              </a>
+                  {t('questCard.join')}
+                </NoSelectTypography>
+              </Button>
             ) : null}
           </QuestCardInfoBox>
         </QuestCardBottomBox>

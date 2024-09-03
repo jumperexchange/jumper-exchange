@@ -27,6 +27,7 @@ export const QuestCarousel = ({ quests, loading }: QuestCarouselProps) => {
                   return (
                     <QuestCard
                       key={`ongoing-mission-${index}`}
+                      id={quest?.id}
                       active={true}
                       title={quest?.attributes.Title}
                       image={
