@@ -218,8 +218,6 @@ export function Widget({
     trackEvent,
   ]);
 
-  console.log('welcomeScreenClosed', { welcomeScreenClosed, enabled });
-
   return (
     <WidgetWrapper
       className="widget-wrapper"

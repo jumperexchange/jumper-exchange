@@ -40,11 +40,6 @@ const App = ({
     }
   };
 
-  console.log('TEST!!!!!!!!', {
-    enabled,
-    welcomeScreenClosed: welcomeScreenClosed,
-  });
-
   return (
     <Box onClick={handleWelcomeScreenEnter}>
       <Slide

@@ -7,8 +7,6 @@ export default function Page() {
   const variant = 'default'; // exchange
   const { activeThemeMode, activeTheme, welcomeScreenClosed } = getCookies();
   const isWelcomeScreenClosed = welcomeScreenClosed === 'true';
-  console.log('activeTheme', activeTheme);
-  console.log('isWelcomeScreenClosed', isWelcomeScreenClosed);
   return (
     <App
       starterVariant={variant}

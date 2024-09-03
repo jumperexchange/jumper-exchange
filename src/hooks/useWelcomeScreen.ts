@@ -58,14 +58,6 @@ export const useWelcomeScreen = (
     });
   };
 
-  console.log('CHECK', {
-    activeTheme,
-    cookieTheme: cookie.theme,
-    enabled,
-    welcomeScreenClosed: state,
-    setWelcomeScreenClosed: updateState,
-  });
-
   return {
     welcomeScreenClosed: state,
     setWelcomeScreenClosed: updateState,
