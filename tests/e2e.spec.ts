@@ -5,6 +5,7 @@ import {
   tabInHeader,
   openMainMenu,
   expectMenuToBeVisible,
+  expectBackgroundColorToHaveCss,
 } from './testData/commonFunctions';
 import values from '../tests/testData/values.json';
 
@@ -71,7 +72,8 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('Should be able to navigate to profile and open Explore Fluid Mission', async ({
-    page,context
+    page,
+    context,
   }) => {
     let profileUrl = `${await page.url()}profile/`;
     // await closeWelcomeScreen(page);
@@ -83,8 +85,8 @@ test.describe('Jumper full e2e flow', () => {
     await page
       .locator('xpath=//p[normalize-space(text())="Explore Fluid"]')
       .click();
-      const newPage = await context.waitForEvent('page');
-      expect(newPage.url()).toBe(values.exploreFluidURL);
+    const newPage = await context.waitForEvent('page');
+    expect(newPage.url()).toBe(values.exploreFluidURL);
   });
 
   test('Should be able to navigate to jumper learn', async ({ page }) => {
@@ -113,6 +115,22 @@ test.describe('Jumper full e2e flow', () => {
     await itemInMenu(page, 'Superfest Festival');
     await expect(learnMoreButton).toBeVisible();
     await expect(page).toHaveURL(values.localSuperfestURL);
+  });
+
+  test('Should be able to open quests mission page and switch background color', async ({
+    page,
+  }) => {
+    const jumperProfileBackButton = await page.locator(
+      'xpath=//p[normalize-space(text())="JUMPER PROFILE"]',
+    );
+    await page.goto(values.aerodromeQuestsURL);
+    expect(jumperProfileBackButton).toBeVisible();
+    await openMainMenu(page);
+    await page.locator('xpath=//*[@id="tab-key-1"]').click(); //switch to Dark theme
+    expectBackgroundColorToHaveCss(page, 'rgb(18, 15, 41)');
+    await page.locator('xpath=//*[@id="tab-key-0"]').click(); //switch to Light theme
+    await openMainMenu(page);
+    expectBackgroundColorToHaveCss(page, 'rgb(243, 235, 255)');
   });
 
   test('Should be able to navigate to X', async ({ page, context }) => {
