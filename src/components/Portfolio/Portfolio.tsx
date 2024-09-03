@@ -194,7 +194,7 @@ function Portfolio() {
               >
                 {token.chains.map((chain, idx) => (
                   <Link
-                    href={`/?${qs.stringify(buildUrl(chain, token))}`}
+                    href={`${process.env.NEXT_PUBLIC_SITE_URL}/?${qs.stringify(buildUrl(chain, token))}`}
                     passHref
                     key={idx}
                   >
