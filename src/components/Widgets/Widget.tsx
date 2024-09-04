@@ -13,7 +13,7 @@ import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { publicRPCList } from 'src/const/rpcList';
@@ -48,6 +48,7 @@ export function Widget({
   const configTheme = useSettingsStore((state) => state.configTheme);
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const searchParams = useSearchParams();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
@@ -58,6 +59,18 @@ export function Widget({
   });
 
   const router = useRouter();
+  // @ts-expect-error
+  fromChain = fromChain || searchParams.get('fromChain');
+  // @ts-expect-error
+  fromToken = fromToken || searchParams.get('fromToken');
+  // @ts-expect-error
+  toChain = toChain || searchParams.get('toChain');
+  // @ts-expect-error
+  toToken = toToken || searchParams.get('toToken');
+  // @ts-expect-error
+  fromAmount = fromAmount || searchParams.get('fromAmount');
+
+  console.log('rerendered', fromChain, fromToken, toChain, toToken, fromAmount);
 
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
