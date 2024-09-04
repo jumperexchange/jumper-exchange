@@ -11,7 +11,6 @@ import { formatUnits } from 'viem';
 import coins from './coins';
 import type { ExtendedChain, TokenAmount } from '@lifi/types';
 import type { Token } from '@lifi/widget';
-import { publicRPCList } from '@/const/rpcList';
 
 interface Chain extends ExtendedChain, Price {}
 
@@ -84,13 +83,8 @@ function transform(
 async function index(account: string) {
   try {
     createConfig({
-      apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
       providers: [EVM(), Solana()],
       integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
-      rpcUrls: {
-        ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
-        ...publicRPCList,
-      },
       preloadChains: true,
     });
 
