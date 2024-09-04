@@ -44,10 +44,10 @@ export const SuperfestMissionPage = ({
   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
-    <QuestsContainer className="superfest">
+    <QuestsContainer className="quests">
       <SuperfestPageMainBox>
         {/* button to go back */}
-        <BackButton />
+        <BackButton title="Discover" />
         {/* big component with the main information */}
         <BannerBox
           quest={quest}

@@ -1,13 +1,12 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import { getContrastAlphaColor } from '@/utils/colors';
+import type { BoxProps, Breakpoint, IconButtonProps } from '@mui/material';
 import {
   Box,
+  IconButton as MuiIconButton,
   Typography,
   styled,
-  IconButton as MuiIconButton,
 } from '@mui/material';
 import { sequel65 } from 'src/fonts/fonts';
-import { getContrastAlphaColor } from '@/utils/colors';
-import type { IconButtonProps } from '@mui/material';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#fdfbef',
@@ -103,6 +102,6 @@ export const RewardsOpenIconButton = styled(MuiIconButton, {
   backgroundColor: '#fef0ca',
   '&:hover': {
     color: '#ffffff',
-    backgroundColor: '#FF0420',
+    backgroundColor: theme.palette.primary.main,
   },
 }));

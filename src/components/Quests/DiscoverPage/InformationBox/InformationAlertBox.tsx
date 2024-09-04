@@ -1,5 +1,5 @@
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { SoraTypography } from 'src/components/Superfest/Superfest.style';
+import { Typography } from '@mui/material';
 import { LeftTextBox } from '../SuperfestMissionPage.style';
 import { InformationBox } from './InformationAlertBox.style';
 
@@ -14,7 +14,17 @@ export const InformationAlertBox = ({
     <InformationBox>
       <InfoOutlinedIcon sx={{ width: 32, height: 32 }} />
       <LeftTextBox ml="32px">
-        <SoraTypography>{information}</SoraTypography>
+        {
+          //* todo: check typography (sora) *//
+        }
+        <Typography
+          variant="bodyMedium"
+          fontWeight={400}
+          lineHeight={'24px'}
+          letterSpacing="0.15px"
+        >
+          {information}
+        </Typography>{' '}
       </LeftTextBox>
     </InformationBox>
   );

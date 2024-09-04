@@ -1,5 +1,5 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Box } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -9,7 +9,7 @@ import { OPBadge } from 'src/components/illustrations/OPBadge';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
-import { FlexSpaceBetweenBox, SoraTypography } from '../Superfest.style';
+import { FlexSpaceBetweenBox } from '../Superfest.style';
 import type { Chain } from '../SuperfestPage/Banner/Banner';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
 import {
@@ -63,8 +63,21 @@ export const QuestCard = ({
   rewardRange,
 }: QuestCardProps) => {
   const { t } = useTranslation();
+  const theme = useTheme();
   const router = useRouter();
-  const { apy, isLoading, isSuccess } = useMissionsMaxAPY(claimingIds);
+  const { apy } = useMissionsMaxAPY(claimingIds);
+
+  const superfestJoinButton = {
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: 'transparent',
+    border: '2px dotted',
+    padding: '16px',
+    '&:hover': {
+      color: '#FFFFFF',
+      backgroundColor: theme.palette.primary.main,
+    },
+  };
 
   return (
     <QuestCardMainBox>
@@ -90,9 +103,14 @@ export const QuestCard = ({
       </Link>
       <QuestCardBottomBox>
         <QuestCardTitleBox>
-          <SoraTypography fontSize="20px" lineHeight="20px" fontWeight={600}>
+          <Typography
+            variant="bodyXLarge"
+            fontSize="20px"
+            lineHeight="20px"
+            fontWeight={600}
+          >
             {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
-          </SoraTypography>
+          </Typography>
         </QuestCardTitleBox>
         <FlexSpaceBetweenBox marginBottom={'8px'} marginTop={'8px'}>
           <FlexCenterRowBox>
@@ -115,30 +133,40 @@ export const QuestCard = ({
           {points ? (
             <FlexCenterRowBox>
               {apy > 0 && !variableWeeklyAPY && (
-                <XPDisplayBox active={active} bgcolor={'#ff0420'}>
-                  <SoraTypography
-                    fontSize="14px"
-                    fontWeight={700}
+                <XPDisplayBox
+                  active={active}
+                  bgcolor={theme.palette.primary.main}
+                >
+                  {
+                    //* todo: check typography (sora) *//
+                  }
+                  <Typography
+                    variant="bodySmallStrong"
                     lineHeight="18px"
                     color={'#ffffff'}
                   >
                     {`${Number(apy).toFixed(1)}%`}
-                  </SoraTypography>
+                  </Typography>
                   <XPIconBox marginLeft="4px">
                     <APYIcon size={20} />
                   </XPIconBox>
                 </XPDisplayBox>
               )}
               {variableWeeklyAPY && (
-                <XPDisplayBox active={active} bgcolor={'#ff0420'}>
-                  <SoraTypography
-                    fontSize="14px"
-                    fontWeight={700}
+                <XPDisplayBox
+                  active={active}
+                  bgcolor={theme.palette.primary.main}
+                >
+                  {
+                    //* todo: check typography (sora) *//
+                  }
+                  <Typography
+                    variant="bodySmallStrong"
                     lineHeight="18px"
                     color={'#ffffff'}
                   >
                     {rewardRange ? rewardRange : `VAR.%`}
-                  </SoraTypography>
+                  </Typography>
                   <XPIconBox marginLeft="4px">
                     <APYIcon size={20} />
                   </XPIconBox>
@@ -148,14 +176,16 @@ export const QuestCard = ({
                 active={active}
                 bgcolor={!completed ? '#31007A' : '#42B852'}
               >
-                <SoraTypography
-                  fontSize="14px"
-                  fontWeight={700}
+                {
+                  //* todo: check typography (sora) *//
+                }
+                <Typography
+                  variant="bodySmallStrong"
                   lineHeight="18px"
                   color={'#ffffff'}
                 >
                   {`${points}`}
-                </SoraTypography>
+                </Typography>
                 <XPIconBox marginLeft="4px">
                   {!completed ? (
                     <SuperfestXPIcon size={16} />
@@ -186,13 +216,9 @@ export const QuestCard = ({
               }}
               onClick={() => router.push(slug)}
             >
-              <SoraTypography
-                fontSize="16px"
-                lineHeight="18px"
-                fontWeight={600}
-              >
+              <Typography fontSize="16px" lineHeight="18px" fontWeight={600}>
                 {String(t('questCard.join')).toUpperCase()}
-              </SoraTypography>
+              </Typography>
             </Button>
           ) : null}
         </QuestCardInfoBox>

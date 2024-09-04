@@ -1,4 +1,4 @@
-import { SoraTypography } from '../../Superfest.style';
+import { Typography } from '@mui/material';
 import {
   LeftTextBox,
   SuperfestPageElementContainer,
@@ -18,9 +18,12 @@ export const DescriptionBoxSF = ({
     <SuperfestPageElementContainer>
       <DescriptionTitleTypography>{longTitle}</DescriptionTitleTypography>
       <LeftTextBox marginTop={'32px'}>
-        <SoraTypography fontSize={'18px'} fontWeight={500} lineHeight={'32px'}>
+        {
+          //* todo: check typography (sora) *//
+        }
+        <Typography variant="bodyLarge" lineHeight={'32px'}>
           {description}
-        </SoraTypography>
+        </Typography>
       </LeftTextBox>
     </SuperfestPageElementContainer>
   );

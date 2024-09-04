@@ -73,7 +73,10 @@ export const InstructionsAccordionItem = ({
     >
       <InstructionsAccordionItemMain onClick={(e) => handleOpen(e)}>
         <InstructionsAccordionItemHeader>
-          <InstructionsAccordionItemIndex>
+          {
+            //* todo: test typography format*//
+          }
+          <InstructionsAccordionItemIndex variant="bodyLargeStrong">
             {index + 1}
           </InstructionsAccordionItemIndex>
           {link ? (

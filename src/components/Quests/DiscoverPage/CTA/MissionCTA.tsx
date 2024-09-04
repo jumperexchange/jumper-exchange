@@ -1,12 +1,17 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Box, type Theme, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  type Theme,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
 import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
-import { SoraTypography } from 'src/components/Superfest/Superfest.style';
 import { XPIconBox } from '../../QuestCard/QuestCard.style';
 import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
@@ -73,14 +78,18 @@ export const MissionCTA = ({
         <StartedTitleTypography>Get Started</StartedTitleTypography>
         {!signature && rewards ? (
           <Box marginTop="32px">
-            <SoraTypography
+            {
+              //* todo: check typography (sora) *//
+            }
+            <Typography
+              variant="bodyMedium"
               fontSize={{ xs: '14px', md: '18px' }}
               lineHeight={{ xs: '14px', md: '18px' }}
               fontWeight={400}
             >
-              Completing any mission below makes you eligible for OP rewards and
+              Completing any mission below makes you eligible for rewards and
               XP.
-            </SoraTypography>
+            </Typography>
           </Box>
         ) : undefined}
       </StartedTitleBox>
@@ -108,14 +117,18 @@ export const MissionCTA = ({
                     height={48}
                     priority={false}
                   />
-                  <SoraTypography
+                  {
+                    //* todo: check typography (sora) *//
+                  }
+                  <Typography
+                    variant="headerMedium"
                     marginTop={{ xs: '16px', md: '0px' }}
                     fontSize={{ xs: '16px', sm: '22px' }}
                     fontWeight={700}
                     marginLeft={'16px'}
                   >
                     {CTA.text ?? 'Go to Protocol Page'}
-                  </SoraTypography>
+                  </Typography>
                 </CTAExplanationBox>
                 <FlexCenterRowBox>
                   {CTA.apy && !variableWeeklyAPY && (
@@ -125,14 +138,18 @@ export const MissionCTA = ({
                       height={'32px'}
                       minWidth={'88px'}
                     >
-                      <SoraTypography
+                      {
+                        //* todo: check typography (sora) *//
+                      }
+                      <Typography
+                        variant="bodyMediumStrong"
                         fontSize="16px"
                         fontWeight={700}
                         lineHeight="20px"
                         color={'#ffffff'}
                       >
                         {`${Number(CTA.apy).toFixed(1)}%`}
-                      </SoraTypography>
+                      </Typography>
                       <XPIconBox marginLeft="4px">
                         <APYIcon size={24} />
                       </XPIconBox>
@@ -145,7 +162,11 @@ export const MissionCTA = ({
                       height={'32px'}
                       minWidth={'88px'}
                     >
-                      <SoraTypography
+                      {
+                        //* todo: check typography (sora) *//
+                      }
+                      <Typography
+                        variant="bodyMediumStrong"
                         fontSize="16px"
                         fontWeight={700}
                         lineHeight="20px"
@@ -156,7 +177,7 @@ export const MissionCTA = ({
                           : rewardRange
                             ? rewardRange
                             : `VAR.%`}
-                      </SoraTypography>
+                      </Typography>
                       <XPIconBox marginLeft="4px">
                         <APYIcon size={24} />
                       </XPIconBox>

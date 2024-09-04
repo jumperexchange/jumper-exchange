@@ -1,15 +1,14 @@
+import type { Theme } from '@mui/material';
+import { Modal, Typography, useMediaQuery } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Button } from 'src/components/Button';
 import {
-  MultisigConfirmationModal,
   MultisigConfirmationModalContainer,
   MultisigConfirmationModalIcon,
   MultisigConfirmationModalIconContainer,
 } from 'src/components/MultisigConfirmationModal';
-import { InfoAlert } from '../InfoAlert';
-import type { Theme } from '@mui/material';
-import { Modal, Typography, useMediaQuery } from '@mui/material';
-import { Button } from 'src/components/Button';
-import { useEffect, useState } from 'react';
 import { useMetaMask } from 'src/hooks/useMetaMask';
+import { InfoAlert } from '../InfoAlert';
 
 export const WalletAlert = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -40,17 +39,22 @@ export const WalletAlert = () => {
             <MultisigConfirmationModalIconContainer>
               <MultisigConfirmationModalIcon />
             </MultisigConfirmationModalIconContainer>
+            {
+              //* todo: test format of typography *//
+            }
             <Typography
+              variant="bodyLargeStrong"
+              fontSize={'1.125rem'}
               fontWeight={700}
               textAlign={'center'}
               marginY={4}
-              style={{
-                fontSize: '1.125rem',
-              }}
             >
               {title}
             </Typography>
-            <Typography fontSize={'1.125 rem'} marginY={4}>
+            {
+              //* todo: test format of typography *//
+            }
+            <Typography variant="bodyLarge" fontSize={'1.125 rem'} marginY={4}>
               {subtitle}
             </Typography>
             <Button

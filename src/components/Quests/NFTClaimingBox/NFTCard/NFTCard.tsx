@@ -1,7 +1,7 @@
 import { ChainId } from '@lifi/sdk';
+import { Typography } from '@mui/material';
 import Image from 'next/image';
 import { Button } from 'src/components/Button';
-import { SoraTypography } from 'src/components/Superfest/Superfest.style';
 import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';
 import { useCheckNFTAvailability } from 'src/hooks/useCheckNFTAvailability';
 import {
@@ -131,13 +131,16 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
                   },
                 }}
               >
-                <SoraTypography
-                  fontSize="16px"
+                {
+                  //* todo: check typography (sora) *//
+                }
+                <Typography
+                  variant="bodyMedium"
                   lineHeight="18px"
                   fontWeight={600}
                 >
                   SEE TX
-                </SoraTypography>
+                </Typography>
               </Button>
             </a>
           ) : (
@@ -156,14 +159,17 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
                 },
               }}
             >
-              <SoraTypography
-                fontSize="16px"
+              {
+                //* todo: check typography (sora) *//
+              }
+              <Typography
+                variant="bodyMedium"
                 lineHeight="18px"
                 color={typoColor}
                 fontWeight={600}
               >
                 MINTED
-              </SoraTypography>
+              </Typography>
             </Button>
           )}
         </NFTCardBotomBox>
@@ -202,9 +208,9 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
             }}
             onClick={() => handleClick()}
           >
-            <SoraTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
+            <Typography variant="bodyMedium" lineHeight="18px" fontWeight={600}>
               {isConfirming ? 'MINTING...' : 'MINT'}
-            </SoraTypography>
+            </Typography>
           </Button>
         </NFTCardBotomBox>
       </NFTCardMainBox>
@@ -242,9 +248,13 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
             },
           }}
         >
-          <SoraTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
+          <Typography
+            variant="bodyMediumStrong"
+            lineHeight="18px"
+            fontWeight={600}
+          >
             {chain === 'box' ? 'LOCKED' : 'UNAVAILABLE'}
-          </SoraTypography>
+          </Typography>
         </Button>
       </NFTCardBotomBox>
     </NFTCardMainBox>

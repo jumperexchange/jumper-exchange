@@ -1,7 +1,10 @@
 import { Box, alpha, styled } from '@mui/material';
 
 export const QuestCardSkeletonContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: '#F8F3E0',
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? '#FFFFFF'
+      : alpha(theme.palette.white.main, 0.08),
   height: 450,
   width: 288,
   textAlign: 'center',

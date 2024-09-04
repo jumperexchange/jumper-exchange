@@ -1,11 +1,11 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { Button } from 'src/components/Button';
-import { SoraTypography } from 'src/components/Superfest/Superfest.style';
 import { JUMPER_FEST_PATH } from 'src/const/urls';
 import { BackButtonMainBox } from './BackButton.style';
 
-export const BackButton = () => {
+export const BackButton = ({ title }: { title: string }) => {
   const router = useRouter();
 
   return (
@@ -23,14 +23,14 @@ export const BackButton = () => {
         <ArrowBackIcon
           sx={{ color: '#FFFFFF', width: '16px', height: '16px' }}
         />
-        <SoraTypography
-          fontSize="14px"
+        <Typography
+          variant="bodySmall"
           lineHeight="14px"
           fontWeight={500}
           marginLeft={'8px'}
         >
-          {String('SUPERFEST').toUpperCase()}
-        </SoraTypography>
+          {String(title).toUpperCase()}
+        </Typography>
       </Button>
     </BackButtonMainBox>
   );

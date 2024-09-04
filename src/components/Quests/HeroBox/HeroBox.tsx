@@ -1,7 +1,6 @@
-import { type Theme, useMediaQuery } from '@mui/material';
+import { type Theme, Typography, useMediaQuery } from '@mui/material';
 import Link from 'next/link';
 import { Button } from 'src/components/Button';
-import { SoraTypography } from 'src/components/Superfest/Superfest.style';
 import { HeroButtonBox, HeroMainBox } from './HeroBox.style';
 
 interface HeroBoxProps {
@@ -38,9 +37,13 @@ export const HeroBox = ({
               padding: '16px',
             }}
           >
-            <SoraTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
-              {String(title).toUpperCase()}
-            </SoraTypography>
+            <Typography
+              variant="bodyMediumStrong"
+              lineHeight="18px"
+              fontWeight={600}
+            >
+              {String('Learn More').toUpperCase()}
+            </Typography>
           </Button>
         </HeroButtonBox>
       </Link>
