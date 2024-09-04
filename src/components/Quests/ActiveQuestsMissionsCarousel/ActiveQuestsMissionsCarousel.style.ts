@@ -3,7 +3,7 @@ import { Box, styled } from '@mui/material';
 import { ButtonPrimary } from '../../Button';
 
 export const QuestsCarouselContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: '#fdfbef',
+  backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '12px',
   width: '90%',
   padding: theme.spacing(2),

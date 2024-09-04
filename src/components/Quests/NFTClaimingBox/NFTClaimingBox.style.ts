@@ -3,7 +3,7 @@ import { Box, Typography, styled } from '@mui/material';
 import { sequel85, sora } from 'src/fonts/fonts';
 
 export const NFTClaimingContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: '#fdfbef',
+  backgroundColor: theme.palette.bgSecondary.main,
   padding: theme.spacing(2),
   borderRadius: '12px',
   width: '90%',

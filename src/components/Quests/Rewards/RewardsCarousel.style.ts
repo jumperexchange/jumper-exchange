@@ -9,7 +9,7 @@ import {
 import { urbanist } from 'src/fonts/fonts';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: '#fdfbef',
+  backgroundColor: theme.palette.bgSecondary.main,
   display: 'flex',
   width: '100%',
   flexDirection: 'row',

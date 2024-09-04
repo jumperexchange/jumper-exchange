@@ -5,7 +5,6 @@ import { useSettingsStore } from '@/stores/settings';
 import ClearIcon from '@mui/icons-material/Clear';
 import type { Theme } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
-import Image from 'next/image';
 import { JumperScanLogo } from 'src/components/illustrations/JumperScanLogo';
 
 type LogoProps = {
@@ -50,12 +49,13 @@ export const Logo = ({ variant }: LogoProps) => {
               marginRight: theme.spacing(2),
             }}
           />
-          <Image
+          {/* todo: check img */}
+          {/* <Image
             alt="jumper-partner-logo"
             src={configTheme.logo?.url.href}
             width={configTheme.logo?.width}
             height={configTheme.logo?.height}
-          />
+          /> */}
         </>
       ) : (
         logo
