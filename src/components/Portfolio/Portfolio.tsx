@@ -138,7 +138,7 @@ function Portfolio() {
                   <TypographyPrimary>{token.symbol}</TypographyPrimary>
                   <CustomAvatarGroup spacing={6}>
                     {token.chains.map((chain) => (
-                      <Tooltip title={chain.name} key={chain.key}>
+                      <Tooltip title={chain.name} key={`${token.symbol}-${chain.key}`}>
                         <Avatar alt={chain.name} src={chain.logoURI} />
                       </Tooltip>
                     ))}

@@ -10,6 +10,7 @@ import {
 import { formatUnits } from 'viem';
 import coins from './coins';
 import type { ExtendedChain, TokenAmount } from '@lifi/types';
+import { Token } from '@lifi/widget';
 
 interface Chain extends ExtendedChain, Price {}
 
@@ -65,7 +66,6 @@ function transform(
   let mergedTokenBalances = Object.values(tokenMap);
 
   mergedTokenBalances = mergedTokenBalances.map((tb) => {
-    // const token = tb.token;
     const balance = getBalance(tb);
 
     return {
@@ -93,9 +93,25 @@ async function index(account: string) {
       chainTypes: [ChainType.EVM, ChainType.SVM],
     });
 
+    const tokens = await LifiGetTokens({
+      chainTypes: [ChainType.EVM, ChainType.SVM],
+    });
+
+    const filterSet = new Set(
+      coins.map(item => `${item.chainId}-${item.address}`)
+    );
+
+    let filteredArray: Token[]= [];
+
+    for (const [, tks] of Object.entries(tokens.tokens)) {
+      filteredArray = filteredArray.concat(tks.filter(item =>
+        filterSet.has(`${item.chainId}-${item.address}`)
+      ));
+    }
+
     const tokenBalances = await getTokenBalances(
       account,
-      coins as TokenAmount[],
+      filteredArray,
     );
 
     const transformedTokenBalances = transform(

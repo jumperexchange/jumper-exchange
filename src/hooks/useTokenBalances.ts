@@ -49,7 +49,7 @@ export const useTokenBalances = (accounts: Account[]) => {
         0,
       );
 
-      setLastTotalValue(totalValue);
+      // setLastTotalValue(totalValue);
       // setLastAddresses(accounts.map(({ address }) => address!));
 
       return {
