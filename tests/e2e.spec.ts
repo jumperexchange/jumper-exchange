@@ -8,6 +8,7 @@ import {
   expectBackgroundColorToHaveCss,
   itemInSettingsMenu,
   itemInSettingsMenuToBeVisible,
+  itemInSettingsMenuToBeEnabled,
 } from './testData/commonFunctions';
 import values from '../tests/testData/values.json';
 
@@ -42,30 +43,21 @@ test.describe('Jumper full e2e flow', () => {
     const settingsTitle = page.locator(
       'xpath=//p[normalize-space(text())="Settings"]',
     );
-    const bestReturnButton = page.locator(
-      'xpath=//button[normalize-space(text())="Best Return"]',
-    );
     const fastestButton = page.locator(
       'xpath=//button[normalize-space(text())="Fastest"]',
-    );
-    const slowGasPrice = page.locator(
-      'xpath=//button[normalize-space(text())="Slow"]',
-    );
-    const fastGasPrice = page.locator(
-      'xpath=//button[normalize-space(text())="Fast"]',
     );
     const customSlippage = page.locator('xpath=//input[@placeholder="Custom"]');
 
     await page.locator('xpath=//div[@class="MuiBox-root mui-afg6ra"]').click();
     await expect(settingsTitle).toBeVisible();
     itemInSettingsMenu(page, 'Route priority');
-    await expect(bestReturnButton).toBeEnabled();
+    itemInSettingsMenuToBeEnabled(page, 'Best Return');
     itemInSettingsMenuToBeVisible(page, 'Fastest');
     await fastestButton.click();
     itemInSettingsMenuToBeVisible(page, 'Reset settings');
     itemInSettingsMenu(page, 'Gas price');
-    expect(slowGasPrice).toBeEnabled();
-    expect(fastGasPrice).toBeEnabled();
+    itemInSettingsMenuToBeEnabled(page, 'Slow');
+    itemInSettingsMenuToBeEnabled(page, 'Fast');
     itemInSettingsMenu(page, 'Max. slippage');
     itemInSettingsMenuToBeVisible(page, '0.5');
     await expect(customSlippage).toBeVisible();
