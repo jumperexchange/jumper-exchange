@@ -26,3 +26,14 @@ export async function expectBackgroundColorToHaveCss(page, rgb: string){
   const backgroundColor = await page.locator('xpath=/html/body/div[1]');
   expect(backgroundColor).toHaveCSS(`background-color`, rgb);
 }
+export async function itemInSettingsMenu(page, selector: string) {
+  await page
+    .locator(`xpath=//p[normalize-space(text())="${selector}"]`)
+    .click();
+}
+export async function itemInSettingsMenuToBeVisible(page, selector: string) {
+  const itemName = await page.locator(
+    `xpath=//button[normalize-space(text())="${selector}"]`,
+  );
+  expect(itemName).toBeVisible();
+}
