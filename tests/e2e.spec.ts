@@ -27,9 +27,9 @@ test.describe('Jumper full e2e flow', () => {
     await expect(
       page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
     ).toBeVisible();
-    await tabInHeader(page, "tab-key-1");
+    await tabInHeader(page, 'tab-key-1');
     await expect(page.locator('xpath=//p[text()="Gas"]')).toBeVisible();
-    await tabInHeader(page, "tab-key-2");
+    await tabInHeader(page, 'tab-key-2');
     await expect(buyETHButton).toBeEnabled();
     await expect(
       page
@@ -55,7 +55,7 @@ test.describe('Jumper full e2e flow', () => {
       'xpath=//button[normalize-space(text())="Fast"]',
     );
     const customSlippage = page.locator('xpath=//input[@placeholder="Custom"]');
-    await tabInHeader(page, 'Exchange');
+
     await page.locator('xpath=//div[@class="MuiBox-root mui-afg6ra"]').click();
     await expect(settingsTitle).toBeVisible();
     itemInSettingsMenu(page, 'Route priority');
@@ -70,7 +70,6 @@ test.describe('Jumper full e2e flow', () => {
     itemInSettingsMenuToBeVisible(page, '0.5');
     await expect(customSlippage).toBeVisible();
   });
-
 
   test.skip('Should handle welcome screen', async ({ page }) => {
     const headerText = 'Find the best route';
