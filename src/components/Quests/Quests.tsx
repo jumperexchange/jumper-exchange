@@ -1,32 +1,41 @@
-import { useAccounts } from '@/hooks/useAccounts';
+import type { Account } from '@/hooks/useAccounts';
 import { JUMPER_QUESTS_PATH } from 'src/const/urls';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
-import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
-import {
-  SuperfestContainer,
-  SuperfestMainBox,
-} from '../Superfest/Superfest.style';
+import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
+import type { Quest } from 'src/types/loyaltyPass';
+import { MantleLogo } from '../illustrations/MantleLogo';
 import { ActiveQuestsMissionsCarousel } from './ActiveQuestsMissionsCarousel/ActiveQuestsMissionsCarousel';
 import { AvailableMissionsList } from './AvailableMissionsList/AvailableMissionsList';
+import { HeroBox } from './HeroBox/HeroBox';
+import { QuestPageMainBox, QuestsContainer } from './Quests.style';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
 
-export const Quests = () => {
-  //HOOKS
-  const { account } = useAccounts();
-  const { quests, isQuestLoading } = useOngoingFestMissions();
-  const {
-    availableRewards,
-    activeCampaigns,
-    pastCampaigns,
-    isLoading: isRewardLoading,
-    isSuccess: isRewardSuccess,
-  } = useMerklRewards({
-    rewardChainId: 10,
-    userAddress: account?.address,
-  });
+interface QuestsProps {
+  title: string;
+  url: string;
+  account?: Account;
+  quests?: Quest[];
+  isQuestLoading: boolean;
+  availableRewards: AvailableRewards[];
+  activeCampaigns: string[];
+  pastCampaigns: string[];
+  isRewardLoading: boolean;
+  isRewardSuccess: boolean;
+}
 
+export const Quests = ({
+  title,
+  url,
+  account,
+  quests,
+  isQuestLoading,
+  availableRewards,
+  activeCampaigns,
+  pastCampaigns,
+  isRewardLoading,
+  isRewardSuccess,
+}: QuestsProps) => {
   return (
-    <SuperfestContainer>
+    <QuestsContainer>
       <RewardsCarousel
         hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
         rewardAmount={availableRewards?.[0]?.amountToClaim as number}
@@ -36,7 +45,13 @@ export const Quests = () => {
         proof={availableRewards?.[0]?.proof}
         isMerklSuccess={isRewardSuccess}
       />
-      <SuperfestMainBox>
+      <HeroBox
+        title={title}
+        url={url}
+        logoMobile={<MantleLogo />}
+        logoDesktop={<MantleLogo />}
+      />
+      <QuestPageMainBox>
         {!account?.address ||
         isQuestLoading ||
         !activeCampaigns ||
@@ -55,7 +70,7 @@ export const Quests = () => {
           loading={isQuestLoading}
           pastCampaigns={pastCampaigns}
         />
-      </SuperfestMainBox>
-    </SuperfestContainer>
+      </QuestPageMainBox>
+    </QuestsContainer>
   );
 };

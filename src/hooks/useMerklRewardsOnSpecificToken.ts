@@ -32,7 +32,7 @@ interface MerklPositionData {
   };
 }
 
-interface AvailableRewards {
+export interface AvailableRewards {
   chainId: number;
   address: string;
   symbol: string;

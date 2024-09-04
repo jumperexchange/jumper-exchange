@@ -45,7 +45,6 @@ export const PartnerThemeFooterImage = () => {
         style={{ zIndex: 100 }}
       >
         <BackgroundFooterImage
-          style={{ position: isSuperfest ? 'relative' : 'absolute' }}
           alt="footer-image"
           src={configTheme?.footerImageUrl?.href}
           width={300}
