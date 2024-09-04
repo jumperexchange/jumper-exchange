@@ -171,7 +171,7 @@ function Portfolio() {
               >
                 {token.chains.map((chain, idx) => (
                   <Link
-                    href={`https://jumper-exchange-git-ft-beta-testing1-jumper-exchange.vercel.app/?${qs.stringify(buildUrl(chain, token))}`}
+                    href={`/?${qs.stringify(buildUrl(chain, token))}`}
                     passHref
                     key={idx}
                   >
