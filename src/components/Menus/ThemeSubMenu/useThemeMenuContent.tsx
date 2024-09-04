@@ -10,6 +10,7 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useStrapi } from 'src/hooks/useStrapi';
+import { validThemes } from 'src/hooks/useWelcomeScreen';
 import type { PartnerThemesData } from 'src/types/strapi';
 
 export const useThemeMenuContent = () => {
@@ -36,15 +37,13 @@ export const useThemeMenuContent = () => {
         [TrackingEventParameter.SwitchedTemplate]: theme,
       },
     });
-    if (!(theme === 'system' || theme === 'light' || theme === 'dark')) {
+    if (!validThemes.includes(theme)) {
       setCookie('welcomeScreenClosed', true, {
         path: '/',
         sameSite: true,
       });
     }
     setTheme(theme);
-    console.log('RESOLVED THEME', resolvedTheme);
-    console.log('theme', theme);
   };
 
   const themes: any = [

@@ -1,5 +1,5 @@
 import { getCookies } from '@/app/lib/getCookies';
-import { WidgetContainer, Widgets } from '@/components/Widgets';
+import { Widgets } from '@/components/Widgets';
 import { Widget } from '@/components/Widgets/Widget';
 import App from '../../ui/app/App';
 
@@ -13,18 +13,16 @@ export default function Page() {
       isWelcomeScreenClosed={isWelcomeScreenClosed}
       activeTheme={activeTheme}
     >
-      <WidgetContainer welcomeScreenClosed={isWelcomeScreenClosed}>
-        <Widget
-          activeTheme={activeTheme}
-          starterVariant={variant}
-          activeThemeMode={activeThemeMode}
-          isWelcomeScreenClosed={isWelcomeScreenClosed}
-        />
-        <Widgets
-          closedWelcomeScreen={isWelcomeScreenClosed}
-          widgetVariant={variant}
-        />
-      </WidgetContainer>
+      <Widget
+        activeTheme={activeTheme}
+        starterVariant={variant}
+        activeThemeMode={activeThemeMode}
+        isWelcomeScreenClosed={isWelcomeScreenClosed}
+      />
+      <Widgets
+        closedWelcomeScreen={isWelcomeScreenClosed}
+        widgetVariant={variant}
+      />
     </App>
   );
 }

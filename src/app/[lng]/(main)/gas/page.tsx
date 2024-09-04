@@ -1,6 +1,6 @@
 import { getCookies } from '@/app/lib/getCookies';
 import App from '@/app/ui/app/App';
-import { WidgetContainer, Widgets } from '@/components/Widgets';
+import { Widgets } from '@/components/Widgets';
 import { Widget } from '@/components/Widgets/Widget';
 
 const Page = () => {
@@ -14,17 +14,15 @@ const Page = () => {
       isWelcomeScreenClosed={isWelcomeScreenClosed}
       activeTheme={activeTheme}
     >
-      <WidgetContainer welcomeScreenClosed={isWelcomeScreenClosed}>
-        <Widget
-          starterVariant={variant}
-          activeThemeMode={activeThemeMode}
-          isWelcomeScreenClosed={isWelcomeScreenClosed}
-        />
-        <Widgets
-          closedWelcomeScreen={isWelcomeScreenClosed}
-          widgetVariant={variant}
-        />
-      </WidgetContainer>
+      <Widget
+        starterVariant={variant}
+        activeThemeMode={activeThemeMode}
+        isWelcomeScreenClosed={isWelcomeScreenClosed}
+      />
+      <Widgets
+        closedWelcomeScreen={isWelcomeScreenClosed}
+        widgetVariant={variant}
+      />
     </App>
   );
 };

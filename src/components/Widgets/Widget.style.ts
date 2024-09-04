@@ -43,12 +43,12 @@ export const WidgetWrapper = styled(Box, {
       },
     }),
 
-    // [theme.breakpoints.down('sm' as Breakpoint)]: {
-    //   height: 'auto',
-    //   div: {
-    //     maxHeight: '100%',
-    //   },
-    // },
+    [theme.breakpoints.down('sm' as Breakpoint)]: {
+      height: 'auto',
+      div: {
+        maxHeight: '100%',
+      },
+    },
 
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       height: 'auto',

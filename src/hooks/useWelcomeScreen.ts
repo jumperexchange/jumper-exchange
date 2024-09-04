@@ -9,6 +9,8 @@ interface useWelcomeScreenProps {
   enabled: boolean;
 }
 
+export const validThemes = ['default', 'light', 'dark', 'system'];
+
 export const useWelcomeScreen = (
   initialState?: boolean,
   activeTheme?: string,
@@ -24,10 +26,13 @@ export const useWelcomeScreen = (
 
   const enabled = useMemo(
     // check if theme is any of jumper-themes or undefined
-() => {
-  const validThemes = ['default', 'light', 'dark', 'system'];
-  return validThemes.includes(activeTheme) || validThemes.includes(cookie.theme) || !cookie.theme;
-},
+    () => {
+      return (
+        (activeTheme && validThemes.includes(activeTheme)) ||
+        validThemes.includes(cookie.theme) ||
+        !cookie.theme
+      );
+    },
     [activeTheme, cookie],
   );
 
