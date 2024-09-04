@@ -24,16 +24,10 @@ export const useWelcomeScreen = (
 
   const enabled = useMemo(
     // check if theme is any of jumper-themes or undefined
-    () =>
-      activeTheme === 'default' ||
-      activeTheme === 'light' ||
-      activeTheme === 'dark' ||
-      activeTheme === 'system' ||
-      cookie.theme === 'default' ||
-      cookie.theme === 'light' ||
-      cookie.theme === 'dark' ||
-      cookie.theme === 'system' ||
-      !cookie.theme,
+() => {
+  const validThemes = ['default', 'light', 'dark', 'system'];
+  return validThemes.includes(activeTheme) || validThemes.includes(cookie.theme) || !cookie.theme;
+},
     [activeTheme, cookie],
   );
 
