@@ -10,7 +10,7 @@ import {
 import { formatUnits } from 'viem';
 import coins from './coins';
 import type { ExtendedChain, TokenAmount } from '@lifi/types';
-import { Token } from '@lifi/widget';
+import type { Token } from '@lifi/widget';
 
 interface Chain extends ExtendedChain, Price {}
 
@@ -98,21 +98,18 @@ async function index(account: string) {
     });
 
     const filterSet = new Set(
-      coins.map(item => `${item.chainId}-${item.address}`)
+      coins.map((item) => `${item.chainId}-${item.address}`),
     );
 
-    let filteredArray: Token[]= [];
+    let filteredArray: Token[] = [];
 
     for (const [, tks] of Object.entries(tokens.tokens)) {
-      filteredArray = filteredArray.concat(tks.filter(item =>
-        filterSet.has(`${item.chainId}-${item.address}`)
-      ));
+      filteredArray = filteredArray.concat(
+        tks.filter((item) => filterSet.has(`${item.chainId}-${item.address}`)),
+      );
     }
 
-    const tokenBalances = await getTokenBalances(
-      account,
-      filteredArray,
-    );
+    const tokenBalances = await getTokenBalances(account, filteredArray);
 
     const transformedTokenBalances = transform(
       tokenBalances.filter((s) => s?.amount && s.amount > 0),
