@@ -162,28 +162,28 @@ export const QuestCard = ({
               </XPDisplayBox>
             ) : null}
             {active && link ? (
-              <a
-                href={link}
-                target="_blank"
-                style={{ textDecoration: 'none', width: '50%' }}
-                rel="noreferrer"
+              // <a
+              //   href={link}
+              //   target="_blank"
+              //   style={{ textDecoration: 'none', width: '50%' }}
+              //   rel="noreferrer"
+              // >
+              <Button
+                aria-label={`Open ${t('questCard.join')}`}
+                variant="secondary"
+                size="medium"
+                styles={{ alignItems: 'center', width: '100%' }}
               >
-                <Button
-                  aria-label={`Open ${t('questCard.join')}`}
-                  variant="secondary"
-                  size="medium"
-                  styles={{ alignItems: 'center', width: '100%' }}
+                <NoSelectTypography
+                  fontSize="16px"
+                  lineHeight="18px"
+                  fontWeight={600}
                 >
-                  <NoSelectTypography
-                    fontSize="16px"
-                    lineHeight="18px"
-                    fontWeight={600}
-                  >
-                    {t('questCard.join')}
-                  </NoSelectTypography>
-                </Button>
-              </a>
-            ) : null}
+                  {t('questCard.join')}
+                </NoSelectTypography>
+              </Button>
+            ) : // </a>
+            null}
           </QuestCardInfoBox>
         </QuestCardBottomBox>
       </QuestCardMainBox>
