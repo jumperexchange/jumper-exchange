@@ -75,6 +75,7 @@ export const ActiveQuestsMissionsCarousel = ({
                       active={true}
                       path={path}
                       id={quest?.id}
+                      label={quest.attributes.Label}
                       title={quest?.attributes.Title}
                       image={String(imgURL)}
                       points={quest?.attributes.Points}

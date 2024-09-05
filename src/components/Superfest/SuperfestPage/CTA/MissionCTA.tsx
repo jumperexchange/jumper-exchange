@@ -38,6 +38,7 @@ interface MissionCtaProps {
   url?: string;
   rewards?: number;
   id?: number;
+  label?: string;
   CTAs: CTALinkInt[];
   variableWeeklyAPY?: boolean;
   signature?: boolean;
@@ -49,6 +50,7 @@ export const MissionCTA = ({
   CTAs,
   rewards,
   id,
+  label,
   variableWeeklyAPY,
   signature,
   rewardRange,
@@ -78,6 +80,7 @@ export const MissionCTA = ({
         [TrackingEventParameter.MissionCtaClaimingId]: claimingId || '',
         [TrackingEventParameter.MissionCtaTitle]: title || '',
         [TrackingEventParameter.MissionCtaPartnerId]: id || '',
+        [TrackingEventParameter.MissionCtaLabel]: label || '',
       },
     });
   };

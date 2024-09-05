@@ -40,6 +40,7 @@ interface QuestCardProps {
   image?: string;
   id?: string | number;
   points?: number;
+  label?: string;
   link?: string;
   startDate?: string;
   endDate?: string;
@@ -60,6 +61,7 @@ export const QuestCard = ({
   id,
   points,
   link,
+  label,
   startDate,
   endDate,
   slug,
@@ -83,6 +85,7 @@ export const QuestCard = ({
         [TrackingEventParameter.QuestCardTitle]: title || '',
         [TrackingEventParameter.QuestCardId]: id || '',
         [TrackingEventParameter.QuestCardPlatform]: 'superfest',
+        [TrackingEventParameter.QuestCardLabel]: label || '',
       },
     });
   };

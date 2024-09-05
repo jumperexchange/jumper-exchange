@@ -43,6 +43,7 @@ interface QuestCardProps {
   path: string;
   link?: string;
   id?: string | number;
+  label?: string;
   startDate?: string;
   endDate?: string;
   platformName?: string;
@@ -64,6 +65,7 @@ export const QuestCard = ({
   id,
   activeCampaign,
   path,
+  label,
   link,
   startDate,
   endDate,
@@ -90,6 +92,7 @@ export const QuestCard = ({
         [TrackingEventParameter.QuestCardTitle]: title || '',
         [TrackingEventParameter.QuestCardId]: id || '',
         [TrackingEventParameter.QuestCardPlatform]: activeCampaign || '',
+        [TrackingEventParameter.QuestCardLabel]: label || '',
       },
     });
   };

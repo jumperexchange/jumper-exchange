@@ -69,6 +69,7 @@ export const ActiveSuperfestMissionsCarousel = ({
                       title={quest?.attributes.Title}
                       image={String(imgURL)}
                       id={quest?.id}
+                      label={quest.attributes.Label}
                       points={quest?.attributes.Points}
                       link={quest?.attributes.Link}
                       startDate={quest?.attributes.StartDate}

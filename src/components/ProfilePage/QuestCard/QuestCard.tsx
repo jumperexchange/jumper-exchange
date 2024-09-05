@@ -31,6 +31,7 @@ interface QuestCardProps {
   title: string;
   id?: number | string;
   image?: string;
+  label?: string;
   points?: number;
   link?: string;
   startDate?: string;
@@ -53,6 +54,7 @@ export const QuestCard = ({
   id,
   image,
   points,
+  label,
   link,
   startDate,
   endDate,
@@ -70,6 +72,7 @@ export const QuestCard = ({
       label: 'click-quest-card',
       data: {
         [TrackingEventParameter.QuestCardTitle]: title,
+        [TrackingEventParameter.QuestCardLabel]: label || '',
         [TrackingEventParameter.QuestCardId]: id || '',
         [TrackingEventParameter.QuestCardPlatform]: platformName || '',
       },
