@@ -12,7 +12,7 @@ import { SuperfestContainer, SuperfestMainBox } from './Superfest.style';
 export const Superfest = () => {
   //HOOKS
   const { account } = useAccounts();
-  const { quests, isQuestLoading } = useOngoingFestMissions();
+  const { quests, isQuestLoading } = useOngoingFestMissions('superfest');
   const {
     availableRewards,
     activeCampaigns,

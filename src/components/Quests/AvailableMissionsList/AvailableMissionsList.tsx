@@ -48,7 +48,7 @@ export const AvailableMissionsList = ({
   );
   const [chainsFilter, setChainsFilter] = useState<string[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
-  const { url } = useOngoingFestMissions();
+  const { url } = useOngoingFestMissions('superfest');
 
   const handleChainChange = (event: SelectChangeEvent<typeof chainsFilter>) => {
     const {

@@ -8,7 +8,7 @@ import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 const Quests = () => {
   //HOOKS
   const { account } = useAccounts();
-  const { quests, isQuestLoading } = useOngoingFestMissions();
+  const { quests, isQuestLoading } = useOngoingFestMissions('superfest'); // todo: add 'mantle' filter
   const {
     availableRewards,
     activeCampaigns,
