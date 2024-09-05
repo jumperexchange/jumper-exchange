@@ -9,7 +9,9 @@ export interface UseQuestsProps {
 }
 
 const STRAPI_CONTENT_TYPE = 'quests';
-export const useOngoingFestMissions = (): UseQuestsProps => {
+export const useOngoingFestMissions = (
+  filterByLabel?: string,
+): UseQuestsProps => {
   const apiBaseUrl =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
@@ -34,10 +36,14 @@ export const useOngoingFestMissions = (): UseQuestsProps => {
   apiUrl.searchParams.set('sort[0]', 'Title:asc');
   //filter url
   apiUrl.searchParams.set('pagination[pageSize]', '50');
-  apiUrl.searchParams.set('filters[Label][$eq]', 'superfest');
   const currentDate = new Date(Date.now()).toISOString().split('T')[0];
   apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
   apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
+
+  if (!!filterByLabel) {
+    apiUrl.searchParams.set('filters[Label][$eq]', filterByLabel);
+  }
+
   process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('publicationState', 'preview');
   const apiAccesToken =
@@ -45,7 +51,7 @@ export const useOngoingFestMissions = (): UseQuestsProps => {
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
       : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['ongoingFestMissions'],
+    queryKey: ['ongoingFestMissions', filterByLabel],
 
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
