@@ -6,7 +6,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import type { Theme } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { JumperScanLogo } from 'src/components/illustrations/JumperScanLogo';
-
+import { LogoPartnerImage } from './Logo.style';
 type LogoProps = {
   variant: 'default' | 'learn' | 'scan' | 'superfest';
 };
@@ -35,27 +35,31 @@ export const Logo = ({ variant }: LogoProps) => {
       {!isMobile && configTheme?.logo?.url ? (
         <>
           {logo}
-          <ClearIcon
-            width="32px"
-            height="32px"
-            sx={{
-              color:
-                theme.palette.mode === 'light'
-                  ? theme.palette.black.main
-                  : theme.palette.grey[500],
-              width: '32px',
-              height: '32px',
-              marginLeft: theme.spacing(-2),
-              marginRight: theme.spacing(2),
-            }}
-          />
-          {/* todo: check img */}
-          {/* <Image
-            alt="jumper-partner-logo"
-            src={configTheme.logo?.url.href}
-            width={configTheme.logo?.width}
-            height={configTheme.logo?.height}
-          /> */}
+          {configTheme.logo?.url.href && (
+            <>
+              <ClearIcon
+                width="32px"
+                height="32px"
+                sx={{
+                  color:
+                    theme.palette.mode === 'light'
+                      ? theme.palette.black.main
+                      : theme.palette.grey[500],
+                  width: '32px',
+                  height: '32px',
+                  marginLeft: theme.spacing(-2),
+                  marginRight: theme.spacing(2),
+                }}
+              />
+              {/* todo: check img */}
+              <LogoPartnerImage
+                alt="jumper-partner-logo"
+                src={configTheme.logo?.url.href}
+                width={configTheme.logo?.width}
+                height={configTheme.logo?.height}
+              />
+            </>
+          )}
         </>
       ) : (
         logo
