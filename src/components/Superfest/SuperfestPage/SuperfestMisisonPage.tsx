@@ -29,10 +29,12 @@ export const SuperfestMissionPage = ({
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
   const rewards = quest.attributes.CustomInformation?.['rewards'];
   const points = quest?.attributes?.Points;
+
   const { account } = useAccounts();
   const { pastCampaigns } = useMerklRewards({
     rewardChainId: 10,
     userAddress: account?.address,
+    rewardToken: '0x4200000000000000000000000000000000000042', // OP
   });
   const {
     isMember,
@@ -61,19 +63,19 @@ export const SuperfestMissionPage = ({
           }
         />
         {/* Big CTA */}
-        <MissionCTA
-          title={attributes?.Title}
-          url={attributes?.Link}
-          rewards={rewards}
-          id={quest.id}
-          label={attributes.Label}
-          key={generateKey('cta')}
-          CTAs={CTAsWithAPYs}
-          variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
-          signature={missionType === 'turtle_signature'}
-          isTurtleMember={isMember}
-          rewardRange={rewardRange}
-        />
+        {CTAsWithAPYs?.length > 0 && (
+          <MissionCTA
+            id={quest.id}
+            title={attributes?.Title}
+            url={attributes?.Link}
+            rewards={rewards}
+            key={generateKey('cta')}
+            CTAs={CTAsWithAPYs}
+            variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
+            signature={missionType === 'turtle_signature'}
+            rewardRange={rewardRange}
+          />
+        )}
         {/* Subtitle and description */}
         <DescriptionBoxSF
           longTitle={attributes?.Subtitle}
@@ -81,9 +83,9 @@ export const SuperfestMissionPage = ({
         />
         {/* Steps */}
         {/* Todo: remove the check for steps */}
-        {attributes?.Steps && attributes?.Steps?.length > 1 ? (
+        {attributes?.Steps && attributes?.Steps?.length > 0 && (
           <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
-        ) : undefined}
+        )}
         {/* Additional Info */}
         {attributes?.Information && (
           <InformationAlertBox information={attributes?.Information} />
