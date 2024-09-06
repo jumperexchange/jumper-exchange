@@ -5,6 +5,9 @@ import {
   tabInHeader,
   openMainMenu,
   expectMenuToBeVisible,
+  expectBackgroundColorToHaveCss,
+  itemInSettingsMenu,
+  itemInSettingsMenuToBeVisible,
 } from './testData/commonFunctions';
 import values from '../tests/testData/values.json';
 
@@ -35,6 +38,38 @@ test.describe('Jumper full e2e flow', () => {
         .getByText('Buy crypto'),
     ).toBeVisible();
     await expect(featureCard).toBeVisible();
+  });
+  test('Should open Settings menu', async ({ page }) => {
+    const settingsTitle = page.locator(
+      'xpath=//p[normalize-space(text())="Settings"]',
+    );
+    const bestReturnButton = page.locator(
+      'xpath=//button[normalize-space(text())="Best Return"]',
+    );
+    const fastestButton = page.locator(
+      'xpath=//button[normalize-space(text())="Fastest"]',
+    );
+    const slowGasPrice = page.locator(
+      'xpath=//button[normalize-space(text())="Slow"]',
+    );
+    const fastGasPrice = page.locator(
+      'xpath=//button[normalize-space(text())="Fast"]',
+    );
+    const customSlippage = page.locator('xpath=//input[@placeholder="Custom"]');
+    await tabInHeader(page, 'Exchange');
+    await page.locator('xpath=//div[@class="MuiBox-root mui-afg6ra"]').click();
+    await expect(settingsTitle).toBeVisible();
+    itemInSettingsMenu(page, 'Route priority');
+    await expect(bestReturnButton).toBeEnabled();
+    itemInSettingsMenuToBeVisible(page, 'Fastest');
+    await fastestButton.click();
+    itemInSettingsMenuToBeVisible(page, 'Reset settings');
+    itemInSettingsMenu(page, 'Gas price');
+    expect(slowGasPrice).toBeEnabled();
+    expect(fastGasPrice).toBeEnabled();
+    itemInSettingsMenu(page, 'Max. slippage');
+    itemInSettingsMenuToBeVisible(page, '0.5');
+    await expect(customSlippage).toBeVisible();
   });
 
   test.skip('Should handle welcome screen', async ({ page }) => {
@@ -84,7 +119,7 @@ test.describe('Jumper full e2e flow', () => {
     await page
       .locator('xpath=//p[normalize-space(text())="Explore Fluid"]')
       .click();
-    const newPage = await page.waitForEvent('load');
+    const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.exploreFluidURL);
   });
 
@@ -114,6 +149,22 @@ test.describe('Jumper full e2e flow', () => {
     await itemInMenu(page, 'Superfest Festival');
     await expect(learnMoreButton).toBeVisible();
     await expect(page).toHaveURL(values.localSuperfestURL);
+  });
+
+  test('Should be able to open quests mission page and switch background color', async ({
+    page,
+  }) => {
+    const jumperProfileBackButton = await page.locator(
+      'xpath=//p[normalize-space(text())="JUMPER PROFILE"]',
+    );
+    await page.goto(values.aerodromeQuestsURL);
+    expect(jumperProfileBackButton).toBeVisible();
+    await openMainMenu(page);
+    await page.locator('xpath=//*[@id="tab-key-1"]').click(); //switch to Dark theme
+    expectBackgroundColorToHaveCss(page, 'rgb(18, 15, 41)');
+    await page.locator('xpath=//*[@id="tab-key-0"]').click(); //switch to Light theme
+    await openMainMenu(page);
+    expectBackgroundColorToHaveCss(page, 'rgb(243, 235, 255)');
   });
 
   test('Should be able to navigate to X', async ({ page, context }) => {

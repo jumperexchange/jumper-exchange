@@ -65,6 +65,7 @@ export const SuperfestMissionPage = ({
         {/* Big CTA */}
         {CTAsWithAPYs?.length > 0 && (
           <MissionCTA
+            id={quest.id}
             title={attributes?.Title}
             url={attributes?.Link}
             rewards={rewards}

@@ -54,6 +54,7 @@ export const QuestCarousel = ({
                   }
 
                   return (
+<<<<<<< HEAD
                     // <QuestCard
                     //   key={`ongoing-mission-${index}`}
                     //   active={true}
@@ -80,7 +81,13 @@ export const QuestCarousel = ({
                     // />
                     <QuestCardDetailled
                       key={`available-mission-${index}`}
+=======
+                    <QuestCard
+                      key={`ongoing-mission-${index}`}
+                      id={quest?.id}
+>>>>>>> develop
                       active={true}
+                      label={quest.attributes.Label}
                       title={quest?.attributes.Title}
                       image={String(imgURL)}
                       points={quest?.attributes.Points}
