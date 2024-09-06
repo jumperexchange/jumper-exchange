@@ -11,7 +11,6 @@ interface QuestPageProps {
 }
 
 const QuestMissionPage = ({ quest, url, path, platform }: QuestPageProps) => {
-  console.log('QUESTPAGE PATH', path);
   return (
     <QuestsMissionPage
       quest={quest}

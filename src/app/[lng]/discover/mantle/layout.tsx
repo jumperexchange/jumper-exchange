@@ -12,7 +12,6 @@ export default async function PartnerThemeLayout({
   params: { partnerTheme: string };
 }) {
   const partnerThemes = await getPartnerThemes();
-  console.log('partnerThemes', partnerThemes);
   return (
     <NextThemeProvider
       themes={[

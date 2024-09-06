@@ -38,7 +38,6 @@ export const QuestsMissionPage = ({
     userAddress: account?.address,
   });
   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
-  console.log('PATH', path);
   return (
     <QuestsContainer>
       <QuestPageMainBox>
