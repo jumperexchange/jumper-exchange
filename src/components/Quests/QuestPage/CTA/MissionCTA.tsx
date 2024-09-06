@@ -11,6 +11,12 @@ import Link from 'next/link';
 import { IconButtonPrimary } from 'src/components/IconButton';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
 import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
+import { useUserTracking } from 'src/hooks/userTracking';
 import { XPIconBox } from '../../QuestCard/QuestCard.style';
 import { FlexCenterRowBox } from '../QuestsMissionPage.style';
 import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
@@ -70,6 +76,7 @@ interface MissionCtaProps {
   url?: string;
   rewards?: number;
   id?: number;
+  label?: string;
   CTAs: CTALinkInt[];
   variableWeeklyAPY?: boolean;
   signature?: boolean;
@@ -80,6 +87,9 @@ interface MissionCtaProps {
 export const MissionCTA = ({
   CTAs,
   rewards,
+  title,
+  id,
+  label,
   variableWeeklyAPY,
   signature,
   rewardRange,
@@ -90,18 +100,34 @@ export const MissionCTA = ({
     theme.breakpoints.down('md'),
   );
   const theme = useTheme();
+  const { trackEvent } = useUserTracking();
 
-  const handleClick = () => {
-    // trackEvent({
-    //   category: TrackingCategory.BlogArticle,
-    //   //   action: TrackingAction.ClickMissionCta,
-    //   label: 'click-blog-cta',
-    //   disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
-    //   data: {
-    //     [TrackingEventParameter.ArticleTitle]: title || '',
-    //     [TrackingEventParameter.ArticleID]: id || '',
-    //   },
-    // });
+  const handleClick = ({
+    rewardId,
+    id,
+    claimingId,
+    activeCampaign,
+    title,
+  }: {
+    rewardId?: string;
+    id?: number;
+    claimingId: string;
+    activeCampaign?: string;
+    title?: string;
+  }) => {
+    trackEvent({
+      category: TrackingCategory.Missions,
+      action: TrackingAction.ClickMissionCta,
+      label: `click-mission-cta-${id}`,
+      data: {
+        [TrackingEventParameter.MissionCtaRewardId]: rewardId || '',
+        [TrackingEventParameter.MissionCtaClaimingId]: claimingId || '',
+        [TrackingEventParameter.MissionCtaTitle]: title || '',
+        [TrackingEventParameter.MissionCtaLabel]: label || '',
+        [TrackingEventParameter.MissionCtaPartnerId]: id || '',
+        [TrackingEventParameter.MissionCtaCampaign]: activeCampaign || '',
+      },
+    });
   };
 
   return (
@@ -136,7 +162,16 @@ export const MissionCTA = ({
               href={CTA.link || '/'}
               target="_blank"
             >
-              <SeveralMissionCtaContainer onClick={handleClick}>
+              <SeveralMissionCtaContainer
+                onClick={() =>
+                  handleClick({
+                    id,
+                    rewardId: CTA.rewardId,
+                    claimingId: CTA.claimingId,
+                    title: CTA.text,
+                  })
+                }
+              >
                 <CTAExplanationBox>
                   <Image
                     src={CTA.logo}
@@ -201,7 +236,14 @@ export const MissionCTA = ({
                   )}
                   {!isMobile && (
                     <MissionCTAButton
-                      onClick={handleClick}
+                      onClick={() =>
+                        handleClick({
+                          id,
+                          title,
+                          claimingId: CTA.claimingId,
+                          rewardId: CTA.rewardId,
+                        })
+                      }
                       activeCampaign={activeCampaign}
                     />
                   )}

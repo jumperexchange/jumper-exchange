@@ -163,6 +163,8 @@ class QuestStrapiApi extends StrapiApi {
     super({ contentType: 'quests' }); // Set content type to "blog-articles" automatically
     const questParams = new QuestParams(this.apiUrl);
     this.apiUrl = questParams.addParams();
+    process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
+      this.apiUrl.searchParams.set('publicationState', 'preview');
   }
 
   sort(order: 'asc' | 'desc'): this {
