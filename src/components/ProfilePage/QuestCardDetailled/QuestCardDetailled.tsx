@@ -192,15 +192,11 @@ export const QuestCardDetailled = ({
             {active && slug ? (
               <Button
                 disabled={false}
-                variant="secondary"
+                variant="primary"
                 size="medium"
                 styles={{
                   alignItems: 'center',
                   width: '100%',
-                  // '&:hover': {
-                  //   color: '#FFFFFF',
-                  //   backgroundColor: '#ff0420',
-                  // },
                 }}
               >
                 <Typography fontSize="16px" lineHeight="18px" fontWeight={600}>
