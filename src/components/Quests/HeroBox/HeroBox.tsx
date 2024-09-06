@@ -1,12 +1,12 @@
-import { type Theme, Typography, useMediaQuery } from '@mui/material';
+import { Box, type Theme, Typography, useMediaQuery } from '@mui/material';
 import Link from 'next/link';
 import { Button } from 'src/components/Button';
 import { HeroButtonBox, HeroMainBox } from './HeroBox.style';
 
 interface HeroBoxProps {
   title: string;
-  logoMobile?: JSX.Element;
-  logoDesktop?: JSX.Element;
+  logoMobile: JSX.Element;
+  logoDesktop: JSX.Element;
   url: string;
 }
 
@@ -22,7 +22,14 @@ export const HeroBox = ({
 
   return (
     <HeroMainBox>
-      <>{isMobile ? logoMobile : logoDesktop}</>
+      <Box
+        sx={{
+          height: { xs: '160px', md: '400px' },
+          width: { xs: '384px', md: '960px' },
+        }}
+      >
+        {isMobile ? logoMobile : logoDesktop}
+      </Box>
       <Link style={{ textDecoration: 'none' }} href={url} target="_blank">
         <HeroButtonBox>
           <Button

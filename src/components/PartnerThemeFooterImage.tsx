@@ -7,6 +7,8 @@ import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { useSettingsStore } from '@/stores/settings';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
+import { usePathname } from 'next/navigation';
+import { JUMPER_DISCOVER_PATH } from 'src/const/urls';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 import { BackgroundFooterImage } from './Widgets';
@@ -15,6 +17,8 @@ export const PartnerThemeFooterImage = () => {
   const { sourceChainToken, destinationChainToken } =
     useChainTokenSelectionStore();
   const { isSuperfest } = useSuperfest();
+  const pathname = usePathname();
+  const isDiscover = pathname.includes(JUMPER_DISCOVER_PATH);
   const { isMainPaths } = useMainPaths();
   const configTheme = useSettingsStore((state) => state.configTheme);
 
@@ -33,9 +37,8 @@ export const PartnerThemeFooterImage = () => {
     destinationChainToken?.chainId === ChainId.SOL;
 
   const showBasedOnURL =
-    isSuperfest || isMainPaths || !!configTheme?.footerImageUrl;
+    isDiscover || isSuperfest || isMainPaths || !!configTheme?.footerImageUrl;
   const showFooterLogo = !activeChainAlert && !isSmallScreen && showBasedOnURL;
-
   return (
     showFooterLogo &&
     configTheme?.footerImageUrl && (
