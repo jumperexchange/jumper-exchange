@@ -54,40 +54,9 @@ export const QuestCarousel = ({
                   }
 
                   return (
-<<<<<<< HEAD
-                    // <QuestCard
-                    //   key={`ongoing-mission-${index}`}
-                    //   active={true}
-                    //   title={quest?.attributes.Title}
-                    //   image={
-                    //     quest.attributes.Image?.data?.attributes?.url &&
-                    //     new URL(
-                    //       quest.attributes.Image?.data?.attributes?.url,
-                    //       url.origin,
-                    //     ).toString()
-                    //   }
-                    //   points={quest?.attributes.Points}
-                    //   link={quest?.attributes.Link}
-                    //   startDate={quest?.attributes.StartDate}
-                    //   endDate={quest?.attributes.EndDate}
-                    //   platformName={
-                    //     quest?.attributes.quests_platform?.data?.attributes
-                    //       ?.Name
-                    //   }
-                    //   platformImage={new URL(
-                    //     quest.attributes.quests_platform?.data?.attributes?.Logo?.data?.attributes?.url,
-                    //     url.origin,
-                    //   ).toString()}
-                    // />
                     <QuestCardDetailled
                       key={`available-mission-${index}`}
-=======
-                    <QuestCard
-                      key={`ongoing-mission-${index}`}
-                      id={quest?.id}
->>>>>>> develop
                       active={true}
-                      label={quest.attributes.Label}
                       title={quest?.attributes.Title}
                       image={String(imgURL)}
                       points={quest?.attributes.Points}
