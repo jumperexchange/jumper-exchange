@@ -6,8 +6,8 @@ export const VoidQuestCardContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   backgroundColor:
     theme.palette.mode === 'light'
-      ? theme.palette.grey[100]
-      : alpha(theme.palette.grey[100], 0.08),
+      ? '#FFFFFF'
+      : alpha(theme.palette.white.main, 0.08),
   height: '416px',
   width: '272px',
   borderRadius: '24px',
