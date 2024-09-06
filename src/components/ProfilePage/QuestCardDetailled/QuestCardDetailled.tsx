@@ -78,7 +78,7 @@ export const QuestCardDetailled = ({
         href={link || `/quests/${slug}`}
         style={{ textDecoration: 'inherit' }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', height: '65%' }}>
           {image && (
             <Image
               src={image}
