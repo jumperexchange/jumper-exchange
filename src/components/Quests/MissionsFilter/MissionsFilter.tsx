@@ -52,7 +52,7 @@ export const MissionsFilter = ({
         onChange={handleChange}
         input={<OutlinedInput />}
         renderValue={() => {
-          return <Typography fontWeight={700}>{title}</Typography>;
+          return <Typography variant="bodyMediumStrong">{title}</Typography>;
         }}
         MenuProps={MenuProps}
         inputProps={{ 'aria-label': 'Without label' }}

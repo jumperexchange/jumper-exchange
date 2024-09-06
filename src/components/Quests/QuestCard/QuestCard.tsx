@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
-import { OPBadge } from 'src/components/illustrations/OPBadge';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { ButtonSecondary } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
@@ -13,7 +12,6 @@ import { FlexSpaceBetweenBox } from '../QuestPage.style';
 import type { Chain } from '../QuestPage/Banner/Banner';
 import { FlexCenterRowBox } from '../QuestsMissionPage.style';
 import {
-  OPBadgeRelativeBox,
   QuestCardBottomBox,
   QuestCardInfoBox,
   QuestCardMainBox,
@@ -88,16 +86,16 @@ export const QuestCard = ({
               }}
             />
           )}
-          {activeCampaign === 'superfest' && (
-            <OPBadgeRelativeBox>
-              {rewards && rewards?.amount > 0 ? <OPBadge /> : undefined}
-            </OPBadgeRelativeBox>
-          )}
         </Box>
       </Link>
       <QuestCardBottomBox>
         <QuestCardTitleBox>
-          <Typography fontSize="20px" lineHeight="20px" fontWeight={600}>
+          <Typography
+            variant="bodyMedium"
+            fontSize="20px"
+            lineHeight="20px"
+            fontWeight={600}
+          >
             {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
           </Typography>
         </QuestCardTitleBox>
@@ -127,6 +125,7 @@ export const QuestCard = ({
                   bgcolor={theme.palette.primary.main}
                 >
                   <Typography
+                    variant="bodySmallStrong"
                     fontSize="14px"
                     fontWeight={700}
                     lineHeight="18px"
@@ -145,6 +144,7 @@ export const QuestCard = ({
                   bgcolor={theme.palette.primary.main}
                 >
                   <Typography
+                    variant="bodySmallStrong"
                     fontSize="14px"
                     fontWeight={700}
                     lineHeight="18px"
@@ -162,6 +162,7 @@ export const QuestCard = ({
                 bgcolor={!completed ? '#31007A' : '#42B852'}
               >
                 <Typography
+                  variant="bodySmallStrong"
                   fontSize="14px"
                   fontWeight={700}
                   lineHeight="18px"
@@ -187,7 +188,12 @@ export const QuestCard = ({
               size="medium"
               onClick={() => router.push(slug)}
             >
-              <Typography fontSize="16px" lineHeight="18px" fontWeight={600}>
+              <Typography
+                variant="bodyMedium"
+                fontSize="16px"
+                lineHeight="18px"
+                fontWeight={600}
+              >
                 {String(t('questCard.join')).toUpperCase()}
               </Typography>
             </ButtonSecondary>

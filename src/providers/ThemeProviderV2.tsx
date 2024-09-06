@@ -76,6 +76,8 @@ export function ThemeProviderV2({ children, activeTheme, themes }: any) {
     setCookie('theme', themeToUse, { path: '/', sameSite: true });
   }, [resolvedTheme]);
 
+  console.log('CURRENT THEME', currentTheme);
+
   return (
     <>
       <CssBaseline />

@@ -69,7 +69,9 @@ export const AvailableMissionsList = ({
   return (
     <AvailableMissionsContainer>
       <AvailableMissionsHeader>
-        <AvailableMissionsTitle>{'Available Missions'}</AvailableMissionsTitle>
+        <AvailableMissionsTitle variant="headerMedium">
+          {'Available Missions'}
+        </AvailableMissionsTitle>
         <Box display="flex">
           {isMobile ? (
             <MissionsFilter
