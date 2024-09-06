@@ -43,6 +43,7 @@ export const QuestCompletedList = ({
               return (
                 <QuestCard
                   key={`completed-mission-${index}`}
+                  id={pda?.id}
                   active={false}
                   title={pda?.reward.name}
                   image={pda?.reward.image}

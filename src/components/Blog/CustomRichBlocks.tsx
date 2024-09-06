@@ -141,7 +141,6 @@ export const CustomRichBlocks = ({
     },
 
     paragraph: ({ children }: ParagraphElement) => {
-      console.log('PARAGRAPH', children);
       if (children[0].props.text.includes('<JUMPER_CTA')) {
         try {
           const htmlString = children[0].props.text;
