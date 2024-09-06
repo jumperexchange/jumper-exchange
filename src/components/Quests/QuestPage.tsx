@@ -1,12 +1,11 @@
 import type { Account } from '@/hooks/useAccounts';
-import { JUMPER_QUESTS_PATH } from 'src/const/urls';
 import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import type { Quest } from 'src/types/loyaltyPass';
 import { MantleLogo } from '../illustrations/MantleLogo';
 import { ActiveQuestsMissionsCarousel } from './ActiveQuestsMissionsCarousel/ActiveQuestsMissionsCarousel';
 import { AvailableMissionsList } from './AvailableMissionsList/AvailableMissionsList';
 import { HeroBox } from './HeroBox/HeroBox';
-import { QuestPageMainBox, QuestsContainer } from './Quests.style';
+import { QuestPageMainBox, QuestsContainer } from './QuestPage.style';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
 
 interface QuestsProps {
@@ -14,6 +13,7 @@ interface QuestsProps {
   url: string;
   account?: Account;
   quests?: Quest[];
+  path: string;
   isQuestLoading: boolean;
   availableRewards: AvailableRewards[];
   activeCampaigns: string[];
@@ -22,11 +22,12 @@ interface QuestsProps {
   isRewardSuccess: boolean;
 }
 
-export const Quests = ({
+export const QuestPage = ({
   title,
   url,
   account,
   quests,
+  path,
   isQuestLoading,
   availableRewards,
   activeCampaigns,
@@ -57,7 +58,7 @@ export const Quests = ({
         !activeCampaigns ||
         activeCampaigns.length === 0 ? undefined : (
           <ActiveQuestsMissionsCarousel
-            path={JUMPER_QUESTS_PATH}
+            path={path}
             quests={quests}
             loading={isQuestLoading}
             activeCampaigns={activeCampaigns}
@@ -65,7 +66,7 @@ export const Quests = ({
           />
         )}
         <AvailableMissionsList
-          path={JUMPER_QUESTS_PATH}
+          path={path}
           quests={quests}
           loading={isQuestLoading}
           pastCampaigns={pastCampaigns}

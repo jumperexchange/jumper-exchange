@@ -9,7 +9,7 @@ import {
   useWriteContract,
 } from 'wagmi';
 import { MerklDistribABI } from '../../../const/abi/merklABI';
-import { FlexCenterRowBox } from '../QuestPage/QuestsMissionPage.style';
+import { FlexCenterRowBox } from '../QuestsMissionPage.style';
 import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
 import {
   ClaimButtonBox,

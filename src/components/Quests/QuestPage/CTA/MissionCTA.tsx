@@ -12,7 +12,7 @@ import { IconButtonPrimary } from 'src/components/IconButton';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
 import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
 import { XPIconBox } from '../../QuestCard/QuestCard.style';
-import { FlexCenterRowBox } from '../QuestsMissionPage.style';
+import { FlexCenterRowBox } from '../../QuestsMissionPage.style';
 import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 import {
   CTAExplanationBox,
@@ -25,16 +25,13 @@ import {
 } from './MissionCTA.style';
 
 interface MissionCTAButtonProps {
-  activeCampaign?: string;
+  platform?: string;
   onClick: () => void;
 }
 
-const MissionCTAButton = ({
-  activeCampaign,
-  onClick,
-}: MissionCTAButtonProps) => {
+const MissionCTAButton = ({ platform, onClick }: MissionCTAButtonProps) => {
   const theme = useTheme();
-  if (activeCampaign === 'superfest') {
+  if (platform === 'superfest') {
     return (
       <MissionCtaButtonSF onClick={onClick}>
         <ArrowForwardIcon
@@ -74,7 +71,7 @@ interface MissionCtaProps {
   variableWeeklyAPY?: boolean;
   signature?: boolean;
   rewardRange?: string;
-  activeCampaign?: string;
+  platform?: string;
 }
 
 export const MissionCTA = ({
@@ -83,7 +80,7 @@ export const MissionCTA = ({
   variableWeeklyAPY,
   signature,
   rewardRange,
-  activeCampaign,
+  platform,
 }: MissionCtaProps) => {
   // const { trackEvent } = useUserTracking();
   const isMobile = useMediaQuery((theme: Theme) =>
@@ -202,7 +199,7 @@ export const MissionCTA = ({
                   {!isMobile && (
                     <MissionCTAButton
                       onClick={handleClick}
-                      activeCampaign={activeCampaign}
+                      platform={platform}
                     />
                   )}
                 </FlexCenterRowBox>

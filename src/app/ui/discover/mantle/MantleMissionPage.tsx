@@ -10,8 +10,7 @@ interface QuestPageProps {
   platform: string;
 }
 
-const QuestMissionPage = ({ quest, url, path, platform }: QuestPageProps) => {
-  console.log('QUESTPAGE PATH', path);
+const MantleMissionPage = ({ quest, url, path, platform }: QuestPageProps) => {
   return (
     <QuestsMissionPage
       quest={quest}
@@ -22,4 +21,4 @@ const QuestMissionPage = ({ quest, url, path, platform }: QuestPageProps) => {
   );
 };
 
-export default QuestMissionPage;
+export default MantleMissionPage;

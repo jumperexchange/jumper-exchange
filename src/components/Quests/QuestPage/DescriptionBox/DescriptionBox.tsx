@@ -2,7 +2,7 @@ import { Typography } from '@mui/material';
 import {
   LeftTextBox,
   QuestsPageElementContainer,
-} from '../QuestsMissionPage.style';
+} from '../../QuestsMissionPage.style';
 import { DescriptionTitleTypography } from './DescriptionBox.style';
 
 interface DescriptionBox {

@@ -3,25 +3,25 @@ import generateKey from 'src/app/lib/generateKey';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
-import { QuestPageMainBox, QuestsContainer } from '../Quests.style';
-import { BackButton } from './BackButton/BackButton';
-import { BannerBox } from './Banner/Banner';
-import { MissionCTA } from './CTA/MissionCTA';
-import { DescriptionBox } from './DescriptionBox/DescriptionBox';
-import { InformationAlertBox } from './InformationBox/InformationAlertBox';
-import { StepsBox } from './StepsBox/StepsBox';
+import { QuestPageMainBox, QuestsContainer } from './QuestPage.style';
+import { BackButton } from './QuestPage/BackButton/BackButton';
+import { BannerBox } from './QuestPage/Banner/Banner';
+import { MissionCTA } from './QuestPage/CTA/MissionCTA';
+import { DescriptionBox } from './QuestPage/DescriptionBox/DescriptionBox';
+import { InformationAlertBox } from './QuestPage/InformationBox/InformationAlertBox';
+import { StepsBox } from './QuestPage/StepsBox/StepsBox';
 
 interface QuestsMissionPageVar {
   quest: Quest;
   baseUrl: string;
-  activeCampaign?: string;
+  platform?: string;
   path: string;
 }
 
 export const QuestsMissionPage = ({
   quest,
   baseUrl,
-  activeCampaign,
+  platform,
   path,
 }: QuestsMissionPageVar) => {
   const attributes = quest?.attributes;
@@ -38,12 +38,12 @@ export const QuestsMissionPage = ({
     userAddress: account?.address,
   });
   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
-
+  console.log('PATH', path);
   return (
     <QuestsContainer>
       <QuestPageMainBox>
         {/* button to go back */}
-        <BackButton path={path} title={activeCampaign} />
+        <BackButton path={path} title={platform} />
         {/* big component with the main information */}
         <BannerBox
           quest={quest}
@@ -61,7 +61,7 @@ export const QuestsMissionPage = ({
         <MissionCTA
           title={attributes?.Title}
           url={attributes?.Link}
-          activeCampaign={activeCampaign}
+          platform={platform}
           rewards={rewards}
           key={generateKey('cta')}
           CTAs={CTAsWithAPYs}

@@ -1,5 +1,6 @@
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
-import QuestPage from 'src/app/ui/quests/QuestMissionPage';
+import MantleMissionPage from 'src/app/ui/discover/mantle/MantleMissionPage';
+import { JUMPER_DISCOVER_PATH } from 'src/const/urls';
 
 // export async function generateMetadata({
 //   params,
@@ -44,5 +45,12 @@ import QuestPage from 'src/app/ui/quests/QuestMissionPage';
 export default async function Page({ params }: { params: { slug: string } }) {
   const { data, url } = await getQuestBySlug(params.slug);
 
-  return <QuestPage quest={data?.data?.[0]} url={url} />;
+  return (
+    <MantleMissionPage
+      quest={data?.data?.[0]}
+      url={url}
+      path={`${JUMPER_DISCOVER_PATH}mantle`}
+      platform={'Mantle'}
+    />
+  );
 }

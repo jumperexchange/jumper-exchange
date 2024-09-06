@@ -1,11 +1,11 @@
 'use client';
-
-import { Quests as QuestsComponent } from 'src/components/Quests';
+import { QuestPage as QuestsPageComponent } from 'src/components/Quests/QuestPage';
+import { JUMPER_DISCOVER_PATH } from 'src/const/urls';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 
-const Quests = () => {
+const MantlePage = () => {
   //HOOKS
   const { account } = useAccounts();
   const { quests, isQuestLoading } = useOngoingFestMissions('superfest'); // todo: add 'mantle' filter
@@ -20,9 +20,10 @@ const Quests = () => {
     userAddress: account?.address,
   });
   return (
-    <QuestsComponent
+    <QuestsPageComponent
       title={'Hello Mantle'}
       url={'https://www.mantle.xyz/'}
+      path={`${JUMPER_DISCOVER_PATH}mantle/`}
       quests={quests}
       availableRewards={availableRewards}
       activeCampaigns={activeCampaigns}
@@ -34,4 +35,4 @@ const Quests = () => {
   );
 };
 
-export default Quests;
+export default MantlePage;

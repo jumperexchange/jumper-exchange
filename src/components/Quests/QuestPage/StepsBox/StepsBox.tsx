@@ -1,10 +1,10 @@
 import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { CustomRichBlocks } from 'src/components/Blog';
-import { DescriptionTitleTypography } from '../DescriptionBox/DescriptionBox.style';
 import {
   LeftTextBox,
   QuestsPageElementContainer,
-} from '../QuestsMissionPage.style';
+} from '../../QuestsMissionPage.style';
+import { DescriptionTitleTypography } from '../DescriptionBox/DescriptionBox.style';
 
 interface StepsBoxProps {
   steps?: RootNode[];

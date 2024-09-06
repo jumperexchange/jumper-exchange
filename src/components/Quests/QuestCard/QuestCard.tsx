@@ -9,9 +9,9 @@ import { OPBadge } from 'src/components/illustrations/OPBadge';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { ButtonSecondary } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
+import { FlexSpaceBetweenBox } from '../QuestPage.style';
 import type { Chain } from '../QuestPage/Banner/Banner';
-import { FlexCenterRowBox } from '../QuestPage/QuestsMissionPage.style';
-import { FlexSpaceBetweenBox } from '../Quests.style';
+import { FlexCenterRowBox } from '../QuestsMissionPage.style';
 import {
   OPBadgeRelativeBox,
   QuestCardBottomBox,

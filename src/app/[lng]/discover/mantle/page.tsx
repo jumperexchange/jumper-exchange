@@ -1,5 +1,5 @@
 import { type Metadata } from 'next';
-import Quests from 'src/app/ui/quests/Quests';
+import MantlePage from 'src/app/ui/discover/mantle/MantlePage';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -12,5 +12,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  return <Quests />;
+  return <MantlePage />;
 }

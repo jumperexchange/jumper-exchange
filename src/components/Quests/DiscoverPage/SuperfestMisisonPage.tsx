@@ -4,7 +4,7 @@ import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { useTurtleMember } from 'src/hooks/useTurtleMember';
 import { type Quest } from 'src/types/loyaltyPass';
-import { QuestsContainer } from '../Quests.style';
+import { QuestsContainer } from '../QuestPage.style';
 import { BackButton } from './BackButton/BackButton';
 import { BannerBox } from './Banner/Banner';
 import { MissionCTA } from './CTA/MissionCTA';

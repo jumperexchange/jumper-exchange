@@ -1,6 +1,6 @@
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Typography } from '@mui/material';
-import { LeftTextBox } from '../QuestsMissionPage.style';
+import { LeftTextBox } from '../../QuestsMissionPage.style';
 import { InformationBox } from './InformationAlertBox.style';
 
 interface InformationAlertBoxProps {
