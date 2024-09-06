@@ -78,7 +78,9 @@ export const BannerBox = ({
         </BannerImageBox>
         <BannerBottomBox>
           <BannerTitleBox>
-            <BannerTitleTypography>{attributes?.Title}</BannerTitleTypography>
+            <BannerTitleTypography variant="headerMedium">
+              {attributes?.Title}
+            </BannerTitleTypography>
           </BannerTitleBox>
           <RewardMainBox>
             {/* chains  */}

@@ -15,7 +15,7 @@ export const StepsBox = ({ steps, baseUrl }: StepsBoxProps) => {
   return (
     <QuestsPageElementContainer>
       <LeftTextBox>
-        <DescriptionTitleTypography>
+        <DescriptionTitleTypography variant="headerMedium">
           Steps to complete the mission
         </DescriptionTitleTypography>
       </LeftTextBox>

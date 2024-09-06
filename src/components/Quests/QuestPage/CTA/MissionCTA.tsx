@@ -104,10 +104,13 @@ export const MissionCTA = ({
   return (
     <CTAMainBox>
       <StartedTitleBox>
-        <StartedTitleTypography>Get Started</StartedTitleTypography>
+        <StartedTitleTypography variant="headerLarge">
+          Get Started
+        </StartedTitleTypography>
         {!signature && rewards ? (
           <Box marginTop="32px">
             <Typography
+              variant="bodyMedium"
               fontSize={{ xs: '14px', md: '18px' }}
               lineHeight={{ xs: '14px', md: '18px' }}
               fontWeight={400}
@@ -143,6 +146,7 @@ export const MissionCTA = ({
                     priority={false}
                   />
                   <Typography
+                    variant="bodyMedium"
                     marginTop={{ xs: '16px', md: '0px' }}
                     fontSize={{ xs: '16px', sm: '22px' }}
                     fontWeight={700}
@@ -160,6 +164,7 @@ export const MissionCTA = ({
                       minWidth={'88px'}
                     >
                       <Typography
+                        variant="bodySmall"
                         fontSize="16px"
                         fontWeight={700}
                         lineHeight="20px"
@@ -180,6 +185,7 @@ export const MissionCTA = ({
                       minWidth={'88px'}
                     >
                       <Typography
+                        variant="bodyMediumStrong"
                         fontSize="16px"
                         fontWeight={700}
                         lineHeight="20px"

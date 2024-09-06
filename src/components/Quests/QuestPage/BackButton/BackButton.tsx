@@ -30,6 +30,7 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
           sx={{ color: '#FFFFFF', width: '16px', height: '16px' }}
         />
         <Typography
+          variant="bodySmall"
           fontSize="14px"
           lineHeight="14px"
           fontWeight={500}

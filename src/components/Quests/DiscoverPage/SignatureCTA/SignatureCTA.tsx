@@ -147,7 +147,7 @@ export const SignatureCTA = ({
                 //* todo: check typography (sora) *//
               }
               <Typography
-                variant="bodyMediumStrong"
+                variant="bodyMedium"
                 fontSize={{ xs: '16px', sm: '22px' }}
                 marginLeft={'16px'}
               >

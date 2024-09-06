@@ -1,4 +1,4 @@
-import { sequel65, sora } from '@/fonts/fonts';
+import { sora } from '@/fonts/fonts';
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Typography, alpha, darken } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -119,7 +119,6 @@ export const SeveralCTABox = styled(Box)(({ theme }) => ({
   },
 }));
 export const StartedTitleTypography = styled(Typography)(({ theme }) => ({
-  fontFamily: sequel65.style.fontFamily,
   [theme.breakpoints.down('md' as Breakpoint)]: {
     fontSize: '16px',
     fontWeight: 600,

@@ -75,7 +75,9 @@ export const MissionCTA = ({
   return (
     <CTAMainBox>
       <StartedTitleBox>
-        <StartedTitleTypography>Get Started</StartedTitleTypography>
+        <StartedTitleTypography variant="headerLarge">
+          Get Started
+        </StartedTitleTypography>
         {!signature && rewards ? (
           <Box marginTop="32px">
             {
