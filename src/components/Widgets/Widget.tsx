@@ -28,6 +28,7 @@ import { useUserTracking } from 'src/hooks/userTracking';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
+import { FlexibleFee } from '../FlexibleFee/FlexibleFee';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
@@ -220,6 +221,14 @@ export function Widget({
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed}
     >
+      <FlexibleFee
+        rate={'0.5%'}
+        isLoading={false}
+        isSuccess={false}
+        onClick={() => {
+          console.log('Contribute with this handler');
+        }}
+      />
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly fallback={<WidgetSkeleton config={config} />}>
         <LiFiWidget integrator={config.integrator} config={config} />

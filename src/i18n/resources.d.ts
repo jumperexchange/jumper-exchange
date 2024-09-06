@@ -132,6 +132,12 @@ interface Resources {
       mobileTitle: 'Only available on Desktop';
       mobileDescription: 'The Jumper Profile page is not available on small screens yet. We are working on it.';
     };
+    flexibleFee: {
+      title: 'Contribute to improve Jumper';
+      tooltip: 'Lorem ipsum...';
+      availableAmount: '{{amountUsd}} • {{amount}} {{chain}} available';
+      contribute: 'Contribute';
+    };
   };
 }
 
