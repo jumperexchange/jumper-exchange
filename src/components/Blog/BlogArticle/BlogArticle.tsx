@@ -77,7 +77,7 @@ export const BlogArticle = ({
       <BlogArticleContainer>
         <BlogArticleContentContainer sx={{ marginTop: 0 }}>
           <BlogArticleTopHeader>
-            {!!tags?.data[0]?.attributes.Title ? (
+            {tags?.data[0]?.attributes.Title ? (
               <Tag
                 color={tags.data[0]?.attributes.TextColor}
                 backgroundColor={tags.data[0]?.attributes.BackgroundColor}
@@ -90,7 +90,7 @@ export const BlogArticle = ({
             ) : (
               <BlogArticleHeaderTagSkeleton variant="rectangular" />
             )}
-            {!!createdAt ? (
+            {createdAt ? (
               <BlogArticleHeaderMeta>
                 <BlogArticleHeaderMetaDate variant="bodyXSmall" as="span">
                   {formatDate(publishedAt || createdAt)}
