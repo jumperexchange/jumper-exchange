@@ -1,4 +1,14 @@
 import type { Quest } from '@/types/loyaltyPass';
+import {
+  Box,
+  type SelectChangeEvent,
+  type Theme,
+  useMediaQuery,
+} from '@mui/material';
+import { useState } from 'react';
+import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
+import { checkInclusion } from '../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
+import { MissionsFilter } from '../MissionsFilter/MissionsFilter';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import {
@@ -7,16 +17,6 @@ import {
   AvailableMissionsStack,
   AvailableMissionsTitle,
 } from './AvailableMissionsList.style';
-import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
-import {
-  Box,
-  type SelectChangeEvent,
-  type Theme,
-  useMediaQuery,
-} from '@mui/material';
-import { useState } from 'react';
-import { MissionsFilter } from '../MissionsFilter/MissionsFilter';
-import { checkInclusion } from '../ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 
 const chains = ['Optimism', 'Base', 'Mode', 'Fraxtal'];
 
@@ -27,7 +27,6 @@ const category = [
   'Derivatives',
   'Yield',
 ];
-
 interface AvailableMissionsListProps {
   quests?: Quest[];
   pastCampaigns?: string[];
@@ -47,14 +46,12 @@ export const AvailableMissionsList = ({
   const [chainsFilter, setChainsFilter] = useState<string[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
   const { url } = useOngoingFestMissions();
-
   const handleChainChange = (event: SelectChangeEvent<typeof chainsFilter>) => {
     const {
       target: { value },
     } = event;
     setChainsFilter(typeof value === 'string' ? value.split(',') : value);
   };
-
   const handleCategoryChange = (
     event: SelectChangeEvent<typeof categoryFilter>,
   ) => {
@@ -63,7 +60,6 @@ export const AvailableMissionsList = ({
     } = event;
     setCategoryFilter(typeof value === 'string' ? value.split(',') : value);
   };
-
   return (
     <AvailableMissionsContainer>
       <AvailableMissionsHeader>
@@ -118,7 +114,6 @@ export const AvailableMissionsList = ({
                 quest.attributes?.CustomInformation?.['claimingIds'];
               const rewardsIds =
                 quest.attributes?.CustomInformation?.['rewardsIds'];
-
               //todo: exclude in a dedicated helper function
               if (chains && chainsFilter && chainsFilter.length > 0) {
                 let included = false;
@@ -145,7 +140,6 @@ export const AvailableMissionsList = ({
               ) {
                 return undefined;
               }
-
               let completed = false;
               if (rewardsIds && pastCampaigns) {
                 completed = checkInclusion(pastCampaigns, rewardsIds);
@@ -164,6 +158,8 @@ export const AvailableMissionsList = ({
                   active={true}
                   title={quest?.attributes.Title}
                   image={String(imgURL)}
+                  id={quest.id}
+                  label={quest?.attributes.Label}
                   points={quest?.attributes.Points}
                   link={quest?.attributes.Link}
                   startDate={quest?.attributes.StartDate}
