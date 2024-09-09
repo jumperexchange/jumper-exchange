@@ -49,21 +49,25 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
       account?.address?.toLowerCase() !== storedAddress?.toLowerCase());
 
   // query
-  const apiBaseUrl = process.env.NEXT_PUBLIC_JUMPER_API;
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['loyalty-pass', account?.address],
     queryFn: async () => {
-      const res = await fetch(`${apiBaseUrl}/users/${account?.address}`);
+      const res = await fetch(
+        `${apiBaseUrl}/wallets/${account?.address}/rewards`,
+      );
 
       if (!res.ok) {
         return undefined;
       }
 
-      const data = await res.json();
+      const jsonResponse = await res.json();
 
-      if (!data || !account?.address) {
+      if (!jsonResponse || !jsonResponse.data || !account?.address) {
         return undefined;
       }
+
+      const { data } = jsonResponse;
 
       setLoyaltyPassData(
         account.address,

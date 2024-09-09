@@ -1,5 +1,6 @@
 'use client';
 import { ChainId, ChainType } from '@lifi/sdk';
+import type { CreateConnectorFnExtended } from '@lifi/wallet-management';
 import type { WalletAdapter } from '@solana/wallet-adapter-base';
 import type { Wallet } from '@solana/wallet-adapter-react';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -52,7 +53,7 @@ export interface AccountResult {
   accounts: Account[];
 }
 
-let lastConnectedAccount: Wallet | Connector;
+let lastConnectedAccount: Wallet | Connector | CreateConnectorFnExtended;
 
 export const useAccounts = (): AccountResult => {
   const account = useWagmiAccount();
@@ -102,7 +103,7 @@ export const useAccounts = (): AccountResult => {
         svm.status === 'connected' &&
         lastConnectedAccount
       ) {
-        if ((lastConnectedAccount as Connector)?.name === evm.connector?.name) {
+        if ((lastConnectedAccount as Connector)?.id === evm.connector?.id) {
           return evm;
         } else {
           return svm;
@@ -145,19 +146,27 @@ export const useAccountConnect = () => {
     if (combinedWallet.evm) {
       wagmiDisconnect();
       lastConnectedAccount = combinedWallet.evm;
-      await connectAsync({ connector: combinedWallet.evm! });
-      trackEvent({
-        category: TrackingCategory.Connect,
-        action: TrackingAction.ConnectWallet,
-        label: 'connect-wallet',
-        data: {
-          [TrackingEventParameter.Wallet]: combinedWallet.evm.name,
-          [TrackingEventParameter.Ecosystem]: ChainType.EVM,
-          [TrackingEventParameter.ChainId]:
-            await combinedWallet.evm.getChainId(),
-          [TrackingEventParameter.WalletAddress]: `${(await combinedWallet.evm.getAccounts())?.[0]}`,
+      const walletDisplayName =
+        (combinedWallet.evm as CreateConnectorFnExtended)?.displayName ||
+        (combinedWallet.evm as Connector)?.name;
+      await connectAsync(
+        { connector: combinedWallet.evm! },
+        {
+          onSuccess(data) {
+            trackEvent({
+              category: TrackingCategory.Connect,
+              action: TrackingAction.ConnectWallet,
+              label: 'connect-wallet',
+              data: {
+                [TrackingEventParameter.Wallet]: walletDisplayName,
+                [TrackingEventParameter.Ecosystem]: ChainType.EVM,
+                [TrackingEventParameter.ChainId]: data.chainId,
+                [TrackingEventParameter.WalletAddress]: `${data.accounts?.[0]}`,
+              },
+            });
+          },
         },
-      });
+      );
     } else if (combinedWallet.svm) {
       if (connected) {
         disconnect();

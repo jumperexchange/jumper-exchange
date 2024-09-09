@@ -7,10 +7,7 @@ export const NFTClaimingContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   borderRadius: '12px',
   width: '90%',
-  boxShadow:
-    theme.palette.mode === 'dark'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+  boxShadow: theme.palette.shadow.main,
   [theme.breakpoints.down('md' as Breakpoint)]: {
     marginTop: '64px',
   },
@@ -66,19 +63,20 @@ export const NFTClaimingTitle = styled(Typography, {
 export const NFTClaimingDescription = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
 })(({ theme }) => ({
+  maxWidth: '600px',
   marginTop: theme.spacing(4),
   fontWeight: 500,
   fontSize: '16px',
   lineHeight: '24px',
   typography: sora.style.fontFamily,
   color: 'inherit',
-  margin: theme.spacing(3, 1.5, 0),
+  margin: theme.spacing(3, 'auto'),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(0, 1.5, 0),
+    margin: theme.spacing(0, 'auto'),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     justifyContent: 'flex-start',
-    margin: 0,
+    margin: '0 auto',
   },
 }));
 

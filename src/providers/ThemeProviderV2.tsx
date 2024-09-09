@@ -1,20 +1,19 @@
 'use client';
 
-import * as React from 'react';
-import { useTheme } from 'next-themes';
-import { CssBaseline } from '@mui/material';
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { useEffect, useState } from 'react';
-import { darkTheme, lightTheme } from 'src/theme';
-import { useCookies } from 'react-cookie';
+import { useSettingsStore } from '@/stores/settings';
 import {
   formatConfig,
   formatTheme,
   getAvailableThemeModes,
 } from '@/utils/formatTheme';
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
-import { useSettingsStore } from '@/stores/settings';
 import type { PartnerThemesData } from '@/types/strapi';
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { darkTheme, lightTheme } from 'src/theme';
 
 function getPartnerTheme(themes: PartnerThemesData[], activeTheme?: string) {
   return themes?.find((d) => d.attributes.uid === activeTheme)?.attributes;

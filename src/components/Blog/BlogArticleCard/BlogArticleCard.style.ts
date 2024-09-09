@@ -19,10 +19,7 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   border: 'unset',
   padding: theme.spacing(2),
   borderRadius: '32px',
-  background:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : theme.palette.alphaLight200.main,
+  background: theme.palette.bgTertiary.main,
   transition: 'background-color 250ms',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     minWidth: 250,
@@ -72,7 +69,9 @@ export const BlogArticleCardImage = styled('img')(({ theme }) => ({
   width: '100%',
   height: 'auto',
   borderRadius: '16px',
-  objectFit: 'contain',
+  objectFit: 'cover',
+  aspectRatio: 1.6,
+  objectPosition: 'left',
 }));
 
 export const BlogArticleCardImageSkeleton = styled(Skeleton)(({ theme }) => ({

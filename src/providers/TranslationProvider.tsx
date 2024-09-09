@@ -3,7 +3,7 @@
 import type { Resource } from 'i18next';
 import { createInstance } from 'i18next';
 import type { ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { fallbackLng } from 'src/i18n';
 import initTranslations from '../app/i18n';

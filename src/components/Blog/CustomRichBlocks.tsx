@@ -9,7 +9,8 @@ import type { ThemeModesSupported } from '@/types/settings';
 import type { MediaAttributes } from '@/types/strapi';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import type { JSX } from 'react';
+import { isValidElement, type JSX, type ReactElement } from 'react';
+import nl2br from 'react-nl2br';
 import { BlogParagraphContainer } from './BlogArticle/BlogArticle.style';
 import type { BlogWidgetProps } from './BlogWidget';
 import { BlogWidget } from './BlogWidget';
@@ -43,6 +44,30 @@ interface WidgetRouteSettings
   toChain?: string;
 }
 
+interface ParagraphProps {
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  strikethrough?: boolean;
+  [key: string]: any;
+}
+
+interface QuoteProps {
+  text: string;
+  [key: string]: any;
+}
+
+interface RichElement<T> {
+  key: string | null;
+  props: T;
+  ref: any;
+  [key: string]: any;
+}
+
+type ParagraphElement = RichElement<ParagraphProps>;
+type QuoteElement = RichElement<QuoteProps>;
+
 export const CustomRichBlocks = ({
   id,
   baseUrl,
@@ -55,6 +80,7 @@ export const CustomRichBlocks = ({
       baseUrl ? (
         <Lightbox imageData={data.image} baseUrl={baseUrl} />
       ) : undefined,
+
     heading: ({
       children,
       level,
@@ -101,7 +127,20 @@ export const CustomRichBlocks = ({
           );
       }
     },
-    paragraph: ({ children }: any) => {
+
+    quote: ({ children }: { children: QuoteElement[] }) => {
+      return children.map((quote) => {
+        return (
+          <BlogParagraphContainer key={generateKey('quote')}>
+            <BlogParagraph quote={true} as="q">
+              {quote.props.text}
+            </BlogParagraph>
+          </BlogParagraphContainer>
+        );
+      });
+    },
+
+    paragraph: ({ children }: ParagraphElement) => {
       if (children[0].props.text.includes('<JUMPER_CTA')) {
         try {
           const htmlString = children[0].props.text;
@@ -181,14 +220,14 @@ export const CustomRichBlocks = ({
             />
           );
         } catch (error) {
-          // console.log(error);
+          console.log(error);
           return;
         }
       } else {
         return (
           <BlogParagraphContainer>
-            {children.map((el: any, index: number) => {
-              if (el.props.text && el.props.text !== '') {
+            {children.map((el: ParagraphElement, index: number) => {
+              if (el.props.text || el.props.text !== '') {
                 if (el.props.content?.type === 'link') {
                   return (
                     <BlogLink
@@ -199,18 +238,29 @@ export const CustomRichBlocks = ({
                     </BlogLink>
                   );
                 } else {
-                  return (
-                    <BlogParagraph
-                      italic={el.props.italic}
-                      strikethrough={el.props.strikethrough}
-                      underline={el.props.underline}
-                      bold={el.props.bold}
-                      key={`blog-paragraph-${index}`}
-                    >
-                      {el.props.text}
-                    </BlogParagraph>
+                  const nl2brText: Array<ReactElement | string> = nl2br(
+                    el.props.text,
                   );
+                  return nl2brText.map((line, lineIndex: number) => {
+                    if (isValidElement(line) && line.type === 'br') {
+                      // adds <br> from nl2br
+                      return line;
+                    }
+                    return (
+                      <BlogParagraph
+                        italic={el.props.italic}
+                        strikethrough={el.props.strikethrough}
+                        underline={el.props.underline}
+                        bold={el.props.bold}
+                        key={`blog-paragraph-line-${index}-${lineIndex}`}
+                      >
+                        {line}
+                      </BlogParagraph>
+                    );
+                  });
                 }
+              } else {
+                return <></>;
               }
             })}
           </BlogParagraphContainer>

@@ -4,7 +4,6 @@ import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { SuperfestCarouselContainer } from './ActiveSuperfestMissionsCarousel.style';
-
 export function checkInclusion(
   activeCampaigns: string[],
   claimingIds: string[],
@@ -17,7 +16,6 @@ export function checkInclusion(
   }
   return false;
 }
-
 interface QuestCarouselProps {
   quests?: Quest[];
   loading: boolean;
@@ -58,14 +56,11 @@ export const ActiveSuperfestMissionsCarousel = ({
                 if (claimingIds && activeCampaigns) {
                   included = checkInclusion(activeCampaigns, claimingIds);
                 }
-
                 if (rewardsIds && pastCampaigns) {
                   completed = checkInclusion(pastCampaigns, rewardsIds);
                 }
-
                 const baseURL = quest.attributes.Image?.data?.attributes?.url;
                 const imgURL = new URL(baseURL, url.origin);
-
                 if (included) {
                   return (
                     <QuestCard
@@ -73,6 +68,8 @@ export const ActiveSuperfestMissionsCarousel = ({
                       active={true}
                       title={quest?.attributes.Title}
                       image={String(imgURL)}
+                      id={quest?.id}
+                      label={quest.attributes.Label}
                       points={quest?.attributes.Points}
                       link={quest?.attributes.Link}
                       startDate={quest?.attributes.StartDate}

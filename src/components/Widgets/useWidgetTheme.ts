@@ -1,12 +1,12 @@
-import type { Breakpoint } from '@mui/material';
-import { useTheme } from '@mui/material';
-import { useTheme as useNextTheme } from 'next-themes';
-import type { PartnerTheme } from 'src/types/strapi';
-import { useEffect } from 'react';
-import { deepmerge } from '@mui/utils';
 import { useSettingsStore } from '@/stores/settings';
 import { formatTheme } from '@/utils/formatTheme';
 import type { WidgetConfig } from '@lifi/widget';
+import type { Breakpoint } from '@mui/material';
+import { useTheme } from '@mui/material';
+import { deepmerge } from '@mui/utils';
+import { useTheme as useNextTheme } from 'next-themes';
+import { useEffect } from 'react';
+import type { PartnerTheme } from 'src/types/strapi';
 
 export const useWidgetTheme = (): PartnerTheme => {
   const theme = useTheme();
@@ -21,10 +21,10 @@ export const useWidgetTheme = (): PartnerTheme => {
     config: {
       appearance: theme.palette.mode,
       theme: {
-        //todo: fix typography
-        // typography: {
-        //   fontFamily: theme.typography,
-        // },
+        // @ts-expect-error
+        typography: {
+          fontFamily: theme.typography.fontFamily,
+        },
         container: {
           borderRadius: '12px',
           maxWidth: '100%',

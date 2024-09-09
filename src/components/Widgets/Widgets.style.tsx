@@ -13,8 +13,8 @@ export const WidgetContainer = styled(Box, {
     prop !== 'isActive' && prop !== 'welcomeScreenClosed',
 })<WidgetContainerProps>(({ theme, welcomeScreenClosed = false }) => ({
   display: 'flex',
-  flexDirection: 'column-reverse',
-  margin: '0 auto 24px',
+  flexDirection: 'column',
+  margin: theme.spacing(0, 'auto', 3),
   overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
   width: '100%',
   minHeight: '50vh',
@@ -22,6 +22,14 @@ export const WidgetContainer = styled(Box, {
   transitionDuration: '.3s',
   transitionTimingFunction: 'ease-in-out',
   maxHeight: 'inherit',
+
+  // radial shadow glow -> animation
+  '&:hover:before': {
+    ...(!welcomeScreenClosed && {
+      opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
+      top: '45%',
+    }),
+  },
 
   // setting hover animations on widget wrappers
   '& > .widget-wrapper > div': {
@@ -129,14 +137,6 @@ export const WidgetContainer = styled(Box, {
         : !welcomeScreenClosed && theme.palette.mode === 'light'
           ? 0.12
           : 0,
-  },
-
-  // radial shadow glow -> animation
-  '&:hover:before': {
-    ...(!welcomeScreenClosed && {
-      opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
-      top: '45%',
-    }),
   },
 }));
 

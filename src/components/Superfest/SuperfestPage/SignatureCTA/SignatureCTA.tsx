@@ -13,7 +13,6 @@ import {
   CTAExplanationBox,
   SeveralMissionCtaContainer,
 } from '../CTA/MissionCTA.style';
-import { useTurtleMember } from 'src/hooks/useTurtleMember';
 import { SiweMessage, generateNonce } from 'siwe';
 
 interface SignatureInt {
@@ -23,9 +22,13 @@ interface SignatureInt {
 
 interface SignatureCtaProps {
   signature?: SignatureInt;
+  isTurtleMember?: boolean;
 }
 
-export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
+export const SignatureCTA = ({
+  signature,
+  isTurtleMember,
+}: SignatureCtaProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const { account } = useAccounts();
@@ -35,13 +38,6 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
   const [messagedHasBeenSigned, setMessagedHasBeenSigned] =
     useState<boolean>(false);
   const { signMessageAsync } = useSignMessage();
-  const {
-    isMember,
-    isLoading: isMemberCheckLoading,
-    isSuccess: isMemberCheckSuccess,
-  } = useTurtleMember({
-    userAddress: account?.address,
-  });
 
   const handleSignatureClick = async () => {
     try {
@@ -107,7 +103,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
 
   return (
     <>
-      {(messagedHasBeenSigned || isMember) && (
+      {(messagedHasBeenSigned || isTurtleMember) && (
         <Box sx={{ width: '100%', marginBottom: '16px' }}>
           <SeveralMissionCtaContainer
             sx={{ cursor: 'not-allowed', '&:hover': { cursor: 'not-allowed' } }}
@@ -126,13 +122,15 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
                 fontWeight={700}
                 marginLeft={'16px'}
               >
-                {'You are a turtle club member.'}
+                {
+                  'Congrats, you are a Turtle Club member now. Pour some whisky and enjoy the boosted yields on your existing DeFi positions.'
+                }
               </SoraTypography>
             </CTAExplanationBox>
           </SeveralMissionCtaContainer>
         </Box>
       )}
-      {!messagedHasBeenSigned && !isMember && (
+      {!messagedHasBeenSigned && !isTurtleMember && (
         <Box sx={{ width: '100%', marginBottom: '16px' }}>
           <SeveralMissionCtaContainer onClick={handleSignatureClick}>
             <CTAExplanationBox>
