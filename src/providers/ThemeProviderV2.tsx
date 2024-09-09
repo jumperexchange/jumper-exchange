@@ -9,17 +9,18 @@ import {
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
+import type { PartnerThemesData } from '@/types/strapi';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { darkTheme, lightTheme } from 'src/theme';
 
-function getPartnerTheme(themes: any[], activeTheme: string) {
+function getPartnerTheme(themes: PartnerThemesData[], activeTheme?: string) {
   return themes?.find((d) => d.attributes.uid === activeTheme)?.attributes;
 }
 
-function getMuiTheme(themes: any[], activeTheme: string) {
-  if (['dark', 'system'].includes(activeTheme)) {
+function getMuiTheme(themes: PartnerThemesData[], activeTheme?: string) {
+  if (activeTheme && ['dark', 'system'].includes(activeTheme)) {
     return darkTheme;
   } else if (activeTheme === 'light') {
     return lightTheme;
@@ -39,17 +40,26 @@ function getMuiTheme(themes: any[], activeTheme: string) {
   return deepmerge(baseTheme, formattedTheme.activeMUITheme);
 }
 
+interface ThemeProviderV2Props {
+  children: React.ReactNode;
+  activeTheme?: string;
+  themes: PartnerThemesData[];
+}
+
 /**
  * Your app's theme provider component.
- * 'use client' is essential for next-themes to work with app-dir.
+ * provider for the MUI theme context, mainly setting up the MUI provider, very linked to the next-theme provider
  */
-export function ThemeProviderV2({ children, activeTheme, themes }: any) {
+export function ThemeProviderV2({
+  children,
+  activeTheme,
+  themes,
+}: ThemeProviderV2Props) {
   const { resolvedTheme, forcedTheme, ...props2 } = useTheme();
   const [cookie, setCookie] = useCookies(['theme']);
   const [partnerThemes, setPartnerThemes] = useSettingsStore((state) => [
     state.partnerThemes,
     state.setPartnerThemes,
-    state.setActiveTheme,
   ]);
   const [configTheme, setConfigTheme] = useSettingsStore((state) => [
     state.configTheme,

@@ -77,7 +77,9 @@ export const RewardsAmountBox = ({
           fontWeight={700}
           color={theme.palette.mode === 'dark' ? '#ffffff' : '#000000'}
         >
-          {!account?.address || (isSuccess && rewardAmount === 0) || isConfirmed
+          {!account?.address ||
+          (isSuccess && (rewardAmount === 0 || !rewardAmount)) ||
+          isConfirmed
             ? '0'
             : rewardAmount
               ? rewardAmount.toFixed(REWARDS_DECIMALS)
