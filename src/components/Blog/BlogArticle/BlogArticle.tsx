@@ -1,4 +1,6 @@
-import { useTheme } from '@mui/material';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import XIcon from '@mui/icons-material/X';
+import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
   BlogArticlAuthorName,
@@ -34,8 +36,11 @@ import type { ThemeModesSupported } from '@/types/settings';
 import type { AuthorData, StrapiImageData, TagData } from '@/types/strapi';
 import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
+import Link from 'next/link';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { IconButtonTertiary } from 'src/components/IconButton.style';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
+import { ShareIconsContainer } from './ShareArticleIcons.style';
 
 interface BlogArticleProps {
   title?: string;
@@ -71,6 +76,8 @@ export const BlogArticle = ({
   const theme = useTheme();
   const minRead = readingTime(content);
   const { t } = useTranslation();
+
+  console.log('AUTHOR', author);
 
   return (
     <>
@@ -126,16 +133,52 @@ export const BlogArticle = ({
               ) : (
                 <BlogAuthorAvatarSkeleton variant="rounded" />
               )}
-              {author?.data ? (
-                <BlogArticlAuthorName
-                  variant="bodyXSmallStrong"
-                  component="span"
-                >
-                  {author.data?.attributes.Name}
-                </BlogArticlAuthorName>
-              ) : (
-                <BlogArticlAuthorNameSkeleton variant="text" />
-              )}
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                {author?.data ? (
+                  <BlogArticlAuthorName
+                    variant="bodyXSmallStrong"
+                    component="span"
+                  >
+                    {author.data?.attributes.Name}
+                  </BlogArticlAuthorName>
+                ) : (
+                  <BlogArticlAuthorNameSkeleton variant="text" />
+                )}
+                {(author?.data && author.data.attributes.Twitter) ||
+                (author?.data && author.data.attributes.LinkedIn) ? (
+                  <ShareIconsContainer
+                    sx={{
+                      marginTop: theme.spacing(0.5),
+                      alignItems: 'flex-start',
+                    }}
+                  >
+                    {author.data.attributes.LinkedIn ? (
+                      <Link href={author.data.attributes.LinkedIn}>
+                        <IconButtonTertiary
+                          sx={{ width: '24px', height: '24px' }}
+                        >
+                          <LinkedInIcon sx={{ width: '14px' }} />
+                        </IconButtonTertiary>
+                      </Link>
+                    ) : null}
+                    {author.data.attributes.Twitter ? (
+                      <Link href={author.data.attributes.Twitter}>
+                        <IconButtonTertiary
+                          sx={{ width: '24px', height: '24px' }}
+                        >
+                          <XIcon sx={{ width: '14px' }} />
+                        </IconButtonTertiary>
+                      </Link>
+                    ) : null}
+                  </ShareIconsContainer>
+                ) : null}
+              </Box>
             </BlogAuthorContainer>
             <ShareArticleIcons title={title} slug={slug} />
           </BlogMetaContainer>
