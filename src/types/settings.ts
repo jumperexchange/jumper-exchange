@@ -24,9 +24,8 @@ export interface SettingsState extends SettingsProps {
   // Mode
   setThemeMode: (mode: ThemeModesSupported) => void;
 
-  setActiveTheme: (activeTheme: any) => void;
-  setConfigTheme: (configTheme: any) => void;
-  setWidgetTheme: (widgetTheme: any) => void;
+  setConfigTheme: (configTheme: Partial<PartnerThemeConfig>) => void;
+  setWidgetTheme: (widgetTheme: { config: Partial<WidgetConfig> }) => void; // maybe config
 
   // Installed Wallets
   setClientWallets: (wallet: string) => void;

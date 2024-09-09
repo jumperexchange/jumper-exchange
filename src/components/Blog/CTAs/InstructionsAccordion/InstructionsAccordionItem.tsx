@@ -73,7 +73,6 @@ export const InstructionsAccordionItem = ({
     <InstructionsAccordionItemContainer
       sx={{
         typograpy: isSuperfest ? sora.style.fontFamily : undefined,
-        border: isSuperfest ? '2px dotted' : undefined,
         borderColor: isSuperfest ? theme.palette.black.main : undefined,
       }}
     >
@@ -148,6 +147,10 @@ export const InstructionsAccordionItem = ({
                             component={'span'}
                             mr={'8px'}
                             sx={{
+                              color:
+                                theme.palette.mode === 'light'
+                                  ? '#000000'
+                                  : '#FFFFFF',
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
                               maxWidth: 208,
@@ -158,7 +161,14 @@ export const InstructionsAccordionItem = ({
                           >
                             {buttonTitles[i]}
                           </Typography>
-                          <ArrowForwardIcon />
+                          <ArrowForwardIcon
+                            style={{
+                              color:
+                                theme.palette.mode === 'light'
+                                  ? '#000000'
+                                  : '#FFFFFF',
+                            }}
+                          />
                         </InstructionsAccordionLinkBox>
                       </a>
                     </InstructionsAccordionButtonMainBox>
