@@ -1,5 +1,3 @@
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import XIcon from '@mui/icons-material/X';
 import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
@@ -36,11 +34,9 @@ import type { ThemeModesSupported } from '@/types/settings';
 import type { AuthorData, StrapiImageData, TagData } from '@/types/strapi';
 import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
-import Link from 'next/link';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import { IconButtonTertiary } from 'src/components/IconButton.style';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
-import { ShareIconsContainer } from './ShareArticleIcons.style';
+import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
 
 interface BlogArticleProps {
   title?: string;
@@ -148,40 +144,7 @@ export const BlogArticle = ({
                 ) : (
                   <BlogArticlAuthorNameSkeleton variant="text" />
                 )}
-                {(author?.data && author.data.attributes.Twitter) ||
-                (author?.data && author.data.attributes.LinkedIn) ? (
-                  <ShareIconsContainer
-                    sx={{
-                      marginTop: theme.spacing(0.5),
-                      alignItems: 'flex-start',
-                    }}
-                  >
-                    {author.data.attributes.LinkedIn ? (
-                      <Link
-                        href={author.data.attributes.LinkedIn}
-                        target="_blank"
-                      >
-                        <IconButtonTertiary
-                          sx={{ width: '24px', height: '24px' }}
-                        >
-                          <LinkedInIcon sx={{ width: '14px' }} />
-                        </IconButtonTertiary>
-                      </Link>
-                    ) : null}
-                    {author.data.attributes.Twitter ? (
-                      <Link
-                        href={author.data.attributes.Twitter}
-                        target="_blank"
-                      >
-                        <IconButtonTertiary
-                          sx={{ width: '24px', height: '24px' }}
-                        >
-                          <XIcon sx={{ width: '14px' }} />
-                        </IconButtonTertiary>
-                      </Link>
-                    ) : null}
-                  </ShareIconsContainer>
-                ) : null}
+                <BlogAuthorSocials author={author} />
               </Box>
             </BlogAuthorContainer>
             <ShareArticleIcons title={title} slug={slug} />
@@ -238,6 +201,7 @@ export const BlogArticle = ({
               ) : (
                 <BlogArticlAuthorRoleSkeleton variant="text" />
               )}
+              <BlogAuthorSocials author={author} />
             </BlogAuthorMetaWrapper>
           </BlogAuthorWrapper>
         </BlogArticleContentContainer>
