@@ -84,6 +84,13 @@ export function Widget({
     [starterVariant, partnerName],
   );
 
+  const handleContribution = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (event?.cancelable) {
+      event.preventDefault();
+    }
+    console.log('Contribute with this handler');
+  };
+
   const integratorStringByType = useMemo(() => {
     if (widgetIntegrator) {
       return widgetIntegrator;
@@ -222,12 +229,10 @@ export function Widget({
       welcomeScreenClosed={welcomeScreenClosed}
     >
       <FlexibleFee
-        rate={'0.5%'}
+        rate={0.05}
         isLoading={false}
         isSuccess={false}
-        onClick={() => {
-          console.log('Contribute with this handler');
-        }}
+        onClick={handleContribution}
       />
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly fallback={<WidgetSkeleton config={config} />}>

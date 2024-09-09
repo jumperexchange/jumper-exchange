@@ -135,7 +135,7 @@ interface Resources {
     flexibleFee: {
       title: 'Contribute to improve Jumper';
       tooltip: 'Lorem ipsum...';
-      availableAmount: '{{amountUsd}} • {{amount}} {{chain}} available';
+      availableAmount: '{{amountUsd}} • {{amount}} {{baseToken}} available';
       contribute: 'Contribute';
     };
   };

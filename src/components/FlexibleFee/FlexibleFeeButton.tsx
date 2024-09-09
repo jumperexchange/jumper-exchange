@@ -7,7 +7,7 @@ import { ButtonSecondary } from '../Button';
 interface FlexibleFeeButtonProps {
   isLoading?: boolean;
   isSuccess?: boolean;
-  onClick: () => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const FlexibleFeeButton = ({
@@ -17,11 +17,11 @@ const FlexibleFeeButton = ({
 }: FlexibleFeeButtonProps) => {
   const theme = useTheme();
 
-  const handleClick = () => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (isLoading || isSuccess) {
       return;
     }
-    onClick();
+    onClick(event);
   };
 
   return (

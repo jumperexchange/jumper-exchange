@@ -24,6 +24,7 @@ export const FlexibleFeeContent = styled(Box)<BoxProps>(({ theme }) => ({
 
 export const FlexibleFeeAmountsBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
+  width: '100%',
   flexDirection: 'column',
   marginLeft: theme.spacing(2),
 }));

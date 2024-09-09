@@ -1,11 +1,21 @@
 import InfoIcon from '@mui/icons-material/Info';
-import { Box, Skeleton, Tooltip, Typography, useTheme } from '@mui/material';
-import { useMemo } from 'react';
+import {
+  Box,
+  FormControl,
+  Input,
+  Skeleton,
+  Tooltip,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import type { ChangeEvent } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Avatar } from 'src/components/Avatar';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { useChains } from 'src/hooks/useChains';
 
 import { useTranslation } from 'react-i18next';
+import { formatInputAmount } from 'src/utils/formatInputAmount';
 import {
   FlexibleFeeContainer as Container,
   FlexibleFeeContent as Content,
@@ -21,8 +31,8 @@ import FlexibleFeeButton from './FlexibleFeeButton';
 interface FlexibleFeeProps {
   isLoading?: boolean;
   isSuccess?: boolean;
-  rate: string;
-  onClick: () => void;
+  rate: number;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const FlexibleFee = ({
@@ -31,9 +41,11 @@ export const FlexibleFee = ({
   rate,
   onClick,
 }: FlexibleFeeProps) => {
+  const [amount, setAmount] = useState<string>('0');
   const { accounts } = useAccounts();
   const activeAccount = accounts.filter((account) => account.isConnected);
   const theme = useTheme();
+  const ref = useRef<HTMLInputElement>(null);
   const { chains } = useChains();
   const { t } = useTranslation();
   const activeChain = useMemo(
@@ -42,10 +54,23 @@ export const FlexibleFee = ({
       chains?.find((chainEl) => chainEl.id === activeAccount[0].chainId),
     [chains, activeAccount],
   );
-
   if (activeAccount.length === 0) {
     return null;
   }
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { value } = event.target;
+    const formattedAmount = formatInputAmount(value, 6, true);
+    setAmount(formattedAmount);
+  };
+
+  const handleDefaultRate = () => {
+    // todo: replace amount?
+    const result = parseFloat(amount) * rate;
+    setAmount(`${result}`);
+  };
 
   return (
     <Container>
@@ -63,7 +88,7 @@ export const FlexibleFee = ({
         </Tooltip>
       </Header>
       <Content>
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" sx={{ width: '100%' }}>
           <FlexibleFeeChainBadge
             overlap="circular"
             className="badge"
@@ -86,17 +111,47 @@ export const FlexibleFee = ({
             }
           </FlexibleFeeChainBadge>
           <FlexibleFeeAmountsBox>
-            <Typography variant="bodyXLargeStrong">0</Typography>
+            <FormControl fullWidth>
+              <Input
+                disableUnderline
+                inputRef={ref}
+                size="small"
+                autoComplete="off"
+                placeholder="0"
+                inputProps={{
+                  inputMode: 'decimal',
+                }}
+                onChange={handleChange}
+                value={amount}
+                name={'flexible-fee-amount'}
+                style={{
+                  fontSize: '24px',
+                  fontWeight: 500,
+                  color:
+                    amount === '0'
+                      ? theme.palette.grey[500]
+                      : theme.palette.text.primary,
+                }}
+                required
+                // startAdornment={startAdornment}
+                // endAdornment={endAdornment}
+                // onBlur={handleBlur}
+                // disabled={disabled}
+              />
+            </FormControl>
             <FlexibleFeeAmountDetails variant="bodyXSmall">
+              {
+                //* todo:  replace amount, amountUsd and chain with dynamic inputs *//
+              }
               {t('flexibleFee.availableAmount', {
                 amountUsd: '20$',
                 amount: 0,
-                chain: 'ETH',
+                baseToken: 'ETH',
               })}
             </FlexibleFeeAmountDetails>
           </FlexibleFeeAmountsBox>
         </Box>
-        <FlexibleFeeAmountsBadge>
+        <FlexibleFeeAmountsBadge onClick={handleDefaultRate}>
           <Typography
             variant="bodyXSmallStrong"
             color={theme.palette.primary.main}
@@ -108,7 +163,7 @@ export const FlexibleFee = ({
       <FlexibleFeeButton
         isLoading={isLoading}
         isSuccess={isSuccess}
-        onClick={onClick}
+        onClick={(event) => onClick(event)}
       />
     </Container>
   );
