@@ -9,6 +9,10 @@ import {
 import { ActiveQuestsMissionsCarousel } from './ActiveQuestsMissionsCarousel/ActiveQuestsMissionsCarousel';
 import { AvailableMissionsList } from './AvailableMissionsList/AvailableMissionsList';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
+import {
+  REWARD_TOKEN_ADDRESS,
+  REWARD_TOKEN_CHAINID,
+} from 'src/const/partnerRewardsTheme';
 
 export const Quests = () => {
   //HOOKS
@@ -21,8 +25,9 @@ export const Quests = () => {
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,
   } = useMerklRewards({
-    rewardChainId: 10,
+    rewardChainId: REWARD_TOKEN_CHAINID,
     userAddress: account?.address,
+    rewardToken: REWARD_TOKEN_ADDRESS,
   });
 
   return (
