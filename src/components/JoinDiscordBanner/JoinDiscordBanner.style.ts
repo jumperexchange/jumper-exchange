@@ -17,14 +17,8 @@ export const DiscordBannerLink = styled(Link)<BoxProps>(({ theme }) => ({
   justifyContent: 'center',
   gap: theme.spacing(1.5),
   alignItems: 'center',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.white.main, 0.48)
-      : alpha(theme.palette.white.main, 0.12),
-  boxShadow:
-    theme.palette.mode === 'dark'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+  backgroundColor: theme.palette.bgSecondary.main,
+  boxShadow: theme.palette.shadow.main,
   borderRadius: '32px',
   cursor: 'pointer',
   padding: theme.spacing(6),

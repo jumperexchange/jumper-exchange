@@ -1,12 +1,23 @@
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Box } from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { APYIcon } from 'src/components/illustrations/APYIcon';
+import { OPBadge } from 'src/components/illustrations/OPBadge';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
+import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import { useUserTracking } from 'src/hooks/userTracking';
 import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
 import { FlexSpaceBetweenBox, SoraTypography } from '../Superfest.style';
 import type { Chain } from '../SuperfestPage/Banner/Banner';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
-import Link from 'next/link';
 import {
   OPBadgeRelativeBox,
   QuestCardBottomBox,
@@ -16,11 +27,6 @@ import {
   XPDisplayBox,
   XPIconBox,
 } from './QuestCard.style';
-import { OPBadge } from 'src/components/illustrations/OPBadge';
-import { Box } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
-import { APYIcon } from 'src/components/illustrations/APYIcon';
 
 export interface RewardsInterface {
   logo: string;
@@ -32,7 +38,9 @@ interface QuestCardProps {
   active?: boolean;
   title?: string;
   image?: string;
+  id?: string | number;
   points?: number;
+  label?: string;
   link?: string;
   startDate?: string;
   endDate?: string;
@@ -46,13 +54,14 @@ interface QuestCardProps {
   variableWeeklyAPY?: boolean;
   rewardRange?: string;
 }
-
 export const QuestCard = ({
   active,
   title,
   image,
+  id,
   points,
   link,
+  label,
   startDate,
   endDate,
   slug,
@@ -66,10 +75,23 @@ export const QuestCard = ({
   const { t } = useTranslation();
   const router = useRouter();
   const { apy, isLoading, isSuccess } = useMissionsMaxAPY(claimingIds);
-
+  const { trackEvent } = useUserTracking();
+  const handleClick = () => {
+    trackEvent({
+      category: TrackingCategory.Quests,
+      action: TrackingAction.ClickQuestCard,
+      label: 'click-quest-card',
+      data: {
+        [TrackingEventParameter.QuestCardTitle]: title || '',
+        [TrackingEventParameter.QuestCardId]: id || '',
+        [TrackingEventParameter.QuestCardPlatform]: 'superfest',
+        [TrackingEventParameter.QuestCardLabel]: label || '',
+      },
+    });
+  };
   return (
     <QuestCardMainBox>
-      <Link href={`/superfest/${slug}`}>
+      <Link href={`/superfest/${slug}`} onClick={handleClick}>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           {image && (
             <Image

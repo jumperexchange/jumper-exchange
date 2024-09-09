@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
+  JUMPER_QUESTS_PATH,
   JUMPER_SCAN_PATH,
   JUMPER_TX_PATH,
   JUMPER_WALLET_PATH,
@@ -28,6 +29,7 @@ export const Navbar = ({ disableNavbar = false }) => {
     pathname?.includes(JUMPER_SCAN_PATH) ||
     pathname?.includes(JUMPER_TX_PATH) ||
     pathname?.includes(JUMPER_WALLET_PATH);
+  const isQuestsPage = pathname?.includes(JUMPER_QUESTS_PATH);
   const { isSuperfest } = useSuperfest();
   const { setWelcomeScreenClosed } = useWelcomeScreen();
 
@@ -56,7 +58,9 @@ export const Navbar = ({ disableNavbar = false }) => {
         />
       </LogoLink>
       {!isScanPage && !isLearnPage && !disableNavbar && (
-        <NavbarTabs navbarPageReload={isLoyaltyPage || isSuperfest} />
+        <NavbarTabs
+          navbarPageReload={isLoyaltyPage || isSuperfest || isQuestsPage}
+        />
       )}
       <NavbarButtons />
     </Container>

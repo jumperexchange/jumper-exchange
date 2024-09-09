@@ -11,7 +11,6 @@ import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
-import { useCookies } from 'react-cookie';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { usePersonalizedFeatureOnLevel } from 'src/hooks/usePersonalizedFeatureOnLevel';
 import { shallow } from 'zustand/shallow';
@@ -23,7 +22,6 @@ export const FeatureCards = () => {
     shallow,
   );
   const { points } = useLoyaltyPass();
-  const [cookie] = useCookies(['welcomeScreenClosed']);
   const [widgetExpanded, setWidgetExpanded] = useState(false);
   const widgetEvents = useWidgetEvents();
   const { account } = useAccounts();

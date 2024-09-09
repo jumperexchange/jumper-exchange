@@ -1,9 +1,9 @@
 'use client';
+import type { RouteExtended } from '@lifi/sdk';
 import { type Route } from '@lifi/sdk';
 
 import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '@/components/MultisigConnectedAlert';
-import { TabsMap } from '@/const/tabsMap';
 import {
   TrackingAction,
   TrackingCategory,
@@ -24,13 +24,14 @@ import type {
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
+import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { activeTab } = useActiveTabStore();
   const { setDestinationChainToken, setSourceChainToken } =
     useChainTokenSelectionStore();
-  const { trackEvent } = useUserTracking();
+  const { trackTransaction, trackEvent } = useUserTracking();
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
   ]);
@@ -49,34 +50,27 @@ export function WidgetEvents() {
     useState(false);
 
   useEffect(() => {
-    const onRouteExecutionStarted = async (route: Route) => {
-      if (!!route.id) {
-        trackEvent({
+    const onRouteExecutionStarted = async (route: RouteExtended) => {
+      const data = handleTransactionDetails(route, {
+        [TrackingEventParameter.Action]: 'execution_start',
+        [TrackingEventParameter.TransactionStatus]: 'STARTED',
+      });
+      if (route.id) {
+        trackTransaction({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionStarted,
           label: 'execution_start',
-          value: parseFloat(route.fromAmountUSD),
-          data: {
-            [TrackingEventParameter.RouteId]: route.id,
-            [TrackingEventParameter.FromToken]: route.fromToken.address,
-            [TrackingEventParameter.ToToken]: route.toToken.address,
-            [TrackingEventParameter.FromChainId]: route.fromChainId,
-            [TrackingEventParameter.ToChainId]: route.toChainId,
-            [TrackingEventParameter.FromAmount]: route.fromAmount,
-            [TrackingEventParameter.ToAmount]: route.toAmount,
-            [TrackingEventParameter.FromAmountUSD]: route.fromAmountUSD,
-            [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
-            [TrackingEventParameter.Variant]: Object.values(TabsMap).filter(
-              (el) => el.index === activeTab,
-            )[0].variant,
-          },
+          data,
           enableAddressable: true,
         });
       }
     };
+
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
       // check if multisig and open the modal
-
+      const data = handleTransactionDetails(update.route, {
+        [TrackingEventParameter.Action]: 'execution_updated',
+      });
       const isMultisigRouteActive = shouldOpenMultisigSignatureModal(
         update.route,
       );
@@ -85,79 +79,50 @@ export function WidgetEvents() {
         setIsMultiSigConfirmationModalOpen(true);
       }
 
-      if (!!update.process && !!update.route) {
+      if (update.process && update.route) {
         if (update.process.txHash !== lastTxHashRef.current) {
           lastTxHashRef.current = update.process.txHash;
-          trackEvent({
-            category: TrackingCategory.WidgetEvent,
-            action: TrackingAction.OnRouteExecutionUpdated,
-            label: 'execution_update',
-            data: {
-              [TrackingEventParameter.FromAmountUSD]:
-                update.route.fromAmountUSD,
-              [TrackingEventParameter.ToAmountUSD]: update.route.toAmountUSD,
-              [TrackingEventParameter.FromAmount]: update.route.fromAmount,
-              [TrackingEventParameter.ToAmount]: update.route.toAmount,
-              [TrackingEventParameter.FromToken]:
-                update.route.fromToken.address,
-              [TrackingEventParameter.ToToken]: update.route.toToken.address,
-              [TrackingEventParameter.FromChainId]: update.route.fromChainId,
-              [TrackingEventParameter.ToChainId]: update.route.toChainId,
-              [TrackingEventParameter.RouteId]: `${update.route.id}`,
-              [TrackingEventParameter.Status]: update.process.status,
-              [TrackingEventParameter.TxHash]: update.process.txHash || '',
-              [TrackingEventParameter.TxLink]: update.process.txLink || '',
-              [TrackingEventParameter.Type]: update.process.type,
-              [TrackingEventParameter.GasCostUSD]:
-                update.route.gasCostUSD || '',
-              [TrackingEventParameter.ErrorCode]:
-                update.process.error?.code || '',
-              [TrackingEventParameter.ErrorMessage]:
-                update.process.error?.message || '',
-              nonInteraction: true,
-            },
-          });
+          // trackTransaction({
+          //   category: TrackingCategory.WidgetEvent,
+          //   action: TrackingAction.OnRouteExecutionUpdated,
+          //   label: 'execution_update',
+          //   data,
+          //   enableAddressable: true,
+          // });
         }
       }
     };
     const onRouteExecutionCompleted = async (route: Route) => {
-      if (!!route.id) {
-        trackEvent({
+      if (route.id) {
+        const data = handleTransactionDetails(route, {
+          [TrackingEventParameter.Action]: 'execution_completed',
+          [TrackingEventParameter.TransactionStatus]: 'COMPLETED',
+        });
+        trackTransaction({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionCompleted,
           label: 'execution_success',
-          value: parseFloat(route.fromAmountUSD),
-          data: {
-            [TrackingEventParameter.RouteId]: route.id,
-            [TrackingEventParameter.FromChainId]: route.fromChainId,
-            [TrackingEventParameter.FromAmountUSD]: route.fromAmountUSD,
-            [TrackingEventParameter.FromAmount]: route.fromAmount,
-            [TrackingEventParameter.FromToken]: route.fromToken.address,
-            [TrackingEventParameter.ToChainId]: route.toChainId,
-            [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
-            [TrackingEventParameter.ToAmount]: route.toAmount,
-            [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
-            [TrackingEventParameter.ToToken]: route.toToken.address,
-          },
+          data,
           enableAddressable: true,
           isConversion: true,
         });
       }
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
-      trackEvent({
+      const data = handleTransactionDetails(update.route, {
+        [TrackingEventParameter.Action]: 'execution_failed',
+        [TrackingEventParameter.TransactionStatus]: 'FAILED',
+        [TrackingEventParameter.Message]: update.process.message || '',
+        [TrackingEventParameter.ErrorMessage]:
+          update.process.error?.message || '',
+        [TrackingEventParameter.IsFinal]: true,
+        [TrackingEventParameter.ErrorCode]: update.process.error?.code || '',
+      });
+      trackTransaction({
         category: TrackingCategory.WidgetEvent,
         action: TrackingAction.OnRouteExecutionFailed,
         label: 'execution_error',
-        data: {
-          [TrackingEventParameter.RouteId]: update.route.id,
-          [TrackingEventParameter.TxHash]: update.process.txHash || '',
-          [TrackingEventParameter.Status]: update.process.status,
-          [TrackingEventParameter.Message]: update.process.message || '',
-          [TrackingEventParameter.ErrorMessage]:
-            update.process.error?.message || '',
-          [TrackingEventParameter.ErrorCode]: update.process.error?.code || '',
-        },
+        data,
         enableAddressable: true,
       });
     };
@@ -216,6 +181,7 @@ export function WidgetEvents() {
           action: TrackingAction.OnWidgetExpanded,
           label: `widget_expanded`,
           enableAddressable: true,
+          data: {},
         });
     };
 
@@ -315,6 +281,7 @@ export function WidgetEvents() {
     setSupportModalState,
     shouldOpenMultisigSignatureModal,
     trackEvent,
+    trackTransaction,
     widgetEvents,
   ]);
 

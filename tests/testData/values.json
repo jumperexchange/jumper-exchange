@@ -1,0 +1,8 @@
+{
+  "localJumperScanURL": "http://localhost:3000/scan/",
+  "localSuperfestURL": "http://localhost:3000/superfest/",
+  "xUrl": "https://x.com/JumperExchange",
+  "discordURL": "https://discord.com/invite/jumperexchange",
+  "exploreFluidURL": "https://jumper.exchange/superfest/rewards-from-fluid-on-base/",
+  "aerodromeQuestsURL": "http://localhost:3000/quests/rewards-from-aerodrome-on-base/"
+}

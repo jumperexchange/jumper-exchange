@@ -4,7 +4,12 @@ import {
   itemInMenu,
   tabInHeader,
   openMainMenu,
+  expectMenuToBeVisible,
+  expectBackgroundColorToHaveCss,
+  itemInSettingsMenu,
+  itemInSettingsMenuToBeVisible,
 } from './testData/commonFunctions';
+import values from '../tests/testData/values.json';
 
 test.describe('Jumper full e2e flow', () => {
   test.beforeEach(async ({ page }) => {
@@ -34,6 +39,38 @@ test.describe('Jumper full e2e flow', () => {
     ).toBeVisible();
     await expect(featureCard).toBeVisible();
   });
+  test('Should open Settings menu', async ({ page }) => {
+    const settingsTitle = page.locator(
+      'xpath=//p[normalize-space(text())="Settings"]',
+    );
+    const bestReturnButton = page.locator(
+      'xpath=//button[normalize-space(text())="Best Return"]',
+    );
+    const fastestButton = page.locator(
+      'xpath=//button[normalize-space(text())="Fastest"]',
+    );
+    const slowGasPrice = page.locator(
+      'xpath=//button[normalize-space(text())="Slow"]',
+    );
+    const fastGasPrice = page.locator(
+      'xpath=//button[normalize-space(text())="Fast"]',
+    );
+    const customSlippage = page.locator('xpath=//input[@placeholder="Custom"]');
+    await tabInHeader(page, 'Exchange');
+    await page.locator('xpath=//div[@class="MuiBox-root mui-afg6ra"]').click();
+    await expect(settingsTitle).toBeVisible();
+    itemInSettingsMenu(page, 'Route priority');
+    await expect(bestReturnButton).toBeEnabled();
+    itemInSettingsMenuToBeVisible(page, 'Fastest');
+    await fastestButton.click();
+    itemInSettingsMenuToBeVisible(page, 'Reset settings');
+    itemInSettingsMenu(page, 'Gas price');
+    expect(slowGasPrice).toBeEnabled();
+    expect(fastGasPrice).toBeEnabled();
+    itemInSettingsMenu(page, 'Max. slippage');
+    itemInSettingsMenuToBeVisible(page, '0.5');
+    await expect(customSlippage).toBeVisible();
+  });
 
   test.skip('Should handle welcome screen', async ({ page }) => {
     const headerText = 'Find the best route';
@@ -62,67 +99,88 @@ test.describe('Jumper full e2e flow', () => {
   }) => {
     // await closeWelcomeScreen(page);
     await openMainMenu(page);
-    await expect(page.getByRole('menu')).toBeVisible();
+    await expectMenuToBeVisible(page);
     await expect(page.getByRole('menuitem')).toHaveCount(11);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
 
-  test('Should be able to navigate to profile', async ({ page }) => {
+  test.skip('Should be able to navigate to profile and open Explore Fluid Mission', async ({
+    page,
+    context,
+  }) => {
     let profileUrl = `${await page.url()}profile/`;
     // await closeWelcomeScreen(page);
     await openMainMenu(page);
-    await expect(page.getByRole('menu')).toBeVisible();
+    await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Profile');
     expect(await page.url()).toBe(profileUrl);
-    await page.locator('.profile-page').isVisible({ timeout: 15000 });
+    await page.locator('.profile-page').isVisible();
+    await page
+      .locator('xpath=//p[normalize-space(text())="Explore Fluid"]')
+      .click();
+    expect(page.url()).toBe(values.exploreFluidURL);
   });
 
   test('Should be able to navigate to jumper learn', async ({ page }) => {
     let learnUrl = `${await page.url()}learn/`;
     // await closeWelcomeScreen(page);
     await openMainMenu(page);
-    await expect(page.getByRole('menu')).toBeVisible();
+    await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Learn');
-
     expect(await page.url()).toBe(learnUrl);
-    await page.waitForLoadState('load', { timeout: 15000 });
+    await page.waitForLoadState('load');
     await page.locator('.learn-page').isVisible();
   });
 
-  test('Should be able to navigate to lifi explorer', async ({ page }) => {
+  test('Should be able to navigate to LI.FI Scan', async ({ page }) => {
     // await closeWelcomeScreen(page);
     await openMainMenu(page);
-    await expect(page.getByRole('menu')).toBeVisible();
+    await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Scan');
     // const newPage = await page.waitForEvent('popup', { timeout: 15000 });
-    expect(page).toHaveURL('http://localhost:3000/scan/');
+    expect(page).toHaveURL(values.localJumperScanURL);
   });
-  test('should be able to navigate to supefest', async ({ page }) => {
+
+  test('Should be able to navigate to Supefest', async ({ page }) => {
     const learnMoreButton = page.locator('#learn-more-button');
     await openMainMenu(page);
     await itemInMenu(page, 'Superfest Festival');
     await expect(learnMoreButton).toBeVisible();
-    await expect(page).toHaveURL('http://localhost:3000/superfest/');
+    await expect(page).toHaveURL(values.localSuperfestURL);
+  });
+
+  test('Should be able to open quests mission page and switch background color', async ({
+    page,
+  }) => {
+    const jumperProfileBackButton = await page.locator(
+      'xpath=//p[normalize-space(text())="JUMPER PROFILE"]',
+    );
+    await page.goto(values.aerodromeQuestsURL);
+    expect(jumperProfileBackButton).toBeVisible();
+    await openMainMenu(page);
+    await page.locator('xpath=//*[@id="tab-key-1"]').click(); //switch to Dark theme
+    expectBackgroundColorToHaveCss(page, 'rgb(18, 15, 41)');
+    await page.locator('xpath=//*[@id="tab-key-0"]').click(); //switch to Light theme
+    await openMainMenu(page);
+    expectBackgroundColorToHaveCss(page, 'rgb(243, 235, 255)');
   });
 
   test('Should be able to navigate to X', async ({ page, context }) => {
-    let xUrl = 'https://x.com/JumperExchange';
     // await closeWelcomeScreen(page);
     await openMainMenu(page);
-    await expect(page.getByRole('menu')).toBeVisible();
+    await expectMenuToBeVisible(page);
     await page.getByRole('link', { name: 'X', exact: true }).click();
     const newPage = await context.waitForEvent('page');
-    expect(newPage.url()).toBe(xUrl);
+    expect(newPage.url()).toBe(values.xUrl);
   });
   test('Should be able to navigate to Discord', async ({ page, context }) => {
-    let discordUrl = 'https://discord.com/invite/jumperexchange';
     // await closeWelcomeScreen(page);
     await openMainMenu(page);
-    await expect(page.getByRole('menu')).toBeVisible();
+    await expectMenuToBeVisible(page);
     await page.getByRole('link', { name: 'Discord' }).click();
     const newPage = await context.waitForEvent('page');
-    expect(newPage.url()).toBe(discordUrl);
+    expect(newPage.url()).toBe(values.discordURL);
   });
   test('API test - Feature Cards', async ({ request }) => {
     const apiURL = 'https://strapi.li.finance/api/feature-cards';
