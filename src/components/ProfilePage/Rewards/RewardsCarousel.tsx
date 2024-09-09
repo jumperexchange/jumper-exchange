@@ -120,12 +120,21 @@ export const RewardsCarousel = ({
                   isPending ||
                   isConfirming ||
                   isConfirmed ||
-                  (!!rewardAmount && !(rewardAmount > 0))
+                  (!!rewardAmount && rewardAmount === 0) ||
+                  (isMerklSuccess && !rewardAmount)
                 }
                 variant="primary"
                 aria-label="Claim rewards"
                 size="large"
                 styles={{
+                  opacity:
+                    isPending ||
+                    isConfirming ||
+                    isConfirmed ||
+                    (!!rewardAmount && rewardAmount === 0) ||
+                    (isMerklSuccess && !rewardAmount)
+                      ? 0.3
+                      : undefined,
                   alignItems: 'center',
                   padding: '16px',
                   width: '100%',
