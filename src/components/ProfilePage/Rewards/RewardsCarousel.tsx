@@ -97,7 +97,6 @@ export const RewardsCarousel = ({
   return (
     <>
       {!hideComponent ? (
-        // && rewardAmount && rewardAmount > 0
         <RewardsCarouselContainer>
           <RewardsCarouselMainBox>
             <FlexCenterRowBox>

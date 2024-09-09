@@ -12,6 +12,7 @@ import { DescriptionBoxSF } from './DescriptionBoxSF/DescriptionBoxSF';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { StepsBox } from './StepsBox/StepsBox';
 import { SuperfestPageMainBox } from './SuperfestMissionPage.style';
+import { notFound } from 'next/navigation';
 
 interface SuperfestMissionPageVar {
   quest: Quest;
@@ -44,6 +45,10 @@ export const SuperfestMissionPage = ({
     userAddress: account?.address,
   });
   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
+
+  if (!quest) {
+    return notFound();
+  }
 
   return (
     <SuperfestContainer className="superfest">

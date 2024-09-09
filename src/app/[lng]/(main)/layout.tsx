@@ -19,6 +19,7 @@ export default async function MainLayout({
 
   const defaultTheme = 'default';
 
+  // provider for the theme context, it is used to provide the theme to the whole app, must be into the layout.tsx or page.tsx.
   return (
     <NextThemeProvider
       themes={[
