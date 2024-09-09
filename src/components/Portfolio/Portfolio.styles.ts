@@ -6,7 +6,7 @@ export const TotalValue = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
   textOverflow: 'ellipsis',
   fontWeight: '700',
-  textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+  // textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
   fontSize: '3rem',
   lineHeight: '4rem',
 }));
@@ -54,9 +54,10 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
     fontSize: '0.4rem',
   },
 
-  '& .MuiAvatarGroup-avatar': {
-    width: 12,
-    height: 12,
+  '& .MuiAvatar-root': {
+    width: 16,
+    height: 16,
     border: '3px solid white',
+    marginLeft: 0,
   },
 }));

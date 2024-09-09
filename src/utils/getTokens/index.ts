@@ -11,6 +11,7 @@ import { formatUnits } from 'viem';
 import coins from './coins';
 import type { ExtendedChain, TokenAmount } from '@lifi/types';
 import type { Token } from '@lifi/widget';
+import { publicRPCList } from '@/const/rpcList';
 
 interface Chain extends ExtendedChain, Price {}
 
@@ -80,11 +81,15 @@ function transform(
   );
 }
 
-async function index(account: string) {
+async function index(account: string, isFull = false) {
   try {
     createConfig({
       providers: [EVM(), Solana()],
       integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+      rpcUrls: {
+        ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
+        ...publicRPCList,
+      },
       preloadChains: true,
     });
 
@@ -93,20 +98,23 @@ async function index(account: string) {
       chainTypes: [ChainType.EVM, ChainType.SVM],
     });
 
+    let filteredArray: Token[] = [];
     const tokens = await LifiGetTokens({
       chainTypes: [ChainType.EVM, ChainType.SVM],
     });
 
-    const filterSet = new Set(
-      coins.map((item) => `${item.chainId}-${item.address}`),
-    );
-
-    let filteredArray: Token[] = [];
-
-    for (const [, tks] of Object.entries(tokens.tokens)) {
-      filteredArray = filteredArray.concat(
-        tks.filter((item) => filterSet.has(`${item.chainId}-${item.address}`)),
+    if (isFull) {
+      filteredArray = Object.values(tokens.tokens).flat();
+    } else {
+      const filterSet = new Set(
+        coins.map((item) => `${item.chainId}-${item.address}`),
       );
+
+      for (const [, tks] of Object.entries(tokens.tokens)) {
+        filteredArray = filteredArray.concat(
+          tks.filter((item) => filterSet.has(`${item.chainId}-${item.address}`)),
+        );
+      }
     }
 
     const tokenBalances = await getTokenBalances(account, filteredArray);

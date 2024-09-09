@@ -70,8 +70,6 @@ export function Widget({
   // @ts-expect-error
   fromAmount = fromAmount || searchParams.get('fromAmount');
 
-  console.log('rerendered', fromChain, fromToken, toChain, toToken, fromAmount);
-
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas/', { kind: PrefetchKind.FULL });

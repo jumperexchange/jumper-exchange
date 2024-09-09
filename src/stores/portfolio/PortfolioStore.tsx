@@ -9,6 +9,7 @@ import type { PortfolioState } from '@/types/portfolio';
 const defaultSettings = {
   lastAddresses: undefined,
   lastTotalValue: 0,
+  lastDate: null,
 };
 
 /*--  Use Zustand  --*/
@@ -17,6 +18,14 @@ export const usePortfolioStore = createWithEqualityFn(
   persist(
     (set, get) => ({
       ...defaultSettings,
+
+      setLast(value: number, addresses: string[]) {
+        set({
+          lastTotalValue: value,
+          lastAddresses: addresses,
+          lastDate: Date.now(),
+        });
+      },
 
       setLastTotalValue: (portfolioLastValue: number) => {
         set({

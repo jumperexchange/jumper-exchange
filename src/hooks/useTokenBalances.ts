@@ -2,7 +2,7 @@ import { useQueries } from '@tanstack/react-query';
 import type { ExtendedTokenAmount } from '@/utils/getTokens';
 import getTokens from '@/utils/getTokens';
 import type { Account } from '@/hooks/useAccounts';
-import { usePortfolioStore } from '@/stores/portfolio';
+import { useState } from 'react';
 
 interface CombinedResult {
   isLoading: boolean;
@@ -14,20 +14,18 @@ interface CombinedResult {
 }
 
 export const useTokenBalances = (accounts: Account[]) => {
-  const { setLastTotalValue, setLastAddresses } = usePortfolioStore(
-    (state) => state,
-  );
+  const [isFull, setIsFull] = useState(false);
 
   return useQueries({
     queries: accounts.map(({ address }) => ({
-      queryKey: ['tokenBalances', address],
+      queryKey: ['tokenBalances', address, isFull],
       queryFn: async () => {
         try {
           if (!address) {
             return;
           }
 
-          return getTokens(address);
+          return getTokens(address, isFull);
         } catch (err) {
           console.error(err);
         }
@@ -43,14 +41,14 @@ export const useTokenBalances = (accounts: Account[]) => {
         .map((result) => result.data)
         .filter((result) => result !== undefined)
         .flat();
-      const refetch = () => results.forEach((result) => result.refetch());
+      const refetch = () => {
+        setIsFull(true);
+        results.forEach((result) => result.refetch());
+      }
       const totalValue = data.reduce(
         (acc, token) => acc + (token?.totalPriceUSD || 0),
         0,
       );
-
-      // setLastTotalValue(totalValue);
-      // setLastAddresses(accounts.map(({ address }) => address!));
 
       return {
         isLoading,
