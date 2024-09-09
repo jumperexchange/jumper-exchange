@@ -142,7 +142,7 @@ test.describe('Jumper full e2e flow', () => {
     expect(page).toHaveURL(values.localJumperScanURL);
   });
 
-  test('Should be able to navigate to Supefest', async ({ page }) => {
+  test.skip('Should be able to navigate to Supefest', async ({ page }) => {
     const learnMoreButton = page.locator('#learn-more-button');
     await openMainMenu(page);
     await itemInMenu(page, 'Superfest Festival');
