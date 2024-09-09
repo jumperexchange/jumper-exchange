@@ -104,7 +104,12 @@ export const RewardsCarousel = ({
             </FlexCenterRowBox>
             <ClaimButtonBox>
               <Button
-                disabled={isPending || isConfirming || isConfirmed}
+                disabled={
+                  isPending ||
+                  isConfirming ||
+                  isConfirmed ||
+                  (!!rewardAmount && rewardAmount === 0)
+                }
                 variant="primary"
                 aria-label="Claim rewards"
                 size="large"
