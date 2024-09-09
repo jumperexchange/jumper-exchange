@@ -44,7 +44,7 @@ export const useTokenBalances = (accounts: Account[]) => {
       const refetch = () => {
         setIsFull(true);
         results.forEach((result) => result.refetch());
-      }
+      };
       const totalValue = data.reduce(
         (acc, token) => acc + (token?.totalPriceUSD || 0),
         0,

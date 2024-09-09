@@ -112,7 +112,9 @@ async function index(account: string, isFull = false) {
 
       for (const [, tks] of Object.entries(tokens.tokens)) {
         filteredArray = filteredArray.concat(
-          tks.filter((item) => filterSet.has(`${item.chainId}-${item.address}`)),
+          tks.filter((item) =>
+            filterSet.has(`${item.chainId}-${item.address}`),
+          ),
         );
       }
     }
