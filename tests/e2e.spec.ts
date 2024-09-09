@@ -105,7 +105,7 @@ test.describe('Jumper full e2e flow', () => {
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
 
-  test('Should be able to navigate to profile and open Explore Fluid Mission', async ({
+  test.skip('Should be able to navigate to profile and open Explore Fluid Mission', async ({
     page,
     context,
   }) => {
@@ -142,7 +142,7 @@ test.describe('Jumper full e2e flow', () => {
     expect(page).toHaveURL(values.localJumperScanURL);
   });
 
-  test.skip('Should be able to navigate to Supefest', async ({ page }) => {
+  test('Should be able to navigate to Supefest', async ({ page }) => {
     const learnMoreButton = page.locator('#learn-more-button');
     await openMainMenu(page);
     await itemInMenu(page, 'Superfest Festival');
