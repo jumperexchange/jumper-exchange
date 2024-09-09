@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InfoAlert } from '.';
 import { InfoAlertClickable } from './InfoAlert/InfoAlertClickable';
+import { useCheckWalletLinking } from 'src/hooks/useCheckWalletLinking';
+import { useAccounts } from 'src/hooks/useAccounts';
 
 export const ChainAlert = () => {
   const { t } = useTranslation();
@@ -14,12 +16,17 @@ export const ChainAlert = () => {
   const [title, setTitle] = useState<string>('');
   const [subtitle, setSubtitle] = useState<string>('');
   const [buttonText, setButtontext] = useState<string>('');
+  const { account } = useAccounts();
+  const { isSuccess: isWalletCheckSuccess, isWalletLinked } =
+    useCheckWalletLinking({
+      userAddress: account?.address,
+      checkWalletLinking:
+        sourceChainToken?.chainId === ChainId.SEI ||
+        destinationChainToken?.chainId === ChainId.SEI,
+    });
 
   useEffect(() => {
-    if (
-      sourceChainToken?.chainId === ChainId.SEI ||
-      destinationChainToken?.chainId === ChainId.SEI
-    ) {
+    if (!isWalletLinked && isWalletCheckSuccess) {
       setIsClickable(true);
       setChainId(ChainId.SEI);
       setTitle(t('seiAlert.title'));
@@ -29,7 +36,7 @@ export const ChainAlert = () => {
       setIsClickable(false);
       setChainId(0);
     }
-  }, [destinationChainToken, sourceChainToken, t]);
+  }, [destinationChainToken, sourceChainToken, t, isWalletLinked]);
 
   return (
     <>

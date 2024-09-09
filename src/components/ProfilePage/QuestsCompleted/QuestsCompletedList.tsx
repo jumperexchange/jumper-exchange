@@ -43,6 +43,7 @@ export const QuestCompletedList = ({
               return (
                 <QuestCard
                   key={`completed-mission-${index}`}
+                  id={pda?.id}
                   active={false}
                   title={pda?.reward.name}
                   image={pda?.reward.image}
@@ -53,7 +54,7 @@ export const QuestCompletedList = ({
           : null}
         {showVoidCardsAsFewPdas
           ? Array.from(
-              { length: pdas && pdas?.length > 0 ? 6 - pdas.length : 3 },
+              { length: pdas && pdas?.length > 0 ? 4 - pdas.length : 2 },
               () => 42,
             ).map((_, idx) => (
               <VoidQuestCard
@@ -63,7 +64,7 @@ export const QuestCompletedList = ({
             ))
           : null}
         {loading
-          ? Array.from({ length: 3 }, () => 42).map((_, idx) => (
+          ? Array.from({ length: 2 }, () => 42).map((_, idx) => (
               <QuestCardSkeleton key={'skeleton-' + idx} />
             ))
           : null}

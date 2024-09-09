@@ -12,6 +12,13 @@ import {
 import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { Leaderboard } from './Leaderboard/Leaderboard';
+import { RewardsCarousel } from './Rewards/RewardsCarousel';
+import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
+import {
+  REWARD_TOKEN_ADDRESS,
+  REWARD_TOKEN_CHAINID,
+  REWARDS_CHAIN_IDS,
+} from 'src/const/partnerRewardsTheme';
 
 export const ProfilePage = () => {
   const { account } = useAccounts();
@@ -19,39 +26,67 @@ export const ProfilePage = () => {
   const { imageLink } = useMercleNft({ userAddress: account?.address });
   const { quests, isQuestLoading } = useOngoingQuests();
 
-  return (
-    <ProfilePageContainer className="profile-page">
-      <Grid container>
-        <Grid
-          xs={12}
-          md={4}
-          sx={{
-            paddingRight: { xs: 0, md: 4 },
-            paddingBottom: { xs: 4, md: 0 },
-          }}
-        >
-          <AddressBox
-            address={account?.address}
-            isEVM={account?.chainType === 'EVM'}
-            imageLink={imageLink}
-          />
-          <Box display={{ xs: 'none', md: 'block' }}>
-            <Leaderboard address={account?.address} />
-          </Box>
-        </Grid>
-        <Grid xs={12} md={8}>
-          <Stack spacing={{ xs: 2, sm: 4 }}>
-            <ProfilePageHeaderBox
-              sx={{ display: 'flex', flex: 2, padding: { xs: 0, sm: 3 } }}
-            >
-              <TierBox points={points} tier={tier} loading={isLoading} />
-            </ProfilePageHeaderBox>
+  const {
+    availableRewards,
+    activeCampaigns,
+    pastCampaigns,
+    isLoading: isRewardLoading,
+    isSuccess: isRewardSuccess,
+  } = useMerklRewards({
+    rewardChainId: REWARD_TOKEN_CHAINID,
+    userAddress: account?.address,
+    rewardToken: REWARD_TOKEN_ADDRESS,
+  });
 
-            <QuestCarousel quests={quests} loading={isQuestLoading} />
-            <QuestCompletedList pdas={pdas} loading={isLoading} />
-          </Stack>
+  return (
+    <>
+      <RewardsCarousel
+        hideComponent={false}
+        // hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
+        rewardAmount={availableRewards?.[0]?.amountToClaim as number}
+        accumulatedAmountForContractBN={
+          availableRewards?.[0]?.accumulatedAmountForContractBN
+        }
+        proof={availableRewards?.[0]?.proof}
+        isMerklSuccess={isRewardSuccess}
+      />
+      <ProfilePageContainer className="profile-page">
+        <Grid container>
+          <Grid
+            xs={12}
+            md={4}
+            sx={{
+              paddingRight: { xs: 0, md: 4 },
+              paddingBottom: { xs: 4, md: 0 },
+            }}
+          >
+            <AddressBox
+              address={account?.address}
+              isEVM={account?.chainType === 'EVM'}
+              imageLink={imageLink}
+            />
+            <Box display={{ xs: 'none', md: 'block' }}>
+              <Leaderboard address={account?.address} />
+            </Box>
+          </Grid>
+          <Grid xs={12} md={8}>
+            <Stack spacing={{ xs: 2, sm: 4 }}>
+              <ProfilePageHeaderBox
+                sx={{ display: 'flex', flex: 2, padding: { xs: 0, sm: 3 } }}
+              >
+                <TierBox points={points} tier={tier} loading={isLoading} />
+              </ProfilePageHeaderBox>
+
+              <QuestCarousel
+                quests={quests}
+                loading={isQuestLoading}
+                pastCampaigns={pastCampaigns}
+              />
+              <QuestCompletedList pdas={pdas} loading={isLoading} />
+            </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-    </ProfilePageContainer>
+      </ProfilePageContainer>
+    </>
   );
 };

@@ -58,7 +58,7 @@ function getLogoData(theme: PartnerThemesAttributes) {
 }
 
 export function formatConfig(
-  theme: PartnerThemesAttributes,
+  theme?: PartnerThemesAttributes,
 ): Partial<PartnerThemeConfig> {
   if (!theme) {
     return {

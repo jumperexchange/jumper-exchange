@@ -62,6 +62,10 @@ export enum TrackingAction {
   ClickShareArticleX = 'action_share_article_x',
   ClickShareArticleLink = 'action_share_article_link',
 
+  // Quests
+  ClickQuestCard = 'action_click_quest_card',
+  ClickMissionCta = 'action_click_mission_cta',
+
   // Pagination
   ClickPagination = 'action_click_pagination',
 
@@ -95,6 +99,8 @@ export enum TrackingCategory {
   BlogFeaturedArticle = 'cat_blog_featured_article',
   BlogArticlesBoard = 'cat_blog_articles_board',
   BlogArticle = 'cat_blog_article',
+  Missions = 'cat_missions',
+  Quests = 'cat_quests',
 }
 
 // can be used as custom dimensions / metrics
@@ -172,4 +178,16 @@ export enum TrackingEventParameter {
   // Pagination
   Pagination = 'param_pagination',
   PaginationCat = 'param_pagination_cat',
+
+  // Quests
+  QuestCardTitle = 'param_quest_card_title',
+  QuestCardLabel = 'param_quest_card_label',
+  QuestCardId = 'param_quest_card_id',
+  QuestCardPlatform = 'param_quest_card_platform',
+  MissionCtaRewardId = 'param_mission_cta_reward_id',
+  MissionCtaClaimingId = 'param_mission_cta_claiming_id',
+  MissionCtaTitle = 'param_mission_cta_title',
+  MissionCtaLabel = 'param_mission_cta_label',
+  MissionCtaPartnerId = 'param_mission_cta_partner_id',
+  MissionCtaCampaign = 'param_mission_cta_campaign',
 }

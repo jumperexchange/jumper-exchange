@@ -22,6 +22,10 @@ export const useOngoingQuests = (): UseQuestsProps => {
   apiUrl.searchParams.set('fields[2]', 'Link'); // link
   apiUrl.searchParams.set('fields[3]', 'StartDate'); // startDate
   apiUrl.searchParams.set('fields[4]', 'EndDate'); // endDate
+  apiUrl.searchParams.set('fields[5]', 'Slug'); // Slug
+  apiUrl.searchParams.set('fields[6]', 'Label'); // label
+  apiUrl.searchParams.set('fields[7]', 'CustomInformation'); // CustomInformation
+  apiUrl.searchParams.set('fields[8]', 'Category'); // Category
   //populate url
   apiUrl.searchParams.set('populate[0]', 'Image');
   apiUrl.searchParams.set('populate[1]', 'quests_platform');

@@ -1,24 +1,29 @@
-import { ChainId } from '@lifi/types';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
+import {
+  RewardsCarouselContainer,
+  RewardsCarouselMainBox,
+  ClaimButtonBox,
+  EarnedTypography,
+  RewardsOpenIconButton,
+} from './RewardsCarousel.style';
+import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
 import { Button } from 'src/components/Button';
 import {
   useAccount,
-  useSwitchChain,
-  useWaitForTransactionReceipt,
   useWriteContract,
+  useWaitForTransactionReceipt,
+  useSwitchChain,
 } from 'wagmi';
+import { ChainId } from '@lifi/types';
 import { MerklDistribABI } from '../../../const/abi/merklABI';
-import { FlexCenterRowBox } from '../QuestPage/QuestsMissionPage.style';
-import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import {
-  ClaimButtonBox,
-  EarnedTypography,
-  RewardsCarouselContainer,
-  RewardsCarouselMainBox,
-  RewardsOpenIconButton,
-} from './RewardsCarousel.style';
-import { PROFILE_CAMPAIGN_SCANNER } from 'src/const/partnerRewardsTheme';
+  PROFILE_CAMPAIGN_SCANNER,
+  REWARD_CLAIMING_ADDRESS,
+  REWARD_TOKEN_ADDRESS,
+  REWARD_TOKEN_CHAINID,
+} from 'src/const/partnerRewardsTheme';
 
 interface RewardsCarouselProps {
   hideComponent: boolean;
@@ -28,8 +33,8 @@ interface RewardsCarouselProps {
   proof: string[];
 }
 
-const CLAIMING_CONTRACT_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae';
-const OP_TOKEN = '0x4200000000000000000000000000000000000042';
+const CLAIMING_CONTRACT_ADDRESS = REWARD_CLAIMING_ADDRESS;
+const REWARD_TOKEN = REWARD_TOKEN_ADDRESS;
 //TESTING
 // const TEST_TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
@@ -41,6 +46,7 @@ export const RewardsCarousel = ({
   proof,
 }: RewardsCarouselProps) => {
   const { address } = useAccount();
+  const theme = useTheme();
   const { switchChainAsync } = useSwitchChain();
   const { data: hash, isPending, writeContract } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -51,11 +57,11 @@ export const RewardsCarousel = ({
   async function handleClick() {
     try {
       const { id } = await switchChainAsync({
-        chainId: ChainId.OPT,
+        chainId: REWARD_TOKEN_CHAINID,
       });
 
       const canClaim =
-        id === ChainId.OPT &&
+        id === REWARD_TOKEN_CHAINID &&
         address &&
         isMerklSuccess &&
         proof &&
@@ -66,11 +72,11 @@ export const RewardsCarousel = ({
           address: CLAIMING_CONTRACT_ADDRESS,
           abi: MerklDistribABI,
           functionName: 'claim',
-          // args: [[address], [OP_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
+          // args: [[address], [REWARD_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
           // TESTING
           args: [
             [address],
-            [OP_TOKEN],
+            [REWARD_TOKEN],
             [accumulatedAmountForContractBN],
             [proof],
           ], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
@@ -90,14 +96,20 @@ export const RewardsCarousel = ({
 
   return (
     <>
-      {!hideComponent && rewardAmount && rewardAmount > 0 ? (
+      {!hideComponent ? (
+        // && rewardAmount && rewardAmount > 0
         <RewardsCarouselContainer>
           <RewardsCarouselMainBox>
             <FlexCenterRowBox>
               <Box>
-                <EarnedTypography>You've earned:</EarnedTypography>
+                <EarnedTypography
+                  color={theme.palette.mode === 'dark' ? '#ffffff' : '#000000'}
+                >
+                  You've earned:
+                </EarnedTypography>
               </Box>
               <RewardsAmountBox
+                isSuccess={isMerklSuccess}
                 rewardAmount={rewardAmount}
                 isConfirmed={isConfirmed}
               />
@@ -108,19 +120,33 @@ export const RewardsCarousel = ({
                   isPending ||
                   isConfirming ||
                   isConfirmed ||
-                  (!!rewardAmount && rewardAmount === 0)
+                  (!!rewardAmount && rewardAmount === 0) ||
+                  (isMerklSuccess && !rewardAmount)
                 }
                 variant="primary"
                 aria-label="Claim rewards"
                 size="large"
                 styles={{
+                  opacity:
+                    isPending ||
+                    isConfirming ||
+                    isConfirmed ||
+                    (!!rewardAmount && rewardAmount === 0) ||
+                    (isMerklSuccess && !rewardAmount)
+                      ? 0.3
+                      : undefined,
                   alignItems: 'center',
                   padding: '16px',
                   width: '100%',
                 }}
                 onClick={() => handleClick()}
               >
-                <Typography fontSize="16px" lineHeight="18px" fontWeight={600}>
+                <Typography
+                  fontSize="16px"
+                  lineHeight="18px"
+                  fontWeight={600}
+                  color={theme.palette.white.main}
+                >
                   {isPending || isConfirming
                     ? 'CLAIMING...'
                     : isConfirmed
@@ -141,7 +167,9 @@ export const RewardsCarousel = ({
                 rel="noreferrer"
               >
                 <RewardsOpenIconButton>
-                  <OpenInNewIcon sx={{ height: '32px' }} />
+                  <OpenInNewIcon
+                    sx={{ height: '32px', color: theme.palette.white.main }}
+                  />
                 </RewardsOpenIconButton>
               </a>
             ) : undefined}

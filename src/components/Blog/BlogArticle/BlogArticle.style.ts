@@ -170,11 +170,11 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(4, 'auto'),
+    margin: theme.spacing(0, 'auto'),
     maxWidth: '100%',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    margin: theme.spacing(8, 'auto'),
+    margin: theme.spacing(0, 'auto'),
     maxWidth: '100%',
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
@@ -195,10 +195,10 @@ export const BlogMetaContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'flex-start',
-  marginTop: theme.spacing(8),
   gap: theme.spacing(2),
   flexDirection: 'column',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginTop: theme.spacing(8),
     alignItems: 'center',
     flexDirection: 'row',
   },

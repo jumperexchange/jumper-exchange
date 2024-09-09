@@ -96,9 +96,8 @@ test.describe('Jumper full e2e flow', () => {
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
 
-  test('Should be able to navigate to profile and open Explore Fluid Mission', async ({
+  test('Should be able to navigate to profile and open Explore Filament Mission', async ({
     page,
-    context,
   }) => {
     let profileUrl = `${await page.url()}profile/`;
     // await closeWelcomeScreen(page);
@@ -108,10 +107,10 @@ test.describe('Jumper full e2e flow', () => {
     expect(await page.url()).toBe(profileUrl);
     await page.locator('.profile-page').isVisible();
     await page
-      .locator('xpath=//p[normalize-space(text())="Explore Fluid"]')
+      .locator('xpath=//p[normalize-space(text())="Explore Filament"]')
       .click();
-    const newPage = await context.waitForEvent('page');
-    expect(newPage.url()).toBe(values.exploreFluidURL);
+    await page.waitForLoadState('networkidle')
+    expect(page.url()).toBe(values.exploreFilamentURL);
   });
 
   test('Should be able to navigate to jumper learn', async ({ page }) => {

@@ -10,6 +10,10 @@ import { MissionCTA } from './CTA/MissionCTA';
 import { DescriptionBox } from './DescriptionBox/DescriptionBox';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { StepsBox } from './StepsBox/StepsBox';
+import {
+  REWARD_TOKEN_ADDRESS,
+  REWARD_TOKEN_CHAINID,
+} from 'src/const/partnerRewardsTheme';
 
 interface QuestsMissionPageVar {
   quest: Quest;
@@ -34,8 +38,9 @@ export const QuestsMissionPage = ({
 
   const { account } = useAccounts();
   const { pastCampaigns } = useMerklRewards({
-    rewardChainId: 10,
+    rewardChainId: REWARD_TOKEN_CHAINID,
     userAddress: account?.address,
+    rewardToken: REWARD_TOKEN_ADDRESS,
   });
   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
 
@@ -49,34 +54,31 @@ export const QuestsMissionPage = ({
           quest={quest}
           baseUrl={baseUrl}
           pastCampaigns={pastCampaigns}
-          // rotatingBadge={
-          //   rewardType === 'weekly' ? (
-          //     <SuperfestWeeklyRewards />
-          //   ) : (
-          //     <SuperfestDailyRewards />
-          //   )
-          // }
         />
         {/* Big CTA */}
-        <MissionCTA
-          title={attributes?.Title}
-          url={attributes?.Link}
-          activeCampaign={activeCampaign}
-          rewards={rewards}
-          key={generateKey('cta')}
-          CTAs={CTAsWithAPYs}
-          variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
-          signature={missionType === 'turtle_signature'}
-          rewardRange={rewardRange}
-        />
+        {CTAsWithAPYs?.length > 0 && (
+          <MissionCTA
+            id={quest.id}
+            title={attributes?.Title}
+            url={attributes?.Link}
+            activeCampaign={activeCampaign}
+            rewards={rewards}
+            key={generateKey('cta')}
+            CTAs={CTAsWithAPYs}
+            variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
+            signature={missionType === 'turtle_signature'}
+            rewardRange={rewardRange}
+          />
+        )}
         {/* Subtitle and description */}
-        <DescriptionBox
-          longTitle={attributes?.Subtitle}
-          description={attributes?.Description}
-        />
+        {attributes?.Subtitle && (
+          <DescriptionBox
+            longTitle={attributes?.Subtitle}
+            description={attributes?.Description}
+          />
+        )}
         {/* Steps */}
-        {/* Todo: remove the check for steps */}
-        {attributes?.Steps && attributes?.Steps?.length > 1 ? (
+        {attributes?.Steps && attributes?.Steps?.length > 0 ? (
           <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
         ) : undefined}
         {/* Additional Info */}
