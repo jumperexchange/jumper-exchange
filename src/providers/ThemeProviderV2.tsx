@@ -48,7 +48,7 @@ interface ThemeProviderV2Props {
 
 /**
  * Your app's theme provider component.
- * 'use client' is essential for next-themes to work with app-dir.
+ * provider for the MUI theme context, mainly setting up the MUI provider, very linked to the next-theme provider
  */
 export function ThemeProviderV2({
   children,
