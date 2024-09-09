@@ -135,7 +135,7 @@ export const BlogArticle = ({
                 sx={{
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: 'center',
+                  alignSelf: 'flex-start',
                 }}
               >
                 {author?.data ? (
@@ -157,7 +157,10 @@ export const BlogArticle = ({
                     }}
                   >
                     {author.data.attributes.LinkedIn ? (
-                      <Link href={author.data.attributes.LinkedIn}>
+                      <Link
+                        href={author.data.attributes.LinkedIn}
+                        target="_blank"
+                      >
                         <IconButtonTertiary
                           sx={{ width: '24px', height: '24px' }}
                         >
@@ -166,7 +169,10 @@ export const BlogArticle = ({
                       </Link>
                     ) : null}
                     {author.data.attributes.Twitter ? (
-                      <Link href={author.data.attributes.Twitter}>
+                      <Link
+                        href={author.data.attributes.Twitter}
+                        target="_blank"
+                      >
                         <IconButtonTertiary
                           sx={{ width: '24px', height: '24px' }}
                         >
