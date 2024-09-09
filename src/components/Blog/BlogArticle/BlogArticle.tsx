@@ -77,8 +77,6 @@ export const BlogArticle = ({
   const minRead = readingTime(content);
   const { t } = useTranslation();
 
-  console.log('AUTHOR', author);
-
   return (
     <>
       <BlogArticleContainer>
