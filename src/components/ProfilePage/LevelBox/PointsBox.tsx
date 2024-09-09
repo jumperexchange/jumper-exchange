@@ -13,7 +13,6 @@ interface PointsBoxProps {
 }
 
 export const PointsBox = ({ points }: PointsBoxProps) => {
-
   return (
     <Box>
       <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>
