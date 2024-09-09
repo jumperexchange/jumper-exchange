@@ -62,6 +62,10 @@ export enum TrackingAction {
   ClickShareArticleX = 'action_share_article_x',
   ClickShareArticleLink = 'action_share_article_link',
 
+  // Quests
+  ClickQuestCard = 'action_click_quest_card',
+  ClickMissionCta = 'action_click_mission_cta',
+
   // Pagination
   ClickPagination = 'action_click_pagination',
 
@@ -95,6 +99,8 @@ export enum TrackingCategory {
   BlogFeaturedArticle = 'cat_blog_featured_article',
   BlogArticlesBoard = 'cat_blog_articles_board',
   BlogArticle = 'cat_blog_article',
+  Missions = 'cat_missions',
+  Quests = 'cat_quests',
 }
 
 // can be used as custom dimensions / metrics
@@ -113,6 +119,7 @@ export enum TrackingEventParameter {
   Wallet = 'param_wallet',
   WalletAddress = 'param_wallet_address',
   Ecosystem = 'param_ecosystem',
+  Integrator = 'param_integrator',
 
   // Widget:
   SourceChainSelection = 'param_source_chain',
@@ -127,19 +134,28 @@ export enum TrackingEventParameter {
   PageloadExternal = 'param_pageload_external',
 
   // Transaction:
+  Action = 'param_action',
   RouteId = 'param_route_id',
+  TransactionId = 'param_transaction_id',
+  SessionId = 'param_session_id',
+  TransactionHash = 'param_transaction_hash',
+  TransactionLink = 'param_transaction_link',
   FromToken = 'param_from_token',
   FromChainId = 'param_from_chain_id',
   ToToken = 'param_to_token',
+  ToChainId = 'param_to_chain_id',
   Timestamp = 'param_timestamp',
   Status = 'param_status',
   Error = 'param_error',
+  Exchange = 'param_exchange',
+  StepNumber = 'param_step_number',
+  IsFinal = 'param_is_final',
   Message = 'param_message',
+  GasCost = 'param_gas_cost',
   GasCostUSD = 'param_gas_cost_usd',
   FeeCostUSD = 'param_fee_cost_usd',
   TxHash = 'param_tx_hash',
   TxLink = 'param_tx_link',
-  ToChainId = 'param_to_chain_id',
   FromAmount = 'param_from_amount',
   ToAmount = 'param_to_amount',
   ToAmountUSD = 'param_to_amount_usd',
@@ -151,6 +167,7 @@ export enum TrackingEventParameter {
   ErrorMessage = 'param_error_message',
   ValueLoss = 'param_value_loss',
   AvailableRoutesCount = 'param_available_routes_count',
+  TransactionStatus = 'param_transaction_status',
 
   // Blog
   ArticleCardId = 'param_article_card_id',
@@ -161,4 +178,16 @@ export enum TrackingEventParameter {
   // Pagination
   Pagination = 'param_pagination',
   PaginationCat = 'param_pagination_cat',
+
+  // Quests
+  QuestCardTitle = 'param_quest_card_title',
+  QuestCardLabel = 'param_quest_card_label',
+  QuestCardId = 'param_quest_card_id',
+  QuestCardPlatform = 'param_quest_card_platform',
+  MissionCtaRewardId = 'param_mission_cta_reward_id',
+  MissionCtaClaimingId = 'param_mission_cta_claiming_id',
+  MissionCtaTitle = 'param_mission_cta_title',
+  MissionCtaLabel = 'param_mission_cta_label',
+  MissionCtaPartnerId = 'param_mission_cta_partner_id',
+  MissionCtaCampaign = 'param_mission_cta_campaign',
 }

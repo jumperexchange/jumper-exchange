@@ -11,6 +11,7 @@ import { ChainId } from '@lifi/sdk';
 import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';
 import { SoraTypography } from '../../Superfest.style';
 import { useCheckNFTAvailability } from 'src/hooks/useCheckNFTAvailability';
+import Link from 'next/link';
 
 interface NFTCardProps {
   image: string;

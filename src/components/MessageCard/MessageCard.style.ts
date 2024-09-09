@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
+import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, lighten, styled } from '@mui/material/styles';
 
 const MessageCard = styled(Box)(({ theme }) => ({
@@ -8,12 +9,15 @@ const MessageCard = styled(Box)(({ theme }) => ({
   position: 'relative',
   whiteSpace: 'pre-line',
   margin: 'auto',
-  width: 416,
+  width: '100%',
   padding: theme.spacing(2, 3),
   boxShadow:
     theme.palette.mode === 'dark'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    width: 416,
+  },
 }));
 
 export const WarningMessageCard = styled(MessageCard)(({ theme }) => ({

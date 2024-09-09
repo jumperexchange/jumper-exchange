@@ -4,7 +4,6 @@ import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAler
 import { widgetConfig } from '@/config/widgetConfig';
 import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
-import { useActiveTabStore } from '@/stores/activeTab/ActiveTabStore';
 import { useMenuStore } from '@/stores/menu';
 import { useSettingsStore } from '@/stores/settings';
 import type { LanguageKey } from '@/types/i18n';
@@ -12,9 +11,6 @@ import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
 import type { CalculateFeeParams, WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import type { Theme } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
@@ -29,13 +25,14 @@ import {
 } from 'src/const/trackingKeys';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useUserTracking } from 'src/hooks/userTracking';
+import { useActiveTabStore } from 'src/stores/activeTab';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
-import { useWidgetTheme } from './useWidgetTheme';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
 import getDeductAmount from '@/app/lib/getDeductAmount';
+import { useWidgetTheme } from './useWidgetTheme';
 
 export function Widget({
   starterVariant,
@@ -48,17 +45,14 @@ export function Widget({
   widgetIntegrator,
   activeTheme,
 }: WidgetProps) {
-  const theme = useTheme();
   const widgetTheme = useWidgetTheme();
-  const themeMode = useSettingsStore((state) => state.themeMode);
   const configTheme = useSettingsStore((state) => state.configTheme);
   const { i18n } = useTranslation();
+  const { trackEvent } = useUserTracking();
   const wagmiConfig = useConfig();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
-  const { trackEvent } = useUserTracking();
   const partnerName = configTheme?.uid ?? 'default';
   const { tokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
@@ -72,7 +66,6 @@ export function Widget({
     router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
 
-  const isGasVariant = activeTab === TabsMap.Refuel.index;
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
@@ -80,6 +73,7 @@ export function Widget({
     (state: MenuState) => state.setWalletSelectMenuState,
   );
 
+  const isGasVariant = activeTab === TabsMap.Refuel.index;
   const allowedChainsByVariant = useMemo(
     () =>
       starterVariant === TabsMap.Refuel.variant

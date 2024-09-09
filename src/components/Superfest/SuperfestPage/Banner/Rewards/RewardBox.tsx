@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import { RewardBottomBox, SupportedChainsBox } from '../Banner.style';
 import { SoraTypography } from 'src/components/Superfest/Superfest.style';
-import { RewardTopBox, RewardSubtitleBox } from './RewardBox.style';
+import { RewardBottomBox, SupportedChainsBox } from '../Banner.style';
+import { RewardSubtitleBox, RewardTopBox } from './RewardBox.style';
 
 interface RewardBoxProps {
   title: string;
