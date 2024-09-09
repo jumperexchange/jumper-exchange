@@ -22,11 +22,6 @@ export const useSettingsStore = createWithEqualityFn(
       ...defaultSettings,
 
       // Mode
-      setActiveTheme: (activeTheme: string) => {
-        set({
-          activeTheme: activeTheme,
-        });
-      },
       setConfigTheme: (configTheme: PartnerThemeConfig) => {
         set({
           configTheme,

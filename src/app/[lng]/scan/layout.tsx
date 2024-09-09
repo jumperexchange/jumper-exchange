@@ -20,7 +20,7 @@ export default async function PartnerThemeLayout({
       enableSystem
       enableColorScheme
     >
-      <ThemeProviderV2>
+      <ThemeProviderV2 themes={[]}>
         <Layout>{children}</Layout>
       </ThemeProviderV2>
     </NextThemeProvider>
