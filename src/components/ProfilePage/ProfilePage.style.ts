@@ -11,12 +11,14 @@ export const ProfilePageContainer = styled(Container)(() => ({
 }));
 
 export const ProfilePageHeaderBox = styled(Box)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.grey[100]
-      : alpha(theme.palette.grey[100], 0.08),
+  backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '24px',
   boxShadow: theme.palette.shadow.main,
+}));
+
+export const NoSelectTypographyTitle = styled(Typography)(({ theme }) => ({
+  userSelect: 'none',
+  color: theme.palette.primary.main,
 }));
 
 export const NoSelectTypography = styled(Typography)(({ theme }) => ({

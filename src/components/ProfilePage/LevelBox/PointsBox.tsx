@@ -1,33 +1,56 @@
 import { XpIconContainer } from '@/components/ProfilePage/LevelBox/PointsBox.style';
-import { useTheme } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
 import { XPIcon } from '../../illustrations/XPIcon';
-import { CenteredBox, NoSelectTypography } from '../ProfilePage.style';
+import {
+  CenteredBox,
+  NoSelectTypography,
+  NoSelectTypographyTitle,
+} from '../ProfilePage.style';
+import InfoIcon from '@mui/icons-material/Info';
 
 interface PointsBoxProps {
   points?: number;
 }
 
 export const PointsBox = ({ points }: PointsBoxProps) => {
-  const theme = useTheme();
 
   return (
-    <CenteredBox>
-      <NoSelectTypography
-        color={
-          theme.palette.mode === 'light'
-            ? theme.palette.accent1.main
-            : theme.palette.white.main
-        }
-        fontWeight={700}
-        sx={{
-          fontSize: { xs: 48, sm: 80 },
-        }}
-      >
-        {points ?? 0}
+    <Box>
+      <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>
+        POINTS
+        <Tooltip
+          title={'Leaderboard is updated on a daily basis'}
+          placement="top"
+          enterTouchDelay={0}
+          arrow
+        >
+          <InfoIcon
+            sx={{
+              width: 16,
+              height: 16,
+              top: '3px',
+              left: '8px',
+              position: 'relative',
+              opacity: '0.5',
+            }}
+          />
+        </Tooltip>
       </NoSelectTypography>
-      <XpIconContainer>
-        <XPIcon />
-      </XpIconContainer>
-    </CenteredBox>
+      <CenteredBox>
+        <NoSelectTypographyTitle
+          fontWeight={700}
+          lineHeight={1.25}
+          sx={{
+            fontSize: { xs: 48, sm: 80 },
+            letterSpacing: '-2px',
+          }}
+        >
+          {points ?? 0}
+        </NoSelectTypographyTitle>
+        <XpIconContainer>
+          <XPIcon />
+        </XpIconContainer>
+      </CenteredBox>
+    </Box>
   );
 };

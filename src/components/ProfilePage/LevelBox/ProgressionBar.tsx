@@ -7,6 +7,7 @@ import {
   ProgressionChartBg,
   ProgressionChartScore,
 } from './ProgressionBar.style';
+import { Button } from '../../../components/Button';
 
 interface ProgressionBarProps {
   points?: number;
@@ -27,27 +28,6 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
     <Box>
       {levelData ? (
         <>
-          <Box
-            sx={{
-              display: { xs: 'none', sm: 'flex' },
-              justifyContent: 'space-between',
-            }}
-          >
-            <NoSelectTypography
-              fontSize="14px"
-              lineHeight="18px"
-              fontWeight={700}
-            >
-              {`LEVEL ${levelData?.level}`}
-            </NoSelectTypography>
-            <NoSelectTypography
-              fontSize="14px"
-              lineHeight="18px"
-              fontWeight={700}
-            >
-              {`LEVEL ${levelData.level + 1}`}
-            </NoSelectTypography>
-          </Box>
           <ProgressionChart>
             <ProgressionChartScore
               points={points}
@@ -56,31 +36,59 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
             />
             <ProgressionChartBg />
           </ProgressionChart>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <CenteredBox>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginTop: '24px',
+            }}
+          >
+            <Button
+              aria-label="Page Navigation"
+              variant="secondary"
+              size="medium"
+              styles={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                pointerEvents: 'none',
+                paddingLeft: '12px',
+                height: '32px',
+              }}
+            >
               <NoSelectTypography
-                fontSize="16px"
-                lineHeight="20px"
+                fontSize="12px"
+                lineHeight="16px"
                 fontWeight={600}
+                marginRight="8px"
               >
-                {levelData.minPoints}
+                LEVEL {levelData.level} • {levelData.minPoints}
               </NoSelectTypography>
-              <CenteredBox sx={{ marginLeft: '8px' }}>
-                <XPIcon size={24} />
-              </CenteredBox>
-            </CenteredBox>
-            <CenteredBox>
+              <XPIcon size={16} />
+            </Button>
+            <Button
+              aria-label="Page Navigation"
+              variant="secondary"
+              size="medium"
+              styles={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                pointerEvents: 'none',
+                paddingLeft: '12px',
+                height: '32px',
+              }}
+            >
               <NoSelectTypography
-                fontSize={'16px'}
-                lineHeight={'20px'}
+                fontSize="12px"
+                lineHeight="16px"
                 fontWeight={600}
+                marginRight="8px"
               >
-                {levelData.maxPoints}
+                LEVEL {levelData.level + 1} • {levelData.maxPoints}
               </NoSelectTypography>
-              <CenteredBox sx={{ marginLeft: '8px' }}>
-                <XPIcon size={24} />
-              </CenteredBox>
-            </CenteredBox>
+              <XPIcon size={16} />
+            </Button>
           </Box>
         </>
       ) : null}
