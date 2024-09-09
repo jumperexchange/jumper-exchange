@@ -4,7 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { sora } from 'src/fonts/fonts';
 import type { InstructionItemProps } from '.';
 import {
@@ -62,6 +62,12 @@ export const InstructionsAccordionItem = ({
   };
 
   const isSuperfest = variant === 'superfest';
+
+  useEffect(() => {
+    if (variant === 'superfest') {
+      setOpen(true);
+    }
+  }, []);
 
   return (
     <InstructionsAccordionItemContainer

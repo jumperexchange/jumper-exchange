@@ -2,7 +2,7 @@
 import type { BackgroundContainerProps } from '@/components/Background';
 import type { ComponentsOverrides, ComponentsVariants } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
-import { createTheme } from '@mui/material/styles';
+import { alpha, createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
@@ -48,6 +48,8 @@ declare module '@mui/material/styles' {
     dataBg: Palette['primary'];
     dataOutline: Palette['primary'];
     bg: Palette['primary'];
+    bgSecondary: Palette['primary'];
+    bgTertiary: Palette['primary'];
     shadow: Palette['primary'];
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
@@ -81,6 +83,8 @@ declare module '@mui/material/styles' {
     dataBg?: Palette['primary'];
     dataOutline?: Palette['primary'];
     bg?: PaletteOptions['primary'];
+    bgSecondary?: PaletteOptions['primary'];
+    bgTertiary?: PaletteOptions['primary'];
     shadow?: PaletteOptions['primary'];
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
@@ -156,6 +160,8 @@ declare module '@mui/material/Button' {
     dataBg: true;
     dataOutline: true;
     bg: true;
+    bgSecondary: true;
+    bgTertiary: true;
     shadow: true;
     alphaDark100: true;
     alphaDark200: true;
@@ -595,6 +601,7 @@ export const lightTheme = createTheme(
       },
       text: {
         primary: '#000',
+        secondary: alpha(themeCustomized.palette.black.main, 0.75),
       },
       grey: {
         300: '#E5E1EB',
@@ -604,10 +611,14 @@ export const lightTheme = createTheme(
         main: '#F3EBFF',
         dark: '#F3EBFF',
       },
+      bgSecondary: {
+        main: alpha(themeCustomized.palette.white.main, 0.48),
+      },
+      bgTertiary: {
+        main: themeCustomized.palette.white.main,
+      },
       shadow: {
-        light: '#F3EBFF',
-        main: '#F3EBFF',
-        dark: '#F3EBFF',
+        main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
       },
       primary: {
         light: '#31007A',
@@ -707,6 +718,7 @@ export const darkTheme = createTheme(
       },
       text: {
         primary: '#fff',
+        secondary: alpha(themeCustomized.palette.white.main, 0.75),
       },
       grey: {
         800: '#302B52',
@@ -716,10 +728,14 @@ export const darkTheme = createTheme(
         main: '#030014',
         dark: '#030014',
       },
+      bgSecondary: {
+        main: alpha(themeCustomized.palette.white.main, 0.12),
+      },
+      bgTertiary: {
+        main: themeCustomized.palette.alphaLight200.main,
+      },
       shadow: {
-        light: '#F3EBFF',
-        main: '#F3EBFF',
-        dark: '#F3EBFF',
+        main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
       },
       primary: {
         light: '#653BA3',

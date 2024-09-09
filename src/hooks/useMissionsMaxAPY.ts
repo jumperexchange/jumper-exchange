@@ -1,10 +1,14 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import type { MerklApyRes } from './useMissionsAPY';
+import {
+  MERKL_CREATOR_TAG,
+  REWARDS_CHAIN_IDS,
+} from 'src/const/partnerRewardsTheme';
 
-const ACTIVE_CHAINS = ['10', '8453', '252', '34443'];
+const ACTIVE_CHAINS = REWARDS_CHAIN_IDS;
 const MERKL_API = 'https://api.merkl.xyz/v3';
-const CREATOR_TAG = 'superfest';
+const CREATOR_TAG = MERKL_CREATOR_TAG;
 
 interface useMissionsAPYRes {
   isLoading: boolean;
@@ -15,7 +19,7 @@ interface useMissionsAPYRes {
 export const useMissionsMaxAPY = (
   claimingIds: string[] | undefined,
 ): useMissionsAPYRes => {
-  const MERKL_CAMPAIGN_API = `${MERKL_API}/campaigns?chainIds=${ACTIVE_CHAINS.join(',')}&creatorTag=${CREATOR_TAG}`;
+  const MERKL_CAMPAIGN_API = `${MERKL_API}/campaigns?chainIds=${ACTIVE_CHAINS.join(',')}`; //&creatorTag=${CREATOR_TAG}`;
 
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['accountCampaignInfo'],

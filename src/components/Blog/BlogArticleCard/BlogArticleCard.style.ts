@@ -19,10 +19,7 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   border: 'unset',
   padding: theme.spacing(2),
   borderRadius: '32px',
-  background:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : theme.palette.alphaLight200.main,
+  background: theme.palette.bgTertiary.main,
   transition: 'background-color 250ms',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     minWidth: 250,

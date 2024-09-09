@@ -27,10 +27,7 @@ export const MultisigConfirmationModalContainer = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'dark'
       ? theme.palette.surface2.main
       : theme.palette.surface1.main,
-  boxShadow:
-    theme.palette.mode === 'dark'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+  boxShadow: theme.palette.shadow.main,
 }));
 
 export const MultisigConfirmationModalButton = styled(Button)(({ theme }) => ({
