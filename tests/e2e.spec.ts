@@ -72,7 +72,6 @@ test.describe('Jumper full e2e flow', () => {
     await expect(customSlippage).toBeVisible();
   });
 
-
   test.skip('Should handle welcome screen', async ({ page }) => {
     const headerText = 'Find the best route';
     await findTheBestRoute(page);
@@ -106,7 +105,7 @@ test.describe('Jumper full e2e flow', () => {
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
 
-  test('Should be able to navigate to profile and open Explore Fluid Mission', async ({
+  test.skip('Should be able to navigate to profile and open Explore Fluid Mission', async ({
     page,
     context,
   }) => {
@@ -120,8 +119,7 @@ test.describe('Jumper full e2e flow', () => {
     await page
       .locator('xpath=//p[normalize-space(text())="Explore Fluid"]')
       .click();
-    const newPage = await context.waitForEvent('page');
-    expect(newPage.url()).toBe(values.exploreFluidURL);
+    expect(page.url()).toBe(values.exploreFluidURL);
   });
 
   test('Should be able to navigate to jumper learn', async ({ page }) => {

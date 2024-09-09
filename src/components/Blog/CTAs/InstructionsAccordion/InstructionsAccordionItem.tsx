@@ -4,7 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { sora } from 'src/fonts/fonts';
 import type { InstructionItemProps } from '.';
 import {
@@ -63,11 +63,16 @@ export const InstructionsAccordionItem = ({
 
   const isSuperfest = variant === 'superfest';
 
+  useEffect(() => {
+    if (variant === 'superfest') {
+      setOpen(true);
+    }
+  }, []);
+
   return (
     <InstructionsAccordionItemContainer
       sx={{
         typograpy: isSuperfest ? sora.style.fontFamily : undefined,
-        border: isSuperfest ? '2px dotted' : undefined,
         borderColor: isSuperfest ? theme.palette.black.main : undefined,
       }}
     >
@@ -145,6 +150,10 @@ export const InstructionsAccordionItem = ({
                             component={'span'}
                             mr={'8px'}
                             sx={{
+                              color:
+                                theme.palette.mode === 'light'
+                                  ? '#000000'
+                                  : '#FFFFFF',
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
                               maxWidth: 208,
@@ -155,7 +164,14 @@ export const InstructionsAccordionItem = ({
                           >
                             {buttonTitles[i]}
                           </Typography>
-                          <ArrowForwardIcon />
+                          <ArrowForwardIcon
+                            style={{
+                              color:
+                                theme.palette.mode === 'light'
+                                  ? '#000000'
+                                  : '#FFFFFF',
+                            }}
+                          />
                         </InstructionsAccordionLinkBox>
                       </a>
                     </InstructionsAccordionButtonMainBox>

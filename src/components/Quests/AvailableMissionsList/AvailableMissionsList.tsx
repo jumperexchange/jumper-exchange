@@ -160,6 +160,7 @@ export const AvailableMissionsList = ({
                   title={quest?.attributes.Title}
                   path={path}
                   activeCampaign={activeCampaign}
+                  label={quest?.attributes.Label}
                   image={String(imgURL)}
                   points={quest?.attributes.Points}
                   link={quest?.attributes.Link}
