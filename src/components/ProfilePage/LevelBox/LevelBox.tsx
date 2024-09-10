@@ -16,7 +16,9 @@ export const LevelBox = ({ level }: LevelBoxProps) => {
       <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>
         LEVEL
         <Tooltip
-          title={'Leaderboard is updated on a daily basis'}
+          title={
+            'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.'
+          }
           placement="top"
           enterTouchDelay={0}
           arrow
@@ -41,7 +43,7 @@ export const LevelBox = ({ level }: LevelBoxProps) => {
             fontSize: { xs: 48, sm: 80 },
           }}
         >
-          {level ?? 0}
+          {level || '-'}
         </NoSelectTypographyTitle>
       </Box>
     </Box>

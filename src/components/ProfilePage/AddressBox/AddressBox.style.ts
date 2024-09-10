@@ -18,12 +18,15 @@ export const AddressBoxContainer = styled(Box, {
   position: 'relative',
   paddingBottom: theme.spacing(1),
   width: '100%',
+  minHeight: '200px',
+  boxShadow: theme.palette.shadow.main,
 
   ...(!imgUrl && {
     background: `linear-gradient(to bottom, ${theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.accent1Alt.main} 50%, ${theme.palette.mode === 'light' ? theme.palette.grey[100] : 'transparent'} 50%)`,
   }),
 
   [theme.breakpoints.up('sm')]: {
+    minHeight: '256px',
     paddingTop: 0,
     paddingBottom: 0,
   },

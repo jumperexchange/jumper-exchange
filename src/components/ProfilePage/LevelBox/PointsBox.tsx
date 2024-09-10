@@ -18,7 +18,9 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
       <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>
         POINTS
         <Tooltip
-          title={'Leaderboard is updated on a daily basis'}
+          title={
+            'Points is your score for interacting with Jumper. As you gain more points, your level goes up.'
+          }
           placement="top"
           enterTouchDelay={0}
           arrow
@@ -36,19 +38,36 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
         </Tooltip>
       </NoSelectTypography>
       <CenteredBox>
-        <NoSelectTypographyTitle
-          fontWeight={700}
-          lineHeight={1.25}
-          sx={{
-            fontSize: { xs: 48, sm: 80 },
-            letterSpacing: '-2px',
-          }}
-        >
-          {points ?? 0}
-        </NoSelectTypographyTitle>
-        <XpIconContainer>
-          <XPIcon />
-        </XpIconContainer>
+        {points ? (
+          <>
+            <NoSelectTypographyTitle
+              fontWeight={700}
+              lineHeight={1.25}
+              sx={{
+                fontSize: { xs: 48, sm: 80 },
+                letterSpacing: '-2px',
+              }}
+            >
+              {points}
+            </NoSelectTypographyTitle>
+            <XpIconContainer>
+              <XPIcon />
+            </XpIconContainer>
+          </>
+        ) : (
+          <>
+            <NoSelectTypographyTitle
+              fontWeight={700}
+              lineHeight={1.25}
+              sx={{
+                fontSize: { xs: 48, sm: 80 },
+                letterSpacing: '-2px',
+              }}
+            >
+              {'-'}
+            </NoSelectTypographyTitle>
+          </>
+        )}
       </CenteredBox>
     </Box>
   );
