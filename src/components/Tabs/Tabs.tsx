@@ -45,8 +45,10 @@ export const Tabs = ({
         const keys = a11yProps(ariaLabel, index);
         const tab = (
           <Tab
+            className={`${ariaLabel} ${value === index ? 'active' : 'inactive'}`}
             key={`${keys.id}-${index}`}
             onClick={(event) => {
+              event.preventDefault();
               el.onClick(event, el.value);
             }}
             icon={el.icon}

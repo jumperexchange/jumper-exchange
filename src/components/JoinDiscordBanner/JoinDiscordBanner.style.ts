@@ -45,7 +45,6 @@ export const DiscordBannerLink = styled(Link)<BoxProps>(({ theme }) => ({
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     margin: theme.spacing(12, 'auto'),
     marginBottom: theme.spacing(14.5),
-
     maxWidth: theme.breakpoints.values.xl,
   },
 }));

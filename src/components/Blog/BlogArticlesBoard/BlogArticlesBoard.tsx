@@ -2,7 +2,6 @@
 
 import { a11yProps, type TabProps } from '@/components/Tabs';
 import type { BlogArticleData, StrapiMetaPagination } from '@/types/strapi';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import type { Breakpoint, Theme } from '@mui/material';
 import { Box, Skeleton, useMediaQuery, useTheme } from '@mui/material';
 import type { PropsWithChildren } from 'react';
@@ -12,8 +11,8 @@ import type { GetTagsResponse } from 'src/app/lib/getTags';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
-import { BlogCarouselContainer } from '../BlogCarousel/BlogCarousel.style';
 import {
+  ArticlesGrid,
   BlogArticlesBoardContainer,
   BlogArticlesBoardTitle,
 } from './BlogArticlesBoard.style';
@@ -35,8 +34,8 @@ export const BlogArticlesBoard = ({
 }: BlogArticlesBoardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  // const [openDropdown, setOpenDropdown] = useState<boolean>(false);
   const [tabId, setTabId] = useState<number | undefined>(0);
+  const [openDropdown, setOpenDropdown] = useState<boolean>(false);
   const [catLabel, setCatLabel] = useState<string | undefined>(
     t('blog.allCategories'),
   );
@@ -45,37 +44,39 @@ export const BlogArticlesBoard = ({
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const handleTagsClick = useCallback(
     (id: number, label?: string) => () => {
-      // if (!isDesktop && !openDropdown) {
-      //   setOpenDropdown(true);
-      // } else {
-      //   setOpenDropdown(false);
-      // }
+      if (!isDesktop && !openDropdown) {
+        console.log('CHECK HANDLER OPEN', id, label);
+        setOpenDropdown(true);
+      } else {
+        console.log('CHECK HANDLER CLOSE', id, label);
+        setOpenDropdown(false);
+      }
       setTabId(id);
       setCatLabel(label);
     },
-    [],
+    [isDesktop, openDropdown],
   );
 
   const filteredTags = useMemo<TabProps[]>(() => {
     // default "All" Category
-    const defaultFilter = {
-      id: 0,
-      label:
-        !isDesktop && tabId !== 0 ? catLabel || '' : t('blog.allCategories'),
-      icon: !isDesktop && (
-        <ArrowDropDownIcon
-          sx={{
-            position: 'absolute',
-            right: theme.spacing(1),
-            marginBottom: 0,
-          }}
-        />
-      ),
-      attributes: [],
-      value: 0,
-      onClick: handleTagsClick(0, t('blog.allCategories')),
-      disabled: false,
-    };
+    // const defaultFilter = {
+    //   id: 0,
+    //   label:
+    //     !isDesktop && tabId !== 0 ? catLabel || '' : t('blog.allCategories'),
+    //   icon: !isDesktop && (
+    //     <ArrowDropDownIcon
+    //       sx={{
+    //         position: 'absolute',
+    //         right: theme.spacing(1),
+    //         marginBottom: 0,
+    //       }}
+    //     />
+    //   ),
+    //   attributes: [],
+    //   value: 0,
+    //   onClick: handleTagsClick(0, t('blog.allCategories')),
+    //   disabled: false,
+    // };
     // tags
     const output = tags?.data.map((el, index: number) => {
       return {
@@ -88,17 +89,31 @@ export const BlogArticlesBoard = ({
     // merge default + tags
     // output?.unshift(defaultFilter);
     return output;
-  }, [isDesktop, tabId, catLabel, t, theme, handleTagsClick, tags?.data]);
+  }, [handleTagsClick, tags?.data]);
+
+  const handleClick = (event: { target: HTMLElement }) => {
+    console.log('event', event);
+    const classList = event.target.classList;
+
+    if (openDropdown) {
+      !classList?.contains(ariaLabel) && setOpenDropdown(false);
+    }
+  };
 
   return (
-    <BlogArticlesBoardContainer id="see-all">
+    <BlogArticlesBoardContainer
+      id="see-all"
+      onClick={(event: React.MouseEvent<HTMLDivElement>) =>
+        handleClick({ target: event.target as HTMLElement })
+      }
+    >
       <BlogArticlesBoardTitle variant="headerMedium">
         {t('blog.categories')}
       </BlogArticlesBoardTitle>
       {filteredTags ? (
         <BlogArticlesBoardTabs
           ariaLabel={ariaLabel}
-          openDropdown={true}
+          openDropdown={openDropdown}
           filteredTags={filteredTags}
           tabId={tabId}
         />
@@ -171,7 +186,7 @@ function CategoryTabPanel({
       hidden={value !== index}
       {...a11yProps(ariaLabel, value)}
     >
-      <BlogCarouselContainer
+      {/* <BlogCarouselContainer
         sx={{
           minWidth: '100%',
           marginLeft: { sx: 0, md: 0, lg: 0, xl: 0 },
@@ -182,53 +197,53 @@ function CategoryTabPanel({
             marginTop: `${theme.spacing(6)}`,
           },
         }}
+      > */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+        }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'column',
-          }}
-        >
-          {chunkedPages.map((page, pageIndex) => (
-            <CategoryPaginationPage pageTab={pageTab} index={pageIndex}>
-              {page.map((article, articleIndex: number) => (
-                <BlogArticleCard
-                  styles={{
-                    display: 'inline-block',
-                    [theme.breakpoints.up('lg' as Breakpoint)]: {
-                      width: 384,
-                    },
-                  }}
-                  baseUrl={tags.url}
-                  id={article.id}
-                  key={`blog-articles-board}-${index}-${articleIndex}`}
-                  image={article.attributes.Image}
-                  title={article.attributes.Title}
-                  slug={article.attributes.Slug}
-                  trackingCategory={TrackingCategory.BlogArticlesBoard}
-                  content={article.attributes.Content}
-                  publishedAt={article.attributes.publishedAt}
-                  createdAt={article.attributes.createdAt}
-                  tags={article.attributes.tags}
-                />
-              ))}
-            </CategoryPaginationPage>
-          ))}
-        </Box>
-        {
-          /* todo: enable pagination*/
-          pagination.pageCount > 0 ? (
-            <Pagination
-              isEmpty={pagination.pageCount <= 1}
-              page={pageTab}
-              setPage={setPageTab}
-              pagination={pagination}
-              categoryId={value}
-            />
-          ) : null
-        }
-      </BlogCarouselContainer>
+        {chunkedPages.map((page, pageIndex) => (
+          <CategoryPaginationPage pageTab={pageTab} index={pageIndex}>
+            {page.map((article, articleIndex: number) => (
+              <BlogArticleCard
+                styles={{
+                  display: 'inline-block',
+                  [theme.breakpoints.up('lg' as Breakpoint)]: {
+                    width: 384,
+                  },
+                }}
+                baseUrl={tags.url}
+                id={article.id}
+                key={`blog-articles-board}-${index}-${articleIndex}`}
+                image={article.attributes.Image}
+                title={article.attributes.Title}
+                slug={article.attributes.Slug}
+                trackingCategory={TrackingCategory.BlogArticlesBoard}
+                content={article.attributes.Content}
+                publishedAt={article.attributes.publishedAt}
+                createdAt={article.attributes.createdAt}
+                tags={article.attributes.tags}
+              />
+            ))}
+          </CategoryPaginationPage>
+        ))}
+      </Box>
+      {
+        /* todo: enable pagination*/
+        pagination.pageCount > 0 ? (
+          <Pagination
+            isEmpty={pagination.pageCount <= 1}
+            page={pageTab}
+            setPage={setPageTab}
+            pagination={pagination}
+            categoryId={value}
+          />
+        ) : null
+      }
+      {/* </BlogCarouselContainer> */}
     </Box>
   );
 }
@@ -253,18 +268,8 @@ const CategoryPaginationPage: React.FC<
   PropsWithChildren<CategoryPaginationPageProps>
 > = ({ children, pageTab, index }) => {
   return (
-    <Box
-      hidden={pageTab !== index}
-      sx={{
-        ...(pageTab === index && {
-          flexWrap: 'wrap',
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '24px',
-        }),
-      }}
-    >
+    <ArticlesGrid hidden={pageTab !== index} active={pageTab === index}>
       {children}
-    </Box>
+    </ArticlesGrid>
   );
 };
