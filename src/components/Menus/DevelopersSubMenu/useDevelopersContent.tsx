@@ -32,12 +32,6 @@ export const useDevelopersContent = () => {
       ),
       onClick: () => {
         trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'open-jumper-github',
-          action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'jumper_github' },
-        });
-        trackEvent({
           category: TrackingCategory.Pageload,
           action: TrackingAction.PageLoad,
           label: 'pageload-jumper-github',

@@ -44,14 +44,6 @@ export const CarouselContainer = ({
         let scrollPos = 0;
         switch (direction) {
           case 'next':
-            trackEvent({
-              category: trackingCategory || 'carousel',
-              label: 'swipe-carousel',
-              action: TrackingAction.SwipeCarousel,
-              data: {
-                [TrackingEventParameter.SwipeDirection]: 'left',
-              },
-            });
             if (scrollLeftPos + swipeDistance < scrollWidth) {
               scrollPos = scrollLeftPos + swipeDistance;
             } else {
@@ -59,14 +51,6 @@ export const CarouselContainer = ({
             }
             break;
           case 'prev':
-            trackEvent({
-              category: trackingCategory || 'carousel',
-              label: 'swipe-carousel',
-              action: TrackingAction.SwipeCarousel,
-              data: {
-                [TrackingEventParameter.SwipeDirection]: 'right',
-              },
-            });
             if (scrollLeftPos - swipeDistance > 0) {
               scrollPos = scrollLeftPos - swipeDistance;
             } else {

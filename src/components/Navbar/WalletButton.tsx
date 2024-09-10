@@ -46,26 +46,11 @@ export const WalletButtons = () => {
   );
 
   const handleWalletSelectClick = () => {
-    !openWalletSelectMenu &&
-      trackEvent({
-        category: TrackingCategory.WalletSelectMenu,
-        action: TrackingAction.OpenMenu,
-        label: 'open_wallet_select_menu',
-        data: { [TrackingEventParameter.Menu]: 'wallet_select_menu' },
-        enableAddressable: true,
-      });
-    setWalletSelectMenuState(!openWalletSelectMenu);
+    !openWalletSelectMenu && setWalletSelectMenuState(!openWalletSelectMenu);
   };
 
   const handleWalletMenuClick = () => {
-    openWalletMenu &&
-      trackEvent({
-        category: TrackingCategory.WalletMenu,
-        action: TrackingAction.OpenMenu,
-        label: 'open_wallet_menu',
-        data: { [TrackingEventParameter.Menu]: 'wallet_menu' },
-      });
-    setWalletMenuState(!openWalletMenu);
+    openWalletMenu && setWalletMenuState(!openWalletMenu);
   };
 
   return (

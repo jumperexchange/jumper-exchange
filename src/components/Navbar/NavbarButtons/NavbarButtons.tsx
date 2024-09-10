@@ -41,12 +41,6 @@ export const NavbarButtons = () => {
     } else {
       setMainMenuState(true);
     }
-    trackEvent({
-      category: TrackingCategory.Menu,
-      action: TrackingAction.OpenMenu,
-      label: 'open_main_menu',
-      data: { [TrackingEventParameter.Menu]: 'main_menu' },
-    });
   };
 
   return (
