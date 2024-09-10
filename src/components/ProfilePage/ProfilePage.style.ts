@@ -18,7 +18,10 @@ export const ProfilePageHeaderBox = styled(Box)(({ theme }) => ({
 
 export const NoSelectTypographyTitle = styled(Typography)(({ theme }) => ({
   userSelect: 'none',
-  color: theme.palette.primary.main,
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.white.main,
 }));
 
 export const NoSelectTypography = styled(Typography)(({ theme }) => ({
