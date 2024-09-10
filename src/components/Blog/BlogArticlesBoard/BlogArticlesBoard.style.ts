@@ -94,5 +94,6 @@ export const PaginationButton = styled(IconButton)(({ theme }) => ({
 export const BlogArticlesBoardTitle = styled(Typography)(({ theme }) => ({
   fontFamily: urbanist.style.fontFamily,
   textAlign: 'center',
+  color: theme.palette.text.primary,
   margin: theme.spacing(10, 'auto', 0),
 }));

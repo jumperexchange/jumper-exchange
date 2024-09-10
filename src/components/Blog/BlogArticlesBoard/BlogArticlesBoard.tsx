@@ -119,10 +119,10 @@ export const BlogArticlesBoard = ({
           const pagination = {
             page: 0,
             pageSize: pageSize,
-            pageCount: Math.ceil(
-              tag.attributes.blog_articles.data.length / pageSize,
-            ),
-            total: tag.attributes.blog_articles.data.length,
+            pageCount:
+              Math.ceil(tag.attributes.blog_articles.data.length / pageSize) -
+              1,
+            total: tag.attributes.blog_articles.data.length - 1,
           };
           return (
             <CategoryTabPanel
@@ -212,7 +212,7 @@ function CategoryTabPanel({
           </Box>
           {
             /* todo: enable pagination*/
-            pagination.pageCount > 1 ? (
+            pagination.pageCount > 0 ? (
               <Pagination
                 isSuccess={tags.data?.length > 0}
                 isEmpty={pagination.pageCount < 1}
@@ -253,6 +253,7 @@ const CategoryPaginationPage: React.FC<
       hidden={pageTab !== index}
       sx={{
         ...(pageTab === index && {
+          flexWrap: 'wrap',
           display: 'flex',
           justifyContent: 'center',
           gap: '24px',

@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 export const PaginationContainer = styled(Box)(({ theme }) => ({
   bottom: 0,
   width: 'fit-content',
+  flexWrap: 'wrap',
   padding: theme.spacing(1),
   backgroundColor:
     theme.palette.mode === 'dark'

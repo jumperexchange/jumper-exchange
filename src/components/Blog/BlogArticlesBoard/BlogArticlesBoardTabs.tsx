@@ -23,6 +23,7 @@ export const BlogArticlesBoardTabs = ({
 
   const containerStyles = {
     marginTop: theme.spacing(4),
+
     backgroundColor:
       !isDesktop && openDropdown
         ? theme.palette.surface1.main
@@ -48,7 +49,7 @@ export const BlogArticlesBoardTabs = ({
       maxWidth: 'unset',
       borderRadius: '28px',
       minWidth: 416,
-      width: 'auto',
+      width: 'fit-content',
       display: 'flex',
     },
 
@@ -92,6 +93,7 @@ export const BlogArticlesBoardTabs = ({
     height: 48,
     borderRadius: '6px',
     width: '100%',
+    flexGrow: 0,
     maxWidth: '320px',
     fontFamily: urbanist.style.fontFamily,
     [theme.breakpoints.up('lg')]: {
