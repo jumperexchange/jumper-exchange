@@ -2,7 +2,7 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { StrapiMetaPagination } from '@/types/strapi';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Skeleton, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
 
 import {
@@ -17,7 +17,6 @@ import {
 } from './Pagination.style';
 
 interface BlogArticlesBoardPaginationProps {
-  isSuccess: boolean;
   isEmpty: boolean;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
@@ -26,7 +25,6 @@ interface BlogArticlesBoardPaginationProps {
 }
 
 export const BlogArticlesBoardPagination = ({
-  isSuccess,
   page,
   setPage,
   pagination,
@@ -49,10 +47,10 @@ export const BlogArticlesBoardPagination = ({
   };
 
   const handleNext = () => {
-    if (page < pagination.pageCount) {
+    if (page + 1 < pagination.pageCount) {
       setPage((state) => state + 1);
     } else {
-      setPage(1);
+      setPage(0);
     }
     trackEvent({
       category: TrackingCategory.BlogArticlesBoard,
@@ -66,10 +64,10 @@ export const BlogArticlesBoardPagination = ({
   };
 
   const handlePrev = () => {
-    if (page > 1) {
-      setPage((state) => state - 1);
+    if (page === 0) {
+      setPage(pagination.pageCount - 1);
     } else {
-      setPage(pagination.pageCount);
+      setPage((state) => state - 1);
     }
     trackEvent({
       category: TrackingCategory.BlogArticlesBoard,
@@ -82,7 +80,7 @@ export const BlogArticlesBoardPagination = ({
     });
   };
 
-  return isSuccess ? (
+  return (
     !isEmpty && (
       <PaginationContainer>
         <PaginationButton onClick={() => handlePrev()} disableRipple={false}>
@@ -101,7 +99,7 @@ export const BlogArticlesBoardPagination = ({
         </PaginationButton>
 
         {Array.from({ length: pagination.pageCount }).map((_, index) => {
-          const actualPage = index + 1;
+          const actualPage = index;
           return (
             <PaginationIndexButton
               key={`pagination-index-button-${index}`}
@@ -109,7 +107,7 @@ export const BlogArticlesBoardPagination = ({
               active={actualPage === page}
             >
               <Typography variant="bodySmallStrong" sx={{ lineHeight: '18px' }}>
-                {actualPage}
+                {actualPage + 1}
               </Typography>
             </PaginationIndexButton>
           );
@@ -130,18 +128,5 @@ export const BlogArticlesBoardPagination = ({
         </PaginationButton>
       </PaginationContainer>
     )
-  ) : (
-    <PaginationContainer>
-      {Array.from({ length: 4 }).map((_, index) => {
-        return (
-          <Skeleton
-            variant="circular"
-            width="40"
-            height="40"
-            key={`pagination-skeleton-${index}`}
-          />
-        );
-      })}
-    </PaginationContainer>
   );
 };

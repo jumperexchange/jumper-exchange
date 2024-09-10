@@ -119,10 +119,10 @@ export const BlogArticlesBoard = ({
           const pagination = {
             page: 0,
             pageSize: pageSize,
-            pageCount:
-              Math.ceil(tag.attributes.blog_articles.data.length / pageSize) -
-              1,
-            total: tag.attributes.blog_articles.data.length - 1,
+            pageCount: Math.ceil(
+              tag.attributes.blog_articles.data.length / pageSize,
+            ),
+            total: tag.attributes.blog_articles.data.length,
           };
           return (
             <CategoryTabPanel
@@ -161,70 +161,74 @@ function CategoryTabPanel({
   data,
   pagination,
 }: CategoryTabPanelProps) {
-  console.log('#####??', value, index);
   const theme = useTheme();
-  const [pageTab, setPageTab] = useState(1);
+  const [pageTab, setPageTab] = useState(pagination.page);
+  const chunkedPages = chunkArray(data, pagination.pageSize);
+  console.log('chunkedPages', chunkedPages);
   return (
     <Box
       role="tabpanel"
       hidden={value !== index}
       {...a11yProps(ariaLabel, value)}
     >
-      {value === index && (
-        <BlogCarouselContainer
+      <BlogCarouselContainer
+        sx={{
+          minWidth: '100%',
+          marginLeft: { sx: 0, md: 0, lg: 0, xl: 0 },
+          [theme.breakpoints.up('md' as Breakpoint)]: {
+            marginTop: theme.spacing(6),
+          },
+          [theme.breakpoints.up('xl' as Breakpoint)]: {
+            marginTop: `${theme.spacing(6)}`,
+          },
+        }}
+      >
+        <Box
           sx={{
-            minWidth: '100%',
-            marginLeft: { sx: 0, md: 0, lg: 0, xl: 0 },
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column',
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              flexDirection: 'column',
-            }}
-          >
-            {chunkArray(data, pageSize).map((page, pageIndex) => (
-              <CategoryPaginationPage pageTab={pageTab} index={pageIndex}>
-                {page.map((article, articleIndex: number) => (
-                  <BlogArticleCard
-                    styles={{
-                      display: 'inline-block',
-                      [theme.breakpoints.up('lg' as Breakpoint)]: {
-                        width: 384,
-                      },
-                    }}
-                    baseUrl={tags.url}
-                    id={article.id}
-                    key={`blog-articles-board}-${index}-${articleIndex}`}
-                    image={article.attributes.Image}
-                    title={article.attributes.Title}
-                    slug={article.attributes.Slug}
-                    trackingCategory={TrackingCategory.BlogArticlesBoard}
-                    content={article.attributes.Content}
-                    publishedAt={article.attributes.publishedAt}
-                    createdAt={article.attributes.createdAt}
-                    tags={article.attributes.tags}
-                  />
-                ))}
-              </CategoryPaginationPage>
-            ))}
-          </Box>
-          {
-            /* todo: enable pagination*/
-            pagination.pageCount > 0 ? (
-              <Pagination
-                isSuccess={tags.data?.length > 0}
-                isEmpty={pagination.pageCount < 1}
-                page={pageTab}
-                setPage={setPageTab}
-                pagination={pagination}
-                categoryId={value}
-              />
-            ) : null
-          }
-        </BlogCarouselContainer>
-      )}
+          {chunkedPages.map((page, pageIndex) => (
+            <CategoryPaginationPage pageTab={pageTab} index={pageIndex}>
+              {page.map((article, articleIndex: number) => (
+                <BlogArticleCard
+                  styles={{
+                    display: 'inline-block',
+                    [theme.breakpoints.up('lg' as Breakpoint)]: {
+                      width: 384,
+                    },
+                  }}
+                  baseUrl={tags.url}
+                  id={article.id}
+                  key={`blog-articles-board}-${index}-${articleIndex}`}
+                  image={article.attributes.Image}
+                  title={article.attributes.Title}
+                  slug={article.attributes.Slug}
+                  trackingCategory={TrackingCategory.BlogArticlesBoard}
+                  content={article.attributes.Content}
+                  publishedAt={article.attributes.publishedAt}
+                  createdAt={article.attributes.createdAt}
+                  tags={article.attributes.tags}
+                />
+              ))}
+            </CategoryPaginationPage>
+          ))}
+        </Box>
+        {
+          /* todo: enable pagination*/
+          pagination.pageCount > 0 ? (
+            <Pagination
+              isEmpty={pagination.pageCount <= 1}
+              page={pageTab}
+              setPage={setPageTab}
+              pagination={pagination}
+              categoryId={value}
+            />
+          ) : null
+        }
+      </BlogCarouselContainer>
     </Box>
   );
 }
