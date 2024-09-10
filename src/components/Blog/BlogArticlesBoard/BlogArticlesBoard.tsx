@@ -27,7 +27,7 @@ interface BlogArticlesBoardProps {
 }
 
 const ariaLabel = 'blog-articles-board-tabs';
-const pageSize = 3;
+const pageSize = 6;
 export const BlogArticlesBoard = ({
   data,
   url,
