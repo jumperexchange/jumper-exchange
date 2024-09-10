@@ -1,4 +1,5 @@
 import { Tag } from '@/components/Tag.style';
+import type { BoxProps } from '@mui/material';
 import {
   Box,
   Card,
@@ -110,7 +111,13 @@ export const BlogArticleCardTitleSkeleton = styled(Skeleton)(({ theme }) => ({
   minHeight: '64px',
 }));
 
-export const BlogArticleCardMetaContainer = styled(Box)(({ theme }) => ({
+interface BlogArticleCardMetaContainerProps extends BoxProps {
+  hasTags?: boolean;
+}
+
+export const BlogArticleCardMetaContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'hasTags',
+})<BlogArticleCardMetaContainerProps>(({ theme, hasTags }) => ({
   display: 'flex',
   alignItems: 'center',
   fontSize: '14px',
@@ -120,7 +127,7 @@ export const BlogArticleCardMetaContainer = styled(Box)(({ theme }) => ({
       : theme.palette.grey[300],
   '*': { textWrap: 'nowrap' },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginLeft: theme.spacing(2),
+    ...(hasTags && { marginLeft: theme.spacing(2) }),
   },
 }));
 

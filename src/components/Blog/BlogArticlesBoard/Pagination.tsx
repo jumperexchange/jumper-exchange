@@ -1,5 +1,5 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import type { StrapiMeta } from '@/types/strapi';
+import type { StrapiMetaPagination } from '@/types/strapi';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Skeleton, Typography, useTheme } from '@mui/material';
@@ -21,7 +21,7 @@ interface BlogArticlesBoardPaginationProps {
   isEmpty: boolean;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
-  meta: StrapiMeta;
+  pagination: StrapiMetaPagination;
   categoryId: number | undefined;
 }
 
@@ -29,7 +29,7 @@ export const BlogArticlesBoardPagination = ({
   isSuccess,
   page,
   setPage,
-  meta,
+  pagination,
   categoryId,
   isEmpty,
 }: BlogArticlesBoardPaginationProps) => {
@@ -49,7 +49,7 @@ export const BlogArticlesBoardPagination = ({
   };
 
   const handleNext = () => {
-    if (page < meta.pagination.pageCount) {
+    if (page < pagination.pageCount) {
       setPage((state) => state + 1);
     } else {
       setPage(1);
@@ -69,7 +69,7 @@ export const BlogArticlesBoardPagination = ({
     if (page > 1) {
       setPage((state) => state - 1);
     } else {
-      setPage(meta.pagination.pageCount);
+      setPage(pagination.pageCount);
     }
     trackEvent({
       category: TrackingCategory.BlogArticlesBoard,
@@ -100,7 +100,7 @@ export const BlogArticlesBoardPagination = ({
           />
         </PaginationButton>
 
-        {Array.from({ length: meta?.pagination.pageCount }).map((_, index) => {
+        {Array.from({ length: pagination.pageCount }).map((_, index) => {
           const actualPage = index + 1;
           return (
             <PaginationIndexButton
@@ -118,7 +118,7 @@ export const BlogArticlesBoardPagination = ({
           <ArrowForwardIcon
             sx={{
               color:
-                meta?.pagination.pageCount === page
+                pagination.pageCount === page
                   ? theme.palette.mode === 'light'
                     ? theme.palette.grey[400]
                     : theme.palette.grey[600]

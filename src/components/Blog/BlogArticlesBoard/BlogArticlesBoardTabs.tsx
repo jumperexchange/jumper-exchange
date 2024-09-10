@@ -8,13 +8,15 @@ import { urbanist } from 'src/fonts/fonts';
 interface BlogArticlesBoardTabsProps {
   openDropdown: boolean;
   filteredTags: TabProps[];
-  categoryId: number | undefined;
+  tabId: number | undefined;
+  ariaLabel: string;
 }
 
 export const BlogArticlesBoardTabs = ({
   openDropdown,
   filteredTags,
-  categoryId,
+  tabId,
+  ariaLabel,
 }: BlogArticlesBoardTabsProps) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
@@ -101,9 +103,9 @@ export const BlogArticlesBoardTabs = ({
   return filteredTags ? (
     <Tabs
       data={filteredTags}
-      value={categoryId ?? 0}
+      value={tabId ?? 0}
       orientation={isDesktop ? 'horizontal' : 'vertical'}
-      ariaLabel="categories-switch-tabs"
+      ariaLabel={ariaLabel}
       containerStyles={containerStyles}
       tabStyles={tabStyles}
     />

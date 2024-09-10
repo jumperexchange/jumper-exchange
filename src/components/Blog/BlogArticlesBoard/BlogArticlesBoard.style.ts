@@ -17,7 +17,7 @@ export const BlogArticlesBoardContainer = styled(Grid)(({ theme }) => ({
 export const ArticlesGrid = styled(Grid)(({ theme }) => ({
   margin: theme.spacing(2, 'auto'),
   display: 'grid',
-  marginTop: `calc(${theme.spacing(5)} + ${theme.spacing(8)} + ${theme.spacing(6)} )`, // title height + tabs container + actual offset
+  // marginTop: `calc(${theme.spacing(5)} + ${theme.spacing(8)} + ${theme.spacing(6)} )`, // title height + tabs container + actual offset
   paddingBottom: theme.spacing(13),
   gridTemplateColumns: '1fr',
   justifyItems: 'center',
@@ -27,11 +27,11 @@ export const ArticlesGrid = styled(Grid)(({ theme }) => ({
     gap: theme.spacing(4),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
+    gridTemplateColumns: '1fr 1fr 1fr',
     maxWidth: 'fit-content',
     paddingBottom: theme.spacing(14.5),
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
-    gridTemplateColumns: '1fr 1fr 1fr',
     paddingBottom: theme.spacing(14.5),
     maxWidth: theme.breakpoints.values.xl,
     marginLeft: 'auto',

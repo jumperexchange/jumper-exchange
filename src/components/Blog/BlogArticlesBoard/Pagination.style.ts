@@ -5,8 +5,8 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import { styled } from '@mui/material/styles';
 
 export const PaginationContainer = styled(Box)(({ theme }) => ({
-  position: 'absolute',
   bottom: 0,
+  width: 'fit-content',
   padding: theme.spacing(1),
   backgroundColor:
     theme.palette.mode === 'dark'
@@ -14,8 +14,7 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
       : getContrastAlphaColor(theme, '4%'),
   borderRadius: '24px',
   left: '50%',
-  transform: 'translateX(-50%)',
-  marginTop: theme.spacing(6),
+  margin: theme.spacing(6, 'auto', 0, 'auto'),
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(2),
