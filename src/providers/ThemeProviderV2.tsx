@@ -1,6 +1,7 @@
 'use client';
 
 import { useSettingsStore } from '@/stores/settings';
+import type { PartnerThemesData } from '@/types/strapi';
 import {
   formatConfig,
   formatTheme,
@@ -9,7 +10,6 @@ import {
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
-import type { PartnerThemesData } from '@/types/strapi';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
@@ -55,16 +55,13 @@ export function ThemeProviderV2({
   activeTheme,
   themes,
 }: ThemeProviderV2Props) {
-  const { resolvedTheme, forcedTheme, ...props2 } = useTheme();
-  const [cookie, setCookie] = useCookies(['theme']);
-  const [partnerThemes, setPartnerThemes] = useSettingsStore((state) => [
+  const { resolvedTheme, forcedTheme } = useTheme();
+  const [, setCookie] = useCookies(['theme']);
+  const [, setPartnerThemes] = useSettingsStore((state) => [
     state.partnerThemes,
     state.setPartnerThemes,
   ]);
-  const [configTheme, setConfigTheme] = useSettingsStore((state) => [
-    state.configTheme,
-    state.setConfigTheme,
-  ]);
+  const setConfigTheme = useSettingsStore((state) => state.setConfigTheme);
 
   const themeToUse = forcedTheme || activeTheme;
 
@@ -72,11 +69,11 @@ export function ThemeProviderV2({
     getMuiTheme(themes, themeToUse),
   );
 
-  const [mounted, setMounted] = useState(false);
+  const [, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
     setPartnerThemes(themes);
-  }, []);
+  }, []); // todo: check dep array
 
   useEffect(() => {
     const themeToUse = forcedTheme || resolvedTheme || activeTheme;
@@ -84,7 +81,7 @@ export function ThemeProviderV2({
     setCurrentTheme(getMuiTheme(themes, themeToUse));
     setConfigTheme(formatConfig(getPartnerTheme(themes, themeToUse)));
     setCookie('theme', themeToUse, { path: '/', sameSite: true });
-  }, [resolvedTheme]);
+  }, [resolvedTheme]); // todo: check dep array
 
   return (
     <>

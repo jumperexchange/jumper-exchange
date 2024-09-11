@@ -9,12 +9,11 @@ import type { ThemeModesSupported } from '@/types/settings';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from 'next-themes';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useSuperfest } from 'src/hooks/useSuperfest';
-import { useTheme } from 'next-themes';
 
 export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
@@ -23,9 +22,6 @@ export const useThemeSwitchTabs = () => {
   const [, setCookie] = useCookies(['themeMode']);
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
-  const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
-    ? 'dark'
-    : 'light';
   const [themeMode, setThemeMode] = useSettingsStore((state) => [
     state.themeMode,
     state.setThemeMode,

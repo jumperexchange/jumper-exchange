@@ -2,8 +2,14 @@ import { useAccounts } from '@/hooks/useAccounts';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import { Box, Grid, Stack } from '@mui/material';
+import {
+  REWARD_TOKEN_ADDRESS,
+  REWARD_TOKEN_CHAINID,
+} from 'src/const/partnerRewardsTheme';
 import { useMercleNft } from 'src/hooks/useMercleNft';
+import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { AddressBox } from './AddressBox/AddressBox';
+import { Leaderboard } from './Leaderboard/Leaderboard';
 import { TierBox } from './LevelBox/TierBox';
 import {
   ProfilePageContainer,
@@ -11,14 +17,7 @@ import {
 } from './ProfilePage.style';
 import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
-import { Leaderboard } from './Leaderboard/Leaderboard';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
-import {
-  REWARD_TOKEN_ADDRESS,
-  REWARD_TOKEN_CHAINID,
-  REWARDS_CHAIN_IDS,
-} from 'src/const/partnerRewardsTheme';
 
 export const ProfilePage = () => {
   const { account } = useAccounts();
@@ -28,9 +27,7 @@ export const ProfilePage = () => {
 
   const {
     availableRewards,
-    activeCampaigns,
     pastCampaigns,
-    isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,
   } = useMerklRewards({
     rewardChainId: REWARD_TOKEN_CHAINID,

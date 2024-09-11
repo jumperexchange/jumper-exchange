@@ -1,9 +1,8 @@
+import type { ThemeModesSupported } from '@/types/settings';
+import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { useSettingsStore } from 'src/stores/settings';
 import type { PartnerTheme } from 'src/types/strapi';
-import { useEffect } from 'react';
-import type { ThemeModesSupported } from '@/types/settings';
-import { useMediaQuery } from '@mui/material';
 
 interface useThemeModeReturn {
   themeMode: PartnerTheme;
@@ -34,7 +33,7 @@ export const useThemeMode = (
       // @ts-expect-error
       updateThemeMode(initialThemeMode);
     }
-  }, []);
+  }, []); // todo: check dep array
 
   return {
     // @ts-expect-error

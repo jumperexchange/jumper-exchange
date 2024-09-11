@@ -1,5 +1,9 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import generateKey from 'src/app/lib/generateKey';
+import {
+  REWARD_TOKEN_ADDRESS,
+  REWARD_TOKEN_CHAINID,
+} from 'src/const/partnerRewardsTheme';
 import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
@@ -10,10 +14,6 @@ import { MissionCTA } from './CTA/MissionCTA';
 import { DescriptionBox } from './DescriptionBox/DescriptionBox';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { StepsBox } from './StepsBox/StepsBox';
-import {
-  REWARD_TOKEN_ADDRESS,
-  REWARD_TOKEN_CHAINID,
-} from 'src/const/partnerRewardsTheme';
 
 interface QuestsMissionPageVar {
   quest: Quest;

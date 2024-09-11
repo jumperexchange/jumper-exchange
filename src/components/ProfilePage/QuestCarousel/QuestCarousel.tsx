@@ -2,12 +2,11 @@ import { CarouselContainer } from '@/components/Blog/BlogCarousel/CarouselContai
 import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import type { Quest } from '@/types/loyaltyPass';
 import { useTranslation } from 'react-i18next';
-import { QuestCard } from '../QuestCard/QuestCard';
-import { QuestCarouselContainer } from './QuestCarousel.style';
-import { TempTitle } from './TempTitle/TempTitle';
+import { checkInclusion } from 'src/components/Superfest/ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
 import { QuestCardDetailled } from '../QuestCardDetailled/QuestCardDetailled';
 import { QuestCardSkeleton } from '../QuestCardDetailled/QuestCardSkeleton';
-import { checkInclusion } from 'src/components/Superfest/ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
+import { QuestCarouselContainer } from './QuestCarousel.style';
+import { TempTitle } from './TempTitle/TempTitle';
 
 interface QuestCarouselProps {
   quests?: Quest[];

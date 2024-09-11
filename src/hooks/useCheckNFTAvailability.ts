@@ -1,12 +1,12 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import request from 'graphql-request';
+import { GALXE_ENDPOINT } from 'src/const/urls';
 import { availableNFT } from './querries/superfestNFT';
 import { superfestNFTCheck } from './querries/superfestNFTCheck';
 import { useAccounts } from './useAccounts';
-import { GALXE_ENDPOINT } from 'src/const/urls';
 
-export interface NFTInfo {
+export interface NFTInfoProps {
   isClaimable: boolean;
   isClaimed: boolean;
   claimingAddress: string;
@@ -20,7 +20,7 @@ export interface NFTInfo {
 }
 
 export interface UseCheckNFTAvailabilityRes {
-  claimInfo: NFTInfo;
+  claimInfo: NFTInfoProps;
   isLoading?: boolean;
   isSuccess?: boolean;
 }
@@ -55,7 +55,6 @@ interface GalxeGraphqlCheckRes {
   };
 }
 
-const SECONDS_IN_A_DAY = 86400;
 const NFTInfo = {
   mode: {
     cid: 'GCrKqtkcEs',
@@ -97,11 +96,7 @@ export const useCheckNFTAvailability = ({
     NFTAddress: `0x1`,
   };
 
-  const {
-    data: dataCheckClaim,
-    isSuccess: IsCheckClaimSuccess,
-    isLoading: IsCheckClaimLoading,
-  } = useQuery({
+  const { data: dataCheckClaim } = useQuery({
     queryKey: ['checkFestNFT' + chain + account?.address],
     queryFn: async () => {
       const res = (await request(

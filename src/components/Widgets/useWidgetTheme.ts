@@ -77,7 +77,7 @@ export const useWidgetTheme = (): PartnerTheme => {
         formattedTheme.activeWidgetTheme,
       ),
     });
-  }, [activeNextTheme, partnerThemes, theme]);
+  }, [activeNextTheme, partnerThemes, theme]); // todo: check dep array
 
   return widgetTheme || defaultWidgetTheme;
 };

@@ -1,13 +1,13 @@
+import { Box } from '@mui/material';
 import { useCheckNFTAvailability } from 'src/hooks/useCheckNFTAvailability';
 import {
   NFTClaimingDescription,
   NFTClaimingHeader,
   NFTClaimingTitle,
 } from '../NFTClaimingBox.style';
-import { Box } from '@mui/material';
 
 export const LastNFTTitle = () => {
-  const { claimInfo, isLoading, isSuccess } = useCheckNFTAvailability({
+  const { claimInfo } = useCheckNFTAvailability({
     chain: 'box',
   });
 

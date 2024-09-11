@@ -1,11 +1,20 @@
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { APYIcon } from 'src/components/illustrations/APYIcon';
+import { FlexSpaceBetweenBox } from 'src/components/Superfest/Superfest.style';
+import type { Chain } from 'src/components/Superfest/SuperfestPage/Banner/Banner';
+import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
+import {
+  PROFILE_CAMPAIGN_DARK_COLOR,
+  PROFILE_CAMPAIGN_LIGHT_COLOR,
+} from 'src/const/partnerRewardsTheme';
+import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
-import Link from 'next/link';
 import {
-  OPBadgeRelativeBox,
   QuestCardBottomBox,
   QuestCardInfoBox,
   QuestCardMainBox,
@@ -13,18 +22,6 @@ import {
   XPDisplayBox,
   XPIconBox,
 } from './QuestCard.style';
-import { OPBadge } from 'src/components/illustrations/OPBadge';
-import { Box, Typography, useTheme } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
-import { APYIcon } from 'src/components/illustrations/APYIcon';
-import type { Chain } from 'src/components/Superfest/SuperfestPage/Banner/Banner';
-import { FlexSpaceBetweenBox } from 'src/components/Superfest/Superfest.style';
-import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
-import {
-  PROFILE_CAMPAIGN_DARK_COLOR,
-  PROFILE_CAMPAIGN_LIGHT_COLOR,
-} from 'src/const/partnerRewardsTheme';
 
 export interface RewardsInterface {
   logo: string;
@@ -69,8 +66,7 @@ export const QuestCardDetailled = ({
 }: QuestCardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const router = useRouter();
-  const { apy, isLoading, isSuccess } = useMissionsMaxAPY(claimingIds);
+  const { apy } = useMissionsMaxAPY(claimingIds);
 
   return (
     <QuestCardMainBox>

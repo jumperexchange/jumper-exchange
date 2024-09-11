@@ -40,14 +40,6 @@ interface QuestCardProps {
   platformImage?: string;
 }
 
-function getStringDateFormatted(startDate: string, endDate: string): string {
-  const sDate = new Date(startDate);
-  const eDate = new Date(endDate);
-  const startMonth = sDate.toLocaleString('default', { month: 'short' });
-  const endMonth = eDate.toLocaleString('default', { month: 'short' });
-  return `${startMonth} ${sDate.getDate()} - ${startMonth === endMonth ? '' : endMonth} ${eDate.getDate()}`;
-}
-
 export const QuestCard = ({
   active,
   title,

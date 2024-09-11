@@ -2,10 +2,10 @@ import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection/ChainT
 import { ChainId } from '@lifi/types';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAccounts } from 'src/hooks/useAccounts';
+import { useCheckWalletLinking } from 'src/hooks/useCheckWalletLinking';
 import { InfoAlert } from '.';
 import { InfoAlertClickable } from './InfoAlert/InfoAlertClickable';
-import { useCheckWalletLinking } from 'src/hooks/useCheckWalletLinking';
-import { useAccounts } from 'src/hooks/useAccounts';
 
 export const ChainAlert = () => {
   const { t } = useTranslation();
@@ -36,7 +36,7 @@ export const ChainAlert = () => {
       setIsClickable(false);
       setChainId(0);
     }
-  }, [destinationChainToken, sourceChainToken, t, isWalletLinked]);
+  }, [destinationChainToken, sourceChainToken, t, isWalletLinked]); // todo: check dep array
 
   return (
     <>

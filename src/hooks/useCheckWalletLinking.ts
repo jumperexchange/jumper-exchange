@@ -1,6 +1,4 @@
-import type { Chain, ChainId, ExtendedChain } from '@lifi/types';
 import { useQuery } from '@tanstack/react-query';
-import { ChainType, getChains } from '@lifi/sdk';
 
 export interface useCheckWalletLinkingProps {
   userAddress?: string;
@@ -17,11 +15,7 @@ export const useCheckWalletLinking = ({
   checkWalletLinking,
 }: useCheckWalletLinkingProps): WalletLinkCheckProps => {
   const POST_ENDPOINT = 'https://li.quest/v1/advanced/routes';
-  const {
-    data: isWalletLinked,
-    isSuccess,
-    isLoading,
-  } = useQuery({
+  const { data: isWalletLinked, isSuccess } = useQuery({
     queryKey: ['SeiWalletLinking' + userAddress],
     queryFn: async () => {
       const payload = {

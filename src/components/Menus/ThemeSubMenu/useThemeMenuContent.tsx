@@ -1,6 +1,5 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useTheme } from 'next-themes';
-import { useSelectedLayoutSegment } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
@@ -16,13 +15,9 @@ import type { PartnerThemesData } from 'src/types/strapi';
 export const useThemeMenuContent = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const segment = useSelectedLayoutSegment();
   const { resolvedTheme, setTheme } = useTheme();
 
-  const [cookie, setCookie] = useCookies([
-    'partnerThemeUid',
-    'welcomeScreenClosed',
-  ]);
+  const [, setCookie] = useCookies(['partnerThemeUid', 'welcomeScreenClosed']);
   const { data: partnerThemes, isSuccess } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
     queryKey: ['partner-themes'],

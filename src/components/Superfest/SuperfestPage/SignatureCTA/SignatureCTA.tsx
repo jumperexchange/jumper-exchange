@@ -1,19 +1,16 @@
 'use client';
 
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useTranslation } from 'react-i18next';
-import { type Theme, useMediaQuery, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import Image from 'next/image';
-import { SoraTypography } from '../../Superfest.style';
-import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
+import { useEffect, useState } from 'react';
+import { SiweMessage, generateNonce } from 'siwe';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { useSignMessage } from 'wagmi';
-import { useEffect, useState } from 'react';
+import { SoraTypography } from '../../Superfest.style';
 import {
   CTAExplanationBox,
   SeveralMissionCtaContainer,
 } from '../CTA/MissionCTA.style';
-import { SiweMessage, generateNonce } from 'siwe';
 
 interface SignatureInt {
   isLive: boolean;
@@ -29,8 +26,6 @@ export const SignatureCTA = ({
   signature,
   isTurtleMember,
 }: SignatureCtaProps) => {
-  const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
   const { account } = useAccounts();
   const [messageToSign, setMessageToSign] = useState<string | undefined>(
     undefined,

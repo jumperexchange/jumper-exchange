@@ -68,9 +68,6 @@ export function WidgetEvents() {
 
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
       // check if multisig and open the modal
-      const data = handleTransactionDetails(update.route, {
-        [TrackingEventParameter.Action]: 'execution_updated',
-      });
       const isMultisigRouteActive = shouldOpenMultisigSignatureModal(
         update.route,
       );

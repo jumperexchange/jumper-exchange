@@ -1,22 +1,6 @@
-import { Box, Typography, useTheme } from '@mui/material';
-import {
-  RewardsCarouselContainer,
-  RewardsCarouselMainBox,
-  ClaimButtonBox,
-  EarnedTypography,
-  RewardsOpenIconButton,
-} from './RewardsCarousel.style';
-import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
-import { Button } from 'src/components/Button';
-import {
-  useAccount,
-  useWriteContract,
-  useWaitForTransactionReceipt,
-  useSwitchChain,
-} from 'wagmi';
-import { ChainId } from '@lifi/types';
-import { MerklDistribABI } from '../../../const/abi/merklABI';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Box, Typography, useTheme } from '@mui/material';
+import { Button } from 'src/components/Button';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import {
   PROFILE_CAMPAIGN_SCANNER,
@@ -24,6 +8,21 @@ import {
   REWARD_TOKEN_ADDRESS,
   REWARD_TOKEN_CHAINID,
 } from 'src/const/partnerRewardsTheme';
+import {
+  useAccount,
+  useSwitchChain,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi';
+import { MerklDistribABI } from '../../../const/abi/merklABI';
+import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
+import {
+  ClaimButtonBox,
+  EarnedTypography,
+  RewardsCarouselContainer,
+  RewardsCarouselMainBox,
+  RewardsOpenIconButton,
+} from './RewardsCarousel.style';
 
 interface RewardsCarouselProps {
   hideComponent: boolean;
