@@ -131,7 +131,19 @@ export const BlogArticle = ({
                 sx={{
                   display: 'flex',
                   flexDirection: 'column',
-                  alignSelf: 'flex-start',
+                  alignSelf: 'center',
+                  [theme.breakpoints.down('sm')]: {
+                    '&:has(.blog-author-socials)': {
+                      alignItems: 'center',
+                      alignSelf: 'flex-start',
+                    },
+                    '.blog-author-socials': {
+                      display: 'none',
+                    },
+                  },
+                  [theme.breakpoints.up('sm')]: {
+                    alignSelf: 'center',
+                  },
                 }}
               >
                 {author?.data ? (
@@ -144,7 +156,11 @@ export const BlogArticle = ({
                 ) : (
                   <BlogArticlAuthorNameSkeleton variant="text" />
                 )}
-                <BlogAuthorSocials author={author} />
+                <BlogAuthorSocials
+                  author={author}
+                  articleId={id}
+                  source="blog-article-header"
+                />
               </Box>
             </BlogAuthorContainer>
             <ShareArticleIcons title={title} slug={slug} />
@@ -201,7 +217,11 @@ export const BlogArticle = ({
               ) : (
                 <BlogArticlAuthorRoleSkeleton variant="text" />
               )}
-              <BlogAuthorSocials author={author} />
+              <BlogAuthorSocials
+                author={author}
+                articleId={id}
+                source="blog-article-footer"
+              />
             </BlogAuthorMetaWrapper>
           </BlogAuthorWrapper>
         </BlogArticleContentContainer>

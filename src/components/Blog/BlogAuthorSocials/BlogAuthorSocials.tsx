@@ -14,9 +14,15 @@ import { useUserTracking } from 'src/hooks/userTracking';
 
 interface BlogAuthorSocialsProps {
   author?: AuthorData;
+  source: string;
+  articleId?: number;
 }
 
-export const BlogAuthorSocials = ({ author }: BlogAuthorSocialsProps) => {
+export const BlogAuthorSocials = ({
+  author,
+  source,
+  articleId,
+}: BlogAuthorSocialsProps) => {
   const { trackEvent } = useUserTracking();
 
   const handleClickLink = ({
@@ -37,13 +43,15 @@ export const BlogAuthorSocials = ({ author }: BlogAuthorSocialsProps) => {
         [TrackingEventParameter.AuthorId]: author?.data.id || '',
         [TrackingEventParameter.PageloadURL]: url,
         [TrackingEventParameter.PageloadDestination]: label,
+        [TrackingEventParameter.PageloadSource]: source,
+        [TrackingEventParameter.ArticleID]: articleId || 0,
       },
     });
   };
 
   return (author?.data && author.data.attributes.Twitter) ||
     (author?.data && author.data.attributes.LinkedIn) ? (
-    <BlogAuthorSocialsContainer>
+    <BlogAuthorSocialsContainer className="blog-author-socials">
       {author.data.attributes.LinkedIn ? (
         <Link href={author.data.attributes.LinkedIn} target="_blank">
           <IconButtonTertiary
