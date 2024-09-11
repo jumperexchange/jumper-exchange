@@ -6,8 +6,9 @@ import { avatarMask12 } from '../Mask.style';
 
 export const FlexibleFeeContainer = styled(Card)<CardProps>(({ theme }) => ({
   boxShadow: theme.palette.shadow.main,
-  backgroundColor: theme.palette.surface1.main,
+  backgroundColor: theme.palette.surface2.main,
   padding: theme.spacing(2),
+  margin: theme.spacing(1, 0, 2),
 }));
 
 export const FlexibleFeeHeader = styled(Box)<BoxProps>(({ theme }) => ({
