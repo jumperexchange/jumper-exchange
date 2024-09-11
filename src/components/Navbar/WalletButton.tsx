@@ -1,12 +1,6 @@
 'use client';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/types';
@@ -24,7 +18,6 @@ import {
 
 export const WalletButtons = () => {
   const { chains } = useChains();
-  const { trackEvent } = useUserTracking();
   const { account } = useAccounts();
   const { t } = useTranslation();
   const { isSuccess } = useChains();
@@ -46,11 +39,11 @@ export const WalletButtons = () => {
   );
 
   const handleWalletSelectClick = () => {
-    !openWalletSelectMenu && setWalletSelectMenuState(!openWalletSelectMenu);
+    setWalletSelectMenuState(!openWalletSelectMenu);
   };
 
   const handleWalletMenuClick = () => {
-    openWalletMenu && setWalletMenuState(!openWalletMenu);
+    setWalletMenuState(!openWalletMenu);
   };
 
   return (
