@@ -118,7 +118,7 @@ test.describe('Jumper full e2e flow', () => {
     await page
       .locator('xpath=//p[normalize-space(text())="Explore Filament"]')
       .click();
-    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('networkidle');
     expect(page.url()).toBe(values.exploreFilamentURL);
   });
 
