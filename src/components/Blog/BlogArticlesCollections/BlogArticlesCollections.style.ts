@@ -1,11 +1,11 @@
 import type { Breakpoint, GridProps, IconButtonProps } from '@mui/material';
-import { Box, Grid, IconButton } from '@mui/material';
+import { Box, Grid, IconButton, Typography } from '@mui/material';
 
 import { getContrastAlphaColor } from '@/utils/colors';
 import { alpha, styled } from '@mui/material/styles';
-import { CarouselHeader, CarouselTitle } from '../BlogCarousel';
+import { urbanist } from 'src/fonts/fonts';
 
-export const BlogArticlesBoardContainer = styled(Grid)(({ theme }) => ({
+export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
   display: 'flex',
   color:
     theme.palette.mode === 'light'
@@ -17,33 +17,39 @@ export const BlogArticlesBoardContainer = styled(Grid)(({ theme }) => ({
   gap: theme.spacing(1.5),
   alignItems: 'center',
   backgroundColor: theme.palette.bgSecondary.main,
-  boxShadow: theme.palette.shadow.main,
   borderRadius: '32px',
   cursor: 'pointer',
-  padding: theme.spacing(6),
   transition: 'background-color 250ms',
-  margin: theme.spacing(6, 2),
   marginBottom: theme.spacing(14.5),
-  '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.white.main, 1)
-        : alpha(theme.palette.white.main, 0.2),
+  padding: theme.spacing(2),
+  margin: theme.spacing(6, 2, 0),
+  boxShadow: theme.palette.shadow.main,
+  ':last-of-type': {
+    marginBottom: theme.spacing(6),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    padding: theme.spacing(12, 8),
-    margin: theme.spacing(8),
-    marginBottom: theme.spacing(14.5),
-    gap: theme.spacing(4),
+    margin: theme.spacing(2, 8, 0),
+    padding: theme.spacing(3),
+    ':last-of-type': {
+      marginBottom: theme.spacing(2),
+    },
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    padding: theme.spacing(12, 8),
-    marginTop: theme.spacing(12),
+    padding: theme.spacing(4),
+    margin: theme.spacing(12, 8, 0),
+    ':last-of-type': {
+      marginBottom: theme.spacing(12),
+    },
+  },
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    padding: theme.spacing(6),
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
-    margin: theme.spacing(12, 'auto'),
-    marginBottom: theme.spacing(14.5),
+    margin: `${theme.spacing(12, 'auto', 0)}`,
     maxWidth: theme.breakpoints.values.xl,
+    ':last-of-type': {
+      marginBottom: theme.spacing(12),
+    },
   },
 }));
 
@@ -66,8 +72,10 @@ export const ArticlesGrid = styled(Grid, {
       gridTemplateColumns: '1fr 1fr',
       gap: theme.spacing(4),
     },
-    [theme.breakpoints.up('xl' as Breakpoint)]: {
+    [theme.breakpoints.up('lg' as Breakpoint)]: {
       gridTemplateColumns: '1fr 1fr 1fr',
+    },
+    [theme.breakpoints.up('xl' as Breakpoint)]: {
       maxWidth: theme.breakpoints.values.xl,
       marginLeft: 'auto',
       marginRight: 'auto',
@@ -127,11 +135,11 @@ export const PaginationButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-export const BlogArticlesBoardTitle = styled(CarouselTitle)(({ theme }) => ({
+export const BlogArticlesCollectionsTitle = styled(Typography)(({ theme }) => ({
+  fontFamily: urbanist.style.fontFamily,
+  textAlign: 'center',
   color: theme.palette.text.primary,
 }));
-
-export const BlogArticlesBoardHeader = styled(CarouselHeader)(() => ({}));
 
 export const CategoryTabPanelContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
