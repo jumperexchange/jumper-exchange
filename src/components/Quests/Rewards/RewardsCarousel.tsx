@@ -2,7 +2,6 @@ import { ChainId } from '@lifi/types';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Box, Typography } from '@mui/material';
 import { Button } from 'src/components/Button';
-import { PROFILE_CAMPAIGN_SCANNER } from 'src/const/partnerRewardsTheme';
 import {
   useAccount,
   useSwitchChain,
@@ -19,6 +18,7 @@ import {
   RewardsCarouselMainBox,
   RewardsOpenIconButton,
 } from './RewardsCarousel.style';
+import { PROFILE_CAMPAIGN_SCANNER } from 'src/const/partnerRewardsTheme';
 
 interface RewardsCarouselProps {
   hideComponent: boolean;
@@ -84,7 +84,7 @@ export const RewardsCarousel = ({
         });
       }
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   }
 

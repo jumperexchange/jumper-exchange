@@ -19,6 +19,7 @@ export interface MerklApyRes {
 
 export const useMissionsAPY = (CTAs: CTALinkInt[] = []): useMissionsAPYRes => {
   const MERKL_CAMPAIGN_API = `${MERKL_API}/campaigns?chainIds=${ACTIVE_CHAINS.join(',')}&creatorTag=${CREATOR_TAG}`;
+
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['campaignInfo'],
     queryFn: async () => {
@@ -27,7 +28,7 @@ export const useMissionsAPY = (CTAs: CTALinkInt[] = []): useMissionsAPYRes => {
         const result = await response.json();
         return result;
       } catch (err) {
-        console.error(err);
+        console.log(err);
       }
     },
     enabled: CTAs.length > 0,

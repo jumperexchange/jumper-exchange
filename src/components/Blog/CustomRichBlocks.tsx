@@ -220,7 +220,7 @@ export const CustomRichBlocks = ({
             />
           );
         } catch (error) {
-          console.error(error);
+          console.log(error);
           return;
         }
       } else {

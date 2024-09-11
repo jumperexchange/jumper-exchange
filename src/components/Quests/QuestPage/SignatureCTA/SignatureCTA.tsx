@@ -83,7 +83,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
         }
       }
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   };
 
@@ -97,7 +97,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
           setMessageToSign(message);
         }
       } catch (err) {
-        console.error(err);
+        console.log(err);
       }
     }
     fetchMessage();

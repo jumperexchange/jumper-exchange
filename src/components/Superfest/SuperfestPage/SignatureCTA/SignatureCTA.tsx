@@ -1,18 +1,19 @@
 'use client';
 
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { Box } from '@mui/material';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SiweMessage, generateNonce } from 'siwe';
+import { type Theme, useMediaQuery, Box } from '@mui/material';
+import Image from 'next/image';
+import { SoraTypography } from '../../Superfest.style';
+import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { useSignMessage } from 'wagmi';
-import { SoraTypography } from '../../Superfest.style';
+import { useEffect, useState } from 'react';
 import {
   CTAExplanationBox,
   SeveralMissionCtaContainer,
 } from '../CTA/MissionCTA.style';
+import { SiweMessage, generateNonce } from 'siwe';
 
 interface SignatureInt {
   isLive: boolean;
@@ -80,7 +81,7 @@ export const SignatureCTA = ({
         }
       }
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   };
 
@@ -94,7 +95,7 @@ export const SignatureCTA = ({
           setMessageToSign(message);
         }
       } catch (err) {
-        console.error(err);
+        console.log(err);
       }
     }
     fetchMessage();

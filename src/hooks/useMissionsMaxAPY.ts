@@ -1,10 +1,10 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
+import type { MerklApyRes } from './useMissionsAPY';
 import {
   MERKL_CREATOR_TAG,
   REWARDS_CHAIN_IDS,
 } from 'src/const/partnerRewardsTheme';
-import type { MerklApyRes } from './useMissionsAPY';
 
 const ACTIVE_CHAINS = REWARDS_CHAIN_IDS;
 const MERKL_API = 'https://api.merkl.xyz/v3';
@@ -29,7 +29,7 @@ export const useMissionsMaxAPY = (
         const result = await response.json();
         return result;
       } catch (err) {
-        console.error(err);
+        console.log(err);
       }
     },
     enabled: claimingIds && claimingIds.length > 0,

@@ -1,24 +1,24 @@
-import { ChainId } from '@lifi/types';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Box } from '@mui/material';
+import {
+  RewardsCarouselContainer,
+  RewardsCarouselMainBox,
+  ClaimButtonBox,
+  EarnedTypography,
+  RewardsOpenIconButton,
+} from './RewardsCarousel.style';
+import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
 import { Button } from 'src/components/Button';
 import {
   useAccount,
-  useSwitchChain,
-  useWaitForTransactionReceipt,
   useWriteContract,
+  useWaitForTransactionReceipt,
+  useSwitchChain,
 } from 'wagmi';
+import { ChainId } from '@lifi/types';
 import { MerklDistribABI } from '../../../const/abi/merklABI';
 import { SoraTypography } from '../Superfest.style';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
-import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
-import {
-  ClaimButtonBox,
-  EarnedTypography,
-  RewardsCarouselContainer,
-  RewardsCarouselMainBox,
-  RewardsOpenIconButton,
-} from './RewardsCarousel.style';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 interface RewardsCarouselProps {
   hideComponent: boolean;
@@ -84,7 +84,7 @@ export const RewardsCarousel = ({
         });
       }
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   }
 
