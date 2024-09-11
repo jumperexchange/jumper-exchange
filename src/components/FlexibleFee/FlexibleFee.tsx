@@ -8,12 +8,13 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import { useMemo, useRef, useState } from 'react';
 import { Avatar } from 'src/components/Avatar';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { useChains } from 'src/hooks/useChains';
 
+import type { RouteExtended } from '@lifi/sdk';
 import { useTranslation } from 'react-i18next';
 import { formatInputAmount } from 'src/utils/formatInputAmount';
 import {
@@ -29,18 +30,21 @@ import {
 import FlexibleFeeButton from './FlexibleFeeButton';
 
 interface FlexibleFeeProps {
-  isLoading?: boolean;
-  isSuccess?: boolean;
-  rate: number;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  route: RouteExtended;
+  // isLoading?: boolean;
+  // isSuccess?: boolean;
+  // rate: number;
+  // onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const FlexibleFee = ({
-  isLoading,
-  isSuccess,
-  rate,
-  onClick,
+export const FlexibleFee: FC<{ route: RouteExtended }> = ({
+  route,
+  // isLoading,
+  // isSuccess,
+  // rate,
+  // onClick,
 }: FlexibleFeeProps) => {
+  console.log('FlexibleFee-ROUTE....', route);
   const [amount, setAmount] = useState<string>('0');
   const { accounts } = useAccounts();
   const activeAccount = accounts.filter((account) => account.isConnected);
@@ -162,14 +166,17 @@ export const FlexibleFee = ({
             variant="bodyXSmallStrong"
             color={theme.palette.primary.main}
           >
-            {rate}%
+            {/* 
+              todo: replace rate with dynamic input //rate
+             */}
+            0.5%
           </Typography>
         </FlexibleFeeAmountsBadge>
       </Content>
       <FlexibleFeeButton
-        isLoading={isLoading}
-        isSuccess={isSuccess}
-        onClick={(event) => onClick(event)}
+        isLoading={false} //todo: isLoading
+        isSuccess={false} //todo: isSuccess
+        onClick={(event) => console.log('fix me')} //todo: onClick(event)}
       />
     </Container>
   );

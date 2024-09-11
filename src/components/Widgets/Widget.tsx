@@ -161,6 +161,7 @@ export function Widget({
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
+      feeConfig: { _vcComponent: FlexibleFee },
       ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
@@ -228,15 +229,13 @@ export function Widget({
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed}
     >
-      <FlexibleFee
-        rate={0.05}
-        isLoading={false}
-        isSuccess={false}
-        onClick={handleContribution}
-      />
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly fallback={<WidgetSkeleton config={config} />}>
-        <LiFiWidget integrator={config.integrator} config={config} />
+        <LiFiWidget
+          integrator={config.integrator}
+          config={config}
+          feeConfig={{ name: 'FlexibleFee', fee: 2, _vcComponent: FlexibleFee }}
+        />
       </ClientOnly>
     </WidgetWrapper>
   );

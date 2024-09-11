@@ -43,6 +43,7 @@ export const useWidgetTheme = (): PartnerTheme => {
           borderRadiusSecondary: 24,
         },
         palette: {
+          ...theme.palette,
           background: {
             paper: theme.palette.surface2.main,
             default: theme.palette.surface1.main,
