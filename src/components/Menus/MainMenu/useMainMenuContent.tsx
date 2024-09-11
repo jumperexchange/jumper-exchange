@@ -10,7 +10,7 @@ import {
   DISCORD_URL,
   JUMPER_FEST_PATH,
   JUMPER_LEARN_PATH,
-  JUMPER_LOYALTY_PATH,
+  JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH,
   X_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -188,7 +188,7 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.fest'),
       prefixIcon: <OPLogo />,
       showMoreIcon: false,
-      link: { url: '/superfest/' },
+      link: { url: JUMPER_FEST_PATH },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -204,7 +204,7 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.profile'),
       prefixIcon: <AccountCircleIcon />,
       showMoreIcon: false,
-      link: { url: '/profile/' },
+      link: { url: JUMPER_LOYALTY_PATH },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -220,7 +220,7 @@ export const useMainMenuContent = () => {
       label: 'Jumper Learn',
       prefixIcon: <SchoolIcon />,
       showMoreIcon: false,
-      link: { url: '/learn/' },
+      link: { url: JUMPER_LEARN_PATH },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -236,7 +236,7 @@ export const useMainMenuContent = () => {
       label: 'Jumper Scan',
       prefixIcon: <SearchOutlinedIcon />,
       showMoreIcon: false,
-      link: { url: '/scan/', external: false },
+      link: { url: JUMPER_SCAN_PATH, external: false },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
@@ -329,225 +329,5 @@ export const useMainMenuContent = () => {
   ]);
 
   return mainMenu;
-  /*
   //Todo: to generate on the server side
-  if (!!hasTheme || isSuperfest || isMainPaths) {
-    return ;
-  }
-
-  return [
-    {
-      children: (
-        <Tabs
-          data={themeSwitchTabs}
-          value={themeMode === 'light' ? 0 : themeMode === 'dark' ? 1 : 2}
-          ariaLabel="theme-switch-tabs"
-          containerStyles={containerStyles}
-          tabStyles={tabStyles}
-        />
-      ),
-      styles: {
-        width: 'auto',
-        margin: theme.spacing(1.5),
-        gap: '8px',
-        backgroundColor: 'transparent',
-        borderRadius: '24px',
-        '&:hover': {
-          backgroundColor: 'transparent',
-        },
-        paddingTop: `${theme.spacing(0.5)} !important`,
-        padding: theme.spacing(0.5),
-        '> button:hover': {
-          backgroundColor: getContrastAlphaColor(theme, '4%'),
-        },
-        '> button:hover svg': {
-          fill:
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[700]
-              : theme.palette.grey[300],
-        },
-      },
-      showMoreIcon: false,
-      disableRipple: true,
-    },
-    {
-      label: t('language.key', { ns: 'language' }),
-      prefixIcon: <LanguageIcon />,
-      suffixIcon: (
-        <Typography
-          variant="bodyMedium"
-          textTransform={'uppercase'}
-          sx={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            maxWidth: 38,
-          }}
-        >
-          {i18n.language}
-        </Typography>
-      ),
-      showMoreIcon: true,
-      triggerSubMenu: MenuKeysEnum.Language,
-      onClick: () => {
-        setSubMenuState(MenuKeysEnum.Language);
-        trackEvent({
-          category: TrackingCategory.MainMenu,
-          action: TrackingAction.OpenMenu,
-          label: `open_submenu_${MenuKeysEnum.Language.toLowerCase()}`,
-          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Language },
-        });
-      },
-    },
-    {
-      label: t('navbar.navbarMenu.developers'),
-      prefixIcon: <DeveloperModeIcon />,
-      triggerSubMenu: MenuKeysEnum.Devs,
-      onClick: () => {
-        setSubMenuState(MenuKeysEnum.Devs);
-        trackEvent({
-          category: TrackingCategory.MainMenu,
-          action: TrackingAction.OpenMenu,
-          label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
-          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
-        });
-      },
-    },
-    {
-      label: t('navbar.navbarMenu.profile'),
-      prefixIcon: <AccountCircleIcon />,
-      showMoreIcon: false,
-      link: { url: '/profile' },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-jumper-pass-link',
-          action: TrackingAction.ClickJumperProfileLink,
-          data: { [TrackingEventParameter.Menu]: 'pass' },
-        });
-        closeAllMenus();
-        router.push(JUMPER_LOYALTY_PATH);
-      },
-    },
-    {
-      label: 'Jumper Learn',
-      prefixIcon: <SchoolIcon />,
-      showMoreIcon: false,
-      link: { url: '/learn' },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-jumper-learn-link',
-          action: TrackingAction.ClickJumperLearnLink,
-          data: { [TrackingEventParameter.Menu]: 'jumper_learn' },
-        });
-        closeAllMenus();
-        router.push(JUMPER_LEARN_PATH);
-      },
-    },
-    {
-      label: t('navbar.navbarMenu.lifiExplorer'),
-      prefixIcon: <SearchOutlinedIcon />,
-      showMoreIcon: false,
-      link: { url: explorerUrl, external: true },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'open-jumper-scan',
-          action: TrackingAction.ClickJumperScanLink,
-          data: { [TrackingEventParameter.Menu]: 'jumper_scan' },
-        });
-        trackEvent({
-          category: TrackingCategory.Pageload,
-          action: TrackingAction.PageLoad,
-          label: 'pageload-jumper-scan',
-          data: {
-            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'jumper-scan',
-            [TrackingEventParameter.PageloadURL]: explorerUrl,
-            [TrackingEventParameter.PageloadExternal]: true,
-          },
-        });
-      },
-    },
-    {
-      label: 'X',
-      prefixIcon: <XIcon />,
-      showMoreIcon: false,
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-x-link',
-          action: TrackingAction.ClickXLink,
-          data: { [TrackingEventParameter.Menu]: 'x_jumper' },
-        });
-        trackEvent({
-          category: TrackingCategory.Pageload,
-          action: TrackingAction.PageLoad,
-          label: 'pageload-x_jumper',
-          data: {
-            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'x-jumper',
-            [TrackingEventParameter.PageloadURL]: X_URL,
-            [TrackingEventParameter.PageloadExternal]: true,
-          },
-        });
-      },
-      link: { url: X_URL, external: true },
-    },
-    {
-      label: 'Discord',
-      prefixIcon: (
-        <Discord
-          color={
-            theme.palette.mode === 'dark'
-              ? theme.palette.white.main
-              : theme.palette.black.main
-          }
-        />
-      ),
-      showMoreIcon: false,
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-discord-link',
-          action: TrackingAction.ClickDiscordLink,
-          data: { [TrackingEventParameter.Menu]: 'jumper_discord' },
-        });
-        trackEvent({
-          category: TrackingCategory.Pageload,
-          action: TrackingAction.PageLoad,
-          label: 'pageload-discord',
-          data: {
-            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'discord-jumper',
-            [TrackingEventParameter.PageloadURL]: DISCORD_URL,
-            [TrackingEventParameter.PageloadExternal]: true,
-          },
-        });
-      },
-      link: { url: DISCORD_URL, external: true },
-    },
-    {
-      label: t('navbar.navbarMenu.support'),
-      prefixIcon: (
-        <Discord
-          color={
-            theme.palette.mode === 'light'
-              ? theme.palette.primary.main
-              : theme.palette.white.main
-          }
-        />
-      ),
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'open-support-modal',
-          action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'support_modal' },
-        });
-        setSupportModalState(true);
-      },
-      showButton: true,
-    },
-  ];*/
 };
