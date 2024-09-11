@@ -68,8 +68,9 @@ export const FlexibleFee = ({
 
   const handleDefaultRate = () => {
     // todo: replace amount?
-    const result = parseFloat(amount) * rate;
-    setAmount(`${result}`);
+    // const result = parseFloat(amount) * rate;
+    // setAmount(`${result}`);
+    setAmount('0.05');
   };
 
   return (
@@ -79,7 +80,7 @@ export const FlexibleFee = ({
           {t('flexibleFee.title')}
         </Typography>
         <Tooltip
-          title={t('flexibleFee.tooltip')}
+          title={t('flexibleFee.description')}
           placement="top"
           enterTouchDelay={0}
           arrow
@@ -88,7 +89,11 @@ export const FlexibleFee = ({
         </Tooltip>
       </Header>
       <Content>
-        <Box display="flex" alignItems="center" sx={{ width: '100%' }}>
+        <Box
+          display="flex"
+          alignItems="center"
+          sx={{ width: '100%', color: theme.palette.text.secondary }}
+        >
           <FlexibleFeeChainBadge
             overlap="circular"
             className="badge"
@@ -125,8 +130,9 @@ export const FlexibleFee = ({
                 value={amount}
                 name={'flexible-fee-amount'}
                 style={{
+                  height: '24px',
                   fontSize: '24px',
-                  fontWeight: 500,
+                  fontWeight: 700,
                   color:
                     amount === '0'
                       ? theme.palette.grey[500]
@@ -156,7 +162,7 @@ export const FlexibleFee = ({
             variant="bodyXSmallStrong"
             color={theme.palette.primary.main}
           >
-            {rate}
+            {rate}%
           </Typography>
         </FlexibleFeeAmountsBadge>
       </Content>

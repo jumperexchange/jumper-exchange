@@ -133,10 +133,10 @@ interface Resources {
       mobileDescription: 'The Jumper Profile page is not available on small screens yet. We are working on it.';
     };
     flexibleFee: {
-      title: 'Contribute to improve Jumper';
-      tooltip: 'Lorem ipsum...';
+      title: 'Help us grow Jumper!';
+      description: 'Lorem ipsum...';
       availableAmount: '{{amountUsd}} • {{amount}} {{baseToken}} available';
-      contribute: 'Contribute';
+      cta: 'Contribute';
     };
   };
 }

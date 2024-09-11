@@ -4,13 +4,16 @@ import { Typography, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslation } from 'react-i18next';
 import { ButtonSecondary } from '../Button';
+
 interface FlexibleFeeButtonProps {
+  // route: RouteExtended;
   isLoading?: boolean;
   isSuccess?: boolean;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const FlexibleFeeButton = ({
+  // route,
   isLoading,
   isSuccess,
   onClick,
@@ -73,7 +76,7 @@ const FlexibleFeeButtonContent = ({
           variant="bodySmallStrong"
           sx={{ marginLeft: theme.spacing(1) }}
         >
-          {t('flexibleFee.contribute')}
+          {t('flexibleFee.cta')}
         </Typography>
       </>
     );

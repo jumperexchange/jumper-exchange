@@ -24,6 +24,7 @@ export const FlexibleFeeContent = styled(Box)<BoxProps>(({ theme }) => ({
 
 export const FlexibleFeeAmountsBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
+  color: theme.palette.secondary.main, //'#747474',
   width: '100%',
   flexDirection: 'column',
   marginLeft: theme.spacing(2),
@@ -31,6 +32,8 @@ export const FlexibleFeeAmountsBox = styled(Box)<BoxProps>(({ theme }) => ({
 
 export const FlexibleFeeAmountDetails = styled(Typography)(({ theme }) => ({
   color: theme.palette.grey[500],
+  marginTop: theme.spacing(0.75),
+  lineHeight: 1,
 }));
 
 export const FlexibleFeeAmountsBadge = styled(Box)<BoxProps>(({ theme }) => ({
