@@ -2,11 +2,32 @@
 import { MainMenu } from '@/components/Menus/MainMenu';
 import { useMenuStore } from '@/stores/menu';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Box } from '@mui/material';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import { MenuToggle, NavbarButtonsContainer, WalletManagementButtons } from '.';
+import { EcosystemSelectMenu } from 'src/components/Menus/EcosystemSelectMenu';
+import { WalletMenu } from 'src/components/Menus/WalletMenu';
+import { WalletSelectMenu } from 'src/components/Menus/WalletSelectMenu';
+import {
+  JUMPER_LEARN_PATH,
+  JUMPER_SCAN_PATH,
+  JUMPER_TX_PATH,
+  JUMPER_WALLET_PATH,
+} from 'src/const/urls';
+import { MenuToggle, NavbarButtonsContainer, RedirectToApp } from '.';
+import { WalletButtons } from '../WalletButton';
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef(null);
+
+  const walletManagementRef = useRef<HTMLAnchorElement>(null);
+  const pathname = usePathname();
+  const hideConnectButton = pathname?.includes(JUMPER_LEARN_PATH);
+  const redirectToApp =
+    pathname?.includes(JUMPER_LEARN_PATH) ||
+    pathname?.includes(JUMPER_SCAN_PATH) ||
+    pathname?.includes(JUMPER_TX_PATH) ||
+    pathname?.includes(JUMPER_WALLET_PATH);
 
   const [openedMenu, openMainMenu, setMainMenuState] = useMenuStore((state) => [
     state.openedMenu,
@@ -39,7 +60,15 @@ export const NavbarButtons = () => {
   return (
     <>
       <NavbarButtonsContainer className="settings">
-        <WalletManagementButtons />
+        {(redirectToApp || !hideConnectButton) && (
+          <Box ref={walletManagementRef}>
+            {redirectToApp && (
+              <RedirectToApp hideConnectButton={hideConnectButton} />
+            )}
+            {!hideConnectButton && <WalletButtons />}
+          </Box>
+        )}
+
         <MenuToggle
           ref={mainMenuAnchor}
           id="main-burger-menu-button"
@@ -58,6 +87,11 @@ export const NavbarButtons = () => {
         </MenuToggle>
       </NavbarButtonsContainer>
       <MainMenu anchorEl={mainMenuAnchor.current ?? undefined} />
+      <WalletMenu anchorEl={walletManagementRef.current ?? undefined} />
+      <WalletSelectMenu anchorEl={walletManagementRef.current || undefined} />
+      <EcosystemSelectMenu
+        anchorEl={walletManagementRef?.current || undefined}
+      />
     </>
   );
 };

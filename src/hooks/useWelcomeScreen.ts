@@ -1,24 +1,40 @@
-import { useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
 import { useSettingsStore } from '@/stores/settings';
+import { useEffect, useMemo, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { useMultisig } from './useMultisig';
 
 interface useWelcomeScreenProps {
   welcomeScreenClosed: boolean | undefined;
   setWelcomeScreenClosed: (closed: boolean) => void;
+  enabled: boolean;
 }
+
+export const validThemes = ['default', 'light', 'dark', 'system'];
 
 export const useWelcomeScreen = (
   initialState?: boolean,
+  activeTheme?: string,
 ): useWelcomeScreenProps => {
-  const [, setState] = useState(initialState);
-  const [cookie, setCookie] = useCookies(['welcomeScreenClosed']);
+  const [state, setState] = useState(initialState);
+  const [cookie, setCookie] = useCookies(['welcomeScreenClosed', 'theme']);
   const { isMultisigSigner } = useMultisig();
 
   const [, sessionSetWelcomeScreenClosed] = useSettingsStore((state) => [
     state.welcomeScreenClosed,
     state.setWelcomeScreenClosed,
   ]);
+
+  const enabled = useMemo(
+    // check if theme is any of jumper-themes or undefined
+    () => {
+      return (
+        (activeTheme && validThemes.includes(activeTheme)) ||
+        validThemes.includes(cookie.theme) ||
+        !cookie.theme
+      );
+    },
+    [activeTheme, cookie],
+  );
 
   useEffect(() => {
     if (isMultisigSigner) {
@@ -29,6 +45,9 @@ export const useWelcomeScreen = (
   }, [cookie.welcomeScreenClosed, isMultisigSigner]);
 
   const updateState = (closed: boolean) => {
+    if (!enabled) {
+      return;
+    }
     setState(closed);
     sessionSetWelcomeScreenClosed(closed);
     setCookie('welcomeScreenClosed', closed, {
@@ -39,8 +58,8 @@ export const useWelcomeScreen = (
   };
 
   return {
-    // welcomeScreenClosed: state || sessionWelcomeScreenClosed,
-    welcomeScreenClosed: true, // todo: adapt to get back the welcome screen
+    welcomeScreenClosed: state,
     setWelcomeScreenClosed: updateState,
+    enabled,
   };
 };

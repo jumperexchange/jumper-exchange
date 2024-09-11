@@ -1,8 +1,8 @@
 'use client';
 import type { StarterVariantType } from '@/types/internal';
+import type { ThemeModesSupported } from '@/types/settings';
 import { ChainId } from '@lifi/sdk';
 import type { BlogWidgetProps } from '../Blog/BlogWidget';
-import type { ThemeModesSupported } from '@/types/settings';
 
 export const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -33,5 +33,6 @@ export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   widgetIntegrator?: string;
   starterVariant: StarterVariantType;
   activeThemeMode?: ThemeModesSupported;
+  isWelcomeScreenClosed?: boolean;
   activeTheme?: string;
 }
