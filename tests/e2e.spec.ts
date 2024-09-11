@@ -108,7 +108,7 @@ test.describe('Jumper full e2e flow', () => {
   test('Should be able to navigate to profile and open Explore Filament Mission', async ({
     page,
   }) => {
-    let profileUrl = `${await page.url()}profile/`;
+    let profileUrl = `${await page.url()}profile`;
     // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
@@ -123,7 +123,7 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('Should be able to navigate to jumper learn', async ({ page }) => {
-    let learnUrl = `${await page.url()}learn/`;
+    let learnUrl = `${await page.url()}learn`;
     // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
