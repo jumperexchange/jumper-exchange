@@ -1,5 +1,9 @@
 import { usePathname } from 'next/navigation';
-import { JUMPER_LEARN_PATH, JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from '@/const/urls';
+import {
+  JUMPER_LEARN_PATH,
+  JUMPER_LOYALTY_PATH,
+  JUMPER_SCAN_PATH,
+} from '@/const/urls';
 
 interface useMainPathsProps {
   isMainPaths: boolean;

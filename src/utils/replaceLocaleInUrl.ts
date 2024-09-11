@@ -27,7 +27,7 @@ export const replaceLocaleInUrl = (currentPath: string, newLocale: string) => {
 
   // Ensure the URL ends with a single slash
   if (updatedUrl.endsWith('/')) {
-    updatedUrl = updatedUrl.slice(-1, 0)
+    updatedUrl = updatedUrl.slice(-1, 0);
   }
 
   // Update the URL using window.history.replaceState()
