@@ -1,17 +1,16 @@
-import { Button } from 'src/components/Button';
-import { NFTCardBotomBox, NFTCardMainBox } from './NFTCard.style';
+import { ChainId } from '@lifi/sdk';
 import Image from 'next/image';
+import { Button } from 'src/components/Button';
+import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';
+import { useCheckNFTAvailability } from 'src/hooks/useCheckNFTAvailability';
 import {
   useAccount,
-  useWriteContract,
-  useWaitForTransactionReceipt,
   useSwitchChain,
+  useWaitForTransactionReceipt,
+  useWriteContract,
 } from 'wagmi';
-import { ChainId } from '@lifi/sdk';
-import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';
 import { SoraTypography } from '../../Superfest.style';
-import { useCheckNFTAvailability } from 'src/hooks/useCheckNFTAvailability';
-import Link from 'next/link';
+import { NFTCardBotomBox, NFTCardMainBox } from './NFTCard.style';
 
 interface NFTCardProps {
   image: string;
@@ -79,11 +78,11 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
           //   bytes calldata _signature // Claim signature
           // )
         } catch (err) {
-          console.log(err);
+          console.error(err);
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

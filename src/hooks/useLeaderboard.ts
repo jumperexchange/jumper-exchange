@@ -18,7 +18,7 @@ export const useLeaderboardList = (page: number, limit: number): any => {
         const result = await response.json();
         return result;
       } catch (err) {
-        console.log('err', err);
+        console.error(err);
       }
     },
   });
@@ -56,7 +56,7 @@ export const useLeaderboardUser = (walletAddress?: string): any => {
         const result = await response.json();
         return result;
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     },
   });
