@@ -24,6 +24,7 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useMemelist } from 'src/hooks/useMemelist';
+import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useConfig } from 'wagmi';
@@ -42,6 +43,7 @@ export function Widget({
   fromAmount,
   allowChains,
   widgetIntegrator,
+  isWelcomeScreenClosed,
   activeTheme,
 }: WidgetProps) {
   const widgetTheme = useWidgetTheme();
@@ -65,8 +67,9 @@ export function Widget({
     router.prefetch('/buy/', { kind: PrefetchKind.FULL });
   });
 
-  const welcomeScreenClosed = useSettingsStore(
-    (state) => state.welcomeScreenClosed,
+  const { welcomeScreenClosed, enabled } = useWelcomeScreen(
+    isWelcomeScreenClosed,
+    activeTheme,
   );
   const setWalletSelectMenuState = useMenuStore(
     (state: MenuState) => state.setWalletSelectMenuState,
@@ -218,7 +221,7 @@ export function Widget({
   return (
     <WidgetWrapper
       className="widget-wrapper"
-      welcomeScreenClosed={welcomeScreenClosed}
+      welcomeScreenClosed={welcomeScreenClosed || !enabled}
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly fallback={<WidgetSkeleton config={config} />}>
