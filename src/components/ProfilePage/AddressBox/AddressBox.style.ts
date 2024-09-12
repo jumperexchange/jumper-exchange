@@ -18,7 +18,7 @@ export const AddressBoxContainer = styled(Box, {
   position: 'relative',
   paddingBottom: theme.spacing(1),
   width: '100%',
-  minHeight: '200px',
+  minHeight: 200,
   boxShadow: theme.palette.shadow.main,
 
   ...(!imgUrl && {
@@ -26,7 +26,7 @@ export const AddressBoxContainer = styled(Box, {
   }),
 
   [theme.breakpoints.up('sm')]: {
-    minHeight: '256px',
+    minHeight: 256,
     paddingTop: 0,
     paddingBottom: 0,
   },

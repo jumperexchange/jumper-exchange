@@ -91,3 +91,12 @@ export const SuperfestButton = styled(ButtonBase)<MuiButtonProps>(
     },
   }),
 );
+
+export const LevelButton = styled(ButtonBase)<MuiButtonProps>(() => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  pointerEvents: 'none',
+  paddingLeft: '12px',
+  height: '32px',
+}));

@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import {
   NoSelectTypography,
   NoSelectTypographyTitle,
@@ -11,6 +12,7 @@ interface LevelBoxProps {
 }
 
 export const LevelBox = ({ level }: LevelBoxProps) => {
+  const { t } = useTranslation();
   return (
     <Box>
       <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>

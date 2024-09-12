@@ -1,14 +1,11 @@
 import type { LevelData } from '@/types/loyaltyPass';
 import { Box } from '@mui/material';
-import { XPIcon } from '../../illustrations/XPIcon';
-import { CenteredBox, NoSelectTypography } from '../ProfilePage.style';
 import {
   ProgressionChart,
   ProgressionChartBg,
   ProgressionChartScore,
 } from './ProgressionBar.style';
-import { Button } from '../../../components/Button';
-import { LevelButton } from './LevelButton';
+import { LevelIndicator } from './LevelIndicator';
 
 interface ProgressionBarProps {
   points?: number;
@@ -44,8 +41,11 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
               marginTop: '24px',
             }}
           >
-            <LevelButton level={levelData.level} points={levelData.minPoints} />
-            <LevelButton
+            <LevelIndicator
+              level={levelData.level}
+              points={levelData.minPoints}
+            />
+            <LevelIndicator
               level={levelData.level + 1}
               points={levelData.maxPoints}
             />

@@ -1,5 +1,6 @@
 import { XpIconContainer } from '@/components/ProfilePage/LevelBox/PointsBox.style';
 import { Box, Tooltip } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { XPIcon } from '../../illustrations/XPIcon';
 import {
   CenteredBox,
@@ -13,6 +14,7 @@ interface PointsBoxProps {
 }
 
 export const PointsBox = ({ points }: PointsBoxProps) => {
+  const { t } = useTranslation();
   return (
     <Box>
       <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>

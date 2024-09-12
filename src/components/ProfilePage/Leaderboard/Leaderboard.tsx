@@ -4,7 +4,7 @@ import {
   NoSelectTypography,
   NoSelectTypographyTitle,
 } from '../ProfilePage.style';
-import { LeaderboardContainer } from './Leaderboard.style';
+import { LeaderboardContainer, LeaderboardEntry } from './Leaderboard.style';
 import { XPIcon } from '../../../components/illustrations/XPIcon';
 import InfoIcon from '@mui/icons-material/Info';
 import {
@@ -20,7 +20,7 @@ import { FirstPage, LastPage } from '@mui/icons-material';
 
 const LEADERBOARD_LENGTH = 25;
 
-interface LeaderboardEntry {
+interface LeaderboardEntryData {
   position: number;
   walletAddress: string;
   points: number;
@@ -48,10 +48,8 @@ export const Leaderboard = ({ address }: { address?: string }) => {
   const {
     data: leaderboardData,
     meta,
-  }: { data: LeaderboardEntry[]; meta: LeaderboardMeta } = useLeaderboardList(
-    currentPage,
-    LEADERBOARD_LENGTH,
-  );
+  }: { data: LeaderboardEntryData[]; meta: LeaderboardMeta } =
+    useLeaderboardList(currentPage, LEADERBOARD_LENGTH);
   const { data: leaderboardUserData }: { data: LeaderboardUserData } =
     useLeaderboardUser(address);
 
@@ -63,6 +61,7 @@ export const Leaderboard = ({ address }: { address?: string }) => {
     ) {
       setLeaderboardListLength(meta.pagination.pagesLength);
     }
+    // leaderboardListLength is not needed here but eslint is complaining
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meta?.pagination?.pagesLength]);
 
@@ -139,29 +138,12 @@ export const Leaderboard = ({ address }: { address?: string }) => {
         {!leaderboardData?.length ? (
           <LeaderboardSkeleton length={LEADERBOARD_LENGTH} />
         ) : (
-          leaderboardData?.map((entry: LeaderboardEntry, index: number) => (
-            <Box
+          leaderboardData?.map((entry: LeaderboardEntryData, index: number) => (
+            <LeaderboardEntry
               key={index}
-              display={'flex'}
-              justifyContent={'space-between'}
-              alignItems={'center'}
-              sx={{
-                width: '100%',
-                margin: '10px 0',
-                position: 'relative',
-                ...(+entry.position === +leaderboardUserData?.position && {
-                  '&:before': {
-                    position: 'absolute',
-                    top: '-6px',
-                    left: '-12px',
-                    content: '""',
-                    height: '36px',
-                    width: '312px',
-                    borderRadius: '6px',
-                    backgroundColor: alpha(theme.palette.black.main, 0.04),
-                  },
-                }),
-              }}
+              isUserPosition={
+                +entry.position === +leaderboardUserData?.position
+              }
             >
               <NoSelectTypography
                 fontSize="18px"
@@ -190,7 +172,7 @@ export const Leaderboard = ({ address }: { address?: string }) => {
                 </NoSelectTypography>
                 <XPIcon size={24} />
               </Box>
-            </Box>
+            </LeaderboardEntry>
           ))
         )}
       </Stack>
