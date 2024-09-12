@@ -4,7 +4,7 @@ import { IconButton as MuiIconButtom, darken, styled } from '@mui/material';
 
 export const IconButton = styled(MuiIconButtom, {
   shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
+})(({ theme }) => ({
   color: getContrastAlphaColor(theme, '84%'),
   transition: 'background 0.3s',
   width: '48px',
@@ -49,7 +49,7 @@ export const IconButtonSecondary = styled(IconButton, {
 
 export const IconButtonTertiary = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
+})(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'dark'
       ? theme.palette.alphaLight300.main
