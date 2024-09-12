@@ -31,7 +31,7 @@ test.describe('Jumper full e2e flow', () => {
       page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
     ).toBeVisible();
     await tabInHeader(page, 'Gas');
-    await expect(page.locator('#tab-Gas-1')).toBeVisible();
+    await expect(page.locator('#navbar-tabs-1')).toBeVisible();
     await tabInHeader(page, 'Buy');
     await expect(buyETHButton).toBeEnabled();
     await expect(
@@ -145,9 +145,9 @@ test.describe('Jumper full e2e flow', () => {
     await page.goto(values.aerodromeQuestsURL);
     expect(jumperProfileBackButton).toBeVisible();
     await openMainMenu(page);
-    await page.locator('xpath=//*[@id="tab-key-1"]').click(); //switch to Dark theme
+    await page.locator('#theme-switch-tabs-1').click(); //switch to Dark theme
     expectBackgroundColorToHaveCss(page, 'rgb(18, 15, 41)');
-    await page.locator('xpath=//*[@id="tab-key-0"]').click(); //switch to Light theme
+    await page.locator('#theme-switch-tabs-0').click(); //switch to Light theme
     await openMainMenu(page);
     expectBackgroundColorToHaveCss(page, 'rgb(243, 235, 255)');
   });
