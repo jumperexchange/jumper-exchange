@@ -56,7 +56,7 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
           marginTop: 1.5,
         }}
       >
-        EVM
+        Ethereum
       </Typography>
     </ConnectButton>
   );
