@@ -87,13 +87,6 @@ export function Widget({
     [starterVariant, partnerName],
   );
 
-  const handleContribution = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (event?.cancelable) {
-      event.preventDefault();
-    }
-    console.log('Contribute with this handler');
-  };
-
   const integratorStringByType = useMemo(() => {
     if (widgetIntegrator) {
       return widgetIntegrator;

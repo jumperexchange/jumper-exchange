@@ -16,7 +16,6 @@ import { useChains } from 'src/hooks/useChains';
 
 import type { RouteExtended } from '@lifi/sdk';
 import { useTranslation } from 'react-i18next';
-import 'src/i18n/i18next-client';
 import { ThemeProviderV2 } from 'src/providers/ThemeProviderV2';
 import { formatInputAmount } from 'src/utils/formatInputAmount';
 import {
@@ -73,9 +72,6 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   };
 
   const handleDefaultRate = () => {
-    // todo: replace amount?
-    // const result = parseFloat(amount) * rate;
-    // setAmount(`${result}`);
     setAmount('0.05');
   };
 
@@ -119,7 +115,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
             >
               <FlexibleFeeChainAvatar src={activeChain?.logoURI} />
               {
-                //* Replace logoURI with from / to chain logo *//
+                //* Replace logoURI with from / to chain logo *
               }
             </FlexibleFeeChainBadge>
             <FlexibleFeeAmountsBox>
