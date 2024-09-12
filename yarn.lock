@@ -9520,7 +9520,6 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^4.0.13"
     react-i18next: "npm:^15.0.1"
-    react-nl2br: "npm:^1.0.4"
     react-router-dom: "npm:^6.26.0"
     rollup-plugin-polyfill-node: "npm:^0.13.0"
     sharp: "npm:^0.33.4"
@@ -11303,15 +11302,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/d64123c73e7795096434135a1bec2aef5caf71a4c1c95b1416cc528bc55f5c4a89df2d311ad3637594f120e864b5798e2c4ea4eb7153bf938ad167c54e7a7e61
-  languageName: node
-  linkType: hard
-
-"react-nl2br@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "react-nl2br@npm:1.0.4"
-  peerDependencies:
-    react: ^15.7.0 || ^16.14.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/face38b19bec9ae9bf43e7efbf158a577f0810fd8d93650c464bdd80a37d61be6f59170cca4fe4993b44c8d5652c541d4f4786d30297ca3252fd99143b5b3816
   languageName: node
   linkType: hard
 
