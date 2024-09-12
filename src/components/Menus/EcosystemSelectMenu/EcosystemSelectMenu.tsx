@@ -13,6 +13,7 @@ import type { Connector } from 'wagmi';
 import { EVMConnectButton } from './EVMConnectButton';
 import { ConnectButtonContainer } from './EcosystemSelectMenu.style';
 import { SVMConnectButton } from './SVMConnectButton';
+import { UTXOConnectButton } from './UTXOConnectButton';
 
 interface MenuProps {
   anchorEl?: HTMLAnchorElement;
@@ -30,6 +31,12 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
       openEcosystemSelect.open,
       openEcosystemSelect.combinedWallet,
     );
+
+  const walletIcon = getConnectorIcon(
+    (openEcosystemSelect.combinedWallet?.evm as Connector) ||
+      openEcosystemSelect.combinedWallet?.utxo ||
+      openEcosystemSelect.combinedWallet?.svm?.adapter,
+  );
   return (
     <Menu
       open={openEcosystemSelect.open}
@@ -60,17 +67,16 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
       </MenuHeaderAppWrapper>
       <ConnectButtonContainer as="li">
         <EVMConnectButton
-          walletIcon={getConnectorIcon(
-            openEcosystemSelect.combinedWallet?.evm as Connector,
-          )}
+          walletIcon={walletIcon}
           evm={openEcosystemSelect.combinedWallet?.evm!}
         />
         <SVMConnectButton
-          walletIcon={getConnectorIcon(
-            (openEcosystemSelect.combinedWallet?.evm as Connector) ||
-              openEcosystemSelect.combinedWallet?.svm?.adapter,
-          )}
+          walletIcon={walletIcon}
           svm={openEcosystemSelect.combinedWallet?.svm!}
+        />
+        <UTXOConnectButton
+          walletIcon={walletIcon}
+          utxo={openEcosystemSelect.combinedWallet?.utxo!}
         />
       </ConnectButtonContainer>
     </Menu>

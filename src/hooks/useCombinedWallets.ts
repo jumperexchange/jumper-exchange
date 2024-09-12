@@ -9,33 +9,36 @@ import {
   createWalletConnectConnector,
   isWalletInstalled,
   isWalletInstalledAsync,
+  useConfig as useBigmiConfig,
 } from '@lifi/wallet-management';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
 import type { Wallet } from '@solana/wallet-adapter-react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
-import {
-  useConnect,
-  useAccount as useWagmiAccount,
-  type Connector,
-} from 'wagmi';
+import { useAccount, useConnect, type Connector } from 'wagmi';
 
 export interface CombinedWallet {
   evm?: CreateConnectorFnExtended | Connector;
   svm?: Wallet;
+  utxo?: CreateConnectorFnExtended | Connector;
 }
 
 const combineWalletLists = (
   evmConnectorList: (CreateConnectorFnExtended | Connector)[],
+  utxoConnectorList: (CreateConnectorFnExtended | Connector)[],
   svmWalletList: Wallet[],
 ): CombinedWallet[] => {
   const combined: CombinedWallet[] = evmConnectorList.map((evm) => {
     const matchedSvm = svmWalletList?.find(
       (svm) => svm.adapter.name === evm.name,
     );
+    const matchedUtxo = utxoConnectorList?.find(
+      (utxo) => utxo.name === evm.name,
+    );
     return {
       evm,
       svm: matchedSvm,
+      utxo: matchedUtxo,
     };
   });
 
@@ -46,12 +49,22 @@ const combineWalletLists = (
     }
   });
 
+  // Add UTXO wallets that didn't find a match in EVM wallets
+  utxoConnectorList?.forEach((utxo) => {
+    if (!combined.some((c) => c.utxo?.name === utxo.name)) {
+      combined.push({ utxo });
+    }
+  });
+
   return combined;
 };
 
 export const useCombinedWallets = () => {
-  const { connectors } = useConnect();
-  const account = useWagmiAccount();
+  const bigmiConfig = useBigmiConfig();
+  const wagmiAccount = useAccount();
+  const bigmiAccount = useAccount({ config: bigmiConfig });
+  const { connectors: wagmiConnectors } = useConnect();
+  const { connectors: bigmiConnectors } = useConnect({ config: bigmiConfig });
   const { wallets: solanaWallets } = useWallet();
 
   const [combinedInstalledWallets, setCombinedInstalledWallets] = useState<
@@ -65,9 +78,9 @@ export const useCombinedWallets = () => {
   // combine installed wallets
   useEffect(() => {
     const evmConnectors: (CreateConnectorFnExtended | Connector)[] =
-      Array.from(connectors);
+      Array.from(wagmiConnectors);
     if (
-      !connectors.some((connector) =>
+      !wagmiConnectors.some((connector) =>
         connector.id.toLowerCase().includes('walletconnect'),
       )
     ) {
@@ -76,7 +89,7 @@ export const useCombinedWallets = () => {
       );
     }
     if (
-      !connectors.some((connector) =>
+      !wagmiConnectors.some((connector) =>
         connector.id.toLowerCase().includes('coinbase'),
       ) &&
       !isWalletInstalled('coinbase')
@@ -84,7 +97,7 @@ export const useCombinedWallets = () => {
       evmConnectors.unshift(createCoinbaseConnector(defaultCoinbaseConfig));
     }
     if (
-      !connectors.some((connector) =>
+      !wagmiConnectors.some((connector) =>
         connector.id.toLowerCase().includes('metamask'),
       ) &&
       !isWalletInstalled('metaMask')
@@ -95,8 +108,14 @@ export const useCombinedWallets = () => {
       (connector) =>
         isWalletInstalled(connector.id) &&
         // We should not show already connected connectors
-        account.connector?.id !== connector.id &&
+        wagmiAccount.connector?.id !== connector.id &&
         connector.id !== 'safe',
+    );
+    const utxoInstalled = bigmiConnectors.filter(
+      (connector) =>
+        isWalletInstalled(connector.id) &&
+        // We should not show already connected connectors
+        bigmiAccount.connector?.id !== connector.id,
     );
     const svmInstalled = solanaWallets?.filter(
       (connector) =>
@@ -104,7 +123,11 @@ export const useCombinedWallets = () => {
         // We should not show already connected connectors
         !connector.adapter.connected,
     );
-    const installedWallets = combineWalletLists(evmInstalled, svmInstalled);
+    const installedWallets = combineWalletLists(
+      evmInstalled,
+      utxoInstalled,
+      svmInstalled,
+    );
 
     const evmNotDetected = evmConnectors.filter(
       (connector) => !isWalletInstalled(connector.id),
@@ -114,19 +137,31 @@ export const useCombinedWallets = () => {
       (connector) =>
         connector.adapter.readyState !== WalletReadyState.Installed,
     );
+
+    const utxoNotDetected = bigmiConnectors.filter(
+      (connector) => !isWalletInstalled(connector.id!),
+    );
+
     const notDetectedWallets = combineWalletLists(
       evmNotDetected,
+      utxoNotDetected,
       svmNotDetected,
     );
 
     setCombinedInstalledWallets(installedWallets);
     setCombinedNotDetectedWallets(notDetectedWallets);
-  }, [connectors, account.connector, solanaWallets]);
+  }, [
+    bigmiAccount.connector?.id,
+    bigmiConnectors,
+    solanaWallets,
+    wagmiAccount.connector?.id,
+    wagmiConnectors,
+  ]);
 
   // check for multisig wallets
   useEffect(() => {
     const multiSigInstalled = async () => {
-      const safeWallet = connectors.find(
+      const safeWallet = wagmiConnectors.find(
         (connector) => connector.name === 'Safe',
       );
       if (await isWalletInstalledAsync(safeWallet?.id || '')) {
@@ -140,7 +175,7 @@ export const useCombinedWallets = () => {
       }
     };
     multiSigInstalled();
-  }, [connectors]);
+  }, [wagmiConnectors]);
 
   return { combinedInstalledWallets, combinedNotDetectedWallets };
 };

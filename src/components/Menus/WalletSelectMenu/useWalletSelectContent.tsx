@@ -51,10 +51,18 @@ export const useWalletSelectContent = () => {
 
   const connectWallet = useCallback(
     async (combinedWallet: CombinedWallet) => {
-      if (combinedWallet.evm && combinedWallet.svm) {
+      const isMultiEcosystemWallet =
+        [combinedWallet.evm, combinedWallet.svm, combinedWallet.utxo].filter(
+          Boolean,
+        ).length > 1;
+      if (isMultiEcosystemWallet) {
         setEcosystemSelectMenuState(true, combinedWallet);
         return;
-      } else if (combinedWallet.evm || combinedWallet.svm) {
+      } else if (
+        combinedWallet.evm ||
+        combinedWallet.svm ||
+        combinedWallet.utxo
+      ) {
         await connect(combinedWallet);
       } else {
         setSnackbarState(
@@ -80,6 +88,7 @@ export const useWalletSelectContent = () => {
     const handleWalletClick = async (combinedWallet: CombinedWallet) => {
       if (
         isWalletInstalled(combinedWallet.evm?.id || '') ||
+        isWalletInstalled(combinedWallet.utxo?.id || '') ||
         (await isWalletInstalledAsync(combinedWallet.evm?.id || '')) ||
         (combinedWallet.svm &&
           combinedWallet.svm.adapter.readyState === WalletReadyState.Installed)
@@ -91,7 +100,9 @@ export const useWalletSelectContent = () => {
           true,
           t('navbar.walletMenu.walletNotInstalled', {
             wallet:
-              (combinedWallet.evm?.id || combinedWallet.svm?.adapter.name) ??
+              (combinedWallet.evm?.id ||
+                combinedWallet.utxo?.id ||
+                combinedWallet.svm?.adapter.name) ??
               '',
           }),
           'error',
@@ -103,18 +114,25 @@ export const useWalletSelectContent = () => {
       const walletDisplayName =
         (combinedWallet.evm as CreateConnectorFnExtended)?.displayName ||
         (combinedWallet.evm as Connector)?.name ||
+        (combinedWallet.utxo as CreateConnectorFnExtended)?.displayName ||
+        (combinedWallet.utxo as Connector)?.name ||
         combinedWallet.svm?.adapter.name ||
         '';
+      const walletIcon = getConnectorIcon(
+        (combinedWallet.evm as Connector) ||
+          (combinedWallet.utxo as Connector) ||
+          combinedWallet.svm?.adapter,
+      );
       return {
         label: walletDisplayName,
         prefixIcon: (
           <Avatar
             className="wallet-select-avatar"
-            src={getConnectorIcon(
-              (combinedWallet.evm as Connector) || combinedWallet.svm?.adapter,
-            )}
+            src={walletIcon}
             alt={`${
-              combinedWallet.evm?.id || combinedWallet.svm?.adapter.name
+              combinedWallet.evm?.id ||
+              combinedWallet.utxo?.id ||
+              combinedWallet.svm?.adapter.name
             }-wallet-logo`}
             sx={{
               height: 40,
