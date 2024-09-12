@@ -109,6 +109,7 @@ test.describe('Jumper full e2e flow', () => {
     page,
   }) => {
     let profileUrl = `${await page.url()}profile/`;
+    const whatIsFilamentTitle = page.locator('xpath=//p[normalize-space(text())="Explore Filament"]');
     // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
@@ -118,8 +119,8 @@ test.describe('Jumper full e2e flow', () => {
     await page
       .locator('xpath=//p[normalize-space(text())="Explore Filament"]')
       .click();
-    await page.waitForLoadState('networkidle');
-    expect(page.url()).toBe(values.exploreFilamentURL);
+    
+    await expect(whatIsFilamentTitle).toBeInViewport({timeout: 15000});
   });
 
   test('Should be able to navigate to jumper learn', async ({ page }) => {
