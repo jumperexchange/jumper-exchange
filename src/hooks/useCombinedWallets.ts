@@ -23,40 +23,51 @@ export interface CombinedWallet {
   utxo?: CreateConnectorFnExtended | Connector;
 }
 
+const normalizeName = (name: string) => name.split(' ')[0].toLowerCase().trim();
+
+const updateOrCreateWallet = (
+  map: Map<string, CombinedWallet>,
+  key: string,
+  wallet: Partial<CombinedWallet>,
+) => {
+  const existingWallet = map.get(key) || {};
+  map.set(key, { ...existingWallet, ...wallet });
+};
+
 const combineWalletLists = (
   evmConnectorList: (CreateConnectorFnExtended | Connector)[],
   utxoConnectorList: (CreateConnectorFnExtended | Connector)[],
   svmWalletList: Wallet[],
 ): CombinedWallet[] => {
-  const combined: CombinedWallet[] = evmConnectorList.map((evm) => {
-    const matchedSvm = svmWalletList?.find(
-      (svm) => svm.adapter.name === evm.name,
+  const addedWallets = new Map<string, CombinedWallet>();
+
+  evmConnectorList.forEach((evm) => {
+    const evmName = normalizeName(evm.name);
+    const matchedSvm = svmWalletList.find(
+      (svm) => normalizeName(svm.adapter.name) === evmName,
     );
-    const matchedUtxo = utxoConnectorList?.find(
-      (utxo) => utxo.name === evm.name,
+    const matchedUtxo = utxoConnectorList.find(
+      (utxo) => normalizeName(utxo.name) === evmName,
     );
-    return {
+
+    updateOrCreateWallet(addedWallets, evmName, {
       evm,
       svm: matchedSvm,
       utxo: matchedUtxo,
-    };
+    });
   });
 
-  // Add SVM wallets that didn't find a match in EVM wallets
-  svmWalletList?.forEach((svm) => {
-    if (!combined.some((c) => c.svm?.adapter.name === svm.adapter.name)) {
-      combined.push({ svm });
-    }
+  svmWalletList.forEach((svm) => {
+    const svmName = normalizeName(svm.adapter.name);
+    updateOrCreateWallet(addedWallets, svmName, { svm });
   });
 
-  // Add UTXO wallets that didn't find a match in EVM wallets
-  utxoConnectorList?.forEach((utxo) => {
-    if (!combined.some((c) => c.utxo?.name === utxo.name)) {
-      combined.push({ utxo });
-    }
+  utxoConnectorList.forEach((utxo) => {
+    const utxoName = normalizeName(utxo.name);
+    updateOrCreateWallet(addedWallets, utxoName, { utxo });
   });
 
-  return combined;
+  return Array.from(addedWallets.values());
 };
 
 export const useCombinedWallets = () => {
