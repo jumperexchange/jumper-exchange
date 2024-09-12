@@ -12,7 +12,7 @@
     "@lifi/explorer": "^0.0.1-alpha.14",
     "@lifi/sdk": "^3.2.0",
     "@lifi/wallet-management": "^3.1.3",
-    "@lifi/widget": "3.5.1-beta.0",
+    "@lifi/widget": "3.5.1-beta.2",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@mui/material-nextjs": "^5.16.6",
