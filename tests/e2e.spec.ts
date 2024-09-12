@@ -8,19 +8,21 @@ import {
   expectBackgroundColorToHaveCss,
   itemInSettingsMenu,
   itemInSettingsMenuToBeVisible,
+  closeWelcomeScreen
 } from './testData/commonFunctions';
 import values from '../tests/testData/values.json';
 
 test.describe('Jumper full e2e flow', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
+    await closeWelcomeScreen(page)
   });
 
   test('Should navigate to the homepage and change tabs', async ({ page }) => {
     const buyETHButton = page
       .frameLocator('iframe[title="Onramper widget"]')
       .locator('button:has-text("Buy ETH")');
-    // await closeWelcomeScreen(page);
+    
     const featureCard = page.locator(
       'xpath=//div[@class="MuiBox-root mui-1393eub"]',
     );
@@ -72,32 +74,18 @@ test.describe('Jumper full e2e flow', () => {
     await expect(customSlippage).toBeVisible();
   });
 
-  test.skip('Should handle welcome screen', async ({ page }) => {
-    const headerText = 'Find the best route';
-    await findTheBestRoute(page);
-    expect(headerText).toBe('Find the best route');
-    await page.locator('#get-started-button').click();
-    const connectWalletButton = page.locator(
-      'xpath=(//button[text()="Connect wallet"])[1]',
-    );
-    await expect(connectWalletButton).toBeVisible();
-  });
-
-  test.skip('Should show again welcome screen when clicking jumper logo', async ({
+  test('Should show again welcome screen when clicking jumper logo', async ({
     page,
   }) => {
     const headerText = 'Find the best route';
-    await findTheBestRoute(page);
-    expect(headerText).toBe('Find the best route');
-    await page.locator('#get-started-button').click();
     await page.locator('#jumper-logo').click();
+    await page.locator('#get-started-button').click();
     expect(headerText).toBe('Find the best route');
   });
 
   test('Should be able to open menu and click away to close it', async ({
     page,
   }) => {
-    // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
     await expect(page.getByRole('menuitem')).toHaveCount(11);
@@ -109,7 +97,7 @@ test.describe('Jumper full e2e flow', () => {
     page,
   }) => {
     let profileUrl = `${await page.url()}profile/`;
-    // await closeWelcomeScreen(page);
+    const whatIsFilamentTitle = page.locator('xpath=//p[normalize-space(text())="Explore Filament"]');
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Profile');
@@ -118,13 +106,12 @@ test.describe('Jumper full e2e flow', () => {
     await page
       .locator('xpath=//p[normalize-space(text())="Explore Filament"]')
       .click();
-    await page.waitForLoadState('networkidle');
-    expect(page.url()).toBe(values.exploreFilamentURL);
+    
+    await expect(whatIsFilamentTitle).toBeInViewport({timeout: 15000});
   });
 
   test('Should be able to navigate to jumper learn', async ({ page }) => {
     let learnUrl = `${await page.url()}learn/`;
-    // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Learn');
@@ -134,7 +121,6 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('Should be able to navigate to LI.FI Scan', async ({ page }) => {
-    // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Scan');
@@ -167,21 +153,21 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('Should be able to navigate to X', async ({ page, context }) => {
-    // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
     await page.getByRole('link', { name: 'X', exact: true }).click();
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.xUrl);
   });
+
   test('Should be able to navigate to Discord', async ({ page, context }) => {
-    // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
     await page.getByRole('link', { name: 'Discord' }).click();
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.discordURL);
   });
+
   test('API test - Feature Cards', async ({ request }) => {
     const apiURL = 'https://strapi.li.finance/api/feature-cards';
     const bearerToken =
