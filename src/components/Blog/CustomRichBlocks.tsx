@@ -243,7 +243,7 @@ export const CustomRichBlocks = ({
                   );
                   return nl2brText.map((line, lineIndex: number) => {
                     if (isValidElement(line) && line.type === 'br') {
-                      // adds <br> from nl2br
+                      // adds <br>
                       return line;
                     }
                     return (
@@ -260,7 +260,7 @@ export const CustomRichBlocks = ({
                   });
                 }
               } else {
-                return <></>;
+                return null;
               }
             })}
           </BlogParagraphContainer>

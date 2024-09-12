@@ -1,8 +1,9 @@
+import type { ReactElement } from 'react';
 import { createElement, Fragment } from 'react';
 
-const newlineToBr = (str: any) => {
+const newlineToBr = (str: unknown): (string | ReactElement)[] => {
   if (typeof str !== 'string') {
-    return str;
+    return [String(str)];
   }
 
   return str.split(/(\r\n|\r|\n)/g).map((line, index) => {
