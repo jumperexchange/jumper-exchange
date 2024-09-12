@@ -1,10 +1,11 @@
-import React from 'react';
-import { FeatureCards } from '@/components/FeatureCards';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
-import { cookies } from 'next/headers';
+import { FeatureCards } from '@/components/FeatureCards';
 import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
-import { Layout } from 'src/Layout';
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
+import { cookies } from 'next/headers';
+import React from 'react';
+import { Layout } from 'src/Layout';
+import { FingerprintProvider } from 'src/providers/FingerprintProvider';
 
 export default async function MainLayout({
   children,
@@ -31,13 +32,15 @@ export default async function MainLayout({
       enableSystem
       enableColorScheme
     >
-      <ThemeProviderV2
-        activeTheme={cookiesHandler.get('theme')?.value || defaultTheme}
-        themes={partnerThemes.data}
-      >
-        <Layout>{children}</Layout>
-        <FeatureCards />
-      </ThemeProviderV2>
+      <FingerprintProvider>
+        <ThemeProviderV2
+          activeTheme={cookiesHandler.get('theme')?.value || defaultTheme}
+          themes={partnerThemes.data}
+        >
+          <Layout>{children}</Layout>
+          <FeatureCards />
+        </ThemeProviderV2>
+      </FingerprintProvider>
     </NextThemeProvider>
   );
 }

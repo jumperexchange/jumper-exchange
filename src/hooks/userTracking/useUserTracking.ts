@@ -16,7 +16,7 @@ import { EventTrackingTool } from '@/types/userTracking';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useCallback, useEffect } from 'react';
-import { useFingerprint } from '../useFingerprint';
+import { useFingerprint } from '../../providers/FingerprintProvider';
 
 const googleEvent = ({
   action,
@@ -121,7 +121,7 @@ export function useUserTracking() {
             data: data || {},
             isConnected: account?.isConnected || false,
             walletAddress: account?.address || 'not_connected',
-            browserFingerprint: fp || 'unknown',
+            browserFingerprint: fp.fp || 'unknown',
             isMobile: !isDesktop,
             sessionId: sessionId || 'unknown',
             url: window?.location?.href || process.env.NEXT_PUBLIC_SITE_URL,
@@ -199,7 +199,7 @@ export function useUserTracking() {
           errorMessage: data[TrackingEventParameter.ErrorMessage],
           action: data[TrackingEventParameter.Action] || '',
           url: window?.location?.href || process.env.NEXT_PUBLIC_SITE_URL,
-          browserFingerprint: fp || 'unknown',
+          browserFingerprint: fp.fp || 'unknown',
         };
         await jumperTrackTransaction(transactionData);
       }
