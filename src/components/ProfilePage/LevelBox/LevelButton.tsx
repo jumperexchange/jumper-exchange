@@ -10,7 +10,7 @@ interface LevelButtonProps {
 export const LevelButton = ({ level, points }: LevelButtonProps) => {
   return (
     <Button
-      aria-label="Page Navigation"
+      aria-label="XP Level"
       variant="secondary"
       size="medium"
       styles={{

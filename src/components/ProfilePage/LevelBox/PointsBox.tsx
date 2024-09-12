@@ -18,9 +18,7 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
       <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>
         POINTS
         <Tooltip
-          title={
-            'Points is your score for interacting with Jumper. As you gain more points, your level goes up.'
-          }
+          title={t('profile_page.pointsInfo')}
           placement="top"
           enterTouchDelay={0}
           arrow

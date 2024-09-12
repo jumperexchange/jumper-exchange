@@ -16,9 +16,7 @@ export const LevelBox = ({ level }: LevelBoxProps) => {
       <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>
         LEVEL
         <Tooltip
-          title={
-            'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.'
-          }
+          title={t('profile_page.levelInfo')}
           placement="top"
           enterTouchDelay={0}
           arrow

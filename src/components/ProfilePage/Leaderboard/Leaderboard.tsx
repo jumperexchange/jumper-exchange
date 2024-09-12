@@ -1,4 +1,5 @@
 import { alpha, Box, Stack, Tooltip, useTheme } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import {
   NoSelectTypography,
   NoSelectTypographyTitle,
@@ -38,6 +39,7 @@ interface LeaderboardMeta {
 
 export const Leaderboard = ({ address }: { address?: string }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [leaderboardListLength, setLeaderboardListLength] =
@@ -94,7 +96,7 @@ export const Leaderboard = ({ address }: { address?: string }) => {
       <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>
         RANK
         <Tooltip
-          title={'Leaderboard is updated on a daily basis'}
+          title={t('profile_page.rank')}
           placement="top"
           enterTouchDelay={0}
           arrow
