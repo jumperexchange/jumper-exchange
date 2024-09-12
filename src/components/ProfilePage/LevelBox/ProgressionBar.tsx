@@ -8,6 +8,7 @@ import {
   ProgressionChartScore,
 } from './ProgressionBar.style';
 import { Button } from '../../../components/Button';
+import { LevelButton } from './LevelButton';
 
 interface ProgressionBarProps {
   points?: number;
@@ -43,52 +44,11 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
               marginTop: '24px',
             }}
           >
-            <Button
-              aria-label="Page Navigation"
-              variant="secondary"
-              size="medium"
-              styles={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                pointerEvents: 'none',
-                paddingLeft: '12px',
-                height: '32px',
-              }}
-            >
-              <NoSelectTypography
-                fontSize="12px"
-                lineHeight="16px"
-                fontWeight={600}
-                marginRight="8px"
-              >
-                LEVEL {levelData.level} • {levelData.minPoints}
-              </NoSelectTypography>
-              <XPIcon size={16} />
-            </Button>
-            <Button
-              aria-label="Page Navigation"
-              variant="secondary"
-              size="medium"
-              styles={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                pointerEvents: 'none',
-                paddingLeft: '12px',
-                height: '32px',
-              }}
-            >
-              <NoSelectTypography
-                fontSize="12px"
-                lineHeight="16px"
-                fontWeight={600}
-                marginRight="8px"
-              >
-                LEVEL {levelData.level + 1} • {levelData.maxPoints}
-              </NoSelectTypography>
-              <XPIcon size={16} />
-            </Button>
+            <LevelButton level={levelData.level} points={levelData.minPoints} />
+            <LevelButton
+              level={levelData.level + 1}
+              points={levelData.maxPoints}
+            />
           </Box>
         </>
       ) : null}
