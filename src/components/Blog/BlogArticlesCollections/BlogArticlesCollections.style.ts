@@ -1,7 +1,7 @@
 import type { Breakpoint, GridProps } from '@mui/material';
-import { Box, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { urbanist } from 'src/fonts/fonts';
 
 export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
@@ -83,42 +83,4 @@ export const BlogArticlesCollectionsTitle = styled(Typography)(({ theme }) => ({
   fontFamily: urbanist.style.fontFamily,
   textAlign: 'center',
   color: theme.palette.text.primary,
-}));
-
-export const CategoryTabPanelContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  color: theme.palette.text.primary,
-  textDecoration: 'unset',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  gap: theme.spacing(1.5),
-  alignItems: 'center',
-  backgroundColor: theme.palette.bgSecondary.main,
-  boxShadow: theme.palette.shadow.main,
-  borderRadius: '32px',
-  cursor: 'pointer',
-  padding: theme.spacing(6),
-  transition: 'background-color 250ms',
-  margin: theme.spacing(6, 2),
-  marginBottom: theme.spacing(14.5),
-  '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.white.main, 1)
-        : alpha(theme.palette.white.main, 0.2),
-  },
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    padding: theme.spacing(12, 8),
-    margin: theme.spacing(8),
-    marginBottom: theme.spacing(14.5),
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    padding: theme.spacing(12, 8),
-    marginTop: theme.spacing(12),
-  },
-  [theme.breakpoints.up('xl' as Breakpoint)]: {
-    margin: theme.spacing(12, 'auto'),
-    marginBottom: theme.spacing(14.5),
-    maxWidth: theme.breakpoints.values.xl,
-  },
 }));
