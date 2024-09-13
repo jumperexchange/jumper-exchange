@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Page() {
   // TODO: make this component client side by removing async, a hook should do the job, will permit us to pre-render the pages
   const featuredArticle = await getFeaturedArticle();
-  const carouselArticles = await getArticles(featuredArticle.data.id);
+  const carouselArticles = await getArticles(featuredArticle.data.id, 5);
   const tags = await getTags();
 
   console.log('tags', tags);
