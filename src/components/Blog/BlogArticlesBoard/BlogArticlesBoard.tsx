@@ -4,16 +4,16 @@ import { a11yProps, type TabProps } from '@/components/Tabs';
 import type { BlogArticleData, StrapiMetaPagination } from '@/types/strapi';
 import type { Breakpoint, Theme } from '@mui/material';
 import { Box, Skeleton, useMediaQuery, useTheme } from '@mui/material';
-import type { PropsWithChildren } from 'react';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { GetTagsResponse } from 'src/app/lib/getTags';
 import { TrackingCategory } from 'src/const/trackingKeys';
+import { chunkArray } from 'src/utils/chunkArray';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
+import { BlogArticlesTab } from '../BlogArticlesCollections/BlogArticlesTab';
 import { Pagination } from '../Pagination/Pagination';
 import {
-  ArticlesGrid,
   BlogArticlesBoardContainer,
   BlogArticlesBoardTitle,
 } from './BlogArticlesBoard.style';
@@ -200,7 +200,7 @@ function CategoryTabPanel({
         }}
       >
         {chunkedPages.map((page, pageIndex) => (
-          <CategoryPaginationPage pageTab={pageTab} index={pageIndex}>
+          <BlogArticlesTab pageTab={pageTab} index={pageIndex}>
             {page.map((article, articleIndex: number) => (
               <BlogArticleCard
                 styles={{
@@ -222,12 +222,12 @@ function CategoryTabPanel({
                 tags={article.attributes.tags}
               />
             ))}
-          </CategoryPaginationPage>
+          </BlogArticlesTab>
         ))}
       </Box>
       {
         /* todo: enable pagination*/
-        pagination.pageCount > 0 ? (
+        pagination.pageCount > 0 && (
           <Pagination
             isEmpty={pagination.pageCount <= 1}
             page={pageTab}
@@ -235,35 +235,9 @@ function CategoryTabPanel({
             pagination={pagination}
             categoryId={value}
           />
-        ) : null
+        )
       }
       {/* </BlogCarouselContainer> */}
     </Box>
   );
 }
-
-function chunkArray(array: any[], chunkSize: number): any[][] {
-  const result = [];
-
-  for (let i = 0; i < array.length; i += chunkSize) {
-    const chunk = array.slice(i, i + chunkSize);
-    result.push(chunk);
-  }
-
-  return result;
-}
-
-interface CategoryPaginationPageProps {
-  pageTab: number;
-  index: number;
-}
-
-const CategoryPaginationPage: React.FC<
-  PropsWithChildren<CategoryPaginationPageProps>
-> = ({ children, pageTab, index }) => {
-  return (
-    <ArticlesGrid hidden={pageTab !== index} active={pageTab === index}>
-      {children}
-    </ArticlesGrid>
-  );
-};

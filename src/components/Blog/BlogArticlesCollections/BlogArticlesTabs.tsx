@@ -10,6 +10,7 @@ import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
 import type { GetTagsResponse } from 'src/app/lib/getTags';
 import { TrackingCategory } from 'src/const/trackingKeys';
+import { chunkArray } from 'src/utils/chunkArray';
 import { BlogArticleCard } from '../BlogArticleCard';
 import {
   BlogArticlesBoardHeader,
@@ -84,7 +85,7 @@ export function BlogArticlesTabs({
       </Box>
       {
         /* todo: enable pagination*/
-        pagination.pageCount > 0 ? (
+        pagination.pageCount > 0 && (
           <Pagination
             id={tag.id}
             isEmpty={pagination.pageCount <= 1}
@@ -93,19 +94,8 @@ export function BlogArticlesTabs({
             pagination={pagination}
             categoryId={index}
           />
-        ) : null
+        )
       }
     </BlogArticlesCollectionsContainer>
   );
-}
-
-function chunkArray(array: any[], chunkSize: number): any[][] {
-  const result = [];
-
-  for (let i = 0; i < array.length; i += chunkSize) {
-    const chunk = array.slice(i, i + chunkSize);
-    result.push(chunk);
-  }
-
-  return result;
 }
