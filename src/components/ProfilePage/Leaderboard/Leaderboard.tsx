@@ -1,5 +1,9 @@
 import { Stack } from '@mui/material';
 import { LeaderboardContainer } from './Leaderboard.style';
+import type {
+  LeaderboardEntryData,
+  LeaderboardMeta,
+} from '../../../hooks/useLeaderboard';
 import {
   useLeaderboardList,
   useLeaderboardUser,
@@ -13,23 +17,6 @@ import { LeaderboardEntry } from './LeaderboardEntry';
 
 const LEADERBOARD_LENGTH = 25;
 
-interface LeaderboardEntryData {
-  position: number;
-  walletAddress: string;
-  points: number;
-}
-
-interface LeaderboardUserData {
-  position: number;
-  points: number;
-}
-
-interface LeaderboardMeta {
-  pagination: {
-    pagesLength: number;
-  };
-}
-
 export const Leaderboard = ({ address }: { address?: string }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [leaderboardListLength, setLeaderboardListLength] =
@@ -40,7 +27,7 @@ export const Leaderboard = ({ address }: { address?: string }) => {
     meta,
   }: { data: LeaderboardEntryData[]; meta: LeaderboardMeta } =
     useLeaderboardList(currentPage, LEADERBOARD_LENGTH);
-  const { data: leaderboardUserData }: { data: LeaderboardUserData } =
+  const { data: leaderboardUserData }: { data: LeaderboardEntryData } =
     useLeaderboardUser(address);
 
   // set leaderboard list length to the number of pages only once
