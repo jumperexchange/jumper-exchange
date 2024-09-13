@@ -1,16 +1,12 @@
-import type { Breakpoint, GridProps, IconButtonProps } from '@mui/material';
-import { Box, Grid, IconButton, Typography } from '@mui/material';
+import type { Breakpoint, GridProps } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 
-import { getContrastAlphaColor } from '@/utils/colors';
 import { alpha, styled } from '@mui/material/styles';
 import { urbanist } from 'src/fonts/fonts';
 
 export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
   display: 'flex',
-  color:
-    theme.palette.mode === 'light'
-      ? theme.palette.black.main
-      : theme.palette.white.main,
+  color: theme.palette.text.primary,
   textDecoration: 'unset',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -83,58 +79,6 @@ export const ArticlesGrid = styled(Grid, {
   }),
 }));
 
-export interface PaginationIndexButtonProps
-  extends Omit<IconButtonProps, 'isDarkMode' | 'isWide' | 'component'> {
-  active: boolean;
-}
-
-export const PaginationIndexButton = styled(IconButton, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<PaginationIndexButtonProps>(({ theme, active }) => ({
-  ...(active
-    ? {
-        color:
-          theme.palette.mode === 'light'
-            ? theme.palette.grey[800]
-            : theme.palette.grey[300],
-      }
-    : {
-        color:
-          theme.palette.mode === 'light'
-            ? theme.palette.grey[800]
-            : theme.palette.grey[400],
-      }),
-  width: 40,
-  height: 40,
-  ...(active && {
-    '& .MuiTouchRipple-root': {
-      backgroundColor:
-        theme.palette.mode === 'light'
-          ? theme.palette.alphaDark100.main
-          : theme.palette.alphaLight300.main,
-      zIndex: -1,
-    },
-  }),
-  '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'dark'
-        ? getContrastAlphaColor(theme, '12%')
-        : getContrastAlphaColor(theme, '4%'),
-  },
-}));
-
-export const PaginationButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.grey[500],
-  width: 40,
-  height: 40,
-  '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'dark'
-        ? getContrastAlphaColor(theme, '12%')
-        : getContrastAlphaColor(theme, '4%'),
-  },
-}));
-
 export const BlogArticlesCollectionsTitle = styled(Typography)(({ theme }) => ({
   fontFamily: urbanist.style.fontFamily,
   textAlign: 'center',
@@ -143,10 +87,7 @@ export const BlogArticlesCollectionsTitle = styled(Typography)(({ theme }) => ({
 
 export const CategoryTabPanelContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color:
-    theme.palette.mode === 'light'
-      ? theme.palette.black.main
-      : theme.palette.white.main,
+  color: theme.palette.text.primary,
   textDecoration: 'unset',
   flexDirection: 'column',
   justifyContent: 'center',
