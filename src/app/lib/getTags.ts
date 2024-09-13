@@ -31,10 +31,11 @@ export async function getTags(): Promise<GetTagsResponse> {
     const filteredData = output.data.filter((item: TagAttributes) => {
       return item.attributes.blog_articles.data.length > 0;
     });
+
     return {
       meta: output.meta,
       data: filteredData?.sort(
-        // sort by blog_articles length
+        // sort by blog_articles' publishedAt date
         (
           {
             attributes: {
@@ -46,7 +47,23 @@ export async function getTags(): Promise<GetTagsResponse> {
               blog_articles: { data: dataB },
             },
           }: { attributes: { blog_articles: { data: BlogArticleData[] } } },
-        ) => dataB.length - dataA.length,
+        ) => {
+          const latestArticleA = dataA.sort(
+            (a, b) =>
+              Date.parse(b.attributes.publishedAt!) -
+              Date.parse(a.attributes.publishedAt!),
+          )[0];
+          const latestArticleB = dataB.sort(
+            (a, b) =>
+              Date.parse(b.attributes.publishedAt!) -
+              Date.parse(a.attributes.publishedAt!),
+          )[0];
+
+          return (
+            Date.parse(latestArticleB.attributes.publishedAt!) -
+            Date.parse(latestArticleA.attributes.publishedAt!)
+          );
+        },
       ),
     };
   });
