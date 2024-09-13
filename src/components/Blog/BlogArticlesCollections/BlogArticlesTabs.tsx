@@ -39,7 +39,7 @@ export function BlogArticlesTabs({
   const chunkedPages = chunkArray(data, pagination.pageSize);
 
   return (
-    <BlogArticlesCollectionsContainer>
+    <BlogArticlesCollectionsContainer id={`${tag.id}`}>
       <Box
         sx={{
           display: 'flex',
@@ -53,7 +53,11 @@ export function BlogArticlesTabs({
           </BlogArticlesBoardTitle>
         </BlogArticlesBoardHeader>
         {chunkedPages.map((page, pageIndex) => (
-          <BlogArticlesTab pageTab={pageTab} index={pageIndex}>
+          <BlogArticlesTab
+            pageTab={pageTab}
+            index={pageIndex}
+            key={`blog-article-tab-${pageIndex}`}
+          >
             {page.map((article, articleIndex: number) => (
               <BlogArticleCard
                 styles={{
@@ -82,6 +86,7 @@ export function BlogArticlesTabs({
         /* todo: enable pagination*/
         pagination.pageCount > 0 ? (
           <Pagination
+            id={tag.id}
             isEmpty={pagination.pageCount <= 1}
             page={pageTab}
             setPage={setPageTab}

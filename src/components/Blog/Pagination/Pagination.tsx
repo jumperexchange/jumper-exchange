@@ -10,6 +10,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
+import Link from 'next/link';
 import {
   PaginationButton,
   PaginationContainer,
@@ -22,12 +23,14 @@ interface PaginationProps {
   setPage: Dispatch<SetStateAction<number>>;
   pagination: StrapiMetaPagination;
   categoryId: number | undefined;
+  id?: number;
 }
 
 export const Pagination = ({
   page,
   setPage,
   pagination,
+  id,
   categoryId,
   isEmpty,
 }: PaginationProps) => {
@@ -83,41 +86,50 @@ export const Pagination = ({
   return (
     !isEmpty && (
       <PaginationContainer>
-        <PaginationButton onClick={() => handlePrev()} disableRipple={false}>
-          <ArrowBackIcon
-            sx={{
-              color:
-                theme.palette.mode === 'light'
-                  ? lighten(theme.palette.text.primary, 0.6)
-                  : darken(theme.palette.text.primary, 0.2),
-            }}
-          />
-        </PaginationButton>
+        <Link href={`#${id}`}>
+          <PaginationButton onClick={() => handlePrev()} disableRipple={false}>
+            <ArrowBackIcon
+              sx={{
+                color:
+                  theme.palette.mode === 'light'
+                    ? lighten(theme.palette.text.primary, 0.6)
+                    : darken(theme.palette.text.primary, 0.2),
+              }}
+            />
+          </PaginationButton>
+        </Link>
 
         {Array.from({ length: pagination.pageCount }).map((_, index) => {
           const actualPage = index;
           return (
-            <PaginationIndexButton
-              key={`pagination-index-button-${index}`}
-              onClick={() => handlePage(actualPage)}
-              active={actualPage === page}
-            >
-              <Typography variant="bodySmallStrong" sx={{ lineHeight: '18px' }}>
-                {actualPage + 1}
-              </Typography>
-            </PaginationIndexButton>
+            <Link href={`#${id}`}>
+              <PaginationIndexButton
+                key={`pagination-index-button-${index}`}
+                onClick={() => handlePage(actualPage)}
+                active={actualPage === page}
+              >
+                <Typography
+                  variant="bodySmallStrong"
+                  sx={{ lineHeight: '18px' }}
+                >
+                  {actualPage + 1}
+                </Typography>
+              </PaginationIndexButton>
+            </Link>
           );
         })}
-        <PaginationButton onClick={() => handleNext()}>
-          <ArrowForwardIcon
-            sx={{
-              color:
-                theme.palette.mode === 'light'
-                  ? lighten(theme.palette.text.primary, 0.6)
-                  : darken(theme.palette.text.primary, 0.2),
-            }}
-          />
-        </PaginationButton>
+        <Link href={`#${id}`}>
+          <PaginationButton onClick={() => handleNext()}>
+            <ArrowForwardIcon
+              sx={{
+                color:
+                  theme.palette.mode === 'light'
+                    ? lighten(theme.palette.text.primary, 0.6)
+                    : darken(theme.palette.text.primary, 0.2),
+              }}
+            />
+          </PaginationButton>
+        </Link>
       </PaginationContainer>
     )
   );

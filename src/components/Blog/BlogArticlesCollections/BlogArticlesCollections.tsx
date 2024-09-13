@@ -62,6 +62,7 @@ export const BlogArticlesCollections = ({
       return (
         <BlogArticlesTabs
           index={tagIndex}
+          key={`blog-article-collection-${tagIndex}`}
           tag={tag}
           tags={tags}
           pagination={pagination}
