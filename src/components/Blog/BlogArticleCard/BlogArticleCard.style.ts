@@ -121,13 +121,13 @@ export const BlogArticleCardMetaContainer = styled(Box, {
   display: 'flex',
   alignItems: 'center',
   fontSize: '14px',
-  marginLeft: theme.spacing(1),
   color:
     theme.palette.mode === 'light'
       ? theme.palette.grey[800]
       : theme.palette.grey[300],
   '*': { textWrap: 'nowrap' },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginLeft: theme.spacing(1),
     ...(hasTags && { marginLeft: theme.spacing(2) }),
   },
 }));
