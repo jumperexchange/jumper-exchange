@@ -121,6 +121,7 @@ export const BlogArticleCardMetaContainer = styled(Box, {
   display: 'flex',
   alignItems: 'center',
   fontSize: '14px',
+  marginLeft: theme.spacing(1),
   color:
     theme.palette.mode === 'light'
       ? theme.palette.grey[800]
