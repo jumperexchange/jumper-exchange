@@ -15,9 +15,9 @@ import {
   BlogArticlesBoardHeader,
   BlogArticlesBoardTitle,
 } from '../BlogArticlesBoard/BlogArticlesBoard.style';
+import { Pagination } from '../Pagination/Pagination';
 import { BlogArticlesCollectionsContainer } from './BlogArticlesCollections.style';
 import { BlogArticlesTab } from './BlogArticlesTab';
-import { BlogArticlesCollectionsPagination as Pagination } from './Pagination';
 
 interface BlogArticlesTabsProps {
   index: number;

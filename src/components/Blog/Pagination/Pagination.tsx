@@ -16,7 +16,7 @@ import {
   PaginationIndexButton,
 } from './Pagination.style';
 
-interface BlogArticlesCollectionsPaginationProps {
+interface PaginationProps {
   isEmpty: boolean;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
@@ -24,13 +24,13 @@ interface BlogArticlesCollectionsPaginationProps {
   categoryId: number | undefined;
 }
 
-export const BlogArticlesCollectionsPagination = ({
+export const Pagination = ({
   page,
   setPage,
   pagination,
   categoryId,
   isEmpty,
-}: BlogArticlesCollectionsPaginationProps) => {
+}: PaginationProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const handlePage = (page: number) => {

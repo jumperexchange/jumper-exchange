@@ -11,13 +11,13 @@ import type { GetTagsResponse } from 'src/app/lib/getTags';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
+import { Pagination } from '../Pagination/Pagination';
 import {
   ArticlesGrid,
   BlogArticlesBoardContainer,
   BlogArticlesBoardTitle,
 } from './BlogArticlesBoard.style';
 import { BlogArticlesBoardTabs } from './BlogArticlesBoardTabs';
-import { BlogArticlesBoardPagination as Pagination } from './Pagination';
 
 interface BlogArticlesBoardProps {
   data: BlogArticleData[];
@@ -32,7 +32,6 @@ export const BlogArticlesBoard = ({
   url,
   tags,
 }: BlogArticlesBoardProps) => {
-  const theme = useTheme();
   const { t } = useTranslation();
   const [tabId, setTabId] = useState<number | undefined>(0);
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
