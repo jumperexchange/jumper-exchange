@@ -174,16 +174,16 @@ export function WidgetEvents() {
       setSourceChainToken(sourceChainData);
     };
 
-    const onWidgetExpanded = async (expanded: boolean) => {
-      expanded &&
-        trackEvent({
-          category: TrackingCategory.WidgetEvent,
-          action: TrackingAction.OnWidgetExpanded,
-          label: `widget_expanded`,
-          enableAddressable: true,
-          data: {},
-        });
-    };
+    // const onWidgetExpanded = async (expanded: boolean) => {
+    //   expanded &&
+    //     trackEvent({
+    //       category: TrackingCategory.WidgetEvent,
+    //       action: TrackingAction.OnWidgetExpanded,
+    //       label: `widget_expanded`,
+    //       enableAddressable: true,
+    //       data: {},
+    //     });
+    // };
 
     const onDestinationChainTokenSelection = async (
       toChainData: ChainTokenSelected,
@@ -237,7 +237,7 @@ export function WidgetEvents() {
       WidgetEvent.DestinationChainTokenSelected,
       onDestinationChainTokenSelection,
     );
-    widgetEvents.on(WidgetEvent.WidgetExpanded, onWidgetExpanded);
+    // widgetEvents.on(WidgetEvent.WidgetExpanded, onWidgetExpanded);
 
     return () => {
       widgetEvents.off(
@@ -270,7 +270,7 @@ export function WidgetEvents() {
         WidgetEvent.DestinationChainTokenSelected,
         onDestinationChainTokenSelection,
       );
-      widgetEvents.off(WidgetEvent.WidgetExpanded, onWidgetExpanded);
+      // widgetEvents.off(WidgetEvent.WidgetExpanded, onWidgetExpanded);
       widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
     };
   }, [
