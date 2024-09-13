@@ -2,7 +2,7 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { StrapiMetaPagination } from '@/types/strapi';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Typography, useTheme } from '@mui/material';
+import { darken, lighten, Typography, useTheme } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
 
 import {
@@ -87,13 +87,9 @@ export const Pagination = ({
           <ArrowBackIcon
             sx={{
               color:
-                page === 1
-                  ? theme.palette.mode === 'light'
-                    ? theme.palette.grey[400]
-                    : theme.palette.grey[600]
-                  : theme.palette.mode === 'light'
-                    ? theme.palette.grey[800]
-                    : theme.palette.grey[400],
+                theme.palette.mode === 'light'
+                  ? lighten(theme.palette.text.primary, 0.6)
+                  : darken(theme.palette.text.primary, 0.2),
             }}
           />
         </PaginationButton>
@@ -116,13 +112,9 @@ export const Pagination = ({
           <ArrowForwardIcon
             sx={{
               color:
-                pagination.pageCount === page
-                  ? theme.palette.mode === 'light'
-                    ? theme.palette.grey[400]
-                    : theme.palette.grey[600]
-                  : theme.palette.mode === 'light'
-                    ? theme.palette.grey[800]
-                    : theme.palette.grey[400],
+                theme.palette.mode === 'light'
+                  ? lighten(theme.palette.text.primary, 0.6)
+                  : darken(theme.palette.text.primary, 0.2),
             }}
           />
         </PaginationButton>

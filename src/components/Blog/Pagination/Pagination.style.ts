@@ -2,7 +2,7 @@ import type { IconButtonProps } from '@mui/material';
 import { Box, IconButton } from '@mui/material';
 
 import { getContrastAlphaColor } from '@/utils/colors';
-import { styled } from '@mui/material/styles';
+import { darken, lighten, styled } from '@mui/material/styles';
 
 export const PaginationContainer = styled(Box)(({ theme }) => ({
   bottom: 0,
@@ -37,14 +37,14 @@ export const PaginationIndexButton = styled(IconButton, {
             : getContrastAlphaColor(theme, '12%'),
         color:
           theme.palette.mode === 'light'
-            ? theme.palette.grey[800]
-            : theme.palette.grey[300],
+            ? lighten(theme.palette.text.primary, 0.2)
+            : theme.palette.text.primary,
       }
     : {
         color:
           theme.palette.mode === 'light'
-            ? theme.palette.grey[800]
-            : theme.palette.grey[400],
+            ? lighten(theme.palette.text.primary, 0.4)
+            : darken(theme.palette.text.primary, 0.2),
       }),
   width: 40,
   height: 40,
