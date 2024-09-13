@@ -54,7 +54,7 @@ export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
 }));
 
 interface ArticlesGridProps extends GridProps {
-  active: boolean;
+  active?: boolean;
 }
 
 export const ArticlesGrid = styled(Grid, {

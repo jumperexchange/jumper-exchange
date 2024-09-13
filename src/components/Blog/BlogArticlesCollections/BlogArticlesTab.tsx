@@ -12,8 +12,8 @@ export const BlogArticlesTab: React.FC<
   PropsWithChildren<BlogArticlesTabProps>
 > = ({ children, pageTab, index }) => {
   return (
-    <ArticlesGrid hidden={pageTab !== index} active={pageTab === index}>
-      {children}
-    </ArticlesGrid>
+    pageTab === index && (
+      <ArticlesGrid active={pageTab === index}>{children}</ArticlesGrid>
+    )
   );
 };
