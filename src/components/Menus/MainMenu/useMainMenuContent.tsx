@@ -185,22 +185,6 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: t('navbar.navbarMenu.fest'),
-      prefixIcon: <OPLogo />,
-      showMoreIcon: false,
-      link: { url: '/superfest/' },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-jumper-fest-link',
-          action: TrackingAction.ClickJumperProfileLink,
-          data: { [TrackingEventParameter.Menu]: 'fest' },
-        });
-        closeAllMenus();
-        router.push(JUMPER_FEST_PATH);
-      },
-    },
-    {
       label: t('navbar.navbarMenu.profile'),
       prefixIcon: <AccountCircleIcon />,
       showMoreIcon: false,

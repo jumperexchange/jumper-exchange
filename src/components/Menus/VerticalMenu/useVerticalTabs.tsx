@@ -82,23 +82,23 @@ export const useVerticalTabs = ({
         />
       ),
     },
-    {
-      onClick: handleClickTab('buy/'),
-      value: 2,
-      icon: (
-        <CreditCardIcon
-          sx={{
-            marginRight: 0.75,
-            marginBottom: `${theme.spacing(0)} !important`,
-            color:
-              theme.palette.mode === 'dark'
-                ? theme.palette.white.main
-                : theme.palette.black.main,
-          }}
-        />
-      ),
-      disabled: process.env.NEXT_PUBLIC_ONRAMPER_ENABLED !== 'true',
-    },
+    // {
+    //   onClick: handleClickTab('buy/'),
+    //   value: 2,
+    //   icon: (
+    //     <CreditCardIcon
+    //       sx={{
+    //         marginRight: 0.75,
+    //         marginBottom: `${theme.spacing(0)} !important`,
+    //         color:
+    //           theme.palette.mode === 'dark'
+    //             ? theme.palette.white.main
+    //             : theme.palette.black.main,
+    //       }}
+    //     />
+    //   ),
+    //   disabled: process.env.NEXT_PUBLIC_ONRAMPER_ENABLED !== 'true',
+    // },
   ];
 
   return output;
