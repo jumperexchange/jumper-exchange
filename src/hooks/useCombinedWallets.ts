@@ -140,27 +140,27 @@ export const useCombinedWallets = () => {
       svmInstalled,
     );
 
-    const evmNotDetected = evmConnectors.filter(
-      (connector) => !isWalletInstalled(connector.id),
-    );
+    // const evmNotDetected = evmConnectors.filter(
+    //   (connector) => !isWalletInstalled(connector.id),
+    // );
 
-    const svmNotDetected = solanaWallets?.filter(
-      (connector) =>
-        connector.adapter.readyState !== WalletReadyState.Installed,
-    );
+    // const svmNotDetected = solanaWallets?.filter(
+    //   (connector) =>
+    //     connector.adapter.readyState !== WalletReadyState.Installed,
+    // );
 
-    const utxoNotDetected = bigmiConnectors.filter(
-      (connector) => !isWalletInstalled(connector.id!),
-    );
+    // const utxoNotDetected = bigmiConnectors.filter(
+    //   (connector) => !isWalletInstalled(connector.id!),
+    // );
 
-    const notDetectedWallets = combineWalletLists(
-      evmNotDetected,
-      utxoNotDetected,
-      svmNotDetected,
-    );
+    // const notDetectedWallets = combineWalletLists(
+    //   evmNotDetected,
+    //   utxoNotDetected,
+    //   svmNotDetected,
+    // );
 
     setCombinedInstalledWallets(installedWallets);
-    setCombinedNotDetectedWallets(notDetectedWallets);
+    // setCombinedNotDetectedWallets(notDetectedWallets);
   }, [
     bigmiAccount.connector?.id,
     bigmiConnectors,
