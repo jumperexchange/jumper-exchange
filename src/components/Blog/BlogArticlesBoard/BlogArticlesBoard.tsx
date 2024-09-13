@@ -40,15 +40,12 @@ export const BlogArticlesBoard = ({
     t('blog.allCategories'),
   );
 
-  console.log('####tags', tags);
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const handleTagsClick = useCallback(
     (id: number, label?: string) => () => {
       if (!isDesktop && !openDropdown) {
-        console.log('CHECK HANDLER OPEN', id, label);
         setOpenDropdown(true);
       } else {
-        console.log('CHECK HANDLER CLOSE', id, label);
         setOpenDropdown(false);
       }
       setTabId(id);
@@ -92,7 +89,6 @@ export const BlogArticlesBoard = ({
   }, [handleTagsClick, tags?.data]);
 
   const handleClick = (event: { target: HTMLElement }) => {
-    console.log('event', event);
     const classList = event.target.classList;
 
     if (openDropdown) {
@@ -179,7 +175,6 @@ function CategoryTabPanel({
   const theme = useTheme();
   const [pageTab, setPageTab] = useState(pagination.page);
   const chunkedPages = chunkArray(data, pagination.pageSize);
-  console.log('chunkedPages', chunkedPages);
   return (
     <Box
       role="tabpanel"

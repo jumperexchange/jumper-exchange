@@ -115,8 +115,6 @@ export const BlogArticlesCollectionsTabs = ({
     },
   };
 
-  console.log('OPENDROOPDOWN:::::', openDropdown);
-
   return filteredTags ? (
     <Tabs
       data={filteredTags}

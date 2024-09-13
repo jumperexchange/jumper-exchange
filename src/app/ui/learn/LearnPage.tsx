@@ -19,7 +19,6 @@ const LearnPage = ({
   tags,
   url,
 }: LearnPageProps) => {
-  console.log('TAGS', tags);
   return (
     <div className="learn-page">
       <FeaturedArticle

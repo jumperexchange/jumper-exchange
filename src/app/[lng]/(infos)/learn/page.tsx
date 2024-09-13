@@ -22,7 +22,6 @@ export default async function Page() {
   const carouselArticles = await getArticles(featuredArticle.data.id, 5);
   const tags = await getTags();
 
-  console.log('tags', tags);
   return (
     <LearnPage
       tags={tags}

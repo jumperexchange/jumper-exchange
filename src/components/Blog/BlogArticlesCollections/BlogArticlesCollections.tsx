@@ -115,7 +115,7 @@ function CategoryTabPanel({
   const theme = useTheme();
   const [pageTab, setPageTab] = useState(pagination.page);
   const chunkedPages = chunkArray(data, pagination.pageSize);
-  console.log('chunkedPages', chunkedPages);
+
   return (
     <BlogArticlesCollectionsContainer>
       <Box
