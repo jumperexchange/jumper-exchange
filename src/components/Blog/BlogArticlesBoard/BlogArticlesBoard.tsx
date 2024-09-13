@@ -73,7 +73,7 @@ export const BlogArticlesBoard = ({ data, tags }: BlogArticlesBoardProps) => {
       return {
         label: el.attributes.Title || '',
         value: el.id,
-        onClick: handleTagsClick(el.id, el.attributes.Title),
+        onClick: handleTagsClick(index, el.attributes.Title),
         // disabled: false,
       };
     });
