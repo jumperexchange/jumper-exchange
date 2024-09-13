@@ -8,7 +8,6 @@ import { BlogArticlesTabs } from './BlogArticlesTabs';
 interface BlogArticlesCollectionsProps {
   data: BlogArticleData[];
   tags: GetTagsResponse;
-  url: string;
 }
 
 const pageSize = 6;
@@ -40,7 +39,6 @@ const sortTags = (tags: GetTagsResponse) => {
 
 export const BlogArticlesCollections = ({
   data,
-  url,
   tags,
 }: BlogArticlesCollectionsProps) => {
   // Apply sorting function

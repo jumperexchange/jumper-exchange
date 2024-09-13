@@ -3,7 +3,7 @@ import type { StrapiMetaPagination } from '@/types/strapi';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { darken, lighten, Typography, useTheme } from '@mui/material';
-import type { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 
 import {
   TrackingAction,
@@ -23,7 +23,7 @@ interface PaginationProps {
   setPage: Dispatch<SetStateAction<number>>;
   pagination: StrapiMetaPagination;
   categoryId: number | undefined;
-  id?: number;
+  id?: number | string;
 }
 
 export const Pagination = ({
@@ -86,7 +86,7 @@ export const Pagination = ({
   return (
     !isEmpty && (
       <PaginationContainer>
-        <Link href={`#${id}`}>
+        <SmoothScrollWrapper id={id}>
           <PaginationButton onClick={() => handlePrev()} disableRipple={false}>
             <ArrowBackIcon
               sx={{
@@ -97,12 +97,12 @@ export const Pagination = ({
               }}
             />
           </PaginationButton>
-        </Link>
+        </SmoothScrollWrapper>
 
         {Array.from({ length: pagination.pageCount }).map((_, index) => {
           const actualPage = index;
           return (
-            <Link href={`#${id}`}>
+            <SmoothScrollWrapper id={id}>
               <PaginationIndexButton
                 key={`pagination-index-button-${index}`}
                 onClick={() => handlePage(actualPage)}
@@ -115,10 +115,10 @@ export const Pagination = ({
                   {actualPage + 1}
                 </Typography>
               </PaginationIndexButton>
-            </Link>
+            </SmoothScrollWrapper>
           );
         })}
-        <Link href={`#${id}`}>
+        <SmoothScrollWrapper id={id}>
           <PaginationButton onClick={() => handleNext()}>
             <ArrowForwardIcon
               sx={{
@@ -129,8 +129,25 @@ export const Pagination = ({
               }}
             />
           </PaginationButton>
-        </Link>
+        </SmoothScrollWrapper>
       </PaginationContainer>
     )
   );
 };
+
+// export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
+
+interface SmoothScrollWrapperProps {
+  id?: number | string;
+}
+
+const SmoothScrollWrapper: React.FC<
+  PropsWithChildren<SmoothScrollWrapperProps>
+> = ({ children, id }) => {
+  if (!id) {
+    return children;
+  }
+  return <Link href={`#${id}`}>{children}</Link>;
+};
+
+export default Pagination;

@@ -22,20 +22,15 @@ import { BlogArticlesBoardTabs } from './BlogArticlesBoardTabs';
 interface BlogArticlesBoardProps {
   data: BlogArticleData[];
   tags: GetTagsResponse;
-  url: string;
 }
 
 const ariaLabel = 'blog-articles-board-tab-handler';
 const pageSize = 6;
-export const BlogArticlesBoard = ({
-  data,
-  url,
-  tags,
-}: BlogArticlesBoardProps) => {
+export const BlogArticlesBoard = ({ data, tags }: BlogArticlesBoardProps) => {
   const { t } = useTranslation();
   const [tabId, setTabId] = useState<number | undefined>(0);
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
-  const [catLabel, setCatLabel] = useState<string | undefined>(
+  const [_, setCatLabel] = useState<string | undefined>(
     t('blog.allCategories'),
   );
 
@@ -78,7 +73,7 @@ export const BlogArticlesBoard = ({
       return {
         label: el.attributes.Title || '',
         value: el.id,
-        onClick: handleTagsClick(index, el.attributes.Title),
+        onClick: handleTagsClick(el.id, el.attributes.Title),
         // disabled: false,
       };
     });

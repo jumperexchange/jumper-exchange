@@ -40,7 +40,7 @@ export function BlogArticlesTabs({
   const chunkedPages = chunkArray(data, pagination.pageSize);
 
   return (
-    <BlogArticlesCollectionsContainer id={`${tag.id}`}>
+    <BlogArticlesCollectionsContainer id={tag.attributes.Title}>
       <Box
         sx={{
           display: 'flex',
@@ -87,7 +87,7 @@ export function BlogArticlesTabs({
         /* todo: enable pagination*/
         pagination.pageCount > 0 && (
           <Pagination
-            id={tag.id}
+            id={tag.attributes.Title}
             isEmpty={pagination.pageCount <= 1}
             page={pageTab}
             setPage={setPageTab}

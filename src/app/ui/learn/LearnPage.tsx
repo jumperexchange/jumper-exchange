@@ -4,6 +4,7 @@ import { FeaturedArticle } from '@/components/Blog/FeaturedArticle/FeaturedArtic
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import type { GetTagsResponse } from 'src/app/lib/getTags';
+import { BlogArticlesBoard } from 'src/components/Blog/BlogArticlesBoard/BlogArticlesBoard';
 import { BlogArticlesCollections } from 'src/components/Blog/BlogArticlesCollections/BlogArticlesCollections';
 
 interface LearnPageProps {
@@ -31,11 +32,8 @@ const LearnPage = ({
       <BlogCarousel url={url} data={carouselArticles?.data} />
       <JoinDiscordBanner />
       {/* <BlogArticlesBoard tags={tags} data={carouselArticles?.data} url={''} /> */}
-      <BlogArticlesCollections
-        tags={tags}
-        data={carouselArticles?.data}
-        url={''}
-      />
+      <BlogArticlesCollections tags={tags} data={carouselArticles?.data} />
+      <BlogArticlesBoard tags={tags} data={carouselArticles?.data} />
     </div>
   );
 };
