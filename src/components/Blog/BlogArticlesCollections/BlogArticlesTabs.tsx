@@ -20,17 +20,14 @@ import { BlogArticlesTab } from './BlogArticlesTab';
 import { BlogArticlesCollectionsPagination as Pagination } from './Pagination';
 
 interface BlogArticlesTabsProps {
-  children?: React.ReactNode;
   index: number;
   tag: TagAttributes;
   tags: GetTagsResponse;
   pagination: StrapiMetaPagination;
-  ariaLabel: string;
   data: BlogArticleData[];
 }
 
 export function BlogArticlesTabs({
-  children,
   index,
   tag,
   tags,

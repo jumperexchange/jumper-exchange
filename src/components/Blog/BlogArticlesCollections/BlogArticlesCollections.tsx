@@ -11,7 +11,6 @@ interface BlogArticlesCollectionsProps {
   url: string;
 }
 
-const ariaLabel = 'blog-articles-board-tabs';
 const pageSize = 6;
 // Predefined order array
 const predefinedOrder = ['Announcement', 'Partner', 'Bridge'];
@@ -62,7 +61,6 @@ export const BlogArticlesCollections = ({
       };
       return (
         <BlogArticlesTabs
-          ariaLabel={ariaLabel}
           index={tagIndex}
           tag={tag}
           tags={tags}
