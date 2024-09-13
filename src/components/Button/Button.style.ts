@@ -92,7 +92,7 @@ export const SuperfestButton = styled(ButtonBase)<MuiButtonProps>(
   }),
 );
 
-export const LevelButton = styled(ButtonBase)<MuiButtonProps>(() => ({
+export const LevelButton = styled(ButtonSecondary)<MuiButtonProps>(() => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

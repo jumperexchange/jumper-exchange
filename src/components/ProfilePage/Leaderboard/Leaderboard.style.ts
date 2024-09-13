@@ -9,7 +9,7 @@ export const LeaderboardContainer = styled(Box)(({ theme }) => ({
   boxShadow: theme.palette.shadow.main,
 }));
 
-export const LeaderboardEntry = styled(Box, {
+export const StyledLeaderboardEntry = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isUserPosition',
 })<{ isUserPosition: boolean }>(({ theme, isUserPosition }) => ({
   display: 'flex',

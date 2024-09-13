@@ -1,22 +1,15 @@
-import { alpha, Box, Stack, Tooltip, useTheme } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import {
-  NoSelectTypography,
-  NoSelectTypographyTitle,
-} from '../ProfilePage.style';
-import { LeaderboardContainer, LeaderboardEntry } from './Leaderboard.style';
-import { XPIcon } from '../../../components/illustrations/XPIcon';
-import InfoIcon from '@mui/icons-material/Info';
+import { Stack } from '@mui/material';
+import { LeaderboardContainer } from './Leaderboard.style';
 import {
   useLeaderboardList,
   useLeaderboardUser,
 } from '../../../hooks/useLeaderboard';
-import { Button } from '../../../components/Button';
-import ChevronRight from '@mui/icons-material/ChevronRight';
-import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import { useEffect, useState } from 'react';
 import { LeaderboardSkeleton } from './LeaderboardSkeleton';
-import { FirstPage, LastPage } from '@mui/icons-material';
+import { IconHeader } from '../Common/IconHeader';
+import { Pagination } from '../Common/Pagination';
+import { NoSelectTypographyTitlePosition } from '../ProfilePage.style';
+import { LeaderboardEntry } from './LeaderboardEntry';
 
 const LEADERBOARD_LENGTH = 25;
 
@@ -38,9 +31,6 @@ interface LeaderboardMeta {
 }
 
 export const Leaderboard = ({ address }: { address?: string }) => {
-  const theme = useTheme();
-  const { t } = useTranslation();
-
   const [currentPage, setCurrentPage] = useState(1);
   const [leaderboardListLength, setLeaderboardListLength] =
     useState(LEADERBOARD_LENGTH);
@@ -92,48 +82,14 @@ export const Leaderboard = ({ address }: { address?: string }) => {
 
   return (
     <LeaderboardContainer>
-      <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>
-        RANK
-        <Tooltip
-          title={t('profile_page.rank')}
-          placement="top"
-          enterTouchDelay={0}
-          arrow
-        >
-          <InfoIcon
-            sx={{
-              width: 16,
-              height: 16,
-              top: '3px',
-              left: '8px',
-              position: 'relative',
-              opacity: '0.5',
-            }}
-          />
-        </Tooltip>
-      </NoSelectTypography>
-      <NoSelectTypographyTitle
+      <IconHeader tooltipKey="profile_page.rank" title="RANK" />
+      <NoSelectTypographyTitlePosition
+        hasPosition={!!leaderboardUserData?.position}
         onClick={goToUserPosition}
         fontWeight={700}
-        sx={{
-          fontSize: { xs: 28, sm: 48 },
-          borderRadius: '12px',
-          textIndent: '12px',
-          ...(leaderboardUserData?.position
-            ? {
-                cursor: 'pointer',
-                transition: 'background-color 0.3s ease-in',
-                '&:hover': {
-                  backgroundColor: alpha(theme.palette.black.main, 0.04),
-                },
-              }
-            : {
-                pointerEvents: 'none',
-              }),
-        }}
       >
         {leaderboardUserData?.position ?? '-'}
-      </NoSelectTypographyTitle>
+      </NoSelectTypographyTitlePosition>
       <Stack direction={'column'} sx={{ margin: '20px 0' }}>
         {!leaderboardData?.length ? (
           <LeaderboardSkeleton length={LEADERBOARD_LENGTH} />
@@ -144,81 +100,22 @@ export const Leaderboard = ({ address }: { address?: string }) => {
               isUserPosition={
                 +entry.position === +leaderboardUserData?.position
               }
-            >
-              <NoSelectTypography
-                fontSize="18px"
-                lineHeight="18px"
-                fontWeight={500}
-                sx={{ opacity: '0.5', width: '25px' }}
-              >
-                {entry.position}.
-              </NoSelectTypography>
-              <NoSelectTypography
-                fontSize="18px"
-                lineHeight="18px"
-                fontWeight={600}
-                sx={{ width: '110px' }}
-              >
-                {entry.walletAddress}
-              </NoSelectTypography>
-              <Box display={'flex'} alignItems={'center'}>
-                <NoSelectTypography
-                  fontSize="18px"
-                  lineHeight="18px"
-                  fontWeight={600}
-                  marginRight={'5px'}
-                >
-                  {entry.points}
-                </NoSelectTypography>
-                <XPIcon size={24} />
-              </Box>
-            </LeaderboardEntry>
+              walletAddress={entry.walletAddress}
+              position={entry.position}
+              points={entry.points}
+            />
           ))
         )}
       </Stack>
       {leaderboardListLength > 1 && (
-        <Box>
-          <Button
-            aria-label="Page Navigation"
-            variant="secondary"
-            size="medium"
-            styles={{
-              alignItems: 'center',
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-              pointerEvents: 'none',
-            }}
-          >
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <FirstPage
-                onClick={firstPage}
-                sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
-              />
-              <ChevronLeft
-                onClick={previousPage}
-                sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
-              />
-            </Box>
-            <NoSelectTypography
-              fontSize="16px"
-              lineHeight="18px"
-              fontWeight={600}
-            >
-              {currentPage}/{leaderboardListLength}
-            </NoSelectTypography>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <ChevronRight
-                onClick={nextPage}
-                sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
-              />
-              <LastPage
-                onClick={lastPage}
-                sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
-              />
-            </Box>
-          </Button>
-        </Box>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={leaderboardListLength}
+          onFirstPage={firstPage}
+          onPreviousPage={previousPage}
+          onNextPage={nextPage}
+          onLastPage={lastPage}
+        />
       )}
     </LeaderboardContainer>
   );
