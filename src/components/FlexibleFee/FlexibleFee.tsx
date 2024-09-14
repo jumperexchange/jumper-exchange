@@ -48,8 +48,8 @@ interface FlexibleFeeProps {
 
 const MIN_AMOUNT = 0.0005;
 
+// TODO:
 // implement getTokenBalance from Widget as a hook
-// implement click to send to the decided token
 
 export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   route,
