@@ -30,14 +30,25 @@ import {
 } from './FlexibleFee.style';
 import FlexibleFeeButton from './FlexibleFeeButton';
 import { SAFE_CONTRACTS } from 'src/const/safeContracts';
-import { useBalance } from 'wagmi';
+import {
+  useAccount,
+  // useWriteContract,
+  useWaitForTransactionReceipt,
+  useSwitchChain,
+  useBalance,
+  useSendTransaction,
+} from 'wagmi';
+import { getToken, getTokenBalance } from '@lifi/sdk';
 import { ExtendedChain } from '@lifi/widget';
+import { parseEther } from 'viem';
 
 interface FlexibleFeeProps {
   route: RouteExtended;
 }
 
-// implement % of the transaction amount
+const MIN_AMOUNT = 0.0005;
+
+// implement getTokenBalance from Widget as a hook
 // implement click to send to the decided token
 
 export const FlexibleFee: FC<{ route: RouteExtended }> = ({
@@ -48,6 +59,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
     undefined,
   );
   const [balance, setBalance] = useState<number>(0);
+  const [balanceUSD, setBalanceUSD] = useState<number>(0);
   const [amount, setAmount] = useState<string>('0');
   const [rate, setRate] = useState<string>('0.3');
   const { accounts } = useAccounts();
@@ -56,6 +68,16 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   const ref = useRef<HTMLInputElement>(null);
   const { chains } = useChains();
   const { t } = useTranslation();
+  const { switchChainAsync } = useSwitchChain();
+  const {
+    data: transactionHash,
+    isPending,
+    sendTransaction,
+  } = useSendTransaction();
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash: transactionHash,
+    });
 
   const { data: sourceBalance, isLoading: isSourceBalanceLoading } = useBalance(
     {
@@ -73,21 +95,23 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   useEffect(() => {
     console.log('destinationBalance', destinationBalance);
     console.log('sourceBalance', sourceBalance);
-    if (sourceBalance && sourceBalance.value >= 0.0005) {
+    if (sourceBalance && sourceBalance.value >= MIN_AMOUNT) {
       setBalance(Number(sourceBalance.value) / 10 ** 18);
       setActiveChain(
         chains?.find((chainEl) => chainEl.id === route.fromChainId),
       );
-    } else if (destinationBalance && destinationBalance.value >= 0.0005) {
+    } else if (destinationBalance && destinationBalance.value >= MIN_AMOUNT) {
       setBalance(Number(destinationBalance.value) / 10 ** 18);
       setActiveChain(chains?.find((chainEl) => chainEl.id === route.toChainId));
     }
   }, [destinationBalance, sourceBalance]);
 
-  const handleDefaultRate = () => {
-    const txPercentageValue =
+  const handleRateClick = () => {
+    const txPercentageUSDValue =
       (Number(rate) / 100) * parseFloat(route.fromAmountUSD);
-    setAmount(txPercentageValue.toString());
+    const ethPrice = balanceUSD / balance;
+    const txPercentageNativeValue = txPercentageUSDValue / ethPrice;
+    setAmount(txPercentageNativeValue.toString());
   };
 
   const handleChange = (
@@ -96,6 +120,33 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
     const { value } = event.target;
     const formattedAmount = formatInputAmount(value, 6, true);
     setAmount(formattedAmount);
+  };
+
+  const handleButtonClick = async () => {
+    if (!activeChain) return;
+    try {
+      const { id } = await switchChainAsync({
+        chainId: activeChain?.id,
+      });
+      const destinationAddress = SAFE_CONTRACTS[activeChain?.id];
+
+      if (
+        id === activeChain?.id &&
+        !!destinationAddress &&
+        parseFloat(amount) > 0
+      ) {
+        try {
+          sendTransaction({
+            to: destinationAddress as `0x${string}`,
+            value: parseEther(amount),
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -179,7 +230,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                   </FlexibleFeeAmountDetails>
                 </FlexibleFeeAmountsBox>
               </Box>
-              <FlexibleFeeAmountsBadge onClick={handleDefaultRate}>
+              <FlexibleFeeAmountsBadge onClick={handleRateClick}>
                 <Typography
                   variant="bodyXSmallStrong"
                   color={theme.palette.primary.main}
@@ -189,9 +240,9 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
               </FlexibleFeeAmountsBadge>
             </Content>
             <FlexibleFeeButton
-              isLoading={false} //todo: isLoading
-              isSuccess={false} //todo: isSuccess
-              onClick={(event) => console.log('fix me')} //todo: onClick(event)}
+              isLoading={isConfirming}
+              isSuccess={isConfirmed}
+              onClick={handleButtonClick}
             />
           </Container>
         </ThemeProviderV2>
