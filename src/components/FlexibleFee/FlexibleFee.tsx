@@ -38,15 +38,15 @@ import {
   useBalance,
   useSendTransaction,
 } from 'wagmi';
-import { getToken, getTokenBalance } from '@lifi/sdk';
 import { ExtendedChain } from '@lifi/widget';
 import { parseEther } from 'viem';
+import { useTokenBalance } from 'src/hooks/useTokenBalance';
 
 interface FlexibleFeeProps {
   route: RouteExtended;
 }
 
-const MIN_AMOUNT = 0.0005;
+const MIN_AMOUNT = 1.5;
 
 // TODO:
 // implement getTokenBalance from Widget as a hook
@@ -79,29 +79,54 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
       hash: transactionHash,
     });
 
-  const { data: sourceBalance, isLoading: isSourceBalanceLoading } = useBalance(
-    {
-      address: activeAccount[0]?.address as `0x${string}`,
+  const { data: sourceBalance, isLoading: isSourceBalanceLoading } =
+    useTokenBalance({
+      tokenAddress: '0x0000000000000000000000000000000000000000',
+      walletAddress: activeAccount[0]?.address as `0x${string}`,
       chainId: route.fromChainId,
-    },
-  );
+    });
 
   const { data: destinationBalance, isLoading: isDestinationBalanceLoading } =
-    useBalance({
-      address: activeAccount[0]?.address as `0x${string}`,
+    useTokenBalance({
+      tokenAddress: '0x0000000000000000000000000000000000000000',
+      walletAddress: activeAccount[0]?.address as `0x${string}`,
       chainId: route.toChainId,
     });
+
+  // const { data: sourceBalance, isLoading: isSourceBalanceLoading } = useBalance(
+  //   {
+  //     address: activeAccount[0]?.address as `0x${string}`,
+  //     chainId: route.fromChainId,
+  //   },
+  // );
+  // const { data: destinationBalance, isLoading: isDestinationBalanceLoading } =
+  //   useBalance({
+  //     address: activeAccount[0]?.address as `0x${string}`,
+  //     chainId: route.toChainId,
+  //   });
 
   useEffect(() => {
     console.log('destinationBalance', destinationBalance);
     console.log('sourceBalance', sourceBalance);
-    if (sourceBalance && sourceBalance.value >= MIN_AMOUNT) {
-      setBalance(Number(sourceBalance.value) / 10 ** 18);
+    if (
+      sourceBalance?.amount &&
+      (Number(sourceBalance.amount) / 10 ** sourceBalance.decimals) *
+        parseFloat(sourceBalance.priceUSD) >=
+        MIN_AMOUNT
+    ) {
+      setBalance(Number(sourceBalance.amount) / 10 ** sourceBalance.decimals);
       setActiveChain(
         chains?.find((chainEl) => chainEl.id === route.fromChainId),
       );
-    } else if (destinationBalance && destinationBalance.value >= MIN_AMOUNT) {
-      setBalance(Number(destinationBalance.value) / 10 ** 18);
+    } else if (
+      destinationBalance?.amount &&
+      (Number(destinationBalance.amount) / 10 ** destinationBalance.decimals) *
+        parseFloat(destinationBalance.priceUSD) >=
+        MIN_AMOUNT
+    ) {
+      setBalance(
+        Number(destinationBalance.amount) / 10 ** destinationBalance.decimals,
+      );
       setActiveChain(chains?.find((chainEl) => chainEl.id === route.toChainId));
     }
   }, [destinationBalance, sourceBalance]);
