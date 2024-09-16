@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Avatar } from 'src/components/Avatar';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { useChains } from 'src/hooks/useChains';
+import { formatUnits } from 'viem';
 
 import type { RouteExtended } from '@lifi/sdk';
 import type { ExtendedChain } from '@lifi/widget';
@@ -91,33 +92,38 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   useEffect(() => {
     if (
       sourceBalance?.amount &&
-      (Number(sourceBalance.amount) / 10 ** sourceBalance.decimals) *
+      parseFloat(formatUnits(sourceBalance.amount, sourceBalance.decimals)) *
         parseFloat(sourceBalance.priceUSD) >=
         MIN_AMOUNT_USD
     ) {
       setBalanceNative(
-        Number(sourceBalance.amount) / 10 ** sourceBalance.decimals,
+        parseFloat(formatUnits(sourceBalance.amount, sourceBalance.decimals)),
       );
       setBalanceNativeInUSD(
         parseFloat(sourceBalance.priceUSD) *
-          (Number(sourceBalance.amount) / 10 ** sourceBalance.decimals),
+          parseFloat(formatUnits(sourceBalance.amount, sourceBalance.decimals)),
       );
       setActiveChain(
         chains?.find((chainEl) => chainEl.id === route.fromChainId),
       );
     } else if (
       destinationBalance?.amount &&
-      (Number(destinationBalance.amount) / 10 ** destinationBalance.decimals) *
+      parseFloat(
+        formatUnits(destinationBalance.amount, destinationBalance.decimals),
+      ) *
         parseFloat(destinationBalance.priceUSD) >=
         MIN_AMOUNT_USD
     ) {
       setBalanceNative(
-        Number(destinationBalance.amount) / 10 ** destinationBalance.decimals,
+        parseFloat(
+          formatUnits(destinationBalance.amount, destinationBalance.decimals),
+        ),
       );
       setBalanceNativeInUSD(
         parseFloat(destinationBalance.priceUSD) *
-          (Number(destinationBalance.amount) /
-            10 ** destinationBalance.decimals),
+          parseFloat(
+            formatUnits(destinationBalance.amount, destinationBalance.decimals),
+          ),
       );
       setActiveChain(chains?.find((chainEl) => chainEl.id === route.toChainId));
     }
@@ -186,10 +192,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
               Help us grow Jumper!
             </Typography>
             <Tooltip
-              title={
-                'Lorem ipsum...'
-                // t('flexibleFee.description')
-              }
+              title={'Lorem ipsum...'}
               placement="top"
               enterTouchDelay={0}
               arrow
