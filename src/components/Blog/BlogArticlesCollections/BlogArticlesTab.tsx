@@ -1,7 +1,7 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { ArticlesGrid } from './BlogArticlesCollections.style';
+import { ArticlesGrid } from './BlogArticlesTab.style';
 
 interface BlogArticlesTabProps {
   pageTab: number;

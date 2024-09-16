@@ -68,17 +68,10 @@ export function BlogArticlesTabs({
                     width: '100%',
                   },
                 }}
+                article={article}
                 baseUrl={tags.url}
-                id={article.id}
                 key={`blog-articles-collection-${index}-${articleIndex}`}
-                image={article.attributes.Image}
-                title={article.attributes.Title}
-                slug={article.attributes.Slug}
                 trackingCategory={TrackingCategory.BlogArticlesCollection}
-                content={article.attributes.Content}
-                publishedAt={article.attributes.publishedAt}
-                createdAt={article.attributes.createdAt}
-                tags={article.attributes.tags}
               />
             ))}
           </BlogArticlesTab>
