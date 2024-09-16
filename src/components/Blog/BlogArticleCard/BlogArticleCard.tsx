@@ -79,12 +79,16 @@ export const BlogArticleCard = ({
         {image.data ? (
           <BlogArticleCardImage
             src={`${baseUrl}${image.data?.attributes?.formats.small.url}`}
-            alt={image.data?.attributes?.alternativeText}
+            alt={image.data?.attributes?.alternativeText ?? title}
+            // read the following to udnerstand why width and height are set to 0, https://github.com/vercel/next.js/discussions/18474#discussioncomment-5501724
+            width={0}
+            height={0}
+            sizes="100vw"
             draggable={false}
           />
         ) : (
           <Skeleton
-            component="img"
+            component="span"
             sx={{
               width: '100%',
               aspectRatio: 1.6,

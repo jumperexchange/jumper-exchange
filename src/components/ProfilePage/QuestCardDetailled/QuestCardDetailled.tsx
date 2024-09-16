@@ -18,7 +18,7 @@ import { Box, Typography, useTheme } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
-import { Chain } from 'src/components/Superfest/SuperfestPage/Banner/Banner';
+import type { Chain } from 'src/components/Superfest/SuperfestPage/Banner/Banner';
 import { FlexSpaceBetweenBox } from 'src/components/Superfest/Superfest.style';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import {

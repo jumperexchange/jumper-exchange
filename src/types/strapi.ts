@@ -170,7 +170,10 @@ interface AuthorAttributes {
     publishedAt?: string;
     updatedAt: string;
     Avatar: AvatarItem;
-    Role: string;
+    Role?: string;
+    Bio?: string;
+    Twitter?: string;
+    LinkedIn?: string;
   };
   id: number;
 }

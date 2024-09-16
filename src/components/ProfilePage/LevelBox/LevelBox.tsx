@@ -1,25 +1,16 @@
-import { Skeleton } from '@mui/material';
-import { NoSelectTypography } from '../ProfilePage.style';
-import { TierBadgeBox } from './TierBox.style';
-
+import { Box } from '@mui/material';
+import { IconHeader } from '../Common/IconHeader';
+import { PointsDisplay } from './PointsDisplay';
 interface LevelBoxProps {
   level?: number;
   loading: boolean;
 }
 
-export const LevelBox = ({ level, loading }: LevelBoxProps) => {
+export const LevelBox = ({ level }: LevelBoxProps) => {
   return (
-    <TierBadgeBox>
-      {loading ? (
-        <Skeleton
-          variant="text"
-          sx={{ fontSize: { xs: 18, sm: 22 }, minWidth: 60 }}
-        />
-      ) : (
-        <NoSelectTypography fontSize={{ xs: 12, sm: 18 }} fontWeight={700}>
-          {`LEVEL ${level}`}
-        </NoSelectTypography>
-      )}
-    </TierBadgeBox>
+    <Box>
+      <IconHeader tooltipKey="profile_page.levelInfo" title="LEVEL" />
+      <PointsDisplay points={level} />
+    </Box>
   );
 };

@@ -17,13 +17,15 @@ const LearnPage = ({
 }: LearnPageProps) => {
   return (
     <div className="learn-page">
-      <FeaturedArticle
-        url={url}
-        featuredArticle={featuredArticle.data}
-        // handleFeatureCardClick={() =>
-        //   handleFeatureCardClick(featuredArticle.data)
-        // }
-      />
+      {featuredArticle.data?.[0] && (
+        <FeaturedArticle
+          url={url}
+          featuredArticle={featuredArticle.data[0]}
+          // handleFeatureCardClick={() =>
+          //   handleFeatureCardClick(featuredArticle.data)
+          // }
+        />
+      )}
       <BlogCarousel url={url} data={carouselArticles?.data} />
       <JoinDiscordBanner />
       {/* <BlogArticlesBoard /> */}
