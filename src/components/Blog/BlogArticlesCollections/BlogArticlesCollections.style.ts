@@ -1,8 +1,8 @@
 import type { Breakpoint, GridProps } from '@mui/material';
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import { urbanist } from 'src/fonts/fonts';
+import { CarouselHeader, CarouselTitle } from '../BlogCarousel';
 
 export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
   display: 'flex',
@@ -78,8 +78,13 @@ export const ArticlesGrid = styled(Grid, {
   }),
 }));
 
-export const BlogArticlesCollectionsTitle = styled(Typography)(({ theme }) => ({
-  fontFamily: urbanist.style.fontFamily,
-  textAlign: 'center',
-  color: theme.palette.text.primary,
-}));
+export const BlogArticlesCollectionsTitle = styled(CarouselTitle)(
+  ({ theme }) => ({
+    color: theme.palette.text.primary,
+    // fontFamily: urbanist.style.fontFamily,
+    // textAlign: 'center',
+    // color: theme.palette.text.primary,
+  }),
+);
+
+export const BlogArticlesCollectionsHeader = styled(CarouselHeader)(() => ({}));

@@ -12,12 +12,12 @@ import type { GetTagsResponse } from 'src/app/lib/getTags';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { chunkArray } from 'src/utils/chunkArray';
 import { BlogArticleCard } from '../BlogArticleCard';
-import {
-  BlogArticlesBoardHeader,
-  BlogArticlesBoardTitle,
-} from '../BlogArticlesBoard/BlogArticlesBoard.style';
 import { Pagination } from '../Pagination/Pagination';
-import { BlogArticlesCollectionsContainer } from './BlogArticlesCollections.style';
+import {
+  BlogArticlesCollectionsContainer,
+  BlogArticlesCollectionsHeader,
+  BlogArticlesCollectionsTitle,
+} from './BlogArticlesCollections.style';
 import { BlogArticlesTab } from './BlogArticlesTab';
 
 interface BlogArticlesTabsProps {
@@ -43,16 +43,17 @@ export function BlogArticlesTabs({
     <BlogArticlesCollectionsContainer id={tag.attributes.Title}>
       <Box
         sx={{
+          width: '100%',
           display: 'flex',
           justifyContent: 'center',
           flexDirection: 'column',
         }}
       >
-        <BlogArticlesBoardHeader>
-          <BlogArticlesBoardTitle variant="headerMedium">
+        <BlogArticlesCollectionsHeader>
+          <BlogArticlesCollectionsTitle variant="headerMedium">
             {tag.attributes.Title}
-          </BlogArticlesBoardTitle>
-        </BlogArticlesBoardHeader>
+          </BlogArticlesCollectionsTitle>
+        </BlogArticlesCollectionsHeader>
         {chunkedPages.map((page, pageIndex) => (
           <BlogArticlesTab
             pageTab={pageTab}
