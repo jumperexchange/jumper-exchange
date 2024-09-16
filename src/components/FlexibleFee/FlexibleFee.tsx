@@ -137,6 +137,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   ]);
 
   const handleRateClick = () => {
+    // to review
     const txPercentageUSDValue =
       (Number(rate) / 100) * parseFloat(route.fromAmountUSD);
     const ethPrice = balanceUSD / balance;
@@ -191,9 +192,6 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
           <Header>
             <Typography variant="bodyMediumStrong">
               Help us grow Jumper!
-              {
-                //t('flexibleFee.title')
-              }
             </Typography>
             <Tooltip
               title={
@@ -255,10 +253,6 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                           : theme.palette.text.primary,
                     }}
                     required
-                    // startAdornment={startAdornment}
-                    // endAdornment={endAdornment}
-                    // onBlur={handleBlur}
-                    // disabled={disabled}
                   />
                 </FormControl>
                 <FlexibleFeeAmountDetails variant="bodyXSmall">
