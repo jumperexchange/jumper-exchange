@@ -219,9 +219,9 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                   activeChain?.logoURI ? (
                     <Avatar
                       size="small"
-                      src={activeChain?.logoURI || ''}
+                      src={activeChain?.nativeToken.logoURI || ''}
                       alt={'wallet-avatar'}
-                    ></Avatar>
+                    />
                   ) : (
                     <Skeleton variant="circular" />
                   )
@@ -256,7 +256,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                   />
                 </FormControl>
                 <FlexibleFeeAmountDetails variant="bodyXSmall">
-                  {`$${balanceUSD}  •  ${balance} ${activeChain?.nativeToken.symbol} available`}
+                  {`$${balanceUSD}  •  ${parseFloat(String(balance)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
                   {/* 
                   t('flexibleFee.availableAmount', {
                   balanceUSD: '20$',
