@@ -38,7 +38,10 @@ export const FlexibleFeeAmountDetails = styled(Typography)(({ theme }) => ({
 }));
 
 export const FlexibleFeeAmountsBadge = styled(Box)<BoxProps>(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? theme.palette.secondary.main
+      : theme.palette.accent1.main,
   padding: theme.spacing(0.5, 1),
   borderRadius: 16,
 }));

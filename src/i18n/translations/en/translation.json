@@ -132,6 +132,6 @@
     "title": "Help us grow Jumper!",
     "description": "Lorem ipsum...",
     "availableAmount": "{{amountUsd}} • {{amount}} {{baseToken}} available",
-    "cta": "Contribute"
+    "cta": "Support"
   }
 }

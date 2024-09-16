@@ -1,6 +1,6 @@
 import CheckIcon from '@mui/icons-material/Check';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Typography, useTheme } from '@mui/material';
+import { alpha, Typography, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslation } from 'react-i18next';
 import { ButtonSecondary } from '../Button';
@@ -36,11 +36,11 @@ const FlexibleFeeButton = ({
         marginTop: theme.spacing(2),
         backgroundColor: isSuccess
           ? theme.palette.success.main
-          : theme.palette.grey[100],
+          : alpha(theme.palette.text.primary, 0.08),
         '&:hover': {
           backgroundColor: isSuccess
             ? theme.palette.success.main
-            : theme.palette.grey[300],
+            : alpha(theme.palette.text.primary, 0.2),
         },
       }}
     >
@@ -76,7 +76,10 @@ const FlexibleFeeButtonContent = ({
           variant="bodySmallStrong"
           sx={{ marginLeft: theme.spacing(1) }}
         >
-          {t('flexibleFee.cta')}
+          Support
+          {
+            // t('flexibleFee.cta')
+          }
         </Typography>
       </>
     );
