@@ -85,10 +85,9 @@ export function BlogArticlesTabs({
       </Box>
       {
         /* todo: enable pagination*/
-        pagination.pageCount > 0 && (
+        pagination.pageCount <= 1 && (
           <Pagination
             id={tag.attributes.Title}
-            inactive={pagination.pageCount <= 1}
             page={pageTab}
             setPage={setPageTab}
             pagination={pagination}

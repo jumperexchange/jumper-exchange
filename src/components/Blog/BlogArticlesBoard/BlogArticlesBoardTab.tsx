@@ -88,9 +88,8 @@ export function BlogArticlesBoardTab({
         </Box>
         {
           /* todo: enable pagination*/
-          pagination.pageCount > 0 && (
+          pagination.pageCount <= 1 && (
             <Pagination
-              inactive={pagination.pageCount <= 1}
               page={pageTab}
               setPage={setPageTab}
               pagination={pagination}

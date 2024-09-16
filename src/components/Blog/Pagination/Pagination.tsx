@@ -18,7 +18,6 @@ import {
 } from './Pagination.style';
 
 interface PaginationProps {
-  inactive: boolean;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
   pagination: StrapiMetaPagination;
@@ -32,7 +31,6 @@ export const Pagination = ({
   pagination,
   id,
   categoryId,
-  inactive,
 }: PaginationProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
@@ -84,54 +82,49 @@ export const Pagination = ({
   };
 
   return (
-    !inactive && (
-      <PaginationContainer>
-        <SmoothScrollWrapper id={id}>
-          <PaginationButton onClick={() => handlePrev()} disableRipple={false}>
-            <ArrowBackIcon
-              sx={{
-                color:
-                  theme.palette.mode === 'light'
-                    ? lighten(theme.palette.text.primary, 0.6)
-                    : darken(theme.palette.text.primary, 0.2),
-              }}
-            />
-          </PaginationButton>
-        </SmoothScrollWrapper>
+    <PaginationContainer>
+      <SmoothScrollWrapper id={id}>
+        <PaginationButton onClick={() => handlePrev()} disableRipple={false}>
+          <ArrowBackIcon
+            sx={{
+              color:
+                theme.palette.mode === 'light'
+                  ? lighten(theme.palette.text.primary, 0.6)
+                  : darken(theme.palette.text.primary, 0.2),
+            }}
+          />
+        </PaginationButton>
+      </SmoothScrollWrapper>
 
-        {Array.from({ length: pagination.pageCount }).map((_, index) => {
-          const actualPage = index;
-          return (
-            <SmoothScrollWrapper id={id}>
-              <PaginationIndexButton
-                key={`pagination-index-button-${index}`}
-                onClick={() => handlePage(actualPage)}
-                active={actualPage === page}
-              >
-                <Typography
-                  variant="bodySmallStrong"
-                  sx={{ lineHeight: '18px' }}
-                >
-                  {actualPage + 1}
-                </Typography>
-              </PaginationIndexButton>
-            </SmoothScrollWrapper>
-          );
-        })}
-        <SmoothScrollWrapper id={id}>
-          <PaginationButton onClick={() => handleNext()}>
-            <ArrowForwardIcon
-              sx={{
-                color:
-                  theme.palette.mode === 'light'
-                    ? lighten(theme.palette.text.primary, 0.6)
-                    : darken(theme.palette.text.primary, 0.2),
-              }}
-            />
-          </PaginationButton>
-        </SmoothScrollWrapper>
-      </PaginationContainer>
-    )
+      {Array.from({ length: pagination.pageCount }).map((_, index) => {
+        const actualPage = index;
+        return (
+          <SmoothScrollWrapper id={id}>
+            <PaginationIndexButton
+              key={`pagination-index-button-${index}`}
+              onClick={() => handlePage(actualPage)}
+              active={actualPage === page}
+            >
+              <Typography variant="bodySmallStrong" sx={{ lineHeight: '18px' }}>
+                {actualPage + 1}
+              </Typography>
+            </PaginationIndexButton>
+          </SmoothScrollWrapper>
+        );
+      })}
+      <SmoothScrollWrapper id={id}>
+        <PaginationButton onClick={() => handleNext()}>
+          <ArrowForwardIcon
+            sx={{
+              color:
+                theme.palette.mode === 'light'
+                  ? lighten(theme.palette.text.primary, 0.6)
+                  : darken(theme.palette.text.primary, 0.2),
+            }}
+          />
+        </PaginationButton>
+      </SmoothScrollWrapper>
+    </PaginationContainer>
   );
 };
 
