@@ -44,7 +44,7 @@ interface FlexibleFeeProps {
   route: RouteExtended;
 }
 
-const MIN_AMOUNT = 1.5;
+const MIN_AMOUNT = 5;
 
 export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   route,
@@ -181,7 +181,8 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
 
   return (
     activeChain &&
-    activeAccount.length > 0 && (
+    activeAccount.length > 0 &&
+    balanceNative > 0 && (
       <ThemeProviderV2 themes={[]}>
         <Container>
           <Header>
@@ -253,7 +254,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                   />
                 </FormControl>
                 <FlexibleFeeAmountDetails variant="bodyXSmall">
-                  {`$${ethPrice ? parseFloat(String(ethPrice * parseFloat(amount))).toFixed(2) : 0}  •  ${parseFloat(String(balanceNative)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
+                  {`$${ethPrice && parseFloat(amount) > 0 ? parseFloat(String(ethPrice * parseFloat(amount))).toFixed(2) : 0}  •  ${parseFloat(String(balanceNative)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
                 </FlexibleFeeAmountDetails>
               </FlexibleFeeAmountsBox>
             </Box>
