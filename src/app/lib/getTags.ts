@@ -28,9 +28,10 @@ export async function getTags(): Promise<GetTagsResponse> {
   }
 
   const data = await res.json().then((output) => {
-    const filteredData = output.data.filter((item: TagAttributes) => {
-      return item.attributes.blog_articles.data.length > 0;
-    });
+    const filteredData = output.data;
+    // .filter((item: TagAttributes) => {
+    //   return item.attributes.blog_articles.data.length > 0;
+    // });
 
     return {
       meta: output.meta,

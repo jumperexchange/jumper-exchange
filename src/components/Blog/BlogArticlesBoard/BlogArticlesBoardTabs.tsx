@@ -58,14 +58,6 @@ export const BlogArticlesBoardTabs = ({
       },
     },
 
-    ...(!isDesktop &&
-      !openDropdown && {
-        '.inactive': {
-          display: 'none',
-          backgroundColor: 'red',
-        },
-      }),
-
     '.MuiTabs-indicator': {
       minWidth: '80%',
       width: '100%',

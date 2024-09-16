@@ -99,7 +99,7 @@ export const Pagination = ({
       {Array.from({ length: pagination.pageCount }).map((_, index) => {
         const actualPage = index;
         return (
-          <SmoothScrollWrapper id={id}>
+          <SmoothScrollWrapper id={id} key={`pagination-wrapper-${index}`}>
             <PaginationIndexButton
               key={`pagination-index-button-${index}`}
               onClick={() => handlePage(actualPage)}

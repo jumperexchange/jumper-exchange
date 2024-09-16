@@ -64,7 +64,7 @@ export function BlogArticlesTabs({
                 styles={{
                   display: 'inline-block',
                   [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    width: 'unset',
+                    width: '100%',
                   },
                 }}
                 baseUrl={tags.url}
@@ -85,7 +85,7 @@ export function BlogArticlesTabs({
       </Box>
       {
         /* todo: enable pagination*/
-        pagination.pageCount <= 1 && (
+        pagination.pageCount > 1 && (
           <Pagination
             id={tag.attributes.Title}
             page={pageTab}

@@ -26,11 +26,7 @@ export const BlogArticlesBoard = ({ data, tags }: BlogArticlesBoardProps) => {
   const { t } = useTranslation();
   const [tabId, setTabId] = useState<number | undefined>(0);
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
-  const [_, setCatLabel] = useState<string | undefined>(
-    t('blog.allCategories'),
-  );
-
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const handleTagsClick = useCallback(
     (id: number, label?: string) => () => {
       if (!isDesktop && !openDropdown) {
@@ -39,7 +35,6 @@ export const BlogArticlesBoard = ({ data, tags }: BlogArticlesBoardProps) => {
         setOpenDropdown(false);
       }
       setTabId(id);
-      setCatLabel(label);
     },
     [isDesktop, openDropdown],
   );
@@ -79,10 +74,12 @@ export const BlogArticlesBoard = ({ data, tags }: BlogArticlesBoardProps) => {
   }, [handleTagsClick, tags?.data]);
 
   const handleClick = (event: { target: HTMLElement }) => {
-    const classList = event.target.classList;
+    // Avoid checking classList, use state and props to manage the dropdown logic
+    const isClickInsideDropdown =
+      event.target.getAttribute('aria-label') === ariaLabel;
 
-    if (openDropdown) {
-      !classList?.contains(ariaLabel) && setOpenDropdown(false);
+    if (openDropdown && !isClickInsideDropdown) {
+      setOpenDropdown(false);
     }
   };
 
@@ -130,6 +127,7 @@ export const BlogArticlesBoard = ({ data, tags }: BlogArticlesBoardProps) => {
             <BlogArticlesBoardTab
               value={tabId || 0}
               index={tagIndex}
+              key={`bloag-articles-tab-${tagIndex}`}
               tags={tags}
               pagination={pagination}
               ariaLabel={ariaLabel}

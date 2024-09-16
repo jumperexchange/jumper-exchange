@@ -180,6 +180,7 @@ class TagStrapiApi extends StrapiApi {
     super({ contentType: 'tags' }); // Set content type to "blog-articles" automatically
     const articleParams = new TagParams(this.apiUrl);
     this.apiUrl = articleParams.addParams();
+    this.apiUrl.searchParams.set('filters[blog_articles][$notNull]', 'true');
   }
 
   sort(order: 'asc' | 'desc'): this {

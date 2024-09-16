@@ -61,7 +61,11 @@ export function BlogArticlesBoardTab({
           }}
         >
           {chunkedPages.map((page, pageIndex) => (
-            <BlogArticlesTab pageTab={pageTab} index={pageIndex}>
+            <BlogArticlesTab
+              pageTab={pageTab}
+              index={pageIndex}
+              key={`blog-articles-tab-${pageIndex}`}
+            >
               {page.map((article, articleIndex: number) => (
                 <BlogArticleCard
                   styles={{
@@ -72,7 +76,7 @@ export function BlogArticlesBoardTab({
                   }}
                   baseUrl={tags.url}
                   id={article.id}
-                  key={`blog-articles-board}-${index}-${articleIndex}`}
+                  key={`blog-articles-board-${index}-${articleIndex}`}
                   image={article.attributes.Image}
                   title={article.attributes.Title}
                   slug={article.attributes.Slug}
@@ -88,7 +92,7 @@ export function BlogArticlesBoardTab({
         </Box>
         {
           /* todo: enable pagination*/
-          pagination.pageCount <= 1 && (
+          pagination.pageCount > 1 && (
             <Pagination
               page={pageTab}
               setPage={setPageTab}
