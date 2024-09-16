@@ -70,7 +70,7 @@ export function BlogArticlesTabs({
                 }}
                 baseUrl={tags.url}
                 id={article.id}
-                key={`blog-articles-collection}-${index}-${articleIndex}`}
+                key={`blog-articles-collection-${index}-${articleIndex}`}
                 image={article.attributes.Image}
                 title={article.attributes.Title}
                 slug={article.attributes.Slug}
