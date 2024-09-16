@@ -88,7 +88,7 @@ export function BlogArticlesTabs({
         pagination.pageCount > 0 && (
           <Pagination
             id={tag.attributes.Title}
-            isEmpty={pagination.pageCount <= 1}
+            inactive={pagination.pageCount <= 1}
             page={pageTab}
             setPage={setPageTab}
             pagination={pagination}

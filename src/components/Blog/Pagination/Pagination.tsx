@@ -18,7 +18,7 @@ import {
 } from './Pagination.style';
 
 interface PaginationProps {
-  isEmpty: boolean;
+  inactive: boolean;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
   pagination: StrapiMetaPagination;
@@ -32,7 +32,7 @@ export const Pagination = ({
   pagination,
   id,
   categoryId,
-  isEmpty,
+  inactive,
 }: PaginationProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
@@ -84,7 +84,7 @@ export const Pagination = ({
   };
 
   return (
-    !isEmpty && (
+    !inactive && (
       <PaginationContainer>
         <SmoothScrollWrapper id={id}>
           <PaginationButton onClick={() => handlePrev()} disableRipple={false}>
