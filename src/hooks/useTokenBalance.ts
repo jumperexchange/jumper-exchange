@@ -55,7 +55,7 @@ export const useTokenBalance = ({
       }
     },
     enabled: !!tokenInfo && !!walletAddress,
-    refetchInterval: 1000 * 60 * 60,
+    refetchInterval: 100,
   });
 
   return {
