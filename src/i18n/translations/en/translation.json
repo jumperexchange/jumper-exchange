@@ -131,7 +131,7 @@
   "flexibleFee": {
     "title": "Help us grow Jumper!",
     "description": "Lorem ipsum...",
-    "availableAmount": "{{amountUsd}} • {{amount}} {{baseToken}} available",
+    "availableAmount": "{{balanceUSD}} • {{balance}} {{tokenSymbol}} available",
     "cta": "Support"
   }
 }

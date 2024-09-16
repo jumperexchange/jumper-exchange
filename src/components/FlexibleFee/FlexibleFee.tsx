@@ -265,9 +265,9 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                   {`$${balanceUSD}  •  ${balance} ${activeChain?.nativeToken.symbol} available`}
                   {/* 
                   t('flexibleFee.availableAmount', {
-                  amountUsd: '20$',
-                  amount: balance,
-                  baseToken: 'ETH',
+                  balanceUSD: '20$',
+                  balance: balance,
+                  tokenSymbol: 'ETH',
                 })
                 */}
                 </FlexibleFeeAmountDetails>
