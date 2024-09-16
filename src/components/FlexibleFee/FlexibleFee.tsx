@@ -101,6 +101,10 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
       setBalanceNative(
         Number(sourceBalance.amount) / 10 ** sourceBalance.decimals,
       );
+      setBalanceNativeInUSD(
+        parseFloat(sourceBalance.priceUSD) *
+          (Number(sourceBalance.amount) / 10 ** sourceBalance.decimals),
+      );
       setActiveChain(
         chains?.find((chainEl) => chainEl.id === route.fromChainId),
       );
@@ -110,8 +114,13 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
         parseFloat(destinationBalance.priceUSD) >=
         MIN_AMOUNT
     ) {
-      setBalance(
+      setBalanceNative(
         Number(destinationBalance.amount) / 10 ** destinationBalance.decimals,
+      );
+      setBalanceNativeInUSD(
+        parseFloat(destinationBalance.priceUSD) *
+          (Number(destinationBalance.amount) /
+            10 ** destinationBalance.decimals),
       );
       setActiveChain(chains?.find((chainEl) => chainEl.id === route.toChainId));
     }
@@ -124,10 +133,10 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   ]);
 
   const handleRateClick = () => {
-    // to review
     const txPercentageUSDValue =
       (Number(rate) / 100) * parseFloat(route.fromAmountUSD);
     const ethPrice = balanceNativeInUSD / balanceNative;
+    console.log(balanceNativeInUSD, balanceNative);
     setEthPrice(ethPrice);
     const txPercentageNativeValue = txPercentageUSDValue * (1 / ethPrice);
     setAmount(txPercentageNativeValue.toString());
@@ -205,7 +214,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                   activeChain?.logoURI ? (
                     <Avatar
                       size="small"
-                      src={activeChain?.nativeToken.logoURI || ''}
+                      src={activeChain?.logoURI || ''}
                       alt={'wallet-avatar'}
                     />
                   ) : (
@@ -213,7 +222,9 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                   )
                 }
               >
-                <FlexibleFeeChainAvatar src={activeChain?.logoURI} />
+                <FlexibleFeeChainAvatar
+                  src={activeChain?.nativeToken.logoURI}
+                />
               </FlexibleFeeChainBadge>
               <FlexibleFeeAmountsBox>
                 <FormControl fullWidth>
@@ -243,13 +254,6 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                 </FormControl>
                 <FlexibleFeeAmountDetails variant="bodyXSmall">
                   {`$${ethPrice ? parseFloat(String(ethPrice * parseFloat(amount))).toFixed(2) : 0}  •  ${parseFloat(String(balanceNative)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
-                  {/* 
-                  t('flexibleFee.availableAmount', {
-                  balanceUSD: '20$',
-                  balance: balance,
-                  tokenSymbol: 'ETH',
-                })
-                */}
                 </FlexibleFeeAmountDetails>
               </FlexibleFeeAmountsBox>
             </Box>
