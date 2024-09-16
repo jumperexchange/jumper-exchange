@@ -242,7 +242,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                   />
                 </FormControl>
                 <FlexibleFeeAmountDetails variant="bodyXSmall">
-                  {`$${ethPrice ? parseFloat(String(ethPrice * parseFloat(amount))).toFixed(2) : 0}`}  •  ${parseFloat(String(balanceNative)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
+                  {`$${ethPrice ? parseFloat(String(ethPrice * parseFloat(amount))).toFixed(2) : 0}  •  ${parseFloat(String(balanceNative)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
                   {/* 
                   t('flexibleFee.availableAmount', {
                   balanceUSD: '20$',
