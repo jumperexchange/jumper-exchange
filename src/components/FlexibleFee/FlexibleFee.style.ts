@@ -1,7 +1,8 @@
 import type { BoxProps, CardProps } from '@mui/material';
 import { Avatar, Badge, Box, Card, Typography } from '@mui/material';
 
-import { styled } from '@mui/material/styles';
+import { darken, styled } from '@mui/material/styles';
+import { IconButtonSecondary } from '../IconButton.style';
 import { avatarMask12 } from '../Mask.style';
 
 export const FlexibleFeeContainer = styled(Card)<CardProps>(({ theme }) => ({
@@ -37,14 +38,24 @@ export const FlexibleFeeAmountDetails = styled(Typography)(({ theme }) => ({
   lineHeight: 1,
 }));
 
-export const FlexibleFeeAmountsBadge = styled(Box)<BoxProps>(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.secondary.main
-      : theme.palette.accent1.main,
-  padding: theme.spacing(0.5, 1),
-  borderRadius: 16,
-}));
+export const FlexibleFeeAmountsBadge = styled(IconButtonSecondary)<BoxProps>(
+  ({ theme }) => ({
+    width: 48,
+    height: 24,
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.secondary.main
+        : theme.palette.accent1Alt.main,
+    padding: theme.spacing(0.5, 1),
+    borderRadius: 16,
+    '&:hover': {
+      backgroundColor:
+        theme.palette.mode === 'light'
+          ? darken(theme.palette.secondary.main, 0.08)
+          : darken(theme.palette.accent1Alt.main, 0.16),
+    },
+  }),
+);
 
 export const FlexibleFeeChainBadge = styled(Badge)(({ theme }) => ({
   borderRadius: '50%',
