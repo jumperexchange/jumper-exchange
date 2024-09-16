@@ -8,15 +8,17 @@ export const useFingerprint = () => {
   const [fp, setFp] = useFpStore((state) => [state.fp, state.setFp]);
 
   useEffect(() => {
+    if (fp === DEFAULT_FP) {
+      return;
+    }
+
     async function load() {
       const fp = await FingerprintJS.load();
       const response = await fp.get();
       setFp(response.visitorId);
     }
-    if (fp === DEFAULT_FP) {
-      load();
-    }
-  }, [fp, setFp]);
+    load();
+  }, [setFp]);
 
   return fp;
 };
