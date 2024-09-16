@@ -1,5 +1,6 @@
 'use client';
 
+import { useAccount } from '@lifi/widget';
 import * as Sentry from '@sentry/nextjs';
 
 import {
@@ -16,6 +17,7 @@ interface JumperDataTrackEventProps {
   isConnected: boolean;
   walletAddress?: string;
   browserFingerprint: string;
+  walletProvider?: string;
   sessionId: string;
   isMobile: boolean;
 }
@@ -42,7 +44,6 @@ const track = async (data: object, path: string) => {
 };
 export interface JumperDataTrackTransactionProps {
   sessionId: string;
-  wallet: string;
   type: string;
   action: string;
   transactionHash?: string;
@@ -70,6 +71,7 @@ export interface JumperDataTrackTransactionProps {
 }
 
 export const useJumperTracking = () => {
+  const account = useAccount();
   const trackEvent = async (data: JumperDataTrackEventProps) => {
     await track(
       {
@@ -80,6 +82,7 @@ export const useJumperTracking = () => {
         isConnected: data.isConnected,
         sessionId: data.sessionId,
         data: data.data,
+        walletProvider: account?.account.connector?.name,
         walletAddress: data.walletAddress,
         browserFingerprint: data.browserFingerprint,
         isMobile: data.isMobile,
@@ -111,7 +114,8 @@ export const useJumperTracking = () => {
       toAmount: data.toAmount,
       toChainId: data.toChainId,
       transactionHash: data.transactionHash,
-      wallet: data.wallet,
+      wallet: account?.account.address,
+      walletProvider: account?.account.connector?.name,
       errorMessage: data.errorMessage,
       errorCode: data.errorCode,
       pathname: data.pathname,

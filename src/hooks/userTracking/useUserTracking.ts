@@ -160,7 +160,6 @@ export function useUserTracking() {
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
         const transactionData = {
           sessionId: sessionId || '',
-          wallet: account?.address || '',
           type: data[TrackingEventParameter.Type] || '',
           routeId: data[TrackingEventParameter.RouteId] || '',
           transactionHash: data[TrackingEventParameter.TransactionHash] || '',

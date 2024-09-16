@@ -10,6 +10,7 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useStrapi } from 'src/hooks/useStrapi';
+import { validThemes } from 'src/hooks/useWelcomeScreen';
 import type { PartnerThemesData } from 'src/types/strapi';
 
 export const useThemeMenuContent = () => {
@@ -18,7 +19,10 @@ export const useThemeMenuContent = () => {
   const segment = useSelectedLayoutSegment();
   const { resolvedTheme, setTheme } = useTheme();
 
-  const [cookie] = useCookies(['partnerThemeUid']);
+  const [cookie, setCookie] = useCookies([
+    'partnerThemeUid',
+    'welcomeScreenClosed',
+  ]);
   const { data: partnerThemes, isSuccess } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
     queryKey: ['partner-themes'],
@@ -33,6 +37,12 @@ export const useThemeMenuContent = () => {
         [TrackingEventParameter.SwitchedTemplate]: theme,
       },
     });
+    if (!validThemes.includes(theme)) {
+      setCookie('welcomeScreenClosed', true, {
+        path: '/',
+        sameSite: true,
+      });
+    }
     setTheme(theme);
   };
 
