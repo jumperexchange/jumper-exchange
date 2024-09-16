@@ -35,7 +35,7 @@ const FlexibleFeeButton = ({
       sx={{
         marginTop: theme.spacing(2),
         backgroundColor: isSuccess
-          ? theme.palette.success.main
+          ? '#D6FFE7' //theme.palette.success.main
           : alpha(theme.palette.text.primary, 0.08),
         '&:hover': {
           backgroundColor: isSuccess
@@ -62,7 +62,7 @@ const FlexibleFeeButtonContent = ({
   const { t } = useTranslation();
 
   if (isSuccess) {
-    return <CheckIcon />;
+    return <CheckIcon sx={{ color: '#00B849' }} />;
   }
   if (isLoading) {
     return (
