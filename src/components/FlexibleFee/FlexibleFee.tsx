@@ -67,7 +67,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   const { switchChainAsync } = useSwitchChain();
   const {
     data: transactionHash,
-    isPending,
+    isPending: isPendingSendTransaction,
     sendTransaction,
   } = useSendTransaction();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -279,7 +279,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
             </FlexibleFeeAmountsBadge>
           </Content>
           <FlexibleFeeButton
-            isLoading={isConfirming}
+            isLoading={isConfirming || isPendingSendTransaction}
             isSuccess={isConfirmed}
             onClick={handleButtonClick}
           />
