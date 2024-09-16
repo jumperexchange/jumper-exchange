@@ -53,8 +53,8 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   const [activeChain, setActiveChain] = useState<ExtendedChain | undefined>(
     undefined,
   );
-  const [balance, setBalance] = useState<number>(0);
-  const [balanceUSD, setBalanceUSD] = useState<number>(0);
+  const [balanceNative, setBalanceNative] = useState<number>(0);
+  const [balanceNativeInUSD, setBalanceNativeInUSD] = useState<number>(0);
   const [amount, setAmount] = useState<string>('0');
   const [ethPrice, setEthPrice] = useState<number | null>(null);
   const [rate, setRate] = useState<string>('0.3');
@@ -98,7 +98,9 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
         parseFloat(sourceBalance.priceUSD) >=
         MIN_AMOUNT
     ) {
-      setBalance(Number(sourceBalance.amount) / 10 ** sourceBalance.decimals);
+      setBalanceNative(
+        Number(sourceBalance.amount) / 10 ** sourceBalance.decimals,
+      );
       setActiveChain(
         chains?.find((chainEl) => chainEl.id === route.fromChainId),
       );
@@ -125,9 +127,9 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
     // to review
     const txPercentageUSDValue =
       (Number(rate) / 100) * parseFloat(route.fromAmountUSD);
-    const ethPrice = balanceUSD / balance;
+    const ethPrice = balanceNativeInUSD / balanceNative;
     setEthPrice(ethPrice);
-    const txPercentageNativeValue = txPercentageUSDValue / ethPrice;
+    const txPercentageNativeValue = txPercentageUSDValue * (1 / ethPrice);
     setAmount(txPercentageNativeValue.toString());
   };
 
@@ -240,7 +242,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                   />
                 </FormControl>
                 <FlexibleFeeAmountDetails variant="bodyXSmall">
-                  {`${ethPrice ? `$${parseFloat(String(ethPrice * parseFloat(amount))).toFixed(2)} •` : null}  •  ${parseFloat(String(balance)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
+                  {`$${ethPrice ? parseFloat(String(ethPrice * parseFloat(amount))).toFixed(2) : 0}`}  •  ${parseFloat(String(balanceNative)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
                   {/* 
                   t('flexibleFee.availableAmount', {
                   balanceUSD: '20$',
