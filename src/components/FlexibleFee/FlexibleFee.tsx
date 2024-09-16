@@ -44,12 +44,11 @@ interface FlexibleFeeProps {
   route: RouteExtended;
 }
 
-const MIN_AMOUNT_USD = 100;
+const MIN_AMOUNT_USD = 2;
 
 export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   route,
 }: FlexibleFeeProps) => {
-  console.log('FlexibleFee-ROUTE....', route);
   const [activeChain, setActiveChain] = useState<ExtendedChain | undefined>(
     undefined,
   );
@@ -90,9 +89,6 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
     });
 
   useEffect(() => {
-    console.log('DESTINATION');
-    console.log(route.toChainId);
-    console.log(destinationBalance);
     if (
       sourceBalance?.amount &&
       (Number(sourceBalance.amount) / 10 ** sourceBalance.decimals) *
@@ -137,9 +133,8 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
     const txPercentageUSDValue =
       (Number(rate) / 100) * parseFloat(route.fromAmountUSD);
     const ethPrice = balanceNativeInUSD / balanceNative;
-    console.log(balanceNativeInUSD, balanceNative);
-    setEthPrice(ethPrice);
     const txPercentageNativeValue = txPercentageUSDValue * (1 / ethPrice);
+    setEthPrice(ethPrice);
     setAmount(txPercentageNativeValue.toString());
   };
 
