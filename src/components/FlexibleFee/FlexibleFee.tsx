@@ -184,115 +184,116 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   console.log(activeChain, activeAccount);
 
   return (
-    // activeChain &&
-    // activeAccount.length > 0 && (
-    <ThemeProviderV2 themes={[]}>
-      <Container>
-        <Header>
-          <Typography variant="bodyMediumStrong">
-            Help us grow Jumper!
-            {
-              //t('flexibleFee.title')
-            }
-          </Typography>
-          <Tooltip
-            title={
-              'Lorem ipsum...'
-              // t('flexibleFee.description')
-            }
-            placement="top"
-            enterTouchDelay={0}
-            arrow
-          >
-            <InfoIcon sx={{ color: theme.palette.grey[500] }} />
-          </Tooltip>
-        </Header>
-        <Content>
-          <Box
-            display="flex"
-            alignItems="center"
-            sx={{ width: '100%', color: theme.palette.text.secondary }}
-          >
-            <FlexibleFeeChainBadge
-              overlap="circular"
-              className="badge"
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              badgeContent={
-                activeChain?.logoURI ? (
-                  <Avatar
-                    size="small"
-                    src={activeChain?.logoURI || ''}
-                    alt={'wallet-avatar'}
-                  ></Avatar>
-                ) : (
-                  <Skeleton variant="circular" />
-                )
+    activeChain &&
+    activeAccount.length > 0 && (
+      <ThemeProviderV2 themes={[]}>
+        <Container>
+          <Header>
+            <Typography variant="bodyMediumStrong">
+              Help us grow Jumper!
+              {
+                //t('flexibleFee.title')
               }
+            </Typography>
+            <Tooltip
+              title={
+                'Lorem ipsum...'
+                // t('flexibleFee.description')
+              }
+              placement="top"
+              enterTouchDelay={0}
+              arrow
             >
-              <FlexibleFeeChainAvatar src={activeChain?.logoURI} />
-            </FlexibleFeeChainBadge>
-            <FlexibleFeeAmountsBox>
-              <FormControl fullWidth>
-                <Input
-                  disableUnderline
-                  inputRef={ref}
-                  size="small"
-                  autoComplete="off"
-                  placeholder="0"
-                  inputProps={{
-                    inputMode: 'decimal',
-                  }}
-                  onChange={handleChange}
-                  value={amount}
-                  name={'flexible-fee-amount'}
-                  style={{
-                    height: '24px',
-                    fontSize: '24px',
-                    fontWeight: 700,
-                    color:
-                      amount === '0'
-                        ? theme.palette.grey[500]
-                        : theme.palette.text.primary,
-                  }}
-                  required
-                  // startAdornment={startAdornment}
-                  // endAdornment={endAdornment}
-                  // onBlur={handleBlur}
-                  // disabled={disabled}
-                />
-              </FormControl>
-              <FlexibleFeeAmountDetails variant="bodyXSmall">
-                {`$${balanceUSD}  •  ${balance} ${activeChain?.nativeToken.symbol} available`}
-                {/* 
+              <InfoIcon sx={{ color: theme.palette.grey[500] }} />
+            </Tooltip>
+          </Header>
+          <Content>
+            <Box
+              display="flex"
+              alignItems="center"
+              sx={{ width: '100%', color: theme.palette.text.secondary }}
+            >
+              <FlexibleFeeChainBadge
+                overlap="circular"
+                className="badge"
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                badgeContent={
+                  activeChain?.logoURI ? (
+                    <Avatar
+                      size="small"
+                      src={activeChain?.logoURI || ''}
+                      alt={'wallet-avatar'}
+                    ></Avatar>
+                  ) : (
+                    <Skeleton variant="circular" />
+                  )
+                }
+              >
+                <FlexibleFeeChainAvatar src={activeChain?.logoURI} />
+              </FlexibleFeeChainBadge>
+              <FlexibleFeeAmountsBox>
+                <FormControl fullWidth>
+                  <Input
+                    disableUnderline
+                    inputRef={ref}
+                    size="small"
+                    autoComplete="off"
+                    placeholder="0"
+                    inputProps={{
+                      inputMode: 'decimal',
+                    }}
+                    onChange={handleChange}
+                    value={amount}
+                    name={'flexible-fee-amount'}
+                    style={{
+                      height: '24px',
+                      fontSize: '24px',
+                      fontWeight: 700,
+                      color:
+                        amount === '0'
+                          ? theme.palette.grey[500]
+                          : theme.palette.text.primary,
+                    }}
+                    required
+                    // startAdornment={startAdornment}
+                    // endAdornment={endAdornment}
+                    // onBlur={handleBlur}
+                    // disabled={disabled}
+                  />
+                </FormControl>
+                <FlexibleFeeAmountDetails variant="bodyXSmall">
+                  {`$${balanceUSD}  •  ${balance} ${activeChain?.nativeToken.symbol} available`}
+                  {/* 
                   t('flexibleFee.availableAmount', {
                   amountUsd: '20$',
                   amount: balance,
                   baseToken: 'ETH',
                 })
                 */}
-              </FlexibleFeeAmountDetails>
-            </FlexibleFeeAmountsBox>
-          </Box>
-          <FlexibleFeeAmountsBadge onClick={handleRateClick}>
-            <Typography
-              variant="bodyXSmallStrong"
-              color={
-                theme.palette.mode === 'light'
-                  ? theme.palette.primary.main
-                  : theme.palette.text.primary
-              }
-            >
-              {rate}%
-            </Typography>
-          </FlexibleFeeAmountsBadge>
-        </Content>
-        <FlexibleFeeButton
-          isLoading={isConfirming}
-          isSuccess={isConfirmed}
-          onClick={handleButtonClick}
-        />
-      </Container>
-    </ThemeProviderV2>
-    // )
+                </FlexibleFeeAmountDetails>
+              </FlexibleFeeAmountsBox>
+            </Box>
+            <FlexibleFeeAmountsBadge onClick={handleRateClick}>
+              <Typography
+                variant="bodyXSmallStrong"
+                color={
+                  theme.palette.mode === 'light'
+                    ? theme.palette.primary.main
+                    : theme.palette.text.primary
+                }
+              >
+                {rate}%
+              </Typography>
+            </FlexibleFeeAmountsBadge>
+          </Content>
+          <FlexibleFeeButton
+            isLoading={isConfirming}
+            isSuccess={isConfirmed}
+            onClick={handleButtonClick}
+          />
+        </Container>
+      </ThemeProviderV2>
+    )
   );
+  // )
 };
