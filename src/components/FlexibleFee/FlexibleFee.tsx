@@ -44,7 +44,7 @@ interface FlexibleFeeProps {
   route: RouteExtended;
 }
 
-const MIN_AMOUNT = 5;
+const MIN_AMOUNT_USD = 100;
 
 export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   route,
@@ -90,13 +90,14 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
     });
 
   useEffect(() => {
-    console.log('destinationBalance', destinationBalance);
-    console.log('sourceBalance', sourceBalance);
+    console.log('DESTINATION');
+    console.log(route.toChainId);
+    console.log(destinationBalance);
     if (
       sourceBalance?.amount &&
       (Number(sourceBalance.amount) / 10 ** sourceBalance.decimals) *
         parseFloat(sourceBalance.priceUSD) >=
-        MIN_AMOUNT
+        MIN_AMOUNT_USD
     ) {
       setBalanceNative(
         Number(sourceBalance.amount) / 10 ** sourceBalance.decimals,
@@ -112,7 +113,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
       destinationBalance?.amount &&
       (Number(destinationBalance.amount) / 10 ** destinationBalance.decimals) *
         parseFloat(destinationBalance.priceUSD) >=
-        MIN_AMOUNT
+        MIN_AMOUNT_USD
     ) {
       setBalanceNative(
         Number(destinationBalance.amount) / 10 ** destinationBalance.decimals,

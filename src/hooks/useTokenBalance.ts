@@ -24,7 +24,7 @@ export const useTokenBalance = ({
     isSuccess,
     isLoading,
   } = useQuery({
-    queryKey: ['campaignInfo'],
+    queryKey: ['tokenInfo' + tokenAddress + walletAddress + chainId],
     queryFn: async () => {
       try {
         const response = await getToken(chainId, tokenAddress);
@@ -43,7 +43,7 @@ export const useTokenBalance = ({
     isSuccess: isBalanceSuccess,
     isLoading: isBalanceLoading,
   } = useQuery({
-    queryKey: ['tokenBalance' + tokenAddress + walletAddress],
+    queryKey: ['tokenBalance' + tokenAddress + walletAddress + chainId],
     queryFn: async () => {
       try {
         if (!tokenInfo) return null;
