@@ -131,6 +131,9 @@ interface Resources {
     profile_page: {
       mobileTitle: 'Only available on Desktop';
       mobileDescription: 'The Jumper Profile page is not available on small screens yet. We are working on it.';
+      rank: 'Leaderboard is updated on a daily basis';
+      pointsInfo: 'Points is your score for interacting with Jumper. As you gain more points, your level goes up.';
+      levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
     };
     flexibleFee: {
       title: 'Help us grow Jumper!';

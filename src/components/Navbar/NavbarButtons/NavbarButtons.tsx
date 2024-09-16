@@ -1,11 +1,5 @@
 'use client';
 import { MainMenu } from '@/components/Menus/MainMenu';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
-import { useUserTracking } from '@/hooks/userTracking';
 import { useMenuStore } from '@/stores/menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Box } from '@mui/material';
@@ -25,8 +19,8 @@ import { WalletButtons } from '../WalletButton';
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef(null);
+
   const walletManagementRef = useRef<HTMLAnchorElement>(null);
-  const { trackEvent } = useUserTracking();
   const pathname = usePathname();
   const hideConnectButton = pathname?.includes(JUMPER_LEARN_PATH);
   const redirectToApp =
@@ -61,12 +55,6 @@ export const NavbarButtons = () => {
     } else {
       setMainMenuState(true);
     }
-    trackEvent({
-      category: TrackingCategory.Menu,
-      action: TrackingAction.OpenMenu,
-      label: 'open_main_menu',
-      data: { [TrackingEventParameter.Menu]: 'main_menu' },
-    });
   };
 
   return (
