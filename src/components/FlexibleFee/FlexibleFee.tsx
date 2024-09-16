@@ -46,8 +46,6 @@ interface FlexibleFeeProps {
 
 const MIN_AMOUNT = 1.5;
 
-// TODO:
-
 export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   route,
 }: FlexibleFeeProps) => {
@@ -76,8 +74,6 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
       hash: transactionHash,
     });
 
-  console.log('activeAccount', activeAccount);
-  console.log('route', route);
   const { data: sourceBalance, isLoading: isSourceBalanceLoading } =
     useTokenBalance({
       tokenAddress: '0x0000000000000000000000000000000000000000',
@@ -91,18 +87,6 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
       walletAddress: activeAccount[0]?.address as `0x${string}`,
       chainId: route.toChainId,
     });
-
-  // const { data: sourceBalance, isLoading: isSourceBalanceLoading } = useBalance(
-  //   {
-  //     address: activeAccount[0]?.address as `0x${string}`,
-  //     chainId: route.fromChainId,
-  //   },
-  // );
-  // const { data: destinationBalance, isLoading: isDestinationBalanceLoading } =
-  //   useBalance({
-  //     address: activeAccount[0]?.address as `0x${string}`,
-  //     chainId: route.toChainId,
-  //   });
 
   useEffect(() => {
     console.log('destinationBalance', destinationBalance);
@@ -181,8 +165,6 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
       console.log(err);
     }
   };
-
-  console.log(activeChain, activeAccount);
 
   return (
     activeChain &&
