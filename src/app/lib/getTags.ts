@@ -6,7 +6,7 @@ import type {
 import { TagStrapiApi } from '@/utils/strapi/StrapiApi';
 
 export interface GetTagsResponse extends StrapiResponse<TagAttributes> {
-  url: string; // Define the shape of the URL
+  url: string;
 }
 
 export async function getTags(): Promise<GetTagsResponse> {
@@ -29,9 +29,6 @@ export async function getTags(): Promise<GetTagsResponse> {
 
   const data = await res.json().then((output) => {
     const filteredData = output.data;
-    // .filter((item: TagAttributes) => {
-    //   return item.attributes.blog_articles.data.length > 0;
-    // });
 
     return {
       meta: output.meta,
@@ -40,25 +37,31 @@ export async function getTags(): Promise<GetTagsResponse> {
         (
           {
             attributes: {
-              blog_articles: { data: dataA },
+              blog_articles: { data: dataA } = { data: [] }, // Use default empty array if data is undefined
             },
           }: { attributes: { blog_articles: { data: BlogArticleData[] } } },
           {
             attributes: {
-              blog_articles: { data: dataB },
+              blog_articles: { data: dataB } = { data: [] }, // Same for dataB
             },
           }: { attributes: { blog_articles: { data: BlogArticleData[] } } },
         ) => {
-          const latestArticleA = dataA.sort(
+          const latestArticleA = dataA?.sort(
             (a, b) =>
-              Date.parse(b.attributes.publishedAt!) -
-              Date.parse(a.attributes.publishedAt!),
+              Date.parse(b.attributes?.publishedAt!) -
+              Date.parse(a.attributes?.publishedAt!),
           )[0];
-          const latestArticleB = dataB.sort(
+
+          const latestArticleB = dataB?.sort(
             (a, b) =>
-              Date.parse(b.attributes.publishedAt!) -
-              Date.parse(a.attributes.publishedAt!),
+              Date.parse(b.attributes?.publishedAt!) -
+              Date.parse(a.attributes?.publishedAt!),
           )[0];
+
+          // Ensure both articles exist before comparing dates
+          if (!latestArticleA || !latestArticleB) {
+            return 0;
+          }
 
           return (
             Date.parse(latestArticleB.attributes.publishedAt!) -

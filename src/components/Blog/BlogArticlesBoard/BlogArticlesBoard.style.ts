@@ -1,7 +1,7 @@
 import type { Breakpoint, GridProps } from '@mui/material';
 import { Grid } from '@mui/material';
 
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { CarouselHeader, CarouselTitle } from '../BlogCarousel';
 
 export const BlogArticlesBoardContainer = styled(Grid)(({ theme }) => ({
@@ -15,17 +15,10 @@ export const BlogArticlesBoardContainer = styled(Grid)(({ theme }) => ({
   backgroundColor: theme.palette.bgSecondary.main,
   boxShadow: theme.palette.shadow.main,
   borderRadius: '32px',
-  cursor: 'pointer',
   padding: theme.spacing(6),
   transition: 'background-color 250ms',
   margin: theme.spacing(6, 2),
   marginBottom: theme.spacing(14.5),
-  '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.white.main, 1)
-        : alpha(theme.palette.white.main, 0.2),
-  },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(12, 8),
     margin: theme.spacing(8),
