@@ -31,15 +31,3 @@ export default async function Page() {
     />
   );
 }
-
-// Prerendering, does not work until the component is client side
-// export async function generateStaticParams() {
-//   const featuredArticle = await getFeaturedArticle();
-//   const articles = await getArticles(featuredArticle.data.id);
-
-//   const data = articles.data
-//     .filter((article) => article.id !== featuredArticle.data.id)
-//     .map((article) => ({ lng: fallbackLng, slug: article.attributes.Slug }));
-
-//   return data;
-// }
