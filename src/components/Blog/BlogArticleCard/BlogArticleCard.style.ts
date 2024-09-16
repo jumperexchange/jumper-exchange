@@ -113,7 +113,7 @@ export const BlogArticleCardTitleSkeleton = styled(Skeleton)(({ theme }) => ({
 }));
 
 interface BlogArticleCardMetaContainerProps extends BoxProps {
-  hasTags?: boolean;
+  hasTags: boolean;
 }
 
 export const BlogArticleCardMetaContainer = styled(Box, {
@@ -125,8 +125,7 @@ export const BlogArticleCardMetaContainer = styled(Box, {
   color: theme.palette.text.primary,
   '*': { textWrap: 'nowrap' },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginLeft: theme.spacing(1),
-    ...(hasTags && { marginLeft: theme.spacing(2) }),
+    ...(hasTags && { marginLeft: theme.spacing(1) }),
   },
 }));
 

@@ -38,7 +38,6 @@ export const BlogArticleCard = ({
   const minRead = readingTime(article.attributes.Content);
   const { t } = useTranslation();
   const { closeAllMenus } = useMenuStore((state) => state);
-
   const handleClick = () => {
     trackEvent({
       category: trackingCategory,
@@ -96,7 +95,9 @@ export const BlogArticleCard = ({
                 {tag.attributes.Title}
               </BlogArticleCardTag>
             ))}
-            <BlogArticleCardMetaContainer>
+            <BlogArticleCardMetaContainer
+              hasTags={article.attributes.tags?.data.length > 0}
+            >
               <BlogArticleMetaDate variant="bodyXSmall" as="span">
                 {formatDate(
                   article.attributes.publishedAt ||

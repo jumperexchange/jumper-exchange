@@ -2,7 +2,6 @@
 
 import type { BlogArticleData } from '@/types/strapi';
 import type { GetTagsResponse } from 'src/app/lib/getTags';
-import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
 import { BlogArticlesTabs } from './BlogArticlesTabs';
 
 interface BlogArticlesCollectionsProps {
@@ -43,11 +42,9 @@ export const BlogArticlesCollections = ({
 }: BlogArticlesCollectionsProps) => {
   // Apply sorting function
   sortTags(tags);
-  return !data ? (
-    Array.from({ length: tags.meta.pagination.pageSize }).map((_, index) => (
-      <BlogArticleCardSkeleton key={`blog-article-card-skeleton-${index}`} />
-    ))
-  ) : tags.data?.length > 0 ? (
+  return (
+    data &&
+    tags.data?.length > 0 &&
     tags.data?.map((tag, tagIndex: number) => {
       const pagination = {
         page: 0,
@@ -68,7 +65,5 @@ export const BlogArticlesCollections = ({
         />
       );
     })
-  ) : (
-    <p>No Content</p> //todo: find better option
   );
 };
