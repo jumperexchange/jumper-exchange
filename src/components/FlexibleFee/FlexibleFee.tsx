@@ -56,6 +56,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   const [balance, setBalance] = useState<number>(0);
   const [balanceUSD, setBalanceUSD] = useState<number>(0);
   const [amount, setAmount] = useState<string>('0');
+  const [ethPrice, setEthPrice] = useState<number | null>(null);
   const [rate, setRate] = useState<string>('0.3');
   const { accounts } = useAccounts();
   const activeAccount = accounts.filter((account) => account.isConnected);
@@ -125,6 +126,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
     const txPercentageUSDValue =
       (Number(rate) / 100) * parseFloat(route.fromAmountUSD);
     const ethPrice = balanceUSD / balance;
+    setEthPrice(ethPrice);
     const txPercentageNativeValue = txPercentageUSDValue / ethPrice;
     setAmount(txPercentageNativeValue.toString());
   };
@@ -238,7 +240,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                   />
                 </FormControl>
                 <FlexibleFeeAmountDetails variant="bodyXSmall">
-                  {`$${''}  •  ${parseFloat(String(balance)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
+                  {`${ethPrice ? `$${parseFloat(String(ethPrice * parseFloat(amount))).toFixed(2)} •` : null}  •  ${parseFloat(String(balance)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
                   {/* 
                   t('flexibleFee.availableAmount', {
                   balanceUSD: '20$',

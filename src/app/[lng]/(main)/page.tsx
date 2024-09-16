@@ -2,6 +2,7 @@ import { getCookies } from '@/app/lib/getCookies';
 import { Widgets } from '@/components/Widgets';
 import { Widget } from '@/components/Widgets/Widget';
 import App from '../../ui/app/App';
+import { FlexibleFee } from 'src/components/FlexibleFee/FlexibleFee';
 
 export default function Page() {
   const variant = 'default'; // exchange
