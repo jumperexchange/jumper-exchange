@@ -101,7 +101,6 @@ class ArticleParams {
     this.apiUrl.searchParams.set('populate[1]', 'tags');
     this.apiUrl.searchParams.set('populate[2]', 'author.Avatar');
     this.apiUrl.searchParams.set('populate[3]', 'faq_items');
-    this.apiUrl.searchParams.set('populate[4]', 'Slug');
     return this.apiUrl;
   }
 }
