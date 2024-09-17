@@ -11,9 +11,5 @@ interface BlogArticlesTabProps {
 export const BlogArticlesTab: React.FC<
   PropsWithChildren<BlogArticlesTabProps>
 > = ({ children, pageTab, index }) => {
-  return (
-    pageTab === index && (
-      <ArticlesGrid active={pageTab === index}>{children}</ArticlesGrid>
-    )
-  );
+  return pageTab === index && <ArticlesGrid>{children}</ArticlesGrid>;
 };
