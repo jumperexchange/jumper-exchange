@@ -3,6 +3,6 @@
   "localSuperfestURL": "http://localhost:3000/superfest/",
   "xUrl": "https://x.com/JumperExchange",
   "discordURL": "https://discord.com/invite/jumperexchange",
-  "exploreFilamentURL": "http://localhost:3000/quests/rewards-from-filament/",
+  "exploreFilamentURL": "https://app.filament.finance/earn",
   "aerodromeQuestsURL": "http://localhost:3000/quests/rewards-from-aerodrome-on-base/"
 }
