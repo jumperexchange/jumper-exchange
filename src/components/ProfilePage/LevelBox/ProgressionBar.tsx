@@ -1,12 +1,11 @@
 import type { LevelData } from '@/types/loyaltyPass';
 import { Box } from '@mui/material';
-import { XPIcon } from '../../illustrations/XPIcon';
-import { CenteredBox, NoSelectTypography } from '../ProfilePage.style';
 import {
   ProgressionChart,
   ProgressionChartBg,
   ProgressionChartScore,
 } from './ProgressionBar.style';
+import { LevelIndicator } from './LevelIndicator';
 
 interface ProgressionBarProps {
   points?: number;
@@ -27,27 +26,6 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
     <Box>
       {levelData ? (
         <>
-          <Box
-            sx={{
-              display: { xs: 'none', sm: 'flex' },
-              justifyContent: 'space-between',
-            }}
-          >
-            <NoSelectTypography
-              fontSize="14px"
-              lineHeight="18px"
-              fontWeight={700}
-            >
-              {`LEVEL ${levelData?.level}`}
-            </NoSelectTypography>
-            <NoSelectTypography
-              fontSize="14px"
-              lineHeight="18px"
-              fontWeight={700}
-            >
-              {`LEVEL ${levelData.level + 1}`}
-            </NoSelectTypography>
-          </Box>
           <ProgressionChart>
             <ProgressionChartScore
               points={points}
@@ -56,31 +34,21 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
             />
             <ProgressionChartBg />
           </ProgressionChart>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <CenteredBox>
-              <NoSelectTypography
-                fontSize="16px"
-                lineHeight="20px"
-                fontWeight={600}
-              >
-                {levelData.minPoints}
-              </NoSelectTypography>
-              <CenteredBox sx={{ marginLeft: '8px' }}>
-                <XPIcon size={24} />
-              </CenteredBox>
-            </CenteredBox>
-            <CenteredBox>
-              <NoSelectTypography
-                fontSize={'16px'}
-                lineHeight={'20px'}
-                fontWeight={600}
-              >
-                {levelData.maxPoints}
-              </NoSelectTypography>
-              <CenteredBox sx={{ marginLeft: '8px' }}>
-                <XPIcon size={24} />
-              </CenteredBox>
-            </CenteredBox>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginTop: '24px',
+            }}
+          >
+            <LevelIndicator
+              level={levelData.level}
+              points={levelData.minPoints}
+            />
+            <LevelIndicator
+              level={levelData.level + 1}
+              points={levelData.maxPoints}
+            />
           </Box>
         </>
       ) : null}
