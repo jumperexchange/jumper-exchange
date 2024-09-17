@@ -18,7 +18,7 @@ import {
   BlogArticlesCollectionsHeader,
   BlogArticlesCollectionsTitle,
 } from './BlogArticlesCollections.style';
-import { BlogArticlesTab } from './BlogArticlesTab';
+import { ArticlesGrid } from './BlogArticlesTabs.style';
 
 interface BlogArticlesTabsProps {
   index: number;
@@ -54,28 +54,27 @@ export function BlogArticlesTabs({
             {tag.attributes.Title}
           </BlogArticlesCollectionsTitle>
         </BlogArticlesCollectionsHeader>
-        {chunkedPages.map((page, pageIndex) => (
-          <BlogArticlesTab
-            pageTab={pageTab}
-            index={pageIndex}
-            key={`blog-article-tab-${pageIndex}`}
-          >
-            {page.map((article, articleIndex: number) => (
-              <BlogArticleCard
-                styles={{
-                  display: 'inline-block',
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    width: '100%',
-                  },
-                }}
-                article={article}
-                baseUrl={tags.url}
-                key={`blog-articles-collection-${index}-${articleIndex}`}
-                trackingCategory={TrackingCategory.BlogArticlesCollection}
-              />
-            ))}
-          </BlogArticlesTab>
-        ))}
+        {chunkedPages.map(
+          (page, pageIndex) =>
+            pageTab === pageIndex && (
+              <ArticlesGrid key={`blog-article-tab-${pageIndex}-`}>
+                {page.map((article, articleIndex: number) => (
+                  <BlogArticleCard
+                    styles={{
+                      display: 'inline-block',
+                      [theme.breakpoints.up('sm' as Breakpoint)]: {
+                        width: '100%',
+                      },
+                    }}
+                    article={article}
+                    baseUrl={tags.url}
+                    key={`blog-articles-collection-${index}-${articleIndex}`}
+                    trackingCategory={TrackingCategory.BlogArticlesCollection}
+                  />
+                ))}
+              </ArticlesGrid>
+            ),
+        )}
       </Box>
       {
         /* todo: enable pagination*/
