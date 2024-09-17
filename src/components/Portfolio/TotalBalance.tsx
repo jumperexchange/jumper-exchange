@@ -1,6 +1,17 @@
 import { WalletCardContainer } from '@/components/Menus';
-import { alpha, IconButton, Skeleton, Stack, Tooltip, Typography, useTheme } from '@mui/material';
-import { TotalValue, VariationValue } from '@/components/Portfolio/Portfolio.styles';
+import {
+  alpha,
+  IconButton,
+  Skeleton,
+  Stack,
+  Tooltip,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import {
+  TotalValue,
+  VariationValue,
+} from '@/components/Portfolio/Portfolio.styles';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -22,10 +33,7 @@ interface TotalBalanceProps {
   totalValue: number;
 }
 
-function TotalBalance({
-  refetch,
-  totalValue,
-}: TotalBalanceProps) {
+function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
   const { t } = useTranslation();
@@ -52,8 +60,8 @@ function TotalBalance({
     const differencePercent =
       portfolio.lastTotalValue !== 0
         ? ((totalValue - portfolio.lastTotalValue) /
-          Math.abs(portfolio.lastTotalValue)) *
-        100
+            Math.abs(portfolio.lastTotalValue)) *
+          100
         : 0;
 
     setDifferenceValue(differenceValue);
@@ -70,7 +78,8 @@ function TotalBalance({
         <Typography
           fontWeight={500}
           fontSize={12}
-          color={(theme) => theme.palette.alphaDark700.main}>
+          color={(theme) => theme.palette.alphaDark700.main}
+        >
           <Tooltip title={t('navbar.walletMenu.refreshBalances')}>
             <IconButton
               size="small"
@@ -97,15 +106,21 @@ function TotalBalance({
           {differenceValue !== 0 && (
             <Stack direction="row" spacing="4px">
               <VariationValue
-                color={(theme) => theme.palette[differenceValue > 0 ? 'success' : 'error'].main}
+                color={(theme) =>
+                  theme.palette[differenceValue > 0 ? 'success' : 'error'].main
+                }
               >
-                {differenceValue > 0 ? <ArrowUpwardIcon fontSize="inherit" /> : <ArrowDownwardIcon />}
+                {differenceValue > 0 ? (
+                  <ArrowUpwardIcon fontSize="inherit" />
+                ) : (
+                  <ArrowDownwardIcon />
+                )}
                 {differencePercent?.toFixed(2)}%
               </VariationValue>
               <VariationValue
-                color={(theme) => theme.palette.alphaDark700.main}>
-                •
-                ${differenceValue?.toFixed(2)}
+                color={(theme) => theme.palette.alphaDark700.main}
+              >
+                • ${differenceValue?.toFixed(2)}
               </VariationValue>
             </Stack>
           )}

@@ -2,7 +2,8 @@
 
 import { ButtonSecondary, ButtonTransparent } from '@/components/Button';
 import { avatarMask32 } from '@/components/Mask.style';
-import { alpha, Breakpoint, ButtonProps } from '@mui/material';
+import type { Breakpoint, ButtonProps } from '@mui/material';
+import { alpha } from '@mui/material';
 import { Avatar, Badge, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 

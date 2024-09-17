@@ -1,6 +1,13 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import { useMenuStore } from '@/stores/menu';
-import { Drawer, IconButton, Menu, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Drawer,
+  IconButton,
+  Menu,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WalletButton } from '.';
@@ -70,14 +77,15 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         zIndex: 1500,
       }}
     >
-        <Stack
-          direction="row"
-          justifyContent="space-between"
+      <Stack direction="row" justifyContent="space-between">
+        <IconButton
+          aria-label="close"
+          onClick={() => setWalletMenuState(false)}
+          color="primary"
         >
-        <IconButton aria-label="close" onClick={() => setWalletMenuState(false)} color="primary">
           <CloseIcon />
         </IconButton>
-{/*        {openWalletSelectMenu && !isPopper ? (
+        {/*        {openWalletSelectMenu && !isPopper ? (
           <MenuPaper show={openWalletSelectMenu && !isPopper}>
             <Box
               component="ul"
@@ -104,28 +112,28 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
             </Box>
           </MenuPaper>
         ) : (*/}
-          <WalletButton
-            sx={{ width: 'auto' }}
-            onClick={() => {
-              setWalletSelectMenuState(true, false);
+        <WalletButton
+          sx={{ width: 'auto' }}
+          onClick={() => {
+            setWalletSelectMenuState(true, false);
+          }}
+        >
+          <Typography
+            sx={{
+              color: theme.palette.text.primary,
             }}
+            variant="bodySmallStrong"
           >
-            <Typography
-              sx={{
-                color: theme.palette.text.primary,
-              }}
-              variant="bodySmallStrong"
-            >
-              {t('navbar.walletMenu.connectAnotherWallet')}
-            </Typography>
-          </WalletButton>
+            {t('navbar.walletMenu.connectAnotherWallet')}
+          </Typography>
+        </WalletButton>
         {/*)}*/}
-        </Stack>
-        {accounts.map((account) =>
-          account.isConnected ? (
-            <WalletCard key={account.address} account={account} />
-          ) : null,
-        )}
+      </Stack>
+      {accounts.map((account) =>
+        account.isConnected ? (
+          <WalletCard key={account.address} account={account} />
+        ) : null,
+      )}
       <Portfolio />
     </Drawer>
   );

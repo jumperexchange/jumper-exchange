@@ -65,6 +65,6 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
 
     '&:last-child': {
       marginLeft: '-6px',
-    }
+    },
   },
 }));

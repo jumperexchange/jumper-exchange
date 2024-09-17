@@ -1,9 +1,11 @@
 import {
   AccordionDetails,
-  Avatar, AvatarGroup,
+  Avatar,
+  AvatarGroup,
   Button,
   Grid,
-  IconButton, Skeleton,
+  IconButton,
+  Skeleton,
   Stack,
   Tooltip,
   useTheme,
@@ -51,47 +53,27 @@ function Portfolio() {
 
   return (
     <>
-      <TotalBalance
-        refetch={refetch}
-        totalValue={totalValue}
-      />
+      <TotalBalance refetch={refetch} totalValue={totalValue} />
       <Stack spacing={1}>
-        {false && new Array(8).fill(undefined).map((token) => (
-          <WalletCardContainer>
-            <Stack direction="row" spacing={1}>
-                <Skeleton
-                  variant="circular"
-                  width={40}
-                  height={40}
-                />
-              <Stack direction="column" alignItems="center" spacing={1}>
-                <Skeleton
-                  variant="rectangular"
-                  width={100}
-                  height={24}
-                />
-                <Skeleton
-                  variant="text"
-                  width={100}
-                  height={24}
-                />
+        {false &&
+          new Array(8).fill(undefined).map((token) => (
+            <WalletCardContainer>
+              <Stack direction="row" spacing={1}>
+                <Skeleton variant="circular" width={40} height={40} />
+                <Stack direction="column" alignItems="center" spacing={1}>
+                  <Skeleton variant="rectangular" width={100} height={24} />
+                  <Skeleton variant="text" width={100} height={24} />
+                </Stack>
+                <Stack direction="column" alignItems="center" spacing={1}>
+                  <Skeleton variant="rectangular" width={100} height={24} />
+                  <Skeleton variant="text" width={100} height={24} />
+                </Stack>
               </Stack>
-              <Stack direction="column" alignItems="center" spacing={1}>
-                <Skeleton
-                  variant="rectangular"
-                  width={100}
-                  height={24}
-                />
-                <Skeleton
-                  variant="text"
-                  width={100}
-                  height={24}
-                />
-              </Stack>
-            </Stack>
-          </WalletCardContainer>
+            </WalletCardContainer>
+          ))}
+        {(data || []).map((token, index) => (
+          <PortfolioToken token={token} key={index} />
         ))}
-        {(data || []).map((token, index) => <PortfolioToken token={token} key={index} />)}
       </Stack>
     </>
   );

@@ -1,21 +1,13 @@
 import { WalletCardContainer } from '@/components/Menus';
 import { Skeleton, Stack } from '@mui/material';
 
-function TotalBalanceSkeleton () {
+function TotalBalanceSkeleton() {
   return (
     <WalletCardContainer>
       <Stack direction="column" spacing={1}>
         <Stack direction="row" alignItems="center" spacing={1}>
-          <Skeleton
-            variant="circular"
-            width={34}
-            height={34}
-          />
-          <Skeleton
-            variant="rectangular"
-            width={100}
-            height={24}
-          />
+          <Skeleton variant="circular" width={34} height={34} />
+          <Skeleton variant="rectangular" width={100} height={24} />
         </Stack>
         <Skeleton
           sx={(theme) => ({
