@@ -47,6 +47,7 @@
     "react-error-boundary": "^4.0.13",
     "react-i18next": "^15.0.1",
     "react-router-dom": "^6.26.0",
+    "shallow-equal": "^3.1.0",
     "sharp": "^0.33.4",
     "siwe": "^2.3.2",
     "typescript": "^5.5.4",
