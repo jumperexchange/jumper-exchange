@@ -1,5 +1,5 @@
 'use client';
-import type { RouteExtended } from '@lifi/sdk';
+import type { ChainId, RouteExtended } from '@lifi/sdk';
 import { type Route } from '@lifi/sdk';
 
 import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
@@ -26,11 +26,31 @@ import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
 
+interface PreviousRoutesRefProps {
+  numRoutes?: number;
+  fromToken?: string;
+  fromChain?: ChainId;
+  toToken?: string;
+  toChain?: ChainId;
+  txHash?: string;
+}
+
 export function WidgetEvents() {
-  const lastTxHashRef = useRef<string>();
+  const previousRoutesRef = useRef<PreviousRoutesRefProps>({
+    numRoutes: undefined,
+    fromToken: undefined,
+    fromChain: undefined,
+    toToken: undefined,
+    toChain: undefined,
+    txHash: undefined,
+  });
   const { activeTab } = useActiveTabStore();
-  const { setDestinationChainToken, setSourceChainToken } =
-    useChainTokenSelectionStore();
+  const {
+    sourceChainToken,
+    destinationChainToken,
+    setDestinationChainToken,
+    setSourceChainToken,
+  } = useChainTokenSelectionStore();
   const { trackTransaction, trackEvent } = useUserTracking();
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
@@ -80,8 +100,8 @@ export function WidgetEvents() {
       }
 
       if (update.process && update.route) {
-        if (update.process.txHash !== lastTxHashRef.current) {
-          lastTxHashRef.current = update.process.txHash;
+        if (update.process.txHash !== previousRoutesRef.current.txHash) {
+          previousRoutesRef.current.txHash = update.process.txHash;
           // trackTransaction({
           //   category: TrackingCategory.WidgetEvent,
           //   action: TrackingAction.OnRouteExecutionUpdated,
@@ -204,17 +224,46 @@ export function WidgetEvents() {
     };
 
     const onAvailableRoutes = async (availableRoutes: Route[]) => {
-      trackEvent({
-        category: TrackingCategory.WidgetEvent,
-        action: TrackingAction.OnAvailableRoutes,
-        label: `routes_available`,
-        enableAddressable: true,
-        data: {
-          [TrackingEventParameter.AvailableRoutesCount]: availableRoutes.length,
-        },
-      });
+      // Compare current availableRoutes with the previous one
+      if (
+        !previousRoutesRef.current ||
+        previousRoutesRef.current.numRoutes !== availableRoutes.length ||
+        previousRoutesRef.current.fromChain !== sourceChainToken.chainId ||
+        previousRoutesRef.current.fromToken !== sourceChainToken.tokenAddress ||
+        previousRoutesRef.current.toChain !== destinationChainToken.chainId ||
+        previousRoutesRef.current.toToken !== destinationChainToken.tokenAddress
+      ) {
+        // Update the previous routes ref to the current available routes
+        previousRoutesRef.current.numRoutes = availableRoutes.length;
+        previousRoutesRef.current.fromChain = sourceChainToken.chainId;
+        previousRoutesRef.current.fromToken = sourceChainToken.tokenAddress;
+        previousRoutesRef.current.toChain = destinationChainToken.chainId;
+        previousRoutesRef.current.toToken = destinationChainToken.tokenAddress;
+        trackEvent({
+          category: TrackingCategory.WidgetEvent,
+          action: TrackingAction.OnAvailableRoutes,
+          label: `routes_available`,
+          enableAddressable: true,
+          data: {
+            [TrackingEventParameter.AvailableRoutesCount]:
+              availableRoutes.length,
+            ...((previousRoutesRef.current.fromChain ||
+              previousRoutesRef.current.fromToken ||
+              previousRoutesRef.current.toToken ||
+              previousRoutesRef.current.toChain) && {
+              [TrackingEventParameter.FromToken]:
+                previousRoutesRef.current.fromToken,
+              [TrackingEventParameter.FromChainId]:
+                previousRoutesRef.current.fromChain,
+              [TrackingEventParameter.ToChainId]:
+                previousRoutesRef.current.toChain,
+              [TrackingEventParameter.ToToken]:
+                previousRoutesRef.current.toToken,
+            }),
+          },
+        });
+      }
     };
-
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
@@ -275,11 +324,14 @@ export function WidgetEvents() {
     };
   }, [
     activeTab,
+    destinationChainToken.chainId,
+    destinationChainToken.tokenAddress,
     setDestinationChain,
     setDestinationChainToken,
     setSourceChainToken,
     setSupportModalState,
     shouldOpenMultisigSignatureModal,
+    sourceChainToken,
     trackEvent,
     trackTransaction,
     widgetEvents,
