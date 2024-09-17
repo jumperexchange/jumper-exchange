@@ -109,30 +109,30 @@ export const useMainMenuContent = () => {
   }
 
   if (!forcedTheme && isMainPaths) {
-    mainMenu.push({
-      label: t('navbar.navbarMenu.theme'),
-      prefixIcon: <PaletteIcon />,
-      triggerSubMenu: !['dark', 'light'].includes(configTheme?.uid)
-        ? MenuKeysEnum.Theme
-        : undefined,
-      showMoreIcon: !['dark', 'light'].includes(configTheme?.uid),
-      suffixIcon: configTheme?.uid && (
-        <Typography
-          variant="bodyMedium"
-          textTransform={'uppercase'}
-          sx={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            maxWidth: 38,
-          }}
-        >
-          {configTheme.uid}
-        </Typography>
-      ),
-      onClick: () => {
-        setSubMenuState(MenuKeysEnum.Theme);
-      },
-    });
+    // mainMenu.push({
+    //   label: t('navbar.navbarMenu.theme'),
+    //   prefixIcon: <PaletteIcon />,
+    //   triggerSubMenu: !['dark', 'light'].includes(configTheme?.uid)
+    //     ? MenuKeysEnum.Theme
+    //     : undefined,
+    //   showMoreIcon: !['dark', 'light'].includes(configTheme?.uid),
+    //   suffixIcon: configTheme?.uid && (
+    //     <Typography
+    //       variant="bodyMedium"
+    //       textTransform={'uppercase'}
+    //       sx={{
+    //         overflow: 'hidden',
+    //         textOverflow: 'ellipsis',
+    //         maxWidth: 38,
+    //       }}
+    //     >
+    //       {configTheme.uid}
+    //     </Typography>
+    //   ),
+    //   onClick: () => {
+    //     setSubMenuState(MenuKeysEnum.Theme);
+    //   },
+    // });
   }
 
   mainMenu = mainMenu.concat([
@@ -164,22 +164,6 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeysEnum.Devs,
       onClick: () => {
         setSubMenuState(MenuKeysEnum.Devs);
-      },
-    },
-    {
-      label: t('navbar.navbarMenu.fest'),
-      prefixIcon: <OPLogo />,
-      showMoreIcon: false,
-      link: { url: '/superfest/' },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-jumper-fest-link',
-          action: TrackingAction.ClickJumperProfileLink,
-          data: { [TrackingEventParameter.Menu]: 'fest' },
-        });
-        closeAllMenus();
-        router.push(JUMPER_FEST_PATH);
       },
     },
     {

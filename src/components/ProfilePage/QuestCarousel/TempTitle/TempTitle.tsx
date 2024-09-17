@@ -46,7 +46,7 @@ export const TempTitle = () => {
               : PROFILE_CAMPAIGN_LIGHT_COLOR
           }
         >
-          Super SEIyan Week
+          {/* Super SEIyan Week */}
         </EarnedTypography>
         {/* <Typography
           marginTop={'4px'}
