@@ -1,6 +1,6 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import { useMenuStore } from '@/stores/menu';
-import { Drawer, Menu, Stack, Typography, useTheme } from '@mui/material';
+import { Drawer, IconButton, Menu, Stack, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WalletButton } from '.';
@@ -10,6 +10,8 @@ import WalletSelectMenuContent from '@/components/Menus/WalletSelectMenu/WalletS
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { Box } from '@mui/system';
 import { MenuPaper } from '@/components/Menu';
+import shadows from '@mui/material/styles/shadows';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface WalletMenuProps {
   anchorEl?: HTMLAnchorElement;
@@ -47,6 +49,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
 
   return (
     <Drawer
+      hideBackdrop
       anchor="right"
       open={openWalletMenu}
       onClose={() => {
@@ -57,25 +60,24 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         sx: (theme) => ({
           width: '100%',
           padding: '1.25rem',
-          gap: '32px',
+          boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
+          gap: theme.spacing(3),
           maxWidth: 450,
-          background: theme.palette.background.default,
+          background: '#F9F5FF', // theme.palette.surface2.main into the figma, which is not matching the right color, might need to be updated
         }),
       }}
       sx={{
         zIndex: 1500,
       }}
     >
-      <Stack
-        spacing={2}
-        sx={{ padding: '0 !important', margin: '0 !important' }}
-      >
-        {accounts.map((account) =>
-          account.isConnected ? (
-            <WalletCard key={account.address} account={account} />
-          ) : null,
-        )}
-        {openWalletSelectMenu && !isPopper ? (
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+        >
+        <IconButton aria-label="close" onClick={() => setWalletMenuState(false)} color="primary">
+          <CloseIcon />
+        </IconButton>
+{/*        {openWalletSelectMenu && !isPopper ? (
           <MenuPaper show={openWalletSelectMenu && !isPopper}>
             <Box
               component="ul"
@@ -101,26 +103,29 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
               />
             </Box>
           </MenuPaper>
-        ) : (
+        ) : (*/}
           <WalletButton
-            sx={{ width: '100%' }}
+            sx={{ width: 'auto' }}
             onClick={() => {
               setWalletSelectMenuState(true, false);
             }}
           >
             <Typography
               sx={{
-                color: isDarkMode
-                  ? theme.palette.white.main
-                  : theme.palette.black.main,
+                color: theme.palette.text.primary,
               }}
               variant="bodySmallStrong"
             >
               {t('navbar.walletMenu.connectAnotherWallet')}
             </Typography>
           </WalletButton>
+        {/*)}*/}
+        </Stack>
+        {accounts.map((account) =>
+          account.isConnected ? (
+            <WalletCard key={account.address} account={account} />
+          ) : null,
         )}
-      </Stack>
       <Portfolio />
     </Drawer>
   );

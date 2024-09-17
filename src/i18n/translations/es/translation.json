@@ -45,7 +45,8 @@
       "copiedMsg": "Dirección de billetera copiada",
       "walletNotInstalled": "{{wallet}} no está instalado",
       "connectAnotherWallet": "Conectar otra billetera",
-      "refreshBalances": ""
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "Cambiar a tema claro",

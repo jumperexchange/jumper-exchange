@@ -45,7 +45,8 @@
       "copiedMsg": "",
       "walletNotInstalled": "",
       "connectAnotherWallet": "",
-      "refreshBalances": ""
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "",

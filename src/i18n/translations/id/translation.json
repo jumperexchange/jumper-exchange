@@ -45,7 +45,8 @@
       "copiedMsg": "Alamat dompet disalin",
       "walletNotInstalled": "{{wallet}} belum terinstall",
       "connectAnotherWallet": "Hubungkan dompet yang lain",
-      "refreshBalances": ""
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "Beralih ke Tema Terang",

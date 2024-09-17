@@ -51,6 +51,7 @@ interface Resources {
         walletNotInstalled: '{{wallet}} is not installed';
         connectAnotherWallet: 'Connect another wallet';
         refreshBalances: 'Refresh balances';
+        totalBalance: 'Total balance';
       };
       themes: {
         switchToLight: 'Switch to light mode';

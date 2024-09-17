@@ -45,7 +45,8 @@
       "copiedMsg": "Indirizzo del portafogli copiato",
       "walletNotInstalled": "",
       "connectAnotherWallet": "",
-      "refreshBalances": ""
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "Passa al tema chiaro",

@@ -2,7 +2,7 @@
 
 import { ButtonSecondary, ButtonTransparent } from '@/components/Button';
 import { avatarMask32 } from '@/components/Mask.style';
-import type { Breakpoint, ButtonProps } from '@mui/material';
+import { alpha, Breakpoint, ButtonProps } from '@mui/material';
 import { Avatar, Badge, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -47,7 +47,12 @@ export const WalletButton = styled(ButtonTransparent, {
 })<WalletButtonProps>(({ theme, colored }) => ({
   borderRadius: '24px',
   padding: '10px 24px',
+  height: 40,
   width: '100%',
+  background: alpha(theme.palette.text.primary, 0.04),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.text.primary, 0.08),
+  },
 }));
 
 export const WalletButtonSecondary = styled(ButtonSecondary, {

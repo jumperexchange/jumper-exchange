@@ -43,7 +43,8 @@
       "copiedMsg": "Wallet address copied",
       "walletNotInstalled": "{{wallet}} is not installed",
       "connectAnotherWallet": "Connect another wallet",
-      "refreshBalances": "Refresh balances"
+      "refreshBalances": "Refresh balances",
+      "totalBalance": "Total balance"
     },
     "themes": {
       "switchToLight": "Switch to light mode",

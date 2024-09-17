@@ -45,7 +45,8 @@
       "copiedMsg": "ウォレットアドレスをコピーしました",
       "walletNotInstalled": "{{wallet}} はインストールされていません。",
       "connectAnotherWallet": "別のウォレットを接続する",
-      "refreshBalances": ""
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "ライトモード",

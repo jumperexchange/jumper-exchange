@@ -45,7 +45,8 @@
       "copiedMsg": "钱包地址已复制",
       "walletNotInstalled": "{{wallet}} 钱包没有安装",
       "connectAnotherWallet": "连接另一个钱包",
-      "refreshBalances": ""
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "切换到浅色主题",

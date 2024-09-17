@@ -12,10 +12,10 @@ export const TotalValue = styled(Typography)(({ theme }) => ({
 }));
 
 export const VariationValue = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.secondary,
   textOverflow: 'ellipsis',
-  fontWeight: '700',
-  fontSize: '0.875rem',
+  fontWeight: '500',
+  fontSize: '0.75rem',
+  lineHeight: '16px',
   display: 'flex',
   alignItems: 'center',
 }));

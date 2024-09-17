@@ -45,7 +45,8 @@
       "copiedMsg": "Địa chỉ ví đã được sao chép",
       "walletNotInstalled": "{{wallet}} chưa được cài đặt",
       "connectAnotherWallet": "Kết nối ví khác",
-      "refreshBalances": ""
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "Đổi sang Chế độ nền sáng",

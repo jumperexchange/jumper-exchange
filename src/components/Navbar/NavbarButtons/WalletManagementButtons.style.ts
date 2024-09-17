@@ -24,6 +24,7 @@ export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
 export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
   padding: theme.spacing(1),
   paddingRight: theme.spacing(1.5),
+  gap: '0.5rem',
   backgroundColor:
     theme.palette.mode === 'dark'
       ? theme.palette.alphaLight300.main

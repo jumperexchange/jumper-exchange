@@ -20,7 +20,8 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
 
   return (
     <Menu
-      open={openWalletSelectMenu && isPopper}
+      open={openWalletSelectMenu}
+      // open={openWalletSelectMenu && isPopper}
       cardsLayout={openSubMenu === MenuKeysEnum.WalletSelectMore ? false : true}
       styles={{
         display: 'grid',
@@ -39,7 +40,8 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
       anchorEl={anchorEl}
     >
       <WalletSelectMenuContent
-        openWalletSelectMenu={openWalletSelectMenu && isPopper}
+        openWalletSelectMenu={openWalletSelectMenu}
+        // openWalletSelectMenu={openWalletSelectMenu && isPopper}
         showAllButton
       />
     </Menu>

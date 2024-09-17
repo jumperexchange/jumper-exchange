@@ -45,7 +45,8 @@
       "copiedMsg": "지갑 주소 복사 완료",
       "walletNotInstalled": "",
       "connectAnotherWallet": "",
-      "refreshBalances": ""
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "라이트 모드로 전환",

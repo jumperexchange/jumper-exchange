@@ -45,7 +45,8 @@
       "copiedMsg": "Cüzdan Adresi kopyalandı",
       "walletNotInstalled": "{{wallet}} kurulu değil",
       "connectAnotherWallet": "Başka bir cüzdana bağlan",
-      "refreshBalances": ""
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "Açık temaya geç",
