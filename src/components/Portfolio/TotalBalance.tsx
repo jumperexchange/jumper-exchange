@@ -1,5 +1,5 @@
 import { WalletCardContainer } from '@/components/Menus';
-import { alpha, IconButton, Stack, Tooltip, Typography, useTheme } from '@mui/material';
+import { alpha, IconButton, Skeleton, Stack, Tooltip, Typography, useTheme } from '@mui/material';
 import { TotalValue, VariationValue } from '@/components/Portfolio/Portfolio.styles';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { isEqual } from 'lodash';
 import { useAccounts } from '@/hooks/useAccounts';
 import { usePortfolioStore } from '@/stores/portfolio';
+import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -28,7 +29,6 @@ function TotalBalance({
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
   const { t } = useTranslation();
-  const theme = useTheme();
   const { accounts } = useAccounts();
   const portfolio = usePortfolioStore((state) => state);
 
@@ -60,6 +60,10 @@ function TotalBalance({
     setDifferencePercent(differencePercent);
   }, [totalValue]);
 
+  if (!totalValue) {
+    return <TotalBalanceSkeleton />;
+  }
+
   return (
     <WalletCardContainer>
       <Stack spacing={1}>
@@ -90,21 +94,21 @@ function TotalBalance({
         </Typography>
         <TotalValue>${totalValue.toFixed(2)}</TotalValue>
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">
-            {differenceValue !== 0 && (
-              <Stack direction="row" spacing="4px">
-                <VariationValue
-                  color={(theme) => theme.palette[differenceValue > 0 ? 'success' : 'error'].main}
-                >
-                  {differenceValue > 0 ? <ArrowUpwardIcon fontSize="inherit" /> : <ArrowDownwardIcon />}
-                  {differencePercent?.toFixed(2)}%
-                </VariationValue>
-                <VariationValue
-                  color={(theme) => theme.palette.alphaDark700.main}>
-                  •
-                  ${differenceValue?.toFixed(2)}
-                </VariationValue>
-              </Stack>
-            )}
+          {differenceValue !== 0 && (
+            <Stack direction="row" spacing="4px">
+              <VariationValue
+                color={(theme) => theme.palette[differenceValue > 0 ? 'success' : 'error'].main}
+              >
+                {differenceValue > 0 ? <ArrowUpwardIcon fontSize="inherit" /> : <ArrowDownwardIcon />}
+                {differencePercent?.toFixed(2)}%
+              </VariationValue>
+              <VariationValue
+                color={(theme) => theme.palette.alphaDark700.main}>
+                •
+                ${differenceValue?.toFixed(2)}
+              </VariationValue>
+            </Stack>
+          )}
         </Stack>
       </Stack>
     </WalletCardContainer>

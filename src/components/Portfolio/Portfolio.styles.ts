@@ -21,14 +21,17 @@ export const VariationValue = styled(Typography)(({ theme }) => ({
 }));
 
 export const CustomAccordion = styled(Accordion)(({ theme }) => ({
-  background: 'transparent',
+  // background: 'transparent',
   border: 0,
   boxShadow: 'none',
+  width: '100%',
 
   '& .MuiAccordionSummary-root': {
-    padding: 0,
+    padding: '16px',
+    borderRadius: 12,
+
     '&:hover': {
-      background: lighten(theme.palette.secondary.main, 0.16),
+      background: 'rgba(0, 0, 0, 0.04)',
     },
   },
 }));
@@ -38,10 +41,11 @@ export const TypographyPrimary = styled(Typography)(({ theme }) => ({
   fontSize: '1.125rem',
   fontWeight: 700,
   lineHeight: '1.5rem',
+  alignSelf: 'stretch',
 }));
 
 export const TypographySecondary = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.secondary,
+  color: theme.palette.alphaDark700.main,
   fontSize: '0.75rem',
   fontWeight: 500,
   lineHeight: '1rem',
@@ -58,6 +62,9 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
     width: 16,
     height: 16,
     border: '3px solid white',
-    marginLeft: 0,
+
+    '&:last-child': {
+      marginLeft: '-6px',
+    }
   },
 }));

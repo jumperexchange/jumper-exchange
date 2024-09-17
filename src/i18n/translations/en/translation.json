@@ -44,7 +44,8 @@
       "walletNotInstalled": "{{wallet}} is not installed",
       "connectAnotherWallet": "Connect another wallet",
       "refreshBalances": "Refresh balances",
-      "totalBalance": "Total balance"
+      "totalBalance": "Total balance",
+      "numberOfChains": "{{numberOfChains}} chains"
     },
     "themes": {
       "switchToLight": "Switch to light mode",

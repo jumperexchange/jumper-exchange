@@ -49,7 +49,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
 
   return (
     <Drawer
-      hideBackdrop
+      variant="persistent"
       anchor="right"
       open={openWalletMenu}
       onClose={() => {
@@ -61,7 +61,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           width: '100%',
           padding: '1.25rem',
           boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
-          gap: theme.spacing(3),
+          gap: theme.spacing(2),
           maxWidth: 450,
           background: '#F9F5FF', // theme.palette.surface2.main into the figma, which is not matching the right color, might need to be updated
         }),

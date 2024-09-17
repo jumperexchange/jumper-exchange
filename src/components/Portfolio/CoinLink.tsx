@@ -9,7 +9,7 @@ import type { ExtendedChain } from '@lifi/sdk';
 import type { ExtendedTokenAmount } from '@/utils/getTokens';
 import React from 'react';
 
-function buildUrl(chain: ExtendedChain, token: ExtendedTokenAmount) {
+export function buildUrl(chain: ExtendedChain, token: ExtendedTokenAmount) {
   return {
     fromChain: chain.id,
     fromToken: token.address,
@@ -20,18 +20,21 @@ interface CoinLinkProps {
   children: React.ReactNode;
   chain: ExtendedChain;
   token: ExtendedTokenAmount;
+  style?: any;
 }
 
-function CoinLink({ chain, token, children }: CoinLinkProps) {
-  const { setWalletMenuState } = useMenuStore((state) => state);
+function CoinLink({ chain, token, children, style = {} }: CoinLinkProps) {
+  // const { setWalletMenuState } = useMenuStore((state) => state);
 
   return (
     <Link
       href={`/?${qs.stringify(buildUrl(chain, token))}`}
       passHref
+      style={style}
       key={generateKey(`${chain}-${token}`)}
-      onClick={() => {
-        setWalletMenuState(false);
+      onClick={(event: React.MouseEvent<HTMLElement>) => {
+        event.stopPropagation();
+        // setWalletMenuState(false);
       }}
     >
       {children}

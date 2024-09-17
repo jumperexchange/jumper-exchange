@@ -1,9 +1,9 @@
 import {
   AccordionDetails,
-  Avatar,
+  Avatar, AvatarGroup,
   Button,
   Grid,
-  IconButton,
+  IconButton, Skeleton,
   Stack,
   Tooltip,
   useTheme,
@@ -33,6 +33,8 @@ import { useTokenBalances } from '@/hooks/useTokenBalances';
 import CoinLink from '@/components/Portfolio/CoinLink';
 import { useEffect, useState } from 'react';
 import TotalBalance from '@/components/Portfolio/TotalBalance';
+import { WalletCardContainer } from '@/components/Menus';
+import PortfolioToken from '@/components/Portfolio/PortfolioToken';
 
 function Portfolio() {
   const { t } = useTranslation();
@@ -42,10 +44,10 @@ function Portfolio() {
 
   const { isLoading, isRefetching, refetch, data, totalValue } =
     useTokenBalances(accounts);
-
-  if (isLoading || isRefetching) {
-    return <PortfolioSkeleton />;
-  }
+  //
+  // if (isLoading || isRefetching) {
+  //   return <PortfolioSkeleton />;
+  // }
 
   return (
     <>
@@ -53,87 +55,43 @@ function Portfolio() {
         refetch={refetch}
         totalValue={totalValue}
       />
-      <Stack spacing={2}>
-        {(data || []).map((token) => (
-          <CustomAccordion key={generateKey(token.symbol)}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Grid container alignItems="flext-start">
-                <Grid item xs={2}>
-                  <Avatar>
-                    {!token?.logoURI ? (
-                      <>?</>
-                    ) : (
-                      <Image
-                        width={40}
-                        height={40}
-                        src={token.logoURI}
-                        alt={token.name}
-                      />
-                    )}
-                  </Avatar>
-                </Grid>
-                <Grid item xs={5}>
-                  <TypographyPrimary>{token.symbol}</TypographyPrimary>
-                  <CustomAvatarGroup spacing={6} max={15}>
-                    {token.chains.map((chain) => (
-                      <CoinLink
-                        chain={chain}
-                        token={token}
-                        key={`${token.symbol}-${chain.key}`}
-                      >
-                        <Tooltip title={chain.name}>
-                          <Avatar alt={chain.name} src={chain.logoURI} />
-                        </Tooltip>
-                      </CoinLink>
-                    ))}
-                  </CustomAvatarGroup>
-                </Grid>
-                <Grid item xs={5} style={{ textAlign: 'right' }}>
-                  <TypographyPrimary>
-                    {token.formattedBalance?.toFixed(2)}
-                  </TypographyPrimary>
-                  <TypographySecondary>
-                    ${token.totalPriceUSD?.toFixed(2)}
-                  </TypographySecondary>
-                </Grid>
-              </Grid>
-            </AccordionSummary>
-            <AccordionDetails
-              sx={{
-                margin: 0,
-                padding: 0,
-              }}
-            >
-              <Box
-                display="flex"
-                flexWrap="wrap"
-                flexDirection="row"
-                justifyContent="flex-start"
-              >
-                {token.chains.map((chain, idx) => (
-                  <CoinLink
-                    chain={chain}
-                    token={token}
-                    key={`${token.symbol}-${chain.key}`}
-                  >
-                    <Button size="small">
-                      <Tooltip title={chain.name}>
-                        <Avatar
-                          src={chain.logoURI}
-                          alt={`Chain ${idx}`}
-                          sx={{ width: 24, height: 24, marginRight: 1 }}
-                        />
-                      </Tooltip>
-                      <TypographySecondary>
-                        {chain.formattedBalance?.toFixed(2)} {token.symbol}
-                      </TypographySecondary>
-                    </Button>
-                  </CoinLink>
-                ))}
-              </Box>
-            </AccordionDetails>
-          </CustomAccordion>
+      <Stack spacing={1}>
+        {false && new Array(8).fill(undefined).map((token) => (
+          <WalletCardContainer>
+            <Stack direction="row" spacing={1}>
+                <Skeleton
+                  variant="circular"
+                  width={40}
+                  height={40}
+                />
+              <Stack direction="column" alignItems="center" spacing={1}>
+                <Skeleton
+                  variant="rectangular"
+                  width={100}
+                  height={24}
+                />
+                <Skeleton
+                  variant="text"
+                  width={100}
+                  height={24}
+                />
+              </Stack>
+              <Stack direction="column" alignItems="center" spacing={1}>
+                <Skeleton
+                  variant="rectangular"
+                  width={100}
+                  height={24}
+                />
+                <Skeleton
+                  variant="text"
+                  width={100}
+                  height={24}
+                />
+              </Stack>
+            </Stack>
+          </WalletCardContainer>
         ))}
+        {(data || []).map((token, index) => <PortfolioToken token={token} key={index} />)}
       </Stack>
     </>
   );
