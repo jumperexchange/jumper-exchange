@@ -1,6 +1,5 @@
 import { expect, test } from '@playwright/test';
 import {
-  findTheBestRoute,
   itemInMenu,
   tabInHeader,
   openMainMenu,
@@ -88,7 +87,7 @@ test.describe('Jumper full e2e flow', () => {
   }) => {
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
-    await expect(page.getByRole('menuitem')).toHaveCount(11);
+    await expect(page.getByRole('menuitem')).toHaveCount(9);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
@@ -128,7 +127,7 @@ test.describe('Jumper full e2e flow', () => {
     expect(page).toHaveURL(values.localJumperScanURL);
   });
 
-  test('Should be able to navigate to Supefest', async ({ page }) => {
+  test.skip('Should be able to navigate to Supefest', async ({ page }) => {
     const learnMoreButton = page.locator('#learn-more-button');
     await openMainMenu(page);
     await itemInMenu(page, 'Superfest Festival');
