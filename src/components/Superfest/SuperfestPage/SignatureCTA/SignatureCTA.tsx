@@ -110,9 +110,7 @@ export const SignatureCTA = ({
           >
             <CTAExplanationBox>
               <Image
-                src={
-                  'https://strapi.jumperfoundation.com/uploads/turtle_ef319715fe.jpg'
-                }
+                src={`${process.env.NEXT_PUBLIC_STRAPI_IMAGE}/turtle_ef319715fe.jpg`}
                 alt={`logo image`}
                 width={48}
                 height={48}
@@ -137,9 +135,7 @@ export const SignatureCTA = ({
           <SeveralMissionCtaContainer onClick={handleSignatureClick}>
             <CTAExplanationBox>
               <Image
-                src={
-                  'https://strapi.jumperfoundation.com/uploads/turtle_ef319715fe.jpg'
-                }
+                src={`${process.env.NEXT_PUBLIC_STRAPI_IMAGE}/turtle_ef319715fe.jpg`}
                 alt={`logo image`}
                 width={48}
                 height={48}
