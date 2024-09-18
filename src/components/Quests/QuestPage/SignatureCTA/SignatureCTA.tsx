@@ -112,7 +112,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
           >
             <CTAExplanationBox>
               <Image
-                src={`${process.env.NEXT_PUBLIC_STRAPI_IMAGE}/turtle_ef319715fe.jpg`}
+                src={`${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/turtle_ef319715fe.jpg`}
                 alt={`logo image`}
                 width={48}
                 height={48}
@@ -137,7 +137,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
           <SeveralMissionCtaContainer onClick={handleSignatureClick}>
             <CTAExplanationBox>
               <Image
-                src={`${process.env.NEXT_PUBLIC_STRAPI_IMAGE}/turtle_ef319715fe.jpg`}
+                src={`${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/turtle_ef319715fe.jpg`}
                 alt={`logo image`}
                 width={48}
                 height={48}

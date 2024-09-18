@@ -12,28 +12,28 @@ import { LastNFTTitle } from './LastNFTTitle/LastNFTTitle';
 const NFT_ARRAY = [
   {
     chain: 'mode',
-    image: `${process.env.NEXT_PUBLIC_STRAPI_IMAGE}/mode_a66678926d.png`,
+    image: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/mode_a66678926d.png`,
     contractAddress: '',
     bgColor: '#dffe00',
     typoColor: '#000000',
   },
   {
     chain: 'base',
-    image: `${process.env.NEXT_PUBLIC_STRAPI_IMAGE}/nft_f4eee6bf7b.png`,
+    image: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/nft_f4eee6bf7b.png`,
     contractAddress: '',
     bgColor: '#2151f5',
     typoColor: '#ffffff',
   },
   {
     chain: 'optimism',
-    image: `${process.env.NEXT_PUBLIC_STRAPI_IMAGE}/nft_632580b867.png`,
+    image: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/nft_632580b867.png`,
     contractAddress: '',
     bgColor: '#ff0000',
     typoColor: '#ffffff',
   },
   {
     chain: 'fraxtal',
-    image: `${process.env.NEXT_PUBLIC_STRAPI_IMAGE}/nft_c1c8975aa4.png`,
+    image: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/nft_c1c8975aa4.png`,
     contractAddress: '',
     bgColor: '#000000',
     typoColor: '#ffffff',
@@ -74,7 +74,7 @@ export const NFTClaimingBox = () => {
           <NFTCard
             key={`nft-card-${42}`}
             chain={'box'}
-            image={`${process.env.NEXT_PUBLIC_STRAPI_IMAGE}/nft_7d22cbd21c.png`}
+            image={`${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/nft_7d22cbd21c.png`}
             bgColor={'#B6E9FB'}
             typoColor={'#000000'}
           />
