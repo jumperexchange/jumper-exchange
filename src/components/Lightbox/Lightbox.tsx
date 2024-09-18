@@ -29,6 +29,12 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
     <>
       <PreviewImage
         src={imageData?.url}
+        // read the following to udnerstand why width and height are set to 0, https://github.com/vercel/next.js/discussions/18474#discussioncomment-5501724
+        width={0}
+        height={0}
+        sizes="100vw"
+        // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        // fill
         alt={imageData.caption ?? 'article-image'}
         onClick={handleImage}
       />

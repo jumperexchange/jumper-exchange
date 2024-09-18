@@ -6,6 +6,8 @@ import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
 import type { Metadata } from 'next';
 import { sliceStrToXChar } from '@/utils/splitStringToXChar';
 import { siteName } from '@/app/lib/metadata';
+import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
+import { getArticles } from '@/app/lib/getArticles';
 
 export async function generateMetadata({
   params,
@@ -76,4 +78,14 @@ export default async function Page({ params }: { params: { slug: string } }) {
       activeThemeMode={activeThemeMode}
     />
   );
+}
+
+export async function generateStaticParams() {
+  const articles = await getArticles();
+
+  const data = articles.data.map((article) => ({
+    slug: article.attributes.Slug,
+  }));
+
+  return data;
 }

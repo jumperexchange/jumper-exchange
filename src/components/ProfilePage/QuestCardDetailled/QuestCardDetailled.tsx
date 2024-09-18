@@ -23,6 +23,8 @@ import {
   XPIconBox,
 } from './QuestCard.style';
 
+import { PROFILE_CAMPAIGN_FLASHY_APY_COLOR } from 'src/const/partnerRewardsTheme';
+
 export interface RewardsInterface {
   logo: string;
   name: string;
@@ -126,7 +128,7 @@ export const QuestCardDetailled = ({
                 {apy > 0 && !variableWeeklyAPY && (
                   <XPDisplayBox
                     active={active}
-                    bgcolor={PROFILE_CAMPAIGN_LIGHT_COLOR}
+                    bgcolor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
                   >
                     <Typography
                       fontSize="14px"
@@ -144,7 +146,7 @@ export const QuestCardDetailled = ({
                 {variableWeeklyAPY && (
                   <XPDisplayBox
                     active={active}
-                    bgcolor={PROFILE_CAMPAIGN_LIGHT_COLOR}
+                    bgcolor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
                   >
                     <Typography
                       fontSize="14px"

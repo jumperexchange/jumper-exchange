@@ -10,7 +10,7 @@ import type { MediaAttributes } from '@/types/strapi';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { isValidElement, type JSX, type ReactElement } from 'react';
-import nl2br from 'react-nl2br';
+import newlineToBr from 'src/utils/newlineToBr';
 import { BlogParagraphContainer } from './BlogArticle/BlogArticle.style';
 import type { BlogWidgetProps } from './BlogWidget';
 import { BlogWidget } from './BlogWidget';
@@ -238,12 +238,12 @@ export const CustomRichBlocks = ({
                     </BlogLink>
                   );
                 } else {
-                  const nl2brText: Array<ReactElement | string> = nl2br(
+                  const nl2brText: Array<ReactElement | string> = newlineToBr(
                     el.props.text,
                   );
                   return nl2brText.map((line, lineIndex: number) => {
                     if (isValidElement(line) && line.type === 'br') {
-                      // adds <br> from nl2br
+                      // adds <br>
                       return line;
                     }
                     return (
@@ -260,7 +260,7 @@ export const CustomRichBlocks = ({
                   });
                 }
               } else {
-                return <></>;
+                return null;
               }
             })}
           </BlogParagraphContainer>

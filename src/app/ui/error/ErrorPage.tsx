@@ -34,12 +34,6 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
         variant="primary"
         onClick={() => {
           trackEvent({
-            category: TrackingCategory.ErrorPage,
-            label: 'error-click-discord-link',
-            action: TrackingAction.OpenMenu,
-            data: { [TrackingEventParameter.Menu]: 'jumper_discord' },
-          });
-          trackEvent({
             category: TrackingCategory.Pageload,
             action: TrackingAction.PageLoad,
             label: 'error-discord-jumper',
