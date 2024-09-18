@@ -1,12 +1,12 @@
 'use client';
-import { createWithEqualityFn } from 'zustand/traditional';
+import { createWithEqualityFn as create } from 'zustand/traditional';
 
 interface ActiveTabState {
   activeTab: number | boolean;
   setActiveTab: (tab: number | boolean) => void;
 }
 
-export const useActiveTabStore = createWithEqualityFn<ActiveTabState>(
+export const useActiveTabStore = create<ActiveTabState>(
   (set) => ({
     activeTab: 0, //TabsMap.Exchange.index,
     setActiveTab: (tab) => set({ activeTab: tab }),

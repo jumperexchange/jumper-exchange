@@ -1,9 +1,9 @@
 import type { MultisigState } from '@/types/multisig';
 import type { ChainId } from '@lifi/types';
 import { shallow } from 'zustand/shallow';
-import { createWithEqualityFn } from 'zustand/traditional';
+import { createWithEqualityFn as create } from 'zustand/traditional';
 
-export const useMultisigStore = createWithEqualityFn<MultisigState>(
+export const useMultisigStore = create<MultisigState>(
   (set) => ({
     destinationChain: undefined,
 

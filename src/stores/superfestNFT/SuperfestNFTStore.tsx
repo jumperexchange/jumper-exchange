@@ -3,9 +3,9 @@ import type { SuperfestNFTState } from 'src/types/SuperfestNFTStore';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
-import { createWithEqualityFn } from 'zustand/traditional';
+import { createWithEqualityFn as create } from 'zustand/traditional';
 
-export const useSuperfestNFTStore = createWithEqualityFn(
+export const useSuperfestNFTStore = create(
   persist(
     (set, get) => ({
       address: undefined,

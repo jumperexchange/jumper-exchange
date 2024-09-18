@@ -6,7 +6,7 @@ import type {
   SnackbarProps,
 } from '@/types/menu';
 import { shallow } from 'zustand/shallow';
-import { createWithEqualityFn } from 'zustand/traditional';
+import { createWithEqualityFn as create } from 'zustand/traditional';
 
 interface DefaultMenuType {
   openMainMenu: boolean;
@@ -28,7 +28,7 @@ export const defaultMenu: DefaultMenuType = {
   openSnackbar: { open: false },
 };
 
-export const useMenuStore = createWithEqualityFn<MenuState>(
+export const useMenuStore = create<MenuState>(
   (set, get) => ({
     ...defaultMenu,
 
