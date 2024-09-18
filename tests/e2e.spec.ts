@@ -8,21 +8,21 @@ import {
   expectBackgroundColorToHaveCss,
   itemInSettingsMenu,
   itemInSettingsMenuToBeVisible,
-  closeWelcomeScreen
+  closeWelcomeScreen,
 } from './testData/commonFunctions';
 import values from '../tests/testData/values.json';
 
 test.describe('Jumper full e2e flow', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await closeWelcomeScreen(page)
+    await closeWelcomeScreen(page);
   });
 
   test('Should navigate to the homepage and change tabs', async ({ page }) => {
     const buyETHButton = page
       .frameLocator('iframe[title="Onramper widget"]')
       .locator('button:has-text("Buy ETH")');
-    
+
     const featureCard = page.locator(
       'xpath=//div[@class="MuiBox-root mui-1393eub"]',
     );
@@ -97,7 +97,9 @@ test.describe('Jumper full e2e flow', () => {
     page,
   }) => {
     let profileUrl = `${await page.url()}profile/`;
-    const whatIsFilamentTitle = page.locator('xpath=//p[normalize-space(text())="Explore Filament"]');
+    const whatIsFilamentTitle = page.locator(
+      'xpath=//p[normalize-space(text())="Explore Filament"]',
+    );
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Profile');
@@ -106,8 +108,8 @@ test.describe('Jumper full e2e flow', () => {
     await page
       .locator('xpath=//p[normalize-space(text())="Explore Filament"]')
       .click();
-    
-    await expect(whatIsFilamentTitle).toBeInViewport({timeout: 15000});
+
+    await expect(whatIsFilamentTitle).toBeInViewport({ timeout: 15000 });
   });
 
   test('Should be able to navigate to jumper learn', async ({ page }) => {
@@ -169,7 +171,7 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('API test - Feature Cards', async ({ request }) => {
-    const apiURL = 'https://strapi.li.finance/api/feature-cards';
+    const apiURL = 'https://strapi.jumperfoundation.com/api/feature-cards';
     const bearerToken =
       'Bearer 2350647febb39fe14dea85ee80e0f90384266c8dce548cf7d1d8190159b6b820fd1fbab76603abb7724293f76bf42b0f02b4a12f599eec0d0fcd1519d767ccb0a37380142e0223d7272c488f31614976a84ed424050516081b73b68776dcdaa265f6a200dca33c9d8b85840913b9a54053c6fb2cc8203bb3b0eea6c705f1b2b0';
     const response = await request.get(apiURL, {

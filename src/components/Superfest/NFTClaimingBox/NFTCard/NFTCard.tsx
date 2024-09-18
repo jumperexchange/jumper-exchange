@@ -23,7 +23,7 @@ interface NFTCardProps {
 }
 
 const LAST_NFT_IMAGE =
-  'https://strapi.li.finance/uploads/supernft_163c0f663b.jpg';
+  'https://strapi.jumperfoundation.com/uploads/supernft_163c0f663b.jpg';
 
 export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
   const { address } = useAccount();

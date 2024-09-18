@@ -12,28 +12,28 @@ import { LastNFTTitle } from './LastNFTTitle/LastNFTTitle';
 const NFT_ARRAY = [
   {
     chain: 'mode',
-    image: 'https://strapi.li.finance/uploads/mode_a66678926d.png',
+    image: 'https://strapi.jumperfoundation.com/uploads/mode_a66678926d.png',
     contractAddress: '',
     bgColor: '#dffe00',
     typoColor: '#000000',
   },
   {
     chain: 'base',
-    image: 'https://strapi.li.finance/uploads/nft_f4eee6bf7b.png',
+    image: 'https://strapi.jumperfoundation.com/uploads/nft_f4eee6bf7b.png',
     contractAddress: '',
     bgColor: '#2151f5',
     typoColor: '#ffffff',
   },
   {
     chain: 'optimism',
-    image: 'https://strapi.li.finance/uploads/nft_632580b867.png',
+    image: 'https://strapi.jumperfoundation.com/uploads/nft_632580b867.png',
     contractAddress: '',
     bgColor: '#ff0000',
     typoColor: '#ffffff',
   },
   {
     chain: 'fraxtal',
-    image: 'https://strapi.li.finance/uploads/nft_c1c8975aa4.png',
+    image: 'https://strapi.jumperfoundation.com/uploads/nft_c1c8975aa4.png',
     contractAddress: '',
     bgColor: '#000000',
     typoColor: '#ffffff',
@@ -74,7 +74,9 @@ export const NFTClaimingBox = () => {
           <NFTCard
             key={`nft-card-${42}`}
             chain={'box'}
-            image={'https://strapi.li.finance/uploads/nft_7d22cbd21c.png'}
+            image={
+              'https://strapi.jumperfoundation.com/uploads/nft_7d22cbd21c.png'
+            }
             bgColor={'#B6E9FB'}
             typoColor={'#000000'}
           />

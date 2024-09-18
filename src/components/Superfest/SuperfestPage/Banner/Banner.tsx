@@ -119,9 +119,11 @@ export const BannerBox = ({
                 logos={
                   completed
                     ? [
-                        'https://strapi.li.finance/uploads/avatar_checkmark_circle_03172fb9d6.svg',
+                        'https://strapi.jumperfoundation.com/uploads/avatar_checkmark_circle_03172fb9d6.svg',
                       ]
-                    : ['https://strapi.li.finance/uploads/xp_cfcff186e5.png']
+                    : [
+                        'https://strapi.jumperfoundation.com/uploads/xp_cfcff186e5.png',
+                      ]
                 }
                 title={'Jumper XP'}
                 value={

@@ -17,7 +17,7 @@ export const RewardsAmountBox = ({
     <FlexCenterRowBox>
       <Box marginLeft="32px">
         <Image
-          src={'https://strapi.li.finance/uploads/op_dddbaa6b32.png'}
+          src={'https://strapi.jumperfoundation.com/uploads/op_dddbaa6b32.png'}
           alt="token image"
           width={56}
           height={56}
@@ -27,7 +27,9 @@ export const RewardsAmountBox = ({
         />
         {isMobile ? undefined : (
           <Image
-            src={'https://strapi.li.finance/uploads/op_dddbaa6b32.png'}
+            src={
+              'https://strapi.jumperfoundation.com/uploads/op_dddbaa6b32.png'
+            }
             alt="token image"
             width={24}
             height={24}
