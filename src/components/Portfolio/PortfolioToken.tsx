@@ -41,8 +41,6 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
   const router = useRouter();
   const hasMultipleChains = token.chains.length > 1;
 
-  console.log('---', token, hasMultipleChains);
-
   const handleChange = () => {
     console.log('change', token);
     if (!hasMultipleChains) {

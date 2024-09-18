@@ -10,28 +10,32 @@ import {
 import { formatUnits } from 'viem';
 import coins from './coins';
 import type { ExtendedChain, TokenAmount } from '@lifi/types';
-import type { Token } from '@lifi/widget';
 import { publicRPCList } from '@/const/rpcList';
 
 interface Chain extends ExtendedChain, Price {}
 
 interface Price {
   amount?: bigint;
+  decimals: number;
   totalPriceUSD: number;
   formattedBalance: number;
 }
 
+// @ts-ignore
 export interface ExtendedTokenAmount extends TokenAmount, Partial<Price> {
   chains: Chain[];
 }
 
-function getBalance(tb: Partial<TokenAmount>) {
-  return (
-    (tb?.amount &&
-      tb?.decimals &&
-      Number(formatUnits(tb.amount, tb.decimals))) ||
-    0
-  );
+function getBalance(tb: Partial<TokenAmount>): number {
+  return tb?.amount && tb?.decimals
+    ? Number(formatUnits(tb.amount, tb.decimals))
+    : 0;
+}
+
+function sum(token: ExtendedTokenAmount): number {
+  return token.chains
+    .filter((t) => !!t.amount)
+    .reduce((acc, t) => acc + Number(formatUnits(t.amount!, t.decimals)), 0);
 }
 
 function transform(
@@ -41,47 +45,39 @@ function transform(
   const tokenMap: Record<string, ExtendedTokenAmount> = {};
 
   tokenBalances.forEach((tb) => {
-    if (tokenMap[tb.symbol]) {
-      // Merge balances
-      tokenMap[tb.symbol].amount =
-        BigInt(tokenMap[tb.symbol].amount || 0) + BigInt(tb.amount || 0);
-    } else {
-      tokenMap[tb.symbol] = {
-        ...tb,
-        chains: [],
-      };
+    if (!tokenMap[tb.symbol]) {
+      tokenMap[tb.symbol] = { ...tb, chains: [] };
     }
 
     const chain = chains.find((c) => c.id === tb.chainId);
     if (chain) {
       const balance = getBalance(tb);
-      tokenMap[tb.symbol].chains?.push({
+      tokenMap[tb.symbol].chains.push({
         ...chain,
+        decimals: tb.decimals,
         formattedBalance: balance,
         amount: tb.amount,
-        totalPriceUSD: balance * Number(tb.priceUSD || 1) ?? 0,
+        totalPriceUSD: balance * Number(tb.priceUSD || 1),
       });
     }
   });
 
-  let mergedTokenBalances = Object.values(tokenMap);
-
-  mergedTokenBalances = mergedTokenBalances.map((tb) => {
-    const balance = getBalance(tb);
-
-    return {
-      ...tb,
-      formattedBalance: balance,
-      totalPriceUSD: balance * Number(tb.priceUSD || 1) ?? 0,
-    };
-  });
-
-  return mergedTokenBalances.sort(
-    (a, b) => (b.totalPriceUSD || 0) - (a.totalPriceUSD || 0),
-  );
+  return Object.values(tokenMap)
+    .map((tb) => {
+      const balance = sum(tb);
+      return {
+        ...tb,
+        formattedBalance: balance,
+        totalPriceUSD: balance * Number(tb.priceUSD || 1),
+      };
+    })
+    .sort((a, b) => (b.totalPriceUSD || 0) - (a.totalPriceUSD || 0));
 }
 
-async function index(account: string, isFull = false) {
+async function getTokens(
+  account: string,
+  isFull = false,
+): Promise<ExtendedTokenAmount[] | undefined> {
   try {
     createConfig({
       providers: [EVM(), Solana()],
@@ -93,43 +89,32 @@ async function index(account: string, isFull = false) {
       preloadChains: true,
     });
 
-    // Can be server side call
     const chains = await getChains({
       chainTypes: [ChainType.EVM, ChainType.SVM],
     });
-
-    let filteredArray: Token[] = [];
     const tokens = await LifiGetTokens({
       chainTypes: [ChainType.EVM, ChainType.SVM],
     });
 
-    if (isFull) {
-      filteredArray = Object.values(tokens.tokens).flat();
-    } else {
-      const filterSet = new Set(
-        coins.map((item) => `${item.chainId}-${item.address}`),
-      );
-
-      for (const [, tks] of Object.entries(tokens.tokens)) {
-        filteredArray = filteredArray.concat(
-          tks.filter((item) =>
-            filterSet.has(`${item.chainId}-${item.address}`),
-          ),
-        );
-      }
-    }
+    const filteredArray = isFull
+      ? Object.values(tokens.tokens).flat()
+      : Object.values(tokens.tokens)
+          .flat()
+          .filter((item) =>
+            new Set(coins.map((coin) => `${coin.chainId}-${coin.address}`)).has(
+              `${item.chainId}-${item.address}`,
+            ),
+          );
 
     const tokenBalances = await getTokenBalances(account, filteredArray);
 
-    const transformedTokenBalances = transform(
+    return transform(
       tokenBalances.filter((s) => s?.amount && s.amount > 0),
       chains,
     ).filter((tb) => Math.round(tb.totalPriceUSD || 0) > 0);
-
-    return transformedTokenBalances;
   } catch (error) {
     console.error(error);
   }
 }
 
-export default index;
+export default getTokens;
