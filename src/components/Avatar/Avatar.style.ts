@@ -8,9 +8,9 @@ export const AvatarSkeletonContainer = styled(Box)(({ theme }) => ({
 
 export const LargeAvatar = styled(Avatar)(({ theme }) => ({
   background: 'transparent',
-  width: 44,
+  width: 40,
   position: 'relative',
-  height: 44,
+  height: 40,
   left: 6,
   top: 4.5,
   border: `6px solid transparent`,
@@ -21,14 +21,14 @@ export const LargeAvatar = styled(Avatar)(({ theme }) => ({
 
 export const LargeAvatarSkeletonBase = styled(Skeleton)(({ theme }) => ({
   border: `6px solid ${theme.palette.surface1.main}`,
-  width: 44,
-  height: 44,
+  width: 40,
+  height: 40,
 }));
 
 export const SmallAvatar = styled(Avatar)(({ theme }) => ({
   background: theme.palette.background.paper,
-  width: 16,
-  height: 16,
+  width: 17,
+  height: 17,
   top: theme.spacing(-0.25),
   backgroundColor: theme.palette.surface1.main,
   // img: {
@@ -46,6 +46,6 @@ export const SmallAvatarSkeletonBase = styled(Skeleton)(({ theme }) => ({
       ? theme.palette.alphaLight400.main
       : darken(theme.palette.white.main, 0.04)
   }`,
-  width: 16,
-  height: 16,
+  width: 17,
+  height: 17,
 }));

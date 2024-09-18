@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WalletButton } from '.';
-import { WalletCard } from './WalletCard';
+import { WalletCardV2 } from './WalletCardV2';
 import Portfolio from '@/components/Portfolio/Portfolio';
 import WalletSelectMenuContent from '@/components/Menus/WalletSelectMenu/WalletSelectMenuContent';
 import { MenuKeysEnum } from '@/const/menuKeys';
@@ -69,7 +69,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           padding: '1.25rem',
           boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
           gap: theme.spacing(2),
-          maxWidth: 450,
+          maxWidth: 416,
           background: '#F9F5FF', // theme.palette.surface2.main into the figma, which is not matching the right color, might need to be updated
         }),
       }}
@@ -131,7 +131,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
       </Stack>
       {accounts.map((account) =>
         account.isConnected ? (
-          <WalletCard key={account.address} account={account} />
+          <WalletCardV2 key={account.address} account={account} />
         ) : null,
       )}
       <Portfolio />

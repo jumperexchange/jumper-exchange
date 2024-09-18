@@ -9,12 +9,13 @@ import generateKey from '@/app/lib/generateKey';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import {
   AccordionDetails,
-  Avatar,
   Badge,
   ButtonBase,
   Grid,
+  Skeleton,
   styled,
   Tooltip,
+  Avatar as MuiAvatar,
 } from '@mui/material';
 import Image from 'next/image';
 import CoinLink, { buildUrl } from '@/components/Portfolio/CoinLink';
@@ -23,6 +24,12 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import qs from 'querystring';
 import { useRouter } from 'next/navigation';
+import {
+  WalletAvatar,
+  WalletCardBadge,
+} from '@/components/Menus/WalletMenu/WalletCardV2.style';
+import { getConnectorIcon } from '@lifi/wallet-management';
+import { Avatar } from '@/components/Avatar';
 
 interface PortfolioTokenProps {
   token: ExtendedTokenAmount;
@@ -70,7 +77,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
           <Grid container display="flex" alignItems="center">
             <Grid item xs={2}>
               {hasMultipleChains ? (
-                <Avatar>
+                <MuiAvatar>
                   {!token?.logoURI ? (
                     <>?</>
                   ) : (
@@ -81,8 +88,28 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                       alt={token.name}
                     />
                   )}
-                </Avatar>
+                </MuiAvatar>
               ) : (
+                <>
+                  <WalletCardBadge
+                    overlap="circular"
+                    className="badge"
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                    badgeContent={
+                      token?.logoURI ? (
+                        <Avatar
+                          size="small"
+                          src={token.chains[0]?.logoURI || ''}
+                          alt={'wallet-avatar'}
+                        />
+                      ) : (
+                        <Skeleton variant="circular" />
+                      )
+                    }
+                  >
+                    <WalletAvatar src={token.logoURI} />
+                  </WalletCardBadge>
+                  {/*                (
                 <Badge
                   overlap="circular"
                   anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -109,6 +136,8 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                     )}
                   </Avatar>
                 </Badge>
+              )*/}
+                </>
               )}
             </Grid>
             <Grid item xs={5}>
@@ -135,7 +164,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                         title={chain.name}
                         key={`${token.symbol}-${chain.key}`}
                       >
-                        <Avatar alt={chain.name} src={chain.logoURI} />
+                        <MuiAvatar alt={chain.name} src={chain.logoURI} />
                       </Tooltip>
                     </CoinLink>
                   ))}
