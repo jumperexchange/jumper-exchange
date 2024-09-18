@@ -46,7 +46,7 @@ export const TempTitle = () => {
               : PROFILE_CAMPAIGN_LIGHT_COLOR
           }
         >
-          {/* Title for Campaign*/}
+          {/*Title*/}
         </EarnedTypography>
         {/* <Typography
           marginTop={'4px'}

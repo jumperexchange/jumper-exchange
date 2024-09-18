@@ -7,21 +7,21 @@ import {
   expectBackgroundColorToHaveCss,
   itemInSettingsMenu,
   itemInSettingsMenuToBeVisible,
-  closeWelcomeScreen
+  closeWelcomeScreen,
 } from './testData/commonFunctions';
 import values from '../tests/testData/values.json';
 
 test.describe('Jumper full e2e flow', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await closeWelcomeScreen(page)
+    await closeWelcomeScreen(page);
   });
 
   test('Should navigate to the homepage and change tabs', async ({ page }) => {
     const buyETHButton = page
       .frameLocator('iframe[title="Onramper widget"]')
       .locator('button:has-text("Buy ETH")');
-    
+
     const featureCard = page.locator(
       'xpath=//div[@class="MuiBox-root mui-1393eub"]',
     );
@@ -96,7 +96,9 @@ test.describe('Jumper full e2e flow', () => {
     page,
   }) => {
     let profileUrl = `${await page.url()}profile/`;
-    const whatIsFilamentTitle = page.locator('xpath=//p[normalize-space(text())="Explore Filament"]');
+    const whatIsFilamentTitle = page.locator(
+      'xpath=//p[normalize-space(text())="Explore Filament"]',
+    );
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Profile');
@@ -105,8 +107,8 @@ test.describe('Jumper full e2e flow', () => {
     await page
       .locator('xpath=//p[normalize-space(text())="Explore Filament"]')
       .click();
-    
-    await expect(whatIsFilamentTitle).toBeInViewport({timeout: 15000});
+
+    await expect(whatIsFilamentTitle).toBeInViewport({ timeout: 15000 });
   });
 
   test('Should be able to navigate to jumper learn', async ({ page }) => {
@@ -168,9 +170,9 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('API test - Feature Cards', async ({ request }) => {
-    const apiURL = 'https://strapi.li.finance/api/feature-cards';
+    const apiURL = 'https://strapi.jumper.exchange/api/feature-cards';
     const bearerToken =
-      'Bearer 2350647febb39fe14dea85ee80e0f90384266c8dce548cf7d1d8190159b6b820fd1fbab76603abb7724293f76bf42b0f02b4a12f599eec0d0fcd1519d767ccb0a37380142e0223d7272c488f31614976a84ed424050516081b73b68776dcdaa265f6a200dca33c9d8b85840913b9a54053c6fb2cc8203bb3b0eea6c705f1b2b0';
+      'Bearer 31ed0fb5f4147b9e367f98933b49e9fc6a00553cf5d29b6521617aa1503024a6708066c402ba5b9d86189760e5bf0f5d04983b5c1c03e2fc45ec0355ed20aeea19b5e936527cbfce0a9a5026d62035f991d1c6e4805a45d38765fa83eb05c16f455216713c47380d2b7dc29321792febab12892a89701eb9dba2ce5d191d8b30';
     const response = await request.get(apiURL, {
       headers: {
         Authorization: bearerToken,
