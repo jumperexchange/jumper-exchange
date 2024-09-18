@@ -94,6 +94,7 @@ class ArticleParams {
 
   constructor(apiUrl: URL) {
     this.apiUrl = apiUrl;
+    this.apiUrl.searchParams.set('filters[Slug][$notNull]', 'true');
   }
 
   addParams(): URL {
