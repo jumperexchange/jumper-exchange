@@ -1,22 +1,22 @@
 import { defaultSettings } from '@/config/config';
-import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 import type {
   SettingsProps,
   SettingsState,
   ThemeModesSupported,
 } from '@/types/settings';
-import type { PartnerThemesData } from '@/types/strapi';
-import type { WidgetConfig } from '@lifi/widget';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
-import { createWithEqualityFn as create } from 'zustand/traditional';
+import { createWithEqualityFn } from 'zustand/traditional';
+import type { PartnerThemesData } from '@/types/strapi';
+import type { WidgetConfig } from '@lifi/widget';
+import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 
 // ----------------------------------------------------------------------
 
 /*--  Use Zustand  --*/
 
-export const useSettingsStore = create(
+export const useSettingsStore = createWithEqualityFn(
   persist(
     (set, get) => ({
       ...defaultSettings,

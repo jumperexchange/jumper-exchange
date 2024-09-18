@@ -2,9 +2,9 @@ import type { LoyaltyPassState, PDA } from '@/types/loyaltyPass';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
-import { createWithEqualityFn as create } from 'zustand/traditional';
+import { createWithEqualityFn } from 'zustand/traditional';
 
-export const useLoyaltyPassStore = create(
+export const useLoyaltyPassStore = createWithEqualityFn(
   persist(
     (set, get) => ({
       address: undefined,

@@ -3,9 +3,9 @@ import type { FpState } from 'src/types/fp';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
-import { createWithEqualityFn as create } from 'zustand/traditional';
+import { createWithEqualityFn } from 'zustand/traditional';
 
-export const useFpStore = create(
+export const useFpStore = createWithEqualityFn(
   persist(
     (set, get) => ({
       ...defaultFp,

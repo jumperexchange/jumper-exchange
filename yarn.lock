@@ -9882,10 +9882,9 @@ __metadata:
     sharp: "npm:^0.33.5"
     siwe: "npm:^2.3.2"
     typescript: "npm:^5.6.2"
-    use-sync-external-store: "npm:^1.2.2"
     uuid: "npm:^10.0.0"
     web-vitals: "npm:^4.2.3"
-    zustand: "npm:^5.0.0-rc.2"
+    zustand: "npm:^4.5.5"
   languageName: unknown
   linkType: soft
 
@@ -13938,26 +13937,5 @@ __metadata:
     react:
       optional: true
   checksum: 10/481b8210187b69678074a1ca51107654c2379688e90407bfcb7961e0803a259742bfd0d77171c3f07e290896ad55fe9659b3863f30d34cb2572650ead1249f25
-  languageName: node
-  linkType: hard
-
-"zustand@npm:^5.0.0-rc.2":
-  version: 5.0.0-rc.2
-  resolution: "zustand@npm:5.0.0-rc.2"
-  peerDependencies:
-    "@types/react": ">=18.0.0"
-    immer: ">=9.0.6"
-    react: ">=18.0.0"
-    use-sync-external-store: ">=1.2.0"
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    immer:
-      optional: true
-    react:
-      optional: true
-    use-sync-external-store:
-      optional: true
-  checksum: 10/40292b1ef1e4bb40eaa08d29f8b11ef0fda364790cb14556f6a69263bab7b4f627dcc7ce5ec035918f495a69bab499bad889061cd7a09762972eb543810f3343
   languageName: node
   linkType: hard
