@@ -1,5 +1,6 @@
-export const PROFILE_CAMPAIGN_DARK_COLOR = '#ECEEF0';
-export const PROFILE_CAMPAIGN_LIGHT_COLOR = '#9E1E1A';
+export const PROFILE_CAMPAIGN_DARK_COLOR = '#FFFFFF'; //#ECEEF0';
+export const PROFILE_CAMPAIGN_LIGHT_COLOR = '#31007a'; //#9E1E1A';
+export const PROFILE_CAMPAIGN_FLASHY_APY_COLOR = '#653ba3'; //#9E1E1A';
 
 export const PROFILE_CAMPAIGN_DARK_TOKEN = `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Sei_Symbol_Gradient_ea276889b3.png`;
 export const PROFILE_CAMPAIGN_LIGHT_TOKEN = `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Sei_Symbol_Gradient_ea276889b3.png`;
