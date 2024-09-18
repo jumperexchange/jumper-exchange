@@ -12,8 +12,13 @@ export function getLevelBasedOnPoints(points: number | undefined): LevelData {
       (el) => points >= el.minPoints && points <= el.maxPoints,
     );
     return levelData ?? levelsData[0];
+  } else {
+    return {
+      level: 0,
+      minPoints: 0,
+      maxPoints: 0,
+    };
   }
-  return levelsData[0];
 }
 
 interface TierBoxProps {

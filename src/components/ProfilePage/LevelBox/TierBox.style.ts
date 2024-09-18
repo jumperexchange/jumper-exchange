@@ -5,10 +5,6 @@ export const TierMainBox = styled(Box)(({ theme }) => ({
   height: '100%',
   width: '100%',
   borderRadius: '8px',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? '#FFFFFF'
-      : alpha(theme.palette.white.main, 0.08),
   padding: '10px',
 }));
 
@@ -28,7 +24,6 @@ export const TierBadgeBox = styled(Box)(({ theme }) => ({
 }));
 
 export const TierInfoBox = styled(Box)(() => ({
-  marginBottom: 16,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
