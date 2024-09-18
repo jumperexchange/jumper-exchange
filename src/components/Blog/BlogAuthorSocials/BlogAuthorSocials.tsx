@@ -52,9 +52,10 @@ export const BlogAuthorSocials = ({
   return (author?.data && author.data.attributes.Twitter) ||
     (author?.data && author.data.attributes.LinkedIn) ? (
     <BlogAuthorSocialsContainer className="blog-author-socials">
-      {author.data.attributes.LinkedIn ? (
+      {author.data.attributes.LinkedIn && (
         <Link href={author.data.attributes.LinkedIn} target="_blank">
           <IconButtonTertiary
+            aria-label="linkedin"
             onClick={() =>
               handleClickLink({
                 action: TrackingAction.ClickAuthorsLinkedIn,
@@ -67,8 +68,8 @@ export const BlogAuthorSocials = ({
             <LinkedInIcon sx={{ width: '14px' }} />
           </IconButtonTertiary>
         </Link>
-      ) : null}
-      {author.data.attributes.Twitter ? (
+      )}
+      {author.data.attributes.Twitter && (
         <Link
           href={author.data.attributes.Twitter}
           target="_blank"
@@ -77,6 +78,7 @@ export const BlogAuthorSocials = ({
           }}
         >
           <IconButtonTertiary
+            aria-label="X"
             onClick={() =>
               handleClickLink({
                 action: TrackingAction.ClickAuthorsX,
@@ -92,7 +94,7 @@ export const BlogAuthorSocials = ({
             <XIcon sx={{ width: '14px' }} />
           </IconButtonTertiary>
         </Link>
-      ) : null}
+      )}
     </BlogAuthorSocialsContainer>
   ) : null;
 };

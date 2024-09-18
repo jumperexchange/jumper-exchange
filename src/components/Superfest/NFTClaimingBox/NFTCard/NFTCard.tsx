@@ -1,17 +1,16 @@
-import { Button } from 'src/components/Button';
-import { NFTCardBotomBox, NFTCardMainBox } from './NFTCard.style';
+import { ChainId } from '@lifi/types';
 import Image from 'next/image';
+import { Button } from 'src/components/Button';
+import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';
+import { useCheckNFTAvailability } from 'src/hooks/useCheckNFTAvailability';
 import {
   useAccount,
-  useWriteContract,
-  useWaitForTransactionReceipt,
   useSwitchChain,
+  useWaitForTransactionReceipt,
+  useWriteContract,
 } from 'wagmi';
-import { ChainId } from '@lifi/sdk';
-import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';
 import { SoraTypography } from '../../Superfest.style';
-import { useCheckNFTAvailability } from 'src/hooks/useCheckNFTAvailability';
-import Link from 'next/link';
+import { NFTCardBotomBox, NFTCardMainBox } from './NFTCard.style';
 
 interface NFTCardProps {
   image: string;
@@ -22,8 +21,7 @@ interface NFTCardProps {
   isSuccess?: boolean;
 }
 
-const LAST_NFT_IMAGE =
-  'https://strapi.li.finance/uploads/supernft_163c0f663b.jpg';
+const LAST_NFT_IMAGE = `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/supernft_163c0f663b.jpg`;
 
 export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
   const { address } = useAccount();
