@@ -4,6 +4,7 @@ import {
   CustomAvatarGroup,
   TypographyPrimary,
   TypographySecondary,
+  SmallAvatar,
 } from '@/components/Portfolio/Portfolio.styles';
 import generateKey from '@/app/lib/generateKey';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -28,18 +29,11 @@ import {
   WalletAvatar,
   WalletCardBadge,
 } from '@/components/Menus/WalletMenu/WalletCardV2.style';
-import { getConnectorIcon } from '@lifi/wallet-management';
 import { Avatar } from '@/components/Avatar';
 
 interface PortfolioTokenProps {
   token: ExtendedTokenAmount;
 }
-
-const SmallAvatar = styled(Avatar)(({ theme }) => ({
-  width: 12,
-  height: 12,
-  border: `2px solid ${theme.palette.background.paper}`,
-}));
 
 function PortfolioToken({ token }: PortfolioTokenProps) {
   const [isExpanded, setExpanded] = useState<boolean>(false);
@@ -205,10 +199,23 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                     overlap="circular"
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                     badgeContent={
-                      <SmallAvatar alt={chain.name} src={chain.logoURI} />
+                      <SmallAvatar>
+                        {!token?.logoURI ? (
+                          <>?</>
+                        ) : (
+                          <Image
+                            width={0}
+                            height={0}
+                            sizes="100vw"
+                            style={{ width: '100%', height: '100%' }} // optional
+                            src={chain.logoURI as string}
+                            alt={chain.name}
+                          />
+                        )}
+                      </SmallAvatar>
                     }
                   >
-                    <Avatar sx={{ width: 24, height: 24 }}>
+                    <MuiAvatar sx={{ width: 24, height: 24 }}>
                       {!token?.logoURI ? (
                         <>?</>
                       ) : (
@@ -221,7 +228,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                           alt={token.name}
                         />
                       )}
-                    </Avatar>
+                    </MuiAvatar>
                   </Badge>
                 </Grid>
                 <Grid item xs={5} textAlign="left">

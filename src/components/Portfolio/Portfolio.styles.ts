@@ -1,4 +1,4 @@
-import { Accordion, AvatarGroup, darken, Typography } from '@mui/material';
+import { Accordion, AvatarGroup, Avatar, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import { lighten } from '@mui/material/styles';
 
@@ -67,4 +67,10 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
       marginLeft: '-6px',
     },
   },
+}));
+
+export const SmallAvatar = styled(Avatar)(({ theme }) => ({
+  width: 12,
+  height: 12,
+  border: `2px solid ${theme.palette.background.paper}`,
 }));
