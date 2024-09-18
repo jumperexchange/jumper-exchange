@@ -2,14 +2,14 @@ export const PROFILE_CAMPAIGN_DARK_COLOR = '#ECEEF0';
 export const PROFILE_CAMPAIGN_LIGHT_COLOR = '#9E1E1A';
 
 export const PROFILE_CAMPAIGN_DARK_TOKEN =
-  'https://strapi.jumperfoundation.com/uploads/Sei_Symbol_Gradient_127605e2de.png';
+  'https://strapi.jumperfoundation.com/uploads/Sei_Symbol_Gradient_ea276889b3.png';
 export const PROFILE_CAMPAIGN_LIGHT_TOKEN =
-  'https://strapi.jumperfoundation.com/uploads/Sei_Symbol_Gradient_127605e2de.png';
+  'https://strapi.jumperfoundation.com/uploads/Sei_Symbol_Gradient_ea276889b3.png';
 
 export const PROFILE_CAMPAIGN_DARK_CHAIN =
-  'https://strapi.jumperfoundation.com/uploads/Sei_Symbol_Gradient_127605e2de.png';
+  'https://strapi.jumperfoundation.com/uploads/Sei_Symbol_Gradient_ea276889b3.png';
 export const PROFILE_CAMPAIGN_LIGHT_CHAIN =
-  'https://strapi.jumperfoundation.com/uploads/Sei_Symbol_Gradient_127605e2de.png';
+  'https://strapi.jumperfoundation.com/uploads/Sei_Symbol_Gradient_ea276889b3.png';
 
 export const PROFILE_CAMPAIGN_SCANNER = 'https://seitrace.com';
 
