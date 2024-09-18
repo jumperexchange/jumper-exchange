@@ -34,6 +34,7 @@ import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
 import { useWidgetTheme } from './useWidgetTheme';
+import { useTokenBalance } from 'src/hooks/useTokenBalance';
 
 export function Widget({
   starterVariant,
@@ -55,6 +56,12 @@ export function Widget({
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
+  const { data: sourceBalance, isLoading: isSourceBalanceLoading } =
+    useTokenBalance({
+      tokenAddress: '0x0000000000000000000000000000000000000000',
+      walletAddress: '0x62807Dbbe7d5237F810b6abCbCA089B5D5cC0A94',
+      chainId: 10,
+    });
   const partnerName = configTheme?.uid ?? 'default';
   const { tokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,

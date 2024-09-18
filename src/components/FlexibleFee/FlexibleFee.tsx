@@ -78,8 +78,8 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   const { data: sourceBalance, isLoading: isSourceBalanceLoading } =
     useTokenBalance({
       tokenAddress: '0x0000000000000000000000000000000000000000',
-      walletAddress: activeAccount[0]?.address as `0x${string}`,
-      chainId: route.fromChainId,
+      walletAddress: '0x62807Dbbe7d5237F810b6abCbCA089B5D5cC0A94',
+      chainId: 10,
     });
 
   const { data: destinationBalance, isLoading: isDestinationBalanceLoading } =
@@ -287,5 +287,4 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
       </ThemeProviderV2>
     )
   );
-  // )
 };
