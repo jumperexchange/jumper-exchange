@@ -15,7 +15,7 @@ import { useAccounts } from 'src/hooks/useAccounts';
 import { useChains } from 'src/hooks/useChains';
 import { formatUnits } from 'viem';
 
-import type { RouteExtended } from '@lifi/sdk';
+import { ChainId, type RouteExtended } from '@lifi/sdk';
 import type { ExtendedChain } from '@lifi/widget';
 import { useTranslation } from 'react-i18next';
 import { SAFE_CONTRACTS } from 'src/const/safeContracts';
@@ -78,8 +78,8 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   const { data: sourceBalance, isLoading: isSourceBalanceLoading } =
     useTokenBalance({
       tokenAddress: '0x0000000000000000000000000000000000000000',
-      walletAddress: '0x62807Dbbe7d5237F810b6abCbCA089B5D5cC0A94',
-      chainId: 10,
+      walletAddress: activeAccount[0]?.address as `0x${string}`,
+      chainId: route.fromChainId,
     });
 
   const { data: destinationBalance, isLoading: isDestinationBalanceLoading } =
@@ -192,7 +192,9 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
 
   return (
     activeChain &&
-    activeAccount.length > 0 && (
+    activeAccount.length > 0 &&
+    route.fromChainId !== ChainId.SOL &&
+    route.toChainId !== ChainId.SOL && (
       <ThemeProviderV2 themes={[]}>
         <Container>
           <Header>

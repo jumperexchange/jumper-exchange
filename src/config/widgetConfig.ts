@@ -1,4 +1,4 @@
-import { createConfig } from '@lifi/sdk';
+import { createConfig, EVM, Solana } from '@lifi/sdk';
 import { ChainId } from '@lifi/types';
 import type { WidgetConfig } from '@lifi/widget';
 import { publicRPCList } from './../const/rpcList';
