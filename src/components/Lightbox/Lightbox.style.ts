@@ -1,11 +1,12 @@
 import { Box, Modal, alpha } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import Image from 'next/image';
 
-export const PreviewImage = styled('img')(({ theme }) => ({
-  maxHeight: '100%',
+export const PreviewImage = styled(Image)(({ theme }) => ({
   borderRadius: '8px',
-  maxWidth: '100%',
+  width: '100%',
+  height: '100%',
   '&:hover': { cursor: 'pointer' },
 }));
 

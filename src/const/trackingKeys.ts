@@ -61,6 +61,8 @@ export enum TrackingAction {
   ClickShareArticleLinkedIn = 'action_share_article_linked',
   ClickShareArticleX = 'action_share_article_x',
   ClickShareArticleLink = 'action_share_article_link',
+  ClickAuthorsLinkedIn = 'action_click_author_linkedin',
+  ClickAuthorsX = 'action_click_author_x',
 
   // Quests
   ClickQuestCard = 'action_click_quest_card',
@@ -178,6 +180,10 @@ export enum TrackingEventParameter {
   // Pagination
   Pagination = 'param_pagination',
   PaginationCat = 'param_pagination_cat',
+
+  // Author
+  AuthorName = 'param_author_name',
+  AuthorId = 'param_author_id',
 
   // Quests
   QuestCardTitle = 'param_quest_card_title',

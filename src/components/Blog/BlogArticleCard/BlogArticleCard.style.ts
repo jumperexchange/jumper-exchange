@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { urbanist } from 'src/fonts/fonts';
+import Image from 'next/image';
 
 export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   flexShrink: 0,
@@ -65,7 +66,7 @@ export const BlogArticleCardMetaSkeleton = styled(Skeleton)(({ theme }) => ({
   borderRadius: '8px',
 }));
 
-export const BlogArticleCardImage = styled('img')(({ theme }) => ({
+export const BlogArticleCardImage = styled(Image)(({ theme }) => ({
   width: '100%',
   height: 'auto',
   borderRadius: '16px',
@@ -114,10 +115,7 @@ export const BlogArticleCardMetaContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   fontSize: '14px',
-  color:
-    theme.palette.mode === 'light'
-      ? theme.palette.grey[800]
-      : theme.palette.grey[300],
+  color: theme.palette.text.primary,
   '*': { textWrap: 'nowrap' },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginLeft: theme.spacing(2),

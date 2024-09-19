@@ -11,6 +11,7 @@ import {
 import { getContrastAlphaColor } from '@/utils/colors';
 import { styled } from '@mui/material/styles';
 import { urbanist } from 'src/fonts/fonts';
+import Image from 'next/image';
 
 export const BlogArticleImageContainer = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -81,7 +82,7 @@ export const BlogArticleHeaderMetaDate = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const BlogArticleImage = styled('img')(({ theme }) => ({
+export const BlogArticleImage = styled(Image)(({ theme }) => ({
   width: '100%',
   borderRadius: '16px',
   maxWidth: theme.breakpoints.values.lg,
@@ -106,7 +107,7 @@ export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   },
 }));
 
-export const BlogAuthorAvatar = styled('img')(({ theme }) => ({
+export const BlogAuthorAvatar = styled(Image)(({ theme }) => ({
   width: '64px !important',
   height: '64px',
   marginRight: theme.spacing(3),

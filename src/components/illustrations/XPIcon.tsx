@@ -24,7 +24,7 @@ export const XPIcon = ({ size }: XPIconProps) => {
           r="16"
           fill={
             theme.palette.mode === 'light'
-              ? '#F9F5FF'
+              ? '#F0E5FF'
               : theme.palette.accent1Alt.main
           }
         />
