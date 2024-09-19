@@ -90,14 +90,6 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
     });
 
   useEffect(() => {
-    console.log('-----------------------');
-    console.log('----------------------- ACCOUNT');
-    console.log(activeAccount[0]?.address);
-    console.log('-----------------------');
-    console.log('----------------------- SOURCE BALANCE');
-    console.log(sourceBalance);
-    console.log('----------------------- DESTINATION BALANCE');
-    console.log(destinationBalance);
     if (
       sourceBalance?.amount &&
       parseFloat(formatUnits(sourceBalance.amount, sourceBalance.decimals)) *
@@ -191,8 +183,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   };
 
   return (
-    activeChain &&
-    activeAccount.length > 0 &&
+    balanceNative > 0 &&
     route.fromChainId !== ChainId.SOL &&
     route.toChainId !== ChainId.SOL && (
       <ThemeProviderV2 themes={[]}>
