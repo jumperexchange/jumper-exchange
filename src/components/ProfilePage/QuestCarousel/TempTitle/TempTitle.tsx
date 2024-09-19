@@ -59,7 +59,7 @@ export const TempTitle = () => {
               : PROFILE_CAMPAIGN_LIGHT_COLOR
           }
         >
-          $300,000 SEI rewards to win
+          
         </Typography> */}
       </Box>
     </FlexCenterRowBox>
