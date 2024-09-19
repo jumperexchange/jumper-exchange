@@ -107,7 +107,8 @@
     "fix:all-files": "npx eslint --fix",
     "pre-commit": "lint-staged",
     "pre-push": "yarn && yarn build",
-    "i18next-resources-for-ts": "i18next-resources-for-ts interface -i ./src/i18n/translations/en -o ./src/i18n/resources.d.ts"
+    "i18next-resources-for-ts": "i18next-resources-for-ts interface -i ./src/i18n/translations/en -o ./src/i18n/resources.d.ts",
+    "prepare": "husky init"
   },
   "lint-staged": {
     "**/*.(ts|tsx|js)": [

@@ -73,7 +73,7 @@ export const SignatureCTA = ({ isTurtleMember }: SignatureCtaProps) => {
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -87,7 +87,7 @@ export const SignatureCTA = ({ isTurtleMember }: SignatureCtaProps) => {
           setMessageToSign(message);
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     }
     fetchMessage();

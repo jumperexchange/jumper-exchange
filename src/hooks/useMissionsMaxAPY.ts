@@ -25,7 +25,7 @@ export const useMissionsMaxAPY = (
         const result = await response.json();
         return result;
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     },
     enabled: claimingIds && claimingIds.length > 0,
