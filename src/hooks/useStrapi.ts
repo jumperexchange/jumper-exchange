@@ -52,7 +52,7 @@ export function getStrapiUrl(contentType: string): URL {
   const apiBaseUrl =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : process.env.NEXT_PUBLIC_STRAPI_URL;
+      : `${process.env.NEXT_PUBLIC_STRAPI_URL}/api`;
   return new URL(`${apiBaseUrl}/${contentType}`);
 }
 
@@ -81,7 +81,7 @@ export const useStrapi = <T>({
   const apiBaseUrl =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : process.env.NEXT_PUBLIC_STRAPI_URL;
+      : `${process.env.NEXT_PUBLIC_STRAPI_URL}/api`;
   const apiUrl = getStrapiUrl(contentType);
 
   // pagination by page + pagesize + return meta object
