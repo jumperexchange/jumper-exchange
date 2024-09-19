@@ -40,7 +40,7 @@ export default [
             'max-len': 'off',
             'newline-per-chained-call': 'off',
             'no-bitwise': 'off',
-            'no-console': 'off',
+            'no-console': ["error", { allow: ["warn", "error"] }],
             'no-continue': 'off',
             'no-nested-ternary': 'off',
             'no-param-reassign': 'off',
