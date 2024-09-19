@@ -182,102 +182,141 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
     }
   };
 
-  return (
-    balanceNative > 0 &&
+  return balanceNative > 0 &&
     route.fromChainId !== ChainId.SOL &&
-    route.toChainId !== ChainId.SOL && (
-      <ThemeProviderV2 themes={[]}>
-        <Container>
-          <Header>
-            <Typography variant="bodyMediumStrong">
-              Help us grow Jumper!
-            </Typography>
-            <Tooltip
-              title={'Lorem ipsum...'}
-              placement="top"
-              enterTouchDelay={0}
-              arrow
-            >
-              <InfoIcon sx={{ color: theme.palette.grey[500] }} />
-            </Tooltip>
-          </Header>
-          <Content>
-            <Box
-              display="flex"
-              alignItems="center"
-              sx={{ width: '100%', color: theme.palette.text.secondary }}
-            >
-              <FlexibleFeeChainBadge
-                overlap="circular"
-                className="badge"
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                badgeContent={
-                  activeChain?.logoURI ? (
-                    <Avatar
-                      size="small"
-                      src={activeChain?.logoURI || ''}
-                      alt={'wallet-avatar'}
-                    />
-                  ) : (
-                    <Skeleton variant="circular" />
-                  )
-                }
-              >
-                <FlexibleFeeChainAvatar
-                  src={activeChain?.nativeToken.logoURI}
-                />
-              </FlexibleFeeChainBadge>
-              <FlexibleFeeAmountsBox>
-                <FormControl fullWidth>
-                  <Input
-                    disableUnderline
-                    inputRef={ref}
+    route.toChainId !== ChainId.SOL ? (
+    <ThemeProviderV2 themes={[]}>
+      <Container>
+        <Header>
+          <Typography variant="bodyMediumStrong">
+            Help us grow Jumper!
+          </Typography>
+          <Tooltip
+            title={'Lorem ipsum...'}
+            placement="top"
+            enterTouchDelay={0}
+            arrow
+          >
+            <InfoIcon sx={{ color: theme.palette.grey[500] }} />
+          </Tooltip>
+        </Header>
+        <Content>
+          <Box
+            display="flex"
+            alignItems="center"
+            sx={{ width: '100%', color: theme.palette.text.secondary }}
+          >
+            <FlexibleFeeChainBadge
+              overlap="circular"
+              className="badge"
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              badgeContent={
+                activeChain?.logoURI ? (
+                  <Avatar
                     size="small"
-                    autoComplete="off"
-                    placeholder="0"
-                    inputProps={{
-                      inputMode: 'decimal',
-                    }}
-                    onChange={handleChange}
-                    value={amount}
-                    name={'flexible-fee-amount'}
-                    style={{
-                      height: '24px',
-                      fontSize: '24px',
-                      fontWeight: 700,
-                      color:
-                        amount === '0'
-                          ? theme.palette.grey[500]
-                          : theme.palette.text.primary,
-                    }}
-                    required
+                    src={activeChain?.logoURI || ''}
+                    alt={'wallet-avatar'}
                   />
-                </FormControl>
-                <FlexibleFeeAmountDetails variant="bodyXSmall">
-                  {`$${ethPrice && parseFloat(amount) > 0 ? parseFloat(String(ethPrice * parseFloat(amount))).toFixed(2) : 0}  •  ${parseFloat(String(balanceNative)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
-                </FlexibleFeeAmountDetails>
-              </FlexibleFeeAmountsBox>
-            </Box>
-            <FlexibleFeeAmountsBadge onClick={handleRateClick}>
-              <Typography
-                variant="bodyXSmallStrong"
-                color={
-                  theme.palette.mode === 'light'
-                    ? theme.palette.primary.main
-                    : theme.palette.text.primary
-                }
-              >
-                {rate}%
-              </Typography>
-            </FlexibleFeeAmountsBadge>
-          </Content>
-          <FlexibleFeeButton
-            isLoading={isConfirming || isPendingSendTransaction}
-            isSuccess={isConfirmed}
-            onClick={handleButtonClick}
+                ) : (
+                  <Skeleton variant="circular" />
+                )
+              }
+            >
+              <FlexibleFeeChainAvatar src={activeChain?.nativeToken.logoURI} />
+            </FlexibleFeeChainBadge>
+            <FlexibleFeeAmountsBox>
+              <FormControl fullWidth>
+                <Input
+                  disableUnderline
+                  inputRef={ref}
+                  size="small"
+                  autoComplete="off"
+                  placeholder="0"
+                  inputProps={{
+                    inputMode: 'decimal',
+                  }}
+                  onChange={handleChange}
+                  value={amount}
+                  name={'flexible-fee-amount'}
+                  style={{
+                    height: '24px',
+                    fontSize: '24px',
+                    fontWeight: 700,
+                    color:
+                      amount === '0'
+                        ? theme.palette.grey[500]
+                        : theme.palette.text.primary,
+                  }}
+                  required
+                />
+              </FormControl>
+              <FlexibleFeeAmountDetails variant="bodyXSmall">
+                {`$${ethPrice && parseFloat(amount) > 0 ? parseFloat(String(ethPrice * parseFloat(amount))).toFixed(2) : 0}  •  ${parseFloat(String(balanceNative)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
+              </FlexibleFeeAmountDetails>
+            </FlexibleFeeAmountsBox>
+          </Box>
+          <FlexibleFeeAmountsBadge onClick={handleRateClick}>
+            <Typography
+              variant="bodyXSmallStrong"
+              color={
+                theme.palette.mode === 'light'
+                  ? theme.palette.primary.main
+                  : theme.palette.text.primary
+              }
+            >
+              {rate}%
+            </Typography>
+          </FlexibleFeeAmountsBadge>
+        </Content>
+        <FlexibleFeeButton
+          isLoading={isConfirming || isPendingSendTransaction}
+          isSuccess={isConfirmed}
+          onClick={handleButtonClick}
+        />
+      </Container>
+    </ThemeProviderV2>
+  ) : (
+    <ThemeProviderV2 themes={[]}>
+      <Container>
+        <Header>
+          <Skeleton variant="text" width="70%" height={24} />
+          <Skeleton variant="circular" width={24} height={24} />
+        </Header>
+        <Content>
+          <Box
+            display="flex"
+            alignItems="center"
+            sx={{ width: '100%', color: theme.palette.text.secondary }}
+          >
+            <FlexibleFeeChainBadge
+              overlap="circular"
+              className="badge"
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              badgeContent={
+                <Skeleton variant="circular" width={16} height={16} />
+              }
+            >
+              <Skeleton variant="circular" width={40} height={40} />
+            </FlexibleFeeChainBadge>
+            <FlexibleFeeAmountsBox>
+              <Skeleton variant="text" width="100%" height={24} />
+              <Skeleton variant="text" width="80%" height={16} />
+            </FlexibleFeeAmountsBox>
+          </Box>
+          <Skeleton
+            variant="rectangular"
+            width={48}
+            height={24}
+            sx={{ borderRadius: '12px' }}
           />
-        </Container>
-      </ThemeProviderV2>
-    )
+        </Content>
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height={40}
+          sx={{ borderRadius: '20px' }}
+        />
+      </Container>
+    </ThemeProviderV2>
   );
 };
