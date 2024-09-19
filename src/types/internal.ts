@@ -1,4 +1,4 @@
-import type { ChainId } from '@lifi/sdk';
+import type { ChainId } from '@lifi/types';
 import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import type { SxProps, Theme } from '@mui/material';
 import type { MenuItemLinkType } from 'src/components/Menu';

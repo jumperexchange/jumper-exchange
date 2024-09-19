@@ -1928,7 +1928,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/react@npm:^11.11.1, @emotion/react@npm:^11.13.0, @emotion/react@npm:^11.13.3":
+"@emotion/react@npm:^11.11.1, @emotion/react@npm:^11.13.3":
   version: 11.13.3
   resolution: "@emotion/react@npm:11.13.3"
   dependencies:
@@ -2814,7 +2814,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/sdk@npm:^3.1.3, @lifi/sdk@npm:^3.1.5, @lifi/sdk@npm:^3.2.3":
+"@lifi/sdk@npm:^3.1.3, @lifi/sdk@npm:^3.2.3":
   version: 3.2.3
   resolution: "@lifi/sdk@npm:3.2.3"
   dependencies:
@@ -2837,7 +2837,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:^3.1.3, @lifi/wallet-management@npm:^3.1.6":
+"@lifi/wallet-management@npm:^3.1.6":
   version: 3.1.6
   resolution: "@lifi/wallet-management@npm:3.1.6"
   dependencies:
@@ -2857,9 +2857,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^3.4.3":
-  version: 3.6.0
-  resolution: "@lifi/widget@npm:3.6.0"
+"@lifi/widget@npm:^3.6.1":
+  version: 3.6.1
+  resolution: "@lifi/widget@npm:3.6.1"
   dependencies:
     "@emotion/react": "npm:^11.13.3"
     "@emotion/styled": "npm:^11.13.0"
@@ -2903,7 +2903,7 @@ __metadata:
     viem: ^2.17.0
     wagmi: ^2.11.0
     zustand: ^4.5.0
-  checksum: 10/5486a615c4f54387692dcfd56c6da3f222a8a97c8175f1dceb5792f8a8a3edaaff2f1bc7e49baf0e81020a39d930b02446589c0d8a3d09bd1f08558465c93e40
+  checksum: 10/ab9ca42750b7c484eb67a48bd518b8a0ace276d5d6d6d56efe1830e906af45626e58e3514347e81dbecc2a2822e418ceafcfe8f56e38210462cce940277a4f7b
   languageName: node
   linkType: hard
 
@@ -3523,14 +3523,14 @@ __metadata:
   linkType: hard
 
 "@mui/types@npm:^7.2.14, @mui/types@npm:^7.2.15":
-  version: 7.2.16
-  resolution: "@mui/types@npm:7.2.16"
+  version: 7.2.17
+  resolution: "@mui/types@npm:7.2.17"
   peerDependencies:
     "@types/react": ^17.0.0 || ^18.0.0 || ^19.0.0
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10/44652fd7afd0063ed38870810ef0524ee5bf9e8fee4aece8d5b76c89dd3e83f6aa370beacc45c0381546b0917cab9af6671d0f4ba7c55af32bd3051a074a2774
+  checksum: 10/de21ecd69e4fe22738f1437d7084747c07a1e88f6fbdea5a2927594c587aaf8cac7bd67118b8749a8c7a6f45875b937d4a20b43f531773cdfd870445a4237893
   languageName: node
   linkType: hard
 
@@ -3640,7 +3640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/third-parties@npm:^14.2.5":
+"@next/third-parties@npm:^14.2.12":
   version: 14.2.12
   resolution: "@next/third-parties@npm:14.2.12"
   dependencies:
@@ -4640,7 +4640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:8.30.0, @sentry/browser@npm:^8.26.0":
+"@sentry/browser@npm:8.30.0, @sentry/browser@npm:^8.30.0":
   version: 8.30.0
   resolution: "@sentry/browser@npm:8.30.0"
   dependencies:
@@ -4767,7 +4767,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/nextjs@npm:^8.26.0":
+"@sentry/nextjs@npm:^8.30.0":
   version: 8.30.0
   resolution: "@sentry/nextjs@npm:8.30.0"
   dependencies:
@@ -4853,7 +4853,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/react@npm:8.30.0, @sentry/react@npm:^8.26.0":
+"@sentry/react@npm:8.30.0, @sentry/react@npm:^8.30.0":
   version: 8.30.0
   resolution: "@sentry/react@npm:8.30.0"
   dependencies:
@@ -5132,7 +5132,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solana/web3.js@npm:^1.95.2, @solana/web3.js@npm:^1.95.3":
+"@solana/web3.js@npm:^1.95.3":
   version: 1.95.3
   resolution: "@solana/web3.js@npm:1.95.3"
   dependencies:
@@ -5576,7 +5576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.51.23, @tanstack/react-query@npm:^5.56.2":
+"@tanstack/react-query@npm:^5.56.2":
   version: 5.56.2
   resolution: "@tanstack/react-query@npm:5.56.2"
   dependencies:
@@ -5588,21 +5588,21 @@ __metadata:
   linkType: hard
 
 "@tanstack/react-router@npm:^1.46.4":
-  version: 1.57.18
-  resolution: "@tanstack/react-router@npm:1.57.18"
+  version: 1.58.3
+  resolution: "@tanstack/react-router@npm:1.58.3"
   dependencies:
     "@tanstack/history": "npm:1.57.6"
     "@tanstack/react-store": "npm:^0.5.5"
     tiny-invariant: "npm:^1.3.3"
     tiny-warning: "npm:^1.0.3"
   peerDependencies:
-    "@tanstack/router-generator": 1.57.15
+    "@tanstack/router-generator": 1.58.1
     react: ">=18"
     react-dom: ">=18"
   peerDependenciesMeta:
     "@tanstack/router-generator":
       optional: true
-  checksum: 10/f105bcf6801b20ffb6beb4668cc084e2c1368a1e910a56882a7c8f2762961b590ad7d0972f737228379b6d330325ca8b6a39d49fcd622a9f8d18345a56b703c8
+  checksum: 10/42f1770516877b2ea82ee25d375329c7d64155465b3fb9f92d9ba32a8f119fff69209bca728e5a613f21f38554dc5d5228c68b1dc78005fc3e4d9ada2e5f6ab4
   languageName: node
   linkType: hard
 
@@ -5957,7 +5957,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^22.3.0":
+"@types/node@npm:*, @types/node@npm:^22.5.5":
   version: 22.5.5
   resolution: "@types/node@npm:22.5.5"
   dependencies:
@@ -8288,9 +8288,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30001579, caniuse-lite@npm:^1.0.30001646":
-  version: 1.0.30001660
-  resolution: "caniuse-lite@npm:1.0.30001660"
-  checksum: 10/5d83f0b7e2075b7e31f114f739155dc6c21b0afe8cb61180f625a4903b0ccd3d7591a5f81c930f14efddfa57040203ba0890850b8a3738f6c7f17c7dd83b9de8
+  version: 1.0.30001662
+  resolution: "caniuse-lite@npm:1.0.30001662"
+  checksum: 10/275dee3c2365d58c65609e707dfd7454e72195fdae7d3a8fea05f1ddb49581f64dfc65965964ee2cff99cc0af44d08c572437b1effd43e9ddc174d7a1d7f95a3
   languageName: node
   linkType: hard
 
@@ -10273,7 +10273,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-import-resolver-typescript@npm:^3.5.2, eslint-import-resolver-typescript@npm:^3.6.1":
+"eslint-import-resolver-typescript@npm:^3.5.2, eslint-import-resolver-typescript@npm:^3.6.3":
   version: 3.6.3
   resolution: "eslint-import-resolver-typescript@npm:3.6.3"
   dependencies:
@@ -10324,7 +10324,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:^2.25.3, eslint-plugin-import@npm:^2.28.1, eslint-plugin-import@npm:^2.29.1":
+"eslint-plugin-import@npm:^2.25.3, eslint-plugin-import@npm:^2.28.1, eslint-plugin-import@npm:^2.30.0":
   version: 2.30.0
   resolution: "eslint-plugin-import@npm:2.30.0"
   dependencies:
@@ -10369,7 +10369,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsx-a11y@npm:^6.5.1, eslint-plugin-jsx-a11y@npm:^6.7.1, eslint-plugin-jsx-a11y@npm:^6.9.0":
+"eslint-plugin-jsx-a11y@npm:^6.10.0, eslint-plugin-jsx-a11y@npm:^6.5.1, eslint-plugin-jsx-a11y@npm:^6.7.1":
   version: 6.10.0
   resolution: "eslint-plugin-jsx-a11y@npm:6.10.0"
   dependencies:
@@ -10433,7 +10433,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:^7.27.1, eslint-plugin-react@npm:^7.33.2, eslint-plugin-react@npm:^7.35.0":
+"eslint-plugin-react@npm:^7.27.1, eslint-plugin-react@npm:^7.33.2, eslint-plugin-react@npm:^7.36.1":
   version: 7.36.1
   resolution: "eslint-plugin-react@npm:7.36.1"
   dependencies:
@@ -12171,7 +12171,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"husky@npm:^9.1.4":
+"husky@npm:^9.1.6":
   version: 9.1.6
   resolution: "husky@npm:9.1.6"
   bin:
@@ -12219,7 +12219,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^23.12.3, i18next@npm:^23.15.1":
+"i18next@npm:^23.15.1":
   version: 23.15.1
   resolution: "i18next@npm:23.15.1"
   dependencies:
@@ -13872,7 +13872,7 @@ __metadata:
   resolution: "jumper.exchange@workspace:."
   dependencies:
     "@emotion/cache": "npm:^11.13.1"
-    "@emotion/react": "npm:^11.13.0"
+    "@emotion/react": "npm:^11.13.3"
     "@emotion/styled": "npm:^11.13.0"
     "@esbuild-plugins/node-globals-polyfill": "npm:^0.2.3"
     "@eslint/compat": "npm:^1.1.1"
@@ -13880,28 +13880,29 @@ __metadata:
     "@eslint/js": "npm:^9.10.0"
     "@fingerprintjs/fingerprintjs": "npm:^3"
     "@lifi/explorer": "npm:^0.0.1-alpha.14"
-    "@lifi/sdk": "npm:^3.1.5"
-    "@lifi/wallet-management": "npm:^3.1.3"
-    "@lifi/widget": "npm:^3.4.3"
+    "@lifi/sdk": "npm:^3.2.3"
+    "@lifi/types": "npm:^15.13.0"
+    "@lifi/wallet-management": "npm:^3.1.6"
+    "@lifi/widget": "npm:^3.6.1"
     "@mui/icons-material": "npm:^5.16.7"
     "@mui/material": "npm:^5.16.7"
     "@mui/material-nextjs": "npm:^5.16.6"
     "@next/eslint-plugin-next": "npm:^14.2.12"
-    "@next/third-parties": "npm:^14.2.5"
+    "@next/third-parties": "npm:^14.2.12"
     "@playwright/test": "npm:^1.47.1"
     "@safe-global/safe-apps-sdk": "npm:^9.1.0"
-    "@sentry/browser": "npm:^8.26.0"
-    "@sentry/nextjs": "npm:^8.26.0"
-    "@sentry/react": "npm:^8.26.0"
+    "@sentry/browser": "npm:^8.30.0"
+    "@sentry/nextjs": "npm:^8.30.0"
+    "@sentry/react": "npm:^8.30.0"
     "@solana/wallet-adapter-base": "npm:^0.9.23"
     "@solana/wallet-adapter-react": "npm:^0.15.35"
     "@solana/wallet-adapter-solflare": "npm:^0.6.28"
-    "@solana/web3.js": "npm:^1.95.2"
+    "@solana/web3.js": "npm:^1.95.3"
     "@strapi/blocks-react-renderer": "npm:^1.0.1"
-    "@tanstack/react-query": "npm:^5.51.23"
+    "@tanstack/react-query": "npm:^5.56.2"
     "@types/eslint__js": "npm:^8.42.3"
     "@types/gtag.js": "npm:^0.0.20"
-    "@types/node": "npm:^22.3.0"
+    "@types/node": "npm:^22.5.5"
     "@types/react": "npm:^18.3.7"
     "@types/react-dom": "npm:^18.3.0"
     "@types/uuid": "npm:^10.0.0"
@@ -13914,23 +13915,23 @@ __metadata:
     eslint-config-next: "npm:^14.2.12"
     eslint-config-prettier: "npm:^9.1.0"
     eslint-config-react-app: "npm:^7.0.1"
-    eslint-import-resolver-typescript: "npm:^3.6.1"
-    eslint-plugin-import: "npm:^2.29.1"
-    eslint-plugin-jsx-a11y: "npm:^6.9.0"
+    eslint-import-resolver-typescript: "npm:^3.6.3"
+    eslint-plugin-import: "npm:^2.30.0"
+    eslint-plugin-jsx-a11y: "npm:^6.10.0"
     eslint-plugin-prettier: "npm:^5.2.1"
-    eslint-plugin-react: "npm:^7.35.0"
+    eslint-plugin-react: "npm:^7.36.1"
     eslint-plugin-react-hooks: "npm:^4.6.2"
     ethers: "npm:^6.13.2"
     fontaine: "npm:^0.5.0"
     globals: "npm:^15.9.0"
     graphql: "npm:^16.9.0"
     graphql-request: "npm:^7.1.0"
-    husky: "npm:^9.1.4"
-    i18next: "npm:^23.12.3"
+    husky: "npm:^9.1.6"
+    i18next: "npm:^23.15.1"
     i18next-resources-for-ts: "npm:^1.5.0"
     i18next-resources-to-backend: "npm:^1.2.1"
-    lint-staged: "npm:^15.2.9"
-    next: "npm:^14.2.5"
+    lint-staged: "npm:^15.2.10"
+    next: "npm:^14.2.12"
     next-i18n-router: "npm:^5.5.1"
     next-sitemap: "npm:^4.2.3"
     next-themes: "npm:^0.3.0"
@@ -13939,13 +13940,13 @@ __metadata:
     react-cookie: "npm:^7.2.0"
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^4.0.13"
-    react-i18next: "npm:^15.0.1"
-    react-router-dom: "npm:^6.26.0"
+    react-i18next: "npm:^15.0.2"
+    react-router-dom: "npm:^6.26.2"
     react-scripts: "npm:^5.0.1"
     rollup-plugin-polyfill-node: "npm:^0.13.0"
-    sharp: "npm:^0.33.4"
+    sharp: "npm:^0.33.5"
     siwe: "npm:^2.3.2"
-    typescript: "npm:^5.5.4"
+    typescript: "npm:^5.6.2"
     typescript-eslint: "npm:^8.6.0"
     uuid: "npm:^10.0.0"
     web-vitals: "npm:^4.2.3"
@@ -14083,7 +14084,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^15.2.9":
+"lint-staged@npm:^15.2.10":
   version: 15.2.10
   resolution: "lint-staged@npm:15.2.10"
   dependencies:
@@ -14955,7 +14956,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:^14.2.5":
+"next@npm:^14.2.12":
   version: 14.2.12
   resolution: "next@npm:14.2.12"
   dependencies:
@@ -17234,7 +17235,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^15.0.1, react-i18next@npm:^15.0.2":
+"react-i18next@npm:^15.0.2":
   version: 15.0.2
   resolution: "react-i18next@npm:15.0.2"
   dependencies:
@@ -17306,7 +17307,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.26.0, react-router-dom@npm:^6.26.2":
+"react-router-dom@npm:^6.26.2":
   version: 6.26.2
   resolution: "react-router-dom@npm:6.26.2"
   dependencies:
@@ -18268,7 +18269,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sharp@npm:^0.33.4":
+"sharp@npm:^0.33.5":
   version: 0.33.5
   resolution: "sharp@npm:0.33.5"
   dependencies:
@@ -19707,7 +19708,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.5.4":
+"typescript@npm:^5.6.2":
   version: 5.6.2
   resolution: "typescript@npm:5.6.2"
   bin:
@@ -19717,7 +19718,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.5.4#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.6.2#optional!builtin<compat/typescript>":
   version: 5.6.2
   resolution: "typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=74658d"
   bin:

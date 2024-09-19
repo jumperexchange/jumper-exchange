@@ -1,5 +1,5 @@
 'use client';
-import { ChainId, ChainType } from '@lifi/sdk';
+import { ChainId, ChainType } from '@lifi/types';
 import type { CreateConnectorFnExtended } from '@lifi/wallet-management';
 import type { WalletAdapter } from '@solana/wallet-adapter-base';
 import type { Wallet } from '@solana/wallet-adapter-react';
