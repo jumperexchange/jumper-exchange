@@ -40,6 +40,9 @@ export const QuestCompletedList = ({
       >
         {!loading && pdas
           ? pdas?.map((pda: PDA, index: number) => {
+              if (!pda?.reward) {
+                return null;
+              }
               return (
                 <QuestCard
                   key={`completed-mission-${index}`}
