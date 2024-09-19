@@ -16,7 +16,7 @@ export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
   const apiBaseUrl =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : process.env.NEXT_PUBLIC_STRAPI_URL;
+      : `${process.env.NEXT_PUBLIC_STRAPI_URL}/api`;
   const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
   //filter url
   apiUrl.searchParams.set('filters[uid][$eq]', 'memecoins');

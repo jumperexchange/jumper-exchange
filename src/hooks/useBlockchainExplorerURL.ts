@@ -1,5 +1,5 @@
 import { useChains } from '@/hooks/useChains';
-import { ChainId } from '@lifi/sdk';
+import { ChainId } from '@lifi/types';
 
 export const useBlockchainExplorerURL = () => {
   const { isSuccess: chainsLoaded, getChainById } = useChains();

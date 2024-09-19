@@ -23,6 +23,7 @@ import { FlexSpaceBetweenBox } from 'src/components/Superfest/Superfest.style';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import {
   PROFILE_CAMPAIGN_DARK_COLOR,
+  PROFILE_CAMPAIGN_FLASHY_APY_COLOR,
   PROFILE_CAMPAIGN_LIGHT_COLOR,
 } from 'src/const/partnerRewardsTheme';
 
@@ -130,7 +131,7 @@ export const QuestCardDetailled = ({
                 {apy > 0 && !variableWeeklyAPY && (
                   <XPDisplayBox
                     active={active}
-                    bgcolor={PROFILE_CAMPAIGN_LIGHT_COLOR}
+                    bgcolor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
                   >
                     <Typography
                       fontSize="14px"
@@ -148,7 +149,7 @@ export const QuestCardDetailled = ({
                 {variableWeeklyAPY && (
                   <XPDisplayBox
                     active={active}
-                    bgcolor={PROFILE_CAMPAIGN_LIGHT_COLOR}
+                    bgcolor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
                   >
                     <Typography
                       fontSize="14px"
