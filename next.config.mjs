@@ -76,6 +76,7 @@ export default withSentryConfig(
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
     // Cannot use `isProduction` here, as this file is not supporting ts
+    // eslint-disable-next-line no-undef
     enabled: process.env.ENV_NAME === 'prod',
     // Suppresses source map uploading logs during build
     silent: true,

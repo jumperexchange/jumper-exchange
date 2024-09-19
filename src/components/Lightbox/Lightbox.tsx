@@ -10,11 +10,10 @@ import {
   PreviewImage,
 } from '.';
 interface LightboxProps {
-  baseUrl: string;
   imageData: MediaAttributes;
 }
 
-export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
+export const Lightbox = ({ imageData }: LightboxProps) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const handleClose = () => {

@@ -1,15 +1,15 @@
 import { expect, test } from '@playwright/test';
+import values from '../tests/testData/values.json';
 import {
-  itemInMenu,
-  tabInHeader,
-  openMainMenu,
-  expectMenuToBeVisible,
+  closeWelcomeScreen,
   expectBackgroundColorToHaveCss,
+  expectMenuToBeVisible,
+  itemInMenu,
   itemInSettingsMenu,
   itemInSettingsMenuToBeVisible,
-  closeWelcomeScreen,
+  openMainMenu,
+  tabInHeader,
 } from './testData/commonFunctions';
-import values from '../tests/testData/values.json';
 
 test.describe('Jumper full e2e flow', () => {
   test.beforeEach(async ({ page }) => {
@@ -21,6 +21,7 @@ test.describe('Jumper full e2e flow', () => {
     const buyETHButton = page
       .frameLocator('iframe[title="Onramper widget"]')
       .locator('button:has-text("Buy ETH")');
+
     const featureCard = page.locator(
       'xpath=//div[@class="MuiBox-root mui-1393eub"]',
     );
@@ -94,7 +95,7 @@ test.describe('Jumper full e2e flow', () => {
   test('Should be able to navigate to profile and open Explore Filament Mission', async ({
     page,
   }) => {
-    let profileUrl = `${await page.url()}profile/`;
+    const profileUrl = `${await page.url()}profile/`;
     const whatIsFilamentTitle = page.locator(
       'xpath=//p[normalize-space(text())="Explore Filament"]',
     );
@@ -106,11 +107,12 @@ test.describe('Jumper full e2e flow', () => {
     await page
       .locator('xpath=//p[normalize-space(text())="Explore Filament"]')
       .click();
+
     await expect(whatIsFilamentTitle).toBeInViewport({ timeout: 15000 });
   });
 
   test('Should be able to navigate to jumper learn', async ({ page }) => {
-    let learnUrl = `${await page.url()}learn/`;
+    const learnUrl = `${await page.url()}learn/`;
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Learn');

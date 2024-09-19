@@ -6,7 +6,6 @@ import { checkInclusion } from 'src/components/Superfest/ActiveSuperfestMissions
 import { QuestCardDetailled } from '../QuestCardDetailled/QuestCardDetailled';
 import { QuestCardSkeleton } from '../QuestCardDetailled/QuestCardSkeleton';
 import { QuestCarouselContainer } from './QuestCarousel.style';
-import { TempTitle } from './TempTitle/TempTitle';
 
 interface QuestCarouselProps {
   quests?: Quest[];

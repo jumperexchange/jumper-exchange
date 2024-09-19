@@ -55,7 +55,7 @@ export const NoSelectTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-export const CompletedTypography = styled(NoSelectTypography)(({ theme }) => ({
+export const CompletedTypography = styled(NoSelectTypography)(() => ({
   color: '#000000',
 }));
 

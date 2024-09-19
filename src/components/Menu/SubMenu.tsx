@@ -93,9 +93,9 @@ export const SubMenu = ({
           <MenuHeaderLabel>{label}</MenuHeaderLabel>
         </MenuHeaderAppBar>
       </MenuHeaderAppWrapper>
-      {!!subMenuList.length ? (
+      {subMenuList.length ? (
         subMenuList.map((el, index) =>
-          !!el.link?.url ? (
+          el.link?.url ? (
             <MenuItemContainer
               autoFocus={index > 0 ? true : false}
               onClick={() => handleClick(el)}
@@ -143,7 +143,7 @@ export const SubMenu = ({
                   variant={'bodyMedium'}
                   isPrefixIcon={!!el.prefixIcon}
                   isSuffixIcon={!!el.suffixIcon}
-                  ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
+                  ml={el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
                 >
                   {`${el.label || ' '}`}
                 </SubMenuLabel>

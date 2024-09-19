@@ -17,7 +17,7 @@ export const NavbarTabs = ({ navbarPageReload }: NavbarTabsProps) => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
-  const navbarTabs = useNavbarTabs({ navbarPageReload });
+  const navbarTabs = useNavbarTabs();
 
   const containerStyles = {
     display: 'none',

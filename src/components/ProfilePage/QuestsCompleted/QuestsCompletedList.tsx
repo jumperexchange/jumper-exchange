@@ -59,7 +59,7 @@ export const QuestCompletedList = ({
             ).map((_, idx) => (
               <VoidQuestCard
                 key={'void-' + idx}
-                connected={!!account?.address && account?.chainType === 'EVM'}
+                // connected={account?.address && account?.chainType === 'EVM'}
               />
             ))
           : null}

@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { urbanist } from 'src/fonts/fonts';
 
-export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
+export const RewardsCarouselContainer = styled(Box)(() => ({
   backgroundColor: '#fdfbef',
   display: 'flex',
   width: '100%',

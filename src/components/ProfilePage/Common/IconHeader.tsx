@@ -1,4 +1,5 @@
 import { Tooltip } from '@mui/material';
+import type { ResourceKey } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { NoSelectTypography } from '../ProfilePage.style';
 import { StyledInfoIcon } from './CustonInfoIcon';
@@ -15,7 +16,7 @@ export const IconHeader = ({ tooltipKey, title }: IconHeaderProps) => {
     <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>
       {title}
       <Tooltip
-        title={t(tooltipKey as any)}
+        title={t(tooltipKey as ResourceKey)}
         placement="top"
         enterTouchDelay={0}
         arrow

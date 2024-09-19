@@ -28,7 +28,7 @@ export const AccordionFAQ = ({ content }: AccordionFAQProps) => {
     setShow(!show);
   };
 
-  return !!content?.length ? (
+  return content?.length ? (
     <Container>
       <AccordionHeader onClick={() => setShow(!show)}>
         <Typography variant="headerMedium" m={theme.spacing(2, 0)}>

@@ -10,8 +10,8 @@ import {
 
 import { getContrastAlphaColor } from '@/utils/colors';
 import { styled } from '@mui/material/styles';
-import { urbanist } from 'src/fonts/fonts';
 import Image from 'next/image';
+import { urbanist } from 'src/fonts/fonts';
 
 export const BlogArticleImageContainer = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -58,7 +58,7 @@ export const BlogArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
   },
 }));
 
-export const BlogArticleHeaderTagSkeleton = styled(Skeleton)(({ theme }) => ({
+export const BlogArticleHeaderTagSkeleton = styled(Skeleton)(() => ({
   height: '48px',
   width: '120px',
   borderRadius: '24px',
@@ -205,7 +205,7 @@ export const BlogMetaContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const BlogAuthorContainer = styled(Box)(({ theme }) => ({
+export const BlogAuthorContainer = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
 }));
@@ -313,7 +313,7 @@ export const BlogArticlAuthorName = styled(Typography)<TypographyProps>(
 );
 
 export const BlogArticlAuthorNameSkeleton = styled(Skeleton)<SkeletonProps>(
-  ({ theme }) => ({
+  () => ({
     width: 142,
     height: 28,
     transform: 'unset',

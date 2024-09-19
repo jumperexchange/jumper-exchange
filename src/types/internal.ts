@@ -12,7 +12,7 @@ declare global {
       run: (
         event_name: string,
         is_conversion: boolean,
-        properties: { name: string; value: any }[],
+        properties: { name: string; value: unknown }[],
       ) => void;
     };
   }

@@ -64,8 +64,8 @@ export interface MenuItemLabelProps extends Omit<TypographyProps, 'variant'> {
 export const MenuItemButtonLabel = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'prefixIcon',
 })<MenuItemLabelProps>(({ prefixIcon, theme }) => ({
-  marginLeft: !!prefixIcon ? '9.5px' : 'inherit',
-  marginRight: !!prefixIcon ? '9.5px' : 'inherit',
+  marginLeft: prefixIcon ? '9.5px' : 'inherit',
+  marginRight: prefixIcon ? '9.5px' : 'inherit',
   color:
     theme.palette.mode === 'light'
       ? theme.palette.primary.main

@@ -124,11 +124,7 @@ export const BannerBox = ({
                     : ['https://strapi.li.finance/uploads/xp_cfcff186e5.png']
                 }
                 title={'Jumper XP'}
-                value={
-                  true
-                    ? `${String(attributes?.Points)}`
-                    : String(attributes?.Points)
-                }
+                value={`${attributes?.Points}`}
               />
             ) : undefined}
           </RewardMainBox>

@@ -10,44 +10,36 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import type { TabProps } from 'src/components/Tabs';
 
-interface useNavbarTabsProps {
-  navbarPageReload?: boolean;
-}
-
-export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
+export const useNavbarTabs = () => {
   const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
 
-  const handleClickTab =
-    (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
-      // Does not get updated if taken from the hook for some reasons
-      const searchParams = new URLSearchParams(window.location.search);
+  const handleClickTab = (tab: string) => {
+    const searchParams = new URLSearchParams(window.location.search);
 
-      // Only replace it if exists
-      if (searchParams.has('toToken')) {
-        searchParams.set(
-          'toToken',
-          '0x0000000000000000000000000000000000000000',
-        );
-      }
+    // Only replace it if exists
+    if (searchParams.has('toToken')) {
+      searchParams.set('toToken', '0x0000000000000000000000000000000000000000');
+    }
 
-      let path = searchParams.toString();
-      path = path.startsWith('?') ? path.substring(1) : path;
+    let path = searchParams.toString();
+    path = path.startsWith('?') ? path.substring(1) : path;
 
-      router.push(`/${tab}?${path}`);
-      trackEvent({
-        category: TrackingCategory.Navigation,
-        action: TrackingAction.SwitchTab,
-        label: `switch_tab_to_${tab}`,
-        data: { [TrackingEventParameter.Tab]: tab },
-        enableAddressable: true,
-      });
-    };
+    router.push(`/${tab}?${path}`);
+    trackEvent({
+      category: TrackingCategory.Navigation,
+      action: TrackingAction.SwitchTab,
+      label: `switch_tab_to_${tab}`,
+      data: { [TrackingEventParameter.Tab]: tab },
+      enableAddressable: true,
+    });
+  };
 
-  const output = [
+  const output: TabProps[] = [
     {
       label: t('navbar.links.exchange'),
       value: 0,
@@ -63,11 +55,11 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
           }}
         />
       ),
-      onClick: handleClickTab(''),
+      onClick: () => handleClickTab(''),
     },
     {
       label: t('navbar.links.refuel'),
-      onClick: handleClickTab('gas/'),
+      onClick: () => handleClickTab('gas/'),
       value: 1,
       icon: (
         <EvStationOutlinedIcon
@@ -84,7 +76,7 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
     },
     {
       label: t('navbar.links.buy'),
-      onClick: handleClickTab('buy/'),
+      onClick: () => handleClickTab('buy/'),
       value: 2,
       icon: (
         <CreditCardIcon

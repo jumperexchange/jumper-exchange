@@ -2,7 +2,6 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Box, useTheme, type CSSObject } from '@mui/material';
 
-import { TrackingAction, TrackingEventParameter } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
@@ -63,7 +62,6 @@ export const CarouselContainer = ({
           left: parseInt(`${scrollPos}`),
           behavior: 'smooth',
         });
-      } else {
       }
     },
     [trackEvent, trackingCategory],

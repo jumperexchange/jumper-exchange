@@ -7,7 +7,7 @@ import App from '../../ui/app/App';
 export async function generateStaticParams() {
   const partnerThemes = await getPartnerThemes();
 
-  let customPath = [
+  const customPath = [
     { partnerTheme: 'memecoins' },
     ...partnerThemes.data.map((d) => ({ partnerTheme: d.attributes.uid })),
   ];

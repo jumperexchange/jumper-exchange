@@ -33,7 +33,7 @@ export const ConnectButtonContainer = styled(Container)(({ theme }) => ({
   padding: '0 12px !important',
 }));
 
-export const EcoSystemSelectBadge = styled(Badge)(({ theme }) => ({
+export const EcoSystemSelectBadge = styled(Badge)(() => ({
   borderRadius: '50%',
   // overflow: 'hidden',
   '> .MuiAvatar-root': {

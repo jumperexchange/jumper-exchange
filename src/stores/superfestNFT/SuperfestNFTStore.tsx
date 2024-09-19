@@ -7,7 +7,7 @@ import { createWithEqualityFn } from 'zustand/traditional';
 
 export const useSuperfestNFTStore = createWithEqualityFn(
   persist(
-    (set, get) => ({
+    (set) => ({
       address: undefined,
       claimInfo: undefined,
       timestamp: undefined,

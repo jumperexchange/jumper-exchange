@@ -21,7 +21,7 @@ export const useWidgetTheme = (): PartnerTheme => {
     config: {
       appearance: theme.palette.mode,
       theme: {
-        // @ts-expect-error
+        // @ts-expect-error: ignore ...missing the following properties from type 'TypographyOptions'
         typography: {
           fontFamily: theme.typography.fontFamily,
         },

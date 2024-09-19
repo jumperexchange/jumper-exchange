@@ -1,8 +1,8 @@
 'use client'; // Error components must be Client Components
+import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
+import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
-import { ThemeProvider as NextThemeProvider } from 'next-themes';
-import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
 
 const ErrorPage = dynamic(() => import('../ui/error/ErrorPage'), {
   ssr: false,

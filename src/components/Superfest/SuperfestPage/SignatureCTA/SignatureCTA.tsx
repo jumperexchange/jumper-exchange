@@ -22,10 +22,7 @@ interface SignatureCtaProps {
   isTurtleMember?: boolean;
 }
 
-export const SignatureCTA = ({
-  signature,
-  isTurtleMember,
-}: SignatureCtaProps) => {
+export const SignatureCTA = ({ isTurtleMember }: SignatureCtaProps) => {
   const { account } = useAccounts();
   const [messageToSign, setMessageToSign] = useState<string | undefined>(
     undefined,

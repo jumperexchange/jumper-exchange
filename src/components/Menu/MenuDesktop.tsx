@@ -90,7 +90,7 @@ export const MenuDesktop = ({
                     : 'ul'
                 }
               >
-                {!!label ? (
+                {label ? (
                   <MenuHeaderAppWrapper>
                     <MenuHeaderAppBar component="div" elevation={0}>
                       <Typography

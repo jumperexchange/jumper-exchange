@@ -37,7 +37,6 @@ export const MenuItem = ({
   styles,
   onClick,
   label,
-  triggerSubMenu,
   prefixIcon,
   suffixIcon,
 }: MenuItemProps) => {
@@ -64,8 +63,8 @@ export const MenuItem = ({
             <Typography
               variant={'bodyMediumStrong'}
               component={'span'}
-              ml={!!prefixIcon ? '9.5px' : 'inherit'}
-              mr={!!prefixIcon ? '9.5px' : 'inherit'}
+              ml={prefixIcon ? '9.5px' : 'inherit'}
+              mr={prefixIcon ? '9.5px' : 'inherit'}
               sx={{
                 color:
                   theme.palette.mode === 'light'

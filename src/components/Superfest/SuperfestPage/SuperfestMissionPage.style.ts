@@ -13,12 +13,12 @@ export const SuperfestPageElementContainer = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
 }));
 
-export const LeftTextBox = styled(Box)(({ theme }) => ({
+export const LeftTextBox = styled(Box)(() => ({
   display: 'flex',
   textAlign: 'left',
 }));
 
-export const SuperfestPageMainBox = styled(Box)(({ theme }) => ({
+export const SuperfestPageMainBox = styled(Box)(() => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',

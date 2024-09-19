@@ -30,13 +30,13 @@ export const useThemeMode = (
 
   useEffect(() => {
     if (!cookie.themeMode) {
-      // @ts-expect-error
+      // @ts-expect-error: ignoring 'undefined' is not assignable to type
       updateThemeMode(initialThemeMode);
     }
   }, []); // todo: check dep array
 
   return {
-    // @ts-expect-error
+    // @ts-expect-error: ignoring Type 'string' is not assignable to type 'PartnerTheme'.
     themeMode: themeMode,
     setThemeMode: updateThemeMode,
   };

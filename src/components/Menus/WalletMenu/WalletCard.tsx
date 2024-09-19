@@ -52,7 +52,6 @@ export const WalletCard = ({ account }: WalletCardProps) => {
 
     setIsMultisigEnvironment(response);
     // Check MultisigEnvironment only on first render
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

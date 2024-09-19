@@ -76,7 +76,7 @@ export const useMerklRewards = ({
   rewardToken,
 }: UseMerklRewardsProps): UseMerklRes => {
   // state
-  let userTVL = 0;
+  const userTVL = 0;
   let rewardsToClaim: AvailableRewards[] = [];
   const activeCampaigns = [] as string[];
   const pastCampaigns = [] as string[];

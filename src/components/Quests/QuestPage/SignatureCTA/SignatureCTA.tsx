@@ -12,16 +12,17 @@ import {
   SeveralMissionCtaContainer,
 } from '../CTA/MissionCTA.style';
 
-interface SignatureInt {
-  isLive: boolean;
-  message: string;
-}
+// interface SignatureInt {
+//   isLive: boolean;
+//   message: string;
+// }
 
-interface SignatureCtaProps {
-  signature?: SignatureInt;
-}
+// interface SignatureCtaProps {
+//   signature?: SignatureInt;
+// }
 
-export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
+export const SignatureCTA = () => {
+  // props: { signature }: SignatureCtaProps
   const { account } = useAccounts();
   const [messageToSign, setMessageToSign] = useState<string | undefined>(
     undefined,

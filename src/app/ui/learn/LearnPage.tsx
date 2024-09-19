@@ -28,7 +28,6 @@ const LearnPage = ({
       )}
       <BlogCarousel url={url} data={carouselArticles?.data} />
       <JoinDiscordBanner />
-      {/* <BlogArticlesBoard /> */}
     </div>
   );
 };

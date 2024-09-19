@@ -1,7 +1,7 @@
 import { alpha } from '@mui/material';
 import { Box, styled } from '@mui/system';
 
-export const TierMainBox = styled(Box)(({ theme }) => ({
+export const TierMainBox = styled(Box)(() => ({
   height: '100%',
   width: '100%',
   borderRadius: '8px',

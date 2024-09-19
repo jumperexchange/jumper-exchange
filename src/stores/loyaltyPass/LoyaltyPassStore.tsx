@@ -6,7 +6,7 @@ import { createWithEqualityFn } from 'zustand/traditional';
 
 export const useLoyaltyPassStore = createWithEqualityFn(
   persist(
-    (set, get) => ({
+    (set) => ({
       address: undefined,
       points: undefined,
       tier: undefined,

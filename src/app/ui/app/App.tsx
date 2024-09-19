@@ -25,7 +25,7 @@ const App = ({
 
   const { welcomeScreenClosed, setWelcomeScreenClosed, enabled } =
     useWelcomeScreen(isWelcomeScreenClosed, activeTheme);
-
+  console.log('huhu');
   const handleWelcomeScreenEnter = () => {
     if (enabled && !welcomeScreenClosed) {
       setWelcomeScreenClosed(true);

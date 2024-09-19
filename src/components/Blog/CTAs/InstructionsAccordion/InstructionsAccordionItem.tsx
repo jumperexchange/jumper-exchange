@@ -45,10 +45,8 @@ export const InstructionsAccordionItem = ({
   step,
   link,
   index,
-  url,
   buttonTitles,
   buttonLinks,
-  activeThemeMode,
   variant,
 }: InstructionsAccordionItemProps) => {
   const [open, setOpen] = useState(false);

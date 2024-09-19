@@ -39,7 +39,6 @@ export const Leaderboard = ({ address }: { address?: string }) => {
       setLeaderboardListLength(meta.pagination.pagesLength);
     }
     // leaderboardListLength is not needed here but eslint is complaining
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meta?.pagination?.pagesLength]);
 
   const nextPage = () => {

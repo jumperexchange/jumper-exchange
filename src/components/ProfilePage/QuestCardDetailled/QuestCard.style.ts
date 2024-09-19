@@ -1,7 +1,7 @@
 import type { BoxProps } from '@mui/material';
 import { Box, alpha, styled } from '@mui/material';
 
-export const QuestCardMainBox = styled(Box)(({ theme }) => ({
+export const QuestCardMainBox = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   height: 450,
@@ -42,7 +42,7 @@ export interface QuestCardInfoBoxProps extends Omit<BoxProps, 'component'> {
 
 export const QuestCardInfoBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'points',
-})<QuestCardInfoBoxProps>(({ points }) => ({
+})<QuestCardInfoBoxProps>(() => ({
   display: 'flex',
   flexDirection: 'column',
 }));
@@ -85,13 +85,13 @@ export const XPDisplayBox = styled(Box, {
   padding: '8px',
 }));
 
-export const XPIconBox = styled(Box)(({ theme }) => ({
+export const XPIconBox = styled(Box)(() => ({
   display: 'flex',
   alignContent: 'flex-end',
   justifyContent: 'flex-end',
 }));
 
-export const OPBadgeRelativeBox = styled(Box)(({ theme }) => ({
+export const OPBadgeRelativeBox = styled(Box)(() => ({
   position: 'relative',
   bottom: '16px',
   right: '32px',

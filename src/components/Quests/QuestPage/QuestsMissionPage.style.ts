@@ -13,12 +13,12 @@ export const QuestsPageElementContainer = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
 }));
 
-export const LeftTextBox = styled(Box)(({ theme }) => ({
+export const LeftTextBox = styled(Box)(() => ({
   display: 'flex',
   textAlign: 'left',
 }));
 
-export const QuestsPageMainBox = styled(Box)(({ theme }) => ({
+export const QuestsPageMainBox = styled(Box)(() => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',

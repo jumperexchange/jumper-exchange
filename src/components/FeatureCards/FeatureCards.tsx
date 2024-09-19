@@ -76,14 +76,13 @@ export const FeatureCards = () => {
       return cards
         ?.filter(excludedFeatureCardsFilter)
         ?.filter(
-          (el, index) =>
+          (el) =>
             isSuccess &&
             el.attributes.DisplayConditions &&
             !disabledFeatureCards.includes(el.attributes.uid),
         )
         .slice(0, 2);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cards, isSuccess]);
 
   const slicedPersonalizedFeatureCards = useMemo(() => {
@@ -101,13 +100,12 @@ export const FeatureCards = () => {
       return personalizedFeatureCards
         ?.filter(excludedFeatureCardsFilter)
         ?.filter(
-          (el, index) =>
+          (el) =>
             el.attributes.DisplayConditions &&
             !disabledFeatureCards.includes(el.attributes.uid),
         )
         .slice(0, 1);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jumperUser, featureCardsLevel]);
 
   return (

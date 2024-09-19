@@ -1,7 +1,7 @@
 import { Box, type Breakpoint, Typography, styled } from '@mui/material';
 import { sequel85 } from 'src/fonts/fonts';
 
-export const BackButtonMainBox = styled(Box)(({ theme }) => ({
+export const BackButtonMainBox = styled(Box)(() => ({
   width: '80%',
   maxWidth: '1210px',
   display: 'flex',

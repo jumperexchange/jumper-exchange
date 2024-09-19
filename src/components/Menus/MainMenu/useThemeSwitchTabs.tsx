@@ -63,7 +63,7 @@ export const useThemeSwitchTabs = () => {
 
   if (isSuperfest || isMainPaths) {
     lightModeEnabled = true;
-  } else if (!!configTheme) {
+  } else if (configTheme) {
     if (
       configTheme.availableThemeModes.includes('light') &&
       configTheme.availableThemeModes.includes('dark')

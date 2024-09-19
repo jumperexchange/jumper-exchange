@@ -8,7 +8,6 @@ import {
 } from '@/const/trackingKeys';
 import {
   DISCORD_URL,
-  JUMPER_FEST_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   X_URL,
@@ -20,7 +19,6 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
-import PaletteIcon from '@mui/icons-material/Palette';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
@@ -29,7 +27,6 @@ import { useTheme } from '@mui/material/styles';
 import { useTheme as useNextTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { OPLogo } from 'src/components/illustrations/OPLogo';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 

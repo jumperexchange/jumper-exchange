@@ -144,7 +144,7 @@ export const BlogBackgroundGradient = styled(BackgroundGradient)(
   }),
 );
 
-export const SuperfestBackgroundContainer = styled('div')(({ theme }) => ({
+export const SuperfestBackgroundContainer = styled('div')(() => ({
   position: 'fixed',
   backgroundRepeat: 'repeat',
   width: '100%',

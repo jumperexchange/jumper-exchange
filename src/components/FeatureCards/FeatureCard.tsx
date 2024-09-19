@@ -31,7 +31,7 @@ interface FeatureCardProps {
   isSuccess: boolean;
 }
 
-export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
+export const FeatureCard = ({ data }: FeatureCardProps) => {
   const [open, setOpen] = useState(true);
   const eventFired = useRef(false);
 
@@ -45,12 +45,12 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   ]);
   const theme = useTheme();
   useEffect(() => {
-    if (data?.attributes.DisplayConditions?.showOnce) {
-      setDisabledFeatureCard(data?.attributes.uid);
+    if (data.attributes.DisplayConditions?.showOnce) {
+      setDisabledFeatureCard(data.attributes.uid);
     }
   }, [
-    data?.attributes.DisplayConditions,
-    data?.attributes.uid,
+    data.attributes.DisplayConditions,
+    data.attributes.uid,
     setDisabledFeatureCard,
   ]);
 
@@ -102,11 +102,11 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   const imageUrl =
     mode === 'dark'
       ? new URL(
-          data.attributes.BackgroundImageDark.data?.attributes.url,
+          data.attributes.BackgroundImageDark.data.attributes.url,
           url.origin,
         )
       : new URL(
-          data.attributes.BackgroundImageLight.data?.attributes.url,
+          data.attributes.BackgroundImageLight.data.attributes.url,
           url.origin,
         );
 
@@ -115,31 +115,44 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   ) => {
     event.stopPropagation();
     setOpen(false);
-    !data?.attributes.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes.uid &&
-      setDisabledFeatureCard(data?.attributes.uid);
+
+    if (
+      !('showOnce' in data.attributes.DisplayConditions) &&
+      !!data.attributes.uid
+    ) {
+      setDisabledFeatureCard(data.attributes.uid);
+    }
+
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.CloseFeatureCard,
       label: `click_close`,
       data: {
-        [TrackingEventParameter.FeatureCardTitle]: data?.attributes.Title,
-        [TrackingEventParameter.FeatureCardId]: data?.attributes.uid,
+        [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
+        [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
       },
     });
   };
 
-  const handleCTA = (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-  ) => {
-    event.stopPropagation();
-    !data?.attributes.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes.uid &&
-      setDisabledFeatureCard(data?.attributes.uid);
+  const handleCardClick = () => {
+    // Open the URL in a new tab if it exists
+    if (data.attributes.URL) {
+      openInNewTab(data.attributes.URL);
+    }
+
+    // Check if 'showOnce' does not exist in DisplayConditions and set disabled feature card
+    if (
+      !('showOnce' in data.attributes.DisplayConditions) &&
+      !!data.attributes.uid
+    ) {
+      setDisabledFeatureCard(data.attributes.uid);
+    }
+
+    // Track the click event
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.ClickFeatureCard,
-      label: `click_cta`,
+      label: 'click_card_bg',
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
         [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
@@ -148,15 +161,24 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     });
   };
 
-  const handleCardClick = () => {
-    data?.attributes.URL && openInNewTab(data?.attributes.URL);
-    !data?.attributes.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes.uid &&
-      setDisabledFeatureCard(data?.attributes.uid);
+  const handleCTA = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
+
+    // Check if 'showOnce' does not exist in DisplayConditions and set disabled feature card
+    if (
+      !('showOnce' in data.attributes.DisplayConditions) &&
+      !!data.attributes.uid
+    ) {
+      setDisabledFeatureCard(data.attributes.uid);
+    }
+
+    // Track the click event
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.ClickFeatureCard,
-      label: 'click_card_bg',
+      label: 'click_cta',
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
         [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
@@ -198,37 +220,33 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
               }}
             />
           </FeatureCardCloseButton>
-          {!!data?.attributes.Title && (
+          {!!data.attributes.Title && (
             <FeatureCardTitle
               variant="headerSmall"
               data={data}
               typographyColor={data.attributes.TitleColor || typographyColor}
               gutterBottom
             >
-              {data?.attributes.Title}
+              {data.attributes.Title}
             </FeatureCardTitle>
           )}
-          {!!data?.attributes.Subtitle && (
+          {!!data.attributes.Subtitle && (
             <FeatureCardSubtitle
               variant="bodySmall"
               typographyColor={typographyColor}
             >
-              {data?.attributes.Subtitle}
+              {data.attributes.Subtitle}
             </FeatureCardSubtitle>
           )}
           <FeatureCardActions>
             <FeatureCardCtaLink
               target="_blank"
               rel="noopener"
-              href={data?.attributes.URL}
+              href={data.attributes.URL}
               onClick={(e) => handleCTA(e)}
               data={data}
             >
-              <FeatureCardCtaLabel
-                variant="bodySmallStrong"
-                data={data}
-                typographyColor={data.attributes.CTAColor || typographyColor}
-              >
+              <FeatureCardCtaLabel variant="bodySmallStrong" data={data}>
                 {data.attributes.CTACall ?? t('featureCard.learnMore')}
               </FeatureCardCtaLabel>
             </FeatureCardCtaLink>

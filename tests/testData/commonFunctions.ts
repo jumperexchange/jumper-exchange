@@ -9,7 +9,6 @@ export async function openMainMenu(page) {
   await page.locator('#main-burger-menu-button').click();
 }
 
-
 export async function itemInMenu(page, option: string) {
   await page.getByRole('menuitem', { name: option }).click({ timeout: 20000 });
 }

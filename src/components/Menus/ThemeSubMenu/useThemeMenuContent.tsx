@@ -12,6 +12,12 @@ import { useStrapi } from 'src/hooks/useStrapi';
 import { validThemes } from 'src/hooks/useWelcomeScreen';
 import type { PartnerThemesData } from 'src/types/strapi';
 
+interface ThemeMenuType {
+  label: string;
+  onClick: () => void;
+  checkIcon: boolean;
+}
+
 export const useThemeMenuContent = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
@@ -41,7 +47,7 @@ export const useThemeMenuContent = () => {
     setTheme(theme);
   };
 
-  const themes: any = [
+  const themes: ThemeMenuType[] = [
     {
       label: t('navbar.themes.default'),
       onClick: () => {

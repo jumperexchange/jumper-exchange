@@ -6,7 +6,7 @@ export const AvatarSkeletonContainer = styled(Box)(({ theme }) => ({
   borderRadius: '50%',
 }));
 
-export const LargeAvatar = styled(Avatar)(({ theme }) => ({
+export const LargeAvatar = styled(Avatar)(() => ({
   background: 'transparent',
   width: 44,
   position: 'relative',

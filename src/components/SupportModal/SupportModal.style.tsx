@@ -5,7 +5,7 @@ import { Box, Modal as MUIModal } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 
-export const Modal = styled(MUIModal)(({ theme }) => ({
+export const Modal = styled(MUIModal)(() => ({
   paddingTop: HeaderHeight.XS,
   zIndex: 1500,
   overflow: 'auto',

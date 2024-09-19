@@ -31,14 +31,14 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
   }),
 );
 
-export const LogoLink = styled(Link)(({ theme }) => ({
+export const LogoLink = styled(Link)(() => ({
   height: 48,
   cursor: 'pointer',
   alignItems: 'center',
   display: 'flex',
 }));
 
-export const CenteredContainer = styled('div')(({ theme }) => ({
+export const CenteredContainer = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',

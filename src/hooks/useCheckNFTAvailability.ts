@@ -83,7 +83,7 @@ export const useCheckNFTAvailability = ({
 }: UseCheckNFTAvailabilityProps): UseCheckNFTAvailabilityRes => {
   const { account } = useAccounts();
 
-  let claimInfo = {
+  const claimInfo = {
     isClaimable: false,
     isClaimed: false,
     claimingAddress: `0x1`,

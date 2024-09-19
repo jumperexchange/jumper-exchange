@@ -77,9 +77,7 @@ export const CustomRichBlocks = ({
 }: CustomRichBlocksProps) => {
   const customRichBlocks = {
     image: (data: ImageData) =>
-      baseUrl ? (
-        <Lightbox imageData={data.image} baseUrl={baseUrl} />
-      ) : undefined,
+      baseUrl ? <Lightbox imageData={data.image} /> : undefined,
 
     heading: ({
       children,
@@ -160,6 +158,7 @@ export const CustomRichBlocks = ({
             <BlogCTA title={title} url={url} id={id} key={generateKey('cta')} />
           );
         } catch (error) {
+          console.error(error);
           return;
         }
       } else if (children[0].props.text.includes('<WIDGET')) {
@@ -202,7 +201,7 @@ export const CustomRichBlocks = ({
       } else if (children[0].props.text.includes('<INSTRUCTIONS')) {
         try {
           const instructions_array: InstructionItemProps[] = [];
-          let jso = children[0].props.text
+          const jso = children[0].props.text
             .replace('<INSTRUCTIONS ', '')
             .replace('/>', '');
 

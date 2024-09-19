@@ -1,16 +1,16 @@
 import { defaultSettings } from '@/config/config';
+import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 import type {
   SettingsProps,
   SettingsState,
   ThemeModesSupported,
 } from '@/types/settings';
+import type { PartnerThemesData } from '@/types/strapi';
+import type { WidgetConfig } from '@lifi/widget';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
-import type { PartnerThemesData } from '@/types/strapi';
-import type { WidgetConfig } from '@lifi/widget';
-import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 
 // ----------------------------------------------------------------------
 
@@ -41,10 +41,11 @@ export const useSettingsStore = createWithEqualityFn(
       // Installed Wallets
       setClientWallets: (wallet: string) => {
         const clientWallets = (get() as SettingsProps)?.clientWallets;
-        !clientWallets.includes(wallet) &&
+        if (!clientWallets.includes(wallet)) {
           set({
             clientWallets: [...clientWallets, wallet],
           });
+        }
       },
 
       // Disable Feature Card

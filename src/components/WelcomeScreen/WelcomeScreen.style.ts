@@ -9,7 +9,7 @@ export interface WrapperProps extends Omit<BoxProps, 'component'> {
 
 export const Overlay = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'showWelcome',
-})<WrapperProps>(({ theme }) => ({
+})<WrapperProps>(() => ({
   position: 'absolute',
   bottom: 0,
   left: 0,
@@ -67,7 +67,7 @@ export const ContentWrapper = styled(
   },
 }));
 
-export const WelcomeContent = styled(Box)<BoxProps>(({ theme }) => ({
+export const WelcomeContent = styled(Box)<BoxProps>(() => ({
   minHeight: '50vh',
 }));
 
