@@ -45,7 +45,14 @@ interface FlexibleFeeProps {
   route: RouteExtended;
 }
 
+interface TokenBalance {
+  amount?: bigint;
+  decimals: number;
+  priceUSD: string;
+}
+
 const MIN_AMOUNT_USD = 2;
+const NATIVE_TOKEN = '0x0000000000000000000000000000000000000000';
 
 export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   route,
@@ -65,6 +72,9 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   const { chains } = useChains();
   const { t } = useTranslation();
   const { switchChainAsync } = useSwitchChain();
+
+  // STATE
+
   const {
     data: transactionHash,
     isPending: isPendingSendTransaction,
@@ -77,72 +87,66 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
 
   const { data: sourceBalance, isLoading: isSourceBalanceLoading } =
     useTokenBalance({
-      tokenAddress: '0x0000000000000000000000000000000000000000',
+      tokenAddress: NATIVE_TOKEN,
       walletAddress: activeAccount[0]?.address as `0x${string}`,
       chainId: route.fromChainId,
     });
 
   const { data: destinationBalance, isLoading: isDestinationBalanceLoading } =
     useTokenBalance({
-      tokenAddress: '0x0000000000000000000000000000000000000000',
+      tokenAddress: NATIVE_TOKEN,
       walletAddress: activeAccount[0]?.address as `0x${string}`,
       chainId: route.toChainId,
     });
 
   useEffect(() => {
-    if (
-      sourceBalance?.amount &&
-      parseFloat(formatUnits(sourceBalance.amount, sourceBalance.decimals)) *
-        parseFloat(sourceBalance.priceUSD) >=
-        MIN_AMOUNT_USD
-    ) {
-      setBalanceNative(
-        parseFloat(formatUnits(sourceBalance.amount, sourceBalance.decimals)),
+    const updateBalanceAndChain = (balance: TokenBalance, chainId: number) => {
+      if (!balance.amount) return;
+      const amount = parseFloat(formatUnits(balance.amount, balance.decimals));
+      const amountUSD = amount * parseFloat(balance.priceUSD);
+
+      setBalanceNative(amount);
+      setBalanceNativeInUSD(amountUSD);
+      setActiveChain(chains?.find((chainEl) => chainEl.id === chainId));
+    };
+
+    if (sourceBalance?.amount) {
+      const sourceAmount = parseFloat(
+        formatUnits(sourceBalance.amount, sourceBalance.decimals),
       );
-      setBalanceNativeInUSD(
-        parseFloat(sourceBalance.priceUSD) *
-          parseFloat(formatUnits(sourceBalance.amount, sourceBalance.decimals)),
-      );
-      setActiveChain(
-        chains?.find((chainEl) => chainEl.id === route.fromChainId),
-      );
-    } else if (
-      destinationBalance?.amount &&
-      parseFloat(
-        formatUnits(destinationBalance.amount, destinationBalance.decimals),
-      ) *
-        parseFloat(destinationBalance.priceUSD) >=
-        MIN_AMOUNT_USD
-    ) {
-      setBalanceNative(
-        parseFloat(
-          formatUnits(destinationBalance.amount, destinationBalance.decimals),
-        ),
-      );
-      setBalanceNativeInUSD(
-        parseFloat(destinationBalance.priceUSD) *
-          parseFloat(
-            formatUnits(destinationBalance.amount, destinationBalance.decimals),
-          ),
-      );
-      setActiveChain(chains?.find((chainEl) => chainEl.id === route.toChainId));
+      const sourceAmountUSD = sourceAmount * parseFloat(sourceBalance.priceUSD);
+
+      if (sourceAmountUSD >= MIN_AMOUNT_USD) {
+        updateBalanceAndChain(sourceBalance, route.fromChainId);
+        return;
+      }
     }
-  }, [
-    chains,
-    route,
-    destinationBalance,
-    route.fromChainId,
-    route.toChainId,
-    sourceBalance,
-  ]);
+
+    if (destinationBalance?.amount) {
+      const destAmount = parseFloat(
+        formatUnits(destinationBalance.amount, destinationBalance.decimals),
+      );
+      const destAmountUSD =
+        destAmount * parseFloat(destinationBalance.priceUSD);
+
+      if (destAmountUSD >= MIN_AMOUNT_USD) {
+        updateBalanceAndChain(destinationBalance, route.toChainId);
+        return;
+      }
+    }
+  }, [chains, route, sourceBalance, destinationBalance]);
+
+  // USER INTERACTION FUNCTIONS
 
   const handleRateClick = () => {
-    const txPercentageUSDValue =
-      (Number(rate) / 100) * parseFloat(route.fromAmountUSD);
+    const rateAsDecimal = Number(rate) / 100;
+    const routeAmountUSD = parseFloat(route.fromAmountUSD);
+
+    const feeAmountUSD = rateAsDecimal * routeAmountUSD;
     const ethPrice = balanceNativeInUSD / balanceNative;
-    const txPercentageNativeValue = txPercentageUSDValue * (1 / ethPrice);
+    const feeAmountNative = feeAmountUSD / ethPrice;
     setEthPrice(ethPrice);
-    setAmount(txPercentageNativeValue.toString());
+    setAmount(feeAmountNative.toString());
   };
 
   const handleChange = (
@@ -153,34 +157,39 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
     setAmount(formattedAmount);
   };
 
-  const handleButtonClick = async () => {
-    if (!activeChain) {
-      return;
-    }
-    try {
-      const { id } = await switchChainAsync({
-        chainId: activeChain?.id,
-      });
-      const destinationAddress = SAFE_CONTRACTS[activeChain?.id];
-
-      if (
-        id === activeChain?.id &&
-        !!destinationAddress &&
-        parseFloat(amount) > 0
-      ) {
-        try {
-          sendTransaction({
-            to: destinationAddress as `0x${string}`,
-            value: parseEther(amount),
-          });
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    } catch (err) {
-      console.log(err);
+  const switchToActiveChain = async () => {
+    if (!activeChain) return;
+    const { id } = await switchChainAsync({
+      chainId: activeChain.id,
+    });
+    if (id !== activeChain?.id) {
+      throw new Error('Failed to switch to the correct chain');
     }
   };
+
+  const sendFlexibleFee = () => {
+    if (!activeChain) return;
+    const destinationAddress = SAFE_CONTRACTS[activeChain.id];
+    if (!destinationAddress || parseFloat(amount) <= 0) {
+      throw new Error('Invalid destination address or amount');
+    }
+
+    sendTransaction({
+      to: destinationAddress as `0x${string}`,
+      value: parseEther(amount),
+    });
+  };
+
+  const handleButtonClick = async () => {
+    try {
+      await switchToActiveChain();
+      sendFlexibleFee();
+    } catch (error) {
+      console.error('Error in flexible fee transaction:', error);
+    }
+  };
+
+  // RETURN
 
   return balanceNative > 0 &&
     route.fromChainId !== ChainId.SOL &&
@@ -275,7 +284,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
         />
       </Container>
     </ThemeProviderV2>
-  ) : (
+  ) : isDestinationBalanceLoading || isSourceBalanceLoading ? (
     <ThemeProviderV2 themes={[]}>
       <Container>
         <Header>
@@ -318,5 +327,5 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
         />
       </Container>
     </ThemeProviderV2>
-  );
+  ) : null;
 };
