@@ -1,5 +1,11 @@
 'use client';
-import { CoinKey, getToken, getTokenBalance, TokenAmount } from '@lifi/sdk';
+import {
+  CoinKey,
+  getToken,
+  getTokenBalance,
+  getTokenBalances,
+  TokenAmount,
+} from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
 
 type useTokenBalanceProps = {
@@ -40,34 +46,18 @@ export const useTokenBalance = ({
         // console.log(tokenInfo);
         const chainId = 10;
         const tokenAddress = '0x0000000000000000000000000000000000000000';
-        const walletAddress = '0x62807Dbbe7d5237F810b6abCbCA089B5D5cC0A94';
+        const walletAddress = '0x62807Dbbe7d5237F810b6abCbxCA089B5D5cC0A94';
 
         try {
           const token = await getToken(chainId, tokenAddress);
-          const tokenBalance = await getTokenBalance(walletAddress, token);
+          console.log(token);
+          const tokenBalance = await getTokenBalances(walletAddress, [token]);
+          console.log('shoooow token balance -');
           console.log(tokenBalance);
           return tokenBalance;
         } catch (error) {
           console.error(error);
         }
-
-        // const tokenBalance = await getTokenBalance(
-        //   '0x62807Dbbe7d5237F810b6abCbCA089B5D5cC0A94',
-        //   {
-        //     address: '0x0000000000000000000000000000000000000000',
-        //     chainId: 10,
-        //     symbol: 'ETH',
-        //     decimals: 18,
-        //     name: 'ETH',
-        //     coinKey: CoinKey.ETH,
-        //     logoURI:
-        //       'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
-        //     priceUSD: '2304.35',
-        //   },
-        // );
-        // console.log('tokenBalance from hooks-----');
-        // console.log(tokenBalance);
-        // return tokenBalance;
       } catch (err) {
         console.log(err);
         return null;
