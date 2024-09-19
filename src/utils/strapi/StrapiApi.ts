@@ -65,7 +65,7 @@ class StrapiApi {
         console.error('Strapi URL is not provided.');
         throw new Error('Strapi URL is not provided.');
       }
-      return process.env.NEXT_PUBLIC_STRAPI_URL;
+      return `${process.env.NEXT_PUBLIC_STRAPI_URL}/api`;
     }
   }
 
@@ -94,6 +94,7 @@ class ArticleParams {
 
   constructor(apiUrl: URL) {
     this.apiUrl = apiUrl;
+    this.apiUrl.searchParams.set('filters[Slug][$notNull]', 'true');
   }
 
   addParams(): URL {
@@ -282,6 +283,6 @@ export {
   FeatureCardStrapiApi,
   JumperUserStrapiApi,
   PartnerThemeStrapiApi,
-  StrapiApi,
   QuestStrapiApi,
+  StrapiApi,
 };
