@@ -157,7 +157,7 @@ export function Widget({
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
-      feeConfig: { name: 'Jumper Fee', fee: 0, _vcComponent: FlexibleFee },
+      feeConfig: { name: 'Jumper', fee: 0, _vcComponent: FlexibleFee },
       ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
