@@ -32,7 +32,7 @@ interface ClaimRewardParams {
   rewardAmount: number;
   rewardToken: string;
   rewardAmountBN: string;
-  claimingAddress: string;
+  claimingAddress: `0x${string}`;
 }
 
 // const CLAIMING_CONTRACT_ADDRESS = REWARD_CLAIMING_ADDRESS;
@@ -152,7 +152,8 @@ export const RewardsCarousel = ({
                         rewardAmountBN:
                           availableReward.accumulatedAmountForContractBN,
                         rewardToken: availableReward.address,
-                        claimingAddress: availableReward.claimingAddress,
+                        claimingAddress:
+                          availableReward.claimingAddress as `0x${string}`,
                       })
                     }
                   >
