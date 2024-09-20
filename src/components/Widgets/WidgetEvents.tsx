@@ -223,15 +223,7 @@ export function WidgetEvents() {
         destinationChainToken.chainId &&
         destinationChainToken.tokenAddress
       ) {
-        previousRoutesRef.current[TrackingEventParameter.FromChainId] =
-          sourceChainToken.chainId;
-        previousRoutesRef.current[TrackingEventParameter.FromToken] =
-          sourceChainToken.tokenAddress;
-        previousRoutesRef.current[TrackingEventParameter.ToChainId] =
-          destinationChainToken.chainId;
-        previousRoutesRef.current[TrackingEventParameter.ToToken] =
-          destinationChainToken.tokenAddress;
-
+        previousRoutesRef.current = newObj;
         trackEvent({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnAvailableRoutes,
