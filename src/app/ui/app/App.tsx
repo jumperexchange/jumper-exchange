@@ -72,7 +72,7 @@ const App = ({
         spacing={4}
         paddingTop={3.5}
       >
-        <VerticalTabs />
+        {welcomeScreenClosed && <VerticalTabs />}
         <WidgetContainer
           welcomeScreenClosed={!enabled || welcomeScreenClosed!}
           className="widget-container"
