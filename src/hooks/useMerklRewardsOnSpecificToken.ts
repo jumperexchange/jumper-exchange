@@ -2,8 +2,8 @@
 import { useQuery } from '@tanstack/react-query';
 import {
   MERKL_CREATOR_TAG,
-  REWARD_TOKEN_ADDRESS,
   REWARDS_CHAIN_IDS,
+  REWARDS_LIST,
 } from 'src/const/partnerRewardsTheme';
 
 interface TokenData {
@@ -58,7 +58,6 @@ export interface UseMerklRes {
 }
 
 export interface UseMerklRewardsProps {
-  rewardChainId: number;
   userAddress?: string;
   rewardToken?: string;
 }
@@ -73,8 +72,6 @@ const MERKL_API = 'https://api.merkl.xyz/v3';
 
 export const useMerklRewards = ({
   userAddress,
-  rewardChainId,
-  rewardToken,
 }: UseMerklRewardsProps): UseMerklRes => {
   // state
   let userTVL = 0;
@@ -84,7 +81,7 @@ export const useMerklRewards = ({
 
   // Call to get the active positions
   // To do -> use the label to get only
-  const MERKL_POSITIONS_API = `${MERKL_API}/multiChainPositions?chainIds=${ACTIVE_CHAINS.join(',')}&user=${userAddress}&creatorTag=${CREATOR_TAG}`;
+  const MERKL_POSITIONS_API = `${MERKL_API}/multiChainPositions?chainIds=${ACTIVE_CHAINS.join(',')}&user=${userAddress}`; //&creatorTag=${CREATOR_TAG}
   const {
     data: positionsData,
     isSuccess: positionsIsSuccess,
@@ -113,7 +110,7 @@ export const useMerklRewards = ({
   }
 
   // check the user positions for the interesting campaign
-  const MERKL_REWARDS_API = `${MERKL_API}/rewards?chainIds=${rewardChainId}&user=${userAddress}`;
+  const MERKL_REWARDS_API = `${MERKL_API}/rewards?chainIds=${ACTIVE_CHAINS.join(',')}&user=${userAddress}`;
   const {
     data: rewardsData,
     isSuccess: rewardsIsSuccess,
@@ -132,26 +129,32 @@ export const useMerklRewards = ({
 
   // transform to know what is not coming from Jumper campaigns
   if (rewardsData) {
-    const tokenData = rewardsData[rewardChainId]?.tokenData;
-    if (tokenData) {
-      rewardsToClaim = Object.entries(tokenData)
-        .map((elem): AvailableRewards => {
-          const key = elem[0];
-          const value = elem[1] as TokenData;
-          return {
-            chainId: rewardChainId,
-            address: key,
-            symbol: value.symbol,
-            accumulatedAmountForContractBN: value.accumulated,
-            amountToClaim: (value.unclaimed as any) / 10 ** value.decimals, //todo: need to be typed with big int
-            amountAccumulated: (value.unclaimed as any) / 10 ** value.decimals, //todo: need to be typed with big int
-            proof: value.proof,
-          };
-        })
-        .filter(
-          (elem) =>
-            elem.address.toLowerCase() === String(rewardToken).toLowerCase(),
+    for (const rewardElem of REWARDS_LIST) {
+      const tokenData = rewardsData[rewardElem.chainId]?.tokenData;
+      if (tokenData) {
+        rewardsToClaim.concat(
+          Object.entries(tokenData)
+            .map((elem): AvailableRewards => {
+              const key = elem[0];
+              const value = elem[1] as TokenData;
+              return {
+                chainId: parseInt(rewardElem.chainId),
+                address: key,
+                symbol: value.symbol,
+                accumulatedAmountForContractBN: value.accumulated,
+                amountToClaim: (value.unclaimed as any) / 10 ** value.decimals, //todo: need to be typed with big int
+                amountAccumulated:
+                  (value.unclaimed as any) / 10 ** value.decimals, //todo: need to be typed with big int
+                proof: value.proof,
+              };
+            })
+            .filter(
+              (elem) =>
+                elem.address.toLowerCase() ===
+                String(rewardElem.tokenAddress).toLowerCase(),
+            ),
         );
+      }
     }
 
     for (const chain of ACTIVE_CHAINS) {
