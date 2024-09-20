@@ -17,6 +17,7 @@ interface Chain extends ExtendedChain, Price {}
 interface Price {
   amount?: bigint;
   decimals: number;
+  address: string;
   totalPriceUSD: number;
   formattedBalance: number;
 }
@@ -54,6 +55,7 @@ function transform(
       const balance = getBalance(tb);
       tokenMap[tb.symbol].chains.push({
         ...chain,
+        address: tb.address,
         decimals: tb.decimals,
         formattedBalance: balance,
         amount: tb.amount,

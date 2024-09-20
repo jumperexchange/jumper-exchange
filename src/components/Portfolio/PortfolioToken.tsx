@@ -136,7 +136,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             </Grid>
             <Grid item xs={5} style={{ textAlign: 'right' }}>
               <TypographyPrimary>
-                {token.formattedBalance?.toFixed(2)}
+                {token.formattedBalance?.toFixed(7)}
               </TypographyPrimary>
               <TypographySecondary>
                 ${token.totalPriceUSD?.toFixed(2)}
@@ -154,7 +154,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             <ButtonBase
               key={generateKey(chain.key)}
               onClick={() => {
-                setFrom(token.address, chain.id);
+                setFrom(chain.address, chain.id);
                 if (!isMainPaths) {
                   router.push('/');
                 }
@@ -222,7 +222,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                       lineHeight: '1.125rem',
                     }}
                   >
-                    {chain.formattedBalance?.toFixed(2)}
+                    {chain.formattedBalance?.toFixed(7)}
                   </TypographyPrimary>
                   <TypographySecondary
                     sx={{

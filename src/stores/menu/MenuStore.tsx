@@ -77,7 +77,7 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
         openSubMenu: MenuKeysEnum.None,
         openMainMenu: false,
         isPopper: isPopper,
-        openWalletMenu: state.openWalletMenu,
+        openWalletMenu: false,
         openSupportModal: false,
       }));
     },
