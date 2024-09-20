@@ -100,7 +100,7 @@ export const RewardsCarousel = ({
       {!hideComponent ? (
         <RewardsCarouselContainer>
           {availableRewards.map((availableReward) => {
-            const amount = availableReward.amountToClaim;
+            const amount = 10; //availableReward.amountToClaim;
             return (
               <RewardsCarouselMainBox>
                 <FlexCenterRowBox>
@@ -117,8 +117,12 @@ export const RewardsCarousel = ({
                     isSuccess={isMerklSuccess}
                     rewardAmount={amount}
                     isConfirmed={isConfirmed}
-                    tokenLogo={availableReward.tokenLogo}
-                    chainLogo={availableReward.chainLogo}
+                    tokenLogo={
+                      'https://strapi.jumper.exchange/uploads/Sei_Symbol_Gradient_ea276889b3.png'
+                    } //availableReward.tokenLogo}
+                    chainLogo={
+                      'https://strapi.jumper.exchange/uploads/Sei_Symbol_Gradient_ea276889b3.png'
+                    } //availableReward.chainLogo}
                   />
                 </FlexCenterRowBox>
                 <ClaimButtonBox>
@@ -127,7 +131,7 @@ export const RewardsCarousel = ({
                       isPending ||
                       isConfirming ||
                       isConfirmed ||
-                      (!!amount && amount === 0) ||
+                      // (!!amount && amount === 0) ||
                       (isMerklSuccess && !amount)
                     }
                     variant="primary"
@@ -138,7 +142,7 @@ export const RewardsCarousel = ({
                         isPending ||
                         isConfirming ||
                         isConfirmed ||
-                        (!!amount && amount === 0) ||
+                        // (!!amount && amount === 0) ||
                         (isMerklSuccess && !amount)
                           ? 0.3
                           : undefined,
