@@ -63,8 +63,8 @@ export function Widget({
 
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
-    router.prefetch('/gas/', { kind: PrefetchKind.FULL });
-    router.prefetch('/buy/', { kind: PrefetchKind.FULL });
+    router.prefetch('/gas', { kind: PrefetchKind.FULL });
+    router.prefetch('/buy', { kind: PrefetchKind.FULL });
   });
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(
