@@ -9,8 +9,9 @@ import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 import type { PartnerThemesData } from '@/types/strapi';
-import type { WidgetConfig } from '@lifi/widget';
+import type { FormState, WidgetConfig } from '@lifi/widget';
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
+import { RefObject } from 'react';
 
 // ----------------------------------------------------------------------
 

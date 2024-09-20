@@ -19,6 +19,7 @@ import { Box } from '@mui/system';
 import { MenuPaper } from '@/components/Menu';
 import shadows from '@mui/material/styles/shadows';
 import CloseIcon from '@mui/icons-material/Close';
+import { useSettingsStore } from '@/stores/settings';
 
 interface WalletMenuProps {
   anchorEl?: HTMLAnchorElement;
@@ -53,6 +54,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
       setWalletMenuState(false);
     }
   }, [accounts, setWalletMenuState, openWalletMenu]);
+
 
   return (
     <Drawer

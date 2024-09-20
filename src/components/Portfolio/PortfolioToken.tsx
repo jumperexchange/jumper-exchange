@@ -14,22 +14,22 @@ import {
   ButtonBase,
   Grid,
   Skeleton,
-  styled,
   Tooltip,
   Avatar as MuiAvatar,
 } from '@mui/material';
 import Image from 'next/image';
-import CoinLink, { buildUrl } from '@/components/Portfolio/CoinLink';
 import type { ExtendedTokenAmount } from '@/utils/getTokens';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import qs from 'querystring';
-import { useRouter } from 'next/navigation';
 import {
   WalletAvatar,
   WalletCardBadge,
 } from '@/components/Menus/WalletMenu/WalletCardV2.style';
 import { Avatar } from '@/components/Avatar';
+import { useSettingsStore } from '@/stores/settings';
+import { useWidgetCache } from '@/stores/widgetCache';
+import { useMainPaths } from '@/hooks/useMainPaths';
+import { useRouter } from 'next/navigation';
 
 interface PortfolioTokenProps {
   token: ExtendedTokenAmount;
@@ -38,13 +38,19 @@ interface PortfolioTokenProps {
 function PortfolioToken({ token }: PortfolioTokenProps) {
   const [isExpanded, setExpanded] = useState<boolean>(false);
   const { t } = useTranslation();
+  const { isMainPaths } = useMainPaths();
   const router = useRouter();
+  const setFrom = useWidgetCache((state) => state.setFrom);
+
   const hasMultipleChains = token.chains.length > 1;
 
   const handleChange = () => {
-    console.log('change', token);
     if (!hasMultipleChains) {
-      router.push(`/?${qs.stringify(buildUrl(token.chains[0], token))}`);
+      setFrom(token.address, token.chainId);
+
+      if (!isMainPaths) {
+        router.push('/')
+      }
       return;
     }
     setExpanded(!isExpanded);
@@ -101,34 +107,6 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                   >
                     <WalletAvatar src={token.logoURI} />
                   </WalletCardBadge>
-                  {/*                (
-                <Badge
-                  overlap="circular"
-                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                  badgeContent={
-                    <SmallAvatar
-                      alt={token.chains[0].name}
-                      src={token.chains[0].logoURI}
-                      sx={{ width: 15, height: 15 }}
-                    />
-                  }
-                >
-                  <Avatar sx={{ width: 40, height: 40 }}>
-                    {!token?.logoURI ? (
-                      <>?</>
-                    ) : (
-                      <Image
-                        width={0}
-                        height={0}
-                        sizes="100vw"
-                        style={{ width: '100%', height: '100%' }} // optional
-                        src={token.logoURI}
-                        alt={token.name}
-                      />
-                    )}
-                  </Avatar>
-                </Badge>
-              )*/}
                 </>
               )}
             </Grid>
@@ -147,18 +125,12 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
               ) : (
                 <CustomAvatarGroup spacing={6} max={15}>
                   {token.chains.map((chain) => (
-                    <CoinLink
-                      chain={chain}
-                      token={token}
+                    <Tooltip
+                      title={chain.name}
                       key={`${token.symbol}-${chain.key}`}
                     >
-                      <Tooltip
-                        title={chain.name}
-                        key={`${token.symbol}-${chain.key}`}
-                      >
-                        <MuiAvatar alt={chain.name} src={chain.logoURI} />
-                      </Tooltip>
-                    </CoinLink>
+                      <MuiAvatar alt={chain.name} src={chain.logoURI} />
+                    </Tooltip>
                   ))}
                 </CustomAvatarGroup>
               )}
@@ -183,7 +155,11 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             <ButtonBase
               key={generateKey(chain.key)}
               onClick={() => {
-                router.push(`/?${qs.stringify(buildUrl(chain, token))}`);
+                setFrom(token.address, chain.id);
+                console.log('tttsige', isMainPaths, token, chain)
+                if (!isMainPaths) {
+                  console.log('working?', router.push('/'))
+                }
               }}
               sx={{
                 width: '100%',
