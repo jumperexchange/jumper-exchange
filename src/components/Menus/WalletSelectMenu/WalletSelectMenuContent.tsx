@@ -44,7 +44,6 @@ function WalletSelectMenuContent({
     NUMBER_OF_WALLETS_DISPLAYED,
   );
   const { openSubMenu, setSubMenuState } = useMenuStore((state) => state);
-  const dd = useMenuStore((state) => state);
 
   const menuItemStyles: SxProps<Theme> = {
     margin: 0,

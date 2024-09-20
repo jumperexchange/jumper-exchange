@@ -20,6 +20,7 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
 
   return (
     <Menu
+      width="100%"
       open={openWalletSelectMenu}
       // open={openWalletSelectMenu && isPopper}
       cardsLayout={openSubMenu === MenuKeysEnum.WalletSelectMore ? false : true}

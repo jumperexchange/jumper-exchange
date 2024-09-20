@@ -128,8 +128,7 @@ export const MenuPaper = styled(Paper, {
     transformOrigin: 'inherit',
     maxHeight: 'calc( 100vh - 80px - 12px )',
     borderRadius: '12px !important',
-    width: '100%',
-    // width: width ?? 288,
+    width: width ?? 288,
     marginTop: -2,
   },
 }));
