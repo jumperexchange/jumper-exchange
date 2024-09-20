@@ -91,9 +91,7 @@ export function Widget({
     formRef?.current?.setFieldValue('fromToken', widgetCache.fromToken, {
       setUrlSearchParam: true,
     });
-  }, [
-    widgetCache,
-  ]);
+  }, [widgetCache]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(
     isWelcomeScreenClosed,
