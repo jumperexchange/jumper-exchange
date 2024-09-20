@@ -35,8 +35,6 @@ interface ClaimRewardParams {
   claimingAddress: `0x${string}`;
 }
 
-// const CLAIMING_CONTRACT_ADDRESS = REWARD_CLAIMING_ADDRESS;
-// const REWARD_TOKEN = REWARD_TOKEN_ADDRESS;
 // -------
 //TESTING
 // const TEST_TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
@@ -99,10 +97,10 @@ export const RewardsCarousel = ({
     <>
       {!hideComponent ? (
         <RewardsCarouselContainer>
-          {availableRewards.map((availableReward) => {
-            const amount = 10; //availableReward.amountToClaim;
+          {availableRewards.map((availableReward, i) => {
+            const amount = availableReward.amountToClaim;
             return (
-              <RewardsCarouselMainBox>
+              <RewardsCarouselMainBox key={i} marginTop={'8px'}>
                 <FlexCenterRowBox>
                   <Box>
                     <EarnedTypography
@@ -117,12 +115,8 @@ export const RewardsCarousel = ({
                     isSuccess={isMerklSuccess}
                     rewardAmount={amount}
                     isConfirmed={isConfirmed}
-                    tokenLogo={
-                      'https://strapi.jumper.exchange/uploads/Sei_Symbol_Gradient_ea276889b3.png'
-                    } //availableReward.tokenLogo}
-                    chainLogo={
-                      'https://strapi.jumper.exchange/uploads/Sei_Symbol_Gradient_ea276889b3.png'
-                    } //availableReward.chainLogo}
+                    tokenLogo={availableReward.tokenLogo}
+                    chainLogo={availableReward.chainLogo}
                   />
                 </FlexCenterRowBox>
                 <ClaimButtonBox>
@@ -131,7 +125,7 @@ export const RewardsCarousel = ({
                       isPending ||
                       isConfirming ||
                       isConfirmed ||
-                      // (!!amount && amount === 0) ||
+                      (!!amount && amount === 0) ||
                       (isMerklSuccess && !amount)
                     }
                     variant="primary"
@@ -142,7 +136,7 @@ export const RewardsCarousel = ({
                         isPending ||
                         isConfirming ||
                         isConfirmed ||
-                        // (!!amount && amount === 0) ||
+                        (!!amount && amount === 0) ||
                         (isMerklSuccess && !amount)
                           ? 0.3
                           : undefined,

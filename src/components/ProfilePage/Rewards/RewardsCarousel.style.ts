@@ -16,10 +16,6 @@ import {
 } from 'src/const/partnerRewardsTheme';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? '#FFFFFF'
-      : alpha(theme.palette.white.main, 0.08),
   // backgroundColor: theme.palette.mode === 'dark' ? '#322153' : '#F6F5FA',
   // backgroundColor:
   //   theme.palette.mode === 'dark'
@@ -27,7 +23,7 @@ export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   //     : PROFILE_CAMPAIGN_LIGHT_COLOR,
   display: 'flex',
   width: '100%',
-  flexDirection: 'row',
+  flexDirection: 'column',
   justifyContent: 'center',
   alignContent: 'center',
   alignItems: 'center',
@@ -62,6 +58,10 @@ export const RewardsCarouselTitle = styled(Typography, {
 
 export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
   width: '100%',
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? '#FFFFFF'
+      : alpha(theme.palette.white.main, 0.08),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',

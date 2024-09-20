@@ -12,7 +12,6 @@ import {
   PROFILE_CAMPAIGN_DARK_TOKEN,
   PROFILE_CAMPAIGN_LIGHT_CHAIN,
   PROFILE_CAMPAIGN_LIGHT_TOKEN,
-  REWARDS_DECIMALS,
 } from 'src/const/partnerRewardsTheme';
 import { useAccounts } from 'src/hooks/useAccounts';
 
@@ -80,7 +79,7 @@ export const RewardsAmountBox = ({
           isConfirmed
             ? '0'
             : rewardAmount
-              ? rewardAmount.toFixed(REWARDS_DECIMALS)
+              ? rewardAmount
               : '...'}
         </Typography>
       </Box>
