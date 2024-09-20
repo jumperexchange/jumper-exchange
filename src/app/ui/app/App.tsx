@@ -6,24 +6,30 @@ import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking';
 import type { StarterVariantType } from '@/types/internal';
-import { Box, Stack } from '@mui/material';
-import { StyledSlide } from './App.style';
+import { Box, Slide, Stack } from '@mui/material';
 import { VerticalTabs } from 'src/components/Menus/VerticalMenu';
 
 export interface AppProps {
   starterVariant: StarterVariantType;
   children: React.ReactNode;
   isWelcomeScreenClosed: boolean;
+  activeTheme?: string;
 }
 
-const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
+const App = ({
+  starterVariant,
+  isWelcomeScreenClosed,
+  activeTheme,
+  children,
+}: AppProps) => {
   const { trackEvent } = useUserTracking();
 
-  const welcomeScreen = useWelcomeScreen(isWelcomeScreenClosed);
+  const { welcomeScreenClosed, setWelcomeScreenClosed, enabled } =
+    useWelcomeScreen(isWelcomeScreenClosed, activeTheme);
 
   const handleWelcomeScreenEnter = () => {
-    if (!welcomeScreen.welcomeScreenClosed) {
-      welcomeScreen.setWelcomeScreenClosed(true);
+    if (enabled && !welcomeScreenClosed) {
+      setWelcomeScreenClosed(true);
 
       trackEvent({
         category: TrackingCategory.WelcomeScreen,
@@ -37,9 +43,9 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
 
   return (
     <Box onClick={handleWelcomeScreenEnter}>
-      <StyledSlide
+      <Slide
         direction="up"
-        in={!welcomeScreen.welcomeScreenClosed}
+        in={enabled && !welcomeScreenClosed}
         appear={false}
         timeout={400}
         className="welcome-screen-container"
@@ -55,9 +61,9 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
             right: 0,
           }}
         >
-          <WelcomeScreen closed={welcomeScreen.welcomeScreenClosed!} />
+          <WelcomeScreen closed={!enabled || welcomeScreenClosed!} />
         </Box>
-      </StyledSlide>
+      </Slide>
       <Stack
         display="flex"
         direction="row"
@@ -68,7 +74,7 @@ const App = ({ starterVariant, isWelcomeScreenClosed, children }: AppProps) => {
       >
         <VerticalTabs />
         <WidgetContainer
-          welcomeScreenClosed={welcomeScreen.welcomeScreenClosed!}
+          welcomeScreenClosed={!enabled || welcomeScreenClosed!}
           className="widget-container"
         >
           {children}

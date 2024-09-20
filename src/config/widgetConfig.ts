@@ -1,4 +1,5 @@
-import { ChainId, createConfig } from '@lifi/sdk';
+import { createConfig } from '@lifi/sdk';
+import { ChainId } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { publicRPCList } from './../const/rpcList';
 

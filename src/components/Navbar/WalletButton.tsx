@@ -1,12 +1,6 @@
 'use client';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/sdk';
@@ -21,7 +15,7 @@ import {
   WalletMgmtBadge,
   WalletMgmtChainAvatar,
   WalletMgmtWalletAvatar,
-} from '.';
+} from './WalletButton.style';
 import { XPIcon } from '../illustrations/XPIcon';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
@@ -29,7 +23,6 @@ import { useRouter } from 'next/navigation';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
-  const { trackEvent } = useUserTracking();
   const { account } = useAccounts();
   const { t } = useTranslation();
   const { isSuccess } = useChains();
@@ -55,38 +48,14 @@ export const WalletButtons = () => {
   );
 
   const handleWalletSelectClick = () => {
-    !openWalletSelectMenu &&
-      trackEvent({
-        category: TrackingCategory.WalletSelectMenu,
-        action: TrackingAction.OpenMenu,
-        label: 'open_wallet_select_menu',
-        data: { [TrackingEventParameter.Menu]: 'wallet_select_menu' },
-        enableAddressable: true,
-      });
     setWalletSelectMenuState(!openWalletSelectMenu);
   };
 
   const handleXPClick = () => {
-    trackEvent({
-      category: TrackingCategory.Menu,
-      label: 'click-jumper-pass-link',
-      action: TrackingAction.ClickJumperProfileLink,
-      data: { [TrackingEventParameter.Menu]: 'pass' },
-      disableTrackingTool: [],
-    });
     router.push(JUMPER_LOYALTY_PATH);
   };
 
   const handleWalletMenuClick = () => {
-    // setIsDrawerOpen(true);
-
-    openWalletMenu &&
-      trackEvent({
-        category: TrackingCategory.WalletMenu,
-        action: TrackingAction.OpenMenu,
-        label: 'open_wallet_menu',
-        data: { [TrackingEventParameter.Menu]: 'wallet_menu' },
-      });
     setWalletMenuState(!openWalletMenu);
   };
 

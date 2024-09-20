@@ -41,8 +41,8 @@ export const ProfilePage = () => {
   return (
     <>
       <RewardsCarousel
-        hideComponent={false}
-        // hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
+        // hideComponent={false}
+        hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
         rewardAmount={availableRewards?.[0]?.amountToClaim as number}
         accumulatedAmountForContractBN={
           availableRewards?.[0]?.accumulatedAmountForContractBN
@@ -72,7 +72,7 @@ export const ProfilePage = () => {
           <Grid xs={12} md={8}>
             <Stack spacing={{ xs: 2, sm: 4 }}>
               <ProfilePageHeaderBox
-                sx={{ display: 'flex', flex: 2, padding: { xs: 0, sm: 3 } }}
+                sx={{ display: 'flex', flex: 2, paddingX: { xs: 0, sm: 1 } }}
               >
                 <TierBox points={points} tier={tier} loading={isLoading} />
               </ProfilePageHeaderBox>

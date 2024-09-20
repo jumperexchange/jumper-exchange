@@ -131,15 +131,6 @@ export const useWalletSelectContent = () => {
         showMoreIcon: false,
         onClick: () => {
           handleWalletClick(combinedWallet);
-          trackEvent({
-            category: TrackingCategory.WalletSelectMenu,
-            action: TrackingAction.ClickConnectWallet,
-            label: 'click_connect_wallet',
-            data: {
-              wallet: walletDisplayName,
-            },
-            enableAddressable: true,
-          });
         },
         styles: {
           '&:hover': {

@@ -1,4 +1,4 @@
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
   BlogArticlAuthorName,
@@ -36,9 +36,11 @@ import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
+import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
+import Image from 'next/image';
 
 interface BlogArticleProps {
-  title?: string;
+  title: string;
   subtitle?: string;
   content?: RootNode[];
   tags?: TagData;
@@ -109,7 +111,7 @@ export const BlogArticle = ({
           )}
 
           {subtitle ? (
-            <BlogArticleSubtitle variant="headerMedium" as="h4">
+            <BlogArticleSubtitle variant="headerMedium" as="h2">
               {subtitle}
             </BlogArticleSubtitle>
           ) : (
@@ -117,25 +119,53 @@ export const BlogArticle = ({
           )}
 
           <BlogMetaContainer>
+            {/*// The following block is a duplication of the row 196 onwards but with slightly different styles, needs to be revisited*/}
             <BlogAuthorContainer>
               {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
                 <BlogAuthorAvatar
+                  width={64}
+                  height={64}
                   src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
-                  alt="author-avatar"
+                  alt={`${author.data.attributes?.Name}'s avatar`}
                 />
               ) : (
                 <BlogAuthorAvatarSkeleton variant="rounded" />
               )}
-              {author?.data ? (
-                <BlogArticlAuthorName
-                  variant="bodyXSmallStrong"
-                  component="span"
-                >
-                  {author.data?.attributes.Name}
-                </BlogArticlAuthorName>
-              ) : (
-                <BlogArticlAuthorNameSkeleton variant="text" />
-              )}
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignSelf: 'center',
+                  [theme.breakpoints.down('sm')]: {
+                    '&:has(.blog-author-socials)': {
+                      alignItems: 'center',
+                      alignSelf: 'flex-start',
+                    },
+                    '.blog-author-socials': {
+                      display: 'none',
+                    },
+                  },
+                  [theme.breakpoints.up('sm')]: {
+                    alignSelf: 'center',
+                  },
+                }}
+              >
+                {author?.data ? (
+                  <BlogArticlAuthorName
+                    variant="bodyXSmallStrong"
+                    component="span"
+                  >
+                    {author.data?.attributes.Name}
+                  </BlogArticlAuthorName>
+                ) : (
+                  <BlogArticlAuthorNameSkeleton variant="text" />
+                )}
+                <BlogAuthorSocials
+                  author={author}
+                  articleId={id}
+                  source="blog-article-header"
+                />
+              </Box>
             </BlogAuthorContainer>
             <ShareArticleIcons title={title} slug={slug} />
           </BlogMetaContainer>
@@ -145,7 +175,10 @@ export const BlogArticle = ({
         {image?.data && (
           <BlogArticleImage
             src={`${baseUrl}${image.data.attributes?.url}`}
-            alt={image?.data.attributes?.alternativeText}
+            alt={image?.data.attributes?.alternativeText ?? title}
+            priority
+            width={1200}
+            height={640}
           />
         )}
       </BlogArticleImageContainer>
@@ -165,6 +198,8 @@ export const BlogArticle = ({
           <BlogAuthorWrapper>
             {author?.data?.attributes?.Avatar.data?.attributes.url ? (
               <BlogAuthorAvatar
+                width={64}
+                height={64}
                 src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
                 alt="author-avatar"
               />
@@ -191,6 +226,11 @@ export const BlogArticle = ({
               ) : (
                 <BlogArticlAuthorRoleSkeleton variant="text" />
               )}
+              <BlogAuthorSocials
+                author={author}
+                articleId={id}
+                source="blog-article-footer"
+              />
             </BlogAuthorMetaWrapper>
           </BlogAuthorWrapper>
         </BlogArticleContentContainer>

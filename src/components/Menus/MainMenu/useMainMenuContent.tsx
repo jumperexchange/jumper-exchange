@@ -109,36 +109,30 @@ export const useMainMenuContent = () => {
   }
 
   if (!forcedTheme && isMainPaths) {
-    mainMenu.push({
-      label: t('navbar.navbarMenu.theme'),
-      prefixIcon: <PaletteIcon />,
-      triggerSubMenu: !['dark', 'light'].includes(configTheme?.uid)
-        ? MenuKeysEnum.Theme
-        : undefined,
-      showMoreIcon: !['dark', 'light'].includes(configTheme?.uid),
-      suffixIcon: configTheme?.uid && (
-        <Typography
-          variant="bodyMedium"
-          textTransform={'uppercase'}
-          sx={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            maxWidth: 38,
-          }}
-        >
-          {configTheme.uid}
-        </Typography>
-      ),
-      onClick: () => {
-        setSubMenuState(MenuKeysEnum.Theme);
-        trackEvent({
-          category: TrackingCategory.MainMenu,
-          action: TrackingAction.OpenMenu,
-          label: `open_submenu_${MenuKeysEnum.Theme.toLowerCase()}`,
-          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Theme },
-        });
-      },
-    });
+    // mainMenu.push({
+    //   label: t('navbar.navbarMenu.theme'),
+    //   prefixIcon: <PaletteIcon />,
+    //   triggerSubMenu: !['dark', 'light'].includes(configTheme?.uid)
+    //     ? MenuKeysEnum.Theme
+    //     : undefined,
+    //   showMoreIcon: !['dark', 'light'].includes(configTheme?.uid),
+    //   suffixIcon: configTheme?.uid && (
+    //     <Typography
+    //       variant="bodyMedium"
+    //       textTransform={'uppercase'}
+    //       sx={{
+    //         overflow: 'hidden',
+    //         textOverflow: 'ellipsis',
+    //         maxWidth: 38,
+    //       }}
+    //     >
+    //       {configTheme.uid}
+    //     </Typography>
+    //   ),
+    //   onClick: () => {
+    //     setSubMenuState(MenuKeysEnum.Theme);
+    //   },
+    // });
   }
 
   mainMenu = mainMenu.concat([
@@ -162,12 +156,6 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeysEnum.Language,
       onClick: () => {
         setSubMenuState(MenuKeysEnum.Language);
-        trackEvent({
-          category: TrackingCategory.MainMenu,
-          action: TrackingAction.OpenMenu,
-          label: `open_submenu_${MenuKeysEnum.Language.toLowerCase()}`,
-          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Language },
-        });
       },
     },
     {
@@ -300,12 +288,6 @@ export const useMainMenuContent = () => {
         />
       ),
       onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'open-support-modal',
-          action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameter.Menu]: 'support_modal' },
-        });
         setSupportModalState(true);
       },
       showButton: true,

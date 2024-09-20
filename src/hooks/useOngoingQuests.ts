@@ -13,7 +13,7 @@ export const useOngoingQuests = (): UseQuestsProps => {
   const apiBaseUrl =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : process.env.NEXT_PUBLIC_STRAPI_URL;
+      : `${process.env.NEXT_PUBLIC_STRAPI_URL}/api`;
   const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
 
   //selected needed field
@@ -34,7 +34,7 @@ export const useOngoingQuests = (): UseQuestsProps => {
   apiUrl.searchParams.set('sort[0]', 'id:desc');
   //filter url
   apiUrl.searchParams.set('pagination[pageSize]', '50');
-  apiUrl.searchParams.set('filters[Points][$gte]', '0');
+  // apiUrl.searchParams.set('filters[Points][$gte]', '0');
   const currentDate = new Date(Date.now()).toISOString().split('T')[0];
   apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
   apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
