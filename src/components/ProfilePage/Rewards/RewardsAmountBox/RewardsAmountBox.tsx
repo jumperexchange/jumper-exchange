@@ -20,10 +20,14 @@ export const RewardsAmountBox = ({
   isSuccess,
   isConfirmed,
   rewardAmount,
+  tokenLogo,
+  chainLogo,
 }: {
   isSuccess: boolean;
   isConfirmed: boolean;
   rewardAmount: number;
+  tokenLogo: string;
+  chainLogo: string;
 }) => {
   //HOOKS
   const { account } = useAccounts();
@@ -33,14 +37,8 @@ export const RewardsAmountBox = ({
   );
 
   //CONST
-  const REWARD_CHAIN_LOGO =
-    theme.palette.mode === 'dark'
-      ? PROFILE_CAMPAIGN_DARK_CHAIN
-      : PROFILE_CAMPAIGN_LIGHT_CHAIN;
-  const REWARD_TOKEN_LOGO =
-    theme.palette.mode === 'dark'
-      ? PROFILE_CAMPAIGN_DARK_TOKEN
-      : PROFILE_CAMPAIGN_LIGHT_TOKEN;
+  const REWARD_CHAIN_LOGO = chainLogo; // theme.palette.mode === 'dark' ?
+  const REWARD_TOKEN_LOGO = tokenLogo; // theme.palette.mode === 'dark' ?
 
   return (
     <FlexCenterRowBox>

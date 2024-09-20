@@ -117,6 +117,8 @@ export const RewardsCarousel = ({
                     isSuccess={isMerklSuccess}
                     rewardAmount={amount}
                     isConfirmed={isConfirmed}
+                    tokenLogo={availableReward.tokenLogo}
+                    chainLogo={availableReward.chainLogo}
                   />
                 </FlexCenterRowBox>
                 <ClaimButtonBox>
