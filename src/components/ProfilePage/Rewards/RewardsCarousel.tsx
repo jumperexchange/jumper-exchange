@@ -18,32 +18,33 @@ import { ChainId } from '@lifi/types';
 import { MerklDistribABI } from '../../../const/abi/merklABI';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
-import {
-  PROFILE_CAMPAIGN_SCANNER,
-  REWARD_CLAIMING_ADDRESS,
-  REWARD_TOKEN_ADDRESS,
-  REWARD_TOKEN_CHAINID,
-} from 'src/const/partnerRewardsTheme';
+import { AvailableRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 
 interface RewardsCarouselProps {
-  hideComponent: boolean;
-  rewardAmount: number;
-  accumulatedAmountForContractBN: string;
   isMerklSuccess: boolean;
-  proof: string[];
+  hideComponent: boolean;
+  availableRewards: AvailableRewards[];
 }
 
-const CLAIMING_CONTRACT_ADDRESS = REWARD_CLAIMING_ADDRESS;
-const REWARD_TOKEN = REWARD_TOKEN_ADDRESS;
+interface ClaimRewardParams {
+  tokenChainid: number;
+  proof: string[];
+  rewardAmount: number;
+  rewardToken: string;
+  rewardAmountBN: string;
+  claimingAddress: string;
+}
+
+// const CLAIMING_CONTRACT_ADDRESS = REWARD_CLAIMING_ADDRESS;
+// const REWARD_TOKEN = REWARD_TOKEN_ADDRESS;
+// -------
 //TESTING
 // const TEST_TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
 export const RewardsCarousel = ({
   hideComponent,
-  rewardAmount,
-  accumulatedAmountForContractBN,
+  availableRewards,
   isMerklSuccess,
-  proof,
 }: RewardsCarouselProps) => {
   const { address } = useAccount();
   const theme = useTheme();
@@ -54,14 +55,21 @@ export const RewardsCarousel = ({
       hash,
     });
 
-  async function handleClick() {
+  async function handleClick({
+    tokenChainid,
+    proof,
+    rewardAmount,
+    rewardToken,
+    rewardAmountBN,
+    claimingAddress,
+  }: ClaimRewardParams) {
     try {
       const { id } = await switchChainAsync({
-        chainId: REWARD_TOKEN_CHAINID,
+        chainId: tokenChainid,
       });
 
       const canClaim =
-        id === REWARD_TOKEN_CHAINID &&
+        id === tokenChainid &&
         address &&
         isMerklSuccess &&
         proof &&
@@ -69,17 +77,10 @@ export const RewardsCarousel = ({
 
       if (canClaim) {
         writeContract({
-          address: CLAIMING_CONTRACT_ADDRESS,
+          address: claimingAddress,
           abi: MerklDistribABI,
           functionName: 'claim',
-          // args: [[address], [REWARD_TOKEN], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
-          // TESTING
-          args: [
-            [address],
-            [REWARD_TOKEN],
-            [accumulatedAmountForContractBN],
-            [proof],
-          ], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
+          args: [[address], [rewardToken], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
           // TESTING
           // args: [
           //   [address],
@@ -98,81 +99,98 @@ export const RewardsCarousel = ({
     <>
       {!hideComponent ? (
         <RewardsCarouselContainer>
-          <RewardsCarouselMainBox>
-            <FlexCenterRowBox>
-              <Box>
-                <EarnedTypography
-                  color={theme.palette.mode === 'dark' ? '#ffffff' : '#000000'}
-                >
-                  You've earned:
-                </EarnedTypography>
-              </Box>
-              <RewardsAmountBox
-                isSuccess={isMerklSuccess}
-                rewardAmount={rewardAmount}
-                isConfirmed={isConfirmed}
-              />
-            </FlexCenterRowBox>
-            <ClaimButtonBox>
-              <Button
-                disabled={
-                  isPending ||
-                  isConfirming ||
-                  isConfirmed ||
-                  (!!rewardAmount && rewardAmount === 0) ||
-                  (isMerklSuccess && !rewardAmount)
-                }
-                variant="primary"
-                aria-label="Claim rewards"
-                size="large"
-                styles={{
-                  opacity:
-                    isPending ||
-                    isConfirming ||
-                    isConfirmed ||
-                    (!!rewardAmount && rewardAmount === 0) ||
-                    (isMerklSuccess && !rewardAmount)
-                      ? 0.3
-                      : undefined,
-                  alignItems: 'center',
-                  padding: '16px',
-                  width: '100%',
-                }}
-                onClick={() => handleClick()}
-              >
-                <Typography
-                  fontSize="16px"
-                  lineHeight="18px"
-                  fontWeight={600}
-                  color={theme.palette.white.main}
-                >
-                  {isPending || isConfirming
-                    ? 'CLAIMING...'
-                    : isConfirmed
-                      ? 'CLAIMED'
-                      : 'CLAIM REWARDS'}
-                </Typography>
-              </Button>
-            </ClaimButtonBox>
-            {hash ? (
-              <a
-                href={`${PROFILE_CAMPAIGN_SCANNER}/tx/${hash}`}
-                target="_blank"
-                style={{
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  marginLeft: '32px',
-                }}
-                rel="noreferrer"
-              >
-                <RewardsOpenIconButton>
-                  <OpenInNewIcon
-                    sx={{ height: '32px', color: theme.palette.white.main }}
+          {availableRewards.map((availableReward) => {
+            const amount = availableReward.amountToClaim;
+            return (
+              <RewardsCarouselMainBox>
+                <FlexCenterRowBox>
+                  <Box>
+                    <EarnedTypography
+                      color={
+                        theme.palette.mode === 'dark' ? '#ffffff' : '#000000'
+                      }
+                    >
+                      You've earned:
+                    </EarnedTypography>
+                  </Box>
+                  <RewardsAmountBox
+                    isSuccess={isMerklSuccess}
+                    rewardAmount={amount}
+                    isConfirmed={isConfirmed}
                   />
-                </RewardsOpenIconButton>
-              </a>
-            ) : undefined}
-          </RewardsCarouselMainBox>
+                </FlexCenterRowBox>
+                <ClaimButtonBox>
+                  <Button
+                    disabled={
+                      isPending ||
+                      isConfirming ||
+                      isConfirmed ||
+                      (!!amount && amount === 0) ||
+                      (isMerklSuccess && !amount)
+                    }
+                    variant="primary"
+                    aria-label="Claim rewards"
+                    size="large"
+                    styles={{
+                      opacity:
+                        isPending ||
+                        isConfirming ||
+                        isConfirmed ||
+                        (!!amount && amount === 0) ||
+                        (isMerklSuccess && !amount)
+                          ? 0.3
+                          : undefined,
+                      alignItems: 'center',
+                      padding: '16px',
+                      width: '100%',
+                    }}
+                    onClick={() =>
+                      handleClick({
+                        tokenChainid: availableReward.chainId,
+                        proof: availableReward.proof,
+                        rewardAmount: availableReward.amountToClaim,
+                        rewardAmountBN:
+                          availableReward.accumulatedAmountForContractBN,
+                        rewardToken: availableReward.address,
+                        claimingAddress: availableReward.claimingAddress,
+                      })
+                    }
+                  >
+                    <Typography
+                      fontSize="16px"
+                      lineHeight="18px"
+                      fontWeight={600}
+                      color={theme.palette.white.main}
+                    >
+                      {isPending || isConfirming
+                        ? 'CLAIMING...'
+                        : isConfirmed
+                          ? 'CLAIMED'
+                          : 'CLAIM REWARDS'}
+                    </Typography>
+                  </Button>
+                </ClaimButtonBox>
+                {hash ? (
+                  <a
+                    href={`${availableReward.explorerLink}/tx/${hash}`}
+                    target="_blank"
+                    style={{
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      marginLeft: '32px',
+                    }}
+                    rel="noreferrer"
+                  >
+                    <RewardsOpenIconButton>
+                      <OpenInNewIcon
+                        sx={{ height: '32px', color: theme.palette.white.main }}
+                      />
+                    </RewardsOpenIconButton>
+                  </a>
+                ) : undefined}
+              </RewardsCarouselMainBox>
+            );
+          })}
         </RewardsCarouselContainer>
       ) : undefined}
     </>

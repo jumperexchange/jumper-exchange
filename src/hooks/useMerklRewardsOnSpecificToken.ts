@@ -37,7 +37,7 @@ interface MerklPositionData {
   };
 }
 
-interface AvailableRewards {
+export interface AvailableRewards {
   chainId: number;
   address: string;
   symbol: string;
@@ -45,6 +45,10 @@ interface AvailableRewards {
   amountToClaim: number;
   amountAccumulated: number;
   proof: string[];
+  explorerLink: string;
+  chainLogo: string;
+  tokenLogo: string;
+  claimingAddress: string;
 }
 
 export interface UseMerklRes {
@@ -146,6 +150,10 @@ export const useMerklRewards = ({
                 amountAccumulated:
                   (value.unclaimed as any) / 10 ** value.decimals, //todo: need to be typed with big int
                 proof: value.proof,
+                explorerLink: rewardElem.explorerLink,
+                tokenLogo: rewardElem.lightTokenLogo,
+                chainLogo: rewardElem.lightChainLogo,
+                claimingAddress: rewardElem.claimingAddress,
               };
             })
             .filter(

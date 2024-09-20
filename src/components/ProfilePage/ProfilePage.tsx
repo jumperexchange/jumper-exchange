@@ -36,11 +36,12 @@ export const ProfilePage = () => {
       <RewardsCarousel
         // hideComponent={false}
         hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
-        rewardAmount={availableRewards?.[0]?.amountToClaim as number}
-        accumulatedAmountForContractBN={
-          availableRewards?.[0]?.accumulatedAmountForContractBN
-        }
-        proof={availableRewards?.[0]?.proof}
+        availableRewards={availableRewards}
+        // rewardAmount={availableRewards?.[0]?.amountToClaim as number}
+        // accumulatedAmountForContractBN={
+        //   availableRewards?.[0]?.accumulatedAmountForContractBN
+        // }
+        // proof={availableRewards?.[0]?.proof}
         isMerklSuccess={isRewardSuccess}
       />
       <ProfilePageContainer className="profile-page">
