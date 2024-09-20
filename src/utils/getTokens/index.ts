@@ -9,7 +9,7 @@ import {
 } from '@lifi/sdk';
 import { formatUnits } from 'viem';
 import coins from './coins';
-import type { ExtendedChain, TokenAmount } from '@lifi/types';
+import type { ExtendedChain, TokenAmount } from '@lifi/sdk';
 import { publicRPCList } from '@/const/rpcList';
 
 interface Chain extends ExtendedChain, Price {}

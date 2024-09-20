@@ -1,9 +1,9 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import { useMenuStore } from '@/stores/menu';
 import {
+  alpha,
   Drawer,
   IconButton,
-  Menu,
   Stack,
   Typography,
   useTheme,
@@ -13,13 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { WalletButton } from '.';
 import { WalletCardV2 } from './WalletCardV2';
 import Portfolio from '@/components/Portfolio/Portfolio';
-import WalletSelectMenuContent from '@/components/Menus/WalletSelectMenu/WalletSelectMenuContent';
-import { MenuKeysEnum } from '@/const/menuKeys';
-import { Box } from '@mui/system';
-import { MenuPaper } from '@/components/Menu';
-import shadows from '@mui/material/styles/shadows';
 import CloseIcon from '@mui/icons-material/Close';
-import { useSettingsStore } from '@/stores/settings';
 
 interface WalletMenuProps {
   anchorEl?: HTMLAnchorElement;
@@ -29,14 +23,9 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   const { t } = useTranslation();
   const { accounts } = useAccounts();
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
-  const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
-  const isDarkMode = theme.palette.mode === 'dark';
+  const [, setOpen] = useState(false);
   const {
-    isPopper,
     openWalletMenu,
-    openWalletSelectMenu,
-    openSubMenu,
     setWalletMenuState,
     setSnackbarState,
     setWalletSelectMenuState,
@@ -72,7 +61,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
           gap: theme.spacing(2),
           maxWidth: 416,
-          background: '#F9F5FF', // theme.palette.surface2.main into the figma, which is not matching the right color, might need to be updated
+          background: theme.palette.surface1.main, // theme.palette.surface2.main into the figma, which is not matching the right color, might need to be updated
         }),
       }}
       sx={{
@@ -83,37 +72,16 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         <IconButton
           aria-label="close"
           onClick={() => setWalletMenuState(false)}
+          sx={{
+            color: theme.palette.text.primary,
+            '&:hover': {
+              backgroundColor: alpha(theme.palette.text.primary, 0.04),
+            },
+          }}
           color="primary"
         >
           <CloseIcon />
         </IconButton>
-        {/*        {openWalletSelectMenu && !isPopper ? (
-          <MenuPaper show={openWalletSelectMenu && !isPopper}>
-            <Box
-              component="ul"
-              sx={{
-                display: 'grid',
-                gridTemplateColumns:
-                  openSubMenu === MenuKeysEnum.EcosystemSelect
-                    ? '1fr 1fr'
-                    : '1fr 1fr 1fr',
-                justifyItems: 'center',
-                ul: {
-                  gridColumnStart: 1,
-                  gridColumnEnd:
-                    openSubMenu === MenuKeysEnum.EcosystemSelect ? 3 : 4,
-                },
-                padding: 0,
-                gap: 2,
-              }}
-            >
-              <WalletSelectMenuContent
-                openWalletSelectMenu={openWalletSelectMenu && !isPopper}
-                showAllButton={false}
-              />
-            </Box>
-          </MenuPaper>
-        ) : (*/}
         <WalletButton
           sx={{ width: 'auto' }}
           onClick={() => {
@@ -132,9 +100,8 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         {/*)}*/}
       </Stack>
       {accounts.map((account) =>
-        account.isConnected ? (
+        account.isConnected &&
           <WalletCardV2 key={account.address} account={account} />
-        ) : null,
       )}
       <Portfolio />
     </Drawer>

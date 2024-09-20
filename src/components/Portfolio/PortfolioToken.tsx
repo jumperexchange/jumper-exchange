@@ -26,7 +26,6 @@ import {
   WalletCardBadge,
 } from '@/components/Menus/WalletMenu/WalletCardV2.style';
 import { Avatar } from '@/components/Avatar';
-import { useSettingsStore } from '@/stores/settings';
 import { useWidgetCache } from '@/stores/widgetCache';
 import { useMainPaths } from '@/hooks/useMainPaths';
 import { useRouter } from 'next/navigation';
@@ -156,9 +155,8 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
               key={generateKey(chain.key)}
               onClick={() => {
                 setFrom(token.address, chain.id);
-                console.log('tttsige', isMainPaths, token, chain)
                 if (!isMainPaths) {
-                  console.log('working?', router.push('/'))
+                  router.push('/')
                 }
               }}
               sx={{

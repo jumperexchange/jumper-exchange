@@ -1,4 +1,4 @@
-import type { ChainId } from '@lifi/types';
+import type { ChainId } from '@lifi/sdk';
 export interface MultisigProps {
   destinationChain?: ChainId;
 }

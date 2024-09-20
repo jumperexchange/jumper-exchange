@@ -1,4 +1,4 @@
-import { ChainId } from '@lifi/types';
+import { ChainId } from '@lifi/sdk';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Box, Typography } from '@mui/material';
 import { Button } from 'src/components/Button';

@@ -14,7 +14,6 @@ import {
   useWaitForTransactionReceipt,
   useSwitchChain,
 } from 'wagmi';
-import { ChainId } from '@lifi/types';
 import { MerklDistribABI } from '../../../const/abi/merklABI';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';

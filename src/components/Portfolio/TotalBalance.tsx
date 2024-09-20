@@ -2,11 +2,9 @@ import { WalletCardContainer } from '@/components/Menus';
 import {
   alpha,
   IconButton,
-  Skeleton,
   Stack,
   Tooltip,
   Typography,
-  useTheme,
 } from '@mui/material';
 import {
   TotalValue,
@@ -78,7 +76,7 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
         <Typography
           fontWeight={500}
           fontSize={12}
-          color={(theme) => theme.palette.alphaDark700.main}
+          color={(theme) => theme.palette.text.primary}
         >
           <Tooltip title={t('navbar.walletMenu.refreshBalances')}>
             <IconButton

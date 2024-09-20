@@ -21,7 +21,7 @@ export const VariationValue = styled(Typography)(({ theme }) => ({
 }));
 
 export const CustomAccordion = styled(Accordion)(({ theme }) => ({
-  // background: 'transparent',
+  background: 'transparent',
   border: 0,
   boxShadow: 'none',
   width: '100%',
@@ -45,7 +45,7 @@ export const TypographyPrimary = styled(Typography)(({ theme }) => ({
 }));
 
 export const TypographySecondary = styled(Typography)(({ theme }) => ({
-  color: theme.palette.alphaDark700.main,
+  color: theme.palette.text.secondary,
   fontSize: '0.75rem',
   fontWeight: 500,
   lineHeight: '1rem',

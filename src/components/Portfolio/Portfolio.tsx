@@ -12,17 +12,10 @@ import { WalletCardContainer } from '@/components/Menus';
 import PortfolioToken from '@/components/Portfolio/PortfolioToken';
 
 function Portfolio() {
-  const { t } = useTranslation();
-  const portfolio = usePortfolioStore((state) => state);
   const { accounts } = useAccounts();
-  const theme = useTheme();
 
-  const { isLoading, isRefetching, refetch, data, totalValue } =
+  const { refetch, data, totalValue } =
     useTokenBalances(accounts);
-  //
-  // if (isLoading || isRefetching) {
-  //   return <PortfolioSkeleton />;
-  // }
 
   return (
     <>

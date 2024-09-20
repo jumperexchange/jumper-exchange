@@ -1,5 +1,5 @@
 import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection/ChainTokenSelectionStore';
-import { ChainId } from '@lifi/types';
+import { ChainId } from '@lifi/sdk';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InfoAlert } from '.';

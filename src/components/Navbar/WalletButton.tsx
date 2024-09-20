@@ -9,7 +9,7 @@ import { useChains } from '@/hooks/useChains';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { walletDigest } from '@/utils/walletDigest';
-import type { Chain } from '@lifi/types';
+import type { Chain } from '@lifi/sdk';
 import { getConnectorIcon } from '@lifi/wallet-management';
 import { Skeleton, Stack, Typography, alpha, useTheme } from '@mui/material';
 import Image from 'next/image';
