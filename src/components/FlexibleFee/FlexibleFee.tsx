@@ -201,7 +201,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
             Help us grow Jumper!
           </Typography>
           <Tooltip
-            title={`This jump's on us, but we gotta keep the lights on somehow. Any contribution, no matter the size, goes a long way! 💜`}
+            title={`Jumper is free to use. Any contribution, no matter the size, goes a long way in accelerating our growth 💜`}
             placement="top"
             enterTouchDelay={0}
             arrow
