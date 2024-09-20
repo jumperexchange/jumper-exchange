@@ -5,6 +5,7 @@ import { alpha, Box, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { fallbackLng } from 'src/i18n';
+import { JUMPER_SCAN_PATH } from '@/const/urls';
 
 export default function Page({
   params: { lng },
@@ -18,7 +19,7 @@ export default function Page({
     () => ({
       appearance: 'light' as PaletteMode, //theme.palette.mode, // This controls light and dark mode
       integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR, // TODO: change as needed
-      base: lng !== fallbackLng ? `${lng}/scan/` : '/scan/', // Important for the routing and having everything served under /scan. Do not remove!
+      base: `${lng !== fallbackLng ? `${lng}` : ''}${JUMPER_SCAN_PATH}`, // Important for the routing and having everything served under /scan. Do not remove!
       theme: {
         // These colors and values correspond to the figma design
         shape: { borderRadiusSecondary: 900, borderRadius: 12 },
