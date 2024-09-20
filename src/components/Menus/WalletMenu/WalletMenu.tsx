@@ -44,7 +44,6 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
     }
   }, [accounts, setWalletMenuState, openWalletMenu]);
 
-
   return (
     <Drawer
       variant="persistent"
@@ -99,9 +98,11 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         </WalletButton>
         {/*)}*/}
       </Stack>
-      {accounts.map((account) =>
-        account.isConnected &&
-          <WalletCardV2 key={account.address} account={account} />
+      {accounts.map(
+        (account) =>
+          account.isConnected && (
+            <WalletCardV2 key={account.address} account={account} />
+          ),
       )}
       <Portfolio />
     </Drawer>

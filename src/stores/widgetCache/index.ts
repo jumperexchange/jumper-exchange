@@ -1,1 +1,1 @@
-export * from './WidgetCache';
+export * from './WidgetCacheStore';

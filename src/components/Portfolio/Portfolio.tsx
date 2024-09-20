@@ -1,8 +1,4 @@
-import {
-  Skeleton,
-  Stack,
-  useTheme,
-} from '@mui/material';
+import { Skeleton, Stack, useTheme } from '@mui/material';
 import { usePortfolioStore } from '@/stores/portfolio';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useTranslation } from 'react-i18next';
@@ -14,8 +10,7 @@ import PortfolioToken from '@/components/Portfolio/PortfolioToken';
 function Portfolio() {
   const { accounts } = useAccounts();
 
-  const { refetch, data, totalValue } =
-    useTokenBalances(accounts);
+  const { refetch, data, totalValue } = useTokenBalances(accounts);
 
   return (
     <>

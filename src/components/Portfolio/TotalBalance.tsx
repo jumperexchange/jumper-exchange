@@ -1,11 +1,5 @@
 import { WalletCardContainer } from '@/components/Menus';
-import {
-  alpha,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { alpha, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import {
   TotalValue,
   VariationValue,

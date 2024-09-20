@@ -2,7 +2,7 @@
 
 import type { PartnerThemesData } from '@/types/strapi';
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
-import type { FormState, WidgetConfig } from '@lifi/widget';
+import type { WidgetConfig } from '@lifi/widget';
 import { RefObject } from 'react';
 
 export type ThemeModesSupported = 'light' | 'dark' | 'system';

@@ -26,9 +26,9 @@ import {
   WalletCardBadge,
 } from '@/components/Menus/WalletMenu/WalletCardV2.style';
 import { Avatar } from '@/components/Avatar';
-import { useWidgetCache } from '@/stores/widgetCache';
 import { useMainPaths } from '@/hooks/useMainPaths';
 import { useRouter } from 'next/navigation';
+import { useWidgetCacheStore } from '@/stores/widgetCache';
 
 interface PortfolioTokenProps {
   token: ExtendedTokenAmount;
@@ -39,7 +39,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
   const { t } = useTranslation();
   const { isMainPaths } = useMainPaths();
   const router = useRouter();
-  const setFrom = useWidgetCache((state) => state.setFrom);
+  const setFrom = useWidgetCacheStore((state) => state.setFrom);
 
   const hasMultipleChains = token.chains.length > 1;
 
@@ -48,7 +48,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
       setFrom(token.address, token.chainId);
 
       if (!isMainPaths) {
-        router.push('/')
+        router.push('/');
       }
       return;
     }
@@ -156,7 +156,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
               onClick={() => {
                 setFrom(token.address, chain.id);
                 if (!isMainPaths) {
-                  router.push('/')
+                  router.push('/');
                 }
               }}
               sx={{

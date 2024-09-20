@@ -32,7 +32,7 @@ import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
 import { useWidgetTheme } from './useWidgetTheme';
-import { useWidgetCache } from '@/stores/widgetCache';
+import { useWidgetCacheStore } from '@/stores/widgetCache';
 
 export function Widget({
   starterVariant,
@@ -60,7 +60,7 @@ export function Widget({
   const { tokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
-  const widgetCache = useWidgetCache((state) => state);
+  const widgetCache = useWidgetCacheStore((state) => state);
 
   const router = useRouter();
 
@@ -84,16 +84,19 @@ export function Widget({
   useEffect(() => {
     console.log('widgetCache triggered', widgetCache, searchParams);
 
-    formRef?.current?.setFieldValue('fromChain', widgetCache.fromChainId, { setUrlSearchParam: true });
-    formRef?.current?.setFieldValue('fromToken', widgetCache.fromToken, { setUrlSearchParam: true });
-
+    formRef?.current?.setFieldValue('fromChain', widgetCache.fromChainId, {
+      setUrlSearchParam: true,
+    });
+    formRef?.current?.setFieldValue('fromToken', widgetCache.fromToken, {
+      setUrlSearchParam: true,
+    });
   }, [
     widgetCache,
     // fromToken,
     // toToken,
     // fromChain,
     // toChain
-  ])
+  ]);
 
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
@@ -245,7 +248,7 @@ export function Widget({
     trackEvent,
   ]);
 
-  console.log('fromChain', config)
+  console.log('fromChain', config);
 
   return (
     <WidgetWrapper
