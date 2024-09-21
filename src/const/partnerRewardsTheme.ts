@@ -28,10 +28,10 @@ export const REWARDS_LIST = [
     tokenAddress: '0x542fda317318ebf1d3deaf76e0b632741a7e677d',
     decimalsToShow: 7,
     explorerLink: 'https://explorer.rootstock.io',
-    lightTokenLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/rbtc_logo_7215e24eae.png`,
-    darkTokenLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/rbtc_logo_7215e24eae.png`,
-    lightChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Layer_1_2_0d42dba0f5.svg`,
-    darkChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Layer_1_2_0d42dba0f5.svg`,
+    lightTokenLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/thumbnail_rbtc_logo_e8454e105a.png`,
+    darkTokenLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/thumbnail_rbtc_logo_e8454e105a.png`,
+    lightChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Layer_1_2_e342a1f262.svg`,
+    darkChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Layer_1_2_e342a1f262.svg`,
   },
 ];
 

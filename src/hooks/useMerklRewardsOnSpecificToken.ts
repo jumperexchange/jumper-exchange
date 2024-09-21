@@ -49,6 +49,7 @@ export interface AvailableRewards {
   chainLogo: string;
   tokenLogo: string;
   claimingAddress: string;
+  decimalsToShow: number;
 }
 
 export interface UseMerklRes {
@@ -132,11 +133,12 @@ export const useMerklRewards = ({
   });
 
   // transform to know what is not coming from Jumper campaigns
+
   if (rewardsData) {
     for (const rewardElem of REWARDS_LIST) {
       const tokenData = rewardsData[rewardElem.chainId]?.tokenData;
       if (tokenData) {
-        rewardsToClaim.concat(
+        rewardsToClaim = rewardsToClaim.concat(
           Object.entries(tokenData)
             .map((elem): AvailableRewards => {
               const key = elem[0];
@@ -154,6 +156,7 @@ export const useMerklRewards = ({
                 tokenLogo: rewardElem.lightTokenLogo,
                 chainLogo: rewardElem.lightChainLogo,
                 claimingAddress: rewardElem.claimingAddress,
+                decimalsToShow: rewardElem.decimalsToShow,
               };
             })
             .filter(

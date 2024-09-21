@@ -21,12 +21,14 @@ export const RewardsAmountBox = ({
   rewardAmount,
   tokenLogo,
   chainLogo,
+  decimalsToShow,
 }: {
   isSuccess: boolean;
   isConfirmed: boolean;
   rewardAmount: number;
   tokenLogo: string;
   chainLogo: string;
+  decimalsToShow: number;
 }) => {
   //HOOKS
   const { account } = useAccounts();
@@ -40,7 +42,7 @@ export const RewardsAmountBox = ({
   const REWARD_TOKEN_LOGO = tokenLogo; // theme.palette.mode === 'dark' ?
 
   return (
-    <FlexCenterRowBox>
+    <FlexCenterRowBox minWidth="96px">
       <Box marginLeft="32px">
         <Image
           src={REWARD_TOKEN_LOGO}
@@ -79,7 +81,7 @@ export const RewardsAmountBox = ({
           isConfirmed
             ? '0'
             : rewardAmount
-              ? rewardAmount
+              ? rewardAmount.toFixed(decimalsToShow)
               : '...'}
         </Typography>
       </Box>
