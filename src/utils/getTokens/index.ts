@@ -1,16 +1,12 @@
 import {
   ChainType,
-  createConfig,
-  EVM,
   getChains,
   getTokenBalances,
   getTokens as LifiGetTokens,
-  Solana,
 } from '@lifi/sdk';
 import { formatUnits } from 'viem';
 import coins from './coins';
 import type { ExtendedChain, TokenAmount } from '@lifi/sdk';
-import { publicRPCList } from '@/const/rpcList';
 
 interface Chain extends ExtendedChain, Price {}
 
@@ -81,16 +77,6 @@ async function getTokens(
   isFull = false,
 ): Promise<ExtendedTokenAmount[] | undefined> {
   try {
-    createConfig({
-      providers: [EVM(), Solana()],
-      integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
-      rpcUrls: {
-        ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
-        ...publicRPCList,
-      },
-      preloadChains: true,
-    });
-
     const chains = await getChains({
       chainTypes: [ChainType.EVM, ChainType.SVM],
     });

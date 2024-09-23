@@ -13,6 +13,7 @@ import { isEqual } from 'lodash';
 import { useAccounts } from '@/hooks/useAccounts';
 import { usePortfolioStore } from '@/stores/portfolio';
 import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
+import { useParams } from 'next/navigation';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -20,12 +21,29 @@ function has24HoursPassed(lastDate: number): boolean {
   return currentTime - lastDate >= twentyFourHoursInMilliseconds;
 }
 
+export const currencyExtendedFormatter = (
+  lng: string | undefined,
+  options: any,
+) => {
+  const formatter = new Intl.NumberFormat(lng, {
+    ...options,
+    style: 'currency',
+  });
+  return (value: any) => {
+    if (value > 0 && value < 0.01) {
+      return `<${formatter.format(0.01)}`;
+    }
+    return formatter.format(value);
+  };
+};
+
 interface TotalBalanceProps {
   refetch: () => void;
   totalValue: number;
 }
 
 function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
+  const { lng } = useParams();
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
   const { t } = useTranslation();
@@ -64,6 +82,17 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
     return <TotalBalanceSkeleton />;
   }
 
+  const ss2 = new Intl.NumberFormat(lng, {
+    style: 'decimal',
+    maximumFractionDigits: 7
+  });
+
+  const ss = new Intl.NumberFormat(lng, {
+    style: 'currency',
+    currency: 'USD',
+    // maximumFractionDigits: 7
+  });
+
   return (
     <WalletCardContainer>
       <Stack spacing={1}>
@@ -93,7 +122,7 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
           </Tooltip>
           {t('navbar.walletMenu.totalBalance')}
         </Typography>
-        <TotalValue>${totalValue.toFixed(2)}</TotalValue>
+        <TotalValue>{ss.format(totalValue)}</TotalValue>
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">
           {differenceValue !== 0 && (
             <Stack direction="row" spacing="4px">

@@ -6,11 +6,24 @@ import { useTokenBalances } from '@/hooks/useTokenBalances';
 import TotalBalance from '@/components/Portfolio/TotalBalance';
 import { WalletCardContainer } from '@/components/Menus';
 import PortfolioToken from '@/components/Portfolio/PortfolioToken';
+import { useEffect } from 'react';
 
 function Portfolio() {
   const { accounts } = useAccounts();
-
+  const [forceRefresh, setForceRefresh] = usePortfolioStore((state) => [state.forceRefresh, state.setForceRefresh]);
   const { refetch, data, totalValue } = useTokenBalances(accounts);
+
+  useEffect(() => {
+    if (!forceRefresh) {
+      return;
+    }
+
+    console.log('-F', forceRefresh)
+
+    setForceRefresh(false);
+    refetch();
+
+  }, [forceRefresh]);
 
   return (
     <>

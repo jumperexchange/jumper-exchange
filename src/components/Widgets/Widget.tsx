@@ -67,14 +67,6 @@ export function Widget({
   const router = useRouter();
 
   // @ts-expect-error
-  fromChain = fromChain || searchParams.get('fromChain');
-  // @ts-expect-error
-  fromToken = fromToken || searchParams.get('fromToken');
-  // @ts-expect-error
-  toChain = toChain || searchParams.get('toChain');
-  // @ts-expect-error
-  toToken = toToken || searchParams.get('toToken');
-  // @ts-expect-error
   fromAmount = fromAmount || searchParams.get('fromAmount');
 
   useEffect(() => {
@@ -231,10 +223,6 @@ export function Widget({
   }, [
     starterVariant,
     partnerName,
-    // fromChain,
-    // fromToken,
-    // toChain,
-    // toToken,
     fromAmount,
     allowChains,
     allowedChainsByVariant,

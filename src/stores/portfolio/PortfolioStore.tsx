@@ -10,6 +10,7 @@ const defaultSettings = {
   lastAddresses: undefined,
   lastTotalValue: 0,
   lastDate: null,
+  forceRefresh: false,
 };
 
 /*--  Use Zustand  --*/
@@ -24,6 +25,11 @@ export const usePortfolioStore = createWithEqualityFn(
           lastTotalValue: value,
           lastAddresses: addresses,
           lastDate: Date.now(),
+        });
+      },
+      setForceRefresh(state: boolean) {
+        set({
+          forceRefresh: state
         });
       },
 
