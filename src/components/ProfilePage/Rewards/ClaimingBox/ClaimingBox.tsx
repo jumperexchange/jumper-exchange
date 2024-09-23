@@ -89,7 +89,7 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
           decimalsToShow={availableReward.decimalsToShow}
         />
       </FlexCenterRowBox>
-      {isConfirmed ? (
+      {isConfirmed ? null : (
         <ClaimButtonBox>
           <Button
             disabled={
@@ -132,7 +132,7 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
             </Typography>
           </Button>
         </ClaimButtonBox>
-      ) : null}
+      )}
       {hash && isConfirmed ? (
         <a
           href={`${availableReward.explorerLink}/tx/${hash}`}
