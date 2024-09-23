@@ -51,9 +51,6 @@ export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
 export const BlogArticlesCollectionsTitle = styled(CarouselTitle)(
   ({ theme }) => ({
     color: theme.palette.text.primary,
-    // fontFamily: urbanist.style.fontFamily,
-    // textAlign: 'center',
-    // color: theme.palette.text.primary,
   }),
 );
 

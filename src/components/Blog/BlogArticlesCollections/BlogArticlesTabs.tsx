@@ -12,10 +12,10 @@ import type { GetTagsResponse } from 'src/app/lib/getTags';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { chunkArray } from 'src/utils/chunkArray';
 import { BlogArticleCard } from '../BlogArticleCard';
+import { CarouselHeader } from '../BlogCarousel';
 import { Pagination } from '../Pagination/Pagination';
 import {
   BlogArticlesCollectionsContainer,
-  BlogArticlesCollectionsHeader,
   BlogArticlesCollectionsTitle,
 } from './BlogArticlesCollections.style';
 import { ArticlesGrid } from './BlogArticlesTabs.style';
@@ -49,11 +49,11 @@ export function BlogArticlesTabs({
           flexDirection: 'column',
         }}
       >
-        <BlogArticlesCollectionsHeader>
+        <CarouselHeader>
           <BlogArticlesCollectionsTitle variant="headerMedium">
             {tag.attributes.Title}
           </BlogArticlesCollectionsTitle>
-        </BlogArticlesCollectionsHeader>
+        </CarouselHeader>
         {chunkedPages.map(
           (page, pageIndex) =>
             pageTab === pageIndex && (
