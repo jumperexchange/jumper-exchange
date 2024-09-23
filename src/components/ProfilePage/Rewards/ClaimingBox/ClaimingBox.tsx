@@ -89,57 +89,51 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
           decimalsToShow={availableReward.decimalsToShow}
         />
       </FlexCenterRowBox>
-      <ClaimButtonBox>
-        <Button
-          disabled={
-            isPending ||
-            isConfirming ||
-            isConfirmed ||
-            (!!amount && amount === 0) ||
-            !amount
-          }
-          variant="secondary"
-          aria-label="Claim"
-          size="large"
-          styles={{
-            opacity:
-              isPending ||
-              isConfirming ||
-              isConfirmed ||
-              (!!amount && amount === 0) ||
-              !amount
-                ? 0.3
-                : undefined,
-            alignItems: 'center',
-            padding: '16px',
-            width: '100%',
-          }}
-          onClick={() =>
-            handleClick({
-              tokenChainid: availableReward.chainId,
-              proof: availableReward.proof,
-              rewardAmount: availableReward.amountToClaim,
-              rewardAmountBN: availableReward.accumulatedAmountForContractBN,
-              rewardToken: availableReward.address,
-              claimingAddress: availableReward.claimingAddress as `0x${string}`,
-            })
-          }
-        >
-          <Typography
-            fontSize="14px"
-            lineHeight="18px"
-            fontWeight={700}
-            color={theme.palette.text.primary}
+      {isConfirmed ? (
+        <ClaimButtonBox>
+          <Button
+            disabled={
+              isPending || isConfirming || (!!amount && amount === 0) || !amount
+            }
+            variant="secondary"
+            aria-label="Claim"
+            size="large"
+            styles={{
+              opacity:
+                isPending ||
+                isConfirming ||
+                (!!amount && amount === 0) ||
+                !amount
+                  ? 0.3
+                  : undefined,
+              alignItems: 'center',
+              padding: '16px',
+              width: '100%',
+            }}
+            onClick={() =>
+              handleClick({
+                tokenChainid: availableReward.chainId,
+                proof: availableReward.proof,
+                rewardAmount: availableReward.amountToClaim,
+                rewardAmountBN: availableReward.accumulatedAmountForContractBN,
+                rewardToken: availableReward.address,
+                claimingAddress:
+                  availableReward.claimingAddress as `0x${string}`,
+              })
+            }
           >
-            {isPending || isConfirming
-              ? 'Claiming...'
-              : isConfirmed
-                ? 'Claimed'
-                : 'Claim'}
-          </Typography>
-        </Button>
-      </ClaimButtonBox>
-      {hash ? (
+            <Typography
+              fontSize="14px"
+              lineHeight="18px"
+              fontWeight={700}
+              color={theme.palette.text.primary}
+            >
+              {isPending || isConfirming ? 'Claiming...' : 'Claim'}
+            </Typography>
+          </Button>
+        </ClaimButtonBox>
+      ) : null}
+      {hash && isConfirmed ? (
         <a
           href={`${availableReward.explorerLink}/tx/${hash}`}
           target="_blank"

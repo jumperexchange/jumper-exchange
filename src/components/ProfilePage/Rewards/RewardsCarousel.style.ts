@@ -116,9 +116,14 @@ export const RewardsOpenIconButton = styled(MuiIconButton, {
   transition: 'background 0.3s',
   width: '48px',
   height: '48px',
-  backgroundColor: theme.palette.primary.main,
-  ':hover': {
-    color: '#ffffff',
-    backgroundColor: darken(theme.palette.primary.main, 0.16),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? alpha(theme.palette.primary.main, 0.08)
+      : alpha(theme.palette.primary.main, 0.42),
+  '&:hover': {
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.primary.main, 0.12)
+        : alpha(theme.palette.primary.main, 0.56),
   },
 }));
