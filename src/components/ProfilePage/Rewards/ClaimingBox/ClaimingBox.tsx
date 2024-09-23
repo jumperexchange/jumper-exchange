@@ -28,16 +28,11 @@ interface ClaimRewardParams {
 }
 
 interface ClaimingBoxProps {
-  key: number;
   amount: number;
   availableReward: AvailableRewards;
 }
 
-export const ClaimingBox = ({
-  key,
-  amount,
-  availableReward,
-}: ClaimingBoxProps) => {
+export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
   const theme = useTheme();
   const { address } = useAccount();
   const { switchChainAsync } = useSwitchChain();
@@ -84,7 +79,7 @@ export const ClaimingBox = ({
   }
 
   return (
-    <RewardsCarouselMainBox marginTop={'8px'} key={key}>
+    <RewardsCarouselMainBox marginTop={'8px'}>
       <FlexCenterRowBox>
         <RewardsAmountBox
           rewardAmount={amount}

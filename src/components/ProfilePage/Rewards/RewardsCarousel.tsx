@@ -45,15 +45,14 @@ export const RewardsCarousel = ({
           {availableRewards.map((availableReward, i) => {
             const amount = availableReward.amountToClaim;
             return (
-              <>
+              <Box key={i + availableReward.address}>
                 {amount > 0 && isMerklSuccess ? (
                   <ClaimingBox
-                    key={i}
                     amount={amount}
                     availableReward={availableReward}
                   />
                 ) : null}
-              </>
+              </Box>
             );
           })}
         </RewardsCarouselContainer>
