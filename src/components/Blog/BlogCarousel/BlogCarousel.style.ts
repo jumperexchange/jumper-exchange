@@ -46,10 +46,7 @@ export const SeeAllButtonContainer = styled(Box, {
 }));
 
 export const SeeAllButton = styled(ButtonPrimary)(({ theme }) => ({
-  color:
-    theme.palette.mode === 'dark'
-      ? theme.palette.white.main
-      : theme.palette.black.main,
+  color: theme.palette.text.primary,
   backgroundColor:
     theme.palette.mode === 'light'
       ? theme.palette.alphaDark100.main

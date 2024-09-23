@@ -19,11 +19,7 @@ export const Tag = styled(Typography, {
     : theme.palette.mode === 'light'
       ? alpha(theme.palette.black.main, 0.04)
       : theme.palette.alphaLight300.main,
-  color: color
-    ? color
-    : theme.palette.mode === 'light'
-      ? theme.palette.black.main
-      : theme.palette.white.main,
+  color: color ? color : theme.palette.text.primary,
   userSelect: 'none',
   borderRadius: '24px',
   flexShrink: 0,
