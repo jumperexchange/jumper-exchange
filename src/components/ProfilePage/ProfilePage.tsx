@@ -13,12 +13,7 @@ import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { Leaderboard } from './Leaderboard/Leaderboard';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
-import {
-  REWARD_TOKEN_ADDRESS,
-  REWARD_TOKEN_CHAINID,
-  REWARDS_CHAIN_IDS,
-} from 'src/const/partnerRewardsTheme';
+import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 
 export const ProfilePage = () => {
   const { account } = useAccounts();
@@ -32,25 +27,20 @@ export const ProfilePage = () => {
     pastCampaigns,
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,
-  } = useMerklRewards({
-    rewardChainId: REWARD_TOKEN_CHAINID,
+  } = useMerklRewardsOnCampaigns({
     userAddress: account?.address,
-    rewardToken: REWARD_TOKEN_ADDRESS,
   });
 
   return (
     <>
-      <RewardsCarousel
-        // hideComponent={false}
-        hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
-        rewardAmount={availableRewards?.[0]?.amountToClaim as number}
-        accumulatedAmountForContractBN={
-          availableRewards?.[0]?.accumulatedAmountForContractBN
-        }
-        proof={availableRewards?.[0]?.proof}
-        isMerklSuccess={isRewardSuccess}
-      />
       <ProfilePageContainer className="profile-page">
+        <RewardsCarousel
+          hideComponent={
+            !account?.address || isRewardLoading || !isRewardSuccess
+          }
+          availableRewards={availableRewards}
+          isMerklSuccess={isRewardSuccess}
+        />
         <Grid container>
           <Grid
             xs={12}
