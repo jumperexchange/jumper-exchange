@@ -47,7 +47,6 @@ export const QuestsMissionPage = ({
   return (
     <QuestsContainer>
       <QuestPageMainBox>
-        {/* button to go back */}
         <BackButton path={path} title={activeCampaign} />
         {/* big component with the main information */}
         {/* <BannerBox
