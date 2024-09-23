@@ -20,7 +20,6 @@ export const VerticalTabs = ({ verticalPageReload }: VerticalTabsProps) => {
   const verticalTabs = useVerticalTabs({ verticalPageReload });
 
   const containerStyles = {
-    marginLeft: 'calc(-56px - 32px)', // negative margin; width of vertical + spacing
     display: 'none',
     borderRadius: 28,
     padding: 0,
