@@ -48,8 +48,8 @@ export const QuestCompletedList = ({
                   key={`completed-mission-${index}`}
                   id={pda?.id}
                   active={false}
-                  title={pda?.reward.name}
-                  image={pda?.reward.image}
+                  title={pda?.reward?.name}
+                  image={pda?.reward?.image}
                   points={pda?.points}
                 />
               );

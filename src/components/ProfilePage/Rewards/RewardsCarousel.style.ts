@@ -7,30 +7,31 @@ import {
   alpha,
   darken,
 } from '@mui/material';
-import { sequel65 } from 'src/fonts/fonts';
-import { getContrastAlphaColor } from '@/utils/colors';
 import type { IconButtonProps } from '@mui/material';
-import {
-  PROFILE_CAMPAIGN_DARK_COLOR,
-  PROFILE_CAMPAIGN_LIGHT_COLOR,
-} from 'src/const/partnerRewardsTheme';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? '#FFFFFF'
-      : alpha(theme.palette.white.main, 0.08),
-  // backgroundColor: theme.palette.mode === 'dark' ? '#322153' : '#F6F5FA',
-  // backgroundColor:
-  //   theme.palette.mode === 'dark'
-  //     ? PROFILE_CAMPAIGN_DARK_COLOR
-  //     : PROFILE_CAMPAIGN_LIGHT_COLOR,
+  backgroundColor: theme.palette.bgSecondary.main,
+  borderRadius: '24px',
+  boxShadow: theme.palette.shadow.main,
   display: 'flex',
   width: '100%',
-  flexDirection: 'row',
-  justifyContent: 'center',
+  justifyContent: 'start',
   alignContent: 'center',
   alignItems: 'center',
+  marginBottom: theme.spacing(4),
+  paddingTop: theme.spacing(3),
+  paddingBottom: theme.spacing(3),
+  paddingLeft: theme.spacing(6),
+  paddingRight: theme.spacing(46),
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '8px',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    flexDirection: 'row',
+    gap: '32px',
+  },
 }));
 
 export const RewardsCarouselHeader = styled(Box, {
@@ -61,18 +62,23 @@ export const RewardsCarouselTitle = styled(Typography, {
 }));
 
 export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
-  width: '100%',
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? '#FFFFFF'
+      : alpha(theme.palette.white.main, 0.08),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   alignContent: 'center',
-  padding: '32px',
+  borderRadius: theme.spacing(3),
+  minHeight: theme.spacing(9),
+  flexDirection: 'row',
+  padding: theme.spacing(2),
   [theme.breakpoints.down('md' as Breakpoint)]: {
-    flexDirection: 'column',
-    alignItems: 'center',
+    minWidth: 400,
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    flexDirection: 'row',
+    minWidth: 300,
   },
 }));
 
@@ -82,27 +88,24 @@ export const ClaimButtonBox = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   alignContent: 'center',
   alignItems: 'center',
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    width: '85%',
-    marginTop: '16px',
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    flexDirection: 'row',
-    marginLeft: '32px',
-    width: '15%',
-  },
+  minWidth: theme.spacing(9),
+  marginLeft: theme.spacing(4),
 }));
 
 export const EarnedTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '24px',
+  lineHeight: '32px',
+  fontWeight: 700,
+}));
+
+export const AmountInputBox = styled(Box)(({ theme }) => ({
+  marginLeft: '8px',
   [theme.breakpoints.down('md' as Breakpoint)]: {
-    fontSize: '32px',
-    lineHeight: '32px',
-    fontWeight: 700,
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    fontSize: '32px',
-    lineHeight: '48px',
-    fontWeight: 700,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    minWidth: 160,
   },
 }));
 
@@ -111,11 +114,16 @@ export const RewardsOpenIconButton = styled(MuiIconButton, {
 })<IconButtonProps>(({ theme }) => ({
   color: theme.palette.white.main,
   transition: 'background 0.3s',
-  width: '48px',
-  height: '48px',
-  backgroundColor: theme.palette.primary.main,
-  ':hover': {
-    color: '#ffffff',
-    backgroundColor: darken(theme.palette.primary.main, 0.16),
+  width: theme.spacing(6),
+  height: theme.spacing(6),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? alpha(theme.palette.primary.main, 0.08)
+      : alpha(theme.palette.primary.main, 0.42),
+  '&:hover': {
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.primary.main, 0.12)
+        : alpha(theme.palette.primary.main, 0.56),
   },
 }));
