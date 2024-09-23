@@ -5,8 +5,8 @@ import type { MetadataRoute } from 'next';
 import { getArticles } from './lib/getArticles';
 import { locales } from 'src/i18n';
 
-function withTrailingSlash(url: string) {
-  return url.endsWith('/') ? url : `${url}/`;
+function withoutTrailingSlash(url: string) {
+  return url.endsWith('/') ? url.slice(0, -1) : url;
 }
 
 function generateAlternates(path: string) {
@@ -15,12 +15,12 @@ function generateAlternates(path: string) {
       ...locales.reduce((acc, loc) => {
         return {
           ...acc,
-          [loc]: withTrailingSlash(
+          [loc]: withoutTrailingSlash(
             `${process.env.NEXT_PUBLIC_SITE_URL}${loc !== 'en' ? `/${loc}` : ''}${path}`,
           ),
         };
       }, {}),
-      'x-default': withTrailingSlash(
+      'x-default': withoutTrailingSlash(
         `${process.env.NEXT_PUBLIC_SITE_URL}${path}`,
       ),
     },
@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = pages.flatMap((route: SitemapPage) => {
     return locales.map((locale) => {
       return {
-        url: withTrailingSlash(
+        url: withoutTrailingSlash(
           `${process.env.NEXT_PUBLIC_SITE_URL}${locale !== 'en' ? `/${locale}` : ''}${route.path}`,
         ),
         lastModified: new Date().toISOString().split('T')[0],
@@ -49,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       return locales.flatMap((locale) => {
         return article.data.map((el) => {
           return {
-            url: withTrailingSlash(
+            url: withoutTrailingSlash(
               `${process.env.NEXT_PUBLIC_SITE_URL}${locale !== 'en' ? `/${locale}` : ''}${JUMPER_LEARN_PATH}${el.attributes.Slug}`,
             ),
             lastModified: new Date(
