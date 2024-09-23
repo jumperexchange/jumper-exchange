@@ -5,7 +5,7 @@ const nextConfig = {
   output: 'standalone',
   reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
   swcMinify: true,
-  trailingSlash: true,
+  trailingSlash: false,
   webpack: (config) => {
     config.resolve.extensionAlias = {
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
@@ -31,10 +31,16 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'cdn.mygateway.xyz',
+        hostname: 'strapi.jumper.exchange',
         port: '',
-        pathname: '/**',
+        pathname: '/uploads/**',
       },
+      // {
+      //   protocol: 'https',
+      //   hostname: 'cdn.mygateway.xyz',
+      //   port: '',
+      //   pathname: '/**',
+      // },
       {
         protocol: 'https',
         hostname: 'jumper-static.s3.us-east-2.amazonaws.com',

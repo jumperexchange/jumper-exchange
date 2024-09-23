@@ -1,9 +1,9 @@
 import { urbanist } from '@/fonts/fonts';
 import type { BoxProps, Breakpoint, TypographyProps } from '@mui/material';
-import { Box, Skeleton, Typography, lighten } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const FeaturedArticleLink = styled(Link, {
   shouldForwardProp: (prop) => prop !== 'active',
@@ -207,10 +207,7 @@ export const FeaturedArticleDetails = styled(Box)(({ theme }) => ({
 export const FeaturedArticleTitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     userSelect: 'none',
-    color:
-      theme.palette.mode === 'light'
-        ? theme.palette.black.main
-        : theme.palette.white.main,
+    color: theme.palette.text.primary,
     marginBottom: theme.spacing(3),
     marginTop: theme.spacing(3),
     overflow: 'hidden',

@@ -63,8 +63,8 @@ export function Widget({
 
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
-    router.prefetch('/gas/', { kind: PrefetchKind.FULL });
-    router.prefetch('/buy/', { kind: PrefetchKind.FULL });
+    router.prefetch('/gas', { kind: PrefetchKind.FULL });
+    router.prefetch('/buy', { kind: PrefetchKind.FULL });
   });
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(
@@ -116,8 +116,23 @@ export function Widget({
       }
     }
 
+    const formParameters: Record<string, number | string | undefined> = {
+      fromChain: fromChain,
+      fromToken: fromToken,
+      toChain: toChain,
+      toToken: toToken,
+      fromAmount: fromAmount,
+    };
+
+    for (const key in formParameters) {
+      if (!formParameters[key]) {
+        delete formParameters[key];
+      }
+    }
+
     return {
       ...widgetConfig,
+      ...formParameters,
       variant: starterVariant === 'refuel' ? 'compact' : 'wide',
       subvariant:
         (starterVariant !== 'buy' &&
@@ -129,11 +144,6 @@ export function Widget({
           setWalletSelectMenuState(true);
         },
       },
-      fromChain: fromChain,
-      fromToken: fromToken,
-      toChain: toChain,
-      toToken: toToken,
-      fromAmount: fromAmount,
       chains: {
         allow: allowChains || allowedChainsByVariant,
       },

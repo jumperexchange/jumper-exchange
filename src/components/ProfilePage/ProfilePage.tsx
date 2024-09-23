@@ -41,8 +41,8 @@ export const ProfilePage = () => {
   return (
     <>
       <RewardsCarousel
-        hideComponent={false}
-        // hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
+        // hideComponent={false}
+        hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
         rewardAmount={availableRewards?.[0]?.amountToClaim as number}
         accumulatedAmountForContractBN={
           availableRewards?.[0]?.accumulatedAmountForContractBN

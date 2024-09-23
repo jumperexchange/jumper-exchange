@@ -29,7 +29,6 @@ export const QuestCarousel = ({
     <>
       {!isNotLive ? (
         <QuestCarouselContainer>
-          <TempTitle />
           <CarouselContainer title={t('missions.available')}>
             {!loading
               ? quests?.map((quest: Quest, index: number) => {

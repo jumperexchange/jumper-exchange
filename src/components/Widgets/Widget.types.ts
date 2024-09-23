@@ -1,7 +1,7 @@
 'use client';
 import type { StarterVariantType } from '@/types/internal';
 import type { ThemeModesSupported } from '@/types/settings';
-import { ChainId } from '@lifi/sdk';
+import { ChainId } from '@lifi/types';
 import type { BlogWidgetProps } from '../Blog/BlogWidget';
 
 export const refuelAllowChains: ChainId[] = [
