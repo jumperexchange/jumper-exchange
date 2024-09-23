@@ -10,9 +10,11 @@ export interface GetTagsResponse extends StrapiResponse<TagAttributes> {
 }
 
 export async function getTags(): Promise<GetTagsResponse> {
-  const urlParams = new TagStrapiApi()
-    .sort('desc')
-    .addPaginationParams({ page: 1, pageSize: 20, withCount: false });
+  const urlParams = new TagStrapiApi().addPaginationParams({
+    page: 1,
+    pageSize: 20,
+    withCount: false,
+  });
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.getApiAccessToken();
