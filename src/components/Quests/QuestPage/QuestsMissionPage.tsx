@@ -10,10 +10,10 @@ import { MissionCTA } from './CTA/MissionCTA';
 import { DescriptionBox } from './DescriptionBox/DescriptionBox';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { StepsBox } from './StepsBox/StepsBox';
-import {
-  REWARD_TOKEN_ADDRESS,
-  REWARD_TOKEN_CHAINID,
-} from 'src/const/partnerRewardsTheme';
+// import {
+//   REWARD_TOKEN_ADDRESS,
+//   REWARD_TOKEN_CHAINID,
+// } from 'src/const/partnerRewardsTheme';
 
 interface QuestsMissionPageVar {
   quest: Quest;
@@ -37,11 +37,11 @@ export const QuestsMissionPage = ({
   const points = quest?.attributes?.Points;
 
   const { account } = useAccounts();
-  const { pastCampaigns } = useMerklRewards({
-    rewardChainId: REWARD_TOKEN_CHAINID,
-    userAddress: account?.address,
-    rewardToken: REWARD_TOKEN_ADDRESS,
-  });
+  // const { pastCampaigns } = useMerklRewards({
+  //   rewardChainId: REWARD_TOKEN_CHAINID,
+  //   userAddress: account?.address,
+  //   rewardToken: REWARD_TOKEN_ADDRESS,
+  // });
   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
@@ -50,11 +50,11 @@ export const QuestsMissionPage = ({
         {/* button to go back */}
         <BackButton path={path} title={activeCampaign} />
         {/* big component with the main information */}
-        <BannerBox
+        {/* <BannerBox
           quest={quest}
           baseUrl={baseUrl}
           pastCampaigns={pastCampaigns}
-        />
+        /> */}
         {/* Big CTA */}
         {CTAsWithAPYs?.length > 0 && (
           <MissionCTA
