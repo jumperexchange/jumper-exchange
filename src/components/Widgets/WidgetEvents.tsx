@@ -24,14 +24,11 @@ import type {
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqualObjects } from 'shallow-equal';
+import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
 
-interface PreviousRoutesRefProps {
-  [key: string]: string | number | boolean;
-}
-
 export function WidgetEvents() {
-  const previousRoutesRef = useRef<PreviousRoutesRefProps>({});
+  const previousRoutesRef = useRef<JumperEventData>({});
   const { activeTab } = useActiveTabStore();
   const {
     sourceChainToken,
@@ -202,7 +199,7 @@ export function WidgetEvents() {
 
     const onAvailableRoutes = async (availableRoutes: Route[]) => {
       // current available routes
-      const newObj = {
+      const newObj: JumperEventData = {
         [TrackingEventParameter.FromToken]: sourceChainToken.tokenAddress || '',
         [TrackingEventParameter.FromChainId]: sourceChainToken.chainId || '',
         [TrackingEventParameter.ToToken]:
