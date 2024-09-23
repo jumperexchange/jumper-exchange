@@ -45,7 +45,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
 
   const hasMultipleChains = token.chains.length > 1;
 
-  const handleChange = () => {
+  const handleChange = (_: React.ChangeEvent<{}>, expanded: boolean) => {
     if (!hasMultipleChains) {
       setFrom(token.address, token.chainId);
 
@@ -54,7 +54,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
       }
       return;
     }
-    setExpanded(!isExpanded);
+    setExpanded(expanded);
   };
 
   return (
