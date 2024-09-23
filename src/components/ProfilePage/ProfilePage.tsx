@@ -13,7 +13,7 @@ import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { Leaderboard } from './Leaderboard/Leaderboard';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
+import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 
 export const ProfilePage = () => {
   const { account } = useAccounts();
@@ -27,7 +27,7 @@ export const ProfilePage = () => {
     pastCampaigns,
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,
-  } = useMerklRewards({
+  } = useMerklRewardsOnCampaigns({
     userAddress: account?.address,
   });
 

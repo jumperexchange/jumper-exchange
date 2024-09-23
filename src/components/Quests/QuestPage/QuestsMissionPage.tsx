@@ -1,6 +1,5 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import generateKey from 'src/app/lib/generateKey';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
 import { QuestPageMainBox, QuestsContainer } from '../Quests.style';
@@ -10,10 +9,7 @@ import { MissionCTA } from './CTA/MissionCTA';
 import { DescriptionBox } from './DescriptionBox/DescriptionBox';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { StepsBox } from './StepsBox/StepsBox';
-// import {
-//   REWARD_TOKEN_ADDRESS,
-//   REWARD_TOKEN_CHAINID,
-// } from 'src/const/partnerRewardsTheme';
+import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 
 interface QuestsMissionPageVar {
   quest: Quest;
@@ -37,11 +33,9 @@ export const QuestsMissionPage = ({
   const points = quest?.attributes?.Points;
 
   const { account } = useAccounts();
-  // const { pastCampaigns } = useMerklRewards({
-  //   rewardChainId: REWARD_TOKEN_CHAINID,
-  //   userAddress: account?.address,
-  //   rewardToken: REWARD_TOKEN_ADDRESS,
-  // });
+  const { pastCampaigns } = useMerklRewardsOnCampaigns({
+    userAddress: account?.address,
+  });
   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
@@ -49,11 +43,11 @@ export const QuestsMissionPage = ({
       <QuestPageMainBox>
         <BackButton path={path} title={activeCampaign} />
         {/* big component with the main information */}
-        {/* <BannerBox
+        <BannerBox
           quest={quest}
           baseUrl={baseUrl}
           pastCampaigns={pastCampaigns}
-        /> */}
+        />
         {/* Big CTA */}
         {CTAsWithAPYs?.length > 0 && (
           <MissionCTA
