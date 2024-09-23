@@ -8,7 +8,7 @@ export function appendUTMParametersToLink(link: string, utm: UtmParams) {
       String(value),
     ]),
   );
-  const updatedLink = link.charAt(link.length - 1) === '/' ? link : `${link}/`;
+  const updatedLink = link.charAt(link.length - 1) === '/' ? link : `${link}`;
   const updatedUrl = `${updatedLink}?${searchParams.toString()}`;
 
   return updatedUrl;

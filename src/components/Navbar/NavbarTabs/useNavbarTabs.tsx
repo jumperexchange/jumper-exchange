@@ -67,7 +67,7 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
     },
     {
       label: t('navbar.links.refuel'),
-      onClick: handleClickTab('gas/'),
+      onClick: handleClickTab('gas'),
       value: 1,
       icon: (
         <EvStationOutlinedIcon
@@ -84,7 +84,7 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
     },
     {
       label: t('navbar.links.buy'),
-      onClick: handleClickTab('buy/'),
+      onClick: handleClickTab('buy'),
       value: 2,
       icon: (
         <CreditCardIcon
