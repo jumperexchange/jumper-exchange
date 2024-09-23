@@ -28,9 +28,7 @@ export const BlogArticlesBoardTabs = ({
           ? getContrastAlphaColor(theme, '12%')
           : getContrastAlphaColor(theme, '4%'),
     display: 'flex',
-    // height: openDropdown ? '68px' : 'auto',
     maxHeight: openDropdown ? 1000 : 0,
-    // height: openDropdown ? 'auto' : 68,
     borderRadius: '12px',
     transitionProperty: 'max-height, background-color',
     transitionDuration: '.3s',
