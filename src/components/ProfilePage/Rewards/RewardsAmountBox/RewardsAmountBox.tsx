@@ -7,24 +7,16 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
-import {
-  PROFILE_CAMPAIGN_DARK_CHAIN,
-  PROFILE_CAMPAIGN_DARK_TOKEN,
-  PROFILE_CAMPAIGN_LIGHT_CHAIN,
-  PROFILE_CAMPAIGN_LIGHT_TOKEN,
-} from 'src/const/partnerRewardsTheme';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { AmountInputBox } from '../RewardsCarousel.style';
 
 export const RewardsAmountBox = ({
-  isSuccess,
   isConfirmed,
   rewardAmount,
   tokenLogo,
   chainLogo,
   decimalsToShow,
 }: {
-  isSuccess: boolean;
   isConfirmed: boolean;
   rewardAmount: number;
   tokenLogo: string;
@@ -79,7 +71,8 @@ export const RewardsAmountBox = ({
           color={theme.palette.mode === 'dark' ? '#ffffff' : '#000000'}
         >
           {!account?.address ||
-          (isSuccess && (rewardAmount === 0 || !rewardAmount)) ||
+          rewardAmount === 0 ||
+          !rewardAmount ||
           isConfirmed
             ? '0'
             : rewardAmount
