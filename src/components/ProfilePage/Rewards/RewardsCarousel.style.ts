@@ -18,11 +18,11 @@ export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'start',
   alignContent: 'center',
   alignItems: 'center',
-  marginBottom: '32px',
-  paddingTop: '24px',
-  paddingBottom: '24px',
-  paddingLeft: '48px',
-  paddingRight: '48px',
+  marginBottom: theme.spacing(4),
+  paddingTop: theme.spacing(3),
+  paddingBottom: theme.spacing(3),
+  paddingLeft: theme.spacing(6),
+  paddingRight: theme.spacing(46),
   [theme.breakpoints.down('md' as Breakpoint)]: {
     flexDirection: 'column',
     alignItems: 'center',
@@ -70,15 +70,15 @@ export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   alignContent: 'center',
-  borderRadius: '24px',
-  minHeight: '72px',
+  borderRadius: theme.spacing(3),
+  minHeight: theme.spacing(9),
   flexDirection: 'row',
-  padding: '16px',
+  padding: theme.spacing(2),
   [theme.breakpoints.down('md' as Breakpoint)]: {
-    minWidth: '400px',
+    minWidth: 400,
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    minWidth: '300px',
+    minWidth: 300,
   },
 }));
 
@@ -88,8 +88,8 @@ export const ClaimButtonBox = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   alignContent: 'center',
   alignItems: 'center',
-  minWidth: '72px',
-  marginLeft: '32px',
+  minWidth: theme.spacing(9),
+  marginLeft: theme.spacing(4),
 }));
 
 export const EarnedTypography = styled(Typography)(({ theme }) => ({
@@ -105,7 +105,7 @@ export const AmountInputBox = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
     justifyContent: 'center',
     alignContent: 'center',
-    minWidth: '160px',
+    minWidth: 160,
   },
 }));
 
@@ -114,8 +114,8 @@ export const RewardsOpenIconButton = styled(MuiIconButton, {
 })<IconButtonProps>(({ theme }) => ({
   color: theme.palette.white.main,
   transition: 'background 0.3s',
-  width: '48px',
-  height: '48px',
+  width: theme.spacing(6),
+  height: theme.spacing(6),
   backgroundColor:
     theme.palette.mode === 'light'
       ? alpha(theme.palette.primary.main, 0.08)

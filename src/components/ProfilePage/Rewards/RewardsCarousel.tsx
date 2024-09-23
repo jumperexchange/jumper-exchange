@@ -35,9 +35,7 @@ export const RewardsCarousel = ({
         <RewardsCarouselContainer>
           <FlexCenterRowBox>
             <Box>
-              <EarnedTypography
-                color={theme.palette.mode === 'dark' ? '#ffffff' : '#000000'}
-              >
+              <EarnedTypography color={theme.palette.text.primary}>
                 Rewards Earned
               </EarnedTypography>
             </Box>
@@ -46,12 +44,12 @@ export const RewardsCarousel = ({
             const amount = availableReward.amountToClaim;
             return (
               <Box key={i + availableReward.address}>
-                {amount > 0 && isMerklSuccess ? (
+                {amount > 0 && isMerklSuccess && (
                   <ClaimingBox
                     amount={amount}
                     availableReward={availableReward}
                   />
-                ) : null}
+                )}
               </Box>
             );
           })}

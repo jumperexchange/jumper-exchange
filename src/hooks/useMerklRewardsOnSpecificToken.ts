@@ -131,12 +131,10 @@ export const useMerklRewardsOnSpecificToken = ({
 
   // transform to know what is not coming from Jumper campaigns
   if (rewardsData) {
-    const tokenData = rewardsData[rewardChainId]?.tokenData;
+    const tokenData = rewardsData?.[rewardChainId]?.tokenData;
     if (tokenData) {
-      rewardsToClaim = Object.entries(tokenData)
-        .map((elem): AvailableRewards => {
-          const key = elem[0];
-          const value = elem[1] as TokenData;
+      rewardsToClaim = Object.entries<TokenData>(tokenData)
+        .map(([key, value]): AvailableRewards => {
           return {
             chainId: rewardChainId,
             address: key,

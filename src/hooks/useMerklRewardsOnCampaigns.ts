@@ -136,13 +136,11 @@ export const useMerklRewardsOnCampaigns = ({
 
   if (rewardsData) {
     for (const rewardElem of REWARDS_LIST) {
-      const tokenData = rewardsData[rewardElem.chainId]?.tokenData;
+      const tokenData = rewardsData?.[rewardElem.chainId]?.tokenData;
       if (tokenData) {
         rewardsToClaim = rewardsToClaim.concat(
-          Object.entries(tokenData)
-            .map((elem): AvailableRewards => {
-              const key = elem[0];
-              const value = elem[1] as TokenData;
+          Object.entries<TokenData>(tokenData)
+            .map(([key, value]): AvailableRewards => {
               return {
                 chainId: parseInt(rewardElem.chainId),
                 address: key,

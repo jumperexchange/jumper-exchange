@@ -31,15 +31,15 @@ export const RewardsAmountBox = ({
   );
 
   //CONST
-  const REWARD_CHAIN_LOGO = chainLogo; // theme.palette.mode === 'dark' ?
-  const REWARD_TOKEN_LOGO = tokenLogo; // theme.palette.mode === 'dark' ?
+  const REWARD_CHAIN_LOGO = chainLogo;
+  const REWARD_TOKEN_LOGO = tokenLogo;
 
   return (
     <FlexCenterRowBox minWidth="96px">
       <Box marginLeft="32px">
         <Image
           src={REWARD_TOKEN_LOGO}
-          alt="token image"
+          alt={`token-image`}
           width={40}
           height={40}
           style={{
