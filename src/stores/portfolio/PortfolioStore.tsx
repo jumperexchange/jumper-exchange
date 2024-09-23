@@ -29,7 +29,7 @@ export const usePortfolioStore = createWithEqualityFn(
       },
       setForceRefresh(state: boolean) {
         set({
-          forceRefresh: state
+          forceRefresh: state,
         });
       },
 

@@ -8,6 +8,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useTranslation } from 'react-i18next';
+import { currencyFormatter } from '@/utils/formatNumbers';
 import { useEffect, useState } from 'react';
 import { isEqual } from 'lodash';
 import { useAccounts } from '@/hooks/useAccounts';
@@ -20,22 +21,6 @@ function has24HoursPassed(lastDate: number): boolean {
   const twentyFourHoursInMilliseconds = 24 * 60 * 60 * 1000;
   return currentTime - lastDate >= twentyFourHoursInMilliseconds;
 }
-
-export const currencyExtendedFormatter = (
-  lng: string | undefined,
-  options: any,
-) => {
-  const formatter = new Intl.NumberFormat(lng, {
-    ...options,
-    style: 'currency',
-  });
-  return (value: any) => {
-    if (value > 0 && value < 0.01) {
-      return `<${formatter.format(0.01)}`;
-    }
-    return formatter.format(value);
-  };
-};
 
 interface TotalBalanceProps {
   refetch: () => void;
@@ -51,7 +36,13 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
   const portfolio = usePortfolioStore((state) => state);
 
   useEffect(() => {
-    const addresses = accounts.map(({ address }) => address!);
+    const addresses = accounts
+      .filter((a) => !!a?.address)
+      .map(({ address }) => address) as string[];
+
+    if (addresses.length === 0) {
+      return;
+    }
 
     if (!portfolio.lastDate) {
       portfolio.setLast(totalValue, addresses);
@@ -82,17 +73,6 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
     return <TotalBalanceSkeleton />;
   }
 
-  const ss2 = new Intl.NumberFormat(lng, {
-    style: 'decimal',
-    maximumFractionDigits: 7
-  });
-
-  const ss = new Intl.NumberFormat(lng, {
-    style: 'currency',
-    currency: 'USD',
-    // maximumFractionDigits: 7
-  });
-
   return (
     <WalletCardContainer>
       <Stack spacing={1}>
@@ -122,7 +102,7 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
           </Tooltip>
           {t('navbar.walletMenu.totalBalance')}
         </Typography>
-        <TotalValue>{ss.format(totalValue)}</TotalValue>
+        <TotalValue>{currencyFormatter(lng).format(totalValue)}</TotalValue>
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">
           {differenceValue !== 0 && (
             <Stack direction="row" spacing="4px">

@@ -27,14 +27,16 @@ import {
 } from '@/components/Menus/WalletMenu/WalletCardV2.style';
 import { Avatar } from '@/components/Avatar';
 import { useMainPaths } from '@/hooks/useMainPaths';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
+import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
 
 interface PortfolioTokenProps {
   token: ExtendedTokenAmount;
 }
 
 function PortfolioToken({ token }: PortfolioTokenProps) {
+  const { lng } = useParams();
   const [isExpanded, setExpanded] = useState<boolean>(false);
   const { t } = useTranslation();
   const { isMainPaths } = useMainPaths();
@@ -136,10 +138,10 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             </Grid>
             <Grid item xs={5} style={{ textAlign: 'right' }}>
               <TypographyPrimary>
-                {token.formattedBalance?.toFixed(7)}
+                {decimalFormatter(lng).format(token.formattedBalance ?? 0)}
               </TypographyPrimary>
               <TypographySecondary>
-                ${token.totalPriceUSD?.toFixed(2)}
+                {currencyFormatter(lng).format(token.totalPriceUSD ?? 0)}
               </TypographySecondary>
             </Grid>
           </Grid>
@@ -222,7 +224,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                       lineHeight: '1.125rem',
                     }}
                   >
-                    {chain.formattedBalance?.toFixed(7)}
+                    {decimalFormatter(lng).format(chain.formattedBalance)}
                   </TypographyPrimary>
                   <TypographySecondary
                     sx={{
@@ -230,7 +232,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                       lineHeight: '0.875rem',
                     }}
                   >
-                    ${chain.totalPriceUSD?.toFixed(2)}
+                    {currencyFormatter(lng).format(chain.totalPriceUSD)}
                   </TypographySecondary>
                 </Grid>
               </Grid>

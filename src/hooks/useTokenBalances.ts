@@ -17,22 +17,26 @@ export const useTokenBalances = (accounts: Account[]) => {
   const [isFull, setIsFull] = useState(false);
 
   return useQueries({
-    queries: accounts.map(({ address }) => ({
-      queryKey: ['tokenBalances', address, isFull],
-      queryFn: async () => {
-        try {
-          if (!address) {
-            return;
-          }
+    queries: accounts
+      .filter((a) => !!a?.address)
+      .map(({ address, isConnected }) => {
+        return {
+          queryKey: ['tokenBalances', address, isFull],
+          queryFn: async () => {
+            try {
+              if (!address) {
+                return;
+              }
 
-          return getTokens(address, isFull);
-        } catch (err) {
-          console.error(err);
-        }
-      },
-      enabled: !!address,
-      refetchInterval: 1000 * 60 * 60, // 1 hour
-    })),
+              return getTokens(address, isFull);
+            } catch (err) {
+              console.error(err);
+            }
+          },
+          enabled: !!address && isConnected,
+          refetchInterval: 1000 * 60 * 60, // 1 hour
+        };
+      }),
     combine: (results): CombinedResult => {
       const isLoading = results.some((result) => result.isLoading);
       const isRefetching = results.some((result) => result.isRefetching);

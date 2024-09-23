@@ -10,7 +10,10 @@ import { useEffect } from 'react';
 
 function Portfolio() {
   const { accounts } = useAccounts();
-  const [forceRefresh, setForceRefresh] = usePortfolioStore((state) => [state.forceRefresh, state.setForceRefresh]);
+  const [forceRefresh, setForceRefresh] = usePortfolioStore((state) => [
+    state.forceRefresh,
+    state.setForceRefresh,
+  ]);
   const { refetch, data, totalValue } = useTokenBalances(accounts);
 
   useEffect(() => {
@@ -18,11 +21,8 @@ function Portfolio() {
       return;
     }
 
-    console.log('-F', forceRefresh)
-
     setForceRefresh(false);
     refetch();
-
   }, [forceRefresh]);
 
   return (

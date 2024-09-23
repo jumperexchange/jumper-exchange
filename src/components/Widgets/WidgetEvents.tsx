@@ -25,6 +25,7 @@ import type {
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
+import { usePortfolioStore } from '@/stores/portfolio';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -48,6 +49,7 @@ export function WidgetEvents() {
 
   const [isMultisigConnectedAlertOpen, setIsMultisigConnectedAlertOpen] =
     useState(false);
+  const setForceRefresh = usePortfolioStore((state) => state.setForceRefresh);
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: RouteExtended) => {
@@ -94,6 +96,9 @@ export function WidgetEvents() {
     };
     const onRouteExecutionCompleted = async (route: Route) => {
       if (route.id) {
+        // Refresh portfolio value
+        setForceRefresh(true);
+
         const data = handleTransactionDetails(route, {
           [TrackingEventParameter.Action]: 'execution_completed',
           [TrackingEventParameter.TransactionStatus]: 'COMPLETED',

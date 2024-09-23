@@ -16,8 +16,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       },
       preloadChains: true,
     });
-
-  }, [])
+  }, []);
 
   return (
     <SolanaProvider>
