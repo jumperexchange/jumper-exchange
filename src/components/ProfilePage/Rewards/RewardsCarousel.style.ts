@@ -19,10 +19,7 @@ export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   alignContent: 'center',
   alignItems: 'center',
   marginBottom: theme.spacing(4),
-  paddingTop: theme.spacing(3),
-  paddingBottom: theme.spacing(3),
-  paddingLeft: theme.spacing(6),
-  paddingRight: theme.spacing(46),
+  padding: theme.spacing(3, 6, 3, 6),
   [theme.breakpoints.down('md' as Breakpoint)]: {
     flexDirection: 'column',
     alignItems: 'center',
