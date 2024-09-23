@@ -1,4 +1,4 @@
-import { Skeleton, Stack, useTheme } from '@mui/material';
+import { Box, Skeleton, Stack, useTheme } from '@mui/material';
 import { usePortfolioStore } from '@/stores/portfolio';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +14,8 @@ function Portfolio() {
     state.forceRefresh,
     state.setForceRefresh,
   ]);
-  const { refetch, data, totalValue } = useTokenBalances(accounts);
+  const { refetch, data, totalValue, isLoading, isRefetching } =
+    useTokenBalances(accounts);
 
   useEffect(() => {
     if (!forceRefresh) {
@@ -29,19 +30,27 @@ function Portfolio() {
     <>
       <TotalBalance refetch={refetch} totalValue={totalValue} />
       <Stack spacing={1}>
-        {false &&
-          new Array(8).fill(undefined).map((token) => (
+        {(isLoading || isRefetching) &&
+          Array.from({ length: 8 }, () => 42).map((token) => (
             <WalletCardContainer>
-              <Stack direction="row" spacing={1}>
-                <Skeleton variant="circular" width={40} height={40} />
-                <Stack direction="column" alignItems="center" spacing={1}>
-                  <Skeleton variant="rectangular" width={100} height={24} />
-                  <Skeleton variant="text" width={100} height={24} />
-                </Stack>
-                <Stack direction="column" alignItems="center" spacing={1}>
-                  <Skeleton variant="rectangular" width={100} height={24} />
-                  <Skeleton variant="text" width={100} height={24} />
-                </Stack>
+              <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
+                <Skeleton variant="circular" width={46} height={40} />
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Stack direction="column" alignItems="start" spacing={1}>
+                    <Skeleton variant="rectangular" width={100} height={24} />
+                    <Skeleton variant="text" width={70} height={24} />
+                  </Stack>
+                  <Stack direction="column" alignItems="end" spacing={1}>
+                    <Skeleton variant="rectangular" width={100} height={24} />
+                    <Skeleton variant="text" width={50} height={24} />
+                  </Stack>
+                </Box>
               </Stack>
             </WalletCardContainer>
           ))}

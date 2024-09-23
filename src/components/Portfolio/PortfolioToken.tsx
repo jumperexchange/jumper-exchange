@@ -165,6 +165,9 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                 width: '100%',
                 padding: '16px',
                 display: 'flex',
+                '&:hover': {
+                  background: 'rgba(0, 0, 0, 0.04)',
+                },
               }}
             >
               <Grid container display="flex" alignItems="center">
