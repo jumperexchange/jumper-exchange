@@ -7,26 +7,31 @@ import {
   alpha,
   darken,
 } from '@mui/material';
-import { sequel65 } from 'src/fonts/fonts';
-import { getContrastAlphaColor } from '@/utils/colors';
 import type { IconButtonProps } from '@mui/material';
-import {
-  PROFILE_CAMPAIGN_DARK_COLOR,
-  PROFILE_CAMPAIGN_LIGHT_COLOR,
-} from 'src/const/partnerRewardsTheme';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
-  // backgroundColor: theme.palette.mode === 'dark' ? '#322153' : '#F6F5FA',
-  // backgroundColor:
-  //   theme.palette.mode === 'dark'
-  //     ? PROFILE_CAMPAIGN_DARK_COLOR
-  //     : PROFILE_CAMPAIGN_LIGHT_COLOR,
+  backgroundColor: theme.palette.bgSecondary.main,
+  borderRadius: '24px',
+  boxShadow: theme.palette.shadow.main,
   display: 'flex',
   width: '100%',
-  flexDirection: 'column',
-  justifyContent: 'center',
+  justifyContent: 'start',
   alignContent: 'center',
   alignItems: 'center',
+  marginBottom: '32px',
+  paddingTop: '24px',
+  paddingBottom: '24px',
+  paddingLeft: '48px',
+  paddingRight: '48px',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '8px',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    flexDirection: 'row',
+    gap: '32px',
+  },
 }));
 
 export const RewardsCarouselHeader = styled(Box, {
@@ -57,7 +62,6 @@ export const RewardsCarouselTitle = styled(Typography, {
 }));
 
 export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
-  width: '100%',
   backgroundColor:
     theme.palette.mode === 'light'
       ? '#FFFFFF'
@@ -66,13 +70,15 @@ export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   alignContent: 'center',
-  padding: '32px',
+  borderRadius: '24px',
+  minHeight: '72px',
+  flexDirection: 'row',
+  padding: '16px',
   [theme.breakpoints.down('md' as Breakpoint)]: {
-    flexDirection: 'column',
-    alignItems: 'center',
+    minWidth: '400px',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    flexDirection: 'row',
+    minWidth: '300px',
   },
 }));
 
@@ -82,27 +88,24 @@ export const ClaimButtonBox = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   alignContent: 'center',
   alignItems: 'center',
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    width: '85%',
-    marginTop: '16px',
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    flexDirection: 'row',
-    marginLeft: '32px',
-    width: '15%',
-  },
+  minWidth: '72px',
+  marginLeft: '32px',
 }));
 
 export const EarnedTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '24px',
+  lineHeight: '32px',
+  fontWeight: 700,
+}));
+
+export const AmountInputBox = styled(Box)(({ theme }) => ({
+  marginLeft: '8px',
   [theme.breakpoints.down('md' as Breakpoint)]: {
-    fontSize: '32px',
-    lineHeight: '32px',
-    fontWeight: 700,
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    fontSize: '32px',
-    lineHeight: '48px',
-    fontWeight: 700,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    minWidth: '160px',
   },
 }));
 

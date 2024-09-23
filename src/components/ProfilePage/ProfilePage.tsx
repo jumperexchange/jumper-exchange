@@ -33,18 +33,18 @@ export const ProfilePage = () => {
 
   return (
     <>
-      <RewardsCarousel
-        hideComponent={false}
-        // hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
-        availableRewards={availableRewards}
-        // rewardAmount={availableRewards?.[0]?.amountToClaim as number}
-        // accumulatedAmountForContractBN={
-        //   availableRewards?.[0]?.accumulatedAmountForContractBN
-        // }
-        // proof={availableRewards?.[0]?.proof}
-        isMerklSuccess={isRewardSuccess}
-      />
       <ProfilePageContainer className="profile-page">
+        <RewardsCarousel
+          hideComponent={false}
+          // hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
+          availableRewards={availableRewards}
+          // rewardAmount={availableRewards?.[0]?.amountToClaim as number}
+          // accumulatedAmountForContractBN={
+          //   availableRewards?.[0]?.accumulatedAmountForContractBN
+          // }
+          // proof={availableRewards?.[0]?.proof}
+          isMerklSuccess={isRewardSuccess}
+        />
         <Grid container>
           <Grid
             xs={12}

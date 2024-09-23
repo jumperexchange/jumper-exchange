@@ -26,7 +26,7 @@ export const REWARDS_LIST = [
     tokenChainId: 30,
     claimingAddress: '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae',
     tokenAddress: '0x542fda317318ebf1d3deaf76e0b632741a7e677d',
-    decimalsToShow: 7,
+    decimalsToShow: 5,
     explorerLink: 'https://explorer.rootstock.io',
     lightTokenLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/thumbnail_rbtc_logo_e8454e105a.png`,
     darkTokenLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/thumbnail_rbtc_logo_e8454e105a.png`,

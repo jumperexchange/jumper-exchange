@@ -97,6 +97,15 @@ export const RewardsCarousel = ({
     <>
       {!hideComponent ? (
         <RewardsCarouselContainer>
+          <FlexCenterRowBox>
+            <Box>
+              <EarnedTypography
+                color={theme.palette.mode === 'dark' ? '#ffffff' : '#000000'}
+              >
+                Rewards Earned
+              </EarnedTypography>
+            </Box>
+          </FlexCenterRowBox>
           {availableRewards.map((availableReward, i) => {
             const amount = availableReward.amountToClaim;
             return (
@@ -104,15 +113,6 @@ export const RewardsCarousel = ({
                 {/* {amount > 0 ? ( */}
                 <RewardsCarouselMainBox key={i} marginTop={'8px'}>
                   <FlexCenterRowBox>
-                    <Box>
-                      <EarnedTypography
-                        color={
-                          theme.palette.mode === 'dark' ? '#ffffff' : '#000000'
-                        }
-                      >
-                        You've earned:
-                      </EarnedTypography>
-                    </Box>
                     <RewardsAmountBox
                       isSuccess={isMerklSuccess}
                       rewardAmount={amount}
@@ -131,8 +131,8 @@ export const RewardsCarousel = ({
                         (!!amount && amount === 0) ||
                         (isMerklSuccess && !amount)
                       }
-                      variant="primary"
-                      aria-label="Claim rewards"
+                      variant="secondary"
+                      aria-label="Claim"
                       size="large"
                       styles={{
                         opacity:
@@ -161,16 +161,16 @@ export const RewardsCarousel = ({
                       }
                     >
                       <Typography
-                        fontSize="16px"
+                        fontSize="14px"
                         lineHeight="18px"
-                        fontWeight={600}
-                        color={theme.palette.white.main}
+                        fontWeight={700}
+                        color={theme.palette.text.primary}
                       >
                         {isPending || isConfirming
-                          ? 'CLAIMING...'
+                          ? 'Claiming...'
                           : isConfirmed
-                            ? 'CLAIMED'
-                            : 'CLAIM REWARDS'}
+                            ? 'Claimed'
+                            : 'Claim'}
                       </Typography>
                     </Button>
                   </ClaimButtonBox>

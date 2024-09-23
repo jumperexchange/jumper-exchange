@@ -14,6 +14,7 @@ import {
   PROFILE_CAMPAIGN_LIGHT_TOKEN,
 } from 'src/const/partnerRewardsTheme';
 import { useAccounts } from 'src/hooks/useAccounts';
+import { AmountInputBox } from '../RewardsCarousel.style';
 
 export const RewardsAmountBox = ({
   isSuccess,
@@ -47,8 +48,8 @@ export const RewardsAmountBox = ({
         <Image
           src={REWARD_TOKEN_LOGO}
           alt="token image"
-          width={64}
-          height={64}
+          width={40}
+          height={40}
           style={{
             borderRadius: 16,
           }}
@@ -56,23 +57,24 @@ export const RewardsAmountBox = ({
         {isMobile ? undefined : (
           <Image
             src={REWARD_CHAIN_LOGO}
-            alt="token image"
-            width={32}
-            height={32}
+            alt="chain image"
+            width={15}
+            height={15}
             style={{
               borderRadius: 16,
               border: '2px solid',
               borderColor: '#FFFFFF',
               zIndex: 10,
-              marginTop: 16,
-              marginLeft: -16,
+              marginTop: 20,
+              marginLeft: -12,
             }}
           />
         )}
       </Box>
-      <Box marginLeft={'8px'}>
+      <AmountInputBox>
         <Typography
-          fontSize="40px"
+          fontSize="24px"
+          lineHeight="32px"
           fontWeight={700}
           color={theme.palette.mode === 'dark' ? '#ffffff' : '#000000'}
         >
@@ -84,7 +86,7 @@ export const RewardsAmountBox = ({
               ? rewardAmount.toFixed(decimalsToShow)
               : '...'}
         </Typography>
-      </Box>
+      </AmountInputBox>
     </FlexCenterRowBox>
   );
 };
