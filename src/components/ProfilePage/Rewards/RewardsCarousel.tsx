@@ -9,7 +9,7 @@ import {
 import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
 import { Button } from 'src/components/Button';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
-import { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
+import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { ClaimingBox } from './ClaimingBox/ClaimingBox';
 
 interface RewardsCarouselProps {

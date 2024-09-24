@@ -1,7 +1,6 @@
 'use client';
 import { ClientOnly } from '@/components/ClientOnly';
 import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAlert';
-import { widgetConfig } from '@/config/widgetConfig';
 import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useMenuStore } from '@/stores/menu';
@@ -16,6 +15,7 @@ import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/config/tokens';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import {
@@ -55,7 +55,7 @@ export function Widget({
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
   const partnerName = configTheme?.uid ?? 'default';
-  const { tokens } = useMemelist({
+  const { tokens: memeListTokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
 
@@ -130,8 +130,11 @@ export function Widget({
       }
     }
 
+    if (memeListTokens) {
+      tokens.allow.concat(memeListTokens);
+    }
+
     return {
-      ...widgetConfig,
       ...formParameters,
       variant: starterVariant === 'refuel' ? 'compact' : 'wide',
       subvariant:
@@ -199,8 +202,7 @@ export function Widget({
       buildUrl: true,
       // insurance: true,
       integrator: integratorStringByType,
-      tokens:
-        partnerName === ThemesMap.Memecoins && tokens ? { allow: tokens } : {},
+      tokens,
     };
   }, [
     starterVariant,
