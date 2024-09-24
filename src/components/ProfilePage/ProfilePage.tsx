@@ -31,6 +31,9 @@ export const ProfilePage = () => {
     userAddress: account?.address,
   });
 
+  console.log('-----------------');
+  console.log(availableRewards);
+
   return (
     <>
       <ProfilePageContainer className="profile-page">
@@ -39,7 +42,7 @@ export const ProfilePage = () => {
             !account?.address ||
             isRewardLoading ||
             !isRewardSuccess ||
-            availableRewards?.length === 0
+            availableRewards?.filter((e) => e?.amountToClaim > 0)?.length === 0
           }
           availableRewards={availableRewards}
           isMerklSuccess={isRewardSuccess}
