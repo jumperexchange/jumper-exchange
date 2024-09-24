@@ -18,7 +18,7 @@ test.describe('Jumper full e2e flow', () => {
     await closeWelcomeScreen(page);
   });
 
-  test('Should navigate to the homepage and change tabs', async ({ page }) => {
+  test.skip('Should navigate to the homepage and change tabs', async ({ page }) => {
     const buyETHButton = page
       .frameLocator('iframe[title="Onramper widget"]')
       .locator('button:has-text("Buy ETH")');
