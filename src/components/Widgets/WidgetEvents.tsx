@@ -212,6 +212,8 @@ export function WidgetEvents() {
             ),
           ),
         ),
+        [TrackingEventParameter.FromAmountUSD]:
+          availableRoutes[0].fromAmountUSD,
       };
 
       // compare current availableRoutes with the previous one
