@@ -205,6 +205,13 @@ export function WidgetEvents() {
         [TrackingEventParameter.ToToken]:
           destinationChainToken.tokenAddress || '',
         [TrackingEventParameter.ToChainId]: destinationChainToken.chainId || '',
+        [TrackingEventParameter.AvailableRoutes]: String(
+          availableRoutes.map((route) =>
+            route.steps.map(
+              (step) => `${step.tool}:${step.estimate.toAmountUSD}$`,
+            ),
+          ),
+        ),
       };
 
       // compare current availableRoutes with the previous one

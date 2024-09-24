@@ -170,6 +170,7 @@ export enum TrackingEventParameter {
   ValueLoss = 'param_value_loss',
   AvailableRoutesCount = 'param_available_routes_count',
   TransactionStatus = 'param_transaction_status',
+  AvailableRoutes = 'param_available_routes',
 
   // Blog
   ArticleCardId = 'param_article_card_id',
