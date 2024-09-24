@@ -125,10 +125,7 @@ export const ToolModalAvatar = styled(Avatar)(() => ({
 }));
 
 export const ToolModaItemlTitle = styled(Typography)(({ theme }) => ({
-  color:
-    theme.palette.mode === 'dark'
-      ? theme.palette.white.main
-      : theme.palette.black.main,
+  color: theme.palette.text.primary,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   maxWidth: 72,
