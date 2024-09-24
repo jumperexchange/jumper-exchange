@@ -31,9 +31,6 @@ export const ProfilePage = () => {
     userAddress: account?.address,
   });
 
-  console.log('-----------------');
-  console.log(availableRewards);
-
   return (
     <>
       <ProfilePageContainer className="profile-page">

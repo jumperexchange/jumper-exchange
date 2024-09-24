@@ -84,8 +84,6 @@ export const useMerklRewardsOnCampaigns = ({
   const activeCampaigns = [] as string[];
   const pastCampaigns = [] as string[];
 
-  userAddress = '0xb9c0dE368BECE5e76B52545a8E377a4C118f597B';
-
   // Call to get the active positions
   // To do -> use the label to get only
   const MERKL_POSITIONS_API = `${MERKL_API}/multiChainPositions?chainIds=${ACTIVE_CHAINS.join(',')}&user=${userAddress}`; //&creatorTag=${CREATOR_TAG}
