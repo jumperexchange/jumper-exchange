@@ -149,7 +149,7 @@ export const SuperfestBackgroundContainer = styled('div')(({ theme }) => ({
   backgroundRepeat: 'repeat',
   width: '100%',
   height: '100%',
-  backgroundImage: `url(https://strapi.li.finance/uploads/Superfest_OP_9e52e7917e.svg)`,
+  backgroundImage: `url(${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Superfest_OP_9e52e7917e.svg)`,
   overflow: 'hidden',
   pointerEvents: 'none',
   left: 0,

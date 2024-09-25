@@ -12,10 +12,7 @@ const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   fontWeight: 'bold',
   transition: 'background-color 250ms',
   overflow: 'hidden',
-  color:
-    theme.palette.mode === 'dark'
-      ? theme.palette.white.main
-      : theme.palette.black.main,
+  color: theme.palette.text.primary,
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'
@@ -91,3 +88,12 @@ export const SuperfestButton = styled(ButtonBase)<MuiButtonProps>(
     },
   }),
 );
+
+export const LevelButton = styled(ButtonSecondary)<MuiButtonProps>(() => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  pointerEvents: 'none',
+  paddingLeft: '12px',
+  height: '32px',
+}));

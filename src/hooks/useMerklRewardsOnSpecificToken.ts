@@ -2,7 +2,6 @@
 import { useQuery } from '@tanstack/react-query';
 import {
   MERKL_CREATOR_TAG,
-  REWARD_TOKEN_ADDRESS,
   REWARDS_CHAIN_IDS,
 } from 'src/const/partnerRewardsTheme';
 
@@ -71,7 +70,7 @@ const MERKL_API = 'https://api.merkl.xyz/v3';
 // TESTING
 // const TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
 
-export const useMerklRewards = ({
+export const useMerklRewardsOnSpecificToken = ({
   userAddress,
   rewardChainId,
   rewardToken,
@@ -132,12 +131,10 @@ export const useMerklRewards = ({
 
   // transform to know what is not coming from Jumper campaigns
   if (rewardsData) {
-    const tokenData = rewardsData[rewardChainId]?.tokenData;
+    const tokenData = rewardsData?.[rewardChainId]?.tokenData;
     if (tokenData) {
-      rewardsToClaim = Object.entries(tokenData)
-        .map((elem): AvailableRewards => {
-          const key = elem[0];
-          const value = elem[1] as TokenData;
+      rewardsToClaim = Object.entries<TokenData>(tokenData)
+        .map(([key, value]): AvailableRewards => {
           return {
             chainId: rewardChainId,
             address: key,

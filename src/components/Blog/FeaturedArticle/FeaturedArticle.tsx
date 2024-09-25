@@ -27,7 +27,7 @@ import {
 
 interface FeaturedArticleProps {
   url: string | undefined;
-  featuredArticle: BlogArticleData[] | undefined;
+  featuredArticle: BlogArticleData;
 }
 
 export const FeaturedArticle = ({
@@ -37,42 +37,48 @@ export const FeaturedArticle = ({
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
 
-  const handleFeatureCardClick = (featuredArticle: BlogArticleData[]) => {
+  const handleFeatureCardClick = (featuredArticle: BlogArticleData) => {
     trackEvent({
       category: TrackingCategory.BlogFeaturedArticle,
       label: 'click-featured-article',
       action: TrackingAction.ClickFeaturedArticle,
-      data: { [TrackingEventParameter.ArticleID]: featuredArticle[0]?.id },
+      data: { [TrackingEventParameter.ArticleID]: featuredArticle?.id },
     });
   };
 
   const formatedDate =
     featuredArticle &&
     formatDate(
-      featuredArticle[0]?.attributes.publishedAt ||
-        featuredArticle[0]?.attributes.createdAt,
+      featuredArticle?.attributes.publishedAt ||
+        featuredArticle?.attributes.createdAt,
     );
 
   const minRead =
-    featuredArticle && readingTime(featuredArticle[0]?.attributes.Content);
+    featuredArticle && readingTime(featuredArticle?.attributes.Content);
 
-  return featuredArticle && featuredArticle?.length > 0 ? (
+  return featuredArticle ? (
     <>
       <FeaturedArticleLink
-        href={`${JUMPER_LEARN_PATH}/${featuredArticle[0]?.attributes.Slug}`}
+        href={`${JUMPER_LEARN_PATH}/${featuredArticle?.attributes.Slug}`}
         onClick={() => {
           handleFeatureCardClick(featuredArticle);
         }}
       >
         <FeaturedArticleImage
-          src={`${url}${featuredArticle[0]?.attributes.Image.data.attributes.formats.medium.url}`}
+          // read the following to udnerstand why width and height are set to 0, https://github.com/vercel/next.js/discussions/18474#discussioncomment-5501724
+          width={0}
+          height={0}
+          sizes="100vw"
+          priority
+          src={`${url}${featuredArticle?.attributes.Image.data.attributes.formats.medium.url}`}
           alt={
-            featuredArticle[0].attributes.Image.data.attributes.alternativeText
+            featuredArticle.attributes.Image.data.attributes.alternativeText ??
+            featuredArticle.attributes.Title
           }
         />
         <FeaturedArticleContent>
           <FeaturedArticleDetails>
-            {featuredArticle[0].attributes.tags.data
+            {featuredArticle.attributes.tags.data
               .slice(0, 1)
               .map((el, index) => (
                 <Tag
@@ -97,12 +103,12 @@ export const FeaturedArticle = ({
           </FeaturedArticleDetails>
           <Box>
             <FeaturedArticleTitle variant="headerMedium" as="h2">
-              {featuredArticle[0].attributes.Title}
+              {featuredArticle.attributes.Title}
             </FeaturedArticleTitle>
           </Box>
           <Box>
             <FeaturedArticleSubtitle>
-              {featuredArticle[0].attributes.Subtitle}
+              {featuredArticle.attributes.Subtitle}
             </FeaturedArticleSubtitle>
           </Box>
         </FeaturedArticleContent>

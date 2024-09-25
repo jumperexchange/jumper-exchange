@@ -10,6 +10,7 @@ import {
 
 import { getContrastAlphaColor } from '@/utils/colors';
 import { styled } from '@mui/material/styles';
+import Image from 'next/image';
 import { urbanist } from 'src/fonts/fonts';
 
 export const BlogArticleImageContainer = styled(Box)(({ theme }) => ({
@@ -81,7 +82,7 @@ export const BlogArticleHeaderMetaDate = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const BlogArticleImage = styled('img')(({ theme }) => ({
+export const BlogArticleImage = styled(Image)(({ theme }) => ({
   width: '100%',
   borderRadius: '16px',
   maxWidth: theme.breakpoints.values.lg,
@@ -106,7 +107,7 @@ export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   },
 }));
 
-export const BlogAuthorAvatar = styled('img')(({ theme }) => ({
+export const BlogAuthorAvatar = styled(Image)(({ theme }) => ({
   width: '64px !important',
   height: '64px',
   marginRight: theme.spacing(3),
@@ -131,12 +132,7 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   padding: theme.spacing(1.5, 2, 3),
 
   li: {
-    color: alpha(
-      theme.palette.mode === 'light'
-        ? theme.palette.black.main
-        : theme.palette.white.main,
-      0.75,
-    ),
+    color: alpha(theme.palette.text.primary, 0.75),
     margin: theme.spacing(0.5, 0),
     fontSize: '18px',
     lineHeight: '32px',
@@ -236,12 +232,7 @@ export const Divider = styled(MuiDivider)(({ theme }) => ({
 // Typography:
 
 export const BlogArticleTitle = styled(Typography)(({ theme }) => ({
-  color: alpha(
-    theme.palette.mode === 'light'
-      ? theme.palette.black.main
-      : theme.palette.white.main,
-    0.88,
-  ),
+  color: alpha(theme.palette.text.primary, 0.88),
   marginTop: theme.spacing(4),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: theme.spacing(8),
@@ -268,12 +259,7 @@ export const BlogArticleTitleSkeleton = styled(Skeleton)<SkeletonProps>(
 export const BlogArticleSubtitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'variant',
 })<TypographyProps>(({ theme }) => ({
-  color: alpha(
-    theme.palette.mode === 'light'
-      ? theme.palette.black.main
-      : theme.palette.white.main,
-    0.88,
-  ),
+  color: alpha(theme.palette.text.primary, 0.88),
   marginTop: theme.spacing(8),
   marginBottom: theme.spacing(6),
   fontWeight: 700,

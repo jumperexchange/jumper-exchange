@@ -1,7 +1,8 @@
 import { urbanist } from '@/fonts/fonts';
 import type { BoxProps, Breakpoint, TypographyProps } from '@mui/material';
-import { Box, Skeleton, Typography, lighten } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export const FeaturedArticleLink = styled(Link, {
@@ -67,10 +68,7 @@ export const FeaturedArticleMetaContainer = styled(Box)<BoxProps>(
   ({ theme }) => ({
     display: 'flex',
     fontSize: '16px',
-    color:
-      theme.palette.mode === 'light'
-        ? theme.palette.grey[800]
-        : theme.palette.grey[300],
+    color: theme.palette.text.primary,
     marginTop: theme.spacing(2),
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       marginTop: 0,
@@ -92,11 +90,12 @@ export const FeaturedArticleMetaDate = styled(Typography)<TypographyProps>(
   }),
 );
 
-export const FeaturedArticleImage = styled('img')(({ theme }) => ({
+export const FeaturedArticleImage = styled(Image)(({ theme }) => ({
   borderRadius: '20px',
   userSelect: 'none',
   alignSelf: 'flex-start',
   width: '100%',
+  height: 'auto',
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     borderRadius: '14px',
     alignSelf: 'center',
@@ -166,7 +165,8 @@ export const FeaturedArticleSubtitleSkeleton = styled(Skeleton)(
 
 export const FeaturedArticleContent = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.mode === 'light' ? '#525252' : lighten('#525252', 0.8), //todo: add to theme
+  color: theme.palette.text.primary,
+  // color: theme.palette.mode === 'light' ? '#525252' : lighten('#525252', 0.8), //todo: add to theme
   flexDirection: 'column',
   alignSelf: 'center',
   justifyContent: 'flex-end',
@@ -207,10 +207,7 @@ export const FeaturedArticleDetails = styled(Box)(({ theme }) => ({
 export const FeaturedArticleTitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     userSelect: 'none',
-    color:
-      theme.palette.mode === 'light'
-        ? theme.palette.black.main
-        : theme.palette.white.main,
+    color: theme.palette.text.primary,
     marginBottom: theme.spacing(3),
     marginTop: theme.spacing(3),
     overflow: 'hidden',
