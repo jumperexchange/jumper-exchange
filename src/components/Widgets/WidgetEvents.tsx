@@ -1,6 +1,6 @@
 'use client';
 import type { RouteExtended } from '@lifi/sdk';
-import { type Route } from '@lifi/sdk';
+import { ChainId, type Route } from '@lifi/sdk';
 
 import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '@/components/MultisigConnectedAlert';
@@ -25,6 +25,7 @@ import type {
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
+import { useCheckFlexFeeEligility } from 'src/hooks/useCheckFlexFeeEligility';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -32,6 +33,7 @@ export function WidgetEvents() {
   const { setDestinationChainToken, setSourceChainToken } =
     useChainTokenSelectionStore();
   const { trackTransaction, trackEvent } = useUserTracking();
+  const { checkEligibilityForFlexibleFee } = useCheckFlexFeeEligility();
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
   ]);
@@ -64,6 +66,7 @@ export function WidgetEvents() {
           enableAddressable: true,
         });
       }
+      checkEligibilityForFlexibleFee(route);
     };
 
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
