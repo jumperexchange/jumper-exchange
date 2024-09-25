@@ -68,7 +68,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   const { t } = useTranslation();
   const { switchChainAsync } = useSwitchChain();
 
-  // STATE
+  // TX STATE
 
   const {
     data: transactionHash,

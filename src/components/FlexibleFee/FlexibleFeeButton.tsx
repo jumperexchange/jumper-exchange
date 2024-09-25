@@ -9,7 +9,7 @@ interface FlexibleFeeButtonProps {
   // route: RouteExtended;
   isLoading?: boolean;
   isSuccess?: boolean;
-  isDissabled?: boolean;
+  isDisabled?: boolean;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -17,7 +17,7 @@ const FlexibleFeeButton = ({
   // route,
   isLoading,
   isSuccess,
-  isDissabled,
+  isDisabled,
   onClick,
 }: FlexibleFeeButtonProps) => {
   const theme = useTheme();
@@ -32,17 +32,17 @@ const FlexibleFeeButton = ({
   return (
     <ButtonSecondary
       onClick={handleClick}
-      disabled={isLoading || isSuccess || isDissabled}
+      disabled={isLoading || isSuccess || isDisabled}
       fullWidth
       sx={{
         marginTop: theme.spacing(2),
         backgroundColor: isSuccess
           ? '#D6FFE7' //theme.palette.success.main
-          : isDissabled
+          : isDisabled
             ? alpha(theme.palette.text.primary, 0.08)
             : undefined,
         '&:hover': {
-          cursor: isDissabled ? 'not-allowed' : undefined,
+          cursor: isDisabled ? 'not-allowed' : undefined,
           backgroundColor: isSuccess ? theme.palette.success.main : undefined,
         },
       }}
@@ -50,7 +50,7 @@ const FlexibleFeeButton = ({
       <FlexibleFeeButtonContent
         isSuccess={isSuccess}
         isLoading={isLoading}
-        isDissabled={isDissabled}
+        isDisabled={isDisabled}
       />
     </ButtonSecondary>
   );
@@ -61,11 +61,11 @@ export default FlexibleFeeButton;
 const FlexibleFeeButtonContent = ({
   isSuccess,
   isLoading,
-  isDissabled,
+  isDisabled,
 }: {
   isSuccess?: boolean;
   isLoading?: boolean;
-  isDissabled?: boolean;
+  isDisabled?: boolean;
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -90,10 +90,15 @@ const FlexibleFeeButtonContent = ({
   } else {
     return (
       <>
-        <FavoriteIcon />
+        <FavoriteIcon
+          sx={{ color: !isDisabled ? theme.palette.primary.main : null }}
+        />
         <Typography
           variant="bodySmallStrong"
-          sx={{ marginLeft: theme.spacing(1) }}
+          sx={{
+            marginLeft: theme.spacing(1),
+            color: !isDisabled ? theme.palette.primary.main : null,
+          }}
         >
           Contribute
         </Typography>
