@@ -70,5 +70,5 @@ export interface TransformedRoute {
   [TrackingEventParameter.ToAmountUSD]: string;
   [TrackingEventParameter.GasCost]: number | null;
   [TrackingEventParameter.Time]: number;
-  [TrackingEventParameter.Slippage]: number;
+  [TrackingEventParameter.Slippage]: string;
 }

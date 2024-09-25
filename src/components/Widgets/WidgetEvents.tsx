@@ -236,7 +236,7 @@ export function WidgetEvents() {
               (acc, step) =>
                 acc +
                 (step.estimate.gasCosts?.reduce(
-                  (sum, gasCost) => sum + parseInt(gasCost.amount),
+                  (sum, gasCost) => sum + parseFloat(gasCost.amount),
                   0,
                 ) || 0),
               0,
@@ -249,7 +249,8 @@ export function WidgetEvents() {
               ((parseFloat(route.fromAmountUSD) -
                 parseFloat(route.toAmountUSD)) /
                 parseFloat(route.fromAmountUSD)) *
-              100,
+                100 +
+              '%',
           };
           return acc;
         }, {});
