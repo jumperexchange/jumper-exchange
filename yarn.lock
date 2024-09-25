@@ -2300,9 +2300,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^3.6.1":
-  version: 3.6.1
-  resolution: "@lifi/widget@npm:3.6.1"
+"@lifi/widget@npm:^3.6.2":
+  version: 3.6.2
+  resolution: "@lifi/widget@npm:3.6.2"
   dependencies:
     "@emotion/react": "npm:^11.13.3"
     "@emotion/styled": "npm:^11.13.0"
@@ -2346,7 +2346,7 @@ __metadata:
     viem: ^2.17.0
     wagmi: ^2.11.0
     zustand: ^4.5.0
-  checksum: 10/ab9ca42750b7c484eb67a48bd518b8a0ace276d5d6d6d56efe1830e906af45626e58e3514347e81dbecc2a2822e418ceafcfe8f56e38210462cce940277a4f7b
+  checksum: 10/f1f18ccd55b983f2d27c033050c660190b67a095feff59946ca12484e045c7a993f11124dbdcc45cab0e0b2c6e115b7f007dd64571a3139b1eee67c13e2a8450
   languageName: node
   linkType: hard
 
@@ -9530,7 +9530,7 @@ __metadata:
     "@lifi/sdk": "npm:^3.2.3"
     "@lifi/types": "npm:^15.13.0"
     "@lifi/wallet-management": "npm:^3.1.6"
-    "@lifi/widget": "npm:^3.6.1"
+    "@lifi/widget": "npm:^3.6.2"
     "@mui/icons-material": "npm:^5.16.7"
     "@mui/material": "npm:^5.16.7"
     "@mui/material-nextjs": "npm:^5.16.6"
