@@ -62,6 +62,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   );
   const [balanceNative, setBalanceNative] = useState<number>(0);
   const [balanceNativeInUSD, setBalanceNativeInUSD] = useState<number>(0);
+  const [isTxSuccess, setIsTxSuccess] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>('0');
   const [ethPrice, setEthPrice] = useState<number | null>(null);
   const [rate, setRate] = useState<string>('0.3');
@@ -135,6 +136,12 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
       }
     }
   }, [chains, route, sourceBalance, destinationBalance]);
+
+  useEffect(() => {
+    if (isConfirmed) {
+      setIsTxSuccess(true);
+    }
+  }, [isConfirmed]);
 
   // USER INTERACTION FUNCTIONS
 
@@ -279,7 +286,8 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
         </Content>
         <FlexibleFeeButton
           isLoading={isConfirming || isPendingSendTransaction}
-          isSuccess={isConfirmed}
+          isSuccess={isTxSuccess}
+          isDissabled={parseInt(amount) === 0}
           onClick={handleButtonClick}
         />
       </Container>
