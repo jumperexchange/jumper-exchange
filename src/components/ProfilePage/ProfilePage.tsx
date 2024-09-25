@@ -13,12 +13,25 @@ import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { Leaderboard } from './Leaderboard/Leaderboard';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import {
-  REWARD_TOKEN_ADDRESS,
-  REWARD_TOKEN_CHAINID,
-  REWARDS_CHAIN_IDS,
-} from 'src/const/partnerRewardsTheme';
+  AvailableRewards,
+  useMerklRewardsOnCampaigns,
+} from 'src/hooks/useMerklRewardsOnCampaigns';
+import { useMemo } from 'react';
+
+const shouldHideComponent = (
+  account: { address?: string } | undefined,
+  isRewardLoading: boolean,
+  isRewardSuccess: boolean,
+  availableRewards: AvailableRewards[],
+) => {
+  return (
+    !account?.address ||
+    isRewardLoading ||
+    !isRewardSuccess ||
+    availableRewards?.filter((e) => e?.amountToClaim > 0)?.length === 0
+  );
+};
 
 export const ProfilePage = () => {
   const { account } = useAccounts();
@@ -32,25 +45,29 @@ export const ProfilePage = () => {
     pastCampaigns,
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,
-  } = useMerklRewards({
-    rewardChainId: REWARD_TOKEN_CHAINID,
+  } = useMerklRewardsOnCampaigns({
     userAddress: account?.address,
-    rewardToken: REWARD_TOKEN_ADDRESS,
   });
+
+  const hideComponent = useMemo(
+    () =>
+      shouldHideComponent(
+        account,
+        isRewardLoading,
+        isRewardSuccess,
+        availableRewards,
+      ),
+    [account, isRewardLoading, isRewardSuccess, availableRewards],
+  );
 
   return (
     <>
-      <RewardsCarousel
-        // hideComponent={false}
-        hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
-        rewardAmount={availableRewards?.[0]?.amountToClaim as number}
-        accumulatedAmountForContractBN={
-          availableRewards?.[0]?.accumulatedAmountForContractBN
-        }
-        proof={availableRewards?.[0]?.proof}
-        isMerklSuccess={isRewardSuccess}
-      />
       <ProfilePageContainer className="profile-page">
+        <RewardsCarousel
+          hideComponent={hideComponent}
+          availableRewards={availableRewards}
+          isMerklSuccess={isRewardSuccess}
+        />
         <Grid container>
           <Grid
             xs={12}
