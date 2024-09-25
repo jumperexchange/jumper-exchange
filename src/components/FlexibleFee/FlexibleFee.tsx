@@ -287,7 +287,9 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
         <FlexibleFeeButton
           isLoading={isConfirming || isPendingSendTransaction}
           isSuccess={isTxSuccess}
-          isDissabled={parseFloat(amount) === 0}
+          isDissabled={
+            parseFloat(amount) === 0 || Number.isNaN(parseFloat(amount))
+          }
           onClick={handleButtonClick}
         />
       </Container>
