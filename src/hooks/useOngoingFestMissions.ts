@@ -15,7 +15,7 @@ export const useOngoingFestMissions = (
   const apiBaseUrl =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : process.env.NEXT_PUBLIC_STRAPI_URL;
+      : `${process.env.NEXT_PUBLIC_STRAPI_URL}/api`;
   const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
 
   //selected needed field

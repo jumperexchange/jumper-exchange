@@ -1,10 +1,6 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import generateKey from 'src/app/lib/generateKey';
-import {
-  REWARD_TOKEN_ADDRESS,
-  REWARD_TOKEN_CHAINID,
-} from 'src/const/partnerRewardsTheme';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
+import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
 import { QuestPageMainBox, QuestsContainer } from './QuestPage.style';
@@ -37,16 +33,13 @@ export const QuestsMissionPage = ({
   const points = quest?.attributes?.Points;
 
   const { account } = useAccounts();
-  const { pastCampaigns } = useMerklRewards({
-    rewardChainId: REWARD_TOKEN_CHAINID,
+  const { pastCampaigns } = useMerklRewardsOnCampaigns({
     userAddress: account?.address,
-    rewardToken: REWARD_TOKEN_ADDRESS,
   });
   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
   return (
     <QuestsContainer>
       <QuestPageMainBox>
-        {/* button to go back */}
         <BackButton path={path} title={platform} />
         {/* big component with the main information */}
         <BannerBox

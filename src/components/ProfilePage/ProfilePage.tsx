@@ -2,12 +2,10 @@ import { useAccounts } from '@/hooks/useAccounts';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import { Box, Grid, Stack } from '@mui/material';
-import {
-  REWARD_TOKEN_ADDRESS,
-  REWARD_TOKEN_CHAINID,
-} from 'src/const/partnerRewardsTheme';
+import { useMemo } from 'react';
 import { useMercleNft } from 'src/hooks/useMercleNft';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
+import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
+import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { AddressBox } from './AddressBox/AddressBox';
 import { Leaderboard } from './Leaderboard/Leaderboard';
 import { TierBox } from './LevelBox/TierBox';
@@ -18,6 +16,20 @@ import {
 import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
+
+const shouldHideComponent = (
+  account: { address?: string } | undefined,
+  isRewardLoading: boolean,
+  isRewardSuccess: boolean,
+  availableRewards: AvailableRewards[],
+) => {
+  return (
+    !account?.address ||
+    isRewardLoading ||
+    !isRewardSuccess ||
+    availableRewards?.filter((e) => e?.amountToClaim > 0)?.length === 0
+  );
+};
 
 export const ProfilePage = () => {
   const { account } = useAccounts();
@@ -31,25 +43,29 @@ export const ProfilePage = () => {
     pastCampaigns,
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,
-  } = useMerklRewards({
-    rewardChainId: REWARD_TOKEN_CHAINID,
+  } = useMerklRewardsOnCampaigns({
     userAddress: account?.address,
-    rewardToken: REWARD_TOKEN_ADDRESS,
   });
+
+  const hideComponent = useMemo(
+    () =>
+      shouldHideComponent(
+        account,
+        isRewardLoading,
+        isRewardSuccess,
+        availableRewards,
+      ),
+    [account, isRewardLoading, isRewardSuccess, availableRewards],
+  );
 
   return (
     <>
-      <RewardsCarousel
-        hideComponent={false}
-        // hideComponent={!account?.address || isRewardLoading || !isRewardSuccess}
-        rewardAmount={availableRewards?.[0]?.amountToClaim as number}
-        accumulatedAmountForContractBN={
-          availableRewards?.[0]?.accumulatedAmountForContractBN
-        }
-        proof={availableRewards?.[0]?.proof}
-        isMerklSuccess={isRewardSuccess}
-      />
       <ProfilePageContainer className="profile-page">
+        <RewardsCarousel
+          hideComponent={hideComponent}
+          availableRewards={availableRewards}
+          isMerklSuccess={isRewardSuccess}
+        />
         <Grid container>
           <Grid
             xs={12}

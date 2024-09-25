@@ -1,6 +1,5 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import generateKey from 'src/app/lib/generateKey';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { useTurtleMember } from 'src/hooks/useTurtleMember';
 import { type Quest } from 'src/types/loyaltyPass';
@@ -13,6 +12,7 @@ import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { StepsBox } from './StepsBox/StepsBox';
 import { SuperfestPageMainBox } from './SuperfestMissionPage.style';
 import { notFound } from 'next/navigation';
+import { useMerklRewardsOnSpecificToken } from 'src/hooks/useMerklRewardsOnSpecificToken';
 
 interface SuperfestMissionPageVar {
   quest: Quest;
@@ -32,7 +32,7 @@ export const SuperfestMissionPage = ({
   const points = quest?.attributes?.Points;
 
   const { account } = useAccounts();
-  const { pastCampaigns } = useMerklRewards({
+  const { pastCampaigns } = useMerklRewardsOnSpecificToken({
     rewardChainId: 10,
     userAddress: account?.address,
     rewardToken: '0x4200000000000000000000000000000000000042', // OP

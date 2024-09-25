@@ -1,5 +1,4 @@
 import { useAccounts } from '@/hooks/useAccounts';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { useTurtleMember } from 'src/hooks/useTurtleMember';
 import { ActiveSuperfestMissionsCarousel } from './ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
@@ -8,6 +7,7 @@ import { HeroBox } from './HeroBox/HeroBox';
 import { NFTClaimingBox } from './NFTClaimingBox/NFTClaimingBox';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
 import { SuperfestContainer, SuperfestMainBox } from './Superfest.style';
+import { useMerklRewardsOnSpecificToken } from 'src/hooks/useMerklRewardsOnSpecificToken';
 
 export const Superfest = () => {
   //HOOKS
@@ -19,7 +19,7 @@ export const Superfest = () => {
     pastCampaigns,
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,
-  } = useMerklRewards({
+  } = useMerklRewardsOnSpecificToken({
     rewardChainId: 10,
     userAddress: account?.address,
     rewardToken: '0x4200000000000000000000000000000000000042', // OP

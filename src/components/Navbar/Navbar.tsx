@@ -40,7 +40,7 @@ export const Navbar = ({ disableNavbar = false }) => {
     closeAllMenus();
     setWelcomeScreenClosed(false);
 
-    if (pathname === '/gas/' || pathname === '/buy/') {
+    if (pathname === '/gas' || pathname === '/buy') {
       return;
     }
     if (isLearnPage) {

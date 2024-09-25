@@ -2,7 +2,7 @@
 import { QuestPage as QuestsPageComponent } from 'src/components/Quests/QuestPage';
 import { JUMPER_DISCOVER_PATH } from 'src/const/urls';
 import { useAccounts } from 'src/hooks/useAccounts';
-import { useMerklRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
+import { useMerklRewardsOnSpecificToken } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 
 const MantlePage = () => {
@@ -15,7 +15,7 @@ const MantlePage = () => {
     pastCampaigns,
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,
-  } = useMerklRewards({
+  } = useMerklRewardsOnSpecificToken({
     rewardChainId: 10,
     userAddress: account?.address,
   });

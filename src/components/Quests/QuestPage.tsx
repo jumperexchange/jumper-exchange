@@ -2,11 +2,11 @@ import type { Account } from '@/hooks/useAccounts';
 import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import type { Quest } from 'src/types/loyaltyPass';
 import { MantleLogo } from '../illustrations/MantleLogo';
+import { RewardsCarousel } from '../Superfest/Rewards/RewardsCarousel';
 import { ActiveQuestsMissionsCarousel } from './ActiveQuestsMissionsCarousel/ActiveQuestsMissionsCarousel';
 import { AvailableMissionsList } from './AvailableMissionsList/AvailableMissionsList';
 import { HeroBox } from './HeroBox/HeroBox';
 import { QuestPageMainBox, QuestsContainer } from './QuestPage.style';
-import { RewardsCarousel } from './Rewards/RewardsCarousel';
 
 interface QuestsProps {
   title: string;

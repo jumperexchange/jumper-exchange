@@ -1,6 +1,6 @@
 'use client';
 
-import { ChainId } from '@lifi/sdk';
+import { ChainId } from '@lifi/types';
 import Link from 'next/link';
 import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 
