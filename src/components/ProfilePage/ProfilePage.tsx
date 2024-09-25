@@ -13,7 +13,25 @@ import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { Leaderboard } from './Leaderboard/Leaderboard';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
-import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
+import {
+  AvailableRewards,
+  useMerklRewardsOnCampaigns,
+} from 'src/hooks/useMerklRewardsOnCampaigns';
+import { useMemo } from 'react';
+
+const shouldHideComponent = (
+  account: { address?: string } | undefined,
+  isRewardLoading: boolean,
+  isRewardSuccess: boolean,
+  availableRewards: AvailableRewards[],
+) => {
+  return (
+    !account?.address ||
+    isRewardLoading ||
+    !isRewardSuccess ||
+    availableRewards?.filter((e) => e?.amountToClaim > 0)?.length === 0
+  );
+};
 
 export const ProfilePage = () => {
   const { account } = useAccounts();
@@ -31,13 +49,22 @@ export const ProfilePage = () => {
     userAddress: account?.address,
   });
 
+  const hideComponent = useMemo(
+    () =>
+      shouldHideComponent(
+        account,
+        isRewardLoading,
+        isRewardSuccess,
+        availableRewards,
+      ),
+    [account, isRewardLoading, isRewardSuccess, availableRewards],
+  );
+
   return (
     <>
       <ProfilePageContainer className="profile-page">
         <RewardsCarousel
-          hideComponent={
-            !account?.address || isRewardLoading || !isRewardSuccess
-          }
+          hideComponent={hideComponent}
           availableRewards={availableRewards}
           isMerklSuccess={isRewardSuccess}
         />
