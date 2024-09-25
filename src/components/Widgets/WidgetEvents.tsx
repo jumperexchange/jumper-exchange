@@ -25,6 +25,7 @@ import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqualObjects } from 'shallow-equal';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
+import type { TransformedRoute } from 'src/types/internal';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
 
 export function WidgetEvents() {
@@ -205,15 +206,6 @@ export function WidgetEvents() {
         [TrackingEventParameter.ToToken]:
           destinationChainToken.tokenAddress || '',
         [TrackingEventParameter.ToChainId]: destinationChainToken.chainId || '',
-        [TrackingEventParameter.AvailableRoutes]: String(
-          availableRoutes.map((route) =>
-            route.steps.map(
-              (step) => `${step.tool}:${step.estimate.toAmountUSD}$`,
-            ),
-          ),
-        ),
-        [TrackingEventParameter.FromAmountUSD]:
-          availableRoutes[0].fromAmountUSD,
       };
 
       // compare current availableRoutes with the previous one
@@ -221,6 +213,7 @@ export function WidgetEvents() {
         previousRoutesRef.current,
         newObj,
       );
+      // if the object has changed, then track the event
       if (
         !isSameObject &&
         previousRoutesRef.current &&
@@ -230,6 +223,36 @@ export function WidgetEvents() {
         destinationChainToken.tokenAddress
       ) {
         previousRoutesRef.current = newObj;
+        const transformedRoutes = availableRoutes.reduce<
+          Record<number, TransformedRoute>
+        >((acc, route, index) => {
+          acc[index] = {
+            [TrackingEventParameter.NbOfSteps]: route.steps.length,
+            [TrackingEventParameter.Steps]: route.steps.map(
+              (step) => step.tool,
+            ),
+            [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
+            [TrackingEventParameter.GasCost]: route.steps.reduce(
+              (acc, step) =>
+                acc +
+                (step.estimate.gasCosts?.reduce(
+                  (sum, gasCost) => sum + parseInt(gasCost.amount),
+                  0,
+                ) || 0),
+              0,
+            ),
+            [TrackingEventParameter.Time]: route.steps.reduce(
+              (acc, step) => acc + step.estimate.executionDuration,
+              0,
+            ),
+            [TrackingEventParameter.Slippage]:
+              ((parseFloat(route.fromAmountUSD) -
+                parseFloat(route.toAmountUSD)) /
+                parseFloat(route.fromAmountUSD)) *
+              100,
+          };
+          return acc;
+        }, {});
         trackEvent({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnAvailableRoutes,
@@ -237,8 +260,10 @@ export function WidgetEvents() {
           enableAddressable: true,
           data: {
             ...newObj,
-            [TrackingEventParameter.AvailableRoutesCount]:
-              availableRoutes.length,
+            [TrackingEventParameter.FromAmountUSD]:
+              availableRoutes[0].fromAmountUSD,
+            [TrackingEventParameter.NbOfSteps]: availableRoutes.length,
+            [TrackingEventParameter.Routes]: transformedRoutes,
           },
         });
       }

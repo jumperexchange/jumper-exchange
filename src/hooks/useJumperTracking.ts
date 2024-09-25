@@ -7,8 +7,11 @@ import {
   JUMPER_ANALYTICS_EVENT,
   JUMPER_ANALYTICS_TRANSACTION,
 } from 'src/const/abi/jumperApiUrls';
+import type { TransformedRoute } from 'src/types/internal';
 
-export type JumperEventData = { [key: string]: string | number | boolean };
+export type JumperEventData = {
+  [key: string]: string | number | boolean | Record<number, TransformedRoute>;
+};
 
 interface JumperDataTrackEventProps {
   category: string;
