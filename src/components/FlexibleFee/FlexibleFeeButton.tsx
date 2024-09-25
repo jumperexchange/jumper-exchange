@@ -76,10 +76,7 @@ const FlexibleFeeButtonContent = ({
           variant="bodySmallStrong"
           sx={{ marginLeft: theme.spacing(1) }}
         >
-          Support
-          {
-            // t('flexibleFee.cta')
-          }
+          Contribute
         </Typography>
       </>
     );
