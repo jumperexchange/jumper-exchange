@@ -28,16 +28,6 @@ export const useTokenBalance = ({
   tokenAddress,
   walletAddress,
 }: useTokenBalanceProps): useTokenBalanceReturn => {
-  createConfig({
-    providers: [EVM(), Solana()],
-    integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
-    rpcUrls: {
-      ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
-      ...publicRPCList,
-    },
-    preloadChains: true,
-  });
-
   const {
     data: balance,
     isSuccess: isBalanceSuccess,
