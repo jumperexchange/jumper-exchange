@@ -36,7 +36,10 @@ export const ProfilePage = () => {
       <ProfilePageContainer className="profile-page">
         <RewardsCarousel
           hideComponent={
-            !account?.address || isRewardLoading || !isRewardSuccess
+            !account?.address ||
+            isRewardLoading ||
+            !isRewardSuccess ||
+            availableRewards?.filter((e) => e?.amountToClaim > 0)?.length === 0
           }
           availableRewards={availableRewards}
           isMerklSuccess={isRewardSuccess}
