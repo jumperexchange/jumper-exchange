@@ -54,6 +54,10 @@ interface TokenBalance {
 const MIN_AMOUNT_USD = 2;
 const NATIVE_TOKEN = '0x0000000000000000000000000000000000000000';
 
+const roundToFiveDecimals = (n: number) => {
+  return Math.floor(n * 100000) / 100000;
+};
+
 export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   route,
 }: FlexibleFeeProps) => {
@@ -153,7 +157,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
     const feeAmountUSD = rateAsDecimal * routeAmountUSD;
     const ethPrice = balanceNativeInUSD / balanceNative;
     const feeAmountNative = feeAmountUSD / ethPrice;
-    setAmount(feeAmountNative.toString());
+    setAmount(roundToFiveDecimals(feeAmountNative).toString());
   };
 
   const handleChange = (
