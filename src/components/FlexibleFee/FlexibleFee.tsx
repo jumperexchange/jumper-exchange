@@ -105,7 +105,9 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
       if (!balance.amount) return;
       const amount = parseFloat(formatUnits(balance.amount, balance.decimals));
       const amountUSD = amount * parseFloat(balance.priceUSD);
+      const ethPrice = amountUSD / amount;
 
+      setEthPrice(ethPrice);
       setBalanceNative(amount);
       setBalanceNativeInUSD(amountUSD);
       setActiveChain(chains?.find((chainEl) => chainEl.id === chainId));
@@ -148,11 +150,9 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
   const handleRateClick = () => {
     const rateAsDecimal = Number(rate) / 100;
     const routeAmountUSD = parseFloat(route.fromAmountUSD);
-
     const feeAmountUSD = rateAsDecimal * routeAmountUSD;
     const ethPrice = balanceNativeInUSD / balanceNative;
     const feeAmountNative = feeAmountUSD / ethPrice;
-    setEthPrice(ethPrice);
     setAmount(feeAmountNative.toString());
   };
 
