@@ -205,10 +205,7 @@ export const FeaturedArticleDetails = styled(Box)(({ theme }) => ({
 export const FeaturedArticleTitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     userSelect: 'none',
-    color:
-      theme.palette.mode === 'light'
-        ? theme.palette.black.main
-        : theme.palette.white.main,
+    color: theme.palette.text.primary,
     marginBottom: theme.spacing(3),
     marginTop: theme.spacing(3),
     overflow: 'hidden',

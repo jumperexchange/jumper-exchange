@@ -30,11 +30,7 @@ export const OnRamper = ({
       theme.palette.mode === 'light' ? theme.palette.grey[100] : '#302B52',
     ),
     cardColor: removeHash(theme.palette.surface2.main),
-    primaryTextColor: removeHash(
-      theme.palette.mode === 'light'
-        ? theme.palette.black.main
-        : theme.palette.white.main,
-    ),
+    primaryTextColor: removeHash(theme.palette.text.primary),
     secondaryTextColor: removeHash(
       theme.palette.mode === 'light'
         ? theme.palette.primary.main

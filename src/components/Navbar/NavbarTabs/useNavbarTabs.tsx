@@ -42,6 +42,7 @@ export const useNavbarTabs = () => {
   const output: TabProps[] = [
     {
       label: t('navbar.links.exchange'),
+      onClick: () => () => handleClickTab(''),
       value: 0,
       icon: (
         <SwapHorizIcon
@@ -55,11 +56,10 @@ export const useNavbarTabs = () => {
           }}
         />
       ),
-      onClick: () => handleClickTab(''),
     },
     {
       label: t('navbar.links.refuel'),
-      onClick: () => handleClickTab('gas/'),
+      onClick: () => handleClickTab('gas'),
       value: 1,
       icon: (
         <EvStationOutlinedIcon
@@ -76,7 +76,7 @@ export const useNavbarTabs = () => {
     },
     {
       label: t('navbar.links.buy'),
-      onClick: () => handleClickTab('buy/'),
+      onClick: () => handleClickTab('buy'),
       value: 2,
       icon: (
         <CreditCardIcon
