@@ -232,11 +232,11 @@ export function WidgetEvents() {
               (step) => step.tool,
             ),
             [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
-            [TrackingEventParameter.GasCost]: route.steps.reduce(
+            [TrackingEventParameter.GasCostUSD]: route.steps.reduce(
               (acc, step) =>
                 acc +
                 (step.estimate.gasCosts?.reduce(
-                  (sum, gasCost) => sum + parseFloat(gasCost.amount),
+                  (sum, gasCost) => sum + parseFloat(gasCost.amountUSD),
                   0,
                 ) || 0),
               0,

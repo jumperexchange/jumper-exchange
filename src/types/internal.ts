@@ -68,7 +68,7 @@ export interface TransformedRoute {
   [TrackingEventParameter.NbOfSteps]: number;
   [TrackingEventParameter.Steps]: object;
   [TrackingEventParameter.ToAmountUSD]: string;
-  [TrackingEventParameter.GasCost]: number | null;
+  [TrackingEventParameter.GasCostUSD]: number | null;
   [TrackingEventParameter.Time]: number;
   [TrackingEventParameter.Slippage]: string;
 }
