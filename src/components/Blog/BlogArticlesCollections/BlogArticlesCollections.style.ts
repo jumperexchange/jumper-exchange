@@ -2,7 +2,7 @@ import type { Breakpoint } from '@mui/material';
 import { Grid } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import { CarouselHeader, CarouselTitle } from '../BlogCarousel';
+import { CarouselTitle } from '../BlogCarousel';
 
 export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
   display: 'flex',
@@ -53,5 +53,3 @@ export const BlogArticlesCollectionsTitle = styled(CarouselTitle)(
     color: theme.palette.text.primary,
   }),
 );
-
-export const BlogArticlesCollectionsHeader = styled(CarouselHeader)(() => ({}));
