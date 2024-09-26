@@ -1,4 +1,3 @@
-import type { ChangeFrequency } from '@/types/sitemap';
 import type { MetadataRoute } from 'next';
 import { getChainsQuery } from '@/hooks/useChains';
 import coins from '@/utils/getTokens/coins';
@@ -22,14 +21,43 @@ const generateBridgeOrderedPairs = (tokens: Token[]) => {
   return orderedPairs;
 };
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+const sitemapLinksLimit = 50000;
+
+export async function generateSitemaps() {
   const { chains } = await getChainsQuery();
   const availableChainsId = chains.map((c) => c.id);
 
   const ordered = generateBridgeOrderedPairs(
     coins.filter((c) => availableChainsId.includes(c.chainId)) as Token[],
   );
-  const routes = ordered.map(([a, b]) => ({
+
+  const numberOfChunks = Math.ceil(ordered.length / sitemapLinksLimit);
+
+  // Fetch the total number of products and calculate the number of sitemaps needed
+  return Array.from({ length: numberOfChunks }).map((_, index) => ({
+    id: index,
+  }));
+}
+
+export default async function sitemap({
+  id,
+}: {
+  id: number;
+}): Promise<MetadataRoute.Sitemap> {
+  console.log('---', id);
+  const { chains } = await getChainsQuery();
+  const availableChainsId = chains.map((c) => c.id);
+
+  const ordered = generateBridgeOrderedPairs(
+    coins.filter((c) => availableChainsId.includes(c.chainId)) as Token[],
+  );
+
+  // Split the ordered array into chunks of 50,000
+  const start = id * sitemapLinksLimit;
+  const end = start + sitemapLinksLimit;
+  const orderedChunks = ordered.slice(start, end);
+
+  const routes = orderedChunks.map(([a, b]) => ({
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/bridge/${`${getChainById(chains, a.chainId)?.name}-${a.symbol}-to-${getChainById(chains, b.chainId)?.name}-${b.symbol}`.toLowerCase()}`,
     lastModified: new Date().toISOString().split('T')[0],
     priority: 0.4,

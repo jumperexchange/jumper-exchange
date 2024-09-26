@@ -1,4 +1,3 @@
-import type { Token } from '@lifi/sdk';
 import { ChainType, getTokens } from '@lifi/sdk';
 import type { TokensResponse } from '@lifi/types';
 import { useQuery } from '@tanstack/react-query';
