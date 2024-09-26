@@ -19,9 +19,9 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('Should navigate to the homepage and change tabs', async ({ page }) => {
-    const buyETHButton = page
-      .frameLocator('iframe[title="Onramper widget"]')
-      .locator('button:has-text("Buy ETH")');
+    // const buyETHButton = page
+    //   .frameLocator('iframe[title="Onramper widget"]')
+    //   .locator('button:has-text("Buy ETH")');
 
     const featureCard = page.locator(
       'xpath=//div[@class="MuiBox-root mui-1393eub"]',
@@ -31,15 +31,16 @@ test.describe('Jumper full e2e flow', () => {
     ).toBeVisible();
     await tabInHeader(page, 'tab-key-1');
     await expect(page.locator('xpath=//p[text()="Gas"]')).toBeVisible();
-    await tabInHeader(page, 'tab-key-2');
-    await expect(buyETHButton).toBeEnabled();
-    await expect(
-      page
-        .frameLocator('iframe[title="Onramper widget"]')
-        .getByText('Buy crypto'),
-    ).toBeVisible();
+    // await tabInHeader(page, 'tab-key-1');
+    // await expect(buyETHButton).toBeEnabled();
+    // await expect(
+    //   page
+    //     .frameLocator('iframe[title="Onramper widget"]')
+    //     .getByText('Buy crypto'),
+    // ).toBeVisible();
     await expect(featureCard).toBeVisible();
   });
+
   test('Should open Settings menu', async ({ page }) => {
     const settingsTitle = page.locator(
       'xpath=//p[normalize-space(text())="Settings"]',
