@@ -72,7 +72,7 @@ export async function getTags(): Promise<GetTagsResponse> {
   const data = await res.json().then((output) => {
     let filteredData = output.data;
 
-    // Sort by published date first
+    // Sort blog_articles by published date first
     filteredData = sortBlogArticlesByPublishedDate(filteredData);
 
     // Then sort tags by predefined order
