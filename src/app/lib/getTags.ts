@@ -1,13 +1,52 @@
-import type {
-  BlogArticleData,
-  StrapiResponse,
-  TagAttributes,
-} from '@/types/strapi';
+import type { StrapiResponse, TagAttributes } from '@/types/strapi';
 import { TagStrapiApi } from '@/utils/strapi/StrapiApi';
 
 export interface GetTagsResponse extends StrapiResponse<TagAttributes> {
   url: string;
 }
+
+const predefinedOrder = ['Announcement', 'Partner', 'Bridge'];
+
+// Helper function to sort tags based on predefined order
+const sortTagsByPredefinedOrder = (tags: TagAttributes[]) => {
+  return tags.sort((a, b) => {
+    const titleA = a.attributes.Title;
+    const titleB = b.attributes.Title;
+
+    const indexA = predefinedOrder.indexOf(titleA);
+    const indexB = predefinedOrder.indexOf(titleB);
+
+    if (indexA === -1 && indexB === -1) {
+      return 0;
+    }
+    if (indexA === -1) {
+      return 1;
+    }
+    if (indexB === -1) {
+      return -1;
+    }
+    return indexA - indexB;
+  });
+};
+
+// Helper function to sort blog articles by `publishedAt` date
+const sortBlogArticlesByPublishedDate = (tags: TagAttributes[]) => {
+  return tags.map((tag) => {
+    tag.attributes.blog_articles.data = tag.attributes.blog_articles.data.sort(
+      (a, b) => {
+        const dateA = a.attributes.publishedAt
+          ? Date.parse(a.attributes.publishedAt)
+          : -Infinity; // Default to oldest if undefined
+        const dateB = b.attributes.publishedAt
+          ? Date.parse(b.attributes.publishedAt)
+          : -Infinity; // Default to oldest if undefined
+
+        return dateB - dateA;
+      },
+    );
+    return tag;
+  });
+};
 
 export async function getTags(): Promise<GetTagsResponse> {
   const urlParams = new TagStrapiApi().addPaginationParams({
@@ -18,6 +57,7 @@ export async function getTags(): Promise<GetTagsResponse> {
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.getApiAccessToken();
+
   const res = await fetch(decodeURIComponent(apiUrl), {
     cache: 'force-cache',
     headers: {
@@ -30,47 +70,17 @@ export async function getTags(): Promise<GetTagsResponse> {
   }
 
   const data = await res.json().then((output) => {
-    const filteredData = output.data;
+    let filteredData = output.data;
+
+    // Sort by published date first
+    filteredData = sortBlogArticlesByPublishedDate(filteredData);
+
+    // Then sort tags by predefined order
+    filteredData = sortTagsByPredefinedOrder(filteredData);
 
     return {
       meta: output.meta,
-      data: filteredData?.sort(
-        // sort by blog_articles' publishedAt date
-        (
-          {
-            attributes: {
-              blog_articles: { data: dataA } = { data: [] }, // Use default empty array if data is undefined
-            },
-          }: { attributes: { blog_articles: { data: BlogArticleData[] } } },
-          {
-            attributes: {
-              blog_articles: { data: dataB } = { data: [] }, // Same for dataB
-            },
-          }: { attributes: { blog_articles: { data: BlogArticleData[] } } },
-        ) => {
-          const latestArticleA = dataA?.sort(
-            (a, b) =>
-              Date.parse(b.attributes?.publishedAt!) -
-              Date.parse(a.attributes?.publishedAt!),
-          )[0];
-
-          const latestArticleB = dataB?.sort(
-            (a, b) =>
-              Date.parse(b.attributes?.publishedAt!) -
-              Date.parse(a.attributes?.publishedAt!),
-          )[0];
-
-          // Ensure both articles exist before comparing dates
-          if (!latestArticleA || !latestArticleB) {
-            return 0;
-          }
-
-          return (
-            Date.parse(latestArticleB.attributes.publishedAt!) -
-            Date.parse(latestArticleA.attributes.publishedAt!)
-          );
-        },
-      ),
+      data: filteredData,
     };
   });
 

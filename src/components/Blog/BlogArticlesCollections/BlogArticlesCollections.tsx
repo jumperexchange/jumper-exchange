@@ -11,37 +11,12 @@ interface BlogArticlesCollectionsProps {
 
 const pageSize = 6;
 // Predefined order array
-const predefinedOrder = ['Announcement', 'Partner', 'Bridge'];
-
-// Function to sort based on predefined order
-const sortTags = (tags: GetTagsResponse) => {
-  return tags.data.sort((a, b) => {
-    const titleA = a.attributes.Title;
-    const titleB = b.attributes.Title;
-
-    const indexA = predefinedOrder.indexOf(titleA);
-    const indexB = predefinedOrder.indexOf(titleB);
-
-    // Categories in predefinedOrder come first, rest keep original order
-    if (indexA === -1 && indexB === -1) {
-      return 0;
-    } // Both are irrelevant
-    if (indexA === -1) {
-      return 1;
-    } // `a` is irrelevant
-    if (indexB === -1) {
-      return -1;
-    } // `b` is irrelevant
-    return indexA - indexB; // Sort by predefined order
-  });
-};
 
 export const BlogArticlesCollections = ({
   data,
   tags,
 }: BlogArticlesCollectionsProps) => {
   // Apply sorting function
-  sortTags(tags);
   return (
     data &&
     tags.data?.length > 0 &&
