@@ -34,6 +34,7 @@ const BridgePage = ({
           color="text.primary"
           marginY={2}
           textAlign="center"
+          sx={{ fontSize: '48px' }}
         >
           How to bridge from {sourceToken.symbol} on {sourceChain.name} to{' '}
           {destinationToken.symbol} on {destinationChain.name}
@@ -47,7 +48,12 @@ const BridgePage = ({
           toToken={destinationToken?.address}
         />
         <BridgePageContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
-          <Typography variant="h1" color="text.primary" marginY={2}>
+          <Typography
+            variant="h1"
+            color="text.primary"
+            marginY={2}
+            sx={{ fontSize: '48px' }}
+          >
             How to bridge from {sourceToken.symbol} on {sourceChain.name} to{' '}
             {destinationToken.symbol} on {destinationChain.name}
           </Typography>
@@ -138,8 +144,15 @@ const BridgePage = ({
                 Clicking on the buttons to see each intermediate transaction
               </li>
               <li>
-                Go to your <MuiLink color="text.primary" component={Link} href="https://jumper.exchange/scan">https://jumper.exchange/scan</MuiLink> profile to visualize
-                your recent transaction
+                Go to your{' '}
+                <MuiLink
+                  color="text.primary"
+                  component={Link}
+                  href="https://jumper.exchange/scan"
+                >
+                  https://jumper.exchange/scan
+                </MuiLink>{' '}
+                profile to visualize your recent transaction
               </li>
             </ul>
           </Typography>
