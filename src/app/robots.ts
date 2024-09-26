@@ -8,6 +8,9 @@ export default function robots(): MetadataRoute.Robots {
       ...(isProduction && { allow: '/' }),
       ...(!isProduction && { disallow: '/' }),
     },
-    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL}/sitemap.xml`,
+    sitemap: [
+      `${process.env.NEXT_PUBLIC_SITE_URL}/sitemap.xml`,
+      `${process.env.NEXT_PUBLIC_SITE_URL}/bridge/sitemap.xml`,
+    ],
   };
 }

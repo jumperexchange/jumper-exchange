@@ -1,19 +1,12 @@
 import BridgePage from '@/app/ui/bridge/BridgePage';
-import type { Metadata } from 'next';
-import { sliceStrToXChar } from '@/utils/splitStringToXChar';
-import { siteName } from '@/app/lib/metadata';
 import { getChainsQuery } from '@/hooks/useChains';
 import { getTokensQuery } from '@/hooks/useTokens';
 import { notFound } from 'next/navigation';
 import {
-  getChainById,
   getChainByName,
   getTokenBySymbolOnSpecificChain,
 } from '@/utils/tokenAndChain';
-import i18nConfig from '../../../../i18nconfig';
 import type { Token } from '@lifi/sdk';
-import { TokensResponse, ExtendedChain } from '@lifi/sdk';
-import coins from '@/utils/getTokens/coins';
 
 function parseString(url: string): [string, string, string, string] {
   // First, split the string into the source part and the destination part using 'to'
@@ -100,19 +93,7 @@ export const dynamicParams = true; // or false, to 404 on unknown paths
 export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
-  const { chains } = await getChainsQuery();
-  const availableChainsId = chains.map((c) => c.id);
-
-  const ordered = generateBridgeOrderedPairs(
-    coins.filter((c) => availableChainsId.includes(c.chainId)) as Token[],
-  );
-
   return [];
-
-  return ordered.map(([a, b]) => ({
-    segments:
-      `${getChainById(chains, a.chainId)?.name}-${a.symbol}-to-${getChainById(chains, b.chainId)?.name}-${b.symbol}`.toLowerCase(),
-  }));
 }
 
 export default async function Page({
@@ -120,41 +101,45 @@ export default async function Page({
 }: {
   params: { segments: string };
 }) {
-  const [
-    sourceChainNameParam,
-    sourceTokenSymbolParam,
-    destinationChainNameParam,
-    destinationTokenSymbolParam,
-  ] = parseString(decodeURIComponent(segments));
+  try {
+    const [
+      sourceChainNameParam,
+      sourceTokenSymbolParam,
+      destinationChainNameParam,
+      destinationTokenSymbolParam,
+    ] = parseString(decodeURIComponent(segments));
 
-  const { chains } = await getChainsQuery();
-  const { tokens } = await getTokensQuery();
+    const { chains } = await getChainsQuery();
+    const { tokens } = await getTokensQuery();
 
-  const sourceChain = getChainByName(chains, sourceChainNameParam);
-  const sourceToken = getTokenBySymbolOnSpecificChain(
-    tokens,
-    sourceChain?.id ?? 0,
-    sourceTokenSymbolParam,
-  );
-  const destinationChain = getChainByName(chains, destinationChainNameParam);
-  const destinationToken = getTokenBySymbolOnSpecificChain(
-    tokens,
-    destinationChain?.id ?? 0,
-    destinationTokenSymbolParam,
-  );
+    const sourceChain = getChainByName(chains, sourceChainNameParam);
+    const sourceToken = getTokenBySymbolOnSpecificChain(
+      tokens,
+      sourceChain?.id ?? 0,
+      sourceTokenSymbolParam,
+    );
+    const destinationChain = getChainByName(chains, destinationChainNameParam);
+    const destinationToken = getTokenBySymbolOnSpecificChain(
+      tokens,
+      destinationChain?.id ?? 0,
+      destinationTokenSymbolParam,
+    );
 
-  if (!sourceChain || !sourceToken || !destinationChain || !destinationToken) {
-    return notFound();
+    if (!sourceChain || !sourceToken || !destinationChain || !destinationToken) {
+      return notFound();
+    }
+
+    return (
+      <BridgePage
+        sourceChain={sourceChain}
+        sourceToken={sourceToken}
+        destinationChain={destinationChain}
+        destinationToken={destinationToken}
+        chains={chains}
+        tokens={tokens}
+      />
+    );
+  } catch (e) {
+    notFound();
   }
-
-  return (
-    <BridgePage
-      sourceChain={sourceChain}
-      sourceToken={sourceToken}
-      destinationChain={destinationChain}
-      destinationToken={destinationToken}
-      chains={chains}
-      tokens={tokens}
-    />
-  );
 }
