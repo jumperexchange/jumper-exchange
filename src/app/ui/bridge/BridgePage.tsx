@@ -1,0 +1,178 @@
+'use client';
+import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
+import { Stack, Typography, Link as MuiLink } from '@mui/material';
+import { Widget } from '@/components/Widgets/Widget';
+import ChainInfo from '@/app/ui/bridge/ChainInfo';
+import TokenInfo from '@/app/ui/bridge/TokenInfo';
+import Link from 'next/link';
+import generateKey from '@/app/lib/generateKey';
+import type { Token, ExtendedChain, TokensResponse } from '@lifi/sdk';
+import { getChainById, getTokenByName } from '@/utils/tokenAndChain';
+import { getChainsQuery } from '@/hooks/useChains';
+import { useEffect } from 'react';
+
+interface BridgePageProps {
+  sourceChain: ExtendedChain;
+  sourceToken: Token;
+  destinationChain: ExtendedChain;
+  destinationToken: Token;
+  chains: ExtendedChain[];
+  tokens: TokensResponse['tokens'];
+}
+
+const BridgePage = ({
+  sourceChain,
+  sourceToken,
+  destinationChain,
+  destinationToken,
+  chains,
+  tokens,
+}: BridgePageProps) => {
+  const title = `Bridge ${sourceToken.name} on ${sourceChain.name} to ${destinationToken.name} on ${destinationChain.name}`;
+
+  return (
+    <Stack display="flex" alignItems="center" direction="column">
+      <Typography variant="h1" color="text.primary">
+        {title}
+      </Typography>
+      <Widget
+        isWelcomeScreenClosed={true}
+        starterVariant="default"
+        fromChain={sourceChain?.id}
+        toChain={destinationChain?.id}
+        fromToken={sourceToken?.address}
+        toToken={destinationToken?.address}
+
+        // fromChain
+        // fromToken
+        // toChain
+        // toToken
+      />
+      <BridgePageContainer>
+        <Typography>
+          To bridge from {sourceToken?.name} on {sourceChain?.name} to{' '}
+          {destinationToken?.name} on {destinationChain?.name}, you will need to
+          follow these steps. This guide will walk you through the process of
+          transferring your assets from {sourceToken?.name} on{' '}
+          {sourceChain?.name} to {destinationToken?.name} on{' '}
+          {destinationChain?.name}.
+        </Typography>
+        <Typography variant="h2">Step 1: Prepare Your Assets</Typography>
+        <Typography>
+          Before you can bridge your assets, you need to ensure you have the
+          necessary funds and assets on the {sourceChain?.name} network. Make
+          sure you have the correct {sourceChain?.name} wallet address and that
+          your {sourceToken?.name} account is funded.
+        </Typography>
+        <Typography variant="h2">Step 2: Choose a Bridge</Typography>
+        <Typography>
+          There are several bridges available to transfer your assets from{' '}
+          {sourceToken?.name} on {sourceChain?.name} to {destinationToken?.name}{' '}
+          on {destinationChain?.name}. Some popular options include:
+        </Typography>
+      </BridgePageContainer>
+      <Stack direction="row">
+        <ChainInfo chainInfo={sourceChain} />
+        <ChainInfo chainInfo={destinationChain} />
+      </Stack>
+      <Stack direction="row">
+        <TokenInfo tokenInfo={sourceToken} chainInfo={sourceChain} />
+        <TokenInfo tokenInfo={destinationToken} chainInfo={destinationChain} />
+      </Stack>
+      <BridgePageContainer>
+        <Typography variant="h3">
+          What is a Blockchain / Crypto Bridge?
+        </Typography>
+        <Typography>
+          Blockchain bridges function similarly to physical bridges, but instead
+          of connecting locations, they link different blockchain networks. This
+          connection is crucial because, without a bridge, blockchain networks
+          operate in isolation, unable to communicate or transfer assets between
+          each other. Each blockchain has its own governance rules and native
+          assets, which makes interoperability a challenge. By establishing a
+          bridge, assets and data can be transferred between blockchains,
+          facilitating crucial interoperability in the crypto ecosystem.
+        </Typography>
+
+        <Typography>
+          Consider Alice, who holds ETH on the Ethereum Mainnet but wants to use
+          it on Avalanche. Since these two networks operate independently with
+          their own rules and consensus mechanisms, direct communication isn't
+          possible. To use her ETH on Avalanche, Alice can utilize a blockchain
+          bridge to convert her ETH into wETH (wrapped ETH) that can function on
+          Avalanche. This process allows her to access the features of both
+          blockchains without needing to acquire additional assets.
+        </Typography>
+
+        <Typography>
+          Here's why bridges are essential for enhancing blockchain
+          interoperability:
+        </Typography>
+        <Typography>1. Isolation of Blockchains</Typography>
+        <Typography>
+          Blockchains operate independently, much like countries with their own
+          governments, languages, and regulations. Each blockchain has its
+          unique set of rules and functionalities, making it impossible for them
+          to communicate with one another directly. For example, Bitcoin has a
+          capped supply of 21 million coins, while Ethereum utilizes smart
+          contracts written in Solidity. This inherent isolation creates
+          challenges for transferring data and assets across different chains.
+        </Typography>
+        <Typography>2. Incompatibility of Systems</Typography>
+        <Typography>
+          Similar to how countries cannot use each other's currencies without a
+          means of conversion, blockchains cannot natively transfer tokens or
+          information due to their distinct systems. Attempting to send Ethereum
+          (ETH) to a Bitcoin (BTC) address is futile, as the protocols of each
+          blockchain do not recognize each other’s formats. This incompatibility
+          limits the potential for collaboration and innovation across the
+          blockchain space.
+        </Typography>
+
+        <Typography>3. Facilitating Interoperability</Typography>
+        <Typography>
+          {' '}
+          Bridges act as intermediaries that allow different blockchains to
+          communicate and interact. By connecting disparate networks, bridges
+          enable the transfer of tokens and information seamlessly. Just as
+          physical bridges in the real world connect locations, blockchain
+          bridges provide the necessary infrastructure for digital currencies
+          and data to flow between chains.
+        </Typography>
+        <Typography>4. Unlocking New Opportunities</Typography>
+        <Typography>
+          The creation of bridges opens up new avenues for developers and users
+          alike. With bridges, projects can leverage the unique features of
+          various blockchains, enhancing functionality and user experience. This
+          interoperability fosters a more vibrant and collaborative ecosystem,
+          driving innovation and expanding the reach of blockchain technology.
+        </Typography>
+
+        <Typography>5. Enhancing User Experience</Typography>
+        <Typography>
+          For end-users, bridges simplify interactions across different
+          blockchain platforms. They can easily transfer assets or access
+          decentralized applications on various chains without navigating
+          complex processes. This convenience not only improves user
+          satisfaction but also encourages broader adoption of blockchain
+          technology.
+        </Typography>
+      </BridgePageContainer>
+      <BridgePageContainer>
+        <Typography variant="h3">Popular bridges</Typography>
+        {getTokenByName(tokens, destinationToken?.name ?? '').map((token) => (
+          <MuiLink
+            key={generateKey(token.address)}
+            component={Link}
+            href={`/bridge/${getChainById(chains, token.chainId)?.name}-${token.symbol}-to-${destinationChain?.name}-${destinationToken?.symbol}`.toLowerCase()}
+          >
+            Bridge from {getChainById(chains, token.chainId)?.name} to{' '}
+            {destinationChain?.name}
+          </MuiLink>
+        ))}
+      </BridgePageContainer>
+    </Stack>
+  );
+};
+
+export default BridgePage;

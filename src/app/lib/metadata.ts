@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/`,
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}`,
   },
   openGraph: {
     title: title,
     description,
     siteName,
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}`,
     images: [
       {
         url: 'https://jumper.exchange/preview.png', // Default image

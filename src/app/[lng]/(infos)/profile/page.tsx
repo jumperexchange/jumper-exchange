@@ -6,7 +6,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: 'Jumper Profile',
     description: 'Jumper Profile is the profile page of Jumper Exchange.',
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/profile/`,
+      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/profile`,
     },
   };
 }

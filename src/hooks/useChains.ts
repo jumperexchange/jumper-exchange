@@ -1,33 +1,27 @@
 import { ChainType, getChains } from '@lifi/sdk';
 import type { Chain, ChainId, ExtendedChain } from '@lifi/types';
 import { useQuery } from '@tanstack/react-query';
+import { getChainById as getChainByIdHelper } from '@/utils/tokenAndChain';
 
-export interface ChainProps {
-  chains: ExtendedChain[];
-  isSuccess: boolean;
-  getChainById: (id: ChainId) => ExtendedChain | undefined;
-}
+export const queryKey = ['chainStats'];
 
-export const useChains = (): ChainProps => {
+export const getChainsQuery = async () => {
+  const chains = await getChains({
+    chainTypes: [ChainType.EVM, ChainType.SVM],
+  });
+  return { chains };
+};
+
+export const useChains = () => {
   const { data, isSuccess } = useQuery({
-    queryKey: ['chainStats'],
-    queryFn: async () => {
-      const chains = await getChains({
-        chainTypes: [ChainType.EVM, ChainType.SVM],
-      });
-      return { chains };
-    },
+    queryKey,
+    queryFn: getChainsQuery,
     enabled: true,
     refetchInterval: 1000 * 60 * 60,
   });
 
   const getChainById = (id: ChainId) => {
-    const filteredChain = data?.chains.find((el: Chain) => el.id === id);
-    if (filteredChain) {
-      return filteredChain;
-    } else {
-      console.error(`ChainID ${id} is not available`);
-    }
+    return getChainByIdHelper(data?.chains ?? [], id);
   };
 
   return {
@@ -36,3 +30,8 @@ export const useChains = (): ChainProps => {
     isSuccess,
   };
 };
+
+/*
+sei-sei-to-ethereum-eth
+Sei-SEI-to-Ethereum-ETH
+ */
