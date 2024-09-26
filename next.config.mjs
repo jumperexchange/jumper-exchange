@@ -1,5 +1,4 @@
 import { withSentryConfig } from '@sentry/nextjs';
-import path from 'node:path';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -36,12 +35,6 @@ const nextConfig = {
         port: '',
         pathname: '/uploads/**',
       },
-      // {
-      //   protocol: 'https',
-      //   hostname: 'cdn.mygateway.xyz',
-      //   port: '',
-      //   pathname: '/**',
-      // },
       {
         protocol: 'https',
         hostname: 'jumper-static.s3.us-east-2.amazonaws.com',
@@ -98,15 +91,6 @@ const nextConfig = {
       },
     ],
   },
-/*  async rewrites() {
-    return [
-        {
-          source: '/:lng?/babbabbabbbbab',
-          destination: '/:lng?/learn',
-        },
-      ]
-
-  },*/
   async redirects() {
     return [
       {

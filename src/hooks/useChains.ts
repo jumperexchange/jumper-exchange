@@ -30,8 +30,3 @@ export const useChains = () => {
     isSuccess,
   };
 };
-
-/*
-sei-sei-to-ethereum-eth
-Sei-SEI-to-Ethereum-ETH
- */

@@ -2,6 +2,10 @@ import type { Token } from '@lifi/sdk';
 import { ChainType, getTokens } from '@lifi/sdk';
 import type { TokensResponse } from '@lifi/types';
 import { useQuery } from '@tanstack/react-query';
+import {
+  getTokenBySymbol as getTokenBySymbolHelper,
+  getTokenByName as getTokenByNameHelper,
+} from '@/utils/tokenAndChain';
 
 export const queryKey = ['tokenStats'];
 
@@ -20,40 +24,21 @@ export const useTokens = () => {
     refetchInterval: 1000 * 60 * 60,
   });
 
-  const getTokenByNameOnSpecificChain = (chainId: number, name: string) => {
-    const chainTokens = data?.tokens[chainId];
-    if (!chainTokens) {
+  const getTokenBySymbol = (symbol: string) => {
+    if (!data?.tokens) {
       return;
     }
-
-    const filteredToken = chainTokens.find(
-      (el: Token) => el.symbol.toLowerCase() === name.toLowerCase(),
-    );
-    if (filteredToken) {
-      return filteredToken;
-    } else {
-      console.error(`Token name ${name} is not available`);
-    }
-  };
-
-  const getTokenBySymbol = (symbol: string) => {
-    return Object.values(data?.tokens ?? [])
-      .flat()
-      .filter((el) => {
-        return el.symbol.toLowerCase() === symbol.toLowerCase();
-      });
+    return getTokenBySymbolHelper(data?.tokens, symbol);
   };
 
   const getTokenByName = (name: string) => {
-    return Object.values(data?.tokens ?? [])
-      .flat()
-      .filter((el) => {
-        return el.name.toLowerCase() === name.toLowerCase();
-      });
+    if (!data?.tokens) {
+      return;
+    }
+    return getTokenByNameHelper(data?.tokens, name);
   };
 
   return {
-    getTokenByNameOnSpecificChain,
     getTokenBySymbol,
     getTokenByName,
     tokens: data || ({} as TokensResponse),

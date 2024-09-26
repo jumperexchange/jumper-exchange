@@ -38,26 +38,13 @@ interface Data {
   value: string | number | JSX.Element | JSX.Element[];
 }
 
-function HalfSizeBlock({
-  info,
-  data = [],
-}: {
-  info: Info;
-  data: Data[];
-}) {
+function HalfSizeBlock({ info, data = [] }: { info: Info; data: Data[] }) {
   return (
     <BridgePageContainer width={'48.5%'}>
       <Typography variant="h3" display="flex" alignItems="center">
         {info.logoURI && (
-          <Box
-            display="flex"
-            marginRight={2}>
-          <Image
-            src={info.logoURI}
-            alt={info.name}
-            width={32}
-            height={32}
-          />
+          <Box display="flex" marginRight={2}>
+            <Image src={info.logoURI} alt={info.name} width={32} height={32} />
           </Box>
         )}
         {info.name} - Information

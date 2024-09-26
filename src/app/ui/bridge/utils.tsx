@@ -4,7 +4,10 @@ import type { ExtendedChain, Token } from '@lifi/sdk';
 import { getChainById } from '@/utils/tokenAndChain';
 import { currencyFormatter } from '@/utils/formatNumbers';
 
-export function buildExplorerLink(blockExplorerUrls: string[] = [], address: string) {
+export function buildExplorerLink(
+  blockExplorerUrls: string[] = [],
+  address: string,
+) {
   if (blockExplorerUrls.length === 0) {
     return address;
   }
@@ -48,12 +51,16 @@ export function getTokenInfoData(chains: ExtendedChain[], tokenInfo: Token) {
   const chain = getChainById(chains, tokenInfo.chainId);
   return [
     {
-      label: 'Token address', value: buildExplorerLink(
+      label: 'Token address',
+      value: buildExplorerLink(
         chain?.metamask?.blockExplorerUrls,
         tokenInfo.address,
       ),
     },
     { label: 'Decimals', value: tokenInfo.decimals },
-    { label: 'Current USD price', value: currencyFormatter('en').format(Number(tokenInfo.priceUSD) ?? 0) },
+    {
+      label: 'Current USD price',
+      value: currencyFormatter('en').format(Number(tokenInfo.priceUSD) ?? 0),
+    },
   ];
 }

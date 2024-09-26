@@ -6,7 +6,9 @@ import {
   getChainByName,
   getTokenBySymbolOnSpecificChain,
 } from '@/utils/tokenAndChain';
-import type { Token } from '@lifi/sdk';
+import type { Metadata } from 'next';
+import { sliceStrToXChar } from '@/utils/splitStringToXChar';
+import { siteName } from '@/app/lib/metadata';
 
 function parseString(url: string): [string, string, string, string] {
   // First, split the string into the source part and the destination part using 'to'
@@ -32,34 +34,29 @@ function parseString(url: string): [string, string, string, string] {
 
   return [sourceChain, sourceToken, destinationChain, destinationToken];
 }
-/*
 export async function generateMetadata({
   params,
 }: {
   params: { segments: string };
 }): Promise<Metadata> {
-  const [
-    sourceChain,
-    sourceTokenName,
-    destinationChain,
-    destinationTokenName,
-  ] = parseString(params.segments);
+  const [sourceChain, sourceTokenName, destinationChain, destinationTokenName] =
+    parseString(params.segments);
 
-  const title = `Jumper | Bridge ${sourceTokenName} on ${sourceChain} to ${destinationTokenName} on ${destinationChain}`;
+  const title = `Jumper | Bridge from ${sourceTokenName} on ${sourceChain} to ${destinationTokenName} on ${destinationChain}`;
 
   const openGraph: Metadata['openGraph'] = {
     title: title,
     description: `${sliceStrToXChar(title, 60)}`,
     siteName: siteName,
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/bridge/${params.segments}`,
-    /!*      images: [
+    /*      images: [
             {
               url: `${article.url}${articleData.Image.data.attributes?.url}`,
               width: 900,
               height: 450,
               alt: 'banner image',
             },
-          ],*!/
+          ],*/
     type: 'article',
   };
 
@@ -69,24 +66,7 @@ export async function generateMetadata({
     twitter: openGraph,
     openGraph,
   };
-}*/
-
-//Optimized function to generate ordered bridge pairs (tokens from different chains)
-const generateBridgeOrderedPairs = (tokens: Token[]) => {
-  const orderedPairs: Array<[Token, Token]> = [];
-
-  // Loop through each token and compare with every other token
-  for (const token1 of tokens) {
-    for (const token2 of tokens) {
-      // Ensure tokens are from different chains (bridge rule)
-      if (token1.chainId !== token2.chainId) {
-        orderedPairs.push([token1, token2]); // Token1 -> Token2
-      }
-    }
-  }
-
-  return orderedPairs;
-};
+}
 
 export const revalidate = 86400;
 export const dynamicParams = true; // or false, to 404 on unknown paths
@@ -125,7 +105,12 @@ export default async function Page({
       destinationTokenSymbolParam,
     );
 
-    if (!sourceChain || !sourceToken || !destinationChain || !destinationToken) {
+    if (
+      !sourceChain ||
+      !sourceToken ||
+      !destinationChain ||
+      !destinationToken
+    ) {
       return notFound();
     }
 
