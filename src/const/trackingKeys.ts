@@ -168,8 +168,12 @@ export enum TrackingEventParameter {
   ErrorCode = 'param_error_code',
   ErrorMessage = 'param_error_message',
   ValueLoss = 'param_value_loss',
-  AvailableRoutesCount = 'param_available_routes_count',
   TransactionStatus = 'param_transaction_status',
+  Routes = 'param_routes',
+  NbOfSteps = 'param_nb_of_steps',
+  Steps = 'param_steps',
+  Time = 'param_time',
+  Slippage = 'param_slippage',
 
   // Blog
   ArticleCardId = 'param_article_card_id',
