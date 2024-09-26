@@ -138,7 +138,7 @@ const BridgePage = ({
                 Clicking on the buttons to see each intermediate transaction
               </li>
               <li>
-                Go to your `https://jumper.exchange/scan` profile to visualize
+                Go to your <MuiLink color="text.primary" component={Link} href="https://jumper.exchange/scan">https://jumper.exchange/scan</MuiLink> profile to visualize
                 your recent transaction
               </li>
             </ul>
