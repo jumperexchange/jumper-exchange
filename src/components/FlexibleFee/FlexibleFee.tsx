@@ -41,6 +41,7 @@ import {
 } from './FlexibleFee.style';
 import FlexibleFeeButton from './FlexibleFeeButton';
 import { useFlexibleFeeStore } from 'src/stores/flexibleFee';
+import { FlexibleFeePercentBox } from './FlexibleFeePercentBox';
 
 interface FlexibleFeeProps {
   route: RouteExtended;
@@ -205,28 +206,22 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
                   required
                 />
               </FormControl>
-              <FlexibleFeeAmountDetails variant="bodyXSmall">
-                {`$${ethPrice && parseFloat(amount) > 0 ? parseFloat(String(ethPrice * parseFloat(amount))).toFixed(2) : 0}  •  ${parseFloat(String(balanceNative)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
-              </FlexibleFeeAmountDetails>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <FlexibleFeeAmountDetails variant="bodyXSmall">
+                  {`$${ethPrice && parseFloat(amount) > 0 ? parseFloat(String(ethPrice * parseFloat(amount))).toFixed(2) : 0}`}
+                </FlexibleFeeAmountDetails>
+                <FlexibleFeeAmountDetails variant="bodyXSmall">
+                  {`${parseFloat(String(balanceNative)).toFixed(4)} ${activeChain?.nativeToken.symbol} available`}
+                </FlexibleFeeAmountDetails>
+              </Box>
             </FlexibleFeeAmountsBox>
           </Box>
-          <FlexibleFeeAmountsBadge onClick={handleRateClick}>
-            <Typography
-              variant="bodyXSmallStrong"
-              color={
-                theme.palette.mode === 'light'
-                  ? theme.palette.primary.main
-                  : theme.palette.text.primary
-              }
-            >
-              {rate}%
-            </Typography>
-          </FlexibleFeeAmountsBadge>
         </Content>
+        <FlexibleFeePercentBox handleRateClick={handleRateClick} />
         <FlexibleFeeButton
           isLoading={isConfirming || isPendingSendTransaction}
           isSuccess={isTxSuccess}
-          isDissabled={
+          isDisabled={
             parseFloat(amount) === 0 || Number.isNaN(parseFloat(amount))
           }
           onClick={handleButtonClick}

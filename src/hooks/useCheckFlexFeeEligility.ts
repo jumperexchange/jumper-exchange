@@ -30,7 +30,7 @@ const getUserBalance = async (
   }
 };
 
-export const useCheckFlexFeeEligility = (route: Route) => {
+export const useCheckFlexFeeEligility = () => {
   const {
     setEthPrice,
     setBalanceNative,
@@ -58,15 +58,21 @@ export const useCheckFlexFeeEligility = (route: Route) => {
     chainId: number,
     address: string,
   ) => {
+    console.log('hereee');
+
     const balance = (await getUserBalance(
       chainId,
       NATIVE_TOKEN,
       address,
     )) as TokenBalance;
 
+    console.log(balance);
+
     if (balance?.amount) {
       const amount = parseFloat(formatUnits(balance.amount, balance.decimals));
       const amountUSD = amount * parseFloat(balance.priceUSD);
+
+      console.log(amountUSD);
 
       if (amountUSD >= MIN_AMOUNT_USD) {
         updateBalanceAndChain(balance, chainId);

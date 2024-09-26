@@ -1,9 +1,9 @@
 import CheckIcon from '@mui/icons-material/Check';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { alpha, Typography, useTheme } from '@mui/material';
+import { alpha, darken, Typography, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslation } from 'react-i18next';
-import { ButtonSecondary } from '../Button';
+import { ButtonPrimary, ButtonSecondary } from '../Button';
 
 interface FlexibleFeeButtonProps {
   // route: RouteExtended;
@@ -30,7 +30,7 @@ const FlexibleFeeButton = ({
   };
 
   return (
-    <ButtonSecondary
+    <ButtonPrimary
       onClick={handleClick}
       disabled={isLoading || isSuccess || isDisabled}
       fullWidth
@@ -40,10 +40,12 @@ const FlexibleFeeButton = ({
           ? '#D6FFE7' //theme.palette.success.main
           : isDisabled
             ? alpha(theme.palette.text.primary, 0.08)
-            : undefined,
+            : theme.palette.primary.main,
         '&:hover': {
-          cursor: isDisabled ? 'not-allowed' : undefined,
-          backgroundColor: isSuccess ? theme.palette.success.main : undefined,
+          cursor: isDisabled ? 'not-allowed' : 'pointer',
+          backgroundColor: isSuccess
+            ? theme.palette.success.main
+            : darken(theme.palette.primary.main, 0.16),
         },
       }}
     >
@@ -52,7 +54,7 @@ const FlexibleFeeButton = ({
         isLoading={isLoading}
         isDisabled={isDisabled}
       />
-    </ButtonSecondary>
+    </ButtonPrimary>
   );
 };
 
@@ -91,13 +93,13 @@ const FlexibleFeeButtonContent = ({
     return (
       <>
         <FavoriteIcon
-          sx={{ color: !isDisabled ? theme.palette.primary.main : null }}
+          sx={{ color: !isDisabled ? theme.palette.white.main : null }}
         />
         <Typography
           variant="bodySmallStrong"
           sx={{
             marginLeft: theme.spacing(1),
-            color: !isDisabled ? theme.palette.primary.main : null,
+            color: !isDisabled ? theme.palette.white.main : null,
           }}
         >
           Contribute

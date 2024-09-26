@@ -20,7 +20,7 @@ export const useFlexibleFeeStore = createWithEqualityFn<FlexibleFeeState>(
     ethPrice: 0,
     balanceNative: 0,
     balanceNativeInUSD: 0,
-    isEligible: true,
+    isEligible: false,
     activeChain: undefined,
     setEthPrice: (n) => set({ ethPrice: n }),
     setBalanceNative: (n) => set({ balanceNative: n }),

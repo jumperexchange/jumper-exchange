@@ -40,7 +40,7 @@ export const FlexibleFeeAmountDetails = styled(Typography)(({ theme }) => ({
 
 export const FlexibleFeeAmountsBadge = styled(IconButtonSecondary)<BoxProps>(
   ({ theme }) => ({
-    width: 48,
+    width: 72,
     height: 24,
     backgroundColor:
       theme.palette.mode === 'light'
@@ -75,3 +75,13 @@ export const FlexibleFeeChainAvatar = styled(Avatar)(({ theme }) => ({
   },
   mask: avatarMask12,
 }));
+
+export const FlexibleFeePercentContainer = styled(Box)<BoxProps>(
+  ({ theme }) => ({
+    display: 'flex',
+    gap: '16px',
+    marginTop: '16px',
+    justifyContent: 'space-around',
+    alignContent: 'center',
+  }),
+);
