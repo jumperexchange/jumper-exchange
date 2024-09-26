@@ -23,14 +23,17 @@ import type {
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { shallowEqualObjects } from 'shallow-equal';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import type { TransformedRoute } from 'src/types/internal';
+import { calcPriceImpact } from 'src/utils/calcPriceImpact';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
   const { activeTab } = useActiveTabStore();
+  const { t } = useTranslation();
   const {
     sourceChainToken,
     destinationChainToken,
@@ -226,6 +229,7 @@ export function WidgetEvents() {
         const transformedRoutes = availableRoutes.reduce<
           Record<number, TransformedRoute>
         >((acc, route, index) => {
+          const priceImpact = calcPriceImpact(route);
           acc[index] = {
             [TrackingEventParameter.NbOfSteps]: route.steps.length,
             [TrackingEventParameter.Steps]: route.steps.map(
@@ -245,15 +249,14 @@ export function WidgetEvents() {
               (acc, step) => acc + step.estimate.executionDuration,
               0,
             ),
-            [TrackingEventParameter.Slippage]:
-              ((parseFloat(route.fromAmountUSD) -
-                parseFloat(route.toAmountUSD)) /
-                parseFloat(route.fromAmountUSD)) *
-                100 +
-              '%',
+            [TrackingEventParameter.Slippage]: t('format.percent', {
+              value: priceImpact,
+            }),
           };
           return acc;
         }, {});
+        console.log('availableRoutes', availableRoutes);
+        console.log(transformedRoutes);
         trackEvent({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnAvailableRoutes,

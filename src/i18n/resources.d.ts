@@ -135,6 +135,11 @@ interface Resources {
       pointsInfo: 'Points is your score for interacting with Jumper. As you gain more points, your level goes up.';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
     };
+    format: {
+      currency: '{{value, currencyExt(currency: USD)}}';
+      number: '{{value, number(maximumFractionDigits: 9)}}';
+      percent: '{{value, percent(maximumFractionDigits: 2)}}';
+    };
   };
 }
 
