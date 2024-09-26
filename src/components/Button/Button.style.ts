@@ -12,10 +12,7 @@ const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   fontWeight: 'bold',
   transition: 'background-color 250ms',
   overflow: 'hidden',
-  color:
-    theme.palette.mode === 'dark'
-      ? theme.palette.white.main
-      : theme.palette.black.main,
+  color: theme.palette.text.primary,
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'

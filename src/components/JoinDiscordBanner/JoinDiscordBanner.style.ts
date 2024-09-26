@@ -8,10 +8,7 @@ import { IconButtonPrimary } from '../IconButton.style';
 
 export const DiscordBannerLink = styled(Link)<BoxProps>(({ theme }) => ({
   display: 'flex',
-  color:
-    theme.palette.mode === 'light'
-      ? theme.palette.black.main
-      : theme.palette.white.main,
+  color: theme.palette.text.primary,
   textDecoration: 'unset',
   flexDirection: 'column',
   justifyContent: 'center',

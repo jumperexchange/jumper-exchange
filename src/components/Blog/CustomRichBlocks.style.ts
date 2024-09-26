@@ -50,12 +50,7 @@ export const BlogParagraph = styled(Typography, {
 // Headings
 
 export const BlogHeadline = styled(Typography)(({ theme }) => ({
-  color: alpha(
-    theme.palette.mode === 'light'
-      ? theme.palette.black.main
-      : theme.palette.white.main,
-    0.88,
-  ),
+  color: alpha(theme.palette.text.primary, 0.88),
   a: {
     fontWeight: 600,
     textDecorationColor:

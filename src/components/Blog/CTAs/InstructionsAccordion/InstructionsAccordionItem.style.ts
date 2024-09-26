@@ -77,12 +77,7 @@ export const InstructionsAccordionToggle = styled(IconButtonTertiary)(
 
 export const InstructionsAccordionItemLabel = styled(Box)(({ theme }) => ({
   marginLeft: theme.spacing(2),
-  color: alpha(
-    theme.palette.mode === 'light'
-      ? theme.palette.black.main
-      : theme.palette.white.main,
-    0.75,
-  ),
+  color: alpha(theme.palette.text.primary, 0.75),
   fontWeight: 600,
   fontSize: '18px',
   lineHeight: '32px',
