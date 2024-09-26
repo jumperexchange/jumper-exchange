@@ -23,7 +23,6 @@ import type {
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { shallowEqualObjects } from 'shallow-equal';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import type { TransformedRoute } from 'src/types/internal';
@@ -33,7 +32,6 @@ import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
   const { activeTab } = useActiveTabStore();
-  const { t } = useTranslation();
   const {
     sourceChainToken,
     destinationChainToken,
@@ -235,7 +233,7 @@ export function WidgetEvents() {
             [TrackingEventParameter.Steps]: route.steps.map(
               (step) => step.tool,
             ),
-            [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
+            [TrackingEventParameter.ToAmountUSD]: Number(route.toAmountUSD),
             [TrackingEventParameter.GasCostUSD]: route.steps.reduce(
               (acc, step) =>
                 acc +
@@ -249,14 +247,10 @@ export function WidgetEvents() {
               (acc, step) => acc + step.estimate.executionDuration,
               0,
             ),
-            [TrackingEventParameter.Slippage]: t('format.percent', {
-              value: priceImpact,
-            }),
+            [TrackingEventParameter.Slippage]: priceImpact,
           };
           return acc;
         }, {});
-        console.log('availableRoutes', availableRoutes);
-        console.log(transformedRoutes);
         trackEvent({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnAvailableRoutes,
@@ -264,8 +258,9 @@ export function WidgetEvents() {
           enableAddressable: true,
           data: {
             ...newObj,
-            [TrackingEventParameter.FromAmountUSD]:
+            [TrackingEventParameter.FromAmountUSD]: Number(
               availableRoutes[0].fromAmountUSD,
+            ),
             [TrackingEventParameter.NbOfSteps]: availableRoutes.length,
             [TrackingEventParameter.Routes]: transformedRoutes,
           },

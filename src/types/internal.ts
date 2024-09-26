@@ -67,8 +67,8 @@ export interface DataItem {
 export interface TransformedRoute {
   [TrackingEventParameter.NbOfSteps]: number;
   [TrackingEventParameter.Steps]: object;
-  [TrackingEventParameter.ToAmountUSD]: string;
+  [TrackingEventParameter.ToAmountUSD]: number;
   [TrackingEventParameter.GasCostUSD]: number | null;
   [TrackingEventParameter.Time]: number;
-  [TrackingEventParameter.Slippage]: string;
+  [TrackingEventParameter.Slippage]: number;
 }

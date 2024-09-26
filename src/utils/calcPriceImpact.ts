@@ -17,7 +17,7 @@ export const calcPriceImpact = (route: Route) => {
   const toTokenPrice =
     formatTokenPrice(toTokenAmount, route.toToken.priceUSD) || 0.01;
 
-  const priceImpact = toTokenPrice / fromTokenPrice - 1;
+  const priceImpact = (toTokenPrice / fromTokenPrice - 1).toFixed(6);
 
-  return priceImpact;
+  return Number(priceImpact);
 };
