@@ -26,8 +26,6 @@ const BridgePage = ({
   chains,
   tokens,
 }: BridgePageProps) => {
-  const title = `Bridge ${sourceToken.name} on ${sourceChain.name} to ${destinationToken.name} on ${destinationChain.name}`;
-
   return (
     <Container>
       <Stack display="flex" alignItems="center" direction="column">
@@ -37,7 +35,8 @@ const BridgePage = ({
           marginY={2}
           textAlign="center"
         >
-          {title}
+          How to bridge from {sourceToken.symbol} on {sourceChain.name} to{' '}
+          {destinationToken.symbol} on {destinationChain.name}
         </Typography>
         <Widget
           isWelcomeScreenClosed={true}
@@ -48,6 +47,10 @@ const BridgePage = ({
           toToken={destinationToken?.address}
         />
         <BridgePageContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
+          <Typography variant="h1" color="text.primary" marginY={2}>
+            How to bridge from {sourceToken.symbol} on {sourceChain.name} to{' '}
+            {destinationToken.symbol} on {destinationChain.name}
+          </Typography>
           <Typography>
             To bridge from {sourceToken?.name} on {sourceChain?.name} to{' '}
             {destinationToken?.name} on {destinationChain?.name}, you will need
@@ -73,6 +76,72 @@ const BridgePage = ({
             {sourceToken?.name} on {sourceChain?.name} to{' '}
             {destinationToken?.name} on {destinationChain?.name}. Some popular
             options include:
+            <ul>
+              <li>Stargate</li>
+              <li>Across</li>
+              <li>Circle CCTP</li>
+              <li>Allbridge</li>
+              <li> Connext</li>
+              <li>Symbiosis</li>
+              <li>Celer</li>
+            </ul>
+          </Typography>
+          <Typography variant="h2" marginY={2}>
+            Step 3: Choose a Bridge
+          </Typography>
+          <Typography>
+            To choose your bridge, follow these steps:
+            <ul>
+              <li>Visualise the different quotes</li>
+              <li>
+                Check the details for each quote (i.e: amount of tokens
+                received, price impact, slippage, number of steps, gas cost,
+                bridging time)
+              </li>
+            </ul>
+          </Typography>
+          <Typography variant="h2" marginY={2}>
+            Step 4: Bridge Your Assets
+          </Typography>
+          <Typography>
+            Once you have find a quote you like, you can bridge your assets from{' '}
+            {sourceToken.symbol} on {sourceChain.name} to{' '}
+            {destinationToken.symbol} on {destinationChain.name}. Follow these
+            steps:
+            <ul>
+              <li>Click on the quote you prefer</li>
+              <li>
+                Verify the details of the quote (i.e: amount of tokens received,
+                price impact, slippage, number of steps, gas cost, bridging
+                time)
+              </li>
+              <li>Click on "Start" execution</li>
+              <li>
+                "Approve" your tokens inside your wallet and wait for the
+                approval transaction to go through
+              </li>
+              <li>
+                "Bridge" your tokens inside your wallet and wait for the
+                approval transaction to go through
+              </li>
+            </ul>
+          </Typography>
+          <Typography variant="h2" marginY={2}>
+            Step 5: Verify Your Bridge
+          </Typography>
+          <Typography>
+            After bridging your assets, verify that they have been successfully
+            transferred to the {destinationChain.name} network. You can do this
+            by either:
+            <ul>
+              <li>
+                Clicking on the buttons to see each intermediate transaction
+              </li>
+              <li>
+                Go to your `https://jumper.exchange/scan` profile to visualize
+                your recent transaction
+              </li>
+            </ul>
           </Typography>
         </BridgePageContainer>
         <Stack
@@ -83,6 +152,7 @@ const BridgePage = ({
         >
           {[sourceChain, destinationChain].map((chain) => (
             <HalfSizeBlock
+              type="Blockchain"
               key={chain.id}
               info={{
                 logoURI: chain?.logoURI,
@@ -93,6 +163,7 @@ const BridgePage = ({
           ))}
           {[sourceToken, destinationToken].map((token) => (
             <HalfSizeBlock
+              type="Token"
               key={token.address}
               info={{
                 logoURI: token?.logoURI,
@@ -197,8 +268,11 @@ const BridgePage = ({
             Popular bridges
           </Typography>
           <Stack direction="row" flexWrap="wrap">
-            {getTokenByName(tokens, destinationToken?.name ?? '').map(
-              (token) => (
+            {getTokenByName(tokens, destinationToken?.name ?? '')
+              .filter((token) => {
+                return token.chainId !== destinationChain.id;
+              })
+              .map((token) => (
                 <MuiLink
                   width="50%"
                   color="text.primary"
@@ -209,8 +283,7 @@ const BridgePage = ({
                   Bridge from {getChainById(chains, token.chainId)?.name} to{' '}
                   {destinationChain?.name}
                 </MuiLink>
-              ),
-            )}
+              ))}
           </Stack>
         </BridgePageContainer>
       </Stack>

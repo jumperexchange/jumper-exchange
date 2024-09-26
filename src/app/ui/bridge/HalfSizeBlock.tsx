@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Link as MuiLink,
   Table,
   TableBody,
@@ -38,16 +39,29 @@ interface Data {
   value: string | number | JSX.Element | JSX.Element[];
 }
 
-function HalfSizeBlock({ info, data = [] }: { info: Info; data: Data[] }) {
+function HalfSizeBlock({
+  info,
+  data = [],
+  type,
+}: {
+  info: Info;
+  data: Data[];
+  type: 'Blockchain' | 'Token';
+}) {
   return (
     <BridgePageContainer width={'48.5%'}>
       <Typography variant="h3" display="flex" alignItems="center">
         {info.logoURI && (
           <Box display="flex" marginRight={2}>
-            <Image src={info.logoURI} alt={info.name} width={32} height={32} />
+            <Avatar
+              variant="rounded"
+              src={info.logoURI}
+              alt={info.name}
+              sx={{ width: 32, height: 32 }}
+            />
           </Box>
         )}
-        {info.name} - Information
+        {info.name} - {type} Information
       </Typography>
       <Table>
         <TableBody>
