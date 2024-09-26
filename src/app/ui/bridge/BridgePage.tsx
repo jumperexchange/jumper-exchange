@@ -56,14 +56,18 @@ const BridgePage = ({
             {sourceChain?.name} to {destinationToken?.name} on{' '}
             {destinationChain?.name}.
           </Typography>
-          <Typography variant="h2">Step 1: Prepare Your Assets</Typography>
+          <Typography variant="h2" marginY={2}>
+            Step 1: Prepare Your Assets
+          </Typography>
           <Typography>
             Before you can bridge your assets, you need to ensure you have the
             necessary funds and assets on the {sourceChain?.name} network. Make
             sure you have the correct {sourceChain?.name} wallet address and
             that your {sourceToken?.name} account is funded.
           </Typography>
-          <Typography variant="h2">Step 2: Choose a Bridge</Typography>
+          <Typography variant="h2" marginY={2}>
+            Step 2: Choose a Bridge
+          </Typography>
           <Typography>
             There are several bridges available to transfer your assets from{' '}
             {sourceToken?.name} on {sourceChain?.name} to{' '}

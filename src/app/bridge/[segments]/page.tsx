@@ -42,11 +42,11 @@ export async function generateMetadata({
   const [sourceChain, sourceTokenName, destinationChain, destinationTokenName] =
     parseString(params.segments);
 
-  const title = `Jumper | Bridge from ${sourceTokenName} on ${sourceChain} to ${destinationTokenName} on ${destinationChain}`;
+  const title = `Jumper | Best way to bridge from ${sourceTokenName} on ${sourceChain} to ${destinationTokenName} on ${destinationChain}`;
 
   const openGraph: Metadata['openGraph'] = {
     title: title,
-    description: `${sliceStrToXChar(title, 60)}`,
+    description: `Jumper offers the best way to do cross-chain bridging of ${sourceTokenName} on ${sourceChain} to ${destinationTokenName} on ${destinationChain} with the fastest speeds, lowest costs, and most secure bridge and swap providers available.`,
     siteName: siteName,
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/bridge/${params.segments}`,
     /*      images: [

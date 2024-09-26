@@ -9,7 +9,6 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
       `${process.env.NEXT_PUBLIC_SITE_URL}/bridge/sitemap/${index}.xml`,
   );
 
-  console.log('sss', bridgeSitemaps);
   return {
     rules: {
       userAgent: '*',
