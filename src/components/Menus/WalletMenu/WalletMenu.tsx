@@ -65,7 +65,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         }),
       }}
       sx={{
-        zIndex: 1500,
+        zIndex: 2000,
       }}
     >
       <Stack direction="row" justifyContent="space-between">
