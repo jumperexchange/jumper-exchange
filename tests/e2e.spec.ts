@@ -1,16 +1,15 @@
 import { expect, test } from '@playwright/test';
+import values from '../tests/testData/values.json';
 import {
-  itemInMenu,
-  openMainMenu,
-  tabInHeader,
-  expectMenuToBeVisible,
+  closeWelcomeScreen,
   expectBackgroundColorToHaveCss,
+  expectMenuToBeVisible,
+  itemInMenu,
   itemInSettingsMenu,
   itemInSettingsMenuToBeVisible,
-  itemInSettingsMenuToBeEnabled,
-  closeWelcomeScreen,
+  openMainMenu,
+  tabInHeader,
 } from './testData/commonFunctions';
-import values from '../tests/testData/values.json';
 
 test.describe('Jumper full e2e flow', () => {
   test.beforeEach(async ({ page }) => {
@@ -29,15 +28,15 @@ test.describe('Jumper full e2e flow', () => {
     await expect(
       page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
     ).toBeVisible();
-    await tabInHeader(page, 'tab-key-1');
-    await expect(page.locator('xpath=//p[text()="Gas"]')).toBeVisible();
-    // await tabInHeader(page, 'tab-key-1');
+    await tabInHeader(page, 'Gas');
+    await expect(page.locator('#navbar-tabs-1')).toBeVisible();
+    await tabInHeader(page, 'Buy');
     // await expect(buyETHButton).toBeEnabled();
-    // await expect(
-    //   page
-    //     .frameLocator('iframe[title="Onramper widget"]')
-    //     .getByText('Buy crypto'),
-    // ).toBeVisible();
+    await expect(
+      page
+        .frameLocator('iframe[title="Onramper widget"]')
+        .getByText('Buy crypto'),
+    ).toBeVisible();
     await expect(featureCard).toBeVisible();
   });
 
@@ -139,9 +138,9 @@ test.describe('Jumper full e2e flow', () => {
     await page.goto(values.aerodromeQuestsURL);
     expect(jumperProfileBackButton).toBeVisible();
     await openMainMenu(page);
-    await page.locator('xpath=//*[@id="tab-key-1"]').click(); //switch to Dark theme
+    await page.locator('#theme-switch-tabs-1').click(); //switch to Dark theme
     expectBackgroundColorToHaveCss(page, 'rgb(18, 15, 41)');
-    await page.locator('xpath=//*[@id="tab-key-0"]').click(); //switch to Light theme
+    await page.locator('#theme-switch-tabs-0').click(); //switch to Light theme
     await openMainMenu(page);
     expectBackgroundColorToHaveCss(page, 'rgb(243, 235, 255)');
   });
