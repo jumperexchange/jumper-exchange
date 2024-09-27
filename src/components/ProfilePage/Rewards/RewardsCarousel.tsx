@@ -6,6 +6,11 @@ import {
   EarnedTypography,
   RewardsCarouselContainer,
 } from './RewardsCarousel.style';
+import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
+import { Button } from 'src/components/Button';
+import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
+import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
+import { ClaimingBox } from './ClaimingBox/ClaimingBox';
 
 interface RewardsCarouselProps {
   isMerklSuccess: boolean;

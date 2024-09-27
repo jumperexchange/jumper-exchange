@@ -12,7 +12,6 @@ export interface SnackbarProps {
 }
 
 export interface EcosystemSelectMenuProps {
-  // open: boolean;
   combinedWallet?: CombinedWallet;
 }
 

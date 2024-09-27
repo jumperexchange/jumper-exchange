@@ -244,8 +244,6 @@ export function Widget({
     trackEvent,
   ]);
 
-  console.log('fromChain', config);
-
   return (
     <WidgetWrapper
       className="widget-wrapper"
