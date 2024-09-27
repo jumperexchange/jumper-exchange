@@ -100,6 +100,7 @@ export enum TrackingCategory {
   BlogCarousel = 'cat_blog_carousel',
   BlogFeaturedArticle = 'cat_blog_featured_article',
   BlogArticlesBoard = 'cat_blog_articles_board',
+  BlogArticlesCollection = 'cat_blog_articles_collection',
   BlogArticle = 'cat_blog_article',
   Missions = 'cat_missions',
   Quests = 'cat_quests',
