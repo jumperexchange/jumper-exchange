@@ -44,7 +44,6 @@ export default async function sitemap({
 }: {
   id: number;
 }): Promise<MetadataRoute.Sitemap> {
-  console.log('---', id);
   const { chains } = await getChainsQuery();
   const availableChainsId = chains.map((c) => c.id);
 
