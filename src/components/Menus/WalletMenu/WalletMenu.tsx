@@ -46,13 +46,14 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
 
   return (
     <CustomDrawer
-      variant="persistent"
+      // variant="persistent"
       anchor="right"
       open={openWalletMenu}
       onClose={() => {
         setWalletMenuState(false);
         setOpen(false);
       }}
+      slotProps={{ backdrop: { invisible: true } }}
     >
       <Stack direction="row" justifyContent="space-between">
         <IconButton
