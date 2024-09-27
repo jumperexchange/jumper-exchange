@@ -20,6 +20,9 @@ import { XPIcon } from '../illustrations/XPIcon';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { useRouter } from 'next/navigation';
+import useImageStatus from 'src/hooks/useImageStatus';
+
+const DEFAULT_IMAGE = '/default_effigy.svg';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
@@ -30,6 +33,8 @@ export const WalletButtons = () => {
   const theme = useTheme();
   const { points } = useLoyaltyPass();
   const router = useRouter();
+  const imgLink = `https://effigy.im/a/${account?.address}.png`;
+  const isImageValid = useImageStatus(imgLink);
 
   const {
     openWalletSelectMenu,
@@ -87,7 +92,7 @@ export const WalletButtons = () => {
         <Stack direction="row" spacing={2}>
           <WalletMenuButton id="wallet-digest-button" onClick={handleXPClick}>
             <Image
-              src={`https://effigy.im/a/${account?.address ?? 'jumper.eth'}.png`}
+              src={isImageValid ? imgLink : DEFAULT_IMAGE}
               alt="Effigy Wallet Icon"
               width={28}
               height={28}
