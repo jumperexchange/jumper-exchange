@@ -1,18 +1,23 @@
 import type { LevelData } from '@/types/loyaltyPass';
 import { Box } from '@mui/material';
+import { LevelIndicator } from './LevelIndicator';
 import {
   ProgressionChart,
   ProgressionChartBg,
   ProgressionChartScore,
 } from './ProgressionBar.style';
-import { LevelIndicator } from './LevelIndicator';
 
 interface ProgressionBarProps {
   points?: number;
   levelData?: LevelData;
+  hideIndicator?: boolean;
 }
 
-export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
+export const ProgressionBar = ({
+  points,
+  levelData,
+  hideIndicator,
+}: ProgressionBarProps) => {
   const calcWidth =
     points && levelData
       ? points - levelData.minPoints > 0
@@ -34,22 +39,24 @@ export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
             />
             <ProgressionChartBg />
           </ProgressionChart>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginTop: '24px',
-            }}
-          >
-            <LevelIndicator
-              level={levelData.level}
-              points={levelData.minPoints}
-            />
-            <LevelIndicator
-              level={levelData.level + 1}
-              points={levelData.maxPoints}
-            />
-          </Box>
+          {!hideIndicator && levelData.level && (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginTop: '24px',
+              }}
+            >
+              <LevelIndicator
+                level={levelData.level}
+                points={levelData.minPoints}
+              />
+              <LevelIndicator
+                level={levelData.level + 1}
+                points={levelData.maxPoints}
+              />
+            </Box>
+          )}
         </>
       ) : null}
     </Box>

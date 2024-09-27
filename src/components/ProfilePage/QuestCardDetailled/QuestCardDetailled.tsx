@@ -1,11 +1,23 @@
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { APYIcon } from 'src/components/illustrations/APYIcon';
+import { FlexSpaceBetweenBox } from 'src/components/Superfest/Superfest.style';
+import type { Chain } from 'src/components/Superfest/SuperfestPage/Banner/Banner';
+import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
+import {
+  PROFILE_CAMPAIGN_DARK_COLOR,
+  PROFILE_CAMPAIGN_FLASHY_APY_COLOR,
+  PROFILE_CAMPAIGN_LIGHT_COLOR,
+} from 'src/const/partnerRewardsTheme';
+import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import type { OngoingRewardsItemStats } from 'src/hooks/useOngoingRewards';
 import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
-import Link from 'next/link';
+import { ProgressionBar } from '../LevelBox/ProgressionBar';
 import {
-  OPBadgeRelativeBox,
   QuestCardBottomBox,
   QuestCardInfoBox,
   QuestCardMainBox,
@@ -13,19 +25,6 @@ import {
   XPDisplayBox,
   XPIconBox,
 } from './QuestCard.style';
-import { OPBadge } from 'src/components/illustrations/OPBadge';
-import { Box, Typography, useTheme } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
-import { APYIcon } from 'src/components/illustrations/APYIcon';
-import type { Chain } from 'src/components/Superfest/SuperfestPage/Banner/Banner';
-import { FlexSpaceBetweenBox } from 'src/components/Superfest/Superfest.style';
-import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
-import {
-  PROFILE_CAMPAIGN_DARK_COLOR,
-  PROFILE_CAMPAIGN_FLASHY_APY_COLOR,
-  PROFILE_CAMPAIGN_LIGHT_COLOR,
-} from 'src/const/partnerRewardsTheme';
 
 export interface RewardsInterface {
   logo: string;
@@ -50,6 +49,7 @@ interface QuestCardProps {
   claimingIds?: string[];
   variableWeeklyAPY?: boolean;
   rewardRange?: string;
+  rewardsProgress?: OngoingRewardsItemStats;
 }
 
 export const QuestCardDetailled = ({
@@ -58,20 +58,17 @@ export const QuestCardDetailled = ({
   image,
   points,
   link,
-  startDate,
-  endDate,
   slug,
   chains,
-  rewards,
   completed,
   claimingIds,
   variableWeeklyAPY,
   rewardRange,
+  rewardsProgress,
 }: QuestCardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const router = useRouter();
-  const { apy, isLoading, isSuccess } = useMissionsMaxAPY(claimingIds);
+  const { apy } = useMissionsMaxAPY(claimingIds);
 
   return (
     <QuestCardMainBox>
@@ -80,7 +77,7 @@ export const QuestCardDetailled = ({
         style={{ textDecoration: 'inherit' }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'row', height: '65%' }}>
-          {image && (
+          {image ? (
             <Image
               src={image}
               alt="Quest Card Image"
@@ -91,6 +88,8 @@ export const QuestCardDetailled = ({
                 borderTopRightRadius: '8px',
               }}
             />
+          ) : (
+            <Skeleton variant="rectangular" width={288} height={288} />
           )}
         </Box>
         <QuestCardBottomBox>
@@ -108,6 +107,16 @@ export const QuestCardDetailled = ({
               {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
             </Typography>
           </QuestCardTitleBox>
+          {rewardsProgress && (
+            <ProgressionBar
+              points={points}
+              levelData={{
+                maxPoints: rewardsProgress.max,
+                minPoints: rewardsProgress.min,
+              }}
+              hideIndicator={true}
+            />
+          )}
           <FlexSpaceBetweenBox marginBottom={'8px'} marginTop={'8px'}>
             <FlexCenterRowBox>
               {chains?.map((elem: Chain, i: number) => {

@@ -1,27 +1,36 @@
 import { useLoyaltyPassStore } from '@/stores/loyaltyPass';
-import type { PDA } from '@/types/loyaltyPass';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SECONDS_IN_A_DAY } from 'src/const/time';
 import { useAccounts } from './useAccounts';
 
-export interface UseLoyaltyPassProps {
+export interface UseOngoingRewardsType {
   isSuccess: boolean;
   isLoading: boolean;
-  points?: number;
-  tier?: string;
-  pdas?: PDA[];
+  data: OngoingRewardsItem[];
 }
 
-export const useLoyaltyPass = (): UseLoyaltyPassProps => {
+export interface OngoingRewardsItemStats {
+  points: number;
+  max: number;
+  min: number;
+}
+export interface OngoingRewardsItem extends OngoingRewardsItemStats {
+  description: string | null;
+  displayName: string;
+  level?: number;
+  id: number;
+  image: string;
+  name: string;
+  nextLevel: number;
+  type: string;
+}
+
+export const useOngoingRewards = (): UseOngoingRewardsType => {
   const { account } = useAccounts();
   const {
     address: storedAddress,
-    points: storedPoints,
-    tier: storedTier,
-    pdas: storedPdas,
     timestamp,
-    setLoyaltyPassData,
     reset,
   } = useLoyaltyPassStore((state) => state);
 
@@ -35,7 +44,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     }
 
     reset();
-  }, [account, storedAddress]);
+  }, [account, reset, storedAddress]);
 
   //we store the data during 24hours to avoid querying too much our partner API.
   const t = Date.now() / 1000;
@@ -43,17 +52,17 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
 
   const queryIsEnabled =
     !!account?.address &&
-    account?.chainType === 'EVM' &&
+    // account?.chainType === 'EVM' &&
     (storeNeedsRefresh ||
       account?.address?.toLowerCase() !== storedAddress?.toLowerCase());
 
   // query
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['loyalty-pass', account?.address],
+    queryKey: ['ongoing-rewards', account?.address],
     queryFn: async () => {
       const res = await fetch(
-        `${apiBaseUrl}/wallets/${account?.address}/rewards`,
+        `${apiBaseUrl}/wallets/${account?.address}/ongoing-rewards`,
       );
 
       if (!res.ok) {
@@ -67,21 +76,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
       }
 
       const { data } = jsonResponse;
-
-      setLoyaltyPassData(
-        account.address,
-        data.sum,
-        data.currentLevel,
-        data.walletRewards,
-        t,
-      );
-
-      return {
-        address: account.address,
-        points: data.sum,
-        tier: data.currentLevel,
-        pdas: data.walletRewards,
-      };
+      return data;
     },
     enabled: queryIsEnabled,
     refetchInterval: 1000 * 60 * 60,
@@ -89,26 +84,21 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
 
   const returnLocalData = account?.address === storedAddress && !queryIsEnabled;
 
-  const errorWhileFetchingData =
-    !data || !account?.address || !(account.chainType === 'EVM');
+  const errorWhileFetchingData = !data || !account?.address; //|| !(account.chainType === 'EVM');
 
   if (returnLocalData) {
     return {
+      data,
       isSuccess: true,
       isLoading: isLoading,
-      points: storedPoints,
-      tier: storedTier,
-      pdas: storedPdas,
     };
   } else if (errorWhileFetchingData) {
     return {
+      data: [],
       isSuccess: false,
       isLoading: isLoading,
-      points: undefined,
-      tier: undefined,
-      pdas: [],
     };
   }
 
-  return { ...data, isSuccess, isLoading };
+  return { data, isSuccess, isLoading };
 };

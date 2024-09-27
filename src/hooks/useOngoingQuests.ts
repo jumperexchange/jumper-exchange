@@ -5,7 +5,7 @@ export interface UseQuestsProps {
   quests: Quest[] | undefined;
   url: URL;
   isSuccess: boolean;
-  isQuestLoading: boolean;
+  isLoading: boolean;
 }
 
 const STRAPI_CONTENT_TYPE = 'quests';
@@ -61,7 +61,7 @@ export const useOngoingQuests = (): UseQuestsProps => {
 
   return {
     quests: data,
-    isQuestLoading: isLoading,
+    isLoading,
     url: apiUrl,
     isSuccess,
   };
