@@ -69,7 +69,6 @@ const App = ({
         direction="row"
         justifyContent="center"
         alignItems="start"
-        spacing={4}
         paddingTop={3.5}
       >
         {welcomeScreenClosed && <VerticalTabs />}
