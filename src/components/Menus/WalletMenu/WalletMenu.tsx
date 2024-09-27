@@ -60,6 +60,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
           gap: theme.spacing(2),
           maxWidth: 416,
+          zIndex: 2000,
           background: theme.palette.surface1.main, // theme.palette.surface2.main into the figma, which is not matching the right color, might need to be updated
         }),
       }}
