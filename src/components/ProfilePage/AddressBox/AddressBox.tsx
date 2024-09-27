@@ -15,8 +15,7 @@ import {
   ProfileIconButton,
 } from './AddressBox.style';
 import useImageStatus from 'src/hooks/useImageStatus';
-
-const DEFAULT_IMAGE = '/default_effigy.svg';
+import { DEFAULT_EFFIGY } from 'src/const/urls';
 
 interface AddressBoxProps {
   address?: string;
@@ -54,11 +53,11 @@ export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
   };
 
   return (
-    <AddressBoxContainer imgUrl={isImageValid ? imgLink : DEFAULT_IMAGE}>
+    <AddressBoxContainer imgUrl={isImageValid ? imgLink : DEFAULT_EFFIGY}>
       <PassImageBox>
         <Image
           alt="Effigy Wallet Icon"
-          src={isImageValid ? imgLink : DEFAULT_IMAGE}
+          src={isImageValid ? imgLink : DEFAULT_EFFIGY}
           width={128}
           height={128}
           priority={false}

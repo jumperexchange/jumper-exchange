@@ -7,10 +7,10 @@ const useImageStatus = (imageUrl: string) => {
     const checkImage = async () => {
       try {
         const response = await fetch(imageUrl);
-        if (response.status <= 299) {
-          setIsImageValid(true);
-        } else {
+        if (response.status > 299) {
           setIsImageValid(false);
+        } else {
+          setIsImageValid(true);
         }
       } catch (error) {
         setIsImageValid(false);

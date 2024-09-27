@@ -19,6 +19,8 @@ export const JUMPER_QUESTS_PATH = '/quests';
 
 export const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
 
+export const DEFAULT_EFFIGY = '/default_effigy.svg';
+
 // prepare sitemap
 export const pages: SitemapPage[] = [
   { path: '/', priority: 1.0 },
