@@ -34,12 +34,14 @@ const sortBlogArticlesByPublishedDate = (tags: TagAttributes[]) => {
   return tags.map((tag) => {
     tag.attributes.blog_articles.data = tag.attributes.blog_articles.data.sort(
       (a, b) => {
-        const dateA = a.attributes.publishedAt
-          ? Date.parse(a.attributes.publishedAt)
-          : -Infinity; // Default to oldest if undefined
-        const dateB = b.attributes.publishedAt
-          ? Date.parse(b.attributes.publishedAt)
-          : -Infinity; // Default to oldest if undefined
+        const dateA =
+          a.attributes.publishedAt || a.attributes.createdAt
+            ? Date.parse(a.attributes.publishedAt || a.attributes.createdAt)
+            : -Infinity; // Default to oldest if undefined
+        const dateB =
+          b.attributes.publishedAt || a.attributes.createdAt
+            ? Date.parse(b.attributes.publishedAt || a.attributes.createdAt)
+            : -Infinity; // Default to oldest if undefined
 
         return dateB - dateA;
       },
