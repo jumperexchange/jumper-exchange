@@ -4,6 +4,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import { useMercleNft } from 'src/hooks/useMercleNft';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
@@ -18,12 +19,12 @@ import {
 interface AddressBoxProps {
   address?: string;
   isEVM?: boolean;
-  imageLink?: string;
 }
 
-export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
+export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { imageLink } = useMercleNft({ userAddress: address });
   const { setSnackbarState } = useMenuStore((state) => state);
   const { data: ensName, isSuccess } = useEnsName({
     address: address as Address | undefined,

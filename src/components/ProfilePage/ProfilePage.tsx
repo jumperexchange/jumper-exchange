@@ -2,7 +2,6 @@ import { useAccounts } from '@/hooks/useAccounts';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { Box, Grid, Stack } from '@mui/material';
 import { useMemo } from 'react';
-import { useMercleNft } from 'src/hooks/useMercleNft';
 import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { AddressBox } from './AddressBox/AddressBox';
@@ -33,7 +32,6 @@ const shouldHideComponent = (
 export const ProfilePage = () => {
   const { account } = useAccounts();
   const { isLoading, points, tier, pdas } = useLoyaltyPass();
-  const { imageLink } = useMercleNft({ userAddress: account?.address });
   const {
     availableRewards,
     pastCampaigns,
@@ -74,7 +72,6 @@ export const ProfilePage = () => {
             <AddressBox
               address={account?.address}
               isEVM={account?.chainType === 'EVM'}
-              imageLink={imageLink}
             />
             <Box display={{ xs: 'none', md: 'block' }}>
               <Leaderboard address={account?.address} />
