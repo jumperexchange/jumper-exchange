@@ -15,6 +15,7 @@ import { useAccounts } from '@/hooks/useAccounts';
 import { usePortfolioStore } from '@/stores/portfolio';
 import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
 import { useParams } from 'next/navigation';
+import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -82,23 +83,9 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
           color={(theme) => theme.palette.text.primary}
         >
           <Tooltip title={t('navbar.walletMenu.refreshBalances')}>
-            <IconButton
-              size="small"
-              aria-label="Refresh"
-              sx={(theme) => ({
-                color: theme.palette.text.primary,
-                backgroundColor: alpha(theme.palette.text.primary, 0.04),
-                marginRight: 1,
-                '&:hover': {
-                  backgroundColor: alpha(theme.palette.text.primary, 0.08),
-                },
-              })}
-              onClick={() => {
-                refetch();
-              }}
-            >
+            <TotalBalanceIconButton refetch={refetch}>
               <RefreshIcon />
-            </IconButton>
+            </TotalBalanceIconButton>
           </Tooltip>
           {t('navbar.walletMenu.totalBalance')}
         </Typography>

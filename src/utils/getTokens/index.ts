@@ -8,7 +8,7 @@ import { formatUnits } from 'viem';
 import coins from './coins';
 import type { ExtendedChain, TokenAmount } from '@lifi/sdk';
 
-interface Chain extends ExtendedChain, Price {}
+export interface Chain extends ExtendedChain, Price {}
 
 interface Price {
   amount?: bigint;
