@@ -1,4 +1,12 @@
-import { Accordion, AvatarGroup, Avatar, Typography } from '@mui/material';
+import {
+  Accordion,
+  AvatarGroup,
+  Avatar,
+  Typography,
+  circularProgressClasses,
+  CircularProgress as MuiCircularProgress,
+  keyframes,
+} from '@mui/material';
 import { styled } from '@mui/system';
 import { lighten } from '@mui/material/styles';
 
@@ -70,7 +78,40 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
 }));
 
 export const SmallAvatar = styled(Avatar)(({ theme }) => ({
-  width: 12,
-  height: 12,
+  width: 20,
+  height: 20,
   border: `2px solid ${theme.palette.background.paper}`,
 }));
+
+const circleAnimation = keyframes`
+  0% {
+    stroke-dashoffset: 129;
+    transform: rotate(0);
+  }
+  50% {
+    stroke-dashoffset: 56;
+    transform: rotate(45deg);
+  };
+  100% {
+    stroke-dashoffset: 129;
+    transform: rotate(360deg);
+  }
+`;
+
+export const CircularProgressPending = styled(MuiCircularProgress)`
+  color: ${({ theme }) =>
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.primary.light};
+  animation-duration: 3s;
+  position: absolute;
+  .${circularProgressClasses.circle} {
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-name: ${circleAnimation};
+    stroke-dasharray: 129;
+    stroke-dashoffset: 129;
+    stroke-linecap: round;
+    transform-origin: 100% 100%;
+  }
+`;
