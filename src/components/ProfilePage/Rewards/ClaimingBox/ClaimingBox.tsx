@@ -8,7 +8,7 @@ import { RewardsAmountBox } from '../RewardsAmountBox/RewardsAmountBox';
 import { Button } from 'src/components/Button';
 import { Typography, useTheme } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
+import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
 import {
   useAccount,
   useWriteContract,

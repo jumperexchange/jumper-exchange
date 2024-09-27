@@ -21,7 +21,7 @@ export const BlogArticleCardSkeleton = () => {
         <BlogArticleCardTitleSkeleton variant="text" />
         <BlogArticleCardDetails>
           <BlogArticleCardTagSkeleton variant="text" />
-          <BlogArticleCardMetaContainer>
+          <BlogArticleCardMetaContainer hasTags={true}>
             <BlogArticleCardMetaSkeleton variant="text" />
           </BlogArticleCardMetaContainer>
         </BlogArticleCardDetails>
