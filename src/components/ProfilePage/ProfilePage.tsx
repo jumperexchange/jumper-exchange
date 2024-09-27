@@ -13,10 +13,8 @@ import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { Leaderboard } from './Leaderboard/Leaderboard';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
-import {
-  AvailableRewards,
-  useMerklRewardsOnCampaigns,
-} from 'src/hooks/useMerklRewardsOnCampaigns';
+import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
+import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useMemo } from 'react';
 
 const shouldHideComponent = (
