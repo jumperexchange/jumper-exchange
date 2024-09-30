@@ -1,74 +1,54 @@
 'use client';
-import { Tabs } from '@/components/Tabs';
 import { useActiveTabStore } from '@/stores/activeTab';
-import { useMediaQuery } from '@mui/material';
+import { Tooltip, useMediaQuery } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
 import { useVerticalTabs } from './useVerticalTabs';
+import { VerticalTabsContainer, VerticalTab } from './VerticalTabs.style';
 
-interface VerticalTabsProps {
-  verticalPageReload?: boolean;
-}
-
-export const VerticalTabs = ({ verticalPageReload }: VerticalTabsProps) => {
-  const theme = useTheme();
+export const VerticalTabs = () => {
   const { activeTab, setActiveTab } = useActiveTabStore();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
-  const verticalTabs = useVerticalTabs({ verticalPageReload });
-
-  const containerStyles = {
-    display: 'none',
-    borderRadius: 28,
-    padding: 0,
-    [theme.breakpoints.up('lg')]: {
-      display: 'flex',
-    },
-    '.MuiTabs-indicator': {
-      position: 'absolute',
-      top: '8px',
-      left: '4px',
-      height: '48px',
-      width: '48px',
-      borderRadius: '28px',
-      transform: 'translateY(0) scaleY(0.98)',
-      backgroundColor:
-        theme.palette.mode === 'dark'
-          ? theme.palette.alphaLight300.main
-          : theme.palette.white.main,
-      zIndex: '-1',
-    },
-  };
-
-  const tabStyles = {
-    height: 48,
-    width: 48,
-    padding: 0,
-    minWidth: 48,
-    margin: 0.5,
-    borderRadius: '24px',
-    '&.Mui-selected': {
-      pointerEvents: 'none',
-    },
-    ':not(.Mui-selected) > svg': {
-      opacity: 0.5,
-    },
-    '> svg': {
-      margin: 0,
-    },
-  };
+  const verticalTabs = useVerticalTabs();
 
   return (
-    <Tabs
-      data={verticalTabs}
-      value={!isDesktop || verticalPageReload ? false : activeTab}
-      onChange={handleChange}
-      ariaLabel="vertical-tabs"
-      containerStyles={containerStyles}
-      tabStyles={tabStyles}
+    <VerticalTabsContainer
+      value={!isDesktop ? false : activeTab}
       orientation="vertical"
-    />
+      onChange={handleChange}
+      aria-label="vertical-tabs"
+    >
+      {verticalTabs.map((el: any, index) => {
+        const tab = (
+          <VerticalTab
+            key={`tab-key-${index}`}
+            onClick={(event) => {
+              el.onClick(event, el.value);
+            }}
+            icon={el.icon}
+            id={`tab-key-${el.value}`}
+            aria-controls={`simple-tabpanel-${index}`}
+          />
+        );
+        return !!el.tooltip ? (
+          <Tooltip
+            title={el.tooltip}
+            key={`tooltip-key-${index}`}
+            enterTouchDelay={0}
+            disableHoverListener={el.disabled}
+            componentsProps={{
+              popper: { sx: { zIndex: 1700 } },
+            }}
+            arrow
+          >
+            {tab}
+          </Tooltip>
+        ) : (
+          tab
+        );
+      })}
+    </VerticalTabsContainer>
   );
 };
