@@ -89,6 +89,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'assets.gravity.xyz',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   async redirects() {
