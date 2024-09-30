@@ -106,6 +106,23 @@ class ArticleParams {
   }
 }
 
+class TagParams {
+  private apiUrl: URL;
+
+  constructor(apiUrl: URL) {
+    this.apiUrl = apiUrl;
+  }
+
+  addParams(): URL {
+    this.apiUrl.searchParams.set('populate[0]', 'Title');
+    this.apiUrl.searchParams.set('populate[1]', 'BackgroundColor');
+    this.apiUrl.searchParams.set('populate[2]', 'TextColor');
+    this.apiUrl.searchParams.set('populate[3]', 'blog_articles');
+    this.apiUrl.searchParams.set('populate[4]', 'blog_articles.Image');
+    return this.apiUrl;
+  }
+}
+
 class QuestParams {
   private apiUrl: URL;
 
@@ -155,6 +172,20 @@ class ArticleStrapiApi extends StrapiApi {
 
   filterByFeatured(): this {
     this.apiUrl.searchParams.set('filters[featured][$eq]', 'true');
+    return this;
+  }
+}
+
+class TagStrapiApi extends StrapiApi {
+  constructor() {
+    super({ contentType: 'tags' }); // Set content type to "blog-articles" automatically
+    const articleParams = new TagParams(this.apiUrl);
+    this.apiUrl = articleParams.addParams();
+    this.apiUrl.searchParams.set('filters[blog_articles][$notNull]', 'true');
+  }
+
+  sort(order: 'asc' | 'desc'): this {
+    this.apiUrl.searchParams.set('sort', `createdAt:${order.toUpperCase()}`);
     return this;
   }
 }
@@ -285,4 +316,5 @@ export {
   PartnerThemeStrapiApi,
   QuestStrapiApi,
   StrapiApi,
+  TagStrapiApi,
 };

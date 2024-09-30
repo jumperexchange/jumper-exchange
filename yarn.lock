@@ -9746,6 +9746,7 @@ __metadata:
     react-i18next: "npm:^15.0.2"
     react-router-dom: "npm:^6.26.2"
     rollup-plugin-polyfill-node: "npm:^0.13.0"
+    shallow-equal: "npm:^3.1.0"
     sharp: "npm:^0.33.5"
     siwe: "npm:^2.3.2"
     typescript: "npm:^5.6.2"
@@ -12067,6 +12068,13 @@ __metadata:
   bin:
     sha.js: ./bin.js
   checksum: 10/d833bfa3e0a67579a6ce6e1bc95571f05246e0a441dd8c76e3057972f2a3e098465687a4369b07e83a0375a88703577f71b5b2e966809e67ebc340dbedb478c7
+  languageName: node
+  linkType: hard
+
+"shallow-equal@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "shallow-equal@npm:3.1.0"
+  checksum: 10/2e0eda6ff74da859a3766fd1865522aacfbef945652d2b629fda0ca5cd9f1f6579e6b3da8bd21e6e8be3a8b49c24484cdd2b8a128f5793d48cff73a0edec15f9
   languageName: node
   linkType: hard
 
