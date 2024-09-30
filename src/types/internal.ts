@@ -3,6 +3,7 @@ import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import type { SxProps, Theme } from '@mui/material';
 import type { MenuItemLinkType } from 'src/components/Menu';
 import type { MenuKeysEnum } from 'src/const/menuKeys';
+import type { TrackingEventParameter } from 'src/const/trackingKeys';
 
 declare global {
   interface Window {
@@ -62,4 +63,12 @@ export type MultisigWidgetConfig = Pick<
 export interface DataItem {
   logoURI?: string;
   name: string;
+}
+export interface TransformedRoute {
+  [TrackingEventParameter.NbOfSteps]: number;
+  [TrackingEventParameter.Steps]: object;
+  [TrackingEventParameter.ToAmountUSD]: number;
+  [TrackingEventParameter.GasCostUSD]: number | null;
+  [TrackingEventParameter.Time]: number;
+  [TrackingEventParameter.Slippage]: number;
 }

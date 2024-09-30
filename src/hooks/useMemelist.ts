@@ -41,7 +41,7 @@ export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
     enabled: enabled,
   });
 
-  const tokenList = data?.[0].attributes?.['DATA'];
+  const tokenList = data?.[0].attributes?.['DATA'] || {};
   return {
     tokens: tokenList,
     isSuccess,
