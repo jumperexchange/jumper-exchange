@@ -1,8 +1,9 @@
 import { ButtonPrimary } from '@/components/Button';
-import { Avatar, Badge, styled } from '@mui/material';
+import { alpha, Avatar, Badge, Skeleton, styled } from '@mui/material';
 import { getContrastAlphaColor } from 'src/utils/colors';
 import { ButtonTransparent } from '../Button';
 import { avatarMask12 } from '../Mask.style';
+import Image from 'next/image';
 
 export const WalletMgmtWalletAvatar = styled(Avatar)(() => ({
   height: 32,
@@ -58,4 +59,21 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
     transition: 'background-color 250ms',
     background: getContrastAlphaColor(theme, '4%'),
   },
+}));
+
+export const ImageWalletMenuButton = styled(Image)(({ theme }) => ({
+  borderRadius: '100%',
+  borderStyle: 'solid',
+  borderWidth: '2px',
+  borderColor:
+    theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : alpha(theme.palette.white.main, 0.08),
+}));
+
+export const SkeletonWalletMenuButton = styled(Skeleton)(({ theme }) => ({
+  fontSize: 24,
+  minWidth: 25,
+  marginRight: 1.1,
+  marginLeft: 1.1,
 }));

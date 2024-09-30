@@ -6,19 +6,13 @@ import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/sdk';
 import { getConnectorIcon } from '@lifi/wallet-management';
 import type { Theme } from '@mui/material';
-import {
-  Skeleton,
-  Stack,
-  Typography,
-  alpha,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import Image from 'next/image';
+import { Stack, Typography, useMediaQuery } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ConnectButton,
+  ImageWalletMenuButton,
+  SkeletonWalletMenuButton,
   WalletMenuButton,
   WalletMgmtBadge,
   WalletMgmtChainAvatar,
@@ -28,15 +22,12 @@ import { XPIcon } from '../illustrations/XPIcon';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { useRouter } from 'next/navigation';
-import { SkeletonWalletMenuButton } from '../Skeleton/Skeleton';
-import { ImageWalletMenuButton } from '../Image/Image';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
   const { account } = useAccounts();
   const { t } = useTranslation();
   const { isSuccess } = useChains();
-  const theme = useTheme();
   const { points } = useLoyaltyPass();
   const router = useRouter();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
