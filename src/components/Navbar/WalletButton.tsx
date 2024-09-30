@@ -28,6 +28,8 @@ import { XPIcon } from '../illustrations/XPIcon';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { useRouter } from 'next/navigation';
+import { SkeletonWalletMenuButton } from '../Skeleton/Skeleton';
+import { ImageWalletMenuButton } from '../Image/Image';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
@@ -95,33 +97,16 @@ export const WalletButtons = () => {
         <Stack direction="row" spacing={2}>
           {isDesktop && (
             <WalletMenuButton id="wallet-digest-button" onClick={handleXPClick}>
-              <Image
+              <ImageWalletMenuButton
                 src={`https://effigy.im/a/${account?.address ?? 'jumper.eth'}.png`}
                 alt="Effigy Wallet Icon"
                 width={28}
                 height={28}
                 priority={false}
                 unoptimized={true}
-                style={{
-                  borderRadius: '100%',
-                  borderStyle: 'solid',
-                  borderWidth: '2px',
-                  borderColor:
-                    theme.palette.mode === 'light'
-                      ? theme.palette.white.main
-                      : alpha(theme.palette.white.main, 0.08),
-                }}
               />
               {points === undefined ? (
-                <Skeleton
-                  variant="text"
-                  sx={{
-                    fontSize: { xs: 24, sm: 24 },
-                    minWidth: 25,
-                    marginRight: 1.1,
-                    marginLeft: 1.1,
-                  }}
-                />
+                <SkeletonWalletMenuButton />
               ) : (
                 <Typography
                   variant={'bodyMediumStrong'}
