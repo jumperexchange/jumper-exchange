@@ -13,16 +13,15 @@ function generateAlternates(path: string) {
   return {
     languages: {
       ...locales.reduce((acc, loc) => {
-        return {
+        const pages = {
           ...acc,
           [loc]: withoutTrailingSlash(
             `${process.env.NEXT_PUBLIC_SITE_URL}${loc !== 'en' ? `/${loc}` : ''}${path}`,
           ),
         };
+
+        return pages;
       }, {}),
-      'x-default': withoutTrailingSlash(
-        `${process.env.NEXT_PUBLIC_SITE_URL}${path}`,
-      ),
     },
   };
 }

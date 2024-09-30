@@ -1,7 +1,4 @@
 'use client';
-import type { RouteExtended } from '@lifi/sdk';
-import { type Route } from '@lifi/sdk';
-
 import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '@/components/MultisigConnectedAlert';
 import {
@@ -16,6 +13,8 @@ import { useActiveTabStore } from '@/stores/activeTab';
 import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection';
 import { useMenuStore } from '@/stores/menu';
 import { useMultisigStore } from '@/stores/multisig';
+import type { RouteExtended } from '@lifi/sdk';
+import { type Route } from '@lifi/sdk';
 import type {
   ChainTokenSelected,
   ContactSupport,
@@ -24,14 +23,22 @@ import type {
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
+import { shallowEqualObjects } from 'shallow-equal';
+import type { JumperEventData } from 'src/hooks/useJumperTracking';
+import type { TransformedRoute } from 'src/types/internal';
+import { calcPriceImpact } from 'src/utils/calcPriceImpact';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
 import { usePortfolioStore } from '@/stores/portfolio';
 
 export function WidgetEvents() {
-  const lastTxHashRef = useRef<string>();
+  const previousRoutesRef = useRef<JumperEventData>({});
   const { activeTab } = useActiveTabStore();
-  const { setDestinationChainToken, setSourceChainToken } =
-    useChainTokenSelectionStore();
+  const {
+    sourceChainToken,
+    destinationChainToken,
+    setDestinationChainToken,
+    setSourceChainToken,
+  } = useChainTokenSelectionStore();
   const { trackTransaction, trackEvent } = useUserTracking();
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
@@ -70,30 +77,14 @@ export function WidgetEvents() {
 
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
       // check if multisig and open the modal
-      const data = handleTransactionDetails(update.route, {
-        [TrackingEventParameter.Action]: 'execution_updated',
-      });
       const isMultisigRouteActive = shouldOpenMultisigSignatureModal(
         update.route,
       );
-
       if (isMultisigRouteActive) {
         setIsMultiSigConfirmationModalOpen(true);
       }
-
-      if (update.process && update.route) {
-        if (update.process.txHash !== lastTxHashRef.current) {
-          lastTxHashRef.current = update.process.txHash;
-          // trackTransaction({
-          //   category: TrackingCategory.WidgetEvent,
-          //   action: TrackingAction.OnRouteExecutionUpdated,
-          //   label: 'execution_update',
-          //   data,
-          //   enableAddressable: true,
-          // });
-        }
-      }
     };
+
     const onRouteExecutionCompleted = async (route: Route) => {
       if (route.id) {
         // Refresh portfolio value
@@ -103,6 +94,8 @@ export function WidgetEvents() {
           [TrackingEventParameter.Action]: 'execution_completed',
           [TrackingEventParameter.TransactionStatus]: 'COMPLETED',
         });
+        // reset ref obj
+        previousRoutesRef.current = {};
         trackTransaction({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionCompleted,
@@ -113,6 +106,7 @@ export function WidgetEvents() {
         });
       }
     };
+
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
       const data = handleTransactionDetails(update.route, {
         [TrackingEventParameter.Action]: 'execution_failed',
@@ -123,6 +117,8 @@ export function WidgetEvents() {
         [TrackingEventParameter.IsFinal]: true,
         [TrackingEventParameter.ErrorCode]: update.process.error?.code || '',
       });
+      // reset ref obj
+      previousRoutesRef.current = {};
       trackTransaction({
         category: TrackingCategory.WidgetEvent,
         action: TrackingAction.OnRouteExecutionFailed,
@@ -209,17 +205,73 @@ export function WidgetEvents() {
     };
 
     const onAvailableRoutes = async (availableRoutes: Route[]) => {
-      trackEvent({
-        category: TrackingCategory.WidgetEvent,
-        action: TrackingAction.OnAvailableRoutes,
-        label: `routes_available`,
-        enableAddressable: true,
-        data: {
-          [TrackingEventParameter.AvailableRoutesCount]: availableRoutes.length,
-        },
-      });
-    };
+      // current available routes
+      const newObj: JumperEventData = {
+        [TrackingEventParameter.FromToken]: sourceChainToken.tokenAddress || '',
+        [TrackingEventParameter.FromChainId]: sourceChainToken.chainId || '',
+        [TrackingEventParameter.ToToken]:
+          destinationChainToken.tokenAddress || '',
+        [TrackingEventParameter.ToChainId]: destinationChainToken.chainId || '',
+      };
 
+      // compare current availableRoutes with the previous one
+      const isSameObject = shallowEqualObjects(
+        previousRoutesRef.current,
+        newObj,
+      );
+      // if the object has changed, then track the event
+      if (
+        !isSameObject &&
+        previousRoutesRef.current &&
+        sourceChainToken.chainId &&
+        sourceChainToken.tokenAddress &&
+        destinationChainToken.chainId &&
+        destinationChainToken.tokenAddress
+      ) {
+        previousRoutesRef.current = newObj;
+        const transformedRoutes = availableRoutes.reduce<
+          Record<number, TransformedRoute>
+        >((acc, route, index) => {
+          const priceImpact = calcPriceImpact(route);
+          acc[index] = {
+            [TrackingEventParameter.NbOfSteps]: route.steps.length,
+            [TrackingEventParameter.Steps]: route.steps.map(
+              (step) => step.tool,
+            ),
+            [TrackingEventParameter.ToAmountUSD]: Number(route.toAmountUSD),
+            [TrackingEventParameter.GasCostUSD]: route.steps.reduce(
+              (acc, step) =>
+                acc +
+                (step.estimate.gasCosts?.reduce(
+                  (sum, gasCost) => sum + parseFloat(gasCost.amountUSD),
+                  0,
+                ) || 0),
+              0,
+            ),
+            [TrackingEventParameter.Time]: route.steps.reduce(
+              (acc, step) => acc + step.estimate.executionDuration,
+              0,
+            ),
+            [TrackingEventParameter.Slippage]: priceImpact,
+          };
+          return acc;
+        }, {});
+        trackEvent({
+          category: TrackingCategory.WidgetEvent,
+          action: TrackingAction.OnAvailableRoutes,
+          label: `routes_available`,
+          enableAddressable: true,
+          data: {
+            ...newObj,
+            [TrackingEventParameter.FromAmountUSD]: Number(
+              availableRoutes[0].fromAmountUSD,
+            ),
+            [TrackingEventParameter.NbOfSteps]: availableRoutes.length,
+            [TrackingEventParameter.Routes]: transformedRoutes,
+          },
+        });
+      }
+    };
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
@@ -242,6 +294,7 @@ export function WidgetEvents() {
       WidgetEvent.DestinationChainTokenSelected,
       onDestinationChainTokenSelection,
     );
+
     // widgetEvents.on(WidgetEvent.WidgetExpanded, onWidgetExpanded);
 
     return () => {
@@ -280,11 +333,14 @@ export function WidgetEvents() {
     };
   }, [
     activeTab,
+    destinationChainToken.chainId,
+    destinationChainToken.tokenAddress,
     setDestinationChain,
     setDestinationChainToken,
     setSourceChainToken,
     setSupportModalState,
     shouldOpenMultisigSignatureModal,
+    sourceChainToken,
     trackEvent,
     trackTransaction,
     widgetEvents,
