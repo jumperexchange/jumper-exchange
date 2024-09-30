@@ -1,17 +1,22 @@
 import initTranslations from '@/app/i18n';
-import TranslationsProvider from '@/providers/TranslationProvider';
-import i18nConfig from 'i18nconfig';
-import type { ReactNode } from 'react';
-import React from 'react';
-import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { fonts } from '@/fonts/fonts';
-import Script from 'next/script';
-import { PixelBg } from '@/components/illustrations/PixelBg';
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
+import { ThemeProvider } from '@/providers/ThemeProvider';
+import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import i18nConfig from 'i18nconfig';
+import { ThemeProvider as NextThemeProvider } from 'next-themes';
+import { cookies } from 'next/headers';
+import Script from 'next/script';
 import type { Viewport } from 'next/types';
+import { type ReactNode } from 'react';
+import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
+import { SettingsStoreProvider } from 'src/stores/settings';
+import type { ActiveThemeResult } from '../lib/getActiveTheme';
+import { getActiveTheme } from '../lib/getActiveTheme';
 import { metadata as JumperMetadata } from '../lib/metadata';
+
 export const metadata = JumperMetadata;
 
 export const viewport: Viewport = {
@@ -26,7 +31,24 @@ export default async function RootLayout({
   children: ReactNode;
   params: { lng: string };
 }) {
-  const { resources } = await initTranslations(lng || fallbackLng, namespaces);
+  const cookiesHandler = cookies();
+  const [resourcesPromise, activeThemePromise] = await Promise.allSettled([
+    initTranslations(lng || fallbackLng, namespaces),
+    getActiveTheme(cookiesHandler),
+  ]);
+
+  const { activeTheme, themes, themeMode } =
+    activeThemePromise.status === 'fulfilled'
+      ? activeThemePromise.value
+      : ({} as ActiveThemeResult);
+
+  const resources =
+    resourcesPromise.status === 'fulfilled'
+      ? resourcesPromise.value.resources
+      : undefined;
+
+  const welcomeScreenClosed =
+    cookiesHandler.get('welcomeScreenClosed')?.value === 'true';
 
   return (
     <html
@@ -71,17 +93,25 @@ export default async function RootLayout({
       <body suppressHydrationWarning>
         <AppRouterCacheProvider>
           <ReactQueryProvider>
-            <WalletProvider>
-              <TranslationsProvider
-                namespaces={[defaultNS]}
-                locale={lng}
-                resources={resources}
-              >
-                {children}
-              </TranslationsProvider>
-
-              <PixelBg />
-            </WalletProvider>
+            <TranslationsProvider
+              namespaces={[defaultNS]}
+              locale={lng}
+              resources={resources}
+            >
+              <NextThemeProvider enableSystem enableColorScheme>
+                <ThemeProvider
+                  themes={themes}
+                  activeTheme={activeTheme}
+                  themeMode={themeMode}
+                >
+                  <SettingsStoreProvider
+                    welcomeScreenClosed={welcomeScreenClosed}
+                  >
+                    <WalletProvider>{children}</WalletProvider>
+                  </SettingsStoreProvider>
+                </ThemeProvider>
+              </NextThemeProvider>
+            </TranslationsProvider>
           </ReactQueryProvider>
         </AppRouterCacheProvider>
       </body>

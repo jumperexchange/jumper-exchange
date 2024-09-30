@@ -1,11 +1,11 @@
 'use client';
+import { JUMPER_SCAN_PATH } from '@/const/urls';
 import { LiFiExplorer } from '@lifi/explorer';
 import type { PaletteMode } from '@mui/material';
 import { alpha, Box, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { fallbackLng } from 'src/i18n';
-import { JUMPER_SCAN_PATH } from '@/const/urls';
 
 export default function Page({
   params: { lng },
@@ -31,7 +31,7 @@ export default function Page({
         },
       },
     }),
-    [lng, theme.palette.mode, theme.palette.white.main],
+    [lng, theme.palette.white.main],
   );
 
   return (

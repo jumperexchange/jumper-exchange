@@ -18,15 +18,12 @@ import {
 } from './WelcomeScreen.style';
 
 interface WelcomeScreenProps {
-  closed: boolean;
   activeTheme?: string;
 }
 
-export const WelcomeScreen = ({ closed, activeTheme }: WelcomeScreenProps) => {
-  const { welcomeScreenClosed, setWelcomeScreenClosed } = useWelcomeScreen(
-    closed,
-    activeTheme,
-  );
+export const WelcomeScreen = ({ activeTheme }: WelcomeScreenProps) => {
+  const { welcomeScreenClosed, setWelcomeScreenClosed } =
+    useWelcomeScreen(activeTheme);
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const [openChainsToolModal, setOpenChainsToolModal] = useState(false);

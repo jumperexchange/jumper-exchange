@@ -10,6 +10,10 @@ acceptLanguage.languages(locales);
 export function middleware(request: NextRequest) {
   const response = i18nRouter(request, i18nConfig);
 
+  // Set a cookie with the pathname that was used on the first page load
+  const pathname = request.nextUrl.pathname;
+  response.cookies.set('pathname', pathname, { path: '/', sameSite: 'strict' });
+
   return response;
 }
 

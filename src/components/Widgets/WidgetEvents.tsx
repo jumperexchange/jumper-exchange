@@ -1,7 +1,4 @@
 'use client';
-import type { RouteExtended } from '@lifi/sdk';
-import { type Route } from '@lifi/sdk';
-
 import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '@/components/MultisigConnectedAlert';
 import {
@@ -9,13 +6,15 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { useAccounts } from '@/hooks/useAccounts';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useUserTracking } from '@/hooks/userTracking';
 import { useActiveTabStore } from '@/stores/activeTab';
 import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection';
 import { useMenuStore } from '@/stores/menu';
 import { useMultisigStore } from '@/stores/multisig';
+import type { RouteExtended } from '@lifi/sdk';
+import { type Route } from '@lifi/sdk';
+import { useAccount } from '@lifi/wallet-management';
 import type {
   ChainTokenSelected,
   ContactSupport,
@@ -41,7 +40,7 @@ export function WidgetEvents() {
     state.setDestinationChain,
   ]);
 
-  const { account } = useAccounts();
+  const { account } = useAccount();
 
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
     useState(false);

@@ -2257,7 +2257,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/sdk@npm:^3.1.3, @lifi/sdk@npm:^3.2.3":
+"@lifi/sdk@npm:^3.1.3":
   version: 3.2.3
   resolution: "@lifi/sdk@npm:3.2.3"
   dependencies:
@@ -2273,7 +2273,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/sdk@npm:^3.3.0-alpha.3, @lifi/sdk@npm:^3.3.0-beta.0":
+"@lifi/sdk@npm:^3.3.0-beta.0":
   version: 3.3.0-beta.0
   resolution: "@lifi/sdk@npm:3.3.0-beta.0"
   dependencies:
@@ -2300,55 +2300,43 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:^3.1.6":
-  version: 3.1.6
-  resolution: "@lifi/wallet-management@npm:3.1.6"
-  dependencies:
-    "@lifi/sdk": "npm:^3.2.3"
-    "@solana/wallet-adapter-base": "npm:^0.9.23"
-    react: "npm:^18.3.1"
-    viem: "npm:^2.21.9"
-    wagmi: "npm:^2.12.12"
-  peerDependencies:
-    "@solana/wallet-adapter-base": ^0.9.0
-    "@tanstack/react-query": ^5.0.0
-    react: ">=18"
-    react-dom: ">=18"
-    viem: ^2.17.0
-    wagmi: ^2.11.0
-  checksum: 10/dc88ec88048033923e31fccc1ecae26d39287da4632b8319da168a519e4269569c1081ae424c0e8f2a15c89da8bab5c685e72d9aab8cf4de4884854d15d647fd
-  languageName: node
-  linkType: hard
-
-"@lifi/wallet-management@npm:^3.2.0-alpha.5":
-  version: 3.2.0-alpha.5
-  resolution: "@lifi/wallet-management@npm:3.2.0-alpha.5"
-  dependencies:
-    "@lifi/sdk": "npm:^3.3.0-alpha.3"
-    "@solana/wallet-adapter-base": "npm:^0.9.23"
-    react: "npm:^18.3.1"
-    use-sync-external-store: "npm:^1.2.2"
-    viem: "npm:^2.21.6"
-    wagmi: "npm:^2.12.11"
-  peerDependencies:
-    "@solana/wallet-adapter-base": ^0.9.0
-    "@tanstack/react-query": ^5.0.0
-    react: ">=18"
-    react-dom: ">=18"
-    viem: ^2.17.0
-    wagmi: ^2.11.0
-  checksum: 10/5a6484f61680c06309a949d4746e1a6baa856da0a1bd35864b8380e6926ef651f176a7984e3660875637a29a7129a4f857ad100a5203b97e115eefd357c95f4a
-  languageName: node
-  linkType: hard
-
-"@lifi/widget@npm:^3.6.0-alpha.5":
-  version: 3.6.2
-  resolution: "@lifi/widget@npm:3.6.2"
+"@lifi/wallet-management@npm:^3.3.0-beta.6":
+  version: 3.3.0-beta.6
+  resolution: "@lifi/wallet-management@npm:3.3.0-beta.6"
   dependencies:
     "@emotion/react": "npm:^11.13.3"
     "@emotion/styled": "npm:^11.13.0"
-    "@lifi/sdk": "npm:^3.2.3"
-    "@lifi/wallet-management": "npm:^3.1.6"
+    "@lifi/sdk": "npm:^3.3.0-beta.0"
+    "@mui/icons-material": "npm:^5.16.7"
+    "@mui/lab": "npm:^5.0.0-alpha.173"
+    "@mui/material": "npm:^5.16.7"
+    "@solana/wallet-adapter-base": "npm:^0.9.23"
+    i18next: "npm:^23.15.1"
+    react: "npm:^18.3.1"
+    react-i18next: "npm:^15.0.2"
+    use-sync-external-store: "npm:^1.2.2"
+    viem: "npm:^2.21.14"
+    wagmi: "npm:^2.12.14"
+    zustand: "npm:^4.5.5"
+  peerDependencies:
+    "@solana/wallet-adapter-base": ^0.9.0
+    "@tanstack/react-query": ^5.0.0
+    react: ">=18"
+    react-dom: ">=18"
+    viem: ^2.17.0
+    wagmi: ^2.11.0
+  checksum: 10/5ce5c94a22a67e801da144081d8a677cec3544bb68527a9b0221303113ae75fd7c36f6a884b81c56c4062394a13dcc4c2d64dd5621c0fdd5866667e48088c77c
+  languageName: node
+  linkType: hard
+
+"@lifi/widget@npm:^3.7.0-beta.6":
+  version: 3.7.0-beta.6
+  resolution: "@lifi/widget@npm:3.7.0-beta.6"
+  dependencies:
+    "@emotion/react": "npm:^11.13.3"
+    "@emotion/styled": "npm:^11.13.0"
+    "@lifi/sdk": "npm:^3.3.0-beta.0"
+    "@lifi/wallet-management": "npm:^3.3.0-beta.6"
     "@mui/icons-material": "npm:^5.16.7"
     "@mui/lab": "npm:^5.0.0-alpha.173"
     "@mui/material": "npm:^5.16.7"
@@ -2366,8 +2354,8 @@ __metadata:
     react-intersection-observer: "npm:^9.13.1"
     react-router-dom: "npm:^6.26.2"
     uuid: "npm:^10.0.0"
-    viem: "npm:^2.21.9"
-    wagmi: "npm:^2.12.12"
+    viem: "npm:^2.21.14"
+    wagmi: "npm:^2.12.14"
     zustand: "npm:^4.5.5"
   peerDependencies:
     "@emotion/react": ^11.11.0
@@ -2387,7 +2375,7 @@ __metadata:
     viem: ^2.17.0
     wagmi: ^2.11.0
     zustand: ^4.5.0
-  checksum: 10/f1f18ccd55b983f2d27c033050c660190b67a095feff59946ca12484e045c7a993f11124dbdcc45cab0e0b2c6e115b7f007dd64571a3139b1eee67c13e2a8450
+  checksum: 10/aa4ccae84a8bc66c169e0ac8ad079513b996a45d1650d351e33a96b49042afcfbb58787c90cb2b118b7ef5d8942080ac8a851f3c548bd9b6a9fe3a1d3379d63d
   languageName: node
   linkType: hard
 
@@ -4988,7 +4976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^22.7.0":
+"@types/node@npm:*":
   version: 22.7.0
   resolution: "@types/node@npm:22.7.0"
   dependencies:
@@ -5008,6 +4996,15 @@ __metadata:
   version: 12.20.55
   resolution: "@types/node@npm:12.20.55"
   checksum: 10/1f916a06fff02faadb09a16ed6e31820ce170798b202ef0b14fc244bfbd721938c54a3a99836e185e4414ca461fe96c5bb5c67c3d248f153555b7e6347f061dd
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.7.4":
+  version: 22.7.4
+  resolution: "@types/node@npm:22.7.4"
+  dependencies:
+    undici-types: "npm:~6.19.2"
+  checksum: 10/19ddab80c4eba2253c855ed67c9bbc47417183049d01e59010a738bd80d47338bab79fd1f44ae51516bd63a1db4bf21ddb38b16bf6401a2e93252068ec52e88b
   languageName: node
   linkType: hard
 
@@ -5074,13 +5071,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.3.9":
+"@types/react@npm:*":
   version: 18.3.9
   resolution: "@types/react@npm:18.3.9"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
   checksum: 10/d1321e874e6523b0a944d4ce514c071cbe44501b04591e17c0b265c9a03fb3e4486337ae1bec74541b72a41f34beef157342205dd07b31d116f4d06fa39cf32f
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^18.3.10":
+  version: 18.3.10
+  resolution: "@types/react@npm:18.3.10"
+  dependencies:
+    "@types/prop-types": "npm:*"
+    csstype: "npm:^3.0.2"
+  checksum: 10/cdc946f15fcad62387e6485a2bbef3e45609708fd81e3ce30b03580077bb8a8a1bd0d19858d8602b33c3921bbb8907ddbc9411fd25294a2c2e944907dad8dd67
   languageName: node
   linkType: hard
 
@@ -7742,7 +7749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:^7.27.1, eslint-plugin-react@npm:^7.36.1":
+"eslint-plugin-react@npm:^7.27.1":
   version: 7.36.1
   resolution: "eslint-plugin-react@npm:7.36.1"
   dependencies:
@@ -7767,6 +7774,34 @@ __metadata:
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
   checksum: 10/bca154b446c35af4859a92fd043dcfe5c74851eb27652234020548570bb81d37cc9f1eb1795b3c9e7514de6c9b48f42fcc00153062eca879dab45ab84e49d0b1
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-react@npm:^7.37.0":
+  version: 7.37.0
+  resolution: "eslint-plugin-react@npm:7.37.0"
+  dependencies:
+    array-includes: "npm:^3.1.8"
+    array.prototype.findlast: "npm:^1.2.5"
+    array.prototype.flatmap: "npm:^1.3.2"
+    array.prototype.tosorted: "npm:^1.1.4"
+    doctrine: "npm:^2.1.0"
+    es-iterator-helpers: "npm:^1.0.19"
+    estraverse: "npm:^5.3.0"
+    hasown: "npm:^2.0.2"
+    jsx-ast-utils: "npm:^2.4.1 || ^3.0.0"
+    minimatch: "npm:^3.1.2"
+    object.entries: "npm:^1.1.8"
+    object.fromentries: "npm:^2.0.8"
+    object.values: "npm:^1.2.0"
+    prop-types: "npm:^15.8.1"
+    resolve: "npm:^2.0.0-next.5"
+    semver: "npm:^6.3.1"
+    string.prototype.matchall: "npm:^4.0.11"
+    string.prototype.repeat: "npm:^1.0.0"
+  peerDependencies:
+    eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
+  checksum: 10/ae005a5e4bdcbf43cda0e5297f5ee8badbbcc18ce6c3f83ac4141173242b27c8a067372061af745ae490c18eef2c3257985bcd240cee85dec262ca875347e8fc
   languageName: node
   linkType: hard
 
@@ -9654,8 +9689,8 @@ __metadata:
     "@fingerprintjs/fingerprintjs": "npm:^3.4.2"
     "@lifi/explorer": "npm:^0.0.1"
     "@lifi/sdk": "npm:^3.3.0-beta.0"
-    "@lifi/wallet-management": "npm:^3.2.0-alpha.5"
-    "@lifi/widget": "npm:^3.6.0-alpha.5"
+    "@lifi/wallet-management": "npm:^3.3.0-beta.6"
+    "@lifi/widget": "npm:^3.7.0-beta.6"
     "@mui/icons-material": "npm:^5.16.7"
     "@mui/material": "npm:^5.16.7"
     "@mui/material-nextjs": "npm:^5.16.6"
@@ -9673,8 +9708,8 @@ __metadata:
     "@strapi/blocks-react-renderer": "npm:^1.0.1"
     "@tanstack/react-query": "npm:^5.56.2"
     "@types/gtag.js": "npm:^0.0.20"
-    "@types/node": "npm:^22.7.0"
-    "@types/react": "npm:^18.3.9"
+    "@types/node": "npm:^22.7.4"
+    "@types/react": "npm:^18.3.10"
     "@types/react-dom": "npm:^18.3.0"
     "@types/uuid": "npm:^10.0.0"
     "@widgetbot/react-embed": "npm:^1.9.0"
@@ -9687,7 +9722,7 @@ __metadata:
     eslint-plugin-import: "npm:^2.30.0"
     eslint-plugin-jsx-a11y: "npm:^6.10.0"
     eslint-plugin-prettier: "npm:^5.2.1"
-    eslint-plugin-react: "npm:^7.36.1"
+    eslint-plugin-react: "npm:^7.37.0"
     eslint-plugin-react-hooks: "npm:^4.6.2"
     ethers: "npm:^6.13.2"
     fontaine: "npm:^0.5.0"
@@ -13287,7 +13322,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^2.1.1, viem@npm:^2.21.12, viem@npm:^2.21.6, viem@npm:^2.21.8, viem@npm:^2.21.9":
+"viem@npm:^2.1.1, viem@npm:^2.21.12, viem@npm:^2.21.14, viem@npm:^2.21.8":
   version: 2.21.14
   resolution: "viem@npm:2.21.14"
   dependencies:
@@ -13316,7 +13351,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wagmi@npm:^2.12.11, wagmi@npm:^2.12.12":
+"wagmi@npm:^2.12.14":
   version: 2.12.14
   resolution: "wagmi@npm:2.12.14"
   dependencies:

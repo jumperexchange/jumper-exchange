@@ -1,9 +1,13 @@
-import { useAccounts } from '@/hooks/useAccounts';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { useOngoingQuests } from '@/hooks/useOngoingQuests';
+import { useAccount } from '@lifi/wallet-management';
 import { Box, Grid, Stack } from '@mui/material';
+import { useMemo } from 'react';
 import { useMercleNft } from 'src/hooks/useMercleNft';
+import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
+import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { AddressBox } from './AddressBox/AddressBox';
+import { Leaderboard } from './Leaderboard/Leaderboard';
 import { TierBox } from './LevelBox/TierBox';
 import {
   ProfilePageContainer,
@@ -11,13 +15,7 @@ import {
 } from './ProfilePage.style';
 import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
-import { Leaderboard } from './Leaderboard/Leaderboard';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
-import {
-  AvailableRewards,
-  useMerklRewardsOnCampaigns,
-} from 'src/hooks/useMerklRewardsOnCampaigns';
-import { useMemo } from 'react';
 
 const shouldHideComponent = (
   account: { address?: string } | undefined,
@@ -34,14 +32,13 @@ const shouldHideComponent = (
 };
 
 export const ProfilePage = () => {
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const { isLoading, points, tier, pdas } = useLoyaltyPass();
   const { imageLink } = useMercleNft({ userAddress: account?.address });
   const { quests, isQuestLoading } = useOngoingQuests();
 
   const {
     availableRewards,
-    activeCampaigns,
     pastCampaigns,
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,

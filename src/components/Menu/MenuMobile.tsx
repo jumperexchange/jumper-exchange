@@ -61,11 +61,7 @@ export const MenuMobile = ({
           cardsLayout={cardsLayout}
           hasLabel={!!label}
           sx={styles}
-          component={
-            isOpenSubMenu && openSubMenu !== MenuKeysEnum.WalletSelect
-              ? 'div'
-              : 'ul'
-          }
+          component={'div'}
         >
           {!!label ? (
             <MenuHeaderAppWrapper>

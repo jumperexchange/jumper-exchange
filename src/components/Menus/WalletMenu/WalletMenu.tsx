@@ -1,7 +1,7 @@
 import { Menu } from '@/components/Menu/Menu';
 import { MenuKeysEnum } from '@/const/menuKeys';
-import { useAccounts } from '@/hooks/useAccounts';
 import { useMenuStore } from '@/stores/menu';
+import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,32 +17,33 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
 
-  const { accounts } = useAccounts();
+  const { accounts } = useAccount();
+
+  const { openWalletMenu } = useWalletMenu();
 
   const {
-    openWalletMenu,
+    openWalletMenu: _openWalletMenu,
     setWalletMenuState,
     setSnackbarState,
     openSubMenu,
-    setWalletSelectMenuState,
   } = useMenuStore((state) => state);
 
   useEffect(() => {
-    openWalletMenu! && setSnackbarState(false);
-  }, [setSnackbarState, openWalletMenu]);
+    _openWalletMenu! && setSnackbarState(false);
+  }, [setSnackbarState, _openWalletMenu]);
 
   useEffect(() => {
     if (
-      openWalletMenu &&
+      _openWalletMenu &&
       accounts.every((account) => account.status === 'disconnected')
     ) {
       setWalletMenuState(false);
     }
-  }, [accounts, setWalletMenuState, openWalletMenu]);
+  }, [accounts, setWalletMenuState, _openWalletMenu]);
 
   return (
     <Menu
-      open={openWalletMenu}
+      open={_openWalletMenu}
       setOpen={setWalletMenuState}
       isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
       width={'auto'}
@@ -65,7 +66,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           sx={{ width: '100%' }}
           onClick={(event) => {
             event.stopPropagation();
-            setWalletSelectMenuState(true);
+            openWalletMenu();
           }}
         >
           <Typography

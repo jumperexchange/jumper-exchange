@@ -1,18 +1,12 @@
 'use client';
 import { MenuKeys, MenuKeysEnum } from '@/const/menuKeys';
-import type {
-  EcosystemSelectMenuProps,
-  MenuState,
-  SnackbarProps,
-} from '@/types/menu';
+import type { MenuState, SnackbarProps } from '@/types/menu';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface DefaultMenuType {
   openMainMenu: boolean;
   openWalletMenu: boolean;
-  openWalletSelectMenu: boolean;
-  openEcosystemSelect: EcosystemSelectMenuProps;
   openSubMenu: keyof typeof MenuKeys;
   openSupportModal: boolean;
   openSnackbar: SnackbarProps;
@@ -21,8 +15,6 @@ interface DefaultMenuType {
 export const defaultMenu: DefaultMenuType = {
   openMainMenu: false,
   openWalletMenu: false,
-  openWalletSelectMenu: false,
-  openEcosystemSelect: { open: false },
   openSubMenu: MenuKeysEnum.None,
   openSupportModal: false,
   openSnackbar: { open: false },
@@ -36,10 +28,8 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       const menuState = get();
       return (
         menuState.openMainMenu ||
-        menuState.openEcosystemSelect.open ||
         menuState.openSubMenu !== MenuKeys.None ||
         menuState.openSupportModal ||
-        menuState.openWalletSelectMenu ||
         menuState.openWalletMenu
       );
       // Add your desired functionality here
@@ -49,11 +39,9 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     closeAllMenus: () => {
       set({
         openMainMenu: false,
-        openWalletSelectMenu: false,
         openWalletMenu: false,
         openSubMenu: MenuKeysEnum.None,
         openSupportModal: false,
-        openEcosystemSelect: { open: false },
       });
     },
 
@@ -62,18 +50,6 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       set({
         openMainMenu: open,
         openSubMenu: MenuKeysEnum.None,
-        openWalletSelectMenu: false,
-        openWalletMenu: false,
-        openSupportModal: false,
-      });
-    },
-
-    // Toggle Navbar Wallet Menu
-    setWalletSelectMenuState: (open) => {
-      set({
-        openWalletSelectMenu: open,
-        openSubMenu: MenuKeysEnum.None,
-        openMainMenu: false,
         openWalletMenu: false,
         openSupportModal: false,
       });
@@ -85,19 +61,6 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
         openWalletMenu: open,
         openSubMenu: MenuKeysEnum.None,
         openMainMenu: false,
-        openWalletSelectMenu: false,
-        openSupportModal: false,
-      });
-    },
-
-    // Toggle Wallet Ecosystem Selection Menu
-    setEcosystemSelectMenuState: (open, combinedWallet) => {
-      set({
-        openEcosystemSelect: { open, combinedWallet },
-        openWalletSelectMenu: false,
-        openSubMenu: MenuKeysEnum.None,
-        openMainMenu: false,
-        openWalletMenu: false,
         openSupportModal: false,
       });
     },
@@ -126,7 +89,6 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       set({
         openSupportModal: open,
         openMainMenu: false,
-        openWalletSelectMenu: false,
         openWalletMenu: false,
         openSubMenu: MenuKeysEnum.None,
       });

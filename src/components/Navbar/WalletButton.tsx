@@ -1,10 +1,13 @@
 'use client';
-import { useAccounts } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/types';
-import { getConnectorIcon } from '@lifi/wallet-management';
+import {
+  getConnectorIcon,
+  useAccount,
+  useWalletMenu,
+} from '@lifi/wallet-management';
 import { Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,16 +21,14 @@ import {
 
 export const WalletButtons = () => {
   const { chains } = useChains();
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const { t } = useTranslation();
   const { isSuccess } = useChains();
+  const { openWalletMenu } = useWalletMenu();
 
-  const {
-    openWalletSelectMenu,
-    setWalletSelectMenuState,
-    openWalletMenu,
-    setWalletMenuState,
-  } = useMenuStore((state) => state);
+  const { openWalletMenu: _openWalletMenu, setWalletMenuState } = useMenuStore(
+    (state) => state,
+  );
 
   const _walletDigest = useMemo(() => {
     return walletDigest(account?.address);
@@ -38,12 +39,8 @@ export const WalletButtons = () => {
     [chains, account?.chainId],
   );
 
-  const handleWalletSelectClick = () => {
-    setWalletSelectMenuState(!openWalletSelectMenu);
-  };
-
   const handleWalletMenuClick = () => {
-    setWalletMenuState(!openWalletMenu);
+    setWalletMenuState(!_openWalletMenu);
   };
 
   return (
@@ -54,7 +51,7 @@ export const WalletButtons = () => {
           id="connect-wallet-button"
           onClick={(event) => {
             event.stopPropagation();
-            handleWalletSelectClick();
+            openWalletMenu();
           }}
         >
           <Typography

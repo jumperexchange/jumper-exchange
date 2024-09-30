@@ -1,5 +1,5 @@
 import { JUMPER_LOYALTY_PATH } from '@/const/urls';
-import { useAccounts } from '@/hooks/useAccounts';
+import { useAccount } from '@lifi/wallet-management';
 import { alpha, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +8,7 @@ import { ProfileButtonBox } from './ProfileButton.style';
 export const ProfileButton = () => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const { account } = useAccounts();
+  const { account } = useAccount();
 
   return (
     <ProfileButtonBox onClick={() => navigate(JUMPER_LOYALTY_PATH)}>

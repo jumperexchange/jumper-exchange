@@ -1,6 +1,6 @@
 import type { FeatureCardData } from '@/types/strapi';
+import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
-import { useAccounts } from './useAccounts';
 import { getLevelBasedOnPoints } from 'src/components/ProfilePage/LevelBox/TierBox';
 
 export interface UsePersonalizedFeatureOnLevelProps {
@@ -19,7 +19,7 @@ export const usePersonalizedFeatureOnLevel = ({
   points,
   enabled,
 }: FCLevelProps): UsePersonalizedFeatureOnLevelProps => {
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const levelData = getLevelBasedOnPoints(points);
   const level = levelData.level;
 
