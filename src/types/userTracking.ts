@@ -1,4 +1,5 @@
 import type { TrackingEventParameter } from 'src/const/trackingKeys';
+import type { JumperEventData } from 'src/hooks/useJumperTracking';
 
 export enum EventTrackingTool {
   GA,
@@ -14,7 +15,7 @@ export interface TrackEventProps {
   category: string;
   label: string;
   value?: number;
-  data?: { [key: string]: string | number | boolean };
+  data?: JumperEventData;
   disableTrackingTool?: EventTrackingTool[];
   enableAddressable?: boolean;
   isConversion?: boolean;

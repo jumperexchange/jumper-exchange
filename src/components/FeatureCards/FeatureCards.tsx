@@ -17,7 +17,7 @@ import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
 
 export const FeatureCards = () => {
-  const [disabledFeatureCards] = useSettingsStore(
+  const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
   );
@@ -112,7 +112,7 @@ export const FeatureCards = () => {
 
   return (
     isDesktop &&
-    // cookie.welcomeScreenClosed &&
+    welcomeScreenClosed &&
     !widgetExpanded && (
       <FeatureCardsContainer>
         {slicedPersonalizedFeatureCards?.map((cardData, index) => {
