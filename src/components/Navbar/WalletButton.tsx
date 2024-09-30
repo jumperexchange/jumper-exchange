@@ -5,9 +5,17 @@ import { useMenuStore } from '@/stores/menu';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/sdk';
 import { getConnectorIcon } from '@lifi/wallet-management';
-import { Skeleton, Stack, Typography, alpha, useTheme } from '@mui/material';
+import type { Theme } from '@mui/material';
+import {
+  Skeleton,
+  Stack,
+  Typography,
+  alpha,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ConnectButton,
@@ -26,10 +34,10 @@ export const WalletButtons = () => {
   const { account } = useAccounts();
   const { t } = useTranslation();
   const { isSuccess } = useChains();
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const theme = useTheme();
   const { points } = useLoyaltyPass();
   const router = useRouter();
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const {
     openWalletSelectMenu,
@@ -85,46 +93,48 @@ export const WalletButtons = () => {
         </ConnectButton>
       ) : (
         <Stack direction="row" spacing={2}>
-          <WalletMenuButton id="wallet-digest-button" onClick={handleXPClick}>
-            <Image
-              src={`https://effigy.im/a/${account?.address ?? 'jumper.eth'}.png`}
-              alt="Effigy Wallet Icon"
-              width={28}
-              height={28}
-              priority={false}
-              unoptimized={true}
-              style={{
-                borderRadius: '100%',
-                borderStyle: 'solid',
-                borderWidth: '2px',
-                borderColor:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.white.main
-                    : alpha(theme.palette.white.main, 0.08),
-              }}
-            />
-            {points === undefined ? (
-              <Skeleton
-                variant="text"
-                sx={{
-                  fontSize: { xs: 24, sm: 24 },
-                  minWidth: 25,
-                  marginRight: 1.1,
-                  marginLeft: 1.1,
+          {isDesktop && (
+            <WalletMenuButton id="wallet-digest-button" onClick={handleXPClick}>
+              <Image
+                src={`https://effigy.im/a/${account?.address ?? 'jumper.eth'}.png`}
+                alt="Effigy Wallet Icon"
+                width={28}
+                height={28}
+                priority={false}
+                unoptimized={true}
+                style={{
+                  borderRadius: '100%',
+                  borderStyle: 'solid',
+                  borderWidth: '2px',
+                  borderColor:
+                    theme.palette.mode === 'light'
+                      ? theme.palette.white.main
+                      : alpha(theme.palette.white.main, 0.08),
                 }}
               />
-            ) : (
-              <Typography
-                variant={'bodyMediumStrong'}
-                width={'auto'}
-                marginRight={1.1}
-                marginLeft={1}
-              >
-                {points}
-              </Typography>
-            )}
-            <XPIcon size={28} />
-          </WalletMenuButton>
+              {points === undefined ? (
+                <Skeleton
+                  variant="text"
+                  sx={{
+                    fontSize: { xs: 24, sm: 24 },
+                    minWidth: 25,
+                    marginRight: 1.1,
+                    marginLeft: 1.1,
+                  }}
+                />
+              ) : (
+                <Typography
+                  variant={'bodyMediumStrong'}
+                  width={'auto'}
+                  marginRight={1.1}
+                  marginLeft={1}
+                >
+                  {points}
+                </Typography>
+              )}
+              <XPIcon size={28} />
+            </WalletMenuButton>
+          )}
           <WalletMenuButton
             id="wallet-digest-button"
             onClick={handleWalletMenuClick}
