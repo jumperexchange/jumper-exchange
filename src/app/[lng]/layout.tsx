@@ -1,16 +1,15 @@
 import initTranslations from '@/app/i18n';
-import TranslationsProvider from '@/providers/TranslationProvider';
-import i18nConfig from 'i18nconfig';
-import type { ReactNode } from 'react';
-import React from 'react';
-import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
-import { fonts } from '@/fonts/fonts';
-import Script from 'next/script';
 import { PixelBg } from '@/components/illustrations/PixelBg';
+import { fonts } from '@/fonts/fonts';
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
+import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import i18nConfig from 'i18nconfig';
+import Script from 'next/script';
 import type { Viewport } from 'next/types';
+import type { ReactNode } from 'react';
+import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { metadata as JumperMetadata } from '../lib/metadata';
 export const metadata = JumperMetadata;
 
@@ -33,6 +32,7 @@ export default async function RootLayout({
       lang={lng || fallbackLng}
       suppressHydrationWarning
       className={fonts.map((f) => f.variable).join(' ')}
+      style={{ scrollBehavior: 'smooth' }}
     >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />

@@ -42,17 +42,18 @@ export const Tabs = ({
       sx={containerStyles}
     >
       {data.map((el, index) => {
+        const keys = a11yProps(ariaLabel, index);
         const tab = (
           <Tab
-            key={`${el.label ?? 'tab-key'}-${index}`}
+            key={`${keys.id}-${index}`}
             onClick={(event) => {
+              event.preventDefault();
               el.onClick(event, el.value);
             }}
             icon={el.icon}
             label={el.label}
-            id={`tab-${el.label ?? 'key'}-${el.value}`}
             aria-label={el.label}
-            aria-controls={`simple-tabpanel-${index}`}
+            {...a11yProps(ariaLabel, el.value)}
             sx={tabStyles}
           />
         );
@@ -76,3 +77,10 @@ export const Tabs = ({
     </TabsContainer>
   ) : null;
 };
+
+export function a11yProps(ariaLabel: string, index: number) {
+  return {
+    id: `${ariaLabel}-${index}`,
+    'aria-controls': `${ariaLabel}panel-${index}`,
+  };
+}
