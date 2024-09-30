@@ -93,6 +93,7 @@ export const useJumperTracking = () => {
         browserFingerprint: data.browserFingerprint,
         isMobile: data.isMobile,
         url: data.url,
+        referrer: document?.referrer,
       },
       JUMPER_ANALYTICS_EVENT,
     );
@@ -126,6 +127,7 @@ export const useJumperTracking = () => {
       errorCode: data.errorCode,
       pathname: data.pathname,
       url: data.url,
+      referrer: document?.referrer,
       browserFingerprint: data.browserFingerprint,
     };
     await track(transactionData, JUMPER_ANALYTICS_TRANSACTION);
