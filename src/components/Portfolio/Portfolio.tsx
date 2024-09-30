@@ -1,11 +1,10 @@
-import { Box, Skeleton, Stack, useTheme, Badge } from '@mui/material';
-import { usePortfolioStore } from '@/stores/portfolio';
-import { useAccounts } from '@/hooks/useAccounts';
-import { useTranslation } from 'react-i18next';
-import { useTokenBalances } from '@/hooks/useTokenBalances';
-import TotalBalance from '@/components/Portfolio/TotalBalance';
 import { WalletCardContainer } from '@/components/Menus';
 import PortfolioToken from '@/components/Portfolio/PortfolioToken';
+import TotalBalance from '@/components/Portfolio/TotalBalance';
+import { useAccounts } from '@/hooks/useAccounts';
+import { useTokenBalances } from '@/hooks/useTokenBalances';
+import { usePortfolioStore } from '@/stores/portfolio';
+import { Badge, Box, Skeleton, Stack } from '@mui/material';
 import { useEffect } from 'react';
 
 function Portfolio() {
@@ -31,8 +30,8 @@ function Portfolio() {
       <TotalBalance refetch={refetch} totalValue={totalValue} />
       <Stack spacing={1}>
         {(isLoading || isRefetching) &&
-          Array.from({ length: 8 }, () => 42).map((token) => (
-            <WalletCardContainer>
+          Array.from({ length: 8 }, () => 42).map((token, index) => (
+            <WalletCardContainer key={`wallet-portfolio-${index}`}>
               <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
                 <Box>
                   <Badge
