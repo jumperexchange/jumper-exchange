@@ -34,7 +34,7 @@ const BridgePage = ({
           color="text.primary"
           marginY={2}
           textAlign="center"
-          sx={{ fontSize: '48px!important' }}
+          sx={{ fontSize: '40px!important' }}
         >
           How to bridge from {sourceToken.symbol} on {sourceChain.name} to{' '}
           {destinationToken.symbol} on {destinationChain.name}
@@ -82,30 +82,27 @@ const BridgePage = ({
             {sourceToken?.name} on {sourceChain?.name} to{' '}
             {destinationToken?.name} on {destinationChain?.name}. Some popular
             options include:
-            <ul>
-              <li>Stargate</li>
-              <li>Across</li>
-              <li>Circle CCTP</li>
-              <li>Allbridge</li>
-              <li> Connext</li>
-              <li>Symbiosis</li>
-              <li>Celer</li>
-            </ul>
           </Typography>
+          <ul>
+            <li>Stargate</li>
+            <li>Across</li>
+            <li>Circle CCTP</li>
+            <li>Allbridge</li>
+            <li> Connext</li>
+            <li>Symbiosis</li>
+            <li>Celer</li>
+          </ul>
           <Typography variant="h2" marginY={2}>
             Step 3: Choose a Bridge
           </Typography>
-          <Typography>
-            To choose your bridge, follow these steps:
-            <ul>
-              <li>Visualise the different quotes</li>
-              <li>
-                Check the details for each quote (i.e: amount of tokens
-                received, price impact, slippage, number of steps, gas cost,
-                bridging time)
-              </li>
-            </ul>
-          </Typography>
+          <Typography>To choose your bridge, follow these steps:</Typography>
+          <ul>
+            <li>Visualise the different quotes</li>
+            <li>
+              Check the details for each quote (i.e: amount of tokens received,
+              price impact, slippage, number of steps, gas cost, bridging time)
+            </li>
+          </ul>
           <Typography variant="h2" marginY={2}>
             Step 4: Bridge Your Assets
           </Typography>
@@ -114,24 +111,23 @@ const BridgePage = ({
             {sourceToken.symbol} on {sourceChain.name} to{' '}
             {destinationToken.symbol} on {destinationChain.name}. Follow these
             steps:
-            <ul>
-              <li>Click on the quote you prefer</li>
-              <li>
-                Verify the details of the quote (i.e: amount of tokens received,
-                price impact, slippage, number of steps, gas cost, bridging
-                time)
-              </li>
-              <li>Click on "Start" execution</li>
-              <li>
-                "Approve" your tokens inside your wallet and wait for the
-                approval transaction to go through
-              </li>
-              <li>
-                "Bridge" your tokens inside your wallet and wait for the
-                approval transaction to go through
-              </li>
-            </ul>
           </Typography>
+          <ul>
+            <li>Click on the quote you prefer</li>
+            <li>
+              Verify the details of the quote (i.e: amount of tokens received,
+              price impact, slippage, number of steps, gas cost, bridging time)
+            </li>
+            <li>Click on "Start" execution</li>
+            <li>
+              "Approve" your tokens inside your wallet and wait for the approval
+              transaction to go through
+            </li>
+            <li>
+              "Bridge" your tokens inside your wallet and wait for the approval
+              transaction to go through
+            </li>
+          </ul>
           <Typography variant="h2" marginY={2}>
             Step 5: Verify Your Bridge
           </Typography>
@@ -139,23 +135,23 @@ const BridgePage = ({
             After bridging your assets, verify that they have been successfully
             transferred to the {destinationChain.name} network. You can do this
             by either:
-            <ul>
-              <li>
-                Clicking on the buttons to see each intermediate transaction
-              </li>
-              <li>
-                Go to your{' '}
-                <MuiLink
-                  color="text.primary"
-                  component={Link}
-                  href="https://jumper.exchange/scan"
-                >
-                  https://jumper.exchange/scan
-                </MuiLink>{' '}
-                profile to visualize your recent transaction
-              </li>
-            </ul>
           </Typography>
+          <ul>
+            <li>
+              Clicking on the buttons to see each intermediate transaction
+            </li>
+            <li>
+              Go to your{' '}
+              <MuiLink
+                color="text.primary"
+                component={Link}
+                href="https://jumper.exchange/scan"
+              >
+                https://jumper.exchange/scan
+              </MuiLink>{' '}
+              profile to visualize your recent transaction
+            </li>
+          </ul>
         </BridgePageContainer>
         <Stack
           direction="row"
@@ -291,10 +287,11 @@ const BridgePage = ({
                   color="text.primary"
                   key={generateKey(token.address)}
                   component={Link}
-                  href={`/bridge/${getChainById(chains, token.chainId)?.name}-${token.symbol}-to-${destinationChain?.name}-${destinationToken?.symbol}`.toLowerCase()}
+                  href={`/bridge/${getChainById(chains, token.chainId)?.name}-${sourceToken.symbol}-to-${destinationChain?.name}-${destinationToken?.symbol}`.toLowerCase()}
                 >
-                  Bridge from {getChainById(chains, token.chainId)?.name} to{' '}
-                  {destinationChain?.name}
+                  Bridge from {sourceToken.symbol} on{' '}
+                  {getChainById(chains, token.chainId)?.name} to{' '}
+                  {destinationToken?.symbol} on {destinationChain?.name}
                 </MuiLink>
               ))}
           </Stack>

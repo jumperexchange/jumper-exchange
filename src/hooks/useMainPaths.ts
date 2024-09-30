@@ -1,5 +1,6 @@
 import { usePathname } from 'next/navigation';
 import {
+  JUMPER_BRIDGE_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
@@ -19,6 +20,7 @@ export const useMainPaths = (): useMainPathsProps => {
     !pathname?.includes(JUMPER_LOYALTY_PATH) &&
     !pathname?.includes(JUMPER_LEARN_PATH) &&
     !pathname?.includes(JUMPER_SCAN_PATH) &&
+    !pathname?.includes(JUMPER_BRIDGE_PATH) &&
     (pathname === '/' ||
       pathname?.split('/').length === 3 ||
       pathname?.split('/').length === 2);
