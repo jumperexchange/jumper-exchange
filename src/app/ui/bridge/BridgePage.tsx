@@ -52,7 +52,7 @@ const BridgePage = ({
             variant="h1"
             color="text.primary"
             marginY={2}
-            sx={{ fontSize: '48px!important' }}
+            sx={{ fontSize: '40px!important' }}
           >
             How to bridge from {sourceToken.symbol} on {sourceChain.name} to{' '}
             {destinationToken.symbol} on {destinationChain.name}
