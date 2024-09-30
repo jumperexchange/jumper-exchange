@@ -1,32 +1,22 @@
 import { WalletCardContainer } from '@/components/Menus';
 import {
-  alpha,
-  Box,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-import {
   CircularProgressPending,
   TotalValue,
   VariationValue,
 } from '@/components/Portfolio/Portfolio.styles';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { useTranslation } from 'react-i18next';
-import { currencyFormatter } from '@/utils/formatNumbers';
-import { useEffect, useState } from 'react';
-import { isEqual } from 'lodash';
+import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
+import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
 import { useAccounts } from '@/hooks/useAccounts';
 import { usePortfolioStore } from '@/stores/portfolio';
-import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
-import { useParams } from 'next/navigation';
-import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
-import { IconHeader } from '../ProfilePage/Common/IconHeader';
-import { StyledInfoIcon } from '../ProfilePage/Common/CustonInfoIcon';
+import { currencyFormatter } from '@/utils/formatNumbers';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
+import { Box, Stack, Tooltip, Typography } from '@mui/material';
+import { isEqual } from 'lodash';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -133,7 +123,7 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
           arrow
           // title={t('navbar.walletMenu.refreshBalances')}
         >
-          <TotalBalanceIconButton refetch={refetch}>
+          <TotalBalanceIconButton refetch={() => refetch()}>
             <CircularProgressPending size={24} />
           </TotalBalanceIconButton>
         </Tooltip>
