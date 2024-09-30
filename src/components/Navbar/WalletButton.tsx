@@ -106,7 +106,7 @@ export const WalletButtons = () => {
                 unoptimized={true}
               />
               {points === undefined ? (
-                <SkeletonWalletMenuButton />
+                <SkeletonWalletMenuButton variant="circular" />
               ) : (
                 <Typography
                   variant={'bodyMediumStrong'}
