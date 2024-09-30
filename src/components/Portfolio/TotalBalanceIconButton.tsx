@@ -11,11 +11,9 @@ function TotalBalanceIconButton({
 }: TotalBalanceIconButtonProps) {
   return (
     <IconButton
-      size="small"
+      size="medium"
       aria-label="Refresh"
       sx={(theme) => ({
-        color: theme.palette.text.primary,
-        backgroundColor: alpha(theme.palette.text.primary, 0.04),
         marginRight: 1,
         '&:hover': {
           backgroundColor: alpha(theme.palette.text.primary, 0.08),

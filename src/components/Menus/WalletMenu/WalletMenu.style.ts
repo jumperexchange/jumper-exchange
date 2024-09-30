@@ -84,6 +84,7 @@ export const WalletCardContainer = styled(Container)(({ theme }) => ({
   boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
   padding: '24px',
   display: 'flex',
+  flexDirection: 'column',
   background: theme.palette.surface2.main,
   borderRadius: '16px',
   [theme.breakpoints.down('sm' as Breakpoint)]: {

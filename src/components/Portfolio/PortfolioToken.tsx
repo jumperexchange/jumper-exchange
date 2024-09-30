@@ -16,6 +16,8 @@ import {
   Skeleton,
   Tooltip,
   Avatar as MuiAvatar,
+  Divider,
+  Box,
 } from '@mui/material';
 import Image from 'next/image';
 import type { ExtendedTokenAmount } from '@/utils/getTokens';
@@ -31,6 +33,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
 import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
 import PortfolioTokenChainButton from '@/components/Portfolio/PortfolioTokenChainButton';
+import { useMenuStore } from 'src/stores/menu';
 
 interface PortfolioTokenProps {
   token: ExtendedTokenAmount;
@@ -43,12 +46,14 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
   const { isMainPaths } = useMainPaths();
   const router = useRouter();
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
+  const { setWalletMenuState } = useMenuStore((state) => state);
 
   const hasMultipleChains = token.chains.length > 1;
 
   const handleChange = (_: React.ChangeEvent<{}>, expanded: boolean) => {
     if (!hasMultipleChains) {
       setFrom(token.address, token.chainId);
+      setWalletMenuState(false);
 
       if (!isMainPaths) {
         router.push('/');
@@ -131,7 +136,11 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                       title={chain.name}
                       key={`${token.symbol}-${chain.key}`}
                     >
-                      <MuiAvatar alt={chain.name} src={chain.logoURI} />
+                      <MuiAvatar
+                        alt={chain.name}
+                        src={chain.logoURI}
+                        sx={{ width: '12px', height: '12px' }}
+                      />
                     </Tooltip>
                   ))}
                 </CustomAvatarGroup>
@@ -153,6 +162,22 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             padding: 0,
           }}
         >
+          {isExpanded && (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                width: '100%',
+              }}
+            >
+              <Divider
+                sx={{
+                  opacity: 0.3,
+                  width: '95%',
+                }}
+              />
+            </Box>
+          )}
           {token.chains.map((chain) => (
             <PortfolioTokenChainButton
               key={generateKey(chain.key)}

@@ -1,6 +1,14 @@
 import { WalletCardContainer } from '@/components/Menus';
-import { alpha, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import {
+  alpha,
+  Box,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import {
+  CircularProgressPending,
   TotalValue,
   VariationValue,
 } from '@/components/Portfolio/Portfolio.styles';
@@ -16,6 +24,9 @@ import { usePortfolioStore } from '@/stores/portfolio';
 import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
 import { useParams } from 'next/navigation';
 import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
+import { IconHeader } from '../ProfilePage/Common/IconHeader';
+import { StyledInfoIcon } from '../ProfilePage/Common/CustonInfoIcon';
+import InfoIcon from '@mui/icons-material/Info';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -76,19 +87,58 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
 
   return (
     <WalletCardContainer>
-      <Stack spacing={1}>
-        <Typography
-          fontWeight={500}
-          fontSize={12}
-          color={(theme) => theme.palette.text.primary}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignContent: 'center',
+            alignItems: 'center',
+          }}
         >
-          <Tooltip title={t('navbar.walletMenu.refreshBalances')}>
-            <TotalBalanceIconButton refetch={refetch}>
-              <RefreshIcon />
-            </TotalBalanceIconButton>
+          <Typography
+            fontWeight={500}
+            fontSize={12}
+            color={(theme) => theme.palette.text.primary}
+          >
+            {t('navbar.walletMenu.totalBalance')}
+          </Typography>
+          <Tooltip
+            title={t('hello' as any)}
+            placement="top"
+            enterTouchDelay={0}
+            arrow
+          >
+            <InfoIcon
+              sx={{
+                marginLeft: '8px',
+                width: 16,
+                height: 16,
+                opacity: '0.5',
+              }}
+            />
           </Tooltip>
-          {t('navbar.walletMenu.totalBalance')}
-        </Typography>
+        </Box>
+        <Tooltip
+          title={t('hello' as any)}
+          placement="top"
+          enterTouchDelay={0}
+          arrow
+          // title={t('navbar.walletMenu.refreshBalances')}
+        >
+          <TotalBalanceIconButton refetch={refetch}>
+            <CircularProgressPending size={24} />
+          </TotalBalanceIconButton>
+        </Tooltip>
+      </Box>
+      <Stack spacing={1}>
         <TotalValue>{currencyFormatter(lng).format(totalValue)}</TotalValue>
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">
           {differenceValue !== 0 && (

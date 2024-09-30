@@ -4,13 +4,20 @@ import {
   TypographySecondary,
 } from '@/components/Portfolio/Portfolio.styles';
 import generateKey from '@/app/lib/generateKey';
-import { Avatar as MuiAvatar, Badge, ButtonBase, Grid } from '@mui/material';
+import {
+  Avatar as MuiAvatar,
+  Badge,
+  ButtonBase,
+  Grid,
+  useTheme,
+} from '@mui/material';
 import Image from 'next/image';
 import type { Chain, ExtendedTokenAmount } from '@/utils/getTokens';
 import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
 import { useMainPaths } from '@/hooks/useMainPaths';
 import { useParams, useRouter } from 'next/navigation';
+import { useMenuStore } from 'src/stores/menu';
 
 interface PortfolioTokenChainButtonProps {
   token: ExtendedTokenAmount;
@@ -22,7 +29,9 @@ function PortfolioTokenChainButton({
   token,
 }: PortfolioTokenChainButtonProps) {
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
+  const { setWalletMenuState } = useMenuStore((state) => state);
   const { isMainPaths } = useMainPaths();
+  const theme = useTheme();
   const router = useRouter();
   const { lng } = useParams();
 
@@ -30,13 +39,16 @@ function PortfolioTokenChainButton({
     <ButtonBase
       onClick={() => {
         setFrom(chain.address, chain.id);
+        setWalletMenuState(false);
         if (!isMainPaths) {
           router.push('/');
         }
       }}
       sx={{
         width: '100%',
-        padding: '16px',
+        paddingLeft: '20px',
+        paddingRight: '16px',
+        paddingY: '16px',
         display: 'flex',
         '&:hover': {
           background: 'rgba(0, 0, 0, 0.04)',
@@ -44,7 +56,7 @@ function PortfolioTokenChainButton({
       }}
     >
       <Grid container display="flex" alignItems="center">
-        <Grid item xs={2}>
+        <Grid item xs={2} textAlign="left">
           <Badge
             overlap="circular"
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -65,7 +77,7 @@ function PortfolioTokenChainButton({
               </SmallAvatar>
             }
           >
-            <MuiAvatar sx={{ width: 24, height: 24 }}>
+            <MuiAvatar sx={{ width: 32, height: 32 }}>
               {!token?.logoURI ? (
                 <>?</>
               ) : (

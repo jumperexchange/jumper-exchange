@@ -23,6 +23,11 @@ export const WidgetContainer = styled(Box, {
   transitionTimingFunction: 'ease-in-out',
   maxHeight: 'inherit',
 
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    margin: theme.spacing(0, 4),
+    marginRight: `calc( ${theme.spacing(4)} ${welcomeScreenClosed && '+ 56px'} )`,
+  },
+
   // radial shadow glow -> animation
   '&:hover:before': {
     ...(!welcomeScreenClosed && {
