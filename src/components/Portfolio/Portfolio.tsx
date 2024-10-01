@@ -41,8 +41,8 @@ function Portfolio() {
                     badgeContent={
                       <Skeleton
                         variant="circular"
-                        width={24}
-                        height={24}
+                        width={16}
+                        height={16}
                         sx={{
                           border: `1px solid #FFFFFF`,
                         }}
