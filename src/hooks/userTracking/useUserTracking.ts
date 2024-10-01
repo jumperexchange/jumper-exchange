@@ -5,6 +5,7 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useAccounts } from '@/hooks/useAccounts';
+import type { JumperEventData } from '@/hooks/useJumperTracking';
 import { useJumperTracking } from '@/hooks/useJumperTracking';
 import { useSession } from '@/hooks/useSession';
 import type {
@@ -16,6 +17,7 @@ import { EventTrackingTool } from '@/types/userTracking';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useCallback, useEffect } from 'react';
+import type { TransformedRoute } from 'src/types/internal';
 import { useFingerprint } from '../useFingerprint';
 
 const googleEvent = ({
@@ -27,7 +29,13 @@ const googleEvent = ({
   category: string;
   data?:
     | TrackTransactionDataProps
-    | { [key: string]: string | number | boolean };
+    | {
+        [key: string]:
+          | string
+          | number
+          | boolean
+          | Record<number, TransformedRoute>;
+      };
 }) => {
   typeof window !== 'undefined' &&
     window?.gtag('event', action, {
@@ -44,9 +52,7 @@ const addressableEvent = ({
 }: {
   action: string;
   label: string;
-  data:
-    | TrackTransactionDataProps
-    | { [key: string]: string | number | boolean };
+  data: TrackTransactionDataProps | JumperEventData;
   isConversion?: boolean;
 }) => {
   const dataArray = [];
