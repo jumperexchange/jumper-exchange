@@ -280,6 +280,7 @@ const themeCustomized = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         '@supports': { fontVariationSettings: 'normal' },
+        body: { scrollBehavior: 'smooth' },
       },
     },
     MuiButton: {

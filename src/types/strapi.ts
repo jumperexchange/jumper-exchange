@@ -45,12 +45,14 @@ export interface MediaAttributes {
 }
 
 export interface StrapiMeta {
-  pagination: {
-    page: number;
-    pageSize: number;
-    pageCount: number;
-    total: number;
-  };
+  pagination: StrapiMetaPagination;
+}
+
+export interface StrapiMetaPagination {
+  page: number;
+  pageSize: number;
+  pageCount: number;
+  total: number;
 }
 
 export type StrapiResponseData<T> = T[];
@@ -131,6 +133,9 @@ export interface TagAttributes {
     TextColor?: string;
     Key: string;
     BackgroundColor?: string;
+    blog_articles: {
+      data: BlogArticleData[];
+    };
     createdAt: string;
     locale: string;
     publishedAt?: string;

@@ -42,7 +42,6 @@ export const DiscordBannerLink = styled(Link)<BoxProps>(({ theme }) => ({
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     margin: theme.spacing(12, 'auto'),
     marginBottom: theme.spacing(14.5),
-
     maxWidth: theme.breakpoints.values.xl,
   },
 }));
@@ -60,8 +59,6 @@ export const DiscordBannerLabel = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const DiscordBannerButton = styled(IconButtonPrimary)<BoxProps>(
-  ({ theme }) => ({
-    display: 'flex',
-  }),
-);
+export const DiscordBannerButton = styled(IconButtonPrimary)<BoxProps>(() => ({
+  display: 'flex',
+}));

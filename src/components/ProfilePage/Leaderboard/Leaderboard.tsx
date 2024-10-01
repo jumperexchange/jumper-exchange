@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import { LeaderboardContainer } from './Leaderboard.style';
+import { useEffect, useState } from 'react';
 import type {
   LeaderboardEntryData,
   LeaderboardMeta,
@@ -8,12 +8,12 @@ import {
   useLeaderboardList,
   useLeaderboardUser,
 } from '../../../hooks/useLeaderboard';
-import { useEffect, useState } from 'react';
-import { LeaderboardSkeleton } from './LeaderboardSkeleton';
 import { IconHeader } from '../Common/IconHeader';
 import { Pagination } from '../Common/Pagination';
 import { NoSelectTypographyTitlePosition } from '../ProfilePage.style';
+import { LeaderboardContainer } from './Leaderboard.style';
 import { LeaderboardEntry } from './LeaderboardEntry';
+import { LeaderboardSkeleton } from './LeaderboardSkeleton';
 
 const LEADERBOARD_LENGTH = 25;
 
