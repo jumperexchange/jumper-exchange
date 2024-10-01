@@ -1,38 +1,37 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import type { StrapiMeta } from '@/types/strapi';
+import type { StrapiMetaPagination } from '@/types/strapi';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Skeleton, Typography, useTheme } from '@mui/material';
-import type { Dispatch, SetStateAction } from 'react';
+import { darken, lighten, Typography, useTheme } from '@mui/material';
+import type { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
+import Link from 'next/link';
 import {
   PaginationButton,
   PaginationContainer,
   PaginationIndexButton,
 } from './Pagination.style';
 
-interface BlogArticlesBoardPaginationProps {
-  isSuccess: boolean;
-  isEmpty: boolean;
+interface PaginationProps {
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
-  meta: StrapiMeta;
+  pagination: StrapiMetaPagination;
   categoryId: number | undefined;
+  id?: number | string;
 }
 
-export const BlogArticlesBoardPagination = ({
-  isSuccess,
+export const Pagination = ({
   page,
   setPage,
-  meta,
+  pagination,
+  id,
   categoryId,
-  isEmpty,
-}: BlogArticlesBoardPaginationProps) => {
+}: PaginationProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const handlePage = (page: number) => {
@@ -49,10 +48,10 @@ export const BlogArticlesBoardPagination = ({
   };
 
   const handleNext = () => {
-    if (page < meta.pagination.pageCount) {
+    if (page + 1 < pagination.pageCount) {
       setPage((state) => state + 1);
     } else {
-      setPage(1);
+      setPage(0);
     }
     trackEvent({
       category: TrackingCategory.BlogArticlesBoard,
@@ -66,10 +65,10 @@ export const BlogArticlesBoardPagination = ({
   };
 
   const handlePrev = () => {
-    if (page > 1) {
-      setPage((state) => state - 1);
+    if (page === 0) {
+      setPage(pagination.pageCount - 1);
     } else {
-      setPage(meta.pagination.pageCount);
+      setPage((state) => state - 1);
     }
     trackEvent({
       category: TrackingCategory.BlogArticlesBoard,
@@ -82,66 +81,66 @@ export const BlogArticlesBoardPagination = ({
     });
   };
 
-  return isSuccess ? (
-    !isEmpty && (
-      <PaginationContainer>
+  return (
+    <PaginationContainer>
+      <SmoothScrollWrapper id={id}>
         <PaginationButton onClick={() => handlePrev()} disableRipple={false}>
           <ArrowBackIcon
             sx={{
               color:
-                page === 1
-                  ? theme.palette.mode === 'light'
-                    ? theme.palette.grey[400]
-                    : theme.palette.grey[600]
-                  : theme.palette.mode === 'light'
-                    ? theme.palette.grey[800]
-                    : theme.palette.grey[400],
+                theme.palette.mode === 'light'
+                  ? lighten(theme.palette.text.primary, 0.6)
+                  : darken(theme.palette.text.primary, 0.2),
             }}
           />
         </PaginationButton>
+      </SmoothScrollWrapper>
 
-        {Array.from({ length: meta?.pagination.pageCount }).map((_, index) => {
-          const actualPage = index + 1;
-          return (
+      {Array.from({ length: pagination.pageCount }).map((_, index) => {
+        const actualPage = index;
+        return (
+          <SmoothScrollWrapper id={id} key={`pagination-wrapper-${index}`}>
             <PaginationIndexButton
               key={`pagination-index-button-${index}`}
               onClick={() => handlePage(actualPage)}
               active={actualPage === page}
             >
               <Typography variant="bodySmallStrong" sx={{ lineHeight: '18px' }}>
-                {actualPage}
+                {actualPage + 1}
               </Typography>
             </PaginationIndexButton>
-          );
-        })}
+          </SmoothScrollWrapper>
+        );
+      })}
+      <SmoothScrollWrapper id={id}>
         <PaginationButton onClick={() => handleNext()}>
           <ArrowForwardIcon
             sx={{
               color:
-                meta?.pagination.pageCount === page
-                  ? theme.palette.mode === 'light'
-                    ? theme.palette.grey[400]
-                    : theme.palette.grey[600]
-                  : theme.palette.mode === 'light'
-                    ? theme.palette.grey[800]
-                    : theme.palette.grey[400],
+                theme.palette.mode === 'light'
+                  ? lighten(theme.palette.text.primary, 0.6)
+                  : darken(theme.palette.text.primary, 0.2),
             }}
           />
         </PaginationButton>
-      </PaginationContainer>
-    )
-  ) : (
-    <PaginationContainer>
-      {Array.from({ length: 4 }).map((_, index) => {
-        return (
-          <Skeleton
-            variant="circular"
-            width="40"
-            height="40"
-            key={`pagination-skeleton-${index}`}
-          />
-        );
-      })}
+      </SmoothScrollWrapper>
     </PaginationContainer>
   );
 };
+
+// export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
+
+interface SmoothScrollWrapperProps {
+  id?: number | string;
+}
+
+const SmoothScrollWrapper: React.FC<
+  PropsWithChildren<SmoothScrollWrapperProps>
+> = ({ children, id }) => {
+  if (!id) {
+    return children;
+  }
+  return <Link href={`#${id}`}>{children}</Link>;
+};
+
+export default Pagination;

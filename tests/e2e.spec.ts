@@ -1,15 +1,17 @@
 import { expect, test } from '@playwright/test';
+import values from '../tests/testData/values.json';
 import {
-  itemInMenu,
-  tabInHeader,
-  openMainMenu,
-  expectMenuToBeVisible,
+  closeWelcomeScreen,
   expectBackgroundColorToHaveCss,
+  expectMenuToBeVisible,
+  itemInMenu,
   itemInSettingsMenu,
   itemInSettingsMenuToBeVisible,
-  closeWelcomeScreen,
+  openMainMenu,
+  tabInHeader,
+  sectionOnTheBlogPage,
+  checkSocialNetworkIcons,
 } from './testData/commonFunctions';
-import values from '../tests/testData/values.json';
 
 test.describe('Jumper full e2e flow', () => {
   test.beforeEach(async ({ page }) => {
@@ -30,7 +32,7 @@ test.describe('Jumper full e2e flow', () => {
       page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
     ).toBeVisible();
     await tabInHeader(page, 'Gas');
-    await expect(page.locator('#tab-Gas-1')).toBeVisible();
+    await expect(page.locator('#navbar-tabs-1')).toBeVisible();
     await tabInHeader(page, 'Buy');
     await expect(buyETHButton).toBeEnabled();
     await expect(
@@ -92,12 +94,12 @@ test.describe('Jumper full e2e flow', () => {
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
 
-  test('Should be able to navigate to profile and open Explore Filament Mission', async ({
+  test('Should be able to navigate to profile and open Explore WoodSwap Mission', async ({
     page,
   }) => {
     let profileUrl = `${await page.url()}profile`;
-    const whatIsFilamentTitle = page.locator(
-      'xpath=//p[normalize-space(text())="Explore Filament"]',
+    const whatIsWoodSwapTitle = page.locator(
+      'xpath=//p[normalize-space(text())="Explore WoodSwap"]',
     );
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
@@ -105,21 +107,40 @@ test.describe('Jumper full e2e flow', () => {
     expect(await page.url()).toBe(profileUrl);
     await page.locator('.profile-page').isVisible();
     await page
-      .locator('xpath=//p[normalize-space(text())="Explore Filament"]')
+      .locator('xpath=//p[normalize-space(text())="Explore WoodSwap"]')
       .click();
 
-    await expect(whatIsFilamentTitle).toBeInViewport({ timeout: 15000 });
+    await expect(whatIsWoodSwapTitle).toBeInViewport({ timeout: 15000 });
   });
 
-  test('Should be able to navigate to jumper learn', async ({ page }) => {
+  test('Should be able to navigate to the Jumper Learn', async ({ page }) => {
+    const sectionName = [
+      'Announcement',
+      'Partner',
+      'Bridge',
+      'Swap',
+      'Tutorial',
+      'Knowledge',
+    ];
+    const socialNetworks = ['LinkedIn', 'Facebook', 'X'];
+    const jumperIsLiveOnSolanaArticlet = await page.locator(
+      'xpath=//h2[normalize-space(text())="Jumper is Live on Solana!"]',
+    );
+    const articleTitle = await page.locator(
+      'xpath=//h2[normalize-space(text())="The most awaited release is here, Jumper is live on Solana!"]',
+    );
     let learnUrl = `${await page.url()}learn`;
-    // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Learn');
     expect(await page.url()).toBe(learnUrl);
     await page.waitForLoadState('load');
     await page.locator('.learn-page').isVisible();
+    sectionOnTheBlogPage(page, sectionName);
+    await jumperIsLiveOnSolanaArticlet.click();
+    await page.waitForLoadState('load');
+    await expect(articleTitle).toBeVisible();
+    checkSocialNetworkIcons(page, socialNetworks);
   });
 
   test('Should be able to navigate to LI.FI Scan', async ({ page }) => {
@@ -147,9 +168,9 @@ test.describe('Jumper full e2e flow', () => {
     await page.goto(values.aerodromeQuestsURL);
     expect(jumperProfileBackButton).toBeVisible();
     await openMainMenu(page);
-    await page.locator('xpath=//*[@id="tab-key-1"]').click(); //switch to Dark theme
+    await page.locator('#theme-switch-tabs-1').click(); //switch to Dark theme
     expectBackgroundColorToHaveCss(page, 'rgb(18, 15, 41)');
-    await page.locator('xpath=//*[@id="tab-key-0"]').click(); //switch to Light theme
+    await page.locator('#theme-switch-tabs-0').click(); //switch to Light theme
     await openMainMenu(page);
     expectBackgroundColorToHaveCss(page, 'rgb(243, 235, 255)');
   });
