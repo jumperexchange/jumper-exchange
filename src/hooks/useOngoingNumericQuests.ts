@@ -4,18 +4,18 @@ import { useEffect } from 'react';
 import { SECONDS_IN_A_DAY } from 'src/const/time';
 import { useAccounts } from './useAccounts';
 
-export interface UseOngoingRewardsType {
+export interface useOngoingNumericQuestsType {
   isSuccess: boolean;
   isLoading: boolean;
-  data: OngoingRewardsItem[];
+  data: OngoingNumericItem[];
 }
 
-export interface OngoingRewardsItemStats {
+export interface OngoingNumericItemStats {
   points: number;
   max: number;
   min: number;
 }
-export interface OngoingRewardsItem extends OngoingRewardsItemStats {
+export interface OngoingNumericItem extends OngoingNumericItemStats {
   description: string | null;
   displayName: string;
   level?: number;
@@ -26,7 +26,7 @@ export interface OngoingRewardsItem extends OngoingRewardsItemStats {
   type: string;
 }
 
-export const useOngoingRewards = (): UseOngoingRewardsType => {
+export const useOngoingNumericQuests = (): useOngoingNumericQuestsType => {
   const { account } = useAccounts();
   const {
     address: storedAddress,

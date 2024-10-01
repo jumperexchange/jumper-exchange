@@ -4,6 +4,8 @@ import type { LevelData } from 'src/types/loyaltyPass';
 
 export const ProgressionChart = styled(Box)(() => ({
   position: 'relative',
+  overflow: 'hidden',
+  borderRadius: '12px',
   height: '16px',
   width: '100%',
   display: 'flex',
@@ -23,7 +25,6 @@ export const ProgressionChartScore = styled(Box, {
     prop !== 'points' && prop !== 'levelData' && prop !== 'calcWidth',
 })<ProgressionChartScoreProps>(({ theme, points, levelData, calcWidth }) => ({
   height: '100%',
-  borderRadius: '12px',
   width:
     points && levelData && points > levelData?.minPoints
       ? `${calcWidth}%`

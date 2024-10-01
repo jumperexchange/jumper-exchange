@@ -13,7 +13,8 @@ import {
   PROFILE_CAMPAIGN_LIGHT_COLOR,
 } from 'src/const/partnerRewardsTheme';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
-import type { OngoingRewardsItemStats } from 'src/hooks/useOngoingRewards';
+import type { OngoingNumericItemStats } from 'src/hooks/useOngoingNumericQuests';
+import { formatDecimal } from 'src/utils/formatDecimals';
 import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
 import { ProgressionBar } from '../LevelBox/ProgressionBar';
@@ -49,7 +50,7 @@ interface QuestCardProps {
   claimingIds?: string[];
   variableWeeklyAPY?: boolean;
   rewardRange?: string;
-  rewardsProgress?: OngoingRewardsItemStats;
+  rewardsProgress?: OngoingNumericItemStats;
 }
 
 export const QuestCardDetailled = ({
@@ -69,7 +70,6 @@ export const QuestCardDetailled = ({
   const theme = useTheme();
   const { t } = useTranslation();
   const { apy } = useMissionsMaxAPY(claimingIds);
-
   return (
     <QuestCardMainBox>
       <Link
@@ -189,7 +189,7 @@ export const QuestCardDetailled = ({
                     lineHeight="18px"
                     color={'#ffffff'}
                   >
-                    {`${points}`}
+                    {`${formatDecimal(points)}`}
                   </Typography>
                   <XPIconBox marginLeft="4px">
                     {!completed ? (
