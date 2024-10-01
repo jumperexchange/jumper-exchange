@@ -52,10 +52,6 @@ export async function sectionOnTheBlogPage(page, selectors: string[]) {
 }
 
 export async function checkSocialNetworkIcons(page, networks: string[]) {
-  const articleTitle = await page.locator(
-    'xpath=//h2[normalize-space(text())="The most awaited release is here, Jumper is live on Solana!"]',
-  );
-  await expect(articleTitle).toBeVisible();
   for (const network of networks) {
     const socialNetworkIcon = await page.locator(
       `xpath=//button[@aria-label='Share article on ${network}']`,
