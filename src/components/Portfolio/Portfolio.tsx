@@ -44,7 +44,7 @@ function Portfolio() {
                         width={24}
                         height={24}
                         sx={{
-                          border: `4px solid #FFFFFF`,
+                          border: `1px solid #FFFFFF`,
                         }}
                       />
                     }
