@@ -76,7 +76,7 @@ export const QuestCardDetailled = ({
         href={link || `/quests/${slug}`}
         style={{ textDecoration: 'inherit' }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'row', height: '65%' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           {image ? (
             <Image
               src={image}
@@ -94,18 +94,24 @@ export const QuestCardDetailled = ({
         </Box>
         <QuestCardBottomBox>
           <QuestCardTitleBox>
-            <Typography
-              fontSize="20px"
-              lineHeight="20px"
-              fontWeight={600}
-              color={
-                theme.palette.mode === 'dark'
-                  ? PROFILE_CAMPAIGN_DARK_COLOR
-                  : PROFILE_CAMPAIGN_LIGHT_COLOR
-              }
-            >
-              {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
-            </Typography>
+            {title ? (
+              <Typography
+                fontSize="20px"
+                lineHeight="20px"
+                fontWeight={600}
+                color={
+                  theme.palette.mode === 'dark'
+                    ? PROFILE_CAMPAIGN_DARK_COLOR
+                    : PROFILE_CAMPAIGN_LIGHT_COLOR
+                }
+              >
+                {title && title.length > 22
+                  ? `${title.slice(0, 21)}...`
+                  : title}
+              </Typography>
+            ) : (
+              <Skeleton variant="text" width={256} height={20} />
+            )}
           </QuestCardTitleBox>
           {rewardsProgress && (
             <ProgressionBar
