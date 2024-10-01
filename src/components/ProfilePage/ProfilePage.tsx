@@ -39,7 +39,6 @@ export const ProfilePage = () => {
 
   const {
     availableRewards,
-    activeCampaigns,
     pastCampaigns,
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,
