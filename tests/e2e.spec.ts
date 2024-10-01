@@ -9,6 +9,8 @@ import {
   itemInSettingsMenuToBeVisible,
   openMainMenu,
   tabInHeader,
+  sectionOnTheBlogPage,
+  checkSocialNetworkIcons,
 } from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {
@@ -111,15 +113,34 @@ test.describe('Jumper full e2e flow', () => {
     await expect(whatIsFilamentTitle).toBeInViewport({ timeout: 15000 });
   });
 
-  test('Should be able to navigate to jumper learn', async ({ page }) => {
+  test('Should be able to navigate to the Jumper Learn', async ({ page }) => {
+    const sectionName = [
+      'Announcement',
+      'Partner',
+      'Bridge',
+      'Swap',
+      'Tutorial',
+      'Knowledge',
+    ];
+    const socialNetworks = ['LinkedIn', 'Facebook', 'X'];
+    const jumperIsLiveOnSolanaArticlet = await page.locator(
+      'xpath=//h2[normalize-space(text())="Jumper is Live on Solana!"]',
+    );
+    const articleTitle = await page.locator(
+      'xpath=//h2[normalize-space(text())="The most awaited release is here, Jumper is live on Solana!"]',
+    );
     let learnUrl = `${await page.url()}learn`;
-    // await closeWelcomeScreen(page);
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Learn');
     expect(await page.url()).toBe(learnUrl);
     await page.waitForLoadState('load');
     await page.locator('.learn-page').isVisible();
+    sectionOnTheBlogPage(page, sectionName);
+    await jumperIsLiveOnSolanaArticlet.click();
+    await page.waitForLoadState('load');
+    await expect(articleTitle).toBeVisible();
+    checkSocialNetworkIcons(page, socialNetworks);
   });
 
   test('Should be able to navigate to LI.FI Scan', async ({ page }) => {
