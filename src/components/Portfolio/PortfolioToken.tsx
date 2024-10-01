@@ -64,7 +64,11 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
   };
 
   return (
-    <WalletCardContainer sx={{ padding: '0!important' }}>
+    <WalletCardContainer
+      sx={{
+        padding: '0!important',
+      }}
+    >
       <CustomAccordion
         expanded={isExpanded}
         key={generateKey(token.symbol)}
@@ -102,10 +106,14 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                     badgeContent={
                       token?.logoURI ? (
-                        <Avatar
-                          size="small"
+                        <MuiAvatar
+                          alt={token.chains[0]?.name || 'chain-name'}
                           src={token.chains[0]?.logoURI || ''}
-                          alt={'wallet-avatar'}
+                          sx={{
+                            width: '16px',
+                            height: '16px',
+                            border: '2px solid white',
+                          }}
                         />
                       ) : (
                         <Skeleton variant="circular" />

@@ -49,7 +49,7 @@ function Portfolio() {
                       />
                     }
                   >
-                    <Skeleton variant="circular" width={46} height={46} />
+                    <Skeleton variant="circular" width={40} height={40} />
                   </Badge>
                 </Box>
                 <Box

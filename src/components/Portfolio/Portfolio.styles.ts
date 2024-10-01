@@ -69,7 +69,7 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
   '& .MuiAvatar-root': {
     width: 16,
     height: 16,
-    border: '3px solid white',
+    border: '2px solid white',
 
     '&:last-child': {
       marginLeft: '-6px',
