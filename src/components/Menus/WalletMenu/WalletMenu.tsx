@@ -3,6 +3,7 @@ import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import { Stack, Typography, useTheme } from '@mui/material';
+import type { MouseEventHandler } from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WalletButton } from '.';
@@ -27,6 +28,14 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
     setSnackbarState,
     openSubMenu,
   } = useMenuStore((state) => state);
+
+  const handleOpenWalletMenu: MouseEventHandler<HTMLButtonElement> = (
+    event,
+  ) => {
+    event.stopPropagation();
+    setWalletMenuState(false);
+    openWalletMenu();
+  };
 
   useEffect(() => {
     _openWalletMenu! && setSnackbarState(false);
@@ -62,13 +71,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
             <WalletCard key={account.address} account={account} />
           ) : null,
         )}
-        <WalletButton
-          sx={{ width: '100%' }}
-          onClick={(event) => {
-            event.stopPropagation();
-            openWalletMenu();
-          }}
-        >
+        <WalletButton sx={{ width: '100%' }} onClick={handleOpenWalletMenu}>
           <Typography
             sx={{
               color: isDarkMode
