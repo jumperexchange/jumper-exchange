@@ -73,8 +73,6 @@ export const WelcomeScreen = ({ closed, activeTheme }: WelcomeScreenProps) => {
           <Trans
             i18nKey={'navbar.welcome.subtitle' as string & never[]}
             components={[
-              // fix: allow component with "no content"
-              // eslint-disable-next-line jsx-a11y/anchor-has-content
               <a
                 className={'link-jumper'}
                 href={JUMPER_URL}
@@ -82,7 +80,6 @@ export const WelcomeScreen = ({ closed, activeTheme }: WelcomeScreenProps) => {
                 rel="noreferrer"
                 // onClick={handleAuditClick}
               />,
-              // eslint-disable-next-line jsx-a11y/anchor-has-content
               <a
                 className={'link-jumper'}
                 href={JUMPER_URL}

@@ -21,7 +21,7 @@ export const useWidgetTheme = (): PartnerTheme => {
     config: {
       appearance: theme.palette.mode,
       theme: {
-        // @ts-expect-error
+        // @ts-expect-error: ignore ...missing the following properties from type 'TypographyOptions'
         typography: {
           fontFamily: theme.typography.fontFamily,
         },
@@ -77,7 +77,7 @@ export const useWidgetTheme = (): PartnerTheme => {
         formattedTheme.activeWidgetTheme,
       ),
     });
-  }, [activeNextTheme, partnerThemes, theme]);
+  }, [activeNextTheme, partnerThemes, theme]); // todo: check dep array
 
   return widgetTheme || defaultWidgetTheme;
 };

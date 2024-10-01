@@ -2,8 +2,12 @@ import { useAccounts } from '@/hooks/useAccounts';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import { Box, Grid, Stack } from '@mui/material';
+import { useMemo } from 'react';
 import { useMercleNft } from 'src/hooks/useMercleNft';
+import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
+import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { AddressBox } from './AddressBox/AddressBox';
+import { Leaderboard } from './Leaderboard/Leaderboard';
 import { TierBox } from './LevelBox/TierBox';
 import {
   ProfilePageContainer,
@@ -11,11 +15,7 @@ import {
 } from './ProfilePage.style';
 import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
-import { Leaderboard } from './Leaderboard/Leaderboard';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
-import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
-import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
-import { useMemo } from 'react';
 
 const shouldHideComponent = (
   account: { address?: string } | undefined,
@@ -39,7 +39,6 @@ export const ProfilePage = () => {
 
   const {
     availableRewards,
-    activeCampaigns,
     pastCampaigns,
     isLoading: isRewardLoading,
     isSuccess: isRewardSuccess,

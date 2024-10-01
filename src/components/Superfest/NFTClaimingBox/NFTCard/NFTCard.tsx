@@ -25,11 +25,11 @@ const LAST_NFT_IMAGE = `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/supernft_1
 
 export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
   const { address } = useAccount();
-  const { claimInfo, isLoading, isSuccess } = useCheckNFTAvailability({
+  const { claimInfo } = useCheckNFTAvailability({
     chain,
   });
   const { switchChainAsync } = useSwitchChain();
-  const { data: hash, isPending, writeContract } = useWriteContract();
+  const { data: hash, writeContract } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash,
@@ -77,11 +77,11 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
           //   bytes calldata _signature // Claim signature
           // )
         } catch (err) {
-          console.log(err);
+          console.error(err);
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

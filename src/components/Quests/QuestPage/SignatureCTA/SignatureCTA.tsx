@@ -1,10 +1,8 @@
 'use client';
 
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { SiweMessage, generateNonce } from 'siwe';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { useTurtleMember } from 'src/hooks/useTurtleMember';
@@ -14,18 +12,17 @@ import {
   SeveralMissionCtaContainer,
 } from '../CTA/MissionCTA.style';
 
-interface SignatureInt {
-  isLive: boolean;
-  message: string;
-}
+// interface SignatureInt {
+//   isLive: boolean;
+//   message: string;
+// }
 
-interface SignatureCtaProps {
-  signature?: SignatureInt;
-}
+// interface SignatureCtaProps {
+//   signature?: SignatureInt;
+// }
 
-export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
-  const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
+export const SignatureCTA = () => {
+  // props: { signature }: SignatureCtaProps
   const { account } = useAccounts();
   const [messageToSign, setMessageToSign] = useState<string | undefined>(
     undefined,
@@ -33,11 +30,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
   const [messagedHasBeenSigned, setMessagedHasBeenSigned] =
     useState<boolean>(false);
   const { signMessageAsync } = useSignMessage();
-  const {
-    isMember,
-    isLoading: isMemberCheckLoading,
-    isSuccess: isMemberCheckSuccess,
-  } = useTurtleMember({
+  const { isMember } = useTurtleMember({
     userAddress: account?.address,
   });
 
@@ -83,7 +76,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -97,7 +90,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
           setMessageToSign(message);
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     }
     fetchMessage();

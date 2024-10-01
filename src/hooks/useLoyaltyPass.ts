@@ -1,8 +1,8 @@
 import { useLoyaltyPassStore } from '@/stores/loyaltyPass';
 import type { PDA } from '@/types/loyaltyPass';
 import { useQuery } from '@tanstack/react-query';
-import { useAccounts } from './useAccounts';
 import { useEffect } from 'react';
+import { useAccounts } from './useAccounts';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
@@ -36,7 +36,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     }
 
     reset();
-  }, [account, storedAddress]);
+  }, [account, storedAddress]); // todo: check dep array
 
   //we store the data during 24hours to avoid querying too much our partner API.
   const t = Date.now() / 1000;

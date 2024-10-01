@@ -81,7 +81,7 @@ export const FeaturedArticleMetaContainer = styled(Box)<BoxProps>(
 );
 
 export const FeaturedArticleMetaDate = styled(Typography)<TypographyProps>(
-  ({ theme }) => ({
+  () => ({
     fontSize: 'inherit',
     '&:after': {
       content: '"•"',
@@ -123,7 +123,7 @@ export const FeaturedArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   },
 }));
 
-export const FeaturedArticleTagSkeleton = styled(Skeleton)(({ theme }) => ({
+export const FeaturedArticleTagSkeleton = styled(Skeleton)(() => ({
   height: '48px',
   width: '108px',
   borderRadius: '24px',
@@ -155,13 +155,11 @@ export const FeaturedArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
   },
 }));
 
-export const FeaturedArticleSubtitleSkeleton = styled(Skeleton)(
-  ({ theme }) => ({
-    height: '64px',
-    transform: 'unset',
-    borderRadius: '12px',
-  }),
-);
+export const FeaturedArticleSubtitleSkeleton = styled(Skeleton)(() => ({
+  height: '64px',
+  transform: 'unset',
+  borderRadius: '12px',
+}));
 
 export const FeaturedArticleContent = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -233,7 +231,7 @@ export const FeaturedArticleTitle = styled(Typography)<TypographyProps>(
 );
 
 export const FeaturedArticleSubtitle = styled(Typography)<TypographyProps>(
-  ({ theme }) => ({
+  () => ({
     userSelect: 'none',
     fontSize: '18px',
     lineHeight: '32px',

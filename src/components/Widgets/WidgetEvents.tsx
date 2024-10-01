@@ -17,7 +17,6 @@ import type { RouteExtended } from '@lifi/sdk';
 import { type Route } from '@lifi/sdk';
 import type {
   ChainTokenSelected,
-  ContactSupport,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
 } from '@lifi/widget';
@@ -142,7 +141,8 @@ export function WidgetEvents() {
       });
     };
 
-    const onRouteContactSupport = (supportId: ContactSupport) => {
+    const onRouteContactSupport = () => {
+      // prop: supportId: ContactSupport
       setSupportModalState(true);
     };
 
@@ -352,7 +352,6 @@ export function WidgetEvents() {
   useEffect(() => {
     setIsMultisigConnectedAlertOpen(isMultisigSigner);
     // prevent endless loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account?.address]);
 
   return (

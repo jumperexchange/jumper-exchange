@@ -21,7 +21,7 @@ export const WalletMgmtChainAvatar = styled(Avatar)(() => ({
   },
 }));
 
-export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
+export const WalletMgmtBadge = styled(Badge)(() => ({
   borderRadius: '50%',
   // overflow: 'hidden',
   '> .MuiAvatar-root': {

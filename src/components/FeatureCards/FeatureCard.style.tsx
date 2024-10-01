@@ -115,8 +115,8 @@ export interface FeatureCardCtaLabelProps
 }
 
 export const FeatureCardCtaLabel = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'data' && prop !== 'typographyColor',
-})<FeatureCardCtaLabelProps>(({ data, typographyColor }) => ({
+  shouldForwardProp: (prop) => prop !== 'data',
+})<FeatureCardCtaLabelProps>(({ data }) => ({
   maxWidth: 224,
   maxHeight: 20,
   overflow: 'hidden',

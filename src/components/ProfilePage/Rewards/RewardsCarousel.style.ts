@@ -1,13 +1,11 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { BoxProps, Breakpoint, IconButtonProps } from '@mui/material';
 import {
   Box,
-  Typography,
-  styled,
   IconButton as MuiIconButton,
+  Typography,
   alpha,
-  darken,
+  styled,
 } from '@mui/material';
-import type { IconButtonProps } from '@mui/material';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.bgSecondary.main,

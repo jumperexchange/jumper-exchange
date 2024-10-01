@@ -3,14 +3,14 @@ import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 
-export const PreviewImage = styled(Image)(({ theme }) => ({
+export const PreviewImage = styled(Image)(() => ({
   borderRadius: '8px',
   width: '100%',
   height: '100%',
   '&:hover': { cursor: 'pointer' },
 }));
 
-export const LightboxModal = styled(Modal)(({ theme }) => ({
+export const LightboxModal = styled(Modal)(() => ({
   zIndex: 1500,
 }));
 

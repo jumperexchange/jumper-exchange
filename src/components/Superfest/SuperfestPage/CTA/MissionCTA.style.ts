@@ -93,7 +93,7 @@ export const MissionCtaButton = styled(IconButtonPrimary)(({ theme }) => ({
     display: 'flex',
   },
 }));
-export const CTABox = styled(Box)(({ theme }) => ({
+export const CTABox = styled(Box)(() => ({
   width: '80%',
   maxWidth: '1210px',
   display: 'flex',
@@ -131,7 +131,7 @@ export const StartedTitleTypography = styled(Typography)(({ theme }) => ({
     lineHeight: '20px',
   },
 }));
-export const StartedTitleBox = styled(Box)(({ theme }) => ({
+export const StartedTitleBox = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-start',

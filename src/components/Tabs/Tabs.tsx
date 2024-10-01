@@ -8,7 +8,7 @@ export interface TabProps {
   tooltip?: string;
   value: number;
   icon?: JSX.Element;
-  onClick: (event: React.MouseEvent<HTMLDivElement>, index: number) => void;
+  onClick: (input: string | boolean | number) => void;
   disabled?: boolean;
 }
 
@@ -46,9 +46,8 @@ export const Tabs = ({
         const tab = (
           <Tab
             key={`${keys.id}-${index}`}
-            onClick={(event) => {
-              event.preventDefault();
-              el.onClick(event, el.value);
+            onClick={() => {
+              el.onClick(el.value);
             }}
             icon={el.icon}
             label={el.label}
@@ -57,7 +56,7 @@ export const Tabs = ({
             sx={tabStyles}
           />
         );
-        return !!el.tooltip ? (
+        return el.tooltip ? (
           <Tooltip
             title={el.tooltip}
             key={`tooltip-${el.label}-${index}`}

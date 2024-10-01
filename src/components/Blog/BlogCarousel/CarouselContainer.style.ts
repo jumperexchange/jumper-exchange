@@ -81,7 +81,7 @@ export const CarouselNavigationContainer = styled(Box, {
 
 export const CarouselNavigationButton = styled(IconButtonTertiary, {
   shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
+})<IconButtonProps>(() => ({
   width: 40,
   height: 40,
   fontSize: 22,

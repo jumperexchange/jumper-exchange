@@ -1,9 +1,8 @@
+import type { ThemeModesSupported } from '@/types/settings';
+import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { useSettingsStore } from 'src/stores/settings';
 import type { PartnerTheme } from 'src/types/strapi';
-import { useEffect } from 'react';
-import type { ThemeModesSupported } from '@/types/settings';
-import { useMediaQuery } from '@mui/material';
 
 interface useThemeModeReturn {
   themeMode: PartnerTheme;
@@ -31,13 +30,13 @@ export const useThemeMode = (
 
   useEffect(() => {
     if (!cookie.themeMode) {
-      // @ts-expect-error
+      // @ts-expect-error: ignoring 'undefined' is not assignable to type
       updateThemeMode(initialThemeMode);
     }
-  }, []);
+  }, []); // todo: check dep array
 
   return {
-    // @ts-expect-error
+    // @ts-expect-error: ignoring Type 'string' is not assignable to type 'PartnerTheme'.
     themeMode: themeMode,
     setThemeMode: updateThemeMode,
   };

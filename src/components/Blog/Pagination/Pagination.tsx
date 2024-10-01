@@ -36,7 +36,7 @@ export const Pagination = ({
   const { trackEvent } = useUserTracking();
   const handlePage = (page: number) => {
     trackEvent({
-      category: TrackingCategory.BlogArticlesBoard,
+      category: TrackingCategory.BlogArticlesCollection,
       label: 'click-pagination',
       action: TrackingAction.ClickPagination,
       data: {
@@ -54,7 +54,7 @@ export const Pagination = ({
       setPage(0);
     }
     trackEvent({
-      category: TrackingCategory.BlogArticlesBoard,
+      category: TrackingCategory.BlogArticlesCollection,
       label: 'click-pagination-next',
       action: TrackingAction.ClickPagination,
       data: {
@@ -71,7 +71,7 @@ export const Pagination = ({
       setPage((state) => state - 1);
     }
     trackEvent({
-      category: TrackingCategory.BlogArticlesBoard,
+      category: TrackingCategory.BlogArticlesCollection,
       label: 'click-pagination-prev',
       action: TrackingAction.ClickPagination,
       data: {

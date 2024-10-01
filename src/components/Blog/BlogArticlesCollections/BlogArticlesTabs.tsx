@@ -13,7 +13,7 @@ import { TrackingCategory } from 'src/const/trackingKeys';
 import { chunkArray } from 'src/utils/chunkArray';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { CarouselHeader } from '../BlogCarousel';
-import { Pagination } from '../Pagination/Pagination';
+import Pagination from '../Pagination/Pagination';
 import {
   BlogArticlesCollectionsContainer,
   BlogArticlesCollectionsTitle,

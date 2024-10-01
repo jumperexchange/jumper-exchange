@@ -36,7 +36,7 @@ export default function TranslationsProvider({
     return () => {
       i18n.off('languageChanged', i18nLanguageChangedListener);
     };
-  }, []);
+  }, []); // todo: check dep array
 
   return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
 }

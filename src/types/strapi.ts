@@ -39,7 +39,7 @@ export interface MediaAttributes {
   url: string;
   previewUrl?: string;
   provider: string;
-  provider_metadata: any;
+  provider_metadata: unknown;
   createdAt: string;
   updatedAt: string;
 }

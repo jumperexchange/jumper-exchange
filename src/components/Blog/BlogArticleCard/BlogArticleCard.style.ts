@@ -56,18 +56,18 @@ export const BlogArticleMetaDate = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const BlogArticleMetaReadingTime = styled(Typography)(({ theme }) => ({
+export const BlogArticleMetaReadingTime = styled(Typography)(() => ({
   fontSize: 'inherit',
 }));
 
-export const BlogArticleCardMetaSkeleton = styled(Skeleton)(({ theme }) => ({
+export const BlogArticleCardMetaSkeleton = styled(Skeleton)(() => ({
   width: 150,
   height: 16,
   transform: 'unset',
   borderRadius: '8px',
 }));
 
-export const BlogArticleCardImage = styled(Image)(({ theme }) => ({
+export const BlogArticleCardImage = styled(Image)(() => ({
   width: '100%',
   height: 'auto',
   borderRadius: '16px',
@@ -76,7 +76,7 @@ export const BlogArticleCardImage = styled(Image)(({ theme }) => ({
   objectPosition: 'left',
 }));
 
-export const BlogArticleCardImageSkeleton = styled(Skeleton)(({ theme }) => ({
+export const BlogArticleCardImageSkeleton = styled(Skeleton)(() => ({
   width: '100%',
   aspectRatio: 1.6,
   transform: 'unset',
@@ -90,7 +90,7 @@ export const BlogArticleCardContent = styled(CardContent)(({ theme }) => ({
   '&:last-child': { paddingBottom: theme.spacing(1) },
 }));
 
-export const BlogArticleCardTitle = styled(Typography)(({ theme }) => ({
+export const BlogArticleCardTitle = styled(Typography)(() => ({
   color: 'inherit',
   fontWeight: 700, //todo: use typography
   fontSize: '24px',
@@ -104,7 +104,7 @@ export const BlogArticleCardTitle = styled(Typography)(({ theme }) => ({
   WebkitBoxOrient: 'vertical',
 }));
 
-export const BlogArticleCardTitleSkeleton = styled(Skeleton)(({ theme }) => ({
+export const BlogArticleCardTitleSkeleton = styled(Skeleton)(() => ({
   width: '100%',
   height: '64px',
   transform: 'unset',

@@ -1,6 +1,6 @@
 import { Box, styled } from '@mui/material';
 
-export const RewardsdMainBox = styled(Box)(({ theme }) => ({
+export const RewardsdMainBox = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'center',

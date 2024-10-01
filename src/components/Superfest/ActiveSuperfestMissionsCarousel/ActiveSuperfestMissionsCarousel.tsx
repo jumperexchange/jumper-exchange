@@ -88,6 +88,7 @@ export const ActiveSuperfestMissionsCarousel = ({
                     />
                   );
                 }
+                return undefined; // Return undefined for quests that are not included
               })
             ) : (
               <>

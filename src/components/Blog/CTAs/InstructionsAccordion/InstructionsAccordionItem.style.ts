@@ -68,12 +68,10 @@ export const InstructionsAccordionItemIndex = styled(Typography)(
   }),
 );
 
-export const InstructionsAccordionToggle = styled(IconButtonTertiary)(
-  ({ theme }) => ({
-    width: '40px',
-    height: '40px',
-  }),
-);
+export const InstructionsAccordionToggle = styled(IconButtonTertiary)(() => ({
+  width: '40px',
+  height: '40px',
+}));
 
 export const InstructionsAccordionItemLabel = styled(Box)(({ theme }) => ({
   marginLeft: theme.spacing(2),

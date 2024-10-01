@@ -13,7 +13,7 @@ interface WidgetsProps {
   closedWelcomeScreen: boolean;
 }
 
-export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
+export function Widgets({ widgetVariant }: WidgetsProps) {
   const { activeTab, setActiveTab } = useActiveTabStore();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
 
@@ -21,12 +21,12 @@ export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
     if (widgetVariant) {
       return widgetVariant;
     } else {
-      let url = window?.location.pathname.slice(1);
+      const url = window?.location.pathname.slice(1);
       if (Object.values(LinkMap).includes(url as LinkMap)) {
-        if (!!TabsMap.Buy.destination.filter((el) => el === url).length) {
+        if (TabsMap.Buy.destination.filter((el) => el === url).length) {
           return TabsMap.Buy.variant;
         } else if (
-          !!TabsMap.Refuel.destination.filter((el) => el === url).length
+          TabsMap.Refuel.destination.filter((el) => el === url).length
         ) {
           return TabsMap.Refuel.variant;
         } else {

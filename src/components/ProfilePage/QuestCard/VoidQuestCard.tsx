@@ -2,11 +2,12 @@ import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { alpha, useTheme } from '@mui/material';
 import { VoidQuestCardContainer } from './VoidQuestCard.style';
 
-interface VoidQuestCardProps {
-  connected: boolean;
-}
+// interface VoidQuestCardProps {
+//   connected: boolean;
+// }
 
-export const VoidQuestCard = ({ connected }: VoidQuestCardProps) => {
+export const VoidQuestCard = () => {
+  //props: { connected }: VoidQuestCardProps
   const theme = useTheme();
   return (
     <VoidQuestCardContainer>

@@ -28,7 +28,7 @@ export const useMissionsAPY = (CTAs: CTALinkInt[] = []): useMissionsAPYRes => {
         const result = await response.json();
         return result;
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     },
     enabled: CTAs.length > 0,

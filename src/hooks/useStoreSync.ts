@@ -11,7 +11,7 @@ const useStoreSync = <T>(
   // Creating store hook with initial state from the server.
   const useServerStore = useMemo(
     () => create<T>(() => state),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     [],
   );
 

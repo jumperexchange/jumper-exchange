@@ -5,12 +5,15 @@ import {
 } from '../QuestsMissionPage.style';
 import { DescriptionTitleTypography } from './DescriptionBox.style';
 
-interface DescriptionBox {
+interface DescriptionBoxProps {
   longTitle?: string;
   description?: string;
 }
 
-export const DescriptionBox = ({ longTitle, description }: DescriptionBox) => {
+export const DescriptionBox = ({
+  longTitle,
+  description,
+}: DescriptionBoxProps) => {
   return (
     <QuestsPageElementContainer>
       <DescriptionTitleTypography>{longTitle}</DescriptionTitleTypography>

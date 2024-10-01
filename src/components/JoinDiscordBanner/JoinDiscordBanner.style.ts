@@ -59,8 +59,6 @@ export const DiscordBannerLabel = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const DiscordBannerButton = styled(IconButtonPrimary)<BoxProps>(
-  ({ theme }) => ({
-    display: 'flex',
-  }),
-);
+export const DiscordBannerButton = styled(IconButtonPrimary)<BoxProps>(() => ({
+  display: 'flex',
+}));

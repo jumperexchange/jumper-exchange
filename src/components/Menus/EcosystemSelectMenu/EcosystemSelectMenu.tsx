@@ -59,19 +59,24 @@ export const EcosystemSelectMenu = ({ anchorEl }: MenuProps) => {
         </MenuHeaderAppBar>
       </MenuHeaderAppWrapper>
       <ConnectButtonContainer as="li">
-        <EVMConnectButton
-          walletIcon={getConnectorIcon(
-            openEcosystemSelect.combinedWallet?.evm as Connector,
-          )}
-          evm={openEcosystemSelect.combinedWallet?.evm!}
-        />
-        <SVMConnectButton
-          walletIcon={getConnectorIcon(
-            (openEcosystemSelect.combinedWallet?.evm as Connector) ||
-              openEcosystemSelect.combinedWallet?.svm?.adapter,
-          )}
-          svm={openEcosystemSelect.combinedWallet?.svm!}
-        />
+        {openEcosystemSelect.combinedWallet?.evm && (
+          <EVMConnectButton
+            walletIcon={getConnectorIcon(
+              openEcosystemSelect.combinedWallet?.evm as Connector,
+            )}
+            evm={openEcosystemSelect.combinedWallet?.evm}
+          />
+        )}
+
+        {openEcosystemSelect.combinedWallet?.svm && (
+          <SVMConnectButton
+            walletIcon={getConnectorIcon(
+              (openEcosystemSelect.combinedWallet?.evm as Connector) ||
+                openEcosystemSelect.combinedWallet?.svm?.adapter,
+            )}
+            svm={openEcosystemSelect.combinedWallet?.svm}
+          />
+        )}
       </ConnectButtonContainer>
     </Menu>
   );

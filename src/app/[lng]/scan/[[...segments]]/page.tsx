@@ -31,7 +31,7 @@ export default function Page({
         },
       },
     }),
-    [lng, theme.palette.mode, theme.palette.white.main],
+    [lng, theme.palette.mode, theme.palette.white.main], // todo: check dep array
   );
 
   return (

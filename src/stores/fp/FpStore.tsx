@@ -7,7 +7,7 @@ import { createWithEqualityFn } from 'zustand/traditional';
 
 export const useFpStore = createWithEqualityFn(
   persist(
-    (set, get) => ({
+    (set) => ({
       ...defaultFp,
       setFp: (fp: string) => {
         set({

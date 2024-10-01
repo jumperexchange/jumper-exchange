@@ -17,7 +17,6 @@ import { WalletReadyState } from '@solana/wallet-adapter-base';
 import { useCallback, useMemo } from 'react';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
-import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { type Connector } from 'wagmi';
 

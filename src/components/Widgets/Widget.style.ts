@@ -107,7 +107,7 @@ export const WidgetWrapper = styled(Box, {
   },
 }));
 
-export const GlowBackground = styled('span')(({ theme }) => ({
+export const GlowBackground = styled('span')(() => ({
   position: 'absolute',
   opacity: 0,
   zIndex: -1,

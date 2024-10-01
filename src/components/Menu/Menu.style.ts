@@ -24,7 +24,7 @@ import { alpha, styled } from '@mui/material/styles';
 
 const MENU_LABEL_HEIGHT = 64;
 
-export const MenuPopper = styled(Popper)<PopperProps>(({ theme }) => ({
+export const MenuPopper = styled(Popper)<PopperProps>(() => ({
   zIndex: 1600,
   top: '16px !important',
   position: 'fixed',
@@ -132,7 +132,7 @@ export const MenuPaper = styled(Paper, {
   },
 }));
 
-export const MobileDrawer = styled(Drawer)<MenuItemLinkProps>(({ theme }) => ({
+export const MobileDrawer = styled(Drawer)<MenuItemLinkProps>(() => ({
   zIndex: 1400,
 }));
 
@@ -142,7 +142,7 @@ export interface MenuItemLinkProps extends Omit<LinkProps, 'component'> {
 
 export const MenuItemLink = styled(Link, {
   shouldForwardProp: (prop) => prop !== 'component',
-})<MenuItemLinkProps>(({ theme }) => ({
+})<MenuItemLinkProps>(() => ({
   display: 'flex',
   alignItems: 'center',
   height: 48,

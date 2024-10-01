@@ -2,34 +2,6 @@
 
 import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 
-// PDA Type
-
-type Claim = {
-  points: number;
-  tier: string;
-  transactions?: number;
-  chains?: number;
-  volume?: string;
-};
-
-type Owner = {
-  gatewayId: string;
-  walletId?: string;
-};
-
-type DataModel = {
-  id: string;
-};
-
-type DataAsset = {
-  claim: Claim;
-  title: string;
-  description: string;
-  image: string;
-  dataModel: DataModel;
-  owner: Owner;
-};
-
 export interface Reward {
   description: string;
   image: string;

@@ -96,6 +96,7 @@ export const ActiveQuestsMissionsCarousel = ({
                     />
                   );
                 }
+                return undefined; // Return undefined for quests that are not included
               })
             ) : (
               <>

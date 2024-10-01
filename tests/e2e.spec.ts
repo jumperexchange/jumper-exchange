@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import values from '../tests/testData/values.json';
 import {
+  checkSocialNetworkIcons,
   closeWelcomeScreen,
   expectBackgroundColorToHaveCss,
   expectMenuToBeVisible,
@@ -8,9 +9,8 @@ import {
   itemInSettingsMenu,
   itemInSettingsMenuToBeVisible,
   openMainMenu,
-  tabInHeader,
   sectionOnTheBlogPage,
-  checkSocialNetworkIcons,
+  tabInHeader,
 } from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {
@@ -97,7 +97,7 @@ test.describe('Jumper full e2e flow', () => {
   test('Should be able to navigate to profile and open Explore WoodSwap Mission', async ({
     page,
   }) => {
-    let profileUrl = `${await page.url()}profile`;
+    const profileUrl = `${await page.url()}profile`;
     const whatIsWoodSwapTitle = page.locator(
       'xpath=//p[normalize-space(text())="Explore WoodSwap"]',
     );
@@ -129,7 +129,7 @@ test.describe('Jumper full e2e flow', () => {
     const articleTitle = await page.locator(
       'xpath=//h2[normalize-space(text())="The most awaited release is here, Jumper is live on Solana!"]',
     );
-    let learnUrl = `${await page.url()}learn`;
+    const learnUrl = `${await page.url()}learn`;
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Learn');

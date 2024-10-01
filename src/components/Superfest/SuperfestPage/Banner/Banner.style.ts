@@ -58,7 +58,7 @@ export interface BannerInfoBoxProps extends Omit<BoxProps, 'component'> {
 
 export const BannerInfoBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'points',
-})<BannerInfoBoxProps>(({ points }) => ({
+})<BannerInfoBoxProps>(() => ({
   display: 'flex',
   flexDirection: 'column',
 }));
@@ -78,7 +78,7 @@ export const QuestDatesBox = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
 }));
 
-export const SuperfestPageMainBox = styled(Box)(({ theme }) => ({
+export const SuperfestPageMainBox = styled(Box)(() => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
@@ -87,7 +87,7 @@ export const SuperfestPageMainBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-export const BannerImageBox = styled(Box)(({ theme }) => ({
+export const BannerImageBox = styled(Box)(() => ({
   position: 'relative',
   width: '100%',
   flexGrow: 1,
@@ -153,7 +153,7 @@ export const BannerTitleTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const BannerLabelBox = styled(Box)(({ theme }) => ({
+export const BannerLabelBox = styled(Box)(() => ({
   border: '2px dotted',
   borderColor: '#000000',
   borderRadius: '8px',
@@ -183,7 +183,7 @@ export const RotatingBox = styled(Box)(() => ({
   },
 }));
 
-export const BadgeRelativeBox = styled(Box)(({ theme }) => ({
+export const BadgeRelativeBox = styled(Box)(() => ({
   position: 'relative',
   left: '5%',
   bottom: '42px',

@@ -1,6 +1,2 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 echo "Executing pre-commit scripts"
-
 yarn pre-commit

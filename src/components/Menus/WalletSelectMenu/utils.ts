@@ -6,8 +6,8 @@ export const walletComparator = (
   a: Connector | Wallet,
   b: Connector | Wallet,
 ) => {
-  let aId = (a as Connector).id || (a as Wallet).adapter?.name;
-  let bId = (b as Connector).id || (b as Wallet).adapter?.name;
+  const aId = (a as Connector).id || (a as Wallet).adapter?.name;
+  const bId = (b as Connector).id || (b as Wallet).adapter?.name;
 
   const priorityA = getWalletPriority(aId);
   const priorityB = getWalletPriority(bId);

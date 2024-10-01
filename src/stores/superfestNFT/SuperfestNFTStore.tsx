@@ -1,4 +1,4 @@
-import type { NFTInfo } from 'src/hooks/useCheckNFTAvailability';
+import type { NFTInfoProps } from 'src/hooks/useCheckNFTAvailability';
 import type { SuperfestNFTState } from 'src/types/SuperfestNFTStore';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -7,7 +7,7 @@ import { createWithEqualityFn } from 'zustand/traditional';
 
 export const useSuperfestNFTStore = createWithEqualityFn(
   persist(
-    (set, get) => ({
+    (set) => ({
       address: undefined,
       claimInfo: undefined,
       timestamp: undefined,
@@ -16,7 +16,7 @@ export const useSuperfestNFTStore = createWithEqualityFn(
       setNFTCheckData: (
         address: string,
         claimInfo: {
-          [key: string]: NFTInfo;
+          [key: string]: NFTInfoProps;
         },
         time: number,
       ) => {

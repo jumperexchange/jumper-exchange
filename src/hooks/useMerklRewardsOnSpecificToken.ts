@@ -76,7 +76,7 @@ export const useMerklRewardsOnSpecificToken = ({
   rewardToken,
 }: UseMerklRewardsProps): UseMerklRes => {
   // state
-  let userTVL = 0;
+  const userTVL = 0;
   let rewardsToClaim: AvailableRewards[] = [];
   const activeCampaigns = [] as string[];
   const pastCampaigns = [] as string[];
@@ -104,7 +104,7 @@ export const useMerklRewardsOnSpecificToken = ({
   if (positionsData) {
     for (const chain of ACTIVE_CHAINS) {
       if (positionsData[chain]) {
-        for (const [key, data] of Object.entries(positionsData[chain])) {
+        for (const [key] of Object.entries(positionsData[chain])) {
           activeCampaigns.push(key);
         }
       }
@@ -154,7 +154,7 @@ export const useMerklRewardsOnSpecificToken = ({
     for (const chain of ACTIVE_CHAINS) {
       const campaignData = rewardsData[chain]?.campaignData;
       if (campaignData) {
-        for (const [key, _] of Object.entries(campaignData)) {
+        for (const [key] of Object.entries(campaignData)) {
           pastCampaigns.push(key);
         }
       }
