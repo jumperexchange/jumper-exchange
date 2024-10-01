@@ -11,15 +11,9 @@ import {
 import type { ChangeEvent, FC } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Avatar } from 'src/components/Avatar';
-import { useAccounts } from 'src/hooks/useAccounts';
-import { useChains } from 'src/hooks/useChains';
-import { formatUnits } from 'viem';
-
-import { ChainId, type RouteExtended } from '@lifi/sdk';
-import type { ExtendedChain } from '@lifi/widget';
+import { type RouteExtended } from '@lifi/sdk';
 import { useTranslation } from 'react-i18next';
 import { SAFE_CONTRACTS } from 'src/const/safeContracts';
-import { useTokenBalance } from 'src/hooks/useTokenBalance';
 import { ThemeProviderV2 } from 'src/providers/ThemeProviderV2';
 import { formatInputAmount } from 'src/utils/formatInputAmount';
 import { parseEther } from 'viem';
@@ -42,10 +36,18 @@ import {
 import FlexibleFeeButton from './FlexibleFeeButton';
 import { useFlexibleFeeStore } from 'src/stores/flexibleFee';
 import { FlexibleFeePercentBox } from './FlexibleFeePercentBox';
+import { useUserTracking } from 'src/hooks/userTracking';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 
 interface FlexibleFeeProps {
   route: RouteExtended;
 }
+
+const NATIVE_TOKEN = '0x0000000000000000000000000000000000000000';
 
 const roundToFiveDecimals = (n: number) => {
   return Math.floor(n * 100000) / 100000;
@@ -61,6 +63,7 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
     isEligible,
     activeChain,
   } = useFlexibleFeeStore();
+  const { trackEvent } = useUserTracking();
   const [isTxSuccess, setIsTxSuccess] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>('0');
   const [rate, setRate] = useState<string>('0.3');
@@ -83,6 +86,27 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
 
   useEffect(() => {
     if (isConfirmed) {
+      trackEvent({
+        category: TrackingCategory.VoluntaryFee,
+        action: TrackingAction.VoluntaryFeeTransferSucccess,
+        label: 'voluntary-fee-transfer-success',
+        data: {
+          [TrackingEventParameter.RouteFromChainId]: route?.fromChainId || '',
+          [TrackingEventParameter.RouteToChainId]: route?.toChainId || '',
+          [TrackingEventParameter.RouteFromToken]:
+            route?.fromToken?.address || '',
+          [TrackingEventParameter.RouteToToken]: route?.toToken?.address || '',
+          [TrackingEventParameter.RouteAmountUSD]: route?.fromAmountUSD || '',
+          [TrackingEventParameter.RouteNumberOfSteps]:
+            route?.steps?.length || '',
+          [TrackingEventParameter.RouteVoluntaryFeeChainId]:
+            activeChain?.id || '',
+          [TrackingEventParameter.RouteVoluntaryFeeToken]: NATIVE_TOKEN || '',
+          [TrackingEventParameter.RouteVoluntaryFeeAmount]: amount || '',
+          [TrackingEventParameter.RouteVoluntaryFeeAmountUSD]:
+            parseFloat(amount) * ethPrice || '',
+        },
+      });
       setIsTxSuccess(true);
     }
   }, [isConfirmed]);
@@ -131,6 +155,27 @@ export const FlexibleFee: FC<{ route: RouteExtended }> = ({
 
   const handleButtonClick = async () => {
     try {
+      trackEvent({
+        category: TrackingCategory.VoluntaryFee,
+        action: TrackingAction.VoluntaryFeeTransferStarted,
+        label: 'voluntary-fee-transfer-started',
+        data: {
+          [TrackingEventParameter.RouteFromChainId]: route?.fromChainId || '',
+          [TrackingEventParameter.RouteToChainId]: route?.toChainId || '',
+          [TrackingEventParameter.RouteFromToken]:
+            route?.fromToken?.address || '',
+          [TrackingEventParameter.RouteToToken]: route?.toToken?.address || '',
+          [TrackingEventParameter.RouteAmountUSD]: route?.fromAmountUSD || '',
+          [TrackingEventParameter.RouteNumberOfSteps]:
+            route?.steps?.length || '',
+          [TrackingEventParameter.RouteVoluntaryFeeChainId]:
+            activeChain?.id || '',
+          [TrackingEventParameter.RouteVoluntaryFeeToken]: NATIVE_TOKEN || '',
+          [TrackingEventParameter.RouteVoluntaryFeeAmount]: amount || '',
+          [TrackingEventParameter.RouteVoluntaryFeeAmountUSD]:
+            parseFloat(amount) * ethPrice || '',
+        },
+      });
       await switchToActiveChain();
       sendFlexibleFee();
     } catch (error) {
