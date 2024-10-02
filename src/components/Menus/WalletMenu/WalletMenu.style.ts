@@ -3,9 +3,7 @@
 import { ButtonSecondary, ButtonTransparent } from '@/components/Button';
 import { avatarMask32 } from '@/components/Mask.style';
 import type { Breakpoint, ButtonProps } from '@mui/material';
-import { Drawer } from '@mui/material';
-import { alpha } from '@mui/material';
-import { Avatar, Badge, Container } from '@mui/material';
+import { alpha, Avatar, Badge, Box, Container, Drawer } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export interface WalletButtonProps extends ButtonProps {
@@ -109,4 +107,19 @@ export const WalletCardBadge = styled(Badge)(({ theme }) => ({
   '> .MuiAvatar-root': {
     mask: avatarMask32,
   },
+}));
+
+export const CollapseContainer = styled(Box)(({ theme }) => ({
+  // zIndex: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  maxHeight: '100%',
+  height: 'auto',
+  zIndex: 2000,
+  width: '100%',
+  padding: '1.25rem',
+  boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
+  gap: theme.spacing(2),
+  maxWidth: 416,
+  background: theme.palette.surface1.main,
 }));

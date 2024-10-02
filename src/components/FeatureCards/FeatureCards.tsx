@@ -13,6 +13,7 @@ import { useMediaQuery } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { usePersonalizedFeatureOnLevel } from 'src/hooks/usePersonalizedFeatureOnLevel';
+import { useMenuStore } from 'src/stores/menu';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
 
@@ -21,6 +22,8 @@ export const FeatureCards = () => {
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
   );
+  const openWalletMenu = useMenuStore((state) => state.openWalletMenu);
+
   const { points } = useLoyaltyPass();
   const [widgetExpanded, setWidgetExpanded] = useState(false);
   const widgetEvents = useWidgetEvents();
@@ -112,6 +115,7 @@ export const FeatureCards = () => {
 
   return (
     isDesktop &&
+    !openWalletMenu &&
     welcomeScreenClosed &&
     !widgetExpanded && (
       <FeatureCardsContainer>

@@ -1,19 +1,19 @@
+import Portfolio from '@/components/Portfolio/Portfolio';
 import { useAccounts } from '@/hooks/useAccounts';
 import { useMenuStore } from '@/stores/menu';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   alpha,
-  Drawer,
+  Collapse,
   IconButton,
   Stack,
   Typography,
   useTheme,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CustomDrawer, WalletButton } from '.';
+import { CollapseContainer, WalletButton } from '.';
 import { WalletCardV2 } from './WalletCardV2';
-import Portfolio from '@/components/Portfolio/Portfolio';
-import CloseIcon from '@mui/icons-material/Close';
 
 interface WalletMenuProps {
   anchorEl?: HTMLAnchorElement;
@@ -23,7 +23,6 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   const { t } = useTranslation();
   const { accounts } = useAccounts();
   const theme = useTheme();
-  const [, setOpen] = useState(false);
   const {
     openWalletMenu,
     setWalletMenuState,
@@ -45,53 +44,53 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   }, [accounts, setWalletMenuState, openWalletMenu]);
 
   return (
-    <CustomDrawer
-      // variant="persistent"
-      anchor="right"
-      open={openWalletMenu}
-      onClose={() => {
-        setWalletMenuState(false);
-        setOpen(false);
-      }}
-      slotProps={{ backdrop: { invisible: true } }}
+    <Collapse
+      in={openWalletMenu}
+      easing={'ease-in-out'}
+      orientation="horizontal"
+      mountOnEnter
+      unmountOnExit
+      sx={{ position: 'absolute', right: 0, top: 0 }}
     >
-      <Stack direction="row" justifyContent="space-between">
-        <IconButton
-          aria-label="close"
-          onClick={() => setWalletMenuState(false)}
-          sx={{
-            color: theme.palette.text.primary,
-            '&:hover': {
-              backgroundColor: alpha(theme.palette.text.primary, 0.04),
-            },
-          }}
-          color="primary"
-        >
-          <CloseIcon />
-        </IconButton>
-        <WalletButton
-          sx={{ width: 'auto' }}
-          onClick={() => {
-            setWalletSelectMenuState(true, false);
-          }}
-        >
-          <Typography
+      <CollapseContainer sx={{ width: 'auto' }}>
+        <Stack direction="row" justifyContent="space-between">
+          <IconButton
+            aria-label="close"
+            onClick={() => setWalletMenuState(false)}
             sx={{
               color: theme.palette.text.primary,
+              '&:hover': {
+                backgroundColor: alpha(theme.palette.text.primary, 0.04),
+              },
             }}
-            variant="bodySmallStrong"
+            color="primary"
           >
-            {t('navbar.walletMenu.connectAnotherWallet')}
-          </Typography>
-        </WalletButton>
-      </Stack>
-      {accounts.map(
-        (account) =>
-          account.isConnected && (
-            <WalletCardV2 key={account.address} account={account} />
-          ),
-      )}
-      <Portfolio />
-    </CustomDrawer>
+            <CloseIcon />
+          </IconButton>
+          <WalletButton
+            sx={{ width: 'auto' }}
+            onClick={() => {
+              setWalletSelectMenuState(true, false);
+            }}
+          >
+            <Typography
+              sx={{
+                color: theme.palette.text.primary,
+              }}
+              variant="bodySmallStrong"
+            >
+              {t('navbar.walletMenu.connectAnotherWallet')}
+            </Typography>
+          </WalletButton>
+        </Stack>
+        {accounts.map(
+          (account) =>
+            account.isConnected && (
+              <WalletCardV2 key={account.address} account={account} />
+            ),
+        )}
+        <Portfolio />
+      </CollapseContainer>
+    </Collapse>
   );
 };
