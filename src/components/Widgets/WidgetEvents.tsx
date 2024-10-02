@@ -259,7 +259,7 @@ export function WidgetEvents() {
           data: {
             ...newObj,
             [TrackingEventParameter.FromAmountUSD]: Number(
-              availableRoutes[0].fromAmountUSD,
+              availableRoutes?.[0]?.fromAmountUSD,
             ),
             [TrackingEventParameter.NbOfSteps]: availableRoutes.length,
             [TrackingEventParameter.Routes]: transformedRoutes,
