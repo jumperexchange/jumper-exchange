@@ -1,7 +1,7 @@
 import { useLoyaltyPassStore } from '@/stores/loyaltyPass';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { SECONDS_IN_A_DAY } from 'src/const/time';
+import { SECONDS_IN_AN_HOUR } from 'src/const/time';
 import { useAccounts } from './useAccounts';
 
 export interface useOngoingNumericQuestsType {
@@ -46,9 +46,9 @@ export const useOngoingNumericQuests = (): useOngoingNumericQuestsType => {
     reset();
   }, [account, reset, storedAddress]);
 
-  //we store the data during 24hours to avoid querying too much our partner API.
+  // we store the data for 1 hour
   const t = Date.now() / 1000;
-  const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_A_DAY;
+  const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_AN_HOUR;
 
   const queryIsEnabled =
     !!account?.address &&
@@ -59,7 +59,7 @@ export const useOngoingNumericQuests = (): useOngoingNumericQuestsType => {
   // query
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['ongoing-rewards', account?.address],
+    queryKey: ['ongoing-numeric-quests', account?.address],
     queryFn: async () => {
       const res = await fetch(
         `${apiBaseUrl}/wallets/${account?.address}/ongoing-rewards`,
@@ -84,7 +84,7 @@ export const useOngoingNumericQuests = (): useOngoingNumericQuestsType => {
 
   const returnLocalData = account?.address === storedAddress && !queryIsEnabled;
 
-  const errorWhileFetchingData = !data || !account?.address; //|| !(account.chainType === 'EVM');
+  const errorWhileFetchingData = !data || !account?.address;
 
   if (returnLocalData) {
     return {

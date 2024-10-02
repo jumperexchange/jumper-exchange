@@ -1,30 +1,8 @@
-import { useTranslation } from 'react-i18next';
-import { CarouselContainer } from 'src/components/Blog';
 import { useOngoingNumericQuests } from 'src/hooks/useOngoingNumericQuests';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { QuestCardDetailled } from '../QuestCardDetailled/QuestCardDetailled';
-import { QuestCarouselContainer } from './QuestCarousel.style';
-import { QuestCarouselItems } from './QuestCarouselItems';
 
-interface QuestCarouselProps {
-  pastCampaigns?: string[];
-}
-
-export const QuestCarousel = ({ pastCampaigns }: QuestCarouselProps) => {
-  const { t } = useTranslation();
-  return (
-    <QuestCarouselContainer>
-      <CarouselContainer title={t('missions.available')}>
-        {/** render quests */}
-        <QuestCarouselItems pastCampaigns={pastCampaigns} />
-        {/** render ongoing numeric quests */}
-        <QuestCarouselNumericItems />
-      </CarouselContainer>
-    </QuestCarouselContainer>
-  );
-};
-
-const QuestCarouselNumericItems = () => {
+export const QuestCarouselNumericItems = () => {
   const {
     data: ongoingNumericQuests,
     isLoading: isongoingNumericQuestsLoading,
@@ -45,6 +23,6 @@ const QuestCarouselNumericItems = () => {
         />
       ))
     : Array.from({ length: 4 }, (_, idx) => (
-        <QuestCardSkeleton key={`quest-card-item-skeleton-${idx}`} />
+        <QuestCardSkeleton key={`ongoing-numeric-quests-skeleton-${idx}`} />
       ));
 };
