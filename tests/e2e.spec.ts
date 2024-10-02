@@ -94,12 +94,12 @@ test.describe('Jumper full e2e flow', () => {
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
 
-  test('Should be able to navigate to profile and open Explore WoodSwap Mission', async ({
+  test('Should be able to navigate to profile and open first Mission', async ({
     page,
   }) => {
     let profileUrl = `${await page.url()}profile`;
-    const whatIsWoodSwapTitle = page.locator(
-      'xpath=//p[normalize-space(text())="Explore WoodSwap"]',
+    const missionTitle = page.locator(
+      'xpath=//div[@class="MuiBox-root mui-9cpca"]',
     );
     await openMainMenu(page);
     await expectMenuToBeVisible(page);
@@ -107,10 +107,10 @@ test.describe('Jumper full e2e flow', () => {
     expect(await page.url()).toBe(profileUrl);
     await page.locator('.profile-page').isVisible();
     await page
-      .locator('xpath=//p[normalize-space(text())="Explore WoodSwap"]')
+      .locator('xpath=(//div[@class="MuiBox-root mui-vyka93"])[1]')
       .click();
 
-    await expect(whatIsWoodSwapTitle).toBeInViewport({ timeout: 15000 });
+    await expect(missionTitle).toBeVisible({ timeout: 15000 });
   });
 
   test('Should be able to navigate to the Jumper Learn', async ({ page }) => {
