@@ -8,7 +8,7 @@ export const QuestCarouselNumericItems = () => {
     isLoading: isongoingNumericQuestsLoading,
   } = useOngoingNumericQuests();
   return !isongoingNumericQuestsLoading
-    ? ongoingNumericQuests.map((numericQuest, index) => (
+    ? ongoingNumericQuests?.map((numericQuest, index) => (
         <QuestCardDetailled
           key={`available-mission-${index}`}
           active={true}

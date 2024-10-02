@@ -113,17 +113,12 @@ export const QuestCardDetailled = ({
               <Skeleton variant="text" width={256} height={20} />
             )}
           </QuestCardTitleBox>
-          {rewardsProgress && (
-            <ProgressionBar
-              points={points}
-              levelData={{
-                maxPoints: rewardsProgress.max,
-                minPoints: rewardsProgress.min,
-              }}
-              hideIndicator={true}
-            />
-          )}
-          <FlexSpaceBetweenBox marginBottom={'8px'} marginTop={'8px'}>
+
+          <FlexSpaceBetweenBox
+            marginBottom={'8px'}
+            marginTop={'8px'}
+            minHeight={'32px'}
+          >
             <FlexCenterRowBox>
               {chains?.map((elem: Chain, i: number) => {
                 return (
@@ -204,6 +199,16 @@ export const QuestCardDetailled = ({
               </FlexCenterRowBox>
             ) : undefined}
           </FlexSpaceBetweenBox>
+          {rewardsProgress && (
+            <ProgressionBar
+              points={points}
+              levelData={{
+                maxPoints: rewardsProgress.max,
+                minPoints: rewardsProgress.min,
+              }}
+              hideIndicator={true}
+            />
+          )}
           <QuestCardInfoBox points={points}>
             {active && slug ? (
               <Button
