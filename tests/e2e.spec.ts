@@ -116,7 +116,7 @@ test.describe('Jumper full e2e flow', () => {
   test('Should be able to navigate to the Jumper Learn', async ({ page }) => {
     const sectionName = [
       'Announcements',
-      'Partner',
+      'Partnerships',
       'Bridge',
       'Swap',
       'Tutorial',
