@@ -198,7 +198,7 @@ export const QuestCardDetailled = ({
           </FlexSpaceBetweenBox>
           {rewardsProgress && (
             <ProgressionBar
-              points={points}
+              points={rewardsProgress.points}
               levelData={{
                 maxPoints: rewardsProgress.max,
                 minPoints: rewardsProgress.min,

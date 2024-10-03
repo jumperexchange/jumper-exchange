@@ -7,6 +7,7 @@ export const QuestCarouselNumericItems = () => {
     data: ongoingNumericQuests,
     isLoading: isongoingNumericQuestsLoading,
   } = useOngoingNumericQuests();
+  console.log(ongoingNumericQuests);
   return !isongoingNumericQuestsLoading
     ? ongoingNumericQuests?.map((numericQuest, index) => (
         <QuestCardDetailled
@@ -14,7 +15,7 @@ export const QuestCarouselNumericItems = () => {
           active={true}
           title={numericQuest.displayName}
           image={numericQuest.image}
-          points={numericQuest.points}
+          points={numericQuest.nextLevel}
           rewardsProgress={{
             min: numericQuest.min,
             max: numericQuest.max,
