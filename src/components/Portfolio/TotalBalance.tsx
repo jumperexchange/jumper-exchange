@@ -153,7 +153,7 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
                 ) : (
                   <ArrowDownwardIcon />
                 )}
-                {differencePercent?.toFixed(2)}%
+                {differencePercent?.toFixed(2)}% (1d)
               </VariationValue>
               <VariationValue color={(theme) => theme.palette.text.secondary}>
                 • ${differenceValue?.toFixed(2)}

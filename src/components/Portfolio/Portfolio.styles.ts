@@ -14,9 +14,8 @@ export const TotalValue = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
   textOverflow: 'ellipsis',
   fontWeight: '700',
-  // textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-  fontSize: '3rem',
-  lineHeight: '4rem',
+  fontSize: '32px',
+  lineHeight: '40px',
 }));
 
 export const VariationValue = styled(Typography)(({ theme }) => ({
@@ -78,8 +77,8 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
 }));
 
 export const SmallAvatar = styled(Avatar)(({ theme }) => ({
-  width: 20,
-  height: 20,
+  width: 16,
+  height: 16,
   border: `2px solid ${theme.palette.background.paper}`,
 }));
 

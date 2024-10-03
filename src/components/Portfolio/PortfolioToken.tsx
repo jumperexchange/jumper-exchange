@@ -110,8 +110,8 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                           alt={token.chains[0]?.name || 'chain-name'}
                           src={token.chains[0]?.logoURI || ''}
                           sx={{
-                            width: '16px',
-                            height: '16px',
+                            width: '18px',
+                            height: '18px',
                             border: '2px solid white',
                           }}
                         />
@@ -130,12 +130,6 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
               {!hasMultipleChains ? (
                 <TypographySecondary>
                   {token.chains[0].name}
-                </TypographySecondary>
-              ) : isExpanded ? (
-                <TypographySecondary>
-                  {t('navbar.walletMenu.numberOfChains', {
-                    numberOfChains: token.chains?.length,
-                  })}
                 </TypographySecondary>
               ) : (
                 <CustomAvatarGroup spacing={6} max={15}>
