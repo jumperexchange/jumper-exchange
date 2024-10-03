@@ -1,6 +1,11 @@
 name: Playwright Tests
 on:
-  push:
+  - pull_request
+  - workflow_dispatch
+permissions:
+  checks: write
+  pull-requests: write
+  contents: write
 jobs:
   test:
     timeout-minutes: 10
@@ -22,3 +27,7 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+    - uses: daun/playwright-report-summary@v3
+      if: always()
+      with:
+        report-file: test-results.json
