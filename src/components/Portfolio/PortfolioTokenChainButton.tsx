@@ -53,6 +53,10 @@ function PortfolioTokenChainButton({
         '&:hover': {
           background: 'rgba(0, 0, 0, 0.04)',
         },
+        '&:last-child:hover': {
+          background: 'rgba(0, 0, 0, 0.04)',
+          borderRadius: '0 0 16px 16px',
+        },
       }}
     >
       <Grid container display="flex" alignItems="center">

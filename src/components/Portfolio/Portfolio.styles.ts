@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { lighten } from '@mui/material/styles';
+import { AccordionProps } from '@mui/material/Accordion'; // Import AccordionProps
 
 export const TotalValue = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -27,21 +28,23 @@ export const VariationValue = styled(Typography)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-export const CustomAccordion = styled(Accordion)(({ theme }) => ({
-  background: 'transparent',
-  border: 0,
-  boxShadow: 'none',
-  width: '100%',
+export const CustomAccordion = styled(Accordion)<{ isExpanded?: boolean }>(
+  ({ theme, isExpanded }) => ({
+    background: 'transparent',
+    border: 0,
+    boxShadow: 'none',
+    width: '100%',
 
-  '& .MuiAccordionSummary-root': {
-    padding: '16px',
-    borderRadius: 12,
-
-    '&:hover': {
-      background: 'rgba(0, 0, 0, 0.04)',
+    '& .MuiAccordionSummary-root': {
+      padding: '16px',
+      borderRadius: 12,
+      '&:hover': {
+        background: 'rgba(0, 0, 0, 0.04)',
+        borderRadius: isExpanded ? '16px 16px 0 0' : '16px',
+      },
     },
-  },
-}));
+  }),
+);
 
 export const TypographyPrimary = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
