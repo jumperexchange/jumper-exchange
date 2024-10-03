@@ -96,16 +96,18 @@ export const AddressBox = ({ address, isEVM, imageLink }: AddressBoxProps) => {
         <ProfileIconButton onClick={() => handleCopyButton()}>
           <ContentCopyIcon sx={{ height: '16px' }} />
         </ProfileIconButton>
-        <a
-          href={`https://etherscan.io/address/${address}`}
-          target="_blank"
-          style={{ textDecoration: 'none', color: 'inherit' }}
-          rel="noreferrer"
-        >
-          <ProfileIconButton>
-            <OpenInNewIcon sx={{ height: '16px' }} />
-          </ProfileIconButton>
-        </a>
+        {address && (
+          <a
+            href={`https://etherscan.io/address/${address}`}
+            target="_blank"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+            rel="noreferrer"
+          >
+            <ProfileIconButton>
+              <OpenInNewIcon sx={{ height: '16px' }} />
+            </ProfileIconButton>
+          </a>
+        )}
       </AddressDisplayBox>
     </AddressBoxContainer>
   );
