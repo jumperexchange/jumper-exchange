@@ -3,12 +3,7 @@ import {
   TypographyPrimary,
   TypographySecondary,
 } from '@/components/Portfolio/Portfolio.styles';
-import {
-  Avatar as MuiAvatar,
-  Badge,
-  ButtonBase,
-  Grid,
-} from '@mui/material';
+import { Avatar as MuiAvatar, Badge, ButtonBase, Grid } from '@mui/material';
 import Image from 'next/image';
 import type { ExtendedTokenAmountWithChain } from '@/utils/getTokens';
 import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
@@ -21,9 +16,7 @@ interface PortfolioTokenChainButtonProps {
   token: ExtendedTokenAmountWithChain;
 }
 
-function PortfolioTokenChainButton({
-  token,
-}: PortfolioTokenChainButtonProps) {
+function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
   const { setWalletMenuState } = useMenuStore((state) => state);
   const { isMainPaths } = useMainPaths();

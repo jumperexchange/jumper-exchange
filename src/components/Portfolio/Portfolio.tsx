@@ -5,7 +5,8 @@ import TotalBalance from '@/components/Portfolio/TotalBalance';
 import { WalletCardContainer } from '@/components/Menus';
 import PortfolioToken from '@/components/Portfolio/PortfolioToken';
 import { useEffect, useState } from 'react';
-import getTokens, { ExtendedTokenAmount, ResultTokenBalance } from '@/utils/getTokens';
+import type { ExtendedTokenAmount } from '@/utils/getTokens';
+import getTokens, { ResultTokenBalance } from '@/utils/getTokens';
 
 function Portfolio() {
   const { accounts } = useAccounts();
@@ -19,7 +20,7 @@ function Portfolio() {
   const handleProgress = (
     round: number,
     cumulativePriceUSD: number,
-    fetchedBalances: ExtendedTokenAmount[]
+    fetchedBalances: ExtendedTokenAmount[],
   ) => {
     console.log(`\n** Round ${round} **`);
     console.log(`Cumulative Price USD: $${cumulativePriceUSD.toFixed(2)}`);
@@ -31,21 +32,21 @@ function Portfolio() {
 
   const handleComplete = () => {
     setIsComplete(true);
-  }
+  };
 
   useEffect(() => {
     if (!accounts?.[0]?.address) {
       return;
     }
 
-    getTokens(accounts?.[0]?.address, handleProgress, handleComplete)
+    getTokens(accounts?.[0]?.address, handleProgress, handleComplete);
   }, [accounts?.[0].address]);
 
   return (
     <>
       <TotalBalance isComplete={isComplete} totalValue={cumulativePriceUSD} />
       <Stack spacing={1}>
-        {(data.length == 0) &&
+        {data.length == 0 &&
           Array.from({ length: 5 }, () => 42).map((token) => (
             <WalletCardContainer>
               <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
@@ -109,7 +110,10 @@ function Portfolio() {
             </WalletCardContainer>
           ))}
         {(data || []).map((token) => (
-          <PortfolioToken token={token} key={`${token.chainId}-${token.address}`} />
+          <PortfolioToken
+            token={token}
+            key={`${token.chainId}-${token.address}`}
+          />
         ))}
       </Stack>
     </>

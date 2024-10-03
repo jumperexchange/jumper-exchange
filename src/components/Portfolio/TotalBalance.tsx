@@ -1,6 +1,10 @@
 import { WalletCardContainer } from '@/components/Menus';
 import { Box, Stack, Tooltip, Typography } from '@mui/material';
-import { CircularProgressPending, TotalValue, VariationValue } from '@/components/Portfolio/Portfolio.styles';
+import {
+  CircularProgressPending,
+  TotalValue,
+  VariationValue,
+} from '@/components/Portfolio/Portfolio.styles';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useTranslation } from 'react-i18next';
@@ -59,8 +63,8 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
     const differencePercent =
       portfolio.lastTotalValue !== 0
         ? ((totalValue - portfolio.lastTotalValue) /
-          Math.abs(portfolio.lastTotalValue)) *
-        100
+            Math.abs(portfolio.lastTotalValue)) *
+          100
         : 0;
 
     setDifferenceValue(differenceValue);
@@ -112,18 +116,19 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
             />
           </Tooltip>
         </Box>
-        {!isComplete &&
+        {!isComplete && (
           <Tooltip
-          title={t('hello' as any)}
-          placement="top"
-          enterTouchDelay={0}
-          arrow
-          // title={t('navbar.walletMenu.refreshBalances')}
-        >
-          <TotalBalanceIconButton refetch={() => {}}>
-            <CircularProgressPending size={24} />
-          </TotalBalanceIconButton>
-        </Tooltip>}
+            title={t('hello' as any)}
+            placement="top"
+            enterTouchDelay={0}
+            arrow
+            // title={t('navbar.walletMenu.refreshBalances')}
+          >
+            <TotalBalanceIconButton refetch={() => {}}>
+              <CircularProgressPending size={24} />
+            </TotalBalanceIconButton>
+          </Tooltip>
+        )}
       </Box>
       <Stack spacing={1}>
         <TotalValue>{currencyFormatter(lng).format(totalValue)}</TotalValue>

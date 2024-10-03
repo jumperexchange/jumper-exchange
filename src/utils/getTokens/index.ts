@@ -6,7 +6,7 @@ import {
 } from '@lifi/sdk';
 import { formatUnits } from 'viem';
 import type { TokenAmount } from '@lifi/sdk';
-import { Token } from '@lifi/widget';
+import type { Token } from '@lifi/widget';
 
 export interface ExtendedTokenAmountWithChain extends ExtendedTokenAmount {
   chainLogoURI?: string;
@@ -21,9 +21,9 @@ interface Price {
 
 export interface ExtendedTokenAmount extends TokenAmount, Partial<Price> {
   chains: ExtendedTokenAmountWithChain[];
-  cumulatedBalance?: number;             // Cumulated balance across chains
-  cumulatedTotalUSD?: number;            // Cumulated total USD across chains
-  totalUSD?: number;                     // Total USD for this token (chain-specific)
+  cumulatedBalance?: number; // Cumulated balance across chains
+  cumulatedTotalUSD?: number; // Cumulated total USD across chains
+  totalUSD?: number; // Total USD for this token (chain-specific)
 }
 
 function getBalance(tb: Partial<TokenAmount>): number {
@@ -46,7 +46,7 @@ export interface ResultTokenBalance {
 
 // Constants
 const MAX_CROSS_CHAIN_FETCH = 1000; // Maximum tokens per fetch round across all chains
-const MAX_TOKENS_PER_CHAIN = 2; // Maximum tokens to fetch per chain per round
+const MAX_TOKENS_PER_CHAIN = 150; // Maximum tokens to fetch per chain per round
 const FETCH_DELAY = 5000;
 
 // Custom setTimeout function returning a Promise
@@ -68,9 +68,9 @@ async function fetchAllTokensByChain(
   onProgress: (
     round: number,
     cumulativePriceUSD: number,
-    fetchedBalances: ExtendedTokenAmount[]
+    fetchedBalances: ExtendedTokenAmount[],
   ) => void,
-  handleComplete: () => void
+  handleComplete: () => void,
 ): Promise<{
   totalPriceUSD: number;
   allBalances: ExtendedTokenAmount[];
@@ -90,11 +90,10 @@ async function fetchAllTokensByChain(
 
   const tokensByChain: Record<string, Token[]> = Object.keys(tokens).reduce(
     (acc, chainId) => {
-      // @ts-expect-error
       acc[chainId] = [...tokens[Number(chainId)]];
       return acc;
     },
-    {} as Record<string, Token[]>
+    {} as Record<string, Token[]>,
   );
 
   while (true) {
@@ -117,7 +116,7 @@ async function fetchAllTokensByChain(
       const tokensToFetch = Math.min(
         MAX_TOKENS_PER_CHAIN,
         tokens.length,
-        MAX_CROSS_CHAIN_FETCH - tokensFetchedThisRound
+        MAX_CROSS_CHAIN_FETCH - tokensFetchedThisRound,
       );
 
       if (tokensToFetch <= 0) {
@@ -132,16 +131,16 @@ async function fetchAllTokensByChain(
     }
 
     if (fetchPromises.length === 0) {
-      console.log("No more tokens to fetch.");
+      console.log('No more tokens to fetch.');
       break;
     }
 
     const fetchResults = await Promise.all(fetchPromises);
 
-    const detailedBalances: ExtendedTokenAmount[] = fetchResults.flat()
+    const detailedBalances: ExtendedTokenAmount[] = fetchResults
+      .flat()
       .filter((t) => t.amount && t.amount > BigInt(0))
-      .map(
-      (balance) => {
+      .map((balance) => {
         const humanReadableBalance = getBalance(balance);
         const chain = chains.find((c) => c.id === balance.chainId);
 
@@ -153,12 +152,11 @@ async function fetchAllTokensByChain(
           totalUSD: humanReadableBalance * parseFloat(balance.priceUSD),
           totalPriceUSD: humanReadableBalance * parseFloat(balance.priceUSD),
         };
-      }
-    );
+      });
 
     const roundPriceUSD = detailedBalances.reduce(
       (sum, balance) => sum + balance.totalUSD!,
-      0
+      0,
     );
 
     totalPriceUSD += roundPriceUSD;
@@ -182,14 +180,16 @@ async function fetchAllTokensByChain(
               chainLogoURI: chain?.logoURI,
               chainName: chain?.name,
               cumulatedBalance: humanReadableBalance,
-              totalPriceUSD: humanReadableBalance * parseFloat(balance.priceUSD),
+              totalPriceUSD:
+                humanReadableBalance * parseFloat(balance.priceUSD),
             },
-          ]
+          ],
         };
-        console.log('will push balance', balance, existingToken)
+        console.log('will push balance', balance, existingToken);
 
         // Update cumulated balance and cumulated total USD for the existing token
-        const cumulatedBalance = getBalance(existingToken) + getBalance(balance);
+        const cumulatedBalance =
+          getBalance(existingToken) + getBalance(balance);
         const cumulatedTotalUSD =
           (existingToken.cumulatedTotalUSD || 0) + balance.totalUSD!;
 
@@ -200,18 +200,23 @@ async function fetchAllTokensByChain(
         balance.cumulatedBalance = getBalance(balance);
 
         // If this symbol is new, store it in the symbol map
-        symbolMap[balance.symbol] = { ...balance, chains: [balance], cumulatedTotalUSD: balance.totalUSD! };
+        symbolMap[balance.symbol] = {
+          ...balance,
+          chains: [balance],
+          cumulatedTotalUSD: balance.totalUSD!,
+        };
       }
     }
 
     // Pass the cumulative sum, cumulative price, and current state of the symbolMap to onProgress
-    const combinedBalances = Object.values(symbolMap)
-      .sort((a, b) => (b.totalPriceUSD || 0) - (a.totalPriceUSD || 0));
+    const combinedBalances = Object.values(symbolMap).sort(
+      (a, b) => (b.totalPriceUSD || 0) - (a.totalPriceUSD || 0),
+    );
 
     onProgress(round, totalPriceUSD, combinedBalances);
 
     console.log(
-      `Round ${round} completed. Fetched ${tokensFetchedThisRound} tokens.`
+      `Round ${round} completed. Fetched ${tokensFetchedThisRound} tokens.`,
     );
 
     round += 1;
@@ -219,7 +224,7 @@ async function fetchAllTokensByChain(
   }
 
   handleComplete();
-  console.log("\nAll tokens have been successfully fetched!");
+  console.log('\nAll tokens have been successfully fetched!');
 
   // Flatten symbolMap into an array of tokens, each with its "chains"
   const allBalances = Object.values(symbolMap);
@@ -231,13 +236,19 @@ async function fetchAllTokensByChain(
 
 async function getTokens(
   account: string,
-  handleProgress: (round: number, cumulativePriceUSD: number, fetchedBalances: ExtendedTokenAmount[]) => void,
+  handleProgress: (
+    round: number,
+    cumulativePriceUSD: number,
+    fetchedBalances: ExtendedTokenAmount[],
+  ) => void,
   handleComplete: () => void,
 ): Promise<void> {
   try {
-    fetchAllTokensByChain(account, handleProgress, handleComplete).catch(error => {
-      console.error("An error occurred during the fetching process:", error);
-    });
+    fetchAllTokensByChain(account, handleProgress, handleComplete).catch(
+      (error) => {
+        console.error('An error occurred during the fetching process:', error);
+      },
+    );
   } catch (error) {
     console.error(error);
   }

@@ -17,7 +17,7 @@ import {
   Box,
 } from '@mui/material';
 import Image from 'next/image';
-import { ExtendedTokenAmountWithChain } from '@/utils/getTokens';
+import type { ExtendedTokenAmountWithChain } from '@/utils/getTokens';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -123,16 +123,14 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             <Grid item xs={5}>
               <TypographyPrimary>{token.symbol}</TypographyPrimary>
               {!hasMultipleChains ? (
-                <TypographySecondary>
-                  {token.name}
-                </TypographySecondary>
+                <TypographySecondary>{token.name}</TypographySecondary>
               ) : isExpanded ? (
                 <TypographySecondary sx={{ paddingY: '2px' }}>
                   {t('navbar.walletMenu.numberOfChains', {
                     numberOfChains: token.chains?.length,
                   })}
                 </TypographySecondary>
-                ) : (
+              ) : (
                 <CustomAvatarGroup spacing={6} max={15}>
                   {token.chains.map((chain) => (
                     <Tooltip
@@ -147,7 +145,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                     </Tooltip>
                   ))}
                 </CustomAvatarGroup>
-                )}
+              )}
             </Grid>
             <Grid item xs={5} style={{ textAlign: 'right' }}>
               <TypographyPrimary>
@@ -165,27 +163,27 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             padding: 0,
           }}
         >
-            <Box
+          <Box
+            sx={{
+              flexDirection: 'column',
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+            }}
+          >
+            <Divider
               sx={{
-                flexDirection: 'column',
-                display: 'flex',
-                justifyContent: 'center',
-                width: '100%',
+                opacity: 0.3,
+                width: '95%',
               }}
-            >
-              <Divider
-                sx={{
-                  opacity: 0.3,
-                  width: '95%',
-                }}
-              />
-          {token.chains.map((tokenWithChain) => (
-            <PortfolioTokenChainButton
-              key={generateKey(tokenWithChain.address)}
-              token={tokenWithChain}
             />
-          ))}
-            </Box>
+            {token.chains.map((tokenWithChain) => (
+              <PortfolioTokenChainButton
+                key={generateKey(tokenWithChain.address)}
+                token={tokenWithChain}
+              />
+            ))}
+          </Box>
         </AccordionDetails>
       </CustomAccordion>
     </WalletCardContainer>
