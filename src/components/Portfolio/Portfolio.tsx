@@ -1,38 +1,54 @@
-import { Box, Skeleton, Stack, useTheme, Badge } from '@mui/material';
+import { Box, Skeleton, Stack, Badge, useTheme } from '@mui/material';
 import { usePortfolioStore } from '@/stores/portfolio';
 import { useAccounts } from '@/hooks/useAccounts';
-import { useTranslation } from 'react-i18next';
-import { useTokenBalances } from '@/hooks/useTokenBalances';
 import TotalBalance from '@/components/Portfolio/TotalBalance';
 import { WalletCardContainer } from '@/components/Menus';
 import PortfolioToken from '@/components/Portfolio/PortfolioToken';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import type { ExtendedTokenAmount } from '@/utils/getTokens';
+import getTokens, { ResultTokenBalance } from '@/utils/getTokens';
 
 function Portfolio() {
   const { accounts } = useAccounts();
+  const [data, setData] = useState<ExtendedTokenAmount[]>([]);
+  const [cumulativePriceUSD, setCumulativePriceUSD] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
   const [forceRefresh, setForceRefresh] = usePortfolioStore((state) => [
     state.forceRefresh,
     state.setForceRefresh,
   ]);
   const theme = useTheme();
-  const { refetch, data, totalValue, isLoading, isRefetching } =
-    useTokenBalances(accounts);
+  const handleProgress = (
+    round: number,
+    cumulativePriceUSD: number,
+    fetchedBalances: ExtendedTokenAmount[],
+  ) => {
+    console.log(`\n** Round ${round} **`);
+    console.log(`Cumulative Price USD: $${cumulativePriceUSD.toFixed(2)}`);
+    console.log(`Fetched Balances this Round:`, fetchedBalances);
+
+    setCumulativePriceUSD(cumulativePriceUSD);
+    setData(fetchedBalances);
+  };
+
+  const handleComplete = () => {
+    setIsComplete(true);
+  };
 
   useEffect(() => {
-    if (!forceRefresh) {
+    if (!accounts?.[0]?.address) {
       return;
     }
 
-    setForceRefresh(false);
-    refetch();
-  }, [forceRefresh]);
+    getTokens(accounts?.[0]?.address, handleProgress, handleComplete);
+  }, [accounts?.[0].address]);
 
   return (
     <>
-      <TotalBalance refetch={refetch} totalValue={totalValue} />
+      <TotalBalance isComplete={isComplete} totalValue={cumulativePriceUSD} />
       <Stack spacing={1}>
-        {(isLoading || isRefetching) &&
-          Array.from({ length: 8 }, () => 42).map((token) => (
+        {data.length == 0 &&
+          Array.from({ length: 5 }, () => 42).map((token) => (
             <WalletCardContainer>
               <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
                 <Box>
@@ -98,8 +114,11 @@ function Portfolio() {
               </Stack>
             </WalletCardContainer>
           ))}
-        {(data || []).map((token, index) => (
-          <PortfolioToken token={token} key={index} />
+        {(data || []).map((token) => (
+          <PortfolioToken
+            token={token}
+            key={`${token.chainId}-${token.address}`}
+          />
         ))}
       </Stack>
     </>
