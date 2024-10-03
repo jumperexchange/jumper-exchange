@@ -1,18 +1,6 @@
 import { WalletCardContainer } from '@/components/Menus';
-import {
-  alpha,
-  Box,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-import {
-  CircularProgressPending,
-  TotalValue,
-  VariationValue,
-} from '@/components/Portfolio/Portfolio.styles';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import { Box, Stack, Tooltip, Typography } from '@mui/material';
+import { CircularProgressPending, TotalValue, VariationValue } from '@/components/Portfolio/Portfolio.styles';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useTranslation } from 'react-i18next';
@@ -24,8 +12,6 @@ import { usePortfolioStore } from '@/stores/portfolio';
 import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
 import { useParams } from 'next/navigation';
 import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
-import { IconHeader } from '../ProfilePage/Common/IconHeader';
-import { StyledInfoIcon } from '../ProfilePage/Common/CustonInfoIcon';
 import InfoIcon from '@mui/icons-material/Info';
 
 function has24HoursPassed(lastDate: number): boolean {
@@ -35,11 +21,11 @@ function has24HoursPassed(lastDate: number): boolean {
 }
 
 interface TotalBalanceProps {
-  refetch: () => void;
   totalValue: number;
+  isComplete: boolean;
 }
 
-function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
+function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
   const { lng } = useParams();
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
@@ -73,8 +59,8 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
     const differencePercent =
       portfolio.lastTotalValue !== 0
         ? ((totalValue - portfolio.lastTotalValue) /
-            Math.abs(portfolio.lastTotalValue)) *
-          100
+          Math.abs(portfolio.lastTotalValue)) *
+        100
         : 0;
 
     setDifferenceValue(differenceValue);
@@ -126,17 +112,18 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
             />
           </Tooltip>
         </Box>
-        <Tooltip
+        {!isComplete &&
+          <Tooltip
           title={t('hello' as any)}
           placement="top"
           enterTouchDelay={0}
           arrow
           // title={t('navbar.walletMenu.refreshBalances')}
         >
-          <TotalBalanceIconButton refetch={refetch}>
+          <TotalBalanceIconButton refetch={() => {}}>
             <CircularProgressPending size={24} />
           </TotalBalanceIconButton>
-        </Tooltip>
+        </Tooltip>}
       </Box>
       <Stack spacing={1}>
         <TotalValue>{currencyFormatter(lng).format(totalValue)}</TotalValue>
