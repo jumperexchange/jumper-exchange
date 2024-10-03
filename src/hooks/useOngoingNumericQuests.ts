@@ -11,18 +11,18 @@ export interface useOngoingNumericQuestsType {
 }
 
 export interface OngoingNumericItemStats {
-  points: number; // currentValue
+  points: number; // todo: change to currentValue
   max: number;
   min: number;
 }
 export interface OngoingNumericItem extends OngoingNumericItemStats {
   description: string | null;
   displayName: string;
-  level?: number; // currentRangeXP
+  level?: number; // todo: change to currentRangeXP
   id: number;
   image: string;
   name: string;
-  nextLevel: number; // nextRangeXP
+  nextLevel: number; // todo: change to nextRangeXP
   type: string;
 }
 
