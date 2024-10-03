@@ -6,7 +6,7 @@ export async function findTheBestRoute(page) {
   await page.getByRole('heading', { name: 'Find the best route' });
 }
 
-export async function openMainMenu(page) {
+export async function openOrCloseMainMenu(page) {
   await page.locator('#main-burger-menu-button').click();
 }
 
