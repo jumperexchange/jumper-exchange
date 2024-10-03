@@ -6,7 +6,7 @@ import {
 } from '@lifi/wallet-management';
 import { type FC, type PropsWithChildren } from 'react';
 
-const { config, connectors } = createDefaultBigmiConfig({
+const { config } = createDefaultBigmiConfig({
   bigmiConfig: {
     ssr: true,
     multiInjectedProviderDiscovery: false,
