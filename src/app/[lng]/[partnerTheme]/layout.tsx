@@ -14,11 +14,12 @@ export async function generateMetadata({
   const partnerThemesData = partnerThemes.data?.find(
     (d) => d.attributes.uid === partnerTheme,
   );
+  const theme = partnerThemesData
+    ? partnerThemesData.attributes.uid
+    : 'default';
   return {
     other: {
-      'partner-theme': partnerThemesData
-        ? partnerThemesData.attributes.uid
-        : 'default',
+      'partner-theme': theme,
     },
   };
 }

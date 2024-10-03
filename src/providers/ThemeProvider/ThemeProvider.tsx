@@ -26,8 +26,12 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   const themeStore = useMemo((): ThemeProps => {
     const effectiveThemeMode = getEffectiveThemeMode(themeMode);
-    const partnerTheme = activeTheme || 'default';
-
+    const metaElement =
+      typeof window !== 'undefined'
+        ? document.querySelector('meta[name="partner-theme"]')
+        : undefined;
+    const metaTheme = metaElement?.getAttribute('content');
+    const partnerTheme = metaTheme || activeTheme || 'default';
     const widgetTheme = getWidgetTheme(
       getMuiTheme(themes, partnerTheme, effectiveThemeMode),
       partnerTheme,

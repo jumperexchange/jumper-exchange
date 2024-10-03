@@ -5,13 +5,11 @@ import type { PropsWithChildren } from 'react';
 import { Layout } from 'src/Layout';
 import App from '../../ui/app/App';
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    other: {
-      'partner-theme': 'default',
-    },
-  };
-}
+export const metadata: Metadata = {
+  other: {
+    'partner-theme': 'default',
+  },
+};
 
 export default async function MainLayout({ children }: PropsWithChildren) {
   const { activeTheme } = getCookies();
