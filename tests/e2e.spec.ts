@@ -117,9 +117,7 @@ test.describe('Jumper full e2e flow', () => {
     const sectionName = [
       'Announcements',
       'Partnerships',
-      'Bridge',
-      'Swap',
-      'Tutorial',
+      'Tutorial', 
       'Knowledge',
     ];
     const socialNetworks = ['LinkedIn', 'Facebook', 'X'];
