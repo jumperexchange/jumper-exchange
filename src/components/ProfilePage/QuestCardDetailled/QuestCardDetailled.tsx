@@ -1,9 +1,9 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
+import { Link } from 'src/components/Link';
 import { FlexSpaceBetweenBox } from 'src/components/Superfest/Superfest.style';
 import type { Chain } from 'src/components/Superfest/SuperfestPage/Banner/Banner';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
@@ -72,10 +72,7 @@ export const QuestCardDetailled = ({
   const { apy } = useMissionsMaxAPY(claimingIds);
   return (
     <QuestCardMainBox>
-      <Link
-        href={link || `/quests/${slug}`}
-        style={{ textDecoration: 'inherit' }}
-      >
+      <Link alt={title} url={link || (slug && `/quests/${slug}`)}>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           {image ? (
             <Image
