@@ -22,7 +22,6 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
   const { isMainPaths } = useMainPaths();
   const router = useRouter();
   const { lng } = useParams();
-  console.log('--chain', token);
 
   return (
     <ButtonBase
