@@ -15,7 +15,6 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  height: '33%',
   flexGrow: 1,
   paddingTop: '16px',
   paddingBottom: '24px',

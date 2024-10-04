@@ -1,9 +1,11 @@
+import type { CSSObject } from '@mui/material';
 import NextLink from 'next/link';
 import type { PropsWithChildren } from 'react';
 
 interface OptionalLinkProps {
   url?: string;
   alt?: string;
+  styles?: CSSObject;
 }
 
 export const OptionalLink: React.FC<PropsWithChildren<OptionalLinkProps>> = (
@@ -14,7 +16,10 @@ export const OptionalLink: React.FC<PropsWithChildren<OptionalLinkProps>> = (
       <NextLink
         href={props.url}
         aria-label={props.alt}
-        style={{ textDecoration: 'inherit' }}
+        style={{
+          textDecoration: 'inherit',
+          ...(props.styles as React.CSSProperties),
+        }}
       >
         {props.children}
       </NextLink>

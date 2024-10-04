@@ -72,7 +72,11 @@ export const QuestCardDetailled = ({
   const { apy } = useMissionsMaxAPY(claimingIds);
   return (
     <QuestCardMainBox>
-      <OptionalLink alt={title} url={link || (slug && `/quests/${slug}`)}>
+      <OptionalLink
+        alt={title}
+        url={link || (slug && `/quests/${slug}`)}
+        styles={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
+      >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           {image ? (
             <Image
@@ -111,11 +115,7 @@ export const QuestCardDetailled = ({
             )}
           </QuestCardTitleBox>
 
-          <FlexSpaceBetweenBox
-            marginBottom={'8px'}
-            marginTop={'8px'}
-            minHeight={'32px'}
-          >
+          <FlexSpaceBetweenBox minHeight={'32px'} flexGrow={1}>
             <FlexCenterRowBox>
               {chains?.map((elem: Chain, i: number) => {
                 return (
