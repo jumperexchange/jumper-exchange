@@ -57,7 +57,7 @@ function HalfSizeBlock({
               variant="rounded"
               src={info.logoURI}
               alt={info.name}
-              sx={{ width: 32, height: 32 }}
+              sx={{ width: 32, height: 32, borderRadius: 50 }}
             />
           </Box>
         )}

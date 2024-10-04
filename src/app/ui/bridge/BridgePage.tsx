@@ -54,7 +54,7 @@ const BridgePage = ({
             marginY={2}
             sx={{ fontSize: '40px!important' }}
           >
-            How to bridge from {sourceToken.symbol} on {sourceChain.name} to{' '}
+            Bridge your {sourceToken.symbol} on {sourceChain.name} to{' '}
             {destinationToken.symbol} on {destinationChain.name}
           </Typography>
           <Typography>
@@ -213,7 +213,7 @@ const BridgePage = ({
             Here's why bridges are essential for enhancing blockchain
             interoperability:
           </Typography>
-          <Typography fontWeight="700">1. Isolation of Blockchains</Typography>
+          <Typography variant="h3">1. Isolation of Blockchains</Typography>
           <Typography>
             Blockchains operate independently, much like countries with their
             own governments, languages, and regulations. Each blockchain has its
@@ -223,7 +223,7 @@ const BridgePage = ({
             smart contracts written in Solidity. This inherent isolation creates
             challenges for transferring data and assets across different chains.
           </Typography>
-          <Typography marginTop={2} fontWeight="700">
+          <Typography marginTop={2} variant="h3">
             2. Incompatibility of Systems
           </Typography>
           <Typography>
@@ -236,7 +236,7 @@ const BridgePage = ({
             innovation across the blockchain space.
           </Typography>
 
-          <Typography marginTop={2} fontWeight="700">
+          <Typography marginTop={2} variant="h3">
             3. Facilitating Interoperability
           </Typography>
           <Typography>
@@ -248,7 +248,7 @@ const BridgePage = ({
             bridges provide the necessary infrastructure for digital currencies
             and data to flow between chains.
           </Typography>
-          <Typography marginTop={2} fontWeight="700">
+          <Typography marginTop={2} variant="h3">
             4. Unlocking New Opportunities
           </Typography>
           <Typography>
@@ -260,7 +260,7 @@ const BridgePage = ({
             technology.
           </Typography>
 
-          <Typography marginTop={2} fontWeight="700">
+          <Typography marginTop={2} variant="h3">
             5. Enhancing User Experience
           </Typography>
           <Typography>
