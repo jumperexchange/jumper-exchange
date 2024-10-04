@@ -43,6 +43,7 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
     theme.palette.mode === 'dark'
       ? theme.palette.alphaLight300.main
       : theme.palette.white.main,
+  boxShadow: '0px 2px 8px 0px #00000014',
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'
