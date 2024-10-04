@@ -9,39 +9,36 @@ function withoutTrailingSlash(url: string) {
   return url.endsWith('/') ? url.slice(0, -1) : url;
 }
 
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // paths
   const routes = pages.flatMap((route: SitemapPage) => {
-      return {
-        url: withoutTrailingSlash(
-          `${process.env.NEXT_PUBLIC_SITE_URL}${route.path}`,
-        ),
-        lastModified: new Date().toISOString().split('T')[0],
-        changeFrequency: 'weekly' as ChangeFrequency,
-        priority: route.priority,
-      };
+    return {
+      url: withoutTrailingSlash(
+        `${process.env.NEXT_PUBLIC_SITE_URL}${route.path}`,
+      ),
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency: 'weekly' as ChangeFrequency,
+      priority: route.priority,
+    };
   });
 
   // articles by slug
   const articles = await getArticles().then(
     (article: StrapiResponse<BlogArticleData>) => {
-        return article.data.map((el) => {
-          return {
-            url: withoutTrailingSlash(
-              `${process.env.NEXT_PUBLIC_SITE_URL}${JUMPER_LEARN_PATH}${el.attributes.Slug}`,
-            ),
-            lastModified: new Date(
-              el.attributes.updatedAt ||
-                el.attributes.publishedAt ||
-                Date.now(),
-            )
-              .toISOString()
-              .split('T')[0],
-            changeFrequency: 'weekly' as ChangeFrequency,
-            priority: 0.8,
-          };
-        });
+      return article.data.map((el) => {
+        return {
+          url: withoutTrailingSlash(
+            `${process.env.NEXT_PUBLIC_SITE_URL}${JUMPER_LEARN_PATH}${el.attributes.Slug}`,
+          ),
+          lastModified: new Date(
+            el.attributes.updatedAt || el.attributes.publishedAt || Date.now(),
+          )
+            .toISOString()
+            .split('T')[0],
+          changeFrequency: 'weekly' as ChangeFrequency,
+          priority: 0.8,
+        };
+      });
     },
   );
 
