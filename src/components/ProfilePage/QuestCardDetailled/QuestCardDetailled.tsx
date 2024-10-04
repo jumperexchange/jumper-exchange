@@ -71,7 +71,7 @@ export const QuestCardDetailled = ({
   const { t } = useTranslation();
   const { apy } = useMissionsMaxAPY(claimingIds);
   return (
-    <QuestCardMainBox>
+    <QuestCardMainBox sx={{ height: 'auto' }}>
       <OptionalLink
         alt={title}
         url={link || (slug && `/quests/${slug}`)}
@@ -93,7 +93,7 @@ export const QuestCardDetailled = ({
             <Skeleton variant="rectangular" width={288} height={288} />
           )}
         </Box>
-        <QuestCardBottomBox>
+        <QuestCardBottomBox gap={0.75}>
           <QuestCardTitleBox>
             {title ? (
               <Typography
@@ -115,7 +115,7 @@ export const QuestCardDetailled = ({
             )}
           </QuestCardTitleBox>
 
-          <FlexSpaceBetweenBox minHeight={'32px'} flexGrow={1}>
+          <FlexSpaceBetweenBox height={'36px'}>
             <FlexCenterRowBox>
               {chains?.map((elem: Chain, i: number) => {
                 return (
@@ -206,8 +206,8 @@ export const QuestCardDetailled = ({
               hideIndicator={true}
             />
           )}
-          <QuestCardInfoBox points={points}>
-            {active && slug ? (
+          {active && slug ? (
+            <QuestCardInfoBox>
               <Button
                 disabled={false}
                 variant="primary"
@@ -221,8 +221,8 @@ export const QuestCardDetailled = ({
                   {String(t('questCard.join')).toUpperCase()}
                 </Typography>
               </Button>
-            ) : null}
-          </QuestCardInfoBox>
+            </QuestCardInfoBox>
+          ) : null}
         </QuestCardBottomBox>
       </OptionalLink>
     </QuestCardMainBox>

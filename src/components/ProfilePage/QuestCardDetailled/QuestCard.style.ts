@@ -39,9 +39,7 @@ export interface QuestCardInfoBoxProps extends Omit<BoxProps, 'component'> {
   points?: number;
 }
 
-export const QuestCardInfoBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'points',
-})<QuestCardInfoBoxProps>(({ points }) => ({
+export const QuestCardInfoBox = styled(Box)<QuestCardInfoBoxProps>(() => ({
   display: 'flex',
   flexDirection: 'column',
 }));

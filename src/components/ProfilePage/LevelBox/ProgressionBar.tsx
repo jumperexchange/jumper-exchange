@@ -28,7 +28,21 @@ export const ProgressionBar = ({
       : 0;
 
   return (
-    <Box>
+    <Box
+      sx={{
+        ...(!hideIndicator
+          ? {
+              marginTop: 1.5,
+            }
+          : {
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexGrow: 1,
+            }),
+      }}
+    >
       {levelData ? (
         <>
           <ProgressionChart>

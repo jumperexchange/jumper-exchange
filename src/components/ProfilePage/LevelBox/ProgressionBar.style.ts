@@ -9,8 +9,6 @@ export const ProgressionChart = styled(Box)(() => ({
   height: '16px',
   width: '100%',
   display: 'flex',
-  marginTop: '12px',
-  marginBottom: '12px',
 }));
 
 export interface ProgressionChartScoreProps
