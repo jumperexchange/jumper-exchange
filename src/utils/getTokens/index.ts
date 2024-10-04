@@ -1,12 +1,13 @@
+import type { TokenAmount, ExtendedChain } from '@lifi/sdk';
 import {
-  ChainType,
   getChains,
   getTokenBalances as LifiGetTokenBalances,
   getTokens as LifiGetTokens,
 } from '@lifi/sdk';
 import { formatUnits } from 'viem';
-import type { TokenAmount } from '@lifi/sdk';
-import type { Token } from '@lifi/widget';
+import type { Token, TokensResponse } from '@lifi/widget';
+import type { Account } from '@/hooks/useAccounts';
+import { sumBy } from 'lodash';
 
 export interface ExtendedTokenAmountWithChain extends ExtendedTokenAmount {
   chainLogoURI?: string;
@@ -23,7 +24,6 @@ export interface ExtendedTokenAmount extends TokenAmount, Partial<Price> {
   chains: ExtendedTokenAmountWithChain[];
   cumulatedBalance?: number; // Cumulated balance across chains
   cumulatedTotalUSD?: number; // Cumulated total USD across chains
-  totalUSD?: number; // Total USD for this token (chain-specific)
 }
 
 function getBalance(tb: Partial<TokenAmount>): number {
@@ -47,7 +47,7 @@ export interface ResultTokenBalance {
 // Constants
 const MAX_CROSS_CHAIN_FETCH = 10000; // Maximum tokens per fetch round across all chains
 const MAX_TOKENS_PER_CHAIN = 150; // Maximum tokens to fetch per chain per round
-const FETCH_DELAY = 5000;
+const FETCH_DELAY = 30000;
 
 // Custom setTimeout function returning a Promise
 const customSetTimeout = (delay: number) =>
@@ -58,30 +58,26 @@ const customSetTimeout = (delay: number) =>
  * Fetches token balances across multiple chains with specified constraints.
  *
  * @param account - The account address to fetch token balances for.
+ * @param chains
+ * @param tokens
  * @param onProgress - A callback invoked after each fetch round with cumulative data.
+ * @param handleComplete
  * @returns A Promise that resolves to the final cumulative sum, total USD value, and all fetched balances.
  */
 
 // Main function to fetch all tokens in batches
-async function fetchAllTokensByChain(
+function fetchAllTokensBalanceByChain(
   account: string,
+  chains: ExtendedChain[],
+  tokens: TokensResponse['tokens'],
   onProgress: (
+    account: string,
     round: number,
     cumulativePriceUSD: number,
     fetchedBalances: ExtendedTokenAmount[],
   ) => void,
   handleComplete: () => void,
-): Promise<{
-  totalPriceUSD: number;
-  allBalances: ExtendedTokenAmount[];
-}> {
-  const chains = await getChains({
-    chainTypes: [ChainType.EVM, ChainType.SVM],
-  });
-  const { tokens } = await LifiGetTokens({
-    chainTypes: [ChainType.EVM, ChainType.SVM],
-  });
-
+): NodeJS.Timeout {
   let totalPriceUSD: number = 0;
   let round = 1;
 
@@ -96,8 +92,8 @@ async function fetchAllTokensByChain(
     {} as Record<string, Token[]>,
   );
 
-  while (true) {
-    console.log(`\n--- Fetch Round ${round} ---`);
+  const fetchTokens = async () => {
+    console.log(`\n--- Fetch Round ${round} of ${account} ---`);
 
     let tokensFetchedThisRound = 0;
     const fetchPromises: Promise<TokenAmount[]>[] = [];
@@ -132,7 +128,8 @@ async function fetchAllTokensByChain(
 
     if (fetchPromises.length === 0) {
       console.log('No more tokens to fetch.');
-      break;
+      clearInterval(intervalId!);
+      return;
     }
 
     const fetchResults = await Promise.all(fetchPromises);
@@ -149,13 +146,12 @@ async function fetchAllTokensByChain(
           chains: [],
           chainName: chain?.name,
           chainLogoURI: chain?.logoURI,
-          totalUSD: humanReadableBalance * parseFloat(balance.priceUSD),
           totalPriceUSD: humanReadableBalance * parseFloat(balance.priceUSD),
         };
       });
 
     const roundPriceUSD = detailedBalances.reduce(
-      (sum, balance) => sum + balance.totalUSD!,
+      (sum, balance) => sum + balance.totalPriceUSD!,
       0,
     );
 
@@ -185,16 +181,15 @@ async function fetchAllTokensByChain(
             },
           ],
         };
-        console.log('will push balance', balance, existingToken);
 
-        // Update cumulated balance and cumulated total USD for the existing token
-        const cumulatedBalance =
-          getBalance(existingToken) + getBalance(balance);
-        const cumulatedTotalUSD =
-          (existingToken.cumulatedTotalUSD || 0) + balance.totalUSD!;
-
-        existingToken.cumulatedBalance = cumulatedBalance;
-        existingToken.cumulatedTotalUSD = cumulatedTotalUSD;
+        existingToken.cumulatedBalance = sumBy(
+          existingToken.chains,
+          'cumulatedBalance',
+        );
+        existingToken.cumulatedTotalUSD = sumBy(
+          existingToken.chains,
+          'totalPriceUSD',
+        );
         symbolMap[balance.symbol] = existingToken;
       } else {
         balance.cumulatedBalance = getBalance(balance);
@@ -203,54 +198,68 @@ async function fetchAllTokensByChain(
         symbolMap[balance.symbol] = {
           ...balance,
           chains: [balance],
-          cumulatedTotalUSD: balance.totalUSD!,
+          cumulatedTotalUSD: balance.totalPriceUSD!,
         };
       }
     }
 
     // Pass the cumulative sum, cumulative price, and current state of the symbolMap to onProgress
-    const combinedBalances = Object.values(symbolMap).sort(
-      (a, b) => (b.totalPriceUSD || 0) - (a.totalPriceUSD || 0),
-    );
+    const combinedBalances = Object.values(symbolMap);
 
-    onProgress(round, totalPriceUSD, combinedBalances);
+    onProgress(account, round, totalPriceUSD, combinedBalances);
 
     console.log(
-      `Round ${round} completed. Fetched ${tokensFetchedThisRound} tokens.`,
+      `Round ${round} on ${account} completed. Fetched ${tokensFetchedThisRound} tokens.`,
     );
 
     round += 1;
-    await customSetTimeout(FETCH_DELAY);
-  }
+    if (Object.values(tokensByChain).every((tokens) => tokens.length === 0)) {
+      // If all tokens are fetched, clear the interval and stop
+      clearInterval(intervalId!);
+      handleComplete();
+      console.log('\nAll tokens have been successfully fetched!');
+    }
+  };
 
-  handleComplete();
-  console.log('\nAll tokens have been successfully fetched!');
+  // Function to clear intervals, making this process cancellable
+  const intervalId = setInterval(fetchTokens, FETCH_DELAY);
 
-  // Flatten symbolMap into an array of tokens, each with its "chains"
-  const allBalances = Object.values(symbolMap);
+  // First fetch
+  fetchTokens();
 
-  return { totalPriceUSD, allBalances };
+  return intervalId;
 }
+
 //------------------------------
 //------------------------------
 
 async function getTokens(
-  account: string,
+  account: Pick<Account, 'chainType' | 'address'>,
   handleProgress: (
+    account: string,
     round: number,
     cumulativePriceUSD: number,
     fetchedBalances: ExtendedTokenAmount[],
   ) => void,
   handleComplete: () => void,
-): Promise<void> {
+): Promise<NodeJS.Timeout | undefined> {
   try {
-    fetchAllTokensByChain(account, handleProgress, handleComplete).catch(
-      (error) => {
-        console.error('An error occurred during the fetching process:', error);
-      },
+    const chains = await getChains({
+      chainTypes: [account.chainType],
+    });
+    const { tokens } = await LifiGetTokens({
+      chainTypes: [account.chainType],
+    });
+
+    return fetchAllTokensBalanceByChain(
+      account.address!,
+      chains,
+      tokens,
+      handleProgress,
+      handleComplete,
     );
   } catch (error) {
-    console.error(error);
+    console.error('An error occurred during the fetching process:', error);
   }
 }
 

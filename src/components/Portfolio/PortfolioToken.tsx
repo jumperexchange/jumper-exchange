@@ -135,7 +135,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                   {token.chains.map((chain) => (
                     <Tooltip
                       title={chain.name}
-                      key={`${token.symbol}-${chain.address}`}
+                      key={`${token.symbol}-${chain.address}-${chain.chainId}`}
                     >
                       <MuiAvatar
                         alt={chain.chainName}
