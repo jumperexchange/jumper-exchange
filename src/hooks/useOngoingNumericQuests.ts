@@ -18,7 +18,7 @@ export interface OngoingNumericItemStats {
 export interface OngoingNumericItem extends OngoingNumericItemStats {
   description: string | null;
   displayName: string;
-  currentRangeXP?: number;
+  currentRangeXP: number;
   id: number;
   image: string;
   name: string;

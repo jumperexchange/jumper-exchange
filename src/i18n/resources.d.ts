@@ -123,6 +123,8 @@ interface Resources {
     questCard: {
       completed: 'Completed';
       join: 'Join';
+      xpToEarnDescription: 'Points left to complete this quest.';
+      earnedXPDescription: "Total points you've earned so far in this quest.";
     };
     missions: {
       available: 'Available Missions';
@@ -132,7 +134,7 @@ interface Resources {
       mobileTitle: 'Only available on Desktop';
       mobileDescription: 'The Jumper Profile page is not available on small screens yet. We are working on it.';
       rank: 'Leaderboard is updated on a daily basis';
-      pointsInfo: 'XP is your score for interacting with Jumper. As you gain more XP, your level goes up.';
+      pointsInfo: 'XP is your score for interacting with Jumper. As you gain XP points, your level goes up.';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
     };
   };

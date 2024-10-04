@@ -14,11 +14,15 @@ export const QuestCarouselNumericItems = () => {
           active={true}
           title={numericQuest.displayName}
           image={numericQuest.image}
-          points={numericQuest.nextRangeXP}
+          points={numericQuest.nextRangeXP - numericQuest.currentRangeXP}
           rewardsProgress={{
             min: numericQuest.min,
             max: numericQuest.max,
             currentValue: numericQuest.currentValue,
+            earnedXP:
+              numericQuest.currentValue >= numericQuest.min
+                ? numericQuest.currentRangeXP
+                : undefined,
           }}
         />
       ))

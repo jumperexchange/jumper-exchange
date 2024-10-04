@@ -115,7 +115,9 @@
   },
   "questCard": {
     "completed": "Completed",
-    "join": "Join"
+    "join": "Join",
+    "xpToEarnDescription": "Points left to complete this quest.",
+    "earnedXPDescription": "Total points you've earned so far in this quest."
   },
   "missions": {
     "available": "Available Missions",

@@ -1,5 +1,5 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Box, Skeleton, Typography, useTheme } from '@mui/material';
+import { Box, Skeleton, Tooltip, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
@@ -33,6 +33,10 @@ export interface RewardsInterface {
   amount: number;
 }
 
+interface RewardsProgressProps extends OngoingNumericItemStats {
+  earnedXP?: number;
+}
+
 interface QuestCardProps {
   active?: boolean;
   title?: string;
@@ -50,7 +54,7 @@ interface QuestCardProps {
   claimingIds?: string[];
   variableWeeklyAPY?: boolean;
   rewardRange?: string;
-  rewardsProgress?: OngoingNumericItemStats;
+  rewardsProgress?: RewardsProgressProps;
 }
 
 export const QuestCardDetailled = ({
@@ -132,6 +136,34 @@ export const QuestCardDetailled = ({
                   />
                 );
               })}
+              {rewardsProgress?.earnedXP && !chains && (
+                <Tooltip
+                  title={t('questCard.earnedXPDescription')} //t(tooltipKey as any)
+                  placement="top"
+                  enterTouchDelay={0}
+                  arrow
+                >
+                  <XPDisplayBox
+                    active={active}
+                    bgcolor={'#42B852'}
+                    sx={{ cursor: 'help' }}
+                  >
+                    <Typography
+                      fontSize="14px"
+                      fontWeight={700}
+                      lineHeight="18px"
+                      color={'#ffffff'}
+                    >
+                      {`${formatDecimal(rewardsProgress?.earnedXP)}`}
+                    </Typography>
+                    <XPIconBox marginLeft="4px">
+                      <CheckCircleIcon
+                        sx={{ width: '16px', color: '#ffffff' }}
+                      />
+                    </XPIconBox>
+                  </XPDisplayBox>
+                </Tooltip>
+              )}
             </FlexCenterRowBox>
             {points ? (
               <FlexCenterRowBox>
@@ -171,28 +203,36 @@ export const QuestCardDetailled = ({
                     </XPIconBox>
                   </XPDisplayBox>
                 )}
-                <XPDisplayBox
-                  active={active}
-                  bgcolor={!completed ? '#31007A' : '#42B852'}
+                <Tooltip
+                  title={t('questCard.xpToEarnDescription')} //t(tooltipKey as any)
+                  placement="top"
+                  enterTouchDelay={0}
+                  arrow
                 >
-                  <Typography
-                    fontSize="14px"
-                    fontWeight={700}
-                    lineHeight="18px"
-                    color={'#ffffff'}
+                  <XPDisplayBox
+                    active={active}
+                    bgcolor={!completed ? '#31007A' : '#42B852'}
+                    sx={{ cursor: 'help' }}
                   >
-                    {`${formatDecimal(points)}`}
-                  </Typography>
-                  <XPIconBox marginLeft="4px">
-                    {!completed ? (
-                      <SuperfestXPIcon size={16} />
-                    ) : (
-                      <CheckCircleIcon
-                        sx={{ width: '16px', color: '#ffffff' }}
-                      />
-                    )}
-                  </XPIconBox>
-                </XPDisplayBox>
+                    <Typography
+                      fontSize="14px"
+                      fontWeight={700}
+                      lineHeight="18px"
+                      color={'#ffffff'}
+                    >
+                      {`+${formatDecimal(points)}`}
+                    </Typography>
+                    <XPIconBox marginLeft="4px">
+                      {!completed ? (
+                        <SuperfestXPIcon size={16} />
+                      ) : (
+                        <CheckCircleIcon
+                          sx={{ width: '16px', color: '#ffffff' }}
+                        />
+                      )}
+                    </XPIconBox>
+                  </XPDisplayBox>
+                </Tooltip>
               </FlexCenterRowBox>
             ) : undefined}
           </FlexSpaceBetweenBox>
