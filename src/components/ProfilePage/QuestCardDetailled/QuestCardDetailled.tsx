@@ -1,5 +1,5 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Box, Skeleton, Tooltip, Typography, useTheme } from '@mui/material';
+import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
@@ -26,6 +26,7 @@ import {
   XPDisplayBox,
   XPIconBox,
 } from './QuestCard.style';
+import { XPRewardsInfo } from './XPRewardsInfo';
 
 export interface RewardsInterface {
   logo: string;
@@ -137,32 +138,16 @@ export const QuestCardDetailled = ({
                 );
               })}
               {rewardsProgress?.earnedXP && !chains && (
-                <Tooltip
-                  title={t('questCard.earnedXPDescription')} //t(tooltipKey as any)
-                  placement="top"
-                  enterTouchDelay={0}
-                  arrow
+                <XPRewardsInfo
+                  bgColor={'#42B852'}
+                  label={`${formatDecimal(rewardsProgress?.earnedXP)}`}
+                  tooltip={t('questCard.earnedXPDescription')}
+                  active={active}
                 >
-                  <XPDisplayBox
-                    active={active}
-                    bgcolor={'#42B852'}
-                    sx={{ cursor: 'help' }}
-                  >
-                    <Typography
-                      fontSize="14px"
-                      fontWeight={700}
-                      lineHeight="18px"
-                      color={'#ffffff'}
-                    >
-                      {`${formatDecimal(rewardsProgress?.earnedXP)}`}
-                    </Typography>
-                    <XPIconBox marginLeft="4px">
-                      <CheckCircleIcon
-                        sx={{ width: '16px', color: '#ffffff' }}
-                      />
-                    </XPIconBox>
-                  </XPDisplayBox>
-                </Tooltip>
+                  <XPIconBox marginLeft="4px">
+                    <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
+                  </XPIconBox>
+                </XPRewardsInfo>
               )}
             </FlexCenterRowBox>
             {points ? (
@@ -203,36 +188,18 @@ export const QuestCardDetailled = ({
                     </XPIconBox>
                   </XPDisplayBox>
                 )}
-                <Tooltip
-                  title={t('questCard.xpToEarnDescription')} //t(tooltipKey as any)
-                  placement="top"
-                  enterTouchDelay={0}
-                  arrow
+                <XPRewardsInfo
+                  bgColor={!completed ? '#31007A' : '#42B852'}
+                  label={`+${formatDecimal(points)}`}
+                  tooltip={t('questCard.xpToEarnDescription')}
+                  active={active}
                 >
-                  <XPDisplayBox
-                    active={active}
-                    bgcolor={!completed ? '#31007A' : '#42B852'}
-                    sx={{ cursor: 'help' }}
-                  >
-                    <Typography
-                      fontSize="14px"
-                      fontWeight={700}
-                      lineHeight="18px"
-                      color={'#ffffff'}
-                    >
-                      {`+${formatDecimal(points)}`}
-                    </Typography>
-                    <XPIconBox marginLeft="4px">
-                      {!completed ? (
-                        <SuperfestXPIcon size={16} />
-                      ) : (
-                        <CheckCircleIcon
-                          sx={{ width: '16px', color: '#ffffff' }}
-                        />
-                      )}
-                    </XPIconBox>
-                  </XPDisplayBox>
-                </Tooltip>
+                  {!completed ? (
+                    <SuperfestXPIcon size={16} />
+                  ) : (
+                    <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
+                  )}
+                </XPRewardsInfo>
               </FlexCenterRowBox>
             ) : undefined}
           </FlexSpaceBetweenBox>
