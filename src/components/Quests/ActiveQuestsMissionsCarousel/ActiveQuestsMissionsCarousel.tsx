@@ -1,9 +1,9 @@
 import { CarouselContainer } from '@/components/Blog/BlogCarousel/CarouselContainer';
 import type { Quest } from '@/types/loyaltyPass';
-import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { QuestsCarouselContainer } from './ActiveQuestsMissionsCarousel.style';
+import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 
 export function checkInclusion(
   activeCampaigns: string[],
@@ -33,7 +33,7 @@ export const ActiveQuestsMissionsCarousel = ({
   pastCampaigns,
   path,
 }: QuestCarouselProps) => {
-  const { url } = useOngoingFestMissions();
+  const { url } = useOngoingQuests();
 
   const isNotLive =
     !loading && (!activeCampaigns || activeCampaigns.length === 0);

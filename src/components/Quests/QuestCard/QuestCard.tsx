@@ -62,7 +62,6 @@ export const QuestCard = ({
   image,
   points,
   id,
-  activeCampaign,
   path,
   label,
   link,
@@ -90,7 +89,7 @@ export const QuestCard = ({
       data: {
         [TrackingEventParameter.QuestCardTitle]: title || '',
         [TrackingEventParameter.QuestCardId]: id || '',
-        [TrackingEventParameter.QuestCardPlatform]: activeCampaign || '',
+        // [TrackingEventParameter.QuestCardPlatform]: activeCampaign || '',
         [TrackingEventParameter.QuestCardLabel]: label || '',
       },
     });

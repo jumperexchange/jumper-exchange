@@ -6,7 +6,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useState } from 'react';
-import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { checkInclusion } from '../ActiveQuestsMissionsCarousel/ActiveQuestsMissionsCarousel';
 import { MissionsFilter } from '../MissionsFilter/MissionsFilter';
 import { QuestCard } from '../QuestCard/QuestCard';
@@ -17,6 +16,7 @@ import {
   AvailableMissionsStack,
   AvailableMissionsTitle,
 } from './AvailableMissionsList.style';
+import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 
 const chains = ['Optimism', 'Base', 'Mode', 'Fraxtal'];
 
@@ -40,14 +40,13 @@ export const AvailableMissionsList = ({
   pastCampaigns,
   loading,
   path,
-  activeCampaign,
 }: AvailableMissionsListProps) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
   const [chainsFilter, setChainsFilter] = useState<string[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
-  const { url } = useOngoingFestMissions();
+  const { url } = useOngoingQuests();
 
   const handleChainChange = (event: SelectChangeEvent<typeof chainsFilter>) => {
     const {
@@ -156,7 +155,6 @@ export const AvailableMissionsList = ({
                   active={true}
                   title={quest?.attributes.Title}
                   path={path}
-                  activeCampaign={activeCampaign}
                   label={quest?.attributes.Label}
                   image={String(imgURL)}
                   points={quest?.attributes.Points}
