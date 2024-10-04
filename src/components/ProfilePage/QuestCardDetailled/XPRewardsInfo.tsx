@@ -18,7 +18,12 @@ export const XPRewardsInfo: React.FC<PropsWithChildren<XPRewardsInfoProps>> = ({
 }) => {
   return (
     <Tooltip title={tooltip} placement="top" enterTouchDelay={0} arrow>
-      <XPDisplayBox active={active} bgcolor={bgColor} sx={{ cursor: 'help' }}>
+      <XPDisplayBox
+        active={active}
+        bgcolor={bgColor}
+        gap={0.5}
+        sx={{ cursor: 'help' }}
+      >
         <Typography
           fontSize="14px"
           fontWeight={700}
