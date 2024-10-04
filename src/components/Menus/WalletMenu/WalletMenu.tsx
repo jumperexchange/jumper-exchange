@@ -25,7 +25,6 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
     openWalletMenu: _openWalletMenu,
     setWalletMenuState,
     setSnackbarState,
-    openSubMenu,
   } = useMenuStore((state) => state);
 
   const handleOpenWalletMenu: MouseEventHandler<HTMLButtonElement> = (
