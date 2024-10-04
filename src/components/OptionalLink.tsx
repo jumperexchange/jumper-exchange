@@ -6,7 +6,9 @@ interface OptionalLinkProps {
   alt?: string;
 }
 
-export const Link: React.FC<PropsWithChildren<OptionalLinkProps>> = (props) => {
+export const OptionalLink: React.FC<PropsWithChildren<OptionalLinkProps>> = (
+  props,
+) => {
   if (props.url) {
     return (
       <NextLink

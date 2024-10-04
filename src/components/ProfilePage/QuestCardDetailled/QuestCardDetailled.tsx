@@ -3,7 +3,7 @@ import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
-import { Link } from 'src/components/Link';
+import { OptionalLink } from 'src/components/OptionalLink';
 import { FlexSpaceBetweenBox } from 'src/components/Superfest/Superfest.style';
 import type { Chain } from 'src/components/Superfest/SuperfestPage/Banner/Banner';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
@@ -72,7 +72,7 @@ export const QuestCardDetailled = ({
   const { apy } = useMissionsMaxAPY(claimingIds);
   return (
     <QuestCardMainBox>
-      <Link alt={title} url={link || (slug && `/quests/${slug}`)}>
+      <OptionalLink alt={title} url={link || (slug && `/quests/${slug}`)}>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           {image ? (
             <Image
@@ -224,7 +224,7 @@ export const QuestCardDetailled = ({
             ) : null}
           </QuestCardInfoBox>
         </QuestCardBottomBox>
-      </Link>
+      </OptionalLink>
     </QuestCardMainBox>
   );
 };
