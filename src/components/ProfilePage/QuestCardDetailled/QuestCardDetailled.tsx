@@ -141,7 +141,9 @@ export const QuestCardDetailled = ({
                 <XPRewardsInfo
                   bgColor={'#42B852'}
                   label={`${formatDecimal(rewardsProgress?.earnedXP)}`}
-                  tooltip={t('questCard.earnedXPDescription')}
+                  tooltip={t('questCard.earnedXPDescription', {
+                    earnedXP: rewardsProgress?.earnedXP,
+                  })}
                   active={active}
                 >
                   <XPIconBox marginLeft="4px">
@@ -191,7 +193,9 @@ export const QuestCardDetailled = ({
                 <XPRewardsInfo
                   bgColor={!completed ? '#31007A' : '#42B852'}
                   label={`+${formatDecimal(points)}`}
-                  tooltip={t('questCard.xpToEarnDescription')}
+                  tooltip={t('questCard.xpToEarnDescription', {
+                    xpToEarn: formatDecimal(points),
+                  })}
                   active={active}
                 >
                   {!completed ? (

@@ -123,8 +123,8 @@ interface Resources {
     questCard: {
       completed: 'Completed';
       join: 'Join';
-      xpToEarnDescription: 'Points left to complete this quest.';
-      earnedXPDescription: "Total points you've earned so far in this quest.";
+      xpToEarnDescription: 'Complete the progress bar to earn +{{xpToEarn}} addtional XP this month.';
+      earnedXPDescription: "You've unlocked {{earnedXP}}xp so far this month and this has been added to your total XP balance";
     };
     missions: {
       available: 'Available Missions';
