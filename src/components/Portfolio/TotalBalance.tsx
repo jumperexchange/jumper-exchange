@@ -95,16 +95,19 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
         >
           <Typography
             fontWeight={500}
-            fontSize={12}
+            fontSize={14}
             color={(theme) => theme.palette.text.primary}
           >
             {t('navbar.walletMenu.totalBalance')}
           </Typography>
           <Tooltip
-            title={t('hello' as any)}
+            title="hello world"
             placement="top"
             enterTouchDelay={0}
             arrow
+            sx={{
+              zIndex: 5000,
+            }}
           >
             <InfoIcon
               sx={{
@@ -131,7 +134,7 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
         )}
       </Box>
       <Stack spacing={1}>
-        <TotalValue>{currencyFormatter(lng).format(totalValue)}</TotalValue>
+        <TotalValue>{currencyFormatter('en').format(totalValue)}</TotalValue>
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">
           {differenceValue !== 0 && (
             <Stack direction="row" spacing="4px">

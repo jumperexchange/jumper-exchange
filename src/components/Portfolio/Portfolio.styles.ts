@@ -15,8 +15,8 @@ export const TotalValue = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
   textOverflow: 'ellipsis',
   fontWeight: '700',
-  fontSize: '32px',
-  lineHeight: '40px',
+  fontSize: '48px',
+  lineHeight: '64px',
 }));
 
 export const VariationValue = styled(Typography)(({ theme }) => ({
