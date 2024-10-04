@@ -5,7 +5,7 @@ function TotalBalanceSkeleton() {
   return (
     <WalletCardContainer
       sx={{
-        height: '132px',
+        height: '150px',
         display: 'flex',
         justifyContent: 'center',
         alignContent: 'center',
@@ -32,7 +32,7 @@ function TotalBalanceSkeleton() {
           })}
           variant="rectangular"
           width={160}
-          height={48}
+          height={28}
         />
         <Stack direction="row" alignItems="center" spacing={1}>
           <Skeleton

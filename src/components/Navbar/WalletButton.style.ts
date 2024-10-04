@@ -11,12 +11,12 @@ export const WalletMgmtWalletAvatar = styled(Avatar)(() => ({
 }));
 
 export const WalletMgmtChainAvatar = styled(Avatar)(() => ({
-  width: 16,
-  height: 16,
+  width: 18,
+  height: 18,
   border: '2px solid transparent',
   background: 'transparent',
   left: 2.5,
-  top: 2.5,
+  top: 1,
   img: {
     borderRadius: '50%',
   },
@@ -43,6 +43,7 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
     theme.palette.mode === 'dark'
       ? theme.palette.alphaLight300.main
       : theme.palette.white.main,
+  boxShadow: '0px 2px 8px 0px #00000014',
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'

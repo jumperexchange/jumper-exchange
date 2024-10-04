@@ -1,4 +1,4 @@
-import { Box, Skeleton, Stack, Badge } from '@mui/material';
+import { Box, Skeleton, Stack, Badge, useTheme } from '@mui/material';
 import { usePortfolioStore } from '@/stores/portfolio';
 import type { Account } from '@/hooks/useAccounts';
 import { useAccounts } from '@/hooks/useAccounts';
@@ -24,7 +24,7 @@ function Portfolio() {
     state.forceRefresh,
     state.setForceRefresh,
   ]);
-
+  const theme = useTheme();
   const handleProgress = (
     account: string,
     round: number,
@@ -138,7 +138,11 @@ function Portfolio() {
                         width={16}
                         height={16}
                         sx={{
-                          border: `1px solid #FFFFFF`,
+                          border: `2px solid #FFFFFF`,
+                          backgroundColor:
+                            theme.palette.mode === 'light'
+                              ? '#e4e4e4'
+                              : '#3f3d56',
                         }}
                       />
                     }
@@ -163,9 +167,9 @@ function Portfolio() {
                       sx={{ borderRadius: '32px' }}
                     />
                     <Skeleton
-                      variant="text"
+                      variant="rectangular"
                       width={96}
-                      height={16}
+                      height={12}
                       sx={{ borderRadius: '32px' }}
                     />
                   </Stack>

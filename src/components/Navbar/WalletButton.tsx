@@ -91,8 +91,8 @@ export const WalletButtons = () => {
               <ImageWalletMenuButton
                 src={`https://effigy.im/a/${account?.address ?? 'jumper.eth'}.png`}
                 alt="Effigy Wallet Icon"
-                width={28}
-                height={28}
+                width={32}
+                height={32}
                 priority={false}
                 unoptimized={true}
               />
@@ -108,7 +108,7 @@ export const WalletButtons = () => {
                   {points}
                 </Typography>
               )}
-              <XPIcon size={28} />
+              <XPIcon size={32} />
             </WalletMenuButton>
           )}
           <WalletMenuButton
