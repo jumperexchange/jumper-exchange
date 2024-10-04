@@ -45,6 +45,7 @@
       "connectAnotherWallet": "Connect another wallet",
       "refreshBalances": "Refresh balances",
       "totalBalance": "Total balance",
+      "totalBalanceTooltip": "Total balance across Chains.",
       "numberOfChains": "{{numberOfChains}} chains"
     },
     "themes": {
