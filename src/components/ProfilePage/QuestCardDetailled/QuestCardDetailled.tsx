@@ -26,6 +26,12 @@ import {
   PROFILE_CAMPAIGN_FLASHY_APY_COLOR,
   PROFILE_CAMPAIGN_LIGHT_COLOR,
 } from 'src/const/partnerRewardsTheme';
+import { useUserTracking } from 'src/hooks/userTracking';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 
 export interface RewardsInterface {
   logo: string;
@@ -50,6 +56,8 @@ interface QuestCardProps {
   claimingIds?: string[];
   variableWeeklyAPY?: boolean;
   rewardRange?: string;
+  label?: string;
+  id?: number;
 }
 
 export const QuestCardDetailled = ({
@@ -67,17 +75,34 @@ export const QuestCardDetailled = ({
   claimingIds,
   variableWeeklyAPY,
   rewardRange,
+  label,
+  id,
 }: QuestCardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const router = useRouter();
   const { apy, isLoading, isSuccess } = useMissionsMaxAPY(claimingIds);
+  const { trackEvent } = useUserTracking();
+
+  const handleClick = () => {
+    trackEvent({
+      category: TrackingCategory.Quests,
+      action: TrackingAction.ClickQuestCard,
+      label: 'click-quest-card',
+      data: {
+        [TrackingEventParameter.QuestCardTitle]: title || '',
+        [TrackingEventParameter.QuestCardLabel]: label || '',
+        [TrackingEventParameter.QuestCardId]: id || '',
+      },
+    });
+  };
 
   return (
     <QuestCardMainBox>
       <Link
         href={link || `/quests/${slug}`}
         style={{ textDecoration: 'inherit' }}
+        onClick={handleClick}
       >
         <Box sx={{ display: 'flex', flexDirection: 'row', height: '65%' }}>
           {image && (
