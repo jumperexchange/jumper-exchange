@@ -1,17 +1,24 @@
 import { Box, Skeleton, Stack, Badge, useTheme } from '@mui/material';
 import { usePortfolioStore } from '@/stores/portfolio';
+import type { Account } from '@/hooks/useAccounts';
 import { useAccounts } from '@/hooks/useAccounts';
 import TotalBalance from '@/components/Portfolio/TotalBalance';
 import { WalletCardContainer } from '@/components/Menus';
 import PortfolioToken from '@/components/Portfolio/PortfolioToken';
 import { useEffect, useState } from 'react';
+import { merge } from 'lodash';
 import type { ExtendedTokenAmount } from '@/utils/getTokens';
 import getTokens, { ResultTokenBalance } from '@/utils/getTokens';
 
 function Portfolio() {
   const { accounts } = useAccounts();
+  const [cachedAccounts, setCachedAccounts] = useState<
+    Pick<Account, 'address' | 'chainType'>[]
+  >([]);
   const [data, setData] = useState<ExtendedTokenAmount[]>([]);
-  const [cumulativePriceUSD, setCumulativePriceUSD] = useState(0);
+  const [cumulativePriceUSD, setCumulativePriceUSD] = useState<{
+    [key: string]: number;
+  }>({});
   const [isComplete, setIsComplete] = useState(false);
   const [forceRefresh, setForceRefresh] = usePortfolioStore((state) => [
     state.forceRefresh,
@@ -19,16 +26,34 @@ function Portfolio() {
   ]);
   const theme = useTheme();
   const handleProgress = (
+    account: string,
     round: number,
-    cumulativePriceUSD: number,
+    totalPriceUSD: number,
     fetchedBalances: ExtendedTokenAmount[],
   ) => {
     console.log(`\n** Round ${round} **`);
-    console.log(`Cumulative Price USD: $${cumulativePriceUSD.toFixed(2)}`);
+    console.log(`Cumulative Price USD: $${totalPriceUSD.toFixed(2)}`);
     console.log(`Fetched Balances this Round:`, fetchedBalances);
 
-    setCumulativePriceUSD(cumulativePriceUSD);
-    setData(fetchedBalances);
+    setCumulativePriceUSD((prev) => ({ ...prev, [account]: totalPriceUSD }));
+    setData((prev) => {
+      const updatedData = prev.map((item) => {
+        const newItem = fetchedBalances.find(
+          (balance) => balance.symbol === item.symbol,
+        );
+        return newItem ? newItem : item;
+      });
+
+      fetchedBalances.forEach((balance) => {
+        if (!updatedData.some((item) => item.symbol === balance.symbol)) {
+          updatedData.push(balance);
+        }
+      });
+
+      return updatedData.sort(
+        (a, b) => (b.totalPriceUSD || 0) - (a.totalPriceUSD || 0),
+      );
+    });
   };
 
   const handleComplete = () => {
@@ -36,20 +61,72 @@ function Portfolio() {
   };
 
   useEffect(() => {
-    if (!accounts?.[0]?.address) {
-      return;
-    }
+    setCachedAccounts((prev) => {
+      const accs = accounts.filter(
+        (account) => account.isConnected && account.address,
+      );
+      if (prev.length === 0) {
+        return accs.map((account) => ({
+          address: account.address,
+          chainType: account.chainType,
+        }));
+      }
 
-    getTokens(accounts?.[0]?.address, handleProgress, handleComplete);
-  }, [accounts?.[0].address]);
+      for (const account of accs) {
+        if (
+          !prev.find((prevAccount) => prevAccount.address === account.address)
+        ) {
+          return [
+            ...prev,
+            { address: account.address, chainType: account.chainType },
+          ];
+        }
+      }
+
+      return prev;
+    });
+  }, [accounts]);
+
+  useEffect(() => {
+    const intervals: (NodeJS.Timeout | undefined)[] = [];
+    const fetchData = async () => {
+      if (cachedAccounts.length === 0) {
+        return;
+      }
+
+      for (const account of cachedAccounts) {
+        const intervalId = await getTokens(
+          account,
+          handleProgress,
+          handleComplete,
+        );
+        intervals.push(intervalId);
+      }
+    };
+
+    fetchData();
+
+    // Cleanup function
+    return () => {
+      for (const intervalId of intervals) {
+        intervalId && clearInterval(intervalId);
+      }
+    };
+  }, [cachedAccounts]);
 
   return (
     <>
-      <TotalBalance isComplete={isComplete} totalValue={cumulativePriceUSD} />
+      <TotalBalance
+        isComplete={isComplete}
+        totalValue={Object.values(cumulativePriceUSD).reduce(
+          (sum, value) => sum + value,
+          0,
+        )}
+      />
       <Stack spacing={1}>
         {data.length == 0 &&
-          Array.from({ length: 5 }, () => 42).map((token) => (
-            <WalletCardContainer>
+          Array.from({ length: 5 }, () => 42).map((_, index) => (
+            <WalletCardContainer key={index}>
               <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
                 <Box>
                   <Badge

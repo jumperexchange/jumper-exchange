@@ -120,17 +120,9 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
           </Tooltip>
         </Box>
         {!isComplete && (
-          <Tooltip
-            title={t('hello' as any)}
-            placement="top"
-            enterTouchDelay={0}
-            arrow
-            // title={t('navbar.walletMenu.refreshBalances')}
-          >
-            <TotalBalanceIconButton refetch={() => {}}>
-              <CircularProgressPending size={24} />
-            </TotalBalanceIconButton>
-          </Tooltip>
+          <TotalBalanceIconButton refetch={() => {}}>
+            <CircularProgressPending size={24} />
+          </TotalBalanceIconButton>
         )}
       </Box>
       <Stack spacing={1}>

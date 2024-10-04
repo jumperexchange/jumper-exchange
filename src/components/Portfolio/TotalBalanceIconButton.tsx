@@ -1,4 +1,5 @@
-import { alpha, IconButton } from '@mui/material';
+import { alpha, IconButton, Tooltip } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface TotalBalanceIconButtonProps {
   refetch: () => void;
@@ -9,22 +10,31 @@ function TotalBalanceIconButton({
   refetch,
   children,
 }: TotalBalanceIconButtonProps) {
+  const { t } = useTranslation();
+
   return (
-    <IconButton
-      size="medium"
-      aria-label="Refresh"
-      sx={(theme) => ({
-        marginRight: 1,
-        '&:hover': {
-          backgroundColor: alpha(theme.palette.text.primary, 0.08),
-        },
-      })}
-      onClick={() => {
-        refetch();
-      }}
+    <Tooltip
+      placement="top"
+      enterTouchDelay={0}
+      arrow
+      title={t('navbar.walletMenu.refreshBalances')}
     >
-      {children}
-    </IconButton>
+      <IconButton
+        size="medium"
+        aria-label="Refresh"
+        sx={(theme) => ({
+          marginRight: 1,
+          '&:hover': {
+            backgroundColor: alpha(theme.palette.text.primary, 0.08),
+          },
+        })}
+        onClick={() => {
+          refetch();
+        }}
+      >
+        {children}
+      </IconButton>
+    </Tooltip>
   );
 }
 
