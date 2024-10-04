@@ -1,11 +1,11 @@
 import type { NFTInfo } from 'src/hooks/useCheckNFTAvailability';
-import type { SuperfestNFTState } from 'src/types/SuperfestNFTStore';
+import type { NFTState } from 'src/types/NFTStore';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 
-export const useSuperfestNFTStore = createWithEqualityFn(
+export const useNFTStore = createWithEqualityFn(
   persist(
     (set, get) => ({
       address: undefined,
@@ -28,9 +28,9 @@ export const useSuperfestNFTStore = createWithEqualityFn(
       },
     }),
     {
-      name: 'jumper-superfest-nft', // name of the item in the storage (must be unique)
+      name: 'jumper-nft', // name of the item in the storage (must be unique)
       version: 1,
     },
-  ) as unknown as StateCreator<SuperfestNFTState, [], [], SuperfestNFTState>,
+  ) as unknown as StateCreator<NFTState, [], [], NFTState>,
   shallow,
 );

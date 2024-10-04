@@ -71,7 +71,7 @@ export const ActiveQuestsMissionsCarousel = ({
                 if (included) {
                   return (
                     <QuestCard
-                      key={`active-superfest-mission-${index}`}
+                      key={`active-mission-${index}`}
                       active={true}
                       path={path}
                       id={quest?.id}

@@ -1,10 +1,10 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import type { CTALinkInt } from 'src/components/Superfest/SuperfestPage/CTA/MissionCTA';
+import { CTALinkInt } from 'src/components/Quests/QuestPage/CTA/MissionCTA';
 
 const ACTIVE_CHAINS = ['10', '8453', '252', '34443'];
 const MERKL_API = 'https://api.merkl.xyz/v3';
-const CREATOR_TAG = 'superfest';
+const CREATOR_TAG = '';
 
 interface useMissionsAPYRes {
   isLoading: boolean;

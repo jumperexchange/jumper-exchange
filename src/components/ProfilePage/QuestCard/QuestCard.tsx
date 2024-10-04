@@ -1,181 +1,215 @@
-import DoneIcon from '@mui/icons-material/Done';
-import { useTheme } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from 'src/const/trackingKeys';
-import { useUserTracking } from 'src/hooks/userTracking';
 import { Button } from '../../Button';
 import { XPIcon } from '../../illustrations/XPIcon';
+import Link from 'next/link';
 import {
-  CenteredBox,
-  CompletedTypography,
-  NoSelectTypography,
-} from '../ProfilePage.style';
-import {
-  CompletedBox,
+  OPBadgeRelativeBox,
   QuestCardBottomBox,
   QuestCardInfoBox,
   QuestCardMainBox,
   QuestCardTitleBox,
-  QuestPlatformMainBox,
   XPDisplayBox,
+  XPIconBox,
 } from './QuestCard.style';
+import { Box, Typography, useTheme } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import { APYIcon } from 'src/components/illustrations/APYIcon';
+import {
+  PROFILE_CAMPAIGN_DARK_COLOR,
+  PROFILE_CAMPAIGN_FLASHY_APY_COLOR,
+  PROFILE_CAMPAIGN_LIGHT_COLOR,
+} from 'src/const/partnerRewardsTheme';
+import { FlexCenterRowBox, FlexSpaceBetweenBox } from '../ProfilePage.style';
+
+interface Chain {
+  logo: string;
+  name: string;
+}
+
+export interface RewardsInterface {
+  logo: string;
+  name: string;
+  amount: number;
+}
 
 interface QuestCardProps {
   active?: boolean;
-  title: string;
-  id?: number | string;
+  title?: string;
   image?: string;
-  label?: string;
   points?: number;
+  link?: string;
+  startDate?: string;
+  endDate?: string;
   platformName?: string;
   platformImage?: string;
-}
-
-function getStringDateFormatted(startDate: string, endDate: string): string {
-  const sDate = new Date(startDate);
-  const eDate = new Date(endDate);
-  const startMonth = sDate.toLocaleString('default', { month: 'short' });
-  const endMonth = eDate.toLocaleString('default', { month: 'short' });
-  return `${startMonth} ${sDate.getDate()} - ${startMonth === endMonth ? '' : endMonth} ${eDate.getDate()}`;
+  slug?: string;
+  chains?: Chain[];
+  rewards?: RewardsInterface;
+  completed?: boolean;
+  claimingIds?: string[];
+  variableWeeklyAPY?: boolean;
+  rewardRange?: string;
 }
 
 export const QuestCard = ({
   active,
   title,
-  id,
   image,
   points,
-  label,
-  platformName,
-  platformImage,
+  link,
+  startDate,
+  endDate,
+  slug,
+  chains,
+  rewards,
+  completed,
+  claimingIds,
+  variableWeeklyAPY,
+  rewardRange,
 }: QuestCardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
-
-  const { trackEvent } = useUserTracking();
-  const handleClick = () => {
-    trackEvent({
-      category: TrackingCategory.Quests,
-      action: TrackingAction.ClickQuestCard,
-      label: 'click-quest-card',
-      data: {
-        [TrackingEventParameter.QuestCardTitle]: title,
-        [TrackingEventParameter.QuestCardLabel]: label || '',
-        [TrackingEventParameter.QuestCardId]: id || '',
-        [TrackingEventParameter.QuestCardPlatform]: platformName || '',
-      },
-    });
-  };
+  const router = useRouter();
+  const { apy, isLoading, isSuccess } = useMissionsMaxAPY(claimingIds);
 
   return (
     <QuestCardMainBox>
-      {image && (
-        <Image
-          src={image}
-          alt="Quest Card Image"
-          width={240}
-          height={240}
-          style={{
-            borderRadius: 8,
-          }}
-        />
-      )}
-      <QuestCardBottomBox>
-        {active ? (
-          <QuestPlatformMainBox platformName={platformName}>
-            {platformName ? (
-              <CenteredBox>
-                <CenteredBox
-                  sx={{
-                    marginRight: '4px',
-                  }}
+      <Link
+        href={link || `/quests/${slug}`}
+        style={{ textDecoration: 'inherit' }}
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'row', height: '65%' }}>
+          {image && (
+            <Image
+              src={image}
+              alt="Quest Card Image"
+              width={288}
+              height={288}
+              style={{
+                borderTopLeftRadius: '8px',
+                borderTopRightRadius: '8px',
+              }}
+            />
+          )}
+        </Box>
+        <QuestCardBottomBox>
+          <QuestCardTitleBox>
+            <Typography
+              fontSize="20px"
+              lineHeight="20px"
+              fontWeight={600}
+              color={
+                theme.palette.mode === 'dark'
+                  ? PROFILE_CAMPAIGN_DARK_COLOR
+                  : PROFILE_CAMPAIGN_LIGHT_COLOR
+              }
+            >
+              {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
+            </Typography>
+          </QuestCardTitleBox>
+          <FlexSpaceBetweenBox marginBottom={'8px'} marginTop={'8px'}>
+            <FlexCenterRowBox>
+              {chains?.map((elem: Chain, i: number) => {
+                return (
+                  <Image
+                    key={elem.name + '-' + i}
+                    src={elem.logo}
+                    style={{
+                      marginLeft: i === 0 ? '' : '-8px',
+                      zIndex: 100 - i,
+                    }}
+                    alt={elem.name}
+                    width="32"
+                    height="32"
+                  />
+                );
+              })}
+            </FlexCenterRowBox>
+            {points ? (
+              <FlexCenterRowBox>
+                {apy > 0 && !variableWeeklyAPY && (
+                  <XPDisplayBox
+                    active={active}
+                    bgcolor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
+                  >
+                    <Typography
+                      fontSize="14px"
+                      fontWeight={700}
+                      lineHeight="18px"
+                      color={'#ffffff'}
+                    >
+                      {`${Number(apy).toFixed(1)}%`}
+                    </Typography>
+                    <XPIconBox marginLeft="4px">
+                      <APYIcon size={20} />
+                    </XPIconBox>
+                  </XPDisplayBox>
+                )}
+                {variableWeeklyAPY && (
+                  <XPDisplayBox
+                    active={active}
+                    bgcolor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
+                  >
+                    <Typography
+                      fontSize="14px"
+                      fontWeight={700}
+                      lineHeight="18px"
+                      color={'#ffffff'}
+                    >
+                      {rewardRange ? rewardRange : `VAR.%`}
+                    </Typography>
+                    <XPIconBox marginLeft="4px">
+                      <APYIcon size={20} />
+                    </XPIconBox>
+                  </XPDisplayBox>
+                )}
+                <XPDisplayBox
+                  active={active}
+                  bgcolor={!completed ? '#31007A' : '#42B852'}
                 >
-                  {platformImage && (
-                    <Image
-                      src={platformImage}
-                      alt="Platform Image"
-                      width={24}
-                      height={24}
-                      style={{
-                        borderRadius: '100%',
-                      }}
-                    />
-                  )}
-                </CenteredBox>
-                <NoSelectTypography
-                  fontSize={'12px'}
-                  lineHeight={'16px'}
-                  fontWeight={700}
-                >
-                  {platformName}
-                </NoSelectTypography>
-              </CenteredBox>
+                  <Typography
+                    fontSize="14px"
+                    fontWeight={700}
+                    lineHeight="18px"
+                    color={'#ffffff'}
+                  >
+                    {`${points}`}
+                  </Typography>
+                  <XPIconBox marginLeft="4px">
+                    {!completed ? (
+                      <XPIcon size={16} />
+                    ) : (
+                      <CheckCircleIcon
+                        sx={{ width: '16px', color: '#ffffff' }}
+                      />
+                    )}
+                  </XPIconBox>
+                </XPDisplayBox>
+              </FlexCenterRowBox>
+            ) : undefined}
+          </FlexSpaceBetweenBox>
+          <QuestCardInfoBox points={points}>
+            {active && slug ? (
+              <Button
+                disabled={false}
+                variant="primary"
+                size="medium"
+                styles={{
+                  alignItems: 'center',
+                  width: '100%',
+                }}
+              >
+                <Typography fontSize="16px" lineHeight="18px" fontWeight={600}>
+                  {String(t('questCard.join')).toUpperCase()}
+                </Typography>
+              </Button>
             ) : null}
-          </QuestPlatformMainBox>
-        ) : (
-          <CompletedBox>
-            <DoneIcon sx={{ height: '16px', color: '#00B849' }} />
-            <CompletedTypography
-              fontSize="12px"
-              lineHeight="16px"
-              fontWeight={700}
-            >
-              {t('questCard.completed')}
-            </CompletedTypography>
-          </CompletedBox>
-        )}
-        <QuestCardTitleBox>
-          <NoSelectTypography
-            fontSize="18px"
-            lineHeight="24px"
-            fontWeight={700}
-          >
-            {title}
-          </NoSelectTypography>
-        </QuestCardTitleBox>
-        <QuestCardInfoBox points={points}>
-          {points ? (
-            <XPDisplayBox active={active}>
-              <NoSelectTypography
-                fontWeight={700}
-                fontSize="14px"
-                lineHeight="18px"
-                color={
-                  theme.palette.mode === 'light'
-                    ? theme.palette.primary.main
-                    : '#BEA0EB'
-                }
-              >
-                {`+${points}`}
-              </NoSelectTypography>
-              <CenteredBox sx={{ marginLeft: '8px' }}>
-                <XPIcon size={24} />
-              </CenteredBox>
-            </XPDisplayBox>
-          ) : null}
-          {active ? (
-            <Button
-              aria-label={`Open ${t('questCard.join')}`}
-              variant="secondary"
-              size="medium"
-              styles={{ alignItems: 'center', width: '100%' }}
-            >
-              <NoSelectTypography
-                fontSize="16px"
-                lineHeight="18px"
-                fontWeight={600}
-              >
-                {t('questCard.join')}
-              </NoSelectTypography>
-            </Button>
-          ) : null}
-        </QuestCardInfoBox>
-      </QuestCardBottomBox>
+          </QuestCardInfoBox>
+        </QuestCardBottomBox>
+      </Link>
     </QuestCardMainBox>
   );
 };

@@ -11,7 +11,6 @@ import {
 } from '@/const/urls';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useMenuStore } from '@/stores/menu';
-import { useSuperfest } from 'src/hooks/useSuperfest';
 import {
   NavbarContainer as Container,
   Logo,
@@ -30,7 +29,6 @@ export const Navbar = ({ disableNavbar = false }) => {
     pathname?.includes(JUMPER_TX_PATH) ||
     pathname?.includes(JUMPER_WALLET_PATH);
   const isQuestsPage = pathname?.includes(JUMPER_QUESTS_PATH);
-  const { isSuperfest } = useSuperfest();
   const { setWelcomeScreenClosed } = useWelcomeScreen();
 
   const { closeAllMenus } = useMenuStore((state) => state);
@@ -58,9 +56,7 @@ export const Navbar = ({ disableNavbar = false }) => {
         />
       </LogoLink>
       {!isScanPage && !isLearnPage && !disableNavbar && (
-        <NavbarTabs
-          navbarPageReload={isLoyaltyPage || isSuperfest || isQuestsPage}
-        />
+        <NavbarTabs navbarPageReload={isLoyaltyPage || isQuestsPage} />
       )}
       <NavbarButtons />
     </Container>

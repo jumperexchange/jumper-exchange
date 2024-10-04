@@ -1,11 +1,17 @@
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { alpha, useTheme } from '@mui/material';
-import { VoidQuestCardContainer } from './VoidQuestCard.style';
+import { VoidQuestCardCompletedContainer } from './VoidQuestCardCompleted.style';
 
-export const VoidQuestCard = () => {
+interface VoidQuestCardCompletedProps {
+  connected: boolean;
+}
+
+export const VoidQuestCardCompleted = ({
+  connected,
+}: VoidQuestCardCompletedProps) => {
   const theme = useTheme();
   return (
-    <VoidQuestCardContainer>
+    <VoidQuestCardCompletedContainer>
       <QuestionMarkIcon
         sx={{
           height: '96px',
@@ -16,6 +22,6 @@ export const VoidQuestCard = () => {
               : alpha(theme.palette.grey[400], 0.08),
         }}
       />
-    </VoidQuestCardContainer>
+    </VoidQuestCardCompletedContainer>
   );
 };

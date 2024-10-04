@@ -8,7 +8,6 @@ import {
 } from '@/const/trackingKeys';
 import {
   DISCORD_URL,
-  JUMPER_FEST_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,

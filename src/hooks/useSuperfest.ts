@@ -1,14 +1,13 @@
 import { usePathname } from 'next/navigation';
-import { JUMPER_FEST_PATH } from 'src/const/urls';
 
-interface useSuperfestProps {
-  isSuperfest: boolean;
+interface useIncludePathProps {
+  includePath: boolean;
 }
 
-export const useSuperfest = (): useSuperfestProps => {
+export const useIncludePath = (path: string): useIncludePathProps => {
   const pathname = usePathname();
 
   return {
-    isSuperfest: pathname?.includes(JUMPER_FEST_PATH) ?? false,
+    includePath: pathname?.includes(path) ?? false,
   };
 };

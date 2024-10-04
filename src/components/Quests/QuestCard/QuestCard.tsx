@@ -14,7 +14,7 @@ import {
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { ButtonSecondary } from '../../Button';
-import { SuperfestXPIcon } from '../../illustrations/XPIcon';
+import { XPIcon } from '../../illustrations/XPIcon';
 import type { Chain } from '../QuestPage/Banner/Banner';
 import { FlexCenterRowBox } from '../QuestPage/QuestsMissionPage.style';
 import { FlexSpaceBetweenBox } from '../Quests.style';
@@ -39,7 +39,6 @@ interface QuestCardProps {
   title?: string;
   image?: string;
   points?: number;
-  activeCampaign?: 'superfest';
   path: string;
   link?: string;
   id?: string | number;
@@ -112,11 +111,6 @@ export const QuestCard = ({
                 borderTopRightRadius: '8px',
               }}
             />
-          )}
-          {activeCampaign === 'superfest' && (
-            <OPBadgeRelativeBox>
-              {rewards && rewards?.amount > 0 ? <OPBadge /> : undefined}
-            </OPBadgeRelativeBox>
           )}
         </Box>
       </Link>
@@ -196,7 +190,7 @@ export const QuestCard = ({
                 </Typography>
                 <XPIconBox marginLeft="4px">
                   {!completed ? (
-                    <SuperfestXPIcon size={16} />
+                    <XPIcon size={16} />
                   ) : (
                     <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
                   )}

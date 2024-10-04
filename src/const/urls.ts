@@ -13,7 +13,6 @@ export const JUMPER_LOYALTY_PATH = '/profile';
 export const JUMPER_SCAN_PATH = '/scan';
 export const JUMPER_TX_PATH = '/tx';
 export const JUMPER_WALLET_PATH = '/wallet';
-export const JUMPER_FEST_PATH = '/superfest';
 export const JUMPER_MEMECOIN_PATH = '/memecoins';
 export const JUMPER_QUESTS_PATH = '/quests';
 

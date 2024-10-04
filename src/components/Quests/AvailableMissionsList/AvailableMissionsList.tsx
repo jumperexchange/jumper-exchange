@@ -33,7 +33,6 @@ interface AvailableMissionsListProps {
   pastCampaigns?: string[];
   loading: boolean;
   path: string;
-  activeCampaign?: 'superfest';
 }
 
 export const AvailableMissionsList = ({

@@ -6,9 +6,9 @@ import {
   useTheme,
 } from '@mui/material';
 import Image from 'next/image';
-import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { AmountInputBox } from '../RewardsCarousel.style';
+import { FlexCenterRowBox } from '../../ProfilePage.style';
 
 export const RewardsAmountBox = ({
   isConfirmed,

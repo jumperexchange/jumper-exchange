@@ -1,39 +1,34 @@
 import type { BoxProps } from '@mui/material';
-import { Box, alpha, styled } from '@mui/material';
+import { Box, alpha, darken, styled } from '@mui/material';
 
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  height: 450,
-  width: 288,
-  textAlign: 'center',
-  borderBottomLeftRadius: '16px',
-  borderBottomRightRadius: '16px',
-}));
-
-export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  height: '33%',
-  flexGrow: 1,
-  paddingTop: '16px',
-  paddingBottom: '24px',
-  paddingLeft: '16px',
-  paddingRight: '16px',
   backgroundColor:
     theme.palette.mode === 'light'
       ? '#FFFFFF'
       : alpha(theme.palette.white.main, 0.08),
-  borderBottomLeftRadius: '8px',
-  borderBottomRightRadius: '8px',
+  height: '416px',
+  width: '272px',
+  borderRadius: '24px',
+  textAlign: 'center',
+  padding: theme.spacing(2),
+  transition: 'background-color 250ms',
+}));
+
+export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  flexGrow: 1,
 }));
 
 export const QuestCardTitleBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
-  alignContent: 'center',
   textAlign: 'left',
+  height: '32px',
 }));
 
 export interface QuestCardInfoBoxProps extends Omit<BoxProps, 'component'> {
@@ -44,7 +39,8 @@ export const QuestCardInfoBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'points',
 })<QuestCardInfoBoxProps>(({ points }) => ({
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
+  justifyContent: points ? 'space-between' : 'flex-end',
 }));
 
 export const CompletedBox = styled(Box)(() => ({
@@ -53,7 +49,7 @@ export const CompletedBox = styled(Box)(() => ({
   backgroundColor: '#d6ffe7',
   borderRadius: '128px',
   padding: '4px',
-  width: '50%',
+  width: '110px',
 }));
 
 export interface QuestPlatformMainBoxProps extends Omit<BoxProps, 'component'> {
@@ -68,6 +64,21 @@ export const QuestPlatformMainBox = styled(Box, {
   alignItems: 'center',
 }));
 
+export const QuestDatesBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? alpha(theme.palette.black.main, 0.04)
+      : theme.palette.alphaLight300.main,
+  paddingTop: '4px',
+  paddingBottom: '4px',
+  paddingLeft: '8px',
+  paddingRight: '8px',
+  borderRadius: '128px',
+  justifyContent: 'center',
+}));
+
 export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {
   active?: boolean;
 }
@@ -75,24 +86,12 @@ export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {
 export const XPDisplayBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active',
 })<XPDisplayBoxProps>(({ active }) => ({
+  width: active ? '50%' : '100%',
   marginRight: active ? '8px' : undefined,
   display: 'flex',
-  height: '28px',
-  alignContent: 'center',
-  justifyContent: 'space-between',
+  height: '40px',
   alignItems: 'center',
   borderRadius: '128px',
-  padding: '8px',
-}));
-
-export const XPIconBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignContent: 'flex-end',
-  justifyContent: 'flex-end',
-}));
-
-export const OPBadgeRelativeBox = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  bottom: '16px',
-  right: '32px',
+  padding: '6px',
+  justifyContent: 'center',
 }));
