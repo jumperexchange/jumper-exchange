@@ -61,7 +61,7 @@ export const MenuMobile = ({
           cardsLayout={cardsLayout}
           hasLabel={!!label}
           sx={styles}
-          component={'div'}
+          component={isOpenSubMenu ? 'div' : 'ul'}
         >
           {!!label ? (
             <MenuHeaderAppWrapper>

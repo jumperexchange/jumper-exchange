@@ -1,5 +1,4 @@
 import { Menu } from '@/components/Menu/Menu';
-import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import { Stack, Typography, useTheme } from '@mui/material';
@@ -54,7 +53,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
     <Menu
       open={_openWalletMenu}
       setOpen={setWalletMenuState}
-      isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
+      isOpenSubMenu={_openWalletMenu}
       width={'auto'}
       styles={{
         background: theme.palette.surface1.main,
