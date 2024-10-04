@@ -11,7 +11,6 @@ export const WidgetSkeleton = ({ config }: WidgetSkeletonProps) => {
   return (
     <Box height="682px">
       <WidgetSkeletonContainer welcomeScreenClosed={true}>
-        {' '}
         <LifiWidgetSkeleton config={config} />
       </WidgetSkeletonContainer>
     </Box>

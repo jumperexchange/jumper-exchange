@@ -75,6 +75,10 @@ export enum TrackingAction {
   JoinDiscordCommunity = 'action_join_discord_community',
   OpenDiscordSupport = 'action_open_discord_support',
   PoweredBy = 'action_click_powered_by',
+
+  // VoluntaryFee
+  VoluntaryFeeTransferStarted = 'voluntary_fee_transfer_started',
+  VoluntaryFeeTransferSucccess = 'voluntary_fee_transfer_successfully',
 }
 
 export enum TrackingCategory {
@@ -104,6 +108,7 @@ export enum TrackingCategory {
   BlogArticle = 'cat_blog_article',
   Missions = 'cat_missions',
   Quests = 'cat_quests',
+  VoluntaryFee = 'voluntary_fee',
 }
 
 // can be used as custom dimensions / metrics
@@ -201,4 +206,16 @@ export enum TrackingEventParameter {
   MissionCtaLabel = 'param_mission_cta_label',
   MissionCtaPartnerId = 'param_mission_cta_partner_id',
   MissionCtaCampaign = 'param_mission_cta_campaign',
+
+  // VoluntaryFee
+  RouteFromChainId = 'param_route_from_chain',
+  RouteToChainId = 'param_route_to_chain',
+  RouteFromToken = 'param_route_from_token',
+  RouteToToken = 'param_route_to_token',
+  RouteAmountUSD = 'param_route_amount_usd',
+  RouteNumberOfSteps = 'param_route_nb_steps',
+  RouteVoluntaryFeeChainId = 'param_voluntary_fees_chain_id',
+  RouteVoluntaryFeeToken = 'param_voluntary_fees_token',
+  RouteVoluntaryFeeAmount = 'param_voluntary_fees_amount',
+  RouteVoluntaryFeeAmountUSD = 'param_voluntary_fees_amount_usd',
 }

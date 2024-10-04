@@ -28,6 +28,7 @@ import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import type { TransformedRoute } from 'src/types/internal';
 import { calcPriceImpact } from 'src/utils/calcPriceImpact';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
+import { useCheckFlexFeeEligility } from 'src/hooks/useCheckFlexFeeEligility';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
@@ -39,6 +40,7 @@ export function WidgetEvents() {
     setSourceChainToken,
   } = useChainTokenSelectionStore();
   const { trackTransaction, trackEvent } = useUserTracking();
+  const { checkEligibilityForFlexibleFee } = useCheckFlexFeeEligility();
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
   ]);
@@ -71,6 +73,7 @@ export function WidgetEvents() {
           enableAddressable: true,
         });
       }
+      checkEligibilityForFlexibleFee(route);
     };
 
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {

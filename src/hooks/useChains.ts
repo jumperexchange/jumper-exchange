@@ -22,7 +22,7 @@ export const useChains = (): ChainProps => {
   });
 
   const getChainById = (id: ChainId) => {
-    const filteredChain = data?.chains.find((el: Chain) => el.id === id);
+    const filteredChain = data?.chains.find((el) => el.id === id);
     if (filteredChain) {
       return filteredChain;
     } else {

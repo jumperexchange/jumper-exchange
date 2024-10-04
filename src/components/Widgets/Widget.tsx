@@ -29,6 +29,7 @@ import { useUserTracking } from 'src/hooks/userTracking';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
+import { FlexibleFee } from '../FlexibleFee/FlexibleFee';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
@@ -169,6 +170,7 @@ export function Widget({
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
+      feeConfig: { name: 'Jumper', fee: 0, _vcComponent: FlexibleFee },
       ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
@@ -237,7 +239,11 @@ export function Widget({
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly fallback={<WidgetSkeleton config={config} />}>
-        <LiFiWidget integrator={config.integrator} config={config} />
+        <LiFiWidget
+          integrator={config.integrator}
+          config={config}
+          feeConfig={{ name: 'FlexibleFee', fee: 2, _vcComponent: FlexibleFee }}
+        />
       </ClientOnly>
     </WidgetWrapper>
   );

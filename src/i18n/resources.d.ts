@@ -135,6 +135,12 @@ interface Resources {
       pointsInfo: 'XP is your score for interacting with Jumper. As you gain more XP, your level goes up.';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
     };
+    flexibleFee: {
+      title: 'Help us grow Jumper!';
+      description: 'Lorem ipsum...';
+      availableAmount: '{{amountUsd}} • {{amount}} {{baseToken}} available';
+      cta: 'Contribute';
+    };
   };
 }
 
