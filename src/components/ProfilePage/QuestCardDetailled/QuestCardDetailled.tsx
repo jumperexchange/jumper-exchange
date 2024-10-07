@@ -49,6 +49,7 @@ interface QuestCardProps {
   points?: number;
   link?: string;
   startDate?: string;
+  action?: string;
   endDate?: string;
   platformName?: string;
   platformImage?: string;
@@ -67,6 +68,7 @@ interface QuestCardProps {
 export const QuestCardDetailled = ({
   title,
   image,
+  action,
   points,
   link,
   slug,
@@ -170,6 +172,7 @@ export const QuestCardDetailled = ({
                   label={`${rewardsProgress?.earnedXP}`}
                   tooltip={t('questCard.earnedXPDescription', {
                     earnedXP: rewardsProgress?.earnedXP,
+                    action: action,
                   })}
                   active={true}
                 >
@@ -220,9 +223,13 @@ export const QuestCardDetailled = ({
                 <XPRewardsInfo
                   bgColor={!completed ? '#31007A' : '#42B852'}
                   label={`+${points}`}
-                  tooltip={t('questCard.xpToEarnDescription', {
-                    xpToEarn: points,
-                  })}
+                  tooltip={
+                    rewardsProgress &&
+                    t('questCard.xpToEarnDescription', {
+                      xpToEarn: points,
+                      action: action,
+                    })
+                  }
                   active={true}
                 >
                   {!completed ? (
@@ -237,6 +244,7 @@ export const QuestCardDetailled = ({
           {rewardsProgress && (
             <ProgressionBar
               ongoingValue={rewardsProgress.currentValue}
+              loading={false}
               levelData={{
                 maxPoints: rewardsProgress.max,
                 minPoints: rewardsProgress.min,
