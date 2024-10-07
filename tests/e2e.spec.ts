@@ -107,7 +107,7 @@ test.describe('Jumper full e2e flow', () => {
     expect(await page.url()).toBe(profileUrl);
     await page.locator('.profile-page').isVisible();
     await page
-      .locator('xpath=(//div[@class="MuiBox-root mui-vyka93"])[1]')
+      .locator('xpath=(//div[@class="MuiBox-root mui-1t1c9pj"])[1]')
       .click();
 
     await expect(missionTitle).toBeVisible({ timeout: 15000 });
