@@ -8,8 +8,6 @@ import {
 import { useState } from 'react';
 import { checkInclusion } from '../ActiveQuestsMissionsCarousel/ActiveQuestsMissionsCarousel';
 import { MissionsFilter } from '../MissionsFilter/MissionsFilter';
-import { QuestCard } from '../QuestCard/QuestCard';
-import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import {
   AvailableMissionsContainer,
   AvailableMissionsHeader,
@@ -17,6 +15,8 @@ import {
   AvailableMissionsTitle,
 } from './AvailableMissionsList.style';
 import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
+import { QuestPageCard } from '../QuestCard/QuestPageCard';
+import { QuestPageCardSkeleton } from '../QuestCard/QuestPageCardSkeleton';
 
 const chains = ['Optimism', 'Base', 'Mode', 'Fraxtal'];
 
@@ -150,7 +150,7 @@ export const AvailableMissionsList = ({
               }
 
               return (
-                <QuestCard
+                <QuestPageCard
                   key={`available-mission-${index}`}
                   active={true}
                   title={quest?.attributes.Title}
@@ -179,7 +179,7 @@ export const AvailableMissionsList = ({
           : null}
         {loading
           ? Array.from({ length: 12 }, () => 42).map((_, idx) => (
-              <QuestCardSkeleton key={'skeleton-' + idx} />
+              <QuestPageCardSkeleton key={'skeleton-' + idx} />
             ))
           : null}
       </AvailableMissionsStack>

@@ -1,7 +1,7 @@
 import type { BoxProps } from '@mui/material';
 import { Box, alpha, styled } from '@mui/material';
 
-export const QuestCardMainBox = styled(Box)(({ theme }) => ({
+export const QuestPageCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   backgroundColor:
@@ -14,7 +14,7 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   borderRadius: '8px',
 }));
 
-export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
+export const QuestPageCardBottomBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   color: theme.palette.text.primary,
   flexDirection: 'column',
@@ -29,20 +29,20 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   borderBottomRightRadius: '8px',
 }));
 
-export const QuestCardTitleBox = styled(Box)(() => ({
+export const QuestPageCardTitleBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
   alignContent: 'center',
   textAlign: 'left',
 }));
 
-export interface QuestCardInfoBoxProps extends Omit<BoxProps, 'component'> {
+export interface QuestPageCardInfoBoxProps extends Omit<BoxProps, 'component'> {
   points?: number;
 }
 
-export const QuestCardInfoBox = styled(Box, {
+export const QuestPageCardInfoBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'points',
-})<QuestCardInfoBoxProps>(({ points }) => ({
+})<QuestPageCardInfoBoxProps>(({ points }) => ({
   display: 'flex',
   flexDirection: 'column',
 }));

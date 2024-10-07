@@ -1,6 +1,6 @@
 import { Box, alpha, styled } from '@mui/material';
 
-export const QuestCardSkeletonContainer = styled(Box)(({ theme }) => ({
+export const QuestPageCardSkeletonContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#F8F3E0',
   height: 450,
   width: 288,

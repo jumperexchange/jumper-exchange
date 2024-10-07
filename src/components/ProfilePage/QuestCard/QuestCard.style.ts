@@ -17,7 +17,7 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   height: '33%',
   flexGrow: 1,
-  padding: theme.spacing(2, 2, 3)
+  padding: theme.spacing(2, 2, 3),
   backgroundColor:
     theme.palette.mode === 'light'
       ? '#FFFFFF'
@@ -79,7 +79,7 @@ export const XPDisplayBox = styled(Box, {
   justifyContent: 'space-between',
   alignItems: 'center',
   borderRadius: '128px',
-  padding: theme.spacing(1)
+  padding: theme.spacing(1),
 }));
 
 export const XPIconBox = styled(Box)(({ theme }) => ({

@@ -1,9 +1,9 @@
 import { CarouselContainer } from '@/components/Blog/BlogCarousel/CarouselContainer';
 import type { Quest } from '@/types/loyaltyPass';
-import { QuestCard } from '../QuestCard/QuestCard';
-import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { QuestsCarouselContainer } from './ActiveQuestsMissionsCarousel.style';
 import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
+import { QuestPageCard } from '../QuestCard/QuestPageCard';
+import { QuestPageCardSkeleton } from '../QuestCard/QuestPageCardSkeleton';
 
 export function checkInclusion(
   activeCampaigns: string[],
@@ -70,7 +70,7 @@ export const ActiveQuestsMissionsCarousel = ({
 
                 if (included) {
                   return (
-                    <QuestCard
+                    <QuestPageCard
                       key={`active-mission-${index}`}
                       active={true}
                       path={path}
@@ -100,7 +100,7 @@ export const ActiveQuestsMissionsCarousel = ({
             ) : (
               <>
                 {Array.from({ length: 3 }, () => 42).map((_, idx) => (
-                  <QuestCardSkeleton key={'mission-card-skeleton-' + idx} />
+                  <QuestPageCardSkeleton key={'mission-card-skeleton-' + idx} />
                 ))}
               </>
             )}

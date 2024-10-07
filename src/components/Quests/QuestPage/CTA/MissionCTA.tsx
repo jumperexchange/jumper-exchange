@@ -16,7 +16,7 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
-import { XPDisplayBox, XPIconBox } from '../../QuestCard/QuestCard.style';
+import { XPDisplayBox, XPIconBox } from '../../QuestCard/QuestPageCard.style';
 import { FlexCenterRowBox } from '../QuestsMissionPage.style';
 import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 import {

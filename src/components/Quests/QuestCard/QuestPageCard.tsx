@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
-import { OPBadge } from 'src/components/illustrations/OPBadge';
 import {
   TrackingAction,
   TrackingCategory,
@@ -19,14 +18,13 @@ import type { Chain } from '../QuestPage/Banner/Banner';
 import { FlexCenterRowBox } from '../QuestPage/QuestsMissionPage.style';
 import { FlexSpaceBetweenBox } from '../Quests.style';
 import {
-  OPBadgeRelativeBox,
-  QuestCardBottomBox,
-  QuestCardInfoBox,
-  QuestCardMainBox,
-  QuestCardTitleBox,
+  QuestPageCardBottomBox,
+  QuestPageCardInfoBox,
+  QuestPageCardMainBox,
+  QuestPageCardTitleBox,
   XPDisplayBox,
   XPIconBox,
-} from './QuestCard.style';
+} from './QuestPageCard.style';
 
 export interface RewardsInterface {
   logo: string;
@@ -34,7 +32,7 @@ export interface RewardsInterface {
   amount: number;
 }
 
-interface QuestCardProps {
+interface QuestPageCardProps {
   active?: boolean;
   title?: string;
   image?: string;
@@ -56,7 +54,7 @@ interface QuestCardProps {
   rewardRange?: string;
 }
 
-export const QuestCard = ({
+export const QuestPageCard = ({
   active,
   title,
   image,
@@ -74,7 +72,7 @@ export const QuestCard = ({
   claimingIds,
   variableWeeklyAPY,
   rewardRange,
-}: QuestCardProps) => {
+}: QuestPageCardProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
@@ -95,7 +93,7 @@ export const QuestCard = ({
   };
 
   return (
-    <QuestCardMainBox>
+    <QuestPageCardMainBox>
       <Link onClick={handleClick} href={`${path}${slug}`}>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           {image && (
@@ -112,12 +110,12 @@ export const QuestCard = ({
           )}
         </Box>
       </Link>
-      <QuestCardBottomBox>
-        <QuestCardTitleBox>
+      <QuestPageCardBottomBox>
+        <QuestPageCardTitleBox>
           <Typography fontSize="20px" lineHeight="20px" fontWeight={600}>
             {title && title.length > 22 ? `${title.slice(0, 21)}...` : title}
           </Typography>
-        </QuestCardTitleBox>
+        </QuestPageCardTitleBox>
         <FlexSpaceBetweenBox marginBottom={'8px'} marginTop={'8px'}>
           <FlexCenterRowBox>
             {chains?.map((elem: Chain, i: number) => {
@@ -197,7 +195,7 @@ export const QuestCard = ({
             </FlexCenterRowBox>
           ) : undefined}
         </FlexSpaceBetweenBox>
-        <QuestCardInfoBox points={points}>
+        <QuestPageCardInfoBox points={points}>
           {active && slug ? (
             <ButtonSecondary
               disabled={false}
@@ -209,8 +207,8 @@ export const QuestCard = ({
               </Typography>
             </ButtonSecondary>
           ) : null}
-        </QuestCardInfoBox>
-      </QuestCardBottomBox>
-    </QuestCardMainBox>
+        </QuestPageCardInfoBox>
+      </QuestPageCardBottomBox>
+    </QuestPageCardMainBox>
   );
 };

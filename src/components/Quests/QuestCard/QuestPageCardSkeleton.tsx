@@ -1,9 +1,9 @@
 import { Skeleton } from '@mui/material';
-import { QuestCardSkeletonContainer } from './QuestCardSkeleton.style';
+import { QuestPageCardSkeletonContainer } from './QuestPageCardSkeleton.style';
 
-export const QuestCardSkeleton = () => {
+export const QuestPageCardSkeleton = () => {
   return (
-    <QuestCardSkeletonContainer>
+    <QuestPageCardSkeletonContainer>
       <Skeleton
         variant="rectangular"
         sx={{
@@ -15,6 +15,6 @@ export const QuestCardSkeleton = () => {
           aspectRatio: 550 / 300,
         }}
       />
-    </QuestCardSkeletonContainer>
+    </QuestPageCardSkeletonContainer>
   );
 };

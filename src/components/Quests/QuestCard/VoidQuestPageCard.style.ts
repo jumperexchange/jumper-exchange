@@ -1,6 +1,6 @@
 import { Box, alpha, styled } from '@mui/material';
 
-export const VoidQuestCardContainer = styled(Box)(({ theme }) => ({
+export const VoidQuestPageCardContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',

@@ -1,11 +1,11 @@
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { alpha, useTheme } from '@mui/material';
-import { VoidQuestCardContainer } from './VoidQuestCard.style';
+import { VoidQuestPageCardContainer } from './VoidQuestPageCard.style';
 
-export const VoidQuestCard = () => {
+export const VoidQuestPageCard = () => {
   const theme = useTheme();
   return (
-    <VoidQuestCardContainer>
+    <VoidQuestPageCardContainer>
       <QuestionMarkIcon
         sx={{
           height: '96px',
@@ -16,6 +16,6 @@ export const VoidQuestCard = () => {
               : alpha(theme.palette.grey[400], 0.08),
         }}
       />
-    </VoidQuestCardContainer>
+    </VoidQuestPageCardContainer>
   );
 };
