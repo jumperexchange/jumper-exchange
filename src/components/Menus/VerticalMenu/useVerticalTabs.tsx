@@ -8,11 +8,13 @@ import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 export const useVerticalTabs = () => {
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleClickTab =
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
@@ -45,6 +47,7 @@ export const useVerticalTabs = () => {
     {
       onClick: handleClickTab(''),
       value: 0,
+      tooltip: t('navbar.links.exchange'),
       icon: (
         <SwapHorizIcon
           sx={{
@@ -61,6 +64,7 @@ export const useVerticalTabs = () => {
     {
       onClick: handleClickTab('gas/'),
       value: 1,
+      tooltip: t('navbar.links.refuel'),
       icon: (
         <EvStationOutlinedIcon
           sx={{
