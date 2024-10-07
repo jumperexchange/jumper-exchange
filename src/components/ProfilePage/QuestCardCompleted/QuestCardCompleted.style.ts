@@ -87,7 +87,7 @@ export const XPDisplayBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active',
 })<XPDisplayBoxProps>(({ active }) => ({
   width: active ? '50%' : '100%',
-  marginRight: active ? '8px' : undefined,
+  ...(active && { marginRight: theme.spacing(1)}),
   display: 'flex',
   height: '40px',
   alignItems: 'center',
