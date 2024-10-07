@@ -223,10 +223,13 @@ export const QuestCardDetailled = ({
                 <XPRewardsInfo
                   bgColor={!completed ? '#31007A' : '#42B852'}
                   label={`+${points}`}
-                  tooltip={t('questCard.xpToEarnDescription', {
-                    xpToEarn: points,
-                    action: action,
-                  })}
+                  tooltip={
+                    rewardsProgress &&
+                    t('questCard.xpToEarnDescription', {
+                      xpToEarn: points,
+                      action: action,
+                    })
+                  }
                   active={true}
                 >
                   {!completed ? (
