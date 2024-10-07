@@ -119,7 +119,7 @@
     "xpToEarnDescription": "Complete the progress bar by {{action}} to earn +{{xpToEarn}}.",
     "earnedXPDescription": "You've unlocked {{earnedXP}}XP by {{action}} so far this month.",
     "action": {
-      "chain_oor": "exploring",
+      "chain_oor": "exploring chains",
       "transact_oor": "trading",
       "swap_oor": "swapping",
       "bridge_oor": "bridging"
