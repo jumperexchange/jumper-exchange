@@ -26,6 +26,13 @@ export const QuestCarouselNumericItems = () => {
         />
       ))
     : Array.from({ length: 4 }, (_, idx) => (
-        <QuestCardSkeleton key={`ongoing-numeric-quests-skeleton-${idx}`} />
+        <QuestCardSkeleton
+          key={`ongoing-numeric-quests-skeleton-${idx}`}
+          sx={{
+            width: 288,
+            height: 436,
+            borderRadius: '8px',
+          }}
+        />
       ));
 };

@@ -55,6 +55,9 @@ export const QuestCarouselItems = ({ pastCampaigns }: QuestCarouselProps) => {
         );
       })
     : Array.from({ length: 3 }, (_, idx) => (
-        <QuestCardSkeleton key={`mission-card-skeleton-${idx}`} />
+        <QuestCardSkeleton
+          key={`mission-card-skeleton-${idx}`}
+          sx={{ width: 288, height: 436, borderRadius: '8px' }}
+        />
       ));
 };
