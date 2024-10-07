@@ -16,6 +16,7 @@ export const IconHeader = ({ tooltipKey, title }: IconHeaderProps) => {
       {title}
       <Tooltip
         title={t(tooltipKey as any)}
+        sx={{ cursor: 'help' }}
         placement="top"
         enterTouchDelay={0}
         arrow

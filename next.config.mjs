@@ -65,18 +65,18 @@ const nextConfig = {
         port: '',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/jumper-static-assets/upload/**',
+      },
       // {
       //   protocol: 'https',
       //   hostname: 'cdn.mygateway.xyz',
       //   port: '',
       //   pathname: '/**',
       // },
-      {
-        protocol: 'https',
-        hostname: 'jumper-static.s3.us-east-2.amazonaws.com',
-        port: '',
-        pathname: '/**',
-      },
       {
         protocol: 'https',
         hostname: '*.etherscan.io',
