@@ -4,7 +4,6 @@ import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SECONDS_IN_A_DAY } from 'src/const/time';
-import { useAccounts } from './useAccounts';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
