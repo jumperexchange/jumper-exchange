@@ -86,6 +86,8 @@ export const QuestCarousel = ({
                         quest?.attributes.Points > 0 && rewardType === 'weekly'
                       }
                       rewardRange={rewardRange}
+                      label={quest?.attributes?.Label}
+                      id={quest?.id}
                     />
                   );
                 })
