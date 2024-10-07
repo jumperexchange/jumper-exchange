@@ -1,27 +1,27 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import generateKey from 'src/app/lib/generateKey';
+import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
-import { QuestPageMainBox, QuestsContainer } from '../Quests.style';
-import { BackButton } from './BackButton/BackButton';
-import { BannerBox } from './Banner/Banner';
-import { MissionCTA } from './CTA/MissionCTA';
-import { DescriptionBox } from './DescriptionBox/DescriptionBox';
-import { InformationAlertBox } from './InformationBox/InformationAlertBox';
-import { StepsBox } from './StepsBox/StepsBox';
-import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
+import { QuestPageMainBox, QuestsContainer } from './QuestPage.style';
+import { BackButton } from './QuestPage/BackButton/BackButton';
+import { BannerBox } from './QuestPage/Banner/Banner';
+import { MissionCTA } from './QuestPage/CTA/MissionCTA';
+import { DescriptionBox } from './QuestPage/DescriptionBox/DescriptionBox';
+import { InformationAlertBox } from './QuestPage/InformationBox/InformationAlertBox';
+import { StepsBox } from './QuestPage/StepsBox/StepsBox';
 
 interface QuestsMissionPageVar {
   quest: Quest;
   baseUrl: string;
-  activeCampaign?: string;
+  platform?: string;
   path: string;
 }
 
 export const QuestsMissionPage = ({
   quest,
   baseUrl,
-  activeCampaign,
+  platform,
   path,
 }: QuestsMissionPageVar) => {
   const attributes = quest?.attributes;
@@ -37,11 +37,10 @@ export const QuestsMissionPage = ({
     userAddress: account?.address,
   });
   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
-
   return (
     <QuestsContainer>
       <QuestPageMainBox>
-        <BackButton path={path} title={activeCampaign} />
+        <BackButton path={path} title={platform} />
         {/* big component with the main information */}
         <BannerBox
           quest={quest}
@@ -54,7 +53,7 @@ export const QuestsMissionPage = ({
             id={quest.id}
             title={attributes?.Title}
             url={attributes?.Link}
-            activeCampaign={activeCampaign}
+            platform={platform}
             rewards={rewards}
             key={generateKey('cta')}
             CTAs={CTAsWithAPYs}

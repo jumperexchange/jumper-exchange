@@ -2,6 +2,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 
 import {
+  JUMPER_DISCOVER_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_QUESTS_PATH,
@@ -25,6 +26,7 @@ export const Navbar = ({ disableNavbar = false }) => {
   const pathname = usePathname();
   const isLearnPage = pathname?.includes(JUMPER_LEARN_PATH);
   const isLoyaltyPage = pathname?.includes(JUMPER_LOYALTY_PATH);
+  const isDiscoverPage = pathname?.includes(JUMPER_DISCOVER_PATH);
   const isScanPage =
     pathname?.includes(JUMPER_SCAN_PATH) ||
     pathname?.includes(JUMPER_TX_PATH) ||
@@ -59,7 +61,9 @@ export const Navbar = ({ disableNavbar = false }) => {
       </LogoLink>
       {!isScanPage && !isLearnPage && !disableNavbar && (
         <NavbarTabs
-          navbarPageReload={isLoyaltyPage || isSuperfest || isQuestsPage}
+          navbarPageReload={
+            isLoyaltyPage || isSuperfest || isQuestsPage || isDiscoverPage
+          }
         />
       )}
       <NavbarButtons />

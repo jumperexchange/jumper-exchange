@@ -1,6 +1,5 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Typography, alpha, styled } from '@mui/material';
-import { urbanist } from 'src/fonts/fonts';
 
 export const BannerMainBox = styled(Box)(({ theme }) => ({
   width: '80%',
@@ -140,7 +139,6 @@ export const RewardMainBox = styled(Box)(({ theme }) => ({
 }));
 
 export const BannerTitleTypography = styled(Typography)(({ theme }) => ({
-  fontFamily: urbanist.style.fontFamily,
   [theme.breakpoints.down('md' as Breakpoint)]: {
     fontSize: '28px',
     fontWeight: 700,

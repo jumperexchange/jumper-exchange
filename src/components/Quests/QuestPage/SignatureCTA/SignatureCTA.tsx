@@ -120,6 +120,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
                 priority={false}
               />
               <Typography
+                variant="bodyMedium"
                 fontSize={{ xs: '16px', sm: '22px' }}
                 fontWeight={700}
                 marginLeft={'16px'}
@@ -145,6 +146,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
                 priority={false}
               />
               <Typography
+                variant="bodyMedium"
                 fontSize={{ xs: '16px', sm: '22px' }}
                 fontWeight={700}
                 marginLeft={'16px'}

@@ -18,7 +18,7 @@ import {
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { XPIconBox } from '../../QuestCard/QuestCard.style';
-import { FlexCenterRowBox } from '../QuestsMissionPage.style';
+import { FlexCenterRowBox } from '../../QuestsMissionPage.style';
 import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 import {
   CTAExplanationBox,
@@ -31,16 +31,13 @@ import {
 } from './MissionCTA.style';
 
 interface MissionCTAButtonProps {
-  activeCampaign?: string;
+  platform?: string;
   onClick: () => void;
 }
 
-const MissionCTAButton = ({
-  activeCampaign,
-  onClick,
-}: MissionCTAButtonProps) => {
+const MissionCTAButton = ({ platform, onClick }: MissionCTAButtonProps) => {
   const theme = useTheme();
-  if (activeCampaign === 'superfest') {
+  if (platform === 'superfest') {
     return (
       <MissionCtaButtonSF onClick={onClick}>
         <ArrowForwardIcon
@@ -78,10 +75,11 @@ interface MissionCtaProps {
   id?: number;
   label?: string;
   CTAs: CTALinkInt[];
+  activeCampaign?: string;
   variableWeeklyAPY?: boolean;
   signature?: boolean;
   rewardRange?: string;
-  activeCampaign?: string;
+  platform?: string;
 }
 
 export const MissionCTA = ({
@@ -90,10 +88,11 @@ export const MissionCTA = ({
   title,
   id,
   label,
+  activeCampaign,
   variableWeeklyAPY,
   signature,
   rewardRange,
-  activeCampaign,
+  platform,
 }: MissionCtaProps) => {
   // const { trackEvent } = useUserTracking();
   const isMobile = useMediaQuery((theme: Theme) =>
@@ -133,10 +132,13 @@ export const MissionCTA = ({
   return (
     <CTAMainBox>
       <StartedTitleBox>
-        <StartedTitleTypography>Get Started</StartedTitleTypography>
+        <StartedTitleTypography variant="headerLarge">
+          Get Started
+        </StartedTitleTypography>
         {!signature && rewards ? (
           <Box marginTop="32px">
             <Typography
+              variant="bodyMedium"
               fontSize={{ xs: '14px', md: '18px' }}
               lineHeight={{ xs: '14px', md: '18px' }}
               fontWeight={400}
@@ -181,6 +183,7 @@ export const MissionCTA = ({
                     priority={false}
                   />
                   <Typography
+                    variant="bodyMedium"
                     marginTop={{ xs: '16px', md: '0px' }}
                     fontSize={{ xs: '16px', sm: '22px' }}
                     fontWeight={700}
@@ -198,6 +201,7 @@ export const MissionCTA = ({
                       minWidth={'88px'}
                     >
                       <Typography
+                        variant="bodySmall"
                         fontSize="16px"
                         fontWeight={700}
                         lineHeight="20px"
@@ -218,6 +222,7 @@ export const MissionCTA = ({
                       minWidth={'88px'}
                     >
                       <Typography
+                        variant="bodyMediumStrong"
                         fontSize="16px"
                         fontWeight={700}
                         lineHeight="20px"
@@ -242,9 +247,10 @@ export const MissionCTA = ({
                           title,
                           claimingId: CTA.claimingId,
                           rewardId: CTA.rewardId,
+                          activeCampaign: activeCampaign,
                         })
                       }
-                      activeCampaign={activeCampaign}
+                      platform={platform}
                     />
                   )}
                 </FlexCenterRowBox>

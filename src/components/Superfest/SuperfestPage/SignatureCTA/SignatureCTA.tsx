@@ -1,19 +1,17 @@
 'use client';
 
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useTranslation } from 'react-i18next';
-import { type Theme, useMediaQuery, Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
-import { SoraTypography } from '../../Superfest.style';
-import { FlexCenterRowBox } from '../SuperfestMissionPage.style';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { SiweMessage, generateNonce } from 'siwe';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { useSignMessage } from 'wagmi';
-import { useEffect, useState } from 'react';
 import {
   CTAExplanationBox,
   SeveralMissionCtaContainer,
 } from '../CTA/MissionCTA.style';
-import { SiweMessage, generateNonce } from 'siwe';
 
 interface SignatureInt {
   isLive: boolean;
@@ -117,15 +115,18 @@ export const SignatureCTA = ({
                 style={{ borderRadius: 100 }}
                 priority={false}
               />
-              <SoraTypography
+              {
+                //* todo: check typography (sora) *//
+              }
+              <Typography
+                variant="bodyMediumStrong"
                 fontSize={{ xs: '16px', sm: '22px' }}
-                fontWeight={700}
                 marginLeft={'16px'}
               >
                 {
                   'Congrats, you are a Turtle Club member now. Pour some whisky and enjoy the boosted yields on your existing DeFi positions.'
                 }
-              </SoraTypography>
+              </Typography>
             </CTAExplanationBox>
           </SeveralMissionCtaContainer>
         </Box>
@@ -142,13 +143,16 @@ export const SignatureCTA = ({
                 style={{ borderRadius: 100 }}
                 priority={false}
               />
-              <SoraTypography
+              {
+                //* todo: check typography (sora) *//
+              }
+              <Typography
+                variant="bodyMediumStrong"
                 fontSize={{ xs: '16px', sm: '22px' }}
-                fontWeight={700}
                 marginLeft={'16px'}
               >
                 {'Click to sign the agreement to become part of the club.'}
-              </SoraTypography>
+              </Typography>
             </CTAExplanationBox>
           </SeveralMissionCtaContainer>
         </Box>

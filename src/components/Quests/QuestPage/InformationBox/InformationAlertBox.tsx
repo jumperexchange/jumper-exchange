@@ -1,6 +1,6 @@
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Typography } from '@mui/material';
-import { LeftTextBox } from '../QuestsMissionPage.style';
+import { LeftTextBox } from '../../QuestsMissionPage.style';
 import { InformationBox } from './InformationAlertBox.style';
 
 interface InformationAlertBoxProps {
@@ -14,7 +14,7 @@ export const InformationAlertBox = ({
     <InformationBox>
       <InfoOutlinedIcon sx={{ width: 32, height: 32 }} />
       <LeftTextBox ml="32px">
-        <Typography>{information}</Typography>
+        <Typography variant="bodyMedium">{information}</Typography>
       </LeftTextBox>
     </InformationBox>
   );

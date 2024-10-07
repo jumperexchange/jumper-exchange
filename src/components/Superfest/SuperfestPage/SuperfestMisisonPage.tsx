@@ -54,7 +54,7 @@ export const SuperfestMissionPage = ({
     <SuperfestContainer className="superfest">
       <SuperfestPageMainBox>
         {/* button to go back */}
-        <BackButton />
+        <BackButton title="Superfest" />
         {/* big component with the main information */}
         <BannerBox
           quest={quest}

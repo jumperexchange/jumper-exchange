@@ -12,7 +12,7 @@ import { useMerklRewardsOnSpecificToken } from 'src/hooks/useMerklRewardsOnSpeci
 export const Superfest = () => {
   //HOOKS
   const { account } = useAccounts();
-  const { quests, isQuestLoading } = useOngoingFestMissions();
+  const { quests, isQuestLoading } = useOngoingFestMissions('superfest');
   const {
     availableRewards,
     activeCampaigns,

@@ -29,7 +29,7 @@ export const ActiveSuperfestMissionsCarousel = ({
   activeCampaigns,
   pastCampaigns,
 }: QuestCarouselProps) => {
-  const { url } = useOngoingFestMissions();
+  const { url } = useOngoingFestMissions('superfest');
 
   const isNotLive =
     !loading && (!activeCampaigns || activeCampaigns.length === 0);

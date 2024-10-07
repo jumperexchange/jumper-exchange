@@ -7,6 +7,7 @@ import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { useSettingsStore } from '@/stores/settings';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
+import { useDiscover } from 'src/hooks/useDiscover';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 import { BackgroundFooterImage } from './Widgets';
@@ -15,6 +16,8 @@ export const PartnerThemeFooterImage = () => {
   const { sourceChainToken, destinationChainToken } =
     useChainTokenSelectionStore();
   const { isSuperfest } = useSuperfest();
+  const { isDiscover } = useDiscover();
+
   const { isMainPaths } = useMainPaths();
   const configTheme = useSettingsStore((state) => state.configTheme);
 
@@ -22,7 +25,7 @@ export const PartnerThemeFooterImage = () => {
     theme.breakpoints.down('lg'),
   );
 
-  if (!configTheme?.footerImageUrl) {
+  if (!configTheme?.footerImageUrl && !configTheme?.partnerUrl) {
     return;
   }
 
@@ -33,19 +36,18 @@ export const PartnerThemeFooterImage = () => {
     destinationChainToken?.chainId === ChainId.SOL;
 
   const showBasedOnURL =
-    isSuperfest || isMainPaths || !!configTheme?.footerImageUrl;
+    isDiscover || isSuperfest || isMainPaths || !!configTheme?.footerImageUrl;
   const showFooterLogo = !activeChainAlert && !isSmallScreen && showBasedOnURL;
-
   return (
     showFooterLogo &&
     configTheme?.footerImageUrl && (
+      //** todo: remove after superfest */
       <Link
-        href={'https://superfest.optimism.io/'}
+        href={configTheme?.partnerUrl || ''}
         target="_blank"
         style={{ zIndex: 100 }}
       >
         <BackgroundFooterImage
-          style={{ position: isSuperfest ? 'relative' : 'absolute' }}
           alt="footer-image"
           src={configTheme?.footerImageUrl?.href}
           width={300}

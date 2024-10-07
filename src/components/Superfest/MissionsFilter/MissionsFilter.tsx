@@ -1,11 +1,10 @@
-import { type Theme, useTheme } from '@mui/material';
+import { type Theme, Typography, useTheme } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
-import { SoraTypography } from '../Superfest.style';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -50,7 +49,18 @@ export const MissionsFilter = ({
         onChange={handleChange}
         input={<OutlinedInput />}
         renderValue={() => {
-          return <SoraTypography fontWeight={700}>{title}</SoraTypography>;
+          return (
+            <Typography
+              variant="bodyMediumStrong"
+              fontSize="18px"
+              lineHeight="24px"
+            >
+              {
+                //* todo: check typography (sora) *//
+              }
+              {title}
+            </Typography>
+          );
         }}
         MenuProps={MenuProps}
         inputProps={{ 'aria-label': 'Without label' }}

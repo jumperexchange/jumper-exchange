@@ -1,5 +1,5 @@
+import { Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
-import { SoraTypography } from 'src/components/Superfest/Superfest.style';
 import { RewardBottomBox, SupportedChainsBox } from '../Banner.style';
 import { RewardSubtitleBox, RewardTopBox } from './RewardBox.style';
 
@@ -10,12 +10,21 @@ interface RewardBoxProps {
 }
 
 export const RewardBox = ({ title, logos, value }: RewardBoxProps) => {
+  const theme = useTheme();
   return (
     <RewardTopBox>
       <RewardSubtitleBox>
-        <SoraTypography fontSize={'14px'} fontWeight={700} color={'#525252'}>
+        {
+          //* todo: check typography (sora) *//
+        }
+        <Typography
+          variant="bodySmallStrong"
+          fontSize={'14px'}
+          fontWeight={700}
+          color={theme.palette.text.secondary}
+        >
           {title}
-        </SoraTypography>
+        </Typography>
       </RewardSubtitleBox>
       <RewardBottomBox>
         {logos.length > 1 ? (
@@ -46,13 +55,16 @@ export const RewardBox = ({ title, logos, value }: RewardBoxProps) => {
               width="48"
               height="48"
             />
-            <SoraTypography
-              fontSize={'24px'}
+            {
+              //* todo: check typography (sora) *//
+            }
+            <Typography
+              variant="bodyXLarge"
               fontWeight={700}
               marginLeft={'12px'}
             >
               {value}
-            </SoraTypography>
+            </Typography>
           </>
         )}
       </RewardBottomBox>
