@@ -14,7 +14,6 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Stack, Tooltip, Typography } from '@mui/material';
 import { isEqual } from 'lodash';
-import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -25,12 +24,11 @@ function has24HoursPassed(lastDate: number): boolean {
 }
 
 interface TotalBalanceProps {
-  refetch: () => void;
   totalValue: number;
+  isComplete: boolean;
 }
 
-function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
-  const { lng } = useParams();
+function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
   const { t } = useTranslation();
@@ -95,16 +93,19 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
         >
           <Typography
             fontWeight={500}
-            fontSize={12}
+            fontSize={14}
             color={(theme) => theme.palette.text.primary}
           >
             {t('navbar.walletMenu.totalBalance')}
           </Typography>
           <Tooltip
-            title={t('hello' as any)}
+            title="hello world"
             placement="top"
             enterTouchDelay={0}
             arrow
+            sx={{
+              zIndex: 5000,
+            }}
           >
             <InfoIcon
               sx={{
@@ -116,20 +117,14 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
             />
           </Tooltip>
         </Box>
-        <Tooltip
-          title={t('hello' as any)}
-          placement="top"
-          enterTouchDelay={0}
-          arrow
-          // title={t('navbar.walletMenu.refreshBalances')}
-        >
-          <TotalBalanceIconButton refetch={() => refetch()}>
+        {!isComplete && (
+          <TotalBalanceIconButton refetch={() => {}}>
             <CircularProgressPending size={24} />
           </TotalBalanceIconButton>
-        </Tooltip>
+        )}
       </Box>
       <Stack spacing={1}>
-        <TotalValue>{currencyFormatter(lng).format(totalValue)}</TotalValue>
+        <TotalValue>{currencyFormatter('en').format(totalValue)}</TotalValue>
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">
           {differenceValue !== 0 && (
             <Stack direction="row" spacing="4px">
@@ -143,7 +138,7 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
                 ) : (
                   <ArrowDownwardIcon />
                 )}
-                {differencePercent?.toFixed(2)}%
+                {differencePercent?.toFixed(2)}% (1d)
               </VariationValue>
               <VariationValue color={(theme) => theme.palette.text.secondary}>
                 • ${differenceValue?.toFixed(2)}

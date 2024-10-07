@@ -1,33 +1,41 @@
-import { alpha, IconButton } from '@mui/material';
-import React from 'react';
+import { alpha, IconButton, Tooltip } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface TotalBalanceIconButtonProps {
   refetch: () => void;
   children: JSX.Element | JSX.Element[];
 }
 
-// Using React.forwardRef to forward props and ref
-const TotalBalanceIconButton = React.forwardRef<
-  HTMLButtonElement,
-  TotalBalanceIconButtonProps
->(({ refetch, children, ...props }, ref) => {
+function TotalBalanceIconButton({
+  refetch,
+  children,
+}: TotalBalanceIconButtonProps) {
+  const { t } = useTranslation();
+
   return (
-    <IconButton
-      size="medium"
-      aria-label="Refresh"
-      sx={(theme) => ({
-        marginRight: 1,
-        '&:hover': {
-          backgroundColor: alpha(theme.palette.text.primary, 0.08),
-        },
-      })}
-      onClick={refetch}
-      ref={ref} // Forwarding the ref here
-      {...props} // Spreading other props to IconButton
+    <Tooltip
+      placement="top"
+      enterTouchDelay={0}
+      arrow
+      title={t('navbar.walletMenu.refreshBalances')}
     >
-      {children}
-    </IconButton>
+      <IconButton
+        size="medium"
+        aria-label="Refresh"
+        sx={(theme) => ({
+          marginRight: 1,
+          '&:hover': {
+            backgroundColor: alpha(theme.palette.text.primary, 0.08),
+          },
+        })}
+        onClick={() => {
+          refetch();
+        }}
+      >
+        {children}
+      </IconButton>
+    </Tooltip>
   );
-});
+}
 
 export default TotalBalanceIconButton;

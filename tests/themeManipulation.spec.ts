@@ -1,36 +1,30 @@
-import { expect, test } from '@playwright/test';
-import { closeWelcomeScreen } from './testData/commonFunctions';
+import { test } from '@playwright/test';
+import {
+  closeWelcomeScreen,
+  openOrCloseMainMenu,
+  expectBackgroundColorToHaveCss,
+} from './testData/commonFunctions';
 
-test.describe.skip(
-  'Switch between dark and light theme and check background color',
-  () => {
-    test.beforeEach(async ({ page }) => {
-      await page.goto('/');
-    });
-    test.use({ colorScheme: 'dark' });
-    test('Should able to change color to Dark', async ({ page }) => {
-      await closeWelcomeScreen(page);
-      await page.locator('#main-burger-menu-button').click();
-      await page.locator('xpath=//*[@id="tab-key-1"]').click();
-      await page.locator('#main-burger-menu-button').click(); //Close menu
-      const backgroundColor = await page.locator('xpath=/html/body/div[1]');
-      expect(backgroundColor).toHaveCSS(
-        'background-color',
-        'rgba(101, 0, 254, 0.1)',
-      );
-    });
+test.describe('Switch between dark and light theme and check the background color', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+  });
 
-    test.use({ colorScheme: 'light' });
-    test('Should able to change color to Light', async ({ page }) => {
-      await closeWelcomeScreen(page);
-      await page.locator('#main-burger-menu-button').click();
-      await page.locator('xpath=//*[@id="tab-key-0"]').click();
-      await page.locator('#main-burger-menu-button').click(); // Close menu
-      const backgroundColor = await page.locator('xpath=/html/body/div[1]');
-      expect(backgroundColor).toHaveCSS(
-        'background-color',
-        'rgba(101, 0, 254, 0.1)',
-      );
-    });
-  },
-);
+  test.use({ colorScheme: 'dark' });
+  test('Should able to change the theme color to Dark', async ({ page }) => {
+    await closeWelcomeScreen(page);
+    await openOrCloseMainMenu(page);
+    await page.locator('#theme-switch-tabs-1').click();
+    await openOrCloseMainMenu(page);
+    await expectBackgroundColorToHaveCss(page, 'rgb(18, 15, 41)');
+  });
+
+  test.use({ colorScheme: 'light' });
+  test('Should able to change the theme color to Light', async ({ page }) => {
+    await closeWelcomeScreen(page);
+    await openOrCloseMainMenu(page);
+    await page.locator('#theme-switch-tabs-0').click();
+    await openOrCloseMainMenu(page);
+    expectBackgroundColorToHaveCss(page, 'rgb(243, 235, 255)');
+  });
+});

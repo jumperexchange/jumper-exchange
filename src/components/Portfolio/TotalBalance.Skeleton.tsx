@@ -3,7 +3,14 @@ import { Skeleton, Stack } from '@mui/material';
 
 function TotalBalanceSkeleton() {
   return (
-    <WalletCardContainer>
+    <WalletCardContainer
+      sx={{
+        height: '150px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignContent: 'center',
+      }}
+    >
       <Stack direction="column" spacing={1}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <Skeleton
@@ -25,7 +32,7 @@ function TotalBalanceSkeleton() {
           })}
           variant="rectangular"
           width={160}
-          height={48}
+          height={28}
         />
         <Stack direction="row" alignItems="center" spacing={1}>
           <Skeleton

@@ -3,16 +3,9 @@ import {
   TypographyPrimary,
   TypographySecondary,
 } from '@/components/Portfolio/Portfolio.styles';
-import generateKey from '@/app/lib/generateKey';
-import {
-  Avatar as MuiAvatar,
-  Badge,
-  ButtonBase,
-  Grid,
-  useTheme,
-} from '@mui/material';
+import { Avatar as MuiAvatar, Badge, ButtonBase, Grid } from '@mui/material';
 import Image from 'next/image';
-import type { Chain, ExtendedTokenAmount } from '@/utils/getTokens';
+import type { ExtendedTokenAmountWithChain } from '@/utils/getTokens';
 import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
 import { useMainPaths } from '@/hooks/useMainPaths';
@@ -20,25 +13,20 @@ import { useParams, useRouter } from 'next/navigation';
 import { useMenuStore } from 'src/stores/menu';
 
 interface PortfolioTokenChainButtonProps {
-  token: ExtendedTokenAmount;
-  chain: Chain;
+  token: ExtendedTokenAmountWithChain;
 }
 
-function PortfolioTokenChainButton({
-  chain,
-  token,
-}: PortfolioTokenChainButtonProps) {
+function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
   const { setWalletMenuState } = useMenuStore((state) => state);
   const { isMainPaths } = useMainPaths();
-  const theme = useTheme();
   const router = useRouter();
   const { lng } = useParams();
 
   return (
     <ButtonBase
       onClick={() => {
-        setFrom(chain.address, chain.id);
+        setFrom(token.address, token.chainId);
         setWalletMenuState(false);
         if (!isMainPaths) {
           router.push('/');
@@ -52,6 +40,10 @@ function PortfolioTokenChainButton({
         display: 'flex',
         '&:hover': {
           background: 'rgba(0, 0, 0, 0.04)',
+        },
+        '&:last-child:hover': {
+          background: 'rgba(0, 0, 0, 0.04)',
+          borderRadius: '0 0 16px 16px',
         },
       }}
     >
@@ -70,8 +62,8 @@ function PortfolioTokenChainButton({
                     height={0}
                     sizes="100vw"
                     style={{ width: '100%', height: '100%' }} // optional
-                    src={chain.logoURI as string}
-                    alt={chain.name}
+                    src={token.chainLogoURI as string}
+                    alt={token.chainName || ''}
                   />
                 )}
               </SmallAvatar>
@@ -102,7 +94,7 @@ function PortfolioTokenChainButton({
           <TypographySecondary
             sx={{ fontSize: '0.625rem', lineHeight: '0.875rem' }}
           >
-            {chain.name}
+            {token.chainName}
           </TypographySecondary>
         </Grid>
         <Grid item xs={5} style={{ textAlign: 'right' }}>
@@ -112,7 +104,7 @@ function PortfolioTokenChainButton({
               lineHeight: '1.125rem',
             }}
           >
-            {decimalFormatter(lng).format(chain.formattedBalance)}
+            {decimalFormatter(lng).format(token.cumulatedBalance ?? 0)}
           </TypographyPrimary>
           <TypographySecondary
             sx={{
@@ -120,7 +112,7 @@ function PortfolioTokenChainButton({
               lineHeight: '0.875rem',
             }}
           >
-            {currencyFormatter(lng).format(chain.totalPriceUSD)}
+            {currencyFormatter(lng).format(token.totalPriceUSD ?? 0)}
           </TypographySecondary>
         </Grid>
       </Grid>

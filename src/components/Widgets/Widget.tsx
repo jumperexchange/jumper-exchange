@@ -75,8 +75,6 @@ export function Widget({
   }, []);
 
   useEffect(() => {
-    console.log('widgetCache triggered', widgetCache, searchParams);
-
     formRef?.current?.setFieldValue('fromChain', widgetCache.fromChainId, {
       setUrlSearchParam: true,
     });

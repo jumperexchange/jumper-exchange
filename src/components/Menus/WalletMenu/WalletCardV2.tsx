@@ -148,7 +148,7 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
           onClick={() => handleCopyButton()}
           sx={{ background: 'transparent' }}
         >
-          <Typography variant="bodySmallStrong">
+          <Typography variant="bodySmallStrong" sx={{ fontSize: '16px' }}>
             {walletDigest(account.address)}
           </Typography>
         </Button>
