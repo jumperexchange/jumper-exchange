@@ -52,7 +52,7 @@ interface Resources {
         connectAnotherWallet: 'Connect another wallet';
         refreshBalances: 'Refresh balances';
         totalBalance: 'Total balance';
-        totalBalanceTooltip: 'Total balance across Chains.';
+        totalBalanceTooltip: "Your total balance may not always be accurate due to potential indexing issues. We're on it!";
         numberOfChains: '{{numberOfChains}} chains';
       };
       themes: {
