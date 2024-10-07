@@ -2,6 +2,26 @@ import type { BoxProps } from '@mui/material';
 import { Box, styled } from '@mui/system';
 import type { LevelData } from 'src/types/loyaltyPass';
 
+interface ProgressionContainerProps extends BoxProps {
+  hideLevelIndicator?: boolean;
+}
+
+export const ProgressionContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'hideLevelIndicator',
+})<ProgressionContainerProps>(({ hideLevelIndicator }) => ({
+  ...(!hideLevelIndicator
+    ? {
+        marginTop: 1.5,
+      }
+    : {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexGrow: 1,
+      }),
+}));
+
 export const ProgressionChart = styled(Box)(() => ({
   position: 'relative',
   overflow: 'hidden',

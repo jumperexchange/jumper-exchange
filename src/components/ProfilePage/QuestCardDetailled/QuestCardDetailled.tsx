@@ -104,9 +104,9 @@ export const QuestCardDetailled = ({
   return (
     <QuestCardMainBox sx={{ height: 'auto' }} onClick={handleClick}>
       <OptionalLink
-        alt={title}
-        url={link || (slug && `/quests/${slug}`)}
-        styles={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
+        ariaLabel={title}
+        href={link || (slug && `/quests/${slug}`)}
+        sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           {image ? (
@@ -121,7 +121,12 @@ export const QuestCardDetailled = ({
               }}
             />
           ) : (
-            <Skeleton variant="rectangular" width={288} height={288} />
+            <Skeleton
+              variant="rectangular"
+              width={288}
+              height={288}
+              sx={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
+            />
           )}
         </Box>
         <QuestCardBottomBox gap={0.75}>
@@ -240,7 +245,7 @@ export const QuestCardDetailled = ({
                 maxPoints: rewardsProgress.max,
                 minPoints: rewardsProgress.min,
               }}
-              hideIndicator={true}
+              hideLevelIndicator={true}
             />
           )}
           {active && slug ? (

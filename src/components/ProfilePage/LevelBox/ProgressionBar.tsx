@@ -5,18 +5,19 @@ import {
   ProgressionChart,
   ProgressionChartBg,
   ProgressionChartScore,
+  ProgressionContainer,
 } from './ProgressionBar.style';
 
 interface ProgressionBarProps {
   points?: number;
   levelData?: LevelData;
-  hideIndicator?: boolean;
+  hideLevelIndicator?: boolean;
 }
 
 export const ProgressionBar = ({
   points,
   levelData,
-  hideIndicator,
+  hideLevelIndicator,
 }: ProgressionBarProps) => {
   const calcWidth =
     points && levelData
@@ -28,21 +29,7 @@ export const ProgressionBar = ({
       : 0;
 
   return (
-    <Box
-      sx={{
-        ...(!hideIndicator
-          ? {
-              marginTop: 1.5,
-            }
-          : {
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexGrow: 1,
-            }),
-      }}
-    >
+    <ProgressionContainer hideLevelIndicator={hideLevelIndicator}>
       {levelData ? (
         <>
           <ProgressionChart>
@@ -53,7 +40,7 @@ export const ProgressionBar = ({
             />
             <ProgressionChartBg />
           </ProgressionChart>
-          {!hideIndicator && levelData.level && (
+          {!hideLevelIndicator && levelData.level && (
             <Box
               sx={{
                 display: 'flex',
@@ -73,6 +60,6 @@ export const ProgressionBar = ({
           )}
         </>
       ) : null}
-    </Box>
+    </ProgressionContainer>
   );
 };

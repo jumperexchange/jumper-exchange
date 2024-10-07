@@ -3,22 +3,22 @@ import NextLink from 'next/link';
 import type { PropsWithChildren } from 'react';
 
 interface OptionalLinkProps {
-  url?: string;
-  alt?: string;
-  styles?: CSSObject;
+  href?: string;
+  ariaLabel?: string;
+  sx?: CSSObject;
 }
 
 export const OptionalLink: React.FC<PropsWithChildren<OptionalLinkProps>> = (
   props,
 ) => {
-  if (props.url) {
+  if (props.href) {
     return (
       <NextLink
-        href={props.url}
-        aria-label={props.alt}
+        href={props.href}
+        aria-label={props.ariaLabel}
         style={{
           textDecoration: 'inherit',
-          ...(props.styles as React.CSSProperties),
+          ...(props.sx as React.CSSProperties),
         }}
       >
         {props.children}
