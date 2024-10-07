@@ -159,7 +159,7 @@ export interface LoyaltyPassState extends LoyaltyPassProps {
 }
 
 export interface LevelData {
-  level: number;
+  level?: number;
   minPoints: number;
   maxPoints: number;
 }
