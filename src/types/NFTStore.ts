@@ -1,6 +1,6 @@
 import type { NFTInfo } from 'src/hooks/useCheckNFTAvailability';
 
-export interface SuperfestNFTStoreProps {
+export interface NFTStoreProps {
   address?: string;
   claimInfo?: {
     [key: string]: NFTInfo;
@@ -8,7 +8,7 @@ export interface SuperfestNFTStoreProps {
   timestamp: number;
 }
 
-export interface SuperfestNFTState extends SuperfestNFTStoreProps {
+export interface NFTState extends NFTStoreProps {
   setNFTCheckData: (
     address: string,
     claimInfo: {

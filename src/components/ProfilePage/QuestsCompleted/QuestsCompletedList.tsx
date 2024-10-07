@@ -1,9 +1,9 @@
 import { useAccounts } from '@/hooks/useAccounts';
 import type { PDA } from '@/types/loyaltyPass';
 import { useTranslation } from 'react-i18next';
-import { QuestCard } from '../QuestCard/QuestCard';
-import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
-import { VoidQuestCard } from '../QuestCard/VoidQuestCard';
+import { QuestCardCompleted } from '../QuestCardCompleted/QuestCardCompleted';
+import { QuestCardCompletedSkeleton } from '../QuestCardCompleted/QuestCardCompletedSkeleton';
+import { VoidQuestCardCompleted } from '../QuestCardCompleted/VoidQuestCardCompleted';
 import {
   CompletedQuestContainer,
   CompletedQuestHeader,
@@ -44,7 +44,7 @@ export const QuestCompletedList = ({
                 return null;
               }
               return (
-                <QuestCard
+                <QuestCardCompleted
                   key={`completed-mission-${index}`}
                   id={pda?.id}
                   active={false}
@@ -60,7 +60,7 @@ export const QuestCompletedList = ({
               { length: pdas && pdas?.length > 0 ? 4 - pdas.length : 2 },
               () => 42,
             ).map((_, idx) => (
-              <VoidQuestCard
+              <VoidQuestCardCompleted
                 key={'void-' + idx}
                 connected={!!account?.address && account?.chainType === 'EVM'}
               />
@@ -68,7 +68,7 @@ export const QuestCompletedList = ({
           : null}
         {loading
           ? Array.from({ length: 2 }, () => 42).map((_, idx) => (
-              <QuestCardSkeleton key={'skeleton-' + idx} />
+              <QuestCardCompletedSkeleton key={'skeleton-' + idx} />
             ))
           : null}
       </CompletedQuestStack>

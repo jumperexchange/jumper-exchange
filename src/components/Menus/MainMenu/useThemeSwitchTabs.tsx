@@ -13,7 +13,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useMainPaths } from 'src/hooks/useMainPaths';
-import { useSuperfest } from 'src/hooks/useSuperfest';
 import { useTheme } from 'next-themes';
 
 export const useThemeSwitchTabs = () => {
@@ -21,7 +20,6 @@ export const useThemeSwitchTabs = () => {
   const { setTheme } = useTheme();
   const { trackEvent } = useUserTracking();
   const [, setCookie] = useCookies(['themeMode']);
-  const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
     ? 'dark'
@@ -65,7 +63,7 @@ export const useThemeSwitchTabs = () => {
   let darkModeEnabled = false;
   let systemModeEnabled = false;
 
-  if (isSuperfest || isMainPaths) {
+  if (isMainPaths) {
     lightModeEnabled = true;
   } else if (!!configTheme) {
     if (

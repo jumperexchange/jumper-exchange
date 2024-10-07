@@ -1,16 +1,11 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import {
   RewardsCarouselContainer,
-  RewardsCarouselMainBox,
-  ClaimButtonBox,
   EarnedTypography,
-  RewardsOpenIconButton,
 } from './RewardsCarousel.style';
-import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
-import { Button } from 'src/components/Button';
-import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { ClaimingBox } from './ClaimingBox/ClaimingBox';
+import { FlexCenterRowBox } from '../ProfilePage.style';
 
 interface RewardsCarouselProps {
   isMerklSuccess: boolean;

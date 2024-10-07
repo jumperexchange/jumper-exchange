@@ -2,12 +2,23 @@ import { CarouselContainer } from '@/components/Blog/BlogCarousel/CarouselContai
 import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import type { Quest } from '@/types/loyaltyPass';
 import { useTranslation } from 'react-i18next';
-import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCarouselContainer } from './QuestCarousel.style';
 import { TempTitle } from './TempTitle/TempTitle';
-import { QuestCardDetailled } from '../QuestCardDetailled/QuestCardDetailled';
-import { QuestCardSkeleton } from '../QuestCardDetailled/QuestCardSkeleton';
-import { checkInclusion } from 'src/components/Superfest/ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
+import { QuestCard } from '../QuestCard/QuestCard';
+import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
+
+export function checkInclusion(
+  activeCampaigns: string[],
+  claimingIds: string[],
+): boolean {
+  const lowerActiveCampaigns = activeCampaigns.map((cId) => cId.toLowerCase());
+  for (const id of claimingIds) {
+    if (lowerActiveCampaigns.includes(id.toLowerCase())) {
+      return true;
+    }
+  }
+  return false;
+}
 
 interface QuestCarouselProps {
   quests?: Quest[];
@@ -53,7 +64,7 @@ export const QuestCarousel = ({
                   }
 
                   return (
-                    <QuestCardDetailled
+                    <QuestCard
                       key={`available-mission-${index}`}
                       active={true}
                       title={quest?.attributes.Title}

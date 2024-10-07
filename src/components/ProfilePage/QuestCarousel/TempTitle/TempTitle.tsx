@@ -1,13 +1,13 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { EarnedTypography } from '../../Rewards/RewardsCarousel.style';
-import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import {
   PROFILE_CAMPAIGN_DARK_CHAIN,
   PROFILE_CAMPAIGN_DARK_COLOR,
   PROFILE_CAMPAIGN_LIGHT_CHAIN,
   PROFILE_CAMPAIGN_LIGHT_COLOR,
 } from 'src/const/partnerRewardsTheme';
+import { FlexCenterRowBox } from '../../ProfilePage.style';
 
 export const TempTitle = () => {
   const theme = useTheme();

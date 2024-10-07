@@ -10,14 +10,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { IconButtonPrimary } from 'src/components/IconButton';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
-import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
-import { XPIconBox } from '../../QuestCard/QuestCard.style';
+import { XPDisplayBox, XPIconBox } from '../../QuestCard/QuestCard.style';
 import { FlexCenterRowBox } from '../QuestsMissionPage.style';
 import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 import {
@@ -40,25 +39,11 @@ const MissionCTAButton = ({
   onClick,
 }: MissionCTAButtonProps) => {
   const theme = useTheme();
-  if (activeCampaign === 'superfest') {
-    return (
-      <MissionCtaButtonSF onClick={onClick}>
-        <ArrowForwardIcon
-          sx={{
-            color: theme.palette.text.primary,
-            width: '20px',
-            height: '20px',
-          }}
-        />
-      </MissionCtaButtonSF>
-    );
-  } else {
-    return (
-      <IconButtonPrimary onClick={onClick}>
-        <ArrowForwardIcon sx={{ width: '28px', height: '28px' }} />
-      </IconButtonPrimary>
-    );
-  }
+  return (
+    <IconButtonPrimary onClick={onClick}>
+      <ArrowForwardIcon sx={{ width: '28px', height: '28px' }} />
+    </IconButtonPrimary>
+  );
 };
 
 export interface CTALinkInt {

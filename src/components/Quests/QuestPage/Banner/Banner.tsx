@@ -16,11 +16,10 @@ import {
 } from './Banner.style';
 import { RewardBox } from './Rewards/RewardBox';
 
-interface SuperfestMissionPageVar {
+interface MissionPageVar {
   quest: Quest;
   baseUrl: string;
   pastCampaigns: string[];
-  activeCampaign?: 'superfest';
   rotatingBadge?: JSX.Element;
 }
 
@@ -34,7 +33,7 @@ export const BannerBox = ({
   baseUrl,
   pastCampaigns,
   rotatingBadge,
-}: SuperfestMissionPageVar) => {
+}: MissionPageVar) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );

@@ -63,3 +63,24 @@ export const CenteredBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
 }));
+
+export const FlexCenterRowBox = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignContent: 'center',
+  alignItems: 'center',
+}));
+
+export const FlexCenterSpaceRowBox = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignContent: 'center',
+}));
+
+export const FlexSpaceBetweenBox = styled(Box)(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+}));

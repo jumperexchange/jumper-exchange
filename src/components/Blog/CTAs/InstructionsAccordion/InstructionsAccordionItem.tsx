@@ -68,10 +68,10 @@ export const InstructionsAccordionItem = ({
     step && setOpen((prev) => !prev);
   };
 
-  const isSuperfest = variant === 'superfest';
+  const isCampaign = variant === 'campaigns';
 
   useEffect(() => {
-    if (variant === 'superfest') {
+    if (variant === 'campaigns') {
       setOpen(true);
     }
   }, []);
@@ -91,12 +91,7 @@ export const InstructionsAccordionItem = ({
   };
 
   return (
-    <InstructionsAccordionItemContainer
-      sx={{
-        typograpy: isSuperfest ? sora.style.fontFamily : undefined,
-        borderColor: isSuperfest ? theme.palette.black.main : undefined,
-      }}
-    >
+    <InstructionsAccordionItemContainer>
       <InstructionsAccordionItemMain onClick={(e) => handleOpen(e)}>
         <InstructionsAccordionItemHeader>
           <InstructionsAccordionItemIndex>
@@ -149,11 +144,7 @@ export const InstructionsAccordionItem = ({
                 {buttonTitles.map((_, i: number) => {
                   return (
                     <InstructionsAccordionButtonMainBox
-                      typography={
-                        variant === 'superfest'
-                          ? sora.style.fontFamily
-                          : undefined
-                      }
+                      typography={undefined}
                       key={`external-link-${i}`}
                     >
                       <a

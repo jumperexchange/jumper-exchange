@@ -23,7 +23,7 @@ export const StepsBox = ({ steps, baseUrl }: StepsBoxProps) => {
         id={1}
         baseUrl={baseUrl}
         content={steps}
-        variant={'superfest'}
+        variant={'campaigns'}
       />
     </QuestsPageElementContainer>
   );

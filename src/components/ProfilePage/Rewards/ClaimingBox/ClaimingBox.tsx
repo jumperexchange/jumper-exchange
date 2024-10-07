@@ -1,4 +1,3 @@
-import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import {
   ClaimButtonBox,
   RewardsCarouselMainBox,
@@ -17,6 +16,7 @@ import {
 } from 'wagmi';
 import { ChainId } from '@lifi/types';
 import { MerklDistribABI } from 'src/const/abi/merklABI';
+import { FlexCenterRowBox } from '../../ProfilePage.style';
 
 interface ClaimRewardParams {
   tokenChainid: number;

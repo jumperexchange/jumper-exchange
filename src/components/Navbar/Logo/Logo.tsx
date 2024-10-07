@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { JumperScanLogo } from 'src/components/illustrations/JumperScanLogo';
 
 type LogoProps = {
-  variant: 'default' | 'learn' | 'scan' | 'superfest';
+  variant: 'default' | 'learn' | 'scan';
 };
 
 export const Logo = ({ variant }: LogoProps) => {
@@ -26,10 +26,6 @@ export const Logo = ({ variant }: LogoProps) => {
     theme.breakpoints.down('md'),
   );
   const theme = useTheme();
-
-  // if (variant === 'superfest') {
-  //   return <JumperLogoBlack />;
-  // }
 
   return (
     <LogoWrapper>
