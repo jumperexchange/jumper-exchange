@@ -17,10 +17,7 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   height: '33%',
   flexGrow: 1,
-  paddingTop: '16px',
-  paddingBottom: '24px',
-  paddingLeft: '16px',
-  paddingRight: '16px',
+  padding: theme.spacing(2, 2, 3)
   backgroundColor:
     theme.palette.mode === 'light'
       ? '#FFFFFF'
