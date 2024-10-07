@@ -5,7 +5,7 @@ import { XPDisplayBox } from './QuestCard.style';
 interface XPRewardsInfoProps {
   bgColor: string;
   label: string;
-  tooltip: string;
+  tooltip?: string;
   active?: boolean;
 }
 

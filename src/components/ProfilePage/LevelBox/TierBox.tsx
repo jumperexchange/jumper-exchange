@@ -37,7 +37,11 @@ export const TierBox = ({ points, loading }: TierBoxProps) => {
           <PointsBox points={points} />
           <LevelBox level={levelData.level} loading={loading} />
         </TierInfoBox>
-        <ProgressionBar ongoingValue={points} levelData={levelData} />
+        <ProgressionBar
+          ongoingValue={points}
+          levelData={levelData}
+          loading={loading}
+        />
       </Box>
     </TierMainBox>
   );
