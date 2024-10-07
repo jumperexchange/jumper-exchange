@@ -124,7 +124,7 @@ interface Resources {
       completed: 'Completed';
       join: 'Join';
       xpToEarnDescription: 'Complete the progress bar to earn +{{xpToEarn}} addtional XP this month.';
-      earnedXPDescription: "You've unlocked {{earnedXP}}xp so far this month and this has been added to your total XP balance";
+      earnedXPDescription: "You've unlocked {{earnedXP}}XP so far this month and this has been added to your total XP balance";
     };
     missions: {
       available: 'Available Missions';
