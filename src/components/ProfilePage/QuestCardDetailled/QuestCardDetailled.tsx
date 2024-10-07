@@ -20,7 +20,6 @@ import {
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import type { OngoingNumericItemStats } from 'src/hooks/useOngoingNumericQuests';
 import { useUserTracking } from 'src/hooks/userTracking';
-import { formatDecimal } from 'src/utils/formatDecimals';
 import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
 import { ProgressionBar } from '../LevelBox/ProgressionBar';
@@ -88,7 +87,6 @@ export const QuestCardDetailled = ({
   const { trackEvent } = useUserTracking();
 
   const handleClick = () => {
-    console.log('click-quest-card', title, label, id);
     trackEvent({
       category: TrackingCategory.Quests,
       action: TrackingAction.ClickQuestCard,
@@ -171,7 +169,7 @@ export const QuestCardDetailled = ({
               {rewardsProgress?.earnedXP && !chains && (
                 <XPRewardsInfo
                   bgColor={'#42B852'}
-                  label={`${formatDecimal(rewardsProgress?.earnedXP)}`}
+                  label={`${rewardsProgress?.earnedXP}`}
                   tooltip={t('questCard.earnedXPDescription', {
                     earnedXP: rewardsProgress?.earnedXP,
                   })}
@@ -223,9 +221,9 @@ export const QuestCardDetailled = ({
                 )}
                 <XPRewardsInfo
                   bgColor={!completed ? '#31007A' : '#42B852'}
-                  label={`+${formatDecimal(points)}`}
+                  label={`+${points}`}
                   tooltip={t('questCard.xpToEarnDescription', {
-                    xpToEarn: formatDecimal(points),
+                    xpToEarn: points,
                   })}
                   active={active}
                 >
