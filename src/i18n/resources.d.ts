@@ -123,8 +123,8 @@ interface Resources {
     questCard: {
       completed: 'Completed';
       join: 'Join';
-      xpToEarnDescription: 'Complete the progress bar by {{action}} to earn +{{xpToEarn}}.';
-      earnedXPDescription: "You've unlocked {{earnedXP}}XP by {{action}} so far this month.";
+      xpToEarnDescription: 'Complete the progress bar by {{action}} to earn +{{xpToEarn}} addtional XP this month.';
+      earnedXPDescription: "You've unlocked {{earnedXP}}XP by {{action}} so far this month and this has been added to your total XP balance.";
       action: {
         chain_oor: 'exploring chains';
         transact_oor: 'trading';
