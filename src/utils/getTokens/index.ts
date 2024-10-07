@@ -49,10 +49,6 @@ const MAX_CROSS_CHAIN_FETCH = 10000; // Maximum tokens per fetch round across al
 const MAX_TOKENS_PER_CHAIN = 150; // Maximum tokens to fetch per chain per round
 const FETCH_DELAY = 30000;
 
-// Custom setTimeout function returning a Promise
-const customSetTimeout = (delay: number) =>
-  new Promise<void>((resolve) => setTimeout(resolve, delay));
-
 // Main function to fetch all tokens in batches
 /**
  * Fetches token balances across multiple chains with specified constraints.

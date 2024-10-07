@@ -51,7 +51,7 @@ function Portfolio() {
       });
 
       return updatedData.sort(
-        (a, b) => (b.totalPriceUSD || 0) - (a.totalPriceUSD || 0),
+        (a, b) => (b.cumulatedTotalUSD || 0) - (a.cumulatedTotalUSD || 0),
       );
     });
   };
