@@ -67,6 +67,7 @@ export enum TrackingAction {
   // Quests
   ClickQuestCard = 'action_click_quest_card',
   ClickMissionCta = 'action_click_mission_cta',
+  ClickMissionCtaSteps = 'action_click_mission_cta_steps',
 
   // Pagination
   ClickPagination = 'action_click_pagination',
@@ -201,4 +202,8 @@ export enum TrackingEventParameter {
   MissionCtaLabel = 'param_mission_cta_label',
   MissionCtaPartnerId = 'param_mission_cta_partner_id',
   MissionCtaCampaign = 'param_mission_cta_campaign',
+  MissionCtaStepsTitle = 'param_mission_cta_steps_title',
+  MissionCtaStepsLink = 'param_mission_cta_steps_link',
+  MissionCtaStepsCTA = 'param_mission_cta_steps_cta',
+  MissionCtaStepsIndex = 'param_mission_cta_steps_index',
 }
