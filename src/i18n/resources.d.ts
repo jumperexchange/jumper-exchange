@@ -123,8 +123,14 @@ interface Resources {
     questCard: {
       completed: 'Completed';
       join: 'Join';
-      xpToEarnDescription: 'Complete the progress bar to earn +{{xpToEarn}} addtional XP this month.';
-      earnedXPDescription: "You've unlocked {{earnedXP}}XP so far this month and this has been added to your total XP balance";
+      xpToEarnDescription: 'Complete the progress bar by {{action}} to earn +{{xpToEarn}}.';
+      earnedXPDescription: "You've unlocked {{earnedXP}}XP by {{action}} so far this month.";
+      action: {
+        chain_oor: 'exploring';
+        transact_oor: 'trading';
+        swap_oor: 'swapping';
+        bridge_oor: 'bridging';
+      };
     };
     missions: {
       available: 'Available Missions';
