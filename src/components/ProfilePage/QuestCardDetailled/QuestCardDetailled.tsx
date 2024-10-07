@@ -12,8 +12,14 @@ import {
   PROFILE_CAMPAIGN_FLASHY_APY_COLOR,
   PROFILE_CAMPAIGN_LIGHT_COLOR,
 } from 'src/const/partnerRewardsTheme';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import type { OngoingNumericItemStats } from 'src/hooks/useOngoingNumericQuests';
+import { useUserTracking } from 'src/hooks/userTracking';
 import { formatDecimal } from 'src/utils/formatDecimals';
 import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
@@ -56,6 +62,8 @@ interface QuestCardProps {
   variableWeeklyAPY?: boolean;
   rewardRange?: string;
   rewardsProgress?: RewardsProgressProps;
+  label?: string;
+  id?: number;
 }
 
 export const QuestCardDetailled = ({
@@ -69,14 +77,32 @@ export const QuestCardDetailled = ({
   completed,
   claimingIds,
   variableWeeklyAPY,
+  label,
+  id,
   rewardRange,
   rewardsProgress,
 }: QuestCardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const { apy } = useMissionsMaxAPY(claimingIds);
+  const { trackEvent } = useUserTracking();
+
+  const handleClick = () => {
+    console.log('click-quest-card', title, label, id);
+    trackEvent({
+      category: TrackingCategory.Quests,
+      action: TrackingAction.ClickQuestCard,
+      label: 'click-quest-card',
+      data: {
+        [TrackingEventParameter.QuestCardTitle]: title || '',
+        [TrackingEventParameter.QuestCardLabel]: label || '',
+        [TrackingEventParameter.QuestCardId]: id || '',
+      },
+    });
+  };
+
   return (
-    <QuestCardMainBox sx={{ height: 'auto' }}>
+    <QuestCardMainBox sx={{ height: 'auto' }} onClick={handleClick}>
       <OptionalLink
         alt={title}
         url={link || (slug && `/quests/${slug}`)}
