@@ -89,7 +89,6 @@ export const QuestCard = ({
       data: {
         [TrackingEventParameter.QuestCardTitle]: title || '',
         [TrackingEventParameter.QuestCardId]: id || '',
-        // [TrackingEventParameter.QuestCardPlatform]: activeCampaign || '',
         [TrackingEventParameter.QuestCardLabel]: label || '',
       },
     });
