@@ -26,7 +26,6 @@ export const QuestCarouselNumericItems = () => {
     }
   };
 
-  console.log('DATA', ongoingNumericQuests);
   return !isongoingNumericQuestsLoading
     ? ongoingNumericQuests?.map((numericQuest, index) => (
         <QuestCardDetailled
