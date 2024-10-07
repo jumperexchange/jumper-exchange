@@ -1,22 +1,22 @@
 import { WalletCardContainer } from '@/components/Menus';
-import { Box, Stack, Tooltip, Typography } from '@mui/material';
 import {
   CircularProgressPending,
   TotalValue,
   VariationValue,
 } from '@/components/Portfolio/Portfolio.styles';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { useTranslation } from 'react-i18next';
-import { currencyFormatter } from '@/utils/formatNumbers';
-import { useEffect, useState } from 'react';
-import { isEqual } from 'lodash';
+import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
+import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
 import { useAccounts } from '@/hooks/useAccounts';
 import { usePortfolioStore } from '@/stores/portfolio';
-import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
-import { useParams } from 'next/navigation';
-import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
+import { currencyFormatter } from '@/utils/formatNumbers';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
+import { Box, Stack, Tooltip, Typography } from '@mui/material';
+import { isEqual } from 'lodash';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -101,9 +101,12 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
             {t('navbar.walletMenu.totalBalance')}
           </Typography>
           <Tooltip
-            title="hello world"
+            title={t('navbar.walletMenu.totalBalanceTooltip')}
             placement="top"
             enterTouchDelay={0}
+            componentsProps={{
+              popper: { sx: { zIndex: 2000 } },
+            }}
             arrow
             sx={{
               zIndex: 5000,
@@ -111,6 +114,7 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
           >
             <InfoIcon
               sx={{
+                cursor: 'help',
                 marginLeft: '8px',
                 width: 16,
                 height: 16,
