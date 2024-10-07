@@ -11,7 +11,6 @@ export const QuestCarouselNumericItems = () => {
     ? ongoingNumericQuests?.map((numericQuest, index) => (
         <QuestCardDetailled
           key={`available-mission-${index}`}
-          active={true}
           title={numericQuest.displayName}
           image={numericQuest.image}
           points={numericQuest.nextRangeXP - numericQuest.currentRangeXP}

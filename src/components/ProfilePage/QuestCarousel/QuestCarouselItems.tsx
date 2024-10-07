@@ -33,7 +33,6 @@ export const QuestCarouselItems = ({ pastCampaigns }: QuestCarouselProps) => {
         return (
           <QuestCardDetailled
             key={`available-mission-${index}`}
-            active={true}
             title={quest?.attributes.Title}
             image={String(imgURL)}
             points={quest?.attributes.Points}

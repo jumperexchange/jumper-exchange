@@ -9,20 +9,20 @@ import {
 } from './ProgressionBar.style';
 
 interface ProgressionBarProps {
-  points?: number;
+  ongoingValue?: number;
   levelData?: LevelData;
   hideLevelIndicator?: boolean;
 }
 
 export const ProgressionBar = ({
-  points,
+  ongoingValue,
   levelData,
   hideLevelIndicator,
 }: ProgressionBarProps) => {
   const calcWidth =
-    points && levelData
-      ? points - levelData.minPoints > 0
-        ? ((points - levelData.minPoints) /
+    ongoingValue && levelData
+      ? ongoingValue - levelData.minPoints > 0
+        ? ((ongoingValue - levelData.minPoints) /
             (levelData.maxPoints - levelData.minPoints)) *
           100
         : 0
@@ -34,7 +34,7 @@ export const ProgressionBar = ({
         <>
           <ProgressionChart>
             <ProgressionChartScore
-              points={points}
+              ongoingValue={ongoingValue}
               calcWidth={calcWidth}
               levelData={levelData}
             />
@@ -50,11 +50,11 @@ export const ProgressionBar = ({
             >
               <LevelIndicator
                 level={levelData.level}
-                points={levelData.minPoints}
+                bound={levelData.minPoints}
               />
               <LevelIndicator
                 level={levelData.level + 1}
-                points={levelData.maxPoints}
+                bound={levelData.maxPoints}
               />
             </Box>
           )}

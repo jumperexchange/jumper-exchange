@@ -44,7 +44,6 @@ interface RewardsProgressProps extends OngoingNumericItemStats {
 }
 
 interface QuestCardProps {
-  active?: boolean;
   title?: string;
   image?: string;
   points?: number;
@@ -66,7 +65,6 @@ interface QuestCardProps {
 }
 
 export const QuestCardDetailled = ({
-  active,
   title,
   image,
   points,
@@ -173,7 +171,7 @@ export const QuestCardDetailled = ({
                   tooltip={t('questCard.earnedXPDescription', {
                     earnedXP: rewardsProgress?.earnedXP,
                   })}
-                  active={active}
+                  active={true}
                 >
                   <XPIconBox marginLeft="4px">
                     <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
@@ -185,7 +183,7 @@ export const QuestCardDetailled = ({
               <FlexCenterRowBox>
                 {apy > 0 && !variableWeeklyAPY && (
                   <XPDisplayBox
-                    active={active}
+                    active={true}
                     bgcolor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
                   >
                     <Typography
@@ -203,7 +201,7 @@ export const QuestCardDetailled = ({
                 )}
                 {variableWeeklyAPY && (
                   <XPDisplayBox
-                    active={active}
+                    active={true}
                     bgcolor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
                   >
                     <Typography
@@ -225,7 +223,7 @@ export const QuestCardDetailled = ({
                   tooltip={t('questCard.xpToEarnDescription', {
                     xpToEarn: points,
                   })}
-                  active={active}
+                  active={true}
                 >
                   {!completed ? (
                     <SuperfestXPIcon size={16} />
@@ -238,7 +236,7 @@ export const QuestCardDetailled = ({
           </FlexSpaceBetweenBox>
           {rewardsProgress && (
             <ProgressionBar
-              points={rewardsProgress.currentValue}
+              ongoingValue={rewardsProgress.currentValue}
               levelData={{
                 maxPoints: rewardsProgress.max,
                 minPoints: rewardsProgress.min,
@@ -246,7 +244,7 @@ export const QuestCardDetailled = ({
               hideLevelIndicator={true}
             />
           )}
-          {active && slug ? (
+          {slug ? (
             <QuestCardInfoBox>
               <Button
                 disabled={false}
