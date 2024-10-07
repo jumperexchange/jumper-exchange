@@ -1,7 +1,7 @@
 import type { LevelData } from '@/types/loyaltyPass';
-import { Box } from '@mui/material';
 import { LevelIndicator } from './LevelIndicator';
 import {
+  LevelIndicatorWrapper,
   ProgressionChart,
   ProgressionChartBg,
   ProgressionChartScore,
@@ -41,13 +41,7 @@ export const ProgressionBar = ({
             <ProgressionChartBg />
           </ProgressionChart>
           {!hideLevelIndicator && levelData.level && (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: '24px',
-              }}
-            >
+            <LevelIndicatorWrapper>
               <LevelIndicator
                 level={levelData.level}
                 bound={levelData.minPoints}
@@ -56,7 +50,7 @@ export const ProgressionBar = ({
                 level={levelData.level + 1}
                 bound={levelData.maxPoints}
               />
-            </Box>
+            </LevelIndicatorWrapper>
           )}
         </>
       ) : null}
