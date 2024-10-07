@@ -1,28 +1,16 @@
 import { expect, test } from '@playwright/test';
 import values from '../tests/testData/values.json';
 import {
-<<<<<<< HEAD
-  itemInMenu,
-  openMainMenu,
-  tabInHeader,
-  expectMenuToBeVisible,
-=======
   closeWelcomeScreen,
->>>>>>> develop
   expectBackgroundColorToHaveCss,
   expectMenuToBeVisible,
   itemInMenu,
   itemInSettingsMenu,
   itemInSettingsMenuToBeVisible,
-<<<<<<< HEAD
-  itemInSettingsMenuToBeEnabled,
-  closeWelcomeScreen,
-=======
   openOrCloseMainMenu,
   tabInHeader,
   sectionOnTheBlogPage,
   checkSocialNetworkIcons,
->>>>>>> develop
 } from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {
@@ -31,7 +19,9 @@ test.describe('Jumper full e2e flow', () => {
     await closeWelcomeScreen(page);
   });
 
-  test.skip('Should navigate to the homepage and change tabs', async ({ page }) => {
+  test.skip('Should navigate to the homepage and change tabs', async ({
+    page,
+  }) => {
     const buyETHButton = page
       .frameLocator('iframe[title="Onramper widget"]')
       .locator('button:has-text("Buy ETH")');
@@ -42,15 +32,9 @@ test.describe('Jumper full e2e flow', () => {
     await expect(
       page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
     ).toBeVisible();
-<<<<<<< HEAD
-    await tabInHeader(page, 'tab-key-1');
-    await expect(page.locator('xpath=//p[text()="Gas"]')).toBeVisible();
-    await tabInHeader(page, 'tab-key-2');
-=======
     await tabInHeader(page, 'Gas');
     await expect(page.locator('#navbar-tabs-1')).toBeVisible();
     await tabInHeader(page, 'Buy');
->>>>>>> develop
     await expect(buyETHButton).toBeEnabled();
     await expect(
       page
