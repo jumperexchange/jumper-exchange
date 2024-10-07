@@ -46,8 +46,8 @@ export interface ResultTokenBalance {
 
 // Constants
 const MAX_CROSS_CHAIN_FETCH = 10000; // Maximum tokens per fetch round across all chains
-const MAX_TOKENS_PER_CHAIN = 150; // Maximum tokens to fetch per chain per round
-const FETCH_DELAY = 30000;
+const MAX_TOKENS_PER_CHAIN = 500; // Maximum tokens to fetch per chain per round
+const FETCH_DELAY = 3000;
 
 // Main function to fetch all tokens in batches
 /**
