@@ -114,6 +114,7 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
           >
             <InfoIcon
               sx={{
+                cursor: 'help',
                 marginLeft: '8px',
                 width: 16,
                 height: 16,
