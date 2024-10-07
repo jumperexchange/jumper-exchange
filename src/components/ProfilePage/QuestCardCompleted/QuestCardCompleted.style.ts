@@ -6,7 +6,7 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   backgroundColor:
     theme.palette.mode === 'light'
-      ? '#FFFFFF'
+      ? theme.palette.white.main
       : alpha(theme.palette.white.main, 0.08),
   height: 416,
   width: 272,
