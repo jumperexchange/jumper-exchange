@@ -46,14 +46,14 @@ export const ProgressionBar = ({
               />
               <ProgressionChartBg />
             </ProgressionChart>
-            {hideLevelIndicator ? null : !!levelData.level ? (
+            {hideLevelIndicator ? null : levelData ? (
               <LevelIndicatorWrapper>
                 <LevelIndicator
-                  level={levelData.level}
+                  level={levelData.level ?? 0}
                   bound={levelData.minPoints}
                 />
                 <LevelIndicator
-                  level={levelData.level + 1}
+                  level={(levelData.level ?? 0) + 1}
                   bound={levelData.maxPoints}
                 />
               </LevelIndicatorWrapper>
