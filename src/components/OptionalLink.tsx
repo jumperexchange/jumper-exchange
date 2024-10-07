@@ -1,5 +1,5 @@
-import type { CSSObject } from '@mui/material';
-import NextLink from 'next/link';
+import { Link as MuiLink, type CSSObject } from '@mui/material';
+import Link from 'next/link';
 import type { PropsWithChildren } from 'react';
 
 interface OptionalLinkProps {
@@ -13,7 +13,8 @@ export const OptionalLink: React.FC<PropsWithChildren<OptionalLinkProps>> = (
 ) => {
   if (props.href) {
     return (
-      <NextLink
+      <MuiLink
+        component={Link}
         href={props.href}
         aria-label={props.ariaLabel}
         style={{
@@ -22,7 +23,7 @@ export const OptionalLink: React.FC<PropsWithChildren<OptionalLinkProps>> = (
         }}
       >
         {props.children}
-      </NextLink>
+      </MuiLink>
     );
   } else {
     return props.children;
