@@ -125,7 +125,7 @@ function Portfolio() {
       />
       <Stack spacing={1}>
         {data.length == 0 &&
-          Array.from({ length: 5 }, () => 42).map((_, index) => (
+          Array.from({ length: 10 }, () => 42).map((_, index) => (
             <WalletCardContainer key={index}>
               <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
                 <Box>
