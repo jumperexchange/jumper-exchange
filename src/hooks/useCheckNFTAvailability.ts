@@ -55,7 +55,6 @@ interface GalxeGraphqlCheckRes {
   };
 }
 
-const SECONDS_IN_A_DAY = 86400;
 const NFTInfo = {
   mode: {
     cid: 'GCrKqtkcEs',

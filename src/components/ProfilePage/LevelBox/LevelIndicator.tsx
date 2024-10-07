@@ -1,13 +1,13 @@
 import { LevelButton } from '../../Button';
-import { NoSelectTypography } from '../ProfilePage.style';
 import { XPIcon } from '../../illustrations/XPIcon';
+import { NoSelectTypography } from '../ProfilePage.style';
 
 interface LevelButtonProps {
   level: number;
-  points: number;
+  bound: number;
 }
 
-export const LevelIndicator = ({ level, points }: LevelButtonProps) => {
+export const LevelIndicator = ({ level, bound }: LevelButtonProps) => {
   return (
     <LevelButton aria-label="XP Level" size="medium">
       <NoSelectTypography
@@ -16,7 +16,7 @@ export const LevelIndicator = ({ level, points }: LevelButtonProps) => {
         fontWeight={600}
         marginRight="8px"
       >
-        LEVEL {level} • {points}
+        LEVEL {level} • {bound}
       </NoSelectTypography>
       <XPIcon size={16} />
     </LevelButton>

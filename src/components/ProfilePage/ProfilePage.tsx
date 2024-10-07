@@ -3,7 +3,6 @@ import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import { useAccount } from '@lifi/wallet-management';
 import { Box, Grid, Stack } from '@mui/material';
 import { useMemo } from 'react';
-import { useMercleNft } from 'src/hooks/useMercleNft';
 import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { AddressBox } from './AddressBox/AddressBox';
@@ -34,9 +33,6 @@ const shouldHideComponent = (
 export const ProfilePage = () => {
   const { account } = useAccount();
   const { isLoading, points, tier, pdas } = useLoyaltyPass();
-  const { imageLink } = useMercleNft({ userAddress: account?.address });
-  const { quests, isQuestLoading } = useOngoingQuests();
-
   const {
     availableRewards,
     pastCampaigns,
@@ -77,7 +73,6 @@ export const ProfilePage = () => {
             <AddressBox
               address={account?.address}
               isEVM={account?.chainType === 'EVM'}
-              imageLink={imageLink}
             />
             <Box display={{ xs: 'none', md: 'block' }}>
               <Leaderboard address={account?.address} />
@@ -91,11 +86,7 @@ export const ProfilePage = () => {
                 <TierBox points={points} tier={tier} loading={isLoading} />
               </ProfilePageHeaderBox>
 
-              <QuestCarousel
-                quests={quests}
-                loading={isQuestLoading}
-                pastCampaigns={pastCampaigns}
-              />
+              <QuestCarousel pastCampaigns={pastCampaigns} />
               <QuestCompletedList pdas={pdas} loading={isLoading} />
             </Stack>
           </Grid>
