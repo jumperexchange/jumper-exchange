@@ -237,6 +237,7 @@ export const QuestCardDetailled = ({
           {rewardsProgress && (
             <ProgressionBar
               ongoingValue={rewardsProgress.currentValue}
+              loading={false}
               levelData={{
                 maxPoints: rewardsProgress.max,
                 minPoints: rewardsProgress.min,
