@@ -128,19 +128,13 @@ function TotalBalance({
             />
           </Tooltip>
         </Box>
-        {
-          // !isComplete
-
-          false ? (
-            <TotalBalanceIconButton disabled={true}>
-              <CircularProgressPending size={24} />
-            </TotalBalanceIconButton>
-          ) : (
-            // <TotalBalanceIconButton refetch={refetch}>
-            <RefreshCircleIcon onClick={refetch} />
-            // </TotalBalanceIconButton>
-          )
-        }
+        {!isComplete ? (
+          <TotalBalanceIconButton disabled={true}>
+            <CircularProgressPending size={24} />
+          </TotalBalanceIconButton>
+        ) : (
+          <RefreshCircleIcon onClick={refetch} />
+        )}
       </Box>
       <Stack spacing={1}>
         <TotalValue>{currencyFormatter('en').format(totalValue)}</TotalValue>
