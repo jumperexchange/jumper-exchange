@@ -51,8 +51,9 @@ interface Resources {
         walletNotInstalled: '{{wallet}} is not installed';
         connectAnotherWallet: 'Connect another wallet';
         refreshBalances: 'Refresh balances';
-        numberOfChains: '{{numberOfChains}} chains';
         totalBalance: 'Total balance';
+        totalBalanceTooltip: "Your total balance may not always be accurate due to potential indexing issues. We're on it!";
+        numberOfChains: '{{numberOfChains}} chains';
       };
       themes: {
         switchToLight: 'Switch to light mode';
