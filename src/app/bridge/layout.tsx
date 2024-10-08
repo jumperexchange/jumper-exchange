@@ -1,37 +1,60 @@
-import React from 'react';
-import { ThemeProviderV2 } from '@/providers/ThemeProviderV2';
+import React, { type ReactNode } from 'react';
 import { Layout } from 'src/Layout';
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { fonts } from '@/fonts/fonts';
 import Script from 'next/script';
-import { PixelBg } from '@/components/illustrations/PixelBg';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import initTranslations from '@/app/i18n';
+import { cookies } from 'next/headers';
+import {
+  type ActiveThemeResult,
+  getActiveTheme,
+} from '@/app/lib/getActiveTheme';
+import { ThemeProvider } from '@/providers/ThemeProvider';
+import { SettingsStoreProvider } from '@/stores/settings';
 
-export default async function MainLayout({
+// TODO: Need to be de-duplicated
+export default async function RootLayout({
   children,
+  params: { lng },
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   params: { lng: string };
 }) {
-  const { resources } = await initTranslations(fallbackLng, namespaces);
+  const cookiesHandler = cookies();
+  const [resourcesPromise, activeThemePromise] = await Promise.allSettled([
+    initTranslations(lng || fallbackLng, namespaces),
+    getActiveTheme(cookiesHandler),
+  ]);
 
-  const defaultTheme = 'default';
+  const { activeTheme, themes, themeMode, isPartnerTheme } =
+    activeThemePromise.status === 'fulfilled'
+      ? activeThemePromise.value
+      : ({} as ActiveThemeResult);
 
-  // provider for the theme context, it is used to provide the theme to the whole app, must be into the layout.tsx or page.tsx.
+  const resources =
+    resourcesPromise.status === 'fulfilled'
+      ? resourcesPromise.value.resources
+      : undefined;
+
+  // Welcome Screen is always closed on partner themes
+  const welcomeScreenClosed =
+    isPartnerTheme ||
+    cookiesHandler.get('welcomeScreenClosed')?.value === 'true';
+
   return (
     <html
-      lang={fallbackLng}
+      lang={lng || fallbackLng}
       suppressHydrationWarning
       className={fonts.map((f) => f.variable).join(' ')}
+      style={{ scrollBehavior: 'smooth' }}
     >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <Script
           async
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
@@ -66,26 +89,25 @@ export default async function MainLayout({
       <body suppressHydrationWarning>
         <AppRouterCacheProvider>
           <ReactQueryProvider>
-            <WalletProvider>
-              <TranslationsProvider
-                namespaces={[defaultNS]}
-                locale={fallbackLng}
-                resources={resources}
-              >
-                <NextThemeProvider
-                  themes={['dark', 'light']}
-                  defaultTheme={defaultTheme}
-                  enableSystem
-                  enableColorScheme
+            <TranslationsProvider
+              namespaces={[defaultNS]}
+              locale={lng}
+              resources={resources}
+            >
+              <NextThemeProvider enableSystem enableColorScheme>
+                <ThemeProvider
+                  themes={themes}
+                  activeTheme={activeTheme}
+                  themeMode={themeMode}
                 >
-                  <ThemeProviderV2 activeTheme={defaultTheme} themes={[]}>
-                    <Layout>{children}</Layout>
-                  </ThemeProviderV2>
-                </NextThemeProvider>
-              </TranslationsProvider>
-
-              <PixelBg />
-            </WalletProvider>
+                  <SettingsStoreProvider
+                    welcomeScreenClosed={welcomeScreenClosed}
+                  >
+                    <WalletProvider>{children}</WalletProvider>
+                  </SettingsStoreProvider>
+                </ThemeProvider>
+              </NextThemeProvider>
+            </TranslationsProvider>
           </ReactQueryProvider>
         </AppRouterCacheProvider>
       </body>

@@ -44,7 +44,6 @@ const BridgePage = ({
         </Typography>
 
         <Widget
-          isWelcomeScreenClosed={true}
           starterVariant="default"
           fromChain={sourceChain?.id}
           toChain={destinationChain?.id}

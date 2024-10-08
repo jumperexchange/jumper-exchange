@@ -25,7 +25,7 @@ const endpoint = clusterApiUrl(WalletAdapterNetwork.Mainnet);
  */
 const wallets: Adapter[] = [new SolflareWalletAdapter()];
 
-export const SolanaProvider: FC<PropsWithChildren> = ({ children }) => {
+export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>

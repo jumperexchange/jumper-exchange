@@ -1,5 +1,5 @@
 import { ChainType, getTokens } from '@lifi/sdk';
-import type { TokensResponse } from '@lifi/types';
+import type { TokensResponse } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
 import {
   getTokenBySymbol as getTokenBySymbolHelper,

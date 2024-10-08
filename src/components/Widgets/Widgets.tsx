@@ -10,10 +10,9 @@ import { WidgetEvents } from './WidgetEvents';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
-  closedWelcomeScreen: boolean;
 }
 
-export function Widgets({ widgetVariant, closedWelcomeScreen }: WidgetsProps) {
+export function Widgets({ widgetVariant }: WidgetsProps) {
   const { activeTab, setActiveTab } = useActiveTabStore();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
 

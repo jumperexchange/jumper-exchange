@@ -3,11 +3,10 @@ import { ClientOnly } from '@/components/ClientOnly';
 import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAlert';
 import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
-import { useMenuStore } from '@/stores/menu';
-import { useSettingsStore } from '@/stores/settings';
+import { useThemeStore } from '@/stores/theme';
 import type { LanguageKey } from '@/types/i18n';
-import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
+import { useWalletMenu } from '@lifi/wallet-management';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { getWalletClient, switchChain } from '@wagmi/core';
@@ -32,7 +31,6 @@ import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { useWidgetTheme } from './useWidgetTheme';
 
 export function Widget({
   starterVariant,
@@ -43,11 +41,12 @@ export function Widget({
   fromAmount,
   allowChains,
   widgetIntegrator,
-  isWelcomeScreenClosed,
   activeTheme,
 }: WidgetProps) {
-  const widgetTheme = useWidgetTheme();
-  const configTheme = useSettingsStore((state) => state.configTheme);
+  const [widgetTheme, configTheme] = useThemeStore((state) => [
+    state.widgetTheme,
+    state.configTheme,
+  ]);
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
   const wagmiConfig = useConfig();
@@ -58,6 +57,7 @@ export function Widget({
   const { tokens: memeListTokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
+  const { openWalletMenu } = useWalletMenu();
 
   const router = useRouter();
 
@@ -67,13 +67,7 @@ export function Widget({
     router.prefetch('/buy', { kind: PrefetchKind.FULL });
   });
 
-  const { welcomeScreenClosed, enabled } = useWelcomeScreen(
-    isWelcomeScreenClosed,
-    activeTheme,
-  );
-  const setWalletSelectMenuState = useMenuStore(
-    (state: MenuState) => state.setWalletSelectMenuState,
-  );
+  const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   const allowedChainsByVariant = useMemo(
@@ -143,9 +137,7 @@ export function Widget({
           starterVariant) ||
         'default',
       walletConfig: {
-        onConnect: async () => {
-          setWalletSelectMenuState(true);
-        },
+        onConnect: openWalletMenu,
       },
       chains: {
         allow: allowChains || allowedChainsByVariant,
@@ -179,7 +171,7 @@ export function Widget({
           allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
         providers: isMultisigSigner
-          ? [
+          ? ([
               EVM({
                 getWalletClient: () => getWalletClient(wagmiConfig),
                 switchChain: async (chainId) => {
@@ -196,22 +188,24 @@ export function Widget({
                 },
                 multisig: multisigSdkConfig,
               }),
-            ]
+            ] as any) // TODO: fix typing Eugene :pray:
           : undefined,
       },
       buildUrl: true,
       // insurance: true,
       integrator: integratorStringByType,
-      tokens,
+      tokens: tokens as any, // TODO: fix typing Eugene :pray:
     };
   }, [
-    starterVariant,
-    partnerName,
     fromChain,
     fromToken,
     toChain,
     toToken,
     fromAmount,
+    memeListTokens,
+    starterVariant,
+    partnerName,
+    openWalletMenu,
     allowChains,
     allowedChainsByVariant,
     configTheme?.allowedBridges,
@@ -224,8 +218,6 @@ export function Widget({
     isMultisigSigner,
     multisigSdkConfig,
     integratorStringByType,
-    tokens,
-    setWalletSelectMenuState,
     wagmiConfig,
     trackEvent,
   ]);

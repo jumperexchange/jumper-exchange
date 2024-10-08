@@ -1,8 +1,8 @@
 import { Menu } from '@/components/Menu/Menu';
-import { MenuKeysEnum } from '@/const/menuKeys';
-import { useAccounts } from '@/hooks/useAccounts';
 import { useMenuStore } from '@/stores/menu';
+import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import { Stack, Typography, useTheme } from '@mui/material';
+import type { MouseEventHandler } from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WalletButton } from '.';
@@ -17,34 +17,42 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
 
-  const { accounts } = useAccounts();
+  const { accounts } = useAccount();
+
+  const { openWalletMenu } = useWalletMenu();
 
   const {
-    openWalletMenu,
+    openWalletMenu: _openWalletMenu,
     setWalletMenuState,
     setSnackbarState,
-    openSubMenu,
-    setWalletSelectMenuState,
   } = useMenuStore((state) => state);
 
+  const handleOpenWalletMenu: MouseEventHandler<HTMLButtonElement> = (
+    event,
+  ) => {
+    event.stopPropagation();
+    setWalletMenuState(false);
+    openWalletMenu();
+  };
+
   useEffect(() => {
-    openWalletMenu! && setSnackbarState(false);
-  }, [setSnackbarState, openWalletMenu]);
+    _openWalletMenu! && setSnackbarState(false);
+  }, [setSnackbarState, _openWalletMenu]);
 
   useEffect(() => {
     if (
-      openWalletMenu &&
+      _openWalletMenu &&
       accounts.every((account) => account.status === 'disconnected')
     ) {
       setWalletMenuState(false);
     }
-  }, [accounts, setWalletMenuState, openWalletMenu]);
+  }, [accounts, setWalletMenuState, _openWalletMenu]);
 
   return (
     <Menu
-      open={openWalletMenu}
+      open={_openWalletMenu}
       setOpen={setWalletMenuState}
-      isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
+      isOpenSubMenu={_openWalletMenu}
       width={'auto'}
       styles={{
         background: theme.palette.surface1.main,
@@ -61,13 +69,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
             <WalletCard key={account.address} account={account} />
           ) : null,
         )}
-        <WalletButton
-          sx={{ width: '100%' }}
-          onClick={(event) => {
-            event.stopPropagation();
-            setWalletSelectMenuState(true);
-          }}
-        >
+        <WalletButton sx={{ width: '100%' }} onClick={handleOpenWalletMenu}>
           <Typography
             sx={{
               color: isDarkMode
