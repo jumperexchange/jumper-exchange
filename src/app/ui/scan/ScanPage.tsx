@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { ClientOnly } from '@/components/ClientOnly';
 import { alpha, Box, type PaletteMode, useTheme } from '@mui/material';
@@ -7,11 +7,7 @@ import { useMemo } from 'react';
 import { fallbackLng } from 'src/i18n';
 import { JUMPER_SCAN_PATH } from '@/const/urls';
 
-export default function ScanPage({
-  lng,
-}: {
-  lng: string,
-}) {
+export default function ScanPage({ lng }: { lng: string }) {
   const theme = useTheme();
 
   const explorerConfig = useMemo(
