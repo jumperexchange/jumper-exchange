@@ -50,6 +50,7 @@ export function getChainInfoData(chainInfo: ExtendedChain) {
 export function getTokenInfoData(chains: ExtendedChain[], tokenInfo: Token) {
   const chain = getChainById(chains, tokenInfo.chainId);
   return [
+    { label: 'Symbol', value: tokenInfo.symbol },
     {
       label: 'Token address',
       value: buildExplorerLink(
