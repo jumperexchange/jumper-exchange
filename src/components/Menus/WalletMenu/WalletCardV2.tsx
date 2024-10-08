@@ -146,7 +146,15 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
           size="small"
           disabled={isMultisigEnvironment}
           onClick={() => handleCopyButton()}
-          sx={{ background: 'transparent' }}
+          sx={(theme) => ({
+            background: 'transparent',
+            '&:hover': {
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? theme.palette.alphaLight300.main
+                  : theme.palette.white.main,
+            },
+        })}
         >
           <Typography variant="bodySmallStrong" sx={{ fontSize: '16px' }}>
             {walletDigest(account.address)}

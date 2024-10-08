@@ -32,7 +32,6 @@ interface TotalBalanceProps {
 }
 
 function TotalBalance({ isComplete = false, refetch, totalValue }: TotalBalanceProps) {
-  const { lng } = useParams();
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
   const { t } = useTranslation();
@@ -72,6 +71,7 @@ function TotalBalance({ isComplete = false, refetch, totalValue }: TotalBalanceP
     setDifferenceValue(differenceValue);
     setDifferencePercent(differencePercent);
   }, [totalValue]);
+
 
   if (!totalValue) {
     return <TotalBalanceSkeleton />;
@@ -126,7 +126,9 @@ function TotalBalance({ isComplete = false, refetch, totalValue }: TotalBalanceP
           </Tooltip>
         </Box>
         {!isComplete ? (
-          <CircularProgressPending size={24} />
+            <TotalBalanceIconButton disabled={true}>
+            <CircularProgressPending size={24} />
+            </TotalBalanceIconButton>
         ) : (
           <TotalBalanceIconButton refetch={refetch}>
             <RefreshIcon sx={(theme) => ({ color: theme.palette.text.primary, position: 'absolute' })} />
@@ -136,7 +138,7 @@ function TotalBalance({ isComplete = false, refetch, totalValue }: TotalBalanceP
       <Stack spacing={1}>
         <TotalValue>{currencyFormatter('en').format(totalValue)}</TotalValue>
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">
-          {differenceValue !== 0 && (
+          {isComplete && differenceValue !== 0 && (
             <Stack direction="row" spacing="4px">
               <VariationValue
                 color={(theme) =>

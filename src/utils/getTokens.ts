@@ -1,13 +1,11 @@
-import type { TokenAmount, ExtendedChain } from '@lifi/sdk';
-import {
-  getChains,
-  getTokenBalances as LifiGetTokenBalances,
-  getTokens as LifiGetTokens,
-} from '@lifi/sdk';
+import type { ExtendedChain, TokenAmount } from '@lifi/sdk';
+import { getChains, getTokenBalances as LifiGetTokenBalances, getTokens as LifiGetTokens } from '@lifi/sdk';
 import { formatUnits } from 'viem';
 import type { Token, TokensResponse } from '@lifi/widget';
-import type { Account } from '@/hooks/useAccounts';
+import { Account, useAccounts } from '@/hooks/useAccounts';
 import { sumBy } from 'lodash';
+import { useQueries } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 
 export interface ExtendedTokenAmountWithChain extends ExtendedTokenAmount {
   chainLogoURI?: string;
@@ -238,8 +236,6 @@ interface Events {
     cumulativePriceUSD: number,
     fetchedBalances: ExtendedTokenAmount[],
   ) => void;
-  onComplete: () => void;
-  onInit: () => void;
 }
 
 async function getTokens(
@@ -247,23 +243,93 @@ async function getTokens(
   events: Events,
 ): Promise<NodeJS.Timeout | undefined> {
   try {
-    events.onInit();
     const chains = await getChains({
       chainTypes: [account.chainType],
     });
     const { tokens } = await LifiGetTokens({
       chainTypes: [account.chainType],
     });
-
-    return fetchAllTokensBalanceByChain(
-      account.address!,
-      chains,
-      tokens,
-      events.onProgress,
-      events.onComplete,
-    );
+    return new Promise((resolve, reject) => {
+      try {
+        const intervalId = fetchAllTokensBalanceByChain(
+          account.address!,
+          chains,
+          tokens,
+          events.onProgress,
+          () => {
+            resolve(intervalId);
+          },
+        );
+      } catch (error) {
+        reject(error);
+      }
+    });
   } catch (error) {
     console.error('An error occurred during the fetching process:', error);
+  }
+}
+
+export function useTokens() {
+  const { accounts } = useAccounts();
+  const [data, setData] = useState<ExtendedTokenAmount[]>([]);
+  const [cumulativePriceUSD, setCumulativePriceUSD] = useState<{
+    [key: string]: number;
+  }>({});
+
+  const handleProgress = (
+    account: string,
+    round: number,
+    totalPriceUSD: number,
+    fetchedBalances: ExtendedTokenAmount[],
+  ) => {
+    console.log(`\n** Round ${round} **`);
+    console.log(`Cumulative Price USD: $${totalPriceUSD.toFixed(2)}`);
+    console.log(`Fetched Balances this Round:`, fetchedBalances);
+
+    setCumulativePriceUSD((prev) => ({ ...prev, [account]: totalPriceUSD }));
+    setData((prev) => {
+      const updatedData = prev.map((item) => {
+        const newItem = fetchedBalances.find(
+          (balance) => balance.symbol === item.symbol,
+        );
+        return newItem ? newItem : item;
+      });
+
+      fetchedBalances.forEach((balance) => {
+        if (!updatedData.some((item) => item.symbol === balance.symbol)) {
+          updatedData.push(balance);
+        }
+      });
+
+      return updatedData.sort(
+        (a, b) => (b.cumulatedTotalUSD || 0) - (a.cumulatedTotalUSD || 0),
+      );
+    });
+  };
+
+  const queries = useQueries({
+    queries: accounts.map((account) => ({
+      queryKey: ['tokens', account.chainType, account.address],
+      queryFn: () => getTokens(account, { onProgress: handleProgress}),
+      refetchOnWindowFocus: false,
+      retry: false,
+    })),
+  });
+
+  const isSuccess = queries.every(query => !query.isFetching && query.isSuccess);
+  const refetch = () => queries.map(query => query.refetch());
+
+  // Disable when fetch is cached
+  useEffect(() => {
+    refetch();
+  }, [])
+
+  return {
+    queries,
+    isSuccess,
+    refetch,
+    cumulativePriceUSD,
+    data
   }
 }
 

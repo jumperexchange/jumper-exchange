@@ -2,12 +2,14 @@ import { alpha, IconButton, Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 interface TotalBalanceIconButtonProps {
-  refetch: () => void;
+  refetch?: () => void;
+  disabled?: boolean;
   children: JSX.Element | JSX.Element[];
 }
 
 function TotalBalanceIconButton({
   refetch,
+  disabled = false,
   children,
 }: TotalBalanceIconButtonProps) {
   const { t } = useTranslation();
@@ -22,6 +24,7 @@ function TotalBalanceIconButton({
       <IconButton
         size="medium"
         aria-label="Refresh"
+        disabled={disabled}
         sx={(theme) => ({
           marginRight: 1,
           '&:hover': {
@@ -29,7 +32,7 @@ function TotalBalanceIconButton({
           },
         })}
         onClick={() => {
-          refetch();
+          refetch && refetch();
         }}
       >
         {children}
