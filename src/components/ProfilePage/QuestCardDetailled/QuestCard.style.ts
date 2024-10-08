@@ -15,7 +15,6 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  height: '33%',
   flexGrow: 1,
   paddingTop: '16px',
   paddingBottom: '24px',
@@ -40,9 +39,7 @@ export interface QuestCardInfoBoxProps extends Omit<BoxProps, 'component'> {
   points?: number;
 }
 
-export const QuestCardInfoBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'points',
-})<QuestCardInfoBoxProps>(({ points }) => ({
+export const QuestCardInfoBox = styled(Box)<QuestCardInfoBoxProps>(() => ({
   display: 'flex',
   flexDirection: 'column',
 }));

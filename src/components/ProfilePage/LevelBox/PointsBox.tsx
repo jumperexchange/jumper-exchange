@@ -9,7 +9,7 @@ interface PointsBoxProps {
 export const PointsBox = ({ points }: PointsBoxProps) => {
   return (
     <Box>
-      <IconHeader tooltipKey="profile_page.pointsInfo" title="POINTS" />
+      <IconHeader tooltipKey="profile_page.pointsInfo" title="XP" />
       <CenteredBox>
         <PointsDisplay points={points} />
       </CenteredBox>

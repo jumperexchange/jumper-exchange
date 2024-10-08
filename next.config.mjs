@@ -37,10 +37,16 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'jumper-static.s3.us-east-2.amazonaws.com',
+        hostname: 'storage.googleapis.com',
         port: '',
-        pathname: '/**',
+        pathname: '/jumper-static-assets/upload/**',
       },
+      // {
+      //   protocol: 'https',
+      //   hostname: 'cdn.mygateway.xyz',
+      //   port: '',
+      //   pathname: '/**',
+      // },
       {
         protocol: 'https',
         hostname: 'resolve.mercle.xyz',
