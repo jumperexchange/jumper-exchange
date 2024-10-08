@@ -53,6 +53,7 @@ interface QuestCardProps {
   endDate?: string;
   platformName?: string;
   platformImage?: string;
+  hideXPProgressComponents?: boolean;
   slug?: string;
   chains?: Chain[];
   rewards?: RewardsInterface;
@@ -80,6 +81,7 @@ export const QuestCardDetailled = ({
   id,
   rewardRange,
   rewardsProgress,
+  hideXPProgressComponents,
 }: QuestCardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -127,7 +129,12 @@ export const QuestCardDetailled = ({
             />
           )}
         </Box>
-        <QuestCardBottomBox gap={0.75}>
+        <QuestCardBottomBox
+          gap={0.75}
+          sx={{
+            ...(hideXPProgressComponents && { justifyContent: 'flex-start' }),
+          }}
+        >
           <QuestCardTitleBox>
             {title ? (
               <Typography
@@ -220,28 +227,32 @@ export const QuestCardDetailled = ({
                     </XPIconBox>
                   </XPDisplayBox>
                 )}
-                <XPRewardsInfo
-                  bgColor={!completed ? '#31007A' : '#42B852'}
-                  label={`+${points}`}
-                  tooltip={
-                    rewardsProgress &&
-                    t('questCard.xpToEarnDescription', {
-                      xpToEarn: points,
-                      action: action,
-                    })
-                  }
-                  active={true}
-                >
-                  {!completed ? (
-                    <SuperfestXPIcon size={16} />
-                  ) : (
-                    <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
-                  )}
-                </XPRewardsInfo>
+                {!hideXPProgressComponents && (
+                  <XPRewardsInfo
+                    bgColor={!completed ? '#31007A' : '#42B852'}
+                    label={`+${points}`}
+                    tooltip={
+                      rewardsProgress &&
+                      t('questCard.xpToEarnDescription', {
+                        xpToEarn: points,
+                        action: action,
+                      })
+                    }
+                    active={true}
+                  >
+                    {!completed ? (
+                      <SuperfestXPIcon size={16} />
+                    ) : (
+                      <CheckCircleIcon
+                        sx={{ width: '16px', color: '#ffffff' }}
+                      />
+                    )}
+                  </XPRewardsInfo>
+                )}
               </FlexCenterRowBox>
             ) : undefined}
           </FlexSpaceBetweenBox>
-          {rewardsProgress && (
+          {rewardsProgress && !hideXPProgressComponents && (
             <ProgressionBar
               ongoingValue={rewardsProgress.currentValue}
               loading={false}
