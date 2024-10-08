@@ -51,8 +51,9 @@ interface Resources {
         walletNotInstalled: '{{wallet}} is not installed';
         connectAnotherWallet: 'Connect another wallet';
         refreshBalances: 'Refresh balances';
-        numberOfChains: '{{numberOfChains}} chains';
         totalBalance: 'Total balance';
+        totalBalanceTooltip: "Your total balance may not always be accurate due to potential indexing issues. We're on it!";
+        numberOfChains: '{{numberOfChains}} chains';
       };
       themes: {
         switchToLight: 'Switch to light mode';
@@ -126,6 +127,14 @@ interface Resources {
     questCard: {
       completed: 'Completed';
       join: 'Join';
+      xpToEarnDescription: 'Complete the progress bar by {{action}} to earn +{{xpToEarn}} addtional XP this month.';
+      earnedXPDescription: "You've unlocked {{earnedXP}}XP by {{action}} so far this month and this has been added to your total XP balance.";
+      action: {
+        chain_oor: 'exploring chains';
+        transact_oor: 'trading';
+        swap_oor: 'swapping';
+        bridge_oor: 'bridging';
+      };
     };
     missions: {
       available: 'Available Missions';
@@ -135,7 +144,7 @@ interface Resources {
       mobileTitle: 'Only available on Desktop';
       mobileDescription: 'The Jumper Profile page is not available on small screens yet. We are working on it.';
       rank: 'Leaderboard is updated on a daily basis';
-      pointsInfo: 'Points is your score for interacting with Jumper. As you gain more points, your level goes up.';
+      pointsInfo: 'XP is your score for interacting with Jumper. As you gain XP points, your level goes up.';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
     };
   };

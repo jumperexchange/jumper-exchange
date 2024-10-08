@@ -47,17 +47,10 @@ export const BlogCarousel = ({
         {data
           ? data.map((article, index) => (
               <BlogArticleCard
-                id={article.id}
+                article={article}
                 baseUrl={url}
                 key={`blog-article-card-${article.id}-${index}`}
                 trackingCategory={TrackingCategory.BlogCarousel}
-                image={article.attributes.Image}
-                title={article.attributes.Title}
-                slug={article.attributes.Slug}
-                content={article.attributes.Content}
-                publishedAt={article.attributes.publishedAt}
-                createdAt={article.attributes.createdAt}
-                tags={article.attributes.tags}
               />
             ))
           : Array.from({ length: 4 }, () => 42).map((_, idx) => (

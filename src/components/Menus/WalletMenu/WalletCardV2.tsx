@@ -29,6 +29,7 @@ import {
   WalletCardButtonContainer,
   WalletCardContainer,
 } from './WalletCardV2.style';
+import { WalletCardV2Stack } from '@/components/Menus/WalletMenu/WalletCardV2Stack';
 
 interface WalletCardV2Props {
   account: Account;
@@ -122,14 +123,7 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
 
   return (
     <WalletCardContainer>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ flexGrow: 1 }}
-        spacing={1}
-        width="100%"
-      >
+      <WalletCardV2Stack>
         <WalletCardBadge
           overlap="circular"
           className="badge"
@@ -140,9 +134,7 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
                 size="small"
                 src={activeChain?.logoURI || ''}
                 alt={'wallet-avatar'}
-              >
-                {/* {activeChain.name[0]} */}
-              </Avatar>
+              ></Avatar>
             ) : (
               <Skeleton variant="circular" />
             )
@@ -154,9 +146,17 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
           size="small"
           disabled={isMultisigEnvironment}
           onClick={() => handleCopyButton()}
-          sx={{ background: 'transparent' }}
+          sx={(theme) => ({
+            background: 'transparent',
+            '&:hover': {
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? theme.palette.alphaLight300.main
+                  : theme.palette.white.main,
+            },
+          })}
         >
-          <Typography variant="bodySmallStrong">
+          <Typography variant="bodySmallStrong" sx={{ fontSize: '16px' }}>
             {walletDigest(account.address)}
           </Typography>
         </Button>
@@ -175,7 +175,7 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
             <PowerSettingsNewIcon sx={{ height: '20px' }} />
           </ButtonSecondary>
         </Stack>
-      </Stack>
+      </WalletCardV2Stack>
     </WalletCardContainer>
   );
 };

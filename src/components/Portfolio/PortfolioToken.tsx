@@ -4,35 +4,35 @@ import {
   CustomAvatarGroup,
   TypographyPrimary,
   TypographySecondary,
-  SmallAvatar,
 } from '@/components/Portfolio/Portfolio.styles';
 import generateKey from '@/app/lib/generateKey';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import {
   AccordionDetails,
-  Badge,
-  ButtonBase,
   Grid,
   Skeleton,
   Tooltip,
   Avatar as MuiAvatar,
+  Divider,
+  Box,
 } from '@mui/material';
 import Image from 'next/image';
-import type { ExtendedTokenAmount } from '@/utils/getTokens';
-import { useState } from 'react';
+import type { ExtendedTokenAmountWithChain } from '@/utils/getTokens';
+import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   WalletAvatar,
   WalletCardBadge,
 } from '@/components/Menus/WalletMenu/WalletCardV2.style';
-import { Avatar } from '@/components/Avatar';
 import { useMainPaths } from '@/hooks/useMainPaths';
 import { useParams, useRouter } from 'next/navigation';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
 import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
+import PortfolioTokenChainButton from '@/components/Portfolio/PortfolioTokenChainButton';
+import { useMenuStore } from 'src/stores/menu';
 
 interface PortfolioTokenProps {
-  token: ExtendedTokenAmount;
+  token: ExtendedTokenAmountWithChain;
 }
 
 function PortfolioToken({ token }: PortfolioTokenProps) {
@@ -42,12 +42,14 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
   const { isMainPaths } = useMainPaths();
   const router = useRouter();
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
+  const { setWalletMenuState } = useMenuStore((state) => state);
 
   const hasMultipleChains = token.chains.length > 1;
 
   const handleChange = (_: React.ChangeEvent<{}>, expanded: boolean) => {
     if (!hasMultipleChains) {
       setFrom(token.address, token.chainId);
+      setWalletMenuState(false);
 
       if (!isMainPaths) {
         router.push('/');
@@ -58,10 +60,13 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
   };
 
   return (
-    <WalletCardContainer sx={{ padding: '0!important' }}>
+    <WalletCardContainer
+      sx={{
+        padding: '0!important',
+      }}
+    >
       <CustomAccordion
         expanded={isExpanded}
-        key={generateKey(token.symbol)}
         disableGutters
         onChange={handleChange}
       >
@@ -95,11 +100,15 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                     className="badge"
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                     badgeContent={
-                      token?.logoURI ? (
-                        <Avatar
-                          size="small"
-                          src={token.chains[0]?.logoURI || ''}
-                          alt={'wallet-avatar'}
+                      !hasMultipleChains ? (
+                        <MuiAvatar
+                          alt={token?.chainName || 'chain-name'}
+                          src={token?.chainLogoURI || ''}
+                          sx={{
+                            width: '18px',
+                            height: '18px',
+                            border: '2px solid white',
+                          }}
                         />
                       ) : (
                         <Skeleton variant="circular" />
@@ -117,20 +126,18 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                 <TypographySecondary>
                   {token.chains[0].name}
                 </TypographySecondary>
-              ) : isExpanded ? (
-                <TypographySecondary>
-                  {t('navbar.walletMenu.numberOfChains', {
-                    numberOfChains: token.chains?.length,
-                  })}
-                </TypographySecondary>
               ) : (
                 <CustomAvatarGroup spacing={6} max={15}>
                   {token.chains.map((chain) => (
                     <Tooltip
                       title={chain.name}
-                      key={`${token.symbol}-${chain.key}`}
+                      key={`${token.symbol}-${chain.address}-${chain.chainId}`}
                     >
-                      <MuiAvatar alt={chain.name} src={chain.logoURI} />
+                      <MuiAvatar
+                        alt={chain.chainName}
+                        src={chain.chainLogoURI}
+                        sx={{ width: '12px', height: '12px' }}
+                      />
                     </Tooltip>
                   ))}
                 </CustomAvatarGroup>
@@ -138,10 +145,10 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             </Grid>
             <Grid item xs={5} style={{ textAlign: 'right' }}>
               <TypographyPrimary>
-                {decimalFormatter(lng).format(token.formattedBalance ?? 0)}
+                {decimalFormatter(lng).format(token.cumulatedBalance ?? 0)}
               </TypographyPrimary>
               <TypographySecondary>
-                {currencyFormatter(lng).format(token.totalPriceUSD ?? 0)}
+                {currencyFormatter(lng).format(token.cumulatedTotalUSD ?? 0)}
               </TypographySecondary>
             </Grid>
           </Grid>
@@ -152,99 +159,31 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             padding: 0,
           }}
         >
-          {token.chains.map((chain) => (
-            <ButtonBase
-              key={generateKey(chain.key)}
-              onClick={() => {
-                setFrom(chain.address, chain.id);
-                if (!isMainPaths) {
-                  router.push('/');
-                }
-              }}
+          <Box
+            sx={{
+              flexDirection: 'column',
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+            }}
+          >
+            <Divider
               sx={{
-                width: '100%',
-                padding: '16px',
-                display: 'flex',
-                '&:hover': {
-                  background: 'rgba(0, 0, 0, 0.04)',
-                },
+                opacity: 0.3,
+                width: '95%',
               }}
-            >
-              <Grid container display="flex" alignItems="center">
-                <Grid item xs={2}>
-                  <Badge
-                    overlap="circular"
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    badgeContent={
-                      <SmallAvatar>
-                        {!token?.logoURI ? (
-                          <>?</>
-                        ) : (
-                          <Image
-                            width={0}
-                            height={0}
-                            sizes="100vw"
-                            style={{ width: '100%', height: '100%' }} // optional
-                            src={chain.logoURI as string}
-                            alt={chain.name}
-                          />
-                        )}
-                      </SmallAvatar>
-                    }
-                  >
-                    <MuiAvatar sx={{ width: 24, height: 24 }}>
-                      {!token?.logoURI ? (
-                        <>?</>
-                      ) : (
-                        <Image
-                          width={0}
-                          height={0}
-                          sizes="100vw"
-                          style={{ width: '100%', height: '100%' }} // optional
-                          src={token.logoURI}
-                          alt={token.name}
-                        />
-                      )}
-                    </MuiAvatar>
-                  </Badge>
-                </Grid>
-                <Grid item xs={5} textAlign="left">
-                  <TypographyPrimary
-                    sx={{ fontSize: '0.875rem', lineHeight: '1.125rem' }}
-                  >
-                    {token.symbol}
-                  </TypographyPrimary>
-                  <TypographySecondary
-                    sx={{ fontSize: '0.625rem', lineHeight: '0.875rem' }}
-                  >
-                    {chain.name}
-                  </TypographySecondary>
-                </Grid>
-                <Grid item xs={5} style={{ textAlign: 'right' }}>
-                  <TypographyPrimary
-                    sx={{
-                      fontSize: '0.875rem',
-                      lineHeight: '1.125rem',
-                    }}
-                  >
-                    {decimalFormatter(lng).format(chain.formattedBalance)}
-                  </TypographyPrimary>
-                  <TypographySecondary
-                    sx={{
-                      fontSize: '0.625rem',
-                      lineHeight: '0.875rem',
-                    }}
-                  >
-                    {currencyFormatter(lng).format(chain.totalPriceUSD)}
-                  </TypographySecondary>
-                </Grid>
-              </Grid>
-            </ButtonBase>
-          ))}
+            />
+            {token.chains.map((tokenWithChain) => (
+              <PortfolioTokenChainButton
+                key={generateKey(tokenWithChain.address)}
+                token={tokenWithChain}
+              />
+            ))}
+          </Box>
         </AccordionDetails>
       </CustomAccordion>
     </WalletCardContainer>
   );
 }
 
-export default PortfolioToken;
+export default memo(PortfolioToken);

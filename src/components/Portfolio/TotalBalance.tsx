@@ -1,20 +1,23 @@
 import { WalletCardContainer } from '@/components/Menus';
-import { alpha, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import {
+  CircularProgressPending,
   TotalValue,
   VariationValue,
 } from '@/components/Portfolio/Portfolio.styles';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { useTranslation } from 'react-i18next';
-import { currencyFormatter } from '@/utils/formatNumbers';
-import { useEffect, useState } from 'react';
-import { isEqual } from 'lodash';
+import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
+import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
 import { useAccounts } from '@/hooks/useAccounts';
 import { usePortfolioStore } from '@/stores/portfolio';
-import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
+import { currencyFormatter } from '@/utils/formatNumbers';
+import InfoIcon from '@mui/icons-material/Info';
+import { Box, Stack, Tooltip, Typography } from '@mui/material';
+import { isEqual } from 'lodash';
 import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -23,12 +26,16 @@ function has24HoursPassed(lastDate: number): boolean {
 }
 
 interface TotalBalanceProps {
-  refetch: () => void;
   totalValue: number;
+  isComplete: boolean;
+  refetch: () => void;
 }
 
-function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
-  const { lng } = useParams();
+function TotalBalance({
+  isComplete = false,
+  refetch,
+  totalValue,
+}: TotalBalanceProps) {
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
   const { t } = useTranslation();
@@ -75,36 +82,71 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
 
   return (
     <WalletCardContainer>
-      <Stack spacing={1}>
-        <Typography
-          fontWeight={500}
-          fontSize={12}
-          color={(theme) => theme.palette.text.primary}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignContent: 'center',
+            alignItems: 'center',
+          }}
         >
-          <Tooltip title={t('navbar.walletMenu.refreshBalances')}>
-            <IconButton
-              size="small"
-              aria-label="Refresh"
+          <Typography
+            fontWeight={500}
+            fontSize={14}
+            color={(theme) => theme.palette.text.primary}
+          >
+            {t('navbar.walletMenu.totalBalance')}
+          </Typography>
+          <Tooltip
+            title={t('navbar.walletMenu.totalBalanceTooltip')}
+            placement="top"
+            enterTouchDelay={0}
+            componentsProps={{
+              popper: { sx: { zIndex: 2000 } },
+            }}
+            arrow
+            sx={{
+              zIndex: 5000,
+            }}
+          >
+            <InfoIcon
+              sx={{
+                cursor: 'help',
+                marginLeft: '8px',
+                width: 16,
+                height: 16,
+                opacity: '0.5',
+              }}
+            />
+          </Tooltip>
+        </Box>
+        {!isComplete ? (
+          <TotalBalanceIconButton disabled={true}>
+            <CircularProgressPending size={24} />
+          </TotalBalanceIconButton>
+        ) : (
+          <TotalBalanceIconButton refetch={refetch}>
+            <RefreshIcon
               sx={(theme) => ({
                 color: theme.palette.text.primary,
-                backgroundColor: alpha(theme.palette.text.primary, 0.04),
-                marginRight: 1,
-                '&:hover': {
-                  backgroundColor: alpha(theme.palette.text.primary, 0.08),
-                },
+                position: 'absolute',
               })}
-              onClick={() => {
-                refetch();
-              }}
-            >
-              <RefreshIcon />
-            </IconButton>
-          </Tooltip>
-          {t('navbar.walletMenu.totalBalance')}
-        </Typography>
-        <TotalValue>{currencyFormatter(lng).format(totalValue)}</TotalValue>
+            />
+          </TotalBalanceIconButton>
+        )}
+      </Box>
+      <Stack spacing={1}>
+        <TotalValue>{currencyFormatter('en').format(totalValue)}</TotalValue>
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">
-          {differenceValue !== 0 && (
+          {isComplete && differenceValue !== 0 && (
             <Stack direction="row" spacing="4px">
               <VariationValue
                 color={(theme) =>
@@ -116,7 +158,7 @@ function TotalBalance({ refetch, totalValue }: TotalBalanceProps) {
                 ) : (
                   <ArrowDownwardIcon />
                 )}
-                {differencePercent?.toFixed(2)}%
+                {differencePercent?.toFixed(2)}% (1d)
               </VariationValue>
               <VariationValue color={(theme) => theme.palette.text.secondary}>
                 • ${differenceValue?.toFixed(2)}

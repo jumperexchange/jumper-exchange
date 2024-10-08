@@ -3,6 +3,7 @@
 import { ButtonSecondary, ButtonTransparent } from '@/components/Button';
 import { avatarMask32 } from '@/components/Mask.style';
 import type { Breakpoint, ButtonProps } from '@mui/material';
+import { Drawer } from '@mui/material';
 import { alpha } from '@mui/material';
 import { Avatar, Badge, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -10,6 +11,19 @@ import { styled } from '@mui/material/styles';
 export interface WalletButtonProps extends ButtonProps {
   colored?: boolean;
 }
+
+export const CustomDrawer = styled(Drawer)(({ theme }) => ({
+  zIndex: 2000,
+  '& .MuiDrawer-paper': {
+    width: '100%',
+    padding: '1.25rem',
+    boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
+    gap: theme.spacing(2),
+    maxWidth: 416,
+    zIndex: 2000,
+    background: theme.palette.surface1.main, // theme.palette.surface2.main into the figma, which is not matching the right color, might need to be updated
+  },
+}));
 
 export const AvatarContainer = styled('div')(() => ({
   position: 'relative',
@@ -68,8 +82,9 @@ export const WalletButtonSecondary = styled(ButtonSecondary, {
 
 export const WalletCardContainer = styled(Container)(({ theme }) => ({
   boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
-  padding: '24px',
+  padding: '16px',
   display: 'flex',
+  flexDirection: 'column',
   background: theme.palette.surface2.main,
   borderRadius: '16px',
   [theme.breakpoints.down('sm' as Breakpoint)]: {

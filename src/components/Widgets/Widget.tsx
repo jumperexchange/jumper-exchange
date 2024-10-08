@@ -75,8 +75,6 @@ export function Widget({
   }, []);
 
   useEffect(() => {
-    console.log('widgetCache triggered', widgetCache, searchParams);
-
     formRef?.current?.setFieldValue('fromChain', widgetCache.fromChainId, {
       setUrlSearchParam: true,
     });
@@ -243,8 +241,6 @@ export function Widget({
     wagmiConfig,
     trackEvent,
   ]);
-
-  console.log('fromChain', config);
 
   return (
     <WidgetWrapper

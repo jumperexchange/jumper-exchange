@@ -1,61 +1,97 @@
-import { Box, Skeleton, Stack, useTheme } from '@mui/material';
-import { usePortfolioStore } from '@/stores/portfolio';
-import { useAccounts } from '@/hooks/useAccounts';
-import { useTranslation } from 'react-i18next';
-import { useTokenBalances } from '@/hooks/useTokenBalances';
+import { Box, Skeleton, Stack, Badge, useTheme } from '@mui/material';
 import TotalBalance from '@/components/Portfolio/TotalBalance';
 import { WalletCardContainer } from '@/components/Menus';
 import PortfolioToken from '@/components/Portfolio/PortfolioToken';
-import { useEffect } from 'react';
+import { useTokens } from '@/utils/getTokens';
 
 function Portfolio() {
-  const { accounts } = useAccounts();
-  const [forceRefresh, setForceRefresh] = usePortfolioStore((state) => [
-    state.forceRefresh,
-    state.setForceRefresh,
-  ]);
-  const { refetch, data, totalValue, isLoading, isRefetching } =
-    useTokenBalances(accounts);
+  const theme = useTheme();
 
-  useEffect(() => {
-    if (!forceRefresh) {
-      return;
-    }
-
-    setForceRefresh(false);
-    refetch();
-  }, [forceRefresh]);
+  const { queries, isSuccess, refetch, cumulativePriceUSD, data } = useTokens();
 
   return (
     <>
-      <TotalBalance refetch={refetch} totalValue={totalValue} />
+      <TotalBalance
+        refetch={refetch}
+        isComplete={isSuccess}
+        totalValue={Object.values(cumulativePriceUSD).reduce(
+          (sum, value) => sum + value,
+          0,
+        )}
+      />
       <Stack spacing={1}>
-        {(isLoading || isRefetching) &&
-          Array.from({ length: 8 }, () => 42).map((token) => (
-            <WalletCardContainer>
+        {data.length == 0 &&
+          Array.from({ length: 10 }, () => 42).map((_, index) => (
+            <WalletCardContainer key={index}>
               <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
-                <Skeleton variant="circular" width={46} height={40} />
+                <Box>
+                  <Badge
+                    overlap="circular"
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                    badgeContent={
+                      <Skeleton
+                        variant="circular"
+                        width={16}
+                        height={16}
+                        sx={{
+                          border: `2px solid #FFFFFF`,
+                          backgroundColor:
+                            theme.palette.mode === 'light'
+                              ? '#e4e4e4'
+                              : '#3f3d56',
+                        }}
+                      />
+                    }
+                  >
+                    <Skeleton variant="circular" width={40} height={40} />
+                  </Badge>
+                </Box>
                 <Box
                   sx={{
                     width: '100%',
                     display: 'flex',
                     justifyContent: 'space-between',
+                    alignContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
                   <Stack direction="column" alignItems="start" spacing={1}>
-                    <Skeleton variant="rectangular" width={100} height={24} />
-                    <Skeleton variant="text" width={70} height={24} />
+                    <Skeleton
+                      variant="rectangular"
+                      width={64}
+                      height={16}
+                      sx={{ borderRadius: '32px' }}
+                    />
+                    <Skeleton
+                      variant="rectangular"
+                      width={96}
+                      height={12}
+                      sx={{ borderRadius: '32px' }}
+                    />
                   </Stack>
                   <Stack direction="column" alignItems="end" spacing={1}>
-                    <Skeleton variant="rectangular" width={100} height={24} />
-                    <Skeleton variant="text" width={50} height={24} />
+                    <Skeleton
+                      variant="rectangular"
+                      width={64}
+                      height={16}
+                      sx={{ borderRadius: '32px' }}
+                    />
+                    <Skeleton
+                      variant="text"
+                      width={48}
+                      height={16}
+                      sx={{ borderRadius: '32px' }}
+                    />
                   </Stack>
                 </Box>
               </Stack>
             </WalletCardContainer>
           ))}
-        {(data || []).map((token, index) => (
-          <PortfolioToken token={token} key={index} />
+        {(data || []).map((token) => (
+          <PortfolioToken
+            token={token}
+            key={`${token.chainId}-${token.address}`}
+          />
         ))}
       </Stack>
     </>

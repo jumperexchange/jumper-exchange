@@ -67,6 +67,7 @@ export enum TrackingAction {
   // Quests
   ClickQuestCard = 'action_click_quest_card',
   ClickMissionCta = 'action_click_mission_cta',
+  ClickMissionCtaSteps = 'action_click_mission_cta_steps',
 
   // Pagination
   ClickPagination = 'action_click_pagination',
@@ -100,6 +101,7 @@ export enum TrackingCategory {
   BlogCarousel = 'cat_blog_carousel',
   BlogFeaturedArticle = 'cat_blog_featured_article',
   BlogArticlesBoard = 'cat_blog_articles_board',
+  BlogArticlesCollection = 'cat_blog_articles_collection',
   BlogArticle = 'cat_blog_article',
   Missions = 'cat_missions',
   Quests = 'cat_quests',
@@ -168,8 +170,12 @@ export enum TrackingEventParameter {
   ErrorCode = 'param_error_code',
   ErrorMessage = 'param_error_message',
   ValueLoss = 'param_value_loss',
-  AvailableRoutesCount = 'param_available_routes_count',
   TransactionStatus = 'param_transaction_status',
+  Routes = 'param_routes',
+  NbOfSteps = 'param_nb_of_steps',
+  Steps = 'param_steps',
+  Time = 'param_time',
+  Slippage = 'param_slippage',
 
   // Blog
   ArticleCardId = 'param_article_card_id',
@@ -196,4 +202,8 @@ export enum TrackingEventParameter {
   MissionCtaLabel = 'param_mission_cta_label',
   MissionCtaPartnerId = 'param_mission_cta_partner_id',
   MissionCtaCampaign = 'param_mission_cta_campaign',
+  MissionCtaStepsTitle = 'param_mission_cta_steps_title',
+  MissionCtaStepsLink = 'param_mission_cta_steps_link',
+  MissionCtaStepsCTA = 'param_mission_cta_steps_cta',
+  MissionCtaStepsIndex = 'param_mission_cta_steps_index',
 }

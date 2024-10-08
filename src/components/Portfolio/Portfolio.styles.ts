@@ -1,14 +1,23 @@
-import { Accordion, AvatarGroup, Avatar, Typography } from '@mui/material';
+import {
+  Accordion,
+  AvatarGroup,
+  Avatar,
+  Typography,
+  circularProgressClasses,
+  CircularProgress as MuiCircularProgress,
+  keyframes,
+} from '@mui/material';
 import { styled } from '@mui/system';
 import { lighten } from '@mui/material/styles';
+import { AccordionProps } from '@mui/material/Accordion';
+import SvgIcon from '@mui/material/SvgIcon/SvgIcon'; // Import AccordionProps
 
 export const TotalValue = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
   textOverflow: 'ellipsis',
   fontWeight: '700',
-  // textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-  fontSize: '3rem',
-  lineHeight: '4rem',
+  fontSize: '48px',
+  lineHeight: '64px',
 }));
 
 export const VariationValue = styled(Typography)(({ theme }) => ({
@@ -20,21 +29,23 @@ export const VariationValue = styled(Typography)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-export const CustomAccordion = styled(Accordion)(({ theme }) => ({
-  background: 'transparent',
-  border: 0,
-  boxShadow: 'none',
-  width: '100%',
+export const CustomAccordion = styled(Accordion)<{ isExpanded?: boolean }>(
+  ({ theme, isExpanded }) => ({
+    background: 'transparent',
+    border: 0,
+    boxShadow: 'none',
+    width: '100%',
 
-  '& .MuiAccordionSummary-root': {
-    padding: '16px',
-    borderRadius: 12,
-
-    '&:hover': {
-      background: 'rgba(0, 0, 0, 0.04)',
+    '& .MuiAccordionSummary-root': {
+      padding: '16px',
+      borderRadius: 12,
+      '&:hover': {
+        background: 'rgba(0, 0, 0, 0.04)',
+        borderRadius: isExpanded ? '16px 16px 0 0' : '16px',
+      },
     },
-  },
-}));
+  }),
+);
 
 export const TypographyPrimary = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -61,7 +72,7 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
   '& .MuiAvatar-root': {
     width: 16,
     height: 16,
-    border: '3px solid white',
+    border: '2px solid white',
 
     '&:last-child': {
       marginLeft: '-6px',
@@ -70,7 +81,42 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
 }));
 
 export const SmallAvatar = styled(Avatar)(({ theme }) => ({
-  width: 12,
-  height: 12,
+  width: 16,
+  height: 16,
   border: `2px solid ${theme.palette.background.paper}`,
 }));
+
+const circleAnimation = keyframes`
+  0% {
+    stroke-dashoffset: 129;
+    transform: rotate(0);
+  }
+  50% {
+    stroke-dashoffset: 56;
+    transform: rotate(45deg);
+  };
+  100% {
+    stroke-dashoffset: 129;
+    transform: rotate(360deg);
+  }
+`;
+
+export const CircularProgressPending = styled(MuiCircularProgress)`
+  color: ${({ theme }) =>
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.primary.light};
+  animation-duration: 3s;
+  position: absolute;
+  .${circularProgressClasses.circle} {
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-name: ${circleAnimation};
+    stroke-dasharray: 129;
+    stroke-dashoffset: 129;
+    stroke-linecap: round;
+    transform-origin: 100% 100%;
+  }
+`;
+
+export const Icon = styled(SvgIcon)``;

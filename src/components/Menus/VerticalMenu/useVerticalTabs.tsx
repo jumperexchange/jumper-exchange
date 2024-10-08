@@ -4,20 +4,12 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { EventTrackingTool } from '@/types/userTracking';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
-interface useVerticalTabsProps {
-  verticalPageReload?: boolean;
-}
-
-export const useVerticalTabs = ({
-  verticalPageReload,
-}: useVerticalTabsProps) => {
+export const useVerticalTabs = () => {
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const router = useRouter();
@@ -82,23 +74,6 @@ export const useVerticalTabs = ({
         />
       ),
     },
-    // {
-    //   onClick: handleClickTab('buy/'),
-    //   value: 2,
-    //   icon: (
-    //     <CreditCardIcon
-    //       sx={{
-    //         marginRight: 0.75,
-    //         marginBottom: `${theme.spacing(0)} !important`,
-    //         color:
-    //           theme.palette.mode === 'dark'
-    //             ? theme.palette.white.main
-    //             : theme.palette.black.main,
-    //       }}
-    //     />
-    //   ),
-    //   disabled: process.env.NEXT_PUBLIC_ONRAMPER_ENABLED !== 'true',
-    // },
   ];
 
   return output;

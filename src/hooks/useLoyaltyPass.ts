@@ -1,8 +1,9 @@
 import { useLoyaltyPassStore } from '@/stores/loyaltyPass';
 import type { PDA } from '@/types/loyaltyPass';
 import { useQuery } from '@tanstack/react-query';
-import { useAccounts } from './useAccounts';
 import { useEffect } from 'react';
+import { SECONDS_IN_A_DAY } from 'src/const/time';
+import { useAccounts } from './useAccounts';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
@@ -11,8 +12,6 @@ export interface UseLoyaltyPassProps {
   tier?: string;
   pdas?: PDA[];
 }
-
-const SECONDS_IN_A_DAY = 86400;
 
 export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   const { account } = useAccounts();

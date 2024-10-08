@@ -18,6 +18,12 @@ import {
   InstructionsAccordionLinkBox,
   InstructionsAccordionToggle,
 } from '.';
+import { useUserTracking } from 'src/hooks/userTracking';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 
 interface InstructionsAccordionItemProps extends InstructionItemProps {
   index: number;
@@ -53,6 +59,7 @@ export const InstructionsAccordionItem = ({
 }: InstructionsAccordionItemProps) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
+  const { trackEvent } = useUserTracking();
   const isTablet = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
   const handleOpen:
     | MouseEventHandler<HTMLDivElement | HTMLButtonElement>
@@ -68,6 +75,20 @@ export const InstructionsAccordionItem = ({
       setOpen(true);
     }
   }, []);
+
+  const handleClick = (i: number) => {
+    trackEvent({
+      category: TrackingCategory.Quests,
+      action: TrackingAction.ClickMissionCtaSteps,
+      label: `click-mission-cta-steps`,
+      data: {
+        [TrackingEventParameter.MissionCtaStepsTitle]: title || '',
+        [TrackingEventParameter.MissionCtaStepsLink]: buttonLinks?.[i] || '',
+        [TrackingEventParameter.MissionCtaStepsCTA]: buttonTitles?.[i] || '',
+        [TrackingEventParameter.MissionCtaStepsIndex]: index || -1,
+      },
+    });
+  };
 
   return (
     <InstructionsAccordionItemContainer
@@ -140,6 +161,7 @@ export const InstructionsAccordionItem = ({
                         target="_blank"
                         rel="noreferrer"
                         style={{ textDecoration: 'none', color: 'inherit' }}
+                        onClick={() => handleClick(i)}
                       >
                         <InstructionsAccordionLinkBox>
                           <Typography

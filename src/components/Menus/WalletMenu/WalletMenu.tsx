@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WalletButton } from '.';
+import { CustomDrawer, WalletButton } from '.';
 import { WalletCardV2 } from './WalletCardV2';
 import Portfolio from '@/components/Portfolio/Portfolio';
 import CloseIcon from '@mui/icons-material/Close';
@@ -45,28 +45,15 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   }, [accounts, setWalletMenuState, openWalletMenu]);
 
   return (
-    <Drawer
-      variant="persistent"
+    <CustomDrawer
+      // variant="persistent"
       anchor="right"
       open={openWalletMenu}
       onClose={() => {
         setWalletMenuState(false);
         setOpen(false);
       }}
-      PaperProps={{
-        sx: (theme) => ({
-          width: '100%',
-          padding: '1.25rem',
-          boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
-          gap: theme.spacing(2),
-          maxWidth: 416,
-          zIndex: 2000,
-          background: theme.palette.surface1.main, // theme.palette.surface2.main into the figma, which is not matching the right color, might need to be updated
-        }),
-      }}
-      sx={{
-        zIndex: 1500,
-      }}
+      slotProps={{ backdrop: { invisible: true } }}
     >
       <Stack direction="row" justifyContent="space-between">
         <IconButton
@@ -97,7 +84,6 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
             {t('navbar.walletMenu.connectAnotherWallet')}
           </Typography>
         </WalletButton>
-        {/*)}*/}
       </Stack>
       {accounts.map(
         (account) =>
@@ -106,6 +92,6 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           ),
       )}
       <Portfolio />
-    </Drawer>
+    </CustomDrawer>
   );
 };
