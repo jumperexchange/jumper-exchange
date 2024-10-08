@@ -29,7 +29,15 @@
     "max-len": "off",
     "newline-per-chained-call": "off",
     "no-bitwise": "off",
-    "no-console": "off",
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "error",
+          "warn"
+        ]
+      }
+    ],
     "no-continue": "off",
     "no-implicit-any-catch": "off",
     "no-nested-ternary": "off",
