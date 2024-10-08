@@ -8,7 +8,7 @@ import { useSettingsStore } from '@/stores/settings';
 import type { LanguageKey } from '@/types/i18n';
 import type { MenuState } from '@/types/menu';
 import { EVM } from '@lifi/sdk';
-import type { WidgetConfig } from '@lifi/widget';
+import type { CalculateFeeParams, WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
@@ -32,6 +32,7 @@ import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import getDeductAmount from '@/app/lib/getDeductAmount';
 import { useWidgetTheme } from './useWidgetTheme';
 
 export function Widget({
@@ -165,7 +166,19 @@ export function Widget({
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
+        HiddenUI.IntegratorStepDetails,
       ],
+      feeConfig: {
+        name: 'Jumper',
+        calculateFee(params) {
+          return getDeductAmount(
+            params.fromChainId,
+            params.fromTokenAddress,
+            params.toChainId,
+            params.toTokenAddress,
+          );
+        },
+      },
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
