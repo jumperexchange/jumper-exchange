@@ -11,6 +11,7 @@ import { useWidgetCacheStore } from '@/stores/widgetCache';
 import { useMainPaths } from '@/hooks/useMainPaths';
 import { useParams, useRouter } from 'next/navigation';
 import { useMenuStore } from 'src/stores/menu';
+import TokenImage from '@/components/Portfolio/TokenImage';
 
 interface PortfolioTokenChainButtonProps {
   token: ExtendedTokenAmountWithChain;
@@ -54,34 +55,17 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             badgeContent={
               <SmallAvatar>
-                {!token?.logoURI ? (
-                  <>?</>
-                ) : (
-                  <Image
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    style={{ width: '100%', height: '100%' }} // optional
-                    src={token.chainLogoURI as string}
-                    alt={token.chainName || ''}
-                  />
-                )}
+                <TokenImage
+                  token={{
+                    logoURI: token.chainLogoURI,
+                    name: token.chainName ?? '',
+                  }}
+                />
               </SmallAvatar>
             }
           >
             <MuiAvatar sx={{ width: 32, height: 32 }}>
-              {!token?.logoURI ? (
-                <>?</>
-              ) : (
-                <Image
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  style={{ width: '100%', height: '100%' }} // optional
-                  src={token.logoURI}
-                  alt={token.name}
-                />
-              )}
+              <TokenImage token={token} />
             </MuiAvatar>
           </Badge>
         </Grid>

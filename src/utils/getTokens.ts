@@ -315,12 +315,14 @@ export function useTokens() {
   };
 
   const queries = useQueries({
-    queries: accounts.map((account) => ({
-      queryKey: ['tokens', account.chainType, account.address],
-      queryFn: () => getTokens(account, { onProgress: handleProgress }),
-      refetchOnWindowFocus: false,
-      retry: false,
-    })),
+    queries: accounts
+      .filter((account) => account.isConnected && !!account?.address)
+      .map((account) => ({
+        queryKey: ['tokens', account.chainType, account.address],
+        queryFn: () => getTokens(account, { onProgress: handleProgress }),
+        refetchOnWindowFocus: false,
+        retry: false,
+      })),
   });
 
   const isSuccess = queries.every(

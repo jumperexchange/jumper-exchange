@@ -30,6 +30,7 @@ import { useWidgetCacheStore } from '@/stores/widgetCache';
 import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
 import PortfolioTokenChainButton from '@/components/Portfolio/PortfolioTokenChainButton';
 import { useMenuStore } from 'src/stores/menu';
+import TokenImage from '@/components/Portfolio/TokenImage';
 
 interface PortfolioTokenProps {
   token: ExtendedTokenAmountWithChain;
@@ -82,16 +83,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             <Grid item xs={2}>
               {hasMultipleChains ? (
                 <MuiAvatar>
-                  {!token?.logoURI ? (
-                    <>?</>
-                  ) : (
-                    <Image
-                      width={40}
-                      height={40}
-                      src={token.logoURI}
-                      alt={token.name}
-                    />
-                  )}
+                  <TokenImage token={token} />
                 </MuiAvatar>
               ) : (
                 <>
@@ -103,19 +95,27 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                       !hasMultipleChains ? (
                         <MuiAvatar
                           alt={token?.chainName || 'chain-name'}
-                          src={token?.chainLogoURI || ''}
                           sx={{
                             width: '18px',
                             height: '18px',
                             border: '2px solid white',
                           }}
-                        />
+                        >
+                          <TokenImage
+                            token={{
+                              name: token.chainName ?? '',
+                              logoURI: token.chainLogoURI,
+                            }}
+                          />
+                        </MuiAvatar>
                       ) : (
                         <Skeleton variant="circular" />
                       )
                     }
                   >
-                    <WalletAvatar src={token.logoURI} />
+                    <WalletAvatar>
+                      <TokenImage token={token} />
+                    </WalletAvatar>
                   </WalletCardBadge>
                 </>
               )}
@@ -135,9 +135,15 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                     >
                       <MuiAvatar
                         alt={chain.chainName}
-                        src={chain.chainLogoURI}
                         sx={{ width: '12px', height: '12px' }}
-                      />
+                      >
+                        <TokenImage
+                          token={{
+                            name: chain.chainName ?? '',
+                            logoURI: chain.chainLogoURI,
+                          }}
+                        />
+                      </MuiAvatar>
                     </Tooltip>
                   ))}
                 </CustomAvatarGroup>
