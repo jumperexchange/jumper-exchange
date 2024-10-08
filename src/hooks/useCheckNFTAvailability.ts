@@ -1,10 +1,10 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import request from 'graphql-request';
+import { GALXE_ENDPOINT } from 'src/const/urls';
 import { availableNFT } from './querries/superfestNFT';
 import { superfestNFTCheck } from './querries/superfestNFTCheck';
 import { useAccounts } from './useAccounts';
-import { GALXE_ENDPOINT } from 'src/const/urls';
 
 export interface NFTInfo {
   isClaimable: boolean;
@@ -55,7 +55,6 @@ interface GalxeGraphqlCheckRes {
   };
 }
 
-const SECONDS_IN_A_DAY = 86400;
 const NFTInfo = {
   mode: {
     cid: 'GCrKqtkcEs',

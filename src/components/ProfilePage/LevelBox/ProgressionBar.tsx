@@ -1,57 +1,73 @@
 import type { LevelData } from '@/types/loyaltyPass';
 import { Box } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
+import { LevelIndicator } from './LevelIndicator';
+import { LevelIndicatorsSkeleton } from './LevelIndicatorsSkeleton';
 import {
+  LevelIndicatorWrapper,
   ProgressionChart,
   ProgressionChartBg,
   ProgressionChartScore,
+  ProgressionContainer,
 } from './ProgressionBar.style';
-import { LevelIndicator } from './LevelIndicator';
 
 interface ProgressionBarProps {
-  points?: number;
+  ongoingValue?: number;
   levelData?: LevelData;
+  hideLevelIndicator?: boolean;
+  loading?: boolean;
 }
 
-export const ProgressionBar = ({ points, levelData }: ProgressionBarProps) => {
+export const ProgressionBar = ({
+  ongoingValue,
+  levelData,
+  hideLevelIndicator,
+  loading,
+}: ProgressionBarProps) => {
   const calcWidth =
-    points && levelData
-      ? points - levelData.minPoints > 0
-        ? ((points - levelData.minPoints) /
+    ongoingValue && levelData
+      ? ongoingValue - levelData.minPoints > 0
+        ? ((ongoingValue - levelData.minPoints) /
             (levelData.maxPoints - levelData.minPoints)) *
           100
         : 0
       : 0;
 
   return (
-    <Box>
-      {levelData ? (
-        <>
-          <ProgressionChart>
-            <ProgressionChartScore
-              points={points}
-              calcWidth={calcWidth}
-              levelData={levelData}
-            />
-            <ProgressionChartBg />
-          </ProgressionChart>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginTop: '24px',
-            }}
-          >
-            <LevelIndicator
-              level={levelData.level}
-              points={levelData.minPoints}
-            />
-            <LevelIndicator
-              level={levelData.level + 1}
-              points={levelData.maxPoints}
-            />
-          </Box>
-        </>
-      ) : null}
-    </Box>
+    <ProgressionContainer hideLevelIndicator={hideLevelIndicator}>
+      {!loading && !!levelData ? (
+        !!levelData && (
+          <>
+            <ProgressionChart>
+              <ProgressionChartScore
+                ongoingValue={ongoingValue}
+                calcWidth={calcWidth}
+                levelData={levelData}
+              />
+              <ProgressionChartBg />
+            </ProgressionChart>
+            {hideLevelIndicator ? null : levelData ? (
+              <LevelIndicatorWrapper>
+                <LevelIndicator
+                  level={levelData.level ?? 0}
+                  bound={levelData.minPoints}
+                />
+                <LevelIndicator
+                  level={(levelData.level ?? 0) + 1}
+                  bound={levelData.maxPoints}
+                />
+              </LevelIndicatorWrapper>
+            ) : (
+              <LevelIndicatorsSkeleton />
+            )}
+          </>
+        )
+      ) : (
+        <Box>
+          <Skeleton width={'100%'} height={16} sx={{ transform: 'unset' }} />
+          {!hideLevelIndicator && <LevelIndicatorsSkeleton />}
+        </Box>
+      )}
+    </ProgressionContainer>
   );
 };
