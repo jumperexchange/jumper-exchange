@@ -3,12 +3,10 @@ import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
 import { ChainId } from '@lifi/types';
 import type { CreateConnectorFnExtended } from '@lifi/wallet-management';
-import { Avatar, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
+import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
 import { type Connector } from 'wagmi';
-import {
-  ConnectButton,
-  EcoSystemSelectBadge,
-} from './EcosystemSelectMenu.style';
+import { ConnectButton } from './EcosystemSelectMenu.style';
 
 interface EvmConnectButton {
   walletIcon?: string;
@@ -29,23 +27,16 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
   };
   return (
     <ConnectButton onClick={() => connectHandler()}>
-      <EcoSystemSelectBadge
-        overlap="circular"
-        className="badge"
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        badgeContent={
-          <Avatar
-            src={walletIcon}
-            alt={'wallet-avatar'}
-            sx={{ width: '36px', height: '36px' }}
-          />
-        }
-      >
-        <Avatar
-          src={ethereumChain?.logoURI}
-          sx={{ width: '88px', height: '88px' }}
-        />
-      </EcoSystemSelectBadge>
+      <AvatarBadge
+        avatarSrc={ethereumChain?.logoURI}
+        avatarSize={88}
+        badgeSize={36}
+        badgeOffset={{ x: 5, y: 5 }}
+        badgeGap={10}
+        alt={`Ecosystem ${ethereumChain?.name} avatar`}
+        badgeAlt={`Ecosystem wallet avatar`}
+        badgeSrc={walletIcon}
+      />
       <Typography
         variant={'bodySmallStrong'}
         sx={{

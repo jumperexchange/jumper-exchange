@@ -2,12 +2,10 @@ import { useAccountConnect } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
 import { ChainId } from '@lifi/types';
-import { Avatar, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import type { Wallet } from '@solana/wallet-adapter-react';
-import {
-  ConnectButton,
-  EcoSystemSelectBadge,
-} from './EcosystemSelectMenu.style';
+import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
+import { ConnectButton } from './EcosystemSelectMenu.style';
 
 interface SVMConnectButtonProps {
   walletIcon?: string;
@@ -30,23 +28,16 @@ export const SVMConnectButton = ({
   };
   return (
     <ConnectButton onClick={() => connectHandler()}>
-      <EcoSystemSelectBadge
-        overlap="circular"
-        className="badge"
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        badgeContent={
-          <Avatar
-            src={walletIcon}
-            alt={'wallet-avatar'}
-            sx={{ width: '36px', height: '36px' }}
-          />
-        }
-      >
-        <Avatar
-          src={solanaChain?.logoURI}
-          sx={{ width: '88px', height: '88px' }}
-        />
-      </EcoSystemSelectBadge>
+      <AvatarBadge
+        avatarSrc={solanaChain?.logoURI}
+        avatarSize={88}
+        badgeSize={36}
+        badgeOffset={{ x: 5, y: 5 }}
+        badgeGap={10}
+        alt={`Ecosystem ${solanaChain?.name} avatar`}
+        badgeAlt={`Ecosystem wallet avatar`}
+        badgeSrc={walletIcon}
+      />
       <Typography
         sx={{
           color:
