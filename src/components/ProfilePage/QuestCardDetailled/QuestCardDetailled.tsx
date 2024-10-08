@@ -53,7 +53,7 @@ interface QuestCardProps {
   endDate?: string;
   platformName?: string;
   platformImage?: string;
-  hideProgressBar?: boolean;
+  hideXPProgressComponents?: boolean;
   slug?: string;
   chains?: Chain[];
   rewards?: RewardsInterface;
@@ -81,7 +81,7 @@ export const QuestCardDetailled = ({
   id,
   rewardRange,
   rewardsProgress,
-  hideProgressBar,
+  hideXPProgressComponents,
 }: QuestCardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -131,7 +131,9 @@ export const QuestCardDetailled = ({
         </Box>
         <QuestCardBottomBox
           gap={0.75}
-          sx={{ ...(hideProgressBar && { justifyContent: 'flex-start' }) }}
+          sx={{
+            ...(hideXPProgressComponents && { justifyContent: 'flex-start' }),
+          }}
         >
           <QuestCardTitleBox>
             {title ? (
@@ -225,7 +227,7 @@ export const QuestCardDetailled = ({
                     </XPIconBox>
                   </XPDisplayBox>
                 )}
-                {!hideProgressBar && (
+                {!hideXPProgressComponents && (
                   <XPRewardsInfo
                     bgColor={!completed ? '#31007A' : '#42B852'}
                     label={`+${points}`}
@@ -250,7 +252,7 @@ export const QuestCardDetailled = ({
               </FlexCenterRowBox>
             ) : undefined}
           </FlexSpaceBetweenBox>
-          {rewardsProgress && !hideProgressBar && (
+          {rewardsProgress && !hideXPProgressComponents && (
             <ProgressionBar
               ongoingValue={rewardsProgress.currentValue}
               loading={false}
