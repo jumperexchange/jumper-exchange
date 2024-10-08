@@ -49,10 +49,10 @@ const BridgePage = ({
         />
         <BridgePageContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
           <Typography
-            variant="h1"
+            variant="h2"
             color="text.primary"
             marginY={2}
-            sx={{ fontSize: '40px!important' }}
+            sx={{ fontSize: '36px!important' }}
           >
             Bridge your {sourceToken.symbol} on {sourceChain.name} to{' '}
             {destinationToken.symbol} on {destinationChain.name}
@@ -65,7 +65,11 @@ const BridgePage = ({
             {sourceChain?.name} to {destinationToken?.name} on{' '}
             {destinationChain?.name}.
           </Typography>
-          <Typography variant="h2" marginY={2}>
+          <Typography
+            variant="h4"
+            marginY={2}
+            sx={{ fontSize: '24px!important' }}
+          >
             Step 1: Prepare Your Assets
           </Typography>
           <Typography>
@@ -74,7 +78,11 @@ const BridgePage = ({
             sure you have the correct {sourceChain?.name} wallet address and
             that your {sourceToken?.name} account is funded.
           </Typography>
-          <Typography variant="h2" marginY={2}>
+          <Typography
+            variant="h4"
+            marginY={2}
+            sx={{ fontSize: '24px!important' }}
+          >
             Step 2: Choose a Bridge
           </Typography>
           <Typography>
@@ -92,7 +100,11 @@ const BridgePage = ({
             <li>Symbiosis</li>
             <li>Celer</li>
           </ul>
-          <Typography variant="h2" marginY={2}>
+          <Typography
+            variant="h4"
+            marginY={2}
+            sx={{ fontSize: '24px!important' }}
+          >
             Step 3: Choose a Bridge
           </Typography>
           <Typography>To choose your bridge, follow these steps:</Typography>
@@ -103,7 +115,11 @@ const BridgePage = ({
               price impact, slippage, number of steps, gas cost, bridging time)
             </li>
           </ul>
-          <Typography variant="h2" marginY={2}>
+          <Typography
+            variant="h4"
+            marginY={2}
+            sx={{ fontSize: '24px!important' }}
+          >
             Step 4: Bridge Your Assets
           </Typography>
           <Typography>
@@ -128,7 +144,11 @@ const BridgePage = ({
               transaction to go through
             </li>
           </ul>
-          <Typography variant="h2" marginY={2}>
+          <Typography
+            variant="h4"
+            marginY={2}
+            sx={{ fontSize: '24px!important' }}
+          >
             Step 5: Verify Your Bridge
           </Typography>
           <Typography>
@@ -176,14 +196,18 @@ const BridgePage = ({
               key={token.address}
               info={{
                 logoURI: token?.logoURI,
-                name: `${token.name} (${token.symbol})`,
+                name: `${token.name}`,
               }}
               data={getTokenInfoData(chains, token)}
             />
           ))}
         </Stack>
         <BridgePageContainer>
-          <Typography variant="h3" marginY={2}>
+          <Typography
+            variant="h3"
+            marginY={2}
+            sx={{ fontSize: '32px!important' }}
+          >
             What is a Blockchain / Crypto Bridge?
           </Typography>
           <Typography>
@@ -209,11 +233,17 @@ const BridgePage = ({
             assets.
           </Typography>
 
-          <Typography variant="h4" marginY={2}>
+          <Typography
+            variant="h4"
+            marginY={2}
+            sx={{ fontSize: '24px!important' }}
+          >
             Here's why bridges are essential for enhancing blockchain
             interoperability:
           </Typography>
-          <Typography variant="h3">1. Isolation of Blockchains</Typography>
+          <Typography variant="h4" sx={{ fontSize: '24px!important' }}>
+            1. Isolation of Blockchains
+          </Typography>
           <Typography>
             Blockchains operate independently, much like countries with their
             own governments, languages, and regulations. Each blockchain has its
@@ -223,7 +253,7 @@ const BridgePage = ({
             smart contracts written in Solidity. This inherent isolation creates
             challenges for transferring data and assets across different chains.
           </Typography>
-          <Typography marginTop={2} variant="h3">
+          <Typography variant="h4" sx={{ fontSize: '24px!important' }}>
             2. Incompatibility of Systems
           </Typography>
           <Typography>
@@ -235,8 +265,7 @@ const BridgePage = ({
             This incompatibility limits the potential for collaboration and
             innovation across the blockchain space.
           </Typography>
-
-          <Typography marginTop={2} variant="h3">
+          <Typography variant="h4" sx={{ fontSize: '24px!important' }}>
             3. Facilitating Interoperability
           </Typography>
           <Typography>
@@ -248,7 +277,7 @@ const BridgePage = ({
             bridges provide the necessary infrastructure for digital currencies
             and data to flow between chains.
           </Typography>
-          <Typography marginTop={2} variant="h3">
+          <Typography variant="h4" sx={{ fontSize: '24px!important' }}>
             4. Unlocking New Opportunities
           </Typography>
           <Typography>
@@ -259,8 +288,7 @@ const BridgePage = ({
             ecosystem, driving innovation and expanding the reach of blockchain
             technology.
           </Typography>
-
-          <Typography marginTop={2} variant="h3">
+          <Typography variant="h4" sx={{ fontSize: '24px!important' }}>
             5. Enhancing User Experience
           </Typography>
           <Typography>

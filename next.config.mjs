@@ -51,12 +51,6 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'raw.githubusercontent.com', // TODO: this one can be dangerous
         port: '',
-        pathname: '/trustwallet/assets/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'raw.githubusercontent.com', // TODO: this one can be dangerous
-        port: '',
         pathname: '/lifinance/types/main/src/assets/**',
       },
       {
