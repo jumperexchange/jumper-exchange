@@ -36,7 +36,7 @@ export const QuestCarouselNumericItems = () => {
           points={
             numericQuest.currentValue < numericQuest.min
               ? numericQuest.currentRangeXP
-              : numericQuest.nextRangeXP - numericQuest.currentRangeXP
+              : Math.abs(numericQuest.nextRangeXP - numericQuest.currentRangeXP)
           }
           rewardsProgress={{
             min: numericQuest.min,
