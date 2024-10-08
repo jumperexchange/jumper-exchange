@@ -3,7 +3,14 @@ import {
   TypographyPrimary,
   TypographySecondary,
 } from '@/components/Portfolio/Portfolio.styles';
-import { Avatar as MuiAvatar, Badge, ButtonBase, Grid } from '@mui/material';
+import {
+  Avatar as MuiAvatar,
+  Badge,
+  ButtonBase,
+  Grid,
+  useTheme,
+  darken,
+} from '@mui/material';
 import Image from 'next/image';
 import type { ExtendedTokenAmountWithChain } from '@/utils/getTokens';
 import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
@@ -12,6 +19,7 @@ import { useMainPaths } from '@/hooks/useMainPaths';
 import { useParams, useRouter } from 'next/navigation';
 import { useMenuStore } from 'src/stores/menu';
 import TokenImage from '@/components/Portfolio/TokenImage';
+import { getContrastAlphaColor } from 'src/utils/colors';
 
 interface PortfolioTokenChainButtonProps {
   token: ExtendedTokenAmountWithChain;
@@ -23,6 +31,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
   const { isMainPaths } = useMainPaths();
   const router = useRouter();
   const { lng } = useParams();
+  const theme = useTheme();
 
   return (
     <ButtonBase
@@ -40,11 +49,17 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
         paddingY: '16px',
         display: 'flex',
         '&:hover': {
-          background: 'rgba(0, 0, 0, 0.04)',
+          backgroundColor:
+            theme.palette.mode === 'dark'
+              ? darken(theme.palette.surface2.main, 0.04)
+              : darken(theme.palette.surface2.main, 0.04),
         },
         '&:last-child:hover': {
-          background: 'rgba(0, 0, 0, 0.04)',
           borderRadius: '0 0 16px 16px',
+          backgroundColor:
+            theme.palette.mode === 'dark'
+              ? darken(theme.palette.surface2.main, 0.04)
+              : darken(theme.palette.surface2.main, 0.04),
         },
       }}
     >
@@ -84,6 +99,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
         <Grid item xs={5} style={{ textAlign: 'right' }}>
           <TypographyPrimary
             sx={{
+              fontWeight: 600,
               fontSize: '0.875rem',
               lineHeight: '1.125rem',
             }}

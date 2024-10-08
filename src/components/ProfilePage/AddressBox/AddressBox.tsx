@@ -17,6 +17,7 @@ import {
 } from './AddressBox.style';
 import useImageStatus from 'src/hooks/useImageStatus';
 import { DEFAULT_EFFIGY } from 'src/const/urls';
+import { walletDigest } from 'src/utils/walletDigest';
 
 interface AddressBoxProps {
   address?: string;
@@ -46,11 +47,7 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
         ? `${ensName.slice(0, 13)}...eth`
         : ensName;
     }
-    return address && isEVM
-      ? address?.slice(0, 6) +
-          '...' +
-          address?.slice(address.length - 4, address.length)
-      : '0x0000...0000';
+    return address && isEVM ? walletDigest(address) : '0x00000...00000';
   };
 
   return (

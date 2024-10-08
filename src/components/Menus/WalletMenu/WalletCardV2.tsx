@@ -28,6 +28,7 @@ import {
   Button,
   WalletCardButtonContainer,
   WalletCardContainer,
+  WalletChainAvatar,
 } from './WalletCardV2.style';
 import { WalletCardV2Stack } from '@/components/Menus/WalletMenu/WalletCardV2Stack';
 
@@ -130,11 +131,11 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           badgeContent={
             activeChain?.logoURI ? (
-              <Avatar
-                size="small"
+              <WalletChainAvatar
                 src={activeChain?.logoURI || ''}
                 alt={'wallet-avatar'}
-              ></Avatar>
+                sx={{ width: 18, height: 18 }}
+              />
             ) : (
               <Skeleton variant="circular" />
             )

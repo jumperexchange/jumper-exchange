@@ -15,6 +15,7 @@ import {
   Avatar as MuiAvatar,
   Divider,
   Box,
+  useTheme,
 } from '@mui/material';
 import Image from 'next/image';
 import type { ExtendedTokenAmountWithChain } from '@/utils/getTokens';
@@ -31,6 +32,7 @@ import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
 import PortfolioTokenChainButton from '@/components/Portfolio/PortfolioTokenChainButton';
 import { useMenuStore } from 'src/stores/menu';
 import TokenImage from '@/components/Portfolio/TokenImage';
+import { capitalize } from 'lodash';
 
 interface PortfolioTokenProps {
   token: ExtendedTokenAmountWithChain;
@@ -44,6 +46,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
   const router = useRouter();
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
   const { setWalletMenuState } = useMenuStore((state) => state);
+  const theme = useTheme();
 
   const hasMultipleChains = token.chains.length > 1;
 
@@ -98,7 +101,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                           sx={{
                             width: '18px',
                             height: '18px',
-                            border: '2px solid white',
+                            border: `2px solid ${theme.palette.surface2.main}`,
                           }}
                         >
                           <TokenImage
@@ -124,7 +127,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
               <TypographyPrimary>{token.symbol}</TypographyPrimary>
               {!hasMultipleChains ? (
                 <TypographySecondary>
-                  {token.chains[0].name}
+                  {capitalize(token.chains[0].name)}
                 </TypographySecondary>
               ) : (
                 <CustomAvatarGroup spacing={6} max={15}>

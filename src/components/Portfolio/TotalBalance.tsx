@@ -129,16 +129,23 @@ function TotalBalance({
           </Tooltip>
         </Box>
         {!isComplete ? (
-          <TotalBalanceIconButton disabled={true}>
+          <TotalBalanceIconButton disabled={true} tooltipText="hello world">
             <CircularProgressPending size={24} />
           </TotalBalanceIconButton>
         ) : (
-          <RefreshCircleIcon onClick={refetch} />
+          <TotalBalanceIconButton
+            tooltipText="Click here to restart the indexing of your tokens now."
+            refetch={refetch}
+          >
+            <RefreshCircleIcon />
+          </TotalBalanceIconButton>
         )}
       </Box>
       <Stack spacing={1}>
         <TotalValue>{currencyFormatter('en').format(totalValue)}</TotalValue>
-        <Stack direction="row" gap="0.5rem" justifyContent="space-between">
+
+        {/* TODO: make it dynamic based on localStorage info */}
+        {/* <Stack direction="row" gap="0.5rem" justifyContent="space-between">
           {isComplete && differenceValue !== 0 && (
             <Stack direction="row" spacing="4px">
               <VariationValue
@@ -146,7 +153,9 @@ function TotalBalance({
                   theme.palette[differenceValue > 0 ? 'success' : 'error'].main
                 }
               >
-                {differenceValue > 0 ? (
+                {
+                differenceValue > 0 
+                ? (
                   <ArrowUpwardIcon fontSize="inherit" />
                 ) : (
                   <ArrowDownwardIcon />
@@ -158,7 +167,7 @@ function TotalBalance({
               </VariationValue>
             </Stack>
           )}
-        </Stack>
+        </Stack> */}
       </Stack>
     </WalletCardContainer>
   );

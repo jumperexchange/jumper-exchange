@@ -34,7 +34,7 @@ function Portfolio() {
                         width={16}
                         height={16}
                         sx={{
-                          border: `2px solid #FFFFFF`,
+                          border: `2px solid ${theme.palette.surface2.main}`,
                           backgroundColor:
                             theme.palette.mode === 'light'
                               ? '#e4e4e4'

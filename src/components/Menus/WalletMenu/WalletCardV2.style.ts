@@ -70,3 +70,13 @@ export const Button = styled(ButtonTransparent)<MuiButtonProps>(
     },
   }),
 );
+
+export const WalletChainAvatar = styled(Avatar)(({ theme }) => ({
+  borderRadius: '50%',
+  border: `2px solid ${theme.palette.surface2.main}`,
+  '> .MuiAvatar-root': {
+    '+ .MuiBadge-badge .MuiAvatar-root': {
+      border: `2px solid ${theme.palette.surface2.main}`,
+    },
+  },
+}));
