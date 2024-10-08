@@ -6,6 +6,9 @@ export const TierMainBox = styled(Box)(({ theme }) => ({
   width: '100%',
   borderRadius: '8px',
   padding: '10px',
+  [theme.breakpoints.up('sm')]: {
+    minHeight: 256,
+  },
 }));
 
 export const TierBadgeBox = styled(Box)(({ theme }) => ({
