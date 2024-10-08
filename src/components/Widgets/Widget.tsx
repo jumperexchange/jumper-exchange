@@ -171,7 +171,7 @@ export function Widget({
           allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
         providers: isMultisigSigner
-          ? [
+          ? ([
               EVM({
                 getWalletClient: () => getWalletClient(wagmiConfig),
                 switchChain: async (chainId) => {
@@ -188,7 +188,7 @@ export function Widget({
                 },
                 multisig: multisigSdkConfig,
               }),
-            ] as any // TODO: fix typing Eugene :pray:
+            ] as any) // TODO: fix typing Eugene :pray:
           : undefined,
       },
       buildUrl: true,

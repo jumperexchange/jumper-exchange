@@ -12,10 +12,10 @@ export interface ChainProps {
 }
 
 export async function getChainsQuery() {
-    const chains = await getChains({
-      chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO],
-    });
-    return { chains };
+  const chains = await getChains({
+    chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO],
+  });
+  return { chains };
 }
 
 export const useChains = (): ChainProps => {

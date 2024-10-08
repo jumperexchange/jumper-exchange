@@ -10,7 +10,10 @@ import { WalletProvider } from '@/providers/WalletProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import initTranslations from '@/app/i18n';
 import { cookies } from 'next/headers';
-import { type ActiveThemeResult, getActiveTheme } from '@/app/lib/getActiveTheme';
+import {
+  type ActiveThemeResult,
+  getActiveTheme,
+} from '@/app/lib/getActiveTheme';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 import { SettingsStoreProvider } from '@/stores/settings';
 
@@ -50,22 +53,22 @@ export default async function RootLayout({
       className={fonts.map((f) => f.variable).join(' ')}
       style={{ scrollBehavior: 'smooth' }}
     >
-    <head>
-      <link rel="icon" href="/favicon.ico" sizes="any" />
-      <Script
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
-      />
-      <Script id="google-analytics">
-        {`
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <Script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
+        />
+        <Script id="google-analytics">
+          {`
               window.dataLayer = window.dataLayer || [];
               function gtag() { dataLayer.push(arguments); }
               gtag('js', new Date());
               gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}');
           `}
-      </Script>
-      <Script id="addressable-tracker">
-        {`
+        </Script>
+        <Script id="addressable-tracker">
+          {`
             !function(w, d){
               w.__adrsbl = {
                   queue: [],
@@ -80,34 +83,34 @@ export default async function RootLayout({
               b.parentNode.insertBefore(s, b);
             }(window, document);
           `}
-      </Script>
-    </head>
+        </Script>
+      </head>
 
-    <body suppressHydrationWarning>
-    <AppRouterCacheProvider>
-      <ReactQueryProvider>
-        <TranslationsProvider
-          namespaces={[defaultNS]}
-          locale={lng}
-          resources={resources}
-        >
-          <NextThemeProvider enableSystem enableColorScheme>
-            <ThemeProvider
-              themes={themes}
-              activeTheme={activeTheme}
-              themeMode={themeMode}
+      <body suppressHydrationWarning>
+        <AppRouterCacheProvider>
+          <ReactQueryProvider>
+            <TranslationsProvider
+              namespaces={[defaultNS]}
+              locale={lng}
+              resources={resources}
             >
-              <SettingsStoreProvider
-                welcomeScreenClosed={welcomeScreenClosed}
-              >
-                <WalletProvider>{children}</WalletProvider>
-              </SettingsStoreProvider>
-            </ThemeProvider>
-          </NextThemeProvider>
-        </TranslationsProvider>
-      </ReactQueryProvider>
-    </AppRouterCacheProvider>
-    </body>
+              <NextThemeProvider enableSystem enableColorScheme>
+                <ThemeProvider
+                  themes={themes}
+                  activeTheme={activeTheme}
+                  themeMode={themeMode}
+                >
+                  <SettingsStoreProvider
+                    welcomeScreenClosed={welcomeScreenClosed}
+                  >
+                    <WalletProvider>{children}</WalletProvider>
+                  </SettingsStoreProvider>
+                </ThemeProvider>
+              </NextThemeProvider>
+            </TranslationsProvider>
+          </ReactQueryProvider>
+        </AppRouterCacheProvider>
+      </body>
     </html>
   );
 }
