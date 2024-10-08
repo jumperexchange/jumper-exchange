@@ -32,6 +32,9 @@ export const QuestCarouselNumericItems = () => {
           action={getNumericAction(numericQuest.type as NumericAction)}
           key={`available-mission-${index}`}
           title={numericQuest.displayName}
+          hideProgressBar={
+            numericQuest.nextRangeXP - numericQuest.currentRangeXP < 0
+          }
           image={numericQuest.image}
           points={
             numericQuest.currentValue < numericQuest.min
