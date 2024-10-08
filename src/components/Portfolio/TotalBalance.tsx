@@ -17,7 +17,7 @@ import { isEqual } from 'lodash';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import { RefreshCircleIcon } from './RefreshCircleIcon';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -114,7 +114,7 @@ function TotalBalance({
             }}
             arrow
             sx={{
-              zIndex: 5000,
+              zIndex: 25000,
             }}
           >
             <InfoIcon
@@ -128,20 +128,19 @@ function TotalBalance({
             />
           </Tooltip>
         </Box>
-        {!isComplete ? (
-          <TotalBalanceIconButton disabled={true}>
-            <CircularProgressPending size={24} />
-          </TotalBalanceIconButton>
-        ) : (
-          <TotalBalanceIconButton refetch={refetch}>
-            <RefreshIcon
-              sx={(theme) => ({
-                color: theme.palette.text.primary,
-                position: 'absolute',
-              })}
-            />
-          </TotalBalanceIconButton>
-        )}
+        {
+          // !isComplete
+
+          false ? (
+            <TotalBalanceIconButton disabled={true}>
+              <CircularProgressPending size={24} />
+            </TotalBalanceIconButton>
+          ) : (
+            // <TotalBalanceIconButton refetch={refetch}>
+            <RefreshCircleIcon onClick={refetch} />
+            // </TotalBalanceIconButton>
+          )
+        }
       </Box>
       <Stack spacing={1}>
         <TotalValue>{currencyFormatter('en').format(totalValue)}</TotalValue>
