@@ -11,13 +11,8 @@ import {
 import { Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ConnectButton,
-  WalletMenuButton,
-  WalletMgmtBadge,
-  WalletMgmtChainAvatar,
-  WalletMgmtWalletAvatar,
-} from './WalletButton.style';
+import AvatarBadge from '../AvatarBadge/AvatarBadge';
+import { ConnectButton, WalletMenuButton } from './WalletButton.style';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
@@ -73,23 +68,16 @@ export const WalletButtons = () => {
           onClick={handleWalletMenuClick}
         >
           {isSuccess && activeChain ? (
-            <WalletMgmtBadge
-              overlap="circular"
-              className="badge"
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              badgeContent={
-                <WalletMgmtChainAvatar
-                  src={activeChain?.logoURI || ''}
-                  alt={'wallet-avatar'}
-                >
-                  {activeChain.name[0]}
-                </WalletMgmtChainAvatar>
-              }
-            >
-              <WalletMgmtWalletAvatar
-                src={getConnectorIcon(account.connector)}
-              />
-            </WalletMgmtBadge>
+            <AvatarBadge
+              avatarSrc={getConnectorIcon(account.connector)}
+              badgeSrc={activeChain?.logoURI || ''}
+              avatarSize={32}
+              badgeSize={12}
+              alt="Wallet avatar"
+              badgeOffset={{ x: 4, y: 4 }}
+              badgeGap={5}
+              badgeAlt={`${activeChain?.name} avatar`}
+            />
           ) : null}
           <Typography
             variant={'bodyMediumStrong'}

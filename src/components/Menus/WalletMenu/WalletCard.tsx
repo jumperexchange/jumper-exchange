@@ -1,5 +1,3 @@
-import { Avatar } from '@/components/Avatar/Avatar';
-import { ButtonSecondary, ButtonTransparent } from '@/components/Button';
 import {
   TrackingAction,
   TrackingCategory,
@@ -13,6 +11,7 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { walletDigest } from '@/utils/walletDigest';
+
 import type { Account } from '@lifi/wallet-management';
 import {
   getConnectorIcon,
@@ -21,13 +20,13 @@ import {
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
+import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
 import {
-  WalletAvatar,
-  WalletCardBadge,
   WalletCardButtonContainer,
   WalletCardContainer,
 } from './WalletMenu.style';
@@ -133,26 +132,16 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   return (
     <WalletCardContainer>
       <Stack direction={'row'} spacing={4} sx={{ margin: 'auto', flexGrow: 1 }}>
-        <WalletCardBadge
-          overlap="circular"
-          className="badge"
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          badgeContent={
-            activeChain?.logoURI ? (
-              <Avatar
-                size="large"
-                src={activeChain?.logoURI || ''}
-                alt={'wallet-avatar'}
-              >
-                {/* {activeChain.name[0]} */}
-              </Avatar>
-            ) : (
-              <Skeleton variant="circular" />
-            )
-          }
-        >
-          <WalletAvatar src={getConnectorIcon(account.connector)} />
-        </WalletCardBadge>
+        <AvatarBadge
+          avatarSrc={getConnectorIcon(account.connector)}
+          badgeSrc={activeChain?.logoURI || ''}
+          avatarSize={88} // Dynamic avatar size
+          badgeSize={32} // Dynamic badge size
+          badgeOffset={{ x: 9.5, y: 9.5 }}
+          badgeGap={10.5}
+          alt={`${account.connector?.name} avatar`}
+          badgeAlt={`${activeChain?.name} avatar`}
+        />
         <WalletCardButtonContainer>
           <ButtonTransparent
             size="medium"

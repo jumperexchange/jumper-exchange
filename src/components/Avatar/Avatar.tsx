@@ -1,39 +1,25 @@
 'use client';
 import {
+  AvatarBase,
+  AvatarSkeletonBase,
   AvatarSkeletonContainer,
-  LargeAvatar,
-  LargeAvatarSkeletonBase,
-  SmallAvatar,
-  SmallAvatarSkeletonBase,
 } from './Avatar.style';
 
-export const LargeAvatarSkeleton = () => {
+export const AvatarSkeleton = ({ size }: { size: number }) => {
   return (
-    <AvatarSkeletonContainer>
-      <LargeAvatarSkeletonBase variant="circular" />
-    </AvatarSkeletonContainer>
-  );
-};
-
-export const SmallAvatarSkeleton = () => {
-  return (
-    <AvatarSkeletonContainer>
-      <SmallAvatarSkeletonBase variant="circular" />
+    <AvatarSkeletonContainer size={size}>
+      <AvatarSkeletonBase size={size} variant="circular" />
     </AvatarSkeletonContainer>
   );
 };
 
 type AvatarProps = {
-  size: 'large' | 'small';
+  size: number;
   src: string;
   alt: string;
   children?: React.ReactNode;
 };
 
 export const Avatar: React.FC<AvatarProps> = ({ size, src, alt }) => {
-  return size === 'large' ? (
-    <LargeAvatar src={src} alt={alt} className="avatar" />
-  ) : (
-    <SmallAvatar src={src} alt={alt} className="avatar" />
-  );
+  return <AvatarBase src={src} alt={alt} className="avatar" size={size} />;
 };
