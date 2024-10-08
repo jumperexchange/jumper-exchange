@@ -77,6 +77,7 @@ export const QuestCard = ({
       {image && (
         <Image
           src={image}
+          loading="lazy"
           alt="Quest Card Image"
           width={240}
           height={240}
