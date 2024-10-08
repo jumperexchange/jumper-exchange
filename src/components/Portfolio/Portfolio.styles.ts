@@ -119,5 +119,4 @@ export const CircularProgressPending = styled(MuiCircularProgress)`
   }
 `;
 
-export const Icon = styled(SvgIcon)`
-`;
+export const Icon = styled(SvgIcon)``;

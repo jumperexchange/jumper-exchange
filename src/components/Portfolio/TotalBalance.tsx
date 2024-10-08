@@ -31,7 +31,11 @@ interface TotalBalanceProps {
   refetch: () => void;
 }
 
-function TotalBalance({ isComplete = false, refetch, totalValue }: TotalBalanceProps) {
+function TotalBalance({
+  isComplete = false,
+  refetch,
+  totalValue,
+}: TotalBalanceProps) {
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
   const { t } = useTranslation();
@@ -64,14 +68,13 @@ function TotalBalance({ isComplete = false, refetch, totalValue }: TotalBalanceP
     const differencePercent =
       portfolio.lastTotalValue !== 0
         ? ((totalValue - portfolio.lastTotalValue) /
-          Math.abs(portfolio.lastTotalValue)) *
-        100
+            Math.abs(portfolio.lastTotalValue)) *
+          100
         : 0;
 
     setDifferenceValue(differenceValue);
     setDifferencePercent(differencePercent);
   }, [totalValue]);
-
 
   if (!totalValue) {
     return <TotalBalanceSkeleton />;
@@ -126,12 +129,17 @@ function TotalBalance({ isComplete = false, refetch, totalValue }: TotalBalanceP
           </Tooltip>
         </Box>
         {!isComplete ? (
-            <TotalBalanceIconButton disabled={true}>
+          <TotalBalanceIconButton disabled={true}>
             <CircularProgressPending size={24} />
-            </TotalBalanceIconButton>
+          </TotalBalanceIconButton>
         ) : (
           <TotalBalanceIconButton refetch={refetch}>
-            <RefreshIcon sx={(theme) => ({ color: theme.palette.text.primary, position: 'absolute' })} />
+            <RefreshIcon
+              sx={(theme) => ({
+                color: theme.palette.text.primary,
+                position: 'absolute',
+              })}
+            />
           </TotalBalanceIconButton>
         )}
       </Box>

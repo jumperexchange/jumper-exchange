@@ -1,8 +1,13 @@
 import type { ExtendedChain, TokenAmount } from '@lifi/sdk';
-import { getChains, getTokenBalances as LifiGetTokenBalances, getTokens as LifiGetTokens } from '@lifi/sdk';
+import {
+  getChains,
+  getTokenBalances as LifiGetTokenBalances,
+  getTokens as LifiGetTokens,
+} from '@lifi/sdk';
 import { formatUnits } from 'viem';
 import type { Token, TokensResponse } from '@lifi/widget';
-import { Account, useAccounts } from '@/hooks/useAccounts';
+import type { Account } from '@/hooks/useAccounts';
+import { useAccounts } from '@/hooks/useAccounts';
 import { sumBy } from 'lodash';
 import { useQueries } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -176,7 +181,9 @@ function fetchAllTokensBalanceByChain(
           ],
         };
 
-        existingToken.chains.sort((a, b) => (b.totalPriceUSD || 0) - (a.totalPriceUSD || 0));
+        existingToken.chains.sort(
+          (a, b) => (b.totalPriceUSD || 0) - (a.totalPriceUSD || 0),
+        );
 
         existingToken.cumulatedBalance = sumBy(
           existingToken.chains,
@@ -310,27 +317,29 @@ export function useTokens() {
   const queries = useQueries({
     queries: accounts.map((account) => ({
       queryKey: ['tokens', account.chainType, account.address],
-      queryFn: () => getTokens(account, { onProgress: handleProgress}),
+      queryFn: () => getTokens(account, { onProgress: handleProgress }),
       refetchOnWindowFocus: false,
       retry: false,
     })),
   });
 
-  const isSuccess = queries.every(query => !query.isFetching && query.isSuccess);
-  const refetch = () => queries.map(query => query.refetch());
+  const isSuccess = queries.every(
+    (query) => !query.isFetching && query.isSuccess,
+  );
+  const refetch = () => queries.map((query) => query.refetch());
 
   // Disable when fetch is cached
   useEffect(() => {
     refetch();
-  }, [])
+  }, []);
 
   return {
     queries,
     isSuccess,
     refetch,
     cumulativePriceUSD,
-    data
-  }
+    data,
+  };
 }
 
 export default getTokens;

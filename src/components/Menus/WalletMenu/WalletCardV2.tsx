@@ -154,7 +154,7 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
                   ? theme.palette.alphaLight300.main
                   : theme.palette.white.main,
             },
-        })}
+          })}
         >
           <Typography variant="bodySmallStrong" sx={{ fontSize: '16px' }}>
             {walletDigest(account.address)}
