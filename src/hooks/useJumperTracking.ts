@@ -120,7 +120,7 @@ export const useJumperTracking = () => {
       toAmount: data.toAmount,
       toChainId: data.toChainId,
       transactionHash: data.transactionHash,
-      wallet: account?.account.address,
+      walletAddress: account?.account.address,
       walletProvider: account?.account.connector?.name,
       errorMessage: data.errorMessage,
       errorCode: data.errorCode,
