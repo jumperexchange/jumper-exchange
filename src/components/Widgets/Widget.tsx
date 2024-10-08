@@ -188,13 +188,13 @@ export function Widget({
                 },
                 multisig: multisigSdkConfig,
               }),
-            ]
+            ] as any // TODO: fix typing Eugene :pray:
           : undefined,
       },
       buildUrl: true,
       // insurance: true,
       integrator: integratorStringByType,
-      tokens,
+      tokens: tokens as any, // TODO: fix typing Eugene :pray:
     };
   }, [
     fromChain,

@@ -1,6 +1,8 @@
 import { useSettingsStore } from '@/stores/settings';
 import { useCallback, useMemo } from 'react';
 import { useCookies } from 'react-cookie';
+import { useMultisig } from './useMultisig';
+import { useMainPaths } from '@/hooks/useMainPaths';
 
 interface useWelcomeScreenProps {
   welcomeScreenClosed: boolean | undefined;
@@ -13,6 +15,7 @@ export const validThemes = ['default', 'light', 'dark', 'system'];
 export const useWelcomeScreen = (
   activeTheme?: string,
 ): useWelcomeScreenProps => {
+  const { isMainPaths } = useMainPaths();
   const [cookie, setCookie] = useCookies(['welcomeScreenClosed', 'theme']);
 
   const [welcomeScreenClosed, setWelcomeScreenClosed] = useSettingsStore(
@@ -23,9 +26,10 @@ export const useWelcomeScreen = (
     // check if theme is any of jumper-themes or undefined
     () => {
       return (
-        (activeTheme && validThemes.includes(activeTheme)) ||
-        validThemes.includes(cookie.theme) ||
-        !cookie.theme
+        isMainPaths &&
+        ((activeTheme && validThemes.includes(activeTheme)) ||
+          validThemes.includes(cookie.theme) ||
+          !cookie.theme)
       );
     },
     [activeTheme, cookie],

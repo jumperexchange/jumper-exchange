@@ -97,7 +97,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
     if (account.chainId) {
       closeAllMenus();
     }
-    const url = `${JUMPER_SCAN_PATH}/wallet/${account.address}/`;
+    const url = `${JUMPER_SCAN_PATH}/wallet/${account.address}`;
 
     trackEvent({
       category: TrackingCategory.WalletMenu,

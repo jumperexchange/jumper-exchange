@@ -2,7 +2,7 @@
 import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
 import { walletDigest } from '@/utils/walletDigest';
-import type { Chain } from '@lifi/types';
+import type { Chain } from '@lifi/sdk';
 import {
   getConnectorIcon,
   useAccount,

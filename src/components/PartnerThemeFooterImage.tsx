@@ -1,6 +1,6 @@
 'use client';
 import { useThemeStore } from '@/stores/theme';
-import { ChainId } from '@lifi/types';
+import { ChainId } from '@lifi/sdk';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import Link from 'next/link';

@@ -14,7 +14,7 @@ import {
   useWaitForTransactionReceipt,
   useSwitchChain,
 } from 'wagmi';
-import { ChainId } from '@lifi/types';
+import { ChainId } from '@lifi/sdk';
 import { MerklDistribABI } from '../../../const/abi/merklABI';
 import { SoraTypography } from '../Superfest.style';
 import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
