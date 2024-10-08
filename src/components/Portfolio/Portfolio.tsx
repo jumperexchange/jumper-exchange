@@ -20,11 +20,14 @@ function Portfolio() {
     [key: string]: number;
   }>({});
   const [isComplete, setIsComplete] = useState(false);
-  const [forceRefresh, setForceRefresh] = usePortfolioStore((state) => [
-    state.forceRefresh,
-    state.setForceRefresh,
-  ]);
+  const [forceRefresh, setForceRefresh] = useState(true);
   const theme = useTheme();
+
+  const handleinitialized = () => {
+    setIsComplete(false);
+    setCumulativePriceUSD({});
+    setData([]);
+  }
   const handleProgress = (
     account: string,
     round: number,
@@ -88,6 +91,15 @@ function Portfolio() {
   }, [accounts]);
 
   useEffect(() => {
+    console.log('----effect', forceRefresh)
+    if (!forceRefresh) {
+      return;
+    }
+
+    if (forceRefresh) {
+      setForceRefresh(false);
+    }
+
     const intervals: (NodeJS.Timeout | undefined)[] = [];
     const fetchData = async () => {
       if (cachedAccounts.length === 0) {
@@ -97,8 +109,11 @@ function Portfolio() {
       for (const account of cachedAccounts) {
         const intervalId = await getTokens(
           account,
-          handleProgress,
-          handleComplete,
+          {
+            onInit: handleinitialized,
+            onProgress: handleProgress,
+            onComplete: handleComplete,
+          },
         );
         intervals.push(intervalId);
       }
@@ -112,11 +127,12 @@ function Portfolio() {
         intervalId && clearInterval(intervalId);
       }
     };
-  }, [cachedAccounts]);
+  }, [cachedAccounts, forceRefresh]);
 
   return (
     <>
       <TotalBalance
+        refetch={() => setForceRefresh(true)}
         isComplete={isComplete}
         totalValue={Object.values(cumulativePriceUSD).reduce(
           (sum, value) => sum + value,

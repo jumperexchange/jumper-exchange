@@ -1,10 +1,6 @@
 import { WalletCardContainer } from '@/components/Menus';
 import { Box, Stack, Tooltip, Typography } from '@mui/material';
-import {
-  CircularProgressPending,
-  TotalValue,
-  VariationValue,
-} from '@/components/Portfolio/Portfolio.styles';
+import { CircularProgressPending, TotalValue, VariationValue } from '@/components/Portfolio/Portfolio.styles';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +13,7 @@ import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
 import { useParams } from 'next/navigation';
 import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
 import InfoIcon from '@mui/icons-material/Info';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -27,9 +24,10 @@ function has24HoursPassed(lastDate: number): boolean {
 interface TotalBalanceProps {
   totalValue: number;
   isComplete: boolean;
+  refetch: () => void;
 }
 
-function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
+function TotalBalance({ isComplete = false, refetch, totalValue }: TotalBalanceProps) {
   const { lng } = useParams();
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
@@ -63,8 +61,8 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
     const differencePercent =
       portfolio.lastTotalValue !== 0
         ? ((totalValue - portfolio.lastTotalValue) /
-            Math.abs(portfolio.lastTotalValue)) *
-          100
+          Math.abs(portfolio.lastTotalValue)) *
+        100
         : 0;
 
     setDifferenceValue(differenceValue);
@@ -119,9 +117,11 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
             />
           </Tooltip>
         </Box>
-        {!isComplete && (
-          <TotalBalanceIconButton refetch={() => {}}>
-            <CircularProgressPending size={24} />
+        {!isComplete ? (
+          <CircularProgressPending size={24} />
+        ) : (
+          <TotalBalanceIconButton refetch={refetch}>
+            <RefreshIcon sx={(theme) => ({ color: theme.palette.text.primary, position: 'absolute' })} />
           </TotalBalanceIconButton>
         )}
       </Box>

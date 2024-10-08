@@ -178,6 +178,8 @@ function fetchAllTokensBalanceByChain(
           ],
         };
 
+        existingToken.chains.sort((a, b) => (b.totalPriceUSD || 0) - (a.totalPriceUSD || 0));
+
         existingToken.cumulatedBalance = sumBy(
           existingToken.chains,
           'cumulatedBalance',
@@ -229,17 +231,23 @@ function fetchAllTokensBalanceByChain(
 //------------------------------
 //------------------------------
 
-async function getTokens(
-  account: Pick<Account, 'chainType' | 'address'>,
-  handleProgress: (
+interface Events {
+  onProgress: (
     account: string,
     round: number,
     cumulativePriceUSD: number,
     fetchedBalances: ExtendedTokenAmount[],
-  ) => void,
-  handleComplete: () => void,
+  ) => void;
+  onComplete: () => void;
+  onInit: () => void;
+}
+
+async function getTokens(
+  account: Pick<Account, 'chainType' | 'address'>,
+  events: Events,
 ): Promise<NodeJS.Timeout | undefined> {
   try {
+    events.onInit();
     const chains = await getChains({
       chainTypes: [account.chainType],
     });
@@ -251,8 +259,8 @@ async function getTokens(
       account.address!,
       chains,
       tokens,
-      handleProgress,
-      handleComplete,
+      events.onProgress,
+      events.onComplete,
     );
   } catch (error) {
     console.error('An error occurred during the fetching process:', error);

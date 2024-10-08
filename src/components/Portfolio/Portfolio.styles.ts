@@ -9,7 +9,8 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { lighten } from '@mui/material/styles';
-import { AccordionProps } from '@mui/material/Accordion'; // Import AccordionProps
+import { AccordionProps } from '@mui/material/Accordion';
+import SvgIcon from '@mui/material/SvgIcon/SvgIcon'; // Import AccordionProps
 
 export const TotalValue = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -116,4 +117,7 @@ export const CircularProgressPending = styled(MuiCircularProgress)`
     stroke-linecap: round;
     transform-origin: 100% 100%;
   }
+`;
+
+export const Icon = styled(SvgIcon)`
 `;
