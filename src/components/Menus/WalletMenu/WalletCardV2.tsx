@@ -28,6 +28,7 @@ import {
   Button,
   WalletCardButtonContainer,
   WalletCardContainer,
+  WalletChainAvatar,
 } from './WalletCardV2.style';
 import { WalletCardV2Stack } from '@/components/Menus/WalletMenu/WalletCardV2Stack';
 
@@ -130,11 +131,11 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           badgeContent={
             activeChain?.logoURI ? (
-              <Avatar
-                size="small"
+              <WalletChainAvatar
                 src={activeChain?.logoURI || ''}
                 alt={'wallet-avatar'}
-              ></Avatar>
+                sx={{ width: 18, height: 18 }}
+              />
             ) : (
               <Skeleton variant="circular" />
             )
@@ -146,7 +147,15 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
           size="small"
           disabled={isMultisigEnvironment}
           onClick={() => handleCopyButton()}
-          sx={{ background: 'transparent' }}
+          sx={(theme) => ({
+            background: 'transparent',
+            '&:hover': {
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? theme.palette.alphaLight300.main
+                  : theme.palette.white.main,
+            },
+          })}
         >
           <Typography variant="bodySmallStrong" sx={{ fontSize: '16px' }}>
             {walletDigest(account.address)}

@@ -53,7 +53,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         setWalletMenuState(false);
         setOpen(false);
       }}
-      slotProps={{ backdrop: { invisible: true } }}
+      // slotProps={{ backdrop: { invisible: true } }}
     >
       <Stack direction="row" justifyContent="space-between">
         <IconButton

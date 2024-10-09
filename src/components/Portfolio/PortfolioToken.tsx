@@ -15,6 +15,7 @@ import {
   Avatar as MuiAvatar,
   Divider,
   Box,
+  useTheme,
 } from '@mui/material';
 import Image from 'next/image';
 import type { ExtendedTokenAmountWithChain } from '@/utils/getTokens';
@@ -30,6 +31,8 @@ import { useWidgetCacheStore } from '@/stores/widgetCache';
 import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
 import PortfolioTokenChainButton from '@/components/Portfolio/PortfolioTokenChainButton';
 import { useMenuStore } from 'src/stores/menu';
+import TokenImage from '@/components/Portfolio/TokenImage';
+import { capitalize } from 'lodash';
 
 interface PortfolioTokenProps {
   token: ExtendedTokenAmountWithChain;
@@ -43,6 +46,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
   const router = useRouter();
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
   const { setWalletMenuState } = useMenuStore((state) => state);
+  const theme = useTheme();
 
   const hasMultipleChains = token.chains.length > 1;
 
@@ -82,16 +86,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             <Grid item xs={2}>
               {hasMultipleChains ? (
                 <MuiAvatar>
-                  {!token?.logoURI ? (
-                    <>?</>
-                  ) : (
-                    <Image
-                      width={40}
-                      height={40}
-                      src={token.logoURI}
-                      alt={token.name}
-                    />
-                  )}
+                  <TokenImage token={token} />
                 </MuiAvatar>
               ) : (
                 <>
@@ -103,19 +98,27 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                       !hasMultipleChains ? (
                         <MuiAvatar
                           alt={token?.chainName || 'chain-name'}
-                          src={token?.chainLogoURI || ''}
                           sx={{
                             width: '18px',
                             height: '18px',
-                            border: '2px solid white',
+                            border: `2px solid ${theme.palette.surface2.main}`,
                           }}
-                        />
+                        >
+                          <TokenImage
+                            token={{
+                              name: token.chainName ?? '',
+                              logoURI: token.chainLogoURI,
+                            }}
+                          />
+                        </MuiAvatar>
                       ) : (
                         <Skeleton variant="circular" />
                       )
                     }
                   >
-                    <WalletAvatar src={token.logoURI} />
+                    <WalletAvatar>
+                      <TokenImage token={token} />
+                    </WalletAvatar>
                   </WalletCardBadge>
                 </>
               )}
@@ -124,7 +127,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
               <TypographyPrimary>{token.symbol}</TypographyPrimary>
               {!hasMultipleChains ? (
                 <TypographySecondary>
-                  {token.chains[0].name}
+                  {capitalize(token.chains[0].name)}
                 </TypographySecondary>
               ) : (
                 <CustomAvatarGroup spacing={6} max={15}>
@@ -135,9 +138,15 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                     >
                       <MuiAvatar
                         alt={chain.chainName}
-                        src={chain.chainLogoURI}
                         sx={{ width: '12px', height: '12px' }}
-                      />
+                      >
+                        <TokenImage
+                          token={{
+                            name: chain.chainName ?? '',
+                            logoURI: chain.chainLogoURI,
+                          }}
+                        />
+                      </MuiAvatar>
                     </Tooltip>
                   ))}
                 </CustomAvatarGroup>

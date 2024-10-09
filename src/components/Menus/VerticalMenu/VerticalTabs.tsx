@@ -38,6 +38,7 @@ export const VerticalTabs = () => {
             key={`tooltip-key-${index}`}
             enterTouchDelay={0}
             disableHoverListener={el.disabled}
+            placement="left"
             componentsProps={{
               popper: { sx: { zIndex: 1700 } },
             }}

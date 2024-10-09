@@ -16,6 +16,7 @@ import { Box, Stack, Tooltip, Typography } from '@mui/material';
 import { isEqual } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { RefreshCircleIcon } from './RefreshCircleIcon';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -24,18 +25,23 @@ function has24HoursPassed(lastDate: number): boolean {
 }
 
 interface TotalBalanceProps {
-  totalValue: number;
   isComplete: boolean;
+  refetch: () => void;
 }
 
-function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
+function TotalBalance({ isComplete = false, refetch }: TotalBalanceProps) {
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
   const { t } = useTranslation();
   const { accounts } = useAccounts();
   const portfolio = usePortfolioStore((state) => state);
+  const { totalValue } = portfolio;
 
   useEffect(() => {
+    if (!isComplete) {
+      return;
+    }
+
     const addresses = accounts
       .filter((a) => !!a?.address)
       .map(({ address }) => address) as string[];
@@ -44,18 +50,16 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
       return;
     }
 
-    if (!portfolio.lastDate) {
-      portfolio.setLast(totalValue, addresses);
-    }
-
     if (!isEqual(portfolio.lastAddresses, addresses)) {
       portfolio.setLast(totalValue, addresses);
       return;
     }
 
-    if (has24HoursPassed(portfolio.lastDate)) {
-      portfolio.setLast(totalValue, addresses);
+    if (!has24HoursPassed(portfolio.lastDate)) {
+      return;
     }
+
+    portfolio.setLast(totalValue, addresses);
 
     const differenceValue = totalValue - portfolio.lastTotalValue;
     const differencePercent =
@@ -67,7 +71,7 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
 
     setDifferenceValue(differenceValue);
     setDifferencePercent(differencePercent);
-  }, [totalValue]);
+  }, [totalValue, isComplete]);
 
   if (!totalValue) {
     return <TotalBalanceSkeleton />;
@@ -99,16 +103,20 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
             {t('navbar.walletMenu.totalBalance')}
           </Typography>
           <Tooltip
-            title="hello world"
+            title={t('navbar.walletMenu.totalBalanceTooltip')}
             placement="top"
             enterTouchDelay={0}
+            componentsProps={{
+              popper: { sx: { zIndex: 2000 } },
+            }}
             arrow
             sx={{
-              zIndex: 5000,
+              zIndex: 25000,
             }}
           >
             <InfoIcon
               sx={{
+                cursor: 'help',
                 marginLeft: '8px',
                 width: 16,
                 height: 16,
@@ -117,9 +125,16 @@ function TotalBalance({ isComplete = false, totalValue }: TotalBalanceProps) {
             />
           </Tooltip>
         </Box>
-        {!isComplete && (
-          <TotalBalanceIconButton refetch={() => {}}>
+        {!isComplete ? (
+          <TotalBalanceIconButton disabled={true} tooltipText="hello world">
             <CircularProgressPending size={24} />
+          </TotalBalanceIconButton>
+        ) : (
+          <TotalBalanceIconButton
+            tooltipText="Click here to restart the indexing of your tokens now."
+            refetch={refetch}
+          >
+            <RefreshCircleIcon />
           </TotalBalanceIconButton>
         )}
       </Box>

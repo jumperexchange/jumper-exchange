@@ -3,7 +3,14 @@ import {
   TypographyPrimary,
   TypographySecondary,
 } from '@/components/Portfolio/Portfolio.styles';
-import { Avatar as MuiAvatar, Badge, ButtonBase, Grid } from '@mui/material';
+import {
+  Avatar as MuiAvatar,
+  Badge,
+  ButtonBase,
+  Grid,
+  useTheme,
+  darken,
+} from '@mui/material';
 import Image from 'next/image';
 import type { ExtendedTokenAmountWithChain } from '@/utils/getTokens';
 import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
@@ -11,6 +18,8 @@ import { useWidgetCacheStore } from '@/stores/widgetCache';
 import { useMainPaths } from '@/hooks/useMainPaths';
 import { useParams, useRouter } from 'next/navigation';
 import { useMenuStore } from 'src/stores/menu';
+import TokenImage from '@/components/Portfolio/TokenImage';
+import { getContrastAlphaColor } from 'src/utils/colors';
 
 interface PortfolioTokenChainButtonProps {
   token: ExtendedTokenAmountWithChain;
@@ -22,6 +31,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
   const { isMainPaths } = useMainPaths();
   const router = useRouter();
   const { lng } = useParams();
+  const theme = useTheme();
 
   return (
     <ButtonBase
@@ -39,11 +49,17 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
         paddingY: '16px',
         display: 'flex',
         '&:hover': {
-          background: 'rgba(0, 0, 0, 0.04)',
+          backgroundColor:
+            theme.palette.mode === 'dark'
+              ? darken(theme.palette.surface2.main, 0.04)
+              : darken(theme.palette.surface2.main, 0.04),
         },
         '&:last-child:hover': {
-          background: 'rgba(0, 0, 0, 0.04)',
           borderRadius: '0 0 16px 16px',
+          backgroundColor:
+            theme.palette.mode === 'dark'
+              ? darken(theme.palette.surface2.main, 0.04)
+              : darken(theme.palette.surface2.main, 0.04),
         },
       }}
     >
@@ -54,34 +70,17 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             badgeContent={
               <SmallAvatar>
-                {!token?.logoURI ? (
-                  <>?</>
-                ) : (
-                  <Image
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    style={{ width: '100%', height: '100%' }} // optional
-                    src={token.chainLogoURI as string}
-                    alt={token.chainName || ''}
-                  />
-                )}
+                <TokenImage
+                  token={{
+                    logoURI: token.chainLogoURI,
+                    name: token.chainName ?? '',
+                  }}
+                />
               </SmallAvatar>
             }
           >
             <MuiAvatar sx={{ width: 32, height: 32 }}>
-              {!token?.logoURI ? (
-                <>?</>
-              ) : (
-                <Image
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  style={{ width: '100%', height: '100%' }} // optional
-                  src={token.logoURI}
-                  alt={token.name}
-                />
-              )}
+              <TokenImage token={token} />
             </MuiAvatar>
           </Badge>
         </Grid>
@@ -100,6 +99,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
         <Grid item xs={5} style={{ textAlign: 'right' }}>
           <TypographyPrimary
             sx={{
+              fontWeight: 600,
               fontSize: '0.875rem',
               lineHeight: '1.125rem',
             }}

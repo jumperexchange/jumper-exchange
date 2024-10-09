@@ -6,10 +6,12 @@ import {
   circularProgressClasses,
   CircularProgress as MuiCircularProgress,
   keyframes,
+  darken,
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { lighten } from '@mui/material/styles';
-import { AccordionProps } from '@mui/material/Accordion'; // Import AccordionProps
+import { AccordionProps } from '@mui/material/Accordion';
+import SvgIcon from '@mui/material/SvgIcon/SvgIcon'; // Import AccordionProps
 
 export const TotalValue = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -39,7 +41,10 @@ export const CustomAccordion = styled(Accordion)<{ isExpanded?: boolean }>(
       padding: '16px',
       borderRadius: 12,
       '&:hover': {
-        background: 'rgba(0, 0, 0, 0.04)',
+        backgroundColor:
+          theme.palette.mode === 'dark'
+            ? darken(theme.palette.surface2.main, 0.04)
+            : darken(theme.palette.surface2.main, 0.04),
         borderRadius: isExpanded ? '16px 16px 0 0' : '16px',
       },
     },
@@ -71,7 +76,7 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
   '& .MuiAvatar-root': {
     width: 16,
     height: 16,
-    border: '2px solid white',
+    border: `2px solid ${theme.palette.surface2.main}`,
 
     '&:last-child': {
       marginLeft: '-6px',
@@ -117,3 +122,5 @@ export const CircularProgressPending = styled(MuiCircularProgress)`
     transform-origin: 100% 100%;
   }
 `;
+
+export const Icon = styled(SvgIcon)``;

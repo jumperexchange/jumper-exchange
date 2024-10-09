@@ -5,8 +5,8 @@ export const QuestCardSkeletonContainer = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '#f5f5f5'
       : alpha(theme.palette.white.main, 0.08),
-  height: '416px',
-  width: '272px',
+  height: 436,
+  width: 272,
   borderRadius: '20px',
   border: 16,
   borderColor:
