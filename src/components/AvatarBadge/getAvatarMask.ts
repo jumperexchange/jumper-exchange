@@ -48,6 +48,5 @@ export const getAvatarMask = ({
     avatarSize - badgeSize / 2 + (!!badgeOffset?.x ? badgeOffset?.x : 0);
   const badgeOffsetY =
     avatarSize - badgeSize / 2 + (!!badgeOffset?.y ? badgeOffset?.y : 0);
-  console.log(badgeOffset?.y, badgeOffset || 13);
   return `radial-gradient(circle ${badgeRadius}px at calc(${badgeOffsetX}px) calc(${badgeOffsetY}px), #fff0 96%, #fff) 100% 100% / 100% 100% no-repeat`;
 };
