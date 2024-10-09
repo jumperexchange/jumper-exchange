@@ -2,7 +2,7 @@ import ScanPage from '@/app/ui/scan/ScanPage';
 import type { Metadata } from 'next';
 
 export async function generateMetadata({
-  params: { segments },
+  params: { segments = [] },
 }: {
   params: {
     segments: string[];
@@ -21,7 +21,7 @@ export async function generateMetadata({
     description:
       'Jumper Scan is a blockchain explorer that allows you to search and explore transactions, blocks, and wallets on multiple blockchains.',
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/scan/${segments.join('/')}`,
+      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/scan${segments.length === 0 ? '' : `/${segments.join('/')}`}`,
     },
   };
 }
