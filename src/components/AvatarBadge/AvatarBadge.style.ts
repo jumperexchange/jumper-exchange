@@ -30,14 +30,17 @@ export const StyledAvatar = styled(Avatar, {
 
 interface StyledBadgeProps {
   badgeOffset?: BadgeOffsetProps;
+  avatarSize: number;
 }
 
 // Styled Badge component for the badge
 export const StyledBadge = styled(Badge, {
-  shouldForwardProp: (prop) => prop !== 'badgeOffset',
-})<StyledBadgeProps>(({ badgeOffset }) => ({
+  shouldForwardProp: (prop) => prop !== 'badgeOffset' && prop !== 'avatarSize',
+})<StyledBadgeProps>(({ badgeOffset, avatarSize }) => ({
   borderRadius: '50%',
   display: 'block',
+  height: avatarSize,
+  width: avatarSize,
 
   '.MuiBadge-badge': {
     position: 'static',

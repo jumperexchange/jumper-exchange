@@ -36,6 +36,7 @@ const AvatarBadge: React.FC<AvatarBadgeProps> = ({
     <StyledBadge
       overlap="circular"
       badgeOffset={badgeOffset}
+      avatarSize={avatarSize}
       // anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       badgeContent={
         <StyledBadgeAvatar src={badgeSrc} alt={badgeAlt} badgeSize={badgeSize}>
