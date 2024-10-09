@@ -15,7 +15,7 @@ import {
   useWaitForTransactionReceipt,
   useSwitchChain,
 } from 'wagmi';
-import { ChainId } from '@lifi/types';
+import { ChainId } from '@lifi/sdk';
 import { MerklDistribABI } from 'src/const/abi/merklABI';
 
 interface ClaimRewardParams {

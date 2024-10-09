@@ -1,18 +1,23 @@
 import { Avatar } from '@/components/Avatar/Avatar';
+import { ButtonSecondary, ButtonTransparent } from '@/components/Button';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import type { Account } from '@/hooks/useAccounts';
-import { useAccountDisconnect } from '@/hooks/useAccounts';
+import { JUMPER_SCAN_PATH } from '@/const/urls';
+import { useBlockchainExplorerURL } from '@/hooks/useBlockchainExplorerURL';
 import { useChains } from '@/hooks/useChains';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { walletDigest } from '@/utils/walletDigest';
-import { getConnectorIcon } from '@lifi/wallet-management';
+import type { Account } from '@lifi/wallet-management';
+import {
+  getConnectorIcon,
+  useAccountDisconnect,
+} from '@lifi/wallet-management';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -20,8 +25,6 @@ import { Box, Skeleton, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
-import { JUMPER_SCAN_PATH } from 'src/const/urls';
 import {
   WalletAvatar,
   WalletCardBadge,
@@ -47,6 +50,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
     [chains, account.chainId],
   );
   const { closeAllMenus, setSnackbarState } = useMenuStore((state) => state);
+  const getBlockExplorerUrl = useBlockchainExplorerURL();
 
   const handleMultisigEnvironmentCheck = useCallback(async () => {
     const response = await checkMultisigEnvironment();
@@ -61,14 +65,20 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   }, [account, handleMultisigEnvironmentCheck]);
 
   const handleExploreButton = () => {
-    account.chainId && closeAllMenus();
+    if (account.chainId) {
+      closeAllMenus();
+    }
 
     trackEvent({
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.OpenBlockchainExplorer,
       label: 'open-blockchain-explorer-wallet',
     });
-    if (account.blockChainExplorerUrl) {
+    const blockChainExplorerUrl = getBlockExplorerUrl(
+      account.address,
+      account.chainId,
+    );
+    if (blockChainExplorerUrl) {
       trackEvent({
         category: TrackingCategory.Pageload,
         action: TrackingAction.PageLoad,
@@ -76,18 +86,19 @@ export const WalletCard = ({ account }: WalletCardProps) => {
         data: {
           [TrackingEventParameter.PageloadSource]: TrackingCategory.Wallet,
           [TrackingEventParameter.PageloadDestination]: 'blokchain-explorer',
-          [TrackingEventParameter.PageloadURL]:
-            account.blockChainExplorerUrl || '',
+          [TrackingEventParameter.PageloadURL]: blockChainExplorerUrl,
           [TrackingEventParameter.PageloadExternal]: true,
         },
       });
-      openInNewTab(account.blockChainExplorerUrl);
+      openInNewTab(blockChainExplorerUrl);
     }
   };
 
   const handleScanButton = () => {
-    account.chainId && closeAllMenus();
-    const url = `${JUMPER_SCAN_PATH}/wallet/${account.address}/`;
+    if (account.chainId) {
+      closeAllMenus();
+    }
+    const url = `${JUMPER_SCAN_PATH}/wallet/${account.address}`;
 
     trackEvent({
       category: TrackingCategory.WalletMenu,
@@ -111,8 +122,8 @@ export const WalletCard = ({ account }: WalletCardProps) => {
     closeAllMenus();
   };
 
-  const handleDisconnect = () => {
-    disconnectWallet(account);
+  const handleDisconnect = async () => {
+    await disconnectWallet(account);
     trackEvent({
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.DisconnectWallet,
@@ -150,7 +161,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             size="medium"
             disabled={isMultisigEnvironment}
             sx={{ width: '100%', gridColumn: '1/4', gridRow: '1/2' }}
-            onClick={() => handleCopyButton()}
+            onClick={handleCopyButton}
           >
             <Typography variant="bodySmallStrong">
               {walletDigest(account.address)}
@@ -158,7 +169,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           </ButtonTransparent>
           <ButtonTransparent
             size="medium"
-            onClick={() => handleExploreButton()}
+            onClick={handleExploreButton}
             sx={{
               gridRow: '2/2',
               gridColumn: '0/3',
@@ -172,13 +183,13 @@ export const WalletCard = ({ account }: WalletCardProps) => {
               gridColumn: '2/3',
               gridRow: '2/2',
             }}
-            onClick={() => handleScanButton()}
+            onClick={handleScanButton}
           >
             <ReceiptLongIcon sx={{ height: '16px' }} />
           </ButtonTransparent>
           <ButtonSecondary
             size="medium"
-            onClick={() => handleDisconnect()}
+            onClick={handleDisconnect}
             sx={{
               gridColumn: '3/3',
               gridRow: '2/2',

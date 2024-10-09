@@ -1,6 +1,5 @@
 'use client';
 
-import { useAccount } from '@lifi/widget';
 import * as Sentry from '@sentry/nextjs';
 
 import {
@@ -14,18 +13,18 @@ export type JumperEventData = {
 };
 
 interface JumperDataTrackEventProps {
-  category: string;
   action: string;
-  label: string;
-  url: string;
-  value: number;
+  browserFingerprint: string;
+  category: string;
   data?: JumperEventData;
   isConnected: boolean;
-  walletAddress?: string;
-  browserFingerprint: string;
-  walletProvider?: string;
-  sessionId: string;
   isMobile: boolean;
+  label: string;
+  sessionId: string;
+  url: string;
+  value: number;
+  walletAddress?: string;
+  walletProvider?: string;
 }
 
 const track = async (data: object, path: string) => {
@@ -49,50 +48,51 @@ const track = async (data: object, path: string) => {
   }
 };
 export interface JumperDataTrackTransactionProps {
-  sessionId: string;
-  type: string;
   action: string;
-  transactionHash?: string;
-  transactionStatus: string;
-  fromChainId: number;
-  toChainId: number;
-  fromToken: string;
-  toToken: string;
-  exchange?: string;
-  stepNumber?: number;
-  integrator?: string;
-  isFinal: boolean;
-  gasCost?: number;
-  gasCostUSD?: number;
-  fromAmount: number;
-  fromAmountUSD?: number;
-  toAmount: number;
-  toAmountUSD?: number;
-  routeId: string;
+  browserFingerprint: string;
   errorCode?: string | number;
   errorMessage?: string;
+  exchange?: string;
+  fromAmount: number;
+  fromAmountUSD?: number;
+  fromChainId: number;
+  fromToken: string;
+  gasCost?: number;
+  gasCostUSD?: number;
+  integrator?: string;
+  isFinal: boolean;
   pathname?: string;
+  routeId: string;
+  sessionId: string;
+  stepNumber?: number;
+  toAmount: number;
+  toAmountUSD?: number;
+  toChainId: number;
+  toToken: string;
+  transactionHash?: string;
+  transactionStatus: string;
+  type: string;
   url: string;
-  browserFingerprint: string;
+  walletAddress?: string;
+  walletProvider?: string;
 }
 
 export const useJumperTracking = () => {
-  const account = useAccount();
   const trackEvent = async (data: JumperDataTrackEventProps) => {
     await track(
       {
-        category: data.category,
         action: data.action,
-        label: data.label,
-        value: data.value,
-        isConnected: data.isConnected,
-        sessionId: data.sessionId,
-        data: data.data,
-        walletProvider: account?.account.connector?.name,
-        walletAddress: data.walletAddress,
         browserFingerprint: data.browserFingerprint,
+        category: data.category,
+        data: data.data,
+        isConnected: data.isConnected,
         isMobile: data.isMobile,
+        label: data.label,
+        sessionId: data.sessionId,
         url: data.url,
+        value: data.value,
+        walletAddress: data.walletAddress,
+        walletProvider: data.walletProvider,
       },
       JUMPER_ANALYTICS_EVENT,
     );
@@ -100,33 +100,33 @@ export const useJumperTracking = () => {
 
   const trackTransaction = async (data: JumperDataTrackTransactionProps) => {
     const transactionData = {
-      sessionId: data.sessionId,
-      routeId: data.routeId,
-      integrator: data.integrator,
       action: data.action,
-      type: data.type,
-      fromToken: data.fromToken,
-      toToken: data.toToken,
-      stepNumber: data.stepNumber,
+      browserFingerprint: data.browserFingerprint,
+      errorCode: data.errorCode,
+      errorMessage: data.errorMessage,
       exchange: data.exchange,
-      transactionStatus: data.transactionStatus,
-      isFinal: data.isFinal,
+      fromAmount: data.fromAmount,
+      fromAmountUSD: data.fromAmountUSD,
+      fromChainId: data.fromChainId,
+      fromToken: data.fromToken,
       gasCost: data.gasCost,
       gasCostUSD: data.gasCostUSD,
-      fromAmountUSD: data.fromAmountUSD,
-      toAmountUSD: data.toAmountUSD,
-      fromAmount: data.fromAmount,
-      fromChainId: data.fromChainId,
-      toAmount: data.toAmount,
-      toChainId: data.toChainId,
-      transactionHash: data.transactionHash,
-      wallet: account?.account.address,
-      walletProvider: account?.account.connector?.name,
-      errorMessage: data.errorMessage,
-      errorCode: data.errorCode,
+      integrator: data.integrator,
+      isFinal: data.isFinal,
       pathname: data.pathname,
+      routeId: data.routeId,
+      sessionId: data.sessionId,
+      stepNumber: data.stepNumber,
+      toAmount: data.toAmount,
+      toAmountUSD: data.toAmountUSD,
+      toChainId: data.toChainId,
+      toToken: data.toToken,
+      transactionHash: data.transactionHash,
+      transactionStatus: data.transactionStatus,
+      type: data.type,
       url: data.url,
-      browserFingerprint: data.browserFingerprint,
+      walletProvider: data.walletProvider,
+      walletAddress: data.walletAddress,
     };
     await track(transactionData, JUMPER_ANALYTICS_TRANSACTION);
   };

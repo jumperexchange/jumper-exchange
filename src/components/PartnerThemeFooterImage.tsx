@@ -1,14 +1,12 @@
 'use client';
-
+import { useThemeStore } from '@/stores/theme';
 import { ChainId } from '@lifi/sdk';
-import Link from 'next/link';
-import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
-
-import { useSettingsStore } from '@/stores/settings';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
+import Link from 'next/link';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useSuperfest } from 'src/hooks/useSuperfest';
+import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { BackgroundFooterImage } from './Widgets';
 
 export const PartnerThemeFooterImage = () => {
@@ -16,7 +14,7 @@ export const PartnerThemeFooterImage = () => {
     useChainTokenSelectionStore();
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
-  const configTheme = useSettingsStore((state) => state.configTheme);
+  const configTheme = useThemeStore((state) => state.configTheme);
 
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('lg'),

@@ -2,7 +2,7 @@ import { useLoyaltyPassStore } from '@/stores/loyaltyPass';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SECONDS_IN_AN_HOUR } from 'src/const/time';
-import { useAccounts } from './useAccounts';
+import { useAccount } from '@lifi/wallet-management';
 
 export interface useOngoingNumericQuestsType {
   isSuccess: boolean;
@@ -27,7 +27,7 @@ export interface OngoingNumericItem extends OngoingNumericItemStats {
 }
 
 export const useOngoingNumericQuests = (): useOngoingNumericQuestsType => {
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const {
     address: storedAddress,
     timestamp,

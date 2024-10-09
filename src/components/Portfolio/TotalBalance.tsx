@@ -6,7 +6,6 @@ import {
 } from '@/components/Portfolio/Portfolio.styles';
 import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
 import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
-import { useAccounts } from '@/hooks/useAccounts';
 import { usePortfolioStore } from '@/stores/portfolio';
 import { currencyFormatter } from '@/utils/formatNumbers';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -17,6 +16,7 @@ import { isEqual } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshCircleIcon } from './RefreshCircleIcon';
+import { useAccount } from '@lifi/wallet-management';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -33,7 +33,7 @@ function TotalBalance({ isComplete = false, refetch }: TotalBalanceProps) {
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
   const { t } = useTranslation();
-  const { accounts } = useAccounts();
+  const { accounts } = useAccount();
   const portfolio = usePortfolioStore((state) => state);
   const { totalValue } = portfolio;
 

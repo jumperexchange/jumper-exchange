@@ -1,11 +1,14 @@
 'use client';
-import { useAccounts } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/sdk';
-import { getConnectorIcon } from '@lifi/wallet-management';
 import type { Theme } from '@mui/material';
+import {
+  getConnectorIcon,
+  useAccount,
+  useWalletMenu,
+} from '@lifi/wallet-management';
 import { Stack, Typography, useMediaQuery } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,9 +33,10 @@ import useImageStatus from 'src/hooks/useImageStatus';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const { t } = useTranslation();
   const { isSuccess } = useChains();
+  const { openWalletMenu } = useWalletMenu();
   const { points } = useLoyaltyPass();
   const router = useRouter();
   const imgLink = `https://effigy.im/a/${account?.address}.png`;
@@ -40,12 +44,9 @@ export const WalletButtons = () => {
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const pathname = usePathname();
 
-  const {
-    openWalletSelectMenu,
-    setWalletSelectMenuState,
-    openWalletMenu,
-    setWalletMenuState,
-  } = useMenuStore((state) => state);
+  const { openWalletMenu: _openWalletMenu, setWalletMenuState } = useMenuStore(
+    (state) => state,
+  );
 
   const _walletDigest = useMemo(() => {
     return walletDigest(account?.address);
@@ -56,16 +57,12 @@ export const WalletButtons = () => {
     [chains, account?.chainId],
   );
 
-  const handleWalletSelectClick = () => {
-    setWalletSelectMenuState(!openWalletSelectMenu);
-  };
-
   const handleXPClick = () => {
     router.push(JUMPER_LOYALTY_PATH);
   };
 
   const handleWalletMenuClick = () => {
-    setWalletMenuState(!openWalletMenu);
+    setWalletMenuState(!_openWalletMenu);
   };
 
   return (
@@ -76,7 +73,7 @@ export const WalletButtons = () => {
           id="connect-wallet-button"
           onClick={(event) => {
             event.stopPropagation();
-            handleWalletSelectClick();
+            openWalletMenu();
           }}
         >
           <Typography

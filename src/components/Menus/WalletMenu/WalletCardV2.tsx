@@ -1,18 +1,19 @@
-import { Avatar } from '@/components/Avatar/Avatar';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import type { Account } from '@/hooks/useAccounts';
-import { useAccountDisconnect } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { walletDigest } from '@/utils/walletDigest';
-import { getConnectorIcon } from '@lifi/wallet-management';
+import type { Account } from '@lifi/wallet-management';
+import {
+  getConnectorIcon,
+  useAccountDisconnect,
+} from '@lifi/wallet-management';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -26,7 +27,6 @@ import {
   WalletAvatar,
   WalletCardBadge,
   Button,
-  WalletCardButtonContainer,
   WalletCardContainer,
   WalletChainAvatar,
 } from './WalletCardV2.style';
@@ -64,13 +64,14 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
 
   const handleExploreButton = () => {
     account.chainId && closeAllMenus();
+    const blockchainExplorerUrl = account.chain?.blockExplorers?.[0]?.url;
 
     trackEvent({
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.OpenBlockchainExplorer,
       label: 'open-blockchain-explorer-wallet',
     });
-    if (account.blockChainExplorerUrl) {
+    if (blockchainExplorerUrl) {
       trackEvent({
         category: TrackingCategory.Pageload,
         action: TrackingAction.PageLoad,
@@ -78,12 +79,11 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
         data: {
           [TrackingEventParameter.PageloadSource]: TrackingCategory.Wallet,
           [TrackingEventParameter.PageloadDestination]: 'blokchain-explorer',
-          [TrackingEventParameter.PageloadURL]:
-            account.blockChainExplorerUrl || '',
+          [TrackingEventParameter.PageloadURL]: blockchainExplorerUrl || '',
           [TrackingEventParameter.PageloadExternal]: true,
         },
       });
-      openInNewTab(account.blockChainExplorerUrl);
+      openInNewTab(blockchainExplorerUrl);
     }
   };
 

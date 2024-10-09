@@ -1,6 +1,6 @@
 'use client';
 import type { StarterVariantType } from '@/types/internal';
-import type { ThemeModesSupported } from '@/types/settings';
+import type { ThemeMode } from '@/types/theme';
 import { ChainId } from '@lifi/sdk';
 import type { BlogWidgetProps } from '../Blog/BlogWidget';
 
@@ -32,7 +32,6 @@ export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   allowChains?: number[];
   widgetIntegrator?: string;
   starterVariant: StarterVariantType;
-  activeThemeMode?: ThemeModesSupported;
-  isWelcomeScreenClosed?: boolean;
+  activeThemeMode?: ThemeMode;
   activeTheme?: string;
 }

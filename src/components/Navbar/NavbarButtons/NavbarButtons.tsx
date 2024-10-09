@@ -5,9 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Box } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import { EcosystemSelectMenu } from 'src/components/Menus/EcosystemSelectMenu';
 import { WalletMenu } from 'src/components/Menus/WalletMenu';
-import { WalletSelectMenu } from 'src/components/Menus/WalletSelectMenu';
 import {
   JUMPER_LEARN_PATH,
   JUMPER_SCAN_PATH,
@@ -88,7 +86,6 @@ export const NavbarButtons = () => {
       </NavbarButtonsContainer>
       <MainMenu anchorEl={mainMenuAnchor.current ?? undefined} />
       <WalletMenu anchorEl={walletManagementRef.current ?? undefined} />
-      <WalletSelectMenu anchorEl={walletManagementRef.current || undefined} />
     </>
   );
 };

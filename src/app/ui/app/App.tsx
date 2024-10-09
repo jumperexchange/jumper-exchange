@@ -1,31 +1,23 @@
 'use client';
-
 import { WelcomeScreen } from '@/components/WelcomeScreen/WelcomeScreen';
 import { WidgetContainer } from '@/components/Widgets';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking';
-import type { StarterVariantType } from '@/types/internal';
 import { Box, Slide, Stack } from '@mui/material';
 import { VerticalTabs } from 'src/components/Menus/VerticalMenu';
+import type { PropsWithChildren } from 'react';
+import { useEffect } from 'react';
 
 export interface AppProps {
-  starterVariant: StarterVariantType;
-  children: React.ReactNode;
-  isWelcomeScreenClosed: boolean;
   activeTheme?: string;
 }
 
-const App = ({
-  starterVariant,
-  isWelcomeScreenClosed,
-  activeTheme,
-  children,
-}: AppProps) => {
+const App = ({ activeTheme, children }: PropsWithChildren<AppProps>) => {
   const { trackEvent } = useUserTracking();
 
   const { welcomeScreenClosed, setWelcomeScreenClosed, enabled } =
-    useWelcomeScreen(isWelcomeScreenClosed, activeTheme);
+    useWelcomeScreen(activeTheme);
 
   const handleWelcomeScreenEnter = () => {
     if (enabled && !welcomeScreenClosed) {
@@ -35,11 +27,23 @@ const App = ({
         category: TrackingCategory.WelcomeScreen,
         action: TrackingAction.CloseWelcomeScreen,
         label: 'enter_welcome_screen_on_widget-click',
-        data: { widgetVariant: starterVariant },
         enableAddressable: true,
       });
     }
   };
+
+  /**
+   * We don't want to use Welcome Screen inside multisig envs
+   */
+  useEffect(() => {
+    // in Multisig env, window.parent is not equal to window
+    const anyWindow =
+      typeof window !== 'undefined' ? (window as any) : undefined;
+    const isIframeEnvironment = anyWindow && anyWindow.parent !== anyWindow;
+    if (isIframeEnvironment) {
+      setWelcomeScreenClosed(true);
+    }
+  }, [setWelcomeScreenClosed]);
 
   return (
     <Box onClick={handleWelcomeScreenEnter}>
@@ -61,7 +65,7 @@ const App = ({
             right: 0,
           }}
         >
-          <WelcomeScreen closed={!enabled || welcomeScreenClosed!} />
+          <WelcomeScreen />
         </Box>
       </Slide>
       <Stack

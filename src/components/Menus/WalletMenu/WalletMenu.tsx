@@ -1,5 +1,5 @@
-import { useAccounts } from '@/hooks/useAccounts';
 import { useMenuStore } from '@/stores/menu';
+import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import {
   alpha,
   Drawer,
@@ -8,7 +8,8 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import type { MouseEventHandler } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CustomDrawer, WalletButton } from '.';
 import { WalletCardV2 } from './WalletCardV2';
@@ -21,37 +22,45 @@ interface WalletMenuProps {
 
 export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   const { t } = useTranslation();
-  const { accounts } = useAccounts();
   const theme = useTheme();
-  const [, setOpen] = useState(false);
+  const isDarkMode = theme.palette.mode === 'dark';
+
+  const { accounts } = useAccount();
+  const { openWalletMenu } = useWalletMenu();
+
   const {
-    openWalletMenu,
+    openWalletMenu: _openWalletMenu,
     setWalletMenuState,
     setSnackbarState,
-    setWalletSelectMenuState,
   } = useMenuStore((state) => state);
 
+  const handleOpenWalletMenu: MouseEventHandler<HTMLButtonElement> = (
+    event,
+  ) => {
+    event.stopPropagation();
+    setWalletMenuState(false);
+    openWalletMenu();
+  };
+
   useEffect(() => {
-    openWalletMenu! && setSnackbarState(false);
-  }, [setSnackbarState, openWalletMenu]);
+    _openWalletMenu! && setSnackbarState(false);
+  }, [setSnackbarState, _openWalletMenu]);
 
   useEffect(() => {
     if (
-      openWalletMenu &&
+      _openWalletMenu &&
       accounts.every((account) => account.status === 'disconnected')
     ) {
       setWalletMenuState(false);
     }
-  }, [accounts, setWalletMenuState, openWalletMenu]);
+  }, [accounts, setWalletMenuState, _openWalletMenu]);
 
   return (
     <CustomDrawer
-      // variant="persistent"
+      open={_openWalletMenu}
       anchor="right"
-      open={openWalletMenu}
       onClose={() => {
         setWalletMenuState(false);
-        setOpen(false);
       }}
       // slotProps={{ backdrop: { invisible: true } }}
     >
@@ -69,12 +78,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         >
           <CloseIcon />
         </IconButton>
-        <WalletButton
-          sx={{ width: 'auto' }}
-          onClick={() => {
-            setWalletSelectMenuState(true, false);
-          }}
-        >
+        <WalletButton sx={{ width: '100%' }} onClick={handleOpenWalletMenu}>
           <Typography
             sx={{
               color: theme.palette.text.primary,

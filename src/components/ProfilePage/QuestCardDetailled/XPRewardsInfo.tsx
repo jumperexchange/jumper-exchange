@@ -22,7 +22,7 @@ export const XPRewardsInfo: React.FC<PropsWithChildren<XPRewardsInfoProps>> = ({
         active={active}
         bgcolor={bgColor}
         gap={0.5}
-        sx={{ cursor: 'help' }}
+        sx={{ ...(tooltip && { cursor: 'help' }) }}
       >
         <Typography
           fontSize="14px"

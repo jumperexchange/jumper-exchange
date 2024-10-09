@@ -1,17 +1,21 @@
-import type { ExtendedChain, TokenAmount } from '@lifi/sdk';
+import type {
+  ExtendedChain,
+  TokenAmount,
+  Token,
+  TokensResponse,
+} from '@lifi/sdk';
 import {
   getChains,
   getTokenBalances as LifiGetTokenBalances,
   getTokens as LifiGetTokens,
 } from '@lifi/sdk';
 import { formatUnits } from 'viem';
-import type { Token, TokensResponse } from '@lifi/widget';
-import type { Account } from '@/hooks/useAccounts';
-import { useAccounts } from '@/hooks/useAccounts';
 import { sortBy, sumBy } from 'lodash';
 import { useQueries } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { usePortfolioStore } from '@/stores/portfolio';
+import type { Account } from '@lifi/wallet-management';
+import { useAccount } from '@lifi/wallet-management';
 
 export interface ExtendedTokenAmountWithChain extends ExtendedTokenAmount {
   chainLogoURI?: string;
@@ -199,7 +203,7 @@ function fetchAllTokensBalanceByChain(
     // Pass the cumulative sum, cumulative price, and current state of the symbolMap to onProgress
     const combinedBalances = sortBy(
       Object.values(symbolMap),
-      'totalPriceUSD',
+      'cumulatedTotalUSD',
     ).reverse();
 
     onProgress(account, round, totalPriceUSD, combinedBalances);
@@ -250,6 +254,7 @@ async function getTokens(
     const { tokens } = await LifiGetTokens({
       chainTypes: [account.chainType],
     });
+
     return new Promise((resolve, reject) => {
       try {
         fetchAllTokensBalanceByChain(
@@ -271,7 +276,7 @@ async function getTokens(
 }
 
 export function useTokens() {
-  const { accounts } = useAccounts();
+  const { accounts } = useAccount();
   const [cache, setCache, forceRefresh] = usePortfolioStore((state) => [
     state.cacheTokens,
     state.setCacheTokens,

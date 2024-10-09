@@ -1,4 +1,4 @@
-import { MenuKeysEnum, MenuMain } from '@/const/menuKeys';
+import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu/MenuStore';
 import type { SxProps, Theme } from '@mui/material';
 import { ClickAwayListener, Fade, Typography } from '@mui/material';
@@ -83,11 +83,7 @@ export const MenuDesktop = ({
                 cardsLayout={cardsLayout}
                 hasLabel={!!label}
                 sx={styles}
-                component={
-                  isOpenSubMenu && openSubMenu !== MenuMain.WalletSelect
-                    ? 'div'
-                    : 'ul'
-                }
+                component={isOpenSubMenu ? 'div' : 'ul'}
               >
                 {!!label ? (
                   <MenuHeaderAppWrapper>

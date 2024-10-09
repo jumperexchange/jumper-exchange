@@ -5,8 +5,8 @@ import {
   type InstructionItemProps,
 } from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
 import { Lightbox } from '@/components/Lightbox/Lightbox';
-import type { ThemeModesSupported } from '@/types/settings';
 import type { MediaAttributes } from '@/types/strapi';
+import type { ThemeMode } from '@/types/theme';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { isValidElement, type JSX, type ReactElement } from 'react';
@@ -29,7 +29,7 @@ interface CustomRichBlocksProps {
   baseUrl?: string;
   content: RootNode[] | undefined;
   id?: number;
-  activeThemeMode?: ThemeModesSupported;
+  activeThemeMode?: ThemeMode;
   variant?: string;
 }
 
