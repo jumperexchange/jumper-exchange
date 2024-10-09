@@ -42,7 +42,7 @@ export const getAvatarMask = ({
 }: GetAvatarMask) => {
   const badgeRadius =
     badgeGap !== undefined
-      ? (badgeSize + badgeGap * 2) / 2
+      ? (badgeSize + badgeGap) / 2
       : (badgeSize + badgeSize / 4) / 2; // Badge radius with default gap if not provided
   const badgeOffsetX =
     avatarSize - badgeSize / 2 + (!!badgeOffset?.x ? badgeOffset?.x : 0);
