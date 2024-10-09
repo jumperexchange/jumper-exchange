@@ -7,11 +7,15 @@ import { Badge, Box, Skeleton, Stack, useTheme } from '@mui/material';
 function Portfolio() {
   const theme = useTheme();
 
-  const { isSuccess, refetch, data } = useTokens();
+  const { isSuccess, refetch, isFetching, data } = useTokens();
 
   return (
     <>
-      <TotalBalance refetch={refetch} isComplete={isSuccess} />
+      <TotalBalance
+        refetch={refetch}
+        isFetching={isFetching}
+        isComplete={isSuccess}
+      />
       <Stack spacing={1}>
         {data.length == 0 &&
           Array.from({ length: 10 }, () => 42).map((_, index) => (

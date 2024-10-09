@@ -11,18 +11,16 @@ import {
   useTheme,
   darken,
 } from '@mui/material';
-import Image from 'next/image';
-import type { ExtendedTokenAmountWithChain } from '@/utils/getTokens';
 import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
 import { useMainPaths } from '@/hooks/useMainPaths';
 import { useParams, useRouter } from 'next/navigation';
 import { useMenuStore } from 'src/stores/menu';
 import TokenImage from '@/components/Portfolio/TokenImage';
-import { getContrastAlphaColor } from 'src/utils/colors';
+import type { CacheToken } from '@/types/portfolio';
 
 interface PortfolioTokenChainButtonProps {
-  token: ExtendedTokenAmountWithChain;
+  token: CacheToken;
 }
 
 function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {

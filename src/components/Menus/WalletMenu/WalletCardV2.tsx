@@ -31,6 +31,7 @@ import {
   WalletChainAvatar,
 } from './WalletCardV2.style';
 import { WalletCardV2Stack } from '@/components/Menus/WalletMenu/WalletCardV2Stack';
+import { usePortfolioStore } from '@/stores/portfolio';
 
 interface WalletCardV2Props {
   account: Account;
@@ -47,6 +48,9 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
   const activeChain = useMemo(
     () => chains?.find((chainEl) => chainEl.id === account.chainId),
     [chains, account.chainId],
+  );
+  const deleteCacheTokenAddress = usePortfolioStore(
+    (state) => state.deleteCacheTokenAddress,
   );
   const { closeAllMenus, setSnackbarState } = useMenuStore((state) => state);
 
@@ -114,7 +118,12 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
   };
 
   const handleDisconnect = () => {
+    if (!account?.address) {
+      return;
+    }
+
     disconnectWallet(account);
+    deleteCacheTokenAddress(account.address);
     trackEvent({
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.DisconnectWallet,
@@ -170,7 +179,9 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
           </Button>
           <ButtonSecondary
             size="small"
-            onClick={() => handleDisconnect()}
+            onClick={() => {
+              handleDisconnect();
+            }}
             sx={{ minWidth: 'auto' }}
           >
             <PowerSettingsNewIcon sx={{ height: '20px' }} />

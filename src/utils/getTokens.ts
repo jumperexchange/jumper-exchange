@@ -10,10 +10,10 @@ import {
   getTokens as LifiGetTokens,
 } from '@lifi/sdk';
 import { formatUnits } from 'viem';
-import { sortBy, sumBy } from 'lodash';
+import { isEqual, sortBy, sumBy } from 'lodash';
 import { useQueries } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { usePortfolioStore } from '@/stores/portfolio';
+import { getOrCreateMap, usePortfolioStore } from '@/stores/portfolio';
 import type { Account } from '@lifi/wallet-management';
 import { useAccount } from '@lifi/wallet-management';
 
@@ -275,13 +275,21 @@ async function getTokens(
   }
 }
 
+export function arraysEqual(arr1: string[], arr2: string[]): boolean {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+
+  const sortedArr1 = sortBy(arr1);
+  const sortedArr2 = sortBy(arr2);
+
+  return isEqual(sortedArr1, sortedArr2);
+}
+
 export function useTokens() {
   const { accounts } = useAccount();
-  const [cache, setCache, forceRefresh] = usePortfolioStore((state) => [
-    state.cacheTokens,
-    state.setCacheTokens,
-    state.forceRefresh,
-  ]);
+  const { getFormattedCacheTokens, setCacheTokens, lastAddresses } =
+    usePortfolioStore((state) => state);
 
   const handleProgress = (
     account: string,
@@ -293,7 +301,7 @@ export function useTokens() {
     console.log(`Cumulative Price USD: $${totalPriceUSD.toFixed(2)}`);
     console.log(`Fetched Balances this Round:`, fetchedBalances);
 
-    setCache(fetchedBalances);
+    setCacheTokens(account, fetchedBalances);
   };
 
   const queries = useQueries({
@@ -302,31 +310,45 @@ export function useTokens() {
       .map((account) => ({
         queryKey: ['tokens', account.chainType, account.address],
         queryFn: () => getTokens(account, { onProgress: handleProgress }),
-        refetchInterval: 100000 * 60 * 60,
+        // refetchInterval: 100000 * 60 * 60,
       })),
   });
 
   const isSuccess = queries.every(
     (query) => !query.isFetching && query.isSuccess,
   );
+  const isFetching = queries.every((query) => query.isFetching);
   const refetch = () => queries.map((query) => query.refetch());
 
   useEffect(() => {
-    if (!forceRefresh) {
+    if (!accounts) {
       return;
     }
 
+    if (
+      arraysEqual(
+        accounts
+          .filter((account) => account.isConnected && account?.address)
+          .map((account) => account.address!),
+        lastAddresses ?? [],
+      )
+    ) {
+      return;
+    }
+    console.log('refetching coz changes address', accounts);
+
     refetch();
-  }, [forceRefresh]);
+  }, [accounts]);
 
   return {
     queries,
     isSuccess,
+    isFetching,
     refetch,
     data:
-      cache.length === 0
+      getFormattedCacheTokens().cache.length === 0
         ? queries.map((query) => query.data ?? []).flat()
-        : cache,
+        : getFormattedCacheTokens().cache,
   };
 }
 

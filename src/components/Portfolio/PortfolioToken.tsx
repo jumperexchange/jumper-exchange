@@ -33,9 +33,10 @@ import PortfolioTokenChainButton from '@/components/Portfolio/PortfolioTokenChai
 import { useMenuStore } from 'src/stores/menu';
 import TokenImage from '@/components/Portfolio/TokenImage';
 import { capitalize } from 'lodash';
+import type { CacheToken } from '@/types/portfolio';
 
 interface PortfolioTokenProps {
-  token: ExtendedTokenAmountWithChain;
+  token: CacheToken;
 }
 
 function PortfolioToken({ token }: PortfolioTokenProps) {

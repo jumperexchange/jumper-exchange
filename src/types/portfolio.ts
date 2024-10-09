@@ -1,17 +1,38 @@
-import type { ExtendedTokenAmount } from '@/utils/getTokens';
+import type {
+  ExtendedTokenAmount,
+  ExtendedTokenAmountWithChain,
+} from '@/utils/getTokens';
+
+export type CacheToken = Pick<
+  ExtendedTokenAmountWithChain,
+  | 'address'
+  | 'chainId'
+  | 'chainLogoURI'
+  | 'chainName'
+  | 'cumulatedBalance'
+  | 'cumulatedTotalUSD'
+  | 'logoURI'
+  | 'name'
+  | 'priceUSD'
+  | 'symbol'
+  | 'totalPriceUSD'
+> & {
+  chains: CacheToken[];
+};
 
 export interface PortfolioProps {
-  lastTotalValue: number;
-  totalValue: number;
+  lastTotalValue: number | null;
   lastAddresses?: string[];
-  lastDate: number;
+  lastDate: number | null;
   forceRefresh: boolean;
-  cacheTokens: ExtendedTokenAmount[];
+  cacheTokens: Map<string, CacheToken[]>;
 }
 export interface PortfolioState extends PortfolioProps {
+  getFormattedCacheTokens(): { totalValue: number; cache: CacheToken[] };
   setLastTotalValue: (portfolioLastValue: number) => void;
   setLastAddresses: (lastAddresses: string[]) => void;
   setLast: (portfolioLastValue: number, lastAddresses: string[]) => void;
   setForceRefresh: (state: boolean) => void;
-  setCacheTokens: (state: ExtendedTokenAmount[]) => void;
+  setCacheTokens: (account: string, state: ExtendedTokenAmount[]) => void;
+  deleteCacheTokenAddress: (account: string) => void;
 }

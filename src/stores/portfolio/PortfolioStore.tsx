@@ -2,31 +2,15 @@ import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
-import type { PortfolioState } from '@/types/portfolio';
+import type { CacheToken, PortfolioState } from '@/types/portfolio';
 import type {
   ExtendedTokenAmount,
   ExtendedTokenAmountWithChain,
 } from '@/utils/getTokens';
-import { sumBy } from 'lodash';
+import { sortBy, sum, sumBy } from 'lodash';
+import { createJSONStorage } from 'zustand/middleware';
 
 // ----------------------------------------------------------------------
-
-type CacheToken = Pick<
-  ExtendedTokenAmountWithChain,
-  | 'address'
-  | 'chainId'
-  | 'chainLogoURI'
-  | 'chainName'
-  | 'cumulatedBalance'
-  | 'cumulatedTotalUSD'
-  | 'logoURI'
-  | 'name'
-  | 'priceUSD'
-  | 'symbol'
-  | 'totalPriceUSD'
-> & {
-  chains: CacheToken[];
-};
 
 function cacheTokenPartialize({
   address,
@@ -61,14 +45,18 @@ function cacheTokenPartialize({
 const defaultSettings = {
   lastAddresses: undefined,
   lastTotalValue: null,
-  totalValue: null,
   lastDate: null,
   forceRefresh: false,
-  cacheTokens: [],
+  cacheTokens: new Map(),
 };
 
-/*--  Use Zustand  --*/
+export function getOrCreateMap<T>(
+  data: Map<string, T> | { [key: string]: T },
+): Map<string, T> {
+  return data instanceof Map ? data : new Map(Object.entries(data));
+}
 
+/*--  Use Zustand  --*/
 export const usePortfolioStore = createWithEqualityFn(
   persist(
     (set, get) => ({
@@ -86,10 +74,40 @@ export const usePortfolioStore = createWithEqualityFn(
           forceRefresh: state,
         });
       },
-      setCacheTokens(state: ExtendedTokenAmount[]) {
+      deleteCacheTokenAddress(account: string) {
+        const cacheTokens = getOrCreateMap(get().cacheTokens);
+        cacheTokens.delete(account);
+
         set({
-          cacheTokens: state,
-          totalValue: sumBy(state, 'cumulatedTotalUSD'),
+          cacheTokens,
+        });
+      },
+      getFormattedCacheTokens() {
+        const cacheTokens = getOrCreateMap(get().cacheTokens);
+        const accountsValues = Array.from(cacheTokens.values());
+        console.log(
+          'before summing',
+          accountsValues,
+          cacheTokens,
+          get().cacheTokens,
+        );
+        let totalValue = sum(
+          accountsValues.map((account) => {
+            return sumBy(account, 'cumulatedTotalUSD');
+          }),
+        );
+
+        return {
+          totalValue,
+          cache: sortBy(accountsValues.flat(), 'cumulatedTotalUSD').reverse(),
+        };
+      },
+      setCacheTokens(account: string, tokens: ExtendedTokenAmount[]) {
+        const cacheTokens = getOrCreateMap(get().cacheTokens);
+        cacheTokens.set(account, tokens.map(cacheTokenPartialize));
+
+        set({
+          cacheTokens,
         });
       },
       setLastTotalValue: (portfolioLastValue: number) => {
@@ -106,22 +124,22 @@ export const usePortfolioStore = createWithEqualityFn(
     {
       name: 'jumper-portfolio', // name of the item in the storage (must be unique)
       version: 0,
-      // TODO: Optimize this typing
-      partialize: ({
-        cacheTokens,
-        ...state
-      }: {
-        [x: string]: any;
-        cacheTokens: ExtendedTokenAmountWithChain[];
-      }) => {
-        if (cacheTokens?.length > 0) {
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state: PortfolioState) => {
+        const { cacheTokens, ...rest } = state;
+        if (cacheTokens.size > 0) {
           return {
-            ...state,
-            cacheTokens: cacheTokens.map(cacheTokenPartialize),
+            ...rest,
+            cacheTokens: Array.from(cacheTokens.entries()).reduce(
+              (acc, [account, tokens]) => {
+                acc[account] = tokens;
+                return acc;
+              },
+              {} as { [key: string]: CacheToken[] },
+            ),
           };
         }
-
-        return state;
+        return rest;
       },
     },
   ) as unknown as StateCreator<PortfolioState, [], [], PortfolioState>,
