@@ -138,7 +138,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           avatarSize={88} // Dynamic avatar size
           badgeSize={32} // Dynamic badge size
           badgeOffset={{ x: 9.5, y: 9.5 }}
-          badgeGap={10.5}
+          badgeGap={6}
           alt={`${account.connector?.name} avatar`}
           badgeAlt={`${activeChain?.name} avatar`}
         />
