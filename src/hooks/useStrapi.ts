@@ -6,8 +6,8 @@ import {
   STRAPI_PARTNER_THEMES,
 } from '@/const/strapiContentKeys';
 import type { StrapiMeta, StrapiResponseData } from '@/types/strapi';
+import type { Account } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
-import type { Account } from './useAccounts';
 
 export interface UseStrapiProps<T> {
   data: StrapiResponseData<T>;

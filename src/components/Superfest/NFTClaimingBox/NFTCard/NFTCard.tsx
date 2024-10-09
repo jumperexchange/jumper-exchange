@@ -1,4 +1,4 @@
-import { ChainId } from '@lifi/types';
+import { ChainId } from '@lifi/sdk';
 import Image from 'next/image';
 import { Button } from 'src/components/Button';
 import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';

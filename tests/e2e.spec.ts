@@ -107,7 +107,7 @@ test.describe('Jumper full e2e flow', () => {
     expect(await page.url()).toBe(profileUrl);
     await page.locator('.profile-page').isVisible();
     await page
-      .locator('xpath=(//div[@class="MuiBox-root mui-vyka93"])[1]')
+      .locator('xpath=(//div[@class="MuiBox-root mui-1t1c9pj"])[1]')
       .click();
 
     await expect(missionTitle).toBeVisible({ timeout: 15000 });
@@ -115,19 +115,17 @@ test.describe('Jumper full e2e flow', () => {
 
   test('Should be able to navigate to the Jumper Learn', async ({ page }) => {
     const sectionName = [
-      'Announcement',
-      'Partner',
-      'Bridge',
-      'Swap',
+      'Announcements',
+      'Partnerships',
       'Tutorial',
       'Knowledge',
     ];
     const socialNetworks = ['LinkedIn', 'Facebook', 'X'];
-    const jumperIsLiveOnSolanaArticlet = await page.locator(
-      'xpath=//h2[normalize-space(text())="Jumper is Live on Solana!"]',
+    const blogArticle = await page.locator(
+      'xpath=//div[@class="MuiBox-root mui-8r1wue"]',
     );
     const articleTitle = await page.locator(
-      'xpath=//h2[normalize-space(text())="The most awaited release is here, Jumper is live on Solana!"]',
+      'xpath=(//h1[contains(@class,"MuiTypography-root MuiTypography-h1")])[1]',
     );
     let learnUrl = `${await page.url()}learn`;
     await openOrCloseMainMenu(page);
@@ -137,7 +135,7 @@ test.describe('Jumper full e2e flow', () => {
     await page.waitForLoadState('load');
     await page.locator('.learn-page').isVisible();
     sectionOnTheBlogPage(page, sectionName);
-    await jumperIsLiveOnSolanaArticlet.click();
+    await blogArticle.click();
     await page.waitForLoadState('load');
     await expect(articleTitle).toBeVisible();
     checkSocialNetworkIcons(page, socialNetworks);

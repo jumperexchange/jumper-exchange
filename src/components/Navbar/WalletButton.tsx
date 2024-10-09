@@ -1,10 +1,13 @@
 'use client';
-import { useAccounts } from '@/hooks/useAccounts';
 import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
 import { walletDigest } from '@/utils/walletDigest';
-import type { Chain } from '@lifi/types';
-import { getConnectorIcon } from '@lifi/wallet-management';
+import type { Chain } from '@lifi/sdk';
+import {
+  getConnectorIcon,
+  useAccount,
+  useWalletMenu,
+} from '@lifi/wallet-management';
 import { Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,16 +16,14 @@ import { ConnectButton, WalletMenuButton } from './WalletButton.style';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const { t } = useTranslation();
   const { isSuccess } = useChains();
+  const { openWalletMenu } = useWalletMenu();
 
-  const {
-    openWalletSelectMenu,
-    setWalletSelectMenuState,
-    openWalletMenu,
-    setWalletMenuState,
-  } = useMenuStore((state) => state);
+  const { openWalletMenu: _openWalletMenu, setWalletMenuState } = useMenuStore(
+    (state) => state,
+  );
 
   const _walletDigest = useMemo(() => {
     return walletDigest(account?.address);
@@ -33,12 +34,8 @@ export const WalletButtons = () => {
     [chains, account?.chainId],
   );
 
-  const handleWalletSelectClick = () => {
-    setWalletSelectMenuState(!openWalletSelectMenu);
-  };
-
   const handleWalletMenuClick = () => {
-    setWalletMenuState(!openWalletMenu);
+    setWalletMenuState(!_openWalletMenu);
   };
 
   return (
@@ -49,7 +46,7 @@ export const WalletButtons = () => {
           id="connect-wallet-button"
           onClick={(event) => {
             event.stopPropagation();
-            handleWalletSelectClick();
+            openWalletMenu();
           }}
         >
           <Typography
@@ -72,14 +69,14 @@ export const WalletButtons = () => {
         >
           {isSuccess && activeChain ? (
             <AvatarBadge
-              avatarSrc={getConnectorIcon(account.connector)}
-              badgeSrc={activeChain?.logoURI || ''}
+              avatarAlt="Wallet avatar"
               avatarSize={32}
+              avatarSrc={getConnectorIcon(account.connector)}
+              badgeAlt={`${activeChain?.name} avatar`}
               badgeSize={12}
-              alt="Wallet avatar"
+              badgeSrc={activeChain?.logoURI || ''}
               badgeOffset={{ x: 4, y: 4 }}
               badgeGap={5}
-              badgeAlt={`${activeChain?.name} avatar`}
             />
           ) : null}
           <Typography

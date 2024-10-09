@@ -1,7 +1,7 @@
+import type { ThemeMode } from '@/types/theme';
 import { WalletButtons } from '../Navbar/WalletButton';
 import { Widget } from '../Widgets/Widget';
 import { BlogWidgetHeader } from './BlogWidget.style';
-import type { ThemeModesSupported } from '@/types/settings';
 
 export interface BlogWidgetProps {
   fromChain?: number;
@@ -10,7 +10,7 @@ export interface BlogWidgetProps {
   toToken?: string;
   fromAmount?: string;
   allowChains?: string;
-  activeThemeMode?: ThemeModesSupported;
+  activeThemeMode?: ThemeMode;
 }
 
 export const BlogWidget = ({

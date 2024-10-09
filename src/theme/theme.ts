@@ -303,6 +303,16 @@ const themeCustomized = createTheme({
         },
       },
     },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: 'inherit',
+          '&:hover': {
+            color: 'inherit',
+          },
+        },
+      },
+    },
     MuiTypography: {
       defaultProps: {
         variantMapping: {
@@ -597,8 +607,7 @@ export const lightTheme = createTheme(
     palette: {
       mode: 'light',
       background: {
-        default:
-          'linear-gradient(180deg, #F9F5FF 0%, #F3EBFF 49.48%, #F9F5FF 99.48%)',
+        default: '#FCFAFF',
       },
       text: {
         primary: '#000',
@@ -714,8 +723,7 @@ export const darkTheme = createTheme(
     palette: {
       mode: 'dark',
       background: {
-        default:
-          'linear-gradient(180deg, #000000 0%, #0C001F 49.48%, #000000 99.48%)', //'#241D52',
+        default: '#120F29', //'#241D52',
       },
       text: {
         primary: '#fff',

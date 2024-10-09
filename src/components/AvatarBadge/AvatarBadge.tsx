@@ -12,30 +12,31 @@ export interface BadgeOffsetProps {
 }
 
 type AvatarBadgeProps = {
+  avatarAlt: string;
+  avatarSize: number;
   avatarSrc?: string;
+  badgeAlt: string;
+  badgeSize: number;
   badgeSrc?: string;
   badgeOffset?: BadgeOffsetProps;
-  avatarSize: number;
   badgeGap?: number;
-  badgeSize: number;
-  alt: string;
-  badgeAlt: string;
 };
 
 const AvatarBadge: React.FC<AvatarBadgeProps> = ({
+  avatarAlt,
+  avatarSize,
   avatarSrc,
+  badgeAlt,
+  badgeSize,
   badgeSrc,
   badgeOffset,
   badgeGap,
-  avatarSize,
-  badgeSize,
-  alt,
-  badgeAlt,
 }) => {
   return (
     <StyledBadge
       overlap="circular"
       badgeOffset={badgeOffset}
+      avatarSize={avatarSize}
       // anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       badgeContent={
         <StyledBadgeAvatar src={badgeSrc} alt={badgeAlt} badgeSize={badgeSize}>
@@ -45,7 +46,7 @@ const AvatarBadge: React.FC<AvatarBadgeProps> = ({
     >
       <StyledAvatar
         src={avatarSrc}
-        alt={alt}
+        alt={avatarAlt}
         avatarSize={avatarSize}
         badgeSize={badgeSize}
         badgeOffset={{ x: badgeOffset?.x, y: badgeOffset?.y }}

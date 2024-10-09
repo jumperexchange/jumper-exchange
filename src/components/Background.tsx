@@ -1,12 +1,11 @@
 'use client';
+import { useThemeStore } from '@/stores/theme';
 import { styled } from '@mui/material/styles';
-import React from 'react';
 import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
   BackgroundGradientTopCenter,
 } from './BackgroundGradient';
-import { useSettingsStore } from '@/stores/settings';
 
 export interface BackgroundContainerProps {
   variant?: 'outlined';
@@ -20,7 +19,7 @@ const BackgroundContainer = styled('div', {
 })(({ theme }) => ({}));
 
 function Background() {
-  const configTheme = useSettingsStore((state) => state.configTheme);
+  const configTheme = useThemeStore((state) => state.configTheme);
 
   return (
     <BackgroundContainer>
