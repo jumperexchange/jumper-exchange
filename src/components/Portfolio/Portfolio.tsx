@@ -1,8 +1,8 @@
-import { Box, Skeleton, Stack, Badge, useTheme } from '@mui/material';
-import TotalBalance from '@/components/Portfolio/TotalBalance';
 import { WalletCardContainer } from '@/components/Menus';
 import PortfolioToken from '@/components/Portfolio/PortfolioToken';
+import TotalBalance from '@/components/Portfolio/TotalBalance';
 import { useTokens } from '@/utils/getTokens';
+import { Badge, Box, Skeleton, Stack, useTheme } from '@mui/material';
 
 function Portfolio() {
   const theme = useTheme();

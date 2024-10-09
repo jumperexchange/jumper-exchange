@@ -9,14 +9,14 @@ import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButto
 import { useAccounts } from '@/hooks/useAccounts';
 import { usePortfolioStore } from '@/stores/portfolio';
 import { currencyFormatter } from '@/utils/formatNumbers';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Stack, Tooltip, Typography } from '@mui/material';
 import { isEqual } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshCircleIcon } from './RefreshCircleIcon';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
