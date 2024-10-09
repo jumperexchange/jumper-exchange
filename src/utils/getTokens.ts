@@ -8,9 +8,10 @@ import { formatUnits } from 'viem';
 import type { Token, TokensResponse } from '@lifi/widget';
 import type { Account } from '@/hooks/useAccounts';
 import { useAccounts } from '@/hooks/useAccounts';
-import { sumBy } from 'lodash';
+import { sortBy, sumBy } from 'lodash';
 import { useQueries } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { usePortfolioStore } from '@/stores/portfolio';
 
 export interface ExtendedTokenAmountWithChain extends ExtendedTokenAmount {
   chainLogoURI?: string;
@@ -33,18 +34,6 @@ function getBalance(tb: Partial<TokenAmount>): number {
   return tb?.amount && tb?.decimals
     ? Number(formatUnits(tb.amount, tb.decimals))
     : 0;
-}
-
-// Define the ResultTokenBalance interface as per your specifications
-export interface ResultTokenBalance {
-  symbol: string;
-  decimals: number;
-  name: string;
-  coinKey?: string; // Assuming CoinKey is a string; adjust as needed
-  logoURI?: string;
-  address: string;
-  priceUSD: string;
-  amount?: bigint;
 }
 
 // Constants
@@ -75,7 +64,7 @@ function fetchAllTokensBalanceByChain(
     cumulativePriceUSD: number,
     fetchedBalances: ExtendedTokenAmount[],
   ) => void,
-  handleComplete: () => void,
+  handleComplete: (combinedWallet: ExtendedTokenAmountWithChain[]) => void,
 ): NodeJS.Timeout {
   let totalPriceUSD: number = 0;
   let round = 1;
@@ -181,9 +170,10 @@ function fetchAllTokensBalanceByChain(
           ],
         };
 
-        existingToken.chains.sort(
-          (a, b) => (b.totalPriceUSD || 0) - (a.totalPriceUSD || 0),
-        );
+        existingToken.chains = sortBy(
+          existingToken.chains,
+          'totalPriceUSD',
+        ).reverse();
 
         existingToken.cumulatedBalance = sumBy(
           existingToken.chains,
@@ -207,7 +197,10 @@ function fetchAllTokensBalanceByChain(
     }
 
     // Pass the cumulative sum, cumulative price, and current state of the symbolMap to onProgress
-    const combinedBalances = Object.values(symbolMap);
+    const combinedBalances = sortBy(
+      Object.values(symbolMap),
+      'totalPriceUSD',
+    ).reverse();
 
     onProgress(account, round, totalPriceUSD, combinedBalances);
 
@@ -219,8 +212,9 @@ function fetchAllTokensBalanceByChain(
     if (Object.values(tokensByChain).every((tokens) => tokens.length === 0)) {
       // If all tokens are fetched, clear the interval and stop
       clearInterval(intervalId!);
-      handleComplete();
-      console.log('\nAll tokens have been successfully fetched!');
+      handleComplete(combinedBalances);
+      console.log(`
+All tokens have been successfully fetched for the account ${account}!`);
     }
   };
 
@@ -248,7 +242,7 @@ interface Events {
 async function getTokens(
   account: Pick<Account, 'chainType' | 'address'>,
   events: Events,
-): Promise<NodeJS.Timeout | undefined> {
+): Promise<undefined | ExtendedTokenAmountWithChain[]> {
   try {
     const chains = await getChains({
       chainTypes: [account.chainType],
@@ -258,13 +252,13 @@ async function getTokens(
     });
     return new Promise((resolve, reject) => {
       try {
-        const intervalId = fetchAllTokensBalanceByChain(
+        fetchAllTokensBalanceByChain(
           account.address!,
           chains,
           tokens,
           events.onProgress,
-          () => {
-            resolve(intervalId);
+          (combinedBalance) => {
+            resolve(combinedBalance);
           },
         );
       } catch (error) {
@@ -278,10 +272,11 @@ async function getTokens(
 
 export function useTokens() {
   const { accounts } = useAccounts();
-  const [data, setData] = useState<ExtendedTokenAmount[]>([]);
-  const [cumulativePriceUSD, setCumulativePriceUSD] = useState<{
-    [key: string]: number;
-  }>({});
+  const [cache, setCache, forceRefresh] = usePortfolioStore((state) => [
+    state.cacheTokens,
+    state.setCacheTokens,
+    state.forceRefresh,
+  ]);
 
   const handleProgress = (
     account: string,
@@ -289,29 +284,11 @@ export function useTokens() {
     totalPriceUSD: number,
     fetchedBalances: ExtendedTokenAmount[],
   ) => {
-    console.log(`\n** Round ${round} **`);
+    console.log(`\n** Round ${round} Account: ${account} **`);
     console.log(`Cumulative Price USD: $${totalPriceUSD.toFixed(2)}`);
     console.log(`Fetched Balances this Round:`, fetchedBalances);
 
-    setCumulativePriceUSD((prev) => ({ ...prev, [account]: totalPriceUSD }));
-    setData((prev) => {
-      const updatedData = prev.map((item) => {
-        const newItem = fetchedBalances.find(
-          (balance) => balance.symbol === item.symbol,
-        );
-        return newItem ? newItem : item;
-      });
-
-      fetchedBalances.forEach((balance) => {
-        if (!updatedData.some((item) => item.symbol === balance.symbol)) {
-          updatedData.push(balance);
-        }
-      });
-
-      return updatedData.sort(
-        (a, b) => (b.cumulatedTotalUSD || 0) - (a.cumulatedTotalUSD || 0),
-      );
-    });
+    setCache(fetchedBalances);
   };
 
   const queries = useQueries({
@@ -320,8 +297,7 @@ export function useTokens() {
       .map((account) => ({
         queryKey: ['tokens', account.chainType, account.address],
         queryFn: () => getTokens(account, { onProgress: handleProgress }),
-        refetchOnWindowFocus: false,
-        retry: false,
+        refetchInterval: 100000 * 60 * 60,
       })),
   });
 
@@ -330,17 +306,22 @@ export function useTokens() {
   );
   const refetch = () => queries.map((query) => query.refetch());
 
-  // Disable when fetch is cached
   useEffect(() => {
+    if (!forceRefresh) {
+      return;
+    }
+
     refetch();
-  }, []);
+  }, [forceRefresh]);
 
   return {
     queries,
     isSuccess,
     refetch,
-    cumulativePriceUSD,
-    data,
+    data:
+      cache.length === 0
+        ? queries.map((query) => query.data ?? []).flat()
+        : cache,
   };
 }
 

@@ -7,18 +7,11 @@ import { useTokens } from '@/utils/getTokens';
 function Portfolio() {
   const theme = useTheme();
 
-  const { queries, isSuccess, refetch, cumulativePriceUSD, data } = useTokens();
+  const { isSuccess, refetch, data } = useTokens();
 
   return (
     <>
-      <TotalBalance
-        refetch={refetch}
-        isComplete={isSuccess}
-        totalValue={Object.values(cumulativePriceUSD).reduce(
-          (sum, value) => sum + value,
-          0,
-        )}
-      />
+      <TotalBalance refetch={refetch} isComplete={isSuccess} />
       <Stack spacing={1}>
         {data.length == 0 &&
           Array.from({ length: 10 }, () => 42).map((_, index) => (

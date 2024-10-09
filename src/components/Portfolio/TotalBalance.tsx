@@ -4,8 +4,6 @@ import {
   TotalValue,
   VariationValue,
 } from '@/components/Portfolio/Portfolio.styles';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
 import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
 import { useAccounts } from '@/hooks/useAccounts';
@@ -14,10 +12,11 @@ import { currencyFormatter } from '@/utils/formatNumbers';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Stack, Tooltip, Typography } from '@mui/material';
 import { isEqual } from 'lodash';
-import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshCircleIcon } from './RefreshCircleIcon';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -26,23 +25,23 @@ function has24HoursPassed(lastDate: number): boolean {
 }
 
 interface TotalBalanceProps {
-  totalValue: number;
   isComplete: boolean;
   refetch: () => void;
 }
 
-function TotalBalance({
-  isComplete = false,
-  refetch,
-  totalValue,
-}: TotalBalanceProps) {
+function TotalBalance({ isComplete = false, refetch }: TotalBalanceProps) {
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
   const { t } = useTranslation();
   const { accounts } = useAccounts();
   const portfolio = usePortfolioStore((state) => state);
+  const { totalValue } = portfolio;
 
   useEffect(() => {
+    if (!isComplete) {
+      return;
+    }
+
     const addresses = accounts
       .filter((a) => !!a?.address)
       .map(({ address }) => address) as string[];
@@ -51,18 +50,16 @@ function TotalBalance({
       return;
     }
 
-    if (!portfolio.lastDate) {
-      portfolio.setLast(totalValue, addresses);
-    }
-
     if (!isEqual(portfolio.lastAddresses, addresses)) {
       portfolio.setLast(totalValue, addresses);
       return;
     }
 
-    if (has24HoursPassed(portfolio.lastDate)) {
-      portfolio.setLast(totalValue, addresses);
+    if (!has24HoursPassed(portfolio.lastDate)) {
+      return;
     }
+
+    portfolio.setLast(totalValue, addresses);
 
     const differenceValue = totalValue - portfolio.lastTotalValue;
     const differencePercent =
@@ -74,7 +71,7 @@ function TotalBalance({
 
     setDifferenceValue(differenceValue);
     setDifferencePercent(differencePercent);
-  }, [totalValue]);
+  }, [totalValue, isComplete]);
 
   if (!totalValue) {
     return <TotalBalanceSkeleton />;
@@ -143,19 +140,15 @@ function TotalBalance({
       </Box>
       <Stack spacing={1}>
         <TotalValue>{currencyFormatter('en').format(totalValue)}</TotalValue>
-
-        {/* TODO: make it dynamic based on localStorage info */}
-        {/* <Stack direction="row" gap="0.5rem" justifyContent="space-between">
-          {isComplete && differenceValue !== 0 && (
+        <Stack direction="row" gap="0.5rem" justifyContent="space-between">
+          {differenceValue !== 0 && (
             <Stack direction="row" spacing="4px">
               <VariationValue
                 color={(theme) =>
                   theme.palette[differenceValue > 0 ? 'success' : 'error'].main
                 }
               >
-                {
-                differenceValue > 0 
-                ? (
+                {differenceValue > 0 ? (
                   <ArrowUpwardIcon fontSize="inherit" />
                 ) : (
                   <ArrowDownwardIcon />
@@ -167,7 +160,7 @@ function TotalBalance({
               </VariationValue>
             </Stack>
           )}
-        </Stack> */}
+        </Stack>
       </Stack>
     </WalletCardContainer>
   );
