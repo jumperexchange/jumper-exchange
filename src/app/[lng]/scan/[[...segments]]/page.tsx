@@ -18,7 +18,8 @@ export async function generateMetadata({
   const [slug, address] = segments;
 
   const title = `Jumper Scan | ${slug && address ? `${slugToTitle[slug]} ${address}` : 'Blockchain Explorer'}`;
-  const description = 'Jumper Scan is a blockchain explorer that allows you to search and explore transactions, blocks, and wallets on multiple blockchains.';
+  const description =
+    'Jumper Scan is a blockchain explorer that allows you to search and explore transactions, blocks, and wallets on multiple blockchains.';
   const canonical = `${process.env.NEXT_PUBLIC_SITE_URL}/scan${segments.length === 0 ? '' : `/${segments.join('/')}`}`;
 
   return {
@@ -36,7 +37,7 @@ export async function generateMetadata({
     twitter: {
       title,
       description,
-    }
+    },
   };
 }
 
