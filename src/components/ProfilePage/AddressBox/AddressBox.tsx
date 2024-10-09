@@ -15,6 +15,9 @@ import {
   PassImageBox,
   ProfileIconButton,
 } from './AddressBox.style';
+import useImageStatus from 'src/hooks/useImageStatus';
+import { DEFAULT_EFFIGY } from 'src/const/urls';
+import { walletDigest } from 'src/utils/walletDigest';
 
 interface AddressBoxProps {
   address?: string;
@@ -30,6 +33,8 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
+  const imgLink = `https://effigy.im/a/${address}.png`;
+  const isImageValid = useImageStatus(imgLink);
 
   const handleCopyButton = () => {
     address && navigator.clipboard.writeText(address);
@@ -42,30 +47,15 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
         ? `${ensName.slice(0, 13)}...eth`
         : ensName;
     }
-    return address && isEVM
-      ? address?.slice(0, 6) +
-          '...' +
-          address?.slice(address.length - 4, address.length)
-      : '0x0000...0000';
+    return address && isEVM ? walletDigest(address) : '0x00000...00000';
   };
 
-  const imgLink = imageLink
-    ? imageLink
-    : address && isEVM
-      ? `https://effigy.im/a/${address}.png`
-      : `https://effigy.im/a/${'jumper.eth'}.png`;
-
-  const effigyLink =
-    address && isEVM
-      ? `https://effigy.im/a/${address}.png`
-      : `https://effigy.im/a/${'jumper.eth'}.png`;
-
   return (
-    <AddressBoxContainer imgUrl={effigyLink}>
+    <AddressBoxContainer imgUrl={isImageValid ? imgLink : DEFAULT_EFFIGY}>
       <PassImageBox>
         <Image
           alt="Effigy Wallet Icon"
-          src={imgLink}
+          src={isImageValid ? imgLink : DEFAULT_EFFIGY}
           width={128}
           height={128}
           priority={false}

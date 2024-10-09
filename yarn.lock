@@ -5042,6 +5042,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4.17.7":
+  version: 4.17.10
+  resolution: "@types/lodash@npm:4.17.10"
+  checksum: 10/10fe24a93adc6048cb23e4135c1ed1d52cc39033682e6513f4f51b74a9af6d7a24fbea92203c22dc4e01e35f1ab3aa0fd0a2b487e8a4a2bbdf1fc05970094066
+  languageName: node
+  linkType: hard
+
 "@types/ms@npm:*":
   version: 0.7.34
   resolution: "@types/ms@npm:0.7.34"
@@ -9814,6 +9821,7 @@ __metadata:
     "@strapi/blocks-react-renderer": "npm:^1.0.1"
     "@tanstack/react-query": "npm:^5.56.2"
     "@types/gtag.js": "npm:^0.0.20"
+    "@types/lodash": "npm:^4.17.7"
     "@types/node": "npm:^22.7.4"
     "@types/react": "npm:^18.3.10"
     "@types/react-dom": "npm:^18.3.0"

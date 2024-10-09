@@ -7,12 +7,12 @@ import { useThemeStore } from '@/stores/theme';
 import type { LanguageKey } from '@/types/i18n';
 import { EVM } from '@lifi/sdk';
 import { useWalletMenu } from '@lifi/wallet-management';
-import type { WidgetConfig } from '@lifi/widget';
+import type { FormState, WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
-import { useRouter } from 'next/navigation';
-import { useEffect, useMemo } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/config/tokens';
 import { publicRPCList } from 'src/const/rpcList';
@@ -31,6 +31,7 @@ import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
+import { useWidgetCacheStore } from '@/stores/widgetCache';
 
 export function Widget({
   starterVariant,
@@ -47,8 +48,10 @@ export function Widget({
     state.widgetTheme,
     state.configTheme,
   ]);
+  const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const searchParams = useSearchParams();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
@@ -58,14 +61,26 @@ export function Widget({
     enabled: partnerName === ThemesMap.Memecoins,
   });
   const { openWalletMenu } = useWalletMenu();
+  const widgetCache = useWidgetCacheStore((state) => state);
 
   const router = useRouter();
 
+  // @ts-expect-error
+  fromAmount = fromAmount || searchParams.get('fromAmount');
+
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
-    router.prefetch('/gas', { kind: PrefetchKind.FULL });
-    router.prefetch('/buy', { kind: PrefetchKind.FULL });
-  });
+    router.prefetch('/gas/', { kind: PrefetchKind.FULL });
+  }, []);
+
+  useEffect(() => {
+    formRef?.current?.setFieldValue('fromChain', widgetCache.fromChainId, {
+      setUrlSearchParam: true,
+    });
+    formRef?.current?.setFieldValue('fromToken', widgetCache.fromToken, {
+      setUrlSearchParam: true,
+    });
+  }, [widgetCache]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
@@ -229,7 +244,11 @@ export function Widget({
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly fallback={<WidgetSkeleton config={config} />}>
-        <LiFiWidget integrator={config.integrator} config={config} />
+        <LiFiWidget
+          integrator={config.integrator}
+          config={config}
+          formRef={formRef}
+        />
       </ClientOnly>
     </WidgetWrapper>
   );

@@ -53,7 +53,6 @@ export const MenuDesktop = ({
       onClickAway={(event) => {
         setTimeout(() => {
           event.stopPropagation();
-          event.preventDefault();
           open && closeAllMenus();
         }, 150);
       }}

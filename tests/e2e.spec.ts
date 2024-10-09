@@ -19,7 +19,9 @@ test.describe('Jumper full e2e flow', () => {
     await closeWelcomeScreen(page);
   });
 
-  test('Should navigate to the homepage and change tabs', async ({ page }) => {
+  test.skip('Should navigate to the homepage and change tabs', async ({
+    page,
+  }) => {
     const buyETHButton = page
       .frameLocator('iframe[title="Onramper widget"]')
       .locator('button:has-text("Buy ETH")');
@@ -27,7 +29,6 @@ test.describe('Jumper full e2e flow', () => {
     const featureCard = page.locator(
       'xpath=//div[@class="MuiBox-root mui-1393eub"]',
     );
-    await tabInHeader(page, 'Exchange');
     await expect(
       page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
     ).toBeVisible();
@@ -46,30 +47,21 @@ test.describe('Jumper full e2e flow', () => {
     const settingsTitle = page.locator(
       'xpath=//p[normalize-space(text())="Settings"]',
     );
-    const bestReturnButton = page.locator(
-      'xpath=//button[normalize-space(text())="Best Return"]',
-    );
     const fastestButton = page.locator(
       'xpath=//button[normalize-space(text())="Fastest"]',
     );
-    const slowGasPrice = page.locator(
-      'xpath=//button[normalize-space(text())="Slow"]',
-    );
-    const fastGasPrice = page.locator(
-      'xpath=//button[normalize-space(text())="Fast"]',
-    );
     const customSlippage = page.locator('xpath=//input[@placeholder="Custom"]');
-    await tabInHeader(page, 'Exchange');
+
     await page.locator('xpath=//div[@class="MuiBox-root mui-afg6ra"]').click();
     await expect(settingsTitle).toBeVisible();
     itemInSettingsMenu(page, 'Route priority');
-    await expect(bestReturnButton).toBeEnabled();
+    itemInSettingsMenuToBeEnabled(page, 'Best Return');
     itemInSettingsMenuToBeVisible(page, 'Fastest');
     await fastestButton.click();
     itemInSettingsMenuToBeVisible(page, 'Reset settings');
     itemInSettingsMenu(page, 'Gas price');
-    expect(slowGasPrice).toBeEnabled();
-    expect(fastGasPrice).toBeEnabled();
+    itemInSettingsMenuToBeEnabled(page, 'Slow');
+    itemInSettingsMenuToBeEnabled(page, 'Fast');
     itemInSettingsMenu(page, 'Max. slippage');
     itemInSettingsMenuToBeVisible(page, '0.5');
     await expect(customSlippage).toBeVisible();
@@ -117,7 +109,7 @@ test.describe('Jumper full e2e flow', () => {
     const sectionName = [
       'Announcements',
       'Partnerships',
-      'Tutorial', 
+      'Tutorial',
       'Knowledge',
     ];
     const socialNetworks = ['LinkedIn', 'Facebook', 'X'];

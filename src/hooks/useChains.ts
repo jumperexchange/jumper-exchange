@@ -1,5 +1,5 @@
-import { ChainType, getChains } from '@lifi/sdk';
 import type { ChainId, ExtendedChain } from '@lifi/sdk';
+import { ChainType, getChains } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
 import { getChainById as getChainByIdHelper } from '@/utils/tokenAndChain';
 

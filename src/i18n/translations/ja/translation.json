@@ -44,7 +44,9 @@
       "explore": "ナビゲーション",
       "copiedMsg": "ウォレットアドレスをコピーしました",
       "walletNotInstalled": "{{wallet}} はインストールされていません。",
-      "connectAnotherWallet": "別のウォレットを接続する"
+      "connectAnotherWallet": "別のウォレットを接続する",
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "ライトモード",

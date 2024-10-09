@@ -44,7 +44,9 @@
       "explore": "Explorer",
       "copiedMsg": "Adresse du portefeuille copiée",
       "walletNotInstalled": "{{wallet}} n'est pas installé",
-      "connectAnotherWallet": "Connecter un autre portefeuille"
+      "connectAnotherWallet": "Connecter un autre portefeuille",
+      "refreshBalances": "Rafraichir les valeurs",
+      "totalBalance": "Valeur total"
     },
     "themes": {
       "switchToLight": "Basculer en mode clair",

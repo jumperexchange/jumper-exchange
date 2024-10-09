@@ -28,6 +28,7 @@ import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import type { TransformedRoute } from 'src/types/internal';
 import { calcPriceImpact } from 'src/utils/calcPriceImpact';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
+import { usePortfolioStore } from '@/stores/portfolio';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
@@ -55,6 +56,7 @@ export function WidgetEvents() {
 
   const [isMultisigConnectedAlertOpen, setIsMultisigConnectedAlertOpen] =
     useState(false);
+  const setForceRefresh = usePortfolioStore((state) => state.setForceRefresh);
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: RouteExtended) => {
@@ -85,6 +87,9 @@ export function WidgetEvents() {
 
     const onRouteExecutionCompleted = async (route: Route) => {
       if (route.id) {
+        // Refresh portfolio value
+        setForceRefresh(true);
+
         const data = handleTransactionDetails(route, {
           [TrackingEventParameter.Action]: 'execution_completed',
           [TrackingEventParameter.TransactionStatus]: 'COMPLETED',

@@ -133,6 +133,12 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeysEnum.Devs,
       onClick: () => {
         setSubMenuState(MenuKeysEnum.Devs);
+        trackEvent({
+          category: TrackingCategory.MainMenu,
+          action: TrackingAction.OpenMenu,
+          label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
+          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
+        });
       },
     },
     {

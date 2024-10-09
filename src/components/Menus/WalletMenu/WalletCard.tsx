@@ -21,7 +21,7 @@ import {
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Skeleton, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -31,6 +31,7 @@ import {
   WalletCardButtonContainer,
   WalletCardContainer,
 } from './WalletMenu.style';
+import { WalletChainAvatar } from './WalletCardV2.style';
 
 interface WalletCardProps {
   account: Account;
@@ -132,20 +133,22 @@ export const WalletCard = ({ account }: WalletCardProps) => {
 
   return (
     <WalletCardContainer>
-      <Stack direction={'row'} spacing={4} sx={{ margin: 'auto', flexGrow: 1 }}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        sx={{ flexGrow: 1 }}
+      >
         <WalletCardBadge
           overlap="circular"
           className="badge"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           badgeContent={
             activeChain?.logoURI ? (
-              <Avatar
-                size="large"
+              <WalletChainAvatar
                 src={activeChain?.logoURI || ''}
                 alt={'wallet-avatar'}
-              >
-                {/* {activeChain.name[0]} */}
-              </Avatar>
+                sx={{ width: 18, height: 18 }}
+              />
             ) : (
               <Skeleton variant="circular" />
             )
@@ -172,17 +175,17 @@ export const WalletCard = ({ account }: WalletCardProps) => {
               gridColumn: '0/3',
             }}
           >
-            <OpenInNewIcon sx={{ height: '20px' }} />
+            <OpenInNewIcon sx={{ height: '16px' }} />
           </ButtonTransparent>
           <ButtonTransparent
-            size="medium"
+            size="small"
             sx={{
               gridColumn: '2/3',
               gridRow: '2/2',
             }}
             onClick={handleScanButton}
           >
-            <ReceiptLongIcon sx={{ height: '20px' }} />
+            <ReceiptLongIcon sx={{ height: '16px' }} />
           </ButtonTransparent>
           <ButtonSecondary
             size="medium"
@@ -192,7 +195,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
               gridRow: '2/2',
             }}
           >
-            <PowerSettingsNewIcon sx={{ height: '20px' }} />
+            <PowerSettingsNewIcon sx={{ height: '16px' }} />
           </ButtonSecondary>
         </WalletCardButtonContainer>
       </Stack>

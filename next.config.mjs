@@ -25,6 +25,36 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.coingecko.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 's2.coinmarketcap.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.sei.io',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.debank.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'strapi.li.finance',
         port: '',
         pathname: '/uploads/**',
@@ -49,7 +79,19 @@ const nextConfig = {
       // },
       {
         protocol: 'https',
+        hostname: '*.etherscan.io',
+        port: '',
+        pathname: '/token/images/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'resolve.mercle.xyz',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.gravity.xyz',
         port: '',
         pathname: '/**',
       },

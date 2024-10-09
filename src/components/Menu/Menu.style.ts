@@ -44,6 +44,7 @@ export const MenuList = styled(MuiMenuList, {
 })<MenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => ({
   marginTop: 0,
   display: cardsLayout ? 'flex' : 'block',
+  flexDirection: cardsLayout ? 'column' : 'unset',
   justifyContent: cardsLayout ? 'center' : 'unset',
   flexWrap: cardsLayout ? 'wrap' : 'inherit',
   padding: cardsLayout ? theme.spacing(0, 3) : 0,
