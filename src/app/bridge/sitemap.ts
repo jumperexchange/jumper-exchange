@@ -1,8 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { getChainsQuery } from '@/hooks/useChains';
-import coins from '@/utils/getTokens/coins';
 import type { Token } from '@lifi/sdk';
 import { getChainById } from '@/utils/tokenAndChain';
+import coins from '@/utils/coins';
 
 //Optimized function to generate ordered bridge pairs (tokens from different chains)
 const generateBridgeOrderedPairs = (tokens: Token[]) => {
