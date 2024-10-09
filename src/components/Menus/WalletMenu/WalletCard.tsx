@@ -133,14 +133,14 @@ export const WalletCard = ({ account }: WalletCardProps) => {
     <WalletCardContainer>
       <Stack direction={'row'} spacing={4} sx={{ margin: 'auto', flexGrow: 1 }}>
         <AvatarBadge
-          avatarSrc={getConnectorIcon(account.connector)}
-          badgeSrc={activeChain?.logoURI || ''}
+          avatarAlt={`${account.connector?.name} avatar`}
           avatarSize={88} // Dynamic avatar size
+          avatarSrc={getConnectorIcon(account.connector)}
+          badgeAlt={`${activeChain?.name} avatar`}
           badgeSize={32} // Dynamic badge size
+          badgeSrc={activeChain?.logoURI || ''}
           badgeOffset={{ x: 9.5, y: 9.5 }}
           badgeGap={6}
-          alt={`${account.connector?.name} avatar`}
-          badgeAlt={`${activeChain?.name} avatar`}
         />
         <WalletCardButtonContainer>
           <ButtonTransparent

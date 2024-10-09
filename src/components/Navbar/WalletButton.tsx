@@ -69,14 +69,14 @@ export const WalletButtons = () => {
         >
           {isSuccess && activeChain ? (
             <AvatarBadge
-              avatarSrc={getConnectorIcon(account.connector)}
-              badgeSrc={activeChain?.logoURI || ''}
+              avatarAlt="Wallet avatar"
               avatarSize={32}
+              avatarSrc={getConnectorIcon(account.connector)}
+              badgeAlt={`${activeChain?.name} avatar`}
               badgeSize={12}
-              alt="Wallet avatar"
+              badgeSrc={activeChain?.logoURI || ''}
               badgeOffset={{ x: 4, y: 4 }}
               badgeGap={5}
-              badgeAlt={`${activeChain?.name} avatar`}
             />
           ) : null}
           <Typography
