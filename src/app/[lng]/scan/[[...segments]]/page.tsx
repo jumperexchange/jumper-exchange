@@ -14,14 +14,20 @@ export async function generateMetadata({
     wallet: 'wallet',
   };
 
-  const [slug, address] = segments;
+  let title = 'Jumper Scan | Crosschain Transactions Explorer';
+  let canonical = `${process.env.NEXT_PUBLIC_SITE_URL}/scan`;
+  if (segments && segments.length > 0) {
+    const [slug, address] = segments;
+    title = `Jumper Scan | ${slugToTitle[slug]} ${address}`;
+    canonical = `${process.env.NEXT_PUBLIC_SITE_URL}/scan/${segments.join('/')}`;
+  }
 
   return {
-    title: `Jumper Scan | ${slugToTitle[slug]} ${address}`,
+    title: title,
     description:
       'Jumper Scan is a blockchain explorer that allows you to search and explore transactions, blocks, and wallets on multiple blockchains.',
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/scan/${segments.join('/')}`,
+      canonical: canonical,
     },
   };
 }
