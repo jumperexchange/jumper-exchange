@@ -14,7 +14,7 @@ export async function generateMetadata({
     wallet: 'wallet',
   };
 
-  let title = 'Jumper Scan | Crosschain Transactions Explorer';
+  let title = 'Jumper Scan | Transactions Explorer';
   let canonical = `${process.env.NEXT_PUBLIC_SITE_URL}/scan`;
   if (segments && segments.length > 0) {
     const [slug, address] = segments;
