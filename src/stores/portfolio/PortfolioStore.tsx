@@ -85,12 +85,7 @@ export const usePortfolioStore = createWithEqualityFn(
       getFormattedCacheTokens() {
         const cacheTokens = getOrCreateMap(get().cacheTokens);
         const accountsValues = Array.from(cacheTokens.values());
-        console.log(
-          'before summing',
-          accountsValues,
-          cacheTokens,
-          get().cacheTokens,
-        );
+
         let totalValue = sum(
           accountsValues.map((account) => {
             return sumBy(account, 'cumulatedTotalUSD');
