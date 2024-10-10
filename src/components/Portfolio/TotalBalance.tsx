@@ -7,18 +7,17 @@ import {
 import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
 import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
 import { usePortfolioStore } from '@/stores/portfolio';
-import CountUp from 'react-countup';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
-import { Box, Stack, Tooltip, Typography } from '@mui/material';
-import { isEqual } from 'lodash';
+import { Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshCircleIcon } from './RefreshCircleIcon';
 import { useAccount } from '@lifi/wallet-management';
 import { currencyFormatter } from '@/utils/formatNumbers';
 import { arraysEqual } from '@/utils/getTokens';
+import { AnimatedCounter } from 'react-animated-counter';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -37,6 +36,7 @@ function TotalBalance({
   isFetching = false,
   refetch,
 }: TotalBalanceProps) {
+  const theme = useTheme();
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
   const { t } = useTranslation();
@@ -153,15 +153,24 @@ function TotalBalance({
         <TotalValue>
           {portfolio.lastTotalValue && !isComplete ? (
             currencyFormatter('en').format(portfolio.lastTotalValue)
-          ) : (
-            <CountUp
-              start={portfolio.lastTotalValue || 0}
-              preserveValue
-              end={totalValue}
-              duration={2.75}
-              decimals={2}
-              prefix="$"
+          ) : (<>$
+            <AnimatedCounter
+              value={totalValue}
+              includeDecimals
+              decimalPrecision={2}
+              includeCommas
+              color={theme.palette.text.primary}
+              containerStyles={{
+                display: 'inline-flex'
+              }}
+              digitStyles={{
+                textOverflow: 'inherit',
+                fontWeight: 'inherit',
+                fontSize: 'inherit',
+                lineHeight: 'inherit',
+              }}
             />
+          </>
           )}
         </TotalValue>
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">

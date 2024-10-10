@@ -37,7 +37,7 @@ export const MenuDesktop = ({
   children,
   anchorEl,
 }: MenuProps) => {
-  const { openSubMenu, closeAllMenus } = useMenuStore((state) => state);
+  const { openSubMenu, setMainMenuState } = useMenuStore((state) => state);
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab' || event.key === 'Escape') {
@@ -53,7 +53,7 @@ export const MenuDesktop = ({
       onClickAway={(event) => {
         setTimeout(() => {
           event.stopPropagation();
-          open && closeAllMenus();
+          open && setMainMenuState(false);
         }, 150);
       }}
     >
