@@ -50,10 +50,11 @@ const defaultSettings = {
   cacheTokens: new Map(),
 };
 
+// Always return a new map to avoid mutation
 export function getOrCreateMap<T>(
   data: Map<string, T> | { [key: string]: T },
 ): Map<string, T> {
-  return data instanceof Map ? data : new Map(Object.entries(data));
+  return new Map(data instanceof Map ? data : Object.entries(data));
 }
 
 /*--  Use Zustand  --*/
