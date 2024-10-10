@@ -87,7 +87,7 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
 export const SmallAvatar = styled(Avatar)(({ theme }) => ({
   width: 16,
   height: 16,
-  border: `2px solid ${theme.palette.background.paper}`,
+  border: `2px solid ${theme.palette.surface2.main}`,
 }));
 
 const circleAnimation = keyframes`

@@ -128,7 +128,9 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
               <TypographyPrimary>{token.symbol}</TypographyPrimary>
               {!hasMultipleChains ? (
                 <TypographySecondary>
-                  {capitalize(token.chains[0].name)}
+                  {token.chains[0].name?.length > 20
+                    ? token.chains[0].name.slice(0, 18) + '...'
+                    : token.chains[0].name}
                 </TypographySecondary>
               ) : (
                 <CustomAvatarGroup spacing={6} max={15}>
