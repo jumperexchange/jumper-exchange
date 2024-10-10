@@ -67,8 +67,7 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
   }, [account, handleMultisigEnvironmentCheck]);
 
   const handleExploreButton = () => {
-    account.chainId && closeAllMenus();
-    const blockchainExplorerUrl = account.chain?.blockExplorers?.[0]?.url;
+    const blockchainExplorerUrl = account.chain?.blockExplorers?.default.url;
 
     trackEvent({
       category: TrackingCategory.WalletMenu,
@@ -114,7 +113,6 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
       action: TrackingAction.CopyAddressToClipboard,
       label: 'copy_addr_to_clipboard',
     });
-    closeAllMenus();
   };
 
   const handleDisconnect = () => {

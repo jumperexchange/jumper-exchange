@@ -78,7 +78,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         >
           <CloseIcon />
         </IconButton>
-        <WalletButton sx={{ width: '100%' }} onClick={handleOpenWalletMenu}>
+        <WalletButton sx={{ width: 'auto' }} onClick={handleOpenWalletMenu}>
           <Typography
             sx={{
               color: theme.palette.text.primary,
