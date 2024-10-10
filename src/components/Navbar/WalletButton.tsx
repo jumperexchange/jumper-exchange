@@ -37,7 +37,7 @@ export const WalletButtons = () => {
   const { t } = useTranslation();
   const { isSuccess } = useChains();
   const { openWalletMenu } = useWalletMenu();
-  const { points } = useLoyaltyPass();
+  const { points, isLoading } = useLoyaltyPass();
   const router = useRouter();
   const imgLink = `https://effigy.im/a/${account?.address}.png`;
   const isImageValid = useImageStatus(imgLink);
@@ -101,7 +101,7 @@ export const WalletButtons = () => {
                 priority={false}
                 unoptimized={true}
               />
-              {points === undefined ? (
+              {isLoading ? (
                 <SkeletonWalletMenuButton variant="circular" />
               ) : (
                 <Typography
@@ -110,7 +110,7 @@ export const WalletButtons = () => {
                   marginRight={1.1}
                   marginLeft={1}
                 >
-                  {points}
+                  {points ?? 0}
                 </Typography>
               )}
               <XPIcon size={32} />

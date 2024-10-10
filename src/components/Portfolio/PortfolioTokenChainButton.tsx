@@ -10,6 +10,7 @@ import {
   Grid,
   useTheme,
   darken,
+  lighten,
 } from '@mui/material';
 import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
@@ -49,7 +50,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
         '&:hover': {
           backgroundColor:
             theme.palette.mode === 'dark'
-              ? darken(theme.palette.surface2.main, 0.04)
+              ? lighten(theme.palette.surface2.main, 0.04)
               : darken(theme.palette.surface2.main, 0.04),
         },
         '&:last-child:hover': {
