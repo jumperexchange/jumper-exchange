@@ -170,10 +170,10 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
         </Button>
         <Stack direction="row" alignItems="flex-end" spacing={1}>
           <Button size="small" onClick={() => handleExploreButton()}>
-            <OpenInNewIcon sx={{ height: '20px' }} />
+            <OpenInNewIcon sx={{ height: '16px' }} />
           </Button>
           <Button size="small" onClick={() => handleScanButton()}>
-            <ReceiptLongIcon sx={{ height: '20px' }} />
+            <ReceiptLongIcon sx={{ height: '16px' }} />
           </Button>
           <ButtonSecondary
             size="small"
@@ -182,7 +182,7 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
             }}
             sx={{ minWidth: 'auto' }}
           >
-            <PowerSettingsNewIcon sx={{ height: '20px' }} />
+            <PowerSettingsNewIcon sx={{ height: '16px' }} />
           </ButtonSecondary>
         </Stack>
       </WalletCardV2Stack>
