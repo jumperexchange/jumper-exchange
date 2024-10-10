@@ -153,24 +153,26 @@ function TotalBalance({
         <TotalValue>
           {portfolio.lastTotalValue && !isComplete ? (
             currencyFormatter('en').format(portfolio.lastTotalValue)
-          ) : (<>$
-            <AnimatedCounter
-              value={totalValue}
-              includeDecimals
-              decimalPrecision={2}
-              includeCommas
-              color={theme.palette.text.primary}
-              containerStyles={{
-                display: 'inline-flex'
-              }}
-              digitStyles={{
-                textOverflow: 'inherit',
-                fontWeight: 'inherit',
-                fontSize: 'inherit',
-                lineHeight: 'inherit',
-              }}
-            />
-          </>
+          ) : (
+            <>
+              $
+              <AnimatedCounter
+                value={totalValue}
+                includeDecimals
+                decimalPrecision={2}
+                includeCommas
+                color={theme.palette.text.primary}
+                containerStyles={{
+                  display: 'inline-flex',
+                }}
+                digitStyles={{
+                  textOverflow: 'inherit',
+                  fontWeight: 'inherit',
+                  fontSize: 'inherit',
+                  lineHeight: 'inherit',
+                }}
+              />
+            </>
           )}
         </TotalValue>
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">
