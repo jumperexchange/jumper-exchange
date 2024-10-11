@@ -335,7 +335,6 @@ export function useTokens() {
     ) {
       return;
     }
-    console.log('refetching coz changes address', accounts);
 
     refetch();
   }, [accounts]);
@@ -346,9 +345,9 @@ export function useTokens() {
     isFetching,
     refetch,
     data:
-      getFormattedCacheTokens().cache.length === 0
+      getFormattedCacheTokens(accounts).cache.length === 0
         ? queries.map((query) => query.data ?? []).flat()
-        : getFormattedCacheTokens().cache,
+        : getFormattedCacheTokens(accounts).cache,
   };
 }
 

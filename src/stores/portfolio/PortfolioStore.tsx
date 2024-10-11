@@ -9,6 +9,7 @@ import type {
 } from '@/utils/getTokens';
 import { sortBy, sum, sumBy } from 'lodash';
 import { createJSONStorage } from 'zustand/middleware';
+import type { Account } from '@lifi/wallet-management';
 
 // ----------------------------------------------------------------------
 
@@ -83,9 +84,16 @@ export const usePortfolioStore = createWithEqualityFn(
           cacheTokens,
         });
       },
-      getFormattedCacheTokens() {
+      getFormattedCacheTokens(accounts?: Account[]) {
         const cacheTokens = getOrCreateMap(get().cacheTokens);
-        const accountsValues = Array.from(cacheTokens.values());
+        let accountsValues = Array.from(cacheTokens.values());
+
+        if (accounts) {
+          accountsValues = accounts
+            .filter((account) => account.isConnected && account?.address)
+            .map((account) => account.address!)
+            .map((account) => cacheTokens.get(account) ?? []);
+        }
 
         let totalValue = sum(
           accountsValues.map((account) => {

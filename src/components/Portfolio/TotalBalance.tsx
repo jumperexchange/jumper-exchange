@@ -42,7 +42,7 @@ function TotalBalance({
   const { t } = useTranslation();
   const { accounts } = useAccount();
   const portfolio = usePortfolioStore((state) => state);
-  const { totalValue } = portfolio.getFormattedCacheTokens();
+  const { totalValue } = portfolio.getFormattedCacheTokens(accounts);
 
   useEffect(() => {
     if (!isComplete) {
@@ -137,9 +137,11 @@ function TotalBalance({
           </Tooltip>
         </Box>
         {!isComplete ? (
-          <TotalBalanceIconButton disabled={true} tooltipText="hello world">
-            <CircularProgressPending size={24} />
-          </TotalBalanceIconButton>
+          <span>
+            <TotalBalanceIconButton disabled={true} tooltipText="hello world">
+              <CircularProgressPending size={24} />
+            </TotalBalanceIconButton>
+          </span>
         ) : (
           <TotalBalanceIconButton
             tooltipText="Click here to restart the indexing of your tokens now."
@@ -150,7 +152,7 @@ function TotalBalance({
         )}
       </Box>
       <Stack spacing={1}>
-        <TotalValue>
+        <TotalValue as="div">
           {portfolio.lastTotalValue && !isComplete ? (
             currencyFormatter('en').format(portfolio.lastTotalValue)
           ) : (
