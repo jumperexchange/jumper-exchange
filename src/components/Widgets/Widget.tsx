@@ -10,6 +10,7 @@ import { useWalletMenu } from '@lifi/wallet-management';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { getWalletClient, switchChain } from '@wagmi/core';
+import { toPng } from 'html-to-image';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
@@ -60,7 +61,7 @@ export function Widget({
   const { openWalletMenu } = useWalletMenu();
 
   const router = useRouter();
-
+  console.log(toPng);
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
