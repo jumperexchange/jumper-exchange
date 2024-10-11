@@ -116,6 +116,10 @@ function fetchAllTokensBalanceByChain(
       chainsFetchedThisRound.push(chainId);
 
       fetchPromises.push(LifiGetTokenBalances(account, tokenBatch));
+      console.log(
+        `fetching on chain ${chainId}`,
+        tokenBatch.map((t) => t.symbol).join(','),
+      );
     }
 
     if (fetchPromises.length === 0) {
@@ -327,6 +331,7 @@ export function useTokens() {
 
   // Usefull to refresh after bridging something
   useEffect(() => {
+    console.log('forceref', forceRefresh);
     if (!forceRefresh) {
       return;
     }
