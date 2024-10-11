@@ -657,9 +657,9 @@ export const lightTheme = createTheme(
         dark: '#8700B8',
       },
       surface1: {
-        light: '#FCFAFF',
-        main: '#FCFAFF',
-        dark: '#FCFAFF',
+        light: '#faf5ff',
+        main: '#faf5ff',
+        dark: '#faf5ff',
       },
       surface2: {
         light: '#FFFFFF',

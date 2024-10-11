@@ -137,11 +137,9 @@ function TotalBalance({
           </Tooltip>
         </Box>
         {!isComplete ? (
-          <span>
-            <TotalBalanceIconButton disabled={true} tooltipText="hello world">
-              <CircularProgressPending size={24} />
-            </TotalBalanceIconButton>
-          </span>
+          <TotalBalanceIconButton disabled={true}>
+            <CircularProgressPending size={24} />
+          </TotalBalanceIconButton>
         ) : (
           <TotalBalanceIconButton
             tooltipText="Click here to restart the indexing of your tokens now."
