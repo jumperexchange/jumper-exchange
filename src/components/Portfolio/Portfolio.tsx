@@ -75,9 +75,9 @@ function Portfolio() {
                       sx={{ borderRadius: '32px' }}
                     />
                     <Skeleton
-                      variant="text"
+                      variant="rectangular"
                       width={48}
-                      height={16}
+                      height={12}
                       sx={{ borderRadius: '32px' }}
                     />
                   </Stack>
