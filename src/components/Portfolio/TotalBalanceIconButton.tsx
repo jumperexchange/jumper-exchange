@@ -29,23 +29,25 @@ function TotalBalanceIconButton({
         zIndex: 25000,
       }}
     >
-      <IconButton
-        size="medium"
-        aria-label="Refresh"
-        disabled={disabled}
-        sx={(theme) => ({
-          marginRight: 1,
-          '&:hover': {
-            padding: 1,
-            backgroundColor: alpha(theme.palette.text.primary, 0.08),
-          },
-        })}
-        onClick={() => {
-          refetch && refetch();
-        }}
-      >
-        {children}
-      </IconButton>
+      <span>
+        <IconButton
+          size="medium"
+          aria-label="Refresh"
+          disabled={disabled}
+          sx={(theme) => ({
+            marginRight: 1,
+            '&:hover': {
+              padding: 1,
+              backgroundColor: alpha(theme.palette.text.primary, 0.08),
+            },
+          })}
+          onClick={() => {
+            refetch && refetch();
+          }}
+        >
+          {children}
+        </IconButton>
+      </span>
     </Tooltip>
   );
 }

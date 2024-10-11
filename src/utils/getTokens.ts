@@ -288,8 +288,13 @@ export function arraysEqual(arr1: string[], arr2: string[]): boolean {
 
 export function useTokens() {
   const { accounts } = useAccount();
-  const { getFormattedCacheTokens, setCacheTokens, lastAddresses } =
-    usePortfolioStore((state) => state);
+  const {
+    getFormattedCacheTokens,
+    setCacheTokens,
+    lastAddresses,
+    forceRefresh,
+    setForceRefresh,
+  } = usePortfolioStore((state) => state);
 
   const handleProgress = (
     account: string,
@@ -319,6 +324,16 @@ export function useTokens() {
   );
   const isFetching = queries.every((query) => query.isFetching);
   const refetch = () => queries.map((query) => query.refetch());
+
+  // Usefull to refresh after bridging something
+  useEffect(() => {
+    if (!forceRefresh) {
+      return;
+    }
+
+    refetch();
+    setForceRefresh(false);
+  }, [forceRefresh]);
 
   useEffect(() => {
     if (!accounts) {
