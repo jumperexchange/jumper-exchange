@@ -71,7 +71,7 @@ export function Widget({
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas/', { kind: PrefetchKind.FULL });
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     formRef?.current?.setFieldValue('fromChain', widgetCache.fromChainId, {

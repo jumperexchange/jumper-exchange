@@ -28,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       return article.data.map((el) => {
         return {
           url: withoutTrailingSlash(
-            `${process.env.NEXT_PUBLIC_SITE_URL}${JUMPER_LEARN_PATH}${el.attributes.Slug}`,
+            `${process.env.NEXT_PUBLIC_SITE_URL}${JUMPER_LEARN_PATH}/${el.attributes.Slug}`,
           ),
           lastModified: new Date(
             el.attributes.updatedAt || el.attributes.publishedAt || Date.now(),
