@@ -18,6 +18,6 @@ export const getAddressLabel = ({
   } else if (address) {
     return walletDigest(address);
   } else {
-    return '0x0000...0000';
+    return walletDigest('0x0000000000000000000000000000000000000000');
   }
 };
