@@ -42,7 +42,7 @@ function getBalance(tb: Partial<TokenAmount>): number {
 
 // Constants
 const MAX_CROSS_CHAIN_FETCH = 10000; // Maximum tokens per fetch round across all chains
-const MAX_TOKENS_PER_CHAIN = 20; // Maximum tokens to fetch per chain per round
+const MAX_TOKENS_PER_CHAIN = 250; // Maximum tokens to fetch per chain per round
 const FETCH_DELAY = 3000;
 
 // Main function to fetch all tokens in batches
