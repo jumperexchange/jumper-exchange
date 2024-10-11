@@ -125,7 +125,12 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
               )}
             </Grid>
             <Grid item xs={5}>
-              <TypographyPrimary>{token.symbol}</TypographyPrimary>
+              <TypographyPrimary>
+                {token.symbol}{' '}
+                {token.symbol?.length > 8
+                  ? token.symbol.slice(0, 7) + '...'
+                  : token.symbol}
+              </TypographyPrimary>
               {!hasMultipleChains ? (
                 <TypographySecondary>
                   {token.chains[0].name?.length > 20
@@ -157,7 +162,9 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             </Grid>
             <Grid item xs={5} style={{ textAlign: 'right' }}>
               <TypographyPrimary>
-                {decimalFormatter(lng).format(token.cumulatedBalance ?? 0)}
+                {decimalFormatter(lng).format(
+                  parseFloat(String(token.cumulatedBalance?.toFixed(3))) ?? 0,
+                )}
               </TypographyPrimary>
               <TypographySecondary>
                 {currencyFormatter(lng).format(token.cumulatedTotalUSD ?? 0)}
