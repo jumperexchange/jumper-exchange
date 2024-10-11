@@ -161,6 +161,8 @@ function TotalBalance({
                 includeDecimals
                 decimalPrecision={2}
                 includeCommas
+                incrementColor={theme.palette.text.primary}
+                decrementColor={theme.palette.text.primary}
                 color={theme.palette.text.primary}
                 containerStyles={{
                   display: 'inline-flex',
