@@ -84,7 +84,7 @@ function TotalBalance({
     setDifferencePercent(differencePercent);
   }, [totalValue, isComplete]);
 
-  if (!totalValue) {
+  if (!isComplete && totalValue === 0) {
     return <TotalBalanceSkeleton />;
   }
 

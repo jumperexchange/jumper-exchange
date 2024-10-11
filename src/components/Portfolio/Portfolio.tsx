@@ -17,7 +17,7 @@ function Portfolio() {
         isComplete={isSuccess}
       />
       <Stack spacing={1}>
-        {data.length == 0 &&
+        {!isSuccess && data.length == 0 &&
           Array.from({ length: 10 }, () => 42).map((_, index) => (
             <WalletCardContainer key={index}>
               <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
