@@ -126,7 +126,6 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             </Grid>
             <Grid item xs={5}>
               <TypographyPrimary>
-                {token.symbol}{' '}
                 {token.symbol?.length > 8
                   ? token.symbol.slice(0, 7) + '...'
                   : token.symbol}
