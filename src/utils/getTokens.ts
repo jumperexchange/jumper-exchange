@@ -42,7 +42,7 @@ function getBalance(tb: Partial<TokenAmount>): number {
 
 // Constants
 const MAX_CROSS_CHAIN_FETCH = 10000; // Maximum tokens per fetch round across all chains
-const MAX_TOKENS_PER_CHAIN = 500; // Maximum tokens to fetch per chain per round
+const MAX_TOKENS_PER_CHAIN = 250; // Maximum tokens to fetch per chain per round
 const FETCH_DELAY = 3000;
 
 // Main function to fetch all tokens in batches
@@ -116,6 +116,10 @@ function fetchAllTokensBalanceByChain(
       chainsFetchedThisRound.push(chainId);
 
       fetchPromises.push(LifiGetTokenBalances(account, tokenBatch));
+      console.log(
+        `fetching on chain ${chainId}`,
+        tokenBatch.map((t) => t.symbol).join(','),
+      );
     }
 
     if (fetchPromises.length === 0) {
@@ -327,6 +331,7 @@ export function useTokens() {
 
   // Usefull to refresh after bridging something
   useEffect(() => {
+    console.log('forceref', forceRefresh);
     if (!forceRefresh) {
       return;
     }
