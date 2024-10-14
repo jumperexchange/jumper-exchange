@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next';
 import {
   WalletAvatar,
   WalletCardBadge,
-} from '@/components/Menus/WalletMenu/WalletCardV2.style';
+} from '@/components/Menus/WalletMenu/WalletCard.style';
 import { useMainPaths } from '@/hooks/useMainPaths';
 import { useParams, useRouter } from 'next/navigation';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
@@ -32,7 +32,6 @@ import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
 import PortfolioTokenChainButton from '@/components/Portfolio/PortfolioTokenChainButton';
 import { useMenuStore } from 'src/stores/menu';
 import TokenImage from '@/components/Portfolio/TokenImage';
-import { capitalize } from 'lodash';
 import type { CacheToken } from '@/types/portfolio';
 
 interface PortfolioTokenProps {
@@ -67,7 +66,10 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
   return (
     <WalletCardContainer
       sx={{
-        padding: '0!important',
+        padding: '0px',
+        [theme.breakpoints.up('md')]: {
+          padding: '0px',
+        },
       }}
     >
       <CustomAccordion
@@ -90,38 +92,36 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                   <TokenImage token={token} />
                 </MuiAvatar>
               ) : (
-                <>
-                  <WalletCardBadge
-                    overlap="circular"
-                    className="badge"
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    badgeContent={
-                      !hasMultipleChains ? (
-                        <MuiAvatar
-                          alt={token?.chainName || 'chain-name'}
-                          sx={{
-                            width: '18px',
-                            height: '18px',
-                            border: `2px solid ${theme.palette.surface2.main}`,
+                <WalletCardBadge
+                  overlap="circular"
+                  className="badge"
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  badgeContent={
+                    !hasMultipleChains ? (
+                      <MuiAvatar
+                        alt={token?.chainName || 'chain-name'}
+                        sx={{
+                          width: '18px',
+                          height: '18px',
+                          border: `2px solid ${theme.palette.surface2.main}`,
+                        }}
+                      >
+                        <TokenImage
+                          token={{
+                            name: token.chainName ?? '',
+                            logoURI: token.chainLogoURI,
                           }}
-                        >
-                          <TokenImage
-                            token={{
-                              name: token.chainName ?? '',
-                              logoURI: token.chainLogoURI,
-                            }}
-                          />
-                        </MuiAvatar>
-                      ) : (
-                        <Skeleton variant="circular" />
-                      )
-                    }
-                  >
-                    <WalletAvatar>
-                      <TokenImage token={token} />
-                    </WalletAvatar>
-                  </WalletCardBadge>
-                </>
+                        />
+                      </MuiAvatar>
+                    ) : (
+                      <Skeleton variant="circular" />
+                    )
+                  }
+                >
+                  <WalletAvatar>
+                    <TokenImage token={token} />
+                  </WalletAvatar>
+                </WalletCardBadge>
               )}
             </Grid>
             <Grid item xs={5}>

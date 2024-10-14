@@ -12,8 +12,8 @@ import type { MouseEventHandler } from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CustomDrawer, WalletButton } from '.';
-import { WalletCardV2 } from './WalletCardV2';
-import Portfolio from '@/components/Portfolio/Portfolio';
+import { WalletCard } from './WalletCard';
+import { Portfolio } from '@/components/Portfolio/Portfolio';
 import CloseIcon from '@mui/icons-material/Close';
 
 interface WalletMenuProps {
@@ -92,7 +92,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
       {accounts.map(
         (account) =>
           account.isConnected && (
-            <WalletCardV2 key={account.address} account={account} />
+            <WalletCard key={account.address} account={account} />
           ),
       )}
       <Portfolio />

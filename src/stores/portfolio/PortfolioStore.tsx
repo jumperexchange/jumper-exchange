@@ -11,8 +11,6 @@ import { sortBy, sum, sumBy } from 'lodash';
 import { createJSONStorage } from 'zustand/middleware';
 import type { Account } from '@lifi/wallet-management';
 
-// ----------------------------------------------------------------------
-
 function cacheTokenPartialize({
   address,
   chainId,

@@ -2,9 +2,6 @@ import type { StateCreator } from 'zustand';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 import type { WidgetCacheState } from '@/types/widgetCache';
-import type { SettingsState } from '@/types/settings';
-
-// ----------------------------------------------------------------------
 
 const defaultSettings = {
   fromToken: undefined,

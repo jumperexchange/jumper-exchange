@@ -11,7 +11,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshCircleIcon } from './RefreshCircleIcon';
 import { useAccount } from '@lifi/wallet-management';
@@ -44,7 +44,7 @@ function TotalBalance({
   const portfolio = usePortfolioStore((state) => state);
   const { totalValue } = portfolio.getFormattedCacheTokens(accounts);
 
-  useEffect(() => {
+  useMemo(() => {
     if (!isComplete) {
       return;
     }
@@ -82,7 +82,7 @@ function TotalBalance({
 
     setDifferenceValue(differenceValue);
     setDifferencePercent(differencePercent);
-  }, [totalValue, isComplete]);
+  }, [isComplete, accounts, portfolio, totalValue]);
 
   if (!isComplete && totalValue === 0) {
     return <TotalBalanceSkeleton />;

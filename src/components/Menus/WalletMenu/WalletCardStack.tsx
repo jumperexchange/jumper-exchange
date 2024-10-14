@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-export const WalletCardV2Stack = ({
+export const WalletCardStack = ({
   children,
 }: {
   children: JSX.Element | JSX.Element[];

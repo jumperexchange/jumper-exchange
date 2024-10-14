@@ -4,7 +4,7 @@ import TotalBalance from '@/components/Portfolio/TotalBalance';
 import { useTokens } from '@/utils/getTokens';
 import { Badge, Box, Skeleton, Stack, useTheme } from '@mui/material';
 
-function Portfolio() {
+export function Portfolio() {
   const theme = useTheme();
 
   const { isSuccess, refetch, isFetching, data } = useTokens();
@@ -95,5 +95,3 @@ function Portfolio() {
     </>
   );
 }
-
-export default Portfolio;

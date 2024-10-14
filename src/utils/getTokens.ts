@@ -12,8 +12,8 @@ import {
 import { formatUnits } from 'viem';
 import { isEqual, sortBy, sumBy } from 'lodash';
 import { useQueries } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { getOrCreateMap, usePortfolioStore } from '@/stores/portfolio';
+import { useEffect } from 'react';
+import { usePortfolioStore } from '@/stores/portfolio';
 import type { Account } from '@lifi/wallet-management';
 import { useAccount } from '@lifi/wallet-management';
 
@@ -34,9 +34,9 @@ export interface ExtendedTokenAmount extends TokenAmount, Partial<Price> {
   cumulatedTotalUSD?: number; // Cumulated total USD across chains
 }
 
-function getBalance(tb: Partial<TokenAmount>): number {
-  return tb?.amount && tb?.decimals
-    ? Number(formatUnits(tb.amount, tb.decimals))
+function getBalance(tokenBalance: Partial<TokenAmount>): number {
+  return tokenBalance?.amount && tokenBalance?.decimals
+    ? Number(formatUnits(tokenBalance.amount, tokenBalance.decimals))
     : 0;
 }
 
