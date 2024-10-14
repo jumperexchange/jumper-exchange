@@ -18,8 +18,13 @@ export async function closeWelcomeScreen(page: Page) {
   return page.locator('#get-started-button').click();
 }
 
-export async function tabInHeader(page, name: string) {
-  await page.locator(`xpath=(//button[@id="${name}"])[1]`).click();
+export async function tabInHeader(page, tabname1: string, tabname2: string) {
+  const gasTab = await page.locator('#tab-key-1');
+  const exchangeTab = await page.locator('#tab-key-0');
+  await gasTab.click();
+  await expect(page.locator(`xpath=//p[text()="${tabname1}"]`)).toBeVisible();
+  await exchangeTab.click();
+  await expect(page.locator(`xpath=//p[text()=${tabname2}]`)).toBeVisible();
 }
 
 export async function expectMenuToBeVisible(page) {
@@ -42,6 +47,12 @@ export async function itemInSettingsMenuToBeVisible(page, selector: string) {
     `xpath=//button[normalize-space(text())="${selector}"]`,
   );
   expect(itemName).toBeVisible();
+}
+export async function itemInSettingsMenuToBeEnabled(page, selector: string) {
+  const item = await page.locator(
+    `xpath=//button[normalize-space(text())="${selector}"]`,
+  );
+  expect(item).toBeEnabled();
 }
 
 export async function sectionOnTheBlogPage(page, selectors: string[]) {
