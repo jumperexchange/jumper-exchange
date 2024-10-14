@@ -122,6 +122,7 @@ export const BlogArticleCardMetaContainer = styled(Box, {
   display: 'flex',
   alignItems: 'center',
   fontSize: '14px',
+  height: 40,
   color: theme.palette.text.primary,
   '*': { textWrap: 'nowrap' },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
