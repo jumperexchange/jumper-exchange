@@ -25,7 +25,7 @@
 import type { ChainId } from '@lifi/sdk';
 import { ChainType, getChains, getToken } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
-import type { HighlightedAreas } from 'src/components/ImageGeneration/Client/WidgetImage';
+import type { HighlightedAreas } from 'src/components/ImageGeneration/ImageGeneration.types';
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
 import WidgetReviewSSR from 'src/components/ImageGeneration/WidgetReviewSSR';
 
@@ -128,8 +128,6 @@ export async function GET(request: Request) {
           theme={theme as 'light' | 'dark'}
           toChain={toChain}
           amount={amount}
-          routeAmount={routeAmount}
-          amountUSD={amountUSD}
           highlighted={highlighted as HighlightedAreas}
         />
       </div>

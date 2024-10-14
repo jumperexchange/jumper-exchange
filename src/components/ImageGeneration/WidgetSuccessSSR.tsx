@@ -1,6 +1,7 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
 import WidgetFieldSSR from './Field';
 import { FieldSkeleton } from './FieldSkeleton';
+import type { ImageTheme } from './ImageGeneration.types';
 import Label from './Label';
 
 const SCALING_FACTOR = 2;
@@ -8,7 +9,7 @@ const SCALING_FACTOR = 2;
 interface WidgetReviewSSRProps {
   toChain?: ExtendedChain | null;
   toToken?: Token | null;
-  theme?: 'light' | 'dark';
+  theme?: ImageTheme;
   isSwap?: boolean;
   amount?: string | null;
   width: number;

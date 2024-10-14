@@ -1,7 +1,7 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import type { HighlightedAreas } from './Client/WidgetImage';
 import WidgetFieldSSR from './Field';
 import { FieldSkeleton } from './FieldSkeleton';
+import type { HighlightedAreas, ImageTheme } from './ImageGeneration.types';
 import Label from './Label';
 
 const SCALING_FACTOR = 2;
@@ -11,11 +11,9 @@ interface WidgetReviewSSRProps {
   toChain?: ExtendedChain | null;
   fromToken?: Token | null;
   toToken?: Token | null;
-  theme?: 'light' | 'dark';
-  routeAmount?: number | null;
+  theme?: ImageTheme;
   isSwap?: boolean;
   amount?: string | null;
-  amountUSD?: string | null;
   width: number;
   height: number;
   highlighted?: HighlightedAreas;
@@ -29,8 +27,6 @@ const WidgetReviewSSR = ({
   isSwap,
   toToken,
   amount,
-  amountUSD,
-  routeAmount,
   width,
   height,
   highlighted,
@@ -60,7 +56,6 @@ const WidgetReviewSSR = ({
         <div
           style={{
             display: 'flex',
-            // justifyContent: 'center',
             flexDirection: 'column',
             margin: '0 24px',
           }}

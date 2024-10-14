@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 
+import type { ImageTheme } from './ImageGeneration.types';
+
 const Label = ({
   sx,
   buttonLabel,
@@ -13,7 +15,7 @@ const Label = ({
   sx?: any; //SxProps<Theme>;
   cardTitle?: string;
   cardContent?: string;
-  theme?: 'light' | 'dark';
+  theme?: ImageTheme;
   buttonLabel?: string;
   title?: string;
   fullWidth?: boolean;

@@ -1,6 +1,6 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import type { HighlightedAreas } from './Client/WidgetImage';
 import WidgetFieldSSR from './Field';
+import type { HighlightedAreas, ImageTheme } from './ImageGeneration.types';
 import Label from './Label';
 
 const SCALING_FACTOR = 2;
@@ -17,7 +17,7 @@ interface WidgetQuoteSSRProps {
   width: number;
   height: number;
   highlighted?: HighlightedAreas;
-  theme?: 'light' | 'dark' | null;
+  theme?: ImageTheme | null;
 }
 
 const WidgetQuoteSSR = ({

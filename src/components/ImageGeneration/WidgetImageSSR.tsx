@@ -1,8 +1,8 @@
 // WidgetImageSSR.tsx
 
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import type { HighlightedAreas } from './Client/WidgetImage';
 import WidgetFieldSSR from './Field';
+import type { HighlightedAreas, ImageTheme } from './ImageGeneration.types';
 
 const SCALING_FACTOR = 2;
 
@@ -15,7 +15,7 @@ interface WidgetImageSSRProps {
   amountUSD?: string | null;
   width: number;
   height: number;
-  theme?: 'light' | 'dark' | null;
+  theme?: ImageTheme | null;
   highlighted?: HighlightedAreas;
 }
 

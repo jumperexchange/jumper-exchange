@@ -3,6 +3,7 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
 import { AvatarBadgeSSR } from '../AvatarBadge/SSR/AvatarBadgeSSR';
 import { FieldSkeleton } from './FieldSkeleton';
+import type { ImageTheme } from './ImageGeneration.types';
 
 function formatDecimal(n: number): string | number {
   // Check if the number is a whole number
@@ -40,7 +41,7 @@ const Field = ({
   sx?: any; //SxProps<Theme>;
   token?: Token | null;
   chain?: ExtendedChain | null;
-  theme?: 'light' | 'dark';
+  theme?: ImageTheme;
   type:
     | 'amount'
     | 'token'

@@ -25,7 +25,7 @@
 import type { ChainId } from '@lifi/sdk';
 import { ChainType, getChains, getToken } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
-import type { HighlightedAreas } from 'src/components/ImageGeneration/Client/WidgetImage';
+import type { HighlightedAreas } from 'src/components/ImageGeneration/ImageGeneration.types';
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
 import WidgetExecutionSSR from 'src/components/ImageGeneration/WidgetExecutionSSR';
 
