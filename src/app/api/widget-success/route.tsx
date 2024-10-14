@@ -21,11 +21,11 @@
 import type { ChainId } from '@lifi/sdk';
 import { ChainType, getChains, getToken } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
-import type { Font } from 'node_modules/next/dist/compiled/@vercel/og/satori';
+import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
 import WidgetSuccessSSR from 'src/components/ImageGeneration/WidgetSuccessSSR';
 
-export const WIDGET_IMAGE_WIDTH = 416;
-export const WIDGET_IMAGE_HEIGHT = 432;
+const WIDGET_IMAGE_WIDTH = 416;
+const WIDGET_IMAGE_HEIGHT = 432;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
@@ -68,6 +68,12 @@ export async function GET(request: Request) {
       ? await fetchToken(parseInt(toChainId) as ChainId, toToken)
       : null;
 
+  const options = await imageResponseOptions({
+    width: WIDGET_IMAGE_WIDTH,
+    height: WIDGET_IMAGE_HEIGHT,
+    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+  });
+
   return new ImageResponse(
     (
       <div
@@ -104,47 +110,6 @@ export async function GET(request: Request) {
         />
       </div>
     ),
-    {
-      width: WIDGET_IMAGE_WIDTH * WIDGET_IMAGE_SCALING_FACTOR,
-      height: WIDGET_IMAGE_HEIGHT * WIDGET_IMAGE_SCALING_FACTOR,
-      fonts: await getFonts(),
-    },
+    options,
   );
-}
-
-export default async function getFonts(): Promise<Font[]> {
-  // This is unfortunate but I can't figure out how to load local font files
-  // when deployed to vercel.
-  const [interRegular, interSemiBold, interBold] = await Promise.all([
-    fetch(`https://fonts.cdnfonts.com/s/19795/Inter-Regular.woff`).then((res) =>
-      res.arrayBuffer(),
-    ),
-    fetch(`https://fonts.cdnfonts.com/s/19795/Inter-SemiBold.woff`).then(
-      (res) => res.arrayBuffer(),
-    ),
-    fetch(`https://fonts.cdnfonts.com/s/19795/Inter-Bold.woff`).then((res) =>
-      res.arrayBuffer(),
-    ),
-  ]);
-
-  return [
-    {
-      name: 'Inter',
-      data: interRegular,
-      style: 'normal',
-      weight: 400,
-    },
-    {
-      name: 'Inter',
-      data: interSemiBold,
-      style: 'normal',
-      weight: 600,
-    },
-    {
-      name: 'Inter',
-      data: interBold,
-      style: 'normal',
-      weight: 700,
-    },
-  ];
 }
