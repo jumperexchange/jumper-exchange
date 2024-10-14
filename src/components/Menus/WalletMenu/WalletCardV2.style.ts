@@ -18,6 +18,7 @@ export const WalletAvatar = styled(Avatar)(({ theme }) => ({
     height: '100%',
     width: '100%',
     objectFit: 'contain',
+     backgroundColor: theme.palette.white.main,
   },
   // mask: avatarMask32,
 }));
