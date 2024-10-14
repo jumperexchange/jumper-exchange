@@ -100,7 +100,7 @@ const Field = ({
           borderStyle: 'solid',
           // borderColor: '#E5E1EB',
           ...(highlighted && {
-            boxShadow: `inset 0 0 0 2px #31007A`,
+            boxShadow: `inset 0 0 0 2px ${theme === 'dark' ? '#653BA3' : '#31007A'}`,
           }),
           ...(type === 'quote' && {
             flexDirection: 'column',
