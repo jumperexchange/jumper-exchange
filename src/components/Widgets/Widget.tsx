@@ -64,7 +64,7 @@ export function Widget({
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
     router.prefetch('/buy', { kind: PrefetchKind.FULL });
-  });
+  }, [router]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
