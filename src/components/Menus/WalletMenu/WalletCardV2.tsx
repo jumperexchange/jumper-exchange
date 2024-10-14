@@ -67,8 +67,7 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
   }, [account, handleMultisigEnvironmentCheck]);
 
   const handleExploreButton = () => {
-    const blockchainExplorerUrl = account.chain?.blockExplorers?.default.url;
-
+    const blockchainExplorerUrl = `${account.chain?.blockExplorers?.default.url}/address/${account.address}`;
     trackEvent({
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.OpenBlockchainExplorer,
@@ -130,7 +129,11 @@ export const WalletCardV2 = ({ account }: WalletCardV2Props) => {
   };
 
   return (
-    <WalletCardContainer>
+    <WalletCardContainer
+      sx={{
+        paddingX: '16px !important',
+      }}
+    >
       <WalletCardV2Stack>
         <WalletCardBadge
           overlap="circular"

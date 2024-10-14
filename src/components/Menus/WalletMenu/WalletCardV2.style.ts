@@ -13,19 +13,20 @@ export const WalletAvatar = styled(Avatar)(({ theme }) => ({
   margin: 'auto',
   height: 40,
   width: 40,
+  backgroundColor: 'transparent',
 
   '> img': {
     height: '100%',
     width: '100%',
     objectFit: 'contain',
-    backgroundColor: theme.palette.white.main,
+    backgroundColor: 'transparent',
   },
   // mask: avatarMask32,
 }));
 
 export const WalletCardContainer = styled(Container)(({ theme }) => ({
   boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
-  padding: '24px',
+  padding: '16px',
   display: 'flex',
   background: theme.palette.surface2.main,
   borderRadius: '16px',
@@ -48,6 +49,7 @@ export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
 
 export const WalletCardBadge = styled(Badge)(({ theme }) => ({
   borderRadius: '50%',
+  backgroundColor: 'transparent',
   '> .MuiAvatar-root': {
     '+ .MuiBadge-badge .MuiAvatar-root': {
       // border: '2px solid white',

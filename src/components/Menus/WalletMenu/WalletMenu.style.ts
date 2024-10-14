@@ -16,7 +16,7 @@ export const CustomDrawer = styled(Drawer)(({ theme }) => ({
   zIndex: 2000,
   '& .MuiDrawer-paper': {
     width: '100%',
-    padding: '1.25rem',
+    // padding: '1.25rem',
     boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
     gap: theme.spacing(2),
     maxWidth: 416,

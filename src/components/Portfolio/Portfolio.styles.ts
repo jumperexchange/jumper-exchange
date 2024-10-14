@@ -7,6 +7,7 @@ import {
   CircularProgress as MuiCircularProgress,
   keyframes,
   darken,
+  Divider,
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { lighten } from '@mui/material/styles';
@@ -64,6 +65,11 @@ export const TypographySecondary = styled(Typography)(({ theme }) => ({
   fontSize: '0.75rem',
   fontWeight: 500,
   lineHeight: '1rem',
+}));
+
+export const PortfolioDivider = styled(Divider)(({ theme }) => ({
+  backgroundColor: theme.palette.surface2.main,
+  opacity: 0.3,
 }));
 
 export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({

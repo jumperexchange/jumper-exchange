@@ -2,6 +2,7 @@ import { useMenuStore } from '@/stores/menu';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import {
   alpha,
+  Box,
   Drawer,
   IconButton,
   Stack,
@@ -64,7 +65,18 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
       }}
       // slotProps={{ backdrop: { invisible: true } }}
     >
-      <Stack direction="row" justifyContent="space-between">
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        sx={{
+          position: 'sticky',
+          top: 0,
+          backdropFilter: 'blur(12px)',
+          zIndex: 5000,
+          paddingX: '1.25rem',
+          paddingTop: '1.25rem',
+        }}
+      >
         <IconButton
           aria-label="close"
           onClick={() => setWalletMenuState(false)}
@@ -89,12 +101,14 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           </Typography>
         </WalletButton>
       </Stack>
-      {accounts.map(
-        (account) =>
-          account.isConnected && (
-            <WalletCardV2 key={account.address} account={account} />
-          ),
-      )}
+      <Box sx={{ paddingX: '1.25rem' }}>
+        {accounts.map(
+          (account) =>
+            account.isConnected && (
+              <WalletCardV2 key={account.address} account={account} />
+            ),
+        )}
+      </Box>
       <Portfolio />
     </CustomDrawer>
   );
