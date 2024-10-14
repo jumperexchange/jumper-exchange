@@ -1,3 +1,4 @@
+import { useAccount } from '@lifi/wallet-management';
 import {
   Box,
   type Theme,
@@ -7,7 +8,6 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
-import { useAccounts } from 'src/hooks/useAccounts';
 import { AmountInputBox } from '../RewardsCarousel.style';
 
 export const RewardsAmountBox = ({
@@ -24,7 +24,7 @@ export const RewardsAmountBox = ({
   decimalsToShow: number;
 }) => {
   //HOOKS
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const theme = useTheme();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),

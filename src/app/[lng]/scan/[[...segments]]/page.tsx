@@ -1,11 +1,48 @@
-'use client';
-import { LiFiExplorer } from '@lifi/explorer';
-import type { PaletteMode } from '@mui/material';
-import { alpha, Box, useTheme } from '@mui/material';
-import { useMemo } from 'react';
-import { ClientOnly } from 'src/components/ClientOnly';
-import { fallbackLng } from 'src/i18n';
-import { JUMPER_SCAN_PATH } from '@/const/urls';
+import ScanPage from '@/app/ui/scan/ScanPage';
+import type { Metadata } from 'next';
+import { siteName } from '@/app/lib/metadata';
+
+export async function generateMetadata({
+  params: { segments = [] },
+}: {
+  params: {
+    segments: string[];
+  };
+}): Promise<Metadata> {
+  const slugToTitle: { [key: string]: string } = {
+    tx: 'Transaction',
+    block: 'Block',
+    wallet: 'wallet',
+  };
+
+  const [slug, address] = segments;
+
+  const title = `Jumper Scan | ${slug && address ? `${slugToTitle[slug]} ${address}` : 'Blockchain Explorer'}`;
+  const description =
+    'Jumper Scan is a blockchain explorer that allows you to search and explore transactions, blocks, and wallets on multiple blockchains.';
+  const canonical = `${process.env.NEXT_PUBLIC_SITE_URL}/scan${segments.length === 0 ? '' : `/${segments.join('/')}`}`;
+
+  return {
+    robots: {
+      index: false,
+    },
+    title,
+    description,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title,
+      description,
+      siteName,
+      url: canonical,
+    },
+    twitter: {
+      title,
+      description,
+    },
+  };
+}
 
 export default function Page({
   params: { lng },
@@ -13,37 +50,5 @@ export default function Page({
   children: React.ReactNode;
   params: { lng: string };
 }) {
-  const theme = useTheme();
-
-  const explorerConfig = useMemo(
-    () => ({
-      appearance: 'light' as PaletteMode, //theme.palette.mode, // This controls light and dark mode
-      integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR, // TODO: change as needed
-      base: `${lng !== fallbackLng ? `${lng}` : ''}${JUMPER_SCAN_PATH}`, // Important for the routing and having everything served under /scan. Do not remove!
-      theme: {
-        // These colors and values correspond to the figma design
-        shape: { borderRadiusSecondary: 900, borderRadius: 12 },
-        palette: {
-          background: {
-            default: alpha(theme.palette.white.main, 0.8),
-            paper: alpha(theme.palette.white.main, 0.8),
-          },
-        },
-      },
-    }),
-    [lng, theme.palette.mode, theme.palette.white.main],
-  );
-
-  return (
-    <ClientOnly>
-      <Box
-        sx={{
-          p: 4,
-          paddingBottom: 8,
-        }}
-      >
-        <LiFiExplorer config={explorerConfig} />
-      </Box>
-    </ClientOnly>
-  );
+  return <ScanPage lng={lng} />;
 }

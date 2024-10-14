@@ -1,10 +1,10 @@
 'use client';
+import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import request from 'graphql-request';
+import { GALXE_ENDPOINT } from 'src/const/urls';
 import { availableNFT } from './querries/superfestNFT';
 import { superfestNFTCheck } from './querries/superfestNFTCheck';
-import { useAccounts } from './useAccounts';
-import { GALXE_ENDPOINT } from 'src/const/urls';
 
 export interface NFTInfo {
   isClaimable: boolean;
@@ -55,7 +55,6 @@ interface GalxeGraphqlCheckRes {
   };
 }
 
-const SECONDS_IN_A_DAY = 86400;
 const NFTInfo = {
   mode: {
     cid: 'GCrKqtkcEs',
@@ -82,7 +81,7 @@ const NFTInfo = {
 export const useCheckNFTAvailability = ({
   chain,
 }: UseCheckNFTAvailabilityProps): UseCheckNFTAvailabilityRes => {
-  const { account } = useAccounts();
+  const { account } = useAccount();
 
   let claimInfo = {
     isClaimable: false,

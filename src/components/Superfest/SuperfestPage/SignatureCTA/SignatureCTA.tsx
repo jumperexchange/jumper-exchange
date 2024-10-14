@@ -1,12 +1,10 @@
 'use client';
 
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useAccount } from '@lifi/wallet-management';
 import { Box } from '@mui/material';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { SiweMessage, generateNonce } from 'siwe';
-import { useAccounts } from 'src/hooks/useAccounts';
 import { useSignMessage } from 'wagmi';
 import { SoraTypography } from '../../Superfest.style';
 import {
@@ -28,9 +26,7 @@ export const SignatureCTA = ({
   signature,
   isTurtleMember,
 }: SignatureCtaProps) => {
-  const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const [messageToSign, setMessageToSign] = useState<string | undefined>(
     undefined,
   );

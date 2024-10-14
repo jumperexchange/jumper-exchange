@@ -10,7 +10,7 @@ export const QuestCardSkeleton = () => {
           height: '450px',
           width: '288px',
           textAlign: 'center',
-          borderRadius: '8px',
+          borderRadius: '16px',
           transform: 'unset',
           aspectRatio: 550 / 300,
         }}

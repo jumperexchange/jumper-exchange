@@ -1,13 +1,12 @@
+import { getArticles } from '@/app/lib/getArticles';
+import { siteName } from '@/app/lib/metadata';
+import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
+import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
+import { sliceStrToXChar } from '@/utils/splitStringToXChar';
+import type { Metadata } from 'next';
 import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
 import { getArticlesByTag } from '../../../../lib/getArticlesByTag';
 import { getCookies } from '../../../../lib/getCookies';
-import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
-import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
-import type { Metadata } from 'next';
-import { sliceStrToXChar } from '@/utils/splitStringToXChar';
-import { siteName } from '@/app/lib/metadata';
-import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
-import { getArticles } from '@/app/lib/getArticles';
 
 export async function generateMetadata({
   params,
@@ -28,7 +27,7 @@ export async function generateMetadata({
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
       description: `${sliceStrToXChar(articleData.Subtitle, 60)}`,
       siteName: siteName,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/learn/${params.slug}/`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/learn/${params.slug}`,
       images: [
         {
           url: `${article.url}${articleData.Image.data.attributes?.url}`,
@@ -44,7 +43,7 @@ export async function generateMetadata({
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
       description: articleData.Subtitle,
       alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/${params.slug}/`,
+        canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/learn/${params.slug}`,
       },
       twitter: openGraph,
       openGraph,

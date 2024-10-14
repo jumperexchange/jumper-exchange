@@ -6,7 +6,6 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { useAccounts } from '@/hooks/useAccounts';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useUserTracking } from '@/hooks/userTracking';
 import { useActiveTabStore } from '@/stores/activeTab';
@@ -15,6 +14,7 @@ import { useMenuStore } from '@/stores/menu';
 import { useMultisigStore } from '@/stores/multisig';
 import type { RouteExtended } from '@lifi/sdk';
 import { type Route } from '@lifi/sdk';
+import { useAccount } from '@lifi/wallet-management';
 import type {
   ChainTokenSelected,
   ContactSupport,
@@ -48,7 +48,7 @@ export function WidgetEvents() {
     state.setDestinationChain,
   ]);
 
-  const { account } = useAccounts();
+  const { account } = useAccount();
 
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
     useState(false);
@@ -259,7 +259,7 @@ export function WidgetEvents() {
           data: {
             ...newObj,
             [TrackingEventParameter.FromAmountUSD]: Number(
-              availableRoutes[0].fromAmountUSD,
+              availableRoutes?.[0]?.fromAmountUSD,
             ),
             [TrackingEventParameter.NbOfSteps]: availableRoutes.length,
             [TrackingEventParameter.Routes]: transformedRoutes,

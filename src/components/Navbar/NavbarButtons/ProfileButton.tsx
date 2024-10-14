@@ -1,17 +1,17 @@
 import { JUMPER_LOYALTY_PATH } from '@/const/urls';
-import { useAccounts } from '@/hooks/useAccounts';
+import { useAccount } from '@lifi/wallet-management';
 import { alpha, useTheme } from '@mui/material';
 import Image from 'next/image';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { ProfileButtonBox } from './ProfileButton.style';
 
 export const ProfileButton = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const theme = useTheme();
-  const { account } = useAccounts();
+  const { account } = useAccount();
 
   return (
-    <ProfileButtonBox onClick={() => navigate(JUMPER_LOYALTY_PATH)}>
+    <ProfileButtonBox onClick={() => router.push(JUMPER_LOYALTY_PATH)}>
       <Image
         src={`https://effigy.im/a/${account?.address ?? 'jumper.eth'}.png`}
         alt="Effigy Wallet Icon"

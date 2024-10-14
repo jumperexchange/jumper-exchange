@@ -35,6 +35,12 @@ const nextConfig = {
         port: '',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/jumper-static-assets/upload/**',
+      },
       // {
       //   protocol: 'https',
       //   hostname: 'cdn.mygateway.xyz',
@@ -43,15 +49,45 @@ const nextConfig = {
       // },
       {
         protocol: 'https',
-        hostname: 'jumper-static.s3.us-east-2.amazonaws.com',
+        hostname: 'resolve.mercle.xyz',
         port: '',
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'resolve.mercle.xyz',
+        hostname: 'raw.githubusercontent.com', // TODO: this one can be dangerous
+        port: '',
+        pathname: '/lifinance/types/main/src/assets/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.coingecko.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 's2.coinmarketcap.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.debank.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.sei.io',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.etherscan.io',
+        port: '',
+        pathname: '/token/images/**',
       },
     ],
   },

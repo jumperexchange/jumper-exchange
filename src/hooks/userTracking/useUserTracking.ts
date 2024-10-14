@@ -1,10 +1,5 @@
 'use client';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
-import { useAccounts } from '@/hooks/useAccounts';
+import { TrackingEventParameter } from '@/const/trackingKeys';
 import type { JumperEventData } from '@/hooks/useJumperTracking';
 import { useJumperTracking } from '@/hooks/useJumperTracking';
 import { useSession } from '@/hooks/useSession';
@@ -14,9 +9,10 @@ import type {
   TrackTransactionProps,
 } from '@/types/userTracking';
 import { EventTrackingTool } from '@/types/userTracking';
+import { useAccount } from '@lifi/wallet-management';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import type { TransformedRoute } from 'src/types/internal';
 import { useFingerprint } from '../useFingerprint';
 
@@ -75,8 +71,11 @@ const addressableEvent = ({
 };
 
 export function useUserTracking() {
-  const { account } = useAccounts();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const { account } = useAccount();
+  const isDesktop = useMediaQuery(
+    (theme: Theme) => theme?.breakpoints.up('md') || '0',
+    { noSsr: true },
+  );
   const sessionId = useSession();
   const fp = useFingerprint();
 
@@ -84,16 +83,6 @@ export function useUserTracking() {
     trackEvent: jumperTrackEvent,
     trackTransaction: jumperTrackTransaction,
   } = useJumperTracking();
-
-  useEffect(() => {
-    if (account?.chainId) {
-      typeof window !== 'undefined' &&
-        window?.gtag('event', TrackingAction.SwitchChain, {
-          category: TrackingCategory.Wallet,
-          [TrackingEventParameter.SwitchedChain]: account?.chainId,
-        });
-    }
-  }, [account, account?.chainId]);
 
   const trackEvent = useCallback(
     async ({
@@ -125,8 +114,9 @@ export function useUserTracking() {
             action,
             label,
             data: data || {},
-            isConnected: account?.isConnected || false,
-            walletAddress: account?.address || 'not_connected',
+            isConnected: account.isConnected || false,
+            walletAddress: account.address || 'not_connected',
+            walletProvider: account.connector?.name,
             browserFingerprint: fp || 'unknown',
             isMobile: !isDesktop,
             sessionId: sessionId || 'unknown',
@@ -139,8 +129,9 @@ export function useUserTracking() {
       }
     },
     [
-      account?.address,
-      account?.isConnected,
+      account.address,
+      account.connector?.name,
+      account.isConnected,
       fp,
       isDesktop,
       jumperTrackEvent,
@@ -206,6 +197,8 @@ export function useUserTracking() {
           action: data[TrackingEventParameter.Action] || '',
           url: window?.location?.href || process.env.NEXT_PUBLIC_SITE_URL,
           browserFingerprint: fp || 'unknown',
+          walletAddress: account.address || 'not_connected',
+          walletProvider: account.connector?.name,
         };
         await jumperTrackTransaction(transactionData);
       }
@@ -219,7 +212,13 @@ export function useUserTracking() {
         });
       }
     },
-    [account?.address, fp, jumperTrackTransaction, sessionId],
+    [
+      account.address,
+      account.connector?.name,
+      fp,
+      jumperTrackTransaction,
+      sessionId,
+    ],
   );
 
   return {
