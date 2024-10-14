@@ -1,15 +1,32 @@
 /* eslint-disable @next/next/no-img-element */
 
-// Test: http://localhost:3000/api/widget-selection?width=416&height=496&fromToken=0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063&fromChainId=137&toToken=0xdAC17F958D2ee523a2206206994597C13D831ec7&toChainId=1&amount=3&
+/**
+ * Image Generation of Widget for SEO pages
+ * Step 1 - Selecting Tokens
+ *
+ * Example:
+ * ```
+ * http://localhost:3000/api/widget-selection?fromToken=0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063&fromChainId=137&toToken=0xdAC17F958D2ee523a2206206994597C13D831ec7&toChainId=1&amount=3&theme=dark
+ * ```
+ *
+ * @typedef {Object} SearchParams
+ * @property {string} fromToken - The token address to send from.
+ * @property {number} fromChainId - The chain ID to send from.
+ * @property {string} toToken - The token address to send to.
+ * @property {number} toChainId - The chain ID to send to.
+ * @property {number} amount - The amount of tokens.
+ * @property {number} [amountUSD] - The USD equivalent amount (optional).
+ * @property {'light'|'dark'} [theme] - The theme for the widget (optional).
+ * @property {'from'|'to'|'amount'} [highlighted] - The highlighted element (optional).
+ *
+ */
 
-// route.tsx
 import type { ChainId } from '@lifi/sdk';
 import { ChainType, getChains, getToken } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
 import type { Font } from 'node_modules/next/dist/compiled/@vercel/og/satori';
 import type { HighlightedAreas } from 'src/components/ImageGeneration/Client/WidgetImage';
 import WidgetImageSSR from 'src/components/ImageGeneration/WidgetImageSSR';
-
 export const WIDGET_IMAGE_WIDTH = 416;
 export const WIDGET_IMAGE_HEIGHT = 496;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
@@ -23,6 +40,7 @@ export async function GET(request: Request) {
   const toToken = searchParams.get('toToken');
   const toChainId = searchParams.get('toChainId');
   const highlighted = searchParams.get('highlighted');
+  const theme = searchParams.get('theme');
 
   // Fetch chain data asynchronously before rendering
   const getChainData = async (chainId: ChainId) => {
@@ -74,7 +92,7 @@ export async function GET(request: Request) {
         }}
       >
         <img
-          alt="Widget Example"
+          alt="Widget Selection Example"
           width={'100%'}
           height={'100%'}
           style={{
@@ -86,7 +104,7 @@ export async function GET(request: Request) {
             width: WIDGET_IMAGE_WIDTH * WIDGET_IMAGE_SCALING_FACTOR,
             height: WIDGET_IMAGE_HEIGHT * WIDGET_IMAGE_SCALING_FACTOR,
           }}
-          src={'http://localhost:3000/widget-light-test-empty.png'}
+          src={`http://localhost:3000/widget/widget-selection-${theme === 'dark' ? 'dark' : 'light'}.png`}
         />
         <WidgetImageSSR
           height={WIDGET_IMAGE_WIDTH}
@@ -97,6 +115,7 @@ export async function GET(request: Request) {
           toChain={toChain}
           amount={amount}
           amountUSD={amountUSD}
+          theme={theme as 'light' | 'dark'}
           highlighted={highlighted as HighlightedAreas}
         />{' '}
       </div>

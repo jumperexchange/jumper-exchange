@@ -2,7 +2,7 @@
 
 import type { ExtendedChain, Token } from '@lifi/sdk';
 import type { HighlightedAreas } from './Client/WidgetImage';
-import WidgetFieldSSR from './WidgetImageFieldSSR';
+import WidgetFieldSSR from './Field';
 
 const SCALING_FACTOR = 2;
 
@@ -15,6 +15,7 @@ interface WidgetImageSSRProps {
   amountUSD?: string | null;
   width: number;
   height: number;
+  theme?: 'light' | 'dark' | null;
   highlighted?: HighlightedAreas;
 }
 
@@ -27,6 +28,7 @@ const WidgetImageSSR = ({
   amountUSD,
   width,
   height,
+  theme,
   highlighted,
 }: WidgetImageSSRProps) => {
   return (
@@ -63,6 +65,7 @@ const WidgetImageSSR = ({
             chain={fromChain}
             token={fromToken}
             fullWidth={true}
+            theme={theme || undefined}
             highlighted={highlighted === 'from'}
           />
           <WidgetFieldSSR
@@ -70,13 +73,15 @@ const WidgetImageSSR = ({
             chain={toChain}
             token={toToken}
             fullWidth={true}
+            theme={theme || undefined}
             sx={{ marginTop: '16px' }}
             highlighted={highlighted === 'to'}
           />
           <WidgetFieldSSR
-            type={'amount'}
+            type={'amount-selection'}
             chain={fromChain}
             token={fromToken}
+            theme={theme || undefined}
             amount={amount ? parseFloat(amount) : undefined}
             amountUSD={amountUSD ? parseFloat(amountUSD) : undefined}
             fullWidth={true}

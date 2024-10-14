@@ -1,8 +1,7 @@
-// WidgetQuoteSSR.tsx
-
 import type { ExtendedChain, Token } from '@lifi/sdk';
 import type { HighlightedAreas } from './Client/WidgetImage';
-import WidgetFieldSSR from './WidgetImageFieldSSR';
+import WidgetFieldSSR from './Field';
+import Label from './Label';
 
 const SCALING_FACTOR = 2;
 
@@ -13,10 +12,12 @@ interface WidgetQuoteSSRProps {
   toToken?: Token | null;
   routeAmount?: number | null;
   amount?: string | null;
+  isSwap?: boolean;
   amountUSD?: string | null;
   width: number;
   height: number;
   highlighted?: HighlightedAreas;
+  theme?: 'light' | 'dark' | null;
 }
 
 const WidgetQuoteSSR = ({
@@ -24,7 +25,9 @@ const WidgetQuoteSSR = ({
   toChain,
   fromToken,
   toToken,
+  theme,
   amount,
+  isSwap,
   amountUSD,
   routeAmount,
   width,
@@ -58,7 +61,6 @@ const WidgetQuoteSSR = ({
           <div
             style={{
               display: 'flex',
-              // justifyContent: 'center',
               flexDirection: 'column',
               alignItems: 'center',
               margin: '0 24px',
@@ -73,6 +75,7 @@ const WidgetQuoteSSR = ({
               }}
             >
               <WidgetFieldSSR
+                theme={theme || undefined}
                 type={'token'}
                 chain={fromChain}
                 token={fromToken}
@@ -80,6 +83,7 @@ const WidgetQuoteSSR = ({
                 highlighted={highlighted === 'from'}
               />
               <WidgetFieldSSR
+                theme={theme || undefined}
                 type={'token'}
                 chain={toChain}
                 token={toToken}
@@ -88,7 +92,8 @@ const WidgetQuoteSSR = ({
               />
             </div>
             <WidgetFieldSSR
-              type={'amount'}
+              theme={theme || undefined}
+              type={'quote-amount'}
               chain={fromChain}
               token={fromToken}
               amount={amount ? parseFloat(amount) : undefined}
@@ -97,11 +102,16 @@ const WidgetQuoteSSR = ({
               sx={{ marginTop: 16 }}
               highlighted={highlighted === 'amount'}
             />
+            <Label
+              buttonLabel={isSwap ? 'Review swap' : 'Review bridge'}
+              theme={theme || undefined}
+              fullWidth={true}
+              sx={{ marginTop: 33, marginLeft: -59 }}
+            />
           </div>
           <div
             style={{
               display: 'flex',
-              // justifyContent: 'center',
               flexDirection: 'column',
               alignItems: 'center',
               margin: '0 24px',
@@ -112,10 +122,13 @@ const WidgetQuoteSSR = ({
                 .fill(0)
                 .map((_, index) => (
                   <WidgetFieldSSR
+                    key={`widget-field-quote-${index}`}
+                    theme={theme || undefined}
                     type={'quote'}
                     chain={fromChain}
                     token={fromToken}
                     fullWidth={true}
+                    showSkeletons={true}
                     highlighted={index.toString() === highlighted}
                     routeAmount={((100 - index) / 100) * (routeAmount || 1)}
                     routeAmountUSD={
@@ -123,7 +136,7 @@ const WidgetQuoteSSR = ({
                       (parseFloat(amount || '1') *
                         parseFloat(fromToken?.priceUSD || '1'))
                     }
-                    extendedHeight={index < 2}
+                    extendedHeight={index < 1}
                     amount={amount ? parseFloat(amount) : undefined}
                     amountUSD={amountUSD ? parseFloat(amountUSD) : undefined}
                     sx={{ ...(index !== 0 && { marginTop: 16 }) }}

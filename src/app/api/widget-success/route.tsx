@@ -2,46 +2,37 @@
 
 /**
  * Image Generation of Widget for SEO pages
- * Step 2 - Quotes
+ * Step 5 - Route success
  *
  * Example:
  * ```
- * http://localhost:3000/api/widget-quotes?fromToken=0x0000000000000000000000000000000000000000&fromChainId=137&toToken=0x0000000000000000000000000000000000000000&toChainId=42161&amount=10&highlighted=0&theme=light
+ * http://localhost:3000/api/widget-success?toToken=0x0000000000000000000000000000000000000000&toChainId=42161&amount=10&&theme=light&isSwap=true
  * ```
  *
  * @typedef {Object} SearchParams
- * @property {string} fromToken - The token address to send from.
- * @property {number} fromChainId - The chain ID to send from.
  * @property {string} toToken - The token address to send to.
  * @property {number} toChainId - The chain ID to send to.
  * @property {number} amount - The amount of tokens.
- * @property {number} [amountUSD] - The USD equivalent amount (optional).
  * @property {boolean} [isSwap] - True if transaction is a swap, default and false if transaction is a bridge (optional).
  * @property {'light'|'dark'} [theme] - The theme for the widget (optional).
- * @property {'from'|'to'|'amount'|'0'|'1'|'2'} [highlighted] - The highlighted element, numbers refer to quote index (optional).
  *
  */
+
 import type { ChainId } from '@lifi/sdk';
 import { ChainType, getChains, getToken } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
 import type { Font } from 'node_modules/next/dist/compiled/@vercel/og/satori';
-import type { HighlightedAreas } from 'src/components/ImageGeneration/Client/WidgetImage';
-import WidgetQuoteSSR from 'src/components/ImageGeneration/WidgetQuotesSSR';
+import WidgetSuccessSSR from 'src/components/ImageGeneration/WidgetSuccessSSR';
 
-export const WIDGET_IMAGE_WIDTH = 856;
-export const WIDGET_IMAGE_HEIGHT = 490; //376;
+export const WIDGET_IMAGE_WIDTH = 416;
+export const WIDGET_IMAGE_HEIGHT = 432;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
-  console.time('start-time');
   const { searchParams } = new URL(request.url);
   const amount = searchParams.get('amount');
-  const amountUSD = searchParams.get('amountUSD');
-  const fromToken = searchParams.get('fromToken');
-  const fromChainId = searchParams.get('fromChainId');
   const toToken = searchParams.get('toToken');
   const toChainId = searchParams.get('toChainId');
-  const highlighted = searchParams.get('highlighted');
   const theme = searchParams.get('theme');
   const isSwap = searchParams.get('isSwap');
 
@@ -53,10 +44,7 @@ export async function GET(request: Request) {
     return chainsData.find((chainEl) => chainEl.id === chainId);
   };
 
-  // Fetch from and to chain details (await this before rendering)
-  const fromChain = fromChainId
-    ? await getChainData(parseInt(fromChainId) as ChainId)
-    : null;
+  // Fetch to chain details (await this before rendering)
   const toChain = toChainId
     ? await getChainData(parseInt(toChainId) as ChainId)
     : null;
@@ -75,20 +63,12 @@ export async function GET(request: Request) {
     }
   };
 
-  const fromTokenData =
-    fromChainId && fromToken
-      ? await fetchToken(parseInt(fromChainId) as ChainId, fromToken)
-      : null;
   const toTokenData =
     toChainId && toToken
       ? await fetchToken(parseInt(toChainId) as ChainId, toToken)
       : null;
 
-  const routeAmount =
-    (parseFloat(fromTokenData?.priceUSD || '0') * parseFloat(amount || '0')) /
-    parseFloat(toTokenData?.priceUSD || '0');
-
-  const ImageResp = new ImageResponse(
+  return new ImageResponse(
     (
       <div
         style={{
@@ -99,7 +79,7 @@ export async function GET(request: Request) {
         }}
       >
         <img
-          alt="Widget Quotes Example"
+          alt="Widget Example"
           width={'100%'}
           height={'100%'}
           style={{
@@ -111,21 +91,16 @@ export async function GET(request: Request) {
             width: WIDGET_IMAGE_WIDTH * WIDGET_IMAGE_SCALING_FACTOR,
             height: WIDGET_IMAGE_HEIGHT * WIDGET_IMAGE_SCALING_FACTOR,
           }}
-          src={`http://localhost:3000/widget/widget-quotes-${theme === 'dark' ? 'dark' : 'light'}.png`}
+          src={`http://localhost:3000/widget/widget-success-${theme === 'dark' ? 'dark' : 'light'}.png`}
         />
-        <WidgetQuoteSSR
-          theme={theme as 'light' | 'dark'}
+        <WidgetSuccessSSR
           height={WIDGET_IMAGE_WIDTH}
-          width={WIDGET_IMAGE_HEIGHT}
           isSwap={isSwap === 'true'}
-          fromToken={fromTokenData}
+          width={WIDGET_IMAGE_HEIGHT}
           toToken={toTokenData}
-          fromChain={fromChain}
+          theme={theme as 'light' | 'dark'}
           toChain={toChain}
           amount={amount}
-          routeAmount={routeAmount}
-          amountUSD={amountUSD}
-          highlighted={highlighted as HighlightedAreas}
         />
       </div>
     ),
@@ -135,8 +110,6 @@ export async function GET(request: Request) {
       fonts: await getFonts(),
     },
   );
-  console.timeEnd('start-time');
-  return ImageResp;
 }
 
 export default async function getFonts(): Promise<Font[]> {

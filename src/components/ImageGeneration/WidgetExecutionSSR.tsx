@@ -12,16 +12,14 @@ interface WidgetReviewSSRProps {
   fromToken?: Token | null;
   toToken?: Token | null;
   theme?: 'light' | 'dark';
-  routeAmount?: number | null;
   isSwap?: boolean;
   amount?: string | null;
-  amountUSD?: string | null;
   width: number;
   height: number;
   highlighted?: HighlightedAreas;
 }
 
-const WidgetReviewSSR = ({
+const WidgetExecutionSSR = ({
   fromChain,
   toChain,
   theme,
@@ -29,8 +27,6 @@ const WidgetReviewSSR = ({
   isSwap,
   toToken,
   amount,
-  amountUSD,
-  routeAmount,
   width,
   height,
   highlighted,
@@ -66,7 +62,7 @@ const WidgetReviewSSR = ({
           }}
         >
           <Label
-            title={isSwap ? 'Review swap' : 'Review bridge'}
+            title={isSwap ? 'Swap' : 'Bridge'}
             theme={theme}
             fullWidth={true}
             sx={{
@@ -90,6 +86,14 @@ const WidgetReviewSSR = ({
             showSkeletons={true}
             sx={{ padding: '0px 16px', marginTop: -4 }}
           />
+          <Label
+            cardContent={
+              isSwap
+                ? 'Waiting for swap transaction'
+                : 'Waiting for bridge transaction'
+            }
+            theme={theme}
+          />
           <WidgetFieldSSR
             type={'review'}
             chain={toChain}
@@ -104,7 +108,7 @@ const WidgetReviewSSR = ({
                 : null
             }
             showSkeletons={true}
-            sx={{ padding: '0px 16px', marginTop: 8 }}
+            sx={{ padding: '0px 16px', marginTop: 2 }}
           />
           <FieldSkeleton
             width={164}
@@ -122,4 +126,4 @@ const WidgetReviewSSR = ({
   );
 };
 
-export default WidgetReviewSSR;
+export default WidgetExecutionSSR;

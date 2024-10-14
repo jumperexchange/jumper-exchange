@@ -7,7 +7,6 @@ import { useUserTracking } from '@/hooks/userTracking';
 import { Box, Slide } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 import { useEffect } from 'react';
-import WidgetQuoteSSR from 'src/components/ImageGeneration/WidgetQuotesSSR';
 
 export interface AppProps {
   activeTheme?: string;
@@ -68,7 +67,6 @@ const App = ({ activeTheme, children }: PropsWithChildren<AppProps>) => {
           <WelcomeScreen />
         </Box>
       </Slide>
-      <WidgetQuoteSSR width={0} height={0} />
       <WidgetContainer
         welcomeScreenClosed={!enabled || welcomeScreenClosed!}
         className="widget-container"

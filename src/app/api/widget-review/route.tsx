@@ -1,8 +1,27 @@
 /* eslint-disable @next/next/no-img-element */
 
-// Test: http://localhost:3000/api/widget-selection?width=416&height=496&fromToken=0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063&fromChainId=137&toToken=0xdAC17F958D2ee523a2206206994597C13D831ec7&toChainId=1&amount=3&
+/**
+ * Image Generation of Widget for SEO pages
+ * Step 3 - Review quote
+ *
+ * Example:
+ * ```
+ * http://localhost:3000/api/widget-review?fromToken=0x0000000000000000000000000000000000000000&fromChainId=137&toToken=0x0000000000000000000000000000000000000000&toChainId=42161&amount=10&highlighted=amount&theme=dark
+ * ```
+ *
+ * @typedef {Object} SearchParams
+ * @property {string} fromToken - The token address to send from.
+ * @property {number} fromChainId - The chain ID to send from.
+ * @property {string} toToken - The token address to send to.
+ * @property {number} toChainId - The chain ID to send to.
+ * @property {number} amount - The amount of tokens.
+ * @property {number} [amountUSD] - The USD equivalent amount (optional).
+ * @property {boolean} [isSwap] - True if transaction is a swap, default and false if transaction is a bridge (optional).
+ * @property {'light'|'dark'} [theme] - The theme for the widget (optional).
+ * @property {'from'|'to'|'amount'} [highlighted] - The highlighted element (optional).
+ *
+ */
 
-// route.tsx
 import type { ChainId } from '@lifi/sdk';
 import { ChainType, getChains, getToken } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
@@ -23,6 +42,8 @@ export async function GET(request: Request) {
   const toToken = searchParams.get('toToken');
   const toChainId = searchParams.get('toChainId');
   const highlighted = searchParams.get('highlighted');
+  const theme = searchParams.get('theme');
+  const isSwap = searchParams.get('isSwap');
 
   // Fetch chain data asynchronously before rendering
   const getChainData = async (chainId: ChainId) => {
@@ -78,7 +99,7 @@ export async function GET(request: Request) {
         }}
       >
         <img
-          alt="Widget Example"
+          alt="Widget Review Example"
           width={'100%'}
           height={'100%'}
           style={{
@@ -90,14 +111,16 @@ export async function GET(request: Request) {
             width: WIDGET_IMAGE_WIDTH * WIDGET_IMAGE_SCALING_FACTOR,
             height: WIDGET_IMAGE_HEIGHT * WIDGET_IMAGE_SCALING_FACTOR,
           }}
-          src={'http://localhost:3000/widget-review-light-compare.png'}
+          src={`http://localhost:3000/widget/widget-review-bridge-${theme === 'dark' ? 'dark' : 'light'}.png`}
         />
         <WidgetReviewSSR
           height={WIDGET_IMAGE_WIDTH}
+          isSwap={isSwap === 'true'}
           width={WIDGET_IMAGE_HEIGHT}
           fromToken={fromTokenData}
           toToken={toTokenData}
           fromChain={fromChain}
+          theme={theme as 'light' | 'dark'}
           toChain={toChain}
           amount={amount}
           routeAmount={routeAmount}

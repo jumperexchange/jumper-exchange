@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 import type { BadgeOffsetProps } from 'src/components/AvatarBadge/AvatarBadge';
-import { getAvatarMask } from '../getAvatarMask';
 
 type AvatarBadgeSSRProps = {
   avatarSrc?: string;
@@ -10,6 +9,7 @@ type AvatarBadgeSSRProps = {
   avatarSize: number;
   badgeGap?: number;
   badgeSize: number;
+  theme?: 'light' | 'dark';
 };
 
 export const AvatarBadgeSSR = ({
@@ -19,12 +19,8 @@ export const AvatarBadgeSSR = ({
   badgeGap,
   avatarSize,
   badgeSize,
+  theme,
 }: AvatarBadgeSSRProps) => {
-  console.log('TEST', { avatarSize, badgeSize, badgeOffset, badgeGap });
-  console.log(
-    'getAvatarMask({ avatarSize, badgeSize, badgeOffset, badgeGap })',
-    getAvatarMask({ avatarSize, badgeSize, badgeOffset, badgeGap }),
-  );
   return (
     <div style={{ display: 'flex' }}>
       <div
@@ -44,7 +40,7 @@ export const AvatarBadgeSSR = ({
             height: avatarSize,
             width: avatarSize,
             // maskImage: 'linear-gradient(to bottom, transparent 25%, black 75%)',
-            mask: 'radial-gradient(circle 10.5px at calc(34px) calc(34px), #fff0 96%, #fff) 100% 100% / 100% 100% no-repeat', //getAvatarMask({ avatarSize, badgeSize, badgeOffset, badgeGap }), // Apply dynamic mask based on avatar and badge size
+            mask: `radial-gradient(circle 10.5px at calc(34px) calc(34px), #fff0 96%, #fff) 100% 100% / 100% 100% no-repeat`, //getAvatarMask({ avatarSize, badgeSize, badgeOffset, badgeGap }), // Apply dynamic mask based on avatar and badge size
           }}
         />
         <div
@@ -60,7 +56,7 @@ export const AvatarBadgeSSR = ({
             ...((badgeOffset?.x || badgeOffset?.y) && {
               transform: `translate(${badgeOffset?.x ? badgeOffset.x + (badgeGap ? badgeGap / 2 : 0) : 0}px, ${badgeOffset?.y ? badgeOffset.y + (badgeGap ? badgeGap / 2 : 0) : 0}px)`,
             }),
-            background: 'white',
+            background: theme === 'dark' ? '#24203D' : '#ffffff',
           }}
         ></div>
         <img
