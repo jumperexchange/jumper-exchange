@@ -42,8 +42,9 @@ function getBalance(tb: Partial<TokenAmount>): number {
 
 // Constants
 const MAX_CROSS_CHAIN_FETCH = 10000; // Maximum tokens per fetch round across all chains
-const MAX_TOKENS_PER_CHAIN = 250; // Maximum tokens to fetch per chain per round
+const MAX_TOKENS_PER_CHAIN = 300; // Maximum tokens to fetch per chain per round
 const FETCH_DELAY = 3000;
+const MAX_TOKENS_FIRST_ROUND = 10; // Maximum tokens to fetch on the first load
 
 // Main function to fetch all tokens in batches
 /**
@@ -101,10 +102,15 @@ function fetchAllTokensBalanceByChain(
         continue;
       }
 
+      // for first round, load only the top 10 tokens to load faster. Then load more tokens each round.
+      const tokensToFetchThisRound =
+        round === 1
+          ? MAX_TOKENS_FIRST_ROUND
+          : MAX_CROSS_CHAIN_FETCH - tokensFetchedThisRound;
       const tokensToFetch = Math.min(
         MAX_TOKENS_PER_CHAIN,
         tokens.length,
-        MAX_CROSS_CHAIN_FETCH - tokensFetchedThisRound,
+        tokensToFetchThisRound,
       );
 
       if (tokensToFetch <= 0) {
