@@ -25,7 +25,7 @@ export const WalletAvatar = styled(Avatar)(({ theme }) => ({
 
 export const WalletCardContainer = styled(Container)(({ theme }) => ({
   boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
-  padding: '24px',
+  padding: theme.spacing(2, 1, 2, 1),
   display: 'flex',
   background: theme.palette.surface2.main,
   borderRadius: '16px',
