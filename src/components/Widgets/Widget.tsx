@@ -4,6 +4,7 @@ import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAler
 import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useThemeStore } from '@/stores/theme';
+import { useWidgetCacheStore } from '@/stores/widgetCache';
 import type { LanguageKey } from '@/types/i18n';
 import { EVM } from '@lifi/sdk';
 import { useWalletMenu } from '@lifi/wallet-management';
@@ -31,7 +32,6 @@ import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { useWidgetCacheStore } from '@/stores/widgetCache';
 
 export function Widget({
   starterVariant,

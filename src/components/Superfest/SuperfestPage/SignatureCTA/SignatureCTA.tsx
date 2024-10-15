@@ -76,7 +76,7 @@ export const SignatureCTA = ({
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -90,7 +90,7 @@ export const SignatureCTA = ({
           setMessageToSign(message);
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     }
     fetchMessage();
