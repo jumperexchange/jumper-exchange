@@ -65,22 +65,10 @@ export function Widget({
 
   const router = useRouter();
 
-  // @ts-expect-error
-  fromAmount = fromAmount || searchParams.get('fromAmount');
-
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
-    router.prefetch('/gas/', { kind: PrefetchKind.FULL });
+    router.prefetch('/gas', { kind: PrefetchKind.FULL });
   }, [router]);
-
-  useEffect(() => {
-    formRef?.current?.setFieldValue('fromChain', widgetCache.fromChainId, {
-      setUrlSearchParam: true,
-    });
-    formRef?.current?.setFieldValue('fromToken', widgetCache.fromToken, {
-      setUrlSearchParam: true,
-    });
-  }, [widgetCache]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
@@ -126,8 +114,8 @@ export function Widget({
     }
 
     const formParameters: Record<string, number | string | undefined> = {
-      fromChain: fromChain,
-      fromToken: fromToken,
+      fromChain: fromChain || widgetCache.fromChainId,
+      fromToken: fromToken || widgetCache.fromToken,
       toChain: toChain,
       toToken: toToken,
       fromAmount: fromAmount,

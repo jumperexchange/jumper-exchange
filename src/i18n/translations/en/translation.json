@@ -139,5 +139,9 @@
     "rank": "Leaderboard is updated on a daily basis",
     "pointsInfo": "XP is your score for interacting with Jumper. As you gain XP points, your level goes up.",
     "levelInfo": "A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more."
+  },
+  "format": {
+    "currency": "{{value, currencyExt(currency: USD)}}",
+    "decimal": "{{value, decimalExt(maximumFractionDigits: 7)}}"
   }
 }

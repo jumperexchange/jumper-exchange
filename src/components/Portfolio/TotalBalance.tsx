@@ -11,11 +11,10 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshCircleIcon } from './RefreshCircleIcon';
 import { useAccount } from '@lifi/wallet-management';
-import { currencyFormatter } from '@/utils/formatNumbers';
 import { arraysEqual } from '@/utils/getTokens';
 import { AnimatedCounter } from 'react-animated-counter';
 
@@ -152,7 +151,7 @@ function TotalBalance({
       <Stack spacing={1}>
         <TotalValue as="div">
           {portfolio.lastTotalValue && !isComplete ? (
-            currencyFormatter('en').format(portfolio.lastTotalValue)
+            t('format.currency', { value: portfolio.lastTotalValue })
           ) : (
             <>
               $

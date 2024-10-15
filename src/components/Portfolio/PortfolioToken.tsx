@@ -28,7 +28,6 @@ import {
 import { useMainPaths } from '@/hooks/useMainPaths';
 import { useParams, useRouter } from 'next/navigation';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
-import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
 import PortfolioTokenChainButton from '@/components/Portfolio/PortfolioTokenChainButton';
 import { useMenuStore } from 'src/stores/menu';
 import TokenImage from '@/components/Portfolio/TokenImage';
@@ -161,12 +160,10 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             </Grid>
             <Grid item xs={5} style={{ textAlign: 'right' }}>
               <TypographyPrimary>
-                {decimalFormatter(lng).format(
-                  parseFloat(String(token.cumulatedBalance?.toFixed(3))) ?? 0,
-                )}
+                {t('format.decimal', { value: token.cumulatedBalance })}
               </TypographyPrimary>
               <TypographySecondary>
-                {currencyFormatter(lng).format(token.cumulatedTotalUSD ?? 0)}
+                {t('format.currency', { value: token.cumulatedTotalUSD })}
               </TypographySecondary>
             </Grid>
           </Grid>

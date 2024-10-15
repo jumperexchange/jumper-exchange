@@ -1,7 +1,7 @@
 import type {
   ExtendedChain,
-  TokenAmount,
   Token,
+  TokenAmount,
   TokensResponse,
 } from '@lifi/sdk';
 import {
@@ -10,7 +10,6 @@ import {
   getTokens as LifiGetTokens,
 } from '@lifi/sdk';
 import { formatUnits } from 'viem';
-import { isEqual, sortBy, sumBy } from 'lodash';
 import { useQueries } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { usePortfolioStore } from '@/stores/portfolio';
@@ -184,18 +183,16 @@ function fetchAllTokensBalanceByChain(
           ],
         };
 
-        existingToken.chains = sortBy(
-          existingToken.chains,
-          'totalPriceUSD',
-        ).reverse();
-
-        existingToken.cumulatedBalance = sumBy(
-          existingToken.chains,
-          'cumulatedBalance',
+        existingToken.chains = existingToken.chains.sort(
+          (a, b) => b.totalPriceUSD ?? 0 - (a.totalPriceUSD ?? 0),
         );
-        existingToken.cumulatedTotalUSD = sumBy(
-          existingToken.chains,
-          'totalPriceUSD',
+        existingToken.cumulatedBalance = existingToken.chains.reduce(
+          (sum, chain) => sum + (chain.cumulatedBalance ?? 0),
+          0,
+        );
+        existingToken.cumulatedTotalUSD = existingToken.chains.reduce(
+          (sum, chain) => sum + (chain.totalPriceUSD ?? 0),
+          0,
         );
         symbolMap[balance.symbol] = existingToken;
       } else {
@@ -211,10 +208,9 @@ function fetchAllTokensBalanceByChain(
     }
 
     // Pass the cumulative sum, cumulative price, and current state of the symbolMap to onProgress
-    const combinedBalances = sortBy(
-      Object.values(symbolMap),
-      'cumulatedTotalUSD',
-    ).reverse();
+    const combinedBalances = Object.values(symbolMap).sort((a, b) => {
+      return (b.cumulatedTotalUSD ?? 0) - (a.cumulatedTotalUSD ?? 0);
+    });
 
     onProgress(account, round, totalPriceUSD, combinedBalances);
 
@@ -290,10 +286,10 @@ export function arraysEqual(arr1: string[], arr2: string[]): boolean {
     return false;
   }
 
-  const sortedArr1 = sortBy(arr1);
-  const sortedArr2 = sortBy(arr2);
+  const sortedArr1 = arr1.slice().sort();
+  const sortedArr2 = arr2.slice().sort();
 
-  return isEqual(sortedArr1, sortedArr2);
+  return sortedArr1.every((value, index) => value === sortedArr2[index]);
 }
 
 export function useTokens() {

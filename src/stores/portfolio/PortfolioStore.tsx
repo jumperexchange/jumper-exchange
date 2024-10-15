@@ -7,7 +7,6 @@ import type {
   ExtendedTokenAmount,
   ExtendedTokenAmountWithChain,
 } from '@/utils/getTokens';
-import { sortBy, sum, sumBy } from 'lodash';
 import { createJSONStorage } from 'zustand/middleware';
 import type { Account } from '@lifi/wallet-management';
 
@@ -93,15 +92,21 @@ export const usePortfolioStore = createWithEqualityFn(
             .map((account) => cacheTokens.get(account) ?? []);
         }
 
-        let totalValue = sum(
-          accountsValues.map((account) => {
-            return sumBy(account, 'cumulatedTotalUSD');
-          }),
-        );
+        let totalValue = accountsValues
+          .map((account) => {
+            return account.reduce((sum, item) => {
+              return sum + (item.cumulatedTotalUSD ?? 0);
+            }, 0);
+          })
+          .reduce((sum, value) => {
+            return sum + value;
+          }, 0);
 
         return {
           totalValue,
-          cache: sortBy(accountsValues.flat(), 'cumulatedTotalUSD').reverse(),
+          cache: accountsValues.flat().sort((a, b) => {
+            return (b.cumulatedTotalUSD ?? 0) - (a.cumulatedTotalUSD ?? 0);
+          }),
         };
       },
       setCacheTokens(account: string, tokens: ExtendedTokenAmount[]) {
