@@ -16,32 +16,21 @@ export const useVerticalTabs = () => {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const handleClickTab =
-    (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
-      // Does not get updated if taken from the hook for some reasons
-      const searchParams = new URLSearchParams(window.location.search);
+  const handleClickTab = (tab: string) => () => {
+    const searchParams = new URLSearchParams(window.location.search);
+    let path = searchParams.toString();
+    path = path.startsWith('?') ? path.substring(1) : path;
 
-      // Only replace it if exists
-      if (searchParams.has('toToken')) {
-        searchParams.set(
-          'toToken',
-          '0x0000000000000000000000000000000000000000',
-        );
-      }
-
-      let path = searchParams.toString();
-      path = path.startsWith('?') ? path.substring(1) : path;
-
-      router.push(`/${tab}?${path}`);
-      trackEvent({
-        category: TrackingCategory.Navigation,
-        action: TrackingAction.SwitchTab,
-        label: `switch_tab_to_${tab}`,
-        data: { [TrackingEventParameter.Tab]: tab },
-        disableTrackingTool: [],
-        enableAddressable: true,
-      });
-    };
+    router.push(`/${tab}?${path}`);
+    trackEvent({
+      category: TrackingCategory.Navigation,
+      action: TrackingAction.SwitchTab,
+      label: `switch_tab_to_${tab}`,
+      data: { [TrackingEventParameter.Tab]: tab },
+      disableTrackingTool: [],
+      enableAddressable: true,
+    });
+  };
 
   const output = [
     {

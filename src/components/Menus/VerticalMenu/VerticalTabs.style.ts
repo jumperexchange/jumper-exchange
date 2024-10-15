@@ -4,9 +4,7 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import type { TabProps, TabsProps } from '@mui/material';
 import { Tab as MuiTab, Tabs, alpha, styled } from '@mui/material';
 
-export const VerticalTabsContainer = styled(Tabs, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<TabsProps>(({ theme }) => ({
+export const VerticalTabsContainer = styled(Tabs)<TabsProps>(({ theme }) => ({
   display: 'none',
   borderRadius: 28,
   padding: 0,
@@ -40,9 +38,7 @@ export const VerticalTabsContainer = styled(Tabs, {
   },
 }));
 
-export const VerticalTab = styled(MuiTab, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<TabProps>(({ theme }) => ({
+export const VerticalTab = styled(MuiTab)<TabProps>(({ theme }) => ({
   display: 'flex',
   height: 48,
   width: 48,
