@@ -32,6 +32,8 @@ import PortfolioTokenChainButton from '@/components/Portfolio/PortfolioTokenChai
 import { useMenuStore } from 'src/stores/menu';
 import TokenImage from '@/components/Portfolio/TokenImage';
 import type { CacheToken } from '@/types/portfolio';
+import { optionalStrShortener } from 'src/utils/optionalStrShortener';
+import { PortfolioDivider, PortfolioDividerBox } from './PortfolioDivider';
 
 interface PortfolioTokenProps {
   token: CacheToken;
@@ -125,15 +127,11 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             </Grid>
             <Grid item xs={5}>
               <TypographyPrimary>
-                {token.symbol?.length > 8
-                  ? token.symbol.slice(0, 7) + '...'
-                  : token.symbol}
+                {optionalStrShortener(token.symbol, 8)}
               </TypographyPrimary>
               {!hasMultipleChains ? (
                 <TypographySecondary>
-                  {token.chains[0].name?.length > 20
-                    ? token.chains[0].name.slice(0, 18) + '...'
-                    : token.chains[0].name}
+                  {optionalStrShortener(token.chains?.[0]?.name, 18)}
                 </TypographySecondary>
               ) : (
                 <CustomAvatarGroup spacing={6} max={15}>
@@ -182,12 +180,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
               width: '100%',
             }}
           >
-            <Divider
-              sx={{
-                opacity: 0.3,
-                width: '95%',
-              }}
-            />
+            <PortfolioDivider />
             {token.chains.map((tokenWithChain) => (
               <PortfolioTokenChainButton
                 key={generateKey(tokenWithChain.address)}

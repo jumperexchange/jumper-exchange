@@ -141,7 +141,7 @@ function TotalBalance({
           </TotalBalanceIconButton>
         ) : (
           <TotalBalanceIconButton
-            tooltipText="Click here to restart the indexing of your tokens now."
+            tooltipText={t('navbar.walletMenu.totalBalanceRefresh')}
             refetch={refetch}
           >
             <RefreshCircleIcon />

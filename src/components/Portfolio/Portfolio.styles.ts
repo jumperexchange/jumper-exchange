@@ -7,6 +7,8 @@ import {
   CircularProgress as MuiCircularProgress,
   keyframes,
   darken,
+  Divider,
+  Box,
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { lighten } from '@mui/material/styles';
@@ -124,3 +126,15 @@ export const CircularProgressPending = styled(MuiCircularProgress)`
 `;
 
 export const Icon = styled(SvgIcon)``;
+
+export const CustomDivider = styled(Divider)(({ theme }) => ({
+  backgroundColor: theme.palette.surface2.main,
+  opacity: 0.3,
+}));
+
+export const PortfolioBox = styled(Box)(({ theme }) => ({
+  flexDirection: 'column',
+  display: 'flex',
+  justifyContent: 'center',
+  paddingX: '8px',
+}));

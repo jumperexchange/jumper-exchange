@@ -6,19 +6,6 @@ export const RefreshCircleIcon: React.FC<IconButtonProps> = ({
   ...other
 }) => {
   return (
-    // <IconButton onClick={onClick} {...other}>
-    //   <Tooltip
-    //     title={'Click here to restart the indexing of your tokens now.'}
-    //     placement="top"
-    //     enterTouchDelay={0}
-    //     componentsProps={{
-    //       popper: { sx: { zIndex: 2000 } },
-    //     }}
-    //     arrow
-    //     sx={{
-    //       zIndex: 25000,
-    //     }}
-    //   >
     <CircularProgress
       variant="determinate"
       size={24}
@@ -31,7 +18,5 @@ export const RefreshCircleIcon: React.FC<IconButtonProps> = ({
             : theme.palette.grey[800],
       })}
     />
-    //   </Tooltip>
-    // </IconButton>
   );
 };

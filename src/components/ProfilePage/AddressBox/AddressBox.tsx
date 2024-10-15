@@ -18,6 +18,7 @@ import {
 import useImageStatus from 'src/hooks/useImageStatus';
 import { DEFAULT_EFFIGY } from 'src/const/urls';
 import { walletDigest } from 'src/utils/walletDigest';
+import useEffigyLink from 'src/hooks/useEffigyLink';
 
 interface AddressBoxProps {
   address?: string;
@@ -33,8 +34,10 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
-  const imgLink = `https://effigy.im/a/${address}.png`;
-  const isImageValid = useImageStatus(imgLink);
+  const imgLink = useEffigyLink(
+    `https://effigy.im/a/${address}.png`,
+    DEFAULT_EFFIGY,
+  );
 
   const handleCopyButton = () => {
     address && navigator.clipboard.writeText(address);
@@ -51,11 +54,11 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
   };
 
   return (
-    <AddressBoxContainer imgUrl={isImageValid ? imgLink : DEFAULT_EFFIGY}>
+    <AddressBoxContainer imgUrl={imgLink}>
       <PassImageBox>
         <Image
           alt="Effigy Wallet Icon"
-          src={isImageValid ? imgLink : DEFAULT_EFFIGY}
+          src={imgLink}
           width={128}
           height={128}
           priority={false}
