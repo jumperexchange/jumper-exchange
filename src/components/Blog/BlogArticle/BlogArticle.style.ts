@@ -96,7 +96,7 @@ export const BlogArticleImage = styled(Image)(({ theme }) => ({
 
 export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   width: '100%',
-  // height: 'auto',
+  height: 'auto',
   transform: 'unset',
   borderRadius: '16px',
   margin: theme.spacing(0, 'auto', 0.75),
