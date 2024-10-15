@@ -33,7 +33,7 @@ import { useMenuStore } from 'src/stores/menu';
 import TokenImage from '@/components/Portfolio/TokenImage';
 import type { CacheToken } from '@/types/portfolio';
 import { optionalStrShortener } from 'src/utils/optionalStrShortener';
-import { PortfolioDivider, PortfolioDividerBox } from './PortfolioDivider';
+import { PortfolioDivider } from './PortfolioDivider';
 
 interface PortfolioTokenProps {
   token: CacheToken;
