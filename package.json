@@ -55,6 +55,7 @@
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@eslint/eslintrc": "^3.1.0",
+    "@lhci/cli": "^0.14.0",
     "@next/eslint-plugin-next": "^14.2.15",
     "@playwright/test": "^1.48.0",
     "@types/gtag.js": "^0.0.20",
