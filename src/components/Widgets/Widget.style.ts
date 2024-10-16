@@ -14,7 +14,12 @@ export const WidgetWrapper = styled(Box, {
   position: 'relative',
   margin: theme.spacing(0, 'auto'),
   zIndex: 2,
-  ...(!welcomeScreenClosed && { overflow: 'hidden' }),
+  ...(!welcomeScreenClosed && {
+    overflow: 'hidden',
+    [`@media screen and (min-height: 700px)`]: {
+      overflow: 'visible',
+    },
+  }),
 
   '> div': {
     transitionProperty: 'margin-top',
