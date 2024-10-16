@@ -7,7 +7,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAccount } from '@lifi/wallet-management';
 import { arraysEqual } from '@/utils/getTokens/utils';
@@ -84,7 +84,7 @@ function TotalBalance({
   }
 
   return (
-    <WalletCardContainer>
+    <WalletCardContainer disableGutters>
       <Box
         sx={{
           display: 'flex',
@@ -136,7 +136,6 @@ function TotalBalance({
           timeToUpdate={0}
           isLoading={!isComplete}
           onClick={() => refetch()}
-          sx={{ marginRight: -1 }}
         />
       </Box>
       <Stack spacing={1}>
@@ -156,14 +155,12 @@ function TotalBalance({
                 color={theme.palette.text.primary}
                 containerStyles={{
                   display: 'inline-flex',
-                  fontFamily: 'inherit',
                 }}
                 digitStyles={{
                   textOverflow: 'inherit',
                   fontWeight: 'inherit',
                   fontSize: 'inherit',
                   lineHeight: 'inherit',
-                  fontFamily: 'inherit',
                 }}
               />
             </>

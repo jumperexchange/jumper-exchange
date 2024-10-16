@@ -1,6 +1,6 @@
 import type { IconButtonProps } from '@mui/material';
 import { Box, CircularProgress, IconButton, Tooltip } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const getProgressValue = (updatedAt: number, timeToUpdate: number) =>
@@ -11,7 +11,7 @@ const getProgressValue = (updatedAt: number, timeToUpdate: number) =>
 const getSecondsToUpdate = (updatedAt: number, timeToUpdate: number) =>
   Math.max(Math.round((timeToUpdate - (Date.now() - updatedAt)) / 1000), 0);
 
-export const RefreshIcon: React.FC<
+const RefreshIcon: React.FC<
   {
     updatedAt: number;
     timeToUpdate: number;
@@ -94,3 +94,5 @@ export const RefreshIcon: React.FC<
     </IconButton>
   );
 };
+
+export default memo(RefreshIcon);

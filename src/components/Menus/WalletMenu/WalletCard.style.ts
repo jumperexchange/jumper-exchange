@@ -28,10 +28,10 @@ export const WalletCardContainer = styled(Container)(({ theme }) => ({
   display: 'flex',
   background: theme.palette.surface2.main,
   borderRadius: '16px',
-  // padding: theme.spacing(2, 1, 2, 1),
-  // [theme.breakpoints.down('sm' as Breakpoint)]: {
-  //   padding: '10px',
-  // },
+  padding: theme.spacing(2),
+  [theme.breakpoints.down('sm' as Breakpoint)]: {
+    padding: '10px',
+  },
 }));
 
 export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
