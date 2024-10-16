@@ -31,6 +31,16 @@ import {
   WalletMgmtChainAvatar,
   WalletMgmtWalletAvatar,
 } from './WalletButton.style';
+import { XPIcon } from '../illustrations/XPIcon';
+import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import {
+  DEFAULT_EFFIGY,
+  JUMPER_LOYALTY_PATH,
+  JUMPER_SCAN_PATH,
+} from 'src/const/urls';
+import { usePathname, useRouter } from 'next/navigation';
+import useImageStatus from 'src/hooks/useImageStatus';
+import useEffigyLink from 'src/hooks/useEffigyLink';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
@@ -40,8 +50,10 @@ export const WalletButtons = () => {
   const { openWalletMenu } = useWalletMenu();
   const { points, isLoading } = useLoyaltyPass();
   const router = useRouter();
-  const imgLink = `https://effigy.im/a/${account?.address}.png`;
-  const isImageValid = useImageStatus(imgLink);
+  const imgLink = useEffigyLink(
+    `https://effigy.im/a/${account?.address}.png`,
+    DEFAULT_EFFIGY,
+  );
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const pathname = usePathname();
 
@@ -95,7 +107,7 @@ export const WalletButtons = () => {
           {isDesktop && !pathname.includes(JUMPER_SCAN_PATH) && (
             <WalletMenuButton id="wallet-digest-button" onClick={handleXPClick}>
               <ImageWalletMenuButton
-                src={isImageValid ? imgLink : DEFAULT_EFFIGY}
+                src={imgLink}
                 alt="Effigy Wallet Icon"
                 width={32}
                 height={32}
