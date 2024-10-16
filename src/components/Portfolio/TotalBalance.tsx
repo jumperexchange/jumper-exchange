@@ -165,17 +165,21 @@ function TotalBalance({
                 color={theme.palette.text.primary}
                 containerStyles={{
                   display: 'inline-flex',
+                  fontFamily: 'inherit',
                 }}
                 digitStyles={{
                   textOverflow: 'inherit',
                   fontWeight: 'inherit',
                   fontSize: 'inherit',
                   lineHeight: 'inherit',
+                  fontFamily: 'inherit',
                 }}
               />
             </>
           )}
         </TotalValue>
+        {/*         
+        Todo: to add back later when we can review the time calculation
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">
           {differenceValue !== 0 && (
             <Stack direction="row" spacing="4px">
@@ -196,7 +200,7 @@ function TotalBalance({
               </VariationValue>
             </Stack>
           )}
-        </Stack>
+        </Stack> */}
       </Stack>
     </WalletCardContainer>
   );

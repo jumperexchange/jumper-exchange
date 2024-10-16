@@ -1,9 +1,10 @@
 import type { Token } from '@lifi/widget';
 import Image from 'next/image';
+import { NoTokenImageBox } from './Portfolio.styles';
 
 function TokenImage({ token }: { token: Pick<Token, 'logoURI' | 'name'> }) {
   if (!token?.logoURI) {
-    return token.name?.slice(0, 1) || '?';
+    return <NoTokenImageBox>{token.name?.slice(0, 1) || '?'}</NoTokenImageBox>;
   }
 
   return (
