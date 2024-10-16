@@ -1,7 +1,7 @@
 name: Lighthouse Tests
 on:
-  - pull_request
-  - workflow_dispatch
+#  - pull_request
+#  - workflow_dispatch
   - push
 jobs:
   lighthouseci:
@@ -11,6 +11,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: | # Cache Next.js build output
+            ${{ github.workspace }}/.next/cache
+          key: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
       - run: yarn install
       - run: yarn build
       - run: ./node_modules/.bin/lhci autorun
