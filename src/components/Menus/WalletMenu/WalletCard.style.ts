@@ -13,22 +13,22 @@ export const WalletAvatar = styled(Avatar)(({ theme }) => ({
   margin: 'auto',
   height: 40,
   width: 40,
+  backgroundColor: 'transparent',
 
   '> img': {
     height: '100%',
     width: '100%',
     objectFit: 'contain',
-    backgroundColor: theme.palette.white.main,
   },
   // mask: avatarMask32,
 }));
 
 export const WalletCardContainer = styled(Container)(({ theme }) => ({
   boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
-  padding: '24px',
   display: 'flex',
   background: theme.palette.surface2.main,
   borderRadius: '16px',
+  padding: theme.spacing(2),
   [theme.breakpoints.down('sm' as Breakpoint)]: {
     padding: '10px',
   },

@@ -55,12 +55,6 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'strapi.li.finance',
-        port: '',
-        pathname: '/uploads/**',
-      },
-      {
-        protocol: 'https',
         hostname: 'strapi.jumper.exchange',
         port: '',
         pathname: '/uploads/**',
