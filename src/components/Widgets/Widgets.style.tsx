@@ -15,7 +15,7 @@ export const WidgetContainer = styled(Box, {
   display: 'flex',
   flexDirection: 'column',
   // margin: theme.spacing(0, 'auto', 3),
-  overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
+  overflow: 'inherit',
   width: 'auto',
   minHeight: '50vh',
   transitionProperty: 'max-height',
@@ -25,14 +25,16 @@ export const WidgetContainer = styled(Box, {
 
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     margin: theme.spacing(0, 4),
-    marginRight: `calc( ${theme.spacing(4)} ${welcomeScreenClosed && '+ 56px'} )`,
+    ...(welcomeScreenClosed && {
+      marginRight: `calc( ${theme.spacing(4)} + 56px )`,
+    }),
   },
 
   // radial shadow glow -> animation
-  '&:hover:before': {
+  '&:hover:after': {
     ...(!welcomeScreenClosed && {
       opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
-      top: '45%',
+      top: '55%',
     }),
   },
 
@@ -41,7 +43,7 @@ export const WidgetContainer = styled(Box, {
     transitionProperty: 'margin-top',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
-    marginTop: !welcomeScreenClosed ? '24px' : 0,
+    ...(welcomeScreenClosed && { marginTop: 0 }),
     cursor: !welcomeScreenClosed ? 'pointer' : 'auto',
     [theme.breakpoints.down('sm' as Breakpoint)]: {
       height: 'auto',
@@ -76,10 +78,7 @@ export const WidgetContainer = styled(Box, {
     left: 0,
     right: 0,
     bottom: !welcomeScreenClosed ? 0 : 'calc( 680px - 486px )',
-    background:
-      theme.palette.mode === 'dark'
-        ? 'linear-gradient(180deg, transparent 15%,  #000 40%)'
-        : 'linear-gradient(180deg, transparent 15%, #fff 40%)',
+    background: `linear-gradient(180deg, transparent 15%,  ${theme.palette.mode === 'dark' ? theme.palette.black.main : theme.palette.white.main} 40%)`,
     opacity: 0.5,
     margin: 'auto',
     transitionProperty: 'opacity, bottom',
@@ -89,6 +88,7 @@ export const WidgetContainer = styled(Box, {
     borderTopRightRadius: '12px',
     borderTopLeftRadius: '12px',
     top: 24,
+    height: '100%',
 
     [`@media screen and (min-height: 700px)`]: {
       top: 'calc( 50vh - 680px / 2.75 - 40px)', // (mid viewheight - half-two/thirds widget height - navbar height )
@@ -96,9 +96,7 @@ export const WidgetContainer = styled(Box, {
 
     [`@media screen and (min-height: 900px)`]: {
       top: 'calc( 50vh - 680px / 2.75 - 128px)', // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
-      bottom: !welcomeScreenClosed
-        ? 'calc( 680px - 300px)'
-        : 'calc( 680px - 486px )',
+      bottom: 'calc( 50vh / 2 )',
     },
   },
 
@@ -117,8 +115,9 @@ export const WidgetContainer = styled(Box, {
   },
 
   // radial shadow glow
-  '.welcome-screen-container + &:before': {
+  '&:after': {
     content: '" "',
+    visibility: !welcomeScreenClosed ? 'visible' : 'hidden',
     transitionProperty: 'top, opacity',
     transitionDuration: '.4s',
     transitionTimingFunction: 'ease-in-out',
@@ -131,8 +130,8 @@ export const WidgetContainer = styled(Box, {
     pointerEvents: 'none',
     width: 1080,
     height: 1080,
-    maxWidth: '90vw',
-    maxHeight: '90vh',
+    maxWidth: 'calc( 416px * 2 )',
+    maxHeight: 'calc( 416px * 2 )',
     transform: 'translate(-50%, -50%)',
     left: '50%',
     top: '50%',
@@ -142,6 +141,10 @@ export const WidgetContainer = styled(Box, {
         : !welcomeScreenClosed && theme.palette.mode === 'light'
           ? 0.12
           : 0,
+    [theme.breakpoints.up('lg' as Breakpoint)]: {
+      maxWidth: '90vh',
+      maxHeight: '90vh',
+    },
   },
 }));
 
