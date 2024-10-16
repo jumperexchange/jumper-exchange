@@ -57,7 +57,7 @@ export function fetchAllTokensBalanceByChain(
   );
 
   const fetchTokens = async () => {
-    console.log(`\n--- Fetch Round ${round} of ${account} ---`);
+    console.debug(`\n--- Fetch Round ${round} of ${account} ---`);
 
     let tokensFetchedThisRound = 0;
     const fetchPromises: Promise<TokenAmount[]>[] = [];
@@ -93,14 +93,14 @@ export function fetchAllTokensBalanceByChain(
       chainsFetchedThisRound.push(chainId);
 
       fetchPromises.push(LifiGetTokenBalances(account, tokenBatch));
-      console.log(
+      console.debug(
         `fetching on chain ${chainId}`,
         tokenBatch.map((t) => t.symbol).join(','),
       );
     }
 
     if (fetchPromises.length === 0) {
-      console.log('No more tokens to fetch.');
+      console.debug('No more tokens to fetch.');
       clearInterval(intervalId!);
       return;
     }
@@ -186,7 +186,7 @@ export function fetchAllTokensBalanceByChain(
 
     onProgress(account, round, totalPriceUSD, combinedBalances);
 
-    console.log(
+    console.debug(
       `Round ${round} on ${account} completed. Fetched ${tokensFetchedThisRound} tokens.`,
     );
 
@@ -195,7 +195,7 @@ export function fetchAllTokensBalanceByChain(
       // If all tokens are fetched, clear the interval and stop
       clearInterval(intervalId!);
       handleComplete(combinedBalances);
-      console.log(`
+      console.debug(`
 All tokens have been successfully fetched for the account ${account}!`);
     }
   };
