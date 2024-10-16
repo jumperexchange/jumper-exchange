@@ -5,6 +5,7 @@ import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { useMercleNft } from 'src/hooks/useMercleNft';
+import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
@@ -44,14 +45,11 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
     setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
   };
 
-  const getAddressOrENSString = (): string => {
-    if (isSuccess && ensName) {
-      return String(ensName).length > 20
-        ? `${ensName.slice(0, 13)}...eth`
-        : ensName;
-    }
-    return address && isEVM ? walletDigest(address) : '0x00000...00000';
-  };
+  const addressLabel = getAddressLabel({
+    isSuccess,
+    ensName,
+    address,
+  });
 
   return (
     <AddressBoxContainer imgUrl={imgLink}>
@@ -85,7 +83,7 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
           width={'100%'}
           textAlign={'center'}
         >
-          {getAddressOrENSString()}
+          {addressLabel}
         </NoSelectTypography>
         <ProfileIconButton onClick={() => handleCopyButton()}>
           <ContentCopyIcon sx={{ height: '16px' }} />

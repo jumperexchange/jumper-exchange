@@ -10,7 +10,7 @@ export const LevelBox = ({ level }: LevelBoxProps) => {
   return (
     <Box>
       <IconHeader tooltipKey="profile_page.levelInfo" title="LEVEL" />
-      <PointsDisplay points={level} />
+      <PointsDisplay points={level} defaultPoints={1} />
     </Box>
   );
 };

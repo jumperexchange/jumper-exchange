@@ -3,9 +3,13 @@ import { NoSelectTypographyTitle } from '../ProfilePage.style';
 
 interface PointsDisplayProps {
   points?: number;
+  defaultPoints?: number;
 }
 
-export const PointsDisplay = ({ points }: PointsDisplayProps) => (
+export const PointsDisplay = ({
+  points,
+  defaultPoints,
+}: PointsDisplayProps) => (
   <Box display="flex" justifyContent="end">
     <NoSelectTypographyTitle
       lineHeight={1.25}
@@ -15,7 +19,7 @@ export const PointsDisplay = ({ points }: PointsDisplayProps) => (
         letterSpacing: '-2px',
       }}
     >
-      {points || '-'}
+      {points || defaultPoints || '0'}
     </NoSelectTypographyTitle>
   </Box>
 );
