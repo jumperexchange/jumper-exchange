@@ -66,10 +66,8 @@ export const WalletCard = ({ account }: WalletCardProps) => {
     handleMultisigEnvironmentCheck();
   }, [account, handleMultisigEnvironmentCheck]);
 
-console.log("ACCOUNT", account)
-
   const handleExploreButton = () => {
-    const blockchainExplorerUrl = account.chain?.blockExplorers?.default.url;
+    const blockchainExplorerUrl = activeChain?.metamask?.blockExplorerUrls?.[0];
 
     trackEvent({
       category: TrackingCategory.WalletMenu,
