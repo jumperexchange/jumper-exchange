@@ -1,9 +1,5 @@
 import { WalletCardContainer } from '@/components/Menus';
-import {
-  CircularProgressPending,
-  TotalValue,
-  VariationValue,
-} from '@/components/Portfolio/Portfolio.styles';
+import { TotalValue } from '@/components/Portfolio/Portfolio.styles';
 import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
 import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
 import { usePortfolioStore } from '@/stores/portfolio';
@@ -13,10 +9,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import { Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RefreshCircleIcon } from './RefreshCircleIcon';
 import { useAccount } from '@lifi/wallet-management';
 import { arraysEqual } from '@/utils/getTokens';
 import { AnimatedCounter } from 'react-animated-counter';
+import { RefreshIcon } from './CircularProgress/RefreshIcon';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -135,18 +131,13 @@ function TotalBalance({
             />
           </Tooltip>
         </Box>
-        {!isComplete ? (
-          <TotalBalanceIconButton disabled={true}>
-            <CircularProgressPending size={24} />
-          </TotalBalanceIconButton>
-        ) : (
-          <TotalBalanceIconButton
-            tooltipText={t('navbar.walletMenu.totalBalanceRefresh')}
-            refetch={refetch}
-          >
-            <RefreshCircleIcon />
-          </TotalBalanceIconButton>
-        )}
+        <RefreshIcon
+          updatedAt={new Date().getTime()}
+          timeToUpdate={0}
+          isLoading={!isComplete}
+          onClick={() => refetch()}
+          sx={{ marginRight: -1 }}
+        />
       </Box>
       <Stack spacing={1}>
         <TotalValue as="div">

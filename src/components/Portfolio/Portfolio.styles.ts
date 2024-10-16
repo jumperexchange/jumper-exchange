@@ -92,39 +92,6 @@ export const SmallAvatar = styled(Avatar)(({ theme }) => ({
   border: `2px solid ${theme.palette.surface2.main}`,
 }));
 
-const circleAnimation = keyframes`
-  0% {
-    stroke-dashoffset: 129;
-    transform: rotate(0);
-  }
-  50% {
-    stroke-dashoffset: 56;
-    transform: rotate(45deg);
-  };
-  100% {
-    stroke-dashoffset: 129;
-    transform: rotate(360deg);
-  }
-`;
-
-export const CircularProgressPending = styled(MuiCircularProgress)`
-  color: ${({ theme }) =>
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.primary.light};
-  animation-duration: 3s;
-  position: absolute;
-  .${circularProgressClasses.circle} {
-    animation-duration: 2s;
-    animation-timing-function: linear;
-    animation-name: ${circleAnimation};
-    stroke-dasharray: 129;
-    stroke-dashoffset: 129;
-    stroke-linecap: round;
-    transform-origin: 100% 100%;
-  }
-`;
-
 export const Icon = styled(SvgIcon)``;
 
 export const CustomDivider = styled(Divider)(({ theme }) => ({
