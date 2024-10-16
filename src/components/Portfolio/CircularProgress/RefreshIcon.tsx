@@ -45,7 +45,7 @@ export const RefreshIcon: React.FC<
   return (
     <IconButton onClick={onClick} disabled={isLoading} {...other}>
       <Tooltip
-        title={t('navbar.walletMenu.refreshBalances')}
+        title={t('navbar.walletMenu.totalBalanceRefresh')}
         placement="top"
         enterTouchDelay={0}
         componentsProps={{
