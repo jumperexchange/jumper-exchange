@@ -38,7 +38,6 @@ interface PortfolioTokenProps {
 }
 
 function PortfolioToken({ token }: PortfolioTokenProps) {
-  const { lng } = useParams();
   const [isExpanded, setExpanded] = useState<boolean>(false);
   const { t } = useTranslation();
   const { isMainPaths } = useMainPaths();

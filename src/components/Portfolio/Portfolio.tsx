@@ -1,13 +1,13 @@
 import { WalletCardContainer } from '@/components/Menus';
 import PortfolioToken from '@/components/Portfolio/PortfolioToken';
 import TotalBalance from '@/components/Portfolio/TotalBalance';
-import { useTokens } from '@/utils/getTokens';
+import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
 import { Badge, Box, Skeleton, Stack, useTheme } from '@mui/material';
 
 export function Portfolio() {
   const theme = useTheme();
 
-  const { isSuccess, refetch, isFetching, data } = useTokens();
+  const { isSuccess, refetch, isFetching, data } = usePortfolioTokens();
 
   return (
     <>

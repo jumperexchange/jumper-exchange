@@ -15,7 +15,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshCircleIcon } from './RefreshCircleIcon';
 import { useAccount } from '@lifi/wallet-management';
-import { arraysEqual } from '@/utils/getTokens';
+import { arraysEqual } from '@/utils/getTokens/utils';
 import { AnimatedCounter } from 'react-animated-counter';
 
 function has24HoursPassed(lastDate: number): boolean {

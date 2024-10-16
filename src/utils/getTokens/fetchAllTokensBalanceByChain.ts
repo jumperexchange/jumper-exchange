@@ -1,45 +1,17 @@
+// Constants
 import type {
   ExtendedChain,
   Token,
   TokenAmount,
   TokensResponse,
 } from '@lifi/sdk';
-import {
-  getChains,
-  getTokenBalances as LifiGetTokenBalances,
-  getTokens as LifiGetTokens,
-} from '@lifi/sdk';
-import { formatUnits } from 'viem';
-import { useQueries } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import { usePortfolioStore } from '@/stores/portfolio';
-import type { Account } from '@lifi/wallet-management';
-import { useAccount } from '@lifi/wallet-management';
+import { getTokenBalances as LifiGetTokenBalances } from '@lifi/sdk';
+import type {
+  ExtendedTokenAmount,
+  ExtendedTokenAmountWithChain,
+} from '@/utils/getTokens/index';
+import { getBalance } from '@/utils/getTokens/utils';
 
-export interface ExtendedTokenAmountWithChain extends ExtendedTokenAmount {
-  chainLogoURI?: string;
-  chainName?: string;
-}
-
-interface Price {
-  amount?: bigint;
-  totalPriceUSD: number;
-  formattedBalance: number;
-}
-
-export interface ExtendedTokenAmount extends TokenAmount, Partial<Price> {
-  chains: ExtendedTokenAmountWithChain[];
-  cumulatedBalance?: number; // Cumulated balance across chains
-  cumulatedTotalUSD?: number; // Cumulated total USD across chains
-}
-
-function getBalance(tokenBalance: Partial<TokenAmount>): number {
-  return tokenBalance?.amount && tokenBalance?.decimals
-    ? Number(formatUnits(tokenBalance.amount, tokenBalance.decimals))
-    : 0;
-}
-
-// Constants
 const MAX_CROSS_CHAIN_FETCH = 10000; // Maximum tokens per fetch round across all chains
 const MAX_TOKENS_PER_CHAIN = 300; // Maximum tokens to fetch per chain per round
 const FETCH_DELAY = 3000;
@@ -58,7 +30,7 @@ const MAX_TOKENS_FIRST_ROUND = 7; // Maximum tokens to fetch on the first load
  */
 
 // Main function to fetch all tokens in batches
-function fetchAllTokensBalanceByChain(
+export function fetchAllTokensBalanceByChain(
   account: string,
   chains: ExtendedChain[],
   tokens: TokensResponse['tokens'],
@@ -236,141 +208,3 @@ All tokens have been successfully fetched for the account ${account}!`);
 
   return intervalId;
 }
-
-//------------------------------
-//------------------------------
-
-interface Events {
-  onProgress: (
-    account: string,
-    round: number,
-    cumulativePriceUSD: number,
-    fetchedBalances: ExtendedTokenAmount[],
-  ) => void;
-}
-
-async function getTokens(
-  account: Pick<Account, 'chainType' | 'address'>,
-  events: Events,
-): Promise<undefined | ExtendedTokenAmountWithChain[]> {
-  try {
-    const chains = await getChains({
-      chainTypes: [account.chainType],
-    });
-    const { tokens } = await LifiGetTokens({
-      chainTypes: [account.chainType],
-    });
-
-    return new Promise((resolve, reject) => {
-      try {
-        fetchAllTokensBalanceByChain(
-          account.address!,
-          chains,
-          tokens,
-          events.onProgress,
-          (combinedBalance) => {
-            resolve(combinedBalance);
-          },
-        );
-      } catch (error) {
-        reject(error);
-      }
-    });
-  } catch (error) {
-    console.error('An error occurred during the fetching process:', error);
-  }
-}
-
-export function arraysEqual(arr1: string[], arr2: string[]): boolean {
-  if (arr1.length !== arr2.length) {
-    return false;
-  }
-
-  const sortedArr1 = arr1.slice().sort();
-  const sortedArr2 = arr2.slice().sort();
-
-  return sortedArr1.every((value, index) => value === sortedArr2[index]);
-}
-
-export function useTokens() {
-  const { accounts } = useAccount();
-  const {
-    getFormattedCacheTokens,
-    setCacheTokens,
-    lastAddresses,
-    forceRefresh,
-    setForceRefresh,
-  } = usePortfolioStore((state) => state);
-
-  const handleProgress = (
-    account: string,
-    round: number,
-    totalPriceUSD: number,
-    fetchedBalances: ExtendedTokenAmount[],
-  ) => {
-    console.log(`\n** Round ${round} Account: ${account} **`);
-    console.log(`Cumulative Price USD: $${totalPriceUSD.toFixed(2)}`);
-    console.log(`Fetched Balances this Round:`, fetchedBalances);
-
-    setCacheTokens(account, fetchedBalances);
-  };
-
-  const queries = useQueries({
-    queries: accounts
-      .filter((account) => account.isConnected && !!account?.address)
-      .map((account) => ({
-        queryKey: ['tokens', account.chainType, account.address],
-        queryFn: () => getTokens(account, { onProgress: handleProgress }),
-        // refetchInterval: 100000 * 60 * 60,
-      })),
-  });
-
-  const isSuccess = queries.every(
-    (query) => !query.isFetching && query.isSuccess,
-  );
-  const isFetching = queries.every((query) => query.isFetching);
-  const refetch = () => queries.map((query) => query.refetch());
-
-  // Usefull to refresh after bridging something
-  useEffect(() => {
-    console.log('forceref', forceRefresh);
-    if (!forceRefresh) {
-      return;
-    }
-
-    refetch();
-    setForceRefresh(false);
-  }, [forceRefresh]);
-
-  useEffect(() => {
-    if (!accounts) {
-      return;
-    }
-
-    if (
-      arraysEqual(
-        accounts
-          .filter((account) => account.isConnected && account?.address)
-          .map((account) => account.address!),
-        lastAddresses ?? [],
-      )
-    ) {
-      return;
-    }
-
-    refetch();
-  }, [accounts]);
-
-  return {
-    queries,
-    isSuccess,
-    isFetching,
-    refetch,
-    data:
-      getFormattedCacheTokens(accounts).cache.length === 0
-        ? queries.map((query) => query.data ?? []).flat()
-        : getFormattedCacheTokens(accounts).cache,
-  };
-}
-
-export default getTokens;
