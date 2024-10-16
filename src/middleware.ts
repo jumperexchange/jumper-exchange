@@ -20,5 +20,5 @@ export function middleware(request: NextRequest) {
 
 // Applies this middleware only to specific paths
 export const config = {
-  matcher: '/((?!api|static|.*\\..*|bridge|_next).*)',
+  matcher: '/((?!api|static|.*\\..*|_next).*)',
 };

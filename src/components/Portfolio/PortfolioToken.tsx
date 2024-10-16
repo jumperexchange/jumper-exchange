@@ -17,8 +17,6 @@ import {
   Box,
   useTheme,
 } from '@mui/material';
-import Image from 'next/image';
-import type { ExtendedTokenAmountWithChain } from '@/utils/getTokens';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
