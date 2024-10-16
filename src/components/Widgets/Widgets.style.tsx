@@ -11,7 +11,7 @@ export interface WidgetContainerProps {
 export const WidgetContainer = styled(Box, {
   shouldForwardProp: (prop) =>
     prop !== 'isActive' && prop !== 'welcomeScreenClosed',
-})<WidgetContainerProps>(({ theme, welcomeScreenClosed = false }) => ({
+})<WidgetContainerProps>(({ theme, welcomeScreenClosed }) => ({
   display: 'flex',
   flexDirection: 'column',
   // margin: theme.spacing(0, 'auto', 3),
@@ -21,7 +21,7 @@ export const WidgetContainer = styled(Box, {
   transitionProperty: 'max-height',
   transitionDuration: '.3s',
   transitionTimingFunction: 'ease-in-out',
-  maxHeight: 'inherit',
+  maxHeight: !welcomeScreenClosed ? '50vh' : 'inherit',
 
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     margin: theme.spacing(0, 4),
@@ -68,43 +68,6 @@ export const WidgetContainer = styled(Box, {
     },
   },
 
-  // widget overlay when welcome screen opened
-  '& .widget-wrapper > div:before': {
-    content: '" "',
-    visibility: !welcomeScreenClosed ? 'visible' : 'hidden',
-    position: 'absolute',
-    width: 'inherit',
-    zIndex: 900,
-    left: 0,
-    right: 0,
-    bottom: !welcomeScreenClosed ? 0 : 'calc( 680px - 486px )',
-    background: `linear-gradient(180deg, transparent 15%,  ${theme.palette.mode === 'dark' ? theme.palette.black.main : theme.palette.white.main} 40%)`,
-    opacity: 0.5,
-    margin: 'auto',
-    transitionProperty: 'opacity, bottom',
-    transitionDuration: '0.3s',
-    transitionTimingFunction: 'ease-in-out',
-    transitionDelay: !welcomeScreenClosed ? '0s' : '0.3s',
-    borderTopRightRadius: '12px',
-    borderTopLeftRadius: '12px',
-    top: 24,
-    height: '100%',
-
-    [`@media screen and (min-height: 700px)`]: {
-      top: 'calc( 50vh - 680px / 2.75 - 40px)', // (mid viewheight - half-two/thirds widget height - navbar height )
-    },
-
-    [`@media screen and (min-height: 900px)`]: {
-      top: 'calc( 50vh - 680px / 2.75 - 128px)', // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
-      bottom: 'calc( 50vh / 2 )',
-    },
-  },
-
-  // dark widget overlay when welcome screen opened -> hover animation
-  '& .widget-wrapper > div:hover:before': {
-    opacity: 0.25,
-  },
-
   '.welcome-screen-container + & .widget-wrapper > div': {
     cursor: 'pointer',
   },
@@ -125,11 +88,11 @@ export const WidgetContainer = styled(Box, {
       theme.palette.mode === 'dark'
         ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);'
         : 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);',
-    position: 'absolute',
     zIndex: -1,
     pointerEvents: 'none',
     width: 1080,
     height: 1080,
+    position: 'fixed',
     maxWidth: 'calc( 416px * 2 )',
     maxHeight: 'calc( 416px * 2 )',
     transform: 'translate(-50%, -50%)',

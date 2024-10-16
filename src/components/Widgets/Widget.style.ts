@@ -14,6 +14,7 @@ export const WidgetWrapper = styled(Box, {
   position: 'relative',
   margin: theme.spacing(0, 'auto'),
   zIndex: 2,
+  ...(!welcomeScreenClosed && { overflow: 'hidden' }),
 
   '> div': {
     transitionProperty: 'margin-top',
@@ -77,10 +78,7 @@ export const WidgetWrapper = styled(Box, {
     left: 0,
     right: 0,
     bottom: !welcomeScreenClosed ? 0 : 'calc( 680px - 486px )',
-    background:
-      theme.palette.mode === 'dark'
-        ? 'linear-gradient(180deg, transparent 15%,  #000 40%)'
-        : 'linear-gradient(180deg, transparent 15%, #fff 40%)',
+    background: `linear-gradient(180deg, transparent 15%,  ${theme.palette.mode === 'dark' ? theme.palette.black.main : theme.palette.white.main} 40%)`,
     opacity: 0.5,
     margin: 'auto',
     transitionProperty: 'opacity, bottom',
@@ -90,14 +88,14 @@ export const WidgetWrapper = styled(Box, {
     borderTopRightRadius: '12px',
     borderTopLeftRadius: '12px',
     top: 24,
+    height: '100%',
 
     [`@media screen and (min-height: 700px)`]: {
-      top: welcomeScreenClosed ? 'calc( 50vh - 680px / 2.75 - 40px)' : '200%', // (mid viewheight - half-two/thirds widget height - navbar height )
+      top: 'calc( 50vh - 680px / 2.75 - 40px)', // (mid viewheight - half-two/thirds widget height - navbar height )
     },
 
     [`@media screen and (min-height: 900px)`]: {
-      top: !welcomeScreenClosed ? '200%' : 'calc( 50vh - 680px / 2.75 - 128px)', // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
-      // bottom: !welcomeScreenClosed ? 0 : 'calc( 680px - 486px )',
+      top: 'calc( 50vh - 680px / 2.75 - 128px)', // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
     },
   },
 
