@@ -130,7 +130,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   };
 
   return (
-    <WalletCardContainer>
+    <WalletCardContainer disableGutters>
       <WalletCardStack>
         <WalletCardBadge
           overlap="circular"

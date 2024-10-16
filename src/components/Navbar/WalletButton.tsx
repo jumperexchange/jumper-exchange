@@ -26,6 +26,7 @@ import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import { usePathname, useRouter } from 'next/navigation';
 import useImageStatus from 'src/hooks/useImageStatus';
+import useEffigyLink from 'src/hooks/useEffigyLink';
 
 export const WalletButtons = () => {
   const { chains } = useChains();

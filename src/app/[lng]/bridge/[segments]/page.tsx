@@ -7,7 +7,6 @@ import {
   getTokenBySymbolOnSpecificChain,
 } from '@/utils/tokenAndChain';
 import type { Metadata } from 'next';
-import { sliceStrToXChar } from '@/utils/splitStringToXChar';
 import { siteName } from '@/app/lib/metadata';
 
 function parseString(url: string): [string, string, string, string] {
