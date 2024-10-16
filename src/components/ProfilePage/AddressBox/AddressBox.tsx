@@ -4,7 +4,6 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_EFFIGY } from 'src/const/urls';
 import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
@@ -33,8 +32,7 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
-  const imgLink = `https://effigy.im/a/${address}.png`;
-  const isImageValid = useImageStatus(imgLink);
+  const imgLink = useImageStatus(address);
 
   const handleCopyButton = () => {
     address && navigator.clipboard.writeText(address);
@@ -48,11 +46,11 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
   });
 
   return (
-    <AddressBoxContainer imgUrl={isImageValid ? imgLink : DEFAULT_EFFIGY}>
+    <AddressBoxContainer imgUrl={imgLink}>
       <PassImageBox>
         <Image
           alt="Effigy Wallet Icon"
-          src={isImageValid ? imgLink : DEFAULT_EFFIGY}
+          src={imgLink}
           width={128}
           height={128}
           priority={false}
