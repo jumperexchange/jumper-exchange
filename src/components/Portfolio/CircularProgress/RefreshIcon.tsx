@@ -1,7 +1,8 @@
 import type { IconButtonProps } from '@mui/material';
-import { Box, CircularProgress, IconButton, Tooltip } from '@mui/material';
+import { CircularProgress, IconButton, Tooltip } from '@mui/material';
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CircularBox } from './CircularProgress.style';
 
 const getProgressValue = (updatedAt: number, timeToUpdate: number) =>
   updatedAt
@@ -56,15 +57,7 @@ const RefreshIcon: React.FC<
           zIndex: 25000,
         }}
       >
-        <Box
-          sx={{
-            display: 'grid',
-            position: 'relative',
-            placeItems: 'center',
-            width: 24,
-            height: 24,
-          }}
-        >
+        <CircularBox>
           <CircularProgress
             variant="determinate"
             size={24}
@@ -89,7 +82,7 @@ const RefreshIcon: React.FC<
                   : theme.palette.primary.light,
             })}
           />
-        </Box>
+        </CircularBox>
       </Tooltip>
     </IconButton>
   );

@@ -84,3 +84,11 @@ export const CircularProgressPending = styled(MuiCircularProgress)`
     transform-origin: 100% 100%;
   }
 `;
+
+export const CircularBox = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  position: 'relative',
+  placeItems: 'center',
+  width: 24,
+  height: 24,
+}));

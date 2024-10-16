@@ -7,12 +7,12 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
-import { memo, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAccount } from '@lifi/wallet-management';
 import { arraysEqual } from '@/utils/getTokens/utils';
 import { AnimatedCounter } from 'react-animated-counter';
-import { RefreshIcon } from './CircularProgress/RefreshIcon';
+import RefreshIcon from './CircularProgress/RefreshIcon';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();

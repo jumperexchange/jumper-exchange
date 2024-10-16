@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import generateKey from '@/app/lib/generateKey';
 import { WalletCardContainer } from '../Menus';
+import { PortfolioSkeletonBox } from './Portfolio.styles';
 
 export default function PortfolioTokenSkeleton() {
   const theme = useTheme();
@@ -37,15 +38,7 @@ export default function PortfolioTokenSkeleton() {
                 <Skeleton variant="circular" width={40} height={40} />
               </Badge>
             </Box>
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            <PortfolioSkeletonBox>
               <Stack direction="column" alignItems="start" spacing={1}>
                 <Skeleton
                   variant="rectangular"
@@ -74,7 +67,7 @@ export default function PortfolioTokenSkeleton() {
                   sx={{ borderRadius: '32px' }}
                 />
               </Stack>
-            </Box>
+            </PortfolioSkeletonBox>
           </Stack>
         </WalletCardContainer>
       ))}

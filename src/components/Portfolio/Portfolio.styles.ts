@@ -106,13 +106,21 @@ export const PortfolioBox = styled(Box)(({ theme }) => ({
   paddingX: '8px',
 }));
 
-export const NoTokenImageBox = styled(Box)(({ theme }) => ({
+export const NoTokenImageBox = styled(Box)(() => ({
   backgroundColor: 'grey',
   borderRadisu: '50%',
   height: 40,
   width: 40,
   display: 'flex',
   justifyContent: 'center',
+  alignContent: 'center',
+  alignItems: 'center',
+}));
+
+export const PortfolioSkeletonBox = styled(Box)(() => ({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-between',
   alignContent: 'center',
   alignItems: 'center',
 }));

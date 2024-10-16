@@ -32,7 +32,7 @@ import PortfolioTokenChainButton from '@/components/Portfolio/PortfolioTokenChai
 import { useMenuStore } from 'src/stores/menu';
 import TokenImage from '@/components/Portfolio/TokenImage';
 import type { CacheToken } from '@/types/portfolio';
-import { optionalStrShortener } from 'src/utils/optionalStrShortener';
+import { stringLenShortener } from 'src/utils/stringLenShortener';
 import { PortfolioDivider } from './PortfolioDivider';
 
 interface PortfolioTokenProps {
@@ -126,11 +126,11 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             </Grid>
             <Grid item xs={5}>
               <TypographyPrimary>
-                {optionalStrShortener(token.symbol, 8)}
+                {stringLenShortener(token.symbol, 8)}
               </TypographyPrimary>
               {!hasMultipleChains ? (
                 <TypographySecondary>
-                  {optionalStrShortener(token.chains?.[0]?.name, 18)}
+                  {stringLenShortener(token.chains?.[0]?.name, 18)}
                 </TypographySecondary>
               ) : (
                 <CustomAvatarGroup spacing={6} max={15}>
