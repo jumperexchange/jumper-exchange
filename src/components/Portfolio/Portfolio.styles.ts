@@ -21,6 +21,7 @@ export const TotalValue = styled(Typography)(({ theme }) => ({
   fontWeight: '700',
   fontSize: '48px',
   lineHeight: '64px',
+  fontFamily: 'var(--font-inter)',
 }));
 
 export const VariationValue = styled(Typography)(({ theme }) => ({

@@ -1631,7 +1631,7 @@ const coins = [
     address: '0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed',
     symbol: 'DEGEN',
     decimals: 18,
-    logoURI: 'https://strapi.li.finance/uploads/degen_38108fbdaa.webp',
+    logoURI: 'https://strapi.jumper.exchange/uploads/degen_38108fbdaa.webp',
   },
   {
     chainId: 8453,
@@ -1710,7 +1710,7 @@ const coins = [
     address: '0x532f27101965dd16442E59d40670FaF5eBB142E4',
     symbol: 'BRETT',
     decimals: 18,
-    logoURI: 'https://strapi.li.finance/uploads/brett_ca2d328cc8.jpeg',
+    logoURI: 'https://strapi.jumper.exchange/uploads/brett_ca2d328cc8.jpeg',
   },
   {
     chainId: 8453,

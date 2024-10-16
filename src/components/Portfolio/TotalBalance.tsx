@@ -1,10 +1,7 @@
 import { WalletCardContainer } from '@/components/Menus';
 import { TotalValue } from '@/components/Portfolio/Portfolio.styles';
 import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
-import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
 import { usePortfolioStore } from '@/stores/portfolio';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
 import { useMemo, useState } from 'react';
@@ -166,7 +163,7 @@ function TotalBalance({
             </>
           )}
         </TotalValue>
-        {/*         
+        {/*
         Todo: to add back later when we can review the time calculation
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">
           {differenceValue !== 0 && (
