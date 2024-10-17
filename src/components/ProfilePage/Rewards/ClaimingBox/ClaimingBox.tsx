@@ -1,22 +1,21 @@
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Typography, useTheme } from '@mui/material';
+import { Button } from 'src/components/Button';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
+import { MerklDistribABI } from 'src/const/abi/merklABI';
+import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
+import {
+  useAccount,
+  useSwitchChain,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi';
+import { RewardsAmountBox } from '../RewardsAmountBox/RewardsAmountBox';
 import {
   ClaimButtonBox,
   RewardsCarouselMainBox,
   RewardsOpenIconButton,
 } from '../RewardsCarousel.style';
-import { RewardsAmountBox } from '../RewardsAmountBox/RewardsAmountBox';
-import { Button } from 'src/components/Button';
-import { Typography, useTheme } from '@mui/material';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
-import {
-  useAccount,
-  useWriteContract,
-  useWaitForTransactionReceipt,
-  useSwitchChain,
-} from 'wagmi';
-import { ChainId } from '@lifi/sdk';
-import { MerklDistribABI } from 'src/const/abi/merklABI';
 
 interface ClaimRewardParams {
   tokenChainid: number;
@@ -74,7 +73,7 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
         });
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

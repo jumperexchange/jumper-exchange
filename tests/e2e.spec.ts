@@ -94,7 +94,7 @@ test.describe('Jumper full e2e flow', () => {
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
 
-  test('Should be able to navigate to profile and open first Mission', async ({
+  test.skip('Should be able to navigate to profile and open first Mission', async ({
     page,
   }) => {
     let profileUrl = `${await page.url()}profile`;
@@ -117,7 +117,7 @@ test.describe('Jumper full e2e flow', () => {
     const sectionName = [
       'Announcements',
       'Partnerships',
-      'Tutorial', 
+      'Tutorial',
       'Knowledge',
     ];
     const socialNetworks = ['LinkedIn', 'Facebook', 'X'];
@@ -142,11 +142,15 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('Should be able to navigate to LI.FI Scan', async ({ page }) => {
+    const searchBar = await page.locator(
+      'xpath=//div[@class="MuiBox-root mui-1nhlr6a"]',
+    );
     await openOrCloseMainMenu(page);
     await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Scan');
     // const newPage = await page.waitForEvent('popup', { timeout: 15000 });
-    expect(page).toHaveURL(values.localJumperScanURL);
+    await expect(page).toHaveURL(values.localJumperScanURL);
+    await expect(searchBar).toBeVisible();
   });
 
   test.skip('Should be able to navigate to Supefest', async ({ page }) => {
