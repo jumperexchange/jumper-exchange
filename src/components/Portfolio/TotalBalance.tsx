@@ -152,6 +152,7 @@ function TotalBalance({
                 color={theme.palette.text.primary}
                 containerStyles={{
                   display: 'inline-flex',
+                  textAlign: 'center',
                 }}
                 digitStyles={{
                   textOverflow: 'inherit',
