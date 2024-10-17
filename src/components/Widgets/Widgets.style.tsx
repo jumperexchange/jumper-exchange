@@ -14,14 +14,19 @@ export const WidgetContainer = styled(Box, {
 })<WidgetContainerProps>(({ theme, welcomeScreenClosed = false }) => ({
   display: 'flex',
   flexDirection: 'column',
-  margin: theme.spacing(0, 'auto', 3),
+  // margin: theme.spacing(0, 'auto', 3),
   overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
-  width: '100%',
+  width: 'auto',
   minHeight: '50vh',
   transitionProperty: 'max-height',
   transitionDuration: '.3s',
   transitionTimingFunction: 'ease-in-out',
   maxHeight: 'inherit',
+
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    margin: theme.spacing(0, 4),
+    marginRight: `calc( ${theme.spacing(4)} ${welcomeScreenClosed && '+ 56px'} )`,
+  },
 
   // radial shadow glow -> animation
   '&:hover:before': {
@@ -32,6 +37,75 @@ export const WidgetContainer = styled(Box, {
   },
 
   // setting hover animations on widget wrappers
+  '& > .widget-wrapper > div': {
+    transitionProperty: 'margin-top',
+    transitionDuration: '.3s',
+    transitionTimingFunction: 'ease-in-out',
+    marginTop: !welcomeScreenClosed ? '24px' : 0,
+    cursor: !welcomeScreenClosed ? 'pointer' : 'auto',
+    [theme.breakpoints.down('sm' as Breakpoint)]: {
+      height: 'auto',
+      div: {
+        maxHeight: '100%',
+      },
+    },
+
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      marginTop: !welcomeScreenClosed ? '24px' : 0,
+      [`@media screen and (min-height: 700px)`]: {
+        marginTop: !welcomeScreenClosed
+          ? 'calc( 50vh - 680px / 2.75 - 40px)'
+          : 0, // (mid viewheight - half-two/thirds widget height - navbar height )
+      },
+
+      [`@media screen and (min-height: 900px)`]: {
+        marginTop: !welcomeScreenClosed
+          ? 'calc( 50vh - 680px / 2.75 - 128px)'
+          : 0, // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
+      },
+    },
+  },
+
+  // widget overlay when welcome screen opened
+  '& .widget-wrapper > div:before': {
+    content: '" "',
+    visibility: !welcomeScreenClosed ? 'visible' : 'hidden',
+    position: 'absolute',
+    width: 'inherit',
+    zIndex: 900,
+    left: 0,
+    right: 0,
+    bottom: !welcomeScreenClosed ? 0 : 'calc( 680px - 486px )',
+    background:
+      theme.palette.mode === 'dark'
+        ? 'linear-gradient(180deg, transparent 15%,  #000 40%)'
+        : 'linear-gradient(180deg, transparent 15%, #fff 40%)',
+    opacity: 0.5,
+    margin: 'auto',
+    transitionProperty: 'opacity, bottom',
+    transitionDuration: '0.3s',
+    transitionTimingFunction: 'ease-in-out',
+    transitionDelay: !welcomeScreenClosed ? '0s' : '0.3s',
+    borderTopRightRadius: '12px',
+    borderTopLeftRadius: '12px',
+    top: 24,
+
+    [`@media screen and (min-height: 700px)`]: {
+      top: 'calc( 50vh - 680px / 2.75 - 40px)', // (mid viewheight - half-two/thirds widget height - navbar height )
+    },
+
+    [`@media screen and (min-height: 900px)`]: {
+      top: 'calc( 50vh - 680px / 2.75 - 128px)', // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
+      bottom: !welcomeScreenClosed
+        ? 'calc( 680px - 300px)'
+        : 'calc( 680px - 486px )',
+    },
+  },
+
+  // dark widget overlay when welcome screen opened -> hover animation
+  '& .widget-wrapper > div:hover:before': {
+    opacity: 0.25,
+  },
 
   '.welcome-screen-container + & .widget-wrapper > div': {
     cursor: 'pointer',

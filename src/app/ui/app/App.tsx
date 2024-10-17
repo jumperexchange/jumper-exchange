@@ -4,7 +4,8 @@ import { WidgetContainer } from '@/components/Widgets';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking';
-import { Box, Slide } from '@mui/material';
+import { Box, Slide, Stack } from '@mui/material';
+import { VerticalTabs } from 'src/components/Menus/VerticalMenu';
 import type { PropsWithChildren } from 'react';
 import { useEffect } from 'react';
 
@@ -67,12 +68,21 @@ const App = ({ activeTheme, children }: PropsWithChildren<AppProps>) => {
           <WelcomeScreen />
         </Box>
       </Slide>
-      <WidgetContainer
-        welcomeScreenClosed={!enabled || welcomeScreenClosed!}
-        className="widget-container"
+      <Stack
+        display="flex"
+        direction="row"
+        justifyContent="center"
+        alignItems="start"
+        paddingTop={3.5}
       >
-        {children}
-      </WidgetContainer>
+        {welcomeScreenClosed && <VerticalTabs />}
+        <WidgetContainer
+          welcomeScreenClosed={!enabled || welcomeScreenClosed!}
+          className="widget-container"
+        >
+          {children}
+        </WidgetContainer>
+      </Stack>
     </Box>
   );
 };

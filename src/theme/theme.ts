@@ -1,8 +1,9 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
 import type { ComponentsOverrides, ComponentsVariants } from '@mui/material';
+import { darken } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
-import { alpha, createTheme } from '@mui/material/styles';
+import { alpha, lighten, createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
@@ -656,9 +657,9 @@ export const lightTheme = createTheme(
         dark: '#8700B8',
       },
       surface1: {
-        light: '#FCFAFF',
-        main: '#FCFAFF',
-        dark: '#FCFAFF',
+        light: '#faf5ff',
+        main: '#faf5ff',
+        dark: '#faf5ff',
       },
       surface2: {
         light: '#FFFFFF',

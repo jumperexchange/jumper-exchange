@@ -8,9 +8,9 @@ import {
   itemInSettingsMenu,
   itemInSettingsMenuToBeVisible,
   openOrCloseMainMenu,
-  tabInHeader,
   sectionOnTheBlogPage,
   checkSocialNetworkIcons,
+  itemInSettingsMenuToBeEnabled,
 } from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {
@@ -20,28 +20,12 @@ test.describe('Jumper full e2e flow', () => {
   });
 
   test('Should navigate to the homepage and change tabs', async ({ page }) => {
-    const buyETHButton = page
-      .frameLocator('iframe[title="Onramper widget"]')
-      .locator('button:has-text("Buy ETH")');
-
-    const featureCard = page.locator(
-      'xpath=//div[@class="MuiBox-root mui-1393eub"]',
-    );
-    await tabInHeader(page, 'Exchange');
-    await expect(
-      page.locator('[id="widget-header-\\:r0\\:"]').getByText('Exchange'),
-    ).toBeVisible();
-    await tabInHeader(page, 'Gas');
-    await expect(page.locator('#navbar-tabs-1')).toBeVisible();
-    await tabInHeader(page, 'Buy');
-    await expect(buyETHButton).toBeEnabled();
-    await expect(
-      page
-        .frameLocator('iframe[title="Onramper widget"]')
-        .getByText('Buy crypto'),
-    ).toBeVisible();
-    await expect(featureCard).toBeVisible();
+    await page.locator('#tab-key-1').click();
+    await expect(page.locator('xpath=//p[text()="Gas"]')).toBeVisible();
+    await page.locator('#tab-key-0').click();
+    await expect(page.locator('xpath=//p[text()="Exchange"]')).toBeVisible();
   });
+
   test('Should open Settings menu', async ({ page }) => {
     const settingsTitle = page.locator(
       'xpath=//p[normalize-space(text())="Settings"]',
@@ -59,15 +43,17 @@ test.describe('Jumper full e2e flow', () => {
       'xpath=//button[normalize-space(text())="Fast"]',
     );
     const customSlippage = page.locator('xpath=//input[@placeholder="Custom"]');
-    await tabInHeader(page, 'Exchange');
     await page.locator('xpath=//div[@class="MuiBox-root mui-afg6ra"]').click();
     await expect(settingsTitle).toBeVisible();
     itemInSettingsMenu(page, 'Route priority');
+    itemInSettingsMenuToBeEnabled(page, 'Best Return');
     await expect(bestReturnButton).toBeEnabled();
     itemInSettingsMenuToBeVisible(page, 'Fastest');
     await fastestButton.click();
     itemInSettingsMenuToBeVisible(page, 'Reset settings');
     itemInSettingsMenu(page, 'Gas price');
+    itemInSettingsMenuToBeEnabled(page, 'Slow');
+    itemInSettingsMenuToBeEnabled(page, 'Fast');
     expect(slowGasPrice).toBeEnabled();
     expect(fastGasPrice).toBeEnabled();
     itemInSettingsMenu(page, 'Max. slippage');

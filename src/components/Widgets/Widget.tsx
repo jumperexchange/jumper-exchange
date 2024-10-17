@@ -4,15 +4,16 @@ import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAler
 import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useThemeStore } from '@/stores/theme';
+import { useWidgetCacheStore } from '@/stores/widgetCache';
 import type { LanguageKey } from '@/types/i18n';
 import { EVM } from '@lifi/sdk';
 import { useWalletMenu } from '@lifi/wallet-management';
-import type { WidgetConfig } from '@lifi/widget';
+import type { FormState, WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
-import { useRouter } from 'next/navigation';
-import { useEffect, useMemo } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/config/tokens';
 import { publicRPCList } from 'src/const/rpcList';
@@ -47,8 +48,10 @@ export function Widget({
     state.widgetTheme,
     state.configTheme,
   ]);
+  const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const searchParams = useSearchParams();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
@@ -58,13 +61,13 @@ export function Widget({
     enabled: partnerName === ThemesMap.Memecoins,
   });
   const { openWalletMenu } = useWalletMenu();
+  const widgetCache = useWidgetCacheStore((state) => state);
 
   const router = useRouter();
 
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
-    router.prefetch('/buy', { kind: PrefetchKind.FULL });
   }, [router]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
@@ -111,8 +114,8 @@ export function Widget({
     }
 
     const formParameters: Record<string, number | string | undefined> = {
-      fromChain: fromChain,
-      fromToken: fromToken,
+      fromChain: fromChain || widgetCache.fromChainId,
+      fromToken: fromToken || widgetCache.fromToken,
       toChain: toChain,
       toToken: toToken,
       fromAmount: fromAmount,
@@ -229,7 +232,11 @@ export function Widget({
     >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly fallback={<WidgetSkeleton config={config} />}>
-        <LiFiWidget integrator={config.integrator} config={config} />
+        <LiFiWidget
+          integrator={config.integrator}
+          config={config}
+          formRef={formRef}
+        />
       </ClientOnly>
     </WidgetWrapper>
   );

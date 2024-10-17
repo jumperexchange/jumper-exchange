@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 
 // PDA Type
