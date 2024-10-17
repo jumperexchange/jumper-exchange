@@ -19,8 +19,11 @@ import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
   ConnectButton,
+  ConnectButtonIcon,
+  ConnectButtonLabel,
   ImageWalletMenuButton,
   SkeletonWalletMenuButton,
+  WalletLabel,
   WalletMenuButton,
   WalletMgmtBadge,
   WalletMgmtChainAvatar,
@@ -71,18 +74,10 @@ export const WalletButtons = () => {
             openWalletMenu();
           }}
         >
-          <Typography
-            variant={'bodyMediumStrong'}
-            sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-            }}
-          >
+          <ConnectButtonIcon />
+          <ConnectButtonLabel variant={'bodyMediumStrong'}>
             {t('navbar.connect')}
-          </Typography>
+          </ConnectButtonLabel>
         </ConnectButton>
       ) : (
         <Stack direction="row" spacing={2}>
@@ -134,14 +129,9 @@ export const WalletButtons = () => {
                 />
               </WalletMgmtBadge>
             ) : null}
-            <Typography
-              variant={'bodyMediumStrong'}
-              width={'auto'}
-              marginRight={0.25}
-              marginLeft={0.75}
-            >
+            <WalletLabel variant={'bodyMediumStrong'}>
               {_walletDigest}
-            </Typography>
+            </WalletLabel>
           </WalletMenuButton>
         </Stack>
       )}

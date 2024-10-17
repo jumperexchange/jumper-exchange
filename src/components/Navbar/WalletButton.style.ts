@@ -1,5 +1,14 @@
 import { ButtonPrimary } from '@/components/Button';
-import { alpha, Avatar, Badge, Skeleton, styled } from '@mui/material';
+import WalletIcon from '@mui/icons-material/Wallet';
+
+import {
+  alpha,
+  Avatar,
+  Badge,
+  Skeleton,
+  styled,
+  Typography,
+} from '@mui/material';
 import Image from 'next/image';
 import { getContrastAlphaColor } from 'src/utils/colors';
 import { ButtonTransparent } from '../Button';
@@ -33,6 +42,31 @@ export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
 export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
   padding: theme.spacing(3),
   textWrap: 'nowrap',
+
+  [theme.breakpoints.down('md')]: {
+    width: 48,
+    minWidth: 48,
+  },
+}));
+
+export const ConnectButtonLabel = styled(Typography)(({ theme }) => ({
+  display: 'none',
+  [theme.breakpoints.up('md')]: {
+    display: '-webkit-box',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical',
+  },
+}));
+
+export const ConnectButtonIcon = styled(WalletIcon)(({ theme }) => ({
+  [theme.breakpoints.down('md')]: {
+    display: 'block',
+  },
+  [theme.breakpoints.up('md')]: {
+    display: 'none',
+  },
 }));
 
 export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
@@ -77,4 +111,14 @@ export const SkeletonWalletMenuButton = styled(Skeleton)(({ theme }) => ({
   minWidth: 25,
   marginRight: 1.1,
   marginLeft: 1.1,
+}));
+
+export const WalletLabel = styled(Typography)(({ theme }) => ({
+  display: 'none',
+  [theme.breakpoints.up('md')]: {
+    display: 'block',
+    marginRight: theme.spacing(0.25),
+    marginLeft: theme.spacing(0.75),
+    width: 'auto',
+  },
 }));
