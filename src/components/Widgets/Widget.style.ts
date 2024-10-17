@@ -6,8 +6,10 @@ import { HeaderHeight } from 'src/const/headerHeight';
 import { DEFAULT_WELCOME_SCREEN_HEIGHT } from '../WelcomeScreen';
 
 const DEFAULT_WIDGET_HEIGHT = 686;
-const DEFAULT_WIDGET_TOP_HOVER_OFFSET = 24; // used on welcome-screen to prepare hover-animation
-const DEFAULT_WIDGET_TOP_OFFSET_VAR = `${DEFAULT_WELCOME_SCREEN_HEIGHT} - ${DEFAULT_WIDGET_HEIGHT}px / 2.75`; // mid viewheight - ≈ 2/3 of widget height
+// used on welcome-screen to prepare hover-animation
+const DEFAULT_WIDGET_TOP_HOVER_OFFSET = 24;
+// mid viewheight - ≈ 2/3 of widget height
+const DEFAULT_WIDGET_TOP_OFFSET_VAR = `${DEFAULT_WELCOME_SCREEN_HEIGHT} - ${DEFAULT_WIDGET_HEIGHT}px / 2.75`;
 export interface WidgetWrapperProps extends Omit<BoxProps, 'component'> {
   welcomeScreenClosed?: boolean;
 }
@@ -39,10 +41,12 @@ export const WidgetWrapper = styled(Box, {
     maxHeight: '100%',
     ...(!welcomeScreenClosed && {
       cursor: 'pointer',
-      marginTop: DEFAULT_WIDGET_TOP_HOVER_OFFSET, // add margin-top to widget-wrapper when welcome-screen is closed
+      // add margin-top to widget-wrapper when welcome-screen is closed
+      marginTop: DEFAULT_WIDGET_TOP_HOVER_OFFSET,
 
       '&:hover': {
-        marginTop: 0, // add margin-top to widget-wrapper when welcome-screen is closed
+        // add margin-top to widget-wrapper when welcome-screen is closed
+        marginTop: 0,
       },
 
       // positioning of widget on mobile-screens from 700px height
@@ -65,7 +69,8 @@ export const WidgetWrapper = styled(Box, {
       height: 'auto',
       marginTop: !welcomeScreenClosed ? DEFAULT_WIDGET_TOP_OFFSET_VAR : 0,
       [`@media screen and (min-height: 700px)`]: {
-        height: DEFAULT_WIDGET_HEIGHT, // default widget height
+        // set default widget height
+        height: DEFAULT_WIDGET_HEIGHT,
         marginTop: !welcomeScreenClosed
           ? // (mid viewheight - ≈ 2/3 of widget height - navbar height )
             `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - 40px )`
@@ -74,7 +79,8 @@ export const WidgetWrapper = styled(Box, {
 
       [`@media screen and (min-height: 900px)`]: {
         marginTop: !welcomeScreenClosed
-          ? `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.MD}px )` // (mid viewheight - ≈ 2/3 of widget height - ( navbar height + additional spacing) )
+          ? // (mid viewheight - ≈ 2/3 of widget height - ( navbar height + additional spacing) )
+            `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.MD}px )`
           : 0,
       },
     },
@@ -83,7 +89,8 @@ export const WidgetWrapper = styled(Box, {
   // widget overlay while welcome-screen is opened
   '& > div:before': {
     content: '" "',
-    visibility: !welcomeScreenClosed ? 'visible' : 'hidden', // hide overlay while welcome-screen is closed
+    // hide overlay while welcome-screen is closed
+    visibility: !welcomeScreenClosed ? 'visible' : 'hidden',
     position: 'absolute',
     width: 'inherit',
     zIndex: 900,

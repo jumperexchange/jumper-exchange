@@ -65,14 +65,18 @@ export const WidgetContainer = styled(Box, {
       width: 1080,
       height: 1080,
       position: 'fixed',
-      maxWidth: 'calc( 416px * 2 )', // double-size of widget width
-      maxHeight: 'calc( 416px * 2 )', // double-size of widget width used to make it a circle-ish glow
+      // double-size of widget width
+      maxWidth: 'calc( 416px * 2 )',
+      // double-size of widget width used to make it a circle-ish glow
+      maxHeight: 'calc( 416px * 2 )',
       transform: 'translate(-50%, -50%)',
       left: '50%',
-      top: GLOW_EFFECT_TOP_POSITION, // default top position of glow-effect
+      // default top position of glow-effect
+      top: GLOW_EFFECT_TOP_POSITION,
       opacity,
       [theme.breakpoints.up('lg' as Breakpoint)]: {
-        maxWidth: '90vh', // using vh here as well to make it a circle-ish glow
+        // using vh here as well to make it a circle-ish glow
+        maxWidth: '90vh',
         maxHeight: '90vh',
       },
     },
@@ -81,7 +85,8 @@ export const WidgetContainer = styled(Box, {
     '&:hover:after': {
       ...(!welcomeScreenClosed && {
         opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
-        top: `calc( ${GLOW_EFFECT_TOP_POSITION} + ${GLOW_EFFECT_TOP_OFFSET_POSITION})`, // adjusting top position of glow-effect while hovering for "spot-light" effect
+        // adjusting top position of glow-effect while hovering for "spot-light" effect
+        top: `calc( ${GLOW_EFFECT_TOP_POSITION} + ${GLOW_EFFECT_TOP_OFFSET_POSITION})`,
       }),
     },
   };
