@@ -27,8 +27,6 @@ export const WidgetWrapper = styled(Box, {
     transitionTimingFunction: 'ease-in-out',
     marginTop: 0,
     cursor: !welcomeScreenClosed ? 'pointer' : 'auto',
-    maxHeight: '100%', //
-
     ...(!welcomeScreenClosed && {
       marginTop: !welcomeScreenClosed ? '24px' : 0,
 
@@ -60,6 +58,7 @@ export const WidgetWrapper = styled(Box, {
       height: 'auto',
       marginTop: !welcomeScreenClosed ? '24px' : theme.spacing(3.5),
       [`@media screen and (min-height: 700px)`]: {
+        height: '686px',
         marginTop: !welcomeScreenClosed
           ? 'calc( 50vh - 680px / 2.75 - 40px)' // (mid viewheight - half-two/thirds widget height - navbar height )
           : theme.spacing(3.5),
@@ -93,7 +92,6 @@ export const WidgetWrapper = styled(Box, {
     borderTopRightRadius: '12px',
     borderTopLeftRadius: '12px',
     top: 24,
-    height: '100%',
 
     [`@media screen and (min-height: 700px)`]: {
       top: 'calc( 50vh - 680px / 2.75 - 40px)', // (mid viewheight - half-two/thirds widget height - navbar height )

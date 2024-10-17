@@ -14,14 +14,17 @@ export const WidgetContainer = styled(Box, {
 })<WidgetContainerProps>(({ theme, welcomeScreenClosed }) => ({
   display: 'flex',
   flexDirection: 'column',
-  // margin: theme.spacing(0, 'auto', 3),
   overflow: 'inherit',
-  width: 'auto',
+  width: '100%',
   minHeight: '50vh',
   transitionProperty: 'max-height',
   transitionDuration: '.3s',
   transitionTimingFunction: 'ease-in-out',
   maxHeight: !welcomeScreenClosed ? '50vh' : 'inherit',
+
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    width: 'auto',
+  },
 
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     margin: theme.spacing(0, 4),
