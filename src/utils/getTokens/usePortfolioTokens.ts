@@ -22,10 +22,6 @@ export function usePortfolioTokens() {
     totalPriceUSD: number,
     fetchedBalances: ExtendedTokenAmount[],
   ) => {
-    console.debug(`\n** Round ${round} Account: ${account} **`);
-    console.debug(`Cumulative Price USD: $${totalPriceUSD.toFixed(2)}`);
-    console.debug(`Fetched Balances this Round:`, fetchedBalances);
-
     setCacheTokens(account, fetchedBalances);
   };
 
