@@ -155,7 +155,9 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             </Grid>
             <Grid item xs={5} style={{ textAlign: 'right' }}>
               <TypographyPrimary>
-                {t('format.decimal', { value: token.cumulatedBalance })}
+                {t('format.decimal', {
+                  value: token.cumulatedBalance?.toFixed(3),
+                })}
               </TypographyPrimary>
               <TypographySecondary>
                 {t('format.currency', { value: token.cumulatedTotalUSD })}
