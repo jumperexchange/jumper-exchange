@@ -3,6 +3,10 @@
 import type { Breakpoint } from '@mui/material';
 import { Box, alpha, styled } from '@mui/material';
 import Image from 'next/image';
+import { DEFAULT_WELCOME_SCREEN_HEIGHT } from '../WelcomeScreen';
+
+const GLOW_EFFECT_TOP_POSITION = '50%';
+const GLOW_EFFECT_TOP_OFFSET_POSITION = '5%';
 
 export interface WidgetContainerProps {
   welcomeScreenClosed: boolean;
@@ -11,139 +15,82 @@ export interface WidgetContainerProps {
 export const WidgetContainer = styled(Box, {
   shouldForwardProp: (prop) =>
     prop !== 'isActive' && prop !== 'welcomeScreenClosed',
-})<WidgetContainerProps>(({ theme, welcomeScreenClosed = false }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  // margin: theme.spacing(0, 'auto', 3),
-  overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
-  width: 'auto',
-  minHeight: '50vh',
-  transitionProperty: 'max-height',
-  transitionDuration: '.3s',
-  transitionTimingFunction: 'ease-in-out',
-  maxHeight: 'inherit',
+})<WidgetContainerProps>(({ theme, welcomeScreenClosed }) => {
+  let opacity = 0;
+  if (!welcomeScreenClosed && theme.palette.mode === 'dark') {
+    opacity = 0.24;
+  } else if (!welcomeScreenClosed && theme.palette.mode === 'light') {
+    opacity = 0.12;
+  }
 
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    margin: theme.spacing(0, 4),
-    marginRight: `calc( ${theme.spacing(4)} ${welcomeScreenClosed && '+ 56px'} )`,
-  },
-
-  // radial shadow glow -> animation
-  '&:hover:before': {
-    ...(!welcomeScreenClosed && {
-      opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
-      top: '45%',
-    }),
-  },
-
-  // setting hover animations on widget wrappers
-  '& > .widget-wrapper > div': {
-    transitionProperty: 'margin-top',
+  return {
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'inherit',
+    width: '100%',
+    transitionProperty: 'max-height',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
-    marginTop: !welcomeScreenClosed ? '24px' : 0,
-    cursor: !welcomeScreenClosed ? 'pointer' : 'auto',
-    [theme.breakpoints.down('sm' as Breakpoint)]: {
-      height: 'auto',
-      div: {
-        maxHeight: '100%',
-      },
-    },
+
+    ...(!welcomeScreenClosed && {
+      minHeight: DEFAULT_WELCOME_SCREEN_HEIGHT,
+      maxHeight: DEFAULT_WELCOME_SCREEN_HEIGHT,
+    }),
 
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      marginTop: !welcomeScreenClosed ? '24px' : 0,
-      [`@media screen and (min-height: 700px)`]: {
-        marginTop: !welcomeScreenClosed
-          ? 'calc( 50vh - 680px / 2.75 - 40px)'
-          : 0, // (mid viewheight - half-two/thirds widget height - navbar height )
+      width: 'auto',
+    },
+
+    [theme.breakpoints.up('lg' as Breakpoint)]: {
+      margin: theme.spacing(0, 4),
+      ...(welcomeScreenClosed && {
+        // extra marginRight-spacing of 56px (width of navbar-tabs + gap) needed to center properly while welcome-screen is closed
+        marginRight: `calc( ${theme.spacing(4)} + 56px )`,
+      }),
+    },
+
+    // default radial shadow glow for a "spot-light" effect
+    '&:after': {
+      content: '" "',
+      visibility: !welcomeScreenClosed ? 'visible' : 'hidden',
+      transitionProperty: 'top, opacity',
+      transitionDuration: '.4s',
+      transitionTimingFunction: 'ease-in-out',
+      background:
+        theme.palette.mode === 'dark'
+          ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);'
+          : 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);',
+      zIndex: -1,
+      pointerEvents: 'none',
+      width: 1080,
+      height: 1080,
+      position: 'fixed',
+      // double-size of widget width
+      maxWidth: 'calc( 416px * 2 )',
+      // double-size of widget width used to make it a circle-ish glow
+      maxHeight: 'calc( 416px * 2 )',
+      transform: 'translate(-50%, -50%)',
+      left: '50%',
+      // default top position of glow-effect
+      top: GLOW_EFFECT_TOP_POSITION,
+      opacity,
+      [theme.breakpoints.up('lg' as Breakpoint)]: {
+        // using vh here as well to make it a circle-ish glow
+        maxWidth: '90vh',
+        maxHeight: '90vh',
       },
-
-      [`@media screen and (min-height: 900px)`]: {
-        marginTop: !welcomeScreenClosed
-          ? 'calc( 50vh - 680px / 2.75 - 128px)'
-          : 0, // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
-      },
-    },
-  },
-
-  // widget overlay when welcome screen opened
-  '& .widget-wrapper > div:before': {
-    content: '" "',
-    visibility: !welcomeScreenClosed ? 'visible' : 'hidden',
-    position: 'absolute',
-    width: 'inherit',
-    zIndex: 900,
-    left: 0,
-    right: 0,
-    bottom: !welcomeScreenClosed ? 0 : 'calc( 680px - 486px )',
-    background:
-      theme.palette.mode === 'dark'
-        ? 'linear-gradient(180deg, transparent 15%,  #000 40%)'
-        : 'linear-gradient(180deg, transparent 15%, #fff 40%)',
-    opacity: 0.5,
-    margin: 'auto',
-    transitionProperty: 'opacity, bottom',
-    transitionDuration: '0.3s',
-    transitionTimingFunction: 'ease-in-out',
-    transitionDelay: !welcomeScreenClosed ? '0s' : '0.3s',
-    borderTopRightRadius: '12px',
-    borderTopLeftRadius: '12px',
-    top: 24,
-
-    [`@media screen and (min-height: 700px)`]: {
-      top: 'calc( 50vh - 680px / 2.75 - 40px)', // (mid viewheight - half-two/thirds widget height - navbar height )
     },
 
-    [`@media screen and (min-height: 900px)`]: {
-      top: 'calc( 50vh - 680px / 2.75 - 128px)', // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
-      bottom: !welcomeScreenClosed
-        ? 'calc( 680px - 300px)'
-        : 'calc( 680px - 486px )',
+    // radial shadow glow -> hover
+    '&:hover:after': {
+      ...(!welcomeScreenClosed && {
+        opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
+        // adjusting top position of glow-effect while hovering for "spot-light" effect
+        top: `calc( ${GLOW_EFFECT_TOP_POSITION} + ${GLOW_EFFECT_TOP_OFFSET_POSITION})`,
+      }),
     },
-  },
-
-  // dark widget overlay when welcome screen opened -> hover animation
-  '& .widget-wrapper > div:hover:before': {
-    opacity: 0.25,
-  },
-
-  '.welcome-screen-container + & .widget-wrapper > div': {
-    cursor: 'pointer',
-  },
-
-  // // TODO move to welcome screen component
-  '.welcome-screen-container + &': {
-    maxHeight: !welcomeScreenClosed ? '50vh' : 'auto',
-  },
-
-  // radial shadow glow
-  '.welcome-screen-container + &:before': {
-    content: '" "',
-    transitionProperty: 'top, opacity',
-    transitionDuration: '.4s',
-    transitionTimingFunction: 'ease-in-out',
-    background:
-      theme.palette.mode === 'dark'
-        ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);'
-        : 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);',
-    position: 'absolute',
-    zIndex: -1,
-    pointerEvents: 'none',
-    width: 1080,
-    height: 1080,
-    maxWidth: '90vw',
-    maxHeight: '90vh',
-    transform: 'translate(-50%, -50%)',
-    left: '50%',
-    top: '50%',
-    opacity:
-      !welcomeScreenClosed && theme.palette.mode === 'dark'
-        ? 0.24
-        : !welcomeScreenClosed && theme.palette.mode === 'light'
-          ? 0.12
-          : 0,
-  },
-}));
+  };
+});
 
 export const BackgroundFooterImage = styled(Image)(({ theme }) => ({
   width: 200,

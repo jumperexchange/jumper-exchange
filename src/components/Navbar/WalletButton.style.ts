@@ -1,12 +1,5 @@
 import { ButtonPrimary } from '@/components/Button';
-import {
-  alpha,
-  Avatar,
-  Badge,
-  Skeleton,
-  styled,
-  Typography,
-} from '@mui/material';
+import { alpha, Avatar, Badge, Skeleton, styled } from '@mui/material';
 import Image from 'next/image';
 import { getContrastAlphaColor } from 'src/utils/colors';
 import { ButtonTransparent } from '../Button';
@@ -44,21 +37,13 @@ export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
 
 export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
   padding: theme.spacing(1),
-  paddingTop: theme.spacing(0.5),
-  paddingLeft: theme.spacing(0.5),
+  paddingRight: theme.spacing(1.5),
   gap: '0.5rem',
   backgroundColor:
     theme.palette.mode === 'dark'
       ? theme.palette.alphaLight300.main
       : theme.palette.white.main,
   boxShadow: '0px 2px 8px 0px #00000014',
-
-  [theme.breakpoints.up('md')]: {
-    paddingRight: theme.spacing(1.5),
-    paddingTop: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-  },
-
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'
@@ -92,14 +77,4 @@ export const SkeletonWalletMenuButton = styled(Skeleton)(({ theme }) => ({
   minWidth: 25,
   marginRight: 1.1,
   marginLeft: 1.1,
-}));
-
-export const WalletLabel = styled(Typography)(({ theme }) => ({
-  display: 'none',
-  [theme.breakpoints.up('md')]: {
-    display: 'block',
-    marginRight: theme.spacing(0.25),
-    marginLeft: theme.spacing(0.75),
-    width: 'auto',
-  },
 }));

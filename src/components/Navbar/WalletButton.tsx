@@ -13,19 +13,14 @@ import { Stack, Typography, useMediaQuery } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  DEFAULT_EFFIGY,
-  JUMPER_LOYALTY_PATH,
-  JUMPER_SCAN_PATH,
-} from 'src/const/urls';
-import useEffigyLink from 'src/hooks/useEffigyLink';
+import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
+import useImageStatus from 'src/hooks/useImageStatus';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
   ConnectButton,
   ImageWalletMenuButton,
   SkeletonWalletMenuButton,
-  WalletLabel,
   WalletMenuButton,
   WalletMgmtBadge,
   WalletMgmtChainAvatar,
@@ -40,10 +35,7 @@ export const WalletButtons = () => {
   const { openWalletMenu } = useWalletMenu();
   const { points, isLoading } = useLoyaltyPass();
   const router = useRouter();
-  const imgLink = useEffigyLink(
-    `https://effigy.im/a/${account?.address}.png`,
-    DEFAULT_EFFIGY,
-  );
+  const imgLink = useImageStatus(account?.address);
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const pathname = usePathname();
 
@@ -142,9 +134,14 @@ export const WalletButtons = () => {
                 />
               </WalletMgmtBadge>
             ) : null}
-            <WalletLabel variant={'bodyMediumStrong'}>
+            <Typography
+              variant={'bodyMediumStrong'}
+              width={'auto'}
+              marginRight={0.25}
+              marginLeft={0.75}
+            >
               {_walletDigest}
-            </WalletLabel>
+            </Typography>
           </WalletMenuButton>
         </Stack>
       )}
