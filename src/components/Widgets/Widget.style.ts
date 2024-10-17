@@ -30,7 +30,7 @@ export const WidgetWrapper = styled(Box, {
     },
   }),
 
-  '> div': {
+  '& > div': {
     position: 'relative',
     transitionProperty: 'margin-top',
     transitionDuration: '.3s',
@@ -81,7 +81,7 @@ export const WidgetWrapper = styled(Box, {
   },
 
   // widget overlay while welcome-screen is opened
-  '> div:before': {
+  '& > div:before': {
     content: '" "',
     visibility: !welcomeScreenClosed ? 'visible' : 'hidden', // hide overlay while welcome-screen is closed
     position: 'absolute',
@@ -103,7 +103,7 @@ export const WidgetWrapper = styled(Box, {
   },
 
   // hover animation of widget overlay
-  '> div:hover:before': {
+  '& > div:hover:before': {
     opacity: 0.25,
     top: DEFAULT_WIDGET_TOP_HOVER_OFFSET,
   },
