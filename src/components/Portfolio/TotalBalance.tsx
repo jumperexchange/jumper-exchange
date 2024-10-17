@@ -1,23 +1,15 @@
 import { WalletCardContainer } from '@/components/Menus';
-import {
-  CircularProgressPending,
-  TotalValue,
-  VariationValue,
-} from '@/components/Portfolio/Portfolio.styles';
+import { TotalValue } from '@/components/Portfolio/Portfolio.styles';
 import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
-import TotalBalanceIconButton from '@/components/Portfolio/TotalBalanceIconButton';
 import { usePortfolioStore } from '@/stores/portfolio';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RefreshCircleIcon } from './RefreshCircleIcon';
 import { useAccount } from '@lifi/wallet-management';
-import { currencyFormatter } from '@/utils/formatNumbers';
-import { arraysEqual } from '@/utils/getTokens';
+import { arraysEqual } from '@/utils/getTokens/utils';
 import { AnimatedCounter } from 'react-animated-counter';
+import RefreshIcon from './CircularProgress/RefreshIcon';
 
 function has24HoursPassed(lastDate: number): boolean {
   const currentTime = Date.now();
@@ -89,7 +81,7 @@ function TotalBalance({
   }
 
   return (
-    <WalletCardContainer>
+    <WalletCardContainer disableGutters>
       <Box
         sx={{
           display: 'flex',
@@ -136,23 +128,17 @@ function TotalBalance({
             />
           </Tooltip>
         </Box>
-        {!isComplete ? (
-          <TotalBalanceIconButton disabled={true}>
-            <CircularProgressPending size={24} />
-          </TotalBalanceIconButton>
-        ) : (
-          <TotalBalanceIconButton
-            tooltipText="Click here to restart the indexing of your tokens now."
-            refetch={refetch}
-          >
-            <RefreshCircleIcon />
-          </TotalBalanceIconButton>
-        )}
+        <RefreshIcon
+          updatedAt={new Date().getTime()}
+          timeToUpdate={0}
+          isLoading={!isComplete}
+          onClick={() => refetch()}
+        />
       </Box>
       <Stack spacing={1}>
         <TotalValue as="div">
           {portfolio.lastTotalValue && !isComplete ? (
-            currencyFormatter('en').format(portfolio.lastTotalValue)
+            t('format.currency', { value: portfolio.lastTotalValue })
           ) : (
             <>
               $
@@ -177,6 +163,8 @@ function TotalBalance({
             </>
           )}
         </TotalValue>
+        {/*
+        Todo: to add back later when we can review the time calculation
         <Stack direction="row" gap="0.5rem" justifyContent="space-between">
           {differenceValue !== 0 && (
             <Stack direction="row" spacing="4px">
@@ -197,7 +185,7 @@ function TotalBalance({
               </VariationValue>
             </Stack>
           )}
-        </Stack>
+        </Stack> */}
       </Stack>
     </WalletCardContainer>
   );

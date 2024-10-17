@@ -7,6 +7,8 @@ import {
   CircularProgress as MuiCircularProgress,
   keyframes,
   darken,
+  Divider,
+  Box,
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { lighten } from '@mui/material/styles';
@@ -19,6 +21,7 @@ export const TotalValue = styled(Typography)(({ theme }) => ({
   fontWeight: '700',
   fontSize: '48px',
   lineHeight: '64px',
+  fontFamily: 'var(--font-inter)',
 }));
 
 export const VariationValue = styled(Typography)(({ theme }) => ({
@@ -90,37 +93,37 @@ export const SmallAvatar = styled(Avatar)(({ theme }) => ({
   border: `2px solid ${theme.palette.surface2.main}`,
 }));
 
-const circleAnimation = keyframes`
-  0% {
-    stroke-dashoffset: 129;
-    transform: rotate(0);
-  }
-  50% {
-    stroke-dashoffset: 56;
-    transform: rotate(45deg);
-  };
-  100% {
-    stroke-dashoffset: 129;
-    transform: rotate(360deg);
-  }
-`;
-
-export const CircularProgressPending = styled(MuiCircularProgress)`
-  color: ${({ theme }) =>
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.primary.light};
-  animation-duration: 3s;
-  position: absolute;
-  .${circularProgressClasses.circle} {
-    animation-duration: 2s;
-    animation-timing-function: linear;
-    animation-name: ${circleAnimation};
-    stroke-dasharray: 129;
-    stroke-dashoffset: 129;
-    stroke-linecap: round;
-    transform-origin: 100% 100%;
-  }
-`;
-
 export const Icon = styled(SvgIcon)``;
+
+export const CustomDivider = styled(Divider)(({ theme }) => ({
+  backgroundColor: theme.palette.surface2.main,
+  opacity: 0.3,
+}));
+
+export const PortfolioBox = styled(Box)(({ theme }) => ({
+  flexDirection: 'column',
+  display: 'flex',
+  justifyContent: 'center',
+  padding: '16px',
+  paddingTop: '0px',
+  paddingBottom: '0px',
+}));
+
+export const NoTokenImageBox = styled(Box)(() => ({
+  backgroundColor: 'grey',
+  borderRadisu: '50%',
+  height: 40,
+  width: 40,
+  display: 'flex',
+  justifyContent: 'center',
+  alignContent: 'center',
+  alignItems: 'center',
+}));
+
+export const PortfolioSkeletonBox = styled(Box)(() => ({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignContent: 'center',
+  alignItems: 'center',
+}));

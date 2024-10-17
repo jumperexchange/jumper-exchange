@@ -3,7 +3,7 @@
 import { ButtonSecondary, ButtonTransparent } from '@/components/Button';
 import { avatarMask32 } from '@/components/Mask.style';
 import type { Breakpoint, ButtonProps } from '@mui/material';
-import { Drawer } from '@mui/material';
+import { Box, Drawer } from '@mui/material';
 import { alpha } from '@mui/material';
 import { Avatar, Badge, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -82,7 +82,7 @@ export const WalletButtonSecondary = styled(ButtonSecondary, {
 
 export const WalletCardContainer = styled(Container)(({ theme }) => ({
   boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
-  padding: '16px',
+  padding: theme.spacing(2),
   display: 'flex',
   flexDirection: 'column',
   background: theme.palette.surface2.main,

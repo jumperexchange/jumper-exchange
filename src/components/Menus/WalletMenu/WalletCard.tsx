@@ -1,3 +1,4 @@
+import { WalletCardStack } from '@/components/Menus/WalletMenu/WalletCardStack';
 import {
   TrackingAction,
   TrackingCategory,
@@ -7,6 +8,7 @@ import { useChains } from '@/hooks/useChains';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
+import { usePortfolioStore } from '@/stores/portfolio';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Account } from '@lifi/wallet-management';
@@ -24,14 +26,12 @@ import { useTranslation } from 'react-i18next';
 import { ButtonSecondary } from 'src/components/Button';
 import { JUMPER_SCAN_PATH } from 'src/const/urls';
 import {
+  Button,
   WalletAvatar,
   WalletCardBadge,
-  Button,
   WalletCardContainer,
   WalletChainAvatar,
 } from './WalletCard.style';
-import { WalletCardStack } from '@/components/Menus/WalletMenu/WalletCardStack';
-import { usePortfolioStore } from '@/stores/portfolio';
 
 interface WalletCardProps {
   account: Account;
@@ -67,7 +67,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   }, [account, handleMultisigEnvironmentCheck]);
 
   const handleExploreButton = () => {
-    const blockchainExplorerUrl = account.chain?.blockExplorers?.default.url;
+    const blockchainExplorerUrl = activeChain?.metamask?.blockExplorerUrls?.[0];
 
     trackEvent({
       category: TrackingCategory.WalletMenu,
@@ -130,7 +130,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   };
 
   return (
-    <WalletCardContainer>
+    <WalletCardContainer disableGutters>
       <WalletCardStack>
         <WalletCardBadge
           overlap="circular"

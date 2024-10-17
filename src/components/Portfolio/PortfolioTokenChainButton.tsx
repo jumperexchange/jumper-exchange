@@ -12,13 +12,13 @@ import {
   darken,
   lighten,
 } from '@mui/material';
-import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
 import { useMainPaths } from '@/hooks/useMainPaths';
 import { useParams, useRouter } from 'next/navigation';
 import { useMenuStore } from 'src/stores/menu';
 import TokenImage from '@/components/Portfolio/TokenImage';
 import type { CacheToken } from '@/types/portfolio';
+import { useTranslation } from 'react-i18next';
 
 interface PortfolioTokenChainButtonProps {
   token: CacheToken;
@@ -31,6 +31,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
   const router = useRouter();
   const { lng } = useParams();
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <ButtonBase
@@ -103,7 +104,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
               lineHeight: '1.125rem',
             }}
           >
-            {decimalFormatter(lng).format(token.cumulatedBalance ?? 0)}
+            {t('format.decimal', { value: token.cumulatedBalance })}
           </TypographyPrimary>
           <TypographySecondary
             sx={{
@@ -111,7 +112,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
               lineHeight: '0.875rem',
             }}
           >
-            {currencyFormatter(lng).format(token.totalPriceUSD ?? 0)}
+            {t('format.currency', { value: token.totalPriceUSD })}
           </TypographySecondary>
         </Grid>
       </Grid>

@@ -612,7 +612,7 @@ export const lightTheme = createTheme(
       },
       text: {
         primary: '#000',
-        secondary: alpha(themeCustomized.palette.black.main, 0.48),
+        secondary: alpha(themeCustomized.palette.black.main, 0.75),
       },
       grey: {
         300: '#E5E1EB',
@@ -728,7 +728,7 @@ export const darkTheme = createTheme(
       },
       text: {
         primary: '#fff',
-        secondary: alpha(themeCustomized.palette.white.main, 0.48),
+        secondary: alpha(themeCustomized.palette.white.main, 0.75),
       },
       grey: {
         800: '#302B52',

@@ -77,11 +77,11 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
           //   bytes calldata _signature // Claim signature
           // )
         } catch (err) {
-          console.log(err);
+          console.error(err);
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

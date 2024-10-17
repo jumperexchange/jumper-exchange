@@ -5,6 +5,7 @@ import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { useMercleNft } from 'src/hooks/useMercleNft';
+import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
@@ -18,6 +19,7 @@ import {
 import useImageStatus from 'src/hooks/useImageStatus';
 import { DEFAULT_EFFIGY } from 'src/const/urls';
 import { walletDigest } from 'src/utils/walletDigest';
+import useEffigyLink from 'src/hooks/useEffigyLink';
 
 interface AddressBoxProps {
   address?: string;
@@ -33,29 +35,28 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
-  const imgLink = `https://effigy.im/a/${address}.png`;
-  const isImageValid = useImageStatus(imgLink);
+  const imgLink = useEffigyLink(
+    `https://effigy.im/a/${address}.png`,
+    DEFAULT_EFFIGY,
+  );
 
   const handleCopyButton = () => {
     address && navigator.clipboard.writeText(address);
     setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
   };
 
-  const getAddressOrENSString = (): string => {
-    if (isSuccess && ensName) {
-      return String(ensName).length > 20
-        ? `${ensName.slice(0, 13)}...eth`
-        : ensName;
-    }
-    return address && isEVM ? walletDigest(address) : '0x00000...00000';
-  };
+  const addressLabel = getAddressLabel({
+    isSuccess,
+    ensName,
+    address,
+  });
 
   return (
-    <AddressBoxContainer imgUrl={isImageValid ? imgLink : DEFAULT_EFFIGY}>
+    <AddressBoxContainer imgUrl={imgLink}>
       <PassImageBox>
         <Image
           alt="Effigy Wallet Icon"
-          src={isImageValid ? imgLink : DEFAULT_EFFIGY}
+          src={imgLink}
           width={128}
           height={128}
           priority={false}
@@ -82,7 +83,7 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
           width={'100%'}
           textAlign={'center'}
         >
-          {getAddressOrENSString()}
+          {addressLabel}
         </NoSelectTypography>
         <ProfileIconButton onClick={() => handleCopyButton()}>
           <ContentCopyIcon sx={{ height: '16px' }} />
