@@ -13,6 +13,7 @@ import {
   BlogArticleHeaderTagSkeleton,
   BlogArticleImage,
   BlogArticleImageContainer,
+  BlogArticleImageSkeleton,
   BlogArticleMetaSkeleton,
   BlogArticleSubtitle,
   BlogArticleSubtitleSkeleton,
@@ -171,7 +172,7 @@ export const BlogArticle = ({
         </BlogArticleContentContainer>
       </BlogArticleContainer>
       <BlogArticleImageContainer>
-        {image?.data && (
+        {image?.data ? (
           <BlogArticleImage
             src={`${baseUrl}${image.data.attributes?.url}`}
             alt={image?.data.attributes?.alternativeText ?? title}
@@ -179,6 +180,8 @@ export const BlogArticle = ({
             width={1200}
             height={640}
           />
+        ) : (
+          <BlogArticleImageSkeleton />
         )}
       </BlogArticleImageContainer>
       <BlogArticleContainer>
