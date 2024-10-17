@@ -1,10 +1,7 @@
 'use client';
-import {
-  BigmiProvider,
-  createDefaultBigmiConfig,
-  useReconnect,
-} from '@lifi/wallet-management';
+import { createDefaultBigmiConfig } from '@lifi/wallet-management';
 import { type FC, type PropsWithChildren } from 'react';
+import { useReconnect, BigmiProvider } from '@bigmi/react';
 
 const { config } = createDefaultBigmiConfig({
   bigmiConfig: {
