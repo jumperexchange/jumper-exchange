@@ -16,7 +16,7 @@ import {
 } from '@lifi/widget';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/config/tokens';
@@ -54,7 +54,6 @@ export function Widget({
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const searchParams = useSearchParams();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
