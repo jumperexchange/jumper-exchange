@@ -30,7 +30,7 @@ export const useTurtleMember = ({
         }
         return false;
       } catch (err) {
-        console.log(err);
+        console.error(err);
         return false;
       }
     },
@@ -53,7 +53,7 @@ export const useTurtleMember = ({
         }
         return false;
       } catch (err) {
-        console.log(err);
+        console.error(err);
         return false;
       }
     },
