@@ -3,43 +3,36 @@ import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Typography, styled } from '@mui/material';
 import { ButtonPrimary } from '../Button';
 
-export interface WrapperProps extends Omit<BoxProps, 'component'> {
-  showWelcome?: boolean;
-}
+export const DEFAULT_WELCOME_SCREEN_HEIGHT = '50vh';
 
-export const Overlay = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'showWelcome',
-})<WrapperProps>(({ theme }) => ({
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  right: 0,
-  margin: 0,
-  padding: 0,
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  scrollBehavior: 'smooth',
-  zIndex: '1400',
+// export interface WrapperProps extends Omit<BoxProps, 'component'> {
+//   showWelcome?: boolean;
+// }
 
-  // widget wrappers -> animations
-  '& +.widget-container .widget-wrapper > div:hover': {
-    marginTop: 0,
-  },
-}));
+// export const Overlay = styled(Box, {
+//   shouldForwardProp: (prop) => prop !== 'showWelcome',
+// })<WrapperProps>(({ theme }) => ({
+//   position: 'absolute',
+//   bottom: 0,
+//   left: 0,
+//   right: 0,
+//   margin: 0,
+//   padding: 0,
+//   width: '100%',
+//   display: 'flex',
+//   flexDirection: 'column',
+//   scrollBehavior: 'smooth',
+//   zIndex: '1400',
+
+//   // widget wrappers -> animations
+//   '& +.widget-container .widget-wrapper > div:hover': {
+//     marginTop: 0,
+//   },
+// }));
 
 export interface ContentWrapperProps extends Omit<BoxProps, 'component'> {
   showWelcome?: boolean;
 }
-
-// const fadeOut = keyframes`
-//   from {
-//     opacity: 1;
-//   }
-//   to {
-//     opacity: 0;
-//   }
-// `;
 
 export const ContentWrapper = styled(
   Box,
@@ -68,7 +61,7 @@ export const ContentWrapper = styled(
 }));
 
 export const WelcomeContent = styled(Box)<BoxProps>(({ theme }) => ({
-  minHeight: '50vh',
+  minHeight: DEFAULT_WELCOME_SCREEN_HEIGHT,
 }));
 
 export const WelcomeScreenSubtitle = styled(Typography)(({ theme }) => ({
