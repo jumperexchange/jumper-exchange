@@ -36,9 +36,9 @@ export const WidgetWrapper = styled(Box, {
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
     marginTop: 0,
-    cursor: !welcomeScreenClosed ? 'pointer' : 'auto',
     maxHeight: '100%',
     ...(!welcomeScreenClosed && {
+      cursor: 'pointer',
       marginTop: DEFAULT_WIDGET_TOP_HOVER_OFFSET, // add margin-top to widget-wrapper when welcome-screen is closed
 
       '&:hover': {
@@ -63,7 +63,7 @@ export const WidgetWrapper = styled(Box, {
 
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       height: 'auto',
-      marginTop: !welcomeScreenClosed ? '24px' : 0,
+      marginTop: !welcomeScreenClosed ? DEFAULT_WIDGET_TOP_OFFSET_VAR : 0,
       [`@media screen and (min-height: 700px)`]: {
         height: DEFAULT_WIDGET_HEIGHT, // default widget height
         marginTop: !welcomeScreenClosed
@@ -96,7 +96,7 @@ export const WidgetWrapper = styled(Box, {
     transitionProperty: 'opacity, bottom',
     transitionDuration: '0.3s',
     transitionTimingFunction: 'ease-in-out',
-    transitionDelay: '0.3s', //!welcomeScreenClosed ? '0s' : '0.3s',
+    transitionDelay: '0.3s',
     borderTopRightRadius: '12px',
     borderTopLeftRadius: '12px',
     top: 0,
