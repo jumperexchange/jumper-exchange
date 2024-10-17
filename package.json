@@ -55,6 +55,7 @@
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@eslint/eslintrc": "^3.1.0",
+    "@lhci/cli": "^0.14.0",
     "@next/eslint-plugin-next": "^14.2.15",
     "@playwright/test": "^1.48.0",
     "@types/gtag.js": "^0.0.20",
@@ -97,7 +98,8 @@
     "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "pre-commit": "lint-staged",
     "pre-push": "yarn && yarn build",
-    "i18next-resources-for-ts": "i18next-resources-for-ts interface -i ./src/i18n/translations/en -o ./src/i18n/resources.d.ts"
+    "i18next-resources-for-ts": "i18next-resources-for-ts interface -i ./src/i18n/translations/en -o ./src/i18n/resources.d.ts",
+    "serve:lhci": "node .next/standalone/server.js"
   },
   "lint-staged": {
     "**/*.(ts|tsx|js)": [
