@@ -6,7 +6,6 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { useAccounts } from '@/hooks/useAccounts';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useUserTracking } from '@/hooks/userTracking';
 import { useActiveTabStore } from '@/stores/activeTab';
@@ -15,6 +14,7 @@ import { useMenuStore } from '@/stores/menu';
 import { useMultisigStore } from '@/stores/multisig';
 import type { RouteExtended } from '@lifi/sdk';
 import { type Route } from '@lifi/sdk';
+import { useAccount } from '@lifi/wallet-management';
 import type {
   ChainTokenSelected,
   ContactSupport,
@@ -28,6 +28,7 @@ import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import type { TransformedRoute } from 'src/types/internal';
 import { calcPriceImpact } from 'src/utils/calcPriceImpact';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
+import { usePortfolioStore } from '@/stores/portfolio';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
@@ -48,13 +49,14 @@ export function WidgetEvents() {
     state.setDestinationChain,
   ]);
 
-  const { account } = useAccounts();
+  const { account } = useAccount();
 
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
     useState(false);
 
   const [isMultisigConnectedAlertOpen, setIsMultisigConnectedAlertOpen] =
     useState(false);
+  const setForceRefresh = usePortfolioStore((state) => state.setForceRefresh);
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: RouteExtended) => {
@@ -85,6 +87,9 @@ export function WidgetEvents() {
 
     const onRouteExecutionCompleted = async (route: Route) => {
       if (route.id) {
+        // Refresh portfolio value
+        setForceRefresh(true);
+
         const data = handleTransactionDetails(route, {
           [TrackingEventParameter.Action]: 'execution_completed',
           [TrackingEventParameter.TransactionStatus]: 'COMPLETED',

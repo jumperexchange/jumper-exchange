@@ -1,5 +1,6 @@
-import { useAccounts } from '@/hooks/useAccounts';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
+import { useOngoingQuests } from '@/hooks/useOngoingQuests';
+import { useAccount } from '@lifi/wallet-management';
 import { Box, Grid, Stack } from '@mui/material';
 import { useMemo } from 'react';
 import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
@@ -30,7 +31,7 @@ const shouldHideComponent = (
 };
 
 export const ProfilePage = () => {
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const { isLoading, points, tier, pdas } = useLoyaltyPass();
   const {
     availableRewards,

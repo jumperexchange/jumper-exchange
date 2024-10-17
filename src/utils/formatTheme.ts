@@ -1,7 +1,7 @@
-import type { PartnerThemesAttributes } from '@/types/strapi';
-import { getStrapiUrl } from '@/hooks/useStrapi';
 import { STRAPI_PARTNER_THEMES } from '@/const/strapiContentKeys';
+import { getStrapiUrl } from '@/hooks/useStrapi';
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
+import type { PartnerThemesAttributes } from '@/types/strapi';
 
 function getImageUrl(
   theme: PartnerThemesAttributes,
@@ -93,6 +93,7 @@ export function formatConfig(
 
 export function formatTheme(theme: PartnerThemesAttributes) {
   const config = formatConfig(theme);
+
   const formattedMUITheme = {
     // @ts-expect-error
     ...(theme.lightConfig || theme.darkConfig).customization,

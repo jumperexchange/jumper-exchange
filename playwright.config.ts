@@ -1,5 +1,4 @@
 import { defineConfig, devices } from '@playwright/test';
-import { url } from 'inspector';
 
 /**
  * Read environment variables from file.

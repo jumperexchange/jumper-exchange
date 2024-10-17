@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { isProduction } from '@/utils/isProduction';
-import { generateSitemaps } from '@/app/bridge/sitemap';
+import { generateSitemaps } from '@/app/[lng]/bridge/sitemap';
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
   // Cannot have a sitemap index yet with app router, so we need to generate the sitemaps here

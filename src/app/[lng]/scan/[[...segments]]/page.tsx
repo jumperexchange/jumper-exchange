@@ -23,6 +23,9 @@ export async function generateMetadata({
   const canonical = `${process.env.NEXT_PUBLIC_SITE_URL}/scan${segments.length === 0 ? '' : `/${segments.join('/')}`}`;
 
   return {
+    robots: {
+      index: false,
+    },
     title,
     description,
     alternates: {

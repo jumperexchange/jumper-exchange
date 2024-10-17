@@ -1,9 +1,9 @@
 import { useLoyaltyPassStore } from '@/stores/loyaltyPass';
 import type { PDA } from '@/types/loyaltyPass';
+import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SECONDS_IN_A_DAY } from 'src/const/time';
-import { useAccounts } from './useAccounts';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
@@ -14,7 +14,7 @@ export interface UseLoyaltyPassProps {
 }
 
 export const useLoyaltyPass = (): UseLoyaltyPassProps => {
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const {
     address: storedAddress,
     points: storedPoints,
@@ -35,7 +35,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     }
 
     reset();
-  }, [account, storedAddress]);
+  }, [account, reset, storedAddress]);
 
   //we store the data during 24hours to avoid querying too much our partner API.
   const t = Date.now() / 1000;

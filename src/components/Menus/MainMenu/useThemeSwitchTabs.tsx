@@ -4,17 +4,16 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useSettingsStore } from '@/stores/settings';
-import type { ThemeModesSupported } from '@/types/settings';
+import { useThemeStore } from '@/stores/theme';
+import type { ThemeMode } from '@/types/theme';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from 'next-themes';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useSuperfest } from 'src/hooks/useSuperfest';
-import { useTheme } from 'next-themes';
 
 export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
@@ -23,15 +22,12 @@ export const useThemeSwitchTabs = () => {
   const [, setCookie] = useCookies(['themeMode']);
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
-  const browserTheme = useMediaQuery('(prefers-color-scheme: dark)')
-    ? 'dark'
-    : 'light';
-  const [themeMode, setThemeMode] = useSettingsStore((state) => [
+  const [themeMode, configTheme, setThemeMode] = useThemeStore((state) => [
     state.themeMode,
+    state.configTheme,
     state.setThemeMode,
   ]);
-  const configTheme = useSettingsStore((state) => state.configTheme);
-  const handleSwitchMode = (mode: ThemeModesSupported) => {
+  const handleSwitchMode = (mode: ThemeMode) => {
     trackEvent({
       category: TrackingCategory.ThemeSection,
       action: TrackingAction.SwitchTheme,
@@ -49,10 +45,10 @@ export const useThemeSwitchTabs = () => {
   };
 
   // tooltips:
-  const lightModeTooltip = !configTheme?.availableThemeModes.includes('dark')
+  const lightModeTooltip = !configTheme?.availableThemeModes?.includes('dark')
     ? t('navbar.themes.lightModeDisabled')
     : t('navbar.themes.switchToLight');
-  const darkModeTooltip = !configTheme?.availableThemeModes.includes('light')
+  const darkModeTooltip = !configTheme?.availableThemeModes?.includes('light')
     ? t('navbar.themes.darkModeDisabled')
     : t('navbar.themes.switchToDark');
   const systemModeTooltip =
@@ -69,17 +65,17 @@ export const useThemeSwitchTabs = () => {
     lightModeEnabled = true;
   } else if (!!configTheme) {
     if (
-      configTheme.availableThemeModes.includes('light') &&
+      configTheme.availableThemeModes?.includes('light') &&
       configTheme.availableThemeModes.includes('dark')
     ) {
       systemModeEnabled = true;
       lightModeEnabled = true;
       darkModeEnabled = true;
     } else {
-      if (configTheme.availableThemeModes.includes('light')) {
+      if (configTheme.availableThemeModes?.includes('light')) {
         lightModeEnabled = true;
       }
-      if (configTheme.availableThemeModes.includes('dark')) {
+      if (configTheme.availableThemeModes?.includes('dark')) {
         darkModeEnabled = true;
       }
     }

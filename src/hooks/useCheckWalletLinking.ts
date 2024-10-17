@@ -1,6 +1,4 @@
-import type { Chain, ChainId, ExtendedChain } from '@lifi/types';
 import { useQuery } from '@tanstack/react-query';
-import { ChainType, getChains } from '@lifi/sdk';
 
 export interface useCheckWalletLinkingProps {
   userAddress?: string;

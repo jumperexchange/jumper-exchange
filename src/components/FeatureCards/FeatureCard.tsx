@@ -1,8 +1,4 @@
 'use client';
-import CloseIcon from '@mui/icons-material/Close';
-import { Slide, useTheme } from '@mui/material';
-import { useEffect, useMemo, useRef, useState } from 'react';
-
 import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
 import {
   TrackingAction,
@@ -11,9 +7,12 @@ import {
 } from '@/const/trackingKeys';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useSettingsStore } from '@/stores/settings/SettingsStore';
+import { useSettingsStore } from '@/stores/settings';
 import type { FeatureCardData } from '@/types/strapi';
 import { openInNewTab } from '@/utils/openInNewTab';
+import CloseIcon from '@mui/icons-material/Close';
+import { Slide, useTheme } from '@mui/material';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   FCard as Card,

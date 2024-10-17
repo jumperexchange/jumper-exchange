@@ -6,12 +6,12 @@ import type {
   MultisigTxDetails,
 } from '@lifi/sdk';
 import { type Process, type Route } from '@lifi/sdk';
+import { useAccount } from '@lifi/wallet-management';
 import type { GatewayTransactionDetails } from '@safe-global/safe-apps-sdk';
 import SafeAppsSDK, { TransactionStatus } from '@safe-global/safe-apps-sdk';
-import { useAccounts } from './useAccounts';
 
 export const useMultisig = () => {
-  const { account } = useAccounts();
+  const { account } = useAccount();
 
   const checkMultisigEnvironment = async () => {
     // in Multisig env, window.parent is not equal to window

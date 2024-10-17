@@ -1,4 +1,4 @@
-import type { Account } from '@/hooks/useAccounts';
+import type { Account } from '@lifi/wallet-management';
 
 interface GetStrapiBaseUrlProps {
   contentType:

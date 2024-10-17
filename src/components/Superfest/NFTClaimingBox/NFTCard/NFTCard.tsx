@@ -1,4 +1,4 @@
-import { ChainId } from '@lifi/types';
+import { ChainId } from '@lifi/sdk';
 import Image from 'next/image';
 import { Button } from 'src/components/Button';
 import { GalxeNFTABI } from 'src/const/abi/galxeNftABI';
@@ -77,11 +77,11 @@ export const NFTCard = ({ image, chain, bgColor, typoColor }: NFTCardProps) => {
           //   bytes calldata _signature // Claim signature
           // )
         } catch (err) {
-          console.log(err);
+          console.error(err);
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

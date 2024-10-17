@@ -1,11 +1,11 @@
 import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection/ChainTokenSelectionStore';
-import { ChainId } from '@lifi/types';
+import { ChainId } from '@lifi/sdk';
+import { useAccount } from '@lifi/wallet-management';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useCheckWalletLinking } from 'src/hooks/useCheckWalletLinking';
 import { InfoAlert } from '.';
 import { InfoAlertClickable } from './InfoAlert/InfoAlertClickable';
-import { useCheckWalletLinking } from 'src/hooks/useCheckWalletLinking';
-import { useAccounts } from 'src/hooks/useAccounts';
 
 export const ChainAlert = () => {
   const { t } = useTranslation();
@@ -16,7 +16,7 @@ export const ChainAlert = () => {
   const [title, setTitle] = useState<string>('');
   const [subtitle, setSubtitle] = useState<string>('');
   const [buttonText, setButtontext] = useState<string>('');
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const { isSuccess: isWalletCheckSuccess, isWalletLinked } =
     useCheckWalletLinking({
       userAddress: account?.address,
@@ -36,7 +36,13 @@ export const ChainAlert = () => {
       setIsClickable(false);
       setChainId(0);
     }
-  }, [destinationChainToken, sourceChainToken, t, isWalletLinked]);
+  }, [
+    destinationChainToken,
+    sourceChainToken,
+    t,
+    isWalletLinked,
+    isWalletCheckSuccess,
+  ]);
 
   return (
     <>

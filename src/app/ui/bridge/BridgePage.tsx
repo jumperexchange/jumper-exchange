@@ -1,11 +1,7 @@
 'use client';
-import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
-import { Container, Link as MuiLink, Stack, Typography } from '@mui/material';
+import { Container, Stack, Typography } from '@mui/material';
 import { Widget } from '@/components/Widgets/Widget';
-import Link from 'next/link';
-import generateKey from '@/app/lib/generateKey';
 import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
-import { getChainById, getTokenByName } from '@/utils/tokenAndChain';
 import HalfSizeBlock from '@/app/ui/bridge/HalfSizeBlock';
 import { getChainInfoData, getTokenInfoData } from '@/app/ui/bridge/utils';
 import StepsExplainerSection from './StepsExplainer';
@@ -44,7 +40,6 @@ const BridgePage = ({
         </Typography>
 
         <Widget
-          isWelcomeScreenClosed={true}
           starterVariant="default"
           fromChain={sourceChain?.id}
           toChain={destinationChain?.id}
@@ -65,10 +60,10 @@ const BridgePage = ({
           width="100%"
           flexWrap="wrap"
         >
-          {[sourceChain, destinationChain].map((chain) => (
+          {[sourceChain, destinationChain].map((chain, index) => (
             <HalfSizeBlock
               type="Blockchain"
-              key={chain.id}
+              key={`${chain.id}-${index}`}
               info={{
                 logoURI: chain?.logoURI,
                 name: chain.name,
@@ -76,10 +71,10 @@ const BridgePage = ({
               data={getChainInfoData(chain)}
             />
           ))}
-          {[sourceToken, destinationToken].map((token) => (
+          {[sourceToken, destinationToken].map((token, index) => (
             <HalfSizeBlock
               type="Token"
-              key={token.address}
+              key={`${token.address}-${index}`}
               info={{
                 logoURI: token?.logoURI,
                 name: `${token.name}`,

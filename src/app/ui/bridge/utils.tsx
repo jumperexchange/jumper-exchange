@@ -61,7 +61,7 @@ export function getTokenInfoData(chains: ExtendedChain[], tokenInfo: Token) {
     { label: 'Decimals', value: tokenInfo.decimals },
     {
       label: 'Current USD price',
-      value: currencyFormatter('en').format(Number(tokenInfo.priceUSD) ?? 0),
+      value: currencyFormatter('en', { currency: 'USD' })(tokenInfo.priceUSD),
     },
   ];
 }

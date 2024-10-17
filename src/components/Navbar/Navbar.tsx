@@ -57,11 +57,11 @@ export const Navbar = ({ disableNavbar = false }) => {
           variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'}
         />
       </LogoLink>
-      {!isScanPage && !isLearnPage && !disableNavbar && (
+      {/* {!isScanPage && !isLearnPage && !disableNavbar && (
         <NavbarTabs
           navbarPageReload={isLoyaltyPage || isSuperfest || isQuestsPage}
         />
-      )}
+      )} */}
       <NavbarButtons />
     </Container>
   );

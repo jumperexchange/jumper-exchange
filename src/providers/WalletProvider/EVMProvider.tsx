@@ -3,7 +3,7 @@ import { defaultCoinbaseConfig } from '@/config/coinbase';
 import { defaultMetaMaskConfig } from '@/config/metaMask';
 import { defaultWalletConnectConfig } from '@/config/walletConnect';
 import { useChains } from '@/hooks/useChains';
-import type { ExtendedChain } from '@lifi/types';
+import type { ExtendedChain } from '@lifi/sdk';
 import {
   createDefaultWagmiConfig,
   safe,

@@ -1,7 +1,7 @@
 'use client';
 import { JumperLearnLogo, JumperLogo } from '@/components/illustrations';
 import { LogoWrapper } from '@/components/illustrations/Logo.style';
-import { useSettingsStore } from '@/stores/settings';
+import { useThemeStore } from '@/stores/theme';
 import ClearIcon from '@mui/icons-material/Clear';
 import type { Theme } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
@@ -21,7 +21,7 @@ export const Logo = ({ variant }: LogoProps) => {
     ) : (
       <JumperLearnLogo />
     );
-  const configTheme = useSettingsStore((state) => state.configTheme);
+  const configTheme = useThemeStore((state) => state.configTheme);
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );

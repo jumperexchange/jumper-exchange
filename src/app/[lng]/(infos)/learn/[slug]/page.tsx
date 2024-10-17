@@ -1,13 +1,12 @@
+import { getArticles } from '@/app/lib/getArticles';
+import { siteName } from '@/app/lib/metadata';
+import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
+import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
+import { sliceStrToXChar } from '@/utils/splitStringToXChar';
+import type { Metadata } from 'next';
 import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
 import { getArticlesByTag } from '../../../../lib/getArticlesByTag';
 import { getCookies } from '../../../../lib/getCookies';
-import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
-import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
-import type { Metadata } from 'next';
-import { sliceStrToXChar } from '@/utils/splitStringToXChar';
-import { siteName } from '@/app/lib/metadata';
-import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
-import { getArticles } from '@/app/lib/getArticles';
 
 export async function generateMetadata({
   params,

@@ -1,4 +1,5 @@
-import { useAccounts } from '@/hooks/useAccounts';
+import { useAccount } from '@lifi/wallet-management';
+import { useMerklRewardsOnSpecificToken } from 'src/hooks/useMerklRewardsOnSpecificToken';
 import { useOngoingFestMissions } from 'src/hooks/useOngoingFestMissions';
 import { useTurtleMember } from 'src/hooks/useTurtleMember';
 import { ActiveSuperfestMissionsCarousel } from './ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
@@ -7,11 +8,10 @@ import { HeroBox } from './HeroBox/HeroBox';
 import { NFTClaimingBox } from './NFTClaimingBox/NFTClaimingBox';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
 import { SuperfestContainer, SuperfestMainBox } from './Superfest.style';
-import { useMerklRewardsOnSpecificToken } from 'src/hooks/useMerklRewardsOnSpecificToken';
 
 export const Superfest = () => {
   //HOOKS
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const { quests, isQuestLoading } = useOngoingFestMissions();
   const {
     availableRewards,

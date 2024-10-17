@@ -1,6 +1,6 @@
 'use client';
 
-import type { ChainId } from '@lifi/types';
+import type { ChainId } from '@lifi/sdk';
 import type { ChainTokenSelected } from '@lifi/widget';
 import { createWithEqualityFn } from 'zustand/traditional';
 

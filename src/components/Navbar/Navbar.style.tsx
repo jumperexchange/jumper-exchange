@@ -9,7 +9,6 @@ import { styled } from '@mui/material/styles';
 
 export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
   ({ theme }) => ({
-    backgroundColor: theme.palette.background.default,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -1,24 +1,24 @@
 'use client';
 
+import Background from '@/components/Background';
 import { BlogBackgroundGradient } from '@/components/BackgroundGradient';
 import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
-import type { ThemeModesSupported } from '@/types/settings';
 import type { BlogArticleData } from '@/types/strapi';
+import type { ThemeMode } from '@/types/theme';
+import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
   BlogArticleSection,
   BlogArticleWrapper,
 } from './LearnArticlePage.style';
-import Background from '@/components/Background';
-import { Box } from '@mui/material';
 
 interface LearnArticlePageProps {
   article: BlogArticleData[];
   articles: BlogArticleData[];
   url: string;
-  activeThemeMode?: ThemeModesSupported;
+  activeThemeMode?: ThemeMode;
 }
 
 const LearnArticlePage = ({

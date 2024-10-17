@@ -17,17 +17,12 @@ export async function generateStaticParams() {
 
 export default function Page() {
   const variant = 'default'; // exchange
-  const { activeThemeMode, welcomeScreenClosed } = getCookies();
-  const isWelcomeScreenClosed = welcomeScreenClosed === 'true';
-
+  const { activeThemeMode } = getCookies();
   return (
-    <App starterVariant={variant} isWelcomeScreenClosed={isWelcomeScreenClosed}>
+    <App>
       <WidgetContainer welcomeScreenClosed={true}>
         <Widget starterVariant={variant} activeThemeMode={activeThemeMode} />
-        <Widgets
-          closedWelcomeScreen={isWelcomeScreenClosed}
-          widgetVariant={variant}
-        />
+        <Widgets widgetVariant={variant} />
       </WidgetContainer>
     </App>
   );

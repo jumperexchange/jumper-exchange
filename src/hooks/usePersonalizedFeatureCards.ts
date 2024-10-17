@@ -1,6 +1,6 @@
 import type { FeatureCardData } from '@/types/strapi';
+import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
-import { useAccounts } from './useAccounts';
 
 export interface UsePersonalizedFeatureCardsProps {
   featureCards: FeatureCardData[] | undefined;
@@ -11,7 +11,7 @@ export interface UsePersonalizedFeatureCardsProps {
 const STRAPI_CONTENT_TYPE = 'jumper-users';
 export const usePersonalizedFeatureCards =
   (): UsePersonalizedFeatureCardsProps => {
-    const { account } = useAccounts();
+    const { account } = useAccount();
 
     const apiBaseUrl =
       process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'

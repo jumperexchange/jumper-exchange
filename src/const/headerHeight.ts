@@ -1,5 +1,5 @@
 export enum HeaderHeight {
-  XS = '64px',
-  SM = '72px',
-  MD = '80px',
+  XS = 64,
+  SM = 72,
+  MD = 80,
 }

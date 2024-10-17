@@ -76,9 +76,9 @@ export const BannerBox = ({
           <Image
             src={`${imgURL}`}
             fill
-            objectFit="cover"
             alt="Banner Image"
             style={{
+              objectFit: 'cover',
               borderTopLeftRadius: '8px',
               borderTopRightRadius: '8px',
             }}

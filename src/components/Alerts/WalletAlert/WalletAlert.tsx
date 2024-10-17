@@ -1,15 +1,14 @@
+import type { Theme } from '@mui/material';
+import { Modal, Typography, useMediaQuery } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Button } from 'src/components/Button';
 import {
-  MultisigConfirmationModal,
   MultisigConfirmationModalContainer,
   MultisigConfirmationModalIcon,
   MultisigConfirmationModalIconContainer,
 } from 'src/components/MultisigConfirmationModal';
-import { InfoAlert } from '../InfoAlert';
-import type { Theme } from '@mui/material';
-import { Modal, Typography, useMediaQuery } from '@mui/material';
-import { Button } from 'src/components/Button';
-import { useEffect, useState } from 'react';
 import { useMetaMask } from 'src/hooks/useMetaMask';
+import { InfoAlert } from '../InfoAlert';
 
 export const WalletAlert = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

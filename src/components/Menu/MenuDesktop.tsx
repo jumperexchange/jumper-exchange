@@ -1,4 +1,4 @@
-import { MenuKeysEnum, MenuMain } from '@/const/menuKeys';
+import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu/MenuStore';
 import type { SxProps, Theme } from '@mui/material';
 import { ClickAwayListener, Fade, Typography } from '@mui/material';
@@ -37,7 +37,7 @@ export const MenuDesktop = ({
   children,
   anchorEl,
 }: MenuProps) => {
-  const { openSubMenu, closeAllMenus } = useMenuStore((state) => state);
+  const { openSubMenu, setMainMenuState } = useMenuStore((state) => state);
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab' || event.key === 'Escape') {
@@ -53,8 +53,7 @@ export const MenuDesktop = ({
       onClickAway={(event) => {
         setTimeout(() => {
           event.stopPropagation();
-          event.preventDefault();
-          open && closeAllMenus();
+          open && setMainMenuState(false);
         }, 150);
       }}
     >
@@ -84,11 +83,7 @@ export const MenuDesktop = ({
                 cardsLayout={cardsLayout}
                 hasLabel={!!label}
                 sx={styles}
-                component={
-                  isOpenSubMenu && openSubMenu !== MenuMain.WalletSelect
-                    ? 'div'
-                    : 'ul'
-                }
+                component={isOpenSubMenu ? 'div' : 'ul'}
               >
                 {!!label ? (
                   <MenuHeaderAppWrapper>

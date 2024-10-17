@@ -44,7 +44,9 @@
       "explore": "",
       "copiedMsg": "",
       "walletNotInstalled": "",
-      "connectAnotherWallet": ""
+      "connectAnotherWallet": "",
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "",
