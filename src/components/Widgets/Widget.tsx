@@ -60,7 +60,6 @@ export function Widget({
   const { openWalletMenu } = useWalletMenu();
 
   const router = useRouter();
-
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
