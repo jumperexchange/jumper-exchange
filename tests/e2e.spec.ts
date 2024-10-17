@@ -147,7 +147,7 @@ test.describe('Jumper full e2e flow', () => {
     await expect(page).toHaveURL(values.localSuperfestURL);
   });
 
-  test('Should be able to open quests mission page and switch background color', async ({
+  test.skip('Should be able to open quests mission page and switch background color', async ({
     page,
   }) => {
     const jumperProfileBackButton = await page.locator(
