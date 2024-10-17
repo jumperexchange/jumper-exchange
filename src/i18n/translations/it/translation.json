@@ -44,7 +44,9 @@
       "explore": "Esplora",
       "copiedMsg": "Indirizzo del portafogli copiato",
       "walletNotInstalled": "",
-      "connectAnotherWallet": ""
+      "connectAnotherWallet": "",
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "Passa al tema chiaro",

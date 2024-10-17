@@ -1,5 +1,5 @@
 import { ChainType, getTokens } from '@lifi/sdk';
-import type { TokensResponse } from '@lifi/types';
+import type { TokensResponse } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
 import {
   getTokenBySymbol as getTokenBySymbolHelper,
@@ -10,7 +10,7 @@ export const queryKey = ['tokenStats'];
 
 export const getTokensQuery = async () => {
   const tokens = await getTokens({
-    chainTypes: [ChainType.EVM, ChainType.SVM],
+    chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO],
   });
   return tokens;
 };

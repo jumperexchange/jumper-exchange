@@ -40,9 +40,9 @@ RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
 # Fix sharp install for image optimization
-#RUN yarn add sharp
-#RUN chown -R nextjs:nodejs /app/node_modules
-#ENV NEXT_SHARP_PATH="/app/node_modules/sharp"
+RUN yarn add sharp
+RUN chown -R nextjs:nodejs /app/node_modules
+ENV NEXT_SHARP_PATH="/app/node_modules/sharp"
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing

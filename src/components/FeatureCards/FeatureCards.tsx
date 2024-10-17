@@ -3,10 +3,10 @@ import {
   STRAPI_FEATURE_CARDS,
   STRAPI_JUMPER_USERS,
 } from '@/const/strapiContentKeys';
-import { useAccounts } from '@/hooks/useAccounts';
 import { useStrapi } from '@/hooks/useStrapi';
-import { useSettingsStore } from '@/stores/settings/SettingsStore';
+import { useSettingsStore } from '@/stores/settings';
 import type { FeatureCardData, JumperUserData } from '@/types/strapi';
+import { useAccount } from '@lifi/wallet-management';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
@@ -24,7 +24,7 @@ export const FeatureCards = () => {
   const { points } = useLoyaltyPass();
   const [widgetExpanded, setWidgetExpanded] = useState(false);
   const widgetEvents = useWidgetEvents();
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const { data: cards, isSuccess } = useStrapi<FeatureCardData>({

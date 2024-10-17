@@ -1,6 +1,6 @@
 export const walletDigest = (address?: string) => {
   if (address) {
-    return `${address.substr(0, 5)}...${address.substr(-4)}`;
+    return `${address.slice(0, 7)}...${address.substring(address.length - 5)}`;
   } else {
     return 'None';
   }

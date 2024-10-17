@@ -1,5 +1,5 @@
-import { useAccounts } from '@/hooks/useAccounts';
 import type { PDA } from '@/types/loyaltyPass';
+import { useAccount } from '@lifi/wallet-management';
 import { useTranslation } from 'react-i18next';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
@@ -20,7 +20,7 @@ export const QuestCompletedList = ({
   pdas,
   loading,
 }: QuestCompletedListProps) => {
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const { t } = useTranslation();
 
   const showVoidCardsAsFewPdas =
