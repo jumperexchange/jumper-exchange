@@ -4,6 +4,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
@@ -16,10 +17,6 @@ import {
   PassImageBox,
   ProfileIconButton,
 } from './AddressBox.style';
-import useImageStatus from 'src/hooks/useImageStatus';
-import { DEFAULT_EFFIGY } from 'src/const/urls';
-import { walletDigest } from 'src/utils/walletDigest';
-import useEffigyLink from 'src/hooks/useEffigyLink';
 
 interface AddressBoxProps {
   address?: string;
@@ -35,10 +32,7 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
-  const imgLink = useEffigyLink(
-    `https://effigy.im/a/${address}.png`,
-    DEFAULT_EFFIGY,
-  );
+  const imgLink = useImageStatus(address);
 
   const handleCopyButton = () => {
     address && navigator.clipboard.writeText(address);

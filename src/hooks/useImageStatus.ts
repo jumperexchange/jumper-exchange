@@ -1,26 +1,29 @@
 import { useState, useEffect } from 'react';
+import { DEFAULT_EFFIGY } from 'src/const/urls';
 
-const useImageStatus = (imageUrl: string) => {
-  const [isImageValid, setIsImageValid] = useState<boolean | null>(null);
+const useImageStatus = (address: string | undefined) => {
+  const [validImage, setValidImage] = useState<string>(DEFAULT_EFFIGY);
+  const imageUrl = `https://effigy.im/a/${address}.png`;
 
   useEffect(() => {
+    if (!address) {
+      return;
+    }
     const checkImage = async () => {
       try {
-        const response = await fetch(imageUrl);
-        if (response.status > 299) {
-          setIsImageValid(false);
-        } else {
-          setIsImageValid(true);
+        const response = await fetch(imageUrl, { method: 'HEAD' });
+        if (response.ok) {
+          setValidImage(imageUrl);
         }
       } catch (error) {
-        setIsImageValid(false);
+        setValidImage(DEFAULT_EFFIGY);
       }
     };
 
     checkImage();
-  }, [imageUrl]);
+  }, [imageUrl, address]);
 
-  return isImageValid;
+  return validImage;
 };
 
 export default useImageStatus;

@@ -23,11 +23,7 @@ import {
 } from './WalletButton.style';
 import { XPIcon } from '../illustrations/XPIcon';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import {
-  DEFAULT_EFFIGY,
-  JUMPER_LOYALTY_PATH,
-  JUMPER_SCAN_PATH,
-} from 'src/const/urls';
+import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import { usePathname, useRouter } from 'next/navigation';
 import useImageStatus from 'src/hooks/useImageStatus';
 import useEffigyLink from 'src/hooks/useEffigyLink';
@@ -40,10 +36,7 @@ export const WalletButtons = () => {
   const { openWalletMenu } = useWalletMenu();
   const { points, isLoading } = useLoyaltyPass();
   const router = useRouter();
-  const imgLink = useEffigyLink(
-    `https://effigy.im/a/${account?.address}.png`,
-    DEFAULT_EFFIGY,
-  );
+  const imgLink = useImageStatus(account?.address);
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const pathname = usePathname();
 
