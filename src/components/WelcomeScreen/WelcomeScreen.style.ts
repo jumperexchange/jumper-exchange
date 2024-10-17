@@ -5,31 +5,6 @@ import { ButtonPrimary } from '../Button';
 
 export const DEFAULT_WELCOME_SCREEN_HEIGHT = '50vh';
 
-// export interface WrapperProps extends Omit<BoxProps, 'component'> {
-//   showWelcome?: boolean;
-// }
-
-// export const Overlay = styled(Box, {
-//   shouldForwardProp: (prop) => prop !== 'showWelcome',
-// })<WrapperProps>(({ theme }) => ({
-//   position: 'absolute',
-//   bottom: 0,
-//   left: 0,
-//   right: 0,
-//   margin: 0,
-//   padding: 0,
-//   width: '100%',
-//   display: 'flex',
-//   flexDirection: 'column',
-//   scrollBehavior: 'smooth',
-//   zIndex: '1400',
-
-//   // widget wrappers -> animations
-//   '& +.widget-container .widget-wrapper > div:hover': {
-//     marginTop: 0,
-//   },
-// }));
-
 export interface ContentWrapperProps extends Omit<BoxProps, 'component'> {
   showWelcome?: boolean;
 }
