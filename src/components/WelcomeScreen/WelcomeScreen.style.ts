@@ -3,6 +3,10 @@ import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Typography, styled } from '@mui/material';
 import { ButtonPrimary } from '../Button';
 
+/**
+ * more welcome-screen styles to be found in Widget.style.tsx + Widgets.style.tsx
+ */
+
 export const DEFAULT_WELCOME_SCREEN_HEIGHT = '50vh';
 
 export interface ContentWrapperProps extends Omit<BoxProps, 'component'> {
