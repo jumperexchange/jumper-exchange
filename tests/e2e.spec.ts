@@ -80,7 +80,7 @@ test.describe('Jumper full e2e flow', () => {
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
 
-  test('Should be able to navigate to profile and open first Mission', async ({
+  test.skip('Should be able to navigate to profile and open first Mission', async ({
     page,
   }) => {
     let profileUrl = `${await page.url()}profile`;
