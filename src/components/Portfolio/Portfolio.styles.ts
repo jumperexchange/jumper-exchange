@@ -104,7 +104,9 @@ export const PortfolioBox = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   display: 'flex',
   justifyContent: 'center',
-  paddingX: '8px',
+  padding: '16px',
+  paddingTop: '0px',
+  paddingBottom: '0px',
 }));
 
 export const NoTokenImageBox = styled(Box)(() => ({
