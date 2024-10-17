@@ -5,7 +5,7 @@ export async function getArticlesByTag(
   excludeId: number,
   tag: number | number[],
 ) {
-  const urlParams = new ArticleStrapiApi().filterByTag(tag);
+  const urlParams = new ArticleStrapiApi().filterByTag(tag).sort('desc');
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.getApiAccessToken();
