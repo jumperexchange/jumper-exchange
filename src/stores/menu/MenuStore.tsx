@@ -50,7 +50,7 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       set({
         openMainMenu: open,
         openSubMenu: MenuKeysEnum.None,
-        openWalletMenu: false,
+        openWalletMenu: get().openWalletMenu,
         openSupportModal: false,
       });
     },

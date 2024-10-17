@@ -34,7 +34,8 @@
       {
         "allow": [
           "error",
-          "warn"
+          "warn",
+          "debug"
         ]
       }
     ],

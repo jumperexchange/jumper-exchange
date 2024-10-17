@@ -4,6 +4,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
@@ -31,6 +32,7 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
+  const imgLink = useImageStatus(address);
 
   const handleCopyButton = () => {
     address && navigator.clipboard.writeText(address);
@@ -43,19 +45,8 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
     address,
   });
 
-  const imgLink = imageLink
-    ? imageLink
-    : address && isEVM
-      ? `https://effigy.im/a/${address}.png`
-      : `https://effigy.im/a/${'jumper.eth'}.png`;
-
-  const effigyLink =
-    address && isEVM
-      ? `https://effigy.im/a/${address}.png`
-      : `https://effigy.im/a/${'jumper.eth'}.png`;
-
   return (
-    <AddressBoxContainer imgUrl={effigyLink}>
+    <AddressBoxContainer imgUrl={imgLink}>
       <PassImageBox>
         <Image
           alt="Effigy Wallet Icon"
