@@ -147,7 +147,7 @@ class ArticleStrapiApi extends StrapiApi {
   }
 
   sort(order: 'asc' | 'desc'): this {
-    this.apiUrl.searchParams.set('sort', `createdAt:${order.toUpperCase()}`);
+    this.apiUrl.searchParams.set('sort', `publishedAt:${order.toUpperCase()}`);
     return this;
   }
 
