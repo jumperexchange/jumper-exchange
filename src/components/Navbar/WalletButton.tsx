@@ -122,7 +122,7 @@ export const WalletButtons = () => {
             }}
           >
             {/* when deleting PromoLabel, also clear related sx-styles in parent above */}
-            <PromoLabel variant="bodyXSmallStrong" />
+            <PromoLabel component="span" variant="bodyXSmallStrong" />
 
             {isSuccess && activeChain ? (
               <WalletMgmtBadge
