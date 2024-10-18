@@ -33,7 +33,7 @@ const WIDGET_IMAGE_HEIGHT = 490; //376;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
-  console.time('start-time');
+  // console.time('start-time');
   const { searchParams } = new URL(request.url);
   const amount = searchParams.get('amount');
   const amountUSD = searchParams.get('amountUSD');
@@ -137,6 +137,6 @@ export async function GET(request: Request) {
     ),
     options,
   );
-  console.timeEnd('start-time');
+  // console.timeEnd('start-time');
   return ImageResp;
 }
