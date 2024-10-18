@@ -12,13 +12,7 @@ import {
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useMenuStore } from '@/stores/menu';
 import { useSuperfest } from 'src/hooks/useSuperfest';
-import {
-  NavbarContainer as Container,
-  Logo,
-  LogoLink,
-  NavbarButtons,
-  NavbarTabs,
-} from '.';
+import { NavbarContainer as Container, Logo, LogoLink, NavbarButtons } from '.';
 
 export const Navbar = ({ disableNavbar = false }) => {
   const router = useRouter();
@@ -57,11 +51,6 @@ export const Navbar = ({ disableNavbar = false }) => {
           variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'}
         />
       </LogoLink>
-      {/* {!isScanPage && !isLearnPage && !disableNavbar && (
-        <NavbarTabs
-          navbarPageReload={isLoyaltyPage || isSuperfest || isQuestsPage}
-        />
-      )} */}
       <NavbarButtons />
     </Container>
   );
