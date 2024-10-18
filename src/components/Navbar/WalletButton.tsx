@@ -19,7 +19,6 @@ import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
   ConnectButton,
-  ConnectButtonIcon,
   ConnectButtonLabel,
   ImageWalletMenuButton,
   SkeletonWalletMenuButton,
@@ -74,7 +73,6 @@ export const WalletButtons = () => {
             openWalletMenu();
           }}
         >
-          <ConnectButtonIcon />
           <ConnectButtonLabel variant={'bodyMediumStrong'}>
             {t('navbar.connect')}
           </ConnectButtonLabel>

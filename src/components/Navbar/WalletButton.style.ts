@@ -1,5 +1,4 @@
 import { ButtonPrimary } from '@/components/Button';
-import WalletIcon from '@mui/icons-material/Wallet';
 
 import {
   alpha,
@@ -50,23 +49,11 @@ export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
 }));
 
 export const ConnectButtonLabel = styled(Typography)(({ theme }) => ({
-  display: 'none',
-  [theme.breakpoints.up('md')]: {
-    display: '-webkit-box',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: 'vertical',
-  },
-}));
-
-export const ConnectButtonIcon = styled(WalletIcon)(({ theme }) => ({
-  [theme.breakpoints.down('md')]: {
-    display: 'block',
-  },
-  [theme.breakpoints.up('md')]: {
-    display: 'none',
-  },
+  display: '-webkit-box',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
 }));
 
 export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
