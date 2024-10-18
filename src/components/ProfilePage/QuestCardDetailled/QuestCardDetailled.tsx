@@ -64,6 +64,7 @@ interface QuestCardProps {
   rewardsProgress?: RewardsProgressProps;
   label?: string;
   id?: number;
+  isUnlock?: boolean;
 }
 
 export const QuestCardDetailled = ({
@@ -82,6 +83,7 @@ export const QuestCardDetailled = ({
   rewardRange,
   rewardsProgress,
   hideXPProgressComponents,
+  isUnlock,
 }: QuestCardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();

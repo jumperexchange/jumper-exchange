@@ -15,6 +15,7 @@ import {
 import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
+import { useTraits } from 'src/hooks/useTraits';
 
 const shouldHideComponent = (
   account: { address?: string } | undefined,
@@ -33,6 +34,7 @@ const shouldHideComponent = (
 export const ProfilePage = () => {
   const { account } = useAccount();
   const { isLoading, points, tier, pdas } = useLoyaltyPass();
+  const { isLoading: isTraitLoading, traits } = useTraits();
   const {
     availableRewards,
     pastCampaigns,
@@ -86,8 +88,8 @@ export const ProfilePage = () => {
                 <TierBox points={points} tier={tier} loading={isLoading} />
               </ProfilePageHeaderBox>
 
-              <QuestCarousel pastCampaigns={pastCampaigns} />
-              <QuestCompletedList pdas={pdas} loading={isLoading} />
+              <QuestCarousel pastCampaigns={pastCampaigns} traits={traits} />
+              {/* <QuestCompletedList pdas={pdas} loading={isLoading} /> */}
             </Stack>
           </Grid>
         </Grid>
