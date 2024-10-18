@@ -13,7 +13,7 @@ export const PromoLabel = styled(Typography, {
 
   return {
     position: 'absolute',
-    top: -10,
+    top: -8,
     right: -12,
     ':before': {
       content: `"${label || t('promo.new')}"`,
