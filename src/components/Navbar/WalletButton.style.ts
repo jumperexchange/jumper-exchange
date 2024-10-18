@@ -3,6 +3,7 @@ import { alpha, Avatar, Badge, Skeleton, styled } from '@mui/material';
 import Image from 'next/image';
 import { getContrastAlphaColor } from 'src/utils/colors';
 import { ButtonTransparent } from '../Button';
+import { avatarMask12 } from '../Mask.style';
 
 export const WalletMgmtWalletAvatar = styled(Avatar)(() => ({
   height: 32,
@@ -21,9 +22,12 @@ export const WalletMgmtChainAvatar = styled(Avatar)(() => ({
   },
 }));
 
-// Refactor WalletMgmtBadge to keep the dynamic mask logic
 export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
   borderRadius: '50%',
+  // overflow: 'hidden',
+  '> .MuiAvatar-root': {
+    mask: avatarMask12,
+  },
 }));
 
 export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({

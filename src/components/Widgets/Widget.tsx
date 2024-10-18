@@ -66,6 +66,7 @@ export function Widget({
   const widgetCache = useWidgetCacheStore((state) => state);
 
   const router = useRouter();
+
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });

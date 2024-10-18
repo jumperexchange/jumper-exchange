@@ -1,8 +1,9 @@
 'use client';
 
 import { ButtonSecondary, ButtonTransparent } from '@/components/Button';
+import { avatarMask32 } from '@/components/Mask.style';
 import type { Breakpoint, ButtonProps } from '@mui/material';
-import { alpha, Avatar, Container, Drawer } from '@mui/material';
+import { alpha, Avatar, Badge, Container, Drawer } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export interface WalletButtonProps extends ButtonProps {
@@ -26,6 +27,18 @@ export const AvatarContainer = styled('div')(() => ({
   position: 'relative',
   width: 'fit-content',
   margin: 'auto',
+}));
+
+export const WalletAvatar = styled(Avatar)(({ theme }) => ({
+  margin: 'auto',
+  height: 88,
+  width: 88,
+  '> img': {
+    height: '100%',
+    width: '100%',
+    objectFit: 'contain',
+  },
+  mask: avatarMask32,
 }));
 
 export const ChainAvatar = styled(Avatar)(({ theme }) => ({
@@ -87,4 +100,11 @@ export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
   width: 'fit-content',
   padding: '0 !important',
   margin: 0,
+}));
+
+export const WalletCardBadge = styled(Badge)(({ theme }) => ({
+  borderRadius: '50%',
+  '> .MuiAvatar-root': {
+    mask: avatarMask32,
+  },
 }));

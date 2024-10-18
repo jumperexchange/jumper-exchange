@@ -11,7 +11,6 @@ import { useMenuStore } from '@/stores/menu';
 import { usePortfolioStore } from '@/stores/portfolio';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { walletDigest } from '@/utils/walletDigest';
-
 import type { Account } from '@lifi/wallet-management';
 import {
   getConnectorIcon,
