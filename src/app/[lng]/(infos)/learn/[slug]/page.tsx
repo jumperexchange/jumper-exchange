@@ -61,7 +61,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const { activeThemeMode } = getCookies();
 
   const currentTags = (
-    article.data.data[0] as BlogArticleData
+    article?.data.data[0] as BlogArticleData
   ).attributes?.tags.data.map((el) => el?.id);
   const relatedArticles = await getArticlesByTag(
     article.data.data[0]?.id,
