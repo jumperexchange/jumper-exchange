@@ -3,15 +3,20 @@ import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/sdk';
-import type { Theme } from '@mui/material';
 import {
   getConnectorIcon,
   useAccount,
   useWalletMenu,
 } from '@lifi/wallet-management';
+import type { Theme } from '@mui/material';
 import { Stack, Typography, useMediaQuery } from '@mui/material';
+import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
+import useImageStatus from 'src/hooks/useImageStatus';
+import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import { XPIcon } from '../illustrations/XPIcon';
 import {
   ConnectButton,
   ImageWalletMenuButton,
@@ -21,12 +26,6 @@ import {
   WalletMgmtChainAvatar,
   WalletMgmtWalletAvatar,
 } from './WalletButton.style';
-import { XPIcon } from '../illustrations/XPIcon';
-import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
-import { usePathname, useRouter } from 'next/navigation';
-import useImageStatus from 'src/hooks/useImageStatus';
-import useEffigyLink from 'src/hooks/useEffigyLink';
 
 export const WalletButtons = () => {
   const { chains } = useChains();

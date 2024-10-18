@@ -1,9 +1,9 @@
 import { ButtonPrimary } from '@/components/Button';
 import { alpha, Avatar, Badge, Skeleton, styled } from '@mui/material';
+import Image from 'next/image';
 import { getContrastAlphaColor } from 'src/utils/colors';
 import { ButtonTransparent } from '../Button';
 import { avatarMask12 } from '../Mask.style';
-import Image from 'next/image';
 
 export const WalletMgmtWalletAvatar = styled(Avatar)(() => ({
   height: 32,
