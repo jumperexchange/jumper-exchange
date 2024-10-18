@@ -41,11 +41,6 @@ export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
 export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
   padding: theme.spacing(3),
   textWrap: 'nowrap',
-
-  [theme.breakpoints.down('md')]: {
-    width: 48,
-    minWidth: 48,
-  },
 }));
 
 export const ConnectButtonLabel = styled(Typography)(({ theme }) => ({
@@ -101,11 +96,8 @@ export const SkeletonWalletMenuButton = styled(Skeleton)(({ theme }) => ({
 }));
 
 export const WalletLabel = styled(Typography)(({ theme }) => ({
-  display: 'none',
-  [theme.breakpoints.up('md')]: {
-    display: 'block',
-    marginRight: theme.spacing(0.25),
-    marginLeft: theme.spacing(0.75),
-    width: 'auto',
-  },
+  display: 'block',
+  marginRight: theme.spacing(0.25),
+  marginLeft: theme.spacing(0.75),
+  width: 'auto',
 }));

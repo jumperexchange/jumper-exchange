@@ -4,8 +4,11 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
-import { ConnectButton as RedirectAppButton } from '../WalletButton.style';
-import { RedirectAppIcon, RedirectAppLabel } from './RedirectToApp.style';
+import {
+  RedirectAppButton,
+  RedirectAppIcon,
+  RedirectAppLabel,
+} from './RedirectToApp.style';
 
 interface RedirectToAppProps {
   hideConnectButton: boolean;
