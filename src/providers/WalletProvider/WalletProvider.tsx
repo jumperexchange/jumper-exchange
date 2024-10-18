@@ -22,8 +22,22 @@ import { useTranslation } from 'react-i18next';
 import { EVMProvider } from './EVMProvider';
 import { SVMProvider } from './SVMProvider';
 import { UTXOProvider } from './UTXOProvider';
+import { createConfig, EVM, Solana, UTXO } from '@lifi/sdk';
+import { publicRPCList } from '@/const/rpcList';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
+  useEffect(() => {
+    createConfig({
+      providers: [EVM(), Solana(), UTXO()],
+      integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+      rpcUrls: {
+        ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
+        ...publicRPCList,
+      },
+      preloadChains: true,
+    });
+  }, []);
+
   return (
     <EVMProvider>
       <SVMProvider>
@@ -39,7 +53,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
 const WalletMenuProvider: FC<PropsWithChildren> = ({ children }) => {
   const { i18n } = useTranslation();
-
   const config: WalletManagementConfig = useMemo(() => {
     return {
       locale: i18n.resolvedLanguage as never,

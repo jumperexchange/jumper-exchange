@@ -1,12 +1,20 @@
-import { Menu } from '@/components/Menu/Menu';
 import { useMenuStore } from '@/stores/menu';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
-import { Stack, Typography, useTheme } from '@mui/material';
+import {
+  alpha,
+  Drawer,
+  IconButton,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WalletButton } from '.';
+import { CustomDrawer, WalletButton } from '.';
 import { WalletCard } from './WalletCard';
+import { Portfolio } from '@/components/Portfolio/Portfolio';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface WalletMenuProps {
   anchorEl?: HTMLAnchorElement;
@@ -18,7 +26,6 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   const isDarkMode = theme.palette.mode === 'dark';
 
   const { accounts } = useAccount();
-
   const { openWalletMenu } = useWalletMenu();
 
   const {
@@ -49,32 +56,32 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   }, [accounts, setWalletMenuState, _openWalletMenu]);
 
   return (
-    <Menu
+    <CustomDrawer
       open={_openWalletMenu}
-      setOpen={setWalletMenuState}
-      isOpenSubMenu={_openWalletMenu}
-      width={'auto'}
-      styles={{
-        background: theme.palette.surface1.main,
-        padding: '12px',
+      anchor="right"
+      onClose={() => {
+        setWalletMenuState(false);
       }}
-      anchorEl={anchorEl}
+      // slotProps={{ backdrop: { invisible: true } }}
     >
-      <Stack
-        spacing={2}
-        sx={{ padding: '0 !important', margin: '0 !important' }}
-      >
-        {accounts.map((account) =>
-          account.isConnected ? (
-            <WalletCard key={account.address} account={account} />
-          ) : null,
-        )}
-        <WalletButton sx={{ width: '100%' }} onClick={handleOpenWalletMenu}>
+      <Stack direction="row" justifyContent="space-between">
+        <IconButton
+          aria-label="close"
+          onClick={() => setWalletMenuState(false)}
+          sx={{
+            color: theme.palette.text.primary,
+            '&:hover': {
+              backgroundColor: alpha(theme.palette.text.primary, 0.04),
+            },
+          }}
+          color="primary"
+        >
+          <CloseIcon />
+        </IconButton>
+        <WalletButton sx={{ width: 'auto' }} onClick={handleOpenWalletMenu}>
           <Typography
             sx={{
-              color: isDarkMode
-                ? theme.palette.white.main
-                : theme.palette.black.main,
+              color: theme.palette.text.primary,
             }}
             variant="bodySmallStrong"
           >
@@ -82,6 +89,13 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           </Typography>
         </WalletButton>
       </Stack>
-    </Menu>
+      {accounts.map(
+        (account) =>
+          account.isConnected && (
+            <WalletCard key={account.address} account={account} />
+          ),
+      )}
+      <Portfolio />
+    </CustomDrawer>
   );
 };

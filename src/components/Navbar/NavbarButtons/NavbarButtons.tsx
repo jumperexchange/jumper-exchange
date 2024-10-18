@@ -59,7 +59,7 @@ export const NavbarButtons = () => {
     <>
       <NavbarButtonsContainer className="settings">
         {(redirectToApp || !hideConnectButton) && (
-          <Box ref={walletManagementRef}>
+          <Box ref={walletManagementRef} display="flex" flexDirection="row">
             {redirectToApp && (
               <RedirectToApp hideConnectButton={hideConnectButton} />
             )}

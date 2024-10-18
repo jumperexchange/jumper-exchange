@@ -84,6 +84,7 @@ export const BlogArticleHeaderMetaDate = styled(Typography)(({ theme }) => ({
 
 export const BlogArticleImage = styled(Image)(({ theme }) => ({
   width: '100%',
+  height: 'auto',
   borderRadius: '16px',
   maxWidth: theme.breakpoints.values.lg,
   aspectRatio: '16/12',
@@ -95,6 +96,7 @@ export const BlogArticleImage = styled(Image)(({ theme }) => ({
 
 export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   width: '100%',
+  height: 'auto',
   transform: 'unset',
   borderRadius: '16px',
   margin: theme.spacing(0, 'auto', 0.75),

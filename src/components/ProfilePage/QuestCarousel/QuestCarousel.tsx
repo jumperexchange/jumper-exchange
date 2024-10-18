@@ -16,7 +16,7 @@ export const QuestCarousel = ({ pastCampaigns }: QuestCarouselProps) => {
         {/** render quests */}
         <QuestCarouselItems pastCampaigns={pastCampaigns} />
         {/** render ongoing numeric quests */}
-        <QuestCarouselNumericItems />
+        {/* <QuestCarouselNumericItems /> */}
       </CarouselContainer>
     </QuestCarouselContainer>
   );

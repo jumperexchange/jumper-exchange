@@ -8,11 +8,24 @@ import {
   useAccount,
   useWalletMenu,
 } from '@lifi/wallet-management';
-import { Typography } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { Stack, Typography, useMediaQuery } from '@mui/material';
+import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import AvatarBadge from '../AvatarBadge/AvatarBadge';
-import { ConnectButton, WalletMenuButton } from './WalletButton.style';
+import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
+import useImageStatus from 'src/hooks/useImageStatus';
+import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import { XPIcon } from '../illustrations/XPIcon';
+import {
+  ConnectButton,
+  ImageWalletMenuButton,
+  SkeletonWalletMenuButton,
+  WalletMenuButton,
+  WalletMgmtBadge,
+  WalletMgmtChainAvatar,
+  WalletMgmtWalletAvatar,
+} from './WalletButton.style';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
@@ -20,6 +33,11 @@ export const WalletButtons = () => {
   const { t } = useTranslation();
   const { isSuccess } = useChains();
   const { openWalletMenu } = useWalletMenu();
+  const { points, isLoading } = useLoyaltyPass();
+  const router = useRouter();
+  const imgLink = useImageStatus(account?.address);
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const pathname = usePathname();
 
   const { openWalletMenu: _openWalletMenu, setWalletMenuState } = useMenuStore(
     (state) => state,
@@ -33,6 +51,10 @@ export const WalletButtons = () => {
     () => chains?.find((chainEl: Chain) => chainEl.id === account?.chainId),
     [chains, account?.chainId],
   );
+
+  const handleXPClick = () => {
+    router.push(JUMPER_LOYALTY_PATH);
+  };
 
   const handleWalletMenuClick = () => {
     setWalletMenuState(!_openWalletMenu);
@@ -63,31 +85,65 @@ export const WalletButtons = () => {
           </Typography>
         </ConnectButton>
       ) : (
-        <WalletMenuButton
-          id="wallet-digest-button"
-          onClick={handleWalletMenuClick}
-        >
-          {isSuccess && activeChain ? (
-            <AvatarBadge
-              avatarAlt="Wallet avatar"
-              avatarSize={32}
-              avatarSrc={getConnectorIcon(account.connector)}
-              badgeAlt={`${activeChain?.name} avatar`}
-              badgeSize={12}
-              badgeSrc={activeChain?.logoURI || ''}
-              badgeOffset={{ x: 4, y: 4 }}
-              badgeGap={5}
-            />
-          ) : null}
-          <Typography
-            variant={'bodyMediumStrong'}
-            width={'auto'}
-            marginRight={0.25}
-            marginLeft={0.75}
+        <Stack direction="row" spacing={2}>
+          {isDesktop && !pathname.includes(JUMPER_SCAN_PATH) && (
+            <WalletMenuButton id="wallet-digest-button" onClick={handleXPClick}>
+              <ImageWalletMenuButton
+                src={imgLink}
+                alt="Effigy Wallet Icon"
+                width={32}
+                height={32}
+                priority={false}
+                unoptimized={true}
+              />
+              {isLoading ? (
+                <SkeletonWalletMenuButton variant="circular" />
+              ) : (
+                <Typography
+                  variant={'bodyMediumStrong'}
+                  width={'auto'}
+                  marginRight={1.1}
+                  marginLeft={1}
+                >
+                  {points ?? 0}
+                </Typography>
+              )}
+              <XPIcon size={32} />
+            </WalletMenuButton>
+          )}
+          <WalletMenuButton
+            id="wallet-digest-button"
+            onClick={handleWalletMenuClick}
           >
-            {_walletDigest}
-          </Typography>
-        </WalletMenuButton>
+            {isSuccess && activeChain ? (
+              <WalletMgmtBadge
+                overlap="circular"
+                className="badge"
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                badgeContent={
+                  <WalletMgmtChainAvatar
+                    src={activeChain?.logoURI || ''}
+                    alt={'wallet-avatar'}
+                  >
+                    {activeChain.name[0]}
+                  </WalletMgmtChainAvatar>
+                }
+              >
+                <WalletMgmtWalletAvatar
+                  src={getConnectorIcon(account.connector)}
+                />
+              </WalletMgmtBadge>
+            ) : null}
+            <Typography
+              variant={'bodyMediumStrong'}
+              width={'auto'}
+              marginRight={0.25}
+              marginLeft={0.75}
+            >
+              {_walletDigest}
+            </Typography>
+          </WalletMenuButton>
+        </Stack>
       )}
     </>
   );

@@ -44,7 +44,9 @@
       "explore": "অন্বেষণ করুন",
       "copiedMsg": "ওয়ালেট ঠিকানা কপি করা হয়েছে ৷",
       "walletNotInstalled": "",
-      "connectAnotherWallet": ""
+      "connectAnotherWallet": "",
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "লাইট মোডে স্যুইচ করুন",
