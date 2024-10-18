@@ -24,9 +24,7 @@ export const RedirectAppLabel = styled(Typography)(({ theme }) => ({
 }));
 
 export const RedirectAppIcon = styled(SwapHorizIcon)(({ theme }) => ({
-  [theme.breakpoints.down('md')]: {
-    display: 'block',
-  },
+  display: 'block',
   [theme.breakpoints.up('md')]: {
     display: 'none',
   },
