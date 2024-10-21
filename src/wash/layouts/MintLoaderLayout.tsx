@@ -3,9 +3,51 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { titanOne } from '../utils/fonts';
-import { cl } from '../utils/utils';
+import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
+
+/************************************************************************************************
+ * Defining the styled components style for the MintLoaderLayout component
+ *************************************************************************************************/
+const MintLoaderLayoutContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+const MintLoaderLayoutContent = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  max-width: 560px;
+  align-items: center;
+  justify-content: center;
+`;
+const MintLoaderLayoutTitle = styled.h1`
+  text-transform: uppercase;
+  color: white;
+  font-size: 56px;
+  line-height: 56px;
+  margin-bottom: 16px;
+  margin-top: 32px;
+  text-align: center;
+  font-family: ${titanOne.style.fontFamily};
+`;
+const MintLoaderLayoutImageContainer = styled.div`
+  position: absolute;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  right: 0;
+  bottom: 166px;
+`;
+const MintLoaderLayoutImage = styled(Image)<{ mounted: boolean }>`
+  transition: opacity 300ms ease-in-out;
+  opacity: ${({ mounted }) => (mounted ? 1 : 0)};
+`;
 
 /**********************************************************************************************
  * MintLoaderLayout Component
@@ -26,41 +68,23 @@ export function MintLoaderLayout(): ReactElement {
   }, []);
 
   return (
-    <div className={'flex w-full items-center justify-center'}>
-      <div
-        className={
-          'relative flex max-w-[560px] flex-col items-center justify-center'
-        }
-      >
-        <div
-          className={
-            'absolute inset-x-0 flex w-full items-center justify-center'
-          }
-          style={{ bottom: '166px' }}
-        >
-          <Image
+    <MintLoaderLayoutContainer>
+      <MintLoaderLayoutContent>
+        <MintLoaderLayoutImageContainer>
+          <MintLoaderLayoutImage
             src={'/wash/mint-loader.png'}
             priority
             loading={'eager'}
             alt={'nft'}
             width={200}
             height={240}
-            className={cl(
-              'transition-opacity duration-300',
-              isMounted ? 'opacity-100' : 'opacity-0',
-            )}
+            mounted={isMounted}
           />
-        </div>
-        <h1
-          className={cl(
-            'uppercase text-white',
-            'mb-4 mt-8 text-[56px] leading-[56px] text-center',
-            titanOne.className,
-          )}
-        >
+        </MintLoaderLayoutImageContainer>
+        <MintLoaderLayoutTitle>
           {'One dirty NFt, coming right up...'}
-        </h1>
-      </div>
-    </div>
+        </MintLoaderLayoutTitle>
+      </MintLoaderLayoutContent>
+    </MintLoaderLayoutContainer>
   );
 }
