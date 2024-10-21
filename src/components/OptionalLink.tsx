@@ -1,4 +1,4 @@
-import { Link as MuiLink, type CSSObject } from '@mui/material';
+import { Box, Link as MuiLink, type CSSObject } from '@mui/material';
 import Link from 'next/link';
 import type { PropsWithChildren } from 'react';
 
@@ -8,10 +8,12 @@ interface OptionalLinkProps {
   sx?: CSSObject;
 }
 
-export const OptionalLink: React.FC<PropsWithChildren<OptionalLinkProps>> = (
-  props,
-) => {
-  if (props.href) {
+export const OptionalLink: React.FC<
+  PropsWithChildren<OptionalLinkProps & { disabled: boolean }>
+> = (props) => {
+  if (props?.disabled) {
+    return <Box sx={{ cursor: 'not-allowed' }}>{props.children}</Box>;
+  } else if (props.href) {
     return (
       <MuiLink
         component={Link}

@@ -90,8 +90,6 @@ export const XPIconBox = styled(Box)(({ theme }) => ({
 
 export const BadgeRelativeBox = styled(Box)(({ theme }) => ({
   position: 'relative',
-  bottom: '0px', // Adjust this value as needed
-  top: '-10px', // Add this line to move it up
-  right: '32px',
-  zIndex: '42000',
+  display: 'flex',
+  justifyContent: 'center',
 }));

@@ -28,7 +28,7 @@ export const QuestCarouselItems = ({
         const claimingIds =
           quest.attributes?.CustomInformation?.['claimingIds'];
         const rewardsIds = quest.attributes?.CustomInformation?.['rewardsIds'];
-        const traits = ['perp_oors'];
+        const questTraits = quest.attributes?.CustomInformation?.['traits'];
 
         //todo: exclude in a dedicated helper function
         let completed = false;
@@ -36,9 +36,10 @@ export const QuestCarouselItems = ({
           completed = checkInclusion(pastCampaigns, rewardsIds);
         }
 
-        let isLocked = true ?? 'undefined';
-        if (true) {
-          isLocked = true;
+        let isUnlockedForUser = false;
+        if (questTraits?.length > 0 && traits) {
+          // isUnlockedForUser = checkInclusion(traits, questTraits);
+          isUnlockedForUser = false;
         }
 
         return (
@@ -62,7 +63,8 @@ export const QuestCarouselItems = ({
               quest?.attributes.Points > 0 && rewardType === 'weekly'
             }
             rewardRange={rewardRange}
-            isUnlocked={true}
+            isTraitsGarded={questTraits?.length > 0}
+            isUnlocked={isUnlockedForUser}
           />
         );
       })

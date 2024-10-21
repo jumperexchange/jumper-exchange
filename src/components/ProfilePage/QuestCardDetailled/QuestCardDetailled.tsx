@@ -1,5 +1,5 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Box, Skeleton, Typography, useTheme } from '@mui/material';
+import { Box, Skeleton, Tooltip, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
@@ -33,7 +33,6 @@ import {
   XPIconBox,
 } from './QuestCard.style';
 import { XPRewardsInfo } from './XPRewardsInfo';
-import { PerpBadge } from 'src/components/illustrations/PerpBadge';
 import { OPBadge } from 'src/components/illustrations/OPBadge';
 
 export interface RewardsInterface {
@@ -67,6 +66,7 @@ interface QuestCardProps {
   rewardsProgress?: RewardsProgressProps;
   label?: string;
   id?: number;
+  isTraitsGarded?: boolean;
   isUnlocked?: boolean;
 }
 
@@ -86,6 +86,7 @@ export const QuestCardDetailled = ({
   rewardRange,
   rewardsProgress,
   hideXPProgressComponents,
+  isTraitsGarded,
   isUnlocked,
 }: QuestCardProps) => {
   const theme = useTheme();
@@ -109,26 +110,56 @@ export const QuestCardDetailled = ({
   return (
     <QuestCardMainBox sx={{ height: 'auto' }} onClick={handleClick}>
       <OptionalLink
+        disabled={isTraitsGarded && !isUnlocked ? true : false}
         ariaLabel={title}
         href={link || (slug && `/quests/${slug}`)}
         sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           {image ? (
             <>
+              <BadgeRelativeBox>
+                {isTraitsGarded ? (
+                  <Tooltip
+                    title={'explanation of the perpoors traits'}
+                    placement="top"
+                    enterTouchDelay={0}
+                    componentsProps={{
+                      popper: { sx: { zIndex: 2000 } },
+                    }}
+                    arrow
+                    sx={{
+                      zIndex: 2500,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        cursor: 'help',
+                        backgroundColor: 'rgba(84, 49, 136, 0.4)',
+                        padding: '4px 16px',
+                        borderRadius: '32px',
+                        marginTop: theme.spacing(2),
+                      }}
+                    >
+                      <Typography sx={{ color: '#FFFFFF', fontWeight: 600 }}>
+                        perp_oors
+                      </Typography>
+                    </Box>
+                  </Tooltip>
+                ) : undefined}
+              </BadgeRelativeBox>
               <Image
                 src={image}
                 alt="Quest Card Image"
                 width={288}
                 height={288}
+                objectFit="cover"
                 style={{
                   borderTopLeftRadius: '8px',
                   borderTopRightRadius: '8px',
                 }}
               />
-              <BadgeRelativeBox>
-                {isUnlocked ? <OPBadge /> : undefined}
-              </BadgeRelativeBox>
             </>
           ) : (
             <Skeleton
@@ -276,16 +307,24 @@ export const QuestCardDetailled = ({
           {slug ? (
             <QuestCardInfoBox>
               <Button
-                disabled={false}
+                disabled={isTraitsGarded && !isUnlocked}
                 variant="primary"
                 size="medium"
                 styles={{
+                  backgroundColor:
+                    isTraitsGarded && !isUnlocked
+                      ? theme.palette.mode === 'dark'
+                        ? '#50436c'
+                        : '#f5f5f5'
+                      : null,
                   alignItems: 'center',
                   width: '100%',
                 }}
               >
                 <Typography fontSize="16px" lineHeight="18px" fontWeight={600}>
-                  {String(t('questCard.join')).toUpperCase()}
+                  {isTraitsGarded && !isUnlocked
+                    ? 'Unlocked for perp_oors'
+                    : String(t('questCard.join'))}
                 </Typography>
               </Button>
             </QuestCardInfoBox>
