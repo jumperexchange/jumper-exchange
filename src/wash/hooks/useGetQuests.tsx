@@ -3,21 +3,27 @@ import { WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useQuery } from '@tanstack/react-query';
 
-import type { TItems } from '../types/types';
 import { useCallback } from 'react';
 
-export type TGetItems = {
+export type TQuest = {
+  id: string;
+  userId: string;
+  questId: string;
+  progress: number;
+};
+
+export type TGetQuests = {
   isLoading: boolean;
-  items?: TItems;
+  activeQuests?: TQuest[];
   error?: Error | null;
   refetch?: VoidFunction;
 };
 
-export function useGetItems(): TGetItems {
+export function useGetQuests(): TGetQuests {
   const wallet = useWallet();
   const { umi } = useUmi();
 
-  const fetchItems = useCallback(async (): Promise<TItems> => {
+  const fetchQuests = useCallback(async (): Promise<TQuest[]> => {
     const response = await fetch(
       `${WASH_ENDPOINT_ROOT_URI}/user/${umi?.identity.publicKey}`,
       {
@@ -29,19 +35,19 @@ export function useGetItems(): TGetItems {
       },
     );
     const result = await response.json();
-    return result.items;
+    return result.activeQuests;
   }, [umi?.identity.publicKey, wallet.publicKey]);
 
   const {
     isLoading,
     error,
-    data: items,
+    data: activeQuests,
     refetch,
   } = useQuery({
-    queryKey: ['items'],
-    queryFn: fetchItems,
+    queryKey: ['quests'],
+    queryFn: fetchQuests,
     enabled: Boolean(umi && wallet?.connected && wallet.publicKey),
   });
 
-  return { isLoading, items, error, refetch };
+  return { isLoading, activeQuests, error, refetch };
 }

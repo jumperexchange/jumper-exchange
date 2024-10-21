@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useUmi } from '../contexts/useUmi';
 import { colorDict, WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
-import axios from 'axios';
 import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import { base58 } from '@metaplex-foundation/umi/serializers';
@@ -42,18 +41,20 @@ export function useGetNFT(): TGetNFT {
    *
    * @returns The NFT data from the server.
    *********************************************************************************************/
-  const fetchCachedNFT = useCallback(
-    async (): Promise<TNFTResponse> =>
-      axios
-        .get(`${WASH_ENDPOINT_ROOT_URI}/user/${umi?.identity.publicKey}/nft`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${base58.serialize(account.address ?? '')}`,
-          },
-        })
-        .then((res) => res.data.data),
-    [umi, account.address],
-  );
+  const fetchCachedNFT = useCallback(async (): Promise<TNFTResponse> => {
+    const response = await fetch(
+      `${WASH_ENDPOINT_ROOT_URI}/user/${umi?.identity.publicKey}/nft`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${base58.serialize(account.address ?? '')}`,
+        },
+      },
+    );
+    const result = await response.json();
+    return result.data;
+  }, [umi, account.address]);
 
   const cachedQuery = useQuery({
     queryKey: ['cachedNFTItem'],
@@ -74,21 +75,19 @@ export function useGetNFT(): TGetNFT {
    *
    * @returns The updated NFT data from the server.
    *********************************************************************************************/
-  const fetchUpdatedNFT = useCallback(
-    async (): Promise<TNFTResponse> =>
-      axios
-        .get(
-          `${WASH_ENDPOINT_ROOT_URI}/major/user/${umi?.identity.publicKey}/nft`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${base58.serialize(account.address ?? '')}`,
-            },
-          },
-        )
-        .then((res) => res.data.data),
-    [umi, account.address],
-  );
+  const fetchUpdatedNFT = useCallback(async (): Promise<TNFTResponse> => {
+    const response = await fetch(
+      `${WASH_ENDPOINT_ROOT_URI}/major/user/${umi?.identity.publicKey}/nft`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${base58.serialize(account.address ?? '')}`,
+        },
+      },
+    );
+    const result = await response.json();
+    return result.data;
+  }, [umi, account.address]);
 
   const updatedQuery = useQuery({
     queryKey: ['updatedNFTItem'],

@@ -142,6 +142,7 @@ export function CollectionNFTItem({ nft }: TNftItemProps): ReactElement {
           borderColor={nft?.isRare ? colors.orange[800] : colors.violet[700]}
           width={320}
           height={320}
+          unoptimized
         />
       );
     }
