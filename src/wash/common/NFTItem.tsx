@@ -44,6 +44,8 @@ const Label = styled.div`
 const NFTSkeleton = styled.div`
   width: 224px;
   height: 224px;
+  min-width: 224px;
+  min-height: 224px;
   border-radius: 16px;
   background-color: ${colors.violet[600]};
   border: 4px solid ${colors.violet[800]};
@@ -54,6 +56,8 @@ const NFTImage = styled(Image)<{ border: string }>`
   border-radius: 16px;
   width: 224px;
   height: 224px;
+  min-width: 224px;
+  min-height: 224px;
   border: 4px solid ${(props) => props.border};
 `;
 

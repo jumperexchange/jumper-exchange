@@ -92,3 +92,11 @@ export const WashH1 = styled.h1`
   text-transform: uppercase;
   color: white;
 `;
+
+export const WashH2 = styled.h2`
+  font-family: ${titanOne.style.fontFamily};
+  font-size: 24px;
+  line-height: 32px;
+  text-transform: uppercase;
+  color: white;
+`;

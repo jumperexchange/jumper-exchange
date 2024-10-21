@@ -21,7 +21,7 @@ type TBoostItemProps = {
  *************************************************************************************************/
 const PowerUpWrapperSkeleton = styled.div`
   width: 130px;
-  height: 96px;
+  height: 88px;
   transform: skewX(-6deg);
   border-radius: 16px;
   background-color: ${colors.violet[400]};
@@ -41,8 +41,8 @@ const PowerUpContentSkeleton = styled.div`
 
 const PowerUpWrapper = styled.button`
   display: flex;
-  height: 96px;
-  width: 130px;
+  height: 88px;
+  width: 120.76px;
   transform: skewX(-6deg);
   justify-content: flex-end;
   align-items: flex-end;
@@ -64,14 +64,25 @@ const PowerUpPercentageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0.25rem 0.5rem;
-  transform: skewX(-6deg);
+  text-align: right;
+`;
+
+const PowerUpPercentageAdd = styled.span<{ disabled: boolean }>`
+  font-size: 12px;
+  line-height: 26px;
+  font-weight: 900;
+  color: white;
+  transform: skewX(-8deg);
+  opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+  font-family: ${inter.style.fontFamily};
 `;
 
 const PowerUpPercentage = styled.span<{ disabled: boolean }>`
-  font-size: 32px;
-  line-height: 32px;
+  font-size: 28px;
+  line-height: 28px;
   font-weight: 900;
   color: white;
+  transform: skewX(-8deg);
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
   font-family: ${inter.style.fontFamily};
 `;
@@ -119,22 +130,25 @@ export function BoostItem({
       onClick={async () => handleUseItem(CLEANING_ITEMS[boostType])}
     >
       <PowerUpPercentageWrapper>
+        <PowerUpPercentageAdd disabled={isDisabled}>
+          {'ADD'}
+        </PowerUpPercentageAdd>
         <PowerUpPercentage disabled={isDisabled}>
           {CLEANING_ITEMS[boostType].percentage}
         </PowerUpPercentage>
       </PowerUpPercentageWrapper>
 
-      <Absolute left={'-16px'} top={'-20px'}>
+      <Absolute left={'-8px'} top={'-16px'}>
         <PowerUpLogo
           disabled={isDisabled}
           src={CLEANING_ITEMS[boostType].logo}
           alt={''}
-          width={72}
-          height={72}
+          width={80}
+          height={80}
         />
       </Absolute>
       <Absolute right={'-4px'} top={'-8px'}>
-        <Counter amount={amount} isDisabled={isDisabled} />
+        <Counter amount={amount} isDisabled={isDisabled || amount === 0} />
       </Absolute>
     </PowerUpWrapper>
   );

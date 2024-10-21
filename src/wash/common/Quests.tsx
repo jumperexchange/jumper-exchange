@@ -4,7 +4,6 @@ import { type ReactElement, useRef } from 'react';
 import Image from 'next/image';
 import { colors, WashH1 } from '../utils/theme';
 import { QUESTS, TOOLTIP_MESSAGES } from '../utils/constants';
-import { cl } from '../utils/utils';
 import styled from '@emotion/styled';
 
 import { CollectButton } from './CollectButton';

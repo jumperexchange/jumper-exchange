@@ -91,11 +91,12 @@ export function DashboardLayout(): ReactElement {
       </Modal>
 
       <div
+        style={{ columnGap: '32px' }}
         className={
-          'relative z-0 mt-40 flex h-min w-full max-w-6xl justify-center gap-6 pt-6'
+          'relative z-0 mt-40 flex h-min w-full max-w-6xl justify-center pt-6'
         }
       >
-        <div className={'flex flex-col gap-6'}>
+        <div className={'flex'} style={{ maxWidth: '760px' }}>
           <div className={'flex flex-col gap-6'}>
             <CurrentNFTBlock
               nft={currentNFT}
