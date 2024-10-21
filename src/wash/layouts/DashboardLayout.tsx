@@ -9,11 +9,22 @@ import { useWashTrading } from '../contexts/useWashTrading';
 import { inter } from '../utils/fonts';
 import { cl, widgetConfig } from '../utils/utils';
 import { LiFiWidget } from '@lifi/widget';
+import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 import type { TCleaningItem } from '../types/wash';
-import { WashH1 } from '../utils/theme';
-
+import { colors, WashH1 } from '../utils/theme';
+/************************************************************************************************
+ * OverkillModal: A modal component to warn users about potential overkill when using an item
+ *
+ * This component displays a warning modal when a user is about to use a boost that exceeds
+ * the remaining progress needed for the current NFT. It provides options to cancel or proceed
+ * with the action.
+ *
+ * Props:
+ * - shouldOverkillNumber: The cleaning item that would cause an overkill, or null if not active
+ * - set_shouldOverkillNumber: Function to update the overkill state
+ ***********************************************************************************************/
 export function OverkillModal(props: {
   shouldOverkillNumber: TCleaningItem | null;
   set_shouldOverkillNumber: (item: TCleaningItem | null) => void;
@@ -62,6 +73,45 @@ export function OverkillModal(props: {
   );
 }
 
+/************************************************************************************************
+ * Defining the styled components style for the DashboardLayout component
+ *************************************************************************************************/
+const DashboardLayoutContainer = styled.div`
+  column-gap: 32px;
+  display: flex;
+  position: relative;
+  z-index: 0;
+  margin-top: 10rem;
+  height: min-content;
+  width: 100%;
+  max-width: 1200px;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 24px;
+`;
+const WashSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 760px;
+`;
+const SwapSection = styled.div`
+  width: min-content;
+  height: min-content;
+  border: 2px solid ${colors.violet[800]};
+  box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
+  border-radius: 32px;
+`;
+
+/************************************************************************************************
+ * DashboardLayout: Main component for the washing dashboard
+ *
+ * This component orchestrates the layout and functionality of the NFT washing dashboard.
+ * It manages the state for overkill warnings, handles item usage, and renders the main
+ * sections of the dashboard including the current NFT block, quests list, and swap widget.
+ *
+ * The component uses the useWashTrading context to access NFT, item, and washing functionalities.
+ ************************************************************************************************/
 export function DashboardLayout(): ReactElement {
   const [shouldOverkillNumber, set_shouldOverkillNumber] =
     useState<TCleaningItem | null>(null);
@@ -103,32 +153,21 @@ export function DashboardLayout(): ReactElement {
         shouldOverkillNumber={shouldOverkillNumber}
         set_shouldOverkillNumber={set_shouldOverkillNumber}
       />
-      <div
-        style={{ columnGap: '32px' }}
-        className={
-          'relative z-0 mt-40 flex h-min w-full max-w-6xl justify-center pt-6'
-        }
-      >
-        <div className={'flex'} style={{ maxWidth: '760px' }}>
-          <div className={'flex flex-col gap-6'}>
-            <CurrentNFTBlock
-              nft={currentNFT}
-              washProgress={currentNFT?.progress ?? 0}
-              items={items.items}
-              handleUseItem={handleUseItem}
-              isSkeleton={!hasNFT}
-            />
-            <QuestsList isSkeleton={!hasNFT} />
-          </div>
-        </div>
-        <div
-          className={cl(
-            ' size-min rounded-[32px] border-2 border-violet-800 shadow-[6px_6px_0px_0px_#8000FF]',
-          )}
-        >
+      <DashboardLayoutContainer>
+        <WashSection>
+          <CurrentNFTBlock
+            nft={currentNFT}
+            washProgress={currentNFT?.progress ?? 0}
+            items={items.items}
+            handleUseItem={handleUseItem}
+            isSkeleton={!hasNFT}
+          />
+          <QuestsList isSkeleton={!hasNFT} />
+        </WashSection>
+        <SwapSection>
           <LiFiWidget integrator={'Mom'} config={widgetConfig} />
-        </div>
-      </div>
+        </SwapSection>
+      </DashboardLayoutContainer>
     </Fragment>
   );
 }
