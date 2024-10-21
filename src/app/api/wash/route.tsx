@@ -16,16 +16,16 @@ type TRequest = {
 export async function POST(request: Request): Promise<Response> {
   const res: TRequest = await request.json();
 
-  fetch(`${WASH_ENDPOINT_ROOT_URI}/user/${res.fromAddress}/trade`, {
+  const response = await fetch(`${WASH_ENDPOINT_ROOT_URI}/lifi`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'x-api-key': process.env.WASH_HANDSHAKE as string,
     },
     body: JSON.stringify({
       ...res,
-      handshake: process.env.WASH_HANDSHAKE,
     }),
   });
 
-  return Response.json({ res });
+  return Response.json({ res, response });
 }

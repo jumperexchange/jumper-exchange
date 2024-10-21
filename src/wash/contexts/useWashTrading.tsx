@@ -12,7 +12,7 @@ import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import type { ReactElement } from 'react';
 import type { TGetCollection } from '../hooks/useGetCollection';
 import type { TRevealHook } from '../hooks/useReveal';
-import type { Route } from '@lifi/widget';
+import type { Process, Route } from '@lifi/widget';
 import type { TGetQuests } from '../hooks/useGetQuests';
 import { useGetQuests } from '../hooks/useGetQuests';
 
@@ -88,28 +88,32 @@ export function WashTradingContextApp({
   const widgetEvents = useWidgetEvents();
 
   useEffect(() => {
-    const onRouteExecutionCompleted = (route: Route): void => {
+    const onRouteExecutionCompleted = (props: {
+      process: Process;
+      route: Route;
+    }): void => {
+      console.warn('route', props.route);
       fetch('/api/wash', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: route.id,
-          fromAddress: route.fromAddress,
-          fromAmount: route.fromAmount,
-          fromAmountUSD: route.fromAmountUSD,
-          fromChainID: route.fromChainId,
-          toAddress: route.toAddress,
-          toAmount: route.toAmount,
-          toAmountUSD: route.toAmountUSD,
-          toChainID: route.toChainId,
+          id: props.route.id,
+          fromAddress: props.route.fromAddress,
+          fromAmount: props.route.fromAmount,
+          fromAmountUSD: props.route.fromAmountUSD,
+          fromChainID: props.route.fromChainId,
+          toAddress: props.route.toAddress,
+          toAmount: props.route.toAmount,
+          toAmountUSD: props.route.toAmountUSD,
+          toChainID: props.route.toChainId,
         }),
       });
     };
 
     widgetEvents.on(
-      WidgetEvent.RouteExecutionCompleted,
+      WidgetEvent.RouteExecutionUpdated,
       onRouteExecutionCompleted,
     );
 
