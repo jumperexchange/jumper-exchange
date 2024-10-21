@@ -1,80 +1,62 @@
 'use client';
 
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import Image from 'next/image';
-import { Button } from '../common/Button';
 import { RevealNFTItem } from '../common/RevealNFTItem';
 import { useWashTrading } from '../contexts/useWashTrading';
 import { inter, titanOne } from '../utils/fonts';
 import { cl, countExtraXPFromItems } from '../utils/utils';
+import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
+import { CallToActionBox } from '../common/CallToActionBox';
 
 /************************************************************************************************
- * CallToActionBox Component
+ * Defining the styled components style for the RevealedNFTLayout component
+ *************************************************************************************************/
+const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
+  position: relative;
+  margin-top: -28dvh;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 152px;
+  transition:
+    opacity 300ms ease-in-out,
+    scale 300ms ease-in-out;
+  opacity: ${({ mounted }) => (mounted ? 1 : 0)};
+  scale: ${({ mounted }) => (mounted ? 1 : 0)};
+`;
+const RevealedNFTLayoutTitle = styled.h1`
+  text-transform: uppercase;
+  color: white;
+  font-size: 56px;
+  line-height: 56px;
+  text-align: center;
+  font-family: ${titanOne.style.fontFamily};
+`;
+const RevealedNFTLayoutSubtitle = styled.span`
+  color: white;
+  margin-top: 8px;
+  margin-bottom: 40px;
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-family: ${inter.style.fontFamily};
+`;
+const RevealedNFTLayoutCallToActionBox = styled.div`
+  margin-top: 66px;
+`;
+
+/************************************************************************************************
+ * RevealedNFTLayout Component
  *
- * This component renders a call-to-action box with a title, subtitle, and a button.
- * It includes an animation effect that slides the box into view after a delay.
+ * This component is responsible for displaying the NFT reveal screen. It shows the revealed NFT,
+ * its rarity, and associated rewards. The component also includes a call-to-action for minting
+ * another NFT.
  *
- * Props:
- * - title: string - The main title text for the call-to-action
- * - subtitle: string - The secondary text providing additional context
+ * The component relies on the useWashTrading hook for accessing NFT and reveal state data.
  ************************************************************************************************/
-function CallToActionBox(props: {
-  title: string;
-  subtitle: string;
-}): ReactElement {
-  const { mint } = useWashTrading();
-  const [isMounted, set_isMounted] = useState<boolean>(false);
-
-  useEffect(() => {
-    setTimeout(() => set_isMounted(true), 1000);
-  }, []);
-
-  return (
-    <div
-      className={cl(
-        'w-full rounded-[32px] border-2 border-violet-800 bg-violet-500 shadow-[6px_6px_0px_0px_#8000FF] md:w-[800px]',
-        'flex flex-row gap-4 overflow-hidden transition-all duration-1000 ease-in-out',
-        isMounted ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0',
-      )}
-    >
-      <Image
-        src={'/wash/call-to-action-items.png'}
-        alt={'call-to-action-box'}
-        className={'h-[136px] w-[164px]'}
-        width={164}
-        height={136}
-      />
-      <div
-        className={'flex flex-row items-center justify-between gap-4 py-7 pr-8'}
-      >
-        <div>
-          <h3
-            className={cl(
-              'text-2xl font-black uppercase text-white ',
-              inter.className,
-            )}
-          >
-            {props.title}
-          </h3>
-          <span className={cl('text-white/60 font-medium', inter.className)}>
-            {props.subtitle}
-          </span>
-        </div>
-        <div className={'w-fit'}>
-          <Button
-            isBusy={mint.isMinting}
-            title={'Mint new NFT'}
-            theme={'pink'}
-            onClick={mint.onMint}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function RevealedNFTLayout(): ReactElement {
   const { reveal, nft, items } = useWashTrading();
   const [isMounted, set_isMounted] = useState<boolean>(false);
@@ -133,30 +115,9 @@ export function RevealedNFTLayout(): ReactElement {
    * Render the RevealNFTLayout component
    *********************************************************************************************/
   return (
-    <div
-      className={cl(
-        'relative mt-[-28dvh] flex w-full flex-col items-center pt-[152px]',
-        'transition-all duration-600 ease-in-out',
-        isMounted ? 'opacity-100 scale-100' : 'opacity-0 scale-0',
-      )}
-    >
-      <h1
-        className={cl(
-          'uppercase text-white',
-          'text-[56px] text-center leading-[56px]',
-          titanOne.className,
-        )}
-      >
-        {title}
-      </h1>
-      <span
-        className={cl(
-          'mt-2 mb-10 text-white font-medium text-2xl',
-          inter.className,
-        )}
-      >
-        {subtitle}
-      </span>
+    <RevealedNFTLayoutContainer mounted={isMounted}>
+      <RevealedNFTLayoutTitle>{title}</RevealedNFTLayoutTitle>
+      <RevealedNFTLayoutSubtitle>{subtitle}</RevealedNFTLayoutSubtitle>
 
       <RevealNFTItem
         nft={currentNFT}
@@ -164,7 +125,7 @@ export function RevealedNFTLayout(): ReactElement {
         isRevealing={reveal.isRevealing}
       />
 
-      <div className={'mt-16 pt-0.5'}>
+      <RevealedNFTLayoutCallToActionBox>
         {!reveal.isRevealing && (
           <CallToActionBox
             title={`up to +${countExtraXPFromItems(items?.items)}% exp on next nft`}
@@ -173,7 +134,7 @@ export function RevealedNFTLayout(): ReactElement {
             }
           />
         )}
-      </div>
-    </div>
+      </RevealedNFTLayoutCallToActionBox>
+    </RevealedNFTLayoutContainer>
   );
 }
