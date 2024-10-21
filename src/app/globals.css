@@ -3,6 +3,7 @@
 	max-width: 100vw;
 	overflow-x: hidden;
   font-family: var(--inter-font), Inter;
+  margin-top: -80px;
 }
 
 

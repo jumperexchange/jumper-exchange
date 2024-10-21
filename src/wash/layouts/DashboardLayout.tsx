@@ -6,13 +6,61 @@ import { CurrentNFTBlock } from '../common/CurrentNFTBlock';
 import { Modal } from '../common/Modal';
 import { QuestsList } from '../common/Quests';
 import { useWashTrading } from '../contexts/useWashTrading';
-import { inter, titanOne } from '../utils/fonts';
+import { inter } from '../utils/fonts';
 import { cl, widgetConfig } from '../utils/utils';
 import { LiFiWidget } from '@lifi/widget';
 
 import type { ReactElement } from 'react';
 import type { TCleaningItem } from '../types/wash';
 import { WashH1 } from '../utils/theme';
+
+export function OverkillModal(props: {
+  shouldOverkillNumber: TCleaningItem | null;
+  set_shouldOverkillNumber: (item: TCleaningItem | null) => void;
+}): ReactElement {
+  const { wash } = useWashTrading();
+
+  return (
+    <Modal
+      isOpen={!!props.shouldOverkillNumber}
+      onClose={() => props.set_shouldOverkillNumber(null)}
+    >
+      <div className={'flex max-w-[400px] flex-col'}>
+        <WashH1>{'Ooooverkill'}</WashH1>
+        <p
+          className={cl(
+            'text-sm text-center mt-4 mb-8 text-white font-medium',
+            inter.className,
+          )}
+        >
+          {
+            'You’re about to use a boost that gives more % than your current NFT has left. Or you could save it for the next NFT you want to wash. Your call anon.'
+          }
+        </p>
+        <div className={'flex justify-center gap-2 rounded-3xl'}>
+          <Button
+            title={'Cancel'}
+            theme={'white'}
+            onClick={() => {
+              props.set_shouldOverkillNumber(null);
+            }}
+          />
+          <Button
+            title={'Proceed'}
+            theme={'pink'}
+            onClick={() => {
+              if (!props.shouldOverkillNumber) {
+                return;
+              }
+              wash.onWash(props.shouldOverkillNumber);
+              props.set_shouldOverkillNumber(null);
+            }}
+          />
+        </div>
+      </div>
+    </Modal>
+  );
+}
 
 export function DashboardLayout(): ReactElement {
   const [shouldOverkillNumber, set_shouldOverkillNumber] =
@@ -51,45 +99,10 @@ export function DashboardLayout(): ReactElement {
 
   return (
     <Fragment>
-      <Modal
-        isOpen={!!shouldOverkillNumber}
-        onClose={() => set_shouldOverkillNumber(null)}
-      >
-        <div className={'flex max-w-[400px] flex-col'}>
-          <WashH1>{'Ooooverkill'}</WashH1>
-          <p
-            className={cl(
-              'text-sm text-center mt-4 mb-8 text-white font-medium',
-              inter.className,
-            )}
-          >
-            {
-              'You’re about to use a boost that gives more % than your current NFT has left. Or you could save it for the next NFT you want to wash. Your call anon.'
-            }
-          </p>
-          <div className={'flex justify-center gap-2 rounded-3xl'}>
-            <Button
-              title={'Cancel'}
-              theme={'white'}
-              onClick={() => {
-                set_shouldOverkillNumber(null);
-              }}
-            />
-            <Button
-              title={'Proceed'}
-              theme={'pink'}
-              onClick={() => {
-                if (!shouldOverkillNumber) {
-                  return;
-                }
-                wash.onWash(shouldOverkillNumber);
-                set_shouldOverkillNumber(null);
-              }}
-            />
-          </div>
-        </div>
-      </Modal>
-
+      <OverkillModal
+        shouldOverkillNumber={shouldOverkillNumber}
+        set_shouldOverkillNumber={set_shouldOverkillNumber}
+      />
       <div
         style={{ columnGap: '32px' }}
         className={

@@ -69,10 +69,11 @@ const PowerUpPercentageWrapper = styled.div`
 
 const PowerUpPercentageAdd = styled.span<{ disabled: boolean }>`
   font-size: 12px;
-  line-height: 26px;
-  font-weight: 900;
+  line-height: 12px;
+  font-weight: 700;
   color: white;
-  transform: skewX(-8deg);
+  font-style: italic;
+  transform: skewX(6deg);
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
   font-family: ${inter.style.fontFamily};
 `;
@@ -82,7 +83,8 @@ const PowerUpPercentage = styled.span<{ disabled: boolean }>`
   line-height: 28px;
   font-weight: 900;
   color: white;
-  transform: skewX(-8deg);
+  font-style: italic;
+  transform: skewX(6deg);
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
   font-family: ${inter.style.fontFamily};
 `;
