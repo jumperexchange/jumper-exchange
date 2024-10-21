@@ -119,9 +119,11 @@ export const QuestCardDetailled = ({
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           {image ? (
             <>
-              <BadgeRelativeBox>
-                {isTraitsGarded ? <TraitsBox trait={'perp_oors'} /> : undefined}
-              </BadgeRelativeBox>
+              {isTraitsGarded && (
+                <BadgeRelativeBox>
+                  <TraitsBox trait={'perp_oors'} />
+                </BadgeRelativeBox>
+              )}
               <Image
                 src={image}
                 alt="Quest Card Image"
