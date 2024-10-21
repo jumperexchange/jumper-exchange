@@ -38,8 +38,8 @@ export const QuestCarouselItems = ({
 
         let isUnlockedForUser = false;
         if (questTraits?.length > 0 && traits) {
-          // isUnlockedForUser = checkInclusion(traits, questTraits);
-          isUnlockedForUser = false;
+          isUnlockedForUser = checkInclusion(traits, questTraits);
+          // isUnlockedForUser = false;
         }
 
         return (

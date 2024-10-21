@@ -10,7 +10,9 @@ export const TraitsBox = ({ trait }: TraitsBoxProps) => {
   const theme = useTheme();
   return (
     <Tooltip
-      title={'explanation of the perpoors traits'}
+      title={
+        'A trait for users of perps protocols (hyperliquid, dydx, gmxv2, vertex, intentx, aark) from the last year'
+      }
       placement="top"
       enterTouchDelay={0}
       componentsProps={{
