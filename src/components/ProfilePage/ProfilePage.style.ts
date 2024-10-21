@@ -7,7 +7,7 @@ export const ProfilePageContainer = styled(Container)(() => ({
   borderRadius: '8px',
   position: 'relative',
   width: '100% !important',
-  // overflow: 'visible',
+  overflow: 'hidden',
   paddingBottom: 20,
 }));
 
