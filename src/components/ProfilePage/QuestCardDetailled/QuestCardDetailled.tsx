@@ -34,6 +34,7 @@ import {
 } from './QuestCard.style';
 import { XPRewardsInfo } from './XPRewardsInfo';
 import { OPBadge } from 'src/components/illustrations/OPBadge';
+import { TraitsBox } from './TraitsBox/TraitsBox';
 
 export interface RewardsInterface {
   logo: string;
@@ -119,35 +120,7 @@ export const QuestCardDetailled = ({
           {image ? (
             <>
               <BadgeRelativeBox>
-                {isTraitsGarded ? (
-                  <Tooltip
-                    title={'explanation of the perpoors traits'}
-                    placement="top"
-                    enterTouchDelay={0}
-                    componentsProps={{
-                      popper: { sx: { zIndex: 2000 } },
-                    }}
-                    arrow
-                    sx={{
-                      zIndex: 2500,
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        cursor: 'help',
-                        backgroundColor: 'rgba(84, 49, 136, 0.4)',
-                        padding: '4px 16px',
-                        borderRadius: '32px',
-                        marginTop: theme.spacing(2),
-                      }}
-                    >
-                      <Typography sx={{ color: '#FFFFFF', fontWeight: 600 }}>
-                        perp_oors
-                      </Typography>
-                    </Box>
-                  </Tooltip>
-                ) : undefined}
+                {isTraitsGarded ? <TraitsBox trait={'perp_oors'} /> : undefined}
               </BadgeRelativeBox>
               <Image
                 src={image}

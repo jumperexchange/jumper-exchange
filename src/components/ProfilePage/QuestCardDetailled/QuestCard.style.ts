@@ -93,3 +93,12 @@ export const BadgeRelativeBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
 }));
+
+export const AbsoluteCenterTraitsBox = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  cursor: 'help',
+  backgroundColor: 'rgba(84, 49, 136, 0.4)',
+  padding: '4px 16px',
+  borderRadius: '32px',
+  marginTop: theme.spacing(2),
+}));
