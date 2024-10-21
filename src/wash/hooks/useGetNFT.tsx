@@ -76,8 +76,8 @@ export function useGetNFT(): TGetNFT {
    * @returns The updated NFT data from the server.
    *********************************************************************************************/
   const fetchUpdatedNFT = useCallback(async (): Promise<TNFTResponse> => {
-    const response = await fetch(
-      `${WASH_ENDPOINT_ROOT_URI}/major/user/${umi?.identity.publicKey}/nft`,
+    await fetch(
+      `${WASH_ENDPOINT_ROOT_URI}/lifi/${umi?.identity.publicKey}/update-data`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -85,9 +85,8 @@ export function useGetNFT(): TGetNFT {
         },
       },
     );
-    const result = await response.json();
-    return result.data;
-  }, [umi, account.address]);
+    return await fetchCachedNFT();
+  }, [umi, account.address, fetchCachedNFT]);
 
   const updatedQuery = useQuery({
     queryKey: ['updatedNFTItem'],
