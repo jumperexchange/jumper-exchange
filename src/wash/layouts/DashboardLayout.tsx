@@ -96,7 +96,8 @@ const WashSection = styled.div`
   max-width: 760px;
 `;
 const SwapSection = styled.div`
-  width: min-content;
+  width: 408px;
+  min-width: 408px;
   height: min-content;
   border: 2px solid ${colors.violet[800]};
   box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
