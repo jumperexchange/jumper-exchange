@@ -44,7 +44,9 @@
       "explore": "สำรวจ",
       "copiedMsg": "คัดลอกที่อยู่กระเป๋าเงินแล้ว",
       "walletNotInstalled": "{{wallet}} ยังไม่ถูกติดตั้ง",
-      "connectAnotherWallet": "เชื่อมต่อกระเป๋าเงินอื่น"
+      "connectAnotherWallet": "เชื่อมต่อกระเป๋าเงินอื่น",
+      "refreshBalances": "",
+      "totalBalance": ""
     },
     "themes": {
       "switchToLight": "เปลี่ยนเป็นธีมสว่าง",

@@ -6,19 +6,12 @@ import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { OnRamperIFrame } from './index';
 
 interface OnRamplerProps {
-  isWelcomeScreenClosed?: boolean;
   activeTheme?: string;
 }
 
-export const OnRamper = ({
-  isWelcomeScreenClosed,
-  activeTheme,
-}: OnRamplerProps) => {
+export const OnRamper = ({ activeTheme }: OnRamplerProps) => {
   const theme = useTheme();
-  const { welcomeScreenClosed } = useWelcomeScreen(
-    isWelcomeScreenClosed,
-    activeTheme,
-  );
+  const { welcomeScreenClosed } = useWelcomeScreen(activeTheme);
   const onRamperConfig = {
     apiKey: process.env.NEXT_PUBLIC_ONRAMPER_API_KEY,
     defaultCrypto: 'ETH',

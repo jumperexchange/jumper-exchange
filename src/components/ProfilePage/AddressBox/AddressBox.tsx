@@ -4,7 +4,9 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
+import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
@@ -30,38 +32,21 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
+  const imgLink = useImageStatus(address);
 
   const handleCopyButton = () => {
     address && navigator.clipboard.writeText(address);
     setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
   };
 
-  const getAddressOrENSString = (): string => {
-    if (isSuccess && ensName) {
-      return String(ensName).length > 20
-        ? `${ensName.slice(0, 13)}...eth`
-        : ensName;
-    }
-    return address && isEVM
-      ? address?.slice(0, 6) +
-          '...' +
-          address?.slice(address.length - 4, address.length)
-      : '0x0000...0000';
-  };
-
-  const imgLink = imageLink
-    ? imageLink
-    : address && isEVM
-      ? `https://effigy.im/a/${address}.png`
-      : `https://effigy.im/a/${'jumper.eth'}.png`;
-
-  const effigyLink =
-    address && isEVM
-      ? `https://effigy.im/a/${address}.png`
-      : `https://effigy.im/a/${'jumper.eth'}.png`;
+  const addressLabel = getAddressLabel({
+    isSuccess,
+    ensName,
+    address,
+  });
 
   return (
-    <AddressBoxContainer imgUrl={effigyLink}>
+    <AddressBoxContainer imgUrl={imgLink}>
       <PassImageBox>
         <Image
           alt="Effigy Wallet Icon"
@@ -92,7 +77,7 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
           width={'100%'}
           textAlign={'center'}
         >
-          {getAddressOrENSString()}
+          {addressLabel}
         </NoSelectTypography>
         <ProfileIconButton onClick={() => handleCopyButton()}>
           <ContentCopyIcon sx={{ height: '16px' }} />

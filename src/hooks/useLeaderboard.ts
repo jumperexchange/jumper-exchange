@@ -46,7 +46,7 @@ export const useLeaderboardList = (
         const result = await response.json();
         return result;
       } catch (err) {
-        console.log('err', err);
+        console.error(err);
       }
     },
   });
@@ -86,7 +86,7 @@ export const useLeaderboardUser = (
         const result = await response.json();
         return result;
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     },
   });

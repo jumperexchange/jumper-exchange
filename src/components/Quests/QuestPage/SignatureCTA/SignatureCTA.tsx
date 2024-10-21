@@ -1,12 +1,10 @@
 'use client';
 
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useAccount } from '@lifi/wallet-management';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { SiweMessage, generateNonce } from 'siwe';
-import { useAccounts } from 'src/hooks/useAccounts';
 import { useTurtleMember } from 'src/hooks/useTurtleMember';
 import { useSignMessage } from 'wagmi';
 import {
@@ -24,9 +22,7 @@ interface SignatureCtaProps {
 }
 
 export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
-  const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
-  const { account } = useAccounts();
+  const { account } = useAccount();
   const [messageToSign, setMessageToSign] = useState<string | undefined>(
     undefined,
   );
@@ -83,7 +79,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -97,7 +93,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
           setMessageToSign(message);
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     }
     fetchMessage();

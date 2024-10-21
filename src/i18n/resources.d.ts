@@ -50,6 +50,11 @@ interface Resources {
         copiedMsg: 'Wallet address copied';
         walletNotInstalled: '{{wallet}} is not installed';
         connectAnotherWallet: 'Connect another wallet';
+        refreshBalances: 'Refresh balances';
+        totalBalance: 'Total balance';
+        totalBalanceTooltip: "Your total balance may not always be accurate due to potential indexing issues. We're on it!";
+        totalBalanceRefresh: 'Click here to restart the indexing of your tokens now.';
+        numberOfChains: '{{numberOfChains}} chains';
       };
       themes: {
         switchToLight: 'Switch to light mode';
@@ -132,6 +137,9 @@ interface Resources {
         bridge_oor: 'bridging';
       };
     };
+    promo: {
+      new: 'New';
+    };
     missions: {
       available: 'Available Missions';
       completed: 'Completed Missions';
@@ -142,6 +150,10 @@ interface Resources {
       rank: 'Leaderboard is updated on a daily basis';
       pointsInfo: 'XP is your score for interacting with Jumper. As you gain XP points, your level goes up.';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
+    };
+    format: {
+      currency: '{{value, currencyExt(currency: USD)}}';
+      decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
     };
   };
 }

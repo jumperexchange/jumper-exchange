@@ -8,7 +8,6 @@ import {
 } from '@/const/trackingKeys';
 import {
   DISCORD_URL,
-  JUMPER_FEST_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
@@ -16,22 +15,18 @@ import {
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
-import { useSettingsStore } from '@/stores/settings';
+import { useThemeStore } from '@/stores/theme';
 import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
-import PaletteIcon from '@mui/icons-material/Palette';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useTheme as useNextTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { OPLogo } from 'src/components/illustrations/OPLogo';
-import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
@@ -39,10 +34,10 @@ export const useMainMenuContent = () => {
   const { trackEvent } = useUserTracking();
   const router = useRouter();
   const theme = useTheme();
-  const configTheme = useSettingsStore((state) => state.configTheme);
-  const { forcedTheme } = useNextTheme();
-  const { isMainPaths } = useMainPaths();
-  const themeMode = useSettingsStore((state) => state.themeMode);
+  const [themeMode, configTheme] = useThemeStore((state) => [
+    state.themeMode,
+    state.configTheme,
+  ]);
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
@@ -72,7 +67,7 @@ export const useMainMenuContent = () => {
 
   let mainMenu: any[] = [];
 
-  if (!forcedTheme && configTheme?.hasThemeModeSwitch) {
+  if (configTheme?.hasThemeModeSwitch) {
     mainMenu.push({
       children: (
         <Tabs
@@ -109,33 +104,6 @@ export const useMainMenuContent = () => {
     });
   }
 
-  if (!forcedTheme && isMainPaths) {
-    // mainMenu.push({
-    //   label: t('navbar.navbarMenu.theme'),
-    //   prefixIcon: <PaletteIcon />,
-    //   triggerSubMenu: !['dark', 'light'].includes(configTheme?.uid)
-    //     ? MenuKeysEnum.Theme
-    //     : undefined,
-    //   showMoreIcon: !['dark', 'light'].includes(configTheme?.uid),
-    //   suffixIcon: configTheme?.uid && (
-    //     <Typography
-    //       variant="bodyMedium"
-    //       textTransform={'uppercase'}
-    //       sx={{
-    //         overflow: 'hidden',
-    //         textOverflow: 'ellipsis',
-    //         maxWidth: 38,
-    //       }}
-    //     >
-    //       {configTheme.uid}
-    //     </Typography>
-    //   ),
-    //   onClick: () => {
-    //     setSubMenuState(MenuKeysEnum.Theme);
-    //   },
-    // });
-  }
-
   mainMenu = mainMenu.concat([
     {
       label: t('language.key', { ns: 'language' }),
@@ -165,6 +133,12 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeysEnum.Devs,
       onClick: () => {
         setSubMenuState(MenuKeysEnum.Devs);
+        trackEvent({
+          category: TrackingCategory.MainMenu,
+          action: TrackingAction.OpenMenu,
+          label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
+          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
+        });
       },
     },
     {

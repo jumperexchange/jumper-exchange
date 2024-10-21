@@ -1,7 +1,7 @@
-import { useAccounts } from './useAccounts';
+import { useAccount } from '@lifi/wallet-management';
 
 export const useMetaMask = () => {
-  const { account } = useAccounts();
+  const { account } = useAccount();
 
   const isMMConnector = Boolean(account?.connector?.name === 'MetaMask');
 

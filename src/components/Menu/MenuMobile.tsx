@@ -39,13 +39,13 @@ export const MenuMobile = ({
   isOpenSubMenu,
   children,
 }: MenuProps) => {
-  const { openSubMenu, closeAllMenus } = useMenuStore((state) => state);
+  const { openSubMenu, setMainMenuState } = useMenuStore((state) => state);
   return (
     <MobileDrawer
       anchor="bottom"
       open={open}
       onClose={(_, reason) => {
-        reason === 'backdropClick' && closeAllMenus();
+        reason === 'backdropClick' && setMainMenuState(false);
       }}
       PaperProps={paperProps}
       keepMounted={keepMounted}
@@ -61,11 +61,7 @@ export const MenuMobile = ({
           cardsLayout={cardsLayout}
           hasLabel={!!label}
           sx={styles}
-          component={
-            isOpenSubMenu && openSubMenu !== MenuKeysEnum.WalletSelect
-              ? 'div'
-              : 'ul'
-          }
+          component={isOpenSubMenu ? 'div' : 'ul'}
         >
           {!!label ? (
             <MenuHeaderAppWrapper>

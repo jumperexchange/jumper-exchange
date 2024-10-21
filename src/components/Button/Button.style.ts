@@ -67,6 +67,7 @@ export const ButtonTransparent = styled(ButtonBase)<MuiButtonProps>(
       left: 0,
       transition: 'background 250ms',
       background: 'transparent',
+      borderRadius: 'inherit',
     },
     '&:hover:before': {
       background: getContrastAlphaColor(theme, '4%'),

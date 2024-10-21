@@ -1,4 +1,4 @@
-import { type ThemeModesSupported } from 'src/types/settings';
+import { type ThemeMode } from 'src/types/theme';
 import { InstructionsAccordionContainer, InstructionsAccordionItem } from '.';
 
 interface InstructionsItemLink {
@@ -13,13 +13,13 @@ export interface InstructionItemProps {
   url?: string;
   buttonTitles?: string[];
   buttonLinks?: string[];
-  activeThemeMode?: ThemeModesSupported;
+  activeThemeMode?: ThemeMode;
   variant?: string;
 }
 
 interface InstructionsAccordionProps {
   data: InstructionItemProps[];
-  activeThemeMode?: ThemeModesSupported;
+  activeThemeMode?: ThemeMode;
   variant?: string;
 }
 
