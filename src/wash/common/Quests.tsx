@@ -171,7 +171,11 @@ export function QuestItem(props: TQuest): ReactElement {
           <QuestInfo>
             <QuestHeadingWrapper>
               <QuestHeading questType={isDone ? 'done' : props.questType}>
-                {isDone ? 'DONE' : props.heading}
+                {isDone
+                  ? 'DONE'
+                  : props.questType === 'common'
+                    ? 'Common quest'
+                    : 'Rare quest'}
               </QuestHeading>
               <IconDone style={{ opacity: isDone ? 1 : 0 }} />
             </QuestHeadingWrapper>

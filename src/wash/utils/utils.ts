@@ -106,3 +106,13 @@ export const widgetConfig: WidgetConfig = {
   },
   integrator: 'MOM',
 };
+
+/**************************************************************************************************
+ * getItem is needed here because cleaning items have different stroke colors depends on UI place.
+ *************************************************************************************************/
+export const getItem = (id: keyof typeof CLEANING_ITEMS, color?: string) => {
+  return {
+    ...CLEANING_ITEMS[id],
+    logo: color ? `/wash/${color}-stroke-${id}.png` : CLEANING_ITEMS[id].logo,
+  };
+};

@@ -12,7 +12,6 @@ import type { TIntRange } from './types';
  *********************************************************************************************/
 export type TQuest = {
   questType: 'common' | 'rare';
-  heading: string;
   title: string;
   description: string;
   progressSteps: number;
