@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { inter } from 'src/fonts/fonts';
 import { titanOne } from './fonts';
+import { mq } from './constants';
 
 export type TColor =
   | 'violet'
@@ -91,6 +92,11 @@ export const WashH1 = styled.h1`
   line-height: 40px;
   text-transform: uppercase;
   color: white;
+  ${mq[0]} {
+    font-size: 24px;
+    line-height: 32px;
+    text-align: center;
+  }
 `;
 
 export const WashH2 = styled.h2`
