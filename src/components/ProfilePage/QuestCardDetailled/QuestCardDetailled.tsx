@@ -24,6 +24,7 @@ import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
 import { ProgressionBar } from '../LevelBox/ProgressionBar';
 import {
+  BadgeRelativeBox,
   QuestCardBottomBox,
   QuestCardInfoBox,
   QuestCardMainBox,
@@ -32,6 +33,8 @@ import {
   XPIconBox,
 } from './QuestCard.style';
 import { XPRewardsInfo } from './XPRewardsInfo';
+import { PerpBadge } from 'src/components/illustrations/PerpBadge';
+import { OPBadge } from 'src/components/illustrations/OPBadge';
 
 export interface RewardsInterface {
   logo: string;
@@ -64,7 +67,7 @@ interface QuestCardProps {
   rewardsProgress?: RewardsProgressProps;
   label?: string;
   id?: number;
-  isUnlock?: boolean;
+  isUnlocked?: boolean;
 }
 
 export const QuestCardDetailled = ({
@@ -83,7 +86,7 @@ export const QuestCardDetailled = ({
   rewardRange,
   rewardsProgress,
   hideXPProgressComponents,
-  isUnlock,
+  isUnlocked,
 }: QuestCardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -112,16 +115,21 @@ export const QuestCardDetailled = ({
       >
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           {image ? (
-            <Image
-              src={image}
-              alt="Quest Card Image"
-              width={288}
-              height={288}
-              style={{
-                borderTopLeftRadius: '8px',
-                borderTopRightRadius: '8px',
-              }}
-            />
+            <>
+              <Image
+                src={image}
+                alt="Quest Card Image"
+                width={288}
+                height={288}
+                style={{
+                  borderTopLeftRadius: '8px',
+                  borderTopRightRadius: '8px',
+                }}
+              />
+              <BadgeRelativeBox>
+                {isUnlocked ? <OPBadge /> : undefined}
+              </BadgeRelativeBox>
+            </>
           ) : (
             <Skeleton
               variant="rectangular"

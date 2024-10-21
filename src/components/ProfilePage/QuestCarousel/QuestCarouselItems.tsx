@@ -60,7 +60,7 @@ export const QuestCarouselItems = ({
               quest?.attributes.Points > 0 && rewardType === 'weekly'
             }
             rewardRange={rewardRange}
-            isUnlock={isUnlock}
+            isUnlocked={true}
           />
         );
       })
