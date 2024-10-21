@@ -18,8 +18,8 @@ export const PromoLabel = styled(Typography, {
     ':before': {
       content: `"${label || t('promo.new')}"`,
       height: 24,
-      textTransform: 'uppercase',
-      padding: theme.spacing(0.75, 1.5),
+      textTransform: 'lowercase',
+      padding: theme.spacing(0.5, 1),
       whiteSpace: 'nowrap',
       color: theme.palette.common.white,
       backgroundColor: theme.palette.primary.main,
