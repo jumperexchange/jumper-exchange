@@ -204,6 +204,18 @@ const QuestsListWrapper = styled.div`
   padding: 32px;
   box-shadow: 6px 6px 0px 0px #8000ff;
 `;
+const QuestsListHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+`;
+const QuestList = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  min-height: 40dvh;
+`;
 
 /************************************************************************************************
  * QuestsList Component
@@ -220,20 +232,18 @@ const QuestsListWrapper = styled.div`
 export function QuestsList(props: { isSkeleton?: boolean }): ReactElement {
   return (
     <QuestsListWrapper>
-      <div className={'mb-4 flex items-center gap-2'}>
+      <QuestsListHeader>
         <WashH1>{'Quests'}</WashH1>
         <InfoPopup description={TOOLTIP_MESSAGES.quest} />
-      </div>
+      </QuestsListHeader>
 
-      <div className={'flex-gap flex flex-col gap-y-4'}>
-        {props.isSkeleton ? (
-          <div className={'min-h-[40dvh]'} />
-        ) : (
-          QUESTS.map((quest, index) => (
-            <QuestItem key={`${quest.title}-${index}`} {...quest} />
-          ))
-        )}
-      </div>
+      <QuestList>
+        {props.isSkeleton
+          ? null
+          : QUESTS.map((quest, i) => (
+              <QuestItem key={`${quest.title}-${i}`} {...quest} />
+            ))}
+      </QuestList>
     </QuestsListWrapper>
   );
 }
