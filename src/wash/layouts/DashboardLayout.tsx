@@ -135,7 +135,7 @@ export function DashboardLayout(): ReactElement {
    * NFT. If it would, it sets a state to prompt the user about potential overkill.
    * Otherwise, it proceeds with washing the NFT using the selected power-up.
    *
-   * @param powerUp - The power-up level to be used (1, 2, or 3)
+   * @param item - The cleaning item to be used
    * @returns A Promise that resolves when the action is completed
    *********************************************************************************************/
   const handleUseItem = useCallback(

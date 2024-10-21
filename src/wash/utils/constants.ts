@@ -27,7 +27,6 @@ export const CLEANING_ITEMS: Record<TCleaningItem['id'], TCleaningItem> = {
     message: 'I am using item1',
     logo: '/wash/violet-stroke-soap.png',
     percentage: '+5%',
-    level: 1,
     boost: 5,
   },
   sponge: {
@@ -35,7 +34,6 @@ export const CLEANING_ITEMS: Record<TCleaningItem['id'], TCleaningItem> = {
     message: 'I am using item2',
     logo: '/wash/violet-stroke-sponge.png',
     percentage: '+10%',
-    level: 2,
     boost: 10,
   },
   cleanser: {
@@ -43,7 +41,6 @@ export const CLEANING_ITEMS: Record<TCleaningItem['id'], TCleaningItem> = {
     message: 'I am using item3',
     logo: '/wash/violet-stroke-cleanser.png',
     percentage: '+15%',
-    level: 3,
     boost: 15,
   },
 };
