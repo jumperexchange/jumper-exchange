@@ -161,7 +161,7 @@ export function RevealNFTItem({
   }, [isRevealing, nft.isRare]);
 
   return (
-    <div className={'relative'}>
+    <div style={{ position: 'relative' }}>
       <RevealNFTContainer backgroundColor={colorToUse[800]}>
         <NFTLabelBox backgroundColor={colorToUse[800]}>
           <NFTLabelSkeleton isRevealing={isRevealing} />
@@ -177,6 +177,7 @@ export function RevealNFTItem({
           <NFTImageSkeleton isRevealing={isRevealing} />
           <NFTImage
             isRevealing={isRevealing}
+            unoptimized
             src={
               nft.imageUri ||
               `/wash/${getPepeImage(100, nft?.color ?? DEFAULT_NFT_COLOR)}` ||
