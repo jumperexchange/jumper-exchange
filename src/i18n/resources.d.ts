@@ -137,6 +137,9 @@ interface Resources {
         bridge_oor: 'bridging';
       };
     };
+    promo: {
+      new: 'New';
+    };
     missions: {
       available: 'Available Missions';
       completed: 'Completed Missions';
