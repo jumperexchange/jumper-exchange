@@ -55,6 +55,7 @@ export const CLEANING_ITEMS: Record<TCleaningItem['id'], TCleaningItem> = {
 export const QUESTS: TQuest[] = [
   {
     questType: 'rare',
+    heading: 'Dump $JUP for $SOL',
     title: 'Dump $JUP for $SOL',
     description:
       'Yep. We woke up and chose violence. Dump JUPITER tokens for SOL. Ducks.',
@@ -70,6 +71,7 @@ export const QUESTS: TQuest[] = [
   },
   {
     questType: 'rare',
+    heading: 'Trade between $WIF & $POPCAT',
     title: 'Trade between $WIF & $POPCAT',
     description:
       'Are you a dog(coin) person or a cat(coin) person? It doesn’t matter. Swap WIF and POPCAT to earn a boost.',
@@ -85,6 +87,7 @@ export const QUESTS: TQuest[] = [
   },
   {
     questType: 'rare',
+    heading: 'Swap between $SOL & $MOTHER',
     title: 'Swap between $SOL & $MOTHER',
     description:
       'A mASSive opportunity for you to earn a wash trading boost by buying this hot new ASSet.',
@@ -100,6 +103,7 @@ export const QUESTS: TQuest[] = [
   },
   {
     questType: 'common',
+    heading: 'Swap between $USDC & $USDT',
     title: 'Swap between $USDC & $USDT',
     description: 'The real authentic washtrading experience… snore.',
     progressSteps: 5,
@@ -114,6 +118,7 @@ export const QUESTS: TQuest[] = [
   },
   {
     questType: 'rare',
+    heading: 'Swap between $SOL & $DRIFT',
     title: 'Swap between $SOL & $DRIFT',
     description:
       'Get your Drift on and acquire some tokens from our good friends at Drift.',
@@ -129,6 +134,7 @@ export const QUESTS: TQuest[] = [
   },
   {
     questType: 'common',
+    heading: 'Dump $TREMP for $BODEN',
     title: 'Dump $TREMP for $BODEN',
     description:
       'The battle we all wanted, but never got. Time to run it back for a wash boost.',
@@ -144,6 +150,7 @@ export const QUESTS: TQuest[] = [
   },
   {
     questType: 'common',
+    heading: 'Swap between $WIF, $MICHI, or $MEW',
     title: 'Swap between $WIF, $MICHI, or $MEW',
     description:
       'This quest gets you to trade Ansem tokens, in the hope that he’ll engage with us. Can’t hurt… right?',
@@ -159,6 +166,7 @@ export const QUESTS: TQuest[] = [
   },
   {
     questType: 'common',
+    heading: 'Swap between $MOODENG and $FWOG',
     title: 'Swap between $MOODENG and $FWOG',
     description:
       'Cute flavour of the month vs cute flavour of the month. You don’t have to pick sides. Just swap between them!',
@@ -174,6 +182,7 @@ export const QUESTS: TQuest[] = [
   },
   {
     questType: 'common',
+    heading: 'Swap between $Trump and $USA',
     title: 'Swap between $Trump and $USA',
     description:
       'Play some Bruce Springsteen, put on your Maga hat and start trading like a true patriot. Murica mfer!',

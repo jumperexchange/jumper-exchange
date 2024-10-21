@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { inter } from 'src/fonts/fonts';
+import { titanOne } from './fonts';
 
 export type TColor =
   | 'violet'
@@ -82,4 +83,12 @@ export const Absolute = styled.div<{
 
 export const WashText = styled.p`
   font-family: ${inter.style.fontFamily};
+`;
+
+export const WashH1 = styled.h1`
+  font-family: ${titanOne.style.fontFamily};
+  font-size: 32px;
+  line-height: 40px;
+  text-transform: uppercase;
+  color: white;
 `;

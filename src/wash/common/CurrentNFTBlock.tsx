@@ -10,7 +10,7 @@ import { NFTItem } from './NFTItem';
 import { RevealRaysBackground } from './RaysBackground';
 import { WashProgress } from './WashProgress';
 
-import type { TColor } from '../utils/theme';
+import { WashH1, type TColor } from '../utils/theme';
 import type { TItems, TNFTItem, TProgress } from '../types/types';
 import type { TCleaningItem } from '../types/wash';
 
@@ -71,15 +71,8 @@ export function CurrentNFTBlock(props: TCurrentNFTBlockProps): ReactElement {
         color={props.nft?.color || DEFAULT_NFT_COLOR}
         isSkeleton={props.isSkeleton}
       />
-      <div className={'z-50'}>
-        <h1
-          className={cl(
-            'text-3xl uppercase text-white mb-3 z-50',
-            titanOne.className,
-          )}
-        >
-          {'Current nft'}
-        </h1>
+      <div className={'z-50 grid gap-3'}>
+        <WashH1>{'Current nft'}</WashH1>
         <NFTItem nft={props.nft} isSkeleton={props.isSkeleton} />
       </div>
 

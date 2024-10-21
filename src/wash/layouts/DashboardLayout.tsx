@@ -12,6 +12,7 @@ import { LiFiWidget } from '@lifi/widget';
 
 import type { ReactElement } from 'react';
 import type { TCleaningItem } from '../types/wash';
+import { WashH1 } from '../utils/theme';
 
 export function DashboardLayout(): ReactElement {
   const [shouldOverkillNumber, set_shouldOverkillNumber] =
@@ -55,9 +56,7 @@ export function DashboardLayout(): ReactElement {
         onClose={() => set_shouldOverkillNumber(null)}
       >
         <div className={'flex max-w-[400px] flex-col'}>
-          <h1 className={`text-3xl uppercase text-white ${titanOne.className}`}>
-            {'Ooooverkill'}
-          </h1>
+          <WashH1>{'Ooooverkill'}</WashH1>
           <p
             className={cl(
               'text-sm text-center mt-4 mb-8 text-white font-medium',

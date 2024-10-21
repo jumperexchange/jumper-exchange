@@ -1,12 +1,12 @@
 import Image from 'next/image';
-import { Absolute, colors } from '../utils/theme';
-import { CLEANING_ITEMS } from '../utils/constants';
+import { Absolute, colors } from 'src/wash/utils/theme';
+import { CLEANING_ITEMS } from 'src/wash/utils/constants';
+import { Counter } from 'src/wash/common/Counter';
 import styled from '@emotion/styled';
-
-import { Counter } from './Counter';
+import { inter } from 'src/fonts/fonts';
 
 import type { ReactElement } from 'react';
-import type { TCleaningItem } from '../types/wash';
+import type { TCleaningItem } from 'src/wash/types/wash';
 
 type TBoostItemProps = {
   boostType: 'soap' | 'sponge' | 'cleanser';
@@ -73,6 +73,7 @@ const PowerUpPercentage = styled.span<{ disabled: boolean }>`
   font-weight: 900;
   color: white;
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+  font-family: ${inter.style.fontFamily};
 `;
 
 const PowerUpLogo = styled(Image)<{ disabled: boolean }>`

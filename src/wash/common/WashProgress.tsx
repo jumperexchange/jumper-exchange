@@ -3,6 +3,7 @@ import { colors } from '../utils/theme';
 import styled from '@emotion/styled';
 
 import type { TProgress } from '../types/types';
+import { inter } from 'src/fonts/fonts';
 
 type TWashProgressProps = {
   progress?: TProgress;
@@ -61,6 +62,16 @@ const ProgressBarFill = styled.div<{ progress: number }>`
   width: ${({ progress }) => `${progress}%`};
 `;
 
+const ProgressLabel = styled.span`
+  font-family: ${inter.style.fontFamily};
+  z-index: 50;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 32px;
+  color: white;
+  text-transform: uppercase;
+`;
+
 /************************************************************************************************
  * Defining the WashProgress component
  *************************************************************************************************/
@@ -76,13 +87,7 @@ export function WashProgress({
 
   return (
     <ProgressBar className={className}>
-      <span
-        className={
-          'z-50 text-[32px] font-black uppercase leading-[32px] text-white'
-        }
-      >
-        {label ? label : `${progress}%`}
-      </span>
+      <ProgressLabel>{label ? label : `${progress}%`}</ProgressLabel>
       <ProgressBarFill progress={progress} />
     </ProgressBar>
   );

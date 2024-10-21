@@ -2,12 +2,11 @@
 
 import { type ReactElement, useRef } from 'react';
 import Image from 'next/image';
-import { colors } from '../utils/theme';
+import { colors, WashH1 } from '../utils/theme';
 import { QUESTS, TOOLTIP_MESSAGES } from '../utils/constants';
 import { cl } from '../utils/utils';
 import styled from '@emotion/styled';
 
-import { titanOne } from '../utils/fonts';
 import { CollectButton } from './CollectButton';
 import { InfoPopup } from './InfoPopup';
 import { IconDone } from './icons/IconDone';
@@ -100,6 +99,29 @@ const QuestDescription = styled.p`
   color: rgba(255, 255, 255, 0.5);
 `;
 
+const QuestHeadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+`;
+
+const QuestHeading = styled.span<{ questType: 'common' | 'rare' | 'done' }>`
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: bold;
+  color: ${(props) =>
+    props.questType === 'common'
+      ? colors.pink[800]
+      : props.questType === 'rare'
+        ? colors.cyan[800]
+        : 'white'};
+`;
+
+const QuestTitle = styled.p`
+  font-weight: 900;
+  color: white;
+`;
+
 /**************************************************************************************************
  * QuestItem Component
  *
@@ -111,6 +133,7 @@ const QuestDescription = styled.p`
  *************************************************************************************************/
 export function QuestItem(props: TQuest): ReactElement {
   const elementRef = useRef<HTMLButtonElement>(null);
+  const isDone = props.progress === props.progressSteps;
 
   /**********************************************************************************************
    * Determines the background color or gradient for the quest item based on its progress and
@@ -133,13 +156,13 @@ export function QuestItem(props: TQuest): ReactElement {
   return (
     <QuestItemWrapper>
       <BoosterWrapper
-        isCompleted={props.progress === props.progressSteps}
+        isCompleted={isDone}
         isCommon={props.questType === 'common'}
       >
         <BoosterImage
           src={props.powerUp.logo}
           alt={''}
-          isComplete={props.progress !== props.progressSteps}
+          isComplete={!isDone}
           width={72}
           height={72}
         />
@@ -147,28 +170,13 @@ export function QuestItem(props: TQuest): ReactElement {
       <ContentWrapper>
         <QuestInfoWrapper questBackground={getQuestBg()}>
           <QuestInfo>
-            {props.progress === props.progressSteps ? (
-              <div className={'flex items-center gap-1'}>
-                <span className={'text-xs font-bold uppercase text-white'}>
-                  {'Done'}
-                </span>
-                <IconDone />
-              </div>
-            ) : (
-              <span
-                className={cl(
-                  'text-xs font-bold',
-                  props.questType === 'rare'
-                    ? 'text-cyan-800'
-                    : 'text-pink-800',
-                )}
-              >
-                {props.title}
-              </span>
-            )}
-            <span className={'font-black text-white'}>
-              {'Swap 10 USDT to DAI'}
-            </span>
+            <QuestHeadingWrapper>
+              <QuestHeading questType={isDone ? 'done' : props.questType}>
+                {isDone ? 'DONE' : props.heading}
+              </QuestHeading>
+              <IconDone style={{ opacity: isDone ? 1 : 0 }} />
+            </QuestHeadingWrapper>
+            <QuestTitle>{props.title}</QuestTitle>
           </QuestInfo>
           <CollectButton
             ref={elementRef}
@@ -213,9 +221,7 @@ export function QuestsList(props: { isSkeleton?: boolean }): ReactElement {
   return (
     <QuestsListWrapper>
       <div className={'mb-4 flex items-center gap-2'}>
-        <h1 className={`text-3xl uppercase text-white ${titanOne.className}`}>
-          {'Quests'}
-        </h1>
+        <WashH1>{'Quests'}</WashH1>
         <InfoPopup description={TOOLTIP_MESSAGES.quest} />
       </div>
 
