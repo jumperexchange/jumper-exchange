@@ -118,21 +118,6 @@ const NFTName = styled.span<{ isRevealing: boolean }>`
   line-height: 20px;
   text-align: center;
 `;
-const NFTNameSkeleton = styled.span<{ isRevealing: boolean }>`
-  animation: ${(props) =>
-    props.isRevealing
-      ? 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-      : 'none'};
-  opacity: ${(props) => (props.isRevealing ? 1 : 0)};
-  transition: opacity 0.5s ease-in-out;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%) skewX(-6deg);
-  height: 40px;
-  width: 200px;
-  background-color: ${colors.violet[600]};
-  border-radius: 16px;
-`;
 
 /**********************************************************************************************
  * RevealNFTItem Component
@@ -192,7 +177,6 @@ export function RevealNFTItem({
       </RevealNFTContainer>
 
       <NFTNameBox backgroundColor={colorToUse[800]}>
-        <NFTNameSkeleton isRevealing={isRevealing} />
         <NFTName isRevealing={isRevealing}>
           {nft.isRare ? 'ser Golden Bridgealot' : 'ser basic Bridgealot'}
         </NFTName>

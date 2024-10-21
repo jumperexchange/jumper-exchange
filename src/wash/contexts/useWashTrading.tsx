@@ -37,6 +37,7 @@ const WashTradingContext = createContext<TWashTradingContext>({
   reveal: {
     onReveal: () => {},
     isRevealing: false,
+    hasCanceledReveal: false,
     error: undefined,
     revealStatus: '',
   },

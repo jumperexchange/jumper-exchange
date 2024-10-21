@@ -4,7 +4,7 @@ import { Fragment, useEffect, useMemo, useState } from 'react';
 import { RevealNFTItem } from '../common/RevealNFTItem';
 import { useWashTrading } from '../contexts/useWashTrading';
 import { inter, titanOne } from '../utils/fonts';
-import { cl, countExtraXPFromItems } from '../utils/utils';
+import { countExtraXPFromItems } from '../utils/utils';
 import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
@@ -122,7 +122,7 @@ export function RevealedNFTLayout(): ReactElement {
       <RevealNFTItem
         nft={currentNFT}
         label={currentNFT?.isRare ? 'Legendary' : 'Common'}
-        isRevealing={reveal.isRevealing}
+        isRevealing={reveal.isRevealing || reveal.hasCanceledReveal}
       />
 
       <RevealedNFTLayoutCallToActionBox>

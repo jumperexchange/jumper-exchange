@@ -8,12 +8,14 @@ import { useWallet } from '@solana/wallet-adapter-react';
 export type TRevealHook = {
   onReveal: VoidFunction;
   isRevealing: boolean;
+  hasCanceledReveal: boolean;
   error?: string;
   revealStatus: string;
 };
 
 export function useReveal(refetchNft?: VoidFunction): TRevealHook {
   const [isRevealing, set_isRevealing] = useState(false);
+  const [hasCanceledReveal, set_hasCanceledReveal] = useState(false);
   const [error, set_error] = useState<string | undefined>('');
   const [revealStatus, set_revealStatus] = useState('');
   const { umi } = useUmi();
@@ -70,6 +72,7 @@ export function useReveal(refetchNft?: VoidFunction): TRevealHook {
 
       set_revealStatus(responseRevealDone.statusText);
     } catch (err) {
+      set_hasCanceledReveal(true);
       set_error(
         err instanceof Error
           ? err.message
@@ -78,6 +81,7 @@ export function useReveal(refetchNft?: VoidFunction): TRevealHook {
     } finally {
       await refetchNft?.();
       setTimeout(() => set_isRevealing(false), 1000);
+      setTimeout(() => set_hasCanceledReveal(false), 1300);
     }
   }, [umi, wallet, refetchNft]);
 
@@ -86,5 +90,6 @@ export function useReveal(refetchNft?: VoidFunction): TRevealHook {
     isRevealing,
     revealStatus,
     error,
+    hasCanceledReveal,
   };
 }
