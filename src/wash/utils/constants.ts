@@ -24,21 +24,21 @@ export const DEFAULT_NFT_COLOR: TColor = 'violet';
 export const CLEANING_ITEMS: Record<TCleaningItem['id'], TCleaningItem> = {
   soap: {
     id: 'soap',
-    message: 'I am using item1',
+    message: 'I am using one soap',
     logo: '/wash/violet-stroke-soap.png',
     percentage: '+5%',
     boost: 5,
   },
   sponge: {
     id: 'sponge',
-    message: 'I am using item2',
+    message: 'I am using one sponge',
     logo: '/wash/violet-stroke-sponge.png',
     percentage: '+10%',
     boost: 10,
   },
   cleanser: {
     id: 'cleanser',
-    message: 'I am using item3',
+    message: 'I am using one cleanser',
     logo: '/wash/violet-stroke-cleanser.png',
     percentage: '+15%',
     boost: 15,
