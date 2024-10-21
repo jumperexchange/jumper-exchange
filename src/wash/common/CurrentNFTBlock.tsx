@@ -219,7 +219,7 @@ export function CurrentNFTBlock(props: TCurrentNFTBlockProps): ReactElement {
         color={props.nft?.color || DEFAULT_NFT_COLOR}
         isSkeleton={props.isSkeleton}
       />
-      <div>
+      <div style={{ zIndex: 50 }}>
         <WashH2 style={{ marginBottom: '24px' }}>{'Current NFT'}</WashH2>
         <NFTItem nft={props.nft} isSkeleton={props.isSkeleton} />
       </div>

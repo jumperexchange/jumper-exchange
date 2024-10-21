@@ -50,8 +50,8 @@ const ProgressBarFill = styled.div<{ progress: number }>`
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 500ms;
-  left: -1px;
   top: 0;
+  left: -1px;
   height: 58px;
   background-image: linear-gradient(
     to right,
@@ -59,7 +59,7 @@ const ProgressBarFill = styled.div<{ progress: number }>`
     ${colors.pink[800]}
   );
   z-index: 20;
-  width: ${({ progress }) => `${progress}%`};
+  width: ${({ progress }) => `calc(${progress}% + 1px)`};
 `;
 
 const ProgressLabel = styled.span`
