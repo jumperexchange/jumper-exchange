@@ -6,7 +6,8 @@ import { Trait } from 'src/types/loyaltyPass';
 
 interface QuestCarouselProps {
   pastCampaigns?: string[];
-  traits?: Trait[];
+  traits?: string[];
+  // traits?: Trait[];
 }
 
 export const QuestCarousel = ({

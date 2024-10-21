@@ -89,7 +89,7 @@ export const ProfilePage = () => {
               </ProfilePageHeaderBox>
 
               <QuestCarousel pastCampaigns={pastCampaigns} traits={traits} />
-              {/* <QuestCompletedList pdas={pdas} loading={isLoading} /> */}
+              <QuestCompletedList pdas={pdas} loading={isLoading} />
             </Stack>
           </Grid>
         </Grid>

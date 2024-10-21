@@ -6,7 +6,8 @@ import { QuestCardDetailled } from '../QuestCardDetailled/QuestCardDetailled';
 
 interface QuestCarouselProps {
   pastCampaigns?: string[];
-  traits?: Trait[];
+  // traits?: Trait[];
+  traits?: string[];
 }
 
 export const QuestCarouselItems = ({
@@ -27,6 +28,7 @@ export const QuestCarouselItems = ({
         const claimingIds =
           quest.attributes?.CustomInformation?.['claimingIds'];
         const rewardsIds = quest.attributes?.CustomInformation?.['rewardsIds'];
+        const traits = ['perp_oors'];
 
         //todo: exclude in a dedicated helper function
         let completed = false;
@@ -34,9 +36,9 @@ export const QuestCarouselItems = ({
           completed = checkInclusion(pastCampaigns, rewardsIds);
         }
 
-        let isUnlock = false;
+        let isLocked = true ?? 'undefined';
         if (true) {
-          isUnlock = true;
+          isLocked = true;
         }
 
         return (

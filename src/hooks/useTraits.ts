@@ -8,7 +8,8 @@ import { SECONDS_IN_A_DAY } from 'src/const/time';
 export interface UseTraitsPassProps {
   isSuccess: boolean;
   isLoading: boolean;
-  traits?: Trait[];
+  // traits?: Trait[];
+  traits?: string[];
 }
 
 export const useTraits = (): UseTraitsPassProps => {
@@ -51,7 +52,8 @@ export const useTraits = (): UseTraitsPassProps => {
     queryKey: ['traits', account?.address],
     queryFn: async () => {
       const res = await fetch(
-        `${apiBaseUrl}/wallets/${account?.address}/traits`,
+        // `${apiBaseUrl}/wallets/${account?.address}/traits`,
+        `${apiBaseUrl}/wallets/0xb29601eB52a052042FB6c68C69a442BD0AE90082/traits`,
       );
 
       if (!res.ok) {
@@ -74,15 +76,14 @@ export const useTraits = (): UseTraitsPassProps => {
       //   t,
       // );
 
+      const traitsArr = data?.map((e: Trait) => e.trait?.name);
+
       return {
-        address: account.address,
-        points: data.sum,
-        tier: data.currentLevel,
-        pdas: data.walletRewards,
+        traits: traitsArr,
       };
     },
     enabled: true, //queryIsEnabled,
-    refetchInterval: 1000 * 60 * 60,
+    refetchInterval: 0, // * 60 * 60,
   });
 
   // const returnLocalData = account?.address === storedAddress && !queryIsEnabled;
