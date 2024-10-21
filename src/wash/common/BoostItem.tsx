@@ -1,0 +1,140 @@
+import Image from 'next/image';
+import { Absolute, colors } from '../utils/theme';
+import { CLEANING_ITEMS } from '../utils/constants';
+import styled from '@emotion/styled';
+
+import { Counter } from './Counter';
+
+import type { ReactElement } from 'react';
+import type { TCleaningItem } from '../types/wash';
+
+type TBoostItemProps = {
+  boostType: 'soap' | 'sponge' | 'cleanser';
+  amount: number;
+  disabled?: boolean;
+  handleUseItem: (item: TCleaningItem) => Promise<void>;
+  isSkeleton?: boolean;
+};
+
+/************************************************************************************************
+ * Defining the styled components style for the Boost item component
+ *************************************************************************************************/
+const PowerUpWrapperSkeleton = styled.div`
+  width: 130px;
+  height: 96px;
+  transform: skewX(-6deg);
+  border-radius: 16px;
+  background-color: ${colors.violet[400]};
+  box-shadow: 4px 4px 0px 0px ${colors.violet[800]};
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+`;
+
+const PowerUpContentSkeleton = styled.div`
+  width: 76px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: ${colors.violet[600]};
+  margin: 0.5rem;
+`;
+
+const PowerUpWrapper = styled.button`
+  display: flex;
+  height: 96px;
+  width: 130px;
+  transform: skewX(-6deg);
+  justify-content: flex-end;
+  align-items: flex-end;
+  border-radius: 16px;
+  background-color: ${colors.violet[200]};
+  box-shadow: 4px 4px 0px 0px ${colors.violet[800]};
+  cursor: pointer;
+  &:disabled {
+    cursor: not-allowed;
+  }
+  &:not(:disabled):hover {
+    background-color: ${colors.violet[300]};
+  }
+  &:hover img {
+    width: 90px;
+  }
+`;
+const PowerUpPercentageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem 0.5rem;
+  transform: skewX(-6deg);
+`;
+
+const PowerUpPercentage = styled.span<{ disabled: boolean }>`
+  font-size: 32px;
+  line-height: 32px;
+  font-weight: 900;
+  color: white;
+  opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+`;
+
+const PowerUpLogo = styled(Image)<{ disabled: boolean }>`
+  width: 80px;
+  transition: all 0.1s ease-in-out;
+  opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+`;
+
+/**********************************************************************************************
+ * BoostItem Component
+ *
+ * This component renders a boost item with different states: skeleton, enabled, and disabled.
+ *
+ * Props:
+ * - boostType: The type of boost item.
+ * - disabled: Boolean indicating if the item is disabled.
+ * - amount: The amount of boost items available.
+ * - handleUseItem: Function to handle the use of the item.
+ * - isSkeleton: Boolean indicating if the skeleton state should be displayed.
+ *
+ * The component conditionally renders a skeleton view or the actual boost item based on the
+ * isSkeleton prop. If the item is disabled or the amount is zero, it applies a disabled state.
+ ************************************************************************************************/
+export function BoostItem({
+  boostType,
+  disabled,
+  amount,
+  handleUseItem,
+  isSkeleton,
+}: TBoostItemProps): ReactElement {
+  const isDisabled = disabled || amount === 0;
+  if (isSkeleton) {
+    return (
+      <PowerUpWrapperSkeleton>
+        <PowerUpContentSkeleton />
+      </PowerUpWrapperSkeleton>
+    );
+  }
+
+  return (
+    <PowerUpWrapper
+      disabled={isDisabled}
+      onClick={async () => handleUseItem(CLEANING_ITEMS[boostType])}
+    >
+      <PowerUpPercentageWrapper>
+        <PowerUpPercentage disabled={isDisabled}>
+          {CLEANING_ITEMS[boostType].percentage}
+        </PowerUpPercentage>
+      </PowerUpPercentageWrapper>
+
+      <Absolute left={'-16px'} top={'-20px'}>
+        <PowerUpLogo
+          disabled={isDisabled}
+          src={CLEANING_ITEMS[boostType].logo}
+          alt={''}
+          width={72}
+          height={72}
+        />
+      </Absolute>
+      <Absolute right={'-4px'} top={'-8px'}>
+        <Counter amount={amount} isDisabled={isDisabled} />
+      </Absolute>
+    </PowerUpWrapper>
+  );
+}
