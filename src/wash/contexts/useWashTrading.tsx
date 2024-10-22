@@ -113,7 +113,11 @@ export function WashTradingContextApp({
       onRouteExecutionCompleted,
     );
 
-    return () => widgetEvents.all.clear();
+    return () =>
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionCompleted,
+        onRouteExecutionCompleted,
+      );
   }, [widgetEvents]);
 
   return (
