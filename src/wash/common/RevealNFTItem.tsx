@@ -5,10 +5,8 @@ import { colors } from '../utils/theme';
 import { DEFAULT_NFT_COLOR } from '../utils/constants';
 import { getPepeImage } from '../utils/utils';
 import styled from '@emotion/styled';
-
-import { titanOne } from '../utils/fonts';
+import { titanOne } from 'src/wash/common/WithFonts';
 import { RevealsBackground } from './RevealBackground';
-
 import type { TNFTItem } from '../types/types';
 
 type TRevealNFTItem = {

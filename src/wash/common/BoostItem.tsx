@@ -3,10 +3,10 @@ import { Absolute, colors } from 'src/wash/utils/theme';
 import { CLEANING_ITEMS } from 'src/wash/utils/constants';
 import { Counter } from 'src/wash/common/Counter';
 import styled from '@emotion/styled';
-import { inter } from 'src/fonts/fonts';
 
 import type { ReactElement } from 'react';
 import type { TCleaningItem } from 'src/wash/types/wash';
+import { inter } from 'src/fonts/fonts';
 
 type TBoostItemProps = {
   boostType: 'soap' | 'sponge' | 'cleanser';

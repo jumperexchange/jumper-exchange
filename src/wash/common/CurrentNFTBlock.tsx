@@ -4,7 +4,7 @@ import { DEFAULT_NFT_COLOR, TOOLTIP_MESSAGES } from '../utils/constants';
 import { cl } from '../utils/utils';
 import styled from '@emotion/styled';
 
-import { titanOne } from '../utils/fonts';
+import { titanOne } from 'src/wash/common/WithFonts';
 import { BoostItem } from './BoostItem';
 import { InfoPopup } from './InfoPopup';
 import { NFTItem } from './NFTItem';
