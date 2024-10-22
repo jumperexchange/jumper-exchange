@@ -34,10 +34,16 @@ const PopularBridgeSection = ({
             return token.chainId !== destinationChain.id;
           })
           .filter((token) => {
-            const isTokenExistsInSourceChain = tokens[token.chainId].some((tk) => tk.symbol === sourceToken.symbol);
-            const isTokenExistsInDestinationChain = tokens[destinationChain.id].some((tk) => tk.symbol === destinationToken.symbol);
+            const isTokenExistsInSourceChain = tokens[token.chainId].some(
+              (tk) => tk.symbol === sourceToken.symbol,
+            );
+            const isTokenExistsInDestinationChain = tokens[
+              destinationChain.id
+            ].some((tk) => tk.symbol === destinationToken.symbol);
 
-            return isTokenExistsInDestinationChain && isTokenExistsInSourceChain;
+            return (
+              isTokenExistsInDestinationChain && isTokenExistsInSourceChain
+            );
           })
           .map((token) => (
             <MuiLink
