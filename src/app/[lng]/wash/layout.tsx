@@ -4,7 +4,7 @@ import { Layout } from 'src/Layout';
 
 export const metadata: Metadata = {};
 
-export default async function SuperfestLayout({ children }: PropsWithChildren) {
+export default async function WastLayout({ children }: PropsWithChildren) {
   return (
     <Layout>
       <div id={'wash-root'}>{children}</div>
