@@ -10,14 +10,14 @@ import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import type { ReactElement } from 'react';
 import type { TGetCollection } from '../hooks/useGetCollection';
 import type { TRevealHook } from '../hooks/useReveal';
+import type { TGetQuests } from '../hooks/useGetQuests';
+import { useGetQuests } from '../hooks/useGetQuests';
 import type {
   LiFiStep,
   Process,
   Route,
   RouteExecutionUpdate,
 } from '@lifi/widget';
-import type { TGetQuests } from '../hooks/useGetQuests';
-import { useGetQuests } from '../hooks/useGetQuests';
 
 type TWashTradingContext = {
   nft: TGetNFT;
