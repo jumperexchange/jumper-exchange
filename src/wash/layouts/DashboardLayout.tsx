@@ -6,7 +6,6 @@ import { CurrentNFTBlock } from '../common/CurrentNFTBlock';
 import { Modal } from '../common/Modal';
 import { QuestsList } from '../common/Quests';
 import { useWashTrading } from '../contexts/useWashTrading';
-import { inter } from '../utils/fonts';
 import { cl, widgetConfig } from '../utils/utils';
 import { LiFiWidget } from '@lifi/widget';
 import styled from '@emotion/styled';
@@ -14,6 +13,7 @@ import styled from '@emotion/styled';
 import type { ReactElement } from 'react';
 import type { TCleaningItem } from '../types/wash';
 import { colors, WashH1 } from '../utils/theme';
+import { inter } from 'src/fonts/fonts';
 /************************************************************************************************
  * OverkillModal: A modal component to warn users about potential overkill when using an item
  *
