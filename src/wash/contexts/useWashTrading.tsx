@@ -11,6 +11,8 @@ import type { ReactElement } from 'react';
 import type { TGetCollection } from '../hooks/useGetCollection';
 import type { TRevealHook } from '../hooks/useReveal';
 import type { Route } from '@lifi/widget';
+import type { TGetQuests } from '../hooks/useGetQuests';
+import { useGetQuests } from '../hooks/useGetQuests';
 
 type TWashTradingContext = {
   nft: TGetNFT;
@@ -19,6 +21,7 @@ type TWashTradingContext = {
   wash: TUseWash;
   items: TGetItems;
   collection: TGetCollection;
+  activeQuests: TGetQuests;
 };
 
 const WashTradingContext = createContext<TWashTradingContext>({
@@ -60,6 +63,12 @@ const WashTradingContext = createContext<TWashTradingContext>({
     refetch: undefined,
     hasCollection: false,
   },
+  activeQuests: {
+    activeQuests: undefined,
+    isLoading: false,
+    error: undefined,
+    refetch: undefined,
+  },
 });
 export function WashTradingContextApp({
   children,
@@ -72,6 +81,7 @@ export function WashTradingContextApp({
   const mint = useMint(nft.refetch);
   const reveal = useReveal(nft.refetch);
   const collection = useGetCollection();
+  const activeQuests = useGetQuests();
 
   const widgetEvents = useWidgetEvents();
 
@@ -106,7 +116,7 @@ export function WashTradingContextApp({
 
   return (
     <WashTradingContext.Provider
-      value={{ reveal, items, nft, wash, mint, collection }}
+      value={{ reveal, items, nft, wash, mint, collection, activeQuests }}
     >
       {children}
     </WashTradingContext.Provider>

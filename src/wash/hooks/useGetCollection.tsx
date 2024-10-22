@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { useUmi } from '../contexts/useUmi';
 import { colorDict, WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
-import axios from 'axios';
 import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import { base58 } from '@metaplex-foundation/umi/serializers';
@@ -30,21 +29,20 @@ export type TGetCollection = {
 export function useGetCollection(): TGetCollection {
   const { account } = useAccount({ chainType: ChainType.SVM });
   const { umi } = useUmi();
-  const fetchNftCollection = useCallback(
-    async (): Promise<TNftResponse[]> =>
-      axios
-        .get(
-          `${WASH_ENDPOINT_ROOT_URI}/user/${umi?.identity.publicKey}/collection`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${base58.serialize(account.address ?? '')}`, //TODO: CHECK IF NO base58 REQUIRED
-            },
-          },
-        )
-        .then((res) => res.data.data),
-    [umi, account.address],
-  );
+  const fetchNftCollection = useCallback(async (): Promise<TNftResponse[]> => {
+    const response = await fetch(
+      `${WASH_ENDPOINT_ROOT_URI}/user/${umi?.identity.publicKey}/collection`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${base58.serialize(account.address ?? '')}`, //TODO: CHECK IF NO base58 REQUIRED
+        },
+      },
+    );
+    const result = await response.json();
+    return result.data;
+  }, [account.address, umi?.identity.publicKey]);
 
   const {
     isPending,

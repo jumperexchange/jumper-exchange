@@ -7,10 +7,9 @@ import {
   WashTradingContextApp,
 } from 'src/wash/contexts/useWashTrading';
 import { EmptyScreenLayout } from 'src/wash/layouts/EmptyScreenLayout';
-import { titanOne } from 'src/wash/utils/fonts';
 import styled from '@emotion/styled';
 
-import { colors } from 'src/wash/utils/theme';
+import { colors, WashH1 } from 'src/wash/utils/theme';
 
 import type { ReactElement } from 'react';
 import { CollectionNFTItem } from 'src/wash/common/CollectionNFTItem';
@@ -35,7 +34,7 @@ const CollectionWrapper = styled.div`
   max-width: 1200px;
   height: min-content;
   background-color: ${colors.violet[500]};
-  padding: 2rem;
+  padding: 2rem 2rem 3rem;
   box-shadow: 6px 6px 0px 0px #8000ff;
   border-radius: 32px;
   border: 2px solid ${colors.violet[800]};
@@ -43,12 +42,6 @@ const CollectionWrapper = styled.div`
 
 const CollectionHeader = styled.div`
   width: 100%;
-`;
-
-const Title = styled.h1`
-  font-size: 2rem;
-  line-height: 40px;
-  ${titanOne.style}
 `;
 
 const NftsList = styled.div`
@@ -133,7 +126,7 @@ function CollectionPage(): ReactElement {
         ) : (
           <CollectionWrapper>
             <CollectionHeader>
-              <Title>{'Your collection'}</Title>
+              <WashH1>{'Your collection'}</WashH1>
               {collection.isLoading ? (
                 <NftsList>
                   <NftSkeleton />
