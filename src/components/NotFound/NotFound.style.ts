@@ -9,4 +9,5 @@ export const NotFoundWrapper = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   flexDirection: 'column',
   justifyContent: 'center',
+  color: theme.palette.text.primary,
 }));
