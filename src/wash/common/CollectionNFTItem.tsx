@@ -1,306 +1,188 @@
-import { Fragment, type ReactElement, useMemo } from 'react';
-import Image from 'next/image';
-import { DEFAULT_NFT_COLOR, TOOLTIP_MESSAGES } from '../utils/constants';
-import { cl } from '../utils/utils';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import Image from 'next/image';
+import { DEFAULT_NFT_COLOR } from '../utils/constants';
+import { colors } from '../utils/theme';
+import { getPepeImage } from '../utils/utils';
 
-import { BoostItem } from './BoostItem';
-import { InfoPopup } from './InfoPopup';
-import { NFTItem } from './NFTItem';
-import { RevealRaysBackground } from './RaysBackground';
 import { WashProgress } from './WashProgress';
 
-import { colors, mq, WashH2, type TColor } from '../utils/theme';
-import type { TItems, TNFTItem } from '../types/types';
-import type { TCleaningItem } from '../types/wash';
+import type { ReactElement, ReactNode } from 'react';
+import type { TNFTItem } from '../types/types';
 import { titanOne } from './WithFonts';
 
-const ImageWrapper = styled.div`
-  position: absolute;
-  left: -24px;
-  right: -24px;
-  top: -32px;
-  z-index: 50;
-  ${mq[0]} {
-    display: none;
-  }
-`;
-
-const MobileImageWrapper = styled.div`
-  position: absolute;
-  display: none;
-  left: -24px;
-  top: -28px;
-  width: 390px;
-  ${mq[0]} {
-    display: block;
-  }
-`;
-
-/************************************************************************************************
-/**************************************************************************************************
- * BorderStroke Component
- *
- * This component renders a decorative border stroke image for the NFT block.
- *
- * Props:
- * - color: TColor - The color of the stroke image to be used
- * - isSkeleton: boolean - Indicates if the component is in a loading state
- *
- * The component uses Next.js Image for optimized image loading and applies conditional
- * styling based on the isSkeleton prop.
- ************************************************************************************************/
-function BorderStroke(props: {
-  color: TColor;
-  isSkeleton?: boolean;
-}): ReactElement {
-  return (
-    <>
-      <MobileImageWrapper>
-        <Image
-          src={`/wash/stroke-${props.color || DEFAULT_NFT_COLOR}-mobile.png`}
-          className={cl(
-            'size-full transition-opacity',
-            props.isSkeleton ? 'opacity-0' : 'opacity-100',
-          )}
-          loading={'eager'}
-          priority
-          width={1680}
-          height={800}
-          alt={'stroke'}
-        />
-      </MobileImageWrapper>
-      <ImageWrapper>
-        <Image
-          src={`/wash/stroke-${props.color || DEFAULT_NFT_COLOR}.png`}
-          className={cl(
-            'size-full transition-opacity',
-            props.isSkeleton ? 'opacity-0' : 'opacity-100',
-          )}
-          loading={'eager'}
-          priority
-          width={1680}
-          height={800}
-          alt={'stroke'}
-        />
-      </ImageWrapper>
-    </>
-  );
-}
-
-/**************************************************************************************************
- * Defining the styled components style for the ProgressSection component
- *************************************************************************************************/
-const ProgressSectionHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  padding-left: 8px;
-`;
-const ProgressSectionTitle = styled.h2`
-  font-family: ${titanOne.style.fontFamily};
-  text-transform: uppercase;
-  color: white;
-`;
-
-/**************************************************************************************************
- * ProgressSection Component
- *
- * This component renders the progress section of the NFT block, including a title, info popup,
- * and a progress bar.
- *
- * Props:
- * - isSkeleton: boolean - Indicates if the component is in a loading state
- * - washProgress: number - The current progress value to be displayed
- *
- * The component uses styled components and custom UI elements to create a consistent look
- * with the rest of the application.
- ************************************************************************************************/
-function ProgressSection(props: {
-  isSkeleton?: boolean;
-  washProgress: number;
-}): ReactElement {
-  return (
-    <Fragment>
-      <ProgressSectionHeader>
-        <ProgressSectionTitle>{'Progress'}</ProgressSectionTitle>
-        <InfoPopup description={TOOLTIP_MESSAGES.progress} />
-      </ProgressSectionHeader>
-      <WashProgress
-        isSkeleton={props.isSkeleton}
-        progress={props.washProgress}
-      />
-    </Fragment>
-  );
-}
-
-/**************************************************************************************************
- * Defining the styled components style for the PowerupSection component
- *************************************************************************************************/
-const PowerUpSectionHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-  padding-left: 8px;
-  margin-top: 20px;
-`;
-const PowerUpSectionTitle = styled.h2`
-  font-family: ${titanOne.style.fontFamily};
-  text-transform: uppercase;
-  color: white;
-`;
-const PowerUpSectionItems = styled.div`
-  display: flex;
-  width: 100%;
-  column-gap: 16px;
-`;
-
-/**************************************************************************************************
- * PowerupSection Component
- *
- * This component renders the power-up section of the NFT block, including a title, info popup,
- * and three BoostItem components for different types of power-ups.
- *
- * Props:
- * - isSkeleton: boolean - Indicates if the component is in a loading state
- * - items: TItems - The current items available to the user
- * - handleUseItem: (item: TCleaningItem) => Promise<void> - Function to handle using an item
- * - canBeRevealed: boolean - Indicates if the NFT can be revealed (disables power-ups)
- *
- * The component uses styled components and custom UI elements to create a consistent look
- * with the rest of the application.
- ************************************************************************************************/
-function PowerupSection(props: {
-  isSkeleton?: boolean;
-  items?: TItems;
-  handleUseItem: (item: TCleaningItem) => Promise<void>;
-  canBeRevealed: boolean;
-}): ReactElement {
-  return (
-    <Fragment>
-      <PowerUpSectionHeader>
-        <PowerUpSectionTitle>{'Power ups'}</PowerUpSectionTitle>
-        <InfoPopup description={TOOLTIP_MESSAGES.powerUp} />
-      </PowerUpSectionHeader>
-      <PowerUpSectionItems>
-        <BoostItem
-          isSkeleton={props.isSkeleton}
-          boostType={'soap'}
-          amount={props.items?.soap ?? 0}
-          handleUseItem={props.handleUseItem}
-          disabled={props.canBeRevealed}
-        />
-        <BoostItem
-          isSkeleton={props.isSkeleton}
-          boostType={'sponge'}
-          amount={props.items?.sponge ?? 0}
-          handleUseItem={props.handleUseItem}
-          disabled={props.canBeRevealed}
-        />
-        <BoostItem
-          isSkeleton={props.isSkeleton}
-          boostType={'cleanser'}
-          amount={props.items?.cleanser ?? 0}
-          handleUseItem={props.handleUseItem}
-          disabled={props.canBeRevealed}
-        />
-      </PowerUpSectionItems>
-    </Fragment>
-  );
-}
-
-/**************************************************************************************************
- * Defining the styled components style for the CurrentNFTBlock component
- *************************************************************************************************/
-const CurrentNFTBlockContainer = styled.div<{ backgroundColor: string }>`
-  position: relative;
-  display: flex;
-  padding: 32px;
-  padding-right: 64px;
-  border-radius: 32px;
-  border: 4px solid ${colors.violet[800]};
-  box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
-  background-color: ${({ backgroundColor }) => backgroundColor};
-  column-gap: 32px;
-  ${mq[0]} {
-    flex-direction: column;
-    padding: 24px;
-    width: 343px;
-  }
-`;
-
-const InfoSection = styled.div`
-  display: flex;
-  z-index: 50;
-  margin-top: 42px;
-  flex-direction: column;
-  align-items: start;
-`;
-
-const ImageSection = styled.div`
-  display: flex;
-  z-index: 50;
-  flex-direction: column;
-  align-items: center;
-`;
-
-type TCurrentNFTBlockProps = {
+type TNftItemProps = {
+  label?: string;
   nft?: TNFTItem;
-  items?: TItems;
-  washProgress: number;
-  handleUseItem: (item: TCleaningItem) => Promise<void>;
-  isSkeleton?: boolean;
+  progress?: number;
 };
 
-//TODO: Split this component
-export function CurrentNFTBlock(props: TCurrentNFTBlockProps): ReactElement {
-  /**********************************************************************************************
-   * Determines if the NFT can be revealed based on its progress and current reveal status.
-   * An NFT can be revealed when:
-   * 1. Its progress is 100% (fully cleaned)
-   * 2. It has not been revealed yet
-   * This memoized value is used to control the UI and functionality related to NFT revelation.
-   *********************************************************************************************/
-  const canBeRevealed = useMemo(() => {
-    return (props.nft?.progress || 0) === 100 && !props.nft?.isRevealed;
-  }, [props.nft?.progress, props.nft?.isRevealed]);
+/**************************************************************************************************
+ * Defining the styled components style for the RevealNFTItem component
+ *************************************************************************************************/
+const RevealNFTContainer = styled.div`
+  border-radius: 4px;
+  width: 254px;
+  height: 254px;
+  border-radius: 16px;
+`;
+const Label = styled.div<{ backgroundColor: string }>`
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) skewX(-6deg);
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100px;
+  height: 24px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${(props) => props.backgroundColor};
+`;
 
-  /**********************************************************************************************
-   * Renders the current NFT block with relevant information and controls.
-   *********************************************************************************************/
-  return (
-    <>
-      <CurrentNFTBlockContainer
-        backgroundColor={
-          canBeRevealed ? colors.violet[600] : colors.violet[500]
-        }
+const NFTImage = styled(Image)<{ borderColor: string }>`
+  position: relative;
+  border-radius: 16px;
+  width: 254px;
+  height: 254px;
+  border: 6px solid ${(props) => props.borderColor};
+`;
+
+/**************************************************************************************************
+ *
+ *************************************************************************************************/
+export function CollectionNFTItem({ nft }: TNftItemProps): ReactElement {
+  function getRarity(): string {
+    if (nft?.isRevealed) {
+      if (nft?.isRare) {
+        return 'legendary';
+      }
+      return 'common';
+    }
+    return 'unknown';
+  }
+
+  function getLabel(): ReactElement {
+    if (nft?.isRevealed) {
+      return (
+        <div
+          css={css`
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            left: 49%;
+            transform: translateX(-50%) skewX(-6deg);
+            bottom: -23px;
+            border-radius: 16px;
+            background-color: ${nft?.isRare
+              ? colors.orange[800]
+              : colors.violet[800]};
+            height: 56px;
+            width: 230px;
+            padding: 0 8px;
+          `}
+        >
+          <span
+            css={css`
+              transform: skewX(6deg);
+              ${titanOne.style};
+              color: white;
+              text-transform: uppercase;
+              font-size: 16px;
+              line-height: 24px;
+              text-align: center;
+            `}
+          >
+            {nft?.isRare ? 'Golden ser Bridgealot' : 'ser basic Bridgealot'}
+          </span>
+        </div>
+      );
+    }
+    return (
+      <div
+        css={css`
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: absolute;
+          left: 49%;
+          transform: translateX(-50%) skewX(-6deg);
+          bottom: -23px;
+          border-radius: 16px;
+          height: 56px;
+          width: 230px;
+          padding: 0 8px;
+        `}
       >
-        {canBeRevealed ? <RevealRaysBackground /> : null}
-        <BorderStroke
-          color={props.nft?.color || DEFAULT_NFT_COLOR}
-          isSkeleton={props.isSkeleton}
+        <WashProgress
+          progress={nft?.progress}
+          className={'!mt-0 w-[235px] !rounded-xl'}
         />
-        <ImageSection>
-          <WashH2 style={{ marginBottom: '24px' }}>{'Current NFT'}</WashH2>
-          <NFTItem nft={props.nft} isSkeleton={props.isSkeleton} />
-        </ImageSection>
+      </div>
+    );
+  }
 
-        <InfoSection>
-          <ProgressSection
-            isSkeleton={props.isSkeleton}
-            washProgress={props.washProgress}
-          />
+  /**********************************************************************************************
+   *
+   **********************************************************************************************/
+  function renderNFTImage(): ReactNode {
+    if (nft?.isRevealed) {
+      return (
+        <NFTImage
+          src={nft?.imageUri ?? ''}
+          alt={'nft-image'}
+          borderColor={nft?.isRare ? colors.orange[800] : colors.violet[700]}
+          width={320}
+          height={320}
+          unoptimized
+        />
+      );
+    }
+    return (
+      <NFTImage
+        src={`/wash/cleaning-stage/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
+        alt={'nft-image'}
+        borderColor={nft?.isRare ? colors.orange[800] : colors.violet[700]}
+        width={320}
+        height={320}
+      />
+    );
+  }
 
-          <PowerupSection
-            isSkeleton={props.isSkeleton}
-            items={props.items}
-            handleUseItem={props.handleUseItem}
-            canBeRevealed={canBeRevealed}
-          />
-        </InfoSection>
-      </CurrentNFTBlockContainer>
-    </>
+  return (
+    <div
+      css={css`
+        position: relative;
+        width: 254px;
+      `}
+    >
+      <RevealNFTContainer>
+        <Label
+          backgroundColor={
+            nft?.isRare ? colors.orange[800] : colors.violet[800]
+          }
+        >
+          <h2
+            className="uppercase text-white"
+            css={css`
+              transform: skewX(6px);
+            `}
+          >
+            {getRarity()}
+          </h2>
+        </Label>
+        {renderNFTImage()}
+      </RevealNFTContainer>
+
+      {nft?.name && <div>{getLabel()}</div>}
+    </div>
   );
 }
