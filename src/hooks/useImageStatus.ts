@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DEFAULT_EFFIGY } from 'src/const/urls';
 
 const useImageStatus = (address: string | undefined) => {

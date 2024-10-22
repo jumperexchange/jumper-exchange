@@ -1,9 +1,16 @@
 import { ButtonPrimary } from '@/components/Button';
-import { alpha, Avatar, Badge, Skeleton, styled } from '@mui/material';
+import {
+  alpha,
+  Avatar,
+  Badge,
+  Skeleton,
+  styled,
+  Typography,
+} from '@mui/material';
+import Image from 'next/image';
 import { getContrastAlphaColor } from 'src/utils/colors';
 import { ButtonTransparent } from '../Button';
 import { avatarMask12 } from '../Mask.style';
-import Image from 'next/image';
 
 export const WalletMgmtWalletAvatar = styled(Avatar)(() => ({
   height: 32,
@@ -33,6 +40,14 @@ export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
 export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
   padding: theme.spacing(3),
   textWrap: 'nowrap',
+}));
+
+export const ConnectButtonLabel = styled(Typography)(({ theme }) => ({
+  display: '-webkit-box',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
 }));
 
 export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
@@ -77,4 +92,11 @@ export const SkeletonWalletMenuButton = styled(Skeleton)(({ theme }) => ({
   minWidth: 25,
   marginRight: 1.1,
   marginLeft: 1.1,
+}));
+
+export const WalletLabel = styled(Typography)(({ theme }) => ({
+  display: 'block',
+  marginRight: theme.spacing(0.25),
+  marginLeft: theme.spacing(0.75),
+  width: 'auto',
 }));
