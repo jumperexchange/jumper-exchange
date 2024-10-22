@@ -53,7 +53,7 @@ export function Counter({ amount, isDisabled }: TCounterProps): ReactElement {
       return <IconBlock />;
     }
     if (amount > 99) {
-      return '99+';
+      return 'x99+';
     }
     if (amount === 0) {
       return 0;

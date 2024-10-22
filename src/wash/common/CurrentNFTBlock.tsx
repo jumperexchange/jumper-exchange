@@ -149,21 +149,21 @@ function PowerupSection(props: {
         <BoostItem
           isSkeleton={props.isSkeleton}
           boostType={'soap'}
-          amount={props.items?.item1 ?? 0}
+          amount={props.items?.soap ?? 0}
           handleUseItem={props.handleUseItem}
           disabled={props.canBeRevealed}
         />
         <BoostItem
           isSkeleton={props.isSkeleton}
           boostType={'sponge'}
-          amount={props.items?.item2 ?? 0}
+          amount={props.items?.sponge ?? 0}
           handleUseItem={props.handleUseItem}
           disabled={props.canBeRevealed}
         />
         <BoostItem
           isSkeleton={props.isSkeleton}
           boostType={'cleanser'}
-          amount={props.items?.item3 ?? 0}
+          amount={props.items?.cleanser ?? 0}
           handleUseItem={props.handleUseItem}
           disabled={props.canBeRevealed}
         />
