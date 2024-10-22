@@ -19,7 +19,6 @@ export const useTraits = (): UseTraitsPassProps => {
     queryFn: async () => {
       const res = await fetch(
         `${apiBaseUrl}/wallets/${account?.address}/traits`,
-        // `${apiBaseUrl}/wallets/0xb29601eB52a052042FB6c68C69a442BD0AE90082/traits`, // testing
       );
 
       if (!res.ok) {
