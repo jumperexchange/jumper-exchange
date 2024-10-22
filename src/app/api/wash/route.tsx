@@ -4,10 +4,12 @@ import { WASH_ENDPOINT_ROOT_URI } from 'src/wash/utils/constants';
 type TRequest = {
   id: string;
   fromAddress: string;
+  fromToken: string;
   fromAmount: string;
   fromAmountUSD: string;
   fromChainID: number;
   toAddress: string;
+  toToken: string;
   toAmount: string;
   toAmountUSD: string;
   toChainID: number;
