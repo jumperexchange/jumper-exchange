@@ -21,7 +21,6 @@ const PolicyPage = () => {
             variant="h4"
             sx={{
               fontSize: '24px!important',
-              marginTop: '4px',
               marginBottom: '2px',
             }}
           >
@@ -48,7 +47,7 @@ const PolicyPage = () => {
             variant="h4"
             sx={{
               fontSize: '24px!important',
-              marginTop: '4px',
+              marginTop: '16px',
               marginBottom: '2px',
             }}
           >
@@ -67,7 +66,7 @@ const PolicyPage = () => {
             variant="h4"
             sx={{
               fontSize: '24px!important',
-              marginTop: '4px',
+              marginTop: '16px',
               marginBottom: '2px',
             }}
           >
@@ -121,33 +120,27 @@ const PolicyPage = () => {
           </Typography>
           <Typography>
             We use the information we collect for the following purposes:
-            <ul>
-              <li>To provide, maintain, and improve the Service.</li>
-              <li>
-                To communicate with you, including updates and promotional
-                materials (with your consent).
-              </li>
-              <li>
-                To monitor and analyze usage trends to enhance the user
-                experience.
-              </li>
-              <li>
-                To ensure the security and integrity of the Service through
-                various third-party tools and security measures.
-              </li>
-              <li>To respond to customer inquiries or requests.</li>
-              <li>
-                To ensure compliance with applicable legal obligations and
-                terms.
-              </li>
-            </ul>
+            <br />
+            To provide, maintain, and improve the Service.
+            <br />
+            To communicate with you, including updates and promotional materials
+            (with your consent).
+            <br />
+            To monitor and analyze usage trends to enhance the user experience.
+            <br />
+            To ensure the security and integrity of the Service through various
+            third-party tools and security measures.
+            <br />
+            To respond to customer inquiries or requests.
+            <br />
+            To ensure compliance with applicable legal obligations and terms.
           </Typography>
 
           <Typography
             variant="h4"
             sx={{
               fontSize: '24px!important',
-              marginTop: '4px',
+              marginTop: '16px',
               marginBottom: '2px',
             }}
           >
@@ -199,7 +192,7 @@ const PolicyPage = () => {
             variant="h4"
             sx={{
               fontSize: '24px!important',
-              marginTop: '4px',
+              marginTop: '16px',
               marginBottom: '2px',
             }}
           >
@@ -232,7 +225,7 @@ const PolicyPage = () => {
             variant="h4"
             sx={{
               fontSize: '24px!important',
-              marginTop: '4px',
+              marginTop: '16px',
               marginBottom: '2px',
             }}
           >
@@ -256,7 +249,7 @@ const PolicyPage = () => {
             variant="h4"
             sx={{
               fontSize: '24px!important',
-              marginTop: '4px',
+              marginTop: '16px',
               marginBottom: '2px',
             }}
           >
@@ -331,7 +324,7 @@ const PolicyPage = () => {
             variant="h4"
             sx={{
               fontSize: '24px!important',
-              marginTop: '4px',
+              marginTop: '16px',
               marginBottom: '2px',
             }}
           >
@@ -350,7 +343,7 @@ const PolicyPage = () => {
             variant="h4"
             sx={{
               fontSize: '24px!important',
-              marginTop: '4px',
+              marginTop: '16px',
               marginBottom: '2px',
             }}
           >
@@ -366,7 +359,7 @@ const PolicyPage = () => {
             variant="h4"
             sx={{
               fontSize: '24px!important',
-              marginTop: '4px',
+              marginTop: '16px',
               marginBottom: '2px',
             }}
           >
