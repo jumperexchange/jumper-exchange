@@ -1,5 +1,7 @@
 'use client';
 
+import { ChainType } from '@lifi/sdk';
+import { useAccount } from '@lifi/wallet-management';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { WashBackground } from 'src/wash/common/WashBackground';
 import {
@@ -11,8 +13,6 @@ import { EmptyScreenLayout } from 'src/wash/layouts/EmptyScreenLayout';
 import { MintLoaderLayout } from 'src/wash/layouts/MintLoaderLayout';
 import { RevealedNFTLayout } from 'src/wash/layouts/RevealNFTLayout';
 import { cl } from 'src/wash/utils/utils';
-import { ChainType } from '@lifi/sdk';
-import { useAccount } from '@lifi/wallet-management';
 
 import type { ReactElement, ReactNode } from 'react';
 
