@@ -41,7 +41,7 @@ export const useTraits = (): UseTraitsPassProps => {
       };
     },
     enabled: !!account?.address,
-    refetchInterval: 1000 * 60 * 60,
+    refetchInterval: 1,
   });
 
   return { ...data, isSuccess, isLoading };

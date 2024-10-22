@@ -11,7 +11,7 @@ export const TraitsBox = ({ trait }: TraitsBoxProps) => {
   return (
     <Tooltip
       title={
-        'A trait for users of perps protocols (hyperliquid, dydx, gmxv2, vertex, intentx, aark) from the last year'
+        'A trait for users of perps protocols (hyperliquid, dydx, gmxv2, vertex, intentx, aark) before October 1st 2024.'
       }
       placement="top"
       enterTouchDelay={0}
@@ -19,12 +19,11 @@ export const TraitsBox = ({ trait }: TraitsBoxProps) => {
         popper: { sx: { zIndex: 2000 } },
       }}
       arrow
-      sx={{
-        zIndex: 2500,
-      }}
     >
       <AbsoluteCenterTraitsBox>
-        <Typography sx={{ color: '#FFFFFF', fontWeight: 600 }}>
+        <Typography
+          sx={{ color: '#FFFFFF', fontWeight: 700, fontSize: '12px' }}
+        >
           {trait}
         </Typography>
       </AbsoluteCenterTraitsBox>
