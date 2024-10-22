@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 
 export const MultisigConnectedAlertContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
+  color: theme.palette.text.primary,
   top: 64,
   left: '50%',
   transform: 'translateX(-50%)',

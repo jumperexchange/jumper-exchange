@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 
 export const MultisigConfirmationModalContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
+  color: theme.palette.text.primary,
   left: '50%',
   transform: 'translateX(-50%)',
   width: 416,

@@ -1,5 +1,5 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Box, Skeleton, Typography, useTheme } from '@mui/material';
+import { Box, Skeleton, Tooltip, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
@@ -24,6 +24,7 @@ import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
 import { ProgressionBar } from '../LevelBox/ProgressionBar';
 import {
+  BadgeRelativeBox,
   QuestCardBottomBox,
   QuestCardInfoBox,
   QuestCardMainBox,
@@ -32,6 +33,8 @@ import {
   XPIconBox,
 } from './QuestCard.style';
 import { XPRewardsInfo } from './XPRewardsInfo';
+import { OPBadge } from 'src/components/illustrations/OPBadge';
+import { TraitsBox } from './TraitsBox/TraitsBox';
 
 export interface RewardsInterface {
   logo: string;
@@ -64,6 +67,8 @@ interface QuestCardProps {
   rewardsProgress?: RewardsProgressProps;
   label?: string;
   id?: number;
+  isTraitsGarded?: boolean;
+  isUnlocked?: boolean;
 }
 
 export const QuestCardDetailled = ({
@@ -82,6 +87,8 @@ export const QuestCardDetailled = ({
   rewardRange,
   rewardsProgress,
   hideXPProgressComponents,
+  isTraitsGarded,
+  isUnlocked,
 }: QuestCardProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -104,22 +111,31 @@ export const QuestCardDetailled = ({
   return (
     <QuestCardMainBox sx={{ height: 'auto' }} onClick={handleClick}>
       <OptionalLink
+        disabled={isTraitsGarded && !isUnlocked ? true : false}
         ariaLabel={title}
         href={link || (slug && `/quests/${slug}`)}
         sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           {image ? (
-            <Image
-              src={image}
-              alt="Quest Card Image"
-              width={288}
-              height={288}
-              style={{
-                borderTopLeftRadius: '8px',
-                borderTopRightRadius: '8px',
-              }}
-            />
+            <>
+              {isTraitsGarded && (
+                <BadgeRelativeBox>
+                  <TraitsBox trait={'perp_oors'} />
+                </BadgeRelativeBox>
+              )}
+              <Image
+                src={image}
+                alt="Quest Card Image"
+                width={288}
+                height={288}
+                objectFit="cover"
+                style={{
+                  borderTopLeftRadius: '8px',
+                  borderTopRightRadius: '8px',
+                }}
+              />
+            </>
           ) : (
             <Skeleton
               variant="rectangular"
@@ -266,16 +282,24 @@ export const QuestCardDetailled = ({
           {slug ? (
             <QuestCardInfoBox>
               <Button
-                disabled={false}
+                disabled={isTraitsGarded && !isUnlocked}
                 variant="primary"
                 size="medium"
                 styles={{
+                  backgroundColor:
+                    isTraitsGarded && !isUnlocked
+                      ? theme.palette.mode === 'dark'
+                        ? '#50436c'
+                        : '#f5f5f5'
+                      : null,
                   alignItems: 'center',
                   width: '100%',
                 }}
               >
                 <Typography fontSize="16px" lineHeight="18px" fontWeight={600}>
-                  {String(t('questCard.join')).toUpperCase()}
+                  {isTraitsGarded && !isUnlocked
+                    ? 'Unlocked for perp_oors'
+                    : String(t('questCard.join'))}
                 </Typography>
               </Button>
             </QuestCardInfoBox>

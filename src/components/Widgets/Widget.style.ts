@@ -32,7 +32,7 @@ export const WidgetWrapper = styled(Box, {
     },
   }),
 
-  '& > div': {
+  '& > div:not(.alert)': {
     position: 'relative',
     transitionProperty: 'margin-top',
     transitionDuration: '.3s',

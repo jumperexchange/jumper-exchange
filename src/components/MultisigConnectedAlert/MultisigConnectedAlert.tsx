@@ -15,7 +15,7 @@ export const MultisigConnectedAlert: React.FC<{
 
   return (
     <Modal open={open} onClose={onClose}>
-      <MultisigConnectedAlertContainer>
+      <MultisigConnectedAlertContainer className="alert">
         <MultisigConnectedAlertIconContainer>
           <MultisigConnectedAlertIcon />
         </MultisigConnectedAlertIconContainer>
@@ -23,13 +23,14 @@ export const MultisigConnectedAlert: React.FC<{
           fontWeight={700}
           textAlign={'center'}
           marginY={4}
+          color="inherit"
           style={{
             fontSize: '1.125rem',
           }}
         >
           {t('multisig.connected.title')}
         </Typography>
-        <Typography fontSize={'1.125 rem'} marginY={4}>
+        <Typography fontSize={'1.125 rem'} marginY={4} color="inherit">
           {t('multisig.connected.description')}
         </Typography>
         <Button
