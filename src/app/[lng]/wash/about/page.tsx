@@ -8,12 +8,12 @@ import {
   WashTradingContextApp,
 } from 'src/wash/contexts/useWashTrading';
 import styled from '@emotion/styled';
-import { titanOne } from 'src/wash/utils/fonts';
 import Image from 'next/image';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 import { ChainType } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import { useRouter } from 'next/navigation';
+import { titanOne } from 'src/wash/common/WithFonts';
 
 const Wrapper = styled.div`
   position: relative;
