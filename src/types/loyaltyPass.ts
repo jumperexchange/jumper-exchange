@@ -44,6 +44,22 @@ export interface PDA {
   reward: Reward;
 }
 
+export interface Trait {
+  id: number;
+  timestamp: string;
+  category: string;
+  subCategory: string;
+  criteria: string;
+  trait: {
+    id: number;
+    timestamp: string;
+    name: string;
+    description: string | null;
+    type: string;
+    imageURI: string | null;
+  };
+}
+
 // Quest Type
 type ImageFormatThumbnail = {
   ext: string;
