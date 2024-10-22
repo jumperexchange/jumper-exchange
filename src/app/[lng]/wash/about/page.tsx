@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 import { ChainType } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
+import { useRouter } from 'next/navigation';
 
 const Wrapper = styled.div`
   position: relative;
@@ -107,9 +108,10 @@ const ContentWrapper = styled.div`
 `;
 
 function AboutPage(): ReactElement {
-  const { mint } = useWashTrading();
+  const { mint, nft } = useWashTrading();
   const { account } = useAccount({ chainType: ChainType.SVM });
   const { openWalletMenu } = useWalletMenu();
+  const router = useRouter();
 
   const { RiveComponent: RiveLogo } = useRive({
     src: '/wash/landing-logo.riv',
@@ -131,6 +133,49 @@ function AboutPage(): ReactElement {
     stateMachines: 'State Machine 1',
   });
 
+  /************************************************************************************************
+   * getButton: Function to determine which button to display based on the current state
+   * This function checks the following conditions:
+   * 1. If the wallet is not connected, it returns a "Connect wallet" button
+   * 2. If the user has an NFT that's not revealed, it returns a "Wash NFT" button
+   * 3. Otherwise, it returns a "Mint NFT" button
+   ************************************************************************************************/
+  const getButton = (): ReactElement => {
+    if (!account.isConnected) {
+      return (
+        <Button
+          title={'Connect wallet'}
+          theme={'pink'}
+          size={'long'}
+          onClick={async () => {
+            if (!account.isConnected) {
+              openWalletMenu();
+            }
+          }}
+        />
+      );
+    }
+    if (nft.hasNFT && !nft.nft?.isRevealed) {
+      return (
+        <Button
+          title={'Wash NFT'}
+          theme={'pink'}
+          size={'long'}
+          onClick={() => router.push('/wash')}
+        />
+      );
+    }
+    return (
+      <Button
+        title={'Mint NFT'}
+        theme={'pink'}
+        size={'long'}
+        onClick={mint.onMint}
+        isBusy={mint.isMinting}
+      />
+    );
+  };
+
   return (
     <Wrapper>
       <RaysBackground />
@@ -148,27 +193,7 @@ function AboutPage(): ReactElement {
           {' to win big!'}
         </Description>
 
-        <ButtonWrapper>
-          {account.isConnected ? (
-            <Button
-              theme={'pink'}
-              size="long"
-              title={'Mint NFT'}
-              onClick={mint.onMint}
-            />
-          ) : (
-            <Button
-              title={'Connect wallet'}
-              theme={'pink'}
-              size={'long'}
-              onClick={async () => {
-                if (!account.isConnected) {
-                  openWalletMenu();
-                }
-              }}
-            />
-          )}
-        </ButtonWrapper>
+        <ButtonWrapper>{getButton()}</ButtonWrapper>
         <RiveCarouselWrapper>
           <RiveCarousel />
         </RiveCarouselWrapper>
