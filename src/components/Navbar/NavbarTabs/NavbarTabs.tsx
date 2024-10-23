@@ -50,7 +50,7 @@ export const NavbarTabs = () => {
     },
     '.MuiTabs-indicator': {
       height: 48,
-      zIndex: -1,
+      zIndex: 1,
       borderRadius: 24,
     },
   };
