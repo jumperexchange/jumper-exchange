@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactElement, useRef } from 'react';
+import { type ReactElement, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { colors, WashH1 } from '../utils/theme';
 import { QUESTS, TOOLTIP_MESSAGES } from '../utils/constants';
@@ -11,6 +11,7 @@ import { InfoPopup } from './InfoPopup';
 import { IconDone } from './icons/IconDone';
 
 import type { TQuest } from '../types/wash';
+import { useWashTrading } from '../contexts/useWashTrading';
 
 /************************************************************************************************
  * Defining the styled components style for the QuestItem component
@@ -233,6 +234,20 @@ const QuestList = styled.div`
  * QUESTS constant.
  ************************************************************************************************/
 export function QuestsList(props: { isSkeleton?: boolean }): ReactElement {
+  const { user } = useWashTrading();
+
+  const questsForUser = useMemo(() => {
+    const activeQuests = [];
+
+    for (const quest of user?.quests || []) {
+      const questData = QUESTS.find((q) => q.id === quest.questId);
+      if (questData) {
+        activeQuests.push({ ...questData, progress: quest.progress });
+      }
+    }
+    return activeQuests.sort((a, b) => a.order - b.order);
+  }, [user?.quests]);
+
   return (
     <QuestsListWrapper>
       <QuestsListHeader>

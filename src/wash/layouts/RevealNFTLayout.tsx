@@ -59,7 +59,7 @@ const RevealedNFTLayoutCallToActionBox = styled.div`
  * The component relies on the useWashTrading hook for accessing NFT and reveal state data.
  ************************************************************************************************/
 export function RevealedNFTLayout(): ReactElement {
-  const { reveal, nft, items } = useWashTrading();
+  const { reveal, nft, user } = useWashTrading();
   const [isMounted, set_isMounted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -129,7 +129,7 @@ export function RevealedNFTLayout(): ReactElement {
       <RevealedNFTLayoutCallToActionBox>
         {!reveal.isRevealing && (
           <CallToActionBox
-            title={`up to +${countExtraXPFromItems(items?.items)}% exp on next nft`}
+            title={`up to +${countExtraXPFromItems(user?.items)}% exp on next nft`}
             subtitle={
               'Mint another NFT and receive additional progress from start!'
             }

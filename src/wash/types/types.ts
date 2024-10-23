@@ -42,3 +42,22 @@ export const optionalRenderProps = <TProps>(
   typeof children === 'function' ? children(renderProps) : children;
 
 export type TProgress = TIntRange<0, 101>;
+
+/************************************************************************************************
+ * TAPIQuest: Defines the structure for Quest data returned by the backend
+ *
+ * @property id - The unique identifier for the API quest instance
+ * @property questId - The identifier of the associated quest template
+ * @property createdAt - The date when the quest was created
+ * @property startDate - If the quest is time-locked, the date when the quest was started
+ * @property endDate - If the quest is time-locked, the date when the quest will end
+ * @property progress - The current progress of the quest (integer range from 0 to 100)
+ ************************************************************************************************/
+export type TAPIQuest = {
+  id: string;
+  questId: string;
+  createdAt: Date;
+  startDate: Date | null;
+  endDate: Date | null;
+  progress: TIntRange<0, number>;
+};

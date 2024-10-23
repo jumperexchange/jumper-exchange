@@ -3,6 +3,8 @@ import type { TIntRange } from './types';
 /**********************************************************************************************
  * TQuest: Defines the structure for quest item properties
  *
+ * @property id - The unique identifier for the quest
+ * @property order - The order of the quest
  * @property questType - The type of quest ('common' or 'rare')
  * @property title - The title of the quest
  * @property description - A detailed description of the quest
@@ -11,6 +13,8 @@ import type { TIntRange } from './types';
  * @property progress - The current progress of the quest (integer range from 0 to a number)
  *********************************************************************************************/
 export type TQuest = {
+  id: string;
+  order: number;
   questType: 'common' | 'rare';
   title: string;
   description: string;
