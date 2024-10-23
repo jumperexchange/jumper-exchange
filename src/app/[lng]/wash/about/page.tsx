@@ -1,19 +1,14 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import { Button } from 'src/wash/common/Button';
 import { RaysBackground } from 'src/wash/common/RaysBackground';
-import {
-  useWashTrading,
-  WashTradingContextApp,
-} from 'src/wash/contexts/useWashTrading';
+import { WashTradingContextApp } from 'src/wash/contexts/useWashTrading';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
-import { ChainType } from '@lifi/sdk';
-import { useAccount, useWalletMenu } from '@lifi/wallet-management';
-import { useRouter } from 'next/navigation';
 import { titanOne } from 'src/wash/common/WithFonts';
+import RiveLogoWrapper from 'src/wash/common/about/RiveLogo';
+import { AboutRouterWithContext } from 'src/wash/common/about/AboutRouter';
 
 const Wrapper = styled.div`
   position: relative;
@@ -60,13 +55,6 @@ const GoldenSpan = styled.span`
   color: #ffc306;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  margin: 40px 0 64px;
-  max-width: 1200px;
-  justify-content: center;
-`;
-
 const HowDoIWash = styled.h2`
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
@@ -88,13 +76,6 @@ const StepsWrapper = styled.div`
   justify-content: center;
 `;
 
-const LogoWrapper = styled.div`
-  width: 260px;
-  height: 170px;
-  position: absolute;
-  top: 100px;
-`;
-
 const RiveCarouselWrapper = styled.div`
   width: 3405px;
   height: 360px;
@@ -108,21 +89,6 @@ const ContentWrapper = styled.div`
 `;
 
 function AboutPage(): ReactElement {
-  const { mint, nft } = useWashTrading();
-  const { account } = useAccount({ chainType: ChainType.SVM });
-  const { openWalletMenu } = useWalletMenu();
-  const router = useRouter();
-
-  const { RiveComponent: RiveLogo } = useRive({
-    src: '/wash/landing-logo.riv',
-    autoplay: true,
-    stateMachines: 'State Machine 1',
-    layout: new Layout({
-      fit: Fit.Cover,
-      alignment: Alignment.Center,
-    }),
-  });
-
   const { RiveComponent: RiveCarousel } = useRive({
     src: '/wash/landing_foam-nft.riv',
     autoplay: true,
@@ -133,56 +99,11 @@ function AboutPage(): ReactElement {
     stateMachines: 'State Machine 1',
   });
 
-  /************************************************************************************************
-   * getButton: Function to determine which button to display based on the current state
-   * This function checks the following conditions:
-   * 1. If the wallet is not connected, it returns a "Connect wallet" button
-   * 2. If the user has an NFT that's not revealed, it returns a "Wash NFT" button
-   * 3. Otherwise, it returns a "Mint NFT" button
-   ************************************************************************************************/
-  const getButton = (): ReactElement => {
-    if (!account.isConnected) {
-      return (
-        <Button
-          title={'Connect wallet'}
-          theme={'pink'}
-          size={'long'}
-          onClick={async () => {
-            if (!account.isConnected) {
-              openWalletMenu();
-            }
-          }}
-        />
-      );
-    }
-    if (nft.hasNFT && !nft.nft?.isRevealed) {
-      return (
-        <Button
-          title={'Wash NFT'}
-          theme={'pink'}
-          size={'long'}
-          onClick={() => router.push('/wash')}
-        />
-      );
-    }
-    return (
-      <Button
-        title={'Mint NFT'}
-        theme={'pink'}
-        size={'long'}
-        onClick={mint.onMint}
-        isBusy={mint.isMinting}
-      />
-    );
-  };
-
   return (
     <Wrapper>
       <RaysBackground />
       <Content />
-      <LogoWrapper>
-        <RiveLogo />
-      </LogoWrapper>
+      <RiveLogoWrapper />
 
       <ContentWrapper>
         <Heading>{'Swap. wash. and win.'}</Heading>
@@ -193,7 +114,7 @@ function AboutPage(): ReactElement {
           {' to win big!'}
         </Description>
 
-        <ButtonWrapper>{getButton()}</ButtonWrapper>
+        <AboutRouterWithContext />
         <RiveCarouselWrapper>
           <RiveCarousel />
         </RiveCarouselWrapper>
