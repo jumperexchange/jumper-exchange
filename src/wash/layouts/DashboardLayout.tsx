@@ -116,7 +116,7 @@ const SwapSection = styled.div`
 export function DashboardLayout(): ReactElement {
   const [shouldOverkillNumber, set_shouldOverkillNumber] =
     useState<TCleaningItem | null>(null);
-  const { items, wash, nft } = useWashTrading();
+  const { user, wash, nft } = useWashTrading();
 
   /**********************************************************************************************
    * currentNFT: Extracts the NFT object from the nft state
@@ -159,7 +159,7 @@ export function DashboardLayout(): ReactElement {
           <CurrentNFTBlock
             nft={currentNFT}
             washProgress={currentNFT?.progress ?? 0}
-            items={items.items}
+            items={user.items}
             handleUseItem={handleUseItem}
             isSkeleton={!hasNFT}
           />

@@ -10,14 +10,14 @@ import { Button } from './Button';
 import { WashProgress } from './WashProgress';
 
 import type { ReactElement, ReactNode } from 'react';
-import type { TNFTItem, TProgress } from '../types/types';
+import type { TNFTItem } from '../types/types';
 import { getPepeImage } from '../utils/getPepeImage';
 import type { TColor } from '../utils/theme';
 
 type TNFTItemProps = {
   label?: string;
   nft?: TNFTItem;
-  progress?: TProgress;
+  progress?: number;
   isSkeleton?: boolean;
 };
 

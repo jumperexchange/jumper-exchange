@@ -100,3 +100,7 @@ export const WashH2 = styled.h2`
   text-transform: uppercase;
   color: white;
 `;
+
+export const SkewX6 = styled.div`
+  transform: skewX(-6deg);
+`;

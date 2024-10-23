@@ -8,14 +8,14 @@ import { colors } from '../utils/theme';
 import { WashProgress } from './WashProgress';
 
 import type { ReactElement, ReactNode } from 'react';
-import type { TNFTItem, TProgress } from '../types/types';
+import type { TNFTItem } from '../types/types';
 import { getPepeImage } from '../utils/getPepeImage';
 import { titanOne } from './fonts';
 
 type TNftItemProps = {
   label?: string;
   nft?: TNFTItem;
-  progress?: TProgress;
+  progress?: number;
 };
 
 /**************************************************************************************************
