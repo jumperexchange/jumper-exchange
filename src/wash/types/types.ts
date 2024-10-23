@@ -19,7 +19,7 @@ export type TIntRange<F extends number, T extends number> = Exclude<
 export type TNFTItem = {
   imageUri?: string;
   name?: string;
-  progress?: TProgress;
+  progress?: number;
   isRevealed?: boolean;
   color?: TColor;
   isRare?: boolean;
@@ -40,8 +40,6 @@ export const optionalRenderProps = <TProps>(
   renderProps: TProps,
 ): ReactNode =>
   typeof children === 'function' ? children(renderProps) : children;
-
-export type TProgress = TIntRange<0, 101>;
 
 /************************************************************************************************
  * TAPIQuest: Defines the structure for Quest data returned by the backend

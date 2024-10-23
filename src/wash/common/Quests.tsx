@@ -258,7 +258,7 @@ export function QuestsList(props: { isSkeleton?: boolean }): ReactElement {
       <QuestList>
         {props.isSkeleton
           ? null
-          : QUESTS.map((quest, i) => (
+          : questsForUser.map((quest, i) => (
               <QuestItem key={`${quest.title}-${i}`} {...quest} />
             ))}
       </QuestList>

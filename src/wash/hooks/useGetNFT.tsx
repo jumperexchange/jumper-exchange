@@ -7,7 +7,7 @@ import { base58 } from '@metaplex-foundation/umi/serializers';
 import { useQuery } from '@tanstack/react-query';
 
 import type { TColor } from '../utils/theme';
-import type { TNFTItem, TProgress } from '../types/types';
+import type { TNFTItem } from '../types/types';
 
 type TNFTResponse = {
   imageUri: string;
@@ -27,9 +27,11 @@ export type TGetNFT = {
 };
 
 export function useGetNFT(): TGetNFT {
+  const [dataRefreshedFor, set_dataRefreshedFor] = useState<string | undefined>(
+    undefined,
+  );
   const { account } = useAccount({ chainType: ChainType.SVM });
   const { umi } = useUmi();
-  const [useUpdatedQuery, set_useUpdatedQuery] = useState(false);
 
   /**********************************************************************************************
    * fetchCachedNFT Function
@@ -75,7 +77,7 @@ export function useGetNFT(): TGetNFT {
    *
    * @returns The updated NFT data from the server.
    *********************************************************************************************/
-  const fetchUpdatedNFT = useCallback(async (): Promise<TNFTResponse> => {
+  const fetchUpdatedNFT = useCallback(async (): Promise<void> => {
     await fetch(
       `${WASH_ENDPOINT_ROOT_URI}/lifi/${umi?.identity.publicKey}/update-data`,
       {
@@ -85,41 +87,41 @@ export function useGetNFT(): TGetNFT {
         },
       },
     );
-    return await fetchCachedNFT();
-  }, [umi, account.address, fetchCachedNFT]);
-
-  const updatedQuery = useQuery({
-    queryKey: ['updatedNFTItem'],
-    queryFn: fetchUpdatedNFT,
-    enabled: Boolean(umi && account.isConnected && account.address),
-  });
+    cachedQuery.refetch();
+    set_dataRefreshedFor(umi?.identity.publicKey);
+  }, [umi?.identity.publicKey, account.address, cachedQuery]);
 
   /************************************************************************************************
-   * NFT Query Management
+   * useEffect Hook for Fetching Updated NFT Data
    *
-   * These useEffect hooks manage the state of which NFT query (cached or updated) to use.
+   * This effect is responsible for triggering the fetchUpdatedNFT function when certain
+   * conditions are met. It ensures that the NFT data is refreshed when:
+   * 1. The Umi instance is available
+   * 2. The account is connected
+   * 3. The account address is available
+   * 4. The Umi public key is available
+   * 5. The data hasn't been refreshed for the current public key
    *
-   * The first useEffect switches to the updated query when it successfully completes.
-   * This ensures we use the most recent data from the server when available.
-   *
-   * The second useEffect switches back to the cached query if it has been updated more recently
-   * than the updated query. This can happen if local changes are made: they are the most recent
-   * and the cached from the server will reflect these changes.
-   *
-   * Together, these hooks ensure we always display the most up-to-date NFT information available,
-   * balancing between server-side updates and local cache updates.
+   * This approach helps maintain up-to-date NFT information while avoiding unnecessary API calls.
    ************************************************************************************************/
   useEffect(() => {
-    if (updatedQuery.isSuccess && !useUpdatedQuery) {
-      set_useUpdatedQuery(true);
+    if (
+      umi &&
+      account.isConnected &&
+      account.address &&
+      umi?.identity.publicKey &&
+      dataRefreshedFor !== umi?.identity.publicKey
+    ) {
+      fetchUpdatedNFT();
     }
-  }, [updatedQuery.isSuccess, useUpdatedQuery]);
-
-  useEffect(() => {
-    if (cachedQuery.dataUpdatedAt > updatedQuery.dataUpdatedAt) {
-      set_useUpdatedQuery(false);
-    }
-  }, [cachedQuery.dataUpdatedAt, updatedQuery.dataUpdatedAt, useUpdatedQuery]);
+  }, [
+    fetchUpdatedNFT,
+    umi,
+    account.isConnected,
+    account.address,
+    umi?.identity.publicKey,
+    dataRefreshedFor,
+  ]);
 
   /************************************************************************************************
    * This section processes and transforms the NFT data for use in the component.
@@ -128,16 +130,14 @@ export function useGetNFT(): TGetNFT {
    * - progressInPercents: Converts the progress from a decimal to a percentage.
    * - colorToColorName: Maps the numeric color value to a color name using the colorDict.
    ************************************************************************************************/
-  const mostUpToDateQuery = useUpdatedQuery ? updatedQuery : cachedQuery;
-  const progressInPercents = Math.round(
-    parseFloat(mostUpToDateQuery.data?.progress ?? '0.00') * 100,
-  ) as TProgress;
-  const colorToColorName =
-    colorDict[parseInt(mostUpToDateQuery.data?.color ?? '0')];
+  const progressInPercents = Number(
+    (parseFloat(cachedQuery.data?.progress ?? '0.00') * 100).toFixed(2),
+  );
+  const colorToColorName = colorDict[parseInt(cachedQuery.data?.color ?? '0')];
 
   return {
     nft: {
-      ...mostUpToDateQuery.data,
+      ...cachedQuery.data,
       color: colorToColorName,
       progress: progressInPercents,
     },

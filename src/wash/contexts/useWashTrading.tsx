@@ -13,7 +13,6 @@ import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import type { ReactElement } from 'react';
 import type { TGetCollection } from '../hooks/useGetCollection';
 import type { TRevealHook } from '../hooks/useReveal';
-import { useGetQuests } from '../hooks/useGetQuests';
 import type {
   LiFiStep,
   Process,
@@ -80,7 +79,6 @@ export function WashTradingContextApp(props: {
   const mint = useMint(nft.refetch);
   const reveal = useReveal(nft.refetch);
   const collection = useGetCollection();
-  const activeQuests = useGetQuests();
 
   const widgetEvents = useWidgetEvents();
 
