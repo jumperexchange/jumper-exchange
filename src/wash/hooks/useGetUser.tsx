@@ -35,7 +35,7 @@ export function useGetUser(): TGetUser {
       },
     );
     const result = await response.json();
-    return { items: result.items, quests: result.activeQuests };
+    return { items: result.items, quests: result.userQuests };
   }, [umi?.identity.publicKey, wallet.publicKey]);
 
   const { isLoading, error, data, refetch } = useQuery({
