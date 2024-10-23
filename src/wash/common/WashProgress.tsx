@@ -3,6 +3,7 @@ import { colors } from '../utils/theme';
 import styled from '@emotion/styled';
 
 import { inter } from 'src/fonts/fonts';
+import { mq } from '../utils/constants';
 
 type TWashProgressProps = {
   progress?: number;
@@ -42,6 +43,9 @@ const ProgressBar = styled.div`
   margin-top: 0.5rem;
   border: 2px solid ${colors.pink[800]};
   background-color: ${colors.violet[300]};
+  ${mq[0]} {
+    width: 285px;
+  }
 `;
 
 const ProgressBarFill = styled.div<{ progress: number }>`

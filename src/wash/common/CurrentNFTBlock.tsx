@@ -1,6 +1,6 @@
 import { Fragment, type ReactElement, useMemo } from 'react';
 import Image from 'next/image';
-import { DEFAULT_NFT_COLOR, TOOLTIP_MESSAGES } from '../utils/constants';
+import { DEFAULT_NFT_COLOR, mq, TOOLTIP_MESSAGES } from '../utils/constants';
 import { cl } from '../utils/utils';
 import styled from '@emotion/styled';
 
@@ -14,6 +14,28 @@ import { WashProgress } from './WashProgress';
 import { colors, WashH2, type TColor } from '../utils/theme';
 import type { TItems, TNFTItem } from '../types/types';
 import type { TCleaningItem } from '../types/wash';
+
+const ImageWrapper = styled.div`
+  position: absolute;
+  left: -24px;
+  top: -32px;
+  z-index: 50;
+  min-width: 830px;
+  ${mq[0]} {
+    display: none;
+  }
+`;
+
+const MobileImageWrapper = styled.div`
+  position: absolute;
+  display: none;
+  left: -24px;
+  top: -28px;
+  width: 390px;
+  ${mq[0]} {
+    display: block;
+  }
+`;
 
 /************************************************************************************************
  * BorderStroke Component
@@ -32,20 +54,36 @@ function BorderStroke(props: {
   isSkeleton?: boolean;
 }): ReactElement {
   return (
-    <div className={'absolute -left-7 -top-8 z-50 min-w-[830px]'}>
-      <Image
-        src={`/wash/stroke-${props.color || DEFAULT_NFT_COLOR}.png`}
-        className={cl(
-          'size-full transition-opacity',
-          props.isSkeleton ? 'opacity-0' : 'opacity-100',
-        )}
-        loading={'eager'}
-        priority
-        width={1680}
-        height={800}
-        alt={'stroke'}
-      />
-    </div>
+    <>
+      <MobileImageWrapper>
+        <Image
+          src={`/wash/stroke-${props.color || DEFAULT_NFT_COLOR}-mobile.png`}
+          className={cl(
+            'size-full transition-opacity',
+            props.isSkeleton ? 'opacity-0' : 'opacity-100',
+          )}
+          loading={'eager'}
+          priority
+          width={1680}
+          height={800}
+          alt={'stroke'}
+        />
+      </MobileImageWrapper>
+      <ImageWrapper>
+        <Image
+          src={`/wash/stroke-${props.color || DEFAULT_NFT_COLOR}.png`}
+          className={cl(
+            'size-full transition-opacity',
+            props.isSkeleton ? 'opacity-0' : 'opacity-100',
+          )}
+          loading={'eager'}
+          priority
+          width={1680}
+          height={800}
+          alt={'stroke'}
+        />
+      </ImageWrapper>
+    </>
   );
 }
 
@@ -185,6 +223,11 @@ const CurrentNFTBlockContainer = styled.div<{ backgroundColor: string }>`
   box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
   background-color: ${({ backgroundColor }) => backgroundColor};
   column-gap: 32px;
+  ${mq[0]} {
+    flex-direction: column;
+    padding: 24px;
+    width: 343px;
+  }
 `;
 
 type TCurrentNFTBlockProps = {
@@ -194,6 +237,21 @@ type TCurrentNFTBlockProps = {
   handleUseItem: (item: TCleaningItem) => Promise<void>;
   isSkeleton?: boolean;
 };
+
+const InfoSection = styled.div`
+  display: flex;
+  z-index: 50;
+  margin-top: 42px;
+  flex-direction: column;
+  align-items: start;
+`;
+
+const ImageSection = styled.div`
+  display: flex;
+  z-index: 50;
+  flex-direction: column;
+  align-items: center;
+`;
 //TODO: Split this component
 export function CurrentNFTBlock(props: TCurrentNFTBlockProps): ReactElement {
   /**********************************************************************************************
@@ -211,32 +269,36 @@ export function CurrentNFTBlock(props: TCurrentNFTBlockProps): ReactElement {
    * Renders the current NFT block with relevant information and controls.
    *********************************************************************************************/
   return (
-    <CurrentNFTBlockContainer
-      backgroundColor={canBeRevealed ? colors.violet[600] : colors.violet[500]}
-    >
-      {canBeRevealed ? <RevealRaysBackground /> : null}
-      <BorderStroke
-        color={props.nft?.color || DEFAULT_NFT_COLOR}
-        isSkeleton={props.isSkeleton}
-      />
-      <div style={{ zIndex: 50 }}>
-        <WashH2 style={{ marginBottom: '24px' }}>{'Current NFT'}</WashH2>
-        <NFTItem nft={props.nft} isSkeleton={props.isSkeleton} />
-      </div>
-
-      <div className={'z-50'} style={{ marginTop: '42px' }}>
-        <ProgressSection
+    <>
+      <CurrentNFTBlockContainer
+        backgroundColor={
+          canBeRevealed ? colors.violet[600] : colors.violet[500]
+        }
+      >
+        {canBeRevealed ? <RevealRaysBackground /> : null}
+        <BorderStroke
+          color={props.nft?.color || DEFAULT_NFT_COLOR}
           isSkeleton={props.isSkeleton}
-          washProgress={props.washProgress}
         />
+        <ImageSection>
+          <WashH2 style={{ marginBottom: '24px' }}>{'Current NFT'}</WashH2>
+          <NFTItem nft={props.nft} isSkeleton={props.isSkeleton} />
+        </ImageSection>
 
-        <PowerupSection
-          isSkeleton={props.isSkeleton}
-          items={props.items}
-          handleUseItem={props.handleUseItem}
-          canBeRevealed={canBeRevealed}
-        />
-      </div>
-    </CurrentNFTBlockContainer>
+        <InfoSection>
+          <ProgressSection
+            isSkeleton={props.isSkeleton}
+            washProgress={props.washProgress}
+          />
+
+          <PowerupSection
+            isSkeleton={props.isSkeleton}
+            items={props.items}
+            handleUseItem={props.handleUseItem}
+            canBeRevealed={canBeRevealed}
+          />
+        </InfoSection>
+      </CurrentNFTBlockContainer>
+    </>
   );
 }

@@ -1,6 +1,8 @@
+import styled from '@emotion/styled';
 import { cl } from '../utils/utils';
 
 import type { ReactElement } from 'react';
+import { mq } from '../utils/constants';
 
 /**********************************************************************************************
  * RaysBackground renders a background with rays that spin. This is used when we need a
@@ -90,6 +92,17 @@ export function RaysBackground({
   );
 }
 
+const RaysWrapper = styled.div`
+  position: absolute;
+  left: -1100px;
+  top: 180px;
+  transform: translateY(-50%);
+  overflow: hidden;
+  ${mq[0]} {
+    left: -1030px;
+  }
+`;
+
 /**********************************************************************************************
  * RevealRaysBackground renders a background with rays that spin. This specific variant is
  * to highlight the fact that the NFT can be revealed and is used in the CurrentNFTBlock
@@ -102,11 +115,7 @@ export function RevealRaysBackground(): ReactElement {
         'absolute left-0 top-0 size-full overflow-hidden rounded-[32px]'
       }
     >
-      <div
-        className={
-          'absolute left-[-1100px] top-[180px] -translate-y-1/2 overflow-hidden'
-        }
-      >
+      <RaysWrapper>
         <svg
           style={{ animation: 'spin 70s linear infinite' }}
           width={'2500'}
@@ -176,7 +185,7 @@ export function RevealRaysBackground(): ReactElement {
             fill={'#28065F'}
           />
         </svg>
-      </div>
+      </RaysWrapper>
     </div>
   );
 }

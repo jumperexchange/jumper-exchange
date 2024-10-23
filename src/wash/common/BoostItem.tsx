@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Absolute, colors } from 'src/wash/utils/theme';
-import { CLEANING_ITEMS } from 'src/wash/utils/constants';
+import { CLEANING_ITEMS, mq } from 'src/wash/utils/constants';
 import { Counter } from 'src/wash/common/Counter';
 import styled from '@emotion/styled';
 
@@ -59,6 +59,10 @@ const PowerUpWrapper = styled.button`
   &:hover img {
     width: 90px;
   }
+  ${mq[0]} {
+    width: 88px;
+    height: 88px;
+  }
 `;
 const PowerUpPercentageWrapper = styled.div`
   display: flex;
@@ -87,12 +91,19 @@ const PowerUpPercentage = styled.span<{ disabled: boolean }>`
   transform: skewX(6deg);
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
   font-family: ${inter.style.fontFamily};
+  ${mq[0]} {
+    font-size: 20px;
+    line-height: 28px;
+  }
 `;
 
 const PowerUpLogo = styled(Image)<{ disabled: boolean }>`
   width: 80px;
   transition: all 0.1s ease-in-out;
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+  ${mq[0]} {
+    width: 64px;
+  }
 `;
 
 /**********************************************************************************************

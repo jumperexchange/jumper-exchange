@@ -10,6 +10,7 @@ import { cl } from '../utils/utils';
 
 import { IconSpinner } from './icons/IconSpinner';
 import { inter } from 'src/fonts/fonts';
+import styled from '@emotion/styled';
 
 type TButtonProps = {
   children?: ReactElement;
@@ -34,7 +35,7 @@ export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
       isBusy,
       className,
       style,
-      size = 'short',
+      size,
     }: TButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactElement {
@@ -52,27 +53,34 @@ export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
       return children;
     }, [children, isBusy, title]);
 
+    const Button = styled.button`
+      position: relative;
+      height: 64px;
+      font-weight: 900;
+      text-transform: uppercase;
+      pointer-events: ${isBusy ? 'none' : 'auto'};
+      width: ${size === 'long' ? '320px' : size === 'short' ? '160px' : '100%'};
+    `;
+
     return (
-      <button
+      <Button
         disabled={disabled}
         ref={ref}
         onClick={onClick}
         style={style}
         className={cl(
           inter.className,
-          'relative h-[64px] rounded-2xl font-black uppercase disabled:cursor-not-allowed',
+          'rounded-2xl disabled:cursor-not-allowed',
           theme === 'pink'
             ? 'bg-pink-800 hover:bg-pink-700 disabled:bg-pink-400 text-white disabled:text-white/30'
             : theme === 'violet'
               ? 'bg-transparent border-2 border-violet-800 disabled:border-violet-200 disabled:bg-transparent hover:bg-violet-600 text-white disabled:text-white/30'
               : 'bg-white hover:bg-[#E6E6E6] disabled:bg-[#CCC] text-black disabled:text-black/30',
-          size === 'long' ? 'w-[320px]' : 'w-[160px]',
-          isBusy ? 'pointer-events-none' : '',
           className,
         )}
       >
         {buttonLayout}
-      </button>
+      </Button>
     );
   },
 );
