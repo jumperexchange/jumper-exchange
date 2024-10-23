@@ -185,7 +185,6 @@ export function QuestItem(props: TQuest): ReactElement {
           <CollectButton
             ref={elementRef}
             className={'skew-x-0'}
-            onClick={() => {}}
             theme={props.questType === 'common' ? 'pink' : 'cyan'}
             progress={props.progress}
             progressSteps={props.progressSteps}
