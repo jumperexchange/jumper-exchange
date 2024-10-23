@@ -2,11 +2,10 @@ import { type ReactElement } from 'react';
 import { colors } from '../utils/theme';
 import styled from '@emotion/styled';
 
-import type { TProgress } from '../types/types';
 import { inter } from 'src/fonts/fonts';
 
 type TWashProgressProps = {
-  progress?: TProgress;
+  progress?: number;
   label?: string;
   className?: string;
   isSkeleton?: boolean;
