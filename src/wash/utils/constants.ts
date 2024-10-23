@@ -7,7 +7,7 @@ import { getItem } from './utils';
  *
  * This constant defines the root URI for the API.
  *************************************************************************************************/
-export const WASH_ENDPOINT_ROOT_URI = 'http://localhost:80';
+export const WASH_ENDPOINT_ROOT_URI = 'https://jumper-wash.builtby.dad';
 
 /************************************************************************************************
  * Default NFT color
