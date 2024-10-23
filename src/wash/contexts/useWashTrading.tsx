@@ -10,7 +10,12 @@ import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import type { ReactElement } from 'react';
 import type { TGetCollection } from '../hooks/useGetCollection';
 import type { TRevealHook } from '../hooks/useReveal';
-import type { Process, Route, RouteExecutionUpdate } from '@lifi/widget';
+import type {
+  LiFiStep,
+  Process,
+  Route,
+  RouteExecutionUpdate,
+} from '@lifi/widget';
 import type { TGetQuests } from '../hooks/useGetQuests';
 import { useGetQuests } from '../hooks/useGetQuests';
 
@@ -86,11 +91,11 @@ export function WashTradingContextApp({
   const widgetEvents = useWidgetEvents();
 
   useEffect(() => {
-    const onRouteExecutionFailed = (props: RouteExecutionUpdate): void => {
+    const onFailed = async (props: RouteExecutionUpdate): Promise<void> => {
       console.warn('Failed', props);
       const txHash = props.process.txHash;
       if (txHash) {
-        fetch('/api/wash', {
+        await fetch('/api/wash', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -99,19 +104,22 @@ export function WashTradingContextApp({
             id: props.route.id,
             txHash,
             fromAddress: props.route.fromAddress,
+            fromToken: props.route.fromToken,
             fromAmount: props.route.fromAmount,
             fromAmountUSD: props.route.fromAmountUSD,
             fromChainID: props.route.fromChainId,
             toAddress: props.route.toAddress,
+            toToken: props.route.toToken,
             toAmount: props.route.toAmount,
             toAmountUSD: props.route.toAmountUSD,
             toChainID: props.route.toChainId,
           }),
         });
+        Promise.all([nft.refetch?.(), items.refetch?.()]);
       }
     };
 
-    const onRouteExecutionCompleted = (route: Route): void => {
+    const onCompleted = async (route: Route): Promise<void> => {
       console.warn('Success', route);
       let txHash: string | undefined = undefined;
       if (route.steps.length > 0) {
@@ -127,7 +135,7 @@ export function WashTradingContextApp({
       }
 
       if (txHash) {
-        fetch('/api/wash', {
+        await fetch('/api/wash', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -136,32 +144,29 @@ export function WashTradingContextApp({
             id: route.id,
             txHash,
             fromAddress: route.fromAddress,
-            fromToken: route.fromToken.address,
+            fromToken: route.fromToken,
             fromAmount: route.fromAmount,
             fromAmountUSD: route.fromAmountUSD,
             fromChainID: route.fromChainId,
             toAddress: route.toAddress,
-            toToken: route.toToken.address,
+            toToken: route.toToken,
             toAmount: route.toAmount,
             toAmountUSD: route.toAmountUSD,
             toChainID: route.toChainId,
           }),
         });
+        Promise.all([nft.refetch?.(), items.refetch?.()]);
       }
     };
 
-    widgetEvents.on(
-      WidgetEvent.RouteExecutionCompleted,
-      onRouteExecutionCompleted,
-    );
-    widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
+    widgetEvents.on(WidgetEvent.RouteExecutionCompleted, onCompleted);
+    widgetEvents.on(WidgetEvent.RouteExecutionFailed, onFailed);
 
-    return () =>
-      widgetEvents.off(
-        WidgetEvent.RouteExecutionCompleted,
-        onRouteExecutionCompleted,
-      );
-  }, [widgetEvents]);
+    return () => {
+      widgetEvents.off(WidgetEvent.RouteExecutionCompleted, onCompleted);
+      widgetEvents.off(WidgetEvent.RouteExecutionFailed, onFailed);
+    };
+  }, [widgetEvents, nft?.refetch, items?.refetch]);
 
   return (
     <WashTradingContext.Provider
