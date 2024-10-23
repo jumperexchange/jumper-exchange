@@ -7,7 +7,7 @@ import { getItem } from './utils';
  *
  * This constant defines the root URI for the API.
  *************************************************************************************************/
-export const WASH_ENDPOINT_ROOT_URI = 'http://localhost:80';
+export const WASH_ENDPOINT_ROOT_URI = 'https://jumper-wash.builtby.dad';
 
 /************************************************************************************************
  * Default NFT color
@@ -52,6 +52,8 @@ export const CLEANING_ITEMS: Record<TCleaningItem['id'], TCleaningItem> = {
  *************************************************************************************************/
 export const QUESTS: TQuest[] = [
   {
+    id: 'quest1',
+    order: 1,
     questType: 'rare',
     title: 'Dump $JUP for $SOL',
     description:
@@ -60,6 +62,8 @@ export const QUESTS: TQuest[] = [
     powerUp: getItem('cleanser', 'blue'),
   },
   {
+    id: 'quest2',
+    order: 2,
     questType: 'rare',
     title: 'Trade between $WIF & $POPCAT',
     description:
@@ -68,6 +72,8 @@ export const QUESTS: TQuest[] = [
     powerUp: getItem('cleanser', 'blue'),
   },
   {
+    id: 'quest3',
+    order: 3,
     questType: 'rare',
     title: 'Swap between $SOL & $MOTHER',
     description:
@@ -76,6 +82,8 @@ export const QUESTS: TQuest[] = [
     powerUp: getItem('sponge', 'blue'),
   },
   {
+    id: 'quest4',
+    order: 4,
     questType: 'common',
     title: 'Swap between $USDC & $USDT',
     description: 'The real authentic washtrading experience… snore.',
@@ -83,6 +91,8 @@ export const QUESTS: TQuest[] = [
     powerUp: getItem('soap', 'pink'),
   },
   {
+    id: 'quest5',
+    order: 5,
     questType: 'rare',
     title: 'Swap between $SOL & $DRIFT',
     description:
@@ -91,6 +101,8 @@ export const QUESTS: TQuest[] = [
     powerUp: getItem('sponge', 'blue'),
   },
   {
+    id: 'quest6',
+    order: 6,
     questType: 'common',
     title: 'Dump $TREMP for $BODEN',
     description:
@@ -99,6 +111,8 @@ export const QUESTS: TQuest[] = [
     powerUp: getItem('soap', 'pink'),
   },
   {
+    id: 'quest7',
+    order: 7,
     questType: 'common',
     title: 'Swap between $WIF, $MICHI, or $MEW',
     description:
@@ -107,6 +121,8 @@ export const QUESTS: TQuest[] = [
     powerUp: getItem('soap', 'pink'),
   },
   {
+    id: 'quest8',
+    order: 8,
     questType: 'common',
     title: 'Swap between $MOODENG and $FWOG',
     description:
@@ -115,6 +131,8 @@ export const QUESTS: TQuest[] = [
     powerUp: getItem('soap', 'pink'),
   },
   {
+    id: 'quest9',
+    order: 9,
     questType: 'common',
     title: 'Swap between $Trump and $USA',
     description:

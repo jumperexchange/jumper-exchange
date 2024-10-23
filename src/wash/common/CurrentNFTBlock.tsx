@@ -12,7 +12,7 @@ import { RevealRaysBackground } from './RaysBackground';
 import { WashProgress } from './WashProgress';
 
 import { colors, WashH2, type TColor } from '../utils/theme';
-import type { TItems, TNFTItem, TProgress } from '../types/types';
+import type { TItems, TNFTItem } from '../types/types';
 import type { TCleaningItem } from '../types/wash';
 
 /************************************************************************************************
@@ -73,14 +73,14 @@ const ProgressSectionTitle = styled.h2`
  *
  * Props:
  * - isSkeleton: boolean - Indicates if the component is in a loading state
- * - washProgress: TProgress - The current progress value to be displayed
+ * - washProgress: number - The current progress value to be displayed
  *
  * The component uses styled components and custom UI elements to create a consistent look
  * with the rest of the application.
  ************************************************************************************************/
 function ProgressSection(props: {
   isSkeleton?: boolean;
-  washProgress: TProgress;
+  washProgress: number;
 }): ReactElement {
   return (
     <Fragment>
@@ -190,7 +190,7 @@ const CurrentNFTBlockContainer = styled.div<{ backgroundColor: string }>`
 type TCurrentNFTBlockProps = {
   nft?: TNFTItem;
   items?: TItems;
-  washProgress: TProgress;
+  washProgress: number;
   handleUseItem: (item: TCleaningItem) => Promise<void>;
   isSkeleton?: boolean;
 };

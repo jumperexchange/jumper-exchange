@@ -12,7 +12,10 @@ export type TUseMint = {
   error?: string;
 };
 
-export function useMint(refetchNft?: VoidFunction): TUseMint {
+export function useMint(
+  refetchNft?: VoidFunction,
+  refetchUser?: VoidFunction,
+): TUseMint {
   const [isMinting, set_isMinting] = useState(false);
   const [error, set_error] = useState<string | undefined>();
   const [mintStatus, set_mintStatus] = useState('');
@@ -121,10 +124,17 @@ export function useMint(refetchNft?: VoidFunction): TUseMint {
       );
       console.error('Error minting NFT:', error);
     } finally {
-      await refetchNft?.();
+      await Promise.all([refetchNft?.(), refetchUser?.()]);
       set_isMinting(false);
     }
-  }, [umi, account.isConnected, account.address, refetchNft, error]);
+  }, [
+    umi,
+    account.isConnected,
+    account.address,
+    refetchNft,
+    refetchUser,
+    error,
+  ]);
 
   return {
     onMint,

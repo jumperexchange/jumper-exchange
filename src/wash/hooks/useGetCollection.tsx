@@ -7,7 +7,7 @@ import { base58 } from '@metaplex-foundation/umi/serializers';
 import { useQuery } from '@tanstack/react-query';
 
 import type { TColor } from '../utils/theme';
-import type { TNFTItem, TProgress } from '../types/types';
+import type { TNFTItem } from '../types/types';
 
 type TNftResponse = {
   imageUri: string;
@@ -57,9 +57,9 @@ export function useGetCollection(): TGetCollection {
 
   const updatedCollection = collection?.length
     ? collection?.map((nft) => {
-        const progressInPercents = Math.round(
-          parseFloat(nft?.progress ?? '0.00') * 100,
-        ) as TProgress;
+        const progressInPercents = Number(
+          (parseFloat(nft?.progress ?? '0.00') * 100).toFixed(2),
+        );
         const colorToColorName = colorDict[parseInt(nft?.color ?? '0')];
 
         return {

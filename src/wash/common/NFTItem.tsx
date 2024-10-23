@@ -12,12 +12,12 @@ import { WashProgress } from './WashProgress';
 
 import type { ReactElement, ReactNode } from 'react';
 import type { TColor } from '../utils/theme';
-import type { TNFTItem, TProgress } from '../types/types';
+import type { TNFTItem } from '../types/types';
 
 type TNFTItemProps = {
   label?: string;
   nft?: TNFTItem;
-  progress?: TProgress;
+  progress?: number;
   isSkeleton?: boolean;
 };
 
