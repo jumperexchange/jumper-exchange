@@ -18,6 +18,7 @@ type TButtonProps = {
   disabled?: boolean;
   isBusy?: boolean;
   className?: string;
+  style?: React.CSSProperties;
   theme?: 'pink' | 'violet' | 'white';
   size?: 'long' | 'short';
 };
@@ -32,6 +33,7 @@ export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
       disabled,
       isBusy,
       className,
+      style,
       size = 'short',
     }: TButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
@@ -55,6 +57,7 @@ export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
         disabled={disabled}
         ref={ref}
         onClick={onClick}
+        style={style}
         className={cl(
           inter.className,
           'relative h-[64px] rounded-2xl font-black uppercase disabled:cursor-not-allowed',

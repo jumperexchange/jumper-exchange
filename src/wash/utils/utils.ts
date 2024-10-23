@@ -3,6 +3,7 @@ import { type WidgetConfig } from '@lifi/widget';
 import { CLEANING_ITEMS } from './constants';
 
 import type { TItems } from '../types/types';
+import { publicRPCList } from 'src/const/rpcList';
 
 /************************************************************************************************
  * Joins the given classes into a single string.
@@ -73,10 +74,17 @@ export const widgetConfig: WidgetConfig = {
   fromChain: 1151111081099710, //Solana
   toChain: 1151111081099710, //Solana
   sdkConfig: {
+    apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+    routeOptions: {
+      maxPriceImpact: 0.4,
+    },
     rpcUrls: {
-      '1151111081099710': [process.env.NEXT_PUBLIC_SOLANA_RPC_URI as string],
+      ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
+      ...publicRPCList,
     },
   },
+  apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+  buildUrl: true,
   theme: {
     palette: {
       primary: {

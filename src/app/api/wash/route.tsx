@@ -4,6 +4,7 @@ import { WASH_ENDPOINT_ROOT_URI } from 'src/wash/utils/constants';
 
 type TRequest = {
   id: string;
+  txHash: string;
   fromAddress: string;
   fromToken: Token;
   fromAmount: string;
