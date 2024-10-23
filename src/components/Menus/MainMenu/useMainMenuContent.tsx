@@ -11,6 +11,7 @@ import {
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
+  JUMPER_WASH_PATH,
   X_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -25,7 +26,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
@@ -34,6 +35,8 @@ export const useMainMenuContent = () => {
   const { trackEvent } = useUserTracking();
   const router = useRouter();
   const theme = useTheme();
+  const pathname = usePathname();
+  const isWashPage = pathname?.includes(JUMPER_WASH_PATH);
   const [themeMode, configTheme] = useThemeStore((state) => [
     state.themeMode,
     state.configTheme,
@@ -67,7 +70,7 @@ export const useMainMenuContent = () => {
 
   let mainMenu: any[] = [];
 
-  if (configTheme?.hasThemeModeSwitch) {
+  if (!isWashPage && configTheme?.hasThemeModeSwitch) {
     mainMenu.push({
       children: (
         <Tabs
