@@ -26,7 +26,6 @@ const ProgressBar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
   height: 100%;
 `;
 
@@ -93,6 +92,7 @@ export const CollectButton = forwardRef<HTMLButtonElement, TCollectButtonProps>(
         onClick={props.onClick}
         disabled={props.disabled}
         isBusy={props.isBusy}
+        style={{ overflow: 'hidden' }}
         className={cl(
           'relative !h-[48px] !w-[164px] -skew-x-6 rounded-lg font-mono font-black uppercase text-white',
           props.progress === props.progressSteps
