@@ -9,7 +9,7 @@ import { colors, SkewX6 } from '../utils/theme';
 import { inter } from 'src/fonts/fonts';
 
 type TCollectButtonProps = {
-  onClick: VoidFunction;
+  onClick?: VoidFunction;
   theme: 'pink' | 'cyan';
   disabled?: boolean;
   isBusy?: boolean;

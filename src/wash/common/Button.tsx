@@ -13,7 +13,7 @@ import { inter } from 'src/fonts/fonts';
 
 type TButtonProps = {
   children?: ReactElement;
-  onClick: VoidFunction;
+  onClick?: VoidFunction;
   title?: string;
   disabled?: boolean;
   isBusy?: boolean;
