@@ -1,19 +1,41 @@
 'use client';
 import { Tabs } from '@/components/Tabs';
-import { useActiveTabStore } from '@/stores/activeTab';
 import { useMediaQuery } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import { alpha, useTheme } from '@mui/material/styles';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
+import { JUMPER_WASH_PATH } from 'src/const/urls';
+import { WashTabsMap } from 'src/wash/const/washtTabsMap';
+import { useActiveWashTabStore } from 'src/wash/stores/activeWashTab';
 import { useNavbarTabs } from '.';
 
 export const NavbarTabs = () => {
   const theme = useTheme();
-  const { activeTab, setActiveTab } = useActiveTabStore();
+  const { activeWashTab, setActiveWashTab } = useActiveWashTabStore();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const pathname = usePathname();
+  const isWashPage = pathname?.includes(JUMPER_WASH_PATH);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
+    setActiveWashTab(newValue);
   };
   const navbarTabs = useNavbarTabs();
+
+  useEffect(() => {
+    const getActiveWashTab = () => {
+      if (pathname.includes(WashTabsMap.WashAbout.destination)) {
+        console.log('WASHABOUT Setter');
+        setActiveWashTab(WashTabsMap.WashAbout.index);
+      } else if (pathname.includes(WashTabsMap.WashCollection.destination)) {
+        console.log('WASHCOLLECTION Setter');
+        setActiveWashTab(WashTabsMap.WashCollection.index);
+      } else if (pathname.includes(WashTabsMap.WashNFT.destination)) {
+        console.log('WASHNFT Setter');
+        setActiveWashTab(WashTabsMap.WashNFT.index);
+      }
+    };
+    getActiveWashTab();
+  }, [pathname, setActiveWashTab]);
 
   const containerStyles = {
     display: 'none',
@@ -51,7 +73,7 @@ export const NavbarTabs = () => {
   return (
     <Tabs
       data={navbarTabs}
-      value={!isDesktop ? false : activeTab}
+      value={!isDesktop && !isWashPage ? false : activeWashTab}
       onChange={handleChange}
       ariaLabel="navbar-tabs"
       containerStyles={containerStyles}

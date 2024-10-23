@@ -5,6 +5,7 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useRouter } from 'next/navigation';
+import { WashLinkMap } from 'src/wash/const/washLinkMap';
 
 export const useNavbarTabs = () => {
   const { trackEvent } = useUserTracking();
@@ -30,16 +31,16 @@ export const useNavbarTabs = () => {
     {
       label: 'About',
       value: 0,
-      onClick: handleClickTab('wash/about'),
+      onClick: handleClickTab(WashLinkMap.WashAbout),
     },
     {
       label: 'Wash NFT',
-      onClick: handleClickTab('wash'),
+      onClick: handleClickTab(WashLinkMap.WashNFT),
       value: 1,
     },
     {
       label: 'Collection',
-      onClick: handleClickTab('wash/collection'),
+      onClick: handleClickTab(WashLinkMap.WashCollection),
       value: 2,
     },
   ];
