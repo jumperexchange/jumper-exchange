@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useUmi } from '../contexts/useUmi';
 import { WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
-import axios from 'axios';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { useWallet } from '@solana/wallet-adapter-react';
 
@@ -48,17 +47,18 @@ export function useReveal(refetchNft?: VoidFunction): TRevealHook {
       const signature = await umi.rpc.sendTransaction(signed);
       const [txHash] = base58.deserialize(signature);
 
-      const responseRevealDone = await axios.post(
+      const responseRevealDone = await fetch(
         `${WASH_ENDPOINT_ROOT_URI}/reveal/done`,
         {
-          assetAddress: data.assetAddress,
-          txHash,
-          userPublicKey: umi.identity.publicKey,
-        },
-        {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify({
+            assetAddress: data.assetAddress,
+            txHash,
+            userPublicKey: umi.identity.publicKey,
+          }),
         },
       );
 

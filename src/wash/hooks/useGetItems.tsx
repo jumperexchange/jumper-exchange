@@ -1,10 +1,10 @@
 import { useUmi } from '../contexts/useUmi';
 import { WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
-import axios from 'axios';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useQuery } from '@tanstack/react-query';
 
 import type { TItems } from '../types/types';
+import { useCallback } from 'react';
 
 export type TGetItems = {
   isLoading: boolean;
@@ -17,16 +17,20 @@ export function useGetItems(): TGetItems {
   const wallet = useWallet();
   const { umi } = useUmi();
 
-  const fetchItems = async (): Promise<TItems> =>
-    axios
-      .get(`${WASH_ENDPOINT_ROOT_URI}/user/${umi?.identity.publicKey}`, {
+  const fetchItems = useCallback(async (): Promise<TItems> => {
+    const response = await fetch(
+      `${WASH_ENDPOINT_ROOT_URI}/user/${umi?.identity.publicKey}`,
+      {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${wallet.publicKey?.toBase58()}`,
         },
-      })
-      .then((res) => res.data.items);
+      },
+    );
+    const result = await response.json();
+    return result.items;
+  }, [umi?.identity.publicKey, wallet.publicKey]);
 
   const {
     isLoading,

@@ -38,7 +38,7 @@ const CollectionWrapper = styled.div`
   max-width: 1200px;
   height: min-content;
   background-color: ${colors.violet[500]};
-  padding: 2rem;
+  padding: 2rem 2rem 3rem;
   box-shadow: 6px 6px 0px 0px #8000ff;
   border-radius: 32px;
   border: 2px solid ${colors.violet[800]};

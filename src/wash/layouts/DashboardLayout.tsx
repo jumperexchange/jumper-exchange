@@ -6,7 +6,6 @@ import { CurrentNFTBlock } from '../common/CurrentNFTBlock';
 import { Modal } from '../common/Modal';
 import { QuestsList } from '../common/Quests';
 import { useWashTrading } from '../contexts/useWashTrading';
-import { inter } from '../utils/fonts';
 import { cl, widgetConfig } from '../utils/utils';
 import { LiFiWidget } from '@lifi/widget';
 import styled from '@emotion/styled';
@@ -14,6 +13,7 @@ import styled from '@emotion/styled';
 import type { ReactElement } from 'react';
 import type { TCleaningItem } from '../types/wash';
 import { colors, WashH1 } from '../utils/theme';
+import { inter } from 'src/fonts/fonts';
 /************************************************************************************************
  * OverkillModal: A modal component to warn users about potential overkill when using an item
  *
@@ -135,7 +135,7 @@ export function DashboardLayout(): ReactElement {
    * NFT. If it would, it sets a state to prompt the user about potential overkill.
    * Otherwise, it proceeds with washing the NFT using the selected power-up.
    *
-   * @param powerUp - The power-up level to be used (1, 2, or 3)
+   * @param item - The cleaning item to be used
    * @returns A Promise that resolves when the action is completed
    *********************************************************************************************/
   const handleUseItem = useCallback(

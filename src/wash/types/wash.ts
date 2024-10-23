@@ -33,6 +33,5 @@ export type TCleaningItem = {
   message: string;
   logo: string;
   percentage: '+5%' | '+10%' | '+15%';
-  level: 1 | 2 | 3;
   boost: 5 | 10 | 15;
 };

@@ -53,9 +53,9 @@ export function countExtraXPFromItems(items?: TItems): number {
     return 0;
   }
   return (
-    items.item1 * CLEANING_ITEMS.soap.boost +
-    items.item2 * CLEANING_ITEMS.sponge.boost +
-    items.item3 * CLEANING_ITEMS.cleanser.boost
+    items.soap * CLEANING_ITEMS.soap.boost +
+    items.sponge * CLEANING_ITEMS.sponge.boost +
+    items.cleanser * CLEANING_ITEMS.cleanser.boost
   );
 }
 

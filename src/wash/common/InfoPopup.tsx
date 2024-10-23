@@ -4,10 +4,10 @@ import { colors } from '../utils/theme';
 import { css } from '@emotion/react';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 
-import { inter } from '../utils/fonts';
 import { IconInfo } from './icons/IconInfo';
 
 import type { ReactElement } from 'react';
+import { inter } from 'src/fonts/fonts';
 
 const popoverPanelStyle = css`
   position: absolute;

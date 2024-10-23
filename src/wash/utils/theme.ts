@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { inter } from 'src/fonts/fonts';
-import { titanOne } from './fonts';
 import { mq } from './constants';
+import { titanOne } from '../common/WithFonts';
 
 export type TColor =
   | 'violet'
