@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect } from 'react';
 import { useGetCollection } from '../hooks/useGetCollection';
-import { type TGetItems, useGetItems } from '../hooks/useGetItems';
+import type { TGetUser } from '../hooks/useGetUser';
+import { useGetUser } from '../hooks/useGetUser';
 import { type TGetNFT, useGetNFT } from '../hooks/useGetNFT';
 import { type TUseMint, useMint } from '../hooks/useMint';
 import { useReveal } from '../hooks/useReveal';
@@ -10,18 +11,20 @@ import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import type { ReactElement } from 'react';
 import type { TGetCollection } from '../hooks/useGetCollection';
 import type { TRevealHook } from '../hooks/useReveal';
-import type { Route } from '@lifi/widget';
-import type { TGetQuests } from '../hooks/useGetQuests';
-import { useGetQuests } from '../hooks/useGetQuests';
+import type {
+  LiFiStep,
+  Process,
+  Route,
+  RouteExecutionUpdate,
+} from '@lifi/widget';
 
 type TWashTradingContext = {
   nft: TGetNFT;
   mint: TUseMint;
   reveal: TRevealHook;
   wash: TUseWash;
-  items: TGetItems;
+  user: TGetUser;
   collection: TGetCollection;
-  activeQuests: TGetQuests;
 };
 
 const WashTradingContext = createContext<TWashTradingContext>({
@@ -50,9 +53,10 @@ const WashTradingContext = createContext<TWashTradingContext>({
     error: '',
     washStatus: '',
   },
-  items: {
+  user: {
     isLoading: false,
     items: undefined,
+    quests: undefined,
     error: undefined,
     refetch: undefined,
   },
@@ -63,66 +67,106 @@ const WashTradingContext = createContext<TWashTradingContext>({
     refetch: undefined,
     hasCollection: false,
   },
-  activeQuests: {
-    activeQuests: undefined,
-    isLoading: false,
-    error: undefined,
-    refetch: undefined,
-  },
 });
-export function WashTradingContextApp({
-  children,
-}: {
+export function WashTradingContextApp(props: {
   children: ReactElement;
 }): ReactElement {
-  const nft = useGetNFT();
-  const items = useGetItems();
-  const wash = useWash(items.refetch, nft.refetch);
+  const user = useGetUser();
+  const nft = useGetNFT(user.refetch);
+  const wash = useWash(user.refetch, nft.refetch);
   const mint = useMint(nft.refetch);
   const reveal = useReveal(nft.refetch);
   const collection = useGetCollection();
-  const activeQuests = useGetQuests();
-
   const widgetEvents = useWidgetEvents();
 
   useEffect(() => {
-    const onRouteExecutionCompleted = (route: Route): void => {
-      fetch('/api/wash', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: route.id,
-          fromAddress: route.fromAddress,
-          fromAmount: route.fromAmount,
-          fromAmountUSD: route.fromAmountUSD,
-          fromChainID: route.fromChainId,
-          toAddress: route.toAddress,
-          toAmount: route.toAmount,
-          toAmountUSD: route.toAmountUSD,
-          toChainID: route.toChainId,
-        }),
-      });
+    const onFailed = async (props: RouteExecutionUpdate): Promise<void> => {
+      console.warn('Failed', props);
+      const txHash = props.process.txHash;
+      const doneAt = props.process.doneAt;
+      if (txHash) {
+        await fetch('/api/wash', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: props.route.id,
+            txHash,
+            fromAddress: props.route.fromAddress,
+            fromToken: props.route.fromToken,
+            fromAmount: props.route.fromAmount,
+            fromAmountUSD: props.route.fromAmountUSD,
+            fromChainID: props.route.fromChainId,
+            toAddress: props.route.toAddress,
+            toToken: props.route.toToken,
+            toAmount: props.route.toAmount,
+            toAmountUSD: props.route.toAmountUSD,
+            toChainID: props.route.toChainId,
+            timestamp: doneAt,
+          }),
+        });
+        Promise.all([nft.refetch?.(), user.refetch?.()]);
+      }
     };
 
-    widgetEvents.on(
-      WidgetEvent.RouteExecutionCompleted,
-      onRouteExecutionCompleted,
-    );
+    const onCompleted = async (route: Route): Promise<void> => {
+      console.warn('Success', route);
+      let txHash: string | undefined = undefined;
+      let doneAt: number | undefined = undefined;
+      if (route.steps.length > 0) {
+        const firstStep = route.steps[0] as LiFiStep & {
+          execution: { process: Process[] };
+        };
+        if ((firstStep?.execution?.process || []).length > 0) {
+          const firstExecution = firstStep.execution.process[0];
+          if (firstExecution) {
+            txHash = firstExecution.txHash;
+            doneAt = firstExecution.doneAt;
+          }
+        }
+      }
 
-    return () =>
-      widgetEvents.off(
-        WidgetEvent.RouteExecutionCompleted,
-        onRouteExecutionCompleted,
-      );
-  }, [widgetEvents]);
+      if (txHash) {
+        await fetch('/api/wash', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: route.id,
+            txHash,
+            fromAddress: route.fromAddress,
+            fromToken: route.fromToken,
+            fromAmount: route.fromAmount,
+            fromAmountUSD: route.fromAmountUSD,
+            fromChainID: route.fromChainId,
+            toAddress: route.toAddress,
+            toToken: route.toToken,
+            toAmount: route.toAmount,
+            toAmountUSD: route.toAmountUSD,
+            toChainID: route.toChainId,
+            timestamp: doneAt,
+          }),
+        });
+        await Promise.all([nft.refetch?.(), user.refetch?.()]);
+      }
+    };
+
+    widgetEvents.on(WidgetEvent.RouteExecutionCompleted, onCompleted);
+    widgetEvents.on(WidgetEvent.RouteExecutionFailed, onFailed);
+
+    return () => {
+      widgetEvents.off(WidgetEvent.RouteExecutionCompleted, onCompleted);
+      widgetEvents.off(WidgetEvent.RouteExecutionFailed, onFailed);
+    };
+  }, [widgetEvents, nft.refetch, user.refetch, nft, user]);
 
   return (
     <WashTradingContext.Provider
-      value={{ reveal, items, nft, wash, mint, collection, activeQuests }}
+      value={{ reveal, user, nft, wash, mint, collection }}
     >
-      {children}
+      {props.children}
     </WashTradingContext.Provider>
   );
 }

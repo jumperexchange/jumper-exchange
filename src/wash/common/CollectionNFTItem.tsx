@@ -9,13 +9,13 @@ import styled from '@emotion/styled';
 import { WashProgress } from './WashProgress';
 
 import type { ReactElement, ReactNode } from 'react';
-import type { TNFTItem, TProgress } from '../types/types';
+import type { TNFTItem } from '../types/types';
 import { titanOne } from 'src/wash/common/WithFonts';
 
 type TNftItemProps = {
   label?: string;
   nft?: TNFTItem;
-  progress?: TProgress;
+  progress?: number;
 };
 
 /**************************************************************************************************
