@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect } from 'react';
 import { useGetCollection } from '../hooks/useGetCollection';
-import { type TGetItems, useGetItems } from '../hooks/useGetItems';
+import type { TGetUser } from '../hooks/useGetUser';
+import { useGetUser } from '../hooks/useGetUser';
 import { type TGetNFT, useGetNFT } from '../hooks/useGetNFT';
 import { type TUseMint, useMint } from '../hooks/useMint';
 import { useReveal } from '../hooks/useReveal';
@@ -10,7 +11,6 @@ import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import type { ReactElement } from 'react';
 import type { TGetCollection } from '../hooks/useGetCollection';
 import type { TRevealHook } from '../hooks/useReveal';
-import type { TGetQuests } from '../hooks/useGetQuests';
 import { useGetQuests } from '../hooks/useGetQuests';
 import type {
   LiFiStep,
@@ -24,9 +24,8 @@ type TWashTradingContext = {
   mint: TUseMint;
   reveal: TRevealHook;
   wash: TUseWash;
-  items: TGetItems;
+  user: TGetUser;
   collection: TGetCollection;
-  activeQuests: TGetQuests;
 };
 
 const WashTradingContext = createContext<TWashTradingContext>({
@@ -55,9 +54,10 @@ const WashTradingContext = createContext<TWashTradingContext>({
     error: '',
     washStatus: '',
   },
-  items: {
+  user: {
     isLoading: false,
     items: undefined,
+    quests: undefined,
     error: undefined,
     refetch: undefined,
   },
@@ -68,21 +68,13 @@ const WashTradingContext = createContext<TWashTradingContext>({
     refetch: undefined,
     hasCollection: false,
   },
-  activeQuests: {
-    activeQuests: undefined,
-    isLoading: false,
-    error: undefined,
-    refetch: undefined,
-  },
 });
-export function WashTradingContextApp({
-  children,
-}: {
+export function WashTradingContextApp(props: {
   children: ReactElement;
 }): ReactElement {
   const nft = useGetNFT();
-  const items = useGetItems();
-  const wash = useWash(items.refetch, nft.refetch);
+  const user = useGetUser();
+  const wash = useWash(user.refetch, nft.refetch);
   const mint = useMint(nft.refetch);
   const reveal = useReveal(nft.refetch);
   const collection = useGetCollection();
@@ -115,7 +107,7 @@ export function WashTradingContextApp({
             toChainID: props.route.toChainId,
           }),
         });
-        Promise.all([nft.refetch?.(), items.refetch?.()]);
+        Promise.all([nft.refetch?.(), user.refetch?.()]);
       }
     };
 
@@ -155,7 +147,7 @@ export function WashTradingContextApp({
             toChainID: route.toChainId,
           }),
         });
-        Promise.all([nft.refetch?.(), items.refetch?.()]);
+        Promise.all([nft.refetch?.(), user.refetch?.()]);
       }
     };
 
@@ -166,13 +158,13 @@ export function WashTradingContextApp({
       widgetEvents.off(WidgetEvent.RouteExecutionCompleted, onCompleted);
       widgetEvents.off(WidgetEvent.RouteExecutionFailed, onFailed);
     };
-  }, [widgetEvents, nft?.refetch, items?.refetch]);
+  }, [widgetEvents, nft?.refetch, user?.refetch]);
 
   return (
     <WashTradingContext.Provider
-      value={{ reveal, items, nft, wash, mint, collection, activeQuests }}
+      value={{ reveal, user, nft, wash, mint, collection }}
     >
-      {children}
+      {props.children}
     </WashTradingContext.Provider>
   );
 }
