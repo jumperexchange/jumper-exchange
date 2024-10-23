@@ -5,9 +5,105 @@ import Image from 'next/image';
 import { Button } from '../common/Button';
 import { useWashTrading } from '../contexts/useWashTrading';
 import { inter } from '../utils/fonts';
-import { cl } from '../utils/utils';
 
 import type { ReactElement } from 'react';
+import styled from '@emotion/styled';
+import { colors } from '../utils/theme';
+import { mq } from '../utils/constants';
+
+const Wrapper = styled.div<{ isMounted: boolean }>`
+  width: 100%;
+  border-radius: 32px;
+  border: 2px solid ${colors.violet[800]};
+  background-color: ${colors.violet[500]};
+  box-shadow: 6px 6px 0px 0px #8000ff;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  overflow: hidden;
+  transition: all 1000ms ease-in-out;
+  transform: ${({ isMounted }) =>
+    isMounted ? 'translateY(0)' : 'translateY(100%)'};
+  opacity: ${({ isMounted }) => (isMounted ? 1 : 0)};
+
+  @media (min-width: 768px) {
+    width: 800px;
+  }
+
+  ${mq[0]} {
+    display: none;
+  }
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.75rem 2rem 1.75rem 0;
+`;
+
+const Title = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: white;
+  font-family: ${inter.style.fontFamily};
+`;
+
+const Subtitle = styled.span`
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  font-family: ${inter.style.fontFamily};
+`;
+
+const ButtonWrapper = styled.div`
+  width: fit-content;
+`;
+
+const MobileWrapper = styled.div<{ isMounted: boolean }>`
+  display: none;
+  max-width: 327px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 14px;
+  overflow: hidden;
+  transition: all 1000ms ease-in-out;
+  transform: ${({ isMounted }) =>
+    isMounted ? 'translateY(0)' : 'translateY(100%)'};
+  opacity: ${({ isMounted }) => (isMounted ? 1 : 0)};
+  ${mq[0]} {
+    display: flex;
+  }
+`;
+
+const MobileSubtitle = styled.span`
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: white;
+  opacity: 60%;
+  text-align: center;
+  font-weight: 500;
+  max-width: 290px;
+  margin: 0.5rem 0 2rem;
+  font-family: ${inter.style.fontFamily};
+`;
+
+const MobileTitle = styled.h3`
+  color: white;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-family: ${inter.style.fontFamily};
+`;
+
+const ImageStyled = styled(Image)`
+  height: 136px;
+  width: 164px;
+`;
 
 /************************************************************************************************
  * CallToActionBox Component
@@ -31,45 +127,40 @@ export function CallToActionBox(props: {
   }, []);
 
   return (
-    <div
-      className={cl(
-        'w-full rounded-[32px] border-2 border-violet-800 bg-violet-500 shadow-[6px_6px_0px_0px_#8000FF] md:w-[800px]',
-        'flex flex-row gap-4 overflow-hidden transition-all duration-1000 ease-in-out',
-        isMounted ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0',
-      )}
-    >
-      <Image
-        src={'/wash/call-to-action-items.png'}
-        alt={'call-to-action-box'}
-        className={'h-[136px] w-[164px]'}
-        width={164}
-        height={136}
-      />
-      <div
-        className={'flex flex-row items-center justify-between gap-4 py-7 pr-8'}
-      >
-        <div>
-          <h3
-            className={cl(
-              'text-2xl font-black uppercase text-white ',
-              inter.className,
-            )}
-          >
-            {props.title}
-          </h3>
-          <span className={cl('text-white/60 font-medium', inter.className)}>
-            {props.subtitle}
-          </span>
-        </div>
-        <div className={'w-fit'}>
-          <Button
-            isBusy={mint.isMinting}
-            title={'Mint new NFT'}
-            theme={'pink'}
-            onClick={mint.onMint}
-          />
-        </div>
-      </div>
-    </div>
+    <>
+      <MobileWrapper isMounted={isMounted}>
+        <MobileTitle>{props.title}</MobileTitle>
+        <MobileSubtitle>{props.subtitle}</MobileSubtitle>
+        <Button
+          isBusy={mint.isMinting}
+          title={'Mint new NFT'}
+          theme={'pink'}
+          onClick={mint.onMint}
+          size={'long'}
+        />
+      </MobileWrapper>
+      <Wrapper isMounted={isMounted}>
+        <ImageStyled
+          src={'/wash/call-to-action-items.png'}
+          alt={'call-to-action-box'}
+          width={164}
+          height={136}
+        />
+        <ContentWrapper>
+          <div>
+            <Title>{props.title}</Title>
+            <Subtitle>{props.subtitle}</Subtitle>
+          </div>
+          <ButtonWrapper>
+            <Button
+              isBusy={mint.isMinting}
+              title={'Mint new NFT'}
+              theme={'pink'}
+              onClick={mint.onMint}
+            />
+          </ButtonWrapper>
+        </ContentWrapper>
+      </Wrapper>
+    </>
   );
 }

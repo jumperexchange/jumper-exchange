@@ -2,7 +2,7 @@
 import { type ReactElement, useMemo } from 'react';
 import Image from 'next/image';
 import { colors } from '../utils/theme';
-import { DEFAULT_NFT_COLOR } from '../utils/constants';
+import { DEFAULT_NFT_COLOR, mq } from '../utils/constants';
 import { getPepeImage } from '../utils/utils';
 import styled from '@emotion/styled';
 
@@ -26,6 +26,10 @@ const RevealNFTContainer = styled.div<{ backgroundColor: string }>`
   width: 320px;
   height: 320px;
   border-radius: 16px;
+  ${mq[0]} {
+    width: 216px;
+    height: 216px;
+  }
 `;
 const NFTLabelBox = styled.div<{ backgroundColor: string }>`
   position: absolute;
@@ -70,6 +74,11 @@ const NFTImageBox = styled.div<{
   overflow: hidden;
   background-color: ${(props) => props.backgroundColor};
   border: 4px solid ${(props) => props.borderColor};
+
+  ${mq[0]} {
+    width: 216px;
+    height: 216px;
+  }
 `;
 const NFTImage = styled(Image)<{ isRevealing: boolean }>`
   opacity: ${(props) => (props.isRevealing ? 0 : 1)};
@@ -78,6 +87,11 @@ const NFTImage = styled(Image)<{ isRevealing: boolean }>`
   width: 320px;
   height: 320px;
   inset: 0;
+
+  ${mq[0]} {
+    width: 216px;
+    height: 216px;
+  }
 `;
 const NFTImageSkeleton = styled.div<{ isRevealing: boolean }>`
   animation: ${(props) =>

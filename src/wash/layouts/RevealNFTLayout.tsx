@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 import { CallToActionBox } from '../common/CallToActionBox';
+import { mq } from '../utils/constants';
 
 /************************************************************************************************
  * Defining the styled components style for the RevealedNFTLayout component
@@ -30,19 +31,27 @@ const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
 const RevealedNFTLayoutTitle = styled.h1`
   text-transform: uppercase;
   color: white;
-  font-size: 56px;
-  line-height: 56px;
+  font-size: 3.5rem;
+  line-height: 3.5rem;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
+  ${mq[0]} {
+    font-size: 2.5rem;
+    line-height: 3rem;
+  }
 `;
 const RevealedNFTLayoutSubtitle = styled.span`
   color: white;
   margin-top: 8px;
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
   font-weight: 500;
   font-size: 1.5rem;
   line-height: 2rem;
   font-family: ${inter.style.fontFamily};
+  ${mq[0]} {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
 `;
 const RevealedNFTLayoutCallToActionBox = styled.div`
   margin-top: 66px;

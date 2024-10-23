@@ -150,7 +150,7 @@ export function BoostItem({
         />
       </Absolute>
       <Absolute right={'-4px'} top={'-8px'}>
-        <Counter amount={amount} isDisabled={isDisabled || amount === 0} />
+        <Counter amount={amount} isDisabled={disabled} />
       </Absolute>
     </PowerUpWrapper>
   );
