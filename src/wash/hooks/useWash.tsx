@@ -35,7 +35,7 @@ export function useWash(
         const message = utf8.serialize(item.message);
         const signedMessage = await umi.identity.signMessage(message);
         const responseUseItem = await fetch(
-          `${WASH_ENDPOINT_ROOT_URI}/user/${umi.identity.publicKey}/item/item${item.id}`,
+          `${WASH_ENDPOINT_ROOT_URI}/user/${umi.identity.publicKey}/item/${item.id}`,
           {
             method: 'PATCH',
             headers: {

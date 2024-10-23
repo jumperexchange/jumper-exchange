@@ -2,8 +2,11 @@ import { type ForwardedRef, forwardRef, type ReactElement } from 'react';
 
 import { cl } from '../utils/utils';
 import { Button } from './Button';
+import styled from '@emotion/styled';
 
 import type { TQuest } from '../types/wash';
+import { colors, SkewX6 } from '../utils/theme';
+import { inter } from 'src/fonts/fonts';
 
 type TCollectButtonProps = {
   onClick: VoidFunction;
@@ -15,35 +18,70 @@ type TCollectButtonProps = {
   progressSteps: TQuest['progressSteps'];
 };
 
+/************************************************************************************************
+ * Defining the styled components style for the ButtonLayout component
+ *************************************************************************************************/
+const ProgressBar = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: 100%;
+`;
+
+const ProgressBarFill = styled.div<{ progress: number; background: string }>`
+  position: absolute;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: -10;
+  background: ${({ background }) => background};
+  width: ${({ progress }) => `${progress}%`};
+`;
+
+const ProgressLabel = styled.span`
+  font-family: ${inter.style.fontFamily};
+  z-index: 20;
+  color: white;
+  text-transform: uppercase;
+`;
+
+/************************************************************************************************
+ * Defining the ButtonLayout component
+ *************************************************************************************************/
 function ButtonLayout(props: TCollectButtonProps): ReactElement {
   const currentProgress = props.progress || 0;
 
   if (currentProgress === props.progressSteps) {
     return (
-      <div className={'skew-x-6'}>
-        <span>{'Claim'}</span>
-      </div>
+      <SkewX6>
+        <ProgressLabel>{'Claim'}</ProgressLabel>
+      </SkewX6>
     );
   }
 
   return (
-    <div className={'relative flex h-full items-center justify-center'}>
-      <div
-        className={cl(
-          'absolute -z-10 left-0 top-0 h-full rounded-l-lg',
-          props.theme === 'pink' ? 'bg-pink-700' : 'bg-cyan-700',
-        )}
-        style={{ width: `${(currentProgress / props.progressSteps) * 100}%` }}
+    <ProgressBar>
+      <ProgressBarFill
+        background={
+          props.theme === 'pink' ? colors.pink[700] : colors.cyan[700]
+        }
+        progress={(currentProgress / props.progressSteps) * 100}
       />
-      <div className={'skew-x-6'}>
-        <span
-          className={'z-20'}
-        >{`${currentProgress}/${props.progressSteps}`}</span>
-      </div>
-    </div>
+      <SkewX6>
+        <ProgressLabel>{`${currentProgress}/${props.progressSteps}`}</ProgressLabel>
+      </SkewX6>
+    </ProgressBar>
   );
 }
 
+/************************************************************************************************
+ * Defining the CollectButton component
+ *************************************************************************************************/
 export const CollectButton = forwardRef<HTMLButtonElement, TCollectButtonProps>(
   function CollectButton(
     props: TCollectButtonProps,

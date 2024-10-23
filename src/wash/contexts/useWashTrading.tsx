@@ -71,19 +71,19 @@ const WashTradingContext = createContext<TWashTradingContext>({
 export function WashTradingContextApp(props: {
   children: ReactElement;
 }): ReactElement {
-  const nft = useGetNFT();
   const user = useGetUser();
+  const nft = useGetNFT(user.refetch);
   const wash = useWash(user.refetch, nft.refetch);
   const mint = useMint(nft.refetch);
   const reveal = useReveal(nft.refetch);
   const collection = useGetCollection();
-
   const widgetEvents = useWidgetEvents();
 
   useEffect(() => {
     const onFailed = async (props: RouteExecutionUpdate): Promise<void> => {
       console.warn('Failed', props);
       const txHash = props.process.txHash;
+      const doneAt = props.process.doneAt;
       if (txHash) {
         await fetch('/api/wash', {
           method: 'POST',
@@ -103,6 +103,7 @@ export function WashTradingContextApp(props: {
             toAmount: props.route.toAmount,
             toAmountUSD: props.route.toAmountUSD,
             toChainID: props.route.toChainId,
+            timestamp: doneAt,
           }),
         });
         Promise.all([nft.refetch?.(), user.refetch?.()]);
@@ -112,6 +113,7 @@ export function WashTradingContextApp(props: {
     const onCompleted = async (route: Route): Promise<void> => {
       console.warn('Success', route);
       let txHash: string | undefined = undefined;
+      let doneAt: number | undefined = undefined;
       if (route.steps.length > 0) {
         const firstStep = route.steps[0] as LiFiStep & {
           execution: { process: Process[] };
@@ -120,6 +122,7 @@ export function WashTradingContextApp(props: {
           const firstExecution = firstStep.execution.process[0];
           if (firstExecution) {
             txHash = firstExecution.txHash;
+            doneAt = firstExecution.doneAt;
           }
         }
       }
@@ -143,9 +146,10 @@ export function WashTradingContextApp(props: {
             toAmount: route.toAmount,
             toAmountUSD: route.toAmountUSD,
             toChainID: route.toChainId,
+            timestamp: doneAt,
           }),
         });
-        Promise.all([nft.refetch?.(), user.refetch?.()]);
+        await Promise.all([nft.refetch?.(), user.refetch?.()]);
       }
     };
 
@@ -156,7 +160,7 @@ export function WashTradingContextApp(props: {
       widgetEvents.off(WidgetEvent.RouteExecutionCompleted, onCompleted);
       widgetEvents.off(WidgetEvent.RouteExecutionFailed, onFailed);
     };
-  }, [widgetEvents, nft?.refetch, user?.refetch]);
+  }, [widgetEvents, nft.refetch, user.refetch, nft, user]);
 
   return (
     <WashTradingContext.Provider

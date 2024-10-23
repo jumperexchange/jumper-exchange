@@ -14,6 +14,7 @@ type TRequest = {
   toAmount: string;
   toAmountUSD: string;
   toChainID: number;
+  timestamp: number;
 };
 
 export async function POST(request: Request): Promise<Response> {
