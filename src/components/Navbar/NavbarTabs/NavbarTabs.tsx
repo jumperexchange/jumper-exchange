@@ -24,13 +24,10 @@ export const NavbarTabs = () => {
   useEffect(() => {
     const getActiveWashTab = () => {
       if (pathname.includes(WashTabsMap.WashAbout.destination)) {
-        console.log('WASHABOUT Setter');
         setActiveWashTab(WashTabsMap.WashAbout.index);
       } else if (pathname.includes(WashTabsMap.WashCollection.destination)) {
-        console.log('WASHCOLLECTION Setter');
         setActiveWashTab(WashTabsMap.WashCollection.index);
       } else if (pathname.includes(WashTabsMap.WashNFT.destination)) {
-        console.log('WASHNFT Setter');
         setActiveWashTab(WashTabsMap.WashNFT.index);
       }
     };
