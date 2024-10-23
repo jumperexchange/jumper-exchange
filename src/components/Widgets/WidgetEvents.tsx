@@ -14,7 +14,7 @@ import { useMenuStore } from '@/stores/menu';
 import { useMultisigStore } from '@/stores/multisig';
 import { usePortfolioStore } from '@/stores/portfolio';
 import type { RouteExtended } from '@lifi/sdk';
-import { type Route } from '@lifi/sdk';
+import { ChainId, type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import type {
   ChainTokenSelected,
@@ -104,6 +104,14 @@ export function WidgetEvents() {
           enableAddressable: true,
           isConversion: true,
         });
+
+        if (
+          route.fromChainId === ChainId.SOL ||
+          route.toChainId === ChainId.SOL
+        ) {
+          // replace console.log with a call to the analytics service
+          console.log('successful transaction on solana');
+        }
       }
     };
 
