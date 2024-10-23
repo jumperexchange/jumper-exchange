@@ -85,10 +85,6 @@ export function WashTradingContextApp(props: {
   const mint = useMint(nft.refetch, user.refetch);
   const reveal = useReveal(nft.refetch);
   const collection = useGetCollection();
-<<<<<<< HEAD
-=======
-
->>>>>>> b444a786 (feat: update flow to support progress on swap)
   const widgetEvents = useWidgetEvents();
 
   useEffect(() => {
