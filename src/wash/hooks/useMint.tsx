@@ -58,6 +58,7 @@ export function useMint(refetchNft?: VoidFunction): TUseMint {
     let signature: Uint8Array | undefined = undefined;
     let data: { tx: ArrayBufferLike; assetAddress: string } | undefined =
       undefined;
+
     try {
       if (!responsePrepareNft) {
         throw new Error('Response from prepare NFT is undefined');
@@ -66,6 +67,9 @@ export function useMint(refetchNft?: VoidFunction): TUseMint {
         tx: ArrayBufferLike;
         assetAddress: string;
       };
+      if (!data || !data.tx || !data.assetAddress) {
+        throw new Error('Invalid data received from prepare NFT');
+      }
       const tx = umi.transactions.deserialize(new Uint8Array(data.tx));
       const signed = await umi.identity.signTransaction(tx);
       signature = await umi.rpc.sendTransaction(signed);

@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '../common/Button';
 import { useWashTrading } from '../contexts/useWashTrading';
-import { inter } from '../utils/fonts';
 import { cl } from '../utils/utils';
 
 import type { ReactElement } from 'react';
+import { inter } from 'src/fonts/fonts';
 
 /************************************************************************************************
  * CallToActionBox Component

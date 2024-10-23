@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import { colors } from '../utils/theme';
 import { DEFAULT_NFT_COLOR } from '../utils/constants';
-import { titanOne } from '../utils/fonts';
 import { getPepeImage } from '../utils/utils';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -11,6 +10,7 @@ import { WashProgress } from './WashProgress';
 
 import type { ReactElement, ReactNode } from 'react';
 import type { TNFTItem, TProgress } from '../types/types';
+import { titanOne } from 'src/wash/common/WithFonts';
 
 type TNftItemProps = {
   label?: string;
@@ -142,6 +142,7 @@ export function CollectionNFTItem({ nft }: TNftItemProps): ReactElement {
           borderColor={nft?.isRare ? colors.orange[800] : colors.violet[700]}
           width={320}
           height={320}
+          unoptimized
         />
       );
     }

@@ -4,7 +4,7 @@ import { DEFAULT_NFT_COLOR, TOOLTIP_MESSAGES } from '../utils/constants';
 import { cl } from '../utils/utils';
 import styled from '@emotion/styled';
 
-import { titanOne } from '../utils/fonts';
+import { titanOne } from 'src/wash/common/WithFonts';
 import { BoostItem } from './BoostItem';
 import { InfoPopup } from './InfoPopup';
 import { NFTItem } from './NFTItem';
@@ -149,21 +149,21 @@ function PowerupSection(props: {
         <BoostItem
           isSkeleton={props.isSkeleton}
           boostType={'soap'}
-          amount={props.items?.item1 ?? 0}
+          amount={props.items?.soap ?? 0}
           handleUseItem={props.handleUseItem}
           disabled={props.canBeRevealed}
         />
         <BoostItem
           isSkeleton={props.isSkeleton}
           boostType={'sponge'}
-          amount={props.items?.item2 ?? 0}
+          amount={props.items?.sponge ?? 0}
           handleUseItem={props.handleUseItem}
           disabled={props.canBeRevealed}
         />
         <BoostItem
           isSkeleton={props.isSkeleton}
           boostType={'cleanser'}
-          amount={props.items?.item3 ?? 0}
+          amount={props.items?.cleanser ?? 0}
           handleUseItem={props.handleUseItem}
           disabled={props.canBeRevealed}
         />

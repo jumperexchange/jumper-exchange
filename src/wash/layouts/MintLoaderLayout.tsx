@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { titanOne } from '../utils/fonts';
+import { titanOne } from 'src/wash/common/WithFonts';
 import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';

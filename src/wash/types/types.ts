@@ -26,9 +26,9 @@ export type TNFTItem = {
 };
 
 export type TItems = {
-  item1: number;
-  item2: number;
-  item3: number;
+  cleanser: number;
+  soap: number;
+  sponge: number;
 };
 
 export type TOptionalRenderProps<TProps, TChildren = ReactNode> =
