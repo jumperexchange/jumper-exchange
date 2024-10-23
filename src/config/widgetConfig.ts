@@ -11,6 +11,9 @@ export const getDefaultWidgetTheme = (
       typography: {
         fontFamily: theme.typography.fontFamily,
       },
+      header: {
+        overflow: 'visible',
+      },
       container: {
         borderRadius: '12px',
         maxWidth: '100%',

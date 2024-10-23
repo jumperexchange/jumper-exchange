@@ -40,7 +40,7 @@ export const VerifyPage = () => {
       const message = new SiweMessage({
         domain: window.location.host,
         address: address,
-        statement: 'Sign in with Jumper to the app.',
+        statement: 'Sign in with EVM to the Jumperapp.',
         uri: window.location.origin,
         version: '1',
         chainId,
@@ -65,7 +65,7 @@ export const VerifyPage = () => {
       const resp = await (window as any).solana.connect();
       const solanaAddress = resp.publicKey.toString();
       setSolanaPublicKey(solanaAddress);
-      const message = 'Sign in with Solana to the app.';
+      const message = 'Sign in with Solana to the Jumper app.';
       const encodedMessage = new TextEncoder().encode(message);
       const signedMessage = await (window as any).solana.signMessage(
         encodedMessage,
