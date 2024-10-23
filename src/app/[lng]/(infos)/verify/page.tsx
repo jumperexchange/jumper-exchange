@@ -3,7 +3,7 @@ import VerifyPage from 'src/app/ui/verify/VerifyPage';
 
 export const metadata: Metadata = {
   title: 'Verify',
-  description: 'Verify is the page to verify your wallet.',
+  description: 'Verify your wallet on Jumper Exchange.',
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/verify`,
   },
