@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
-import { type ReactElement, useMemo } from 'react';
-import Image from 'next/image';
-import { colors } from '../utils/theme';
-import { DEFAULT_NFT_COLOR } from '../utils/constants';
-import { getPepeImage } from '../utils/utils';
 import styled from '@emotion/styled';
-import { titanOne } from 'src/wash/common/WithFonts';
-import { RevealsBackground } from './RevealBackground';
+import Image from 'next/image';
+import { type ReactElement, useMemo } from 'react';
 import type { TNFTItem } from '../types/types';
+import { DEFAULT_NFT_COLOR } from '../utils/constants';
+import { getPepeImage } from '../utils/getPepeImage';
+import { colors } from '../utils/theme';
+import { RevealsBackground } from './RevealBackground';
+import { titanOne } from './fonts';
 
 type TRevealNFTItem = {
   label: string;

@@ -1,15 +1,15 @@
 'use client';
 
+import styled from '@emotion/styled';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { RevealNFTItem } from '../common/RevealNFTItem';
 import { useWashTrading } from '../contexts/useWashTrading';
 import { countExtraXPFromItems } from '../utils/utils';
-import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
-import { CallToActionBox } from '../common/CallToActionBox';
-import { titanOne } from 'src/wash/common/WithFonts';
 import { inter } from 'src/fonts/fonts';
+import { CallToActionBox } from '../common/CallToActionBox';
+import { titanOne } from '../common/fonts';
 
 /************************************************************************************************
  * Defining the styled components style for the RevealedNFTLayout component

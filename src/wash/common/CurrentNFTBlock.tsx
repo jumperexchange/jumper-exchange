@@ -1,19 +1,19 @@
-import { Fragment, type ReactElement, useMemo } from 'react';
+import styled from '@emotion/styled';
 import Image from 'next/image';
+import { Fragment, useMemo, type ReactElement } from 'react';
 import { DEFAULT_NFT_COLOR, TOOLTIP_MESSAGES } from '../utils/constants';
 import { cl } from '../utils/utils';
-import styled from '@emotion/styled';
 
-import { titanOne } from 'src/wash/common/WithFonts';
 import { BoostItem } from './BoostItem';
 import { InfoPopup } from './InfoPopup';
 import { NFTItem } from './NFTItem';
 import { RevealRaysBackground } from './RaysBackground';
 import { WashProgress } from './WashProgress';
 
-import { colors, WashH2, type TColor } from '../utils/theme';
 import type { TItems, TNFTItem, TProgress } from '../types/types';
 import type { TCleaningItem } from '../types/wash';
+import { colors, WashH2, type TColor } from '../utils/theme';
+import { titanOne } from './fonts';
 
 /************************************************************************************************
  * BorderStroke Component

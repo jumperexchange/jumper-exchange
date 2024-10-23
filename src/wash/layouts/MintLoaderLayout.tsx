@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { titanOne } from 'src/wash/common/WithFonts';
 import styled from '@emotion/styled';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 import type { ReactElement } from 'react';
+import { titanOne } from '../common/fonts';
 
 /************************************************************************************************
  * Defining the styled components style for the MintLoaderLayout component

@@ -14,6 +14,7 @@ import type { Viewport } from 'next/types';
 import type { ReactNode } from 'react';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { SettingsStoreProvider } from 'src/stores/settings';
+import { titanOne } from 'src/wash/common/fonts';
 import type { ActiveThemeResult } from '../lib/getActiveTheme';
 import { getActiveTheme } from '../lib/getActiveTheme';
 import { description, siteName, title } from '../lib/metadata';
@@ -126,7 +127,10 @@ export default async function RootLayout({
     <html
       lang={lng || fallbackLng}
       suppressHydrationWarning
-      className={fonts.map((f) => f.variable).join(' ')}
+      className={fonts
+        .concat([titanOne])
+        .map((f) => f.variable)
+        .join(' ')}
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>

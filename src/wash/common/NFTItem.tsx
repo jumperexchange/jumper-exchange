@@ -1,18 +1,18 @@
 /** @jsxImportSource @emotion/react */
-import Image from 'next/image';
-import { colors } from '../utils/theme';
-import { useWashTrading } from '../contexts/useWashTrading';
-import { DEFAULT_NFT_COLOR } from '../utils/constants';
-import { getPepeImage } from '../utils/utils';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import Image from 'next/image';
+import { useWashTrading } from '../contexts/useWashTrading';
+import { DEFAULT_NFT_COLOR } from '../utils/constants';
+import { colors } from '../utils/theme';
 
 import { Button } from './Button';
 import { WashProgress } from './WashProgress';
 
 import type { ReactElement, ReactNode } from 'react';
-import type { TColor } from '../utils/theme';
 import type { TNFTItem, TProgress } from '../types/types';
+import { getPepeImage } from '../utils/getPepeImage';
+import type { TColor } from '../utils/theme';
 
 type TNFTItemProps = {
   label?: string;
@@ -124,10 +124,7 @@ export function NFTItem({
     if (nft?.progress === 100) {
       return (
         <NFTImage
-          src={
-            `/wash/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}` ??
-            ''
-          }
+          src={`/wash/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
           border={colors[(nft?.color || DEFAULT_NFT_COLOR) as TColor][800]}
           alt={'nft-image'}
           width={320}
@@ -149,10 +146,7 @@ export function NFTItem({
     if (!nft?.isRevealed) {
       return (
         <NFTImage
-          src={
-            `/wash/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}` ??
-            ''
-          }
+          src={`/wash/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
           alt={'nft-image'}
           border={colors[(nft?.color || DEFAULT_NFT_COLOR) as TColor][800]}
           width={320}
