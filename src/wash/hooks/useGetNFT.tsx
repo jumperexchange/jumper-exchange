@@ -26,7 +26,7 @@ export type TGetNFT = {
   refetch?: VoidFunction;
 };
 
-export function useGetNFT(): TGetNFT {
+export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
   const [dataRefreshedFor, set_dataRefreshedFor] = useState<string | undefined>(
     undefined,
   );
@@ -87,9 +87,10 @@ export function useGetNFT(): TGetNFT {
         },
       },
     );
-    cachedQuery.refetch();
     set_dataRefreshedFor(umi?.identity.publicKey);
-  }, [umi?.identity.publicKey, account.address, cachedQuery]);
+    cachedQuery.refetch();
+    refetchUser?.();
+  }, [umi?.identity.publicKey, account.address, cachedQuery, refetchUser]);
 
   /************************************************************************************************
    * useEffect Hook for Fetching Updated NFT Data
