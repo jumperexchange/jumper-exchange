@@ -183,7 +183,7 @@ function RiveFallbackWrapper(): ReactElement {
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * CallToActionBox Component
  *
  * This component renders a call-to-action box with a title, subtitle, and a button.
