@@ -8,6 +8,7 @@ import styled from '@emotion/styled';
 import { titanOne } from 'src/wash/common/WithFonts';
 import { RevealsBackground } from './RevealBackground';
 import type { TNFTItem } from '../types/types';
+import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 
 type TRevealNFTItem = {
   label: string;
@@ -23,7 +24,7 @@ const RevealNFTContainer = styled.div<{ backgroundColor: string }>`
   background-color: ${(props) => props.backgroundColor};
   width: 320px;
   height: 320px;
-  border-radius: 16px;
+  border-radius: 24px;
 `;
 const NFTLabelBox = styled.div<{ backgroundColor: string }>`
   position: absolute;
@@ -62,7 +63,7 @@ const NFTImageBox = styled.div<{
   borderColor: string;
 }>`
   position: relative;
-  border-radius: 16px;
+  border-radius: 24px;
   width: 320px;
   height: 320px;
   overflow: hidden;
@@ -117,6 +118,15 @@ const NFTName = styled.span<{ isRevealing: boolean }>`
   text-align: center;
 `;
 
+const RiveBox = styled.div<{ isRevealing: boolean }>`
+  position: absolute;
+  inset: 2px;
+  overflow: hidden;
+  border-radius: 24px;
+  opacity: ${(props) => (props.isRevealing ? 1 : 0)};
+  transition: opacity 0.5s ease-in-out;
+`;
+
 /**********************************************************************************************
  * RevealNFTItem Component
  *
@@ -143,6 +153,16 @@ export function RevealNFTItem({
     return nft.isRare ? colors.orange : colors.violet;
   }, [isRevealing, nft.isRare]);
 
+  const { RiveComponent } = useRive({
+    src: '/wash/reveal.riv',
+    stateMachines: 'State Machine 1',
+    layout: new Layout({
+      fit: Fit.None,
+      alignment: Alignment.Center,
+    }),
+    autoplay: true,
+  });
+
   return (
     <div style={{ position: 'relative' }}>
       <RevealNFTContainer backgroundColor={colorToUse[800]}>
@@ -150,7 +170,6 @@ export function RevealNFTItem({
           <NFTLabelSkeleton isRevealing={isRevealing} />
           <NFTLabel isRevealing={isRevealing}>{label}</NFTLabel>
         </NFTLabelBox>
-
         <NFTImageBox
           backgroundColor={
             !isRevealing && nft.isRare ? colors.gold[800] : colorToUse[800]
@@ -171,6 +190,10 @@ export function RevealNFTItem({
             height={320}
           />
         </NFTImageBox>
+        <RiveBox isRevealing={isRevealing}>
+          <RiveComponent />
+        </RiveBox>
+
         <RevealsBackground isRare={!isRevealing && nft.isRare} />
       </RevealNFTContainer>
 

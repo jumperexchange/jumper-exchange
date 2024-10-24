@@ -23,6 +23,7 @@
     "@mui/material": "^5.16.7",
     "@mui/material-nextjs": "^5.16.6",
     "@next/third-parties": "^14.2.15",
+    "@rive-app/react-canvas": "^4.14.5",
     "@safe-global/safe-apps-sdk": "^9.1.0",
     "@sentry/browser": "^8.34.0",
     "@sentry/nextjs": "^8.34.0",
