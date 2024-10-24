@@ -127,7 +127,7 @@ export function RevealedNFTLayout(): ReactElement {
       />
 
       <RevealedNFTLayoutCallToActionBox>
-        {reveal.isRevealing && (
+        {!reveal.isRevealing && (
           <CallToActionBox
             title={`up to +${countExtraXPFromItems(user?.items)}% exp on next nft`}
             subtitle={
