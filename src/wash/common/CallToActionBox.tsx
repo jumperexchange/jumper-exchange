@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { Button } from '../common/Button';
 import { useWashTrading } from '../contexts/useWashTrading';
 import { cl } from '../utils/utils';
@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import type { ReactElement } from 'react';
 import { inter } from 'src/fonts/fonts';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
+import { colors } from '../utils/theme';
 
 /**************************************************************************************************
  * Defining the styled components style for the RiveFallbackWrapper component
@@ -97,7 +98,7 @@ export function CallToActionBox(props: {
   return (
     <div
       className={cl(
-        'w-full rounded-[32px] border-2 border-violet-800 bg-violet-500 shadow-[6px_6px_0px_0px_#8000FF] md:w-[800px]',
+        `w-full rounded-[32px] border-2 border-violet-800 bg-violet-500 shadow-[6px_6px_0px_0px_${colors.violet[800]}] md:w-[800px]`,
         'flex flex-row gap-4 overflow-hidden transition-all duration-1000 ease-in-out',
         isMounted ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0',
       )}

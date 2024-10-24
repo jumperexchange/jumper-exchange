@@ -1,13 +1,13 @@
 'use client';
 /** @jsxImportSource @emotion/react */
 
+import styled from '@emotion/styled';
 import { WashBackground } from 'src/wash/common/WashBackground';
 import {
   useWashTrading,
   WashTradingContextApp,
 } from 'src/wash/contexts/useWashTrading';
 import { EmptyScreenLayout } from 'src/wash/layouts/EmptyScreenLayout';
-import styled from '@emotion/styled';
 
 import { colors, WashH1 } from 'src/wash/utils/theme';
 
@@ -35,7 +35,7 @@ const CollectionWrapper = styled.div`
   height: min-content;
   background-color: ${colors.violet[500]};
   padding: 2rem 2rem 3rem;
-  box-shadow: 6px 6px 0px 0px #8000ff;
+  box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
   border-radius: 32px;
   border: 2px solid ${colors.violet[800]};
 `;
