@@ -1,6 +1,5 @@
 import type { Token } from '@lifi/sdk';
 import 'server-only';
-import { WASH_ENDPOINT_ROOT_URI } from 'src/wash/utils/constants';
 
 type TRequest = {
   id: string;
@@ -20,6 +19,7 @@ type TRequest = {
 
 export async function POST(request: Request): Promise<Response> {
   const res: TRequest = await request.json();
+  const WASH_ENDPOINT_ROOT_URI = 'https://jumper-wash.builtby.dad';
 
   const response = await fetch(`${WASH_ENDPOINT_ROOT_URI}/lifi/trade`, {
     method: 'POST',
