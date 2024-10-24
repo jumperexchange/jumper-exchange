@@ -141,7 +141,7 @@ export function RevealedNFTLayout(): ReactElement {
       />
 
       <RevealedNFTLayoutCallToActionBox>
-        {reveal.isRevealing && (
+        {!reveal.isRevealing && (
           <CallToActionBox
             title={
               countExtraXPFromItems(user?.items) === 0
