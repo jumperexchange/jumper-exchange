@@ -154,7 +154,7 @@ export function RevealNFTItem({
   }, [isRevealing, nft.isRare]);
 
   const { RiveComponent } = useRive({
-    src: '/wash/reveal.riv',
+    src: '/wash/rive/reveal/rive.riv',
     stateMachines: 'State Machine 1',
     layout: new Layout({
       fit: Fit.None,
