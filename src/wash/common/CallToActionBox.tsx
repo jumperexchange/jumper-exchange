@@ -4,12 +4,60 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Button } from '../common/Button';
 import { useWashTrading } from '../contexts/useWashTrading';
-import { cl } from '../utils/utils';
 import styled from '@emotion/styled';
+
 import type { ReactElement } from 'react';
 import { inter } from 'src/fonts/fonts';
+import { colors, FitContent } from '../utils/theme';
+import { mq } from '../utils/constants';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
-import { colors } from '../utils/theme';
+
+/************************************************************************************************
+ * Defining the styled components style for the CallToActionBox component
+ *************************************************************************************************/
+const CallToActionBoxWrapper = styled.div<{ isMounted: boolean }>`
+  width: 100%;
+  border-radius: 32px;
+  border: 2px solid ${colors.violet[800]};
+  background-color: ${colors.violet[500]};
+  box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
+  display: flex;
+  gap: 4px;
+  overflow: hidden;
+  transition: all 1000ms ease-in-out;
+  transform: translateY(${({ isMounted }) => (isMounted ? '0' : '100%')});
+  opacity: ${({ isMounted }) => (isMounted ? '1' : '0')};
+  ${mq[0]} {
+    width: 800px;
+  }
+`;
+
+const CallToActionBoxContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+  padding-top: 28px;
+  padding-bottom: 28px;
+  padding-right: 32px;
+`;
+
+const CallToActionBoxTitle = styled.h3`
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-family: ${inter.style.fontFamily};
+`;
+
+const CallToActionBoxSubtitle = styled.span`
+  color: #ffffff;
+  opacity: 0.6;
+  font-weight: 500;
+  font-family: ${inter.style.fontFamily};
+`;
 
 /**************************************************************************************************
  * Defining the styled components style for the RiveFallbackWrapper component
@@ -96,39 +144,22 @@ export function CallToActionBox(props: {
   }, []);
 
   return (
-    <div
-      className={cl(
-        `w-full rounded-[32px] border-2 border-violet-800 bg-violet-500 shadow-[6px_6px_0px_0px_${colors.violet[800]}] md:w-[800px]`,
-        'flex flex-row gap-4 overflow-hidden transition-all duration-1000 ease-in-out',
-        isMounted ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0',
-      )}
-    >
+    <CallToActionBoxWrapper isMounted={isMounted}>
       <RiveFallbackWrapper />
-      <div
-        className={'flex flex-row items-center justify-between gap-4 py-7 pr-8'}
-      >
+      <CallToActionBoxContent>
         <div>
-          <h3
-            className={cl(
-              'text-2xl font-black uppercase text-white ',
-              inter.className,
-            )}
-          >
-            {props.title}
-          </h3>
-          <span className={cl('text-white/60 font-medium', inter.className)}>
-            {props.subtitle}
-          </span>
+          <CallToActionBoxTitle>{props.title}</CallToActionBoxTitle>
+          <CallToActionBoxSubtitle>{props.subtitle}</CallToActionBoxSubtitle>
         </div>
-        <div className={'w-fit'}>
+        <FitContent>
           <Button
             isBusy={mint.isMinting}
             title={'Mint new NFT'}
             theme={'pink'}
             onClick={mint.onMint}
           />
-        </div>
-      </div>
-    </div>
+        </FitContent>
+      </CallToActionBoxContent>
+    </CallToActionBoxWrapper>
   );
 }
