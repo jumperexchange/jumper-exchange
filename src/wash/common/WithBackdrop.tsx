@@ -5,6 +5,7 @@ import { DashboardLayout } from 'src/wash/layouts/DashboardLayout';
 import { cl } from 'src/wash/utils/utils';
 
 import type { ReactElement, ReactNode } from 'react';
+import { colors } from '../utils/theme';
 
 /**********************************************************************************************
  * WithBackdrop: A component that wraps content with a conditional backdrop
@@ -37,8 +38,7 @@ export function WithBackdrop(props: {
         <div
           className={'absolute left-0 top-0 z-20 h-1/2 w-full'}
           style={{
-            background:
-              'linear-gradient(360deg, #1B1036 0%, rgba(27, 16, 54, 0) 100%)',
+            background: `linear-gradient(360deg, ${colors.violet[100]} 0%, rgba(27, 16, 54, 0) 100%)`,
             backdropFilter: 'blur(8px)',
           }}
         />
