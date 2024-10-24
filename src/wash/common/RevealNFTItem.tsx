@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { type ReactElement, useMemo } from 'react';
-import Image from 'next/image';
-import { colors } from '../utils/theme';
-import { DEFAULT_NFT_COLOR } from '../utils/constants';
-import { getPepeImage } from '../utils/utils';
 import styled from '@emotion/styled';
-import { titanOne } from 'src/wash/common/WithFonts';
-import { RevealsBackground } from './RevealBackground';
-import type { TNFTItem } from '../types/types';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
+import Image from 'next/image';
+import { type ReactElement, useMemo } from 'react';
+import { titanOne } from 'src/wash/common/WithFonts';
+import type { TNFTItem } from '../types/types';
+import { DEFAULT_NFT_COLOR } from '../utils/constants';
+import { colors } from '../utils/theme';
+import { getPepeImage } from '../utils/utils';
+import { RevealsBackground } from './RevealBackground';
 
 type TRevealNFTItem = {
   label: string;
@@ -18,7 +18,7 @@ type TRevealNFTItem = {
 
 /************************************************************************************************
  * Defining the styled components style for the RevealNFTItem component
- *************************************************************************************************/
+ ************************************************************************************************/
 const RevealNFTContainer = styled.div<{ backgroundColor: string }>`
   border-radius: 4px;
   background-color: ${(props) => props.backgroundColor};
