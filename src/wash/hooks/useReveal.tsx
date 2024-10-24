@@ -87,7 +87,7 @@ export function useReveal(refetchNft?: VoidFunction): TRevealHook {
 
   return {
     onReveal,
-    isRevealing,
+    isRevealing: true,
     revealStatus,
     error,
     hasCanceledReveal,
