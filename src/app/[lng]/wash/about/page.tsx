@@ -55,7 +55,6 @@ const Heading = styled.h1`
 `;
 
 const MobileContentWrapper = styled.div`
-  display: none;
   ${mq[0]} {
     display: inline-block;
     max-width: 335px;
