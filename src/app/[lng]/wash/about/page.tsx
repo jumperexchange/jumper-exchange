@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { RaysBackground } from 'src/wash/common/RaysBackground';
 import { WashTradingContextApp } from 'src/wash/contexts/useWashTrading';
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 import { titanOne } from 'src/wash/common/WithFonts';
 import RiveLogoWrapper from 'src/wash/common/about/RiveLogo';
 import { AboutRouterWithContext } from 'src/wash/common/about/AboutRouter';
@@ -17,17 +16,11 @@ const Wrapper = styled.div`
   padding-top: 220px;
   z-index: 10;
   display: flex;
-  max-height: 1800px;
-  min-height: 100vh;
   width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   overflow: hidden;
-
-  ${mq[0]} {
-    max-height: unset;
-  }
 `;
 
 const Content = styled.div`
@@ -51,13 +44,6 @@ const Heading = styled.h1`
   ${mq[0]} {
     font-size: 40px;
     line-height: 48px;
-  }
-`;
-
-const MobileContentWrapper = styled.div`
-  ${mq[0]} {
-    display: inline-block;
-    max-width: 335px;
   }
 `;
 
@@ -118,6 +104,11 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 40px;
+  ${mq[0]} {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 `;
 
 function AboutPage(): ReactElement {
@@ -128,43 +119,40 @@ function AboutPage(): ReactElement {
       <RiveLogoWrapper />
 
       <ContentWrapper>
-        <MobileContentWrapper>
-          <Heading>{'Swap. wash. and win.'}</Heading>
-          <Description>
-            {"Trade on Jumper to 'wash clean' your NFT,"}
-            <br /> {'reveal a '}
-            <GoldenSpan>{'Golden Ser Bridgealot'}</GoldenSpan>
-            {' to win Jumper points, NFTs, and memecoins!'}
-          </Description>
+        <Heading>{'Swap. wash. and win.'}</Heading>
+        <Description>
+          {"Trade on Jumper to 'wash clean' your NFT,"}
+          <br /> {'reveal a '}
+          <GoldenSpan>{'Golden Ser Bridgealot'}</GoldenSpan>
+          {' to win big!'}
+        </Description>
 
-          <AboutRouterWithContext />
-        </MobileContentWrapper>
+        <AboutRouterWithContext />
+
         <RiveSlideshowWrapper />
 
-        <MobileContentWrapper>
-          <HowDoIWash>{'"How do I wash trade?"'}</HowDoIWash>
+        <HowDoIWash>{'"How do I wash trade?"'}</HowDoIWash>
 
-          <StepsWrapper>
-            <StepImage
-              src={'/wash/about/step-1.png'}
-              width={1080}
-              height={1080}
-              alt={'step-1'}
-            />
-            <StepImage
-              src={'/wash/about/step-2.png'}
-              width={1080}
-              height={1080}
-              alt={'step-2'}
-            />
-            <StepImage
-              src={'/wash/about/step-3.png'}
-              width={1080}
-              height={1080}
-              alt={'step-3'}
-            />
-          </StepsWrapper>
-        </MobileContentWrapper>
+        <StepsWrapper>
+          <StepImage
+            src={'/wash/about/step-1.png'}
+            width={1080}
+            height={1080}
+            alt={'step-1'}
+          />
+          <StepImage
+            src={'/wash/about/step-2.png'}
+            width={1080}
+            height={1080}
+            alt={'step-2'}
+          />
+          <StepImage
+            src={'/wash/about/step-3.png'}
+            width={1080}
+            height={1080}
+            alt={'step-3'}
+          />
+        </StepsWrapper>
       </ContentWrapper>
     </Wrapper>
   );
