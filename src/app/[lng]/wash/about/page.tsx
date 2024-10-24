@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactElement } from 'react';
+import { useState, type ReactElement } from 'react';
 import { RaysBackground } from 'src/wash/common/RaysBackground';
 import { WashTradingContextApp } from 'src/wash/contexts/useWashTrading';
 import styled from '@emotion/styled';
@@ -9,6 +9,7 @@ import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 import { titanOne } from 'src/wash/common/WithFonts';
 import RiveLogoWrapper from 'src/wash/common/about/RiveLogo';
 import { AboutRouterWithContext } from 'src/wash/common/about/AboutRouter';
+import RiveSlideshowWrapper from 'src/wash/common/about/RiveSlideshow';
 
 const Wrapper = styled.div`
   position: relative;
@@ -76,11 +77,6 @@ const StepsWrapper = styled.div`
   justify-content: center;
 `;
 
-const RiveCarouselWrapper = styled.div`
-  width: 3405px;
-  height: 360px;
-`;
-
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -89,16 +85,6 @@ const ContentWrapper = styled.div`
 `;
 
 function AboutPage(): ReactElement {
-  const { RiveComponent: RiveCarousel } = useRive({
-    src: '/wash/landing_foam-nft.riv',
-    autoplay: true,
-    layout: new Layout({
-      fit: Fit.Fill,
-      alignment: Alignment.Center,
-    }),
-    stateMachines: 'State Machine 1',
-  });
-
   return (
     <Wrapper>
       <RaysBackground />
@@ -115,27 +101,25 @@ function AboutPage(): ReactElement {
         </Description>
 
         <AboutRouterWithContext />
-        <RiveCarouselWrapper>
-          <RiveCarousel />
-        </RiveCarouselWrapper>
+        <RiveSlideshowWrapper />
 
         <HowDoIWash>{'"How do I wash trade?"'}</HowDoIWash>
 
         <StepsWrapper>
           <StepImage
-            src={'/wash/step-1.png'}
+            src={'/wash/about/step-1.png'}
             width={1080}
             height={1080}
             alt={'step-1'}
           />
           <StepImage
-            src={'/wash/step-2.png'}
+            src={'/wash/about/step-2.png'}
             width={1080}
             height={1080}
             alt={'step-2'}
           />
           <StepImage
-            src={'/wash/step-3.png'}
+            src={'/wash/about/step-3.png'}
             width={1080}
             height={1080}
             alt={'step-3'}

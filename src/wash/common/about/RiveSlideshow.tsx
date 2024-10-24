@@ -3,28 +3,26 @@ import styled from '@emotion/styled';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 import Image from 'next/image';
 
-const LogoWrapper = styled.div`
-  width: 260px;
-  height: 170px;
-  position: absolute;
-  top: 100px;
+const RiveCarouselWrapper = styled.div`
+  width: 3840px;
+  height: 406px;
+  position: relative;
 `;
-const LogoImage = styled(Image)<{ isLoaded: boolean }>`
-  transition: opacity 0.5s ease-in;
+const SlideshowImage = styled(Image)<{ isLoaded: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
-  width: 260px;
-  height: 170px;
-  min-width: 260px;
-  min-height: 170px;
+  width: 3840px;
+  height: 406px;
+  min-width: 3840px;
+  min-height: 406px;
   opacity: ${({ isLoaded }) => (isLoaded ? 0 : 1)};
 `;
 
-export default function RiveLogoWrapper(): ReactElement {
+export default function RiveSlideshowWrapper(): ReactElement {
   const [isLoaded, set_isLoaded] = useState<boolean>(false);
-  const { RiveComponent: RiveLogo, rive } = useRive({
-    src: '/wash/about/landing-logo.riv',
+  const { RiveComponent: RiveSlideshow, rive } = useRive({
+    src: '/wash/about/landing-slideshow.riv',
     autoplay: true,
     stateMachines: 'State Machine 1',
     layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
@@ -35,22 +33,22 @@ export default function RiveLogoWrapper(): ReactElement {
   });
 
   return (
-    <LogoWrapper>
-      <LogoImage
+    <RiveCarouselWrapper>
+      <SlideshowImage
         isLoaded={isLoaded}
-        src={'/wash/about/logo.png'}
-        alt={'logo'}
-        width={260}
-        height={170}
+        src={'/wash/about/slideshow.png'}
+        alt={'slideshow'}
+        width={3840}
+        height={406}
       />
-      <RiveLogo
-        width={260}
-        height={170}
+      <RiveSlideshow
+        width={3840}
+        height={406}
         style={{
           position: 'absolute',
           opacity: isLoaded ? 1 : 0,
         }}
       />
-    </LogoWrapper>
+    </RiveCarouselWrapper>
   );
 }
