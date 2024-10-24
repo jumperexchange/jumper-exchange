@@ -2,8 +2,9 @@ import { type WidgetConfig } from '@lifi/widget';
 
 import { CLEANING_ITEMS } from './constants';
 
-import type { TItems } from '../types/types';
 import { publicRPCList } from 'src/const/rpcList';
+import type { TItems } from '../types/types';
+import { colors } from './theme';
 
 /************************************************************************************************
  * Joins the given classes into a single string.
@@ -88,28 +89,28 @@ export const widgetConfig: WidgetConfig = {
   theme: {
     palette: {
       primary: {
-        main: '#FF009D',
+        main: colors.pink[800],
       },
       text: {
         primary: '#ffffff',
         secondary: '#ffffff',
       },
       secondary: {
-        main: '#28065F',
+        main: colors.violet[300],
       },
       background: {
-        default: '#28065F',
-        paper: '#390083',
+        default: colors.violet[200],
+        paper: colors.violet[300],
       },
       grey: {
-        300: '#28065F',
-        800: '#420097',
+        300: colors.violet[300],
+        800: colors.violet[400],
       },
     },
     container: {
       boxShadow: '0px 8px 32px rgba(0, 0, 0, 0.08)',
       borderRadius: '32px',
-      backgroundColor: '#28065F',
+      backgroundColor: colors.violet[300],
     },
   },
   integrator: 'MOM',

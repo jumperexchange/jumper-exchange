@@ -1,13 +1,14 @@
-import { Fragment } from 'react';
-import { cl } from '../utils/utils';
 import {
   Dialog,
   DialogPanel,
   Transition,
   TransitionChild,
 } from '@headlessui/react';
+import { Fragment } from 'react';
+import { cl } from '../utils/utils';
 
 import type { ReactElement } from 'react';
+import { colors } from '../utils/theme';
 
 type TModalProps = {
   isOpen: boolean;
@@ -34,9 +35,13 @@ export function Modal({
           leaveTo={'opacity-0'}
         >
           <div
-            className={
-              'fixed inset-0 bg-[#1B1036CC] backdrop-blur transition-opacity'
-            }
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: `${colors.violet[100]}CC`,
+              backdropFilter: 'blur',
+              transition: 'opacity 300ms ease-in-out',
+            }}
           />
         </TransitionChild>
         <div className={'fixed inset-0 z-[1001] overflow-y-auto'}>
