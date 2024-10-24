@@ -1,10 +1,10 @@
 'use client';
 
-import { type ReactElement, useMemo, useRef } from 'react';
-import Image from 'next/image';
-import { colors, WashH1 } from '../utils/theme';
-import { QUESTS, TOOLTIP_MESSAGES } from '../utils/constants';
 import styled from '@emotion/styled';
+import Image from 'next/image';
+import { type ReactElement, useMemo, useRef } from 'react';
+import { QUESTS, TOOLTIP_MESSAGES } from '../utils/constants';
+import { colors, WashH1 } from '../utils/theme';
 
 import { CollectButton } from './CollectButton';
 import { InfoPopup } from './InfoPopup';
@@ -23,7 +23,7 @@ const QuestItemWrapper = styled.div`
   border-radius: 1rem;
   background-color: ${colors.violet[200]};
   padding: 0.5rem;
-  box-shadow: 4px 4px 0px #8000ff;
+  box-shadow: 4px 4px 0px ${colors.violet[800]};
   transform: skew(-6deg);
 `;
 
@@ -36,18 +36,18 @@ const BoosterWrapper = styled.div<{ isCompleted: boolean; isCommon: boolean }>`
   min-width: 88px;
   position: relative;
   box-shadow:
-    4px 4px 0px 0px #390083,
-    0px 0px 0px 0px #00b6bf,
-    0px 0px 0px 0px #ff009d;
+    4px 4px 0px 0px ${colors.violet[300]},
+    0px 0px 0px 0px ${colors.cyan[800]},
+    0px 0px 0px 0px ${colors.pink[800]};
   transition: all;
   transition-duration: 600ms;
   &:hover {
     box-shadow: ${(props) =>
       props.isCompleted && props.isCommon
-        ? '4px 4px 0px 0px #FF009D'
+        ? `4px 4px 0px 0px ${colors.pink[800]}`
         : props.isCompleted
-          ? '4px 4px 0px 0px #00B6BF'
-          : '4px 4px 0px 0px #390083, 0px 0px 0px 0px #00b6bf, 0px 0px 0px 0px #ff009d;'};
+          ? `4px 4px 0px 0px ${colors.cyan[800]}`
+          : `4px 4px 0px 0px ${colors.violet[300]}, 0px 0px 0px 0px ${colors.cyan[800]}, 0px 0px 0px 0px ${colors.pink[800]};`};
     transition: ${(props) =>
       props.isCompleted && props.isCommon ? 'all ease-in' : 'all'};
   }
@@ -205,7 +205,7 @@ const QuestsListWrapper = styled.div`
   border: 2px solid ${colors.violet[800]};
   background-color: ${colors.violet[500]};
   padding: 32px;
-  box-shadow: 6px 6px 0px 0px #8000ff;
+  box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
 `;
 const QuestsListHeader = styled.div`
   display: flex;
