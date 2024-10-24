@@ -16,7 +16,7 @@ import { colors, WashH1 } from '../utils/theme';
 import { inter } from 'src/fonts/fonts';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { mq } from '../utils/constants';
-import { SwapWarning } from '../common/SwapWarning';
+import { SwapWarningWrapper } from '../common/SwapWarning';
 /************************************************************************************************
  * OverkillModal: A modal component to warn users about potential overkill when using an item
  *
@@ -184,7 +184,7 @@ export function DashboardLayout(): ReactElement {
               <LiFiWidget integrator={'Mom'} config={widgetConfig} />
             </ClientOnly>
           </SwapSection>
-          <SwapWarning />
+          <SwapWarningWrapper />
         </WarngingSwapWrapper>
       </DashboardLayoutContainer>
     </Fragment>

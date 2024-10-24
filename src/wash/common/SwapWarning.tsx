@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
-import type { ReactElement } from 'react';
+import { Fragment, useEffect, useState, type ReactElement } from 'react';
 import { IconInfo } from './icons/IconInfo';
+import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 
-const Warning = styled.div`
+const WarningWrapper = styled.div<{ isMounted: boolean }>`
   background-color: #ffe5004d;
   border: 2px solid #ffc700;
   backdrop-filter: blur(32px);
@@ -14,6 +15,9 @@ const Warning = styled.div`
   gap: 1rem;
   font-weight: 500;
   align-items: center;
+  transition: all 1000ms ease-in-out;
+  transform: translateY(${({ isMounted }) => (isMounted ? '0' : '50%')});
+  opacity: ${({ isMounted }) => (isMounted ? '1' : '0')};
 `;
 const WarningHeading = styled.p`
   font-size: 14px;
@@ -36,9 +40,15 @@ const WarningIcon = styled(IconInfo)`
   min-width: 23px;
 `;
 
-export function SwapWarning(): ReactElement {
+function SwapWarning(): ReactElement {
+  const [isMounted, set_isMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setTimeout(() => set_isMounted(true), 1000);
+  }, []);
+
   return (
-    <Warning>
+    <WarningWrapper isMounted={isMounted}>
       <WarningIcon color={'#835E00'} />
       <WarningContent>
         <WarningHeading>Warning</WarningHeading>
@@ -47,6 +57,34 @@ export function SwapWarning(): ReactElement {
           progress!
         </WarningText>
       </WarningContent>
-    </Warning>
+    </WarningWrapper>
   );
+}
+
+export function SwapWarningWrapper(): ReactElement {
+  const [shouldDisplayWarning, set_shouldDisplayWarning] =
+    useState<boolean>(false);
+  const widgetEvents = useWidgetEvents();
+
+  useEffect(() => {
+    const onStarted = async (): Promise<void> => {
+      set_shouldDisplayWarning(true);
+    };
+
+    const onCompleted = async (): Promise<void> => {
+      set_shouldDisplayWarning(false);
+    };
+
+    widgetEvents.on(WidgetEvent.RouteExecutionStarted, onStarted);
+    widgetEvents.on(WidgetEvent.RouteExecutionFailed, onCompleted);
+    widgetEvents.on(WidgetEvent.RouteExecutionCompleted, onCompleted);
+
+    return () => {
+      widgetEvents.off(WidgetEvent.RouteExecutionStarted, onStarted);
+      widgetEvents.off(WidgetEvent.RouteExecutionCompleted, onCompleted);
+      widgetEvents.off(WidgetEvent.RouteExecutionFailed, onCompleted);
+    };
+  }, [widgetEvents]);
+
+  return shouldDisplayWarning ? <SwapWarning /> : <Fragment />;
 }
