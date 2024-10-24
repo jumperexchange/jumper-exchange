@@ -8,6 +8,7 @@ import styled from '@emotion/styled';
 import { titanOne } from 'src/wash/common/WithFonts';
 import { RevealsBackground } from './RevealBackground';
 import type { TNFTItem } from '../types/types';
+import Rive, { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 
 type TRevealNFTItem = {
   label: string;
@@ -143,6 +144,19 @@ export function RevealNFTItem({
     return nft.isRare ? colors.orange : colors.violet;
   }, [isRevealing, nft.isRare]);
 
+  const { RiveComponent } = useRive({
+    // Load a local riv `clean_the_car.riv` or upload your own!
+    src: '/wash/reveal.riv',
+    // Be sure to specify the correct state machine (or animation) name
+    stateMachines: 'Motion',
+    // This is optional.Provides additional layout control.
+    layout: new Layout({
+      fit: Fit.FitWidth, // Change to: rive.Fit.Contain, or Cover
+      alignment: Alignment.Center,
+    }),
+    autoplay: true,
+  });
+
   return (
     <div style={{ position: 'relative' }}>
       <RevealNFTContainer backgroundColor={colorToUse[800]}>
@@ -150,6 +164,8 @@ export function RevealNFTItem({
           <NFTLabelSkeleton isRevealing={isRevealing} />
           <NFTLabel isRevealing={isRevealing}>{label}</NFTLabel>
         </NFTLabelBox>
+
+        <RiveComponent />
 
         <NFTImageBox
           backgroundColor={
