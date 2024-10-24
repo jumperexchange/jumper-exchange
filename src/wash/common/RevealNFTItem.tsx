@@ -182,7 +182,7 @@ export function RevealNFTItem({
             unoptimized
             src={
               nft.imageUri ||
-              `/wash/${getPepeImage(100, nft?.color ?? DEFAULT_NFT_COLOR)}` ||
+              `/wash/cleaning-stage/${getPepeImage(100, nft?.color ?? DEFAULT_NFT_COLOR)}` ||
               ''
             }
             alt={'nft-image'}
