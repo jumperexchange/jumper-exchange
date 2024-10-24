@@ -4074,6 +4074,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rive-app/canvas@npm:2.21.6":
+  version: 2.21.6
+  resolution: "@rive-app/canvas@npm:2.21.6"
+  checksum: 10/63dee5a3b6b7150a0cb3abf15d275ad0333c975ea59a85b95655197a7682e6ab8a0aabfe67be298b58aa5e7918089bb302b09bcbb338606965b452c19576c661
+  languageName: node
+  linkType: hard
+
+"@rive-app/react-canvas@npm:^4.14.5":
+  version: 4.14.5
+  resolution: "@rive-app/react-canvas@npm:4.14.5"
+  dependencies:
+    "@rive-app/canvas": "npm:2.21.6"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 10/9c65da7eb850bca812cd717a6f9037e23acd499a7aa2ea3ee70134384b94c17f85450126a5364687af4b4fda3ec77b5fba510046d30d33fd4652381ad307b40b
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-commonjs@npm:26.0.1":
   version: 26.0.1
   resolution: "@rollup/plugin-commonjs@npm:26.0.1"
@@ -9793,6 +9811,7 @@ __metadata:
     "@next/eslint-plugin-next": "npm:^14.2.15"
     "@next/third-parties": "npm:^14.2.15"
     "@playwright/test": "npm:^1.48.1"
+    "@rive-app/react-canvas": "npm:^4.14.5"
     "@safe-global/safe-apps-sdk": "npm:^9.1.0"
     "@sentry/browser": "npm:^8.34.0"
     "@sentry/nextjs": "npm:^8.34.0"
