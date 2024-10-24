@@ -9,7 +9,7 @@ import { cl } from '../utils/utils';
 import type { ReactElement } from 'react';
 import { inter } from 'src/fonts/fonts';
 
-/************************************************************************************************
+/**************************************************************************************************
  * CallToActionBox Component
  *
  * This component renders a call-to-action box with a title, subtitle, and a button.

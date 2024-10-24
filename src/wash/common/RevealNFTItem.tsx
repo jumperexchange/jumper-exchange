@@ -16,7 +16,7 @@ type TRevealNFTItem = {
   isRevealing: boolean;
 };
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the RevealNFTItem component
  *************************************************************************************************/
 const RevealNFTContainer = styled.div<{ backgroundColor: string }>`

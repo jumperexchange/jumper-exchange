@@ -21,7 +21,7 @@ type TNFTItemProps = {
   isSkeleton?: boolean;
 };
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the NFT item component
  *************************************************************************************************/
 const Label = styled.div`
@@ -81,7 +81,7 @@ const WashProgressContainer = styled.div`
   left: 50%;
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * NFTItem Component
  *
  * This component renders an NFT item with various states such as revealed, not revealed, and

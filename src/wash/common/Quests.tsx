@@ -13,7 +13,7 @@ import { IconDone } from './icons/IconDone';
 import type { TQuest } from '../types/wash';
 import { useWashTrading } from '../contexts/useWashTrading';
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the QuestItem component
  *************************************************************************************************/
 const QuestItemWrapper = styled.div`
@@ -196,7 +196,7 @@ export function QuestItem(props: TQuest): ReactElement {
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the QuestsList component
  *************************************************************************************************/
 const QuestsListWrapper = styled.div`
@@ -220,7 +220,7 @@ const QuestList = styled.div`
   min-height: 40dvh;
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * QuestsList Component
  *
  * This component renders a list of quests or a skeleton placeholder.

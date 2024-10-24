@@ -14,7 +14,7 @@ import type { ReactElement } from 'react';
 import type { TCleaningItem } from '../types/wash';
 import { colors, WashH1 } from '../utils/theme';
 import { inter } from 'src/fonts/fonts';
-/************************************************************************************************
+/**************************************************************************************************
  * OverkillModal: A modal component to warn users about potential overkill when using an item
  *
  * This component displays a warning modal when a user is about to use a boost that exceeds
@@ -73,7 +73,7 @@ export function OverkillModal(props: {
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the DashboardLayout component
  *************************************************************************************************/
 const DashboardLayoutContainer = styled.div`
@@ -104,7 +104,7 @@ const SwapSection = styled.div`
   border-radius: 32px;
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * DashboardLayout: Main component for the washing dashboard
  *
  * This component orchestrates the layout and functionality of the NFT washing dashboard.
