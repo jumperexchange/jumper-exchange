@@ -40,13 +40,13 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <EVMProvider>
-      <SVMProvider>
-        <UTXOProvider>
+      <UTXOProvider>
+        <SVMProvider>
           <WalletMenuProvider>
             <WalletTrackingProvider>{children}</WalletTrackingProvider>
           </WalletMenuProvider>
-        </UTXOProvider>
-      </SVMProvider>
+        </SVMProvider>
+      </UTXOProvider>
     </EVMProvider>
   );
 };
