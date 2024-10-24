@@ -35,7 +35,13 @@ export function Modal({
           leaveTo={'opacity-0'}
         >
           <div
-            className={`fixed inset-0 bg-[${colors.violet[100]}CC] backdrop-blur transition-opacity`}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: `${colors.violet[100]}CC`,
+              backdropFilter: 'blur',
+              transition: 'opacity 300ms ease-in-out',
+            }}
           />
         </TransitionChild>
         <div className={'fixed inset-0 z-[1001] overflow-y-auto'}>
