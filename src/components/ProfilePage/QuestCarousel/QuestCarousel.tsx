@@ -3,6 +3,7 @@ import { CarouselContainer } from 'src/components/Blog';
 import { QuestCarouselContainer } from './QuestCarousel.style';
 import { QuestCarouselItems } from './QuestCarouselItems';
 import { Trait } from 'src/types/loyaltyPass';
+import { QuestCarouselNumericItems } from './QuestCarouseNumericItems';
 
 interface QuestCarouselProps {
   pastCampaigns?: string[];
@@ -21,7 +22,7 @@ export const QuestCarousel = ({
         {/** render quests */}
         <QuestCarouselItems pastCampaigns={pastCampaigns} traits={traits} />
         {/** render ongoing numeric quests */}
-        {/* <QuestCarouselNumericItems /> */}
+        <QuestCarouselNumericItems />
       </CarouselContainer>
     </QuestCarouselContainer>
   );
