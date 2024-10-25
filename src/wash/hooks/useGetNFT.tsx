@@ -92,7 +92,7 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
     refetchUser?.();
   }, [umi?.identity.publicKey, account.address, cachedQuery, refetchUser]);
 
-  /************************************************************************************************
+  /**************************************************************************************************
    * useEffect Hook for Fetching Updated NFT Data
    *
    * This effect is responsible for triggering the fetchUpdatedNFT function when certain
@@ -124,7 +124,7 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
     dataRefreshedFor,
   ]);
 
-  /************************************************************************************************
+  /**************************************************************************************************
    * This section processes and transforms the NFT data for use in the component.
    *
    * - mostUpToDateQuery: Selects the most recent query data (updated or cached).

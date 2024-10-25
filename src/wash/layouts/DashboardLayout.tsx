@@ -17,7 +17,8 @@ import { inter } from 'src/fonts/fonts';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { mq } from '../utils/constants';
 import { SwapWarningWrapper } from '../common/SwapWarning';
-/************************************************************************************************
+
+/**************************************************************************************************
  * OverkillModal: A modal component to warn users about potential overkill when using an item
  *
  * This component displays a warning modal when a user is about to use a boost that exceeds
@@ -76,7 +77,7 @@ export function OverkillModal(props: {
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the DashboardLayout component
  *************************************************************************************************/
 const DashboardLayoutContainer = styled.div`
@@ -117,7 +118,7 @@ const WarngingSwapWrapper = styled.div`
   }
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * DashboardLayout: Main component for the washing dashboard
  *
  * This component orchestrates the layout and functionality of the NFT washing dashboard.

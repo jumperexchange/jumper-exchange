@@ -11,7 +11,7 @@ import { CallToActionBox } from '../common/CallToActionBox';
 import { titanOne } from 'src/wash/common/WithFonts';
 import { inter } from 'src/fonts/fonts';
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the RevealedNFTLayout component
  *************************************************************************************************/
 const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
@@ -49,7 +49,7 @@ const RevealedNFTLayoutCallToActionBox = styled.div`
   margin-top: 66px;
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * RevealedNFTLayout Component
  *
  * This component is responsible for displaying the NFT reveal screen. It shows the revealed NFT,
