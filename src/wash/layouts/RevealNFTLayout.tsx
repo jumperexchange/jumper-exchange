@@ -129,9 +129,15 @@ export function RevealedNFTLayout(): ReactElement {
       <RevealedNFTLayoutCallToActionBox>
         {!reveal.isRevealing && (
           <CallToActionBox
-            title={`up to +${countExtraXPFromItems(user?.items)}% exp on next nft`}
+            title={
+              countExtraXPFromItems(user?.items) === 0
+                ? `Keep washing anon!`
+                : `GET +${countExtraXPFromItems(user?.items)}% BOOST on next nft`
+            }
             subtitle={
-              'Mint another NFT and receive additional progress from start!'
+              countExtraXPFromItems(user?.items) === 0
+                ? 'Mint new NFT and wash it clean for another chance to win valuable NFTs and blue chip memecoins.'
+                : 'You’ve still got power ups in your inventory. Mint another NFT and put them to good use!'
             }
           />
         )}
