@@ -7,7 +7,7 @@ import { AboutRouterWithContext } from '../../../../wash/common/about/AboutRoute
 import RiveLogoWrapper from '../../../../wash/common/about/RiveLogo';
 import RiveSlideshowWrapper from '../../../../wash/common/about/RiveSlideshow';
 import { RaysBackground } from '../../../../wash/common/RaysBackground';
-import { titanOne } from '../../../../wash/common/WithFonts';
+import { titanOne } from '../../../../wash/common/fonts';
 import { WashTradingContextApp } from '../../../../wash/contexts/useWashTrading';
 import { mq } from '../../../../wash/utils/theme';
 

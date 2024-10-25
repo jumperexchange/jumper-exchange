@@ -8,7 +8,7 @@ import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 import { CallToActionBox } from '../common/CallToActionBox';
-import { titanOne } from '../common/WithFonts';
+import { titanOne } from '../common/fonts';
 import { inter } from '../../fonts/fonts';
 import { mq } from '../utils/theme';
 

@@ -19,10 +19,6 @@ import type {
   Route,
   RouteExecutionUpdate,
 } from '@lifi/widget';
-import {
-  useWalletManagementEvents,
-  WalletManagementEvent,
-} from '@lifi/wallet-management';
 
 type TWashTradingContext = {
   nft: TGetNFT;
@@ -122,12 +118,14 @@ export function WashTradingContextApp(props: {
       console.warn('Success', route);
       let txHash: string | undefined = undefined;
       let doneAt: number | undefined = undefined;
+      let toAmount: number = Number(route.toAmount);
       if (route.steps.length > 0) {
         const firstStep = route.steps[0] as LiFiStep & {
-          execution: { process: Process[] };
+          execution: { process: Process[]; toAmount: string };
         };
         if ((firstStep?.execution?.process || []).length > 0) {
           const firstExecution = firstStep.execution.process[0];
+          toAmount = Number(firstStep.execution.toAmount);
           if (firstExecution) {
             txHash = firstExecution.txHash;
             doneAt = Number((firstExecution.doneAt || 0) / 1000);
@@ -151,7 +149,7 @@ export function WashTradingContextApp(props: {
             fromChainID: route.fromChainId,
             toAddress: route.toAddress,
             toToken: route.toToken,
-            toAmount: route.toAmount,
+            toAmount: toAmount,
             toAmountUSD: route.toAmountUSD,
             toChainID: route.toChainId,
             timestamp: doneAt,
