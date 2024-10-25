@@ -180,11 +180,7 @@ export function RevealNFTItem({
           <NFTImage
             isRevealing={isRevealing}
             unoptimized
-            src={
-              nft.imageUri ||
-              `/wash/cleaning-stage/${getPepeImage(100, nft?.color ?? DEFAULT_NFT_COLOR)}` ||
-              ''
-            }
+            src={nft.imageUri || ''}
             alt={'nft-image'}
             width={320}
             height={320}

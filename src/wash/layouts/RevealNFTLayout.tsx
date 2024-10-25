@@ -149,11 +149,14 @@ export function RevealedNFTLayout(): ReactElement {
       <RevealNFTItem
         nft={currentNFT}
         label={currentNFT?.isRare ? 'Legendary' : 'Common'}
-        isRevealing={reveal.isRevealing || reveal.hasCanceledReveal}
+        isRevealing={
+          (reveal.isRevealing || reveal.hasCanceledReveal) &&
+          currentNFT.progress === 100
+        }
       />
 
       <RevealedNFTLayoutCallToActionBox>
-        {reveal.isRevealing && (
+        {!reveal.isRevealing && (
           <CallToActionBox
             title={
               countExtraXPFromItems(user?.items) === 0
