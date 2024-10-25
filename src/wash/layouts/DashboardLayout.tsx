@@ -15,7 +15,10 @@ import type { TCleaningItem } from '../types/wash';
 import { colors, WashH1 } from '../utils/theme';
 import { inter } from 'src/fonts/fonts';
 import { ClientOnly } from 'src/components/ClientOnly';
-/************************************************************************************************
+import { mq } from '../utils/constants';
+import { SwapWarningWrapper } from '../common/SwapWarning';
+
+/**************************************************************************************************
  * OverkillModal: A modal component to warn users about potential overkill when using an item
  *
  * This component displays a warning modal when a user is about to use a boost that exceeds
@@ -74,7 +77,7 @@ export function OverkillModal(props: {
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the DashboardLayout component
  *************************************************************************************************/
 const DashboardLayoutContainer = styled.div`
@@ -105,7 +108,17 @@ const SwapSection = styled.div`
   border-radius: 32px;
 `;
 
-/************************************************************************************************
+const WarngingSwapWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  ${mq[1]} {
+    gap: 1rem;
+  }
+`;
+
+/**************************************************************************************************
  * DashboardLayout: Main component for the washing dashboard
  *
  * This component orchestrates the layout and functionality of the NFT washing dashboard.
@@ -166,11 +179,14 @@ export function DashboardLayout(): ReactElement {
           />
           <QuestsList isSkeleton={!hasNFT} />
         </WashSection>
-        <SwapSection>
-          <ClientOnly fallback={<WidgetSkeleton config={widgetConfig} />}>
-            <LiFiWidget integrator={'Mom'} config={widgetConfig} />
-          </ClientOnly>
-        </SwapSection>
+        <WarngingSwapWrapper>
+          <SwapSection>
+            <ClientOnly fallback={<WidgetSkeleton config={widgetConfig} />}>
+              <LiFiWidget integrator={'Mom'} config={widgetConfig} />
+            </ClientOnly>
+          </SwapSection>
+          <SwapWarningWrapper />
+        </WarngingSwapWrapper>
       </DashboardLayoutContainer>
     </Fragment>
   );

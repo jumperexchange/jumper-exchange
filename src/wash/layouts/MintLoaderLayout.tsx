@@ -1,13 +1,75 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { titanOne } from 'src/wash/common/WithFonts';
 import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
+import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 
-/************************************************************************************************
+/**************************************************************************************************
+ * Defining the styled components style for the RiveFallbackWrapper component
+ *************************************************************************************************/
+const RiveWrapper = styled.div`
+  width: 300px;
+  height: 360px;
+  position: absolute;
+  bottom: 100px;
+`;
+const RiveFallbackImage = styled(Image)<{ isLoaded: boolean }>`
+  transition: opacity 0.5s ease-in;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 300px;
+  min-width: 300px;
+  bottom: 37px;
+  opacity: ${({ isLoaded }) => (isLoaded ? 0 : 1)};
+`;
+
+/**************************************************************************************************
+ * RiveFallbackWrapper Component
+ *
+ * This component handles the loading and display of a Rive animation with a fallback image.
+ * It uses the useRive hook to load and control the Rive animation, and manages the visibility
+ * of the fallback image based on the loading state of the Rive component.
+ ************************************************************************************************/
+function RiveFallbackWrapper(): ReactElement {
+  const [isLoaded, set_isLoaded] = useState<boolean>(false);
+  const { RiveComponent, rive } = useRive({
+    src: '/wash/rive/mintLoader/rive.riv',
+    autoplay: true,
+    stateMachines: 'State Machine 1',
+    layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
+    onLoad: () => {
+      set_isLoaded(true);
+      setTimeout(() => rive?.play(), 1000);
+    },
+  });
+
+  return (
+    <RiveWrapper>
+      <RiveFallbackImage
+        isLoaded={isLoaded}
+        src={'/wash/rive/mintLoader/fallback.png'}
+        alt={'logo'}
+        width={200}
+        height={240}
+      />
+      <RiveComponent
+        width={200}
+        height={240}
+        style={{
+          position: 'absolute',
+          opacity: isLoaded ? 1 : 0,
+        }}
+      />
+    </RiveWrapper>
+  );
+}
+
+/**************************************************************************************************
  * Defining the styled components style for the MintLoaderLayout component
  *************************************************************************************************/
 const MintLoaderLayoutContainer = styled.div`
@@ -34,53 +96,18 @@ const MintLoaderLayoutTitle = styled.h1`
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
 `;
-const MintLoaderLayoutImageContainer = styled.div`
-  position: absolute;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  left: 0;
-  right: 0;
-  bottom: 166px;
-`;
-const MintLoaderLayoutImage = styled(Image)<{ mounted: boolean }>`
-  transition: opacity 300ms ease-in-out;
-  opacity: ${({ mounted }) => (mounted ? 1 : 0)};
-`;
 
 /**********************************************************************************************
  * MintLoaderLayout Component
  *
  * This component displays a loading screen for the NFT minting process.
  * It includes an animated image and a title message.
- *
- * Key features:
- * - Uses Next.js Image component for optimized image loading
- * - Implements a fade-in effect for the image using CSS transitions
- * - Utilizes custom fonts and utility classes for styling
  ************************************************************************************************/
 export function MintLoaderLayout(): ReactElement {
-  const [isMounted, set_isMounted] = useState<boolean>(false);
-
-  useEffect(() => {
-    set_isMounted(true);
-  }, []);
-
   return (
     <MintLoaderLayoutContainer>
       <MintLoaderLayoutContent>
-        <MintLoaderLayoutImageContainer>
-          <MintLoaderLayoutImage
-            src={'/wash/mint-loader.png'}
-            priority
-            loading={'eager'}
-            alt={'nft'}
-            width={200}
-            height={240}
-            mounted={isMounted}
-          />
-        </MintLoaderLayoutImageContainer>
+        <RiveFallbackWrapper />
         <MintLoaderLayoutTitle>
           {'One dirty NFt, coming right up...'}
         </MintLoaderLayoutTitle>

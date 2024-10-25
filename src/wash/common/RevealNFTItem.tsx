@@ -16,7 +16,7 @@ type TRevealNFTItem = {
   isRevealing: boolean;
 };
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the RevealNFTItem component
  *************************************************************************************************/
 const RevealNFTContainer = styled.div<{ backgroundColor: string }>`
@@ -43,6 +43,7 @@ const NFTLabelBox = styled.div<{ backgroundColor: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  color: white;
   background-color: ${(props) => props.backgroundColor};
 `;
 const NFTLabel = styled.h2<{ isRevealing: boolean }>`
@@ -154,10 +155,10 @@ export function RevealNFTItem({
   }, [isRevealing, nft.isRare]);
 
   const { RiveComponent } = useRive({
-    src: '/wash/reveal.riv',
+    src: '/wash/rive/reveal/rive.riv',
     stateMachines: 'State Machine 1',
     layout: new Layout({
-      fit: Fit.None,
+      fit: Fit.Cover,
       alignment: Alignment.Center,
     }),
     autoplay: true,
@@ -180,11 +181,7 @@ export function RevealNFTItem({
           <NFTImage
             isRevealing={isRevealing}
             unoptimized
-            src={
-              nft.imageUri ||
-              `/wash/${getPepeImage(100, nft?.color ?? DEFAULT_NFT_COLOR)}` ||
-              ''
-            }
+            src={nft.imageUri || ''}
             alt={'nft-image'}
             width={320}
             height={320}

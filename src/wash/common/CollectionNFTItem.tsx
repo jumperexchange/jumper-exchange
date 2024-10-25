@@ -148,7 +148,7 @@ export function CollectionNFTItem({ nft }: TNftItemProps): ReactElement {
     }
     return (
       <NFTImage
-        src={`/wash/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
+        src={`/wash/cleaning-stage/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
         alt={'nft-image'}
         borderColor={nft?.isRare ? colors.orange[800] : colors.violet[700]}
         width={320}
