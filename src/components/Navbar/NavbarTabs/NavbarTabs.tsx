@@ -42,7 +42,7 @@ export const NavbarTabs = () => {
       backgroundColor: '#390083', // wash color
       display: 'flex',
       '.MuiTabs-indicator': {
-        backgroundColor: alpha('#5500bf', 0.4),
+        backgroundColor: alpha('#5500bf', 0.05),
       },
     },
     div: {
@@ -59,7 +59,10 @@ export const NavbarTabs = () => {
     height: 48,
     width: 142,
     borderRadius: '24px',
+    color: theme.palette.white.main,
+
     '&.Mui-selected': {
+      color: 'inherit',
       backgroundColor: '#5500bf',
     },
     ':hover': {
