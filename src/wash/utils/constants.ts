@@ -178,6 +178,8 @@ export const TOOLTIP_MESSAGES = {
     'Every trade you make on Solana with Jumper helps wash your NFT clean. It takes $10,000 of volume to fully wash the NFT, or you can complete quests for power ups to boost your progress!',
   quest:
     'Every Solana swap you make on Jumper helps wash your NFT. But you can wash your NFT even faster by completing quests for items that boost your progress! Lfg.',
+  goldenNft:
+    'When the game ends on xx/xx/xxxx Golden NFT holders will be airdropped something sexy from the prize pool; holding Mad Lads, Retardio Cousins, Degods, Yoots, $Coby, and more!',
 };
 
 /**********************************************************************************************

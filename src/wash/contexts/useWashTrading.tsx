@@ -76,11 +76,11 @@ export function WashTradingContextApp(props: {
   children: ReactElement;
 }): ReactElement {
   const user = useGetUser();
+  const collection = useGetCollection();
   const nft = useGetNFT(user.refetch);
   const wash = useWash(user.refetch, nft.refetch);
-  const mint = useMint(nft.refetch, user.refetch);
-  const reveal = useReveal(nft.refetch);
-  const collection = useGetCollection();
+  const mint = useMint(nft.refetch, user.refetch, collection.refetch);
+  const reveal = useReveal(nft.refetch, collection.refetch);
   const widgetEvents = useWidgetEvents();
 
   useEffect(() => {
@@ -166,7 +166,7 @@ export function WashTradingContextApp(props: {
       widgetEvents.off(WidgetEvent.RouteExecutionCompleted, onCompleted);
       widgetEvents.off(WidgetEvent.RouteExecutionFailed, onFailed);
     };
-  }, [widgetEvents, nft.refetch, user.refetch, nft, user]);
+  }, [widgetEvents, nft.refetch, user.refetch, nft, user, collection]);
 
   return (
     <WashTradingContext.Provider

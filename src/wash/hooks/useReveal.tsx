@@ -13,7 +13,10 @@ export type TRevealHook = {
   revealStatus: string;
 };
 
-export function useReveal(refetchNft?: VoidFunction): TRevealHook {
+export function useReveal(
+  refetchNft?: VoidFunction,
+  refetchCollection?: VoidFunction,
+): TRevealHook {
   const { account } = useAccount({ chainType: ChainType.SVM });
   const [isRevealing, set_isRevealing] = useState(false);
   const [hasCanceledReveal, set_hasCanceledReveal] = useState(false);
@@ -80,11 +83,17 @@ export function useReveal(refetchNft?: VoidFunction): TRevealHook {
           : 'An error occurred while revealing',
       );
     } finally {
-      await refetchNft?.();
+      Promise.all([refetchNft?.(), refetchCollection?.()]);
       setTimeout(() => set_isRevealing(false), 1000);
       setTimeout(() => set_hasCanceledReveal(false), 1300);
     }
-  }, [umi, account.address, account.isConnected, refetchNft]);
+  }, [
+    umi,
+    account.isConnected,
+    account.address,
+    refetchNft,
+    refetchCollection,
+  ]);
 
   return {
     onReveal,

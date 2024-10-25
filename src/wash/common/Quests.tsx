@@ -7,7 +7,7 @@ import { QUESTS, TOOLTIP_MESSAGES } from '../utils/constants';
 import { colors, mq, WashH1 } from '../utils/theme';
 
 import { CollectButton } from './CollectButton';
-import { InfoPopup } from './InfoPopup';
+import { InfoTooltip } from './InfoTooltip';
 import { IconDone } from './icons/IconDone';
 
 import { useWashTrading } from '../contexts/useWashTrading';
@@ -342,7 +342,7 @@ export function QuestsList(props: { isSkeleton?: boolean }): ReactElement {
     <QuestsListWrapper>
       <QuestsListHeader>
         <WashH1>{'Quests'}</WashH1>
-        <InfoPopup description={TOOLTIP_MESSAGES.quest} />
+        <InfoTooltip description={TOOLTIP_MESSAGES.quest} />
       </QuestsListHeader>
 
       <QuestList>

@@ -12,6 +12,9 @@ import {
 } from '../../../../wash/contexts/useWashTrading';
 import { EmptyScreenLayout } from '../../../../wash/layouts/EmptyScreenLayout';
 import { mq, WashH1, colors } from '../../../../wash/utils/theme';
+import { Button } from '../../../../wash/common/Button';
+import { countExtraXPFromItems } from '../../../../wash/utils/utils';
+import { inter } from '../../../../fonts/fonts';
 
 const Wrapper = styled.div`
   position: relative;
@@ -40,6 +43,7 @@ const CollectionWrapper = styled.div`
   box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
   border-radius: 32px;
   border: 2px solid ${colors.violet[800]};
+  margin-bottom: 1rem;
   ${mq[1]} {
     width: 343px;
   }
@@ -113,6 +117,47 @@ const SkeletonName = styled.div`
   width: 230px;
   padding: 0 8px;
 `;
+const MintNext = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid ${colors.violet[800]};
+  width: 254px;
+  height: 254px;
+  padding: 24px 16px;
+  border-radius: 24px;
+  justify-content: space-between;
+`;
+const Percents = styled.p`
+  font-size: 40px;
+  line-height: 48px;
+  font-family: ${inter.style.fontFamily};
+  color: white;
+  font-weight: 900;
+  transform: skewX(-6deg);
+`;
+const MintNextSubtitle = styled.p`
+  font-size: 24px;
+  line-height: 32 px;
+  font-family: ${inter.style.fontFamily};
+  color: white;
+  font-weight: 900;
+  text-transform: uppercase;
+  transform: skewX(-6deg);
+`;
+const MintNextDescription = styled.p`
+  font-weight: 500;
+  color: white;
+  text-align: center;
+  font-size: 14px;
+  line-height: 20px;
+  font-family: ${inter.style.fontFamily};
+`;
+const MintNextUpperBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 function NftSkeleton(): ReactElement {
   return (
@@ -125,9 +170,11 @@ function NftSkeleton(): ReactElement {
 }
 
 function CollectionPage(): ReactElement {
-  const { collection } = useWashTrading();
+  const { collection, user, mint } = useWashTrading();
 
   const currentCollection = collection.collection;
+
+  const hasUnrevealedNFT = currentCollection.some((item) => !item.isRevealed);
 
   return (
     <Wrapper>
@@ -150,13 +197,33 @@ function CollectionPage(): ReactElement {
                 <NftsList>
                   {currentCollection &&
                     currentCollection.length > 0 &&
-                    currentCollection?.map((nft) => (
+                    currentCollection?.map((nft, index) => (
                       <CollectionNFTItem
                         key={`${nft.name} + ${nft.imageUri}`}
                         nft={{ ...nft, name: 'ser basic Bridgealot' }}
                         label={nft?.isRare ? 'Rare' : 'Common'}
+                        index={index}
                       />
                     ))}
+                  {!hasUnrevealedNFT && (
+                    <MintNext>
+                      <MintNextUpperBlock>
+                        <Percents>
+                          +{countExtraXPFromItems(user?.items)}%
+                        </Percents>
+                        <MintNextSubtitle>On next nft</MintNextSubtitle>
+                        <MintNextDescription>
+                          Mint new NFT and wash it with Quest trades!
+                        </MintNextDescription>
+                      </MintNextUpperBlock>
+                      <Button
+                        onClick={mint.onMint}
+                        theme={'pink'}
+                        title={'Mint again'}
+                        isBusy={mint.isMinting}
+                      />
+                    </MintNext>
+                  )}
                 </NftsList>
               )}
             </CollectionHeader>

@@ -5,7 +5,6 @@ import { cl } from '../utils/utils';
 import styled from '@emotion/styled';
 
 import { BoostItem } from './BoostItem';
-import { InfoPopup } from './InfoPopup';
 import { NFTItem } from './NFTItem';
 import { RevealRaysBackground } from './RaysBackground';
 import { WashProgress } from './WashProgress';
@@ -13,7 +12,12 @@ import { WashProgress } from './WashProgress';
 import { colors, mq, WashH2, type TColor } from '../utils/theme';
 import type { TItems, TNFTItem } from '../types/types';
 import type { TCleaningItem } from '../types/wash';
+<<<<<<< Updated upstream
 import { titanOne } from './fonts';
+=======
+import { titanOne } from './WithFonts';
+import { InfoTooltip } from './InfoTooltip';
+>>>>>>> Stashed changes
 
 const ImageWrapper = styled.div`
   position: absolute;
@@ -125,7 +129,7 @@ function ProgressSection(props: {
     <Fragment>
       <ProgressSectionHeader>
         <ProgressSectionTitle>{'Progress'}</ProgressSectionTitle>
-        <InfoPopup description={TOOLTIP_MESSAGES.progress} />
+        <InfoTooltip description={TOOLTIP_MESSAGES.progress} />
       </ProgressSectionHeader>
       <WashProgress
         isSkeleton={props.isSkeleton}
@@ -182,7 +186,7 @@ function PowerupSection(props: {
     <Fragment>
       <PowerUpSectionHeader>
         <PowerUpSectionTitle>{'Power ups'}</PowerUpSectionTitle>
-        <InfoPopup description={TOOLTIP_MESSAGES.powerUp} />
+        <InfoTooltip description={TOOLTIP_MESSAGES.powerUp} />
       </PowerUpSectionHeader>
       <PowerUpSectionItems>
         <BoostItem

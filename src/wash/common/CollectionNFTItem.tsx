@@ -2,20 +2,29 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { DEFAULT_NFT_COLOR } from '../utils/constants';
+import { DEFAULT_NFT_COLOR, TOOLTIP_MESSAGES } from '../utils/constants';
+import type { TColor } from '../utils/theme';
 import { colors } from '../utils/theme';
 
 import { WashProgress } from './WashProgress';
 
 import type { ReactElement, ReactNode } from 'react';
 import type { TNFTItem } from '../types/types';
+<<<<<<< Updated upstream
 import { titanOne } from './fonts';
 import { getPepeImage } from '../utils/getPepeImage';
+=======
+import { titanOne } from './WithFonts';
+import { Button } from './Button';
+import { useRouter } from 'next/navigation';
+import { InfoTooltip } from './InfoTooltip';
+>>>>>>> Stashed changes
 
 type TNftItemProps = {
   label?: string;
   nft?: TNFTItem;
   progress?: number;
+  index?: number;
 };
 
 /**************************************************************************************************
@@ -55,10 +64,25 @@ const NFTImage = styled(Image)<{ borderColor: string }>`
   border: 6px solid ${(props) => props.borderColor};
 `;
 
+const KeepWashingButton = styled.div<{ backgroundColor: string }>`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  background-color: ${(props) => props.backgroundColor}CC; // 80% opacity
+`;
+
 /**************************************************************************************************
  *
  *************************************************************************************************/
-export function CollectionNFTItem({ nft }: TNftItemProps): ReactElement {
+export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
   function getRarity(): string {
     if (nft?.isRevealed) {
       if (nft?.isRare) {
@@ -68,6 +92,7 @@ export function CollectionNFTItem({ nft }: TNftItemProps): ReactElement {
     }
     return 'unknown';
   }
+  const router = useRouter();
 
   function getLabel(): ReactElement {
     if (nft?.isRevealed) {
@@ -136,24 +161,55 @@ export function CollectionNFTItem({ nft }: TNftItemProps): ReactElement {
   function renderNFTImage(): ReactNode {
     if (nft?.isRevealed) {
       return (
+        <div style={{ position: 'relative' }}>
+          {nft?.isRare && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '12px',
+                right: '12px',
+                zIndex: '1',
+              }}
+            >
+              <InfoTooltip
+                description={TOOLTIP_MESSAGES.goldenNft}
+                position={index % 4 < 2 ? 'right' : 'left'}
+              />
+            </div>
+          )}
+          <NFTImage
+            src={nft?.imageUri ?? ''}
+            alt={'nft-image'}
+            borderColor={nft?.isRare ? colors.orange[800] : colors.violet[700]}
+            width={320}
+            height={320}
+            unoptimized
+          />
+        </div>
+      );
+    }
+    return (
+      <div style={{ position: 'relative' }}>
         <NFTImage
-          src={nft?.imageUri ?? ''}
+          src={`/wash/cleaning-stage/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
           alt={'nft-image'}
           borderColor={nft?.isRare ? colors.orange[800] : colors.violet[700]}
           width={320}
           height={320}
-          unoptimized
         />
-      );
-    }
-    return (
-      <NFTImage
-        src={`/wash/cleaning-stage/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
-        alt={'nft-image'}
-        borderColor={nft?.isRare ? colors.orange[800] : colors.violet[700]}
-        width={320}
-        height={320}
-      />
+
+        <KeepWashingButton
+          backgroundColor={
+            colors[(nft?.color || DEFAULT_NFT_COLOR) as TColor][800]
+          }
+        >
+          <Button
+            size={'short'}
+            title={'keep washing'}
+            onClick={() => router.push('/wash')}
+          />
+        </KeepWashingButton>
+      </div>
     );
   }
 
