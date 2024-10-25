@@ -1,3 +1,4 @@
+import { useAccount } from '@lifi/wallet-management';
 import { useRouter } from 'next/navigation';
 import {
   WashProgressAlertButton,
@@ -18,12 +19,14 @@ import { colors } from '../../utils/theme';
 export const WashProgressAlert = () => {
   const data = useGetNFT();
   const router = useRouter();
+  const { account } = useAccount();
 
   const handleWashCta = () => {
     router.push(JUMPER_WASH_PATH);
   };
 
   return (
+    account?.address &&
     data.hasNFT && (
       <WashProgressAlertContainer className="alert">
         <WashProgressAlertTitle>Wash trade</WashProgressAlertTitle>
