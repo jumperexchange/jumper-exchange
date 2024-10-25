@@ -1,5 +1,6 @@
 'use client';
 import { useActiveTabStore } from '@/stores/activeTab';
+import { useAccount } from '@lifi/wallet-management';
 import { Tooltip, useMediaQuery } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import { useGetNFT } from '../../../wash/hooks/useGetNFT';
@@ -14,11 +15,12 @@ export const VerticalTabs = () => {
   };
   const verticalTabs = useVerticalTabs();
   const data = useGetNFT();
+  const { account } = useAccount();
 
   return (
     <VerticalTabsContainer
       value={!isDesktop ? false : activeTab}
-      sx={{ ...(data.hasNFT && { marginTop: '140px' }) }}
+      sx={{ ...(data.hasNFT && account?.address && { marginTop: '140px' }) }}
       orientation="vertical"
       onChange={handleChange}
       aria-label="vertical-tabs"
