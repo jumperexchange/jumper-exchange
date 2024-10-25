@@ -106,7 +106,7 @@ export const QUESTS: TQuest[] = [
     title: 'Swap between $SOL & $DRIFT',
     description:
       'Get your Drift on and acquire some tokens from our good friends at Drift.',
-    progressSteps: 10,
+    progressSteps: 5,
     powerUp: getItem('sponge', 'blue'),
   },
   {
@@ -126,7 +126,7 @@ export const QUESTS: TQuest[] = [
     title: 'Swap between $WIF, $MICHI, or $MEW',
     description:
       'This quest gets you to trade Ansem tokens, in the hope that he’ll engage with us. Can’t hurt… right?',
-    progressSteps: 10,
+    progressSteps: 5,
     powerUp: getItem('soap', 'pink'),
   },
   {
@@ -146,7 +146,17 @@ export const QUESTS: TQuest[] = [
     title: 'Swap between $Trump and $USA',
     description:
       'Play some Bruce Springsteen, put on your Maga hat and start trading like a true patriot. Murica mfer!',
-    progressSteps: 10,
+    progressSteps: 5,
+    powerUp: getItem('soap', 'pink'),
+  },
+  {
+    id: 'quest10',
+    order: 10,
+    questType: 'common',
+    title: 'Dump $RETARDIO for $COBY',
+    description:
+      'Sell some Retardio for Coby. The sentences you end up writing in this job…',
+    progressSteps: 5,
     powerUp: getItem('soap', 'pink'),
   },
 ];
