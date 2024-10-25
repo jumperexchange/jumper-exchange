@@ -19,10 +19,6 @@ import type {
   Route,
   RouteExecutionUpdate,
 } from '@lifi/widget';
-import {
-  useWalletManagementEvents,
-  WalletManagementEvent,
-} from '@lifi/wallet-management';
 
 type TWashTradingContext = {
   nft: TGetNFT;
