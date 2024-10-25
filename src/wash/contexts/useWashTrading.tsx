@@ -19,17 +19,6 @@ import type {
   Route,
   RouteExecutionUpdate,
 } from '@lifi/widget';
-import {
-  useWalletManagementEvents,
-  WalletManagementEvent,
-} from '@lifi/wallet-management';
-import type { TransactionWithMeta } from '@metaplex-foundation/umi';
-import { useUmi } from './useUmi';
-import { base58 } from '@metaplex-foundation/umi/serializers';
-import { createUmi } from '@metaplex-foundation/umi-bundle-defaults';
-import { mplCore } from '@metaplex-foundation/mpl-core';
-import { walletAdapterIdentity } from '@metaplex-foundation/umi-signer-wallet-adapters';
-import { useWallet } from '@solana/wallet-adapter-react';
 
 type TWashTradingContext = {
   nft: TGetNFT;
@@ -86,7 +75,6 @@ const WashTradingContext = createContext<TWashTradingContext>(defaultArgs);
 export function WashTradingContextApp(props: {
   children: ReactElement;
 }): ReactElement {
-  const wallet = useWallet();
   const user = useGetUser();
   const nft = useGetNFT(user.refetch);
   const wash = useWash(user.refetch, nft.refetch);
