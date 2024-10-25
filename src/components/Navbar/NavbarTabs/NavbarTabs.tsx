@@ -1,37 +1,56 @@
 'use client';
 import { Tabs } from '@/components/Tabs';
-import { useActiveTabStore } from '@/stores/activeTab';
 import { useMediaQuery } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
+import { alpha, useTheme } from '@mui/material/styles';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
+import { JUMPER_WASH_PATH } from 'src/const/urls';
+import { WashTabsMap } from 'src/wash/const/washtTabsMap';
+import { useActiveWashTabStore } from 'src/wash/stores/activeWashTab';
 import { useNavbarTabs } from '.';
 
-interface NavbarTabsProps {
-  navbarPageReload?: boolean;
-}
-
-export const NavbarTabs = ({ navbarPageReload }: NavbarTabsProps) => {
+export const NavbarTabs = () => {
   const theme = useTheme();
-  const { activeTab, setActiveTab } = useActiveTabStore();
+  const { activeWashTab, setActiveWashTab } = useActiveWashTabStore();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const pathname = usePathname();
+  const isWashPage = pathname?.includes(JUMPER_WASH_PATH);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
+    setActiveWashTab(newValue);
   };
-  const navbarTabs = useNavbarTabs({ navbarPageReload });
+  const navbarTabs = useNavbarTabs();
+
+  useEffect(() => {
+    const getActiveWashTab = () => {
+      if (pathname.includes(WashTabsMap.WashAbout.destination)) {
+        setActiveWashTab(WashTabsMap.WashAbout.index);
+      } else if (pathname.includes(WashTabsMap.WashCollection.destination)) {
+        setActiveWashTab(WashTabsMap.WashCollection.index);
+      } else if (pathname.includes(WashTabsMap.WashNFT.destination)) {
+        setActiveWashTab(WashTabsMap.WashNFT.index);
+      }
+    };
+    getActiveWashTab();
+  }, [pathname, setActiveWashTab]);
 
   const containerStyles = {
     display: 'none',
-    minWidth: 416,
-    borderRadius: 28,
     [theme.breakpoints.up('lg')]: {
+      minWidth: 416,
+      borderRadius: 28,
+      backgroundColor: '#390083', // wash color
       display: 'flex',
+      '.MuiTabs-indicator': {
+        backgroundColor: alpha('#5500bf', 0.05),
+      },
     },
     div: {
       height: 56,
     },
     '.MuiTabs-indicator': {
       height: 48,
-      zIndex: -1,
+      zIndex: 1,
       borderRadius: 24,
     },
   };
@@ -40,12 +59,21 @@ export const NavbarTabs = ({ navbarPageReload }: NavbarTabsProps) => {
     height: 48,
     width: 142,
     borderRadius: '24px',
+    color: theme.palette.white.main,
+
+    '&.Mui-selected': {
+      color: 'inherit',
+      backgroundColor: '#5500bf',
+    },
+    ':hover': {
+      backgroundColor: alpha('#5500bf', 0.4),
+    },
   };
 
   return (
     <Tabs
       data={navbarTabs}
-      value={!isDesktop || navbarPageReload ? false : activeTab}
+      value={!isDesktop && !isWashPage ? false : activeWashTab}
       onChange={handleChange}
       ariaLabel="navbar-tabs"
       containerStyles={containerStyles}

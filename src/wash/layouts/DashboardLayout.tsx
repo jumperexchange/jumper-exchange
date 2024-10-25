@@ -132,7 +132,7 @@ const WarngingSwapWrapper = styled.div`
   flex-direction: column;
   gap: 1.5rem;
 
-  ${mq[0]} {
+  ${mq[1]} {
     gap: 1rem;
   }
 `;

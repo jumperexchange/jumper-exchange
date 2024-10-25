@@ -8,9 +8,9 @@ import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 import { CallToActionBox } from '../common/CallToActionBox';
-import { mq } from '../utils/theme';
-import { inter } from '../../fonts/fonts';
 import { titanOne } from '../common/WithFonts';
+import { inter } from '../../fonts/fonts';
+import { mq } from '../utils/theme';
 
 /**************************************************************************************************
  * Defining the styled components style for the RevealedNFTLayout component
@@ -20,6 +20,7 @@ const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
   margin-top: -28dvh;
   display: flex;
   width: 100%;
+  max-width: 100vw;
   flex-direction: column;
   align-items: center;
   padding-top: 152px;
@@ -28,39 +29,50 @@ const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
     scale 300ms ease-in-out;
   opacity: ${({ mounted }) => (mounted ? 1 : 0)};
   scale: ${({ mounted }) => (mounted ? 1 : 0)};
-
+  ${mq[0]} {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
   ${mq[1]} {
-    margin-top: -45dvh;
-    max-width: 327px;
+    margin-top: 0dvh;
+    padding-top: 0px;
   }
 `;
 const RevealedNFTLayoutTitle = styled.h1`
   text-transform: uppercase;
   color: white;
-  font-size: 3.5rem;
-  line-height: 3.5rem;
+  font-size: 56px;
+  line-height: 56px;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
+  ${mq[0]} {
+    font-size: 32px;
+    line-height: 32px;
+  }
   ${mq[1]} {
-    font-size: 2.5rem;
-    line-height: 3rem;
+    font-size: 48px;
+    line-height: 48px;
   }
 `;
 const RevealedNFTLayoutSubtitle = styled.span`
   color: white;
   margin-top: 8px;
-  margin-bottom: 2.5rem;
+  margin-bottom: 40px;
   font-weight: 500;
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 24px;
+  line-height: 32px;
   font-family: ${inter.style.fontFamily};
-  ${mq[1]} {
-    font-size: 1rem;
-    line-height: 1.5rem;
+  ${mq[0]} {
+    text-align: center;
+    font-size: 16px;
+    line-height: 20px;
   }
 `;
 const RevealedNFTLayoutCallToActionBox = styled.div`
   margin-top: 66px;
+  ${mq[0]} {
+    max-width: 320px;
+  }
 `;
 
 /**************************************************************************************************
@@ -137,7 +149,10 @@ export function RevealedNFTLayout(): ReactElement {
       <RevealNFTItem
         nft={currentNFT}
         label={currentNFT?.isRare ? 'Legendary' : 'Common'}
-        isRevealing={reveal.isRevealing || reveal.hasCanceledReveal}
+        isRevealing={
+          (reveal.isRevealing || reveal.hasCanceledReveal) &&
+          currentNFT.progress === 100
+        }
       />
 
       <RevealedNFTLayoutCallToActionBox>

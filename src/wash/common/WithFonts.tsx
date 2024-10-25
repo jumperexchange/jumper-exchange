@@ -3,7 +3,7 @@
 import React from 'react';
 
 import type { ReactElement, ReactNode } from 'react';
-import { inter } from 'src/fonts/fonts';
+import { inter } from '../../fonts/fonts';
 import { Titan_One } from 'next/font/google';
 
 export const titanOne = Titan_One({

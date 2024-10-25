@@ -1,17 +1,17 @@
 'use client';
 
 import { Fragment } from 'react';
+import { DashboardLayout } from 'src/wash/layouts/DashboardLayout';
 import styled from '@emotion/styled';
 
 import type { ReactElement, ReactNode } from 'react';
-import { colors, mq } from '../utils/theme';
-import { DashboardLayout } from '../layouts/DashboardLayout';
+import { mq, colors } from 'src/wash/utils/theme';
 
 /**************************************************************************************************
  * Defining the styled components style for the WithBackdrop component
  *************************************************************************************************/
 const BackdropWrapper = styled.div<{ shouldDisplayBackdrop: boolean }>`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 20;
@@ -26,7 +26,7 @@ const BackdropWrapper = styled.div<{ shouldDisplayBackdrop: boolean }>`
 `;
 
 const TopBlur = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 20;
@@ -40,7 +40,7 @@ const TopBlur = styled.div`
   );
 `;
 const Background = styled.div`
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   z-index: 20;
@@ -53,7 +53,7 @@ const ChildrenWrapper = styled.div`
   z-index: 50;
   margin-top: 28dvh;
   ${mq[1]} {
-    margin-top: 40dvh;
+    margin-top: 96px;
   }
 `;
 
