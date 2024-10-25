@@ -92,7 +92,7 @@ const DashboardLayoutContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   padding-top: 24px;
-  ${mq[1]} {
+  ${mq[0]} {
     flex-direction: column-reverse;
     align-items: center;
     row-gap: 24px;
@@ -106,7 +106,7 @@ const WashSection = styled.div`
   gap: 32px;
   max-width: 760px;
 
-  ${mq[1]} {
+  ${mq[0]} {
     align-items: center;
   }
 `;
@@ -118,7 +118,7 @@ const SwapSection = styled.div`
   box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
   border-radius: 32px;
 
-  ${mq[1]} {
+  ${mq[0]} {
     width: 343px;
     max-width: unset;
     min-width: unset;
@@ -132,7 +132,7 @@ const WarngingSwapWrapper = styled.div`
   flex-direction: column;
   gap: 1.5rem;
 
-  ${mq[1]} {
+  ${mq[0]} {
     gap: 1rem;
   }
 `;

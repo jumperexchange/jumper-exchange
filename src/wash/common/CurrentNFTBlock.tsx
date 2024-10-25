@@ -18,10 +18,10 @@ import { titanOne } from './WithFonts';
 const ImageWrapper = styled.div`
   position: absolute;
   left: -24px;
+  right: -24px;
   top: -32px;
   z-index: 50;
-  min-width: 830px;
-  ${mq[1]} {
+  ${mq[0]} {
     display: none;
   }
 `;
@@ -32,7 +32,7 @@ const MobileImageWrapper = styled.div`
   left: -24px;
   top: -28px;
   width: 390px;
-  ${mq[1]} {
+  ${mq[0]} {
     display: block;
   }
 `;
@@ -224,20 +224,12 @@ const CurrentNFTBlockContainer = styled.div<{ backgroundColor: string }>`
   box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
   background-color: ${({ backgroundColor }) => backgroundColor};
   column-gap: 32px;
-  ${mq[1]} {
+  ${mq[0]} {
     flex-direction: column;
     padding: 24px;
     width: 343px;
   }
 `;
-
-type TCurrentNFTBlockProps = {
-  nft?: TNFTItem;
-  items?: TItems;
-  washProgress: number;
-  handleUseItem: (item: TCleaningItem) => Promise<void>;
-  isSkeleton?: boolean;
-};
 
 const InfoSection = styled.div`
   display: flex;
@@ -253,6 +245,15 @@ const ImageSection = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
+type TCurrentNFTBlockProps = {
+  nft?: TNFTItem;
+  items?: TItems;
+  washProgress: number;
+  handleUseItem: (item: TCleaningItem) => Promise<void>;
+  isSkeleton?: boolean;
+};
+
 //TODO: Split this component
 export function CurrentNFTBlock(props: TCurrentNFTBlockProps): ReactElement {
   /**********************************************************************************************

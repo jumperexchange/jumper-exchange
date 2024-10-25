@@ -25,7 +25,7 @@ const QuestItemWrapper = styled.div`
   padding: 0.5rem;
   box-shadow: 4px 4px 0px ${colors.violet[800]};
   transform: skew(-6deg);
-  ${mq[1]} {
+  ${mq[0]} {
     display: none;
   }
 `;
@@ -54,7 +54,7 @@ const BoosterWrapper = styled.div<{ isCompleted: boolean; isCommon: boolean }>`
     transition: ${(props) =>
       props.isCompleted && props.isCommon ? 'all ease-in' : 'all'};
   }
-  ${mq[1]} {
+  ${mq[0]} {
     min-height: 48px;
     min-width: 48px;
     box-shadow:
@@ -110,7 +110,7 @@ const QuestDescription = styled.p`
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.5);
 
-  ${mq[1]} {
+  ${mq[0]} {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -152,7 +152,7 @@ const QuestItemMobileWrapper = styled.div`
   transform: skew(-3deg);
   flex-direction: column;
   justify-content: space-between;
-  ${mq[1]} {
+  ${mq[0]} {
     display: flex;
   }
 `;
@@ -293,7 +293,7 @@ const QuestsListWrapper = styled.div`
   padding: 32px;
   box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
 
-  ${mq[1]} {
+  ${mq[0]} {
     max-width: 343px;
     padding: 24px;
   }
