@@ -2,8 +2,9 @@
 import { useActiveTabStore } from '@/stores/activeTab';
 import { Tooltip, useMediaQuery } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
+import { useGetNFT } from '../../../wash/hooks/useGetNFT';
 import { useVerticalTabs } from './useVerticalTabs';
-import { VerticalTabsContainer, VerticalTab } from './VerticalTabs.style';
+import { VerticalTab, VerticalTabsContainer } from './VerticalTabs.style';
 
 export const VerticalTabs = () => {
   const { activeTab, setActiveTab } = useActiveTabStore();
@@ -12,10 +13,12 @@ export const VerticalTabs = () => {
     setActiveTab(newValue);
   };
   const verticalTabs = useVerticalTabs();
+  const data = useGetNFT();
 
   return (
     <VerticalTabsContainer
       value={!isDesktop ? false : activeTab}
+      sx={{ ...(data.hasNFT && { marginTop: '140px' }) }}
       orientation="vertical"
       onChange={handleChange}
       aria-label="vertical-tabs"
