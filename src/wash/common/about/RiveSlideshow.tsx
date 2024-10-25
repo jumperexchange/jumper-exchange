@@ -21,6 +21,12 @@ const SlideshowImage = styled(Image)<{ isLoaded: boolean }>`
   height: 406px;
   min-width: 3840px;
   min-height: 406px;
+  ${mq[1]} {
+    width: 1920px;
+    height: 203px;
+    min-width: 1920px;
+    min-height: 203px;
+  }
   opacity: ${({ isLoaded }) => (isLoaded ? 0 : 1)};
 `;
 
