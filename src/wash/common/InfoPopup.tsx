@@ -2,14 +2,19 @@
 
 import { colors } from '../utils/theme';
 import { css } from '@emotion/react';
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 
 import { IconInfo } from './icons/IconInfo';
 
-import type { ReactElement } from 'react';
+import { useState, type ReactElement } from 'react';
 import { inter } from 'src/fonts/fonts';
+import styled from '@emotion/styled';
 
-const popoverPanelStyle = css`
+const TooltipWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+const Tooltip = styled.div`
   position: absolute;
   left: 2rem;
   top: 0;
@@ -24,30 +29,34 @@ const popoverPanelStyle = css`
     outline: none;
   }
 `;
+const TooltipTrigger = styled.div`
+  cursor: help;
+`;
+
 export function InfoPopup(props: { description: string }): ReactElement {
+  const [showTooltip, set_showTooltip] = useState(false);
   return (
-    <Popover
-      css={css`
-        position: relative;
-        display: flex;
-        align-items: center;
-      `}
-    >
-      <PopoverButton>
-        <IconInfo />
-      </PopoverButton>
-      <PopoverPanel as={'div'} css={popoverPanelStyle}>
-        <p
-          css={css`
-            transform: skewX(6deg);
-            color: white;
-            font-weight: bold;
-            ${inter.style}
-          `}
-        >
-          {props.description}
-        </p>
-      </PopoverPanel>
-    </Popover>
+    <TooltipWrapper>
+      <TooltipTrigger
+        onMouseEnter={() => set_showTooltip(true)}
+        onMouseLeave={() => set_showTooltip(false)}
+      >
+        <IconInfo color={colors.violet[800]} />
+      </TooltipTrigger>
+      {showTooltip && (
+        <Tooltip>
+          <p
+            css={css`
+              transform: skewX(6deg);
+              color: white;
+              font-weight: bold;
+              ${inter.style}
+            `}
+          >
+            {props.description}
+          </p>
+        </Tooltip>
+      )}
+    </TooltipWrapper>
   );
 }
