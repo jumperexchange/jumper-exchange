@@ -64,11 +64,11 @@ export function useReveal(refetchNft?: VoidFunction): TRevealHook {
       );
 
       await umi.rpc.confirmTransaction(signature, {
+        commitment: 'confirmed',
         strategy: {
           type: 'blockhash',
           ...(await umi.rpc.getLatestBlockhash()),
         },
-        commitment: 'finalized',
       });
 
       set_revealStatus(responseRevealDone.statusText);
