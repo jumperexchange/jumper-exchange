@@ -16,6 +16,16 @@ export const WASH_ENDPOINT_ROOT_URI = 'https://jumper-wash.builtby.dad';
 export const DEFAULT_NFT_COLOR: TColor = 'violet';
 
 /**************************************************************************************************
+ * getItem is needed here because cleaning items have different stroke colors depends on UI place.
+ *************************************************************************************************/
+export const getItem = (id: keyof typeof CLEANING_ITEMS, color?: string) => {
+  return {
+    ...CLEANING_ITEMS[id],
+    logo: color ? `/wash/${color}-stroke-${id}.png` : CLEANING_ITEMS[id].logo,
+  };
+};
+
+/**************************************************************************************************
  * Defining the different cleaning items and their properties
  *
  * Check @file://types/wash.ts for more information
