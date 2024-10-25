@@ -43,6 +43,7 @@ const NFTLabelBox = styled.div<{ backgroundColor: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  color: white;
   background-color: ${(props) => props.backgroundColor};
 `;
 const NFTLabel = styled.h2<{ isRevealing: boolean }>`
