@@ -8,9 +8,9 @@ import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 import { CallToActionBox } from '../common/CallToActionBox';
-import { titanOne } from 'src/wash/common/WithFonts';
-import { inter } from 'src/fonts/fonts';
-import { mq } from '../utils/constants';
+import { titanOne } from '../common/WithFonts';
+import { inter } from '../../fonts/fonts';
+import { mq } from '../utils/theme';
 
 /**************************************************************************************************
  * Defining the styled components style for the RevealedNFTLayout component

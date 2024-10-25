@@ -9,7 +9,7 @@ import styled from '@emotion/styled';
 import type { ReactElement } from 'react';
 import { inter } from 'src/fonts/fonts';
 import { colors, FitContent } from '../utils/theme';
-import { mq } from '../utils/constants';
+import { mq } from 'src/wash/utils/theme';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 
 /**************************************************************************************************

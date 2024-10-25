@@ -5,8 +5,7 @@ import { DashboardLayout } from 'src/wash/layouts/DashboardLayout';
 import styled from '@emotion/styled';
 
 import type { ReactElement, ReactNode } from 'react';
-import { mq } from '../utils/constants';
-import { colors } from '../utils/theme';
+import { mq, colors } from 'src/wash/utils/theme';
 
 /**************************************************************************************************
  * Defining the styled components style for the WithBackdrop component

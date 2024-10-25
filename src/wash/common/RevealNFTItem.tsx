@@ -2,8 +2,6 @@
 import { type ReactElement, useMemo } from 'react';
 import Image from 'next/image';
 import { colors, mq } from '../utils/theme';
-import { DEFAULT_NFT_COLOR } from '../utils/constants';
-import { getPepeImage } from '../utils/utils';
 import styled from '@emotion/styled';
 import { RevealsBackground } from './RevealBackground';
 import type { TNFTItem } from '../types/types';
