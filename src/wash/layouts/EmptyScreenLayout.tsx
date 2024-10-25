@@ -2,7 +2,7 @@
 
 import { Button } from '../common/Button';
 import { useWashTrading } from '../contexts/useWashTrading';
-import { titanOne } from '../common/WithFonts';
+import { titanOne } from '../common/fonts';
 import { WashText } from '../utils/theme';
 import { ChainType } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';

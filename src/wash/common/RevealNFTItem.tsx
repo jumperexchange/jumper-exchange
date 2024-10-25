@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import { RevealsBackground } from './RevealBackground';
 import type { TNFTItem } from '../types/types';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
-import { titanOne } from './WithFonts';
+import { titanOne } from './fonts';
 
 type TRevealNFTItem = {
   label: string;

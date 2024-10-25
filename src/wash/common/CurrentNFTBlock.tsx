@@ -13,7 +13,7 @@ import { WashProgress } from './WashProgress';
 import { colors, mq, WashH2, type TColor } from '../utils/theme';
 import type { TItems, TNFTItem } from '../types/types';
 import type { TCleaningItem } from '../types/wash';
-import { titanOne } from './WithFonts';
+import { titanOne } from './fonts';
 
 const ImageWrapper = styled.div`
   position: absolute;

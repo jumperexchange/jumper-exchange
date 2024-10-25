@@ -4,13 +4,13 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import { DEFAULT_NFT_COLOR } from '../utils/constants';
 import { colors } from '../utils/theme';
-import { getPepeImage } from '../utils/utils';
 
 import { WashProgress } from './WashProgress';
 
 import type { ReactElement, ReactNode } from 'react';
 import type { TNFTItem } from '../types/types';
-import { titanOne } from './WithFonts';
+import { titanOne } from './fonts';
+import { getPepeImage } from '../utils/getPepeImage';
 
 type TNftItemProps = {
   label?: string;

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useWashTrading } from '../contexts/useWashTrading';
 import { DEFAULT_NFT_COLOR } from '../utils/constants';
 import { colors } from '../utils/theme';
-import { getPepeImage } from '../utils/utils';
+import { getPepeImage } from '../utils/getPepeImage';
 
 import { Button } from './Button';
 import { WashProgress } from './WashProgress';
