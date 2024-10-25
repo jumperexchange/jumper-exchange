@@ -53,8 +53,8 @@ const ChildrenWrapper = styled.div`
   position: relative;
   z-index: 50;
   margin-top: 28dvh;
-  ${mq[0]} {
-    margin-top: 40dvh;
+  ${mq[1]} {
+    margin-top: 96px;
   }
 `;
 

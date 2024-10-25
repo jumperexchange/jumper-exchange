@@ -10,6 +10,7 @@ import type { ReactElement } from 'react';
 import { CallToActionBox } from '../common/CallToActionBox';
 import { titanOne } from 'src/wash/common/WithFonts';
 import { inter } from 'src/fonts/fonts';
+import { mq } from '../utils/constants';
 
 /**************************************************************************************************
  * Defining the styled components style for the RevealedNFTLayout component
@@ -19,6 +20,7 @@ const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
   margin-top: -28dvh;
   display: flex;
   width: 100%;
+  max-width: 100vw;
   flex-direction: column;
   align-items: center;
   padding-top: 152px;
@@ -27,6 +29,14 @@ const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
     scale 300ms ease-in-out;
   opacity: ${({ mounted }) => (mounted ? 1 : 0)};
   scale: ${({ mounted }) => (mounted ? 1 : 0)};
+  ${mq[0]} {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  ${mq[1]} {
+    margin-top: 0dvh;
+    padding-top: 0px;
+  }
 `;
 const RevealedNFTLayoutTitle = styled.h1`
   text-transform: uppercase;
@@ -35,18 +45,34 @@ const RevealedNFTLayoutTitle = styled.h1`
   line-height: 56px;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
+  ${mq[0]} {
+    font-size: 32px;
+    line-height: 32px;
+  }
+  ${mq[1]} {
+    font-size: 48px;
+    line-height: 48px;
+  }
 `;
 const RevealedNFTLayoutSubtitle = styled.span`
   color: white;
   margin-top: 8px;
   margin-bottom: 40px;
   font-weight: 500;
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 24px;
+  line-height: 32px;
   font-family: ${inter.style.fontFamily};
+  ${mq[0]} {
+    text-align: center;
+    font-size: 16px;
+    line-height: 20px;
+  }
 `;
 const RevealedNFTLayoutCallToActionBox = styled.div`
   margin-top: 66px;
+  ${mq[0]} {
+    max-width: 320px;
+  }
 `;
 
 /**************************************************************************************************
@@ -127,7 +153,7 @@ export function RevealedNFTLayout(): ReactElement {
       />
 
       <RevealedNFTLayoutCallToActionBox>
-        {!reveal.isRevealing && (
+        {reveal.isRevealing && (
           <CallToActionBox
             title={
               countExtraXPFromItems(user?.items) === 0

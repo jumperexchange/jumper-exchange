@@ -91,7 +91,10 @@ const CallToActionBoxWrapper = styled.div<{ isMounted: boolean }>`
   transform: translateY(${({ isMounted }) => (isMounted ? '0' : '100%')});
   opacity: ${({ isMounted }) => (isMounted ? '1' : '0')};
   ${mq[0]} {
-    width: 800px;
+    flex-direction: column-reverse;
+  }
+  ${mq[1]} {
+    max-width: 800px;
   }
 `;
 
@@ -104,6 +107,23 @@ const CallToActionBoxContent = styled.div`
   padding-top: 28px;
   padding-bottom: 28px;
   padding-right: 32px;
+  ${mq[0]} {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0;
+    padding-top: 28px;
+    flex-direction: column;
+  }
+`;
+
+const CallToActionBoxText = styled.div`
+  padding-right: 32px;
+  ${mq[0]} {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 24px;
+  }
 `;
 
 const CallToActionBoxTitle = styled.h3`
@@ -113,6 +133,9 @@ const CallToActionBoxTitle = styled.h3`
   text-transform: uppercase;
   color: #ffffff;
   font-family: ${inter.style.fontFamily};
+  ${mq[0]} {
+    paddiong-bottom: 12px;
+  }
 `;
 
 const CallToActionBoxSubtitle = styled.span`
@@ -147,10 +170,10 @@ export function CallToActionBox(props: {
     <CallToActionBoxWrapper isMounted={isMounted}>
       <RiveFallbackWrapper />
       <CallToActionBoxContent>
-        <div>
+        <CallToActionBoxText>
           <CallToActionBoxTitle>{props.title}</CallToActionBoxTitle>
           <CallToActionBoxSubtitle>{props.subtitle}</CallToActionBoxSubtitle>
-        </div>
+        </CallToActionBoxText>
         <FitContent>
           <Button
             isBusy={mint.isMinting}

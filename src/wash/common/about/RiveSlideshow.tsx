@@ -8,7 +8,7 @@ const RiveCarouselWrapper = styled.div`
   width: 3840px;
   height: 406px;
   position: relative;
-  ${mq[0]} {
+  ${mq[1]} {
     width: 1920px;
     height: 203px;
   }

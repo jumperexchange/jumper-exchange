@@ -157,7 +157,7 @@ export function RevealNFTItem({
     src: '/wash/rive/reveal/rive.riv',
     stateMachines: 'State Machine 1',
     layout: new Layout({
-      fit: Fit.None,
+      fit: Fit.Cover,
       alignment: Alignment.Center,
     }),
     autoplay: true,

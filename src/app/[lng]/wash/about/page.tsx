@@ -41,7 +41,7 @@ const Heading = styled.h1`
   text-align: center;
   margin-bottom: 1rem;
 
-  ${mq[0]} {
+  ${mq[1]} {
     font-size: 40px;
     line-height: 48px;
   }
@@ -53,7 +53,7 @@ const Description = styled.p`
   line-height: 2rem;
   color: white;
 
-  ${mq[0]} {
+  ${mq[1]} {
     font-size: 1rem;
     line-height: 1.5rem;
   }
@@ -73,7 +73,7 @@ const HowDoIWash = styled.h2`
   color: white;
   margin-top: 60px;
 
-  ${mq[0]} {
+  ${mq[1]} {
     margin-top: 20px;
   }
 `;
@@ -81,7 +81,7 @@ const HowDoIWash = styled.h2`
 const StepImage = styled(Image)`
   max-width: 360px;
 
-  ${mq[0]} {
+  ${mq[1]} {
     max-width: 343px;
   }
 `;
@@ -92,7 +92,7 @@ const StepsWrapper = styled.div`
   column-gap: 48px;
   justify-content: center;
 
-  ${mq[0]} {
+  ${mq[1]} {
     flex-direction: column;
     gap: 24px;
     justify-content: center;
@@ -104,7 +104,7 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 40px;
-  ${mq[0]} {
+  ${mq[1]} {
     width: 100%;
     padding-left: 1rem;
     padding-right: 1rem;

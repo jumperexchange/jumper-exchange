@@ -190,6 +190,6 @@ export const colorDict: Record<number, TColor> = {
  * For now we have only one breakpoint. We show mobile layout on screen width less than 1200 and
  * default layout on larger screens.
  *************************************************************************************************/
-const breakpoints = [1200];
+const breakpoints = [768, 1280];
 
 export const mq = breakpoints.map((bp) => `@media (max-width: ${bp}px)`);
