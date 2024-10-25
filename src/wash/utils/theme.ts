@@ -110,3 +110,7 @@ export const WashH2 = styled.h2`
 export const SkewX6 = styled.div`
   transform: skewX(-6deg);
 `;
+
+export const FitContent = styled.div`
+  width: fit-content;
+`;

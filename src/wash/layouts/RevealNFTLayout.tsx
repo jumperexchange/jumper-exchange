@@ -12,7 +12,7 @@ import { mq } from '../utils/constants';
 import { titanOne } from 'src/wash/common/WithFonts';
 import { inter } from 'src/fonts/fonts';
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the RevealedNFTLayout component
  *************************************************************************************************/
 const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
@@ -58,7 +58,7 @@ const RevealedNFTLayoutCallToActionBox = styled.div`
   margin-top: 66px;
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * RevealedNFTLayout Component
  *
  * This component is responsible for displaying the NFT reveal screen. It shows the revealed NFT,
@@ -138,9 +138,15 @@ export function RevealedNFTLayout(): ReactElement {
       <RevealedNFTLayoutCallToActionBox>
         {!reveal.isRevealing && (
           <CallToActionBox
-            title={`up to +${countExtraXPFromItems(user?.items)}% exp on next nft`}
+            title={
+              countExtraXPFromItems(user?.items) === 0
+                ? `Keep washing anon!`
+                : `GET +${countExtraXPFromItems(user?.items)}% BOOST on next nft`
+            }
             subtitle={
-              'Mint another NFT and receive additional progress from start!'
+              countExtraXPFromItems(user?.items) === 0
+                ? 'Mint new NFT and wash it clean for another chance to win valuable NFTs and blue chip memecoins.'
+                : 'You’ve still got power ups in your inventory. Mint another NFT and put them to good use!'
             }
           />
         )}

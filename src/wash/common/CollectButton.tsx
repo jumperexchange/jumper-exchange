@@ -9,7 +9,7 @@ import { colors, SkewX6 } from '../utils/theme';
 import { inter } from 'src/fonts/fonts';
 
 type TCollectButtonProps = {
-  onClick: VoidFunction;
+  onClick?: VoidFunction;
   theme: 'pink' | 'cyan';
   disabled?: boolean;
   isBusy?: boolean;
@@ -19,7 +19,7 @@ type TCollectButtonProps = {
   size?: 'short' | 'long';
 };
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the ButtonLayout component
  *************************************************************************************************/
 const ProgressBar = styled.div`
@@ -50,7 +50,7 @@ const ProgressLabel = styled.span`
   text-transform: uppercase;
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the ButtonLayout component
  *************************************************************************************************/
 function ButtonLayout(props: TCollectButtonProps): ReactElement {
@@ -79,7 +79,7 @@ function ButtonLayout(props: TCollectButtonProps): ReactElement {
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the CollectButton component
  *************************************************************************************************/
 export const CollectButton = forwardRef<HTMLButtonElement, TCollectButtonProps>(

@@ -7,15 +7,18 @@ import { Modal } from '../common/Modal';
 import { QuestsList } from '../common/Quests';
 import { useWashTrading } from '../contexts/useWashTrading';
 import { cl, widgetConfig } from '../utils/utils';
-import { LiFiWidget } from '@lifi/widget';
+import { LiFiWidget, WidgetSkeleton } from '@lifi/widget';
 import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 import type { TCleaningItem } from '../types/wash';
 import { colors, WashH1 } from '../utils/theme';
-import { inter } from 'src/fonts/fonts';
 import { mq } from '../utils/constants';
-/************************************************************************************************
+import { SwapWarningWrapper } from '../common/SwapWarning';
+import { ClientOnly } from '../../components/ClientOnly';
+import { inter } from '../../fonts/fonts';
+
+/**************************************************************************************************
  * OverkillModal: A modal component to warn users about potential overkill when using an item
  *
  * This component displays a warning modal when a user is about to use a boost that exceeds
@@ -74,7 +77,7 @@ export function OverkillModal(props: {
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the DashboardLayout component
  *************************************************************************************************/
 const DashboardLayoutContainer = styled.div`
@@ -124,7 +127,17 @@ const SwapSection = styled.div`
   }
 `;
 
-/************************************************************************************************
+const WarngingSwapWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  ${mq[0]} {
+    gap: 1rem;
+  }
+`;
+
+/**************************************************************************************************
  * DashboardLayout: Main component for the washing dashboard
  *
  * This component orchestrates the layout and functionality of the NFT washing dashboard.
@@ -185,9 +198,14 @@ export function DashboardLayout(): ReactElement {
           />
           <QuestsList isSkeleton={!hasNFT} />
         </WashSection>
-        <SwapSection>
-          <LiFiWidget integrator={'Mom'} config={widgetConfig} />
-        </SwapSection>
+        <WarngingSwapWrapper>
+          <SwapSection>
+            <ClientOnly fallback={<WidgetSkeleton config={widgetConfig} />}>
+              <LiFiWidget integrator={'Mom'} config={widgetConfig} />
+            </ClientOnly>
+          </SwapSection>
+          <SwapWarningWrapper />
+        </WarngingSwapWrapper>
       </DashboardLayoutContainer>
     </Fragment>
   );

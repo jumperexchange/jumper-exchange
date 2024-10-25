@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useContext, useEffect } from 'react';
 import { useGetCollection } from '../hooks/useGetCollection';
 import type { TGetUser } from '../hooks/useGetUser';
@@ -17,6 +19,10 @@ import type {
   Route,
   RouteExecutionUpdate,
 } from '@lifi/widget';
+import {
+  useWalletManagementEvents,
+  WalletManagementEvent,
+} from '@lifi/wallet-management';
 
 type TWashTradingContext = {
   nft: TGetNFT;
@@ -27,7 +33,7 @@ type TWashTradingContext = {
   collection: TGetCollection;
 };
 
-const WashTradingContext = createContext<TWashTradingContext>({
+const defaultArgs: TWashTradingContext = {
   nft: {
     isLoading: false,
     hasNFT: false,
@@ -67,7 +73,9 @@ const WashTradingContext = createContext<TWashTradingContext>({
     refetch: undefined,
     hasCollection: false,
   },
-});
+};
+
+const WashTradingContext = createContext<TWashTradingContext>(defaultArgs);
 export function WashTradingContextApp(props: {
   children: ReactElement;
 }): ReactElement {

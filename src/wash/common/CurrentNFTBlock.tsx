@@ -4,7 +4,6 @@ import { DEFAULT_NFT_COLOR, mq, TOOLTIP_MESSAGES } from '../utils/constants';
 import { cl } from '../utils/utils';
 import styled from '@emotion/styled';
 
-import { titanOne } from 'src/wash/common/WithFonts';
 import { BoostItem } from './BoostItem';
 import { InfoPopup } from './InfoPopup';
 import { NFTItem } from './NFTItem';
@@ -14,6 +13,7 @@ import { WashProgress } from './WashProgress';
 import { colors, WashH2, type TColor } from '../utils/theme';
 import type { TItems, TNFTItem } from '../types/types';
 import type { TCleaningItem } from '../types/wash';
+import { titanOne } from './WithFonts';
 
 const ImageWrapper = styled.div`
   position: absolute;
@@ -38,6 +38,7 @@ const MobileImageWrapper = styled.div`
 `;
 
 /************************************************************************************************
+/**************************************************************************************************
  * BorderStroke Component
  *
  * This component renders a decorative border stroke image for the NFT block.
@@ -87,7 +88,7 @@ function BorderStroke(props: {
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the ProgressSection component
  *************************************************************************************************/
 const ProgressSectionHeader = styled.div`
@@ -103,7 +104,7 @@ const ProgressSectionTitle = styled.h2`
   color: white;
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * ProgressSection Component
  *
  * This component renders the progress section of the NFT block, including a title, info popup,
@@ -134,7 +135,7 @@ function ProgressSection(props: {
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the PowerupSection component
  *************************************************************************************************/
 const PowerUpSectionHeader = styled.div`
@@ -156,7 +157,7 @@ const PowerUpSectionItems = styled.div`
   column-gap: 16px;
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * PowerupSection Component
  *
  * This component renders the power-up section of the NFT block, including a title, info popup,
@@ -210,7 +211,7 @@ function PowerupSection(props: {
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the CurrentNFTBlock component
  *************************************************************************************************/
 const CurrentNFTBlockContainer = styled.div<{ backgroundColor: string }>`

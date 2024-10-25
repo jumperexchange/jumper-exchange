@@ -9,7 +9,7 @@ type TCounterProps = {
   isDisabled?: boolean;
 };
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the Counter component
  *************************************************************************************************/
 const CounterBubble = styled.div<{ backgroundColor: string }>`
@@ -27,7 +27,7 @@ const CounterBubble = styled.div<{ backgroundColor: string }>`
   background-color: ${({ backgroundColor }) => backgroundColor};
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * Counter Component
  *
  * This component renders a counter bubble with a dynamic background color and label.

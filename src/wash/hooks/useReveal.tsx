@@ -2,7 +2,8 @@ import { useCallback, useState } from 'react';
 import { useUmi } from '../contexts/useUmi';
 import { WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
 import { base58 } from '@metaplex-foundation/umi/serializers';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useAccount } from '@lifi/wallet-management';
+import { ChainType } from '@lifi/sdk';
 
 export type TRevealHook = {
   onReveal: VoidFunction;
@@ -13,15 +14,15 @@ export type TRevealHook = {
 };
 
 export function useReveal(refetchNft?: VoidFunction): TRevealHook {
+  const { account } = useAccount({ chainType: ChainType.SVM });
   const [isRevealing, set_isRevealing] = useState(false);
   const [hasCanceledReveal, set_hasCanceledReveal] = useState(false);
   const [error, set_error] = useState<string | undefined>('');
   const [revealStatus, set_revealStatus] = useState('');
   const { umi } = useUmi();
-  const wallet = useWallet();
 
   const onReveal = useCallback(async () => {
-    if (!umi || !wallet?.connected || !wallet.publicKey) {
+    if (!umi || !account.isConnected || !account.address) {
       console.error('Wallet not connected or Umi not initialized');
       return;
     }
@@ -83,7 +84,7 @@ export function useReveal(refetchNft?: VoidFunction): TRevealHook {
       setTimeout(() => set_isRevealing(false), 1000);
       setTimeout(() => set_hasCanceledReveal(false), 1300);
     }
-  }, [umi, wallet, refetchNft]);
+  }, [umi, account.address, account.isConnected, refetchNft]);
 
   return {
     onReveal,
