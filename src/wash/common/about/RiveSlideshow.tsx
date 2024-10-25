@@ -28,6 +28,10 @@ const SlideshowImage = styled(Image)<{ isLoaded: boolean }>`
     min-height: 203px;
   }
   opacity: ${({ isLoaded }) => (isLoaded ? 0 : 1)};
+  ${mq[1]} {
+    width: 1920px;
+    max-height: 203px;
+  }
 `;
 
 export default function RiveSlideshowWrapper(): ReactElement {
