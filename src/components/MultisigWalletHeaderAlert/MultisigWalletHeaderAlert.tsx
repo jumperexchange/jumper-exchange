@@ -12,7 +12,7 @@ export const MultisigWalletHeaderAlert = () => {
   const { t } = useTranslation();
 
   return (
-    <MultisigWalletHeaderAlertContainer>
+    <MultisigWalletHeaderAlertContainer className="alert">
       <MultisigWalletHeaderAlertTitle>
         <InfoRoundedIcon />
         <Typography fontWeight={700} marginLeft={1}>
