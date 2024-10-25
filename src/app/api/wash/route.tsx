@@ -31,6 +31,7 @@ export async function POST(request: Request): Promise<Response> {
       ...res,
     }),
   });
+  const decodedResponse = await response.json();
 
-  return Response.json({ res, response });
+  return Response.json({ res, response: decodedResponse });
 }

@@ -2,7 +2,7 @@
 
 import { Button } from '../common/Button';
 import { useWashTrading } from '../contexts/useWashTrading';
-import { titanOne } from 'src/wash/common/WithFonts';
+import { titanOne } from '../common/WithFonts';
 import { WashText } from '../utils/theme';
 import { ChainType } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
@@ -10,7 +10,7 @@ import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the EmptyScreenLayout component
  *************************************************************************************************/
 const EmptyScreenLayoutContainer = styled.div`
@@ -41,7 +41,7 @@ const EmptyScreenLayoutText = styled(WashText)`
   color: white;
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * EmptyScreenLayout: Component for displaying the empty screen layout
  *
  * This component renders the layout for when the user hasn't minted an NFT yet. It displays

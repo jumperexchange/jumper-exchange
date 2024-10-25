@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import { type ReactElement, useMemo, useRef } from 'react';
 import { QUESTS, TOOLTIP_MESSAGES } from '../utils/constants';
-import { colors, WashH1 } from '../utils/theme';
+import { colors, mq, WashH1 } from '../utils/theme';
 
 import { CollectButton } from './CollectButton';
 import { InfoPopup } from './InfoPopup';
@@ -13,7 +13,7 @@ import { IconDone } from './icons/IconDone';
 import { useWashTrading } from '../contexts/useWashTrading';
 import type { TQuest } from '../types/wash';
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the QuestItem component
  *************************************************************************************************/
 const QuestItemWrapper = styled.div`
@@ -25,6 +25,9 @@ const QuestItemWrapper = styled.div`
   padding: 0.5rem;
   box-shadow: 4px 4px 0px ${colors.violet[800]};
   transform: skew(-6deg);
+  ${mq[0]} {
+    display: none;
+  }
 `;
 
 const BoosterWrapper = styled.div<{ isCompleted: boolean; isCommon: boolean }>`
@@ -50,6 +53,15 @@ const BoosterWrapper = styled.div<{ isCompleted: boolean; isCommon: boolean }>`
           : `4px 4px 0px 0px ${colors.violet[300]}, 0px 0px 0px 0px ${colors.cyan[800]}, 0px 0px 0px 0px ${colors.pink[800]};`};
     transition: ${(props) =>
       props.isCompleted && props.isCommon ? 'all ease-in' : 'all'};
+  }
+  ${mq[0]} {
+    min-height: 48px;
+    min-width: 48px;
+    box-shadow:
+      2px 2px 0px 0px #390083,
+      0px 0px 0px 0px #00b6bf,
+      0px 0px 0px 0px #ff009d;
+    border-radius: 0.5rem;
   }
 `;
 
@@ -97,6 +109,13 @@ const QuestDescription = styled.p`
   margin-left: 0.5rem;
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.5);
+
+  ${mq[0]} {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
 `;
 
 const QuestHeadingWrapper = styled.div`
@@ -120,6 +139,27 @@ const QuestHeading = styled.span<{ questType: 'common' | 'rare' | 'done' }>`
 const QuestTitle = styled.p`
   font-weight: 900;
   color: white;
+`;
+
+const QuestItemMobileWrapper = styled.div`
+  background-color: ${colors.violet[200]};
+  display: none;
+  gap: 0.25rem;
+  border-radius: 1rem;
+  padding: 1rem;
+  height: 196px;
+  box-shadow: 4px 4px 0px #8000ff;
+  transform: skew(-3deg);
+  flex-direction: column;
+  justify-content: space-between;
+  ${mq[0]} {
+    display: flex;
+  }
+`;
+
+const QuestItemInnerBox = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 /**************************************************************************************************
@@ -154,49 +194,95 @@ export function QuestItem(props: TQuest): ReactElement {
   };
 
   return (
-    <QuestItemWrapper>
-      <BoosterWrapper
-        isCompleted={isDone}
-        isCommon={props.questType === 'common'}
-      >
-        <BoosterImage
-          src={props.powerUp.logo}
-          alt={''}
-          isComplete={!isDone}
-          width={72}
-          height={72}
-        />
-      </BoosterWrapper>
-      <ContentWrapper>
-        <QuestInfoWrapper questBackground={getQuestBg()}>
-          <QuestInfo>
-            <QuestHeadingWrapper>
-              <QuestHeading questType={isDone ? 'done' : props.questType}>
-                {isDone
-                  ? 'DONE'
-                  : props.questType === 'common'
-                    ? 'Common quest'
-                    : 'Rare quest'}
-              </QuestHeading>
-              <IconDone style={{ opacity: isDone ? 1 : 0 }} />
-            </QuestHeadingWrapper>
-            <QuestTitle>{props.title}</QuestTitle>
-          </QuestInfo>
-          <CollectButton
-            ref={elementRef}
-            className={'skew-x-0'}
-            theme={props.questType === 'common' ? 'pink' : 'cyan'}
-            progress={props.progress}
-            progressSteps={props.progressSteps}
+    <>
+      <QuestItemWrapper>
+        <BoosterWrapper
+          isCompleted={isDone}
+          isCommon={props.questType === 'common'}
+        >
+          <BoosterImage
+            src={props.powerUp.logo}
+            alt={''}
+            isComplete={!isDone}
+            width={72}
+            height={72}
           />
-        </QuestInfoWrapper>
-        <QuestDescription>{props.description}</QuestDescription>
-      </ContentWrapper>
-    </QuestItemWrapper>
+        </BoosterWrapper>
+        <ContentWrapper>
+          <QuestInfoWrapper questBackground={getQuestBg()}>
+            <QuestInfo>
+              <QuestHeadingWrapper>
+                <QuestHeading questType={isDone ? 'done' : props.questType}>
+                  {isDone
+                    ? 'DONE'
+                    : props.questType === 'common'
+                      ? 'Common quest'
+                      : 'Rare quest'}
+                </QuestHeading>
+                <IconDone style={{ opacity: isDone ? 1 : 0 }} />
+              </QuestHeadingWrapper>
+              <QuestTitle>{props.title}</QuestTitle>
+            </QuestInfo>
+            <CollectButton
+              ref={elementRef}
+              className={'skew-x-0'}
+              size={'short'}
+              onClick={() => {}}
+              theme={props.questType === 'common' ? 'pink' : 'cyan'}
+              progress={props.progress}
+              progressSteps={props.progressSteps}
+            />
+          </QuestInfoWrapper>
+          <QuestDescription>{props.description}</QuestDescription>
+        </ContentWrapper>
+      </QuestItemWrapper>
+
+      <QuestItemMobileWrapper>
+        <div>
+          <QuestItemInnerBox>
+            <QuestInfo>
+              <QuestHeadingWrapper>
+                <QuestHeading questType={isDone ? 'done' : props.questType}>
+                  {isDone
+                    ? 'DONE'
+                    : props.questType === 'common'
+                      ? 'Common quest'
+                      : 'Rare quest'}
+                </QuestHeading>
+                <IconDone style={{ opacity: isDone ? 1 : 0 }} />
+              </QuestHeadingWrapper>
+              <QuestTitle>{props.title}</QuestTitle>
+            </QuestInfo>
+            <BoosterWrapper
+              isCompleted={isDone}
+              isCommon={props.questType === 'common'}
+            >
+              <BoosterImage
+                src={props.powerUp.logo}
+                alt={''}
+                isComplete={!isDone}
+                width={32}
+                height={32}
+              />
+            </BoosterWrapper>
+          </QuestItemInnerBox>
+          <QuestDescription>{props.description}</QuestDescription>
+        </div>
+
+        <CollectButton
+          ref={elementRef}
+          className={'skew-x-0'}
+          onClick={() => {}}
+          theme={props.questType === 'common' ? 'pink' : 'cyan'}
+          progress={props.progress}
+          progressSteps={props.progressSteps}
+        />
+      </QuestItemMobileWrapper>
+    </>
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the QuestsList component
  *************************************************************************************************/
 const QuestsListWrapper = styled.div`
@@ -206,6 +292,11 @@ const QuestsListWrapper = styled.div`
   background-color: ${colors.violet[500]};
   padding: 32px;
   box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
+
+  ${mq[0]} {
+    max-width: 343px;
+    padding: 24px;
+  }
 `;
 const QuestsListHeader = styled.div`
   display: flex;
@@ -220,7 +311,7 @@ const QuestList = styled.div`
   min-height: 40dvh;
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * QuestsList Component
  *
  * This component renders a list of quests or a skeleton placeholder.

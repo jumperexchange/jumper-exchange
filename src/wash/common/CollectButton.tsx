@@ -16,9 +16,10 @@ type TCollectButtonProps = {
   className?: string;
   progress: TQuest['progress'];
   progressSteps: TQuest['progressSteps'];
+  size?: 'short' | 'long';
 };
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the ButtonLayout component
  *************************************************************************************************/
 const ProgressBar = styled.div`
@@ -49,7 +50,7 @@ const ProgressLabel = styled.span`
   text-transform: uppercase;
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the ButtonLayout component
  *************************************************************************************************/
 function ButtonLayout(props: TCollectButtonProps): ReactElement {
@@ -78,7 +79,7 @@ function ButtonLayout(props: TCollectButtonProps): ReactElement {
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the CollectButton component
  *************************************************************************************************/
 export const CollectButton = forwardRef<HTMLButtonElement, TCollectButtonProps>(
@@ -93,8 +94,9 @@ export const CollectButton = forwardRef<HTMLButtonElement, TCollectButtonProps>(
         disabled={props.disabled}
         isBusy={props.isBusy}
         style={{ overflow: 'hidden' }}
+        size={props.size}
         className={cl(
-          'relative !h-[48px] !w-[164px] -skew-x-6 rounded-lg font-mono font-black uppercase text-white',
+          'relative !h-[48px] -skew-x-6 rounded-lg font-mono font-black uppercase text-white',
           props.progress === props.progressSteps
             ? '!bg-violet-600 cursor-pointer hover:!bg-violet-700 disabled:!bg-violet-200 disabled:!cursor-not-allowed disabled:!text-white/30'
             : props.theme === 'pink'

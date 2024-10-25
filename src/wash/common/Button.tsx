@@ -9,7 +9,7 @@ import {
 import { cl } from '../utils/utils';
 
 import { IconSpinner } from './icons/IconSpinner';
-import { inter } from 'src/fonts/fonts';
+import { inter } from '../../fonts/fonts';
 
 type TButtonProps = {
   children?: ReactElement;

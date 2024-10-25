@@ -8,10 +8,11 @@ import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 import { CallToActionBox } from '../common/CallToActionBox';
-import { titanOne } from 'src/wash/common/WithFonts';
-import { inter } from 'src/fonts/fonts';
+import { titanOne } from '../common/WithFonts';
+import { inter } from '../../fonts/fonts';
+import { mq } from '../utils/theme';
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the RevealedNFTLayout component
  *************************************************************************************************/
 const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
@@ -19,6 +20,7 @@ const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
   margin-top: -28dvh;
   display: flex;
   width: 100%;
+  max-width: 100vw;
   flex-direction: column;
   align-items: center;
   padding-top: 152px;
@@ -27,6 +29,14 @@ const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
     scale 300ms ease-in-out;
   opacity: ${({ mounted }) => (mounted ? 1 : 0)};
   scale: ${({ mounted }) => (mounted ? 1 : 0)};
+  ${mq[0]} {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  ${mq[1]} {
+    margin-top: 0dvh;
+    padding-top: 0px;
+  }
 `;
 const RevealedNFTLayoutTitle = styled.h1`
   text-transform: uppercase;
@@ -35,21 +45,37 @@ const RevealedNFTLayoutTitle = styled.h1`
   line-height: 56px;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
+  ${mq[0]} {
+    font-size: 32px;
+    line-height: 32px;
+  }
+  ${mq[1]} {
+    font-size: 48px;
+    line-height: 48px;
+  }
 `;
 const RevealedNFTLayoutSubtitle = styled.span`
   color: white;
   margin-top: 8px;
   margin-bottom: 40px;
   font-weight: 500;
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 24px;
+  line-height: 32px;
   font-family: ${inter.style.fontFamily};
+  ${mq[0]} {
+    text-align: center;
+    font-size: 16px;
+    line-height: 20px;
+  }
 `;
 const RevealedNFTLayoutCallToActionBox = styled.div`
   margin-top: 66px;
+  ${mq[0]} {
+    max-width: 320px;
+  }
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * RevealedNFTLayout Component
  *
  * This component is responsible for displaying the NFT reveal screen. It shows the revealed NFT,
@@ -123,15 +149,24 @@ export function RevealedNFTLayout(): ReactElement {
       <RevealNFTItem
         nft={currentNFT}
         label={currentNFT?.isRare ? 'Legendary' : 'Common'}
-        isRevealing={reveal.isRevealing || reveal.hasCanceledReveal}
+        isRevealing={
+          (reveal.isRevealing || reveal.hasCanceledReveal) &&
+          currentNFT.progress === 100
+        }
       />
 
       <RevealedNFTLayoutCallToActionBox>
         {!reveal.isRevealing && (
           <CallToActionBox
-            title={`up to +${countExtraXPFromItems(user?.items)}% exp on next nft`}
+            title={
+              countExtraXPFromItems(user?.items) === 0
+                ? `Keep washing anon!`
+                : `GET +${countExtraXPFromItems(user?.items)}% BOOST on next nft`
+            }
             subtitle={
-              'Mint another NFT and receive additional progress from start!'
+              countExtraXPFromItems(user?.items) === 0
+                ? 'Mint new NFT and wash it clean for another chance to win valuable NFTs and blue chip memecoins.'
+                : 'You’ve still got power ups in your inventory. Mint another NFT and put them to good use!'
             }
           />
         )}

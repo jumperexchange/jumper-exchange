@@ -4,21 +4,11 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import { useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+import { WashLinkMap } from 'src/wash/const/washLinkMap';
 
-interface useNavbarTabsProps {
-  navbarPageReload?: boolean;
-}
-
-export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
+export const useNavbarTabs = () => {
   const { trackEvent } = useUserTracking();
-  const { t } = useTranslation();
-  const theme = useTheme();
   const router = useRouter();
 
   const handleClickTab =
@@ -39,56 +29,19 @@ export const useNavbarTabs = ({ navbarPageReload }: useNavbarTabsProps) => {
 
   const output = [
     {
-      label: t('navbar.links.exchange'),
+      label: 'About',
       value: 0,
-      icon: (
-        <SwapHorizIcon
-          sx={{
-            marginRight: 0.75,
-            marginBottom: `${theme.spacing(0)} !important`,
-            color:
-              theme.palette.mode === 'dark'
-                ? theme.palette.white.main
-                : theme.palette.black.main,
-          }}
-        />
-      ),
-      onClick: handleClickTab(''),
+      onClick: handleClickTab(WashLinkMap.WashAbout),
     },
     {
-      label: t('navbar.links.refuel'),
-      onClick: handleClickTab('gas'),
+      label: 'Wash NFT',
+      onClick: handleClickTab(WashLinkMap.WashNFT),
       value: 1,
-      icon: (
-        <EvStationOutlinedIcon
-          sx={{
-            marginRight: 0.75,
-            marginBottom: `${theme.spacing(0)} !important`,
-            color:
-              theme.palette.mode === 'dark'
-                ? theme.palette.white.main
-                : theme.palette.black.main,
-          }}
-        />
-      ),
     },
     {
-      label: t('navbar.links.buy'),
-      onClick: handleClickTab('buy'),
+      label: 'Collection',
+      onClick: handleClickTab(WashLinkMap.WashCollection),
       value: 2,
-      icon: (
-        <CreditCardIcon
-          sx={{
-            marginRight: 0.75,
-            marginBottom: `${theme.spacing(0)} !important`,
-            color:
-              theme.palette.mode === 'dark'
-                ? theme.palette.white.main
-                : theme.palette.black.main,
-          }}
-        />
-      ),
-      disabled: process.env.NEXT_PUBLIC_ONRAMPER_ENABLED !== 'true',
     },
   ];
 

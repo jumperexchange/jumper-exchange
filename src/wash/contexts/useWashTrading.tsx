@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useContext, useEffect } from 'react';
 import { useGetCollection } from '../hooks/useGetCollection';
 import type { TGetUser } from '../hooks/useGetUser';
