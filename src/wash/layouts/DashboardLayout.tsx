@@ -7,13 +7,14 @@ import { Modal } from '../common/Modal';
 import { QuestsList } from '../common/Quests';
 import { useWashTrading } from '../contexts/useWashTrading';
 import { cl, widgetConfig } from '../utils/utils';
-import { LiFiWidget } from '@lifi/widget';
+import { LiFiWidget, WidgetSkeleton } from '@lifi/widget';
 import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 import type { TCleaningItem } from '../types/wash';
 import { colors, WashH1 } from '../utils/theme';
 import { inter } from 'src/fonts/fonts';
+import { ClientOnly } from 'src/components/ClientOnly';
 /************************************************************************************************
  * OverkillModal: A modal component to warn users about potential overkill when using an item
  *
@@ -166,7 +167,9 @@ export function DashboardLayout(): ReactElement {
           <QuestsList isSkeleton={!hasNFT} />
         </WashSection>
         <SwapSection>
-          <LiFiWidget integrator={'Mom'} config={widgetConfig} />
+          <ClientOnly fallback={<WidgetSkeleton config={widgetConfig} />}>
+            <LiFiWidget integrator={'Mom'} config={widgetConfig} />
+          </ClientOnly>
         </SwapSection>
       </DashboardLayoutContainer>
     </Fragment>
