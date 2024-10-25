@@ -115,7 +115,7 @@ export function CollectionNFTItem({ nft }: TNftItemProps): ReactElement {
           position: absolute;
           left: 49%;
           transform: translateX(-50%) skewX(-6deg);
-          bottom: -12px;
+          bottom: -23px;
           border-radius: 16px;
           height: 56px;
           width: 230px;
