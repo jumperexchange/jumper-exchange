@@ -41,7 +41,7 @@ export const optionalRenderProps = <TProps>(
 ): ReactNode =>
   typeof children === 'function' ? children(renderProps) : children;
 
-/************************************************************************************************
+/**************************************************************************************************
  * TAPIQuest: Defines the structure for Quest data returned by the backend
  *
  * @property id - The unique identifier for the API quest instance

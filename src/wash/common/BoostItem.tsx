@@ -1,12 +1,12 @@
 import Image from 'next/image';
-import { Absolute, colors } from 'src/wash/utils/theme';
-import { CLEANING_ITEMS } from 'src/wash/utils/constants';
-import { Counter } from 'src/wash/common/Counter';
 import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
-import type { TCleaningItem } from 'src/wash/types/wash';
-import { inter } from 'src/fonts/fonts';
+import { inter } from '../../fonts/fonts';
+import type { TCleaningItem } from '../types/wash';
+import { CLEANING_ITEMS } from '../utils/constants';
+import { mq, Absolute, colors } from '../utils/theme';
+import { Counter } from './Counter';
 
 type TBoostItemProps = {
   boostType: 'soap' | 'sponge' | 'cleanser';
@@ -16,7 +16,7 @@ type TBoostItemProps = {
   isSkeleton?: boolean;
 };
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the Boost item component
  *************************************************************************************************/
 const PowerUpWrapperSkeleton = styled.div`
@@ -59,6 +59,10 @@ const PowerUpWrapper = styled.button`
   &:hover img {
     width: 90px;
   }
+  ${mq[1]} {
+    width: 88px;
+    height: 88px;
+  }
 `;
 const PowerUpPercentageWrapper = styled.div`
   display: flex;
@@ -87,12 +91,19 @@ const PowerUpPercentage = styled.span<{ disabled: boolean }>`
   transform: skewX(6deg);
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
   font-family: ${inter.style.fontFamily};
+  ${mq[1]} {
+    font-size: 20px;
+    line-height: 28px;
+  }
 `;
 
 const PowerUpLogo = styled(Image)<{ disabled: boolean }>`
   width: 80px;
   transition: all 0.1s ease-in-out;
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+  ${mq[1]} {
+    width: 64px;
+  }
 `;
 
 /**********************************************************************************************
@@ -150,7 +161,7 @@ export function BoostItem({
         />
       </Absolute>
       <Absolute right={'-4px'} top={'-8px'}>
-        <Counter amount={amount} isDisabled={isDisabled || amount === 0} />
+        <Counter amount={amount} isDisabled={disabled} />
       </Absolute>
     </PowerUpWrapper>
   );

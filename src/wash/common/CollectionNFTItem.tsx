@@ -9,8 +9,8 @@ import { getPepeImage } from '../utils/utils';
 import { WashProgress } from './WashProgress';
 
 import type { ReactElement, ReactNode } from 'react';
-import { titanOne } from 'src/wash/common/WithFonts';
 import type { TNFTItem } from '../types/types';
+import { titanOne } from './WithFonts';
 
 type TNftItemProps = {
   label?: string;
@@ -78,7 +78,7 @@ export function CollectionNFTItem({ nft }: TNftItemProps): ReactElement {
             justify-content: center;
             align-items: center;
             position: absolute;
-            left: 48%;
+            left: 49%;
             transform: translateX(-50%) skewX(-6deg);
             bottom: -23px;
             border-radius: 16px;
@@ -113,9 +113,9 @@ export function CollectionNFTItem({ nft }: TNftItemProps): ReactElement {
           justify-content: center;
           align-items: center;
           position: absolute;
-          left: 48%;
+          left: 49%;
           transform: translateX(-50%) skewX(-6deg);
-          bottom: -12px;
+          bottom: -23px;
           border-radius: 16px;
           height: 56px;
           width: 230px;
@@ -148,7 +148,7 @@ export function CollectionNFTItem({ nft }: TNftItemProps): ReactElement {
     }
     return (
       <NFTImage
-        src={`/wash/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
+        src={`/wash/cleaning-stage/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
         alt={'nft-image'}
         borderColor={nft?.isRare ? colors.orange[800] : colors.violet[700]}
         width={320}
@@ -158,7 +158,12 @@ export function CollectionNFTItem({ nft }: TNftItemProps): ReactElement {
   }
 
   return (
-    <div className={'relative'}>
+    <div
+      css={css`
+        position: relative;
+        width: 254px;
+      `}
+    >
       <RevealNFTContainer>
         <Label
           backgroundColor={

@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { type ReactElement, useMemo } from 'react';
 import Image from 'next/image';
-import { colors } from '../utils/theme';
+import { colors, mq } from '../utils/theme';
 import { DEFAULT_NFT_COLOR } from '../utils/constants';
 import { getPepeImage } from '../utils/utils';
 import styled from '@emotion/styled';
-import { titanOne } from 'src/wash/common/WithFonts';
 import { RevealsBackground } from './RevealBackground';
 import type { TNFTItem } from '../types/types';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
+import { titanOne } from './WithFonts';
 
 type TRevealNFTItem = {
   label: string;
@@ -16,7 +16,7 @@ type TRevealNFTItem = {
   isRevealing: boolean;
 };
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the RevealNFTItem component
  *************************************************************************************************/
 const RevealNFTContainer = styled.div<{ backgroundColor: string }>`
@@ -25,6 +25,10 @@ const RevealNFTContainer = styled.div<{ backgroundColor: string }>`
   width: 320px;
   height: 320px;
   border-radius: 24px;
+  ${mq[1]} {
+    width: 216px;
+    height: 216px;
+  }
 `;
 const NFTLabelBox = styled.div<{ backgroundColor: string }>`
   position: absolute;
@@ -69,6 +73,11 @@ const NFTImageBox = styled.div<{
   overflow: hidden;
   background-color: ${(props) => props.backgroundColor};
   border: 4px solid ${(props) => props.borderColor};
+
+  ${mq[1]} {
+    width: 216px;
+    height: 216px;
+  }
 `;
 const NFTImage = styled(Image)<{ isRevealing: boolean }>`
   opacity: ${(props) => (props.isRevealing ? 0 : 1)};
@@ -77,6 +86,11 @@ const NFTImage = styled(Image)<{ isRevealing: boolean }>`
   width: 320px;
   height: 320px;
   inset: 0;
+
+  ${mq[1]} {
+    width: 216px;
+    height: 216px;
+  }
 `;
 const NFTImageSkeleton = styled.div<{ isRevealing: boolean }>`
   animation: ${(props) =>
@@ -154,7 +168,7 @@ export function RevealNFTItem({
   }, [isRevealing, nft.isRare]);
 
   const { RiveComponent } = useRive({
-    src: '/wash/reveal.riv',
+    src: '/wash/rive/reveal/rive.riv',
     stateMachines: 'State Machine 1',
     layout: new Layout({
       fit: Fit.None,
@@ -182,7 +196,7 @@ export function RevealNFTItem({
             unoptimized
             src={
               nft.imageUri ||
-              `/wash/${getPepeImage(100, nft?.color ?? DEFAULT_NFT_COLOR)}` ||
+              `/wash/cleaning-stage/${getPepeImage(100, nft?.color ?? DEFAULT_NFT_COLOR)}` ||
               ''
             }
             alt={'nft-image'}

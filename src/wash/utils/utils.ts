@@ -2,11 +2,11 @@ import { type WidgetConfig } from '@lifi/widget';
 
 import { CLEANING_ITEMS } from './constants';
 
-import { publicRPCList } from 'src/const/rpcList';
 import type { TItems } from '../types/types';
 import { colors } from './theme';
+import { publicRPCList } from '../../const/rpcList';
 
-/************************************************************************************************
+/**************************************************************************************************
  * Joins the given classes into a single string.
  * @example cl('foo', 'bar') // 'foo bar'
  * @example cl('foo', false && 'bar') // 'foo'
@@ -18,7 +18,7 @@ export function cl(...classes: (string | null | undefined)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * getPepeImage Function
  *
  * This function returns the appropriate image filename based on the progress and color provided.
@@ -43,7 +43,7 @@ export function getPepeImage(progress: number = 0, color?: string): string {
   }
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * countExtraXPFromItems Function
  *
 
@@ -61,7 +61,7 @@ export function countExtraXPFromItems(items?: TItems): number {
   );
 }
 
-/************************************************************************************************
+/**************************************************************************************************
  * widgetConfig Configuration
  *
  * This configuration object defines the settings for the widget, including its appearance, theme,
@@ -114,14 +114,4 @@ export const widgetConfig: WidgetConfig = {
     },
   },
   integrator: 'MOM',
-};
-
-/**************************************************************************************************
- * getItem is needed here because cleaning items have different stroke colors depends on UI place.
- *************************************************************************************************/
-export const getItem = (id: keyof typeof CLEANING_ITEMS, color?: string) => {
-  return {
-    ...CLEANING_ITEMS[id],
-    logo: color ? `/wash/${color}-stroke-${id}.png` : CLEANING_ITEMS[id].logo,
-  };
 };

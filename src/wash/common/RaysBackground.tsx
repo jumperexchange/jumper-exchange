@@ -1,26 +1,58 @@
-import { cl } from '../utils/utils';
+import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
+import { colors } from '../utils/theme';
+import { mq } from '../utils/theme';
+
+const Wrapper = styled.div`
+  position: absolute;
+  top: -2800px;
+  left: 50%;
+  z-index: -10;
+  transform: translateX(-50%);
+`;
+
+const Background = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -30;
+  height: 100%;
+  width: 100%;
+  background-color: ${colors.violet[100]};
+`;
+
+const RevealWrapper = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 32px;
+`;
+
+const RevealContent = styled.div`
+  position: absolute;
+  left: -1100px;
+  top: 180px;
+  transform: translateY(-50%);
+  overflow: hidden;
+`;
+
+const RevealSvg = styled.svg`
+  z-index: 0;
+`;
 
 /**********************************************************************************************
  * RaysBackground renders a background with rays that spin. This is used when we need a
  * full-screen background with rays
  *********************************************************************************************/
-export function RaysBackground({
-  className,
-}: {
-  className?: string;
-}): ReactElement {
+export function RaysBackground(): ReactElement {
   return (
-    <div
-      className={cl(
-        'absolute top-[-2900px] left-1/2 -z-10 -translate-x-1/2 ',
-        className,
-      )}
-    >
-      <div className={'absolute left-0 top-0 -z-30 size-full bg-violet-100'} />
+    <Wrapper>
+      <Background />
       <svg
-        className={'z-0'}
         style={{ animation: 'spin 40s linear infinite' }}
         width={'6000'}
         height={'6000'}
@@ -86,9 +118,20 @@ export function RaysBackground({
           fill={'#28065F'}
         />
       </svg>
-    </div>
+    </Wrapper>
   );
 }
+
+const RaysWrapper = styled.div`
+  position: absolute;
+  left: -1100px;
+  top: 180px;
+  transform: translateY(-50%);
+  overflow: hidden;
+  ${mq[1]} {
+    left: -1030px;
+  }
+`;
 
 /**********************************************************************************************
  * RevealRaysBackground renders a background with rays that spin. This specific variant is
@@ -97,17 +140,9 @@ export function RaysBackground({
  *********************************************************************************************/
 export function RevealRaysBackground(): ReactElement {
   return (
-    <div
-      className={
-        'absolute left-0 top-0 size-full overflow-hidden rounded-[32px]'
-      }
-    >
-      <div
-        className={
-          'absolute left-[-1100px] top-[180px] -translate-y-1/2 overflow-hidden'
-        }
-      >
-        <svg
+    <RevealWrapper>
+      <RevealContent>
+        <RevealSvg
           style={{ animation: 'spin 70s linear infinite' }}
           width={'2500'}
           height={'2500'}
@@ -175,8 +210,8 @@ export function RevealRaysBackground(): ReactElement {
             d={'M1001.56 0L959.999 533L918.442 0H1001.56Z'}
             fill={'#28065F'}
           />
-        </svg>
-      </div>
-    </div>
+        </RevealSvg>
+      </RevealContent>
+    </RevealWrapper>
   );
 }
