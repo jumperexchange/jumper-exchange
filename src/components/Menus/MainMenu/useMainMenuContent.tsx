@@ -19,6 +19,7 @@ import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
 import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
@@ -142,6 +143,22 @@ export const useMainMenuContent = () => {
           label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
           data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
         });
+      },
+    },
+    {
+      label: 'Solana Washtrade',
+      prefixIcon: <BubbleChartIcon />,
+      showMoreIcon: false,
+      link: { url: JUMPER_WASH_PATH },
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-wash-trade-link',
+          action: 'action_click_wash_trade_link',
+          data: { [TrackingEventParameter.Menu]: 'wash' },
+        });
+        closeAllMenus();
+        router.push(JUMPER_WASH_PATH);
       },
     },
     {
