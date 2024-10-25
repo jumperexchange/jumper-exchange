@@ -1,6 +1,5 @@
 import type { TColor } from './theme';
 import type { TCleaningItem, TQuest } from '../types/wash';
-import { getItem } from './utils';
 
 /**************************************************************************************************
  * WASH_ENDPOINT_ROOT_URI

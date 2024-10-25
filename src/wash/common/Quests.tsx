@@ -10,8 +10,8 @@ import { CollectButton } from './CollectButton';
 import { InfoPopup } from './InfoPopup';
 import { IconDone } from './icons/IconDone';
 
-import { useWashTrading } from '../contexts/useWashTrading';
 import type { TQuest } from '../types/wash';
+import { useWashTrading } from '../contexts/useWashTrading';
 
 /**************************************************************************************************
  * Defining the styled components style for the QuestItem component
