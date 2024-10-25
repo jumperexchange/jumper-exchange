@@ -23,6 +23,13 @@ import {
   useWalletManagementEvents,
   WalletManagementEvent,
 } from '@lifi/wallet-management';
+import type { TransactionWithMeta } from '@metaplex-foundation/umi';
+import { useUmi } from './useUmi';
+import { base58 } from '@metaplex-foundation/umi/serializers';
+import { createUmi } from '@metaplex-foundation/umi-bundle-defaults';
+import { mplCore } from '@metaplex-foundation/mpl-core';
+import { walletAdapterIdentity } from '@metaplex-foundation/umi-signer-wallet-adapters';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 type TWashTradingContext = {
   nft: TGetNFT;
@@ -79,6 +86,7 @@ const WashTradingContext = createContext<TWashTradingContext>(defaultArgs);
 export function WashTradingContextApp(props: {
   children: ReactElement;
 }): ReactElement {
+  const wallet = useWallet();
   const user = useGetUser();
   const nft = useGetNFT(user.refetch);
   const wash = useWash(user.refetch, nft.refetch);
@@ -122,12 +130,14 @@ export function WashTradingContextApp(props: {
       console.warn('Success', route);
       let txHash: string | undefined = undefined;
       let doneAt: number | undefined = undefined;
+      let toAmount: number = Number(route.toAmount);
       if (route.steps.length > 0) {
         const firstStep = route.steps[0] as LiFiStep & {
-          execution: { process: Process[] };
+          execution: { process: Process[]; toAmount: string };
         };
         if ((firstStep?.execution?.process || []).length > 0) {
           const firstExecution = firstStep.execution.process[0];
+          toAmount = Number(firstStep.execution.toAmount);
           if (firstExecution) {
             txHash = firstExecution.txHash;
             doneAt = Number((firstExecution.doneAt || 0) / 1000);
@@ -151,7 +161,7 @@ export function WashTradingContextApp(props: {
             fromChainID: route.fromChainId,
             toAddress: route.toAddress,
             toToken: route.toToken,
-            toAmount: route.toAmount,
+            toAmount: toAmount,
             toAmountUSD: route.toAmountUSD,
             toChainID: route.toChainId,
             timestamp: doneAt,
