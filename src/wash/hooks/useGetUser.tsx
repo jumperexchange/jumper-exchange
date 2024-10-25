@@ -1,10 +1,11 @@
 import { useUmi } from '../contexts/useUmi';
 import { WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { useQuery } from '@tanstack/react-query';
 
 import type { TAPIQuest, TItems } from '../types/types';
 import { useCallback } from 'react';
+import { useAccount } from '@lifi/wallet-management';
+import { ChainType } from '@lifi/sdk';
 
 export type TGetUser = {
   isLoading: boolean;
@@ -20,7 +21,7 @@ type TGetUserResponse = {
 };
 
 export function useGetUser(): TGetUser {
-  const wallet = useWallet();
+  const { account } = useAccount({ chainType: ChainType.SVM });
   const { umi } = useUmi();
 
   const fetchUser = useCallback(async (): Promise<TGetUserResponse> => {
@@ -30,18 +31,18 @@ export function useGetUser(): TGetUser {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${wallet.publicKey?.toBase58()}`,
+          Authorization: `Bearer ${account.address ?? ''}`,
         },
       },
     );
     const result = await response.json();
     return { items: result.items, quests: result.userQuests };
-  }, [umi?.identity.publicKey, wallet.publicKey]);
+  }, [umi?.identity.publicKey, account.address]);
 
   const { isLoading, error, data, refetch } = useQuery({
     queryKey: ['user'],
     queryFn: fetchUser,
-    enabled: Boolean(umi && wallet?.connected && wallet.publicKey),
+    enabled: Boolean(umi && account.isConnected && account.address),
   });
 
   return {
