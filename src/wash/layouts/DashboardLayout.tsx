@@ -13,10 +13,10 @@ import styled from '@emotion/styled';
 import type { ReactElement } from 'react';
 import type { TCleaningItem } from '../types/wash';
 import { colors, WashH1 } from '../utils/theme';
-import { inter } from 'src/fonts/fonts';
-import { ClientOnly } from 'src/components/ClientOnly';
-import { mq } from '../utils/constants';
+import { mq } from '../utils/theme';
 import { SwapWarningWrapper } from '../common/SwapWarning';
+import { ClientOnly } from '../../components/ClientOnly';
+import { inter } from '../../fonts/fonts';
 
 /**************************************************************************************************
  * OverkillModal: A modal component to warn users about potential overkill when using an item
@@ -92,12 +92,23 @@ const DashboardLayoutContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   padding-top: 24px;
+  ${mq[0]} {
+    flex-direction: column-reverse;
+    align-items: center;
+    row-gap: 24px;
+    max-width: 343px;
+    margin-top: 5rem;
+  }
 `;
 const WashSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
   max-width: 760px;
+
+  ${mq[0]} {
+    align-items: center;
+  }
 `;
 const SwapSection = styled.div`
   width: 408px;
@@ -106,6 +117,14 @@ const SwapSection = styled.div`
   border: 2px solid ${colors.violet[800]};
   box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
   border-radius: 32px;
+
+  ${mq[0]} {
+    width: 343px;
+    max-width: unset;
+    min-width: unset;
+    border: none;
+    box-shadow: none;
+  }
 `;
 
 const WarngingSwapWrapper = styled.div`

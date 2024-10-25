@@ -111,14 +111,15 @@ export function useMint(
 
       // Wait for transaction to be confirmed
       await umi.rpc.confirmTransaction(signature, {
+        commitment: 'confirmed',
         strategy: {
           type: 'blockhash',
           ...(await umi.rpc.getLatestBlockhash()),
         },
-        commitment: 'finalized',
       });
       set_mintStatus(dataSaveNft.statusText);
     } catch (err) {
+      set_isMinting(false);
       set_error(
         err instanceof Error ? err.message : 'An error occured while minting',
       );

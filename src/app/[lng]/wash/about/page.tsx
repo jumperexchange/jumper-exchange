@@ -1,15 +1,15 @@
 'use client';
 
 import { type ReactElement } from 'react';
-import { RaysBackground } from 'src/wash/common/RaysBackground';
-import { WashTradingContextApp } from 'src/wash/contexts/useWashTrading';
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { titanOne } from 'src/wash/common/WithFonts';
-import RiveLogoWrapper from 'src/wash/common/about/RiveLogo';
-import { AboutRouterWithContext } from 'src/wash/common/about/AboutRouter';
-import RiveSlideshowWrapper from 'src/wash/common/about/RiveSlideshow';
-import { mq } from 'src/wash/utils/constants';
+import { AboutRouterWithContext } from '../../../../wash/common/about/AboutRouter';
+import RiveLogoWrapper from '../../../../wash/common/about/RiveLogo';
+import RiveSlideshowWrapper from '../../../../wash/common/about/RiveSlideshow';
+import { RaysBackground } from '../../../../wash/common/RaysBackground';
+import { titanOne } from '../../../../wash/common/WithFonts';
+import { WashTradingContextApp } from '../../../../wash/contexts/useWashTrading';
+import { mq } from '../../../../wash/utils/theme';
 
 const Wrapper = styled.div`
   position: relative;

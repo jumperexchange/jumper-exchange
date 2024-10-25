@@ -16,6 +16,7 @@ type TCollectButtonProps = {
   className?: string;
   progress: TQuest['progress'];
   progressSteps: TQuest['progressSteps'];
+  size?: 'short' | 'long';
 };
 
 /**************************************************************************************************
@@ -93,8 +94,9 @@ export const CollectButton = forwardRef<HTMLButtonElement, TCollectButtonProps>(
         disabled={props.disabled}
         isBusy={props.isBusy}
         style={{ overflow: 'hidden' }}
+        size={props.size}
         className={cl(
-          'relative !h-[48px] !w-[164px] -skew-x-6 rounded-lg font-mono font-black uppercase text-white',
+          'relative !h-[48px] -skew-x-6 rounded-lg font-mono font-black uppercase text-white',
           props.progress === props.progressSteps
             ? '!bg-violet-600 cursor-pointer hover:!bg-violet-700 disabled:!bg-violet-200 disabled:!cursor-not-allowed disabled:!text-white/30'
             : props.theme === 'pink'

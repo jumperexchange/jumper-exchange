@@ -171,7 +171,7 @@ export function NFTItem({
             colors[(nft?.color || DEFAULT_NFT_COLOR) as TColor][800]
           }
         >
-          <Button title={'reveal'} onClick={reveal.onReveal} />
+          <Button size={'short'} title={'reveal'} onClick={reveal.onReveal} />
         </NFTRevealButton>
       ) : null}
 

@@ -2,7 +2,7 @@ import { useState, type ReactElement } from 'react';
 import styled from '@emotion/styled';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 import Image from 'next/image';
-import { mq } from 'src/wash/utils/constants';
+import { mq } from '../../utils/theme';
 
 const RiveCarouselWrapper = styled.div`
   width: 3840px;

@@ -2,17 +2,16 @@
 /** @jsxImportSource @emotion/react */
 
 import styled from '@emotion/styled';
-import { WashBackground } from 'src/wash/common/WashBackground';
+
+import type { ReactElement } from 'react';
+import { CollectionNFTItem } from '../../../../wash/common/CollectionNFTItem';
+import { WashBackground } from '../../../../wash/common/WashBackground';
 import {
   useWashTrading,
   WashTradingContextApp,
-} from 'src/wash/contexts/useWashTrading';
-import { EmptyScreenLayout } from 'src/wash/layouts/EmptyScreenLayout';
-
-import { colors, WashH1 } from 'src/wash/utils/theme';
-
-import type { ReactElement } from 'react';
-import { CollectionNFTItem } from 'src/wash/common/CollectionNFTItem';
+} from '../../../../wash/contexts/useWashTrading';
+import { EmptyScreenLayout } from '../../../../wash/layouts/EmptyScreenLayout';
+import { mq, WashH1, colors } from '../../../../wash/utils/theme';
 
 const Wrapper = styled.div`
   position: relative;
@@ -25,6 +24,9 @@ const Wrapper = styled.div`
   overflow: hidden;
   align-items: center;
   background-color: ${colors.violet[100]};
+  ${mq[1]} {
+    padding-bottom: 2rem;
+  }
 `;
 
 const CollectionWrapper = styled.div`
@@ -38,10 +40,15 @@ const CollectionWrapper = styled.div`
   box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
   border-radius: 32px;
   border: 2px solid ${colors.violet[800]};
+  ${mq[1]} {
+    width: 343px;
+  }
 `;
 
 const CollectionHeader = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const NftsList = styled.div`
@@ -50,6 +57,11 @@ const NftsList = styled.div`
   row-gap: 60px;
   column-gap: 1.5rem;
   margin-top: 2rem;
+  ${mq[1]} {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    align-self: center;
+  }
 `;
 
 const Container = styled.div`
@@ -92,7 +104,7 @@ const SkeletonWrapper = styled.div`
 
 const SkeletonName = styled.div`
   position: absolute;
-  left: 48%;
+  left: 49%;
   transform: translateX(-50%) skewX(-6deg);
   bottom: -23px;
   border-radius: 16px;

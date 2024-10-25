@@ -63,7 +63,9 @@ export function Counter({ amount, isDisabled }: TCounterProps): ReactElement {
 
   return (
     <CounterBubble
-      backgroundColor={isDisabled ? colors.pink[300] : colors.pink[800]}
+      backgroundColor={
+        isDisabled || amount === 0 ? colors.pink[300] : colors.pink[800]
+      }
     >
       {label}
     </CounterBubble>

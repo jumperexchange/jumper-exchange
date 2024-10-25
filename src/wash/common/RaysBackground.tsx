@@ -1,6 +1,8 @@
-import type { ReactElement } from 'react';
 import styled from '@emotion/styled';
+
+import type { ReactElement } from 'react';
 import { colors } from '../utils/theme';
+import { mq } from '../utils/theme';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -119,6 +121,17 @@ export function RaysBackground(): ReactElement {
     </Wrapper>
   );
 }
+
+const RaysWrapper = styled.div`
+  position: absolute;
+  left: -1100px;
+  top: 180px;
+  transform: translateY(-50%);
+  overflow: hidden;
+  ${mq[1]} {
+    left: -1030px;
+  }
+`;
 
 /**********************************************************************************************
  * RevealRaysBackground renders a background with rays that spin. This specific variant is
