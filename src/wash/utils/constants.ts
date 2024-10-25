@@ -1,14 +1,14 @@
 import type { TColor } from './theme';
 import type { TCleaningItem, TQuest } from '../types/wash';
 
-/************************************************************************************************
+/**************************************************************************************************
  * WASH_ENDPOINT_ROOT_URI
  *
  * This constant defines the root URI for the API.
  *************************************************************************************************/
 export const WASH_ENDPOINT_ROOT_URI = 'https://jumper-wash.builtby.dad';
 
-/************************************************************************************************
+/**************************************************************************************************
  * Default NFT color
  *
  * This constant defines the default color for NFTs. Useful for the placeholder.
@@ -16,16 +16,6 @@ export const WASH_ENDPOINT_ROOT_URI = 'https://jumper-wash.builtby.dad';
 export const DEFAULT_NFT_COLOR: TColor = 'violet';
 
 /**************************************************************************************************
- * getItem is needed here because cleaning items have different stroke colors depends on UI place.
- *************************************************************************************************/
-export const getItem = (id: keyof typeof CLEANING_ITEMS, color?: string) => {
-  return {
-    ...CLEANING_ITEMS[id],
-    logo: color ? `/wash/${color}-stroke-${id}.png` : CLEANING_ITEMS[id].logo,
-  };
-};
-
-/************************************************************************************************
  * Defining the different cleaning items and their properties
  *
  * Check @file://types/wash.ts for more information
@@ -54,7 +44,7 @@ export const CLEANING_ITEMS: Record<TCleaningItem['id'], TCleaningItem> = {
   },
 };
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the different quests and their properties
  *
  * Check @file://types/wash.ts for more information

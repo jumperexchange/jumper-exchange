@@ -21,7 +21,7 @@ type TNFTItemProps = {
   isSkeleton?: boolean;
 };
 
-/************************************************************************************************
+/**************************************************************************************************
  * Defining the styled components style for the NFT item component
  *************************************************************************************************/
 const Label = styled.div`
@@ -81,7 +81,7 @@ const WashProgressContainer = styled.div`
   left: 50%;
 `;
 
-/************************************************************************************************
+/**************************************************************************************************
  * NFTItem Component
  *
  * This component renders an NFT item with various states such as revealed, not revealed, and
@@ -124,7 +124,7 @@ export function NFTItem({
     if (nft?.progress === 100) {
       return (
         <NFTImage
-          src={`/wash/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
+          src={`/wash/cleaning-stage/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
           border={colors[(nft?.color || DEFAULT_NFT_COLOR) as TColor][800]}
           alt={'nft-image'}
           width={320}
@@ -146,7 +146,7 @@ export function NFTItem({
     if (!nft?.isRevealed) {
       return (
         <NFTImage
-          src={`/wash/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
+          src={`/wash/cleaning-stage/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
           alt={'nft-image'}
           border={colors[(nft?.color || DEFAULT_NFT_COLOR) as TColor][800]}
           width={320}

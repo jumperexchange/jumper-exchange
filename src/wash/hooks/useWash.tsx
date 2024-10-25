@@ -2,9 +2,10 @@ import { useCallback, useState } from 'react';
 import { useUmi } from '../contexts/useUmi';
 import { WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
 import { utf8 } from '@metaplex-foundation/umi/serializers';
-import { useWallet } from '@solana/wallet-adapter-react';
 
 import type { TCleaningItem } from '../types/wash';
+import { useAccount } from '@lifi/wallet-management';
+import { ChainType } from '@lifi/sdk';
 
 export type TUseWash = {
   onWash: (item: TCleaningItem, shouldOverkill?: boolean) => Promise<void>;
@@ -17,7 +18,7 @@ export function useWash(
   refetchItems?: VoidFunction,
   refetchNft?: VoidFunction,
 ): TUseWash {
-  const wallet = useWallet();
+  const { account } = useAccount({ chainType: ChainType.SVM });
   const [isWashing, set_isWashing] = useState(false);
   const [error, set_error] = useState('');
   const [washStatus, set_washStatus] = useState('');
@@ -25,7 +26,7 @@ export function useWash(
 
   const onWash = useCallback(
     async (item: TCleaningItem): Promise<void> => {
-      if (!umi || !wallet?.connected || !wallet.publicKey) {
+      if (!umi || !account.isConnected || !account.address) {
         console.error('Wallet not connected or Umi not initialized');
         return;
       }
@@ -40,7 +41,7 @@ export function useWash(
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${wallet.publicKey?.toBase58()}`,
+              Authorization: `Bearer ${account.address ?? ''}`,
             },
             body: JSON.stringify({
               message: Array.from(message),
@@ -62,7 +63,7 @@ export function useWash(
         );
       }
     },
-    [refetchItems, refetchNft, umi, wallet?.connected, wallet.publicKey],
+    [refetchItems, refetchNft, umi, account.isConnected, account.address],
   );
 
   return {
