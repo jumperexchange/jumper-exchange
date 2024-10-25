@@ -31,6 +31,7 @@ import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { useActiveTabStore } from 'src/stores/activeTab';
+import { WashProgressAlert } from 'src/wash/common/WashProgressAlert';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
@@ -234,6 +235,7 @@ export function Widget({
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
     >
+      {welcomeScreenClosed && <WashProgressAlert />}
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
         <LiFiWidget
