@@ -1,12 +1,11 @@
 'use client';
 
 import { Fragment } from 'react';
-import { DashboardLayout } from 'src/wash/layouts/DashboardLayout';
 import styled from '@emotion/styled';
 
 import type { ReactElement, ReactNode } from 'react';
-import { mq } from '../utils/constants';
-import { colors } from '../utils/theme';
+import { colors, mq } from '../utils/theme';
+import { DashboardLayout } from '../layouts/DashboardLayout';
 
 /**************************************************************************************************
  * Defining the styled components style for the WithBackdrop component
@@ -53,7 +52,7 @@ const ChildrenWrapper = styled.div`
   position: relative;
   z-index: 50;
   margin-top: 28dvh;
-  ${mq[0]} {
+  ${mq[1]} {
     margin-top: 40dvh;
   }
 `;

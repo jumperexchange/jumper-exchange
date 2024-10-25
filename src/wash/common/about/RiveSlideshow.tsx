@@ -2,13 +2,13 @@ import { useState, type ReactElement } from 'react';
 import styled from '@emotion/styled';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 import Image from 'next/image';
-import { mq } from 'src/wash/utils/constants';
+import { mq } from '../../utils/theme';
 
 const RiveCarouselWrapper = styled.div`
   width: 3840px;
   height: 406px;
   position: relative;
-  ${mq[0]} {
+  ${mq[1]} {
     width: 1920px;
     height: 203px;
   }
@@ -22,6 +22,10 @@ const SlideshowImage = styled(Image)<{ isLoaded: boolean }>`
   min-width: 3840px;
   min-height: 406px;
   opacity: ${({ isLoaded }) => (isLoaded ? 0 : 1)};
+  ${mq[1]} {
+    width: 1920px;
+    max-height: 203px;
+  }
 `;
 
 export default function RiveSlideshowWrapper(): ReactElement {

@@ -8,9 +8,9 @@ import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 import { CallToActionBox } from '../common/CallToActionBox';
-import { mq } from '../utils/constants';
-import { titanOne } from 'src/wash/common/WithFonts';
-import { inter } from 'src/fonts/fonts';
+import { mq } from '../utils/theme';
+import { inter } from '../../fonts/fonts';
+import { titanOne } from '../common/WithFonts';
 
 /**************************************************************************************************
  * Defining the styled components style for the RevealedNFTLayout component
@@ -28,6 +28,11 @@ const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
     scale 300ms ease-in-out;
   opacity: ${({ mounted }) => (mounted ? 1 : 0)};
   scale: ${({ mounted }) => (mounted ? 1 : 0)};
+
+  ${mq[1]} {
+    margin-top: -45dvh;
+    max-width: 327px;
+  }
 `;
 const RevealedNFTLayoutTitle = styled.h1`
   text-transform: uppercase;
@@ -36,7 +41,7 @@ const RevealedNFTLayoutTitle = styled.h1`
   line-height: 3.5rem;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
-  ${mq[0]} {
+  ${mq[1]} {
     font-size: 2.5rem;
     line-height: 3rem;
   }
@@ -49,7 +54,7 @@ const RevealedNFTLayoutSubtitle = styled.span`
   font-size: 1.5rem;
   line-height: 2rem;
   font-family: ${inter.style.fontFamily};
-  ${mq[0]} {
+  ${mq[1]} {
     font-size: 1rem;
     line-height: 1.5rem;
   }

@@ -2,9 +2,9 @@ import { type WidgetConfig } from '@lifi/widget';
 
 import { CLEANING_ITEMS } from './constants';
 
-import { publicRPCList } from 'src/const/rpcList';
 import type { TItems } from '../types/types';
 import { colors } from './theme';
+import { publicRPCList } from '../../const/rpcList';
 
 /**************************************************************************************************
  * Joins the given classes into a single string.

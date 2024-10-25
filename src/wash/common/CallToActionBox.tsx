@@ -8,9 +8,117 @@ import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 import { colors, FitContent } from '../utils/theme';
-import { mq } from '../utils/constants';
-import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
+import { mq } from '../utils/theme';
 import { inter } from '../../fonts/fonts';
+import { useRive, Layout, Fit, Alignment } from '@rive-app/react-canvas';
+
+/************************************************************************************************
+ * Defining the styled components style for the CallToActionBox component
+ *************************************************************************************************/
+const CallToActionBoxWrapper = styled.div<{ isMounted: boolean }>`
+  width: 100%;
+  border-radius: 32px;
+  border: 2px solid ${colors.violet[800]};
+  background-color: ${colors.violet[500]};
+  box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
+  display: flex;
+  gap: 4px;
+  overflow: hidden;
+  transition: all 1000ms ease-in-out;
+  transform: translateY(${({ isMounted }) => (isMounted ? '0' : '100%')});
+  opacity: ${({ isMounted }) => (isMounted ? '1' : '0')};
+  ${mq[0]} {
+    flex-direction: column-reverse;
+  }
+  ${mq[1]} {
+    display: none;
+  }
+`;
+
+const CallToActionBoxContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+  padding-top: 28px;
+  padding-bottom: 28px;
+  padding-right: 32px;
+  ${mq[0]} {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0;
+    padding-top: 28px;
+    flex-direction: column;
+  }
+`;
+
+const CallToActionBoxText = styled.div`
+  padding-right: 32px;
+  ${mq[0]} {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 24px;
+  }
+`;
+
+const CallToActionBoxTitle = styled.h3`
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-family: ${inter.style.fontFamily};
+  ${mq[0]} {
+    paddiong-bottom: 12px;
+  }
+`;
+
+const CallToActionBoxSubtitle = styled.span`
+  color: #ffffff;
+  opacity: 0.6;
+  font-weight: 500;
+  font-family: ${inter.style.fontFamily};
+`;
+
+const MobileWrapper = styled.div<{ isMounted: boolean }>`
+  display: none;
+  max-width: 327px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 14px;
+  overflow: hidden;
+  transition: all 1000ms ease-in-out;
+  transform: ${({ isMounted }) =>
+    isMounted ? 'translateY(0)' : 'translateY(100%)'};
+  opacity: ${({ isMounted }) => (isMounted ? 1 : 0)};
+  ${mq[1]} {
+    display: flex;
+  }
+`;
+
+const MobileSubtitle = styled.span`
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: white;
+  opacity: 60%;
+  text-align: center;
+  font-weight: 500;
+  max-width: 290px;
+  margin: 0.5rem 0 2rem;
+  font-family: ${inter.style.fontFamily};
+`;
+
+const MobileTitle = styled.h3`
+  color: white;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-family: ${inter.style.fontFamily};
+`;
 
 /**************************************************************************************************
  * Defining the styled components style for the RiveFallbackWrapper component
@@ -75,92 +183,7 @@ function RiveFallbackWrapper(): ReactElement {
   );
 }
 
-const MobileWrapper = styled.div<{ isMounted: boolean }>`
-  display: none;
-  max-width: 327px;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 14px;
-  overflow: hidden;
-  transition: all 1000ms ease-in-out;
-  transform: ${({ isMounted }) =>
-    isMounted ? 'translateY(0)' : 'translateY(100%)'};
-  opacity: ${({ isMounted }) => (isMounted ? 1 : 0)};
-  ${mq[0]} {
-    display: flex;
-  }
-`;
-
-const MobileSubtitle = styled.span`
-  font-size: 1rem;
-  line-height: 1.5rem;
-  color: white;
-  opacity: 60%;
-  text-align: center;
-  font-weight: 500;
-  max-width: 290px;
-  margin: 0.5rem 0 2rem;
-  font-family: ${inter.style.fontFamily};
-`;
-
-const MobileTitle = styled.h3`
-  color: white;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  text-transform: uppercase;
-  font-weight: 900;
-  font-family: ${inter.style.fontFamily};
-`;
-
 /************************************************************************************************
- * Defining the styled components style for the CallToActionBox component
- *************************************************************************************************/
-const CallToActionBoxWrapper = styled.div<{ isMounted: boolean }>`
-  width: 100%;
-  border-radius: 32px;
-  border: 2px solid ${colors.violet[800]};
-  background-color: ${colors.violet[500]};
-  box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
-  display: flex;
-  gap: 4px;
-  overflow: hidden;
-  transition: all 1000ms ease-in-out;
-  transform: translateY(${({ isMounted }) => (isMounted ? '0' : '100%')});
-  opacity: ${({ isMounted }) => (isMounted ? '1' : '0')};
-  ${mq[0]} {
-    display: none;
-  }
-`;
-
-const CallToActionBoxContent = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 4px;
-  padding-top: 28px;
-  padding-bottom: 28px;
-  padding-right: 32px;
-`;
-
-const CallToActionBoxTitle = styled.h3`
-  font-size: 24px;
-  line-height: 32px;
-  font-weight: 900;
-  text-transform: uppercase;
-  color: #ffffff;
-  font-family: ${inter.style.fontFamily};
-`;
-
-const CallToActionBoxSubtitle = styled.span`
-  color: #ffffff;
-  opacity: 0.6;
-  font-weight: 500;
-  font-family: ${inter.style.fontFamily};
-`;
-
-/**************************************************************************************************
  * CallToActionBox Component
  *
  * This component renders a call-to-action box with a title, subtitle, and a button.
@@ -197,10 +220,10 @@ export function CallToActionBox(props: {
       <CallToActionBoxWrapper isMounted={isMounted}>
         <RiveFallbackWrapper />
         <CallToActionBoxContent>
-          <div>
+          <CallToActionBoxText>
             <CallToActionBoxTitle>{props.title}</CallToActionBoxTitle>
             <CallToActionBoxSubtitle>{props.subtitle}</CallToActionBoxSubtitle>
-          </div>
+          </CallToActionBoxText>
           <FitContent>
             <Button
               isBusy={mint.isMinting}

@@ -1,6 +1,6 @@
 import { Fragment, type ReactElement, useMemo } from 'react';
 import Image from 'next/image';
-import { DEFAULT_NFT_COLOR, mq, TOOLTIP_MESSAGES } from '../utils/constants';
+import { DEFAULT_NFT_COLOR, TOOLTIP_MESSAGES } from '../utils/constants';
 import { cl } from '../utils/utils';
 import styled from '@emotion/styled';
 
@@ -10,7 +10,7 @@ import { NFTItem } from './NFTItem';
 import { RevealRaysBackground } from './RaysBackground';
 import { WashProgress } from './WashProgress';
 
-import { colors, WashH2, type TColor } from '../utils/theme';
+import { colors, mq, WashH2, type TColor } from '../utils/theme';
 import type { TItems, TNFTItem } from '../types/types';
 import type { TCleaningItem } from '../types/wash';
 import { titanOne } from './WithFonts';
@@ -21,7 +21,7 @@ const ImageWrapper = styled.div`
   top: -32px;
   z-index: 50;
   min-width: 830px;
-  ${mq[0]} {
+  ${mq[1]} {
     display: none;
   }
 `;
@@ -32,7 +32,7 @@ const MobileImageWrapper = styled.div`
   left: -24px;
   top: -28px;
   width: 390px;
-  ${mq[0]} {
+  ${mq[1]} {
     display: block;
   }
 `;
@@ -224,7 +224,7 @@ const CurrentNFTBlockContainer = styled.div<{ backgroundColor: string }>`
   box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
   background-color: ${({ backgroundColor }) => backgroundColor};
   column-gap: 32px;
-  ${mq[0]} {
+  ${mq[1]} {
     flex-direction: column;
     padding: 24px;
     width: 343px;

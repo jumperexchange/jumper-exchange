@@ -3,15 +3,15 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { type ReactElement, useMemo, useRef } from 'react';
-import { mq, QUESTS, TOOLTIP_MESSAGES } from '../utils/constants';
-import { colors, WashH1 } from '../utils/theme';
+import { QUESTS, TOOLTIP_MESSAGES } from '../utils/constants';
+import { colors, mq, WashH1 } from '../utils/theme';
 
 import { CollectButton } from './CollectButton';
 import { InfoPopup } from './InfoPopup';
 import { IconDone } from './icons/IconDone';
 
-import type { TQuest } from '../types/wash';
 import { useWashTrading } from '../contexts/useWashTrading';
+import type { TQuest } from '../types/wash';
 
 /**************************************************************************************************
  * Defining the styled components style for the QuestItem component
@@ -25,7 +25,7 @@ const QuestItemWrapper = styled.div`
   padding: 0.5rem;
   box-shadow: 4px 4px 0px ${colors.violet[800]};
   transform: skew(-6deg);
-  ${mq[0]} {
+  ${mq[1]} {
     display: none;
   }
 `;
@@ -54,7 +54,7 @@ const BoosterWrapper = styled.div<{ isCompleted: boolean; isCommon: boolean }>`
     transition: ${(props) =>
       props.isCompleted && props.isCommon ? 'all ease-in' : 'all'};
   }
-  ${mq[0]} {
+  ${mq[1]} {
     min-height: 48px;
     min-width: 48px;
     box-shadow:
@@ -110,7 +110,7 @@ const QuestDescription = styled.p`
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.5);
 
-  ${mq[0]} {
+  ${mq[1]} {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -152,7 +152,7 @@ const QuestItemMobileWrapper = styled.div`
   transform: skew(-3deg);
   flex-direction: column;
   justify-content: space-between;
-  ${mq[0]} {
+  ${mq[1]} {
     display: flex;
   }
 `;
@@ -292,7 +292,8 @@ const QuestsListWrapper = styled.div`
   background-color: ${colors.violet[500]};
   padding: 32px;
   box-shadow: 6px 6px 0px 0px ${colors.violet[800]};
-  ${mq[0]} {
+
+  ${mq[1]} {
     max-width: 343px;
     padding: 24px;
   }

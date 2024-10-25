@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
-import { mq } from '../utils/constants';
 import { colors } from '../utils/theme';
+import { mq } from '../utils/theme';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -128,7 +128,7 @@ const RaysWrapper = styled.div`
   top: 180px;
   transform: translateY(-50%);
   overflow: hidden;
-  ${mq[0]} {
+  ${mq[1]} {
     left: -1030px;
   }
 `;

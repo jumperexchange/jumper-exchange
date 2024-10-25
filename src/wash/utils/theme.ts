@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { inter } from 'src/fonts/fonts';
-import { mq } from './constants';
+
 import { titanOne } from '../common/WithFonts';
+import { inter } from '../../fonts/fonts';
 
 export type TColor =
   | 'violet'
@@ -13,6 +13,14 @@ export type TColor =
   | 'blue'
   | 'brown'
   | 'gold';
+
+/**************************************************************************************************
+ * For now we have only one breakpoint. We show mobile layout on screen width less than 1200 and
+ * default layout on larger screens.
+ *************************************************************************************************/
+const breakpoints = [768, 1280];
+
+export const mq = breakpoints.map((bp) => `@media (max-width: ${bp}px)`);
 
 export const colors: Record<TColor, Record<number, string>> = {
   violet: {
@@ -92,7 +100,7 @@ export const WashH1 = styled.h1`
   line-height: 40px;
   text-transform: uppercase;
   color: white;
-  ${mq[0]} {
+  ${mq[1]} {
     font-size: 24px;
     line-height: 32px;
     text-align: center;

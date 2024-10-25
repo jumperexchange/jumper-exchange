@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { type ReactElement, useMemo } from 'react';
 import Image from 'next/image';
-import { colors } from '../utils/theme';
-import { DEFAULT_NFT_COLOR, mq } from '../utils/constants';
+import { colors, mq } from '../utils/theme';
+import { DEFAULT_NFT_COLOR } from '../utils/constants';
 import { getPepeImage } from '../utils/utils';
 import styled from '@emotion/styled';
-import { titanOne } from 'src/wash/common/WithFonts';
 import { RevealsBackground } from './RevealBackground';
 import type { TNFTItem } from '../types/types';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
+import { titanOne } from './WithFonts';
 
 type TRevealNFTItem = {
   label: string;
@@ -25,7 +25,7 @@ const RevealNFTContainer = styled.div<{ backgroundColor: string }>`
   width: 320px;
   height: 320px;
   border-radius: 24px;
-  ${mq[0]} {
+  ${mq[1]} {
     width: 216px;
     height: 216px;
   }
@@ -74,7 +74,7 @@ const NFTImageBox = styled.div<{
   background-color: ${(props) => props.backgroundColor};
   border: 4px solid ${(props) => props.borderColor};
 
-  ${mq[0]} {
+  ${mq[1]} {
     width: 216px;
     height: 216px;
   }
@@ -87,7 +87,7 @@ const NFTImage = styled(Image)<{ isRevealing: boolean }>`
   height: 320px;
   inset: 0;
 
-  ${mq[0]} {
+  ${mq[1]} {
     width: 216px;
     height: 216px;
   }
