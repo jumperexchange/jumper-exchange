@@ -21,7 +21,9 @@ export const UmiContextApp = (props: { children: ReactNode }): ReactElement => {
   useEffect(() => {
     if (wallet.connected && wallet.publicKey) {
       set_umi(
-        createUmi(process.env.NEXT_PUBLIC_SOLANA_RPC_URI as string)
+        createUmi(process.env.NEXT_PUBLIC_SOLANA_RPC_URI as string, {
+          commitment: 'confirmed',
+        })
           .use(mplCore())
           .use(walletAdapterIdentity(wallet)),
       );

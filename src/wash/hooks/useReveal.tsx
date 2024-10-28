@@ -67,8 +67,7 @@ export function useReveal(
       );
 
       await umi.rpc.confirmTransaction(signature, {
-        commitment:
-          process.env.MODE_ENV === 'production' ? 'confirmed' : 'finalized',
+        commitment: 'confirmed',
         strategy: {
           type: 'blockhash',
           ...(await umi.rpc.getLatestBlockhash()),
