@@ -1,6 +1,7 @@
-import type { PartnerThemesData, StrapiResponseData } from '@/types/strapi';
-import { type ThemeMode } from '@/types/theme';
 import type { cookies } from 'next/headers';
+import type { PartnerThemesData, StrapiResponseData } from '../../types/strapi';
+import type { ThemeMode } from '../../types/theme';
+import { getWashThemeMode } from '../../wash/utils/getWashThemeMode';
 import { getPartnerThemes } from './getPartnerThemes';
 
 export type ActiveThemeResult = {
@@ -40,10 +41,13 @@ export async function getActiveTheme(
   const activeTheme =
     pathPartnerTheme || (cookieThemeIsPartnerTheme ? 'default' : cookieTheme);
 
+  const washThemeMode = getWashThemeMode(cookiesHandler);
+
   return {
     themes: partnerThemes.data,
-    activeTheme,
-    themeMode: cookiesHandler.get('themeMode')?.value as ThemeMode,
+    activeTheme: washThemeMode || activeTheme,
+    themeMode:
+      washThemeMode || (cookiesHandler.get('themeMode')?.value as ThemeMode),
     isPartnerTheme: Boolean(pathPartnerTheme),
   };
 }
