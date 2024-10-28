@@ -45,7 +45,7 @@ export async function getActiveTheme(
 
   return {
     themes: partnerThemes.data,
-    activeTheme: washThemeMode ? 'dark' : activeTheme,
+    activeTheme: washThemeMode || activeTheme,
     themeMode:
       washThemeMode || (cookiesHandler.get('themeMode')?.value as ThemeMode),
     isPartnerTheme: Boolean(pathPartnerTheme),
