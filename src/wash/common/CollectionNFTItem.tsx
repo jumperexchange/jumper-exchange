@@ -51,6 +51,11 @@ const Label = styled.div<{ backgroundColor: string }>`
   justify-content: center;
   background-color: ${(props) => props.backgroundColor};
 `;
+const RarityLabel = styled.h2`
+  transform: skewX(6px);
+  color: white;
+  text-transform: uppercase;
+`;
 
 const NFTImage = styled(Image)<{ borderColor: string }>`
   position: relative;
@@ -75,10 +80,29 @@ const KeepWashingButton = styled.div<{ backgroundColor: string }>`
   background-color: ${(props) => props.backgroundColor}CC; // 80% opacity
 `;
 
-/**************************************************************************************************
+/************************************************************************************************
+ * CollectionNFTItem Component
  *
- *************************************************************************************************/
+ * Renders an NFT item card with dynamic content based on the NFT's revealed state and rarity.
+ *
+ * Props:
+ * - nft: TNFTItem - The NFT data including reveal state, rarity, progress etc
+ * - index: number - Position index used for tooltip positioning
+ ************************************************************************************************/
 export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
+  const bgColor = nft?.isRare ? colors.orange[800] : colors.violet[800];
+  const borderColor = nft?.isRare ? colors.orange[800] : colors.violet[700];
+
+  /**********************************************************************************************
+   * getRarity
+   *
+   * Determines the rarity level of an NFT based on its revealed state and rarity flag:
+   * - Returns 'legendary' for revealed rare NFTs
+   * - Returns 'common' for revealed non-rare NFTs
+   * - Returns 'unknown' for unrevealed NFTs
+   *
+   * Used to apply appropriate styling and labels based on NFT rarity
+   **********************************************************************************************/
   function getRarity(): string {
     if (nft?.isRevealed) {
       if (nft?.isRare) {
@@ -90,6 +114,16 @@ export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
   }
   const router = useRouter();
 
+  /**********************************************************************************************
+   * getLabel
+   *
+   * Renders the label component for an NFT based on its revealed state:
+   * - For revealed NFTs: Shows the NFT name with appropriate styling and rarity-based colors
+   * - For unrevealed NFTs: Shows a progress bar indicating the washing progress
+   *
+   * The component uses skewed transforms and absolute positioning for visual styling
+   * TODO: transform to proper styled component
+   **********************************************************************************************/
   function getLabel(): ReactElement {
     if (nft?.isRevealed) {
       return (
@@ -103,9 +137,7 @@ export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
             transform: translateX(-50%) skewX(-6deg);
             bottom: -23px;
             border-radius: 16px;
-            background-color: ${nft?.isRare
-              ? colors.orange[800]
-              : colors.violet[800]};
+            background-color: ${bgColor};
             height: 56px;
             width: 230px;
             padding: 0 8px;
@@ -152,24 +184,22 @@ export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
   }
 
   /**********************************************************************************************
+   * renderNFTImage
    *
+   * Renders the NFT image based on its revealed state:
+   * - For revealed NFTs: Shows the final NFT image with appropriate border color
+   * - For unrevealed NFTs: Shows cleaning stage image with wash progress and "Keep Washing" button
+   *
+   * The border color and background colors are determined by the NFT's rarity and color properties
    **********************************************************************************************/
   function renderNFTImage(): ReactNode {
     if (nft?.isRevealed) {
       return (
         <Relative>
-          {nft?.isRare && (
-            <Absolute top={'12px'} right={'12px'} style={{ zIndex: 1 }}>
-              <InfoTooltip
-                description={TOOLTIP_MESSAGES.goldenNft}
-                position={index % 4 < 2 ? 'right' : 'left'}
-              />
-            </Absolute>
-          )}
           <NFTImage
             src={nft?.imageUri ?? ''}
             alt={'nft-image'}
-            borderColor={nft?.isRare ? colors.orange[800] : colors.violet[700]}
+            borderColor={borderColor}
             width={320}
             height={320}
             unoptimized
@@ -178,11 +208,11 @@ export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
       );
     }
     return (
-      <div style={{ position: 'relative' }}>
+      <Relative>
         <NFTImage
           src={`/wash/cleaning-stage/${getPepeImage(nft?.progress || 0, nft?.color ?? DEFAULT_NFT_COLOR)}`}
           alt={'nft-image'}
-          borderColor={nft?.isRare ? colors.orange[800] : colors.violet[700]}
+          borderColor={borderColor}
           width={320}
           height={320}
         />
@@ -198,36 +228,28 @@ export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
             onClick={() => router.push('/wash')}
           />
         </KeepWashingButton>
-      </div>
+      </Relative>
     );
   }
 
   return (
-    <div
-      css={css`
-        position: relative;
-        width: 254px;
-      `}
-    >
+    <Relative style={{ width: 254 }}>
       <RevealNFTContainer>
-        <Label
-          backgroundColor={
-            nft?.isRare ? colors.orange[800] : colors.violet[800]
-          }
-        >
-          <h2
-            className="uppercase text-white"
-            css={css`
-              transform: skewX(6px);
-            `}
-          >
-            {getRarity()}
-          </h2>
+        <Label backgroundColor={bgColor}>
+          <RarityLabel>{getRarity()}</RarityLabel>
         </Label>
         {renderNFTImage()}
+        {nft?.isRare && nft?.isRevealed ? (
+          <Absolute top={'12px'} right={'12px'}>
+            <InfoTooltip
+              description={TOOLTIP_MESSAGES.goldenNft}
+              position={index % 4 < 2 ? 'right' : 'left'}
+            />
+          </Absolute>
+        ) : null}
       </RevealNFTContainer>
 
       {nft?.name && <div>{getLabel()}</div>}
-    </div>
+    </Relative>
   );
 }

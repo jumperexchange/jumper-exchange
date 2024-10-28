@@ -209,7 +209,7 @@ function CollectionPage(): ReactElement {
                 <NftsList>
                   {currentCollection &&
                     currentCollection.length > 0 &&
-                    currentCollection?.map((nft, index) => (
+                    currentCollection?.map((nft, index, arr) => (
                       <CollectionNFTItem
                         key={`${nft.name} + ${nft.imageUri}`}
                         nft={{ ...nft, name: 'ser basic Bridgealot' }}
