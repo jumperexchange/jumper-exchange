@@ -59,3 +59,5 @@ export type TAPIQuest = {
   endDate: Date | null;
   progress: TIntRange<0, number>;
 };
+
+export type TTooltipPosition = 'left' | 'right';

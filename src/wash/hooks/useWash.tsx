@@ -17,6 +17,7 @@ export type TUseWash = {
 export function useWash(
   refetchItems?: VoidFunction,
   refetchNft?: VoidFunction,
+  refetchCollection?: VoidFunction,
 ): TUseWash {
   const { account } = useAccount({ chainType: ChainType.SVM });
   const [isWashing, set_isWashing] = useState(false);
@@ -52,8 +53,11 @@ export function useWash(
 
         set_isWashing(false);
         set_washStatus(responseUseItem.statusText);
-        refetchItems?.();
-        refetchNft?.();
+        await Promise.all([
+          refetchItems?.(),
+          refetchNft?.(),
+          refetchCollection?.(),
+        ]);
       } catch (err) {
         set_isWashing(false);
         set_error(
@@ -63,7 +67,14 @@ export function useWash(
         );
       }
     },
-    [refetchItems, refetchNft, umi, account.isConnected, account.address],
+    [
+      refetchItems,
+      refetchNft,
+      refetchCollection,
+      umi,
+      account.isConnected,
+      account.address,
+    ],
   );
 
   return {

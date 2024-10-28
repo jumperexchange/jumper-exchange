@@ -1,12 +1,13 @@
 'use client';
 
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment, useCallback, useRef, useState } from 'react';
 import { Button } from '../common/Button';
 import { CurrentNFTBlock } from '../common/CurrentNFTBlock';
 import { Modal } from '../common/Modal';
 import { QuestsList } from '../common/Quests';
 import { useWashTrading } from '../contexts/useWashTrading';
 import { cl, widgetConfig } from '../utils/utils';
+import type { FormState } from '@lifi/widget';
 import { LiFiWidget, WidgetSkeleton } from '@lifi/widget';
 import styled from '@emotion/styled';
 
@@ -150,6 +151,7 @@ export function DashboardLayout(): ReactElement {
   const [shouldOverkillNumber, set_shouldOverkillNumber] =
     useState<TCleaningItem | null>(null);
   const { user, wash, nft } = useWashTrading();
+  const formRef = useRef<FormState>(null);
 
   /**********************************************************************************************
    * currentNFT: Extracts the NFT object from the nft state
@@ -196,12 +198,16 @@ export function DashboardLayout(): ReactElement {
             handleUseItem={handleUseItem}
             isSkeleton={!hasNFT}
           />
-          <QuestsList isSkeleton={!hasNFT} />
+          <QuestsList isSkeleton={!hasNFT} formRef={formRef} />
         </WashSection>
         <WarngingSwapWrapper>
           <SwapSection>
             <ClientOnly fallback={<WidgetSkeleton config={widgetConfig} />}>
-              <LiFiWidget integrator={'Mom'} config={widgetConfig} />
+              <LiFiWidget
+                integrator={'Mom'}
+                config={widgetConfig}
+                formRef={formRef}
+              />
             </ClientOnly>
           </SwapSection>
           <SwapWarningWrapper />
