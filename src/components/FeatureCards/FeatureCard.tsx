@@ -178,16 +178,18 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         onClick={handleCardClick}
         isDarkCard={data.attributes.DisplayConditions.mode === 'dark'}
       >
-        {imageUrl?.href && <Image
-          alt={data?.attributes.Title}
-          src={imageUrl?.href}
-          quality={100}
-          fill
-          sizes="100vw"
-          style={{
-            objectFit: "cover",
-          }}
-        />}
+        {imageUrl?.href && (
+          <Image
+            alt={data?.attributes.Title}
+            src={imageUrl?.href}
+            quality={100}
+            fill
+            sizes="100vw"
+            style={{
+              objectFit: 'cover',
+            }}
+          />
+        )}
         <FeatureCardContent>
           <FeatureCardCloseButton
             disableRipple={true}

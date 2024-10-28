@@ -22,7 +22,7 @@ export interface CardProps extends Omit<MuiCardProps, 'component'> {
 }
 
 export const FCard = styled(MuiCard, {
-  shouldForwardProp: (prop) =>prop !== 'isDarkCard',
+  shouldForwardProp: (prop) => prop !== 'isDarkCard',
 })<CardProps>(({ theme, isDarkCard }) => ({
   width: 384,
   height: 160,
