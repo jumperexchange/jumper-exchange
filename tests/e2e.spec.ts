@@ -10,6 +10,7 @@ import {
   sectionOnTheBlogPage,
   checkSocialNetworkIcons,
   itemInSettingsMenuToBeEnabled,
+  checkTheNumberOfMenuItems,
 } from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {
@@ -73,7 +74,7 @@ test.describe('Jumper full e2e flow', () => {
     page,
   }) => {
     await openOrCloseMainMenu(page);
-    await expect(page.getByRole('menuitem')).toHaveCount(9);
+    await checkTheNumberOfMenuItems(page, 9);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
@@ -145,7 +146,13 @@ test.describe('Jumper full e2e flow', () => {
   test('Should open Developers section inside menu', async ({ page }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Developers');
-    await expect(page.getByRole('menuitem')).toHaveCount(2);
+    await checkTheNumberOfMenuItems(page, 2);
+  });
+
+  test('Should open Language section inside menu', async ({ page }) => {
+    await openOrCloseMainMenu(page);
+    await itemInMenu(page, 'Language');
+    await checkTheNumberOfMenuItems(page, 14);
   });
 
   test.skip('Should be able to open quests mission page and switch background color', async ({

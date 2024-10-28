@@ -1,6 +1,5 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-import exp from 'constants';
 
 export async function findTheBestRoute(page) {
   await page.getByRole('heading', { name: 'Find the best route' });
@@ -9,6 +8,11 @@ export async function findTheBestRoute(page) {
 export async function openOrCloseMainMenu(page) {
   await page.locator('#main-burger-menu-button').click();
   await expect(page.getByRole('menu')).toBeVisible();
+}
+
+export async function checkTheNumberOfMenuItems(page, numberOfMenuItems:number){
+  await expect(page.getByRole('menuitem')).toHaveCount(numberOfMenuItems);
+
 }
 
 export async function itemInMenu(page, option: string) {
