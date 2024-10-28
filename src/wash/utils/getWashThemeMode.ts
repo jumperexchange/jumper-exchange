@@ -5,7 +5,7 @@ export const getWashThemeMode = (
 ) => {
   const pathname = cookiesHandler.get('pathname')?.value || '/';
   const segments = pathname.split('/').slice(0, 3);
-  if (segments.includes('wash')) {
+  if (segments.includes('wash') && !segments.includes('learn')) {
     return 'dark';
   }
   return undefined;
