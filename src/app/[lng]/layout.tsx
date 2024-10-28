@@ -154,6 +154,7 @@ export default async function RootLayout({
               };
               var s = d.createElement('script');
               s.async = true;
+              s.defer = true;
               s.src = 'https://tag.adrsbl.io/p.js?tid=${process.env.NEXT_PUBLIC_ADDRESSABLE_TID}';
               var b = d.getElementsByTagName('script')[0];
               b.parentNode.insertBefore(s, b);

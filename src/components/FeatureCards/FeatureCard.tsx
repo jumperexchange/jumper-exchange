@@ -5,6 +5,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
+import Image from 'next/image';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useSettingsStore } from '@/stores/settings';
@@ -174,10 +175,19 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
       <Card
-        backgroundImageUrl={imageUrl?.href}
         onClick={handleCardClick}
         isDarkCard={data.attributes.DisplayConditions.mode === 'dark'}
       >
+        {imageUrl?.href && <Image
+          alt={data?.attributes.Title}
+          src={imageUrl?.href}
+          quality={100}
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: "cover",
+          }}
+        />}
         <FeatureCardContent>
           <FeatureCardCloseButton
             disableRipple={true}

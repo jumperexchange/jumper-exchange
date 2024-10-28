@@ -22,9 +22,8 @@ export interface CardProps extends Omit<MuiCardProps, 'component'> {
 }
 
 export const FCard = styled(MuiCard, {
-  shouldForwardProp: (prop) =>
-    prop !== 'backgroundImageUrl' && prop !== 'isDarkCard',
-})<CardProps>(({ theme, backgroundImageUrl, isDarkCard }) => ({
+  shouldForwardProp: (prop) =>prop !== 'isDarkCard',
+})<CardProps>(({ theme, isDarkCard }) => ({
   width: 384,
   height: 160,
   cursor: 'pointer',
@@ -32,7 +31,7 @@ export const FCard = styled(MuiCard, {
   position: 'relative',
   marginBottom: theme.spacing(1.5),
   overflow: 'hidden',
-  backgroundImage: `url(${backgroundImageUrl}), radial-gradient(circle at 506px 437px, #3F49E1 -43%, ${
+  backgroundImage: `radial-gradient(circle at 506px 437px, #3F49E1 -43%, ${
     isDarkCard || theme.palette.mode === 'dark' ? '#20223D' : '#FFFFFF'
   } 506px 349px)`,
   backgroundSize: 'contain',
