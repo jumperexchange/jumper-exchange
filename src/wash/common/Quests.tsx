@@ -2,16 +2,21 @@
 
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { type ReactElement, useMemo, useRef } from 'react';
+import type { RefObject } from 'react';
+import { type ReactElement, useCallback, useMemo, useRef } from 'react';
 import { QUESTS, TOOLTIP_MESSAGES } from '../utils/constants';
-import { colors, mq, WashH1 } from '../utils/theme';
+import { colors, Flex, mq, WashH1 } from '../utils/theme';
 
 import { CollectButton } from './CollectButton';
-import { InfoPopup } from './InfoPopup';
+import { InfoTooltip } from './InfoTooltip';
 import { IconDone } from './icons/IconDone';
 
 import { useWashTrading } from '../contexts/useWashTrading';
 import type { TQuest } from '../types/wash';
+import { Button } from './Button';
+import { IconArrowLeft } from './icons/IconArrowLeft';
+import Link from 'next/link';
+import type { FormState } from '@lifi/widget';
 
 /**************************************************************************************************
  * Defining the styled components style for the QuestItem component
@@ -171,7 +176,9 @@ const QuestItemInnerBox = styled.div`
  * Props:
  * - TQuest: Contains all the quest details including progress, type, title, and description.
  *************************************************************************************************/
-export function QuestItem(props: TQuest): ReactElement {
+export function QuestItem(
+  props: TQuest & { formRef?: RefObject<FormState> },
+): ReactElement {
   const elementRef = useRef<HTMLButtonElement>(null);
   const isDone = props.progress === props.progressSteps;
 
@@ -192,6 +199,33 @@ export function QuestItem(props: TQuest): ReactElement {
     }
     return `linear-gradient(to right, ${colors.cyan[600]}, ${colors.cyan[800]})`;
   };
+
+  /**********************************************************************************************
+   * Handles quest selection by updating form values and scrolling to top
+   *
+   * Updates form fields with:
+   * - Solana chain ID for both from/to chains
+   * - Selected sending token for fromToken
+   * - Selected receiving token for toToken
+   *
+   * After setting form values, smoothly scrolls window to top
+   *********************************************************************************************/
+  const onSelectQuest = useCallback(() => {
+    const queryArgs = { setUrlSearchParam: true };
+    const ref = props.formRef?.current;
+    const solID = 1151111081099710;
+    const sendToken = props.sendingToken[0];
+    const receiveToken = props.receivingToken[0];
+    ref?.setFieldValue('fromChain', solID, queryArgs);
+    ref?.setFieldValue('fromToken', sendToken, queryArgs);
+    ref?.setFieldValue('toChain', solID, queryArgs);
+    ref?.setFieldValue('toToken', receiveToken, queryArgs);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }, [props.formRef, props.sendingToken, props.receivingToken]);
 
   return (
     <>
@@ -223,15 +257,36 @@ export function QuestItem(props: TQuest): ReactElement {
               </QuestHeadingWrapper>
               <QuestTitle>{props.title}</QuestTitle>
             </QuestInfo>
-            <CollectButton
-              ref={elementRef}
-              className={'skew-x-0'}
-              size={'short'}
-              onClick={() => {}}
-              theme={props.questType === 'common' ? 'pink' : 'cyan'}
-              progress={props.progress}
-              progressSteps={props.progressSteps}
-            />
+            <Flex>
+              <CollectButton
+                ref={elementRef}
+                className={'skew-x-0'}
+                size={'short'}
+                onClick={() => {}}
+                theme={props.questType === 'common' ? 'pink' : 'cyan'}
+                progress={props.progress}
+                progressSteps={props.progressSteps}
+              />
+              <Button
+                onClick={onSelectQuest}
+                style={{
+                  backgroundColor:
+                    props.questType === 'common'
+                      ? colors.pink[800]
+                      : colors.cyan[800],
+                  transform: 'skewX(-1deg)',
+                  width: '40px',
+                  height: '48px',
+                  borderRadius: '8px',
+                  marginLeft: '4px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <IconArrowLeft />
+              </Button>
+            </Flex>
           </QuestInfoWrapper>
           <QuestDescription>{props.description}</QuestDescription>
         </ContentWrapper>
@@ -323,7 +378,10 @@ const QuestList = styled.div`
  * It then renders either a skeleton placeholder or a list of QuestItem components based on the
  * QUESTS constant.
  ************************************************************************************************/
-export function QuestsList(props: { isSkeleton?: boolean }): ReactElement {
+export function QuestsList(props: {
+  isSkeleton?: boolean;
+  formRef?: RefObject<FormState>;
+}): ReactElement {
   const { user } = useWashTrading();
 
   const questsForUser = useMemo(() => {
@@ -342,14 +400,18 @@ export function QuestsList(props: { isSkeleton?: boolean }): ReactElement {
     <QuestsListWrapper>
       <QuestsListHeader>
         <WashH1>{'Quests'}</WashH1>
-        <InfoPopup description={TOOLTIP_MESSAGES.quest} />
+        <InfoTooltip description={TOOLTIP_MESSAGES.quest} />
       </QuestsListHeader>
 
       <QuestList>
         {props.isSkeleton
           ? null
           : questsForUser.map((quest, i) => (
-              <QuestItem key={`${quest.title}-${i}`} {...quest} />
+              <QuestItem
+                key={`${quest.title}-${i}`}
+                formRef={props.formRef}
+                {...quest}
+              />
             ))}
       </QuestList>
     </QuestsListWrapper>

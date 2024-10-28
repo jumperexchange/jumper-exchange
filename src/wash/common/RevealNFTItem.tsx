@@ -1,12 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { type ReactElement, useMemo } from 'react';
 import Image from 'next/image';
-import { colors, mq } from '../utils/theme';
+import { Absolute, colors, mq } from '../utils/theme';
 import styled from '@emotion/styled';
 import { RevealsBackground } from './RevealBackground';
 import type { TNFTItem } from '../types/types';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 import { titanOne } from './fonts';
+import { InfoTooltip } from './InfoTooltip';
+import { TOOLTIP_MESSAGES } from '../utils/constants';
 
 type TRevealNFTItem = {
   label: string;
@@ -23,6 +25,7 @@ const RevealNFTContainer = styled.div<{ backgroundColor: string }>`
   width: 320px;
   height: 320px;
   border-radius: 24px;
+  position: relative;
   ${mq[1]} {
     width: 216px;
     height: 216px;
@@ -211,6 +214,11 @@ export function RevealNFTItem({
           {nft.isRare ? 'ser Golden Bridgealot' : 'ser basic Bridgealot'}
         </NFTName>
       </NFTNameBox>
+      {nft.isRare && !isRevealing ? (
+        <Absolute top={'12px'} right={'12px'}>
+          <InfoTooltip description={TOOLTIP_MESSAGES.goldenNft} />
+        </Absolute>
+      ) : null}
     </div>
   );
 }

@@ -69,6 +69,8 @@ export const QUESTS: TQuest[] = [
       'Yep. We woke up and chose violence. Dump JUPITER tokens for SOL. Ducks.',
     progressSteps: 10,
     powerUp: getItem('cleanser', 'blue'),
+    sendingToken: ['JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN'], // JUP
+    receivingToken: ['11111111111111111111111111111111'], // SOL
   },
   {
     id: 'quest2',
@@ -79,6 +81,14 @@ export const QUESTS: TQuest[] = [
       'Are you a dog(coin) person or a cat(coin) person? It doesn’t matter. Swap WIF and POPCAT to earn a boost.',
     progressSteps: 5,
     powerUp: getItem('cleanser', 'blue'),
+    sendingToken: [
+      'EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm',
+      '7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr',
+    ], // WIF POPCAT
+    receivingToken: [
+      '7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr',
+      'EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm',
+    ], // POPCAT WIF
   },
   {
     id: 'quest3',
@@ -89,6 +99,14 @@ export const QUESTS: TQuest[] = [
       'A mASSive opportunity for you to earn a wash trading boost by buying this hot new ASSet.',
     progressSteps: 10,
     powerUp: getItem('sponge', 'blue'),
+    sendingToken: [
+      '11111111111111111111111111111111',
+      '3S8qX1MsMqRbiwKg2cQyx7nis1oHMgaCuc9c4VfvVdPN',
+    ], // SOL MOTHER
+    receivingToken: [
+      '3S8qX1MsMqRbiwKg2cQyx7nis1oHMgaCuc9c4VfvVdPN',
+      '11111111111111111111111111111111',
+    ], // MOTHER SOL
   },
   {
     id: 'quest4',
@@ -98,6 +116,14 @@ export const QUESTS: TQuest[] = [
     description: 'The real authentic washtrading experience… snore.',
     progressSteps: 5,
     powerUp: getItem('soap', 'pink'),
+    sendingToken: [
+      'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB',
+    ], // USDC USDT
+    receivingToken: [
+      'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB',
+      'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    ], // USDT USDC
   },
   {
     id: 'quest5',
@@ -108,6 +134,14 @@ export const QUESTS: TQuest[] = [
       'Get your Drift on and acquire some tokens from our good friends at Drift.',
     progressSteps: 5,
     powerUp: getItem('sponge', 'blue'),
+    sendingToken: [
+      '11111111111111111111111111111111',
+      'DriFtupJYLTosbwoN8koMbEYSx54aFAVLddWsbksjwg7',
+    ], // SOL DRIFT
+    receivingToken: [
+      'DriFtupJYLTosbwoN8koMbEYSx54aFAVLddWsbksjwg7',
+      '11111111111111111111111111111111',
+    ], // DRIFT SOL
   },
   {
     id: 'quest6',
@@ -118,6 +152,8 @@ export const QUESTS: TQuest[] = [
       'The battle we all wanted, but never got. Time to run it back for a wash boost.',
     progressSteps: 2,
     powerUp: getItem('soap', 'pink'),
+    sendingToken: ['FU1q8vJpZNUrmqsciSjp8bAKKidGsLmouB8CBdf8TKQv'], // TREMP
+    receivingToken: ['3psH1Mj1f7yUfaD5gh6Zj7epE8hhrMkMETgv5TshQA4o'], // BODEN
   },
   {
     id: 'quest7',
@@ -128,6 +164,16 @@ export const QUESTS: TQuest[] = [
       'This quest gets you to trade Ansem tokens, in the hope that he’ll engage with us. Can’t hurt… right?',
     progressSteps: 5,
     powerUp: getItem('soap', 'pink'),
+    sendingToken: [
+      'EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm',
+      '5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp',
+      'MEW1gQWJ3nEXg2qgERiKu7FAFj79PHvQVREQUzScPP5',
+    ], // WIF MICHI MEW
+    receivingToken: [
+      '5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp',
+      'EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm',
+      'MEW1gQWJ3nEXg2qgERiKu7FAFj79PHvQVREQUzScPP5',
+    ], // MICHI WIF MEW
   },
   {
     id: 'quest8',
@@ -138,6 +184,14 @@ export const QUESTS: TQuest[] = [
       'Cute flavour of the month vs cute flavour of the month. You don’t have to pick sides. Just swap between them!',
     progressSteps: 8,
     powerUp: getItem('soap', 'pink'),
+    sendingToken: [
+      'ED5nyyWEzpPPiWimP8vYm7sD7TD3LAt3Q3gRTWHzPJBY',
+      'A8C3xuqscfmyLrte3VmTqrAq8kgMASius9AFNANwpump',
+    ], // MOODENG FWOG
+    receivingToken: [
+      'ED5nyyWEzpPPiWimP8vYm7sD7TD3LAt3Q3gRTWHzPJBY',
+      'A8C3xuqscfmyLrte3VmTqrAq8kgMASius9AFNANwpump',
+    ], // MOODENG FWOG
   },
   {
     id: 'quest9',
@@ -148,6 +202,14 @@ export const QUESTS: TQuest[] = [
       'Play some Bruce Springsteen, put on your Maga hat and start trading like a true patriot. Murica mfer!',
     progressSteps: 5,
     powerUp: getItem('soap', 'pink'),
+    sendingToken: [
+      'HaP8r3ksG76PhQLTqR8FYBeNiQpejcFbQmiHbg787Ut1',
+      '69kdRLyP5DTRkpHraaSZAQbWmAwzF9guKjZfzMXzcbAs',
+    ], // TRUMP USA
+    receivingToken: [
+      '69kdRLyP5DTRkpHraaSZAQbWmAwzF9guKjZfzMXzcbAs',
+      'HaP8r3ksG76PhQLTqR8FYBeNiQpejcFbQmiHbg787Ut1',
+    ], // USA TRUMP
   },
   {
     id: 'quest10',
@@ -158,6 +220,14 @@ export const QUESTS: TQuest[] = [
       'Sell some Retardio for Coby. The sentences you end up writing in this job…',
     progressSteps: 5,
     powerUp: getItem('soap', 'pink'),
+    sendingToken: [
+      '6ogzHhzdrQr9Pgv6hZ2MNze7UrzBMAFyBBWUYp1Fhitx',
+      '8WnQQRbuEZ3CCDbH5MCVioBbw6o75NKANq9WdPhBDsWo',
+    ], // Retardio coby
+    receivingToken: [
+      '8WnQQRbuEZ3CCDbH5MCVioBbw6o75NKANq9WdPhBDsWo',
+      '6ogzHhzdrQr9Pgv6hZ2MNze7UrzBMAFyBBWUYp1Fhitx',
+    ], // coby Retardio
   },
 ];
 
@@ -178,6 +248,9 @@ export const TOOLTIP_MESSAGES = {
     'Every trade you make on Solana with Jumper helps wash your NFT clean. It takes $10,000 of volume to fully wash the NFT, or you can complete quests for power ups to boost your progress!',
   quest:
     'Every Solana swap you make on Jumper helps wash your NFT. But you can wash your NFT even faster by completing quests for items that boost your progress! Lfg.',
+  goldenNft:
+    //TODO: change this on launch
+    'When the game ends on xx/xx/xxxx Golden NFT holders will be airdropped something sexy from the prize pool; holding Mad Lads, Retardio Cousins, Degods, Yoots, $Coby, and more!',
 };
 
 /**********************************************************************************************

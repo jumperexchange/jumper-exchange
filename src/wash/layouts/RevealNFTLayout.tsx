@@ -129,7 +129,7 @@ export function RevealedNFTLayout(): ReactElement {
       return 'Loading your NFT, fingers crossed anon!';
     }
     if (currentNFT?.isRare) {
-      return '+500 Jumper points';
+      return '+5 Jumper points and a share of the prize pool!';
     }
     return '+5 Jumper points';
   }, [reveal.isRevealing, currentNFT?.isRare]);
