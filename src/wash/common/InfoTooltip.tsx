@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { colors } from '../utils/theme';
+import { colors, mq } from '../utils/theme';
 import { IconInfo } from './icons/IconInfo';
 
 import { useState, type ReactElement } from 'react';
@@ -18,6 +18,9 @@ const TooltipDescription = styled.p`
   color: white;
   font-weight: bold;
   ${inter.style}
+  ${mq[1]} {
+    font-size: 10px;
+  }
 `;
 
 const TooltipTrigger = styled.div`
@@ -45,6 +48,12 @@ export function InfoTooltip({
     padding: 1rem 1.5rem;
     &:focus {
       outline: none;
+    }
+    ${mq[1]} {
+      left: unset;
+      right: 1rem;
+      top: 2rem;
+      max-width: 200px;
     }
   `;
   const [showTooltip, set_showTooltip] = useState(false);

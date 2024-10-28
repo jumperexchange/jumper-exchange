@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import { type ReactElement, useMemo, useRef } from 'react';
 import { QUESTS, TOOLTIP_MESSAGES } from '../utils/constants';
-import { colors, mq, WashH1 } from '../utils/theme';
+import { colors, Flex, mq, WashH1 } from '../utils/theme';
 
 import { CollectButton } from './CollectButton';
 import { InfoTooltip } from './InfoTooltip';
@@ -12,6 +12,9 @@ import { IconDone } from './icons/IconDone';
 
 import { useWashTrading } from '../contexts/useWashTrading';
 import type { TQuest } from '../types/wash';
+import { Button } from './Button';
+import { IconArrowLeft } from './icons/IconArrowLeft';
+import Link from 'next/link';
 
 /**************************************************************************************************
  * Defining the styled components style for the QuestItem component
@@ -223,15 +226,39 @@ export function QuestItem(props: TQuest): ReactElement {
               </QuestHeadingWrapper>
               <QuestTitle>{props.title}</QuestTitle>
             </QuestInfo>
-            <CollectButton
-              ref={elementRef}
-              className={'skew-x-0'}
-              size={'short'}
-              onClick={() => {}}
-              theme={props.questType === 'common' ? 'pink' : 'cyan'}
-              progress={props.progress}
-              progressSteps={props.progressSteps}
-            />
+            <Flex>
+              <CollectButton
+                ref={elementRef}
+                className={'skew-x-0'}
+                size={'short'}
+                onClick={() => {}}
+                theme={props.questType === 'common' ? 'pink' : 'cyan'}
+                progress={props.progress}
+                progressSteps={props.progressSteps}
+              />
+              <Link
+                href={`?fromChain=1151111081099710&fromToken=${props.sendingToken[0]}&toChain=1151111081099710&toToken=${props.receivingToken[0]}`}
+              >
+                <Button
+                  style={{
+                    backgroundColor:
+                      props.questType === 'common'
+                        ? colors.pink[800]
+                        : colors.cyan[800],
+                    transform: 'skewX(-1deg)',
+                    width: '40px',
+                    height: '48px',
+                    borderRadius: '8px',
+                    marginLeft: '4px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <IconArrowLeft />
+                </Button>
+              </Link>
+            </Flex>
           </QuestInfoWrapper>
           <QuestDescription>{props.description}</QuestDescription>
         </ContentWrapper>

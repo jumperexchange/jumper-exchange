@@ -67,7 +67,8 @@ export function useReveal(
       );
 
       await umi.rpc.confirmTransaction(signature, {
-        commitment: 'confirmed',
+        commitment:
+          process.env.MODE_ENV === 'production' ? 'confirmed' : 'finalized',
         strategy: {
           type: 'blockhash',
           ...(await umi.rpc.getLatestBlockhash()),
@@ -83,7 +84,7 @@ export function useReveal(
           : 'An error occurred while revealing',
       );
     } finally {
-      Promise.all([refetchNft?.(), refetchCollection?.()]);
+      await Promise.all([refetchNft?.(), refetchCollection?.()]);
       setTimeout(() => set_isRevealing(false), 1000);
       setTimeout(() => set_hasCanceledReveal(false), 1300);
     }

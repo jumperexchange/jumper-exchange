@@ -22,6 +22,8 @@ export type TQuest = {
   expirationTimestamp?: number;
   progress?: TIntRange<0, number>;
   powerUp: TCleaningItem;
+  sendingToken: string[];
+  receivingToken: string[];
 };
 
 /**********************************************************************************************

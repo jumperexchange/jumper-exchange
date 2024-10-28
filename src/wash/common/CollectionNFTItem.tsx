@@ -4,21 +4,17 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import { DEFAULT_NFT_COLOR, TOOLTIP_MESSAGES } from '../utils/constants';
 import type { TColor } from '../utils/theme';
-import { colors } from '../utils/theme';
+import { Absolute, colors, Relative } from '../utils/theme';
 
 import { WashProgress } from './WashProgress';
 
 import type { ReactElement, ReactNode } from 'react';
 import type { TNFTItem } from '../types/types';
-<<<<<<< Updated upstream
 import { titanOne } from './fonts';
 import { getPepeImage } from '../utils/getPepeImage';
-=======
-import { titanOne } from './WithFonts';
+import { InfoTooltip } from './InfoTooltip';
 import { Button } from './Button';
 import { useRouter } from 'next/navigation';
-import { InfoTooltip } from './InfoTooltip';
->>>>>>> Stashed changes
 
 type TNftItemProps = {
   label?: string;
@@ -161,21 +157,14 @@ export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
   function renderNFTImage(): ReactNode {
     if (nft?.isRevealed) {
       return (
-        <div style={{ position: 'relative' }}>
+        <Relative>
           {nft?.isRare && (
-            <div
-              style={{
-                position: 'absolute',
-                top: '12px',
-                right: '12px',
-                zIndex: '1',
-              }}
-            >
+            <Absolute top={'12px'} right={'12px'} style={{ zIndex: 1 }}>
               <InfoTooltip
                 description={TOOLTIP_MESSAGES.goldenNft}
                 position={index % 4 < 2 ? 'right' : 'left'}
               />
-            </div>
+            </Absolute>
           )}
           <NFTImage
             src={nft?.imageUri ?? ''}
@@ -185,7 +174,7 @@ export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
             height={320}
             unoptimized
           />
-        </div>
+        </Relative>
       );
     }
     return (

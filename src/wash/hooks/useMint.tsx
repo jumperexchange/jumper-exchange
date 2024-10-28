@@ -112,7 +112,8 @@ export function useMint(
 
       // Wait for transaction to be confirmed
       await umi.rpc.confirmTransaction(signature, {
-        commitment: 'confirmed',
+        commitment:
+          process.env.MODE_ENV === 'production' ? 'confirmed' : 'finalized',
         strategy: {
           type: 'blockhash',
           ...(await umi.rpc.getLatestBlockhash()),

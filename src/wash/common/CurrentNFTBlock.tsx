@@ -12,12 +12,8 @@ import { WashProgress } from './WashProgress';
 import { colors, mq, WashH2, type TColor } from '../utils/theme';
 import type { TItems, TNFTItem } from '../types/types';
 import type { TCleaningItem } from '../types/wash';
-<<<<<<< Updated upstream
 import { titanOne } from './fonts';
-=======
-import { titanOne } from './WithFonts';
 import { InfoTooltip } from './InfoTooltip';
->>>>>>> Stashed changes
 
 const ImageWrapper = styled.div`
   position: absolute;

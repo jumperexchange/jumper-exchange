@@ -89,6 +89,10 @@ export const Absolute = styled.div<{
   bottom: ${({ bottom }) => bottom};
 `;
 
+export const Relative = styled.div`
+  position: relative;
+`;
+
 export const WashText = styled.p`
   font-family: ${inter.style.fontFamily};
 `;
@@ -120,4 +124,8 @@ export const SkewX6 = styled.div`
 
 export const FitContent = styled.div`
   width: fit-content;
+`;
+
+export const Flex = styled.div`
+  display: flex;
 `;
