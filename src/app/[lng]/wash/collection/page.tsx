@@ -3,7 +3,7 @@
 
 import styled from '@emotion/styled';
 
-import type { ReactElement } from 'react';
+import { useCallback, type ReactElement } from 'react';
 import { CollectionNFTItem } from '../../../../wash/common/CollectionNFTItem';
 import { WashBackground } from '../../../../wash/common/WashBackground';
 import {
@@ -15,6 +15,7 @@ import { mq, WashH1, colors } from '../../../../wash/utils/theme';
 import { Button } from '../../../../wash/common/Button';
 import { countExtraXPFromItems } from '../../../../wash/utils/utils';
 import { inter } from '../../../../fonts/fonts';
+import { useRouter } from 'next/navigation';
 
 const Wrapper = styled.div`
   position: relative;
@@ -170,11 +171,22 @@ function NftSkeleton(): ReactElement {
 }
 
 function CollectionPage(): ReactElement {
+  const router = useRouter();
   const { collection, user, mint } = useWashTrading();
-
   const currentCollection = collection.collection;
-
   const hasUnrevealedNFT = currentCollection.some((item) => !item.isRevealed);
+
+  /**********************************************************************************************
+   * mintAndRedirect
+   *
+   * Mints a new NFT and redirects user to the wash page.
+   * Uses the mint.onMint() function from the WashTrading context to handle minting.
+   * After successful mint, redirects to /wash route using Next.js router.
+   **********************************************************************************************/
+  const mintAndRedirect = useCallback(async () => {
+    await mint.onMint();
+    router.push('/wash');
+  }, [mint, router]);
 
   return (
     <Wrapper>
@@ -217,7 +229,7 @@ function CollectionPage(): ReactElement {
                         </MintNextDescription>
                       </MintNextUpperBlock>
                       <Button
-                        onClick={mint.onMint}
+                        onClick={mintAndRedirect}
                         theme={'pink'}
                         title={'Mint again'}
                         isBusy={mint.isMinting}

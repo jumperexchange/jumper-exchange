@@ -214,9 +214,11 @@ export function RevealNFTItem({
           {nft.isRare ? 'ser Golden Bridgealot' : 'ser basic Bridgealot'}
         </NFTName>
       </NFTNameBox>
-      <Absolute top={'12px'} right={'12px'}>
-        <InfoTooltip description={TOOLTIP_MESSAGES.goldenNft} />
-      </Absolute>
+      {nft.isRare && !isRevealing ? (
+        <Absolute top={'12px'} right={'12px'}>
+          <InfoTooltip description={TOOLTIP_MESSAGES.goldenNft} />
+        </Absolute>
+      ) : null}
     </div>
   );
 }

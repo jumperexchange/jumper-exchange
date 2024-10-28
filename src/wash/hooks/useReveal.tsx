@@ -85,8 +85,8 @@ export function useReveal(
       );
     } finally {
       await Promise.all([refetchNft?.(), refetchCollection?.()]);
-      setTimeout(() => set_isRevealing(false), 1000);
-      setTimeout(() => set_hasCanceledReveal(false), 1300);
+      setTimeout(() => set_isRevealing(false), 100);
+      setTimeout(() => set_hasCanceledReveal(false), 700);
     }
   }, [
     umi,

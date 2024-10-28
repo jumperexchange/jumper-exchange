@@ -78,7 +78,7 @@ export function WashTradingContextApp(props: {
   const user = useGetUser();
   const collection = useGetCollection();
   const nft = useGetNFT(user.refetch);
-  const wash = useWash(user.refetch, nft.refetch);
+  const wash = useWash(user.refetch, nft.refetch, collection.refetch);
   const mint = useMint(nft.refetch, user.refetch, collection.refetch);
   const reveal = useReveal(nft.refetch, collection.refetch);
   const widgetEvents = useWidgetEvents();
