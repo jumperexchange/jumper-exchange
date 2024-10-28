@@ -7,11 +7,30 @@ import type {
 } from '@lifi/sdk';
 import { type Process, type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
+import type { Connector } from 'wagmi';
 import type { GatewayTransactionDetails } from '@safe-global/safe-apps-sdk';
 import SafeAppsSDK, { TransactionStatus } from '@safe-global/safe-apps-sdk';
+import { useEffect, useState } from 'react';
+
+const getIsSafeConnector = async (connector?: Connector): Promise<boolean> => {
+  let isSafeConnector = connector?.id === 'safe';
+  if (isSafeConnector) {
+    return isSafeConnector;
+  }
+  const isWalletConnect = connector?.id === 'walletConnect';
+  if (!isWalletConnect) {
+    return false;
+  }
+  const provider = (await connector?.getProvider()) as any;
+  isSafeConnector = provider?.signer?.session?.peer?.metadata?.name
+    ?.toLowerCase?.()
+    ?.includes?.('safe');
+  return isSafeConnector;
+};
 
 export const useMultisig = () => {
   const { account } = useAccount();
+  const [isSafeConnector, setIsSafeConnector] = useState(false);
 
   const checkMultisigEnvironment = async () => {
     // in Multisig env, window.parent is not equal to window
@@ -29,8 +48,6 @@ export const useMultisig = () => {
 
     return !!accountInfo?.safeAddress;
   };
-
-  const isSafeConnector = Boolean(account?.connector?.name === 'Safe');
 
   const handleMultiSigTransactionDetails = async (
     txHash: string,
@@ -196,6 +213,17 @@ export const useMultisig = () => {
 
     return !isRouteDone && !isRouteFailed && multisigRouteStarted;
   };
+
+  useEffect(() => {
+    (async () => {
+      const isSafeConnector = await getIsSafeConnector(
+        account.connector as Connector,
+      );
+      if (isSafeConnector) {
+        setIsSafeConnector(isSafeConnector);
+      }
+    })();
+  }, [account.connector]);
 
   return {
     isMultisigSigner: isSafeConnector,
