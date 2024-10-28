@@ -13,14 +13,14 @@ export const useABTest = ({
   feature: string;
   user: string;
 }): UseABTestProps => {
-  if (!feature || !user) {
-    return { isEnabled: false, isSuccess: true, isLoading: false };
-  }
-
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['ab_test', feature, user],
     queryFn: async () => {
+      if (!feature || !user) {
+        return { isEnabled: false, isSuccess: true, isLoading: false };
+      }
+
       const res = await fetch(
         `${apiBaseUrl}/posthog/feature-flag?key=${feature}&distinctId=${user}`,
       );
