@@ -16,7 +16,9 @@ import { MenuToggle, NavbarButtonsContainer, RedirectToApp } from '.';
 import { WalletButtons } from '../WalletButton';
 import dynamic from 'next/dynamic';
 
-const WalletMenu = dynamic(() => import('../../Menus/WalletMenu/WalletMenu').then((s) => s.WalletMenu));
+const WalletMenu = dynamic(() =>
+  import('../../Menus/WalletMenu/WalletMenu').then((s) => s.WalletMenu),
+);
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef(null);
