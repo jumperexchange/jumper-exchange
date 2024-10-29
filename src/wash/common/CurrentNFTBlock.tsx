@@ -63,6 +63,7 @@ function BorderStroke(props: {
             'size-full transition-opacity',
             props.isSkeleton ? 'opacity-0' : 'opacity-100',
           )}
+          style={{ maxWidth: '100%', height: 'auto' }}
           loading={'eager'}
           priority
           width={1680}
@@ -77,6 +78,7 @@ function BorderStroke(props: {
             'size-full transition-opacity',
             props.isSkeleton ? 'opacity-0' : 'opacity-100',
           )}
+          style={{ maxWidth: '100%', height: 'auto' }}
           loading={'eager'}
           priority
           width={1680}

@@ -174,7 +174,9 @@ function CollectionPage(): ReactElement {
   const router = useRouter();
   const { collection, user, mint } = useWashTrading();
   const currentCollection = collection.collection;
-  const hasUnrevealedNFT = currentCollection?.some((item) => !item.isRevealed);
+  const hasUnrevealedNFT = (currentCollection || [])?.some(
+    (item) => !item.isRevealed,
+  );
 
   /**********************************************************************************************
    * mintAndRedirect

@@ -101,6 +101,7 @@ const PowerUpLogo = styled(Image)<{ disabled: boolean }>`
   width: 80px;
   transition: all 0.1s ease-in-out;
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+  height: auto;
   ${mq[1]} {
     width: 64px;
   }

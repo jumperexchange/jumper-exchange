@@ -121,17 +121,6 @@ export function RaysBackground(): ReactElement {
   );
 }
 
-const RaysWrapper = styled.div`
-  position: absolute;
-  left: -1100px;
-  top: 180px;
-  transform: translateY(-50%);
-  overflow: hidden;
-  ${mq[1]} {
-    left: -1030px;
-  }
-`;
-
 /**********************************************************************************************
  * RevealRaysBackground renders a background with rays that spin. This specific variant is
  * to highlight the fact that the NFT can be revealed and is used in the CurrentNFTBlock

@@ -127,9 +127,9 @@ export function WashTradingContextApp(props: {
         toAmount = Number(firstStep.execution.toAmount);
         for (const execution of firstStep?.execution?.process || []) {
           const isToSolana =
-            execution.chainId === 1151111081099710 ||
-            execution.txLink.includes('solana.com') ||
-            (execution.txHash && !execution.txHash.startsWith('0x'));
+            execution?.chainId === 1151111081099710 ||
+            (execution?.txLink || '').includes('solana.com') ||
+            (execution?.txHash && !execution.txHash.startsWith('0x'));
 
           if (execution && isToSolana) {
             txHash = execution.txHash;

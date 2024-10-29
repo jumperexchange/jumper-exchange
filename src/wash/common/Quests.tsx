@@ -15,7 +15,6 @@ import { useWashTrading } from '../contexts/useWashTrading';
 import type { TQuest } from '../types/wash';
 import { Button } from './Button';
 import { IconArrowLeft } from './icons/IconArrowLeft';
-import Link from 'next/link';
 import type { FormState } from '@lifi/widget';
 
 /**************************************************************************************************
@@ -76,6 +75,7 @@ const BoosterImage = styled(Image)<{ isComplete: boolean }>`
 	top: 50%;
 	transform: translate(-50%, -50%);
 	transition-duration: 300ms;
+  height: auto;
 	&:hover {
 		width: ${(props) => (props.isComplete ? '80px' : '72px')};
 		transition: ${(props) => (props.isComplete ? 'all ease-out' : 'all ease-in')};
