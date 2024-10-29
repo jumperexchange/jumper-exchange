@@ -226,6 +226,26 @@ export function QuestItem(
     });
   }, [props.formRef, props.sendingToken, props.receivingToken]);
 
+  const GoToSwapButton = styled(Button)<{ width?: string }>`
+    background-color: ${props.questType === 'common'
+      ? colors.pink[800]
+      : colors.cyan[800]};
+    transform: skewX(-1deg);
+    width: ${(props) => props.width || '40px'};
+    height: 48px;
+    border-radius: 8px;
+    margin-left: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background-color: ${props.questType === 'common'
+        ? colors.pink[700]
+        : colors.cyan[700]};
+    }
+  `;
+
   return (
     <>
       <QuestItemWrapper>
@@ -235,7 +255,7 @@ export function QuestItem(
         >
           <BoosterImage
             src={props.powerUp.logo}
-            alt={''}
+            alt={'power-up'}
             isComplete={!isDone}
             width={72}
             height={72}
@@ -259,32 +279,15 @@ export function QuestItem(
             <Flex>
               <CollectButton
                 ref={elementRef}
-                className={'skew-x-0'}
+                style={{ transform: 'skewX(0deg)' }}
                 size={'short'}
-                onClick={() => {}}
                 theme={props.questType === 'common' ? 'pink' : 'cyan'}
                 progress={props.progress}
                 progressSteps={props.progressSteps}
               />
-              <Button
-                onClick={onSelectQuest}
-                style={{
-                  backgroundColor:
-                    props.questType === 'common'
-                      ? colors.pink[800]
-                      : colors.cyan[800],
-                  transform: 'skewX(-1deg)',
-                  width: '40px',
-                  height: '48px',
-                  borderRadius: '8px',
-                  marginLeft: '4px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
+              <GoToSwapButton onClick={onSelectQuest}>
                 <IconArrowLeft />
-              </Button>
+              </GoToSwapButton>
             </Flex>
           </QuestInfoWrapper>
           <QuestDescription>{props.description}</QuestDescription>
@@ -323,14 +326,18 @@ export function QuestItem(
           <QuestDescription>{props.description}</QuestDescription>
         </div>
 
-        <CollectButton
-          ref={elementRef}
-          className={'skew-x-0'}
-          onClick={() => {}}
-          theme={props.questType === 'common' ? 'pink' : 'cyan'}
-          progress={props.progress}
-          progressSteps={props.progressSteps}
-        />
+        <div style={{ display: 'flex' }}>
+          <CollectButton
+            ref={elementRef}
+            style={{ transform: 'skewX(0deg)', width: '100%' }}
+            theme={props.questType === 'common' ? 'pink' : 'cyan'}
+            progress={props.progress}
+            progressSteps={props.progressSteps}
+          />
+          <GoToSwapButton width={'60px'} onClick={onSelectQuest}>
+            <IconArrowLeft />
+          </GoToSwapButton>
+        </div>
       </QuestItemMobileWrapper>
     </>
   );

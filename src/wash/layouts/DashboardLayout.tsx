@@ -6,7 +6,7 @@ import { CurrentNFTBlock } from '../common/CurrentNFTBlock';
 import { Modal } from '../common/Modal';
 import { QuestsList } from '../common/Quests';
 import { useWashTrading } from '../contexts/useWashTrading';
-import { cl, widgetConfig } from '../utils/utils';
+import { widgetConfig } from '../utils/utils';
 import type { FormState } from '@lifi/widget';
 import { LiFiWidget, WidgetSkeleton } from '@lifi/widget';
 import styled from '@emotion/styled';
@@ -18,6 +18,29 @@ import { mq } from '../utils/theme';
 import { SwapWarningWrapper } from '../common/SwapWarning';
 import { ClientOnly } from '../../components/ClientOnly';
 import { inter } from '../../fonts/fonts';
+
+const ModalContent = styled.div`
+  display: flex;
+  max-width: 400px;
+  flex-direction: column;
+`;
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 1.5rem;
+`;
+
+const OverkillWarning = styled.p`
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  margin: 1rem 0 2rem;
+  color: white;
+  font-weight: 500;
+  font-family: ${inter.style.fontFamily};
+`;
 
 /**************************************************************************************************
  * OverkillModal: A modal component to warn users about potential overkill when using an item
@@ -41,19 +64,14 @@ export function OverkillModal(props: {
       isOpen={!!props.shouldOverkillNumber}
       onClose={() => props.set_shouldOverkillNumber(null)}
     >
-      <div className={'flex max-w-[400px] flex-col'}>
+      <ModalContent>
         <WashH1>{'Ooooverkill'}</WashH1>
-        <p
-          className={cl(
-            'text-sm text-center mt-4 mb-8 text-white font-medium',
-            inter.className,
-          )}
-        >
+        <OverkillWarning>
           {
             'You’re about to use a boost that gives more % than your current NFT has left. Or you could save it for the next NFT you want to wash. Your call anon.'
           }
-        </p>
-        <div className={'flex justify-center gap-2 rounded-3xl'}>
+        </OverkillWarning>
+        <ButtonsWrapper>
           <Button
             title={'Cancel'}
             theme={'white'}
@@ -72,8 +90,8 @@ export function OverkillModal(props: {
               props.set_shouldOverkillNumber(null);
             }}
           />
-        </div>
-      </div>
+        </ButtonsWrapper>
+      </ModalContent>
     </Modal>
   );
 }

@@ -6,7 +6,6 @@ import { inter } from '../../fonts/fonts';
 type TWashProgressProps = {
   progress?: number;
   label?: string;
-  className?: string;
   isSkeleton?: boolean;
 };
 
@@ -79,7 +78,6 @@ const ProgressLabel = styled.span`
 export function WashProgress({
   progress = 0,
   label,
-  className,
   isSkeleton,
 }: TWashProgressProps): ReactElement {
   if (isSkeleton) {
@@ -87,7 +85,7 @@ export function WashProgress({
   }
 
   return (
-    <ProgressBar className={className}>
+    <ProgressBar>
       <ProgressLabel>{label ? label : `${progress}%`}</ProgressLabel>
       <ProgressBarFill progress={progress} />
     </ProgressBar>

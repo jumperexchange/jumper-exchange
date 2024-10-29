@@ -5,26 +5,73 @@ import {
   TransitionChild,
 } from '@headlessui/react';
 import { Fragment } from 'react';
-import { cl } from '../utils/utils';
 
 import type { ReactElement } from 'react';
-import { colors } from '../utils/theme';
+import { colors, mq } from '../utils/theme';
+import styled from '@emotion/styled';
 
 type TModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  className?: string;
   children: ReactElement;
 };
+
+const StyledDialog = styled(Dialog)`
+  position: relative;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  display: flex;
+  min-height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  ${mq[1]} {
+    padding: 0;
+  }
+`;
+
+const ContentWrapper = styled.div`
+  position: fixed;
+  inset: 0px;
+  z-index: 1001;
+  overflow-y: auto;
+`;
+
+const Background = styled.div`
+  position: fixed;
+  inset: 0px;
+  background: ${colors.violet[100]}CC;
+  backdrop-filter: blur;
+  transition: opacity 300ms ease-in-out;
+`;
+
+const StyledDialogPanel = styled(DialogPanel)`
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  max-width: 42rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: ${colors.violet[400]} !important;
+  padding: 40px !important;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+`;
+
 export function Modal({
   isOpen,
   onClose,
   children,
-  className,
 }: TModalProps): ReactElement {
   return (
     <Transition show={isOpen} as={Fragment}>
-      <Dialog as={'div'} className={'relative z-[1000]'} onClose={onClose}>
+      <StyledDialog as={'div'} onClose={onClose}>
         <TransitionChild
           as={Fragment}
           enter={'ease-out duration-300'}
@@ -34,22 +81,10 @@ export function Modal({
           leaveFrom={'opacity-100'}
           leaveTo={'opacity-0'}
         >
-          <div
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: `${colors.violet[100]}CC`,
-              backdropFilter: 'blur',
-              transition: 'opacity 300ms ease-in-out',
-            }}
-          />
+          <Background />
         </TransitionChild>
-        <div className={'fixed inset-0 z-[1001] overflow-y-auto'}>
-          <div
-            className={
-              'flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0'
-            }
-          >
+        <ContentWrapper>
+          <ModalContent>
             <TransitionChild
               as={Fragment}
               enter={'ease-out duration-300'}
@@ -59,20 +94,11 @@ export function Modal({
               leaveFrom={'opacity-100 translate-y-0 sm:scale-100'}
               leaveTo={'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'}
             >
-              <DialogPanel
-                className={cl(
-                  'relative overflow-hidden flex max-w-2xl',
-                  'flex-col items-center justify-center rounded-md',
-                  '!bg-violet-400 !p-10 transition-all',
-                  className,
-                )}
-              >
-                {children}
-              </DialogPanel>
+              <StyledDialogPanel>{children}</StyledDialogPanel>
             </TransitionChild>
-          </div>
-        </div>
-      </Dialog>
+          </ModalContent>
+        </ContentWrapper>
+      </StyledDialog>
     </Transition>
   );
 }

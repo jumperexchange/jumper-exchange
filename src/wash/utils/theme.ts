@@ -122,6 +122,10 @@ export const SkewX6 = styled.div`
   transform: skewX(-6deg);
 `;
 
+export const SkewXNegative6 = styled.div`
+  transform: skewX(6deg);
+`;
+
 export const FitContent = styled.div`
   width: fit-content;
 `;

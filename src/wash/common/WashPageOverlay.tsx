@@ -1,15 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useWashTrading } from 'src/wash/contexts/useWashTrading';
-import { EmptyScreenLayout } from 'src/wash/layouts/EmptyScreenLayout';
-import { MintLoaderLayout } from 'src/wash/layouts/MintLoaderLayout';
-import { RevealedNFTLayout } from 'src/wash/layouts/RevealNFTLayout';
-import { cl } from 'src/wash/utils/utils';
+
 import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 
 import type { ReactElement, ReactNode } from 'react';
+import styled from '@emotion/styled';
+import { useWashTrading } from '../contexts/useWashTrading';
+import { EmptyScreenLayout } from '../layouts/EmptyScreenLayout';
+import { MintLoaderLayout } from '../layouts/MintLoaderLayout';
+import { RevealedNFTLayout } from '../layouts/RevealNFTLayout';
 
 /**********************************************************************************************
  * WashPageOverlay: A component that manages and displays different layouts based on the
@@ -31,6 +32,14 @@ export function WashPageOverlay(): ReactNode {
   const [hasCurrentLayout, set_hasCurrentLayout] = useState<boolean>(false);
   const { account } = useAccount({ chainType: ChainType.SVM });
   const { reveal, mint, nft } = useWashTrading();
+
+  const OverlayWrapper = styled.div<{ hasCurrentLayout: boolean }>`
+    transition-property: opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 1000ms;
+    opacity: ${hasCurrentLayout ? 1 : 0};
+    pointer-events: ${hasCurrentLayout ? 'auto' : 'none'};
+  `;
 
   /**********************************************************************************************
    * currentNFT: Extracts the NFT object from the nft state
@@ -81,13 +90,8 @@ export function WashPageOverlay(): ReactNode {
   ]);
 
   return (
-    <div
-      className={cl(
-        'transition-opacity duration-1000',
-        hasCurrentLayout ? 'opacity-100' : 'opacity-0 pointer-events-none',
-      )}
-    >
+    <OverlayWrapper hasCurrentLayout={hasCurrentLayout}>
       {currentLayout}
-    </div>
+    </OverlayWrapper>
   );
 }

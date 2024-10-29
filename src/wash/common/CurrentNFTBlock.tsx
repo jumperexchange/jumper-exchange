@@ -1,7 +1,6 @@
 import { Fragment, type ReactElement, useMemo } from 'react';
 import Image from 'next/image';
 import { DEFAULT_NFT_COLOR, TOOLTIP_MESSAGES } from '../utils/constants';
-import { cl } from '../utils/utils';
 import styled from '@emotion/styled';
 
 import { BoostItem } from './BoostItem';
@@ -19,7 +18,7 @@ const ImageWrapper = styled.div`
   position: absolute;
   left: -24px;
   right: -24px;
-  top: -32px;
+  top: -26px;
   z-index: 50;
   ${mq[0]} {
     display: none;
@@ -35,6 +34,15 @@ const MobileImageWrapper = styled.div`
   ${mq[0]} {
     display: block;
   }
+`;
+
+const StyledImage = styled(Image)<{ isSkeleton: boolean }>`
+  width: 100%;
+  height: 100%;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  opacity: ${(props) => (props.isSkeleton ? 0 : 1)};
 `;
 
 /************************************************************************************************
@@ -57,30 +65,24 @@ function BorderStroke(props: {
   return (
     <>
       <MobileImageWrapper>
-        <Image
+        <StyledImage
+          isSkeleton={props.isSkeleton}
           src={`/wash/stroke-${props.color || DEFAULT_NFT_COLOR}-mobile.png`}
-          className={cl(
-            'size-full transition-opacity',
-            props.isSkeleton ? 'opacity-0' : 'opacity-100',
-          )}
           loading={'eager'}
           priority
-          width={1680}
-          height={800}
+          width={1612}
+          height={808}
           alt={'stroke'}
         />
       </MobileImageWrapper>
       <ImageWrapper>
-        <Image
+        <StyledImage
+          isSkeleton={props.isSkeleton}
           src={`/wash/stroke-${props.color || DEFAULT_NFT_COLOR}.png`}
-          className={cl(
-            'size-full transition-opacity',
-            props.isSkeleton ? 'opacity-0' : 'opacity-100',
-          )}
           loading={'eager'}
           priority
-          width={1680}
-          height={800}
+          width={1612}
+          height={808}
           alt={'stroke'}
         />
       </ImageWrapper>

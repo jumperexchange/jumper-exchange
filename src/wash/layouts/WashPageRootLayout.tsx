@@ -1,15 +1,30 @@
 'use client';
 
-import { useMemo } from 'react';
-import { WashBackground } from 'src/wash/common/WashBackground';
-import { useWashTrading } from 'src/wash/contexts/useWashTrading';
 import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
-
 import type { ReactElement } from 'react';
-import { WithBackdrop } from 'src/wash/common/WithBackdrop';
-import { WashPageOverlay } from 'src/wash/common/WashPageOverlay';
+import { useMemo } from 'react';
+import { WashBackground } from '../common/WashBackground';
+import { WashPageOverlay } from '../common/WashPageOverlay';
+import { WithBackdrop } from '../common/WithBackdrop';
+import { useWashTrading } from '../contexts/useWashTrading';
+import styled from '@emotion/styled';
+import { colors } from '../utils/theme';
 
+const WashPageRootWrapper = styled.div`
+  position: relative;
+  z-index: 10;
+  display: flex;
+  min-height: 100vh;
+  width: 100%:
+  height: 100%; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  background-color: ${colors.violet[100]};
+  padding-bottom: 40px;
+`;
 export function WashPageRootLayout(): ReactElement {
   const { account } = useAccount({ chainType: ChainType.SVM });
   const { reveal, mint, nft } = useWashTrading();
@@ -49,16 +64,11 @@ export function WashPageRootLayout(): ReactElement {
   ]);
 
   return (
-    <div
-      className={
-        // TODO: remove classname
-        'relative z-10 flex min-h-screen w-full flex-col items-center justify-start overflow-hidden bg-violet-100 pb-10'
-      }
-    >
+    <WashPageRootWrapper>
       <WashBackground />
       <WithBackdrop shouldDisplayBackdrop={shouldDisplayBackdrop}>
         <WashPageOverlay />
       </WithBackdrop>
-    </div>
+    </WashPageRootWrapper>
   );
 }

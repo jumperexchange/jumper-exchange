@@ -39,6 +39,9 @@ const EmptyScreenLayoutText = styled(WashText)`
   margin-bottom: 24px;
   text-align: center;
   color: white;
+  margin-bottom: 24px;
+  text-align: center;
+  color: white;
 `;
 
 /**************************************************************************************************
@@ -63,7 +66,7 @@ export function EmptyScreenLayout(): ReactElement {
         <EmptyScreenLayoutTitle>
           {'Hold your horses there! '}
         </EmptyScreenLayoutTitle>
-        <EmptyScreenLayoutText className={'mb-6 text-center text-white'}>
+        <EmptyScreenLayoutText>
           {
             "You've got to mint an NFT and then wash it clean with your trades. Your average bot farm could never..."
           }

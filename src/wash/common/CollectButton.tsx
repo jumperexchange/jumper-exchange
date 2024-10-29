@@ -1,19 +1,19 @@
+import type { CSSProperties } from 'react';
 import { type ForwardedRef, forwardRef, type ReactElement } from 'react';
 
-import { cl } from '../utils/utils';
 import { Button } from './Button';
 import styled from '@emotion/styled';
 
 import type { TQuest } from '../types/wash';
-import { colors, SkewX6 } from '../utils/theme';
-import { inter } from 'src/fonts/fonts';
+import { colors, SkewX6, SkewXNegative6 } from '../utils/theme';
+import { inter } from '../../fonts/fonts';
 
 type TCollectButtonProps = {
   onClick?: VoidFunction;
   theme: 'pink' | 'cyan';
   disabled?: boolean;
   isBusy?: boolean;
-  className?: string;
+  style?: CSSProperties;
   progress: TQuest['progress'];
   progressSteps: TQuest['progressSteps'];
   size?: 'short' | 'long';
@@ -41,6 +41,7 @@ const ProgressBarFill = styled.div<{ progress: number; background: string }>`
   z-index: -10;
   background: ${({ background }) => background};
   width: ${({ progress }) => `${progress}%`};
+  border-radius: 0.5rem 0 0 0.5rem;
 `;
 
 const ProgressLabel = styled.span`
@@ -72,9 +73,9 @@ function ButtonLayout(props: TCollectButtonProps): ReactElement {
         }
         progress={(currentProgress / props.progressSteps) * 100}
       />
-      <SkewX6>
+      <SkewXNegative6>
         <ProgressLabel>{`${currentProgress}/${props.progressSteps}`}</ProgressLabel>
-      </SkewX6>
+      </SkewXNegative6>
     </ProgressBar>
   );
 }
@@ -87,27 +88,55 @@ export const CollectButton = forwardRef<HTMLButtonElement, TCollectButtonProps>(
     props: TCollectButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactElement {
+    const StyledButton = styled(Button)`
+      position: relative;
+      height: 48px !important;
+      transform: skewX(-6deg);
+      overflow: hidden;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: white;
+      border-radius: 0.5rem;
+      cursor: ${props.progress === props.progressSteps ? 'pointer' : 'default'};
+      background-color: ${
+        props.progress === props.progressSteps
+          ? `${colors.violet[600]} !important`
+          : props.theme === 'pink'
+            ? `${colors.pink[300]} !important`
+            : colors.cyan[300]
+      };
+
+      &:hover {
+        background-color: ${
+          props.progress === props.progressSteps
+            ? `${colors.violet[700]} !important`
+            : props.theme === 'pink'
+              ? `${colors.pink[300]} !important`
+              : colors.cyan[300]
+        };};
+      }
+
+      &:disabled {
+        background-color: ${
+          props.progress === props.progressSteps
+            ? `${colors.violet[200]} !important`
+            : 'inherit'
+        };
+        cursor: not-allowed;
+        color: rgba(255, 255, 255, 0.3) !important;
+      }
+    `;
     return (
-      <Button
+      <StyledButton
         ref={ref}
         onClick={props.onClick}
         disabled={props.disabled}
         isBusy={props.isBusy}
-        style={{ overflow: 'hidden' }}
+        style={props.style}
         size={props.size}
-        className={cl(
-          'relative !h-[48px] -skew-x-6 rounded-lg font-mono font-black uppercase text-white',
-          props.progress === props.progressSteps
-            ? '!bg-violet-600 cursor-pointer hover:!bg-violet-700 disabled:!bg-violet-200 disabled:!cursor-not-allowed disabled:!text-white/30'
-            : props.theme === 'pink'
-              ? '!bg-pink-300 !cursor-default'
-              : '!bg-cyan-300 !cursor-default',
-
-          props.className,
-        )}
       >
         <ButtonLayout {...props} />
-      </Button>
+      </StyledButton>
     );
   },
 );

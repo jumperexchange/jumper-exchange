@@ -76,8 +76,32 @@ const KeepWashingButton = styled.div<{ backgroundColor: string }>`
 
   align-items: center;
   justify-content: center;
-  border-radius: 13px;
+  border-radius: 10px;
   background-color: ${(props) => props.backgroundColor}CC; // 80% opacity
+`;
+
+const WashProgressWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 49%;
+  transform: translateX(-50%) skewX(-6deg);
+  bottom: -23px;
+  border-radius: 16px;
+  height: 56px;
+  width: 230px;
+  padding: 0 8px;
+`;
+
+const RevealedLabel = styled.span`
+  transform: skewX(6deg);
+  ${titanOne.style};
+  color: white;
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
 `;
 
 /************************************************************************************************
@@ -92,6 +116,21 @@ const KeepWashingButton = styled.div<{ backgroundColor: string }>`
 export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
   const bgColor = nft?.isRare ? colors.orange[800] : colors.violet[800];
   const borderColor = nft?.isRare ? colors.orange[800] : colors.violet[700];
+
+  const RevealedLabelWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 49%;
+    transform: translateX(-50%) skewX(-6deg);
+    bottom: -23px;
+    border-radius: 16px;
+    background-color: ${bgColor};
+    height: 56px;
+    width: 230px;
+    padding: 0 8px;
+  `;
 
   /**********************************************************************************************
    * getRarity
@@ -114,6 +153,12 @@ export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
   }
   const router = useRouter();
 
+  const StyledWashProgress = styled(WashProgress)`
+    margin-top: 0px !important;
+    width: 235px;
+    border-radius: 12px;
+  `;
+
   /**********************************************************************************************
    * getLabel
    *
@@ -127,59 +172,17 @@ export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
   function getLabel(): ReactElement {
     if (nft?.isRevealed) {
       return (
-        <div
-          css={css`
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            left: 49%;
-            transform: translateX(-50%) skewX(-6deg);
-            bottom: -23px;
-            border-radius: 16px;
-            background-color: ${bgColor};
-            height: 56px;
-            width: 230px;
-            padding: 0 8px;
-          `}
-        >
-          <span
-            css={css`
-              transform: skewX(6deg);
-              ${titanOne.style};
-              color: white;
-              text-transform: uppercase;
-              font-size: 16px;
-              line-height: 24px;
-              text-align: center;
-            `}
-          >
+        <RevealedLabelWrapper>
+          <RevealedLabel>
             {nft?.isRare ? 'Golden ser Bridgealot' : 'ser basic Bridgealot'}
-          </span>
-        </div>
+          </RevealedLabel>
+        </RevealedLabelWrapper>
       );
     }
     return (
-      <div
-        css={css`
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: absolute;
-          left: 49%;
-          transform: translateX(-50%) skewX(-6deg);
-          bottom: -23px;
-          border-radius: 16px;
-          height: 56px;
-          width: 230px;
-          padding: 0 8px;
-        `}
-      >
-        <WashProgress
-          progress={nft?.progress}
-          className={'!mt-0 w-[235px] !rounded-xl'}
-        />
-      </div>
+      <WashProgressWrapper>
+        <StyledWashProgress progress={nft?.progress} />
+      </WashProgressWrapper>
     );
   }
 
@@ -225,6 +228,7 @@ export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
           <Button
             size={'short'}
             title={'keep washing'}
+            theme={'white'}
             onClick={() => router.push('/wash')}
           />
         </KeepWashingButton>
