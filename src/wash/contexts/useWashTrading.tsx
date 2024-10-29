@@ -129,6 +129,7 @@ export function WashTradingContextApp(props: {
           if (execution && execution.chainId === 1151111081099710) {
             txHash = execution.txHash;
             doneAt = Number(execution.doneAt || 0);
+            break;
           }
         }
       }
