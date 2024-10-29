@@ -1,5 +1,5 @@
-import { Box, styled } from '@mui/system';
 import type { Breakpoint } from '@mui/material/styles';
+import { Box, styled } from '@mui/system';
 
 export const XpIconContainer = styled(Box)(({ theme }) => ({
   marginLeft: 12,
@@ -15,4 +15,9 @@ export const XpIconContainer = styled(Box)(({ theme }) => ({
       height: 30,
     },
   },
+}));
+
+export const PointsBoxContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
 }));

@@ -1,7 +1,8 @@
-import { Tooltip } from '@mui/material';
+import { Tooltip, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { PointsBoxContainer } from '../LevelBox/PointsBox.style';
 import { NoSelectTypography } from '../ProfilePage.style';
-import { StyledInfoIcon } from './CustonInfoIcon';
+import { StyledInfoIcon } from './StyledInfoIcon';
 
 interface IconHeaderProps {
   tooltipKey: string;
@@ -10,19 +11,21 @@ interface IconHeaderProps {
 
 export const IconHeader = ({ tooltipKey, title }: IconHeaderProps) => {
   const { t } = useTranslation();
-
+  const theme = useTheme();
   return (
-    <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>
-      {title}
+    <PointsBoxContainer display="flex">
+      <NoSelectTypography fontSize="14px" lineHeight="18px" fontWeight={700}>
+        {title}
+      </NoSelectTypography>
       <Tooltip
         title={t(tooltipKey as any)}
-        sx={{ cursor: 'help' }}
+        sx={{ cursor: 'help', color: theme.palette.text.primary }}
         placement="top"
         enterTouchDelay={0}
         arrow
       >
         <StyledInfoIcon />
       </Tooltip>
-    </NoSelectTypography>
+    </PointsBoxContainer>
   );
 };

@@ -17,7 +17,7 @@ export const ProgressionContainer = styled(Box, {
 })<ProgressionContainerProps>(({ hideLevelIndicator }) => ({
   ...(!hideLevelIndicator
     ? {
-        marginTop: 1.5,
+        marginTop: 8,
       }
     : {
         display: 'flex',

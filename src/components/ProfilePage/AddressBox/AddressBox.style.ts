@@ -10,25 +10,21 @@ export const AddressBoxContainer = styled(Box, {
 })<AddressBoxContainerProps>(({ theme, imgUrl }) => ({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
   alignItems: 'center',
   borderRadius: 24,
-  paddingTop: theme.spacing(3),
   overflow: 'hidden',
   position: 'relative',
-  paddingBottom: theme.spacing(1),
   width: '100%',
-  minHeight: 200,
   boxShadow: theme.palette.shadow.main,
+  minHeight: 256,
 
   ...(!imgUrl && {
     background: `linear-gradient(to bottom, ${theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.accent1Alt.main} 50%, ${theme.palette.mode === 'light' ? theme.palette.grey[100] : 'transparent'} 50%)`,
   }),
 
-  [theme.breakpoints.up('sm')]: {
-    minHeight: 256,
-    paddingTop: 0,
-    paddingBottom: 0,
+  [theme.breakpoints.up('lg')]: {
+    maxWidth: 320,
   },
 
   '&:before': {
@@ -37,7 +33,7 @@ export const AddressBoxContainer = styled(Box, {
     left: 0,
     top: 0,
     right: 0,
-    bottom: '50%',
+    bottom: 72,
     filter: 'blur(6px)',
     background: `url(${imgUrl})`,
     backgroundPosition: 'top',
@@ -47,7 +43,7 @@ export const AddressBoxContainer = styled(Box, {
     ...(imgUrl && { content: '" "' }),
     position: 'absolute',
     left: 0,
-    top: '50%',
+    top: 'calc( 100% - 72px)',
     right: 0,
     bottom: 0,
     backgroundColor:
@@ -67,37 +63,33 @@ export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
       theme.palette.mode === 'light'
         ? theme.palette.black.main
         : theme.palette.grey[100],
-    width: '32px',
-    height: '32px',
+    width: 32,
+    height: 32,
     marginLeft: theme.spacing(1),
   }),
 );
 
 export const AddressDisplayBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  marginTop: theme.spacing(1.5),
-  marginBottom: theme.spacing(1.5),
   zIndex: 1,
+  alignItems: 'center',
+  height: 72,
+  justifyContent: 'center',
 
-  [theme.breakpoints.up('sm')]: {
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: theme.spacing(1),
-  },
   [theme.breakpoints.up('md')]: {
-    flexWrap: 'nowrap',
     gap: 0,
   },
 }));
 
 export const PassImageBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  marginTop: theme.spacing(3),
+  flexGrow: 1,
+  alignItems: 'center',
   [theme.breakpoints.down('sm')]: {
     marginTop: 8,
     '& > img': {
-      width: 84,
-      height: 84,
+      width: 120,
+      height: 120,
     },
   },
 }));

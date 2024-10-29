@@ -11,14 +11,7 @@ export const PointsDisplay = ({
   defaultPoints,
 }: PointsDisplayProps) => (
   <Box display="flex" justifyContent="end">
-    <NoSelectTypographyTitle
-      lineHeight={1.25}
-      fontWeight={700}
-      sx={{
-        fontSize: { xs: 48, sm: 80 },
-        letterSpacing: '-2px',
-      }}
-    >
+    <NoSelectTypographyTitle>
       {points || defaultPoints || '0'}
     </NoSelectTypographyTitle>
   </Box>

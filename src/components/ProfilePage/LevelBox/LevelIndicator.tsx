@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { LevelButton } from '../../Button';
 import { XPIcon } from '../../illustrations/XPIcon';
 import { NoSelectTypography } from '../ProfilePage.style';
@@ -8,15 +9,16 @@ interface LevelButtonProps {
 }
 
 export const LevelIndicator = ({ level, bound }: LevelButtonProps) => {
+  const { t } = useTranslation();
+
   return (
     <LevelButton aria-label="XP Level" size="medium">
       <NoSelectTypography
-        fontSize="12px"
-        lineHeight="16px"
-        fontWeight={600}
+        sx={{ color: 'inherit' }}
+        variant="bodyXSmallStrong"
         marginRight="8px"
       >
-        LEVEL {level} • {bound}
+        {t('profile_page.level')} {level} • {bound}
       </NoSelectTypography>
       <XPIcon size={16} />
     </LevelButton>

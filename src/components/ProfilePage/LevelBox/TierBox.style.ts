@@ -5,7 +5,8 @@ export const TierMainBox = styled(Box)(({ theme }) => ({
   height: '100%',
   width: '100%',
   borderRadius: '8px',
-  padding: '10px',
+  backgroundColor: theme.palette.bgSecondary.main,
+  padding: theme.spacing(4),
   [theme.breakpoints.up('sm')]: {
     minHeight: 256,
   },

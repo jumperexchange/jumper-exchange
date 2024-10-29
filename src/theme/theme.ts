@@ -1,9 +1,8 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
 import type { ComponentsOverrides, ComponentsVariants } from '@mui/material';
-import { darken } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
-import { alpha, lighten, createTheme } from '@mui/material/styles';
+import { alpha, createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
@@ -52,6 +51,7 @@ declare module '@mui/material/styles' {
     bgSecondary: Palette['primary'];
     bgTertiary: Palette['primary'];
     shadow: Palette['primary'];
+    shadowLight: Palette['primary'];
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
     alphaDark300: Palette['primary'];
@@ -87,6 +87,7 @@ declare module '@mui/material/styles' {
     bgSecondary?: PaletteOptions['primary'];
     bgTertiary?: PaletteOptions['primary'];
     shadow?: PaletteOptions['primary'];
+    shadowLight?: PaletteOptions['primary'];
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
     alphaDark300?: PaletteOptions['primary'];
@@ -164,6 +165,7 @@ declare module '@mui/material/Button' {
     bgSecondary: true;
     bgTertiary: true;
     shadow: true;
+    shadowLight: true;
     alphaDark100: true;
     alphaDark200: true;
     alphaDark300: true;
@@ -631,6 +633,9 @@ export const lightTheme = createTheme(
       shadow: {
         main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
       },
+      shadowLight: {
+        main: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+      },
       primary: {
         light: '#31007A',
         main: '#31007A',
@@ -746,6 +751,7 @@ export const darkTheme = createTheme(
       },
       shadow: {
         main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+        light: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
       },
       primary: {
         light: '#653BA3',

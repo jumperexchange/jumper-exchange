@@ -11,18 +11,38 @@ export const ProfilePageContainer = styled(Container)(() => ({
   paddingBottom: 20,
 }));
 
-export const ProfilePageHeaderBox = styled(Box)(({ theme }) => ({
+export const ProfileHeaderBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(2),
+  flexDirection: 'column',
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    flexDirection: 'row',
+  },
+}));
+
+export const ProfileInfoBox = styled(Box)(({ theme }) => ({
+  gab: theme.spacing(2),
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '24px',
+  flexDirection: 'column',
   boxShadow: theme.palette.shadow.main,
+  padding: theme.spacing(2),
+
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    padding: theme.spacing(3),
+  },
+
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    flexDirection: 'row',
+  },
 }));
 
 export const NoSelectTypographyTitle = styled(Typography)(({ theme }) => ({
   userSelect: 'none',
-  color:
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.white.main,
+  color: theme.palette.text.primary,
+  lineHeight: '64px',
+  fontWeight: 700,
+  fontSize: 48,
 }));
 
 export const NoSelectTypographyTitlePosition = styled(NoSelectTypographyTitle, {

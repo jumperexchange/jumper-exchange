@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type {
   LeaderboardEntryData,
   LeaderboardMeta,
@@ -21,6 +22,7 @@ export const Leaderboard = ({ address }: { address?: string }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [leaderboardListLength, setLeaderboardListLength] =
     useState(LEADERBOARD_LENGTH);
+  const { t } = useTranslation();
 
   const {
     data: leaderboardData,
@@ -69,7 +71,10 @@ export const Leaderboard = ({ address }: { address?: string }) => {
 
   return (
     <LeaderboardContainer>
-      <IconHeader tooltipKey="profile_page.rank" title="RANK" />
+      <IconHeader
+        tooltipKey="profile_page.rankInfo"
+        title={t('profile_page.rank')}
+      />
       <NoSelectTypographyTitlePosition
         hasPosition={!!leaderboardUserData?.position}
         onClick={goToUserPosition}

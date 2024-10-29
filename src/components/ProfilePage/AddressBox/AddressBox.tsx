@@ -1,15 +1,14 @@
-import { useMenuStore } from '@/stores/menu';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
-import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
+import { AddressMenu } from '../AddressMenu/AddressMenu';
 import { NoSelectTypography } from '../ProfilePage.style';
 import {
   AddressBoxContainer,
@@ -24,19 +23,23 @@ interface AddressBoxProps {
 }
 
 export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
-  const { t } = useTranslation();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const theme = useTheme();
+  const [openAddressMenu, setOpenAddressMenu] = useState(false);
   const { imageLink } = useMercleNft({ userAddress: address });
-  const { setSnackbarState } = useMenuStore((state) => state);
   const { data: ensName, isSuccess } = useEnsName({
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
   const imgLink = useImageStatus(address);
 
-  const handleCopyButton = () => {
-    address && navigator.clipboard.writeText(address);
-    setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
+  const handleAddressMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (openAddressMenu) {
+      setAnchorEl(null);
+      setOpenAddressMenu(false);
+    }
+    setAnchorEl(event.currentTarget);
+    setOpenAddressMenu(true);
   };
 
   const addressLabel = getAddressLabel({
@@ -51,8 +54,8 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
         <Image
           alt="Effigy Wallet Icon"
           src={imgLink}
-          width={128}
-          height={128}
+          width={140}
+          height={140}
           priority={false}
           unoptimized={true}
           style={{
@@ -79,20 +82,23 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
         >
           {addressLabel}
         </NoSelectTypography>
-        <ProfileIconButton onClick={() => handleCopyButton()}>
-          <ContentCopyIcon sx={{ height: '16px' }} />
-        </ProfileIconButton>
         {address && (
-          <a
-            href={`https://etherscan.io/address/${address}`}
-            target="_blank"
-            style={{ textDecoration: 'none', color: 'inherit' }}
-            rel="noreferrer"
-          >
-            <ProfileIconButton>
-              <OpenInNewIcon sx={{ height: '16px' }} />
+          <>
+            <ProfileIconButton
+              onClick={handleAddressMenu}
+              id="address-menu-button"
+              aria-controls={openAddressMenu ? 'address-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={openAddressMenu ? 'true' : undefined}
+            >
+              <KeyboardArrowDownIcon />
             </ProfileIconButton>
-          </a>
+            <AddressMenu
+              open={openAddressMenu}
+              setOpen={setOpenAddressMenu}
+              anchorEl={anchorEl}
+            />
+          </>
         )}
       </AddressDisplayBox>
     </AddressBoxContainer>

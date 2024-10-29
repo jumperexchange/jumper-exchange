@@ -90,11 +90,17 @@ export const SuperfestButton = styled(ButtonBase)<MuiButtonProps>(
   }),
 );
 
-export const LevelButton = styled(ButtonSecondary)<MuiButtonProps>(() => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  pointerEvents: 'none',
-  paddingLeft: '12px',
-  height: '32px',
-}));
+export const LevelButton = styled(ButtonSecondary)<MuiButtonProps>(
+  ({ theme }) => ({
+    display: 'flex',
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.primary.main
+        : theme.palette.white.main,
+    justifyContent: 'center',
+    alignItems: 'center',
+    pointerEvents: 'none',
+    paddingLeft: '12px',
+    height: '32px',
+  }),
+);
