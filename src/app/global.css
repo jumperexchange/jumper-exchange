@@ -12,11 +12,6 @@
   border: 0 solid;
 }
 
-:after,
-:before {
-  --tw-content: '';
-}
-
 html {
   line-height: 1.5;
   -webkit-text-size-adjust: 100%;
@@ -31,15 +26,6 @@ html {
 body {
   margin: 0;
   line-height: inherit;
-}
-
-a {
-  color: inherit;
-  text-decoration: inherit;
-}
-
-b {
-  font-weight: bolder;
 }
 
 h1,
@@ -68,10 +54,6 @@ button {
 }
 
 canvas,
-embed,
-iframe,
-img,
-object,
 svg {
   display: block;
   vertical-align: middle;
