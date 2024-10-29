@@ -87,7 +87,7 @@ export function WashTradingContextApp(props: {
     const onFailed = async (props: RouteExecutionUpdate): Promise<void> => {
       console.warn('Failed', props);
       const txHash = props.process.txHash;
-      const doneAt = Number((props.process.doneAt || 0) / 1000);
+      const doneAt = Number(props.process.doneAt || 0);
       if (txHash) {
         await fetch('/api/wash', {
           method: 'POST',
@@ -128,7 +128,7 @@ export function WashTradingContextApp(props: {
           toAmount = Number(firstStep.execution.toAmount);
           if (firstExecution) {
             txHash = firstExecution.txHash;
-            doneAt = Number((firstExecution.doneAt || 0) / 1000);
+            doneAt = Number(firstExecution.doneAt || 0);
           }
         }
       }

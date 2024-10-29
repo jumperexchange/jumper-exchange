@@ -76,7 +76,10 @@ export function useMint(
       }
       const tx = umi.transactions.deserialize(new Uint8Array(data.tx));
       const signed = await umi.identity.signTransaction(tx);
-      signature = await umi.rpc.sendTransaction(signed);
+      signature = await umi.rpc.sendTransaction(signed, {
+        preflightCommitment: 'confirmed',
+        commitment: 'confirmed',
+      });
     } catch (err) {
       set_isMinting(false);
       set_error(
@@ -112,8 +115,7 @@ export function useMint(
 
       // Wait for transaction to be confirmed
       await umi.rpc.confirmTransaction(signature, {
-        commitment:
-          process.env.MODE_ENV === 'production' ? 'confirmed' : 'finalized',
+        commitment: 'confirmed',
         strategy: {
           type: 'blockhash',
           ...(await umi.rpc.getLatestBlockhash()),
