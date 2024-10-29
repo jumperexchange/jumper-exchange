@@ -1,6 +1,5 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
-
 import {
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,

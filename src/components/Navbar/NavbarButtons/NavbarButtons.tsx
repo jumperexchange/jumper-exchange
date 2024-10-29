@@ -5,7 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Box } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import { WalletMenu } from 'src/components/Menus/WalletMenu';
+// import { WalletMenu } from 'src/components/Menus/WalletMenu';
 import {
   JUMPER_LEARN_PATH,
   JUMPER_SCAN_PATH,
@@ -14,6 +14,9 @@ import {
 } from 'src/const/urls';
 import { MenuToggle, NavbarButtonsContainer, RedirectToApp } from '.';
 import { WalletButtons } from '../WalletButton';
+import dynamic from 'next/dynamic';
+
+const WalletMenu = dynamic(() => import('../../Menus/WalletMenu/WalletMenu').then((s) => s.WalletMenu));
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef(null);
