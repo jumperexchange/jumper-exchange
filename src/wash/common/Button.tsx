@@ -1,5 +1,6 @@
 'use client';
 
+import type { ButtonHTMLAttributes } from 'react';
 import {
   type ForwardedRef,
   forwardRef,
@@ -14,14 +15,11 @@ import { colors } from '../utils/theme';
 
 type TButtonProps = {
   children?: ReactElement;
-  onClick?: VoidFunction;
   title?: string;
-  disabled?: boolean;
   isBusy?: boolean;
-  style?: React.CSSProperties;
   theme?: 'pink' | 'violet' | 'white';
   size?: 'long' | 'short';
-};
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const BusyButton = styled.div`
   display: flex;
@@ -46,18 +44,11 @@ const SpinnerIcon = styled(IconSpinner)`
 
 export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
   function Button(
-    {
-      children,
-      title,
-      theme,
-      onClick,
-      disabled,
-      isBusy,
-      style,
-      size = 'short',
-    }: TButtonProps,
+    props: TButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactElement {
+    const { children, theme, title, isBusy, size = 'short', ...rest } = props;
+
     const buttonLayout = useMemo((): ReactElement | undefined => {
       if (isBusy) {
         return (
@@ -116,12 +107,7 @@ export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
     `;
 
     return (
-      <StyledButton
-        disabled={disabled}
-        ref={ref}
-        onClick={onClick}
-        style={style}
-      >
+      <StyledButton ref={ref} {...rest}>
         {buttonLayout}
       </StyledButton>
     );
