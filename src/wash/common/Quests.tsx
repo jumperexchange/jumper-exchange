@@ -15,7 +15,6 @@ import { useWashTrading } from '../contexts/useWashTrading';
 import type { TQuest } from '../types/wash';
 import { Button } from './Button';
 import { IconArrowLeft } from './icons/IconArrowLeft';
-import Link from 'next/link';
 import type { FormState } from '@lifi/widget';
 
 /**************************************************************************************************

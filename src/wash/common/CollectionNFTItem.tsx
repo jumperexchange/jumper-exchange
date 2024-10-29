@@ -20,7 +20,7 @@ type TNftItemProps = {
   label?: string;
   nft?: TNFTItem;
   progress?: number;
-  index?: number;
+  index: number;
 };
 
 /**************************************************************************************************
