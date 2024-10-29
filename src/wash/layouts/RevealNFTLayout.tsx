@@ -43,6 +43,7 @@ const RevealedNFTLayoutTitle = styled.h1`
   color: white;
   font-size: 56px;
   line-height: 56px;
+  font-weight: inherit;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
   ${mq[0]} {

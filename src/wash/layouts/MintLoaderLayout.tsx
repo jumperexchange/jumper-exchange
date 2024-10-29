@@ -92,6 +92,7 @@ const MintLoaderLayoutTitle = styled.h1`
   color: white;
   font-size: 56px;
   line-height: 56px;
+  font-weight: inherit;
   margin-bottom: 16px;
   margin-top: 32px;
   text-align: center;

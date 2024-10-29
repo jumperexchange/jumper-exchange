@@ -101,6 +101,7 @@ export const WashH1 = styled.h1`
   font-family: ${titanOne.style.fontFamily};
   font-size: 32px;
   line-height: 40px;
+  font-weight: inherit;
   text-transform: uppercase;
   color: white;
   ${mq[1]} {
@@ -116,6 +117,7 @@ export const WashH2 = styled.h2`
   line-height: 32px;
   text-transform: uppercase;
   color: white;
+  font-weight: inherit;
 `;
 
 export const SkewX6 = styled.div`

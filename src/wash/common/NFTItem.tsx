@@ -86,6 +86,8 @@ const StyledWashProgress = styled(WashProgress)`
 const StyledH2 = styled.h2`
   color: white;
   text-transform: uppercase;
+  font-size: inherit;
+  font-weight: inherit;
 `;
 /**************************************************************************************************
  * NFTItem Component

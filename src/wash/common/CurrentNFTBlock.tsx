@@ -105,6 +105,8 @@ const ProgressSectionTitle = styled.h2`
   font-family: ${titanOne.style.fontFamily};
   text-transform: uppercase;
   color: white;
+  font-size: inherit;
+  font-weight: inherit;
 `;
 
 /**************************************************************************************************
@@ -153,6 +155,8 @@ const PowerUpSectionTitle = styled.h2`
   font-family: ${titanOne.style.fontFamily};
   text-transform: uppercase;
   color: white;
+  font-size: inherit;
+  font-weight: inherit;
 `;
 const PowerUpSectionItems = styled.div`
   display: flex;

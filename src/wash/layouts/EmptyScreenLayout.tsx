@@ -28,6 +28,7 @@ const EmptyScreenLayoutContent = styled.div`
 const EmptyScreenLayoutTitle = styled.h1`
   font-size: 56px;
   line-height: 56px;
+  font-weight: inherit;
   text-transform: uppercase;
   color: white;
   margin-bottom: 16px;
