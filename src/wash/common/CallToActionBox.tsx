@@ -21,6 +21,13 @@ const RiveWrapper = styled.div`
   height: 136px;
   min-height: 136px;
   position: relative;
+  ${mq[0]} {
+    width: 120px;
+    min-width: 120px;
+    height: 100px;
+    min-height: 100px;
+    margin-top: -40px;
+  }
 `;
 const RiveFallbackImage = styled(Image)<{ isLoaded: boolean }>`
   transition: opacity 0.5s ease-in;
@@ -112,16 +119,21 @@ const CallToActionBoxContent = styled.div`
     text-align: center;
     padding: 0;
     padding-top: 28px;
+    padding-right: 0;
     flex-direction: column;
   }
 `;
 
 const CallToActionBoxText = styled.div`
   padding-right: 32px;
-  ${mq[0]} {
+  ${mq[1]} {
     padding-left: 16px;
     padding-right: 16px;
-    padding-bottom: 24px;
+  }
+  ${mq[0]} {
+    padding-right: 8px;
+    padding-left: 8px;
+    padding-bottom: 12px;
   }
 `;
 
@@ -134,7 +146,9 @@ const CallToActionBoxTitle = styled.h3`
   color: #ffffff;
   margin: 0;
   ${mq[0]} {
-    paddiong-bottom: 12px;
+    font-size: 24px;
+    line-height: 24px;
+    padding-bottom: 12px;
   }
 `;
 

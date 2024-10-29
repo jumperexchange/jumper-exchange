@@ -66,7 +66,7 @@ export function WashPageRootLayout(): ReactElement {
   return (
     <WashPageRootWrapper>
       <WashBackground />
-      <WithBackdrop shouldDisplayBackdrop={true}>
+      <WithBackdrop shouldDisplayBackdrop={shouldDisplayBackdrop}>
         <WashPageOverlay />
       </WithBackdrop>
     </WashPageRootWrapper>

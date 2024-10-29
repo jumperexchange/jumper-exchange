@@ -80,9 +80,6 @@ const MintLoaderLayoutContainer = styled.div`
   justify-content: center;
   width: 100%;
   padding-top: 0;
-  ${mq[0]} {
-    padding-top: 10dvh;
-  }
 `;
 const MintLoaderLayoutContent = styled.div`
   display: flex;

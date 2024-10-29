@@ -28,13 +28,14 @@ const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
     scale 300ms ease-in-out;
   opacity: ${({ mounted }) => (mounted ? 1 : 0)};
   scale: ${({ mounted }) => (mounted ? 1 : 0)};
+  ${mq[1]} {
+    margin-top: -200px;
+    padding-top: 0px;
+  }
   ${mq[0]} {
+    margin-top: -200px;
     padding-left: 16px;
     padding-right: 16px;
-  }
-  ${mq[1]} {
-    margin-top: 0dvh;
-    padding-top: 0px;
   }
 `;
 const RevealedNFTLayoutTitle = styled.h1`

@@ -19,7 +19,10 @@ export type TColor =
  *************************************************************************************************/
 const breakpoints = [1100, 1280];
 
-export const mq = breakpoints.map((bp) => `@media (max-width: ${bp}px)`);
+export const mq = breakpoints.map(
+  (bp, index) =>
+    `@media (max-width: ${bp}px) and (min-width: ${breakpoints[index - 1] ?? 0}px)`,
+);
 
 export const colors: Record<TColor, Record<number, string>> = {
   violet: {
