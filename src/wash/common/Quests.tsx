@@ -75,6 +75,7 @@ const BoosterImage = styled(Image)<{ isComplete: boolean }>`
 	top: 50%;
 	transform: translate(-50%, -50%);
 	transition-duration: 300ms;
+  height: auto;
 	&:hover {
 		width: ${(props) => (props.isComplete ? '80px' : '72px')};
     height: ${(props) => (props.isComplete ? '80px' : '72px')};
