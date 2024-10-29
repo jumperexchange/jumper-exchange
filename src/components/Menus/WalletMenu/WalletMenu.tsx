@@ -13,17 +13,21 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CustomDrawer, WalletButton } from '.';
 import { WalletCard } from './WalletCard';
-import { Portfolio } from '@/components/Portfolio/Portfolio';
 import CloseIcon from '@mui/icons-material/Close';
+import dynamic from 'next/dynamic';
+import PortfolioSkeleton from '@/components/Portfolio/PortfolioSkeleton';
 
-interface WalletMenuProps {
-  anchorEl?: HTMLAnchorElement;
-}
+const Portfolio = dynamic(
+  () => import('@/components/Portfolio/Portfolio').then((s) => s.Portfolio),
+  {
+    loading: () => <PortfolioSkeleton />,
+    ssr: false,
+  },
+);
 
-export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
+export const WalletMenu = () => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
 
   const { accounts } = useAccount();
   const { openWalletMenu } = useWalletMenu();
@@ -62,7 +66,6 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
       onClose={() => {
         setWalletMenuState(false);
       }}
-      // slotProps={{ backdrop: { invisible: true } }}
     >
       <Stack direction="row" justifyContent="space-between">
         <IconButton

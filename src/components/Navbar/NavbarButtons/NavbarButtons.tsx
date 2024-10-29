@@ -5,7 +5,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Box } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-// import { WalletMenu } from 'src/components/Menus/WalletMenu';
 import {
   JUMPER_LEARN_PATH,
   JUMPER_SCAN_PATH,
@@ -16,7 +15,10 @@ import { MenuToggle, NavbarButtonsContainer, RedirectToApp } from '.';
 import { WalletButtons } from '../WalletButton';
 import dynamic from 'next/dynamic';
 
-const WalletMenu = dynamic(() => import('../../Menus/WalletMenu/WalletMenu').then((s) => s.WalletMenu));
+const WalletMenu = dynamic(
+  () => import('../../Menus/WalletMenu/WalletMenu').then((s) => s.WalletMenu),
+  { ssr: false },
+);
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef(null);
@@ -30,11 +32,13 @@ export const NavbarButtons = () => {
     pathname?.includes(JUMPER_TX_PATH) ||
     pathname?.includes(JUMPER_WALLET_PATH);
 
-  const [openedMenu, openMainMenu, setMainMenuState] = useMenuStore((state) => [
-    state.openedMenu,
-    state.openMainMenu,
-    state.setMainMenuState,
-  ]);
+  const [openedMenu, openMainMenu, setMainMenuState, openWalletMenu] =
+    useMenuStore((state) => [
+      state.openedMenu,
+      state.openMainMenu,
+      state.setMainMenuState,
+      state.openWalletMenu,
+    ]);
   // return focus to the button when we transitioned from !open -> open
   const prevMainMenu = useRef(openMainMenu);
   useEffect(() => {
@@ -88,7 +92,7 @@ export const NavbarButtons = () => {
         </MenuToggle>
       </NavbarButtonsContainer>
       <MainMenu anchorEl={mainMenuAnchor.current ?? undefined} />
-      <WalletMenu anchorEl={walletManagementRef.current ?? undefined} />
+      {openWalletMenu && <WalletMenu />}
     </>
   );
 };
