@@ -4,7 +4,7 @@ import { Layout } from '../../../Layout';
 
 export const metadata: Metadata = {
   other: {
-    'partner-theme': 'dark',
+    'partner-theme': 'wash',
   },
 };
 export default async function WastLayout({ children }: PropsWithChildren) {

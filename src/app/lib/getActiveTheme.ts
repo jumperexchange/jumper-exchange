@@ -41,13 +41,11 @@ export async function getActiveTheme(
   const activeTheme =
     pathPartnerTheme || (cookieThemeIsPartnerTheme ? 'default' : cookieTheme);
 
-  const washThemeMode = getWashThemeMode(cookiesHandler);
-
   return {
     themes: partnerThemes.data,
-    activeTheme: washThemeMode || activeTheme,
+    activeTheme: activeTheme,
     themeMode:
-      washThemeMode || (cookiesHandler.get('themeMode')?.value as ThemeMode),
+      cookiesHandler.get('themeMode')?.value as ThemeMode,
     isPartnerTheme: Boolean(pathPartnerTheme),
   };
 }
