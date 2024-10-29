@@ -18,7 +18,6 @@ type TButtonProps = {
   title?: string;
   disabled?: boolean;
   isBusy?: boolean;
-  className?: string;
   style?: React.CSSProperties;
   theme?: 'pink' | 'violet' | 'white';
   size?: 'long' | 'short';
@@ -54,7 +53,6 @@ export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
       onClick,
       disabled,
       isBusy,
-      className,
       style,
       size = 'short',
     }: TButtonProps,
@@ -123,7 +121,6 @@ export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
         ref={ref}
         onClick={onClick}
         style={style}
-        className={className}
       >
         {buttonLayout}
       </StyledButton>
