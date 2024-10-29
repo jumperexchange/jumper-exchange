@@ -119,16 +119,16 @@ export function WashTradingContextApp(props: {
       let txHash: string | undefined = undefined;
       let doneAt: number | undefined = undefined;
       let toAmount: number = Number(route.toAmount);
+
       if (route.steps.length > 0) {
         const firstStep = route.steps[0] as LiFiStep & {
           execution: { process: Process[]; toAmount: string };
         };
-        if ((firstStep?.execution?.process || []).length > 0) {
-          const firstExecution = firstStep.execution.process[0];
-          toAmount = Number(firstStep.execution.toAmount);
-          if (firstExecution) {
-            txHash = firstExecution.txHash;
-            doneAt = Number(firstExecution.doneAt || 0);
+        toAmount = Number(firstStep.execution.toAmount);
+        for (const execution of firstStep?.execution?.process || []) {
+          if (execution && execution.chainId === 1151111081099710) {
+            txHash = execution.txHash;
+            doneAt = Number(execution.doneAt || 0);
           }
         }
       }
