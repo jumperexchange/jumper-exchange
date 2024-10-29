@@ -77,6 +77,7 @@ const BoosterImage = styled(Image)<{ isComplete: boolean }>`
 	transition-duration: 300ms;
 	&:hover {
 		width: ${(props) => (props.isComplete ? '80px' : '72px')};
+    height: ${(props) => (props.isComplete ? '80px' : '72px')};
 		transition: ${(props) => (props.isComplete ? 'all ease-out' : 'all ease-in')};
 	}
 	&:not(:hover) {

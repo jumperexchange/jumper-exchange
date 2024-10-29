@@ -57,7 +57,8 @@ const PowerUpWrapper = styled.button`
     background-color: ${colors.violet[300]};
   }
   &:hover img {
-    width: 90px;
+    width: 85px;
+    height: 85px;
   }
   ${mq[1]} {
     width: 88px;
