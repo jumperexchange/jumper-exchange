@@ -83,7 +83,7 @@ export function formatConfig(
     createdAt: theme.createdAt,
     uid: theme.uid,
     hasThemeModeSwitch: false,
-    hasBackgroundGradient: false,
+    hasBackgroundGradient: (theme.lightConfig || theme.darkConfig)?.customization?.hasBackgroundGradient ?? false,
     allowedBridges: theme.Bridges?.map((i) => i.key),
     allowedExchanges: theme.Exchanges?.map((i) => i.key),
   };

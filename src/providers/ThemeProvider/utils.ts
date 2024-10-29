@@ -63,9 +63,6 @@ export function getEffectiveThemeMode(
   themeMode?: ThemeMode,
   resolvedTheme?: string,
 ): ThemeMode {
-  if (themeMode) {
-    return themeMode;
-  }
   if (resolvedTheme === 'system') {
     return themeMode || 'system';
   }
