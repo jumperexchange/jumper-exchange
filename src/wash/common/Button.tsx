@@ -42,6 +42,24 @@ const SpinnerIcon = styled(IconSpinner)`
   }
 `;
 
+const StyledButtonRoot = styled.button`
+  font-family: ${inter.style.fontFamily};
+  position: relative;
+  height: 64px;
+  border-radius: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  letter-spacing: inherit;
+  margin: 0;
+  padding: 0;
+`;
+
 export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
   function Button(
     props: TButtonProps,
@@ -63,13 +81,8 @@ export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
       return children;
     }, [children, isBusy, title]);
 
-    const StyledButton = styled.button`
-      font-family: ${inter.style.fontFamily};
-      position: relative;
-      height: 64px;
-      border-radius: 1rem;
-      font-weight: 900;
-      text-transform: uppercase;
+    //TODO: export this out of function
+    const StyledButton = styled(StyledButtonRoot)`
       background-color: ${theme === 'pink'
         ? colors.pink[800]
         : theme === 'violet'

@@ -17,7 +17,7 @@ const WashPageRootWrapper = styled.div`
   display: flex;
   min-height: 100vh;
   width: 100%:
-  height: 100%; 
+  height: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
@@ -66,7 +66,7 @@ export function WashPageRootLayout(): ReactElement {
   return (
     <WashPageRootWrapper>
       <WashBackground />
-      <WithBackdrop shouldDisplayBackdrop={shouldDisplayBackdrop}>
+      <WithBackdrop shouldDisplayBackdrop={true}>
         <WashPageOverlay />
       </WithBackdrop>
     </WashPageRootWrapper>

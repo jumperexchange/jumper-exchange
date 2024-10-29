@@ -105,8 +105,6 @@ const CallToActionBoxContent = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 4px;
-  padding-top: 28px;
-  padding-bottom: 28px;
   padding-right: 32px;
   ${mq[0]} {
     align-items: center;
@@ -128,12 +126,13 @@ const CallToActionBoxText = styled.div`
 `;
 
 const CallToActionBoxTitle = styled.h3`
+  font-family: ${inter.style.fontFamily};
   font-size: 24px;
   line-height: 32px;
   font-weight: 900;
   text-transform: uppercase;
   color: #ffffff;
-  font-family: ${inter.style.fontFamily};
+  margin: 0;
   ${mq[0]} {
     paddiong-bottom: 12px;
   }

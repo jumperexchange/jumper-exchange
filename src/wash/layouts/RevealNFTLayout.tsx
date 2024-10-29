@@ -17,13 +17,12 @@ import { mq } from '../utils/theme';
  *************************************************************************************************/
 const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
   position: relative;
-  margin-top: -28dvh;
+  margin-top: -10dvh;
   display: flex;
   width: 100%;
   max-width: 100vw;
   flex-direction: column;
   align-items: center;
-  padding-top: 152px;
   transition:
     opacity 300ms ease-in-out,
     scale 300ms ease-in-out;

@@ -39,7 +39,9 @@ const Heading = styled.h1`
   text-transform: uppercase;
   color: white;
   text-align: center;
+  margin: 0;
   margin-bottom: 1rem;
+  font-weight: inherit;
 
   ${mq[1]} {
     font-size: 40px;
@@ -52,6 +54,7 @@ const Description = styled.p`
   font-size: 1.5rem;
   line-height: 2rem;
   color: white;
+  margin: 0;
 
   ${mq[1]} {
     font-size: 1rem;
@@ -69,8 +72,10 @@ const HowDoIWash = styled.h2`
   font-family: ${titanOne.style.fontFamily};
   font-size: 2.5rem;
   line-height: 3rem;
+  font-weight: inherit;
   text-transform: uppercase;
   color: white;
+  margin: 0;
   margin-top: 60px;
 
   ${mq[1]} {
@@ -80,6 +85,7 @@ const HowDoIWash = styled.h2`
 
 const StepImage = styled(Image)`
   max-width: 360px;
+  height: auto;
 
   ${mq[1]} {
     max-width: 343px;

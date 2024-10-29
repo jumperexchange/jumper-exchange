@@ -230,6 +230,7 @@ export function QuestItem(
     });
   }, [props.formRef, props.sendingToken, props.receivingToken]);
 
+  //TODO: export this out of function
   const GoToSwapButton = styled(Button)<{ width?: string }>`
     background-color: ${props.questType === 'common'
       ? colors.pink[800]
@@ -242,6 +243,7 @@ export function QuestItem(
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 
     &:hover {
       background-color: ${props.questType === 'common'

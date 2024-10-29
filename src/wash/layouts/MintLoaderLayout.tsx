@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
+import { mq } from '../utils/theme';
 
 /**************************************************************************************************
  * Defining the styled components style for the RiveFallbackWrapper component
@@ -78,6 +79,10 @@ const MintLoaderLayoutContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  padding-top: 0;
+  ${mq[0]} {
+    padding-top: 10dvh;
+  }
 `;
 const MintLoaderLayoutContent = styled.div`
   display: flex;
@@ -99,6 +104,14 @@ const MintLoaderLayoutTitle = styled.h1`
   margin-right: 0;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
+  ${mq[0]} {
+    font-size: 32px;
+    line-height: 32px;
+  }
+  ${mq[1]} {
+    font-size: 48px;
+    line-height: 48px;
+  }
 `;
 
 /**********************************************************************************************

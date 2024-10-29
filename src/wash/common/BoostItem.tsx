@@ -47,9 +47,19 @@ const PowerUpWrapper = styled.button`
   justify-content: flex-end;
   align-items: flex-end;
   border-radius: 16px;
+  border: 0 solid;
   background-color: ${colors.violet[200]};
   box-shadow: 4px 4px 0px 0px ${colors.violet[800]};
   cursor: pointer;
+  font-family: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  margin: 0;
+  padding: 0;
   &:disabled {
     cursor: not-allowed;
   }
@@ -100,11 +110,12 @@ const PowerUpPercentage = styled.span<{ disabled: boolean }>`
 
 const PowerUpLogo = styled(Image)<{ disabled: boolean }>`
   width: 80px;
+  height: 80px;
   transition: all 0.1s ease-in-out;
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
-  height: auto;
   ${mq[1]} {
     width: 64px;
+    height: 64px;
   }
 `;
 

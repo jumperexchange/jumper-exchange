@@ -81,6 +81,8 @@ export function WashPageOverlay(): ReactNode {
     } else {
       set_hasCurrentLayout(false);
     }
+    set_currentLayout(<MintLoaderLayout />);
+    set_hasCurrentLayout(true);
   }, [
     account.isConnected,
     currentNFT?.name,

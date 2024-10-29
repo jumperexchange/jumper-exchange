@@ -5,50 +5,14 @@
   margin-top: -80px;
 }
 
-*,
-:after,
-:before {
-  box-sizing: border-box;
-  border: 0 solid;
-}
-
-html {
-  line-height: 1.5;
-  -webkit-text-size-adjust: 100%;
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
-  tab-size: 4;
-  font-feature-settings: normal;
-  font-variation-settings: normal;
-  -webkit-tap-highlight-color: transparent;
-}
-
-body {
-  margin: 0;
-  line-height: inherit;
-}
-
-[role='button'],
-button {
-  cursor: pointer;
-  -webkit-appearance: button;
-  background-color: initial;
-  text-transform: none;
-  background-image: none;
-  font-family: inherit;
-  font-feature-settings: inherit;
-  font-variation-settings: inherit;
-  font-size: 100%;
-  font-weight: inherit;
-  line-height: inherit;
-  letter-spacing: inherit;
-  color: inherit;
-  margin: 0;
-  padding: 0;
-}
-
-canvas,
-svg {
+#wash-root canvas,
+#wash-root svg {
   display: block;
   vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
