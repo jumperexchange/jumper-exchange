@@ -28,10 +28,6 @@ body {
   line-height: inherit;
 }
 
-p {
-  margin: 0;
-}
-
 [role='button'],
 button {
   cursor: pointer;
