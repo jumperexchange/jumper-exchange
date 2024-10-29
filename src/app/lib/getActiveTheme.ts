@@ -44,8 +44,7 @@ export async function getActiveTheme(
   return {
     themes: partnerThemes.data,
     activeTheme: activeTheme,
-    themeMode:
-      cookiesHandler.get('themeMode')?.value as ThemeMode,
+    themeMode: cookiesHandler.get('themeMode')?.value as ThemeMode,
     isPartnerTheme: Boolean(pathPartnerTheme),
   };
 }
