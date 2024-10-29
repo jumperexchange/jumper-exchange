@@ -13,7 +13,7 @@ export const SettingsStoreProvider: React.FC<
   const storeRef = useRef<SettingsStore>();
 
   if (!storeRef.current) {
-    storeRef.current = createSettingsStore({ welcomeScreenClosed: true });
+    storeRef.current = createSettingsStore({ welcomeScreenClosed });
   }
 
   return (
