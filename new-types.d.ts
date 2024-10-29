@@ -10,7 +10,6 @@ declare namespace NodeJS {
     NEXT_PUBLIC_ENVIRONMENT: string;
     NEXT_PUBLIC_SITE_URL: string;
     NEXT_PUBLIC_ADDRESSABLE_TID: string;
-    NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: string;
     SENTRY_AUTH_TOKEN: string;
     NEXT_PUBLIC_CUSTOM_RPCS: string;
     NEXT_PUBLIC_DKEY: string;

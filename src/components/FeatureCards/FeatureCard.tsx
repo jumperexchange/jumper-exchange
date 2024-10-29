@@ -182,7 +182,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
           <Image
             alt={data?.attributes.Title}
             src={imageUrl?.href}
-            quality={100}
+            quality={70}
             fill
             sizes="100vw"
             style={{
