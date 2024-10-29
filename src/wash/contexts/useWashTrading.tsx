@@ -84,7 +84,7 @@ export function WashTradingContextApp(props: {
   const widgetEvents = useWidgetEvents();
 
   useEffect(() => {
-    const onFailed = async (props: RouteExecutionUpdate): Promise<void> => {
+    const onSwapFailed = async (props: RouteExecutionUpdate): Promise<void> => {
       console.warn('Failed', props);
       const txHash = props.process.txHash;
       const doneAt = Number(props.process.doneAt || 0);
@@ -114,21 +114,27 @@ export function WashTradingContextApp(props: {
       }
     };
 
-    const onCompleted = async (route: Route): Promise<void> => {
+    const onSwapCompleted = async (route: Route): Promise<void> => {
       console.warn('Success', route);
       let txHash: string | undefined = undefined;
       let doneAt: number | undefined = undefined;
       let toAmount: number = Number(route.toAmount);
+
       if (route.steps.length > 0) {
         const firstStep = route.steps[0] as LiFiStep & {
           execution: { process: Process[]; toAmount: string };
         };
-        if ((firstStep?.execution?.process || []).length > 0) {
-          const firstExecution = firstStep.execution.process[0];
-          toAmount = Number(firstStep.execution.toAmount);
-          if (firstExecution) {
-            txHash = firstExecution.txHash;
-            doneAt = Number(firstExecution.doneAt || 0);
+        toAmount = Number(firstStep.execution.toAmount);
+        for (const execution of firstStep?.execution?.process || []) {
+          const isToSolana =
+            execution.chainId === 1151111081099710 ||
+            execution.txLink.includes('solana.com') ||
+            (execution.txHash && !execution.txHash.startsWith('0x'));
+
+          if (execution && isToSolana) {
+            txHash = execution.txHash;
+            doneAt = Number(execution.doneAt || 0);
+            break;
           }
         }
       }
@@ -159,12 +165,12 @@ export function WashTradingContextApp(props: {
       }
     };
 
-    widgetEvents.on(WidgetEvent.RouteExecutionCompleted, onCompleted);
-    widgetEvents.on(WidgetEvent.RouteExecutionFailed, onFailed);
+    widgetEvents.on(WidgetEvent.RouteExecutionCompleted, onSwapCompleted);
+    widgetEvents.on(WidgetEvent.RouteExecutionFailed, onSwapFailed);
 
     return () => {
-      widgetEvents.off(WidgetEvent.RouteExecutionCompleted, onCompleted);
-      widgetEvents.off(WidgetEvent.RouteExecutionFailed, onFailed);
+      widgetEvents.off(WidgetEvent.RouteExecutionCompleted, onSwapCompleted);
+      widgetEvents.off(WidgetEvent.RouteExecutionFailed, onSwapFailed);
     };
   }, [widgetEvents, nft.refetch, user.refetch, nft, user, collection]);
 
