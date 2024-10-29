@@ -225,6 +225,7 @@ export interface Customization {
   logoName?: string;
   footerBannerUrl?: string;
   typography?: string;
+  hasBackgroundGradient?: boolean;
 }
 
 type WidgetConfigProps = Omit<WidgetConfig, 'integrator'>;

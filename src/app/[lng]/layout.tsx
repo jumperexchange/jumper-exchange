@@ -14,7 +14,6 @@ import type { Viewport } from 'next/types';
 import type { ReactNode } from 'react';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { SettingsStoreProvider } from 'src/stores/settings';
-import { getWashThemeMode } from 'src/wash/utils/getWashThemeMode';
 import type { ActiveThemeResult } from '../lib/getActiveTheme';
 import { getActiveTheme } from '../lib/getActiveTheme';
 import { description, siteName, title } from '../lib/metadata';
@@ -123,8 +122,6 @@ export default async function RootLayout({
     isPartnerTheme ||
     cookiesHandler.get('welcomeScreenClosed')?.value === 'true';
 
-  const washThemeMode = getWashThemeMode(cookiesHandler);
-
   return (
     <html
       lang={lng || fallbackLng}
@@ -177,7 +174,7 @@ export default async function RootLayout({
                 <ThemeProvider
                   themes={themes}
                   activeTheme={activeTheme}
-                  themeMode={washThemeMode ? 'dark' : themeMode}
+                  themeMode={themeMode}
                 >
                   <SettingsStoreProvider
                     welcomeScreenClosed={welcomeScreenClosed}
