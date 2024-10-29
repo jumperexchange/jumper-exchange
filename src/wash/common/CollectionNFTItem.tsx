@@ -243,7 +243,7 @@ export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
           <Absolute top={'12px'} right={'12px'}>
             <InfoTooltip
               description={TOOLTIP_MESSAGES.goldenNft}
-              position={index % 4 < 2 ? 'right' : 'left'}
+              position={(index || 0) % 4 < 2 ? 'right' : 'left'}
             />
           </Absolute>
         ) : null}

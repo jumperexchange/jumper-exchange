@@ -37,7 +37,6 @@ export const useMainMenuContent = () => {
   const router = useRouter();
   const theme = useTheme();
   const pathname = usePathname();
-  const isWashPage = pathname?.includes(JUMPER_WASH_PATH);
   const [themeMode, configTheme] = useThemeStore((state) => [
     state.themeMode,
     state.configTheme,
@@ -71,7 +70,7 @@ export const useMainMenuContent = () => {
 
   let mainMenu: any[] = [];
 
-  if (!isWashPage && configTheme?.hasThemeModeSwitch) {
+  if (configTheme?.hasThemeModeSwitch) {
     mainMenu.push({
       children: (
         <Tabs
