@@ -48,7 +48,10 @@ export function useReveal(
       const data = (await responseRevealNft.json()) as any;
       const tx = umi.transactions.deserialize(new Uint8Array(data.tx));
       const signed = await umi.identity.signTransaction(tx);
-      const signature = await umi.rpc.sendTransaction(signed);
+      const signature = await umi.rpc.sendTransaction(signed, {
+        preflightCommitment: 'confirmed',
+        commitment: 'confirmed',
+      });
       const [txHash] = base58.deserialize(signature);
 
       const responseRevealDone = await fetch(

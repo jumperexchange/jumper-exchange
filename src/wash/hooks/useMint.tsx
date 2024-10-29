@@ -76,7 +76,10 @@ export function useMint(
       }
       const tx = umi.transactions.deserialize(new Uint8Array(data.tx));
       const signed = await umi.identity.signTransaction(tx);
-      signature = await umi.rpc.sendTransaction(signed);
+      signature = await umi.rpc.sendTransaction(signed, {
+        preflightCommitment: 'confirmed',
+        commitment: 'confirmed',
+      });
     } catch (err) {
       set_isMinting(false);
       set_error(
