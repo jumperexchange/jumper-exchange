@@ -24,6 +24,7 @@ const RiveFallbackImage = styled(Image)<{ isLoaded: boolean }>`
   left: 0;
   width: 300px;
   min-width: 300px;
+  height: auto;
   bottom: 37px;
   opacity: ${({ isLoaded }) => (isLoaded ? 0 : 1)};
 `;

@@ -108,6 +108,7 @@ export const WashProgressAlertImage = styled(
   borderColor: border || colors.violet[700],
   borderWidth: '3px',
   borderRadius: '8px',
+  height: 'auto',
 }));
 
 export const WashProgressFoam = styled('span', {
