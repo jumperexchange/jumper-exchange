@@ -115,6 +115,7 @@ const QuestDescription = styled.p`
   margin-left: 0.5rem;
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.5);
+  margin: 0;
 
   ${mq[0]} {
     display: -webkit-box;
@@ -145,6 +146,7 @@ const QuestHeading = styled.span<{ questType: 'common' | 'rare' | 'done' }>`
 const QuestTitle = styled.p`
   font-weight: 900;
   color: white;
+  margin: 0;
 `;
 
 const QuestItemMobileWrapper = styled.div`

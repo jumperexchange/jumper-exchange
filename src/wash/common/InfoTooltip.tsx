@@ -17,6 +17,7 @@ const TooltipDescription = styled.p`
   transform: skewX(6deg);
   color: white;
   font-weight: bold;
+  margin: 0;
   ${inter.style}
   ${mq[1]} {
     font-size: 10px;

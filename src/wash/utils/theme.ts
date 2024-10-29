@@ -95,6 +95,7 @@ export const Relative = styled.div`
 
 export const WashText = styled.p`
   font-family: ${inter.style.fontFamily};
+  margin: 0;
 `;
 
 export const WashH1 = styled.h1`

@@ -31,11 +31,13 @@ const WarningHeading = styled.p`
   color: white;
   font-weight: 700;
   text-transform: uppercase;
+  margin: 0;
 `;
 const WarningText = styled.p`
   font-size: 14px;
   line-height: 20px;
   color: white;
+  margin: 0;
 `;
 const WarningContent = styled.div`
   display: flex;
