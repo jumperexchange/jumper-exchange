@@ -107,6 +107,7 @@ const ProgressSectionTitle = styled.h2`
   color: white;
   font-size: inherit;
   font-weight: inherit;
+  margin: 0;
 `;
 
 /**************************************************************************************************
@@ -157,6 +158,7 @@ const PowerUpSectionTitle = styled.h2`
   color: white;
   font-size: inherit;
   font-weight: inherit;
+  margin: 0;
 `;
 const PowerUpSectionItems = styled.div`
   display: flex;

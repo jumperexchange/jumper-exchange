@@ -56,6 +56,7 @@ const NFTLabel = styled.h2<{ isRevealing: boolean }>`
   transition: opacity 0.5s ease-in-out;
   font-size: inherit;
   font-weight: inherit;
+  margin: 0;
 `;
 const NFTLabelSkeleton = styled.h2<{ isRevealing: boolean }>`
   animation: ${(props) =>
@@ -66,6 +67,7 @@ const NFTLabelSkeleton = styled.h2<{ isRevealing: boolean }>`
   transition: opacity 0.5s ease-in-out;
   font-size: inherit;
   font-weight: inherit;
+  margin: 0;
 `;
 
 const NFTImageBox = styled.div<{

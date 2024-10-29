@@ -104,6 +104,7 @@ export const WashH1 = styled.h1`
   font-weight: inherit;
   text-transform: uppercase;
   color: white;
+  margin: 0;
   ${mq[1]} {
     font-size: 24px;
     line-height: 32px;
@@ -118,6 +119,7 @@ export const WashH2 = styled.h2`
   text-transform: uppercase;
   color: white;
   font-weight: inherit;
+  margin: 0;
 `;
 
 export const SkewX6 = styled.div`

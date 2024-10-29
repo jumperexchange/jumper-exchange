@@ -57,6 +57,7 @@ const RarityLabel = styled.h2`
   text-transform: uppercase;
   font-size: inherit;
   font-weight: inherit;
+  margin: 0;
 `;
 
 const NFTImage = styled(Image)<{ borderColor: string }>`

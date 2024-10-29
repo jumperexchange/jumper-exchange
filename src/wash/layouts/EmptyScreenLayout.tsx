@@ -31,6 +31,8 @@ const EmptyScreenLayoutTitle = styled.h1`
   font-weight: inherit;
   text-transform: uppercase;
   color: white;
+  margin-left: 0;
+  margin-right: 0;
   margin-bottom: 16px;
   margin-top: 32px;
   text-align: center;

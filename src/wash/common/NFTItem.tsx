@@ -88,6 +88,7 @@ const StyledH2 = styled.h2`
   text-transform: uppercase;
   font-size: inherit;
   font-weight: inherit;
+  margin: 0;
 `;
 /**************************************************************************************************
  * NFTItem Component

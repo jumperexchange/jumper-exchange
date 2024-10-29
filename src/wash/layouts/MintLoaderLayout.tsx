@@ -95,6 +95,8 @@ const MintLoaderLayoutTitle = styled.h1`
   font-weight: inherit;
   margin-bottom: 16px;
   margin-top: 32px;
+  margin-left: 0;
+  margin-right: 0;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
 `;
