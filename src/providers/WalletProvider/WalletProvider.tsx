@@ -2,10 +2,21 @@
 import { defaultCoinbaseConfig } from '@/config/coinbase';
 import { defaultMetaMaskConfig } from '@/config/metaMask';
 import { defaultWalletConnectConfig } from '@/config/walletConnect';
-import { TrackingAction, TrackingCategory, TrackingEventParameter } from '@/const/trackingKeys';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking';
-import type { WalletConnected, WalletManagementConfig } from '@lifi/wallet-management';
-import { useWalletManagementEvents, WalletManagementEvent, WalletManagementProvider } from '@lifi/wallet-management';
+import type {
+  WalletConnected,
+  WalletManagementConfig,
+} from '@lifi/wallet-management';
+import {
+  useWalletManagementEvents,
+  WalletManagementEvent,
+  WalletManagementProvider,
+} from '@lifi/wallet-management';
 import { type FC, type PropsWithChildren, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EVMProvider } from './EVMProvider';
