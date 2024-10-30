@@ -25,6 +25,12 @@ const ProgressSkeleton = styled.div`
   margin-top: 0.5rem;
   border: 2px solid ${colors.violet[800]};
   background-color: ${colors.violet[600]};
+  ${mq[0]} {
+    width: 285px;
+  }
+  ${mq[1]} {
+    width: 400px;
+  }
 `;
 
 const ProgressBar = styled.div`
@@ -40,8 +46,11 @@ const ProgressBar = styled.div`
   margin-top: 0.5rem;
   border: 2px solid ${colors.pink[800]};
   background-color: ${colors.violet[300]};
-  ${mq[1]} {
+  ${mq[0]} {
     width: 285px;
+  }
+  ${mq[1]} {
+    width: 400px;
   }
 `;
 

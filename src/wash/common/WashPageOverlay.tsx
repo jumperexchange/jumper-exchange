@@ -77,7 +77,7 @@ export function WashPageOverlay(): ReactNode {
       return;
     }
     if (account.isConnected && !nft.isFetched && !nft.isLoading) {
-      set_hasCurrentLayout(true);
+      set_hasCurrentLayout(false);
       return;
     }
 
@@ -87,7 +87,7 @@ export function WashPageOverlay(): ReactNode {
     } else if (!currentNFT?.name && mint.isMinting) {
       set_currentLayout(<MintLoaderLayout />);
       set_hasCurrentLayout(true);
-    } else if (!currentNFT?.name || !nft.isLoading) {
+    } else if (!currentNFT?.name) {
       set_currentLayout(<MintLayout />);
       set_hasCurrentLayout(true);
     } else if (currentNFT?.isRevealed || reveal.isRevealing) {
@@ -113,7 +113,10 @@ export function WashPageOverlay(): ReactNode {
   ]);
 
   return (
-    <OverlayWrapper hasCurrentLayout={hasCurrentLayout}>
+    <OverlayWrapper
+      id={`wash-page-overlay-${hasCurrentLayout ? 'visible' : 'hidden'}`}
+      hasCurrentLayout={hasCurrentLayout}
+    >
       {currentLayout}
     </OverlayWrapper>
   );

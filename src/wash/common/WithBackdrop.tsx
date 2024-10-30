@@ -1,11 +1,11 @@
 'use client';
 
 import { Fragment, useMemo } from 'react';
-import { DashboardLayout } from 'src/wash/layouts/DashboardLayout';
+import { DashboardLayout } from '../layouts/DashboardLayout';
 import styled from '@emotion/styled';
 
 import type { ReactElement, ReactNode } from 'react';
-import { mq, colors } from 'src/wash/utils/theme';
+import { mq, colors } from '../utils/theme';
 import { useAccount } from '@lifi/wallet-management';
 import { ChainType } from '@lifi/sdk';
 import { useWashTrading } from '../contexts/useWashTrading';

@@ -236,7 +236,12 @@ const CurrentNFTBlockContainer = styled.div<{ backgroundColor: string }>`
   ${mq[0]} {
     flex-direction: column;
     padding: 24px;
+    padding-right: 24px;
     width: 343px;
+  }
+  ${mq[1]} {
+    padding: 32px;
+    padding-right: 32px;
   }
 `;
 
