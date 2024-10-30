@@ -69,7 +69,7 @@ export function WashPageOverlay(): ReactNode {
     } else if (!currentNFT?.name && mint.isMinting) {
       set_currentLayout(<MintLoaderLayout />);
       set_hasCurrentLayout(true);
-    } else if (!currentNFT?.name) {
+    } else if (!currentNFT?.name || !nft.isLoading) {
       set_currentLayout(<EmptyScreenLayout />);
       set_hasCurrentLayout(true);
     } else if (currentNFT?.isRevealed || reveal.isRevealing) {
@@ -85,6 +85,7 @@ export function WashPageOverlay(): ReactNode {
     account.isConnected,
     currentNFT?.name,
     currentNFT?.isRevealed,
+    nft.isLoading,
     reveal.isRevealing,
     mint.isMinting,
   ]);

@@ -1,11 +1,14 @@
 'use client';
 
-import { Fragment } from 'react';
+import { Fragment, useMemo } from 'react';
 import { DashboardLayout } from 'src/wash/layouts/DashboardLayout';
 import styled from '@emotion/styled';
 
 import type { ReactElement, ReactNode } from 'react';
 import { mq, colors } from 'src/wash/utils/theme';
+import { useAccount } from '@lifi/wallet-management';
+import { ChainType } from '@lifi/sdk';
+import { useWashTrading } from '../contexts/useWashTrading';
 
 /**************************************************************************************************
  * Defining the styled components style for the WithBackdrop component
@@ -74,13 +77,47 @@ const ChildrenWrapper = styled.div`
  * - children: ReactNode - The content to be displayed within the backdrop
  * - shouldDisplayBackdrop: boolean - Determines if the backdrop should be visible
  *************************************************************************************************/
-export function WithBackdrop(props: {
-  children: ReactNode;
-  shouldDisplayBackdrop: boolean;
-}): ReactElement {
+export function WithBackdrop(props: { children: ReactNode }): ReactElement {
+  const { account } = useAccount({ chainType: ChainType.SVM });
+  const { reveal, mint, nft } = useWashTrading();
+
+  /**********************************************************************************************
+   * currentNFT: Extracts the NFT object from the nft state
+   *
+   * This line assigns the NFT object from the nft state to a local variable for easier access.
+   *********************************************************************************************/
+  const currentNFT = nft.nft;
+
+  /**********************************************************************************************
+   * shouldDisplayBackdrop: Determines if the backdrop should be displayed
+   *
+   * This memoized value checks various conditions to decide if the backdrop should be shown:
+   * 1. Account is not connected
+   * 2. NFT public key is missing
+   * 3. Minting is in progress
+   * 4. NFT is revealed
+   * 5. NFT is in the process of revealing
+   * 6. Reveal screen should be displayed
+   *********************************************************************************************/
+  const shouldDisplayBackdrop = useMemo(() => {
+    return (
+      !account.isConnected ||
+      !currentNFT?.name ||
+      mint.isMinting ||
+      currentNFT?.isRevealed ||
+      reveal.isRevealing
+    );
+  }, [
+    account.isConnected,
+    mint.isMinting,
+    currentNFT?.name,
+    currentNFT?.isRevealed,
+    reveal.isRevealing,
+  ]);
+
   return (
     <Fragment>
-      <BackdropWrapper shouldDisplayBackdrop={props.shouldDisplayBackdrop}>
+      <BackdropWrapper shouldDisplayBackdrop={shouldDisplayBackdrop}>
         <TopBlur />
         <Background />
         <ChildrenWrapper>{props.children}</ChildrenWrapper>

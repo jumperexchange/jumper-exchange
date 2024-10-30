@@ -30,6 +30,7 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
   const [dataRefreshedFor, set_dataRefreshedFor] = useState<string | undefined>(
     undefined,
   );
+  const [isReady, set_isReady] = useState(false);
   const { account } = useAccount({ chainType: ChainType.SVM });
   const { umi } = useUmi();
 
@@ -55,6 +56,7 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
       },
     );
     const result = await response.json();
+    setTimeout(() => set_isReady(true), 300);
     return result.data;
   }, [umi, account.address]);
 
@@ -88,8 +90,7 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
       },
     );
     set_dataRefreshedFor(umi?.identity.publicKey);
-    cachedQuery.refetch();
-    refetchUser?.();
+    await Promise.all([cachedQuery.refetch(), refetchUser?.()]);
   }, [umi?.identity.publicKey, account.address, cachedQuery, refetchUser]);
 
   /**************************************************************************************************
@@ -143,7 +144,7 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
       progress: progressInPercents,
     },
     hasNFT: Boolean(cachedQuery.data),
-    isLoading: cachedQuery.isPending,
+    isLoading: cachedQuery.isPending || !isReady,
     error: cachedQuery.error,
     refetch: cachedQuery.refetch,
   };
