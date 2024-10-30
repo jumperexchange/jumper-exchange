@@ -10,7 +10,7 @@ import {
   useWashTrading,
   WashTradingContextApp,
 } from '../../../../wash/contexts/useWashTrading';
-import { EmptyScreenLayout } from '../../../../wash/layouts/EmptyScreenLayout';
+import { MintLayout } from '../../../../wash/layouts/MintLayout';
 import { mq, WashH1, colors } from '../../../../wash/utils/theme';
 import { Button } from '../../../../wash/common/Button';
 import { countExtraXPFromItems } from '../../../../wash/utils/utils';
@@ -195,7 +195,7 @@ function CollectionPage(): ReactElement {
       <Container>
         <WashBackground />
         {currentCollection?.length === 0 && !collection.isLoading ? (
-          <EmptyScreenLayout />
+          <MintLayout />
         ) : (
           <CollectionWrapper>
             <CollectionHeader>
