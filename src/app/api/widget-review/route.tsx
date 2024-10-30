@@ -15,7 +15,6 @@
  * @property {string} toToken - The token address to send to.
  * @property {number} toChainId - The chain ID to send to.
  * @property {number} amount - The amount of tokens.
- * @property {number} [amountUSD] - The USD equivalent amount (optional).
  * @property {boolean} [isSwap] - True if transaction is a swap, default and false if transaction is a bridge (optional).
  * @property {'light'|'dark'} [theme] - The theme for the widget (optional).
  * @property {'from'|'to'|'amount'} [highlighted] - The highlighted element (optional).
@@ -36,7 +35,6 @@ const WIDGET_IMAGE_SCALING_FACTOR = 2;
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const amount = searchParams.get('amount');
-  const amountUSD = searchParams.get('amountUSD');
   const fromToken = searchParams.get('fromToken');
   const fromChainId = searchParams.get('fromChainId');
   const toToken = searchParams.get('toToken');
@@ -84,15 +82,12 @@ export async function GET(request: Request) {
       ? await fetchToken(parseInt(toChainId) as ChainId, toToken)
       : null;
 
-  const routeAmount =
-    (parseFloat(fromTokenData?.priceUSD || '0') * parseFloat(amount || '0')) /
-    parseFloat(toTokenData?.priceUSD || '0');
-
   const options = await imageResponseOptions({
     width: WIDGET_IMAGE_WIDTH,
     height: WIDGET_IMAGE_HEIGHT,
     scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
   });
+
   return new ImageResponse(
     (
       <div
@@ -116,7 +111,7 @@ export async function GET(request: Request) {
             width: WIDGET_IMAGE_WIDTH * WIDGET_IMAGE_SCALING_FACTOR,
             height: WIDGET_IMAGE_HEIGHT * WIDGET_IMAGE_SCALING_FACTOR,
           }}
-          src={`http://localhost:3000/widget/widget-review-bridge-${theme === 'dark' ? 'dark' : 'light'}.png`}
+          src={`${process.env.NEXT_PUBLIC_SITE_URL}/widget/widget-review-bridge-${theme === 'dark' ? 'dark' : 'light'}.png`}
         />
         <WidgetReviewSSR
           height={WIDGET_IMAGE_WIDTH}

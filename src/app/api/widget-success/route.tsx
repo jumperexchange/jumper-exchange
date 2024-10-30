@@ -97,7 +97,7 @@ export async function GET(request: Request) {
             width: WIDGET_IMAGE_WIDTH * WIDGET_IMAGE_SCALING_FACTOR,
             height: WIDGET_IMAGE_HEIGHT * WIDGET_IMAGE_SCALING_FACTOR,
           }}
-          src={`http://localhost:3000/widget/widget-success-${theme === 'dark' ? 'dark' : 'light'}.png`}
+          src={`${process.env.NEXT_PUBLIC_SITE_URL}/widget/widget-success-${theme === 'dark' ? 'dark' : 'light'}.png`}
         />
         <WidgetSuccessSSR
           height={WIDGET_IMAGE_WIDTH}
