@@ -99,6 +99,29 @@ export async function GET(request: Request) {
           }}
           src={`${process.env.VERCEL_BRANCH_URL || process.env.NEXT_PUBLIC_SITE_URL}/widget/widget-success-${theme === 'dark' ? 'dark' : 'light'}.png`}
         />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            margin: '0 22px',
+          }}
+        >
+          <p>
+            NEXT_PUBLIC_SITE_URL:
+            {`${process.env.NEXT_PUBLIC_SITE_URL}`}
+          </p>
+          <br />
+          <p>
+            VERCEL_BRANCH_URL:
+            {`${process.env.VERCEL_BRANCH_URL}`}
+          </p>
+          <br />
+          <p>
+            VERCEL_URL:
+            {`${process.env.VERCEL_URL}`}
+          </p>
+          <br />
+        </div>
         <WidgetSuccessSSR
           height={WIDGET_IMAGE_WIDTH}
           isSwap={isSwap === 'true'}
