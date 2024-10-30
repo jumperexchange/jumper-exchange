@@ -6,18 +6,6 @@ import type { TItems } from '../types/types';
 import { colors } from './theme';
 import { publicRPCList } from '../../const/rpcList';
 
-/**************************************************************************************************
- * Joins the given classes into a single string.
- * @example cl('foo', 'bar') // 'foo bar'
- * @example cl('foo', false && 'bar') // 'foo'
- *
- * @param classes the classes to be joined
- * @returns the joined classes
- *************************************************************************************************/
-export function cl(...classes: (string | null | undefined)[]): string {
-  return classes.filter(Boolean).join(' ');
-}
-
 /************************************************************************************************
  * countExtraXPFromItems Function
  *

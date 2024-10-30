@@ -1,21 +1,31 @@
 import { Fragment, type ReactElement } from 'react';
-import { cl } from '../utils/utils';
+import styled from '@emotion/styled';
+import { colors } from '../utils/theme';
 
+const RevealBackgroundWrapper = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 66%;
+  z-index: -10;
+  transform: translate(-50%, -50%);
+`;
+const Background = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -30;
+  height: 100%;
+  width: 100%;
+  background-color: ${colors.violet[100]};
+`;
 export function RevealsBackground({
-  className,
   isRare,
 }: {
-  className?: string;
   isRare?: boolean;
 }): ReactElement {
   return (
-    <div
-      className={cl(
-        'absolute left-1/2 top-2/3 -z-10 -translate-y-1/2 -translate-x-1/2 ',
-        className,
-      )}
-    >
-      <div className={'absolute left-0 top-0 -z-30 size-full bg-violet-100'} />
+    <RevealBackgroundWrapper>
+      <Background />
       <svg
         style={{ animation: 'spin 40s linear infinite' }}
         width={'8000'}
@@ -314,6 +324,6 @@ export function RevealsBackground({
           </Fragment>
         )}
       </svg>
-    </div>
+    </RevealBackgroundWrapper>
   );
 }

@@ -47,20 +47,36 @@ const PowerUpWrapper = styled.button`
   justify-content: flex-end;
   align-items: flex-end;
   border-radius: 16px;
+  border: 0 solid;
   background-color: ${colors.violet[200]};
   box-shadow: 4px 4px 0px 0px ${colors.violet[800]};
   cursor: pointer;
+  font-family: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  margin: 0;
+  padding: 0;
   &:disabled {
+    background-color: ${colors.violet[200]};
     cursor: not-allowed;
   }
   &:not(:disabled):hover {
     background-color: ${colors.violet[300]};
   }
   &:hover img {
-    width: 90px;
+    width: 85px;
+    height: 85px;
+  }
+  ${mq[0]} {
+    width: 88px;
+    height: 88px;
   }
   ${mq[1]} {
-    width: 88px;
+    width: 120.76px;
     height: 88px;
   }
 `;
@@ -91,19 +107,28 @@ const PowerUpPercentage = styled.span<{ disabled: boolean }>`
   transform: skewX(6deg);
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
   font-family: ${inter.style.fontFamily};
-  ${mq[1]} {
+  ${mq[0]} {
     font-size: 20px;
+    line-height: 28px;
+  }
+  ${mq[1]} {
+    font-size: 28px;
     line-height: 28px;
   }
 `;
 
 const PowerUpLogo = styled(Image)<{ disabled: boolean }>`
   width: 80px;
+  height: 80px;
   transition: all 0.1s ease-in-out;
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
-  height: auto;
-  ${mq[1]} {
+  ${mq[0]} {
     width: 64px;
+    height: 64px;
+  }
+  ${mq[1]} {
+    width: 80px;
+    height: 80px;
   }
 `;
 

@@ -1,8 +1,8 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import { WashTradingContextApp } from 'src/wash/contexts/useWashTrading';
-import { WashPageRootLayout } from 'src/wash/layouts/WashPageRootLayout';
+import { WashTradingContextApp } from '../../../wash/contexts/useWashTrading';
+import { WashPageRootLayout } from '../../../wash/layouts/WashPageRootLayout';
 
 export default function WithRevealContext(): ReactElement {
   return (

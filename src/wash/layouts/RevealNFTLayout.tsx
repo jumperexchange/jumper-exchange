@@ -17,25 +17,25 @@ import { mq } from '../utils/theme';
  *************************************************************************************************/
 const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
   position: relative;
-  margin-top: -28dvh;
+  margin-top: -10dvh;
   display: flex;
   width: 100%;
   max-width: 100vw;
   flex-direction: column;
   align-items: center;
-  padding-top: 152px;
   transition:
     opacity 300ms ease-in-out,
     scale 300ms ease-in-out;
   opacity: ${({ mounted }) => (mounted ? 1 : 0)};
   scale: ${({ mounted }) => (mounted ? 1 : 0)};
+  ${mq[1]} {
+    margin-top: -200px;
+    padding-top: 0px;
+  }
   ${mq[0]} {
+    margin-top: -240px;
     padding-left: 16px;
     padding-right: 16px;
-  }
-  ${mq[1]} {
-    margin-top: 0dvh;
-    padding-top: 0px;
   }
 `;
 const RevealedNFTLayoutTitle = styled.h1`
@@ -43,7 +43,9 @@ const RevealedNFTLayoutTitle = styled.h1`
   color: white;
   font-size: 56px;
   line-height: 56px;
+  font-weight: inherit;
   text-align: center;
+  margin: 0;
   font-family: ${titanOne.style.fontFamily};
   ${mq[0]} {
     font-size: 32px;

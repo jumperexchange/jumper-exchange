@@ -39,9 +39,11 @@ const Heading = styled.h1`
   text-transform: uppercase;
   color: white;
   text-align: center;
+  margin: 0;
   margin-bottom: 1rem;
+  font-weight: inherit;
 
-  ${mq[1]} {
+  ${mq[0]} {
     font-size: 40px;
     line-height: 48px;
   }
@@ -52,8 +54,9 @@ const Description = styled.p`
   font-size: 1.5rem;
   line-height: 2rem;
   color: white;
+  margin: 0;
 
-  ${mq[1]} {
+  ${mq[0]} {
     font-size: 1rem;
     line-height: 1.5rem;
   }
@@ -69,19 +72,22 @@ const HowDoIWash = styled.h2`
   font-family: ${titanOne.style.fontFamily};
   font-size: 2.5rem;
   line-height: 3rem;
+  font-weight: inherit;
   text-transform: uppercase;
   color: white;
+  margin: 0;
   margin-top: 60px;
 
-  ${mq[1]} {
+  ${mq[0]} {
     margin-top: 20px;
   }
 `;
 
 const StepImage = styled(Image)`
   max-width: 360px;
+  height: auto;
 
-  ${mq[1]} {
+  ${mq[0]} {
     max-width: 343px;
   }
 `;
@@ -92,7 +98,7 @@ const StepsWrapper = styled.div`
   column-gap: 48px;
   justify-content: center;
 
-  ${mq[1]} {
+  ${mq[0]} {
     flex-direction: column;
     gap: 24px;
     justify-content: center;
@@ -104,7 +110,7 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 40px;
-  ${mq[1]} {
+  ${mq[0]} {
     width: 100%;
     padding-left: 1rem;
     padding-right: 1rem;

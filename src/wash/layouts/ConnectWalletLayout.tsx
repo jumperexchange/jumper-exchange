@@ -1,48 +1,72 @@
 'use client';
 
 import { Button } from '../common/Button';
-import { useWashTrading } from '../contexts/useWashTrading';
 import { titanOne } from '../common/fonts';
-import { WashText } from '../utils/theme';
+import { mq, WashText } from '../utils/theme';
 import { ChainType } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
+import { useWashTrading } from '../contexts/useWashTrading';
 
 /**************************************************************************************************
- * Defining the styled components style for the EmptyScreenLayout component
+ * Defining the styled components style for the ConnectWalletLayout component
  *************************************************************************************************/
-const EmptyScreenLayoutContainer = styled.div`
+const ConnectWalletLayoutContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
+  ${mq[0]} {
+    margin-top: -100px;
+  }
+  ${mq[1]} {
+    margin-top: -140px;
+  }
 `;
-const EmptyScreenLayoutContent = styled.div`
+const ConnectWalletLayoutContent = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 560px;
   align-items: center;
 `;
-const EmptyScreenLayoutTitle = styled.h1`
+const ConnectWalletLayoutTitle = styled.h1`
   font-size: 56px;
   line-height: 56px;
+  font-weight: inherit;
   text-transform: uppercase;
   color: white;
+  margin-left: 0;
+  margin-right: 0;
   margin-bottom: 16px;
   margin-top: 32px;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
+  ${mq[0]} {
+    font-size: 32px;
+    line-height: 32px;
+  }
+  ${mq[1]} {
+    font-size: 48px;
+    line-height: 48px;
+  }
 `;
-const EmptyScreenLayoutText = styled(WashText)`
+const ConnectWalletLayoutText = styled(WashText)`
   margin-bottom: 24px;
   text-align: center;
   color: white;
+  margin-bottom: 24px;
+  text-align: center;
+  color: white;
+  ${mq[0]} {
+    font-size: 16px;
+    line-height: 16px;
+  }
 `;
 
 /**************************************************************************************************
- * EmptyScreenLayout: Component for displaying the empty screen layout
+ * ConnectWalletLayout: Component for displaying the empty screen layout
  *
  * This component renders the layout for when the user hasn't minted an NFT yet. It displays
  * a title, explanatory text, and either a "Mint NFT" button (if the wallet is connected) or
@@ -52,37 +76,34 @@ const EmptyScreenLayoutText = styled(WashText)`
  * the useWalletMenu hook to handle wallet connection, and the useWashTrading hook
  * to access the mint functionality.
  ************************************************************************************************/
-export function EmptyScreenLayout(): ReactElement {
+export function ConnectWalletLayout(): ReactElement {
   const { account } = useAccount({ chainType: ChainType.SVM });
   const { openWalletMenu } = useWalletMenu();
-  const { mint } = useWashTrading();
+  const { nft } = useWashTrading();
 
   return (
-    <EmptyScreenLayoutContainer>
-      <EmptyScreenLayoutContent>
-        <EmptyScreenLayoutTitle>
+    <ConnectWalletLayoutContainer>
+      <ConnectWalletLayoutContent>
+        <ConnectWalletLayoutTitle>
           {'Hold your horses there! '}
-        </EmptyScreenLayoutTitle>
-        <EmptyScreenLayoutText className={'mb-6 text-center text-white'}>
+        </ConnectWalletLayoutTitle>
+        <ConnectWalletLayoutText>
           {
             "You've got to mint an NFT and then wash it clean with your trades. Your average bot farm could never..."
           }
-        </EmptyScreenLayoutText>
-        {account.isConnected ? (
-          <Button theme={'pink'} title={'Mint NFT'} onClick={mint.onMint} />
-        ) : (
-          <Button
-            title={'Connect wallet'}
-            theme={'pink'}
-            size={'long'}
-            onClick={async () => {
-              if (!account.isConnected) {
-                openWalletMenu();
-              }
-            }}
-          />
-        )}
-      </EmptyScreenLayoutContent>
-    </EmptyScreenLayoutContainer>
+        </ConnectWalletLayoutText>
+        <Button
+          title={'Connect your Solana wallet'}
+          theme={'pink'}
+          size={'long'}
+          isBusy={account.isConnecting || (account.isConnected && !nft.isReady)}
+          onClick={async () => {
+            if (!account.isConnected) {
+              openWalletMenu();
+            }
+          }}
+        />
+      </ConnectWalletLayoutContent>
+    </ConnectWalletLayoutContainer>
   );
 }

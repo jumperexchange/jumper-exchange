@@ -1,12 +1,40 @@
+import styled from '@emotion/styled';
 import type { ReactElement } from 'react';
+import { colors, mq } from '../utils/theme';
 
+const WashBackgroundWrapper = styled.div`
+  position: absolute;
+  inset: 0px;
+  z-index: -10;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+`;
+
+const Background = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -30;
+  width: 100%;
+  height: 100%;
+  background-color: ${colors.violet[100]};
+`;
+
+const StyledSvg = styled.svg`
+  display: block;
+  ${mq[1]} {
+    display: none;
+    height: 100%;
+  }
+`;
 export function WashBackground(): ReactElement {
   return (
-    <div className={'absolute inset-0 -z-10 flex size-full justify-between'}>
-      <div className={'absolute left-0 top-0 -z-30 size-full bg-violet-100'} />
-      <svg
+    <WashBackgroundWrapper>
+      <Background />
+      <StyledSvg
         viewBox={'0 0 600 1802'}
-        className={'hidden h-full lg:block'}
         fill={'none'}
         xmlns={'http://www.w3.org/2000/svg'}
       >
@@ -34,10 +62,9 @@ export function WashBackground(): ReactElement {
             <rect width={'600'} height={'1802'} fill={'white'} />
           </clipPath>
         </defs>
-      </svg>
-      <svg
+      </StyledSvg>
+      <StyledSvg
         viewBox={'0 0 600 1802'}
-        className={'hidden h-full lg:block'}
         fill={'none'}
         xmlns={'http://www.w3.org/2000/svg'}
       >
@@ -70,7 +97,7 @@ export function WashBackground(): ReactElement {
             />
           </clipPath>
         </defs>
-      </svg>
-    </div>
+      </StyledSvg>
+    </WashBackgroundWrapper>
   );
 }

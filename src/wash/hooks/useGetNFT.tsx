@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useUmi } from '../contexts/useUmi';
 import { colorDict, WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
 import { ChainType } from '@lifi/sdk';
@@ -21,6 +21,8 @@ type TNFTResponse = {
 export type TGetNFT = {
   nft?: TNFTItem;
   isLoading: boolean;
+  isFetched: boolean;
+  isReady: boolean;
   hasNFT: boolean;
   error: Error | null;
   refetch?: VoidFunction;
@@ -32,6 +34,7 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
   );
   const { account } = useAccount({ chainType: ChainType.SVM });
   const { umi } = useUmi();
+  const [isReady, set_isReady] = useState(false);
 
   /**********************************************************************************************
    * fetchCachedNFT Function
@@ -44,6 +47,15 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
    * @returns The NFT data from the server.
    *********************************************************************************************/
   const fetchCachedNFT = useCallback(async (): Promise<TNFTResponse> => {
+    if (
+      !umi ||
+      !account.isConnected ||
+      !account.address ||
+      account.isDisconnected
+    ) {
+      set_isReady(false);
+      return undefined;
+    }
     const response = await fetch(
       `${WASH_ENDPOINT_ROOT_URI}/user/${umi?.identity.publicKey}/nft`,
       {
@@ -55,13 +67,13 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
       },
     );
     const result = await response.json();
+    setTimeout(() => set_isReady(true), 1000);
     return result.data;
-  }, [umi, account.address]);
+  }, [umi, account.isConnected, account.isDisconnected, account.address]);
 
   const cachedQuery = useQuery({
     queryKey: ['cachedNFTItem'],
     queryFn: fetchCachedNFT,
-    enabled: Boolean(umi && account.isConnected && account.address),
   });
 
   /**********************************************************************************************
@@ -88,8 +100,7 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
       },
     );
     set_dataRefreshedFor(umi?.identity.publicKey);
-    cachedQuery.refetch();
-    refetchUser?.();
+    await Promise.all([cachedQuery.refetch(), refetchUser?.()]);
   }, [umi?.identity.publicKey, account.address, cachedQuery, refetchUser]);
 
   /**************************************************************************************************
@@ -136,14 +147,81 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
   );
   const colorToColorName = colorDict[parseInt(cachedQuery.data?.color ?? '0')];
 
-  return {
-    nft: {
+  /**************************************************************************************************
+   * NFT Data Memoization
+   *
+   * This useMemo hook creates a memoized NFT object that combines:
+   * - The cached query data
+   * - Transformed color name from numeric value
+   * - Progress value converted to percentage
+   *
+   * Returns undefined if:
+   * - Umi instance is not available
+   * - Account is not connected
+   * - Account address is not available
+   *************************************************************************************************/
+  const nft = useMemo(() => {
+    if (
+      !umi ||
+      !account.isConnected ||
+      !account.address ||
+      account.isDisconnected
+    ) {
+      return undefined;
+    }
+    return {
       ...cachedQuery.data,
       color: colorToColorName,
       progress: progressInPercents,
-    },
-    hasNFT: Boolean(cachedQuery.data),
-    isLoading: cachedQuery.isPending,
+    };
+  }, [
+    umi,
+    account.isConnected,
+    account.address,
+    account.isDisconnected,
+    cachedQuery.data,
+    colorToColorName,
+    progressInPercents,
+  ]);
+
+  /**************************************************************************************************
+   * NFT Ownership Check
+   *
+   * This useMemo hook determines if the connected account owns an NFT by:
+   * - Verifying the Umi instance is available
+   * - Checking the account is connected and has a valid address
+   * - Confirming the cached query contains NFT data
+   *
+   * Returns false if any required conditions are not met
+   *************************************************************************************************/
+  const hasNFT = useMemo(() => {
+    if (
+      !umi ||
+      !account.isConnected ||
+      !account.address ||
+      account.isDisconnected
+    ) {
+      return false;
+    }
+    return Boolean(cachedQuery.data);
+  }, [
+    account.address,
+    account.isConnected,
+    account.isDisconnected,
+    cachedQuery.data,
+    umi,
+  ]);
+
+  return {
+    nft,
+    hasNFT,
+    isLoading:
+      cachedQuery.isPending ||
+      cachedQuery.isFetching ||
+      cachedQuery.isRefetching ||
+      cachedQuery.isLoading,
+    isFetched: cachedQuery.isFetched,
+    isReady,
     error: cachedQuery.error,
     refetch: cachedQuery.refetch,
   };

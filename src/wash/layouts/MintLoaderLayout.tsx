@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
 import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
+import { mq } from '../utils/theme';
 
 /**************************************************************************************************
  * Defining the styled components style for the RiveFallbackWrapper component
@@ -16,6 +17,16 @@ const RiveWrapper = styled.div`
   height: 360px;
   position: absolute;
   bottom: 100px;
+  ${mq[0]} {
+    padding-top: 48px;
+    width: 200px;
+    height: 240px;
+  }
+  ${mq[1]} {
+    padding-top: 32px;
+    width: 200px;
+    height: 240px;
+  }
 `;
 const RiveFallbackImage = styled(Image)<{ isLoaded: boolean }>`
   transition: opacity 0.5s ease-in;
@@ -27,6 +38,14 @@ const RiveFallbackImage = styled(Image)<{ isLoaded: boolean }>`
   height: auto;
   bottom: 37px;
   opacity: ${({ isLoaded }) => (isLoaded ? 0 : 1)};
+  ${mq[0]} {
+    width: 200px;
+    height: 240px;
+  }
+  ${mq[1]} {
+    width: 200px;
+    height: 240px;
+  }
 `;
 
 /**************************************************************************************************
@@ -78,6 +97,13 @@ const MintLoaderLayoutContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  padding-top: 0;
+  ${mq[0]} {
+    margin-top: -100px;
+  }
+  ${mq[1]} {
+    margin-top: -140px;
+  }
 `;
 const MintLoaderLayoutContent = styled.div`
   display: flex;
@@ -92,10 +118,21 @@ const MintLoaderLayoutTitle = styled.h1`
   color: white;
   font-size: 56px;
   line-height: 56px;
+  font-weight: inherit;
   margin-bottom: 16px;
   margin-top: 32px;
+  margin-left: 0;
+  margin-right: 0;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
+  ${mq[0]} {
+    font-size: 32px;
+    line-height: 32px;
+  }
+  ${mq[1]} {
+    font-size: 48px;
+    line-height: 48px;
+  }
 `;
 
 /**********************************************************************************************

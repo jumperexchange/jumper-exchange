@@ -26,6 +26,10 @@ const RevealNFTContainer = styled.div<{ backgroundColor: string }>`
   height: 320px;
   border-radius: 24px;
   position: relative;
+  ${mq[0]} {
+    width: 216px;
+    height: 216px;
+  }
   ${mq[1]} {
     width: 216px;
     height: 216px;
@@ -54,6 +58,9 @@ const NFTLabelBox = styled.div<{ backgroundColor: string }>`
 const NFTLabel = styled.h2<{ isRevealing: boolean }>`
   opacity: ${(props) => (props.isRevealing ? 0 : 1)};
   transition: opacity 0.5s ease-in-out;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
 `;
 const NFTLabelSkeleton = styled.h2<{ isRevealing: boolean }>`
   animation: ${(props) =>
@@ -62,6 +69,9 @@ const NFTLabelSkeleton = styled.h2<{ isRevealing: boolean }>`
       : 'none'};
   opacity: ${(props) => (props.isRevealing ? 1 : 0)};
   transition: opacity 0.5s ease-in-out;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
 `;
 
 const NFTImageBox = styled.div<{
@@ -75,7 +85,10 @@ const NFTImageBox = styled.div<{
   overflow: hidden;
   background-color: ${(props) => props.backgroundColor};
   border: 4px solid ${(props) => props.borderColor};
-
+  ${mq[0]} {
+    width: 216px;
+    height: 216px;
+  }
   ${mq[1]} {
     width: 216px;
     height: 216px;
@@ -88,7 +101,10 @@ const NFTImage = styled(Image)<{ isRevealing: boolean }>`
   width: 320px;
   height: 320px;
   inset: 0;
-
+  ${mq[0]} {
+    width: 216px;
+    height: 216px;
+  }
   ${mq[1]} {
     width: 216px;
     height: 216px;
