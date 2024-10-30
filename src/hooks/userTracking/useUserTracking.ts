@@ -13,32 +13,7 @@ import { useAccount } from '@lifi/wallet-management';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useCallback } from 'react';
-import type { TransformedRoute } from 'src/types/internal';
 import { useFingerprint } from '../useFingerprint';
-
-const googleEvent = ({
-  action,
-  category,
-  data,
-}: {
-  action: string;
-  category: string;
-  data?:
-    | TrackTransactionDataProps
-    | {
-        [key: string]:
-          | string
-          | number
-          | boolean
-          | Record<number, TransformedRoute>;
-      };
-}) => {
-  typeof window !== 'undefined' &&
-    window?.gtag('event', action, {
-      category: category,
-      ...data,
-    });
-};
 
 const addressableEvent = ({
   action,
@@ -95,9 +70,6 @@ export function useUserTracking() {
       enableAddressable,
       isConversion,
     }: TrackEventProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        googleEvent({ action, category, data });
-      }
       if (enableAddressable) {
         const dataArray = [];
         if (label) {
@@ -147,13 +119,9 @@ export function useUserTracking() {
     async ({
       data,
       action,
-      category,
       disableTrackingTool,
       enableAddressable,
     }: TrackTransactionProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        googleEvent({ action, category, data });
-      }
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
         const transactionData = {
           sessionId: sessionId || '',

@@ -7,7 +7,6 @@ import type { TrackingEventParameter } from 'src/const/trackingKeys';
 
 declare global {
   interface Window {
-    gtag: Gtag.Gtag;
     __adrsbl: {
       queue: any[];
       run: (
