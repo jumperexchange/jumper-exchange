@@ -6,7 +6,6 @@ import { inter } from '../../fonts/fonts';
 type TWashProgressProps = {
   progress?: number;
   label?: string;
-  className?: string;
   isSkeleton?: boolean;
 };
 
@@ -26,6 +25,12 @@ const ProgressSkeleton = styled.div`
   margin-top: 0.5rem;
   border: 2px solid ${colors.violet[800]};
   background-color: ${colors.violet[600]};
+  ${mq[0]} {
+    width: 285px;
+  }
+  ${mq[1]} {
+    width: 400px;
+  }
 `;
 
 const ProgressBar = styled.div`
@@ -41,8 +46,11 @@ const ProgressBar = styled.div`
   margin-top: 0.5rem;
   border: 2px solid ${colors.pink[800]};
   background-color: ${colors.violet[300]};
-  ${mq[1]} {
+  ${mq[0]} {
     width: 285px;
+  }
+  ${mq[1]} {
+    width: 400px;
   }
 `;
 
@@ -79,7 +87,6 @@ const ProgressLabel = styled.span`
 export function WashProgress({
   progress = 0,
   label,
-  className,
   isSkeleton,
 }: TWashProgressProps): ReactElement {
   if (isSkeleton) {
@@ -87,7 +94,7 @@ export function WashProgress({
   }
 
   return (
-    <ProgressBar className={className}>
+    <ProgressBar>
       <ProgressLabel>{label ? label : `${progress}%`}</ProgressLabel>
       <ProgressBarFill progress={progress} />
     </ProgressBar>

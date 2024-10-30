@@ -10,7 +10,7 @@ import {
   useWashTrading,
   WashTradingContextApp,
 } from '../../../../wash/contexts/useWashTrading';
-import { EmptyScreenLayout } from '../../../../wash/layouts/EmptyScreenLayout';
+import { MintLayout } from '../../../../wash/layouts/MintLayout';
 import { mq, WashH1, colors } from '../../../../wash/utils/theme';
 import { Button } from '../../../../wash/common/Button';
 import { countExtraXPFromItems } from '../../../../wash/utils/utils';
@@ -28,7 +28,7 @@ const Wrapper = styled.div`
   overflow: hidden;
   align-items: center;
   background-color: ${colors.violet[100]};
-  ${mq[1]} {
+  ${mq[0]} {
     padding-bottom: 2rem;
   }
 `;
@@ -45,7 +45,7 @@ const CollectionWrapper = styled.div`
   border-radius: 32px;
   border: 2px solid ${colors.violet[800]};
   margin-bottom: 1rem;
-  ${mq[1]} {
+  ${mq[0]} {
     width: 343px;
   }
 `;
@@ -62,7 +62,7 @@ const NftsList = styled.div`
   row-gap: 60px;
   column-gap: 1.5rem;
   margin-top: 2rem;
-  ${mq[1]} {
+  ${mq[0]} {
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
     align-self: center;
@@ -195,7 +195,7 @@ function CollectionPage(): ReactElement {
       <Container>
         <WashBackground />
         {currentCollection?.length === 0 && !collection.isLoading ? (
-          <EmptyScreenLayout />
+          <MintLayout />
         ) : (
           <CollectionWrapper>
             <CollectionHeader>

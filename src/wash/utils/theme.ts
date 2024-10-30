@@ -19,7 +19,10 @@ export type TColor =
  *************************************************************************************************/
 const breakpoints = [1100, 1280];
 
-export const mq = breakpoints.map((bp) => `@media (max-width: ${bp}px)`);
+export const mq = breakpoints.map(
+  (bp, index) =>
+    `@media (max-width: ${bp}px) and (min-width: ${breakpoints[index - 1] ?? 0}px)`,
+);
 
 export const colors: Record<TColor, Record<number, string>> = {
   violet: {
@@ -95,14 +98,17 @@ export const Relative = styled.div`
 
 export const WashText = styled.p`
   font-family: ${inter.style.fontFamily};
+  margin: 0;
 `;
 
 export const WashH1 = styled.h1`
   font-family: ${titanOne.style.fontFamily};
   font-size: 32px;
   line-height: 40px;
+  font-weight: inherit;
   text-transform: uppercase;
   color: white;
+  margin: 0;
   ${mq[1]} {
     font-size: 24px;
     line-height: 32px;
@@ -116,10 +122,16 @@ export const WashH2 = styled.h2`
   line-height: 32px;
   text-transform: uppercase;
   color: white;
+  font-weight: inherit;
+  margin: 0;
 `;
 
 export const SkewX6 = styled.div`
   transform: skewX(-6deg);
+`;
+
+export const SkewXNegative6 = styled.div`
+  transform: skewX(6deg);
 `;
 
 export const FitContent = styled.div`

@@ -1,10 +1,8 @@
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useWashTrading } from '../contexts/useWashTrading';
 import { DEFAULT_NFT_COLOR } from '../utils/constants';
-import { colors } from '../utils/theme';
+import { colors, Relative } from '../utils/theme';
 import { getPepeImage } from '../utils/getPepeImage';
 
 import { Button } from './Button';
@@ -81,6 +79,17 @@ const WashProgressContainer = styled.div`
   left: 50%;
 `;
 
+const StyledWashProgress = styled(WashProgress)`
+  width: 200px !important;
+`;
+
+const StyledH2 = styled.h2`
+  color: white;
+  text-transform: uppercase;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+`;
 /**************************************************************************************************
  * NFTItem Component
  *
@@ -158,10 +167,10 @@ export function NFTItem({
   }
 
   return (
-    <div className={'relative'}>
+    <Relative>
       {label && (
         <Label>
-          <h2 className="uppercase text-white">{label}</h2>
+          <StyledH2>{label}</StyledH2>
         </Label>
       )}
       {renderNFTImage()}
@@ -171,20 +180,20 @@ export function NFTItem({
             colors[(nft?.color || DEFAULT_NFT_COLOR) as TColor][800]
           }
         >
-          <Button size={'short'} title={'reveal'} onClick={reveal.onReveal} />
+          <Button
+            theme={'white'}
+            size={'short'}
+            title={'reveal'}
+            onClick={reveal.onReveal}
+          />
         </NFTRevealButton>
       ) : null}
 
       {progress && (
         <WashProgressContainer>
-          <WashProgress
-            progress={nft?.progress}
-            css={css`
-              width: 200px !important;
-            `}
-          />
+          <StyledWashProgress progress={nft?.progress} />
         </WashProgressContainer>
       )}
-    </div>
+    </Relative>
   );
 }

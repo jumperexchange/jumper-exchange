@@ -32,6 +32,8 @@ type TWashTradingContext = {
 const defaultArgs: TWashTradingContext = {
   nft: {
     isLoading: false,
+    isFetched: false,
+    isReady: false,
     hasNFT: false,
     error: null,
     refetch: undefined,

@@ -28,7 +28,7 @@ export const WashProgressAlert = () => {
   return (
     account?.address &&
     data.hasNFT && (
-      <WashProgressAlertContainer className="alert">
+      <WashProgressAlertContainer className={'alert'}>
         <WashProgressAlertTitle>Wash trade</WashProgressAlertTitle>
         <WashProgressAlertContent marginTop={1.5}>
           Trade on Jumper to wash your NFT and win prizes.
