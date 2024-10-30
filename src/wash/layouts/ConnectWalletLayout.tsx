@@ -2,7 +2,7 @@
 
 import { Button } from '../common/Button';
 import { titanOne } from '../common/fonts';
-import { WashText } from '../utils/theme';
+import { mq, WashText } from '../utils/theme';
 import { ChainType } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import styled from '@emotion/styled';
@@ -18,6 +18,12 @@ const ConnectWalletLayoutContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  ${mq[0]} {
+    margin-top: -100px;
+  }
+  ${mq[1]} {
+    margin-top: -140px;
+  }
 `;
 const ConnectWalletLayoutContent = styled.div`
   display: flex;
@@ -37,6 +43,14 @@ const ConnectWalletLayoutTitle = styled.h1`
   margin-top: 32px;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
+  ${mq[0]} {
+    font-size: 32px;
+    line-height: 32px;
+  }
+  ${mq[1]} {
+    font-size: 48px;
+    line-height: 48px;
+  }
 `;
 const ConnectWalletLayoutText = styled(WashText)`
   margin-bottom: 24px;
@@ -45,6 +59,10 @@ const ConnectWalletLayoutText = styled(WashText)`
   margin-bottom: 24px;
   text-align: center;
   color: white;
+  ${mq[0]} {
+    font-size: 16px;
+    line-height: 16px;
+  }
 `;
 
 /**************************************************************************************************

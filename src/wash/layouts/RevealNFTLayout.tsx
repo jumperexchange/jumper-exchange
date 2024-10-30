@@ -33,7 +33,7 @@ const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
     padding-top: 0px;
   }
   ${mq[0]} {
-    margin-top: -200px;
+    margin-top: -240px;
     padding-left: 16px;
     padding-right: 16px;
   }

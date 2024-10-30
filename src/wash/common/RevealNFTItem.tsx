@@ -26,6 +26,10 @@ const RevealNFTContainer = styled.div<{ backgroundColor: string }>`
   height: 320px;
   border-radius: 24px;
   position: relative;
+  ${mq[0]} {
+    width: 216px;
+    height: 216px;
+  }
   ${mq[1]} {
     width: 216px;
     height: 216px;
@@ -81,7 +85,10 @@ const NFTImageBox = styled.div<{
   overflow: hidden;
   background-color: ${(props) => props.backgroundColor};
   border: 4px solid ${(props) => props.borderColor};
-
+  ${mq[0]} {
+    width: 216px;
+    height: 216px;
+  }
   ${mq[1]} {
     width: 216px;
     height: 216px;
@@ -94,7 +101,10 @@ const NFTImage = styled(Image)<{ isRevealing: boolean }>`
   width: 320px;
   height: 320px;
   inset: 0;
-
+  ${mq[0]} {
+    width: 216px;
+    height: 216px;
+  }
   ${mq[1]} {
     width: 216px;
     height: 216px;

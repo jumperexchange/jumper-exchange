@@ -26,7 +26,7 @@ const RiveWrapper = styled.div`
     min-width: 120px;
     height: 100px;
     min-height: 100px;
-    margin-top: -40px;
+    margin-top: -80px;
   }
 `;
 const RiveFallbackImage = styled(Image)<{ isLoaded: boolean }>`
@@ -100,6 +100,7 @@ const CallToActionBoxWrapper = styled.div<{ isMounted: boolean }>`
   opacity: ${({ isMounted }) => (isMounted ? '1' : '0')};
   ${mq[0]} {
     flex-direction: column-reverse;
+    margin-top: -16px;
   }
   ${mq[1]} {
     max-width: 800px;
@@ -118,7 +119,7 @@ const CallToActionBoxContent = styled.div`
     justify-content: center;
     text-align: center;
     padding: 0;
-    padding-top: 28px;
+    padding-top: 16px;
     padding-right: 0;
     flex-direction: column;
   }
@@ -146,8 +147,8 @@ const CallToActionBoxTitle = styled.h3`
   color: #ffffff;
   margin: 0;
   ${mq[0]} {
-    font-size: 24px;
-    line-height: 24px;
+    font-size: 16px;
+    line-height: 16px;
     padding-bottom: 12px;
   }
 `;
@@ -157,6 +158,10 @@ const CallToActionBoxSubtitle = styled.span`
   opacity: 0.6;
   font-weight: 500;
   font-family: ${inter.style.fontFamily};
+  ${mq[0]} {
+    font-size: 12px;
+    line-height: 10px;
+  }
 `;
 
 /**************************************************************************************************

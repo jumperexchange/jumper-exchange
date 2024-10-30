@@ -3,7 +3,7 @@
 import { Button } from '../common/Button';
 import { useWashTrading } from '../contexts/useWashTrading';
 import { titanOne } from '../common/fonts';
-import { WashText } from '../utils/theme';
+import { mq, WashText } from '../utils/theme';
 import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
@@ -16,6 +16,12 @@ const MintLayoutContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  ${mq[0]} {
+    margin-top: -100px;
+  }
+  ${mq[1]} {
+    margin-top: -140px;
+  }
 `;
 const MintLayoutContent = styled.div`
   display: flex;
@@ -32,6 +38,14 @@ const MintLayoutTitle = styled.h1`
   margin-top: 32px;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
+  ${mq[0]} {
+    font-size: 32px;
+    line-height: 32px;
+  }
+  ${mq[1]} {
+    font-size: 48px;
+    line-height: 48px;
+  }
 `;
 const MintLayoutText = styled(WashText)`
   margin-bottom: 24px;
@@ -40,6 +54,10 @@ const MintLayoutText = styled(WashText)`
   margin-bottom: 24px;
   text-align: center;
   color: white;
+  ${mq[0]} {
+    font-size: 16px;
+    line-height: 16px;
+  }
 `;
 
 /**************************************************************************************************

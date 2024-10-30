@@ -12,6 +12,18 @@ import { RevealedNFTLayout } from '../layouts/RevealNFTLayout';
 import { ConnectWalletLayout } from '../layouts/ConnectWalletLayout';
 import { MintLayout } from '../layouts/MintLayout';
 
+/**************************************************************************************************
+ * Defining the styled components style for the WashPageOverlay component
+ *************************************************************************************************/
+const OverlayWrapper = styled.div<{ hasCurrentLayout: boolean }>`
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 1000ms;
+  opacity: ${({ hasCurrentLayout }) => (hasCurrentLayout ? 1 : 0)};
+  pointer-events: ${({ hasCurrentLayout }) =>
+    hasCurrentLayout ? 'auto' : 'none'};
+`;
+
 /**********************************************************************************************
  * WashPageOverlay: A component that manages and displays different layouts based on the
  * current state
@@ -37,14 +49,6 @@ export function WashPageOverlay(): ReactNode {
       set_isReady(true);
     }, 2000);
   }, []);
-
-  const OverlayWrapper = styled.div<{ hasCurrentLayout: boolean }>`
-    transition-property: opacity;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 1000ms;
-    opacity: ${hasCurrentLayout ? 1 : 0};
-    pointer-events: ${hasCurrentLayout ? 'auto' : 'none'};
-  `;
 
   /**********************************************************************************************
    * currentNFT: Extracts the NFT object from the nft state

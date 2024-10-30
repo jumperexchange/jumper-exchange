@@ -14,7 +14,7 @@ import { useWashTrading } from '../contexts/useWashTrading';
  * Defining the styled components style for the WithBackdrop component
  *************************************************************************************************/
 const BackdropWrapper = styled.div<{ shouldDisplayBackdrop: boolean }>`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 20;
@@ -29,7 +29,7 @@ const BackdropWrapper = styled.div<{ shouldDisplayBackdrop: boolean }>`
 `;
 
 const TopBlur = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 20;
@@ -43,7 +43,7 @@ const TopBlur = styled.div`
   );
 `;
 const Background = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   z-index: 20;

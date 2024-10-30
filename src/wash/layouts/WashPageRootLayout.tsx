@@ -21,6 +21,7 @@ const WashPageRootWrapper = styled.div`
   background-color: ${colors.violet[100]};
   padding-bottom: 40px;
 `;
+
 export function WashPageRootLayout(): ReactElement {
   return (
     <WashPageRootWrapper>
