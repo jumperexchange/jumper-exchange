@@ -75,7 +75,7 @@ export function ConnectWalletLayout(): ReactElement {
           }
         </ConnectWalletLayoutText>
         <Button
-          title={'Connect wallet'}
+          title={'Connect your Solana wallet'}
           theme={'pink'}
           size={'long'}
           isBusy={account.isConnecting || (account.isConnected && !nft.isReady)}
