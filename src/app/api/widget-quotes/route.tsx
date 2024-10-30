@@ -117,7 +117,7 @@ export async function GET(request: Request) {
             width: WIDGET_IMAGE_WIDTH * WIDGET_IMAGE_SCALING_FACTOR,
             height: WIDGET_IMAGE_HEIGHT * WIDGET_IMAGE_SCALING_FACTOR,
           }}
-          src={`${process.env.VERCEL_BRANCH_URL || process.env.NEXT_PUBLIC_SITE_URL}/widget/widget-quotes-${theme === 'dark' ? 'dark' : 'light'}.png`}
+          src={`${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL || process.env.NEXT_PUBLIC_SITE_URL}/widget/widget-quotes-${theme === 'dark' ? 'dark' : 'light'}.png`}
         />
         <WidgetQuoteSSR
           theme={theme as 'light' | 'dark'}
