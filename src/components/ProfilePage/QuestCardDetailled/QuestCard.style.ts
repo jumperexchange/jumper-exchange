@@ -88,8 +88,18 @@ export const XPIconBox = styled(Box)(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export const OPBadgeRelativeBox = styled(Box)(({ theme }) => ({
+export const BadgeRelativeBox = styled(Box)(({ theme }) => ({
   position: 'relative',
-  bottom: '16px',
-  right: '32px',
+  display: 'flex',
+  justifyContent: 'center',
+  zIndex: 1,
+}));
+
+export const AbsoluteCenterTraitsBox = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  cursor: 'help',
+  backgroundColor: '#653ba3', //'rgba(84, 49, 136, 0.4)',
+  borderRadius: '32px',
+  padding: theme.spacing(0.5, 2),
+  marginTop: theme.spacing(1),
 }));
