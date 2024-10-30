@@ -61,7 +61,7 @@ const StyledImage = styled(Image)<{ isSkeleton: boolean }>`
  ************************************************************************************************/
 function BorderStroke(props: {
   color: TColor;
-  isSkeleton?: boolean;
+  isSkeleton: boolean;
 }): ReactElement {
   return (
     <>
@@ -265,7 +265,7 @@ type TCurrentNFTBlockProps = {
   items?: TItems;
   washProgress: number;
   handleUseItem: (item: TCleaningItem) => Promise<void>;
-  isSkeleton?: boolean;
+  isSkeleton: boolean;
 };
 
 //TODO: Split this component

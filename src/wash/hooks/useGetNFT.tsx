@@ -46,7 +46,9 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
    *
    * @returns The NFT data from the server.
    *********************************************************************************************/
-  const fetchCachedNFT = useCallback(async (): Promise<TNFTResponse> => {
+  const fetchCachedNFT = useCallback(async (): Promise<
+    TNFTResponse | undefined
+  > => {
     if (
       !umi ||
       !account.isConnected ||

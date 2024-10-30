@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import type { ReactElement } from 'react';
-import { mq, colors } from '../utils/theme';
+import { colors } from '../utils/theme';
 
 const Wrapper = styled.div`
   position: absolute;

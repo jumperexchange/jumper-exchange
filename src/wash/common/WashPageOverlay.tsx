@@ -38,7 +38,9 @@ const OverlayWrapper = styled.div<{ hasCurrentLayout: boolean }>`
  * ensuring that the correct layout is always displayed according to the current application state.
  *********************************************************************************************/
 export function WashPageOverlay(): ReactNode {
-  const [currentLayout, set_currentLayout] = useState<ReactElement>(null);
+  const [currentLayout, set_currentLayout] = useState<ReactElement | null>(
+    null,
+  );
   const [hasCurrentLayout, set_hasCurrentLayout] = useState<boolean>(false);
   const { account } = useAccount({ chainType: ChainType.SVM });
   const { reveal, mint, nft } = useWashTrading();

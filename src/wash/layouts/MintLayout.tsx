@@ -6,7 +6,7 @@ import { titanOne } from '../common/fonts';
 import { mq, WashText } from '../utils/theme';
 import styled from '@emotion/styled';
 
-import type { ReactElement } from 'react';
+import { Fragment, type ReactElement } from 'react';
 
 /**************************************************************************************************
  * Defining the styled components style for the MintLayout component
@@ -75,7 +75,7 @@ export function MintLayout(): ReactElement {
   const { mint, nft } = useWashTrading();
 
   if (!nft.isReady) {
-    return null;
+    return <Fragment />;
   }
 
   return (
