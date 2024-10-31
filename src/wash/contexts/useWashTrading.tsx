@@ -39,20 +39,20 @@ const defaultArgs: TWashTradingContext = {
     refetch: undefined,
   },
   mint: {
-    onMint: () => {},
+    onMint: () => undefined,
     mintStatus: '',
     isMinting: false,
     error: undefined,
   },
   reveal: {
-    onReveal: () => {},
+    onReveal: () => undefined,
     isRevealing: false,
     hasCanceledReveal: false,
     error: undefined,
     revealStatus: '',
   },
   wash: {
-    onWash: async () => {},
+    onWash: async () => undefined,
     isWashing: false,
     error: '',
     washStatus: '',
@@ -120,7 +120,7 @@ export function WashTradingContextApp(props: {
       console.warn('Success', route);
       let txHash: string | undefined = undefined;
       let doneAt: number | undefined = undefined;
-      let toAmount: number = Number(route.toAmount);
+      let toAmount = Number(route.toAmount);
 
       if (route.steps.length > 0) {
         const firstStep = route.steps[0] as LiFiStep & {

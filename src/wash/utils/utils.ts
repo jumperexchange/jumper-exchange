@@ -37,7 +37,7 @@ export const widgetConfig: WidgetConfig = {
   appearance: 'dark',
   fromChain: 1151111081099710, //Solana
   toChain: 1151111081099710, //Solana
-  hiddenUI: ['poweredBy'],
+  hiddenUI: ['poweredBy', 'language', 'appearance'],
   sdkConfig: {
     apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
     routeOptions: {

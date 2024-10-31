@@ -8,7 +8,7 @@
  * @param color - The color string (optional).
  * @returns The image filename corresponding to the progress and color.
  *************************************************************************************************/
-export function getPepeImage(progress: number = 0, color?: string): string {
+export function getPepeImage(progress = 0, color?: string): string {
   switch (true) {
     case progress >= 0 && progress < 20:
       return `${color}-stage-1.png`;

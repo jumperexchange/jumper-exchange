@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { DEFAULT_NFT_COLOR, TOOLTIP_MESSAGES } from '../utils/constants';
