@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import ProfilePage from '../../../ui/profile/ProfilePage';
+import ProfilePage from '@/app/ui/profile/ProfilePage';
 
 export const metadata: Metadata = {
   title: 'Jumper Profile',

@@ -1,17 +1,16 @@
+'use client'
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
-import { useOngoingQuests } from '@/hooks/useOngoingQuests';
-import { useAccount } from '@lifi/wallet-management';
 import { Box, Grid, Stack } from '@mui/material';
-import { useMemo } from 'react';
-import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
-import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
-import { AddressBox } from './AddressBox/AddressBox';
-import { Leaderboard } from './Leaderboard/Leaderboard';
-import { TierBox } from './LevelBox/TierBox';
+import { useContext } from 'react';
+import { useMerklRewardsOnCampaigns } from '@/hooks/useMerklRewardsOnCampaigns';
+import { AddressBox } from '@/components/ProfilePage/AddressBox/AddressBox';
+import { Leaderboard } from '@/components/ProfilePage/Leaderboard/Leaderboard';
+import { TierBox } from '@/components/ProfilePage/LevelBox/TierBox';
 import {
   ProfilePageContainer,
   ProfilePageHeaderBox,
 } from './ProfilePage.style';
+<<<<<<< Updated upstream
 import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
@@ -48,26 +47,29 @@ export const ProfilePage = () => {
   } = useMerklRewardsOnCampaigns({
     userAddress: account?.address,
   });
+=======
+import { QuestCarousel } from '@/components/ProfilePage/QuestCarousel/QuestCarousel';
+import { QuestCompletedList } from '@/components/ProfilePage/QuestsCompleted/QuestsCompletedList';
+import { useTraits } from '@/hooks/useTraits';
+import { ProfileContext } from '@/providers/ProfileProvider';
+import { MerkleRewards } from '@/components/ProfilePage/MerkleRewards';
 
-  const hideComponent = useMemo(
-    () =>
-      shouldHideComponent(
-        account,
-        isRewardLoading,
-        isRewardSuccess,
-        availableRewards,
-      ),
-    [account, isRewardLoading, isRewardSuccess, availableRewards],
-  );
+export const ProfilePage = () => {
+  const { walletAddress, isPublic, isEVMAddress } = useContext(ProfileContext)
+>>>>>>> Stashed changes
+
+  const { isLoading, points, tier, pdas } = useLoyaltyPass(walletAddress);
+  const { traits } = useTraits();
+  const {
+    pastCampaigns,
+  } = useMerklRewardsOnCampaigns({
+    userAddress: walletAddress,
+  });
 
   return (
     <>
       <ProfilePageContainer className="profile-page">
-        <RewardsCarousel
-          hideComponent={hideComponent}
-          availableRewards={availableRewards}
-          isMerklSuccess={isRewardSuccess}
-        />
+        {!isPublic && <MerkleRewards />}
         <Grid container>
           <Grid
             xs={12}
@@ -78,11 +80,11 @@ export const ProfilePage = () => {
             }}
           >
             <AddressBox
-              address={account?.address}
-              isEVM={account?.chainType === 'EVM'}
+              address={walletAddress}
+              isEVM={isEVMAddress}
             />
             <Box display={{ xs: 'none', md: 'block' }}>
-              <Leaderboard address={account?.address} />
+              <Leaderboard address={walletAddress} />
             </Box>
           </Grid>
           <Grid xs={12} md={8}>

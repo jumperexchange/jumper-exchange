@@ -10,7 +10,7 @@ import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { NoSelectTypography } from '../ProfilePage.style';
+import { NoSelectTypography } from '@/components/ProfilePage/ProfilePage.style';
 import {
   AddressBoxContainer,
   AddressDisplayBox,

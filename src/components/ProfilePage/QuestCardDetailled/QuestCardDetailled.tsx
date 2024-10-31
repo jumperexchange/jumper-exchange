@@ -129,8 +129,8 @@ export const QuestCardDetailled = ({
                 alt="Quest Card Image"
                 width={288}
                 height={288}
-                objectFit="cover"
                 style={{
+                  objectFit: 'cover',
                   borderTopLeftRadius: '8px',
                   borderTopRightRadius: '8px',
                 }}

@@ -4,6 +4,7 @@ import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SECONDS_IN_A_DAY } from 'src/const/time';
+import { isEVMAddress } from '@/utils/isEVMAddress';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
@@ -13,8 +14,7 @@ export interface UseLoyaltyPassProps {
   pdas?: PDA[];
 }
 
-export const useLoyaltyPass = (): UseLoyaltyPassProps => {
-  const { account } = useAccount();
+export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
   const {
     address: storedAddress,
     points: storedPoints,
@@ -26,34 +26,34 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
   } = useLoyaltyPassStore((state) => state);
 
   useEffect(() => {
-    if (!account || !storedAddress) {
+    if (!walletAddress || !storedAddress) {
       return;
     }
 
-    if (account.address === storedAddress) {
+    if (walletAddress === storedAddress) {
       return;
     }
 
     reset();
-  }, [account, reset, storedAddress]);
+  }, [walletAddress, reset, storedAddress]);
 
   //we store the data during 24hours to avoid querying too much our partner API.
   const t = Date.now() / 1000;
   const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_A_DAY;
 
   const queryIsEnabled =
-    !!account?.address &&
-    account?.chainType === 'EVM' &&
+    !!walletAddress &&
+    isEVMAddress(walletAddress) &&
     (storeNeedsRefresh ||
-      account?.address?.toLowerCase() !== storedAddress?.toLowerCase());
+      walletAddress.toLowerCase() !== storedAddress?.toLowerCase());
 
   // query
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['loyalty-pass', account?.address],
+    queryKey: ['loyalty-pass', walletAddress],
     queryFn: async () => {
       const res = await fetch(
-        `${apiBaseUrl}/wallets/${account?.address}/rewards`,
+        `${apiBaseUrl}/wallets/${walletAddress}/rewards`,
       );
 
       if (!res.ok) {
@@ -62,14 +62,14 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
 
       const jsonResponse = await res.json();
 
-      if (!jsonResponse || !jsonResponse.data || !account?.address) {
+      if (!jsonResponse || !jsonResponse.data || !walletAddress) {
         return undefined;
       }
 
       const { data } = jsonResponse;
 
       setLoyaltyPassData(
-        account.address,
+        walletAddress,
         data.sum,
         data.currentLevel,
         data.walletRewards,
@@ -77,7 +77,7 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
       );
 
       return {
-        address: account.address,
+        address: walletAddress,
         points: data.sum,
         tier: data.currentLevel,
         pdas: data.walletRewards,
@@ -87,10 +87,10 @@ export const useLoyaltyPass = (): UseLoyaltyPassProps => {
     refetchInterval: 1000 * 60 * 60,
   });
 
-  const returnLocalData = account?.address === storedAddress && !queryIsEnabled;
+  const returnLocalData = walletAddress === storedAddress && !queryIsEnabled;
 
   const errorWhileFetchingData =
-    !data || !account?.address || !(account.chainType === 'EVM');
+    !data || !walletAddress || !isEVMAddress(walletAddress);
 
   if (returnLocalData) {
     return {
