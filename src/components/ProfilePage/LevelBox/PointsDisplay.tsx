@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { NoSelectTypographyTitle } from '../ProfilePage.style';
+import { TierboxInfoTitles } from './TierBox.style';
 
 interface PointsDisplayProps {
   points?: number;
@@ -11,8 +11,8 @@ export const PointsDisplay = ({
   defaultPoints,
 }: PointsDisplayProps) => (
   <Box display="flex" justifyContent="end">
-    <NoSelectTypographyTitle>
+    <TierboxInfoTitles variant="headerLarge">
       {points || defaultPoints || '0'}
-    </NoSelectTypographyTitle>
+    </TierboxInfoTitles>
   </Box>
 );

@@ -9,7 +9,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Page({ params }: { params: { page: string } }) {
-  // console.log('params', params);
-  return <LeaderboardPage page={params.page} />;
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { page?: string };
+}) {
+  return <LeaderboardPage page={searchParams.page ?? undefined} />;
 }

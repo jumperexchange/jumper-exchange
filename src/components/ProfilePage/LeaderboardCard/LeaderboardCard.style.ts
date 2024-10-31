@@ -1,6 +1,6 @@
 import type { Breakpoint } from '@mui/material';
-import { Box, styled } from '@mui/material';
-import { ButtonSecondary } from 'src/components/Button';
+import { alpha, Box, styled } from '@mui/material';
+import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
 
 export const CardContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -43,3 +43,17 @@ export const CardButton = styled(ButtonSecondary)(({ theme }) => ({
     minWidth: 192,
   },
 }));
+
+export const LeaderboardUserPositionButton = styled(ButtonTransparent)(
+  ({ theme }) => ({
+    padding: theme.spacing(0, 1),
+    marginTop: theme.spacing(0.5),
+    height: 64,
+    backgroundColor: 'transparent',
+    ':hover': {
+      ':before': {
+        backgroundColor: alpha(theme.palette.black.main, 0.04),
+      },
+    },
+  }),
+);

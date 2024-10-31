@@ -28,7 +28,7 @@ import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
 
-export const Leaderboard = ({ page: defaultPage }: { page: string }) => {
+export const Leaderboard = ({ page: defaultPage }: { page?: string }) => {
   const { account } = useAccount();
   const { page, setPage, maxPages, setMaxPages } = useLeaderboardPageStore(
     (state) => state,
@@ -46,7 +46,6 @@ export const Leaderboard = ({ page: defaultPage }: { page: string }) => {
 
   // set leaderboard list length to the number of pages only once
   useEffect(() => {
-    // console.log('default page', defaultPage);
     if (defaultPage) {
       setPage(parseInt(defaultPage));
     }
@@ -83,10 +82,14 @@ export const Leaderboard = ({ page: defaultPage }: { page: string }) => {
             ? Array.from({ length: LEADERBOARD_LENGTH }).map((_, index) => (
                 <>
                   <LeaderboardEntrySkeleton
-                    key={index}
+                    key={`leaderboard-entry-${index}-skeleton`}
                     isUserPosition={false}
                   />
-                  {index !== LEADERBOARD_LENGTH - 1 && <Divider />}
+                  {index !== LEADERBOARD_LENGTH - 1 && (
+                    <Divider
+                      key={`leaderboard-entry-${index}-skeleton-divider`}
+                    />
+                  )}
                 </>
               ))
             : leaderboardData?.map(
@@ -96,7 +99,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: string }) => {
                   return (
                     <>
                       <LeaderboardEntry
-                        key={index}
+                        key={`leaderboard-entry-${index}`}
                         isUserPosition={isUserPosition}
                         walletAddress={
                           isUserPosition && account.address
@@ -106,7 +109,9 @@ export const Leaderboard = ({ page: defaultPage }: { page: string }) => {
                         position={entry.position}
                         points={entry.points}
                       />
-                      {index !== leaderboardData.length - 1 && <Divider />}
+                      {index !== leaderboardData.length - 1 && (
+                        <Divider key={`leaderboard-entry-${index}-divider`} />
+                      )}
                     </>
                   );
                 },

@@ -2,7 +2,6 @@ import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
 import { Stack } from '@mui/material';
 import { useMemo } from 'react';
-import { useABTest } from 'src/hooks/useABTest';
 import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useTraits } from 'src/hooks/useTraits';
@@ -36,10 +35,10 @@ export const ProfilePage = () => {
   const { account } = useAccount();
   const { isLoading, points, tier, pdas } = useLoyaltyPass();
   const { isLoading: isTraitLoading, traits } = useTraits();
-  const { isEnabled: isABTestEnabled } = useABTest({
-    feature: 'test_ab_1',
-    user: account?.address || '',
-  });
+  // const { isEnabled: isABTestEnabled } = useABTest({
+  //   feature: 'test_ab_1',
+  //   user: account?.address || '',
+  // });
   const {
     availableRewards,
     pastCampaigns,

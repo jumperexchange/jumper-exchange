@@ -1,4 +1,4 @@
-import { alpha } from '@mui/material';
+import { alpha, Typography } from '@mui/material';
 import { Box, styled } from '@mui/system';
 
 export const TierMainBox = styled(Box)(({ theme }) => ({
@@ -31,4 +31,9 @@ export const TierInfoBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+}));
+
+export const TierboxInfoTitles = styled(Typography)(({ theme }) => ({
+  userSelect: 'none',
+  color: theme.palette.text.primary,
 }));

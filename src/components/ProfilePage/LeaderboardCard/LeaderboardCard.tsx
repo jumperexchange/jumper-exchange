@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next';
 import type { LeaderboardEntryData } from '../../../hooks/useLeaderboard';
 import { useLeaderboardUser } from '../../../hooks/useLeaderboard';
 import { IconHeader } from '../Common/IconHeader';
-import { NoSelectTypographyTitle } from '../ProfilePage.style';
+import { TierboxInfoTitles } from '../LevelBox/TierBox.style';
 import {
   CardButton,
+  LeaderboardUserPositionButton,
   RankContainer,
   RankContentContainer,
 } from './LeaderboardCard.style';
@@ -15,6 +16,8 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
     useLeaderboardUser(address);
   const { t } = useTranslation();
 
+  const handleUserPositionLink = () => {};
+
   return (
     <RankContainer>
       <IconHeader
@@ -22,9 +25,11 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
         title={t('profile_page.rank')}
       />
       <RankContentContainer>
-        <NoSelectTypographyTitle alignSelf={'flex-start'}>
-          {leaderboardUserData?.position ?? '-'}
-        </NoSelectTypographyTitle>
+        <LeaderboardUserPositionButton onClick={handleUserPositionLink}>
+          <TierboxInfoTitles variant="headerLarge" alignSelf={'flex-start'}>
+            {leaderboardUserData?.position ?? '-'}
+          </TierboxInfoTitles>
+        </LeaderboardUserPositionButton>
         <Link href="/leaderboard" passHref>
           <CardButton>{t('leaderboard.title')}</CardButton>
         </Link>
