@@ -17,6 +17,7 @@ export const ProfileHeaderBox = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     flexDirection: 'row',
+    gap: theme.spacing(4),
   },
 }));
 

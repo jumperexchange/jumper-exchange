@@ -382,6 +382,9 @@ const themeCustomized = createTheme({
       light: '#000000',
       dark: '#000000',
     },
+    shadowLight: {
+      main: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+    },
     alphaDark100: {
       main: 'rgba(0, 0, 0, 0.04)',
     },
@@ -632,9 +635,6 @@ export const lightTheme = createTheme(
       },
       shadow: {
         main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-      },
-      shadowLight: {
-        main: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
       },
       primary: {
         light: '#31007A',

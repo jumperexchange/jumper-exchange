@@ -147,7 +147,6 @@ interface Resources {
     profile_page: {
       mobileTitle: 'Only available on Desktop';
       mobileDescription: 'The Jumper Profile page is not available on small screens yet. We are working on it.';
-      leaderboard: 'Leaderboard';
       level: 'Level';
       rank: 'Rank';
       rankInfo: 'Leaderboard is updated on a daily basis';
@@ -156,6 +155,12 @@ interface Resources {
       copyAddress: 'Copy wallet address';
       openBlockchainExplorer: 'Open explorer';
       addressMenu: 'Address Menu';
+    };
+    leaderboard: {
+      title: 'Leaderboard';
+      description: 'Explore the top rankings and see where you place among other users. View the highest-ranking users on the first page, and use pagination to explore the full list.';
+      rankCtaConnect: 'Where do you rank?';
+      updatedLabel: 'Updated: {{date}}';
     };
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';

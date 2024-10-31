@@ -1,41 +1,63 @@
-import { useTheme } from '@mui/material';
+import type { BoxProps } from '@mui/material';
+import { Box, styled, useTheme } from '@mui/material';
 
-// XPIcon
-interface XPIconProps {
+interface XPIconBackgroundProps extends BoxProps {
+  bgColor?: string;
   size?: number;
 }
 
-export const XPIcon = ({ size }: XPIconProps) => {
-  const theme = useTheme();
+export const XPIconBackground = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'bgColor' && prop !== 'size',
+})<XPIconBackgroundProps>(({ theme, bgColor, size }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: size || 20,
+  height: size || 20,
+  borderRadius: `${size ? size / 2 : 10}px`,
+  backgroundColor: bgColor
+    ? bgColor
+    : theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.accent1Alt.main,
+}));
 
+interface XPIconProps {
+  color?: string;
+  bgColor?: string;
+  size?: number;
+}
+
+export const XPIcon = ({ color, bgColor, size }: XPIconProps) => {
+  const theme = useTheme();
   return (
-    <svg
-      width={size ?? 20}
-      height={size ?? 20}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <circle
-        cx={size ? size / 2 : 10}
-        cy={size ? size / 2 : 10}
-        r={size ? size / 2 : 10}
-        fill={
-          theme.palette.mode === 'light'
-            ? theme.palette.primary.main
-            : theme.palette.accent1Alt.main
-        }
-      />
-      <path
-        d="M5.187 7.687a.625.625 0 0 0 0 .884l1.436 1.436-1.436 1.436a.625.625 0 0 0 .884.884l1.436-1.436 1.436 1.436a.625.625 0 1 0 .884-.884L8.39 10.007 9.827 8.57a.625.625 0 0 0-.884-.884L7.507 9.123 6.07 7.687a.625.625 0 0 0-.884 0zM10.625 11.25h1.25v1.25h-.625c-.313 0-.625-.313-.625-.625v-.625z"
-        fill="#fff"
-      />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M11.25 7.5c-.313 0-.625.313-.625.625v3.125h3.125c1.25 0 1.875-.938 1.875-1.875 0-.938-.625-1.875-1.875-1.875h-2.5zm2.5 1.25h-1.875V10h1.875c.469 0 .625-.395.625-.625 0-.23-.156-.625-.625-.625z"
-        fill="#fff"
-      />
-    </svg>
+    <XPIconBackground size={size || 20} bgColor={bgColor}>
+      <svg
+        width={size ? size * 0.6 : 11}
+        height={size ? size * 0.6 : 11}
+        fill="none"
+        style={{ marginLeft: '5%' }}
+        viewBox={`0 0 11 11`}
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M.378 3.18a.625.625 0 0 0 0 .884L1.814 5.5.378 6.936c-.59.59.295 1.474.884.884l1.436-1.436L4.134 7.82c.59.59 1.474-.294.884-.884L3.581 5.5l1.437-1.437c.59-.589-.294-1.473-.884-.884L2.698 4.616 1.261 3.18a.625.625 0 0 0-.884 0z"
+          fill={
+            color || theme.palette.mode === 'light'
+              ? theme.palette.white.main
+              : theme.palette.primary.main
+          }
+        />
+        <path
+          fill={
+            color || theme.palette.mode === 'light'
+              ? theme.palette.white.main
+              : theme.palette.primary.main
+          }
+          d="M6.441 2.994c-.313 0-.625.313-.625.624V7.37c0 .312.312.625.625.625h.625v-1.25h1.875c1.25 0 1.875-.939 1.875-1.875 0-.938-.625-1.875-1.875-1.875zm.625 1.251h1.875c.47 0 .625.395.625.625 0 .23-.156.625-.625.625H7.066z"
+        />
+      </svg>
+    </XPIconBackground>
   );
 };
 
@@ -46,7 +68,7 @@ export const SuperfestXPIcon = ({ size }: XPIconProps) => {
       width={size ?? '32'}
       height={size ?? '32'}
       fill="none"
-      viewBox="0 0 32 32"
+      viewBox={`0 0 ${size} ${size}`}
     >
       <g clipPath="url(#a)">
         <circle cx="16" cy="16" r="16" fill={'#ffffff'} />

@@ -14,16 +14,32 @@ export const CardContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const RankContainer = styled(CardContainer)(({ theme }) => ({
+  justifyContent: 'flex-start',
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     maxWidth: 256,
   },
 }));
 
+export const RankContentContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  flexGrow: 1,
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    flexDirection: 'column',
+  },
+}));
+
 export const CardButton = styled(ButtonSecondary)(({ theme }) => ({
   fontSize: 14,
+  width: '100%',
   lineHeight: '18px',
   color:
     theme.palette.mode === 'light'
       ? theme.palette.primary.main
       : theme.palette.white.main,
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    minWidth: 192,
+  },
 }));

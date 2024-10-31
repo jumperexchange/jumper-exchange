@@ -1,8 +1,8 @@
 import { Tooltip, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { StyledInfoIcon } from '../../TooltipInfo/TooltipInfo.style';
 import { PointsBoxContainer } from '../LevelBox/PointsBox.style';
 import { NoSelectTypography } from '../ProfilePage.style';
-import { StyledInfoIcon } from './StyledInfoIcon';
 
 interface IconHeaderProps {
   tooltipKey: string;

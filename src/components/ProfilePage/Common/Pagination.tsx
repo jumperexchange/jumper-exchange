@@ -1,29 +1,22 @@
-import { Box, Button } from '@mui/material';
 import {
-  FirstPage,
-  LastPage,
   ChevronLeft,
   ChevronRight,
+  FirstPage,
+  LastPage,
 } from '@mui/icons-material';
+import { Box, Button } from '@mui/material';
+import { useLeaderboardPageStore } from 'src/stores/leaderboardPage';
 import { NoSelectTypography } from '../ProfilePage.style';
 
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  onFirstPage: () => void;
-  onPreviousPage: () => void;
-  onNextPage: () => void;
-  onLastPage: () => void;
-}
-
-export const Pagination = ({
-  currentPage,
-  totalPages,
-  onFirstPage,
-  onPreviousPage,
-  onNextPage,
-  onLastPage,
-}: PaginationProps) => {
+export const Pagination = () => {
+  const {
+    page,
+    maxPages,
+    setNextPage,
+    setLastPage,
+    setFirstPage,
+    setPreviousPage,
+  } = useLeaderboardPageStore((state) => state);
   return (
     <Button
       aria-label="Page Navigation"
@@ -38,24 +31,24 @@ export const Pagination = ({
     >
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <FirstPage
-          onClick={onFirstPage}
+          onClick={setFirstPage}
           sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
         />
         <ChevronLeft
-          onClick={onPreviousPage}
+          onClick={setPreviousPage}
           sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
         />
       </Box>
       <NoSelectTypography fontSize="16px" lineHeight="18px" fontWeight={600}>
-        {currentPage}/{totalPages}
+        {page}/{maxPages}
       </NoSelectTypography>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <ChevronRight
-          onClick={onNextPage}
+          onClick={setNextPage}
           sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
         />
         <LastPage
-          onClick={onLastPage}
+          onClick={setLastPage}
           sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
         />
       </Box>
