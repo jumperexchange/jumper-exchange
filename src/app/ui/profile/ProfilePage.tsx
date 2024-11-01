@@ -12,7 +12,7 @@ const ProfilePage = ({ walletAddress, isPublic }: ProfilePageProps) => {
 
   return (
     <ProfileProvider
-      walletAddress={walletAddress || account?.address}
+      walletAddress={walletAddress || account?.address || ''}
       isPublic={isPublic}
     >
       <ProfilePageComponent />

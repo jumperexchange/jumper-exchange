@@ -4,12 +4,23 @@ import { publicRPCList } from '@/const/rpcList';
 import { getChainsQuery } from '@/hooks/useChains';
 import { walletDigest } from '@/utils/walletDigest';
 import { getLeaderboardUserQuery } from '@/hooks/useLeaderboard';
+import type { PDA } from '@/types/loyaltyPass';
 
 const BASE_WIDTH = 700;
 const BASE_HEIGHT = BASE_WIDTH / 1.91;
 
 // Replace by src/hooks/useLoyaltyPass.ts getLoyaltyPassDataQuery when server side ready
-async function getLoyaltyPassData(walletAddress: string) {
+export interface UseLoyaltyPassProps {
+  address: string;
+  points?: number;
+  tier?: string;
+  pdas?: PDA[];
+}
+
+// Replace by src/hooks/useLoyaltyPass.ts getLoyaltyPassDataQuery when server side ready
+async function getLoyaltyPassData(
+  walletAddress: string,
+): Promise<undefined | UseLoyaltyPassProps> {
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const res = await fetch(`${apiBaseUrl}/wallets/${walletAddress}/rewards`);
 
@@ -203,7 +214,7 @@ export async function GET(
                 display: 'flex',
               }}
             >
-              {loyaltyPass?.pdas.slice(0, 10).map((pda) => (
+              {loyaltyPass?.pdas?.slice(0, 10).map((pda) => (
                 <div
                   style={{
                     display: 'flex',

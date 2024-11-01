@@ -14,11 +14,9 @@ interface ProfileProps {
   isEVMAddress: boolean;
 }
 
-export const ProfileProvider: React.FC<PropsWithChildren<ProfileProps>> = ({
-  children,
-  walletAddress,
-  isPublic,
-}) => {
+export const ProfileProvider: React.FC<
+  PropsWithChildren<Pick<ProfileProps, 'walletAddress' | 'isPublic'>>
+> = ({ children, walletAddress, isPublic }) => {
   return (
     <ProfileContext.Provider
       value={{

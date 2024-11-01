@@ -2,8 +2,8 @@ import ProfilePage from '@/app/ui/profile/ProfilePage';
 import type { Metadata } from 'next';
 
 type Props = {
-  params: { walletAddress: string }
-}
+  params: { walletAddress: string };
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
