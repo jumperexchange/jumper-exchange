@@ -44,6 +44,10 @@ async function getLoyaltyPassData(
   };
 }
 
+export const config = {
+  maxDuration: 60,
+};
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ walletAddress: string }> },
@@ -114,10 +118,10 @@ export async function GET(
               display: 'flex',
             }}
           >
-            <img
+            {/*            <img
               style={{ borderRadius: '50%' }}
               src={`https://effigy.im/a/${walletAddress}.png`}
-            />
+            />*/}
           </div>
           <div
             style={{
@@ -199,12 +203,12 @@ export async function GET(
                 flexDirection: 'row',
               }}
             >
-              {chainsToDisplay.map((logoURI) => (
+              {/*              {chainsToDisplay.map((logoURI) => (
                 <img
                   style={{ width: 50, height: 50, borderRadius: '50%' }}
                   src={logoURI}
                 />
-              ))}
+              ))}*/}
             </div>
           </div>
         </div>
@@ -251,7 +255,7 @@ export async function GET(
       </div>
     ),
     {
-      debug: false,
+      debug: true,
       width: BASE_WIDTH,
       height: BASE_HEIGHT,
     },
