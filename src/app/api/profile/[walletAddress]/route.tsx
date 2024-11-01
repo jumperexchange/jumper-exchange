@@ -206,12 +206,12 @@ export async function GET(
                 flexDirection: 'row',
               }}
             >
-              {/*              {chainsToDisplay.map((logoURI) => (
+              {chainsToDisplay.map((logoURI) => (
                 <img
                   style={{ width: 50, height: 50, borderRadius: '50%' }}
                   src={logoURI}
                 />
-              ))}*/}
+              ))}
             </div>
           </div>
         </div>
@@ -258,7 +258,7 @@ export async function GET(
       </div>
     ),
     {
-      debug: true,
+      debug: false,
       width: BASE_WIDTH,
       height: BASE_HEIGHT,
     },
