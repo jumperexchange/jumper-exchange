@@ -98,7 +98,13 @@ export async function GET(
 
   return new ImageResponse(
     (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          background: '#ffff00',
+        }}
+      >
         <div
           style={{
             position: 'relative',
