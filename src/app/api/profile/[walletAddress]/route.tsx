@@ -116,10 +116,10 @@ export async function GET(
               display: 'flex',
             }}
           >
-            {/*            <img
+            <img
               style={{ borderRadius: '50%' }}
               src={`https://effigy.im/a/${walletAddress}.png`}
-            />*/}
+            />
           </div>
           <div
             style={{
