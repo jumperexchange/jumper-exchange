@@ -50,6 +50,8 @@ export async function GET(
 ) {
   const walletAddress = (await params).walletAddress;
 
+  // eslint-disable-next-line no-console
+  console.log('init sdk config');
   createConfig({
     providers: [EVM(), Solana(), UTXO()],
     integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
@@ -60,11 +62,19 @@ export async function GET(
     preloadChains: true,
   });
 
+  // eslint-disable-next-line no-console
+  console.log('staring fetching');
+
   const { chains } = await getChainsQuery();
+  // eslint-disable-next-line no-console
+  console.log('finished fetching chains');
   const tokens = await getTokenBalances(
     walletAddress,
     chains.map((chain) => chain.nativeToken),
   );
+  // eslint-disable-next-line no-console
+  console.log('finished fetching tokenbalances');
+
   const tokensToDisplay = tokens.filter(
     (token) => token.amount ?? 0 > BigInt(0n),
   );
@@ -76,7 +86,12 @@ export async function GET(
     queryKey: [, walletAddress],
   }).then(({ data }) => data);
 
+  // eslint-disable-next-line no-console
+  console.log('finished fetching leaderboard');
+
   const loyaltyPass = await getLoyaltyPassData(walletAddress);
+  // eslint-disable-next-line no-console
+  console.log('finished fetching loyalty pass');
 
   return new ImageResponse(
     (
