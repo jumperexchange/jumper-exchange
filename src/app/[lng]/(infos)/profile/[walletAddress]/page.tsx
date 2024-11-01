@@ -18,6 +18,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: `${baseUrl}/profile/${params.walletAddress}`,
       images: `${baseUrl}/api/profile/${params.walletAddress}`,
     },
+    twitter: {
+      images: `${baseUrl}/api/profile/${params.walletAddress}`,
+    }
   };
 }
 
