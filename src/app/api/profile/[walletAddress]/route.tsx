@@ -44,9 +44,7 @@ async function getLoyaltyPassData(
   };
 }
 
-export const config = {
-  maxDuration: 60,
-};
+export const maxDuration = 60;
 
 export async function GET(
   request: Request,
