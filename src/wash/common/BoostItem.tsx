@@ -132,6 +132,12 @@ const PowerUpLogo = styled(Image)<{ disabled: boolean }>`
   }
 `;
 
+const maxAmountDict = {
+  soap: 20,
+  sponge: 10,
+  cleanser: 7,
+};
+
 /**********************************************************************************************
  * BoostItem Component
  *
@@ -187,7 +193,11 @@ export function BoostItem({
         />
       </Absolute>
       <Absolute right={'-4px'} top={'-8px'}>
-        <Counter amount={amount} isDisabled={disabled} />
+        <Counter
+          amount={amount}
+          maxAmount={maxAmountDict[boostType]}
+          isDisabled={disabled}
+        />
       </Absolute>
     </PowerUpWrapper>
   );
