@@ -5,6 +5,7 @@ import { getChainsQuery } from '@/hooks/useChains';
 import { walletDigest } from '@/utils/walletDigest';
 import { getLeaderboardUserQuery } from '@/hooks/useLeaderboard';
 import type { PDA } from '@/types/loyaltyPass';
+import render from '@/utils/effigy/blockiesPNG';
 
 const BASE_WIDTH = 700;
 const BASE_HEIGHT = BASE_WIDTH / 1.91;
@@ -116,6 +117,10 @@ export async function GET(
               display: 'flex',
             }}
           >
+            <img
+              style={{ borderRadius: '50%' }}
+              src={`data:image/png;base64, ${render({ seed: walletAddress.toLowerCase() }).toString('base64')}`}
+            />
             {/*            <img
               style={{ borderRadius: '50%' }}
               src={`https://effigy.im/a/${walletAddress}.png`}
@@ -148,7 +153,7 @@ export async function GET(
                 display: 'flex',
               }}
             >
-              Rank: {leaderboardUser.position}
+              Rank: {leaderboardUser?.position ?? '-'}
             </div>
           </div>
         </div>
@@ -231,7 +236,7 @@ export async function GET(
                 display: 'flex',
               }}
             >
-              {/*              {loyaltyPass?.pdas?.slice(0, 10).map((pda) => (
+              {loyaltyPass?.pdas?.slice(0, 10).map((pda) => (
                 <div
                   style={{
                     display: 'flex',
@@ -246,7 +251,7 @@ export async function GET(
                     src={pda.reward.image}
                   />
                 </div>
-              ))}*/}
+              ))}
             </div>
           </div>
         </div>
