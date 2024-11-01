@@ -229,7 +229,7 @@ export async function GET(
                 display: 'flex',
               }}
             >
-              {loyaltyPass?.pdas?.slice(0, 10).map((pda) => (
+{/*              {loyaltyPass?.pdas?.slice(0, 10).map((pda) => (
                 <div
                   style={{
                     display: 'flex',
@@ -244,7 +244,7 @@ export async function GET(
                     src={pda.reward.image}
                   />
                 </div>
-              ))}
+              ))}*/}
             </div>
           </div>
         </div>
