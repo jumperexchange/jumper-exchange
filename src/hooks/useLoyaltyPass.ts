@@ -1,6 +1,5 @@
 import { useLoyaltyPassStore } from '@/stores/loyaltyPass';
 import type { PDA } from '@/types/loyaltyPass';
-import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SECONDS_IN_A_DAY } from 'src/const/time';
@@ -14,6 +13,37 @@ export interface UseLoyaltyPassProps {
   pdas?: PDA[];
 }
 
+export async function getLoyaltyPassDataQuery({
+  queryKey,
+}: {
+  queryKey: (string | undefined)[];
+}) {
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const walletAddress = queryKey[1];
+  const res = await fetch(`${apiBaseUrl}/wallets/${walletAddress}/rewards`);
+
+  if (!res.ok) {
+    return undefined;
+  }
+
+  const jsonResponse = await res.json();
+
+  if (!jsonResponse || !jsonResponse.data || !walletAddress) {
+    return undefined;
+  }
+
+  const { data } = jsonResponse;
+
+  return {
+    address: walletAddress,
+    points: data.sum,
+    tier: data.currentLevel,
+    pdas: data.walletRewards,
+  };
+}
+
+// TODO: Make this component server friendly by removing the useEffect/state
+// Will enable its usage into /app/api/profile/[walletAddress]/route.tsx
 export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
   const {
     address: storedAddress,
@@ -48,39 +78,21 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
       walletAddress.toLowerCase() !== storedAddress?.toLowerCase());
 
   // query
-  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['loyalty-pass', walletAddress],
-    queryFn: async () => {
-      const res = await fetch(
-        `${apiBaseUrl}/wallets/${walletAddress}/rewards`,
-      );
+    queryFn: async ({ queryKey }) => {
+      const walletAddress = queryKey[1];
+      const data = await getLoyaltyPassDataQuery({ queryKey });
 
-      if (!res.ok) {
-        return undefined;
+      if (data && walletAddress) {
+        setLoyaltyPassData(walletAddress, data.points, data.tier, data.pdas, t);
       }
-
-      const jsonResponse = await res.json();
-
-      if (!jsonResponse || !jsonResponse.data || !walletAddress) {
-        return undefined;
-      }
-
-      const { data } = jsonResponse;
-
-      setLoyaltyPassData(
-        walletAddress,
-        data.sum,
-        data.currentLevel,
-        data.walletRewards,
-        t,
-      );
 
       return {
         address: walletAddress,
-        points: data.sum,
-        tier: data.currentLevel,
-        pdas: data.walletRewards,
+        points: data?.points,
+        tier: data?.tier,
+        pdas: data?.pdas,
       };
     },
     enabled: queryIsEnabled,

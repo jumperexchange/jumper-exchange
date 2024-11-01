@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { createContext, type PropsWithChildren } from 'react';
 import { isEVMAddress } from '@/utils/isEVMAddress';
 
@@ -9,16 +9,24 @@ export const ProfileContext = createContext<ProfileProps>({
 });
 
 interface ProfileProps {
-  walletAddress: string,
-  isPublic?: boolean,
-  isEVMAddress: boolean,
+  walletAddress: string;
+  isPublic?: boolean;
+  isEVMAddress: boolean;
 }
 
-export const ProfileProvider: React.FC<
-  PropsWithChildren<ProfileProps>
-> = ({ children, walletAddress, isPublic }) => {
+export const ProfileProvider: React.FC<PropsWithChildren<ProfileProps>> = ({
+  children,
+  walletAddress,
+  isPublic,
+}) => {
   return (
-    <ProfileContext.Provider value={{ walletAddress, isPublic: isPublic ?? false, isEVMAddress: isEVMAddress(walletAddress) }}>
+    <ProfileContext.Provider
+      value={{
+        walletAddress,
+        isPublic: isPublic ?? false,
+        isEVMAddress: isEVMAddress(walletAddress),
+      }}
+    >
       {children}
     </ProfileContext.Provider>
   );

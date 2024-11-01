@@ -1,4 +1,7 @@
-import { type AvailableRewards, useMerklRewardsOnCampaigns } from '@/hooks/useMerklRewardsOnCampaigns';
+import {
+  type AvailableRewards,
+  useMerklRewardsOnCampaigns,
+} from '@/hooks/useMerklRewardsOnCampaigns';
 import { useAccount } from '@lifi/wallet-management';
 import { RewardsCarousel } from '@/components/ProfilePage/Rewards/RewardsCarousel';
 import { useMemo } from 'react';
@@ -45,5 +48,5 @@ export function MerkleRewards() {
       availableRewards={availableRewards}
       isMerklSuccess={isRewardSuccess}
     />
-  )
+  );
 }
