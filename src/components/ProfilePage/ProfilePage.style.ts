@@ -1,7 +1,7 @@
 import type { Breakpoint } from '@mui/material';
 import { Box, Container, Typography, alpha, styled } from '@mui/material';
 
-export const ProfilePageContainer = styled(Container)(() => ({
+export const PageContainer = styled(Container)(() => ({
   marginTop: 32,
   background: 'transparent',
   borderRadius: '8px',

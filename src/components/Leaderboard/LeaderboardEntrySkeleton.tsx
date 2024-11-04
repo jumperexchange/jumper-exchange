@@ -1,4 +1,4 @@
-import { alpha, Box, Skeleton, useTheme } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import {
   LeaderboardEntryWrapper,
@@ -11,8 +11,6 @@ export const LeaderboardEntrySkeleton = ({
 }: {
   isUserPosition?: boolean;
 }) => {
-  const theme = useTheme();
-
   return (
     <LeaderboardEntryWrapper isUserPosition={isUserPosition}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -47,15 +45,7 @@ export const LeaderboardEntrySkeleton = ({
           height={24}
           sx={{ borderRadius: '12px' }}
         />
-        <XPIcon
-          size={24}
-          color={theme.palette.primary.main}
-          bgColor={
-            theme.palette.mode === 'light'
-              ? alpha(theme.palette.primary.main, 0.08)
-              : alpha(theme.palette.primary.main, 0.42)
-          }
-        />
+        <XPIcon size={24} />
       </RankPointsContainer>
     </LeaderboardEntryWrapper>
   );

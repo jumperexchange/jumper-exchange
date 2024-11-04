@@ -9,9 +9,9 @@ import { AddressBox } from './AddressBox/AddressBox';
 import { LeaderboardCard } from './LeaderboardCard/LeaderboardCard';
 import { TierBox } from './LevelBox/TierBox';
 import {
+  PageContainer,
   ProfileHeaderBox,
   ProfileInfoBox,
-  ProfilePageContainer,
 } from './ProfilePage.style';
 import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
@@ -34,7 +34,7 @@ const shouldHideComponent = (
 export const ProfilePage = () => {
   const { account } = useAccount();
   const { isLoading, points, tier, pdas } = useLoyaltyPass();
-  const { isLoading: isTraitLoading, traits } = useTraits();
+  const { traits } = useTraits();
   // const { isEnabled: isABTestEnabled } = useABTest({
   //   feature: 'test_ab_1',
   //   user: account?.address || '',
@@ -60,7 +60,7 @@ export const ProfilePage = () => {
   );
 
   return (
-    <ProfilePageContainer className="profile-page">
+    <PageContainer className="profile-page">
       <RewardsCarousel
         hideComponent={hideComponent}
         availableRewards={availableRewards}
@@ -80,6 +80,6 @@ export const ProfilePage = () => {
         <QuestCarousel pastCampaigns={pastCampaigns} traits={traits} />
         <QuestCompletedList pdas={pdas} loading={isLoading} />
       </Stack>
-    </ProfilePageContainer>
+    </PageContainer>
   );
 };

@@ -1,44 +1,35 @@
 import { useMenuStore } from '@/stores/menu';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { useTheme } from '@mui/material/styles';
-
 import { useAccount } from '@lifi/wallet-management';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import { useTheme } from '@mui/material/styles';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
+import { JUMPER_SCAN_PATH } from 'src/const/urls';
+import { useUserTracking } from 'src/hooks/userTracking';
 export const useAddressContent = () => {
   const { account } = useAccount();
-  const { setSnackbarState } = useMenuStore((state) => state);
+  const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const closeAllMenus = useMenuStore((state) => state.closeAllMenus);
+  const router = useRouter();
 
-  const handleCopyButton = () => {
-    account?.address && navigator.clipboard.writeText(account.address);
-    setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
+  const handleScanButton = () => {
+    const url = `${JUMPER_SCAN_PATH}/wallet/${account.address}`;
+    trackEvent({
+      category: TrackingCategory.AddressMenu,
+      action: TrackingAction.OpenJumperScan,
+      label: 'open-jumper-scan-wallet',
+    });
+    router.push(url);
   };
 
   return [
     {
-      label: t('profile_page.copyAddress') as string,
-      showMoreIcon: false,
-      prefixIcon: (
-        <ContentCopyIcon
-          sx={{
-            height: '16px',
-            color: isDarkMode
-              ? theme.palette.white.main
-              : theme.palette.black.main,
-          }}
-        />
-      ),
-      onClick: () => {
-        handleCopyButton();
-        closeAllMenus();
-      },
-    },
-    {
-      label: t('profile_page.openBlockchainExplorer') as string,
+      label: t('profile_page.open', { tool: 'explorer' }) as string,
       showMoreIcon: false,
       prefixIcon: (
         <OpenInNewIcon
@@ -56,6 +47,24 @@ export const useAddressContent = () => {
       link: {
         url: `https://etherscan.io/address/${account.address}`,
         external: true,
+      },
+    },
+    {
+      label: t('profile_page.open', { tool: 'Jumper Scan' }) as string,
+      showMoreIcon: false,
+      prefixIcon: (
+        <ReceiptLongIcon
+          sx={{
+            height: '16px',
+            color: isDarkMode
+              ? theme.palette.white.main
+              : theme.palette.black.main,
+          }}
+        />
+      ),
+      onClick: () => {
+        handleScanButton();
+        closeAllMenus();
       },
     },
   ];

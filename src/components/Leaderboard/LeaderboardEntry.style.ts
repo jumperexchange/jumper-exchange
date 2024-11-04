@@ -1,4 +1,4 @@
-import type { BoxProps } from '@mui/material';
+import type { BoxProps, Breakpoint } from '@mui/material';
 import {
   alpha,
   Box,
@@ -33,7 +33,10 @@ export const LeaderboardEntryWrapper = styled(Box, {
       background: theme.palette.bgTertiary.main,
       borderRadius: '24px',
       margin: '10px 0',
-      padding: theme.spacing(2, 3),
+      padding: theme.spacing(2, 1),
+      [theme.breakpoints.up('sm' as Breakpoint)]: {
+        padding: theme.spacing(2, 3),
+      },
     }),
     ...(isUserEntry &&
       isUserConnected && {
@@ -67,6 +70,15 @@ export const LeaderboardEntryDivider = styled(Divider)(({ theme }) => ({
   margin: theme.spacing(0, 3),
 }));
 
+export const LeaderboardEntryInfos = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  maxWidth: '65%',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    maxWidth: '80%',
+  },
+}));
+
 export const RankLabel = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(1, 2),
   display: 'inline-block',
@@ -88,15 +100,26 @@ export const RankLabelSkeleton = styled(Skeleton)(({ theme }) => ({
 
 export const RankWalletImage = styled(Image)(({ theme }) => ({
   borderRadius: '100%',
-  marginLeft: theme.spacing(3),
+  marginLeft: theme.spacing(1),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginLeft: theme.spacing(4),
+  },
 }));
 
 export const RankWalletAddress = styled(Typography)(({ theme }) => ({
-  marginLeft: theme.spacing(4),
+  marginLeft: theme.spacing(1),
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginLeft: theme.spacing(4),
+  },
 }));
 
 export const RankPointsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  gap: theme.spacing(2),
+  gap: theme.spacing(0.5),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    gap: theme.spacing(2),
+  },
 }));

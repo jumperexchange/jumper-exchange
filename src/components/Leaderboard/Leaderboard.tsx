@@ -1,13 +1,13 @@
 'use client';
-import { Box, Container, Divider, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAccount } from '@lifi/wallet-management';
 import {
   LEADERBOARD_LENGTH,
-  useLeaderboardPageStore,
-} from 'src/stores/leaderboardPage';
+  useLeaderboardStore,
+} from 'src/stores/leaderboard';
 import type {
   LeaderboardEntryData,
   LeaderboardMeta,
@@ -17,6 +17,7 @@ import {
   useLeaderboardUser,
 } from '../../hooks/useLeaderboard';
 import { Pagination } from '../ProfilePage/Common/Pagination';
+import { PageContainer } from '../ProfilePage/ProfilePage.style';
 import { TooltipInfo } from '../TooltipInfo/TooltipInfo';
 import {
   LeaderboardContainer,
@@ -28,9 +29,14 @@ import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
 
+const isValidPage = (page: string, totalPages: number) => {
+  const pageNum = parseInt(page, 10);
+  return !isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages;
+};
+
 export const Leaderboard = ({ page: defaultPage }: { page?: string }) => {
   const { account } = useAccount();
-  const { page, setPage, maxPages, setMaxPages } = useLeaderboardPageStore(
+  const { page, setPage, maxPages, setMaxPages } = useLeaderboardStore(
     (state) => state,
   );
 
@@ -44,14 +50,21 @@ export const Leaderboard = ({ page: defaultPage }: { page?: string }) => {
   const { data: leaderboardUserData }: { data: LeaderboardEntryData } =
     useLeaderboardUser(account?.address);
 
-  // set leaderboard list length to the number of pages only once
   useEffect(() => {
-    if (defaultPage) {
-      setPage(parseInt(defaultPage));
-    }
-    if (meta?.pagination?.pagesLength && maxPages === LEADERBOARD_LENGTH) {
+    // set maxPages to the number of pages returned by the API
+    if (meta?.pagination?.pagesLength && maxPages === 0) {
       setMaxPages(meta.pagination.pagesLength);
     }
+
+    if (
+      !defaultPage ||
+      !meta?.pagination?.pagesLength ||
+      !isValidPage(defaultPage, meta.pagination.pagesLength)
+    ) {
+      return;
+    }
+    setPage(parseInt(defaultPage));
+
     // maxPages is not needed here but eslint is complaining
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meta?.pagination?.pagesLength]);
@@ -63,7 +76,7 @@ export const Leaderboard = ({ page: defaultPage }: { page?: string }) => {
   });
 
   return (
-    <Container>
+    <PageContainer>
       <LeaderboardContainer>
         <LeaderboardHeader>
           <Box display={'flex'} alignItems={'center'}>
@@ -119,6 +132,6 @@ export const Leaderboard = ({ page: defaultPage }: { page?: string }) => {
         </LeaderboardEntryStack>
         {maxPages > 1 && <Pagination />}
       </LeaderboardContainer>
-    </Container>
+    </PageContainer>
   );
 };

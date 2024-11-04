@@ -1,5 +1,5 @@
 import type { BoxProps } from '@mui/material';
-import { Box, styled, useTheme } from '@mui/material';
+import { alpha, Box, styled, useTheme } from '@mui/material';
 
 interface XPIconBackgroundProps extends BoxProps {
   bgColor?: string;
@@ -26,12 +26,42 @@ interface XPIconProps {
   color?: string;
   bgColor?: string;
   size?: number;
+  variant?: 'primary' | 'secondary';
 }
 
-export const XPIcon = ({ color, bgColor, size }: XPIconProps) => {
+export const XPIcon = ({
+  color,
+  bgColor,
+  size,
+  variant = 'primary',
+}: XPIconProps) => {
   const theme = useTheme();
+  let iconColor, iconBgColor;
+  switch (variant) {
+    case 'secondary':
+      iconColor =
+        theme.palette.mode === 'light'
+          ? theme.palette.white.main
+          : theme.palette.primary.main;
+      iconBgColor =
+        theme.palette.mode === 'light'
+          ? theme.palette.accent1.main
+          : theme.palette.white.main;
+      break;
+    default:
+      iconColor =
+        theme.palette.mode === 'light'
+          ? theme.palette.primary.main
+          : theme.palette.white.main;
+      iconBgColor =
+        theme.palette.mode === 'light'
+          ? alpha(theme.palette.primary.main, 0.08)
+          : alpha(theme.palette.primary.main, 0.42);
+      break;
+  }
+
   return (
-    <XPIconBackground size={size || 20} bgColor={bgColor}>
+    <XPIconBackground size={size || 20} bgColor={bgColor ?? iconBgColor}>
       <svg
         width={size ? size * 0.6 : 11}
         height={size ? size * 0.6 : 11}
@@ -42,18 +72,10 @@ export const XPIcon = ({ color, bgColor, size }: XPIconProps) => {
       >
         <path
           d="M.378 3.18a.625.625 0 0 0 0 .884L1.814 5.5.378 6.936c-.59.59.295 1.474.884.884l1.436-1.436L4.134 7.82c.59.59 1.474-.294.884-.884L3.581 5.5l1.437-1.437c.59-.589-.294-1.473-.884-.884L2.698 4.616 1.261 3.18a.625.625 0 0 0-.884 0z"
-          fill={
-            color || theme.palette.mode === 'light'
-              ? theme.palette.white.main
-              : theme.palette.primary.main
-          }
+          fill={color ?? iconColor}
         />
         <path
-          fill={
-            color || theme.palette.mode === 'light'
-              ? theme.palette.white.main
-              : theme.palette.primary.main
-          }
+          fill={color ?? iconColor}
           d="M6.441 2.994c-.313 0-.625.313-.625.624V7.37c0 .312.312.625.625.625h.625v-1.25h1.875c1.25 0 1.875-.939 1.875-1.875 0-.938-.625-1.875-1.875-1.875zm.625 1.251h1.875c.47 0 .625.395.625.625 0 .23-.156.625-.625.625H7.066z"
         />
       </svg>

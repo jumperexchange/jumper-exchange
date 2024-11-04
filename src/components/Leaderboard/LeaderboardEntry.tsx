@@ -2,10 +2,11 @@ import { alpha, Box, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import useImageStatus from 'src/hooks/useImageStatus';
-import { useLeaderboardPageStore } from 'src/stores/leaderboardPage';
+import { useLeaderboardStore } from 'src/stores/leaderboard';
 import { effigyAddressFormatter } from 'src/utils/effigyAddressFormatter';
 import { ConnectButton } from '../ConnectButton';
 import {
+  LeaderboardEntryInfos,
   LeaderboardEntryWrapper,
   RankLabel,
   RankPointsContainer,
@@ -34,7 +35,7 @@ export const LeaderboardEntry = ({
   const { t } = useTranslation();
   const formattedAddress = effigyAddressFormatter(walletAddress);
   const imgLink = useImageStatus(formattedAddress);
-  const { setUserPage } = useLeaderboardPageStore((state) => state);
+  const { setUserPage } = useLeaderboardStore((state) => state);
 
   const handleUserPosition = (e: React.MouseEvent<HTMLDivElement>) => {
     e?.preventDefault();
@@ -52,7 +53,7 @@ export const LeaderboardEntry = ({
           : undefined
       }
     >
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <LeaderboardEntryInfos>
         <Box minWidth={74} textAlign={'center'}>
           <RankLabel variant="bodyXSmallStrong">
             {isUserEntry && !isUserConnected ? '?' : position}
@@ -71,7 +72,7 @@ export const LeaderboardEntry = ({
             ? t('leaderboard.rankCtaConnect')
             : walletAddress}
         </RankWalletAddress>
-      </Box>
+      </LeaderboardEntryInfos>
       {isUserEntry && !isUserConnected ? (
         <ConnectButton />
       ) : (

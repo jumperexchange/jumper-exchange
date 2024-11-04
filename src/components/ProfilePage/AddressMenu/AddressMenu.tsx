@@ -1,10 +1,6 @@
-import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Fade from '@mui/material/Fade';
-import { useTranslation } from 'react-i18next';
 import {
-  MenuHeaderAppBar,
-  MenuHeaderAppWrapper,
   MenuList,
   MenuPaper,
   MenuPopper,
@@ -21,7 +17,6 @@ export const AddressMenu = ({
   setOpen: any;
   anchorEl: HTMLElement | null;
 }) => {
-  const { t } = useTranslation();
   const addressBoxMenuItems = useAddressContent();
 
   return (
@@ -58,24 +53,14 @@ export const AddressMenu = ({
                 hasLabel={true}
                 // component={isOpenSubMenu ? 'div' : 'ul'}
               >
-                <MenuHeaderAppWrapper>
-                  <MenuHeaderAppBar component="div" elevation={0}>
-                    <Typography
-                      variant={'bodyMediumStrong'}
-                      width={'100%'}
-                      align={'center'}
-                      flex={1}
-                      noWrap
-                    >
-                      {t('profile_page.addressMenu')}
-                    </Typography>
-                  </MenuHeaderAppBar>
-                </MenuHeaderAppWrapper>
                 {addressBoxMenuItems.map((el, index) => (
                   <MenuItem
                     key={`${el.label}-${index}`}
                     autoFocus={index > 0 ? true : false}
                     label={el.label}
+                    styles={
+                      index === 0 ? { marginTop: '24px !important' } : undefined
+                    }
                     prefixIcon={el.prefixIcon}
                     link={el.link}
                     showMoreIcon={el.showMoreIcon}

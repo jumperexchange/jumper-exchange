@@ -1,10 +1,10 @@
 'use client';
 
 import { useAccount } from '@lifi/wallet-management';
-import { Box } from '@mui/material';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { useLeaderboardUser } from '../../hooks/useLeaderboard';
 import { LeaderboardEntry } from './LeaderboardEntry';
+import { LeaderboardUserEntryBox } from './LeaderboardUserEntry.style';
 
 export const LeaderboardUserEntry = () => {
   const { account } = useAccount();
@@ -12,7 +12,7 @@ export const LeaderboardUserEntry = () => {
   const { points } = useLoyaltyPass();
 
   return (
-    <Box marginTop={'24px'}>
+    <LeaderboardUserEntryBox>
       <LeaderboardEntry
         isUserEntry={true}
         isUserConnected={!!account.address}
@@ -22,6 +22,6 @@ export const LeaderboardUserEntry = () => {
         position={leaderboardUserData?.position ?? '-'}
         points={points || 0}
       />
-    </Box>
+    </LeaderboardUserEntryBox>
   );
 };
