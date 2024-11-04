@@ -132,12 +132,6 @@ const PowerUpLogo = styled(Image)<{ disabled: boolean }>`
   }
 `;
 
-const maxAmountDict = {
-  soap: 20,
-  sponge: 10,
-  cleanser: 7,
-};
-
 /**********************************************************************************************
  * BoostItem Component
  *
