@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
 import { useUmi } from '../contexts/useUmi';
-import { WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
 import { utf8 } from '@metaplex-foundation/umi/serializers';
 
 import type { TCleaningItem } from '../types/wash';
@@ -36,20 +35,18 @@ export function useWash(
         set_isWashing(true);
         const message = utf8.serialize(item.message);
         const signedMessage = await umi.identity.signMessage(message);
-        const responseUseItem = await fetch(
-          `${WASH_ENDPOINT_ROOT_URI}/user/${umi.identity.publicKey}/item/${item.id}`,
-          {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${account.address ?? ''}`,
-            },
-            body: JSON.stringify({
-              message: Array.from(message),
-              signature: Array.from(signedMessage),
-            }),
+        const responseUseItem = await fetch('/api/items/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        );
+          body: JSON.stringify({
+            message: Array.from(message),
+            signature: Array.from(signedMessage),
+            item: item.id,
+            publicKey: umi.identity.publicKey,
+          }),
+        });
 
         set_isWashing(false);
         set_washStatus(responseUseItem.statusText);

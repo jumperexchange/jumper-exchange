@@ -37,6 +37,7 @@ export const CLEANING_ITEMS: Record<TCleaningItem['id'], TCleaningItem> = {
     logo: '/wash/violet-stroke-soap.png',
     percentage: '+5%',
     boost: 5,
+    maxAmount: 20,
   },
   sponge: {
     id: 'sponge',
@@ -44,6 +45,7 @@ export const CLEANING_ITEMS: Record<TCleaningItem['id'], TCleaningItem> = {
     logo: '/wash/violet-stroke-sponge.png',
     percentage: '+10%',
     boost: 10,
+    maxAmount: 10,
   },
   cleanser: {
     id: 'cleanser',
@@ -51,6 +53,7 @@ export const CLEANING_ITEMS: Record<TCleaningItem['id'], TCleaningItem> = {
     logo: '/wash/violet-stroke-cleanser.png',
     percentage: '+15%',
     boost: 15,
+    maxAmount: 7,
   },
 };
 
@@ -243,11 +246,11 @@ export const QUESTS: TQuest[] = [
  ************************************************************************************************/
 export const TOOLTIP_MESSAGES = {
   powerUp:
-    'Complete quests to gain power ups which can be used to give a big progress boost to your current NFT.',
+    'Complete quests to gain power ups, and use them to super charge your wash trading progress.',
   progress:
-    'Every trade you make on Solana with Jumper helps wash your NFT clean. It takes $10,000 of volume to fully wash the NFT, or you can complete quests for power ups to boost your progress!',
+    'Every swap helps wash your NFT clean. It takes $10,000 of volume to fully wash the NFT, or you can complete quests for power ups to boost your progress much faster!',
   quest:
-    'Every Solana swap you make on Jumper helps wash your NFT. But you can wash your NFT even faster by completing quests for items that boost your progress! Lfg.',
+    'Quests help speed up your wash trading progress. Trade at least $10 of volume per quest to gain power ups that boost your progress! Lfg.',
   goldenNft:
     //TODO: change this on launch
     'When the game ends on xx/xx/xxxx Golden NFT holders will be airdropped something sexy from the prize pool; holding Mad Lads, Retardio Cousins, Degods, Yoots, $Coby, and more!',

@@ -40,4 +40,5 @@ export type TCleaningItem = {
   logo: string;
   percentage: '+5%' | '+10%' | '+15%';
   boost: 5 | 10 | 15;
+  maxAmount: number;
 };

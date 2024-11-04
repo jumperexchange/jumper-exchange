@@ -187,7 +187,11 @@ export function BoostItem({
         />
       </Absolute>
       <Absolute right={'-4px'} top={'-8px'}>
-        <Counter amount={amount} isDisabled={disabled} />
+        <Counter
+          amount={amount}
+          maxAmount={CLEANING_ITEMS[boostType].maxAmount}
+          isDisabled={disabled}
+        />
       </Absolute>
     </PowerUpWrapper>
   );
