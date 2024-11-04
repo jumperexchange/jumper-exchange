@@ -121,8 +121,9 @@ const QuestDescription = styled.p`
   ${mq[0]} {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 4;
     overflow: hidden;
+    padding-left: 0.5rem;
   }
 `;
 
@@ -156,7 +157,6 @@ const QuestItemMobileWrapper = styled.div`
   gap: 0.25rem;
   border-radius: 1rem;
   padding: 1rem;
-  height: 196px;
   box-shadow: 4px 4px 0px #8000ff;
   transform: skew(-3deg);
   flex-direction: column;
@@ -305,7 +305,7 @@ export function QuestItem(
           <QuestDescription>
             {props.description}&nbsp;
             <VolumeWarning questType={props.questType}>
-              {'The trade should have at least $10 volume.'}
+              {'Swap at least $10 per trade for this quest.'}
             </VolumeWarning>
           </QuestDescription>
         </ContentWrapper>
@@ -340,7 +340,12 @@ export function QuestItem(
               />
             </BoosterWrapper>
           </QuestItemInnerBox>
-          <QuestDescription>{props.description}</QuestDescription>
+          <QuestDescription>
+            {props.description}&nbsp;
+            <VolumeWarning questType={props.questType}>
+              {'Swap at least $10 per trade for this quest.'}
+            </VolumeWarning>
+          </QuestDescription>
         </div>
 
         <div style={{ display: 'flex' }}>
