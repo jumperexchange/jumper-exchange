@@ -23,7 +23,7 @@ import type { FormState } from '@lifi/widget';
 const QuestItemWrapper = styled.div`
   display: flex;
   max-width: 722px;
-  gap: 1rem;
+  gap: 0.5rem;
   border-radius: 1rem;
   background-color: ${colors.violet[200]};
   padding: 0.5rem;
@@ -116,6 +116,7 @@ const QuestDescription = styled.p`
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.5);
   margin: 0;
+  padding-left: 1rem;
 
   ${mq[0]} {
     display: -webkit-box;
@@ -168,6 +169,11 @@ const QuestItemMobileWrapper = styled.div`
 const QuestItemInnerBox = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const VolumeWarning = styled.span<{ questType: 'common' | 'rare' }>`
+  color: ${({ questType }) =>
+    questType === 'common' ? colors.pink[800] : colors.cyan[800]};
 `;
 
 /**************************************************************************************************
@@ -296,7 +302,12 @@ export function QuestItem(
               </GoToSwapButton>
             </Flex>
           </QuestInfoWrapper>
-          <QuestDescription>{props.description}</QuestDescription>
+          <QuestDescription>
+            {props.description}&nbsp;
+            <VolumeWarning questType={props.questType}>
+              {'The trade should have at least $10 volume.'}
+            </VolumeWarning>
+          </QuestDescription>
         </ContentWrapper>
       </QuestItemWrapper>
 
