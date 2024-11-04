@@ -19,9 +19,9 @@ import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
 import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
+import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
@@ -146,7 +146,7 @@ export const useMainMenuContent = () => {
     },
     {
       label: 'Solana Washtrade',
-      prefixIcon: <BubbleChartIcon />,
+      prefixIcon: <LocalLaundryServiceIcon />,
       showMoreIcon: false,
       link: { url: JUMPER_WASH_PATH },
       onClick: () => {
