@@ -42,7 +42,11 @@ const SpinnerIcon = styled(IconSpinner)`
   }
 `;
 
-const StyledButtonRoot = styled.button`
+const StyledButton = styled.button<{
+  theme: 'white' | 'violet' | 'pink';
+  size: 'long' | 'short';
+  isBusy: boolean;
+}>`
   font-family: ${inter.style.fontFamily};
   position: relative;
   height: 64px;
@@ -58,6 +62,40 @@ const StyledButtonRoot = styled.button`
   letter-spacing: inherit;
   margin: 0;
   padding: 0;
+  background-color: ${(props) =>
+    props.theme === 'pink'
+      ? colors.pink[800]
+      : props.theme === 'violet'
+        ? 'transparent'
+        : 'white'};
+  border: ${(props) =>
+    props.theme === 'violet' ? `2px solid ${colors.violet[800]}` : 'none'};
+  color: ${(props) => (props.theme === 'white' ? 'black' : 'white')};
+  width: ${(props) => (props.size === 'long' ? '320px' : '160px')};
+  pointer-events: ${(props) => (props.isBusy ? 'none' : 'auto')};
+
+  &:hover {
+    background-color: ${(props) =>
+      props.theme === 'pink'
+        ? colors.pink[700]
+        : props.theme === 'violet'
+          ? colors.violet[600]
+          : '#E6E6E6'};
+  }
+
+  &:disabled {
+    background-color: ${(props) =>
+      props.theme === 'pink'
+        ? colors.pink[400]
+        : props.theme === 'violet'
+          ? 'transparent'
+          : '#CCC'};
+    border-color: ${(props) =>
+      props.theme === 'violet' ? colors.violet[200] : 'transparent'};
+    color: ${(props) =>
+      props.theme === 'white' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)'};
+    cursor: not-allowed;
+  }
 `;
 
 export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
@@ -81,46 +119,14 @@ export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
       return children;
     }, [children, isBusy, title]);
 
-    //TODO: export this out of function
-    const StyledButton = styled(StyledButtonRoot)`
-      background-color: ${theme === 'pink'
-        ? colors.pink[800]
-        : theme === 'violet'
-          ? 'transparent'
-          : 'white'};
-      border: ${theme === 'violet'
-        ? `2px solid ${colors.violet[800]}`
-        : 'none'};
-      color: ${theme === 'white' ? 'black' : 'white'};
-      width: ${size === 'long' ? '320px' : '160px'};
-      pointer-events: ${isBusy ? 'none' : 'auto'};
-
-      &:hover {
-        background-color: ${theme === 'pink'
-          ? colors.pink[700]
-          : theme === 'violet'
-            ? colors.violet[600]
-            : '#E6E6E6'};
-      }
-
-      &:disabled {
-        background-color: ${theme === 'pink'
-          ? colors.pink[400]
-          : theme === 'violet'
-            ? 'transparent'
-            : '#CCC'};
-        border-color: ${theme === 'violet'
-          ? colors.violet[200]
-          : 'transparent'};
-        color: ${theme === 'white'
-          ? 'rgba(0,0,0,0.3)'
-          : 'rgba(255,255,255,0.3)'};
-        cursor: not-allowed;
-      }
-    `;
-
     return (
-      <StyledButton ref={ref} {...rest}>
+      <StyledButton
+        theme={theme}
+        size={size}
+        isBusy={isBusy}
+        ref={ref}
+        {...rest}
+      >
         {buttonLayout}
       </StyledButton>
     );

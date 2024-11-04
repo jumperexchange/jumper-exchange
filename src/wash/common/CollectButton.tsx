@@ -80,6 +80,46 @@ function ButtonLayout(props: TCollectButtonProps): ReactElement {
   );
 }
 
+const StyledButton = styled(Button)<{
+  progress: TQuest['progress'];
+  progressSteps: TQuest['progressSteps'];
+  buttonTheme: 'pink' | 'cyan';
+}>`
+  position: relative;
+  height: 48px !important;
+  transform: skewX(-6deg);
+  overflow: hidden;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: white;
+  border-radius: 0.5rem;
+  cursor: ${(props) => (props.progress === props.progressSteps ? 'pointer' : 'default')};
+  background-color: ${(props) =>
+    props.progress === props.progressSteps
+      ? `${colors.violet[600]} !important`
+      : props.buttonTheme === 'pink'
+        ? `${colors.pink[300]} !important`
+        : colors.cyan[300]};
+
+  &:hover {
+    background-color: ${(props) =>
+      props.progress === props.progressSteps
+        ? `${colors.violet[700]} !important`
+        : props.buttonTheme === 'pink'
+          ? `${colors.pink[300]} !important`
+          : colors.cyan[300]};};
+  }
+
+  &:disabled {
+    background-color: ${(props) =>
+      props.progress === props.progressSteps
+        ? `${colors.violet[200]} !important`
+        : 'inherit'};
+    cursor: not-allowed;
+    color: rgba(255, 255, 255, 0.3) !important;
+  }
+`;
+
 /**************************************************************************************************
  * Defining the CollectButton component
  *************************************************************************************************/
@@ -88,47 +128,12 @@ export const CollectButton = forwardRef<HTMLButtonElement, TCollectButtonProps>(
     props: TCollectButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactElement {
-    const StyledButton = styled(Button)`
-      position: relative;
-      height: 48px !important;
-      transform: skewX(-6deg);
-      overflow: hidden;
-      font-weight: 900;
-      text-transform: uppercase;
-      color: white;
-      border-radius: 0.5rem;
-      cursor: ${props.progress === props.progressSteps ? 'pointer' : 'default'};
-      background-color: ${
-        props.progress === props.progressSteps
-          ? `${colors.violet[600]} !important`
-          : props.theme === 'pink'
-            ? `${colors.pink[300]} !important`
-            : colors.cyan[300]
-      };
-
-      &:hover {
-        background-color: ${
-          props.progress === props.progressSteps
-            ? `${colors.violet[700]} !important`
-            : props.theme === 'pink'
-              ? `${colors.pink[300]} !important`
-              : colors.cyan[300]
-        };};
-      }
-
-      &:disabled {
-        background-color: ${
-          props.progress === props.progressSteps
-            ? `${colors.violet[200]} !important`
-            : 'inherit'
-        };
-        cursor: not-allowed;
-        color: rgba(255, 255, 255, 0.3) !important;
-      }
-    `;
     return (
       <StyledButton
+        progress={props.progress}
+        progressSteps={props.progressSteps}
         ref={ref}
+        buttonTheme={props.theme}
         onClick={props.onClick}
         disabled={props.disabled}
         isBusy={props.isBusy}

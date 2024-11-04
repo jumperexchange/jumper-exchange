@@ -176,6 +176,28 @@ const VolumeWarning = styled.span<{ questType: 'common' | 'rare' }>`
     questType === 'common' ? colors.pink[800] : colors.cyan[800]};
 `;
 
+const GoToSwapButton = styled(Button)<{
+  width?: string;
+  questType: 'common' | 'rare';
+}>`
+  background-color: ${(props) =>
+    props.questType === 'common' ? colors.pink[800] : colors.cyan[800]};
+  transform: skewX(-1deg);
+  width: ${(props) => props.width || '40px'};
+  height: 48px;
+  border-radius: 8px;
+  margin-left: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) =>
+      props.questType === 'common' ? colors.pink[700] : colors.cyan[700]};
+  }
+`;
+
 /**************************************************************************************************
  * QuestItem Component
  *
@@ -236,28 +258,6 @@ export function QuestItem(
     });
   }, [props.formRef, props.sendingToken, props.receivingToken]);
 
-  //TODO: export this out of function
-  const GoToSwapButton = styled(Button)<{ width?: string }>`
-    background-color: ${props.questType === 'common'
-      ? colors.pink[800]
-      : colors.cyan[800]};
-    transform: skewX(-1deg);
-    width: ${(props) => props.width || '40px'};
-    height: 48px;
-    border-radius: 8px;
-    margin-left: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-
-    &:hover {
-      background-color: ${props.questType === 'common'
-        ? colors.pink[700]
-        : colors.cyan[700]};
-    }
-  `;
-
   return (
     <>
       <QuestItemWrapper>
@@ -297,7 +297,10 @@ export function QuestItem(
                 progress={props.progress}
                 progressSteps={props.progressSteps}
               />
-              <GoToSwapButton onClick={onSelectQuest}>
+              <GoToSwapButton
+                questType={props.questType}
+                onClick={onSelectQuest}
+              >
                 <IconArrowLeft />
               </GoToSwapButton>
             </Flex>
@@ -356,7 +359,11 @@ export function QuestItem(
             progress={props.progress}
             progressSteps={props.progressSteps}
           />
-          <GoToSwapButton width={'60px'} onClick={onSelectQuest}>
+          <GoToSwapButton
+            questType={props.questType}
+            width={'60px'}
+            onClick={onSelectQuest}
+          >
             <IconArrowLeft />
           </GoToSwapButton>
         </div>
