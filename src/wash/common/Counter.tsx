@@ -7,6 +7,7 @@ import { colors } from '../utils/theme';
 type TCounterProps = {
   amount: number;
   isDisabled?: boolean;
+  maxAmount?: number;
 };
 
 /**************************************************************************************************
@@ -22,6 +23,7 @@ const CounterBubble = styled.div<{ backgroundColor: string }>`
   font-size: 14px;
   line-height: 20px;
   height: 24px;
+  text-transform: uppercase;
   font-weight: 900;
   padding: 2px 8px 2px 8px;
   background-color: ${({ backgroundColor }) => backgroundColor};
@@ -40,26 +42,29 @@ const CounterBubble = styled.div<{ backgroundColor: string }>`
  * The component determines the background color and label based on the amount and disabled state.
  * It uses a styled component (CounterBubble) for consistent styling across different states.
  ************************************************************************************************/
-export function Counter({ amount, isDisabled }: TCounterProps): ReactElement {
+export function Counter({
+  amount,
+  isDisabled,
+  maxAmount,
+}: TCounterProps): ReactElement {
   /**********************************************************************************************
    * Determines the label to display in the counter bubble based on the amount and disabled state.
    * Returns:
    * - IconBlock component if the counter is disabled
-   * - '99+' if the amount exceeds 99
    * - The actual amount (or 0 if undefined) otherwise
    *********************************************************************************************/
   const label = useMemo((): string | number | ReactElement => {
     if (isDisabled) {
       return <IconBlock />;
     }
-    if (amount > 99) {
-      return 'x99+';
-    }
     if (amount === 0) {
-      return 0;
+      return `0/${maxAmount}`;
     }
-    return `x${amount}`;
-  }, [amount, isDisabled]);
+    if (amount >= maxAmount) {
+      return 'max';
+    }
+    return `${amount}/${maxAmount}`;
+  }, [amount, isDisabled, maxAmount]);
 
   return (
     <CounterBubble
