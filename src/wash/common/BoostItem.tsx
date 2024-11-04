@@ -195,7 +195,7 @@ export function BoostItem({
       <Absolute right={'-4px'} top={'-8px'}>
         <Counter
           amount={amount}
-          maxAmount={maxAmountDict[boostType]}
+          maxAmount={CLEANING_ITEMS[boostType].maxAmount}
           isDisabled={disabled}
         />
       </Absolute>

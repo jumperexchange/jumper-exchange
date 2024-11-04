@@ -23,6 +23,7 @@ const CounterBubble = styled.div<{ backgroundColor: string }>`
   font-size: 14px;
   line-height: 20px;
   height: 24px;
+  text-transform: uppercase;
   font-weight: 900;
   padding: 2px 8px 2px 8px;
   background-color: ${({ backgroundColor }) => backgroundColor};
@@ -58,6 +59,9 @@ export function Counter({
     }
     if (amount === 0) {
       return `0/${maxAmount}`;
+    }
+    if (amount >= maxAmount) {
+      return 'max';
     }
     return `${amount}/${maxAmount}`;
   }, [amount, isDisabled, maxAmount]);
