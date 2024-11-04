@@ -43,7 +43,7 @@ const SpinnerIcon = styled(IconSpinner)`
 `;
 
 const StyledButton = styled.button<{
-  theme: 'white' | 'violet' | 'pink';
+  themeToUse: 'white' | 'violet' | 'pink';
   size: 'long' | 'short';
   isBusy: boolean;
 }>`
@@ -63,37 +63,39 @@ const StyledButton = styled.button<{
   margin: 0;
   padding: 0;
   background-color: ${(props) =>
-    props.theme === 'pink'
+    props.themeToUse === 'pink'
       ? colors.pink[800]
-      : props.theme === 'violet'
+      : props.themeToUse === 'violet'
         ? 'transparent'
         : 'white'};
   border: ${(props) =>
-    props.theme === 'violet' ? `2px solid ${colors.violet[800]}` : 'none'};
-  color: ${(props) => (props.theme === 'white' ? 'black' : 'white')};
+    props.themeToUse === 'violet' ? `2px solid ${colors.violet[800]}` : 'none'};
+  color: ${(props) => (props.themeToUse === 'white' ? 'black' : 'white')};
   width: ${(props) => (props.size === 'long' ? '320px' : '160px')};
   pointer-events: ${(props) => (props.isBusy ? 'none' : 'auto')};
 
   &:hover {
     background-color: ${(props) =>
-      props.theme === 'pink'
+      props.themeToUse === 'pink'
         ? colors.pink[700]
-        : props.theme === 'violet'
+        : props.themeToUse === 'violet'
           ? colors.violet[600]
           : '#E6E6E6'};
   }
 
   &:disabled {
     background-color: ${(props) =>
-      props.theme === 'pink'
+      props.themeToUse === 'pink'
         ? colors.pink[400]
-        : props.theme === 'violet'
+        : props.themeToUse === 'violet'
           ? 'transparent'
           : '#CCC'};
     border-color: ${(props) =>
-      props.theme === 'violet' ? colors.violet[200] : 'transparent'};
+      props.themeToUse === 'violet' ? colors.violet[200] : 'transparent'};
     color: ${(props) =>
-      props.theme === 'white' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)'};
+      props.themeToUse === 'white'
+        ? 'rgba(0,0,0,0.3)'
+        : 'rgba(255,255,255,0.3)'};
     cursor: not-allowed;
   }
 `;
@@ -121,9 +123,9 @@ export const Button = forwardRef<HTMLButtonElement, TButtonProps>(
 
     return (
       <StyledButton
-        theme={theme}
+        themeToUse={theme as 'white' | 'violet' | 'pink'}
         size={size}
-        isBusy={isBusy}
+        isBusy={Boolean(isBusy)}
         ref={ref}
         {...rest}
       >

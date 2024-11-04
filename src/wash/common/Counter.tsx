@@ -7,7 +7,7 @@ import { colors } from '../utils/theme';
 type TCounterProps = {
   amount: number;
   isDisabled?: boolean;
-  maxAmount?: number;
+  maxAmount: number;
 };
 
 /**************************************************************************************************
