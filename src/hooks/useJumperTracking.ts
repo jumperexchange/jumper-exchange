@@ -25,6 +25,7 @@ interface JumperDataTrackEventProps {
   value: number;
   walletAddress?: string;
   walletProvider?: string;
+  referrer?: string;
 }
 
 const track = async (data: object, path: string) => {
@@ -75,6 +76,7 @@ export interface JumperDataTrackTransactionProps {
   url: string;
   walletAddress?: string;
   walletProvider?: string;
+  referrer?: string;
 }
 
 export const useJumperTracking = () => {
@@ -93,6 +95,7 @@ export const useJumperTracking = () => {
         value: data.value,
         walletAddress: data.walletAddress,
         walletProvider: data.walletProvider,
+        referrer: data.referrer,
       },
       JUMPER_ANALYTICS_EVENT,
     );
@@ -127,6 +130,7 @@ export const useJumperTracking = () => {
       url: data.url,
       walletProvider: data.walletProvider,
       walletAddress: data.walletAddress,
+      referrer: data.referrer,
     };
     await track(transactionData, JUMPER_ANALYTICS_TRANSACTION);
   };
