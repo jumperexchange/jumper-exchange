@@ -1,30 +1,36 @@
+import { useAccount } from '@lifi/wallet-management';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
+import { useMenuStore } from 'src/stores/menu';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { AddressMenu } from '../AddressMenu/AddressMenu';
-import { NoSelectTypography } from '../ProfilePage.style';
 import {
+  AddressBox,
   AddressBoxContainer,
-  AddressDisplayBox,
+  AddressButton,
+  AddressButtonLabel,
   PassImageBox,
   ProfileIconButton,
-} from './AddressBox.style';
+} from './AddressCard.style';
 
 interface AddressBoxProps {
   address?: string;
   isEVM?: boolean;
 }
 
-export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
+export const AddressCard = ({ address, isEVM }: AddressBoxProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const theme = useTheme();
+  const { account } = useAccount();
+  const { t } = useTranslation();
   const [openAddressMenu, setOpenAddressMenu] = useState(false);
   const { imageLink } = useMercleNft({ userAddress: address });
   const { data: ensName, isSuccess } = useEnsName({
@@ -32,6 +38,13 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
     chainId: mainnet.id,
   });
   const imgLink = useImageStatus(address);
+
+  const { setSnackbarState } = useMenuStore((state) => state);
+
+  const handleCopyButton = () => {
+    account?.address && navigator.clipboard.writeText(account.address);
+    setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
+  };
 
   const handleAddressMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (openAddressMenu) {
@@ -72,22 +85,21 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
           }}
         />
       </PassImageBox>
-      <AddressDisplayBox>
-        <NoSelectTypography
-          fontWeight={700}
-          fontSize={20}
-          lineHeight={'32px'}
-          width={'100%'}
-          textAlign={'center'}
+      <AddressBox>
+        <AddressButton
+          aria-label="Copy wallet address"
+          onClick={handleCopyButton}
         >
-          {addressLabel}
-        </NoSelectTypography>
+          <AddressButtonLabel variant="bodyMediumStrong">
+            {addressLabel}
+          </AddressButtonLabel>
+        </AddressButton>
         {address && (
           <>
             <ProfileIconButton
               onClick={handleAddressMenu}
               id="address-menu-button"
-              aria-controls={openAddressMenu ? 'address-menu' : undefined}
+              aria-controls={'address-menu'}
               aria-haspopup="true"
               aria-expanded={openAddressMenu ? 'true' : undefined}
             >
@@ -100,7 +112,7 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
             />
           </>
         )}
-      </AddressDisplayBox>
+      </AddressBox>
     </AddressBoxContainer>
   );
 };

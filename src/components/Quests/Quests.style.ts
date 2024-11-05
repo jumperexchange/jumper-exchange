@@ -8,11 +8,6 @@ export const QuestsContainer = styled(Box)(() => ({
   paddingBottom: 20,
 }));
 
-export const CenteredBox = styled(Box)(() => ({
-  display: 'flex',
-  alignItems: 'center',
-}));
-
 export const FlexSpaceBetweenBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',

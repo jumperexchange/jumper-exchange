@@ -28,7 +28,7 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
       />
       <RankContentContainer>
         <Link href={`/leaderboard?page=${userPage}`} passHref>
-          <LeaderboardUserPositionButton>
+          <LeaderboardUserPositionButton aria-label="Open leaderboard page with your position">
             <LeaderboardUserTitle variant="headerLarge">
               {leaderboardUserData?.position ?? '-'}
             </LeaderboardUserTitle>

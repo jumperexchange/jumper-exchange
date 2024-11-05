@@ -1,5 +1,4 @@
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import { alpha, Box, Tooltip, Typography, useTheme } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import { AbsoluteCenterTraitsBox } from '../QuestCard.style';
 
 interface TraitsBoxProps {
@@ -7,7 +6,6 @@ interface TraitsBoxProps {
 }
 
 export const TraitsBox = ({ trait }: TraitsBoxProps) => {
-  const theme = useTheme();
   return (
     <Tooltip
       title={

@@ -1,9 +1,9 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Box, Skeleton, Tooltip, Typography, useTheme } from '@mui/material';
+import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
-import { OptionalLink } from 'src/components/OptionalLink';
+import { OptionalLink } from 'src/components/ProfilePage/OptionalLink/OptionalLink';
 import { FlexSpaceBetweenBox } from 'src/components/Superfest/Superfest.style';
 import type { Chain } from 'src/components/Superfest/SuperfestPage/Banner/Banner';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
@@ -23,8 +23,9 @@ import { useUserTracking } from 'src/hooks/userTracking';
 import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
 import { ProgressionBar } from '../LevelBox/ProgressionBar';
+import { BadgeRelativeBox } from '../QuestCard/QuestCard.style';
+import { TraitsBox } from '../QuestCard/TraitsBox/TraitsBox';
 import {
-  BadgeRelativeBox,
   QuestCardBottomBox,
   QuestCardInfoBox,
   QuestCardMainBox,
@@ -33,8 +34,6 @@ import {
   XPIconBox,
 } from './QuestCard.style';
 import { XPRewardsInfo } from './XPRewardsInfo';
-import { OPBadge } from 'src/components/illustrations/OPBadge';
-import { TraitsBox } from './TraitsBox/TraitsBox';
 
 export interface RewardsInterface {
   logo: string;
@@ -42,7 +41,7 @@ export interface RewardsInterface {
   amount: number;
 }
 
-interface RewardsProgressProps extends OngoingNumericItemStats {
+export interface RewardsProgressProps extends OngoingNumericItemStats {
   earnedXP?: number;
 }
 
@@ -51,9 +50,7 @@ interface QuestCardProps {
   image?: string;
   points?: number;
   link?: string;
-  startDate?: string;
   action?: string;
-  endDate?: string;
   platformName?: string;
   platformImage?: string;
   hideXPProgressComponents?: boolean;
@@ -192,7 +189,7 @@ export const QuestCardDetailled = ({
               {rewardsProgress?.earnedXP && !chains && (
                 <XPRewardsInfo
                   bgColor={'#42B852'}
-                  label={`${rewardsProgress?.earnedXP}`}
+                  points={`${rewardsProgress?.earnedXP}`}
                   tooltip={t('questCard.earnedXPDescription', {
                     earnedXP: rewardsProgress?.earnedXP,
                     action: action,
@@ -246,7 +243,7 @@ export const QuestCardDetailled = ({
                 {!hideXPProgressComponents && (
                   <XPRewardsInfo
                     bgColor={!completed ? '#31007A' : '#42B852'}
-                    label={`+${points}`}
+                    points={`+${points}`}
                     tooltip={
                       rewardsProgress &&
                       t('questCard.xpToEarnDescription', {

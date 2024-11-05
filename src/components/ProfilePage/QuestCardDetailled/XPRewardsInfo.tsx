@@ -1,38 +1,37 @@
-import { Tooltip, Typography } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import type { PropsWithChildren } from 'react';
-import { XPDisplayBox } from './QuestCard.style';
+import { XPIcon } from 'src/components/illustrations/XPIcon';
+import { XPDisplayBox, XPDisplayBoxLabel } from '../QuestCard/QuestCard.style';
 
 interface XPRewardsInfoProps {
-  bgColor: string;
-  label: string;
+  bgColor?: string;
+  points: string;
   tooltip?: string;
   active?: boolean;
+  completed?: boolean;
 }
 
 export const XPRewardsInfo: React.FC<PropsWithChildren<XPRewardsInfoProps>> = ({
   bgColor,
-  label,
+  points,
   tooltip,
   active,
   children,
+  completed,
 }) => {
   return (
     <Tooltip title={tooltip} placement="top" enterTouchDelay={0} arrow>
       <XPDisplayBox
         active={active}
+        completed={completed}
         bgcolor={bgColor}
         gap={0.5}
         sx={{ ...(tooltip && { cursor: 'help' }) }}
       >
-        <Typography
-          fontSize="14px"
-          fontWeight={700}
-          lineHeight="18px"
-          color={'#ffffff'}
-        >
-          {label}
-        </Typography>
-        {children}
+        <XPDisplayBoxLabel variant="bodySmallStrong">
+          {points}
+        </XPDisplayBoxLabel>
+        {children ? children : <XPIcon size={20} variant="secondary" />}
       </XPDisplayBox>
     </Tooltip>
   );

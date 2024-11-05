@@ -3,6 +3,7 @@ import { Box, Container, Typography, alpha, styled } from '@mui/material';
 
 export const PageContainer = styled(Container)(() => ({
   marginTop: 32,
+  fontFamily: 'var(--font-inter)',
   background: 'transparent',
   borderRadius: '8px',
   position: 'relative',
@@ -11,13 +12,23 @@ export const PageContainer = styled(Container)(() => ({
   paddingBottom: 20,
 }));
 
+export const SectionTitle = styled(Typography)(({ theme }) => ({
+  fontWeight: 700,
+  fontSize: '24px',
+  lineHeight: '32px',
+  color: 'inherit',
+  margin: theme.spacing(0, 1.5, 0),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    margin: theme.spacing(0, 1.5, 0),
+  },
+}));
+
 export const ProfileHeaderBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  gap: theme.spacing(2),
+  gap: theme.spacing(4),
   flexDirection: 'column',
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     flexDirection: 'row',
-    gap: theme.spacing(4),
   },
 }));
 
@@ -74,13 +85,4 @@ export const NoSelectTypographyTitlePosition = styled(NoSelectTypographyTitle, {
 export const NoSelectTypography = styled(Typography)(({ theme }) => ({
   userSelect: 'none',
   color: theme.palette.text.primary,
-}));
-
-export const CompletedTypography = styled(NoSelectTypography)(({ theme }) => ({
-  color: '#000000',
-}));
-
-export const CenteredBox = styled(Box)(() => ({
-  display: 'flex',
-  alignItems: 'center',
 }));

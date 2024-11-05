@@ -2,16 +2,14 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Box, useTheme, type CSSObject } from '@mui/material';
 
-import { TrackingAction, TrackingEventParameter } from '@/const/trackingKeys';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
+import { SectionTitle } from 'src/components/ProfilePage/ProfilePage.style';
 import {
   CarouselContainerBox,
   CarouselHeader,
   CarouselNavigationButton,
   CarouselNavigationContainer,
-  CarouselTitle,
 } from '.';
 
 interface CarouselContainerProps {
@@ -28,50 +26,46 @@ export const CarouselContainer = ({
   children,
   trackingCategory,
 }: CarouselContainerProps) => {
-  const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const carouselContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleChange = useCallback(
-    (direction: 'next' | 'prev') => {
-      if (carouselContainerRef.current) {
-        const node: HTMLDivElement = carouselContainerRef.current;
-        const scrollLeftPos = node.scrollLeft;
-        const scrollWidth =
-          carouselContainerRef.current.scrollWidth -
-          carouselContainerRef.current.clientWidth;
+  const handleChange = useCallback((direction: 'next' | 'prev') => {
+    if (carouselContainerRef.current) {
+      const node: HTMLDivElement = carouselContainerRef.current;
+      const scrollLeftPos = node.scrollLeft;
+      const scrollWidth =
+        carouselContainerRef.current.scrollWidth -
+        carouselContainerRef.current.clientWidth;
 
-        let scrollPos = 0;
-        switch (direction) {
-          case 'next':
-            if (scrollLeftPos + swipeDistance < scrollWidth) {
-              scrollPos = scrollLeftPos + swipeDistance;
-            } else {
-              scrollPos = scrollWidth;
-            }
-            break;
-          case 'prev':
-            if (scrollLeftPos - swipeDistance > 0) {
-              scrollPos = scrollLeftPos - swipeDistance;
-            } else {
-              scrollPos = 0;
-            }
-            break;
-        }
-
-        node.scrollTo({
-          left: parseInt(`${scrollPos}`),
-          behavior: 'smooth',
-        });
-      } else {
+      let scrollPos = 0;
+      switch (direction) {
+        case 'next':
+          if (scrollLeftPos + swipeDistance < scrollWidth) {
+            scrollPos = scrollLeftPos + swipeDistance;
+          } else {
+            scrollPos = scrollWidth;
+          }
+          break;
+        case 'prev':
+          if (scrollLeftPos - swipeDistance > 0) {
+            scrollPos = scrollLeftPos - swipeDistance;
+          } else {
+            scrollPos = 0;
+          }
+          break;
       }
-    },
-    [trackEvent, trackingCategory],
-  );
+
+      node.scrollTo({
+        left: parseInt(`${scrollPos}`),
+        behavior: 'smooth',
+      });
+    } else {
+    }
+  }, []);
   return (
     <Box>
       <CarouselHeader>
-        {title && <CarouselTitle variant="headerMedium">{title}</CarouselTitle>}
+        {title && <SectionTitle variant="headerMedium">{title}</SectionTitle>}
         {Array.isArray(children) && children?.length > 1 && (
           <CarouselNavigationContainer hide={children?.length < 1}>
             <CarouselNavigationButton

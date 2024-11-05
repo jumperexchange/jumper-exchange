@@ -1,62 +1,93 @@
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoneIcon from '@mui/icons-material/Done';
-import { useTheme } from '@mui/material';
+import LockIcon from '@mui/icons-material/Lock';
+import { Box, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import { APYIcon } from 'src/components/illustrations/APYIcon';
+import { JumperIconDark } from 'src/components/illustrations/JumperIconDark';
+import { OptionalLink } from 'src/components/ProfilePage/OptionalLink/OptionalLink';
+import type { Chain } from 'src/components/Quests/QuestPage/Banner/Banner';
+import { FlexCenterRowBox } from 'src/components/Quests/QuestPage/QuestsMissionPage.style';
+import { PROFILE_CAMPAIGN_FLASHY_APY_COLOR } from 'src/const/partnerRewardsTheme';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
+import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { useUserTracking } from 'src/hooks/userTracking';
-import { Button } from '../../Button';
-import { XPIcon } from '../../illustrations/XPIcon';
+import type { QuestChains } from 'src/types/loyaltyPass';
+import { XPIconBox } from '../QuestCardDetailled/QuestCard.style';
+import type {
+  RewardsInterface,
+  RewardsProgressProps,
+} from '../QuestCardDetailled/QuestCardDetailled';
+import { XPRewardsInfo } from '../QuestCardDetailled/XPRewardsInfo';
 import {
-  CenteredBox,
-  CompletedTypography,
-  NoSelectTypography,
-} from '../ProfilePage.style';
-import {
+  BadgeRelativeBox,
   CompletedBox,
-  QuestCardBottomBox,
+  CompletedTypography,
+  QuestCardButtonCta,
+  QuestCardButtonCtaLabel,
+  QuestCardContent,
+  QuestCardImage,
   QuestCardInfoBox,
   QuestCardMainBox,
-  QuestCardTitleBox,
-  QuestPlatformMainBox,
-  XPDisplayBox,
+  QuestCardTitle,
+  QuestCardTitleSkeleton,
 } from './QuestCard.style';
+import { TraitsBox } from './TraitsBox/TraitsBox';
 
 interface QuestCardProps {
+  action?: string;
   active?: boolean;
-  title: string;
+  chains?: QuestChains[];
+  claimingIds?: string[];
+  completed?: boolean;
+  ctaLink?: string;
+  hideXPProgressComponents?: boolean;
   id?: number | string;
   image?: string;
+  isTraitsGarded?: boolean;
+  isUnlocked?: boolean;
   label?: string;
   points?: number;
-  platformName?: string;
-  platformImage?: string;
-}
-
-function getStringDateFormatted(startDate: string, endDate: string): string {
-  const sDate = new Date(startDate);
-  const eDate = new Date(endDate);
-  const startMonth = sDate.toLocaleString('default', { month: 'short' });
-  const endMonth = eDate.toLocaleString('default', { month: 'short' });
-  return `${startMonth} ${sDate.getDate()} - ${startMonth === endMonth ? '' : endMonth} ${eDate.getDate()}`;
+  // platformName?: string;
+  // platformImage?: string;
+  rewards?: RewardsInterface;
+  rewardsProgress?: RewardsProgressProps;
+  rewardRange?: string;
+  title?: string;
+  url?: string;
+  variableWeeklyAPY?: boolean;
 }
 
 export const QuestCard = ({
+  action,
   active,
-  title,
+  chains,
+  claimingIds,
+  completed,
+  ctaLink,
+  hideXPProgressComponents,
   id,
   image,
-  points,
+  isTraitsGarded,
+  isUnlocked,
   label,
-  platformName,
-  platformImage,
+  points,
+  // platformName,
+  // platformImage,
+  rewards,
+  rewardsProgress,
+  rewardRange,
+  title,
+  url,
+  variableWeeklyAPY,
 }: QuestCardProps) => {
-  const theme = useTheme();
   const { t } = useTranslation();
-
+  const { apy } = useMissionsMaxAPY(claimingIds);
   const { trackEvent } = useUserTracking();
   const handleClick = () => {
     trackEvent({
@@ -64,119 +95,154 @@ export const QuestCard = ({
       action: TrackingAction.ClickQuestCard,
       label: 'click-quest-card',
       data: {
-        [TrackingEventParameter.QuestCardTitle]: title,
+        [TrackingEventParameter.QuestCardTitle]: title || '',
         [TrackingEventParameter.QuestCardLabel]: label || '',
         [TrackingEventParameter.QuestCardId]: id || '',
-        [TrackingEventParameter.QuestCardPlatform]: platformName || '',
+        // [TrackingEventParameter.QuestCardPlatform]: platformName || '',
       },
     });
   };
-
   return (
-    <QuestCardMainBox>
-      {image && (
-        <Image
-          src={image}
-          loading="lazy"
-          alt="Quest Card Image"
-          width={240}
-          height={240}
-          style={{
-            borderRadius: 8,
-          }}
-        />
-      )}
-      <QuestCardBottomBox>
-        {active ? (
-          <QuestPlatformMainBox platformName={platformName}>
-            {platformName ? (
-              <CenteredBox>
-                <CenteredBox
-                  sx={{
-                    marginRight: '4px',
-                  }}
-                >
-                  {platformImage && (
+    <QuestCardMainBox onClick={handleClick}>
+      <OptionalLink
+        disabled={isTraitsGarded && !isUnlocked ? true : false}
+        ariaLabel={title}
+        href={ctaLink}
+      >
+        {image ? (
+          <>
+            {isTraitsGarded && (
+              <BadgeRelativeBox>
+                <TraitsBox trait={'perp_oors'} />
+              </BadgeRelativeBox>
+            )}
+            <QuestCardImage
+              src={image}
+              loading="lazy"
+              alt="Quest Card Image"
+              width={288}
+              height={288}
+            />
+          </>
+        ) : (
+          <Skeleton variant="rectangular" width={'288px'} height={'288px'} />
+        )}
+        <QuestCardContent>
+          {title ? (
+            <QuestCardTitle variant="headerSmall">{title}</QuestCardTitle>
+          ) : (
+            <QuestCardTitleSkeleton variant="rectangular" />
+          )}
+          <Box>
+            <QuestCardInfoBox>
+              {chains ? (
+                <FlexCenterRowBox>
+                  {chains.map((elem: Chain, i: number) => (
                     <Image
-                      src={platformImage}
-                      alt="Platform Image"
-                      width={24}
-                      height={24}
+                      key={elem.name + '-' + i}
+                      src={elem.logo}
                       style={{
-                        borderRadius: '100%',
+                        marginLeft: i === 0 ? '' : '-8px',
+                        zIndex: 100 - i,
                       }}
+                      alt={elem.name}
+                      width="32"
+                      height="32"
+                    />
+                  ))}
+                </FlexCenterRowBox>
+              ) : (
+                <JumperIconDark />
+              )}
+              {rewardsProgress?.earnedXP && !chains && (
+                <XPRewardsInfo
+                  bgColor={'#42B852'}
+                  points={`${rewardsProgress?.earnedXP}`}
+                  tooltip={t('questCard.earnedXPDescription', {
+                    earnedXP: rewardsProgress?.earnedXP,
+                    action: action,
+                  })}
+                  active={true}
+                >
+                  <XPIconBox marginLeft="4px">
+                    <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
+                  </XPIconBox>
+                </XPRewardsInfo>
+              )}
+              {points ? (
+                <>
+                  {apy > 0 && !variableWeeklyAPY && (
+                    <XPRewardsInfo
+                      active={true}
+                      points={`${Number(apy).toFixed(1)}%`}
+                      tooltip={
+                        rewardsProgress &&
+                        t('questCard.xpToEarnDescription', {
+                          xpToEarn: points,
+                          action: action,
+                        })
+                      }
+                    >
+                      <APYIcon size={20} />
+                    </XPRewardsInfo>
+                  )}
+                  {variableWeeklyAPY && (
+                    <XPRewardsInfo
+                      active={true}
+                      bgColor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
+                      points={rewardRange ? rewardRange : `VAR.%`}
+                      tooltip={
+                        rewardsProgress &&
+                        t('questCard.xpToEarnDescription', {
+                          xpToEarn: points,
+                          action: action,
+                        })
+                      }
+                    >
+                      <APYIcon size={20} />
+                    </XPRewardsInfo>
+                  )}
+                  {!hideXPProgressComponents && (
+                    <XPRewardsInfo
+                      completed={completed}
+                      points={`+${points}`}
+                      tooltip={
+                        rewardsProgress &&
+                        t('questCard.xpToEarnDescription', {
+                          xpToEarn: points,
+                          action: action,
+                        })
+                      }
+                      active={true}
                     />
                   )}
-                </CenteredBox>
-                <NoSelectTypography
-                  fontSize={'12px'}
-                  lineHeight={'16px'}
-                  fontWeight={700}
-                >
-                  {platformName}
-                </NoSelectTypography>
-              </CenteredBox>
-            ) : null}
-          </QuestPlatformMainBox>
-        ) : (
-          <CompletedBox>
-            <DoneIcon sx={{ height: '16px', color: '#00B849' }} />
-            <CompletedTypography
-              fontSize="12px"
-              lineHeight="16px"
-              fontWeight={700}
-            >
-              {t('questCard.completed')}
-            </CompletedTypography>
-          </CompletedBox>
-        )}
-        <QuestCardTitleBox>
-          <NoSelectTypography
-            fontSize="18px"
-            lineHeight="24px"
-            fontWeight={700}
-          >
-            {title}
-          </NoSelectTypography>
-        </QuestCardTitleBox>
-        <QuestCardInfoBox points={points}>
-          {points ? (
-            <XPDisplayBox active={active}>
-              <NoSelectTypography
-                fontWeight={700}
-                fontSize="14px"
-                lineHeight="18px"
-                color={
-                  theme.palette.mode === 'light'
-                    ? theme.palette.primary.main
-                    : '#BEA0EB'
-                }
-              >
-                {`+${points}`}
-              </NoSelectTypography>
-              <CenteredBox sx={{ marginLeft: '8px' }}>
-                <XPIcon size={24} />
-              </CenteredBox>
-            </XPDisplayBox>
-          ) : null}
-          {active ? (
-            <Button
-              aria-label={`Open ${t('questCard.join')}`}
-              variant="secondary"
-              size="medium"
-              styles={{ alignItems: 'center', width: '100%' }}
-            >
-              <NoSelectTypography
-                fontSize="16px"
-                lineHeight="18px"
-                fontWeight={600}
-              >
-                {t('questCard.join')}
-              </NoSelectTypography>
-            </Button>
-          ) : null}
-        </QuestCardInfoBox>
-      </QuestCardBottomBox>
+                </>
+              ) : undefined}
+            </QuestCardInfoBox>
+            {active ? (
+              <QuestCardButtonCta aria-label={`Open ${t('questCard.join')}`}>
+                {isTraitsGarded && !isUnlocked && (
+                  <LockIcon sx={{ height: '16px', width: '16px' }} />
+                )}
+                <QuestCardButtonCtaLabel variant="bodyXSmallStrong">
+                  {isTraitsGarded && !isUnlocked
+                    ? 'Unlocked for perp_oors'
+                    : t('questCard.join')}
+                </QuestCardButtonCtaLabel>
+              </QuestCardButtonCta>
+            ) : (
+              <CompletedBox>
+                <DoneIcon
+                  sx={{ width: '16px', height: '16px', color: '#00B849' }}
+                />
+                <CompletedTypography variant="bodyXSmallStrong">
+                  {t('questCard.completed')}
+                </CompletedTypography>
+              </CompletedBox>
+            )}
+          </Box>
+        </QuestCardContent>
+      </OptionalLink>
     </QuestCardMainBox>
   );
 };

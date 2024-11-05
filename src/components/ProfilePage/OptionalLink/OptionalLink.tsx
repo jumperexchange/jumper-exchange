@@ -1,6 +1,9 @@
-import { Box, Link as MuiLink, type CSSObject } from '@mui/material';
-import Link from 'next/link';
+import { type CSSObject } from '@mui/material';
 import type { PropsWithChildren } from 'react';
+import {
+  OptionalLinkContainer,
+  OptionalLinkFallbackContainer,
+} from './OptionalLink.style';
 
 interface OptionalLinkProps {
   href?: string;
@@ -12,20 +15,22 @@ export const OptionalLink: React.FC<
   PropsWithChildren<OptionalLinkProps & { disabled: boolean }>
 > = (props) => {
   if (props?.disabled) {
-    return <Box sx={{ cursor: 'not-allowed' }}>{props.children}</Box>;
+    return (
+      <OptionalLinkFallbackContainer>
+        {props.children}
+      </OptionalLinkFallbackContainer>
+    );
   } else if (props.href) {
     return (
-      <MuiLink
-        component={Link}
+      <OptionalLinkContainer
         href={props.href}
         aria-label={props.ariaLabel}
         style={{
-          textDecoration: 'inherit',
           ...(props.sx as React.CSSProperties),
         }}
       >
         {props.children}
-      </MuiLink>
+      </OptionalLinkContainer>
     );
   } else {
     return props.children;

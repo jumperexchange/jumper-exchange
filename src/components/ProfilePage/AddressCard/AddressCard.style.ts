@@ -1,5 +1,6 @@
 import type { BoxProps, IconButtonProps } from '@mui/material';
-import { Box, IconButton, alpha, styled } from '@mui/material';
+import { Box, IconButton, Typography, alpha, styled } from '@mui/material';
+import { ButtonTransparent } from 'src/components/Button/Button.style';
 
 export interface AddressBoxContainerProps extends Omit<BoxProps, 'component'> {
   imgUrl?: string;
@@ -69,7 +70,22 @@ export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
   }),
 );
 
-export const AddressDisplayBox = styled(Box)(({ theme }) => ({
+export const AddressButton = styled(ButtonTransparent)(({ theme }) => ({
+  padding: theme.spacing(0, 1),
+  height: 32,
+  background: 'transparent',
+  borderRadius: '16px',
+  '&:hover': {
+    backgroundColor:
+      theme.palette.mode === 'dark'
+        ? theme.palette.alphaLight300.main
+        : theme.palette.white.main,
+  },
+}));
+
+export const AddressButtonLabel = styled(Typography)(({ theme }) => ({}));
+
+export const AddressBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   zIndex: 1,
   alignItems: 'center',

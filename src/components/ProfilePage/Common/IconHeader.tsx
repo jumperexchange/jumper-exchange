@@ -1,8 +1,7 @@
 import { Tooltip, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { StyledInfoIcon } from '../../TooltipInfo/TooltipInfo.style';
-import { PointsBoxContainer } from '../LevelBox/PointsBox.style';
-import { IconHeaderTitle } from './IconHeader.style';
+import { IconHeaderContainer, IconHeaderTitle } from './IconHeader.style';
 
 interface IconHeaderProps {
   tooltipKey: string;
@@ -13,7 +12,7 @@ export const IconHeader = ({ tooltipKey, title }: IconHeaderProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   return (
-    <PointsBoxContainer display="flex">
+    <IconHeaderContainer>
       <IconHeaderTitle variant="bodySmallStrong">{title}</IconHeaderTitle>
       <Tooltip
         title={t(tooltipKey as any)}
@@ -24,6 +23,6 @@ export const IconHeader = ({ tooltipKey, title }: IconHeaderProps) => {
       >
         <StyledInfoIcon />
       </Tooltip>
-    </PointsBoxContainer>
+    </IconHeaderContainer>
   );
 };

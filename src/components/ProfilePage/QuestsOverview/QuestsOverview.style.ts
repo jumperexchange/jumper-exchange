@@ -1,27 +1,29 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { ButtonPrimary } from '../../Button';
+import { SectionTitle } from '../ProfilePage.style';
 
-export const QuestCarouselContainer = styled(Box)(({ theme }) => ({
+export const QuestsOverviewContainer = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(288px, 1fr))',
+  gridColumnGap: theme.spacing(2),
+  gridRowGap: theme.spacing(2),
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '32px',
   padding: theme.spacing(2),
-  margin: theme.spacing(6, 2, 0),
   boxShadow: theme.palette.shadow.main,
+  marginTop: theme.spacing(2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(2, 8, 0),
+    marginTop: theme.spacing(4),
     padding: theme.spacing(3),
   },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    padding: theme.spacing(4),
-    margin: theme.spacing(12, 8, 0),
-  },
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    padding: theme.spacing(6),
-  },
-  [theme.breakpoints.up('xl' as Breakpoint)]: {
-    margin: `${theme.spacing(12, 'auto', 0)}`,
-    maxWidth: theme.breakpoints.values.xl,
+}));
+
+export const QuestsOverviewTitle = styled(SectionTitle)(({ theme }) => ({
+  gridColumn: '1 / -1',
+  marginBottom: '8px',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginBottom: '8px',
   },
 }));
 

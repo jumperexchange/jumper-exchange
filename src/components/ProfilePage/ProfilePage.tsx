@@ -1,11 +1,10 @@
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
-import { Stack } from '@mui/material';
 import { useMemo } from 'react';
 import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useTraits } from 'src/hooks/useTraits';
-import { AddressBox } from './AddressBox/AddressBox';
+import { AddressCard } from './AddressCard/AddressCard';
 import { LeaderboardCard } from './LeaderboardCard/LeaderboardCard';
 import { TierBox } from './LevelBox/TierBox';
 import {
@@ -13,8 +12,8 @@ import {
   ProfileHeaderBox,
   ProfileInfoBox,
 } from './ProfilePage.style';
-import { QuestCarousel } from './QuestCarousel/QuestCarousel';
-import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
+import { QuestsCompletedCarousel } from './QuestsCompletedCarousel/QuestsCompletedCarousel';
+import { QuestsOverview } from './QuestsOverview/QuestsOverview';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
 
 const shouldHideComponent = (
@@ -61,13 +60,14 @@ export const ProfilePage = () => {
 
   return (
     <PageContainer className="profile-page">
-      <RewardsCarousel
-        hideComponent={hideComponent}
-        availableRewards={availableRewards}
-        isMerklSuccess={isRewardSuccess}
-      />
+      {!hideComponent && (
+        <RewardsCarousel
+          availableRewards={availableRewards}
+          isMerklSuccess={isRewardSuccess}
+        />
+      )}
       <ProfileHeaderBox>
-        <AddressBox
+        <AddressCard
           address={account?.address}
           isEVM={account?.chainType === 'EVM'}
         />
@@ -76,10 +76,8 @@ export const ProfilePage = () => {
           <LeaderboardCard address={account?.address} />
         </ProfileInfoBox>
       </ProfileHeaderBox>
-      <Stack spacing={{ xs: 2, sm: 4 }}>
-        <QuestCarousel pastCampaigns={pastCampaigns} traits={traits} />
-        <QuestCompletedList pdas={pdas} loading={isLoading} />
-      </Stack>
+      <QuestsOverview pastCampaigns={pastCampaigns} traits={traits} />
+      <QuestsCompletedCarousel pdas={pdas} loading={isLoading} />
     </PageContainer>
   );
 };

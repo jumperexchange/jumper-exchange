@@ -260,6 +260,19 @@ const themeCustomized = createTheme({
         }),
       },
     },
+    MuiContainer: {
+      styleOverrides: {
+        root: () => ({
+          [themeBase.breakpoints.up('lg' as Breakpoint)]: {
+            maxWidth: 1280,
+          },
+          [themeBase.breakpoints.up('xl' as Breakpoint)]: {
+            paddingLeft: 0,
+            paddingRight: 0,
+          },
+        }),
+      },
+    },
     MuiTooltip: {
       styleOverrides: {
         tooltip: ({ theme }) => ({
@@ -656,6 +669,11 @@ export const lightTheme = createTheme(
         main: '#31007A',
         dark: '#31007A',
       },
+      accent1Alt: {
+        light: '#BEA0EB',
+        main: '#BEA0EB',
+        dark: '#BEA0EB',
+      },
       accent2: {
         light: '#8700B8',
         main: '#8700B8',
@@ -751,7 +769,6 @@ export const darkTheme = createTheme(
       },
       shadow: {
         main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-        light: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
       },
       primary: {
         light: '#653BA3',
