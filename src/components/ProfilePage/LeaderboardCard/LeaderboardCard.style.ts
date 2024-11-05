@@ -1,5 +1,6 @@
 import type { Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/material';
+import Link from 'next/link';
 import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
 import { TierboxInfoTitles } from '../LevelBox/TierBox.style';
 
@@ -10,8 +11,11 @@ export const CardContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '16px',
   width: '100%',
-  padding: theme.spacing(4),
+  padding: theme.spacing(2),
   boxShadow: theme.palette.shadowLight.main,
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    padding: theme.spacing(4),
+  },
 }));
 
 export const RankContainer = styled(CardContainer)(({ theme }) => ({
@@ -24,12 +28,23 @@ export const RankContainer = styled(CardContainer)(({ theme }) => ({
 export const RankContentContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
+  flexWrap: 'wrap',
+  gap: theme.spacing(2),
   justifyContent: 'space-between',
   alignItems: 'center',
   flexGrow: 1,
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    gap: 0,
+  },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     alignItems: 'flex-start',
     flexDirection: 'column',
+  },
+}));
+
+export const CardButtonContainer = styled(Link)(({ theme }) => ({
+  [theme.breakpoints.down('sm' as Breakpoint)]: {
+    width: '100%',
   },
 }));
 

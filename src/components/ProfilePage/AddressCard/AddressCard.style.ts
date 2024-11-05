@@ -12,6 +12,10 @@ export const AddressBoxContainer = styled(Box, {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  background:
+    theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : theme.palette.bgTertiary.main,
   alignItems: 'center',
   borderRadius: 24,
   overflow: 'hidden',
@@ -47,10 +51,7 @@ export const AddressBoxContainer = styled(Box, {
     top: 'calc( 100% - 72px)',
     right: 0,
     bottom: 0,
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.grey[100]
-        : alpha(theme.palette.grey[100], 0.08),
+    backgroundColor: 'inherit',
   },
 }));
 
@@ -91,7 +92,6 @@ export const AddressBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   height: 72,
   justifyContent: 'center',
-
   [theme.breakpoints.up('md')]: {
     gap: 0,
   },

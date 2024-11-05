@@ -17,10 +17,10 @@ export const PageContainer = styled(Container)(({ theme }) => ({
 }));
 
 export const SectionTitle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.text.primary,
   fontWeight: 700,
   fontSize: '24px',
   lineHeight: '32px',
-  color: 'inherit',
   margin: theme.spacing(0, 1.5, 0),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(0, 1.5, 0),

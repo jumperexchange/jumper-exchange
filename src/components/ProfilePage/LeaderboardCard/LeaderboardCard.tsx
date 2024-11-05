@@ -7,6 +7,7 @@ import { useLeaderboardUser } from '../../../hooks/useLeaderboard';
 import { IconHeader } from '../Common/IconHeader';
 import {
   CardButton,
+  CardButtonContainer,
   LeaderboardUserPositionButton,
   LeaderboardUserTitle,
   RankContainer,
@@ -36,9 +37,9 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
             </LeaderboardUserTitle>
           </LeaderboardUserPositionButton>
         </Link>
-        <Link href="/leaderboard" passHref>
+        <CardButtonContainer href="/leaderboard" passHref>
           <CardButton>{t('leaderboard.title')}</CardButton>
-        </Link>
+        </CardButtonContainer>
       </RankContentContainer>
     </RankContainer>
   );

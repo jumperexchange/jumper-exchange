@@ -30,7 +30,10 @@ export const LeaderboardEntryWrapper = styled(Box, {
     width: '100%',
     position: 'relative',
     ...(isUserEntry && {
-      background: theme.palette.bgTertiary.main,
+      background:
+        theme.palette.mode === 'light'
+          ? theme.palette.white.main
+          : theme.palette.bgTertiary.main,
       borderRadius: '24px',
       margin: '10px 0',
       padding: theme.spacing(2, 1),
