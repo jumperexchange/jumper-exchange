@@ -15,6 +15,7 @@ import {
 import { QuestsCompletedCarousel } from './QuestsCompletedCarousel/QuestsCompletedCarousel';
 import { QuestsOverview } from './QuestsOverview/QuestsOverview';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
+// import { useABTest } from 'src/hooks/useABTest';
 
 const shouldHideComponent = (
   account: { address?: string } | undefined,
