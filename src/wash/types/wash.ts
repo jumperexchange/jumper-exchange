@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { TIntRange } from './types';
 
 /**********************************************************************************************
@@ -17,7 +18,7 @@ export type TQuest = {
   order: number;
   questType: 'common' | 'rare';
   title: string;
-  description: string;
+  description: string | ReactNode;
   progressSteps: number;
   expirationTimestamp?: number;
   progress?: TIntRange<0, number>;
