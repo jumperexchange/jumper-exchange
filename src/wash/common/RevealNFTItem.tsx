@@ -232,7 +232,9 @@ export function RevealNFTItem({
       </NFTNameBox>
       {nft.isRare && !isRevealing ? (
         <Absolute top={'12px'} right={'12px'}>
-          <InfoTooltip description={TOOLTIP_MESSAGES.goldenNft} />
+          <InfoTooltip
+            description={TOOLTIP_MESSAGES.goldenNft(nft.rewardName ?? 'reward')}
+          />
         </Absolute>
       ) : null}
     </div>

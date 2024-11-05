@@ -10,7 +10,7 @@ import type { ReactElement } from 'react';
 import { CallToActionBox } from '../common/CallToActionBox';
 import { titanOne } from '../common/fonts';
 import { inter } from '../../fonts/fonts';
-import { mq } from '../utils/theme';
+import { colors, mq } from '../utils/theme';
 
 /**************************************************************************************************
  * Defining the styled components style for the RevealedNFTLayout component
@@ -77,6 +77,22 @@ const RevealedNFTLayoutCallToActionBox = styled.div`
   }
 `;
 
+const RewardWrapper = styled.div`
+  margin-top: 1rem;
+  max-width: 765px;
+  text-align: center;
+`;
+
+const RewardName = styled.span`
+  margin: 0px;
+  color: ${colors.orange[800]};
+  text-transform: uppercase;
+`;
+
+const CyanText = styled.span`
+  color: ${colors.cyan[800]};
+`;
+
 /**************************************************************************************************
  * RevealedNFTLayout Component
  *
@@ -87,7 +103,7 @@ const RevealedNFTLayoutCallToActionBox = styled.div`
  * The component relies on the useWashTrading hook for accessing NFT and reveal state data.
  ************************************************************************************************/
 export function RevealedNFTLayout(): ReactElement {
-  const { reveal, nft, user } = useWashTrading();
+  const { reveal, nft, user, collection } = useWashTrading();
   const [isMounted, set_isMounted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -102,6 +118,7 @@ export function RevealedNFTLayout(): ReactElement {
    * for easier access.
    *********************************************************************************************/
   const currentNFT = nft.nft;
+  const currentCollection = collection.collection;
 
   /**********************************************************************************************
    * Determine the title to display based on the reveal state and NFT rarity
@@ -130,11 +147,55 @@ export function RevealedNFTLayout(): ReactElement {
     if (reveal.isRevealing) {
       return 'Loading your NFT, fingers crossed anon!';
     }
-    if (currentNFT?.isRare) {
-      return '+5 Jumper points and a share of the prize pool!';
+    const isSingleNFT = currentCollection.length === 1;
+    const { isRare, rewardName } = currentNFT || {};
+    const discordRole = 'Jumper OG discord role';
+    const jumperMerch = 'Jumper merch';
+
+    if (!isRare) {
+      return (
+        <RewardWrapper>
+          {isSingleNFT ? (
+            <>
+              Congrats! You've won&nbsp;
+              <CyanText>+10XP</CyanText>&nbsp;plus a chance to win&nbsp;
+              <CyanText>{jumperMerch}</CyanText>
+              &nbsp;and a coveted&nbsp;
+              <CyanText>{discordRole}</CyanText>. Wow!
+            </>
+          ) : (
+            <>
+              Congrats! You've won a chance to win&nbsp;
+              <CyanText>{jumperMerch}</CyanText> and a coveted&nbsp;
+              <CyanText>{discordRole}</CyanText>. Keep going!
+            </>
+          )}
+        </RewardWrapper>
+      );
     }
-    return '+5 Jumper points';
-  }, [reveal.isRevealing, currentNFT?.isRare]);
+    return (
+      <RewardWrapper>
+        {isSingleNFT ? (
+          <>
+            What a pull! You've won <CyanText>+10XP</CyanText>&nbsp;plus a&nbsp;
+            <RewardName>{rewardName ?? 'reward'}</RewardName>, and a chance to
+            win&nbsp;
+            <CyanText>{jumperMerch}</CyanText>
+            &nbsp;and a&nbsp;
+            <CyanText>{discordRole}</CyanText>.
+          </>
+        ) : (
+          <>
+            Insane luck! You've won&nbsp;
+            <RewardName>{rewardName ?? 'reward'}</RewardName>, and a chance to
+            win&nbsp;
+            <CyanText>{jumperMerch}</CyanText>&nbsp;and a&nbsp;
+            <CyanText>{discordRole}</CyanText>.
+          </>
+        )}
+      </RewardWrapper>
+    );
+  }, [reveal.isRevealing, currentCollection.length, currentNFT]);
 
   if (!currentNFT) {
     return <Fragment />;

@@ -54,7 +54,9 @@ const Background = styled.div`
 const ChildrenWrapper = styled.div`
   position: relative;
   z-index: 50;
-  margin-top: 420px;
+  padding-top: 100px;
+  margin-top: auto;
+  margin-bottom: auto;
   ${mq[1]} {
     margin-top: 360px;
   }
