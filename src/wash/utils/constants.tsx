@@ -1,12 +1,15 @@
-import type { TColor } from './theme';
+import { colors, type TColor } from './theme';
 import type { TCleaningItem, TQuest } from '../types/wash';
+import Link from 'next/link';
 
 /**************************************************************************************************
  * WASH_ENDPOINT_ROOT_URI
  *
  * This constant defines the root URI for the API.
  *************************************************************************************************/
-export const WASH_ENDPOINT_ROOT_URI = 'https://jumper-wash.builtby.dad';
+// export const WASH_ENDPOINT_ROOT_URI = 'https://jumper-wash.builtby.dad';
+
+export const WASH_ENDPOINT_ROOT_URI = 'http://localhost:80';
 
 /**************************************************************************************************
  * Default NFT color
@@ -216,7 +219,7 @@ export const QUESTS: TQuest[] = [
   },
   {
     id: 'quest11',
-    order: 11,
+    order: 10,
     questType: 'common',
     title: 'Dump $USDC for $COBY',
     description: 'Sell some USDC for Coby. Who needs stablecoins anyway!',
@@ -233,11 +236,22 @@ export const QUESTS: TQuest[] = [
   },
   {
     id: 'quest12',
-    order: 12,
+    order: 11,
     questType: 'common',
     title: 'Trade $SOL for $USDC',
-    description:
-      'Enjoy the classic washtrading pair, and join in our partner’s OKAYBEARS movember campaign.',
+    description: (
+      <div>
+        Enjoy the classic washtrading pair, and join in our partner’s
+        OKAYBEARS&nbsp;
+        <Link
+          style={{ color: colors.pink[800] }}
+          href={'https://jumper.exchange/'}
+          target={'_blank'}
+        >
+          movember campaign.
+        </Link>
+      </div>
+    ),
     progressSteps: 5,
     powerUp: getItem('soap', 'pink'),
     sendingToken: [
