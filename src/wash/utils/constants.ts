@@ -216,7 +216,7 @@ export const QUESTS: TQuest[] = [
   },
   {
     id: 'quest10',
-    order: 11,
+    order: 10,
     questType: 'common',
     title: 'Dump $USDC for $COBY',
     description: 'Sell some USDC for Coby. Who needs stablecoins anyway!',
@@ -233,7 +233,7 @@ export const QUESTS: TQuest[] = [
   },
   {
     id: 'quest11',
-    order: 12,
+    order: 11,
     questType: 'common',
     title: 'Trade $SOL for $USDC',
     description:
