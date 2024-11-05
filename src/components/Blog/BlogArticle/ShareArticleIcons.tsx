@@ -13,7 +13,12 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { FB_SHARE_URL, LINKEDIN_SHARE_URL, X_SHARE_URL } from '@/const/urls';
+import {
+  FB_SHARE_URL,
+  getSiteUrl,
+  LINKEDIN_SHARE_URL,
+  X_SHARE_URL,
+} from '@/const/urls';
 import { ShareArticleIcon } from './ShareArticleIcon';
 import {
   ShareIconsContainer,
@@ -39,9 +44,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
     };
   }, []);
   const handleShareClick = () => {
-    navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
-    );
+    navigator.clipboard.writeText(`${getSiteUrl()}${pathname}`);
     setShowCopyMessage(true);
     trackEvent({
       category: TrackingCategory.BlogArticle,
@@ -66,10 +69,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       return;
     }
     const xUrl = new URL(X_SHARE_URL);
-    xUrl.searchParams.set(
-      'url',
-      `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
-    );
+    xUrl.searchParams.set('url', `${getSiteUrl()}${pathname}`);
     xUrl.searchParams.set('title', title);
     trackEvent({
       category: TrackingCategory.BlogArticle,
@@ -88,10 +88,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
       return;
     }
     const fbUrl = new URL(FB_SHARE_URL);
-    fbUrl.searchParams.set(
-      'u',
-      `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
-    );
+    fbUrl.searchParams.set('u', `${getSiteUrl()}${pathname}`);
     fbUrl.searchParams.set('title', title);
     trackEvent({
       category: TrackingCategory.BlogArticle,
@@ -111,10 +108,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
     }
     const linkedInUrl = new URL(LINKEDIN_SHARE_URL);
     linkedInUrl.searchParams.set('mini', 'true');
-    linkedInUrl.searchParams.set(
-      'url',
-      `${process.env.NEXT_PUBLIC_SITE_URL}${pathname}`,
-    );
+    linkedInUrl.searchParams.set('url', `${getSiteUrl()}${pathname}`);
     linkedInUrl.searchParams.set('title', title);
     trackEvent({
       category: TrackingCategory.BlogArticle,

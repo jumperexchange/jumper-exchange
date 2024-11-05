@@ -1,6 +1,7 @@
 import ScanPage from '@/app/ui/scan/ScanPage';
 import type { Metadata } from 'next';
 import { siteName } from '@/app/lib/metadata';
+import { getSiteUrl } from '@/const/urls';
 
 export async function generateMetadata({
   params: { segments = [] },
@@ -20,7 +21,7 @@ export async function generateMetadata({
   const title = `Jumper Scan | ${slug && address ? `${slugToTitle[slug]} ${address}` : 'Blockchain Explorer'}`;
   const description =
     'Jumper Scan is a blockchain explorer that allows you to search and explore transactions, blocks, and wallets on multiple blockchains.';
-  const canonical = `${process.env.NEXT_PUBLIC_SITE_URL}/scan${segments.length === 0 ? '' : `/${segments.join('/')}`}`;
+  const canonical = `${getSiteUrl()}/scan${segments.length === 0 ? '' : `/${segments.join('/')}`}`;
 
   return {
     robots: {

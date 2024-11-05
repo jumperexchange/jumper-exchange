@@ -17,6 +17,7 @@ import {
   PassImageBox,
   ProfileIconButton,
 } from './AddressBox.style';
+import { getSiteUrl } from '@/const/urls';
 
 interface AddressBoxProps {
   address?: string;

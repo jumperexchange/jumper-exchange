@@ -1,13 +1,12 @@
 import ProfilePage from '@/app/ui/profile/ProfilePage';
 import type { Metadata } from 'next';
+import { getSiteUrl } from '@/const/urls';
 
 type Props = {
   params: { walletAddress: string };
 };
 
-const baseUrl = process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
-  : process.env.NEXT_PUBLIC_SITE_URL;
+const baseUrl = getSiteUrl();
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
