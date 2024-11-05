@@ -1,0 +1,33 @@
+{
+  "ETHtoETHswap": {
+    "ETHtoUSDT": {
+      "tokenSymbol": "ETH",
+      "fromToken": "0x0000000000000000000000000000000000000000",
+      "fromChain": "1",
+      "amount": "1",
+      "toTokenSymbol": "USDT",
+      "toToken": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      "toChain": "1"
+    },
+
+    "USDTtoDAI": {
+      "tokenSymbol": "USDT",
+      "fromToken": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      "fromChain": "1",
+      "amount": "10",
+      "toTokenSymbol": "DAI",
+      "toToken": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      "toChain": "1"
+    },
+
+    "USDCtoWETH": {
+      "tokenSymbol": "USDC",
+      "fromToken": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "fromChain": "1",
+      "amount": "50",
+      "toTokenSymbol": "WETH",
+      "toToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "toChain": "1"
+    }
+  }
+}
