@@ -216,21 +216,38 @@ export const QUESTS: TQuest[] = [
   },
   {
     id: 'quest10',
-    order: 10,
+    order: 11,
     questType: 'common',
-    title: 'Dump $RETARDIO for $COBY',
-    description:
-      'Sell some Retardio for Coby. The sentences you end up writing in this job…',
+    title: 'Dump $USDC for $COBY',
+    description: 'Sell some USDC for Coby. Who needs stablecoins anyway!',
     progressSteps: 5,
     powerUp: getItem('soap', 'pink'),
     sendingToken: [
-      '6ogzHhzdrQr9Pgv6hZ2MNze7UrzBMAFyBBWUYp1Fhitx',
+      'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
       '8WnQQRbuEZ3CCDbH5MCVioBbw6o75NKANq9WdPhBDsWo',
-    ], // Retardio coby
+    ], // USDC coby
     receivingToken: [
       '8WnQQRbuEZ3CCDbH5MCVioBbw6o75NKANq9WdPhBDsWo',
-      '6ogzHhzdrQr9Pgv6hZ2MNze7UrzBMAFyBBWUYp1Fhitx',
-    ], // coby Retardio
+      'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    ], // coby USDC
+  },
+  {
+    id: 'quest11',
+    order: 12,
+    questType: 'common',
+    title: 'Trade $SOL for $USDC',
+    description:
+      'Enjoy the classic washtrading pair, and join in our partner’s OKAYBEARS movember campaign.',
+    progressSteps: 5,
+    powerUp: getItem('soap', 'pink'),
+    sendingToken: [
+      '11111111111111111111111111111111',
+      'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    ], // SOL USDC
+    receivingToken: [
+      'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      '11111111111111111111111111111111',
+    ], // USDC SOL
   },
 ];
 
