@@ -35,6 +35,7 @@ import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
+import { isIframeEnvironment } from 'src/utils/iframe';
 
 export function Widget({
   starterVariant,
@@ -175,31 +176,31 @@ export function Widget({
           maxPriceImpact: 0.4,
           allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
-        providers: isMultisigSigner
-          ? ([
-              EVM({
-                getWalletClient: () => getWalletClient(wagmiConfig),
-                switchChain: async (chainId) => {
-                  const chain = await switchChain(wagmiConfig, { chainId });
-                  trackEvent({
-                    category: TrackingCategory.Widget,
-                    action: TrackingAction.SwitchChain,
-                    label: 'switch-chain',
-                    data: {
-                      [TrackingEventParameter.ChainId]: chainId,
-                    },
-                  });
-                  return getWalletClient(wagmiConfig, { chainId: chain.id });
-                },
-                multisig: multisigSdkConfig,
-              }),
-            ] as any) // TODO: fix typing Eugene :pray:
-          : undefined,
+        providers:
+          isMultisigSigner && isIframeEnvironment()
+            ? [
+                EVM({
+                  getWalletClient: () => getWalletClient(wagmiConfig),
+                  switchChain: async (chainId) => {
+                    const chain = await switchChain(wagmiConfig, { chainId });
+                    trackEvent({
+                      category: TrackingCategory.Widget,
+                      action: TrackingAction.SwitchChain,
+                      label: 'switch-chain',
+                      data: {
+                        [TrackingEventParameter.ChainId]: chainId,
+                      },
+                    });
+                    return getWalletClient(wagmiConfig, { chainId: chain.id });
+                  },
+                  multisig: multisigSdkConfig,
+                }),
+              ]
+            : undefined,
       },
       buildUrl: true,
-      // insurance: true,
       integrator: integratorStringByType,
-      tokens: tokens as any, // TODO: fix typing Eugene :pray:
+      tokens: tokens,
     };
   }, [
     fromChain,

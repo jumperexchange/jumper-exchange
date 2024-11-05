@@ -11,6 +11,7 @@ import type { Connector } from 'wagmi';
 import type { GatewayTransactionDetails } from '@safe-global/safe-apps-sdk';
 import SafeAppsSDK, { TransactionStatus } from '@safe-global/safe-apps-sdk';
 import { useEffect, useState } from 'react';
+import { isIframeEnvironment } from 'src/utils/iframe';
 
 const getIsSafeConnector = async (connector?: Connector): Promise<boolean> => {
   let isSafeConnector = connector?.id === 'safe';
@@ -33,10 +34,7 @@ export const useMultisig = () => {
   const [isSafeConnector, setIsSafeConnector] = useState(false);
 
   const checkMultisigEnvironment = async () => {
-    // in Multisig env, window.parent is not equal to window
-    const isIframeEnvironment = window.parent !== window;
-
-    if (!isIframeEnvironment) {
+    if (!isIframeEnvironment()) {
       return false;
     }
 
