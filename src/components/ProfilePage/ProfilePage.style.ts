@@ -1,7 +1,7 @@
 import type { Breakpoint } from '@mui/material';
 import { Box, Container, Typography, alpha, styled } from '@mui/material';
 
-export const PageContainer = styled(Container)(() => ({
+export const PageContainer = styled(Container)(({ theme }) => ({
   marginTop: 32,
   fontFamily: 'var(--font-inter)',
   background: 'transparent',
@@ -10,6 +10,10 @@ export const PageContainer = styled(Container)(() => ({
   width: '100% !important',
   overflow: 'hidden',
   paddingBottom: 20,
+  [theme.breakpoints.up('xl' as Breakpoint)]: {
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
 }));
 
 export const SectionTitle = styled(Typography)(({ theme }) => ({

@@ -19,7 +19,11 @@ export const LeaderboardUserEntry = () => {
         walletAddress={
           account?.address || '0x0000000000000000000000000000000000000000'
         }
-        position={leaderboardUserData?.position ?? '-'}
+        position={
+          leaderboardUserData?.position
+            ? parseInt(leaderboardUserData?.position)
+            : undefined
+        }
         points={points || 0}
       />
     </LeaderboardUserEntryBox>

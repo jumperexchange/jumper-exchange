@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import useImageStatus from 'src/hooks/useImageStatus';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import { numberWithCommas } from 'src/utils/formatNumbers';
 import { XPIcon } from '../illustrations/XPIcon';
 import { PromoLabel } from '../PromoLabel.style';
 import {
@@ -60,6 +61,8 @@ export const WalletButtons = () => {
   const handleWalletMenuClick = () => {
     setWalletMenuState(!_openWalletMenu);
   };
+
+  const pointsLabel = points && numberWithCommas(points);
 
   return (
     <>
@@ -106,7 +109,7 @@ export const WalletButtons = () => {
                   marginRight={1.1}
                   marginLeft={1}
                 >
-                  {points ?? 0}
+                  {pointsLabel ?? 0}
                 </Typography>
               )}
               <XPIcon size={32} />

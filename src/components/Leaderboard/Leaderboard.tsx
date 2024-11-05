@@ -108,7 +108,9 @@ export const Leaderboard = ({ page: defaultPage }: { page?: string }) => {
             : leaderboardData?.map(
                 (entry: LeaderboardEntryData, index: number) => {
                   const isUserPosition =
-                    +entry.position === +leaderboardUserData?.position;
+                    +parseInt(entry.position) ===
+                    +parseInt(leaderboardUserData?.position);
+
                   return (
                     <>
                       <LeaderboardEntry
@@ -119,8 +121,16 @@ export const Leaderboard = ({ page: defaultPage }: { page?: string }) => {
                             ? account.address
                             : entry.walletAddress
                         }
-                        position={entry.position}
-                        points={entry.points}
+                        position={
+                          typeof entry.position === 'string'
+                            ? parseInt(entry.position)
+                            : entry.position
+                        }
+                        points={
+                          typeof entry.points === 'string'
+                            ? parseInt(entry.points)
+                            : entry.points
+                        }
                       />
                       {index !== leaderboardData.length - 1 && (
                         <Divider key={`leaderboard-entry-${index}-divider`} />

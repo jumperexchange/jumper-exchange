@@ -266,10 +266,6 @@ const themeCustomized = createTheme({
           [themeBase.breakpoints.up('lg' as Breakpoint)]: {
             maxWidth: 1280,
           },
-          [themeBase.breakpoints.up('xl' as Breakpoint)]: {
-            paddingLeft: 0,
-            paddingRight: 0,
-          },
         }),
       },
     },

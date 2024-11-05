@@ -4,6 +4,7 @@ import { XPIcon } from 'src/components/illustrations/XPIcon';
 import useImageStatus from 'src/hooks/useImageStatus';
 import { useLeaderboardStore } from 'src/stores/leaderboard';
 import { effigyAddressFormatter } from 'src/utils/effigyAddressFormatter';
+import { numberWithCommas } from 'src/utils/formatNumbers';
 import { ConnectButton } from '../ConnectButton';
 import {
   LeaderboardEntryInfos,
@@ -19,7 +20,7 @@ interface LeaderboardEntryProps {
   isUserConnected?: boolean;
   isUserEntry?: boolean;
   walletAddress: string;
-  position: number;
+  position?: number;
   points: number;
 }
 
@@ -39,9 +40,14 @@ export const LeaderboardEntry = ({
 
   const handleUserPosition = (e: React.MouseEvent<HTMLDivElement>) => {
     e?.preventDefault();
-    setUserPage(position);
+    if (!position) {
+      return;
+    }
+    setUserPage(typeof position === 'string' ? parseInt(position) : position);
   };
 
+  const rankLabel = numberWithCommas(position);
+  const pointsLabel = numberWithCommas(points);
   return (
     <LeaderboardEntryWrapper
       isUserPosition={isUserPosition}
@@ -56,7 +62,7 @@ export const LeaderboardEntry = ({
       <LeaderboardEntryInfos>
         <Box minWidth={74} textAlign={'center'}>
           <RankLabel variant="bodyXSmallStrong">
-            {isUserEntry && !isUserConnected ? '?' : position}
+            {isUserEntry && !isUserConnected ? '?' : rankLabel || '-'}
           </RankLabel>
         </Box>
         <RankWalletImage
@@ -77,7 +83,7 @@ export const LeaderboardEntry = ({
         <ConnectButton />
       ) : (
         <RankPointsContainer>
-          <Typography variant="bodyLargeStrong">{points}</Typography>
+          <Typography variant="bodyLargeStrong">{pointsLabel}</Typography>
           <XPIcon
             size={24}
             color={

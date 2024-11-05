@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { LEADERBOARD_LENGTH } from 'src/stores/leaderboard';
+import { numberWithCommas } from 'src/utils/formatNumbers';
 import type { LeaderboardEntryData } from '../../../hooks/useLeaderboard';
 import { useLeaderboardUser } from '../../../hooks/useLeaderboard';
 import { IconHeader } from '../Common/IconHeader';
@@ -17,8 +18,9 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
     useLeaderboardUser(address);
   const { t } = useTranslation();
   const userPage = Math.ceil(
-    leaderboardUserData?.position / LEADERBOARD_LENGTH,
+    parseFloat(leaderboardUserData?.position) / LEADERBOARD_LENGTH,
   );
+  const title = numberWithCommas(leaderboardUserData?.position);
 
   return (
     <RankContainer>
@@ -30,7 +32,7 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
         <Link href={`/leaderboard?page=${userPage}`} passHref>
           <LeaderboardUserPositionButton aria-label="Open leaderboard page with your position">
             <LeaderboardUserTitle variant="headerLarge">
-              {leaderboardUserData?.position ?? '-'}
+              {leaderboardUserData?.position ? title : '-'}
             </LeaderboardUserTitle>
           </LeaderboardUserPositionButton>
         </Link>

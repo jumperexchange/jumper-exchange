@@ -4,9 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 const LEADERBOARD_ENDPOINT = `${process.env.NEXT_PUBLIC_BACKEND_URL}/leaderboard`;
 
 export interface LeaderboardEntryData {
-  position: number;
+  position: string;
   walletAddress: string;
-  points: number;
+  points: string;
 }
 
 export interface LeaderboardMeta {
