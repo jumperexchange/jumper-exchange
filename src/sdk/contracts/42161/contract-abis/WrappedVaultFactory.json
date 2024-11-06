@@ -1,0 +1,273 @@
+{
+  "abi": [
+    {
+      "type": "constructor",
+      "inputs": [
+        {
+          "name": "_protocolFeeRecipient",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_protocolFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        },
+        {
+          "name": "_minimumFrontendFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        },
+        { "name": "_owner", "type": "address", "internalType": "address" },
+        {
+          "name": "_pointsFactory",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "payable"
+    },
+    {
+      "type": "function",
+      "name": "MAX_MIN_REFERRAL_FEE",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "MAX_PROTOCOL_FEE",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "incentivizedVaults",
+      "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+      "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "isVault",
+      "inputs": [{ "name": "", "type": "address", "internalType": "address" }],
+      "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "minimumFrontendFee",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "owner",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "pointsFactory",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "protocolFee",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "protocolFeeRecipient",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "transferOwnership",
+      "inputs": [
+        { "name": "newOwner", "type": "address", "internalType": "address" }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "updateMinimumReferralFee",
+      "inputs": [
+        {
+          "name": "newMinimumReferralFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "payable"
+    },
+    {
+      "type": "function",
+      "name": "updateProtocolFee",
+      "inputs": [
+        {
+          "name": "newProtocolFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "payable"
+    },
+    {
+      "type": "function",
+      "name": "updateProtocolFeeRecipient",
+      "inputs": [
+        { "name": "newRecipient", "type": "address", "internalType": "address" }
+      ],
+      "outputs": [],
+      "stateMutability": "payable"
+    },
+    {
+      "type": "function",
+      "name": "wrapVault",
+      "inputs": [
+        {
+          "name": "vault",
+          "type": "address",
+          "internalType": "contract ERC4626"
+        },
+        { "name": "owner", "type": "address", "internalType": "address" },
+        { "name": "name", "type": "string", "internalType": "string" },
+        {
+          "name": "initialFrontendFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "wrappedVault",
+          "type": "address",
+          "internalType": "contract WrappedVault"
+        }
+      ],
+      "stateMutability": "payable"
+    },
+    {
+      "type": "event",
+      "name": "OwnershipTransferred",
+      "inputs": [
+        {
+          "name": "user",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "newOwner",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "ProtocolFeeRecipientUpdated",
+      "inputs": [
+        {
+          "name": "newRecipient",
+          "type": "address",
+          "indexed": false,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "ProtocolFeeUpdated",
+      "inputs": [
+        {
+          "name": "newProtocolFee",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "ReferralFeeUpdated",
+      "inputs": [
+        {
+          "name": "newReferralFee",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "WrappedVaultCreated",
+      "inputs": [
+        {
+          "name": "underlyingVaultAddress",
+          "type": "address",
+          "indexed": true,
+          "internalType": "contract ERC4626"
+        },
+        {
+          "name": "incentivizedVaultAddress",
+          "type": "address",
+          "indexed": true,
+          "internalType": "contract WrappedVault"
+        },
+        {
+          "name": "owner",
+          "type": "address",
+          "indexed": false,
+          "internalType": "address"
+        },
+        {
+          "name": "inputToken",
+          "type": "address",
+          "indexed": false,
+          "internalType": "address"
+        },
+        {
+          "name": "frontendFee",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "indexed": false,
+          "internalType": "string"
+        },
+        {
+          "name": "vaultSymbol",
+          "type": "string",
+          "indexed": false,
+          "internalType": "string"
+        }
+      ],
+      "anonymous": false
+    },
+    { "type": "error", "name": "ProtocolFeeTooHigh", "inputs": [] },
+    { "type": "error", "name": "ReferralFeeTooHigh", "inputs": [] }
+  ]
+}
