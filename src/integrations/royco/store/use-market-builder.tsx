@@ -12,7 +12,10 @@ import type { AbiFunction } from 'abitype';
 import { Abi, SolidityAddress, IsAbi } from 'abitype';
 import type { AbiParameter } from 'viem';
 import { isAddress, ParseAbi } from 'viem';
-import { isAbiValid, isSolidityAddressValid } from 'src/integrations/royco/sdk/utils';
+import {
+  isAbiValid,
+  isSolidityAddressValid,
+} from 'src/integrations/royco/sdk/utils';
 
 export const MarketBuilderMarketBuilderFormSchema = z.object({
   functions: z.array(

@@ -1,32 +1,35 @@
+import type {
+  TypedRoycoMarketUserType,
+  TypedRoycoMarketOfferType,
+  TypedRoycoTransactionType,
+} from '../market';
 import {
   RoycoMarketUserType,
   RoycoMarketOfferType,
   RoycoMarketRewardStyle,
   RoycoMarketType,
-  TypedRoycoMarketUserType,
-  TypedRoycoMarketOfferType,
   TypedRoycoMarketRewardStyle,
-  TypedRoycoTransactionType,
   RoycoTransactionType,
-} from "../market";
-import { getSupportedToken, NULL_ADDRESS, SupportedToken } from "../constants";
-import { ContractMap, MulticallAbi } from "../contracts";
+} from '../market';
+import type { SupportedToken } from '../constants';
+import { getSupportedToken, NULL_ADDRESS } from '../constants';
+import { ContractMap, MulticallAbi } from '../contracts';
 import {
   getSupportedChain,
   isSolidityAddressValid,
   isSolidityIntValid,
-} from "../utils";
-import { Address } from "abitype";
-import { useTokenAllowance } from "./use-token-allowance";
-import { BigNumber, ethers } from "ethers";
-import { erc20Abi, multicall3Abi } from "viem";
-import { useTokenQuotes } from "./use-token-quotes";
-import { useEnrichedMarket } from "./use-enriched-market";
-import { useMarketOffersRecipe } from "./use-market-offers-recipe";
-import { useReadRecipeMarket } from "./use-read-recipe-market";
-import { useReadProtocolFeeRecipe } from "./use-read-protocol-fee-recipe";
-import { TransactionOptionsType } from "@/components/composables";
-import { MarketTransactionType } from "@/store";
+} from '../utils';
+import type { Address } from 'abitype';
+import { useTokenAllowance } from './use-token-allowance';
+import { BigNumber, ethers } from 'ethers';
+import { erc20Abi, multicall3Abi } from 'viem';
+import { useTokenQuotes } from './use-token-quotes';
+import { useEnrichedMarket } from './use-enriched-market';
+import { useMarketOffersRecipe } from './use-market-offers-recipe';
+import { useReadRecipeMarket } from './use-read-recipe-market';
+import { useReadProtocolFeeRecipe } from './use-read-protocol-fee-recipe';
+import type { TransactionOptionsType } from '@/components/composables';
+import { MarketTransactionType } from '@/store';
 
 const erc20Interface = new ethers.utils.Interface(erc20Abi);
 
@@ -54,7 +57,7 @@ export const checkOfferValidityRecipe = ({
   try {
     const chain = getSupportedChain(chainId);
     if (!chain) {
-      throw new Error("Unsupported chain");
+      throw new Error('Unsupported chain');
     }
 
     // (AP)
@@ -62,26 +65,26 @@ export const checkOfferValidityRecipe = ({
       // Market Offer
       if (offerType === RoycoMarketOfferType.market.id) {
         const isValid =
-          isSolidityIntValid("uint256", targetMarketId) &&
-          isSolidityIntValid("uint256", quantity) &&
-          isSolidityAddressValid("address", fundingVault) &&
-          quantity !== "0";
+          isSolidityIntValid('uint256', targetMarketId) &&
+          isSolidityIntValid('uint256', quantity) &&
+          isSolidityAddressValid('address', fundingVault) &&
+          quantity !== '0';
         return isValid;
       }
       // Limit Offer
       else {
         const isValid =
-          isSolidityIntValid("uint256", targetMarketId) &&
-          isSolidityIntValid("uint256", quantity) &&
-          isSolidityAddressValid("address", fundingVault) &&
+          isSolidityIntValid('uint256', targetMarketId) &&
+          isSolidityIntValid('uint256', quantity) &&
+          isSolidityAddressValid('address', fundingVault) &&
           incentiveTokens.every((token) =>
-            isSolidityAddressValid("address", token)
+            isSolidityAddressValid('address', token),
           ) &&
           incentiveTokensAmount.every((amount) =>
-            isSolidityIntValid("uint256", amount)
+            isSolidityIntValid('uint256', amount),
           ) &&
-          isSolidityIntValid("uint256", expiry) &&
-          quantity !== "0";
+          isSolidityIntValid('uint256', expiry) &&
+          quantity !== '0';
         return isValid;
       }
     }
@@ -90,24 +93,24 @@ export const checkOfferValidityRecipe = ({
       // Market Offer
       if (offerType === RoycoMarketOfferType.market.id) {
         const isValid =
-          isSolidityIntValid("uint256", targetMarketId) &&
-          isSolidityIntValid("uint256", quantity) &&
-          quantity !== "0";
+          isSolidityIntValid('uint256', targetMarketId) &&
+          isSolidityIntValid('uint256', quantity) &&
+          quantity !== '0';
         return isValid;
       }
       // Limit Offer
       else {
         const isValid =
-          isSolidityIntValid("uint256", targetMarketId) &&
-          isSolidityIntValid("uint256", quantity) &&
+          isSolidityIntValid('uint256', targetMarketId) &&
+          isSolidityIntValid('uint256', quantity) &&
           incentiveTokens.every((token) =>
-            isSolidityAddressValid("address", token)
+            isSolidityAddressValid('address', token),
           ) &&
           incentiveTokensAmount.every((amount) =>
-            isSolidityIntValid("uint256", amount)
+            isSolidityIntValid('uint256', amount),
           ) &&
-          isSolidityIntValid("uint256", expiry) &&
-          quantity !== "0";
+          isSolidityIntValid('uint256', expiry) &&
+          quantity !== '0';
         return isValid;
       }
     }
@@ -125,7 +128,7 @@ export type GetIncentivesInfoRecipeDataElement = SupportedToken & {
 };
 
 export type GetIncentivesInfoRecipeResponseType = {
-  status: "success" | "error";
+  status: 'success' | 'error';
   data: GetIncentivesInfoRecipeDataElement[];
 };
 
@@ -155,7 +158,7 @@ export const getIncentivesInfoRecipe = ({
       .toString();
 
     // Calculate time for which incentives are locked
-    let incentiveLockupTime: string = "0"; // Assuming upfront reward style
+    let incentiveLockupTime: string = '0'; // Assuming upfront reward style
     if (rewardStyleValue !== RoycoMarketRewardStyle.upfront.value) {
       incentiveLockupTime = lockupTime; // Update if not upfront reward style
     }
@@ -172,7 +175,7 @@ export const getIncentivesInfoRecipe = ({
 
       // Find if incentive already exists in incentivesInfo
       const incentiveIndex = incentivesInfo.findIndex(
-        (incentive) => incentive.id === incentiveId
+        (incentive) => incentive.id === incentiveId,
       );
 
       // If not, add it
@@ -189,12 +192,12 @@ export const getIncentivesInfoRecipe = ({
       // If it does, update it
       else {
         incentivesInfo[incentiveIndex].raw_amount = BigNumber.from(
-          incentivesInfo[incentiveIndex].raw_amount
+          incentivesInfo[incentiveIndex].raw_amount,
         )
           .add(BigNumber.from(incentiveRawAmount))
           .toString();
         incentivesInfo[incentiveIndex].token_amount = BigNumber.from(
-          incentivesInfo[incentiveIndex].token_amount
+          incentivesInfo[incentiveIndex].token_amount,
         ).toString();
       }
     }
@@ -212,12 +215,12 @@ export const getIncentivesInfoRecipe = ({
     }
 
     return {
-      status: "success",
+      status: 'success',
       data: incentivesInfo,
     };
   } catch (error) {
     return {
-      status: "error",
+      status: 'error',
       data: [],
     };
   }
@@ -233,7 +236,7 @@ export type GetIncentivesInfoWithFeesRecipeDataElement = SupportedToken & {
 };
 
 export type GetIncentivesInfoWithFeesRecipeResponseType = {
-  status: "success" | "error";
+  status: 'success' | 'error';
   data: GetIncentivesInfoWithFeesRecipeDataElement[];
 };
 
@@ -260,23 +263,23 @@ export const getIncentivesInfoWithFees = ({
 
       const protocolFeeRawAmount: string = BigNumber.from(incentiveRawAmount)
         .mul(BigNumber.from(protocolFee))
-        .div(BigNumber.from("10").pow(18))
+        .div(BigNumber.from('10').pow(18))
         .toString();
       const frontendFeeRawAmount: string = BigNumber.from(incentiveRawAmount)
         .mul(BigNumber.from(frontendFee))
-        .div(BigNumber.from("10").pow(18))
+        .div(BigNumber.from('10').pow(18))
         .toString();
 
       const incentiveRawAmountAfterFees =
         BigNumber.from(incentiveRawAmount).toString();
 
       const protocolFeeTokenAmount: string = BigNumber.from(
-        protocolFeeRawAmount
+        protocolFeeRawAmount,
       )
         .div(BigNumber.from(10).pow(incentiveData.decimals))
         .toString();
       const frontendFeeTokenAmount: string = BigNumber.from(
-        frontendFeeRawAmount
+        frontendFeeRawAmount,
       )
         .div(BigNumber.from(10).pow(incentiveData.decimals))
         .toString();
@@ -284,13 +287,13 @@ export const getIncentivesInfoWithFees = ({
         .div(BigNumber.from(10).pow(incentiveData.decimals))
         .toString();
       const incentiveTokenAmountAfterFees: string = BigNumber.from(
-        incentiveRawAmountAfterFees
+        incentiveRawAmountAfterFees,
       )
         .div(BigNumber.from(10).pow(incentiveData.decimals))
         .toString();
 
       const incentiveIndex = incentivesInfoWithFees.findIndex(
-        (incentive) => incentive.id === incentiveId
+        (incentive) => incentive.id === incentiveId,
       );
 
       if (incentiveIndex === -1) {
@@ -305,43 +308,43 @@ export const getIncentivesInfoWithFees = ({
         });
       } else {
         incentivesInfoWithFees[incentiveIndex].raw_amount = BigNumber.from(
-          incentivesInfoWithFees[incentiveIndex].raw_amount
+          incentivesInfoWithFees[incentiveIndex].raw_amount,
         )
           .add(BigNumber.from(incentiveRawAmount))
           .toString();
         incentivesInfoWithFees[incentiveIndex].token_amount = BigNumber.from(
-          incentivesInfoWithFees[incentiveIndex].token_amount
+          incentivesInfoWithFees[incentiveIndex].token_amount,
         ).toString();
         incentivesInfoWithFees[incentiveIndex].protocol_fee_raw_amount =
           BigNumber.from(
-            incentivesInfoWithFees[incentiveIndex].protocol_fee_raw_amount
+            incentivesInfoWithFees[incentiveIndex].protocol_fee_raw_amount,
           )
             .add(BigNumber.from(protocolFeeRawAmount))
             .toString();
         incentivesInfoWithFees[incentiveIndex].protocol_fee_token_amount =
           BigNumber.from(
-            incentivesInfoWithFees[incentiveIndex].protocol_fee_token_amount
+            incentivesInfoWithFees[incentiveIndex].protocol_fee_token_amount,
           ).toString();
         incentivesInfoWithFees[incentiveIndex].frontend_fee_raw_amount =
           BigNumber.from(
-            incentivesInfoWithFees[incentiveIndex].frontend_fee_raw_amount
+            incentivesInfoWithFees[incentiveIndex].frontend_fee_raw_amount,
           )
             .add(BigNumber.from(frontendFeeRawAmount))
             .toString();
         incentivesInfoWithFees[incentiveIndex].frontend_fee_token_amount =
           BigNumber.from(
-            incentivesInfoWithFees[incentiveIndex].frontend_fee_token_amount
+            incentivesInfoWithFees[incentiveIndex].frontend_fee_token_amount,
           ).toString();
       }
     }
 
     return {
-      status: "success",
+      status: 'success',
       data: incentivesInfoWithFees,
     };
   } catch (error) {
     return {
-      status: "error",
+      status: 'error',
       data: [],
     };
   }
@@ -369,9 +372,9 @@ export const getApprovalTxOptions = ({
         label: `Approve`,
         address: tokenData.contract_address,
         abi: erc20Abi,
-        functionName: "approve",
+        functionName: 'approve',
         args: [approvalAddress, ethers.constants.MaxUint256.toString()],
-        status: "idle",
+        status: 'idle',
         txHash: null,
       };
 
@@ -410,7 +413,7 @@ export const useCreateOfferRecipe = ({
   targetMarketId,
   fundingVault = NULL_ADDRESS,
   quantity,
-  expiry = "0",
+  expiry = '0',
   incentiveTokens = [],
   incentiveTokensAmount = [],
   userType,
@@ -502,36 +505,36 @@ export const useCreateOfferRecipe = ({
       (acc, offer) =>
         BigNumber.from(acc).add(
           BigNumber.from(
-            offer.fill_quantity.toLocaleString("fullwide", {
+            offer.fill_quantity.toLocaleString('fullwide', {
               useGrouping: false,
-            })
-          )
+            }),
+          ),
         ),
-      BigNumber.from(0)
+      BigNumber.from(0),
     );
     fulfillableQuantity = totalFulfullableQuantity.toString();
 
     // incentives calculation starts
     const incentiveIds = propsMarketOffersRecipe.data.flatMap(
-      (offer) => offer.token_ids
+      (offer) => offer.token_ids,
     );
     const incentiveRawAmounts = propsMarketOffersRecipe.data.flatMap((offer) =>
       offer.token_amounts.map((amount) =>
         BigNumber.from(
-          amount.toLocaleString("fullwide", { useGrouping: false })
+          amount.toLocaleString('fullwide', { useGrouping: false }),
         )
           .mul(
-            offer.fill_quantity.toLocaleString("fullwide", {
+            offer.fill_quantity.toLocaleString('fullwide', {
               useGrouping: false,
-            })
+            }),
           )
           .div(
-            offer.quantity.toLocaleString("fullwide", {
+            offer.quantity.toLocaleString('fullwide', {
               useGrouping: false,
-            })
+            }),
           )
-          .toString()
-      )
+          .toString(),
+      ),
     );
 
     incentivesInfo = getIncentivesInfoRecipe({
@@ -540,7 +543,7 @@ export const useCreateOfferRecipe = ({
       incentiveIds: incentiveIds,
       incentiveRawAmounts: incentiveRawAmounts,
       rewardStyleValue: propsEnrichedMarket.data.reward_style ?? 0,
-      lockupTime: propsEnrichedMarket.data.lockup_time?.toString() ?? "0",
+      lockupTime: propsEnrichedMarket.data.lockup_time?.toString() ?? '0',
     }).data;
 
     const incentivesInfoWithFees = getIncentivesInfoWithFees({
@@ -548,7 +551,7 @@ export const useCreateOfferRecipe = ({
       incentiveRawAmounts,
       protocolFee: propsReadProtocolFeeRecipe.data as string,
       frontendFee: BigNumber.from(
-        propsEnrichedMarket.data.frontend_fee?.toString()
+        propsEnrichedMarket.data.frontend_fee?.toString(),
       ).toString(),
     }).data;
     // incentives calculation ends
@@ -564,8 +567,8 @@ export const useCreateOfferRecipe = ({
           token_amount: BigNumber.from(quantity)
             .div(
               BigNumber.from(10).pow(
-                propsEnrichedMarket.data.input_token_data.decimals
-              )
+                propsEnrichedMarket.data.input_token_data.decimals,
+              ),
             )
             .toString(),
         },
@@ -573,16 +576,16 @@ export const useCreateOfferRecipe = ({
 
       // preparting contract data
       const offerIds = propsMarketOffersRecipe.data.map(
-        (offer) => offer.offer_id
+        (offer) => offer.offer_id,
       );
       const fillAmounts = propsMarketOffersRecipe.data.map((offer) =>
         BigNumber.from(
-          offer.fill_quantity.toLocaleString("fullwide", {
+          offer.fill_quantity.toLocaleString('fullwide', {
             useGrouping: false,
-          })
-        ).toString()
+          }),
+        ).toString(),
       );
-      const frontendFeeRecipient = "0x77777Cc68b333a2256B436D675E8D257699Aa667";
+      const frontendFeeRecipient = '0x77777Cc68b333a2256B436D675E8D257699Aa667';
 
       const ref = `${RoycoTransactionType.fill_ap_offers.id}`;
 
@@ -593,9 +596,9 @@ export const useCreateOfferRecipe = ({
         label: `Fill Offers`,
         address: offerContract.address,
         abi: offerContract.abi,
-        functionName: "fillIPOffers",
+        functionName: 'fillIPOffers',
         args: [offerIds, fillAmounts, fundingVault, frontendFeeRecipient],
-        status: "idle",
+        status: 'idle',
         txHash: null,
       };
 
@@ -614,24 +617,24 @@ export const useCreateOfferRecipe = ({
           quantity: offer.quantity,
           expiry: offer.expiry,
           incentivesRequested: offer.token_ids.map((token) => {
-            const [chainId, tokenAddress] = token.split("-");
+            const [chainId, tokenAddress] = token.split('-');
             return tokenAddress;
           }),
           incentiveAmountsRequested: offer.token_amounts.map((amount) =>
             BigNumber.from(
-              amount.toLocaleString("fullwide", { useGrouping: false })
-            ).toString()
+              amount.toLocaleString('fullwide', { useGrouping: false }),
+            ).toString(),
           ),
         };
       });
       const fillAmounts = propsMarketOffersRecipe.data.map((offer) =>
         BigNumber.from(
-          offer.fill_quantity.toLocaleString("fullwide", {
+          offer.fill_quantity.toLocaleString('fullwide', {
             useGrouping: false,
-          })
-        ).toString()
+          }),
+        ).toString(),
       );
-      const frontendFeeRecipient = "0x77777Cc68b333a2256B436D675E8D257699Aa667";
+      const frontendFeeRecipient = '0x77777Cc68b333a2256B436D675E8D257699Aa667';
 
       const ref = `${RoycoTransactionType.fill_ap_offers.id}`;
 
@@ -642,9 +645,9 @@ export const useCreateOfferRecipe = ({
         label: `Fill Offers`,
         address: offerContract.address,
         abi: offerContract.abi,
-        functionName: "fillAPOffers",
+        functionName: 'fillAPOffers',
         args: [offers, fillAmounts, frontendFeeRecipient],
-        status: "idle",
+        status: 'idle',
         txHash: null,
       };
 
@@ -673,7 +676,7 @@ export const useCreateOfferRecipe = ({
       incentiveIds: incentiveIds,
       incentiveRawAmounts: incentiveRawAmounts,
       rewardStyleValue: propsEnrichedMarket.data.reward_style ?? 0,
-      lockupTime: propsEnrichedMarket.data.lockup_time?.toString() ?? "0",
+      lockupTime: propsEnrichedMarket.data.lockup_time?.toString() ?? '0',
     }).data;
 
     const incentivesInfoWithFees = getIncentivesInfoWithFees({
@@ -681,7 +684,7 @@ export const useCreateOfferRecipe = ({
       incentiveRawAmounts,
       protocolFee: propsReadProtocolFeeRecipe.data as string,
       frontendFee: BigNumber.from(
-        propsEnrichedMarket.data.frontend_fee?.toString()
+        propsEnrichedMarket.data.frontend_fee?.toString(),
       ).toString(),
     }).data;
     // incentives calculation ends
@@ -700,8 +703,8 @@ export const useCreateOfferRecipe = ({
           token_amount: BigNumber.from(quantity)
             .div(
               BigNumber.from(10).pow(
-                propsEnrichedMarket.data.input_token_data.decimals
-              )
+                propsEnrichedMarket.data.input_token_data.decimals,
+              ),
             )
             .toString(),
         },
@@ -714,7 +717,7 @@ export const useCreateOfferRecipe = ({
         label: `Create`,
         address: offerContract.address,
         abi: offerContract.abi,
-        functionName: "createAPOffer",
+        functionName: 'createAPOffer',
         args: [
           targetMarketId,
           fundingVault,
@@ -723,7 +726,7 @@ export const useCreateOfferRecipe = ({
           incentiveTokens,
           incentiveTokensAmount,
         ],
-        status: "idle",
+        status: 'idle',
         txHash: null,
       };
 
@@ -739,7 +742,7 @@ export const useCreateOfferRecipe = ({
         label: `Create`,
         address: offerContract.address,
         abi: offerContract.abi,
-        functionName: "createIPOffer",
+        functionName: 'createIPOffer',
         args: [
           targetMarketId,
           quantity,
@@ -747,7 +750,7 @@ export const useCreateOfferRecipe = ({
           incentiveTokens,
           incentiveTokensAmount,
         ],
-        status: "idle",
+        status: 'idle',
         txHash: null,
         tokensOut: tokensInvolved,
       };
@@ -758,7 +761,7 @@ export const useCreateOfferRecipe = ({
 
   const propsTokenQuotes = useTokenQuotes({
     token_ids: [
-      propsEnrichedMarket.data?.input_token_data?.id ?? "",
+      propsEnrichedMarket.data?.input_token_data?.id ?? '',
       ...incentivesInfo.map((incentive) => incentive.id),
     ],
   });
@@ -792,10 +795,10 @@ export const useCreateOfferRecipe = ({
 
     for (let i = 0; i < tokensInvolved.length; i++) {
       const allowanceRequired = BigNumber.from(tokensInvolved[i].raw_amount);
-      const allowanceGiven = BigNumber.from(allowanceData[i]?.result ?? "0");
+      const allowanceGiven = BigNumber.from(allowanceData[i]?.result ?? '0');
 
       if (allowanceGiven.gte(allowanceRequired)) {
-        approveContractOptions[i].status = "success";
+        approveContractOptions[i].status = 'success';
       }
     }
 
@@ -805,17 +808,17 @@ export const useCreateOfferRecipe = ({
     enrichedIncentivesInfo = incentivesInfo.map((incentive) => {
       const inputTokenId = propsEnrichedMarket.data
         ? propsEnrichedMarket.data.input_token_data.id
-        : "";
+        : '';
 
       // console.log("inputTokenId", inputTokenId);
       // console.log("quoteData", quoteData);
 
       let tokenData = quoteData.find(
-        (quote) => quote.token_id === incentive.id
+        (quote) => quote.token_id === incentive.id,
       );
 
       let inputTokenData = quoteData.find(
-        (quote) => quote.token_id === inputTokenId
+        (quote) => quote.token_id === inputTokenId,
       );
 
       if (!inputTokenData) {

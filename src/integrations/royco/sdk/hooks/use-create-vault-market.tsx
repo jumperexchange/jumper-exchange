@@ -1,5 +1,5 @@
-import { ContractMap } from "../contracts";
-import { isSolidityAddressValid } from "../utils";
+import { ContractMap } from '../contracts';
+import { isSolidityAddressValid } from '../utils';
 
 export const useCreateVaultMarket = ({
   chainId = 0,
@@ -26,8 +26,8 @@ export const useCreateVaultMarket = ({
     undefined;
 
   // Check arguments
-  const isVaultAddressValid = isSolidityAddressValid("address", vaultAddress);
-  const isVaultOwnerValid = isSolidityAddressValid("address", vaultOwner);
+  const isVaultAddressValid = isSolidityAddressValid('address', vaultAddress);
+  const isVaultOwnerValid = isSolidityAddressValid('address', vaultOwner);
 
   // If all data is ready, set isReady to true and set writeContractOptions
   if (WrappedVaultFactory && isVaultAddressValid && isVaultOwnerValid) {
@@ -36,7 +36,7 @@ export const useCreateVaultMarket = ({
     writeContractOptions = {
       address: WrappedVaultFactory.address,
       abi: WrappedVaultFactory.abi,
-      functionName: "wrapVault",
+      functionName: 'wrapVault',
       args: [
         vaultAddress,
         vaultOwner,

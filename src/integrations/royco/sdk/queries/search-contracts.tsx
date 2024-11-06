@@ -1,5 +1,5 @@
-import { type TypedRoycoClient } from "../client";
-import { type SortingState } from "@tanstack/react-table";
+import { type TypedRoycoClient } from '../client';
+import { type SortingState } from '@tanstack/react-table';
 
 export const contractsPerPage = 10;
 
@@ -24,11 +24,11 @@ export type ContractFilter = {
 };
 
 const constructFilterClauses = (filters: ContractFilter[]): string => {
-  let idFilter = "";
-  let typeFilter = "";
-  let sourceFilter = "";
-  let chainIdFilter = "";
-  let whitelistedContractFilter = "";
+  let idFilter = '';
+  let typeFilter = '';
+  let sourceFilter = '';
+  let chainIdFilter = '';
+  let whitelistedContractFilter = '';
 
   /**
    * @note To filter string: wrap in single quotes
@@ -36,37 +36,56 @@ const constructFilterClauses = (filters: ContractFilter[]): string => {
    */
   filters.forEach((filter) => {
     switch (filter.id) {
-      case "id":
-        if (idFilter) idFilter += " OR ";
+      case 'id':
+        if (idFilter) {
+          idFilter += ' OR ';
+        }
         idFilter = `id = '${filter.value}'`;
         break;
-      case "type":
-        if (typeFilter) typeFilter += " OR ";
+      case 'type':
+        if (typeFilter) {
+          typeFilter += ' OR ';
+        }
         typeFilter = `type = '${filter.value}'`;
         break;
-      case "source":
-        if (sourceFilter) sourceFilter += " OR ";
+      case 'source':
+        if (sourceFilter) {
+          sourceFilter += ' OR ';
+        }
         sourceFilter = `source = '${filter.value}'`;
         break;
-      case "chain_id":
-        if (chainIdFilter) chainIdFilter += " OR ";
+      case 'chain_id':
+        if (chainIdFilter) {
+          chainIdFilter += ' OR ';
+        }
         chainIdFilter = `chain_id = ${filter.value}`;
         break;
-      case "is_whitelisted":
-        if (whitelistedContractFilter) whitelistedContractFilter += " OR ";
+      case 'is_whitelisted':
+        if (whitelistedContractFilter) {
+          whitelistedContractFilter += ' OR ';
+        }
         whitelistedContractFilter = `is_whitelisted = ${filter.value}`;
         break;
     }
   });
 
-  let filterClauses = "";
+  let filterClauses = '';
 
-  if (idFilter) filterClauses += `(${idFilter}) AND `;
-  if (typeFilter) filterClauses += `(${typeFilter}) AND `;
-  if (sourceFilter) filterClauses += `(${sourceFilter}) AND `;
-  if (chainIdFilter) filterClauses += `(${chainIdFilter}) AND `;
-  if (whitelistedContractFilter)
+  if (idFilter) {
+    filterClauses += `(${idFilter}) AND `;
+  }
+  if (typeFilter) {
+    filterClauses += `(${typeFilter}) AND `;
+  }
+  if (sourceFilter) {
+    filterClauses += `(${sourceFilter}) AND `;
+  }
+  if (chainIdFilter) {
+    filterClauses += `(${chainIdFilter}) AND `;
+  }
+  if (whitelistedContractFilter) {
     filterClauses += `(${whitelistedContractFilter}) AND `;
+  }
   if (filterClauses) {
     filterClauses = filterClauses.slice(0, -5); // Remove the trailing " AND "
   }
@@ -76,12 +95,12 @@ const constructFilterClauses = (filters: ContractFilter[]): string => {
 
 const constructSortingClauses = (sorting: SortingState): string => {
   if (sorting.length === 0) {
-    return "";
+    return '';
   }
 
   const sortingClauses = sorting
-    .map((sort) => `${sort.id} ${sort.desc ? "DESC" : "ASC"}`)
-    .join(", ");
+    .map((sort) => `${sort.id} ${sort.desc ? 'DESC' : 'ASC'}`)
+    .join(', ');
 
   return sortingClauses;
 };
@@ -90,16 +109,16 @@ export const searchContractsQueryOptions = (
   client: TypedRoycoClient,
   sorting: SortingState = [
     {
-      id: "contract_name",
+      id: 'contract_name',
       desc: false,
     },
   ],
   filters: ContractFilter[] = [],
   searchKey?: string,
-  pageIndex: number = 0
+  pageIndex: number = 0,
 ) => ({
   queryKey: [
-    "search-contracts",
+    'search-contracts',
     `searchKey=${searchKey}`,
     ...sorting.map((sort) => `sort=${sort.id}:${sort.desc}`),
     ...filters.map((filter) => `filter=${filter.id}:${filter.value}`),
@@ -109,8 +128,8 @@ export const searchContractsQueryOptions = (
     const filterClauses = constructFilterClauses(filters);
     const sortingClauses = constructSortingClauses(sorting);
 
-    const { data, error } = await client.rpc("search_contracts", {
-      search_key: searchKey || "",
+    const { data, error } = await client.rpc('search_contracts', {
+      search_key: searchKey || '',
       sorting: sortingClauses,
       filters: filterClauses,
       page_index: pageIndex,
