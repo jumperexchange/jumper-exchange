@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { useOngoingNumericQuests } from 'src/hooks/useOngoingNumericQuests';
 import { getMonthInfo } from 'src/utils/getRemainingDaysOfMonth';
 import { QuestCard } from '../QuestCard/QuestCard';
 
@@ -7,10 +8,10 @@ type NumericAction = 'chain_oor' | 'transact_oor' | 'swap_oor' | 'bridge_oor';
 export const QuestCarouselNumericItems = () => {
   const { t } = useTranslation();
 
-  // const {
-  //   data: ongoingNumericQuests,
-  //   isLoading: isongoingNumericQuestsLoading,
-  // } = useOngoingNumericQuests();
+  const {
+    data: ongoingNumericQuests,
+    isLoading: isongoingNumericQuestsLoading,
+  } = useOngoingNumericQuests();
 
   const getNumericAction = (type: NumericAction) => {
     switch (type) {
@@ -25,68 +26,9 @@ export const QuestCarouselNumericItems = () => {
     }
   };
 
-  const ongoingNumericQuests = [
-    {
-      type: 'chain_oor',
-      currentRangeXP: 15,
-      nextRangeXP: 20,
-      currentValue: 4,
-      min: 3,
-      max: 4,
-      id: 58,
-      name: 'Chain_oor - november',
-      description: null,
-      image:
-        'https://storage.googleapis.com/jumper-static-assets/upload/chainoor.png',
-      displayName: 'Chain_oor - nov',
-    },
-    {
-      type: 'transact_oor',
-      currentRangeXP: 18,
-      nextRangeXP: 25,
-      currentValue: 8,
-      min: 5,
-      max: 9,
-      id: 64,
-      name: 'Transact_oor - november',
-      description: null,
-      image:
-        'https://storage.googleapis.com/jumper-static-assets/upload/transactoor.png',
-      displayName: 'Transact_oor - nov',
-    },
-    {
-      type: 'swap_oor',
-      currentRangeXP: 18,
-      nextRangeXP: 25,
-      currentValue: 7379.43,
-      min: 1000,
-      max: 9999,
-      id: 155,
-      name: 'Swap_oor - november',
-      description: null,
-      image:
-        'https://storage.googleapis.com/jumper-static-assets/upload/swapoor.png',
-      displayName: 'Swap_oor - nov',
-    },
-    {
-      type: 'bridge_oor',
-      currentRangeXP: 25,
-      nextRangeXP: 33,
-      currentValue: 14945.55,
-      min: 10000,
-      max: 49999,
-      id: 156,
-      name: 'Bridge_oor - november',
-      description: null,
-      image:
-        'https://storage.googleapis.com/jumper-static-assets/upload/bridgeoor.png',
-      displayName: 'Bridge_oor - nov',
-    },
-  ];
-
   const monthInfo = getMonthInfo();
 
-  return true //!isongoingNumericQuestsLoading
+  return !isongoingNumericQuestsLoading
     ? ongoingNumericQuests?.map((numericQuest, index) => (
         <QuestCard
           action={getNumericAction(numericQuest.type as NumericAction)}
