@@ -17,6 +17,7 @@ type TNFTResponse = {
   color: TColor;
   isRare?: boolean;
   isRevealed?: boolean;
+  rewardName?: string;
 };
 export type TGetNFT = {
   nft?: TNFTItem;

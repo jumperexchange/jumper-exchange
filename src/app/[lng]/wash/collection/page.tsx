@@ -136,15 +136,17 @@ const Percents = styled.p`
   color: white;
   font-weight: 900;
   transform: skewX(-6deg);
+  margin: 0px;
 `;
 const MintNextSubtitle = styled.p`
   font-size: 24px;
-  line-height: 32 px;
+  line-height: 32px;
   font-family: ${inter.style.fontFamily};
   color: white;
   font-weight: 900;
   text-transform: uppercase;
   transform: skewX(-6deg);
+  margin: 0px;
 `;
 const MintNextDescription = styled.p`
   font-weight: 500;

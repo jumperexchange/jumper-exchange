@@ -13,11 +13,11 @@ import type {
   WalletManagementConfig,
 } from '@lifi/wallet-management';
 import {
+  useWalletManagementEvents,
   WalletManagementEvent,
   WalletManagementProvider,
-  useWalletManagementEvents,
 } from '@lifi/wallet-management';
-import { useEffect, useMemo, type FC, type PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EVMProvider } from './EVMProvider';
 import { SVMProvider } from './SVMProvider';
@@ -26,17 +26,17 @@ import { createConfig, EVM, Solana, UTXO } from '@lifi/sdk';
 import { publicRPCList } from '@/const/rpcList';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
-  useEffect(() => {
-    createConfig({
-      providers: [EVM(), Solana(), UTXO()],
-      integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
-      rpcUrls: {
-        ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
-        ...publicRPCList,
-      },
-      preloadChains: true,
-    });
-  }, []);
+  createConfig({
+    apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+    apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+    providers: [EVM(), Solana(), UTXO()],
+    integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+    rpcUrls: {
+      ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
+      ...publicRPCList,
+    },
+    preloadChains: true,
+  });
 
   return (
     <EVMProvider>

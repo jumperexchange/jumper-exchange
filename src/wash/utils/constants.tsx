@@ -1,5 +1,6 @@
-import type { TColor } from './theme';
+import { colors, type TColor } from './theme';
 import type { TCleaningItem, TQuest } from '../types/wash';
+import Link from 'next/link';
 
 /**************************************************************************************************
  * WASH_ENDPOINT_ROOT_URI
@@ -215,22 +216,50 @@ export const QUESTS: TQuest[] = [
     ], // USA TRUMP
   },
   {
-    id: 'quest10',
+    id: 'quest11',
     order: 10,
     questType: 'common',
-    title: 'Dump $RETARDIO for $COBY',
-    description:
-      'Sell some Retardio for Coby. The sentences you end up writing in this job…',
+    title: 'Dump $USDC for $COBY',
+    description: 'Sell some USDC for Coby. Who needs stablecoins anyway!',
     progressSteps: 5,
     powerUp: getItem('soap', 'pink'),
     sendingToken: [
-      '6ogzHhzdrQr9Pgv6hZ2MNze7UrzBMAFyBBWUYp1Fhitx',
+      'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
       '8WnQQRbuEZ3CCDbH5MCVioBbw6o75NKANq9WdPhBDsWo',
-    ], // Retardio coby
+    ], // USDC coby
     receivingToken: [
       '8WnQQRbuEZ3CCDbH5MCVioBbw6o75NKANq9WdPhBDsWo',
-      '6ogzHhzdrQr9Pgv6hZ2MNze7UrzBMAFyBBWUYp1Fhitx',
-    ], // coby Retardio
+      'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    ], // coby USDC
+  },
+  {
+    id: 'quest12',
+    order: 11,
+    questType: 'common',
+    title: 'Trade $SOL for $USDC',
+    description: (
+      <div>
+        Enjoy the classic washtrading pair, and join in our partner’s
+        OKAYBEARS&nbsp;
+        <Link
+          style={{ color: colors.pink[800] }}
+          href={'https://jumper.exchange/'}
+          target={'_blank'}
+        >
+          movember campaign.
+        </Link>
+      </div>
+    ),
+    progressSteps: 5,
+    powerUp: getItem('soap', 'pink'),
+    sendingToken: [
+      '11111111111111111111111111111111',
+      'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    ], // SOL USDC
+    receivingToken: [
+      'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      '11111111111111111111111111111111',
+    ], // USDC SOL
   },
 ];
 
@@ -251,9 +280,8 @@ export const TOOLTIP_MESSAGES = {
     'Every swap helps wash your NFT clean. It takes $10,000 of volume to fully wash the NFT, or you can complete quests for power ups to boost your progress much faster!',
   quest:
     'Quests help speed up your wash trading progress. Trade at least $10 of volume per quest to gain power ups that boost your progress! Lfg.',
-  goldenNft:
-    //TODO: change this on launch
-    'When the game ends on xx/xx/xxxx Golden NFT holders will be airdropped something sexy from the prize pool; holding Mad Lads, Retardio Cousins, Degods, Yoots, $Coby, and more!',
+  goldenNft: (prize: string) =>
+    `Congrats! You’ll be getting a ${prize} when the campaign ends. In the meantime, keep washing for more chances to win!`,
 };
 
 /**********************************************************************************************

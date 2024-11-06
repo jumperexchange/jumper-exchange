@@ -45,7 +45,7 @@ const StepsExplainerSection = ({
         {sourceToken?.name} account is funded.
       </Typography>
       <Typography variant="h4" marginY={2} sx={{ fontSize: '24px!important' }}>
-        Step 2: Choose a Bridge
+        Step 2: Check Available Bridge Options
       </Typography>
       <Typography>
         There are several bridges available to transfer your assets from{' '}
@@ -62,7 +62,7 @@ const StepsExplainerSection = ({
         <li>Celer</li>
       </ul>
       <Typography variant="h4" marginY={2} sx={{ fontSize: '24px!important' }}>
-        Step 3: Choose a Bridge
+        Step 3: Select a Bridge
       </Typography>
       <Typography>To choose your bridge, follow these steps:</Typography>
       <ul>

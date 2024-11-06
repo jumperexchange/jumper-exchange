@@ -23,6 +23,7 @@ export type TNFTItem = {
   isRevealed?: boolean;
   color?: TColor;
   isRare?: boolean;
+  rewardName?: string;
 };
 
 export type TItems = {

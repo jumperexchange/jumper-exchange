@@ -16,6 +16,7 @@ import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { RewardsCarousel } from './Rewards/RewardsCarousel';
 import { useTraits } from 'src/hooks/useTraits';
+import { useABTest } from 'src/hooks/useABTest';
 
 const shouldHideComponent = (
   account: { address?: string } | undefined,
@@ -35,6 +36,10 @@ export const ProfilePage = () => {
   const { account } = useAccount();
   const { isLoading, points, tier, pdas } = useLoyaltyPass();
   const { isLoading: isTraitLoading, traits } = useTraits();
+  const { isEnabled: isABTestEnabled } = useABTest({
+    feature: 'test_ab_1',
+    user: account?.address || '',
+  });
   const {
     availableRewards,
     pastCampaigns,

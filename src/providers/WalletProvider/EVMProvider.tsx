@@ -6,7 +6,6 @@ import { useChains } from '@/hooks/useChains';
 import type { ExtendedChain } from '@lifi/sdk';
 import {
   createDefaultWagmiConfig,
-  safe,
   useSyncWagmiConfig,
 } from '@lifi/wallet-management';
 import { type FC, type PropsWithChildren } from 'react';
@@ -16,7 +15,6 @@ const { config, connectors } = createDefaultWagmiConfig({
   coinbase: defaultCoinbaseConfig,
   metaMask: defaultMetaMaskConfig,
   walletConnect: defaultWalletConnectConfig,
-  connectors: [safe],
   lazy: true,
 });
 
