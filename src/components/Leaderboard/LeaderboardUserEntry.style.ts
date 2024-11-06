@@ -10,5 +10,4 @@ export const LeaderboardUserEntryBox = styled(Link)(({ theme }) => ({
   pointerEvents: 'auto',
   boxShadow: theme.palette.shadowLight.main,
   borderRadius: '24px',
-  marginTop: theme.spacing(3),
 }));

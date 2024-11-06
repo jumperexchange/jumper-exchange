@@ -36,7 +36,7 @@ export const LeaderboardEntryWrapper = styled(Box, {
           ? theme.palette.white.main
           : theme.palette.bgTertiary.main,
       borderRadius: '24px',
-      margin: '10px 0',
+      marginTop: theme.spacing(3),
       padding: theme.spacing(2, 1),
       [theme.breakpoints.up('sm' as Breakpoint)]: {
         padding: theme.spacing(2, 3),
