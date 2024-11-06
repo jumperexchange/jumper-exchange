@@ -179,6 +179,9 @@ export const getEnrichedMarketsQueryOptions = (
       custom_token_data: custom_token_data,
     });
 
+    console.log('MARKETS DATA HERE:');
+    console.log('result', result);
+
     if (!!result.data && !!result.data.data && result.data.data.length > 0) {
       const rows = result.data.data;
 
