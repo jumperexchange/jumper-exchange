@@ -183,7 +183,7 @@ export const QUESTS: TQuest[] = [
     id: 'quest8',
     order: 8,
     questType: 'common',
-    title: 'Swap between $MOODENG and $FWOG',
+    title: 'Swap between $MOODENG & $FWOG',
     description:
       'Cute flavour of the month vs cute flavour of the month. You don’t have to pick sides. Just swap between them!',
     progressSteps: 8,
@@ -201,7 +201,7 @@ export const QUESTS: TQuest[] = [
     id: 'quest9',
     order: 9,
     questType: 'common',
-    title: 'Swap between $Trump and $USA',
+    title: 'Swap between $Trump & $USA',
     description:
       'Play some Bruce Springsteen, put on your Maga hat and start trading like a true patriot. Murica mfer!',
     progressSteps: 5,
