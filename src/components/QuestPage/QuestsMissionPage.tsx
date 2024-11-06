@@ -3,12 +3,12 @@ import generateKey from 'src/app/lib/generateKey';
 import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
-import { QuestPageMainBox, QuestsContainer } from '../Quests.style';
 import { BackButton } from './BackButton/BackButton';
 import { BannerBox } from './Banner/Banner';
 import { MissionCTA } from './CTA/MissionCTA';
 import { DescriptionBox } from './DescriptionBox/DescriptionBox';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
+import { QuestPageMainBox, QuestsContainer } from './QuestPage.style';
 import { StepsBox } from './StepsBox/StepsBox';
 
 interface QuestsMissionPageVar {

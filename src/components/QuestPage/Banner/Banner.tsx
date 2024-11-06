@@ -1,8 +1,8 @@
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import Image from 'next/image';
+import { checkInclusion } from 'src/components/ProfilePage/checkInclusion';
 import { type Quest } from 'src/types/loyaltyPass';
-import { checkInclusion } from '../../ActiveQuestsMissionsCarousel/ActiveQuestsMissionsCarousel';
 import {
   BadgeMainBox,
   BadgeRelativeBox,

@@ -6,8 +6,8 @@ import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
 import { OptionalLink } from 'src/components/ProfilePage/OptionalLink/OptionalLink';
-import type { Chain } from 'src/components/Quests/QuestPage/Banner/Banner';
-import { FlexCenterRowBox } from 'src/components/Quests/QuestPage/QuestsMissionPage.style';
+import type { Chain } from 'src/components/QuestPage/Banner/Banner';
+import { FlexCenterRowBox } from 'src/components/QuestPage/QuestsMissionPage.style';
 import { PROFILE_CAMPAIGN_FLASHY_APY_COLOR } from 'src/const/partnerRewardsTheme';
 import {
   TrackingAction,
