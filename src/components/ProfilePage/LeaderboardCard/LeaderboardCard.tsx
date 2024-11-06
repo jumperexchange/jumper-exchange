@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { LEADERBOARD_LENGTH } from 'src/stores/leaderboard';
+import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
 import { numberWithCommas } from 'src/utils/formatNumbers';
 import type { LeaderboardEntryData } from '../../../hooks/useLeaderboard';
 import { useLeaderboardUser } from '../../../hooks/useLeaderboard';

@@ -1,13 +1,9 @@
 'use client';
 import { Box, Divider, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAccount } from '@lifi/wallet-management';
-import {
-  LEADERBOARD_LENGTH,
-  useLeaderboardStore,
-} from 'src/stores/leaderboard';
 import type {
   LeaderboardEntryData,
   LeaderboardMeta,
@@ -29,16 +25,15 @@ import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
 
+export const LEADERBOARD_LENGTH = 25;
+
 const isValidPage = (page: string, totalPages: number) => {
   const pageNum = parseInt(page, 10);
   return !isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages;
 };
 
-export const Leaderboard = ({ page: defaultPage }: { page?: string }) => {
+export const Leaderboard = ({ page: defaultPage = '1' }: { page?: string }) => {
   const { account } = useAccount();
-  const { page, setPage, maxPages, setMaxPages } = useLeaderboardStore(
-    (state) => state,
-  );
 
   const { t } = useTranslation();
 
@@ -46,28 +41,15 @@ export const Leaderboard = ({ page: defaultPage }: { page?: string }) => {
     data: leaderboardData,
     meta,
   }: { data: LeaderboardEntryData[]; meta: LeaderboardMeta } =
-    useLeaderboardList(page, LEADERBOARD_LENGTH);
+    useLeaderboardList(parseInt(defaultPage), LEADERBOARD_LENGTH);
   const { data: leaderboardUserData }: { data: LeaderboardEntryData } =
     useLeaderboardUser(account?.address);
 
-  useEffect(() => {
-    // set maxPages to the number of pages returned by the API
-    if (meta?.pagination?.pagesLength && maxPages === 0) {
-      setMaxPages(meta.pagination.pagesLength);
-    }
-
-    if (
-      !defaultPage ||
-      !meta?.pagination?.pagesLength ||
-      !isValidPage(defaultPage, meta.pagination.pagesLength)
-    ) {
-      return;
-    }
-    setPage(parseInt(defaultPage));
-
-    // maxPages is not needed here but eslint is complaining
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [meta?.pagination?.pagesLength]);
+  const currentPage = useMemo(() => {
+    return isValidPage(defaultPage, meta?.pagination?.pagesLength)
+      ? parseInt(defaultPage)
+      : 1;
+  }, [defaultPage, meta?.pagination.pagesLength]);
 
   const date = new Date().toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -140,7 +122,12 @@ export const Leaderboard = ({ page: defaultPage }: { page?: string }) => {
                 },
               )}
         </LeaderboardEntryStack>
-        {maxPages > 1 && <Pagination />}
+        {meta?.pagination?.pagesLength > 1 && (
+          <Pagination
+            page={currentPage}
+            maxPages={meta.pagination.pagesLength}
+          />
+        )}
       </LeaderboardContainer>
     </PageContainer>
   );

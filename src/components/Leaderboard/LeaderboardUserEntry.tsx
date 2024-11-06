@@ -12,18 +12,16 @@ export const LeaderboardUserEntry = () => {
   const { points } = useLoyaltyPass();
 
   return (
-    <LeaderboardUserEntryBox>
+    <LeaderboardUserEntryBox
+      href={`/leaderboard?page=${leaderboardUserData.userPage}`}
+    >
       <LeaderboardEntry
         isUserEntry={true}
         isUserConnected={!!account.address}
         walletAddress={
           account?.address || '0x0000000000000000000000000000000000000000'
         }
-        position={
-          leaderboardUserData?.position
-            ? parseInt(leaderboardUserData?.position)
-            : undefined
-        }
+        position={parseInt(leaderboardUserData?.position)}
         points={points || 0}
       />
     </LeaderboardUserEntryBox>

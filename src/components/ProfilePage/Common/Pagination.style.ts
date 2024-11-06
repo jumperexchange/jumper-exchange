@@ -1,5 +1,6 @@
 import type { Breakpoint, ButtonProps } from '@mui/material';
 import { Box, Button, styled } from '@mui/material';
+import Link from 'next/link';
 
 export const PaginationContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
@@ -14,11 +15,20 @@ export interface PaginationButtonProps extends ButtonProps {
   activePage?: boolean;
 }
 
+export const PaginationLink = styled(Link)(({ theme }) => ({
+  textDecoration: 'none',
+  color: theme.palette.text.primary,
+  '&:hover': {
+    textDecoration: 'none',
+  },
+  pointerEvents: 'auto',
+}));
+
 export const PaginationButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'activePage',
 })<PaginationButtonProps>(({ theme, activePage }) => ({
   backgroundColor: activePage ? theme.palette.white.main : 'transparent',
-  color: theme.palette.text.primary,
+  color: activePage ? theme.palette.black.main : theme.palette.text.primary,
   height: '32px',
   display: activePage ? 'flex' : 'none',
   alignItems: 'center',

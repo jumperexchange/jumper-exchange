@@ -5,26 +5,21 @@ import {
   LastPage,
 } from '@mui/icons-material';
 import { Box, IconButton, Typography } from '@mui/material';
-import { useLeaderboardStore } from 'src/stores/leaderboard';
 import {
   PaginationButton,
-  PaginationClosestPages,
   PaginationContainer,
+  PaginationLink,
 } from './Pagination.style';
 
 const PAGINATION_NR_OF_PAGES_TO_DISPLAY = 5;
 
-export const Pagination = () => {
-  const {
-    page,
-    maxPages,
-    setPage,
-    setNextPage,
-    setLastPage,
-    setFirstPage,
-    setPreviousPage,
-  } = useLeaderboardStore((state) => state);
-
+export const Pagination = ({
+  page,
+  maxPages,
+}: {
+  page: number;
+  maxPages: number;
+}) => {
   let starterIndex = 1;
   const paginationMedian = Math.round(PAGINATION_NR_OF_PAGES_TO_DISPLAY / 2);
   const getPagesToDisplay = () => {
@@ -49,68 +44,72 @@ export const Pagination = () => {
   return (
     <PaginationContainer>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <IconButton>
-          <FirstPage
-            onClick={setFirstPage}
-            sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
-          />
-        </IconButton>
-        <IconButton>
-          <ChevronLeft
-            onClick={setPreviousPage}
-            sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
-          />
-        </IconButton>
+        <PaginationLink href={`/leaderboard?page=1`}>
+          <IconButton>
+            <FirstPage sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
+          </IconButton>
+        </PaginationLink>
+        <PaginationLink href={`/leaderboard?page=${page - 1}`}>
+          <IconButton>
+            <ChevronLeft sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
+          </IconButton>
+        </PaginationLink>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        {starterIndex !== 1 && (
+        {/* {starterIndex !== 1 && (
           <PaginationClosestPages>
-            <PaginationButton onClick={setFirstPage}>
-              <Typography variant="bodyXSmallStrong">1</Typography>
-            </PaginationButton>
+            <PaginationLink href={`/leaderboard?page=1`}>
+              <PaginationButton
+                onClick={() => {
+                  router.push(`/leaderboard?page=1`);
+                }}
+              >
+                <Typography variant="bodyXSmallStrong">1</Typography>
+              </PaginationButton>
+            </PaginationLink>
             <Typography variant="bodyXSmallStrong" component="span">
               ...
             </Typography>
           </PaginationClosestPages>
-        )}
+        )} */}
         {displayedPages.map((pageNr, index) => (
-          <PaginationButton
-            activePage={page === pageNr}
+          <PaginationLink
+            href={`/leaderboard?page=${pageNr}`}
             key={`pagination-pageNr-${index}`}
-            onClick={() => {
-              if (page !== pageNr) {
-                setPage(pageNr);
-              }
-            }}
           >
-            <Typography variant="bodyXSmallStrong">{pageNr}</Typography>
-          </PaginationButton>
+            <PaginationButton
+              activePage={page === pageNr}
+              key={`pagination-pageNr-${index}`}
+            >
+              <Typography variant="bodyXSmallStrong">{pageNr}</Typography>
+            </PaginationButton>
+          </PaginationLink>
         ))}
-        {page <= maxPages - PAGINATION_NR_OF_PAGES_TO_DISPLAY + 1 && (
+        {/* {page <= maxPages - PAGINATION_NR_OF_PAGES_TO_DISPLAY + 1 && (
           <PaginationClosestPages>
             <Typography variant="bodyXSmallStrong" component={'span'}>
               ...
             </Typography>
-            <PaginationButton onClick={setLastPage}>
-              <Typography variant="bodyXSmallStrong">{maxPages}</Typography>
-            </PaginationButton>
+            <PaginationLink href={`/leaderboard?page=${maxPages}`}>
+              <PaginationButton>
+                <Typography variant="bodyXSmallStrong">{maxPages}</Typography>
+              </PaginationButton>
+            </PaginationLink>
           </PaginationClosestPages>
-        )}
+        )} */}
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <IconButton>
-          <ChevronRight
-            onClick={setNextPage}
-            sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
-          />
-        </IconButton>
-        <IconButton>
-          <LastPage
-            onClick={setLastPage}
-            sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
-          />
-        </IconButton>
+        <PaginationLink href={`/leaderboard?page=${page + 1}`}>
+          <IconButton>
+            <ChevronRight sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
+          </IconButton>
+        </PaginationLink>
+        <PaginationLink href={`/leaderboard?page=${maxPages}`}>
+          <IconButton>
+            <LastPage sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
+          </IconButton>
+        </PaginationLink>
       </Box>
     </PaginationContainer>
   );

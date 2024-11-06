@@ -2,7 +2,6 @@ import { alpha, Box, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import useImageStatus from 'src/hooks/useImageStatus';
-import { useLeaderboardStore } from 'src/stores/leaderboard';
 import { effigyAddressFormatter } from 'src/utils/effigyAddressFormatter';
 import { numberWithCommas } from 'src/utils/formatNumbers';
 import { ConnectButton } from '../ConnectButton';
@@ -36,28 +35,14 @@ export const LeaderboardEntry = ({
   const { t } = useTranslation();
   const formattedAddress = effigyAddressFormatter(walletAddress);
   const imgLink = useImageStatus(formattedAddress);
-  const { setUserPage } = useLeaderboardStore((state) => state);
-
-  const handleUserPosition = (e: React.MouseEvent<HTMLDivElement>) => {
-    e?.preventDefault();
-    if (!position) {
-      return;
-    }
-    setUserPage(typeof position === 'string' ? parseInt(position) : position);
-  };
-
   const rankLabel = numberWithCommas(position);
   const pointsLabel = numberWithCommas(points);
+
   return (
     <LeaderboardEntryWrapper
       isUserPosition={isUserPosition}
       isUserEntry={isUserEntry}
       isUserConnected={isUserConnected}
-      onClick={
-        isUserEntry && isUserConnected
-          ? (e) => handleUserPosition(e)
-          : undefined
-      }
     >
       <LeaderboardEntryInfos>
         <Box minWidth={74} textAlign={'center'}>
