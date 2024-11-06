@@ -57,7 +57,6 @@
     "shallow-equal": "^3.1.0",
     "sharp": "^0.33.5",
     "siwe": "^2.3.2",
-    "typescript": "^5.6.3",
     "uuid": "^10.0.0",
     "zustand": "^4.5.5"
   },
