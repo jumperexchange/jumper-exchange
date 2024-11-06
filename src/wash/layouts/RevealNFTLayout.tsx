@@ -11,6 +11,7 @@ import { CallToActionBox } from '../common/CallToActionBox';
 import { titanOne } from '../common/fonts';
 import { inter } from '../../fonts/fonts';
 import { colors, mq } from '../utils/theme';
+import Link from 'next/link';
 
 /**************************************************************************************************
  * Defining the styled components style for the RevealedNFTLayout component
@@ -79,10 +80,11 @@ const RevealedNFTLayoutCallToActionBox = styled.div`
   }
 `;
 
-const RewardWrapper = styled.div`
+const RewardWrapper = styled.div<{ maxWidth?: string }>`
   margin-top: 1rem;
-  max-width: 765px;
+  max-width: ${(props) => props.maxWidth ?? '1200px'};
   text-align: center;
+  font-weight: 500;
 `;
 
 const RewardName = styled.span`
@@ -151,32 +153,36 @@ export function RevealedNFTLayout(): ReactElement {
     }
     const isSingleNFT = (currentCollection || [])?.length === 1;
     const { isRare, rewardName } = currentNFT || {};
-    const discordRole = 'Jumper OG discord role';
+    const jumperRole = 'Jumper OG roles';
+    const jumperDiscordRole = 'Jumper OG discord role';
     const jumperMerch = 'Jumper merch';
 
     if (!isRare) {
       return (
         <RewardWrapper>
-          {isSingleNFT ? (
+          Congrats, Chad! You've earned&nbsp;
+          {isSingleNFT && (
             <>
-              Congrats! You've won&nbsp;
-              <CyanText>+10XP</CyanText>&nbsp;plus a chance to win&nbsp;
-              <CyanText>{jumperMerch}</CyanText>
-              &nbsp;and a coveted&nbsp;
-              <CyanText>{discordRole}</CyanText>. Wow!
-            </>
-          ) : (
-            <>
-              Congrats! You've won a chance to win&nbsp;
-              <CyanText>{jumperMerch}</CyanText> and a coveted&nbsp;
-              <CyanText>{discordRole}</CyanText>. Keep going!
+              <CyanText>+10XP</CyanText>&nbsp;plus&nbsp;
             </>
           )}
+          a raffle entry with a chance to win&nbsp;
+          <CyanText>{jumperMerch}</CyanText>
+          &nbsp;and a&nbsp;
+          <CyanText>{jumperRole}</CyanText>. Join in to participate{' '}
+          <Link
+            href={'https://jumper.exchange/profile'}
+            target={'_blank'}
+            style={{ color: 'white' }}
+          >
+            here
+          </Link>
+          . Jump more & wash more for a chance to win the legendary NFT!
         </RewardWrapper>
       );
     }
     return (
-      <RewardWrapper>
+      <RewardWrapper maxWidth={'760px'}>
         {isSingleNFT ? (
           <>
             What a pull! You've won <CyanText>+10XP</CyanText>&nbsp;plus a&nbsp;
@@ -184,15 +190,15 @@ export function RevealedNFTLayout(): ReactElement {
             win&nbsp;
             <CyanText>{jumperMerch}</CyanText>
             &nbsp;and a&nbsp;
-            <CyanText>{discordRole}</CyanText>.
+            <CyanText>{jumperDiscordRole}</CyanText>.
           </>
         ) : (
           <>
-            Insane luck! You've won&nbsp;
+            Insane luck! You've won a&nbsp;
             <RewardName>{rewardName ?? 'reward'}</RewardName>, and a chance to
             win&nbsp;
             <CyanText>{jumperMerch}</CyanText>&nbsp;and a&nbsp;
-            <CyanText>{discordRole}</CyanText>.
+            <CyanText>{jumperDiscordRole}</CyanText>.
           </>
         )}
       </RewardWrapper>
