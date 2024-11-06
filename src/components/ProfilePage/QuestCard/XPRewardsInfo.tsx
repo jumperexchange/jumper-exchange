@@ -1,7 +1,7 @@
 import { Tooltip } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
-import { XPDisplayBox, XPDisplayBoxLabel } from '../QuestCard/QuestCard.style';
+import { XPDisplayBox, XPDisplayBoxLabel } from './QuestCard.style';
 
 interface XPRewardsInfoProps {
   bgColor?: string;

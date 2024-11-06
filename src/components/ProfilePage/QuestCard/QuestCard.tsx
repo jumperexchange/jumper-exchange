@@ -16,15 +16,11 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import type { OngoingNumericItemStats } from 'src/hooks/useOngoingNumericQuests';
 import { useUserTracking } from 'src/hooks/userTracking';
 import type { QuestChains } from 'src/types/loyaltyPass';
 import { formatDateShort } from 'src/utils/formatDate';
 import { ProgressionBar } from '../LevelBox/ProgressionBar';
-import type {
-  RewardsInterface,
-  RewardsProgressProps,
-} from '../QuestCardDetailled/QuestCardDetailled';
-import { XPRewardsInfo } from '../QuestCardDetailled/XPRewardsInfo';
 import {
   BadgeRelativeBox,
   CompletedBox,
@@ -41,6 +37,17 @@ import {
   RewardsWrapper,
 } from './QuestCard.style';
 import { TraitsBox } from './TraitsBox/TraitsBox';
+import { XPRewardsInfo } from './XPRewardsInfo';
+
+export interface RewardsInterface {
+  logo: string;
+  name: string;
+  amount: number;
+}
+
+export interface RewardsProgressProps extends OngoingNumericItemStats {
+  earnedXP?: number;
+}
 
 interface QuestCardProps {
   action?: string;
