@@ -29,7 +29,7 @@ const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
   opacity: ${({ mounted }) => (mounted ? 1 : 0)};
   scale: ${({ mounted }) => (mounted ? 1 : 0)};
   ${mq[1]} {
-    margin-top: -200px;
+    margin-top: -320px;
     padding-top: 0px;
   }
   ${mq[0]} {
@@ -46,6 +46,7 @@ const RevealedNFTLayoutTitle = styled.h1`
   font-weight: inherit;
   text-align: center;
   margin: 0;
+  z-index: 10;
   font-family: ${titanOne.style.fontFamily};
   ${mq[0]} {
     font-size: 32px;
@@ -64,6 +65,7 @@ const RevealedNFTLayoutSubtitle = styled.span`
   font-size: 24px;
   line-height: 32px;
   font-family: ${inter.style.fontFamily};
+  z-index: 10;
   ${mq[0]} {
     text-align: center;
     font-size: 16px;
@@ -195,7 +197,7 @@ export function RevealedNFTLayout(): ReactElement {
         )}
       </RewardWrapper>
     );
-  }, [reveal.isRevealing, currentCollection?.length, currentNFT]);
+  }, [reveal.isRevealing, currentCollection, currentNFT]);
 
   if (!currentNFT) {
     return <Fragment />;

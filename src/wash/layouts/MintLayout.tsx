@@ -38,6 +38,7 @@ const MintLayoutTitle = styled.h1`
   margin-top: 32px;
   text-align: center;
   font-family: ${titanOne.style.fontFamily};
+  z-index: 10;
   ${mq[0]} {
     font-size: 32px;
     line-height: 32px;
