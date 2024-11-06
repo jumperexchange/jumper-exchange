@@ -1,6 +1,5 @@
 'use client';
 import { ClientOnly } from '@/components/ClientOnly';
-import { MultisigWalletHeaderAlert } from '@/components/MultisigWalletHeaderAlert';
 import { TabsMap } from '@/const/tabsMap';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useThemeStore } from '@/stores/theme';
@@ -235,7 +234,6 @@ export function Widget({
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
     >
-      {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
         <LiFiWidget
           integrator={config.integrator}
