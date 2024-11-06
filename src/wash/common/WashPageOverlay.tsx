@@ -22,6 +22,9 @@ const OverlayWrapper = styled.div<{ hasCurrentLayout: boolean }>`
   opacity: ${({ hasCurrentLayout }) => (hasCurrentLayout ? 1 : 0)};
   pointer-events: ${({ hasCurrentLayout }) =>
     hasCurrentLayout ? 'auto' : 'none'};
+  @media (min-width: 1280px) and (max-width: 1440px) {
+    transform: scale(0.8);
+  }
 `;
 
 /**********************************************************************************************
