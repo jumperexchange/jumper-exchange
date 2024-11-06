@@ -1,5 +1,5 @@
-import type { MarketFilter } from 'src/sdk/queries';
-import type { BaseSortingFilter } from 'src/sdk/types';
+import type { MarketFilter } from 'src/integrations/royco/sdk/queries';
+import type { BaseSortingFilter } from 'src/integrations/royco/sdk/types';
 import { sepolia } from 'viem/chains';
 import { create } from 'zustand';
 import { SupportedChainlist } from '../sdk/constants';

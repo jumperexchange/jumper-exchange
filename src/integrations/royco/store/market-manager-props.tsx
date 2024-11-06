@@ -9,7 +9,7 @@ import type {
   TypedRoycoMarketScriptType,
   TypedRoycoMarketUserType,
   TypedRoycoMarketVaultIncentiveAction,
-} from 'src/sdk/market';
+} from 'src/integrations/royco/sdk/market';
 import {
   RoycoMarketActionType,
   RoycoMarketFundingType,
@@ -21,7 +21,7 @@ import {
   RoycoMarketUserType,
   RoycoMarketVaultIncentiveAction,
   RoycoTransactionType,
-} from 'src/sdk/market';
+} from 'src/integrations/royco/sdk/market';
 import { ScrollTextIcon, VaultIcon } from 'lucide-react';
 
 /**

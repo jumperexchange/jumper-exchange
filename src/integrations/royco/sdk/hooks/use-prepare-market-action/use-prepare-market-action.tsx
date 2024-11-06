@@ -20,7 +20,7 @@ import { useVaultAPMarketOffer } from './use-vault-ap-market-offer';
 import { useVaultAPLimitOffer } from './use-vault-ap-limit-offer';
 import { useVaultIPMarketOffer } from './use-vault-ip-market-offer';
 import { useVaultIPAddIncentives } from './use-vault-ip-add-incentives';
-import { MarketVaultIncentiveAction } from 'src/store';
+import { MarketVaultIncentiveAction } from 'src/integrations/royco/store';
 import { useVaultIPExtendIncentives } from './use-vault-ip-extend-incentives';
 import { useVaultIPRefundIncentives } from './use-vault-ip-refund-incentives';
 

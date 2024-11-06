@@ -1,7 +1,7 @@
-import type { ContractFilter } from 'src/sdk/queries';
+import type { ContractFilter } from 'src/integrations/royco/sdk/queries';
 import { create } from 'zustand';
 
-export interface FunctionFormState {
+export interface SelectionMenuState {
   chainId: number;
   setChainId: (chainId: number) => void;
 
@@ -23,11 +23,17 @@ export interface FunctionFormState {
   draggingId: string | null;
   setDraggingId: (draggingId: string | null) => void;
 
-  updateAbi: boolean;
-  setUpdateAbi: (updateAbi: boolean) => void;
+  placeholderContractList: Array<any>;
+  setPlaceholderContractList: (placeholderContractList: Array<any>) => void;
+
+  pageIndex: number;
+  setPageIndex: (pageIndex: number) => void;
+
+  placeholderCounts: Array<number>;
+  setPlaceholderCounts: (placeholderCounts: Array<number>) => void;
 }
 
-export const useFunctionForm = create<FunctionFormState>((set) => ({
+export const useSelectionMenu = create<SelectionMenuState>((set) => ({
   chainId: 1,
   setChainId: (chainId) => set({ chainId }),
 
@@ -59,6 +65,13 @@ export const useFunctionForm = create<FunctionFormState>((set) => ({
   draggingId: null,
   setDraggingId: (draggingId) => set({ draggingId }),
 
-  updateAbi: false,
-  setUpdateAbi: (updateAbi) => set({ updateAbi }),
+  placeholderContractList: [[], []],
+  setPlaceholderContractList: (placeholderContractList) =>
+    set({ placeholderContractList }),
+
+  pageIndex: 0,
+  setPageIndex: (pageIndex) => set({ pageIndex }),
+
+  placeholderCounts: [],
+  setPlaceholderCounts: (placeholderCounts) => set({ placeholderCounts }),
 }));
