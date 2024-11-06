@@ -80,15 +80,9 @@ export const RewardsWrapper = styled(Box)(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export interface QuestPlatformMainBoxProps extends Omit<BoxProps, 'component'> {
-  platformName?: string;
-}
-
-export const QuestPlatformMainBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'platformName',
-})<QuestPlatformMainBoxProps>(({ platformName }) => ({
+export const QuestPlatformMainBox = styled(Box)<BoxProps>(() => ({
   display: 'flex',
-  justifyContent: platformName ? 'space-between' : 'flex-end',
+  justifyContent: 'flex-end',
   alignItems: 'center',
 }));
 

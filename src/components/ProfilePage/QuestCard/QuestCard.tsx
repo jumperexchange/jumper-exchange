@@ -5,7 +5,6 @@ import { Box, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
-import { JumperIconDark } from 'src/components/illustrations/JumperIconDark';
 import { OptionalLink } from 'src/components/ProfilePage/OptionalLink/OptionalLink';
 import type { Chain } from 'src/components/Quests/QuestPage/Banner/Banner';
 import { FlexCenterRowBox } from 'src/components/Quests/QuestPage/QuestsMissionPage.style';
@@ -66,8 +65,6 @@ interface QuestCardProps {
   points?: number;
   startDate?: string;
   endDate?: string;
-  // platformName?: string;
-  // platformImage?: string;
   rewards?: RewardsInterface;
   rewardsProgress?: RewardsProgressProps;
   rewardRange?: string;
@@ -92,14 +89,11 @@ export const QuestCard = ({
   isUnlocked,
   label,
   points,
-  // platformName,
-  // platformImage,
-  rewards,
+  // rewards,
   rewardsProgress,
   rewardRange,
   startDate,
   title,
-  url,
   variableWeeklyAPY,
 }: QuestCardProps) => {
   const { t } = useTranslation();
@@ -164,25 +158,28 @@ export const QuestCard = ({
             <QuestCardInfoBox>
               {!isLoading ? (
                 <>
-                  {chains ? (
-                    <FlexCenterRowBox>
-                      {chains.map((elem: Chain, i: number) => (
-                        <Image
-                          key={elem.name + '-' + i}
-                          src={elem.logo}
-                          style={{
-                            marginLeft: i === 0 ? '' : '-8px',
-                            zIndex: 100 - i,
-                          }}
-                          alt={elem.name}
-                          width="32"
-                          height="32"
-                        />
-                      ))}
-                    </FlexCenterRowBox>
-                  ) : (
-                    <JumperIconDark />
-                  )}
+                  {
+                    chains && (
+                      <FlexCenterRowBox>
+                        {chains.map((elem: Chain, i: number) => (
+                          <Image
+                            key={elem.name + '-' + i}
+                            src={elem.logo}
+                            style={{
+                              marginLeft: i === 0 ? '' : '-8px',
+                              zIndex: 100 - i,
+                            }}
+                            alt={elem.name}
+                            width="32"
+                            height="32"
+                          />
+                        ))}
+                      </FlexCenterRowBox>
+                    )
+                    // : (
+                    //   <JumperIconDark />
+                    // )
+                  }
                 </>
               ) : (
                 <Skeleton variant="circular" width={'32px'} height={'32px'} />

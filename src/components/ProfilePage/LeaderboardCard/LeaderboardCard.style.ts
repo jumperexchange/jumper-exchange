@@ -79,5 +79,6 @@ export const LeaderboardUserPositionButton = styled(ButtonTransparent)(
 
 export const LeaderboardUserTitle = styled(TierboxInfoTitles)(() => ({
   marginTop: 0,
+  width: '100%',
   alignSelf: 'flex-start',
 }));

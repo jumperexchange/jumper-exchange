@@ -30,14 +30,26 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
         title={t('profile_page.rank')}
       />
       <RankContentContainer>
-        <Link href={`/leaderboard?page=${userPage}`} passHref>
-          <LeaderboardUserPositionButton aria-label="Open leaderboard page with your position">
-            <LeaderboardUserTitle variant="headerLarge">
-              {leaderboardUserData?.position ? title : '-'}
-            </LeaderboardUserTitle>
-          </LeaderboardUserPositionButton>
-        </Link>
-        <CardButtonContainer href="/leaderboard" passHref>
+        {title ? (
+          <Link
+            aria-label="Open leaderboard with your position"
+            href={`/leaderboard?page=${userPage}`}
+            passHref
+          >
+            <LeaderboardUserPositionButton aria-label="Open leaderboard page with your position">
+              <LeaderboardUserTitle variant="headerLarge">
+                {leaderboardUserData?.position ? title : '-'}
+              </LeaderboardUserTitle>
+            </LeaderboardUserPositionButton>
+          </Link>
+        ) : (
+          <LeaderboardUserTitle variant="headerLarge">-</LeaderboardUserTitle>
+        )}
+        <CardButtonContainer
+          href="/leaderboard"
+          passHref
+          aria-label="Open leaderboard page"
+        >
           <CardButton>{t('leaderboard.title')}</CardButton>
         </CardButtonContainer>
       </RankContentContainer>

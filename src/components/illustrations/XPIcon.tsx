@@ -39,14 +39,9 @@ export const XPIcon = ({
   let iconColor, iconBgColor;
   switch (variant) {
     case 'secondary':
-      iconColor =
-        theme.palette.mode === 'light'
-          ? theme.palette.white.main
-          : theme.palette.primary.main;
-      iconBgColor =
-        theme.palette.mode === 'light'
-          ? theme.palette.accent1.main
-          : theme.palette.white.main;
+      iconColor = theme.palette.white.main;
+      iconBgColor = theme.palette.accent1.main;
+
       break;
     case 'completed': {
       iconColor = theme.palette.white.main;
