@@ -147,7 +147,7 @@ export function RevealedNFTLayout(): ReactElement {
     if (reveal.isRevealing) {
       return 'Loading your NFT, fingers crossed anon!';
     }
-    const isSingleNFT = currentCollection.length === 1;
+    const isSingleNFT = (currentCollection || [])?.length === 1;
     const { isRare, rewardName } = currentNFT || {};
     const discordRole = 'Jumper OG discord role';
     const jumperMerch = 'Jumper merch';
@@ -195,7 +195,7 @@ export function RevealedNFTLayout(): ReactElement {
         )}
       </RewardWrapper>
     );
-  }, [reveal.isRevealing, currentCollection.length, currentNFT]);
+  }, [reveal.isRevealing, currentCollection?.length, currentNFT]);
 
   if (!currentNFT) {
     return <Fragment />;
