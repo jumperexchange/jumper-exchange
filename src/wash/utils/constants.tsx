@@ -243,7 +243,7 @@ export const QUESTS: TQuest[] = [
         OKAYBEARS&nbsp;
         <Link
           style={{ color: colors.pink[800] }}
-          href={'https://jumper.exchange/'}
+          href={'https://three.okay.xyz/campaign/movember2024'}
           target={'_blank'}
         >
           movember campaign.

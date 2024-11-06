@@ -31,8 +31,8 @@ const RevealNFTContainer = styled.div<{ backgroundColor: string }>`
     height: 216px;
   }
   ${mq[1]} {
-    width: 216px;
-    height: 216px;
+    width: 320px;
+    height: 320px;
   }
 `;
 const NFTLabelBox = styled.div<{ backgroundColor: string }>`
@@ -119,8 +119,14 @@ const NFTImageSkeleton = styled.div<{ isRevealing: boolean }>`
   transition: opacity 0.5s ease-in-out;
   position: absolute;
   inset: 0;
-  width: 320px;
-  height: 320px;
+  ${mq[0]} {
+    width: 216px;
+    height: 216px;
+  }
+  ${mq[1]} {
+    width: 320px;
+    height: 320px;
+  }
   background-color: ${colors.violet[600]};
 `;
 
