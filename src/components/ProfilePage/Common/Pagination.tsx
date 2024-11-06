@@ -7,6 +7,7 @@ import {
 import { Box, IconButton, Typography } from '@mui/material';
 import {
   PaginationButton,
+  PaginationClosestPages,
   PaginationContainer,
   PaginationLink,
 } from './Pagination.style';
@@ -31,7 +32,7 @@ export const Pagination = ({
     } else if (page < paginationMedian) {
       starterIndex = 1;
     } else {
-      starterIndex = maxPages - PAGINATION_NR_OF_PAGES_TO_DISPLAY + 1;
+      starterIndex = maxPages - PAGINATION_NR_OF_PAGES_TO_DISPLAY;
     }
     return Array.from(
       { length: PAGINATION_NR_OF_PAGES_TO_DISPLAY },
@@ -58,14 +59,10 @@ export const Pagination = ({
         </PaginationLink>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        {/* {starterIndex !== 1 && (
+        {starterIndex !== 1 && (
           <PaginationClosestPages>
             <PaginationLink href={`/leaderboard?page=1`}>
-              <PaginationButton
-                onClick={() => {
-                  router.push(`/leaderboard?page=1`);
-                }}
-              >
+              <PaginationButton>
                 <Typography variant="bodyXSmallStrong">1</Typography>
               </PaginationButton>
             </PaginationLink>
@@ -73,7 +70,7 @@ export const Pagination = ({
               ...
             </Typography>
           </PaginationClosestPages>
-        )} */}
+        )}
         {displayedPages.map((pageNr, index) => (
           <PaginationLink
             href={`/leaderboard?page=${pageNr}`}
@@ -87,7 +84,7 @@ export const Pagination = ({
             </PaginationButton>
           </PaginationLink>
         ))}
-        {/* {page <= maxPages - PAGINATION_NR_OF_PAGES_TO_DISPLAY + 1 && (
+        {page <= maxPages - paginationMedian && (
           <PaginationClosestPages>
             <Typography variant="bodyXSmallStrong" component={'span'}>
               ...
@@ -98,7 +95,7 @@ export const Pagination = ({
               </PaginationButton>
             </PaginationLink>
           </PaginationClosestPages>
-        )} */}
+        )}
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center' }}>

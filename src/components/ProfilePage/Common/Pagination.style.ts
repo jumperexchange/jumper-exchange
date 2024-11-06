@@ -18,6 +18,7 @@ export interface PaginationButtonProps extends ButtonProps {
 export const PaginationLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   color: theme.palette.text.primary,
+  width: 34,
   '&:hover': {
     textDecoration: 'none',
   },
@@ -29,14 +30,14 @@ export const PaginationButton = styled(Button, {
 })<PaginationButtonProps>(({ theme, activePage }) => ({
   backgroundColor: activePage ? theme.palette.white.main : 'transparent',
   color: activePage ? theme.palette.black.main : theme.palette.text.primary,
-  height: '32px',
+  height: 34,
   display: activePage ? 'flex' : 'none',
   alignItems: 'center',
   justifyContent: 'center',
   cursor: activePage ? 'unset' : 'pointer',
   pointerEvents: 'auto',
   minWidth: 'unset',
-  width: 'auto',
+  width: 34,
   borderRadius: '16px',
   ...(activePage && {
     '&:hover': {
