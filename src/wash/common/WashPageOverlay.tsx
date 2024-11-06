@@ -25,6 +25,9 @@ const OverlayWrapper = styled.div<{ hasCurrentLayout: boolean }>`
   @media (min-width: 1280px) and (max-width: 1440px) {
     transform: scale(0.8);
   }
+  @media (min-height: 800px) and (max-height: 990px) {
+    transform: scale(0.8);
+  }
 `;
 
 /**********************************************************************************************

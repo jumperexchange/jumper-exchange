@@ -57,11 +57,17 @@ const ChildrenWrapper = styled.div`
   padding-top: 100px;
   margin-top: auto;
   margin-bottom: auto;
+  ${mq[0]} {
+    margin-top: 320px;
+  }
   ${mq[1]} {
     margin-top: 360px;
   }
-  ${mq[0]} {
-    margin-top: 320px;
+  @media (min-width: 1280px) and (max-width: 1440px) {
+    margin-top: 300px;
+  }
+  @media (min-height: 800px) and (max-height: 990px) {
+    margin-top: 300px;
   }
 `;
 
