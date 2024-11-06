@@ -280,9 +280,8 @@ export const TOOLTIP_MESSAGES = {
     'Every swap helps wash your NFT clean. It takes $10,000 of volume to fully wash the NFT, or you can complete quests for power ups to boost your progress much faster!',
   quest:
     'Quests help speed up your wash trading progress. Trade at least $10 of volume per quest to gain power ups that boost your progress! Lfg.',
-  goldenNft:
-    //TODO: change this on launch
-    'When the game ends on xx/xx/xxxx Golden NFT holders will be airdropped something sexy from the prize pool; holding Mad Lads, Retardio Cousins, Degods, Yoots, $Coby, and more!',
+  goldenNft: (prize: string) =>
+    `Congrats! You’ll be getting a ${prize} when the campaign ends. In the meantime, keep washing for more chances to win!`,
 };
 
 /**********************************************************************************************

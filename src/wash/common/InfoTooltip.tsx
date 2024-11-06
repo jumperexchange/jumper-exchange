@@ -22,6 +22,9 @@ const TooltipDescription = styled.p`
   ${mq[1]} {
     font-size: 10px;
   }
+  ${mq[0]} {
+    transform: skewX(2deg);
+  }
 `;
 
 const TooltipTrigger = styled.div`
@@ -55,6 +58,13 @@ export function InfoTooltip({
       right: 1rem;
       top: 2rem;
       max-width: 200px;
+    }
+    ${mq[0]} {
+      left: unset;
+      right: 1rem;
+      top: 2rem;
+      max-width: 200px;
+      transform: skewX(-2deg);
     }
   `;
   const [showTooltip, set_showTooltip] = useState(false);

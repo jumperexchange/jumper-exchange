@@ -248,7 +248,9 @@ export function CollectionNFTItem({ nft, index }: TNftItemProps): ReactElement {
         {nft?.isRare && nft?.isRevealed ? (
           <Absolute top={'12px'} right={'12px'}>
             <InfoTooltip
-              description={TOOLTIP_MESSAGES.goldenNft}
+              description={TOOLTIP_MESSAGES.goldenNft(
+                nft.rewardName ?? 'reward',
+              )}
               position={(index || 0) % 4 < 2 ? 'right' : 'left'}
             />
           </Absolute>
