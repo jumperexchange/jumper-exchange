@@ -1,17 +1,16 @@
 import { useTranslation } from 'react-i18next';
-import { useOngoingNumericQuests } from 'src/hooks/useOngoingNumericQuests';
-import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
-import { QuestCardDetailled } from '../QuestCardDetailled/QuestCardDetailled';
+import { getMonthInfo } from 'src/utils/getRemainingDaysOfMonth';
+import { QuestCard } from '../QuestCard/QuestCard';
 
 type NumericAction = 'chain_oor' | 'transact_oor' | 'swap_oor' | 'bridge_oor';
 
 export const QuestCarouselNumericItems = () => {
   const { t } = useTranslation();
 
-  const {
-    data: ongoingNumericQuests,
-    isLoading: isongoingNumericQuestsLoading,
-  } = useOngoingNumericQuests();
+  // const {
+  //   data: ongoingNumericQuests,
+  //   isLoading: isongoingNumericQuestsLoading,
+  // } = useOngoingNumericQuests();
 
   const getNumericAction = (type: NumericAction) => {
     switch (type) {
@@ -26,9 +25,70 @@ export const QuestCarouselNumericItems = () => {
     }
   };
 
-  return !isongoingNumericQuestsLoading
+  const ongoingNumericQuests = [
+    {
+      type: 'chain_oor',
+      currentRangeXP: 15,
+      nextRangeXP: 20,
+      currentValue: 4,
+      min: 3,
+      max: 4,
+      id: 58,
+      name: 'Chain_oor - november',
+      description: null,
+      image:
+        'https://storage.googleapis.com/jumper-static-assets/upload/chainoor.png',
+      displayName: 'Chain_oor - nov',
+    },
+    {
+      type: 'transact_oor',
+      currentRangeXP: 18,
+      nextRangeXP: 25,
+      currentValue: 8,
+      min: 5,
+      max: 9,
+      id: 64,
+      name: 'Transact_oor - november',
+      description: null,
+      image:
+        'https://storage.googleapis.com/jumper-static-assets/upload/transactoor.png',
+      displayName: 'Transact_oor - nov',
+    },
+    {
+      type: 'swap_oor',
+      currentRangeXP: 18,
+      nextRangeXP: 25,
+      currentValue: 7379.43,
+      min: 1000,
+      max: 9999,
+      id: 155,
+      name: 'Swap_oor - november',
+      description: null,
+      image:
+        'https://storage.googleapis.com/jumper-static-assets/upload/swapoor.png',
+      displayName: 'Swap_oor - nov',
+    },
+    {
+      type: 'bridge_oor',
+      currentRangeXP: 25,
+      nextRangeXP: 33,
+      currentValue: 14945.55,
+      min: 10000,
+      max: 49999,
+      id: 156,
+      name: 'Bridge_oor - november',
+      description: null,
+      image:
+        'https://storage.googleapis.com/jumper-static-assets/upload/bridgeoor.png',
+      displayName: 'Bridge_oor - nov',
+    },
+  ];
+
+  const monthInfo = getMonthInfo();
+
+  return true //!isongoingNumericQuestsLoading
     ? ongoingNumericQuests?.map((numericQuest, index) => (
-        <QuestCardDetailled
+        <QuestCard
           action={getNumericAction(numericQuest.type as NumericAction)}
           key={`available-mission-${index}`}
           title={numericQuest.displayName}
@@ -42,15 +102,9 @@ export const QuestCarouselNumericItems = () => {
               : Math.abs(numericQuest.nextRangeXP - numericQuest.currentRangeXP)
           }
           rewardsProgress={{
-            min:
-              numericQuest.currentValue < numericQuest.min
-                ? 0
-                : numericQuest.min,
-            max:
-              numericQuest.currentValue < numericQuest.min
-                ? numericQuest.min
-                : numericQuest.max,
-            currentValue: numericQuest.currentValue,
+            min: 1,
+            max: monthInfo.maxDays,
+            currentValue: monthInfo.today,
             earnedXP:
               numericQuest.currentValue >= numericQuest.min
                 ? numericQuest.currentRangeXP
@@ -59,13 +113,6 @@ export const QuestCarouselNumericItems = () => {
         />
       ))
     : Array.from({ length: 4 }, (_, idx) => (
-        <QuestCardSkeleton
-          key={`ongoing-numeric-quests-skeleton-${idx}`}
-          sx={{
-            width: 288,
-            height: 436,
-            borderRadius: '8px',
-          }}
-        />
+        <QuestCard key={`ongoing-numeric-quests-skeleton-${idx}`} />
       ));
 };

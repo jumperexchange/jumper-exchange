@@ -19,7 +19,7 @@ import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { useUserTracking } from 'src/hooks/userTracking';
 import type { QuestChains } from 'src/types/loyaltyPass';
 import { formatDateShort } from 'src/utils/formatDate';
-import { XPIconBox } from '../QuestCardDetailled/QuestCard.style';
+import { ProgressionBar } from '../LevelBox/ProgressionBar';
 import type {
   RewardsInterface,
   RewardsProgressProps,
@@ -38,6 +38,7 @@ import {
   QuestCardMainBox,
   QuestCardTitle,
   QuestCardTitleSkeleton,
+  RewardsWrapper,
 } from './QuestCard.style';
 import { TraitsBox } from './TraitsBox/TraitsBox';
 
@@ -51,6 +52,7 @@ interface QuestCardProps {
   hideXPProgressComponents?: boolean;
   id?: number | string;
   image?: string;
+  isLoading?: boolean;
   isTraitsGarded?: boolean;
   isUnlocked?: boolean;
   label?: string;
@@ -78,6 +80,7 @@ export const QuestCard = ({
   hideXPProgressComponents,
   id,
   image,
+  isLoading,
   isTraitsGarded,
   isUnlocked,
   label,
@@ -108,12 +111,15 @@ export const QuestCard = ({
       },
     });
   };
-
+  const rewardsQuestCard = rewardsProgress?.earnedXP && !chains;
   let buttonLabel = `${t('questCard.join')}`;
   if (isTraitsGarded && !isUnlocked) {
     buttonLabel = 'Unlocked for perp_oors';
   } else if (startDate && endDate) {
     buttonLabel = `${formatDateShort(startDate)} - ${formatDateShort(endDate)}`;
+  } else if (rewardsQuestCard) {
+    const daysLeft = rewardsProgress.max - rewardsProgress.currentValue;
+    buttonLabel = `${daysLeft} day${daysLeft > 1 ? 's' : ''} left`;
   }
 
   return (
@@ -149,92 +155,102 @@ export const QuestCard = ({
           )}
           <Box>
             <QuestCardInfoBox>
-              {chains ? (
-                <FlexCenterRowBox>
-                  {chains.map((elem: Chain, i: number) => (
-                    <Image
-                      key={elem.name + '-' + i}
-                      src={elem.logo}
-                      style={{
-                        marginLeft: i === 0 ? '' : '-8px',
-                        zIndex: 100 - i,
-                      }}
-                      alt={elem.name}
-                      width="32"
-                      height="32"
-                    />
-                  ))}
-                </FlexCenterRowBox>
-              ) : (
-                <JumperIconDark />
-              )}
-              {rewardsProgress?.earnedXP && !chains && (
-                <XPRewardsInfo
-                  bgColor={'#42B852'}
-                  points={`${rewardsProgress?.earnedXP}`}
-                  tooltip={t('questCard.earnedXPDescription', {
-                    earnedXP: rewardsProgress?.earnedXP,
-                    action: action,
-                  })}
-                  active={true}
-                >
-                  <XPIconBox marginLeft="4px">
-                    <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
-                  </XPIconBox>
-                </XPRewardsInfo>
-              )}
-              {points ? (
+              {!isLoading ? (
                 <>
-                  {apy > 0 && !variableWeeklyAPY && (
-                    <XPRewardsInfo
-                      active={true}
-                      points={`${Number(apy).toFixed(1)}%`}
-                      tooltip={
-                        rewardsProgress &&
-                        t('questCard.xpToEarnDescription', {
-                          xpToEarn: points,
-                          action: action,
-                        })
-                      }
-                    >
-                      <APYIcon size={20} />
-                    </XPRewardsInfo>
-                  )}
-                  {variableWeeklyAPY && (
-                    <XPRewardsInfo
-                      active={true}
-                      bgColor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
-                      points={rewardRange ? rewardRange : `VAR.%`}
-                      tooltip={
-                        rewardsProgress &&
-                        t('questCard.xpToEarnDescription', {
-                          xpToEarn: points,
-                          action: action,
-                        })
-                      }
-                    >
-                      <APYIcon size={20} />
-                    </XPRewardsInfo>
-                  )}
-                  {!hideXPProgressComponents && (
-                    <XPRewardsInfo
-                      completed={completed}
-                      points={`+${points}`}
-                      tooltip={
-                        rewardsProgress &&
-                        t('questCard.xpToEarnDescription', {
-                          xpToEarn: points,
-                          action: action,
-                        })
-                      }
-                      active={true}
-                    />
+                  {chains ? (
+                    <FlexCenterRowBox>
+                      {chains.map((elem: Chain, i: number) => (
+                        <Image
+                          key={elem.name + '-' + i}
+                          src={elem.logo}
+                          style={{
+                            marginLeft: i === 0 ? '' : '-8px',
+                            zIndex: 100 - i,
+                          }}
+                          alt={elem.name}
+                          width="32"
+                          height="32"
+                        />
+                      ))}
+                    </FlexCenterRowBox>
+                  ) : (
+                    <JumperIconDark />
                   )}
                 </>
-              ) : undefined}
+              ) : (
+                <Skeleton variant="circular" width={'32px'} height={'32px'} />
+              )}
+
+              <RewardsWrapper>
+                {rewardsQuestCard && (
+                  <XPRewardsInfo
+                    completed={true}
+                    points={`${rewardsProgress?.earnedXP}`}
+                    tooltip={t('questCard.earnedXPDescription', {
+                      earnedXP: rewardsProgress?.earnedXP,
+                      action: action,
+                    })}
+                    active={true}
+                  >
+                    <CheckCircleIcon
+                      sx={{ width: '20px', height: '20px', color: 'inherit' }}
+                    />
+                  </XPRewardsInfo>
+                )}
+                {points ? (
+                  <>
+                    {apy > 0 && !variableWeeklyAPY && (
+                      <XPRewardsInfo
+                        active={true}
+                        completed={true}
+                        points={`${Number(apy).toFixed(1)}%`}
+                        tooltip={
+                          rewardsProgress &&
+                          t('questCard.xpToEarnDescription', {
+                            xpToEarn: points,
+                            action: action,
+                          })
+                        }
+                      >
+                        <APYIcon size={20} />
+                      </XPRewardsInfo>
+                    )}
+                    {variableWeeklyAPY && (
+                      <XPRewardsInfo
+                        active={true}
+                        bgColor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
+                        points={rewardRange ? rewardRange : `VAR.%`}
+                        tooltip={
+                          rewardsProgress &&
+                          t('questCard.xpToEarnDescription', {
+                            xpToEarn: points,
+                            action: action,
+                          })
+                        }
+                      >
+                        <APYIcon size={20} />
+                      </XPRewardsInfo>
+                    )}
+                    {!hideXPProgressComponents && (
+                      <XPRewardsInfo
+                        completed={completed}
+                        points={`+${points}`}
+                        tooltip={
+                          rewardsProgress &&
+                          t('questCard.xpToEarnDescription', {
+                            xpToEarn: points,
+                            action: action,
+                          })
+                        }
+                        active={true}
+                      />
+                    )}
+                  </>
+                ) : undefined}
+              </RewardsWrapper>
             </QuestCardInfoBox>
 
-            {!active && !completed && (
+            {!active && !completed && !rewardsQuestCard && (
               <QuestCardButtonSkeleton variant="rectangular" />
             )}
             {active && (
@@ -242,10 +258,27 @@ export const QuestCard = ({
                 {isTraitsGarded && !isUnlocked && (
                   <LockIcon sx={{ height: '16px', width: '16px' }} />
                 )}
-                <QuestCardButtonCtaLabel variant="bodyXSmallStrong">
+                <QuestCardButtonCtaLabel
+                  variant="bodyXSmallStrong"
+                  sx={{
+                    ...(isTraitsGarded && !isUnlocked && { margin: '0 8px' }),
+                  }}
+                >
                   {buttonLabel}
                 </QuestCardButtonCtaLabel>
               </QuestCardButtonCta>
+            )}
+            {rewardsQuestCard && (
+              <ProgressionBar
+                ongoingValue={rewardsProgress.currentValue}
+                loading={false}
+                label={buttonLabel}
+                levelData={{
+                  maxPoints: rewardsProgress.max,
+                  minPoints: rewardsProgress.min,
+                }}
+                hideLevelIndicator={true}
+              />
             )}
             {completed && (
               <CompletedBox>

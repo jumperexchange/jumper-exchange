@@ -1,4 +1,4 @@
-import type { BoxProps, TypographyProps } from '@mui/material';
+import type { BoxProps } from '@mui/material';
 import {
   Box,
   Button,
@@ -72,6 +72,14 @@ export const QuestCardInfoBox = styled(Box)(({ theme }) => ({
   },
 }));
 
+export const RewardsWrapper = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  flexGrow: 1,
+  flexWrap: 'nowrap',
+  justifyContent: 'flex-end',
+}));
+
 export interface QuestPlatformMainBoxProps extends Omit<BoxProps, 'component'> {
   platformName?: string;
 }
@@ -107,28 +115,23 @@ export interface XPDisplayBoxProps extends BoxProps {
 export const XPDisplayBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active' && prop !== 'completed',
 })<XPDisplayBoxProps>(({ active, theme, completed }) => ({
-  marginRight: active ? '8px' : undefined,
   display: 'flex',
+  color: completed ? '#00B849' : theme.palette.primary.main,
   backgroundColor: completed ? '#D6FFE7' : '#F0E5FF',
   height: 32,
   alignItems: 'center',
   borderRadius: '128px',
   padding: theme.spacing(0.5, 0.75),
   justifyContent: 'center',
+  ':not(last-of-type)': {
+    marginRight: theme.spacing(1),
+  },
 }));
 
-export interface XPDisplayBoxLabelProps extends TypographyProps {
-  active?: boolean;
-  completed?: boolean;
-}
-
-export const XPDisplayBoxLabel = styled(Typography)<XPDisplayBoxLabelProps>(({
-  theme,
-  completed,
-}) => {
+export const XPDisplayBoxLabel = styled(Typography)(({ theme }) => {
   return {
     margin: theme.spacing(0, 0.5),
-    color: completed ? '#00B849' : theme.palette.primary.main,
+    color: 'inherit',
     userSelect: 'none',
   };
 });
