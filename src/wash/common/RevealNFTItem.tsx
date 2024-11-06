@@ -90,8 +90,8 @@ const NFTImageBox = styled.div<{
     height: 216px;
   }
   ${mq[1]} {
-    width: 216px;
-    height: 216px;
+    width: 320px;
+    height: 320px;
   }
 `;
 const NFTImage = styled(Image)<{ isRevealing: boolean }>`
@@ -106,8 +106,8 @@ const NFTImage = styled(Image)<{ isRevealing: boolean }>`
     height: 216px;
   }
   ${mq[1]} {
-    width: 216px;
-    height: 216px;
+    width: 320px;
+    height: 320px;
   }
 `;
 const NFTImageSkeleton = styled.div<{ isRevealing: boolean }>`
