@@ -8,6 +8,7 @@ import {
   styled,
   Typography,
 } from '@mui/material';
+import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 
 interface LeaderboardEntryWrapperProps extends BoxProps {
@@ -58,11 +59,15 @@ export const LeaderboardEntryWrapper = styled(Box, {
         position: 'absolute',
         top: -1,
         bottom: -1,
-        left: -12,
-        right: -12,
+        left: -2,
+        right: -2,
         borderRadius: '6px',
         backgroundColor: alpha(theme.palette.black.main, 0.04),
         boxShadow: `inset 0 0 0 1px ${theme.palette.grey[400]}`,
+        [theme.breakpoints.up('sm' as Breakpoint)]: {
+          left: -12,
+          right: -12,
+        },
       },
     }),
   }),
@@ -76,45 +81,82 @@ export const LeaderboardEntryDivider = styled(Divider)(({ theme }) => ({
 export const LeaderboardEntryInfos = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  maxWidth: '65%',
+  maxWidth: 'calc( 100% - 80px)',
+  gap: theme.spacing(1),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
+    gap: theme.spacing(4),
     maxWidth: '80%',
   },
 }));
 
 export const RankLabel = styled(Typography)(({ theme }) => ({
-  padding: theme.spacing(1, 2),
+  padding: theme.spacing(1),
   display: 'inline-block',
   backgroundColor: theme.palette.alphaDark100.main,
   borderRadius: '32px',
+  minWidth: 84,
+  textAlign: 'center',
   ':before': {
     content: '"#"',
     marginRight: theme.spacing(0.25),
   },
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    padding: theme.spacing(1, 2),
+    minWidth: 100,
+  },
 }));
 
 export const RankLabelSkeleton = styled(Skeleton)(({ theme }) => ({
-  padding: theme.spacing(1, 2),
+  padding: theme.spacing(1),
   display: 'inline-block',
   borderRadius: '16px',
-  height: 32,
+  height: 24,
   width: 48,
+  minWidth: 84,
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    height: 32,
+    padding: theme.spacing(1, 2),
+    minWidth: 100,
+  },
 }));
 
-export const RankWalletImage = styled(Image)(({ theme }) => ({
+interface RankWalletProps extends ImageProps {
+  isUserEntry?: boolean;
+}
+
+export const RankWalletImage = styled(Image, {
+  shouldForwardProp: (prop) => prop !== 'isUserEntry',
+})<RankWalletProps>(({ theme, isUserEntry }) => ({
+  ...(isUserEntry && {
+    display: 'none',
+  }),
   borderRadius: '100%',
-  marginLeft: theme.spacing(1),
+  width: 24,
+  height: 24,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginLeft: theme.spacing(4),
+    display: 'block',
+    width: 48,
+    height: 48,
+  },
+}));
+
+export const RankWalletImageSkeleton = styled(Skeleton)(({ theme }) => ({
+  borderRadius: '100%',
+  width: 24,
+  height: 24,
+  flexShrink: 0,
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    display: 'block',
+    width: 48,
+    height: 48,
   },
 }));
 
 export const RankWalletAddress = styled(Typography)(({ theme }) => ({
-  marginLeft: theme.spacing(1),
   textOverflow: 'ellipsis',
   overflow: 'hidden',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginLeft: theme.spacing(4),
+  [theme.breakpoints.down('sm' as Breakpoint)]: {
+    fontSize: '14px',
   },
 }));
 
@@ -122,7 +164,9 @@ export const RankPointsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(0.5),
+  marginRight: theme.spacing(1),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: theme.spacing(2),
+    marginRight: 0,
   },
 }));

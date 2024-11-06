@@ -26,7 +26,7 @@ interface XPIconProps {
   color?: string;
   bgColor?: string;
   size?: number;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'completed';
 }
 
 export const XPIcon = ({
@@ -48,6 +48,11 @@ export const XPIcon = ({
           ? theme.palette.accent1.main
           : theme.palette.white.main;
       break;
+    case 'completed': {
+      iconColor = theme.palette.white.main;
+      iconBgColor = '#00B849';
+      break;
+    }
     default:
       iconColor =
         theme.palette.mode === 'light'

@@ -1,9 +1,11 @@
-import { Box, Skeleton } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import {
+  LeaderboardEntryInfos,
   LeaderboardEntryWrapper,
   RankLabelSkeleton,
   RankPointsContainer,
+  RankWalletImageSkeleton,
 } from './LeaderboardEntry.style';
 
 export const LeaderboardEntrySkeleton = ({
@@ -13,30 +15,16 @@ export const LeaderboardEntrySkeleton = ({
 }) => {
   return (
     <LeaderboardEntryWrapper isUserPosition={isUserPosition}>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Box
-          minWidth={74}
-          textAlign={'center'}
-          display={'flex'}
-          justifyContent={'center'}
-          alignItems={'center'}
-        >
-          <RankLabelSkeleton variant="rectangular" />
-        </Box>
-        <Skeleton
-          animation="wave"
-          variant="circular"
-          width={48}
-          height={48}
-          sx={{ marginLeft: '24px' }}
-        />
+      <LeaderboardEntryInfos>
+        <RankLabelSkeleton variant="rectangular" />
+        <RankWalletImageSkeleton animation="wave" variant="circular" />
         <Skeleton
           animation="wave"
           variant="rectangular"
           height={24}
-          sx={{ minWidth: '160px', marginLeft: '32px', borderRadius: '12px' }}
+          sx={{ minWidth: '160px', borderRadius: '12px' }}
         />
-      </Box>
+      </LeaderboardEntryInfos>
       <RankPointsContainer>
         <Skeleton
           animation="wave"

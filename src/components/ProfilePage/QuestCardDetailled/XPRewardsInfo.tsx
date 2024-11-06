@@ -28,10 +28,14 @@ export const XPRewardsInfo: React.FC<PropsWithChildren<XPRewardsInfoProps>> = ({
         gap={0.5}
         sx={{ ...(tooltip && { cursor: 'help' }) }}
       >
-        <XPDisplayBoxLabel variant="bodySmallStrong">
+        <XPDisplayBoxLabel variant="bodySmallStrong" completed={completed}>
           {points}
         </XPDisplayBoxLabel>
-        {children ? children : <XPIcon size={20} variant="secondary" />}
+        {children ? (
+          children
+        ) : (
+          <XPIcon size={20} variant={completed ? 'completed' : 'secondary'} />
+        )}
       </XPDisplayBox>
     </Tooltip>
   );

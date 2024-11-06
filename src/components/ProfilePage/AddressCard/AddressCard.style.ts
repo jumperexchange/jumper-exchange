@@ -68,6 +68,12 @@ export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
     width: 32,
     height: 32,
     marginLeft: theme.spacing(1),
+    ':hover': {
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.black.main
+          : theme.palette.grey[100],
+    },
   }),
 );
 

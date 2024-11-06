@@ -49,7 +49,9 @@ export const Pagination = ({
             <FirstPage sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
           </IconButton>
         </PaginationLink>
-        <PaginationLink href={`/leaderboard?page=${page - 1}`}>
+        <PaginationLink
+          href={`/leaderboard?page=${page !== 1 ? page - 1 : maxPages}`}
+        >
           <IconButton>
             <ChevronLeft sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
           </IconButton>
@@ -100,7 +102,9 @@ export const Pagination = ({
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <PaginationLink href={`/leaderboard?page=${page + 1}`}>
+        <PaginationLink
+          href={`/leaderboard?page=${page !== maxPages ? page + 1 : 1}`}
+        >
           <IconButton>
             <ChevronRight sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
           </IconButton>

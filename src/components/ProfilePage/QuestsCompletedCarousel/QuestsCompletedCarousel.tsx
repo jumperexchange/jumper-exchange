@@ -37,6 +37,7 @@ export const QuestsCompletedCarousel = ({
                 <QuestCard
                   key={`completed-mission-${index}`}
                   id={pda?.id}
+                  completed={true}
                   active={false}
                   title={title}
                   image={pda?.reward?.image}

@@ -18,6 +18,7 @@ import {
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { useUserTracking } from 'src/hooks/userTracking';
 import type { QuestChains } from 'src/types/loyaltyPass';
+import { formatDateShort } from 'src/utils/formatDate';
 import { XPIconBox } from '../QuestCardDetailled/QuestCard.style';
 import type {
   RewardsInterface,
@@ -30,6 +31,7 @@ import {
   CompletedTypography,
   QuestCardButtonCta,
   QuestCardButtonCtaLabel,
+  QuestCardButtonSkeleton,
   QuestCardContent,
   QuestCardImage,
   QuestCardInfoBox,
@@ -53,6 +55,8 @@ interface QuestCardProps {
   isUnlocked?: boolean;
   label?: string;
   points?: number;
+  startDate?: string;
+  endDate?: string;
   // platformName?: string;
   // platformImage?: string;
   rewards?: RewardsInterface;
@@ -70,6 +74,7 @@ export const QuestCard = ({
   claimingIds,
   completed,
   ctaLink,
+  endDate,
   hideXPProgressComponents,
   id,
   image,
@@ -82,6 +87,7 @@ export const QuestCard = ({
   rewards,
   rewardsProgress,
   rewardRange,
+  startDate,
   title,
   url,
   variableWeeklyAPY,
@@ -102,6 +108,14 @@ export const QuestCard = ({
       },
     });
   };
+
+  let buttonLabel = `${t('questCard.join')}`;
+  if (isTraitsGarded && !isUnlocked) {
+    buttonLabel = 'Unlocked for perp_oors';
+  } else if (startDate && endDate) {
+    buttonLabel = `${formatDateShort(startDate)} - ${formatDateShort(endDate)}`;
+  }
+
   return (
     <QuestCardMainBox onClick={handleClick}>
       <OptionalLink
@@ -219,18 +233,21 @@ export const QuestCard = ({
                 </>
               ) : undefined}
             </QuestCardInfoBox>
-            {active ? (
+
+            {!active && !completed && (
+              <QuestCardButtonSkeleton variant="rectangular" />
+            )}
+            {active && (
               <QuestCardButtonCta aria-label={`Open ${t('questCard.join')}`}>
                 {isTraitsGarded && !isUnlocked && (
                   <LockIcon sx={{ height: '16px', width: '16px' }} />
                 )}
                 <QuestCardButtonCtaLabel variant="bodyXSmallStrong">
-                  {isTraitsGarded && !isUnlocked
-                    ? 'Unlocked for perp_oors'
-                    : t('questCard.join')}
+                  {buttonLabel}
                 </QuestCardButtonCtaLabel>
               </QuestCardButtonCta>
-            ) : (
+            )}
+            {completed && (
               <CompletedBox>
                 <DoneIcon
                   sx={{ width: '16px', height: '16px', color: '#00B849' }}

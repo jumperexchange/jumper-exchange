@@ -1,12 +1,9 @@
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Fade from '@mui/material/Fade';
-import {
-  MenuList,
-  MenuPaper,
-  MenuPopper,
-} from 'src/components/Menu/Menu.style';
+import { MenuPaper, MenuPopper } from 'src/components/Menu/Menu.style';
 import { MenuItem } from 'src/components/Menu/MenuItem';
-import { useAddressContent } from '../useAddressContent';
+import { useAddressMenuContent } from '../useAddressMenuContent';
+import { AddressMenuList } from './AdressMenu.style';
 
 export const AddressMenu = ({
   open,
@@ -17,7 +14,7 @@ export const AddressMenu = ({
   setOpen: any;
   anchorEl: HTMLElement | null;
 }) => {
-  const addressBoxMenuItems = useAddressContent();
+  const addressBoxMenuItems = useAddressMenuContent();
 
   return (
     <ClickAwayListener
@@ -45,22 +42,26 @@ export const AddressMenu = ({
             }}
           >
             <MenuPaper show={open} width={'320px'} className="menu-paper">
-              <MenuList
+              <AddressMenuList
                 autoFocusItem={open}
                 id="main-burger-menu"
                 autoFocus={open}
                 aria-labelledby="main-burger-menu"
                 hasLabel={true}
-                // component={isOpenSubMenu ? 'div' : 'ul'}
+                sx={{
+                  ':first-child': {
+                    marginTop: '16px',
+                  },
+                  'li:last-of-type': {
+                    marginBottom: '16px',
+                  },
+                }}
               >
                 {addressBoxMenuItems.map((el, index) => (
                   <MenuItem
                     key={`${el.label}-${index}`}
                     autoFocus={index > 0 ? true : false}
                     label={el.label}
-                    styles={
-                      index === 0 ? { marginTop: '24px !important' } : undefined
-                    }
                     prefixIcon={el.prefixIcon}
                     link={el.link}
                     showMoreIcon={el.showMoreIcon}
@@ -69,7 +70,7 @@ export const AddressMenu = ({
                     showButton={false}
                   />
                 ))}
-              </MenuList>
+              </AddressMenuList>
             </MenuPaper>
           </Fade>
         )}

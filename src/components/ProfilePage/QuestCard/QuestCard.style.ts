@@ -1,4 +1,4 @@
-import type { BoxProps } from '@mui/material';
+import type { BoxProps, TypographyProps } from '@mui/material';
 import {
   Box,
   Button,
@@ -56,6 +56,7 @@ export const QuestCardTitle = styled(Typography)(({ theme }) => ({
 
 export const QuestCardTitleSkeleton = styled(Skeleton)(() => ({
   width: '100%',
+  minWidth: 100,
   height: 24,
   borderRadius: '12px',
 }));
@@ -98,7 +99,7 @@ export const QuestDatesBox = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
 }));
 
-export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {
+export interface XPDisplayBoxProps extends BoxProps {
   active?: boolean;
   completed?: boolean;
 }
@@ -108,7 +109,7 @@ export const XPDisplayBox = styled(Box, {
 })<XPDisplayBoxProps>(({ active, theme, completed }) => ({
   marginRight: active ? '8px' : undefined,
   display: 'flex',
-  backgroundColor: completed ? '#42B852' : '#F0E5FF',
+  backgroundColor: completed ? '#D6FFE7' : '#F0E5FF',
   height: 32,
   alignItems: 'center',
   borderRadius: '128px',
@@ -116,16 +117,21 @@ export const XPDisplayBox = styled(Box, {
   justifyContent: 'center',
 }));
 
-export const XPDisplayBoxLabel = styled(Typography)<XPDisplayBoxProps>(
-  ({ theme }) => ({
+export interface XPDisplayBoxLabelProps extends TypographyProps {
+  active?: boolean;
+  completed?: boolean;
+}
+
+export const XPDisplayBoxLabel = styled(Typography)<XPDisplayBoxLabelProps>(({
+  theme,
+  completed,
+}) => {
+  return {
     margin: theme.spacing(0, 0.5),
-    color:
-      theme.palette.mode === 'light'
-        ? theme.palette.primary.main
-        : theme.palette.accent1Alt.main,
+    color: completed ? '#00B849' : theme.palette.primary.main,
     userSelect: 'none',
-  }),
-);
+  };
+});
 
 export const BadgeRelativeBox = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -141,6 +147,13 @@ export const AbsoluteCenterTraitsBox = styled(Box)(({ theme }) => ({
   borderRadius: '32px',
   padding: theme.spacing(0.5, 2),
   marginTop: theme.spacing(1),
+}));
+
+export const QuestCardButtonSkeleton = styled(Skeleton)(({ theme }) => ({
+  alignItems: 'center',
+  width: '100%',
+  height: 24,
+  borderRadius: '12px',
 }));
 
 export const QuestCardButtonCta = styled(Button)(({ theme }) => ({
@@ -165,8 +178,6 @@ export const QuestCardButtonCtaLabel = styled(Typography)(({ theme }) => ({
   margin: theme.spacing(0, 1),
 }));
 
-export const CompletedTypography = styled(QuestCardButtonCtaLabel)(
-  ({ theme }) => ({
-    color: '#00B849',
-  }),
-);
+export const CompletedTypography = styled(QuestCardButtonCtaLabel)(() => ({
+  color: '#00B849',
+}));

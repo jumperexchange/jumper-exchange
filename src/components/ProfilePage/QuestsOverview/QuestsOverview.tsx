@@ -42,6 +42,8 @@ export const QuestsOverview = ({
             const rewardsIds =
               quest.attributes?.CustomInformation?.['rewardsIds'];
             const questTraits = quest.attributes?.CustomInformation?.['traits'];
+            const endDate = quest.attributes.EndDate;
+            const startDate = quest.attributes.StartDate;
             //todo: exclude in a dedicated helper function
             let completed = false;
             if (rewardsIds && pastCampaigns) {
@@ -66,6 +68,8 @@ export const QuestsOverview = ({
                 // platformName={
                 //   quest?.attributes.quests_platform?.data?.attributes?.Name
                 // }
+                startDate={startDate}
+                endDate={endDate}
                 chains={chains}
                 rewards={rewards}
                 completed={completed}

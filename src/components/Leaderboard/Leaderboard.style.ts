@@ -7,7 +7,6 @@ export const LeaderboardContainer = styled(Box)(({ theme }) => ({
   borderRadius: '32px',
   width: '100%',
   padding: theme.spacing(4, 2),
-  margin: theme.spacing(4, 0, 0),
   boxShadow: theme.palette.shadow.main,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(4),

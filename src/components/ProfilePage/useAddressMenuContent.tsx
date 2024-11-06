@@ -8,7 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { JUMPER_SCAN_PATH } from 'src/const/urls';
 import { useUserTracking } from 'src/hooks/userTracking';
-export const useAddressContent = () => {
+
+export const useAddressMenuContent = () => {
   const { account } = useAccount();
   const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
