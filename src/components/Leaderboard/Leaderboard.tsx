@@ -27,12 +27,11 @@ import { LeaderboardUserEntry } from './LeaderboardUserEntry';
 
 export const LEADERBOARD_LENGTH = 25;
 
-const isValidPage = (page: string, totalPages: number) => {
-  const pageNum = parseInt(page, 10);
+const isValidPage = (pageNum: number, totalPages: number) => {
   return !isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages;
 };
 
-export const Leaderboard = ({ page: defaultPage = '1' }: { page?: string }) => {
+export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
   const { account } = useAccount();
 
   const { t } = useTranslation();
@@ -41,13 +40,13 @@ export const Leaderboard = ({ page: defaultPage = '1' }: { page?: string }) => {
     data: leaderboardData,
     meta,
   }: { data: LeaderboardEntryData[]; meta: LeaderboardMeta } =
-    useLeaderboardList(parseInt(defaultPage), LEADERBOARD_LENGTH);
+    useLeaderboardList(defaultPage, LEADERBOARD_LENGTH);
   const { data: leaderboardUserData }: { data: LeaderboardEntryData } =
     useLeaderboardUser(account?.address);
 
   const currentPage = useMemo(() => {
     return isValidPage(defaultPage, meta?.pagination?.pagesLength)
-      ? parseInt(defaultPage)
+      ? defaultPage
       : 1;
   }, [defaultPage, meta?.pagination.pagesLength]);
 
