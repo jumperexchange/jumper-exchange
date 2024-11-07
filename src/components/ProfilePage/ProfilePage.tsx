@@ -5,7 +5,9 @@ import { useContext } from 'react';
 import { useMerklRewardsOnCampaigns } from '@/hooks/useMerklRewardsOnCampaigns';
 import { AddressBox } from '@/components/ProfilePage/AddressBox/AddressBox';
 import { Leaderboard } from '@/components/ProfilePage/Leaderboard/Leaderboard';
-import { TierBox } from '@/components/ProfilePage/LevelBox/TierBox';
+import { useMemo } from 'react';
+import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
+import { TierBox } from './LevelBox/TierBox';
 import {
   ProfilePageContainer,
   ProfilePageHeaderBox,
@@ -13,6 +15,7 @@ import {
 import { QuestCarousel } from './QuestCarousel/QuestCarousel';
 import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { useTraits } from 'src/hooks/useTraits';
+// import { useABTest } from 'src/hooks/useABTest';
 
 import { MerkleRewards } from '@/components/ProfilePage/MerkleRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
@@ -20,7 +23,7 @@ import { ProfileContext } from '@/providers/ProfileProvider';
 export const ProfilePage = () => {
   const { walletAddress, isPublic, isEVMAddress } = useContext(ProfileContext);
 
-  const { isLoading, points, tier, pdas } = useLoyaltyPass(walletAddress);
+  const { isLoading, points, pdas } = useLoyaltyPass(walletAddress);
   const { traits } = useTraits();
   const { pastCampaigns } = useMerklRewardsOnCampaigns({
     userAddress: walletAddress,
@@ -49,7 +52,7 @@ export const ProfilePage = () => {
               <ProfilePageHeaderBox
                 sx={{ display: 'flex', flex: 2, paddingX: { xs: 0, sm: 1 } }}
               >
-                <TierBox points={points} tier={tier} loading={isLoading} />
+                <TierBox points={points} loading={isLoading} />
               </ProfilePageHeaderBox>
 
               <QuestCarousel pastCampaigns={pastCampaigns} traits={traits} />

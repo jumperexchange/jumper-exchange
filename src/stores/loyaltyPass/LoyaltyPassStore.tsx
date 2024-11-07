@@ -1,4 +1,4 @@
-import type { LoyaltyPassState, PDA } from '@/types/loyaltyPass';
+import { LoyaltyPassProps, LoyaltyPassState, PDA } from '@/types/loyaltyPass';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
@@ -9,7 +9,7 @@ export const useLoyaltyPassStore = createWithEqualityFn(
     (set, get) => ({
       address: undefined,
       points: undefined,
-      tier: undefined,
+      level: undefined,
       pdas: [],
       timestamp: undefined,
 
@@ -17,7 +17,7 @@ export const useLoyaltyPassStore = createWithEqualityFn(
         set({
           address: undefined,
           points: undefined,
-          tier: undefined,
+          level: undefined,
           pdas: [],
           timestamp: undefined,
         });
@@ -27,14 +27,14 @@ export const useLoyaltyPassStore = createWithEqualityFn(
       setLoyaltyPassData: (
         address: string,
         points: number,
-        tier: string,
+        level: string,
         pdas: PDA[],
         time: number,
       ) => {
         set({
           address: address,
           points: points,
-          tier: tier,
+          level: level,
           pdas: pdas,
           timestamp: time,
         });
@@ -42,11 +42,19 @@ export const useLoyaltyPassStore = createWithEqualityFn(
     }),
     {
       name: 'jumper-loyalty-pass', // name of the item in the storage (must be unique)
-      version: 2,
+      version: 3,
       migrate: (persistedState, version) => {
         if (version === 1) {
           // if the stored value is in version 1, we clear the storage
           persistedState = {};
+        }
+
+        if (version === 2) {
+          const state = persistedState as LoyaltyPassProps & { tier?: string };
+          state.level = state.tier
+          delete state.tier
+
+          persistedState = state;
         }
 
         return persistedState;

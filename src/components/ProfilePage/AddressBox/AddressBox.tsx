@@ -1,6 +1,7 @@
 import { useMenuStore } from '@/stores/menu';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import LinkIcon from '@mui/icons-material/Link';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
@@ -35,8 +36,8 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
   });
   const imgLink = useImageStatus(address);
 
-  const handleCopyButton = () => {
-    address && navigator.clipboard.writeText(address);
+  const handleCopyButton = (textToCopy: string) => {
+    address && navigator.clipboard.writeText(textToCopy);
     setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
   };
 
@@ -80,9 +81,11 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
         >
           {addressLabel}
         </NoSelectTypography>
-        <ProfileIconButton onClick={() => handleCopyButton()}>
-          <ContentCopyIcon sx={{ height: '16px' }} />
-        </ProfileIconButton>
+        {address && (
+          <ProfileIconButton onClick={() => handleCopyButton(address)}>
+            <ContentCopyIcon sx={{ height: '16px' }} />
+          </ProfileIconButton>
+        )}
         {address && (
           <a
             href={`https://etherscan.io/address/${address}`}
@@ -94,6 +97,15 @@ export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
               <OpenInNewIcon sx={{ height: '16px' }} />
             </ProfileIconButton>
           </a>
+        )}
+        {address && (
+          <ProfileIconButton
+            onClick={() =>
+              handleCopyButton(`${getSiteUrl()}/profile/${address}`)
+            }
+          >
+            <LinkIcon sx={{ height: '16px' }} />
+          </ProfileIconButton>
         )}
       </AddressDisplayBox>
     </AddressBoxContainer>

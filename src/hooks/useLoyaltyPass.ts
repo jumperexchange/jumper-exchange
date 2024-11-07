@@ -9,7 +9,7 @@ export interface UseLoyaltyPassProps {
   isSuccess: boolean;
   isLoading: boolean;
   points?: number;
-  tier?: string;
+  level?: string;
   pdas?: PDA[];
 }
 
@@ -37,7 +37,7 @@ export async function getLoyaltyPassDataQuery({
   return {
     address: walletAddress,
     points: data.sum,
-    tier: data.currentLevel,
+    level: data.currentLevel,
     pdas: data.walletRewards,
   };
 }
@@ -48,7 +48,7 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
   const {
     address: storedAddress,
     points: storedPoints,
-    tier: storedTier,
+    level: storedTier,
     pdas: storedPdas,
     timestamp,
     setLoyaltyPassData,
@@ -85,13 +85,13 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
       const data = await getLoyaltyPassDataQuery({ queryKey });
 
       if (data && walletAddress) {
-        setLoyaltyPassData(walletAddress, data.points, data.tier, data.pdas, t);
+        setLoyaltyPassData(walletAddress, data.points, data.level, data.pdas, t);
       }
 
       return {
         address: walletAddress,
         points: data?.points,
-        tier: data?.tier,
+        level: data?.level,
         pdas: data?.pdas,
       };
     },
@@ -109,7 +109,7 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
       isSuccess: true,
       isLoading: isLoading,
       points: storedPoints,
-      tier: storedTier,
+      level: storedTier,
       pdas: storedPdas,
     };
   } else if (errorWhileFetchingData) {
@@ -117,7 +117,7 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
       isSuccess: false,
       isLoading: isLoading,
       points: undefined,
-      tier: undefined,
+      level: undefined,
       pdas: [],
     };
   }
