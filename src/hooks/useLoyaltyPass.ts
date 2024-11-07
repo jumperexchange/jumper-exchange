@@ -85,7 +85,13 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
       const data = await getLoyaltyPassDataQuery({ queryKey });
 
       if (data && walletAddress) {
-        setLoyaltyPassData(walletAddress, data.points, data.level, data.pdas, t);
+        setLoyaltyPassData(
+          walletAddress,
+          data.points,
+          data.level,
+          data.pdas,
+          t,
+        );
       }
 
       return {

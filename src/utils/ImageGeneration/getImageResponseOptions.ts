@@ -1,5 +1,5 @@
-import { Font } from 'next/dist/compiled/@vercel/og/satori';
-import { ImageResponseOptions } from 'next/dist/compiled/@vercel/og/types';
+import type { Font } from 'next/dist/compiled/@vercel/og/satori';
+import type { ImageResponseOptions } from 'next/dist/compiled/@vercel/og/types';
 
 export const getImageResponseOptions = async ({
   width,

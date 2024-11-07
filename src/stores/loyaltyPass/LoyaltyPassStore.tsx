@@ -1,4 +1,8 @@
-import { LoyaltyPassProps, LoyaltyPassState, PDA } from '@/types/loyaltyPass';
+import type {
+  LoyaltyPassProps,
+  LoyaltyPassState,
+  PDA,
+} from '@/types/loyaltyPass';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
@@ -51,8 +55,8 @@ export const useLoyaltyPassStore = createWithEqualityFn(
 
         if (version === 2) {
           const state = persistedState as LoyaltyPassProps & { tier?: string };
-          state.level = state.tier
-          delete state.tier
+          state.level = state.tier;
+          delete state.tier;
 
           persistedState = state;
         }
