@@ -1,5 +1,4 @@
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
-import type { PartnerThemesData } from '@/types/strapi';
 import type { ThemeMode, ThemeProps, ThemeState } from '@/types/theme';
 import type { WidgetConfig } from '@lifi/widget';
 import type { StateCreator } from 'zustand';
@@ -26,15 +25,24 @@ export const createThemeStore = (props: ThemeProps) =>
             themeMode: mode,
           });
         },
-        setPartnerThemes: (partnerThemes: PartnerThemesData[]) => {
-          set({
-            partnerThemes,
-          });
-        },
       }),
       {
         name: 'jumper-theme-store',
         version: 0,
+        partialize: (state) => {
+          return {
+            themeMode: state.themeMode,
+            activeTheme: state.activeTheme,
+            configTheme: state.configTheme,
+            widgetTheme: state.widgetTheme,
+          }
+        },
+        merge: (persistedState, currentState) => {
+          return {
+            ...persistedState as ThemeState,
+            ...currentState
+          }
+        },
       },
     ) as StateCreator<ThemeState, [], [], ThemeState>,
     Object.is,

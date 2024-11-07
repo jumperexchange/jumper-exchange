@@ -36,7 +36,9 @@ const MobileImageWrapper = styled.div`
   }
 `;
 
-const StyledImage = styled(Image)<{ isSkeleton: boolean }>`
+const StyledImage = styled(Image, {
+  shouldForwardProp: (prop) => prop !== 'isSkeleton',
+})<{ isSkeleton: boolean }>`
   width: 100%;
   height: auto;
   max-width: 100%;

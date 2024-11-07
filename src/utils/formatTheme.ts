@@ -69,7 +69,7 @@ export function formatConfig(
     };
   }
 
-  const defaultMode = theme.lightConfig ? 'light' : 'dark';
+  const defaultMode = isDarkOrLightThemeMode(theme);
   const result = {
     availableThemeModes: getAvailableThemeModes(theme),
     backgroundColor:
@@ -134,3 +134,5 @@ export function formatTheme(theme: PartnerThemesAttributes) {
     themeName: theme.uid,
   };
 }
+
+export const isDarkOrLightThemeMode = (theme: PartnerThemesAttributes) => theme.darkConfig ? 'dark' : 'light';

@@ -1,7 +1,7 @@
 'use client';
 import { useMetaTag } from '@/hooks/useMetaTag';
 import { useThemeStore } from '@/stores/theme';
-import { formatConfig } from '@/utils/formatTheme';
+import { formatConfig, isDarkOrLightThemeMode } from '@/utils/formatTheme';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { useTheme as useNextTheme } from 'next-themes';
 import { useEffect, useMemo } from 'react';
@@ -27,11 +27,12 @@ export function ThemeProviderBase({
     state.setWidgetTheme,
   ]);
 
-  const effectiveThemeMode = getEffectiveThemeMode(themeMode, resolvedTheme);
-
   const metaTheme = useMetaTag('partner-theme');
 
   const partnerTheme = metaTheme || activeTheme || 'default';
+  const isPartnerTheme = themes?.find((d) => d.attributes.uid === partnerTheme);
+
+  const effectiveThemeMode = getEffectiveThemeMode(isPartnerTheme?.attributes && isDarkOrLightThemeMode(isPartnerTheme?.attributes) || themeMode, resolvedTheme);
 
   const currentMuiTheme = useMemo(
     () => getMuiTheme(themes, partnerTheme, effectiveThemeMode),

@@ -1,7 +1,7 @@
 'use client';
 import { ThemeStoreProvider } from '@/stores/theme';
 import type { ThemeMode, ThemeProps } from '@/types/theme';
-import { formatConfig } from '@/utils/formatTheme';
+import { formatConfig, isDarkOrLightThemeMode } from '@/utils/formatTheme';
 import { CssBaseline } from '@mui/material';
 import { useMemo } from 'react';
 import type { PartnerThemeConfig } from 'src/types/PartnerThemeConfig';
@@ -13,6 +13,7 @@ import {
   getPartnerTheme,
   getWidgetTheme,
 } from './utils';
+import { PartnerTheme, PartnerThemesAttributes } from '@/types/strapi';
 
 /**
  * App's theme provider component.
@@ -25,13 +26,15 @@ export function ThemeProvider({
   themeMode,
 }: ThemeProviderProps) {
   const themeStore = useMemo((): ThemeProps => {
-    const effectiveThemeMode = getEffectiveThemeMode(themeMode);
     const metaElement =
       typeof window !== 'undefined'
         ? document.querySelector('meta[name="partner-theme"]')
         : undefined;
     const metaTheme = metaElement?.getAttribute('content');
     const partnerTheme = metaTheme || activeTheme || 'default';
+    const isPartnerTheme = themes?.find((d) => d.attributes.uid === partnerTheme);
+    const effectiveThemeMode = getEffectiveThemeMode(isPartnerTheme ? isDarkOrLightThemeMode(isPartnerTheme.attributes) : themeMode);
+
     const widgetTheme = getWidgetTheme(
       getMuiTheme(themes, partnerTheme, effectiveThemeMode),
       partnerTheme,
