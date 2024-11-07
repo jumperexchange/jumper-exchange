@@ -18,12 +18,7 @@ const ConnectWalletLayoutContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  ${mq[0]} {
-    margin-top: -100px;
-  }
-  ${mq[1]} {
-    margin-top: -140px;
-  }
+  padding-top: 28vh;
 `;
 const ConnectWalletLayoutContent = styled.div`
   display: flex;
