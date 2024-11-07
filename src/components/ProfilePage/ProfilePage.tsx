@@ -24,6 +24,10 @@ export const ProfilePage = () => {
   const { walletAddress, isPublic, isEVMAddress } = useContext(ProfileContext);
 
   const { isLoading, points, pdas } = useLoyaltyPass(walletAddress);
+  // const { isEnabled: isABTestEnabled } = useABTest({
+  //   feature: 'test_ab_1',
+  //   user: account?.address || '',
+  // });
   const { traits } = useTraits();
   const { pastCampaigns } = useMerklRewardsOnCampaigns({
     userAddress: walletAddress,

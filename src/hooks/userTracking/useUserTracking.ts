@@ -121,6 +121,7 @@ export function useUserTracking() {
             browserFingerprint: fp || 'unknown',
             isMobile: !isDesktop,
             sessionId: sessionId || 'unknown',
+            referrer: document?.referrer,
             url: window?.location?.href || getSiteUrl(),
           };
           await jumperTrackEvent(eventData);
@@ -200,6 +201,7 @@ export function useUserTracking() {
           browserFingerprint: fp || 'unknown',
           walletAddress: account.address || 'not_connected',
           walletProvider: account.connector?.name,
+          referrer: document?.referrer,
         };
         await jumperTrackTransaction(transactionData);
       }
