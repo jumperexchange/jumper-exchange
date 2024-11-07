@@ -72,7 +72,7 @@ export const CarouselContainer = ({
     <Box>
       <CarouselHeader>
         {title && <CarouselTitle variant="headerMedium">{title}</CarouselTitle>}
-        {Array.isArray(children) && children?.length > 1 && (
+        {Array.isArray(children) && (
           <CarouselNavigationContainer hide={children?.length < 1}>
             <CarouselNavigationButton
               aria-label="previous"
