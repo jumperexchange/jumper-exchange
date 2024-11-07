@@ -144,22 +144,22 @@ export const useMainMenuContent = () => {
         });
       },
     },
-    {
-      label: 'Solana Washtrade',
-      prefixIcon: <LocalLaundryServiceIcon />,
-      showMoreIcon: false,
-      link: { url: JUMPER_WASH_PATH },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-wash-trade-link',
-          action: 'action_click_wash_trade_link',
-          data: { [TrackingEventParameter.Menu]: 'wash' },
-        });
-        closeAllMenus();
-        router.push(JUMPER_WASH_PATH);
-      },
-    },
+    // {
+    //   label: 'Solana Washtrade',
+    //   prefixIcon: <LocalLaundryServiceIcon />,
+    //   showMoreIcon: false,
+    //   link: { url: JUMPER_WASH_PATH },
+    //   onClick: () => {
+    //     trackEvent({
+    //       category: TrackingCategory.Menu,
+    //       label: 'click-wash-trade-link',
+    //       action: 'action_click_wash_trade_link',
+    //       data: { [TrackingEventParameter.Menu]: 'wash' },
+    //     });
+    //     closeAllMenus();
+    //     router.push(JUMPER_WASH_PATH);
+    //   },
+    // },
     {
       label: t('navbar.navbarMenu.profile'),
       prefixIcon: <AccountCircleIcon />,
