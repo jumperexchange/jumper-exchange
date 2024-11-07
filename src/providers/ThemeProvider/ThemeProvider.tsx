@@ -32,8 +32,14 @@ export function ThemeProvider({
         : undefined;
     const metaTheme = metaElement?.getAttribute('content');
     const partnerTheme = metaTheme || activeTheme || 'default';
-    const isPartnerTheme = themes?.find((d) => d.attributes.uid === partnerTheme);
-    const effectiveThemeMode = getEffectiveThemeMode(isPartnerTheme ? isDarkOrLightThemeMode(isPartnerTheme.attributes) : themeMode);
+    const isPartnerTheme = themes?.find(
+      (d) => d.attributes.uid === partnerTheme,
+    );
+    const effectiveThemeMode = getEffectiveThemeMode(
+      isPartnerTheme
+        ? isDarkOrLightThemeMode(isPartnerTheme.attributes)
+        : themeMode,
+    );
 
     const widgetTheme = getWidgetTheme(
       getMuiTheme(themes, partnerTheme, effectiveThemeMode),

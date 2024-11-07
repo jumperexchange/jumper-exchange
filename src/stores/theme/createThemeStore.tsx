@@ -35,13 +35,13 @@ export const createThemeStore = (props: ThemeProps) =>
             activeTheme: state.activeTheme,
             configTheme: state.configTheme,
             widgetTheme: state.widgetTheme,
-          }
+          };
         },
         merge: (persistedState, currentState) => {
           return {
-            ...persistedState as ThemeState,
-            ...currentState
-          }
+            ...(persistedState as ThemeState),
+            ...currentState,
+          };
         },
       },
     ) as StateCreator<ThemeState, [], [], ThemeState>,

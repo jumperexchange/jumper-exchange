@@ -135,4 +135,5 @@ export function formatTheme(theme: PartnerThemesAttributes) {
   };
 }
 
-export const isDarkOrLightThemeMode = (theme: PartnerThemesAttributes) => theme.darkConfig ? 'dark' : 'light';
+export const isDarkOrLightThemeMode = (theme: PartnerThemesAttributes) =>
+  theme.darkConfig ? 'dark' : 'light';

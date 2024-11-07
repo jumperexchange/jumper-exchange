@@ -32,7 +32,12 @@ export function ThemeProviderBase({
   const partnerTheme = metaTheme || activeTheme || 'default';
   const isPartnerTheme = themes?.find((d) => d.attributes.uid === partnerTheme);
 
-  const effectiveThemeMode = getEffectiveThemeMode(isPartnerTheme?.attributes && isDarkOrLightThemeMode(isPartnerTheme?.attributes) || themeMode, resolvedTheme);
+  const effectiveThemeMode = getEffectiveThemeMode(
+    (isPartnerTheme?.attributes &&
+      isDarkOrLightThemeMode(isPartnerTheme?.attributes)) ||
+      themeMode,
+    resolvedTheme,
+  );
 
   const currentMuiTheme = useMemo(
     () => getMuiTheme(themes, partnerTheme, effectiveThemeMode),
