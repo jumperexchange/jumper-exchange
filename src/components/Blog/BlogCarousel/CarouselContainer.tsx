@@ -73,7 +73,7 @@ export const CarouselContainer = ({
       <CarouselHeader>
         {title && <CarouselTitle variant="headerMedium">{title}</CarouselTitle>}
         {Array.isArray(children) && (
-          <CarouselNavigationContainer hide={children?.length < 1}>
+          <CarouselNavigationContainer>
             <CarouselNavigationButton
               aria-label="previous"
               onClick={() => handleChange('prev')}
