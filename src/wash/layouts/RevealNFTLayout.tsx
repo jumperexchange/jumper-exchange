@@ -18,7 +18,6 @@ import Link from 'next/link';
  *************************************************************************************************/
 const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
   position: relative;
-  margin-top: -10dvh;
   display: flex;
   width: 100%;
   max-width: 100vw;
@@ -29,14 +28,17 @@ const RevealedNFTLayoutContainer = styled.div<{ mounted: boolean }>`
     scale 300ms ease-in-out;
   opacity: ${({ mounted }) => (mounted ? 1 : 0)};
   scale: ${({ mounted }) => (mounted ? 1 : 0)};
-  ${mq[1]} {
-    margin-top: -320px;
-    padding-top: 0px;
-  }
+  transform-origin: top center;
+
   ${mq[0]} {
-    margin-top: -240px;
     padding-left: 16px;
     padding-right: 16px;
+  }
+  ${mq[1]} {
+    padding-top: 0px;
+  }
+  @media (min-height: 50px) and (max-height: 800px) {
+    margin-top: 0px;
   }
 `;
 const RevealedNFTLayoutTitle = styled.h1`
@@ -85,6 +87,7 @@ const RewardWrapper = styled.div<{ maxWidth?: string }>`
   max-width: ${(props) => props.maxWidth ?? '1200px'};
   text-align: center;
   font-weight: 500;
+  min-height: 64px;
 `;
 
 const RewardName = styled.span`
@@ -149,7 +152,11 @@ export function RevealedNFTLayout(): ReactElement {
    *********************************************************************************************/
   const subtitle = useMemo(() => {
     if (reveal.isRevealing) {
-      return 'Loading your NFT, fingers crossed anon!';
+      return (
+        <RewardWrapper maxWidth={'760px'}>
+          {'Loading your NFT, fingers crossed anon!'}
+        </RewardWrapper>
+      );
     }
     const isSingleNFT = (currentCollection || [])?.length === 1;
     const { isRare, rewardName } = currentNFT || {};
@@ -220,10 +227,7 @@ export function RevealedNFTLayout(): ReactElement {
       <RevealNFTItem
         nft={currentNFT}
         label={currentNFT?.isRare ? 'Legendary' : 'Common'}
-        isRevealing={
-          (reveal.isRevealing || reveal.hasCanceledReveal) &&
-          currentNFT.progress === 100
-        }
+        isRevealing={reveal.isRevealing || reveal.hasCanceledReveal}
       />
 
       <RevealedNFTLayoutCallToActionBox>

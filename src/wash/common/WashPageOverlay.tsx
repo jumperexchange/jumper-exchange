@@ -22,11 +22,13 @@ const OverlayWrapper = styled.div<{ hasCurrentLayout: boolean }>`
   opacity: ${({ hasCurrentLayout }) => (hasCurrentLayout ? 1 : 0)};
   pointer-events: ${({ hasCurrentLayout }) =>
     hasCurrentLayout ? 'auto' : 'none'};
-  @media (min-width: 1280px) and (max-width: 1440px) {
+  @media (min-width: 1100px) and (max-width: 1440px) {
     transform: scale(0.8);
+    transform-origin: top center;
   }
-  @media (min-height: 800px) and (max-height: 990px) {
+  @media (min-height: 500px) and (max-height: 800px) {
     transform: scale(0.8);
+    transform-origin: top center;
   }
 `;
 

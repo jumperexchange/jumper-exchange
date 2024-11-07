@@ -5,7 +5,7 @@ import { DashboardLayout } from '../layouts/DashboardLayout';
 import styled from '@emotion/styled';
 
 import type { ReactElement, ReactNode } from 'react';
-import { mq, colors } from '../utils/theme';
+import { colors } from '../utils/theme';
 import { useAccount } from '@lifi/wallet-management';
 import { ChainType } from '@lifi/sdk';
 import { useWashTrading } from '../contexts/useWashTrading';
@@ -18,14 +18,15 @@ const BackdropWrapper = styled.div<{ shouldDisplayBackdrop: boolean }>`
   top: 0;
   left: 0;
   z-index: 20;
-  display: flex;
   height: 100%;
   width: 100%;
-  justify-content: center;
   transition: opacity 1s ease-in-out;
   opacity: ${({ shouldDisplayBackdrop }) => (shouldDisplayBackdrop ? 1 : 0)};
   pointer-events: ${({ shouldDisplayBackdrop }) =>
     shouldDisplayBackdrop ? 'auto' : 'none'};
+  @media (min-height: 50px) and (max-height: 712px) {
+    overflow: auto;
+  }
 `;
 
 const TopBlur = styled.div`
@@ -35,6 +36,7 @@ const TopBlur = styled.div`
   z-index: 20;
   height: 50%;
   width: 100%;
+  pointer-events: none;
   backdrop-filter: blur(8px);
   background: linear-gradient(
     360deg,
@@ -49,6 +51,7 @@ const Background = styled.div`
   z-index: 20;
   height: 50%;
   width: 100%;
+  pointer-events: none;
   background-color: ${colors.violet[100]};
 `;
 const ChildrenWrapper = styled.div`
@@ -57,18 +60,6 @@ const ChildrenWrapper = styled.div`
   padding-top: 100px;
   margin-top: auto;
   margin-bottom: auto;
-  ${mq[0]} {
-    margin-top: 320px;
-  }
-  ${mq[1]} {
-    margin-top: 360px;
-  }
-  @media (min-width: 1280px) and (max-width: 1440px) {
-    margin-top: 300px;
-  }
-  @media (min-height: 800px) and (max-height: 990px) {
-    margin-top: 300px;
-  }
 `;
 
 /**************************************************************************************************
