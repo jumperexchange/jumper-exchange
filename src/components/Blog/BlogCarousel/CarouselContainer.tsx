@@ -72,7 +72,7 @@ export const CarouselContainer = ({
     <Box>
       <CarouselHeader>
         {title && <CarouselTitle variant="headerMedium">{title}</CarouselTitle>}
-        {Array.isArray(children) && (
+        {
           <CarouselNavigationContainer>
             <CarouselNavigationButton
               aria-label="previous"
@@ -88,7 +88,7 @@ export const CarouselContainer = ({
               <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
             </CarouselNavigationButton>
           </CarouselNavigationContainer>
-        )}
+        }
       </CarouselHeader>
       <CarouselContainerBox ref={carouselContainerRef} sx={styles}>
         {children}
