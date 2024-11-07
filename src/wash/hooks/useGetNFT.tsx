@@ -93,15 +93,16 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
    * @returns The updated NFT data from the server.
    *********************************************************************************************/
   const fetchUpdatedNFT = useCallback(async (): Promise<void> => {
-    await fetch(
-      `${WASH_ENDPOINT_ROOT_URI}/lifi/${umi?.identity.publicKey}/update-data`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${base58.serialize(account.address ?? '')}`,
-        },
+    await fetch(`/api/update-data`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${base58.serialize(account.address ?? '')}`,
       },
-    );
+      body: JSON.stringify({
+        publicKey: umi?.identity.publicKey,
+      }),
+    });
     set_dataRefreshedFor(umi?.identity.publicKey);
     await Promise.all([cachedQuery.refetch(), refetchUser?.()]);
   }, [umi?.identity.publicKey, account.address, cachedQuery, refetchUser]);
