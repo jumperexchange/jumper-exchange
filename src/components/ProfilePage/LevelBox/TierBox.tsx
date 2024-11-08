@@ -15,8 +15,8 @@ export function getLevelBasedOnPoints(points: number | undefined): LevelData {
   } else {
     return {
       level: 0,
-      minPoints: 0,
-      maxPoints: 0,
+      minPoints: levelsData[0].minPoints,
+      maxPoints: levelsData[0].maxPoints,
     };
   }
 }
