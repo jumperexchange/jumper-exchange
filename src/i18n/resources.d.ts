@@ -120,10 +120,6 @@ interface Resources {
         title: 'Multiple signatures required';
         description: 'Please notify other multisig wallet participants to sign before the transaction expires.';
       };
-      alert: {
-        title: 'Multisig wallet connected';
-        description: 'Destination wallet address is required to complete the exchange.';
-      };
     };
     questCard: {
       completed: 'Completed';

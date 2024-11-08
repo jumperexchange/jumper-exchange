@@ -66,23 +66,21 @@ export const CarouselContainer = ({
     <Box>
       <CarouselHeader>
         {title && <SectionTitle variant="headerMedium">{title}</SectionTitle>}
-        {Array.isArray(children) && children?.length > 1 && (
-          <CarouselNavigationContainer hide={children?.length < 1}>
-            <CarouselNavigationButton
-              aria-label="previous"
-              onClick={() => handleChange('prev')}
-            >
-              <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
-            </CarouselNavigationButton>
-            <CarouselNavigationButton
-              aria-label="next"
-              sx={{ marginLeft: theme.spacing(1) }}
-              onClick={() => handleChange('next')}
-            >
-              <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
-            </CarouselNavigationButton>
-          </CarouselNavigationContainer>
-        )}
+        <CarouselNavigationContainer>
+          <CarouselNavigationButton
+            aria-label="previous"
+            onClick={() => handleChange('prev')}
+          >
+            <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
+          </CarouselNavigationButton>
+          <CarouselNavigationButton
+            aria-label="next"
+            sx={{ marginLeft: theme.spacing(1) }}
+            onClick={() => handleChange('next')}
+          >
+            <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
+          </CarouselNavigationButton>
+        </CarouselNavigationContainer>
       </CarouselHeader>
       <CarouselContainerBox ref={carouselContainerRef} sx={styles}>
         {children}
