@@ -22,7 +22,6 @@ export interface ThemeActions {
   setThemeMode: (mode: ThemeMode) => void;
   setConfigTheme: (configTheme: Partial<PartnerThemeConfig>) => void;
   setWidgetTheme: (widgetTheme: { config: Partial<WidgetConfig> }) => void;
-  setPartnerThemes: (themes: PartnerThemesData[]) => void;
 }
 
 export type ThemeState = ThemeProps & ThemeActions;
