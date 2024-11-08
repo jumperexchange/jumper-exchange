@@ -3,7 +3,6 @@ import { useUmi } from '../contexts/useUmi';
 import { colorDict, WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
 import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
-import { base58 } from '@metaplex-foundation/umi/serializers';
 import { useQuery } from '@tanstack/react-query';
 
 import type { TColor } from '../utils/theme';
@@ -65,7 +64,6 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${base58.serialize(account.address ?? '')}`,
         },
       },
     );
@@ -98,7 +96,6 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${base58.serialize(account.address ?? '')}`,
         },
         body: JSON.stringify({
           publicKey: umi?.identity.publicKey,
@@ -109,7 +106,7 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
     } catch (error) {
       console.warn('error', error);
     }
-  }, [umi?.identity.publicKey, account.address, cachedQuery, refetchUser]);
+  }, [umi?.identity.publicKey, cachedQuery, refetchUser]);
 
   /**************************************************************************************************
    * useEffect Hook for Fetching Updated NFT Data
