@@ -29,6 +29,9 @@ export type TGetNFT = {
 };
 
 export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
+  const [isRefreshingDataFor, set_isRefreshingDataFor] = useState<
+    string | undefined
+  >(undefined);
   const [dataRefreshedFor, set_dataRefreshedFor] = useState<string | undefined>(
     undefined,
   );
@@ -92,6 +95,7 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
    *********************************************************************************************/
   const fetchUpdatedNFT = useCallback(async (): Promise<void> => {
     try {
+      set_isRefreshingDataFor(umi?.identity.publicKey);
       await fetch(`/api/update-data`, {
         method: 'POST',
         headers: {
@@ -102,6 +106,7 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
         }),
       });
       set_dataRefreshedFor(umi?.identity.publicKey);
+      set_isRefreshingDataFor(undefined);
       await Promise.all([cachedQuery.refetch(), refetchUser?.()]);
     } catch (error) {
       console.warn('error', error);
@@ -127,7 +132,8 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
       account.isConnected &&
       account.address &&
       umi?.identity.publicKey &&
-      dataRefreshedFor !== umi?.identity.publicKey
+      dataRefreshedFor !== umi?.identity.publicKey &&
+      (!isRefreshingDataFor || isRefreshingDataFor !== umi?.identity.publicKey)
     ) {
       fetchUpdatedNFT();
     }
@@ -138,6 +144,7 @@ export function useGetNFT(refetchUser?: VoidFunction): TGetNFT {
     account.address,
     umi?.identity.publicKey,
     dataRefreshedFor,
+    isRefreshingDataFor,
   ]);
 
   /**************************************************************************************************
