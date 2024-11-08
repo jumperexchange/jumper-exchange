@@ -32,7 +32,7 @@ function AboutRouter(): ReactElement {
     if (!account.isConnected) {
       return (
         <Button
-          title={'Connect wallet'}
+          title={'Connect your solana wallet'}
           theme={'pink'}
           size={'long'}
           onClick={async () => {
