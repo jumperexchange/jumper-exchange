@@ -31,13 +31,12 @@ export function useGetUser(): TGetUser {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${account.address ?? ''}`,
         },
       },
     );
     const result = await response.json();
     return { items: result.items, quests: result.userQuests };
-  }, [umi?.identity.publicKey, account.address]);
+  }, [umi?.identity.publicKey]);
 
   const { isLoading, error, data, refetch } = useQuery({
     queryKey: ['user'],

@@ -3,7 +3,6 @@ import { useUmi } from '../contexts/useUmi';
 import { colorDict, WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
 import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
-import { base58 } from '@metaplex-foundation/umi/serializers';
 import { useQuery } from '@tanstack/react-query';
 
 import type { TColor } from '../utils/theme';
@@ -36,13 +35,12 @@ export function useGetCollection(): TGetCollection {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${base58.serialize(account.address ?? '')}`, //TODO: CHECK IF NO base58 REQUIRED
         },
       },
     );
     const result = await response.json();
     return result.data;
-  }, [account.address, umi?.identity.publicKey]);
+  }, [umi?.identity.publicKey]);
 
   const {
     isPending,
