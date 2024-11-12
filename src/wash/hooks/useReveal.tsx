@@ -4,6 +4,7 @@ import { WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { useAccount } from '@lifi/wallet-management';
 import { ChainType } from '@lifi/sdk';
+import { useToast } from '../contexts/useToast';
 
 export type TRevealHook = {
   onReveal: VoidFunction;
@@ -17,6 +18,7 @@ export function useReveal(
   refetchNft?: VoidFunction,
   refetchCollection?: VoidFunction,
 ): TRevealHook {
+  const { set_message } = useToast();
   const { account } = useAccount({ chainType: ChainType.SVM });
   const [isRevealing, set_isRevealing] = useState(false);
   const [hasCanceledReveal, set_hasCanceledReveal] = useState(false);
@@ -27,6 +29,7 @@ export function useReveal(
   const onReveal = useCallback(async () => {
     if (!umi || !account.isConnected || !account.address) {
       console.error('Wallet not connected or Umi not initialized');
+      set_message('Wallet not connected or Umi not initialized');
       return;
     }
 
@@ -85,6 +88,11 @@ export function useReveal(
           ? err.message
           : 'An error occurred while revealing',
       );
+      set_message(
+        err instanceof Error
+          ? err.message
+          : 'An error occurred while revealing',
+      );
     } finally {
       await Promise.all([refetchNft?.(), refetchCollection?.()]);
       setTimeout(() => set_isRevealing(false), 100);
@@ -94,6 +102,7 @@ export function useReveal(
     umi,
     account.isConnected,
     account.address,
+    set_message,
     refetchNft,
     refetchCollection,
   ]);

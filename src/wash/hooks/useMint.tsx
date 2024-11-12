@@ -4,6 +4,14 @@ import { WASH_ENDPOINT_ROOT_URI } from '../utils/constants';
 import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import { base58 } from '@metaplex-foundation/umi/serializers';
+import toast from 'react-hot-toast';
+import styled from '@emotion/styled';
+import { colors } from '../utils/theme';
+import { useToast } from '../contexts/useToast';
+
+const ToastWrapper = styled.div`
+  backgound-color: ${colors.violet[800]}33;
+`;
 
 export type TUseMint = {
   onMint: VoidFunction;
@@ -17,6 +25,7 @@ export function useMint(
   refetchUser?: VoidFunction,
   refetchCollection?: VoidFunction,
 ): TUseMint {
+  const { set_message } = useToast();
   const [isMinting, set_isMinting] = useState(false);
   const [error, set_error] = useState<string | undefined>();
   const [mintStatus, set_mintStatus] = useState('');
@@ -26,6 +35,7 @@ export function useMint(
   const onMint = useCallback(async (): Promise<void> => {
     if (!umi || !account.isConnected || !account.address) {
       console.error('Wallet not connected or Umi not initialized');
+      set_message('Wallet not connected or Umi not initialized');
       return;
     }
 
@@ -53,7 +63,10 @@ export function useMint(
       set_error(
         err instanceof Error ? err.message : 'An error occured while minting',
       );
-      console.error('Error minting NFT:', error);
+      set_message(
+        err instanceof Error ? err.message : 'An error occured while minting',
+      );
+      toast.custom((t) => <ToastWrapper></ToastWrapper>);
     }
 
     /******************************************************************************************
@@ -83,6 +96,9 @@ export function useMint(
     } catch (err) {
       set_isMinting(false);
       set_error(
+        err instanceof Error ? err.message : 'An error occured while minting',
+      );
+      set_message(
         err instanceof Error ? err.message : 'An error occured while minting',
       );
       console.error('Error minting NFT:', error);
@@ -127,6 +143,9 @@ export function useMint(
       set_error(
         err instanceof Error ? err.message : 'An error occured while minting',
       );
+      set_message(
+        err instanceof Error ? err.message : 'An error occured while minting',
+      );
       console.error('Error minting NFT:', error);
     } finally {
       await Promise.all([
@@ -140,6 +159,7 @@ export function useMint(
     umi,
     account.isConnected,
     account.address,
+    set_message,
     error,
     refetchNft,
     refetchUser,
