@@ -2331,9 +2331,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/explorer@npm:^0.0.2":
-  version: 0.0.2
-  resolution: "@lifi/explorer@npm:0.0.2"
+"@lifi/explorer@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "@lifi/explorer@npm:0.0.3"
   dependencies:
     "@emotion/react": "npm:^11.11.1"
     "@emotion/styled": "npm:^11.11.0"
@@ -2356,7 +2356,7 @@ __metadata:
     "@mui/material": ^5.15.19
     "@tanstack/react-query": 5.48.0
     react: 18.3.1
-  checksum: 10/2136ea19494cd6f2808509b50c87d027199d500cfbc2847c15e3385197b69aa10a44ac44701c26ca1875051519f74b5d98951cd1d030916387ba2cdd39a85292
+  checksum: 10/8a8def40f003213dd4e25b0404099f40569c828dc1bb67b779365bda4ca12f3ba91115186db812f96783c1a7d2e2fe18a45f3f7c9a517795d4980401c85b2531
   languageName: node
   linkType: hard
 
@@ -10277,7 +10277,7 @@ __metadata:
     "@eslint/eslintrc": "npm:^3.1.0"
     "@fingerprintjs/fingerprintjs": "npm:^3.4.2"
     "@headlessui/react": "npm:^2.2.0"
-    "@lifi/explorer": "npm:^0.0.2"
+    "@lifi/explorer": "npm:^0.0.3"
     "@lifi/sdk": "npm:^3.4.1"
     "@lifi/wallet-management": "npm:^3.4.4"
     "@lifi/widget": "npm:^3.12.1"
