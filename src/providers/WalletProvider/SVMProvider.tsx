@@ -9,7 +9,6 @@ import {
 import { SolflareWalletAdapter } from '@solana/wallet-adapter-solflare';
 import { clusterApiUrl } from '@solana/web3.js';
 import { type FC, type PropsWithChildren } from 'react';
-import { ToastContextApp } from 'src/wash/contexts/useToast';
 import { UmiContextApp } from 'src/wash/contexts/useUmi';
 
 const endpoint = clusterApiUrl(WalletAdapterNetwork.Mainnet);
@@ -31,9 +30,7 @@ export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        <ToastContextApp>
-          <UmiContextApp>{children}</UmiContextApp>
-        </ToastContextApp>
+        <UmiContextApp>{children}</UmiContextApp>
       </WalletProvider>
     </ConnectionProvider>
   );

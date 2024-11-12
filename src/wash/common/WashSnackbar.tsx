@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import { Snackbar } from '@mui/material';
-import { type ReactElement } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { IconInfo } from './icons/IconInfo';
 
 import { colors } from '../utils/theme';
-import { useToast } from '../contexts/useToast';
+import { useWashTrading } from '../contexts/useWashTrading';
 
 const StyledSnackbar = styled(Snackbar)`
   top: auto !important;
@@ -31,15 +31,20 @@ const Message = styled.p`
   line-height: 20px;
 `;
 export function WashSnackbar(): ReactElement {
-  const { message, set_message } = useToast();
+  const { mint, reveal } = useWashTrading();
+  const [error, set_error] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    set_error(mint.error || reveal.error);
+  }, [mint.error, reveal.error]);
 
   const handleCloseSnackbar = () => {
-    set_message(null);
+    set_error(undefined);
   };
 
   return (
     <StyledSnackbar
-      open={!!message}
+      open={!!error}
       onClose={handleCloseSnackbar}
       autoHideDuration={4000}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -48,7 +53,7 @@ export function WashSnackbar(): ReactElement {
         <div style={{ minWidth: '23px' }}>
           <IconInfo color={colors.violet[800]} />
         </div>
-        <Message>{message}</Message>
+        <Message>{error}</Message>
       </StyledContent>
     </StyledSnackbar>
   );
