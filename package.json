@@ -33,7 +33,10 @@
     "@solana/wallet-adapter-solflare": "^0.6.28",
     "@solana/web3.js": "^1.95.4",
     "@strapi/blocks-react-renderer": "^1.0.1",
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.46.1",
     "@tanstack/react-query": "^5.59.20",
+    "@weiroll/weiroll.js": "^0.3.0",
     "@widgetbot/react-embed": "^1.9.0",
     "accept-language": "^3.0.20",
     "axios": "^1.7.7",
@@ -45,6 +48,7 @@
     "i18next": "^23.16.5",
     "i18next-resources-for-ts": "^1.5.0",
     "i18next-resources-to-backend": "^1.2.1",
+    "lucide-react": "^0.456.0",
     "next": "^14.2.17",
     "next-i18n-router": "^5.5.1",
     "next-themes": "^0.3.0",
@@ -58,6 +62,7 @@
     "sharp": "^0.33.5",
     "siwe": "^2.3.2",
     "uuid": "^10.0.0",
+    "zod": "^3.23.8",
     "zustand": "^4.5.5"
   },
   "devDependencies": {
