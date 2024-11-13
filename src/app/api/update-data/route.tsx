@@ -1,4 +1,3 @@
-import { base58 } from '@metaplex-foundation/umi/serializers';
 import 'server-only';
 
 type TRequest = {
@@ -15,7 +14,6 @@ export async function POST(request: Request): Promise<Response> {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': process.env.WASH_HANDSHAKE as string,
-        Authorization: `Bearer ${base58.serialize(res.publicKey ?? '')}`,
       },
     },
   );
