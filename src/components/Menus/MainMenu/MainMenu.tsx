@@ -17,7 +17,7 @@ export const MainMenu = ({ anchorEl }: MenuProps) => {
 
   return (
     <Menu
-      keepMounted={true}
+      keepMounted
       open={openMainMenu}
       setOpen={setMainMenuState}
       isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}

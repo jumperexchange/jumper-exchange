@@ -1,14 +1,24 @@
 import type { PropsWithChildren } from 'react';
 import { Navbar } from './components/Navbar/Navbar';
-import { Snackbar } from './components/Snackbar/Snackbar';
-import { SupportModal } from './components/SupportModal/SupportModal';
 import Background from '@/components/Background';
-import { PartnerThemeFooterImage } from './components/PartnerThemeFooterImage';
+import dynamic from 'next/dynamic';
 
 interface LayoutProps {
   fixedPoweredBy?: boolean | undefined;
   disableNavbar?: boolean;
 }
+
+const SupportModal = dynamic(() =>
+  import('./components/SupportModal/SupportModal').then((s) => s.SupportModal),
+);
+const Snackbar = dynamic(() =>
+  import('./components/Snackbar/Snackbar').then((s) => s.Snackbar),
+);
+const PartnerThemeFooterImage = dynamic(() =>
+  import('./components/PartnerThemeFooterImage').then(
+    (s) => s.PartnerThemeFooterImage,
+  ),
+);
 
 export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
   children,

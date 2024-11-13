@@ -6,8 +6,6 @@ import { Badge, Box, Skeleton, Stack, useTheme } from '@mui/material';
 import PortfolioTokenSkeleton from './PortfolioTokensSkeleton';
 
 export function Portfolio() {
-  const theme = useTheme();
-
   const { isSuccess, refetch, isFetching, data } = usePortfolioTokens();
 
   return (
