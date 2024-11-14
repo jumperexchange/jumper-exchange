@@ -19,7 +19,7 @@ export const FieldSkeleton = ({
         height,
         borderRadius: height,
         backgroundColor: '#74747454',
-        ...(sx && sx),
+        ...(sx ? sx : {}),
       }}
     ></div>
   );

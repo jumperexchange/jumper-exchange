@@ -21,66 +21,35 @@
  *
  */
 
-import type { ChainId } from '@lifi/sdk';
-import { ChainType, getChains, getToken } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
 import type { HighlightedAreas } from 'src/components/ImageGeneration/ImageGeneration.types';
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
 import WidgetReviewSSR from 'src/components/ImageGeneration/WidgetReviewSSR';
+import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
+import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
+import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
 
 const WIDGET_IMAGE_WIDTH = 416;
 const WIDGET_IMAGE_HEIGHT = 440;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const amount = searchParams.get('amount');
-  const fromToken = searchParams.get('fromToken');
-  const fromChainId = searchParams.get('fromChainId');
-  const toToken = searchParams.get('toToken');
-  const toChainId = searchParams.get('toChainId');
-  const highlighted = searchParams.get('highlighted');
-  const theme = searchParams.get('theme');
-  const isSwap = searchParams.get('isSwap');
+  const {
+    fromChainId,
+    toChainId,
+    fromToken,
+    toToken,
+    isSwap,
+    theme,
+    amount,
+    highlighted,
+  } = parseSearchParams(request.url);
 
-  // Fetch chain data asynchronously before rendering
-  const getChainData = async (chainId: ChainId) => {
-    const chainsData = await getChains({
-      chainTypes: [ChainType.EVM, ChainType.SVM],
-    });
-    return chainsData.find((chainEl) => chainEl.id === chainId);
-  };
-
-  // Fetch from and to chain details (await this before rendering)
-  const fromChain = fromChainId
-    ? await getChainData(parseInt(fromChainId) as ChainId)
-    : null;
-  const toChain = toChainId
-    ? await getChainData(parseInt(toChainId) as ChainId)
-    : null;
-
-  // Fetch token asynchronously
-  const fetchToken = async (chainId: ChainId | null, token: string | null) => {
-    if (!chainId || !token) {
-      return null;
-    }
-    try {
-      const fetchedToken = await getToken(chainId, token);
-      return fetchedToken;
-    } catch (error) {
-      console.error('Error fetching token:', error);
-      return null;
-    }
-  };
-
-  const fromTokenData =
-    fromChainId && fromToken
-      ? await fetchToken(parseInt(fromChainId) as ChainId, fromToken)
-      : null;
-  const toTokenData =
-    toChainId && toToken
-      ? await fetchToken(parseInt(toChainId) as ChainId, toToken)
-      : null;
+  // Fetch data asynchronously before rendering
+  const fromTokenData = await fetchTokenData(fromChainId, fromToken);
+  const toTokenData = await fetchTokenData(toChainId, toToken);
+  const fromChain = await fetchChainData(fromChainId);
+  const toChain = await fetchChainData(toChainId);
 
   const options = await imageResponseOptions({
     width: WIDGET_IMAGE_WIDTH,

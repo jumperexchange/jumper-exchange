@@ -15,11 +15,11 @@ export const imageResponseOptions = async ({
     },
     width: width * scalingFactor,
     height: height * scalingFactor,
-    fonts: await getFonts(), // Await properly within the async function
+    fonts: await getInterFonts(), // Await properly within the async function
   };
 };
 
-async function getFonts(): Promise<Font[]> {
+async function getInterFonts(): Promise<Font[]> {
   // This is unfortunate but I can't figure out how to load local font files
   // when deployed to vercel.
   const [interRegular, interSemiBold, interBold] = await Promise.all([

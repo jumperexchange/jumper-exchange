@@ -1,27 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 import type { ExtendedChain, Token } from '@lifi/sdk';
+import { decimalFormatter } from 'src/utils/formatNumbers';
+import { getOffset, getWidth } from 'src/utils/image-generation/helpers';
 import { AvatarBadgeSSR } from '../AvatarBadge/SSR/AvatarBadgeSSR';
 import { FieldSkeleton } from './FieldSkeleton';
 import type { ImageTheme } from './ImageGeneration.types';
-
-function formatDecimal(n: number): string | number {
-  // Check if the number is a whole number
-  if (Number.isInteger(n)) {
-    return n; // Return the number without decimals
-  }
-
-  // Convert to string to check the number of decimals
-  const decimalPart = n.toString().split('.')[1];
-
-  // If it has 2 or fewer decimal places, return it with 2 decimals
-  if (decimalPart && decimalPart.length <= 2) {
-    return n.toFixed(2);
-  }
-
-  // Otherwise, return the number rounded to 6 decimal places
-  return n.toFixed(6);
-}
 
 const Field = ({
   sx,
@@ -63,31 +47,13 @@ const Field = ({
   showSkeletons?: boolean;
 }) => {
   // Function to calculate top offset based on conditions
-  const getOffset = () => {
-    if (type === 'amount') {
-      return 46;
-    }
-    if (type === 'quote') {
-      if (extendedHeight) {
-        return 56;
-      }
-      return 16;
-    } else {
-      return 46;
-    }
-  };
-  const getWidth = () => {
-    if (type === 'quote') {
-      return 315;
-    } else if (fullWidth) {
-      return 368;
-    } else {
-      return 174;
-    }
-  };
 
-  const containerOffset = getOffset();
-  const containerWidth = getWidth();
+  const containerOffset = getOffset(type, extendedHeight);
+  const containerWidth = getWidth(type, fullWidth);
+  const formatAmount = decimalFormatter('en', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 6,
+  });
 
   return (
     <div style={{ display: 'flex', width: containerWidth }}>
@@ -190,7 +156,7 @@ const Field = ({
                     }),
                   }}
                 >
-                  {formatDecimal(routeAmount || amount || 0)}
+                  {formatAmount(routeAmount || amount || 0)}
                 </p>
                 {!showSkeletons && token ? (
                   <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
