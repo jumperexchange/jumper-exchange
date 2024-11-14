@@ -47,7 +47,7 @@ interface Resources {
         switchChain: 'Switch Chain';
         copy: 'Copy';
         explore: 'Explore';
-        copiedMsg: 'Wallet address copied';
+        copiedMsg: 'Copied';
         walletNotInstalled: '{{wallet}} is not installed';
         connectAnotherWallet: 'Connect another wallet';
         refreshBalances: 'Refresh balances';

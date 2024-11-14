@@ -1,5 +1,5 @@
 import { StyledLeaderboardEntry } from '../Leaderboard/Leaderboard.style';
-import { NoSelectTypography } from '../ProfilePage.style';
+import { NoSelectTypography } from '@/components/ProfilePage/ProfilePage.style';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import { Box } from '@mui/material';
 

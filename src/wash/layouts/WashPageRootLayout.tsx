@@ -6,6 +6,7 @@ import { WashPageOverlay } from '../common/WashPageOverlay';
 import type { ReactElement } from 'react';
 import styled from '@emotion/styled';
 import { colors } from '../utils/theme';
+import { WashSnackbar } from '../common/WashSnackbar';
 
 const WashPageRootWrapper = styled.div`
   position: relative;
@@ -26,6 +27,7 @@ export function WashPageRootLayout(): ReactElement {
   return (
     <WashPageRootWrapper>
       <WashBackground />
+      <WashSnackbar />
       <WithBackdrop>
         <WashPageOverlay />
       </WithBackdrop>

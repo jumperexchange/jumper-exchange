@@ -1,8 +1,23 @@
 'use client';
-import { ProfilePage as ProfilePageComponent } from '@/components/ProfilePage';
+import { ProfilePage as ProfilePageComponent } from '@/components/ProfilePage/ProfilePage';
+import { useAccount } from '@lifi/wallet-management';
+import { ProfileProvider } from '@/providers/ProfileProvider';
 
-const ProfilePage = () => {
-  return <ProfilePageComponent />;
+interface ProfilePageProps {
+  walletAddress?: string;
+  isPublic?: boolean;
+}
+const ProfilePage = ({ walletAddress, isPublic }: ProfilePageProps) => {
+  const { account } = useAccount();
+
+  return (
+    <ProfileProvider
+      walletAddress={walletAddress || account?.address || ''}
+      isPublic={isPublic}
+    >
+      <ProfilePageComponent />
+    </ProfileProvider>
+  );
 };
 
 export default ProfilePage;

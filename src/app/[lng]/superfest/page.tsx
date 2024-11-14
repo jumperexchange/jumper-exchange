@@ -1,11 +1,12 @@
 import { type Metadata } from 'next';
 import Superfest from 'src/app/ui/superfest/Superfest';
+import { getSiteUrl } from '@/const/urls';
 
 export const metadata: Metadata = {
   title: 'Jumper | Superfest',
   description: 'Dive into the Superchain DeFi Festival!',
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/superfest`,
+    canonical: `${getSiteUrl()}/superfest`,
   },
 };
 
