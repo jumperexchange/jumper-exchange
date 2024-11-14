@@ -1,14 +1,19 @@
 import { useOngoingQuests } from '@/hooks/useOngoingQuests';
 import { checkInclusion } from 'src/components/Superfest/ActiveSuperfestMissionsCarousel/ActiveSuperfestMissionsCarousel';
-import type { Quest } from 'src/types/loyaltyPass';
+import type { Quest, Trait } from 'src/types/loyaltyPass';
 import { QuestCardSkeleton } from '../QuestCard/QuestCardSkeleton';
 import { QuestCardDetailled } from '../QuestCardDetailled/QuestCardDetailled';
 
 interface QuestCarouselProps {
   pastCampaigns?: string[];
+  // traits?: Trait[];
+  traits?: string[];
 }
 
-export const QuestCarouselItems = ({ pastCampaigns }: QuestCarouselProps) => {
+export const QuestCarouselItems = ({
+  pastCampaigns,
+  traits,
+}: QuestCarouselProps) => {
   const { quests, isLoading: isQuestsLoading, url } = useOngoingQuests();
 
   return !isQuestsLoading
@@ -23,11 +28,18 @@ export const QuestCarouselItems = ({ pastCampaigns }: QuestCarouselProps) => {
         const claimingIds =
           quest.attributes?.CustomInformation?.['claimingIds'];
         const rewardsIds = quest.attributes?.CustomInformation?.['rewardsIds'];
+        const questTraits = quest.attributes?.CustomInformation?.['traits'];
 
         //todo: exclude in a dedicated helper function
         let completed = false;
         if (rewardsIds && pastCampaigns) {
           completed = checkInclusion(pastCampaigns, rewardsIds);
+        }
+
+        let isUnlockedForUser = false;
+        if (questTraits?.length > 0 && traits) {
+          isUnlockedForUser = checkInclusion(traits, questTraits);
+          // isUnlockedForUser = false;
         }
 
         return (
@@ -51,6 +63,8 @@ export const QuestCarouselItems = ({ pastCampaigns }: QuestCarouselProps) => {
               quest?.attributes.Points > 0 && rewardType === 'weekly'
             }
             rewardRange={rewardRange}
+            isTraitsGarded={questTraits?.length > 0}
+            isUnlocked={isUnlockedForUser}
           />
         );
       })

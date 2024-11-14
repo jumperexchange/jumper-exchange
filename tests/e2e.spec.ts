@@ -3,7 +3,6 @@ import values from '../tests/testData/values.json';
 import {
   closeWelcomeScreen,
   expectBackgroundColorToHaveCss,
-  expectMenuToBeVisible,
   itemInMenu,
   itemInSettingsMenu,
   itemInSettingsMenuToBeVisible,
@@ -11,6 +10,7 @@ import {
   sectionOnTheBlogPage,
   checkSocialNetworkIcons,
   itemInSettingsMenuToBeEnabled,
+  checkTheNumberOfMenuItems,
 } from './testData/commonFunctions';
 
 test.describe('Jumper full e2e flow', () => {
@@ -74,8 +74,7 @@ test.describe('Jumper full e2e flow', () => {
     page,
   }) => {
     await openOrCloseMainMenu(page);
-    await expectMenuToBeVisible(page);
-    await expect(page.getByRole('menuitem')).toHaveCount(9);
+    await checkTheNumberOfMenuItems(page, 10);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
@@ -88,7 +87,6 @@ test.describe('Jumper full e2e flow', () => {
       'xpath=//div[@class="MuiBox-root mui-9cpca"]',
     );
     await openOrCloseMainMenu(page);
-    await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Profile');
     expect(await page.url()).toBe(profileUrl);
     await page.locator('.profile-page').isVisible();
@@ -115,7 +113,6 @@ test.describe('Jumper full e2e flow', () => {
     );
     let learnUrl = `${await page.url()}learn`;
     await openOrCloseMainMenu(page);
-    await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Learn');
     expect(await page.url()).toBe(learnUrl);
     await page.waitForLoadState('load');
@@ -132,7 +129,6 @@ test.describe('Jumper full e2e flow', () => {
       'xpath=//div[@class="MuiBox-root mui-1nhlr6a"]',
     );
     await openOrCloseMainMenu(page);
-    await expectMenuToBeVisible(page);
     await itemInMenu(page, 'Jumper Scan');
     // const newPage = await page.waitForEvent('popup', { timeout: 15000 });
     await expect(page).toHaveURL(values.localJumperScanURL);
@@ -145,6 +141,18 @@ test.describe('Jumper full e2e flow', () => {
     await itemInMenu(page, 'Superfest Festival');
     await expect(learnMoreButton).toBeVisible();
     await expect(page).toHaveURL(values.localSuperfestURL);
+  });
+
+  test('Should open Developers section inside menu', async ({ page }) => {
+    await openOrCloseMainMenu(page);
+    await itemInMenu(page, 'Developers');
+    await checkTheNumberOfMenuItems(page, 2);
+  });
+
+  test('Should open Language section inside menu', async ({ page }) => {
+    await openOrCloseMainMenu(page);
+    await itemInMenu(page, 'Language');
+    await checkTheNumberOfMenuItems(page, 14);
   });
 
   test.skip('Should be able to open quests mission page and switch background color', async ({
@@ -165,7 +173,6 @@ test.describe('Jumper full e2e flow', () => {
 
   test('Should be able to navigate to X', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
-    await expectMenuToBeVisible(page);
     await page.getByRole('link', { name: 'X', exact: true }).click();
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.xUrl);
@@ -173,7 +180,6 @@ test.describe('Jumper full e2e flow', () => {
 
   test('Should be able to navigate to Discord', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
-    await expectMenuToBeVisible(page);
     await page.getByRole('link', { name: 'Discord' }).click();
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.discordURL);
