@@ -13,7 +13,7 @@ import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection';
 import { useMenuStore } from '@/stores/menu';
 import { useMultisigStore } from '@/stores/multisig';
 import { usePortfolioStore } from '@/stores/portfolio';
-import type { RouteExtended } from '@lifi/sdk';
+import type { RouteExtended, TokenAmount } from '@lifi/sdk';
 import { type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import type {
@@ -28,7 +28,11 @@ import { shallowEqualObjects } from 'shallow-equal';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import type { TransformedRoute } from 'src/types/internal';
 import { calcPriceImpact } from 'src/utils/calcPriceImpact';
-import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
+import { isValidEvmOrSvmAddress } from 'src/utils/isValidEvmOrSvmAddress';
+import {
+  handleRouteEventDetails,
+  handleTransactionDetails,
+} from 'src/utils/routesInterpreterUtils';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
@@ -272,6 +276,47 @@ export function WidgetEvents() {
         });
       }
     };
+
+    const onTokenSearch = async (value: string, tokens: TokenAmount[]) => {
+      const lowercaseValue = value?.toLowerCase();
+      const { isValid, addressType } = isValidEvmOrSvmAddress(lowercaseValue);
+      const SearchNothingFound = tokens?.length > 0 ? false : true;
+
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnTokenSearch,
+        label: `token_search`,
+        data: {
+          [TrackingEventParameter.SearchValue]: lowercaseValue,
+          [TrackingEventParameter.SearchIsAddress]: isValid,
+          [TrackingEventParameter.SearchAddressType]: addressType as string,
+          [TrackingEventParameter.SearchNumberOfResult]: tokens?.length,
+          [TrackingEventParameter.SearchNothingFound]: SearchNothingFound,
+          [TrackingEventParameter.SearchFirstResultAddress]:
+            tokens?.[0].address,
+          [TrackingEventParameter.SearchFirstResultName]: tokens?.[0].name,
+          [TrackingEventParameter.SearchFirstResultSymbol]: tokens?.[0].symbol,
+          [TrackingEventParameter.SearchFirstResultChainId]:
+            tokens?.[0].chainId,
+        },
+      });
+    };
+
+    const onRouteSelected = async (route: Route, routes: Route[]) => {
+      const position = routes.findIndex((elem: Route) => elem.id === route.id);
+
+      const data = handleRouteEventDetails(route, {
+        [TrackingEventParameter.RoutePosition]: position,
+      });
+
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnRouteSelected,
+        label: `route_selected`,
+        data,
+      });
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
@@ -294,6 +339,8 @@ export function WidgetEvents() {
       WidgetEvent.DestinationChainTokenSelected,
       onDestinationChainTokenSelection,
     );
+    widgetEvents.on(WidgetEvent.RouteSelected, onRouteSelected);
+    widgetEvents.on(WidgetEvent.TokenSearch, onTokenSearch);
 
     // widgetEvents.on(WidgetEvent.WidgetExpanded, onWidgetExpanded);
 

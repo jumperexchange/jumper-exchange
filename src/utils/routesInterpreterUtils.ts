@@ -28,6 +28,21 @@ export const handleTransactionDetails = (
   };
 };
 
+export const handleRouteEventDetails = (
+  route: RouteExtended,
+  customData: object,
+) => {
+  const routesData = filterRoutesObject(route);
+  const customTransactionData = {
+    ...customData,
+  };
+
+  return {
+    ...routesData,
+    ...customTransactionData,
+  };
+};
+
 export const filterRoutesObject = (
   route: RouteExtended | Route,
   // activeTab?: number | boolean,
