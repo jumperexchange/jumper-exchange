@@ -22,10 +22,9 @@ import { getSiteUrl } from '@/const/urls';
 
 interface AddressBoxProps {
   address?: string;
-  isEVM?: boolean;
 }
 
-export const AddressBox = ({ address, isEVM }: AddressBoxProps) => {
+export const AddressBox = ({ address }: AddressBoxProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { imageLink } = useMercleNft({ userAddress: address });

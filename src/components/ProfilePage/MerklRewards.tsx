@@ -20,7 +20,7 @@ const shouldHideComponent = (
   );
 };
 
-export function MerkleRewards() {
+export function MerklRewards() {
   const { account } = useAccount();
 
   const {

@@ -17,7 +17,7 @@ import { QuestCompletedList } from './QuestsCompleted/QuestsCompletedList';
 import { useTraits } from 'src/hooks/useTraits';
 // import { useABTest } from 'src/hooks/useABTest';
 
-import { MerkleRewards } from '@/components/ProfilePage/MerkleRewards';
+import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
 
 export const ProfilePage = () => {
@@ -36,7 +36,7 @@ export const ProfilePage = () => {
   return (
     <>
       <ProfilePageContainer className="profile-page">
-        {!isPublic && <MerkleRewards />}
+        {!isPublic && <MerklRewards />}
         <Grid container>
           <Grid
             xs={12}
@@ -46,7 +46,7 @@ export const ProfilePage = () => {
               paddingBottom: { xs: 4, md: 0 },
             }}
           >
-            <AddressBox address={walletAddress} isEVM={isEVMAddress} />
+            <AddressBox address={walletAddress} />
             <Box display={{ xs: 'none', md: 'block' }}>
               <Leaderboard address={walletAddress} />
             </Box>
