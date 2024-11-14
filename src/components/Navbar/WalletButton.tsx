@@ -37,7 +37,7 @@ export const WalletButtons = () => {
   const { t } = useTranslation();
   const { isSuccess } = useChains();
   const { openWalletMenu } = useWalletMenu();
-  const { points, isLoading } = useLoyaltyPass();
+  const { points, isLoading } = useLoyaltyPass(account?.address);
   const router = useRouter();
   const imgLink = useImageStatus(account?.address);
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));

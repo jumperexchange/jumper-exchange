@@ -3,12 +3,13 @@ import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
 import LearnPage from '@/app/ui/learn/LearnPage';
 import type { Metadata } from 'next';
 import { getTags } from 'src/app/lib/getTags';
+import { getSiteUrl } from '@/const/urls';
 
 export const metadata: Metadata = {
   title: 'Jumper Learn',
   description: 'Jumper Learn is the blog of Jumper Exchange.',
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/learn`,
+    canonical: `${getSiteUrl()}/learn`,
   },
 };
 

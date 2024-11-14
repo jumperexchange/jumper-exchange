@@ -1,5 +1,5 @@
-'use client';
 import { useQuery } from '@tanstack/react-query';
+import { ChainType, getChains } from '@lifi/sdk';
 
 const LEADERBOARD_ENDPOINT = `${process.env.NEXT_PUBLIC_BACKEND_URL}/leaderboard`;
 
@@ -62,6 +62,28 @@ export const useLeaderboardList = (
   };
 };
 
+export async function getLeaderboardUserQuery({
+  queryKey,
+}: {
+  queryKey: (string | undefined)[];
+}) {
+  const walletAddress = queryKey[1];
+  if (!walletAddress) {
+    return {
+      data: null,
+      isLoading: false,
+      isSuccess: false,
+    };
+  }
+  try {
+    const response = await fetch(`${LEADERBOARD_ENDPOINT}/${walletAddress}`);
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 export const useLeaderboardUser = (
   walletAddress?: string,
 ): LeaderboardUserData => {
@@ -70,25 +92,8 @@ export const useLeaderboardUser = (
     isSuccess,
     isLoading,
   } = useQuery({
-    queryKey: [`leaderboard-user-${walletAddress}`],
-    queryFn: async () => {
-      if (!walletAddress) {
-        return {
-          data: null,
-          isLoading: false,
-          isSuccess: false,
-        };
-      }
-      try {
-        const response = await fetch(
-          `${LEADERBOARD_ENDPOINT}/${walletAddress}`,
-        );
-        const result = await response.json();
-        return result;
-      } catch (err) {
-        console.error(err);
-      }
-    },
+    queryKey: ['leaderboard-user', walletAddress],
+    queryFn: getLeaderboardUserQuery,
   });
 
   const data = leaderboardUserData?.data;
