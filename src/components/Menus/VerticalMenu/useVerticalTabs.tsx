@@ -17,12 +17,7 @@ export const useVerticalTabs = () => {
   const { t } = useTranslation();
 
   const handleClickTab = (tab: string) => () => {
-    const searchParams = new URLSearchParams(window.location.search);
-    searchParams.delete('toToken');
-    let path = searchParams.toString();
-    path = path.startsWith('?') ? path.substring(1) : path;
-
-    router.push(`/${tab}?${path}`);
+    router.push(`/${tab}`);
     trackEvent({
       category: TrackingCategory.Navigation,
       action: TrackingAction.SwitchTab,
