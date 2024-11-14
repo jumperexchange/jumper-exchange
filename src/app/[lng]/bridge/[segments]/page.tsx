@@ -65,6 +65,9 @@ export async function generateMetadata({
     description: title,
     twitter: openGraph,
     openGraph,
+    alternates: {
+      canonical: `${getSiteUrl()}/bridge/${params.segments}`,
+    },
   };
 }
 
