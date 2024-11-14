@@ -3,7 +3,6 @@ import type { PDA } from '@/types/loyaltyPass';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SECONDS_IN_A_DAY } from 'src/const/time';
-import { isEVMAddress } from '@/utils/isEVMAddress';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
@@ -73,7 +72,6 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
 
   const queryIsEnabled =
     !!walletAddress &&
-    isEVMAddress(walletAddress) &&
     (storeNeedsRefresh ||
       walletAddress.toLowerCase() !== storedAddress?.toLowerCase());
 
@@ -108,7 +106,7 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
   const returnLocalData = walletAddress === storedAddress && !queryIsEnabled;
 
   const errorWhileFetchingData =
-    !data || !walletAddress || !isEVMAddress(walletAddress);
+    !data || !walletAddress;
 
   if (returnLocalData) {
     return {
