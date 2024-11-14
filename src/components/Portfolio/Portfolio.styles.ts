@@ -1,19 +1,15 @@
 import {
   Accordion,
-  AvatarGroup,
   Avatar,
-  Typography,
-  circularProgressClasses,
-  CircularProgress as MuiCircularProgress,
-  keyframes,
+  AvatarGroup,
+  Box,
   darken,
   Divider,
-  Box,
+  Typography,
 } from '@mui/material';
-import { styled } from '@mui/system';
 import { lighten } from '@mui/material/styles';
-import { AccordionProps } from '@mui/material/Accordion';
 import SvgIcon from '@mui/material/SvgIcon/SvgIcon'; // Import AccordionProps
+import { styled } from '@mui/system';
 
 export const TotalValue = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -105,9 +101,7 @@ export const PortfolioBox = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   display: 'flex',
   justifyContent: 'center',
-  padding: '16px',
-  paddingTop: '0px',
-  paddingBottom: '0px',
+  padding: theme.spacing(0, 2),
 }));
 
 export const NoTokenImageBox = styled(Box)(() => ({

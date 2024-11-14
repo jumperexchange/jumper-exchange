@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { LevelButton } from '../../Button';
 import { XPIcon } from '../../illustrations/XPIcon';
-import { NoSelectTypography } from '../ProfilePage.style';
+import { NoSelectTypography } from '@/components/ProfilePage/ProfilePage.style';
 
 interface LevelButtonProps {
   level: number;

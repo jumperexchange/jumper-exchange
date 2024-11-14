@@ -1,4 +1,4 @@
-import { useAccount } from '@lifi/wallet-management';
+import { useMenuStore } from '@/stores/menu';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
-import { useMenuStore } from 'src/stores/menu';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
@@ -23,14 +22,12 @@ import {
 
 interface AddressBoxProps {
   address?: string;
-  isEVM?: boolean;
 }
 
-export const AddressCard = ({ address, isEVM }: AddressBoxProps) => {
+export const AddressCard = ({ address }: AddressBoxProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const theme = useTheme();
-  const { account } = useAccount();
   const { t } = useTranslation();
+  const theme = useTheme();
   const [openAddressMenu, setOpenAddressMenu] = useState(false);
   const { imageLink } = useMercleNft({ userAddress: address });
   const { data: ensName, isSuccess } = useEnsName({
@@ -38,11 +35,13 @@ export const AddressCard = ({ address, isEVM }: AddressBoxProps) => {
     chainId: mainnet.id,
   });
   const imgLink = useImageStatus(address);
-
   const { setSnackbarState } = useMenuStore((state) => state);
 
-  const handleCopyButton = () => {
-    account?.address && navigator.clipboard.writeText(account.address);
+  const handleCopyButton = (textToCopy?: string) => {
+    if (!textToCopy) {
+      return;
+    }
+    navigator.clipboard.writeText(textToCopy);
     setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
   };
 
@@ -88,7 +87,7 @@ export const AddressCard = ({ address, isEVM }: AddressBoxProps) => {
       <AddressBox>
         <AddressButton
           aria-label="Copy wallet address"
-          onClick={handleCopyButton}
+          onClick={() => handleCopyButton(address)}
         >
           <AddressButtonLabel variant="bodyMediumStrong">
             {addressLabel}

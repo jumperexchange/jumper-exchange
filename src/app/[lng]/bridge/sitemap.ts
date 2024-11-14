@@ -3,6 +3,7 @@ import { getChainsQuery } from '@/hooks/useChains';
 import type { Token } from '@lifi/sdk';
 import { getChainById } from '@/utils/tokenAndChain';
 import coins from '@/utils/coins';
+import { getSiteUrl } from '@/const/urls';
 
 //Optimized function to generate ordered bridge pairs (tokens from different chains)
 const generateBridgeOrderedPairs = (tokens: Token[]) => {
@@ -57,7 +58,7 @@ export default async function sitemap({
   const orderedChunks = ordered.slice(start, end);
 
   const routes = orderedChunks.map(([a, b]) => ({
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/bridge/${`${getChainById(chains, a.chainId)?.name}-${a.symbol}-to-${getChainById(chains, b.chainId)?.name}-${b.symbol}`.toLowerCase()}`,
+    url: `${getSiteUrl()}/bridge/${`${getChainById(chains, a.chainId)?.name}-${a.symbol}-to-${getChainById(chains, b.chainId)?.name}-${b.symbol}`.toLowerCase()}`,
     lastModified: new Date().toISOString().split('T')[0],
     priority: 0.4,
   }));

@@ -4,7 +4,7 @@ import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/B
 
 type Claim = {
   points: number;
-  tier: string;
+  level: string;
   transactions?: number;
   chains?: number;
   volume?: string;
@@ -165,7 +165,7 @@ export interface Quest {
 export interface LoyaltyPassProps {
   address?: string;
   points?: number;
-  tier?: string;
+  level?: string;
   pdas?: PDA[];
   time?: number;
   timestamp: number;
@@ -175,7 +175,7 @@ export interface LoyaltyPassState extends LoyaltyPassProps {
   setLoyaltyPassData: (
     address: string,
     points: number,
-    tier: string,
+    level: string,
     pdas: PDA[],
     time: number,
   ) => void;

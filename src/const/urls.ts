@@ -23,6 +23,12 @@ export const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
 
 export const DEFAULT_EFFIGY = '/default_effigy.svg';
 
+export function getSiteUrl() {
+  return process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
+    : process.env.NEXT_PUBLIC_SITE_URL;
+}
+
 // prepare sitemap
 export const pages: SitemapPage[] = [
   { path: '/', priority: 1.0 },

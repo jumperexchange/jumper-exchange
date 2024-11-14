@@ -9,6 +9,7 @@ import {
 
 interface RewardsCarouselProps {
   isMerklSuccess: boolean;
+  hideComponent: boolean;
   availableRewards: AvailableRewards[];
 }
 
@@ -18,11 +19,12 @@ interface RewardsCarouselProps {
 
 export const RewardsCarousel = ({
   availableRewards,
+  hideComponent,
   isMerklSuccess,
 }: RewardsCarouselProps) => {
   const theme = useTheme();
 
-  return (
+  return !hideComponent ? (
     <RewardsCarouselContainer>
       <FlexCenterRowBox>
         <Box>
@@ -42,5 +44,5 @@ export const RewardsCarousel = ({
         );
       })}
     </RewardsCarouselContainer>
-  );
+  ) : undefined;
 };

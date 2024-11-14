@@ -22,8 +22,10 @@ import { XPIcon } from '../illustrations/XPIcon';
 import { PromoLabel } from '../PromoLabel.style';
 import {
   ConnectButton,
+  ConnectButtonLabel,
   ImageWalletMenuButton,
   SkeletonWalletMenuButton,
+  WalletLabel,
   WalletMenuButton,
   WalletMgmtBadge,
   WalletMgmtChainAvatar,
@@ -36,7 +38,7 @@ export const WalletButtons = () => {
   const { t } = useTranslation();
   const { isSuccess } = useChains();
   const { openWalletMenu } = useWalletMenu();
-  const { points, isLoading } = useLoyaltyPass();
+  const { points, isLoading } = useLoyaltyPass(account?.address);
   const router = useRouter();
   const imgLink = useImageStatus(account?.address);
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
@@ -76,18 +78,9 @@ export const WalletButtons = () => {
             openWalletMenu();
           }}
         >
-          <Typography
-            variant={'bodyMediumStrong'}
-            sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-            }}
-          >
+          <ConnectButtonLabel variant={'bodyMediumStrong'}>
             {t('navbar.connect')}
-          </Typography>
+          </ConnectButtonLabel>
         </ConnectButton>
       ) : (
         <Stack direction="row" spacing={2}>
@@ -152,14 +145,9 @@ export const WalletButtons = () => {
                 />
               </WalletMgmtBadge>
             ) : null}
-            <Typography
-              variant={'bodyMediumStrong'}
-              width={'auto'}
-              marginRight={0.25}
-              marginLeft={0.75}
-            >
+            <WalletLabel variant={'bodyMediumStrong'}>
               {_walletDigest}
-            </Typography>
+            </WalletLabel>
           </WalletMenuButton>
         </Stack>
       )}

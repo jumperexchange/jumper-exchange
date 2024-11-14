@@ -22,7 +22,6 @@ export function getLevelBasedOnPoints(points: number | undefined): LevelData {
 }
 
 interface TierBoxProps {
-  tier?: string;
   points?: number;
   loading: boolean;
 }
