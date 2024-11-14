@@ -11,6 +11,7 @@ import {
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
+  JUMPER_WASH_PATH,
   X_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -20,12 +21,13 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
+import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
@@ -34,6 +36,7 @@ export const useMainMenuContent = () => {
   const { trackEvent } = useUserTracking();
   const router = useRouter();
   const theme = useTheme();
+  const pathname = usePathname();
   const [themeMode, configTheme] = useThemeStore((state) => [
     state.themeMode,
     state.configTheme,
@@ -139,6 +142,22 @@ export const useMainMenuContent = () => {
           label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
           data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
         });
+      },
+    },
+    {
+      label: 'Solana Washtrade',
+      prefixIcon: <LocalLaundryServiceIcon />,
+      showMoreIcon: false,
+      link: { url: JUMPER_WASH_PATH },
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-wash-trade-link',
+          action: 'action_click_wash_trade_link',
+          data: { [TrackingEventParameter.Menu]: 'wash' },
+        });
+        closeAllMenus();
+        router.push(JUMPER_WASH_PATH);
       },
     },
     {

@@ -73,3 +73,27 @@ export async function checkSocialNetworkIcons(page, networks: string[]) {
     await expect(socialNetworkIcon).toBeEnabled();
   }
 }
+
+export async function checkIfBestReturnLabelIsVisible(page) {
+  const bestReturnLabel = page.locator(
+    'xpath=//p[normalize-space(text())="Best Return"]',
+  );
+  await expect(bestReturnLabel).toBeVisible();
+}
+
+export function buildUlParams(data: {
+  amount: string;
+  fromChain: string;
+  fromToken: string;
+  toChain: string;
+  toToken: string;
+}): string {
+  const params = new URLSearchParams({
+    fromAmount: data.amount,
+    fromChain: data.fromChain,
+    fromToken: data.fromToken,
+    toChain: data.toChain,
+    toToken: data.toToken,
+  });
+  return `?${params.toString()}`;
+}
