@@ -42,20 +42,25 @@ export interface ProgressionChartScoreProps
   ongoingValue?: number;
   levelData?: LevelData;
   calcWidth?: number;
+  chartCol?: string;
 }
 
 export const ProgressionChartScore = styled(Box, {
   shouldForwardProp: (prop) =>
-    prop !== 'ongoingValue' && prop !== 'levelData' && prop !== 'calcWidth',
+    prop !== 'ongoingValue' &&
+    prop !== 'levelData' &&
+    prop !== 'calcWidth' &&
+    prop !== 'chartCol',
 })<ProgressionChartScoreProps>(
-  ({ theme, ongoingValue, levelData, calcWidth }) => ({
+  ({ theme, ongoingValue, levelData, calcWidth, chartCol }) => ({
     height: '100%',
     width:
       ongoingValue && levelData && ongoingValue > levelData?.minPoints
         ? `${calcWidth}%`
         : '0%',
-    backgroundColor:
-      theme.palette.mode === 'light'
+    backgroundColor: chartCol
+      ? chartCol
+      : theme.palette.mode === 'light'
         ? theme.palette.accent1.main
         : theme.palette.accent1Alt.main,
     ...(ongoingValue &&
@@ -64,13 +69,19 @@ export const ProgressionChartScore = styled(Box, {
   }),
 );
 
-export const ProgressionChartBg = styled(Box)(({ theme }) => ({
+export interface ProgressionChartBgProps extends BoxProps {
+  chartBg?: string;
+}
+
+export const ProgressionChartBg = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'chartBg',
+})<ProgressionChartBgProps>(({ theme, chartBg }) => ({
   position: 'absolute',
   width: '100%',
   height: '16px',
   borderRadius: '12px',
   backgroundColor:
-    theme.palette.mode === 'light'
+    chartBg || theme.palette.mode === 'light'
       ? theme.palette.alphaDark200.main
       : theme.palette.alphaLight200.main,
 }));

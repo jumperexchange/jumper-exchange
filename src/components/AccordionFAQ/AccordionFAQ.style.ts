@@ -1,3 +1,4 @@
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import type { AccordionProps as MuiAccordionProps } from '@mui/material';
 import {
   Box,
@@ -6,17 +7,24 @@ import {
   IconButton,
   Accordion as MuiAccordion,
   AccordionDetails as MuiAccordionDetails,
+  AccordionSummary as MuiAccordionSummary,
+  Typography,
   type Breakpoint,
 } from '@mui/material';
 
-import { styled } from '@mui/material/styles';
+import {
+  alpha,
+  darken,
+  keyframes,
+  lighten,
+  styled,
+} from '@mui/material/styles';
 
 export const AccordionContainer = styled(Container)(({ theme }) => ({
   margin: 'auto',
   marginTop: theme.spacing(4),
   padding: theme.spacing(1, 2),
   borderRadius: '8px',
-  background: theme.palette.surface1.main,
   position: 'relative',
   maxWidth: theme.breakpoints.values.md,
   width: '100% !important',
@@ -25,35 +33,70 @@ export const AccordionContainer = styled(Container)(({ theme }) => ({
       ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
       : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
 
-  '&:before': {
-    content: '" "',
-    zIndex: '-1',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    background: 'linear-gradient(to top left, #fff 0%, #fff 100% )',
-    filter: 'blur(20px)',
-    opacity: 'var(0.7)',
-    transition: 'opacity 0.3s',
-  },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: theme.breakpoints.values.md,
     maxWidth: theme.breakpoints.values.md,
   },
 }));
 
+interface FaqShowMoreArrowProps {
+  active: boolean;
+}
+
+export const rotateAnimation = keyframes`
+  from {
+    transform: rotate(270deg);
+  }
+  to {
+    transform: rotate(90deg);
+  }
+`;
+
+export const FaqShowMoreIconButton = styled(IconButton)(({ theme }) => ({
+  width: 32,
+  height: 32,
+  backgroundColor: alpha(theme.palette.text.primary, 0.12),
+  '&:hover': {
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? darken(theme.palette.text.primary, 0.12)
+        : lighten(theme.palette.text.primary, 0.12),
+  },
+}));
+
+export const FaqShowMoreArrow = styled(
+  ArrowForwardIosIcon,
+)<FaqShowMoreArrowProps>(({ theme, active }) => ({
+  width: 24,
+  height: 24,
+  transition: 'transform 0.3s ease',
+  transform: active ? 'rotate(90deg)' : 'rotate(270deg)',
+  animation: `${active ? rotateAnimation : 'none'} 300ms ease-in-out`,
+}));
+
 export interface AccordionProps extends Omit<MuiAccordionProps, 'component'> {
   show?: boolean;
 }
 
+export const AccordionItemWrapper = styled(Box)<AccordionProps>(
+  ({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: theme.spacing(2),
+  }),
+);
+
 export const Accordion = styled(MuiAccordion, {
   shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
 })<AccordionProps>(({ theme, show }) => ({
-  background: 'transparent',
-  visibility: show ? 'visible' : 'hidden',
-  height: show ? 'auto' : 0,
+  fontFamily: 'inherit',
+  borderRadius: '16px',
+  padding: theme.spacing(3),
+  background: alpha(theme.palette.text.primary, 0.08),
+  minHeight: 64,
+  // visibility: show ? 'visible' : 'hidden',
+  // height: show ? 'auto' : 0,
   '&:last-of-type': {
     marginBottom: show ? theme.spacing(2) : 0,
   },
@@ -64,6 +107,11 @@ export const AccordionDetails = styled(MuiAccordionDetails)<AccordionProps>(
     '& > img': { width: '100%' },
   }),
 );
+
+export const AccordionTitle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  margin: theme.spacing(2, 0),
+}));
 
 export const AccordionToggleButton = styled(IconButton)(({ theme }) => ({
   width: 42,
@@ -82,4 +130,8 @@ export const AccordionDivider = styled(Divider)(({ theme }) => ({
   ...(theme.palette.mode === 'dark' && {
     borderColor: theme.palette.grey[200],
   }),
+}));
+
+export const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
+  minHeight: 'inherit',
 }));
