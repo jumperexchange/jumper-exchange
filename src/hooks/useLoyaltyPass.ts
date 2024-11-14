@@ -105,8 +105,7 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
 
   const returnLocalData = walletAddress === storedAddress && !queryIsEnabled;
 
-  const errorWhileFetchingData =
-    !data || !walletAddress;
+  const errorWhileFetchingData = !data || !walletAddress;
 
   if (returnLocalData) {
     return {
