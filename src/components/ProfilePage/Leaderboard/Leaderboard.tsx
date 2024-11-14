@@ -10,7 +10,7 @@ import {
 } from '../../../hooks/useLeaderboard';
 import { IconHeader } from '../Common/IconHeader';
 import { Pagination } from '../Common/Pagination';
-import { NoSelectTypographyTitlePosition } from '../ProfilePage.style';
+import { NoSelectTypographyTitlePosition } from '@/components/ProfilePage/ProfilePage.style';
 import { LeaderboardContainer } from './Leaderboard.style';
 import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardSkeleton } from './LeaderboardSkeleton';

@@ -1,5 +1,5 @@
 'use client';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import {
   JUMPER_LEARN_PATH,
@@ -19,7 +19,6 @@ import {
 } from '.';
 
 export const Navbar = ({ disableNavbar = false }) => {
-  const router = useRouter();
   const pathname = usePathname();
   const isLearnPage = pathname?.includes(JUMPER_LEARN_PATH);
   const isScanPage =
@@ -33,22 +32,20 @@ export const Navbar = ({ disableNavbar = false }) => {
   const handleClick = () => {
     closeAllMenus();
     setWelcomeScreenClosed(false);
-
-    if (pathname === '/gas' || pathname === '/buy') {
-      return;
-    }
-    if (isLearnPage) {
-      router.push(JUMPER_LEARN_PATH);
-    } else if (isScanPage) {
-      router.push(JUMPER_SCAN_PATH);
-    } else {
-      router.push('/');
-    }
   };
+
+  let logoHref;
+  if (isLearnPage) {
+    logoHref = JUMPER_LEARN_PATH;
+  } else if (isScanPage) {
+    logoHref = JUMPER_SCAN_PATH;
+  } else {
+    logoHref = '/';
+  }
 
   return (
     <Container>
-      <LogoLink id="jumper-logo" onClick={handleClick}>
+      <LogoLink href={logoHref} id="jumper-logo" onClick={handleClick}>
         <Logo
           variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'}
         />

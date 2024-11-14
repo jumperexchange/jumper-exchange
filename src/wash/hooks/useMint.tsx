@@ -53,7 +53,6 @@ export function useMint(
       set_error(
         err instanceof Error ? err.message : 'An error occured while minting',
       );
-      console.error('Error minting NFT:', error);
     }
 
     /******************************************************************************************
@@ -134,6 +133,7 @@ export function useMint(
         refetchUser?.(),
         refetchCollection?.(),
       ]);
+      setTimeout(() => set_error(undefined), 4000);
       set_isMinting(false);
     }
   }, [

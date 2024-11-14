@@ -1,4 +1,4 @@
-import { JUMPER_LEARN_PATH, pages } from '@/const/urls';
+import { getSiteUrl, JUMPER_LEARN_PATH, pages } from '@/const/urls';
 import type { ChangeFrequency, SitemapPage } from '@/types/sitemap';
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import type { MetadataRoute } from 'next';
@@ -13,9 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // paths
   const routes = pages.flatMap((route: SitemapPage) => {
     return {
-      url: withoutTrailingSlash(
-        `${process.env.NEXT_PUBLIC_SITE_URL}${route.path}`,
-      ),
+      url: withoutTrailingSlash(`${getSiteUrl()}${route.path}`),
       lastModified: new Date().toISOString().split('T')[0],
       changeFrequency: 'weekly' as ChangeFrequency,
       priority: route.priority,
@@ -28,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       return article.data.map((el) => {
         return {
           url: withoutTrailingSlash(
-            `${process.env.NEXT_PUBLIC_SITE_URL}${JUMPER_LEARN_PATH}/${el.attributes.Slug}`,
+            `${getSiteUrl()}${JUMPER_LEARN_PATH}/${el.attributes.Slug}`,
           ),
           lastModified: new Date(
             el.attributes.updatedAt || el.attributes.publishedAt || Date.now(),

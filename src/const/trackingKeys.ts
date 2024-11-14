@@ -15,6 +15,7 @@ export enum TrackingAction {
   SwitchChain = 'action_switch_chain',
 
   // Widget
+  OnRouteSelected = 'action_on_route_selected',
   OnRouteExecutionStarted = 'action_on_route_exec_started',
   OnRouteExecutionCompleted = 'action_on_route_exec_completed',
   OnRouteExecutionFailed = 'action_on_route_exec_failed',
@@ -24,6 +25,7 @@ export enum TrackingAction {
   OnDestinationChainAndTokenSelection = 'action_on_destination_selection',
   OnWidgetExpanded = 'action_on_widget_expanded',
   OnAvailableRoutes = 'action_available_routes',
+  OnTokenSearch = 'action_token_search',
 
   // Welcome_Screen
   ShowWelcomeMessageScreen = 'action_show_welcome_screen',
@@ -137,6 +139,9 @@ export enum TrackingEventParameter {
   PageloadDestination = 'param_pageload_destination',
   PageloadExternal = 'param_pageload_external',
 
+  // Selection:
+  RoutePosition = 'param_route_position',
+
   // Transaction:
   Action = 'param_action',
   RouteId = 'param_route_id',
@@ -206,4 +211,15 @@ export enum TrackingEventParameter {
   MissionCtaStepsLink = 'param_mission_cta_steps_link',
   MissionCtaStepsCTA = 'param_mission_cta_steps_cta',
   MissionCtaStepsIndex = 'param_mission_cta_steps_index',
+
+  // Search
+  SearchValue = 'param_search_value',
+  SearchIsAddress = 'param_search_is_address',
+  SearchAddressType = 'param_search_address_type',
+  SearchNumberOfResult = 'param_search_nb_result',
+  SearchNothingFound = 'param_search_nothing_found',
+  SearchFirstResultAddress = 'param_search_first_result_address',
+  SearchFirstResultName = 'param_search_first_result_name',
+  SearchFirstResultSymbol = 'param_search_first_result_symbol',
+  SearchFirstResultChainId = 'param_search_first_result_chain_id',
 }

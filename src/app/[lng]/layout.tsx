@@ -17,18 +17,19 @@ import { SettingsStoreProvider } from 'src/stores/settings';
 import type { ActiveThemeResult } from '../lib/getActiveTheme';
 import { getActiveTheme } from '../lib/getActiveTheme';
 import { description, siteName, title } from '../lib/metadata';
+import { getSiteUrl } from '@/const/urls';
 
 export const metadata: Metadata = {
   title,
   description,
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}`,
+    canonical: `${getSiteUrl()}`,
   },
   openGraph: {
     title: title,
     description,
     siteName,
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}`,
+    url: `${getSiteUrl()}`,
     images: [
       {
         url: 'https://jumper.exchange/preview.png', // Default image
