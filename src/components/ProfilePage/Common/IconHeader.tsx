@@ -1,6 +1,6 @@
 import { Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { NoSelectTypography } from '../ProfilePage.style';
+import { NoSelectTypography } from '@/components/ProfilePage/ProfilePage.style';
 import { StyledInfoIcon } from './CustonInfoIcon';
 
 interface IconHeaderProps {

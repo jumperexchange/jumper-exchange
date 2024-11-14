@@ -5,7 +5,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from '@mui/icons-material';
-import { NoSelectTypography } from '../ProfilePage.style';
+import { NoSelectTypography } from '@/components/ProfilePage/ProfilePage.style';
 
 interface PaginationProps {
   currentPage: number;

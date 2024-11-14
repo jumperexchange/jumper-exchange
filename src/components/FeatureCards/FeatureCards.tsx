@@ -17,14 +17,14 @@ import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
 
 export const FeatureCards = () => {
+  const { account } = useAccount();
   const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
   );
-  const { points } = useLoyaltyPass();
+  const { points } = useLoyaltyPass(account?.address);
   const [widgetExpanded, setWidgetExpanded] = useState(false);
   const widgetEvents = useWidgetEvents();
-  const { account } = useAccount();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const { data: cards, isSuccess } = useStrapi<FeatureCardData>({
