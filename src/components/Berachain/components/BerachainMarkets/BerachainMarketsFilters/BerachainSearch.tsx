@@ -1,7 +1,6 @@
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import {
   alpha,
-  Autocomplete,
   darken,
   InputAdornment,
   TextField,
@@ -9,10 +8,11 @@ import {
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
-import { berachainMarkets } from 'src/components/Berachain/hooks/useBerachainMarket';
+import { berachainMarkets } from 'src/components/Berachain/const/berachainExampleData';
 import { useBerachainMarkets } from 'src/components/Berachain/hooks/useBerachainMarkets';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
-export const BerachainFilterSearchMenu = () => {
+import { BerachainSearchAutocomplete } from './BerachainSearch.style';
+export const BerachainSearch = () => {
   const theme = useTheme();
   const [isInputEmpty, setIsInputEmpty] = useState(true);
 
@@ -22,7 +22,7 @@ export const BerachainFilterSearchMenu = () => {
 
   const data = useBerachainMarkets(berachainMarkets);
   return (
-    <Autocomplete
+    <BerachainSearchAutocomplete
       autoComplete={true}
       size="small"
       autoSelect={true}
@@ -37,22 +37,6 @@ export const BerachainFilterSearchMenu = () => {
         } else {
           setSearch(value);
         }
-      }}
-      // padding-top: 0;
-      // padding-bottom: 0;
-      // height: 40px;
-      sx={{
-        height: '40px',
-        width: '280px',
-        padding: 0,
-        alignSelf: 'flex-end',
-        '&:hover': {
-          '.MuiOutlinedInput-root .MuiOutlinedInput-root': {
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              border: '1px solid red', //#554F4E
-            },
-          },
-        },
       }}
       slotProps={{
         paper: {

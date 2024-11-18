@@ -95,10 +95,15 @@ export const Accordion = styled(MuiAccordion, {
   padding: theme.spacing(3),
   background: alpha(theme.palette.text.primary, 0.08),
   minHeight: 64,
+  transition: 'background-color 300ms ease-in-out',
   // visibility: show ? 'visible' : 'hidden',
   // height: show ? 'auto' : 0,
   '&:last-of-type': {
-    marginBottom: show ? theme.spacing(2) : 0,
+    borderRadius: '16px',
+  },
+
+  '&:hover': {
+    background: alpha(theme.palette.text.primary, 0.16),
   },
 }));
 
@@ -110,7 +115,9 @@ export const AccordionDetails = styled(MuiAccordionDetails)<AccordionProps>(
 
 export const AccordionTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
-  margin: theme.spacing(2, 0),
+  margin: theme.spacing(2, 'auto'),
+  marginBottom: theme.spacing(4),
+  textAlign: 'center',
 }));
 
 export const AccordionToggleButton = styled(IconButton)(({ theme }) => ({

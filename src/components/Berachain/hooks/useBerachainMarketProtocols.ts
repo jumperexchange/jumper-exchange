@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import type { BerachainMarket } from './useBerachainMarket';
+import type { BerachainMarketType } from '../const/berachainExampleData';
 
-export const useBerachainMarketProtocols = (data: BerachainMarket[]) => {
+export const useBerachainMarketProtocols = (data: BerachainMarketType[]) => {
   const preparedTokens = useMemo(() => {
     if (!data || data.length === 0) {
       return undefined;

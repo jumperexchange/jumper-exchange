@@ -1,12 +1,14 @@
 import { Typography } from '@mui/material';
 import Image from 'next/image';
 import {
+  BeraChainWelcomeBear,
   BeraChainWelcomeBox,
   BeraChainWelcomeButtonsWrapper,
   BeraChainWelcomeConnectButtonCTA,
   BeraChainWelcomeContent,
   BeraChainWelcomeIllustrations,
   BeraChainWelcomeLearnMoreButton,
+  BeraChainWelcomeSubtitle,
   BeraChainWelcomeSubtitleBox,
   BeraChainWelcomeSubtitleLabel,
   BeraChainWelcomeTitle,
@@ -16,18 +18,31 @@ export const BerachainWelcome = () => {
   return (
     <BeraChainWelcomeBox>
       <BeraChainWelcomeIllustrations>
-        <Image
+        <BeraChainWelcomeBear
           src="/berachain/sir-bridgealot-w-glow.png"
-          alt="Berachain Bear"
+          alt="Berachain Pepe"
           width={278}
           height={395}
+          sx={{
+            position: 'absolute',
+            aspectRatio: 0.8,
+            height: '100%',
+            width: 'auto',
+            left: 0,
+          }}
         />
-        <Image
+        <BeraChainWelcomeBear
           src="/berachain/berachain-bear-w-glow.png"
           alt="Berachain Bear"
           width={304}
           height={395}
-          style={{ transform: 'translateX(-108px)' }}
+          style={{
+            position: 'absolute',
+            aspectRatio: 0.8,
+            height: '100%',
+            width: 'auto',
+            right: 0,
+          }}
         />
       </BeraChainWelcomeIllustrations>
       <BeraChainWelcomeContent>
@@ -46,12 +61,21 @@ export const BerachainWelcome = () => {
             Launching soon
           </BeraChainWelcomeSubtitleLabel>
         </BeraChainWelcomeSubtitleBox>
-        <BeraChainWelcomeTitle variant="bodyXLarge">
+        <BeraChainWelcomeTitle
+          variant="urbanistTitle3XLarge"
+          sx={{
+            typography: {
+              xs: 'urbanistTitleXLarge',
+              sm: 'urbanistTitle2XLarge',
+              md: 'urbanistTitle3XLarge',
+            },
+          }}
+        >
           Earn Rich Incentives
         </BeraChainWelcomeTitle>
-        <Typography variant="bodyXLarge">
+        <BeraChainWelcomeSubtitle variant="bodyXLarge">
           by pledging your Crypto across various Berachain partner markets!
-        </Typography>
+        </BeraChainWelcomeSubtitle>
       </BeraChainWelcomeContent>
       <BeraChainWelcomeButtonsWrapper>
         <BeraChainWelcomeConnectButtonCTA>

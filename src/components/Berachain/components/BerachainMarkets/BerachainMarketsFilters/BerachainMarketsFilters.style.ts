@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import type { Breakpoint } from '@mui/material/styles';
 import { alpha, styled } from '@mui/material/styles';
 
 // outer container
@@ -29,9 +30,13 @@ export const BerachainMarketsFilterBox = styled(Box)(({ theme }) => ({
 
 export const BerachainMarketsSortFilterBox = styled(Box)(({ theme }) => ({
   display: 'flex',
+  flexDirection: 'column',
   justifyContent: 'space-between',
   gap: theme.spacing(1),
   alignItems: 'flex-end',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    flexDirection: 'row',
+  },
 }));
 
 export const BerachainMarketsSortLabel = styled(Typography)(({ theme }) => ({

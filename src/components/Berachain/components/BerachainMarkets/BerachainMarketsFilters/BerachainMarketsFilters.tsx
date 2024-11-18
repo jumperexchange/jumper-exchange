@@ -1,11 +1,11 @@
 import { BerachainFilterChainsMenu } from './BerachainFilterChainsMenu';
 import { BerachainFilterProtocolsMenu } from './BerachainFilterProtocolsMenu';
-import { BerachainFilterSearchMenu } from './BerachainFilterSearch';
 import { BerachainFilterTokensMenu } from './BerachainFilterTokensMenu';
 import {
   BerachainMarketsFiltersContainer,
   BerachainMarketsFiltersInnerContainer,
 } from './BerachainMarketsFilters.style';
+import { BerachainSearch } from './BerachainSearch';
 import { BerachainSortMenu } from './BerachainSortMenu';
 
 export const BerachainMarketsFilters = () => {
@@ -15,7 +15,7 @@ export const BerachainMarketsFilters = () => {
         <BerachainFilterTokensMenu />
         <BerachainFilterChainsMenu />
         <BerachainFilterProtocolsMenu />
-        <BerachainFilterSearchMenu />
+        <BerachainSearch />
       </BerachainMarketsFiltersInnerContainer>
       <BerachainSortMenu />
     </BerachainMarketsFiltersContainer>

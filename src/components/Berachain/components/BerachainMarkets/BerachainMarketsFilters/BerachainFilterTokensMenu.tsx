@@ -3,7 +3,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
-import { berachainMarkets } from 'src/components/Berachain/hooks/useBerachainMarket';
+import { berachainMarkets } from 'src/components/Berachain/const/berachainExampleData';
 import { useBerachainMarketTokens } from 'src/components/Berachain/hooks/useBerachainMarketTokens';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import { BerachainMarketFilter } from '../BerachainMarketFilter/BerachainMarketFilter';

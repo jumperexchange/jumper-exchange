@@ -1,0 +1,23 @@
+import { Autocomplete } from '@mui/material';
+import type { Breakpoint } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+
+// outer container
+export const BerachainSearchAutocomplete = styled(Autocomplete)(
+  ({ theme }) => ({
+    height: '40px',
+    width: '280px',
+    padding: 0,
+    alignSelf: 'flex-end',
+    '&:hover': {
+      '.MuiOutlinedInput-root .MuiOutlinedInput-root': {
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          border: '1px solid red', //#554F4E
+        },
+      },
+    },
+    [theme.breakpoints.down('md' as Breakpoint)]: {
+      display: 'none',
+    },
+  }),
+);

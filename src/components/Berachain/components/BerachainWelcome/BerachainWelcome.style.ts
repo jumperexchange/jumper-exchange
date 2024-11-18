@@ -1,5 +1,7 @@
 import { Box, Button, Typography } from '@mui/material';
+import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, styled } from '@mui/material/styles';
+import Image from 'next/image';
 
 export const BeraChainWelcomeBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -11,6 +13,7 @@ export const BeraChainWelcomeBox = styled(Box)(({ theme }) => ({
 export const BeraChainWelcomeContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   color: theme.palette.white.main,
+  textAlign: 'center',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
@@ -18,12 +21,32 @@ export const BeraChainWelcomeContent = styled(Box)(({ theme }) => ({
   zIndex: 1,
 }));
 
-export const BeraChainWelcomeIllustrations = styled(Box)(({ theme }) => ({}));
+export const BeraChainWelcomeIllustrations = styled(Box)(({ theme }) => ({
+  aspectRatio: 1.3,
+  position: 'relative',
+  padding: 0,
+  width: '100%',
+  height: 'auto',
+  border: '1px solid red',
+  maxWidth: 474,
+}));
+
+export const BeraChainWelcomeBear = styled(Image)(({ theme }) => ({
+  // [theme.breakpoints.down('sm' as Breakpoint)]: {
+  //   width: '100%',
+  //   height: 'auto',
+  // },
+}));
 
 export const BeraChainWelcomeSubtitleBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  marginTop: theme.spacing(3),
+  marginTop: theme.spacing(5),
+  flexDirection: 'column',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    flexDirection: 'row',
+    marginTop: theme.spacing(3),
+  },
 }));
 
 export const BeraChainWelcomeSubtitleLabel = styled(Typography)(
@@ -35,21 +58,36 @@ export const BeraChainWelcomeSubtitleLabel = styled(Typography)(
     height: 24,
     padding: theme.spacing(0.25, 1.5),
     borderRadius: '12px',
+    marginTop: theme.spacing(2),
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      marginTop: 0,
+    },
   }),
 );
 
 export const BeraChainWelcomeTitle = styled(Typography)(({ theme }) => ({
-  fontSize: '96px',
-  fontStyle: 'normal',
-  fontWeight: 700,
-  lineHeight: '112px',
   marginTop: theme.spacing(1.5),
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    flexDirection: 'column',
+    gap: '8px',
+  },
+}));
+
+export const BeraChainWelcomeSubtitle = styled(Typography)(({ theme }) => ({
+  marginTop: theme.spacing(1.5),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginTop: 0,
+  },
 }));
 
 export const BeraChainWelcomeButtonsWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
+  flexDirection: 'column',
   marginTop: theme.spacing(4),
   gap: theme.spacing(2),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    flexDirection: 'row',
+  },
 }));
 
 export const BeraChainWelcomeConnectButtonCTA = styled(Button)(({ theme }) => ({
