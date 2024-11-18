@@ -27,6 +27,10 @@ import { useEffect, useRef, useState } from 'react';
 import { shallowEqualObjects } from 'shallow-equal';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import type { TransformedRoute } from 'src/types/internal';
+import type {
+  RouteSelectedProps,
+  TokenSearchProps,
+} from 'src/types/userTracking';
 import { calcPriceImpact } from 'src/utils/calcPriceImpact';
 import { isValidEvmOrSvmAddress } from 'src/utils/isValidEvmOrSvmAddress';
 import {
@@ -277,10 +281,14 @@ export function WidgetEvents() {
       }
     };
 
-    const onTokenSearch = async (value: string, tokens: TokenAmount[]) => {
+    const onTokenSearch = async ({ value, tokens }: TokenSearchProps) => {
       const lowercaseValue = value?.toLowerCase();
       const { isValid, addressType } = isValidEvmOrSvmAddress(lowercaseValue);
       const SearchNothingFound = tokens?.length > 0 ? false : true;
+      const tokenAddress = tokens?.length > 0 ? tokens?.[0]?.address : '';
+      const tokenName = tokens?.length > 0 ? tokens?.[0]?.name : '';
+      const tokenSymbol = tokens?.length > 0 ? tokens?.[0]?.symbol : '';
+      const tokenChainId = tokens?.length > 0 ? tokens?.[0]?.chainId : '';
 
       trackEvent({
         category: TrackingCategory.WidgetEvent,
@@ -292,19 +300,16 @@ export function WidgetEvents() {
           [TrackingEventParameter.SearchAddressType]: addressType as string,
           [TrackingEventParameter.SearchNumberOfResult]: tokens?.length,
           [TrackingEventParameter.SearchNothingFound]: SearchNothingFound,
-          [TrackingEventParameter.SearchFirstResultAddress]:
-            tokens?.[0].address,
-          [TrackingEventParameter.SearchFirstResultName]: tokens?.[0].name,
-          [TrackingEventParameter.SearchFirstResultSymbol]: tokens?.[0].symbol,
-          [TrackingEventParameter.SearchFirstResultChainId]:
-            tokens?.[0].chainId,
+          [TrackingEventParameter.SearchFirstResultAddress]: tokenAddress,
+          [TrackingEventParameter.SearchFirstResultName]: tokenName,
+          [TrackingEventParameter.SearchFirstResultSymbol]: tokenSymbol,
+          [TrackingEventParameter.SearchFirstResultChainId]: tokenChainId,
         },
       });
     };
 
-    const onRouteSelected = async (route: Route, routes: Route[]) => {
+    const onRouteSelected = async ({ route, routes }: RouteSelectedProps) => {
       const position = routes.findIndex((elem: Route) => elem.id === route.id);
-
       const data = handleRouteEventDetails(route, {
         [TrackingEventParameter.RoutePosition]: position,
       });
