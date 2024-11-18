@@ -150,7 +150,7 @@ export const QuestCard = ({
         )}
         <QuestCardContent>
           {title ? (
-            <QuestCardTitle variant="headerSmall">{title}</QuestCardTitle>
+            <QuestCardTitle variant="titleXSmall">{title}</QuestCardTitle>
           ) : (
             <QuestCardTitleSkeleton variant="rectangular" />
           )}

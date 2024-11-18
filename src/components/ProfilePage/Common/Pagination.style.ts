@@ -1,14 +1,18 @@
 import type { Breakpoint, ButtonProps } from '@mui/material';
-import { Box, Button, styled } from '@mui/material';
+import { alpha, Box, Button, styled } from '@mui/material';
 import Link from 'next/link';
 
 export const PaginationContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   width: '100%',
   display: 'flex',
+  height: 40,
+  padding: theme.spacing(0.5),
   marginTop: theme.spacing(3),
   justifyContent: 'space-between',
   pointerEvents: 'none',
+  borderRadius: '20px',
+  background: alpha(theme.palette.text.primary, 0.04),
 }));
 
 export interface PaginationButtonProps extends ButtonProps {
@@ -18,7 +22,8 @@ export interface PaginationButtonProps extends ButtonProps {
 export const PaginationLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   color: theme.palette.text.primary,
-  width: 34,
+  // margin: theme.spacing(0, 1),
+  // width: 34,
   '&:hover': {
     textDecoration: 'none',
   },
@@ -36,10 +41,11 @@ export const PaginationButton = styled(Button, {
   justifyContent: 'center',
   cursor: activePage ? 'unset' : 'pointer',
   pointerEvents: 'auto',
-  minWidth: 'unset',
-  width: 34,
+  minWidth: 34,
+  padding: theme.spacing(1),
   borderRadius: '16px',
   ...(activePage && {
+    boxShadow: theme.palette.shadowLight.main,
     '&:hover': {
       backgroundColor: theme.palette.white.main,
     },

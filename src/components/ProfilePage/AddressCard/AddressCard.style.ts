@@ -1,14 +1,8 @@
 import type { BoxProps, IconButtonProps } from '@mui/material';
-import { Box, IconButton, Typography, alpha, styled } from '@mui/material';
+import { Box, IconButton, Typography, styled } from '@mui/material';
 import { ButtonTransparent } from 'src/components/Button/Button.style';
 
-export interface AddressBoxContainerProps extends Omit<BoxProps, 'component'> {
-  imgUrl?: string;
-}
-
-export const AddressBoxContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'imgUrl',
-})<AddressBoxContainerProps>(({ theme, imgUrl }) => ({
+export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
@@ -24,43 +18,14 @@ export const AddressBoxContainer = styled(Box, {
   boxShadow: theme.palette.shadow.main,
   minHeight: 256,
 
-  ...(!imgUrl && {
-    background: `linear-gradient(to bottom, ${theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.accent1Alt.main} 50%, ${theme.palette.mode === 'light' ? theme.palette.grey[100] : 'transparent'} 50%)`,
-  }),
-
   [theme.breakpoints.up('lg')]: {
     maxWidth: 320,
-  },
-
-  '&:before': {
-    ...(imgUrl && { content: '" "' }),
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    right: 0,
-    bottom: 72,
-    filter: 'blur(6px)',
-    background: `url(${imgUrl})`,
-    backgroundPosition: 'top',
-    backgroundSize: 'cover',
-  },
-  '&:after': {
-    ...(imgUrl && { content: '" "' }),
-    position: 'absolute',
-    left: 0,
-    top: 'calc( 100% - 72px)',
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'inherit',
   },
 }));
 
 export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
   ({ theme }) => ({
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.grey[200]
-        : alpha(theme.palette.grey[200], 0.08),
+    backgroundColor: 'transparent',
     color:
       theme.palette.mode === 'light'
         ? theme.palette.black.main
@@ -107,11 +72,43 @@ export const PassImageBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexGrow: 1,
   alignItems: 'center',
+  width: '100%',
+  justifyContent: 'center',
   [theme.breakpoints.down('sm')]: {
     marginTop: 8,
     '& > img': {
       width: 120,
       height: 120,
     },
+  },
+}));
+
+export interface ImageBackgroundProps extends BoxProps {
+  imgUrl?: string;
+}
+
+export const ImageBackground = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'imgUrl',
+})<ImageBackgroundProps>(({ theme, imgUrl }) => ({
+  position: 'absolute',
+  left: 0,
+  top: 0,
+  right: 0,
+  bottom: 72,
+  overflow: 'hidden',
+  ...(!imgUrl && {
+    background: `linear-gradient(to bottom, ${theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.accent1Alt.main} 50%, ${theme.palette.mode === 'light' ? theme.palette.grey[100] : 'transparent'} 50%)`,
+  }),
+  '&:before': {
+    ...(imgUrl && { content: '" "' }),
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    filter: 'blur(6px)',
+    background: `url(${imgUrl})`,
+    backgroundPosition: 'top',
+    backgroundSize: 'cover',
   },
 }));

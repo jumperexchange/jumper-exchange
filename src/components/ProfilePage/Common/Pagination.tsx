@@ -4,13 +4,15 @@ import {
   FirstPage,
   LastPage,
 } from '@mui/icons-material';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import {
   PaginationButton,
   PaginationClosestPages,
   PaginationContainer,
   PaginationLink,
 } from './Pagination.style';
+import { PaginationNavigator } from './PaginationNavigator';
+import { PaginationButtonNavigatorBox } from './PaginationNavigator.style';
 
 const PAGINATION_NR_OF_PAGES_TO_DISPLAY = 5;
 
@@ -44,29 +46,29 @@ export const Pagination = ({
 
   return (
     <PaginationContainer>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <PaginationLink href={`/leaderboard?page=1`}>
-          <IconButton>
-            <FirstPage sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
-          </IconButton>
-        </PaginationLink>
-        <PaginationLink
+      <PaginationButtonNavigatorBox>
+        <PaginationNavigator
+          href={`/leaderboard?page=1`}
+          icon={<FirstPage sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />}
+          disabled={page === 1}
+        />
+        <PaginationNavigator
           href={`/leaderboard?page=${page !== 1 ? page - 1 : maxPages}`}
-        >
-          <IconButton>
+          icon={
             <ChevronLeft sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
-          </IconButton>
-        </PaginationLink>
-      </Box>
+          }
+          disabled={page === 1}
+        />
+      </PaginationButtonNavigatorBox>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         {starterIndex !== 1 && (
           <PaginationClosestPages>
             <PaginationLink href={`/leaderboard?page=1`}>
               <PaginationButton>
-                <Typography variant="bodyXSmallStrong">1</Typography>
+                <Typography variant="bodySmallStrong">1</Typography>
               </PaginationButton>
             </PaginationLink>
-            <Typography variant="bodyXSmallStrong" component="span">
+            <Typography variant="bodySmallStrong" component="span">
               ...
             </Typography>
           </PaginationClosestPages>
@@ -80,38 +82,38 @@ export const Pagination = ({
               activePage={page === pageNr}
               key={`pagination-pageNr-${index}`}
             >
-              <Typography variant="bodyXSmallStrong">{pageNr}</Typography>
+              <Typography variant="bodySmallStrong">{pageNr}</Typography>
             </PaginationButton>
           </PaginationLink>
         ))}
         {page <= maxPages - paginationMedian && (
           <PaginationClosestPages>
-            <Typography variant="bodyXSmallStrong" component={'span'}>
+            <Typography variant="bodySmallStrong" component={'span'}>
               ...
             </Typography>
             <PaginationLink href={`/leaderboard?page=${maxPages}`}>
               <PaginationButton>
-                <Typography variant="bodyXSmallStrong">{maxPages}</Typography>
+                <Typography variant="bodySmallStrong">{maxPages}</Typography>
               </PaginationButton>
             </PaginationLink>
           </PaginationClosestPages>
         )}
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <PaginationLink
+      <PaginationButtonNavigatorBox>
+        <PaginationNavigator
           href={`/leaderboard?page=${page !== maxPages ? page + 1 : 1}`}
-        >
-          <IconButton>
+          icon={
             <ChevronRight sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
-          </IconButton>
-        </PaginationLink>
-        <PaginationLink href={`/leaderboard?page=${maxPages}`}>
-          <IconButton>
-            <LastPage sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />
-          </IconButton>
-        </PaginationLink>
-      </Box>
+          }
+          disabled={page === maxPages}
+        />
+        <PaginationNavigator
+          href={`/leaderboard?page=${maxPages}`}
+          icon={<LastPage sx={{ cursor: 'pointer', pointerEvents: 'auto' }} />}
+          disabled={page === maxPages}
+        />
+      </PaginationButtonNavigatorBox>
     </PaginationContainer>
   );
 };

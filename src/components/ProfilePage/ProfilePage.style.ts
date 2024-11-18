@@ -8,7 +8,7 @@ export const PageContainer = styled(Container)(({ theme }) => ({
   borderRadius: '8px',
   position: 'relative',
   width: '100% !important',
-  overflow: 'hidden',
+  overflow: 'visible', //'hidden',
   paddingBottom: 20,
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     paddingLeft: 0,

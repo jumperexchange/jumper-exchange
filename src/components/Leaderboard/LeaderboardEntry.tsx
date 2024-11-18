@@ -1,11 +1,13 @@
-import { alpha, Typography, useTheme } from '@mui/material';
+import { useWalletMenu } from '@lifi/wallet-management';
+import { alpha, Box, Skeleton, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import useImageStatus from 'src/hooks/useImageStatus';
 import { effigyAddressFormatter } from 'src/utils/effigyAddressFormatter';
 import { numberWithCommas } from 'src/utils/formatNumbers';
-import { ConnectButton } from '../ConnectButton';
+import { walletDigest } from 'src/utils/walletDigest';
 import {
+  LeaderboardEntryConnect,
   LeaderboardEntryInfos,
   LeaderboardEntryWrapper,
   RankLabel,
@@ -18,7 +20,7 @@ interface LeaderboardEntryProps {
   isUserPosition?: boolean;
   isUserConnected?: boolean;
   isUserEntry?: boolean;
-  walletAddress: string;
+  walletAddress?: string;
   position?: number;
   points: number;
 }
@@ -37,6 +39,7 @@ export const LeaderboardEntry = ({
   const imgLink = useImageStatus(formattedAddress);
   const rankLabel = numberWithCommas(position);
   const pointsLabel = numberWithCommas(points);
+  const { openWalletMenu } = useWalletMenu();
 
   return (
     <LeaderboardEntryWrapper
@@ -45,28 +48,43 @@ export const LeaderboardEntry = ({
       isUserConnected={isUserConnected}
     >
       <LeaderboardEntryInfos>
-        {/* <Box minWidth={74} textAlign={'center'}> */}
-        <RankLabel variant="bodyXSmallStrong">
-          {isUserEntry && !isUserConnected ? '?' : rankLabel || '-'}
-        </RankLabel>
-        {/* </Box> */}
-        <RankWalletImage
-          src={imgLink}
-          alt="Effigy Wallet Icon"
-          isUserEntry={isUserEntry}
-          width={48}
-          height={48}
-          priority={false}
-          unoptimized={true}
-        />
+        <Box minWidth={74} textAlign={'center'}>
+          <RankLabel variant="bodyXSmallStrong">
+            {isUserEntry && !isUserConnected ? '?' : rankLabel || 'N/A'}
+          </RankLabel>
+        </Box>
+        {walletAddress ? (
+          <RankWalletImage
+            src={imgLink}
+            alt="Effigy Wallet Icon"
+            isUserEntry={isUserEntry}
+            width={48}
+            height={48}
+            priority={false}
+            unoptimized={true}
+          />
+        ) : (
+          <Skeleton variant="circular" width={48} height={48} />
+        )}
+
         <RankWalletAddress variant="bodyLargeStrong">
           {isUserEntry && !isUserConnected
             ? t('leaderboard.rankCtaConnect')
-            : walletAddress}
+            : walletDigest(walletAddress)}
         </RankWalletAddress>
       </LeaderboardEntryInfos>
       {isUserEntry && !isUserConnected ? (
-        <ConnectButton />
+        <LeaderboardEntryConnect
+          id={'leaderboard-entry-connect-button'}
+          onClick={(event) => {
+            event.stopPropagation();
+            openWalletMenu();
+          }}
+        >
+          <Typography variant="bodySmallStrong">
+            {t('leaderboard.connectWallet')}
+          </Typography>
+        </LeaderboardEntryConnect>
       ) : (
         <RankPointsContainer>
           <Typography variant="bodyLargeStrong">{pointsLabel}</Typography>

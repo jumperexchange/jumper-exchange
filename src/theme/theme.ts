@@ -123,6 +123,9 @@ declare module '@mui/material/styles' {
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
+    titleXSmall: React.CSSProperties;
+    title2xSmall: React.CSSProperties;
+    titleLarge: React.CSSProperties;
   }
 
   // allow configuration using `createTheme`
@@ -144,6 +147,9 @@ declare module '@mui/material/styles' {
     bodySmall: React.CSSProperties;
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
+    titleXSmall: React.CSSProperties;
+    title2xSmall: React.CSSProperties;
+    titleLarge: React.CSSProperties;
   }
 }
 declare module '@mui/material/Button' {
@@ -204,6 +210,9 @@ declare module '@mui/material/Typography' {
     bodyXSmallStrong: true;
     bodyXSmall: true;
     brandHeaderXLarge: true;
+    titleXSmall: true;
+    title2xSmall: true;
+    titleLarge: true;
   }
 }
 
@@ -540,7 +549,7 @@ const themeCustomized = createTheme({
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '14px',
-      lineHeight: '20px',
+      lineHeight: '18px',
       letterSpacing: 0,
     },
     bodySmall: {
@@ -611,6 +620,24 @@ const themeCustomized = createTheme({
       fontSize: themeBase.typography.pxToRem(12),
       lineHeight: themeBase.typography.pxToRem(18),
       fontWeight: 700,
+    },
+    titleXSmall: {
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '24px',
+    },
+    title2xSmall: {
+      fontSize: '14px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '20px',
+    },
+    titleLarge: {
+      fontSize: '48px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '64px',
     },
   },
 });

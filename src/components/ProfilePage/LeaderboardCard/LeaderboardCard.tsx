@@ -37,13 +37,13 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
             passHref
           >
             <LeaderboardUserPositionButton aria-label="Open leaderboard page with your position">
-              <LeaderboardUserTitle variant="headerLarge">
-                {leaderboardUserData?.position ? title : '-'}
+              <LeaderboardUserTitle variant="titleLarge">
+                {leaderboardUserData?.position ? title : 'N/A'}
               </LeaderboardUserTitle>
             </LeaderboardUserPositionButton>
           </Link>
         ) : (
-          <LeaderboardUserTitle variant="headerLarge">-</LeaderboardUserTitle>
+          <LeaderboardUserTitle variant="titleLarge">N/A</LeaderboardUserTitle>
         )}
         <CardButtonContainer
           href="/leaderboard"

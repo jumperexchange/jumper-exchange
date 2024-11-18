@@ -149,6 +149,7 @@ interface Resources {
       pointsInfo: 'XP is your score for interacting with Jumper. As you gain XP points, your level goes up.';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
       copyAddress: 'Copy wallet address';
+      shareProfile: 'Share profile';
       open: 'Open {{tool}}';
     };
     leaderboard: {
@@ -156,6 +157,7 @@ interface Resources {
       description: 'Current XP leaders remain unofficial until the review of the token allocation.';
       rankCtaConnect: 'Where do you rank?';
       updatedLabel: 'Updated: {{date}}';
+      connectWallet: 'Connect wallet';
     };
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';

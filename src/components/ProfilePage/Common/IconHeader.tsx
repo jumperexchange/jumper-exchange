@@ -13,7 +13,7 @@ export const IconHeader = ({ tooltipKey, title }: IconHeaderProps) => {
   const theme = useTheme();
   return (
     <IconHeaderContainer>
-      <IconHeaderTitle variant="bodySmallStrong">{title}</IconHeaderTitle>
+      <IconHeaderTitle variant="title2xSmall">{title}</IconHeaderTitle>
       <Tooltip
         title={t(tooltipKey as any)}
         sx={{ cursor: 'help', color: theme.palette.text.primary }}

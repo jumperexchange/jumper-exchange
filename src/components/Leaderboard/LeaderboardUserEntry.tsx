@@ -11,6 +11,18 @@ export const LeaderboardUserEntry = () => {
   const { data: leaderboardUserData } = useLeaderboardUser(account?.address);
   const { points } = useLoyaltyPass();
 
+  if (!account.address) {
+    // avoid wrapped link to enable "connect" onclick event
+    return (
+      <LeaderboardEntry
+        isUserEntry={true}
+        isUserConnected={!!account.address}
+        position={parseInt(leaderboardUserData?.position)}
+        points={points || 0}
+      />
+    );
+  }
+
   return (
     <LeaderboardUserEntryBox
       href={`/leaderboard?page=${leaderboardUserData.userPage}`}
@@ -18,9 +30,7 @@ export const LeaderboardUserEntry = () => {
       <LeaderboardEntry
         isUserEntry={true}
         isUserConnected={!!account.address}
-        walletAddress={
-          account?.address || '0x0000000000000000000000000000000000000000'
-        }
+        walletAddress={account?.address}
         position={parseInt(leaderboardUserData?.position)}
         points={points || 0}
       />

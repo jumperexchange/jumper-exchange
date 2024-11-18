@@ -36,5 +36,5 @@ export const TierInfoBox = styled(Box)(() => ({
 export const TierboxInfoTitles = styled(Typography)(({ theme }) => ({
   userSelect: 'none',
   color: theme.palette.text.primary,
-  marginTop: theme.spacing(0.5),
+  marginTop: theme.spacing(1),
 }));

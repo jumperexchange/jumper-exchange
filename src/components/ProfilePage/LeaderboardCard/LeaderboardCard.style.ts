@@ -14,7 +14,7 @@ export const CardContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   boxShadow: theme.palette.shadowLight.main,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    padding: theme.spacing(4),
+    padding: theme.spacing(3),
   },
 }));
 
@@ -33,9 +33,9 @@ export const RankContentContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   flexGrow: 1,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    gap: 0,
-  },
+  // [theme.breakpoints.up('sm' as Breakpoint)]: {
+  //   gap: 0,
+  // },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     alignItems: 'flex-start',
     flexDirection: 'column',
@@ -43,22 +43,18 @@ export const RankContentContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const CardButtonContainer = styled(Link)(({ theme }) => ({
-  [theme.breakpoints.down('sm' as Breakpoint)]: {
-    width: '100%',
-  },
+  width: '100%',
 }));
 
 export const CardButton = styled(ButtonSecondary)(({ theme }) => ({
   fontSize: 14,
   width: '100%',
   lineHeight: '18px',
+  height: 40,
   color:
     theme.palette.mode === 'light'
       ? theme.palette.primary.main
       : theme.palette.white.main,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    minWidth: 192,
-  },
 }));
 
 export const LeaderboardUserPositionButton = styled(ButtonTransparent)(
@@ -77,8 +73,8 @@ export const LeaderboardUserPositionButton = styled(ButtonTransparent)(
   }),
 );
 
-export const LeaderboardUserTitle = styled(TierboxInfoTitles)(() => ({
-  marginTop: 0,
+export const LeaderboardUserTitle = styled(TierboxInfoTitles)(({ theme }) => ({
   width: '100%',
   alignSelf: 'flex-start',
+  marginTop: theme.spacing(1),
 }));

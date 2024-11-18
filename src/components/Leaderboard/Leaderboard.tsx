@@ -1,5 +1,5 @@
 'use client';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +17,7 @@ import { PageContainer } from '../ProfilePage/ProfilePage.style';
 import { TooltipInfo } from '../TooltipInfo/TooltipInfo';
 import {
   LeaderboardContainer,
+  LeaderboardEntryDivider,
   LeaderboardEntryStack,
   LeaderboardHeader,
   LeaderboardUpdateDateLabel,
@@ -80,7 +81,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                     isUserPosition={false}
                   />
                   {index !== LEADERBOARD_LENGTH - 1 && (
-                    <Divider
+                    <LeaderboardEntryDivider
                       key={`leaderboard-entry-${index}-skeleton-divider`}
                     />
                   )}
@@ -114,7 +115,9 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                         }
                       />
                       {index !== leaderboardData.length - 1 && (
-                        <Divider key={`leaderboard-entry-${index}-divider`} />
+                        <LeaderboardEntryDivider
+                          key={`leaderboard-entry-${index}-divider`}
+                        />
                       )}
                     </>
                   );

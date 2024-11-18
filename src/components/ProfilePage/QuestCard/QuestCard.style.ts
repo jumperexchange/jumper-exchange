@@ -25,6 +25,7 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   minWidth: 288,
   textAlign: 'center',
   transition: 'background-color 250ms',
+  boxShadow: theme.palette.shadowLight.main,
 }));
 
 export const QuestCardImage = styled(Image)(({ theme }) => ({
@@ -52,6 +53,10 @@ export const QuestCardTitle = styled(Typography)(({ theme }) => ({
   textAlign: 'left',
   userSelect: 'none',
   color: theme.palette.text.primary,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxHeight: '24px',
+  whiteSpace: 'nowrap',
 }));
 
 export const QuestCardTitleSkeleton = styled(Skeleton)(() => ({
@@ -158,7 +163,11 @@ export const QuestCardButtonCta = styled(Button)(({ theme }) => ({
   width: '100%',
   height: 24,
   color: theme.palette.text.primary,
+  transition: 'background-color 300ms',
   backgroundColor: alpha(theme.palette.text.primary, 0.04),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.text.primary, 0.08),
+  },
 }));
 
 export const CompletedBox = styled(Box)(() => ({

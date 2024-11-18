@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
+import { ButtonSecondary } from '../Button';
 
 interface LeaderboardEntryWrapperProps extends BoxProps {
   isUserConnected?: boolean;
@@ -36,6 +37,7 @@ export const LeaderboardEntryWrapper = styled(Box, {
           ? theme.palette.white.main
           : theme.palette.bgTertiary.main,
       borderRadius: '24px',
+      boxShadow: theme.palette.shadowLight.main,
       marginTop: theme.spacing(3),
       padding: theme.spacing(2, 1),
       [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -89,20 +91,20 @@ export const LeaderboardEntryInfos = styled(Box)(({ theme }) => ({
   },
 }));
 
+export const LeaderboardEntryConnect = styled(ButtonSecondary)(({ theme }) => ({
+  color: '#200052',
+  height: 40,
+}));
+
 export const RankLabel = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(1),
   display: 'inline-block',
-  backgroundColor: theme.palette.alphaDark100.main,
-  borderRadius: '32px',
-  minWidth: 84,
+  backgroundColor: alpha(theme.palette.text.primary, 0.04),
+  borderRadius: '16px',
+  minWidth: 32,
   textAlign: 'center',
-  ':before': {
-    content: '"#"',
-    marginRight: theme.spacing(0.25),
-  },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    padding: theme.spacing(1, 2),
-    minWidth: 100,
+    padding: theme.spacing(1),
   },
 }));
 

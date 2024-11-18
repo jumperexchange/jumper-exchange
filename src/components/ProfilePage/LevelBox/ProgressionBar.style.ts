@@ -2,10 +2,10 @@ import type { BoxProps } from '@mui/material';
 import { Box, styled } from '@mui/system';
 import type { LevelData } from 'src/types/loyaltyPass';
 
-export const LevelIndicatorWrapper = styled(Box)(() => ({
+export const LevelIndicatorWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  marginTop: '24px',
+  marginTop: theme.spacing(2),
 }));
 
 interface ProgressionContainerProps extends BoxProps {

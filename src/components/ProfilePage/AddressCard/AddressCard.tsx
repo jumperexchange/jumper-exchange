@@ -16,6 +16,7 @@ import {
   AddressBoxContainer,
   AddressButton,
   AddressButtonLabel,
+  ImageBackground,
   PassImageBox,
   ProfileIconButton,
 } from './AddressCard.style';
@@ -61,8 +62,9 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
   });
 
   return (
-    <AddressBoxContainer imgUrl={imgLink}>
+    <AddressBoxContainer>
       <PassImageBox>
+        <ImageBackground imgUrl={imgLink} />
         <Image
           alt="Effigy Wallet Icon"
           src={imgLink}
