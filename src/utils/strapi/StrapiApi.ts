@@ -6,7 +6,6 @@ interface GetStrapiBaseUrlProps {
     | 'blog-articles'
     | 'faq-items'
     | 'tags'
-    | 'jumper-users'
     | 'partner-themes'
     | 'quests';
 }
@@ -255,41 +254,6 @@ interface FilterPerrsonalFeatureCardsProps {
   account: Account | undefined;
 }
 
-class JumperUserStrapiApi extends StrapiApi {
-  constructor() {
-    super({ contentType: 'jumper-users' }); // Set content type to "jumper-users" automatically
-    this.addJumperUsersParams(); // Add specific parameters for jumper users
-  }
-
-  private addJumperUsersParams(): void {
-    // populate feature cards with custom fields
-    this.apiUrl.searchParams.set('populate[0]', 'feature_cards');
-    this.apiUrl.searchParams.set(
-      'populate[feature_cards][populate][0]',
-      'BackgroundImageLight',
-    );
-    this.apiUrl.searchParams.set(
-      'populate[feature_cards][populate][1]',
-      'BackgroundImageDark',
-    );
-  }
-
-  addJumperUsersPersonalizedFCParams(
-    filterPersonalFeatureCards: FilterPerrsonalFeatureCardsProps,
-  ): this {
-    if (
-      filterPersonalFeatureCards.account?.address &&
-      filterPersonalFeatureCards.account?.chainType === 'EVM'
-    ) {
-      this.apiUrl.searchParams.set(
-        'filters[EvmWalletAddress][$eqi]',
-        filterPersonalFeatureCards.account?.address,
-      );
-    }
-    return this;
-  }
-}
-
 class BlogFaqStrapiApi extends StrapiApi {
   constructor() {
     super({ contentType: 'blog-articles' }); // Set content type to "blog-articles" automatically
@@ -312,7 +276,6 @@ export {
   ArticleStrapiApi,
   BlogFaqStrapiApi,
   FeatureCardStrapiApi,
-  JumperUserStrapiApi,
   PartnerThemeStrapiApi,
   QuestStrapiApi,
   StrapiApi,

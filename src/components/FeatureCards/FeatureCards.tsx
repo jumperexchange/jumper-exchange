@@ -1,7 +1,6 @@
 'use client';
 import {
   STRAPI_FEATURE_CARDS,
-  STRAPI_JUMPER_USERS,
 } from '@/const/strapiContentKeys';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useSettingsStore } from '@/stores/settings';
@@ -15,6 +14,7 @@ import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { usePersonalizedFeatureOnLevel } from 'src/hooks/usePersonalizedFeatureOnLevel';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
+import { usePersonalizedFeatureCards } from '@/hooks/usePersonalizedFeatureCards';
 
 export const FeatureCards = () => {
   const { account } = useAccount();
@@ -32,18 +32,11 @@ export const FeatureCards = () => {
     queryKey: ['feature-cards'],
   });
 
-  const { data: jumperUser } = useStrapi<JumperUserData>({
-    contentType: STRAPI_JUMPER_USERS,
-    filterPersonalFeatureCards: {
-      enabled: true,
-      account: account,
-    },
-    queryKey: ['personalized-feature-cards'],
-  });
+  const { data: featureCardsToDisplay } = usePersonalizedFeatureCards();
 
   const { featureCards: featureCardsLevel } = usePersonalizedFeatureOnLevel({
     points: points,
-    enabled: !!points && (!jumperUser || jumperUser?.length === 0),
+    enabled: !!points && (!featureCardsToDisplay || featureCardsToDisplay?.length === 0),
   });
 
   useEffect(() => {
@@ -88,8 +81,8 @@ export const FeatureCards = () => {
 
   const slicedPersonalizedFeatureCards = useMemo(() => {
     const personalizedFeatureCards =
-      jumperUser && jumperUser[0]?.attributes?.feature_cards.data.length > 0
-        ? jumperUser && jumperUser[0]?.attributes?.feature_cards.data
+      featureCardsToDisplay && featureCardsToDisplay.length > 0
+        ?  featureCardsLevel?.filter((card) => featureCardsToDisplay.includes(card.id))
         : featureCardsLevel && featureCardsLevel.length > 0
           ? [featureCardsLevel[0]]
           : undefined;
@@ -108,7 +101,7 @@ export const FeatureCards = () => {
         .slice(0, 1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jumperUser, featureCardsLevel]);
+  }, [featureCardsToDisplay, featureCardsLevel]);
 
   return (
     isDesktop &&
