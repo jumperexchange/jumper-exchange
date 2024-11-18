@@ -3,12 +3,14 @@ import { useBerachainMarket } from '../../hooks/useBerachainMarket';
 import { BerachainMarketCard } from '../BerachainMarketCard/BerachainMarketCard';
 import { BerachainMarketCards } from './BerachainMarkets.style';
 import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMarketsFilters';
+import { BerachainMarketsHeader } from './BerachainMarketsHeader';
 
 export const BerachainMarkets = () => {
   const data = useBerachainMarket();
 
   return (
     <Box>
+      <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
         {data?.map((card) => (

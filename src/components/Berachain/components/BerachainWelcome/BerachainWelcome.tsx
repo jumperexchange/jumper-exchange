@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   BeraChainWelcomeBear,
   BeraChainWelcomeBox,
@@ -51,7 +52,7 @@ export const BerachainWelcome = () => {
             We present
           </Typography>
           <Image
-            src="/berachain/berachain-brand.png"
+            src="/berachain/berachain-brand-logo-full.png"
             alt="Berachain Brand"
             width={234}
             height={38}
@@ -78,14 +79,16 @@ export const BerachainWelcome = () => {
         </BeraChainWelcomeSubtitle>
       </BeraChainWelcomeContent>
       <BeraChainWelcomeButtonsWrapper>
-        <BeraChainWelcomeConnectButtonCTA>
-          <Typography variant="bodyLargeStrong">
-            Connect Wallet & Start Pledging
-          </Typography>
-        </BeraChainWelcomeConnectButtonCTA>
-        <BeraChainWelcomeLearnMoreButton>
-          Learn more
-        </BeraChainWelcomeLearnMoreButton>
+        <Link href="/berachain/explore">
+          <BeraChainWelcomeConnectButtonCTA>
+            <Typography variant="bodyLargeStrong">Start Exploring!</Typography>
+          </BeraChainWelcomeConnectButtonCTA>
+        </Link>
+        <Link href="/berachain">
+          <BeraChainWelcomeLearnMoreButton>
+            Learn more
+          </BeraChainWelcomeLearnMoreButton>
+        </Link>
       </BeraChainWelcomeButtonsWrapper>
     </BeraChainWelcomeBox>
   );
