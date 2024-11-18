@@ -1,7 +1,5 @@
 'use client';
-import {
-  STRAPI_FEATURE_CARDS,
-} from '@/const/strapiContentKeys';
+import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useSettingsStore } from '@/stores/settings';
 import type { FeatureCardData, JumperUserData } from '@/types/strapi';
@@ -36,7 +34,9 @@ export const FeatureCards = () => {
 
   const { featureCards: featureCardsLevel } = usePersonalizedFeatureOnLevel({
     points: points,
-    enabled: !!points && (!featureCardsToDisplay || featureCardsToDisplay?.length === 0),
+    enabled:
+      !!points &&
+      (!featureCardsToDisplay || featureCardsToDisplay?.length === 0),
   });
 
   useEffect(() => {
@@ -82,7 +82,9 @@ export const FeatureCards = () => {
   const slicedPersonalizedFeatureCards = useMemo(() => {
     const personalizedFeatureCards =
       featureCardsToDisplay && featureCardsToDisplay.length > 0
-        ?  featureCardsLevel?.filter((card) => featureCardsToDisplay.includes(card.id))
+        ? featureCardsLevel?.filter((card) =>
+            featureCardsToDisplay.includes(card.id),
+          )
         : featureCardsLevel && featureCardsLevel.length > 0
           ? [featureCardsLevel[0]]
           : undefined;

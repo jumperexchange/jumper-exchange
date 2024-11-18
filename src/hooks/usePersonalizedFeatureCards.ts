@@ -18,7 +18,9 @@ export const usePersonalizedFeatureCards =
     const { data, isSuccess } = useQuery({
       queryKey: ['jumperUser', account?.address],
       queryFn: async () => {
-        const response = await fetch(getFeatureCardsEndpoint(account?.address!));
+        const response = await fetch(
+          getFeatureCardsEndpoint(account?.address!),
+        );
         const result = await response.json();
 
         return result.data;
@@ -30,6 +32,6 @@ export const usePersonalizedFeatureCards =
     return {
       data,
       isSuccess,
-      isConnected: !!account?.address
+      isConnected: !!account?.address,
     };
   };
