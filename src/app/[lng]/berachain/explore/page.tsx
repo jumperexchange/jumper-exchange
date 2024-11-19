@@ -1,5 +1,5 @@
 import { type Metadata } from 'next';
-import BerachainExploreMarketPage from 'src/app/ui/berachain/BerachainExploreMarketPage';
+import BerachainExploreMarketsPage from 'src/app/ui/berachain/BerachainExploreMarketPage';
 
 export const metadata: Metadata = {
   title: 'Jumper | Berachain',
@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  return <BerachainExploreMarketPage />;
+  return <BerachainExploreMarketsPage />;
 }

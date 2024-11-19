@@ -40,7 +40,7 @@ export const BerachainSortMenu = () => {
       </BerachainMarketsSortLabel>
       <BerachainMarketFiltersButton
         id={assetsFilterId}
-        aria-controls={openSortMenu ? 'assets-filter-menu' : undefined}
+        aria-controls={openSortMenu ? assetsMenuId : undefined}
         aria-haspopup="true"
         aria-expanded={openSortMenu ? 'true' : undefined}
         onClick={handleSortClick}

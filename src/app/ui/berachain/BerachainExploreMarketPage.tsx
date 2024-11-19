@@ -1,8 +1,8 @@
 'use client';
-import { BerachainExploreMarket } from 'src/components/Berachain/BerachainExploreMarket';
+import { BerachainExplore } from 'src/components/Berachain/BerachainExplore';
 
-const BerachainExploreMarketPage = () => {
-  return <BerachainExploreMarket />;
+const BerachainExploreMarketsPage = () => {
+  return <BerachainExplore />;
 };
 
-export default BerachainExploreMarketPage;
+export default BerachainExploreMarketsPage;

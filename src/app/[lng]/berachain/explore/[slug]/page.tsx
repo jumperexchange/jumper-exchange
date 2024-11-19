@@ -1,6 +1,6 @@
 import { type Metadata } from 'next';
 import { siteName } from 'src/app/lib/metadata';
-import BerachainExploreMarketPage from 'src/app/ui/berachain/BerachainExploreMarketPage';
+import BerachainExplorePage from 'src/app/ui/berachain/BerachainExplorePage';
 import { berachainMarkets } from 'src/components/Berachain/const/berachainExampleData';
 import { getSiteUrl } from 'src/const/urls';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
@@ -52,6 +52,14 @@ export async function generateMetadata({
   }
 }
 
-export default async function Page() {
-  return <BerachainExploreMarketPage />;
+export default async function Page({ params }: { params: { slug: string } }) {
+  const berachainProtocol = await berachainMarkets.filter(
+    (market) => market.protocol.slug === params.slug,
+  );
+
+  return (
+    <BerachainExplorePage
+      market={berachainProtocol.length > 0 ? berachainProtocol[0] : undefined}
+    />
+  );
 }

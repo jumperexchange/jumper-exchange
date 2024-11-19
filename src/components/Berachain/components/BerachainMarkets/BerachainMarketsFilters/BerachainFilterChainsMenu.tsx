@@ -63,7 +63,7 @@ export const BerachainFilterChainsMenu = () => {
       </Typography>
       <BerachainMarketFiltersButton
         id={assetsFilterId}
-        aria-controls={openAssetsFilterMenu ? 'assets-filter-menu' : undefined}
+        aria-controls={openAssetsFilterMenu ? assetsMenuId : undefined}
         aria-haspopup="true"
         aria-expanded={openAssetsFilterMenu ? 'true' : undefined}
         onClick={handleAssetsFilterClick}

@@ -121,8 +121,8 @@ declare module '@mui/material/styles' {
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
-    interTitleSmall: React.CSSProperties;
-    interTitle2XSmall: React.CSSProperties;
+    titleSmall: React.CSSProperties;
+    title2XSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitle3XLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
@@ -151,8 +151,8 @@ declare module '@mui/material/styles' {
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
-    interTitleSmall: React.CSSProperties;
-    interTitle2XSmall: React.CSSProperties;
+    titleSmall: React.CSSProperties;
+    title2XSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
     urbanistTitle3XLarge: React.CSSProperties;
@@ -219,8 +219,8 @@ declare module '@mui/material/Typography' {
     bodyXSmallStrong: true;
     bodyXSmall: true;
     brandHeaderXLarge: true;
-    interTitleSmall: true;
-    interTitle2XSmall: true;
+    titleSmall: true;
+    title2XSmall: true;
     urbanistTitleLarge: true;
     urbanistTitleXLarge: true;
     urbanistTitle3XLarge: true;
@@ -640,14 +640,14 @@ const themeCustomized = createTheme({
       lineHeight: '72px',
       letterSpacing: 0,
     },
-    interTitle2XSmall: {
+    title2XSmall: {
       fontFamily: inter.style.fontFamily,
       fontSize: '14px',
       fontStyle: 'normal',
       fontWeight: 700,
       lineHeight: '20px',
     },
-    interTitleSmall: {
+    titleSmall: {
       fontFamily: inter.style.fontFamily,
       fontSize: '24px',
       fontStyle: 'normal',

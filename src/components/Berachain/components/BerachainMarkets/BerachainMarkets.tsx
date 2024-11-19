@@ -18,7 +18,7 @@ export const BerachainMarkets = () => {
             chainId={card.chain}
             protocol={card.protocol}
             tokens={card.tokens}
-            apy={`${typeof card.apys.total === 'number' ? card.apys.total + '%' : card.apys.total}`}
+            apys={card.apys}
             tvl={card.tvl}
           />
         ))}

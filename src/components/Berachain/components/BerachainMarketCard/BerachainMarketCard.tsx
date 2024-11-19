@@ -1,13 +1,24 @@
 import type { Chain, ChainId } from '@lifi/sdk';
-import { alpha, Box, Skeleton, Typography, useTheme } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Skeleton,
+  Tooltip,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useChains } from 'src/hooks/useChains';
 import type { UseMultipleTokenProps } from 'src/hooks/useMultipleTokens';
 import { useMultipleTokens } from 'src/hooks/useMultipleTokens';
-import type { BerachainProtocol } from '../../const/berachainExampleData';
+import type {
+  BerachainApys,
+  BerachainProtocol,
+} from '../../const/berachainExampleData';
 import { BerachainProgressCard } from '../BerachainProgressCard/BerachainProgressCard';
+import { BerachainTooltipTokens } from '../BerachainTooltipTokens/BerachainTooltipTokens';
 import {
   BerachainMarketCardBadge,
   BerachainMarketCardHeader,
@@ -27,7 +38,7 @@ export type BerachainProtocolType =
 interface BerachainMarketCardProps {
   chainId?: ChainId;
   protocol?: BerachainProtocol;
-  apy?: string;
+  apys?: BerachainApys;
   tvl?: string;
   tokens?: string[];
 }
@@ -35,16 +46,23 @@ interface BerachainMarketCardProps {
 export const BerachainMarketCard = ({
   chainId,
   protocol,
-  apy,
+  apys,
   tvl,
   tokens,
 }: BerachainMarketCardProps) => {
   const theme = useTheme();
+  const [anchorTokensTooltip, setAnchorTokensTooltip] =
+    useState<null | HTMLElement>(null);
+  const [openTokensTooltip, setOpenTokensTooltip] = useState(false);
+
   const { chains } = useChains();
   const tokenChainDetails = useMemo(
     () => chainId && chains?.find((chainEl: Chain) => chainEl.id === chainId),
     [chainId, chains],
   );
+
+  const tokensTooltipId = 'tokens-tooltip-button';
+  const tokensTooltipMenuId = 'tokens-tooltip-menu';
 
   const prepareTokenFetch = useMemo(() => {
     if (chainId === undefined || !tokens) {
@@ -60,8 +78,8 @@ export const BerachainMarketCard = ({
 
   const {
     tokens: fetchedTokens,
-    isLoading,
-    isError,
+    // isLoading,
+    // isError,
   } = useMultipleTokens(prepareTokenFetch);
 
   return (
@@ -99,30 +117,67 @@ export const BerachainMarketCard = ({
               <Skeleton variant="circular" sx={{ width: 32, height: 32 }} />
             )}
             <BerchainMarketCardTokenBox>
-              {fetchedTokens[0]?.logoURI ? (
-                <Image
-                  src={fetchedTokens[0].logoURI}
-                  alt={''}
-                  width={20}
-                  height={20}
-                  style={{ borderRadius: '10px' }}
-                />
-              ) : (
-                <Skeleton variant="circular" sx={{ width: 20, height: 20 }} />
-              )}
-              {fetchedTokens[0]?.name ? (
-                <Typography variant="bodyXSmallStrong">
-                  {fetchedTokens[0]?.symbol}
-                </Typography>
-              ) : (
-                <Skeleton variant="text" sx={{ width: '44px' }} />
-              )}
+              {fetchedTokens.map((token) => (
+                <>
+                  {token?.logoURI ? (
+                    <Image
+                      src={token.logoURI}
+                      alt={`${token.name} logo`}
+                      width={20}
+                      height={20}
+                      style={{ borderRadius: '10px' }}
+                    />
+                  ) : (
+                    <Skeleton
+                      variant="circular"
+                      sx={{ width: 20, height: 20 }}
+                    />
+                  )}
+                  {fetchedTokens.length === 1 && token?.name && (
+                    <Typography variant="bodyXSmallStrong">
+                      {fetchedTokens[0]?.symbol}
+                    </Typography>
+                  )}
+                </>
+              ))}
             </BerchainMarketCardTokenBox>
           </Box>
           {protocol?.type && (
-            <BerachainMarketCardBadge variant="bodySmall" type={protocol?.type}>
-              {protocol.type}
-            </BerachainMarketCardBadge>
+            <Tooltip
+              title={
+                <BerachainTooltipTokens
+                  open={openTokensTooltip}
+                  setOpen={setOpenTokensTooltip}
+                  anchor={anchorTokensTooltip}
+                  setAnchor={setAnchorTokensTooltip}
+                  idLabel={tokensTooltipId}
+                  idMenu={tokensTooltipMenuId}
+                  chainId={chainId}
+                  apyTokens={apys?.tokens}
+                />
+              }
+              open={openTokensTooltip ? false : undefined}
+              disableFocusListener={openTokensTooltip ? false : undefined}
+              disableInteractive={!openTokensTooltip ? false : undefined}
+              placement="bottom"
+              enterTouchDelay={0}
+              arrow
+            >
+              <BerachainMarketCardBadge
+                variant="bodySmall"
+                type={protocol?.type}
+                // onMouseEnter={(event) => handleTooltip(event, false)}
+                // onMouseLeave={(event) => handleTooltip(event, true)}
+                id={tokensTooltipId}
+                aria-controls={
+                  openTokensTooltip ? tokensTooltipMenuId : undefined
+                }
+                aria-haspopup="true"
+                aria-expanded={openTokensTooltip ? 'true' : undefined}
+              >
+                {protocol.type}
+              </BerachainMarketCardBadge>
+            </Tooltip>
           )}
         </BerchainMarketCardInfos>
         <BerchainMarketCardInfos>
@@ -135,7 +190,7 @@ export const BerachainMarketCard = ({
           />
           <BerachainProgressCard
             title={'Net APY'}
-            value={apy}
+            value={`${typeof apys?.total === 'number' ? apys?.total + '%' : apys?.total}`}
             tooltip={'Net APY tooltip msg lorem ipsum'}
             sx={{ color: alpha(theme.palette.white.main, 0.48) }}
             valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
