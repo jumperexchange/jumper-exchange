@@ -1,4 +1,3 @@
-import { useWalletMenu } from '@lifi/wallet-management';
 import { alpha, Box, Skeleton, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
@@ -6,8 +5,8 @@ import useImageStatus from 'src/hooks/useImageStatus';
 import { effigyAddressFormatter } from 'src/utils/effigyAddressFormatter';
 import { numberWithCommas } from 'src/utils/formatNumbers';
 import { walletDigest } from 'src/utils/walletDigest';
+import { ConnectButton } from '../ConnectButton';
 import {
-  LeaderboardEntryConnect,
   LeaderboardEntryInfos,
   LeaderboardEntryWrapper,
   RankLabel,
@@ -39,7 +38,6 @@ export const LeaderboardEntry = ({
   const imgLink = useImageStatus(formattedAddress);
   const rankLabel = numberWithCommas(position);
   const pointsLabel = numberWithCommas(points);
-  const { openWalletMenu } = useWalletMenu();
 
   return (
     <LeaderboardEntryWrapper
@@ -74,17 +72,10 @@ export const LeaderboardEntry = ({
         </RankWalletAddress>
       </LeaderboardEntryInfos>
       {isUserEntry && !isUserConnected ? (
-        <LeaderboardEntryConnect
+        <ConnectButton
           id={'leaderboard-entry-connect-button'}
-          onClick={(event) => {
-            event.stopPropagation();
-            openWalletMenu();
-          }}
-        >
-          <Typography variant="bodySmallStrong">
-            {t('leaderboard.connectWallet')}
-          </Typography>
-        </LeaderboardEntryConnect>
+          label={t('leaderboard.connectWallet')}
+        />
       ) : (
         <RankPointsContainer>
           <Typography variant="bodyLargeStrong">{pointsLabel}</Typography>

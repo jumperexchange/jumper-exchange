@@ -2,8 +2,9 @@
 import { LeaderboardPage as LeaderboardPageComponent } from '@/components/Leaderboard/LeaderboardPage';
 
 const LeaderboardPage = ({ page }: { page?: string }) => {
-  const defaultPage =
-    page && !isNaN(parseInt(page)) && parseInt(page) >= 1 ? parseInt(page) : 1;
+  const parsedPage = page ? parseInt(page, 10) : NaN;
+  const defaultPage = !isNaN(parsedPage) && parsedPage >= 1 ? parsedPage : 1;
+
   return <LeaderboardPageComponent page={defaultPage} />;
 };
 

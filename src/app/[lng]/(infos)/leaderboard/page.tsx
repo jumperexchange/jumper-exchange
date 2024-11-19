@@ -14,5 +14,5 @@ export default async function Page({
 }: {
   searchParams: { page?: string };
 }) {
-  return <LeaderboardPage page={searchParams.page ?? undefined} />;
+  return <LeaderboardPage page={searchParams.page} />;
 }

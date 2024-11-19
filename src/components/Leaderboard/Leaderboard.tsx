@@ -98,11 +98,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                       <LeaderboardEntry
                         key={`leaderboard-entry-${index}`}
                         isUserPosition={isUserPosition}
-                        walletAddress={
-                          isUserPosition && account.address
-                            ? account.address
-                            : entry.walletAddress
-                        }
+                        walletAddress={entry.walletAddress}
                         position={
                           typeof entry.position === 'string'
                             ? parseInt(entry.position)

@@ -1,10 +1,9 @@
 import { useMenuStore } from '@/stores/menu';
+import { useWalletMenu } from '@lifi/wallet-management';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { useTheme } from '@mui/material';
-import Image from 'next/image';
+import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ConnectButton } from 'src/components/ConnectButton';
 import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
@@ -17,6 +16,9 @@ import {
   AddressBoxContainer,
   AddressButton,
   AddressButtonLabel,
+  AddressConnectButton,
+  AddressEffigyImage,
+  AddressEffigyImageSkeleton,
   ImageBackground,
   PassImageBox,
   ProfileIconButton,
@@ -29,7 +31,7 @@ interface AddressBoxProps {
 export const AddressCard = ({ address }: AddressBoxProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { t } = useTranslation();
-  const theme = useTheme();
+
   const [openAddressMenu, setOpenAddressMenu] = useState(false);
   const { imageLink } = useMercleNft({ userAddress: address });
   const { data: ensName, isSuccess } = useEnsName({
@@ -38,6 +40,7 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
   });
   const imgLink = useImageStatus(address);
   const { setSnackbarState } = useMenuStore((state) => state);
+  const { openWalletMenu } = useWalletMenu();
 
   const handleCopyButton = (textToCopy?: string) => {
     if (!textToCopy) {
@@ -66,26 +69,18 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
     <AddressBoxContainer>
       <PassImageBox>
         <ImageBackground imgUrl={imgLink} />
-        <Image
-          alt="Effigy Wallet Icon"
-          src={imgLink}
-          width={140}
-          height={140}
-          priority={false}
-          unoptimized={true}
-          style={{
-            backgroundColor: imageLink
-              ? theme.palette.mode === 'light'
-                ? '#F9F5FF'
-                : theme.palette.accent1Alt.main
-              : undefined,
-            borderRadius: '100%',
-            borderStyle: 'solid',
-            borderWidth: '5px',
-            borderColor: theme.palette.white.main,
-            zIndex: 1,
-          }}
-        />
+        {address ? (
+          <AddressEffigyImage
+            alt="Effigy Wallet Icon"
+            src={imageLink || imgLink}
+            width={140}
+            height={140}
+            priority={false}
+            unoptimized={true}
+          />
+        ) : (
+          <AddressEffigyImageSkeleton variant="circular" />
+        )}
       </PassImageBox>
       <AddressBox>
         {address ? (
@@ -98,10 +93,17 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
             </AddressButtonLabel>
           </AddressButton>
         ) : (
-          <ConnectButton
-            sx={{ height: '40px', padding: '8px 16px' }}
+          <AddressConnectButton
             id="connect-wallet-button-address-card"
-          />
+            onClick={(event) => {
+              event.stopPropagation();
+              openWalletMenu();
+            }}
+          >
+            <Typography variant={'bodySmallStrong'}>
+              {t('leaderboard.connectWallet')}
+            </Typography>
+          </AddressConnectButton>
         )}
         {address && (
           <>

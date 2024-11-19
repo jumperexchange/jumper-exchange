@@ -10,9 +10,10 @@ import {
 interface ConnectButtonProps {
   sx?: SxProps<Theme>;
   id?: string;
+  label?: string;
 }
 
-export const ConnectButton = ({ sx, id }: ConnectButtonProps) => {
+export const ConnectButton = ({ sx, id, label }: ConnectButtonProps) => {
   const { t } = useTranslation();
   const { openWalletMenu } = useWalletMenu();
 
@@ -28,7 +29,7 @@ export const ConnectButton = ({ sx, id }: ConnectButtonProps) => {
       }}
     >
       <ConnectButtonLabel variant={'bodyMediumStrong'}>
-        {t('navbar.connect')}
+        {label || t('navbar.connect')}
       </ConnectButtonLabel>
     </ConnectButtonStyle>
   );

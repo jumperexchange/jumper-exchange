@@ -31,7 +31,7 @@ export const QuestsOverview = ({
       {!isQuestsLoading
         ? quests?.map((quest: Quest, index: number) => {
             const baseURL = quest.attributes.Image?.data?.attributes?.url;
-            const imgURL = new URL(baseURL, url.origin);
+            const imgURL = baseURL && new URL(baseURL, url.origin);
             const rewards = quest.attributes.CustomInformation?.['rewards'];
             const rewardType =
               quest.attributes?.CustomInformation?.['rewardType'];

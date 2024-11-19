@@ -1,6 +1,18 @@
 import type { BoxProps, IconButtonProps } from '@mui/material';
-import { Box, IconButton, Typography, styled } from '@mui/material';
-import { ButtonTransparent } from 'src/components/Button/Button.style';
+import {
+  Box,
+  IconButton,
+  Skeleton,
+  Typography,
+  alpha,
+  styled,
+} from '@mui/material';
+import type { ImageProps } from 'next/image';
+import Image from 'next/image';
+import {
+  ButtonSecondary,
+  ButtonTransparent,
+} from 'src/components/Button/Button.style';
 
 export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -21,6 +33,31 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     maxWidth: 320,
   },
+}));
+
+interface AddressEffigyImageProps extends ImageProps {
+  imageLink?: string;
+}
+
+export const AddressEffigyImage = styled(Image, {
+  shouldForwardProp: (prop) => prop !== 'imageLink',
+})<AddressEffigyImageProps>(({ theme, imageLink }) => ({
+  backgroundColor: imageLink
+    ? theme.palette.mode === 'light'
+      ? '#F9F5FF'
+      : theme.palette.accent1Alt.main
+    : undefined,
+  borderRadius: '100%',
+  borderStyle: 'solid',
+  borderWidth: '5px',
+  borderColor: theme.palette.white.main,
+  zIndex: 1,
+}));
+
+export const AddressEffigyImageSkeleton = styled(Skeleton)(({ theme }) => ({
+  backgroundColor: alpha(theme.palette.grey[400], 0.8),
+  width: 140,
+  height: 140,
 }));
 
 export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
@@ -53,6 +90,16 @@ export const AddressButton = styled(ButtonTransparent)(({ theme }) => ({
         ? theme.palette.alphaLight300.main
         : theme.palette.white.main,
   },
+}));
+
+export const AddressConnectButton = styled(ButtonSecondary)(({ theme }) => ({
+  textWrap: 'nowrap',
+  height: 40,
+  padding: theme.spacing(1, 2),
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.white.main,
 }));
 
 export const AddressButtonLabel = styled(Typography)(({ theme }) => ({}));

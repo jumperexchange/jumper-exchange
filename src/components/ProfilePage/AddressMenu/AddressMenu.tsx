@@ -43,9 +43,8 @@ export const AddressMenu = ({
           >
             <MenuPaper
               show={open}
-              width={'320px'}
               className="menu-paper"
-              sx={{ borderRadius: '12px' }}
+              sx={{ borderRadius: '12px', width: '320px' }}
             >
               <AddressMenuList
                 autoFocusItem={open}

@@ -59,7 +59,6 @@ export const CarouselContainer = ({
         left: parseInt(`${scrollPos}`),
         behavior: 'smooth',
       });
-    } else {
     }
   }, []);
   return (
