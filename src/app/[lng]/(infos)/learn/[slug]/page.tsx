@@ -7,6 +7,7 @@ import type { Metadata } from 'next';
 import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
 import { getArticlesByTag } from '../../../../lib/getArticlesByTag';
 import { getCookies } from '../../../../lib/getCookies';
+import { getSiteUrl } from '@/const/urls';
 
 export async function generateMetadata({
   params,
@@ -27,7 +28,7 @@ export async function generateMetadata({
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
       description: `${sliceStrToXChar(articleData.Subtitle, 60)}`,
       siteName: siteName,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/learn/${params.slug}`,
+      url: `${getSiteUrl()}/learn/${params.slug}`,
       images: [
         {
           url: `${article.url}${articleData.Image.data.attributes?.url}`,
@@ -43,7 +44,7 @@ export async function generateMetadata({
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
       description: articleData.Subtitle,
       alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/learn/${params.slug}`,
+        canonical: `${getSiteUrl()}/learn/${params.slug}`,
       },
       twitter: openGraph,
       openGraph,
@@ -61,11 +62,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const { activeThemeMode } = getCookies();
 
   const currentTags = (
-    article.data as BlogArticleData
-  ).attributes?.tags.data.map((el) => el?.id);
-
+    article?.data?.data[0] as BlogArticleData
+  )?.attributes?.tags.data.map((el) => el?.id);
   const relatedArticles = await getArticlesByTag(
-    article.data[0]?.id,
+    article?.data?.data[0]?.id,
     currentTags,
   );
 

@@ -1,3 +1,4 @@
+import type { Route, TokenAmount } from '@lifi/sdk';
 import type { TrackingEventParameter } from 'src/const/trackingKeys';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
 
@@ -59,4 +60,14 @@ export interface TrackTransactionProps {
   enableAddressable?: boolean;
   data: TrackTransactionDataProps;
   isConversion?: boolean;
+}
+
+export interface TokenSearchProps {
+  value: string;
+  tokens: TokenAmount[];
+}
+
+export interface RouteSelectedProps {
+  route: Route;
+  routes: Route[];
 }

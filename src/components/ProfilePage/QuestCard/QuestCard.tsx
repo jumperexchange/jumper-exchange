@@ -14,7 +14,7 @@ import {
   CenteredBox,
   CompletedTypography,
   NoSelectTypography,
-} from '../ProfilePage.style';
+} from '@/components/ProfilePage/ProfilePage.style';
 import {
   CompletedBox,
   QuestCardBottomBox,
