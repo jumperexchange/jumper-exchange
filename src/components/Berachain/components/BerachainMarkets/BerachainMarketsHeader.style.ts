@@ -14,6 +14,7 @@ export const BerachainMarketHeaderBox = styled(Box)(({ theme }) => ({
   backdropFilter: 'blur(8px)',
   padding: theme.spacing(4),
   [theme.breakpoints.up('md' as Breakpoint)]: {
+    gap: theme.spacing(2),
     flexDirection: 'row',
   },
 }));
@@ -44,6 +45,7 @@ export const BerachainMarketHeaderTitle = styled(Box)(({ theme }) => ({
   justifyContent: 'flex-start',
   gap: theme.spacing(2),
   alignItems: 'center',
+  flexWrap: 'wrap',
 }));
 
 export const BerachainMarketHeaderSubtitle = styled(Typography)(
@@ -69,8 +71,11 @@ export const BerachainMarketHeaderProgressCardStyles = (
   width: '50%',
   padding: '16px',
   height: 'auto',
+  userSelect: 'none',
+  typography: theme.typography.title2XSmall,
+  transition: 'background-color 300ms ease-in-out',
   '&:hover': {
-    background: theme.palette.action.hover,
+    background: alpha(theme.palette.text.primary, 0.16),
   },
   [theme.breakpoints.up('md')]: {
     height: 108,

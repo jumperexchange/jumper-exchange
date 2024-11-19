@@ -67,6 +67,7 @@ export const BerachainTooltipTokens = ({
                 alt={`${token.name} logo`}
                 width={16}
                 height={16}
+                style={{ borderRadius: '13px' }}
               />
             ) : (
               <Skeleton

@@ -75,7 +75,7 @@ export const BeraChainWelcomeSubtitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const BeraChainWelcomeButtonsWrapper = styled(Box)(({ theme }) => ({
+export const BeraChainWelcomeBoxContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   marginTop: theme.spacing(4),

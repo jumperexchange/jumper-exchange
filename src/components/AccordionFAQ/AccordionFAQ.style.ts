@@ -55,7 +55,7 @@ export const rotateAnimation = keyframes`
 export const FaqShowMoreIconButton = styled(IconButton)(({ theme }) => ({
   width: 32,
   height: 32,
-  backgroundColor: alpha(theme.palette.text.primary, 0.12),
+  backgroundColor: alpha(theme.palette.text.primary, 0.08),
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'light'

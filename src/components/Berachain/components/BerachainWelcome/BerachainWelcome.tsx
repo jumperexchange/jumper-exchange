@@ -1,10 +1,11 @@
 import { Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
+import { BerachainProgressCard } from '../BerachainProgressCard/BerachainProgressCard';
 import {
   BeraChainWelcomeBear,
   BeraChainWelcomeBox,
-  BeraChainWelcomeButtonsWrapper,
+  BeraChainWelcomeBoxContent,
   BeraChainWelcomeConnectButtonCTA,
   BeraChainWelcomeContent,
   BeraChainWelcomeIllustrations,
@@ -79,7 +80,45 @@ export const BerachainWelcome = () => {
           by pledging your Crypto across various Berachain partner markets!
         </BeraChainWelcomeSubtitle>
       </BeraChainWelcomeContent>
-      <BeraChainWelcomeButtonsWrapper>
+      <BeraChainWelcomeBoxContent>
+        <BerachainProgressCard
+          title={'Total Value Locked'}
+          value="$718K.88"
+          icon={
+            <Image
+              src="/berachain/tvl.svg"
+              alt="TVL illustration"
+              width={26}
+              height={26}
+            />
+          }
+          sx={{
+            borderRadius: '16px',
+            border: '1px solid rgba(255, 255, 255, 0.20)',
+            background: 'rgba(255, 255, 255, 0.08)',
+            backdropFilter: 'blur(8px)',
+          }}
+        />
+        <BerachainProgressCard
+          title={'Incentives'}
+          value="$520.64K"
+          icon={
+            <Image
+              src="/berachain/gift.svg"
+              alt="Gift illustration"
+              width={26}
+              height={26}
+            />
+          }
+          sx={{
+            borderRadius: '16px',
+            border: '1px solid rgba(255, 255, 255, 0.20)',
+            background: 'rgba(255, 255, 255, 0.08)',
+            backdropFilter: 'blur(8px)',
+          }}
+        />
+      </BeraChainWelcomeBoxContent>
+      <BeraChainWelcomeBoxContent>
         <Link href="/berachain/explore">
           <BeraChainWelcomeConnectButtonCTA>
             <Typography variant="bodyLargeStrong">Start Exploring!</Typography>
@@ -87,10 +126,10 @@ export const BerachainWelcome = () => {
         </Link>
         <Link href="/berachain">
           <BeraChainWelcomeLearnMoreButton>
-            Learn more
+            <Typography variant="bodyLargeStrong">Learn more</Typography>
           </BeraChainWelcomeLearnMoreButton>
         </Link>
-      </BeraChainWelcomeButtonsWrapper>
+      </BeraChainWelcomeBoxContent>
     </BeraChainWelcomeBox>
   );
 };
