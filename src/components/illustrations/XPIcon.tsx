@@ -61,25 +61,26 @@ export const XPIcon = ({
   }
 
   return (
-    <XPIconBackground size={size || 20} bgColor={bgColor ?? iconBgColor}>
-      <svg
-        width={size ? size * 0.6 : 11}
-        height={size ? size * 0.6 : 11}
-        fill="none"
-        style={{ marginLeft: '5%' }}
-        viewBox={`0 0 11 11`}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M.378 3.18a.625.625 0 0 0 0 .884L1.814 5.5.378 6.936c-.59.59.295 1.474.884.884l1.436-1.436L4.134 7.82c.59.59 1.474-.294.884-.884L3.581 5.5l1.437-1.437c.59-.589-.294-1.473-.884-.884L2.698 4.616 1.261 3.18a.625.625 0 0 0-.884 0z"
-          fill={color ?? iconColor}
-        />
-        <path
-          fill={color ?? iconColor}
-          d="M6.441 2.994c-.313 0-.625.313-.625.624V7.37c0 .312.312.625.625.625h.625v-1.25h1.875c1.25 0 1.875-.939 1.875-1.875 0-.938-.625-1.875-1.875-1.875zm.625 1.251h1.875c.47 0 .625.395.625.625 0 .23-.156.625-.625.625H7.066z"
-        />
-      </svg>
-    </XPIconBackground>
+    <svg
+      width={28}
+      height={28}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 28 28"
+      style={{ width: size, height: size }}
+    >
+      <circle cx={14} cy={14} r={14} fill={bgColor || iconBgColor} />
+      <path
+        d="M7.262 10.762a.875.875 0 0 0 0 1.237l2.01 2.01-2.01 2.01A.875.875 0 0 0 8.5 17.258l2.01-2.01 2.01 2.01a.875.875 0 1 0 1.238-1.237l-2.01-2.01 2.01-2.01a.875.875 0 1 0-1.238-1.238l-2.01 2.01-2.01-2.01a.875.875 0 0 0-1.238 0zM14.875 15.75h1.75v1.75h-.875c-.438 0-.875-.438-.875-.875v-.875z"
+        fill={color || iconColor}
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M15.75 10.5c-.438 0-.875.438-.875.875v4.375h4.375c1.75 0 2.625-1.313 2.625-2.625 0-1.313-.875-2.625-2.625-2.625h-3.5zm3.5 1.75h-2.625V14h2.625c.656 0 .875-.553.875-.875 0-.322-.219-.875-.875-.875z"
+        fill={color || iconColor}
+      />
+    </svg>
   );
 };
 

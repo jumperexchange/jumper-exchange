@@ -4,6 +4,7 @@ import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ConnectButton } from 'src/components/ConnectButton';
 import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
@@ -87,14 +88,21 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
         />
       </PassImageBox>
       <AddressBox>
-        <AddressButton
-          aria-label="Copy wallet address"
-          onClick={() => handleCopyButton(address)}
-        >
-          <AddressButtonLabel variant="bodyMediumStrong">
-            {addressLabel}
-          </AddressButtonLabel>
-        </AddressButton>
+        {address ? (
+          <AddressButton
+            aria-label="Copy wallet address"
+            onClick={() => handleCopyButton(address)}
+          >
+            <AddressButtonLabel variant="bodyMediumStrong">
+              {addressLabel}
+            </AddressButtonLabel>
+          </AddressButton>
+        ) : (
+          <ConnectButton
+            sx={{ height: '40px', padding: '8px 16px' }}
+            id="connect-wallet-button-address-card"
+          />
+        )}
         {address && (
           <>
             <ProfileIconButton

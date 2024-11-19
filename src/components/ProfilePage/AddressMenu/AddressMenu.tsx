@@ -41,12 +41,17 @@ export const AddressMenu = ({
               transformOrigin: 'top',
             }}
           >
-            <MenuPaper show={open} width={'320px'} className="menu-paper">
+            <MenuPaper
+              show={open}
+              width={'320px'}
+              className="menu-paper"
+              sx={{ borderRadius: '12px' }}
+            >
               <AddressMenuList
                 autoFocusItem={open}
-                id="main-burger-menu"
+                id="address-menu"
                 autoFocus={open}
-                aria-labelledby="main-burger-menu"
+                aria-labelledby="address-menu"
                 hasLabel={true}
                 sx={{
                   ':first-child': {
