@@ -11,14 +11,7 @@ const generateBridgeOrderedPairs = (tokens: Token[]) => {
 
   // Loop through each token and compare with every other token
   for (const token1 of tokens) {
-    if (token1.symbol.includes('.')) {
-      continue;
-    }
-
     for (const token2 of tokens) {
-      if (token2.symbol.includes('.')) {
-        continue;
-      }
       // Ensure tokens are from different chains (bridge rule)
       if (token1.chainId !== token2.chainId) {
         orderedPairs.push([token1, token2]); // Token1 -> Token2

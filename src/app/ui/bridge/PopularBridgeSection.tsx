@@ -38,33 +38,6 @@ const PopularBridgeSection = ({
   const popularBridges = [...sameSymbolTokens, ...otherTokens].slice(0, NUMBER_OF_TOKENS)
     .filter((token) => token.symbol !== sourceToken.symbol || token.chainId !== sourceToken.chainId);
 
-  /*let popularBridges = getTokenByName(tokens, destinationToken?.name ?? '')
-    .filter((token) => {
-      return token.chainId !== destinationChain.id;
-    })
-    .filter((token) => {
-      const isTokenExistsInSourceChain = tokens[token.chainId].some(
-        (tk) => tk.symbol === sourceToken.symbol,
-      );
-      const isTokenExistsInDestinationChain = tokens[
-        destinationChain.id
-        ].some((tk) => tk.symbol === destinationToken.symbol);
-
-      return (
-        isTokenExistsInDestinationChain && isTokenExistsInSourceChain
-      );
-    });
-
-  if (popularBridges.length <= NUMBER_OF_TOKENS) {
-    // popularBridges = tokens[destinationChain.id].slice(0, NUMBER_OF_TOKENS - popularBridges.length)
-    //   .filter((token) => sourceToken.symbol !== token.symbol && sourceToken.chainId !== token.chainId);
-    popularBridges = Object.values(tokens)
-      .flat()
-      .filter((token) => token.chainId !== destinationChain.id)
-      .slice(0, NUMBER_OF_TOKENS);
-  }*/
-  console.log('--', destinationToken, popularBridges);
-
   return (
     <BridgePageContainer width="100%">
       <Typography variant="h3" marginY={2}>
