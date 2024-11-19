@@ -1,5 +1,5 @@
-import { Box } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, Button } from '@mui/material';
+import { lighten, styled } from '@mui/material/styles';
 import { ProfilePageContainer } from '../ProfilePage/ProfilePage.style';
 
 export const BerachainContainer = styled(ProfilePageContainer)(({ theme }) => ({
@@ -18,4 +18,19 @@ export const BeraChainBackground = styled(Box)(({ theme }) => ({
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
+}));
+
+export const BeraChainBackButton = styled(Button)(({ theme }) => ({
+  display: 'flex',
+  color: theme.palette.text.primary,
+  padding: theme.spacing(0.75),
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: 40,
+  borderRadius: '20px',
+  background: '#1E1D1C',
+  transition: 'background ease-in-out 300ms',
+  '&:hover': {
+    background: lighten('#1E1D1C', 0.04),
+  },
 }));

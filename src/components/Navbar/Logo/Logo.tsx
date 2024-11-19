@@ -55,6 +55,7 @@ export const Logo = ({ variant }: LogoProps) => {
             src={configTheme.logo?.url.href}
             width={configTheme.logo?.width}
             height={configTheme.logo?.height}
+            style={{ width: 'auto', height: 'auto' }}
           />
         </>
       ) : (

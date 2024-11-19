@@ -2,7 +2,6 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import type { AccordionProps as MuiAccordionProps } from '@mui/material';
 import {
   Box,
-  Container,
   Divider,
   IconButton,
   Accordion as MuiAccordion,
@@ -20,10 +19,10 @@ import {
   styled,
 } from '@mui/material/styles';
 
-export const AccordionContainer = styled(Container)(({ theme }) => ({
+export const AccordionBox = styled(Box)(({ theme }) => ({
   margin: 'auto',
-  marginTop: theme.spacing(4),
-  padding: theme.spacing(1, 2),
+  // marginTop: theme.spacing(4),
+  // padding: theme.spacing(1, 2),
   borderRadius: '8px',
   position: 'relative',
   maxWidth: theme.breakpoints.values.md,
@@ -41,6 +40,7 @@ export const AccordionContainer = styled(Container)(({ theme }) => ({
 
 interface FaqShowMoreArrowProps {
   active: boolean;
+  arrowSize?: number;
 }
 
 export const rotateAnimation = keyframes`
@@ -65,10 +65,10 @@ export const FaqShowMoreIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 export const FaqShowMoreArrow = styled(ArrowForwardIosIcon, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<FaqShowMoreArrowProps>(({ active }) => ({
-  width: 24,
-  height: 24,
+  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'arrowSize',
+})<FaqShowMoreArrowProps>(({ active, arrowSize }) => ({
+  width: arrowSize || 24,
+  height: arrowSize || 24,
   transition: 'transform 0.3s ease',
   transform: active ? 'rotate(90deg)' : 'rotate(270deg)',
   animation: `${active ? rotateAnimation : 'none'} 300ms ease-in-out`,
@@ -91,6 +91,7 @@ export const Accordion = styled(MuiAccordion)<AccordionProps>(({ theme }) => ({
   fontFamily: 'inherit',
   borderRadius: '16px',
   padding: theme.spacing(3),
+  width: '100%',
   background: alpha(theme.palette.text.primary, 0.08),
   minHeight: 64,
   transition: 'background-color 300ms ease-in-out',
@@ -137,6 +138,21 @@ export const AccordionDivider = styled(Divider)(({ theme }) => ({
   }),
 }));
 
-export const AccordionSummary = styled(MuiAccordionSummary)(() => ({
+export const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
   minHeight: 'inherit',
+  '& .MuiAccordionSummary-content': {
+    alignItems: 'center',
+    gap: theme.spacing(1.5),
+  },
+}));
+
+export const AccordionIndex = styled(Box)(({ theme }) => ({
+  borderRadius: '16px',
+  height: 32,
+  width: 32,
+  flexShrink: 0,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  background: alpha(theme.palette.text.primary, 0.08),
 }));

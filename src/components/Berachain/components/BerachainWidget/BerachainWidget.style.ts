@@ -12,8 +12,7 @@ import { urbanist } from 'src/fonts/fonts';
 export const BerachainActionBerachainWidgetWrapper = styled(Box)(
   ({ theme }) => ({
     minWidth: 416,
-    width: '35%',
-    // height: 522,
+    height: 'fit-content',
     backgroundColor: theme.palette.surface1.main,
     borderRadius: '24px',
     boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
