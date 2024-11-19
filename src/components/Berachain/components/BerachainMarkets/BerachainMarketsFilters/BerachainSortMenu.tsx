@@ -9,10 +9,7 @@ import {
   BerachainMarketFilterArrow,
   BerachainMarketFiltersButton,
 } from '../BerachainMarkets.style';
-import {
-  BerachainMarketsSortFilterBox,
-  BerachainMarketsSortLabel,
-} from './BerachainMarketsFilters.style';
+import { BerachainMarketsSortFilterBox } from './BerachainMarketsFilters.style';
 
 export const BerachainSortMenu = () => {
   const { sort, setSort } = useBerachainMarketsFilterStore((state) => state);
@@ -35,9 +32,9 @@ export const BerachainSortMenu = () => {
 
   return (
     <BerachainMarketsSortFilterBox>
-      <BerachainMarketsSortLabel variant="bodySmall">
+      {/* <BerachainMarketsSortLabel variant="bodySmall">
         Sort by
-      </BerachainMarketsSortLabel>
+      </BerachainMarketsSortLabel> */}
       <BerachainMarketFiltersButton
         id={assetsFilterId}
         aria-controls={openSortMenu ? assetsMenuId : undefined}
@@ -45,7 +42,7 @@ export const BerachainSortMenu = () => {
         aria-expanded={openSortMenu ? 'true' : undefined}
         onClick={handleSortClick}
       >
-        <Typography variant="bodySmall">All selected</Typography>
+        <Typography variant="bodySmall">Sort</Typography>
         <BerachainMarketFilterArrow active={openSortMenu} />
       </BerachainMarketFiltersButton>
       <BerachainMarketFilter

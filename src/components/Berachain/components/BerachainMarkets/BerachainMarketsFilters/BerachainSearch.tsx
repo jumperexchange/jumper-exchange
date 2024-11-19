@@ -109,7 +109,7 @@ export const BerachainSearch = () => {
                 />
                 {isInputEmpty && (
                   <Typography variant="bodySmall" color={'text.primary'}>
-                    Search for markets or assets
+                    Search for markets
                   </Typography>
                 )}
               </InputAdornment>

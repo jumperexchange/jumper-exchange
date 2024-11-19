@@ -40,9 +40,9 @@ export const BerachainFilterTokensMenu = () => {
 
   return (
     <BerachainMarketsFilterBox>
-      <Typography variant="bodySmall" color={'text.primary'}>
+      {/* <Typography variant="bodySmall" color={'text.primary'}>
         Base Assets
-      </Typography>
+      </Typography> */}
       <BerachainMarketFiltersButton
         id={assetsFilterId}
         aria-controls={openTokensFilterMenu ? assetsMenuId : undefined}
@@ -50,7 +50,7 @@ export const BerachainFilterTokensMenu = () => {
         aria-expanded={openTokensFilterMenu ? 'true' : undefined}
         onClick={handleTokensFilterClick}
       >
-        <Typography variant="bodySmall">All selected</Typography>
+        <Typography variant="bodySmall">All Tokens</Typography>
         <BerachainMarketFilterArrow active={openTokensFilterMenu} />
       </BerachainMarketFiltersButton>
       <BerachainMarketFilter
