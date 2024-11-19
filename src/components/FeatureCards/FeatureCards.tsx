@@ -2,7 +2,7 @@
 import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useSettingsStore } from '@/stores/settings';
-import type { FeatureCardData, JumperUserData } from '@/types/strapi';
+import type { FeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import type { Theme } from '@mui/material';
@@ -34,9 +34,7 @@ export const FeatureCards = () => {
 
   const { featureCards: featureCardsLevel } = usePersonalizedFeatureOnLevel({
     points: points,
-    enabled:
-      !!points &&
-      (!featureCardsToDisplay || featureCardsToDisplay?.length === 0),
+    enabled: !!points,
   });
 
   useEffect(() => {
@@ -82,9 +80,7 @@ export const FeatureCards = () => {
   const slicedPersonalizedFeatureCards = useMemo(() => {
     const personalizedFeatureCards =
       featureCardsToDisplay && featureCardsToDisplay.length > 0
-        ? featureCardsLevel?.filter((card) =>
-            featureCardsToDisplay.includes(card.id),
-          )
+        ? featureCardsToDisplay
         : featureCardsLevel && featureCardsLevel.length > 0
           ? [featureCardsLevel[0]]
           : undefined;
