@@ -55,7 +55,7 @@ export const BerchainMarketCardAvatarSkeleton = styled(Skeleton)(
 export const BerchainMarketCardTokenBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  gap: theme.spacing(1),
+  gap: theme.spacing(0.5),
   height: 32,
   borderRadius: '16px',
   backgroundColor: alpha(theme.palette.white.main, 0.08),

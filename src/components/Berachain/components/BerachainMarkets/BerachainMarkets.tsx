@@ -13,8 +13,9 @@ export const BerachainMarkets = () => {
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
-        {data?.map((card) => (
+        {data?.map((card, index) => (
           <BerachainMarketCard
+            key={`berachain-market-card-${card.protocol?.name || 'protocol'}-${index}`}
             chainId={card.chain}
             protocol={card.protocol}
             tokens={card.tokens}

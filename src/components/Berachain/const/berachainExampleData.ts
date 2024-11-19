@@ -96,22 +96,22 @@ export const berachainMarkets: BerachainMarketType[] = [
       },
     },
     chain: 137,
-    tokens: ['0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'],
+    tokens: ['0xc2132D05D31c914a87C6611C10748AEb04B58e8F'],
     tvl: '$31.00',
     apys: {
       total: 4.78,
       tokens: [
         {
           tokenAddress: [
-            '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-            '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+            '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
+            '0xA3c322Ad15218fBFAEd26bA7f616249f7705D945',
           ],
           value: 2,
         },
         {
           tokenAddress: [
-            '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-            '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+            '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
+            '0xA3c322Ad15218fBFAEd26bA7f616249f7705D945',
           ],
           value: 2.78,
         },

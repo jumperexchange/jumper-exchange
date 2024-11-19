@@ -79,8 +79,9 @@ export const BerachainFilterChainsMenu = () => {
         idLabel={assetsFilterId}
         idMenu={assetsMenuId}
       >
-        {chains.map((chain) => (
+        {chains.map((chain, index) => (
           <BerachainMarketFilterItem
+            key={`berachain-chain-filter-${index}-${chain.id}`}
             onClick={() => {
               setChainFilter(chain.id);
             }}

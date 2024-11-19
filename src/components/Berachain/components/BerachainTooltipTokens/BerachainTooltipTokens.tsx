@@ -31,20 +31,14 @@ export const BerachainTooltipTokens = ({
       return undefined;
     }
 
-    const result = apyTokens.flatMap((tokens, index) => {
-      if (!tokens.tokenAddress || !Array.isArray(tokens.tokenAddress)) {
-        return [];
-      }
-
-      return tokens.tokenAddress.map((token) => {
-        return {
+    return apyTokens.flatMap(
+      (tokens, tokenSetIndex) =>
+        tokens.tokenAddress?.map((token, tokenIndex) => ({
           chainId,
           tokenAddress: token,
-        };
-      });
-    });
-
-    return result;
+          queryKey: ['tokens', chainId, token],
+        })) ?? [],
+    );
   }, [apyTokens, chainId]);
 
   const {

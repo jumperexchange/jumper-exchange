@@ -69,9 +69,10 @@ export const BerachainMarketCard = ({
       return undefined;
     }
     return tokens.map(
-      (token): UseMultipleTokenProps => ({
+      (token, index): UseMultipleTokenProps => ({
         chainId,
         tokenAddress: token,
+        queryKey: ['berachain-market-card-tokens', chainId, token, index],
       }),
     );
   }, [chainId, tokens]);
@@ -117,10 +118,14 @@ export const BerachainMarketCard = ({
               <Skeleton variant="circular" sx={{ width: 32, height: 32 }} />
             )}
             <BerchainMarketCardTokenBox>
-              {fetchedTokens.map((token) => (
-                <>
+              {fetchedTokens.map((token, index) => (
+                <Box
+                  sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+                  key={`berachain-market-card-token-container-${index}`}
+                >
                   {token?.logoURI ? (
                     <Image
+                      key={`berachain-market-card-token-${token.name}-${index}`}
                       src={token.logoURI}
                       alt={`${token.name} logo`}
                       width={20}
@@ -129,16 +134,20 @@ export const BerachainMarketCard = ({
                     />
                   ) : (
                     <Skeleton
+                      key={`berachain-market-card-token-skeleton-${index}`}
                       variant="circular"
                       sx={{ width: 20, height: 20 }}
                     />
                   )}
                   {fetchedTokens.length === 1 && token?.name && (
-                    <Typography variant="bodyXSmallStrong">
+                    <Typography
+                      variant="bodyXSmallStrong"
+                      key={`berachain-market-card-token-label-${token.name}-${index}`}
+                    >
                       {fetchedTokens[0]?.symbol}
                     </Typography>
                   )}
-                </>
+                </Box>
               ))}
             </BerchainMarketCardTokenBox>
           </Box>

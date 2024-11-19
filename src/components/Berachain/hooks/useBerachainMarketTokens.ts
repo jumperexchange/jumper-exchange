@@ -14,6 +14,7 @@ export const useBerachainMarketTokens = (data: BerachainMarketType[]) => {
       market.tokens.map((tokenAddress: string) => ({
         chainId: market.chain as ChainId,
         tokenAddress,
+        queryKey: [tokenAddress, market.chain],
       })),
     );
 

@@ -61,12 +61,13 @@ export const BerachainFilterProtocolsMenu = () => {
         idLabel={assetsFilterId}
         idMenu={assetsMenuId}
       >
-        {data?.map((protocol: string) => {
+        {data?.map((protocol: string, index: number) => {
           if (!protocol) {
             return null;
           }
           return (
             <BerachainMarketFilterItem
+              key={`berachain-protocol-filter-${index}-${protocol}`}
               onClick={() => {
                 setProtocolFilter(protocol);
               }}

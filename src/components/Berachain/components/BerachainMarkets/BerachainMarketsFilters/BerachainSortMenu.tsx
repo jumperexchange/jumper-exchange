@@ -56,12 +56,13 @@ export const BerachainSortMenu = () => {
         idLabel={assetsFilterId}
         idMenu={assetsMenuId}
       >
-        {data.map((sortType: string) => {
+        {data.map((sortType: string, index: number) => {
           if (!sortType) {
             return null;
           }
           return (
             <BerachainMarketFilterItem
+              key={`berachain-sort-${index}`}
               onClick={() => {
                 setSort(sortType);
               }}

@@ -17,6 +17,7 @@ export async function getTokenQuery(chainId: ChainId, tokenAddress: string) {
 export interface UseMultipleTokenProps {
   chainId: ChainId;
   tokenAddress: string;
+  queryKey: (string | number)[];
 }
 
 export const useMultipleTokens = (
@@ -25,7 +26,7 @@ export const useMultipleTokens = (
   const safeTokens = Array.isArray(tokens) ? tokens : [];
   const queries = useQueries({
     queries: safeTokens.map((token) => ({
-      queryKey: ['tokens', token.chainId, token.tokenAddress],
+      queryKey: token.queryKey,
       queryFn: () => getTokenQuery(token.chainId, token.tokenAddress),
       enabled: !!token.chainId && !!token.tokenAddress,
       refetchInterval: 1000 * 60 * 60, // Refetch every hour

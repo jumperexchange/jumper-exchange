@@ -61,12 +61,13 @@ export const BerachainFilterTokensMenu = () => {
         idLabel={assetsFilterId}
         idMenu={assetsMenuId}
       >
-        {data.tokens.map((token) => {
+        {data.tokens.map((token, index) => {
           if (!token) {
             return null;
           }
           return (
             <BerachainMarketFilterItem
+              key={`berachain-token-filter-${index}-${token.symbol}`}
               onClick={() => {
                 setTokenFilter(token.address);
               }}
