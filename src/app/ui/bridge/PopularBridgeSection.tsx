@@ -27,16 +27,30 @@ const PopularBridgeSection = ({
 }: PopularBridgeProps) => {
   const sameSymbolTokens = Object.values(tokens)
     .flat()
-    .filter((token) => token.symbol === sourceToken.symbol && token.chainId !== destinationChain.id);
+    .filter(
+      (token) =>
+        token.symbol === sourceToken.symbol &&
+        token.chainId !== destinationChain.id,
+    );
 
   const otherTokens = Object.values(tokens)
     .flat()
-    .filter((token) => token.chainId !== destinationChain.id && token.symbol !== sourceToken.symbol)
-    .filter((token, index, self) =>
-      self.findIndex(t => t.chainId === token.chainId) === index
+    .filter(
+      (token) =>
+        token.chainId !== destinationChain.id &&
+        token.symbol !== sourceToken.symbol,
     )
-  const popularBridges = [...sameSymbolTokens, ...otherTokens].slice(0, NUMBER_OF_TOKENS)
-    .filter((token) => token.symbol !== sourceToken.symbol || token.chainId !== sourceToken.chainId);
+    .filter(
+      (token, index, self) =>
+        self.findIndex((t) => t.chainId === token.chainId) === index,
+    );
+  const popularBridges = [...sameSymbolTokens, ...otherTokens]
+    .slice(0, NUMBER_OF_TOKENS)
+    .filter(
+      (token) =>
+        token.symbol !== sourceToken.symbol ||
+        token.chainId !== sourceToken.chainId,
+    );
 
   return (
     <BridgePageContainer width="100%">
@@ -44,20 +58,19 @@ const PopularBridgeSection = ({
         Popular bridges
       </Typography>
       <Stack direction="row" flexWrap="wrap">
-        {popularBridges
-          .map((token) => (
-            <MuiLink
-              width="50%"
-              color="text.primary"
-              key={generateKey(token.address)}
-              component={Link}
-              href={`/bridge/${getChainById(chains, token.chainId)?.name}-${token.symbol}-to-${destinationChain?.name}-${destinationToken?.symbol}`.toLowerCase()}
-            >
-              Bridge from {token.symbol} on{' '}
-              {getChainById(chains, token.chainId)?.name} to{' '}
-              {destinationToken?.symbol} on {destinationChain?.name}
-            </MuiLink>
-          ))}
+        {popularBridges.map((token) => (
+          <MuiLink
+            width="50%"
+            color="text.primary"
+            key={generateKey(token.address)}
+            component={Link}
+            href={`/bridge/${getChainById(chains, token.chainId)?.name}-${token.symbol}-to-${destinationChain?.name}-${destinationToken?.symbol}`.toLowerCase()}
+          >
+            Bridge from {token.symbol} on{' '}
+            {getChainById(chains, token.chainId)?.name} to{' '}
+            {destinationToken?.symbol} on {destinationChain?.name}
+          </MuiLink>
+        ))}
       </Stack>
     </BridgePageContainer>
   );

@@ -29,8 +29,7 @@ export async function generateSitemaps() {
   const availableChainsId = chains.map((c) => c.id);
 
   const ordered = generateBridgeOrderedPairs(
-    coins
-      .filter((c) => availableChainsId.includes(c.chainId)) as Token[],
+    coins.filter((c) => availableChainsId.includes(c.chainId)) as Token[],
   );
 
   const numberOfChunks = Math.ceil(ordered.length / sitemapLinksLimit);
