@@ -45,9 +45,9 @@ interface BerachainMarketFilterArrowProps {
   active: boolean;
 }
 
-export const BerachainMarketFilterArrow = styled(
-  ArrowForwardIosIcon,
-)<BerachainMarketFilterArrowProps>(({ theme, active }) => ({
+export const BerachainMarketFilterArrow = styled(ArrowForwardIosIcon, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<BerachainMarketFilterArrowProps>(({ active }) => ({
   width: 24,
   height: 24,
   transition: 'transform 0.3s ease',

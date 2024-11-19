@@ -124,8 +124,9 @@ declare module '@mui/material/styles' {
     titleSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
-    urbanistTitle3XLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
+    urbanistTitle2XLarge: React.CSSProperties;
+    urbanistTitle3XLarge: React.CSSProperties;
     urbanistTitleMedium: React.CSSProperties;
     urbanistBodyLarge: React.CSSProperties;
     urbanistBodyXLarge: React.CSSProperties;
@@ -155,6 +156,7 @@ declare module '@mui/material/styles' {
     title2XSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
+    urbanistTitle2XLarge: React.CSSProperties;
     urbanistTitle3XLarge: React.CSSProperties;
     urbanistTitleMedium: React.CSSProperties;
     urbanistBodyLarge: React.CSSProperties;
@@ -222,6 +224,7 @@ declare module '@mui/material/Typography' {
     titleSmall: true;
     title2XSmall: true;
     urbanistTitleLarge: true;
+    urbanistTitle2XLarge: true;
     urbanistTitleXLarge: true;
     urbanistTitle3XLarge: true;
     urbanistTitleMedium: true;
@@ -288,9 +291,9 @@ const themeCustomized = createTheme({
     },
     MuiSnackbar: {
       styleOverrides: {
-        root: () => ({
+        root: ({ theme }) => ({
           top: 80,
-          [themeBase.breakpoints.up('sm' as Breakpoint)]: {
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
             top: 80,
           },
         }),
@@ -298,8 +301,8 @@ const themeCustomized = createTheme({
     },
     MuiContainer: {
       styleOverrides: {
-        root: () => ({
-          [themeBase.breakpoints.up('lg' as Breakpoint)]: {
+        root: ({ theme }) => ({
+          [theme.breakpoints.up('lg' as Breakpoint)]: {
             maxWidth: 1280,
           },
         }),
@@ -414,6 +417,7 @@ const themeCustomized = createTheme({
           bodyXSmall: 'p',
           brandHeaderXLarge: 'h1',
           urbanistTitleLarge: 'p',
+          urbanistTitle2XLarge: 'p',
           urbanistTitle3XLarge: 'h1',
           urbanistBodyLarge: 'p',
           urbanistBodyXLarge: 'p',
@@ -667,6 +671,13 @@ const themeCustomized = createTheme({
       fontStyle: 'normal',
       fontWeight: 700,
       lineHeight: '72px',
+    },
+    urbanistTitle2XLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '80px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '96px',
     },
     urbanistTitle3XLarge: {
       fontSize: '96px',

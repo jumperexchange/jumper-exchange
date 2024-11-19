@@ -3,7 +3,7 @@ import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, styled } from '@mui/material/styles';
 import Image from 'next/image';
 
-export const BeraChainWelcomeBox = styled(Box)(({ theme }) => ({
+export const BeraChainWelcomeBox = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -31,12 +31,7 @@ export const BeraChainWelcomeIllustrations = styled(Box)(({ theme }) => ({
   maxWidth: 474,
 }));
 
-export const BeraChainWelcomeBear = styled(Image)(({ theme }) => ({
-  // [theme.breakpoints.down('sm' as Breakpoint)]: {
-  //   width: '100%',
-  //   height: 'auto',
-  // },
-}));
+export const BeraChainWelcomeBear = styled(Image)(() => ({}));
 
 export const BeraChainWelcomeSubtitleBox = styled(Box)(({ theme }) => ({
   display: 'flex',

@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -16,6 +16,7 @@ import {
 } from './BerachainWelcome.style';
 
 export const BerachainWelcome = () => {
+  const theme = useTheme();
   return (
     <BeraChainWelcomeBox>
       <BeraChainWelcomeIllustrations>
@@ -66,9 +67,9 @@ export const BerachainWelcome = () => {
           variant="urbanistTitle3XLarge"
           sx={{
             typography: {
-              xs: 'urbanistTitleXLarge',
-              sm: 'urbanistTitle2XLarge',
-              md: 'urbanistTitle3XLarge',
+              xs: theme.typography.urbanistTitleXLarge,
+              sm: theme.typography.urbanistTitle2XLarge,
+              md: theme.typography.urbanistTitle3XLarge,
             },
           }}
         >

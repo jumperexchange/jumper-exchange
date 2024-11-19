@@ -64,9 +64,9 @@ export const FaqShowMoreIconButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-export const FaqShowMoreArrow = styled(
-  ArrowForwardIosIcon,
-)<FaqShowMoreArrowProps>(({ theme, active }) => ({
+export const FaqShowMoreArrow = styled(ArrowForwardIosIcon, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<FaqShowMoreArrowProps>(({ active }) => ({
   width: 24,
   height: 24,
   transition: 'transform 0.3s ease',
@@ -87,9 +87,7 @@ export const AccordionItemWrapper = styled(Box)<AccordionProps>(
   }),
 );
 
-export const Accordion = styled(MuiAccordion, {
-  shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
-})<AccordionProps>(({ theme, show }) => ({
+export const Accordion = styled(MuiAccordion)<AccordionProps>(({ theme }) => ({
   fontFamily: 'inherit',
   borderRadius: '16px',
   padding: theme.spacing(3),
@@ -139,6 +137,6 @@ export const AccordionDivider = styled(Divider)(({ theme }) => ({
   }),
 }));
 
-export const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
+export const AccordionSummary = styled(MuiAccordionSummary)(() => ({
   minHeight: 'inherit',
 }));
