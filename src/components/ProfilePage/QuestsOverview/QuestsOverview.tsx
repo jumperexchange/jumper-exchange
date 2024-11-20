@@ -3,7 +3,6 @@ import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 import type { Quest } from 'src/types/loyaltyPass';
 import { checkInclusion } from '../checkInclusion';
 import { QuestCard } from '../QuestCard/QuestCard';
-import { QuestCarouselNumericItems } from './QuestCarouselNumericItems';
 import {
   QuestsOverviewContainer,
   QuestsOverviewTitle,
@@ -88,7 +87,7 @@ export const QuestsOverview = ({
             <QuestCard key={`mission-card-skeleton-${idx}`} isLoading={true} />
           ))}
       {/** render ongoing numeric quests */}
-      <QuestCarouselNumericItems />
+      {/* <QuestCarouselNumericItems /> */}
     </QuestsOverviewContainer>
   );
 };
