@@ -1,4 +1,4 @@
-import { alpha, Box, Skeleton, Typography, useTheme } from '@mui/material';
+import { alpha, Box, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import useImageStatus from 'src/hooks/useImageStatus';
@@ -13,6 +13,7 @@ import {
   RankPointsContainer,
   RankWalletAddress,
   RankWalletImage,
+  RankWalletImageSkeleton,
 } from './LeaderboardEntry.style';
 
 interface LeaderboardEntryProps {
@@ -62,10 +63,14 @@ export const LeaderboardEntry = ({
             unoptimized={true}
           />
         ) : (
-          <Skeleton variant="circular" width={48} height={48} />
+          <RankWalletImageSkeleton variant="circular" width={48} height={48} />
         )}
 
-        <RankWalletAddress variant="bodyLargeStrong">
+        <RankWalletAddress
+          variant="bodyLargeStrong"
+          isUserConnected={isUserConnected}
+          isUserEntry={isUserEntry}
+        >
           {isUserEntry && !isUserConnected
             ? t('leaderboard.rankCtaConnect')
             : walletDigest(walletAddress)}

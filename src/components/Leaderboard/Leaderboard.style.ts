@@ -15,9 +15,9 @@ export const LeaderboardContainer = styled(Box)(({ theme }) => ({
 
 export const LeaderboardHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing(0.5),
-  alignItems: 'center',
+  flexDirection: 'column-reverse',
+  gap: theme.spacing(1.5),
+  alignItems: 'flex-start',
   paddingLeft: theme.spacing(3),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: 0,
@@ -28,7 +28,10 @@ export const LeaderboardHeader = styled(Box)(({ theme }) => ({
 
 export const LeaderboardUpdateDateLabel = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(1, 2),
-  backgroundColor: theme.palette.alphaDark100.main,
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? theme.palette.alphaDark100.main
+      : theme.palette.alphaLight100.main,
   borderRadius: '16px',
 }));
 

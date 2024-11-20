@@ -1,4 +1,4 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { BoxProps, Breakpoint, TypographyProps } from '@mui/material';
 import {
   alpha,
   Box,
@@ -144,6 +144,7 @@ export const RankWalletImage = styled(Image, {
 
 export const RankWalletImageSkeleton = styled(Skeleton)(({ theme }) => ({
   borderRadius: '100%',
+  display: 'none',
   width: 24,
   height: 24,
   flexShrink: 0,
@@ -154,11 +155,23 @@ export const RankWalletImageSkeleton = styled(Skeleton)(({ theme }) => ({
   },
 }));
 
-export const RankWalletAddress = styled(Typography)(({ theme }) => ({
+interface RankWalletAddressProps extends TypographyProps {
+  isUserConnected?: boolean;
+  isUserEntry?: boolean;
+}
+
+export const RankWalletAddress = styled(Typography, {
+  shouldForwardProp: (prop) =>
+    prop !== 'isUserConnected' && prop !== 'isUserEntry',
+})<RankWalletAddressProps>(({ theme, isUserConnected, isUserEntry }) => ({
   textOverflow: 'ellipsis',
   overflow: 'hidden',
   [theme.breakpoints.down('sm' as Breakpoint)]: {
     fontSize: '14px',
+    ...(!isUserConnected &&
+      isUserEntry && {
+        display: 'none',
+      }),
   },
 }));
 

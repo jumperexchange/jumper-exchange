@@ -60,7 +60,13 @@ export const Pagination = ({
           disabled={page === 1}
         />
       </PaginationButtonNavigatorBox>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: { xs: 0, sm: '8px' },
+        }}
+      >
         {starterIndex !== 1 && (
           <PaginationClosestPages>
             <PaginationLink href={`/leaderboard?page=1`}>

@@ -13,6 +13,7 @@ export const PaginationButtonNavigatorBox = styled(Box)(({ theme }) => ({
 export const PaginationButtonNavigator = styled(
   PaginationButton,
 )<PaginationButtonProps>(() => ({
+  display: 'flex',
   height: '34px',
   width: '34px',
 }));
