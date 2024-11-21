@@ -3,17 +3,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { BerachainProgressCard } from '../BerachainProgressCard/BerachainProgressCard';
 import {
-  BeraChainWelcomeBear,
+  BerachainWelcomeBear,
   BeraChainWelcomeBox,
-  BeraChainWelcomeBoxContent,
-  BeraChainWelcomeConnectButtonCTA,
+  BerachainWelcomeBoxContent,
+  BerachainWelcomeConnectButtonCTA,
   BeraChainWelcomeContent,
   BeraChainWelcomeIllustrations,
-  BeraChainWelcomeLearnMoreButton,
-  BeraChainWelcomeSubtitle,
-  BeraChainWelcomeSubtitleBox,
-  BeraChainWelcomeSubtitleLabel,
-  BeraChainWelcomeTitle,
+  BerachainWelcomeLearnMoreButton,
+  BerachainWelcomeSubtitle,
+  BerachainWelcomeSubtitleBox,
+  BerachainWelcomeSubtitleLabel,
+  BerachainWelcomeTitle,
 } from './BerachainWelcome.style';
 
 export const BerachainWelcome = () => {
@@ -21,35 +21,27 @@ export const BerachainWelcome = () => {
   return (
     <BeraChainWelcomeBox>
       <BeraChainWelcomeIllustrations>
-        <BeraChainWelcomeBear
+        <BerachainWelcomeBear
           src="/berachain/sir-bridgealot-w-glow.png"
           alt="Berachain Pepe"
           width={278}
           height={395}
           sx={{
-            position: 'absolute',
-            aspectRatio: 0.8,
-            height: '100%',
-            width: 'auto',
             left: 0,
           }}
         />
-        <BeraChainWelcomeBear
+        <BerachainWelcomeBear
           src="/berachain/berachain-bear-w-glow.png"
           alt="Berachain Bear"
           width={304}
           height={395}
           style={{
-            position: 'absolute',
-            aspectRatio: 0.8,
-            height: '100%',
-            width: 'auto',
             right: 0,
           }}
         />
       </BeraChainWelcomeIllustrations>
       <BeraChainWelcomeContent>
-        <BeraChainWelcomeSubtitleBox>
+        <BerachainWelcomeSubtitleBox>
           <Typography variant="bodyXLarge" marginRight={'16px'}>
             We present
           </Typography>
@@ -60,11 +52,11 @@ export const BerachainWelcome = () => {
             height={38}
             style={{ marginRight: '24px' }}
           />
-          <BeraChainWelcomeSubtitleLabel variant="bodyMediumStrong">
+          <BerachainWelcomeSubtitleLabel variant="bodyMediumStrong">
             Launching soon
-          </BeraChainWelcomeSubtitleLabel>
-        </BeraChainWelcomeSubtitleBox>
-        <BeraChainWelcomeTitle
+          </BerachainWelcomeSubtitleLabel>
+        </BerachainWelcomeSubtitleBox>
+        <BerachainWelcomeTitle
           variant="urbanistTitle3XLarge"
           sx={{
             typography: {
@@ -75,12 +67,12 @@ export const BerachainWelcome = () => {
           }}
         >
           Earn Rich Incentives
-        </BeraChainWelcomeTitle>
-        <BeraChainWelcomeSubtitle variant="bodyXLarge">
+        </BerachainWelcomeTitle>
+        <BerachainWelcomeSubtitle variant="bodyXLarge">
           by pledging your Crypto across various Berachain partner markets!
-        </BeraChainWelcomeSubtitle>
+        </BerachainWelcomeSubtitle>
       </BeraChainWelcomeContent>
-      <BeraChainWelcomeBoxContent>
+      <BerachainWelcomeBoxContent>
         <BerachainProgressCard
           title={'Total Value Locked'}
           value="$718K.88"
@@ -117,19 +109,19 @@ export const BerachainWelcome = () => {
             backdropFilter: 'blur(8px)',
           }}
         />
-      </BeraChainWelcomeBoxContent>
-      <BeraChainWelcomeBoxContent>
+      </BerachainWelcomeBoxContent>
+      <BerachainWelcomeBoxContent>
         <Link href="/berachain/explore">
-          <BeraChainWelcomeConnectButtonCTA>
+          <BerachainWelcomeConnectButtonCTA>
             <Typography variant="bodyLargeStrong">Start Exploring!</Typography>
-          </BeraChainWelcomeConnectButtonCTA>
+          </BerachainWelcomeConnectButtonCTA>
         </Link>
         <Link href="/berachain">
-          <BeraChainWelcomeLearnMoreButton>
+          <BerachainWelcomeLearnMoreButton>
             <Typography variant="bodyLargeStrong">Learn more</Typography>
-          </BeraChainWelcomeLearnMoreButton>
+          </BerachainWelcomeLearnMoreButton>
         </Link>
-      </BeraChainWelcomeBoxContent>
+      </BerachainWelcomeBoxContent>
     </BeraChainWelcomeBox>
   );
 };

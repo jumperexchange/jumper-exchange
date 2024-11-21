@@ -1,12 +1,10 @@
 import { BerachainFilterChainsMenu } from './BerachainFilterChainsMenu';
-import { BerachainFilterProtocolsMenu } from './BerachainFilterProtocolsMenu';
 import { BerachainFilterTokensMenu } from './BerachainFilterTokensMenu';
 import {
   BerachainMarketsFiltersContainer,
   BerachainMarketsFiltersInnerContainer,
 } from './BerachainMarketsFilters.style';
 import { BerachainSearch } from './BerachainSearch';
-import { BerachainSortMenu } from './BerachainSortMenu';
 
 export const BerachainMarketsFilters = () => {
   return (
@@ -14,10 +12,12 @@ export const BerachainMarketsFilters = () => {
       <BerachainMarketsFiltersInnerContainer>
         <BerachainFilterTokensMenu />
         <BerachainFilterChainsMenu />
-        <BerachainFilterProtocolsMenu />
-        <BerachainSearch />
+        {/* <BerachainFilterProtocolsMenu /> */}
       </BerachainMarketsFiltersInnerContainer>
-      <BerachainSortMenu />
+      <BerachainMarketsFiltersInnerContainer>
+        <BerachainSearch />
+        {/* <BerachainSortMenu /> */}
+      </BerachainMarketsFiltersInnerContainer>
     </BerachainMarketsFiltersContainer>
   );
 };

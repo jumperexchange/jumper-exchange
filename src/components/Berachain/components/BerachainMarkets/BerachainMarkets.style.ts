@@ -1,9 +1,7 @@
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Box, Button, Grid } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
-import { darken, styled } from '@mui/material/styles';
-import { rotateAnimation } from 'src/components/AccordionFAQ';
-
+import { alpha, darken, styled } from '@mui/material/styles';
 export const BerachainMarketFilters = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
@@ -45,12 +43,13 @@ interface BerachainMarketFilterArrowProps {
   active: boolean;
 }
 
-export const BerachainMarketFilterArrow = styled(ArrowForwardIosIcon, {
+export const BerachainMarketFilterArrow = styled(KeyboardArrowDownIcon, {
   shouldForwardProp: (prop) => prop !== 'active',
-})<BerachainMarketFilterArrowProps>(({ active }) => ({
+})<BerachainMarketFilterArrowProps>(({ active, theme }) => ({
+  color: alpha(theme.palette.text.primary, 0.24),
+  marginTop: theme.spacing(0.25),
   width: 24,
   height: 24,
   transition: 'transform 0.3s ease',
-  transform: active ? 'rotate(90deg)' : 'rotate(270deg)',
-  animation: `${active ? rotateAnimation : 'none'} 300ms ease-in-out`,
+  transform: `rotate(${active ? '180deg' : '0deg'})`,
 }));

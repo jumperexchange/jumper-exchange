@@ -22,6 +22,7 @@ import { BerachainTooltipTokens } from '../BerachainTooltipTokens/BerachainToolt
 import {
   BerachainMarketCardBadge,
   BerachainMarketCardHeader,
+  BerachainMarketCardTokenContainer,
   BerachainMarketCardWrapper,
   BerchainMarketCardAvatar,
   BerchainMarketCardInfos,
@@ -119,7 +120,7 @@ export const BerachainMarketCard = ({
             )}
             <BerchainMarketCardTokenBox>
               {fetchedTokens.map((token, index) => (
-                <Box
+                <BerachainMarketCardTokenContainer
                   sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
                   key={`berachain-market-card-token-container-${index}`}
                 >
@@ -147,46 +148,25 @@ export const BerachainMarketCard = ({
                       {fetchedTokens[0]?.symbol}
                     </Typography>
                   )}
-                </Box>
+                </BerachainMarketCardTokenContainer>
               ))}
             </BerchainMarketCardTokenBox>
           </Box>
           {protocol?.type && (
-            <Tooltip
-              title={
-                <BerachainTooltipTokens
-                  open={openTokensTooltip}
-                  setOpen={setOpenTokensTooltip}
-                  anchor={anchorTokensTooltip}
-                  setAnchor={setAnchorTokensTooltip}
-                  idLabel={tokensTooltipId}
-                  idMenu={tokensTooltipMenuId}
-                  chainId={chainId}
-                  apyTokens={apys?.tokens}
-                />
+            <BerachainMarketCardBadge
+              variant="bodySmall"
+              type={protocol?.type}
+              // onMouseEnter={(event) => handleTooltip(event, false)}
+              // onMouseLeave={(event) => handleTooltip(event, true)}
+              id={tokensTooltipId}
+              aria-controls={
+                openTokensTooltip ? tokensTooltipMenuId : undefined
               }
-              open={openTokensTooltip ? false : undefined}
-              disableFocusListener={openTokensTooltip ? false : undefined}
-              disableInteractive={!openTokensTooltip ? false : undefined}
-              placement="bottom"
-              enterTouchDelay={0}
-              arrow
+              aria-haspopup="true"
+              aria-expanded={openTokensTooltip ? 'true' : undefined}
             >
-              <BerachainMarketCardBadge
-                variant="bodySmall"
-                type={protocol?.type}
-                // onMouseEnter={(event) => handleTooltip(event, false)}
-                // onMouseLeave={(event) => handleTooltip(event, true)}
-                id={tokensTooltipId}
-                aria-controls={
-                  openTokensTooltip ? tokensTooltipMenuId : undefined
-                }
-                aria-haspopup="true"
-                aria-expanded={openTokensTooltip ? 'true' : undefined}
-              >
-                {protocol.type}
-              </BerachainMarketCardBadge>
-            </Tooltip>
+              {protocol.type}
+            </BerachainMarketCardBadge>
           )}
         </BerchainMarketCardInfos>
         <BerchainMarketCardInfos>
@@ -197,13 +177,36 @@ export const BerachainMarketCard = ({
             sx={{ color: alpha(theme.palette.white.main, 0.48) }}
             valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
           />
-          <BerachainProgressCard
-            title={'Net APY'}
-            value={`${typeof apys?.total === 'number' ? apys?.total + '%' : apys?.total}`}
-            tooltip={'Net APY tooltip msg lorem ipsum'}
-            sx={{ color: alpha(theme.palette.white.main, 0.48) }}
-            valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
-          />
+          <Tooltip
+            title={
+              <BerachainTooltipTokens
+                open={openTokensTooltip}
+                setOpen={setOpenTokensTooltip}
+                anchor={anchorTokensTooltip}
+                setAnchor={setAnchorTokensTooltip}
+                idLabel={tokensTooltipId}
+                idMenu={tokensTooltipMenuId}
+                chainId={chainId}
+                apyTokens={apys?.tokens}
+              />
+            }
+            open={openTokensTooltip ? false : undefined}
+            disableFocusListener={openTokensTooltip ? false : undefined}
+            disableInteractive={!openTokensTooltip ? false : undefined}
+            placement="top"
+            enterTouchDelay={0}
+            arrow
+          >
+            <div style={{ flexGrow: 1 }}>
+              <BerachainProgressCard
+                title={'Net APY'}
+                value={`${typeof apys?.total === 'number' ? apys?.total + '%' : apys?.total}`}
+                tooltip={'Net APY tooltip msg lorem ipsum'}
+                sx={{ color: alpha(theme.palette.white.main, 0.48) }}
+                valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
+              />
+            </div>
+          </Tooltip>
         </BerchainMarketCardInfos>
       </BerachainMarketCardWrapper>
     </Link>

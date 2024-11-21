@@ -69,8 +69,8 @@ export const FaqShowMoreArrow = styled(ArrowForwardIosIcon, {
 })<FaqShowMoreArrowProps>(({ active, arrowSize }) => ({
   width: arrowSize || 24,
   height: arrowSize || 24,
-  transition: 'transform 0.3s ease',
-  transform: active ? 'rotate(90deg)' : 'rotate(270deg)',
+  // transition: 'transform 0.3s ease',
+  // transform: active ? 'rotate(90deg)' : 'rotate(270deg)',
   animation: `${active ? rotateAnimation : 'none'} 300ms ease-in-out`,
 }));
 
@@ -90,7 +90,7 @@ export const AccordionItemWrapper = styled(Box)<AccordionProps>(
 export const Accordion = styled(MuiAccordion)<AccordionProps>(({ theme }) => ({
   fontFamily: 'inherit',
   borderRadius: '16px',
-  padding: theme.spacing(3),
+  padding: theme.spacing(2, 3),
   width: '100%',
   background: alpha(theme.palette.text.primary, 0.08),
   minHeight: 64,

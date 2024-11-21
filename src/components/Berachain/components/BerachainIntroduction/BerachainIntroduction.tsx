@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import { BeraChainWelcomeConnectButtonCTA } from '../BerachainWelcome/BerachainWelcome.style';
+import { BerachainWelcomeConnectButtonCTA } from '../BerachainWelcome/BerachainWelcome.style';
 import {
   BerachainBearTyping,
   BerachainIntroductionBox,
@@ -69,11 +69,9 @@ export const BerachainIntroduction = () => {
           />
         </BerachainIntroductionStep>
       </BerachainIntroductionSteps>
-      <BeraChainWelcomeConnectButtonCTA>
-        <Typography variant="bodyLargeStrong">
-          Connect Wallet & Start Pledging
-        </Typography>
-      </BeraChainWelcomeConnectButtonCTA>
+      <BerachainWelcomeConnectButtonCTA>
+        <Typography variant="bodyLargeStrong">Get Started</Typography>
+      </BerachainWelcomeConnectButtonCTA>
     </BerachainIntroductionBox>
   );
 };

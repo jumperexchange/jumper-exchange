@@ -6,6 +6,7 @@ import type { BerachainProtocolType } from './BerachainMarketCard';
 
 export const BerachainMarketCardWrapper = styled(Card)(({ theme }) => ({
   display: 'flex',
+  position: 'relative',
   flexDirection: 'column',
   padding: theme.spacing(2),
   alignItems: 'flex-start',
@@ -18,6 +19,27 @@ export const BerachainMarketCardWrapper = styled(Card)(({ theme }) => ({
   '&:hover': {
     background: lighten('#1E1D1C', 0.02),
     border: `1px solid ${lighten('#383433', 0.2)}`,
+  },
+  '&:before': {
+    content: "' '",
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    borderRadius: '16px',
+    opacity: 0.28,
+    background: '#F47226',
+    filter: 'blur(40px)',
+  },
+}));
+
+export const BerachainMarketCardTokenContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  '&:not(:first-of-type)': {
+    marginLeft: theme.spacing(-1),
   },
 }));
 

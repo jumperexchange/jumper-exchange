@@ -1,9 +1,9 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link, Typography } from '@mui/material';
 import {
-  BeraChainBackground as Background,
-  BeraChainBackButton,
-  BerachainContainer as Container,
+  BerachainBackground as Background,
+  BerachainBackButton,
+  BerachainContentContainer as Container,
 } from './Berachain.style';
 import { BerachainProtocolAction } from './components/BerachainProtocolAction/BerachainProtocolAction';
 import type { BerachainMarketType } from './const/berachainExampleData';
@@ -19,10 +19,10 @@ export const BerachainExploreProtocol = ({
     <Container>
       <Background />
       <Link href="/berachain/explore" style={{ textDecoration: 'none' }}>
-        <BeraChainBackButton>
+        <BerachainBackButton>
           <ArrowBackIcon />
           <Typography variant="bodySmallStrong">Explore Berachain</Typography>
-        </BeraChainBackButton>
+        </BerachainBackButton>
       </Link>
       <BerachainProtocolAction
         image={market?.protocol.image}

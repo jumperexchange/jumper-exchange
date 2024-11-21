@@ -15,10 +15,11 @@ export const NavbarButtonsContainer = styled('div')({
 export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => ({
   justifyContent: 'center',
   backgroundColor: 'transparent',
-  color:
+  color: `${
     theme.palette.mode === 'dark'
       ? theme.palette.accent1Alt.main
-      : theme.palette.primary.main,
+      : theme.palette.primary.main
+  } !important`,
   width: 48,
   borderRadius: '50%',
   marginLeft: theme.spacing(1.5),
