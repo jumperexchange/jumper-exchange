@@ -3,19 +3,19 @@ import { type SxProps, type Theme } from '@mui/material';
 import type { TypographyProps } from '@mui/material/Typography';
 import Typography from '@mui/material/Typography';
 import type { ReactElement } from 'react';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Accordion,
   AccordionBox,
   AccordionDetails,
+  AccordionDivider,
   AccordionHeader,
   AccordionIndex,
   AccordionItemWrapper,
   AccordionSummary,
   AccordionTitle,
+  AccordionToggleButton,
   FaqShowMoreArrow,
-  FaqShowMoreIconButton,
 } from '.';
 
 export interface FaqProps {
@@ -26,28 +26,28 @@ interface AccordionFAQProps {
   title?: string;
   content: FaqProps[];
   sx?: SxProps<Theme>;
+  itemSx?: SxProps<Theme>;
   accordionHeader?: ReactElement;
   showIndex?: boolean;
   questionTextTypography?: TypographyProps['variant'];
   answerTextTypography?: TypographyProps['variant'];
   arrowSize?: number;
+  showDivider?: boolean;
 }
 
 export const AccordionFAQ = ({
   content,
   title,
   sx,
+  itemSx,
   accordionHeader,
   showIndex,
   questionTextTypography,
   answerTextTypography,
   arrowSize,
+  showDivider,
 }: AccordionFAQProps) => {
-  const [show, setShow] = useState(false);
   const { t } = useTranslation();
-  // const handleShowMore = () => {
-  //   setShow(!show);
-  // };
 
   return !!content?.length ? (
     <>
@@ -61,12 +61,12 @@ export const AccordionFAQ = ({
         )}
         <AccordionItemWrapper>
           {content?.map((el: FaqProps, index: number) => (
-            <Accordion key={`faq-item-${index}`}>
+            <Accordion key={`faq-item-${index}`} sx={itemSx}>
               <AccordionSummary
                 expandIcon={
-                  <FaqShowMoreIconButton sx={{ color: 'text.primary' }}>
-                    <FaqShowMoreArrow active={show} arrowSize={arrowSize} />
-                  </FaqShowMoreIconButton>
+                  <AccordionToggleButton sx={{ color: 'text.primary' }}>
+                    <FaqShowMoreArrow arrowSize={arrowSize} />
+                  </AccordionToggleButton>
                 }
                 aria-controls={`panel${index}a-content`}
                 id={`panel${index}a-header`}
@@ -78,7 +78,7 @@ export const AccordionFAQ = ({
                   {el.Question}
                 </Typography>
               </AccordionSummary>
-              {/* <AccordionDivider /> */}
+              {showDivider && <AccordionDivider />}
               <AccordionDetails sx={{ '& > img': { width: '100%' } }}>
                 <Typography variant={answerTextTypography || 'bodyMedium'}>
                   {el.Answer}

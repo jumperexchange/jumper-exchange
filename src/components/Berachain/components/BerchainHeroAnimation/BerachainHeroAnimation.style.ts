@@ -57,8 +57,8 @@ export const BerachainPlanetContainer = styled(Box)(({ theme }) => ({
   bottom: 0,
   left: 0,
   right: 0,
-  top: '25%',
-  height: '75%',
+  top: '35vh',
+  height: '65vh',
   width: '100%',
   '&:after': {
     content: '" "',

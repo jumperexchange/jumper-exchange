@@ -6,13 +6,13 @@ export const BerachainProtocolActionBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   gap: theme.spacing(4),
+  marginTop: theme.spacing(3),
 }));
 
 export const BerachainProtocolActionInfoBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   padding: theme.spacing(3),
   flexDirection: 'column',
-  marginTop: theme.spacing(3),
   gap: theme.spacing(2),
   borderRadius: '24px',
   background: '#121214',
@@ -44,4 +44,8 @@ export const BerachainActionProtocolShareLink = styled(Link)(() => ({
 export const BerachainActionProtocolShare = styled(IconButton)(({ theme }) => ({
   background: alpha(theme.palette.text.primary, 0.08),
   color: theme.palette.text.primary,
+  transition: 'background-color 300ms ease-in-out',
+  '&:hover': {
+    background: alpha(theme.palette.text.primary, 0.16),
+  },
 }));

@@ -3,7 +3,7 @@ import { AccordionHeader } from 'src/components/AccordionFAQ';
 
 export const BerachainProtocolFaqAccordionHeader = () => {
   return (
-    <AccordionHeader>
+    <AccordionHeader sx={{ marginBottom: '8px' }}>
       <Typography variant="title2XSmall">How to participate</Typography>
     </AccordionHeader>
   );

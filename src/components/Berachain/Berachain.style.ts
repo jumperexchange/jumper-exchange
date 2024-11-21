@@ -11,7 +11,7 @@ export const BerachainFrame = styled(Box)(({ theme }) => ({
   bottom: 0,
   width: '100%',
   height: '100%',
-  paddingTop: 112,
+  paddingTop: 80,
 }));
 
 export const BerachainStarsBackground = styled(Box)(({ theme }) => ({
@@ -49,7 +49,7 @@ export const BerachainBackground = styled(Box)(({ theme }) => ({
 export const BerachainBackButton = styled(Button)(({ theme }) => ({
   display: 'flex',
   color: theme.palette.text.primary,
-  padding: theme.spacing(0.75),
+  padding: theme.spacing(0.75, 1.5),
   justifyContent: 'center',
   alignItems: 'center',
   height: 40,

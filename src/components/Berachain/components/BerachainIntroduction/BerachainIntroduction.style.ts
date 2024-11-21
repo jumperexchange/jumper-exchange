@@ -36,6 +36,7 @@ export const BerachainIntroductionStep = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(4, 0, 4, 3),
+  width: '100%',
   position: 'relative',
   flexDirection: 'row',
   gap: theme.spacing(2),

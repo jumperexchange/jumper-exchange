@@ -9299,6 +9299,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gsap@npm:^3.12.5":
+  version: 3.12.5
+  resolution: "gsap@npm:3.12.5"
+  checksum: 10/192e9f6b11e54d8a0d26cff76573278d42748c6a54906fa42c81425390238ea8f6abbba5c0bca75c4bba32e4f2db957f22c2158fab1be7d4a8d71fc2fb24e8c3
+  languageName: node
+  linkType: hard
+
 "h3@npm:^1.12.0, h3@npm:^1.13.0":
   version: 1.13.0
   resolution: "h3@npm:1.13.0"
@@ -10325,6 +10332,7 @@ __metadata:
     globals: "npm:^15.12.0"
     graphql: "npm:^16.9.0"
     graphql-request: "npm:^7.1.2"
+    gsap: "npm:^3.12.5"
     husky: "npm:^9.1.6"
     i18next: "npm:^23.16.5"
     i18next-resources-for-ts: "npm:^1.5.0"

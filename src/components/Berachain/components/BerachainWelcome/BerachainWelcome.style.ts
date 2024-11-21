@@ -8,6 +8,7 @@ export const BeraChainWelcomeBox = styled(Box)(() => ({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
+  marginTop: 'calc( 20vh - 80px)',
 }));
 
 const BeraChainWelcomeContentAnimation = keyframes`
@@ -28,7 +29,7 @@ export const BeraChainWelcomeContent = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: -72,
+  marginTop: -112,
   zIndex: 1,
   animation: `${BeraChainWelcomeContentAnimation} 1s`,
   animationDelay: '2s',
@@ -123,16 +124,16 @@ export const BerachainWelcomeBear = styled(Image)(() => ({
   width: 'auto',
 }));
 
-export const BerachainWelcomeSubtitleBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  marginTop: theme.spacing(5),
-  flexDirection: 'column',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    flexDirection: 'row',
-    marginTop: theme.spacing(3),
-  },
-}));
+// export const BerachainWelcomeSubtitleBox = styled(Box)(({ theme }) => ({
+//   display: 'flex',
+//   alignItems: 'center',
+//   marginTop: theme.spacing(5),
+//   flexDirection: 'column',
+//   [theme.breakpoints.up('sm' as Breakpoint)]: {
+//     flexDirection: 'row',
+//     marginTop: theme.spacing(3),
+//   },
+// }));
 
 export const BerachainWelcomeSubtitleLabel = styled(Typography)(
   ({ theme }) => ({
@@ -151,7 +152,6 @@ export const BerachainWelcomeSubtitleLabel = styled(Typography)(
 );
 
 export const BerachainWelcomeTitle = styled(Typography)(({ theme }) => ({
-  marginTop: theme.spacing(1.5),
   [theme.breakpoints.down('md' as Breakpoint)]: {
     flexDirection: 'column',
     gap: '8px',
@@ -179,6 +179,7 @@ export const BerachainWelcomeConnectButtonCTA = styled(Button)(({ theme }) => ({
   boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
   color: theme.palette.black.main,
   backgroundColor: theme.palette.white.main,
+  padding: theme.spacing(1, 2),
   '&:hover': {
     backgroundColor: darken(theme.palette.white.main, 0.2),
   },
@@ -187,6 +188,7 @@ export const BerachainWelcomeConnectButtonCTA = styled(Button)(({ theme }) => ({
 export const BerachainWelcomeLearnMoreButton = styled(Button)(({ theme }) => ({
   color: theme.palette.white.main,
   backgroundColor: alpha(theme.palette.white.main, 0.24),
+  padding: theme.spacing(1, 2),
   '&:hover': {
     backgroundColor: alpha(theme.palette.white.main, 0.48),
   },

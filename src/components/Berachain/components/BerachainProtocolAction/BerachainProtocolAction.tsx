@@ -118,7 +118,9 @@ export const BerachainProtocolAction = ({
         <BerachainActionProtocolCard>
           <AccordionFAQ
             showIndex={true}
-            sx={{ padding: '20px' }}
+            showDivider={true}
+            sx={{ padding: 0 }}
+            itemSx={{ padding: 0, backgroundColor: 'transparent' }}
             content={faqItems}
             accordionHeader={<BerachainProtocolFaqAccordionHeader />}
             questionTextTypography="bodyLarge"

@@ -10,8 +10,8 @@ export const BerachainMarketFilters = styled(Box)(({ theme }) => ({
 
 export const BerachainMarketFiltersButton = styled(Button)(({ theme }) => ({
   display: 'flex',
-  height: 40,
-  color: theme.palette.text.primary,
+  height: 48,
+  color: alpha(theme.palette.text.primary, 0.48),
   padding: theme.spacing(1.5),
   alignItems: 'center',
   gap: theme.spacing(1.5),

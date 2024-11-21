@@ -11,8 +11,6 @@ import {
   BeraChainWelcomeIllustrations,
   BerachainWelcomeLearnMoreButton,
   BerachainWelcomeSubtitle,
-  BerachainWelcomeSubtitleBox,
-  BerachainWelcomeSubtitleLabel,
   BerachainWelcomeTitle,
 } from './BerachainWelcome.style';
 
@@ -22,7 +20,7 @@ export const BerachainWelcome = () => {
     <BeraChainWelcomeBox>
       <BeraChainWelcomeIllustrations>
         <BerachainWelcomeBear
-          src="/berachain/sir-bridgealot-w-glow.png"
+          src="/berachain/berachain-sir-bridgealot-astronaut-w-glow.png"
           alt="Berachain Pepe"
           width={278}
           height={395}
@@ -31,7 +29,7 @@ export const BerachainWelcome = () => {
           }}
         />
         <BerachainWelcomeBear
-          src="/berachain/berachain-bear-w-glow.png"
+          src="/berachain/berachain-bear-astronaut-w-glow.png"
           alt="Berachain Bear"
           width={304}
           height={395}
@@ -41,7 +39,7 @@ export const BerachainWelcome = () => {
         />
       </BeraChainWelcomeIllustrations>
       <BeraChainWelcomeContent>
-        <BerachainWelcomeSubtitleBox>
+        {/* <BerachainWelcomeSubtitleBox>
           <Typography variant="bodyXLarge" marginRight={'16px'}>
             We present
           </Typography>
@@ -55,7 +53,7 @@ export const BerachainWelcome = () => {
           <BerachainWelcomeSubtitleLabel variant="bodyMediumStrong">
             Launching soon
           </BerachainWelcomeSubtitleLabel>
-        </BerachainWelcomeSubtitleBox>
+        </BerachainWelcomeSubtitleBox> */}
         <BerachainWelcomeTitle
           variant="urbanistTitle3XLarge"
           sx={{
@@ -89,6 +87,7 @@ export const BerachainWelcome = () => {
             border: '1px solid rgba(255, 255, 255, 0.20)',
             background: 'rgba(255, 255, 255, 0.08)',
             backdropFilter: 'blur(8px)',
+            minWidth: '212px',
           }}
         />
         <BerachainProgressCard
@@ -107,6 +106,7 @@ export const BerachainWelcome = () => {
             border: '1px solid rgba(255, 255, 255, 0.20)',
             background: 'rgba(255, 255, 255, 0.08)',
             backdropFilter: 'blur(8px)',
+            minWidth: '212px',
           }}
         />
       </BerachainWelcomeBoxContent>
@@ -117,7 +117,7 @@ export const BerachainWelcome = () => {
           </BerachainWelcomeConnectButtonCTA>
         </Link>
         <Link href="/berachain">
-          <BerachainWelcomeLearnMoreButton>
+          <BerachainWelcomeLearnMoreButton sx={{ padding: '8px 24px' }}>
             <Typography variant="bodyLargeStrong">Learn more</Typography>
           </BerachainWelcomeLearnMoreButton>
         </Link>

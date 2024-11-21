@@ -4,7 +4,6 @@ import {
   darken,
   InputAdornment,
   TextField,
-  Typography,
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
@@ -24,7 +23,8 @@ export const BerachainSearch = () => {
   return (
     <BerachainSearchAutocomplete
       autoComplete={true}
-      size="small"
+      size="medium"
+      popupIcon={null}
       autoSelect={true}
       // open={true} // for debugging
       clearOnEscape={false}
@@ -87,31 +87,38 @@ export const BerachainSearch = () => {
       renderInput={(params) => (
         <TextField
           sx={{
-            height: '40px',
             paddingTop: 0,
             paddingBottom: 0,
             backgroundColor: '#313131',
             borderRadius: '8px',
             transition: 'background-color 0.3s ease-in-out',
-
             '&:hover': {
               backgroundColor: darken('#313131', 0.16),
             },
+            '& .MuiInputBase-input::placeholder': {
+              opacity: isInputEmpty ? 1 : 0,
+              color: alpha(theme.palette.text.primary, 0.48),
+              transition: 'opacity 0.2s ease-in-out',
+              typography: theme.typography.bodyMedium,
+            },
           }}
           {...params}
-          label={!isInputEmpty ? 'Search for markets or assets' : undefined}
+          placeholder="Search for markets"
+          InputLabelProps={{
+            ...params.InputLabelProps,
+            shrink: false,
+          }}
           InputProps={{
             ...params.InputProps,
             startAdornment: (
               <InputAdornment position="start">
                 <SearchRoundedIcon
-                  sx={{ width: '24px', height: '24px', color: 'text.primary' }}
+                  sx={{
+                    width: '24px',
+                    height: '24px',
+                    color: alpha(theme.palette.text.primary, 0.48),
+                  }}
                 />
-                {isInputEmpty && (
-                  <Typography variant="bodySmall" color={'text.primary'}>
-                    Search for markets
-                  </Typography>
-                )}
               </InputAdornment>
             ),
           }}

@@ -1,5 +1,5 @@
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import type { AccordionProps as MuiAccordionProps } from '@mui/material';
+import type { BoxProps } from '@mui/material';
 import {
   Box,
   Divider,
@@ -11,13 +11,7 @@ import {
   type Breakpoint,
 } from '@mui/material';
 
-import {
-  alpha,
-  darken,
-  keyframes,
-  lighten,
-  styled,
-} from '@mui/material/styles';
+import { alpha, keyframes, styled } from '@mui/material/styles';
 
 export const AccordionBox = styled(Box)(({ theme }) => ({
   margin: 'auto',
@@ -39,46 +33,32 @@ export const AccordionBox = styled(Box)(({ theme }) => ({
 }));
 
 interface FaqShowMoreArrowProps {
-  active: boolean;
   arrowSize?: number;
 }
 
 export const rotateAnimation = keyframes`
   from {
-    transform: rotate(270deg);
+    transform: rotate(0deg);
   }
   to {
-    transform: rotate(90deg);
+    transform: rotate(180deg);
   }
 `;
 
-export const FaqShowMoreIconButton = styled(IconButton)(({ theme }) => ({
-  width: 32,
-  height: 32,
-  backgroundColor: alpha(theme.palette.text.primary, 0.08),
-  '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? darken(theme.palette.text.primary, 0.12)
-        : lighten(theme.palette.text.primary, 0.12),
-  },
-}));
-
 export const FaqShowMoreArrow = styled(ArrowForwardIosIcon, {
-  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'arrowSize',
-})<FaqShowMoreArrowProps>(({ active, arrowSize }) => ({
+  shouldForwardProp: (prop) => prop !== 'arrowSize',
+})<FaqShowMoreArrowProps>(({ arrowSize }) => ({
   width: arrowSize || 24,
   height: arrowSize || 24,
-  // transition: 'transform 0.3s ease',
-  // transform: active ? 'rotate(90deg)' : 'rotate(270deg)',
-  animation: `${active ? rotateAnimation : 'none'} 300ms ease-in-out`,
+  transition: 'transform 0.3s ease',
+  transform: 'rotate(90deg)',
 }));
 
-export interface AccordionProps extends Omit<MuiAccordionProps, 'component'> {
+export interface AccordionItemWrapperProps extends BoxProps {
   show?: boolean;
 }
 
-export const AccordionItemWrapper = styled(Box)<AccordionProps>(
+export const AccordionItemWrapper = styled(Box)<AccordionItemWrapperProps>(
   ({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -87,7 +67,7 @@ export const AccordionItemWrapper = styled(Box)<AccordionProps>(
   }),
 );
 
-export const Accordion = styled(MuiAccordion)<AccordionProps>(({ theme }) => ({
+export const Accordion = styled(MuiAccordion)(({ theme, sx }) => ({
   fontFamily: 'inherit',
   borderRadius: '16px',
   padding: theme.spacing(2, 3),
@@ -106,11 +86,9 @@ export const Accordion = styled(MuiAccordion)<AccordionProps>(({ theme }) => ({
   },
 }));
 
-export const AccordionDetails = styled(MuiAccordionDetails)<AccordionProps>(
-  () => ({
-    '& > img': { width: '100%' },
-  }),
-);
+export const AccordionDetails = styled(MuiAccordionDetails)(() => ({
+  '& > img': { width: '100%' },
+}));
 
 export const AccordionTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -120,10 +98,17 @@ export const AccordionTitle = styled(Typography)(({ theme }) => ({
 }));
 
 export const AccordionToggleButton = styled(IconButton)(({ theme }) => ({
-  width: 42,
-  height: 42,
-  color:
-    theme.palette.mode === 'dark' ? theme.palette.white.main : 'currentColor',
+  background: alpha(theme.palette.text.primary, 0.08),
+  color: theme.palette.text.primary,
+  transition: 'background-color 300ms ease-in-out',
+  width: 32,
+  height: 32,
+  backgroundColor: alpha(theme.palette.text.primary, 0.08),
+
+  '&:hover': {
+    color: theme.palette.text.primary,
+    background: alpha(theme.palette.text.primary, 0.16),
+  },
 }));
 
 export const AccordionHeader = styled(Box)(() => ({
@@ -133,9 +118,7 @@ export const AccordionHeader = styled(Box)(() => ({
 }));
 
 export const AccordionDivider = styled(Divider)(({ theme }) => ({
-  ...(theme.palette.mode === 'dark' && {
-    borderColor: theme.palette.grey[200],
-  }),
+  borderColor: alpha(theme.palette.text.primary, 0.08),
 }));
 
 export const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({

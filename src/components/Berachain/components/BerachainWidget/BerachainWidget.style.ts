@@ -13,7 +13,6 @@ export const BerachainActionBerachainWidgetWrapper = styled(Box)(
   ({ theme }) => ({
     minWidth: 416,
     height: 'fit-content',
-    backgroundColor: theme.palette.surface1.main,
     borderRadius: '24px',
     boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
   }),
@@ -21,15 +20,17 @@ export const BerachainActionBerachainWidgetWrapper = styled(Box)(
 
 export const BerachainWidgetHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
+  color: theme.palette.text.primary,
   justifyContent: 'space-between',
   alignItems: 'center',
 }));
 
 export const BerachainWidgetSelection = styled(Box)(({ theme }) => ({
   display: 'flex',
+  color: theme.palette.text.primary,
   justifyContent: 'space-between',
   flexDirection: 'column',
-  backgroundColor: theme.palette.surface2.main,
+  backgroundColor: '#1E1D1C',
   borderRadius: '16px',
   padding: theme.spacing(2),
   marginTop: theme.spacing(2),
@@ -107,11 +108,12 @@ export const BerachainActionPledgeButton = styled(Button)(({ theme }) => ({
 
 export const BerachainWidgetPledgedBox = styled(Box)(({ theme }) => ({
   display: 'flex',
+  color: theme.palette.text.primary,
   height: 44,
   width: '100%',
   borderRadius: '12px',
   justifyContent: 'space-between',
-  backgroundColor: alpha('#835FB8', 0.24),
+  backgroundColor: '#1E1D1C',
   marginTop: theme.spacing(2),
   alignItems: 'center',
   padding: theme.spacing(1.5, 2),
@@ -126,7 +128,7 @@ export const BerachainWidgetPledgedBoxLabel = styled(Typography)(
 export const BerachainActionBerachainWidget = styled(Box)(({ theme }) => ({
   width: 416,
   // height: 522,
-  backgroundColor: theme.palette.surface1.main,
+  backgroundColor: '#121214',
   padding: theme.spacing(3),
   borderRadius: '24px',
   boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',

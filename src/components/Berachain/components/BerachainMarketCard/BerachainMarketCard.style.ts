@@ -15,22 +15,12 @@ export const BerachainMarketCardWrapper = styled(Card)(({ theme }) => ({
   borderRadius: '16px',
   border: '1px solid #383433',
   background: '#1E1D1C',
-  transition: 'background ease-in-out 300ms, border ease-in-out 300ms',
+  transition:
+    'background ease-in-out 300ms, border ease-in-out 300ms, box-shadow ease-in-out 300ms',
   '&:hover': {
     background: lighten('#1E1D1C', 0.02),
+    boxShadow: `0px 0px 28px 2px ${alpha('#F47226', 0.14)}`,
     border: `1px solid ${lighten('#383433', 0.2)}`,
-  },
-  '&:before': {
-    content: "' '",
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    borderRadius: '16px',
-    opacity: 0.28,
-    background: '#F47226',
-    filter: 'blur(40px)',
   },
 }));
 
