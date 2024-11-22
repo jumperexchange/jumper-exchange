@@ -23,6 +23,11 @@ export const usePersonalizedFeatureCards =
         const response = await fetch(
           getFeatureCardsEndpoint(account?.address!),
         );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
         const result = await response.json();
 
         return result.data;
@@ -64,6 +69,11 @@ export const usePersonalizedFeatureCards =
             Authorization: `Bearer ${apiAccesToken}`,
           },
         });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
         const result = await response.json();
         return result.data;
       },
