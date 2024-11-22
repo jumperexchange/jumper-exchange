@@ -1,50 +1,67 @@
-import type { FeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
+import type { FeatureCardData } from '@/types/strapi';
 
 export interface UsePersonalizedFeatureCardsProps {
-  featureCards: FeatureCardData[] | undefined;
+  data: FeatureCardData[];
   isSuccess: boolean;
   isConnected: boolean;
 }
 
-const STRAPI_CONTENT_TYPE = 'jumper-users';
+function getFeatureCardsEndpoint(walletAddress: string): string {
+  return `${process.env.NEXT_PUBLIC_BACKEND_URL}/wallets/${walletAddress}/feature-cards`;
+}
+
+const STRAPI_CONTENT_TYPE = 'feature-cards';
 export const usePersonalizedFeatureCards =
   (): UsePersonalizedFeatureCardsProps => {
     const { account } = useAccount();
+
+    const { data: fcCardData, isSuccess: fcCardDataIsSuccess } = useQuery({
+      queryKey: ['jumperUser', account?.address],
+      queryFn: async () => {
+        const response = await fetch(
+          getFeatureCardsEndpoint(account?.address!),
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
+        const result = await response.json();
+
+        return result.data;
+      },
+      enabled: !!account?.address,
+      refetchInterval: 1000 * 60 * 60,
+    });
 
     const apiBaseUrl =
       process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
         ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
         : `${process.env.NEXT_PUBLIC_STRAPI_URL}/api`;
     const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
-    apiUrl.searchParams.set('populate[0]', 'feature_cards');
+
+    apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
+    apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
     apiUrl.searchParams.set(
-      'populate[feature_cards][populate][0]',
-      'BackgroundImageLight',
+      'populate[featureCardsExclusions][fields][0]',
+      'uid',
     );
-    apiUrl.searchParams.set(
-      'populate[feature_cards][populate][1]',
-      'BackgroundImageDark',
+    apiUrl.searchParams.set('filters[PersonalizedFeatureCard]', 'true');
+    fcCardData?.map((id: number) =>
+      apiUrl.searchParams.set('filters[id][]', id.toString()),
     );
-    apiUrl.searchParams.set(
-      'populate[feature_cards][populate][2]',
-      'featureCardsExclusions',
-    );
-    if (account?.address && account.chainType === 'EVM') {
-      apiUrl.searchParams.set(
-        'filters[EvmWalletAddress][$eqi]',
-        account?.address,
-      );
-    }
+
     process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
       apiUrl.searchParams.set('publicationState', 'preview');
     const apiAccesToken =
       process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
         ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
         : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+
     const { data, isSuccess } = useQuery({
-      queryKey: ['jumperUser'],
+      queryKey: ['personalizedFeatureCardsOnAddress', account?.address],
 
       queryFn: async () => {
         const response = await fetch(decodeURIComponent(apiUrl.href), {
@@ -52,17 +69,21 @@ export const usePersonalizedFeatureCards =
             Authorization: `Bearer ${apiAccesToken}`,
           },
         });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
         const result = await response.json();
         return result.data;
       },
-      enabled: !!account?.address && account.chainType === 'EVM',
+      enabled: fcCardDataIsSuccess && !!account?.address,
       refetchInterval: 1000 * 60 * 60,
     });
-    const featureCards = data?.[0]?.attributes?.feature_cards.data;
 
     return {
-      featureCards: featureCards,
+      data,
       isSuccess,
-      isConnected: !!account?.address && account.chainType === 'EVM',
+      isConnected: !!account?.address,
     };
   };
