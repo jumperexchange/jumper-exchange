@@ -117,15 +117,7 @@ export const WalletButtons = () => {
           <WalletMenuButton
             id="wallet-digest-button"
             onClick={handleWalletMenuClick}
-            sx={{
-              // delete with PromoLabel
-              overflow: 'visible',
-              position: 'relative',
-            }}
           >
-            {/* when deleting PromoLabel, also clear related sx-styles in parent above */}
-            <PromoLabel component="span" variant="bodyXSmallStrong" />
-
             {isSuccess && activeChain ? (
               <WalletMgmtBadge
                 overlap="circular"

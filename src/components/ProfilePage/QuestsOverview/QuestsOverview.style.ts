@@ -7,7 +7,7 @@ export const QuestsOverviewContainer = styled(Box)(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(288px, 1fr))',
   gridColumnGap: theme.spacing(2),
-  gridRowGap: theme.spacing(2),
+  gridRowGap: theme.spacing(1),
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '32px',
   padding: theme.spacing(2),
