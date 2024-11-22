@@ -15,6 +15,7 @@ import { useMediaQuery } from '@mui/material';
 import { useCallback } from 'react';
 import type { TransformedRoute } from 'src/types/internal';
 import { useFingerprint } from '../useFingerprint';
+import { getSiteUrl } from '@/const/urls';
 
 const googleEvent = ({
   action,
@@ -120,8 +121,8 @@ export function useUserTracking() {
             browserFingerprint: fp || 'unknown',
             isMobile: !isDesktop,
             sessionId: sessionId || 'unknown',
-            url: window?.location?.href || process.env.NEXT_PUBLIC_SITE_URL,
             referrer: document?.referrer,
+            url: window?.location?.href || getSiteUrl(),
           };
           await jumperTrackEvent(eventData);
         } catch (error) {
@@ -196,7 +197,7 @@ export function useUserTracking() {
           errorCode: data[TrackingEventParameter.ErrorCode],
           errorMessage: data[TrackingEventParameter.ErrorMessage],
           action: data[TrackingEventParameter.Action] || '',
-          url: window?.location?.href || process.env.NEXT_PUBLIC_SITE_URL,
+          url: window?.location?.href || getSiteUrl(),
           browserFingerprint: fp || 'unknown',
           walletAddress: account.address || 'not_connected',
           walletProvider: account.connector?.name,

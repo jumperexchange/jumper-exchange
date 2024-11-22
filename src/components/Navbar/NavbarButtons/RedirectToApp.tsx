@@ -1,10 +1,14 @@
 'use client';
-import { Typography, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
-import { ConnectButton as RedirectAppButton } from '../WalletButton.style';
+import {
+  RedirectAppButton,
+  RedirectAppIcon,
+  RedirectAppLabel,
+} from './RedirectToApp.style';
 
 interface RedirectToAppProps {
   hideConnectButton: boolean;
@@ -33,18 +37,10 @@ export const RedirectToApp = ({ hideConnectButton }: RedirectToAppProps) => {
         ...(!hideConnectButton && { marginRight: theme.spacing(1) }),
       }}
     >
-      <Typography
-        variant={'bodyMediumStrong'}
-        sx={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          display: '-webkit-box',
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical',
-        }}
-      >
+      <RedirectAppIcon />
+      <RedirectAppLabel variant={'bodyMediumStrong'}>
         {t('blog.openApp')}
-      </Typography>
+      </RedirectAppLabel>
     </RedirectAppButton>
   );
 };

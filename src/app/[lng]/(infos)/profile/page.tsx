@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
-import ProfilePage from '../../../ui/profile/ProfilePage';
+import ProfilePage from '@/app/ui/profile/ProfilePage';
+import { getSiteUrl } from '@/const/urls';
 
 export const metadata: Metadata = {
   title: 'Jumper Profile',
   description: 'Jumper Profile is the profile page of Jumper Exchange.',
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/profile`,
+    canonical: `${getSiteUrl()}/profile`,
   },
 };
 

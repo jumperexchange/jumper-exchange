@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { NoSelectTypographyTitle } from '../ProfilePage.style';
+import { NoSelectTypographyTitle } from '@/components/ProfilePage/ProfilePage.style';
 
 interface PointsDisplayProps {
   points?: number;

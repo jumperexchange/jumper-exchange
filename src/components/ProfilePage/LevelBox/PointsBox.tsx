@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { IconHeader } from '../Common/IconHeader';
-import { CenteredBox } from '../ProfilePage.style';
+import { CenteredBox } from '@/components/ProfilePage/ProfilePage.style';
 import { PointsDisplay } from './PointsDisplay';
 interface PointsBoxProps {
   points?: number;

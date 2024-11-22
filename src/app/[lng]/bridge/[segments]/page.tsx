@@ -8,6 +8,7 @@ import {
 } from '@/utils/tokenAndChain';
 import type { Metadata } from 'next';
 import { siteName } from '@/app/lib/metadata';
+import { getSiteUrl } from '@/const/urls';
 
 function parseString(url: string): [string, string, string, string] {
   // First, split the string into the source part and the destination part using 'to'
@@ -47,7 +48,7 @@ export async function generateMetadata({
     title: title,
     description: `Jumper offers the best way to do cross-chain bridging of ${sourceTokenName} on ${sourceChain} to ${destinationTokenName} on ${destinationChain} with the fastest speeds, lowest costs, and most secure bridge and swap providers available.`,
     siteName: siteName,
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/bridge/${params.segments}`,
+    url: `${getSiteUrl()}/bridge/${params.segments}`,
     /*      images: [
             {
               url: `${article.url}${articleData.Image.data.attributes?.url}`,
@@ -64,6 +65,9 @@ export async function generateMetadata({
     description: title,
     twitter: openGraph,
     openGraph,
+    alternates: {
+      canonical: `${getSiteUrl()}/bridge/${params.segments}`,
+    },
   };
 }
 
