@@ -13,7 +13,11 @@ import { Stack, Typography, useMediaQuery } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DEFAULT_WALLET_ADDRESS, JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
+import {
+  DEFAULT_WALLET_ADDRESS,
+  JUMPER_LOYALTY_PATH,
+  JUMPER_SCAN_PATH,
+} from 'src/const/urls';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
