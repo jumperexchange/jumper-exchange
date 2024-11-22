@@ -13,8 +13,7 @@ import { Stack, Typography, useMediaQuery } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
-import useImageStatus from 'src/hooks/useImageStatus';
+import { DEFAULT_WALLET_ADDRESS, JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
@@ -30,6 +29,7 @@ import {
   WalletMgmtChainAvatar,
   WalletMgmtWalletAvatar,
 } from './WalletButton.style';
+import useBlockieImg from '@/hooks/useBlockieImg';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
@@ -39,7 +39,7 @@ export const WalletButtons = () => {
   const { openWalletMenu } = useWalletMenu();
   const { points, isLoading } = useLoyaltyPass(account?.address);
   const router = useRouter();
-  const imgLink = useImageStatus(account?.address);
+  const imgLink = useBlockieImg(account?.address);
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const pathname = usePathname();
 
@@ -90,7 +90,7 @@ export const WalletButtons = () => {
               >
                 <ImageWalletMenuButton
                   src={imgLink}
-                  alt="Effigy Wallet Icon"
+                  alt={`${account?.address} wallet Icon`}
                   width={32}
                   height={32}
                   priority={false}

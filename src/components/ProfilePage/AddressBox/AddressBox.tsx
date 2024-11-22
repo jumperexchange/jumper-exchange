@@ -5,7 +5,6 @@ import LinkIcon from '@mui/icons-material/Link';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
-import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
@@ -19,6 +18,8 @@ import {
   ProfileIconButton,
 } from './AddressBox.style';
 import { getSiteUrl } from '@/const/urls';
+import { blo } from 'blo';
+import useBlockieImg from '@/hooks/useBlockieImg';
 
 interface AddressBoxProps {
   address?: string;
@@ -33,7 +34,7 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
-  const imgLink = useImageStatus(address);
+  const imgLink = useBlockieImg(address);
 
   const handleCopyButton = (textToCopy: string) => {
     address && navigator.clipboard.writeText(textToCopy);
@@ -50,7 +51,7 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
     <AddressBoxContainer imgUrl={imgLink}>
       <PassImageBox>
         <Image
-          alt="Effigy Wallet Icon"
+          alt={`${address} wallet Icon`}
           src={imgLink}
           width={128}
           height={128}
