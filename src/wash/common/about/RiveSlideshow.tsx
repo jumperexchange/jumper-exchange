@@ -4,6 +4,12 @@ import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
 import Image from 'next/image';
 import { mq } from '../../utils/theme';
 
+const Wrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+`;
+
 const RiveCarouselWrapper = styled.div`
   width: 3840px;
   height: 406px;
@@ -44,22 +50,24 @@ export default function RiveSlideshowWrapper(): ReactElement {
   });
 
   return (
-    <RiveCarouselWrapper>
-      <SlideshowImage
-        isLoaded={isLoaded}
-        src={'/wash/about/slideshow.png'}
-        alt={'slideshow'}
-        width={3840}
-        height={406}
-      />
-      <RiveSlideshow
-        width={3840}
-        height={406}
-        style={{
-          position: 'absolute',
-          opacity: isLoaded ? 1 : 0,
-        }}
-      />
-    </RiveCarouselWrapper>
+    <Wrapper>
+      <RiveCarouselWrapper>
+        <SlideshowImage
+          isLoaded={isLoaded}
+          src={'/wash/about/slideshow.png'}
+          alt={'slideshow'}
+          width={3840}
+          height={406}
+        />
+        <RiveSlideshow
+          width={3840}
+          height={406}
+          style={{
+            position: 'absolute',
+            opacity: isLoaded ? 1 : 0,
+          }}
+        />
+      </RiveCarouselWrapper>
+    </Wrapper>
   );
 }
