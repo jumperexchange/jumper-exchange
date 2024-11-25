@@ -57,8 +57,6 @@ export function fetchAllTokensBalanceByChain(
   );
 
   const fetchTokens = async () => {
-    console.debug(`\n--- Fetch Round ${round} of ${account} ---`);
-
     let tokensFetchedThisRound = 0;
     const fetchPromises: Promise<TokenAmount[]>[] = [];
     const chainsFetchedThisRound: string[] = [];
@@ -93,14 +91,9 @@ export function fetchAllTokensBalanceByChain(
       chainsFetchedThisRound.push(chainId);
 
       fetchPromises.push(LifiGetTokenBalances(account, tokenBatch));
-      console.debug(
-        `fetching on chain ${chainId}`,
-        tokenBatch.map((t) => t.symbol).join(','),
-      );
     }
 
     if (fetchPromises.length === 0) {
-      console.debug('No more tokens to fetch.');
       clearInterval(intervalId!);
       return;
     }
@@ -156,7 +149,7 @@ export function fetchAllTokensBalanceByChain(
         };
 
         existingToken.chains = existingToken.chains.sort(
-          (a, b) => b.totalPriceUSD ?? 0 - (a.totalPriceUSD ?? 0),
+          (a, b) => (b.totalPriceUSD ?? 0) - (a.totalPriceUSD ?? 0),
         );
         existingToken.cumulatedBalance = existingToken.chains.reduce(
           (sum, chain) => sum + (chain.cumulatedBalance ?? 0),
@@ -186,17 +179,11 @@ export function fetchAllTokensBalanceByChain(
 
     onProgress(account, round, totalPriceUSD, combinedBalances);
 
-    console.debug(
-      `Round ${round} on ${account} completed. Fetched ${tokensFetchedThisRound} tokens.`,
-    );
-
     round += 1;
     if (Object.values(tokensByChain).every((tokens) => tokens.length === 0)) {
       // If all tokens are fetched, clear the interval and stop
       clearInterval(intervalId!);
       handleComplete(combinedBalances);
-      console.debug(`
-All tokens have been successfully fetched for the account ${account}!`);
     }
   };
 
