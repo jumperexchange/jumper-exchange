@@ -18,34 +18,32 @@ import {
   ProfileIconButton,
 } from './AddressBox.style';
 import { getSiteUrl } from '@/const/urls';
-import { blo } from 'blo';
 import useBlockieImg from '@/hooks/useBlockieImg';
+import { useWalletAddressImg } from '@/hooks/useAddressImg';
 
 interface AddressBoxProps {
-  address?: string;
+  address: string;
 }
 
 export const AddressBox = ({ address }: AddressBoxProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { imageLink } = useMercleNft({ userAddress: address });
+  const imgLink = useWalletAddressImg(address);
   const { setSnackbarState } = useMenuStore((state) => state);
   const { data: ensName, isSuccess } = useEnsName({
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
-  const imgLink = useBlockieImg(address);
-
-  const handleCopyButton = (textToCopy: string) => {
-    address && navigator.clipboard.writeText(textToCopy);
-    setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
-  };
-
   const addressLabel = getAddressLabel({
     isSuccess,
     ensName,
     address,
   });
+
+  const handleCopyButton = (textToCopy: string) => {
+    address && navigator.clipboard.writeText(textToCopy);
+    setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
+  };
 
   return (
     <AddressBoxContainer imgUrl={imgLink}>
@@ -58,7 +56,7 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
           priority={false}
           unoptimized={true}
           style={{
-            backgroundColor: imageLink
+            backgroundColor: imgLink
               ? theme.palette.mode === 'light'
                 ? '#F9F5FF'
                 : theme.palette.accent1Alt.main
