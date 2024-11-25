@@ -8,7 +8,7 @@ import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
 import { getArticlesByTag } from '../../../../lib/getArticlesByTag';
 import { getCookies } from '../../../../lib/getCookies';
 import { getSiteUrl } from '@/const/urls';
-import { notFound, redirect } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 
 export async function generateMetadata({
   params,
@@ -69,7 +69,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   }
 
   if (articleData.attributes.RedirectURL) {
-    return redirect(articleData.attributes.RedirectURL);
+    return permanentRedirect(articleData.attributes.RedirectURL);
   }
 
   const currentTags = articleData?.attributes?.tags.data.map((el) => el?.id);
