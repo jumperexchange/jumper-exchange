@@ -77,7 +77,8 @@ export const usePersonalizedFeatureCards =
         const result = await response.json();
         return result.data;
       },
-      enabled: fcCardDataIsSuccess && !!account?.address,
+      enabled:
+        fcCardData?.length > 0 && fcCardDataIsSuccess && !!account?.address,
       refetchInterval: 1000 * 60 * 60,
     });
 
