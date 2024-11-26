@@ -3,12 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { BerachainProgressCard } from '../BerachainProgressCard/BerachainProgressCard';
 import {
-  BerachainWelcomeBear,
   BeraChainWelcomeBox,
   BerachainWelcomeBoxContent,
   BerachainWelcomeConnectButtonCTA,
   BeraChainWelcomeContent,
-  BeraChainWelcomeIllustrations,
   BerachainWelcomeLearnMoreButton,
   BerachainWelcomeSubtitle,
   BerachainWelcomeTitle,
@@ -18,26 +16,6 @@ export const BerachainWelcome = () => {
   const theme = useTheme();
   return (
     <BeraChainWelcomeBox>
-      <BeraChainWelcomeIllustrations>
-        <BerachainWelcomeBear
-          src="/berachain/berachain-sir-bridgealot-astronaut-w-glow.png"
-          alt="Berachain Pepe"
-          width={278}
-          height={395}
-          sx={{
-            left: 0,
-          }}
-        />
-        <BerachainWelcomeBear
-          src="/berachain/berachain-bear-astronaut-w-glow.png"
-          alt="Berachain Bear"
-          width={304}
-          height={395}
-          style={{
-            right: 0,
-          }}
-        />
-      </BeraChainWelcomeIllustrations>
       <BeraChainWelcomeContent>
         {/* <BerachainWelcomeSubtitleBox>
           <Typography variant="bodyXLarge" marginRight={'16px'}>

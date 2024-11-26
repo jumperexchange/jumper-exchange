@@ -33,6 +33,7 @@ interface AccordionFAQProps {
   answerTextTypography?: TypographyProps['variant'];
   arrowSize?: number;
   showDivider?: boolean;
+  showAnswerDivider?: boolean;
 }
 
 export const AccordionFAQ = ({
@@ -46,6 +47,7 @@ export const AccordionFAQ = ({
   answerTextTypography,
   arrowSize,
   showDivider,
+  showAnswerDivider,
 }: AccordionFAQProps) => {
   const { t } = useTranslation();
 
@@ -61,31 +63,36 @@ export const AccordionFAQ = ({
         )}
         <AccordionItemWrapper>
           {content?.map((el: FaqProps, index: number) => (
-            <Accordion key={`faq-item-${index}`} sx={itemSx}>
-              <AccordionSummary
-                expandIcon={
-                  <AccordionToggleButton sx={{ color: 'text.primary' }}>
-                    <FaqShowMoreArrow arrowSize={arrowSize} />
-                  </AccordionToggleButton>
-                }
-                aria-controls={`panel${index}a-content`}
-                id={`panel${index}a-header`}
-              >
-                {showIndex && <AccordionIndex>{index + 1}</AccordionIndex>}
-                <Typography
-                  variant={questionTextTypography || 'urbanistBody2XLarge'}
+            <>
+              <Accordion key={`faq-item-${index}`} sx={itemSx}>
+                <AccordionSummary
+                  expandIcon={
+                    <AccordionToggleButton sx={{ color: 'text.primary' }}>
+                      <FaqShowMoreArrow arrowSize={arrowSize} />
+                    </AccordionToggleButton>
+                  }
+                  aria-controls={`panel${index}a-content`}
+                  id={`panel${index}a-header`}
                 >
-                  {el.Question}
-                </Typography>
-              </AccordionSummary>
-              {showDivider && <AccordionDivider />}
-              <AccordionDetails sx={{ '& > img': { width: '100%' } }}>
-                <Typography variant={answerTextTypography || 'bodyMedium'}>
-                  {el.Answer}
-                </Typography>
-                {/* <BlocksRenderer content={el.Answer} /> */}
-              </AccordionDetails>
-            </Accordion>
+                  {showIndex && <AccordionIndex>{index + 1}</AccordionIndex>}
+                  <Typography
+                    variant={questionTextTypography || 'urbanistBody2XLarge'}
+                  >
+                    {el.Question}
+                  </Typography>
+                </AccordionSummary>
+                {showAnswerDivider && <AccordionDivider />}
+                <AccordionDetails sx={{ '& > img': { width: '100%' } }}>
+                  <Typography variant={answerTextTypography || 'bodyMedium'}>
+                    {el.Answer}
+                  </Typography>
+                  {/* <BlocksRenderer content={el.Answer} /> */}
+                </AccordionDetails>
+              </Accordion>
+              {showDivider && index !== content.length - 1 && (
+                <AccordionDivider key={`faq-item-divider-${index}`} />
+              )}
+            </>
           ))}
         </AccordionItemWrapper>
       </AccordionBox>

@@ -7,7 +7,6 @@ import {
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
-import { berachainMarkets } from 'src/components/Berachain/const/berachainExampleData';
 import { useBerachainMarkets } from 'src/components/Berachain/hooks/useBerachainMarkets';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import { BerachainSearchAutocomplete } from './BerachainSearch.style';
@@ -19,7 +18,8 @@ export const BerachainSearch = () => {
     (state) => state,
   );
 
-  const data = useBerachainMarkets(berachainMarkets);
+  const { data } = useBerachainMarkets();
+
   return (
     <BerachainSearchAutocomplete
       autoComplete={true}
@@ -42,6 +42,7 @@ export const BerachainSearch = () => {
         paper: {
           sx: {
             // paper menu container
+            display: 'none',
             padding: '12px 8px',
             borderRadius: '8px',
             border: '1px solid #383433',
@@ -82,7 +83,7 @@ export const BerachainSearch = () => {
           },
         },
       }}
-      options={data}
+      options={['some', 'some other']} //data
       // disablePortal
       renderInput={(params) => (
         <TextField

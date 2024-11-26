@@ -6,8 +6,7 @@ import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMark
 import { BerachainMarketsHeader } from './BerachainMarketsHeader';
 
 export const BerachainMarkets = () => {
-  const data = useBerachainMarket();
-
+  const { data, url } = useBerachainMarket();
   return (
     <Box>
       <BerachainMarketsHeader />
@@ -15,12 +14,15 @@ export const BerachainMarkets = () => {
       <BerachainMarketCards>
         {data?.map((card, index) => (
           <BerachainMarketCard
-            key={`berachain-market-card-${card.protocol?.name || 'protocol'}-${index}`}
-            chainId={card.chain}
-            protocol={card.protocol}
-            tokens={card.tokens}
-            apys={card.apys}
-            tvl={card.tvl}
+            key={`berachain-market-card-${card.id || 'protocol'}-${index}`}
+            // chainId={card.chain}
+            image={card.attributes.Image}
+            title={card.attributes.Title}
+            // protocol={card.protocol}
+            // tokens={card.tokens}
+            // apys={card.apys}
+            // tvl={card.tvl}
+            url={url}
           />
         ))}
       </BerachainMarketCards>

@@ -1,14 +1,14 @@
 import { Box, Button, Typography } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, keyframes, styled } from '@mui/material/styles';
-import Image from 'next/image';
 
 export const BeraChainWelcomeBox = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: 'calc( 20vh - 80px)',
+  marginTop: '55vh',
+  height: 'calc(45vh - 80px)',
 }));
 
 const BeraChainWelcomeContentAnimation = keyframes`
@@ -34,94 +34,6 @@ export const BeraChainWelcomeContent = styled(Box)(({ theme }) => ({
   animation: `${BeraChainWelcomeContentAnimation} 1s`,
   animationDelay: '2s',
   animationIterationCount: 1,
-}));
-
-const BeraChainWelcomeIllustrationsGlitch = keyframes`
-  0% {
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  15% {
-    filter: blur(4px) invert(1);
-    margin-left: -6px;
-  }
-  17% {
-    filter: blur(0px) invert(0);
-    margin-left: 8px;
-  }
-  20% {
-    margin-left: 0px;
-
-  }
-  31% {
-    opacity: 0.5;
-    filter: blur(0px) invert(0);
-    margin-left: -6px;
-  }
-  34% {
-    opacity: 0;
-    margin-left: 4px;
-    filter: blur(2px) invert(0.5);
-  }
-  35% {
-    opacity: 1;
-    filter: blur(0px) invert(0);
-    margin-left: 0px;
-  }
-  40% {
-    opacity: 0.5;
-    margin-left: -4px;
-  }
-  42% {
-    opacity: 1;
-    margin-left: 4px;
-  }
-  50% {
-    opacity: 0.7;
-    margin-left: 0px;
-  }
-  52 {
-    opacity: 1;
-  }
-  54% {
-    opacity: 0.2;
-    filter: blur(4px) invert(0.7);
-  }
-  65 {
-    opacity: 1;
-    filter: blur(0px) invert(0);
-  }
-  75% {
-    opacity: 0.5;
-    transform: translateX(3px);
-  }xx^xX^^
-  100% {
-    opacity: 1;
-    margin-left: 0px^x^x;
-    filter: blur(0px)xw invert(0);  
-    }
-`;
-
-export const BeraChainWelcomeIllustrations = styled(Box)(() => ({
-  aspectRatio: 1.3,
-  position: 'relative',
-  padding: 0,
-  width: '100%',
-  height: 'auto',
-  border: '1px solid red',
-  maxWidth: 474,
-  animation: `${BeraChainWelcomeIllustrationsGlitch} 3s`,
-  animationIterationCount: 1,
-  animationDelay: '1.5s',
-}));
-
-export const BerachainWelcomeBear = styled(Image)(() => ({
-  position: 'absolute',
-  aspectRatio: 0.8,
-  height: '100%',
-  width: 'auto',
 }));
 
 // export const BerachainWelcomeSubtitleBox = styled(Box)(({ theme }) => ({
@@ -168,6 +80,7 @@ export const BerachainWelcomeSubtitle = styled(Typography)(({ theme }) => ({
 export const BerachainWelcomeBoxContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
+  alignItems: 'center',
   marginTop: theme.spacing(4),
   gap: theme.spacing(2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {

@@ -4,7 +4,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
-import { berachainMarkets } from 'src/components/Berachain/const/berachainExampleData';
+import { useBerachainMarkets } from 'src/components/Berachain/hooks/useBerachainMarkets';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import { useChains } from 'src/hooks/useChains';
 import { BerachainMarketFilter } from '../BerachainMarketFilter/BerachainMarketFilter';
@@ -16,6 +16,7 @@ import {
 import { BerachainMarketsFilterBox } from './BerachainMarketsFilters.style';
 
 export const BerachainFilterChainsMenu = () => {
+  const { data } = useBerachainMarkets();
   const { chainFilter, setChainFilter } = useBerachainMarketsFilterStore(
     (state) => state,
   );
@@ -44,17 +45,17 @@ export const BerachainFilterChainsMenu = () => {
   // Filter chains-data with available Chains from request
   const chains: ExtendedChain[] = useMemo(() => {
     const filteredChains: ChainId[] = [];
-    berachainMarkets.forEach((market) => {
+    data?.forEach((market) => {
       // Check if the chain is not already in the chains array
-      if (!filteredChains.includes(market.chain)) {
-        // If it's not present, add it to the chains array
-        filteredChains.push(market.chain);
-      }
+      // if (!filteredChains.includes(market.chain)) {
+      //   // If it's not present, add it to the chains array
+      //   filteredChains.push(market.chain);
+      // }
     });
     return unfilteredChains.filter((el) => {
       return filteredChains.includes(el.id);
     });
-  }, [unfilteredChains]);
+  }, [data, unfilteredChains]);
 
   return (
     <BerachainMarketsFilterBox>

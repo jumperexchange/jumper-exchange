@@ -3,7 +3,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import LanguageIcon from '@mui/icons-material/Language';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import XIcon from '@mui/icons-material/X';
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { AccordionFAQ } from 'src/components/AccordionFAQ';
@@ -39,6 +39,7 @@ export const BerachainProtocolAction = ({
 }: BerachainProtocolActionProps) => {
   const { setSnackbarState } = useMenuStore((state) => state);
   const { t } = useTranslation();
+  const theme = useTheme();
 
   const faqItems = useBerachainFaq();
 
@@ -119,8 +120,18 @@ export const BerachainProtocolAction = ({
           <AccordionFAQ
             showIndex={true}
             showDivider={true}
+            showAnswerDivider={true}
             sx={{ padding: 0 }}
-            itemSx={{ padding: 0, backgroundColor: 'transparent' }}
+            itemSx={{
+              padding: 0,
+              backgroundColor: 'transparent',
+              // '& > div': {
+              //   borderTop: `1px solid ${alpha(theme.palette.text.primary, 0.04)}`,
+              // },
+              // '&:first-of-type > div': {
+              //   borderTop: 'unset',
+              // },
+            }}
             content={faqItems}
             accordionHeader={<BerachainProtocolFaqAccordionHeader />}
             questionTextTypography="bodyLarge"

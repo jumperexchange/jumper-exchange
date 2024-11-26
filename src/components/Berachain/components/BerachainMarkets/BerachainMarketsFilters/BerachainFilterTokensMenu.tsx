@@ -50,7 +50,7 @@ export const BerachainFilterTokensMenu = () => {
         aria-expanded={openTokensFilterMenu ? 'true' : undefined}
         onClick={handleTokensFilterClick}
       >
-        <Typography variant="bodySmall">All Tokens</Typography>
+        <Typography variant="bodyMedium">All Tokens</Typography>
         <BerachainMarketFilterArrow active={openTokensFilterMenu} />
       </BerachainMarketFiltersButton>
       <BerachainMarketFilter

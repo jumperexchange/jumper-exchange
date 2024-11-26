@@ -13,6 +13,7 @@ import { useMemo, useState } from 'react';
 import { useChains } from 'src/hooks/useChains';
 import type { UseMultipleTokenProps } from 'src/hooks/useMultipleTokens';
 import { useMultipleTokens } from 'src/hooks/useMultipleTokens';
+import type { StrapiImageData } from 'src/types/strapi';
 import type {
   BerachainApys,
   BerachainProtocol,
@@ -28,6 +29,7 @@ import {
   BerchainMarketCardInfos,
   BerchainMarketCardTokenBox,
 } from './BerachainMarketCard.style';
+import BerachainMarketCardDeposit from './BerachainMarketCardDeposit';
 
 export type BerachainProtocolType =
   | 'Vault'
@@ -39,17 +41,23 @@ export type BerachainProtocolType =
 interface BerachainMarketCardProps {
   chainId?: ChainId;
   protocol?: BerachainProtocol;
+  image?: StrapiImageData;
+  title?: string;
   apys?: BerachainApys;
   tvl?: string;
   tokens?: string[];
+  url?: string;
 }
 
 export const BerachainMarketCard = ({
   chainId,
   protocol,
   apys,
+  title,
+  image,
   tvl,
   tokens,
+  url,
 }: BerachainMarketCardProps) => {
   const theme = useTheme();
   const [anchorTokensTooltip, setAnchorTokensTooltip] =
@@ -64,7 +72,6 @@ export const BerachainMarketCard = ({
 
   const tokensTooltipId = 'tokens-tooltip-button';
   const tokensTooltipMenuId = 'tokens-tooltip-menu';
-
   const prepareTokenFetch = useMemo(() => {
     if (chainId === undefined || !tokens) {
       return undefined;
@@ -83,7 +90,6 @@ export const BerachainMarketCard = ({
     // isLoading,
     // isError,
   } = useMultipleTokens(prepareTokenFetch);
-
   return (
     <Link
       href={`/berachain/explore/${protocol?.slug}`}
@@ -91,12 +97,18 @@ export const BerachainMarketCard = ({
     >
       <BerachainMarketCardWrapper>
         <BerachainMarketCardHeader>
-          {protocol?.image ? (
+          {image ? (
             <Image
-              src={protocol.image}
-              alt={`${protocol.name + ' '}logo`}
-              width={20}
-              height={20}
+              key={`berachain-market-card-token-${image.data.id}`}
+              src={`${url}${image.data.attributes.url}`}
+              alt={`${image.data.attributes.alternativeText || 'protocol'} logo`}
+              width={image.data.attributes.width}
+              height={image.data.attributes.height}
+              style={{
+                borderRadius: '10px',
+                maxHeight: '40px',
+                maxWidth: '80px',
+              }}
             />
           ) : (
             <Skeleton
@@ -104,7 +116,14 @@ export const BerachainMarketCard = ({
               sx={{ width: 96, height: 40, borderRadius: '8px' }}
             />
           )}
-          <Typography variant="bodyLargeStrong">{protocol?.name}</Typography>
+          {title ? (
+            <Typography variant="bodyLargeStrong">{title}</Typography>
+          ) : (
+            <Skeleton
+              variant="rectangular"
+              sx={{ width: 96, height: 40, borderRadius: '8px' }}
+            />
+          )}
         </BerachainMarketCardHeader>
         <BerchainMarketCardInfos>
           <Box display={'flex'} gap={'8px'}>
@@ -119,37 +138,41 @@ export const BerachainMarketCard = ({
               <Skeleton variant="circular" sx={{ width: 32, height: 32 }} />
             )}
             <BerchainMarketCardTokenBox>
-              {fetchedTokens.map((token, index) => (
-                <BerachainMarketCardTokenContainer
-                  sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
-                  key={`berachain-market-card-token-container-${index}`}
-                >
-                  {token?.logoURI ? (
-                    <Image
-                      key={`berachain-market-card-token-${token.name}-${index}`}
-                      src={token.logoURI}
-                      alt={`${token.name} logo`}
-                      width={20}
-                      height={20}
-                      style={{ borderRadius: '10px' }}
-                    />
-                  ) : (
-                    <Skeleton
-                      key={`berachain-market-card-token-skeleton-${index}`}
-                      variant="circular"
-                      sx={{ width: 20, height: 20 }}
-                    />
-                  )}
-                  {fetchedTokens.length === 1 && token?.name && (
-                    <Typography
-                      variant="bodyXSmallStrong"
-                      key={`berachain-market-card-token-label-${token.name}-${index}`}
-                    >
-                      {fetchedTokens[0]?.symbol}
-                    </Typography>
-                  )}
-                </BerachainMarketCardTokenContainer>
-              ))}
+              {fetchedTokens.length ? (
+                fetchedTokens.map((token, index) => (
+                  <BerachainMarketCardTokenContainer
+                    sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+                    key={`berachain-market-card-token-container-${index}`}
+                  >
+                    {token?.logoURI ? (
+                      <Image
+                        key={`berachain-market-card-token-${token.name}-${index}`}
+                        src={token.logoURI}
+                        alt={`${token.name} logo`}
+                        width={20}
+                        height={20}
+                        style={{ borderRadius: '10px' }}
+                      />
+                    ) : (
+                      <Skeleton
+                        key={`berachain-market-card-token-skeleton-${index}`}
+                        variant="circular"
+                        sx={{ width: 20, height: 20 }}
+                      />
+                    )}
+                    {fetchedTokens.length === 1 && token?.name && (
+                      <Typography
+                        variant="bodyXSmallStrong"
+                        key={`berachain-market-card-token-label-${token.name}-${index}`}
+                      >
+                        {fetchedTokens[0]?.symbol}
+                      </Typography>
+                    )}
+                  </BerachainMarketCardTokenContainer>
+                ))
+              ) : (
+                <Skeleton variant="circular" sx={{ width: 32, height: 32 }} />
+              )}
             </BerchainMarketCardTokenBox>
           </Box>
           {protocol?.type && (
@@ -200,7 +223,7 @@ export const BerachainMarketCard = ({
             <div style={{ flexGrow: 1 }}>
               <BerachainProgressCard
                 title={'Net APY'}
-                value={`${typeof apys?.total === 'number' ? apys?.total + '%' : apys?.total}`}
+                value={`${typeof apys?.total === 'number' ? apys?.total + '%' : apys?.total || 'N/A'}`}
                 tooltip={'Net APY tooltip msg lorem ipsum'}
                 sx={{ color: alpha(theme.palette.white.main, 0.48) }}
                 valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
@@ -208,6 +231,7 @@ export const BerachainMarketCard = ({
             </div>
           </Tooltip>
         </BerchainMarketCardInfos>
+        <BerachainMarketCardDeposit chain={tokenChainDetails} />
       </BerachainMarketCardWrapper>
     </Link>
   );

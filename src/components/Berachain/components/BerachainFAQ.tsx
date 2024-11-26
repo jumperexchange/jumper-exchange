@@ -7,7 +7,7 @@ export const BerachainFAQ = () => {
     <AccordionFAQ
       title="Frequently Asked Questions"
       content={faqItems}
-      sx={{ marginTop: 20 }}
+      sx={{ marginTop: 10 }}
     />
   );
 };

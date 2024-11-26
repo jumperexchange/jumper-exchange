@@ -63,7 +63,7 @@ export const AccordionItemWrapper = styled(Box)<AccordionItemWrapperProps>(
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    gap: theme.spacing(2),
+    gap: theme.spacing(1),
   }),
 );
 
@@ -77,6 +77,9 @@ export const Accordion = styled(MuiAccordion)(({ theme, sx }) => ({
   transition: 'background-color 300ms ease-in-out',
   // visibility: show ? 'visible' : 'hidden',
   // height: show ? 'auto' : 0,
+  '&.Mui-expanded': {
+    margin: 0,
+  },
   '&:last-of-type': {
     borderRadius: '16px',
   },
@@ -86,7 +89,7 @@ export const Accordion = styled(MuiAccordion)(({ theme, sx }) => ({
   },
 }));
 
-export const AccordionDetails = styled(MuiAccordionDetails)(() => ({
+export const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   '& > img': { width: '100%' },
 }));
 
@@ -111,14 +114,16 @@ export const AccordionToggleButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-export const AccordionHeader = styled(Box)(() => ({
+export const AccordionHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  marginLeft: theme.spacing(2),
 }));
 
 export const AccordionDivider = styled(Divider)(({ theme }) => ({
   borderColor: alpha(theme.palette.text.primary, 0.08),
+  width: '100%',
 }));
 
 export const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({

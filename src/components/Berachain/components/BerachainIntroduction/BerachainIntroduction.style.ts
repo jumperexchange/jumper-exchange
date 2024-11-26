@@ -4,7 +4,7 @@ import { alpha, styled } from '@mui/material/styles';
 import Image from 'next/image';
 
 export const BerachainIntroductionBox = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(20),
+  marginTop: theme.spacing(10),
   color: theme.palette.text.primary,
   display: 'flex',
   flexDirection: 'column',
