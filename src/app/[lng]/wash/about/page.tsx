@@ -100,8 +100,6 @@ export default function AboutPage(): ReactElement {
             <Button title={'Go to Jumper'} theme={'pink'} size={'long'} />
           </Link>
         </ButtonWrapper>
-
-        <RiveSlideshowWrapper />
       </ContentWrapper>
     </Wrapper>
   );
