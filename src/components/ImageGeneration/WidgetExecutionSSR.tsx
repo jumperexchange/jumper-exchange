@@ -1,8 +1,17 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import WidgetFieldSSR from './Field';
+import type { CSSProperties } from 'react';
+import ReviewField from './Fields/ReviewField';
 import { FieldSkeleton } from './FieldSkeleton';
 import type { HighlightedAreas, ImageTheme } from './ImageGeneration.types';
-import Label from './Label';
+import ButtonLabel from './Labels/ButtonLabel';
+import CardContent from './Labels/CardContent';
+import CardTitle from './Labels/CardTitle';
+import Title from './Labels/Title';
+import {
+  contentContainerStyles,
+  contentPositioningStyles,
+  pageStyles,
+} from './style';
 
 const SCALING_FACTOR = 2;
 
@@ -31,37 +40,23 @@ const WidgetExecutionSSR = ({
   height,
   highlighted,
 }: WidgetReviewSSRProps) => {
+  const contentContainerStyle = contentContainerStyles({
+    height,
+    width,
+    scalingFactor: SCALING_FACTOR,
+  }) as CSSProperties;
+
+  const contentPositioningStyle = contentPositioningStyles() as CSSProperties;
+  const pageStyle = pageStyles() as CSSProperties;
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        height,
-        width,
-        transform: `scale(${SCALING_FACTOR})`,
-        transformOrigin: 'top left',
-        position: 'relative',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          position: 'absolute',
-          left: 0,
-          top: 0,
-        }}
-      >
+    <div style={contentPositioningStyle}>
+      <div style={contentContainerStyle}>
         {
           // pages container -->
         }
-        <div
-          style={{
-            display: 'flex',
-            // justifyContent: 'center',
-            flexDirection: 'column',
-            margin: '0 24px',
-          }}
-        >
-          <Label
+        <div style={pageStyle}>
+          <Title
             title={isSwap ? 'Swap' : 'Bridge'}
             theme={theme}
             fullWidth={true}
@@ -71,12 +66,11 @@ const WidgetExecutionSSR = ({
               marginLeft: -2,
             }}
           />
-          <Label
+          <CardTitle
             cardTitle={isSwap ? 'Swap' : 'Swap and bridge'}
             theme={theme}
           />
-          <WidgetFieldSSR
-            type={'review'}
+          <ReviewField
             chain={fromChain}
             theme={theme}
             token={fromToken}
@@ -84,9 +78,9 @@ const WidgetExecutionSSR = ({
             fullWidth={false}
             highlighted={highlighted === 'from'}
             showSkeletons={true}
-            sx={{ padding: '0px 16px', marginTop: -4 }}
+            sx={{ padding: '0px 16px', marginTop: 12 }}
           />
-          <Label
+          <CardContent
             cardContent={
               isSwap
                 ? 'Waiting for swap transaction'
@@ -94,8 +88,7 @@ const WidgetExecutionSSR = ({
             }
             theme={theme}
           />
-          <WidgetFieldSSR
-            type={'review'}
+          <ReviewField
             chain={toChain}
             token={toToken}
             theme={theme}
@@ -108,14 +101,14 @@ const WidgetExecutionSSR = ({
                 : null
             }
             showSkeletons={true}
-            sx={{ padding: '0px 16px', marginTop: 2 }}
+            sx={{ padding: '0px 16px', marginTop: 16 }}
           />
           <FieldSkeleton
             width={164}
             height={12}
             sx={{ marginTop: -7, marginLeft: 14 }}
           />
-          <Label
+          <ButtonLabel
             buttonLabel={isSwap ? 'Start swapping' : 'Start bridging'}
             theme={theme}
             sx={{ marginTop: 53 }}
@@ -125,5 +118,4 @@ const WidgetExecutionSSR = ({
     </div>
   );
 };
-
 export default WidgetExecutionSSR;

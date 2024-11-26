@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 
-import type { ImageTheme } from './ImageGeneration.types';
+import type { CSSProperties } from 'react';
+import type { ImageTheme } from '../ImageGeneration.types';
 
 const Label = ({
   sx,
@@ -12,7 +13,7 @@ const Label = ({
   theme,
   fullWidth,
 }: {
-  sx?: any; //SxProps<Theme>;
+  sx?: CSSProperties;
   cardTitle?: string;
   cardContent?: string;
   theme?: ImageTheme;

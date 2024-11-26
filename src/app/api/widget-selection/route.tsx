@@ -22,9 +22,11 @@
  */
 
 import { ImageResponse } from 'next/og';
+import type { CSSProperties } from 'react';
 import type { HighlightedAreas } from 'src/components/ImageGeneration/ImageGeneration.types';
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
-import WidgetImageSSR from 'src/components/ImageGeneration/WidgetImageSSR';
+import { imageFrameStyles } from 'src/components/ImageGeneration/style';
+import WidgetSelectionSSR from 'src/components/ImageGeneration/WidgetSelectionSSR';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
@@ -57,32 +59,29 @@ export async function GET(request: Request) {
     scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
   });
 
+  const imageFrameStyle = imageFrameStyles({
+    width: WIDGET_IMAGE_WIDTH,
+    height: WIDGET_IMAGE_HEIGHT,
+    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+  }) as CSSProperties;
+
+  const imageStyle = imageFrameStyles({
+    width: WIDGET_IMAGE_WIDTH,
+    height: WIDGET_IMAGE_HEIGHT,
+    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+  }) as CSSProperties;
+
   return new ImageResponse(
     (
-      <div
-        style={{
-          position: 'relative',
-          display: 'flex',
-          width: WIDGET_IMAGE_WIDTH * WIDGET_IMAGE_SCALING_FACTOR,
-          height: WIDGET_IMAGE_HEIGHT * WIDGET_IMAGE_SCALING_FACTOR,
-        }}
-      >
+      <div style={imageFrameStyle}>
         <img
           alt="Widget Selection Example"
           width={'100%'}
           height={'100%'}
-          style={{
-            margin: 'auto',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            objectFit: 'cover',
-            width: WIDGET_IMAGE_WIDTH * WIDGET_IMAGE_SCALING_FACTOR,
-            height: WIDGET_IMAGE_HEIGHT * WIDGET_IMAGE_SCALING_FACTOR,
-          }}
+          style={imageStyle}
           src={`${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}` : process.env.NEXT_PUBLIC_SITE_URL}/widget/widget-selection-${theme === 'dark' ? 'dark' : 'light'}.png`}
         />
-        <WidgetImageSSR
+        <WidgetSelectionSSR
           height={WIDGET_IMAGE_WIDTH}
           width={WIDGET_IMAGE_HEIGHT}
           fromToken={fromTokenData}
@@ -93,7 +92,7 @@ export async function GET(request: Request) {
           amountUSD={amountUSD}
           theme={theme as 'light' | 'dark'}
           highlighted={highlighted as HighlightedAreas}
-        />{' '}
+        />
       </div>
     ),
     options,

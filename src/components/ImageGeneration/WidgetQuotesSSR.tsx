@@ -1,7 +1,15 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import WidgetFieldSSR from './Field';
+import type { CSSProperties } from 'react';
+import QuoteAmountField from './Fields/QuoteAmountField';
+import QuoteField from './Fields/QuoteField';
+import TokenField from './Fields/TokenField';
 import type { HighlightedAreas, ImageTheme } from './ImageGeneration.types';
-import Label from './Label';
+import Label from './Labels/Label';
+import {
+  contentContainerStyles,
+  contentPositioningStyles,
+  pageStyles,
+} from './style';
 
 const SCALING_FACTOR = 2;
 
@@ -34,24 +42,21 @@ const WidgetQuoteSSR = ({
   height,
   highlighted,
 }: WidgetQuoteSSRProps) => {
+  const contentContainerStyle = contentContainerStyles({
+    height,
+    width,
+    scalingFactor: SCALING_FACTOR,
+  }) as CSSProperties;
+
+  const contentPositioningStyle = contentPositioningStyles() as CSSProperties;
+  const pageStyle = pageStyles() as CSSProperties;
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        height,
-        width,
-        transform: `scale(${SCALING_FACTOR})`,
-        transformOrigin: 'top left',
-        position: 'relative',
-      }}
-    >
+    <div style={contentPositioningStyle}>
       <div
         style={{
-          display: 'flex',
-          position: 'absolute',
-          marginTop: 64,
-          left: 0,
-          top: 0,
+          ...contentContainerStyle,
+          marginTop: 128,
         }}
       >
         {
@@ -60,10 +65,8 @@ const WidgetQuoteSSR = ({
         <div style={{ display: 'flex', gap: 24 }}>
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
+              ...pageStyle,
               alignItems: 'center',
-              margin: '0 24px',
             }}
           >
             <div
@@ -74,26 +77,23 @@ const WidgetQuoteSSR = ({
                 justifyContent: 'space-between',
               }}
             >
-              <WidgetFieldSSR
+              <TokenField
                 theme={theme || undefined}
-                type={'token'}
                 chain={fromChain}
                 token={fromToken}
                 fullWidth={false}
                 highlighted={highlighted === 'from'}
               />
-              <WidgetFieldSSR
+              <TokenField
                 theme={theme || undefined}
-                type={'token'}
                 chain={toChain}
                 token={toToken}
                 fullWidth={false}
                 highlighted={highlighted === 'to'}
               />
             </div>
-            <WidgetFieldSSR
+            <QuoteAmountField
               theme={theme || undefined}
-              type={'quote-amount'}
               chain={fromChain}
               token={fromToken}
               amount={amount ? parseFloat(amount) : undefined}
@@ -111,20 +111,17 @@ const WidgetQuoteSSR = ({
           </div>
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
+              ...pageStyle,
               alignItems: 'center',
-              margin: '0 24px',
             }}
           >
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              {Array(5)
+              {Array(3)
                 .fill(0)
                 .map((_, index) => (
-                  <WidgetFieldSSR
+                  <QuoteField
                     key={`widget-field-quote-${index}`}
                     theme={theme || undefined}
-                    type={'quote'}
                     chain={fromChain}
                     token={fromToken}
                     fullWidth={true}
@@ -136,10 +133,10 @@ const WidgetQuoteSSR = ({
                       (parseFloat(amount || '1') *
                         parseFloat(fromToken?.priceUSD || '1'))
                     }
-                    extendedHeight={index < 1}
-                    amount={amount ? parseFloat(amount) : undefined}
+                    extendedHeight={index === 0}
+                    amount={amount ? parseFloat(amount) : null}
                     amountUSD={amountUSD ? parseFloat(amountUSD) : undefined}
-                    sx={{ ...(index !== 0 && { marginTop: 16 }) }}
+                    sx={{ ...(index !== 0 && { marginTop: 16, height: 110 }) }}
                   />
                 ))}
             </div>

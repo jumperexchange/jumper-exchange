@@ -1,8 +1,15 @@
 // WidgetImageSSR.tsx
 
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import WidgetFieldSSR from './Field';
+import type { CSSProperties } from 'react';
+import AmountField from './Fields/AmountField';
+import TokenField from './Fields/TokenField';
 import type { HighlightedAreas, ImageTheme } from './ImageGeneration.types';
+import {
+  contentContainerStyles,
+  contentPositioningStyles,
+  pageStyles,
+} from './style';
 
 const SCALING_FACTOR = 2;
 
@@ -19,7 +26,7 @@ interface WidgetImageSSRProps {
   highlighted?: HighlightedAreas;
 }
 
-const WidgetImageSSR = ({
+const WidgetSelectionSSR = ({
   fromChain,
   toChain,
   fromToken,
@@ -31,45 +38,38 @@ const WidgetImageSSR = ({
   theme,
   highlighted,
 }: WidgetImageSSRProps) => {
+  const contentContainerStyle = contentContainerStyles({
+    height,
+    width,
+    scalingFactor: SCALING_FACTOR,
+  }) as CSSProperties;
+
+  const contentPositioningStyle = contentPositioningStyles() as CSSProperties;
+  const pageStyle = pageStyles() as CSSProperties;
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        height,
-        width,
-        transform: `scale(${SCALING_FACTOR})`,
-        transformOrigin: 'top left',
-        position: 'relative',
-      }}
-    >
+    <div style={contentPositioningStyle}>
       <div
         style={{
-          display: 'flex',
-          position: 'absolute',
-          marginTop: 64,
-          left: 0,
-          top: 0,
+          ...contentContainerStyle,
+          // marginTop: 64,
         }}
       >
         <div
           style={{
-            display: 'flex',
-            // justifyContent: 'center',
-            flexDirection: 'column',
+            ...pageStyle,
             alignItems: 'center',
-            margin: '0 24px',
           }}
         >
-          <WidgetFieldSSR
-            type={'token'}
+          <TokenField
             chain={fromChain}
             token={fromToken}
             fullWidth={true}
             theme={theme || undefined}
             highlighted={highlighted === 'from'}
+            sx={{ marginTop: 64 }}
           />
-          <WidgetFieldSSR
-            type={'token'}
+          <TokenField
             chain={toChain}
             token={toToken}
             fullWidth={true}
@@ -77,15 +77,13 @@ const WidgetImageSSR = ({
             sx={{ marginTop: '16px' }}
             highlighted={highlighted === 'to'}
           />
-          <WidgetFieldSSR
-            type={'amount-selection'}
+          <AmountField
             chain={fromChain}
             token={fromToken}
             theme={theme || undefined}
             amount={amount ? parseFloat(amount) : undefined}
-            amountUSD={amountUSD ? parseFloat(amountUSD) : undefined}
+            // amountUSD={amountUSD ? parseFloat(amountUSD) : undefined}
             fullWidth={true}
-            sx={{ marginTop: '16px' }}
             highlighted={highlighted === 'amount'}
           />
         </div>
@@ -94,4 +92,4 @@ const WidgetImageSSR = ({
   );
 };
 
-export default WidgetImageSSR;
+export default WidgetSelectionSSR;

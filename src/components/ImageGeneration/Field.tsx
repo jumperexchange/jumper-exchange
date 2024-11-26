@@ -22,7 +22,7 @@ const Field = ({
   fullWidth,
   showSkeletons,
 }: {
-  sx?: any; //SxProps<Theme>;
+  sx?: any;
   token?: Token | null;
   chain?: ExtendedChain | null;
   theme?: ImageTheme;
@@ -60,12 +60,12 @@ const Field = ({
       <div
         style={{
           display: 'flex',
-          height: extendedHeight ? 149.6 : type === 'quote' ? 112 : 104,
           borderRadius: '12px',
           borderWidth: '1px',
           justifyContent: 'space-between',
           borderStyle: 'solid',
-          // borderColor: '#E5E1EB',
+          height: extendedHeight ? 149.6 : type === 'quote' ? 112 : 104,
+          padding: `${containerOffset}px 16px 16px`,
           ...(highlighted && {
             boxShadow: `inset 0 0 0 2px ${theme === 'dark' ? '#653BA3' : '#31007A'}`,
           }),
@@ -73,7 +73,6 @@ const Field = ({
             flexDirection: 'column',
             justifyContent: 'flex-start',
           }),
-          padding: `${containerOffset}px 16px 16px`,
           ...sx,
         }}
       >

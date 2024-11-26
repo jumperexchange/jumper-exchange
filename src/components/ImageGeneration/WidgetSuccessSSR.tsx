@@ -1,8 +1,10 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import WidgetFieldSSR from './Field';
+import type { CSSProperties } from 'react';
+import SuccessField from './Fields/SuccessField';
 import { FieldSkeleton } from './FieldSkeleton';
 import type { ImageTheme } from './ImageGeneration.types';
-import Label from './Label';
+import Title from './Labels/Title';
+import { contentContainerStyles, contentPositioningStyles } from './style';
 
 const SCALING_FACTOR = 2;
 
@@ -25,25 +27,17 @@ const WidgetSuccessSSR = ({
   width,
   height,
 }: WidgetReviewSSRProps) => {
+  const contentContainerStyle = contentContainerStyles({
+    height,
+    width,
+    scalingFactor: SCALING_FACTOR,
+  }) as CSSProperties;
+
+  const contentPositioningStyle = contentPositioningStyles() as CSSProperties;
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        height,
-        width,
-        transform: `scale(${SCALING_FACTOR})`,
-        transformOrigin: 'top left',
-        position: 'relative',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          position: 'absolute',
-          left: 0,
-          top: 0,
-        }}
-      >
+    <div style={contentPositioningStyle}>
+      <div style={contentContainerStyle}>
         {
           // pages container -->
         }
@@ -54,7 +48,7 @@ const WidgetSuccessSSR = ({
             margin: '0 22px',
           }}
         >
-          <Label
+          <Title
             title={isSwap ? 'Swap successful' : 'Bridge successful'}
             theme={theme}
             fullWidth={true}
@@ -64,15 +58,11 @@ const WidgetSuccessSSR = ({
               alignSelf: 'flex-start',
             }}
           />
-          <WidgetFieldSSR
-            type={'success'}
+          <SuccessField
             chain={toChain}
             theme={theme}
             token={toToken}
             amount={amount ? parseFloat(amount) : null}
-            fullWidth={false}
-            showSkeletons={true}
-            sx={{ padding: '0px', marginTop: -2, marginLeft: 114 }}
           />
           <FieldSkeleton width={344} height={12} sx={{ marginTop: -42 }} />
           <FieldSkeleton width={184} height={12} sx={{ marginTop: 12 }} />
