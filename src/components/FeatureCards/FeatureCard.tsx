@@ -35,9 +35,6 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   const eventFired = useRef(false);
 
   const { t } = useTranslation();
-  const { url } = useStrapi<FeatureCardData>({
-    contentType: STRAPI_FEATURE_CARDS,
-  });
   const { trackEvent } = useUserTracking();
   const [setDisabledFeatureCard] = useSettingsStore((state) => [
     state.setDisabledFeatureCard,
@@ -102,11 +99,11 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     mode === 'dark'
       ? new URL(
           data.attributes.BackgroundImageDark.data?.attributes.url,
-          url.origin,
+          process.env.NEXT_PUBLIC_STRAPI_URL,
         )
       : new URL(
           data.attributes.BackgroundImageLight.data?.attributes.url,
-          url.origin,
+          process.env.NEXT_PUBLIC_STRAPI_URL,
         );
 
   const handleClose = (
