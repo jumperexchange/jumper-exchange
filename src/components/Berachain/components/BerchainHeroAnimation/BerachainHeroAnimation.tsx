@@ -1,14 +1,6 @@
-import { gsap } from 'gsap';
-import { useEffect, useRef } from 'react';
+import { motion } from 'motion/react';
 import {
   BerachainAnimationFrame,
-  BerachainAsteroidX1,
-  BerachainAsteroidX2,
-  BerachainAsteroidX3,
-  BerachainAsteroidX4,
-  BerachainAsteroidX5,
-  BerachainAsteroidX6,
-  BerachainAsteroidX7,
   BerachainPlanetContainer,
   BerachainPlanetCrater,
   BerchainSpaceGlow,
@@ -17,160 +9,169 @@ import { BerachainHeroImages } from './BerchainHeroImages';
 import Starfield from './Starfield';
 
 const BerachainHeroAnimation = () => {
-  const animationRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Asteroid X1 Animation
-      gsap.fromTo(
-        '.BerachainAsteroidX1',
-        { x: '-75px', y: '-150px', rotation: 10, scale: 1 },
-        {
-          x: '-50%',
-          y: '200px',
-          rotation: 55,
-          scale: 0,
-          duration: 15,
-          ease: 'power1.out',
-        },
-      );
-
-      // Asteroid X2 Animation
-      gsap.to('.BerachainAsteroidX2', {
-        x: '-100vw',
-        y: '100px',
-        rotation: 360,
-        scale: -0.5,
-        duration: 30,
-        repeat: -1,
-        yoyo: true,
-        ease: 'none',
-      });
-
-      // Asteroid X3 Animation
-      gsap.to('.BerachainAsteroidX3', {
-        x: '-100vw',
-        y: '100px',
-        rotation: -135,
-        scale: 0.4,
-        duration: 60,
-        repeat: -1,
-        yoyo: true,
-        ease: 'none',
-      });
-
-      // Asteroid X4 Animation
-      gsap.to('.BerachainAsteroidX4', {
-        x: '100vw',
-        y: '400px',
-        rotation: 270,
-        scale: 0.35,
-        duration: 25,
-        repeat: -1,
-        yoyo: true,
-        ease: 'none',
-      });
-
-      // Asteroid X5 Animation
-      gsap.to('.BerachainAsteroidX5', {
-        x: '120vw',
-        y: '150px',
-        rotation: -170,
-        scale: 0.35,
-        duration: 90,
-        repeat: -1,
-        yoyo: true,
-        ease: 'none',
-      });
-
-      // Asteroid X6 Animation
-      gsap.to('.BerachainAsteroidX6', {
-        x: '500px',
-        y: '-600px',
-        rotation: 45,
-        scaleX: 0.9,
-        scaleY: 0.9,
-        duration: 20,
-        repeat: -1,
-        yoyo: true,
-        ease: 'none',
-      });
-
-      // Asteroid X7 Animation
-      gsap.to('.BerachainAsteroidX7', {
-        x: '-120vw',
-        y: '240px',
-        rotation: 45,
-        scaleX: 0.8,
-        duration: 25,
-        repeat: -1,
-        yoyo: true,
-        ease: 'none',
-      });
-    }, animationRef);
-
-    return () => ctx.revert(); // Clean up animations on unmount
-  }, []);
-
   return (
-    <BerachainAnimationFrame className="animation-frame" ref={animationRef}>
+    <BerachainAnimationFrame className="animation-frame">
       <BerchainSpaceGlow sx={{ zIndex: 2 }} />
       <Starfield sx={{ zIndex: 3 }} />
-      <BerachainAsteroidX1
+
+      <motion.img
         className="BerachainAsteroidX1"
         src={'/berachain/berachain-asteroid-2.svg'}
         alt="Berachain Asteroid 1"
         width={386}
         height={293}
-        style={{ zIndex: 4 }}
+        style={{ zIndex: 4, position: 'absolute', top: 0, left: '50%' }}
+        initial={{ x: '-75px', y: '-150px', rotate: 10, scale: 1 }}
+        animate={{ x: '-50%', y: '200px', rotate: 55, scale: 0 }}
+        transition={{
+          duration: 15,
+          ease: 'easeInOut',
+          repeat: Infinity,
+          repeatType: 'reverse',
+        }}
       />
-      <BerachainAsteroidX2
+
+      <motion.img
         className="BerachainAsteroidX2"
         src={'/berachain/berachain-asteroid-2.svg'}
         alt="Berachain Asteroid 2"
         width={386}
         height={293}
-        style={{ zIndex: 4 }}
+        style={{
+          zIndex: 4,
+          position: 'absolute',
+          top: 0,
+          right: 0,
+        }}
+        initial={{
+          x: '0',
+          y: '-140px',
+          rotate: 160,
+          scale: 0.8,
+        }}
+        animate={{
+          x: ['0', '-100%'],
+          y: ['-140px', '100px'],
+          rotate: [160, 360],
+          scale: [0.8, 0.5],
+        }}
+        transition={{
+          duration: 30,
+          times: [0, 0.5, 0.50001, 1],
+          ease: 'easeInOut',
+          repeat: Infinity,
+          repeatType: 'reverse',
+        }}
       />
-      <BerachainAsteroidX3
+
+      <motion.img
         className="BerachainAsteroidX3"
         src={'/berachain/berachain-asteroid-2.svg'}
         alt="Berachain Asteroid 3"
         width={386}
         height={293}
-        style={{ zIndex: 4 }}
+        style={{ zIndex: 4, position: 'absolute', top: 0, left: 0 }}
+        initial={{ x: '-150px', y: '100px', rotate: -45, scale: 0.4 }}
+        animate={{
+          x: ['-150px', '150vw'],
+          y: ['100px', '100px'],
+          rotate: [-45, -135],
+          scale: 0.4,
+        }}
+        transition={{
+          duration: 60,
+          repeat: Infinity,
+          repeatType: 'reverse',
+          ease: 'linear',
+        }}
       />
-      <BerachainAsteroidX4
+
+      <motion.img
         className="BerachainAsteroidX4"
         src={'/berachain/berachain-asteroid-2.svg'}
         alt="Berachain Asteroid 4"
         width={386}
         height={293}
-        style={{ zIndex: 4 }}
+        style={{ zIndex: 4, position: 'absolute', top: 0, right: 0 }}
+        initial={{ x: 0, y: '100px', rotate: 165, scale: 0.35 }}
+        animate={{
+          x: '100%',
+          y: '400px',
+          rotate: 270,
+          scale: 0.35,
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          repeatType: 'reverse',
+          ease: 'linear',
+        }}
       />
-      <BerachainAsteroidX5
+
+      <motion.img
         className="BerachainAsteroidX5"
         src={'/berachain/berachain-asteroid-2.svg'}
         alt="Berachain Asteroid 5"
         width={386}
         height={293}
-        style={{ zIndex: 4 }}
+        style={{ zIndex: 4, position: 'absolute', top: 0, left: 0 }}
+        initial={{ x: 0, y: '-50px', rotate: 170, scale: 0.35 }}
+        animate={{
+          x: '150%',
+          y: '350px',
+          rotate: -170,
+          scale: 0.35,
+        }}
+        transition={{
+          duration: 50,
+          repeat: Infinity,
+          repeatType: 'reverse',
+          ease: 'easeInOut',
+        }}
       />
-      <BerachainAsteroidX6
+
+      <motion.img
         className="BerachainAsteroidX6"
         src={'/berachain/berachain-asteroid-1.svg'}
         alt="Berachain Asteroid 6"
         width={341}
         height={303}
-        style={{ zIndex: 4 }}
+        style={{ zIndex: 4, position: 'absolute', top: 0, left: 0 }}
+        initial={{ x: '-150px', y: '200px', rotate: 0, scale: 1 }}
+        animate={{
+          x: '500px',
+          y: '-600px',
+          rotate: 45,
+          scale: 0.9,
+        }}
+        transition={{
+          duration: 50,
+          repeat: Infinity,
+          repeatType: 'reverse',
+          ease: 'linear',
+        }}
       />
-      <BerachainAsteroidX7
+
+      <motion.img
         className="BerachainAsteroidX7"
         src={'/berachain/berachain-asteroid-1.svg'}
         alt="Berachain Asteroid 7"
         width={341}
         height={303}
-        style={{ zIndex: 4 }}
+        style={{ zIndex: 4, position: 'absolute', top: 0, right: 0 }}
+        initial={{ x: '150px', y: '200px', rotate: 45, scale: 1 }}
+        animate={{
+          x: '-100vw',
+          y: '200px',
+          rotate: -45,
+          scale: 0.8,
+        }}
+        transition={{
+          duration: 45,
+          repeat: Infinity,
+          repeatType: 'reverse',
+          ease: 'linear',
+        }}
       />
 
       <BerachainHeroImages sx={{ zIndex: 6 }} />

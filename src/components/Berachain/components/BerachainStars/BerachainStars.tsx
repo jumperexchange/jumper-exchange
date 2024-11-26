@@ -1,10 +1,10 @@
-import { gsap } from 'gsap';
+import { motion } from 'motion/react';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { BerachainStarsContainer } from './BerachainStars.style';
 
 export const BerachainStars: React.FC = () => {
   const starsContainerRef = useRef<HTMLDivElement | null>(null);
-  const starsRef = useRef<Element[]>([]);
+  const starsRef = useRef<HTMLElement[]>([]);
 
   const createStars = useCallback((count: number) => {
     if (starsContainerRef.current) {
@@ -19,29 +19,35 @@ export const BerachainStars: React.FC = () => {
     }
   }, []);
 
-  const animateStar = useCallback((star: Element) => {
-    gsap.to(star, {
-      duration: Math.random() * 0.5 + 0.5,
-      opacity: Math.random(),
-      onComplete: () => animateStar(star),
-    });
-  }, []);
-
   useEffect(() => {
     if (starsContainerRef.current) {
       createStars(200);
-      starsRef.current.forEach(animateStar);
     }
 
+    // Capture the current stars in a local variable for cleanup
+    const currentStars = [...starsRef.current];
+
     return () => {
-      // Cleanup animation on component unmount
-      starsRef.current.forEach((star) => gsap.killTweensOf(star));
+      // Use the captured stars for cleanup
+      currentStars.forEach((star) => star.remove());
     };
-  }, [createStars, animateStar]);
+  }, [createStars]);
 
   return (
     <BerachainStarsContainer ref={starsContainerRef} id="stars">
-      {/* Remove the "BerachainStars" text */}
+      {starsRef.current.map((star, index) => (
+        <motion.figure
+          key={index}
+          className="star"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: Math.random() }}
+          transition={{
+            duration: Math.random() * 0.5 + 0.5,
+            repeat: Infinity,
+            repeatType: 'mirror' as const,
+          }}
+        />
+      ))}
     </BerachainStarsContainer>
   );
 };

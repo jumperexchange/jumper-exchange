@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
-import { alpha, darken, keyframes, styled } from '@mui/material/styles';
+import { alpha, darken, styled } from '@mui/material/styles';
 
 export const BeraChainWelcomeBox = styled(Box)(() => ({
   display: 'flex',
@@ -11,17 +11,6 @@ export const BeraChainWelcomeBox = styled(Box)(() => ({
   height: 'calc(45vh - 80px)',
 }));
 
-const BeraChainWelcomeContentAnimation = keyframes`
-  from {
-    opacity: 0;
-    margin-top: 120px;
-  }
-  to {
-    opacity: 1;
-    margin-top: 0px;
-  }
-`;
-
 export const BeraChainWelcomeContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   color: theme.palette.white.main,
@@ -31,9 +20,6 @@ export const BeraChainWelcomeContent = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   marginTop: -112,
   zIndex: 1,
-  animation: `${BeraChainWelcomeContentAnimation} 1s`,
-  animationDelay: '2s',
-  animationIterationCount: 1,
 }));
 
 // export const BerachainWelcomeSubtitleBox = styled(Box)(({ theme }) => ({
