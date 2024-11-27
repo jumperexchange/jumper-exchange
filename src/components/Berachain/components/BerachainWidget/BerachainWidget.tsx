@@ -63,7 +63,7 @@ export const BerachainWidget = () => {
           </BerachainWidgetSelectionRewards>
         </BerachainWidgetSelection>
         <BerachainWidgetSelection>
-          <Typography variant="title2XSmall">You’re pledging</Typography>
+          <Typography variant="title2XSmall">Deposit</Typography>
           <Box display={'flex'} alignItems={'center'} marginTop={'8px'}>
             <BerachainWidgetSelectionTokenLogoSkeleton variant="circular" />
             <Typography variant="bodyXLargeStrong" marginLeft={'16px'}>
@@ -72,7 +72,7 @@ export const BerachainWidget = () => {
           </Box>
         </BerachainWidgetSelection>
         <BerachainActionPledgeButton>
-          <Typography variant="bodyMediumStrong">Pledge more tokens</Typography>
+          <Typography variant="bodyMediumStrong">Deposit tokens</Typography>
         </BerachainActionPledgeButton>
         <BerachainWidgetDivider sx={{ marginTop: '48px' }} />
         <BerachainWidgetPledgedBox>
