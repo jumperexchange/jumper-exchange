@@ -28,7 +28,7 @@ export const BerachainMarkets = () => {
                 deposited={index % 2 === 0 ? `${index * 100}$` : undefined}
               />
             ))
-          : Array.from({ length: 6 }, () => 42).map((_, idx) => (
+          : Array.from({ length: 9 }, () => 42).map((_, idx) => (
               <BerachainMarketCard key={idx} />
             ))}
       </BerachainMarketCards>
