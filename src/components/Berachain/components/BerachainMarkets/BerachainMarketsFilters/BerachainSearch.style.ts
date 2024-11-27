@@ -6,17 +6,13 @@ import { styled } from '@mui/material/styles';
 export const BerachainSearchAutocomplete = styled(Autocomplete)(
   ({ theme }) => ({
     height: 48,
-    width: '280px',
+    width: 280,
     padding: 0,
     alignSelf: 'flex-end',
     '.MuiOutlinedInput-root': {
       height: 48,
-      padding: '9px 16px',
-      '&:hover': {
-        // '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-        //   border: '1px solid red', //#554F4E
-        // },
-      },
+      padding: theme.spacing(1, 2),
+      borderRadius: '8px',
     },
     [theme.breakpoints.down('md' as Breakpoint)]: {
       display: 'none',

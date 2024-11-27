@@ -3,14 +3,14 @@ import InfoIcon from '@mui/icons-material/Info';
 import LanguageIcon from '@mui/icons-material/Language';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import XIcon from '@mui/icons-material/X';
-import { Box, Skeleton, Typography, useTheme } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { AccordionFAQ } from 'src/components/AccordionFAQ';
 import { getSiteUrl } from 'src/const/urls';
 import { useMenuStore } from 'src/stores/menu';
-import type { BerachainProtocolSocials } from '../../const/berachainExampleData';
-import { useBerachainFaq } from '../../hooks/useBerachainFaq';
+import type { Quest } from 'src/types/loyaltyPass';
+import type { BerachainMarketInfo } from '../../berachain.types';
 import { BerachainWidget } from '../BerachainWidget/BerachainWidget';
 import {
   BerachainActionProtocolCard,
@@ -23,37 +23,43 @@ import {
 import { BerachainProtocolFaqAccordionHeader } from './BerachainProtocolFaqAccordionHeader';
 
 interface BerachainProtocolActionProps {
-  image?: string;
-  socials?: BerachainProtocolSocials;
-  slug?: string;
-  title?: string;
-  description?: string;
+  market?: Quest;
+  detailInformation?: BerachainMarketInfo;
+}
+
+export function getStrapiBaseUrl() {
+  const apiBaseUrl =
+    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
+      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
+      : `${process.env.NEXT_PUBLIC_STRAPI_URL}`;
+  return apiBaseUrl;
 }
 
 export const BerachainProtocolAction = ({
-  image,
-  socials,
-  slug,
-  title,
-  description,
+  market,
+  detailInformation,
 }: BerachainProtocolActionProps) => {
   const { setSnackbarState } = useMenuStore((state) => state);
   const { t } = useTranslation();
-  const theme = useTheme();
-
-  const faqItems = useBerachainFaq();
+  const baseUrl = getStrapiBaseUrl();
 
   const handleCopyButton = (textToCopy: string) => {
     navigator.clipboard.writeText(textToCopy);
     setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
   };
 
-  return (
+  return market ? (
     <BerachainProtocolActionBox>
       <BerachainProtocolActionInfoBox>
         <BerachainActionProtocolIntro>
-          {image ? (
-            <Image src={image} alt="Protocol image" width={192} height={192} />
+          {market.attributes.Image.data.attributes.url ? (
+            <Image
+              src={`${baseUrl}${market.attributes.Image.data.attributes.url}`}
+              alt="Protocol image"
+              width={market.attributes.Image.data.attributes.width}
+              height={market.attributes.Image.data.attributes.height}
+              style={{ width: 192, height: 'auto', objectFit: 'contain' }}
+            />
           ) : (
             <Skeleton
               variant="circular"
@@ -61,46 +67,54 @@ export const BerachainProtocolAction = ({
             />
           )}
           <BerachainActionProtocolCard>
-            {title ? (
-              <Typography variant="titleSmall">What is {title}?</Typography>
+            {market.attributes.Title ? (
+              <Typography variant="titleSmall">
+                What is {market.attributes.Title}?
+              </Typography>
             ) : (
               <Skeleton
                 variant="rectangular"
                 sx={{ height: '32px', width: '160px' }}
               />
             )}
-            {description ? (
-              <Typography variant="bodyMedium">{description}</Typography>
+            {market.attributes.Information ? (
+              <Typography variant="bodyMedium">
+                {market.attributes.Information}
+              </Typography>
             ) : (
               <Skeleton
                 variant="rectangular"
-                sx={{ height: '72px', width: '100%' }}
+                sx={{ height: '72px', width: '100%', borderRadius: '8px' }}
               />
             )}
             <Box sx={{ display: 'flex', gap: '12px' }}>
-              {socials && (
+              {detailInformation?.socials && (
                 <>
-                  {socials?.twitter && (
+                  {detailInformation?.socials?.twitter && (
                     <BerachainActionProtocolShareLink
-                      href={socials.twitter}
+                      href={detailInformation?.socials?.twitter}
                       style={{ color: 'inherit', textDecoration: 'none' }}
                     >
                       <BerachainActionProtocolShare>
-                        <XIcon />
+                        <XIcon sx={{ width: '16px', height: '16px' }} />
                       </BerachainActionProtocolShare>
                     </BerachainActionProtocolShareLink>
                   )}
-                  {socials?.telegram && (
-                    <BerachainActionProtocolShareLink href={socials.telegram}>
+                  {detailInformation?.socials?.telegram && (
+                    <BerachainActionProtocolShareLink
+                      href={detailInformation?.socials?.telegram}
+                    >
                       <BerachainActionProtocolShare>
-                        <TelegramIcon />
+                        <TelegramIcon sx={{ width: '16px', height: '16px' }} />
                       </BerachainActionProtocolShare>
                     </BerachainActionProtocolShareLink>
                   )}
-                  {socials?.website && (
-                    <BerachainActionProtocolShareLink href={socials.website}>
+                  {detailInformation?.socials?.website && (
+                    <BerachainActionProtocolShareLink
+                      href={detailInformation?.socials?.website}
+                    >
                       <BerachainActionProtocolShare>
-                        <LanguageIcon />
+                        <LanguageIcon sx={{ width: '16px', height: '16px' }} />
                       </BerachainActionProtocolShare>
                     </BerachainActionProtocolShareLink>
                   )}
@@ -108,50 +122,60 @@ export const BerachainProtocolAction = ({
               )}
               <BerachainActionProtocolShare
                 onClick={() =>
-                  handleCopyButton(`${getSiteUrl()}/berachain/explore/${slug}`)
+                  handleCopyButton(
+                    `${getSiteUrl()}/berachain/explore/${market.attributes.Slug}`,
+                  )
                 }
               >
-                <ContentCopyIcon />
+                <ContentCopyIcon sx={{ width: '16px', height: '16px' }} />
               </BerachainActionProtocolShare>
             </Box>
           </BerachainActionProtocolCard>
         </BerachainActionProtocolIntro>
-        <BerachainActionProtocolCard>
-          <AccordionFAQ
-            showIndex={true}
-            showDivider={true}
-            showAnswerDivider={true}
-            sx={{ padding: 0 }}
-            itemSx={{
-              padding: 0,
-              backgroundColor: 'transparent',
-              // '& > div': {
-              //   borderTop: `1px solid ${alpha(theme.palette.text.primary, 0.04)}`,
-              // },
-              // '&:first-of-type > div': {
-              //   borderTop: 'unset',
-              // },
-            }}
-            content={faqItems}
-            accordionHeader={<BerachainProtocolFaqAccordionHeader />}
-            questionTextTypography="bodyLarge"
-            answerTextTypography="bodyMedium"
-            arrowSize={20}
-          />
-        </BerachainActionProtocolCard>
+        {detailInformation?.faqItems && (
+          <BerachainActionProtocolCard sx={{ padding: '20px 12px' }}>
+            <AccordionFAQ
+              showIndex={true}
+              showDivider={true}
+              showAnswerDivider={true}
+              sx={{ padding: 0 }}
+              itemSx={{
+                padding: '0px 8px',
+                backgroundColor: 'transparent',
+                '.MuiAccordionSummary-root': {
+                  padding: 0,
+                },
+                '.accordion-items': {
+                  gap: '4px',
+                },
+                '.MuiAccordionDetails-root': {
+                  padding: '20px 16px 16px',
+                },
+                // '& > div': {
+                //   borderTop: `1px solid ${alpha(theme.palette.text.primary, 0.04)}`,
+                // },
+                // '&:first-of-type > div': {
+                //   borderTop: 'unset',
+                // },
+              }}
+              content={detailInformation?.faqItems}
+              accordionHeader={<BerachainProtocolFaqAccordionHeader />}
+              questionTextTypography="bodyLarge"
+              answerTextTypography="bodyMedium"
+              arrowSize={12}
+            />
+          </BerachainActionProtocolCard>
+        )}
         <BerachainActionProtocolCard
           sx={{ flexDirection: 'row', alignItems: 'flex-start', gap: '12px' }}
         >
           <InfoIcon />
           <Typography variant="bodySmall">
-            Rewards starts accruing as soon as you do the onchain actions
-            (supply, borrow etc.). You can claim your first rewards in
-            approximately 24h. The additional XP will be credited as PDAs on
-            your profile page at the end of the campaign.
+            {market.attributes.Information}
           </Typography>
         </BerachainActionProtocolCard>
       </BerachainProtocolActionInfoBox>
       <BerachainWidget />
     </BerachainProtocolActionBox>
-  );
+  ) : null;
 };

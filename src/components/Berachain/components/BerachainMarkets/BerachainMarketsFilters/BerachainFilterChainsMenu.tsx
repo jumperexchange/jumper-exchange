@@ -46,11 +46,14 @@ export const BerachainFilterChainsMenu = () => {
   const chains: ExtendedChain[] = useMemo(() => {
     const filteredChains: ChainId[] = [];
     data?.forEach((market) => {
+      if (!market.protocolInfos?.chain) {
+        return null;
+      }
       // Check if the chain is not already in the chains array
-      // if (!filteredChains.includes(market.chain)) {
-      //   // If it's not present, add it to the chains array
-      //   filteredChains.push(market.chain);
-      // }
+      if (!filteredChains.includes(market.protocolInfos?.chain)) {
+        // If it's not present, add it to the chains array
+        filteredChains.push(market.protocolInfos?.chain);
+      }
     });
     return unfilteredChains.filter((el) => {
       return filteredChains.includes(el.id);

@@ -1,4 +1,5 @@
 import type { Chain, ChainId } from '@lifi/sdk';
+import type { Breakpoint } from '@mui/material';
 import {
   alpha,
   Box,
@@ -16,8 +17,8 @@ import { useMultipleTokens } from 'src/hooks/useMultipleTokens';
 import type { StrapiImageData } from 'src/types/strapi';
 import type {
   BerachainApys,
-  BerachainProtocol,
-} from '../../const/berachainExampleData';
+  BerachainProtocolType,
+} from '../../berachain.types';
 import { BerachainProgressCard } from '../BerachainProgressCard/BerachainProgressCard';
 import { BerachainTooltipTokens } from '../BerachainTooltipTokens/BerachainTooltipTokens';
 import {
@@ -29,35 +30,31 @@ import {
   BerchainMarketCardInfos,
   BerchainMarketCardTokenBox,
 } from './BerachainMarketCard.style';
-import BerachainMarketCardDeposit from './BerachainMarketCardDeposit';
-
-export type BerachainProtocolType =
-  | 'Vault'
-  | 'Recipe'
-  | 'DEX'
-  | 'Money Market'
-  | 'Staking';
 
 interface BerachainMarketCardProps {
   chainId?: ChainId;
-  protocol?: BerachainProtocol;
   image?: StrapiImageData;
   title?: string;
+  type?: BerachainProtocolType;
+  slug?: string;
   apys?: BerachainApys;
   tvl?: string;
   tokens?: string[];
   url?: string;
+  deposited?: string;
 }
 
 export const BerachainMarketCard = ({
   chainId,
-  protocol,
   apys,
+  slug,
   title,
+  type,
   image,
   tvl,
   tokens,
   url,
+  deposited,
 }: BerachainMarketCardProps) => {
   const theme = useTheme();
   const [anchorTokensTooltip, setAnchorTokensTooltip] =
@@ -92,7 +89,7 @@ export const BerachainMarketCard = ({
   } = useMultipleTokens(prepareTokenFetch);
   return (
     <Link
-      href={`/berachain/explore/${protocol?.slug}`}
+      href={`/berachain/explore/${slug}`}
       style={{ textDecoration: 'none' }}
     >
       <BerachainMarketCardWrapper>
@@ -105,23 +102,24 @@ export const BerachainMarketCard = ({
               width={image.data.attributes.width}
               height={image.data.attributes.height}
               style={{
-                borderRadius: '10px',
                 maxHeight: '40px',
-                maxWidth: '80px',
+                maxWidth: '92px',
+                height: 'auto',
+                objectFit: 'contain',
               }}
             />
           ) : (
             <Skeleton
               variant="rectangular"
-              sx={{ width: 96, height: 40, borderRadius: '8px' }}
+              sx={{ width: 92, height: 40, borderRadius: '8px' }}
             />
           )}
           {title ? (
             <Typography variant="bodyLargeStrong">{title}</Typography>
           ) : (
             <Skeleton
-              variant="rectangular"
-              sx={{ width: 96, height: 40, borderRadius: '8px' }}
+              variant="text"
+              sx={{ width: 96, height: 24, borderRadius: '8px' }}
             />
           )}
         </BerachainMarketCardHeader>
@@ -171,14 +169,14 @@ export const BerachainMarketCard = ({
                   </BerachainMarketCardTokenContainer>
                 ))
               ) : (
-                <Skeleton variant="circular" sx={{ width: 32, height: 32 }} />
+                <Skeleton variant="circular" sx={{ width: 20, height: 20 }} />
               )}
             </BerchainMarketCardTokenBox>
           </Box>
-          {protocol?.type && (
+          {type && (
             <BerachainMarketCardBadge
               variant="bodySmall"
-              type={protocol?.type}
+              type={type}
               // onMouseEnter={(event) => handleTooltip(event, false)}
               // onMouseLeave={(event) => handleTooltip(event, true)}
               id={tokensTooltipId}
@@ -188,16 +186,28 @@ export const BerachainMarketCard = ({
               aria-haspopup="true"
               aria-expanded={openTokensTooltip ? 'true' : undefined}
             >
-              {protocol.type}
+              {type}
             </BerachainMarketCardBadge>
           )}
         </BerchainMarketCardInfos>
-        <BerchainMarketCardInfos>
+        <BerchainMarketCardInfos
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: deposited ? '1fr 1fr 1fr' : '1fr 1fr',
+          }}
+        >
           <BerachainProgressCard
             title={'TVL'}
             value={tvl}
             tooltip={'TVL tooltip msg lorem ipsum'}
-            sx={{ color: alpha(theme.palette.white.main, 0.48) }}
+            sx={{
+              height: '100%',
+              padding: theme.spacing(1.5, 2),
+              display: 'flex',
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                padding: theme.spacing(1.5, 2),
+              },
+            }}
             valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
           />
           <Tooltip
@@ -225,13 +235,36 @@ export const BerachainMarketCard = ({
                 title={'Net APY'}
                 value={`${typeof apys?.total === 'number' ? apys?.total + '%' : apys?.total || 'N/A'}`}
                 tooltip={'Net APY tooltip msg lorem ipsum'}
-                sx={{ color: alpha(theme.palette.white.main, 0.48) }}
+                sx={{
+                  height: '100%',
+                  padding: theme.spacing(1.5, 2),
+                  display: 'flex',
+                  [theme.breakpoints.up('sm' as Breakpoint)]: {
+                    padding: theme.spacing(1.5, 2),
+                  },
+                }}
                 valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
               />
             </div>
           </Tooltip>
+          {deposited && (
+            <BerachainProgressCard
+              title={'Deposit'}
+              value={'$2,380'}
+              sx={{
+                height: '100%',
+                padding: theme.spacing(1.5, 2),
+                display: 'flex',
+                [theme.breakpoints.up('sm' as Breakpoint)]: {
+                  padding: theme.spacing(1.5, 2),
+                },
+                backgroundImage:
+                  'linear-gradient(rgba(253, 183, 45, 0.20), rgba(253, 183, 45, 0.20))',
+              }}
+            />
+          )}
         </BerchainMarketCardInfos>
-        <BerachainMarketCardDeposit chain={tokenChainDetails} />
+        {/* <BerachainMarketCardDeposit chain={tokenChainDetails} /> */}
       </BerachainMarketCardWrapper>
     </Link>
   );

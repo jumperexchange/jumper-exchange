@@ -1,72 +1,113 @@
 import { useMemo } from 'react';
-import type { Quest } from 'src/types/loyaltyPass';
+import type { BerachainQuest } from '../berachain.types';
 import { useBerachainMarketsFilterStore } from '../stores/BerachainMarketsFilterStore';
 import { useBerachainMarkets } from './useBerachainMarkets';
 
 interface UseBerachainQuestsProps {
-  data: Quest[] | undefined;
-  url: URL;
+  data: BerachainQuest[] | undefined;
+  url: string;
   isSuccess: boolean;
   isLoading: boolean;
 }
 
-export const useBerachainMarket = () => {
-  const { data: berachainMarkets, url } = useBerachainMarkets();
+export const useBerachainMarket = (): UseBerachainQuestsProps => {
+  const {
+    data: berachainMarkets,
+    url,
+    isLoading,
+    isSuccess,
+  } = useBerachainMarkets();
+
   const { chainFilter, tokenFilter, protocolFilter, sort, search } =
     useBerachainMarketsFilterStore((state) => state);
+
   const data = useMemo(() => {
     let filteredData = berachainMarkets;
-    // if (!filteredData) {
-    //   return [];
-    // }
-    // if (chainFilter.length > 0) {
-    //   filteredData = filteredData?.filter((market) => {
-    //     return !chainFilter.includes(market.chain);
-    //   });
-    // }
-    // if (tokenFilter.length > 0) {
-    //   filteredData = filteredData?.filter((market) => {
-    //     return !market.tokens.some((token) => tokenFilter.includes(token));
-    //   });
-    // }
-    // if (protocolFilter.length > 0) {
-    //   filteredData = filteredData?.filter((market) => {
-    //     return !protocolFilter.includes(market.protocol.type);
-    //   });
-    // }
-    // // Apply sorting
-    // if (sort) {
-    //   filteredData?.sort((a, b) => {
-    //     if (sort === 'TVL') {
-    //       // Convert TVL strings to numbers for comparison
-    //       const tvlA = parseFloat(a.tvl.replace('$', '').replace(',', ''));
-    //       const tvlB = parseFloat(b.tvl.replace('$', '').replace(',', ''));
-    //       return tvlB - tvlA; // Sort in descending order
-    //     } else if (sort === 'APY') {
-    //       // Convert APY to numbers for comparison
-    //       const apyA =
-    //         typeof a.apys.total === 'number'
-    //           ? a.apys.total
-    //           : parseFloat(a.apys.total.replace('K%', '000').replace('%', ''));
-    //       const apyB =
-    //         typeof b.apys.total === 'number'
-    //           ? b.apys.total
-    //           : parseFloat(b.apys.total.replace('K%', '000').replace('%', ''));
-    //       return apyB - apyA; // Sort in descending order
-    //     }
-    //     return 0; // Return 0 if neither condition is met
-    //   });
-    // }
-    // // Apply search filter
-    // if (search) {
-    //   filteredData = filteredData?.filter((market) => {
-    //     const protocolName = market.protocol.name.toLowerCase();
-    //     const searchTerm = search.toLowerCase();
-    //     return protocolName.includes(searchTerm);
-    //   });
-    // }
-    return filteredData;
-  }, [berachainMarkets]);
+    if (!filteredData) {
+      return [];
+    }
+    if (chainFilter.length > 0) {
+      filteredData = filteredData?.filter((market) => {
+        if (!market.protocolInfos?.chain) {
+          return undefined;
+        }
+        return !chainFilter.includes(market.protocolInfos?.chain);
+      });
+    }
+    if (tokenFilter.length > 0) {
+      filteredData = filteredData?.filter((market) => {
+        return !market.protocolInfos?.tokens.some((token) =>
+          tokenFilter.includes(token),
+        );
+      });
+    }
+    if (protocolFilter.length > 0) {
+      filteredData = filteredData?.filter((market) => {
+        if (!market.attributes.CustomInformation.type) {
+          return undefined;
+        }
+        return !protocolFilter.includes(
+          market.attributes.CustomInformation.type,
+        );
+      });
+    }
+    // Apply sorting
+    if (sort) {
+      filteredData?.sort((a, b) => {
+        if (sort === 'TVL' && a.protocolInfos?.tvl && b.protocolInfos?.tvl) {
+          // Convert TVL strings to numbers for comparison
+          const tvlA = parseFloat(
+            a.protocolInfos?.tvl.replace('$', '').replace(',', ''),
+          );
+          const tvlB = parseFloat(
+            b.protocolInfos?.tvl.replace('$', '').replace(',', ''),
+          );
+          return tvlB - tvlA; // Sort in descending order
+        } else if (
+          sort === 'APY' &&
+          a.protocolInfos?.apys.total &&
+          b.protocolInfos?.apys.total
+        ) {
+          // Convert APY to numbers for comparison
+          const apyA =
+            typeof a.protocolInfos?.apys.total === 'number'
+              ? a.protocolInfos?.apys.total
+              : parseFloat(
+                  a.protocolInfos?.apys.total
+                    .replace('K%', '000')
+                    .replace('%', ''),
+                );
+          const apyB =
+            typeof b.protocolInfos?.apys.total === 'number'
+              ? b.protocolInfos?.apys.total
+              : parseFloat(
+                  b.protocolInfos?.apys.total
+                    .replace('K%', '000')
+                    .replace('%', ''),
+                );
+          return apyB - apyA; // Sort in descending order
+        }
+        return 0; // Return 0 if neither condition is met
+      });
+    }
+    // Apply search filter
+    if (search) {
+      filteredData = filteredData?.filter((market) => {
+        const protocolName = market.attributes.Title.toLowerCase();
+        const searchTerm = search.toLowerCase();
+        return protocolName.includes(searchTerm);
+      });
+    }
 
-  return { data, url };
+    return filteredData;
+  }, [
+    berachainMarkets,
+    chainFilter,
+    protocolFilter,
+    search,
+    sort,
+    tokenFilter,
+  ]);
+
+  return { data, url, isLoading, isSuccess };
 };

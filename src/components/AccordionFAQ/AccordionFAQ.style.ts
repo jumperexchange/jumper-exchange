@@ -21,10 +21,10 @@ export const AccordionBox = styled(Box)(({ theme }) => ({
   position: 'relative',
   maxWidth: theme.breakpoints.values.md,
   width: '100% !important',
-  boxShadow:
-    theme.palette.mode === 'dark'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
+  // boxShadow:
+  //   theme.palette.mode === 'dark'
+  //     ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+  //     : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: theme.breakpoints.values.md,
@@ -75,8 +75,9 @@ export const Accordion = styled(MuiAccordion)(({ theme, sx }) => ({
   background: alpha(theme.palette.text.primary, 0.08),
   minHeight: 64,
   transition: 'background-color 300ms ease-in-out',
-  // visibility: show ? 'visible' : 'hidden',
-  // height: show ? 'auto' : 0,
+  '&:before': {
+    display: 'none',
+  },
   '&.Mui-expanded': {
     margin: 0,
   },
@@ -91,6 +92,9 @@ export const Accordion = styled(MuiAccordion)(({ theme, sx }) => ({
 
 export const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   '& > img': { width: '100%' },
+  '&:before': {
+    display: 'none',
+  },
 }));
 
 export const AccordionTitle = styled(Typography)(({ theme }) => ({
@@ -122,7 +126,7 @@ export const AccordionHeader = styled(Box)(({ theme }) => ({
 }));
 
 export const AccordionDivider = styled(Divider)(({ theme }) => ({
-  borderColor: alpha(theme.palette.text.primary, 0.08),
+  borderColor: alpha(theme.palette.text.primary, 0.04),
   width: '100%',
 }));
 

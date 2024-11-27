@@ -61,7 +61,7 @@ export const AccordionFAQ = ({
             </AccordionTitle>
           </AccordionHeader>
         )}
-        <AccordionItemWrapper>
+        <AccordionItemWrapper className="accordion-items">
           {content?.map((el: FaqProps, index: number) => (
             <>
               <Accordion key={`faq-item-${index}`} sx={itemSx}>
@@ -82,7 +82,10 @@ export const AccordionFAQ = ({
                   </Typography>
                 </AccordionSummary>
                 {showAnswerDivider && <AccordionDivider />}
-                <AccordionDetails sx={{ '& > img': { width: '100%' } }}>
+                <AccordionDetails
+                  className="accordion-details"
+                  sx={{ '& > img': { width: '100%' } }}
+                >
                   <Typography variant={answerTextTypography || 'bodyMedium'}>
                     {el.Answer}
                   </Typography>

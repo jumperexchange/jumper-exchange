@@ -20,7 +20,7 @@ export const BerachainWelcome = () => {
       <motion.div
         initial={{ opacity: 0, y: 120 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 2 }}
+        transition={{ duration: 1, delay: 0.5 }}
       >
         <BeraChainWelcomeContent>
           <BerachainWelcomeTitle
@@ -33,10 +33,10 @@ export const BerachainWelcome = () => {
               },
             }}
           >
-            Earn Rich Incentives
+            Jump into Boyco
           </BerachainWelcomeTitle>
           <BerachainWelcomeSubtitle variant="bodyXLarge">
-            by pledging your Crypto across various Berachain partner markets!
+            Provide liquidity to Berachain Apps prior to mainnet launch
           </BerachainWelcomeSubtitle>
         </BeraChainWelcomeContent>
       </motion.div>

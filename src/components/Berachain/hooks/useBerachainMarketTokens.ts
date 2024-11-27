@@ -2,9 +2,9 @@ import type { ChainId } from '@lifi/sdk';
 import { useMemo } from 'react';
 import type { UseMultipleTokenProps } from 'src/hooks/useMultipleTokens';
 import { useMultipleTokens } from 'src/hooks/useMultipleTokens';
-import type { BerachainMarketType } from '../const/berachainExampleData';
+import type { BerachainProtocolInfo } from '../berachain.types';
 
-export const useBerachainMarketTokens = (data: BerachainMarketType[]) => {
+export const useBerachainMarketTokens = (data: BerachainProtocolInfo[]) => {
   const preparedTokens = useMemo(() => {
     if (!data || data.length === 0) {
       return undefined;

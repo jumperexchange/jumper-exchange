@@ -13,6 +13,7 @@ export const BerachainProtocolActionInfoBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   padding: theme.spacing(3),
   flexDirection: 'column',
+  maxWidth: 640,
   gap: theme.spacing(2),
   borderRadius: '24px',
   background: '#121214',

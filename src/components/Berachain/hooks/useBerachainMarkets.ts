@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import type { Quest } from 'src/types/loyaltyPass';
+import type { BerachainQuest } from '../berachain.types';
+import { berachainMarkets } from '../const/berachainExampleData';
 
 const STRAPI_CONTENT_TYPE = 'quests';
 
 export interface UseBerachainQuestsProps {
-  data: Quest[] | undefined;
+  data: BerachainQuest[] | undefined;
   url: string;
   isSuccess: boolean;
   isLoading: boolean;
@@ -63,8 +64,16 @@ export const useBerachainMarkets = (): UseBerachainQuestsProps => {
     refetchInterval: 1000 * 60 * 60,
   });
 
+  const mergeData = data?.map((market: BerachainQuest) => {
+    const protocolInfos = berachainMarkets.find(
+      (protocolMatch) => protocolMatch.slug === market.attributes.Slug,
+    );
+    market.protocolInfos = protocolInfos;
+    return market;
+  });
+
   return {
-    data,
+    data: mergeData,
     isLoading,
     url: apiBaseUrl || process.env.NEXT_PUBLIC_STRAPI_URL,
     isSuccess,

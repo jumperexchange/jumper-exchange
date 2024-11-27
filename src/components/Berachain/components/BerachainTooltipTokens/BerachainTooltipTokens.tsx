@@ -3,7 +3,7 @@ import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useMemo, type Dispatch, type SetStateAction } from 'react';
 import { useMultipleTokens } from 'src/hooks/useMultipleTokens';
-import type { BerachainApyToken } from '../../const/berachainExampleData';
+import type { BerachainApyToken } from '../../berachain.types';
 
 interface BerachainTooltipTokensProps {
   open: boolean;
@@ -33,7 +33,7 @@ export const BerachainTooltipTokens = ({
 
     return apyTokens.flatMap(
       (tokens, tokenSetIndex) =>
-        tokens.tokenAddress?.map((token, tokenIndex) => ({
+        tokens.tokenAddress?.map((token) => ({
           chainId,
           tokenAddress: token,
           queryKey: ['tokens', chainId, token],

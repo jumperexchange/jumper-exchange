@@ -1,15 +1,15 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link, Typography } from '@mui/material';
+import type { Quest } from 'src/types/loyaltyPass';
 import {
   BerachainBackground as Background,
   BerachainBackButton,
   BerachainContentContainer as Container,
 } from './Berachain.style';
 import { BerachainProtocolAction } from './components/BerachainProtocolAction/BerachainProtocolAction';
-import type { BerachainMarketType } from './const/berachainExampleData';
 
 interface BerachainExploreProtocolProps {
-  market?: BerachainMarketType;
+  market?: Quest;
 }
 
 export const BerachainExploreProtocol = ({
@@ -25,11 +25,8 @@ export const BerachainExploreProtocol = ({
         </BerachainBackButton>
       </Link>
       <BerachainProtocolAction
-        image={market?.protocol.image}
-        socials={market?.protocol.socials}
-        description={market?.protocol.description}
-        title={market?.protocol.name}
-        slug={market?.protocol.slug}
+        market={market}
+        detailInformation={market?.attributes.CustomInformation}
       />
     </Container>
   );

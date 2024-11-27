@@ -2,7 +2,7 @@ import type { TypographyProps } from '@mui/material';
 import { Box, Card, Skeleton, Typography } from '@mui/material';
 import { alpha, lighten, styled } from '@mui/material/styles';
 import Image from 'next/image';
-import type { BerachainProtocolType } from './BerachainMarketCard';
+import type { BerachainProtocolType } from '../../berachain.types';
 
 export const BerachainMarketCardWrapper = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -37,6 +37,7 @@ export const BerachainMarketCardHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(1.5),
+  height: 48,
 }));
 
 export const BerchainMarketCardInfos = styled(Box)(({ theme }) => ({

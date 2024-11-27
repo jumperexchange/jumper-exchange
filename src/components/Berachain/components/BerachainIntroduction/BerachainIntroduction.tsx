@@ -20,11 +20,10 @@ export const BerachainIntroduction = () => {
         <BerachainIntroductionStep>
           <BerachainIntroductionStepContent>
             <Typography variant="urbanistBody2XLarge">
-              1. Lorem Ipsum
+              1. Browse markets
             </Typography>
             <Typography variant="bodyMedium">
-              Etiam eget dui cursus, commodo augue sit amet, posuere enim. Etiam
-              tristique sem.
+              Browse incentivised Boyco markets on mainnet.
             </Typography>
           </BerachainIntroductionStepContent>
           <BerachainBearTyping
@@ -37,11 +36,10 @@ export const BerachainIntroduction = () => {
         <BerachainIntroductionStep>
           <BerachainIntroductionStepContent>
             <Typography variant="urbanistBody2XLarge">
-              2. Pledge your Crypto
+              2. Deposit some tokens
             </Typography>
             <Typography variant="bodyMedium">
-              Pledge your tokens to various Berachain partner markets for
-              exciting rewards.
+              Select the dApp and pool you would like to deposit liquidity into.
             </Typography>
           </BerachainIntroductionStepContent>
           <BerachainIntroductionStepIllustration
@@ -54,11 +52,10 @@ export const BerachainIntroduction = () => {
         <BerachainIntroductionStep>
           <BerachainIntroductionStepContent>
             <Typography variant="urbanistBody2XLarge">
-              3. Receive Incentives
+              3. Receive incentives
             </Typography>
             <Typography variant="bodyMedium">
-              Sit back, relax and let your incentives pile up for pledging your
-              tokens to Berachain*
+              Sit back, relax, earn while Berachain is going live.
             </Typography>
           </BerachainIntroductionStepContent>
           <BerachainIntroductionStepIllustration

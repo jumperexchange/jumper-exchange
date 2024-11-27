@@ -2,33 +2,6 @@ import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/B
 import type { StrapiImageData } from './strapi';
 
 // PDA Type
-
-type Claim = {
-  points: number;
-  level: string;
-  transactions?: number;
-  chains?: number;
-  volume?: string;
-};
-
-type Owner = {
-  gatewayId: string;
-  walletId?: string;
-};
-
-type DataModel = {
-  id: string;
-};
-
-type DataAsset = {
-  claim: Claim;
-  title: string;
-  description: string;
-  image: string;
-  dataModel: DataModel;
-  owner: Owner;
-};
-
 export interface Reward {
   description: string;
   image: string;

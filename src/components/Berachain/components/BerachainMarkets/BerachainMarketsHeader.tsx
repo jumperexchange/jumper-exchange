@@ -22,7 +22,7 @@ export const BerachainMarketsHeader = () => {
       <BerachainMarketInfos>
         <BerachainMarketHeaderTitle>
           <Typography variant="urbanistTitleMedium">
-            Pre-mine on{!isDesktop && ' Berachain'}
+            Help protocols launch on{!isDesktop && ' Berachain'}
           </Typography>
           {isDesktop && (
             <Image
@@ -34,7 +34,8 @@ export const BerachainMarketsHeader = () => {
           )}
         </BerachainMarketHeaderTitle>
         <BerachainMarketHeaderSubtitle>
-          Pledge your tokens to various Berachain markets and earn incentives.
+          Deposit your tokens across Berachain Apps launch markets and watch the
+          rewards pile up.
         </BerachainMarketHeaderSubtitle>
         <Link href="/berachain">
           <BerachainMarketHeaderCTA>

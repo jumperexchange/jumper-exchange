@@ -1,9 +1,9 @@
 'use client';
 import { BerachainExploreProtocol } from 'src/components/Berachain/BerachainExploreProtocol';
-import type { BerachainMarketType } from 'src/components/Berachain/const/berachainExampleData';
+import type { Quest } from 'src/types/loyaltyPass';
 
 interface BerachainExplorePageProps {
-  market?: BerachainMarketType;
+  market?: Quest;
 }
 
 const BerachainExplorePage = ({ market }: BerachainExplorePageProps) => {

@@ -96,6 +96,9 @@ export const BerachainSearch = () => {
             '&:hover': {
               backgroundColor: darken('#313131', 0.16),
             },
+            '& .MuiInputBase-input': {
+              borderRadius: '8px',
+            },
             '& .MuiInputBase-input::placeholder': {
               opacity: isInputEmpty ? 1 : 0,
               color: alpha(theme.palette.text.primary, 0.48),

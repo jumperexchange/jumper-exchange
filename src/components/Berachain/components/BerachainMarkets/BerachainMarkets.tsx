@@ -6,25 +6,31 @@ import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMark
 import { BerachainMarketsHeader } from './BerachainMarketsHeader';
 
 export const BerachainMarkets = () => {
-  const { data, url } = useBerachainMarket();
+  const { data, isLoading, url } = useBerachainMarket();
   return (
     <Box>
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
-        {data?.map((card, index) => (
-          <BerachainMarketCard
-            key={`berachain-market-card-${card.id || 'protocol'}-${index}`}
-            // chainId={card.chain}
-            image={card.attributes.Image}
-            title={card.attributes.Title}
-            // protocol={card.protocol}
-            // tokens={card.tokens}
-            // apys={card.apys}
-            // tvl={card.tvl}
-            url={url}
-          />
-        ))}
+        {data && !isLoading
+          ? data?.map((card, index) => (
+              <BerachainMarketCard
+                key={`berachain-market-card-${card.id || 'protocol'}-${index}`}
+                chainId={card.protocolInfos?.chain}
+                image={card.attributes.Image}
+                title={card.attributes.Title}
+                slug={card.attributes.Slug}
+                tokens={card.protocolInfos?.tokens}
+                apys={card.protocolInfos?.apys}
+                tvl={card.protocolInfos?.tvl}
+                type={card.attributes.CustomInformation?.type}
+                url={url}
+                deposited={index % 2 === 0 ? `${index * 100}$` : undefined}
+              />
+            ))
+          : Array.from({ length: 6 }, () => 42).map((_, idx) => (
+              <BerachainMarketCard key={idx} />
+            ))}
       </BerachainMarketCards>
     </Box>
   );

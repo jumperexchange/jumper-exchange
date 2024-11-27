@@ -2,8 +2,8 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
-import { berachainMarkets } from 'src/components/Berachain/const/berachainExampleData';
 import { useBerachainMarketProtocols } from 'src/components/Berachain/hooks/useBerachainMarketProtocols';
+import { useBerachainMarkets } from 'src/components/Berachain/hooks/useBerachainMarkets';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import { BerachainMarketFilter } from '../BerachainMarketFilter/BerachainMarketFilter';
 import { BerachainMarketFilterItem } from '../BerachainMarketFilter/BerachainMarketFilter.style';
@@ -14,6 +14,7 @@ import {
 import { BerachainMarketsFilterBox } from './BerachainMarketsFilters.style';
 
 export const BerachainFilterProtocolsMenu = () => {
+  const { data: berachainMarkets } = useBerachainMarkets();
   const { protocolFilter, setProtocolFilter } = useBerachainMarketsFilterStore(
     (state) => state,
   );
