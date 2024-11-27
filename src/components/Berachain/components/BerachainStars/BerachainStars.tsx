@@ -1,50 +1,46 @@
-import { motion } from 'motion/react';
-import React, { useCallback, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 import { BerachainStarsContainer } from './BerachainStars.style';
 
-export const BerachainStars: React.FC = () => {
-  const starsContainerRef = useRef<HTMLDivElement | null>(null);
-  const starsRef = useRef<HTMLElement[]>([]);
+interface Star {
+  id: number;
+  top: string;
+  left: string;
+  opacity: number;
+  duration: number;
+}
 
-  const createStars = useCallback((count: number) => {
-    if (starsContainerRef.current) {
-      for (let i = 0; i < count; i++) {
-        const tmpStar = document.createElement('figure');
-        tmpStar.className = 'star';
-        tmpStar.style.top = `${100 * Math.random()}%`;
-        tmpStar.style.left = `${100 * Math.random()}%`;
-        starsContainerRef.current.appendChild(tmpStar);
-        starsRef.current.push(tmpStar);
-      }
-    }
-  }, []);
+export const BerachainStars: React.FC = () => {
+  const [stars, setStars] = useState<Star[]>([]);
 
   useEffect(() => {
-    if (starsContainerRef.current) {
-      createStars(200);
-    }
-
-    // Capture the current stars in a local variable for cleanup
-    const currentStars = [...starsRef.current];
-
-    return () => {
-      // Use the captured stars for cleanup
-      currentStars.forEach((star) => star.remove());
+    const createStars = (count: number) => {
+      const newStars = Array.from({ length: count }, (_, i) => ({
+        id: i,
+        top: `${100 * Math.random()}%`,
+        left: `${100 * Math.random()}%`,
+        opacity: Math.random(),
+        duration: Math.random() * 0.5 + 0.5,
+      }));
+      setStars(newStars);
     };
-  }, [createStars]);
+
+    createStars(200);
+  }, []);
 
   return (
-    <BerachainStarsContainer ref={starsContainerRef} id="stars">
-      {starsRef.current.map((star, index) => (
+    <BerachainStarsContainer id="stars">
+      {stars.map((star) => (
         <motion.figure
-          key={index}
+          key={star.id}
           className="star"
+          style={{ top: star.top, left: star.left }}
           initial={{ opacity: 0 }}
-          animate={{ opacity: Math.random() }}
+          animate={{ opacity: star.opacity }}
           transition={{
-            duration: Math.random() * 0.5 + 0.5,
+            duration: star.duration,
             repeat: Infinity,
-            repeatType: 'mirror' as const,
+            repeatType: 'mirror',
           }}
         />
       ))}

@@ -91,14 +91,12 @@ export const BerachainWelcome = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 3.5 }} // Starts 1.5 seconds after the main content animation
+        transition={{ duration: 1, delay: 1.25 }} // Starts 1.5 seconds after the main content animation
       >
         <BerachainWelcomeBoxContent>
           <Link href="/berachain/explore">
             <BerachainWelcomeConnectButtonCTA>
-              <Typography variant="bodyLargeStrong">
-                Start Exploring!
-              </Typography>
+              <Typography variant="bodyLargeStrong">Start Exploring</Typography>
             </BerachainWelcomeConnectButtonCTA>
           </Link>
           <Link href="/berachain">
