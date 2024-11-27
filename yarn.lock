@@ -2389,9 +2389,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:^3.4.4":
-  version: 3.4.4
-  resolution: "@lifi/wallet-management@npm:3.4.4"
+"@lifi/wallet-management@npm:3.4.6-beta.0, @lifi/wallet-management@npm:^3.4.6-beta.0":
+  version: 3.4.6-beta.0
+  resolution: "@lifi/wallet-management@npm:3.4.6-beta.0"
   dependencies:
     "@bigmi/client": "npm:^0.0.4"
     "@bigmi/core": "npm:^0.0.4"
@@ -2418,13 +2418,13 @@ __metadata:
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10/9c1f0a350d1b043a2fb3a9e94dc988bc1ed23b0a9066b50f317e0cfba3967a9537d9ae3532fdc9eafde6505f29fcb74ba2f7e1bb75a2e6dbba20bf783b18ee9c
+  checksum: 10/5b7042604e3c739e187130819669b56e32edd046292b9a1e8df9cccf85638798c815337d334951df929c677d4cbe0811a19a41fef7b31d4b3b07d5dc048cc838
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^3.12.1":
-  version: 3.12.1
-  resolution: "@lifi/widget@npm:3.12.1"
+"@lifi/widget@npm:3.12.3-beta.0":
+  version: 3.12.3-beta.0
+  resolution: "@lifi/widget@npm:3.12.3-beta.0"
   dependencies:
     "@bigmi/client": "npm:^0.0.4"
     "@bigmi/core": "npm:^0.0.4"
@@ -2432,7 +2432,7 @@ __metadata:
     "@emotion/react": "npm:^11.13.3"
     "@emotion/styled": "npm:^11.13.0"
     "@lifi/sdk": "npm:^3.4.1"
-    "@lifi/wallet-management": "npm:^3.4.4"
+    "@lifi/wallet-management": "npm:^3.4.6-beta.0"
     "@mui/icons-material": "npm:^5.16.7"
     "@mui/lab": "npm:^5.0.0-alpha.173"
     "@mui/material": "npm:^5.16.7"
@@ -2456,7 +2456,7 @@ __metadata:
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10/7aba93a60e1f2c91dfe3a5797a12ef1210599f3ac51658fbb42c01fee2ec09ac50ae057a376e754b101efebc02fbba90e42d264de7dcdf5021dfe2249e2f4072
+  checksum: 10/60daecdda4bd77f80b6401df6b02b9f1cc813a99a3c8892138f3be889f9469bdc37ca63efca31f43c35e4526f27b28d172b18087987a1678ee250ad677c073aa
   languageName: node
   linkType: hard
 
@@ -10279,8 +10279,8 @@ __metadata:
     "@headlessui/react": "npm:^2.2.0"
     "@lifi/explorer": "npm:^0.0.3"
     "@lifi/sdk": "npm:^3.4.1"
-    "@lifi/wallet-management": "npm:^3.4.4"
-    "@lifi/widget": "npm:^3.12.1"
+    "@lifi/wallet-management": "npm:3.4.6-beta.0"
+    "@lifi/widget": "npm:3.12.3-beta.0"
     "@metaplex-foundation/mpl-core": "npm:^1.1.1"
     "@metaplex-foundation/umi": "npm:^0.9.2"
     "@metaplex-foundation/umi-bundle-defaults": "npm:^0.9.2"
