@@ -161,7 +161,7 @@ interface Resources {
     };
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';
-      decimal: '{{value, decimalExt(maximumFractionDigits: 7)}}';
+      decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
     };
   };
 }

@@ -49,14 +49,6 @@ export async function generateMetadata({
     description: `Jumper offers the best way to do cross-chain bridging of ${sourceTokenName} on ${sourceChain} to ${destinationTokenName} on ${destinationChain} with the fastest speeds, lowest costs, and most secure bridge and swap providers available.`,
     siteName: siteName,
     url: `${getSiteUrl()}/bridge/${params.segments}`,
-    /*      images: [
-            {
-              url: `${article.url}${articleData.Image.data.attributes?.url}`,
-              width: 900,
-              height: 450,
-              alt: 'banner image',
-            },
-          ],*/
     type: 'article',
   };
 
