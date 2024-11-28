@@ -25,7 +25,7 @@ export const BerachainWidget = () => {
     <BerachainActionBerachainWidgetWrapper>
       <BerachainActionBerachainWidget>
         <BerachainWidgetHeader>
-          <Typography variant="titleSmall">Pledge Tokens</Typography>
+          <Typography variant="titleSmall">Deposit tokens</Typography>
           <Image
             src="/berachain/berachain-icon-chain.png"
             alt="Berachain icon with chain"
