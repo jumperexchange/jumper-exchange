@@ -21,6 +21,7 @@
  * @property {'from'|'to'|'amount'|'0'|'1'|'2'} [highlighted] - The highlighted element, numbers refer to quote index (optional).
  *
  */
+import type { ChainId } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
 import type { CSSProperties } from 'react';
 import type { HighlightedAreas } from 'src/components/ImageGeneration/ImageGeneration.types';
@@ -51,8 +52,8 @@ export async function GET(request: Request) {
   // Fetch data asynchronously before rendering
   const fromTokenData = await fetchTokenData(fromChainId, fromToken);
   const toTokenData = await fetchTokenData(toChainId, toToken);
-  const fromChain = await fetchChainData(fromChainId);
-  const toChain = await fetchChainData(toChainId);
+  const fromChain = await fetchChainData(fromChainId as unknown as ChainId);
+  const toChain = await fetchChainData(toChainId as unknown as ChainId);
 
   const routeAmount =
     (parseFloat(fromTokenData?.priceUSD || '0') * parseFloat(amount || '0')) /

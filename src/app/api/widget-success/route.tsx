@@ -18,6 +18,7 @@
  *
  */
 
+import type { ChainId } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
 import type { CSSProperties } from 'react';
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
@@ -38,7 +39,7 @@ export async function GET(request: Request) {
 
   // Fetch data asynchronously before rendering
   const toTokenData = await fetchTokenData(toChainId, toToken);
-  const toChain = await fetchChainData(toChainId);
+  const toChain = await fetchChainData(toChainId as unknown as ChainId);
 
   const options = await imageResponseOptions({
     width: WIDGET_IMAGE_WIDTH,
