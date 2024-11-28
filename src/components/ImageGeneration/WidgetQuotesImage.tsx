@@ -13,7 +13,7 @@ import {
 
 const SCALING_FACTOR = 2;
 
-interface WidgetQuoteSSRProps {
+interface WidgetQuoteImageProps {
   fromChain?: ExtendedChain | null;
   toChain?: ExtendedChain | null;
   fromToken?: Token | null;
@@ -28,7 +28,7 @@ interface WidgetQuoteSSRProps {
   theme?: ImageTheme | null;
 }
 
-const WidgetQuoteSSR = ({
+const WidgetQuoteImage = ({
   fromChain,
   toChain,
   fromToken,
@@ -41,7 +41,7 @@ const WidgetQuoteSSR = ({
   width,
   height,
   highlighted,
-}: WidgetQuoteSSRProps) => {
+}: WidgetQuoteImageProps) => {
   const contentContainerStyle = contentContainerStyles({
     height,
     width,
@@ -147,4 +147,4 @@ const WidgetQuoteSSR = ({
   );
 };
 
-export default WidgetQuoteSSR;
+export default WidgetQuoteImage;

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import { AvatarBadgeSSR } from '../../AvatarBadge/SSR/AvatarBadgeSSR';
+import { AvatarBadgeNoMUI } from '../../AvatarBadge/NoMUI/AvatarBadgeNoMUI';
 import type { ImageTheme } from '../ImageGeneration.types';
 import { fieldContainerStyles } from '../style';
 
@@ -38,7 +38,7 @@ const TokenField = ({
       >
         <div style={{ display: 'flex', width: '100%' }}>
           {token && chain && (
-            <AvatarBadgeSSR
+            <AvatarBadgeNoMUI
               avatarSize={40}
               avatarSrc={token?.logoURI}
               badgeSize={16}

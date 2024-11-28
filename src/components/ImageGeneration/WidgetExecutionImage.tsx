@@ -4,6 +4,7 @@ import ReviewField from './Fields/ReviewField';
 import { FieldSkeleton } from './FieldSkeleton';
 import type { HighlightedAreas, ImageTheme } from './ImageGeneration.types';
 import ButtonLabel from './Labels/ButtonLabel';
+import CardContent from './Labels/CardContent';
 import CardTitle from './Labels/CardTitle';
 import Title from './Labels/Title';
 import {
@@ -14,7 +15,7 @@ import {
 
 const SCALING_FACTOR = 2;
 
-interface WidgetReviewSSRProps {
+interface WidgetReviewImageProps {
   fromChain?: ExtendedChain | null;
   toChain?: ExtendedChain | null;
   fromToken?: Token | null;
@@ -25,10 +26,9 @@ interface WidgetReviewSSRProps {
   width: number;
   height: number;
   highlighted?: HighlightedAreas;
-  sx?: CSSProperties;
 }
 
-const WidgetReviewSSR = ({
+const WidgetExecutionImage = ({
   fromChain,
   toChain,
   theme,
@@ -39,8 +39,7 @@ const WidgetReviewSSR = ({
   width,
   height,
   highlighted,
-  sx,
-}: WidgetReviewSSRProps) => {
+}: WidgetReviewImageProps) => {
   const contentContainerStyle = contentContainerStyles({
     height,
     width,
@@ -58,11 +57,11 @@ const WidgetReviewSSR = ({
         }
         <div style={pageStyle}>
           <Title
-            title={isSwap ? 'Review swap' : 'Review bridge'}
+            title={isSwap ? 'Swap' : 'Bridge'}
             theme={theme}
             fullWidth={true}
             sx={{
-              marginTop: 22,
+              marginTop: 21,
               alignSelf: 'flex-start',
               marginLeft: -2,
             }}
@@ -79,7 +78,16 @@ const WidgetReviewSSR = ({
             fullWidth={false}
             highlighted={highlighted === 'from'}
             showSkeletons={true}
-            sx={{ marginTop: 0 }}
+            sx={{ padding: '0px 16px', marginTop: 14 }}
+          />
+          <CardContent
+            cardContent={
+              isSwap
+                ? 'Waiting for swap transaction'
+                : 'Waiting for bridge transaction'
+            }
+            sx={{ marginTop: 14 }}
+            theme={theme}
           />
           <ReviewField
             chain={toChain}
@@ -94,7 +102,7 @@ const WidgetReviewSSR = ({
                 : null
             }
             showSkeletons={true}
-            sx={{ marginTop: 8 }}
+            sx={{ padding: '0px 16px', marginTop: 18 }}
           />
           <FieldSkeleton
             width={164}
@@ -104,12 +112,11 @@ const WidgetReviewSSR = ({
           <ButtonLabel
             buttonLabel={isSwap ? 'Start swapping' : 'Start bridging'}
             theme={theme}
-            sx={{ marginTop: 40 }}
+            sx={{ marginTop: 53 }}
           />
         </div>
       </div>
     </div>
   );
 };
-
-export default WidgetReviewSSR;
+export default WidgetExecutionImage;

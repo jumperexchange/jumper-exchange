@@ -3,7 +3,7 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
 import { decimalFormatter } from 'src/utils/formatNumbers';
 import { getOffset, getWidth } from 'src/utils/image-generation/helpers';
-import { AvatarBadgeSSR } from '../AvatarBadge/SSR/AvatarBadgeSSR';
+import { AvatarBadgeNoMUI } from '../AvatarBadge/NoMUI/AvatarBadgeNoMUI';
 import { FieldSkeleton } from './FieldSkeleton';
 import type { ImageTheme } from './ImageGeneration.types';
 
@@ -79,7 +79,7 @@ const Field = ({
         {type !== 'button' && (
           <div style={{ display: 'flex', width: '100%' }}>
             {token && chain && (
-              <AvatarBadgeSSR
+              <AvatarBadgeNoMUI
                 avatarSize={40}
                 avatarSrc={token?.logoURI}
                 badgeSize={16}

@@ -26,7 +26,7 @@ interface WidgetImageSSRProps {
   highlighted?: HighlightedAreas;
 }
 
-const WidgetSelectionSSR = ({
+const WidgetSelectionImage = ({
   fromChain,
   toChain,
   fromToken,
@@ -91,4 +91,4 @@ const WidgetSelectionSSR = ({
   );
 };
 
-export default WidgetSelectionSSR;
+export default WidgetSelectionImage;

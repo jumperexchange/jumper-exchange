@@ -8,7 +8,7 @@ import { contentContainerStyles, contentPositioningStyles } from './style';
 
 const SCALING_FACTOR = 2;
 
-interface WidgetReviewSSRProps {
+interface WidgetReviewImageProps {
   toChain?: ExtendedChain | null;
   toToken?: Token | null;
   theme?: ImageTheme;
@@ -18,7 +18,7 @@ interface WidgetReviewSSRProps {
   height: number;
 }
 
-const WidgetSuccessSSR = ({
+const WidgetSuccessImage = ({
   toChain,
   theme,
   isSwap,
@@ -26,7 +26,7 @@ const WidgetSuccessSSR = ({
   amount,
   width,
   height,
-}: WidgetReviewSSRProps) => {
+}: WidgetReviewImageProps) => {
   const contentContainerStyle = contentContainerStyles({
     height,
     width,
@@ -72,4 +72,4 @@ const WidgetSuccessSSR = ({
   );
 };
 
-export default WidgetSuccessSSR;
+export default WidgetSuccessImage;

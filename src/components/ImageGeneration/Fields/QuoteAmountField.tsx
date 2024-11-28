@@ -3,7 +3,7 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
 import type { CSSProperties } from 'react';
 import { decimalFormatter } from 'src/utils/formatNumbers';
-import { AvatarBadgeSSR } from '../../AvatarBadge/SSR/AvatarBadgeSSR';
+import { AvatarBadgeNoMUI } from '../../AvatarBadge/NoMUI/AvatarBadgeNoMUI';
 import type { ImageTheme } from '../ImageGeneration.types';
 import {
   amountContainerStyles,
@@ -63,7 +63,7 @@ const QuoteAmountField = ({
       >
         <div style={{ display: 'flex', width: '100%' }}>
           {token && chain && (
-            <AvatarBadgeSSR
+            <AvatarBadgeNoMUI
               avatarSize={40}
               avatarSrc={token?.logoURI}
               badgeSize={16}

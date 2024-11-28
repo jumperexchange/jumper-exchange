@@ -1,5 +1,5 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import { AvatarBadgeSSR } from '../../AvatarBadge/SSR/AvatarBadgeSSR';
+import { AvatarBadgeNoMUI } from '../../AvatarBadge/NoMUI/AvatarBadgeNoMUI';
 import { FieldSkeleton } from '../FieldSkeleton';
 import type { ImageTheme } from '../ImageGeneration.types';
 
@@ -60,7 +60,7 @@ const ReviewField = ({
       >
         <div style={{ display: 'flex', width: '100%' }}>
           {token && chain && (
-            <AvatarBadgeSSR
+            <AvatarBadgeNoMUI
               avatarSize={40}
               avatarSrc={token.logoURI}
               badgeSize={16}

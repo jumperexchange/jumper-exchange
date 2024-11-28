@@ -6,7 +6,7 @@ interface BadgeOffsetProps {
   y?: number;
 }
 
-type AvatarBadgeSSRProps = {
+type AvatarBadgeNoMUIProps = {
   avatarSrc?: string;
   badgeSrc?: string;
   badgeOffset?: BadgeOffsetProps;
@@ -16,7 +16,7 @@ type AvatarBadgeSSRProps = {
   theme?: 'light' | 'dark';
 };
 
-export const AvatarBadgeSSR = ({
+export const AvatarBadgeNoMUI = ({
   avatarSrc,
   badgeSrc,
   badgeOffset,
@@ -24,7 +24,7 @@ export const AvatarBadgeSSR = ({
   avatarSize,
   badgeSize,
   theme,
-}: AvatarBadgeSSRProps) => {
+}: AvatarBadgeNoMUIProps) => {
   return (
     <div style={{ display: 'flex' }}>
       <div

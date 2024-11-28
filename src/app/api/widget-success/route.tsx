@@ -23,7 +23,7 @@ import { ImageResponse } from 'next/og';
 import type { CSSProperties } from 'react';
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
 import { imageFrameStyles } from 'src/components/ImageGeneration/style';
-import WidgetSuccessSSR from 'src/components/ImageGeneration/WidgetSuccessSSR';
+import WidgetSuccessImage from 'src/components/ImageGeneration/WidgetSuccessImage';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
@@ -69,7 +69,7 @@ export async function GET(request: Request) {
           style={imageStyle}
           src={`${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}` : process.env.NEXT_PUBLIC_SITE_URL}/widget/widget-success-${theme === 'dark' ? 'dark' : 'light'}.png`}
         />
-        <WidgetSuccessSSR
+        <WidgetSuccessImage
           height={WIDGET_IMAGE_WIDTH}
           isSwap={isSwap === 'true'}
           width={WIDGET_IMAGE_HEIGHT}
