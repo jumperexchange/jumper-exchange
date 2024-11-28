@@ -19,61 +19,60 @@ export const BerachainIntroduction = () => {
       </BerachainIntroductionTitle>
       <BerachainIntroductionSteps>
         <BerachainIntroductionStep>
-          <Link href="/berachain/explore" as="button">
-            <BerachainIntroductionStepContent>
-              <Typography variant="urbanistBody2XLarge">
-                1. Browse markets
-              </Typography>
-              <Typography variant="bodyMedium">
-                Browse incentivised Boyco markets on mainnet.
-              </Typography>
-            </BerachainIntroductionStepContent>
-            <BerachainBearTyping
-              src={'/berachain/berachain-bear-typing.png'}
-              alt={'Berachain on typing machine'}
-              width={385}
-              height={385}
-            />
-          </Link>
+          {/* <Link href="/berachain/explore" as="button"> */}
+          <BerachainIntroductionStepContent>
+            <Typography variant="urbanistBody2XLarge">
+              1. Browse markets
+            </Typography>
+            <Typography variant="bodyMedium">
+              Browse incentivised Boyco markets on mainnet.
+            </Typography>
+          </BerachainIntroductionStepContent>
+          <BerachainBearTyping
+            src={'/berachain/berachain-bear-typing.png'}
+            alt={'Berachain on typing machine'}
+            width={385}
+            height={385}
+          />
+          {/* </Link> */}
         </BerachainIntroductionStep>
 
         <BerachainIntroductionStep>
-          <Link href="/berachain/explore" as="button">
-            <BerachainIntroductionStepContent>
-              <Typography variant="urbanistBody2XLarge">
-                2. Deposit tokens
-              </Typography>
-              <Typography variant="bodyMedium">
-                Select the dApp and pool you would like to deposit liquidity
-                into.
-              </Typography>
-            </BerachainIntroductionStepContent>
-            <BerachainIntroductionStepIllustration
-              src={'/berachain/berachain-bear-loves-honey.png'}
-              alt={'Berachain on typing machine'}
-              width={385}
-              height={385}
-            />
-          </Link>
+          {/* <Link href="/berachain/explore" as="button"> */}
+          <BerachainIntroductionStepContent>
+            <Typography variant="urbanistBody2XLarge">
+              2. Deposit tokens
+            </Typography>
+            <Typography variant="bodyMedium">
+              Select the dApp and pool you would like to deposit liquidity into.
+            </Typography>
+          </BerachainIntroductionStepContent>
+          <BerachainIntroductionStepIllustration
+            src={'/berachain/berachain-bear-loves-honey.png'}
+            alt={'Berachain on typing machine'}
+            width={385}
+            height={385}
+          />
+          {/* </Link> */}
         </BerachainIntroductionStep>
 
         <BerachainIntroductionStep>
-          <Link href="/berachain/explore" as="button">
-            <BerachainIntroductionStepContent>
-              <Typography variant="urbanistBody2XLarge">
-                3. Receive incentives
-              </Typography>
-              <Typography variant="bodyMedium">
-                Sit back, relax, earn incentives while Berachain goes live.
-              </Typography>
-            </BerachainIntroductionStepContent>
-            <BerachainIntroductionStepIllustration
-              src={'/berachain/berachain-bear-chillin.png'}
-              alt={'Berachain on typing machine'}
-              width={385}
-              height={385}
-            />
-          </Link>
+          {/* <Link href="/berachain/explore" as="button"> */}
+          <BerachainIntroductionStepContent>
+            <Typography variant="urbanistBody2XLarge">
+              3. Receive incentives
+            </Typography>
+            <Typography variant="bodyMedium">
+              Sit back, relax, earn incentives while Berachain goes live.
+            </Typography>
+          </BerachainIntroductionStepContent>
+          <BerachainIntroductionStepIllustration
+            src={'/berachain/berachain-bear-chillin.png'}
+            alt={'Berachain on typing machine'}
+            width={385}
+            height={385}
+          />
+          {/* </Link> */}
         </BerachainIntroductionStep>
       </BerachainIntroductionSteps>
       <Link href="/berachain/explore">
