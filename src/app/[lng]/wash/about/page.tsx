@@ -2,14 +2,13 @@
 
 import { type ReactElement } from 'react';
 import styled from '@emotion/styled';
-import Image from 'next/image';
-import { AboutRouterWithContext } from '../../../../wash/common/about/AboutRouter';
 import RiveLogoWrapper from '../../../../wash/common/about/RiveLogo';
 import RiveSlideshowWrapper from '../../../../wash/common/about/RiveSlideshow';
 import { RaysBackground } from '../../../../wash/common/RaysBackground';
 import { titanOne } from '../../../../wash/common/fonts';
-import { WashTradingContextApp } from '../../../../wash/contexts/useWashTrading';
 import { mq } from '../../../../wash/utils/theme';
+import Link from 'next/link';
+import { Button } from 'src/wash/common/Button';
 
 const Wrapper = styled.div`
   position: relative;
@@ -21,8 +20,14 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   overflow: hidden;
+  min-height: 100vh;
 `;
-
+const ButtonWrapper = styled.div`
+  display: flex;
+  margin: 40px 0 64px;
+  max-width: 1200px;
+  justify-content: center;
+`;
 const Content = styled.div`
   display: flex;
   height: min-content;
@@ -42,6 +47,7 @@ const Heading = styled.h1`
   margin: 0;
   margin-bottom: 1rem;
   font-weight: inherit;
+  margin-top: 40px;
 
   ${mq[0]} {
     font-size: 40px;
@@ -62,49 +68,6 @@ const Description = styled.p`
   }
 `;
 
-const GoldenSpan = styled.span`
-  font-weight: 900;
-  color: #ffc306;
-`;
-
-const HowDoIWash = styled.h2`
-  text-align: center;
-  font-family: ${titanOne.style.fontFamily};
-  font-size: 2.5rem;
-  line-height: 3rem;
-  font-weight: inherit;
-  text-transform: uppercase;
-  color: white;
-  margin: 0;
-  margin-top: 60px;
-
-  ${mq[0]} {
-    margin-top: 20px;
-  }
-`;
-
-const StepImage = styled(Image)`
-  max-width: 360px;
-  height: auto;
-
-  ${mq[0]} {
-    max-width: 343px;
-  }
-`;
-
-const StepsWrapper = styled.div`
-  margin: 40px 0 80px;
-  display: flex;
-  column-gap: 48px;
-  justify-content: center;
-
-  ${mq[0]} {
-    flex-direction: column;
-    gap: 24px;
-    justify-content: center;
-  }
-`;
-
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -117,7 +80,7 @@ const ContentWrapper = styled.div`
   }
 `;
 
-function AboutPage(): ReactElement {
+export default function AboutPage(): ReactElement {
   return (
     <Wrapper>
       <RaysBackground />
@@ -125,49 +88,19 @@ function AboutPage(): ReactElement {
       <RiveLogoWrapper />
 
       <ContentWrapper>
-        <Heading>{'Swap. wash. and win.'}</Heading>
+        <Heading>{'jump into the next big thing.'}</Heading>
         <Description>
-          {"Trade on Jumper to 'wash clean' your NFT,"}
-          <br /> {'reveal a '}
-          <GoldenSpan>{'Golden Ser Bridgealot'}</GoldenSpan>
-          {' to win big!'}
+          {'The game might be over, but head to Jumper'}
+          <br />
+          {'keep winning with the Jumper Loyalty Pass.'}
         </Description>
 
-        <AboutRouterWithContext />
-
-        <RiveSlideshowWrapper />
-
-        <HowDoIWash>{'"How do I wash trade?"'}</HowDoIWash>
-
-        <StepsWrapper>
-          <StepImage
-            src={'/wash/about/step-1.png'}
-            width={1080}
-            height={1080}
-            alt={'step-1'}
-          />
-          <StepImage
-            src={'/wash/about/step-2.png'}
-            width={1080}
-            height={1080}
-            alt={'step-2'}
-          />
-          <StepImage
-            src={'/wash/about/step-3.png'}
-            width={1080}
-            height={1080}
-            alt={'step-3'}
-          />
-        </StepsWrapper>
+        <ButtonWrapper>
+          <Link href={'/'}>
+            <Button title={'Go to Jumper'} theme={'pink'} size={'long'} />
+          </Link>
+        </ButtonWrapper>
       </ContentWrapper>
     </Wrapper>
-  );
-}
-
-export default function WithContext(): ReactElement {
-  return (
-    <WashTradingContextApp>
-      <AboutPage />
-    </WashTradingContextApp>
   );
 }
