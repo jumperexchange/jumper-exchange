@@ -236,7 +236,7 @@ export const BerachainMarketCard = ({
               <BerachainProgressCard
                 title={'Net APY'}
                 value={`${typeof apys?.total === 'number' ? apys?.total + '%' : apys?.total || 'N/A'}`}
-                tooltip={'Expected return rate on your invested amount.'}
+                tooltip={'Expected return rate on your invested'}
                 sx={{
                   height: '100%',
                   padding: theme.spacing(1.5, 2),

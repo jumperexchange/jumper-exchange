@@ -37,9 +37,4 @@ export interface BerachainProtocolInfo {
   apys: BerachainApys;
 }
 
-export type BerachainProtocolType =
-  | 'Vault'
-  | 'Recipe'
-  | 'DEX'
-  | 'Money Market'
-  | 'Staking';
+export type BerachainProtocolType = 'Vault' | 'DEX' | 'Lending' | 'Staking';
