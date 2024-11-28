@@ -62,7 +62,7 @@ const WidgetReviewSSR = ({
             theme={theme}
             fullWidth={true}
             sx={{
-              marginTop: 21,
+              marginTop: 22,
               alignSelf: 'flex-start',
               marginLeft: -2,
             }}
@@ -79,7 +79,7 @@ const WidgetReviewSSR = ({
             fullWidth={false}
             highlighted={highlighted === 'from'}
             showSkeletons={true}
-            sx={{ marginTop: -4 }}
+            sx={{ marginTop: 0 }}
           />
           <ReviewField
             chain={toChain}
@@ -99,7 +99,7 @@ const WidgetReviewSSR = ({
           <FieldSkeleton
             width={164}
             height={12}
-            sx={{ marginTop: -7, marginLeft: 14 }}
+            sx={{ marginTop: -12, marginLeft: 14 }}
           />
           <ButtonLabel
             buttonLabel={isSwap ? 'Start swapping' : 'Start bridging'}

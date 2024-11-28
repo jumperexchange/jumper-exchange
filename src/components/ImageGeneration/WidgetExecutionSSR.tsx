@@ -78,7 +78,7 @@ const WidgetExecutionSSR = ({
             fullWidth={false}
             highlighted={highlighted === 'from'}
             showSkeletons={true}
-            sx={{ padding: '0px 16px', marginTop: 12 }}
+            sx={{ padding: '0px 16px', marginTop: 14 }}
           />
           <CardContent
             cardContent={
@@ -86,6 +86,7 @@ const WidgetExecutionSSR = ({
                 ? 'Waiting for swap transaction'
                 : 'Waiting for bridge transaction'
             }
+            sx={{ marginTop: 14 }}
             theme={theme}
           />
           <ReviewField
@@ -101,12 +102,12 @@ const WidgetExecutionSSR = ({
                 : null
             }
             showSkeletons={true}
-            sx={{ padding: '0px 16px', marginTop: 16 }}
+            sx={{ padding: '0px 16px', marginTop: 18 }}
           />
           <FieldSkeleton
             width={164}
             height={12}
-            sx={{ marginTop: -7, marginLeft: 14 }}
+            sx={{ marginTop: -12, marginLeft: 14 }}
           />
           <ButtonLabel
             buttonLabel={isSwap ? 'Start swapping' : 'Start bridging'}

@@ -4,6 +4,7 @@ import type { ExtendedChain, Token } from '@lifi/sdk';
 import type { CSSProperties } from 'react';
 import { decimalFormatter } from 'src/utils/formatNumbers';
 import { AvatarBadgeSSR } from '../../AvatarBadge/SSR/AvatarBadgeSSR';
+import { FieldSkeleton } from '../FieldSkeleton';
 import type { ImageTheme } from '../ImageGeneration.types';
 import { amountTextStyles } from '../style';
 
@@ -74,12 +75,13 @@ const AmountField = ({
               flexDirection: 'column',
               marginLeft: '16px',
               width: '100%',
-              marginTop: 8,
+              marginTop: 2,
             }}
           >
             <p style={amountTextStyle}>
               {formatAmount(routeAmount || amount || 0)}
             </p>
+            <FieldSkeleton width={40} height={8} sx={{ marginTop: 6 }} />
           </div>
         </div>
       </div>

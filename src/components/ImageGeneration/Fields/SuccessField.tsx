@@ -61,7 +61,7 @@ const SuccessField = ({
               theme={theme}
             />
           )}
-          <div style={amountContainerStyle}>
+          <div style={{ ...amountContainerStyle, marginTop: 2 }}>
             <p style={amountTextStyle}>
               {formatAmount(routeAmount || amount || 0)}
             </p>

@@ -82,7 +82,6 @@ const WidgetSelectionSSR = ({
             token={fromToken}
             theme={theme || undefined}
             amount={amount ? parseFloat(amount) : undefined}
-            // amountUSD={amountUSD ? parseFloat(amountUSD) : undefined}
             fullWidth={true}
             highlighted={highlighted === 'amount'}
           />
