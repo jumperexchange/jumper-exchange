@@ -18,8 +18,8 @@ export const BerachainIntroduction = () => {
         How does it work?
       </BerachainIntroductionTitle>
       <BerachainIntroductionSteps>
-        <Link href="/berachain/explore">
-          <BerachainIntroductionStep>
+        <BerachainIntroductionStep>
+          <Link href="/berachain/explore">
             <BerachainIntroductionStepContent>
               <Typography variant="urbanistBody2XLarge">
                 1. Browse markets
@@ -34,10 +34,11 @@ export const BerachainIntroduction = () => {
               width={385}
               height={385}
             />
-          </BerachainIntroductionStep>
-        </Link>
-        <Link href="/berachain/explore">
-          <BerachainIntroductionStep>
+          </Link>
+        </BerachainIntroductionStep>
+
+        <BerachainIntroductionStep>
+          <Link href="/berachain/explore">
             <BerachainIntroductionStepContent>
               <Typography variant="urbanistBody2XLarge">
                 2. Deposit tokens
@@ -53,10 +54,10 @@ export const BerachainIntroduction = () => {
               width={385}
               height={385}
             />
-          </BerachainIntroductionStep>
-        </Link>
-        <Link href="/berachain/explore">
-          <BerachainIntroductionStep>
+          </Link>
+        </BerachainIntroductionStep>
+        <BerachainIntroductionStep>
+          <Link href="/berachain/explore">
             <BerachainIntroductionStepContent>
               <Typography variant="urbanistBody2XLarge">
                 3. Receive incentives
@@ -71,8 +72,8 @@ export const BerachainIntroduction = () => {
               width={385}
               height={385}
             />
-          </BerachainIntroductionStep>
-        </Link>
+          </Link>
+        </BerachainIntroductionStep>
       </BerachainIntroductionSteps>
       <Link href="/berachain/explore">
         <BerachainWelcomeConnectButtonCTA>
