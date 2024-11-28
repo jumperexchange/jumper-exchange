@@ -78,7 +78,7 @@ export const BerachainWidget = () => {
         <BerachainWidgetPledgedBox>
           <Box>
             <BerachainWidgetPledgedBoxLabel variant="bodySmallStrong">
-              Tokens pledged by you
+              Tokens deposited by you
             </BerachainWidgetPledgedBoxLabel>
           </Box>
           <Box display={'flex'} alignItems={'center'}>
