@@ -6,11 +6,12 @@ import { SectionTitle } from '../ProfilePage.style';
 export const QuestsOverviewContainer = styled(Box)(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(288px, 1fr))',
-  gridColumnGap: theme.spacing(2),
-  gridRowGap: theme.spacing(1),
+  gridColumnGap: theme.spacing(1),
+  gridRowGap: theme.spacing(2),
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '32px',
-  padding: theme.spacing(2),
+  paddingY: theme.spacing(2),
+  paddingX: theme.spacing(1),
   boxShadow: theme.palette.shadow.main,
   marginTop: theme.spacing(4),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
