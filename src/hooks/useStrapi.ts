@@ -2,7 +2,6 @@ import {
   STRAPI_BLOG_ARTICLES,
   STRAPI_FAQ_ITEMS,
   STRAPI_FEATURE_CARDS,
-  STRAPI_JUMPER_USERS,
   STRAPI_PARTNER_THEMES,
 } from '@/const/strapiContentKeys';
 import type { StrapiMeta, StrapiResponseData } from '@/types/strapi';
@@ -35,8 +34,7 @@ interface ContentTypeProps {
     | 'blog-articles'
     | 'faq-items'
     | 'tags'
-    | 'partner-themes'
-    | 'jumper-users';
+    | 'partner-themes';
   filterSlug?: string;
   filterUid?: string;
   filterTag?: (number | null | undefined)[] | null | undefined;
@@ -181,36 +179,6 @@ export const useStrapi = <T>({
       apiUrl.searchParams.set('filters[uid][$eq]', filterUid);
     }
   }
-
-  // jumper users -->
-  if (contentType === STRAPI_JUMPER_USERS) {
-    apiUrl.searchParams.set('populate[0]', 'feature_cards');
-    apiUrl.searchParams.set(
-      'populate[feature_cards][populate][0]',
-      'BackgroundImageLight',
-    );
-    apiUrl.searchParams.set(
-      'populate[feature_cards][populate][1]',
-      'BackgroundImageDark',
-    );
-    apiUrl.searchParams.set(
-      'populate[feature_cards][populate][2]',
-      'featureCardsExclusions',
-    );
-    // filter feature cards by related EVM address
-    if (filterPersonalFeatureCards?.enabled) {
-      if (
-        filterPersonalFeatureCards.account?.address &&
-        filterPersonalFeatureCards.account.chainType === 'EVM'
-      ) {
-        apiUrl.searchParams.set(
-          'filters[EvmWalletAddress][$eqi]',
-          filterPersonalFeatureCards.account?.address,
-        );
-      }
-    }
-  }
-
   // show drafts ONLY on development env
   process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
     apiUrl.searchParams.set('publicationState', 'preview');
