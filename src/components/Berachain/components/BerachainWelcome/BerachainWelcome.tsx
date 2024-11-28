@@ -36,7 +36,7 @@ export const BerachainWelcome = () => {
             Jump into Boyco
           </BerachainWelcomeTitle>
           <BerachainWelcomeSubtitle variant="bodyXLarge">
-            Provide liquidity to Berachain Apps prior to mainnet launch
+            Provide liquidity to Berachain apps prior to mainnet launch
           </BerachainWelcomeSubtitle>
         </BeraChainWelcomeContent>
       </motion.div>
@@ -49,7 +49,7 @@ export const BerachainWelcome = () => {
         <BerachainWelcomeBoxContent>
           <BerachainProgressCard
             title={'Total Value Locked'}
-            value="$718K.88"
+            value="$718K"
             icon={
               <Image
                 src="/berachain/tvl.svg"
@@ -68,7 +68,7 @@ export const BerachainWelcome = () => {
           />
           <BerachainProgressCard
             title={'Incentives'}
-            value="$520.64K"
+            value="$420K"
             icon={
               <Image
                 src="/berachain/gift.svg"
@@ -96,10 +96,10 @@ export const BerachainWelcome = () => {
         <BerachainWelcomeBoxContent>
           <Link href="/berachain/explore">
             <BerachainWelcomeConnectButtonCTA>
-              <Typography variant="bodyLargeStrong">Start Exploring</Typography>
+              <Typography variant="bodyLargeStrong">Start exploring</Typography>
             </BerachainWelcomeConnectButtonCTA>
           </Link>
-          <Link href="/berachain">
+          <Link href="https://blog.berachain.com/blog/flow-of-value-examining-the-differences-between-pos-and-pol-a-case-for-a-new-paradigm-in-sustainable-incentive-alignment-at-the-protocol-layer">
             <BerachainWelcomeLearnMoreButton sx={{ padding: '8px 24px' }}>
               <Typography variant="bodyLargeStrong">Learn more</Typography>
             </BerachainWelcomeLearnMoreButton>

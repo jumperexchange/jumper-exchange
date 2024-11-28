@@ -1,4 +1,5 @@
 import { Typography } from '@mui/material';
+import Link from 'next/link';
 import { BerachainWelcomeConnectButtonCTA } from '../BerachainWelcome/BerachainWelcome.style';
 import {
   BerachainBearTyping,
@@ -36,7 +37,7 @@ export const BerachainIntroduction = () => {
         <BerachainIntroductionStep>
           <BerachainIntroductionStepContent>
             <Typography variant="urbanistBody2XLarge">
-              2. Deposit some tokens
+              2. Deposit tokens
             </Typography>
             <Typography variant="bodyMedium">
               Select the dApp and pool you would like to deposit liquidity into.
@@ -55,7 +56,7 @@ export const BerachainIntroduction = () => {
               3. Receive incentives
             </Typography>
             <Typography variant="bodyMedium">
-              Sit back, relax, earn while Berachain is going live.
+              Sit back, relax, earn while Berachain goes live.
             </Typography>
           </BerachainIntroductionStepContent>
           <BerachainIntroductionStepIllustration
@@ -66,9 +67,11 @@ export const BerachainIntroduction = () => {
           />
         </BerachainIntroductionStep>
       </BerachainIntroductionSteps>
-      <BerachainWelcomeConnectButtonCTA>
-        <Typography variant="bodyLargeStrong">Get Started</Typography>
-      </BerachainWelcomeConnectButtonCTA>
+      <Link href="/berachain/explore">
+        <BerachainWelcomeConnectButtonCTA>
+          <Typography variant="bodyLargeStrong">Get started</Typography>
+        </BerachainWelcomeConnectButtonCTA>
+      </Link>
     </BerachainIntroductionBox>
   );
 };
