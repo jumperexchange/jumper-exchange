@@ -5115,8 +5115,8 @@ __metadata:
   linkType: hard
 
 "@tanstack/react-router@npm:^1.46.4":
-  version: 1.84.0
-  resolution: "@tanstack/react-router@npm:1.84.0"
+  version: 1.84.2
+  resolution: "@tanstack/react-router@npm:1.84.2"
   dependencies:
     "@tanstack/history": "npm:1.81.9"
     "@tanstack/react-store": "npm:^0.6.1"
@@ -5130,7 +5130,7 @@ __metadata:
   peerDependenciesMeta:
     "@tanstack/router-generator":
       optional: true
-  checksum: 10/704b5252e923f1f45623050fafa30e8333cd6c883e632410bc88f927f4d8a6c16d5cb0e18e0424909a19b6da3b8f726f1479f3d37d5a2be141ac009ab59a19bb
+  checksum: 10/a70210c1528f7dc36c474ef81b08390977b8c4edb3c9842f1ded27d4c6da01458026c8e818c8923db68bb7c6d90bb313e1664592c42e761e822d15e4221eda0d
   languageName: node
   linkType: hard
 
@@ -7473,9 +7473,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.41":
-  version: 1.5.66
-  resolution: "electron-to-chromium@npm:1.5.66"
-  checksum: 10/bc0e2a20108314cdc81dd8e7531e80ef6540878d3b847a146ed45053b7322018811202c42f552adc682d8781e843e491dd7e450becc4211603880ea16e38bc04
+  version: 1.5.67
+  resolution: "electron-to-chromium@npm:1.5.67"
+  checksum: 10/02dc78eeaa5eb6630353e48a30f2f081e283a6e1ef9ba0d4a932ca289795fd98947b6fa85c9d74d8fb335b80ad8f65d893052b047a9ac78093e5b37501c3d34f
   languageName: node
   linkType: hard
 
@@ -13521,8 +13521,8 @@ __metadata:
   linkType: hard
 
 "viem@npm:^2.1.1, viem@npm:^2.21.35, viem@npm:^2.21.37, viem@npm:^2.21.43":
-  version: 2.21.51
-  resolution: "viem@npm:2.21.51"
+  version: 2.21.52
+  resolution: "viem@npm:2.21.52"
   dependencies:
     "@noble/curves": "npm:1.6.0"
     "@noble/hashes": "npm:1.5.0"
@@ -13538,7 +13538,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/4cc75ab410a22f6fab6a9aea51cf2b2aadf3047b4341d8644cdb5dcb971158ad783fceb9c660688b762585e49d75bf74b8d1f25fb14001688a0d8092f42c619f
+  checksum: 10/d30346ebc74237a922a62704780bbf7f49cfa11477e743aa8a2c0c9c184c7f290f93c5c5f34e357ae88fee08ea81e108fe8bea44bf61f9774d4d515f5038b9d4
   languageName: node
   linkType: hard
 
