@@ -99,7 +99,11 @@ export const BerachainWelcome = () => {
               <Typography variant="bodyLargeStrong">Start exploring</Typography>
             </BerachainWelcomeConnectButtonCTA>
           </Link>
-          <Link href="https://blog.berachain.com/blog/flow-of-value-examining-the-differences-between-pos-and-pol-a-case-for-a-new-paradigm-in-sustainable-incentive-alignment-at-the-protocol-layer">
+          <Link
+            href="https://blog.berachain.com/blog/flow-of-value-examining-the-differences-between-pos-and-pol-a-case-for-a-new-paradigm-in-sustainable-incentive-alignment-at-the-protocol-layer"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <BerachainWelcomeLearnMoreButton sx={{ padding: '8px 24px' }}>
               <Typography variant="bodyLargeStrong">Learn more</Typography>
             </BerachainWelcomeLearnMoreButton>

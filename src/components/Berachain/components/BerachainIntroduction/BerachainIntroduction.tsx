@@ -56,7 +56,7 @@ export const BerachainIntroduction = () => {
               3. Receive incentives
             </Typography>
             <Typography variant="bodyMedium">
-              Sit back, relax, earn while Berachain goes live.
+              Sit back, relax, earn incentives while Berachain goes live.
             </Typography>
           </BerachainIntroductionStepContent>
           <BerachainIntroductionStepIllustration
