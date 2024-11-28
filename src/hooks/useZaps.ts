@@ -1,10 +1,4 @@
-import type { TokenAmount } from '@lifi/widget';
 import { useQuery } from '@tanstack/react-query';
-
-const CHAINS: Record<string, number> = {
-  ethereum: 1,
-  base: 8453,
-};
 
 interface UseZapsProps {
   chain: string;
@@ -53,17 +47,5 @@ export const useZaps = (zapParams: UseZapsProps) => {
     },
   });
 
-  const token: TokenAmount = {
-    chainId: CHAINS[chain],
-    address: data?.data?.depositToken.address,
-    symbol: data?.data?.depositToken.symbol,
-    name: data?.data?.depositToken.name,
-    decimals: data?.data?.depositToken.decimals,
-    priceUSD: data?.data?.depositToken.priceUSD,
-    coinKey: undefined,
-    logoURI: data?.data?.depositToken.logoURI,
-    amount: BigInt(params.amount),
-  };
-
-  return { data, token, isSuccess, isLoading };
+  return { data, isSuccess, isLoading };
 };
