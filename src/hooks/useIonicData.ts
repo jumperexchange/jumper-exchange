@@ -18,16 +18,12 @@ export const useIonicData = () => {
       });
 
       if (!res.ok) {
-        return { data: null, isSuccess: false, isLoading: false };
+        return { data: null };
       }
 
       const data = await res.json();
 
-      return {
-        data,
-        isSuccess: true,
-        isLoading: false,
-      };
+      return { data };
     },
   });
   return { data, isSuccess, isLoading };

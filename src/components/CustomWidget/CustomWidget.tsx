@@ -1,5 +1,5 @@
 import type { ContractCall, WidgetConfig } from '@lifi/widget';
-import { ChainType, DisabledUI, HiddenUI, ItemPrice, LiFiWidget } from '@lifi/widget';
+import { ChainType, DisabledUI, HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useEffect, useMemo, useState } from 'react';
 import { useZaps } from '@/hooks/useZaps';
 import type { Account } from '@lifi/wallet-management';
@@ -18,7 +18,7 @@ const projectData = {
   method: 'mint',
   params: { amount: '1000000000000000' },
   displayName: 'Ionic Money',
-}
+};
 
 export function CustomWidget({ account }: CustomWidgetProps) {
   const [contractCalls, setContractCalls] = useState<ContractCall[]>([]);
@@ -61,9 +61,9 @@ export function CustomWidget({ account }: CustomWidgetProps) {
           borderRadius: '16px',
         },
       },
-    }
-    return baseConfig
-  }, [])
+    };
+    return baseConfig;
+  }, []);
 
   return (
     <LiFiWidget

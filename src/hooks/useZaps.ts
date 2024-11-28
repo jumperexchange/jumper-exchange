@@ -49,11 +49,7 @@ export const useZaps = (zapParams: UseZapsProps) => {
 
       const { data } = resFormatted;
 
-      return {
-        data,
-        isSuccess: true,
-        isLoading: false,
-      };
+      return { data };
     },
   });
 
