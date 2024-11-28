@@ -22,7 +22,7 @@ export const BerachainMarketsHeader = () => {
       <BerachainMarketInfos>
         <BerachainMarketHeaderTitle>
           <Typography variant="urbanistTitleMedium">
-            Help protocols launch on{!isDesktop && ' Berachain'}
+            Pre-deposit liquidity into {!isDesktop && ' Berachain'}
           </Typography>
           {isDesktop && (
             <Image
@@ -34,8 +34,8 @@ export const BerachainMarketsHeader = () => {
           )}
         </BerachainMarketHeaderTitle>
         <BerachainMarketHeaderSubtitle>
-          Deposit your tokens across Berachain Apps launch markets and watch the
-          rewards pile up.
+          Browse the Boyco markets, deposit your tokens and earn rewards when
+          Berachain launches.
         </BerachainMarketHeaderSubtitle>
         <Link href="/berachain">
           <BerachainMarketHeaderCTA>
