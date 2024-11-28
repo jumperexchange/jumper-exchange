@@ -1,6 +1,10 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import type { BadgeOffsetProps } from 'src/components/AvatarBadge/AvatarBadge';
+
+interface BadgeOffsetProps {
+  x?: number;
+  y?: number;
+}
 
 type AvatarBadgeSSRProps = {
   avatarSrc?: string;
