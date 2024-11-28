@@ -199,7 +199,9 @@ export const BerachainMarketCard = ({
           <BerachainProgressCard
             title={'TVL'}
             value={tvl}
-            tooltip={'TVL tooltip msg lorem ipsum'}
+            tooltip={
+              'Total Value Locked is the metric showing the total amount in a pool.'
+            }
             sx={{
               height: '100%',
               padding: theme.spacing(1.5, 2),
@@ -234,7 +236,7 @@ export const BerachainMarketCard = ({
               <BerachainProgressCard
                 title={'Net APY'}
                 value={`${typeof apys?.total === 'number' ? apys?.total + '%' : apys?.total || 'N/A'}`}
-                tooltip={'Net APY tooltip msg lorem ipsum'}
+                tooltip={'Expected return rate on your invested amount.'}
                 sx={{
                   height: '100%',
                   padding: theme.spacing(1.5, 2),

@@ -47,13 +47,13 @@ export const BerachainMarketsHeader = () => {
         <BerachainProgressCard
           title={'Total Value Locked'}
           value={'$107.07K'}
-          tooltip={'Lorem ipsum..'}
+          tooltip={'This is the total amount in a protocol.'}
           sx={BerachainMarketHeaderProgressCardStyles(theme)}
         />
         <BerachainProgressCard
           title={'Total Volume'}
           value={'$406.82K'}
-          tooltip={'Lorem ipsum..'}
+          tooltip={'This is the total volume done on Boyco.'}
           sx={BerachainMarketHeaderProgressCardStyles(theme)}
         />
       </BerachainMarketHeaderCards>
