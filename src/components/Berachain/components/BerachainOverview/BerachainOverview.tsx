@@ -22,11 +22,8 @@ export const BerachainOverview = () => {
         </Box>
         <BerachainProgressContainer>
           <BerachainProgressCard title={'Total Volume'} value={'$114.45'} />
-          <BerachainProgressCard
-            title={'Total Value Locked'}
-            value={'$118.88'}
-          />
-          <BerachainProgressCard title={'Incentives'} value={'$2.57'} />
+          <BerachainProgressCard title={'Total Value Locked'} value={'$718k'} />
+          <BerachainProgressCard title={'Incentives'} value={'$420k'} />
         </BerachainProgressContainer>
       </BerachainOverviewHeader>
       <BerachainMarkets />
