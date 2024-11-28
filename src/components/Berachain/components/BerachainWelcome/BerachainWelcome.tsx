@@ -100,7 +100,7 @@ export const BerachainWelcome = () => {
             </BerachainWelcomeConnectButtonCTA>
           </Link>
           <Link
-            href="https://blog.berachain.com/blog/flow-of-value-examining-the-differences-between-pos-and-pol-a-case-for-a-new-paradigm-in-sustainable-incentive-alignment-at-the-protocol-layer"
+            href="https://blog.berachain.com/blog/rfb-boyco"
             rel="noopener noreferrer"
             target="_blank"
           >
