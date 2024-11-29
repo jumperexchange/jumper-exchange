@@ -13,6 +13,8 @@ import {
   RankContainer,
   RankContentContainer,
 } from './LeaderboardCard.style';
+import { RANKIcon } from 'src/components/illustrations/IconRANK';
+import { Box } from '@mui/material';
 
 export const LeaderboardCard = ({ address }: { address?: string }) => {
   const { data: leaderboardUserData }: { data: LeaderboardEntryData } =
@@ -25,10 +27,13 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
 
   return (
     <RankContainer>
-      <IconHeader
-        tooltipKey="profile_page.rankInfo"
-        title={t('profile_page.rank')}
-      />
+      <Box>
+        <IconHeader
+          icon={<RANKIcon size={20} />}
+          tooltipKey="profile_page.rankInfo"
+          title={t('profile_page.rank')}
+        />
+      </Box>
       <RankContentContainer>
         {title ? (
           <Link

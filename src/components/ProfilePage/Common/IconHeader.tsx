@@ -6,13 +6,15 @@ import { IconHeaderContainer, IconHeaderTitle } from './IconHeader.style';
 interface IconHeaderProps {
   tooltipKey: string;
   title: string;
+  icon?: React.ReactNode;
 }
 
-export const IconHeader = ({ tooltipKey, title }: IconHeaderProps) => {
+export const IconHeader = ({ tooltipKey, title, icon }: IconHeaderProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   return (
     <IconHeaderContainer>
+      {icon}
       <IconHeaderTitle variant="title2xSmall">{title}</IconHeaderTitle>
       <Tooltip
         title={t(tooltipKey as any)}
@@ -21,7 +23,7 @@ export const IconHeader = ({ tooltipKey, title }: IconHeaderProps) => {
         enterTouchDelay={0}
         arrow
       >
-        <StyledInfoIcon />
+        <StyledInfoIcon size={20} />
       </Tooltip>
     </IconHeaderContainer>
   );
