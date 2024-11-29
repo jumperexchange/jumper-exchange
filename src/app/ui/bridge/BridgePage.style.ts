@@ -2,12 +2,14 @@
 
 import type { BoxProps } from '@mui/system';
 import { Box, styled } from '@mui/system';
-import type { Breakpoint } from '@mui/material/styles';
 
 export const BridgePageContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active',
 })<BoxProps>(({ theme }) => ({
   color: theme.palette.text.primary,
+  maxWidth: '100%',
+  flexGrow: 1,
+  overflow: 'hidden',
   position: 'relative',
   borderRadius: 32,
   backgroundColor: theme.palette.bgSecondary.main,
@@ -18,4 +20,7 @@ export const BridgePageContainer = styled(Box, {
   flexDirection: 'column',
   padding: theme.spacing(4),
   margin: theme.spacing(2, 0),
+  // [theme.breakpoints.up('md' as Breakpoint)]: {
+  //   maxWidth: 'calc(50% - 16px)',
+  // },
 }));
