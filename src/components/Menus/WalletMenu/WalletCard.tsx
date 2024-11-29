@@ -10,7 +10,6 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { usePortfolioStore } from '@/stores/portfolio';
 import { openInNewTab } from '@/utils/openInNewTab';
-import { walletDigest } from '@/utils/walletDigest';
 import type { Account } from '@lifi/wallet-management';
 import {
   getConnectorIcon,
@@ -25,6 +24,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ButtonSecondary } from 'src/components/Button';
 import { JUMPER_SCAN_PATH } from 'src/const/urls';
+import { useWalletLabel } from 'src/hooks/useWalletLabel';
 import {
   Button,
   WalletAvatar,
@@ -45,6 +45,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   const { checkMultisigEnvironment } = useMultisig();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
   const router = useRouter();
+  const label = useWalletLabel(account.address);
   const activeChain = useMemo(
     () => chains?.find((chainEl) => chainEl.id === account.chainId),
     [chains, account.chainId],
@@ -165,7 +166,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           })}
         >
           <Typography variant="bodySmallStrong" sx={{ fontSize: '16px' }}>
-            {walletDigest(account.address)}
+            {label}
           </Typography>
         </Button>
         <Stack direction="row" alignItems="flex-end" spacing={1}>
