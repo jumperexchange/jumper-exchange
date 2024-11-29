@@ -76,11 +76,11 @@ export function CustomWidget({ account }: CustomWidgetProps) {
       },
     };
     return baseConfig;
-  }, []);
+  }, [isSuccess]);
 
   return (
     <>
-      {token && contractCalls && (
+      {token && contractCalls && contractCalls.length > 0 && (
         <LiFiWidget
           contractComponent={
             <DepositCard
