@@ -13,8 +13,11 @@ import { Stack, Typography, useMediaQuery } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
-import useImageStatus from 'src/hooks/useImageStatus';
+import {
+  DEFAULT_WALLET_ADDRESS,
+  JUMPER_LOYALTY_PATH,
+  JUMPER_SCAN_PATH,
+} from 'src/const/urls';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
@@ -30,6 +33,12 @@ import {
   WalletMgmtChainAvatar,
   WalletMgmtWalletAvatar,
 } from './WalletButton.style';
+import useBlockieImg from '@/hooks/useBlockieImg';
+import { useWalletAddressImg } from '@/hooks/useAddressImg';
+import { useEnsName } from 'wagmi';
+import type { Address } from 'viem';
+import { mainnet } from 'wagmi/chains';
+import { getAddressLabel } from '@/utils/getAddressLabel';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
@@ -39,7 +48,7 @@ export const WalletButtons = () => {
   const { openWalletMenu } = useWalletMenu();
   const { points, isLoading } = useLoyaltyPass(account?.address);
   const router = useRouter();
-  const imgLink = useImageStatus(account?.address);
+  const imgLink = useWalletAddressImg(account?.address);
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const pathname = usePathname();
 
@@ -47,9 +56,15 @@ export const WalletButtons = () => {
     (state) => state,
   );
 
-  const _walletDigest = useMemo(() => {
-    return walletDigest(account?.address);
-  }, [account?.address]);
+  const { data: ensName, isSuccess: isSuccessEnsName } = useEnsName({
+    address: account?.address as Address | undefined,
+    chainId: mainnet.id,
+  });
+  const addressLabel = getAddressLabel({
+    isSuccess: isSuccessEnsName,
+    ensName,
+    address: account?.address,
+  });
 
   const activeChain = useMemo(
     () => chains?.find((chainEl: Chain) => chainEl.id === account?.chainId),
@@ -90,7 +105,7 @@ export const WalletButtons = () => {
               >
                 <ImageWalletMenuButton
                   src={imgLink}
-                  alt="Effigy Wallet Icon"
+                  alt={`${account?.address} wallet Icon`}
                   width={32}
                   height={32}
                   priority={false}
@@ -143,7 +158,7 @@ export const WalletButtons = () => {
               </WalletMgmtBadge>
             ) : null}
             <WalletLabel variant={'bodyMediumStrong'}>
-              {_walletDigest}
+              {addressLabel ?? walletDigest(account?.address)}
             </WalletLabel>
           </WalletMenuButton>
         </Stack>
