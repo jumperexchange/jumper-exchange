@@ -21,6 +21,8 @@ jobs:
       run: npx playwright install --with-deps chromium
     - name: Run local env
       run: yarn dev &
+    - name: Wait local env to be ready
+      run: npx wait-on http://localhost:3000
     - name: Build synpress cache
       run: yarn build:cache --force tests/wallet-setup/
     - name: Run Playwright E2E tests

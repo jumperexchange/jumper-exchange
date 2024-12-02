@@ -60,6 +60,7 @@
     "sharp": "^0.33.5",
     "siwe": "^2.3.2",
     "uuid": "^10.0.0",
+    "wait-on": "^8.0.1",
     "zustand": "^4.5.5"
   },
   "devDependencies": {
@@ -112,7 +113,6 @@
     "test:ci:e2e": "xvfb-run npx playwright test --debug",
     "test:e2e-real": "npx playwright test --headed",
     "build:cache": "synpress --headless"
-
   },
   "lint-staged": {
     "**/*.(ts|tsx|js)": [
