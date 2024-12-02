@@ -25,6 +25,7 @@ import {
 import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
+import { IconHeader } from '../ProfilePage/Common/IconHeader';
 
 export const LEADERBOARD_LENGTH = 25;
 
@@ -65,11 +66,17 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
             <Typography variant="headerMedium">
               {t('leaderboard.title')}
             </Typography>
-            <TooltipInfo title={t('leaderboard.description')} size={24} />
+            <Box sx={{ marginLeft: '8px' }}>
+              <IconHeader
+                tooltipKey="tooltip example"
+                title={`Updated: ${date}`}
+              />
+            </Box>
+            {/* <TooltipInfo title={t('leaderboard.description')} size={24} /> */}
           </Box>
-          <LeaderboardUpdateDateLabel variant="bodyXSmallStrong">
+          {/* <LeaderboardUpdateDateLabel variant="bodyXSmallStrong">
             {t('leaderboard.updatedLabel', { date: date })}
-          </LeaderboardUpdateDateLabel>
+          </LeaderboardUpdateDateLabel> */}
         </LeaderboardHeader>
         <LeaderboardUserEntry />
         <LeaderboardEntryStack direction={'column'}>
