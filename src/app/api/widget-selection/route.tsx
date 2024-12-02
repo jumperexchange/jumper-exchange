@@ -15,7 +15,6 @@
  * @property {string} toToken - The token address to send to.
  * @property {number} toChainId - The chain ID to send to.
  * @property {number} amount - The amount of tokens.
- * @property {number} [amountUSD] - The USD equivalent amount (optional).
  * @property {'light'|'dark'} [theme] - The theme for the widget (optional).
  * @property {'from'|'to'|'amount'} [highlighted] - The highlighted element (optional).
  *
@@ -45,7 +44,6 @@ export async function GET(request: Request) {
     theme,
     amount,
     highlighted,
-    amountUSD,
   } = parseSearchParams(request.url);
 
   // Fetch data asynchronously before rendering
@@ -90,7 +88,6 @@ export async function GET(request: Request) {
           fromChain={fromChain}
           toChain={toChain}
           amount={amount}
-          amountUSD={amountUSD}
           theme={theme as 'light' | 'dark'}
           highlighted={highlighted as HighlightedAreas}
         />

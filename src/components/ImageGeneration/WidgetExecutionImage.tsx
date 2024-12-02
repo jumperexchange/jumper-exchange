@@ -3,7 +3,6 @@ import type { CSSProperties } from 'react';
 import ReviewField from './Fields/ReviewField';
 import { FieldSkeleton } from './FieldSkeleton';
 import type { HighlightedAreas, ImageTheme } from './ImageGeneration.types';
-import ButtonLabel from './Labels/ButtonLabel';
 import CardContent from './Labels/CardContent';
 import CardTitle from './Labels/CardTitle';
 import Title from './Labels/Title';
@@ -78,7 +77,7 @@ const WidgetExecutionImage = ({
             fullWidth={false}
             highlighted={highlighted === 'from'}
             showSkeletons={true}
-            sx={{ padding: '0px 16px', marginTop: 14 }}
+            sx={{ padding: '0px 16px', marginTop: 0 }}
           />
           <CardContent
             cardContent={
@@ -102,17 +101,12 @@ const WidgetExecutionImage = ({
                 : null
             }
             showSkeletons={true}
-            sx={{ padding: '0px 16px', marginTop: 18 }}
+            sx={{ padding: '0px 16px', marginTop: 4 }}
           />
           <FieldSkeleton
             width={164}
             height={12}
             sx={{ marginTop: -12, marginLeft: 14 }}
-          />
-          <ButtonLabel
-            buttonLabel={isSwap ? 'Start swapping' : 'Start bridging'}
-            theme={theme}
-            sx={{ marginTop: 53 }}
           />
         </div>
       </div>

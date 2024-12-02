@@ -2,7 +2,7 @@ import type { ExtendedChain, Token } from '@lifi/sdk';
 import type { CSSProperties } from 'react';
 import ReviewField from './Fields/ReviewField';
 import { FieldSkeleton } from './FieldSkeleton';
-import type { HighlightedAreas, ImageTheme } from './ImageGeneration.types';
+import type { ImageTheme } from './ImageGeneration.types';
 import ButtonLabel from './Labels/ButtonLabel';
 import CardTitle from './Labels/CardTitle';
 import Title from './Labels/Title';
@@ -24,7 +24,6 @@ interface WidgetReviewImageProps {
   amount?: string | null;
   width: number;
   height: number;
-  highlighted?: HighlightedAreas;
   sx?: CSSProperties;
 }
 
@@ -38,7 +37,6 @@ const WidgetReviewImage = ({
   amount,
   width,
   height,
-  highlighted,
   sx,
 }: WidgetReviewImageProps) => {
   const contentContainerStyle = contentContainerStyles({
@@ -77,7 +75,6 @@ const WidgetReviewImage = ({
             token={fromToken}
             amount={amount ? parseFloat(amount) : null}
             fullWidth={false}
-            highlighted={highlighted === 'from'}
             showSkeletons={true}
             sx={{ marginTop: 0 }}
           />
@@ -86,7 +83,6 @@ const WidgetReviewImage = ({
             token={toToken}
             theme={theme}
             fullWidth={false}
-            highlighted={highlighted === 'to'}
             amount={
               amount && fromToken && toToken
                 ? (parseFloat(amount) * parseFloat(fromToken?.priceUSD)) /
