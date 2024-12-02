@@ -19,6 +19,8 @@ jobs:
       run: yarn install
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
+    - name: Run local env
+      run: yarn dev &
     - name: Build synpress cache
       run: yarn build:cache --force tests/wallet-setup/
     - name: Run Playwright E2E tests
