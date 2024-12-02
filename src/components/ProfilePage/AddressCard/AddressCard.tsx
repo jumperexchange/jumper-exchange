@@ -6,10 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
-import { getAddressLabel } from 'src/utils/getAddressLabel';
-import type { Address } from 'viem';
-import { useEnsName } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
+import { useWalletLabel } from 'src/hooks/useWalletLabel';
 import { AddressMenu } from '../AddressMenu/AddressMenu';
 import {
   AddressBox,
@@ -34,14 +31,10 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
 
   const [openAddressMenu, setOpenAddressMenu] = useState(false);
   const { imageLink } = useMercleNft({ userAddress: address });
-  const { data: ensName, isSuccess } = useEnsName({
-    address: address as Address | undefined,
-    chainId: mainnet.id,
-  });
   const imgLink = useImageStatus(address);
   const { setSnackbarState } = useMenuStore((state) => state);
   const { openWalletMenu } = useWalletMenu();
-
+  const label = useWalletLabel(address);
   const handleCopyButton = (textToCopy?: string) => {
     if (!textToCopy) {
       return;
@@ -58,12 +51,6 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
     setAnchorEl(event.currentTarget);
     setOpenAddressMenu(true);
   };
-
-  const addressLabel = getAddressLabel({
-    isSuccess,
-    ensName,
-    address,
-  });
 
   return (
     <AddressBoxContainer>
@@ -89,7 +76,7 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
             onClick={() => handleCopyButton(address)}
           >
             <AddressButtonLabel variant="bodyMediumStrong">
-              {addressLabel}
+              {label}
             </AddressButtonLabel>
           </AddressButton>
         ) : (

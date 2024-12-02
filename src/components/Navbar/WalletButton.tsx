@@ -1,7 +1,6 @@
 'use client';
 import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
-import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/sdk';
 import {
   getConnectorIcon,
@@ -16,10 +15,10 @@ import { useTranslation } from 'react-i18next';
 import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import useImageStatus from 'src/hooks/useImageStatus';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import { useWalletLabel } from 'src/hooks/useWalletLabel';
 import { numberWithCommas } from 'src/utils/formatNumbers';
 import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
-import { PromoLabel } from '../PromoLabel.style';
 import {
   ConnectButton,
   ConnectButtonLabel,
@@ -48,9 +47,7 @@ export const WalletButtons = () => {
     (state) => state,
   );
 
-  const _walletDigest = useMemo(() => {
-    return walletDigest(account?.address);
-  }, [account?.address]);
+  const label = useWalletLabel(account?.address);
 
   const activeChain = useMemo(
     () => chains?.find((chainEl: Chain) => chainEl.id === account?.chainId),
@@ -137,9 +134,7 @@ export const WalletButtons = () => {
                 />
               </WalletMgmtBadge>
             ) : null}
-            <WalletLabel variant={'bodyMediumStrong'}>
-              {_walletDigest}
-            </WalletLabel>
+            <WalletLabel variant={'bodyMediumStrong'}>{label}</WalletLabel>
           </WalletMenuButton>
         </Stack>
       )}
