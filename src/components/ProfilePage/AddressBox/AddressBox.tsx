@@ -5,7 +5,6 @@ import LinkIcon from '@mui/icons-material/Link';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
-import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
@@ -19,45 +18,45 @@ import {
   ProfileIconButton,
 } from './AddressBox.style';
 import { getSiteUrl } from '@/const/urls';
+import useBlockieImg from '@/hooks/useBlockieImg';
+import { useWalletAddressImg } from '@/hooks/useAddressImg';
 
 interface AddressBoxProps {
-  address?: string;
+  address: string;
 }
 
 export const AddressBox = ({ address }: AddressBoxProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { imageLink } = useMercleNft({ userAddress: address });
+  const imgLink = useWalletAddressImg(address);
   const { setSnackbarState } = useMenuStore((state) => state);
   const { data: ensName, isSuccess } = useEnsName({
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
-  const imgLink = useImageStatus(address);
-
-  const handleCopyButton = (textToCopy: string) => {
-    address && navigator.clipboard.writeText(textToCopy);
-    setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
-  };
-
   const addressLabel = getAddressLabel({
     isSuccess,
     ensName,
     address,
   });
 
+  const handleCopyButton = (textToCopy: string) => {
+    address && navigator.clipboard.writeText(textToCopy);
+    setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
+  };
+
   return (
     <AddressBoxContainer imgUrl={imgLink}>
       <PassImageBox>
         <Image
-          alt="Effigy Wallet Icon"
+          alt={`${address} wallet Icon`}
           src={imgLink}
           width={128}
           height={128}
           priority={false}
           unoptimized={true}
           style={{
-            backgroundColor: imageLink
+            backgroundColor: imgLink
               ? theme.palette.mode === 'light'
                 ? '#F9F5FF'
                 : theme.palette.accent1Alt.main
