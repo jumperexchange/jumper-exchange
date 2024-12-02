@@ -42,7 +42,7 @@ export default defineConfig({
     command: 'yarn run dev',
     url: 'http://localhost:3000',
     timeout: 200 * 1000,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
   },
 
   /* Configure projects for major browsers */
