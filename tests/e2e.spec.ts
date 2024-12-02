@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import values from '../tests/testData/values.json';
+import values from '../tests/testData/values.json' assert { type:"json"};
 import {
   closeWelcomeScreen,
   expectBackgroundColorToHaveCss,
