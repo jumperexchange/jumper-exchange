@@ -57,6 +57,7 @@ const QuoteField = ({
         style={{
           ...fieldContainerStyle,
           padding: `${extendedHeight ? 56 : 16}px 16px 16px`,
+          width: '100%',
           ...(highlighted && {
             boxShadow: `inset 0 0 0 2px ${theme === 'dark' ? '#653BA3' : '#31007A'}`,
           }),
