@@ -25,7 +25,11 @@ export const QuestsCompletedCarousel = ({
 
   return (
     <QuestsOverviewContainer>
-      <CarouselContainer title={t('missions.completed')}>
+      <CarouselContainer
+        title={t('missions.completed')}
+        updateTitle={'2 day ago'}
+        updateTooltip={'tooltip example'}
+      >
         {/** render quests */}
         {!loading && pdas
           ? pdas?.map((pda: PDA, index: number) => {

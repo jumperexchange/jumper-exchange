@@ -154,7 +154,7 @@ interface Resources {
     };
     leaderboard: {
       title: 'Leaderboard';
-      description: 'Current XP leaders remain unofficial until the review of the token allocation.';
+      description: '';
       rankCtaConnect: 'Where do you rank?';
       updatedLabel: 'Updated: {{date}}';
       connectWallet: 'Connect wallet';

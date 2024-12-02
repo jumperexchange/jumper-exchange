@@ -37,6 +37,7 @@ import {
 } from './QuestCard.style';
 import { TraitsBox } from './TraitsBox/TraitsBox';
 import { XPRewardsInfo } from './XPRewardsInfo';
+import { IconHeader } from '../Common/IconHeader';
 
 export interface RewardsInterface {
   logo: string;
