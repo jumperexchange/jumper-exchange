@@ -18,7 +18,6 @@ import useImageStatus from 'src/hooks/useImageStatus';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
-import { PromoLabel } from '../PromoLabel.style';
 import {
   ConnectButton,
   ConnectButtonLabel,
@@ -114,15 +113,7 @@ export const WalletButtons = () => {
           <WalletMenuButton
             id="wallet-digest-button"
             onClick={handleWalletMenuClick}
-            sx={{
-              // delete with PromoLabel
-              overflow: 'visible',
-              position: 'relative',
-            }}
           >
-            {/* when deleting PromoLabel, also clear related sx-styles in parent above */}
-            <PromoLabel component="span" variant="bodyXSmallStrong" />
-
             {isSuccess && activeChain ? (
               <WalletMgmtBadge
                 overlap="circular"
