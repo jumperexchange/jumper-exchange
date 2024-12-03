@@ -30,11 +30,11 @@ import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { useActiveTabStore } from 'src/stores/activeTab';
+import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
 import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import { refuelAllowChains, themeAllowChains } from './Widget.types';
-import { isIframeEnvironment } from 'src/utils/iframe';
 
 export function Widget({
   starterVariant,
@@ -46,6 +46,7 @@ export function Widget({
   allowChains,
   widgetIntegrator,
   activeTheme,
+  autoHeight,
 }: WidgetProps) {
   const [widgetTheme, configTheme] = useThemeStore((state) => [
     state.widgetTheme,
@@ -229,10 +230,13 @@ export function Widget({
     trackEvent,
   ]);
 
+  console.log('AUTOHEIGHT????', autoHeight);
+
   return (
     <WidgetWrapper
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
+      autoHeight={autoHeight}
     >
       <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
         <LiFiWidget
