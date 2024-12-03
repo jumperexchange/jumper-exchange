@@ -22,7 +22,6 @@ import {
   LeaderboardHeader,
   LeaderboardTitleBox,
   LeaderboardUpdateDateBox,
-  LeaderboardUpdateDateLabel,
 } from './Leaderboard.style';
 import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
