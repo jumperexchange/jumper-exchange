@@ -67,7 +67,7 @@ export const AccordionItemWrapper = styled(Box)<AccordionItemWrapperProps>(
   }),
 );
 
-export const Accordion = styled(MuiAccordion)(({ theme, sx }) => ({
+export const Accordion = styled(MuiAccordion)(({ theme }) => ({
   fontFamily: 'inherit',
   borderRadius: '16px',
   padding: theme.spacing(2, 3),

@@ -230,8 +230,6 @@ export function Widget({
     trackEvent,
   ]);
 
-  console.log('AUTOHEIGHT????', autoHeight);
-
   return (
     <WidgetWrapper
       className="widget-wrapper"

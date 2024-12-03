@@ -13,7 +13,10 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
   const { t } = useTranslation();
 
   return (
-    <Link href={path ?? '/profile'} style={{ textDecoration: 'none' }}>
+    <Link
+      href={path ?? '/profile'}
+      style={{ textDecoration: 'none', width: 168, display: 'block' }}
+    >
       <BackButtonStyles size={'large'}>
         <ArrowBackIcon
           sx={{ color: '#FFFFFF', width: '16px', height: '16px' }}

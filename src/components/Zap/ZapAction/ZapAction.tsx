@@ -53,8 +53,6 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
     display: 'flex',
     width: '100%',
     borderRadius: '24px',
-    backgroundColor: theme.palette.surface2.main,
-
     div: {
       height: 38,
     },
@@ -71,6 +69,7 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
     minWidth: 'unset',
     borderRadius: '18px',
   };
+
   const tabs: TabProps[] = [
     {
       label: 'Get USDz',
@@ -206,7 +205,7 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
                   sx={{
                     padding: 0,
                     '> .accordion-items div:hover': {
-                      background: '#282440',
+                      background: '#F9F9F9',
                     },
                   }}
                   itemSx={{
@@ -254,6 +253,10 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
             padding: theme.spacing(3, 1),
             borderRadius: '24px',
             backgroundColor: theme.palette.surface1.main,
+            boxShadow:
+              theme.palette.mode === 'light'
+                ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+                : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
           }}
         >
           <Tabs
