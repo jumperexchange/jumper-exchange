@@ -23,12 +23,21 @@ export const QuestsCompletedCarousel = ({
     (!loading && pdas && pdas?.length < 6 && account?.address) ||
     !account?.address;
 
+  const today = new Date();
+  const secondDay = new Date(today.getFullYear(), today.getMonth(), 2);
+  const date = secondDay.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
   return (
     <QuestsOverviewContainer>
       <CarouselContainer
         title={t('missions.completed')}
-        updateTitle={'2 day ago'}
-        updateTooltip={'tooltip example'}
+        updateTitle={`Updated: ${date}`}
+        updateTooltip={`As Jumper organize ad-hoc campaigns, the missions are updated on a monthly basis to create the associated graphics.
+           Keep in mind: XP coming from specific campaigns will be updated on a monthly basis as well.`}
       >
         {/** render quests */}
         {!loading && pdas

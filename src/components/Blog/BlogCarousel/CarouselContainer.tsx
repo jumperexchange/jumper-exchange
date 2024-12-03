@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
 import { SectionTitle } from 'src/components/ProfilePage/ProfilePage.style';
 import {
+  CarouselCenteredBox,
   CarouselContainerBox,
   CarouselHeader,
   CarouselNavigationButton,
@@ -69,13 +70,7 @@ export const CarouselContainer = ({
   return (
     <Box>
       <CarouselHeader>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
+        <CarouselCenteredBox>
           {title && <SectionTitle variant="headerMedium">{title}</SectionTitle>}
           {updateTitle && (
             <Box>
@@ -85,7 +80,7 @@ export const CarouselContainer = ({
               />
             </Box>
           )}
-        </Box>
+        </CarouselCenteredBox>
         <CarouselNavigationContainer>
           <CarouselNavigationButton
             aria-label="previous"

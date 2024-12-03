@@ -20,6 +20,8 @@ import {
   LeaderboardEntryDivider,
   LeaderboardEntryStack,
   LeaderboardHeader,
+  LeaderboardTitleBox,
+  LeaderboardUpdateDateBox,
   LeaderboardUpdateDateLabel,
 } from './Leaderboard.style';
 import { LeaderboardEntry } from './LeaderboardEntry';
@@ -62,21 +64,17 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
     <PageContainer>
       <LeaderboardContainer>
         <LeaderboardHeader>
-          <Box display={'flex'} alignItems={'center'}>
+          <LeaderboardTitleBox>
             <Typography variant="headerMedium">
               {t('leaderboard.title')}
             </Typography>
-            <Box sx={{ marginLeft: '8px' }}>
+            <LeaderboardUpdateDateBox>
               <IconHeader
-                tooltipKey="tooltip example"
+                tooltipKey="The leaderboard is updated on a daily basis."
                 title={`Updated: ${date}`}
               />
-            </Box>
-            {/* <TooltipInfo title={t('leaderboard.description')} size={24} /> */}
-          </Box>
-          {/* <LeaderboardUpdateDateLabel variant="bodyXSmallStrong">
-            {t('leaderboard.updatedLabel', { date: date })}
-          </LeaderboardUpdateDateLabel> */}
+            </LeaderboardUpdateDateBox>
+          </LeaderboardTitleBox>
         </LeaderboardHeader>
         <LeaderboardUserEntry />
         <LeaderboardEntryStack direction={'column'}>

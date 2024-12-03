@@ -66,3 +66,9 @@ export const CarouselNavigationButton = styled(IconButtonTertiary, {
   height: 40,
   fontSize: 22,
 }));
+
+export const CarouselCenteredBox = styled(Box)(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
