@@ -20,7 +20,7 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
     alignItems: 'center',
     height: HeaderHeight.XS,
     padding: theme.spacing(1, 2),
-    zIndex: 1500,
+    zIndex: 1300,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       height: HeaderHeight.SM,
       padding: theme.spacing(2, 3),

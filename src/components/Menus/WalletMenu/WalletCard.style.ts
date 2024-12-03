@@ -1,13 +1,10 @@
 'use client';
 
-import { avatarMask32 } from '@/components/Mask.style';
-import type { Breakpoint } from '@mui/material';
-import { alpha } from '@mui/material';
-import { Avatar, Badge, Container } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import type { ButtonProps as MuiButtonProps } from '@mui/material/Button/Button';
-import { getContrastAlphaColor } from '@/utils/colors';
 import { ButtonTransparent } from '@/components/Button';
+import type { Breakpoint } from '@mui/material';
+import { alpha, Avatar, Badge, Container } from '@mui/material';
+import type { ButtonProps as MuiButtonProps } from '@mui/material/Button/Button';
+import { styled } from '@mui/material/styles';
 
 export const WalletAvatar = styled(Avatar)(({ theme }) => ({
   margin: 'auto',
