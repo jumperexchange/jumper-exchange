@@ -20,7 +20,4 @@ export const BridgePageContainer = styled(Box, {
   flexDirection: 'column',
   padding: theme.spacing(4),
   margin: theme.spacing(2, 0),
-  // [theme.breakpoints.up('md' as Breakpoint)]: {
-  //   maxWidth: 'calc(50% - 16px)',
-  // },
 }));
