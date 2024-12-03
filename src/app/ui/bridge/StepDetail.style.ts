@@ -15,7 +15,6 @@ export const StepDetailContainer = styled(Box, {
   gap: theme.spacing(3),
 
   [theme.breakpoints.up('lg' as Breakpoint)]: {
-    ...(imgWidth <= 600 && { flexDirection: 'row' }),
     gap: theme.spacing(6),
   },
 }));

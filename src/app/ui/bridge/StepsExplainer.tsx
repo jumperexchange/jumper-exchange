@@ -5,7 +5,6 @@ import { Link as MuiLink, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { Divider } from 'src/components/Blog';
 import StepDetail from './StepDetail';
-import { StepDetailContentList } from './StepsExplainer.style';
 
 const WIDGET_AMOUNT = 3;
 
@@ -66,7 +65,7 @@ const StepsExplainerSection = ({
         ${sourceToken?.name} on ${sourceChain?.name} to ${destinationToken?.name}
         on ${destinationChain?.name}. Some popular options include:`}
         content={
-          <StepDetailContentList>
+          <ul>
             <li>Stargate</li>
             <li>Across</li>
             <li>Circle CCTP</li>
@@ -74,7 +73,7 @@ const StepsExplainerSection = ({
             <li> Connext</li>
             <li>Symbiosis</li>
             <li>Celer</li>
-          </StepDetailContentList>
+          </ul>
         }
         img={{
           imgUrl: `/api/widget-quotes?fromToken=${sourceToken.address}&fromChainId=${sourceChain.id}&toToken=${destinationToken.address}&toChainId=${destinationChain.id}&amount=${WIDGET_AMOUNT}&theme=${theme.palette.mode === 'dark' ? 'dark' : 'light'}&isSwap=false`,
