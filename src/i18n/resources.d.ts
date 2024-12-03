@@ -154,10 +154,14 @@ interface Resources {
     };
     leaderboard: {
       title: 'Leaderboard';
-      description: '';
+      description: 'The leaderboard is updated on a daily basis.';
       rankCtaConnect: 'Where do you rank?';
       updatedLabel: 'Updated: {{date}}';
       connectWallet: 'Connect wallet';
+    };
+    completedMissionsInformation: {
+      title: '';
+      description: 'As Jumper organize ad-hoc campaigns, the missions are updated on a monthly basis to create the associated graphics. Keep in mind: XP coming from specific campaigns will be updated on a monthly basis as well.';
     };
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';

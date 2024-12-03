@@ -4,7 +4,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import useImageStatus from 'src/hooks/useImageStatus';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
@@ -23,6 +22,7 @@ import {
   PassImageBox,
   ProfileIconButton,
 } from './AddressCard.style';
+import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 
 interface AddressBoxProps {
   address?: string;
@@ -38,7 +38,7 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
-  const imgLink = useImageStatus(address);
+  const imgLink = useWalletAddressImg(address);
   const { setSnackbarState } = useMenuStore((state) => state);
   const { openWalletMenu } = useWalletMenu();
 

@@ -29,21 +29,22 @@ export const QuestsOverview = ({
       {/** render quests */}
       {!isQuestsLoading
         ? quests?.map((quest: Quest, index: number) => {
-            const baseURL = quest.attributes.Image?.data?.attributes?.url;
+            const baseURL = quest?.attributes.Image?.data?.attributes?.url;
             const imgURL = baseURL && new URL(baseURL, url.origin);
-            const rewards = quest.attributes.CustomInformation?.['rewards'];
+            const rewards = quest?.attributes.CustomInformation?.['rewards'];
             const rewardType =
-              quest.attributes?.CustomInformation?.['rewardType'];
+              quest?.attributes?.CustomInformation?.['rewardType'];
             const rewardRange =
-              quest.attributes?.CustomInformation?.['rewardRange'];
-            const chains = quest.attributes.CustomInformation?.['chains'];
+              quest?.attributes?.CustomInformation?.['rewardRange'];
+            const chains = quest?.attributes.CustomInformation?.['chains'];
             const claimingIds =
-              quest.attributes?.CustomInformation?.['claimingIds'];
+              quest?.attributes?.CustomInformation?.['claimingIds'];
             const rewardsIds =
-              quest.attributes?.CustomInformation?.['rewardsIds'];
-            const questTraits = quest.attributes?.CustomInformation?.['traits'];
-            const endDate = quest.attributes.EndDate;
-            const startDate = quest.attributes.StartDate;
+              quest?.attributes?.CustomInformation?.['rewardsIds'];
+            const questTraits =
+              quest?.attributes?.CustomInformation?.['traits'];
+            const endDate = quest?.attributes.EndDate;
+            const startDate = quest?.attributes.StartDate;
             //todo: exclude in a dedicated helper function
             let completed = false;
             if (rewardsIds && pastCampaigns) {

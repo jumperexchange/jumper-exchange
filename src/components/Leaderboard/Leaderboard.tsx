@@ -69,7 +69,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
             </Typography>
             <LeaderboardUpdateDateBox>
               <IconHeader
-                tooltipKey="The leaderboard is updated on a daily basis."
+                tooltipKey={t('leaderboard.description')}
                 title={`Updated: ${date}`}
               />
             </LeaderboardUpdateDateBox>

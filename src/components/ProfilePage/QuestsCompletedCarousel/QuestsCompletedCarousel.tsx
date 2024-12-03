@@ -36,8 +36,7 @@ export const QuestsCompletedCarousel = ({
       <CarouselContainer
         title={t('missions.completed')}
         updateTitle={`Updated: ${date}`}
-        updateTooltip={`As Jumper organize ad-hoc campaigns, the missions are updated on a monthly basis to create the associated graphics.
-           Keep in mind: XP coming from specific campaigns will be updated on a monthly basis as well.`}
+        updateTooltip={t('completedMissionsInformation.description')}
       >
         {/** render quests */}
         {!loading && pdas
