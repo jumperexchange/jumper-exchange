@@ -35,4 +35,4 @@ jobs:
     - uses: daun/playwright-report-summary@v3
       if: always()
       with:
-        report-file: test-results.json
+        report-file: test-results-${{ matrix.shard }}.json
