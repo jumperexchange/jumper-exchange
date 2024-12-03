@@ -6,7 +6,7 @@
  *
  * Example:
  * ```
- * http://localhost:3000/api/widget-review?fromToken=0x0000000000000000000000000000000000000000&fromChainId=137&toToken=0x0000000000000000000000000000000000000000&toChainId=42161&amount=10&highlighted=amount&theme=dark
+ * http://localhost:3000/api/widget-review?fromToken=0x0000000000000000000000000000000000000000&fromChainId=137&toToken=0x0000000000000000000000000000000000000000&toChainId=42161&amount=10&theme=dark
  * ```
  *
  * @typedef {Object} SearchParams
@@ -17,14 +17,12 @@
  * @property {number} amount - The amount of tokens.
  * @property {boolean} [isSwap] - True if transaction is a swap, default and false if transaction is a bridge (optional).
  * @property {'light'|'dark'} [theme] - The theme for the widget (optional).
- * @property {'from'|'to'|'amount'} [highlighted] - The highlighted element (optional).
  *
  */
 
 import type { ChainId } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
 import type { CSSProperties } from 'react';
-import type { HighlightedAreas } from 'src/components/ImageGeneration/ImageGeneration.types';
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
 import { imageFrameStyles } from 'src/components/ImageGeneration/style';
 import WidgetReviewImage from 'src/components/ImageGeneration/WidgetReviewImage';
@@ -37,16 +35,8 @@ const WIDGET_IMAGE_HEIGHT = 440;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
-  const {
-    fromChainId,
-    toChainId,
-    fromToken,
-    toToken,
-    isSwap,
-    theme,
-    amount,
-    highlighted,
-  } = parseSearchParams(request.url);
+  const { fromChainId, toChainId, fromToken, toToken, isSwap, theme, amount } =
+    parseSearchParams(request.url);
 
   // Fetch data asynchronously before rendering
   const fromTokenData = await fetchTokenData(fromChainId, fromToken);
@@ -92,7 +82,6 @@ export async function GET(request: Request) {
           theme={theme as 'light' | 'dark'}
           toChain={toChain}
           amount={amount}
-          highlighted={highlighted as HighlightedAreas}
         />
       </div>
     ),

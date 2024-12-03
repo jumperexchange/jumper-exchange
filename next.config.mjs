@@ -19,12 +19,6 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'effigy.im',
-        port: '',
-        pathname: '/a/**',
-      },
-      {
-        protocol: 'https',
         hostname: 'raw.githubusercontent.com',
         port: '',
         pathname: '/**',
