@@ -1,27 +1,6 @@
 import type { BoxProps } from '@mui/material';
 import { alpha, Box, styled, useTheme } from '@mui/material';
 
-interface LVLIconBackgroundProps extends BoxProps {
-  bgColor?: string;
-  size?: number;
-}
-
-export const LVLIconBackground = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'bgColor' && prop !== 'size',
-})<LVLIconBackgroundProps>(({ theme, bgColor, size }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: size || 20,
-  height: size || 20,
-  borderRadius: `${size ? size / 2 : 10}px`,
-  backgroundColor: bgColor
-    ? bgColor
-    : theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.accent1Alt.main,
-}));
-
 interface LVLIconProps {
   color?: string;
   bgColor?: string;

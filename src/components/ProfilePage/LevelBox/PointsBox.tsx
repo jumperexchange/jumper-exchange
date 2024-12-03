@@ -9,11 +9,6 @@ interface PointsBoxProps {
 
 export const PointsBox = ({ points }: PointsBoxProps) => {
   const currentDate = new Date();
-  const options: Intl.DateTimeFormatOptions = {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  };
   const formattedDate = currentDate.toLocaleDateString('en-US', options);
 
   return (

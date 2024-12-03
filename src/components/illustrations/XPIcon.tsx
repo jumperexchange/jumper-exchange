@@ -1,27 +1,6 @@
 import type { BoxProps } from '@mui/material';
 import { alpha, Box, styled, useTheme } from '@mui/material';
 
-interface XPIconBackgroundProps extends BoxProps {
-  bgColor?: string;
-  size?: number;
-}
-
-export const XPIconBackground = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'bgColor' && prop !== 'size',
-})<XPIconBackgroundProps>(({ theme, bgColor, size }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: size || 20,
-  height: size || 20,
-  borderRadius: `${size ? size / 2 : 10}px`,
-  backgroundColor: bgColor
-    ? bgColor
-    : theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.accent1Alt.main,
-}));
-
 interface XPIconProps {
   color?: string;
   bgColor?: string;
