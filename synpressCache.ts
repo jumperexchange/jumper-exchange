@@ -1,14 +1,16 @@
+import { exec } from 'child_process';
+import { promisify } from 'util';
 
-import { execSync } from 'child_process';
+const execPromise = promisify(exec);
 
 async function buildSynpressCache() {
   console.log('Building Synpress cache...');
   try {
-    execSync('yarn build:cache --force tests/wallet-setup/', { stdio: 'inherit' });
+    await execPromise('yarn build:cache --force tests/wallet-setup/');
     console.log('Synpress cache build complete.');
   } catch (error) {
     console.error('Failed to build Synpress cache:', error);
-    process.exit(1); // Exit with failure if the cache build fails
+    process.exit(1); // Fail the test suite if the cache build fails
   }
 }
 
