@@ -113,7 +113,9 @@
     "i18next-resources-for-ts": "i18next-resources-for-ts interface -i ./src/i18n/translations/en -o ./src/i18n/resources.d.ts",
     "test:ci:e2e": "xvfb-run npx playwright test",
     "test:e2e-real": "npx playwright test --headed",
-    "build:cache": "synpress --headless"
+    "build:cache": "synpress --headless",
+    "build:cache:ci": "xvfb-run npx synpress"
+
   },
   "lint-staged": {
     "**/*.(ts|tsx|js)": [
