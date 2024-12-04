@@ -8,8 +8,13 @@ permissions:
   contents: write
 jobs:
   test:
-    timeout-minutes: 20
+    name: Test (${{ matrix.shard }} / ${{ strategy.job-total}})
+    continue-on-error: true
+    timeout-minutes: 10
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [ 1, 2, 3, 4 ]
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -19,21 +24,16 @@ jobs:
       run: yarn install
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
-    - name: Run local env
-      run: yarn dev &
-    - name: Wait local env to be ready
-      run: npx wait-on http://localhost:3000
-    - name: Build synpress cache
-      run: yarn build:cache --force tests/wallet-setup/
-    - name: Run Playwright E2E tests
-      run: yarn run test:ci:e2e
-    - uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+    - name: Run Playwright tests
+      env:
+        PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.json
+      run: |
+        yarn playwright test \
+          --shard ${{ matrix.shard }}/${{ strategy.job-total }} \
+          --reporter=json
     - uses: daun/playwright-report-summary@v3
       if: always()
       with:
-        report-file: test-results.json
+        report-file: report-${{ matrix.shard }}.json
+        report-tag: ${{ matrix.shard }}
+        comment-title: 'Test results (${{ matrix.shard }}/${{ strategy.job-total }})'
