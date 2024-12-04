@@ -10,7 +10,7 @@ jobs:
   test:
     name: Test (${{ matrix.shard }} / ${{ strategy.job-total}})
     continue-on-error: true
-    timeout-minutes: 10
+    timeout-minutes: 20
     runs-on: ubuntu-latest
     strategy:
       matrix:
