@@ -20,10 +20,10 @@ export async function generateMetadata({
     }
 
     const openGraph: Metadata['openGraph'] = {
-      title: 'Jumper | Berachain',
-      description: 'Dive into the Berachain universe!',
+      title: 'Jumper | Zap',
+      description: 'Use zapping on Jumper',
       siteName: siteName,
-      url: `${getSiteUrl()}/berachain/explore/${params.slug}`,
+      url: `${getSiteUrl()}/zap/${params.slug}`,
       // images: [
       //   {
       //     url: `${article.url}${articleData.Image.data.attributes?.url}`,
@@ -46,8 +46,8 @@ export async function generateMetadata({
     };
   } catch (err) {
     return {
-      title: `Jumper Learn | ${sliceStrToXChar(params.slug.replaceAll('-', ' '), 45)}`,
-      description: `This is the description for the article "${params.slug.replaceAll('-', ' ')}".`,
+      title: `Jumper Zapping | ${sliceStrToXChar(params.slug.replaceAll('-', ' '), 45)}`,
+      description: `This is the description for zapping "${params.slug.replaceAll('-', ' ')}".`,
     };
   }
 }
