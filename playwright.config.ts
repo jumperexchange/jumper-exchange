@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
+import { PlaywrightTestConfig } from '@playwright/test';
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -15,6 +17,7 @@ import { defineConfig, devices } from '@playwright/test';
 // const baseURL = `http://localhost:${PORT}`;
 
 export default defineConfig({
+  globalSetup: './global-setup',
   timeout: 120 * 1000,
   expect: {
     timeout: 40 * 1000,
