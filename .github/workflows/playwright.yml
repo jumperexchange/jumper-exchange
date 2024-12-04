@@ -24,11 +24,17 @@ jobs:
       run: yarn install
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
+    - name: Run local env
+      run: yarn dev &
+    - name: Wait local env to be ready
+      run: npx wait-on http://localhost:3000
+    - name: Build synpress cache
+      run: yarn build:cache --force tests/wallet-setup/
     - name: Run Playwright tests
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.json
       run: |
-        yarn playwright test \
+        yarn run test:ci:e2e \
           --shard ${{ matrix.shard }}/${{ strategy.job-total }} \
           --reporter=json
     - uses: daun/playwright-report-summary@v3
