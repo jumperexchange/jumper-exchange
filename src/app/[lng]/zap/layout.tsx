@@ -4,7 +4,7 @@ import { Layout } from 'src/Layout';
 
 export const metadata: Metadata = {
   other: {
-    'partner-theme': 'zap',
+    'partner-theme': 'default',
   },
 };
 

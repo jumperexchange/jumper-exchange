@@ -19,7 +19,6 @@ import { useState } from 'react';
 import { AccordionFAQ } from 'src/components/AccordionFAQ';
 import type { TabProps } from 'src/components/Tabs';
 import { Tabs } from 'src/components/Tabs';
-import { Widget } from 'src/components/Widgets/Widget';
 import { getSiteUrl } from 'src/const/urls';
 import { useMenuStore } from 'src/stores/menu';
 import type { Quest } from 'src/types/loyaltyPass';
@@ -36,6 +35,7 @@ import {
   ZapProtocolActionInfoBox,
 } from './ZapAction.style';
 import { ZapActionFaqAccordionHeader } from './ZapActionFaqAccordionHeader';
+import { ZapWidget } from './Zapwidget';
 
 interface ZapActionProps {
   market?: Quest;
@@ -268,17 +268,17 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
           />
           {tab === 0 ? (
             <Box sx={{ marginTop: theme.spacing(1.5) }}>
-              <Widget starterVariant={'default'} autoHeight={true} />
+              <ZapWidget starterVariant={'default'} autoHeight={true} />
             </Box>
           ) : null}
           {tab === 1 ? (
             <Box sx={{ marginTop: theme.spacing(1.5) }}>
-              <Widget starterVariant={'refuel'} autoHeight={true} />
+              <ZapWidget starterVariant={'refuel'} autoHeight={true} />
             </Box>
           ) : null}
           {tab === 2 ? (
             <Box sx={{ marginTop: theme.spacing(1.5) }}>
-              <Widget starterVariant={'custom'} autoHeight={true} />
+              <ZapWidget starterVariant={'custom'} autoHeight={true} />
             </Box>
           ) : null}
         </Box>
