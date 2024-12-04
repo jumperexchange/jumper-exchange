@@ -25,7 +25,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
     - name: Build env and build synpress cache
-      run: yarn env & yarn wait-on http://localhost:3000 && yarn build:cache --force tests/wallet-setup/
+      run: yarn dev & yarn wait-on http://localhost:3000 && yarn build:cache --force tests/wallet-setup/
     - name: Run Playwright tests
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.json
