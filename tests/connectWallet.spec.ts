@@ -1,10 +1,10 @@
 import { testWithSynpress } from '@synthetixio/synpress-core';
 import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
 import { openOrCloseMainMenu , itemInMenu, closeWelcomeScreen } from './testData/commonFunctions';
-import basicSetup from './wallet-setup/basic.setup';
+import connectedSetup from './wallet-setup/connected.setup';
 import  buildSynpressCache  from '../synpressCache';
 
-const test = testWithSynpress(metaMaskFixtures(basicSetup));
+const test = testWithSynpress(metaMaskFixtures(connectedSetup));
 
 const { expect } = test;
 test.describe('Connect Metamask with Jumper app and open /profile page',()=>{
@@ -19,7 +19,7 @@ test.describe('Connect Metamask with Jumper app and open /profile page',()=>{
     const metamask = new MetaMask(
       context,
       page,
-      basicSetup.walletPassword,
+      connectedSetup.walletPassword,
       extensionId,
     );
     const connectWalletButton = page.locator('#connect-wallet-button');
