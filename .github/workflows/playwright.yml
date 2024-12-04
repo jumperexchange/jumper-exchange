@@ -25,14 +25,15 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
     - name: Run Playwright tests
-      run: yarn playwright test --shard ${{ matrix.shard }}/${{ strategy.job-total }}
-    - uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report-${{ matrix.shard }}
-        path: playwright-report/
-        retention-days: 30
+      env:
+        PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.json
+      run: |
+        yarn playwright test \
+          --shard ${{ matrix.shard }}/${{ strategy.job-total }} \
+          --reporter=json
     - uses: daun/playwright-report-summary@v3
       if: always()
       with:
-        report-file: test-results-${{ matrix.shard }}.json
+        report-file: report-${{ matrix.shard }}.json
+        report-tag: ${{ matrix.shard }}
+        comment-title: 'Test results (${{ matrix.shard }}/${{ strategy.job-total }})'
