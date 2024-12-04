@@ -1,7 +1,7 @@
 
 import { execSync } from 'child_process';
 
-async function globalSetup() {
+async function buildSynpressCache() {
   console.log('Building Synpress cache...');
   try {
     execSync('yarn build:cache --force tests/wallet-setup/', { stdio: 'inherit' });
@@ -12,4 +12,4 @@ async function globalSetup() {
   }
 }
 
-export default globalSetup;
+export default buildSynpressCache;
