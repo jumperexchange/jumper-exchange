@@ -7,7 +7,7 @@ export const ZapProtocolActionBox = styled(Box)(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'center',
   gap: theme.spacing(4),
-  marginTop: theme.spacing(3),
+  margin: theme.spacing(3, 'auto'),
 }));
 
 export const ZapProtocolActionInfoBox = styled(Box)(({ theme }) => ({

@@ -100,7 +100,7 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
   };
 
   return (
-    <Container>
+    <Container className="mycontainer">
       {/* <BerachainBackButton>
           <ArrowBackIcon />
           <Typography variant="bodySmallStrong">Explore Berachain</Typography>
