@@ -24,8 +24,6 @@ jobs:
       run: yarn install
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
-    - name: Install xvfb
-      run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
     - name: Build synpress cache
       run: yarn build:cache --force tests/wallet-setup/
     - name: Run Playwright tests
