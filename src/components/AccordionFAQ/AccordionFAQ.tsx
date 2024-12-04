@@ -1,22 +1,15 @@
 import { QAJsonSchema } from '@/components/JsonSchema';
 import { type SxProps, type Theme } from '@mui/material';
 import type { TypographyProps } from '@mui/material/Typography';
-import Typography from '@mui/material/Typography';
 import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Accordion,
   AccordionBox,
-  AccordionDetails,
-  AccordionDivider,
   AccordionHeader,
-  AccordionIndex,
   AccordionItemWrapper,
-  AccordionSummary,
   AccordionTitle,
-  AccordionToggleButton,
-  FaqShowMoreArrow,
 } from '.';
+import { AccordionFAQItem } from './AccordionFAQItem';
 
 export interface FaqProps {
   Question: string;
@@ -63,39 +56,20 @@ export const AccordionFAQ = ({
         )}
         <AccordionItemWrapper className="accordion-items">
           {content?.map((el: FaqProps, index: number) => (
-            <>
-              <Accordion key={`faq-item-${index}`} sx={itemSx}>
-                <AccordionSummary
-                  expandIcon={
-                    <AccordionToggleButton sx={{ color: 'text.primary' }}>
-                      <FaqShowMoreArrow arrowSize={arrowSize} />
-                    </AccordionToggleButton>
-                  }
-                  aria-controls={`panel${index}a-content`}
-                  id={`panel${index}a-header`}
-                >
-                  {showIndex && <AccordionIndex>{index + 1}</AccordionIndex>}
-                  <Typography
-                    variant={questionTextTypography || 'urbanistBody2XLarge'}
-                  >
-                    {el.Question}
-                  </Typography>
-                </AccordionSummary>
-                {showAnswerDivider && <AccordionDivider />}
-                <AccordionDetails
-                  className="accordion-details"
-                  sx={{ '& > img': { width: '100%' } }}
-                >
-                  <Typography variant={answerTextTypography || 'bodyMedium'}>
-                    {el.Answer}
-                  </Typography>
-                  {/* <BlocksRenderer content={el.Answer} /> */}
-                </AccordionDetails>
-              </Accordion>
-              {showDivider && index !== content.length - 1 && (
-                <AccordionDivider key={`faq-item-divider-${index}`} />
-              )}
-            </>
+            <AccordionFAQItem
+              key={`faq-item-${index}`}
+              showIndex={showIndex}
+              arrowSize={arrowSize}
+              index={index}
+              questionTextTypography={questionTextTypography}
+              showAnswerDivider={showAnswerDivider}
+              answerTextTypography={answerTextTypography}
+              showDivider={showDivider}
+              question={el.Question}
+              answer={el.Answer}
+              itemSx={itemSx}
+              lastItem={index !== content.length - 1}
+            />
           ))}
         </AccordionItemWrapper>
       </AccordionBox>

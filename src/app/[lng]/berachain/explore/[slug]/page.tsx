@@ -2,9 +2,9 @@ import { type Metadata } from 'next';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { siteName } from 'src/app/lib/metadata';
 import BerachainExplorePage from 'src/app/ui/berachain/BerachainExplorePage';
-import type { BerachainQuest } from 'src/components/Berachain/berachain.types';
 import { berachainMarkets } from 'src/components/Berachain/const/berachainExampleData';
 import { getSiteUrl } from 'src/const/urls';
+import type { ExtendedQuest } from 'src/types/questDetails';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 
 export async function generateMetadata({
@@ -54,7 +54,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const { data } = await getQuestBySlug(params.slug);
-  const questData = (data.data[0] as BerachainQuest) || undefined;
+  const questData = (data.data[0] as ExtendedQuest) || undefined;
 
   if (questData) {
     const protocolDetails = berachainMarkets.filter(

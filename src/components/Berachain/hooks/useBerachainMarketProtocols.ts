@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import type { BerachainMarketInfo, BerachainQuest } from '../berachain.types';
+import type { ExtendedQuest, QuestDetails } from 'src/types/questDetails';
 
 export const useBerachainMarketProtocols = (
-  data: BerachainQuest[] | undefined,
+  data: ExtendedQuest[] | undefined,
 ) => {
   const preparedTokens = useMemo(() => {
     if (!data || data.length === 0) {
@@ -10,8 +10,7 @@ export const useBerachainMarketProtocols = (
     }
 
     const filteredTokens = data.flatMap(
-      (market) =>
-        (market.attributes.CustomInformation as BerachainMarketInfo).type,
+      (market) => (market.attributes.CustomInformation as QuestDetails).type,
     );
 
     // Remove duplicates based on tokenAddress

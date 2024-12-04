@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import type { BerachainQuest } from '../berachain.types';
+import type { ExtendedQuest } from 'src/types/questDetails';
 import { useBerachainMarketsFilterStore } from '../stores/BerachainMarketsFilterStore';
 import { useBerachainMarkets } from './useBerachainMarkets';
 
 interface UseBerachainQuestsProps {
-  data: BerachainQuest[] | undefined;
+  data: ExtendedQuest[] | undefined;
   url: string;
   isSuccess: boolean;
   isLoading: boolean;

@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import type { BerachainQuest } from '../berachain.types';
+import type { ExtendedQuest } from 'src/types/questDetails';
 import { berachainMarkets } from '../const/berachainExampleData';
 
 const STRAPI_CONTENT_TYPE = 'quests';
 
 export interface UseBerachainQuestsProps {
-  data: BerachainQuest[] | undefined;
+  data: ExtendedQuest[] | undefined;
   url: string;
   isSuccess: boolean;
   isLoading: boolean;
@@ -64,7 +64,7 @@ export const useBerachainMarkets = (): UseBerachainQuestsProps => {
     refetchInterval: 1000 * 60 * 60,
   });
 
-  const mergeData = data?.map((market: BerachainQuest) => {
+  const mergeData = data?.map((market: ExtendedQuest) => {
     const protocolInfos = berachainMarkets.find(
       (protocolMatch) => protocolMatch.slug === market.attributes.Slug,
     );

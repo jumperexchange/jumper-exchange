@@ -10,7 +10,7 @@ import { AccordionFAQ } from 'src/components/AccordionFAQ';
 import { getSiteUrl } from 'src/const/urls';
 import { useMenuStore } from 'src/stores/menu';
 import type { Quest } from 'src/types/loyaltyPass';
-import type { BerachainMarketInfo } from '../../berachain.types';
+import type { QuestDetails } from 'src/types/questDetails';
 import { BerachainWidget } from '../BerachainWidget/BerachainWidget';
 import {
   BerachainActionProtocolCard,
@@ -24,7 +24,7 @@ import { BerachainProtocolFaqAccordionHeader } from './BerachainProtocolFaqAccor
 
 interface BerachainProtocolActionProps {
   market?: Quest;
-  detailInformation?: BerachainMarketInfo;
+  detailInformation?: QuestDetails;
 }
 
 export function getStrapiBaseUrl() {

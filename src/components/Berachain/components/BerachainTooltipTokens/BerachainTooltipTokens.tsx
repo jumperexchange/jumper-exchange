@@ -1,28 +1,16 @@
 import type { ChainId } from '@lifi/sdk';
 import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
-import { useMemo, type Dispatch, type SetStateAction } from 'react';
+import { useMemo } from 'react';
 import { useMultipleTokens } from 'src/hooks/useMultipleTokens';
-import type { BerachainApyToken } from '../../berachain.types';
+import type { ProtocolApyToken } from 'src/types/questDetails';
 
 interface BerachainTooltipTokensProps {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  anchor: HTMLElement | null;
-  setAnchor: Dispatch<SetStateAction<HTMLElement | null>>;
-  idLabel: string;
-  idMenu: string;
   chainId?: ChainId;
-  apyTokens?: BerachainApyToken[];
+  apyTokens?: ProtocolApyToken[];
 }
 
 export const BerachainTooltipTokens = ({
-  open,
-  setOpen,
-  anchor,
-  setAnchor,
-  idLabel,
-  idMenu,
   chainId,
   apyTokens,
 }: BerachainTooltipTokensProps) => {

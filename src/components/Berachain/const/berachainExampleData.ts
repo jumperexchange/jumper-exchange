@@ -1,6 +1,6 @@
-import type { BerachainProtocolInfo } from '../berachain.types';
+import type { ProtocolInfo } from 'src/types/questDetails';
 
-export const berachainMarkets: BerachainProtocolInfo[] = [
+export const berachainMarkets: ProtocolInfo[] = [
   {
     slug: 'dolomite-vault-market-dai',
     chain: 1,

@@ -14,11 +14,9 @@ import { useMemo, useState } from 'react';
 import { useChains } from 'src/hooks/useChains';
 import type { UseMultipleTokenProps } from 'src/hooks/useMultipleTokens';
 import { useMultipleTokens } from 'src/hooks/useMultipleTokens';
+import type { ProtocolApys } from 'src/types/questDetails';
 import type { StrapiImageData } from 'src/types/strapi';
-import type {
-  BerachainApys,
-  BerachainProtocolType,
-} from '../../berachain.types';
+import type { BerachainProtocolType } from '../../berachain.types';
 import { BerachainProgressCard } from '../BerachainProgressCard/BerachainProgressCard';
 import { BerachainTooltipTokens } from '../BerachainTooltipTokens/BerachainTooltipTokens';
 import {
@@ -37,7 +35,7 @@ interface BerachainMarketCardProps {
   title?: string;
   type?: BerachainProtocolType;
   slug?: string;
-  apys?: BerachainApys;
+  apys?: ProtocolApys;
   tvl?: string;
   tokens?: string[];
   url?: string;
@@ -215,12 +213,12 @@ export const BerachainMarketCard = ({
           <Tooltip
             title={
               <BerachainTooltipTokens
-                open={openTokensTooltip}
-                setOpen={setOpenTokensTooltip}
-                anchor={anchorTokensTooltip}
-                setAnchor={setAnchorTokensTooltip}
-                idLabel={tokensTooltipId}
-                idMenu={tokensTooltipMenuId}
+                // open={openTokensTooltip}
+                // setOpen={setOpenTokensTooltip}
+                // anchor={anchorTokensTooltip}
+                // setAnchor={setAnchorTokensTooltip}
+                // idLabel={tokensTooltipId}
+                // idMenu={tokensTooltipMenuId}
                 chainId={chainId}
                 apyTokens={apys?.tokens}
               />

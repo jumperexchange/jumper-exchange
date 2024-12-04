@@ -11,6 +11,7 @@ export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
 export const JUMPER_LEARN_PATH = '/learn';
 export const JUMPER_LOYALTY_PATH = '/profile';
 export const JUMPER_SCAN_PATH = '/scan';
+export const JUMPER_ZAP_PATH = '/zap';
 export const JUMPER_WASH_PATH = '/wash';
 export const JUMPER_BRIDGE_PATH = '/bridge';
 export const JUMPER_TX_PATH = '/tx';
