@@ -135,14 +135,6 @@ test.describe('Jumper full e2e flow', () => {
     await expect(searchBar).toBeVisible();
   });
 
-  test.skip('Should be able to navigate to Supefest', async ({ page }) => {
-    const learnMoreButton = page.locator('#learn-more-button');
-    await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Superfest Festival');
-    await expect(learnMoreButton).toBeVisible();
-    await expect(page).toHaveURL(values.localSuperfestURL);
-  });
-
   test('Should open Developers section inside menu', async ({ page }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Developers');

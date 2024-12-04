@@ -17,7 +17,6 @@ import { PlaywrightTestConfig } from '@playwright/test';
 // const baseURL = `http://localhost:${PORT}`;
 
 export default defineConfig({
-  globalSetup: './global-setup',
   timeout: 120 * 1000,
   expect: {
     timeout: 40 * 1000,
