@@ -4,22 +4,11 @@ async function buildSynpressCache() {
   console.log('Building Synpress cache...');
 
   return new Promise<void>((resolve, reject) => {
-    const process = spawn('yarn', ['build:cache', '--force', 'tests/wallet-setup/'], { stdio: ['inherit', 'pipe', 'inherit'] });
-
-    process.stdout?.on('data', (data) => {
-      const output = data.toString();
-      console.log(output);
-
-      // Proceed when the expected message is found
-      if (output.includes('All wallet setup functions are now cached!')) {
-        console.log('Detected successful cache completion.');
-        resolve();
-      }
-    });
+    const process = spawn('yarn', ['build:cache', '--force', 'tests/wallet-setup/'], { stdio: 'inherit' });
 
     process.on('close', (code) => {
       if (code === 0) {
-        console.log('Synpress cache process completed.');
+        console.log('Synpress cache build complete.');
         resolve();
       } else {
         console.error(`Failed to build Synpress cache with exit code ${code}`);
@@ -33,5 +22,4 @@ async function buildSynpressCache() {
     });
   });
 }
-
 export default buildSynpressCache;
