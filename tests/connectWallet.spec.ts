@@ -7,16 +7,12 @@ import { execSync } from 'child_process';
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
 const { expect } = test;
-test.beforeAll(() => {
+test.beforeEach(() => {
   console.log('Building Synpress cache...');
-  try {
-    execSync('yarn build:cache tests/wallet-setup/', { stdio: 'inherit' });
+    execSync('yarn build:cache --force tests/wallet-setup/');
     console.log('Synpress cache build complete.');
-  } catch (error) {
-    console.error('Failed to build Synpress cache:', error);
-    throw error; // Fail the test suite if the cache build fails
-  }
-});
+  })
+
 test('should connect wallet to Jumper', async ({
   context,
   page,
