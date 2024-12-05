@@ -22,7 +22,8 @@ export const JUMPER_QUESTS_PATH = '/quests';
 
 export const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
 
-export const DEFAULT_EFFIGY = '/default_effigy.svg';
+export const DEFAULT_WALLET_ADDRESS =
+  '0x0000000000000000000000000000000000000000';
 
 export function getSiteUrl() {
   return process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL
