@@ -6,6 +6,7 @@ import basicSetup from './wallet-setup/basic.setup';
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
 const { expect } = test;
+
 test.describe('Connect Metamask with Jumper app and open /profile page',()=>{
   test('should connect wallet to Jumper', async ({
     context,
@@ -21,6 +22,7 @@ test.describe('Connect Metamask with Jumper app and open /profile page',()=>{
     const connectWalletButton = page.locator('#connect-wallet-button');
     const metaMaskWalletOption = page.locator('xpath=//span[normalize-space(text())="MetaMask"]');
     const availableMissionTitle = page.locator('xpath=//p[normalize-space(text())="Available Missions"]');
+    await page.goto('/');
     await expect(connectWalletButton).toBeEnabled();
     await connectWalletButton.click();
     await metaMaskWalletOption.click();
