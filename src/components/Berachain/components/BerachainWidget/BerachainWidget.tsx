@@ -2,6 +2,7 @@ import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { Tabs, type TabProps } from 'src/components/Tabs/Tabs';
 import { Widget } from 'src/components/Widgets/Widget';
+import { BerachainWidgetWip } from '../BerachainWidgetWip/BerachainWidgetWip';
 
 export const BerachainWidget = () => {
   const [tab, setTab] = useState(0);
@@ -73,7 +74,7 @@ export const BerachainWidget = () => {
       />
       {tab === 0 ? (
         <Box sx={{ marginTop: theme.spacing(1.5) }}>
-          <Widget starterVariant={'default'} autoHeight={true} />
+          <BerachainWidgetWip />
         </Box>
       ) : null}
       {tab === 1 ? (
