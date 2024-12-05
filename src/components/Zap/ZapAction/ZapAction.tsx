@@ -70,41 +70,32 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
     borderRadius: '18px',
   };
 
-  const tabs: TabProps[] = [
-    {
-      label: 'Get USDz',
-      value: 0,
-      onClick: () => {
-        setTab(0);
-      },
-    },
-    {
-      label: 'Deposit',
-      value: 1,
-      onClick: () => {
-        setTab(1);
-      },
-    },
-    {
-      label: 'Withdraw',
-      value: 1,
-      onClick: () => {
-        setTab(2);
-      },
-    },
-  ];
-
   const handleCopyButton = (textToCopy: string) => {
     navigator.clipboard.writeText(textToCopy);
     setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
   };
 
+  const tabs: TabProps[] = [
+    { label: 'Get USDz', value: 0, onClick: () => setTab(0) },
+    { label: 'Deposit', value: 1, onClick: () => setTab(1) },
+    { label: 'Withdraw', value: 2, onClick: () => setTab(2) },
+  ];
+
+  const renderZapWidget = () => {
+    switch (tab) {
+      case 0:
+        return <ZapWidget starterVariant={'default'} autoHeight={true} />;
+      case 1:
+        return <ZapWidget starterVariant={'refuel'} autoHeight={true} />;
+      case 2:
+        return <ZapWidget starterVariant={'custom'} autoHeight={true} />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <Container className="mycontainer">
-      {/* <BerachainBackButton>
-          <ArrowBackIcon />
-          <Typography variant="bodySmallStrong">Explore Berachain</Typography>
-          </BerachainBackButton> */}
+    <Container>
       <ZapProtocolActionBox>
         <Box>
           <BackButton />
@@ -266,21 +257,7 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
             containerStyles={containerStyles}
             tabStyles={tabStyles}
           />
-          {tab === 0 ? (
-            <Box sx={{ marginTop: theme.spacing(1.5) }}>
-              <ZapWidget starterVariant={'default'} autoHeight={true} />
-            </Box>
-          ) : null}
-          {tab === 1 ? (
-            <Box sx={{ marginTop: theme.spacing(1.5) }}>
-              <ZapWidget starterVariant={'refuel'} autoHeight={true} />
-            </Box>
-          ) : null}
-          {tab === 2 ? (
-            <Box sx={{ marginTop: theme.spacing(1.5) }}>
-              <ZapWidget starterVariant={'custom'} autoHeight={true} />
-            </Box>
-          ) : null}
+          <Box sx={{ marginTop: theme.spacing(1.5) }}>{renderZapWidget()}</Box>
         </Box>
       </ZapProtocolActionBox>
     </Container>
