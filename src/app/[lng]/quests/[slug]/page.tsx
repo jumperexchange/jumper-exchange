@@ -7,11 +7,14 @@
 //   },
 // };
 
+import { notFound } from 'next/navigation';
 import { getQuestBySlug } from '../../../lib/getQuestBySlug';
 import QuestPage from '../../../ui/quests/QuestMissionPage';
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const { data, url } = await getQuestBySlug(params.slug);
-
-  return <QuestPage quest={data?.data?.[0]} url={url} />;
+  if (!data) {
+    return notFound();
+  }
+  return <QuestPage quest={data} url={url} />;
 }

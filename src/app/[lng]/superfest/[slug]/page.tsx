@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import SuperfestPage from 'src/app/ui/superfest/SuperfestMissionPage';
 
@@ -43,6 +44,8 @@ import SuperfestPage from 'src/app/ui/superfest/SuperfestMissionPage';
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const { data, url } = await getQuestBySlug(params.slug);
-
-  return <SuperfestPage quest={data?.data?.[0]} url={url} />;
+  if (!data) {
+    return notFound();
+  }
+  return <SuperfestPage quest={data} url={url} />;
 }

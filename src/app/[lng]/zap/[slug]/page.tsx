@@ -5,7 +5,6 @@ import { siteName } from 'src/app/lib/metadata';
 import ZapPage from 'src/app/ui/zap/ZapPage';
 import { zapMarkets } from 'src/components/Zap/zapExampleData';
 import { getSiteUrl } from 'src/const/urls';
-import type { ExtendedQuest } from 'src/types/questDetails';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 
 export async function generateMetadata({
@@ -14,8 +13,7 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   try {
-    const { data } = await getQuestBySlug(params.slug);
-    const questData = data.data[0] || undefined;
+    const { data: questData } = await getQuestBySlug(params.slug);
     if (!questData) {
       throw new Error();
     }
@@ -54,12 +52,13 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const { data } = await getQuestBySlug(params.slug);
+  const { data } = await getQuestBySlug(params.slug, 'ExtendedQuest');
 
-  if (!data?.data?.[0]) {
+  if (!data) {
     return notFound();
   }
-  const questData = data.data[0] as ExtendedQuest;
+
+  const questData = data;
 
   if (questData) {
     const protocolDetails = zapMarkets.filter(
