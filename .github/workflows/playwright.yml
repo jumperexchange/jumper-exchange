@@ -28,9 +28,6 @@ jobs:
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.json
       run: |
-        yarn dev &
-        npx wait-on http://localhost:3000  --timeout 300000 --interval 2000 --log-level error &&
-        yarn build:cache:ci --force tests/wallet-setup/
         yarn run test:ci:e2e \
           --shard ${{ matrix.shard }}/${{ strategy.job-total }} \
           --reporter=json
