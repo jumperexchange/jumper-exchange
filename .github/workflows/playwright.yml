@@ -1,41 +1,73 @@
 name: Playwright Tests
+
 on:
   - pull_request
   - workflow_dispatch
+
 permissions:
   checks: write
   pull-requests: write
   contents: write
+
 jobs:
-  test:
-    name: Test (${{ matrix.shard }} / ${{ strategy.job-total}})
-    continue-on-error: true
-    timeout-minutes: 10
+  setup-env:
+    name: Setup Local Environment
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Start Local Environment
+        run: |
+          yarn dev &
+          npx wait-on http://localhost:3000
+
+  test-e2e:
+    name: Run E2E Tests
+    runs-on: ubuntu-latest
+    needs: setup-env 
     strategy:
       matrix:
-        shard: [ 1, 2, 3, 4 ]
+        shard: [1, 2, 3, 4]
+
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 18
-    - name: Install dependencies
-      run: yarn install
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
-    - name: Build env and build synpress cache
-      run: yarn dev & npx wait-on http://localhost:3000 && yarn build:cache:ci --force tests/wallet-setup/
-    - name: Run Playwright tests
-      env:
-        PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.json
-      run: |
-        yarn run test:ci:e2e \
-          --shard ${{ matrix.shard }}/${{ strategy.job-total }} \
-          --reporter=json
-    - uses: daun/playwright-report-summary@v3
-      if: always()
-      with:
-        report-file: report-${{ matrix.shard }}.json
-        report-tag: ${{ matrix.shard }}
-        comment-title: 'Test results (${{ matrix.shard }}/${{ strategy.job-total }})'
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Build Synpress Cache
+        run: yarn build:cache:ci --force tests/wallet-setup/
+
+      - name: Run Playwright Tests
+        env:
+          PLAYWRIGHT_HTML_REPORT: true
+        run: |
+          yarn run test:ci:e2e \
+            --shard ${{ matrix.shard }}/${{ strategy.job-total }} \
+            --reporter=html
+
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-html-report-${{ matrix.shard }}
+          path: ./playwright-report  # Adjust this path if needed
+
+      - name: Comment with HTML Report Link
+        uses: daun/playwright-report-summary@v3
+        if: always()
+        with:
+          report-file: ./playwright-report/index.html
+          report-tag: ${{ matrix.shard }}
+          comment-title: 'E2E Test Results (Shard ${{ matrix.shard }}/${{ strategy.job-total }})'
