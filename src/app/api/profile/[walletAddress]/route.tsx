@@ -5,9 +5,9 @@ import { getChainsQuery } from '@/hooks/useChains';
 import { walletDigest } from '@/utils/walletDigest';
 import { getLeaderboardUserQuery } from '@/hooks/useLeaderboard';
 import type { PDA } from '@/types/loyaltyPass';
-import render from '@/utils/effigy/blockiesPNG';
 import { getSiteUrl } from '@/const/urls';
 import { getImageResponseOptions } from '@/utils/ImageGeneration/getImageResponseOptions';
+import useBlockieImg from '@/hooks/useBlockieImg';
 
 const BASE_WIDTH = 800;
 const BASE_HEIGHT = BASE_WIDTH / 1.91;
@@ -55,6 +55,7 @@ export async function GET(
 ) {
   const walletAddress = (await params).walletAddress;
   const loyaltyPass = await getLoyaltyPassData(walletAddress);
+  const imgLink = useBlockieImg(walletAddress);
 
   return new ImageResponse(
     (
@@ -90,12 +91,8 @@ export async function GET(
                 borderRadius: '50%',
                 border: '8px solid #fff',
               }}
-              src={`data:image/png;base64, ${render({ seed: walletAddress.toLowerCase() }).toString('base64')}`}
+              src={imgLink}
             />
-            {/*            <img
-              style={{ borderRadius: '50%' }}
-              src={`https://effigy.im/a/${walletAddress}.png`}
-            />*/}
           </div>
           <div
             style={{
