@@ -1,4 +1,5 @@
 import { type Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { siteName } from 'src/app/lib/metadata';
 import ZapPage from 'src/app/ui/zap/ZapPage';
@@ -54,7 +55,11 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const { data } = await getQuestBySlug(params.slug);
-  const questData = (data.data[0] as ExtendedQuest) || undefined;
+
+  if (!data?.data?.[0]) {
+    return notFound();
+  }
+  const questData = data.data[0] as ExtendedQuest;
 
   if (questData) {
     const protocolDetails = zapMarkets.filter(
