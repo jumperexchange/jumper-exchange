@@ -123,7 +123,7 @@ type QuestsPlatformData = {
   data: { id: number; attributes: QuestsPlatformAttributes };
 };
 
-type QuestAttributes = {
+export type QuestAttributes = {
   UID: string;
   Title: string;
   Description?: string;

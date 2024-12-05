@@ -15,7 +15,7 @@ export async function getQuestBySlug(
 export async function getQuestBySlug(
   slug: string,
   type?: 'Quest' | 'ExtendedQuest',
-): Promise<{ data: Quest | ExtendedQuest; url: string }> {
+): Promise<{ data?: Quest | ExtendedQuest; url: string }> {
   const urlParams = new QuestStrapiApi().filterBySlug(slug);
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
@@ -33,6 +33,9 @@ export async function getQuestBySlug(
 
   const data = await res.json(); // Extract data from the response
 
+  if (!data || !Array.isArray(data.data) || data.data.length === 0) {
+    return { data: undefined, url: apiBaseUrl };
+  }
   if (type === 'ExtendedQuest') {
     return { data: data.data[0] as ExtendedQuest, url: apiBaseUrl };
   } else {

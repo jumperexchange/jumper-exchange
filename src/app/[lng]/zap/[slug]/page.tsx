@@ -5,6 +5,7 @@ import { siteName } from 'src/app/lib/metadata';
 import ZapPage from 'src/app/ui/zap/ZapPage';
 import { zapMarkets } from 'src/components/Zap/zapExampleData';
 import { getSiteUrl } from 'src/const/urls';
+import type { QuestAttributes } from 'src/types/loyaltyPass';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 
 export async function generateMetadata({
@@ -13,40 +14,43 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   try {
-    const { data: questData } = await getQuestBySlug(params.slug);
-    if (!questData) {
+    const quest = await getQuestBySlug(params.slug);
+
+    if (!quest || !quest.data) {
       throw new Error();
     }
 
+    const questData = quest.data.attributes as QuestAttributes;
+
     const openGraph: Metadata['openGraph'] = {
-      title: 'Jumper | Zap',
-      description: 'Use zapping on Jumper',
+      title: `Jumper | Zaps - ${sliceStrToXChar(questData.Title, 45)}`,
+      description: `${sliceStrToXChar(questData.Information || 'Zap description', 60)}`,
       siteName: siteName,
       url: `${getSiteUrl()}/zap/${params.slug}`,
-      // images: [
-      //   {
-      //     url: `${article.url}${articleData.Image.data.attributes?.url}`,
-      //     width: 900,
-      //     height: 450,
-      //     alt: 'banner image',
-      //   },
-      // ],
-      // type: 'article',
+      images: [
+        {
+          url: `${quest.url}${questData.Image.data.attributes?.url}`,
+          width: 900,
+          height: 450,
+          alt: 'banner image',
+        },
+      ],
+      type: 'article',
     };
 
     return {
-      title: `Jumper Berachain | ${sliceStrToXChar(questData.attributes.Title, 45)}`,
-      description: `Description of ${questData.attributes.Title}`,
+      title: `Jumper | Zaps - ${sliceStrToXChar(questData.Title, 45)}`,
+      description: questData.Subtitle,
       alternates: {
-        canonical: `${getSiteUrl()}/berachain/explore/${params.slug}`,
+        canonical: `${getSiteUrl()}/zap/${params.slug}`,
       },
       twitter: openGraph,
       openGraph,
     };
   } catch (err) {
     return {
-      title: `Jumper Zapping | ${sliceStrToXChar(params.slug.replaceAll('-', ' '), 45)}`,
-      description: `This is the description for zapping "${params.slug.replaceAll('-', ' ')}".`,
+      title: `Jumper | Zaps - ${sliceStrToXChar(params.slug.replaceAll('-', ' '), 45)}`,
+      description: 'Use Jumper to zap into DeFi protocols',
     };
   }
 }
