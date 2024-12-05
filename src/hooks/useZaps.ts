@@ -5,7 +5,7 @@ interface UseZapsProps {
   project: string;
   product: string;
   method: string;
-  params: Record<string, string>;
+  params: any;
 }
 
 export const useZaps = (zapParams: UseZapsProps) => {

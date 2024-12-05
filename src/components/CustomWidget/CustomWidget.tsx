@@ -16,42 +16,36 @@ interface CustomWidgetProps {
 
 // TODO: abstract this to JSON file
 const projectData = {
-  chain: 'base',
-  project: 'ionic',
-  product: 'ionWETH',
-  method: 'mint',
-  params: { amount: '1000000000000000' }, // TODO: take this from input
-  displayName: 'Ionic Money',
+  chain: 'ethereum',
+  project: 'mellow',
+  product: 'steakhouse',
+  method: 'deposit',
+  params: {
+    to: '0x0000000000000000000000000000000000000000',
+    amounts: ['0'],
+    minLpAmount: '0',
+    deadline: '1717334400',
+  }, // TODO: take this from input
+  displayName: 'Mellow Finance',
 };
 
 export function CustomWidget({ account }: CustomWidgetProps) {
-  const [contractCalls, setContractCalls] = useState<ContractCall[]>([]);
   const [token, setToken] = useState<TokenAmount>();
   const { data, isSuccess } = useZaps(projectData);
 
   useEffect(() => {
     if (isSuccess) {
       setToken({
-        chainId: CHAINS[projectData.chain],
+        chainId: 1,
         address: data?.data?.depositToken.address,
         symbol: data?.data?.depositToken.symbol,
         name: data?.data?.depositToken.name,
         decimals: data?.data?.depositToken.decimals,
         priceUSD: data?.data?.depositToken.priceUSD,
-        coinKey: undefined,
+        coinKey: 'wstETH',
         logoURI: data?.data?.depositToken.logoURI,
-        amount: BigInt(projectData.params.amount),
+        amount: '0',
       });
-      setContractCalls([
-        {
-          fromAmount: projectData.params.amount, // TODO: take this from input
-          fromTokenAddress: data?.data?.depositToken.address,
-          toContractAddress: data?.data?.marketAddress,
-          toContractCallData: data?.data?.payload,
-          toContractGasLimit: '500000', // not sure what is the best value here
-          toTokenAddress: data?.data?.marketAddress,
-        },
-      ]);
     }
   }, [isSuccess]);
 
@@ -80,13 +74,13 @@ export function CustomWidget({ account }: CustomWidgetProps) {
 
   return (
     <>
-      {token && contractCalls && contractCalls.length > 0 && (
+      {token && (
         <LiFiWidget
           contractComponent={
             <DepositCard
               token={token}
-              contractCalls={contractCalls}
               contractTool={data?.data?.meta}
+              contractCalls={[]}
             />
           }
           config={widgetConfig}
