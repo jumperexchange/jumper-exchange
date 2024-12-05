@@ -11,15 +11,13 @@ import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { NoSelectTypography } from '@/components/ProfilePage/ProfilePage.style';
-import {
-  AddressBoxContainer,
-  AddressDisplayBox,
-  PassImageBox,
-  ProfileIconButton,
-} from './AddressBox.style';
 import { getSiteUrl } from '@/const/urls';
 import useBlockieImg from '@/hooks/useBlockieImg';
 import { useWalletAddressImg } from '@/hooks/useAddressImg';
+import {
+  AddressBoxContainer,
+  PassImageBox,
+} from '../AddressCard/AddressCard.style';
 
 interface AddressBoxProps {
   address: string;
@@ -69,7 +67,7 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
           }}
         />
       </PassImageBox>
-      <AddressDisplayBox>
+      <AddressDisplayBo>
         <NoSelectTypography
           fontWeight={700}
           fontSize={20}
