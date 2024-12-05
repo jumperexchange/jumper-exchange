@@ -31,7 +31,6 @@ jobs:
         yarn run test:ci:e2e \
           --shard ${{ matrix.shard }}/${{ strategy.job-total }} \
           --reporter=json
-          kill $!
     - uses: daun/playwright-report-summary@v3
       if: always()
       with:
