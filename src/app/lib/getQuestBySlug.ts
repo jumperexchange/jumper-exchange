@@ -1,10 +1,13 @@
 import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
+import type { Quest } from 'src/types/loyaltyPass';
+import type { StrapiResponse } from 'src/types/strapi';
 
 export async function getQuestBySlug(slug: string) {
   const urlParams = new QuestStrapiApi().filterBySlug(slug);
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.getApiAccessToken();
+
   const res = await fetch(decodeURIComponent(apiUrl), {
     cache: 'force-cache',
     headers: {
@@ -16,7 +19,7 @@ export async function getQuestBySlug(slug: string) {
     throw new Error('Failed to fetch data');
   }
 
-  const data = await res.json(); // Extract data from the response
+  const data: StrapiResponse<Quest> = await res.json(); // Use the defined type here
 
   return { data, url: apiBaseUrl }; // Return a plain object
 }
