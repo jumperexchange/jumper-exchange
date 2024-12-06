@@ -8,12 +8,6 @@ const test = testWithSynpress(metaMaskFixtures(basicSetup));
 const { expect } = test;
 
 test.beforeAll(async () => {
-  console.log('Starting local environment...');
-  execSync('yarn dev &', { stdio: 'inherit' }); 
-  console.log('Waiting for localhost:3000...');
-  execSync('npx wait-on http://localhost:3000 --timeout 300000 --interval 2000 --log-level error', {
-    stdio: 'inherit',
-  }); 
   console.log('Building cache...');
   execSync('yarn build:cache:ci --force tests/wallet-setup/', { stdio: 'inherit' });
 });
