@@ -153,7 +153,7 @@ export function Widget({
       },
       exchanges: {
         allow: configTheme?.allowedExchanges,
-        deny: ['bepop', 'paraswap', '0x'],
+        deny: ['bebop', 'paraswap', '0x'],
       },
       languages: {
         default: i18n.language as LanguageKey,
