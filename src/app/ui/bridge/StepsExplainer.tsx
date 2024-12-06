@@ -28,7 +28,7 @@ const StepsExplainerSection = ({
         variant="h2"
         color="text.primary"
         marginY={2}
-        sx={{ fontSize: '36px!important' }}
+        sx={{ fontSize: '36px' }}
       >
         Bridge your {sourceToken.symbol} on {sourceChain.name} to{' '}
         {destinationToken.symbol} on {destinationChain.name}
@@ -50,7 +50,7 @@ const StepsExplainerSection = ({
         you have the correct ${sourceChain?.name} wallet address and that your
         ${sourceToken?.name} account is funded.`}
         img={{
-          imgUrl: `/api/widget-selection?fromToken=${sourceToken.address}&fromChainId=${sourceChain.id}&toToken=${destinationToken.address}&toChainId=${destinationChain.id}&amount=${WIDGET_AMOUNT}&theme=${theme.palette.mode === 'dark' ? 'dark' : 'light'}&isSwap=false`,
+          imgUrl: `/api/widget-selection?fromToken=${sourceToken.address}&fromChainId=${sourceChain.id}&toToken=${destinationToken.address}&toChainId=${destinationChain.id}&amount=${WIDGET_AMOUNT}&theme=${theme.palette.mode}&isSwap=false`,
           width: 416,
           height: 496,
           alt: 'Widget Selection Image',
@@ -76,7 +76,7 @@ const StepsExplainerSection = ({
           </ul>
         }
         img={{
-          imgUrl: `/api/widget-quotes?fromToken=${sourceToken.address}&fromChainId=${sourceChain.id}&toToken=${destinationToken.address}&toChainId=${destinationChain.id}&amount=${WIDGET_AMOUNT}&theme=${theme.palette.mode === 'dark' ? 'dark' : 'light'}&isSwap=false`,
+          imgUrl: `/api/widget-quotes?fromToken=${sourceToken.address}&fromChainId=${sourceChain.id}&toToken=${destinationToken.address}&toChainId=${destinationChain.id}&amount=${WIDGET_AMOUNT}&theme=${theme.palette.mode}&isSwap=false`,
           width: 856,
           height: 490,
           alt: 'Widget Quotes Image',
@@ -98,7 +98,7 @@ const StepsExplainerSection = ({
           </ul>
         }
         img={{
-          imgUrl: `/api/widget-review?fromToken=${sourceToken.address}&fromChainId=${sourceChain.id}&toToken=${destinationToken.address}&toChainId=${destinationChain.id}&amount=${WIDGET_AMOUNT}&theme=${theme.palette.mode === 'dark' ? 'dark' : 'light'}&isSwap=false`,
+          imgUrl: `/api/widget-review?fromToken=${sourceToken.address}&fromChainId=${sourceChain.id}&toToken=${destinationToken.address}&toChainId=${destinationChain.id}&amount=${WIDGET_AMOUNT}&theme=${theme.palette.mode}&isSwap=false`,
           width: 416,
           height: 440,
           alt: 'Widget Review Image',
@@ -122,7 +122,7 @@ const StepsExplainerSection = ({
           </ul>
         }
         img={{
-          imgUrl: `/api/widget-execution?fromToken=${sourceToken.address}&fromChainId=${sourceChain.id}&toToken=${destinationToken.address}&toChainId=${destinationChain.id}&amount=${WIDGET_AMOUNT}&theme=${theme.palette.mode === 'dark' ? 'dark' : 'light'}&isSwap=false`,
+          imgUrl: `/api/widget-execution?fromToken=${sourceToken.address}&fromChainId=${sourceChain.id}&toToken=${destinationToken.address}&toChainId=${destinationChain.id}&amount=${WIDGET_AMOUNT}&theme=${theme.palette.mode}&isSwap=false`,
           width: 416,
           height: 432,
           alt: 'Widget Execution Image',
@@ -155,7 +155,7 @@ const StepsExplainerSection = ({
           </ul>
         }
         img={{
-          imgUrl: `/api/widget-success?toToken=${destinationToken.address}&toChainId=${destinationChain.id}&amount=${WIDGET_AMOUNT}&theme=${theme.palette.mode === 'dark' ? 'dark' : 'light'}&isSwap=false`,
+          imgUrl: `/api/widget-success?toToken=${destinationToken.address}&toChainId=${destinationChain.id}&amount=${WIDGET_AMOUNT}&theme=${theme.palette.mode}&isSwap=false`,
           width: 416,
           height: 432,
           alt: 'Widget Success Image',

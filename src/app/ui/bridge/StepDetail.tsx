@@ -27,15 +27,11 @@ const StepDetail = ({ title, description, img, content }: StepDetailProps) => {
       imgWidth={img.width}
     >
       <Box>
-        <Typography
-          variant="h4"
-          marginY={2}
-          sx={{ fontSize: '24px!important' }}
-        >
+        <Typography variant="h4" marginY={2} sx={{ fontSize: '24p' }}>
           {title}
         </Typography>
         <Typography>{description}</Typography>
-        {content ? content : null}
+        {content}
       </Box>
       <Image
         src={img.imgUrl}
