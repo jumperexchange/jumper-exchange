@@ -9,7 +9,7 @@ const { expect } = test;
 
 test.beforeAll(async () => {
   console.log('Building cache...');
-  execSync('yarn build:cache:ci --force tests/wallet-setup/', { stdio: 'inherit' });
+  execSync('yarn build:cache --force tests/wallet-setup/', { stdio: 'inherit' });
 });
 
 test.describe('Connect Metamask with Jumper app and open /profile page', () => {
