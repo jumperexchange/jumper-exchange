@@ -11,7 +11,7 @@ const { expect } = test;
 
 test.beforeAll(async () => {
   console.log('Building cache...');
-  await execPromise('yarn build:cache --force tests/wallet-setup/');
+  await execPromise('yarn build:cache --force tests/wallet-setup/ && npx playwright test tests/connectWallet.spec.ts');
 });
 
 test.describe('Connect Metamask with Jumper app and open /profile page', () => {
