@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { ChainType, getChains } from '@lifi/sdk';
+import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
 
 const LEADERBOARD_ENDPOINT = `${process.env.NEXT_PUBLIC_BACKEND_URL}/leaderboard`;
 
 export interface LeaderboardEntryData {
-  position: number;
+  position: string;
   walletAddress: string;
-  points: number;
+  points: string;
 }
 
 export interface LeaderboardMeta {
@@ -22,8 +22,12 @@ export interface LeaderboardListData {
   isSuccess: boolean;
 }
 
+export interface LeaderboardUserDataExtended extends LeaderboardEntryData {
+  userPage?: number;
+}
+
 export interface LeaderboardUserData {
-  data: LeaderboardEntryData;
+  data: LeaderboardUserDataExtended;
   isLoading: boolean;
   isSuccess: boolean;
 }
@@ -95,8 +99,10 @@ export const useLeaderboardUser = (
     queryKey: ['leaderboard-user', walletAddress],
     queryFn: getLeaderboardUserQuery,
   });
-
-  const data = leaderboardUserData?.data;
+  const userPage =
+    leaderboardUserData?.data &&
+    Math.ceil(leaderboardUserData?.data.position / LEADERBOARD_LENGTH);
+  const data = { ...leaderboardUserData?.data, userPage };
 
   return {
     data,
