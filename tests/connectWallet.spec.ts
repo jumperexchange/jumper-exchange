@@ -1,17 +1,15 @@
+import { execSync } from 'child_process';
 import { testWithSynpress } from '@synthetixio/synpress-core';
 import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
 import { openOrCloseMainMenu, itemInMenu, closeWelcomeScreen } from './testData/commonFunctions';
 import basicSetup from './wallet-setup/basic.setup';
-import { exec } from 'child_process';
-import util from 'util';
 
-const execPromise = util.promisify(exec);
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 const { expect } = test;
 
 test.beforeAll(async () => {
   console.log('Building cache...');
-  await execPromise('yarn build:cache --force tests/wallet-setup/ && npx playwright test tests/connectWallet.spec.ts');
+  execSync('yarn build:cache:ci --force tests/wallet-setup/ && npx playwright test tests/connectWallet.spec.ts', { stdio: 'inherit' });
 });
 
 test.describe('Connect Metamask with Jumper app and open /profile page', () => {
