@@ -66,3 +66,4 @@ jobs:
           build-args: |
             ENV_FILE=${{ github.ref_name == 'main' && '.env.production' || github.ref_name == 'develop' && '.env.development' || format('.env.{0}', github.ref_name) }}
             ENV_NAME=${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
+            NEXT_PUBLIC_LATEST_COMMIT_SHA={{sha}}
