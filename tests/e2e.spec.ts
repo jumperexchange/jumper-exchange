@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import values from '../tests/testData/values.json';
+import values from '../tests/testData/values.json' assert { type:"json"};
 import {
   closeWelcomeScreen,
   expectBackgroundColorToHaveCss,
@@ -133,14 +133,6 @@ test.describe('Jumper full e2e flow', () => {
     // const newPage = await page.waitForEvent('popup', { timeout: 15000 });
     await expect(page).toHaveURL(values.localJumperScanURL);
     await expect(searchBar).toBeVisible();
-  });
-
-  test.skip('Should be able to navigate to Supefest', async ({ page }) => {
-    const learnMoreButton = page.locator('#learn-more-button');
-    await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Superfest Festival');
-    await expect(learnMoreButton).toBeVisible();
-    await expect(page).toHaveURL(values.localSuperfestURL);
   });
 
   test('Should open Developers section inside menu', async ({ page }) => {

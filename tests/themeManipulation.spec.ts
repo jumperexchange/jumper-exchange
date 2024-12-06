@@ -1,7 +1,6 @@
 import { test } from '@playwright/test';
 import {
   closeWelcomeScreen,
-  openOrCloseMainMenu,
   expectBackgroundColorToHaveCss,
 } from './testData/commonFunctions';
 

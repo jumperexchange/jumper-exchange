@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
-        node-version: 20
+        node-version: 18
     - name: Install dependencies
       run: yarn install
     - name: Install Playwright Browsers
@@ -28,7 +28,7 @@ jobs:
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.json
       run: |
-        yarn playwright test \
+        yarn run test:ci:e2e \
           --shard ${{ matrix.shard }}/${{ strategy.job-total }} \
           --reporter=json
     - uses: daun/playwright-report-summary@v3

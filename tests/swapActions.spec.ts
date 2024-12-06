@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import chainData from './testData/chainData.json';
+import chainData from './testData/chainData.json' assert {type:"json"};
 import {
   buildUlParams,
   checkIfBestReturnLabelIsVisible,
