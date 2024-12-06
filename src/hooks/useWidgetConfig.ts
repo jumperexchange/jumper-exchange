@@ -145,9 +145,11 @@ export const useWidgetConfig = ({
       },
       bridges: {
         allow: configTheme?.allowedBridges,
+        deny: ['allbridge', 'hop', 'celerim', 'squid'],
       },
       exchanges: {
         allow: configTheme?.allowedExchanges,
+        deny: ['bepop', 'paraswap', '0x'],
       },
       languages: {
         default: i18n.language as LanguageKey,
