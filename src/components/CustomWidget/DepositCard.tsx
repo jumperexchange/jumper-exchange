@@ -13,12 +13,14 @@ export interface ItemPriceProps {
     logoURI: string;
     name: string;
   };
+  analytics: any;
 }
 
 export const DepositCard: React.FC<ItemPriceProps> = ({
   token,
   contractCalls,
   contractTool,
+  analytics,
 }) => {
   const { setFieldValue } = useFieldActions();
 
@@ -53,7 +55,12 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         >
           <Typography variant="subtitle2">TVL</Typography>
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            N/A
+            {analytics?.tvl_usd
+              ? `$${Number(analytics.tvl_usd).toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}`
+              : 'N/A'}
           </Typography>
         </Box>
         <Box
@@ -67,7 +74,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         >
           <Typography variant="subtitle2">Incentives</Typography>
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            N/A
+            {analytics?.apr ? `${analytics?.apr.toFixed(2)}%` : 'N/A'}
           </Typography>
         </Box>
       </Box>

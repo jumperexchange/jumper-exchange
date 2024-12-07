@@ -18,7 +18,7 @@ interface CustomWidgetProps {
 const projectData = {
   chain: 'ethereum',
   project: 'mellow',
-  product: 'steakhouse',
+  product: 'ethereum-steaklrt',
   method: 'deposit',
   params: {
     to: '0x0000000000000000000000000000000000000000',
@@ -72,6 +72,10 @@ export function CustomWidget({ account }: CustomWidgetProps) {
     return baseConfig;
   }, [isSuccess]);
 
+  const analytics = data?.data?.analytics?.find(
+    (item: any) => item.id === projectData.product,
+  );
+
   return (
     <>
       {token && (
@@ -80,6 +84,7 @@ export function CustomWidget({ account }: CustomWidgetProps) {
             <DepositCard
               token={token}
               contractTool={data?.data?.meta}
+              analytics={analytics}
               contractCalls={[]}
             />
           }
