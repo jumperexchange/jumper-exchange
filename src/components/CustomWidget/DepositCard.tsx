@@ -78,6 +78,22 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
           </Typography>
         </Box>
       </Box>
+      {analytics?.position && (
+        <Box
+          sx={{
+            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+            borderRadius: 1,
+            paddingX: 2,
+            paddingY: 1,
+            flex: 1,
+          }}
+        >
+          <Typography variant="subtitle2">Position</Typography>
+          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+            {analytics?.position}
+          </Typography>
+        </Box>
+      )}
       <Box display="flex" gap={1}>
         <Chip
           label={token.symbol}

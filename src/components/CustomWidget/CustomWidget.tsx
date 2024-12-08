@@ -1,9 +1,11 @@
 import type { ContractCall, WidgetConfig, TokenAmount } from '@lifi/widget';
 import { ChainType, DisabledUI, HiddenUI, LiFiWidget } from '@lifi/widget';
+import { formatUnits } from 'viem';
 import { useEffect, useMemo, useState } from 'react';
 import { useZaps } from '@/hooks/useZaps';
 import type { Account } from '@lifi/wallet-management';
 import { DepositCard } from './DepositCard';
+import { useContractRead } from 'src/hooks/useReadContractData';
 
 const CHAINS: Record<string, number> = {
   ethereum: 1,
@@ -32,6 +34,20 @@ const projectData = {
 export function CustomWidget({ account }: CustomWidgetProps) {
   const [token, setToken] = useState<TokenAmount>();
   const { data, isSuccess } = useZaps(projectData);
+  const { data: depositTokenData } = useContractRead({
+    address: data?.data?.marketAddress,
+    functionName: 'balanceOf',
+    abi: [
+      {
+        inputs: [{ name: 'owner', type: 'address' }],
+        name: 'balanceOf',
+        outputs: [{ name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ],
+    args: [account.address],
+  });
 
   useEffect(() => {
     if (isSuccess) {
@@ -72,9 +88,13 @@ export function CustomWidget({ account }: CustomWidgetProps) {
     return baseConfig;
   }, [isSuccess]);
 
-  const analytics = data?.data?.analytics?.find(
+  let analytics = data?.data?.analytics?.find(
     (item: any) => item.id === projectData.product,
   );
+
+  if (depositTokenData) {
+    analytics.position = formatUnits(depositTokenData, 18);
+  }
 
   return (
     <>
