@@ -7,11 +7,6 @@ import basicSetup from './wallet-setup/basic.setup';
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 const { expect } = test;
 
-test.beforeAll(async () => {
-  console.log('Building cache...');
-  execSync('yarn build:cache:ci --force tests/wallet-setup/ && npx playwright test tests/connectWallet.spec.ts', { stdio: 'inherit' });
-});
-
 test.describe('Connect Metamask with Jumper app and open /profile page', () => {
   test('should connect wallet to Jumper', async ({
     context,

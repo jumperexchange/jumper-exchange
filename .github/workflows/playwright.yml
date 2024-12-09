@@ -28,6 +28,7 @@ jobs:
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.json
       run: |
+        yarn build:cache:ci &
         yarn run test:ci:e2e \
           --shard ${{ matrix.shard }}/${{ strategy.job-total }} \
           --reporter=json
