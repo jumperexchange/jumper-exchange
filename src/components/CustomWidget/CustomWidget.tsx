@@ -58,9 +58,9 @@ export function CustomWidget({ account }: CustomWidgetProps) {
         name: data?.data?.depositToken.name,
         decimals: data?.data?.depositToken.decimals,
         priceUSD: data?.data?.depositToken.priceUSD,
-        coinKey: 'wstETH',
+        coinKey: 'wstETH' as any,
         logoURI: data?.data?.depositToken.logoURI,
-        amount: '0',
+        amount: '0' as any,
       });
     }
   }, [isSuccess]);
