@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { numberWithCommas } from 'src/utils/formatNumbers';
+import { useTranslation } from 'react-i18next';
 import { TierboxInfoTitles } from './TierBox.style';
 
 interface PointsDisplayProps {
@@ -11,10 +11,12 @@ export const PointsDisplay = ({
   points,
   defaultPoints,
 }: PointsDisplayProps) => {
-  const title = numberWithCommas(points || defaultPoints || 0);
+  const { t } = useTranslation();
   return (
     <Box display="flex" justifyContent="end">
-      <TierboxInfoTitles variant="headerLarge">{title}</TierboxInfoTitles>
+      <TierboxInfoTitles variant="headerLarge">
+        {t('format.decimal2Digit', { value: points || defaultPoints || 0 })}
+      </TierboxInfoTitles>
     </Box>
   );
 };

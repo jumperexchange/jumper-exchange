@@ -19,7 +19,6 @@ import {
   JUMPER_SCAN_PATH,
 } from 'src/const/urls';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import { numberWithCommas } from 'src/utils/formatNumbers';
 import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
@@ -79,8 +78,6 @@ export const WalletButtons = () => {
     setWalletMenuState(!_openWalletMenu);
   };
 
-  const pointsLabel = points && numberWithCommas(points);
-
   return (
     <>
       {!account?.address ? (
@@ -122,7 +119,7 @@ export const WalletButtons = () => {
                     marginRight={1.1}
                     marginLeft={1}
                   >
-                    {pointsLabel ?? 0}
+                    {points ? t('format.decimal2Digit', { value: points }) : 0}
                   </Typography>
                 )}
                 <XPIcon size={32} />
