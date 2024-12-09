@@ -119,7 +119,7 @@ export const WalletButtons = () => {
                     marginRight={1.1}
                     marginLeft={1}
                   >
-                    {points ?? 0}
+                    {points ? t('format.decimal2Digit', { value: points }) : 0}
                   </Typography>
                 )}
                 <XPIcon size={32} />

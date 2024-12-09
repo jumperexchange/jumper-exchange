@@ -75,26 +75,17 @@ export const ButtonTransparent = styled(ButtonBase)<MuiButtonProps>(
   }),
 );
 
-export const SuperfestButton = styled(ButtonBase)<MuiButtonProps>(
+export const LevelButton = styled(ButtonSecondary)<MuiButtonProps>(
   ({ theme }) => ({
-    backgroundColor:
+    display: 'flex',
+    color:
       theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.08)
-        : alpha(theme.palette.primary.main, 0.42),
-    '&:hover': {
-      backgroundColor:
-        theme.palette.mode === 'light'
-          ? alpha(theme.palette.primary.main, 0.12)
-          : alpha(theme.palette.primary.main, 0.56),
-    },
+        ? theme.palette.primary.main
+        : theme.palette.white.main,
+    justifyContent: 'center',
+    alignItems: 'center',
+    pointerEvents: 'none',
+    paddingLeft: '12px',
+    height: '32px',
   }),
 );
-
-export const LevelButton = styled(ButtonSecondary)<MuiButtonProps>(() => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  pointerEvents: 'none',
-  paddingLeft: '12px',
-  height: '32px',
-}));
