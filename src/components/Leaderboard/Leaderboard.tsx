@@ -53,11 +53,11 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
       : 1;
   }, [defaultPage, meta?.pagination.pagesLength]);
 
-  const date = new Date().toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
+  // const date = new Date().toLocaleDateString('en-GB', {
+  //   day: 'numeric',
+  //   month: 'long',
+  //   year: 'numeric',
+  // });
 
   return (
     <PageContainer>
@@ -70,7 +70,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
             <LeaderboardUpdateDateBox>
               <IconHeader
                 tooltipKey={t('leaderboard.description')}
-                title={`Updated: ${date}`}
+                title={`Updated: ${t('format.date', { value: new Date() })}`}
               />
             </LeaderboardUpdateDateBox>
           </LeaderboardTitleBox>

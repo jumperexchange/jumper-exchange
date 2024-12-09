@@ -25,17 +25,12 @@ export const QuestsCompletedCarousel = ({
 
   const today = new Date();
   const secondDay = new Date(today.getFullYear(), today.getMonth(), 2);
-  const date = secondDay.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
 
   return (
     <QuestsOverviewContainer>
       <CarouselContainer
         title={t('missions.completed')}
-        updateTitle={`Updated: ${date}`}
+        updateTitle={`Updated: ${t('format.date', { value: secondDay })}`}
         updateTooltip={t('completedMissionsInformation.description')}
       >
         {/** render quests */}
