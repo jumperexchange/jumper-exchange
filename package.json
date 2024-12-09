@@ -115,7 +115,7 @@
     "test:ci:e2e": "npx playwright test",
     "test:e2e-real": "npx playwright test --headed",
     "build:cache": "synpress --headless",
-    "build:cache:ci": "synpress --force tests/wallet-setup/"
+    "build:cache:ci": "xvfb-run synpress --force tests/wallet-setup/"
   },
   "lint-staged": {
     "**/*.(ts|tsx|js)": [
