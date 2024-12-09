@@ -149,7 +149,7 @@ export function Widget({
       },
       bridges: {
         allow: configTheme?.allowedBridges,
-        deny: ['allbridge', 'hop', 'celerim', 'squid'],
+        deny: ['allbridge', 'celerim', 'squid'],
       },
       exchanges: {
         allow: configTheme?.allowedExchanges,
