@@ -13,13 +13,16 @@ export async function generateMetadata({
 }: {
   params: { segments: string };
 }): Promise<Metadata> {
-  const sourceChain = params.segments;
-
-  const title = `Jumper | How To Swap on ${sourceChain} | A Complete Guide`;
+  const { chains } = await getChainsQuery();
+  const sourceChain = getChainById(
+    chains,
+    parseInt(params.segments) as unknown as ChainId,
+  );
+  const title = `Jumper | How To Swap on ${sourceChain?.name} | A Complete Guide`;
 
   const openGraph: Metadata['openGraph'] = {
     title: title,
-    description: `Jumper offers the best way to swap tokenA to  tokenB on ${sourceChain} with the fastest speeds, lowest costs, and most secure swap providers available.`,
+    description: `Jumper offers the best way to swap tokenA to tokenB on ${sourceChain?.name} with the fastest speeds, lowest costs, and most secure swap providers available.`,
     siteName: siteName,
     url: `${getSiteUrl()}/swap/${params.segments}`,
     type: 'article',

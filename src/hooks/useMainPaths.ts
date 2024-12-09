@@ -1,10 +1,11 @@
-import { usePathname } from 'next/navigation';
 import {
   JUMPER_BRIDGE_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
+  JUMPER_SWAP_PATH,
 } from '@/const/urls';
+import { usePathname } from 'next/navigation';
 
 interface useMainPathsProps {
   isMainPaths: boolean;
@@ -17,6 +18,7 @@ export const useMainPaths = (): useMainPathsProps => {
   const isBuy = pathname?.includes('/buy');
   //Todo: find better way to check
   const isExchange =
+    !pathname?.includes(JUMPER_SWAP_PATH) &&
     !pathname?.includes(JUMPER_LOYALTY_PATH) &&
     !pathname?.includes(JUMPER_LEARN_PATH) &&
     !pathname?.includes(JUMPER_SCAN_PATH) &&
