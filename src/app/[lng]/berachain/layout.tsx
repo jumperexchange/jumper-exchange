@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
 import { Layout } from 'src/Layout';
+import { RoycoClientProvider } from '@/app/[lng]/berachain/RoycoClientProvider';
 
 export const metadata: Metadata = {
   other: {
@@ -9,5 +10,11 @@ export const metadata: Metadata = {
 };
 
 export default async function BeraChainLayout({ children }: PropsWithChildren) {
-  return <Layout>{children}</Layout>;
+  return (
+    <RoycoClientProvider>
+      <Layout>
+        {children}
+      </Layout>
+    </RoycoClientProvider>
+  );
 }

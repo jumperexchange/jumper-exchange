@@ -11,11 +11,11 @@ export const BerachainMarketsFilters = () => {
     <BerachainMarketsFiltersContainer>
       <BerachainMarketsFiltersInnerContainer>
         <BerachainFilterTokensMenu />
-        <BerachainFilterChainsMenu />
+        {/*<BerachainFilterChainsMenu />*/}
         {/* <BerachainFilterProtocolsMenu /> */}
       </BerachainMarketsFiltersInnerContainer>
       <BerachainMarketsFiltersInnerContainer>
-        <BerachainSearch />
+        {/*<BerachainSearch />*/}
         {/* <BerachainSortMenu /> */}
       </BerachainMarketsFiltersInnerContainer>
     </BerachainMarketsFiltersContainer>

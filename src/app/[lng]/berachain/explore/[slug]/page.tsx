@@ -6,6 +6,7 @@ import { berachainMarkets } from 'src/components/Berachain/const/berachainExampl
 import { getSiteUrl } from 'src/const/urls';
 import type { ExtendedQuest } from 'src/types/questDetails';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
+import { notFound } from 'next/navigation';
 
 export async function generateMetadata({
   params,
@@ -46,15 +47,19 @@ export async function generateMetadata({
     };
   } catch (err) {
     return {
-      title: `Jumper Learn | ${sliceStrToXChar(params.slug.replaceAll('-', ' '), 45)}`,
-      description: `This is the description for the article "${params.slug.replaceAll('-', ' ')}".`,
+      title: `Jumper Berachain | ${sliceStrToXChar(params.slug.replaceAll('-', ' '), 45)}`,
+      description: `Description of "${params.slug.replaceAll('-', ' ')}".`,
     };
   }
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const { data } = await getQuestBySlug(params.slug);
-  const questData = (data.data[0] as ExtendedQuest) || undefined;
+  const questData = (data?.data?.[0] as ExtendedQuest) || undefined;
+
+  if (!questData) {
+    return notFound();
+  }
 
   if (questData) {
     const protocolDetails = berachainMarkets.filter(
