@@ -1,10 +1,10 @@
 'use client';
-import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
-import { Link as MuiLink, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { SeoPageContainer } from 'src/components/SeoPageContainer.style';
 
 const BridgeExplanationSection = () => {
   return (
-    <BridgePageContainer>
+    <SeoPageContainer>
       <Typography variant="h3" marginY={2} sx={{ fontSize: '32px!important' }}>
         What is a Blockchain / Crypto Bridge?
       </Typography>
@@ -130,7 +130,7 @@ const BridgeExplanationSection = () => {
         This convenience not only improves user satisfaction but also encourages
         broader adoption of blockchain technology.
       </Typography>
-    </BridgePageContainer>
+    </SeoPageContainer>
   );
 };
 
