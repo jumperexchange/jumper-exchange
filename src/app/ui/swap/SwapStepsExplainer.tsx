@@ -40,7 +40,7 @@ const SwapStepsExplainerSection = ({
         title={'Step 1: Prepare Your Wallet'}
         description={`To swap tokens on ${sourceChain?.name}, you will first need to connect your wallet.`}
         img={{
-          imgUrl: `http://localhost:3000/widget/widget-connect-wallet-${theme.palette.mode}.png`,
+          imgUrl: `${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}` : process.env.NEXT_PUBLIC_SITE_URL}/widget/widget-connect-wallet-${theme.palette.mode}.png`,
           width: 416,
           height: 496,
           alt: 'Widget Selection Image',
@@ -52,12 +52,6 @@ const SwapStepsExplainerSection = ({
         title={`Step 2: Make sure to have Funds on ${sourceChain.name} in your wallet`}
         description={`Before you can swap your assets, you need to ensure you have the
         necessary funds and assets on the ${sourceChain?.name} network.`}
-        // img={{
-        //   imgUrl: `/api/widget-selection&fromChainId=${sourceChain.id}&toChainId=${sourceChain.id}&amount=${1}&theme=${theme.palette.mode}&isSwap=true`,
-        //   width: 416,
-        //   height: 496,
-        //   alt: 'Widget Selection Image',
-        // }}
       />
 
       <Divider />
@@ -67,7 +61,7 @@ const SwapStepsExplainerSection = ({
           'There are several XXXXXXXXXX available to transfer your assets.'
         }
         img={{
-          imgUrl: `http://localhost:3000/api/widget-selection?fromChainId=${sourceChain.id}&fromToken=${sourceToken?.address}&toChainId=${sourceChain.id}&toToken=${destinationToken?.address}&amount=${1}&theme=${theme.palette.mode}&isSwap=true`,
+          imgUrl: `/api/widget-selection?fromChainId=${sourceChain.id}&fromToken=${sourceToken?.address}&toChainId=${sourceChain.id}&toToken=${destinationToken?.address}&amount=${1}&theme=${theme.palette.mode}&isSwap=true`,
           width: 416,
           height: 496,
           alt: 'Widget Selection Image',
