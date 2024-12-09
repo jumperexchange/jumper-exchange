@@ -34,4 +34,19 @@ test.describe('On chain swaps', () => {
     await page.goto(`/${urlParams}`);
     await checkIfBestReturnLabelIsVisible(page);
   });
+ 
+  test(`Check ${chainData.ARBtoARB.ETHtoUSDT.tokenSymbol} to ${chainData.ARBtoARB.ETHtoUSDT.toTokenSymbol} swap pair on ARB chain`, async ({
+    page,
+  }) => {
+    const urlParams = buildUlParams(chainData.ARBtoARB.ETHtoUSDT);
+    await page.goto(`/${urlParams}`);
+    await checkIfBestReturnLabelIsVisible(page);
+  });
+  test(`Check ${chainData.ARBtoARB.USDCtoWBTC.tokenSymbol} to ${chainData.ARBtoARB.USDCtoWBTC.toTokenSymbol} swap pair on ARB chain`, async ({
+    page,
+  }) => {
+    const urlParams = buildUlParams(chainData.ARBtoARB.USDCtoWBTC);
+    await page.goto(`/${urlParams}`);
+    await checkIfBestReturnLabelIsVisible(page);
+  });
 });
