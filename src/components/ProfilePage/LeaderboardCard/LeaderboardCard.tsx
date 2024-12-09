@@ -26,9 +26,9 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
 
   return (
     <RankContainer>
-      <Box sx={{ width: '96px' }}>
+      <Box sx={{ width: '104px', height: 'auto' }}>
         <IconHeader
-          icon={<RANKIcon size={24} />}
+          icon={<RANKIcon size={20} />}
           tooltipKey="profile_page.rankInfo"
           title={t('profile_page.rank')}
         />
