@@ -22,6 +22,8 @@ jobs:
         node-version: 18
     - name: Install dependencies
       run: yarn install
+    - name: Install xvfb server
+      run: yarn add xvfb
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
     - name: Run Playwright tests

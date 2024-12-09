@@ -62,6 +62,7 @@
     "siwe": "^2.3.2",
     "uuid": "^10.0.0",
     "wait-on": "^8.0.1",
+    "xvfb": "^0.4.0",
     "zustand": "^4.5.5"
   },
   "devDependencies": {

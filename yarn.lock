@@ -11907,6 +11907,7 @@ __metadata:
     uuid: "npm:^10.0.0"
     wait-on: "npm:^8.0.1"
     web-vitals: "npm:^4.2.4"
+    xvfb: "npm:^0.4.0"
     zustand: "npm:^4.5.5"
   languageName: unknown
   linkType: soft
@@ -12573,6 +12574,15 @@ __metadata:
     object-assign: "npm:^4.0.1"
     thenify-all: "npm:^1.0.0"
   checksum: 10/8427de0ece99a07e9faed3c0c6778820d7543e3776f9a84d22cf0ec0a8eb65f6e9aee9c9d353ff9a105ff62d33a9463c6ca638974cc652ee8140cd1e35951c87
+  languageName: node
+  linkType: hard
+
+"nan@npm:^2.13.2":
+  version: 2.22.0
+  resolution: "nan@npm:2.22.0"
+  dependencies:
+    node-gyp: "npm:latest"
+  checksum: 10/ab165ba910e549fcc21fd561a33f534d86e81ae36c97b1019dcfe506b09692ff867c97794a54b49c9a83b8b485f529f0f58d24966c3a11863c97dc70814f4d50
   languageName: node
   linkType: hard
 
@@ -14647,6 +14657,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sleep@npm:6.1.0":
+  version: 6.1.0
+  resolution: "sleep@npm:6.1.0"
+  dependencies:
+    nan: "npm:^2.13.2"
+    node-gyp: "npm:latest"
+  checksum: 10/d8622e5321ab4498a577dd160bcc92bbba629b689b229564899d63e64ad21872fd330c01213c0d0f4a7d1b5cf2418c2a800e527a6d40fe6b44fcafdab264a739
+  languageName: node
+  linkType: hard
+
 "slice-ansi@npm:^5.0.0":
   version: 5.0.0
   resolution: "slice-ansi@npm:5.0.0"
@@ -16439,6 +16459,18 @@ __metadata:
   version: 4.0.2
   resolution: "xtend@npm:4.0.2"
   checksum: 10/ac5dfa738b21f6e7f0dd6e65e1b3155036d68104e67e5d5d1bde74892e327d7e5636a076f625599dc394330a731861e87343ff184b0047fef1360a7ec0a5a36a
+  languageName: node
+  linkType: hard
+
+"xvfb@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "xvfb@npm:0.4.0"
+  dependencies:
+    sleep: "npm:6.1.0"
+  dependenciesMeta:
+    sleep:
+      optional: true
+  checksum: 10/5952cef318f82887935f5de0f000ab3580bb7dae60d67e2f774208369f715ee89938c1904d54bff02b603064c525433dc72851aaf9bde9842442d15feb5e96a0
   languageName: node
   linkType: hard
 
