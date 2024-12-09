@@ -11,6 +11,7 @@ export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
 export const JUMPER_LEARN_PATH = '/learn';
 export const JUMPER_LOYALTY_PATH = '/profile';
 export const JUMPER_SCAN_PATH = '/scan';
+export const JUMPER_ZAP_PATH = '/zap';
 export const JUMPER_WASH_PATH = '/wash';
 export const JUMPER_BRIDGE_PATH = '/bridge';
 export const JUMPER_TX_PATH = '/tx';
@@ -21,7 +22,8 @@ export const JUMPER_QUESTS_PATH = '/quests';
 
 export const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
 
-export const DEFAULT_EFFIGY = '/default_effigy.svg';
+export const DEFAULT_WALLET_ADDRESS =
+  '0x0000000000000000000000000000000000000000';
 
 export function getSiteUrl() {
   return process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL

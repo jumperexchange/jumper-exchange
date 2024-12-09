@@ -6573,6 +6573,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"blo@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "blo@npm:1.2.0"
+  checksum: 10/17ec61e41b201bbba8ab3c874cad94696604b6ac4029de5050c92ea5817dff6814d8642b9b2948e0d6804194437b751fa2755652201f26fa5d606913c489b757
+  languageName: node
+  linkType: hard
+
 "blob-to-buffer@npm:^1.2.8":
   version: 1.2.9
   resolution: "blob-to-buffer@npm:1.2.9"
@@ -9936,6 +9943,7 @@ __metadata:
     "@widgetbot/react-embed": "npm:^1.9.0"
     accept-language: "npm:^3.0.20"
     axios: "npm:^1.7.7"
+    blo: "npm:^1.2.0"
     dotenv-cli: "npm:^7.4.2"
     eslint: "npm:8.57.1"
     eslint-config-prettier: "npm:^9.1.0"
