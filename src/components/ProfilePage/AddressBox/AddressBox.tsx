@@ -17,7 +17,9 @@ import { useWalletAddressImg } from '@/hooks/useAddressImg';
 import {
   AddressBoxContainer,
   PassImageBox,
+  ProfileIconButton,
 } from '../AddressCard/AddressCard.style';
+import { AddressDisplayBox } from './AddressBox.style';
 
 interface AddressBoxProps {
   address: string;
@@ -44,7 +46,7 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
   };
 
   return (
-    <AddressBoxContainer imgUrl={imgLink}>
+    <AddressBoxContainer>
       <PassImageBox>
         <Image
           alt={`${address} wallet Icon`}
@@ -67,7 +69,7 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
           }}
         />
       </PassImageBox>
-      <AddressDisplayBo>
+      <AddressDisplayBox>
         <NoSelectTypography
           fontWeight={700}
           fontSize={20}
