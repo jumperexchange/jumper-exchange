@@ -12,9 +12,14 @@ import {
   BerachainWelcomeSubtitle,
   BerachainWelcomeTitle,
 } from './BerachainWelcome.style';
+import { useEnrichedRoycoStats } from 'royco/hooks';
+import { useTranslation } from 'react-i18next';
 
 export const BerachainWelcome = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
+  const { data } = useEnrichedRoycoStats();
+
   return (
     <BeraChainWelcomeBox>
       <motion.div
@@ -49,7 +54,7 @@ export const BerachainWelcome = () => {
         <BerachainWelcomeBoxContent>
           <BerachainProgressCard
             title={'Total Value Locked'}
-            value="$718K"
+            value={t('format.currency', { value: data?.total_tvl, notation: 'compact' })}
             icon={
               <Image
                 src="/berachain/tvl.svg"
@@ -68,7 +73,7 @@ export const BerachainWelcome = () => {
           />
           <BerachainProgressCard
             title={'Incentives'}
-            value="$420K"
+            value={t('format.currency', { value: data?.total_incentives, notation: 'compact' })}
             icon={
               <Image
                 src="/berachain/gift.svg"

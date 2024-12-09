@@ -12,10 +12,14 @@ import {
   BerachainMarketHeaderTitle,
   BerachainMarketInfos,
 } from './BerachainMarketsHeader.style';
+import { useTranslation } from 'react-i18next';
+import { useEnrichedRoycoStats } from 'royco/hooks';
 
 export const BerachainMarketsHeader = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const { t } = useTranslation();
+  const { data } = useEnrichedRoycoStats();
 
   return (
     <BerachainMarketHeaderBox>
@@ -46,13 +50,13 @@ export const BerachainMarketsHeader = () => {
       <BerachainMarketHeaderCards>
         <BerachainProgressCard
           title={'Total Value Locked'}
-          value={'$720K'}
+          value={t('format.currency', { value: data?.total_tvl, notation: 'compact' })}
           tooltip={'This is the total amount in a protocol.'}
           sx={BerachainMarketHeaderProgressCardStyles(theme)}
         />
         <BerachainProgressCard
           title={'Total Volume'}
-          value={'$420K'}
+          value={t('format.currency', { value: data?.total_volume, notation: 'compact' })}
           tooltip={'This is the total volume done on Boyco.'}
           sx={BerachainMarketHeaderProgressCardStyles(theme)}
         />
