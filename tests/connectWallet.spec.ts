@@ -22,10 +22,12 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
     const connectWalletButton = page.locator('#connect-wallet-button');
     const metaMaskWalletOption = page.locator('xpath=//span[normalize-space(text())="MetaMask"]');
     const availableMissionTitle = page.locator('xpath=//p[normalize-space(text())="Available Missions"]');
+    const ethereumOption = page.locator('xpath=//span[normalize-space(text())="Ethereum"]');
     await page.goto('/');
     await expect(connectWalletButton).toBeEnabled();
     await connectWalletButton.click();
     await metaMaskWalletOption.click();
+    await ethereumOption.click();
     await metamask.connectToDapp(['Account 1']);
     await closeWelcomeScreen(page);
     await openOrCloseMainMenu(page);
