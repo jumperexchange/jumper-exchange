@@ -1,12 +1,14 @@
 import { type Metadata } from 'next';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { siteName } from 'src/app/lib/metadata';
-import BerachainExplorePage from 'src/app/ui/berachain/BerachainExplorePage';
 import { berachainMarkets } from 'src/components/Berachain/const/berachainExampleData';
 import { getSiteUrl } from 'src/const/urls';
 import type { ExtendedQuest } from 'src/types/questDetails';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { notFound } from 'next/navigation';
+import { useEnrichedMarkets } from 'royco/hooks';
+import { BerachainExploreProtocol } from '@/components/Berachain/BerachainExploreProtocol';
+import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
 
 export async function generateMetadata({
   params,
@@ -54,19 +56,27 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const { data } = await getQuestBySlug(params.slug);
-  const questData = (data?.data?.[0] as ExtendedQuest) || undefined;
+  // Royco hooks only works on client side so notFound not really possible from there :(
+  // Have to rely on the hardcoded array
 
-  if (!questData) {
-    return notFound();
-  }
+  // const { data, url, findFromStrapiByUid } = useBerachainMarkets();
+  // const card = findFromStrapiByUid(param.slug)
 
-  if (questData) {
-    const protocolDetails = berachainMarkets.filter(
-      (market) => market.slug === questData.attributes.Slug,
-    );
-    questData.protocolInfos = protocolDetails[0];
-  }
 
-  return <BerachainExplorePage market={data?.data?.[0]} />;
+  // const { data } = await getQuestBySlug(params.slug);
+  // const questData = (data?.data?.[0] as ExtendedQuest) || undefined;
+  //
+  // if (!questData) {
+  //   return notFound();
+  // }
+  //
+  // if (questData) {
+  //   const protocolDetails = berachainMarkets.filter(
+  //     (market) => market.slug === questData.attributes.Slug,
+  //   );
+  //   questData.protocolInfos = protocolDetails[0];
+  // }
+  console.log('exporepagebera', params.slug)
+
+  return <BerachainExploreProtocol marketId={params.slug} />;
 }

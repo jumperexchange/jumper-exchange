@@ -21,6 +21,8 @@ export const BerachainMarketsHeader = () => {
   const { t } = useTranslation();
   const { data } = useEnrichedRoycoStats();
 
+  console.log('sss', data)
+
   return (
     <BerachainMarketHeaderBox>
       <BerachainMarketInfos>
@@ -50,13 +52,13 @@ export const BerachainMarketsHeader = () => {
       <BerachainMarketHeaderCards>
         <BerachainProgressCard
           title={'Total Value Locked'}
-          value={t('format.currency', { value: data?.total_tvl, notation: 'compact' })}
+          value={data?.total_tvl ? t('format.currency', { value: data?.total_tvl, notation: 'compact' }) : 'N/A'}
           tooltip={'This is the total amount in a protocol.'}
           sx={BerachainMarketHeaderProgressCardStyles(theme)}
         />
         <BerachainProgressCard
           title={'Total Volume'}
-          value={t('format.currency', { value: data?.total_volume, notation: 'compact' })}
+          value={data?.total_volume ? t('format.currency', { value: data?.total_volume, notation: 'compact' }) : 'N/A'}
           tooltip={'This is the total volume done on Boyco.'}
           sx={BerachainMarketHeaderProgressCardStyles(theme)}
         />

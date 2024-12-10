@@ -233,8 +233,6 @@ export function Widget({
     trackEvent,
   ]);
 
-  console.log('ss', config)
-
   return (
     <WidgetWrapper
       className="widget-wrapper"

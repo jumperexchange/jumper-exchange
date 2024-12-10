@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "repository": "https://github.com/jumperexchange/jumper-exchange",
-  "packageManager": "yarn@4.5.1",
   "dependencies": {
     "@bigmi/react": "^0.0.4",
     "@emotion/cache": "^11.13.1",
@@ -34,6 +33,7 @@
     "@solana/web3.js": "^1.95.4",
     "@strapi/blocks-react-renderer": "^1.0.1",
     "@tanstack/react-query": "^5.59.20",
+    "@wagmi/core": "^2.15.2",
     "@widgetbot/react-embed": "^1.9.0",
     "accept-language": "^3.0.20",
     "axios": "^1.7.7",
@@ -46,6 +46,7 @@
     "i18next": "^23.16.5",
     "i18next-resources-for-ts": "^1.5.0",
     "i18next-resources-to-backend": "^1.2.1",
+    "immer": "^10.1.1",
     "motion": "^11.11.17",
     "next": "^14.2.17",
     "next-i18n-router": "^5.5.1",
@@ -56,11 +57,13 @@
     "react-dom": "^18.3.1",
     "react-error-boundary": "^4.1.2",
     "react-i18next": "^15.1.1",
-    "royco": "^0.8.0",
+    "royco": "^0.9.34",
     "shallow-equal": "^3.1.0",
     "sharp": "^0.33.5",
     "siwe": "^2.3.2",
+    "use-immer": "^0.10.0",
     "uuid": "^10.0.0",
+    "wagmi": "^2.13.5",
     "zustand": "^4.5.5"
   },
   "devDependencies": {
@@ -119,5 +122,12 @@
     "**/*.(md|json)": [
       "yarn prettier --write"
     ]
+  },
+  "overrides": {
+    "wagmi": "2.13.3",
+    "@wagmi/core": "2.15.2",
+    "royco/wagmi": "2.13.3",
+    "royco/@wagmi/core": "2.15.2",
+    "@lifi/wallet-management/@wagmi/core": "2.15.2"
   }
 }
