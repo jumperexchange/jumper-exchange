@@ -1,8 +1,8 @@
 'use client';
-import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
+import type { ExtendedChain, Token } from '@lifi/sdk';
 import { Link as MuiLink, Typography } from '@mui/material';
 import Link from 'next/link';
-import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
+import { SeoPageContainer } from 'src/components/SeoPageContainer.style';
 
 interface StepsExplainerProps {
   sourceChain: ExtendedChain;
@@ -18,7 +18,7 @@ const StepsExplainerSection = ({
   destinationToken,
 }: StepsExplainerProps) => {
   return (
-    <BridgePageContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
+    <SeoPageContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
       <Typography
         variant="h2"
         color="text.primary"
@@ -118,7 +118,7 @@ const StepsExplainerSection = ({
           profile to visualize your recent transaction
         </li>
       </ul>
-    </BridgePageContainer>
+    </SeoPageContainer>
   );
 };
 

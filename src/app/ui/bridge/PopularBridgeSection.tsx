@@ -1,10 +1,10 @@
 'use client';
-import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
+import generateKey from '@/app/lib/generateKey';
+import { getChainById } from '@/utils/tokenAndChain';
+import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
 import { Link as MuiLink, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
-import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
-import { getChainById, getTokenByName } from '@/utils/tokenAndChain';
-import generateKey from '@/app/lib/generateKey';
+import { SeoPageContainer } from 'src/components/SeoPageContainer.style';
 
 interface PopularBridgeProps {
   sourceChain: ExtendedChain;
@@ -53,7 +53,7 @@ const PopularBridgeSection = ({
     );
 
   return (
-    <BridgePageContainer width="100%">
+    <SeoPageContainer width="100%">
       <Typography variant="h3" marginY={2}>
         Popular bridges
       </Typography>
@@ -72,7 +72,7 @@ const PopularBridgeSection = ({
           </MuiLink>
         ))}
       </Stack>
-    </BridgePageContainer>
+    </SeoPageContainer>
   );
 };
 
