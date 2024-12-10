@@ -46,7 +46,7 @@ export function CustomWidget({ account }: CustomWidgetProps) {
         priceUSD: data?.data?.depositToken.priceUSD,
         coinKey: data?.data?.depositToken.name as any,
         logoURI: data?.data?.depositToken.logoURI,
-        amount: 0,
+        amount: '0' as any,
       });
     }
   }, [isSuccess]);
