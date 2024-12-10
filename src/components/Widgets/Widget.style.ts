@@ -38,7 +38,7 @@ export const WidgetWrapper = styled(Box, {
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
     marginTop: 0,
-    maxHeight: '100%',
+    maxHeight: welcomeScreenClosed ? '100%' : '50vh',
     ...(!welcomeScreenClosed && {
       cursor: 'pointer',
       // add margin-top to widget-wrapper when welcome-screen is closed
@@ -70,7 +70,7 @@ export const WidgetWrapper = styled(Box, {
       marginTop: !welcomeScreenClosed ? DEFAULT_WIDGET_TOP_OFFSET_VAR : 0,
       [`@media screen and (min-height: 700px)`]: {
         // set default widget height
-        height: DEFAULT_WIDGET_HEIGHT,
+        height: welcomeScreenClosed ? DEFAULT_WIDGET_HEIGHT : '50vh',
         marginTop: !welcomeScreenClosed
           ? // (mid viewheight - ≈ 2/3 of widget height - navbar height )
             `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - 40px )`

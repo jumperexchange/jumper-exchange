@@ -2,9 +2,10 @@ import { useMenuStore } from '@/stores/menu';
 import { useWalletMenu } from '@lifi/wallet-management';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Typography } from '@mui/material';
+import type { MouseEvent } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import useImageStatus from 'src/hooks/useImageStatus';
+import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { useWalletLabel } from 'src/hooks/useWalletLabel';
 import { AddressMenu } from '../AddressMenu/AddressMenu';
@@ -31,7 +32,7 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
 
   const [openAddressMenu, setOpenAddressMenu] = useState(false);
   const { imageLink } = useMercleNft({ userAddress: address });
-  const imgLink = useImageStatus(address);
+  const imgLink = useWalletAddressImg(address);
   const { setSnackbarState } = useMenuStore((state) => state);
   const { openWalletMenu } = useWalletMenu();
   const label = useWalletLabel(address);
@@ -82,7 +83,7 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
         ) : (
           <AddressConnectButton
             id="connect-wallet-button-address-card"
-            onClick={(event) => {
+            onClick={(event: MouseEvent<HTMLButtonElement>) => {
               event.stopPropagation();
               openWalletMenu();
             }}

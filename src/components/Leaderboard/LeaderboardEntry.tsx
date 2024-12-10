@@ -1,7 +1,7 @@
 import { alpha, Box, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
-import useImageStatus from 'src/hooks/useImageStatus';
+import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 import { effigyAddressFormatter } from 'src/utils/effigyAddressFormatter';
 import { numberWithCommas } from 'src/utils/formatNumbers';
 import { walletDigest } from 'src/utils/walletDigest';
@@ -36,7 +36,7 @@ export const LeaderboardEntry = ({
   const theme = useTheme();
   const { t } = useTranslation();
   const formattedAddress = effigyAddressFormatter(walletAddress);
-  const imgLink = useImageStatus(formattedAddress);
+  const imgLink = useWalletAddressImg(formattedAddress);
   const rankLabel = numberWithCommas(position);
   const pointsLabel = numberWithCommas(points);
 

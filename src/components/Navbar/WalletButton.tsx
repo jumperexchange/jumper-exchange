@@ -1,4 +1,5 @@
 'use client';
+import { useWalletAddressImg } from '@/hooks/useAddressImg';
 import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
 import type { Chain } from '@lifi/sdk';
@@ -13,7 +14,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
-import useImageStatus from 'src/hooks/useImageStatus';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { useWalletLabel } from 'src/hooks/useWalletLabel';
 import { numberWithCommas } from 'src/utils/formatNumbers';
@@ -39,7 +39,7 @@ export const WalletButtons = () => {
   const { openWalletMenu } = useWalletMenu();
   const { points, isLoading } = useLoyaltyPass(account?.address);
   const router = useRouter();
-  const imgLink = useImageStatus(account?.address);
+  const imgLink = useWalletAddressImg(account?.address);
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const pathname = usePathname();
 
@@ -90,7 +90,7 @@ export const WalletButtons = () => {
               >
                 <ImageWalletMenuButton
                   src={imgLink}
-                  alt="Effigy Wallet Icon"
+                  alt={`${account?.address} wallet Icon`}
                   width={32}
                   height={32}
                   priority={false}
