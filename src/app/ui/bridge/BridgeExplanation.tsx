@@ -42,7 +42,7 @@ const BridgeExplanationSection = () => {
       <Typography
         variant="h4"
         sx={{
-          fontSize: '24px',
+          fontSize: '24px! important',
           marginTop: '4px',
           marginBottom: '2px',
         }}

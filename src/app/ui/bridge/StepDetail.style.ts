@@ -13,7 +13,7 @@ export const StepDetailContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const StepDetailInfo = styled(Box)<BoxProps>(({ theme }) => ({
+export const StepDetailInfo = styled(Box)<BoxProps>(() => ({
   display: 'flex',
   minWidth: '50%',
 }));
