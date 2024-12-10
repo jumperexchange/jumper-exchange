@@ -10,6 +10,7 @@ import {
   alpha,
   Box,
   Container,
+  darken,
   Skeleton,
   Typography,
   useTheme,
@@ -195,13 +196,16 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
                   showAnswerDivider={true}
                   sx={{
                     padding: 0,
-                    '> .accordion-items div:hover': {
-                      background: '#F9F9F9',
-                    },
                   }}
                   itemSx={{
                     padding: '0px 8px',
                     backgroundColor: 'transparent',
+                    '&:hover': {
+                      background:
+                        theme.palette.mode === 'light'
+                          ? darken(theme.palette.white.main, 0.04)
+                          : alpha(theme.palette.white.main, 0.16),
+                    },
                     '.MuiAccordionSummary-root': {
                       padding: 0,
                     },
@@ -211,12 +215,6 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
                     '.MuiAccordionDetails-root': {
                       padding: '20px 16px 16px',
                     },
-                    // '& > div': {
-                    //   borderTop: `1px solid ${alpha(theme.palette.text.primary, 0.04)}`,
-                    // },
-                    // '&:first-of-type > div': {
-                    //   borderTop: 'unset',
-                    // },
                   }}
                   content={detailInformation?.faqItems}
                   accordionHeader={<ZapActionFaqAccordionHeader />}
