@@ -10,7 +10,6 @@ import { AccordionFAQ } from 'src/components/AccordionFAQ';
 import { getSiteUrl } from 'src/const/urls';
 import { useMenuStore } from 'src/stores/menu';
 import type { Quest } from 'src/types/loyaltyPass';
-import type { QuestDetails } from 'src/types/questDetails';
 import { BerachainWidget } from '../BerachainWidget/BerachainWidget';
 import {
   BerachainActionProtocolCard,
@@ -21,43 +20,41 @@ import {
   BerachainProtocolActionInfoBox,
 } from './BerachainProtocolAction.style';
 import { BerachainProtocolFaqAccordionHeader } from './BerachainProtocolFaqAccordionHeader';
+import { EnrichedMarketDataType } from 'royco/queries';
+import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
+import { WagmiProvider } from 'wagmi';
+import { config } from '@/components/Berachain/wagmiConfig';
 
 interface BerachainProtocolActionProps {
-  market?: Quest;
-  detailInformation?: QuestDetails;
-}
-
-export function getStrapiBaseUrl() {
-  const apiBaseUrl =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : `${process.env.NEXT_PUBLIC_STRAPI_URL}`;
-  return apiBaseUrl;
+  market?: EnrichedMarketDataType;
+  card: Quest;
+  // detailInformation?: QuestDetails;
 }
 
 export const BerachainProtocolAction = ({
   market,
-  detailInformation,
+  card,
 }: BerachainProtocolActionProps) => {
   const { setSnackbarState } = useMenuStore((state) => state);
   const { t } = useTranslation();
   const baseUrl = getStrapiBaseUrl();
+  const detailInformation = card?.attributes.CustomInformation
 
   const handleCopyButton = (textToCopy: string) => {
     navigator.clipboard.writeText(textToCopy);
     setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
   };
 
-  return market ? (
+  return market && (
     <BerachainProtocolActionBox>
       <BerachainProtocolActionInfoBox>
         <BerachainActionProtocolIntro>
-          {market.attributes.Image.data.attributes.url ? (
+          {card.attributes.Image.data.attributes.url ? (
             <Image
-              src={`${baseUrl}${market.attributes.Image.data.attributes.url}`}
+              src={`${baseUrl}${card.attributes.Image.data.attributes.url}`}
               alt="Protocol image"
-              width={market.attributes.Image.data.attributes.width}
-              height={market.attributes.Image.data.attributes.height}
+              width={card.attributes.Image.data.attributes.width}
+              height={card.attributes.Image.data.attributes.height}
               style={{ width: 192, height: 'auto', objectFit: 'contain' }}
             />
           ) : (
@@ -67,9 +64,9 @@ export const BerachainProtocolAction = ({
             />
           )}
           <BerachainActionProtocolCard>
-            {market.attributes.Title ? (
+            {card.attributes.Title ? (
               <Typography variant="titleSmall">
-                What is {market.attributes.Title}?
+                What is {card.attributes.Title}?
               </Typography>
             ) : (
               <Skeleton
@@ -77,9 +74,9 @@ export const BerachainProtocolAction = ({
                 sx={{ height: '32px', width: '160px' }}
               />
             )}
-            {market.attributes.Information ? (
+            {card.attributes.Information ? (
               <Typography variant="bodyMedium">
-                {market.attributes.Information}
+                {card.attributes.Information}
               </Typography>
             ) : (
               <Skeleton
@@ -123,7 +120,7 @@ export const BerachainProtocolAction = ({
               <BerachainActionProtocolShare
                 onClick={() =>
                   handleCopyButton(
-                    `${getSiteUrl()}/berachain/explore/${market.attributes.Slug}`,
+                    `${getSiteUrl()}/berachain/explore/${market?.market_id}`,
                   )
                 }
               >
@@ -171,11 +168,11 @@ export const BerachainProtocolAction = ({
         >
           <InfoIcon />
           <Typography variant="bodySmall">
-            {market.attributes.Information}
+            {card.attributes.Information}
           </Typography>
         </BerachainActionProtocolCard>
       </BerachainProtocolActionInfoBox>
-      <BerachainWidget />
+      <BerachainWidget market={market} />
     </BerachainProtocolActionBox>
-  ) : null;
+  );
 };

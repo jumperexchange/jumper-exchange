@@ -166,6 +166,9 @@ export function Widget({
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
+      subvariantOptions: {
+        custom: 'test',
+      },
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,

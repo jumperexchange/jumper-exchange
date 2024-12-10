@@ -23,6 +23,7 @@ export const useBerachainMarket = (): UseBerachainQuestsProps => {
 
   const data = useMemo(() => {
     let filteredData = berachainMarkets;
+    console.log('dataFromStrapi', filteredData)
     if (!filteredData) {
       return [];
     }
