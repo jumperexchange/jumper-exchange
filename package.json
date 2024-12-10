@@ -4,7 +4,7 @@
   "private": true,
   "repository": "https://github.com/jumperexchange/jumper-exchange",
   "dependencies": {
-    "@bigmi/react": "^0.0.4",
+    "@bigmi/react": "^0.0.5",
     "@emotion/cache": "^11.13.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
@@ -128,6 +128,7 @@
     "@wagmi/core": "2.15.2",
     "royco/wagmi": "2.13.3",
     "royco/@wagmi/core": "2.15.2",
-    "@lifi/wallet-management/@wagmi/core": "2.15.2"
+    "@lifi/wallet-management/@wagmi/core": "2.15.2",
+    "bigmi/wagmi":"2.13.3"
   }
 }

@@ -40,6 +40,15 @@ export const BerachainWidget = ({ market }: { market: EnrichedMarketDataType }) 
     propsActionsDecoderExitMarket,
   } = useActiveMarket(market.chain_id, market.market_type, market.market_id);
 
+  console.log('active',
+    isLoading,
+    marketMetadata,
+    currentMarketData,
+    previousMarketData,
+    propsReadMarket,
+    propsActionsDecoderEnterMarket,
+    propsActionsDecoderExitMarket,);
+
   const containerStyles = {
     display: 'flex',
     width: '100%',
