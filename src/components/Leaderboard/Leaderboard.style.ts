@@ -26,13 +26,13 @@ export const LeaderboardHeader = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const LeaderboardUpdateDateLabel = styled(Typography)(({ theme }) => ({
-  padding: theme.spacing(1, 2),
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.alphaDark100.main
-      : theme.palette.alphaLight100.main,
-  borderRadius: '16px',
+export const LeaderboardTitleBox = styled(Box)(() => ({
+  display: 'flex',
+  alignItems: 'center',
+}));
+
+export const LeaderboardUpdateDateBox = styled(Box)(() => ({
+  marginLeft: '8px',
 }));
 
 export const LeaderboardEntryStack = styled(Stack)(({ theme }) => ({

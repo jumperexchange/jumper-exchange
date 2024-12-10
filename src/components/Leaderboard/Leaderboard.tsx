@@ -20,11 +20,13 @@ import {
   LeaderboardEntryDivider,
   LeaderboardEntryStack,
   LeaderboardHeader,
-  LeaderboardUpdateDateLabel,
+  LeaderboardTitleBox,
+  LeaderboardUpdateDateBox,
 } from './Leaderboard.style';
 import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
+import { IconHeader } from '../ProfilePage/Common/IconHeader';
 
 export const LEADERBOARD_LENGTH = 25;
 
@@ -51,25 +53,27 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
       : 1;
   }, [defaultPage, meta?.pagination.pagesLength]);
 
-  const date = new Date().toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
+  // const date = new Date().toLocaleDateString('en-GB', {
+  //   day: 'numeric',
+  //   month: 'long',
+  //   year: 'numeric',
+  // });
 
   return (
     <PageContainer>
       <LeaderboardContainer>
         <LeaderboardHeader>
-          <Box display={'flex'} alignItems={'center'}>
+          <LeaderboardTitleBox>
             <Typography variant="headerMedium">
               {t('leaderboard.title')}
             </Typography>
-            <TooltipInfo title={t('leaderboard.description')} size={24} />
-          </Box>
-          <LeaderboardUpdateDateLabel variant="bodyXSmallStrong">
-            {t('leaderboard.updatedLabel', { date: date })}
-          </LeaderboardUpdateDateLabel>
+            <LeaderboardUpdateDateBox>
+              <IconHeader
+                tooltipKey={t('leaderboard.description')}
+                title={`Updated: ${t('format.date', { value: new Date() })}`}
+              />
+            </LeaderboardUpdateDateBox>
+          </LeaderboardTitleBox>
         </LeaderboardHeader>
         <LeaderboardUserEntry />
         <LeaderboardEntryStack direction={'column'}>

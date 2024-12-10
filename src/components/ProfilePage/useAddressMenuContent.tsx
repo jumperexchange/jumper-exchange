@@ -61,9 +61,7 @@ export const useAddressMenuContent = () => {
         <OpenInNewIcon
           sx={{
             height: '16px',
-            color: isDarkMode
-              ? theme.palette.white.main
-              : theme.palette.black.main,
+            color: theme.palette.text.primary,
           }}
         />
       ),
@@ -82,9 +80,7 @@ export const useAddressMenuContent = () => {
         <ReceiptLongIcon
           sx={{
             height: '16px',
-            color: isDarkMode
-              ? theme.palette.white.main
-              : theme.palette.black.main,
+            color: theme.palette.text.primary,
           }}
         />
       ),

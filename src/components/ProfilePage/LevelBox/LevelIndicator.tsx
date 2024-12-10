@@ -26,7 +26,7 @@ export const LevelIndicator = ({ level, bound }: LevelButtonProps) => {
         size={16}
         variant="secondary"
         color={theme.palette.white.main}
-        bgColor="#31007A"
+        bgColor={theme.palette.primary.main}
       />
     </LevelButton>
   );

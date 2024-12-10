@@ -11,12 +11,12 @@ import {
 import type { Theme } from '@mui/material';
 import { Stack, Typography, useMediaQuery } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
+import type { MouseEvent } from 'react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { useWalletLabel } from 'src/hooks/useWalletLabel';
-import { numberWithCommas } from 'src/utils/formatNumbers';
 import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
@@ -62,15 +62,13 @@ export const WalletButtons = () => {
     setWalletMenuState(!_openWalletMenu);
   };
 
-  const pointsLabel = points && numberWithCommas(points);
-
   return (
     <>
       {!account?.address ? (
         <ConnectButton
           // Used in the widget
           id="connect-wallet-button"
-          onClick={(event) => {
+          onClick={(event: MouseEvent<HTMLButtonElement>) => {
             event.stopPropagation();
             openWalletMenu();
           }}
@@ -105,7 +103,7 @@ export const WalletButtons = () => {
                     marginRight={1.1}
                     marginLeft={1}
                   >
-                    {pointsLabel ?? 0}
+                    {points ? t('format.decimal2Digit', { value: points }) : 0}
                   </Typography>
                 )}
                 <XPIcon size={32} />

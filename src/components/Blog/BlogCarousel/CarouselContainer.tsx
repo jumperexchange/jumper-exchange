@@ -6,14 +6,18 @@ import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
 import { SectionTitle } from 'src/components/ProfilePage/ProfilePage.style';
 import {
+  CarouselCenteredBox,
   CarouselContainerBox,
   CarouselHeader,
   CarouselNavigationButton,
   CarouselNavigationContainer,
 } from '.';
+import { IconHeader } from 'src/components/ProfilePage/Common/IconHeader';
 
 interface CarouselContainerProps {
   title?: string;
+  updateTitle?: string;
+  updateTooltip?: string;
   styles?: CSSObject;
   children: ReactNode | ReactNode[];
   trackingCategory?: string;
@@ -23,6 +27,8 @@ const swipeDistance = 420;
 export const CarouselContainer = ({
   styles,
   title,
+  updateTitle,
+  updateTooltip,
   children,
   trackingCategory,
 }: CarouselContainerProps) => {
@@ -64,7 +70,17 @@ export const CarouselContainer = ({
   return (
     <Box>
       <CarouselHeader>
-        {title && <SectionTitle variant="headerMedium">{title}</SectionTitle>}
+        <CarouselCenteredBox>
+          {title && <SectionTitle variant="headerMedium">{title}</SectionTitle>}
+          {updateTitle && (
+            <Box>
+              <IconHeader
+                tooltipKey={updateTooltip || ''}
+                title={updateTitle}
+              />
+            </Box>
+          )}
+        </CarouselCenteredBox>
         <CarouselNavigationContainer>
           <CarouselNavigationButton
             aria-label="previous"

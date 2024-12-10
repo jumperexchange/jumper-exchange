@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 import { effigyAddressFormatter } from 'src/utils/effigyAddressFormatter';
-import { numberWithCommas } from 'src/utils/formatNumbers';
 import { walletDigest } from 'src/utils/walletDigest';
 import { ConnectButton } from '../ConnectButton';
 import {
@@ -37,8 +36,6 @@ export const LeaderboardEntry = ({
   const { t } = useTranslation();
   const formattedAddress = effigyAddressFormatter(walletAddress);
   const imgLink = useWalletAddressImg(formattedAddress);
-  const rankLabel = numberWithCommas(position);
-  const pointsLabel = numberWithCommas(points);
 
   return (
     <LeaderboardEntryWrapper
@@ -49,7 +46,9 @@ export const LeaderboardEntry = ({
       <LeaderboardEntryInfos>
         <Box minWidth={74} textAlign={'center'}>
           <RankLabel variant="bodyXSmallStrong">
-            {isUserEntry && !isUserConnected ? '?' : rankLabel || 'N/A'}
+            {isUserEntry && !isUserConnected
+              ? '?'
+              : t('format.decimal2Digit', { value: position }) || 'N/A'}
           </RankLabel>
         </Box>
         {walletAddress ? (
@@ -83,14 +82,12 @@ export const LeaderboardEntry = ({
         />
       ) : (
         <RankPointsContainer>
-          <Typography variant="bodyLargeStrong">{pointsLabel}</Typography>
+          <Typography variant="bodyLargeStrong">
+            {t('format.decimal2Digit', { value: points })}
+          </Typography>
           <XPIcon
             size={24}
-            color={
-              theme.palette.mode === 'light'
-                ? theme.palette.primary.main
-                : theme.palette.white.main
-            }
+            color={theme.palette.text.primary}
             bgColor={
               theme.palette.mode === 'light'
                 ? alpha(theme.palette.primary.main, 0.08)

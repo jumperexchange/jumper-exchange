@@ -24,25 +24,30 @@ export const RewardsCarousel = ({
 }: RewardsCarouselProps) => {
   const theme = useTheme();
 
-  return !hideComponent ? (
-    <RewardsCarouselContainer>
-      <FlexCenterRowBox>
-        <Box>
-          <EarnedTypography color={theme.palette.text.primary}>
-            Rewards Earned
-          </EarnedTypography>
-        </Box>
-      </FlexCenterRowBox>
-      {availableRewards.map((availableReward, i) => {
-        const amount = availableReward.amountToClaim;
-        return (
-          <Box key={i + availableReward.address}>
-            {amount > 0 && isMerklSuccess && (
-              <ClaimingBox amount={amount} availableReward={availableReward} />
-            )}
+  return (
+    !hideComponent && (
+      <RewardsCarouselContainer>
+        <FlexCenterRowBox>
+          <Box>
+            <EarnedTypography color={theme.palette.text.primary}>
+              Rewards Earned
+            </EarnedTypography>
           </Box>
-        );
-      })}
-    </RewardsCarouselContainer>
-  ) : undefined;
+        </FlexCenterRowBox>
+        {availableRewards.map((availableReward, i) => {
+          const amount = availableReward.amountToClaim;
+          return (
+            <Box key={i + availableReward.address}>
+              {amount > 0 && isMerklSuccess && (
+                <ClaimingBox
+                  amount={amount}
+                  availableReward={availableReward}
+                />
+              )}
+            </Box>
+          );
+        })}
+      </RewardsCarouselContainer>
+    )
+  );
 };
