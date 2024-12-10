@@ -2,8 +2,7 @@ import { siteName } from '@/app/lib/metadata';
 import { getSiteUrl } from '@/const/urls';
 import { getChainsQuery } from '@/hooks/useChains';
 import { getTokensQuery } from '@/hooks/useTokens';
-import { getChainById } from '@/utils/tokenAndChain';
-import type { ChainId } from '@lifi/sdk';
+import { getChainByName } from '@/utils/tokenAndChain';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import SwapPage from 'src/app/ui/swap/SwapPage';
@@ -14,10 +13,7 @@ export async function generateMetadata({
   params: { segments: string };
 }): Promise<Metadata> {
   const { chains } = await getChainsQuery();
-  const sourceChain = getChainById(
-    chains,
-    parseInt(params.segments) as unknown as ChainId,
-  );
+  const sourceChain = getChainByName(chains, params.segments);
   const title = `Jumper | How To Swap on ${sourceChain?.name} | A Complete Guide`;
 
   const openGraph: Metadata['openGraph'] = {
@@ -56,10 +52,7 @@ export default async function Page({
     const sourceChainId = decodeURIComponent(segments);
     const { chains } = await getChainsQuery();
     const { tokens } = await getTokensQuery();
-    const sourceChain = getChainById(
-      chains,
-      parseInt(sourceChainId) as unknown as ChainId,
-    );
+    const sourceChain = getChainByName(chains, sourceChainId);
 
     if (!sourceChain) {
       return notFound();
