@@ -2,6 +2,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Typography } from '@mui/material';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { BackButtonStyles } from './BackButton.style';
 
 interface BackButtonProps {
@@ -14,7 +15,7 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
 
   return (
     <Link
-      href={path ?? '/profile'}
+      href={path ?? JUMPER_LOYALTY_PATH}
       style={{ textDecoration: 'none', width: 168, display: 'block' }}
     >
       <BackButtonStyles size={'large'}>
