@@ -32,8 +32,13 @@ export async function getQuestBySlug(
   }
 
   const data = await res.json(); // Extract data from the response
-
-  if (!data || !Array.isArray(data.data) || data.data.length === 0) {
+  if (
+    !data || // Check if data is undefined or null
+    !data.data || // Check if data.data is undefined or null
+    !Array.isArray(data.data) || // Check if data.data is not an array
+    data.data.length === 0 || // Check if data.data is an empty array
+    data.data[0] === 0 // Check if the first element is exactly zero (assuming this is an invalid value)
+  ) {
     return { data: undefined, url: apiBaseUrl };
   }
   if (type === 'ExtendedQuest') {
