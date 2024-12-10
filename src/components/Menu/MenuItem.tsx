@@ -1,8 +1,7 @@
 import { ButtonSecondary } from '@/components/Button/Button.style';
-import type { MenuKeysEnum } from '@/const/menuKeys';
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
-import type { MouseEventHandler } from 'react';
+import type { MouseEvent, MouseEventHandler, ReactNode } from 'react';
 import { MenuItemContainer, MenuItemLink } from '.';
 import { MenuItemLabel } from './MenuItemLabel';
 
@@ -10,10 +9,11 @@ export interface MenuItemLinkType {
   url: string;
   external?: boolean;
 }
+
 interface MenuItemProps {
   open: boolean;
   showButton: boolean | undefined;
-  children?: Element | JSX.Element | undefined;
+  children?: ReactNode; // Update the type here
   disableRipple?: boolean | undefined;
   autoFocus?: boolean;
   showMoreIcon?: boolean;
@@ -21,7 +21,6 @@ interface MenuItemProps {
   link?: MenuItemLinkType;
   label?: string;
   onClick?: MouseEventHandler<HTMLLIElement>;
-  triggerSubMenu?: MenuKeysEnum;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
 }
@@ -37,7 +36,6 @@ export const MenuItem = ({
   styles,
   onClick,
   label,
-  triggerSubMenu,
   prefixIcon,
   suffixIcon,
 }: MenuItemProps) => {
@@ -49,7 +47,7 @@ export const MenuItem = ({
       showButton={showButton || false}
       sx={styles}
       autoFocus={autoFocus}
-      onClick={(event) => {
+      onClick={(event: MouseEvent<HTMLLIElement>) => {
         event.stopPropagation();
         if (!children) {
           onClick && onClick(event);

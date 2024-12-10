@@ -281,46 +281,46 @@ export function WidgetEvents() {
       }
     };
 
-    const onTokenSearch = async ({ value, tokens }: TokenSearchProps) => {
-      const lowercaseValue = value?.toLowerCase();
-      const { isValid, addressType } = isValidEvmOrSvmAddress(lowercaseValue);
-      const SearchNothingFound = tokens?.length > 0 ? false : true;
-      const tokenAddress = tokens?.length > 0 ? tokens?.[0]?.address : '';
-      const tokenName = tokens?.length > 0 ? tokens?.[0]?.name : '';
-      const tokenSymbol = tokens?.length > 0 ? tokens?.[0]?.symbol : '';
-      const tokenChainId = tokens?.length > 0 ? tokens?.[0]?.chainId : '';
+    // const onTokenSearch = async ({ value, tokens }: TokenSearchProps) => {
+    //   const lowercaseValue = value?.toLowerCase();
+    //   const { isValid, addressType } = isValidEvmOrSvmAddress(lowercaseValue);
+    //   const SearchNothingFound = tokens?.length > 0 ? false : true;
+    //   const tokenAddress = tokens?.length > 0 ? tokens?.[0]?.address : '';
+    //   const tokenName = tokens?.length > 0 ? tokens?.[0]?.name : '';
+    //   const tokenSymbol = tokens?.length > 0 ? tokens?.[0]?.symbol : '';
+    //   const tokenChainId = tokens?.length > 0 ? tokens?.[0]?.chainId : '';
 
-      trackEvent({
-        category: TrackingCategory.WidgetEvent,
-        action: TrackingAction.OnTokenSearch,
-        label: `token_search`,
-        data: {
-          [TrackingEventParameter.SearchValue]: lowercaseValue,
-          [TrackingEventParameter.SearchIsAddress]: isValid,
-          [TrackingEventParameter.SearchAddressType]: addressType as string,
-          [TrackingEventParameter.SearchNumberOfResult]: tokens?.length,
-          [TrackingEventParameter.SearchNothingFound]: SearchNothingFound,
-          [TrackingEventParameter.SearchFirstResultAddress]: tokenAddress,
-          [TrackingEventParameter.SearchFirstResultName]: tokenName,
-          [TrackingEventParameter.SearchFirstResultSymbol]: tokenSymbol,
-          [TrackingEventParameter.SearchFirstResultChainId]: tokenChainId,
-        },
-      });
-    };
+    //   trackEvent({
+    //     category: TrackingCategory.WidgetEvent,
+    //     action: TrackingAction.OnTokenSearch,
+    //     label: `token_search`,
+    //     data: {
+    //       [TrackingEventParameter.SearchValue]: lowercaseValue,
+    //       [TrackingEventParameter.SearchIsAddress]: isValid,
+    //       [TrackingEventParameter.SearchAddressType]: addressType as string,
+    //       [TrackingEventParameter.SearchNumberOfResult]: tokens?.length,
+    //       [TrackingEventParameter.SearchNothingFound]: SearchNothingFound,
+    //       [TrackingEventParameter.SearchFirstResultAddress]: tokenAddress,
+    //       [TrackingEventParameter.SearchFirstResultName]: tokenName,
+    //       [TrackingEventParameter.SearchFirstResultSymbol]: tokenSymbol,
+    //       [TrackingEventParameter.SearchFirstResultChainId]: tokenChainId,
+    //     },
+    //   });
+    // };
 
-    const onRouteSelected = async ({ route, routes }: RouteSelectedProps) => {
-      const position = routes.findIndex((elem: Route) => elem.id === route.id);
-      const data = handleRouteEventDetails(route, {
-        [TrackingEventParameter.RoutePosition]: position,
-      });
+    // const onRouteSelected = async ({ route, routes }: RouteSelectedProps) => {
+    //   const position = routes.findIndex((elem: Route) => elem.id === route.id);
+    //   const data = handleRouteEventDetails(route, {
+    //     [TrackingEventParameter.RoutePosition]: position,
+    //   });
 
-      trackEvent({
-        category: TrackingCategory.WidgetEvent,
-        action: TrackingAction.OnRouteSelected,
-        label: `route_selected`,
-        data,
-      });
-    };
+    //   trackEvent({
+    //     category: TrackingCategory.WidgetEvent,
+    //     action: TrackingAction.OnRouteSelected,
+    //     label: `route_selected`,
+    //     data,
+    //   });
+    // };
 
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
@@ -344,8 +344,8 @@ export function WidgetEvents() {
       WidgetEvent.DestinationChainTokenSelected,
       onDestinationChainTokenSelection,
     );
-    widgetEvents.on(WidgetEvent.RouteSelected, onRouteSelected);
-    widgetEvents.on(WidgetEvent.TokenSearch, onTokenSearch);
+    // widgetEvents.on(WidgetEvent.RouteSelected, onRouteSelected);
+    // widgetEvents.on(WidgetEvent.TokenSearch, onTokenSearch);
 
     // widgetEvents.on(WidgetEvent.WidgetExpanded, onWidgetExpanded);
 

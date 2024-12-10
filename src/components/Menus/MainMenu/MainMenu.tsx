@@ -1,9 +1,9 @@
 import { Menu } from '@/components/Menu/Menu';
 import { MenuItem } from '@/components/Menu/MenuItem';
+import { ThemeSubmenu } from '@/components/Menus/ThemeSubMenu/ThemeSubMenu';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
 import { DevelopersSubmenu, LanguagesSubmenu, useMainMenuContent } from '..';
-import { ThemeSubmenu } from '@/components/Menus/ThemeSubMenu/ThemeSubMenu';
 
 interface MenuProps {
   anchorEl?: HTMLAnchorElement;
@@ -33,7 +33,6 @@ export const MainMenu = ({ anchorEl }: MenuProps) => {
             link={el.link}
             styles={el.styles}
             children={el.children}
-            triggerSubMenu={el.triggerSubMenu}
             showButton={el.showButton}
             disableRipple={el.disableRipple}
             showMoreIcon={el.showMoreIcon}

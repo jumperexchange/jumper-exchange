@@ -1,6 +1,8 @@
 import { alpha, Box, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
+import { useWalletAddressImg } from 'src/hooks/useAddressImg';
+import { effigyAddressFormatter } from 'src/utils/effigyAddressFormatter';
 import { walletDigest } from 'src/utils/walletDigest';
 import { ConnectButton } from '../ConnectButton';
 import {
@@ -12,8 +14,6 @@ import {
   RankWalletImage,
   RankWalletImageSkeleton,
 } from './LeaderboardEntry.style';
-import { effigyAddressFormatter } from 'src/utils/effigyAddressFormatter';
-import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 
 interface LeaderboardEntryProps {
   isUserPosition?: boolean;

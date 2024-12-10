@@ -18,6 +18,7 @@ import type { ActiveThemeResult } from '../lib/getActiveTheme';
 import { getActiveTheme } from '../lib/getActiveTheme';
 import { description, siteName, title } from '../lib/metadata';
 import { getSiteUrl } from '@/const/urls';
+import ForceReloadOnUpdate from '@/components/ForceReloadOnUpdate';
 
 export const metadata: Metadata = {
   title,
@@ -180,6 +181,7 @@ export default async function RootLayout({
                   <SettingsStoreProvider
                     welcomeScreenClosed={welcomeScreenClosed}
                   >
+                    <ForceReloadOnUpdate />
                     <WalletProvider>{children}</WalletProvider>
                   </SettingsStoreProvider>
                 </ThemeProvider>

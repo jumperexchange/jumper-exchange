@@ -1,7 +1,6 @@
-import { ZERO_ADDRESS } from 'src/const/zeroAddress';
+import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 import type { GetEnsNameReturnType } from 'wagmi/actions';
 import { walletDigest } from './walletDigest';
-import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 interface getAddressLabelProps {
   isSuccess: boolean;
   ensName?: GetEnsNameReturnType;
