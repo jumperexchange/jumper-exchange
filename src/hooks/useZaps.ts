@@ -2,30 +2,28 @@ import { useQuery } from '@tanstack/react-query';
 
 interface UseZapsProps {
   chain: string;
+  address: string;
   project: string;
-  product: string;
-  method: string;
-  params: any;
 }
 
 export const useZaps = (zapParams: UseZapsProps) => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   // request params
-  const { chain, project, product, method, params } = zapParams;
+  const { chain, address, project } = zapParams;
 
   // get data
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['zaps', `${chain}-${product}-${project}-${method}`],
+    queryKey: ['zaps', `${chain}-${address}-${project}`],
     queryFn: async () => {
-      if (!chain || !project || !product || !method || !params) {
+      if (!chain || !address || !project) {
         return { data: null, isSuccess: false, isLoading: false };
       }
 
       // post request
-      const res = await fetch(`${apiBaseUrl}/zaps/generate-zap-data`, {
+      const res = await fetch(`${apiBaseUrl}/zaps/get-zap-data`, {
         method: 'POST',
-        body: JSON.stringify({ chain, product, project, method, params }),
+        body: JSON.stringify({ chain, address, project }),
         headers: {
           'Content-Type': 'application/json',
         },

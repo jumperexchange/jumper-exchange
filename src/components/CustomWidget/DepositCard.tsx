@@ -99,15 +99,6 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
           label={token.symbol}
           avatar={<Avatar alt={token.symbol} src={token.logoURI} />}
         />
-        {/* <Chip
-          label="Vault"
-          avatar={
-            <Avatar
-              alt="Vault"
-              src={'https://gravatar.com/avatar/any?d=retro'}
-            />
-          }
-        /> */}
       </Box>
     </Stack>
   );

@@ -1,4 +1,4 @@
-import type { ContractCall, WidgetConfig, TokenAmount } from '@lifi/widget';
+import type { WidgetConfig, TokenAmount } from '@lifi/widget';
 import { ChainType, DisabledUI, HiddenUI, LiFiWidget } from '@lifi/widget';
 import { formatUnits } from 'viem';
 import { useEffect, useMemo, useState } from 'react';
@@ -7,35 +7,21 @@ import type { Account } from '@lifi/wallet-management';
 import { DepositCard } from './DepositCard';
 import { useContractRead } from 'src/hooks/useReadContractData';
 
-const CHAINS: Record<string, number> = {
-  ethereum: 1,
-  base: 8453,
-};
-
 interface CustomWidgetProps {
   account: Account;
 }
-
-// TODO: abstract this to JSON file
+// hardcoded for now
 const projectData = {
   chain: 'ethereum',
   project: 'mellow',
-  product: 'ethereum-steaklrt',
-  method: 'deposit',
-  params: {
-    to: '0x0000000000000000000000000000000000000000',
-    amounts: ['0'],
-    minLpAmount: '0',
-    deadline: '1717334400',
-  }, // TODO: take this from input
-  displayName: 'Mellow Finance',
+  address: '0xBEEF69Ac7870777598A04B2bd4771c71212E6aBc',
 };
 
 export function CustomWidget({ account }: CustomWidgetProps) {
   const [token, setToken] = useState<TokenAmount>();
   const { data, isSuccess } = useZaps(projectData);
   const { data: depositTokenData } = useContractRead({
-    address: data?.data?.marketAddress,
+    address: projectData.address as `0x${string}`,
     functionName: 'balanceOf',
     abi: [
       {
@@ -53,14 +39,14 @@ export function CustomWidget({ account }: CustomWidgetProps) {
     if (isSuccess) {
       setToken({
         chainId: 1,
-        address: data?.data?.depositToken.address,
+        address: projectData.address as `0x${string}`,
         symbol: data?.data?.depositToken.symbol,
         name: data?.data?.depositToken.name,
         decimals: data?.data?.depositToken.decimals,
         priceUSD: data?.data?.depositToken.priceUSD,
-        coinKey: 'wstETH' as any,
+        coinKey: data?.data?.depositToken.name as any,
         logoURI: data?.data?.depositToken.logoURI,
-        amount: '0' as any,
+        amount: 0,
       });
     }
   }, [isSuccess]);
@@ -74,7 +60,7 @@ export function CustomWidget({ account }: CustomWidgetProps) {
       },
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
-      integrator: 'jumper.exchange',
+      integrator: 'zap.mellow',
       disabledUI: [DisabledUI.ToAddress],
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language],
       useRecommendedRoute: true,
@@ -88,13 +74,10 @@ export function CustomWidget({ account }: CustomWidgetProps) {
     return baseConfig;
   }, [isSuccess]);
 
-  let analytics = data?.data?.analytics?.find(
-    (item: any) => item.id === projectData.product,
-  );
-
-  if (depositTokenData) {
-    analytics.position = formatUnits(depositTokenData, 18);
-  }
+  const analytics = {
+    ...data?.data?.analytics,
+    position: depositTokenData ? formatUnits(depositTokenData, 18) : 0,
+  };
 
   return (
     <>
