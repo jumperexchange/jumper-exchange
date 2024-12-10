@@ -1,11 +1,12 @@
-import type { Metadata } from 'next';
+import { type Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { siteName } from 'src/app/lib/metadata';
+import ZapPage from 'src/app/ui/zap/ZapPage';
+import { zapMarkets } from 'src/components/Zap/zapExampleData';
 import { getSiteUrl } from 'src/const/urls';
 import type { QuestAttributes } from 'src/types/loyaltyPass';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
-import { getQuestBySlug } from '../../../lib/getQuestBySlug';
-import QuestPage from '../../../ui/quests/QuestMissionPage';
 
 export async function generateMetadata({
   params,
@@ -22,10 +23,10 @@ export async function generateMetadata({
     const questData = quest.data.attributes as QuestAttributes;
 
     const openGraph: Metadata['openGraph'] = {
-      title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
-      description: `${sliceStrToXChar(questData.Information || 'Quest description', 60)}`,
+      title: `Jumper | Zaps - ${sliceStrToXChar(questData.Title, 45)}`,
+      description: `${sliceStrToXChar(questData.Information || 'Zap description', 60)}`,
       siteName: siteName,
-      url: `${getSiteUrl()}/quests/${params.slug}`,
+      url: `${getSiteUrl()}/zap/${params.slug}`,
       images: [
         {
           url: `${quest.url}${questData.Image.data.attributes?.url}`,
@@ -38,26 +39,37 @@ export async function generateMetadata({
     };
 
     return {
-      title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
+      title: `Jumper | Zaps - ${sliceStrToXChar(questData.Title, 45)}`,
       description: questData.Subtitle,
       alternates: {
-        canonical: `${getSiteUrl()}/quests/${params.slug}`,
+        canonical: `${getSiteUrl()}/zap/${params.slug}`,
       },
       twitter: openGraph,
       openGraph,
     };
   } catch (err) {
     return {
-      title: `Jumper Quest | ${sliceStrToXChar(params.slug.replaceAll('-', ' '), 45)}`,
-      description: `This is the description for the quest "${params.slug.replaceAll('-', ' ')}".`,
+      title: `Jumper | Zaps - ${sliceStrToXChar(params.slug.replaceAll('-', ' '), 45)}`,
+      description: 'Use Jumper to zap into DeFi protocols',
     };
   }
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const { data, url } = await getQuestBySlug(params.slug);
+  const { data } = await getQuestBySlug(params.slug, 'ExtendedQuest');
+
   if (!data) {
     return notFound();
   }
-  return <QuestPage quest={data} url={url} />;
+
+  const questData = data;
+
+  if (questData) {
+    const protocolDetails = zapMarkets.filter(
+      (market) => market.slug === questData.attributes.Slug,
+    );
+    questData.protocolInfos = protocolDetails[0];
+  }
+
+  return <ZapPage market={questData} />;
 }
