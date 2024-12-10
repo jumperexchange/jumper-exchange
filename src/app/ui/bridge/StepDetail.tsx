@@ -4,8 +4,6 @@ import Image from 'next/image';
 import type { ReactElement } from 'react';
 import { StepDetailContainer } from './StepDetail.style';
 
-const WIDGET_AMOUNT = 3;
-
 interface StepDetailImageProps {
   imgUrl: string;
   width: number;

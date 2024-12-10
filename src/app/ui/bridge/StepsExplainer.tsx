@@ -27,19 +27,19 @@ const StepsExplainerSection = ({
     {
       title: 'Step 1: Prepare Your Assets',
       description: `Before you can bridge your assets, you need to ensure you have the necessary funds and assets on the ${sourceChain?.name} network. Make sure you have the correct ${sourceChain?.name} wallet address and that your ${sourceToken?.name} account is funded.`,
-      img: getWidgetImageProps(
+      img: getWidgetImageProps({
         sourceToken,
         sourceChain,
         destinationToken,
         destinationChain,
         theme,
-        {
+        widgetImageProps: {
           endpoint: 'widget-selection',
           width: 416,
           height: 496,
           alt: 'Widget Selection Image',
         },
-      ),
+      }),
     },
     {
       title: 'Step 2: Check Available Bridge Options',
@@ -55,19 +55,19 @@ const StepsExplainerSection = ({
           <li>Celer</li>
         </ul>
       ),
-      img: getWidgetImageProps(
+      img: getWidgetImageProps({
         sourceToken,
         sourceChain,
         destinationToken,
         destinationChain,
         theme,
-        {
+        widgetImageProps: {
           endpoint: 'widget-quotes',
           width: 856,
           height: 490,
           alt: 'Widget Quotes Image',
         },
-      ),
+      }),
     },
     {
       title: 'Step 3: Select a Bridge',
@@ -81,19 +81,19 @@ const StepsExplainerSection = ({
           </li>
         </ul>
       ),
-      img: getWidgetImageProps(
+      img: getWidgetImageProps({
         sourceToken,
         sourceChain,
         destinationToken,
         destinationChain,
         theme,
-        {
+        widgetImageProps: {
           endpoint: 'widget-review',
           width: 416,
           height: 440,
           alt: 'Widget Review Image',
         },
-      ),
+      }),
     },
     {
       title: 'Step 4: Bridge Your Assets',
@@ -107,19 +107,19 @@ const StepsExplainerSection = ({
           </li>
         </ul>
       ),
-      img: getWidgetImageProps(
+      img: getWidgetImageProps({
         sourceToken,
         sourceChain,
         destinationToken,
         destinationChain,
         theme,
-        {
+        widgetImageProps: {
           endpoint: 'widget-execution',
           width: 416,
           height: 432,
           alt: 'Widget Execution Image',
         },
-      ),
+      }),
     },
     {
       title: 'Step 5: Verify Your Bridge',
@@ -140,19 +140,19 @@ const StepsExplainerSection = ({
           </li>
         </ul>
       ),
-      img: getWidgetImageProps(
+      img: getWidgetImageProps({
         sourceToken,
         sourceChain,
         destinationToken,
         destinationChain,
         theme,
-        {
+        widgetImageProps: {
           endpoint: 'widget-success',
           width: 416,
           height: 432,
           alt: 'Widget Success Image',
         },
-      ),
+      }),
     },
   ];
 
