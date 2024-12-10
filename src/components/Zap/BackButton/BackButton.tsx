@@ -9,7 +9,7 @@ interface BackButtonProps {
   path?: string;
   title?: string;
 }
-
+// todo: cleanup and use one single BackButton component
 export const BackButton = ({ path, title }: BackButtonProps) => {
   const { t } = useTranslation();
 
