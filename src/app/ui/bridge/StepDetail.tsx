@@ -22,10 +22,7 @@ interface StepDetailProps {
 
 const StepDetail = ({ title, description, img, content }: StepDetailProps) => {
   return (
-    <StepDetailContainer
-      sx={(theme) => ({ marginTop: theme.spacing(4) })}
-      imgWidth={img.width}
-    >
+    <StepDetailContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
       <Box>
         <Typography variant="h4" marginY={2} sx={{ fontSize: '24p' }}>
           {title}

@@ -5,7 +5,7 @@ import { Typography } from '@mui/material';
 const BridgeExplanationSection = () => {
   return (
     <BridgePageContainer>
-      <Typography variant="h3" marginY={2} sx={{ fontSize: '32px' }}>
+      <Typography variant="h3" marginY={2} sx={{ fontSize: '32px !important' }}>
         What is a Blockchain / Crypto Bridge?
       </Typography>
       <Typography>
@@ -33,7 +33,7 @@ const BridgeExplanationSection = () => {
         variant="h4"
         marginY={2}
         sx={{
-          fontSize: '24px',
+          fontSize: '24px !important',
         }}
       >
         Here's why bridges are essential for enhancing blockchain
@@ -61,7 +61,7 @@ const BridgeExplanationSection = () => {
       <Typography
         variant="h4"
         sx={{
-          fontSize: '24px',
+          fontSize: '24px !important',
           marginTop: '4px',
           marginBottom: '2px',
         }}
@@ -80,7 +80,7 @@ const BridgeExplanationSection = () => {
       <Typography
         variant="h4"
         sx={{
-          fontSize: '24px',
+          fontSize: '24px !important',
           marginTop: '4px',
           marginBottom: '2px',
         }}
@@ -99,7 +99,7 @@ const BridgeExplanationSection = () => {
       <Typography
         variant="h4"
         sx={{
-          fontSize: '24px',
+          fontSize: '24px !important',
           marginTop: '4px',
           marginBottom: '2px',
         }}
@@ -116,7 +116,7 @@ const BridgeExplanationSection = () => {
       <Typography
         variant="h4"
         sx={{
-          fontSize: '24px',
+          fontSize: '24px !important',
           marginTop: '4px',
           marginBottom: '2px',
         }}

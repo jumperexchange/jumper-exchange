@@ -3,13 +3,7 @@
 import type { BoxProps, Breakpoint } from '@mui/system';
 import { Box, styled } from '@mui/system';
 
-interface StepDetailContainerProps {
-  imgWidth: number;
-}
-
-export const StepDetailContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'imgWidth',
-})<StepDetailContainerProps>(({ theme, imgWidth }) => ({
+export const StepDetailContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(3),
