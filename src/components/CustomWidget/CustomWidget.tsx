@@ -39,7 +39,7 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
   useEffect(() => {
     if (isSuccess) {
       setToken({
-        chainId: 1,
+        chainId: projectData.chain === 'ethereum' ? 1 : 8453,
         address: data?.data?.market?.address as `0x${string}`,
         symbol: data?.data?.market?.lpToken.symbol,
         name: data?.data?.market?.lpToken.name,
@@ -56,12 +56,12 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
     const baseConfig: WidgetConfig = {
       toAddress: {
         ...data?.data?.meta,
-        address: data?.data?.marketAddress,
+        address: data?.data?.market?.address,
         chainType: ChainType.EVM,
       },
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
-      integrator: 'zap.mellow',
+      integrator: projectData.project === 'mellow' ? 'zap.mellow' : 'zap.ionic',
       disabledUI: [DisabledUI.ToAddress],
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language],
       useRecommendedRoute: true,
