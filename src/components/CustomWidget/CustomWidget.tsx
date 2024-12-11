@@ -7,17 +7,18 @@ import type { Account } from '@lifi/wallet-management';
 import { DepositCard } from './DepositCard';
 import { useContractRead } from 'src/hooks/useReadContractData';
 
+export interface ProjectData {
+  chain: string;
+  project: string;
+  address: string;
+}
+
 interface CustomWidgetProps {
   account: Account;
+  projectData: ProjectData;
 }
-// hardcoded for now
-const projectData = {
-  chain: 'ethereum',
-  project: 'mellow',
-  address: '0xBEEF69Ac7870777598A04B2bd4771c71212E6aBc',
-};
 
-export function CustomWidget({ account }: CustomWidgetProps) {
+export function CustomWidget({ account, projectData }: CustomWidgetProps) {
   const [token, setToken] = useState<TokenAmount>();
   const { data, isSuccess } = useZaps(projectData);
   const { data: depositTokenData } = useContractRead({

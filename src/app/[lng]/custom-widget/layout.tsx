@@ -1,7 +1,7 @@
-import { getCookies } from '@/app/lib/getCookies';
 import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
 import { Layout } from 'src/Layout';
+import { WalletProviderZap } from 'src/providers/WalletProvider/ZapWalletProvider';
 
 export const metadata: Metadata = {
   other: {
@@ -12,7 +12,9 @@ export const metadata: Metadata = {
 export default async function MainLayout({ children }: PropsWithChildren) {
   return (
     <>
-      <Layout>{children}</Layout>
+      <WalletProviderZap>
+        <Layout>{children}</Layout>
+      </WalletProviderZap>
     </>
   );
 }

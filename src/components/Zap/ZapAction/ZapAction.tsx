@@ -36,6 +36,7 @@ import {
 } from './ZapAction.style';
 import { ZapActionFaqAccordionHeader } from './ZapActionFaqAccordionHeader';
 import { ZapWidget } from './Zapwidget';
+import CustomWidgetPage from '@/app/ui/custom-widget/CustomWidgetPage';
 
 interface ZapActionProps {
   market?: Quest;
@@ -76,19 +77,30 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
   };
 
   const tabs: TabProps[] = [
-    { label: 'Get USDz', value: 0, onClick: () => setTab(0) },
-    { label: 'Deposit', value: 1, onClick: () => setTab(1) },
-    { label: 'Withdraw', value: 2, onClick: () => setTab(2) },
+    { label: 'Deposit', value: 0, onClick: () => setTab(0) },
+    { label: 'Withdraw', value: 1, onClick: () => setTab(1) },
   ];
 
   const renderZapWidget = () => {
+    const projectData = {
+      chain: 'ethereum',
+      project: 'mellow',
+      address: '0xBEEF69Ac7870777598A04B2bd4771c71212E6aBc',
+    };
+
     switch (tab) {
       case 0:
-        return <ZapWidget starterVariant={'default'} autoHeight={true} />;
+        return (
+          <>
+            <CustomWidgetPage projectData={projectData} />
+          </>
+        );
       case 1:
-        return <ZapWidget starterVariant={'refuel'} autoHeight={true} />;
-      case 2:
-        return <ZapWidget starterVariant={'custom'} autoHeight={true} />;
+        return (
+          <>
+            <ZapWidget starterVariant={'custom'} autoHeight={true} />
+          </>
+        );
       default:
         return null;
     }
