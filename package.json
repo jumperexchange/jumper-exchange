@@ -6,7 +6,7 @@
   "repository": "https://github.com/jumperexchange/jumper-exchange",
   "packageManager": "yarn@4.5.1",
   "dependencies": {
-    "@bigmi/react": "^0.0.4",
+    "@bigmi/react": "^0.0.5",
     "@emotion/cache": "^11.13.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",

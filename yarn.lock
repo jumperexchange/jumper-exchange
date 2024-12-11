@@ -1434,21 +1434,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bigmi/client@npm:^0.0.4":
-  version: 0.0.4
-  resolution: "@bigmi/client@npm:0.0.4"
-  dependencies:
-    "@bigmi/core": "npm:^0.0.4"
-    "@wagmi/core": "npm:^2.14.1"
-    viem: "npm:^2.21.35"
-    wagmi: "npm:^2.12.25"
-  peerDependencies:
-    viem: ^2.21.0
-    wagmi: ^2.12.0
-  checksum: 10/eab058887e52ebb74243c195497f379cead3cc73d27923b8e32ad23c3f56d0fa84f0f25acb6820d2d506b0650241a2d6c40689f40094a1648138855338834e11
-  languageName: node
-  linkType: hard
-
 "@bigmi/client@npm:^0.0.5":
   version: 0.0.5
   resolution: "@bigmi/client@npm:0.0.5"
@@ -1461,23 +1446,6 @@ __metadata:
     viem: ^2.21.0
     wagmi: ^2.12.0
   checksum: 10/38939f57a6729f7b63db37207ac867a8624e51289a0dc8dffcbcc800f033e3b055f5a0c9c2a32dba8da27978929e66b18d3c2eb840eee59b771200103941efd8
-  languageName: node
-  linkType: hard
-
-"@bigmi/core@npm:^0.0.4":
-  version: 0.0.4
-  resolution: "@bigmi/core@npm:0.0.4"
-  dependencies:
-    "@noble/hashes": "npm:^1.5.0"
-    bech32: "npm:^2.0.0"
-    bitcoinjs-lib: "npm:^7.0.0-rc.0"
-    bs58: "npm:^6.0.0"
-    viem: "npm:^2.21.35"
-  peerDependencies:
-    bitcoinjs-lib: ^7.0.0-rc.0
-    bs58: ^6.0.0
-    viem: ^2.21.0
-  checksum: 10/4a65b0106ff4d833a517eae049bcf86dfbf08f326015e3f83c586599b44c51fefeeff6437db6da7a19f2aeb1f42a95ecd73a3c845aaebed974310cfbc84efba6
   languageName: node
   linkType: hard
 
@@ -1495,24 +1463,6 @@ __metadata:
     bs58: ^6.0.0
     viem: ^2.21.0
   checksum: 10/9a851a7264603a95f8cfde27ff5a524a8495186f94abbb998055d0acc8a3f8be067d1c874a9c826692a68e7febf9ce0f91a013d2b40cc8fe2112deb272177382
-  languageName: node
-  linkType: hard
-
-"@bigmi/react@npm:^0.0.4":
-  version: 0.0.4
-  resolution: "@bigmi/react@npm:0.0.4"
-  dependencies:
-    "@bigmi/client": "npm:^0.0.4"
-    "@bigmi/core": "npm:^0.0.4"
-    use-sync-external-store: "npm:^1.2.2"
-    viem: "npm:^2.21.35"
-    wagmi: "npm:^2.12.25"
-  peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
-    viem: ^2.21.0
-    wagmi: ^2.12.0
-  checksum: 10/f4ddc545f19799f83d779ee3cdab6846f1ed65079742808b6f28ccc0127204014ae632d632fd9f4def2130fa0a85b64ef72f8e7e6911bfc79068dd1863341770
   languageName: node
   linkType: hard
 
@@ -6633,7 +6583,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wagmi/core@npm:2.15.2, @wagmi/core@npm:^2.14.1, @wagmi/core@npm:^2.15.2":
+"@wagmi/core@npm:2.15.2, @wagmi/core@npm:^2.15.2":
   version: 2.15.2
   resolution: "@wagmi/core@npm:2.15.2"
   dependencies:
@@ -11386,7 +11336,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "jumper.exchange@workspace:."
   dependencies:
-    "@bigmi/react": "npm:^0.0.4"
+    "@bigmi/react": "npm:^0.0.5"
     "@emotion/cache": "npm:^11.13.1"
     "@emotion/react": "npm:^11.13.3"
     "@emotion/styled": "npm:^11.13.0"
@@ -15370,7 +15320,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^2.1.1, viem@npm:^2.21.35, viem@npm:^2.21.54":
+"viem@npm:^2.1.1, viem@npm:^2.21.54":
   version: 2.21.54
   resolution: "viem@npm:2.21.54"
   dependencies:
@@ -15399,7 +15349,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wagmi@npm:^2.12.25, wagmi@npm:^2.13.3":
+"wagmi@npm:^2.13.3":
   version: 2.13.5
   resolution: "wagmi@npm:2.13.5"
   dependencies:
