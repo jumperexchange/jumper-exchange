@@ -16,7 +16,6 @@ interface SwapPageProps {
 
 const BridgePage = ({
   sourceChain,
-  tokens,
   destinationToken,
   sourceToken,
 }: SwapPageProps) => {

@@ -10,7 +10,7 @@ const SwapExplanationSection = () => {
   ];
   return (
     <SeoPageContainer
-      sx={(theme) => ({
+      sx={() => ({
         width: '100%',
       })}
     >
