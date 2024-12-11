@@ -40,13 +40,13 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
     if (isSuccess) {
       setToken({
         chainId: 1,
-        address: projectData.address as `0x${string}`,
-        symbol: data?.data?.depositToken.symbol,
-        name: data?.data?.depositToken.name,
-        decimals: data?.data?.depositToken.decimals,
-        priceUSD: data?.data?.depositToken.priceUSD,
-        coinKey: data?.data?.depositToken.name as any,
-        logoURI: data?.data?.depositToken.logoURI,
+        address: data?.data?.market?.address as `0x${string}`,
+        symbol: data?.data?.market?.lpToken.symbol,
+        name: data?.data?.market?.lpToken.name,
+        decimals: data?.data?.market?.lpToken.decimals,
+        priceUSD: '0',
+        coinKey: data?.data?.market?.lpToken.name as any,
+        logoURI: data?.data?.meta?.logoURI,
         amount: '0' as any,
       });
     }
