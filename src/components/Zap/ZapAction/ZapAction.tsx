@@ -37,6 +37,7 @@ import {
 import { ZapActionFaqAccordionHeader } from './ZapActionFaqAccordionHeader';
 import { ZapWidget } from './Zapwidget';
 import CustomWidgetPage from '@/app/ui/custom-widget/CustomWidgetPage';
+import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
 
 interface ZapActionProps {
   market?: Quest;
@@ -94,7 +95,45 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
       case 1:
         return (
           <>
-            <ZapWidget starterVariant={'custom'} autoHeight={true} />
+            <WidgetLikeField
+              contractCalls={[
+                {
+                  label: 'Approve',
+                  type: 'sign',
+                  message: 'test',
+                  onVerify: async (arg) => {
+                    // Do something
+                    await new Promise((resolve) => setTimeout(resolve, 4000));
+
+                    return true;
+                  },
+                },
+                {
+                  label: 'Withdraw',
+                  type: 'send',
+                  data: '',
+                  onVerify: (arg) => {
+                    return Promise.resolve(true);
+                  },
+                },
+              ]}
+              overrideStyle={{ mainColor: '#FF8425' }}
+              label="Withdraw"
+              placeholder="Enter the amount"
+              hasMaxButton={true}
+              helperText={{
+                left: 'I am a left test',
+                right: 'I am a right test',
+              }}
+              image={{
+                url: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+                name: 'theter',
+                badge: {
+                  url: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
+                  name: 'ff',
+                },
+              }}
+            />
           </>
         );
       default:

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function InfosLayout({ children }: PropsWithChildren) {
+export default async function MainLayout({ children }: PropsWithChildren) {
   return (
     <WalletProviderZap>
       <Layout>{children}</Layout>
