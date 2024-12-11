@@ -109,8 +109,6 @@ function WidgetLikeField({
   //   );
   // });
 
-  console.log('index', contractCallIndex);
-
   if (contractCalls.length === contractCallIndex) {
     return (
       <Button
@@ -134,11 +132,11 @@ function WidgetLikeField({
   const { mutate, isPending, isSuccess, isError } =
     contractMutations[contractCallIndex];
 
-  console.log('sss', contractMutations);
+  // console.log('sss', contractMutations);
 
   async function onSubmit(e: any) {
     try {
-      console.log('submitted', e);
+      // console.log('submitted', e);
       e.preventDefault();
       mutate();
     } catch (e) {
