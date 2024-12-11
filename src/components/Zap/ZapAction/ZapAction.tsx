@@ -82,18 +82,14 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
   ];
 
   const renderZapWidget = () => {
-    const projectData = {
-      chain: 'ethereum',
-      project: 'mellow',
-      address: '0xBEEF69Ac7870777598A04B2bd4771c71212E6aBc',
-    };
-
     switch (tab) {
       case 0:
-        return (
+        return detailInformation?.projectData ? (
           <>
-            <CustomWidgetPage projectData={projectData} />
+            <CustomWidgetPage projectData={detailInformation?.projectData} />
           </>
+        ) : (
+          <>loading</>
         );
       case 1:
         return (

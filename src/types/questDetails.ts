@@ -1,6 +1,7 @@
 import type { ChainId } from '@lifi/sdk';
 import type { FaqProps } from 'src/components/AccordionFAQ';
 import type { Quest } from './loyaltyPass';
+import { ProjectData } from 'src/components/CustomWidget/CustomWidget';
 
 export interface QuestSocials {
   twitter: string;
@@ -12,6 +13,7 @@ export interface QuestDetails {
   type: string;
   socials: QuestSocials;
   faqItems: FaqProps[];
+  projectData: ProjectData;
 }
 
 export interface ExtendedQuest extends Quest {
