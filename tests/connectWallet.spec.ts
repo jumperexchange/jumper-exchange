@@ -1,7 +1,11 @@
 import { execSync } from 'child_process';
 import { testWithSynpress } from '@synthetixio/synpress-core';
 import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
-import { openOrCloseMainMenu, itemInMenu, closeWelcomeScreen } from './testData/commonFunctions';
+import {
+  openOrCloseMainMenu,
+  itemInMenu,
+  closeWelcomeScreen,
+} from './testData/commonFunctions';
 import basicSetup from './wallet-setup/basic.setup';
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -20,9 +24,15 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
       extensionId,
     );
     const connectWalletButton = page.locator('#connect-wallet-button');
-    const metaMaskWalletOption = page.locator('xpath=//span[normalize-space(text())="MetaMask"]');
-    const availableMissionTitle = page.locator('xpath=//p[normalize-space(text())="Available Missions"]');
-    const ethereumOption = page.locator('xpath=//span[normalize-space(text())="Ethereum"]');
+    const metaMaskWalletOption = page.locator(
+      'xpath=//span[normalize-space(text())="MetaMask"]',
+    );
+    const availableMissionTitle = page.locator(
+      'xpath=//p[normalize-space(text())="Available Missions"]',
+    );
+    const ethereumOption = page.locator(
+      'xpath=//span[normalize-space(text())="Ethereum"]',
+    );
     await page.goto('/');
     await expect(connectWalletButton).toBeEnabled();
     await connectWalletButton.click();
