@@ -76,38 +76,39 @@ function WidgetLikeField({
 
   const contractMutations = [] as any[];
 
-  contractCalls.forEach((contractCall, index) => {
-    contractMutations.push(
-      useMutation({
-        mutationKey: ['signMessage', account.address],
-        mutationFn: async () => {
-          let result;
-          switch (contractCall.type) {
-            case 'sign': {
-              const signer = await getEthersSigner(config);
-              const message = contractCall.message;
-              result = await signer.signMessage(message);
-              break;
-            }
-            case 'send': {
-              // To be implemented
-              result = contractCall.data;
-              break;
-            }
-            default: {
-              throw new Error('Case not implemented');
-            }
-          }
+  // contractCalls.forEach((contractCall, index) => {
+  //   contractMutations.push(
+  //     useMutation({
+  //       mutationKey: ['signMessage', account.address],
+  //       mutationFn: async () => {
+  //         let result;
+  //         switch (contractCall.type) {
+  //           case 'sign': {
+  //             const signer = await getEthersSigner(config);
+  //             const message = contractCall.message;
+  //             result = await signer.signMessage(message);
+  //             break;
+  //           }
+  //           case 'send': {
+  //             // To be implemented
+  //             result = contractCall.data;
+  //             break;
+  //           }
+  //           default: {
+  //             throw new Error('Case not implemented');
+  //           }
+  //         }
 
-          return contractCall.onVerify(result);
-        },
-        onSuccess: () => {
-          console.log('onSuccess triggered');
-          setContractCallIndex(index + 1);
-        },
-      }),
-    );
-  });
+  //         return contractCall.onVerify(result);
+  //       },
+  //       onSuccess: () => {
+  //         console.log('onSuccess triggered');
+  //         setContractCallIndex(index + 1);
+  //       },
+  //     }),
+  //   );
+  // });
+
   console.log('index', contractCallIndex);
 
   if (contractCalls.length === contractCallIndex) {
