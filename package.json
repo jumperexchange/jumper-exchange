@@ -34,13 +34,11 @@
     "@solana/wallet-adapter-solflare": "^0.6.28",
     "@solana/web3.js": "^1.95.8",
     "@strapi/blocks-react-renderer": "^1.0.1",
-    "@synthetixio/synpress": "4.0.3",
     "@tanstack/react-query": "^5.62.7",
     "@widgetbot/react-embed": "^1.9.0",
     "accept-language": "^3.0.20",
     "axios": "^1.7.9",
     "blo": "^1.2.0",
-    "dotenv-cli": "^7.4.4",
     "ethers": "^6.13.4",
     "fontaine": "^0.5.0",
     "graphql": "^16.9.0",
@@ -62,7 +60,6 @@
     "siwe": "^2.3.2",
     "uuid": "^11.0.3",
     "wait-on": "^8.0.1",
-    "xvfb": "^0.4.0",
     "zustand": "^5.0.2"
   },
   "devDependencies": {
@@ -71,11 +68,13 @@
     "@metamask/test-dapp": "8.13.0",
     "@next/eslint-plugin-next": "^14.2.20",
     "@playwright/test": "^1.49.1",
+    "@synthetixio/synpress": "4.0.0-alpha.7",
     "@types/gtag.js": "^0.0.20",
     "@types/node": "^22.10.2",
     "@types/react": "^18.3.16",
     "@types/react-dom": "^18.3.5",
     "@types/uuid": "^10.0.0",
+    "dotenv-cli": "^7.4.4",
     "eslint": "8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-react-app": "^7.0.1",
@@ -91,7 +90,8 @@
     "prettier": "^3.4.2",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "typescript": "^5.7.2",
-    "web-vitals": "^4.2.4"
+    "web-vitals": "^4.2.4",
+    "xvfb": "^0.4.0"
   },
   "scripts": {
     "dev": "next dev",

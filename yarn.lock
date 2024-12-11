@@ -1523,31 +1523,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@depay/web3-blockchains@npm:^9.1.4, @depay/web3-blockchains@npm:^9.6.1":
+"@depay/web3-blockchains@npm:^9.1.4":
   version: 9.7.5
   resolution: "@depay/web3-blockchains@npm:9.7.5"
   checksum: 10/af838de1047477ada79b4a19296040339bb19d3ee2686a3b125883c975d173f446365485a3a57748fda5aacb9180726f9b974faf80ba144071d771cf3b3b256f
-  languageName: node
-  linkType: hard
-
-"@depay/web3-client@npm:10.18.6":
-  version: 10.18.6
-  resolution: "@depay/web3-client@npm:10.18.6"
-  peerDependencies:
-    "@depay/solana-web3.js": ^1.25.1
-    "@depay/web3-blockchains": ^9.3.6
-    ethers: ^5.7.1
-  checksum: 10/c8e85dcc25a02290a0413f1edb25eb6654668c74aeeeb1a5071b5c76d680bd1c30ab4138de73f47d7ec8d371d3e795cbd0a3065b3771c80b0652cba72269a5b7
-  languageName: node
-  linkType: hard
-
-"@depay/web3-mock-evm@npm:^14.17.0":
-  version: 14.19.1
-  resolution: "@depay/web3-mock-evm@npm:14.19.1"
-  dependencies:
-    "@depay/web3-blockchains": "npm:^9.6.1"
-    ethers: "npm:^5.7.1"
-  checksum: 10/0455dc7b2b8188bc4104476053f1d410c295c59836537654c70e29cb597aa175786f6bc348a61c35c6075170be6efef81897c3cbe5e8d81593290773eb1bcd37
   languageName: node
   linkType: hard
 
@@ -5955,24 +5934,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@synthetixio/ethereum-wallet-mock@npm:0.0.4":
-  version: 0.0.4
-  resolution: "@synthetixio/ethereum-wallet-mock@npm:0.0.4"
+"@synthetixio/ethereum-wallet-mock@npm:0.0.1-alpha.7":
+  version: 0.0.1-alpha.7
+  resolution: "@synthetixio/ethereum-wallet-mock@npm:0.0.1-alpha.7"
   dependencies:
-    "@depay/web3-client": "npm:10.18.6"
     "@depay/web3-mock": "npm:14.17.0"
-    "@depay/web3-mock-evm": "npm:^14.17.0"
-    "@synthetixio/synpress-core": "npm:0.0.4"
+    "@synthetixio/synpress-core": "npm:0.0.1-alpha.7"
     viem: "npm:2.9.9"
   peerDependencies:
-    "@playwright/test": 1.48.2
-  checksum: 10/f12e2ab236e696bca8d85d0683bbc09d77b29aaff16e08cffa7e57623a6856c6028ef4db141d1f490699ff845fada23f10c71244cdc9b06d8ba5e7e0ed19608e
+    "@playwright/test": 1.44.0
+  checksum: 10/fdbbdf83fd5237a895478ce3bfc5de8610021d86d20855e8fed9d6a66c3a7a888f0330d849a7413a86a94d50708b249fb00d48d0137521af744a3a7114379ac7
   languageName: node
   linkType: hard
 
-"@synthetixio/synpress-cache@npm:0.0.4":
-  version: 0.0.4
-  resolution: "@synthetixio/synpress-cache@npm:0.0.4"
+"@synthetixio/synpress-cache@npm:0.0.1-alpha.7":
+  version: 0.0.1-alpha.7
+  resolution: "@synthetixio/synpress-cache@npm:0.0.1-alpha.7"
   dependencies:
     axios: "npm:1.6.7"
     chalk: "npm:5.3.0"
@@ -5986,50 +5963,50 @@ __metadata:
     unzipper: "npm:0.10.14"
     zod: "npm:3.22.4"
   peerDependencies:
-    playwright-core: 1.48.2
+    playwright-core: 1.44.0
   bin:
     synpress-cache: dist/cli/index.js
-  checksum: 10/e34ec70f3c1b17123311b3463ec67bf7014968dd20575fd1b2c6448f4881b277a2beb2b99e2ef6fe01306cd7c41d0ceadd7a8638c0b72504e952d05a5e22007c
+  checksum: 10/61b9c3f934c31a2207b78111d141ead2163b7f72999a563d177a7579ed83f4ca89227f85dacb601fb1d90926e6f289c72a5ef0e0b0fd0e92164aebc8bba986a3
   languageName: node
   linkType: hard
 
-"@synthetixio/synpress-core@npm:0.0.4":
-  version: 0.0.4
-  resolution: "@synthetixio/synpress-core@npm:0.0.4"
+"@synthetixio/synpress-core@npm:0.0.1-alpha.7":
+  version: 0.0.1-alpha.7
+  resolution: "@synthetixio/synpress-core@npm:0.0.1-alpha.7"
   peerDependencies:
-    "@playwright/test": 1.48.2
-  checksum: 10/a6bf1ece0aa00f143659d4d932ba2b2dc1a11a2f1dc8cffb64b3240c042177a4c755cf87920b4bb84f9288ba7135ae8604e25479ab1731f1a23b796413718f2a
+    "@playwright/test": 1.44.0
+  checksum: 10/97079655db828c78d3a297f3dd9d7090b9b313175d7a5fbc1bb53cd6dccc9d0ff2b87f8df4419da10bda46876f651ae39f851b548e494d3964a924b54d221e3a
   languageName: node
   linkType: hard
 
-"@synthetixio/synpress-metamask@npm:0.0.4":
-  version: 0.0.4
-  resolution: "@synthetixio/synpress-metamask@npm:0.0.4"
+"@synthetixio/synpress-metamask@npm:0.0.1-alpha.7":
+  version: 0.0.1-alpha.7
+  resolution: "@synthetixio/synpress-metamask@npm:0.0.1-alpha.7"
   dependencies:
-    "@synthetixio/synpress-cache": "npm:0.0.4"
-    "@synthetixio/synpress-core": "npm:0.0.4"
+    "@synthetixio/synpress-cache": "npm:0.0.1-alpha.7"
+    "@synthetixio/synpress-core": "npm:0.0.1-alpha.7"
     "@viem/anvil": "npm:0.0.7"
     fs-extra: "npm:11.2.0"
     zod: "npm:3.22.4"
   peerDependencies:
-    "@playwright/test": 1.48.2
-  checksum: 10/ed8655821723ba4454856dbcd7d1cdb6ec977f5fac58b8e72f163ea67513314532653a4d231b3e217009c31a8cf052c6598ce1b046c7c49b41a1cdbb0bf81df7
+    "@playwright/test": 1.44.0
+  checksum: 10/8f7bd3a4c48fa139d7935f3a974fa57157d1c8ba3e22d94fe6abc44a2db819cb5e8568c4319c026b32acbfbcca717138576ca651c88478a3daaf6dbae3b10879
   languageName: node
   linkType: hard
 
-"@synthetixio/synpress@npm:4.0.3":
-  version: 4.0.3
-  resolution: "@synthetixio/synpress@npm:4.0.3"
+"@synthetixio/synpress@npm:4.0.0-alpha.7":
+  version: 4.0.0-alpha.7
+  resolution: "@synthetixio/synpress@npm:4.0.0-alpha.7"
   dependencies:
-    "@synthetixio/ethereum-wallet-mock": "npm:0.0.4"
-    "@synthetixio/synpress-cache": "npm:0.0.4"
-    "@synthetixio/synpress-core": "npm:0.0.4"
-    "@synthetixio/synpress-metamask": "npm:0.0.4"
+    "@synthetixio/ethereum-wallet-mock": "npm:0.0.1-alpha.7"
+    "@synthetixio/synpress-cache": "npm:0.0.1-alpha.7"
+    "@synthetixio/synpress-core": "npm:0.0.1-alpha.7"
+    "@synthetixio/synpress-metamask": "npm:0.0.1-alpha.7"
   peerDependencies:
-    "@playwright/test": 1.48.2
+    "@playwright/test": 1.44.0
   bin:
     synpress: dist/cli.js
-  checksum: 10/b0ec431fdbd512421f0c8afacb04560791e25c69d9b45f4891804a40b8508b5dc793a10f589d19623e4508ec6102a6e7971cc5cf49132a593872ce8b71d5b435
+  checksum: 10/d19f6ed7cbd33a683aeda3fd6d99412bcb26fe75d83c5d6a9c46847084559cfbdc55f1bfb55498c30469bf23e473d4d6403a5e1fa1abc7ea820766ecb51966af
   languageName: node
   linkType: hard
 
@@ -7856,6 +7833,16 @@ __metadata:
     get-intrinsic: "npm:^1.2.4"
     set-function-length: "npm:^1.2.2"
   checksum: 10/659b03c79bbfccf0cde3a79e7d52570724d7290209823e1ca5088f94b52192dc1836b82a324d0144612f816abb2f1734447438e38d9dafe0b3f82c2a1b9e3bce
+  languageName: node
+  linkType: hard
+
+"call-bound@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "call-bound@npm:1.0.2"
+  dependencies:
+    call-bind: "npm:^1.0.8"
+    get-intrinsic: "npm:^1.2.5"
+  checksum: 10/6f0020b8848307446ed410d0dcf40470b3c16d96a26d8d8bba2ea5bc1582f9bdfc49945cf270698495d4c0f422ad56d243a336855cfb0260feabf72952238cf8
   languageName: node
   linkType: hard
 
@@ -10064,7 +10051,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-intrinsic@npm:^1.2.1, get-intrinsic@npm:^1.2.3, get-intrinsic@npm:^1.2.4":
+"get-intrinsic@npm:^1.2.1, get-intrinsic@npm:^1.2.3, get-intrinsic@npm:^1.2.4, get-intrinsic@npm:^1.2.5":
   version: 1.2.5
   resolution: "get-intrinsic@npm:1.2.5"
   dependencies:
@@ -11364,7 +11351,7 @@ __metadata:
     "@solana/wallet-adapter-solflare": "npm:^0.6.28"
     "@solana/web3.js": "npm:^1.95.8"
     "@strapi/blocks-react-renderer": "npm:^1.0.1"
-    "@synthetixio/synpress": "npm:4.0.3"
+    "@synthetixio/synpress": "npm:4.0.0-alpha.7"
     "@tanstack/react-query": "npm:^5.62.7"
     "@types/gtag.js": "npm:^0.0.20"
     "@types/node": "npm:^22.10.2"
@@ -12337,7 +12324,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-inspect@npm:^1.13.1, object-inspect@npm:^1.13.3":
+"object-inspect@npm:^1.13.3":
   version: 1.13.3
   resolution: "object-inspect@npm:1.13.3"
   checksum: 10/14cb973d8381c69e14d7f1c8c75044eb4caf04c6dabcf40ca5c2ce42dc2073ae0bb2a9939eeca142b0c05215afaa1cd5534adb7c8879c32cba2576e045ed8368
@@ -13980,15 +13967,51 @@ __metadata:
   languageName: node
   linkType: hard
 
-"side-channel@npm:^1.0.4, side-channel@npm:^1.0.6":
-  version: 1.0.6
-  resolution: "side-channel@npm:1.0.6"
+"side-channel-list@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "side-channel-list@npm:1.0.0"
   dependencies:
-    call-bind: "npm:^1.0.7"
     es-errors: "npm:^1.3.0"
-    get-intrinsic: "npm:^1.2.4"
-    object-inspect: "npm:^1.13.1"
-  checksum: 10/eb10944f38cebad8ad643dd02657592fa41273ce15b8bfa928d3291aff2d30c20ff777cfe908f76ccc4551ace2d1245822fdc576657cce40e9066c638ca8fa4d
+    object-inspect: "npm:^1.13.3"
+  checksum: 10/603b928997abd21c5a5f02ae6b9cc36b72e3176ad6827fab0417ead74580cc4fb4d5c7d0a8a2ff4ead34d0f9e35701ed7a41853dac8a6d1a664fcce1a044f86f
+  languageName: node
+  linkType: hard
+
+"side-channel-map@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "side-channel-map@npm:1.0.1"
+  dependencies:
+    call-bound: "npm:^1.0.2"
+    es-errors: "npm:^1.3.0"
+    get-intrinsic: "npm:^1.2.5"
+    object-inspect: "npm:^1.13.3"
+  checksum: 10/5771861f77feefe44f6195ed077a9e4f389acc188f895f570d56445e251b861754b547ea9ef73ecee4e01fdada6568bfe9020d2ec2dfc5571e9fa1bbc4a10615
+  languageName: node
+  linkType: hard
+
+"side-channel-weakmap@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "side-channel-weakmap@npm:1.0.2"
+  dependencies:
+    call-bound: "npm:^1.0.2"
+    es-errors: "npm:^1.3.0"
+    get-intrinsic: "npm:^1.2.5"
+    object-inspect: "npm:^1.13.3"
+    side-channel-map: "npm:^1.0.1"
+  checksum: 10/a815c89bc78c5723c714ea1a77c938377ea710af20d4fb886d362b0d1f8ac73a17816a5f6640f354017d7e292a43da9c5e876c22145bac00b76cfb3468001736
+  languageName: node
+  linkType: hard
+
+"side-channel@npm:^1.0.4, side-channel@npm:^1.0.6":
+  version: 1.1.0
+  resolution: "side-channel@npm:1.1.0"
+  dependencies:
+    es-errors: "npm:^1.3.0"
+    object-inspect: "npm:^1.13.3"
+    side-channel-list: "npm:^1.0.0"
+    side-channel-map: "npm:^1.0.1"
+    side-channel-weakmap: "npm:^1.0.2"
+  checksum: 10/7d53b9db292c6262f326b6ff3bc1611db84ece36c2c7dc0e937954c13c73185b0406c56589e2bb8d071d6fee468e14c39fb5d203ee39be66b7b8174f179afaba
   languageName: node
   linkType: hard
 
