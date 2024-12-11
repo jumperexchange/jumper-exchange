@@ -69,6 +69,7 @@ export default async function Page({
       <SwapPage
         sourceChain={sourceChain}
         sourceToken={sourceToken}
+        destinationChain={sourceChain}
         destinationToken={destinationToken}
         tokens={tokens}
       />

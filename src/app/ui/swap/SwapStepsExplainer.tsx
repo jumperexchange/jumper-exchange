@@ -10,12 +10,14 @@ import { getWidgetImageProps } from 'src/utils/image-generation/getWidgetImage';
 
 interface SwapStepsExplainerProps {
   sourceChain: ExtendedChain;
+  destinationChain: ExtendedChain;
   sourceToken?: Token;
   destinationToken?: Token;
 }
 
 const SwapStepsExplainerSection = ({
   sourceChain,
+  destinationChain,
   sourceToken,
   destinationToken,
 }: SwapStepsExplainerProps) => {
@@ -43,6 +45,7 @@ const SwapStepsExplainerSection = ({
       img: getWidgetImageProps({
         sourceToken,
         sourceChain,
+        destinationChain,
         destinationToken,
         theme,
         widgetImageProps: {
@@ -70,6 +73,7 @@ const SwapStepsExplainerSection = ({
       img: getWidgetImageProps({
         sourceToken,
         sourceChain,
+        destinationChain,
         destinationToken,
         theme,
         widgetImageProps: {
@@ -100,6 +104,7 @@ const SwapStepsExplainerSection = ({
       img: getWidgetImageProps({
         sourceToken,
         sourceChain,
+        destinationChain,
         destinationToken,
         theme,
         widgetImageProps: {
@@ -133,6 +138,7 @@ const SwapStepsExplainerSection = ({
       img: getWidgetImageProps({
         sourceToken,
         sourceChain,
+        destinationChain,
         destinationToken,
         theme,
         widgetImageProps: {

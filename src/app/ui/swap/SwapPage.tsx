@@ -9,6 +9,7 @@ import StepsExplainerSection from './SwapStepsExplainer';
 
 interface SwapPageProps {
   sourceChain: ExtendedChain;
+  destinationChain: ExtendedChain;
   tokens: TokensResponse['tokens'];
   sourceToken?: Token;
   destinationToken?: Token;
@@ -41,6 +42,7 @@ const BridgePage = ({
         <StepsExplainerSection
           sourceChain={sourceChain}
           sourceToken={sourceToken}
+          destinationChain={sourceChain}
           destinationToken={destinationToken}
         />
 

@@ -22,7 +22,6 @@ const TokenField = ({
   fullWidth?: boolean;
 }) => {
   // Function to calculate top offset based on conditions
-
   const fieldContainerStyle = fieldContainerStyles();
   return (
     <div style={{ display: 'flex', width: fullWidth ? 368 : 174 }}>

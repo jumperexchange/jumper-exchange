@@ -85,7 +85,16 @@ export const AvatarBadgeNoMUI = ({
             }}
           />
         ) : (
-          <AvatarSkeleton width={badgeSize} height={badgeSize} />
+          <AvatarSkeleton
+            width={badgeSize}
+            height={badgeSize}
+            sx={{
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+              transform: `translate(${badgeOffset?.x ? badgeOffset.x : 0}px, ${badgeOffset?.y ? badgeOffset.y : 0}px)`,
+            }}
+          />
         )}
       </div>
     </div>
