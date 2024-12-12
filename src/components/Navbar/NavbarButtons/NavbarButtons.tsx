@@ -13,7 +13,7 @@ import {
   JUMPER_WALLET_PATH,
 } from 'src/const/urls';
 import { MenuToggle, NavbarButtonsContainer, RedirectToApp } from '.';
-import { WalletButtons } from '../WalletButton';
+import { WalletButtons } from '../WalletButtons';
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef(null);

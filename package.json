@@ -4,7 +4,6 @@
   "type": "module",
   "private": true,
   "repository": "https://github.com/jumperexchange/jumper-exchange",
-  "packageManager": "yarn@4.5.3",
   "dependencies": {
     "@bigmi/react": "^0.0.5",
     "@emotion/cache": "^11.14.0",

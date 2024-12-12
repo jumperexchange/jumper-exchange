@@ -132,18 +132,36 @@ export const WithdrawWidget = ({
       <BerachainTransactionDetails market={market} />
 
       {!account?.isConnected && (
-        <div className="h-full w-full place-content-center items-start">
+        <Box
+          sx={{
+            height: '100%',
+            width: '100%',
+            display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
+            placeContent: 'center', // Centers content horizontally and vertically.
+            alignItems: 'start', // Aligns items at the start along the cross-axis.
+          }}
+        >
+        {/*<div className="h-full w-full place-content-center items-start">*/}
           <Typography variant="body2" color="textSecondary">
             Wallet not connected
           </Typography>
-        </div>
+        </Box>
       )}
       {!isLoadingPositionsRecipe && !!positions && positions.length === 0 && (
-        <div className="h-full w-full place-content-center items-start">
+        <Box
+          sx={{
+            height: '100%',
+            width: '100%',
+            display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
+            placeContent: 'center', // Centers content horizontally and vertically.
+            alignItems: 'start', // Aligns items at the start along the cross-axis.
+          }}
+        >
+        {/*<div className="h-full w-full place-content-center items-start">*/}
           <Typography variant="body2" color="textSecondary">
             No withdrawable positions found
           </Typography>
-        </div>
+        </Box>
       )}
       {!!positions &&
         !isLoadingPositionsRecipe &&
@@ -153,12 +171,44 @@ export const WithdrawWidget = ({
           return (
             <Box
               // delay={0.1 + positionIndex * 0.1}
-              className="w-full"
+              // className="w-full"
               key={`withdraw-position:${positionIndex}`}
             >
-              <div className="flex w-full flex-row items-center justify-between gap-2 rounded-2xl border border-divider p-3">
-                <div className="hide-scrollbar flex w-full grow flex-col items-start space-y-1 overflow-x-scroll">
-                  <Typography className="whitespace-nowrap break-normal text-black">
+              <Box
+                sx={{
+                  display: 'flex',        // Equivalent to `flex`
+                  width: '100%',          // Equivalent to `w-full`
+                  flexDirection: 'row',   // Equivalent to `flex-row`
+                  alignItems: 'center',   // Equivalent to `items-center`
+                  justifyContent: 'space-between', // Equivalent to `justify-between`
+                  gap: 2,                 // Equivalent to `gap-2` (MUI uses theme-based spacing; `2` = 2 * 8px = 16px)
+                  borderRadius: '16px',   // Equivalent to `rounded-2xl` (16px)
+                  border: '1px solid',    // Creates the border
+                  borderColor: 'divider', // Uses the theme's divider color
+                  padding: 3,             // Equivalent to `p-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
+                }}
+                // className="flex w-full flex-row items-center justify-between gap-2 rounded-2xl border border-divider p-3"
+                >
+                <Box
+                  sx={{
+                    display: 'flex',         // Equivalent to `flex`
+                    width: '100%',           // Equivalent to `w-full`
+                    flexGrow: 1,             // Equivalent to `grow`
+                    flexDirection: 'column', // Equivalent to `flex-col`
+                    alignItems: 'start',     // Equivalent to `items-start`
+                    gap: 1,                  // Equivalent to `space-y-1` (MUI uses theme-based spacing; `1` = 1 * 8px = 8px)
+                    overflowX: 'scroll',     // Equivalent to `overflow-x-scroll`
+                  }}
+                  // className="hide-scrollbar flex w-full grow flex-col items-start space-y-1 overflow-x-scroll"
+                >
+                  <Typography
+                    sx={{
+                      whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
+                      wordBreak: 'normal',  // Equivalent to `break-normal`
+                      color: 'black',       // Equivalent to `text-black`
+                    }}
+                    // className="whitespace-nowrap break-normal text-black"
+                  >
                     Value:{' '}
                     {Intl.NumberFormat('en-US', {
                       style: 'currency',
@@ -177,7 +227,16 @@ export const WithdrawWidget = ({
                     )}
                   </Typography>
 
-                  <div className="flex w-full grow flex-col space-y-3">
+                  <Box
+                    sx={{
+                      display: 'flex',         // Equivalent to `flex`
+                      width: '100%',           // Equivalent to `w-full`
+                      flexGrow: 1,             // Equivalent to `grow`
+                      flexDirection: 'column', // Equivalent to `flex-col`
+                      gap: 3,                  // Equivalent to `space-y-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
+                    }}
+                    // className="flex w-full grow flex-col space-y-3"
+                  >
                     {withdrawType === MarketWithdrawType.input_token.id ? (
                       <WithdrawInputTokenRow
                         key={`withdraw-input-token-row:${positionIndex}`}
@@ -244,11 +303,17 @@ export const WithdrawWidget = ({
                         );
                       })
                     )}
-                  </div>
-                </div>
+                  </Box>
+                </Box>
 
                 {withdrawType === MarketWithdrawType.input_token.id && (
-                  <div className="w-24 shrink-0">
+                  <Box
+                    sx={{
+                      width: '6rem',    // Equivalent to `w-24` (24 * 0.25rem = 6rem)
+                      flexShrink: 0,    // Equivalent to `shrink-0`
+                    }}
+                    // className="w-24 shrink-0"
+                  >
                     <Button
                       disabled={
                         // @ts-expect-error
@@ -288,13 +353,14 @@ export const WithdrawWidget = ({
                           }
                         }
                       }}
+                      size="small"
                       className="text-sm"
                     >
                       Withdraw
                     </Button>
-                  </div>
+                  </Box>
                 )}
-              </div>
+              </Box>
             </Box>
           );
         })}
