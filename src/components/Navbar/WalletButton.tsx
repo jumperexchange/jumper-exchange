@@ -1,7 +1,7 @@
 'use client';
+import { useWalletAddressImg } from '@/hooks/useAddressImg';
 import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
-import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/sdk';
 import {
   getConnectorIcon,
@@ -13,12 +13,9 @@ import { Stack, Typography, useMediaQuery } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  DEFAULT_WALLET_ADDRESS,
-  JUMPER_LOYALTY_PATH,
-  JUMPER_SCAN_PATH,
-} from 'src/const/urls';
+import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import { useWalletLabel } from 'src/hooks/useWalletLabel';
 import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
@@ -32,12 +29,6 @@ import {
   WalletMgmtChainAvatar,
   WalletMgmtWalletAvatar,
 } from './WalletButton.style';
-import useBlockieImg from '@/hooks/useBlockieImg';
-import { useWalletAddressImg } from '@/hooks/useAddressImg';
-import { useEnsName } from 'wagmi';
-import type { Address } from 'viem';
-import { mainnet } from 'wagmi/chains';
-import { getAddressLabel } from '@/utils/getAddressLabel';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
@@ -55,15 +46,7 @@ export const WalletButtons = () => {
     (state) => state,
   );
 
-  const { data: ensName, isSuccess: isSuccessEnsName } = useEnsName({
-    address: account?.address as Address | undefined,
-    chainId: mainnet.id,
-  });
-  const addressLabel = getAddressLabel({
-    isSuccess: isSuccessEnsName,
-    ensName,
-    address: account?.address,
-  });
+  const label = useWalletLabel(account?.address);
 
   const activeChain = useMemo(
     () => chains?.find((chainEl: Chain) => chainEl.id === account?.chainId),
@@ -148,9 +131,7 @@ export const WalletButtons = () => {
                 />
               </WalletMgmtBadge>
             ) : null}
-            <WalletLabel variant={'bodyMediumStrong'}>
-              {addressLabel ?? walletDigest(account?.address)}
-            </WalletLabel>
+            <WalletLabel variant={'bodyMediumStrong'}>{label}</WalletLabel>
           </WalletMenuButton>
         </Stack>
       )}
