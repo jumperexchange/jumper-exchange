@@ -54,7 +54,10 @@ export const BerachainWelcome = () => {
         <BerachainWelcomeBoxContent>
           <BerachainProgressCard
             title={'Total Value Locked'}
-            value={t('format.currency', { value: data?.total_tvl, notation: 'compact' })}
+            value={t('format.currency', {
+              value: data?.total_tvl,
+              notation: 'compact',
+            })}
             icon={
               <Image
                 src="/berachain/tvl.svg"
@@ -73,7 +76,10 @@ export const BerachainWelcome = () => {
           />
           <BerachainProgressCard
             title={'Incentives'}
-            value={t('format.currency', { value: data?.total_incentives, notation: 'compact' })}
+            value={t('format.currency', {
+              value: data?.total_incentives,
+              notation: 'compact',
+            })}
             icon={
               <Image
                 src="/berachain/gift.svg"

@@ -1,7 +1,6 @@
 import { Box, Button, Typography, useTheme } from '@mui/material';
-import { EnrichedMarketDataType } from 'royco/queries';
-import BerachainTransactionDetails
-  from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
+import type { EnrichedMarketDataType } from 'royco/queries';
+import BerachainTransactionDetails from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
 import InfoBlock from '@/components/Berachain/components/BerachainWidget/InfoBlock';
 import {
   getRecipeIncentiveTokenWithdrawalTransactionOptions,
@@ -16,7 +15,7 @@ import { WithdrawInputTokenRow } from './WithdrawInputTokenRow';
 import { WithdrawIncentiveTokenRow } from './WithdrawIncentiveTokenRow';
 import { useState } from 'react';
 
-export type TypedMarketWithdrawType = "input_token" | "incentives";
+export type TypedMarketWithdrawType = 'input_token' | 'incentives';
 export const MarketWithdrawType: Record<
   TypedMarketWithdrawType,
   {
@@ -25,16 +24,20 @@ export const MarketWithdrawType: Record<
   }
 > = {
   input_token: {
-    id: "input_token",
-    label: "Input Token",
+    id: 'input_token',
+    label: 'Input Token',
   },
   incentives: {
-    id: "incentives",
-    label: "Incentives",
+    id: 'incentives',
+    label: 'Incentives',
   },
 };
 
-export const WithdrawWidget = ({ market }: { market: EnrichedMarketDataType }) => {
+export const WithdrawWidget = ({
+  market,
+}: {
+  market: EnrichedMarketDataType;
+}) => {
   const { account } = useAccount();
   const theme = useTheme();
   const [transactions, setTransactions] = useState([]);
@@ -46,8 +49,8 @@ export const WithdrawWidget = ({ market }: { market: EnrichedMarketDataType }) =
     isError,
     error,
   } = useEnrichedPositionsRecipe({
-    chain_id: market.chain_id,
-    market_id: market.market_id,
+    chain_id: market.chain_id!,
+    market_id: market.market_id!,
     account_address: (account?.address?.toLowerCase() as string) ?? '',
     page_index: 0,
     filters: [
@@ -71,8 +74,8 @@ export const WithdrawWidget = ({ market }: { market: EnrichedMarketDataType }) =
     isError: isErrorPositionsVault,
     error: errorPositionsVault,
   } = useEnrichedPositionsVault({
-    chain_id: market.chain_id,
-    market_id: market.market_id,
+    chain_id: market.chain_id!,
+    market_id: market.market_id!,
     account_address: (account?.address?.toLowerCase() as string) ?? '',
     page_index: 0,
     filters: [
@@ -85,9 +88,8 @@ export const WithdrawWidget = ({ market }: { market: EnrichedMarketDataType }) =
 
   const positions =
     market.market_type === RoycoMarketType.recipe.value
-      ? Array.isArray(positionsRecipe?.data)
-      && positionsRecipe.data
-      /*       : []
+      ? Array.isArray(positionsRecipe?.data) && positionsRecipe.data
+      : /*       : []
             : Array.isArray(positionsVault?.data)
               ? positionsVault.data.filter((position) => {
                 if (!!position) {
@@ -114,10 +116,15 @@ export const WithdrawWidget = ({ market }: { market: EnrichedMarketDataType }) =
                 }
                 return false;
               })*/
-      : [];
+        [];
 
-      console.log('-positions', positions, positionsRecipe, positionsVault)
-      console.log('-transactions', transactions)
+  // TODO: to remove
+  // eslint-disable-next-line no-console
+  console.log('-positions', positions, positionsRecipe, positionsVault);
+
+  // TODO: to remove
+  // eslint-disable-next-line no-console
+  console.log('-transactions', transactions);
 
   return (
     <Box sx={{ marginTop: theme.spacing(1.5) }}>
@@ -126,21 +133,22 @@ export const WithdrawWidget = ({ market }: { market: EnrichedMarketDataType }) =
 
       {!account?.isConnected && (
         <div className="h-full w-full place-content-center items-start">
-          <Typography variant="body2" color="textSecondary">Wallet not connected</Typography>
+          <Typography variant="body2" color="textSecondary">
+            Wallet not connected
+          </Typography>
         </div>
       )}
-      {!isLoadingPositionsRecipe &&
-        !!positions &&
-        positions.length === 0 && (
-          <div className="h-full w-full place-content-center items-start">
-            <Typography variant="body2" color="textSecondary">
-              No withdrawable positions found
-            </Typography>
-          </div>
-        )}
+      {!isLoadingPositionsRecipe && !!positions && positions.length === 0 && (
+        <div className="h-full w-full place-content-center items-start">
+          <Typography variant="body2" color="textSecondary">
+            No withdrawable positions found
+          </Typography>
+        </div>
+      )}
       {!!positions &&
         !isLoadingPositionsRecipe &&
-        Array.isArray(positions) && positions.length > 0 &&
+        Array.isArray(positions) &&
+        positions.length > 0 &&
         positions.map((position, positionIndex) => {
           return (
             <Box
@@ -148,8 +156,7 @@ export const WithdrawWidget = ({ market }: { market: EnrichedMarketDataType }) =
               className="w-full"
               key={`withdraw-position:${positionIndex}`}
             >
-              <div
-                className="flex w-full flex-row items-center justify-between gap-2 rounded-2xl border border-divider p-3">
+              <div className="flex w-full flex-row items-center justify-between gap-2 rounded-2xl border border-divider p-3">
                 <div className="hide-scrollbar flex w-full grow flex-col items-start space-y-1 overflow-x-scroll">
                   <Typography className="whitespace-nowrap break-normal text-black">
                     Value:{' '}
@@ -162,88 +169,80 @@ export const WithdrawWidget = ({ market }: { market: EnrichedMarketDataType }) =
                       maximumFractionDigits: 8,
                     }).format(
                       withdrawType === MarketWithdrawType.input_token.id
-                        ? (position?.input_token_data
-                          ?.token_amount_usd ?? 0)
+                        ? (position?.input_token_data?.token_amount_usd ?? 0)
                         : (position?.tokens_data?.reduce(
-                          (acc, token) =>
-                            acc + token.token_amount_usd,
-                          0,
-                        ) ?? 0),
+                            (acc, token) => acc + token.token_amount_usd,
+                            0,
+                          ) ?? 0),
                     )}
                   </Typography>
 
                   <div className="flex w-full grow flex-col space-y-3">
-                    {withdrawType ===
-                    MarketWithdrawType.input_token.id ? (
+                    {withdrawType === MarketWithdrawType.input_token.id ? (
                       <WithdrawInputTokenRow
                         key={`withdraw-input-token-row:${positionIndex}`}
                         token={position?.input_token_data}
                       />
                     ) : (
-                      position?.tokens_data?.map(
-                        (token, tokenIndex) => {
-                          return (
-                            <WithdrawIncentiveTokenRow
-                              disabled={
+                      position?.tokens_data?.map((token, tokenIndex) => {
+                        return (
+                          <WithdrawIncentiveTokenRow
+                            disabled={
+                              market.market_type ===
+                              RoycoMarketType.recipe.value
+                                ? // @ts-ignore
+                                  position?.is_claimed[tokenIndex] === true
+                                : BigInt(token.raw_amount) === BigInt(0)
+                            }
+                            onClick={() => {
+                              if (
                                 market.market_type ===
-                                RoycoMarketType.recipe.id
-                                  ? // @ts-ignore
-                                  position?.is_claimed[tokenIndex] ===
-                                  true
-                                  : BigInt(
-                                    token.raw_amount,
-                                  ) === BigInt(0)
-                              }
-                              onClick={() => {
-                                if (
-                                  market.market_type ===
-                                  RoycoMarketType.recipe.id
-                                ) {
-                                  const contractOptions =
-                                    getRecipeIncentiveTokenWithdrawalTransactionOptions(
-                                      {
-                                        account:
-                                          account?.address?.toLowerCase() as string,
-                                        chain_id:
-                                        market.chain_id,
-                                        position: {
-                                          weiroll_wallet:
+                                RoycoMarketType.recipe.value
+                              ) {
+                                const contractOptions =
+                                  getRecipeIncentiveTokenWithdrawalTransactionOptions(
+                                    {
+                                      account:
+                                        account?.address?.toLowerCase() as string,
+                                      chain_id: market.chain_id!,
+                                      position: {
+                                        // @ts-expect-error
+                                        weiroll_wallet:
                                           /**
                                            * @TODO Strictly type this
                                            */
                                           // @ts-ignore
                                           position.weiroll_wallet,
-                                          token_data: token,
-                                        },
+                                        token_data: token,
                                       },
-                                    );
+                                    },
+                                  );
 
-                                  setTransactions([contractOptions]);
-                                } else {
-                                  const contractOptions =
-                                    getVaultIncentiveTokenWithdrawalTransactionOptions(
-                                      {
-                                        account:
-                                          account?.address?.toLowerCase() as string,
-                                        market_id:
-                                        market.market_id,
-                                        chain_id:
-                                        market.chain_id,
-                                        position: {
-                                          token_data: token,
-                                        },
+                                // @ts-expect-error
+                                setTransactions([contractOptions]);
+                              } else {
+                                const contractOptions =
+                                  getVaultIncentiveTokenWithdrawalTransactionOptions(
+                                    {
+                                      account:
+                                        account?.address?.toLowerCase() as string,
+                                      market_id: market.market_id!,
+                                      chain_id: market.chain_id!,
+                                      position: {
+                                        token_data: token,
                                       },
-                                    );
+                                    },
+                                  );
 
-                                  setTransactions([contractOptions]);
-                                }
-                              }}
-                              key={`withdraw-incentive-token-row:${positionIndex}-${tokenIndex}`}
-                              token={token}
-                            />
-                          );
-                        },
-                      )
+                                // @ts-expect-error
+                                setTransactions([contractOptions]);
+                              }
+                            }}
+                            key={`withdraw-incentive-token-row:${positionIndex}-${tokenIndex}`}
+                            token={token}
+                          />
+                        );
+                      })
                     )}
                   </div>
                 </div>
@@ -251,35 +250,39 @@ export const WithdrawWidget = ({ market }: { market: EnrichedMarketDataType }) =
                 {withdrawType === MarketWithdrawType.input_token.id && (
                   <div className="w-24 shrink-0">
                     <Button
-                      disabled={BigInt(
-                        position?.input_token_data?.raw_amount,
-                      ) === BigInt(0)}
+                      disabled={
+                        // @ts-expect-error
+                        BigInt(position?.input_token_data?.raw_amount) ===
+                        BigInt(0)
+                      }
                       onClick={() => {
                         if (!!position) {
                           if (
-                            market.market_type ===
-                            RoycoMarketType.recipe.value
+                            market.market_type === RoycoMarketType.recipe.value
                           ) {
                             const contractOptions =
-                              getRecipeInputTokenWithdrawalTransactionOptions(
-                                {
-                                  chain_id: market.chain_id,
-                                  position: {
-                                    weiroll_wallet:
+                              getRecipeInputTokenWithdrawalTransactionOptions({
+                                chain_id: market.chain_id!,
+                                position: {
+                                  // @ts-expect-error
+                                  weiroll_wallet:
                                     /**
                                      * @TODO Strictly type this
                                      */
                                     // @ts-ignore
                                     position.weiroll_wallet,
-                                    token_data:
-                                    position.input_token_data,
-                                  },
+                                  token_data: position.input_token_data,
                                 },
-                              );
+                              });
 
+                            // @ts-expect-error
                             setTransactions([contractOptions]);
                           } else {
-                            console.log('OPEN A MODAL? and run setSelectedVaultPosition (Not implemented)')
+                            // TODO: to remove
+                            // eslint-disable-next-line no-console
+                            console.log(
+                              'OPEN A MODAL? and run setSelectedVaultPosition (Not implemented)',
+                            );
                             // setSelectedVaultPosition(position);
                             // setIsVaultWithdrawModalOpen(true);
                           }

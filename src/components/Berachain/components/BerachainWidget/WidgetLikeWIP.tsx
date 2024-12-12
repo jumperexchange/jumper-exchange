@@ -7,13 +7,14 @@ import {
   InputLabel,
   Skeleton,
   Typography,
-  Button, alpha,
+  Button,
+  alpha,
 } from '@mui/material';
 import { Config, useConfig } from 'wagmi';
 import { getConnectorClient } from 'wagmi/actions';
 import { BrowserProvider, JsonRpcSigner } from 'ethers';
 import type { Account, Chain, Client, Transport } from 'viem';
-import { ContractCall } from '@lifi/sdk';
+import type { ContractCall } from '@lifi/sdk';
 import LoadingButton from '@mui/lab/LoadingButton';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -21,14 +22,16 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useAccount } from '@lifi/wallet-management';
 import TokenImage from '@/components/Portfolio/TokenImage';
-import { WalletAvatar, WalletCardBadge } from '@/components/Menus/WalletMenu/WalletCard.style';
+import {
+  WalletAvatar,
+  WalletCardBadge,
+} from '@/components/Menus/WalletMenu/WalletCard.style';
 import { styled } from '@mui/system';
 import { getEthersSigner } from '@/components/WidgetLikeField/utils';
 
 function WidgetLikeWIP({ contractCalls }: { contractCalls: ContractCall[] }) {
   const config = useConfig();
   const { account } = useAccount();
-  console.log('--', config);
 
   const [st, setSt] = useState(0);
 
@@ -39,18 +42,23 @@ function WidgetLikeWIP({ contractCalls }: { contractCalls: ContractCall[] }) {
       const message = 'toto';
 
       const s = await signer.signMessage(message);
-      await new Promise(resolve => setTimeout(resolve, 4000));
+      await new Promise((resolve) => setTimeout(resolve, 4000));
 
       return true;
     },
     onSuccess: () => {
+      // TODO: to remove
+      // eslint-disable-next-line no-console
       console.log('onSuccess triggered');
       setSt(1);
     },
   });
 
+  // @ts-expect-error
   async function onSubmit(e) {
     try {
+      // TODO: to remove
+      // eslint-disable-next-line no-console
       console.log('submitted', e);
       e.preventDefault();
       mutate();
@@ -85,60 +93,74 @@ function WidgetLikeWIP({ contractCalls }: { contractCalls: ContractCall[] }) {
               className="badge"
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               badgeContent={
-                  <MuiAvatar
-                    alt={'chain-name'}
-                    sx={(theme) => ({
-                      width: '18px',
-                      height: '18px',
-                      border: `2px solid ${theme.palette.surface2.main}`,
-                    })}
-                  >
-                    <TokenImage
-                      token={{
-                        name: '',
-                        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
-                      }}
-                    />
-                  </MuiAvatar>
+                <MuiAvatar
+                  alt={'chain-name'}
+                  sx={(theme) => ({
+                    width: '18px',
+                    height: '18px',
+                    border: `2px solid ${theme.palette.surface2.main}`,
+                  })}
+                >
+                  <TokenImage
+                    token={{
+                      name: '',
+                      logoURI:
+                        'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+                    }}
+                  />
+                </MuiAvatar>
               }
             >
               <WalletAvatar>
-                <TokenImage token={{ logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png' }} />
+                <TokenImage
+                  token={{
+                    name: 'Ethereum',
+                    logoURI:
+                      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+                  }}
+                />
               </WalletAvatar>
-            </WalletCardBadge>}
+            </WalletCardBadge>
+          }
           // startAdornment={<Avatar
           //   src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png" />}
-          endAdornment={<MaxButton sx={{ p: '10px' }} aria-label="menu">
-            max
-          </MaxButton>}
+          endAdornment={<div>max</div>}
         />
-        <FormHelperText id="component-error-text" sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
+        <FormHelperText
+          id="component-error-text"
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
           <Typography>left one</Typography>
           <Typography>/1000</Typography>
         </FormHelperText>
       </FormControl>
       Bye
-      {st === 0 && <LoadingButton type="submit" loading={isPending}
-                                  variant="contained"
-                                  sx={{
-                                    '&.MuiLoadingButton-loading': {
-                                      border: '1px solid red'
-                                    },
-                                    '.MuiLoadingButton-loadingIndicator': {
-                                      color: 'red',
-                                    }
-                                  }}
-      >
-        <Typography variant="bodyMediumStrong">Approve</Typography>
-      </LoadingButton>}
-      {st === 1 && <LoadingButton type="submit" variant="contained"
-      >
-        <Typography variant="bodyMediumStrong">Withdraw</Typography>
-      </LoadingButton>}
+      {st === 0 && (
+        <LoadingButton
+          type="submit"
+          loading={isPending}
+          variant="contained"
+          sx={{
+            '&.MuiLoadingButton-loading': {
+              border: '1px solid red',
+            },
+            '.MuiLoadingButton-loadingIndicator': {
+              color: 'red',
+            },
+          }}
+        >
+          <Typography variant="bodyMediumStrong">Approve</Typography>
+        </LoadingButton>
+      )}
+      {st === 1 && (
+        <LoadingButton type="submit" variant="contained">
+          <Typography variant="bodyMediumStrong">Withdraw</Typography>
+        </LoadingButton>
+      )}
     </Box>
   );
 }

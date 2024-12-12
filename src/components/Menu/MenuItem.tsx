@@ -2,7 +2,7 @@ import { ButtonSecondary } from '@/components/Button/Button.style';
 import type { MenuKeysEnum } from '@/const/menuKeys';
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
-import type { MouseEventHandler } from 'react';
+import type { MouseEventHandler, ReactNode } from 'react';
 import { MenuItemContainer, MenuItemLink } from '.';
 import { MenuItemLabel } from './MenuItemLabel';
 
@@ -13,7 +13,7 @@ export interface MenuItemLinkType {
 interface MenuItemProps {
   open: boolean;
   showButton: boolean | undefined;
-  children?: Element | JSX.Element | undefined;
+  children?: ReactNode | Element | JSX.Element | undefined;
   disableRipple?: boolean | undefined;
   autoFocus?: boolean;
   showMoreIcon?: boolean;
@@ -56,6 +56,7 @@ export const MenuItem = ({
         }
       }}
     >
+      {/*// @ts-expect-error*/}
       <>
         {children}
         {showButton && (

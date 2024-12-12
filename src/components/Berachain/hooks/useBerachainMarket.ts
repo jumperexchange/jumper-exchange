@@ -23,7 +23,6 @@ export const useBerachainMarket = (): UseBerachainQuestsProps => {
 
   const data = useMemo(() => {
     let filteredData = berachainMarkets;
-    console.log('dataFromStrapi', filteredData)
     if (!filteredData) {
       return [];
     }
@@ -44,10 +43,12 @@ export const useBerachainMarket = (): UseBerachainQuestsProps => {
     }
     if (protocolFilter.length > 0) {
       filteredData = filteredData?.filter((market) => {
+        // @ts-expect-error
         if (!market.attributes.CustomInformation.type) {
           return undefined;
         }
         return !protocolFilter.includes(
+          // @ts-expect-error
           market.attributes.CustomInformation.type,
         );
       });

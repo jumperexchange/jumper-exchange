@@ -1,6 +1,6 @@
 import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import type { StrapiImageData } from './strapi';
-import { QuestDetails } from '@/types/questDetails';
+import type { QuestDetails } from '@/types/questDetails';
 
 // PDA Type
 export interface Reward {

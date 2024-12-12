@@ -1,6 +1,6 @@
-"use client"
+'use client';
 
-import { RoycoProvider } from "royco";
+import { RoycoProvider } from 'royco';
 import React from 'react';
 
 export const RoycoClientProvider = ({
@@ -12,7 +12,8 @@ export const RoycoClientProvider = ({
     [chain_id: number]: string;
   } = {
     1: 'https://eth-mainnet.g.alchemy.com/v2/1loBE7C025PbFMLCiTAhbG3WrIqH0J1y',
-    11155111: 'https://eth-sepolia.g.alchemy.com/v2/1loBE7C025PbFMLCiTAhbG3WrIqH0J1y',
+    11155111:
+      'https://eth-sepolia.g.alchemy.com/v2/1loBE7C025PbFMLCiTAhbG3WrIqH0J1y',
   };
 
   return (

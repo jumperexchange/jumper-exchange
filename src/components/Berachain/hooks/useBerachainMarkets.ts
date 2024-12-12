@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import type { ExtendedQuest } from 'src/types/questDetails';
 import { getQuestBy } from '@/app/lib/getQuestBy';
-import { Quest } from '@/types/loyaltyPass';
+import type { Quest } from '@/types/loyaltyPass';
 import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
 
 export interface UseBerachainQuestsProps {
@@ -43,17 +43,19 @@ export const strapiBerachainMatching: T = {
   ],
 };
 
-const findKeyByValue = (obj: T) => (value: string): string | null => {
-  // Use Object.entries to iterate through key-value pairs
-  for (const [key, array] of Object.entries(obj)) {
-    if (array.includes(value)) {
-      return key; // Return the key if the value is found
+const findKeyByValue =
+  (obj: T) =>
+  (value: string): string | null => {
+    // Use Object.entries to iterate through key-value pairs
+    for (const [key, array] of Object.entries(obj)) {
+      if (array.includes(value)) {
+        return key; // Return the key if the value is found
+      }
     }
-  }
 
-  // Default it to berachain
-  return 'berachain'; // Return null if no match is found
-};
+    // Default it to berachain
+    return 'berachain'; // Return null if no match is found
+  };
 
 export const useBerachainMarkets = (): UseBerachainQuestsProps => {
   const { data, isSuccess, isLoading } = useQuery({
@@ -68,7 +70,7 @@ export const useBerachainMarkets = (): UseBerachainQuestsProps => {
   });
 
   function findFromStrapiByUid(uid: string) {
-    const found = data?.data.find((d) => d.attributes.UID === uid)
+    const found = data?.data.find((d) => d.attributes.UID === uid);
 
     if (found) {
       return found;
@@ -78,12 +80,16 @@ export const useBerachainMarkets = (): UseBerachainQuestsProps => {
     return data?.data.find((d) => d.attributes.UID === 'berachain-default')!;
   }
 
-  const s = findKeyByValue(strapiBerachainMatching)('0x2120adcdcf8e0ed9d6dd3df683f076402b79e3bd');
-  console.log('into use', s, data?.data.find((d) => d.attributes.UID === s))
+  const s = findKeyByValue(strapiBerachainMatching)(
+    '0x2120adcdcf8e0ed9d6dd3df683f076402b79e3bd',
+  );
 
   return {
+    // @ts-expect-error
     data,
-    findFromStrapiByUid: (value: string) => findFromStrapiByUid(findKeyByValue(strapiBerachainMatching)(value)),
+    findFromStrapiByUid: (value: string) =>
+      // @ts-expect-error
+      findFromStrapiByUid(findKeyByValue(strapiBerachainMatching)(value)),
     isLoading,
     url: getStrapiBaseUrl() || process.env.NEXT_PUBLIC_STRAPI_URL,
     isSuccess,

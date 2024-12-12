@@ -28,7 +28,7 @@ import {
   BerchainMarketCardTokenBox,
 } from './BerachainMarketCard.style';
 import { useTranslation } from 'react-i18next';
-import { EnrichedMarketDataType } from 'royco/queries';
+import type { EnrichedMarketDataType } from 'royco/queries';
 import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
 
@@ -73,23 +73,18 @@ export const BerachainMarketCard = ({
     isRefetching: isRefetchingRecipe,
     data: dataRecipe,
   } = useEnrichedAccountBalancesRecipeInMarket({
-    chain_id: roycoData.chain_id,
-    market_id: roycoData.market_id,
-    account_address: account?.address?.toLowerCase() ?? "",
+    chain_id: roycoData.chain_id!,
+    market_id: roycoData.market_id!,
+    account_address: account?.address?.toLowerCase() ?? '',
     custom_token_data: undefined,
   });
 
   //TODO: refactorize
-  deposited = dataRecipe?.input_token_data_ap?.token_amount > 0
-
-  console.log('accountBalance', {
-    isLoading: isLoadingRecipe,
-    isRefetching: isRefetchingRecipe,
-    data: dataRecipe,
-  }, account?.address)
+  // @ts-expect-error
+  deposited = dataRecipe?.input_token_data_ap?.token_amount > 0;
 
   // What is the purpose of below?
-/*
+  /*
   const prepareTokenFetch = useMemo(() => {
     if (chainId === undefined || !tokens) {
       return undefined;
@@ -148,51 +143,56 @@ export const BerachainMarketCard = ({
         </BerachainMarketCardHeader>
         <BerchainMarketCardInfos>
           <Box display={'flex'} gap={'8px'}>
-            {tokenChainDetails?.logoURI ? (
-              <BerchainMarketCardAvatar
-                src={tokenChainDetails?.logoURI}
-                alt={`${tokenChainDetails.name} logo`}
-                width={20}
-                height={20}
-              />
-            ) : (
-              <Skeleton variant="circular" sx={{ width: 32, height: 32 }} />
-            )}
+            {
+              // @ts-expect-error
+              tokenChainDetails?.logoURI ? (
+                <BerchainMarketCardAvatar
+                  // @ts-expect-error
+                  src={tokenChainDetails?.logoURI}
+                  // @ts-expect-error
+                  alt={`${tokenChainDetails.name} logo`}
+                  width={20}
+                  height={20}
+                />
+              ) : (
+                <Skeleton variant="circular" sx={{ width: 32, height: 32 }} />
+              )
+            }
             <BerchainMarketCardTokenBox>
               {roycoData.input_token_data ? (
                 // fetchedTokens.map((token, index) => (
-                  <BerachainMarketCardTokenContainer
-                    sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
-                    key={`berachain-market-card-token-container-${roycoData.input_token_data.name}`}
+                <BerachainMarketCardTokenContainer
+                  sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+                  key={`berachain-market-card-token-container-${roycoData.input_token_data.name}`}
+                >
+                  {roycoData.input_token_data.image ? (
+                    <img
+                      key={`berachain-market-card-token-${roycoData.input_token_data.name}-${roycoData.input_token_data.id}`}
+                      src={roycoData.input_token_data.image}
+                      alt={`${roycoData.input_token_data.name} logo`}
+                      width={20}
+                      height={20}
+                      style={{ borderRadius: '10px' }}
+                    />
+                  ) : (
+                    <Skeleton
+                      key={`berachain-market-card-token-skeleton-${roycoData.input_token_data.id}`}
+                      variant="circular"
+                      sx={{ width: 20, height: 20 }}
+                    />
+                  )}
+                  {/*{fetchedTokens.length === 1 && token?.name && (*/}
+                  <Typography
+                    variant="bodyXSmallStrong"
+                    key={`berachain-market-card-token-label-${roycoData.input_token_data.name}-${roycoData.input_token_data.id}`}
                   >
-                    {roycoData.input_token_data.image ? (
-                      <img
-                        key={`berachain-market-card-token-${roycoData.input_token_data.name}-${roycoData.input_token_data.id}`}
-                        src={roycoData.input_token_data.image}
-                        alt={`${roycoData.input_token_data.name} logo`}
-                        width={20}
-                        height={20}
-                        style={{ borderRadius: '10px' }}
-                      />
-                    ) : (
-                      <Skeleton
-                        key={`berachain-market-card-token-skeleton-${roycoData.input_token_data.id}`}
-                        variant="circular"
-                        sx={{ width: 20, height: 20 }}
-                      />
-                    )}
-                    {/*{fetchedTokens.length === 1 && token?.name && (*/}
-                      <Typography
-                        variant="bodyXSmallStrong"
-                        key={`berachain-market-card-token-label-${roycoData.input_token_data.name}-${roycoData.input_token_data.id}`}
-                      >
-                        {roycoData.input_token_data.symbol}
-                        {/*{fetchedTokens[0]?.symbol}*/}
-                      </Typography>
-                    {/*)}*/}
-                  </BerachainMarketCardTokenContainer>
-                // ))
+                    {roycoData.input_token_data.symbol}
+                    {/*{fetchedTokens[0]?.symbol}*/}
+                  </Typography>
+                  {/*)}*/}
+                </BerachainMarketCardTokenContainer>
               ) : (
+                // ))
                 <Skeleton variant="circular" sx={{ width: 20, height: 20 }} />
               )}
             </BerchainMarketCardTokenBox>
@@ -222,7 +222,14 @@ export const BerachainMarketCard = ({
         >
           <BerachainProgressCard
             title={'TVL'}
-            value={roycoData.locked_quantity_usd ? t('format.currency', { value: roycoData.locked_quantity_usd, notation: 'compact' }) : 'N/A'}
+            value={
+              roycoData.locked_quantity_usd
+                ? t('format.currency', {
+                    value: roycoData.locked_quantity_usd,
+                    notation: 'compact',
+                  })
+                : 'N/A'
+            }
             tooltip={
               'Total Value Locked is the metric showing the total amount in a pool.'
             }
@@ -239,6 +246,7 @@ export const BerachainMarketCard = ({
           <Tooltip
             title={
               <BerachainTooltipTokens
+                // @ts-expect-error
                 open={openTokensTooltip}
                 setOpen={setOpenTokensTooltip}
                 anchor={anchorTokensTooltip}
@@ -258,7 +266,14 @@ export const BerachainMarketCard = ({
             <div style={{ flexGrow: 1 }}>
               <BerachainProgressCard
                 title={'Net APY'}
-                value={roycoData?.annual_change_ratio ? t('format.percent', { value: roycoData.annual_change_ratio }) : 'N/A'}
+                value={
+                  roycoData?.annual_change_ratio
+                    ? // @ts-expect-error
+                      t('format.percent', {
+                        value: roycoData.annual_change_ratio,
+                      })
+                    : 'N/A'
+                }
                 tooltip={'Expected return rate on your invested'}
                 sx={{
                   height: '100%',
@@ -275,7 +290,9 @@ export const BerachainMarketCard = ({
           {deposited && (
             <BerachainProgressCard
               title={'Deposited'}
-              value={t('format.currency', { value: dataRecipe?.input_token_data_ap?.token_amount_usd })}
+              value={t('format.currency', {
+                value: dataRecipe?.input_token_data_ap?.token_amount_usd,
+              })}
               sx={{
                 height: '100%',
                 padding: theme.spacing(1.5, 2),

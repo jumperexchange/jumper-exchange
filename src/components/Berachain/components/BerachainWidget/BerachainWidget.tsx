@@ -4,7 +4,7 @@ import { type TabProps, Tabs } from 'src/components/Tabs/Tabs';
 import { Widget } from 'src/components/Widgets/Widget';
 import { BerachainWidgetWip } from '../BerachainWidgetWip/BerachainWidgetWip';
 import WidgetLikeField from '@/components/WidgetLikeField/WidgetLikeField';
-import { EnrichedMarketDataType } from 'royco/queries';
+import type { EnrichedMarketDataType } from 'royco/queries';
 import { formatDuration } from 'date-fns';
 import {
   BerachainWidgetSelection,
@@ -15,8 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { secondsToDuration } from '@/components/Berachain/lockupTimeMap';
 import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
 import { useConfig, useReadContract, useReadContracts } from 'wagmi';
-import BerachainTransactionDetails
-  from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
+import BerachainTransactionDetails from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
 import InfoBlock from '@/components/Berachain/components/BerachainWidget/InfoBlock';
 import { useAccountBalance, usePrepareMarketAction } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
@@ -24,14 +23,18 @@ import { parseRawAmount, parseRawAmountToTokenAmount } from 'royco/utils';
 import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 import { WithdrawWidget } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget';
 
-export const BerachainWidget = ({ market }: { market: EnrichedMarketDataType }) => {
+export const BerachainWidget = ({
+  market,
+}: {
+  market: EnrichedMarketDataType;
+}) => {
   const [tab, setTab] = useState(2);
   const { t } = useTranslation();
   const theme = useTheme();
 
   const token = useMemo(() => {
     return market.input_token_data;
-  }, [market?.input_token_data])
+  }, [market?.input_token_data]);
 
   const containerStyles = {
     display: 'flex',
@@ -80,26 +83,27 @@ export const BerachainWidget = ({ market }: { market: EnrichedMarketDataType }) 
 
   const { account } = useAccount();
   const { isLoading: isLoadingWallet, data: dataWallet } = useAccountBalance({
-    chain_id: market.chain_id,
-    account: account?.address || "",
-    tokens: market
-      ? [market.input_token_data.contract_address]
-      : [],
+    chain_id: market.chain_id!,
+    account: account?.address || '',
+    tokens: market ? [market.input_token_data.contract_address] : [],
   });
 
+  // TODO: to remove
+  // eslint-disable-next-line no-console
   console.log('datawallet', dataWallet, {
     chain_id: market.chain_id,
-    account: account?.address || "",
-    tokens: market
-      ? [market.input_token_data.contract_address]
-      : [],
+    account: account?.address || '',
+    tokens: market ? [market.input_token_data.contract_address] : [],
   });
   const balance = parseRawAmountToTokenAmount(
-    dataWallet?.[0]?.raw_amount ?? "0",
-    market?.input_token_data.decimals ?? 0
-  )
+    // @ts-expect-error
+    dataWallet?.[0]?.raw_amount ?? '0',
+    market?.input_token_data.decimals ?? 0,
+  );
 
-  console.log('market', market)
+  // TODO: to remove
+  // eslint-disable-next-line no-console
+  console.log('market', market);
   return (
     <Box
       sx={{
@@ -112,7 +116,9 @@ export const BerachainWidget = ({ market }: { market: EnrichedMarketDataType }) 
             : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
       }}
     >
-      <Typography variant="h2" color="text.primary" sx={{ mb: 3 }}>{market.name}</Typography>
+      <Typography variant="h2" color="text.primary" sx={{ mb: 3 }}>
+        {market.name}
+      </Typography>
       <Tabs
         data={tabs}
         value={tab}
@@ -122,7 +128,11 @@ export const BerachainWidget = ({ market }: { market: EnrichedMarketDataType }) 
       />
       {tab === 0 && (
         <Box sx={{ marginTop: theme.spacing(1.5) }}>
-          <Widget starterVariant="default" toChain={token?.chain_id} toToken={token?.contract_address} />
+          <Widget
+            starterVariant="default"
+            toChain={token?.chain_id}
+            toToken={token?.contract_address}
+          />
           <BerachainWidgetWip />
         </Box>
       )}
@@ -132,44 +142,51 @@ export const BerachainWidget = ({ market }: { market: EnrichedMarketDataType }) 
           <BerachainTransactionDetails market={market} />
           <WidgetLikeField
             market={market}
-            // contractCalls={writeContractOptions}
+            contractCalls={[]}
             overrideStyle={{ mainColor: '#FF8425' }}
             label="Supply"
             placeholder="Enter the amount"
             maxButtonHandlerValue={balance}
             helperText={{
               before: {
-                right: <Typography variant="body2" color="textSecondary">Balance: {balance}</Typography>
+                right: (
+                  <Typography variant="body2" color="textSecondary">
+                    Balance: {balance}
+                  </Typography>
+                ),
               },
               after: {
-                left: (<Typography variant="body2" color="textSecondary">
-                  {Intl.NumberFormat("en-US", {
-                      notation: "standard",
+                left: (
+                  <Typography variant="body2" color="textSecondary">
+                    {Intl.NumberFormat('en-US', {
+                      notation: 'standard',
                       useGrouping: true,
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 8,
                     }).format(
                       parseRawAmountToTokenAmount(
-                        market?.quantity_ip ?? "0", // @note: AP fills IP quantity
-                        market?.input_token_data.decimals ?? 0
-                      )
-                    )}{" "}
-                  {market?.input_token_data.symbol.toUpperCase()} Fillable in Total
-                </Typography>),
-              }
+                        market?.quantity_ip ?? '0', // @note: AP fills IP quantity
+                        market?.input_token_data.decimals ?? 0,
+                      ),
+                    )}{' '}
+                    {market?.input_token_data.symbol.toUpperCase()} Fillable in
+                    Total
+                  </Typography>
+                ),
+              },
             }}
             image={{
               url: market.input_token_data.image,
               name: market.input_token_data.name,
               badge: {
                 url: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
-                name: 'Ethereum'
-              }
+                name: 'Ethereum',
+              },
             }}
           />
         </Box>
       )}
-      {tab === 2 && (<WithdrawWidget market={market} />)}
+      {tab === 2 && <WithdrawWidget market={market} />}
     </Box>
   );
 };

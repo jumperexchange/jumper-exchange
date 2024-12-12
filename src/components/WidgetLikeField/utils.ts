@@ -1,6 +1,6 @@
 import type { Account, Chain, Client, Transport } from 'viem';
 import { BrowserProvider, JsonRpcSigner } from 'ethers';
-import { Config } from 'wagmi';
+import type { Config } from 'wagmi';
 import { getConnectorClient } from 'wagmi/actions';
 export function clientToSigner(client: Client<Transport, Chain, Account>) {
   const { account, chain, transport } = client;
@@ -20,5 +20,5 @@ export async function getEthersSigner(
   { chainId }: { chainId?: number } = {},
 ) {
   const client = await getConnectorClient(config, { chainId });
-  return clientToSigner(client);
+  return clientToSigner(client as Client<Transport, Chain, Account>);
 }

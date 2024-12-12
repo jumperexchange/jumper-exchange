@@ -12,9 +12,7 @@ export const metadata: Metadata = {
 export default async function BeraChainLayout({ children }: PropsWithChildren) {
   return (
     <RoycoClientProvider>
-      <Layout>
-        {children}
-      </Layout>
+      <Layout>{children}</Layout>
     </RoycoClientProvider>
   );
 }

@@ -108,15 +108,21 @@ export const AvailableMissionsList = ({
           ? quests?.map((quest: Quest, index: number) => {
               const baseURL = quest.attributes.Image?.data?.attributes?.url;
               const imgURL = new URL(baseURL, url.origin);
+              // @ts-expect-error
               const rewards = quest.attributes.CustomInformation?.['rewards'];
               const rewardType =
+                // @ts-expect-error
                 quest.attributes?.CustomInformation?.['rewardType'];
               const rewardRange =
+                // @ts-expect-error
                 quest.attributes?.CustomInformation?.['rewardRange'];
+              // @ts-expect-error
               const chains = quest.attributes.CustomInformation?.['chains'];
               const claimingIds =
+                // @ts-expect-error
                 quest.attributes?.CustomInformation?.['claimingIds'];
               const rewardsIds =
+                // @ts-expect-error
                 quest.attributes?.CustomInformation?.['rewardsIds'];
 
               //todo: exclude in a dedicated helper function

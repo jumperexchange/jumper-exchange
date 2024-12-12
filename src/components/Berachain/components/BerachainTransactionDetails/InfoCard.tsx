@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { Fragment } from "react";
+import React, { Fragment } from 'react';
 
 /**
  * @description Imports for styling
@@ -26,31 +26,33 @@ const InfoCardContainer = React.forwardRef<
         gap: 3, // Matches `gap-3` (spacing scale, 3 is equivalent to 24px)
         borderRadius: '12px', // Matches `rounded-xl` (extra-large rounding)
         border: '1px solid', // Matches `border`
-        borderColor: theme => theme.palette.divider, // Matches `border-divider`
+        borderColor: (theme) => theme.palette.divider, // Matches `border-divider`
         backgroundColor: 'white', // Matches `bg-white`
         padding: '20px', // Matches `p-5` (20px in the spacing scale)
       }}
       // className={cn(
-        /*"flex h-fit w-full flex-col gap-3 rounded-xl border border-divider bg-white p-5",*/
-        // className
+      /*"flex h-fit w-full flex-col gap-3 rounded-xl border border-divider bg-white p-5",*/
+      // className
       // )}
     >
       {props.children}
     </Box>
   );
 });
-InfoCardContainer.displayName = "InfoCardContainer";
+InfoCardContainer.displayName = 'InfoCardContainer';
 
 const InfoCardRowKey = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <Box ref={ref}
-       sx={{
-         color: theme => theme.palette.text.secondary,
-       }}
-       // className={cn("text-secondary", className)}
-       {...props} />
+  <Box
+    ref={ref}
+    sx={{
+      color: (theme) => theme.palette.text.secondary,
+    }}
+    // className={cn("text-secondary", className)}
+    {...props}
+  />
 ));
 
 const InfoCardRowValue = React.forwardRef<
@@ -67,8 +69,8 @@ const InfoCardRowValue = React.forwardRef<
     }}
     ref={ref}
     // className={cn(
-      /*"flex flex-row items-center gap-[0.375rem] text-black",*/
-      // className
+    /*"flex flex-row items-center gap-[0.375rem] text-black",*/
+    // className
     // )}
     {...props}
   />
@@ -99,13 +101,13 @@ const InfoCardRow = React.forwardRef<
     }}
     ref={ref}
     // className={cn(
-      /*"flex flex-row items-center justify-between font-gt text-base font-light",*/
-      // className
+    /*"flex flex-row items-center justify-between font-gt text-base font-light",*/
+    // className
     // )}
     {...props}
   />
 )) as InfoCardRowComponent;
-InfoCardRow.displayName = "InfoCardRow";
+InfoCardRow.displayName = 'InfoCardRow';
 
 /**
  * @description Info Card Row Component API
@@ -130,9 +132,13 @@ const InfoCard = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("", className)} {...props} />
+  <div
+    ref={ref}
+    // className={cn('', className)}
+    {...props}
+  />
 )) as InfoCardComponent;
-InfoCard.displayName = "InfoCard";
+InfoCard.displayName = 'InfoCard';
 
 /**
  * @description Info Card Component API

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link, Typography } from '@mui/material';
 import type { Quest } from 'src/types/loyaltyPass';
@@ -19,7 +19,6 @@ interface BerachainExploreProtocolProps {
 export const BerachainExploreProtocol = ({
   marketId,
 }: BerachainExploreProtocolProps) => {
-
   const { data: roycoData } = useEnrichedMarkets({
     is_verified: false,
     market_id: marketId,
@@ -29,7 +28,7 @@ export const BerachainExploreProtocol = ({
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
 
   if (!roycoData) {
-    return <>Loading...</>
+    return <>Loading...</>;
   }
 
   if (!Array.isArray(roycoData) || roycoData.length === 0) {
@@ -38,8 +37,7 @@ export const BerachainExploreProtocol = ({
 
   const roycoDataMarket = roycoData[0];
 
-  const card = findFromStrapiByUid(roycoDataMarket.market_id)
-  console.log('--card', roycoDataMarket, card)
+  const card = findFromStrapiByUid(roycoDataMarket.market_id!);
 
   return (
     <Container>
@@ -50,10 +48,7 @@ export const BerachainExploreProtocol = ({
           <Typography variant="bodySmallStrong">Explore Berachain</Typography>
         </BerachainBackButton>
       </Link>
-      <BerachainProtocolAction
-        market={roycoDataMarket}
-        card={card}
-      />
+      {card && <BerachainProtocolAction market={roycoDataMarket} card={card} />}
     </Container>
   );
 };

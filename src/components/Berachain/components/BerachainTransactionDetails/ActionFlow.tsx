@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Link, Tooltip, Typography } from '@mui/material';
-import { decodeActionsReturnType } from 'royco/market';
+import type { decodeActionsReturnType } from 'royco/market';
 import { Box } from '@mui/system';
 // import { decodeActionsReturnType } from "@/sdk/market";
 // import { SlideUpWrapper } from "@/components/animations";
@@ -17,10 +17,10 @@ import { Box } from '@mui/system';
 const ActionFlow = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
-  actions: decodeActionsReturnType['actions'];
-  size?: 'xs' | 'sm' | 'md' | 'lg';
-  showAlertIcon?: boolean;
-}
+    actions: decodeActionsReturnType['actions'];
+    size?: 'xs' | 'sm' | 'md' | 'lg';
+    showAlertIcon?: boolean;
+  }
 >(({ className, size, actions, showAlertIcon = true, ...props }, ref) => {
   return (
     <Box
@@ -30,7 +30,8 @@ const ActionFlow = React.forwardRef<
         flexDirection: 'column', // Matches `flex-col`
         gap: 1, // Matches `gap-3`
         // fontFamily: 'GT', // Matches `font-gt` (adjust for actual font family)
-        fontSize: size === 'sm' ? '0.875rem' : size === 'xs' ? '0.75rem' : '1rem', // Conditional font size
+        fontSize:
+          size === 'sm' ? '0.875rem' : size === 'xs' ? '0.75rem' : '1rem', // Conditional font size
         fontWeight: 300, // Matches `font-light`
         color: 'black', // Matches `text-black`
       }}
@@ -54,7 +55,7 @@ const ActionFlow = React.forwardRef<
                 display: 'flex', // Matches `flex`
                 flexDirection: 'row', // Matches `flex-row`
                 border: '1px solid', // Matches `border`
-                borderColor: theme => theme.palette.text.primary, // Matches `border-divider` (uses MUI's theme for the divider color)
+                borderColor: (theme) => theme.palette.text.primary, // Matches `border-divider` (uses MUI's theme for the divider color)
                 borderRadius: '4px', // Matches `rounded-md` (Material-UI's default rounded border radius)
                 padding: '4px', // Matches `p-1` (4px in the spacing scale)
               }}
@@ -70,7 +71,7 @@ const ActionFlow = React.forwardRef<
                   justifyContent: 'center', // Matches `place-content-center`
                   alignItems: 'center', // Matches `items-center`
                   borderRadius: '4px', // Matches `rounded-md`
-                  border: theme => `1px solid ${theme.palette.text.primary}`, // Matches `border border-divider`
+                  border: (theme) => `1px solid ${theme.palette.text.primary}`, // Matches `border border-divider`
                 }}
                 // className={cn(
                 //   "flex h-6 w-6 shrink-0 flex-col place-content-center items-center rounded-md border border-divider",
@@ -89,90 +90,113 @@ const ActionFlow = React.forwardRef<
                   //   size === "xs" && "h-3"
                   // )}
                 >
-                  <Typography variant="body2" color="textSecondary" component="span"
-                              sx={{
-                                lineHeight: size === 'xs' ? '12px' : '20px', // Dynamic line height: leading-3 = 12px, leading-5 = 20px
-                              }}>{actionIndex + 1}</Typography>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="span"
+                    sx={{
+                      lineHeight: size === 'xs' ? '12px' : '20px', // Dynamic line height: leading-3 = 12px, leading-5 = 20px
+                    }}
+                  >
+                    {actionIndex + 1}
+                  </Typography>
                 </Box>
-                </Box>
+              </Box>
 
+              <Box
+                sx={{
+                  marginLeft: size === 'xs' ? '8px' : '12px', // Dynamic margin-left: `ml-2` = 8px, `ml-3` = 12px
+                  marginTop: '0.1rem', // Matches `mt-[0.1rem]`
+                  display: 'flex', // Matches `flex`
+                  flexGrow: 1, // Matches `grow`
+                  whiteSpace: 'pre-wrap', // Matches `text-wrap`
+                  fontWeight: 300, // Matches `font-light`
+                }}
+                // className={cn(
+                //   "ml-3 mt-[0.1rem] flex grow text-wrap font-light",
+                //   size === "xs" && "ml-2"
+                // )}
+              >
                 <Box
                   sx={{
-                    marginLeft: size === 'xs' ? '8px' : '12px', // Dynamic margin-left: `ml-2` = 8px, `ml-3` = 12px
-                    marginTop: '0.1rem', // Matches `mt-[0.1rem]`
-                    display: 'flex', // Matches `flex`
-                    flexGrow: 1, // Matches `grow`
-                    whiteSpace: 'pre-wrap', // Matches `text-wrap`
-                    fontWeight: 300, // Matches `font-light`
+                    wordBreak: 'break-all', // Matches `break-all`
+                    lineHeight: size === 'sm' ? '20px' : '20px', // `leading-5` translates to `20px` in both cases
                   }}
                   // className={cn(
-                  //   "ml-3 mt-[0.1rem] flex grow text-wrap font-light",
-                  //   size === "xs" && "ml-2"
+                  //   "break-all leading-5",
+                  //   size === "sm" && "leading-5"
                   // )}
                 >
-                  <Box
-                    sx={{
-                      wordBreak: 'break-all', // Matches `break-all`
-                      lineHeight: size === 'sm' ? '20px' : '20px', // `leading-5` translates to `20px` in both cases
-                    }}
-                    // className={cn(
-                    //   "break-all leading-5",
-                    //   size === "sm" && "leading-5"
-                    // )}
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="span"
                   >
-                    <Typography variant="body2" color="textSecondary" component="span">Call to</Typography>
-                    <Tooltip
-                      title={action.function_signature}
-                      placement="top"
-                      enterTouchDelay={0}
-                      arrow
+                    Call to
+                  </Typography>
+                  <Tooltip
+                    title={action.function_signature}
+                    placement="top"
+                    enterTouchDelay={0}
+                    arrow
+                  >
+                    <Typography
+                      variant="body2"
+                      color="primary.main"
+                      component="span"
+                      sx={{ cursor: 'help', marginX: 1 }}
                     >
-                      <Typography variant="body2" color="primary.main" component="span"
-                                  sx={{ cursor: 'help', marginX: 1 }}
-                      >
-                        {action.function_name
-                          ? action.function_name
-                          : action.contract_function}
-                      </Typography>
-                    </Tooltip>
-                    <Typography variant="body2" component="span" color="textSecondary">function on:</Typography>
-                    <Tooltip
-                      title={action.contract_address.slice(0, 6) +
-                        '...' +
-                        action.contract_address.slice(-4)}
-                      sx={{ cursor: 'help' }}
-                      placement="top"
-                      enterTouchDelay={0}
-                      arrow>
-                      <Link
-                        sx={{
-                          display: 'inline-block', // Matches `inline-block`
-                          textAlign: 'left', // Matches `text-left`
-                          color: 'black', // Matches `text-black`
-                          textDecoration: 'underline', // Matches `underline`
-                          textDecorationColor: 'secondary.main', // Matches `decoration-secondary`
-                          textDecorationStyle: 'dotted', // Matches `decoration-dotted`
-                          textDecorationThickness: '2px', // Matches the visual appearance of decoration thickness
-                          textUnderlineOffset: '3px', // Matches `underline-offset-[3px]`
-                          transition: 'color 200ms ease-in-out', // Matches `transition-colors duration-200 ease-in-out`
-                          '&:hover': {
-                            color: 'secondary.main', // Matches `hover:text-secondary`
-                            textDecorationColor: 'tertiary.main', // Matches `hover:decoration-tertiary`
-                          },
-                        }}
-                        href={action.explorer_url}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="inline-block text-left text-black underline decoration-secondary decoration-dotted underline-offset-[3px] transition-colors duration-200 ease-in-out hover:text-secondary hover:decoration-tertiary"
-                      >
-                        {action.contract_name
-                          ? action.contract_name
-                          : 'Unknown'}
-                      </Link>
-                    </Tooltip>
-                  </Box>
+                      {action.function_name
+                        ? action.function_name
+                        : action.contract_function}
+                    </Typography>
+                  </Tooltip>
+                  <Typography
+                    variant="body2"
+                    component="span"
+                    color="textSecondary"
+                  >
+                    function on:
+                  </Typography>
+                  <Tooltip
+                    title={
+                      action.contract_address.slice(0, 6) +
+                      '...' +
+                      action.contract_address.slice(-4)
+                    }
+                    sx={{ cursor: 'help' }}
+                    placement="top"
+                    enterTouchDelay={0}
+                    arrow
+                  >
+                    <Link
+                      sx={{
+                        display: 'inline-block', // Matches `inline-block`
+                        textAlign: 'left', // Matches `text-left`
+                        color: 'black', // Matches `text-black`
+                        textDecoration: 'underline', // Matches `underline`
+                        textDecorationColor: 'secondary.main', // Matches `decoration-secondary`
+                        textDecorationStyle: 'dotted', // Matches `decoration-dotted`
+                        textDecorationThickness: '2px', // Matches the visual appearance of decoration thickness
+                        textUnderlineOffset: '3px', // Matches `underline-offset-[3px]`
+                        transition: 'color 200ms ease-in-out', // Matches `transition-colors duration-200 ease-in-out`
+                        '&:hover': {
+                          color: 'secondary.main', // Matches `hover:text-secondary`
+                          textDecorationColor: 'tertiary.main', // Matches `hover:decoration-tertiary`
+                        },
+                      }}
+                      href={action.explorer_url}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="inline-block text-left text-black underline decoration-secondary decoration-dotted underline-offset-[3px] transition-colors duration-200 ease-in-out hover:text-secondary hover:decoration-tertiary"
+                    >
+                      {action.contract_name ? action.contract_name : 'Unknown'}
+                    </Link>
+                  </Tooltip>
                 </Box>
-            </Box>);
+              </Box>
+            </Box>
+          );
         })
       ) : (
         <Typography variant="body2" color="textSecondary">

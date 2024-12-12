@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import ActionFlow from '@/components/Berachain/components/BerachainTransactionDetails/ActionFlow';
 import { useActiveMarket } from '../../hooks/useActiveMarket';
-import { EnrichedMarketDataType } from 'royco/queries';
+import type { EnrichedMarketDataType } from 'royco/queries';
 import Grid from '@mui/material/Unstable_Grid2';
 
 function Recipe({ market }: { market: EnrichedMarketDataType }) {
@@ -14,16 +14,23 @@ function Recipe({ market }: { market: EnrichedMarketDataType }) {
     propsActionsDecoderEnterMarket,
     propsActionsDecoderExitMarket,
     // } = useActiveMarket(market.chain_id, market.market_type, market.market_id);
-  } = useActiveMarket(1, market.market_type, '0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b');
+  } = useActiveMarket(
+    1,
+    market.market_type,
+    '0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b',
+  );
 
   return (
     <Grid
       container
       spacing={{ xs: 1, md: 3 }}
       mb={2}
-      className="mb-2 grid grid-cols-2 gap-x-1 md:gap-x-3">
+      className="mb-2 grid grid-cols-2 gap-x-1 md:gap-x-3"
+    >
       <Grid xs={6}>
-        <Typography variant="body2" color="textSecondary" >Deposit Script</Typography>
+        <Typography variant="body2" color="textSecondary">
+          Deposit Script
+        </Typography>
         <Box
           sx={(theme) => ({
             maxHeight: 200, // Matches max-h-[200px]
@@ -47,7 +54,9 @@ function Recipe({ market }: { market: EnrichedMarketDataType }) {
         </Box>
       </Grid>
       <Grid xs={6}>
-        <Typography variant="body2" color="textSecondary">Withdrawal Script</Typography>
+        <Typography variant="body2" color="textSecondary">
+          Withdrawal Script
+        </Typography>
 
         <Box
           sx={(theme) => ({

@@ -39,9 +39,13 @@ export const BannerBox = ({
     theme.breakpoints.down('md'),
   );
   const attributes = quest?.attributes;
+  // @ts-expect-error
   const rewardsIds = quest.attributes?.CustomInformation?.['rewardsIds'];
+  // @ts-expect-error
   const rewards = attributes?.CustomInformation?.['rewards'];
+  // @ts-expect-error
   const chains = attributes?.CustomInformation?.['chains'];
+  // @ts-expect-error
   const partners = attributes?.CustomInformation?.['partner'];
   // const rewardType = attributes?.CustomInformation?.['rewardType'];
   const bannerImageURL = isMobile

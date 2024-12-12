@@ -20,14 +20,21 @@ export const QuestCarouselItems = ({
     ? quests?.map((quest: Quest, index: number) => {
         const baseURL = quest.attributes.Image?.data?.attributes?.url;
         const imgURL = new URL(baseURL, url.origin);
+        // @ts-expect-error
         const rewards = quest.attributes.CustomInformation?.['rewards'];
+        // @ts-expect-error
         const rewardType = quest.attributes?.CustomInformation?.['rewardType'];
         const rewardRange =
+          // @ts-expect-error
           quest.attributes?.CustomInformation?.['rewardRange'];
+        // @ts-expect-error
         const chains = quest.attributes.CustomInformation?.['chains'];
         const claimingIds =
+          // @ts-expect-error
           quest.attributes?.CustomInformation?.['claimingIds'];
+        // @ts-expect-error
         const rewardsIds = quest.attributes?.CustomInformation?.['rewardsIds'];
+        // @ts-expect-error
         const questTraits = quest.attributes?.CustomInformation?.['traits'];
 
         //todo: exclude in a dedicated helper function

@@ -24,7 +24,7 @@ export const percentFormatter = (
     ...options,
     style: 'percent',
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
   });
 
   return (value: any) => {

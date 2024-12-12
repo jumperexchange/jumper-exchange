@@ -3,7 +3,11 @@ import { createInstance } from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 import i18nConfig from '../../i18nconfig';
-import { currencyFormatter, decimalFormatter, percentFormatter } from '@/utils/formatNumbers';
+import {
+  currencyFormatter,
+  decimalFormatter,
+  percentFormatter,
+} from '@/utils/formatNumbers';
 
 // TODO: use https://nextjs.org/docs/app/building-your-application/routing/internationalization#localization
 export default async function initTranslations(

@@ -4,30 +4,30 @@ import React from 'react';
 export const WithdrawIncentiveTokenRow = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
-  token: any;
-  disabled: boolean;
-}
+    token: any;
+    disabled: boolean;
+  }
 >(({ className, token, disabled, ...props }, ref) => {
   return (
     <div
       ref={ref}
       // className={cn(
-        ///*"flex w-full grow flex-row items-center justify-between gap-2",*/
-        // className
+      ///*"flex w-full grow flex-row items-center justify-between gap-2",*/
+      // className
       // )}
       {...props}
     >
       <div className="flex h-4 flex-row items-center space-x-2">
         <Typography>
-          {Intl.NumberFormat("en-US", {
-            style: "decimal",
-            notation: "standard",
+          {Intl.NumberFormat('en-US', {
+            style: 'decimal',
+            notation: 'standard',
             useGrouping: true,
             minimumFractionDigits: 2,
             maximumFractionDigits: 8,
           }).format(token.token_amount)}
         </Typography>
-TOKEN
+        TOKEN
         {/*<TokenDisplayer size={4} tokens={[token]} symbols={true} />*/}
       </div>
       <div className="w-24">

@@ -13,5 +13,5 @@ export const MaxButton = styled(Button, {
   backgroundColor: alpha(mainColor ?? theme.palette.primary.main, 0.78),
   '&:hover': {
     backgroundColor: alpha(mainColor ?? theme.palette.primary.main, 0.48),
-  }
-}))
+  },
+}));

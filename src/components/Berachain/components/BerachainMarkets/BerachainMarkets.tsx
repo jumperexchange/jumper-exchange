@@ -6,6 +6,7 @@ import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMark
 import { BerachainMarketsHeader } from './BerachainMarketsHeader';
 import { useEnrichedMarkets } from 'royco/hooks';
 import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
+import type { EnrichedMarketDataType } from 'royco/queries';
 
 export const BerachainMarkets = () => {
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
@@ -20,22 +21,26 @@ export const BerachainMarkets = () => {
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
-        {!roycoData || !data && Array.from({ length: 9 }, () => 42).map((_, idx) => (
-          <BerachainMarketCard key={idx} />
-        ))}
-        {Array.isArray(roycoData)
-          && roycoData?.map((roycoData, index) => {
+        {!roycoData ||
+          (!data &&
+            Array.from({ length: 9 }, () => 42).map((_, idx) => (
+              <BerachainMarketCard
+                roycoData={{} as EnrichedMarketDataType}
+                key={idx}
+              />
+            )))}
+        {Array.isArray(roycoData) &&
+          roycoData?.map((roycoData, index) => {
             if (!roycoData?.id) {
               return;
             }
-            const card = findFromStrapiByUid(roycoData.market_id)
-            console.log('--card', roycoData, card)
+            const card = findFromStrapiByUid(roycoData.market_id!);
             return (
               <BerachainMarketCard
                 key={`berachain-market-card-${roycoData.id || 'protocol'}-${index}`}
                 roycoData={roycoData}
                 // chainId={roycoData.chain_id}
-                image={card.attributes.Image}
+                image={card?.attributes.Image}
                 // title={roycoData.name}
                 // slug={roycoData.id}
                 // slug={card.attributes.Slug}
@@ -48,7 +53,7 @@ export const BerachainMarkets = () => {
                 url={url}
                 deposited={index % 2 === 0 ? `${index * 100}$` : undefined}
               />
-            )
+            );
           })}
       </BerachainMarketCards>
     </Box>

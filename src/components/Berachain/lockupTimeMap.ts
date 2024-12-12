@@ -1,4 +1,3 @@
-
 export const LockupTimeMap: Record<
   string,
   {
@@ -10,38 +9,38 @@ export const LockupTimeMap: Record<
 > = {
   minutes: {
     offer: 1,
-    notation: "min",
-    label: "Minutes",
+    notation: 'min',
+    label: 'Minutes',
     multiplier: 60,
   },
   hours: {
     offer: 2,
-    notation: "hr",
-    label: "Hours",
+    notation: 'hr',
+    label: 'Hours',
     multiplier: 3600,
   },
   days: {
     offer: 3,
-    notation: "d",
-    label: "Days",
+    notation: 'd',
+    label: 'Days',
     multiplier: 86400,
   },
   weeks: {
     offer: 4,
-    notation: "wk",
-    label: "Weeks",
+    notation: 'wk',
+    label: 'Weeks',
     multiplier: 604800,
   },
   months: {
     offer: 5,
-    notation: "mo",
-    label: "Months",
+    notation: 'mo',
+    label: 'Months',
     multiplier: 2592000,
   },
   years: {
     offer: 6,
-    notation: "yr",
-    label: "Years",
+    notation: 'yr',
+    label: 'Years',
     multiplier: 31536000,
   },
 };

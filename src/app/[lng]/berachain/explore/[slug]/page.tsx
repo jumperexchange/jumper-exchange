@@ -58,7 +58,6 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: { slug: string } }) {
   // Royco hooks only works on client side so notFound not really possible from there :(
   // Have to rely on the hardcoded array
-  console.log('exporepagebera', params.slug)
 
   return <BerachainExploreProtocol marketId={params.slug} />;
 }
