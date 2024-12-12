@@ -14,8 +14,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
+import { useENSSNS } from 'src/hooks/useENSSNS';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import { useWalletLabel } from 'src/hooks/useWalletLabel';
 import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
@@ -46,7 +46,7 @@ export const WalletButtons = () => {
     (state) => state,
   );
 
-  const { name: label } = useWalletLabel(account?.address);
+  const { name: label } = useENSSNS(account?.address);
 
   const activeChain = useMemo(
     () => chains?.find((chainEl: Chain) => chainEl.id === account?.chainId),

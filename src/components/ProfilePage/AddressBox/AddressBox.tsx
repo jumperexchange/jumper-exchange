@@ -8,7 +8,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
-import { useWalletLabel } from 'src/hooks/useWalletLabel';
+import { useENSSNS } from 'src/hooks/useENSSNS';
 import {
   AddressBoxContainer,
   PassImageBox,
@@ -25,7 +25,7 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
   const theme = useTheme();
   const imgLink = useWalletAddressImg(address);
   const { setSnackbarState } = useMenuStore((state) => state);
-  const { name: addressLabel } = useWalletLabel(address);
+  const { name: addressLabel } = useENSSNS(address);
 
   const handleCopyButton = (textToCopy: string) => {
     address && navigator.clipboard.writeText(textToCopy);

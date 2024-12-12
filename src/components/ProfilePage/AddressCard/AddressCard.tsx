@@ -5,8 +5,8 @@ import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWalletAddressImg } from 'src/hooks/useAddressImg';
+import { useENSSNS } from 'src/hooks/useENSSNS';
 import { useMercleNft } from 'src/hooks/useMercleNft';
-import { useWalletLabel } from 'src/hooks/useWalletLabel';
 import { AddressMenu } from '../AddressMenu/AddressMenu';
 import {
   AddressBox,
@@ -31,7 +31,7 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
 
   const [openAddressMenu, setOpenAddressMenu] = useState(false);
   const { imageLink } = useMercleNft({ userAddress: address });
-  const { name: addressLabel } = useWalletLabel(address);
+  const { name: addressLabel } = useENSSNS(address);
 
   const imgLink = useWalletAddressImg(address);
   const { setSnackbarState } = useMenuStore((state) => state);

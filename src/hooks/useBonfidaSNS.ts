@@ -12,7 +12,7 @@ export const useBonfidaSNS = ({ walletAddress }: UseBonfidaSNSProps) => {
     enabled: addressType === 'sol',
     queryFn: async () => {
       const response = await fetch(
-        `https://sns-sdk-proxy.bonfida.workers.dev/reverse-lookup/${walletAddress}`, //${walletAddress}`,
+        `https://sns-sdk-proxy.bonfida.workers.dev/reverse-lookup/${walletAddress}`,
       );
       const result = await response.json();
       return result;
