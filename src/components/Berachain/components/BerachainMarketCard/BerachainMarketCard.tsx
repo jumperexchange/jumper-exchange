@@ -29,6 +29,8 @@ import {
 } from './BerachainMarketCard.style';
 import { useTranslation } from 'react-i18next';
 import { EnrichedMarketDataType } from 'royco/queries';
+import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
+import { useAccount } from '@lifi/wallet-management';
 
 interface BerachainMarketCardProps {
   roycoData: EnrichedMarketDataType;
@@ -49,6 +51,7 @@ export const BerachainMarketCard = ({
   url,
   deposited,
 }: BerachainMarketCardProps) => {
+  const { account } = useAccount();
   const chainId = roycoData.chain_id;
   const theme = useTheme();
   const { t } = useTranslation();
@@ -64,6 +67,26 @@ export const BerachainMarketCard = ({
 
   const tokensTooltipId = 'tokens-tooltip-button';
   const tokensTooltipMenuId = 'tokens-tooltip-menu';
+
+  const {
+    isLoading: isLoadingRecipe,
+    isRefetching: isRefetchingRecipe,
+    data: dataRecipe,
+  } = useEnrichedAccountBalancesRecipeInMarket({
+    chain_id: roycoData.chain_id,
+    market_id: roycoData.market_id,
+    account_address: account?.address?.toLowerCase() ?? "",
+    custom_token_data: undefined,
+  });
+
+  //TODO: refactorize
+  deposited = dataRecipe?.input_token_data_ap?.token_amount > 0
+
+  console.log('accountBalance', {
+    isLoading: isLoadingRecipe,
+    isRefetching: isRefetchingRecipe,
+    data: dataRecipe,
+  }, account?.address)
 
   // What is the purpose of below?
 /*
@@ -143,7 +166,7 @@ export const BerachainMarketCard = ({
                     key={`berachain-market-card-token-container-${roycoData.input_token_data.name}`}
                   >
                     {roycoData.input_token_data.image ? (
-                      <Image
+                      <img
                         key={`berachain-market-card-token-${roycoData.input_token_data.name}-${roycoData.input_token_data.id}`}
                         src={roycoData.input_token_data.image}
                         alt={`${roycoData.input_token_data.name} logo`}
@@ -213,18 +236,16 @@ export const BerachainMarketCard = ({
             }}
             valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
           />
-          {/* TODO: Needs to be done when type will be alright across all apys
           <Tooltip
             title={
               <BerachainTooltipTokens
-                // open={openTokensTooltip}
-                // setOpen={setOpenTokensTooltip}
-                // anchor={anchorTokensTooltip}
-                // setAnchor={setAnchorTokensTooltip}
-                // idLabel={tokensTooltipId}
-                // idMenu={tokensTooltipMenuId}
-                chainId={chainId}
-                apyTokens={Array.isArray(roycoData.native_annual_change_ratios) ? roycoData.native_annual_change_ratios : roycoData}
+                open={openTokensTooltip}
+                setOpen={setOpenTokensTooltip}
+                anchor={anchorTokensTooltip}
+                setAnchor={setAnchorTokensTooltip}
+                idLabel={tokensTooltipId}
+                idMenu={tokensTooltipMenuId}
+                data={roycoData}
               />
             }
             open={openTokensTooltip ? false : undefined}
@@ -233,11 +254,11 @@ export const BerachainMarketCard = ({
             placement="top"
             enterTouchDelay={0}
             arrow
-          >*/}
+          >
             <div style={{ flexGrow: 1 }}>
               <BerachainProgressCard
                 title={'Net APY'}
-                value={roycoData?.native_annual_change_ratio ? t('format.percent', { value: roycoData.native_annual_change_ratio }) : 'N/A'}
+                value={roycoData?.annual_change_ratio ? t('format.percent', { value: roycoData.annual_change_ratio }) : 'N/A'}
                 tooltip={'Expected return rate on your invested'}
                 sx={{
                   height: '100%',
@@ -250,11 +271,11 @@ export const BerachainMarketCard = ({
                 valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
               />
             </div>
-          {/*</Tooltip>*/}
+          </Tooltip>
           {deposited && (
             <BerachainProgressCard
-              title={'Deposit'}
-              value={'$2,380'}
+              title={'Deposited'}
+              value={t('format.currency', { value: dataRecipe?.input_token_data_ap?.token_amount_usd })}
               sx={{
                 height: '100%',
                 padding: theme.spacing(1.5, 2),

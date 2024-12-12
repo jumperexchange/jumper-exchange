@@ -4,12 +4,17 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { WalletAvatar, WalletCardBadge } from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useConfig } from 'wagmi';
+import { useConfig, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { getEthersSigner } from '@/components/WidgetLikeField/utils';
 import { MaxButton } from '@/components/WidgetLikeField/WidgetLikeField.style';
+import { TransactionOptionsType } from 'royco/types';
+import { usePrepareMarketAction } from 'royco/hooks';
+import { parseRawAmount, parseRawAmountToTokenAmount, parseTokenAmountToRawAmount } from 'royco/utils';
+import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
+import { EnrichedMarketDataType } from 'royco/queries';
 
 interface Image {
   url: string;
@@ -33,15 +38,21 @@ interface SendContractCall extends BaseContractCall {
 
 type ContractCall = SignContractCall | SendContractCall;
 
+interface HelperText {
+  left: string | React.ReactNode;
+  right: string| React.ReactNode;
+}
+
 interface WidgetLikeFieldProps {
-  contractCalls: ContractCall[];
+  market: EnrichedMarketDataType;
+  contractCalls: TransactionOptionsType[];
   label: string;
   placeholder?: string;
   image?: Image & { badge?: Image };
-  hasMaxButton?: boolean;
+  maxButtonHandlerValue?: number | string | null;
   helperText?: {
-    left?: string;
-    right?: string;
+    before?: Partial<HelperText>;
+    after?: Partial<HelperText>;
   };
   overrideStyle?: {
     mainColor?: string;
@@ -49,26 +60,157 @@ interface WidgetLikeFieldProps {
 }
 
 function WidgetLikeField({
-  contractCalls,
+  contractCalls = [],
   label,
   image,
   placeholder,
-  hasMaxButton = true,
+  maxButtonHandlerValue,
   helperText,
+  market,
   overrideStyle = {},
 }: WidgetLikeFieldProps) {
   const theme = useTheme();
-  const config = useConfig();
   const { account } = useAccount();
+  const [inputValue, setInputValue] = useState<string | null>(null);
+
+  const userType = 'ap'
+  const offerType = 'market'
+  const fundingType = 'wallet'
+  const vaultIncentiveActionType = 'add'
+  const {
+    isValid,
+    isLoading,
+    isReady,
+    writeContractOptions,
+    canBePerformedCompletely,
+    canBePerformedPartially,
+    incentiveData,
+  } = usePrepareMarketAction({
+    chain_id: market.chain_id,
+    market_id: market.market_id,
+    market_type: 'recipe',
+    user_type: userType,
+    offer_type: offerType,
+    account: account?.address,
+    quantity: parseTokenAmountToRawAmount(
+      inputValue ?? '0',
+      market?.input_token_data.decimals ?? 0
+    ),
+    funding_vault: DEFAULT_WALLET_ADDRESS,
+    token_ids: [],
+    token_amounts: [],
+    expiry: "0",
+    token_rates: [],
+    start_timestamps: [],
+    end_timestamps: [],
+
+    vault_incentive_action: vaultIncentiveActionType,
+    offer_validation_url: `/api/validate`,
+    frontend_fee_recipient: process.env.NEXT_PUBLIC_ROYCO_FRONTEND_FEE_RECIPIENT,
+  })
+  console.log('prep', {
+    chain_id: market.chain_id,
+    market_id: market.market_id,
+    market_type: 'recipe',
+    user_type: userType,
+    offer_type: offerType,
+    account: account?.address,
+    quantity: parseTokenAmountToRawAmount(
+      inputValue ?? '0',
+      market?.input_token_data.decimals ?? 0
+    ),
+    funding_vault: DEFAULT_WALLET_ADDRESS,
+    token_ids: [],
+    token_amounts: [],
+    expiry: "0",
+    token_rates: [],
+    start_timestamps: [],
+    end_timestamps: [],
+
+    vault_incentive_action: vaultIncentiveActionType,
+    offer_validation_url: `/api/validate`,
+    frontend_fee_recipient: process.env.NEXT_PUBLIC_ROYCO_FRONTEND_FEE_RECIPIENT,
+  })
+
+  console.log('result', {
+    isValid,
+    isLoading,
+    isReady,
+    writeContractOptions,
+    canBePerformedCompletely,
+    canBePerformedPartially,
+    incentiveData,
+  })
 
   const [contractCallIndex, setContractCallIndex] = useState(0);
 
   const contractMutations = [];
 
+  function onClickMaxButton() {
+    onChangeValue(maxButtonHandlerValue);
+  }
+
+  const {
+    status: txStatus,
+    data: txHash,
+    isIdle: isTxIdle,
+    isPending: isTxPending,
+    isError: isTxError,
+    error: txError,
+    writeContract,
+    reset: resetTx,
+  } = useWriteContract();
+
+  console.log('writecontract', {
+    status: txStatus,
+    data: txHash,
+    isIdle: isTxIdle,
+    isPending: isTxPending,
+    isError: isTxError,
+    error: txError,
+    writeContract,
+    reset: resetTx,
+  }, writeContractOptions);
+
+  const {
+    isLoading: isTxConfirming,
+    isSuccess: isTxConfirmed,
+    isError: isTxConfirmError,
+    status: confirmationStatus,
+  } = useWaitForTransactionReceipt({
+    chainId: market.chain_id,
+    hash: txHash,
+    confirmations: 2,
+    query: {
+      enabled: !txHash
+    }
+  });
+
+  console.log('waitTransactionReceipt', {
+    txHash,
+    isLoading: isTxConfirming,
+    isSuccess: isTxConfirmed,
+    isError: isTxConfirmError,
+    status: confirmationStatus,
+  } )
+
+  useEffect(() => {
+    if(txStatus === 'success') {
+      setContractCallIndex(contractCallIndex+1);
+    }
+  }, [txStatus]);
+
+  function onChangeValue(value: string = "0") {
+    setInputValue(value)
+  }
+
+  // return <div>TOTO</div>
+/*
   contractCalls.forEach((contractCall, index) => {
     contractMutations.push(useMutation({
       mutationKey: ['signMessage', account.address],
-      mutationFn: async () => {
+      mutationFn: async (value) => {
+        console.log('value:', value)
         let result;
         switch (contractCall.type) {
           case 'sign': {
@@ -94,9 +236,9 @@ function WidgetLikeField({
         setContractCallIndex(index + 1);
       },
     }));
-  });
+  });*/
   console.log('index', contractCallIndex);
-
+/* TODO: enable completed state when finishing all transactions
   if (contractCalls.length === contractCallIndex) {
     return (
       <Button
@@ -114,22 +256,21 @@ function WidgetLikeField({
         <Typography variant="bodyMediumStrong">Completed</Typography>
       </Button>
     );
-  }
-
-  const { mutate, isPending, isSuccess, isError } = contractMutations[contractCallIndex];
-
-  console.log('sss', contractMutations);
+  }*/
 
   async function onSubmit(e) {
     try {
-      console.log('submitted', e);
+      console.log('submitted', inputValue);
       e.preventDefault();
-      mutate();
+
+      resetTx();
+      writeContract({
+        ...writeContractOptions[contractCallIndex],
+      })
     } catch (e) {
-      console.error(e);
+      console.error('ERROR SENDING', e);
     }
   }
-
 
   return (
       <Box
@@ -144,11 +285,24 @@ function WidgetLikeField({
       >
         <InputLabel htmlFor="component" sx={{ marginBottom: 1 }}><Typography
           variant="titleSmall">{label}</Typography></InputLabel>
-        <FormControl error={isError} variant="standard" aria-autocomplete="none">
+        <FormControl error={isTxError} variant="standard" aria-autocomplete="none">
+          {helperText?.before && <FormHelperText id="component-text" sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: 1,
+          }}>
+            <Typography component="span">{helperText.before?.left}</Typography>
+            <Typography component="span">{helperText.before?.right}</Typography>
+          </FormHelperText>}
           <OutlinedInput
             autoComplete="off"
             id="component"
             defaultValue=""
+            value={inputValue}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChangeValue(event.target.value);
+            }}
             placeholder={placeholder}
             aria-describedby="component-text"
             sx={{ padding: '0.6rem 1rem' }}
@@ -184,24 +338,24 @@ function WidgetLikeField({
                   }} />
                 </WalletAvatar>
               </WalletCardBadge>}
-            endAdornment={hasMaxButton && <MaxButton sx={{ p: '5px 10px' }} aria-label="menu" mainColor={overrideStyle?.mainColor}>
+            endAdornment={maxButtonHandlerValue && <MaxButton sx={{ p: '5px 10px' }} aria-label="menu" mainColor={overrideStyle?.mainColor} onClick={onClickMaxButton}>
               max
             </MaxButton>}
           />
-          {helperText && <FormHelperText id="component-text" sx={{
+          {helperText?.after && <FormHelperText id="component-text" sx={{
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginBottom: 1,
           }}>
-            <Typography component="span">{helperText.left}</Typography>
-            <Typography component="span">{helperText.right}</Typography>
+            <Typography component="span">{helperText.after?.left}</Typography>
+            <Typography component="span">{helperText.after?.right}</Typography>
           </FormHelperText>}
         </FormControl>
-        {contractCalls[contractCallIndex] &&
+        {writeContractOptions[contractCallIndex] &&
           <LoadingButton
             type="submit"
-            loading={isPending}
+            loading={isLoading || isTxPending || isTxConfirming}
             variant="contained"
             sx={{
               '&.MuiLoadingButton-loading': {
@@ -212,7 +366,7 @@ function WidgetLikeField({
               },
             }}
           >
-            <Typography variant="bodyMediumStrong">{contractCalls[contractCallIndex].label}</Typography>
+            <Typography variant="bodyMediumStrong">{writeContractOptions[contractCallIndex].label}</Typography>
           </LoadingButton>
         }
       </Box>

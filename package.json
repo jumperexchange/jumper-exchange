@@ -129,6 +129,6 @@
     "royco/wagmi": "2.13.3",
     "royco/@wagmi/core": "2.15.2",
     "@lifi/wallet-management/@wagmi/core": "2.15.2",
-    "bigmi/wagmi":"2.13.3"
+    "bigmi/wagmi": "2.13.3"
   }
 }

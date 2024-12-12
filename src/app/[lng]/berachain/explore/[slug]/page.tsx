@@ -58,24 +58,6 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: { slug: string } }) {
   // Royco hooks only works on client side so notFound not really possible from there :(
   // Have to rely on the hardcoded array
-
-  // const { data, url, findFromStrapiByUid } = useBerachainMarkets();
-  // const card = findFromStrapiByUid(param.slug)
-
-
-  // const { data } = await getQuestBySlug(params.slug);
-  // const questData = (data?.data?.[0] as ExtendedQuest) || undefined;
-  //
-  // if (!questData) {
-  //   return notFound();
-  // }
-  //
-  // if (questData) {
-  //   const protocolDetails = berachainMarkets.filter(
-  //     (market) => market.slug === questData.attributes.Slug,
-  //   );
-  //   questData.protocolInfos = protocolDetails[0];
-  // }
   console.log('exporepagebera', params.slug)
 
   return <BerachainExploreProtocol marketId={params.slug} />;

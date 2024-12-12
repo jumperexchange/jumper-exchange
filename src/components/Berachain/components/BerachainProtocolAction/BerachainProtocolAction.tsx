@@ -23,7 +23,6 @@ import { BerachainProtocolFaqAccordionHeader } from './BerachainProtocolFaqAccor
 import { EnrichedMarketDataType } from 'royco/queries';
 import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
 import { WagmiProvider } from 'wagmi';
-import { config } from '@/components/Berachain/wagmiConfig';
 
 interface BerachainProtocolActionProps {
   market?: EnrichedMarketDataType;

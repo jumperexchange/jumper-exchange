@@ -21,7 +21,7 @@ export const BerachainExploreProtocol = ({
 }: BerachainExploreProtocolProps) => {
 
   const { data: roycoData } = useEnrichedMarkets({
-    is_verified: true,
+    is_verified: false,
     market_id: marketId,
     sorting: [{ id: 'locked_quantity_usd', desc: true }],
   });

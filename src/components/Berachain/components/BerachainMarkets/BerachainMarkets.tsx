@@ -10,7 +10,8 @@ import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMa
 export const BerachainMarkets = () => {
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
   const { data: roycoData } = useEnrichedMarkets({
-    is_verified: true,
+    is_verified: false,
+    // chain_id: 11155111,
     sorting: [{ id: 'locked_quantity_usd', desc: true }],
   });
 

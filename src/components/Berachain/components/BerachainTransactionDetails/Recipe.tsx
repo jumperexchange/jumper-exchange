@@ -1,10 +1,10 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import ActionFlow from '@/components/Berachain/components/BerachainTransactionDetails/ActionFlow';
 import { useActiveMarket } from '../../hooks/useActiveMarket';
+import { EnrichedMarketDataType } from 'royco/queries';
+import Grid from '@mui/material/Unstable_Grid2';
 
-function Recipe() {
-  console.log('recipe type')
-
+function Recipe({ market }: { market: EnrichedMarketDataType }) {
   const {
     isLoading,
     marketMetadata,
@@ -13,14 +13,27 @@ function Recipe() {
     propsReadMarket,
     propsActionsDecoderEnterMarket,
     propsActionsDecoderExitMarket,
-  } = useActiveMarket();
+    // } = useActiveMarket(market.chain_id, market.market_type, market.market_id);
+  } = useActiveMarket(1, market.market_type, '0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b');
 
   return (
-    <div className="mb-2 grid grid-cols-2 gap-x-1 md:gap-x-3">
-      <div>
-        <Typography>Deposit Script</Typography>
-
-        <div
+    <Grid
+      container
+      spacing={{ xs: 1, md: 3 }}
+      mb={2}
+      className="mb-2 grid grid-cols-2 gap-x-1 md:gap-x-3">
+      <Grid xs={6}>
+        <Typography variant="body2" color="textSecondary" >Deposit Script</Typography>
+        <Box
+          sx={(theme) => ({
+            maxHeight: 200, // Matches max-h-[200px]
+            overflowX: 'hidden', // Matches overflow-x-hidden
+            overflowY: 'auto', // Matches overflow-y-scroll
+            border: 1, // Matches border
+            borderRadius: '8px', // Matches rounded-lg
+            padding: 1, // Matches p-1
+            borderColor: theme.palette.text.primary,
+          })}
           // className={cn(
           //   // BASE_MARGIN_TOP.SM,
           //   "max-h-[200px] overflow-x-hidden overflow-y-scroll rounded-lg border p-1"
@@ -31,28 +44,35 @@ function Recipe() {
             actions={propsActionsDecoderEnterMarket.data ?? []}
             showAlertIcon={false}
           />
-        </div>
-      </div>
+        </Box>
+      </Grid>
+      <Grid xs={6}>
+        <Typography variant="body2" color="textSecondary">Withdrawal Script</Typography>
 
-      <div>
-        <SecondaryLabel>Withdrawal Script</SecondaryLabel>
-
-        <div
-          className={cn(
-            BASE_MARGIN_TOP.SM,
-            "max-h-[200px] overflow-x-hidden overflow-y-scroll rounded-lg border p-1"
-          )}
+        <Box
+          sx={(theme) => ({
+            maxHeight: 200, // Matches max-h-[200px]
+            overflowX: 'hidden', // Matches overflow-x-hidden
+            overflowY: 'auto', // Matches overflow-y-scroll
+            border: 1, // Matches border
+            borderRadius: '8px', // Matches rounded-lg
+            padding: 1, // Matches p-1
+            borderColor: theme.palette.text.primary,
+          })}
+          // className={cn(
+          //   BASE_MARGIN_TOP.SM,
+          //   "max-h-[200px] overflow-x-hidden overflow-y-scroll rounded-lg border p-1"
+          // )}
         >
           <ActionFlow
             size="xs"
             actions={propsActionsDecoderExitMarket.data ?? []}
             showAlertIcon={false}
           />
-        </div>
-      </div>
-    </div>
-  )
-
+        </Box>
+      </Grid>
+    </Grid>
+  );
 }
 
 export default Recipe;

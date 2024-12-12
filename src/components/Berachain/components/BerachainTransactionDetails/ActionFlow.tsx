@@ -3,6 +3,7 @@
 import React from 'react';
 import { Link, Tooltip, Typography } from '@mui/material';
 import { decodeActionsReturnType } from 'royco/market';
+import { Box } from '@mui/system';
 // import { decodeActionsReturnType } from "@/sdk/market";
 // import { SlideUpWrapper } from "@/components/animations";
 // import {
@@ -13,7 +14,7 @@ import { decodeActionsReturnType } from 'royco/market';
 // import { AlertIndicator } from "@/components/common";
 // import { cn } from "@/lib/utils";
 
-export const ActionFlow = React.forwardRef<
+const ActionFlow = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
   actions: decodeActionsReturnType['actions'];
@@ -22,7 +23,18 @@ export const ActionFlow = React.forwardRef<
 }
 >(({ className, size, actions, showAlertIcon = true, ...props }, ref) => {
   return (
-    <div
+    <Box
+      sx={{
+        display: 'flex', // Matches `flex`
+        width: '100%', // Matches `w-full`
+        flexDirection: 'column', // Matches `flex-col`
+        gap: 1, // Matches `gap-3`
+        // fontFamily: 'GT', // Matches `font-gt` (adjust for actual font family)
+        fontSize: size === 'sm' ? '0.875rem' : size === 'xs' ? '0.75rem' : '1rem', // Conditional font size
+        fontWeight: 300, // Matches `font-light`
+        color: 'black', // Matches `text-black`
+      }}
+      // className={className} // Include additional custom classes
       ref={ref}
       // className={cn(
       //   "flex w-full flex-col gap-3 font-gt text-base font-light text-black",
@@ -37,66 +49,117 @@ export const ActionFlow = React.forwardRef<
           const BASE_KEY = `action-flow:${action.id}:${actionIndex}`;
 
           return (
-            <div
-              // className={cn(
-              //   "flex h-6 w-6 shrink-0 flex-col place-content-center items-center rounded-md border border-divider",
-              //   size === "sm" && "h-5 w-5",
-              //   size === "xs" && "h-5 w-5"
-              // )}
+            <Box
+              sx={{
+                display: 'flex', // Matches `flex`
+                flexDirection: 'row', // Matches `flex-row`
+                border: '1px solid', // Matches `border`
+                borderColor: theme => theme.palette.text.primary, // Matches `border-divider` (uses MUI's theme for the divider color)
+                borderRadius: '4px', // Matches `rounded-md` (Material-UI's default rounded border radius)
+                padding: '4px', // Matches `p-1` (4px in the spacing scale)
+              }}
             >
-              <div
+              {/*// Below box is the number*/}
+              <Box
+                sx={{
+                  display: 'flex', // Matches `flex`
+                  height: size === 'sm' || size === 'xs' ? 20 : 24, // Conditional height (5 = 20px, 6 = 24px)
+                  width: size === 'sm' || size === 'xs' ? 20 : 24, // Conditional width
+                  flexShrink: 0, // Matches `shrink-0`
+                  flexDirection: 'column', // Matches `flex-col`
+                  justifyContent: 'center', // Matches `place-content-center`
+                  alignItems: 'center', // Matches `items-center`
+                  borderRadius: '4px', // Matches `rounded-md`
+                  border: theme => `1px solid ${theme.palette.text.primary}`, // Matches `border border-divider`
+                }}
                 // className={cn(
-                //   "flex h-5",
-                //   size === "sm" && "h-4",
-                //   size === "xs" && "h-3"
+                //   "flex h-6 w-6 shrink-0 flex-col place-content-center items-center rounded-md border border-divider",
+                //   size === "sm" && "h-5 w-5",
+                //   size === "xs" && "h-5 w-5"
                 // )}
               >
-                  <span
-                    // className={cn(
-                    //   "leading-5",
-                    //   size === "sm" && "leading-5",
-                    //   size === "xs" && "leading-3"
-                    // )}
-                  >
-                    {actionIndex + 1}
-                  </span>
-              </div>
-            </div>
-
-          <div
-            // className={cn(
-            //   "ml-3 mt-[0.1rem] flex grow text-wrap font-light",
-            //   size === "xs" && "ml-2"
-            // )}
-          >
-                <span
+                <Box
+                  sx={{
+                    display: 'flex', // Matches `flex`
+                    height: size === 'sm' ? 16 : size === 'xs' ? 12 : 20, // Dynamic height (h-4 = 16px, h-3 = 12px, h-5 = 20px)
+                  }}
                   // className={cn(
-                  //   "break-all leading-5",
-                  //   size === "sm" && "leading-5"
+                  //   "flex h-5",
+                  //   size === "sm" && "h-4",
+                  //   size === "xs" && "h-3"
                   // )}
                 >
-                  Call to
-                  <Tooltip
-                    title={action.function_signature}
-                    sx={{ cursor: 'help' }}
-                    placement="top"
-                    enterTouchDelay={0}
-                    arrow
+                  <Typography variant="body2" color="textSecondary" component="span"
+                              sx={{
+                                lineHeight: size === 'xs' ? '12px' : '20px', // Dynamic line height: leading-3 = 12px, leading-5 = 20px
+                              }}>{actionIndex + 1}</Typography>
+                </Box>
+                </Box>
+
+                <Box
+                  sx={{
+                    marginLeft: size === 'xs' ? '8px' : '12px', // Dynamic margin-left: `ml-2` = 8px, `ml-3` = 12px
+                    marginTop: '0.1rem', // Matches `mt-[0.1rem]`
+                    display: 'flex', // Matches `flex`
+                    flexGrow: 1, // Matches `grow`
+                    whiteSpace: 'pre-wrap', // Matches `text-wrap`
+                    fontWeight: 300, // Matches `font-light`
+                  }}
+                  // className={cn(
+                  //   "ml-3 mt-[0.1rem] flex grow text-wrap font-light",
+                  //   size === "xs" && "ml-2"
+                  // )}
+                >
+                  <Box
+                    sx={{
+                      wordBreak: 'break-all', // Matches `break-all`
+                      lineHeight: size === 'sm' ? '20px' : '20px', // `leading-5` translates to `20px` in both cases
+                    }}
+                    // className={cn(
+                    //   "break-all leading-5",
+                    //   size === "sm" && "leading-5"
+                    // )}
                   >
-                    {action.function_name
-                      ? action.function_name
-                      : action.contract_function}
-                  </Tooltip>
-                  function on:{' '}
-                  <Tooltip
-                    title={action.contract_address.slice(0, 6) +
-                      '...' +
-                      action.contract_address.slice(-4)}
-                    sx={{ cursor: 'help' }}
-                    placement="top"
-                    enterTouchDelay={0}
-                    arrow>
+                    <Typography variant="body2" color="textSecondary" component="span">Call to</Typography>
+                    <Tooltip
+                      title={action.function_signature}
+                      placement="top"
+                      enterTouchDelay={0}
+                      arrow
+                    >
+                      <Typography variant="body2" color="primary.main" component="span"
+                                  sx={{ cursor: 'help', marginX: 1 }}
+                      >
+                        {action.function_name
+                          ? action.function_name
+                          : action.contract_function}
+                      </Typography>
+                    </Tooltip>
+                    <Typography variant="body2" component="span" color="textSecondary">function on:</Typography>
+                    <Tooltip
+                      title={action.contract_address.slice(0, 6) +
+                        '...' +
+                        action.contract_address.slice(-4)}
+                      sx={{ cursor: 'help' }}
+                      placement="top"
+                      enterTouchDelay={0}
+                      arrow>
                       <Link
+                        sx={{
+                          display: 'inline-block', // Matches `inline-block`
+                          textAlign: 'left', // Matches `text-left`
+                          color: 'black', // Matches `text-black`
+                          textDecoration: 'underline', // Matches `underline`
+                          textDecorationColor: 'secondary.main', // Matches `decoration-secondary`
+                          textDecorationStyle: 'dotted', // Matches `decoration-dotted`
+                          textDecorationThickness: '2px', // Matches the visual appearance of decoration thickness
+                          textUnderlineOffset: '3px', // Matches `underline-offset-[3px]`
+                          transition: 'color 200ms ease-in-out', // Matches `transition-colors duration-200 ease-in-out`
+                          '&:hover': {
+                            color: 'secondary.main', // Matches `hover:text-secondary`
+                            textDecorationColor: 'tertiary.main', // Matches `hover:decoration-tertiary`
+                          },
+                        }}
                         href={action.explorer_url}
                         target="_blank"
                         rel="noreferrer noopener"
@@ -106,18 +169,17 @@ export const ActionFlow = React.forwardRef<
                           ? action.contract_name
                           : 'Unknown'}
                       </Link>
-                  </Tooltip>
-                </span>
-          </div>;
-        )
-          ;
+                    </Tooltip>
+                  </Box>
+                </Box>
+            </Box>);
         })
       ) : (
-        <Typography>
+        <Typography variant="body2" color="textSecondary">
           No actions added
         </Typography>
       )}
-    </div>
+    </Box>
   );
 });
 
