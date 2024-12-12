@@ -388,6 +388,7 @@ export const WithdrawWidget = ({
                                   token_data: position.input_token_data,
                                 },
                               });
+                            // @ts-expect-error
                             writeContract(contractOptions);
                             // setTransactions([contractOptions]);
                           } else {
