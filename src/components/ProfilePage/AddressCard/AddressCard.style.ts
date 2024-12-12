@@ -35,13 +35,13 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-interface AddressEffigyImageProps extends ImageProps {
+interface AddressBlockiesImageProps extends ImageProps {
   imageLink?: string;
 }
 
-export const AddressEffigyImage = styled(Image, {
+export const AddressBlockiesImage = styled(Image, {
   shouldForwardProp: (prop) => prop !== 'imageLink',
-})<AddressEffigyImageProps>(({ theme, imageLink }) => ({
+})<AddressBlockiesImageProps>(({ theme, imageLink }) => ({
   backgroundColor: imageLink
     ? theme.palette.mode === 'light'
       ? '#F9F5FF'
@@ -54,7 +54,7 @@ export const AddressEffigyImage = styled(Image, {
   zIndex: 1,
 }));
 
-export const AddressEffigyImageSkeleton = styled(Skeleton)(({ theme }) => ({
+export const AddressBlockiesImageSkeleton = styled(Skeleton)(({ theme }) => ({
   backgroundColor: alpha(theme.palette.grey[400], 0.8),
   width: 140,
   height: 140,

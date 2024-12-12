@@ -12,8 +12,9 @@ import {
   RankWalletImage,
   RankWalletImageSkeleton,
 } from './LeaderboardEntry.style';
-import { effigyAddressFormatter } from 'src/utils/effigyAddressFormatter';
+
 import { useWalletAddressImg } from 'src/hooks/useAddressImg';
+import { obfuscatedAddressFormatter } from 'src/utils/obfuscatedAddressFormatter';
 
 interface LeaderboardEntryProps {
   isUserPosition?: boolean;
@@ -34,7 +35,7 @@ export const LeaderboardEntry = ({
 }: LeaderboardEntryProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const formattedAddress = effigyAddressFormatter(walletAddress);
+  const formattedAddress = obfuscatedAddressFormatter(walletAddress);
   const imgLink = useWalletAddressImg(formattedAddress);
 
   return (
@@ -54,7 +55,7 @@ export const LeaderboardEntry = ({
         {walletAddress ? (
           <RankWalletImage
             src={imgLink}
-            alt="Effigy Wallet Icon"
+            alt="Blockies Wallet Icon"
             isUserEntry={isUserEntry}
             width={48}
             height={48}

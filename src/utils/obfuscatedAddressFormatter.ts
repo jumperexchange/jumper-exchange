@@ -1,6 +1,6 @@
 import { ZERO_ADDRESS } from 'src/const/zeroAddress';
 
-export const effigyAddressFormatter = (address?: string) => {
+export const obfuscatedAddressFormatter = (address?: string) => {
   const addressChunks = address?.split('...');
   if (addressChunks?.length === 2) {
     const addressPreChunksLength = addressChunks[0].length;
