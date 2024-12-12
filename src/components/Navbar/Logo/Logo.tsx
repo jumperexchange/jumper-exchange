@@ -44,10 +44,11 @@ export const Logo = ({ variant }: LogoProps) => {
                 theme.palette.mode === 'light'
                   ? theme.palette.black.main
                   : theme.palette.grey[500],
-              width: '32px',
-              height: '32px',
+              width: '16px',
+              height: '16px',
               marginLeft: theme.spacing(-2),
               marginRight: theme.spacing(2),
+              alignSelf: 'center',
             }}
           />
           <Image
