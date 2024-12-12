@@ -53,7 +53,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
 const WalletMenuProvider: FC<PropsWithChildren> = ({ children }) => {
   const { i18n } = useTranslation();
-  // @ts-expect-error
   const config: WalletManagementConfig = useMemo(() => {
     return {
       locale: i18n.resolvedLanguage as never,
