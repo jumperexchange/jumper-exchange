@@ -12818,6 +12818,7 @@ __metadata:
     sharp: "npm:^0.33.5"
     siwe: "npm:^2.3.2"
     typescript: "npm:^5.7.2"
+    use-immer: "npm:^0.11.0"
     uuid: "npm:^11.0.3"
     web-vitals: "npm:^4.2.4"
     xvfb: "npm:^0.4.0"
@@ -17112,6 +17113,16 @@ __metadata:
   dependencies:
     punycode: "npm:^2.1.0"
   checksum: 10/b271ca7e3d46b7160222e3afa3e531505161c9a4e097febae9664e4b59912f4cbe94861361a4175edac3a03fee99d91e44b6a58c17a634bc5a664b19fc76fbcb
+  languageName: node
+  linkType: hard
+
+"use-immer@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "use-immer@npm:0.11.0"
+  peerDependencies:
+    immer: ">=8.0.0"
+    react: ^16.8.0 || ^17.0.1 || ^18.0.0 || ^19.0.0
+  checksum: 10/09ddbddec5bd5a939dc462de4c9d1ce47989bc60daa712c5235664650b132e246b8e61b6bd3dc8179649445b7cf389065373c75f23829a676dbda6b5d2428928
   languageName: node
   linkType: hard
 
