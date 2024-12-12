@@ -42,8 +42,8 @@ export const MainMenu = ({ anchorEl }: MenuProps) => {
             open
           />
         ))}
-      <LanguagesSubmenu />
-      <DevelopersSubmenu />
+      {/*<LanguagesSubmenu />*/}
+      {/*<DevelopersSubmenu />*/}
       <ThemeSubmenu />
     </Menu>
   );

@@ -13,7 +13,14 @@ import {
   JUMPER_WALLET_PATH,
 } from 'src/const/urls';
 import { MenuToggle, NavbarButtonsContainer, RedirectToApp } from '.';
-import { WalletButtons } from '../WalletButtons';
+import dynamic from 'next/dynamic';
+
+const WalletButtons = dynamic(
+  () => import('../WalletButtons').then((mod) => mod.WalletButtons),
+  {
+    ssr: false,
+  },
+);
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef(null);

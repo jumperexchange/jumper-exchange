@@ -9,11 +9,13 @@ import {
   useEnrichedPositionsRecipe,
   useEnrichedPositionsVault,
 } from 'royco/hooks';
+import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import { RoycoMarketType, RoycoMarketUserType } from 'royco/market';
 import { WithdrawInputTokenRow } from './WithdrawInputTokenRow';
 import { WithdrawIncentiveTokenRow } from './WithdrawIncentiveTokenRow';
 import { useState } from 'react';
+import { WalletButtons } from '@/components/Navbar/WalletButtons';
 
 export type TypedMarketWithdrawType = 'input_token' | 'incentives';
 export const MarketWithdrawType: Record<
@@ -42,6 +44,54 @@ export const WithdrawWidget = ({
   const theme = useTheme();
   const [transactions, setTransactions] = useState([]);
   const withdrawType = 'input_token';
+
+  const {
+    status: txStatus,
+    data: txHash,
+    isIdle: isTxIdle,
+    isPending: isTxPending,
+    isError: isTxError,
+    error: txError,
+    writeContract,
+    reset: resetTx,
+  } = useWriteContract();
+
+  // TODO: to remove
+  // eslint-disable-next-line no-console
+  console.log('writecontract', {
+    status: txStatus,
+    data: txHash,
+    isIdle: isTxIdle,
+    isPending: isTxPending,
+    isError: isTxError,
+    error: txError,
+    writeContract,
+    reset: resetTx,
+  });
+
+  const {
+    isLoading: isTxConfirming,
+    isSuccess: isTxConfirmed,
+    isError: isTxConfirmError,
+    status: confirmationStatus,
+  } = useWaitForTransactionReceipt({
+    chainId: market.chain_id ?? undefined,
+    hash: txHash,
+    confirmations: 2,
+    query: {
+      enabled: !txHash,
+    },
+  });
+
+  // TODO: to remove
+  // eslint-disable-next-line no-console
+  console.log('waitTransactionReceipt', {
+    txHash,
+    isLoading: isTxConfirming,
+    isSuccess: isTxConfirmed,
+    isError: isTxConfirmError,
+    status: confirmationStatus,
+  });
 
   const {
     isLoading: isLoadingPositionsRecipe,
@@ -141,9 +191,11 @@ export const WithdrawWidget = ({
             alignItems: 'start', // Aligns items at the start along the cross-axis.
           }}
         >
-        {/*<div className="h-full w-full place-content-center items-start">*/}
+          {/*<div className="h-full w-full place-content-center items-start">*/}
           <Typography variant="body2" color="textSecondary">
             Wallet not connected
+            <WalletButtons />
+            {/*TODO: REMOVE THIS, JUST A BYPASS TO TEST IT WITH THE BUG*/}
           </Typography>
         </Box>
       )}
@@ -157,7 +209,7 @@ export const WithdrawWidget = ({
             alignItems: 'start', // Aligns items at the start along the cross-axis.
           }}
         >
-        {/*<div className="h-full w-full place-content-center items-start">*/}
+          {/*<div className="h-full w-full place-content-center items-start">*/}
           <Typography variant="body2" color="textSecondary">
             No withdrawable positions found
           </Typography>
@@ -176,36 +228,36 @@ export const WithdrawWidget = ({
             >
               <Box
                 sx={{
-                  display: 'flex',        // Equivalent to `flex`
-                  width: '100%',          // Equivalent to `w-full`
-                  flexDirection: 'row',   // Equivalent to `flex-row`
-                  alignItems: 'center',   // Equivalent to `items-center`
+                  display: 'flex', // Equivalent to `flex`
+                  width: '100%', // Equivalent to `w-full`
+                  flexDirection: 'row', // Equivalent to `flex-row`
+                  alignItems: 'center', // Equivalent to `items-center`
                   justifyContent: 'space-between', // Equivalent to `justify-between`
-                  gap: 2,                 // Equivalent to `gap-2` (MUI uses theme-based spacing; `2` = 2 * 8px = 16px)
-                  borderRadius: '16px',   // Equivalent to `rounded-2xl` (16px)
-                  border: '1px solid',    // Creates the border
-                  borderColor: 'divider', // Uses the theme's divider color
-                  padding: 3,             // Equivalent to `p-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
+                  gap: 2, // Equivalent to `gap-2` (MUI uses theme-based spacing; `2` = 2 * 8px = 16px)
+                  borderRadius: '16px', // Equivalent to `rounded-2xl` (16px)
+                  border: '1px solid #fff', // Creates the border
+                  padding: 3, // Equivalent to `p-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
+                  margin: 1,
                 }}
                 // className="flex w-full flex-row items-center justify-between gap-2 rounded-2xl border border-divider p-3"
-                >
+              >
                 <Box
                   sx={{
-                    display: 'flex',         // Equivalent to `flex`
-                    width: '100%',           // Equivalent to `w-full`
-                    flexGrow: 1,             // Equivalent to `grow`
+                    display: 'flex', // Equivalent to `flex`
+                    width: '100%', // Equivalent to `w-full`
+                    flexGrow: 1, // Equivalent to `grow`
                     flexDirection: 'column', // Equivalent to `flex-col`
-                    alignItems: 'start',     // Equivalent to `items-start`
-                    gap: 1,                  // Equivalent to `space-y-1` (MUI uses theme-based spacing; `1` = 1 * 8px = 8px)
-                    overflowX: 'scroll',     // Equivalent to `overflow-x-scroll`
+                    alignItems: 'start', // Equivalent to `items-start`
+                    gap: 1, // Equivalent to `space-y-1` (MUI uses theme-based spacing; `1` = 1 * 8px = 8px)
+                    overflowX: 'scroll', // Equivalent to `overflow-x-scroll`
                   }}
                   // className="hide-scrollbar flex w-full grow flex-col items-start space-y-1 overflow-x-scroll"
                 >
                   <Typography
                     sx={{
                       whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
-                      wordBreak: 'normal',  // Equivalent to `break-normal`
-                      color: 'black',       // Equivalent to `text-black`
+                      wordBreak: 'normal', // Equivalent to `break-normal`
+                      color: 'text.primary', // Equivalent to `text-black`
                     }}
                     // className="whitespace-nowrap break-normal text-black"
                   >
@@ -226,14 +278,13 @@ export const WithdrawWidget = ({
                           ) ?? 0),
                     )}
                   </Typography>
-
                   <Box
                     sx={{
-                      display: 'flex',         // Equivalent to `flex`
-                      width: '100%',           // Equivalent to `w-full`
-                      flexGrow: 1,             // Equivalent to `grow`
+                      display: 'flex', // Equivalent to `flex`
+                      width: '100%', // Equivalent to `w-full`
+                      flexGrow: 1, // Equivalent to `grow`
                       flexDirection: 'column', // Equivalent to `flex-col`
-                      gap: 3,                  // Equivalent to `space-y-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
+                      gap: 3, // Equivalent to `space-y-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
                     }}
                     // className="flex w-full grow flex-col space-y-3"
                   >
@@ -276,9 +327,7 @@ export const WithdrawWidget = ({
                                       },
                                     },
                                   );
-
-                                // @ts-expect-error
-                                setTransactions([contractOptions]);
+                                writeContract(contractOptions);
                               } else {
                                 const contractOptions =
                                   getVaultIncentiveTokenWithdrawalTransactionOptions(
@@ -292,9 +341,7 @@ export const WithdrawWidget = ({
                                       },
                                     },
                                   );
-
-                                // @ts-expect-error
-                                setTransactions([contractOptions]);
+                                writeContract(contractOptions);
                               }
                             }}
                             key={`withdraw-incentive-token-row:${positionIndex}-${tokenIndex}`}
@@ -309,8 +356,8 @@ export const WithdrawWidget = ({
                 {withdrawType === MarketWithdrawType.input_token.id && (
                   <Box
                     sx={{
-                      width: '6rem',    // Equivalent to `w-24` (24 * 0.25rem = 6rem)
-                      flexShrink: 0,    // Equivalent to `shrink-0`
+                      width: '6rem', // Equivalent to `w-24` (24 * 0.25rem = 6rem)
+                      flexShrink: 0, // Equivalent to `shrink-0`
                     }}
                     // className="w-24 shrink-0"
                   >
@@ -339,9 +386,8 @@ export const WithdrawWidget = ({
                                   token_data: position.input_token_data,
                                 },
                               });
-
-                            // @ts-expect-error
-                            setTransactions([contractOptions]);
+                            writeContract(contractOptions);
+                            // setTransactions([contractOptions]);
                           } else {
                             // TODO: to remove
                             // eslint-disable-next-line no-console

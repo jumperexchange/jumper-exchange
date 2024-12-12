@@ -55,7 +55,6 @@ export const WalletButtons = () => {
     (state) => state,
   );
 
-
   const { data: ensName, isSuccess: isSuccessEnsName } = useEnsName({
     address: account?.address as Address | undefined,
     chainId: mainnet.id,
@@ -78,8 +77,6 @@ export const WalletButtons = () => {
   const handleWalletMenuClick = () => {
     setWalletMenuState(!_openWalletMenu);
   };
-
-  console.log('walletbuttons', account)
 
   return (
     <>
