@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { BerachainStars } from '../BerachainStars/BerachainStars';
 import {
   BerachainAnimationFrame,
   BerachainPlanetContainer,
@@ -6,14 +7,13 @@ import {
   BerchainSpaceGlow,
 } from './BerachainHeroAnimation.style';
 import { BerachainHeroImages } from './BerchainHeroImages';
-import Starfield from './Starfield';
 
 const BerachainHeroAnimation = () => {
   return (
     <BerachainAnimationFrame className="animation-frame">
       <BerchainSpaceGlow sx={{ zIndex: 2 }} />
-      <Starfield sx={{ zIndex: 3 }} />
-
+      <BerachainStars />
+      {/* todo: sx -> without casting? */}
       <motion.img
         className="BerachainAsteroidX1"
         src={'/berachain/berachain-asteroid-2.svg'}
@@ -30,7 +30,6 @@ const BerachainHeroAnimation = () => {
           repeatType: 'reverse',
         }}
       />
-
       <motion.img
         className="BerachainAsteroidX2"
         src={'/berachain/berachain-asteroid-2.svg'}
@@ -63,7 +62,6 @@ const BerachainHeroAnimation = () => {
           repeatType: 'reverse',
         }}
       />
-
       <motion.img
         className="BerachainAsteroidX3"
         src={'/berachain/berachain-asteroid-2.svg'}
@@ -85,7 +83,6 @@ const BerachainHeroAnimation = () => {
           ease: 'linear',
         }}
       />
-
       <motion.img
         className="BerachainAsteroidX4"
         src={'/berachain/berachain-asteroid-2.svg'}
@@ -107,7 +104,6 @@ const BerachainHeroAnimation = () => {
           ease: 'linear',
         }}
       />
-
       <motion.img
         className="BerachainAsteroidX5"
         src={'/berachain/berachain-asteroid-2.svg'}
@@ -129,7 +125,6 @@ const BerachainHeroAnimation = () => {
           ease: 'easeInOut',
         }}
       />
-
       <motion.img
         className="BerachainAsteroidX6"
         src={'/berachain/berachain-asteroid-1.svg'}
@@ -151,7 +146,6 @@ const BerachainHeroAnimation = () => {
           ease: 'linear',
         }}
       />
-
       <motion.img
         className="BerachainAsteroidX7"
         src={'/berachain/berachain-asteroid-1.svg'}
@@ -173,7 +167,6 @@ const BerachainHeroAnimation = () => {
           ease: 'linear',
         }}
       />
-
       <BerachainHeroImages sx={{ zIndex: 6 }} />
       <BerachainPlanetContainer sx={{ zIndex: 5 }}>
         <BerachainPlanetCrater
