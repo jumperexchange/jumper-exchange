@@ -57,6 +57,7 @@
     "react-dom": "^18.3.1",
     "react-error-boundary": "^4.1.2",
     "react-i18next": "^15.1.4",
+    "royco": "^0.9.47",
     "shallow-equal": "^3.1.0",
     "sharp": "^0.33.5",
     "siwe": "^2.3.2",
