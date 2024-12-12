@@ -56,7 +56,6 @@ export const MenuItem = ({
         }
       }}
     >
-      {/*// @ts-expect-error*/}
       <>
         {children}
         {showButton && (
