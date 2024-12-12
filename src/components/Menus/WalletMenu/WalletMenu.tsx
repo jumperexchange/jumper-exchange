@@ -80,6 +80,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         >
           <CloseIcon />
         </IconButton>
+        {/* @ts-expect-error*/}
         <WalletButtons sx={{ width: 'auto' }} onClick={handleOpenWalletMenu}>
           <Typography
             sx={{
