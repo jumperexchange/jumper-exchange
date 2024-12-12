@@ -46,5 +46,7 @@ export const useENSSNS = (address: string | undefined): UseENSSNSType => {
     return { name: address, isSuccess: false };
   }
 
+  // console.log('result', result);
+
   return { name: ensName, isSuccess };
 };
