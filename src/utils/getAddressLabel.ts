@@ -1,22 +1,30 @@
-import { ZERO_ADDRESS } from 'src/const/zeroAddress';
-import type { GetEnsNameReturnType } from 'wagmi/actions';
-import { walletDigest } from './walletDigest';
 import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
+import type { GetEnsNameReturnType } from 'wagmi/actions';
+import { checkAddressType } from './checkAddressType';
+import { walletDigest } from './walletDigest';
 interface getAddressLabelProps {
   isSuccess: boolean;
-  ensName?: GetEnsNameReturnType;
+  name?: GetEnsNameReturnType;
   address?: string;
 }
 
 export const getAddressLabel = ({
   isSuccess,
-  ensName,
+  name,
   address,
 }: getAddressLabelProps): string => {
-  if (isSuccess && ensName) {
-    return String(ensName).length > 20
-      ? `${String(ensName).slice(0, 13)}...eth`
-      : ensName;
+  const walletType = checkAddressType(address);
+  if (isSuccess && name) {
+    switch (walletType) {
+      case 'sol':
+        return String(name).length > 16
+          ? `${String(name).slice(0, 13)}...sol`
+          : `${name}.sol`;
+      default:
+        return String(name).length > 20
+          ? `${String(name).slice(0, 13)}...eth`
+          : name;
+    }
   } else if (address) {
     return walletDigest(address);
   } else {

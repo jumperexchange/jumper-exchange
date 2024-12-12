@@ -46,7 +46,7 @@ export const WalletButtons = () => {
     (state) => state,
   );
 
-  const label = useWalletLabel(account?.address);
+  const { name: label } = useWalletLabel(account?.address);
 
   const activeChain = useMemo(
     () => chains?.find((chainEl: Chain) => chainEl.id === account?.chainId),
