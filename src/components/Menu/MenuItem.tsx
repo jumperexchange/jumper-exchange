@@ -10,6 +10,7 @@ export interface MenuItemLinkType {
   url: string;
   external?: boolean;
 }
+
 interface MenuItemProps {
   open: boolean;
   showButton: boolean | undefined;
