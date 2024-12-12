@@ -168,6 +168,7 @@ interface Resources {
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       date: '{{value, dateExt}}';
+      shortDate: '{{value, dateShortExt}}';
     };
   };
 }
