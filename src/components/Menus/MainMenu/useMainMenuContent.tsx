@@ -11,7 +11,6 @@ import {
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
-  JUMPER_WASH_PATH,
   X_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -21,7 +20,6 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
-import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
@@ -37,6 +35,7 @@ export const useMainMenuContent = () => {
   const router = useRouter();
   const theme = useTheme();
   const pathname = usePathname();
+  const disableThemeSwitch = pathname.includes(JUMPER_SCAN_PATH);
   const [themeMode, configTheme] = useThemeStore((state) => [
     state.themeMode,
     state.configTheme,
@@ -70,7 +69,7 @@ export const useMainMenuContent = () => {
 
   let mainMenu: any[] = [];
 
-  if (configTheme?.hasThemeModeSwitch) {
+  if (configTheme?.hasThemeModeSwitch && !disableThemeSwitch) {
     mainMenu.push({
       children: (
         <Tabs
