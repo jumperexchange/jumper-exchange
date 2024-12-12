@@ -327,6 +327,7 @@ export const WithdrawWidget = ({
                                       },
                                     },
                                   );
+                                // @ts-expect-error
                                 writeContract(contractOptions);
                               } else {
                                 const contractOptions =
