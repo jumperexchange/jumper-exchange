@@ -21,8 +21,8 @@ interface LeaderboardEntryProps {
   isUserConnected?: boolean;
   isUserEntry?: boolean;
   walletAddress?: string;
-  position?: number;
-  points: number;
+  position?: number | string;
+  points: number | string;
 }
 
 export const LeaderboardEntry = ({

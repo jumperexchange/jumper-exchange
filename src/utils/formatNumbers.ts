@@ -34,26 +34,6 @@ export const currencyFormatter = (
   };
 };
 
-export const dateFormatter = (
-  lng: string | undefined,
-  options: Intl.DateTimeFormatOptions,
-) => {
-  const formatter = new Intl.DateTimeFormat(lng, {
-    ...options,
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-
-  return (value: any) => {
-    if (!value) {
-      return '';
-    }
-
-    return formatter.format(value);
-  };
-};
-
 // export function numberWithCommas(num?: string | number) {
 //   if (num === undefined || num === null) {
 //     return;

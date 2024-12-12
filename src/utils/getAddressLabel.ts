@@ -1,4 +1,3 @@
-import { ZERO_ADDRESS } from 'src/const/zeroAddress';
 import type { GetEnsNameReturnType } from 'wagmi/actions';
 import { walletDigest } from './walletDigest';
 import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';

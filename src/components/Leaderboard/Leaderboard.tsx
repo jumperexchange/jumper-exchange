@@ -103,16 +103,8 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                         key={`leaderboard-entry-${index}`}
                         isUserPosition={isUserPosition}
                         walletAddress={entry.walletAddress}
-                        position={
-                          typeof entry.position === 'string'
-                            ? parseInt(entry.position)
-                            : entry.position
-                        }
-                        points={
-                          typeof entry.points === 'string'
-                            ? parseInt(entry.points)
-                            : entry.points
-                        }
+                        position={entry.position}
+                        points={entry.points}
                       />
                       {index !== leaderboardData.length - 1 && (
                         <LeaderboardEntryDivider

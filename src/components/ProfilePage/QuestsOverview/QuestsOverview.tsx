@@ -29,22 +29,22 @@ export const QuestsOverview = ({
       {/** render quests */}
       {!isQuestsLoading
         ? quests?.map((quest: Quest, index: number) => {
-            const baseURL = quest?.attributes.Image?.data?.attributes?.url;
+            const baseURL = quest?.attributes?.Image?.data?.attributes?.url;
             const imgURL = baseURL && new URL(baseURL, url.origin);
-            const rewards = quest?.attributes.CustomInformation?.['rewards'];
+            const rewards = quest?.attributes?.CustomInformation?.['rewards'];
             const rewardType =
               quest?.attributes?.CustomInformation?.['rewardType'];
             const rewardRange =
               quest?.attributes?.CustomInformation?.['rewardRange'];
-            const chains = quest?.attributes.CustomInformation?.['chains'];
+            const chains = quest?.attributes?.CustomInformation?.['chains'];
             const claimingIds =
               quest?.attributes?.CustomInformation?.['claimingIds'];
             const rewardsIds =
               quest?.attributes?.CustomInformation?.['rewardsIds'];
             const questTraits =
               quest?.attributes?.CustomInformation?.['traits'];
-            const endDate = quest?.attributes.EndDate;
-            const startDate = quest?.attributes.StartDate;
+            const endDate = quest?.attributes?.EndDate;
+            const startDate = quest?.attributes?.StartDate;
             //todo: exclude in a dedicated helper function
             let completed = false;
             if (rewardsIds && pastCampaigns) {
@@ -60,14 +60,14 @@ export const QuestsOverview = ({
             return (
               <QuestCard
                 key={`available-mission-${index}`}
-                title={quest?.attributes.Title}
+                title={quest?.attributes?.Title}
                 active={true}
                 image={String(imgURL)}
-                points={quest?.attributes.Points}
-                ctaLink={quest?.attributes.Link}
-                url={quest?.attributes.Slug}
+                points={quest?.attributes?.Points}
+                ctaLink={quest?.attributes?.Link}
+                url={quest?.attributes?.Slug}
                 // platformName={
-                //   quest?.attributes.quests_platform?.data?.attributes?.Name
+                //   quest?.attributes?.quests_platform?.data?.attributes?.Name
                 // }
                 startDate={startDate}
                 endDate={endDate}
@@ -76,7 +76,7 @@ export const QuestsOverview = ({
                 completed={completed}
                 claimingIds={claimingIds}
                 variableWeeklyAPY={
-                  quest?.attributes.Points > 0 && rewardType === 'weekly'
+                  quest?.attributes?.Points > 0 && rewardType === 'weekly'
                 }
                 rewardRange={rewardRange}
                 isTraitsGarded={questTraits?.length > 0}
