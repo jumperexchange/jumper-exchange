@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import chainData from './testData/chainData.json';
+import chainData from './testData/chainData.json' assert { type: 'json' };
 import {
   buildUlParams,
   checkIfBestReturnLabelIsVisible,
@@ -31,6 +31,21 @@ test.describe('On chain swaps', () => {
     page,
   }) => {
     const urlParams = buildUlParams(chainData.ETHtoETHswap.USDCtoWETH);
+    await page.goto(`/${urlParams}`);
+    await checkIfBestReturnLabelIsVisible(page);
+  });
+
+  test(`Check ${chainData.ARBtoARB.ETHtoUSDT.tokenSymbol} to ${chainData.ARBtoARB.ETHtoUSDT.toTokenSymbol} swap pair on ARB chain`, async ({
+    page,
+  }) => {
+    const urlParams = buildUlParams(chainData.ARBtoARB.ETHtoUSDT);
+    await page.goto(`/${urlParams}`);
+    await checkIfBestReturnLabelIsVisible(page);
+  });
+  test(`Check ${chainData.ARBtoARB.USDCtoWBTC.tokenSymbol} to ${chainData.ARBtoARB.USDCtoWBTC.toTokenSymbol} swap pair on ARB chain`, async ({
+    page,
+  }) => {
+    const urlParams = buildUlParams(chainData.ARBtoARB.USDCtoWBTC);
     await page.goto(`/${urlParams}`);
     await checkIfBestReturnLabelIsVisible(page);
   });
