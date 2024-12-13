@@ -28,8 +28,9 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
     custom_token_data: undefined,
   });
 
-  // @ts-expect-error
-  const deposited = dataRecipe?.input_token_data_ap?.token_amount > 0;
+  const deposited =
+    dataRecipe?.input_token_data_ap?.token_amount &&
+    dataRecipe?.input_token_data_ap?.token_amount > 0;
 
   return (
     <BerachainWidgetSelection>
@@ -38,8 +39,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
           title="APY"
           value={
             market.annual_change_ratio
-              ? // @ts-expect-error
-                t('format.percent', {
+              ? t('format.percent', {
                   value: market.annual_change_ratio.toString(),
                 })
               : 'N/A'

@@ -48,16 +48,12 @@ export const ActiveQuestsMissionsCarousel = ({
             {!loading ? (
               quests?.map((quest: Quest, index: number) => {
                 const claimingIds =
-                  // @ts-expect-error
                   quest.attributes?.CustomInformation?.['claimingIds'];
                 const rewardsIds =
-                  // @ts-expect-error
                   quest.attributes?.CustomInformation?.['rewardsIds'];
                 const rewardType =
-                  // @ts-expect-error
                   quest.attributes?.CustomInformation?.['rewardType'];
                 const rewardRange =
-                  // @ts-expect-error
                   quest.attributes?.CustomInformation?.['rewardRange'];
                 let included = false;
                 let completed = false;
@@ -91,7 +87,6 @@ export const ActiveQuestsMissionsCarousel = ({
                           ?.Name
                       }
                       slug={quest?.attributes.Slug}
-                      // @ts-expect-error
                       chains={quest.attributes.CustomInformation?.['chains']}
                       completed={completed}
                       variableWeeklyAPY={

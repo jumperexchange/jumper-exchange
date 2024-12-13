@@ -91,7 +91,7 @@ type QuestsPlatformData = {
   data: { id: number; attributes: QuestsPlatformAttributes };
 };
 
-type QuestAttributes = {
+type QuestAttributes<T = never> = {
   UID: string;
   Title: string;
   Description?: string;
@@ -115,9 +115,9 @@ type QuestAttributes = {
   quests_platform: QuestsPlatformData;
 };
 
-export interface Quest {
+export interface Quest<T = never> {
   id: number;
-  attributes: QuestAttributes;
+  attributes: QuestAttributes<T>;
 }
 
 export interface LoyaltyPassProps {

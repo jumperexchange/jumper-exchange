@@ -96,8 +96,7 @@ export const BerachainWidget = ({
     tokens: market ? [market.input_token_data.contract_address] : [],
   });
   const balance = parseRawAmountToTokenAmount(
-    // @ts-expect-error
-    dataWallet?.[0]?.raw_amount ?? '0',
+    dataWallet?.[0]?.raw_amount?.toString() ?? '0',
     market?.input_token_data.decimals ?? 0,
   );
 

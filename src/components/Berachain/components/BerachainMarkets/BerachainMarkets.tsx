@@ -51,7 +51,6 @@ export const BerachainMarkets = () => {
                 // tvl={roycoData.locked_quantity_usd}
                 type={card.attributes.CustomInformation?.type}
                 url={url}
-                deposited={index % 2 === 0 ? `${index * 100}$` : undefined}
               />
             );
           })}

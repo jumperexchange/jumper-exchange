@@ -43,13 +43,11 @@ export const useBerachainMarket = (): UseBerachainQuestsProps => {
     }
     if (protocolFilter.length > 0) {
       filteredData = filteredData?.filter((market) => {
-        // @ts-expect-error
-        if (!market.attributes.CustomInformation.type) {
+        if (!market.attributes.CustomInformation?.type) {
           return undefined;
         }
         return !protocolFilter.includes(
-          // @ts-expect-error
-          market.attributes.CustomInformation.type,
+          market.attributes.CustomInformation?.type,
         );
       });
     }

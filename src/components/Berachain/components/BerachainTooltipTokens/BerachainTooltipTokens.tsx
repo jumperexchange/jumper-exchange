@@ -52,7 +52,7 @@ export const BerachainTooltipTokens = ({
 
   const prepareTokenFetch = useMemo(() => {
     return apys.map((token, tokenSetIndex) => ({
-      chainId: token.chain_id,
+      chainId: token.chain_id as unknown as ChainId,
       tokenAddress: token.token_address,
       queryKey: ['tokens', token.chain_id, token.token_address],
     }));
@@ -66,7 +66,6 @@ export const BerachainTooltipTokens = ({
     tokens: fetchedTokens,
     // isLoading,
     // isError,
-    // @ts-expect-error
   } = useMultipleTokens(prepareTokenFetch);
 
   if (
@@ -105,8 +104,7 @@ export const BerachainTooltipTokens = ({
           </Box>
           <Typography variant="bodyXSmallStrong">
             {apys[index].annual_change_ratio
-              ? // @ts-expect-error
-                t('format.percent', { value: apys[index].annual_change_ratio })
+              ? t('format.percent', { value: apys[index].annual_change_ratio })
               : 'N/A'}
           </Typography>
         </Box>

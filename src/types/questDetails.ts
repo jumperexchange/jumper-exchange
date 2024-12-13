@@ -1,6 +1,9 @@
 import type { ChainId } from '@lifi/sdk';
 import type { FaqProps } from 'src/components/AccordionFAQ';
 import type { Quest } from './loyaltyPass';
+import type { Chain } from '@/components/Superfest/SuperfestPage/Banner/Banner';
+import type { RewardsInterface } from '@/components/Quests/QuestCard/QuestCard';
+import type { CTALinkInt } from '@/components/Superfest/SuperfestPage/CTA/MissionCTA';
 
 export interface QuestSocials {
   twitter: string;
@@ -12,9 +15,19 @@ export interface QuestDetails {
   type: string;
   socials: QuestSocials;
   faqItems: FaqProps[];
+  claimingIds: string[];
+  rewardsIds: string[];
+  rewardType: string;
+  rewardRange: string;
+  chains: Chain[];
+  rewards: RewardsInterface;
+  missionType: string;
+  traits: string[];
+  CTA: CTALinkInt[];
+  partner: { logo: string; name: string }[];
 }
 
-export interface ExtendedQuest extends Quest {
+export interface ExtendedQuest extends Quest<never> {
   protocolInfos?: ProtocolInfo;
 }
 

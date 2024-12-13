@@ -3,9 +3,10 @@ import type { ExtendedQuest } from 'src/types/questDetails';
 import { getQuestBy } from '@/app/lib/getQuestBy';
 import type { Quest } from '@/types/loyaltyPass';
 import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
+import type { StrapiResponse } from '@/types/strapi';
 
 export interface UseBerachainQuestsProps {
-  data: ExtendedQuest[] | undefined;
+  data?: StrapiResponse<Quest>;
   url: string;
   isSuccess: boolean;
   isLoading: boolean;
@@ -69,7 +70,7 @@ export const useBerachainMarkets = (): UseBerachainQuestsProps => {
     refetchInterval: 1000 * 60 * 60,
   });
 
-  function findFromStrapiByUid(uid: string) {
+  function findFromStrapiByUid(uid: string | null) {
     const found = data?.data.find((d) => d.attributes.UID === uid);
 
     if (found) {
@@ -80,15 +81,9 @@ export const useBerachainMarkets = (): UseBerachainQuestsProps => {
     return data?.data.find((d) => d.attributes.UID === 'berachain-default')!;
   }
 
-  const s = findKeyByValue(strapiBerachainMatching)(
-    '0x2120adcdcf8e0ed9d6dd3df683f076402b79e3bd',
-  );
-
   return {
-    // @ts-expect-error
     data,
     findFromStrapiByUid: (value: string) =>
-      // @ts-expect-error
       findFromStrapiByUid(findKeyByValue(strapiBerachainMatching)(value)),
     isLoading,
     url: getStrapiBaseUrl() || process.env.NEXT_PUBLIC_STRAPI_URL,

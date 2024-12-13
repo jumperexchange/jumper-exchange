@@ -18,7 +18,7 @@ import type { ContractCall } from '@lifi/sdk';
 import LoadingButton from '@mui/lab/LoadingButton';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useAccount } from '@lifi/wallet-management';
 import TokenImage from '@/components/Portfolio/TokenImage';
@@ -54,8 +54,7 @@ function WidgetLikeWIP({ contractCalls }: { contractCalls: ContractCall[] }) {
     },
   });
 
-  // @ts-expect-error
-  async function onSubmit(e) {
+  async function onSubmit(e: React.ChangeEvent<HTMLInputElement>) {
     try {
       // TODO: to remove
       // eslint-disable-next-line no-console

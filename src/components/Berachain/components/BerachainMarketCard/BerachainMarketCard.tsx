@@ -39,7 +39,6 @@ interface BerachainMarketCardProps {
   apys?: number[];
   tokens?: string[];
   url?: string;
-  deposited?: string;
 }
 
 export const BerachainMarketCard = ({
@@ -49,7 +48,6 @@ export const BerachainMarketCard = ({
   image,
   tokens,
   url,
-  deposited,
 }: BerachainMarketCardProps) => {
   const { account } = useAccount();
   const chainId = roycoData.chain_id;
@@ -61,9 +59,9 @@ export const BerachainMarketCard = ({
 
   const { chains } = useChains();
   const tokenChainDetails = useMemo(
-    () => chainId && chains?.find((chainEl: Chain) => chainEl.id === chainId),
+    () => chains?.find((chainEl: Chain) => chainEl.id === chainId),
     [chainId, chains],
-  );
+  )!;
 
   const tokensTooltipId = 'tokens-tooltip-button';
   const tokensTooltipMenuId = 'tokens-tooltip-menu';
@@ -79,9 +77,9 @@ export const BerachainMarketCard = ({
     custom_token_data: undefined,
   });
 
-  //TODO: refactorize
-  // @ts-expect-error
-  deposited = dataRecipe?.input_token_data_ap?.token_amount > 0;
+  const deposited =
+    dataRecipe?.input_token_data_ap?.token_amount &&
+    dataRecipe?.input_token_data_ap?.token_amount > 0;
 
   // What is the purpose of below?
   /*
@@ -143,21 +141,16 @@ export const BerachainMarketCard = ({
         </BerachainMarketCardHeader>
         <BerchainMarketCardInfos>
           <Box display={'flex'} gap={'8px'}>
-            {
-              // @ts-expect-error
-              tokenChainDetails?.logoURI ? (
-                <BerchainMarketCardAvatar
-                  // @ts-expect-error
-                  src={tokenChainDetails?.logoURI}
-                  // @ts-expect-error
-                  alt={`${tokenChainDetails.name} logo`}
-                  width={20}
-                  height={20}
-                />
-              ) : (
-                <Skeleton variant="circular" sx={{ width: 32, height: 32 }} />
-              )
-            }
+            {tokenChainDetails?.logoURI ? (
+              <BerchainMarketCardAvatar
+                src={tokenChainDetails.logoURI}
+                alt={`${tokenChainDetails.name} logo`}
+                width={20}
+                height={20}
+              />
+            ) : (
+              <Skeleton variant="circular" sx={{ width: 32, height: 32 }} />
+            )}
             <BerchainMarketCardTokenBox>
               {roycoData.input_token_data ? (
                 // fetchedTokens.map((token, index) => (
@@ -244,18 +237,7 @@ export const BerachainMarketCard = ({
             valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
           />
           <Tooltip
-            title={
-              <BerachainTooltipTokens
-                // @ts-expect-error
-                open={openTokensTooltip}
-                setOpen={setOpenTokensTooltip}
-                anchor={anchorTokensTooltip}
-                setAnchor={setAnchorTokensTooltip}
-                idLabel={tokensTooltipId}
-                idMenu={tokensTooltipMenuId}
-                data={roycoData}
-              />
-            }
+            title={<BerachainTooltipTokens data={roycoData} />}
             open={openTokensTooltip ? false : undefined}
             disableFocusListener={openTokensTooltip ? false : undefined}
             disableInteractive={!openTokensTooltip ? false : undefined}
@@ -268,8 +250,7 @@ export const BerachainMarketCard = ({
                 title={'Net APY'}
                 value={
                   roycoData?.annual_change_ratio
-                    ? // @ts-expect-error
-                      t('format.percent', {
+                    ? t('format.percent', {
                         value: roycoData.annual_change_ratio,
                       })
                     : 'N/A'

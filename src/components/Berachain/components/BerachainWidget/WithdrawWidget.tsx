@@ -194,8 +194,6 @@ export const WithdrawWidget = ({
           {/*<div className="h-full w-full place-content-center items-start">*/}
           <Typography variant="body2" color="textSecondary">
             Wallet not connected
-            <WalletButtons />
-            {/*TODO: REMOVE THIS, JUST A BYPASS TO TEST IT WITH THE BUG*/}
           </Typography>
         </Box>
       )}
@@ -365,8 +363,7 @@ export const WithdrawWidget = ({
                   >
                     <Button
                       disabled={
-                        // @ts-expect-error
-                        BigInt(position?.input_token_data?.raw_amount) ===
+                        BigInt(position?.input_token_data?.raw_amount ?? 0) ===
                         BigInt(0)
                       }
                       onClick={() => {
@@ -390,7 +387,6 @@ export const WithdrawWidget = ({
                               });
                             // @ts-expect-error
                             writeContract(contractOptions);
-                            // setTransactions([contractOptions]);
                           } else {
                             // TODO: to remove
                             // eslint-disable-next-line no-console

@@ -24,15 +24,10 @@ export const SuperfestMissionPage = ({
   baseUrl,
 }: SuperfestMissionPageVar) => {
   const attributes = quest?.attributes;
-  // @ts-expect-error
   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
-  // @ts-expect-error
   const missionType = quest?.attributes?.CustomInformation?.['missionType'];
-  // @ts-expect-error
   const rewardType = attributes?.CustomInformation?.['rewardType'];
-  // @ts-expect-error
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
-  // @ts-expect-error
   const rewards = quest.attributes.CustomInformation?.['rewards'];
   const points = quest?.attributes?.Points;
 
@@ -78,7 +73,7 @@ export const SuperfestMissionPage = ({
             id={quest.id}
             title={attributes?.Title}
             url={attributes?.Link}
-            rewards={rewards}
+            rewards={!!rewards}
             key={generateKey('cta')}
             CTAs={CTAsWithAPYs}
             variableWeeklyAPY={points > 0 && rewardType === 'weekly'}

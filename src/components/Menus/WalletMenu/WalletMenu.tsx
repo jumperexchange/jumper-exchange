@@ -11,12 +11,11 @@ import {
 import type { MouseEventHandler } from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CustomDrawer } from '.';
+import { CustomDrawer, WalletButton } from '.';
+import { WalletButton } from './WalletMenu.style';
 import { WalletCard } from './WalletCard';
 import { Portfolio } from '@/components/Portfolio/Portfolio';
 import CloseIcon from '@mui/icons-material/Close';
-import { WalletButtons } from '@/components/Navbar/WalletButtons';
-import dynamic from 'next/dynamic';
 
 interface WalletMenuProps {
   anchorEl?: HTMLAnchorElement;
@@ -80,8 +79,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         >
           <CloseIcon />
         </IconButton>
-        {/* @ts-expect-error*/}
-        <WalletButtons sx={{ width: 'auto' }} onClick={handleOpenWalletMenu}>
+        <WalletButton sx={{ width: 'auto' }} onClick={handleOpenWalletMenu}>
           <Typography
             sx={{
               color: theme.palette.text.primary,
@@ -90,7 +88,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           >
             {t('navbar.walletMenu.connectAnotherWallet')}
           </Typography>
-        </WalletButtons>
+        </WalletButton>
       </Stack>
       {accounts.map(
         (account) =>
