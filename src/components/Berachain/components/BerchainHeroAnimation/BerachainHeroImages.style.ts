@@ -6,11 +6,12 @@ export const BeraChainWelcomeIllustrations = styled(Box)(() => ({
   position: 'absolute',
   padding: 0,
   top: 'calc(60vh - 80px)',
-  width: '100%',
+  width: 474, // '100%',
   height: 'auto',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  maxWidth: 474,
+  maxWidth: '35%',
+  minWidth: 320,
 }));
 
 export const BerachainWelcomeBear = styled(Image)(() => ({

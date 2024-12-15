@@ -1,14 +1,16 @@
 import { Box, Button, Typography } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, styled } from '@mui/material/styles';
+import Link from 'next/link';
 
-export const BeraChainWelcomeBox = styled(Box)(() => ({
+export const BeraChainWelcomeBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: '55vh',
+  marginTop: '50vh',
   height: 'calc(45vh - 80px)',
+  padding: theme.spacing(1),
 }));
 
 export const BeraChainWelcomeContent = styled(Box)(({ theme }) => ({
@@ -50,6 +52,7 @@ export const BerachainWelcomeSubtitleLabel = styled(Typography)(
 );
 
 export const BerachainWelcomeTitle = styled(Typography)(({ theme }) => ({
+  letterSpacing: 0,
   [theme.breakpoints.down('md' as Breakpoint)]: {
     flexDirection: 'column',
     gap: '8px',
@@ -65,11 +68,11 @@ export const BerachainWelcomeSubtitle = styled(Typography)(({ theme }) => ({
 
 export const BerachainWelcomeBoxContent = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'column',
   alignItems: 'center',
-  marginTop: theme.spacing(4),
+  marginTop: theme.spacing(1.5),
   gap: theme.spacing(2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginTop: theme.spacing(4),
     flexDirection: 'row',
   },
 }));
@@ -79,8 +82,18 @@ export const BerachainWelcomeConnectButtonCTA = styled(Button)(({ theme }) => ({
   color: theme.palette.black.main,
   backgroundColor: theme.palette.white.main,
   padding: theme.spacing(1, 2),
+  [theme.breakpoints.down('sm' as Breakpoint)]: {
+    height: 40,
+    width: '100%',
+  },
   '&:hover': {
     backgroundColor: darken(theme.palette.white.main, 0.2),
+  },
+}));
+
+export const BerachainButtonWrapperLink = styled(Link)(({ theme }) => ({
+  [theme.breakpoints.down('sm' as Breakpoint)]: {
+    width: '100%',
   },
 }));
 
@@ -88,6 +101,10 @@ export const BerachainWelcomeLearnMoreButton = styled(Button)(({ theme }) => ({
   color: theme.palette.white.main,
   backgroundColor: alpha(theme.palette.white.main, 0.24),
   padding: theme.spacing(1, 2),
+  [theme.breakpoints.down('sm' as Breakpoint)]: {
+    height: 40,
+    width: '100%',
+  },
   '&:hover': {
     backgroundColor: alpha(theme.palette.white.main, 0.48),
   },

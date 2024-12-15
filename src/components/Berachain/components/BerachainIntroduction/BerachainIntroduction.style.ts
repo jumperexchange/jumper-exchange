@@ -2,21 +2,25 @@ import { Box, Grid, Typography } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { alpha, styled } from '@mui/material/styles';
 import Image from 'next/image';
+import { ProfilePageContainer } from 'src/components/ProfilePage/ProfilePage.style';
 
-export const BerachainIntroductionBox = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(10),
-  color: theme.palette.text.primary,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  gap: theme.spacing(2),
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    gap: theme.spacing(4),
-  },
-}));
+export const BerachainIntroductionBox = styled(ProfilePageContainer)(
+  ({ theme }) => ({
+    marginTop: theme.spacing(10),
+    color: theme.palette.text.primary,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: theme.spacing(2),
+    [theme.breakpoints.up('lg' as Breakpoint)]: {
+      gap: theme.spacing(4),
+    },
+  }),
+);
 
 export const BerachainIntroductionTitle = styled(Typography)(({ theme }) => ({
+  letterSpacing: 0,
   textAlign: 'center',
 }));
 
@@ -40,6 +44,7 @@ export const BerachainIntroductionStep = styled(Box)(({ theme }) => ({
   position: 'relative',
   flexDirection: 'row',
   gap: theme.spacing(2),
+  justifyContent: 'space-between',
   borderRadius: '16px',
   border: '1px solid #383433',
   background: 'transparent',
@@ -61,6 +66,10 @@ export const BerachainIntroductionStepContent = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 
+export const BerachainIntroductionStepTitle = styled(Typography)(() => ({
+  letterSpacing: 0,
+}));
+
 export const BerachainIntroductionStepIllustration = styled(Image)(
   ({ theme }) => ({
     aspectRatio: '1 / 1',
@@ -75,5 +84,7 @@ export const BerachainIntroductionStepIllustration = styled(Image)(
 export const BerachainBearTyping = styled(
   BerachainIntroductionStepIllustration,
 )(({ theme }) => ({
-  // transform: 'translateX(24px)',
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    transform: 'translateX(24px)',
+  },
 }));

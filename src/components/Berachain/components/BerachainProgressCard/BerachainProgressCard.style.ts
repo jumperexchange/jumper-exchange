@@ -1,9 +1,8 @@
 import { Box, Card } from '@mui/material';
-import type { Breakpoint } from '@mui/material/styles';
 import { alpha, styled } from '@mui/material/styles';
 
 export const BeraChainProgressCardComponent = styled(Card)(({ theme }) => ({
-  display: 'none',
+  display: 'flex',
   flexDirection: 'row',
   backgroundColor: 'inherit',
   padding: theme.spacing(1.5, 3),
@@ -12,9 +11,6 @@ export const BeraChainProgressCardComponent = styled(Card)(({ theme }) => ({
   boxShadow: 'unset',
   alignItems: 'center',
   gap: '16px',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    display: 'flex',
-  },
 }));
 
 export const BeraChainProgressCardContent = styled(Box)(({ theme }) => ({
