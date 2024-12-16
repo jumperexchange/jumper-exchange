@@ -6,6 +6,8 @@ import { useZaps } from '@/hooks/useZaps';
 import type { Account } from '@lifi/wallet-management';
 import { DepositCard } from './DepositCard';
 import { useContractRead } from 'src/hooks/useReadContractData';
+import WidgetLikeField from '../Zap/WidgetLikeField/WidgetLikeField';
+import { Divider } from '@mui/material';
 
 export interface ProjectData {
   chain: string;
@@ -21,8 +23,9 @@ interface CustomWidgetProps {
 export function CustomWidget({ account, projectData }: CustomWidgetProps) {
   const [token, setToken] = useState<TokenAmount>();
   const { data, isSuccess } = useZaps(projectData);
-  const { data: depositTokenData } = useContractRead({
+  const { data: depositTokenData, isLoading: isLoadingDepositTokenData } = useContractRead({
     address: projectData.address as `0x${string}`,
+    chainId: projectData.chain === 'ethereum' ? 1 : 8453,
     functionName: 'balanceOf',
     abi: [
       {
@@ -94,6 +97,31 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
           }
           config={widgetConfig}
           integrator={widgetConfig.integrator}
+        />
+      )}
+
+      <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
+
+      {!isLoadingDepositTokenData && (
+        <WidgetLikeField
+          contractCalls={[{
+            data: '0x',
+            type: 'send',
+            label: 'Redeem',
+            onVerify: () => Promise.resolve(true),
+        }]}
+        label="Redeem"
+        image={{
+          url: token?.logoURI,
+          name: token?.name,
+        }}
+        placeholder="0.00"
+        helperText={{
+          left: 'Available balance',
+          right: depositTokenData ? formatUnits(depositTokenData, 18) : '0.00',
+        }}
+        balance={depositTokenData ? formatUnits(depositTokenData, 18) : '0.00'}
+        projectData={projectData}
         />
       )}
     </>

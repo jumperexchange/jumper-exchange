@@ -1,11 +1,11 @@
 import {
   Avatar as MuiAvatar,
   Box,
-  Button,
   FormHelperText,
   InputLabel,
   Typography,
   useTheme,
+  Grid,
 } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -21,6 +21,8 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { getEthersSigner } from './utils';
 import { MaxButton } from './WidgetLikeField.style';
+import { useContractWrite } from 'src/hooks/useWriteContractData';
+import { parseUnits } from 'ethers';
 
 interface Image {
   url: string;
@@ -57,6 +59,12 @@ interface WidgetLikeFieldProps {
   overrideStyle?: {
     mainColor?: string;
   };
+  balance?: string;
+  projectData: {
+    address: string;
+    chain: string;
+    project: string;
+  };
 }
 
 function WidgetLikeField({
@@ -67,190 +75,164 @@ function WidgetLikeField({
   hasMaxButton = true,
   helperText,
   overrideStyle = {},
+  balance,
+  projectData,
 }: WidgetLikeFieldProps) {
   const theme = useTheme();
   const config = useConfig();
   const { account } = useAccount();
+  const [value, setValue] = useState<string>('');
+  const { write } = useContractWrite({
+    address: projectData?.address as `0x${string}`,
+    chainId: projectData?.chain === 'ethereum' ? 1 : 8453,
+    functionName: 'redeem',
+    abi: [
+      {
+        inputs: [{ name: 'amount', type: 'uint256' }],
+        name: 'redeem',
+        outputs: [{ name: '', type: 'uint256' }],
+        stateMutability: 'nonpayable',
+        type: 'function',
+      },
+    ],
+  });
 
-  const [contractCallIndex, setContractCallIndex] = useState(0);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    // Only allow numbers and one decimal point
+    if (inputValue === '' || /^\d*\.?\d*$/.test(inputValue)) {
+      setValue(inputValue);
+    }
+  };
 
-  const contractMutations = [] as any[];
-
-  // contractCalls.forEach((contractCall, index) => {
-  //   contractMutations.push(
-  //     useMutation({
-  //       mutationKey: ['signMessage', account.address],
-  //       mutationFn: async () => {
-  //         let result;
-  //         switch (contractCall.type) {
-  //           case 'sign': {
-  //             const signer = await getEthersSigner(config);
-  //             const message = contractCall.message;
-  //             result = await signer.signMessage(message);
-  //             break;
-  //           }
-  //           case 'send': {
-  //             // To be implemented
-  //             result = contractCall.data;
-  //             break;
-  //           }
-  //           default: {
-  //             throw new Error('Case not implemented');
-  //           }
-  //         }
-
-  //         return contractCall.onVerify(result);
-  //       },
-  //       onSuccess: () => {
-  //         console.log('onSuccess triggered');
-  //         setContractCallIndex(index + 1);
-  //       },
-  //     }),
-  //   );
-  // });
-
-  if (contractCalls.length === contractCallIndex) {
-    return (
-      <Button
-        disabled
-        type="button"
-        variant="contained"
-        fullWidth
-        sx={{
-          '&.MuiButtonBase-root': {
-            backgroundColor:
-              overrideStyle?.mainColor ?? theme.palette.primary.main,
-            color: theme.palette.text.primary,
-          },
-        }}
-      >
-        <Typography variant="bodyMediumStrong">Completed</Typography>
-      </Button>
-    );
-  }
-
-  const { mutate, isPending, isSuccess, isError } =
-    contractMutations[contractCallIndex];
-
-  // console.log('sss', contractMutations);
-
-  async function onSubmit(e: any) {
+  async function onSubmit(e: React.FormEvent) {
     try {
-      // console.log('submitted', e);
       e.preventDefault();
-      mutate();
+      write([parseUnits(value, 18)]);
     } catch (e) {
       console.error(e);
     }
   }
 
   return (
-    <Box
-      component="form"
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-      noValidate
-      autoComplete="off"
-      onSubmit={onSubmit}
-    >
-      <InputLabel htmlFor="component" sx={{ marginBottom: 1 }}>
-        <Typography variant="titleSmall">{label}</Typography>
-      </InputLabel>
-      <FormControl error={isError} variant="standard" aria-autocomplete="none">
-        <OutlinedInput
+    <Grid container justifyContent={'center'}>
+      <Grid xs={12} md={3} p={3} bgcolor={'#fff'} borderRadius={1}>
+        <Box
+          component="form"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+          noValidate
           autoComplete="off"
-          id="component"
-          defaultValue=""
-          placeholder={placeholder}
-          aria-describedby="component-text"
-          sx={{ padding: '0.6rem 1rem' }}
-          startAdornment={
-            image && (
-              <WalletCardBadge
-                sx={{ marginRight: '10px' }}
-                overlap="circular"
-                className="badge"
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                badgeContent={
-                  image.badge && (
-                    <MuiAvatar
-                      alt={image.badge.name}
-                      sx={(theme) => ({
-                        width: '18px',
-                        height: '18px',
-                        border: `2px solid ${theme.palette.surface2.main}`,
-                      })}
-                    >
+          onSubmit={onSubmit}
+        >
+          <InputLabel htmlFor="component" sx={{ marginBottom: 1 }}>
+            <Typography variant="titleSmall">{label}</Typography>
+          </InputLabel>
+          <FormControl
+            error={false}
+            variant="standard"
+            aria-autocomplete="none"
+          >
+            <OutlinedInput
+              autoComplete="off"
+              id="component"
+              value={value}
+              onChange={handleInputChange}
+              placeholder={placeholder}
+              aria-describedby="component-text"
+              sx={{ padding: '0.6rem 1rem', marginBottom: helperText ? 0 : 2 }}
+              inputProps={{
+                inputMode: 'decimal',
+                pattern: '[0-9]*[.]?[0-9]*',
+              }}
+              startAdornment={
+                image && (
+                  <WalletCardBadge
+                    sx={{ marginRight: '10px' }}
+                    overlap="circular"
+                    className="badge"
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                    badgeContent={
+                      image.badge && (
+                        <MuiAvatar
+                          alt={image.badge.name}
+                          sx={(theme) => ({
+                            width: '18px',
+                            height: '18px',
+                            border: `2px solid ${theme.palette.surface2.main}`,
+                          })}
+                        >
+                          <TokenImage
+                            token={{
+                              name: image.badge.name,
+                              logoURI: image.badge.url,
+                            }}
+                          />
+                        </MuiAvatar>
+                      )
+                    }
+                  >
+                    <WalletAvatar>
                       <TokenImage
                         token={{
-                          name: image.badge.name,
-                          logoURI: image.badge.url,
+                          name: image.name,
+                          logoURI: image.url,
                         }}
                       />
-                    </MuiAvatar>
-                  )
-                }
+                    </WalletAvatar>
+                  </WalletCardBadge>
+                )
+              }
+              endAdornment={
+                hasMaxButton && (
+                  <MaxButton
+                    sx={{ p: '5px 10px' }}
+                    aria-label="menu"
+                    mainColor={overrideStyle?.mainColor}
+                    onClick={() => setValue(balance ?? '0')}
+                  >
+                    max
+                  </MaxButton>
+                )
+              }
+            />
+            {helperText && (
+              <FormHelperText
+                id="component-text"
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: 1,
+                }}
               >
-                <WalletAvatar>
-                  <TokenImage
-                    token={{
-                      name: image.name,
-                      logoURI: image.url,
-                    }}
-                  />
-                </WalletAvatar>
-              </WalletCardBadge>
-            )
-          }
-          endAdornment={
-            hasMaxButton && (
-              <MaxButton
-                sx={{ p: '5px 10px' }}
-                aria-label="menu"
-                mainColor={overrideStyle?.mainColor}
-              >
-                max
-              </MaxButton>
-            )
-          }
-        />
-        {helperText && (
-          <FormHelperText
-            id="component-text"
+                <Typography component="span">{helperText.left}</Typography>
+                <Typography component="span">{helperText.right}</Typography>
+              </FormHelperText>
+            )}
+          </FormControl>
+          <LoadingButton
+            type="submit"
+            loading={false}
+            variant="contained"
             sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginBottom: 1,
+              '&.MuiLoadingButton-loading': {
+                border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
+              },
+              '.MuiLoadingButton-loadingIndicator': {
+                color: overrideStyle?.mainColor ?? theme.palette.primary.main,
+              },
             }}
           >
-            <Typography component="span">{helperText.left}</Typography>
-            <Typography component="span">{helperText.right}</Typography>
-          </FormHelperText>
-        )}
-      </FormControl>
-      {contractCalls[contractCallIndex] && (
-        <LoadingButton
-          type="submit"
-          loading={isPending}
-          variant="contained"
-          sx={{
-            '&.MuiLoadingButton-loading': {
-              border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
-            },
-            '.MuiLoadingButton-loadingIndicator': {
-              color: overrideStyle?.mainColor ?? theme.palette.primary.main,
-            },
-          }}
-        >
-          <Typography variant="bodyMediumStrong">
-            {contractCalls[contractCallIndex].label}
-          </Typography>
-        </LoadingButton>
-      )}
-    </Box>
+            <Typography variant="bodyMediumStrong">
+              {contractCalls[0].label}
+            </Typography>
+          </LoadingButton>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }
 

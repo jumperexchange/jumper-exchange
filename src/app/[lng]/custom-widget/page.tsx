@@ -16,7 +16,7 @@ export default async function Page() {
   const projectData = {
     chain: 'base',
     project: 'ionic',
-    address: '0xa900A17a49Bc4D442bA7F72c39FA2108865671f0',
+    address: '0xa900a17a49bc4d442ba7f72c39fa2108865671f0',
   };
 
   return <CustomWidgetPage projectData={projectData} />;

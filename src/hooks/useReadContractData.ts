@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Address } from 'viem';
 import { createPublicClient, http, PublicClient } from 'viem';
-import { mainnet } from 'viem/chains'; // Import the chain you need
+import { mainnet, base } from 'viem/chains'; // Import the chain you need
 
 interface UseContractReadProps {
   address: Address;
@@ -37,7 +37,7 @@ export function useContractRead({
 
       try {
         const client = createPublicClient({
-          chain: mainnet,
+          chain: chainId === 1 ? mainnet : base,
           transport: http(),
         });
 
