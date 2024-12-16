@@ -7,7 +7,6 @@
   "packageManager": "yarn@4.5.3",
   "dependencies": {
     "@bigmi/react": "^0.0.5",
-    "@bonfida/sns-react": "^3.1.2",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
