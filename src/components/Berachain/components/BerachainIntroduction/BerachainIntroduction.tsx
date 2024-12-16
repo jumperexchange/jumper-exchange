@@ -33,7 +33,16 @@ export const BerachainIntroduction = () => {
         <BerachainIntroductionStep>
           {/* <Link href="/berachain/explore" as="button"> */}
           <BerachainIntroductionStepContent>
-            <BerachainIntroductionStepTitle variant="urbanistBody2XLarge">
+            <BerachainIntroductionStepTitle
+              variant="urbanistBody2XLarge"
+              sx={{
+                typography: (theme) => ({
+                  xs: theme.typography.urbanistTitleXSmall,
+                  sm: theme.typography.urbanistBody2XLarge,
+                  md: theme.typography.urbanistBody2XLarge,
+                }),
+              }}
+            >
               1. Browse markets
             </BerachainIntroductionStepTitle>
             <Typography variant="bodyMedium">
@@ -52,7 +61,16 @@ export const BerachainIntroduction = () => {
         <BerachainIntroductionStep>
           {/* <Link href="/berachain/explore" as="button"> */}
           <BerachainIntroductionStepContent>
-            <BerachainIntroductionStepTitle variant="urbanistBody2XLarge">
+            <BerachainIntroductionStepTitle
+              variant="urbanistBody2XLarge"
+              sx={{
+                typography: (theme) => ({
+                  xs: theme.typography.urbanistTitleXSmall,
+                  sm: theme.typography.urbanistBody2XLarge,
+                  md: theme.typography.urbanistBody2XLarge,
+                }),
+              }}
+            >
               2. Deposit tokens
             </BerachainIntroductionStepTitle>
             <Typography variant="bodyMedium">
@@ -71,7 +89,16 @@ export const BerachainIntroduction = () => {
         <BerachainIntroductionStep>
           {/* <Link href="/berachain/explore" as="button"> */}
           <BerachainIntroductionStepContent>
-            <BerachainIntroductionStepTitle variant="urbanistBody2XLarge">
+            <BerachainIntroductionStepTitle
+              variant="urbanistBody2XLarge"
+              sx={{
+                typography: (theme) => ({
+                  xs: theme.typography.urbanistTitleXSmall,
+                  sm: theme.typography.urbanistBody2XLarge,
+                  md: theme.typography.urbanistBody2XLarge,
+                }),
+              }}
+            >
               3. Receive incentives
             </BerachainIntroductionStepTitle>
             <Typography variant="bodyMedium">

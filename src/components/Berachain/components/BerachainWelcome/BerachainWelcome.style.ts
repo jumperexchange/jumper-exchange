@@ -92,6 +92,8 @@ export const BerachainWelcomeConnectButtonCTA = styled(Button)(({ theme }) => ({
 }));
 
 export const BerachainButtonWrapperLink = styled(Link)(({ theme }) => ({
+  marginTop: theme.spacing(4),
+  minWidth: 146,
   [theme.breakpoints.down('sm' as Breakpoint)]: {
     width: '100%',
   },
