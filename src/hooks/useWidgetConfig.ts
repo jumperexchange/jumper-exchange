@@ -101,9 +101,7 @@ export const useWidgetConfig = ({
         ...publicRPCList,
       };
     } catch (e) {
-      if (process.env.DEV) {
-        console.warn('Parsing custom rpcs failed', e);
-      }
+      console.warn('Parsing custom rpcs failed', e);
     }
 
     const formParameters: Record<string, number | string | undefined> = {
