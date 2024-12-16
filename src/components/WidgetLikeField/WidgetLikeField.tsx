@@ -34,7 +34,7 @@ import {
 } from 'royco/utils';
 import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 import type { EnrichedMarketDataType } from 'royco/queries';
-import { switchChain } from "@wagmi/core";
+import { switchChain } from '@wagmi/core';
 
 interface Image {
   url: string;
@@ -178,7 +178,10 @@ function WidgetLikeField({
   } = useWriteContract();
 
   const shouldSwitchChain = useMemo(() => {
-    if (writeContractOptions.length > 0 && account?.chainId !== writeContractOptions[0]?.chainId) {
+    if (
+      writeContractOptions.length > 0 &&
+      account?.chainId !== writeContractOptions[0]?.chainId
+    ) {
       return true;
     }
     return false;
@@ -207,7 +210,6 @@ function WidgetLikeField({
   });
 
   useEffect(() => {
-    console.log('sss', isTxConfirmed, contractCallIndex, writeContractOptions)
     if (isTxConfirmed) {
       setContractCallIndex(contractCallIndex + 1);
     }
@@ -216,66 +218,6 @@ function WidgetLikeField({
   function onChangeValue(value: string | number | null = '0') {
     setInputValue(value);
   }
-
-  // return <div>TOTO</div>
-  /*
-  contractCalls.forEach((contractCall, index) => {
-    contractMutations.push(useMutation({
-      mutationKey: ['signMessage', account.address],
-      mutationFn: async (value) => {
-        console.log('value:', value)
-        let result;
-        switch (contractCall.type) {
-          case 'sign': {
-            const signer = await getEthersSigner(config);
-            const message = contractCall.message;
-           result = await signer.signMessage(message);
-           break;
-          }
-          case 'send': {
-            // To be implemented
-           result = contractCall.data;
-            break;
-          }
-          default: {
-            throw new Error('Case not implemented');
-          }
-        }
-
-        return contractCall.onVerify(result);
-      },
-      onSuccess: () => {
-        console.log('onSuccess triggered');
-        setContractCallIndex(index + 1);
-      },
-    }));
-  });*/
-
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('index', contractCallIndex);
-  /* TODO: enable completed state when finishing all transactions
-  if (contractCalls.length === contractCallIndex) {
-    return (
-      <Button
-        disabled
-        type="button"
-        variant="contained"
-        fullWidth
-        sx={{
-          '&.MuiButtonBase-root': {
-            backgroundColor: overrideStyle?.mainColor ?? theme.palette.primary.main,
-            color: theme.palette.text.primary,
-          }
-        }}
-      >
-        <Typography variant="bodyMediumStrong">Completed</Typography>
-      </Button>
-    );
-  }*/
-
-  console.log('macx handler',
-    maxButtonHandlerValue)
 
   async function onSubmit(e: React.FormEvent) {
     try {
@@ -439,50 +381,53 @@ function WidgetLikeField({
                 chainId: writeContractOptions[0]?.chainId,
               });
             } catch (error) {
-              console.log(error);
+              // TODO: to remove
+              // eslint-disable-next-line no-console
+              console.error(error);
             }
           }}
         >
-          <Typography variant="bodyMediumStrong">
-            Switch chain
-          </Typography>
+          <Typography variant="bodyMediumStrong">Switch chain</Typography>
         </LoadingButton>
-      ) : writeContractOptions[contractCallIndex] && (
-        <LoadingButton
-          type="submit"
-          loading={isLoading || isTxPending || isTxConfirming}
-          variant="contained"
-          sx={{
-            '&.MuiLoadingButton-loading': {
-              border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
-            },
-            '.MuiLoadingButton-loadingIndicator': {
-              color: overrideStyle?.mainColor ?? theme.palette.primary.main,
-            },
-          }}
-        >
-          <Typography variant="bodyMediumStrong">
-            {writeContractOptions[contractCallIndex].label}
-          </Typography>
-        </LoadingButton>
+      ) : (
+        writeContractOptions[contractCallIndex] && (
+          <LoadingButton
+            type="submit"
+            loading={isLoading || isTxPending || isTxConfirming}
+            variant="contained"
+            sx={{
+              '&.MuiLoadingButton-loading': {
+                border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
+              },
+              '.MuiLoadingButton-loadingIndicator': {
+                color: overrideStyle?.mainColor ?? theme.palette.primary.main,
+              },
+            }}
+          >
+            <Typography variant="bodyMediumStrong">
+              {writeContractOptions[contractCallIndex].label}
+            </Typography>
+          </LoadingButton>
+        )
       )}
 
-      {contractCallIndex !== 0 && contractCallIndex > writeContractOptions.length - 1 &&
-      <Box
-        sx={{
-          height: '100%',
-          width: '100%',
-          display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
-          placeContent: 'center', // Centers content horizontally and vertically.
-          alignItems: 'start', // Aligns items at the start along the cross-axis.
-        }}
-      >
-        {/*<div className="h-full w-full place-content-center items-start">*/}
-        <Typography variant="body2" color="textSecondary">
-          Deposited with success!
-        </Typography>
-      </Box>
-    }
+      {contractCallIndex !== 0 &&
+        contractCallIndex > writeContractOptions.length - 1 && (
+          <Box
+            sx={{
+              height: '100%',
+              width: '100%',
+              display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
+              placeContent: 'center', // Centers content horizontally and vertically.
+              alignItems: 'start', // Aligns items at the start along the cross-axis.
+            }}
+          >
+            {/*<div className="h-full w-full place-content-center items-start">*/}
+            <Typography variant="body2" color="textSecondary">
+              Deposited with success!
+            </Typography>
+          </Box>
+        )}
     </Box>
   );
 }

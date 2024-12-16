@@ -93,7 +93,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                 'linear-gradient(rgba(253, 183, 45, 0.20), rgba(253, 183, 45, 0.20))',
             }}
           />
-        ): null}
+        ) : null}
       </BerachainWidgetSelectionRewards>
     </BerachainWidgetSelection>
   );

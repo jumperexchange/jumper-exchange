@@ -14,9 +14,10 @@ export const CustomLoadingButton = styled(LoadingButton, {
     border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
   },
   '.MuiLoadingButton-loadingIndicator': {
-    color: overrideStyle?.mainColor ?? theme.palette.primary.main,
+    color: theme.palette.text.primary,
   },
-  '&.Mui-disabled': { // TODO: Refactorize the button
+  '&.Mui-disabled': {
+    // TODO: Refactorize the button
     backgroundColor: darken(theme.palette.primary.main, 0.16),
   },
   ':hover': {

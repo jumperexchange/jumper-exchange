@@ -5,8 +5,7 @@ import { Widget } from 'src/components/Widgets/Widget';
 import { BerachainWidgetWip } from '../BerachainWidgetWip/BerachainWidgetWip';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useTranslation } from 'react-i18next';
-import BerachainTransactionDetails
-  from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
+import BerachainTransactionDetails from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
 import InfoBlock from '@/components/Berachain/components/BerachainWidget/InfoBlock';
 import { useAccountBalance } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
@@ -78,7 +77,8 @@ export const BerachainWidget = ({
   return (
     <Box
       sx={{
-        padding: theme.spacing(1),
+        padding: theme.spacing(3),
+        width: '100%',
         borderRadius: '24px',
         backgroundColor: '#121214',
         boxShadow:
@@ -97,9 +97,7 @@ export const BerachainWidget = ({
         containerStyles={containerStyles}
         tabStyles={tabStyles}
       />
-      <Box sx={{
-        maxWidth: '432px',
-      }}>
+      <Box>
         {tab === 0 && (
           <Box sx={{ marginTop: theme.spacing(1.5) }}>
             <Widget

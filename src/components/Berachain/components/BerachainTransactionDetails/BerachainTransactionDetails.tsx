@@ -1,7 +1,18 @@
 import { Box } from '@mui/system';
-import { Button, Collapse, IconButton, Link, Tooltip, Typography } from '@mui/material';
+import {
+  Button,
+  Collapse,
+  Divider,
+  IconButton,
+  Link,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import type { EnrichedMarketDataType } from 'royco/queries';
-import type { RoycoMarketRewardStyleRecordType, TypedRoycoMarketRewardStyle } from 'royco/market';
+import type {
+  RoycoMarketRewardStyleRecordType,
+  TypedRoycoMarketRewardStyle,
+} from 'royco/market';
 import { RoycoMarketRewardStyle, RoycoMarketType } from 'royco/market';
 import Recipe from './Recipe';
 import { useState } from 'react';
@@ -14,10 +25,10 @@ import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 export const MarketRewardStyle: Record<
   TypedRoycoMarketRewardStyle,
   RoycoMarketRewardStyleRecordType & {
-  label: string;
-  tag: string;
-  description: string;
-}
+    label: string;
+    tag: string;
+    description: string;
+  }
 > = {
   upfront: {
     ...RoycoMarketRewardStyle.upfront,
@@ -30,14 +41,14 @@ export const MarketRewardStyle: Record<
     label: 'Arrear',
     tag: '',
     description:
-      'Lock Action Provider\'s assets and pay incentives once unlocked.',
+      "Lock Action Provider's assets and pay incentives once unlocked.",
   },
   forfeitable: {
     ...RoycoMarketRewardStyle.forfeitable,
     label: 'Forfeitable',
     tag: '',
     description:
-      'Lock Action Provider\'s assets and stream incentives, which are forfeited if withdrawn early.',
+      "Lock Action Provider's assets and stream incentives, which are forfeited if withdrawn early.",
   },
 };
 
@@ -51,7 +62,11 @@ function BerachainTransactionDetails({
   const [open, setOpen] = useState<boolean>(false);
   return (
     <Box>
-      <Button variant="text" onClick={() => setOpen(!open)} endIcon={!open ? <ArrowDropDown /> : <ArrowDropUp />}>
+      <Button
+        variant="text"
+        onClick={() => setOpen(!open)}
+        endIcon={!open ? <ArrowDropDown /> : <ArrowDropUp />}
+      >
         Transaction Details
       </Button>
       <Collapse in={open}>
@@ -94,7 +109,11 @@ function BerachainTransactionDetails({
           <InfoCard.Row>
             <InfoCard.Row.Key>Reward Style</InfoCard.Row.Key>
             <InfoCard.Row.Value>
-              <Typography variant="body2" color="textSecondary" component="span">
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                component="span"
+              >
                 {
                   MarketRewardStyle[
                     market.reward_style === 0
@@ -102,7 +121,7 @@ function BerachainTransactionDetails({
                       : market.reward_style === 1
                         ? 'arrear'
                         : 'forfeitable'
-                    ].label
+                  ].label
                 }
 
                 <Tooltip
@@ -113,7 +132,7 @@ function BerachainTransactionDetails({
                         : market.reward_style === 1
                           ? 'arrear'
                           : 'forfeitable'
-                      ].description
+                    ].description
                   }
                   placement="top"
                   enterTouchDelay={0}
@@ -222,9 +241,9 @@ function BerachainTransactionDetails({
               {
                 // @ts-ignore
                 market.input_token_data.contract_address.slice(0, 6) +
-                '...' +
-                // @ts-ignore
-                market.input_token_data.contract_address.slice(-4)
+                  '...' +
+                  // @ts-ignore
+                  market.input_token_data.contract_address.slice(-4)
               }
               {/* <InfoTip {...INFO_TIP_PROPS}>Wrapped Vault</InfoTip> */}
               <IconButton
@@ -240,6 +259,7 @@ function BerachainTransactionDetails({
             </Link>
           </InfoCard.Row.Value>
         </InfoCard.Row>
+        <Divider color="white" sx={{ marginY: 2 }} />
       </Collapse>
     </Box>
   );

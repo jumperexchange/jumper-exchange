@@ -1,15 +1,33 @@
-import { Avatar as MuiAvatar, Box, darken, FormHelperText, InputLabel, Typography, useTheme } from '@mui/material';
+import {
+  Avatar as MuiAvatar,
+  Box,
+  darken,
+  FormHelperText,
+  InputLabel,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { WalletAvatar, WalletCardBadge } from '@/components/Menus/WalletMenu/WalletCard.style';
+import {
+  WalletAvatar,
+  WalletCardBadge,
+} from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
-import { useConfig, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import {
+  useConfig,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import { useEffect, useMemo, useState } from 'react';
 import { MaxButton } from '@/components/WidgetLikeField/WidgetLikeField.style';
 import type { TransactionOptionsType } from 'royco/types';
 import { useAccountBalance, usePrepareMarketAction } from 'royco/hooks';
-import { parseRawAmountToTokenAmount, parseTokenAmountToRawAmount } from 'royco/utils';
+import {
+  parseRawAmountToTokenAmount,
+  parseTokenAmountToRawAmount,
+} from 'royco/utils';
 import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { switchChain } from '@wagmi/core';
@@ -79,7 +97,9 @@ function DepositWidget({
   );
   const wagmiConfig = useConfig();
   const theme = useTheme();
-  const [inputValue, setInputValue] = useState<string | number | null>(null);
+  const [inputValue, setInputValue] = useState<string | number | undefined>(
+    undefined,
+  );
 
   const userType = 'ap';
   const offerType = 'market';
@@ -115,10 +135,8 @@ function DepositWidget({
     vault_incentive_action: vaultIncentiveActionType,
     offer_validation_url: `/api/validate`,
     frontend_fee_recipient:
-    process.env.NEXT_PUBLIC_ROYCO_FRONTEND_FEE_RECIPIENT,
+      process.env.NEXT_PUBLIC_ROYCO_FRONTEND_FEE_RECIPIENT,
   });
-
-  console.log('write', writeContractOptions)
 
   const [contractCallIndex, setContractCallIndex] = useState(0);
   const maxInputValue = useMemo(() => {
@@ -127,24 +145,10 @@ function DepositWidget({
       market?.input_token_data.decimals ?? 0,
     );
   }, [market]);
-  const hasErrorText = useMemo(() => {
-    if (inputValue > parseRawAmountToTokenAmount(
-      market?.quantity_ip ?? '0', // @note: AP fills IP quantity
-      market?.input_token_data.decimals ?? 0,
-    )) {
-      return 'Above fillable';
-    }
-    if (inputValue > balance) {
-      return 'Above balance';
-    }
-
-    return null;
-  }, [market, inputValue, balance]);
 
   function onClickMaxButton() {
     onChangeValue(balance > maxInputValue ? maxInputValue : balance);
   }
-
 
   const {
     status: txStatus,
@@ -158,7 +162,10 @@ function DepositWidget({
   } = useWriteContract();
 
   const shouldSwitchChain = useMemo(() => {
-    if (writeContractOptions.length > 0 && account?.chainId !== writeContractOptions[0]?.chainId) {
+    if (
+      writeContractOptions.length > 0 &&
+      account?.chainId !== writeContractOptions[0]?.chainId
+    ) {
       return true;
     }
     return false;
@@ -175,6 +182,29 @@ function DepositWidget({
     confirmations: 2,
     pollingInterval: 1_000,
   });
+
+  const hasErrorText = useMemo(() => {
+    if (
+      inputValue >
+      parseRawAmountToTokenAmount(
+        market?.quantity_ip ?? '0', // @note: AP fills IP quantity
+        market?.input_token_data.decimals ?? 0,
+      )
+    ) {
+      return 'Above fillable';
+    }
+    if (inputValue > balance) {
+      return 'Above balance';
+    }
+    if (isTxConfirmError) {
+      return 'Impossible to confirm tx';
+    }
+    if (isTxError) {
+      return 'An error occurred';
+    }
+
+    return null;
+  }, [market, inputValue, balance, isTxError, isTxConfirmError, txError]);
 
   // TODO: to remove
   // eslint-disable-next-line no-console
@@ -242,7 +272,7 @@ function DepositWidget({
           }}
         >
           <Typography component="span"></Typography>
-          <Typography variant="body2" color="textSecondary">
+          <Typography variant="body2" color="textSecondary" component="span">
             Balance: {balance}
           </Typography>
         </FormHelperText>
@@ -317,7 +347,7 @@ function DepositWidget({
             marginBottom: 1,
           }}
         >
-          <Typography variant="body2" color="textSecondary">
+          <Typography variant="body2" color="textSecondary" component="span">
             {Intl.NumberFormat('en-US', {
               notation: 'standard',
               useGrouping: true,
@@ -326,7 +356,18 @@ function DepositWidget({
             }).format(maxInputValue)}{' '}
             {market?.input_token_data.symbol.toUpperCase()} Fillable in Total
           </Typography>
-          {hasErrorText && <Typography component="span">{hasErrorText}</Typography>}
+          {hasErrorText && (
+            <Typography component="span">{hasErrorText}</Typography>
+          )}
+          {txHash && (
+            <Typography
+              component="a"
+              href={`https://etherscan.io/tx/${txHash}`}
+              target="_blank"
+            >
+              Transaction link
+            </Typography>
+          )}
         </FormHelperText>
       </FormControl>
       {writeContractOptions.length === 0 && (
@@ -342,13 +383,13 @@ function DepositWidget({
                 chainId: writeContractOptions[0]?.chainId,
               });
             } catch (error) {
-              console.log(error);
+              // TODO: to remove
+              // eslint-disable-next-line no-console
+              console.error(error);
             }
           }}
         >
-          <Typography variant="bodyMediumStrong">
-            Deposit
-          </Typography>
+          <Typography variant="bodyMediumStrong">Deposit</Typography>
         </CustomLoadingButton>
       )}
       {!account?.isConnected ? (
@@ -378,44 +419,47 @@ function DepositWidget({
                 chainId: writeContractOptions[0]?.chainId,
               });
             } catch (error) {
-              console.log(error);
+              // TODO: to remove
+              // eslint-disable-next-line no-console
+              console.error(error);
             }
           }}
         >
-          <Typography variant="bodyMediumStrong">
-            Switch chain
-          </Typography>
+          <Typography variant="bodyMediumStrong">Switch chain</Typography>
         </CustomLoadingButton>
-      ) : writeContractOptions[contractCallIndex] && (
-        <CustomLoadingButton
-          type="submit"
-          disabled={hasErrorText}
-          loading={isLoading || isTxPending || isTxConfirming}
-          variant="contained"
-          overrideStyle={overrideStyle}
-        >
-          <Typography variant="bodyMediumStrong">
-            {writeContractOptions[contractCallIndex].label}
-          </Typography>
-        </CustomLoadingButton>
+      ) : (
+        writeContractOptions[contractCallIndex] && (
+          <CustomLoadingButton
+            type="submit"
+            disabled={hasErrorText}
+            loading={isLoading || isTxPending || isTxConfirming}
+            variant="contained"
+            overrideStyle={overrideStyle}
+          >
+            <Typography variant="bodyMediumStrong">
+              {writeContractOptions[contractCallIndex].label}
+            </Typography>
+          </CustomLoadingButton>
+        )
       )}
 
-      {contractCallIndex !== 0 && contractCallIndex > writeContractOptions.length - 1 &&
-        <Box
-          sx={{
-            height: '100%',
-            width: '100%',
-            display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
-            placeContent: 'center', // Centers content horizontally and vertically.
-            alignItems: 'start', // Aligns items at the start along the cross-axis.
-          }}
-        >
-          {/*<div className="h-full w-full place-content-center items-start">*/}
-          <Typography variant="body2" color="textSecondary">
-            Deposited with success!
-          </Typography>
-        </Box>
-      }
+      {contractCallIndex !== 0 &&
+        contractCallIndex > writeContractOptions.length - 1 && (
+          <Box
+            sx={{
+              height: '100%',
+              width: '100%',
+              display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
+              placeContent: 'center', // Centers content horizontally and vertically.
+              alignItems: 'start', // Aligns items at the start along the cross-axis.
+            }}
+          >
+            {/*<div className="h-full w-full place-content-center items-start">*/}
+            <Typography variant="body2" color="textSecondary">
+              Deposited with success!
+            </Typography>
+          </Box>
+        )}
     </Box>
   );
 }

@@ -4,7 +4,13 @@ import { useActiveMarket } from '../../hooks/useActiveMarket';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import Grid from '@mui/material/Unstable_Grid2';
 
-function Recipe({ market, type }: { market: EnrichedMarketDataType, type: 'deposit' | 'withdraw' }) {
+function Recipe({
+  market,
+  type,
+}: {
+  market: EnrichedMarketDataType;
+  type: 'deposit' | 'withdraw';
+}) {
   const {
     isLoading,
     marketMetadata,
