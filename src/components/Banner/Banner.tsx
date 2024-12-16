@@ -2,9 +2,27 @@
 import { Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { BannerContainer } from './Banner.style';
+import { useUserTracking } from 'src/hooks/userTracking';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 
 export const Banner = () => {
   const theme = useTheme();
+  const { trackEvent } = useUserTracking();
+
+  const handleClick = () => {
+    trackEvent({
+      category: TrackingCategory.Banner,
+      action: TrackingAction.ClickBanner,
+      label: 'click-banner-cta',
+      data: {
+        [TrackingEventParameter.ActiveCampaign]: 'wrapped-2024',
+      },
+    });
+  };
 
   return (
     <a
@@ -12,7 +30,7 @@ export const Banner = () => {
       target="_blank"
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
-      <BannerContainer>
+      <BannerContainer onClick={handleClick}>
         <Image
           alt="jumper-logo"
           width={24}
