@@ -25,7 +25,11 @@ export const Banner = () => {
           }
         />
         <Typography
-          color={theme.palette.accent1.main}
+          color={
+            theme.palette.mode === 'dark'
+              ? '#FFFFFFD6'
+              : theme.palette.accent1.main
+          }
           sx={{
             fontSize: '16px',
             fontWeight: 700,
