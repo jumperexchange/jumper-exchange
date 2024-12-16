@@ -118,6 +118,8 @@ function DepositWidget({
     process.env.NEXT_PUBLIC_ROYCO_FRONTEND_FEE_RECIPIENT,
   });
 
+  console.log('write', writeContractOptions)
+
   const [contractCallIndex, setContractCallIndex] = useState(0);
   const maxInputValue = useMemo(() => {
     return parseRawAmountToTokenAmount(
