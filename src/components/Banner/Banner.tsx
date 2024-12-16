@@ -1,5 +1,5 @@
 'use client';
-import { Typography, useTheme } from '@mui/material';
+import { Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { BannerContainer } from './Banner.style';
 import { useUserTracking } from 'src/hooks/userTracking';
@@ -23,6 +23,10 @@ export const Banner = () => {
       },
     });
   };
+
+  const isSmallScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
+  );
 
   return (
     <a
@@ -55,7 +59,9 @@ export const Banner = () => {
           }}
         >
           {' '}
-          Your 2024 Jumper Wrapped is here. Wrap your year{' '}
+          {isSmallScreen
+            ? 'Your 2024 Jumper Wrapped is here'
+            : 'Your 2024 Jumper Wrapped is here. Wrap your year'}{' '}
         </Typography>
         <Image
           alt="arrow-icon"
