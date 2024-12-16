@@ -18,7 +18,7 @@ export async function checkTheNumberOfMenuItems(
 }
 
 export async function itemInMenu(page, option: string) {
-  await page.getByRole('menuitem', { name: option }).click({ timeout: 20000 });
+  await page.getByRole('menuitem', { name: option }).click();
 }
 
 export async function closeWelcomeScreen(page: Page) {

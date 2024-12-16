@@ -14,8 +14,8 @@ import {
   AddressButton,
   AddressButtonLabel,
   AddressConnectButton,
-  AddressEffigyImage,
-  AddressEffigyImageSkeleton,
+  AddressBlockiesImage,
+  AddressBlockiesImageSkeleton,
   ImageBackground,
   PassImageBox,
   ProfileIconButton,
@@ -59,8 +59,8 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
       <PassImageBox>
         <ImageBackground imgUrl={imgLink} />
         {address ? (
-          <AddressEffigyImage
-            alt="Effigy Wallet Icon"
+          <AddressBlockiesImage
+            alt="Blockie Wallet Icon"
             src={imageLink || imgLink}
             width={140}
             height={140}
@@ -68,7 +68,7 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
             unoptimized={true}
           />
         ) : (
-          <AddressEffigyImageSkeleton variant="circular" />
+          <AddressBlockiesImageSkeleton variant="circular" />
         )}
       </PassImageBox>
       <AddressBox>

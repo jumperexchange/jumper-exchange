@@ -18,7 +18,7 @@ import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import type { OngoingNumericItemStats } from 'src/hooks/useOngoingNumericQuests';
 import { useUserTracking } from 'src/hooks/userTracking';
 import type { QuestChains } from 'src/types/loyaltyPass';
-import { formatDateShort } from 'src/utils/formatDate';
+import { formatMonthDayDateShort } from 'src/utils/formatDate';
 import { ProgressionBar } from '../LevelBox/ProgressionBar';
 import {
   BadgeRelativeBox,
@@ -118,7 +118,7 @@ export const QuestCard = ({
   if (isTraitsGarded && !isUnlocked) {
     buttonLabel = 'Unlocked for perp_oors';
   } else if (startDate && endDate) {
-    buttonLabel = `${formatDateShort(startDate)} - ${formatDateShort(endDate)}`;
+    buttonLabel = `${formatMonthDayDateShort(startDate)} - ${formatMonthDayDateShort(endDate)}`;
   } else if (rewardsQuestCard) {
     const daysLeft = rewardsProgress.max - rewardsProgress.currentValue;
     buttonLabel = `${daysLeft} day${daysLeft > 1 ? 's' : ''} left`;
