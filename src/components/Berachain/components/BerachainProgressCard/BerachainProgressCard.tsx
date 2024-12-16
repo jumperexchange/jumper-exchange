@@ -29,7 +29,17 @@ export const BerachainProgressCard = ({
       {icon ? icon : null}
       <BeraChainProgressCardContent>
         <BeraChainProgressCardHeader display={'flex'}>
-          <Typography variant="bodySmall">{title}</Typography>
+          <Typography
+            variant="bodySmall"
+            sx={(theme) => ({
+              typography: {
+                xs: theme.typography.bodyXSmall,
+                sm: theme.typography.bodySmall,
+              },
+            })}
+          >
+            {title}
+          </Typography>
           {tooltip && (
             <Tooltip
               title={tooltip}
@@ -48,7 +58,17 @@ export const BerachainProgressCard = ({
             </Tooltip>
           )}
         </BeraChainProgressCardHeader>
-        <Typography variant="bodyLargeStrong" marginTop={'4px'} sx={valueSx}>
+        <Typography
+          variant="titleSmall"
+          marginTop={'4px'}
+          sx={(theme) => ({
+            typography: {
+              xs: theme.typography.titleXSmall,
+              sm: theme.typography.titleSmall,
+            },
+            valueSx,
+          })}
+        >
           {value || 'N/A'}
         </Typography>
       </BeraChainProgressCardContent>

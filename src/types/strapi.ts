@@ -226,6 +226,7 @@ export interface Customization {
   footerBannerUrl?: string;
   typography?: string;
   hasBackgroundGradient?: boolean;
+  hasBlurredNavigation?: boolean;
 }
 
 type WidgetConfigProps = Omit<WidgetConfig, 'integrator'>;
