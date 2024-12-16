@@ -10,6 +10,7 @@ import {
 } from '@lifi/wallet-management';
 import { type FC, type PropsWithChildren } from 'react';
 import { WagmiProvider } from 'wagmi';
+import { sepolia } from "viem/chains";
 
 const { config, connectors } = createDefaultWagmiConfig({
   coinbase: defaultCoinbaseConfig,
@@ -21,7 +22,7 @@ const { config, connectors } = createDefaultWagmiConfig({
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
   const { chains } = useChains();
 
-  useSyncWagmiConfig(config, connectors, chains as ExtendedChain[]);
+  useSyncWagmiConfig(config, connectors, [...chains as ExtendedChain[], sepolia]);
 
   return (
     <WagmiProvider config={config} reconnectOnMount={false}>

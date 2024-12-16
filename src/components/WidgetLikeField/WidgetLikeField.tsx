@@ -21,7 +21,7 @@ import {
   useWriteContract,
 } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { getEthersSigner } from '@/components/WidgetLikeField/utils';
 import { MaxButton } from '@/components/WidgetLikeField/WidgetLikeField.style';
@@ -34,6 +34,7 @@ import {
 } from 'royco/utils';
 import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 import type { EnrichedMarketDataType } from 'royco/queries';
+import { switchChain } from "@wagmi/core";
 
 interface Image {
   url: string;
@@ -88,6 +89,7 @@ function WidgetLikeField({
   market,
   overrideStyle = {},
 }: WidgetLikeFieldProps) {
+  const wagmiConfig = useConfig();
   const theme = useTheme();
   const { account } = useAccount();
   const [inputValue, setInputValue] = useState<string | number | null>(null);
@@ -156,18 +158,6 @@ function WidgetLikeField({
       process.env.NEXT_PUBLIC_ROYCO_FRONTEND_FEE_RECIPIENT,
   });
 
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('result', {
-    isValid,
-    isLoading,
-    isReady,
-    writeContractOptions,
-    canBePerformedCompletely,
-    canBePerformedPartially,
-    incentiveData,
-  });
-
   const [contractCallIndex, setContractCallIndex] = useState(0);
 
   const contractMutations = [];
@@ -187,22 +177,12 @@ function WidgetLikeField({
     reset: resetTx,
   } = useWriteContract();
 
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log(
-    'writecontract',
-    {
-      status: txStatus,
-      data: txHash,
-      isIdle: isTxIdle,
-      isPending: isTxPending,
-      isError: isTxError,
-      error: txError,
-      writeContract,
-      reset: resetTx,
-    },
-    writeContractOptions,
-  );
+  const shouldSwitchChain = useMemo(() => {
+    if (writeContractOptions.length > 0 && account?.chainId !== writeContractOptions[0]?.chainId) {
+      return true;
+    }
+    return false;
+  }, [account?.chainId, writeContractOptions]);
 
   const {
     isLoading: isTxConfirming,
@@ -213,9 +193,7 @@ function WidgetLikeField({
     chainId: market.chain_id ?? undefined,
     hash: txHash,
     confirmations: 2,
-    query: {
-      enabled: !txHash,
-    },
+    pollingInterval: 1_000,
   });
 
   // TODO: to remove
@@ -229,10 +207,11 @@ function WidgetLikeField({
   });
 
   useEffect(() => {
-    if (txStatus === 'success') {
+    console.log('sss', isTxConfirmed, contractCallIndex, writeContractOptions)
+    if (isTxConfirmed) {
       setContractCallIndex(contractCallIndex + 1);
     }
-  }, [txStatus]);
+  }, [isTxConfirmed]);
 
   function onChangeValue(value: string | number | null = '0') {
     setInputValue(value);
@@ -294,6 +273,9 @@ function WidgetLikeField({
       </Button>
     );
   }*/
+
+  console.log('macx handler',
+    maxButtonHandlerValue)
 
   async function onSubmit(e: React.FormEvent) {
     try {
@@ -396,7 +378,7 @@ function WidgetLikeField({
             )
           }
           endAdornment={
-            maxButtonHandlerValue && (
+            maxButtonHandlerValue !== 0 && (
               <MaxButton
                 sx={{ p: '5px 10px' }}
                 aria-label="menu"
@@ -423,7 +405,49 @@ function WidgetLikeField({
           </FormHelperText>
         )}
       </FormControl>
-      {writeContractOptions[contractCallIndex] && (
+      {!account?.isConnected ? (
+        <Box
+          sx={{
+            height: '100%',
+            width: '100%',
+            display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
+            placeContent: 'center', // Centers content horizontally and vertically.
+            alignItems: 'start', // Aligns items at the start along the cross-axis.
+          }}
+        >
+          {/*<div className="h-full w-full place-content-center items-start">*/}
+          <Typography variant="body2" color="textSecondary">
+            Wallet not connected
+          </Typography>
+        </Box>
+      ) : shouldSwitchChain ? (
+        <LoadingButton
+          type="button"
+          // loading={isLoading || isTxPending || isTxConfirming}
+          variant="contained"
+          sx={{
+            '&.MuiLoadingButton-loading': {
+              border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
+            },
+            '.MuiLoadingButton-loadingIndicator': {
+              color: overrideStyle?.mainColor ?? theme.palette.primary.main,
+            },
+          }}
+          onClick={async () => {
+            try {
+              await switchChain(wagmiConfig, {
+                chainId: writeContractOptions[0]?.chainId,
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          }}
+        >
+          <Typography variant="bodyMediumStrong">
+            Switch chain
+          </Typography>
+        </LoadingButton>
+      ) : writeContractOptions[contractCallIndex] ? (
         <LoadingButton
           type="submit"
           loading={isLoading || isTxPending || isTxConfirming}
@@ -441,7 +465,21 @@ function WidgetLikeField({
             {writeContractOptions[contractCallIndex].label}
           </Typography>
         </LoadingButton>
-      )}
+      ):
+        <Box
+        sx={{
+          height: '100%',
+          width: '100%',
+          display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
+          placeContent: 'center', // Centers content horizontally and vertically.
+          alignItems: 'start', // Aligns items at the start along the cross-axis.
+        }}
+      >
+        {/*<div className="h-full w-full place-content-center items-start">*/}
+        <Typography variant="body2" color="textSecondary">
+          Deposited with success!
+        </Typography>
+      </Box>}
     </Box>
   );
 }

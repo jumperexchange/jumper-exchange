@@ -11,7 +11,7 @@ import {
 import type { MouseEventHandler } from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CustomDrawer, WalletButton } from '.';
+import { CustomDrawer } from '.';
 import { WalletButton } from './WalletMenu.style';
 import { WalletCard } from './WalletCard';
 import { Portfolio } from '@/components/Portfolio/Portfolio';

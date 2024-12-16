@@ -28,7 +28,7 @@ export const BerachainWidget = ({
 }: {
   market: EnrichedMarketDataType;
 }) => {
-  const [tab, setTab] = useState(2);
+  const [tab, setTab] = useState(1);
   const { t } = useTranslation();
   const theme = useTheme();
 
