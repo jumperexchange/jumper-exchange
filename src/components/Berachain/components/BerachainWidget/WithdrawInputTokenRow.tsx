@@ -38,7 +38,7 @@ export const WithdrawInputTokenRow = React.forwardRef<
             className="badge"
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           >
-            <WalletAvatar>
+            <WalletAvatar component="span">
               <TokenImage
                 token={{
                   name: token.symbol,

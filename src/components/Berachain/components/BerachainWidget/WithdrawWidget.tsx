@@ -9,13 +9,15 @@ import {
   useEnrichedPositionsRecipe,
   useEnrichedPositionsVault,
 } from 'royco/hooks';
-import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useWriteContract, useWaitForTransactionReceipt, useConfig } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import { RoycoMarketType, RoycoMarketUserType } from 'royco/market';
 import { WithdrawInputTokenRow } from './WithdrawInputTokenRow';
 import { WithdrawIncentiveTokenRow } from './WithdrawIncentiveTokenRow';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { WalletButtons } from '@/components/Navbar/WalletButtons';
+import { CustomLoadingButton } from '@/components/Berachain/components/BerachainWidget/LoadingButton.style';
+import { switchChain } from '@wagmi/core';
 
 export type TypedMarketWithdrawType = 'input_token' | 'incentives';
 export const MarketWithdrawType: Record<
@@ -40,10 +42,18 @@ export const WithdrawWidget = ({
 }: {
   market: EnrichedMarketDataType;
 }) => {
+  const wagmiConfig = useConfig();
   const { account } = useAccount();
   const theme = useTheme();
   const [transactions, setTransactions] = useState([]);
   const withdrawType = 'input_token';
+
+  const shouldSwitchChain = useMemo(() => {
+    if (market.chain_id !== account?.chainId) {
+      return true;
+    }
+    return false;
+  }, [account?.chainId]);
 
   const {
     status: txStatus,
@@ -104,13 +114,13 @@ export const WithdrawWidget = ({
     account_address: (account?.address?.toLowerCase() as string) ?? '',
     page_index: 0,
     filters: [
-      {
+/*      {
         id: 'can_withdraw',
         // withdrawType === MarketWithdrawType.input_token.id
         //   ? "can_withdraw"
         // : "can_claim",
         value: true,
-      },
+      },*/
       {
         id: 'offer_side',
         value: 0,
@@ -179,7 +189,7 @@ export const WithdrawWidget = ({
   return (
     <Box sx={{ marginTop: theme.spacing(1.5) }}>
       <InfoBlock market={market} />
-      <BerachainTransactionDetails market={market} />
+      <BerachainTransactionDetails type="withdraw" market={market} />
 
       {!account?.isConnected && (
         <Box
@@ -196,6 +206,27 @@ export const WithdrawWidget = ({
             Wallet not connected
           </Typography>
         </Box>
+      )}
+      {shouldSwitchChain && (
+        <CustomLoadingButton
+          overrideStyle={{ mainColor: '#FF8425' }}
+          type="button"
+          // loading={isLoading || isTxPending || isTxConfirming}
+          variant="contained"
+          onClick={async () => {
+            try {
+              await switchChain(wagmiConfig, {
+                chainId: market.chain_id,
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          }}
+        >
+          <Typography variant="bodyMediumStrong">
+            Switch chain
+          </Typography>
+        </CustomLoadingButton>
       )}
       {!isLoadingPositionsRecipe && !!positions && positions.length === 0 && (
         <Box
@@ -266,7 +297,7 @@ export const WithdrawWidget = ({
                       notation: 'standard',
                       useGrouping: true,
                       minimumFractionDigits: 2,
-                      maximumFractionDigits: 8,
+                      maximumFractionDigits: 2,
                     }).format(
                       withdrawType === MarketWithdrawType.input_token.id
                         ? (position?.input_token_data?.token_amount_usd ?? 0)
@@ -296,7 +327,7 @@ export const WithdrawWidget = ({
                         return (
                           <WithdrawIncentiveTokenRow
                             disabled={
-                              market.market_type ===
+                              position.can_withdraw && market.market_type ===
                               RoycoMarketType.recipe.value
                                 ? // @ts-ignore
                                   position?.is_claimed[tokenIndex] === true
@@ -361,8 +392,13 @@ export const WithdrawWidget = ({
                     }}
                     // className="w-24 shrink-0"
                   >
-                    <Button
+                    {position?.can_withdraw === false ? <Typography variant="body2" color="textSecondary">Locked</Typography> :
+                    <CustomLoadingButton
+                      overrideStyle={{
+                        mainColor: '#FF8425'
+                      }}
                       disabled={
+                      !position.can_withdraw ||
                         BigInt(position?.input_token_data?.raw_amount ?? 0) ===
                         BigInt(0)
                       }
@@ -402,7 +438,7 @@ export const WithdrawWidget = ({
                       className="text-sm"
                     >
                       Withdraw
-                    </Button>
+                    </CustomLoadingButton>}
                   </Box>
                 )}
               </Box>

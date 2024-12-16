@@ -75,12 +75,13 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
           />
         )}
 
-        {deposited && (
+        {deposited ? (
           <BerachainProgressCard
             title={'Deposited'}
             value={t('format.currency', {
               value: dataRecipe?.input_token_data_ap?.token_amount_usd,
             })}
+            tooltip="Deposited value"
             sx={{
               height: '100%',
               padding: theme.spacing(1.5, 2),
@@ -92,7 +93,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                 'linear-gradient(rgba(253, 183, 45, 0.20), rgba(253, 183, 45, 0.20))',
             }}
           />
-        )}
+        ): null}
       </BerachainWidgetSelectionRewards>
     </BerachainWidgetSelection>
   );

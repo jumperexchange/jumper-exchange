@@ -1,40 +1,19 @@
-import {
-  Avatar as MuiAvatar,
-  Box,
-  Button,
-  FormHelperText,
-  InputLabel,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Avatar as MuiAvatar, Box, darken, FormHelperText, InputLabel, Typography, useTheme } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import {
-  WalletAvatar,
-  WalletCardBadge,
-} from '@/components/Menus/WalletMenu/WalletCard.style';
+import { WalletAvatar, WalletCardBadge } from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
-import LoadingButton from '@mui/lab/LoadingButton';
-import {
-  useConfig,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi';
+import { useConfig, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { getEthersSigner } from '@/components/WidgetLikeField/utils';
+import { useEffect, useMemo, useState } from 'react';
 import { MaxButton } from '@/components/WidgetLikeField/WidgetLikeField.style';
 import type { TransactionOptionsType } from 'royco/types';
-import { usePrepareMarketAction } from 'royco/hooks';
-import {
-  parseRawAmount,
-  parseRawAmountToTokenAmount,
-  parseTokenAmountToRawAmount,
-} from 'royco/utils';
+import { useAccountBalance, usePrepareMarketAction } from 'royco/hooks';
+import { parseRawAmountToTokenAmount, parseTokenAmountToRawAmount } from 'royco/utils';
 import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 import type { EnrichedMarketDataType } from 'royco/queries';
-import { switchChain } from "@wagmi/core";
+import { switchChain } from '@wagmi/core';
+import { CustomLoadingButton } from '../LoadingButton.style';
 
 interface Image {
   url: string;
@@ -69,7 +48,6 @@ interface WidgetLikeFieldProps {
   label: string;
   placeholder?: string;
   image?: Image & { badge?: Image };
-  maxButtonHandlerValue?: number | string | null;
   helperText?: {
     before?: Partial<HelperText>;
     after?: Partial<HelperText>;
@@ -79,19 +57,28 @@ interface WidgetLikeFieldProps {
   };
 }
 
-function WidgetLikeField({
+function DepositWidget({
   contractCalls = [],
   label,
   image,
   placeholder,
-  maxButtonHandlerValue,
   helperText,
   market,
   overrideStyle = {},
 }: WidgetLikeFieldProps) {
+  const { account } = useAccount();
+  const { isLoading: isLoadingWallet, data: dataWallet } = useAccountBalance({
+    chain_id: market.chain_id!,
+    account: account?.address || '',
+    tokens: market ? [market.input_token_data.contract_address] : [],
+  });
+
+  const balance = parseRawAmountToTokenAmount(
+    dataWallet?.[0]?.raw_amount?.toString() ?? '0',
+    market?.input_token_data.decimals ?? 0,
+  );
   const wagmiConfig = useConfig();
   const theme = useTheme();
-  const { account } = useAccount();
   const [inputValue, setInputValue] = useState<string | number | null>(null);
 
   const userType = 'ap';
@@ -128,43 +115,34 @@ function WidgetLikeField({
     vault_incentive_action: vaultIncentiveActionType,
     offer_validation_url: `/api/validate`,
     frontend_fee_recipient:
-      process.env.NEXT_PUBLIC_ROYCO_FRONTEND_FEE_RECIPIENT,
-  });
-
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('prep', {
-    chain_id: market.chain_id,
-    market_id: market.market_id,
-    market_type: 'recipe',
-    user_type: userType,
-    offer_type: offerType,
-    account: account?.address,
-    quantity: parseTokenAmountToRawAmount(
-      String(inputValue) ?? '0',
-      market?.input_token_data.decimals ?? 0,
-    ),
-    funding_vault: DEFAULT_WALLET_ADDRESS,
-    token_ids: [],
-    token_amounts: [],
-    expiry: '0',
-    token_rates: [],
-    start_timestamps: [],
-    end_timestamps: [],
-
-    vault_incentive_action: vaultIncentiveActionType,
-    offer_validation_url: `/api/validate`,
-    frontend_fee_recipient:
-      process.env.NEXT_PUBLIC_ROYCO_FRONTEND_FEE_RECIPIENT,
+    process.env.NEXT_PUBLIC_ROYCO_FRONTEND_FEE_RECIPIENT,
   });
 
   const [contractCallIndex, setContractCallIndex] = useState(0);
+  const maxInputValue = useMemo(() => {
+    return parseRawAmountToTokenAmount(
+      market?.quantity_ip ?? '0', // @note: AP fills IP quantity
+      market?.input_token_data.decimals ?? 0,
+    );
+  }, [market]);
+  const hasErrorText = useMemo(() => {
+    if (inputValue > parseRawAmountToTokenAmount(
+      market?.quantity_ip ?? '0', // @note: AP fills IP quantity
+      market?.input_token_data.decimals ?? 0,
+    )) {
+      return 'Above fillable';
+    }
+    if (inputValue > balance) {
+      return 'Above balance';
+    }
 
-  const contractMutations = [];
+    return null;
+  }, [market, inputValue, balance]);
 
   function onClickMaxButton() {
-    onChangeValue(maxButtonHandlerValue);
+    onChangeValue(balance > maxInputValue ? maxInputValue : balance);
   }
+
 
   const {
     status: txStatus,
@@ -207,7 +185,6 @@ function WidgetLikeField({
   });
 
   useEffect(() => {
-    console.log('sss', isTxConfirmed, contractCallIndex, writeContractOptions)
     if (isTxConfirmed) {
       setContractCallIndex(contractCallIndex + 1);
     }
@@ -217,71 +194,10 @@ function WidgetLikeField({
     setInputValue(value);
   }
 
-  // return <div>TOTO</div>
-  /*
-  contractCalls.forEach((contractCall, index) => {
-    contractMutations.push(useMutation({
-      mutationKey: ['signMessage', account.address],
-      mutationFn: async (value) => {
-        console.log('value:', value)
-        let result;
-        switch (contractCall.type) {
-          case 'sign': {
-            const signer = await getEthersSigner(config);
-            const message = contractCall.message;
-           result = await signer.signMessage(message);
-           break;
-          }
-          case 'send': {
-            // To be implemented
-           result = contractCall.data;
-            break;
-          }
-          default: {
-            throw new Error('Case not implemented');
-          }
-        }
-
-        return contractCall.onVerify(result);
-      },
-      onSuccess: () => {
-        console.log('onSuccess triggered');
-        setContractCallIndex(index + 1);
-      },
-    }));
-  });*/
-
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('index', contractCallIndex);
-  /* TODO: enable completed state when finishing all transactions
-  if (contractCalls.length === contractCallIndex) {
-    return (
-      <Button
-        disabled
-        type="button"
-        variant="contained"
-        fullWidth
-        sx={{
-          '&.MuiButtonBase-root': {
-            backgroundColor: overrideStyle?.mainColor ?? theme.palette.primary.main,
-            color: theme.palette.text.primary,
-          }
-        }}
-      >
-        <Typography variant="bodyMediumStrong">Completed</Typography>
-      </Button>
-    );
-  }*/
-
-  console.log('macx handler',
-    maxButtonHandlerValue)
-
   async function onSubmit(e: React.FormEvent) {
     try {
       // TODO: to remove
       // eslint-disable-next-line no-console
-      console.log('submitted', inputValue);
       e.preventDefault();
 
       resetTx();
@@ -310,24 +226,24 @@ function WidgetLikeField({
         <Typography variant="titleSmall">{label}</Typography>
       </InputLabel>
       <FormControl
-        error={isTxError}
+        error={isTxError || hasErrorText}
         variant="standard"
         aria-autocomplete="none"
       >
-        {helperText?.before && (
-          <FormHelperText
-            id="component-text"
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginBottom: 1,
-            }}
-          >
-            <Typography component="span">{helperText.before?.left}</Typography>
-            <Typography component="span">{helperText.before?.right}</Typography>
-          </FormHelperText>
-        )}
+        <FormHelperText
+          id="component-text"
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: 1,
+          }}
+        >
+          <Typography component="span"></Typography>
+          <Typography variant="body2" color="textSecondary">
+            Balance: {balance}
+          </Typography>
+        </FormHelperText>
         <OutlinedInput
           autoComplete="off"
           id="component"
@@ -378,7 +294,7 @@ function WidgetLikeField({
             )
           }
           endAdornment={
-            maxButtonHandlerValue !== 0 && (
+            balance !== 0 && (
               <MaxButton
                 sx={{ p: '5px 10px' }}
                 aria-label="menu"
@@ -390,21 +306,49 @@ function WidgetLikeField({
             )
           }
         />
-        {helperText?.after && (
-          <FormHelperText
-            id="component-text"
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginBottom: 1,
-            }}
-          >
-            <Typography component="span">{helperText.after?.left}</Typography>
-            <Typography component="span">{helperText.after?.right}</Typography>
-          </FormHelperText>
-        )}
+        <FormHelperText
+          id="component-text"
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: 1,
+          }}
+        >
+          <Typography variant="body2" color="textSecondary">
+            {Intl.NumberFormat('en-US', {
+              notation: 'standard',
+              useGrouping: true,
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 8,
+            }).format(maxInputValue)}{' '}
+            {market?.input_token_data.symbol.toUpperCase()} Fillable in Total
+          </Typography>
+          {hasErrorText && <Typography component="span">{hasErrorText}</Typography>}
+        </FormHelperText>
       </FormControl>
+      {writeContractOptions.length === 0 && (
+        <CustomLoadingButton
+          type="button"
+          overrideStyle={overrideStyle}
+          disabled
+          // loading={isLoading || isTxPending || isTxConfirming}
+          variant="contained"
+          onClick={async () => {
+            try {
+              await switchChain(wagmiConfig, {
+                chainId: writeContractOptions[0]?.chainId,
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          }}
+        >
+          <Typography variant="bodyMediumStrong">
+            Deposit
+          </Typography>
+        </CustomLoadingButton>
+      )}
       {!account?.isConnected ? (
         <Box
           sx={{
@@ -421,18 +365,11 @@ function WidgetLikeField({
           </Typography>
         </Box>
       ) : shouldSwitchChain ? (
-        <LoadingButton
+        <CustomLoadingButton
+          overrideStyle={overrideStyle}
           type="button"
           // loading={isLoading || isTxPending || isTxConfirming}
           variant="contained"
-          sx={{
-            '&.MuiLoadingButton-loading': {
-              border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
-            },
-            '.MuiLoadingButton-loadingIndicator': {
-              color: overrideStyle?.mainColor ?? theme.palette.primary.main,
-            },
-          }}
           onClick={async () => {
             try {
               await switchChain(wagmiConfig, {
@@ -446,45 +383,39 @@ function WidgetLikeField({
           <Typography variant="bodyMediumStrong">
             Switch chain
           </Typography>
-        </LoadingButton>
+        </CustomLoadingButton>
       ) : writeContractOptions[contractCallIndex] && (
-        <LoadingButton
+        <CustomLoadingButton
           type="submit"
+          disabled={hasErrorText}
           loading={isLoading || isTxPending || isTxConfirming}
           variant="contained"
-          sx={{
-            '&.MuiLoadingButton-loading': {
-              border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
-            },
-            '.MuiLoadingButton-loadingIndicator': {
-              color: overrideStyle?.mainColor ?? theme.palette.primary.main,
-            },
-          }}
+          overrideStyle={overrideStyle}
         >
           <Typography variant="bodyMediumStrong">
             {writeContractOptions[contractCallIndex].label}
           </Typography>
-        </LoadingButton>
+        </CustomLoadingButton>
       )}
 
       {contractCallIndex !== 0 && contractCallIndex > writeContractOptions.length - 1 &&
-      <Box
-        sx={{
-          height: '100%',
-          width: '100%',
-          display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
-          placeContent: 'center', // Centers content horizontally and vertically.
-          alignItems: 'start', // Aligns items at the start along the cross-axis.
-        }}
-      >
-        {/*<div className="h-full w-full place-content-center items-start">*/}
-        <Typography variant="body2" color="textSecondary">
-          Deposited with success!
-        </Typography>
-      </Box>
-    }
+        <Box
+          sx={{
+            height: '100%',
+            width: '100%',
+            display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
+            placeContent: 'center', // Centers content horizontally and vertically.
+            alignItems: 'start', // Aligns items at the start along the cross-axis.
+          }}
+        >
+          {/*<div className="h-full w-full place-content-center items-start">*/}
+          <Typography variant="body2" color="textSecondary">
+            Deposited with success!
+          </Typography>
+        </Box>
+      }
     </Box>
   );
 }
 
-export default WidgetLikeField;
+export default DepositWidget;

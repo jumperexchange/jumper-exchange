@@ -136,7 +136,7 @@ export function Widget({
 
     return {
       ...formParameters,
-      variant: starterVariant === 'refuel' ? 'compact' : 'wide',
+      variant: starterVariant === 'compact' ? 'compact' : starterVariant === 'refuel' ? 'compact' : 'wide',
       subvariant:
         (starterVariant !== 'buy' &&
           !(partnerName === ThemesMap.Memecoins) &&

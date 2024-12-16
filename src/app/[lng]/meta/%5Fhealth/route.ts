@@ -3,7 +3,7 @@
 const data = { isHealthy: true };
 
 export async function GET() {
-  let hasUpdateAvailable = true;
+  let hasUpdateAvailable = false;
   try {
     const latestCommitSHA = process.env.NEXT_PUBLIC_LATEST_COMMIT_SHA;
     const githubLatestCommitShaResponse = await fetch(

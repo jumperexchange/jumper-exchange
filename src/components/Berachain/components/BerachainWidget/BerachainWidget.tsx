@@ -3,25 +3,16 @@ import { useMemo, useState } from 'react';
 import { type TabProps, Tabs } from 'src/components/Tabs/Tabs';
 import { Widget } from 'src/components/Widgets/Widget';
 import { BerachainWidgetWip } from '../BerachainWidgetWip/BerachainWidgetWip';
-import WidgetLikeField from '@/components/WidgetLikeField/WidgetLikeField';
 import type { EnrichedMarketDataType } from 'royco/queries';
-import { formatDuration } from 'date-fns';
-import {
-  BerachainWidgetSelection,
-  BerachainWidgetSelectionRewards,
-} from '@/components/Berachain/components/BerachainWidgetWip/BerachainWidgetWip.style';
-import { BerachainProgressCard } from '@/components/Berachain/components/BerachainProgressCard/BerachainProgressCard';
 import { useTranslation } from 'react-i18next';
-import { secondsToDuration } from '@/components/Berachain/lockupTimeMap';
-import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
-import { useConfig, useReadContract, useReadContracts } from 'wagmi';
-import BerachainTransactionDetails from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
+import BerachainTransactionDetails
+  from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
 import InfoBlock from '@/components/Berachain/components/BerachainWidget/InfoBlock';
-import { useAccountBalance, usePrepareMarketAction } from 'royco/hooks';
+import { useAccountBalance } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
-import { parseRawAmount, parseRawAmountToTokenAmount } from 'royco/utils';
-import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
+import { parseRawAmountToTokenAmount } from 'royco/utils';
 import { WithdrawWidget } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget';
+import DepositWidget from '@/components/Berachain/components/BerachainWidget/DepositWidget/DepositWidget';
 
 export const BerachainWidget = ({
   market,
@@ -81,25 +72,6 @@ export const BerachainWidget = ({
     },
   ];
 
-  const { account } = useAccount();
-  const { isLoading: isLoadingWallet, data: dataWallet } = useAccountBalance({
-    chain_id: market.chain_id!,
-    account: account?.address || '',
-    tokens: market ? [market.input_token_data.contract_address] : [],
-  });
-
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('datawallet', dataWallet, {
-    chain_id: market.chain_id,
-    account: account?.address || '',
-    tokens: market ? [market.input_token_data.contract_address] : [],
-  });
-  const balance = parseRawAmountToTokenAmount(
-    dataWallet?.[0]?.raw_amount?.toString() ?? '0',
-    market?.input_token_data.decimals ?? 0,
-  );
-
   // TODO: to remove
   // eslint-disable-next-line no-console
   console.log('market', market);
@@ -125,67 +97,41 @@ export const BerachainWidget = ({
         containerStyles={containerStyles}
         tabStyles={tabStyles}
       />
-      {tab === 0 && (
-        <Box sx={{ marginTop: theme.spacing(1.5) }}>
-          <Widget
-            starterVariant="default"
-            toChain={token?.chain_id}
-            toToken={token?.contract_address}
-          />
-          <BerachainWidgetWip />
-        </Box>
-      )}
-      {tab === 1 && (
-        <Box sx={{ marginTop: theme.spacing(1.5) }}>
-          <InfoBlock market={market} />
-          <BerachainTransactionDetails market={market} />
-          <WidgetLikeField
-            market={market}
-            contractCalls={[]}
-            overrideStyle={{ mainColor: '#FF8425' }}
-            label="Supply"
-            placeholder="Enter the amount"
-            maxButtonHandlerValue={balance}
-            helperText={{
-              before: {
-                right: (
-                  <Typography variant="body2" color="textSecondary">
-                    Balance: {balance}
-                  </Typography>
-                ),
-              },
-              after: {
-                left: (
-                  <Typography variant="body2" color="textSecondary">
-                    {Intl.NumberFormat('en-US', {
-                      notation: 'standard',
-                      useGrouping: true,
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 8,
-                    }).format(
-                      parseRawAmountToTokenAmount(
-                        market?.quantity_ip ?? '0', // @note: AP fills IP quantity
-                        market?.input_token_data.decimals ?? 0,
-                      ),
-                    )}{' '}
-                    {market?.input_token_data.symbol.toUpperCase()} Fillable in
-                    Total
-                  </Typography>
-                ),
-              },
-            }}
-            image={{
-              url: market.input_token_data.image,
-              name: market.input_token_data.name,
-              badge: {
-                url: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
-                name: 'Ethereum',
-              },
-            }}
-          />
-        </Box>
-      )}
-      {tab === 2 && <WithdrawWidget market={market} />}
+      <Box sx={{
+        maxWidth: '432px',
+      }}>
+        {tab === 0 && (
+          <Box sx={{ marginTop: theme.spacing(1.5) }}>
+            <Widget
+              starterVariant="compact"
+              toChain={token?.chain_id}
+              toToken={token?.contract_address}
+            />
+          </Box>
+        )}
+        {tab === 1 && (
+          <Box sx={{ marginTop: theme.spacing(1.5) }}>
+            <InfoBlock market={market} />
+            <BerachainTransactionDetails type="deposit" market={market} />
+            <DepositWidget
+              market={market}
+              contractCalls={[]}
+              overrideStyle={{ mainColor: '#FF8425' }}
+              label="Supply"
+              placeholder="Enter the amount"
+              image={{
+                url: market.input_token_data.image,
+                name: market.input_token_data.name,
+                badge: {
+                  url: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+                  name: 'Ethereum',
+                },
+              }}
+            />
+          </Box>
+        )}
+        {tab === 2 && <WithdrawWidget market={market} />}
+      </Box>
     </Box>
   );
 };
