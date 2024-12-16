@@ -21,5 +21,5 @@ export function middleware(request: NextRequest) {
 // Applies this middleware only to specific paths
 export const config = {
   matcher:
-    '/((?!api|static|_next|favicon\\.ico|.*\\.(?:png|jp?eg|gif|webp|svg|ico|riv)).*)',
+    '/((?!api|static|_next|favicon\\.ico|.*\\.(?:png|jp?eg|gif|webp|svg|ico|xml|riv)).*)',
 };
