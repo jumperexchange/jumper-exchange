@@ -24,7 +24,10 @@ export const BerachainWidget = ({
   const { t } = useTranslation();
   const theme = useTheme();
   const chains = useChains();
-  const chain = useMemo(() => chains.getChainById(market?.chain_id!), [market?.chain_id]);
+  const chain = useMemo(
+    () => chains.getChainById(market?.chain_id!),
+    [market?.chain_id],
+  );
 
   const token = useMemo(() => {
     return market.input_token_data;

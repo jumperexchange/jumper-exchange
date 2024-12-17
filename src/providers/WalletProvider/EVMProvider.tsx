@@ -24,11 +24,7 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // TODO: To be removed
   // eslint-disable-next-line no-console
-  console.log([
-    ...(chains as ExtendedChain[]),
-    sepolia,
-    arbitrum,
-  ])
+  console.log([...(chains as ExtendedChain[]), sepolia, arbitrum]);
   useSyncWagmiConfig(config, connectors, [
     ...(chains as ExtendedChain[]),
     sepolia,

@@ -5,7 +5,10 @@ import {
 } from '@/components/Berachain/components/BerachainWidgetWip/BerachainWidgetWip.style';
 import { BerachainProgressCard } from '@/components/Berachain/components/BerachainProgressCard/BerachainProgressCard';
 import { formatDuration } from 'date-fns';
-import { formatWithCustomLabels, secondsToDuration } from '@/components/Berachain/lockupTimeMap';
+import {
+  formatWithCustomLabels,
+  secondsToDuration,
+} from '@/components/Berachain/lockupTimeMap';
 import { useTranslation } from 'react-i18next';
 import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';

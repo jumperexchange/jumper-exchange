@@ -187,10 +187,10 @@ function DepositWidget({
   const hasErrorText = useMemo(() => {
     if (
       (inputValue ?? 0) >
-        parseRawAmountToTokenAmount(
-          market?.quantity_ip ?? '0', // @note: AP fills IP quantity
-          market?.input_token_data.decimals ?? 0,
-        )
+      parseRawAmountToTokenAmount(
+        market?.quantity_ip ?? '0', // @note: AP fills IP quantity
+        market?.input_token_data.decimals ?? 0,
+      )
     ) {
       return 'Above fillable';
     }
