@@ -41,8 +41,6 @@ export const QAJsonSchema = ({ data }: QAJsonSchemaProps) => {
   const schema = useMemo(() => {
     const entities = data?.map((el, index) => {
       const text = el.Answer;
-      // used for data from strapi -->
-      // const text = extractTextFromBlocks(el.Answer as unknown as BlocksProps[]);
       const output = text && {
         '@type': 'Question',
         name: el.Question,
