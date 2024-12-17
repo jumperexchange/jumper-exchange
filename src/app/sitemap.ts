@@ -50,7 +50,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const swapPages = chains.map((chain) => {
     return {
       url: withoutTrailingSlash(
-        `${getSiteUrl()}${JUMPER_SWAP_PATH}/${chain.name}`,
+        `${getSiteUrl()}${JUMPER_SWAP_PATH}/${chain.name}`
+          .replace(' ', '-')
+          .toLowerCase(),
       ),
       lastModified: new Date().toISOString().split('T')[0],
       priority: 0.4,

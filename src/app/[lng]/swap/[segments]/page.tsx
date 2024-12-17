@@ -20,7 +20,7 @@ export async function generateMetadata({
     title: title,
     description: `Jumper offers the best way to swap tokens on ${sourceChain?.name} with the fastest speeds, lowest costs, and most secure swap providers available.`,
     siteName: siteName,
-    url: `${getSiteUrl()}/swap/${params.segments}`,
+    url: `${getSiteUrl()}/swap/${params.segments.replace('-', ' ').toLowerCase()}`,
     type: 'article',
   };
 
@@ -49,7 +49,9 @@ export default async function Page({
   params: { segments: string };
 }) {
   try {
-    const chainName = decodeURIComponent(segments);
+    const chainName = decodeURIComponent(
+      segments.replace('-', ' ').toLowerCase(),
+    );
     const { chains } = await getChainsQuery();
     const { tokens } = await getTokensQuery();
     const sourceChain = getChainByName(chains, chainName);
