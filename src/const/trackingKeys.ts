@@ -78,6 +78,9 @@ export enum TrackingAction {
   JoinDiscordCommunity = 'action_join_discord_community',
   OpenDiscordSupport = 'action_open_discord_support',
   PoweredBy = 'action_click_powered_by',
+
+  //Banner
+  ClickBanner = 'action_click_banner',
 }
 
 export enum TrackingCategory {
@@ -107,6 +110,7 @@ export enum TrackingCategory {
   BlogArticle = 'cat_blog_article',
   Missions = 'cat_missions',
   Quests = 'cat_quests',
+  Banner = 'cat_banner',
 }
 
 // can be used as custom dimensions / metrics
@@ -222,4 +226,7 @@ export enum TrackingEventParameter {
   SearchFirstResultName = 'param_search_first_result_name',
   SearchFirstResultSymbol = 'param_search_first_result_symbol',
   SearchFirstResultChainId = 'param_search_first_result_chain_id',
+
+  //Banner
+  ActiveCampaign = 'param_banner_campaign',
 }
