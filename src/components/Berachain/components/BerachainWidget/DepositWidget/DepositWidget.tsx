@@ -113,8 +113,8 @@ function DepositWidget({
     canBePerformedPartially,
     incentiveData,
   } = usePrepareMarketAction({
-    chain_id: market.chain_id,
-    market_id: market.market_id,
+    chain_id: market?.chain_id!,
+    market_id: market?.market_id!,
     market_type: 'recipe',
     user_type: userType,
     offer_type: offerType,
