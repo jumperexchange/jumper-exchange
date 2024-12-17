@@ -34,8 +34,8 @@ import { switchChain } from '@wagmi/core';
 import { CustomLoadingButton } from '../LoadingButton.style';
 
 interface Image {
-  url: string;
-  name: string;
+  url?: string;
+  name?: string;
 }
 
 interface BaseContractCall {
@@ -97,7 +97,7 @@ function DepositWidget({
   );
   const wagmiConfig = useConfig();
   const theme = useTheme();
-  const [inputValue, setInputValue] = useState<number | undefined>(undefined);
+  const [inputValue, setInputValue] = useState<string>('');
 
   const userType = 'ap';
   const offerType = 'market';
@@ -184,9 +184,27 @@ function DepositWidget({
     pollingInterval: 1_000,
   });
 
+  const hasErrorDisablingButton = useMemo(() => {
+    if (
+      (parseFloat(inputValue) ?? 0) >
+      parseRawAmountToTokenAmount(
+        market?.quantity_ip ?? '0', // @note: AP fills IP quantity
+        market?.input_token_data.decimals ?? 0,
+      )
+    ) {
+      return true;
+    }
+
+    if ((parseFloat(inputValue) ?? 0) > balance) {
+      return true;
+    }
+
+    return null;
+  }, [market, inputValue, balance]);
+
   const hasErrorText = useMemo(() => {
     if (
-      (inputValue ?? 0) >
+      (parseFloat(inputValue) ?? 0) >
       parseRawAmountToTokenAmount(
         market?.quantity_ip ?? '0', // @note: AP fills IP quantity
         market?.input_token_data.decimals ?? 0,
@@ -194,12 +212,15 @@ function DepositWidget({
     ) {
       return 'Above fillable';
     }
-    if ((inputValue ?? 0) > balance) {
+
+    if ((parseFloat(inputValue) ?? 0) > balance) {
       return 'Above balance';
     }
+
     if (isTxConfirmError) {
       return 'Impossible to confirm tx';
     }
+
     if (isTxError) {
       return 'An error occurred';
     }
@@ -224,7 +245,7 @@ function DepositWidget({
   }, [isTxConfirmed]);
 
   function onChangeValue(value: string = '0') {
-    setInputValue(value === '' ? 0 : parseFloat(value));
+    setInputValue(value);
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -305,23 +326,27 @@ function DepositWidget({
                         border: `2px solid ${theme.palette.surface2.main}`,
                       })}
                     >
-                      <TokenImage
-                        token={{
-                          name: image.badge.name,
-                          logoURI: image.badge.url,
-                        }}
-                      />
+                      {image.badge.name && (
+                        <TokenImage
+                          token={{
+                            name: image.badge.name,
+                            logoURI: image.badge.url,
+                          }}
+                        />
+                      )}
                     </MuiAvatar>
                   )
                 }
               >
                 <WalletAvatar>
-                  <TokenImage
-                    token={{
-                      name: image.name,
-                      logoURI: image.url,
-                    }}
-                  />
+                  {image.name && (
+                    <TokenImage
+                      token={{
+                        name: image.name,
+                        logoURI: image.url,
+                      }}
+                    />
+                  )}
                 </WalletAvatar>
               </WalletCardBadge>
             )
@@ -432,9 +457,9 @@ function DepositWidget({
         writeContractOptions[contractCallIndex] && (
           <CustomLoadingButton
             type="submit"
-            disabled={!!hasErrorText}
             loading={isLoading || isTxPending || isTxConfirming}
             variant="contained"
+            disabled={!!hasErrorDisablingButton}
             overrideStyle={overrideStyle}
           >
             <Typography variant="bodyMediumStrong">
