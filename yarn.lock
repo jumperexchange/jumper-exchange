@@ -5087,13 +5087,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-apps-provider@npm:0.18.4":
-  version: 0.18.4
-  resolution: "@safe-global/safe-apps-provider@npm:0.18.4"
+"@safe-global/safe-apps-provider@npm:0.18.5":
+  version: 0.18.5
+  resolution: "@safe-global/safe-apps-provider@npm:0.18.5"
   dependencies:
     "@safe-global/safe-apps-sdk": "npm:^9.1.0"
     events: "npm:^3.3.0"
-  checksum: 10/252ccad3416f73e9fa5e7bdd074955ca6b81c55be89c3cd3e25a7cab9b01922cb9f9a02d2766dff15003908c7cccc47bc22f58dd2d4a65b504fd7870eabda41b
+  checksum: 10/0dcebbaf2564686629e705c62e3a679fb2b204a7c1a4970e76b1ce9bbc8444c2927083aaab73bd51ee16e29b8f33df6f919658a2c199aa2415b12ba957cd9310
   languageName: node
   linkType: hard
 
@@ -6065,8 +6065,8 @@ __metadata:
   linkType: hard
 
 "@tanstack/react-router@npm:^1.46.4":
-  version: 1.90.0
-  resolution: "@tanstack/react-router@npm:1.90.0"
+  version: 1.91.2
+  resolution: "@tanstack/react-router@npm:1.91.2"
   dependencies:
     "@tanstack/history": "npm:1.90.0"
     "@tanstack/react-store": "npm:^0.6.1"
@@ -6080,7 +6080,7 @@ __metadata:
   peerDependenciesMeta:
     "@tanstack/router-generator":
       optional: true
-  checksum: 10/59c9a961f0580671c8dc3bcbcbe7db46e8a4cfac074a1c9f5f5e8590d9d7a4a8e7a9a993353a492f9c8f1887534613b54d9822459fca8c289cab9dcb3289e0e6
+  checksum: 10/7204f463311639011d2ba34aaa9d1eebbb1e02cac8dbb9fbb9281d919c741a8de353fd27a9beba67e949cff756285fdbbcbb85786e88e498551910654e9f6daf
   languageName: node
   linkType: hard
 
@@ -6098,14 +6098,14 @@ __metadata:
   linkType: hard
 
 "@tanstack/react-virtual@npm:^3.10.8, @tanstack/react-virtual@npm:^3.11.1, @tanstack/react-virtual@npm:^3.8.1":
-  version: 3.11.1
-  resolution: "@tanstack/react-virtual@npm:3.11.1"
+  version: 3.11.2
+  resolution: "@tanstack/react-virtual@npm:3.11.2"
   dependencies:
-    "@tanstack/virtual-core": "npm:3.10.9"
+    "@tanstack/virtual-core": "npm:3.11.2"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10/ccc525e048ebf48470bcc3b89a3ea652d7d92abf372f269ae0e3bd7c21a6724971e56b65da3457b481498298e6cb788fbaf04b0a52ce0e7aff2df4f254b3c5fe
+  checksum: 10/a1136da0ec4c2ecbd4f996d8b84f228f0b8d851b15806e01049a160ad1d9b2eef0e0a491035fe017c6f84a0e125334f69ea23b32c180df23614ea4a8eeb7490c
   languageName: node
   linkType: hard
 
@@ -6116,10 +6116,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/virtual-core@npm:3.10.9":
-  version: 3.10.9
-  resolution: "@tanstack/virtual-core@npm:3.10.9"
-  checksum: 10/15140fc41c728ed08486eba4c9caadbdb3c594f02d3b55fddca63813bc32e8cde64faf6ca6385f9815aeeedbc441dd8c9590aca4319c16a91f39b1937ef4eac7
+"@tanstack/virtual-core@npm:3.11.2":
+  version: 3.11.2
+  resolution: "@tanstack/virtual-core@npm:3.11.2"
+  checksum: 10/8433044a5c801052ba2e4cdda098cdc8e32adfd3a76ba31af7064bbdda60062fe221a3558096987baa66cd94f528855e887c282cb0f9eb99d3751457c2a62872
   languageName: node
   linkType: hard
 
@@ -6538,13 +6538,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wagmi/connectors@npm:5.6.1":
-  version: 5.6.1
-  resolution: "@wagmi/connectors@npm:5.6.1"
+"@wagmi/connectors@npm:5.7.0":
+  version: 5.7.0
+  resolution: "@wagmi/connectors@npm:5.7.0"
   dependencies:
     "@coinbase/wallet-sdk": "npm:4.2.3"
     "@metamask/sdk": "npm:0.31.2"
-    "@safe-global/safe-apps-provider": "npm:0.18.4"
+    "@safe-global/safe-apps-provider": "npm:0.18.5"
     "@safe-global/safe-apps-sdk": "npm:9.1.0"
     "@walletconnect/ethereum-provider": "npm:2.17.0"
     cbw-sdk: "npm:@coinbase/wallet-sdk@3.9.3"
@@ -6555,7 +6555,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/3db4f9a4cdb0cf2d803c3da65af00ba71d412e973c57443b88a58fc4cdc636a699dfcb19cceeb2532e77f3fb55655c031d09e2ce19b6974bdc49090a70d09a5f
+  checksum: 10/cccee9efbaec155f403e2f285d2435aad63e4988f7c05fc10c1f5ce52d8d7d5e1f41ec1d0cb95accde456734312be514ab160b40c3d954cda49200080849df27
   languageName: node
   linkType: hard
 
@@ -7823,7 +7823,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"call-bind@npm:^1.0.2, call-bind@npm:^1.0.5, call-bind@npm:^1.0.6, call-bind@npm:^1.0.7, call-bind@npm:^1.0.8":
+"call-bind@npm:^1.0.5, call-bind@npm:^1.0.6, call-bind@npm:^1.0.7, call-bind@npm:^1.0.8":
   version: 1.0.8
   resolution: "call-bind@npm:1.0.8"
   dependencies:
@@ -8530,13 +8530,13 @@ __metadata:
   linkType: hard
 
 "dunder-proto@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "dunder-proto@npm:1.0.0"
+  version: 1.0.1
+  resolution: "dunder-proto@npm:1.0.1"
   dependencies:
-    call-bind-apply-helpers: "npm:^1.0.0"
+    call-bind-apply-helpers: "npm:^1.0.1"
     es-errors: "npm:^1.3.0"
     gopd: "npm:^1.2.0"
-  checksum: 10/08e0487edc6b5f5e7cc91cbbe2cd7a81919f296b2e8092277776a75280005b340ab22c12b16ad0371c531e76d11898dae617325573144f50839e8f310df2a6ef
+  checksum: 10/5add88a3d68d42d6e6130a0cac450b7c2edbe73364bbd2fc334564418569bea97c6943a8fcd70e27130bf32afc236f30982fc4905039b703f23e9e0433c29934
   languageName: node
   linkType: hard
 
@@ -8581,9 +8581,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.73":
-  version: 1.5.73
-  resolution: "electron-to-chromium@npm:1.5.73"
-  checksum: 10/07d0885656c49ea4deb98340db23c68b43615c0325566e0ae6df751328460d4cdfb86ca0fcaaa745cf7b44c6141440fe2eb2f5d9518d1c110ba3872c73ed817d
+  version: 1.5.74
+  resolution: "electron-to-chromium@npm:1.5.74"
+  checksum: 10/6ed6330341e865e25e07c2f8dd5f614ffac929014571d15f1386a685b6d2a4c9bfc0c94f22392ebe0f72c834f48d578990e4e3399949fc4363219fc36d5ac553
   languageName: node
   linkType: hard
 
@@ -10053,7 +10053,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-intrinsic@npm:^1.2.1, get-intrinsic@npm:^1.2.4, get-intrinsic@npm:^1.2.5, get-intrinsic@npm:^1.2.6":
+"get-intrinsic@npm:^1.2.4, get-intrinsic@npm:^1.2.5, get-intrinsic@npm:^1.2.6":
   version: 1.2.6
   resolution: "get-intrinsic@npm:1.2.6"
   dependencies:
@@ -10534,8 +10534,8 @@ __metadata:
   linkType: hard
 
 "i18next@npm:^24.1.0":
-  version: 24.1.0
-  resolution: "i18next@npm:24.1.0"
+  version: 24.1.2
+  resolution: "i18next@npm:24.1.2"
   dependencies:
     "@babel/runtime": "npm:^7.23.2"
   peerDependencies:
@@ -10543,7 +10543,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/3a71b5052d84388a9097b594c2b8dc8bfba3f3198d1ca89217e5fb4836d528aa1aee54432269ae092c439e2a12bb71c2abe05abc03cd3e657a001fe5e6883b51
+  checksum: 10/b8c11b1d1dab17a7b2c3aad68325f9cc66b1a15bd3d176d24587dcc430b4dfaf453f8bd0cc244260cdd84610caf0a258269633083824af291022249f16635c22
   languageName: node
   linkType: hard
 
@@ -10588,14 +10588,14 @@ __metadata:
   linkType: hard
 
 "import-in-the-middle@npm:^1.11.2, import-in-the-middle@npm:^1.8.1":
-  version: 1.11.3
-  resolution: "import-in-the-middle@npm:1.11.3"
+  version: 1.12.0
+  resolution: "import-in-the-middle@npm:1.12.0"
   dependencies:
     acorn: "npm:^8.8.2"
     acorn-import-attributes: "npm:^1.9.5"
     cjs-module-lexer: "npm:^1.2.2"
     module-details-from-path: "npm:^1.0.3"
-  checksum: 10/27e8643d53b5e98300cc56e830e31e34f481fea94adcb3f08958761772ea771a430f473128706b81c561b111b9ce6844fe7f85102574874a519e317ac151423e
+  checksum: 10/73f3f0ad8c3fceb90bcf308e84609290fe912af32a4be12fce2bf1fde28a0cb12d7219e15e8fe9e8d7ceafcb115a49a66566c2fd973d0a08e33437b00dfce3f9
   languageName: node
   linkType: hard
 
@@ -10662,12 +10662,13 @@ __metadata:
   linkType: hard
 
 "is-array-buffer@npm:^3.0.4":
-  version: 3.0.4
-  resolution: "is-array-buffer@npm:3.0.4"
+  version: 3.0.5
+  resolution: "is-array-buffer@npm:3.0.5"
   dependencies:
-    call-bind: "npm:^1.0.2"
-    get-intrinsic: "npm:^1.2.1"
-  checksum: 10/34a26213d981d58b30724ef37a1e0682f4040d580fa9ff58fdfdd3cefcb2287921718c63971c1c404951e7b747c50fdc7caf6e867e951353fa71b369c04c969b
+    call-bind: "npm:^1.0.8"
+    call-bound: "npm:^1.0.3"
+    get-intrinsic: "npm:^1.2.6"
+  checksum: 10/ef1095c55b963cd0dcf6f88a113e44a0aeca91e30d767c475e7d746d28d1195b10c5076b94491a7a0cd85020ca6a4923070021d74651d093dc909e9932cf689b
   languageName: node
   linkType: hard
 
@@ -10785,11 +10786,11 @@ __metadata:
   linkType: hard
 
 "is-finalizationregistry@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "is-finalizationregistry@npm:1.1.0"
+  version: 1.1.1
+  resolution: "is-finalizationregistry@npm:1.1.1"
   dependencies:
-    call-bind: "npm:^1.0.7"
-  checksum: 10/0a812f3ef86fa3e3caf6bb8c6d61b7fc65df88f9751f73617331a5a7e35bb0a192d0c320dbf2f8b97a6819491e52126615313ba9900529697f226235627c58b5
+    call-bound: "npm:^1.0.3"
+  checksum: 10/0bfb145e9a1ba852ddde423b0926d2169ae5fe9e37882cde9e8f69031281a986308df4d982283e152396e88b86562ed2256cbaa5e6390fb840a4c25ab54b8a80
   languageName: node
   linkType: hard
 
@@ -10988,12 +10989,12 @@ __metadata:
   linkType: hard
 
 "is-weakset@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "is-weakset@npm:2.0.3"
+  version: 2.0.4
+  resolution: "is-weakset@npm:2.0.4"
   dependencies:
-    call-bind: "npm:^1.0.7"
-    get-intrinsic: "npm:^1.2.4"
-  checksum: 10/40159582ff1b44fc40085f631baf19f56479b05af2faede65b4e6a0b6acab745c13fd070e35b475aafd8a1ee50879ba5a3f1265125b46bebdb446b6be1f62165
+    call-bound: "npm:^1.0.3"
+    get-intrinsic: "npm:^1.2.6"
+  checksum: 10/1d5e1d0179beeed3661125a6faa2e59bfb48afda06fc70db807f178aa0ebebc3758fb6358d76b3d528090d5ef85148c345dcfbf90839592fe293e3e5e82f2134
   languageName: node
   linkType: hard
 
@@ -15381,10 +15382,10 @@ __metadata:
   linkType: hard
 
 "wagmi@npm:^2.13.3, wagmi@npm:^2.14.1":
-  version: 2.14.1
-  resolution: "wagmi@npm:2.14.1"
+  version: 2.14.3
+  resolution: "wagmi@npm:2.14.3"
   dependencies:
-    "@wagmi/connectors": "npm:5.6.1"
+    "@wagmi/connectors": "npm:5.7.0"
     "@wagmi/core": "npm:2.16.0"
     use-sync-external-store: "npm:1.2.0"
   peerDependencies:
@@ -15395,7 +15396,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/03cfcc1cef0949ad93b001ba87051b4ddc3949a79f191b3bb2a1bbc8ed7ce672fccd2589c35aaf2de4c8b8047c57deb531c1d015c41ed0a579c80e4a3d499833
+  checksum: 10/fe9677e5c11905730749cfa8289e9b8bc01773fcbcf205bcfb4847a94a86009628903684a14b47524b42d8f56961f9bd1ee6d28c574f638688c78553d7bbca22
   languageName: node
   linkType: hard
 
