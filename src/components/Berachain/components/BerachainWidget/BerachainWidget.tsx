@@ -1,5 +1,5 @@
 import { Box, Typography, useTheme } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { type TabProps, Tabs } from 'src/components/Tabs/Tabs';
 import { Widget } from 'src/components/Widgets/Widget';
 import { BerachainWidgetWip } from '../BerachainWidgetWip/BerachainWidgetWip';
@@ -12,6 +12,8 @@ import { useAccount } from '@lifi/wallet-management';
 import { parseRawAmountToTokenAmount } from 'royco/utils';
 import { WithdrawWidget } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget';
 import DepositWidget from '@/components/Berachain/components/BerachainWidget/DepositWidget/DepositWidget';
+import { fetchChainData } from '@/utils/image-generation/fetchChainData';
+import { useChains } from '@/hooks/useChains';
 
 export const BerachainWidget = ({
   market,
@@ -21,6 +23,8 @@ export const BerachainWidget = ({
   const [tab, setTab] = useState(1);
   const { t } = useTranslation();
   const theme = useTheme();
+  const chains = useChains();
+  const chain = useMemo(() => chains.getChainById(market?.chain_id!), [market?.chain_id]);
 
   const token = useMemo(() => {
     return market.input_token_data;
@@ -122,8 +126,8 @@ export const BerachainWidget = ({
                 url: market.input_token_data.image,
                 name: market.input_token_data.name,
                 badge: {
-                  url: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
-                  name: 'Ethereum',
+                  url: chain?.logoURI,
+                  name: chain?.name,
                 },
               }}
             />
