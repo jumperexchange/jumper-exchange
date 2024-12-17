@@ -4,7 +4,11 @@ const data = { isHealthy: true };
 
 export async function GET() {
   let hasUpdateAvailable = false;
-  try {
+
+  return Response.json({ ...data, hasUpdateAvailable });
+
+  // Disabled until proper fix
+  /*try {
     const latestCommitSHA = process.env.NEXT_PUBLIC_LATEST_COMMIT_SHA;
     const githubLatestCommitShaResponse = await fetch(
       `https://api.github.com/repos/jumperexchange/jumper-exchange/commits/${latestCommitSHA}/branches-where-head`,
@@ -23,5 +27,5 @@ export async function GET() {
     }
   } finally {
     return Response.json({ ...data, hasUpdateAvailable });
-  }
+  }*/
 }
