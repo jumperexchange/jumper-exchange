@@ -55,28 +55,28 @@ export const ChainAvatar = styled(Avatar)(({ theme }) => ({
   },
 }));
 
-export const WalletButton = styled(ButtonTransparent, {
-  shouldForwardProp: (prop) => prop !== 'colored',
-})<WalletButtonProps>(({ theme, colored }) => ({
-  borderRadius: '24px',
-  padding: '10px 24px',
-  height: 40,
-  width: '100%',
-  background: alpha(theme.palette.text.primary, 0.04),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.text.primary, 0.08),
-  },
-}));
+export const WalletButton = styled(ButtonTransparent)<WalletButtonProps>(
+  ({ theme }) => ({
+    borderRadius: '24px',
+    padding: '10px 24px',
+    height: 40,
+    width: '100%',
+    background: alpha(theme.palette.text.primary, 0.04),
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.text.primary, 0.08),
+    },
+  }),
+);
 
-export const WalletButtonSecondary = styled(ButtonSecondary, {
-  shouldForwardProp: (prop) => prop !== 'colored',
-})<WalletButtonProps>(({ theme }) => ({
-  borderRadius: '24px',
-  padding: '10px 24px',
-  width: '100%',
-  gridColumn: '2/3',
-  gridRow: '2/3',
-}));
+export const WalletButtonSecondary = styled(ButtonSecondary)<WalletButtonProps>(
+  () => ({
+    borderRadius: '24px',
+    padding: '10px 24px',
+    width: '100%',
+    gridColumn: '2/3',
+    gridRow: '2/3',
+  }),
+);
 
 export const WalletCardContainer = styled(Container)(({ theme }) => ({
   boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',

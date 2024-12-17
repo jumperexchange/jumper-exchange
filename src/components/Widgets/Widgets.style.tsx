@@ -13,8 +13,7 @@ export interface WidgetContainerProps {
 }
 
 export const WidgetContainer = styled(Box, {
-  shouldForwardProp: (prop) =>
-    prop !== 'isActive' && prop !== 'welcomeScreenClosed',
+  shouldForwardProp: (prop) => prop !== 'welcomeScreenClosed',
 })<WidgetContainerProps>(({ theme, welcomeScreenClosed }) => {
   let opacity = 0;
   if (!welcomeScreenClosed && theme.palette.mode === 'dark') {

@@ -29,7 +29,6 @@ export const RedirectToApp = ({ hideConnectButton }: RedirectToAppProps) => {
 
   return (
     <RedirectAppButton
-      // Used in the widget
       component={Link}
       href={'/'}
       onClick={handleOpenApp}

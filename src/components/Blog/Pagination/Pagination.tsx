@@ -128,8 +128,6 @@ export const Pagination = ({
   );
 };
 
-// export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
-
 interface SmoothScrollWrapperProps {
   id?: number | string;
 }

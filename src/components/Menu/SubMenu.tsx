@@ -71,7 +71,7 @@ export const SubMenu = ({
       ref={menuListRef}
     >
       <MenuHeaderAppWrapper>
-        <MenuHeaderAppBar component="div" elevation={0}>
+        <MenuHeaderAppBar component={'div'} elevation={0}>
           <IconButton
             size="medium"
             aria-label="settings"
@@ -109,7 +109,7 @@ export const SubMenu = ({
                   event.stopPropagation();
                   typeof el.onClick === 'function' && el.onClick();
                 }}
-                component="li"
+                as="li"
                 key={`${el.label}-${index}`}
               >
                 {el.prefixIcon}

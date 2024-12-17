@@ -35,7 +35,7 @@ export const QuestCardTitleBox = styled(Box)(() => ({
   textAlign: 'left',
 }));
 
-export interface QuestCardInfoBoxProps extends Omit<BoxProps, 'component'> {
+export interface QuestCardInfoBoxProps extends BoxProps {
   points?: number;
 }
 
@@ -53,7 +53,7 @@ export const CompletedBox = styled(Box)(() => ({
   width: '50%',
 }));
 
-export interface QuestPlatformMainBoxProps extends Omit<BoxProps, 'component'> {
+export interface QuestPlatformMainBoxProps extends BoxProps {
   platformName?: string;
 }
 
@@ -65,7 +65,7 @@ export const QuestPlatformMainBox = styled(Box, {
   alignItems: 'center',
 }));
 
-export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {
+export interface XPDisplayBoxProps extends BoxProps {
   active?: boolean;
 }
 

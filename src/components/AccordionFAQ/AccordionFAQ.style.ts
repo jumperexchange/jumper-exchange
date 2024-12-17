@@ -44,12 +44,12 @@ export const AccordionContainer = styled(Container)(({ theme }) => ({
   },
 }));
 
-export interface AccordionProps extends Omit<MuiAccordionProps, 'component'> {
+export interface AccordionProps extends MuiAccordionProps {
   show?: boolean;
 }
 
 export const Accordion = styled(MuiAccordion, {
-  shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
+  shouldForwardProp: (prop) => prop !== 'show',
 })<AccordionProps>(({ theme, show }) => ({
   background: 'transparent',
   visibility: show ? 'visible' : 'hidden',
@@ -59,11 +59,9 @@ export const Accordion = styled(MuiAccordion, {
   },
 }));
 
-export const AccordionDetails = styled(MuiAccordionDetails)<AccordionProps>(
-  () => ({
-    '& > img': { width: '100%' },
-  }),
-);
+export const AccordionDetails = styled(MuiAccordionDetails)(() => ({
+  '& > img': { width: '100%' },
+}));
 
 export const AccordionToggleButton = styled(IconButton)(({ theme }) => ({
   width: 42,

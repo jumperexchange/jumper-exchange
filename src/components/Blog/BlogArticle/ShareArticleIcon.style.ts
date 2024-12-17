@@ -2,7 +2,7 @@ import { IconButtonTertiary } from '@/components/IconButton.style';
 import type { IconButtonProps } from '@mui/material';
 import { styled } from '@mui/material';
 
-export interface ShareButtonProps extends Omit<IconButtonProps, 'component'> {
+export interface ShareButtonProps extends IconButtonProps {
   expanded?: boolean;
 }
 

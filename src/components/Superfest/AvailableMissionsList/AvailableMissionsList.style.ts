@@ -1,4 +1,4 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, styled } from '@mui/material';
 
 export const AvailableMissionsContainer = styled(Box)(({ theme }) => ({
@@ -27,9 +27,7 @@ export const AvailableMissionsContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const AvailableMissionsHeader = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<BoxProps>(({ theme }) => ({
+export const AvailableMissionsHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   alignContent: 'center',
@@ -39,9 +37,7 @@ export const AvailableMissionsHeader = styled(Box, {
   justifyContent: 'space-between',
 }));
 
-export const AvailableMissionsTitle = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
-})(({ theme }) => ({
+export const AvailableMissionsTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   fontSize: '24px',
   lineHeight: '32px',

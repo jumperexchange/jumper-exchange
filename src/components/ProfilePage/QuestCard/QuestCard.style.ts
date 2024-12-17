@@ -1,5 +1,5 @@
 import type { BoxProps } from '@mui/material';
-import { Box, alpha, darken, styled } from '@mui/material';
+import { Box, alpha, styled } from '@mui/material';
 
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -31,7 +31,7 @@ export const QuestCardTitleBox = styled(Box)(() => ({
   height: '32px',
 }));
 
-export interface QuestCardInfoBoxProps extends Omit<BoxProps, 'component'> {
+export interface QuestCardInfoBoxProps extends BoxProps {
   points?: number;
 }
 
@@ -52,7 +52,7 @@ export const CompletedBox = styled(Box)(() => ({
   width: '110px',
 }));
 
-export interface QuestPlatformMainBoxProps extends Omit<BoxProps, 'component'> {
+export interface QuestPlatformMainBoxProps extends BoxProps {
   platformName?: string;
 }
 
@@ -79,7 +79,7 @@ export const QuestDatesBox = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
 }));
 
-export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {
+export interface XPDisplayBoxProps extends BoxProps {
   active?: boolean;
 }
 

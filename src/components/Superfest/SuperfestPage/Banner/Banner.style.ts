@@ -52,7 +52,7 @@ export const BannerTitleBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-export interface BannerInfoBoxProps extends Omit<BoxProps, 'component'> {
+export interface BannerInfoBoxProps extends BoxProps {
   points?: number;
 }
 

@@ -1,13 +1,11 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { Breakpoint, IconButtonProps } from '@mui/material';
 import {
   Box,
-  Typography,
-  styled,
   IconButton as MuiIconButton,
+  Typography,
   alpha,
-  darken,
+  styled,
 } from '@mui/material';
-import type { IconButtonProps } from '@mui/material';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.bgSecondary.main,
@@ -31,9 +29,7 @@ export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const RewardsCarouselHeader = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<BoxProps>(({ theme }) => ({
+export const RewardsCarouselHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   ...(theme.palette.mode === 'dark' && {
     color: theme.palette.white.main,
@@ -41,9 +37,7 @@ export const RewardsCarouselHeader = styled(Box, {
   justifyContent: 'space-between',
 }));
 
-export const RewardsCarouselTitle = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
-})(({ theme }) => ({
+export const RewardsCarouselTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   fontSize: '24px',
   lineHeight: '32px',
@@ -106,21 +100,21 @@ export const AmountInputBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const RewardsOpenIconButton = styled(MuiIconButton, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
-  color: theme.palette.white.main,
-  transition: 'background 0.3s',
-  width: theme.spacing(6),
-  height: theme.spacing(6),
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.primary.main, 0.08)
-      : alpha(theme.palette.primary.main, 0.42),
-  '&:hover': {
+export const RewardsOpenIconButton = styled(MuiIconButton)<IconButtonProps>(
+  ({ theme }) => ({
+    color: theme.palette.white.main,
+    transition: 'background 0.3s',
+    width: theme.spacing(6),
+    height: theme.spacing(6),
     backgroundColor:
       theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.12)
-        : alpha(theme.palette.primary.main, 0.56),
-  },
-}));
+        ? alpha(theme.palette.primary.main, 0.08)
+        : alpha(theme.palette.primary.main, 0.42),
+    '&:hover': {
+      backgroundColor:
+        theme.palette.mode === 'light'
+          ? alpha(theme.palette.primary.main, 0.12)
+          : alpha(theme.palette.primary.main, 0.56),
+    },
+  }),
+);
