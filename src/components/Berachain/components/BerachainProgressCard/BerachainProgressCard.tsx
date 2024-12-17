@@ -1,11 +1,13 @@
 import InfoIcon from '@mui/icons-material/Info';
 import type { SxProps, Theme } from '@mui/material';
-import { Tooltip, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import {
   BeraChainProgressCardComponent,
   BeraChainProgressCardContent,
   BeraChainProgressCardHeader,
 } from './BerachainProgressCard.style';
+import { useTranslation } from 'react-i18next';
 
 interface BerachainProgressCardProps {
   title: string;
@@ -24,9 +26,11 @@ export const BerachainProgressCard = ({
   icon,
   sx,
 }: BerachainProgressCardProps) => {
+  const { t } = useTranslation();
+
   return (
     <BeraChainProgressCardComponent sx={sx}>
-      {icon ? icon : null}
+      {icon && icon}
       <BeraChainProgressCardContent>
         <BeraChainProgressCardHeader display={'flex'}>
           <Typography

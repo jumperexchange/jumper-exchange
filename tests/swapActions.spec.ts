@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import chainData from './testData/chainData.json';
+import chainData from './testData/chainData.json' assert { type: 'json' };
 import {
   buildUlParams,
   checkIfBestReturnLabelIsVisible,
@@ -34,7 +34,7 @@ test.describe('On chain swaps', () => {
     await page.goto(`/${urlParams}`);
     await checkIfBestReturnLabelIsVisible(page);
   });
- 
+
   test(`Check ${chainData.ARBtoARB.ETHtoUSDT.tokenSymbol} to ${chainData.ARBtoARB.ETHtoUSDT.toTokenSymbol} swap pair on ARB chain`, async ({
     page,
   }) => {

@@ -45,6 +45,7 @@ export const BerachainFilterChainsMenu = () => {
   // Filter chains-data with available Chains from request
   const chains: ExtendedChain[] = useMemo(() => {
     const filteredChains: ChainId[] = [];
+    // @ts-expect-error
     data?.forEach((market) => {
       if (!market.protocolInfos?.chain) {
         return null;

@@ -73,7 +73,7 @@ export const SuperfestMissionPage = ({
             id={quest.id}
             title={attributes?.Title}
             url={attributes?.Link}
-            rewards={rewards}
+            rewards={!!rewards}
             key={generateKey('cta')}
             CTAs={CTAsWithAPYs}
             variableWeeklyAPY={points > 0 && rewardType === 'weekly'}

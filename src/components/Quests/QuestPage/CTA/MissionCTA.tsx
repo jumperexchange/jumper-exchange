@@ -74,7 +74,7 @@ export interface CTALinkInt {
 interface MissionCtaProps {
   title?: string;
   url?: string;
-  rewards?: number;
+  rewards?: boolean;
   id?: number;
   label?: string;
   CTAs: CTALinkInt[];

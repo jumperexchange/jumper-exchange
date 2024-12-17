@@ -204,7 +204,12 @@ class QuestStrapiApi extends StrapiApi {
   }
 
   filterBySlug(filterSlug: string): this {
-    this.apiUrl.searchParams.set('filters[Slug][$eq]', filterSlug);
+    this.filterBy('Slug', filterSlug);
+    return this;
+  }
+
+  filterBy(key: string, value: string): this {
+    this.apiUrl.searchParams.set(`filters[${key}][$eq]`, value);
     return this;
   }
 }

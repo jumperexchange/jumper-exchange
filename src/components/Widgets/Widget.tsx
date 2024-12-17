@@ -136,7 +136,13 @@ export function Widget({
 
     return {
       ...formParameters,
-      variant: starterVariant === 'refuel' ? 'compact' : 'wide',
+      variant:
+        // @ts-expect-error
+        starterVariant === 'compact'
+          ? 'compact'
+          : starterVariant === 'refuel'
+            ? 'compact'
+            : 'wide',
       subvariant:
         (starterVariant !== 'buy' &&
           !(partnerName === ThemesMap.Memecoins) &&
@@ -150,7 +156,7 @@ export function Widget({
       },
       bridges: {
         allow: configTheme?.allowedBridges,
-        deny: ['allbridge', 'hop', 'celerim', 'squid'],
+        deny: ['allbridge', 'celerim', 'squid'],
       },
       exchanges: {
         allow: configTheme?.allowedExchanges,

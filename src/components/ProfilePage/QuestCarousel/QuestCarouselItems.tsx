@@ -37,7 +37,7 @@ export const QuestCarouselItems = ({
         }
 
         let isUnlockedForUser = false;
-        if (questTraits?.length > 0 && traits) {
+        if (Array.isArray(questTraits) && questTraits?.length > 0 && traits) {
           isUnlockedForUser = checkInclusion(traits, questTraits);
           // isUnlockedForUser = false;
         }
@@ -63,7 +63,7 @@ export const QuestCarouselItems = ({
               quest?.attributes.Points > 0 && rewardType === 'weekly'
             }
             rewardRange={rewardRange}
-            isTraitsGarded={questTraits?.length > 0}
+            isTraitsGarded={(questTraits?.length ?? 0) > 0}
             isUnlocked={isUnlockedForUser}
           />
         );

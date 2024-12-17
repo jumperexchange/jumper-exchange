@@ -14,7 +14,6 @@ import { useMemo, useState } from 'react';
 import { useChains } from 'src/hooks/useChains';
 import type { UseMultipleTokenProps } from 'src/hooks/useMultipleTokens';
 import { useMultipleTokens } from 'src/hooks/useMultipleTokens';
-import type { ProtocolApys } from 'src/types/questDetails';
 import type { StrapiImageData } from 'src/types/strapi';
 import type { BerachainProtocolType } from '../../berachain.types';
 import { BerachainProgressCard } from '../BerachainProgressCard/BerachainProgressCard';
@@ -28,45 +27,62 @@ import {
   BerchainMarketCardInfos,
   BerchainMarketCardTokenBox,
 } from './BerachainMarketCard.style';
+import { useTranslation } from 'react-i18next';
+import type { EnrichedMarketDataType } from 'royco/queries';
+import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
+import { useAccount } from '@lifi/wallet-management';
 
 interface BerachainMarketCardProps {
-  chainId?: ChainId;
+  roycoData: EnrichedMarketDataType;
   image?: StrapiImageData;
-  title?: string;
   type?: BerachainProtocolType;
-  slug?: string;
-  apys?: ProtocolApys;
-  tvl?: string;
+  apys?: number[];
   tokens?: string[];
   url?: string;
-  deposited?: string;
 }
 
 export const BerachainMarketCard = ({
-  chainId,
+  roycoData,
   apys,
-  slug,
-  title,
   type,
   image,
-  tvl,
   tokens,
   url,
-  deposited,
 }: BerachainMarketCardProps) => {
+  const { account } = useAccount();
+  const chainId = roycoData.chain_id;
   const theme = useTheme();
+  const { t } = useTranslation();
   const [anchorTokensTooltip, setAnchorTokensTooltip] =
     useState<null | HTMLElement>(null);
   const [openTokensTooltip, setOpenTokensTooltip] = useState(false);
 
   const { chains } = useChains();
   const tokenChainDetails = useMemo(
-    () => chainId && chains?.find((chainEl: Chain) => chainEl.id === chainId),
+    () => chains?.find((chainEl: Chain) => chainEl.id === chainId),
     [chainId, chains],
-  );
+  )!;
 
   const tokensTooltipId = 'tokens-tooltip-button';
   const tokensTooltipMenuId = 'tokens-tooltip-menu';
+
+  const {
+    isLoading: isLoadingRecipe,
+    isRefetching: isRefetchingRecipe,
+    data: dataRecipe,
+  } = useEnrichedAccountBalancesRecipeInMarket({
+    chain_id: roycoData.chain_id!,
+    market_id: roycoData.market_id!,
+    account_address: account?.address?.toLowerCase() ?? '',
+    custom_token_data: undefined,
+  });
+
+  const deposited =
+    dataRecipe?.input_token_data_ap?.token_amount &&
+    dataRecipe?.input_token_data_ap?.token_amount > 0;
+
+  // What is the purpose of below?
+  /*
   const prepareTokenFetch = useMemo(() => {
     if (chainId === undefined || !tokens) {
       return undefined;
@@ -85,9 +101,11 @@ export const BerachainMarketCard = ({
     // isLoading,
     // isError,
   } = useMultipleTokens(prepareTokenFetch);
+*/
+
   return (
     <Link
-      href={`/berachain/explore/${slug}`}
+      href={`/berachain/explore/${roycoData.market_id}`}
       style={{ textDecoration: 'none' }}
     >
       <BerachainMarketCardWrapper>
@@ -112,8 +130,8 @@ export const BerachainMarketCard = ({
               sx={{ width: 92, height: 40, borderRadius: '8px' }}
             />
           )}
-          {title ? (
-            <Typography variant="bodyLargeStrong">{title}</Typography>
+          {roycoData.name ? (
+            <Typography variant="bodyLargeStrong">{roycoData.name}</Typography>
           ) : (
             <Skeleton
               variant="text"
@@ -125,7 +143,7 @@ export const BerachainMarketCard = ({
           <Box display={'flex'} gap={'8px'}>
             {tokenChainDetails?.logoURI ? (
               <BerchainMarketCardAvatar
-                src={tokenChainDetails?.logoURI}
+                src={tokenChainDetails.logoURI}
                 alt={`${tokenChainDetails.name} logo`}
                 width={20}
                 height={20}
@@ -134,39 +152,40 @@ export const BerachainMarketCard = ({
               <Skeleton variant="circular" sx={{ width: 32, height: 32 }} />
             )}
             <BerchainMarketCardTokenBox>
-              {fetchedTokens.length ? (
-                fetchedTokens.map((token, index) => (
-                  <BerachainMarketCardTokenContainer
-                    sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
-                    key={`berachain-market-card-token-container-${index}`}
+              {roycoData.input_token_data ? (
+                // fetchedTokens.map((token, index) => (
+                <BerachainMarketCardTokenContainer
+                  sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+                  key={`berachain-market-card-token-container-${roycoData.input_token_data.name}`}
+                >
+                  {roycoData.input_token_data.image ? (
+                    <img
+                      key={`berachain-market-card-token-${roycoData.input_token_data.name}-${roycoData.input_token_data.id}`}
+                      src={roycoData.input_token_data.image}
+                      alt={`${roycoData.input_token_data.name} logo`}
+                      width={20}
+                      height={20}
+                      style={{ borderRadius: '10px' }}
+                    />
+                  ) : (
+                    <Skeleton
+                      key={`berachain-market-card-token-skeleton-${roycoData.input_token_data.id}`}
+                      variant="circular"
+                      sx={{ width: 20, height: 20 }}
+                    />
+                  )}
+                  {/*{fetchedTokens.length === 1 && token?.name && (*/}
+                  <Typography
+                    variant="bodyXSmallStrong"
+                    key={`berachain-market-card-token-label-${roycoData.input_token_data.name}-${roycoData.input_token_data.id}`}
                   >
-                    {token?.logoURI ? (
-                      <Image
-                        key={`berachain-market-card-token-${token.name}-${index}`}
-                        src={token.logoURI}
-                        alt={`${token.name} logo`}
-                        width={20}
-                        height={20}
-                        style={{ borderRadius: '10px' }}
-                      />
-                    ) : (
-                      <Skeleton
-                        key={`berachain-market-card-token-skeleton-${index}`}
-                        variant="circular"
-                        sx={{ width: 20, height: 20 }}
-                      />
-                    )}
-                    {fetchedTokens.length === 1 && token?.name && (
-                      <Typography
-                        variant="bodyXSmallStrong"
-                        key={`berachain-market-card-token-label-${token.name}-${index}`}
-                      >
-                        {fetchedTokens[0]?.symbol}
-                      </Typography>
-                    )}
-                  </BerachainMarketCardTokenContainer>
-                ))
+                    {roycoData.input_token_data.symbol}
+                    {/*{fetchedTokens[0]?.symbol}*/}
+                  </Typography>
+                  {/*)}*/}
+                </BerachainMarketCardTokenContainer>
               ) : (
+                // ))
                 <Skeleton variant="circular" sx={{ width: 20, height: 20 }} />
               )}
             </BerchainMarketCardTokenBox>
@@ -196,7 +215,14 @@ export const BerachainMarketCard = ({
         >
           <BerachainProgressCard
             title={'TVL'}
-            value={tvl}
+            value={
+              roycoData.locked_quantity_usd
+                ? t('format.currency', {
+                    value: roycoData.locked_quantity_usd,
+                    notation: 'compact',
+                  })
+                : 'N/A'
+            }
             tooltip={
               'Total Value Locked is the metric showing the total amount in a pool.'
             }
@@ -211,18 +237,7 @@ export const BerachainMarketCard = ({
             valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
           />
           <Tooltip
-            title={
-              <BerachainTooltipTokens
-                // open={openTokensTooltip}
-                // setOpen={setOpenTokensTooltip}
-                // anchor={anchorTokensTooltip}
-                // setAnchor={setAnchorTokensTooltip}
-                // idLabel={tokensTooltipId}
-                // idMenu={tokensTooltipMenuId}
-                chainId={chainId}
-                apyTokens={apys?.tokens}
-              />
-            }
+            title={<BerachainTooltipTokens data={roycoData} />}
             open={openTokensTooltip ? false : undefined}
             disableFocusListener={openTokensTooltip ? false : undefined}
             disableInteractive={!openTokensTooltip ? false : undefined}
@@ -233,7 +248,13 @@ export const BerachainMarketCard = ({
             <div style={{ flexGrow: 1 }}>
               <BerachainProgressCard
                 title={'Net APY'}
-                value={`${typeof apys?.total === 'number' ? apys?.total + '%' : apys?.total || 'N/A'}`}
+                value={
+                  roycoData?.annual_change_ratio
+                    ? t('format.percent', {
+                        value: roycoData.annual_change_ratio,
+                      })
+                    : 'N/A'
+                }
                 tooltip={'Expected return rate on your invested'}
                 sx={{
                   height: '100%',
@@ -249,8 +270,10 @@ export const BerachainMarketCard = ({
           </Tooltip>
           {deposited && (
             <BerachainProgressCard
-              title={'Deposit'}
-              value={'$2,380'}
+              title={'Deposited'}
+              value={t('format.currency', {
+                value: dataRecipe?.input_token_data_ap?.token_amount_usd,
+              })}
               sx={{
                 height: '100%',
                 padding: theme.spacing(1.5, 2),
