@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Link as MuiLink,
   Table,
   TableBody,
   TableCell,
@@ -8,25 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import Link from 'next/link';
 import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
-
-function buildExplorerLink(blockExplorerUrls: string[] = [], address: string) {
-  if (blockExplorerUrls.length === 0) {
-    return address;
-  }
-
-  return (
-    <MuiLink
-      color="text.primary"
-      component={Link}
-      target="_blank"
-      href={`${blockExplorerUrls[0]}/tokens/${address}`}
-    >
-      {address}
-    </MuiLink>
-  );
-}
 
 interface Info {
   logoURI?: string;
