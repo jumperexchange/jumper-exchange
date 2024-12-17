@@ -12757,6 +12757,7 @@ __metadata:
     "@types/react": "npm:^18.3.16"
     "@types/react-dom": "npm:^18.3.5"
     "@types/uuid": "npm:^10.0.0"
+    "@wagmi/core": "npm:2.15.2"
     "@widgetbot/react-embed": "npm:^1.9.0"
     accept-language: "npm:^3.0.20"
     blo: "npm:^1.2.0"
@@ -12801,6 +12802,7 @@ __metadata:
     typescript: "npm:^5.7.2"
     use-immer: "npm:^0.11.0"
     uuid: "npm:^11.0.3"
+    wagmi: "npm:^2.13.3"
     web-vitals: "npm:^4.2.4"
     xvfb: "npm:^0.4.0"
     zustand: "npm:^5.0.2"
@@ -14569,10 +14571,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"preact@npm:^10.16.0, preact@npm:^10.24.2":
+"preact@npm:^10.16.0":
   version: 10.25.1
   resolution: "preact@npm:10.25.1"
   checksum: 10/f9a961b24eed35b52faf95d77f03405975a3a5a005841fb6873d82e47781be9e578c1f666a407c941a19da2efdf15f9c4d66a8df14abcc96e213636e230edecc
+  languageName: node
+  linkType: hard
+
+"preact@npm:^10.24.2":
+  version: 10.25.2
+  resolution: "preact@npm:10.25.2"
+  checksum: 10/4910dbb6ba7112a418b75ebe87d72b5f6a201c275d6618b8d749bd8b273df6bee1811bc6d26047039d7c59c5a905f5ec6083549301d51dea1a6fcabb5caf9916
   languageName: node
   linkType: hard
 

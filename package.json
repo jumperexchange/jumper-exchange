@@ -34,6 +34,7 @@
     "@solana/web3.js": "^1.95.8",
     "@strapi/blocks-react-renderer": "^1.0.1",
     "@tanstack/react-query": "^5.62.7",
+    "@wagmi/core": "2.15.2",
     "@widgetbot/react-embed": "^1.9.0",
     "accept-language": "^3.0.20",
     "blo": "^1.2.0",
@@ -62,6 +63,7 @@
     "siwe": "^2.3.2",
     "use-immer": "^0.11.0",
     "uuid": "^11.0.3",
+    "wagmi": "^2.13.3",
     "zustand": "^5.0.2"
   },
   "devDependencies": {
@@ -136,7 +138,9 @@
     "royco/wagmi": "2.13.3",
     "royco/@wagmi/core": "2.15.2",
     "@lifi/wallet-management/@wagmi/core": "2.15.2",
-    "bigmi/wagmi": "2.13.3"
+    "bigmi/wagmi": "2.13.3",
+    "@bigmi/client/wagmi": "2.13.3",
+    "@bigmi/client/@wagmi/core": "2.15.2"
   },
   "packageManager": "yarn@4.5.3"
 }
