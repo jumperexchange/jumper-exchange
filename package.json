@@ -130,7 +130,7 @@
       "yarn prettier --write"
     ]
   },
-  "overrides": {
+  "resolutions": {
     "wagmi": "2.13.3",
     "@wagmi/core": "2.15.2",
     "royco/wagmi": "2.13.3",
