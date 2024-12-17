@@ -1,5 +1,5 @@
-import type { Breakpoint } from '@mui/material';
-import { Box, Typography, useTheme } from '@mui/material';
+import type { Breakpoint, Theme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { motion } from 'motion/react';
 import Image from 'next/image';
 import { BerachainProgressCard } from '../BerachainProgressCard/BerachainProgressCard';
@@ -16,6 +16,8 @@ import {
 
 export const BerachainWelcome = () => {
   const theme = useTheme();
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+
   return (
     <BeraChainWelcomeBox>
       <motion.div
@@ -64,7 +66,7 @@ export const BerachainWelcome = () => {
         >
           <BerachainWelcomeBoxContent>
             <BerachainProgressCard
-              title={'TVL'}
+              title={isDesktop ? 'Total Value Locked' : 'TVL'}
               value="$718K"
               icon={
                 <Image
