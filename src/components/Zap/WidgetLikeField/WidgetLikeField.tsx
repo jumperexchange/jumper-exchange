@@ -6,6 +6,7 @@ import {
   Typography,
   useTheme,
   Grid,
+  Link,
 } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -82,7 +83,7 @@ function WidgetLikeField({
   const config = useConfig();
   const { account } = useAccount();
   const [value, setValue] = useState<string>('');
-  const { write } = useContractWrite({
+  const { write, isLoading, error, data } = useContractWrite({
     address: projectData?.address as `0x${string}`,
     chainId: projectData?.chain === 'ethereum' ? 1 : 8453,
     functionName: 'redeem',
@@ -141,6 +142,7 @@ function WidgetLikeField({
               value={value}
               onChange={handleInputChange}
               placeholder={placeholder}
+              disabled={isLoading}
               aria-describedby="component-text"
               sx={{ padding: '0.6rem 1rem', marginBottom: helperText ? 0 : 2 }}
               inputProps={{
@@ -212,10 +214,47 @@ function WidgetLikeField({
                 <Typography component="span">{helperText.right}</Typography>
               </FormHelperText>
             )}
+            {error && (
+              <FormHelperText
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: 1,
+                  color: 'red',
+                }}
+              >
+                {error.message}
+              </FormHelperText>
+            )}
+            {data && (
+              <FormHelperText
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  marginBottom: 1,
+                  color: 'green',
+                }}
+              >
+                <Link
+                  href={
+                    projectData?.chain === 'ethereum'
+                      ? 'https://etherscan.io/tx/' + data
+                      : 'https://basescan.org/tx/' + data
+                  }
+                  target="_blank"
+                >
+                  View on{' '}
+                  {projectData?.chain === 'ethereum' ? 'Etherscan' : 'BaseScan'}
+                </Link>
+              </FormHelperText>
+            )}
           </FormControl>
           <LoadingButton
             type="submit"
-            loading={false}
+            loading={isLoading}
+            disabled={balance === '0' || isLoading}
             variant="contained"
             sx={{
               '&.MuiLoadingButton-loading': {

@@ -23,21 +23,22 @@ interface CustomWidgetProps {
 export function CustomWidget({ account, projectData }: CustomWidgetProps) {
   const [token, setToken] = useState<TokenAmount>();
   const { data, isSuccess } = useZaps(projectData);
-  const { data: depositTokenData, isLoading: isLoadingDepositTokenData } = useContractRead({
-    address: projectData.address as `0x${string}`,
-    chainId: projectData.chain === 'ethereum' ? 1 : 8453,
-    functionName: 'balanceOf',
-    abi: [
-      {
-        inputs: [{ name: 'owner', type: 'address' }],
-        name: 'balanceOf',
-        outputs: [{ name: '', type: 'uint256' }],
-        stateMutability: 'view',
-        type: 'function',
-      },
-    ],
-    args: [account.address],
-  });
+  const { data: depositTokenData, isLoading: isLoadingDepositTokenData } =
+    useContractRead({
+      address: projectData.address as `0x${string}`,
+      chainId: projectData.chain === 'ethereum' ? 1 : 8453,
+      functionName: 'balanceOf',
+      abi: [
+        {
+          inputs: [{ name: 'owner', type: 'address' }],
+          name: 'balanceOf',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'view',
+          type: 'function',
+        },
+      ],
+      args: [account.address],
+    });
 
   useEffect(() => {
     if (isSuccess) {
@@ -104,24 +105,30 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
 
       {!isLoadingDepositTokenData && (
         <WidgetLikeField
-          contractCalls={[{
-            data: '0x',
-            type: 'send',
-            label: 'Redeem',
-            onVerify: () => Promise.resolve(true),
-        }]}
-        label="Redeem"
-        image={{
-          url: token?.logoURI,
-          name: token?.name,
-        }}
-        placeholder="0.00"
-        helperText={{
-          left: 'Available balance',
-          right: depositTokenData ? formatUnits(depositTokenData, 18) : '0.00',
-        }}
-        balance={depositTokenData ? formatUnits(depositTokenData, 18) : '0.00'}
-        projectData={projectData}
+          contractCalls={[
+            {
+              data: '0x',
+              type: 'send',
+              label: 'Redeem',
+              onVerify: () => Promise.resolve(true),
+            },
+          ]}
+          label="Redeem"
+          image={{
+            url: token?.logoURI,
+            name: token?.name,
+          }}
+          placeholder="0.00"
+          helperText={{
+            left: 'Available balance',
+            right: depositTokenData
+              ? formatUnits(depositTokenData, 18)
+              : '0.00',
+          }}
+          balance={
+            depositTokenData ? formatUnits(depositTokenData, 18) : '0.00'
+          }
+          projectData={projectData}
         />
       )}
     </>
