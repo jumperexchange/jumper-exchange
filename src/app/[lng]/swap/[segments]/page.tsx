@@ -18,7 +18,7 @@ export async function generateMetadata({
 
   const openGraph: Metadata['openGraph'] = {
     title: title,
-    description: `Jumper offers the best way to swap tokenA to tokenB on ${sourceChain?.name} with the fastest speeds, lowest costs, and most secure swap providers available.`,
+    description: `Jumper offers the best way to swap tokens on ${sourceChain?.name} with the fastest speeds, lowest costs, and most secure swap providers available.`,
     siteName: siteName,
     url: `${getSiteUrl()}/swap/${params.segments}`,
     type: 'article',
@@ -49,11 +49,10 @@ export default async function Page({
   params: { segments: string };
 }) {
   try {
-    const sourceChainId = decodeURIComponent(segments);
+    const chainName = decodeURIComponent(segments);
     const { chains } = await getChainsQuery();
     const { tokens } = await getTokensQuery();
-    const sourceChain = getChainByName(chains, sourceChainId);
-
+    const sourceChain = getChainByName(chains, chainName);
     if (!sourceChain) {
       return notFound();
     }
@@ -70,6 +69,7 @@ export default async function Page({
         sourceChain={sourceChain}
         sourceToken={sourceToken}
         destinationChain={sourceChain}
+        chainName={chainName}
         destinationToken={destinationToken}
         tokens={tokens}
       />

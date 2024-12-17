@@ -13,6 +13,7 @@ interface SwapStepsExplainerProps {
   destinationChain: ExtendedChain;
   sourceToken?: Token;
   destinationToken?: Token;
+  chainName: string;
 }
 
 const SwapStepsExplainerSection = ({
@@ -20,6 +21,7 @@ const SwapStepsExplainerSection = ({
   destinationChain,
   sourceToken,
   destinationToken,
+  chainName,
 }: SwapStepsExplainerProps) => {
   const theme = useTheme();
 
@@ -37,6 +39,17 @@ const SwapStepsExplainerSection = ({
     {
       title: `Step 2: Make sure to have Funds on ${sourceChain.name} in your wallet`,
       description: `Before you can swap your assets, you need to ensure you have the necessary funds and assets on the ${sourceChain?.name} network.`,
+      img: getWidgetImageProps({
+        theme,
+        chainName,
+        amount: 1,
+        widgetImageProps: {
+          endpoint: 'widget-amounts',
+          width: 416,
+          height: 536,
+          alt: 'Widget Amounts Image',
+        },
+      }),
     },
     {
       title: `Step 3: Select Tokens to Swap`,
