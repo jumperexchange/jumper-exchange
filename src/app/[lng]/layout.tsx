@@ -18,6 +18,7 @@ import type { ActiveThemeResult } from '../lib/getActiveTheme';
 import { getActiveTheme } from '../lib/getActiveTheme';
 import { description, siteName, title } from '../lib/metadata';
 import { getSiteUrl } from '@/const/urls';
+import { Banner } from 'src/components/Banner/Banner';
 
 export const metadata: Metadata = {
   title,
@@ -180,7 +181,10 @@ export default async function RootLayout({
                   <SettingsStoreProvider
                     welcomeScreenClosed={welcomeScreenClosed}
                   >
-                    <WalletProvider>{children}</WalletProvider>
+                    <WalletProvider>
+                      <Banner />
+                      {children}
+                    </WalletProvider>
                   </SettingsStoreProvider>
                 </ThemeProvider>
               </NextThemeProvider>
