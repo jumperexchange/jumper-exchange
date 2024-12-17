@@ -1,13 +1,13 @@
 import {
   BerachainBackground as Background,
-  BerachainContentContainer as Container,
+  BerachainContentContainer,
 } from './Berachain.style';
 import { BerachainMarkets } from './components/BerachainMarkets/BerachainMarkets';
 export const BerachainExplore = () => {
   return (
-    <Container>
+    <BerachainContentContainer>
       <Background />
       <BerachainMarkets />
-    </Container>
+    </BerachainContentContainer>
   );
 };
