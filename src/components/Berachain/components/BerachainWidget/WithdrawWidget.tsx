@@ -212,7 +212,7 @@ export const WithdrawWidget = ({
         Array.isArray(positions) &&
         positions.length > 0 &&
         positions
-          .filter((d) => !d.is_withdrawn)
+          .filter((d) => !d?.is_withdrawn)
           .map((position, positionIndex) => {
             return (
               <Box
@@ -358,7 +358,7 @@ export const WithdrawWidget = ({
                       onClick={async () => {
                         try {
                           await switchChain(wagmiConfig, {
-                            chainId: market.chain_id,
+                            chainId: market?.chain_id ?? 1,
                           });
                         } catch (error) {
                           // TODO: to remove

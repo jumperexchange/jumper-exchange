@@ -130,12 +130,13 @@
       "yarn prettier --write"
     ]
   },
-  "overrides": {
+  "resolutions": {
     "wagmi": "2.13.3",
     "@wagmi/core": "2.15.2",
     "royco/wagmi": "2.13.3",
     "royco/@wagmi/core": "2.15.2",
     "@lifi/wallet-management/@wagmi/core": "2.15.2",
     "bigmi/wagmi": "2.13.3"
-  }
+  },
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
 }

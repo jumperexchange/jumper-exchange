@@ -37,6 +37,7 @@ export const BerachainFilterProtocolsMenu = () => {
   const assetsFilterId = 'token-filter-button';
   const assetsMenuId = 'token-filter-menu';
 
+  // @ts-expect-error
   const data = useBerachainMarketProtocols(berachainMarkets);
 
   return (

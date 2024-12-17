@@ -137,6 +137,7 @@ export function Widget({
     return {
       ...formParameters,
       variant:
+        // @ts-expect-error
         starterVariant === 'compact'
           ? 'compact'
           : starterVariant === 'refuel'

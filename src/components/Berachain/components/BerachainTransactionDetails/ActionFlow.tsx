@@ -51,6 +51,7 @@ const ActionFlow = React.forwardRef<
 
           return (
             <Box
+              key={BASE_KEY}
               sx={{
                 display: 'flex', // Matches `flex`
                 flexDirection: 'row', // Matches `flex-row`

@@ -63,7 +63,7 @@ export const QuestCarouselItems = ({
               quest?.attributes.Points > 0 && rewardType === 'weekly'
             }
             rewardRange={rewardRange}
-            isTraitsGarded={questTraits?.length > 0}
+            isTraitsGarded={(questTraits?.length ?? 0) > 0}
             isUnlocked={isUnlockedForUser}
           />
         );

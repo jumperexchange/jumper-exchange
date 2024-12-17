@@ -10,14 +10,12 @@ import {
   Button,
   alpha,
 } from '@mui/material';
-import { Config, useConfig } from 'wagmi';
-import { getConnectorClient } from 'wagmi/actions';
-import { BrowserProvider, JsonRpcSigner } from 'ethers';
-import type { Account, Chain, Client, Transport } from 'viem';
+import { useConfig } from 'wagmi';
 import type { ContractCall } from '@lifi/sdk';
 import LoadingButton from '@mui/lab/LoadingButton';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import type { FormEvent } from 'react';
 import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useAccount } from '@lifi/wallet-management';
@@ -54,7 +52,7 @@ function WidgetLikeWIP({ contractCalls }: { contractCalls: ContractCall[] }) {
     },
   });
 
-  async function onSubmit(e: React.ChangeEvent<HTMLInputElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     try {
       // TODO: to remove
       // eslint-disable-next-line no-console

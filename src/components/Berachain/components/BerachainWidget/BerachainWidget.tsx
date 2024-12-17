@@ -101,6 +101,7 @@ export const BerachainWidget = ({
         {tab === 0 && (
           <Box sx={{ marginTop: theme.spacing(1.5) }}>
             <Widget
+              // @ts-expect-error
               starterVariant="compact"
               toChain={token?.chain_id}
               toToken={token?.contract_address}

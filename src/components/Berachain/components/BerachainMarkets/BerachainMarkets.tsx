@@ -1,5 +1,4 @@
 import { Box } from '@mui/material';
-import { useBerachainMarket } from '../../hooks/useBerachainMarket';
 import { BerachainMarketCard } from '../BerachainMarketCard/BerachainMarketCard';
 import { BerachainMarketCards } from './BerachainMarkets.style';
 import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMarketsFilters';

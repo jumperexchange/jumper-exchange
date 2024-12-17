@@ -97,9 +97,7 @@ function DepositWidget({
   );
   const wagmiConfig = useConfig();
   const theme = useTheme();
-  const [inputValue, setInputValue] = useState<string | number | undefined>(
-    undefined,
-  );
+  const [inputValue, setInputValue] = useState<number | undefined>(undefined);
 
   const userType = 'ap';
   const offerType = 'market';
@@ -147,7 +145,9 @@ function DepositWidget({
   }, [market]);
 
   function onClickMaxButton() {
-    onChangeValue(balance > maxInputValue ? maxInputValue : balance);
+    onChangeValue(
+      (balance > maxInputValue ? maxInputValue : balance).toString(),
+    );
   }
 
   const {
@@ -185,15 +185,16 @@ function DepositWidget({
 
   const hasErrorText = useMemo(() => {
     if (
-      inputValue >
-      parseRawAmountToTokenAmount(
-        market?.quantity_ip ?? '0', // @note: AP fills IP quantity
-        market?.input_token_data.decimals ?? 0,
-      )
+      inputValue ??
+      0 >
+        parseRawAmountToTokenAmount(
+          market?.quantity_ip ?? '0', // @note: AP fills IP quantity
+          market?.input_token_data.decimals ?? 0,
+        )
     ) {
       return 'Above fillable';
     }
-    if (inputValue > balance) {
+    if (inputValue ?? 0 > balance) {
       return 'Above balance';
     }
     if (isTxConfirmError) {
@@ -222,8 +223,8 @@ function DepositWidget({
     }
   }, [isTxConfirmed]);
 
-  function onChangeValue(value: string | number | null = '0') {
-    setInputValue(value);
+  function onChangeValue(value: string = '0') {
+    setInputValue(parseFloat(value));
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -258,7 +259,7 @@ function DepositWidget({
         <Typography variant="titleSmall">{label}</Typography>
       </InputLabel>
       <FormControl
-        error={isTxError || hasErrorText}
+        error={isTxError || !!hasErrorText}
         variant="standard"
         aria-autocomplete="none"
       >
@@ -431,7 +432,7 @@ function DepositWidget({
         writeContractOptions[contractCallIndex] && (
           <CustomLoadingButton
             type="submit"
-            disabled={hasErrorText}
+            disabled={!!hasErrorText}
             loading={isLoading || isTxPending || isTxConfirming}
             variant="contained"
             overrideStyle={overrideStyle}
