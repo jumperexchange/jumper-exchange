@@ -1,6 +1,7 @@
 import InfoIcon from '@mui/icons-material/Info';
 import type { SxProps, Theme } from '@mui/material';
 import { Tooltip, Typography } from '@mui/material';
+import type { CSSProperties } from 'react';
 import {
   BeraChainProgressCardComponent,
   BeraChainProgressCardContent,
@@ -66,7 +67,7 @@ export const BerachainProgressCard = ({
               xs: theme.typography.titleXSmall,
               sm: theme.typography.titleSmall,
             },
-            valueSx,
+            ...(valueSx as CSSProperties),
           })}
         >
           {value || 'N/A'}

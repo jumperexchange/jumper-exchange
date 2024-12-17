@@ -55,9 +55,7 @@ export const BerachainMarketCard = ({
   deposited,
 }: BerachainMarketCardProps) => {
   const theme = useTheme();
-  const [anchorTokensTooltip, setAnchorTokensTooltip] =
-    useState<null | HTMLElement>(null);
-  const [openTokensTooltip, setOpenTokensTooltip] = useState(false);
+  const [openTokensTooltip] = useState(false);
 
   const { chains } = useChains();
   const tokenChainDetails = useMemo(
@@ -208,7 +206,13 @@ export const BerachainMarketCard = ({
                 padding: theme.spacing(1.5, 2),
               },
             }}
-            valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
+            valueSx={{
+              color: alpha(theme.palette.white.main, 0.84),
+              fontSize: theme.typography.titleXSmall.fontSize,
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                fontSize: theme.typography.titleXSmall.fontSize,
+              },
+            }}
           />
           <Tooltip
             title={
@@ -243,7 +247,13 @@ export const BerachainMarketCard = ({
                     padding: theme.spacing(1.5, 2),
                   },
                 }}
-                valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
+                valueSx={{
+                  color: alpha(theme.palette.white.main, 0.84),
+                  fontSize: theme.typography.titleXSmall.fontSize,
+                  [theme.breakpoints.up('sm' as Breakpoint)]: {
+                    fontSize: theme.typography.titleXSmall.fontSize,
+                  },
+                }}
               />
             </div>
           </Tooltip>
@@ -260,6 +270,12 @@ export const BerachainMarketCard = ({
                 },
                 backgroundImage:
                   'linear-gradient(rgba(253, 183, 45, 0.20), rgba(253, 183, 45, 0.20))',
+              }}
+              valueSx={{
+                fontSize: theme.typography.titleXSmall.fontSize,
+                [theme.breakpoints.up('sm' as Breakpoint)]: {
+                  fontSize: theme.typography.titleXSmall.fontSize,
+                },
               }}
             />
           )}
