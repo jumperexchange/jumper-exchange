@@ -1,9 +1,10 @@
-import { Typography, useTheme } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { motion } from 'motion/react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { BerachainProgressCard } from '../BerachainProgressCard/BerachainProgressCard';
 import {
+  BerachainButtonWrapperLink,
   BeraChainWelcomeBox,
   BerachainWelcomeBoxContent,
   BerachainWelcomeConnectButtonCTA,
@@ -32,7 +33,7 @@ export const BerachainWelcome = () => {
             variant="urbanistTitle3XLarge"
             sx={{
               typography: {
-                xs: theme.typography.urbanistTitleXLarge,
+                xs: theme.typography.urbanistTitleLarge,
                 sm: theme.typography.urbanistTitle2XLarge,
                 md: theme.typography.urbanistTitle3XLarge,
               },
@@ -40,87 +41,133 @@ export const BerachainWelcome = () => {
           >
             Jump into Boyco
           </BerachainWelcomeTitle>
-          <BerachainWelcomeSubtitle variant="bodyXLarge">
+          <BerachainWelcomeSubtitle
+            variant="bodyXLarge"
+            sx={{
+              typography: {
+                xs: theme.typography.bodyLarge,
+                sm: theme.typography.bodyXLarge,
+              },
+            }}
+          >
             Provide liquidity to Berachain apps prior to mainnet launch
           </BerachainWelcomeSubtitle>
         </BeraChainWelcomeContent>
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1 }} // Starts 1 second after the main content animation
+      <Box
+        sx={(theme) => ({
+          [theme.breakpoints.down('sm')]: {
+            width: '100%',
+          },
+        })}
       >
-        <BerachainWelcomeBoxContent>
-          <BerachainProgressCard
-            title={'Total Value Locked'}
-            value={t('format.currency', {
-              value: data?.total_tvl,
-              notation: 'compact',
-            })}
-            icon={
-              <Image
-                src="/berachain/tvl.svg"
-                alt="TVL illustration"
-                width={26}
-                height={26}
-              />
-            }
-            sx={{
-              borderRadius: '16px',
-              border: '1px solid rgba(255, 255, 255, 0.20)',
-              background: 'rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(8px)',
-              minWidth: '212px',
-            }}
-          />
-          <BerachainProgressCard
-            title={'Incentives'}
-            value={t('format.currency', {
-              value: data?.total_incentives,
-              notation: 'compact',
-            })}
-            icon={
-              <Image
-                src="/berachain/gift.svg"
-                alt="Gift illustration"
-                width={26}
-                height={26}
-              />
-            }
-            sx={{
-              borderRadius: '16px',
-              border: '1px solid rgba(255, 255, 255, 0.20)',
-              background: 'rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(8px)',
-              minWidth: '212px',
-            }}
-          />
-        </BerachainWelcomeBoxContent>
-      </motion.div>
+        <motion.div
+          initial={{ opacity: 0, width: '100%' }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1 }} // Starts 1 second after the main content animation
+        >
+          <BerachainWelcomeBoxContent>
+            <BerachainProgressCard
+              title={'TVL'}
+              value={t('format.currency', {
+                value: data?.total_tvl,
+                notation: 'compact',
+              })}
+              icon={
+                <Image
+                  src="/berachain/tvl.svg"
+                  alt="TVL illustration"
+                  width={26}
+                  height={26}
+                />
+              }
+              sx={(theme) => ({
+                borderRadius: '16px',
+                border: '1px solid rgba(255, 255, 255, 0.20)',
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(8px)',
+                padding: theme.spacing(2, 2.5),
+                justifyContent: 'center',
+                [theme.breakpoints.up('sm')]: {
+                  justifyContent: 'flex-start',
+                  minWidth: '240px',
+                  padding: '18px',
+                },
+              })}
+            />
+            <BerachainProgressCard
+              title={'Incentives'}
+              value={t('format.currency', {
+                value: data?.total_incentives,
+                notation: 'compact',
+              })}
+              icon={
+                <Image
+                  src="/berachain/gift.svg"
+                  alt="Gift illustration"
+                  width={26}
+                  height={26}
+                />
+              }
+              sx={(theme) => ({
+                borderRadius: '16px',
+                border: '1px solid rgba(255, 255, 255, 0.20)',
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(8px)',
+                padding: theme.spacing(2, 2.5),
+                justifyContent: 'center',
+                [theme.breakpoints.up('sm')]: {
+                  justifyContent: 'flex-start',
+                  minWidth: '240px',
+                  padding: '18px',
+                },
+              })}
+            />
+          </BerachainWelcomeBoxContent>
+        </motion.div>
+      </Box>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.25 }} // Starts 1.5 seconds after the main content animation
+      <Box
+        sx={{
+          [theme.breakpoints.down('sm' as Breakpoint)]: {
+            width: '100%',
+          },
+        }}
       >
-        <BerachainWelcomeBoxContent>
-          <Link href="/berachain/explore">
-            <BerachainWelcomeConnectButtonCTA>
-              <Typography variant="bodyLargeStrong">Start exploring</Typography>
-            </BerachainWelcomeConnectButtonCTA>
-          </Link>
-          <Link
-            href="https://blog.berachain.com/blog/rfb-boyco"
-            rel="noopener noreferrer"
-            target="_blank"
+        <motion.div
+          initial={{ opacity: 0, width: '100%' }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.25 }} // Starts 1.5 seconds after the main content animation
+        >
+          <BerachainWelcomeBoxContent
+            sx={(theme) => ({
+              [theme.breakpoints.down('sm' as Breakpoint)]: {
+                gap: theme.spacing(1),
+                flexDirection: 'column',
+                width: '100%',
+              },
+            })}
           >
-            <BerachainWelcomeLearnMoreButton sx={{ padding: '8px 24px' }}>
-              <Typography variant="bodyLargeStrong">Learn more</Typography>
-            </BerachainWelcomeLearnMoreButton>
-          </Link>
-        </BerachainWelcomeBoxContent>
-      </motion.div>
+            <BerachainButtonWrapperLink href="/berachain/explore">
+              <BerachainWelcomeConnectButtonCTA>
+                <Typography variant="bodyLargeStrong">
+                  Start exploring
+                </Typography>
+              </BerachainWelcomeConnectButtonCTA>
+            </BerachainButtonWrapperLink>
+            <BerachainButtonWrapperLink
+              href="https://blog.berachain.com/blog/rfb-boyco"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <BerachainWelcomeLearnMoreButton sx={{ padding: '8px 24px' }}>
+                <Typography variant="bodyLargeStrong">Learn more</Typography>
+              </BerachainWelcomeLearnMoreButton>
+            </BerachainButtonWrapperLink>
+          </BerachainWelcomeBoxContent>
+        </motion.div>
+      </Box>
     </BeraChainWelcomeBox>
   );
 };

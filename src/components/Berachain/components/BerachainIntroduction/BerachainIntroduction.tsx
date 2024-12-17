@@ -1,6 +1,8 @@
 import { Typography } from '@mui/material';
-import Link from 'next/link';
-import { BerachainWelcomeConnectButtonCTA } from '../BerachainWelcome/BerachainWelcome.style';
+import {
+  BerachainButtonWrapperLink,
+  BerachainWelcomeConnectButtonCTA,
+} from '../BerachainWelcome/BerachainWelcome.style';
 import {
   BerachainBearTyping,
   BerachainIntroductionBox,
@@ -8,22 +10,41 @@ import {
   BerachainIntroductionStepContent,
   BerachainIntroductionStepIllustration,
   BerachainIntroductionSteps,
+  BerachainIntroductionStepTitle,
   BerachainIntroductionTitle,
 } from './BerachainIntroduction.style';
 
 export const BerachainIntroduction = () => {
   return (
     <BerachainIntroductionBox>
-      <BerachainIntroductionTitle variant="urbanistTitleXLarge">
+      <BerachainIntroductionTitle
+        variant="urbanistTitleXLarge"
+        sx={(theme) => ({
+          typography: {
+            xs: theme.typography.urbanistTitleMedium,
+            sm: theme.typography.urbanistTitleLarge,
+            md: theme.typography.urbanistTitleXLarge,
+          },
+        })}
+      >
         How does it work?
       </BerachainIntroductionTitle>
       <BerachainIntroductionSteps>
         <BerachainIntroductionStep>
           {/* <Link href="/berachain/explore" as="button"> */}
           <BerachainIntroductionStepContent>
-            <Typography variant="urbanistBody2XLarge">
+            <BerachainIntroductionStepTitle
+              variant="urbanistBody2XLarge"
+              sx={{
+                typography: (theme) => ({
+                  xs: theme.typography.urbanistTitleXSmall,
+                  sm: theme.typography.urbanistBody2XLarge,
+                  md: theme.typography.urbanistBody2XLarge,
+                }),
+              }}
+            >
               1. Browse markets
-            </Typography>
+            </BerachainIntroductionStepTitle>
             <Typography variant="bodyMedium">
               Browse incentivised Boyco markets on mainnet.
             </Typography>
@@ -40,9 +61,18 @@ export const BerachainIntroduction = () => {
         <BerachainIntroductionStep>
           {/* <Link href="/berachain/explore" as="button"> */}
           <BerachainIntroductionStepContent>
-            <Typography variant="urbanistBody2XLarge">
+            <BerachainIntroductionStepTitle
+              variant="urbanistBody2XLarge"
+              sx={{
+                typography: (theme) => ({
+                  xs: theme.typography.urbanistTitleXSmall,
+                  sm: theme.typography.urbanistBody2XLarge,
+                  md: theme.typography.urbanistBody2XLarge,
+                }),
+              }}
+            >
               2. Deposit tokens
-            </Typography>
+            </BerachainIntroductionStepTitle>
             <Typography variant="bodyMedium">
               Select the dApp and pool you would like to deposit liquidity into.
             </Typography>
@@ -59,9 +89,18 @@ export const BerachainIntroduction = () => {
         <BerachainIntroductionStep>
           {/* <Link href="/berachain/explore" as="button"> */}
           <BerachainIntroductionStepContent>
-            <Typography variant="urbanistBody2XLarge">
+            <BerachainIntroductionStepTitle
+              variant="urbanistBody2XLarge"
+              sx={{
+                typography: (theme) => ({
+                  xs: theme.typography.urbanistTitleXSmall,
+                  sm: theme.typography.urbanistBody2XLarge,
+                  md: theme.typography.urbanistBody2XLarge,
+                }),
+              }}
+            >
               3. Receive incentives
-            </Typography>
+            </BerachainIntroductionStepTitle>
             <Typography variant="bodyMedium">
               Sit back, relax, earn incentives while Berachain goes live.
             </Typography>
@@ -75,11 +114,11 @@ export const BerachainIntroduction = () => {
           {/* </Link> */}
         </BerachainIntroductionStep>
       </BerachainIntroductionSteps>
-      <Link href="/berachain/explore">
+      <BerachainButtonWrapperLink href="/berachain/explore">
         <BerachainWelcomeConnectButtonCTA>
           <Typography variant="bodyLargeStrong">Get started</Typography>
         </BerachainWelcomeConnectButtonCTA>
-      </Link>
+      </BerachainButtonWrapperLink>
     </BerachainIntroductionBox>
   );
 };

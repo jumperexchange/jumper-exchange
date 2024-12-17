@@ -1,5 +1,6 @@
 import { Box, Button } from '@mui/material';
 import { lighten, styled } from '@mui/material/styles';
+import { inter } from 'src/fonts/fonts';
 import { ProfilePageContainer } from '../ProfilePage/ProfilePage.style';
 
 export const BerachainFrame = styled(Box)(({ theme }) => ({
@@ -32,6 +33,15 @@ export const BerachainContentContainer = styled(ProfilePageContainer)(() => ({
   width: '100%',
   zIndex: 10,
   fontFamily: 'var(--font-ibm-plex-sans)',
+}));
+
+export const BerachainWelcomeContainer = styled(Box)(() => ({
+  width: '100%',
+  zIndex: 100,
+  position: 'relative',
+  overflow: 'scroll',
+  fontFamily: inter.style.fontFamily,
+  paddingBottom: 64,
 }));
 
 export const BerachainBackground = styled(Box)(({ theme }) => ({

@@ -20,6 +20,7 @@ interface AccordionFAQProps {
   content: FaqProps[];
   sx?: SxProps<Theme>;
   itemSx?: SxProps<Theme>;
+  itemAnswerSx?: SxProps<Theme>;
   accordionHeader?: ReactElement;
   showIndex?: boolean;
   questionTextTypography?: TypographyProps['variant'];
@@ -34,6 +35,7 @@ export const AccordionFAQ = ({
   title,
   sx,
   itemSx,
+  itemAnswerSx,
   accordionHeader,
   showIndex,
   questionTextTypography,
@@ -61,6 +63,7 @@ export const AccordionFAQ = ({
               showIndex={showIndex}
               arrowSize={arrowSize}
               index={index}
+              itemAnswerSx={itemAnswerSx}
               questionTextTypography={questionTextTypography}
               showAnswerDivider={showAnswerDivider}
               answerTextTypography={answerTextTypography}

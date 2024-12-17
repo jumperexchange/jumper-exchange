@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BerachainStarsContainer } from './BerachainStars.style';
 
 interface Star {
@@ -10,7 +10,7 @@ interface Star {
   duration: number;
 }
 
-export const BerachainStars: React.FC = () => {
+export const BerachainStars = () => {
   const [stars, setStars] = useState<Star[]>([]);
 
   useEffect(() => {

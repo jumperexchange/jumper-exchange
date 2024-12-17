@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 
@@ -44,10 +45,9 @@ export const BerchainSpaceGlow = styled(Box)(({ theme }) => ({
   left: 0,
   right: 0,
   bottom: 0,
-  top: 0,
+  top: -160,
   backgroundImage: `url(/berachain/berachain-spacy-glowish-background.png)`,
   backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
 }));
 
 export const BerachainPlanetContainer = styled(Box)(({ theme }) => ({
@@ -56,9 +56,13 @@ export const BerachainPlanetContainer = styled(Box)(({ theme }) => ({
   overflow: 'visible',
   left: 0,
   right: 0,
-  top: '60vh',
-  height: '40vh',
+  top: '35vh',
+  height: '80vh',
   width: '100%',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    top: '40vh',
+    height: '65vh',
+  },
   '&:after': {
     content: '" "',
     position: 'absolute',
