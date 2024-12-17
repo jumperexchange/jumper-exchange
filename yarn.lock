@@ -14844,15 +14844,15 @@ __metadata:
   linkType: hard
 
 "typed-array-byte-length@npm:^1.0.1":
-  version: 1.0.2
-  resolution: "typed-array-byte-length@npm:1.0.2"
+  version: 1.0.3
+  resolution: "typed-array-byte-length@npm:1.0.3"
   dependencies:
     call-bind: "npm:^1.0.8"
     for-each: "npm:^0.3.3"
     gopd: "npm:^1.2.0"
     has-proto: "npm:^1.2.0"
     is-typed-array: "npm:^1.1.14"
-  checksum: 10/ca94a4a56790c24b3ba6c639af35f142ccd99a6bea073b1e3d8a398bdcc9ebecb34ae98751ddb217161f4c0778d28cef777fc7994a40a2c530119260f4b27311
+  checksum: 10/269dad101dda73e3110117a9b84db86f0b5c07dad3a9418116fd38d580cab7fc628a4fc167e29b6d7c39da2f53374b78e7cb578b3c5ec7a556689d985d193519
   languageName: node
   linkType: hard
 
