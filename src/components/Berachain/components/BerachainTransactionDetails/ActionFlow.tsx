@@ -3,7 +3,7 @@
 import React from 'react';
 import { Link, Tooltip, Typography } from '@mui/material';
 import type { decodeActionsReturnType } from 'royco/market';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 // import { decodeActionsReturnType } from "@/sdk/market";
 // import { SlideUpWrapper } from "@/components/animations";
 // import {

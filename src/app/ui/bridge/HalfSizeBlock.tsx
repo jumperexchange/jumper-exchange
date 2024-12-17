@@ -10,7 +10,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 
 function buildExplorerLink(blockExplorerUrls: string[] = [], address: string) {
   if (blockExplorerUrls.length === 0) {

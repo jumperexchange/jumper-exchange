@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/system';
+import { Box, styled } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 
 export const XpIconContainer = styled(Box)(({ theme }) => ({

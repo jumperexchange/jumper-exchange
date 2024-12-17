@@ -6,7 +6,7 @@ import React, { Fragment } from 'react';
  * @description Imports for styling
  */
 // import { cn } from "@/lib/utils";
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 
 /**
  * @description Info Card Container

@@ -1,4 +1,4 @@
-import { styled } from '@mui/system';
+import { styled } from '@mui/material';
 import { alpha, Button } from '@mui/material';
 
 export const MaxButton = styled(Button, {

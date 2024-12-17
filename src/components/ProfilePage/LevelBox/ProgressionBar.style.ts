@@ -1,5 +1,5 @@
 import type { BoxProps } from '@mui/material';
-import { Box, styled } from '@mui/system';
+import { Box, styled } from '@mui/material';
 import type { LevelData } from 'src/types/loyaltyPass';
 
 export const LevelIndicatorWrapper = styled(Box)(() => ({

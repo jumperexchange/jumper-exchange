@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/system';
+import { Box, styled } from '@mui/material';
 
 export const BerachainActionProtocolBox = styled(Box)(({ theme }) => ({
   display: 'flex',

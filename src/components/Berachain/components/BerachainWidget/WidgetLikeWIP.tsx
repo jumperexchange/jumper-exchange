@@ -24,7 +24,6 @@ import {
   WalletAvatar,
   WalletCardBadge,
 } from '@/components/Menus/WalletMenu/WalletCard.style';
-import { styled } from '@mui/system';
 import { getEthersSigner } from '@/components/WidgetLikeField/utils';
 
 function WidgetLikeWIP({ contractCalls }: { contractCalls: ContractCall[] }) {

@@ -103,6 +103,7 @@ function DepositWidget({
   const offerType = 'market';
   const fundingType = 'wallet';
   const vaultIncentiveActionType = 'add';
+
   const {
     isValid,
     isLoading,
