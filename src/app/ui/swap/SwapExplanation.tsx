@@ -1,7 +1,7 @@
 'use client';
 import { Box, Typography, alpha } from '@mui/material';
 import { AccordionFAQ } from 'src/components/AccordionFAQ';
-import { SeoPageContainer } from 'src/components/SeoPageContainer.style';
+import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
 
 const SwapExplanationSection = () => {
   const faqData = [
@@ -9,7 +9,7 @@ const SwapExplanationSection = () => {
     { Question: 'Some Question here 2', Answer: 'Some Answer here 2' },
   ];
   return (
-    <SeoPageContainer
+    <DynamicPagesContainer
       sx={() => ({
         width: '100%',
       })}
@@ -33,7 +33,7 @@ const SwapExplanationSection = () => {
           },
         })}
       />
-    </SeoPageContainer>
+    </DynamicPagesContainer>
   );
 };
 

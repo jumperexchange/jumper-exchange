@@ -4,7 +4,7 @@ import { getChainById } from '@/utils/tokenAndChain';
 import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
 import { Link as MuiLink, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
-import { SeoPageContainer } from 'src/components/SeoPageContainer.style';
+import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
 
 interface PopularBridgeProps {
   sourceChain: ExtendedChain;
@@ -53,7 +53,7 @@ const PopularBridgeSection = ({
     );
 
   return (
-    <SeoPageContainer width="100%">
+    <DynamicPagesContainer width="100%">
       <Typography variant="h3" marginY={2}>
         Popular bridges
       </Typography>
@@ -72,7 +72,7 @@ const PopularBridgeSection = ({
           </MuiLink>
         ))}
       </Stack>
-    </SeoPageContainer>
+    </DynamicPagesContainer>
   );
 };
 

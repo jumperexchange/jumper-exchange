@@ -3,7 +3,7 @@
 import type { BoxProps } from '@mui/system';
 import { Box, styled } from '@mui/system';
 
-export const SeoPageContainer = styled(Box)<BoxProps>(({ theme }) => ({
+export const DynamicPagesContainer = styled(Box)<BoxProps>(({ theme }) => ({
   color: theme.palette.text.primary,
   position: 'relative',
   borderRadius: 32,

@@ -2,7 +2,7 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
 import { Link as MuiLink, Typography } from '@mui/material';
 import Link from 'next/link';
-import { SeoPageContainer } from 'src/components/SeoPageContainer.style';
+import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
 
 interface StepsExplainerProps {
   sourceChain: ExtendedChain;
@@ -18,7 +18,7 @@ const StepsExplainerSection = ({
   destinationToken,
 }: StepsExplainerProps) => {
   return (
-    <SeoPageContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
+    <DynamicPagesContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
       <Typography
         variant="h2"
         color="text.primary"
@@ -118,7 +118,7 @@ const StepsExplainerSection = ({
           profile to visualize your recent transaction
         </li>
       </ul>
-    </SeoPageContainer>
+    </DynamicPagesContainer>
   );
 };
 

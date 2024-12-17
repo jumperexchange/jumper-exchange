@@ -4,13 +4,13 @@ import type { TableCellProps } from '@mui/material';
 import { TableCell } from '@mui/material';
 import type { BoxProps, Breakpoint } from '@mui/system';
 import { styled } from '@mui/system';
-import { SeoPageContainer } from '../SeoPageContainer.style';
+import { DynamicPagesContainer } from '../DynamicPagesContainer';
 
 interface InformationCardContainerProps extends BoxProps {
   fullWidth?: boolean;
 }
 
-export const InformationCardContainer = styled(SeoPageContainer, {
+export const InformationCardContainer = styled(DynamicPagesContainer, {
   shouldForwardProp: (prop) => prop !== 'fullWidth',
 })<InformationCardContainerProps>(({ theme, fullWidth }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {

@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import Link from 'next/link';
-import { SeoPageContainer } from 'src/components/SeoPageContainer.style';
+import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
 
 function buildExplorerLink(blockExplorerUrls: string[] = [], address: string) {
   if (blockExplorerUrls.length === 0) {
@@ -48,7 +48,7 @@ function HalfSizeBlock({
   type: 'Blockchain' | 'Token';
 }) {
   return (
-    <SeoPageContainer width={'48.5%'}>
+    <DynamicPagesContainer width={'48.5%'}>
       <Typography variant="h3" display="flex" alignItems="center">
         {info.logoURI && (
           <Box display="flex" marginRight={2}>
@@ -72,7 +72,7 @@ function HalfSizeBlock({
           ))}
         </TableBody>
       </Table>
-    </SeoPageContainer>
+    </DynamicPagesContainer>
   );
 }
 

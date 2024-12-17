@@ -4,7 +4,7 @@ import { Link as MuiLink, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { Divider } from 'src/components/Blog';
-import { SeoPageContainer } from 'src/components/SeoPageContainer.style';
+import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
 import StepDetail from 'src/components/StepDetail/StepDetail';
 import { getWidgetImageProps } from 'src/utils/image-generation/getWidgetImage';
 
@@ -166,7 +166,7 @@ const SwapStepsExplainerSection = ({
   ];
 
   return (
-    <SeoPageContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
+    <DynamicPagesContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
       <Typography
         variant="h2"
         color="text.primary"
@@ -192,7 +192,7 @@ const SwapStepsExplainerSection = ({
           />
         </Fragment>
       ))}
-    </SeoPageContainer>
+    </DynamicPagesContainer>
   );
 };
 
