@@ -186,8 +186,7 @@ function DepositWidget({
 
   const hasErrorText = useMemo(() => {
     if (
-      inputValue ??
-      0 >
+      (inputValue ?? 0) >
         parseRawAmountToTokenAmount(
           market?.quantity_ip ?? '0', // @note: AP fills IP quantity
           market?.input_token_data.decimals ?? 0,
@@ -195,7 +194,7 @@ function DepositWidget({
     ) {
       return 'Above fillable';
     }
-    if (inputValue ?? 0 > balance) {
+    if ((inputValue ?? 0) > balance) {
       return 'Above balance';
     }
     if (isTxConfirmError) {
@@ -225,7 +224,7 @@ function DepositWidget({
   }, [isTxConfirmed]);
 
   function onChangeValue(value: string = '0') {
-    setInputValue(parseFloat(value));
+    setInputValue(value === '' ? 0 : parseFloat(value));
   }
 
   async function onSubmit(e: React.FormEvent) {

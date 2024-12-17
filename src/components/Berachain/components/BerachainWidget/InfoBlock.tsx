@@ -5,7 +5,7 @@ import {
 } from '@/components/Berachain/components/BerachainWidgetWip/BerachainWidgetWip.style';
 import { BerachainProgressCard } from '@/components/Berachain/components/BerachainProgressCard/BerachainProgressCard';
 import { formatDuration } from 'date-fns';
-import { secondsToDuration } from '@/components/Berachain/lockupTimeMap';
+import { formatWithCustomLabels, secondsToDuration } from '@/components/Berachain/lockupTimeMap';
 import { useTranslation } from 'react-i18next';
 import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
@@ -62,7 +62,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
         ) : (
           <BerachainProgressCard
             title="Lockup time"
-            value={formatDuration(
+            value={formatWithCustomLabels(
               Object.entries(secondsToDuration(market.lockup_time))
                 .filter(([_, value]) => value > 0) // Filter out zero values
                 .slice(0, 2) // Take the first two non-zero units

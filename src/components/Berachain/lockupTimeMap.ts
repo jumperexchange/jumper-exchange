@@ -10,37 +10,37 @@ export const LockupTimeMap: Record<
   minutes: {
     offer: 1,
     notation: 'min',
-    label: 'Minutes',
+    label: 'minutes',
     multiplier: 60,
   },
   hours: {
     offer: 2,
     notation: 'hr',
-    label: 'Hours',
+    label: 'hours',
     multiplier: 3600,
   },
   days: {
     offer: 3,
     notation: 'd',
-    label: 'Days',
+    label: 'days',
     multiplier: 86400,
   },
   weeks: {
     offer: 4,
     notation: 'wk',
-    label: 'Weeks',
+    label: 'weeks',
     multiplier: 604800,
   },
   months: {
     offer: 5,
     notation: 'mo',
-    label: 'Months',
+    label: 'months',
     multiplier: 2592000,
   },
   years: {
     offer: 6,
     notation: 'yr',
-    label: 'Years',
+    label: 'years',
     multiplier: 31536000,
   },
 };
@@ -65,4 +65,15 @@ export function secondsToDuration(seconds: any) {
     minutes,
     seconds,
   };
+}
+
+export function formatWithCustomLabels(duration: Record<string, number>) {
+  return Object.entries(duration)
+    .filter(([_, value]) => value > 0) // Filter out zero values
+    .slice(0, 2) // Take the first two non-zero units
+    .map(([unit, value]) => {
+      const notation = `${LockupTimeMap[unit]?.notation || unit}${value > 1 && 's'}`; // Get notation or fallback to original unit
+      return `${value} ${notation}`; // Format as "X mins", "Y hrs", etc.
+    })
+    .join(' '); // Combine into a single string
 }
