@@ -1,8 +1,8 @@
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import { Skeleton, Typography } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { berachainMarkets } from 'src/components/Berachain/const/berachainExampleData';
 import { useBerachainMarketTokens } from 'src/components/Berachain/hooks/useBerachainMarketTokens';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
@@ -13,6 +13,8 @@ import {
   BerachainMarketFiltersButton,
 } from '../BerachainMarkets.style';
 import { BerachainMarketsFilterBox } from './BerachainMarketsFilters.style';
+import { useEnrichedMarkets } from 'royco/hooks';
+import type { EnrichedMarketDataType } from 'royco/queries';
 
 export const BerachainFilterTokensMenu = () => {
   const { tokenFilter, setTokenFilter } = useBerachainMarketsFilterStore(
@@ -36,7 +38,29 @@ export const BerachainFilterTokensMenu = () => {
   const assetsFilterId = 'token-filter-button';
   const assetsMenuId = 'token-filter-menu';
 
-  const data = useBerachainMarketTokens(berachainMarkets);
+  const { data } = useEnrichedMarkets({
+    is_verified: false,
+    sorting: [{ id: 'locked_quantity_usd', desc: true }],
+  });
+
+  const tokens = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    const mappedTokens = new Map<
+      string,
+      EnrichedMarketDataType['input_token_data']
+    >();
+
+    for (const token of data) {
+      // const [, tokenAddress] = (token.input_token_id ?? '')?.split('-')
+      const tokenAddress = token.input_token_data?.symbol ?? '';
+      mappedTokens.set(tokenAddress, token.input_token_data);
+    }
+
+    return mappedTokens;
+  }, [data]);
 
   return (
     <BerachainMarketsFilterBox>
@@ -61,7 +85,7 @@ export const BerachainFilterTokensMenu = () => {
         idLabel={assetsFilterId}
         idMenu={assetsMenuId}
       >
-        {data.tokens.map((token, index) => {
+        {Array.from(tokens.values()).map((token, index) => {
           if (!token) {
             return null;
           }
@@ -69,10 +93,10 @@ export const BerachainFilterTokensMenu = () => {
             <BerachainMarketFilterItem
               key={`berachain-token-filter-${index}-${token.symbol}`}
               onClick={() => {
-                setTokenFilter(token.address);
+                setTokenFilter(token.symbol);
               }}
             >
-              {tokenFilter.includes(token.address) ? (
+              {tokenFilter.includes(token.symbol) ? (
                 <RadioButtonUncheckedIcon
                   sx={{ color: '#FF8425', width: '24px', height: '24px' }}
                 />
@@ -82,14 +106,15 @@ export const BerachainFilterTokensMenu = () => {
                 />
               )}
 
-              {token.logoURI ? (
-                <Image
-                  src={token.logoURI}
+              {token.image ? (
+                <Box
+                  component="img"
+                  src={token.image}
                   alt={`${token.symbol}-logo`}
                   width={20}
                   height={20}
                   style={{ borderRadius: '10px', marginLeft: '12px' }}
-                ></Image>
+                ></Box>
               ) : (
                 <Skeleton
                   variant="circular"

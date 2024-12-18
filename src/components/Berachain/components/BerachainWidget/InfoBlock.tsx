@@ -11,9 +11,11 @@ import {
 } from '@/components/Berachain/lockupTimeMap';
 import { useTranslation } from 'react-i18next';
 import type { Breakpoint } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
+import TooltipIncentives from '@/components/Berachain/components/BerachainWidget/TooltipIncentives';
 
 function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
   const { t } = useTranslation();
@@ -47,7 +49,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                 })
               : 'N/A'
           }
-          tooltip={'APY lorem ipsum tooltip msg'}
+          tooltip={<TooltipIncentives market={market} />}
         />
         {market.lockup_time === '0' ? (
           <BerachainProgressCard
@@ -64,7 +66,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
           />
         ) : (
           <BerachainProgressCard
-            title="Lockup time"
+            title="Lockup"
             value={formatWithCustomLabels(
               Object.entries(secondsToDuration(market.lockup_time))
                 .filter(([_, value]) => value > 0) // Filter out zero values

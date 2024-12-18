@@ -31,6 +31,7 @@ import { useTranslation } from 'react-i18next';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
+import TooltipIncentives from '@/components/Berachain/components/BerachainWidget/TooltipIncentives';
 
 interface BerachainMarketCardProps {
   roycoData: EnrichedMarketDataType;
@@ -237,7 +238,7 @@ export const BerachainMarketCard = ({
             valueSx={{ color: alpha(theme.palette.white.main, 0.84) }}
           />
           <Tooltip
-            title={<BerachainTooltipTokens data={roycoData} />}
+            title={<TooltipIncentives market={roycoData} />}
             open={openTokensTooltip ? false : undefined}
             disableFocusListener={openTokensTooltip ? false : undefined}
             disableInteractive={!openTokensTooltip ? false : undefined}

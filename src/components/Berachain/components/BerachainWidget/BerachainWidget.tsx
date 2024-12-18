@@ -101,7 +101,14 @@ export const BerachainWidget = ({
       />
       <Box>
         {tab === 0 && (
-          <Box sx={{ marginTop: theme.spacing(1.5) }}>
+          <Box
+            sx={{
+              marginTop: theme.spacing(1.5),
+              '.widget-wrapper > div > div': {
+                maxWidth: '100%!important',
+              },
+            }}
+          >
             <Widget
               // @ts-expect-error
               starterVariant="compact"

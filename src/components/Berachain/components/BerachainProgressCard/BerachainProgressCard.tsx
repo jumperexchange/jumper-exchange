@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 interface BerachainProgressCardProps {
   title: string;
   value?: string;
-  tooltip?: string;
+  tooltip?: string | React.ReactNode;
   icon?: React.ReactNode;
   sx?: SxProps<Theme> | undefined;
   valueSx?: SxProps<Theme> | undefined;
