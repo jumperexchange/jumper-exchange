@@ -149,11 +149,9 @@ export function Widget({
       },
       bridges: {
         allow: configTheme?.allowedBridges,
-        deny: ['allbridge', 'celerim', 'squid'],
       },
       exchanges: {
         allow: configTheme?.allowedExchanges,
-        deny: ['bebop', 'paraswap', '0x'],
       },
       languages: {
         default: i18n.language as LanguageKey,
