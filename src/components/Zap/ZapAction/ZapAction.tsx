@@ -133,6 +133,11 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
                   name: 'ff',
                 },
               }}
+              projectData={{
+                address: 'test',
+                chain: 'test',
+                project: 'test',
+              }}
             />
           </>
         );

@@ -1,6 +1,6 @@
 import type { Account, Chain, Client, Transport } from 'viem';
 import { BrowserProvider, JsonRpcSigner } from 'ethers';
-import { Config } from 'wagmi';
+import type { Config } from 'wagmi';
 import { getConnectorClient } from 'wagmi/actions';
 export function clientToSigner(client: Client<Transport, Chain, Account>) {
   const { account, chain, transport } = client;

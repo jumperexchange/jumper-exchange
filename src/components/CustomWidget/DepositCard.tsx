@@ -75,7 +75,11 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         >
           <Typography variant="subtitle2">Incentives</Typography>
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            {analytics?.apr ? `${analytics?.apr.toFixed(2)}%` : 'N/A'}
+            {analytics?.apr
+              ? `${analytics?.apr.toFixed(2)}%`
+              : analytics?.totalSupplyApy
+                ? `${Number(analytics?.totalSupplyApy).toFixed(2)}%`
+                : 'N/A'}
           </Typography>
         </Box>
       </Box>

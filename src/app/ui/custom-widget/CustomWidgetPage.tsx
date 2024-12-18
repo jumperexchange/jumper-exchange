@@ -1,8 +1,6 @@
 'use client';
-import {
-  CustomWidget as CustomWidgetComponent,
-  ProjectData,
-} from '@/components/CustomWidget/CustomWidget';
+import type { ProjectData } from '@/components/CustomWidget/CustomWidget';
+import { CustomWidget as CustomWidgetComponent } from '@/components/CustomWidget/CustomWidget';
 import { useAccount } from '@lifi/wallet-management';
 
 interface CustomWidgetPageProps {
