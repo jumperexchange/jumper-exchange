@@ -22,12 +22,7 @@ export const LevelIndicator = ({ level, bound }: LevelButtonProps) => {
       >
         {t('profile_page.level')} {level} • {bound}
       </NoSelectTypography>
-      <XPIcon
-        size={16}
-        variant="secondary"
-        color={theme.palette.white.main}
-        bgColor={theme.palette.primary.main}
-      />
+      <XPIcon />
     </LevelButton>
   );
 };

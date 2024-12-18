@@ -33,7 +33,7 @@ export const LeaderboardEntrySkeleton = ({
           height={24}
           sx={{ borderRadius: '12px' }}
         />
-        <XPIcon size={24} />
+        <XPIcon />
       </RankPointsContainer>
     </LeaderboardEntryWrapper>
   );

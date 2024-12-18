@@ -1,40 +1,4 @@
-import { useTheme } from '@mui/material';
-
-interface LVLIconProps {
-  color?: string;
-  bgColor?: string;
-  size?: number;
-  variant?: 'primary' | 'secondary' | 'completed';
-}
-
-export const LVLIcon = ({
-  color,
-  bgColor,
-  size,
-  variant = 'primary',
-}: LVLIconProps) => {
-  const theme = useTheme();
-  let iconColor, iconBgColor;
-  switch (variant) {
-    case 'secondary':
-      iconColor = theme.palette.white.main;
-      iconBgColor = theme.palette.accent1.main;
-
-      break;
-    case 'completed': {
-      iconColor = theme.palette.white.main;
-      iconBgColor = '#00B849';
-      break;
-    }
-    default:
-      iconColor =
-        theme.palette.mode === 'light'
-          ? theme.palette.primary.main
-          : theme.palette.white.main;
-      iconBgColor = theme.palette.bgQuaternary.main;
-      break;
-  }
-
+export const LVLIcon = () => {
   return (
     <svg
       width="20"

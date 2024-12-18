@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import { walletDigest } from 'src/utils/walletDigest';
@@ -33,7 +33,6 @@ export const LeaderboardEntry = ({
   position,
   points,
 }: LeaderboardEntryProps) => {
-  const theme = useTheme();
   const { t } = useTranslation();
   const formattedAddress = obfuscatedAddressFormatter(walletAddress);
   const imgLink = useWalletAddressImg(formattedAddress);
@@ -86,11 +85,7 @@ export const LeaderboardEntry = ({
           <Typography variant="bodyLargeStrong">
             {t('format.decimal2Digit', { value: points })}
           </Typography>
-          <XPIcon
-            size={24}
-            color={theme.palette.text.primary}
-            bgColor={theme.palette.bgQuaternary.main}
-          />
+          <XPIcon />
         </RankPointsContainer>
       )}
     </LeaderboardEntryWrapper>

@@ -1,40 +1,4 @@
-import { useTheme } from '@mui/material';
-
-interface XPIconProps {
-  color?: string;
-  bgColor?: string;
-  size?: number;
-  variant?: 'primary' | 'secondary' | 'completed';
-}
-
-export const XPIcon = ({
-  color,
-  bgColor,
-  size,
-  variant = 'primary',
-}: XPIconProps) => {
-  const theme = useTheme();
-  let iconColor, iconBgColor;
-  switch (variant) {
-    case 'secondary':
-      iconColor = theme.palette.white.main;
-      iconBgColor = theme.palette.accent1.main;
-
-      break;
-    case 'completed': {
-      iconColor = theme.palette.white.main;
-      iconBgColor = '#00B849';
-      break;
-    }
-    default:
-      iconColor =
-        theme.palette.mode === 'light'
-          ? theme.palette.primary.main
-          : theme.palette.white.main;
-      iconBgColor = theme.palette.bgQuaternary.main;
-      break;
-  }
-
+export const XPIcon = () => {
   return (
     <svg
       width="20"
@@ -62,7 +26,11 @@ export const XPIcon = ({
   );
 };
 
-export const SuperfestXPIcon = ({ size }: XPIconProps) => {
+interface SuperfestXPIconProps {
+  size?: number;
+}
+
+export const SuperfestXPIcon = ({ size }: SuperfestXPIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
