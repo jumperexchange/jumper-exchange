@@ -5,6 +5,7 @@ import { JUMPER_FEST_PATH } from 'src/const/urls';
 import { SoraTypography } from '../../Superfest.style';
 import { BackButtonMainBox } from './BackButton.style';
 
+// todo: cleanup and use one single BackButton component
 export const BackButton = () => {
   const router = useRouter();
 
