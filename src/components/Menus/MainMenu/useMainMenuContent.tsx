@@ -12,6 +12,7 @@ import {
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
   JUMPER_WASH_PATH,
+  JUMPER_WRAPPED_URL,
   X_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -21,8 +22,8 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
-import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
 import SchoolIcon from '@mui/icons-material/School';
+import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
@@ -158,6 +159,21 @@ export const useMainMenuContent = () => {
         });
         closeAllMenus();
         router.push(JUMPER_LOYALTY_PATH);
+      },
+    },
+    {
+      label: 'Jumper Wrapped',
+      prefixIcon: <ViewCarouselIcon />,
+      showMoreIcon: false,
+      link: { url: JUMPER_WRAPPED_URL, external: true },
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-jumper-learn-link',
+          action: TrackingAction.ClickJumperLearnLink,
+          data: { [TrackingEventParameter.Menu]: 'jumper_wrapped' },
+        });
+        closeAllMenus();
       },
     },
     {
