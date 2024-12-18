@@ -50,6 +50,10 @@ declare module '@mui/material/styles' {
     bg: Palette['primary'];
     bgSecondary: Palette['primary'];
     bgTertiary: Palette['primary'];
+    bgQuaternary: {
+      main: string;
+      hover: string;
+    };
     shadow: Palette['primary'];
     shadowLight: Palette['primary'];
     alphaDark100: Palette['primary'];
@@ -86,6 +90,7 @@ declare module '@mui/material/styles' {
     bg?: PaletteOptions['primary'];
     bgSecondary?: PaletteOptions['primary'];
     bgTertiary?: PaletteOptions['primary'];
+    bgQuaternary?: PaletteOptions['primary'];
     shadow?: PaletteOptions['primary'];
     shadowLight?: PaletteOptions['primary'];
     alphaDark100?: PaletteOptions['primary'];
@@ -170,6 +175,7 @@ declare module '@mui/material/Button' {
     bg: true;
     bgSecondary: true;
     bgTertiary: true;
+    bgQuaternary: true;
     shadow: true;
     shadowLight: true;
     alphaDark100: true;
@@ -669,6 +675,10 @@ export const lightTheme = createTheme(
       bgTertiary: {
         main: themeCustomized.palette.white.main,
       },
+      bgQuaternary: {
+        hover: alpha('#653BA3', 0.12),
+        main: alpha('#31007A', 0.08),
+      },
       shadow: {
         main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
       },
@@ -789,6 +799,10 @@ export const darkTheme = createTheme(
       },
       bgTertiary: {
         main: themeCustomized.palette.alphaLight200.main,
+      },
+      bgQuaternary: {
+        hover: alpha('#653BA3', 0.56),
+        main: alpha('#653BA3', 0.42),
       },
       shadow: {
         main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',

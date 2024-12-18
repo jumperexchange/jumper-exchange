@@ -1,4 +1,4 @@
-import { alpha, Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import { walletDigest } from 'src/utils/walletDigest';
@@ -89,11 +89,7 @@ export const LeaderboardEntry = ({
           <XPIcon
             size={24}
             color={theme.palette.text.primary}
-            bgColor={
-              theme.palette.mode === 'light'
-                ? alpha(theme.palette.primary.main, 0.08)
-                : alpha(theme.palette.primary.main, 0.42)
-            }
+            bgColor={theme.palette.bgQuaternary.main}
           />
         </RankPointsContainer>
       )}

@@ -1,5 +1,4 @@
-import type { BoxProps } from '@mui/material';
-import { alpha, Box, styled, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 
 interface XPIconProps {
   color?: string;
@@ -32,10 +31,7 @@ export const XPIcon = ({
         theme.palette.mode === 'light'
           ? theme.palette.primary.main
           : theme.palette.white.main;
-      iconBgColor =
-        theme.palette.mode === 'light'
-          ? alpha(theme.palette.primary.main, 0.08)
-          : alpha(theme.palette.primary.main, 0.42);
+      iconBgColor = theme.palette.bgQuaternary.main;
       break;
   }
 
