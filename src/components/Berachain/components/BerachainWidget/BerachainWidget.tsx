@@ -1,18 +1,13 @@
 import { Box, Typography, useTheme } from '@mui/material';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { type TabProps, Tabs } from 'src/components/Tabs/Tabs';
 import { Widget } from 'src/components/Widgets/Widget';
-import { BerachainWidgetWip } from '../BerachainWidgetWip/BerachainWidgetWip';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useTranslation } from 'react-i18next';
 import BerachainTransactionDetails from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
 import InfoBlock from '@/components/Berachain/components/BerachainWidget/InfoBlock';
-import { useAccountBalance } from 'royco/hooks';
-import { useAccount } from '@lifi/wallet-management';
-import { parseRawAmountToTokenAmount } from 'royco/utils';
-import { WithdrawWidget } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget';
+import { WithdrawWidget } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawWidget';
 import DepositWidget from '@/components/Berachain/components/BerachainWidget/DepositWidget/DepositWidget';
-import { fetchChainData } from '@/utils/image-generation/fetchChainData';
 import { useChains } from '@/hooks/useChains';
 
 export const BerachainWidget = ({
@@ -136,7 +131,12 @@ export const BerachainWidget = ({
             />
           </Box>
         )}
-        {tab === 2 && <WithdrawWidget market={market} />}
+        {tab === 2 && (
+          <WithdrawWidget
+            market={market}
+            overrideStyle={{ mainColor: '#FF8425' }}
+          />
+        )}
       </Box>
     </Box>
   );

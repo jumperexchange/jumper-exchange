@@ -86,7 +86,6 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
             })}
             tooltip="Deposited value"
             sx={{
-              height: '100%',
               padding: theme.spacing(1.5, 2),
               display: 'flex',
               [theme.breakpoints.up('sm' as Breakpoint)]: {

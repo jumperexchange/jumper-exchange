@@ -21,6 +21,7 @@ import { getExplorerUrl, shortAddress } from 'royco/utils';
 import InfoIcon from '@mui/icons-material/Info';
 import ExternalLinkIcon from '@mui/icons-material/Link';
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
+import SvgIcon from '@mui/material/SvgIcon/SvgIcon';
 
 export const MarketRewardStyle: Record<
   TypedRoycoMarketRewardStyle,
@@ -83,21 +84,18 @@ function BerachainTransactionDetails({
           <InfoCard.Row.Value>
             <Typography variant="body2" color="textSecondary" component="span">
               {`${shortAddress(market.market_id ?? '')}`}
-              <Tooltip
-                title="Market id is constructed as concatenation of chain id,
+            </Typography>
+            <Tooltip
+              title="Market id is constructed as concatenation of chain id,
               market type and market index. For recipes, market id is
               hash of the market and for vaults, it is the address of
               wrapped vault."
-                placement="top"
-                enterTouchDelay={0}
-                arrow
-              >
-                <InfoIcon
-                  htmlColor="white"
-                  sx={{ cursor: 'help', marginX: 1 }}
-                />
-              </Tooltip>
-            </Typography>
+              placement="top"
+              enterTouchDelay={0}
+              arrow
+            >
+              <InfoIcon htmlColor="white" sx={{ cursor: 'help', marginX: 1 }} />
+            </Tooltip>
           </InfoCard.Row.Value>
         </InfoCard.Row>
 
@@ -123,27 +121,27 @@ function BerachainTransactionDetails({
                         : 'forfeitable'
                   ].label
                 }
-
-                <Tooltip
-                  title={
-                    MarketRewardStyle[
-                      market.reward_style === 0
-                        ? 'upfront'
-                        : market.reward_style === 1
-                          ? 'arrear'
-                          : 'forfeitable'
-                    ].description
-                  }
-                  placement="top"
-                  enterTouchDelay={0}
-                  arrow
-                >
-                  <InfoIcon
-                    htmlColor="white"
-                    sx={{ cursor: 'help', marginX: 1 }}
-                  />
-                </Tooltip>
               </Typography>
+
+              <Tooltip
+                title={
+                  MarketRewardStyle[
+                    market.reward_style === 0
+                      ? 'upfront'
+                      : market.reward_style === 1
+                        ? 'arrear'
+                        : 'forfeitable'
+                  ].description
+                }
+                placement="top"
+                enterTouchDelay={0}
+                arrow
+              >
+                <InfoIcon
+                  htmlColor="white"
+                  sx={{ cursor: 'help', marginX: 1 }}
+                />
+              </Tooltip>
             </InfoCard.Row.Value>
           </InfoCard.Row>
         )}
@@ -166,22 +164,22 @@ function BerachainTransactionDetails({
                   notation: 'standard',
                   useGrouping: true,
                 }).format(market.total_incentive_amounts_usd ?? 0)}
-                <Tooltip
-                  title={
-                    market.market_type === RoycoMarketType.recipe.value
-                      ? 'Remaining incentives in all IP offers'
-                      : 'Remaining incentives in a present or future campaign'
-                  }
-                  placement="top"
-                  enterTouchDelay={0}
-                  arrow
-                >
-                  <InfoIcon
-                    htmlColor="white"
-                    sx={{ cursor: 'help', marginX: 1 }}
-                  />
-                </Tooltip>
               </Typography>
+              <Tooltip
+                title={
+                  market.market_type === RoycoMarketType.recipe.value
+                    ? 'Remaining incentives in all IP offers'
+                    : 'Remaining incentives in a present or future campaign'
+                }
+                placement="top"
+                enterTouchDelay={0}
+                arrow
+              >
+                <InfoIcon
+                  htmlColor="white"
+                  sx={{ cursor: 'help', marginX: 1 }}
+                />
+              </Tooltip>
             </InfoCard.Row.Value>
           </InfoCard.Row>
         }
@@ -204,22 +202,22 @@ function BerachainTransactionDetails({
                   notation: 'standard',
                   useGrouping: true,
                 }).format(market.locked_quantity_usd ?? 0)}
-                <Tooltip
-                  title={
-                    market.market_type === RoycoMarketType.recipe.value
-                      ? 'Value of all input tokens locked inside weiroll wallets'
-                      : 'Value of all input tokens deposited in underlying vault through Royco'
-                  }
-                  placement="top"
-                  enterTouchDelay={0}
-                  arrow
-                >
-                  <InfoIcon
-                    htmlColor="white"
-                    sx={{ cursor: 'help', marginX: 1 }}
-                  />
-                </Tooltip>
               </Typography>
+              <Tooltip
+                title={
+                  market.market_type === RoycoMarketType.recipe.value
+                    ? 'Value of all input tokens locked inside weiroll wallets'
+                    : 'Value of all input tokens deposited in underlying vault through Royco'
+                }
+                placement="top"
+                enterTouchDelay={0}
+                arrow
+              >
+                <InfoIcon
+                  htmlColor="white"
+                  sx={{ cursor: 'help', marginX: 1 }}
+                />
+              </Tooltip>
             </InfoCard.Row.Value>
           </InfoCard.Row>
         }
@@ -246,17 +244,17 @@ function BerachainTransactionDetails({
                   market.input_token_data.contract_address.slice(-4)
               }
               {/* <InfoTip {...INFO_TIP_PROPS}>Wrapped Vault</InfoTip> */}
-              <IconButton
-                sx={{
-                  height: '20px', // Matches `h-5`, 5 in Tailwind corresponds to 20px (since 1 unit = 4px in MUI)
-                  width: '20px', // Matches `w-5`, 5 in Tailwind corresponds to 20px
-                  padding: '0.1rem', // Matches `p-[0.1rem]`, equivalent to 0.1rem (1rem = 16px, so 0.1rem = 1.6px)
-                  color: 'secondary.main', // Matches `text-secondary`, using MUI's theme for secondary color
-                }}
-              >
-                <ExternalLinkIcon strokeWidth={1.5} />
-              </IconButton>
             </Link>
+            <ExternalLinkIcon
+              sx={{
+                marginX: 1,
+                height: '24px', // Matches `h-5`, 5 in Tailwind corresponds to 20px (since 1 unit = 4px in MUI)
+                width: '24px', // Matches `w-5`, 5 in Tailwind corresponds to 20px
+                padding: '0.1rem', // Matches `p-[0.1rem]`, equivalent to 0.1rem (1rem = 16px, so 0.1rem = 1.6px)
+                color: 'text.primary', // Matches `text-secondary`, using MUI's theme for secondary color
+              }}
+              strokeWidth={1.5}
+            />
           </InfoCard.Row.Value>
         </InfoCard.Row>
         <Divider color="white" sx={{ marginY: 2 }} />

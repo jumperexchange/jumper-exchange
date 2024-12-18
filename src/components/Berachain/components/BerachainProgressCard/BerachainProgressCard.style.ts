@@ -11,6 +11,7 @@ export const BeraChainProgressCardComponent = styled(Card)(({ theme }) => ({
   boxShadow: 'unset',
   alignItems: 'center',
   gap: '16px',
+  height: 'auto',
 }));
 
 export const BeraChainProgressCardContent = styled(Box)(({ theme }) => ({

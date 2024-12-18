@@ -1,4 +1,13 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import type { SelectChangeEvent } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import BerachainTransactionDetails from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
 import InfoBlock from '@/components/Berachain/components/BerachainWidget/InfoBlock';
@@ -16,11 +25,12 @@ import {
 } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import { RoycoMarketType, RoycoMarketUserType } from 'royco/market';
-import { WithdrawInputTokenRow } from './WithdrawInputTokenRow';
-import { WithdrawIncentiveTokenRow } from './WithdrawIncentiveTokenRow';
+import { WithdrawInputTokenRow } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawInputTokenRow';
+import { WithdrawIncentiveTokenRow } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawIncentiveTokenRow';
 import { useMemo, useState } from 'react';
 import { CustomLoadingButton } from '@/components/Berachain/components/BerachainWidget/LoadingButton.style';
 import { switchChain } from '@wagmi/core';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 export type TypedMarketWithdrawType = 'input_token' | 'incentives';
 export const MarketWithdrawType: Record<
@@ -42,14 +52,22 @@ export const MarketWithdrawType: Record<
 
 export const WithdrawWidget = ({
   market,
+  overrideStyle = {},
 }: {
   market: EnrichedMarketDataType;
+  overrideStyle?: {
+    mainColor?: string;
+  };
 }) => {
   const wagmiConfig = useConfig();
   const { account } = useAccount();
   const theme = useTheme();
   const [transactions, setTransactions] = useState([]);
-  const withdrawType = 'input_token';
+  const [withdrawType, setWithdrawType] = useState('input_token');
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setWithdrawType(event.target.value as string);
+  };
 
   const shouldSwitchChain = useMemo(() => {
     if (account?.isConnected && market.chain_id !== account?.chainId) {
@@ -174,7 +192,37 @@ export const WithdrawWidget = ({
     <Box sx={{ marginTop: theme.spacing(1.5) }}>
       <InfoBlock market={market} />
       <BerachainTransactionDetails type="withdraw" market={market} />
-
+      <FormControl fullWidth>
+        <InputLabel id="withdraw-type-label">Withdraw type</InputLabel>
+        <Select
+          labelId="withdraw-type-label"
+          id="demo-simple-select"
+          value={withdrawType}
+          label="Withdraw type"
+          onChange={handleChange}
+          MenuProps={{
+            sx: {
+              '.MuiMenu-list': {
+                backgroundColor: '#121214',
+              },
+            },
+          }}
+          sx={{
+            '.MuiSelect-icon': {
+              color: 'text.primary',
+            },
+          }}
+        >
+          {Object.keys(MarketWithdrawType).map((key, index) => (
+            <MenuItem
+              value={MarketWithdrawType[key as TypedMarketWithdrawType].id}
+              key={index}
+            >
+              {MarketWithdrawType[key as TypedMarketWithdrawType].label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       {!account?.isConnected && (
         <Box
           sx={{
@@ -191,22 +239,48 @@ export const WithdrawWidget = ({
           </Typography>
         </Box>
       )}
-      {positionsRecipeSuccess && positions.length === 0 && (
-        <Box
-          sx={{
-            height: '100%',
-            width: '100%',
-            display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
-            placeContent: 'center', // Centers content horizontally and vertically.
-            alignItems: 'start', // Aligns items at the start along the cross-axis.
-          }}
-        >
-          {/*<div className="h-full w-full place-content-center items-start">*/}
-          <Typography variant="body2" color="textSecondary">
-            No withdrawable positions found
-          </Typography>
+      {shouldSwitchChain && (
+        <Box sx={{ marginTop: theme.spacing(1.5) }}>
+          <CustomLoadingButton
+            fullWidth
+            overrideStyle={overrideStyle}
+            type="button"
+            // loading={isLoading || isTxPending || isTxConfirming}
+            variant="contained"
+            onClick={async () => {
+              try {
+                await switchChain(wagmiConfig, {
+                  chainId: market?.chain_id!,
+                });
+              } catch (error) {
+                // TODO: to remove
+                // eslint-disable-next-line no-console
+                console.error(error);
+              }
+            }}
+          >
+            <Typography variant="bodyMediumStrong">Switch chain</Typography>
+          </CustomLoadingButton>
         </Box>
       )}
+      {!shouldSwitchChain &&
+        positionsRecipeSuccess &&
+        positions.length === 0 && (
+          <Box
+            sx={{
+              height: '100%',
+              width: '100%',
+              display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
+              placeContent: 'center', // Centers content horizontally and vertically.
+              alignItems: 'start', // Aligns items at the start along the cross-axis.
+            }}
+          >
+            {/*<div className="h-full w-full place-content-center items-start">*/}
+            <Typography variant="body2" color="textSecondary">
+              No withdrawable positions found
+            </Typography>
+          </Box>
+        )}
       {!!positions &&
         !isLoadingPositionsRecipe &&
         Array.isArray(positions) &&
@@ -457,6 +531,23 @@ export const WithdrawWidget = ({
                       </Box>
                     )}
                 </Box>
+                {withdrawType === MarketWithdrawType.incentives.id && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      color: 'text.primary',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '100%',
+                    }}
+                  >
+                    <Typography variant="body2" color="textSecondary">
+                      Click to claim
+                    </Typography>
+                    <ArrowUpwardIcon />
+                  </Box>
+                )}
               </Box>
             );
           })}

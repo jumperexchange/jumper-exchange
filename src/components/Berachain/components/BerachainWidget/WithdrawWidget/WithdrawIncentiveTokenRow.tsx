@@ -3,21 +3,28 @@ import React from 'react';
 import {
   WalletAvatar,
   WalletCardBadge,
-} from 'src/components/Menus/WalletMenu/WalletCard.style';
+} from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
 
-export const WithdrawInputTokenRow = React.forwardRef<
+export const WithdrawIncentiveTokenRow = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
     token: any;
+    disabled: boolean;
   }
->(({ className, token, ...props }, ref) => {
+>(({ className, token, disabled, ...props }, ref) => {
   return (
     <Box
       display="flex"
       flexDirection="row"
       ref={ref}
-      // className={cn("flex w-full flex-row", className)}
+      sx={{
+        cursor: 'pointer',
+      }}
+      // className={cn(
+      ///*"flex w-full grow flex-row items-center justify-between gap-2",*/
+      // className
+      // )}
       {...props}
     >
       <Box
@@ -29,7 +36,7 @@ export const WithdrawInputTokenRow = React.forwardRef<
           whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
           wordBreak: 'normal', // Equivalent to `break-normal`
         }}
-        // className="flex flex-row items-center space-x-2 whitespace-nowrap break-normal"
+        className="flex h-4 flex-row items-center space-x-2"
       >
         <Typography variant="body2" color="textSecondary">
           <WalletCardBadge

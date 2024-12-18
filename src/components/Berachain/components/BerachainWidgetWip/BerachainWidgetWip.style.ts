@@ -92,8 +92,8 @@ export const BerachainWidgetSelectionChainLogoSkeleton = styled(Skeleton)(
 export const BerachainWidgetSelectionRewards = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'stretch',
   gap: theme.spacing(2),
-  marginTop: theme.spacing(2),
 }));
 
 export const BerachainActionPledgeButton = styled(Button)(({ theme }) => ({

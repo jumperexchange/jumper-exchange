@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Link, Tooltip, Typography } from '@mui/material';
+import { darken, Link, Tooltip, Typography } from '@mui/material';
 import type { decodeActionsReturnType } from 'royco/market';
 import { Box } from '@mui/material';
 // import { decodeActionsReturnType } from "@/sdk/market";
@@ -145,7 +145,7 @@ const ActionFlow = React.forwardRef<
                       variant="body2"
                       color="primary.main"
                       component="span"
-                      sx={{ cursor: 'help', marginX: 1 }}
+                      sx={{ cursor: 'help', marginX: 0.5 }}
                     >
                       {action.function_name
                         ? action.function_name
@@ -171,10 +171,10 @@ const ActionFlow = React.forwardRef<
                     arrow
                   >
                     <Link
-                      sx={{
+                      sx={(theme) => ({
+                        marginLeft: 0.5,
                         display: 'inline-block', // Matches `inline-block`
                         textAlign: 'left', // Matches `text-left`
-                        color: 'black', // Matches `text-black`
                         textDecoration: 'underline', // Matches `underline`
                         textDecorationColor: 'secondary.main', // Matches `decoration-secondary`
                         textDecorationStyle: 'dotted', // Matches `decoration-dotted`
@@ -182,14 +182,14 @@ const ActionFlow = React.forwardRef<
                         textUnderlineOffset: '3px', // Matches `underline-offset-[3px]`
                         transition: 'color 200ms ease-in-out', // Matches `transition-colors duration-200 ease-in-out`
                         '&:hover': {
-                          color: 'secondary.main', // Matches `hover:text-secondary`
                           textDecorationColor: 'tertiary.main', // Matches `hover:decoration-tertiary`
+                          color: darken(theme.palette.primary.main, 0.16),
                         },
-                      }}
+                      })}
                       href={action.explorer_url}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="inline-block text-left text-black underline decoration-secondary decoration-dotted underline-offset-[3px] transition-colors duration-200 ease-in-out hover:text-secondary hover:decoration-tertiary"
+                      // className="inline-block text-left text-black underline decoration-secondary decoration-dotted underline-offset-[3px] transition-colors duration-200 ease-in-out hover:text-secondary hover:decoration-tertiary"
                     >
                       {action.contract_name ? action.contract_name : 'Unknown'}
                     </Link>
