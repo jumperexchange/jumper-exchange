@@ -123,6 +123,7 @@ export const BerachainWidget = ({
             <BerachainTransactionDetails type="deposit" market={market} />
             <DepositWidget
               market={market}
+              chain={chain}
               contractCalls={[]}
               overrideStyle={{ mainColor: '#FF8425' }}
               label="Supply"
@@ -141,6 +142,7 @@ export const BerachainWidget = ({
         {tab === 2 && (
           <WithdrawWidget
             market={market}
+            chain={chain}
             overrideStyle={{ mainColor: '#FF8425' }}
           />
         )}

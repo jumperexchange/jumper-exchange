@@ -31,6 +31,7 @@ import { useMemo, useState } from 'react';
 import { CustomLoadingButton } from '@/components/Berachain/components/BerachainWidget/LoadingButton.style';
 import { switchChain } from '@wagmi/core';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import type { ExtendedChain } from '@lifi/sdk';
 
 export type TypedMarketWithdrawType = 'input_token' | 'incentives';
 export const MarketWithdrawType: Record<
@@ -52,9 +53,11 @@ export const MarketWithdrawType: Record<
 
 export const WithdrawWidget = ({
   market,
+  chain,
   overrideStyle = {},
 }: {
   market: EnrichedMarketDataType;
+  chain?: ExtendedChain;
   overrideStyle?: {
     mainColor?: string;
   };
@@ -522,7 +525,7 @@ export const WithdrawWidget = ({
                         {txHash && (
                           <Typography
                             component="a"
-                            href={`https://etherscan.io/tx/${txHash}`}
+                            href={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
                             target="_blank"
                           >
                             Transaction link

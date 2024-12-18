@@ -32,6 +32,7 @@ import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { switchChain } from '@wagmi/core';
 import { CustomLoadingButton } from '../LoadingButton.style';
+import type { ExtendedChain } from '@lifi/sdk';
 
 interface Image {
   url?: string;
@@ -66,6 +67,7 @@ interface WidgetLikeFieldProps {
   label: string;
   placeholder?: string;
   image?: Image & { badge?: Image };
+  chain?: ExtendedChain;
   helperText?: {
     before?: Partial<HelperText>;
     after?: Partial<HelperText>;
@@ -80,6 +82,7 @@ function DepositWidget({
   label,
   image,
   placeholder,
+  chain,
   helperText,
   market,
   overrideStyle = {},
@@ -227,16 +230,6 @@ function DepositWidget({
 
     return null;
   }, [market, inputValue, balance, isTxError, isTxConfirmError, txError]);
-
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('waitTransactionReceipt', {
-    txHash,
-    isLoading: isTxConfirming,
-    isSuccess: isTxConfirmed,
-    isError: isTxConfirmError,
-    status: confirmationStatus,
-  });
 
   useEffect(() => {
     if (isTxConfirmed) {
@@ -388,7 +381,7 @@ function DepositWidget({
           {txHash && (
             <Typography
               component="a"
-              href={`https://etherscan.io/tx/${txHash}`}
+              href={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
               target="_blank"
             >
               Transaction link
