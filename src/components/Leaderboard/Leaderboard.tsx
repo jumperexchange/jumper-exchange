@@ -9,7 +9,6 @@ import {
   useLeaderboardList,
   useLeaderboardUser,
 } from '../../hooks/useLeaderboard';
-import { IconHeader } from '../ProfilePage/Common/IconHeader';
 import { Pagination } from '../ProfilePage/Common/Pagination';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
 import {
@@ -23,12 +22,20 @@ import {
 import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
+import dynamic from 'next/dynamic';
 
 export const LEADERBOARD_LENGTH = 25;
 
 const isValidPage = (pageNum: number, totalPages: number) => {
   return !isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages;
 };
+
+const IconHeader = dynamic(
+  import('../ProfilePage/Common/IconHeader').then((mod) => mod.IconHeader),
+  {
+    ssr: false,
+  },
+);
 
 export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
   const { account } = useAccount();

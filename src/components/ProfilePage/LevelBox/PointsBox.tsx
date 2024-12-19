@@ -3,8 +3,15 @@
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
-import { IconHeader } from '../Common/IconHeader';
 import { PointsDisplay } from './PointsDisplay';
+import dynamic from 'next/dynamic';
+
+const IconHeader = dynamic(
+  import('../Common/IconHeader').then((mod) => mod.IconHeader),
+  {
+    ssr: false,
+  },
+);
 
 interface PointsBoxProps {
   points?: number;

@@ -12,7 +12,7 @@ import {
   CarouselNavigationButton,
   CarouselNavigationContainer,
 } from '.';
-import { IconHeader } from 'src/components/ProfilePage/Common/IconHeader';
+import dynamic from 'next/dynamic';
 
 interface CarouselContainerProps {
   title?: string;
@@ -23,6 +23,13 @@ interface CarouselContainerProps {
   trackingCategory?: string;
 }
 const swipeDistance = 420;
+
+const IconHeader = dynamic(
+  import('../../ProfilePage/Common/IconHeader').then((mod) => mod.IconHeader),
+  {
+    ssr: false,
+  },
+);
 
 export const CarouselContainer = ({
   styles,
