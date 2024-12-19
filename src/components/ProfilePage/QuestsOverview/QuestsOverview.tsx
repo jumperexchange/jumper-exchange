@@ -57,35 +57,36 @@ export const QuestsOverview = ({
               // isUnlockedForUser = false;
             }
 
-            return (
-              <QuestCard
-                key={`available-mission-${index}`}
-                title={quest?.attributes?.Title}
-                active={true}
-                image={String(imgURL)}
-                points={quest?.attributes?.Points}
-                ctaLink={quest?.attributes?.Link}
-                url={quest?.attributes?.Slug}
-                // platformName={
-                //   quest?.attributes?.quests_platform?.data?.attributes?.Name
-                // }
-                startDate={startDate}
-                endDate={endDate}
-                chains={chains}
-                rewards={rewards}
-                completed={completed}
-                claimingIds={claimingIds}
-                variableWeeklyAPY={
-                  quest?.attributes?.Points > 0 && rewardType === 'weekly'
-                }
-                rewardRange={rewardRange}
-                isTraitsGarded={questTraits?.length > 0}
-                isUnlocked={isUnlockedForUser}
-              />
-            );
+            const data = {
+              title: quest?.attributes?.Title,
+              active: true,
+              image: String(imgURL),
+              points: quest?.attributes?.Points,
+              ctaLink: quest?.attributes?.Link,
+              url: quest?.attributes?.Slug,
+              // platformName:
+              //   quest?.attributes?.quests_platform?.data?.attributes?.Name
+              // ,
+              startDate: startDate,
+              endDate: endDate,
+              chains: chains,
+              rewards: rewards,
+              completed: completed,
+              claimingIds: claimingIds,
+              variableWeeklyAPY:
+                quest?.attributes?.Points > 0 && rewardType === 'weekly',
+              rewardRange: rewardRange,
+              isTraitsGarded: questTraits?.length > 0,
+              isUnlocked: isUnlockedForUser,
+            };
+
+            return <QuestCard key={`available-mission-${index}`} data={data} />;
           })
         : Array.from({ length: 8 }, (_, idx) => (
-            <QuestCard key={`mission-card-skeleton-${idx}`} isLoading={true} />
+            <QuestCard
+              key={`mission-card-skeleton-${idx}`}
+              data={{ isLoading: true }}
+            />
           ))}
       {/** render ongoing numeric quests */}
       {/* <QuestCarouselNumericItems /> */}

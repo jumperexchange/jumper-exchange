@@ -1,20 +1,17 @@
 'use client';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAccount } from '@lifi/wallet-management';
-import type {
-  LeaderboardEntryData,
-  LeaderboardMeta,
-} from '../../hooks/useLeaderboard';
+import type { LeaderboardEntryData } from '../../hooks/useLeaderboard';
 import {
   useLeaderboardList,
   useLeaderboardUser,
 } from '../../hooks/useLeaderboard';
+import { IconHeader } from '../ProfilePage/Common/IconHeader';
 import { Pagination } from '../ProfilePage/Common/Pagination';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
-import { TooltipInfo } from '../TooltipInfo/TooltipInfo';
 import {
   LeaderboardContainer,
   LeaderboardEntryDivider,
@@ -26,7 +23,6 @@ import {
 import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
-import { IconHeader } from '../ProfilePage/Common/IconHeader';
 
 export const LEADERBOARD_LENGTH = 25;
 
@@ -39,13 +35,11 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
 
   const { t } = useTranslation();
 
-  const {
-    data: leaderboardData,
-    meta,
-  }: { data: LeaderboardEntryData[]; meta: LeaderboardMeta } =
-    useLeaderboardList(defaultPage, LEADERBOARD_LENGTH);
-  const { data: leaderboardUserData }: { data: LeaderboardEntryData } =
-    useLeaderboardUser(account?.address);
+  const { data: leaderboardData, meta } = useLeaderboardList(
+    defaultPage,
+    LEADERBOARD_LENGTH,
+  );
+  const { data: leaderboardUserData } = useLeaderboardUser(account?.address);
 
   const currentPage = useMemo(() => {
     return isValidPage(defaultPage, meta?.pagination?.pagesLength)

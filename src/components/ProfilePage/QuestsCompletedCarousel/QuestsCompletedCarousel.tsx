@@ -41,17 +41,16 @@ export const QuestsCompletedCarousel = ({
               if (!pda?.reward) {
                 return null;
               }
-              const title = `${capitalizeString(pda.reward?.type)} (${capitalizeString(pda?.reward?.name)})`;
+              const data = {
+                id: pda?.id,
+                completed: true,
+                active: false,
+                title: `${capitalizeString(pda.reward?.type)} (${capitalizeString(pda?.reward?.name)})`,
+                image: pda?.reward?.image,
+                points: pda?.points,
+              };
               return (
-                <QuestCard
-                  key={`completed-mission-${index}`}
-                  id={pda?.id}
-                  completed={true}
-                  active={false}
-                  title={title}
-                  image={pda?.reward?.image}
-                  points={pda?.points}
-                />
+                <QuestCard key={`completed-mission-${index}`} data={data} />
               );
             })
           : null}
@@ -68,7 +67,7 @@ export const QuestsCompletedCarousel = ({
           : null}
         {loading
           ? Array.from({ length: 2 }, () => 42).map((_, idx) => (
-              <QuestCard key={'skeleton-' + idx} />
+              <QuestCard key={'skeleton-' + idx} data={{}} />
             ))
           : null}
       </CarouselContainer>
