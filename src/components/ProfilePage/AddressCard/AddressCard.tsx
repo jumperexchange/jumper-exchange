@@ -4,25 +4,27 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { XPIcon } from 'src/components/illustrations/XPIcon';
+import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { AddressMenu } from '../AddressMenu/AddressMenu';
+import { WalletLinking } from '../WalletLinking/WalletLinking';
 import {
+  AddressBlockiesImage,
+  AddressBlockiesImageSkeleton,
   AddressBox,
   AddressBoxContainer,
   AddressButton,
   AddressButtonLabel,
   AddressConnectButton,
-  AddressBlockiesImage,
-  AddressBlockiesImageSkeleton,
   ImageBackground,
   PassImageBox,
   ProfileIconButton,
 } from './AddressCard.style';
-import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 
 interface AddressBoxProps {
   address?: string;
@@ -33,6 +35,7 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
   const { t } = useTranslation();
 
   const [openAddressMenu, setOpenAddressMenu] = useState(false);
+  const [openWalletLinkMenu, setOpenWalletLinkMenu] = useState(false);
   const { imageLink } = useMercleNft({ userAddress: address });
   const { data: ensName, isSuccess } = useEnsName({
     address: address as Address | undefined,
@@ -57,6 +60,15 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
     }
     setAnchorEl(event.currentTarget);
     setOpenAddressMenu(true);
+  };
+
+  const handleWalletLinkMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (openWalletLinkMenu) {
+      setAnchorEl(null);
+      setOpenWalletLinkMenu(false);
+    }
+    setAnchorEl(event.currentTarget);
+    setOpenWalletLinkMenu(true);
   };
 
   const addressLabel = getAddressLabel({
@@ -116,9 +128,23 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
             >
               <KeyboardArrowDownIcon />
             </ProfileIconButton>
+            <ProfileIconButton
+              onClick={handleWalletLinkMenu}
+              id="wallet-linking-menu-button"
+              aria-controls={'wallet-linking'}
+              aria-haspopup="true"
+              aria-expanded={openWalletLinkMenu ? 'true' : undefined}
+            >
+              <XPIcon size={16} />
+            </ProfileIconButton>
             <AddressMenu
               open={openAddressMenu}
               setOpen={setOpenAddressMenu}
+              anchorEl={anchorEl}
+            />
+            <WalletLinking
+              open={openWalletLinkMenu}
+              setOpen={setOpenWalletLinkMenu}
               anchorEl={anchorEl}
             />
           </>

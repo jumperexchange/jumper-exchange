@@ -1,19 +1,17 @@
+import { NoSelectTypography } from '@/components/ProfilePage/ProfilePage.style';
+import { getSiteUrl } from '@/const/urls';
+import { useWalletAddressImg } from '@/hooks/useAddressImg';
 import { useMenuStore } from '@/stores/menu';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import LinkIcon from '@mui/icons-material/Link';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
-import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { NoSelectTypography } from '@/components/ProfilePage/ProfilePage.style';
-import { getSiteUrl } from '@/const/urls';
-import useBlockieImg from '@/hooks/useBlockieImg';
-import { useWalletAddressImg } from '@/hooks/useAddressImg';
 import {
   AddressBoxContainer,
   PassImageBox,
