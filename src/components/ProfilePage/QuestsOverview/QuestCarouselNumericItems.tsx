@@ -29,21 +29,22 @@ export const QuestCarouselNumericItems = () => {
   const monthInfo = getMonthInfo();
 
   return !isongoingNumericQuestsLoading
-    ? ongoingNumericQuests?.map((numericQuest, index) => (
-        <QuestCard
-          action={getNumericAction(numericQuest.type as NumericAction)}
-          key={`available-mission-${index}`}
-          title={numericQuest.displayName}
-          hideXPProgressComponents={
-            numericQuest.nextRangeXP - numericQuest.currentRangeXP < 0
-          }
-          image={numericQuest.image}
-          points={
+    ? ongoingNumericQuests?.map((numericQuest, index) => {
+        const data = {
+          action: getNumericAction(numericQuest.type as NumericAction),
+          title: numericQuest.displayName,
+          hideXPProgressComponents:
+            numericQuest.nextRangeXP - numericQuest.currentRangeXP < 0,
+
+          image: numericQuest.image,
+          points:
             numericQuest.currentValue < numericQuest.min
               ? numericQuest.currentRangeXP
-              : Math.abs(numericQuest.nextRangeXP - numericQuest.currentRangeXP)
-          }
-          rewardsProgress={{
+              : Math.abs(
+                  numericQuest.nextRangeXP - numericQuest.currentRangeXP,
+                ),
+
+          rewardsProgress: {
             min: 1,
             max: monthInfo.maxDays,
             currentValue: monthInfo.today,
@@ -51,10 +52,11 @@ export const QuestCarouselNumericItems = () => {
               numericQuest.currentValue >= numericQuest.min
                 ? numericQuest.currentRangeXP
                 : undefined,
-          }}
-        />
-      ))
+          },
+        };
+        return <QuestCard key={`available-mission-${index}`} data={data} />;
+      })
     : Array.from({ length: 4 }, (_, idx) => (
-        <QuestCard key={`ongoing-numeric-quests-skeleton-${idx}`} />
+        <QuestCard key={`ongoing-numeric-quests-skeleton-${idx}`} data={{}} />
       ));
 };
