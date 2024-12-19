@@ -1,4 +1,4 @@
-export const RANKIcon = () => {
+export const RankIcon = () => {
   return (
     <svg
       width="20"

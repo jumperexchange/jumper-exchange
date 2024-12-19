@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { RANKIcon } from 'src/components/illustrations/IconRANK';
+import { RankIcon } from 'src/components/illustrations/IconRANK';
 import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
 import type { LeaderboardEntryData } from '../../../hooks/useLeaderboard';
 import { useLeaderboardUser } from '../../../hooks/useLeaderboard';
@@ -28,7 +28,7 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
     <RankContainer>
       <Box sx={{ width: '104px', height: 'auto' }}>
         <IconHeader
-          icon={<RANKIcon />}
+          icon={<RankIcon />}
           tooltipKey="profile_page.rankInfo"
           title={t('profile_page.rank')}
         />

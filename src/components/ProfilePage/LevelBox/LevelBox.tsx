@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { LVLIcon } from 'src/components/illustrations/IconLVL';
+import { LvlIcon } from 'src/components/illustrations/IconLVL';
 import { IconHeader } from '../Common/IconHeader';
 import { PointsDisplay } from './PointsDisplay';
 interface LevelBoxProps {
@@ -14,7 +14,7 @@ export const LevelBox = ({ level }: LevelBoxProps) => {
   return (
     <Box>
       <IconHeader
-        icon={<LVLIcon />}
+        icon={<LvlIcon />}
         tooltipKey="profile_page.levelInfo"
         title={t('profile_page.level')}
       />

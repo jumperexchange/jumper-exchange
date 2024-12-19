@@ -6,6 +6,7 @@ import {
   EarnedTypography,
   RewardsCarouselContainer,
 } from './RewardsCarousel.style';
+import { useTranslation } from 'react-i18next';
 
 interface RewardsCarouselProps {
   isMerklSuccess: boolean;
@@ -23,6 +24,7 @@ export const RewardsCarousel = ({
   isMerklSuccess,
 }: RewardsCarouselProps) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     !hideComponent && (
@@ -30,7 +32,7 @@ export const RewardsCarousel = ({
         <FlexCenterRowBox>
           <Box>
             <EarnedTypography color={theme.palette.text.primary}>
-              Rewards Earned
+              {t('profile_page.rewards')}
             </EarnedTypography>
           </Box>
         </FlexCenterRowBox>

@@ -1,4 +1,4 @@
-export const LVLIcon = () => {
+export const LvlIcon = () => {
   return (
     <svg
       width="20"

@@ -151,6 +151,7 @@ interface Resources {
       copyAddress: 'Copy wallet address';
       shareProfile: 'Share profile';
       open: 'Open {{tool}}';
+      rewards: 'Rewards Earned';
     };
     leaderboard: {
       title: 'Leaderboard';
