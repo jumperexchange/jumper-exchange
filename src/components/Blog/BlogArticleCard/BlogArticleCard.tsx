@@ -3,7 +3,6 @@ import { JUMPER_LEARN_PATH } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu/MenuStore';
 import type { BlogArticleData } from '@/types/strapi';
-import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import type { CSSObject } from '@mui/material';
 import { Skeleton } from '@mui/material';
@@ -99,10 +98,11 @@ export const BlogArticleCard = ({
               hasTags={article.attributes.tags?.data.length > 0}
             >
               <BlogArticleMetaDate variant="bodyXSmall" as="span">
-                {formatDate(
-                  article.attributes.publishedAt ||
+                {t('format.shortDate', {
+                  value:
+                    article.attributes.publishedAt ||
                     article.attributes.createdAt,
-                )}
+                })}
               </BlogArticleMetaDate>
               <BlogArticleMetaReadingTime variant="bodyXSmall" as="span">
                 {t('blog.minRead', { minRead: minRead })}

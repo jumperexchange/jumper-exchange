@@ -4,6 +4,7 @@ import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 import i18nConfig from '../../i18nconfig';
 import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
+import { dateFormatter } from 'src/utils/formatDate';
 
 // TODO: use https://nextjs.org/docs/app/building-your-application/routing/internationalization#localization
 export default async function initTranslations(
@@ -41,6 +42,7 @@ export default async function initTranslations(
 
   i18nInstance.services.formatter?.addCached('decimalExt', decimalFormatter);
   i18nInstance.services.formatter?.addCached('currencyExt', currencyFormatter);
+  i18nInstance.services.formatter?.addCached('dateExt', dateFormatter);
 
   return {
     i18n: i18nInstance,
