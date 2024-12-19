@@ -1,13 +1,9 @@
-import {
-  Avatar,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import { Avatar, Table, TableBody, TableRow, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
+import {
+  InformationCardCell,
+  InformationCardContainer,
+} from './InformationCard.style';
 
 interface Info {
   logoURI?: string;
@@ -18,18 +14,20 @@ interface Data {
   label: string;
   value: string | number | JSX.Element | JSX.Element[];
 }
-// should be replaced by <InformationCard> after merging: https://github.com/jumperexchange/jumper-exchange/pull/1557
-function HalfSizeBlock({
+
+function InformationCard({
   info,
   data = [],
   type,
+  fullWidth,
 }: {
   info: Info;
   data: Data[];
   type: 'Blockchain' | 'Token';
+  fullWidth?: boolean;
 }) {
   return (
-    <DynamicPagesContainer width={'48.5%'}>
+    <InformationCardContainer fullWidth={fullWidth}>
       <Typography variant="h3" display="flex" alignItems="center">
         {info.logoURI && (
           <Box display="flex" marginRight={2}>
@@ -43,18 +41,20 @@ function HalfSizeBlock({
         )}
         {info.name} - {type} Information
       </Typography>
-      <Table>
+      <Table
+        sx={(theme) => ({ tableLayout: 'fixed', marginTop: theme.spacing(1) })}
+      >
         <TableBody>
           {data.map(({ label, value }, index) => (
             <TableRow key={index}>
-              <TableCell>{label}</TableCell>
-              <TableCell>{value}</TableCell>
+              <InformationCardCell fullWidth>{label}</InformationCardCell>
+              <InformationCardCell fullWidth>{value}</InformationCardCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </DynamicPagesContainer>
+    </InformationCardContainer>
   );
 }
 
-export default HalfSizeBlock;
+export default InformationCard;
