@@ -17,8 +17,8 @@ export const XPIcon = () => {
         fill="white"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M11.25 7.5C10.9375 7.5 10.625 7.8125 10.625 8.125V11.25H13.75C15 11.25 15.625 10.3125 15.625 9.375C15.625 8.4375 15 7.5 13.75 7.5H11.25ZM13.75 8.75H11.875V10H13.75C14.2188 10 14.375 9.60512 14.375 9.375C14.375 9.14488 14.2188 8.75 13.75 8.75Z"
         fill="white"
       />

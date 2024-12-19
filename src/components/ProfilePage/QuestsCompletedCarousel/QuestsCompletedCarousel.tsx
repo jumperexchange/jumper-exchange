@@ -1,3 +1,5 @@
+'use client';
+
 import type { PDA } from '@/types/loyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
 import { useTranslation } from 'react-i18next';

@@ -8,35 +8,6 @@ export const formatMonthDayDateShort = (dateStr: string) => {
   });
 };
 
-// to do: remove when confident about blog translation
-// export const dateShortFormatter = (dateString: string | Date) => {
-//   return new Date(dateString).toLocaleDateString('en-US', {
-//     day: 'numeric',
-//     year: 'numeric',
-//     month: 'short',
-//   });
-// };
-
-export const dateShortFormatter = (
-  lng: string | undefined,
-  options: Intl.DateTimeFormatOptions,
-) => {
-  const formatter = new Intl.DateTimeFormat(lng, {
-    ...options,
-    day: 'numeric',
-    year: 'numeric',
-    month: 'short',
-  });
-
-  return (value: any) => {
-    if (!value) {
-      return '';
-    }
-
-    return formatter.format(value);
-  };
-};
-
 export const dateFormatter = (
   lng: string | undefined,
   options: Intl.DateTimeFormatOptions,
@@ -44,7 +15,6 @@ export const dateFormatter = (
   const formatter = new Intl.DateTimeFormat(lng, {
     ...options,
     day: 'numeric',
-    month: 'long',
     year: 'numeric',
   });
 
