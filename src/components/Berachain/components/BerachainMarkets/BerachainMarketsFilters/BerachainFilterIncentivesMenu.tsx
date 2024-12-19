@@ -13,10 +13,9 @@ import { BerachainMarketsFilterBox } from './BerachainMarketsFilters.style';
 import { useEnrichedMarkets } from 'royco/hooks';
 import type { EnrichedMarketDataType } from 'royco/queries';
 
-export const BerachainFilterTokensMenu = () => {
-  const { tokenFilter, setTokenFilter } = useBerachainMarketsFilterStore(
-    (state) => state,
-  );
+export const BerachainFilterIncentivesMenu = () => {
+  const { incentiveFilter, setIncentiveFilter } =
+    useBerachainMarketsFilterStore((state) => state);
 
   const [anchorTokenEl, setAnchorTokenEl] = useState<null | HTMLElement>(null);
   const [openTokensFilterMenu, setOpenTokensFilterMenu] = useState(false);
@@ -47,12 +46,13 @@ export const BerachainFilterTokensMenu = () => {
 
     const mappedTokens = new Map<
       string,
-      EnrichedMarketDataType['input_token_data']
+      EnrichedMarketDataType['incentive_tokens_data'][0]
     >();
 
     for (const token of data) {
-      const symbol = token.input_token_data?.symbol ?? '';
-      mappedTokens.set(symbol, token.input_token_data);
+      for (const incentive of token.incentive_tokens_data) {
+        mappedTokens.set(incentive.symbol, incentive);
+      }
     }
 
     return mappedTokens;
@@ -67,7 +67,7 @@ export const BerachainFilterTokensMenu = () => {
         aria-expanded={openTokensFilterMenu ? 'true' : undefined}
         onClick={handleTokensFilterClick}
       >
-        <Typography variant="bodyMedium">All Tokens</Typography>
+        <Typography variant="bodyMedium">All Incentives</Typography>
         <BerachainMarketFilterArrow active={openTokensFilterMenu} />
       </BerachainMarketFiltersButton>
       <BerachainMarketFilter
@@ -86,10 +86,10 @@ export const BerachainFilterTokensMenu = () => {
             <BerachainMarketFilterItem
               key={`berachain-token-filter-${index}-${token.symbol}`}
               onClick={() => {
-                setTokenFilter(token.symbol);
+                setIncentiveFilter(token.symbol);
               }}
             >
-              {tokenFilter.includes(token.symbol) ? (
+              {incentiveFilter.includes(token.symbol) ? (
                 <RadioButtonUncheckedIcon
                   sx={{ color: '#FF8425', width: '24px', height: '24px' }}
                 />

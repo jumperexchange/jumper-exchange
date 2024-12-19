@@ -18,8 +18,6 @@ export const BerachainSearch = () => {
     (state) => state,
   );
 
-  const { data } = useBerachainMarkets();
-
   return (
     <BerachainSearchAutocomplete
       autoComplete={true}

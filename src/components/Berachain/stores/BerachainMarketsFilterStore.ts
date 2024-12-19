@@ -7,6 +7,8 @@ interface BerachainMarketsFilterStoreProps {
   setChainFilter: (chainId: ChainId) => void;
   tokenFilter: string[];
   setTokenFilter: (token: string) => void;
+  incentiveFilter: string[];
+  setIncentiveFilter: (token: string) => void;
   protocolFilter: string[];
   setProtocolFilter: (protocol: string) => void;
   sort: string | undefined;
@@ -20,6 +22,7 @@ export const useBerachainMarketsFilterStore =
     (set) => ({
       chainFilter: [],
       tokenFilter: [],
+      incentiveFilter: [],
       protocolFilter: [],
       sort: undefined,
       search: undefined,
@@ -45,6 +48,18 @@ export const useBerachainMarketsFilterStore =
             updatedTokenFilter.splice(index, 1);
           }
           return { tokenFilter: updatedTokenFilter };
+        });
+      },
+      setIncentiveFilter: (token) => {
+        set((state) => {
+          const updatedTokenFilter = [...state.incentiveFilter];
+          const index = updatedTokenFilter.indexOf(token);
+          if (index === -1) {
+            updatedTokenFilter.push(token);
+          } else {
+            updatedTokenFilter.splice(index, 1);
+          }
+          return { incentiveFilter: updatedTokenFilter };
         });
       },
       setProtocolFilter: (protocol) => {

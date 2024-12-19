@@ -16,26 +16,38 @@ export const BerachainMarkets = () => {
     sorting: [{ id: 'locked_quantity_usd', desc: true }],
   });
 
-  const { tokenFilter } = useBerachainMarketsFilterStore((state) => state);
+  // TODO: move useEnrichedMarkets to a hook so we can filter it from there
+  const { tokenFilter, incentiveFilter, search } =
+    useBerachainMarketsFilterStore((state) => state);
 
   return (
     <Box>
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
-        {!roycoData ||
-          (!data &&
-            Array.from({ length: 9 }, () => 42).map((_, idx) => (
-              <BerachainMarketCard
-                roycoData={{} as EnrichedMarketDataType}
-                key={idx}
-              />
-            )))}
+        {!roycoData &&
+          !data &&
+          Array.from({ length: 9 }, () => 42).map((_, idx) => (
+            <BerachainMarketCard
+              roycoData={{} as EnrichedMarketDataType}
+              key={idx}
+            />
+          ))}
         {Array.isArray(roycoData) &&
           roycoData
             .filter(
               (data) => !tokenFilter.includes(data.input_token_data?.symbol),
             )
+            .filter((data) => {
+              const dataIncentives =
+                data.incentive_tokens_data?.map((s) => s.symbol) ?? [];
+              return !dataIncentives.some((symbol) =>
+                incentiveFilter.includes(symbol),
+              );
+            })
+            .filter((data) => {
+              return search ? data.name?.toLowerCase().includes(search) : true;
+            })
             .map((roycoData, index) => {
               if (!roycoData?.id) {
                 return;

@@ -36,7 +36,7 @@ export const WithdrawIncentiveTokenRow = React.forwardRef<
           whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
           wordBreak: 'normal', // Equivalent to `break-normal`
         }}
-        className="flex h-4 flex-row items-center space-x-2"
+        // className="flex h-4 flex-row items-center space-x-2"
       >
         <Typography variant="body2" color="textSecondary">
           <WalletCardBadge

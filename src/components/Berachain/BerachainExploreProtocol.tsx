@@ -11,6 +11,7 @@ import { BerachainProtocolAction } from './components/BerachainProtocolAction/Be
 import { useEnrichedMarkets } from 'royco/hooks';
 import { notFound } from 'next/navigation';
 import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
+import { EnrichedMarketDataType } from 'royco/queries';
 
 interface BerachainExploreProtocolProps {
   marketId: string;
@@ -19,7 +20,11 @@ interface BerachainExploreProtocolProps {
 export const BerachainExploreProtocol = ({
   marketId,
 }: BerachainExploreProtocolProps) => {
-  const { data: roycoData } = useEnrichedMarkets({
+  const {
+    data: roycoData,
+    isFetched,
+    ...props
+  } = useEnrichedMarkets({
     is_verified: false,
     market_id: marketId,
     sorting: [{ id: 'locked_quantity_usd', desc: true }],
@@ -27,8 +32,19 @@ export const BerachainExploreProtocol = ({
 
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
 
-  if (!roycoData) {
-    return <>Loading...</>;
+  if (!roycoData || !data) {
+    return (
+      <Container>
+        <Background />
+        <Link href="/berachain/explore" style={{ textDecoration: 'none' }}>
+          <BerachainBackButton>
+            <ArrowBackIcon />
+            <Typography variant="bodySmallStrong">Explore Berachain</Typography>
+          </BerachainBackButton>
+        </Link>
+        <BerachainProtocolAction />
+      </Container>
+    );
   }
 
   if (!Array.isArray(roycoData) || roycoData.length === 0) {
