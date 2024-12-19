@@ -11,7 +11,7 @@ export const AddressMenu = ({
   anchorEl,
 }: {
   open: boolean;
-  setOpen: any;
+  setOpen: (value: boolean | ((prevState: boolean) => boolean)) => void;
   anchorEl: HTMLElement | null;
 }) => {
   const addressBoxMenuItems = useAddressMenuContent();
