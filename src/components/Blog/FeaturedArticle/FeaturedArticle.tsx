@@ -10,7 +10,6 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData } from '@/types/strapi';
-import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import {
@@ -48,10 +47,11 @@ export const FeaturedArticle = ({
 
   const formatedDate =
     featuredArticle &&
-    formatDate(
-      featuredArticle?.attributes.publishedAt ||
+    t('format.shortDate', {
+      value:
+        featuredArticle?.attributes.publishedAt ||
         featuredArticle?.attributes.createdAt,
-    );
+    });
 
   const minRead =
     featuredArticle && readingTime(featuredArticle?.attributes.Content);
