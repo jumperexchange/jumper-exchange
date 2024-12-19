@@ -156,22 +156,19 @@ export const RankWalletImageSkeleton = styled(Skeleton)(({ theme }) => ({
 }));
 
 interface RankWalletAddressProps extends TypographyProps {
-  isUserConnected?: boolean;
-  isUserEntry?: boolean;
+  hide?: boolean;
 }
 
 export const RankWalletAddress = styled(Typography, {
-  shouldForwardProp: (prop) =>
-    prop !== 'isUserConnected' && prop !== 'isUserEntry',
-})<RankWalletAddressProps>(({ theme, isUserConnected, isUserEntry }) => ({
+  shouldForwardProp: (prop) => prop !== 'hide',
+})<RankWalletAddressProps>(({ theme, hide }) => ({
   textOverflow: 'ellipsis',
   overflow: 'hidden',
   [theme.breakpoints.down('sm' as Breakpoint)]: {
     fontSize: '14px',
-    ...(!isUserConnected &&
-      isUserEntry && {
-        display: 'none',
-      }),
+    ...(hide && {
+      display: 'none',
+    }),
   },
 }));
 

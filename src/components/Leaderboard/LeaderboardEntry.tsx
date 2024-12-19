@@ -67,8 +67,7 @@ export const LeaderboardEntry = ({
 
         <RankWalletAddress
           variant="bodyLargeStrong"
-          isUserConnected={isUserConnected}
-          isUserEntry={isUserEntry}
+          hide={!isUserConnected && isUserEntry}
         >
           {isUserEntry && !isUserConnected
             ? t('leaderboard.rankCtaConnect')
