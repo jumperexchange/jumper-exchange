@@ -210,6 +210,7 @@ export interface BlogArticleAttributes {
   faq_items: FaqData;
   publishedAt?: string;
   locale: string;
+  RedirectURL?: string;
   localizations: {
     data: any[];
   };

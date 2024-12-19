@@ -52,7 +52,10 @@ export const BlogArticleCard = ({
   };
   return (
     <Link
-      href={`${JUMPER_LEARN_PATH}/${article.attributes.Slug}`}
+      href={
+        article.attributes.RedirectURL ??
+        `${JUMPER_LEARN_PATH}/${article.attributes.Slug}`
+      }
       style={{ textDecoration: 'none', width: '100%' }}
     >
       <BlogArticleCardContainer
