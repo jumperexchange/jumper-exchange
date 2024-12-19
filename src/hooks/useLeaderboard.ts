@@ -35,7 +35,12 @@ export interface LeaderboardUserData {
 export const useLeaderboardList = (
   page: number,
   limit: number,
-): LeaderboardListData => {
+): {
+  data: LeaderboardEntryData[];
+  meta: LeaderboardMeta;
+  isLoading: boolean;
+  isSuccess: boolean;
+} => {
   const {
     data: leaderboardListData,
     isSuccess,
@@ -90,7 +95,11 @@ export async function getLeaderboardUserQuery({
 
 export const useLeaderboardUser = (
   walletAddress?: string,
-): LeaderboardUserData => {
+): {
+  data: LeaderboardEntryData & { userPage: number };
+  isLoading: boolean;
+  isSuccess: boolean;
+} => {
   const {
     data: leaderboardUserData,
     isSuccess,
@@ -99,6 +108,7 @@ export const useLeaderboardUser = (
     queryKey: ['leaderboard-user', walletAddress],
     queryFn: getLeaderboardUserQuery,
   });
+
   const userPage =
     leaderboardUserData?.data &&
     Math.ceil(leaderboardUserData?.data.position / LEADERBOARD_LENGTH);
