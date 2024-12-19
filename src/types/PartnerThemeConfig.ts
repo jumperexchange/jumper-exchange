@@ -17,6 +17,7 @@ export interface PartnerThemeConfig {
   uid: string;
   hasThemeModeSwitch: boolean;
   hasBackgroundGradient: boolean;
+  hasBlurredNavigation: boolean;
   allowedBridges: string[];
   allowedExchanges: string[];
 }

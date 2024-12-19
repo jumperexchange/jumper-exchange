@@ -45,6 +45,7 @@
     "i18next": "^24.1.0",
     "i18next-resources-for-ts": "^1.5.0",
     "i18next-resources-to-backend": "^1.2.1",
+    "motion": "^11.11.17",
     "next": "^14.2.20",
     "next-i18n-router": "^5.5.1",
     "next-themes": "^0.3.0",
