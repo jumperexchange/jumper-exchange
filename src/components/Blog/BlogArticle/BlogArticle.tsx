@@ -33,7 +33,6 @@ import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
 import { Tag } from '@/components/Tag.style';
 import type { AuthorData, StrapiImageData, TagData } from '@/types/strapi';
 import type { ThemeMode } from '@/types/theme';
-import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
@@ -95,7 +94,7 @@ export const BlogArticle = ({
             {createdAt ? (
               <BlogArticleHeaderMeta>
                 <BlogArticleHeaderMetaDate variant="bodyXSmall" as="span">
-                  {formatDate(publishedAt || createdAt)}
+                  {t('format.shortDate', { value: publishedAt || createdAt })}
                 </BlogArticleHeaderMetaDate>
                 <span>{t('blog.minRead', { minRead: minRead })}</span>
               </BlogArticleHeaderMeta>

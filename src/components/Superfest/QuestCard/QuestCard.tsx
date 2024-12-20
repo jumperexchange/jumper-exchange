@@ -74,7 +74,7 @@ export const QuestCard = ({
 }: QuestCardProps) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { apy, isLoading, isSuccess } = useMissionsMaxAPY(claimingIds);
+  const { apy } = useMissionsMaxAPY(claimingIds);
   const { trackEvent } = useUserTracking();
   const handleClick = () => {
     trackEvent({

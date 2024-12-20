@@ -1,5 +1,6 @@
 'use client';
-import { Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { BannerContainer } from './Banner.style';
 import { useUserTracking } from 'src/hooks/userTracking';
@@ -33,6 +34,7 @@ export const Banner = () => {
       href="https://wrapped.jumper.exchange"
       target="_blank"
       style={{ textDecoration: 'none', color: 'inherit' }}
+      rel="noreferrer"
     >
       <BannerContainer onClick={handleClick}>
         <Image

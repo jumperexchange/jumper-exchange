@@ -1,9 +1,11 @@
+'use client';
+
 import type { LevelData } from '@/types/loyaltyPass';
-import { Box } from '@mui/material';
+import { CardContainer } from '../LeaderboardCard/LeaderboardCard.style';
 import { LevelBox } from './LevelBox';
 import { PointsBox } from './PointsBox';
 import { ProgressionBar } from './ProgressionBar';
-import { TierInfoBox, TierMainBox } from './TierBox.style';
+import { TierInfoBox } from './TierBox.style';
 import { levelsData } from './levelsData';
 
 export function getLevelBasedOnPoints(points: number | undefined): LevelData {
@@ -15,8 +17,8 @@ export function getLevelBasedOnPoints(points: number | undefined): LevelData {
   } else {
     return {
       level: 0,
-      minPoints: 0,
-      maxPoints: 0,
+      minPoints: levelsData[0].minPoints,
+      maxPoints: levelsData[0].maxPoints,
     };
   }
 }
@@ -30,18 +32,16 @@ export const TierBox = ({ points, loading }: TierBoxProps) => {
   const levelData = getLevelBasedOnPoints(points);
 
   return (
-    <TierMainBox>
-      <Box sx={{ padding: { xs: 1, sm: 2 } }}>
-        <TierInfoBox>
-          <PointsBox points={points} />
-          <LevelBox level={levelData.level} loading={loading} />
-        </TierInfoBox>
-        <ProgressionBar
-          ongoingValue={points}
-          levelData={levelData}
-          loading={loading}
-        />
-      </Box>
-    </TierMainBox>
+    <CardContainer>
+      <TierInfoBox>
+        <PointsBox points={points} />
+        <LevelBox level={levelData.level} loading={loading} />
+      </TierInfoBox>
+      <ProgressionBar
+        ongoingValue={points}
+        levelData={levelData}
+        loading={loading}
+      />
+    </CardContainer>
   );
 };

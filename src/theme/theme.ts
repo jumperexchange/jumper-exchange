@@ -1,9 +1,8 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
 import type { ComponentsOverrides, ComponentsVariants } from '@mui/material';
-import { darken } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
-import { alpha, lighten, createTheme } from '@mui/material/styles';
+import { alpha, createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
@@ -51,7 +50,12 @@ declare module '@mui/material/styles' {
     bg: Palette['primary'];
     bgSecondary: Palette['primary'];
     bgTertiary: Palette['primary'];
+    bgQuaternary: {
+      main: string;
+      hover: string;
+    };
     shadow: Palette['primary'];
+    shadowLight: Palette['primary'];
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
     alphaDark300: Palette['primary'];
@@ -86,7 +90,9 @@ declare module '@mui/material/styles' {
     bg?: PaletteOptions['primary'];
     bgSecondary?: PaletteOptions['primary'];
     bgTertiary?: PaletteOptions['primary'];
+    bgQuaternary?: PaletteOptions['primary'];
     shadow?: PaletteOptions['primary'];
+    shadowLight?: PaletteOptions['primary'];
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
     alphaDark300?: PaletteOptions['primary'];
@@ -122,6 +128,9 @@ declare module '@mui/material/styles' {
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
+    titleXSmall: React.CSSProperties;
+    title2xSmall: React.CSSProperties;
+    titleLarge: React.CSSProperties;
   }
 
   // allow configuration using `createTheme`
@@ -143,6 +152,9 @@ declare module '@mui/material/styles' {
     bodySmall: React.CSSProperties;
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
+    titleXSmall: React.CSSProperties;
+    title2xSmall: React.CSSProperties;
+    titleLarge: React.CSSProperties;
   }
 }
 declare module '@mui/material/Button' {
@@ -163,7 +175,9 @@ declare module '@mui/material/Button' {
     bg: true;
     bgSecondary: true;
     bgTertiary: true;
+    bgQuaternary: true;
     shadow: true;
+    shadowLight: true;
     alphaDark100: true;
     alphaDark200: true;
     alphaDark300: true;
@@ -202,6 +216,9 @@ declare module '@mui/material/Typography' {
     bodyXSmallStrong: true;
     bodyXSmall: true;
     brandHeaderXLarge: true;
+    titleXSmall: true;
+    title2xSmall: true;
+    titleLarge: true;
   }
 }
 
@@ -254,6 +271,15 @@ const themeCustomized = createTheme({
           top: 80,
           [themeBase.breakpoints.up('sm' as Breakpoint)]: {
             top: 80,
+          },
+        }),
+      },
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: () => ({
+          [themeBase.breakpoints.up('lg' as Breakpoint)]: {
+            maxWidth: 1280,
           },
         }),
       },
@@ -379,6 +405,9 @@ const themeCustomized = createTheme({
       main: '#000000',
       light: '#000000',
       dark: '#000000',
+    },
+    shadowLight: {
+      main: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
     },
     alphaDark100: {
       main: 'rgba(0, 0, 0, 0.04)',
@@ -526,7 +555,7 @@ const themeCustomized = createTheme({
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '14px',
-      lineHeight: '20px',
+      lineHeight: '18px',
       letterSpacing: 0,
     },
     bodySmall: {
@@ -598,6 +627,24 @@ const themeCustomized = createTheme({
       lineHeight: themeBase.typography.pxToRem(18),
       fontWeight: 700,
     },
+    titleXSmall: {
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '24px',
+    },
+    title2xSmall: {
+      fontSize: '14px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '20px',
+    },
+    titleLarge: {
+      fontSize: '48px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '64px',
+    },
   },
 });
 
@@ -628,6 +675,10 @@ export const lightTheme = createTheme(
       bgTertiary: {
         main: themeCustomized.palette.white.main,
       },
+      bgQuaternary: {
+        hover: alpha('#653BA3', 0.12),
+        main: alpha('#31007A', 0.08),
+      },
       shadow: {
         main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
       },
@@ -650,6 +701,11 @@ export const lightTheme = createTheme(
         light: '#31007A',
         main: '#31007A',
         dark: '#31007A',
+      },
+      accent1Alt: {
+        light: '#BEA0EB',
+        main: '#BEA0EB',
+        dark: '#BEA0EB',
       },
       accent2: {
         light: '#8700B8',
@@ -743,6 +799,10 @@ export const darkTheme = createTheme(
       },
       bgTertiary: {
         main: themeCustomized.palette.alphaLight200.main,
+      },
+      bgQuaternary: {
+        hover: alpha('#653BA3', 0.56),
+        main: alpha('#653BA3', 0.42),
       },
       shadow: {
         main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
