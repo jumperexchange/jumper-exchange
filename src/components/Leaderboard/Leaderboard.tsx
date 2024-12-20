@@ -30,12 +30,9 @@ const isValidPage = (pageNum: number, totalPages: number) => {
   return !isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages;
 };
 
-const IconHeader = dynamic(
-  import('../ProfilePage/Common/IconHeader').then((mod) => mod.IconHeader),
-  {
-    ssr: false,
-  },
-);
+const IconHeader = dynamic(import('../ProfilePage/Common/IconHeader'), {
+  ssr: false,
+});
 
 export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
   const { account } = useAccount();

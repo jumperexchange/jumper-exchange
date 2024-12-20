@@ -1,12 +1,16 @@
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { LvlIcon } from 'src/components/illustrations/IconLVL';
-import { IconHeader } from '../Common/IconHeader';
 import { PointsDisplay } from './PointsDisplay';
+import dynamic from 'next/dynamic';
 interface LevelBoxProps {
   level?: number;
   loading: boolean;
 }
+
+const IconHeader = dynamic(import('../../ProfilePage/Common/IconHeader'), {
+  ssr: false,
+});
 
 export const LevelBox = ({ level }: LevelBoxProps) => {
   const { t } = useTranslation();

@@ -5,7 +5,6 @@ import { RankIcon } from 'src/components/illustrations/IconRANK';
 import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
 import type { LeaderboardEntryData } from '../../../hooks/useLeaderboard';
 import { useLeaderboardUser } from '../../../hooks/useLeaderboard';
-import { IconHeader } from '../Common/IconHeader';
 import {
   CardButton,
   CardButtonContainer,
@@ -14,6 +13,11 @@ import {
   RankContainer,
   RankContentContainer,
 } from './LeaderboardCard.style';
+import dynamic from 'next/dynamic';
+
+const IconHeader = dynamic(import('../../ProfilePage/Common/IconHeader'), {
+  ssr: false,
+});
 
 export const LeaderboardCard = ({ address }: { address?: string }) => {
   const { data: leaderboardUserData }: { data: LeaderboardEntryData } =

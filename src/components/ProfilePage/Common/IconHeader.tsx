@@ -11,7 +11,7 @@ export interface IconHeaderProps {
   icon?: React.ReactNode;
 }
 
-export const IconHeader = ({ tooltipKey, title, icon }: IconHeaderProps) => {
+const IconHeader = ({ tooltipKey, title, icon }: IconHeaderProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   return (
@@ -30,3 +30,5 @@ export const IconHeader = ({ tooltipKey, title, icon }: IconHeaderProps) => {
     </IconHeaderContainer>
   );
 };
+
+export default IconHeader;

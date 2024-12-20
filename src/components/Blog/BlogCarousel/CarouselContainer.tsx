@@ -24,12 +24,9 @@ interface CarouselContainerProps {
 }
 const swipeDistance = 420;
 
-const IconHeader = dynamic(
-  import('../../ProfilePage/Common/IconHeader').then((mod) => mod.IconHeader),
-  {
-    ssr: false,
-  },
-);
+const IconHeader = dynamic(import('../../ProfilePage/Common/IconHeader'), {
+  ssr: false,
+});
 
 export const CarouselContainer = ({
   styles,
