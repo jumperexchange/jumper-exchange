@@ -116,11 +116,11 @@
     "clean": "rm -rf ./tsconfig.tsbuildinfo",
     "lint-staged": "lint-staged",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
-    "test": "yarn playwright test",
+    "test": "pnpm playwright test",
     "fix:staged-files": "lint-staged --allow-empty",
     "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "pre-commit": "lint-staged",
-    "pre-push": "yarn && yarn build",
+    "pre-push": "pnpm && pnpm build",
     "i18next-resources-for-ts": "i18next-resources-for-ts interface -i ./src/i18n/translations/en -o ./src/i18n/resources.d.ts",
     "test:ci:e2e": "xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' npx playwright test",
     "test:e2e-real": "npx playwright test --headed",
@@ -130,11 +130,11 @@
   "lint-staged": {
     "**/*.(ts|tsx|js)": [
       "bash -c tsc --noEmit",
-      "yarn eslint --fix",
-      "yarn prettier --write"
+      "pnpm eslint --fix",
+      "pnpm prettier --write"
     ],
     "**/*.(md|json)": [
-      "yarn prettier --write"
+      "pnpm prettier --write"
     ]
   },
   "overrides": {
