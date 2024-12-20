@@ -1,31 +1,23 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Button } from 'src/components/Button';
-import { BackButtonMainBox } from './BackButton.style';
+import { BackButtonStyles } from './BackButton.style';
 
 interface BackButtonProps {
-  path: string;
+  path?: string;
   title?: string;
 }
 
 export const BackButton = ({ path, title }: BackButtonProps) => {
-  const router = useRouter();
   const { t } = useTranslation();
 
   return (
-    <BackButtonMainBox>
-      <Button
-        size={'large'}
-        styles={{
-          paddingLeft: '16px',
-          paddingRight: '16px',
-        }}
-        onClick={() => {
-          router.push(path);
-        }}
-      >
+    <Link
+      href={path ?? '/profile'}
+      style={{ textDecoration: 'none', width: 168, display: 'block' }}
+    >
+      <BackButtonStyles size={'large'}>
         <ArrowBackIcon
           sx={{ color: '#FFFFFF', width: '16px', height: '16px' }}
         />
@@ -39,7 +31,7 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
             title || t('navbar.navbarMenu.profile') || 'Jumper Profile',
           ).toUpperCase()}
         </Typography>
-      </Button>
-    </BackButtonMainBox>
+      </BackButtonStyles>
+    </Link>
   );
 };
