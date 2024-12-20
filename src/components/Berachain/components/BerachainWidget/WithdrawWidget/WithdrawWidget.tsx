@@ -20,6 +20,7 @@ import { switchChain } from '@wagmi/core';
 import type { ExtendedChain } from '@lifi/sdk';
 import { WithdrawWidgetInputTokenTab } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawWidgetInputTokenTab';
 import { WithdrawWidgetIncentiveTab } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawWidgetIncentiveTab';
+import ConnectButton from '@/components/Navbar/ConnectButton';
 
 export type TypedMarketWithdrawType = 'input_token' | 'incentives';
 export const MarketWithdrawType: Record<
@@ -101,23 +102,18 @@ export const WithdrawWidget = ({
           ))}
         </Select>
       </FormControl>
-      {!account?.isConnected && (
+      {!account?.isConnected ? (
         <Box
           sx={{
-            height: '100%',
-            width: '100%',
-            display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
-            placeContent: 'center', // Centers content horizontally and vertically.
-            alignItems: 'start', // Aligns items at the start along the cross-axis.
+            marginY: 1,
+            '& > button': {
+              width: '100%!important',
+            },
           }}
         >
-          {/*<div className="h-full w-full place-content-center items-start">*/}
-          <Typography variant="body2" color="textSecondary">
-            Wallet not connected
-          </Typography>
+          <ConnectButton />
         </Box>
-      )}
-      {shouldSwitchChain && (
+      ) : shouldSwitchChain ? (
         <Box sx={{ marginTop: theme.spacing(1.5) }}>
           <CustomLoadingButton
             fullWidth
@@ -140,15 +136,13 @@ export const WithdrawWidget = ({
             <Typography variant="bodyMediumStrong">Switch chain</Typography>
           </CustomLoadingButton>
         </Box>
-      )}
-      {!shouldSwitchChain &&
-        withdrawType === MarketWithdrawType.input_token.id && (
-          <WithdrawWidgetInputTokenTab market={market} chain={chain} />
-        )}
-      {!shouldSwitchChain &&
+      ) : withdrawType === MarketWithdrawType.input_token.id ? (
+        <WithdrawWidgetInputTokenTab market={market} chain={chain} />
+      ) : (
         withdrawType === MarketWithdrawType.incentives.id && (
           <WithdrawWidgetIncentiveTab market={market} chain={chain} />
-        )}
+        )
+      )}
     </Box>
   );
 };

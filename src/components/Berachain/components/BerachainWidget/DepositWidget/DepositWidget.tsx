@@ -33,6 +33,12 @@ import type { EnrichedMarketDataType } from 'royco/queries';
 import { switchChain } from '@wagmi/core';
 import { CustomLoadingButton } from '../LoadingButton.style';
 import type { ExtendedChain } from '@lifi/sdk';
+import {
+  ConnectButtonWrapper,
+  ConnectButtonLabel,
+} from '@/components/Navbar/WalletButton.style';
+import { useTranslation } from 'react-i18next';
+import ConnectButton from '@/components/Navbar/ConnectButton';
 
 interface Image {
   url?: string;
@@ -87,6 +93,7 @@ function DepositWidget({
   market,
   overrideStyle = {},
 }: WidgetLikeFieldProps) {
+  const { t } = useTranslation();
   const { account } = useAccount();
   const { isLoading: isLoadingWallet, data: dataWallet } = useAccountBalance({
     chain_id: market.chain_id!,
@@ -389,43 +396,8 @@ function DepositWidget({
           )}
         </FormHelperText>
       </FormControl>
-      {writeContractOptions.length === 0 && (
-        <CustomLoadingButton
-          type="button"
-          overrideStyle={overrideStyle}
-          disabled
-          // loading={isLoading || isTxPending || isTxConfirming}
-          variant="contained"
-          onClick={async () => {
-            try {
-              await switchChain(wagmiConfig, {
-                chainId: writeContractOptions[0]?.chainId,
-              });
-            } catch (error) {
-              // TODO: to remove
-              // eslint-disable-next-line no-console
-              console.error(error);
-            }
-          }}
-        >
-          <Typography variant="bodyMediumStrong">Deposit</Typography>
-        </CustomLoadingButton>
-      )}
       {!account?.isConnected ? (
-        <Box
-          sx={{
-            height: '100%',
-            width: '100%',
-            display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
-            placeContent: 'center', // Centers content horizontally and vertically.
-            alignItems: 'start', // Aligns items at the start along the cross-axis.
-          }}
-        >
-          {/*<div className="h-full w-full place-content-center items-start">*/}
-          <Typography variant="body2" color="textSecondary">
-            Wallet not connected
-          </Typography>
-        </Box>
+        <ConnectButton />
       ) : shouldSwitchChain ? (
         <CustomLoadingButton
           overrideStyle={overrideStyle}
@@ -445,6 +417,17 @@ function DepositWidget({
           }}
         >
           <Typography variant="bodyMediumStrong">Switch chain</Typography>
+        </CustomLoadingButton>
+      ) : writeContractOptions.length === 0 ? (
+        <CustomLoadingButton
+          type="button"
+          overrideStyle={overrideStyle}
+          disabled
+          // loading={isLoading || isTxPending || isTxConfirming}
+          variant="contained"
+          onClick={() => {}}
+        >
+          <Typography variant="bodyMediumStrong">Deposit</Typography>
         </CustomLoadingButton>
       ) : (
         writeContractOptions[contractCallIndex] && (

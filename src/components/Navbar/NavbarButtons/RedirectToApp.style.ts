@@ -3,9 +3,9 @@
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ConnectButton } from '../WalletButton.style';
+import { ConnectButtonWrapper } from '../WalletButton.style';
 
-export const RedirectAppButton = styled(ConnectButton)(({ theme }) => ({
+export const RedirectAppButton = styled(ConnectButtonWrapper)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     width: 48,
     minWidth: 48,
