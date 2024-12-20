@@ -194,7 +194,12 @@ export const WithdrawWidgetInputTokenTab = ({
                 marginY: 1,
                 marginX: 0,
               }}
-              control={<Radio disabled={position?.can_withdraw !== true} />}
+              control={
+                <Radio
+                  sx={{ visibility: 'hidden' }}
+                  disabled={position?.can_withdraw !== true}
+                />
+              }
               labelPlacement="start"
               label={
                 <Box

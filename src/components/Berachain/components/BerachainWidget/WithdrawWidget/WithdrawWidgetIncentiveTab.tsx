@@ -212,13 +212,8 @@ export const WithdrawWidgetIncentiveTab = ({
               }}
               control={
                 <Radio
-                  disabled={
-                    token.position?.can_withdraw &&
-                    market.market_type === RoycoMarketType.recipe.value
-                      ? // @ts-ignore
-                        token.position?.is_claimed[tokenIndex] === true
-                      : BigInt(token.raw_amount) === BigInt(0)
-                  }
+                  sx={{ visibility: 'hidden' }}
+                  disabled={!token.position?.is_claimed as unknown as boolean}
                 />
               }
               labelPlacement="start"
@@ -317,11 +312,7 @@ export const WithdrawWidgetIncentiveTab = ({
         }}
         disabled={
           !tokensData[value] ||
-          (tokensData[value].position?.can_withdraw &&
-          market.market_type === RoycoMarketType.recipe.value
-            ? // @ts-ignore
-              tokensData[value].position?.is_claimed === true
-            : BigInt(tokensData[value].raw_amount) === BigInt(0))
+          (!tokensData[value].position?.is_claimed as unknown as boolean)
         }
         onClick={() => {
           if (!!tokensData[value]) {
