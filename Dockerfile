@@ -4,16 +4,15 @@ ARG ENV_NAME
 ENV ENV_NAME $ENV_NAME
 ARG NEXT_PUBLIC_LATEST_COMMIT_SHA
 ENV NEXT_PUBLIC_LATEST_COMMIT_SHA $NEXT_PUBLIC_LATEST_COMMIT_SHA
-ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production YARN_VERSION=4.0.1
-RUN corepack enable && corepack prepare yarn@${YARN_VERSION}
+ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production PNPM_VERSION=9.15.1
+RUN corepack enable && corepack install -g pnpm@${PNPM_VERSION}
 
 WORKDIR /app
 
 COPY . .
 RUN rm .env*
-COPY package.json yarn.lock .yarnrc.yml ./
-COPY .yarn ./.yarn
-RUN yarn install --immutable
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install
 ARG ENV_FILE=.env
 
 ARG SENTRY_AUTH_TOKEN
@@ -22,7 +21,7 @@ ARG NEXT_PUBLIC_SENTRY_DSN
 ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
 
 COPY ./$ENV_FILE ./.env
-RUN yarn run build
+RUN pnpm build
 
 # Production image, copy all the files and run next
 FROM node:20-alpine AS runner
@@ -42,7 +41,7 @@ RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
 # Fix sharp install for image optimization
-RUN yarn add sharp
+RUN pnpm install sharp
 RUN chown -R nextjs:nodejs /app/node_modules
 ENV NEXT_SHARP_PATH="/app/node_modules/sharp"
 
