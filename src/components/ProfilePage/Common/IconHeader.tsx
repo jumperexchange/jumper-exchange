@@ -14,6 +14,7 @@ export interface IconHeaderProps {
 const IconHeader = ({ tooltipKey, title, icon }: IconHeaderProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
+
   return (
     <IconHeaderContainer>
       {icon}

@@ -1,6 +1,6 @@
 'use client';
 import { Typography } from '@mui/material';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAccount } from '@lifi/wallet-management';
@@ -22,7 +22,7 @@ import {
 import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
-import dynamic from 'next/dynamic';
+import IconHeader from '../ProfilePage/Common/IconHeader';
 
 export const LEADERBOARD_LENGTH = 25;
 
@@ -30,14 +30,15 @@ const isValidPage = (pageNum: number, totalPages: number) => {
   return !isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages;
 };
 
-const IconHeader = dynamic(import('../ProfilePage/Common/IconHeader'), {
-  ssr: false,
-});
-
 export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
   const { account } = useAccount();
 
   const { t } = useTranslation();
+
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const { data: leaderboardData, meta } = useLeaderboardList(
     defaultPage,
@@ -66,10 +67,12 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
               {t('leaderboard.title')}
             </Typography>
             <LeaderboardUpdateDateBox>
-              <IconHeader
-                tooltipKey={t('leaderboard.description')}
-                title={`Updated: ${t('format.date', { value: new Date() })}`}
-              />
+              {isClient && (
+                <IconHeader
+                  tooltipKey={t('leaderboard.description')}
+                  title={`Updated: ${t('format.date', { value: new Date() })}`}
+                />
+              )}
             </LeaderboardUpdateDateBox>
           </LeaderboardTitleBox>
         </LeaderboardHeader>

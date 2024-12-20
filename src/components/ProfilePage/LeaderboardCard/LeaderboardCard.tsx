@@ -13,11 +13,7 @@ import {
   RankContainer,
   RankContentContainer,
 } from './LeaderboardCard.style';
-import dynamic from 'next/dynamic';
-
-const IconHeader = dynamic(import('../../ProfilePage/Common/IconHeader'), {
-  ssr: false,
-});
+import IconHeader from '../Common/IconHeader';
 
 export const LeaderboardCard = ({ address }: { address?: string }) => {
   const { data: leaderboardUserData }: { data: LeaderboardEntryData } =

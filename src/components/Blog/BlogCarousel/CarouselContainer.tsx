@@ -3,7 +3,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Box, useTheme, type CSSObject } from '@mui/material';
 
 import type { ReactNode } from 'react';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { SectionTitle } from 'src/components/ProfilePage/ProfilePage.style';
 import {
   CarouselCenteredBox,
@@ -12,7 +12,7 @@ import {
   CarouselNavigationButton,
   CarouselNavigationContainer,
 } from '.';
-import dynamic from 'next/dynamic';
+import IconHeader from 'src/components/ProfilePage/Common/IconHeader';
 
 interface CarouselContainerProps {
   title?: string;
@@ -24,10 +24,6 @@ interface CarouselContainerProps {
 }
 const swipeDistance = 420;
 
-const IconHeader = dynamic(import('../../ProfilePage/Common/IconHeader'), {
-  ssr: false,
-});
-
 export const CarouselContainer = ({
   styles,
   title,
@@ -38,6 +34,11 @@ export const CarouselContainer = ({
 }: CarouselContainerProps) => {
   const theme = useTheme();
   const carouselContainerRef = useRef<HTMLDivElement>(null);
+
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleChange = useCallback((direction: 'next' | 'prev') => {
     if (carouselContainerRef.current) {
@@ -78,10 +79,12 @@ export const CarouselContainer = ({
           {title && <SectionTitle variant="headerMedium">{title}</SectionTitle>}
           {updateTitle && (
             <Box>
-              <IconHeader
-                tooltipKey={updateTooltip || ''}
-                title={updateTitle}
-              />
+              {isClient && (
+                <IconHeader
+                  tooltipKey={updateTooltip || ''}
+                  title={updateTitle}
+                />
+              )}
             </Box>
           )}
         </CarouselCenteredBox>

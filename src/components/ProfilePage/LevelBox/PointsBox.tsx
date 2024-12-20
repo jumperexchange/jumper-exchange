@@ -4,11 +4,8 @@ import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import { PointsDisplay } from './PointsDisplay';
-import dynamic from 'next/dynamic';
-
-const IconHeader = dynamic(import('../Common/IconHeader'), {
-  ssr: false,
-});
+import IconHeader from '../Common/IconHeader';
+import { useEffect, useState } from 'react';
 
 interface PointsBoxProps {
   points?: number;
@@ -16,14 +13,21 @@ interface PointsBoxProps {
 
 export const PointsBox = ({ points }: PointsBoxProps) => {
   const { t } = useTranslation();
+
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <Box>
-      <p>toto</p>
-      <IconHeader
-        tooltipKey="profile_page.pointsInfo"
-        title={`Updated: ${t('format.date', { value: new Date() })}`}
-        icon={<XPIcon />}
-      />
+      {isClient && (
+        <IconHeader
+          tooltipKey="profile_page.pointsInfo"
+          title={`Updated: ${t('format.date', { value: new Date() })}`}
+          icon={<XPIcon />}
+        />
+      )}
       <Box display="flex" alignItems="center">
         <PointsDisplay points={points} />
       </Box>
