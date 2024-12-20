@@ -52,13 +52,11 @@ export const BannerTitleBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-export interface BannerInfoBoxProps extends Omit<BoxProps, 'component'> {
+export interface BannerInfoBoxProps extends BoxProps {
   points?: number;
 }
 
-export const BannerInfoBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'points',
-})<BannerInfoBoxProps>(({ points }) => ({
+export const BannerInfoBox = styled(Box)<BannerInfoBoxProps>(() => ({
   display: 'flex',
   flexDirection: 'column',
 }));
