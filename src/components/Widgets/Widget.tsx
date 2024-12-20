@@ -149,6 +149,7 @@ export function Widget({
       },
       bridges: {
         allow: configTheme?.allowedBridges,
+        deny: ['stargateV2', 'stargate'],
       },
       exchanges: {
         allow: configTheme?.allowedExchanges,
