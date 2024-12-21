@@ -1,9 +1,9 @@
 FROM node:20 AS builder
 
 ARG ENV_NAME
-ENV ENV_NAME $ENV_NAME
+ENV ENV_NAME=$ENV_NAME
 ARG NEXT_PUBLIC_LATEST_COMMIT_SHA
-ENV NEXT_PUBLIC_LATEST_COMMIT_SHA $NEXT_PUBLIC_LATEST_COMMIT_SHA
+ENV NEXT_PUBLIC_LATEST_COMMIT_SHA=$NEXT_PUBLIC_LATEST_COMMIT_SHA
 ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production PNPM_VERSION=9.15.1
 RUN corepack enable && corepack install -g pnpm@${PNPM_VERSION}
 
@@ -27,7 +27,7 @@ RUN pnpm build
 FROM node:20-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
@@ -54,7 +54,7 @@ USER nextjs
 
 EXPOSE 3000
 
-ENV PORT 3000
+ENV PORT=3000
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
