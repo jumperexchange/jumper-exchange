@@ -42,7 +42,7 @@ export const ActiveSuperfestMissionsCarousel = ({
             styles={{ paddingLeft: '32px' }}
           >
             {!loading ? (
-              quests?.map((quest: Quest, index: number) => {
+              quests?.map((quest, index: number) => {
                 const claimingIds =
                   quest.attributes?.CustomInformation?.['claimingIds'];
                 const rewardsIds =

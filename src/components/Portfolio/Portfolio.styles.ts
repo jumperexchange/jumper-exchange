@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { lighten } from '@mui/material/styles';
 import SvgIcon from '@mui/material/SvgIcon/SvgIcon'; // Import AccordionProps
-import { styled } from '@mui/system';
+import { styled } from '@mui/material';
 
 export const TotalValue = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
