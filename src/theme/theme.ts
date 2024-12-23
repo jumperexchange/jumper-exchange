@@ -784,9 +784,9 @@ export const lightTheme = createTheme(
       bgTertiary: {
         main: themeCustomized.palette.white.main,
       },
-      // shadow: {
-      //   main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-      // },
+      shadow: {
+        main: '0px',
+      },
       primary: {
         light: '#31007A',
         main: '#31007A',
