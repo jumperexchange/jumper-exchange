@@ -10,8 +10,10 @@ import {
 } from '@lifi/wallet-management';
 import { type FC, type PropsWithChildren } from 'react';
 import { WagmiProvider } from 'wagmi';
+import { abstractWalletConnector } from '@abstract-foundation/agw-react/connectors';
 
 const { config, connectors } = createDefaultWagmiConfig({
+  connectors: [abstractWalletConnector()],
   coinbase: defaultCoinbaseConfig,
   metaMask: defaultMetaMaskConfig,
   walletConnect: defaultWalletConnectConfig,
