@@ -11,7 +11,6 @@ import {
 import { type FC, type PropsWithChildren } from 'react';
 import { WagmiProvider } from 'wagmi';
 import { abstractWalletConnector } from '@abstract-foundation/agw-react/connectors';
-import { abstractTestnet } from 'wagmi/chains';
 
 const { config, connectors } = createDefaultWagmiConfig({
   connectors: [abstractWalletConnector()],
@@ -24,10 +23,7 @@ const { config, connectors } = createDefaultWagmiConfig({
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
   const { chains } = useChains();
 
-  useSyncWagmiConfig(config, connectors, [
-    abstractTestnet,
-    ...chains,
-  ] as ExtendedChain[]);
+  useSyncWagmiConfig(config, connectors, chains as ExtendedChain[]);
 
   return (
     <WagmiProvider config={config} reconnectOnMount={false}>
