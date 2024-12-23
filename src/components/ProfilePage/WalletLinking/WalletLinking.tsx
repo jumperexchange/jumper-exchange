@@ -40,12 +40,7 @@ export const WalletLinking = ({
         })}
         open={open}
       >
-        <MenuPopper
-          open={open}
-          // anchorEl={anchorEl}
-          transition
-          // placement="bottom-end"
-        >
+        <MenuPopper open={open} transition>
           {({ TransitionProps }) => (
             <Fade
               {...TransitionProps}

@@ -56,7 +56,7 @@ export const WalletLinkingMenu = ({
               <ArrowBackIcon />
             </IconButton>
           ) : (
-            <span />
+            <span style={{ width: '40px' }} />
           )}
           <Typography variant="titleXSmall">{title}</Typography>
           <IconButton

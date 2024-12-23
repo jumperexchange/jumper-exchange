@@ -1,33 +1,42 @@
-import { Typography } from '@mui/material';
+import { StepButton, StepConnector } from '@mui/material';
 import Box from '@mui/material/Box';
 import Step from '@mui/material/Step';
 import Stepper from '@mui/material/Stepper';
-import Image from 'next/image';
 import { Checked } from 'src/components/illustrations/Checked';
-import { WalletLinkingStepBox } from './WalletLinkingStepper.style';
+import {
+  WalletLinkingStepBox,
+  WalletLinkingStepImage,
+  WalletLinkingStepText,
+} from './WalletLinkingStepper.style';
 
 const steps = [
   <WalletLinkingStepBox>
-    <Image
-      src={'/chain-icon-eth-edit-min.svg'}
+    <WalletLinkingStepImage
+      src={'/chain-icon-eth.svg'}
       width={64}
       height={64}
       alt="Ethereum logo"
     />
-    <Typography variant="bodySmall">Sign with EVM</Typography>
+    <WalletLinkingStepText variant="bodySmall">
+      Sign with EVM
+    </WalletLinkingStepText>
   </WalletLinkingStepBox>,
   <WalletLinkingStepBox>
-    <Image
-      src={'/chain-icon-sol-edit-min.svg'}
+    <WalletLinkingStepImage
+      src={'/chain-icon-sol.svg'}
       width={64}
       height={64}
       alt="Ethereum logo"
     />
-    <Typography variant="bodySmall">Sign with Solana</Typography>
+    <WalletLinkingStepText variant="bodySmall">
+      Sign with Solana
+    </WalletLinkingStepText>
   </WalletLinkingStepBox>,
   <WalletLinkingStepBox>
     <Checked />
-    <Typography variant="bodySmall">Verify signatures</Typography>
+    <WalletLinkingStepText variant="bodySmall">
+      Verify signatures
+    </WalletLinkingStepText>
   </WalletLinkingStepBox>,
 ];
 
@@ -43,12 +52,30 @@ export default function WalletLinkingStepper({
   onClick,
   completed,
 }: WalletLinkingStepperProps) {
+  // const classes = useStyles();
+
   return (
     <Box sx={{ width: '100%' }}>
-      <Stepper nonLinear activeStep={step}>
+      <Stepper
+        nonLinear
+        activeStep={step}
+        connector={<StepConnector />}
+        sx={{
+          '& .MuiStepLabel-iconContainer:not(.Mui-completed)': {
+            display: 'none',
+          },
+        }}
+      >
         {steps.map((label, index) => (
           <Step key={`step-${index}`} completed={completed}>
-            {label}
+            <StepButton
+              color="inherit"
+              disabled={completed}
+              className="step-button"
+              onClick={onClick}
+            >
+              {label}
+            </StepButton>
           </Step>
         ))}
       </Stepper>

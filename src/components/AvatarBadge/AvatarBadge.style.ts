@@ -59,7 +59,9 @@ export const StyledBadge = styled(Badge, {
 }));
 
 // Styled avatar
-export const StyledBadgeAvatar = styled(MuiAvatar)<{
+export const StyledBadgeAvatar = styled(MuiAvatar, {
+  shouldForwardProp: (prop) => prop !== 'badgeSize',
+})<{
   badgeSize: number;
 }>(({ badgeSize }) => ({
   width: badgeSize,

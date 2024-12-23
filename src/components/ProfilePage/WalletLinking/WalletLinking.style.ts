@@ -8,15 +8,16 @@ export const WalletLinkingPaper = styled(MenuPaper)(({ theme }) => ({
   transform: 'translate(-50%, -50%)',
   width: 'auto',
   maxWidth: `calc( 100% - 32px )`,
+  borderRadius: '12px',
   margin: 'auto',
   height: 'auto !important',
   [theme.breakpoints.up('sm')]: {
-    maxWidth: '480px',
-    width: 'auto',
+    width: 480,
+    height: 366,
   },
   [theme.breakpoints.up('md')]: {
-    maxWidth: '480px',
-    width: 'auto',
+    width: 480,
+    height: 366,
   },
 }));
 
