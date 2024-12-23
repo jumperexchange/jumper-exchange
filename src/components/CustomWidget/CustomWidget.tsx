@@ -80,6 +80,7 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
           borderRadius: '16px',
         },
       },
+      contractCompactComponent: <></>,
       walletConfig: {
         onConnect() {
           openWalletMenu();
