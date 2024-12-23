@@ -51,7 +51,7 @@ export const BerachainMarketCard = ({
   url,
 }: BerachainMarketCardProps) => {
   const { account } = useAccount();
-  const chainId = roycoData.chain_id;
+  const chainId = roycoData?.chain_id;
   const theme = useTheme();
   const [openTokensTooltip] = useState(false);
   const { t } = useTranslation();
@@ -70,8 +70,8 @@ export const BerachainMarketCard = ({
     isRefetching: isRefetchingRecipe,
     data: dataRecipe,
   } = useEnrichedAccountBalancesRecipeInMarket({
-    chain_id: roycoData.chain_id!,
-    market_id: roycoData.market_id!,
+    chain_id: roycoData?.chain_id!,
+    market_id: roycoData?.market_id!,
     account_address: account?.address?.toLowerCase() ?? '',
     custom_token_data: undefined,
   });
@@ -104,7 +104,7 @@ export const BerachainMarketCard = ({
 
   return (
     <Link
-      href={`/berachain/explore/${roycoData.market_id}`}
+      href={`/berachain/explore/${roycoData?.market_id}`}
       style={{ textDecoration: 'none' }}
     >
       <BerachainMarketCardWrapper>
@@ -129,66 +129,14 @@ export const BerachainMarketCard = ({
               sx={{ width: 92, height: 40, borderRadius: '8px' }}
             />
           )}
-          {roycoData.name ? (
-            <Typography variant="bodyLargeStrong">{roycoData.name}</Typography>
+          {roycoData?.name ? (
+            <Typography variant="bodyLargeStrong">{roycoData?.name}</Typography>
           ) : (
             <Skeleton
               variant="text"
               sx={{ width: 96, height: 24, borderRadius: '8px' }}
             />
           )}
-        </BerachainMarketCardHeader>
-        <BerchainMarketCardInfos>
-          <Box display={'flex'} gap={'8px'}>
-            {tokenChainDetails?.logoURI ? (
-              <BerchainMarketCardAvatar
-                src={tokenChainDetails.logoURI}
-                alt={`${tokenChainDetails.name} logo`}
-                width={20}
-                height={20}
-              />
-            ) : (
-              <Skeleton variant="circular" sx={{ width: 32, height: 32 }} />
-            )}
-            <BerchainMarketCardTokenBox>
-              {roycoData.input_token_data ? (
-                // fetchedTokens.map((token, index) => (
-                <BerachainMarketCardTokenContainer
-                  sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
-                  key={`berachain-market-card-token-container-${roycoData.input_token_data.name}`}
-                >
-                  {roycoData.input_token_data.image ? (
-                    <img
-                      key={`berachain-market-card-token-${roycoData.input_token_data.name}-${roycoData.input_token_data.id}`}
-                      src={roycoData.input_token_data.image}
-                      alt={`${roycoData.input_token_data.name} logo`}
-                      width={20}
-                      height={20}
-                      style={{ borderRadius: '10px' }}
-                    />
-                  ) : (
-                    <Skeleton
-                      key={`berachain-market-card-token-skeleton-${roycoData.input_token_data.id}`}
-                      variant="circular"
-                      sx={{ width: 20, height: 20 }}
-                    />
-                  )}
-                  {/*{fetchedTokens.length === 1 && token?.name && (*/}
-                  <Typography
-                    variant="bodyXSmallStrong"
-                    key={`berachain-market-card-token-label-${roycoData.input_token_data.name}-${roycoData.input_token_data.id}`}
-                  >
-                    {roycoData.input_token_data.symbol}
-                    {/*{fetchedTokens[0]?.symbol}*/}
-                  </Typography>
-                  {/*)}*/}
-                </BerachainMarketCardTokenContainer>
-              ) : (
-                // ))
-                <Skeleton variant="circular" sx={{ width: 20, height: 20 }} />
-              )}
-            </BerchainMarketCardTokenBox>
-          </Box>
           {type && (
             <BerachainMarketCardBadge
               variant="bodySmall"
@@ -205,42 +153,64 @@ export const BerachainMarketCard = ({
               {type}
             </BerachainMarketCardBadge>
           )}
-        </BerchainMarketCardInfos>
+        </BerachainMarketCardHeader>
+        <>
+          {/* <BerchainMarketCardInfos
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              backgroundColor: 'inherit',
+            }}
+          >
+            <Box>
+              <Typography>Deposited</Typography>
+              <BerachainMarketCardTokenContainer
+                  sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+                  key={`berachain-market-card-token-container-${roycoData?.input_token_data?.name}`}
+                >
+                  {roycoData?.input_token_data?.image ? (
+                    <img
+                      key={`berachain-market-card-token-${roycoData?.input_token_data?.name}-${roycoData?.input_token_data?.id}`}
+                      src={roycoData?.input_token_data?.image}
+                      alt={`${roycoData?.input_token_data?.name} logo`}
+                      width={20}
+                      height={20}
+                      style={{ borderRadius: '10px' }}
+                    />
+                  ) : (
+                    <Skeleton
+                      key={`berachain-market-card-token-skeleton-${roycoData?.input_token_data?.id}`}
+                      variant="circular"
+                      sx={{ width: 20, height: 20 }}
+                    />
+                  )}
+                  <Typography
+                    variant="bodyXSmallStrong"
+                    key={`berachain-market-card-token-label-${roycoData?.input_token_data?.name}-${roycoData?.input_token_data?.id}`}
+                  >
+                    {roycoData?.input_token_data?.symbol}
+                    
+                  </Typography>s
+                </BerachainMarketCardTokenContainer>
+            </Box>
+            <Box>
+              <Typography> TVL</Typography>
+              <Typography>
+                {roycoData?.locked_quantity_usd
+                  ? t('format.currency', {
+                      value: roycoData?.locked_quantity_usd,
+                      notation: 'compact',
+                    })
+                  : 'N/A'}
+              </Typography>
+            </Box>
+          </BerchainMarketCardInfos> */}
+        </>
         <BerchainMarketCardInfos
           sx={{
-            display: 'grid',
-            gridTemplateColumns: deposited ? '1fr 1fr 1fr' : '1fr 1fr',
+            display: 'flex',
           }}
         >
-          <BerachainProgressCard
-            title={'TVL'}
-            value={
-              roycoData.locked_quantity_usd
-                ? t('format.currency', {
-                    value: roycoData.locked_quantity_usd,
-                    notation: 'compact',
-                  })
-                : 'N/A'
-            }
-            tooltip={
-              'Total Value Locked is the metric showing the total amount in a pool.'
-            }
-            sx={{
-              height: '100%',
-              padding: theme.spacing(1.5, 2),
-              display: 'flex',
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                padding: theme.spacing(1.5, 2),
-              },
-            }}
-            valueSx={{
-              color: alpha(theme.palette.white.main, 0.84),
-              fontSize: theme.typography.titleXSmall.fontSize,
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                fontSize: theme.typography.titleXSmall.fontSize,
-              },
-            }}
-          />
           <Tooltip
             title={<TooltipIncentives market={roycoData} />}
             open={openTokensTooltip ? false : undefined}
@@ -256,7 +226,7 @@ export const BerachainMarketCard = ({
                 value={
                   roycoData?.annual_change_ratio
                     ? t('format.percent', {
-                        value: roycoData.annual_change_ratio,
+                        value: roycoData?.annual_change_ratio,
                       })
                     : 'N/A'
                 }
@@ -279,7 +249,7 @@ export const BerachainMarketCard = ({
               />
             </div>
           </Tooltip>
-          {deposited && (
+          {/* {deposited && (
             <BerachainProgressCard
               title={'Deposited'}
               value={t('format.currency', {
@@ -302,10 +272,12 @@ export const BerachainMarketCard = ({
                 },
               }}
             />
-          )}
+          )} */}
         </BerchainMarketCardInfos>
         {/* <BerachainMarketCardDeposit chain={tokenChainDetails} /> */}
       </BerachainMarketCardWrapper>
     </Link>
   );
 };
+
+

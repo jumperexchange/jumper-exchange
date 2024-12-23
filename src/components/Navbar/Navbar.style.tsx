@@ -20,7 +20,7 @@ export const NavbarContainer = styled(AppBar, {
   justifyContent: 'space-between',
   position: 'sticky',
   top: 0,
-  ackdropFilter: !hasBlurredNavigation ? 'unset' : 'blur(12px)',
+  ackdropFilter: !hasBlurredNavigation ? 'blur(12px)' : 'blur(12px)',
   boxShadow: 'unset',
   background: 'transparent',
   alignItems: 'center',
