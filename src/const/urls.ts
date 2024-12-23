@@ -19,6 +19,7 @@ export const JUMPER_WALLET_PATH = '/wallet';
 export const JUMPER_FEST_PATH = '/superfest';
 export const JUMPER_MEMECOIN_PATH = '/memecoins';
 export const JUMPER_QUESTS_PATH = '/quests';
+export const JUMPER_WRAPPED_URL = 'https://wrapped.jumper.exchange';
 
 export const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
 
