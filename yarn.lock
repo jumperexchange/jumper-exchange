@@ -5,9 +5,9 @@ __metadata:
   version: 8
   cacheKey: 10
 
-"@abstract-foundation/agw-client@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@abstract-foundation/agw-client@npm:0.1.0"
+"@abstract-foundation/agw-client@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@abstract-foundation/agw-client@npm:0.1.1"
   peerDependencies:
     abitype: ^1.0.0
     typescript: ">=5.0.4"
@@ -15,15 +15,15 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/5a9fb9963865f5aecd7724fd2d3ce360363549b7d8cd4ba7a974d92beb115bc12f7f0342a54eaaa3d05c2c3a6caccf748bfd99b1aedd76ab62542de30b75409e
+  checksum: 10/d2911fe39500013c1b47de74c9c816cd42f5c296601328b189e00ac709cc9c9cbbd09cf042ddc37249e40632f7607971004a805beec037dd8dc9d094a6d7c4c6
   languageName: node
   linkType: hard
 
-"@abstract-foundation/agw-react@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@abstract-foundation/agw-react@npm:0.1.0"
+"@abstract-foundation/agw-react@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@abstract-foundation/agw-react@npm:0.1.1"
   peerDependencies:
-    "@abstract-foundation/agw-client": ^0.1.0
+    "@abstract-foundation/agw-client": ^0.1.1
     "@privy-io/cross-app-connect": ^0.1.2
     "@privy-io/react-auth": ^1.97.0
     "@tanstack/react-query": ^5
@@ -40,7 +40,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 10/23fe07193e0b631a5d348979da799ba023b8babee7279da6189ea0d63bd759a2946aa114eae480e5394c116fa734c79312be67be7151c0f0427b6ea1d372eafd
+  checksum: 10/7c8ebbe1d73b62a62458302e2f9af6f85352d4514ff322af034d655dd352532bdc8633aa3cc2e09daf2695b30622dab8ac6eecbddb00deafd02f84c4a80f7185
   languageName: node
   linkType: hard
 
@@ -11494,8 +11494,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "jumper.exchange@workspace:."
   dependencies:
-    "@abstract-foundation/agw-client": "npm:^0.1.0"
-    "@abstract-foundation/agw-react": "npm:^0.1.0"
+    "@abstract-foundation/agw-client": "npm:^0.1.1"
+    "@abstract-foundation/agw-react": "npm:^0.1.1"
     "@bigmi/react": "npm:^0.0.6"
     "@emotion/cache": "npm:^11.14.0"
     "@emotion/react": "npm:^11.14.0"
