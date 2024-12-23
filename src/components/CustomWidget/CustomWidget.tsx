@@ -3,7 +3,7 @@ import { ChainType, DisabledUI, HiddenUI, LiFiWidget } from '@lifi/widget';
 import { formatUnits } from 'viem';
 import { useEffect, useMemo, useState } from 'react';
 import { useZaps } from '@/hooks/useZaps';
-import type { Account } from '@lifi/wallet-management';
+import { useWalletMenu, type Account } from '@lifi/wallet-management';
 import { DepositCard } from './DepositCard';
 import { useContractRead } from 'src/hooks/useReadContractData';
 import WidgetLikeField from '../Zap/WidgetLikeField/WidgetLikeField';
@@ -23,6 +23,8 @@ interface CustomWidgetProps {
 export function CustomWidget({ account, projectData }: CustomWidgetProps) {
   const [token, setToken] = useState<TokenAmount>();
   const { data, isSuccess } = useZaps(projectData);
+  const { openWalletMenu } = useWalletMenu();
+
   const { data: depositTokenData, isLoading: isLoadingDepositTokenData } =
     useContractRead({
       address: projectData.address as `0x${string}`,
@@ -73,6 +75,11 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
         container: {
           border: '1px solid rgb(234, 234, 234)',
           borderRadius: '16px',
+        },
+      },
+      walletConfig: {
+        onConnect() {
+          openWalletMenu();
         },
       },
     };
