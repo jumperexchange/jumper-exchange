@@ -7,6 +7,7 @@ export const getDefaultWidgetTheme = (
   config: {
     appearance: theme.palette.mode,
     theme: {
+      // @ts-ignore
       typography: {
         fontFamily: theme.typography.fontFamily,
       },
