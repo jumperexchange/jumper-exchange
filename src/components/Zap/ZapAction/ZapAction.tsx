@@ -296,10 +296,10 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
             padding: theme.spacing(3, 1),
             borderRadius: '24px',
             backgroundColor: theme.palette.surface1.main,
-            boxShadow:
-              theme.palette.mode === 'light'
-                ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-                : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+            // boxShadow:
+            //   theme.palette.mode === 'light'
+            //     ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+            //     : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
           }}
         >
           <Tabs
