@@ -78,6 +78,7 @@
     "@next/eslint-plugin-next": "^14.2.20",
     "@playwright/test": "^1.49.1",
     "@synthetixio/synpress": "4.0.0-alpha.7",
+    "@synthetixio/synpress-core": "^0.0.4",
     "@types/gtag.js": "^0.0.20",
     "@types/lodash": "^4",
     "@types/node": "^22.10.2",
