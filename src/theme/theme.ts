@@ -900,9 +900,9 @@ export const darkTheme = createTheme(
       bgTertiary: {
         main: themeCustomized.palette.alphaLight200.main,
       },
-      // shadow: {
-      //   main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-      // },
+      shadow: {
+        main: '0px',
+      },
       primary: {
         light: '#653BA3',
         main: '#653BA3',

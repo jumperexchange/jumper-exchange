@@ -99,10 +99,10 @@ export const FeaturedArticleImage = styled(Image)(({ theme }) => ({
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     borderRadius: '14px',
     alignSelf: 'center',
-    // boxShadow:
-    //   theme.palette.mode === 'light'
-    //     ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-    //     : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+    boxShadow:
+      theme.palette.mode === 'light'
+        ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+        : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
   },
 }));
 
@@ -114,10 +114,10 @@ export const FeaturedArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   userSelect: 'none',
   transform: 'unset',
   alignSelf: 'flex-start',
-  // boxShadow:
-  //   theme.palette.mode === 'light'
-  //     ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-  //     : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  boxShadow:
+    theme.palette.mode === 'light'
+      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
   [theme.breakpoints.up('md' as Breakpoint)]: {
     alignSelf: 'center',
   },
