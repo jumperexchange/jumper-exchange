@@ -805,7 +805,7 @@ export const lightTheme = createTheme(
         main: themeCustomized.palette.white.main,
       },
       shadow: {
-        main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+        main: 'rgba(0, 0, 0, 0.16)',
       },
       primary: {
         light: '#31007A',
@@ -921,7 +921,7 @@ export const darkTheme = createTheme(
         main: themeCustomized.palette.alphaLight200.main,
       },
       shadow: {
-        main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+        main: 'rgba(0, 0, 0, 0.16)',
       },
       primary: {
         light: '#653BA3',

@@ -148,7 +148,7 @@ dependencies:
     version: 11.15.0(react-dom@18.3.1)(react@18.3.1)
   next:
     specifier: ^14.2.20
-    version: 14.2.21(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@18.3.1)(react@18.3.1)
+    version: 14.2.21(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@18.3.1)(react@18.3.1)
   next-i18n-router:
     specifier: ^5.5.1
     version: 5.5.1
@@ -215,14 +215,14 @@ devDependencies:
     specifier: ^14.2.20
     version: 14.2.21
   '@playwright/test':
-    specifier: ^1.49.1
-    version: 1.49.1
+    specifier: 1.44.1
+    version: 1.44.1
   '@synthetixio/synpress':
     specifier: 4.0.0-alpha.7
-    version: 4.0.0-alpha.7(@playwright/test@1.49.1)(playwright-core@1.44.0)(postcss@8.4.49)(typescript@5.7.2)
+    version: 4.0.0-alpha.7(@playwright/test@1.44.1)(playwright-core@1.44.0)(postcss@8.4.49)(typescript@5.7.2)
   '@synthetixio/synpress-core':
     specifier: ^0.0.4
-    version: 0.0.4(@playwright/test@1.49.1)
+    version: 0.0.4(@playwright/test@1.44.1)
   '@types/gtag.js':
     specifier: ^0.0.20
     version: 0.0.20
@@ -4736,7 +4736,7 @@ packages:
       '@emotion/cache': 11.14.0
       '@mui/material': 5.16.12(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.3.18)(react-dom@18.3.1)(react@18.3.1)
       '@types/react': 18.3.18
-      next: 14.2.21(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@18.3.1)(react@18.3.1)
+      next: 14.2.21(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
     dev: false
 
@@ -5103,7 +5103,7 @@ packages:
       next: ^13.0.0 || ^14.0.0
       react: ^18.2.0
     dependencies:
-      next: 14.2.21(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@18.3.1)(react@18.3.1)
+      next: 14.2.21(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       third-party-capital: 1.0.20
     dev: false
@@ -5804,12 +5804,12 @@ packages:
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
     dev: true
 
-  /@playwright/test@1.49.1:
-    resolution: {integrity: sha512-Ky+BVzPz8pL6PQxHqNRW1k3mIyv933LML7HktS8uik0bUXNCdPhoS/kLihiO1tMf/egaJb4IutXd7UywvXEW+g==}
-    engines: {node: '>=18'}
+  /@playwright/test@1.44.1:
+    resolution: {integrity: sha512-1hZ4TNvD5z9VuhNJ/walIjvMVvYkZKf71axoF/uiAqpntQJXpG64dlXhoDXE3OczPuTuvjf/M5KWFg5VAVUS3Q==}
+    engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      playwright: 1.49.1
+      playwright: 1.44.1
 
   /@popperjs/core@2.11.8:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
@@ -6576,7 +6576,7 @@ packages:
       '@sentry/vercel-edge': 8.47.0
       '@sentry/webpack-plugin': 2.22.7(webpack@5.97.1)
       chalk: 3.0.0
-      next: 14.2.21(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@18.3.1)(react@18.3.1)
+      next: 14.2.21(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@18.3.1)(react@18.3.1)
       resolve: 1.22.8
       rollup: 3.29.5
       stacktrace-parser: 0.1.10
@@ -7200,14 +7200,14 @@ packages:
       tslib: 2.8.1
     dev: false
 
-  /@synthetixio/ethereum-wallet-mock@0.0.1-alpha.7(@playwright/test@1.49.1)(typescript@5.7.2):
+  /@synthetixio/ethereum-wallet-mock@0.0.1-alpha.7(@playwright/test@1.44.1)(typescript@5.7.2):
     resolution: {integrity: sha512-afyAVC2b39OC/mxfVeISFQ7TVleS15GYeCPte6VrdFYWi/2SXPml6myAZx9FlRqRlyaPLhRrtRRjdno44S6/6Q==}
     peerDependencies:
       '@playwright/test': 1.44.0
     dependencies:
       '@depay/web3-mock': 14.17.0
-      '@playwright/test': 1.49.1
-      '@synthetixio/synpress-core': 0.0.1-alpha.7(@playwright/test@1.49.1)
+      '@playwright/test': 1.44.1
+      '@synthetixio/synpress-core': 0.0.1-alpha.7(@playwright/test@1.44.1)
       viem: 2.9.9(typescript@5.7.2)
     transitivePeerDependencies:
       - bufferutil
@@ -7244,30 +7244,30 @@ packages:
       - typescript
     dev: true
 
-  /@synthetixio/synpress-core@0.0.1-alpha.7(@playwright/test@1.49.1):
+  /@synthetixio/synpress-core@0.0.1-alpha.7(@playwright/test@1.44.1):
     resolution: {integrity: sha512-El23vK/FlYiliT2JworRc8zXGVdUIvzxwzWtGMZwC/KOKy0RGgNA7rQfwc3VSPhp1ceUd4w3uIRtv6Ccjo8WbA==}
     peerDependencies:
       '@playwright/test': 1.44.0
     dependencies:
-      '@playwright/test': 1.49.1
+      '@playwright/test': 1.44.1
     dev: true
 
-  /@synthetixio/synpress-core@0.0.4(@playwright/test@1.49.1):
+  /@synthetixio/synpress-core@0.0.4(@playwright/test@1.44.1):
     resolution: {integrity: sha512-3zO8PGigi9sjdG359pZ0EB3BiBPweZVOyiobCopNDykKI/EoWNYY05bOttOG+/Wg0HynMzGTPTRwpJ0+a+k2Sg==}
     peerDependencies:
       '@playwright/test': 1.48.2
     dependencies:
-      '@playwright/test': 1.49.1
+      '@playwright/test': 1.44.1
     dev: true
 
-  /@synthetixio/synpress-metamask@0.0.1-alpha.7(@playwright/test@1.49.1)(playwright-core@1.44.0)(postcss@8.4.49)(typescript@5.7.2):
+  /@synthetixio/synpress-metamask@0.0.1-alpha.7(@playwright/test@1.44.1)(playwright-core@1.44.0)(postcss@8.4.49)(typescript@5.7.2):
     resolution: {integrity: sha512-xzBsF5wnak25uw7ZO9RJEmCuMtT03W9pyDaEpO7T1VkDcZT8MBxKHs9vR4UKqHHd9IPKXc9EvsUJ/oSwW4saKQ==}
     peerDependencies:
       '@playwright/test': 1.44.0
     dependencies:
-      '@playwright/test': 1.49.1
+      '@playwright/test': 1.44.1
       '@synthetixio/synpress-cache': 0.0.1-alpha.7(playwright-core@1.44.0)(postcss@8.4.49)(typescript@5.7.2)
-      '@synthetixio/synpress-core': 0.0.1-alpha.7(@playwright/test@1.49.1)
+      '@synthetixio/synpress-core': 0.0.1-alpha.7(@playwright/test@1.44.1)
       '@viem/anvil': 0.0.7
       fs-extra: 11.2.0
       zod: 3.22.4
@@ -7284,17 +7284,17 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@synthetixio/synpress@4.0.0-alpha.7(@playwright/test@1.49.1)(playwright-core@1.44.0)(postcss@8.4.49)(typescript@5.7.2):
+  /@synthetixio/synpress@4.0.0-alpha.7(@playwright/test@1.44.1)(playwright-core@1.44.0)(postcss@8.4.49)(typescript@5.7.2):
     resolution: {integrity: sha512-hdVV+LR/aCO+o7FyeJiFxJ+o797mDqNqkh+huz3Ic4LDbTW18HkLKwLwUzRKt8ngIOf60K/PFL9QyBLujTc76g==}
     hasBin: true
     peerDependencies:
       '@playwright/test': 1.44.0
     dependencies:
-      '@playwright/test': 1.49.1
-      '@synthetixio/ethereum-wallet-mock': 0.0.1-alpha.7(@playwright/test@1.49.1)(typescript@5.7.2)
+      '@playwright/test': 1.44.1
+      '@synthetixio/ethereum-wallet-mock': 0.0.1-alpha.7(@playwright/test@1.44.1)(typescript@5.7.2)
       '@synthetixio/synpress-cache': 0.0.1-alpha.7(playwright-core@1.44.0)(postcss@8.4.49)(typescript@5.7.2)
-      '@synthetixio/synpress-core': 0.0.1-alpha.7(@playwright/test@1.49.1)
-      '@synthetixio/synpress-metamask': 0.0.1-alpha.7(@playwright/test@1.49.1)(playwright-core@1.44.0)(postcss@8.4.49)(typescript@5.7.2)
+      '@synthetixio/synpress-core': 0.0.1-alpha.7(@playwright/test@1.44.1)
+      '@synthetixio/synpress-metamask': 0.0.1-alpha.7(@playwright/test@1.44.1)(playwright-core@1.44.0)(postcss@8.4.49)(typescript@5.7.2)
     transitivePeerDependencies:
       - '@microsoft/api-extractor'
       - '@swc/core'
@@ -13434,7 +13434,7 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
     dev: false
 
-  /next@14.2.21(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@18.3.1)(react@18.3.1):
+  /next@14.2.21(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-rZmLwucLHr3/zfDMYbJXbw0ZeoBpirxkXuvsJbk7UPorvPYZhP7vq7aHbKnU7dQNCYIimRrbB2pp3xmf+wsYUg==}
     engines: {node: '>=18.17.0'}
     hasBin: true
@@ -13454,7 +13454,7 @@ packages:
     dependencies:
       '@next/env': 14.2.21
       '@opentelemetry/api': 1.9.0
-      '@playwright/test': 1.49.1
+      '@playwright/test': 1.44.1
       '@swc/helpers': 0.5.5
       busboy: 1.6.0
       caniuse-lite: 1.0.30001690
@@ -13979,17 +13979,17 @@ packages:
     hasBin: true
     dev: true
 
-  /playwright-core@1.49.1:
-    resolution: {integrity: sha512-BzmpVcs4kE2CH15rWfzpjzVGhWERJfmnXmniSyKeRZUs9Ws65m+RGIi7mjJK/euCegfn3i7jvqWeWyHe9y3Vgg==}
-    engines: {node: '>=18'}
+  /playwright-core@1.44.1:
+    resolution: {integrity: sha512-wh0JWtYTrhv1+OSsLPgFzGzt67Y7BE/ZS3jEqgGBlp2ppp1ZDj8c+9IARNW4dwf1poq5MgHreEM2KV/GuR4cFA==}
+    engines: {node: '>=16'}
     hasBin: true
 
-  /playwright@1.49.1:
-    resolution: {integrity: sha512-VYL8zLoNTBxVOrJBbDuRgDWa3i+mfQgDTrL8Ah9QXZ7ax4Dsj0MSq5bYgytRnDVVe+njoKnfsYkH3HzqVj5UZA==}
-    engines: {node: '>=18'}
+  /playwright@1.44.1:
+    resolution: {integrity: sha512-qr/0UJ5CFAtloI3avF95Y0L1xQo6r3LQArLIg/z/PoGJ6xa+EwzrwO5lpNr/09STxdHuUoP2mvuELJS+hLdtgg==}
+    engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      playwright-core: 1.49.1
+      playwright-core: 1.44.1
     optionalDependencies:
       fsevents: 2.3.2
 
