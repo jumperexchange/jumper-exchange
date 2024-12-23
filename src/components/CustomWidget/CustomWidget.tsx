@@ -65,6 +65,9 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
         address: data?.data?.market?.address,
         chainType: ChainType.EVM,
       },
+      bridges: {
+        allow: ['across', 'hop', 'stargateV2', 'stargate', 'symbiosis'],
+      },
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
       integrator: projectData.project === 'mellow' ? 'zap.mellow' : 'zap.ionic',
