@@ -12,9 +12,9 @@
     "@fingerprintjs/fingerprintjs": "^3.4.2",
     "@headlessui/react": "^2.2.0",
     "@lifi/explorer": "^0.0.4",
-    "@lifi/sdk": "^3.4.3",
+    "@lifi/sdk": "3.4.3",
     "@lifi/wallet-management": "^3.4.7",
-    "@lifi/widget": "^3.12.5",
+    "@lifi/widget": "3.12.5",
     "@metaplex-foundation/mpl-core": "^1.1.1",
     "@metaplex-foundation/umi": "^0.9.2",
     "@metaplex-foundation/umi-bundle-defaults": "^0.9.2",
@@ -144,6 +144,7 @@
     "@lifi/wallet-management/@wagmi/core": "2.16.0",
     "bigmi/wagmi": "2.14.3",
     "@bigmi/client/wagmi": "2.14.3",
-    "@bigmi/client/@wagmi/core": "2.16.0"
+    "@bigmi/client/@wagmi/core": "2.16.0",
+    "@metamask/sdk": "0.30.0"
   }
 }
