@@ -24,8 +24,6 @@ jobs:
       run: npm install -g pnpm
     - name: Install dependencies
       run: pnpm install
-    - name: Install synpress
-      run: pnpm install @synthetixio/synpress-core
     - name: Install xvfb server
       run: sudo apt-get install xvfb
     - name: Install Playwright Browsers
