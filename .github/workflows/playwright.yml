@@ -21,7 +21,7 @@ jobs:
       with:
         node-version: 18
     - name: Install dependencies
-      run: yarn install
+      run: pnpm install
     - name: Install xvfb server
       run: sudo apt-get install xvfb
     - name: Install Playwright Browsers
@@ -30,8 +30,8 @@ jobs:
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.json
       run: |
-        yarn build:cache:ci &
-        yarn run test:ci:e2e \
+       pnpm build:cache:ci &
+        pnpm run test:ci:e2e \
           --shard ${{ matrix.shard }}/${{ strategy.job-total }} \
           --reporter=json
     - uses: daun/playwright-report-summary@v3
