@@ -20,6 +20,8 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 18
+    - name: Install pnpm
+      run: npm install -g pnpm
     - name: Install dependencies
       run: pnpm install
     - name: Install xvfb server
