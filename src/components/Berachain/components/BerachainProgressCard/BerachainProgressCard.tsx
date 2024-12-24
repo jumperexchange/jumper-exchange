@@ -13,6 +13,7 @@ interface BerachainProgressCardProps {
   title: string;
   value?: string;
   tooltip?: string | React.ReactNode;
+  showTooltipIcon?: boolean;
   icon?: React.ReactNode;
   sx?: SxProps<Theme> | undefined;
   valueSx?: SxProps<Theme> | undefined;
@@ -22,6 +23,7 @@ export const BerachainProgressCard = ({
   title,
   value,
   tooltip,
+  showTooltipIcon,
   valueSx,
   icon,
   sx,
@@ -44,7 +46,7 @@ export const BerachainProgressCard = ({
           >
             {title}
           </Typography>
-          {tooltip && (
+          {(tooltip || showTooltipIcon) && (
             <Tooltip
               title={tooltip}
               placement={'top'}
@@ -63,12 +65,12 @@ export const BerachainProgressCard = ({
           )}
         </BeraChainProgressCardHeader>
         <Typography
-          variant="titleSmall"
+          variant="titleXSmall"
           marginTop={'4px'}
           sx={(theme) => ({
             typography: {
               xs: theme.typography.titleXSmall,
-              sm: theme.typography.titleSmall,
+              sm: theme.typography.titleXSmall,
             },
             ...(valueSx as CSSProperties),
           })}

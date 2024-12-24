@@ -276,9 +276,6 @@ function DepositWidget({
       autoComplete="off"
       onSubmit={onSubmit}
     >
-      <InputLabel htmlFor="component" sx={{ marginBottom: 1 }}>
-        <Typography variant="titleSmall">{label}</Typography>
-      </InputLabel>
       <FormControl
         error={isTxError || !!hasErrorText}
         variant="standard"
@@ -294,9 +291,11 @@ function DepositWidget({
           }}
         >
           <Typography component="span"></Typography>
-          <Typography variant="body2" color="textSecondary" component="span">
-            Balance: {balance}
-          </Typography>
+          {/* {account?.isConnected && (
+            <Typography variant="body2" color="textSecondary" component="span">
+              Balance: {balance}
+            </Typography>
+          )} */}
         </FormHelperText>
         <OutlinedInput
           autoComplete="off"
@@ -308,51 +307,100 @@ function DepositWidget({
           }}
           placeholder={placeholder}
           aria-describedby="component-text"
-          sx={{ padding: '0.6rem 1rem' }}
+          sx={{
+            padding: '16px',
+            '& input': {
+              fontSize: '24px',
+              fontWeight: 700,
+              lineHeight: '36px',
+              marginLeft: '8px',
+            },
+            '& input::placeholder': {
+              fontSize: '24px',
+              fontWeight: 700,
+              lineHeight: '36px',
+              marginLeft: '8px',
+            },
+          }}
           startAdornment={
             image && (
-              <WalletCardBadge
-                sx={{ marginRight: '10px' }}
-                overlap="circular"
-                className="badge"
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                badgeContent={
-                  image.badge && (
-                    <MuiAvatar
-                      alt={image.badge.name}
-                      sx={(theme) => ({
-                        width: '18px',
-                        height: '18px',
-                        border: `2px solid ${theme.palette.surface2.main}`,
-                      })}
-                    >
-                      {image.badge.name && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                  width: 'auto',
+                }}
+              >
+                <>
+                  <WalletCardBadge
+                    overlap="circular"
+                    className="badge"
+                    sx={{ maringRight: '8px' }}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                    badgeContent={
+                      image.badge && (
+                        <MuiAvatar
+                          alt={image.badge.name}
+                          sx={(theme: any) => ({
+                            width: '18px',
+                            height: '18px',
+                            border: `2px solid ${theme.palette.surface2.main}`,
+                          })}
+                        >
+                          {image.badge.name && (
+                            <TokenImage
+                              token={{
+                                name: image.badge.name,
+                                logoURI: image.badge.url,
+                              }}
+                            />
+                          )}
+                        </MuiAvatar>
+                      )
+                    }
+                  >
+                    <WalletAvatar>
+                      {image.name && (
                         <TokenImage
                           token={{
-                            name: image.badge.name,
-                            logoURI: image.badge.url,
+                            name: image.name,
+                            logoURI: image.url,
                           }}
                         />
                       )}
-                    </MuiAvatar>
-                  )
-                }
-              >
-                <WalletAvatar>
-                  {image.name && (
-                    <TokenImage
-                      token={{
-                        name: image.name,
-                        logoURI: image.url,
-                      }}
-                    />
-                  )}
-                </WalletAvatar>
-              </WalletCardBadge>
+                    </WalletAvatar>
+                  </WalletCardBadge>
+                </>
+                {/* <Box sx={{ marginTop: '4px', minWidth: '100px' }}>
+                  <Typography
+                    variant="bodyXSmall"
+                    color="textSecondary"
+                    component="span"
+                  >
+                    /{' '}
+                    {Intl.NumberFormat('en-US', {
+                      notation: 'standard',
+                      useGrouping: true,
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 5,
+                    }).format(maxInputValue)}{' '}
+                    available
+                  </Typography>
+                </Box> */}
+              </Box>
             )
           }
           endAdornment={
-            balance !== 0 && (
+            // balance > 0 && (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                marginTop: '20px',
+                width: '96px',
+              }}
+            >
               <MaxButton
                 sx={{ p: '5px 10px' }}
                 aria-label="menu"
@@ -361,7 +409,24 @@ function DepositWidget({
               >
                 max
               </MaxButton>
-            )
+              {account?.isConnected && (
+                <Box sx={{ marginTop: '4px' }}>
+                  <Typography
+                    variant="bodyXSmall"
+                    color="textSecondary"
+                    component="span"
+                  >
+                    /{' '}
+                    {Intl.NumberFormat('en-US', {
+                      notation: 'compact',
+                      useGrouping: true,
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 4,
+                    }).format(balance)}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
           }
         />
         <FormHelperText
@@ -373,7 +438,7 @@ function DepositWidget({
             marginBottom: 1,
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="span">
+          {/* <Typography variant="body2" color="textSecondary" component="span">
             {Intl.NumberFormat('en-US', {
               notation: 'standard',
               useGrouping: true,
@@ -381,7 +446,7 @@ function DepositWidget({
               maximumFractionDigits: 8,
             }).format(maxInputValue)}{' '}
             {market?.input_token_data.symbol.toUpperCase()} Fillable in Total
-          </Typography>
+          </Typography> */}
           {hasErrorText && (
             <Typography component="span">{hasErrorText}</Typography>
           )}

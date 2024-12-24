@@ -89,9 +89,9 @@ export const BerachainWidget = ({
             : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
       }}
     >
-      <Typography variant="h2" color="text.primary" sx={{ mb: 3 }}>
+      {/* <Typography variant="h2" color="text.primary" sx={{ mb: 3 }}>
         {market.name}
-      </Typography>
+      </Typography> */}
       <Tabs
         data={tabs}
         value={tab}
@@ -126,8 +126,8 @@ export const BerachainWidget = ({
               chain={chain}
               contractCalls={[]}
               overrideStyle={{ mainColor: '#FF8425' }}
-              label="Supply"
-              placeholder="Enter the amount"
+              label=""
+              placeholder="0"
               image={{
                 url: market.input_token_data.image,
                 name: market.input_token_data.name,

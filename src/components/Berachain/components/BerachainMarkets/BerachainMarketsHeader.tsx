@@ -38,7 +38,7 @@ export const BerachainMarketsHeader = () => {
           )}
         </BerachainMarketHeaderTitle>
         <BerachainMarketHeaderSubtitle>
-          Browse the Boyco markets, deposit your tokens and earn rewards when
+          Browse Boyco markets, deposit tokens and earn rewards when
           Berachain launches.
         </BerachainMarketHeaderSubtitle>
         <Link href="/berachain">
