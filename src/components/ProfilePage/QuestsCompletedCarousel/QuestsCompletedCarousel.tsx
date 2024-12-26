@@ -56,7 +56,7 @@ export const QuestsCompletedCarousel = ({
           : null}
         {showVoidCardsAsFewPdas
           ? Array.from(
-              { length: pdas && pdas?.length > 0 ? 4 - pdas.length : 2 },
+              { length: pdas && pdas?.length > 0 ? 4 - pdas.length : 4 },
               () => 42,
             ).map((_, idx) => (
               <VoidQuestCard
@@ -66,7 +66,7 @@ export const QuestsCompletedCarousel = ({
             ))
           : null}
         {loading
-          ? Array.from({ length: 2 }, () => 42).map((_, idx) => (
+          ? Array.from({ length: 4 }, () => 42).map((_, idx) => (
               <QuestCard key={'skeleton-' + idx} data={{}} />
             ))
           : null}
