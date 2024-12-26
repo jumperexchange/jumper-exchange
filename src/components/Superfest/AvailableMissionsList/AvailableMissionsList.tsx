@@ -101,18 +101,15 @@ export const AvailableMissionsList = ({
       >
         {!loading && quests
           ? quests?.map((quest: Quest, index: number) => {
-              const baseURL = quest.attributes.Image?.data?.attributes?.url;
-              const imgURL = new URL(baseURL, url.origin);
-              const rewards = quest.attributes.CustomInformation?.['rewards'];
+              const imgURL = new URL(
+                quest.attributes.Image?.data?.attributes?.url,
+                url.origin,
+              );
               const rewardType =
                 quest.attributes?.CustomInformation?.['rewardType'];
               const missionType =
                 quest?.attributes?.CustomInformation?.['missionType'];
-              const rewardRange =
-                quest.attributes?.CustomInformation?.['rewardRange'];
               const chains = quest.attributes.CustomInformation?.['chains'];
-              const claimingIds =
-                quest.attributes?.CustomInformation?.['claimingIds'];
               const rewardsIds =
                 quest.attributes?.CustomInformation?.['rewardsIds'];
               //todo: exclude in a dedicated helper function
@@ -170,13 +167,17 @@ export const AvailableMissionsList = ({
                   }
                   slug={quest?.attributes.Slug}
                   chains={chains}
-                  rewards={rewards}
+                  rewards={quest.attributes.CustomInformation?.['rewards']}
                   completed={completed}
-                  claimingIds={claimingIds}
+                  claimingIds={
+                    quest.attributes?.CustomInformation?.['claimingIds']
+                  }
                   variableWeeklyAPY={
                     quest?.attributes.Points > 0 && rewardType === 'weekly'
                   }
-                  rewardRange={rewardRange}
+                  rewardRange={
+                    quest.attributes?.CustomInformation?.['rewardRange']
+                  }
                 />
               );
             })

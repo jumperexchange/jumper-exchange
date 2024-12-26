@@ -1,6 +1,7 @@
 'use client';
 import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
+import { getAddressLabel } from '@/utils/getAddressLabel';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/sdk';
 import {
@@ -13,12 +14,11 @@ import { Stack, Typography, useMediaQuery } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  DEFAULT_WALLET_ADDRESS,
-  JUMPER_LOYALTY_PATH,
-  JUMPER_SCAN_PATH,
-} from 'src/const/urls';
+import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import type { Address } from 'viem';
+import { useEnsName } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
@@ -31,12 +31,7 @@ import {
   WalletMgmtChainAvatar,
   WalletMgmtWalletAvatar,
 } from './WalletButton.style';
-import useBlockieImg from '@/hooks/useBlockieImg';
 import { useWalletAddressImg } from '@/hooks/useAddressImg';
-import { useEnsName } from 'wagmi';
-import type { Address } from 'viem';
-import { mainnet } from 'wagmi/chains';
-import { getAddressLabel } from '@/utils/getAddressLabel';
 import ConnectButton from '@/components/Navbar/ConnectButton';
 
 export const WalletButtons = () => {
@@ -108,10 +103,10 @@ export const WalletButtons = () => {
                     marginRight={1.1}
                     marginLeft={1}
                   >
-                    {points ?? 0}
+                    {points ? t('format.decimal2Digit', { value: points }) : 0}
                   </Typography>
                 )}
-                <XPIcon size={32} />
+                <XPIcon />
               </WalletMenuButton>
             )}
           <WalletMenuButton

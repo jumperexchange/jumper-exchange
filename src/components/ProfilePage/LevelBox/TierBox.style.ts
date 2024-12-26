@@ -1,11 +1,12 @@
-import { alpha } from '@mui/material';
-import { Box, styled } from '@mui/material';
+import { alpha, Typography } from '@mui/material';
+import { Box, styled } from '@mui/system';
 
 export const TierMainBox = styled(Box)(({ theme }) => ({
   height: '100%',
   width: '100%',
   borderRadius: '8px',
-  padding: '10px',
+  backgroundColor: theme.palette.bgSecondary.main,
+  padding: theme.spacing(4),
   [theme.breakpoints.up('sm')]: {
     minHeight: 256,
   },
@@ -30,4 +31,10 @@ export const TierInfoBox = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+}));
+
+export const TierboxInfoTitles = styled(Typography)(({ theme }) => ({
+  userSelect: 'none',
+  color: theme.palette.text.primary,
+  marginTop: theme.spacing(1),
 }));

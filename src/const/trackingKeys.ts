@@ -97,6 +97,7 @@ export enum TrackingCategory {
   DiscordBanner = 'cat_discord_banner',
   Wallet = 'cat_wallet',
   WalletMenu = 'cat_wallet_menu',
+  AddressMenu = 'cat_address_menu',
   Connect = 'cat_connect_wallet',
   Pageload = 'cat_pageload',
   WalletSelectMenu = 'cat_wallet_select_menu',

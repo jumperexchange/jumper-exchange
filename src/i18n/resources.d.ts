@@ -143,14 +143,34 @@ interface Resources {
     profile_page: {
       mobileTitle: 'Only available on Desktop';
       mobileDescription: 'The Jumper Profile page is not available on small screens yet. We are working on it.';
-      rank: 'Leaderboard is updated on a daily basis';
-      pointsInfo: 'XP is your score for interacting with Jumper. As you gain XP points, your level goes up.';
+      level: 'Level';
+      rank: 'Rank';
+      rankInfo: 'Rank is your position in the leaderboard. Gain XP and move upward in the leaderboard.';
+      pointsInfo: 'XP is your score for interacting with Jumper. As you gain XP points, your level goes up. XP coming from Jumper transactions is updated on a daily basis.';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
+      copyAddress: 'Copy wallet address';
+      shareProfile: 'Share profile';
+      open: 'Open {{tool}}';
+      rewards: 'Rewards Earned';
+    };
+    leaderboard: {
+      title: 'Leaderboard';
+      description: 'The leaderboard is updated on a daily basis.';
+      rankCtaConnect: 'Where do you rank?';
+      updatedLabel: 'Updated: {{date}}';
+      connectWallet: 'Connect wallet';
+    };
+    completedMissionsInformation: {
+      title: '';
+      description: 'As Jumper organize ad-hoc campaigns, the missions are updated on a monthly basis to create the associated graphics. Keep in mind: XP coming from specific campaigns will be updated on a monthly basis as well.';
     };
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
       percent: '{{value, decimalExt()}}';
+      decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
+      date: '{{value, dateExt(month: long)}}';
+      shortDate: '{{value, dateExt(month: short)}}';
     };
   };
 }

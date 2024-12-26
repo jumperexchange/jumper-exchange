@@ -18,12 +18,14 @@ interface ProgressionBarProps {
   loading?: boolean;
   chartBg?: string;
   chartCol?: string;
+  label?: string;
 }
 
 export const ProgressionBar = ({
   ongoingValue,
   levelData,
   hideLevelIndicator,
+  label,
   loading,
   chartBg,
   chartCol,
@@ -42,7 +44,7 @@ export const ProgressionBar = ({
       {!loading && !!levelData ? (
         !!levelData && (
           <>
-            <ProgressionChart>
+            <ProgressionChart label={label}>
               <ProgressionChartScore
                 ongoingValue={ongoingValue}
                 calcWidth={calcWidth}

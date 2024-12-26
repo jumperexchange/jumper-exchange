@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { ChainType, getChains } from '@lifi/sdk';
+import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
 
 const LEADERBOARD_ENDPOINT = `${process.env.NEXT_PUBLIC_BACKEND_URL}/leaderboard`;
 
 export interface LeaderboardEntryData {
-  position: number;
+  position: string;
   walletAddress: string;
-  points: number;
+  points: string;
 }
 
 export interface LeaderboardMeta {
@@ -22,8 +22,12 @@ export interface LeaderboardListData {
   isSuccess: boolean;
 }
 
+export interface LeaderboardUserDataExtended extends LeaderboardEntryData {
+  userPage?: number;
+}
+
 export interface LeaderboardUserData {
-  data: LeaderboardEntryData;
+  data: LeaderboardUserDataExtended;
   isLoading: boolean;
   isSuccess: boolean;
 }
@@ -31,7 +35,12 @@ export interface LeaderboardUserData {
 export const useLeaderboardList = (
   page: number,
   limit: number,
-): LeaderboardListData => {
+): {
+  data: LeaderboardEntryData[];
+  meta: LeaderboardMeta;
+  isLoading: boolean;
+  isSuccess: boolean;
+} => {
   const {
     data: leaderboardListData,
     isSuccess,
@@ -86,7 +95,11 @@ export async function getLeaderboardUserQuery({
 
 export const useLeaderboardUser = (
   walletAddress?: string,
-): LeaderboardUserData => {
+): {
+  data: LeaderboardEntryData & { userPage: number };
+  isLoading: boolean;
+  isSuccess: boolean;
+} => {
   const {
     data: leaderboardUserData,
     isSuccess,
@@ -96,7 +109,10 @@ export const useLeaderboardUser = (
     queryFn: getLeaderboardUserQuery,
   });
 
-  const data = leaderboardUserData?.data;
+  const userPage =
+    leaderboardUserData?.data &&
+    Math.ceil(leaderboardUserData?.data.position / LEADERBOARD_LENGTH);
+  const data = { ...leaderboardUserData?.data, userPage };
 
   return {
     data,
