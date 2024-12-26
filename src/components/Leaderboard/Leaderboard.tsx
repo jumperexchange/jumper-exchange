@@ -1,6 +1,6 @@
 'use client';
 import { Typography } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAccount } from '@lifi/wallet-management';
@@ -23,6 +23,7 @@ import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
 import IconHeader from '../ProfilePage/Common/IconHeader';
+import useClient from 'src/hooks/useClient';
 
 export const LEADERBOARD_LENGTH = 25;
 
@@ -35,10 +36,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
 
   const { t } = useTranslation();
 
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const isClient = useClient();
 
   const { data: leaderboardData, meta } = useLeaderboardList(
     defaultPage,

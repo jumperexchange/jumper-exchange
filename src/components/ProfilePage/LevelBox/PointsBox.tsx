@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import { PointsDisplay } from './PointsDisplay';
 import IconHeader from '../Common/IconHeader';
-import { useEffect, useState } from 'react';
+import useClient from 'src/hooks/useClient';
 
 interface PointsBoxProps {
   points?: number;
@@ -14,10 +14,8 @@ interface PointsBoxProps {
 export const PointsBox = ({ points }: PointsBoxProps) => {
   const { t } = useTranslation();
 
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const isClient = useClient();
+
 
   return (
     <Box>

@@ -3,7 +3,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Box, useTheme, type CSSObject } from '@mui/material';
 
 import type { ReactNode } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { SectionTitle } from 'src/components/ProfilePage/ProfilePage.style';
 import {
   CarouselCenteredBox,
@@ -13,6 +13,7 @@ import {
   CarouselNavigationContainer,
 } from '.';
 import IconHeader from 'src/components/ProfilePage/Common/IconHeader';
+import useClient from 'src/hooks/useClient';
 
 interface CarouselContainerProps {
   title?: string;
@@ -35,10 +36,7 @@ export const CarouselContainer = ({
   const theme = useTheme();
   const carouselContainerRef = useRef<HTMLDivElement>(null);
 
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const isClient = useClient();
 
   const handleChange = useCallback((direction: 'next' | 'prev') => {
     if (carouselContainerRef.current) {
