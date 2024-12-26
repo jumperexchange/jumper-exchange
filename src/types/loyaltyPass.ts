@@ -128,7 +128,7 @@ export interface QuestChains {
   logo: string;
 }
 
-interface CustomInformation {
+export interface CustomInformation {
   chains: QuestChains[];
   [key: string]: any;
 }

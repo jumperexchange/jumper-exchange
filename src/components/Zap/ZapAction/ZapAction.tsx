@@ -21,7 +21,7 @@ import type { TabProps } from 'src/components/Tabs';
 import { Tabs } from 'src/components/Tabs';
 import { getSiteUrl } from 'src/const/urls';
 import { useMenuStore } from 'src/stores/menu';
-import type { Quest } from 'src/types/loyaltyPass';
+import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import type { QuestDetails } from 'src/types/questDetails';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { BackButton } from '../BackButton/BackButton';
@@ -41,7 +41,7 @@ import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
 
 interface ZapActionProps {
   market?: Quest;
-  detailInformation?: QuestDetails;
+  detailInformation?: CustomInformation;
 }
 
 export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
