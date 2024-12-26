@@ -69,18 +69,14 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
     <AddressBoxContainer>
       <PassImageBox>
         <ImageBackground imgUrl={imgLink} />
-        {address ? (
-          <AddressBlockiesImage
-            alt="Blockie Wallet Icon"
-            src={imageLink || imgLink}
-            width={140}
-            height={140}
-            priority={false}
-            unoptimized={true}
-          />
-        ) : (
-          <AddressBlockiesImageSkeleton variant="circular" />
-        )}
+        <AddressBlockiesImage
+          alt="Blockie Wallet Icon"
+          src={imageLink || imgLink}
+          width={140}
+          height={140}
+          priority={false}
+          unoptimized={true}
+        />
       </PassImageBox>
       <AddressBox>
         {address ? (
