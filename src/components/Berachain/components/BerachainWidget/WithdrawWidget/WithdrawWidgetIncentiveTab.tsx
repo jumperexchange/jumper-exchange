@@ -342,13 +342,14 @@ export const WithdrawWidgetIncentiveTab = ({
       </CustomLoadingButton>
       {isTxConfirmed && txHash ? (
         <TxConfirmation
-          s={'Transaction successfull'}
+          s={'Claim successful'}
           link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
+          success={true}
         />
       ) : (
         txHash && (
           <TxConfirmation
-            s={'Transaction completed'}
+            s={'Transaction link'}
             link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
           />
         )

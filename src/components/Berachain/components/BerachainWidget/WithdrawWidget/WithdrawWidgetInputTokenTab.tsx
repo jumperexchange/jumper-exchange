@@ -320,13 +320,14 @@ export const WithdrawWidgetInputTokenTab = ({
       </CustomLoadingButton>
       {isTxConfirmed && txHash ? (
         <TxConfirmation
-          s={'Transaction successfull'}
+          s={'Withdrawal successful'}
           link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
+          success={true}
         />
       ) : (
         txHash && (
           <TxConfirmation
-            s={'Transaction completed'}
+            s={'Transaction link'}
             link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
           />
         )

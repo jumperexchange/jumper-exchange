@@ -482,7 +482,7 @@ function DepositWidget({
                 {hasErrorText}
               </Typography>
             )}
-            {txHash && (
+            {/* {txHash && (
               <Typography
                 component="a"
                 href={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
@@ -490,7 +490,7 @@ function DepositWidget({
               >
                 Transaction link
               </Typography>
-            )}
+            )} */}
           </FormHelperText>
         </FormControl>
         {!account?.isConnected ? (
@@ -542,7 +542,7 @@ function DepositWidget({
           )
         )}
 
-        {contractCallIndex !== 0 &&
+        {/* {contractCallIndex !== 0 &&
           contractCallIndex > writeContractOptions.length - 1 && (
             <Box
               sx={{
@@ -553,18 +553,28 @@ function DepositWidget({
                 alignItems: 'start', // Aligns items at the start along the cross-axis.
               }}
             >
-              {/*<div className="h-full w-full place-content-center items-start">*/}
+              <div className="h-full w-full place-content-center items-start">
               <Typography variant="body2" color="textSecondary">
                 Deposited with success!
               </Typography>
             </Box>
-          )}
+          )} */}
 
-        {txHash && (
+        {contractCallIndex !== 0 &&
+        contractCallIndex > writeContractOptions.length - 1 &&
+        txHash ? (
           <TxConfirmation
-            s={'Transaction completed'}
-            link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+            s={'Deposit successful'}
+            link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
+            success={true}
           />
+        ) : (
+          txHash && (
+            <TxConfirmation
+              s={'Transaction link'}
+              link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+            />
+          )
         )}
       </Box>
     </BerachainDepositInputBackground>

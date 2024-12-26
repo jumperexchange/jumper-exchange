@@ -1,8 +1,17 @@
 import { alpha, Box, Typography, useTheme } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
+import InfoIcon from '@mui/icons-material/Info';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-export const TxConfirmation = ({ s, link }: { s: string; link: string }) => {
+export const TxConfirmation = ({
+  s,
+  link,
+  success,
+}: {
+  s: string;
+  link: string;
+  success?: boolean;
+}) => {
   const theme = useTheme();
 
   return (
@@ -37,9 +46,17 @@ export const TxConfirmation = ({ s, link }: { s: string; link: string }) => {
             alignItems: 'center',
           }}
         >
-          <CheckIcon sx={{ color: '#FF8425', width: '16px', height: '16px' }} />
+          {success ? (
+            <CheckIcon
+              sx={{ color: '#FF8425', width: '16px', height: '16px' }}
+            />
+          ) : (
+            <InfoIcon
+              sx={{ color: '#FF8425', width: '16px', height: '16px' }}
+            />
+          )}
         </Box>
-        <Typography>{s}</Typography>
+        <Typography color={theme.palette.text.primary}>{s}</Typography>
       </Box>
       <a
         href={link}
