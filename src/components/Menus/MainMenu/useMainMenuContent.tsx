@@ -23,7 +23,6 @@ import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import PetsIcon from '@mui/icons-material/Pets';
 import SchoolIcon from '@mui/icons-material/School';
-import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
