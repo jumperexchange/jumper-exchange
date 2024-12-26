@@ -90,7 +90,7 @@ function BerachainTransactionDetails({
             width: '100%',
           }}
         >
-          <Typography>Transaction Details</Typography>
+          <Typography>Market Details</Typography>
           {!open ? <ArrowDropDown /> : <ArrowDropUp />}
         </Box>
       </AccordionSummary>
@@ -145,7 +145,7 @@ function BerachainTransactionDetails({
            * @info Reward Style
            * @condition Recipe Market
            */}
-          {market.market_type === RoycoMarketType.recipe.value && (
+          {/* {market.market_type === RoycoMarketType.recipe.value && (
             <InfoCard.Row>
               <InfoCard.Row.Key>Reward Style</InfoCard.Row.Key>
               <InfoCard.Row.Value>
@@ -186,7 +186,7 @@ function BerachainTransactionDetails({
                 </Tooltip>
               </InfoCard.Row.Value>
             </InfoCard.Row>
-          )}
+          )} */}
           {/**
            * @info Incentives
            */}
@@ -228,38 +228,38 @@ function BerachainTransactionDetails({
            * @info TVL
            */}
           {
-            <InfoCard.Row>
-              <InfoCard.Row.Key>TVL</InfoCard.Row.Key>
-              <InfoCard.Row.Value>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  component="span"
-                >
-                  {Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    notation: 'standard',
-                    useGrouping: true,
-                  }).format(market.locked_quantity_usd ?? 0)}
-                </Typography>
-                <Tooltip
-                  title={
-                    market.market_type === RoycoMarketType.recipe.value
-                      ? 'Value of all input tokens locked inside weiroll wallets'
-                      : 'Value of all input tokens deposited in underlying vault through Royco'
-                  }
-                  placement="top"
-                  enterTouchDelay={0}
-                  arrow
-                >
-                  <InfoIcon
-                    htmlColor="white"
-                    sx={{ cursor: 'help', marginX: 1 }}
-                  />
-                </Tooltip>
-              </InfoCard.Row.Value>
-            </InfoCard.Row>
+            // <InfoCard.Row>
+            //   <InfoCard.Row.Key>TVL</InfoCard.Row.Key>
+            //   <InfoCard.Row.Value>
+            //     <Typography
+            //       variant="body2"
+            //       color="textSecondary"
+            //       component="span"
+            //     >
+            //       {Intl.NumberFormat('en-US', {
+            //         style: 'currency',
+            //         currency: 'USD',
+            //         notation: 'standard',
+            //         useGrouping: true,
+            //       }).format(market.locked_quantity_usd ?? 0)}
+            //     </Typography>
+            //     <Tooltip
+            //       title={
+            //         market.market_type === RoycoMarketType.recipe.value
+            //           ? 'Value of all input tokens locked inside weiroll wallets'
+            //           : 'Value of all input tokens deposited in underlying vault through Royco'
+            //       }
+            //       placement="top"
+            //       enterTouchDelay={0}
+            //       arrow
+            //     >
+            //       <InfoIcon
+            //         htmlColor="white"
+            //         sx={{ cursor: 'help', marginX: 1 }}
+            //       />
+            //     </Tooltip>
+            //   </InfoCard.Row.Value>
+            // </InfoCard.Row>
           }
           <InfoCard.Row>
             <InfoCard.Row.Key>Input Token</InfoCard.Row.Key>

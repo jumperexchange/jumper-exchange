@@ -6,6 +6,8 @@ import {
   InputLabel,
   Typography,
   useTheme,
+  alpha,
+  Input,
 } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -14,6 +16,8 @@ import {
   WalletCardBadge,
 } from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
+import CheckIcon from '@mui/icons-material/Check';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
   useConfig,
   useWaitForTransactionReceipt,
@@ -39,6 +43,10 @@ import {
 } from '@/components/Navbar/WalletButton.style';
 import { useTranslation } from 'react-i18next';
 import ConnectButton from '@/components/Navbar/ConnectButton';
+import {
+  BerachainDepositInputBackground,
+  BerachainWidgetSelection,
+} from '../../BerachainWidgetWip/BerachainWidgetWip.style';
 
 interface Image {
   url?: string;
@@ -220,11 +228,19 @@ function DepositWidget({
         market?.input_token_data.decimals ?? 0,
       )
     ) {
-      return 'Above fillable';
+      return `There are not enough positions left in the market. Still available to deposit: ${Intl.NumberFormat(
+        'en-US',
+        {
+          notation: 'standard',
+          useGrouping: true,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 5,
+        },
+      ).format(maxInputValue)}`;
     }
 
     if ((parseFloat(inputValue) ?? 0) > balance) {
-      return 'Above balance';
+      return `You have not enough tokens. Current balance: ${balance}`;
     }
 
     if (isTxConfirmError) {
@@ -266,113 +282,122 @@ function DepositWidget({
   }
 
   return (
-    <Box
-      component="form"
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-      noValidate
-      autoComplete="off"
-      onSubmit={onSubmit}
-    >
-      <FormControl
-        error={isTxError || !!hasErrorText}
-        variant="standard"
-        aria-autocomplete="none"
+    <BerachainDepositInputBackground>
+      <Box
+        component="form"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+        noValidate
+        autoComplete="off"
+        onSubmit={onSubmit}
       >
-        <FormHelperText
-          id="component-text"
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginBottom: 1,
-          }}
+        <FormControl
+          error={isTxError || !!hasErrorText}
+          variant="standard"
+          aria-autocomplete="none"
         >
-          <Typography component="span"></Typography>
-          {/* {account?.isConnected && (
+          <FormHelperText
+            id="component-text"
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginBottom: 1,
+            }}
+          >
+            <Typography component="span"></Typography>
+            {/* {account?.isConnected && (
             <Typography variant="body2" color="textSecondary" component="span">
               Balance: {balance}
             </Typography>
           )} */}
-        </FormHelperText>
-        <OutlinedInput
-          autoComplete="off"
-          id="component"
-          defaultValue=""
-          value={inputValue}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            onChangeValue(event.target.value);
-          }}
-          placeholder={placeholder}
-          aria-describedby="component-text"
-          sx={{
-            padding: '16px',
-            '& input': {
-              fontSize: '24px',
-              fontWeight: 700,
-              lineHeight: '36px',
-              marginLeft: '8px',
-            },
-            '& input::placeholder': {
-              fontSize: '24px',
-              fontWeight: 700,
-              lineHeight: '36px',
-              marginLeft: '8px',
-            },
-          }}
-          startAdornment={
-            image && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                  width: 'auto',
-                }}
-              >
-                <>
-                  <WalletCardBadge
-                    overlap="circular"
-                    className="badge"
-                    sx={{ maringRight: '8px' }}
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    badgeContent={
-                      image.badge && (
-                        <MuiAvatar
-                          alt={image.badge.name}
-                          sx={(theme: any) => ({
-                            width: '18px',
-                            height: '18px',
-                            border: `2px solid ${theme.palette.surface2.main}`,
-                          })}
-                        >
-                          {image.badge.name && (
-                            <TokenImage
-                              token={{
-                                name: image.badge.name,
-                                logoURI: image.badge.url,
-                              }}
-                            />
-                          )}
-                        </MuiAvatar>
-                      )
-                    }
-                  >
-                    <WalletAvatar>
-                      {image.name && (
-                        <TokenImage
-                          token={{
-                            name: image.name,
-                            logoURI: image.url,
-                          }}
-                        />
-                      )}
-                    </WalletAvatar>
-                  </WalletCardBadge>
-                </>
-                {/* <Box sx={{ marginTop: '4px', minWidth: '100px' }}>
+          </FormHelperText>
+          <Input
+            autoComplete="off"
+            id="component"
+            defaultValue=""
+            value={inputValue}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChangeValue(event.target.value);
+            }}
+            placeholder={placeholder}
+            aria-describedby="component-text"
+            disableUnderline={true}
+            sx={{
+              backgroundColor: '#302F2E',
+              borderRadius: theme.spacing(2),
+              padding: '16px',
+              '& input': {
+                fontSize: '24px',
+                fontWeight: 700,
+                lineHeight: '36px',
+                marginLeft: '8px',
+              },
+              '& input::placeholder': {
+                fontSize: '24px',
+                fontWeight: 700,
+                lineHeight: '36px',
+                marginLeft: '8px',
+              },
+              '& .MuiInput-underline:before': { borderBottom: 'none' },
+              '& .MuiInput-underline:after': { borderBottom: 'none' },
+              '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+                borderBottom: 'none',
+              },
+            }}
+            startAdornment={
+              image && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start',
+                    width: 'auto',
+                  }}
+                >
+                  <>
+                    <WalletCardBadge
+                      overlap="circular"
+                      className="badge"
+                      sx={{ maringRight: '8px' }}
+                      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                      badgeContent={
+                        image.badge && (
+                          <MuiAvatar
+                            alt={image.badge.name}
+                            sx={(theme: any) => ({
+                              width: '18px',
+                              height: '18px',
+                              border: `2px solid ${theme.palette.surface2.main}`,
+                            })}
+                          >
+                            {image.badge.name && (
+                              <TokenImage
+                                token={{
+                                  name: image.badge.name,
+                                  logoURI: image.badge.url,
+                                }}
+                              />
+                            )}
+                          </MuiAvatar>
+                        )
+                      }
+                    >
+                      <WalletAvatar>
+                        {image.name && (
+                          <TokenImage
+                            token={{
+                              name: image.name,
+                              logoURI: image.url,
+                            }}
+                          />
+                        )}
+                      </WalletAvatar>
+                    </WalletCardBadge>
+                  </>
+                  {/* <Box sx={{ marginTop: '4px', minWidth: '100px' }}>
                   <Typography
                     variant="bodyXSmall"
                     color="textSecondary"
@@ -388,57 +413,57 @@ function DepositWidget({
                     available
                   </Typography>
                 </Box> */}
-              </Box>
-            )
-          }
-          endAdornment={
-            // balance > 0 && (
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                marginTop: '20px',
-                width: '96px',
-              }}
-            >
-              <MaxButton
-                sx={{ p: '5px 10px' }}
-                aria-label="menu"
-                mainColor={overrideStyle?.mainColor}
-                onClick={onClickMaxButton}
-              >
-                max
-              </MaxButton>
-              {account?.isConnected && (
-                <Box sx={{ marginTop: '4px' }}>
-                  <Typography
-                    variant="bodyXSmall"
-                    color="textSecondary"
-                    component="span"
-                  >
-                    /{' '}
-                    {Intl.NumberFormat('en-US', {
-                      notation: 'compact',
-                      useGrouping: true,
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 4,
-                    }).format(balance)}
-                  </Typography>
                 </Box>
-              )}
-            </Box>
-          }
-        />
-        <FormHelperText
-          id="component-text"
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginBottom: 1,
-          }}
-        >
-          {/* <Typography variant="body2" color="textSecondary" component="span">
+              )
+            }
+            endAdornment={
+              // balance > 0 && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  marginTop: '20px',
+                  width: '96px',
+                }}
+              >
+                <MaxButton
+                  sx={{ p: '5px 10px' }}
+                  aria-label="menu"
+                  mainColor={overrideStyle?.mainColor}
+                  onClick={onClickMaxButton}
+                >
+                  max
+                </MaxButton>
+                {account?.isConnected && (
+                  <Box sx={{ marginTop: '4px' }}>
+                    <Typography
+                      variant="bodyXSmall"
+                      color="textSecondary"
+                      component="span"
+                    >
+                      /{' '}
+                      {Intl.NumberFormat('en-US', {
+                        notation: 'compact',
+                        useGrouping: true,
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 4,
+                      }).format(balance)}
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+            }
+          />
+          <FormHelperText
+            id="component-text"
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginBottom: 1,
+            }}
+          >
+            {/* <Typography variant="body2" color="textSecondary" component="span">
             {Intl.NumberFormat('en-US', {
               notation: 'standard',
               useGrouping: true,
@@ -447,87 +472,118 @@ function DepositWidget({
             }).format(maxInputValue)}{' '}
             {market?.input_token_data.symbol.toUpperCase()} Fillable in Total
           </Typography> */}
-          {hasErrorText && (
-            <Typography component="span">{hasErrorText}</Typography>
+            {hasErrorText && (
+              <Typography component="span">{hasErrorText}</Typography>
+            )}
+            {txHash && (
+              <Typography
+                component="a"
+                href={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
+                target="_blank"
+              >
+                Transaction link
+              </Typography>
+            )}
+          </FormHelperText>
+        </FormControl>
+        {!account?.isConnected ? (
+          <ConnectButton />
+        ) : shouldSwitchChain ? (
+          <CustomLoadingButton
+            overrideStyle={overrideStyle}
+            type="button"
+            // loading={isLoading || isTxPending || isTxConfirming}
+            variant="contained"
+            onClick={async () => {
+              try {
+                await switchChain(wagmiConfig, {
+                  chainId: writeContractOptions[0]?.chainId,
+                });
+              } catch (error) {
+                // TODO: to remove
+                // eslint-disable-next-line no-console
+                console.error(error);
+              }
+            }}
+          >
+            <Typography variant="bodyMediumStrong">Switch chain</Typography>
+          </CustomLoadingButton>
+        ) : writeContractOptions.length === 0 ? (
+          <CustomLoadingButton
+            type="button"
+            overrideStyle={overrideStyle}
+            disabled
+            // loading={isLoading || isTxPending || isTxConfirming}
+            variant="contained"
+            onClick={() => {}}
+          >
+            <Typography variant="bodyMediumStrong">Deposit</Typography>
+          </CustomLoadingButton>
+        ) : (
+          writeContractOptions[contractCallIndex] && (
+            <CustomLoadingButton
+              type="submit"
+              loading={isLoading || isTxPending || isTxConfirming}
+              variant="contained"
+              disabled={!!hasErrorDisablingButton}
+              overrideStyle={overrideStyle}
+            >
+              <Typography variant="bodyMediumStrong">
+                {writeContractOptions[contractCallIndex].label}
+              </Typography>
+            </CustomLoadingButton>
+          )
+        )}
+
+        {contractCallIndex !== 0 &&
+          contractCallIndex > writeContractOptions.length - 1 && (
+            <Box
+              sx={{
+                height: '100%',
+                width: '100%',
+                display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
+                placeContent: 'center', // Centers content horizontally and vertically.
+                alignItems: 'start', // Aligns items at the start along the cross-axis.
+              }}
+            >
+              {/*<div className="h-full w-full place-content-center items-start">*/}
+              <Typography variant="body2" color="textSecondary">
+                Deposited with success!
+              </Typography>
+            </Box>
           )}
-          {txHash && (
+
+        {/* {txHash && (
+          <Box
+            sx={{
+              width: '100%',
+              borderRadius: '16px',
+              backgroundColor: 'inherit',
+              padding: theme.spacing(2),
+              marginTop: theme.spacing(2),
+              border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
+              gap: '8px',
+            }}
+          >
+            <Box sx={{ backgroundColor: '#291812' }}>
+              <CheckIcon sx={{ color: '#FF8425' }} />
+            </Box>
             <Typography
               component="a"
               href={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
               target="_blank"
             >
-              Transaction link
+              Transaction completed
             </Typography>
-          )}
-        </FormHelperText>
-      </FormControl>
-      {!account?.isConnected ? (
-        <ConnectButton />
-      ) : shouldSwitchChain ? (
-        <CustomLoadingButton
-          overrideStyle={overrideStyle}
-          type="button"
-          // loading={isLoading || isTxPending || isTxConfirming}
-          variant="contained"
-          onClick={async () => {
-            try {
-              await switchChain(wagmiConfig, {
-                chainId: writeContractOptions[0]?.chainId,
-              });
-            } catch (error) {
-              // TODO: to remove
-              // eslint-disable-next-line no-console
-              console.error(error);
-            }
-          }}
-        >
-          <Typography variant="bodyMediumStrong">Switch chain</Typography>
-        </CustomLoadingButton>
-      ) : writeContractOptions.length === 0 ? (
-        <CustomLoadingButton
-          type="button"
-          overrideStyle={overrideStyle}
-          disabled
-          // loading={isLoading || isTxPending || isTxConfirming}
-          variant="contained"
-          onClick={() => {}}
-        >
-          <Typography variant="bodyMediumStrong">Deposit</Typography>
-        </CustomLoadingButton>
-      ) : (
-        writeContractOptions[contractCallIndex] && (
-          <CustomLoadingButton
-            type="submit"
-            loading={isLoading || isTxPending || isTxConfirming}
-            variant="contained"
-            disabled={!!hasErrorDisablingButton}
-            overrideStyle={overrideStyle}
-          >
-            <Typography variant="bodyMediumStrong">
-              {writeContractOptions[contractCallIndex].label}
-            </Typography>
-          </CustomLoadingButton>
-        )
-      )}
-
-      {contractCallIndex !== 0 &&
-        contractCallIndex > writeContractOptions.length - 1 && (
-          <Box
-            sx={{
-              height: '100%',
-              width: '100%',
-              display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
-              placeContent: 'center', // Centers content horizontally and vertically.
-              alignItems: 'start', // Aligns items at the start along the cross-axis.
-            }}
-          >
-            {/*<div className="h-full w-full place-content-center items-start">*/}
-            <Typography variant="body2" color="textSecondary">
-              Deposited with success!
-            </Typography>
+            <Box
+              sx={{ backgroundColor: alpha(theme.palette.white.main, 0.08) }}
+            >
+              <OpenInNewIcon />
+            </Box>
           </Box>
-        )}
-    </Box>
+        )} */}
+      </Box>
+    </BerachainDepositInputBackground>
   );
 }
 

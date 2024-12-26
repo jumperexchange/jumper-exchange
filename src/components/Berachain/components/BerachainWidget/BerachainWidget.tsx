@@ -120,7 +120,6 @@ export const BerachainWidget = ({
         {tab === 1 && (
           <Box sx={{ marginTop: theme.spacing(1.5) }}>
             <InfoBlock market={market} />
-            <BerachainTransactionDetails type="deposit" market={market} />
             <DepositWidget
               market={market}
               chain={chain}
@@ -137,6 +136,7 @@ export const BerachainWidget = ({
                 },
               }}
             />
+            <BerachainTransactionDetails type="deposit" market={market} />
           </Box>
         )}
         {tab === 2 && (

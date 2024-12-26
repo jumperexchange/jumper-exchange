@@ -39,6 +39,19 @@ export const BerachainWidgetSelection = styled(Box)(({ theme }) => ({
   gap: '8px',
 }));
 
+export const BerachainDepositInputBackground = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  color: theme.palette.text.primary,
+  justifyContent: 'space-between',
+  flexDirection: 'column',
+  borderRadius: '16px',
+  backgroundColor: '#1E1D1C',
+  padding: theme.spacing(2),
+  marginTop: theme.spacing(2),
+  border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
+  gap: '8px',
+}));
+
 export const BerachainDetailsDropdown = styled(Box)(({ theme }) => ({
   display: 'flex',
   color: theme.palette.text.primary,
