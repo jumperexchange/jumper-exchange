@@ -778,12 +778,6 @@ const themeCustomized = createTheme({
       fontWeight: 700,
       lineHeight: '24px',
     },
-    title2xSmall: {
-      fontSize: '14px',
-      fontStyle: 'normal',
-      fontWeight: 700,
-      lineHeight: '20px',
-    },
     titleLarge: {
       fontSize: '48px',
       fontStyle: 'normal',

@@ -133,7 +133,7 @@ interface CustomInformation {
   [key: string]: any;
 }
 
-type QuestAttributes = {
+export type QuestAttributes = {
   UID: string;
   Title: string;
   Description?: string;
