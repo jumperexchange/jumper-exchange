@@ -182,6 +182,8 @@ export const useStrapi = <T>({
   // show drafts ONLY on development env
   process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
     apiUrl.searchParams.set('publicationState', 'preview');
+  process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
+    apiUrl.searchParams.set('pagination[pageSize]', '50');
 
   // use local strapi on develop || prod strapi
   const apiAccesToken =
