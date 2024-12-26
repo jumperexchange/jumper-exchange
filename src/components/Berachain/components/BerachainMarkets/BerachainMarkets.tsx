@@ -53,13 +53,14 @@ export const BerachainMarkets = () => {
                 return;
               }
               const card = findFromStrapiByUid(roycoData.market_id!);
+
               return (
                 <BerachainMarketCard
                   key={`berachain-market-card-${roycoData.id || 'protocol'}-${index}`}
                   roycoData={roycoData}
                   // chainId={roycoData.chain_id}
                   image={card?.attributes.Image}
-                  // title={roycoData.name}
+                  title={card?.attributes.Title}
                   // slug={roycoData.id}
                   // slug={card.attributes.Slug}
                   tokens={[]}

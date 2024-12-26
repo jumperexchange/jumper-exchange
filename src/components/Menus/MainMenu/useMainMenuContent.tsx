@@ -8,6 +8,7 @@ import {
 } from '@/const/trackingKeys';
 import {
   DISCORD_URL,
+  JUMPER_BOYCO_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
@@ -21,7 +22,7 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
-import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
+import PetsIcon from '@mui/icons-material/Pets';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
@@ -142,6 +143,22 @@ export const useMainMenuContent = () => {
           label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
           data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
         });
+      },
+    },
+    {
+      label: 'Boyco Launch',
+      prefixIcon: <PetsIcon />,
+      showMoreIcon: false,
+      link: { url: JUMPER_BOYCO_PATH },
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-jumper-pass-berachain',
+          action: TrackingAction.ClickJumperCampaignLink,
+          data: { [TrackingEventParameter.Menu]: 'berachain' },
+        });
+        closeAllMenus();
+        router.push(JUMPER_BOYCO_PATH);
       },
     },
     {

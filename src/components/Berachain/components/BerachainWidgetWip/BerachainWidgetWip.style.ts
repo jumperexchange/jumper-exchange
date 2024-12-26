@@ -5,6 +5,7 @@ import {
   Divider,
   Skeleton,
   Typography,
+  Accordion,
 } from '@mui/material';
 import { alpha, darken, styled } from '@mui/material/styles';
 import { urbanist } from 'src/fonts/fonts';
@@ -14,7 +15,7 @@ export const BerachainActionBerachainWidgetWrapper = styled(Box)(
     minWidth: 416,
     height: 'fit-content',
     borderRadius: '24px',
-    boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
+    boxShadow: '0px 4px 24px 0px rgba(126, 88, 88, 0.08)',
   }),
 );
 
@@ -35,6 +36,45 @@ export const BerachainWidgetSelection = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   marginTop: theme.spacing(2),
   border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
+  gap: '8px',
+}));
+
+export const BerachainDepositInputBackground = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  color: theme.palette.text.primary,
+  justifyContent: 'space-between',
+  flexDirection: 'column',
+  borderRadius: '16px',
+  backgroundColor: '#1E1D1C',
+  padding: theme.spacing(2),
+  marginTop: theme.spacing(2),
+  border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
+  gap: '8px',
+}));
+
+export const BerachainDetailsDropdown = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  color: theme.palette.text.primary,
+  justifyContent: 'space-between',
+  backgroundColor: '#1E1D1C',
+  borderRadius: '16px',
+  padding: theme.spacing(2),
+  marginTop: theme.spacing(2),
+  border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
+  cursor: 'pointer',
+}));
+
+export const BerachainDetailsAccordion = styled(Accordion)<{
+  isExpanded?: boolean;
+}>(({ theme, isExpanded }) => ({
+  background: 'transparent',
+  border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
+  cursor: 'pointer',
+  boxShadow: 'none',
+  width: '100%',
+  marginTop: theme.spacing(2),
+  backgroundColor: '#1E1D1C',
+  borderRadius: '16px 16px 16px 16px',
 }));
 
 export const BerachainWidgetSelectionBox = styled(Box)(({ theme }) => ({

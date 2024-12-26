@@ -4,6 +4,7 @@ import {
   Radio,
   RadioGroup,
   Typography,
+  useTheme,
 } from '@mui/material';
 import type {
   EnrichedMarketDataType,
@@ -36,6 +37,7 @@ export const WithdrawWidgetIncentiveTab = ({
 }) => {
   const { account } = useAccount();
   const [value, setValue] = useState(0);
+  const theme = useTheme();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(parseInt((event.target as HTMLInputElement).value, 10));
@@ -170,11 +172,12 @@ export const WithdrawWidgetIncentiveTab = ({
           display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
           placeContent: 'center', // Centers content horizontally and vertically.
           alignItems: 'start', // Aligns items at the start along the cross-axis.
+          marginTop: theme.spacing(2),
         }}
       >
         {/*<div className="h-full w-full place-content-center items-start">*/}
-        <Typography variant="body2" color="textSecondary">
-          No withdrawable positions found
+        <Typography variant="bodyLargeStrong" color="textSecondary">
+          No claimable positions found
         </Typography>
       </Box>
     );

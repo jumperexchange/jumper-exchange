@@ -54,12 +54,12 @@ export const BerachainProtocolAction = ({
               alt="Protocol image"
               width={card?.attributes.Image.data.attributes.width}
               height={card?.attributes.Image.data.attributes.height}
-              style={{ width: 192, height: 'auto', objectFit: 'contain' }}
+              style={{ width: 144, height: 'auto', objectFit: 'contain' }}
             />
           ) : (
             <Skeleton
               variant="circular"
-              sx={{ width: '192px', height: '192px', flexShrink: 0 }}
+              sx={{ width: '144px', height: '144px', flexShrink: 0 }}
             />
           )}
           <BerachainActionProtocolCard>
@@ -73,9 +73,9 @@ export const BerachainProtocolAction = ({
                 sx={{ height: '32px', width: '160px' }}
               />
             )}
-            {card?.attributes?.Information ? (
+            {card?.attributes?.Description ? (
               <Typography variant="bodyMedium">
-                {card?.attributes.Information}
+                {card?.attributes.Description}
               </Typography>
             ) : (
               <Skeleton
@@ -116,15 +116,6 @@ export const BerachainProtocolAction = ({
                   )}
                 </>
               )}
-              <BerachainActionProtocolShare
-                onClick={() =>
-                  handleCopyButton(
-                    `${getSiteUrl()}/berachain/explore/${market?.market_id}`,
-                  )
-                }
-              >
-                <ContentCopyIcon sx={{ width: '16px', height: '16px' }} />
-              </BerachainActionProtocolShare>
             </Box>
           </BerachainActionProtocolCard>
         </BerachainActionProtocolIntro>
@@ -162,14 +153,16 @@ export const BerachainProtocolAction = ({
             />
           </BerachainActionProtocolCard>
         )}
-        <BerachainActionProtocolCard
-          sx={{ flexDirection: 'row', alignItems: 'flex-start', gap: '12px' }}
-        >
-          <InfoIcon />
-          <Typography variant="bodySmall">
-            {card?.attributes?.Information}
-          </Typography>
-        </BerachainActionProtocolCard>
+        {card?.attributes?.Information && (
+          <BerachainActionProtocolCard
+            sx={{ flexDirection: 'row', alignItems: 'flex-start', gap: '12px' }}
+          >
+            <InfoIcon />
+            <Typography variant="bodySmall">
+              {card?.attributes?.Information}
+            </Typography>
+          </BerachainActionProtocolCard>
+        )}
       </BerachainProtocolActionInfoBox>
       {market && <BerachainWidget market={market} />}
     </BerachainProtocolActionBox>
