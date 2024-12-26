@@ -30,6 +30,7 @@ import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
+import { BoycoIcon } from 'src/components/illustrations/BoycoIcon';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -146,7 +147,7 @@ export const useMainMenuContent = () => {
     },
     {
       label: 'Boyco Launch',
-      prefixIcon: <PetsIcon />,
+      prefixIcon: <BoycoIcon />,
       showMoreIcon: false,
       link: { url: JUMPER_BOYCO_PATH },
       onClick: () => {
