@@ -16,7 +16,6 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
 
   const isClient = useClient();
 
-
   return (
     <Box>
       {isClient && (
