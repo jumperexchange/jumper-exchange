@@ -1,2 +1,2 @@
-export * from '@/app/ui/profile/ProfilePage';
-export * from './AddressBox/IconButton.style';
+export * from './AddressCard/IconButton.style';
+export * from './ProfilePage';
