@@ -253,6 +253,7 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                           })
                         }
                         active={true}
+                        color={completed ? '#00B849' : undefined}
                       />
                     )}
                   </>
