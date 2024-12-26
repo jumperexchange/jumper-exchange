@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import {
   WalletAvatar,
@@ -10,8 +10,11 @@ export const WithdrawInputTokenRow = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
     token: any;
+    tokenValueUSD?: string;
   }
->(({ className, token, ...props }, ref) => {
+>(({ className, token, tokenValueUSD, ...props }, ref) => {
+  const theme = useTheme();
+
   return (
     <Box
       display="flex"
@@ -25,36 +28,43 @@ export const WithdrawInputTokenRow = React.forwardRef<
           display: 'flex', // Equivalent to `flex`
           flexDirection: 'row', // Equivalent to `flex-row`
           alignItems: 'center', // Equivalent to `items-center`
-          gap: 2, // Equivalent to `space-x-2` (MUI uses theme-based spacing; `2` = 2 * 8px = 16px)
           whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
           wordBreak: 'normal', // Equivalent to `break-normal`
         }}
         // className="flex flex-row items-center space-x-2 whitespace-nowrap break-normal"
       >
-        <Typography variant="body2" color="textSecondary">
-          <WalletCardBadge
-            sx={{ marginRight: '10px' }}
-            overlap="circular"
-            className="badge"
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        <WalletCardBadge
+          sx={{ marginRight: '8px' }}
+          overlap="circular"
+          className="badge"
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        >
+          <WalletAvatar component="span">
+            <TokenImage
+              token={{
+                name: token.symbol,
+                logoURI: token.image,
+              }}
+            />
+          </WalletAvatar>
+        </WalletCardBadge>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography
+            variant="bodyMediumStrong"
+            color={theme.palette.text.primary}
           >
-            <WalletAvatar component="span">
-              <TokenImage
-                token={{
-                  name: token.symbol,
-                  logoURI: token.image,
-                }}
-              />
-            </WalletAvatar>
-          </WalletCardBadge>
-          {Intl.NumberFormat('en-US', {
-            style: 'decimal',
-            notation: 'standard',
-            useGrouping: true,
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 8,
-          }).format(token.token_amount)}
-        </Typography>
+            {Intl.NumberFormat('en-US', {
+              style: 'decimal',
+              notation: 'standard',
+              useGrouping: true,
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 5,
+            }).format(token.token_amount)}
+          </Typography>
+          <Typography variant="bodyXSmall" color="textSecondary">
+            {tokenValueUSD}
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

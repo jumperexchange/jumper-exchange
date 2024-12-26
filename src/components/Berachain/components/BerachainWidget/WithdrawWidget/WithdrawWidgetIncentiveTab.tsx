@@ -187,7 +187,7 @@ export const WithdrawWidgetIncentiveTab = ({
   return (
     <Box sx={{ marginY: 1 }}>
       <Typography variant="body2" color="textSecondary">
-        Select a position
+        Claim a position
       </Typography>
       <RadioGroup
         aria-labelledby="incentive-token"
@@ -222,63 +222,104 @@ export const WithdrawWidgetIncentiveTab = ({
               }
               labelPlacement="start"
               label={
+                // <Box
+                //   component="span"
+                //   sx={{
+                //     display: 'flex', // Equivalent to `flex`
+                //     width: '100%', // Equivalent to `w-full`
+                //     flexDirection: 'row', // Equivalent to `flex-row`
+                //     alignItems: 'center', // Equivalent to `items-center`
+                //   }}
+                //   // className="flex w-full flex-row items-center justify-between gap-2 rounded-2xl border border-divider p-3"
+                // >
+                //   <Box
+                //     component="span"
+                //     sx={{
+                //       display: 'flex', // Equivalent to `flex`
+                //       flexGrow: 1, // Equivalent to `grow`
+                //       flexDirection: 'column', // Equivalent to `flex-col`
+                //       alignItems: 'start', // Equivalent to `items-start`
+                //       gap: 1, // Equivalent to `space-y-1` (MUI uses theme-based spacing; `1` = 1 * 8px = 8px)
+                //       overflowX: 'scroll', // Equivalent to `overflow-x-scroll`
+                //     }}
+                //     // className="hide-scrollbar flex w-full grow flex-col items-start space-y-1 overflow-x-scroll"
+                //   >
+                //     <Typography
+                //       sx={{
+                //         whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
+                //         wordBreak: 'normal', // Equivalent to `break-normal`
+                //         color: 'text.primary', // Equivalent to `text-black`
+                //       }}
+                //       // className="whitespace-nowrap break-normal text-black"
+                //     >
+                //       Value:{' '}
+                //       {Intl.NumberFormat('en-US', {
+                //         style: 'currency',
+                //         currency: 'USD',
+                //         notation: 'standard',
+                //         useGrouping: true,
+                //         minimumFractionDigits: 2,
+                //         maximumFractionDigits: 6,
+                //       }).format(
+                //         token.position?.tokens_data?.reduce(
+                //           (acc, token) => acc + token.token_amount_usd,
+                //           0,
+                //         ) ?? 0,
+                //       )}
+                //     </Typography>
+                //     {!token.position?.can_claim && (
+                //       <Typography
+                //         sx={{
+                //           whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
+                //           wordBreak: 'normal', // Equivalent to `break-normal`
+                //           color: 'text.primary', // Equivalent to `text-black`
+                //         }}
+                //         // className="whitespace-nowrap break-normal text-black"
+                //       >
+                //         LOCKED
+                //       </Typography>
+                //     )}
+                //     <Box
+                //       component="span"
+                //       sx={{
+                //         display: 'flex', // Equivalent to `flex`
+                //         width: '100%', // Equivalent to `w-full`
+                //         flexGrow: 1, // Equivalent to `grow`
+                //         flexDirection: 'column', // Equivalent to `flex-col`
+                //         gap: 3, // Equivalent to `space-y-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
+                //       }}
+                //       // className="flex w-full grow flex-col space-y-3"
+                //     >
+                //       <WithdrawInputTokenRow
+                //         key={`withdraw-input-token-row:${tokenIndex}`}
+                //         token={token}
+                //         tokenValueUSD={}
+                //       />
+                //     </Box>
+                //   </Box>
+                // </Box>
                 <Box
                   component="span"
                   sx={{
+                    flexGrow: 1, // Equivalent to `grow`
+                    minWidth: '400px', // Equivalent to `min-w-full`
                     display: 'flex', // Equivalent to `flex`
                     width: '100%', // Equivalent to `w-full`
                     flexDirection: 'row', // Equivalent to `flex-row`
                     alignItems: 'center', // Equivalent to `items-center`
                   }}
-                  // className="flex w-full flex-row items-center justify-between gap-2 rounded-2xl border border-divider p-3"
                 >
                   <Box
-                    component="span"
                     sx={{
-                      display: 'flex', // Equivalent to `flex`
+                      display: 'flex',
+                      width: '100%',
                       flexGrow: 1, // Equivalent to `grow`
-                      flexDirection: 'column', // Equivalent to `flex-col`
-                      alignItems: 'start', // Equivalent to `items-start`
-                      gap: 1, // Equivalent to `space-y-1` (MUI uses theme-based spacing; `1` = 1 * 8px = 8px)
-                      overflowX: 'scroll', // Equivalent to `overflow-x-scroll`
+                      minWidth: '400px',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
                     }}
-                    // className="hide-scrollbar flex w-full grow flex-col items-start space-y-1 overflow-x-scroll"
                   >
-                    <Typography
-                      sx={{
-                        whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
-                        wordBreak: 'normal', // Equivalent to `break-normal`
-                        color: 'text.primary', // Equivalent to `text-black`
-                      }}
-                      // className="whitespace-nowrap break-normal text-black"
-                    >
-                      Value:{' '}
-                      {Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        notation: 'standard',
-                        useGrouping: true,
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 6,
-                      }).format(
-                        token.position?.tokens_data?.reduce(
-                          (acc, token) => acc + token.token_amount_usd,
-                          0,
-                        ) ?? 0,
-                      )}
-                    </Typography>
-                    {!token.position?.can_claim && (
-                      <Typography
-                        sx={{
-                          whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
-                          wordBreak: 'normal', // Equivalent to `break-normal`
-                          color: 'text.primary', // Equivalent to `text-black`
-                        }}
-                        // className="whitespace-nowrap break-normal text-black"
-                      >
-                        LOCKED
-                      </Typography>
-                    )}
                     <Box
                       component="span"
                       sx={{
@@ -286,16 +327,50 @@ export const WithdrawWidgetIncentiveTab = ({
                         width: '100%', // Equivalent to `w-full`
                         flexGrow: 1, // Equivalent to `grow`
                         flexDirection: 'column', // Equivalent to `flex-col`
-                        gap: 3, // Equivalent to `space-y-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
                       }}
-                      // className="flex w-full grow flex-col space-y-3"
                     >
                       <WithdrawInputTokenRow
                         key={`withdraw-input-token-row:${tokenIndex}`}
                         token={token}
+                        tokenValueUSD={Intl.NumberFormat('en-US', {
+                          style: 'currency',
+                          currency: 'USD',
+                          notation: 'standard',
+                          useGrouping: true,
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 6,
+                        }).format(
+                          token.position?.tokens_data?.reduce(
+                            (acc, token) => acc + token.token_amount_usd,
+                            0,
+                          ) ?? 0,
+                        )}
                       />
                     </Box>
+                    {!token.position?.can_claim && (
+                      <Box
+                        sx={{
+                          borderRadius: '32px',
+                          padding: theme.spacing(1),
+                          borderColor: '#302F2E',
+                          borderWidth: '1px',
+                          borderStyle: 'solid',
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            whiteSpace: 'nowrap',
+                            wordBreak: 'normal',
+                          }}
+                          variant="bodyMediumStrong"
+                          color={theme.palette.text.primary}
+                        >
+                          Locked
+                        </Typography>
+                      </Box>
+                    )}
                   </Box>
+                  {/* </Box> */}
                 </Box>
               }
               // delay={0.1 + positionIndex * 0.1}

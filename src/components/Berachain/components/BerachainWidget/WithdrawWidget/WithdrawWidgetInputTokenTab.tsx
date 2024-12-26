@@ -137,7 +137,6 @@ export const WithdrawWidgetInputTokenTab = ({
 
   // TODO: to remove
   // eslint-disable-next-line no-console
-  console.log('-positions', positions, positionsRecipe, positionsVault);
 
   useEffect(() => {
     refetch();
@@ -170,7 +169,7 @@ export const WithdrawWidgetInputTokenTab = ({
       }}
     >
       <Typography variant="bodyLargeStrong" color="textSecondary">
-        Select a position
+        Withdraw a position
       </Typography>
       <RadioGroup
         aria-labelledby="input-token"
@@ -196,10 +195,11 @@ export const WithdrawWidgetInputTokenTab = ({
                 padding: 3, // Equivalent to `p-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
                 marginY: 1,
                 marginX: 0,
+                cursor: !position?.can_withdraw ? 'not-allowed' : 'pointer',
               }}
               control={
                 <Radio
-                  sx={{ visibility: 'hidden' }}
+                  sx={{ visibility: 'hidden', width: '1px', height: '1px' }}
                   disabled={position?.can_withdraw !== true}
                 />
               }
@@ -208,57 +208,25 @@ export const WithdrawWidgetInputTokenTab = ({
                 <Box
                   component="span"
                   sx={{
+                    flexGrow: 1, // Equivalent to `grow`
+                    minWidth: '400px', // Equivalent to `min-w-full`
                     display: 'flex', // Equivalent to `flex`
                     width: '100%', // Equivalent to `w-full`
                     flexDirection: 'row', // Equivalent to `flex-row`
                     alignItems: 'center', // Equivalent to `items-center`
                   }}
-                  // className="flex w-full flex-row items-center justify-between gap-2 rounded-2xl border border-divider p-3"
                 >
                   <Box
-                    component="span"
                     sx={{
-                      display: 'flex', // Equivalent to `flex`
+                      display: 'flex',
+                      width: '100%',
                       flexGrow: 1, // Equivalent to `grow`
-                      flexDirection: 'column', // Equivalent to `flex-col`
-                      alignItems: 'start', // Equivalent to `items-start`
-                      gap: 1, // Equivalent to `space-y-1` (MUI uses theme-based spacing; `1` = 1 * 8px = 8px)
-                      overflowX: 'scroll', // Equivalent to `overflow-x-scroll`
+                      minWidth: '400px',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
                     }}
-                    // className="hide-scrollbar flex w-full grow flex-col items-start space-y-1 overflow-x-scroll"
                   >
-                    <Typography
-                      sx={{
-                        whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
-                        wordBreak: 'normal', // Equivalent to `break-normal`
-                        color: 'text.primary', // Equivalent to `text-black`
-                      }}
-                      // className="whitespace-nowrap break-normal text-black"
-                    >
-                      Value:{' '}
-                      {Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        notation: 'standard',
-                        useGrouping: true,
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }).format(
-                        position?.input_token_data?.token_amount_usd ?? 0,
-                      )}
-                    </Typography>
-                    {!position?.can_withdraw && (
-                      <Typography
-                        sx={{
-                          whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
-                          wordBreak: 'normal', // Equivalent to `break-normal`
-                          color: 'text.primary', // Equivalent to `text-black`
-                        }}
-                        // className="whitespace-nowrap break-normal text-black"
-                      >
-                        LOCKED
-                      </Typography>
-                    )}
                     <Box
                       component="span"
                       sx={{
@@ -266,20 +234,49 @@ export const WithdrawWidgetInputTokenTab = ({
                         width: '100%', // Equivalent to `w-full`
                         flexGrow: 1, // Equivalent to `grow`
                         flexDirection: 'column', // Equivalent to `flex-col`
-                        gap: 3, // Equivalent to `space-y-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
                       }}
-                      // className="flex w-full grow flex-col space-y-3"
                     >
                       <WithdrawInputTokenRow
                         key={`withdraw-input-token-row:${positionIndex}`}
                         token={position?.input_token_data}
+                        tokenValueUSD={Intl.NumberFormat('en-US', {
+                          style: 'currency',
+                          currency: 'USD',
+                          notation: 'standard',
+                          useGrouping: true,
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }).format(
+                          position?.input_token_data?.token_amount_usd ?? 0,
+                        )}
                       />
                     </Box>
+                    {!position?.can_withdraw && (
+                      <Box
+                        sx={{
+                          borderRadius: '32px',
+                          padding: theme.spacing(1),
+                          borderColor: '#302F2E',
+                          borderWidth: '1px',
+                          borderStyle: 'solid',
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            whiteSpace: 'nowrap',
+                            wordBreak: 'normal',
+                          }}
+                          variant="bodyMediumStrong"
+                          color={theme.palette.text.primary}
+                        >
+                          Locked
+                        </Typography>
+                      </Box>
+                    )}
                   </Box>
+                  {/* </Box> */}
                 </Box>
               }
-              // delay={0.1 + positionIndex * 0.1}
-              // className="w-full"
               key={`withdraw-position:${positionIndex}`}
             />
           );

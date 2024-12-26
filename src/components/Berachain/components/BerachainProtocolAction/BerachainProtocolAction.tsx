@@ -69,7 +69,7 @@ export const BerachainProtocolAction = ({
                 width: '144px',
                 height: '144px',
                 flexShrink: 0,
-                marginTop: '32px',
+                marginTop: '16px',
               }}
             />
           )}
@@ -168,7 +168,7 @@ export const BerachainProtocolAction = ({
         ) : (
           <Skeleton
             variant="rectangular"
-            sx={{ height: '112px', width: '100%', borderRadius: '8px' }}
+            sx={{ height: '312px', width: '100%', borderRadius: '8px' }}
           />
         )}
         {card?.attributes?.Information && (
