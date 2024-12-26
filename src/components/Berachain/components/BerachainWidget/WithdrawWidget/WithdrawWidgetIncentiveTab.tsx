@@ -23,6 +23,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { ExtendedChain } from '@lifi/sdk';
 import { WithdrawInputTokenRow } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawInputTokenRow';
 import { CustomLoadingButton } from '@/components/Berachain/components/BerachainWidget/LoadingButton.style';
+import { TxConfirmation } from '../TxConfirmation';
 
 export const WithdrawWidgetIncentiveTab = ({
   market,
@@ -339,29 +340,26 @@ export const WithdrawWidgetIncentiveTab = ({
       >
         <Typography variant="bodyMediumStrong">Claim incentive</Typography>
       </CustomLoadingButton>
-      {txHash && (
-        <Box
-          sx={{
-            flexShrink: 0, // Equivalent to `shrink-0`
-          }}
-          // className="w-24 shrink-0"
-        >
-          <Typography
-            component="a"
-            href={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
-            target="_blank"
-          >
-            Transaction link
-          </Typography>
-        </Box>
+      {isTxConfirmed && txHash ? (
+        <TxConfirmation
+          s={'Transaction successfull'}
+          link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
+        />
+      ) : (
+        txHash && (
+          <TxConfirmation
+            s={'Transaction completed'}
+            link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
+          />
+        )
       )}
-      {isTxConfirmed && (
+      {/* {isTxConfirmed && (
         <Box>
           <Typography variant="body2" color="textSecondary">
             Transaction successfull!
           </Typography>
         </Box>
-      )}
+      )} */}
     </Box>
   );
 };

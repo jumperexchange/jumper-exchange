@@ -16,8 +16,6 @@ import {
   WalletCardBadge,
 } from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
-import CheckIcon from '@mui/icons-material/Check';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
   useConfig,
   useWaitForTransactionReceipt,
@@ -43,10 +41,8 @@ import {
 } from '@/components/Navbar/WalletButton.style';
 import { useTranslation } from 'react-i18next';
 import ConnectButton from '@/components/Navbar/ConnectButton';
-import {
-  BerachainDepositInputBackground,
-  BerachainWidgetSelection,
-} from '../../BerachainWidgetWip/BerachainWidgetWip.style';
+import { BerachainDepositInputBackground } from '../../BerachainWidgetWip/BerachainWidgetWip.style';
+import { TxConfirmation } from '../TxConfirmation';
 
 interface Image {
   url?: string;
@@ -228,7 +224,7 @@ function DepositWidget({
         market?.input_token_data.decimals ?? 0,
       )
     ) {
-      return `There are not enough positions left in the market. Still available to deposit: ${Intl.NumberFormat(
+      return `Not enough positions left. Still available to deposit: ${Intl.NumberFormat(
         'en-US',
         {
           notation: 'standard',
@@ -473,7 +469,18 @@ function DepositWidget({
             {market?.input_token_data.symbol.toUpperCase()} Fillable in Total
           </Typography> */}
             {hasErrorText && (
-              <Typography component="span">{hasErrorText}</Typography>
+              <Typography
+                component="span"
+                variant="bodySmall"
+                sx={(theme) => ({
+                  typography: {
+                    xs: theme.typography.bodyXSmall,
+                    sm: theme.typography.bodySmall,
+                  },
+                })}
+              >
+                {hasErrorText}
+              </Typography>
             )}
             {txHash && (
               <Typography
@@ -553,35 +560,12 @@ function DepositWidget({
             </Box>
           )}
 
-        {/* {txHash && (
-          <Box
-            sx={{
-              width: '100%',
-              borderRadius: '16px',
-              backgroundColor: 'inherit',
-              padding: theme.spacing(2),
-              marginTop: theme.spacing(2),
-              border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
-              gap: '8px',
-            }}
-          >
-            <Box sx={{ backgroundColor: '#291812' }}>
-              <CheckIcon sx={{ color: '#FF8425' }} />
-            </Box>
-            <Typography
-              component="a"
-              href={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
-              target="_blank"
-            >
-              Transaction completed
-            </Typography>
-            <Box
-              sx={{ backgroundColor: alpha(theme.palette.white.main, 0.08) }}
-            >
-              <OpenInNewIcon />
-            </Box>
-          </Box>
-        )} */}
+        {txHash && (
+          <TxConfirmation
+            s={'Transaction completed'}
+            link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+          />
+        )}
       </Box>
     </BerachainDepositInputBackground>
   );
