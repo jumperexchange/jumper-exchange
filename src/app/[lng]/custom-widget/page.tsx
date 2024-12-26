@@ -14,9 +14,11 @@ export const metadata: Metadata = {
 export default async function Page() {
   // hardcoded for now
   const projectData = {
-    chain: 'base',
-    project: 'ionic',
-    address: '0xa900a17a49bc4d442ba7f72c39fa2108865671f0',
+    chain: 'lisk',
+    chainId: 1135,
+    project: 'beefy',
+    integrator: 'zap.beefy',
+    address: '0xb3aac1293632706e134e4cc41976b49ec89fab1b',
   };
 
   return <CustomWidgetPage projectData={projectData} />;

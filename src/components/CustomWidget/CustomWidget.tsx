@@ -8,10 +8,13 @@ import { DepositCard } from './DepositCard';
 import { useContractRead } from 'src/hooks/useReadContractData';
 import WidgetLikeField from '../Zap/WidgetLikeField/WidgetLikeField';
 import { Divider } from '@mui/material';
+import { useThemeStore } from 'src/stores/theme';
 
 export interface ProjectData {
   chain: string;
+  chainId: number;
   project: string;
+  integrator: string;
   address: string;
 }
 
@@ -25,10 +28,15 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
   const { data, isSuccess } = useZaps(projectData);
   const { openWalletMenu } = useWalletMenu();
 
+  const [widgetTheme, configTheme] = useThemeStore((state) => [
+    state.widgetTheme,
+    state.configTheme,
+  ]);
+
   const { data: depositTokenData, isLoading: isLoadingDepositTokenData } =
     useContractRead({
       address: projectData.address as `0x${string}`,
-      chainId: projectData.chain === 'ethereum' ? 1 : 8453,
+      chainId: projectData.chainId,
       functionName: 'balanceOf',
       abi: [
         {
@@ -45,7 +53,7 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
   useEffect(() => {
     if (isSuccess) {
       setToken({
-        chainId: projectData.chain === 'ethereum' ? 1 : 8453,
+        chainId: projectData.chainId,
         address: data?.data?.market?.address as `0x${string}`,
         symbol: data?.data?.market?.lpToken.symbol,
         name: data?.data?.market?.lpToken.name,
@@ -70,16 +78,17 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
       },
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
-      integrator: projectData.project === 'mellow' ? 'zap.mellow' : 'zap.ionic',
+      integrator: projectData.integrator,
       disabledUI: [DisabledUI.ToAddress],
-      hiddenUI: [HiddenUI.Appearance, HiddenUI.Language],
+      hiddenUI: [
+        HiddenUI.Appearance,
+        HiddenUI.Language,
+        HiddenUI.PoweredBy,
+        HiddenUI.WalletMenu,
+      ],
+      appearance: widgetTheme.config.appearance,
+      theme: widgetTheme.config.theme,
       useRecommendedRoute: true,
-      theme: {
-        container: {
-          border: '1px solid rgb(234, 234, 234)',
-          borderRadius: '16px',
-        },
-      },
       contractCompactComponent: <></>,
       walletConfig: {
         onConnect() {
