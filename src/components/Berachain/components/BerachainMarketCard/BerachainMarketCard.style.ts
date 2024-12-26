@@ -36,6 +36,7 @@ export const BerachainMarketCardTokenContainer = styled(Box)(({ theme }) => ({
 export const BerachainMarketCardHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'space-between',
   gap: theme.spacing(1.5),
   height: 48,
 }));

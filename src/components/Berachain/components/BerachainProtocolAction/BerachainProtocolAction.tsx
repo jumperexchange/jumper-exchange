@@ -23,6 +23,7 @@ import { BerachainProtocolFaqAccordionHeader } from './BerachainProtocolFaqAccor
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
 import { WagmiProvider } from 'wagmi';
+import BerachainWidgetLoader from '../BerachainWidget/WidgetLoader/WidgetLoader';
 
 interface BerachainProtocolActionProps {
   market?: EnrichedMarketDataType;
@@ -54,12 +55,22 @@ export const BerachainProtocolAction = ({
               alt="Protocol image"
               width={card?.attributes.Image.data.attributes.width}
               height={card?.attributes.Image.data.attributes.height}
-              style={{ width: 144, height: 'auto', objectFit: 'contain' }}
+              style={{
+                width: 144,
+                height: 'auto',
+                // borderRadius: '100%',
+                objectFit: 'contain',
+              }}
             />
           ) : (
             <Skeleton
               variant="circular"
-              sx={{ width: '144px', height: '144px', flexShrink: 0 }}
+              sx={{
+                width: '144px',
+                height: '144px',
+                flexShrink: 0,
+                marginTop: '32px',
+              }}
             />
           )}
           <BerachainActionProtocolCard>
@@ -70,7 +81,7 @@ export const BerachainProtocolAction = ({
             ) : (
               <Skeleton
                 variant="rectangular"
-                sx={{ height: '32px', width: '160px' }}
+                sx={{ height: '32px', width: '380px' }}
               />
             )}
             {card?.attributes?.Description ? (
@@ -119,39 +130,46 @@ export const BerachainProtocolAction = ({
             </Box>
           </BerachainActionProtocolCard>
         </BerachainActionProtocolIntro>
-        {detailInformation?.faqItems && (
-          <BerachainActionProtocolCard sx={{ padding: '20px 12px' }}>
-            <AccordionFAQ
-              showIndex={true}
-              showDivider={true}
-              showAnswerDivider={true}
-              sx={{ padding: 0 }}
-              itemSx={{
-                padding: '0px 8px',
-                backgroundColor: 'transparent',
-                '.MuiAccordionSummary-root': {
-                  padding: 0,
-                },
-                '.accordion-items': {
-                  gap: '4px',
-                },
-                '.MuiAccordionDetails-root': {
-                  padding: '20px 16px 16px',
-                },
-                // '& > div': {
-                //   borderTop: `1px solid ${alpha(theme.palette.text.primary, 0.04)}`,
-                // },
-                // '&:first-of-type > div': {
-                //   borderTop: 'unset',
-                // },
-              }}
-              content={detailInformation?.faqItems}
-              accordionHeader={<BerachainProtocolFaqAccordionHeader />}
-              questionTextTypography="bodyLarge"
-              answerTextTypography="bodyMedium"
-              arrowSize={12}
-            />
-          </BerachainActionProtocolCard>
+        {card?.attributes?.CustomInformation ? (
+          detailInformation?.faqItems && (
+            <BerachainActionProtocolCard sx={{ padding: '20px 12px' }}>
+              <AccordionFAQ
+                showIndex={true}
+                showDivider={true}
+                showAnswerDivider={true}
+                sx={{ padding: 0 }}
+                itemSx={{
+                  padding: '0px 8px',
+                  backgroundColor: 'transparent',
+                  '.MuiAccordionSummary-root': {
+                    padding: 0,
+                  },
+                  '.accordion-items': {
+                    gap: '4px',
+                  },
+                  '.MuiAccordionDetails-root': {
+                    padding: '20px 16px 16px',
+                  },
+                  // '& > div': {
+                  //   borderTop: `1px solid ${alpha(theme.palette.text.primary, 0.04)}`,
+                  // },
+                  // '&:first-of-type > div': {
+                  //   borderTop: 'unset',
+                  // },
+                }}
+                content={detailInformation?.faqItems}
+                accordionHeader={<BerachainProtocolFaqAccordionHeader />}
+                questionTextTypography="bodyLarge"
+                answerTextTypography="bodyMedium"
+                arrowSize={12}
+              />
+            </BerachainActionProtocolCard>
+          )
+        ) : (
+          <Skeleton
+            variant="rectangular"
+            sx={{ height: '112px', width: '100%', borderRadius: '8px' }}
+          />
         )}
         {card?.attributes?.Information && (
           <BerachainActionProtocolCard
@@ -164,7 +182,7 @@ export const BerachainProtocolAction = ({
           </BerachainActionProtocolCard>
         )}
       </BerachainProtocolActionInfoBox>
-      {market && <BerachainWidget market={market} />}
+      {market ? <BerachainWidget market={market} /> : <BerachainWidgetLoader />}
     </BerachainProtocolActionBox>
   );
 };

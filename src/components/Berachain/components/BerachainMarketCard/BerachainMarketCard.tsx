@@ -117,45 +117,54 @@ export const BerachainMarketCard = ({
     >
       <BerachainMarketCardWrapper>
         <BerachainMarketCardHeader>
-          {image ? (
-            <Image
-              key={`berachain-market-card-token-${image.data.id}`}
-              src={`${url}${image.data.attributes.url}`}
-              alt={`${image.data.attributes.alternativeText || 'protocol'} logo`}
-              width={image.data.attributes.width}
-              height={image.data.attributes.height}
-              style={{
-                maxHeight: '40px',
-                maxWidth: '92px',
-                height: 'auto',
-                objectFit: 'contain',
-              }}
-            />
-          ) : (
-            <Skeleton
-              variant="rectangular"
-              sx={{ width: 92, height: 40, borderRadius: '8px' }}
-            />
-          )}
-          {roycoData?.name ? (
-            // <Typography variant="bodyLargeStrong">{roycoData?.name}</Typography>
-            <Typography
-              variant="bodySmall"
-              sx={(theme) => ({
-                typography: {
-                  xs: theme.typography.bodyXSmall,
-                  sm: theme.typography.bodySmall,
-                },
-              })}
-            >
-              {`${title} ${roycoData?.input_token_data?.symbol} Market`}
-            </Typography>
-          ) : (
-            <Skeleton
-              variant="text"
-              sx={{ width: 96, height: 24, borderRadius: '8px' }}
-            />
-          )}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              gap: '8px',
+            }}
+          >
+            {image ? (
+              <Image
+                key={`berachain-market-card-token-${image.data.id}`}
+                src={`${url}${image.data.attributes.url}`}
+                alt={`${image.data.attributes.alternativeText || 'protocol'} logo`}
+                width={image.data.attributes.width}
+                height={image.data.attributes.height}
+                style={{
+                  maxHeight: '40px',
+                  maxWidth: '64px',
+                  height: 'auto',
+                  objectFit: 'contain',
+                }}
+              />
+            ) : (
+              <Skeleton
+                variant="rectangular"
+                sx={{ width: 92, height: 40, borderRadius: '8px' }}
+              />
+            )}
+            {roycoData?.name ? (
+              // <Typography variant="bodyLargeStrong">{roycoData?.name}</Typography>
+              <Typography
+                variant="bodyMediumStrong"
+                sx={(theme) => ({
+                  typography: {
+                    xs: theme.typography.bodySmallStrong,
+                    sm: theme.typography.bodyMediumStrong,
+                  },
+                })}
+              >
+                {`${title} ${roycoData?.input_token_data?.symbol} Market`}
+              </Typography>
+            ) : (
+              <Skeleton
+                variant="text"
+                sx={{ width: 96, height: 24, borderRadius: '8px' }}
+              />
+            )}
+          </Box>
           {type && (
             <BerachainMarketCardBadge
               variant="bodySmall"

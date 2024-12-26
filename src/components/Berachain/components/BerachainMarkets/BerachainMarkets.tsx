@@ -25,8 +25,7 @@ export const BerachainMarkets = () => {
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
-        {!roycoData &&
-          !data &&
+        {(!roycoData || !data) &&
           Array.from({ length: 9 }, () => 42).map((_, idx) => (
             <BerachainMarketCard
               roycoData={{} as EnrichedMarketDataType}

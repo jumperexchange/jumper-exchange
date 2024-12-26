@@ -64,7 +64,12 @@ export const BerachainExploreProtocol = ({
           <Typography variant="bodySmallStrong">Explore Berachain</Typography>
         </BerachainBackButton>
       </Link>
-      {card && <BerachainProtocolAction market={roycoDataMarket} card={card} />}
+      {/* {card &&  */}
+      <BerachainProtocolAction
+        market={roycoDataMarket}
+        card={card ?? undefined}
+      />
+      {/* } */}
     </Container>
   );
 };
