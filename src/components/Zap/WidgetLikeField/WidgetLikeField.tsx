@@ -117,7 +117,17 @@ function WidgetLikeField({
 
   return (
     <Grid container justifyContent={'center'}>
-      <Grid xs={12} md={3} p={3} bgcolor={'#fff'} borderRadius={1}>
+      <Grid
+        xs={12}
+        md={12}
+        p={3}
+        bgcolor={'#fff'}
+        borderRadius={1}
+        sx={{
+          backgroundColor: theme.palette.surface1.main,
+          paddgin: theme.spacing(1),
+        }}
+      >
         <Box
           component="form"
           sx={{

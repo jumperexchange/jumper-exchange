@@ -1,16 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 
 interface UseZapsProps {
-  chain: string;
-  address: string;
-  project: string;
+  chain?: string;
+  address?: string;
+  project?: string;
 }
 
-export const useZaps = (zapParams: UseZapsProps) => {
+export const useZaps = ({ chain, address, project }: UseZapsProps) => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-  // request params
-  const { chain, address, project } = zapParams;
 
   // get data
   const { data, isSuccess, isLoading } = useQuery({
@@ -43,6 +40,8 @@ export const useZaps = (zapParams: UseZapsProps) => {
 
       return { data };
     },
+    enabled: !!chain && !!address && !!project,
+    refetchInterval: 1 * 60 * 60,
   });
 
   return { data, isSuccess, isLoading };

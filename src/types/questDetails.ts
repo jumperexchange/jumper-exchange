@@ -22,10 +22,10 @@ export interface ExtendedQuest extends Quest {
 
 export interface ProtocolInfo {
   slug: string;
-  chain: ChainId;
-  tokens: string[];
-  tvl: string;
-  apys: ProtocolApys;
+  chain?: ChainId;
+  tokens?: string[];
+  tvl?: string;
+  apys?: ProtocolApys;
 }
 
 export interface ProtocolApys {

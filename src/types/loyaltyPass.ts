@@ -123,6 +123,16 @@ type QuestsPlatformData = {
   data: { id: number; attributes: QuestsPlatformAttributes };
 };
 
+export interface QuestChains {
+  name: string;
+  logo: string;
+}
+
+export interface CustomInformation {
+  chains: QuestChains[];
+  [key: string]: any;
+}
+
 export type QuestAttributes = {
   UID: string;
   Title: string;
@@ -141,7 +151,7 @@ export type QuestAttributes = {
   ClaimingId?: string;
   Subtitle?: string;
   Steps?: RootNode[];
-  CustomInformation?: any; // JSON object that can change and where type is not enforced inside Strapi yet.
+  CustomInformation?: CustomInformation; // JSON object that can change and where type is not enforced inside Strapi yet.
   Image: ImageData;
   BannerImage: BannerImageData;
   quests_platform: QuestsPlatformData;
