@@ -275,7 +275,6 @@ function DepositWidget({
         writeContractOptions[0].args[1] =
           writeContractOptions?.[0]?.requiredApprovalAmount;
       }
-      console.log(writeContractOptions);
 
       resetTx();
       writeContract({
