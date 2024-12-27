@@ -2,21 +2,19 @@ import { Box, Grid, Typography } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { alpha, styled } from '@mui/material/styles';
 import Image from 'next/image';
-import { ProfilePageContainer } from 'src/components/ProfilePage/ProfilePage.style';
+import { PageContainer } from 'src/components/ProfilePage/ProfilePage.style';
 
-export const BerachainIntroductionBox = styled(ProfilePageContainer)(
-  ({ theme }) => ({
-    marginTop: theme.spacing(10),
-    color: theme.palette.text.primary,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    [theme.breakpoints.up('lg' as Breakpoint)]: {
-      gap: theme.spacing(4),
-    },
-  }),
-);
+export const BerachainIntroductionBox = styled(PageContainer)(({ theme }) => ({
+  marginTop: theme.spacing(10),
+  color: theme.palette.text.primary,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    gap: theme.spacing(4),
+  },
+}));
 
 export const BerachainIntroductionTitle = styled(Typography)(({ theme }) => ({
   letterSpacing: 0,
