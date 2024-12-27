@@ -174,8 +174,6 @@ declare module '@mui/material/styles' {
     urbanistBodyLarge: React.CSSProperties;
     urbanistBodyXLarge: React.CSSProperties;
     urbanistBody2XLarge: React.CSSProperties;
-    titleXSmall: React.CSSProperties;
-    title2xSmall: React.CSSProperties;
     titleLarge: React.CSSProperties;
   }
 }
