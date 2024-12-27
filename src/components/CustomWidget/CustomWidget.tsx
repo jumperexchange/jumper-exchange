@@ -147,36 +147,6 @@ export function CustomWidget({
       )}
 
       {!isLoadingDepositTokenData && type === 'withdraw' && (
-        // <>
-        //   <WidgetLikeField
-        //     contractCalls={[
-        //       {
-        //         data: '0x',
-        //         type: 'send',
-        //         label: 'Redeem',
-        //         onVerify: () => Promise.resolve(true),
-        //       },
-        //     ]}
-        //     label="Redeem"
-        //     image={{
-        //       url: token?.logoURI || '',
-        //       name: token?.name || '',
-        //     }}
-        //     placeholder="0.00"
-        //     helperText={{
-        //       left: 'Available balance',
-        //       right: depositTokenData
-        //         ? formatUnits(depositTokenData, 18)
-        //         : '0.00',
-        //     }}
-        //     balance={
-        //       depositTokenData
-        //         ? formatUnits(depositTokenData, lpTokenDecimals)
-        //         : '0.00'
-        //     }
-        //     projectData={projectData}
-        //   />
-        // </>
         <Box
           sx={{
             display: 'flex',
