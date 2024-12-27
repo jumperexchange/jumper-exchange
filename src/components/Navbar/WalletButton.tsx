@@ -44,7 +44,6 @@ export const WalletButtons = () => {
   const router = useRouter();
   const imgLink = useWalletAddressImg({
     userAddress: account?.address,
-    onlyUseBlockie: false,
   });
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const pathname = usePathname();

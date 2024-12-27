@@ -40,7 +40,6 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
   });
   const imgLink = useWalletAddressImg({
     userAddress: address,
-    onlyUseBlockie: false,
   });
   const { setSnackbarState } = useMenuStore((state) => state);
   const { openWalletMenu } = useWalletMenu();

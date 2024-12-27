@@ -30,7 +30,6 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
   const theme = useTheme();
   const imgLink = useWalletAddressImg({
     userAddress: address,
-    onlyUseBlockie: false,
   });
   const { setSnackbarState } = useMenuStore((state) => state);
   const { data: ensName, isSuccess } = useEnsName({

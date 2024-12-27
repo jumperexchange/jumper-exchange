@@ -15,6 +15,7 @@ import {
 
 import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 import { obfuscatedAddressFormatter } from 'src/utils/obfuscatedAddressFormatter';
+import useBlockieImg from 'src/hooks/useBlockieImg';
 
 interface LeaderboardEntryProps {
   isUserPosition?: boolean;
@@ -35,10 +36,7 @@ export const LeaderboardEntry = ({
 }: LeaderboardEntryProps) => {
   const { t } = useTranslation();
   const formattedAddress = obfuscatedAddressFormatter(walletAddress);
-  const imgLink = useWalletAddressImg({
-    userAddress: formattedAddress,
-    onlyUseBlockie: true,
-  });
+  const imgLink = useBlockieImg(formattedAddress);
 
   return (
     <LeaderboardEntryWrapper
