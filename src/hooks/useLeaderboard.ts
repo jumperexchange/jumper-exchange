@@ -58,6 +58,7 @@ export const useLeaderboardList = (
         console.error(err);
       }
     },
+    refetchInterval: 1000 * 60 * 60,
   });
 
   const data = leaderboardListData?.data;
@@ -107,6 +108,7 @@ export const useLeaderboardUser = (
   } = useQuery({
     queryKey: ['leaderboard-user', walletAddress],
     queryFn: getLeaderboardUserQuery,
+    refetchInterval: 1000 * 60 * 60,
   });
 
   const userPage =

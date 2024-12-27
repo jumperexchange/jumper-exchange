@@ -24,6 +24,7 @@ import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
 import IconHeader from '../ProfilePage/Common/IconHeader';
 import useClient from 'src/hooks/useClient';
+import { Box } from '@mui/material';
 
 export const LEADERBOARD_LENGTH = 25;
 
@@ -78,17 +79,17 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
         <LeaderboardEntryStack direction={'column'}>
           {!leaderboardData?.length
             ? Array.from({ length: LEADERBOARD_LENGTH }).map((_, index) => (
-                <>
+                <Box key={`leaderboard-entry-${index}-fragment`}>
                   <LeaderboardEntrySkeleton
                     key={`leaderboard-entry-${index}-skeleton`}
                     isUserPosition={false}
                   />
                   {index !== LEADERBOARD_LENGTH - 1 && (
                     <LeaderboardEntryDivider
-                      key={`leaderboard-entry-${index}-skeleton-divider`}
+                      key={`leaderboard-entry-divider=${index}-skeleton`}
                     />
                   )}
-                </>
+                </Box>
               ))
             : leaderboardData?.map(
                 (entry: LeaderboardEntryData, index: number) => {
@@ -97,7 +98,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                     +parseInt(leaderboardUserData?.position);
 
                   return (
-                    <>
+                    <Box key={`leaderboard-entry-${index}-fragment`}>
                       <LeaderboardEntry
                         key={`leaderboard-entry-${index}`}
                         isUserPosition={isUserPosition}
@@ -107,10 +108,10 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                       />
                       {index !== leaderboardData.length - 1 && (
                         <LeaderboardEntryDivider
-                          key={`leaderboard-entry-${index}-divider`}
+                          key={`leaderboard-entry-divider-${index}`}
                         />
                       )}
-                    </>
+                    </Box>
                   );
                 },
               )}

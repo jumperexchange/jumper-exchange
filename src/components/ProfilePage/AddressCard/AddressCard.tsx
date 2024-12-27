@@ -38,7 +38,9 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
     address: address as Address | undefined,
     chainId: mainnet.id,
   });
-  const imgLink = useWalletAddressImg(address);
+  const imgLink = useWalletAddressImg({
+    userAddress: address,
+  });
   const { setSnackbarState } = useMenuStore((state) => state);
   const { openWalletMenu } = useWalletMenu();
 

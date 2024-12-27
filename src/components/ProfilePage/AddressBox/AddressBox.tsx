@@ -28,7 +28,9 @@ interface AddressBoxProps {
 export const AddressBox = ({ address }: AddressBoxProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const imgLink = useWalletAddressImg(address);
+  const imgLink = useWalletAddressImg({
+    userAddress: address,
+  });
   const { setSnackbarState } = useMenuStore((state) => state);
   const { data: ensName, isSuccess } = useEnsName({
     address: address as Address | undefined,
