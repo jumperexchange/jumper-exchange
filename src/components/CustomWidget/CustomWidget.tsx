@@ -9,6 +9,7 @@ import { useContractRead } from 'src/hooks/useReadContractData';
 import WidgetLikeField from '../Zap/WidgetLikeField/WidgetLikeField';
 import { Divider } from '@mui/material';
 import { useThemeStore } from 'src/stores/theme';
+import { Box } from '@mui/material';
 
 export interface ProjectData {
   chain: string;
@@ -21,9 +22,14 @@ export interface ProjectData {
 interface CustomWidgetProps {
   account: Account;
   projectData: ProjectData;
+  type: 'deposit' | 'withdraw';
 }
 
-export function CustomWidget({ account, projectData }: CustomWidgetProps) {
+export function CustomWidget({
+  account,
+  projectData,
+  type,
+}: CustomWidgetProps) {
   const [token, setToken] = useState<TokenAmount>();
   const { data, isSuccess } = useZaps(projectData);
   const { openWalletMenu } = useWalletMenu();
@@ -125,7 +131,7 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
 
   return (
     <>
-      {token && (
+      {type === 'deposit' && token && (
         <LiFiWidget
           contractComponent={
             <DepositCard
@@ -140,9 +146,45 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
         />
       )}
 
-      {!isLoadingDepositTokenData && analytics.position > 0 && (
-        <>
-          <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
+      {!isLoadingDepositTokenData && type === 'withdraw' && (
+        // <>
+        //   <WidgetLikeField
+        //     contractCalls={[
+        //       {
+        //         data: '0x',
+        //         type: 'send',
+        //         label: 'Redeem',
+        //         onVerify: () => Promise.resolve(true),
+        //       },
+        //     ]}
+        //     label="Redeem"
+        //     image={{
+        //       url: token?.logoURI || '',
+        //       name: token?.name || '',
+        //     }}
+        //     placeholder="0.00"
+        //     helperText={{
+        //       left: 'Available balance',
+        //       right: depositTokenData
+        //         ? formatUnits(depositTokenData, 18)
+        //         : '0.00',
+        //     }}
+        //     balance={
+        //       depositTokenData
+        //         ? formatUnits(depositTokenData, lpTokenDecimals)
+        //         : '0.00'
+        //     }
+        //     projectData={projectData}
+        //   />
+        // </>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            minWidth: 416,
+          }}
+        >
           <WidgetLikeField
             contractCalls={[
               {
@@ -161,7 +203,7 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
             helperText={{
               left: 'Available balance',
               right: depositTokenData
-                ? formatUnits(depositTokenData, 18)
+                ? formatUnits(depositTokenData, lpTokenDecimals)
                 : '0.00',
             }}
             balance={
@@ -171,7 +213,7 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
             }
             projectData={projectData}
           />
-        </>
+        </Box>
       )}
     </>
   );

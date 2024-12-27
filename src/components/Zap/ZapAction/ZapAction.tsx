@@ -128,7 +128,10 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
       case 0:
         return detailInformation?.projectData ? (
           <>
-            <CustomWidgetPage projectData={detailInformation?.projectData} />
+            <CustomWidgetPage
+              projectData={detailInformation?.projectData}
+              type="deposit"
+            />
           </>
         ) : (
           <Skeleton
@@ -137,44 +140,18 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
           />
         );
       case 1:
-        return (
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px',
-              minWidth: 416,
-            }}
-          >
-            <WidgetLikeField
-              contractCalls={[
-                {
-                  data: '0x',
-                  type: 'send',
-                  label: 'Redeem',
-                  onVerify: () => Promise.resolve(true),
-                },
-              ]}
-              label="Redeem"
-              image={{
-                url: token?.logoURI || '',
-                name: token?.name || '',
-              }}
-              placeholder="0.00"
-              helperText={{
-                left: 'Available balance',
-                right: depositTokenData
-                  ? formatUnits(depositTokenData, token?.decimals ?? 18)
-                  : '0.00',
-              }}
-              balance={
-                depositTokenData
-                  ? formatUnits(depositTokenData, token?.decimals ?? 18)
-                  : '0.00'
-              }
+        return detailInformation?.projectData ? (
+          <>
+            <CustomWidgetPage
               projectData={detailInformation?.projectData}
+              type="withdraw"
             />
-          </Box>
+          </>
+        ) : (
+          <Skeleton
+            variant="rectangular"
+            sx={{ height: '200px', width: '416px', borderRadius: '8px' }}
+          />
         );
       default:
         return (
