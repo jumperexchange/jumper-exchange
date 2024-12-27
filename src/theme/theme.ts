@@ -486,7 +486,7 @@ const themeCustomized = createTheme({
       dark: '#000000',
     },
     shadowLight: {
-      main: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+      main: 'rgba(0, 0, 0, 0.16)',
     },
     alphaDark100: {
       main: 'rgba(0, 0, 0, 0.04)',
