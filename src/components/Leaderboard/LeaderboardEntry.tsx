@@ -35,7 +35,10 @@ export const LeaderboardEntry = ({
 }: LeaderboardEntryProps) => {
   const { t } = useTranslation();
   const formattedAddress = obfuscatedAddressFormatter(walletAddress);
-  const imgLink = useWalletAddressImg(formattedAddress);
+  const imgLink = useWalletAddressImg({
+    userAddress: formattedAddress,
+    onlyUseBlockie: true,
+  });
 
   return (
     <LeaderboardEntryWrapper

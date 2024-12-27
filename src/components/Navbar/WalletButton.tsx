@@ -42,7 +42,10 @@ export const WalletButtons = () => {
   const { openWalletMenu } = useWalletMenu();
   const { points, isLoading } = useLoyaltyPass(account?.address);
   const router = useRouter();
-  const imgLink = useWalletAddressImg(account?.address);
+  const imgLink = useWalletAddressImg({
+    userAddress: account?.address,
+    onlyUseBlockie: false,
+  });
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const pathname = usePathname();
 
