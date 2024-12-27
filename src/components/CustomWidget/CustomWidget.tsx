@@ -182,6 +182,7 @@ export function CustomWidget({
                 : '0.00'
             }
             projectData={projectData}
+            writeDecimals={lpTokenDecimals}
           />
         </Box>
       )}

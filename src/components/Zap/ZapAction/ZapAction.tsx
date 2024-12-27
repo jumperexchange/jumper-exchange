@@ -39,7 +39,6 @@ import {
 import { ZapActionFaqAccordionHeader } from './ZapActionFaqAccordionHeader';
 import { ZapWidget } from './Zapwidget';
 import CustomWidgetPage from '@/app/ui/custom-widget/CustomWidgetPage';
-import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
 import { useZaps } from 'src/hooks/useZaps';
 import { useContractRead } from 'src/hooks/useReadContractData';
 import { useAccount } from '@lifi/wallet-management';

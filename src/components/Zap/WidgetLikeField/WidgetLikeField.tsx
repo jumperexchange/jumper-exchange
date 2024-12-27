@@ -66,6 +66,7 @@ interface WidgetLikeFieldProps {
     chain: string;
     project: string;
   };
+  writeDecimals: number;
 }
 
 function WidgetLikeField({
@@ -78,6 +79,7 @@ function WidgetLikeField({
   overrideStyle = {},
   balance,
   projectData,
+  writeDecimals,
 }: WidgetLikeFieldProps) {
   const theme = useTheme();
   const config = useConfig();
@@ -109,7 +111,7 @@ function WidgetLikeField({
   async function onSubmit(e: React.FormEvent) {
     try {
       e.preventDefault();
-      write([parseUnits(value, 18)]);
+      write([parseUnits(value, writeDecimals)]);
     } catch (e) {
       console.error(e);
     }
