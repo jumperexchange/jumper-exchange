@@ -110,7 +110,12 @@ export function CustomWidget({
         HiddenUI.WalletMenu,
       ],
       appearance: widgetTheme.config.appearance,
-      theme: widgetTheme.config.theme,
+      theme: {
+        ...widgetTheme.config.theme,
+        container: {
+          maxHeight: 820,
+        },
+      },
       useRecommendedRoute: true,
       contractCompactComponent: <></>,
       walletConfig: {
