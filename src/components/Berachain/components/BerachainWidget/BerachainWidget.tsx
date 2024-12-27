@@ -51,7 +51,7 @@ export const BerachainWidget = ({
 
   const tabs: TabProps[] = [
     {
-      label: `Get ${token.name}`,
+      label: `Get ${token.symbol}`,
       value: 0,
       onClick: () => {
         setTab(0);
@@ -75,7 +75,7 @@ export const BerachainWidget = ({
 
   // TODO: to remove
   // eslint-disable-next-line no-console
-  console.log('market', market);
+  // console.log('market', market);
   return (
     <Box
       sx={{

@@ -42,8 +42,11 @@ export const TxConfirmation = ({
           sx={{
             backgroundColor: '#291812',
             borderRadius: '50%',
+            display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'center',
+            padding: theme.spacing(1),
           }}
         >
           {success ? (
@@ -64,6 +67,8 @@ export const TxConfirmation = ({
         style={{
           textDecoration: 'none',
           color: 'inherit',
+          display: 'flex',
+          alignItems: 'center',
         }}
         rel="noreferrer"
       >
@@ -73,6 +78,8 @@ export const TxConfirmation = ({
             borderRadius: '50%',
             flexDirection: 'row',
             alignItems: 'center',
+            padding: theme.spacing(1),
+            display: 'flex',
           }}
         >
           <OpenInNewIcon

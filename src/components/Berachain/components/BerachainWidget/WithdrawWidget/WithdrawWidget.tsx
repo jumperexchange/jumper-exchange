@@ -70,8 +70,7 @@ export const WithdrawWidget = ({
   return (
     <Box sx={{ marginTop: theme.spacing(1.5) }}>
       <InfoBlock market={market} />
-      {/* <BerachainTransactionDetails type="withdraw" market={market} /> */}
-      <FormControl fullWidth sx={{ marginTop: theme.spacing(2) }}>
+      {/* <FormControl fullWidth sx={{ marginTop: theme.spacing(2) }}>
         <InputLabel id="withdraw-type-label">Withdraw type</InputLabel>
         <Select
           labelId="withdraw-type-label"
@@ -101,7 +100,7 @@ export const WithdrawWidget = ({
             </MenuItem>
           ))}
         </Select>
-      </FormControl>
+      </FormControl> */}
       {!account?.isConnected ? (
         <Box
           sx={{

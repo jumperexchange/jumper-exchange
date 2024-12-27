@@ -266,6 +266,17 @@ function DepositWidget({
       // eslint-disable-next-line no-console
       e.preventDefault();
 
+      if (
+        contractCallIndex === 0 &&
+        writeContractOptions.length > 0 &&
+        writeContractOptions?.[0]?.args.length === 2 &&
+        !!writeContractOptions?.[0].requiredApprovalAmount
+      ) {
+        writeContractOptions[0].args[1] =
+          writeContractOptions?.[0]?.requiredApprovalAmount;
+      }
+      console.log(writeContractOptions);
+
       resetTx();
       writeContract({
         ...writeContractOptions[contractCallIndex],
@@ -304,11 +315,6 @@ function DepositWidget({
             }}
           >
             <Typography component="span"></Typography>
-            {/* {account?.isConnected && (
-            <Typography variant="body2" color="textSecondary" component="span">
-              Balance: {balance}
-            </Typography>
-          )} */}
           </FormHelperText>
           <Input
             autoComplete="off"
@@ -413,41 +419,42 @@ function DepositWidget({
               )
             }
             endAdornment={
-              // balance > 0 && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  marginTop: '20px',
-                  width: '96px',
-                }}
-              >
-                <MaxButton
-                  sx={{ p: '5px 10px' }}
-                  aria-label="menu"
-                  mainColor={overrideStyle?.mainColor}
-                  onClick={onClickMaxButton}
+              balance > 0 && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    marginTop: '20px',
+                    width: '96px',
+                  }}
                 >
-                  max
-                </MaxButton>
-                {account?.isConnected && (
-                  <Box sx={{ marginTop: '4px' }}>
-                    <Typography
-                      variant="bodyXSmall"
-                      color="textSecondary"
-                      component="span"
-                    >
-                      /{' '}
-                      {Intl.NumberFormat('en-US', {
-                        notation: 'compact',
-                        useGrouping: true,
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 4,
-                      }).format(balance)}
-                    </Typography>
-                  </Box>
-                )}
-              </Box>
+                  <MaxButton
+                    sx={{ p: '5px 10px' }}
+                    aria-label="menu"
+                    mainColor={overrideStyle?.mainColor}
+                    onClick={onClickMaxButton}
+                  >
+                    max
+                  </MaxButton>
+                  {account?.isConnected && (
+                    <Box sx={{ marginTop: '4px' }}>
+                      <Typography
+                        variant="bodyXSmall"
+                        color="textSecondary"
+                        component="span"
+                      >
+                        /{' '}
+                        {Intl.NumberFormat('en-US', {
+                          notation: 'compact',
+                          useGrouping: true,
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 4,
+                        }).format(balance)}
+                      </Typography>
+                    </Box>
+                  )}
+                </Box>
+              )
             }
           />
           <FormHelperText
@@ -482,15 +489,6 @@ function DepositWidget({
                 {hasErrorText}
               </Typography>
             )}
-            {/* {txHash && (
-              <Typography
-                component="a"
-                href={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
-                target="_blank"
-              >
-                Transaction link
-              </Typography>
-            )} */}
           </FormHelperText>
         </FormControl>
         {!account?.isConnected ? (
@@ -542,24 +540,6 @@ function DepositWidget({
           )
         )}
 
-        {/* {contractCallIndex !== 0 &&
-          contractCallIndex > writeContractOptions.length - 1 && (
-            <Box
-              sx={{
-                height: '100%',
-                width: '100%',
-                display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
-                placeContent: 'center', // Centers content horizontally and vertically.
-                alignItems: 'start', // Aligns items at the start along the cross-axis.
-              }}
-            >
-              <div className="h-full w-full place-content-center items-start">
-              <Typography variant="body2" color="textSecondary">
-                Deposited with success!
-              </Typography>
-            </Box>
-          )} */}
-
         {contractCallIndex !== 0 &&
         contractCallIndex > writeContractOptions.length - 1 &&
         txHash ? (
@@ -569,7 +549,8 @@ function DepositWidget({
             success={true}
           />
         ) : (
-          txHash && (
+          // txHash && (
+          true && (
             <TxConfirmation
               s={'Transaction link'}
               link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
