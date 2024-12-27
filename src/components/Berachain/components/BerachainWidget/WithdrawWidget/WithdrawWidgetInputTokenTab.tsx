@@ -266,7 +266,7 @@ export const WithdrawWidgetInputTokenTab = ({
                             whiteSpace: 'nowrap',
                             wordBreak: 'normal',
                           }}
-                          variant="bodyMediumStrong"
+                          variant="bodySmallStrong"
                           color={theme.palette.text.primary}
                         >
                           Locked

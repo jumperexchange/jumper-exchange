@@ -75,7 +75,9 @@ export const TxConfirmation = ({
             alignItems: 'center',
           }}
         >
-          <OpenInNewIcon sx={{ width: '16px', height: '16px' }} />
+          <OpenInNewIcon
+            sx={{ width: '16px', height: '16px', color: '#FFFFFF' }}
+          />
         </Box>
       </a>
     </Box>

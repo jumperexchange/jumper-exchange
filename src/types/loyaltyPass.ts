@@ -91,6 +91,16 @@ type QuestsPlatformData = {
   data: { id: number; attributes: QuestsPlatformAttributes };
 };
 
+export interface QuestChains {
+  name: string;
+  logo: string;
+}
+
+interface CustomInformation {
+  chains: QuestChains[];
+  [key: string]: any;
+}
+
 type QuestAttributes<T = never> = {
   UID: string;
   Title: string;
