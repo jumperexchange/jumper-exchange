@@ -2,8 +2,8 @@ import type { ChainId } from '@lifi/sdk';
 import type { FaqProps } from 'src/components/AccordionFAQ';
 import type { Quest } from './loyaltyPass';
 import type { Chain } from '@/components/Superfest/SuperfestPage/Banner/Banner';
-import type { RewardsInterface } from '@/components/Quests/QuestCard/QuestCard';
 import type { CTALinkInt } from '@/components/Superfest/SuperfestPage/CTA/MissionCTA';
+import { RewardsInterface } from 'src/components/ProfilePage/QuestCard/QuestCard';
 
 export interface QuestSocials {
   twitter: string;
