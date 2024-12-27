@@ -50,6 +50,23 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
       args: [account.address],
     });
 
+  const { data: depositTokenDecimals } = useContractRead({
+    address: projectData.address as `0x${string}`,
+    chainId: projectData.chainId,
+    functionName: 'decimals',
+    abi: [
+      {
+        inputs: [],
+        name: 'decimals',
+        outputs: [{ name: '', type: 'uint8' }],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ],
+  });
+
+  const lpTokenDecimals = depositTokenDecimals ?? 18;
+
   useEffect(() => {
     if (isSuccess) {
       setToken({
@@ -101,7 +118,9 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
 
   const analytics = {
     ...data?.data?.analytics,
-    position: depositTokenData ? formatUnits(depositTokenData, 18) : 0,
+    position: depositTokenData
+      ? formatUnits(depositTokenData, lpTokenDecimals)
+      : 0,
   };
 
   return (
@@ -146,7 +165,9 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
                 : '0.00',
             }}
             balance={
-              depositTokenData ? formatUnits(depositTokenData, 18) : '0.00'
+              depositTokenData
+                ? formatUnits(depositTokenData, lpTokenDecimals)
+                : '0.00'
             }
             projectData={projectData}
           />
