@@ -3,8 +3,6 @@ import {
   BerachainWidgetSelection,
   BerachainWidgetSelectionRewards,
 } from '@/components/Berachain/components/BerachainWidgetWip/BerachainWidgetWip.style';
-import { BerachainProgressCard } from '@/components/Berachain/components/BerachainProgressCard/BerachainProgressCard';
-import { formatDuration } from 'date-fns';
 import InfoIcon from '@mui/icons-material/Info';
 import {
   formatWithCustomLabels,
@@ -25,9 +23,10 @@ import {
   BeraChainProgressCardComponent,
   BeraChainProgressCardContent,
   BeraChainProgressCardHeader,
-} from '../BerachainProgressCard/BerachainProgressCard.style';
+} from '../BerachainMarketCard/StatCard/BerachainProgressCard.style';
 import { useMemo, useState } from 'react';
 import { parseRawAmountToTokenAmount } from 'royco/utils';
+import { BerachainProgressCard } from '../BerachainMarketCard/StatCard/BerachainProgressCard';
 
 function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
   const { t } = useTranslation();
@@ -60,67 +59,6 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
 
   return (
     <BerachainWidgetSelection>
-      {/* <BerachainWidgetSelectionRewards>
-        <BerachainProgressCard
-          title="APY"
-          value={
-            market.annual_change_ratio
-              ? t('format.percent', {
-                  value: market.annual_change_ratio.toString(),
-                })
-              : 'N/A'
-          }
-          tooltip={<TooltipIncentives market={market} />}
-        />
-        {market.lockup_time === '0' ? (
-          <BerachainProgressCard
-            title="TVL"
-            value={
-              market.locked_quantity_usd
-                ? t('format.currency', {
-                    value: market.locked_quantity_usd,
-                    notation: 'compact',
-                  })
-                : 'N/A'
-            }
-            tooltip={'Rewards lorem ipsum tooltip msg'}
-          />
-        ) : (
-          <BerachainProgressCard
-            title="Lockup"
-            value={formatWithCustomLabels(
-              Object.entries(secondsToDuration(market.lockup_time))
-                .filter(([_, value]) => value > 0) // Filter out zero values
-                .slice(0, 2) // Take the first two non-zero units
-                .reduce(
-                  (acc, [unit, value]) => ({ ...acc, [unit]: value }),
-                  {},
-                ),
-            )}
-            tooltip={'Rewards lorem ipsum tooltip msg'}
-          />
-        )}
-
-        {deposited ? (
-          <BerachainProgressCard
-            title={'Deposited'}
-            value={t('format.currency', {
-              value: dataRecipe?.input_token_data_ap?.token_amount_usd,
-            })}
-            tooltip="Deposited value"
-            sx={{
-              padding: theme.spacing(1.5, 2),
-              display: 'flex',
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                padding: theme.spacing(1.5, 2),
-              },
-              backgroundImage:
-                'linear-gradient(rgba(253, 183, 45, 0.20), rgba(253, 183, 45, 0.20))',
-            }}
-          />
-        ) : null}
-      </BerachainWidgetSelectionRewards> */}
-
       <BerchainMarketCardInfos
         sx={{
           display: 'flex',

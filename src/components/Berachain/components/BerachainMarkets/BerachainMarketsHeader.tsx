@@ -2,7 +2,6 @@ import type { Theme } from '@mui/material';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
-import { BerachainProgressCard } from '../BerachainProgressCard/BerachainProgressCard';
 import {
   BerachainMarketHeaderBox,
   BerachainMarketHeaderCards,
@@ -14,6 +13,7 @@ import {
 } from './BerachainMarketsHeader.style';
 import { useTranslation } from 'react-i18next';
 import { useEnrichedRoycoStats } from 'royco/hooks';
+import { BerachainProgressCard } from '../BerachainMarketCard/StatCard/BerachainProgressCard';
 
 export const BerachainMarketsHeader = () => {
   const theme = useTheme();

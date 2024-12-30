@@ -6,7 +6,7 @@ import {
   BeraChainProgressCardComponent,
   BeraChainProgressCardContent,
   BeraChainProgressCardHeader,
-} from './BerachainProgressCard.style';
+} from '../BerachainMarketCard/StatCard/BerachainProgressCard.style';
 import { useTranslation } from 'react-i18next';
 
 interface BerachainProgressCardProps {
