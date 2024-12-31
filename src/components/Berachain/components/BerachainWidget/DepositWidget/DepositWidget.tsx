@@ -232,19 +232,19 @@ function DepositWidget({
           minimumFractionDigits: 0,
           maximumFractionDigits: 5,
         },
-      ).format(maxInputValue)}`;
+      ).format(maxInputValue)}.`;
     }
 
     if ((parseFloat(inputValue) ?? 0) > balance) {
-      return `You have not enough tokens. Current balance: ${balance}`;
+      return `You have not enough tokens. Current balance: ${balance}.`;
     }
 
     if (isTxConfirmError) {
-      return 'Impossible to confirm tx';
+      return 'Impossible to confirm the transaction.';
     }
 
     if (isTxError) {
-      return 'An error occurred';
+      return 'An error occurred during the execution. Please check your wallet.';
     }
 
     return null;
@@ -479,6 +479,7 @@ function DepositWidget({
                 component="span"
                 variant="bodySmall"
                 sx={(theme) => ({
+                  marginBottom: theme.spacing(1),
                   typography: {
                     xs: theme.typography.bodyXSmall,
                     sm: theme.typography.bodySmall,
