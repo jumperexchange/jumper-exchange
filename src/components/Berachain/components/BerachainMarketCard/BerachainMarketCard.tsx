@@ -100,6 +100,7 @@ export const BerachainMarketCard = ({
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'flex-start',
+              alignItems: 'center',
               gap: '8px',
             }}
           >

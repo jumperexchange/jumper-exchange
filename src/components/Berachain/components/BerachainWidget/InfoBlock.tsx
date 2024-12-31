@@ -1,8 +1,4 @@
 import type { EnrichedMarketDataType } from 'royco/queries';
-import {
-  BerachainWidgetSelection,
-  BerachainWidgetSelectionRewards,
-} from '@/components/Berachain/components/BerachainWidgetWip/BerachainWidgetWip.style';
 import InfoIcon from '@mui/icons-material/Info';
 import {
   formatWithCustomLabels,
@@ -27,6 +23,8 @@ import {
 import { useMemo, useState } from 'react';
 import { parseRawAmountToTokenAmount } from 'royco/utils';
 import { BerachainProgressCard } from '../BerachainMarketCard/StatCard/BerachainProgressCard';
+import { BerachainWidgetSelection } from './DepositWidget/WidgetDeposit.style';
+import DigitCard from '../BerachainMarketCard/StatCard/DigitCard';
 
 function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
   const { t } = useTranslation();
@@ -231,7 +229,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
             },
           }}
         >
-          <Box>
+          {/* <Box>
             <BeraChainProgressCardContent>
               <BeraChainProgressCardHeader display={'flex'}>
                 <Typography
@@ -279,8 +277,30 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                 }).format(maxInputValue)}{' '}
               </Typography>
             </BeraChainProgressCardContent>
-          </Box>
-          <Box>
+          </Box> */}
+          <DigitCard
+            title={'Available to Deposit'}
+            tooltipText="Available to Deposit"
+            digit={Intl.NumberFormat('en-US', {
+              notation: 'standard',
+              useGrouping: true,
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 5,
+            }).format(maxInputValue)}
+          />
+          <DigitCard
+            title={'TVL'}
+            tooltipText="The total value of crypto assets deposited in this pool"
+            digit={
+              market?.locked_quantity_usd
+                ? t('format.currency', {
+                    value: market?.locked_quantity_usd,
+                    notation: 'compact',
+                  })
+                : 'N/A'
+            }
+          />
+          {/* <Box>
             <BeraChainProgressCardContent>
               <BeraChainProgressCardHeader display={'flex'}>
                 <Typography
@@ -328,7 +348,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                   : 'N/A'}
               </Typography>
             </BeraChainProgressCardContent>
-          </Box>
+          </Box> */}
         </BeraChainProgressCardComponent>
       </BerchainMarketCardInfos>
 

@@ -1,5 +1,4 @@
 import { Box, Skeleton, useTheme } from '@mui/material';
-import { BerachainDepositInputBackground } from '../../BerachainWidgetWip/BerachainWidgetWip.style';
 
 function BerachainWidgetLoader() {
   const theme = useTheme();

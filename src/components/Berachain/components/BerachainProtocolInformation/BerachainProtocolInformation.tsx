@@ -12,13 +12,13 @@ import { useMenuStore } from 'src/stores/menu';
 import type { Quest } from 'src/types/loyaltyPass';
 import { BerachainWidget } from '../BerachainWidget/BerachainWidget';
 import {
-  BerachainActionProtocolCard,
-  BerachainActionProtocolIntro,
-  BerachainActionProtocolShare,
-  BerachainActionProtocolShareLink,
+  BerachainInformationProtocolCard,
+  BerachainInformationProtocolIntro,
+  BerachainInformationProtocolShare,
+  BerachainInformationProtocolShareLink,
   BerachainProtocolActionBox,
   BerachainProtocolActionInfoBox,
-} from './BerachainProtocolAction.style';
+} from './BerachainProtocolInformation.style';
 import { BerachainProtocolFaqAccordionHeader } from './BerachainProtocolFaqAccordionHeader';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
@@ -31,7 +31,7 @@ interface BerachainProtocolActionProps {
   // detailInformation?: QuestDetails;
 }
 
-export const BerachainProtocolAction = ({
+export const BerachainProtocolInformation = ({
   market,
   card,
 }: BerachainProtocolActionProps) => {
@@ -48,7 +48,7 @@ export const BerachainProtocolAction = ({
   return (
     <BerachainProtocolActionBox>
       <BerachainProtocolActionInfoBox>
-        <BerachainActionProtocolIntro>
+        <BerachainInformationProtocolIntro>
           {card?.attributes?.Image.data.attributes.url ? (
             <Image
               src={`${baseUrl}${card?.attributes.Image.data.attributes.url}`}
@@ -73,7 +73,7 @@ export const BerachainProtocolAction = ({
               }}
             />
           )}
-          <BerachainActionProtocolCard>
+          <BerachainInformationProtocolCard>
             {card?.attributes?.Title ? (
               <Typography variant="titleSmall">
                 What is {card?.attributes.Title}?
@@ -98,41 +98,41 @@ export const BerachainProtocolAction = ({
               {detailInformation?.socials && (
                 <>
                   {detailInformation?.socials?.twitter && (
-                    <BerachainActionProtocolShareLink
+                    <BerachainInformationProtocolShareLink
                       href={detailInformation?.socials?.twitter}
                       style={{ color: 'inherit', textDecoration: 'none' }}
                     >
-                      <BerachainActionProtocolShare>
+                      <BerachainInformationProtocolShare>
                         <XIcon sx={{ width: '16px', height: '16px' }} />
-                      </BerachainActionProtocolShare>
-                    </BerachainActionProtocolShareLink>
+                      </BerachainInformationProtocolShare>
+                    </BerachainInformationProtocolShareLink>
                   )}
                   {detailInformation?.socials?.telegram && (
-                    <BerachainActionProtocolShareLink
+                    <BerachainInformationProtocolShareLink
                       href={detailInformation?.socials?.telegram}
                     >
-                      <BerachainActionProtocolShare>
+                      <BerachainInformationProtocolShare>
                         <TelegramIcon sx={{ width: '16px', height: '16px' }} />
-                      </BerachainActionProtocolShare>
-                    </BerachainActionProtocolShareLink>
+                      </BerachainInformationProtocolShare>
+                    </BerachainInformationProtocolShareLink>
                   )}
                   {detailInformation?.socials?.website && (
-                    <BerachainActionProtocolShareLink
+                    <BerachainInformationProtocolShareLink
                       href={detailInformation?.socials?.website}
                     >
-                      <BerachainActionProtocolShare>
+                      <BerachainInformationProtocolShare>
                         <LanguageIcon sx={{ width: '16px', height: '16px' }} />
-                      </BerachainActionProtocolShare>
-                    </BerachainActionProtocolShareLink>
+                      </BerachainInformationProtocolShare>
+                    </BerachainInformationProtocolShareLink>
                   )}
                 </>
               )}
             </Box>
-          </BerachainActionProtocolCard>
-        </BerachainActionProtocolIntro>
+          </BerachainInformationProtocolCard>
+        </BerachainInformationProtocolIntro>
         {card?.attributes?.CustomInformation ? (
           detailInformation?.faqItems && (
-            <BerachainActionProtocolCard sx={{ padding: '20px 12px' }}>
+            <BerachainInformationProtocolCard sx={{ padding: '20px 12px' }}>
               <AccordionFAQ
                 showIndex={true}
                 showDivider={true}
@@ -150,12 +150,6 @@ export const BerachainProtocolAction = ({
                   '.MuiAccordionDetails-root': {
                     padding: '20px 16px 16px',
                   },
-                  // '& > div': {
-                  //   borderTop: `1px solid ${alpha(theme.palette.text.primary, 0.04)}`,
-                  // },
-                  // '&:first-of-type > div': {
-                  //   borderTop: 'unset',
-                  // },
                 }}
                 content={detailInformation?.faqItems}
                 accordionHeader={<BerachainProtocolFaqAccordionHeader />}
@@ -163,7 +157,7 @@ export const BerachainProtocolAction = ({
                 answerTextTypography="bodyMedium"
                 arrowSize={12}
               />
-            </BerachainActionProtocolCard>
+            </BerachainInformationProtocolCard>
           )
         ) : (
           <Skeleton
@@ -172,14 +166,14 @@ export const BerachainProtocolAction = ({
           />
         )}
         {card?.attributes?.Information && (
-          <BerachainActionProtocolCard
+          <BerachainInformationProtocolCard
             sx={{ flexDirection: 'row', alignItems: 'flex-start', gap: '12px' }}
           >
             <InfoIcon />
             <Typography variant="bodySmall">
               {card?.attributes?.Information}
             </Typography>
-          </BerachainActionProtocolCard>
+          </BerachainInformationProtocolCard>
         )}
       </BerachainProtocolActionInfoBox>
       {market ? <BerachainWidget market={market} /> : <BerachainWidgetLoader />}

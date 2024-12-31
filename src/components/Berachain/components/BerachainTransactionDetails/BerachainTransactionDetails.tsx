@@ -24,12 +24,9 @@ import InfoIcon from '@mui/icons-material/Info';
 import ExternalLinkIcon from '@mui/icons-material/Link';
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 import SvgIcon from '@mui/material/SvgIcon/SvgIcon';
-import {
-  BerachainDetailsAccordion,
-  BerachainDetailsDropdown,
-  BerachainWidgetSelection,
-} from '../BerachainWidgetWip/BerachainWidgetWip.style';
+
 import AccordionSummary from '@mui/material/AccordionSummary';
+import { BerachainDetailsAccordion } from '../BerachainWidget/DepositWidget/WidgetDeposit.style';
 
 export const MarketRewardStyle: Record<
   TypedRoycoMarketRewardStyle,

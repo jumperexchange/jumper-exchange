@@ -20,13 +20,13 @@ export const BerachainProtocolActionInfoBox = styled(Box)(({ theme }) => ({
   boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
 }));
 
-export const BerachainActionProtocolIntro = styled(Box)(({ theme }) => ({
+export const BerachainInformationProtocolIntro = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   gap: theme.spacing(2),
 }));
 
-export const BerachainActionProtocolCard = styled(Box)(({ theme }) => ({
+export const BerachainInformationProtocolCard = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   color: theme.palette.text.primary,
@@ -37,16 +37,18 @@ export const BerachainActionProtocolCard = styled(Box)(({ theme }) => ({
   boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
 }));
 
-export const BerachainActionProtocolShareLink = styled(Link)(() => ({
+export const BerachainInformationProtocolShareLink = styled(Link)(() => ({
   color: 'inherit',
   textDecoration: 'none',
 }));
 
-export const BerachainActionProtocolShare = styled(IconButton)(({ theme }) => ({
-  background: alpha(theme.palette.text.primary, 0.08),
-  color: theme.palette.text.primary,
-  transition: 'background-color 300ms ease-in-out',
-  '&:hover': {
-    background: alpha(theme.palette.text.primary, 0.16),
-  },
-}));
+export const BerachainInformationProtocolShare = styled(IconButton)(
+  ({ theme }) => ({
+    background: alpha(theme.palette.text.primary, 0.08),
+    color: theme.palette.text.primary,
+    transition: 'background-color 300ms ease-in-out',
+    '&:hover': {
+      background: alpha(theme.palette.text.primary, 0.16),
+    },
+  }),
+);

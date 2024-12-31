@@ -7,10 +7,11 @@ import {
   BeraChainProgressCardHeader,
 } from './BerachainProgressCard.style';
 import TooltipIncentives from '../../BerachainWidget/TooltipIncentives';
+import { BerachainIncentiveToken } from 'src/components/Berachain/BerachainType';
 
 interface DigitCardProps {
   marketData: EnrichedMarketDataType;
-  tokens: any;
+  tokens: BerachainIncentiveToken[];
 }
 
 const TokenIncentivesCard = ({ marketData, tokens }: DigitCardProps) => {
@@ -67,7 +68,7 @@ const TokenIncentivesCard = ({ marketData, tokens }: DigitCardProps) => {
                 gap: '16px',
               }}
             >
-              {tokens?.map((incentiveTokenData: any) => (
+              {tokens?.map((incentiveTokenData: BerachainIncentiveToken) => (
                 <Box
                   sx={{
                     display: 'flex',

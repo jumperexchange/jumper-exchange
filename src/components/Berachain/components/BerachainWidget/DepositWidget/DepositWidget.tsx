@@ -41,8 +41,8 @@ import {
 } from '@/components/Navbar/WalletButton.style';
 import { useTranslation } from 'react-i18next';
 import ConnectButton from '@/components/Navbar/ConnectButton';
-import { BerachainDepositInputBackground } from '../../BerachainWidgetWip/BerachainWidgetWip.style';
 import { TxConfirmation } from '../TxConfirmation';
+import { BerachainDepositInputBackground } from './WidgetDeposit.style';
 
 interface Image {
   url?: string;

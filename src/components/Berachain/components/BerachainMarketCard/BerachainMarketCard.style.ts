@@ -39,6 +39,7 @@ export const BerachainMarketCardHeader = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   gap: theme.spacing(1.5),
   height: 48,
+  width: '100%',
 }));
 
 export const BerchainMarketCardInfos = styled(Box)(({ theme }) => ({

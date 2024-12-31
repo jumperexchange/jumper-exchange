@@ -7,11 +7,11 @@ import {
   BerachainBackButton,
   BerachainContentContainer as Container,
 } from './Berachain.style';
-import { BerachainProtocolAction } from './components/BerachainProtocolAction/BerachainProtocolAction';
 import { useEnrichedMarkets } from 'royco/hooks';
 import { notFound } from 'next/navigation';
 import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
 import { EnrichedMarketDataType } from 'royco/queries';
+import { BerachainProtocolInformation } from './components/BerachainProtocolInformation/BerachainProtocolInformation';
 
 interface BerachainExploreProtocolProps {
   marketId: string;
@@ -42,7 +42,7 @@ export const BerachainExploreProtocol = ({
             <Typography variant="bodySmallStrong">Explore Berachain</Typography>
           </BerachainBackButton>
         </Link>
-        <BerachainProtocolAction />
+        <BerachainProtocolInformation />
       </Container>
     );
   }
@@ -65,7 +65,7 @@ export const BerachainExploreProtocol = ({
         </BerachainBackButton>
       </Link>
       {/* {card &&  */}
-      <BerachainProtocolAction
+      <BerachainProtocolInformation
         market={roycoDataMarket}
         card={card ?? undefined}
       />
