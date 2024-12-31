@@ -2,7 +2,6 @@ import type { Breakpoint, Theme } from '@mui/material';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { motion } from 'motion/react';
 import Image from 'next/image';
-import { BerachainProgressCard } from '../BerachainProgressCard/BerachainProgressCard';
 import {
   BerachainButtonWrapperLink,
   BeraChainWelcomeBox,
@@ -15,6 +14,7 @@ import {
 } from './BerachainWelcome.style';
 import { useEnrichedRoycoStats } from 'royco/hooks';
 import { useTranslation } from 'react-i18next';
+import { BerachainProgressCard } from '../BerachainMarketCard/StatCard/BerachainProgressCard';
 
 export const BerachainWelcome = () => {
   const theme = useTheme();

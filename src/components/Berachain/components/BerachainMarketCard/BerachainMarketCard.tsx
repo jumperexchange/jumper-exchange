@@ -22,6 +22,7 @@ import DigitCard from './StatCard/DigitCard';
 import DigitTokenSymbolCard from './StatCard/DigitTokenSymbolCard';
 import TokenIncentivesCard from './StatCard/TokenIncentivesCard';
 import DigitTooltipCard from './StatCard/DigitTooltipCard';
+import { APY_TOOLTIP, TVL_TOOLTIP } from '../../const/title';
 
 interface BerachainMarketCardProps {
   roycoData: EnrichedMarketDataType;
@@ -186,7 +187,7 @@ export const BerachainMarketCard = ({
             />
             <DigitCard
               title={'TVL'}
-              tooltipText="Total value of crypto assets deposited in this market."
+              tooltipText={TVL_TOOLTIP}
               digit={
                 roycoData?.locked_quantity_usd
                   ? t('format.currency', {
@@ -214,7 +215,7 @@ export const BerachainMarketCard = ({
                     })
                   : 'N/A'
               }
-              tooltipText="Expected yearly return rate of the tokens invested"
+              tooltipText={APY_TOOLTIP}
             />
           )}
         </BerchainMarketCardInfos>

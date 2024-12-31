@@ -25,6 +25,13 @@ import { parseRawAmountToTokenAmount } from 'royco/utils';
 import { BerachainProgressCard } from '../BerachainMarketCard/StatCard/BerachainProgressCard';
 import { BerachainWidgetSelection } from './DepositWidget/WidgetDeposit.style';
 import DigitCard from '../BerachainMarketCard/StatCard/DigitCard';
+import {
+  APY_TOOLTIP,
+  AVAILABLE_TOOLTIP,
+  DEPOSIT_TOOLTIP,
+  INCENTIVES_TOOLTIP,
+  TVL_TOOLTIP,
+} from '../../const/title';
 
 function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
   const { t } = useTranslation();
@@ -90,7 +97,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                   {deposited ? 'Deposited' : 'Deposit'}
                 </Typography>
                 <Tooltip
-                  title={'Deposit amount'}
+                  title={DEPOSIT_TOOLTIP}
                   placement={'top'}
                   enterTouchDelay={0}
                   arrow
@@ -171,7 +178,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                     Lockup
                   </Typography>
                   <Tooltip
-                    title={'lockup'}
+                    title={LOCKUP_TOOLTIP}
                     placement={'top'}
                     enterTouchDelay={0}
                     arrow
@@ -229,7 +236,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
             },
           }}
         >
-          {/* <Box>
+          <Box>
             <BeraChainProgressCardContent>
               <BeraChainProgressCardHeader display={'flex'}>
                 <Typography
@@ -244,7 +251,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                   Available to Deposit
                 </Typography>
                 <Tooltip
-                  title={'tvl'}
+                  title={AVAILABLE_TOOLTIP}
                   placement={'top'}
                   enterTouchDelay={0}
                   arrow
@@ -277,10 +284,10 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                 }).format(maxInputValue)}{' '}
               </Typography>
             </BeraChainProgressCardContent>
-          </Box> */}
-          <DigitCard
+          </Box>
+          {/* <DigitCard
             title={'Available to Deposit'}
-            tooltipText="Available to Deposit"
+            tooltipText={AVAILABLE_TOOLTIP}
             digit={Intl.NumberFormat('en-US', {
               notation: 'standard',
               useGrouping: true,
@@ -290,7 +297,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
           />
           <DigitCard
             title={'TVL'}
-            tooltipText="The total value of crypto assets deposited in this pool"
+            tooltipText={TVL_TOOLTIP}
             digit={
               market?.locked_quantity_usd
                 ? t('format.currency', {
@@ -299,8 +306,8 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                   })
                 : 'N/A'
             }
-          />
-          {/* <Box>
+          /> */}
+          <Box>
             <BeraChainProgressCardContent>
               <BeraChainProgressCardHeader display={'flex'}>
                 <Typography
@@ -315,7 +322,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                   TVL
                 </Typography>
                 <Tooltip
-                  title={'tvl'}
+                  title={TVL_TOOLTIP}
                   placement={'top'}
                   enterTouchDelay={0}
                   arrow
@@ -348,7 +355,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                   : 'N/A'}
               </Typography>
             </BeraChainProgressCardContent>
-          </Box> */}
+          </Box>
         </BeraChainProgressCardComponent>
       </BerchainMarketCardInfos>
 
@@ -398,7 +405,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
                       {'Total Incentives'}
                     </Typography>
                     <Tooltip
-                      title={''}
+                      title={INCENTIVES_TOOLTIP}
                       placement={'top'}
                       enterTouchDelay={0}
                       arrow
@@ -464,7 +471,7 @@ function InfoBlock({ market }: { market: EnrichedMarketDataType }) {
           </Tooltip>
         ) : (
           <Tooltip
-            title={'Expected return on the tokens invested'}
+            title={APY_TOOLTIP}
             open={openTokensTooltip ? false : undefined}
             disableFocusListener={openTokensTooltip ? false : undefined}
             disableInteractive={!openTokensTooltip ? false : undefined}
