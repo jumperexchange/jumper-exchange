@@ -11,6 +11,7 @@ export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
 export const JUMPER_LEARN_PATH = '/learn';
 export const JUMPER_LOYALTY_PATH = '/profile';
 export const JUMPER_SCAN_PATH = '/scan';
+export const JUMPER_ZAP_PATH = '/zap';
 export const JUMPER_WASH_PATH = '/wash';
 export const JUMPER_BRIDGE_PATH = '/bridge';
 export const JUMPER_TX_PATH = '/tx';
@@ -18,7 +19,7 @@ export const JUMPER_WALLET_PATH = '/wallet';
 export const JUMPER_FEST_PATH = '/superfest';
 export const JUMPER_MEMECOIN_PATH = '/memecoins';
 export const JUMPER_QUESTS_PATH = '/quests';
-export const JUMPER_WRAPPED_URL = 'https://wrapped.jumper.exchange';
+export const JUMPER_BOYCO_PATH = '/berachain';
 
 export const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
 

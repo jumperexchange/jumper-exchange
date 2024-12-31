@@ -41,7 +41,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   webServer: {
-    command: 'yarn run dev',
+    command: 'pnpm run dev',
     url: 'http://localhost:3000',
     timeout: 200 * 1000,
     reuseExistingServer: true,

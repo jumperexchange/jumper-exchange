@@ -1,12 +1,12 @@
 'use client';
 
 import { ButtonTransparent } from '@/components/Button';
-import type { Breakpoint } from '@mui/material';
+import type { AvatarProps, Breakpoint } from '@mui/material';
 import { Avatar, Badge, Container } from '@mui/material';
 import type { ButtonProps as MuiButtonProps } from '@mui/material/Button/Button';
 import { styled } from '@mui/material/styles';
 
-export const WalletAvatar = styled(Avatar)(({ theme }) => ({
+export const WalletAvatar = styled(Avatar)<AvatarProps>(({ theme }) => ({
   margin: 'auto',
   height: 40,
   width: 40,

@@ -1,5 +1,4 @@
 'use client';
-import { useWalletAddressImg } from '@/hooks/useAddressImg';
 import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
 import { getAddressLabel } from '@/utils/getAddressLabel';
@@ -23,7 +22,6 @@ import { mainnet } from 'wagmi/chains';
 import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
-  ConnectButton,
   ConnectButtonLabel,
   ImageWalletMenuButton,
   SkeletonWalletMenuButton,
@@ -33,6 +31,8 @@ import {
   WalletMgmtChainAvatar,
   WalletMgmtWalletAvatar,
 } from './WalletButton.style';
+import { useWalletAddressImg } from '@/hooks/useAddressImg';
+import ConnectButton from '@/components/Navbar/ConnectButton';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
@@ -78,18 +78,7 @@ export const WalletButtons = () => {
   return (
     <>
       {!account?.address ? (
-        <ConnectButton
-          // Used in the widget
-          id="connect-wallet-button"
-          onClick={(event) => {
-            event.stopPropagation();
-            openWalletMenu();
-          }}
-        >
-          <ConnectButtonLabel variant={'bodyMediumStrong'}>
-            {t('navbar.connect')}
-          </ConnectButtonLabel>
-        </ConnectButton>
+        <ConnectButton />
       ) : (
         <Stack direction="row" spacing={2}>
           {isDesktop &&

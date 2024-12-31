@@ -1,5 +1,5 @@
 import type { ThemeMode } from '@/types/theme';
-import { WalletButtons } from '../Navbar/WalletButton';
+import { WalletButtons } from '../Navbar/WalletButtons';
 import { Widget } from '../Widgets/Widget';
 import { BlogWidgetHeader } from './BlogWidget.style';
 

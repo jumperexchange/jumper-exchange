@@ -10,6 +10,10 @@ export const PageContainer = styled(Container)(({ theme }) => ({
   width: '100% !important',
   overflow: 'visible', //'hidden',
   paddingBottom: 20,
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    paddingLeft: '8px',
+    paddingRight: '8px',
+  },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     paddingLeft: 0,
     paddingRight: 0,

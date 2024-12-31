@@ -167,6 +167,7 @@ interface Resources {
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
+      percent: '{{value, decimalExt()}}';
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';

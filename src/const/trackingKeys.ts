@@ -52,6 +52,7 @@ export enum TrackingAction {
   ClickJumperLearnLink = 'action_click_jumper_learn_link',
   ClickJumperProfileLink = 'action_click_jumper_profile_link',
   ClickJumperScanLink = 'action_click_jumper-scan_link',
+  ClickJumperCampaignLink = 'action_click_jumper-campaign_link',
 
   // Blog
   SeeAllPosts = 'action_see_all_posts',
