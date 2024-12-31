@@ -1,23 +1,33 @@
-import { IconButton } from '@mui/material';
+import { Breakpoint, IconButton } from '@mui/material';
 import { alpha, Box, styled } from '@mui/material';
 import Link from 'next/link';
 
 export const BerachainProtocolActionBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'row',
   gap: theme.spacing(4),
   marginTop: theme.spacing(3),
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    flexDirection: 'column',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    flexDirection: 'row',
+  },
 }));
 
 export const BerachainProtocolActionInfoBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  padding: theme.spacing(3),
   flexDirection: 'column',
-  maxWidth: 640,
   gap: theme.spacing(2),
   borderRadius: '24px',
   background: '#121214',
   boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    maxWidth: 380,
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    maxWidth: 640,
+    padding: theme.spacing(3),
+  },
 }));
 
 export const BerachainInformationProtocolIntro = styled(Box)(({ theme }) => ({

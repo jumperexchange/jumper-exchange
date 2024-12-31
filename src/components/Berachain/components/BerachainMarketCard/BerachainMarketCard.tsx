@@ -118,9 +118,9 @@ export const BerachainMarketCard = ({
                 width={image.data.attributes.width}
                 height={image.data.attributes.height}
                 style={{
-                  maxHeight: '40px',
-                  maxWidth: '64px',
+                  width: '72px',
                   height: 'auto',
+                  maxHeight: '72px',
                   objectFit: 'contain',
                 }}
               />
@@ -187,7 +187,7 @@ export const BerachainMarketCard = ({
                   ? t('format.currency', {
                       value: dataRecipe?.input_token_data_ap?.token_amount,
                     })
-                  : dataRecipe?.input_token_data_ap?.symbol
+                  : roycoData?.input_token_data?.symbol
               }
             />
             <DigitCard

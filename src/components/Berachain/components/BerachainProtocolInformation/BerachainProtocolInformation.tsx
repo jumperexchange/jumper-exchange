@@ -3,7 +3,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import LanguageIcon from '@mui/icons-material/Language';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import XIcon from '@mui/icons-material/X';
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Skeleton, Theme, Typography, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { AccordionFAQ } from 'src/components/AccordionFAQ';
@@ -38,41 +38,45 @@ export const BerachainProtocolInformation = ({
   const { setSnackbarState } = useMenuStore((state) => state);
   const { t } = useTranslation();
   const baseUrl = getStrapiBaseUrl();
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
+  );
   const detailInformation = card?.attributes?.CustomInformation;
-
-  const handleCopyButton = (textToCopy: string) => {
-    navigator.clipboard.writeText(textToCopy);
-    setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
-  };
 
   return (
     <BerachainProtocolActionBox>
+      {isMobile &&
+        (market ? (
+          <BerachainWidget market={market} />
+        ) : (
+          <BerachainWidgetLoader />
+        ))}
       <BerachainProtocolActionInfoBox>
         <BerachainInformationProtocolIntro>
-          {card?.attributes?.Image.data.attributes.url ? (
-            <Image
-              src={`${baseUrl}${card?.attributes.Image.data.attributes.url}`}
-              alt="Protocol image"
-              width={card?.attributes.Image.data.attributes.width}
-              height={card?.attributes.Image.data.attributes.height}
-              style={{
-                width: 144,
-                height: 'auto',
-                // borderRadius: '100%',
-                objectFit: 'contain',
-              }}
-            />
-          ) : (
-            <Skeleton
-              variant="circular"
-              sx={{
-                width: '144px',
-                height: '144px',
-                flexShrink: 0,
-                marginTop: '16px',
-              }}
-            />
-          )}
+          {!isMobile &&
+            (card?.attributes?.Image.data.attributes.url ? (
+              <Image
+                src={`${baseUrl}${card?.attributes.Image.data.attributes.url}`}
+                alt="Protocol image"
+                width={card?.attributes.Image.data.attributes.width}
+                height={card?.attributes.Image.data.attributes.height}
+                style={{
+                  width: 144,
+                  height: 'auto',
+                  objectFit: 'contain',
+                }}
+              />
+            ) : (
+              <Skeleton
+                variant="circular"
+                sx={{
+                  width: '144px',
+                  height: '144px',
+                  flexShrink: 0,
+                  marginTop: '16px',
+                }}
+              />
+            ))}
           <BerachainInformationProtocolCard>
             {card?.attributes?.Title ? (
               <Typography variant="titleSmall">
@@ -176,7 +180,12 @@ export const BerachainProtocolInformation = ({
           </BerachainInformationProtocolCard>
         )}
       </BerachainProtocolActionInfoBox>
-      {market ? <BerachainWidget market={market} /> : <BerachainWidgetLoader />}
+      {!isMobile &&
+        (market ? (
+          <BerachainWidget market={market} />
+        ) : (
+          <BerachainWidgetLoader />
+        ))}
     </BerachainProtocolActionBox>
   );
 };

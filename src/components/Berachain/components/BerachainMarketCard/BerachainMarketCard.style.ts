@@ -1,4 +1,4 @@
-import type { TypographyProps } from '@mui/material';
+import type { Breakpoint, TypographyProps } from '@mui/material';
 import { Box, Card, Skeleton, Typography } from '@mui/material';
 import { alpha, lighten, styled } from '@mui/material/styles';
 import Image from 'next/image';
@@ -11,7 +11,6 @@ export const BerachainMarketCardWrapper = styled(Card)(({ theme }) => ({
   padding: theme.spacing(2),
   alignItems: 'flex-start',
   gap: theme.spacing(2),
-  width: 384,
   borderRadius: '16px',
   border: '1px solid #383433',
   background: '#1E1D1C',
@@ -21,6 +20,12 @@ export const BerachainMarketCardWrapper = styled(Card)(({ theme }) => ({
     background: lighten('#1E1D1C', 0.02),
     boxShadow: `0px 0px 28px 2px ${alpha('#F47226', 0.14)}`,
     border: `1px solid ${lighten('#383433', 0.2)}`,
+  },
+  [theme.breakpoints.down('sm' as Breakpoint)]: {
+    width: 320,
+  },
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    width: 384,
   },
 }));
 

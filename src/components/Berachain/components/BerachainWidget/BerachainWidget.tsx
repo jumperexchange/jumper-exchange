@@ -1,4 +1,11 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Breakpoint,
+  Theme,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useMemo, useState } from 'react';
 import { type TabProps, Tabs } from 'src/components/Tabs/Tabs';
 import { Widget } from 'src/components/Widgets/Widget';
@@ -22,6 +29,9 @@ export const BerachainWidget = ({
   const chain = useMemo(
     () => chains.getChainById(market?.chain_id!),
     [market?.chain_id],
+  );
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
   );
 
   const token = useMemo(() => {
@@ -51,14 +61,14 @@ export const BerachainWidget = ({
 
   const tabs: TabProps[] = [
     {
-      label: `Get ${token.symbol}`,
+      label: isMobile ? 'Swap' : `Get ${token.symbol}`,
       value: 0,
       onClick: () => {
         setTab(0);
       },
     },
     {
-      label: 'Deposit',
+      label: isMobile ? 'Invest' : `Deposit`,
       value: 1,
       onClick: () => {
         setTab(1);
@@ -79,7 +89,6 @@ export const BerachainWidget = ({
   return (
     <Box
       sx={{
-        padding: theme.spacing(3),
         width: '100%',
         borderRadius: '24px',
         backgroundColor: '#121214',
@@ -87,6 +96,9 @@ export const BerachainWidget = ({
           theme.palette.mode === 'light'
             ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
             : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+        [theme.breakpoints.up('md' as Breakpoint)]: {
+          padding: theme.spacing(3),
+        },
       }}
     >
       {/* <Typography variant="h2" color="text.primary" sx={{ mb: 3 }}>

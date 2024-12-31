@@ -186,3 +186,104 @@ function InfoBlock({ market, type }: InfoBlockProps) {
 }
 
 export default InfoBlock;
+
+{
+  /* {type === 'deposit' && (
+        <BerchainMarketCardInfos
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <Box
+            sx={{
+              height: '100%',
+              width: '100%',
+              padding: theme.spacing(1),
+              display: 'flex',
+              justifyContent: 'space-between',
+              backgroundColor: deposited ? '#291812' : undefined,
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                padding: theme.spacing(1.5, 2),
+              },
+            }}
+          >
+            <DigitTokenSymbolCard
+              title={deposited ? 'Deposited' : 'Deposit'}
+              tooltipText={deposited ? DEPOSITED_TOOLTIP : DEPOSIT_TOOLTIP}
+              tokenImage={market?.input_token_data?.image}
+              digit={
+                deposited
+                  ? t('format.currency', {
+                      value: dataRecipe?.input_token_data_ap?.token_amount_usd,
+                    })
+                  : market?.input_token_data?.symbol
+              }
+            />
+
+            <DigitCard
+              title={'TVL'}
+              tooltipText={TVL_TOOLTIP}
+              digit={
+                market?.locked_quantity_usd
+                  ? t('format.currency', {
+                      value: market?.locked_quantity_usd,
+                      notation: 'compact',
+                    })
+                  : 'N/A'
+              }
+            />
+          </Box>
+
+          <Divider />
+
+          <Box
+            sx={{
+              height: '100%',
+              width: '100%',
+              padding: theme.spacing(1),
+              display: 'flex',
+              justifyContent: 'space-between',
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                padding: theme.spacing(1),
+              },
+            }}
+          >
+            {market?.incentive_tokens_data?.length > 0 ? (
+              <TokenIncentivesCard
+                tokens={market?.incentive_tokens_data}
+                marketData={market}
+              />
+            ) : (
+              <DigitTooltipCard
+                title={'APY'}
+                digit={
+                  market?.annual_change_ratio
+                    ? t('format.percent', {
+                        value: market?.annual_change_ratio,
+                      })
+                    : 'N/A'
+                }
+                tooltipText={APY_TOOLTIP}
+              />
+            )}
+
+            {market.lockup_time === '0' ? undefined : (
+              <DigitCard
+                title={'Lockup'}
+                tooltipText={LOCKUP_TOOLTIP}
+                digit={formatWithCustomLabels(
+                  Object.entries(secondsToDuration(market.lockup_time))
+                    .filter(([_, value]) => value > 0) // Filter out zero values
+                    .slice(0, 2) // Take the first two non-zero units
+                    .reduce(
+                      (acc, [unit, value]) => ({ ...acc, [unit]: value }),
+                      {},
+                    ),
+                )}
+              />
+            )}
+          </Box>
+        </BerchainMarketCardInfos>
+      )} */
+}
