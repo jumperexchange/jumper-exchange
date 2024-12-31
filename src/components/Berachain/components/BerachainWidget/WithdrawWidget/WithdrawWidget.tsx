@@ -69,7 +69,8 @@ export const WithdrawWidget = ({
 
   return (
     <Box sx={{ marginTop: theme.spacing(1.5) }}>
-      <InfoBlock market={market} />
+      <InfoBlock market={market} type="withdraw" />
+
       {/* <FormControl fullWidth sx={{ marginTop: theme.spacing(2) }}>
         <InputLabel id="withdraw-type-label">Withdraw type</InputLabel>
         <Select

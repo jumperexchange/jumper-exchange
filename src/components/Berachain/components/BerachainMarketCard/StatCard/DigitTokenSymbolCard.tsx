@@ -8,7 +8,7 @@ import { BerachainMarketCardTokenContainer } from '../BerachainMarketCard.style'
 
 interface DigitCardProps {
   title: string;
-  digit: string | number;
+  digit?: string | number | undefined;
   tooltipText?: string;
   tokenImage?: string;
   hasDeposited?: boolean;

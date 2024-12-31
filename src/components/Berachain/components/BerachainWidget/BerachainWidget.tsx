@@ -119,7 +119,7 @@ export const BerachainWidget = ({
         )}
         {tab === 1 && (
           <Box sx={{ marginTop: theme.spacing(1.5) }}>
-            <InfoBlock market={market} />
+            <InfoBlock market={market} type="deposit" />
             <DepositWidget
               market={market}
               chain={chain}
