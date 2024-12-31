@@ -30,6 +30,7 @@ import {
   AVAILABLE_TOOLTIP,
   DEPOSIT_TOOLTIP,
   INCENTIVES_TOOLTIP,
+  LOCKUP_TOOLTIP,
   TVL_TOOLTIP,
 } from '../../const/title';
 

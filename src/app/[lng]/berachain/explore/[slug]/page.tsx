@@ -1,14 +1,9 @@
 import { type Metadata } from 'next';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { siteName } from 'src/app/lib/metadata';
-import { berachainMarkets } from 'src/components/Berachain/const/berachainExampleData';
 import { getSiteUrl } from 'src/const/urls';
-import type { ExtendedQuest } from 'src/types/questDetails';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
-import { notFound } from 'next/navigation';
-import { useEnrichedMarkets } from 'royco/hooks';
 import { BerachainExploreProtocol } from '@/components/Berachain/BerachainExploreProtocol';
-import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
 
 export async function generateMetadata({
   params,

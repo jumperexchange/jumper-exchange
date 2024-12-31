@@ -22,7 +22,7 @@ import DigitCard from './StatCard/DigitCard';
 import DigitTokenSymbolCard from './StatCard/DigitTokenSymbolCard';
 import TokenIncentivesCard from './StatCard/TokenIncentivesCard';
 import DigitTooltipCard from './StatCard/DigitTooltipCard';
-import { APY_TOOLTIP, TVL_TOOLTIP } from '../../const/title';
+import { APY_TOOLTIP, DEPOSIT_TOOLTIP, TVL_TOOLTIP } from '../../const/title';
 
 interface BerachainMarketCardProps {
   roycoData: EnrichedMarketDataType;
@@ -175,7 +175,7 @@ export const BerachainMarketCard = ({
           >
             <DigitTokenSymbolCard
               title={deposited ? 'Deposited' : 'Deposit'}
-              tooltipText="Deposit amount"
+              tooltipText={DEPOSIT_TOOLTIP}
               tokenImage={roycoData?.input_token_data?.image}
               digit={
                 deposited

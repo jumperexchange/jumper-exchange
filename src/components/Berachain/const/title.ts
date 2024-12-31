@@ -5,9 +5,13 @@ export const APY_TITLE = 'APY';
 
 //Tooltip
 export const TVL_TOOLTIP =
-  'Total value of crypto assets deposited in this market.';
+  'Total value of crypto assets deposited in this market';
 export const APY_TOOLTIP = 'Expected yearly return rate of the tokens invested';
-export const AVAILABLE_TOOLTIP = 'Available';
-export const DEPOSIT_TOOLTIP = 'Deposit';
-export const INCENTIVES_TOOLTIP = 'incentives';
-export const LOCKUP_TOOLTIP = 'lockup';
+export const DEPOSIT_TOOLTIP =
+  'Symbol of the underlying tokens or amount you have deposited';
+export const AVAILABLE_TOOLTIP =
+  'Amount available to deposit into this market based on capacity';
+export const INCENTIVES_TOOLTIP =
+  'List of incentives available for this market';
+export const LOCKUP_TOOLTIP =
+  'Rewards require a lockup period. You can withdraw your position but withdrawal forfeits rewards.';
