@@ -1,5 +1,6 @@
 'use client';
-import { Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { BannerContainer } from './Banner.style';
 import { useUserTracking } from 'src/hooks/userTracking';
@@ -19,7 +20,7 @@ export const Banner = () => {
       action: TrackingAction.ClickBanner,
       label: 'click-banner-cta',
       data: {
-        [TrackingEventParameter.ActiveCampaign]: 'wrapped-2024',
+        [TrackingEventParameter.ActiveCampaign]: '',
       },
     });
   };
@@ -30,9 +31,10 @@ export const Banner = () => {
 
   return (
     <a
-      href="https://wrapped.jumper.exchange"
+      href="https://jumper.exchange"
       target="_blank"
       style={{ textDecoration: 'none', color: 'inherit' }}
+      rel="noreferrer"
     >
       <BannerContainer onClick={handleClick}>
         <Image
@@ -59,9 +61,7 @@ export const Banner = () => {
           }}
         >
           {' '}
-          {isSmallScreen
-            ? 'Your 2024 Jumper Wrapped is here'
-            : 'Your 2024 Jumper Wrapped is here. Wrap your year'}{' '}
+          {isSmallScreen ? '' : ''}{' '}
         </Typography>
         <Image
           alt="arrow-icon"

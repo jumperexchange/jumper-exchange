@@ -137,8 +137,8 @@ export async function GET(
                   fill="white"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M13.5 9C13.125 9 12.75 9.375 12.75 9.75V13.5H16.5C18 13.5 18.75 12.375 18.75 11.25C18.75 10.125 18 9 16.5 9H13.5ZM16.5 10.5H14.25V12H16.5C17.0625 12 17.25 11.5261 17.25 11.25C17.25 10.9739 17.0625 10.5 16.5 10.5Z"
                   fill="white"
                 />

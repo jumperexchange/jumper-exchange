@@ -16,12 +16,14 @@ interface ProgressionBarProps {
   levelData?: LevelData;
   hideLevelIndicator?: boolean;
   loading?: boolean;
+  label?: string;
 }
 
 export const ProgressionBar = ({
   ongoingValue,
   levelData,
   hideLevelIndicator,
+  label,
   loading,
 }: ProgressionBarProps) => {
   const calcWidth =
@@ -38,7 +40,7 @@ export const ProgressionBar = ({
       {!loading && !!levelData ? (
         !!levelData && (
           <>
-            <ProgressionChart>
+            <ProgressionChart label={label}>
               <ProgressionChartScore
                 ongoingValue={ongoingValue}
                 calcWidth={calcWidth}
