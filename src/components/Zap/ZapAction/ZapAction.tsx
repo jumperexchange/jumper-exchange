@@ -37,11 +37,13 @@ import {
   ZapProtocolActionInfoBox,
 } from './ZapAction.style';
 import { ZapActionFaqAccordionHeader } from './ZapActionFaqAccordionHeader';
-import { ZapWidget } from './Zapwidget';
-import CustomWidgetPage from '@/app/ui/custom-widget/CustomWidgetPage';
+import ZapWidgetPage from 'src/app/ui/widget/ZapWidgetPage';
 import { useZaps } from 'src/hooks/useZaps';
 import { useContractRead } from 'src/hooks/useReadContractData';
 import { useAccount } from '@lifi/wallet-management';
+import { useMediaQuery } from '@mui/material';
+import { Theme } from '@mui/material';
+import { Breakpoint } from '@mui/material';
 
 interface ZapActionProps {
   market?: Quest;
@@ -57,6 +59,9 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
   const baseUrl = getStrapiBaseUrl();
   const theme = useTheme();
   const { account } = useAccount();
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
+  );
 
   const containerStyles = {
     display: 'flex',
@@ -112,11 +117,6 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
     borderRadius: '18px',
   };
 
-  const handleCopyButton = (textToCopy: string) => {
-    navigator.clipboard.writeText(textToCopy);
-    setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
-  };
-
   const tabs: TabProps[] = [
     { label: 'Deposit', value: 0, onClick: () => setTab(0) },
     { label: 'Withdraw', value: 1, onClick: () => setTab(1) },
@@ -127,7 +127,7 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
       case 0:
         return detailInformation?.projectData ? (
           <>
-            <CustomWidgetPage
+            <ZapWidgetPage
               projectData={detailInformation?.projectData}
               type="deposit"
             />
@@ -141,7 +141,7 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
       case 1:
         return detailInformation?.projectData ? (
           <>
-            <CustomWidgetPage
+            <ZapWidgetPage
               projectData={detailInformation?.projectData}
               type="withdraw"
             />
@@ -165,24 +165,50 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
   return (
     <Container>
       <ZapProtocolActionBox>
+        {isMobile && (
+          <Box
+            sx={{
+              marginTop: theme.spacing(8),
+              padding: theme.spacing(3, 1),
+              borderRadius: '24px',
+              backgroundColor: theme.palette.surface1.main,
+              boxShadow:
+                theme.palette.mode === 'light'
+                  ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+                  : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+            }}
+          >
+            <Tabs
+              data={tabs}
+              value={tab}
+              ariaLabel="zap-switch-tabs"
+              containerStyles={containerStyles}
+              tabStyles={tabStyles}
+            />
+            <Box sx={{ marginTop: theme.spacing(1.5), minWidth: '416px' }}>
+              {renderZapWidget()}
+            </Box>
+          </Box>
+        )}
         <Box>
           <BackButton />
           <ZapProtocolActionInfoBox>
             <ZapActionProtocolIntro>
-              {market?.attributes.Image.data.attributes.url ? (
-                <Image
-                  src={`${baseUrl}${market.attributes.Image.data.attributes.url}`}
-                  alt="Protocol image"
-                  width={market.attributes.Image.data.attributes.width}
-                  height={market.attributes.Image.data.attributes.height}
-                  style={{ width: 192, height: 'auto', objectFit: 'contain' }}
-                />
-              ) : (
-                <Skeleton
-                  variant="circular"
-                  sx={{ width: '192px', height: '192px', flexShrink: 0 }}
-                />
-              )}
+              {!isMobile &&
+                (market?.attributes.Image.data.attributes.url ? (
+                  <Image
+                    src={`${baseUrl}${market.attributes.Image.data.attributes.url}`}
+                    alt="Protocol image"
+                    width={market.attributes.Image.data.attributes.width}
+                    height={market.attributes.Image.data.attributes.height}
+                    style={{ width: 192, height: 'auto', objectFit: 'contain' }}
+                  />
+                ) : (
+                  <Skeleton
+                    variant="circular"
+                    sx={{ width: '192px', height: '192px', flexShrink: 0 }}
+                  />
+                ))}
               <ZapActionProtocolCard>
                 {market?.attributes.Title ? (
                   <Typography variant="titleSmall">
@@ -194,19 +220,11 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
                     sx={{ height: '32px', width: '160px' }}
                   />
                 )}
-                {
-                  market?.attributes?.Description && (
-                    <Typography variant="bodyMedium">
-                      {market.attributes.Description}
-                    </Typography>
-                  )
-                  // : (
-                  //   <Skeleton
-                  //     variant="rectangular"
-                  //     sx={{ height: '72px', width: '100%', borderRadius: '8px' }}
-                  //   />
-                  // )
-                }
+                {market?.attributes?.Description && (
+                  <Typography variant="bodyMedium">
+                    {market.attributes.Description}
+                  </Typography>
+                )}
                 <Box sx={{ display: 'flex', gap: '12px' }}>
                   {detailInformation?.socials && (
                     <>
@@ -255,9 +273,6 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
                   showAnswerDivider={true}
                   sx={{
                     padding: 0,
-                    '> .accordion-items div:hover': {
-                      background: '#F9F9F9',
-                    },
                   }}
                   itemSx={{
                     padding: '0px 8px',
@@ -271,12 +286,6 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
                     '.MuiAccordionDetails-root': {
                       padding: '20px 16px 16px',
                     },
-                    // '& > div': {
-                    //   borderTop: `1px solid ${alpha(theme.palette.text.primary, 0.04)}`,
-                    // },
-                    // '&:first-of-type > div': {
-                    //   borderTop: 'unset',
-                    // },
                   }}
                   content={detailInformation?.faqItems}
                   accordionHeader={<ZapActionFaqAccordionHeader />}
@@ -300,29 +309,41 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
             )}
           </ZapProtocolActionInfoBox>
         </Box>
-        <Box
-          sx={{
-            marginTop: theme.spacing(8),
-            padding: theme.spacing(3, 1),
-            borderRadius: '24px',
-            backgroundColor: theme.palette.surface1.main,
-            boxShadow:
-              theme.palette.mode === 'light'
-                ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-                : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-          }}
-        >
-          <Tabs
-            data={tabs}
-            value={tab}
-            ariaLabel="zap-switch-tabs"
-            containerStyles={containerStyles}
-            tabStyles={tabStyles}
-          />
-          <Box sx={{ marginTop: theme.spacing(1.5), minWidth: '416px' }}>
-            {renderZapWidget()}
+        {!isMobile && (
+          <Box
+            sx={{
+              marginTop: theme.spacing(8),
+              padding: theme.spacing(3, 1),
+              borderRadius: '24px',
+              backgroundColor: theme.palette.surface1.main,
+              boxShadow:
+                theme.palette.mode === 'light'
+                  ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+                  : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+            }}
+          >
+            <Tabs
+              data={tabs}
+              value={tab}
+              ariaLabel="zap-switch-tabs"
+              containerStyles={containerStyles}
+              tabStyles={tabStyles}
+            />
+            <Box
+              sx={{
+                marginTop: theme.spacing(1.5),
+                [theme.breakpoints.down('md' as Breakpoint)]: {
+                  minWidth: '316px',
+                },
+                [theme.breakpoints.up('md' as Breakpoint)]: {
+                  minWidth: '416px',
+                },
+              }}
+            >
+              {renderZapWidget()}
+            </Box>
           </Box>
-        </Box>
+        )}
       </ZapProtocolActionBox>
     </Container>
   );

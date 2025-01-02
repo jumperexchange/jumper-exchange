@@ -1,7 +1,7 @@
 import type { ChainId } from '@lifi/sdk';
 import type { FaqProps } from 'src/components/AccordionFAQ';
 import type { Quest } from './loyaltyPass';
-import type { ProjectData } from 'src/components/CustomWidget/CustomWidget';
+import type { ProjectData } from 'src/components/ZapWidget/ZapWidget';
 
 export interface QuestSocials {
   twitter: string;

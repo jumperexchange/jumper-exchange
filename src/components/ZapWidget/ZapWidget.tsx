@@ -4,12 +4,16 @@ import { formatUnits } from 'viem';
 import { useEffect, useMemo, useState } from 'react';
 import { useZaps } from '@/hooks/useZaps';
 import { useWalletMenu, type Account } from '@lifi/wallet-management';
-import { DepositCard } from './DepositCard';
+import { DepositCard } from './Deposit/DepositCard';
 import { useContractRead } from 'src/hooks/useReadContractData';
 import WidgetLikeField from '../Zap/WidgetLikeField/WidgetLikeField';
 import { Divider } from '@mui/material';
 import { useThemeStore } from 'src/stores/theme';
 import { Box } from '@mui/material';
+import { WithdrawWidget } from './Withdraw/WithdrawWidget';
+import { Skeleton } from '@mui/material';
+import { Breakpoint } from '@mui/material';
+import { useTheme } from '@mui/material';
 
 export interface ProjectData {
   chain: string;
@@ -25,11 +29,8 @@ interface CustomWidgetProps {
   type: 'deposit' | 'withdraw';
 }
 
-export function CustomWidget({
-  account,
-  projectData,
-  type,
-}: CustomWidgetProps) {
+export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
+  const theme = useTheme();
   const [token, setToken] = useState<TokenAmount>();
   const { data, isSuccess } = useZaps(projectData);
   const { openWalletMenu } = useWalletMenu();
@@ -125,7 +126,7 @@ export function CustomWidget({
       },
     };
     return baseConfig;
-  }, [isSuccess]);
+  }, [isSuccess, widgetTheme.config.theme, widgetTheme.config.appearance]);
 
   const analytics = {
     ...data?.data?.analytics,
@@ -135,62 +136,57 @@ export function CustomWidget({
   };
 
   return (
-    <>
-      {type === 'deposit' && token && (
-        <LiFiWidget
-          contractComponent={
-            <DepositCard
-              token={token}
-              contractTool={data?.data?.meta}
-              analytics={analytics}
-              contractCalls={[]}
-            />
-          }
-          config={widgetConfig}
-          integrator={widgetConfig.integrator}
+    <Box
+      display="flex"
+      justifyContent="center"
+      sx={{
+        [theme.breakpoints.down('md' as Breakpoint)]: {
+          maxWidth: 316,
+        },
+        [theme.breakpoints.up('md' as Breakpoint)]: {
+          maxWidth: 416,
+        },
+      }}
+    >
+      {type === 'deposit' &&
+        (token ? (
+          <LiFiWidget
+            contractComponent={
+              <DepositCard
+                token={token}
+                contractTool={data?.data?.meta}
+                analytics={analytics}
+                contractCalls={[]}
+              />
+            }
+            config={widgetConfig}
+            integrator={widgetConfig.integrator}
+          />
+        ) : (
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              marginTop: '32px',
+              height: 592,
+              borderRadius: '16px',
+              [theme.breakpoints.down('md' as Breakpoint)]: {
+                maxWidth: 316,
+              },
+              [theme.breakpoints.up('md' as Breakpoint)]: {
+                maxWidth: 376,
+              },
+            }}
+          />
+        ))}
+
+      {!isLoadingDepositTokenData && type === 'withdraw' && token && (
+        <WithdrawWidget
+          token={token}
+          lpTokenDecimals={lpTokenDecimals}
+          projectData={projectData}
+          depositTokenData={depositTokenData}
         />
       )}
-
-      {!isLoadingDepositTokenData && type === 'withdraw' && (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '16px',
-            minWidth: 416,
-          }}
-        >
-          <WidgetLikeField
-            contractCalls={[
-              {
-                data: '0x',
-                type: 'send',
-                label: 'Redeem',
-                onVerify: () => Promise.resolve(true),
-              },
-            ]}
-            label="Redeem"
-            image={{
-              url: token?.logoURI || '',
-              name: token?.name || '',
-            }}
-            placeholder="0.00"
-            helperText={{
-              left: 'Available balance',
-              right: depositTokenData
-                ? formatUnits(depositTokenData, lpTokenDecimals)
-                : '0.00',
-            }}
-            balance={
-              depositTokenData
-                ? formatUnits(depositTokenData, lpTokenDecimals)
-                : '0.00'
-            }
-            projectData={projectData}
-            writeDecimals={lpTokenDecimals}
-          />
-        </Box>
-      )}
-    </>
+    </Box>
   );
 }
