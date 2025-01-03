@@ -28,7 +28,7 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
           marginLeft={'8px'}
         >
           {String(
-            title || t('navbar.navbarMenu.profile') || 'Jumper Profile',
+            title || t('navbar.navbarMenu.profile') || 'Profile',
           ).toUpperCase()}
         </Typography>
       </BackButtonStyles>

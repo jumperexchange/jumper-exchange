@@ -37,12 +37,13 @@ import {
   ZapProtocolActionInfoBox,
 } from './ZapAction.style';
 import { ZapActionFaqAccordionHeader } from './ZapActionFaqAccordionHeader';
-import { ZapWidget } from './Zapwidget';
-import CustomWidgetPage from '@/app/ui/custom-widget/CustomWidgetPage';
-import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
+import ZapWidgetPage from 'src/app/ui/widget/ZapWidgetPage';
 import { useZaps } from 'src/hooks/useZaps';
 import { useContractRead } from 'src/hooks/useReadContractData';
 import { useAccount } from '@lifi/wallet-management';
+import { useMediaQuery } from '@mui/material';
+import { Theme } from '@mui/material';
+import { Breakpoint } from '@mui/material';
 
 interface ZapActionProps {
   market?: Quest;
@@ -58,6 +59,9 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
   const baseUrl = getStrapiBaseUrl();
   const theme = useTheme();
   const { account } = useAccount();
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
+  );
 
   const containerStyles = {
     display: 'flex',
@@ -113,11 +117,6 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
     borderRadius: '18px',
   };
 
-  const handleCopyButton = (textToCopy: string) => {
-    navigator.clipboard.writeText(textToCopy);
-    setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
-  };
-
   const tabs: TabProps[] = [
     { label: 'Deposit', value: 0, onClick: () => setTab(0) },
     { label: 'Withdraw', value: 1, onClick: () => setTab(1) },
@@ -128,53 +127,39 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
       case 0:
         return detailInformation?.projectData ? (
           <>
-            <CustomWidgetPage projectData={detailInformation?.projectData} />
+            <ZapWidgetPage
+              projectData={detailInformation?.projectData}
+              type="deposit"
+            />
+          </>
+        ) : (
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              height: '200px',
+              borderRadius: '8px',
+              [theme.breakpoints.down('md' as Breakpoint)]: {
+                width: 316,
+              },
+              [theme.breakpoints.up('md' as Breakpoint)]: {
+                width: 416,
+              },
+            }}
+          />
+        );
+      case 1:
+        return detailInformation?.projectData ? (
+          <>
+            <ZapWidgetPage
+              projectData={detailInformation?.projectData}
+              type="withdraw"
+            />
           </>
         ) : (
           <Skeleton
             variant="rectangular"
             sx={{ height: '200px', width: '416px', borderRadius: '8px' }}
           />
-        );
-      case 1:
-        return (
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px',
-              minWidth: 416,
-            }}
-          >
-            <WidgetLikeField
-              contractCalls={[
-                {
-                  data: '0x',
-                  type: 'send',
-                  label: 'Redeem',
-                  onVerify: () => Promise.resolve(true),
-                },
-              ]}
-              label="Redeem"
-              image={{
-                url: token?.logoURI || '',
-                name: token?.name || '',
-              }}
-              placeholder="0.00"
-              helperText={{
-                left: 'Available balance',
-                right: depositTokenData
-                  ? formatUnits(depositTokenData, token?.decimals ?? 18)
-                  : '0.00',
-              }}
-              balance={
-                depositTokenData
-                  ? formatUnits(depositTokenData, token?.decimals ?? 18)
-                  : '0.00'
-              }
-              projectData={detailInformation?.projectData}
-            />
-          </Box>
         );
       default:
         return (
@@ -188,12 +173,37 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
 
   return (
     <Container>
+      <BackButton />
       <ZapProtocolActionBox>
-        <Box>
-          <BackButton />
-          <ZapProtocolActionInfoBox>
-            <ZapActionProtocolIntro>
-              {market?.attributes.Image.data.attributes.url ? (
+        {isMobile && (
+          <Box
+            sx={{
+              marginTop: theme.spacing(2),
+              padding: theme.spacing(3, 1),
+              borderRadius: '24px',
+              backgroundColor: theme.palette.surface1.main,
+              boxShadow:
+                theme.palette.mode === 'light'
+                  ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+                  : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+            }}
+          >
+            <Tabs
+              data={tabs}
+              value={tab}
+              ariaLabel="zap-switch-tabs"
+              containerStyles={containerStyles}
+              tabStyles={tabStyles}
+            />
+            <Box sx={{ marginTop: theme.spacing(1.5), minWidth: '416px' }}>
+              {renderZapWidget()}
+            </Box>
+          </Box>
+        )}
+        <ZapProtocolActionInfoBox>
+          <ZapActionProtocolIntro>
+            {!isMobile &&
+              (market?.attributes.Image.data.attributes.url ? (
                 <Image
                   src={`${baseUrl}${market.attributes.Image.data.attributes.url}`}
                   alt="Protocol image"
@@ -206,147 +216,140 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
                   variant="circular"
                   sx={{ width: '192px', height: '192px', flexShrink: 0 }}
                 />
-              )}
-              <ZapActionProtocolCard>
-                {market?.attributes.Title ? (
-                  <Typography variant="titleSmall">
-                    {market.attributes.Title}
-                  </Typography>
-                ) : (
-                  <Skeleton
-                    variant="rectangular"
-                    sx={{ height: '32px', width: '160px' }}
-                  />
-                )}
-                {
-                  market?.attributes?.Description && (
-                    <Typography variant="bodyMedium">
-                      {market.attributes.Description}
-                    </Typography>
-                  )
-                  // : (
-                  //   <Skeleton
-                  //     variant="rectangular"
-                  //     sx={{ height: '72px', width: '100%', borderRadius: '8px' }}
-                  //   />
-                  // )
-                }
-                <Box sx={{ display: 'flex', gap: '12px' }}>
-                  {detailInformation?.socials && (
-                    <>
-                      {detailInformation?.socials?.twitter && (
-                        <ZapActionProtocolShareLink
-                          href={detailInformation?.socials?.twitter}
-                          style={{ color: 'inherit', textDecoration: 'none' }}
-                        >
-                          <ZapActionProtocolShare>
-                            <XIcon sx={{ width: '16px', height: '16px' }} />
-                          </ZapActionProtocolShare>
-                        </ZapActionProtocolShareLink>
-                      )}
-                      {detailInformation?.socials?.telegram && (
-                        <ZapActionProtocolShareLink
-                          href={detailInformation?.socials?.telegram}
-                        >
-                          <ZapActionProtocolShare>
-                            <TelegramIcon
-                              sx={{ width: '16px', height: '16px' }}
-                            />
-                          </ZapActionProtocolShare>
-                        </ZapActionProtocolShareLink>
-                      )}
-                      {detailInformation?.socials?.website && (
-                        <ZapActionProtocolShareLink
-                          href={detailInformation?.socials?.website}
-                        >
-                          <ZapActionProtocolShare>
-                            <LanguageIcon
-                              sx={{ width: '16px', height: '16px' }}
-                            />
-                          </ZapActionProtocolShare>
-                        </ZapActionProtocolShareLink>
-                      )}
-                    </>
-                  )}
-                </Box>
-              </ZapActionProtocolCard>
-            </ZapActionProtocolIntro>
-            {detailInformation?.faqItems && (
-              <ZapActionProtocolCard sx={{ padding: '20px 12px' }}>
-                <AccordionFAQ
-                  showIndex={true}
-                  showDivider={true}
-                  showAnswerDivider={true}
-                  sx={{
-                    padding: 0,
-                    '> .accordion-items div:hover': {
-                      background: '#F9F9F9',
-                    },
-                  }}
-                  itemSx={{
-                    padding: '0px 8px',
-                    backgroundColor: 'transparent',
-                    '.MuiAccordionSummary-root': {
-                      padding: 0,
-                    },
-                    '.accordion-items': {
-                      gap: '4px',
-                    },
-                    '.MuiAccordionDetails-root': {
-                      padding: '20px 16px 16px',
-                    },
-                    // '& > div': {
-                    //   borderTop: `1px solid ${alpha(theme.palette.text.primary, 0.04)}`,
-                    // },
-                    // '&:first-of-type > div': {
-                    //   borderTop: 'unset',
-                    // },
-                  }}
-                  content={detailInformation?.faqItems}
-                  accordionHeader={<ZapActionFaqAccordionHeader />}
-                  questionTextTypography="bodyLarge"
-                  answerTextTypography="bodyMedium"
-                  arrowSize={12}
-                />
-              </ZapActionProtocolCard>
-            )}
-            {market?.attributes?.Information && (
-              <ZapActionProtocolDisclaimer>
-                <InfoIcon
-                  sx={(theme) => ({
-                    color: alpha(theme.palette.text.primary, 0.48),
-                  })}
-                />
-                <Typography variant="bodySmall">
-                  {market?.attributes.Information}
+              ))}
+            <ZapActionProtocolCard>
+              {market?.attributes.Title ? (
+                <Typography variant="titleSmall">
+                  {market.attributes.Title}
                 </Typography>
-              </ZapActionProtocolDisclaimer>
-            )}
-          </ZapProtocolActionInfoBox>
-        </Box>
-        <Box
-          sx={{
-            marginTop: theme.spacing(8),
-            padding: theme.spacing(3, 1),
-            borderRadius: '24px',
-            backgroundColor: theme.palette.surface1.main,
-            boxShadow:
-              theme.palette.mode === 'light'
-                ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-                : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-          }}
-        >
-          <Tabs
-            data={tabs}
-            value={tab}
-            ariaLabel="zap-switch-tabs"
-            containerStyles={containerStyles}
-            tabStyles={tabStyles}
-          />
-          <Box sx={{ marginTop: theme.spacing(1.5), minWidth: '416px' }}>
-            {renderZapWidget()}
+              ) : (
+                <Skeleton
+                  variant="rectangular"
+                  sx={{ height: '32px', width: '160px' }}
+                />
+              )}
+              {market?.attributes?.Description && (
+                <Typography variant="bodyMedium">
+                  {market.attributes.Description}
+                </Typography>
+              )}
+              <Box sx={{ display: 'flex', gap: '12px' }}>
+                {detailInformation?.socials && (
+                  <>
+                    {detailInformation?.socials?.twitter && (
+                      <ZapActionProtocolShareLink
+                        href={detailInformation?.socials?.twitter}
+                        style={{ color: 'inherit', textDecoration: 'none' }}
+                      >
+                        <ZapActionProtocolShare>
+                          <XIcon sx={{ width: '16px', height: '16px' }} />
+                        </ZapActionProtocolShare>
+                      </ZapActionProtocolShareLink>
+                    )}
+                    {detailInformation?.socials?.telegram && (
+                      <ZapActionProtocolShareLink
+                        href={detailInformation?.socials?.telegram}
+                      >
+                        <ZapActionProtocolShare>
+                          <TelegramIcon
+                            sx={{ width: '16px', height: '16px' }}
+                          />
+                        </ZapActionProtocolShare>
+                      </ZapActionProtocolShareLink>
+                    )}
+                    {detailInformation?.socials?.website && (
+                      <ZapActionProtocolShareLink
+                        href={detailInformation?.socials?.website}
+                      >
+                        <ZapActionProtocolShare>
+                          <LanguageIcon
+                            sx={{ width: '16px', height: '16px' }}
+                          />
+                        </ZapActionProtocolShare>
+                      </ZapActionProtocolShareLink>
+                    )}
+                  </>
+                )}
+              </Box>
+            </ZapActionProtocolCard>
+          </ZapActionProtocolIntro>
+          {detailInformation?.faqItems && (
+            <ZapActionProtocolCard sx={{ padding: '20px 12px' }}>
+              <AccordionFAQ
+                showIndex={true}
+                showDivider={true}
+                showAnswerDivider={true}
+                sx={{
+                  padding: 0,
+                }}
+                itemSx={{
+                  padding: '0px 8px',
+                  backgroundColor: 'transparent',
+                  '.MuiAccordionSummary-root': {
+                    padding: 0,
+                  },
+                  '.accordion-items': {
+                    gap: '4px',
+                  },
+                  '.MuiAccordionDetails-root': {
+                    padding: '20px 16px 16px',
+                  },
+                }}
+                content={detailInformation?.faqItems}
+                accordionHeader={<ZapActionFaqAccordionHeader />}
+                questionTextTypography="bodyLarge"
+                answerTextTypography="bodyMedium"
+                arrowSize={12}
+              />
+            </ZapActionProtocolCard>
+          )}
+          {market?.attributes?.Information && (
+            <ZapActionProtocolDisclaimer>
+              <InfoIcon
+                sx={(theme) => ({
+                  color: alpha(theme.palette.text.primary, 0.48),
+                })}
+              />
+              <Typography variant="bodySmall">
+                {market?.attributes.Information}
+              </Typography>
+            </ZapActionProtocolDisclaimer>
+          )}
+        </ZapProtocolActionInfoBox>
+        {!isMobile && (
+          <Box
+            sx={{
+              marginTop: theme.spacing(2),
+              padding: theme.spacing(3, 1),
+              borderRadius: '24px',
+              backgroundColor: theme.palette.surface1.main,
+              boxShadow:
+                theme.palette.mode === 'light'
+                  ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+                  : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+            }}
+          >
+            <Tabs
+              data={tabs}
+              value={tab}
+              ariaLabel="zap-switch-tabs"
+              containerStyles={containerStyles}
+              tabStyles={tabStyles}
+            />
+            <Box
+              sx={{
+                [theme.breakpoints.down('md' as Breakpoint)]: {
+                  minWidth: '316px',
+                },
+                [theme.breakpoints.up('md' as Breakpoint)]: {
+                  minWidth: '416px',
+                },
+              }}
+            >
+              {renderZapWidget()}
+            </Box>
           </Box>
-        </Box>
+        )}
       </ZapProtocolActionBox>
     </Container>
   );

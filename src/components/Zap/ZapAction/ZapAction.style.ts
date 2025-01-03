@@ -1,13 +1,18 @@
 import { IconButton } from '@mui/material';
-import { alpha, Box, styled } from '@mui/system';
+import { alpha, Box, Breakpoint, styled } from '@mui/system';
 import Link from 'next/link';
 
 export const ZapProtocolActionBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'row',
   justifyContent: 'center',
   gap: theme.spacing(4),
   margin: theme.spacing(3, 'auto'),
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    flexDirection: 'column',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    flexDirection: 'row',
+  },
 }));
 
 export const ZapProtocolActionInfoBox = styled(Box)(({ theme }) => ({

@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { siteName } from 'src/app/lib/metadata';
 import ZapPage from 'src/app/ui/zap/ZapPage';
-import { zapMarkets } from 'src/components/Zap/zapExampleData';
 import { getSiteUrl } from 'src/const/urls';
 import type { QuestAttributes } from 'src/types/loyaltyPass';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
@@ -63,13 +62,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
   }
 
   const questData = data;
-
-  if (questData) {
-    const protocolDetails = zapMarkets.filter(
-      (market) => market.slug === questData.attributes.Slug,
-    );
-    questData.protocolInfos = protocolDetails[0];
-  }
 
   return <ZapPage market={questData} />;
 }

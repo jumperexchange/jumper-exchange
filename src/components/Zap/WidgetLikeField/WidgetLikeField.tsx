@@ -7,6 +7,7 @@ import {
   useTheme,
   Grid,
   Link,
+  Input,
 } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -17,14 +18,18 @@ import {
 import TokenImage from '@/components/Portfolio/TokenImage';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useConfig } from 'wagmi';
-import { useAccount } from '@lifi/wallet-management';
-import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { getEthersSigner } from './utils';
+import { useMemo, useState } from 'react';
 import { MaxButton } from './WidgetLikeField.style';
 import { useContractWrite } from 'src/hooks/useWriteContractData';
 import { parseUnits } from 'ethers';
 import { useContractRead } from 'src/hooks/useReadContractData';
+import { alpha } from '@mui/material';
+import { ProjectData } from 'src/components/ZapWidget/ZapWidget';
+import { ConnectButton } from 'src/components/ConnectButton';
+import { switchChain } from '@wagmi/core';
+import { useAccount } from '@lifi/wallet-management';
+import { TxConfirmation } from 'src/components/ZapWidget/TxConfirmation';
+import { Breakpoint } from '@mui/material';
 
 interface Image {
   url: string;
@@ -62,15 +67,8 @@ interface WidgetLikeFieldProps {
     mainColor?: string;
   };
   balance?: string;
-  projectData: {
-    chain: string;
-    chainId: number;
-    project: string;
-    integrator: string;
-    address: string;
-    withdrawAddress?: string;
-    tokenAddress?: string;
-  };
+  projectData: ProjectData;
+  writeDecimals: number;
 }
 
 function WidgetLikeField({
@@ -83,10 +81,12 @@ function WidgetLikeField({
   overrideStyle = {},
   balance,
   projectData,
+  writeDecimals,
 }: WidgetLikeFieldProps) {
   const theme = useTheme();
-  const config = useConfig();
+  const wagmiConfig = useConfig();
   const { account } = useAccount();
+
   const [value, setValue] = useState<string>('');
   const { write, isLoading, error, data } = useContractWrite({
     address: (projectData?.withdrawAddress ||
@@ -104,22 +104,12 @@ function WidgetLikeField({
     ],
   });
 
-  const { data: depositTokenDecimals } = useContractRead({
-    address: (projectData.tokenAddress || projectData.address) as `0x${string}`,
-    chainId: projectData.chainId,
-    functionName: 'decimals',
-    abi: [
-      {
-        inputs: [],
-        name: 'decimals',
-        outputs: [{ name: '', type: 'uint8' }],
-        stateMutability: 'view',
-        type: 'function',
-      },
-    ],
-  });
-
-  const lpTokenDecimals = depositTokenDecimals ?? 18;
+  const shouldSwitchChain = useMemo(() => {
+    if (!!projectData?.address && account?.chainId !== projectData?.chainId) {
+      return true;
+    }
+    return false;
+  }, [account?.chainId, projectData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -132,14 +122,14 @@ function WidgetLikeField({
   async function onSubmit(e: React.FormEvent) {
     try {
       e.preventDefault();
-      write([parseUnits(value, lpTokenDecimals)]);
+      write([parseUnits(value, writeDecimals)]);
     } catch (e) {
       console.error(e);
     }
   }
 
   return (
-    <Grid container justifyContent={'center'}>
+    <Grid container justifyContent={'center'} maxWidth={416}>
       <Grid
         xs={12}
         md={12}
@@ -169,84 +159,137 @@ function WidgetLikeField({
             variant="standard"
             aria-autocomplete="none"
           >
-            <OutlinedInput
+            <Input
               autoComplete="off"
               id="component"
+              defaultValue=""
               value={value}
               onChange={handleInputChange}
               placeholder={placeholder}
               disabled={isLoading}
               aria-describedby="component-text"
-              sx={{ padding: '0.6rem 1rem', marginBottom: helperText ? 0 : 2 }}
-              inputProps={{
-                inputMode: 'decimal',
-                pattern: '[0-9]*[.]?[0-9]*',
+              disableUnderline={true}
+              sx={{
+                borderRadius: theme.spacing(2),
+                padding: '16px',
+                backgroundColor: theme.palette.surface2.main,
+                boxShadow:
+                  theme.palette.mode === 'light'
+                    ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+                    : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+                maxWidth: 416,
+                '& input': {
+                  fontSize: '24px',
+                  fontWeight: 700,
+                  lineHeight: '36px',
+                  marginLeft: '8px',
+                },
+                '& input::placeholder': {
+                  fontSize: '24px',
+                  fontWeight: 700,
+                  lineHeight: '36px',
+                  marginLeft: '8px',
+                },
+                '& .MuiInput-underline:before': { borderBottom: 'none' },
+                '& .MuiInput-underline:after': { borderBottom: 'none' },
+                '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+                  borderBottom: 'none',
+                },
               }}
               startAdornment={
                 image && (
-                  <WalletCardBadge
-                    sx={{ marginRight: '10px' }}
-                    overlap="circular"
-                    className="badge"
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    badgeContent={
-                      image.badge && (
-                        <MuiAvatar
-                          alt={image.badge.name}
-                          sx={(theme) => ({
-                            width: '18px',
-                            height: '18px',
-                            border: `2px solid ${theme.palette.surface2.main}`,
-                          })}
-                        >
-                          <TokenImage
-                            token={{
-                              name: image.badge.name,
-                              logoURI: image.badge.url,
-                            }}
-                          />
-                        </MuiAvatar>
-                      )
-                    }
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'flex-start',
+                      width: 'auto',
+                    }}
                   >
-                    <WalletAvatar>
-                      <TokenImage
-                        token={{
-                          name: image.name,
-                          logoURI: image.url,
+                    <>
+                      <WalletCardBadge
+                        overlap="circular"
+                        className="badge"
+                        sx={{ maringRight: '8px' }}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'right',
                         }}
-                      />
-                    </WalletAvatar>
-                  </WalletCardBadge>
+                        badgeContent={
+                          image.badge && (
+                            <MuiAvatar
+                              alt={image.badge.name}
+                              sx={(theme: any) => ({
+                                width: '18px',
+                                height: '18px',
+                                border: `2px solid ${theme.palette.surface2.main}`,
+                              })}
+                            >
+                              {image.badge.name && (
+                                <TokenImage
+                                  token={{
+                                    name: image.badge.name,
+                                    logoURI: image.badge.url,
+                                  }}
+                                />
+                              )}
+                            </MuiAvatar>
+                          )
+                        }
+                      >
+                        <WalletAvatar>
+                          {image.name && (
+                            <TokenImage
+                              token={{
+                                name: image.name,
+                                logoURI: image.url,
+                              }}
+                            />
+                          )}
+                        </WalletAvatar>
+                      </WalletCardBadge>
+                    </>
+                  </Box>
                 )
               }
               endAdornment={
-                hasMaxButton && (
-                  <MaxButton
-                    sx={{ p: '5px 10px' }}
-                    aria-label="menu"
-                    mainColor={overrideStyle?.mainColor}
-                    onClick={() => setValue(balance ?? '0')}
+                !!account?.isConnected &&
+                !!balance &&
+                parseFloat(balance) > 0 && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
                   >
-                    max
-                  </MaxButton>
+                    <MaxButton
+                      sx={{ p: '5px 10px', marginTop: '16px' }}
+                      aria-label="menu"
+                      mainColor={overrideStyle?.mainColor}
+                      onClick={() => setValue(balance ?? '0')}
+                    >
+                      max
+                    </MaxButton>
+                    <Box sx={{ marginTop: '4px' }}>
+                      <Typography
+                        variant="bodyXSmall"
+                        color="textSecondary"
+                        component="span"
+                      >
+                        /{' '}
+                        {Intl.NumberFormat('en-US', {
+                          notation: 'compact',
+                          useGrouping: true,
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits:
+                            parseFloat(balance) > 1 ? 1 : 4,
+                        }).format(parseFloat(balance))}
+                      </Typography>
+                    </Box>
+                  </Box>
                 )
               }
             />
-            {helperText && (
-              <FormHelperText
-                id="component-text"
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginBottom: 1,
-                }}
-              >
-                <Typography component="span">{helperText.left}</Typography>
-                <Typography component="span">{helperText.right}</Typography>
-              </FormHelperText>
-            )}
             {error && (
               <FormHelperText
                 sx={{
@@ -255,53 +298,79 @@ function WidgetLikeField({
                   justifyContent: 'space-between',
                   marginBottom: 1,
                   color: 'red',
+                  [theme.breakpoints.down('md' as Breakpoint)]: {
+                    maxWidth: 316,
+                  },
+                  [theme.breakpoints.up('md' as Breakpoint)]: {
+                    maxWidth: 416,
+                  },
                 }}
               >
                 {error.message}
               </FormHelperText>
             )}
-            {data && (
-              <FormHelperText
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  marginBottom: 1,
-                  color: 'green',
-                }}
-              >
-                <Link
-                  href={
-                    projectData?.chain === 'ethereum'
-                      ? 'https://etherscan.io/tx/' + data
-                      : 'https://basescan.org/tx/' + data
-                  }
-                  target="_blank"
-                >
-                  View on{' '}
-                  {projectData?.chain === 'ethereum' ? 'Etherscan' : 'BaseScan'}
-                </Link>
-              </FormHelperText>
-            )}
           </FormControl>
-          <LoadingButton
-            type="submit"
-            loading={isLoading}
-            disabled={balance === '0' || isLoading}
-            variant="contained"
-            sx={{
-              '&.MuiLoadingButton-loading': {
-                border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
-              },
-              '.MuiLoadingButton-loadingIndicator': {
-                color: overrideStyle?.mainColor ?? theme.palette.primary.main,
-              },
-            }}
-          >
-            <Typography variant="bodyMediumStrong">
-              {contractCalls[0].label}
-            </Typography>
-          </LoadingButton>
+
+          {!account?.isConnected ? (
+            <ConnectButton sx={{ marginTop: theme.spacing(2) }} />
+          ) : shouldSwitchChain ? (
+            <LoadingButton
+              sx={{ marginTop: theme.spacing(2) }}
+              overrideStyle={overrideStyle}
+              type="button"
+              variant="contained"
+              onClick={async () => {
+                try {
+                  await switchChain(wagmiConfig, {
+                    chainId: projectData.chainId,
+                  });
+                } catch (error) {
+                  // TODO: to remove
+                  // eslint-disable-next-line no-console
+                  console.error(error);
+                }
+              }}
+            >
+              <Typography variant="bodyMediumStrong">Switch chain</Typography>
+            </LoadingButton>
+          ) : (
+            <LoadingButton
+              type="submit"
+              loading={isLoading}
+              disabled={balance === '0' || isLoading}
+              variant="contained"
+              sx={{
+                marginTop: theme.spacing(2),
+                borderColor: alpha(theme.palette.surface2.main, 0.08),
+                '&.MuiLoadingButton-loading': {
+                  border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
+                },
+                '.MuiLoadingButton-loadingIndicator': {
+                  color: overrideStyle?.mainColor ?? theme.palette.primary.main,
+                },
+              }}
+            >
+              <Typography variant="bodyMediumStrong">
+                {contractCalls[0].label}
+              </Typography>
+            </LoadingButton>
+          )}
+
+          {data && (
+            <TxConfirmation
+              s={
+                !!data && !isLoading
+                  ? 'Interaction successful'
+                  : 'Check on explorer'
+              }
+              link={
+                projectData?.chain === 'ethereum'
+                  ? 'https://etherscan.io/tx/' + data
+                  : 'https://basescan.org/tx/' + data
+              }
+              success={!!data && !isLoading ? true : false}
+            />
+          )}
         </Box>
       </Grid>
     </Grid>
