@@ -28,6 +28,7 @@ import { ConnectButton } from 'src/components/ConnectButton';
 import { switchChain } from '@wagmi/core';
 import { useAccount } from '@lifi/wallet-management';
 import { TxConfirmation } from 'src/components/ZapWidget/TxConfirmation';
+import { Breakpoint } from '@mui/material';
 
 interface Image {
   url: string;
@@ -296,6 +297,12 @@ function WidgetLikeField({
                   justifyContent: 'space-between',
                   marginBottom: 1,
                   color: 'red',
+                  [theme.breakpoints.down('md' as Breakpoint)]: {
+                    maxWidth: 316,
+                  },
+                  [theme.breakpoints.up('md' as Breakpoint)]: {
+                    maxWidth: 416,
+                  },
                 }}
               >
                 {error.message}

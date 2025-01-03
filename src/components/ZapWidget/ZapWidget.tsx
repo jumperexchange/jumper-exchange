@@ -173,7 +173,7 @@ export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
                 maxWidth: 316,
               },
               [theme.breakpoints.up('md' as Breakpoint)]: {
-                maxWidth: 376,
+                maxWidth: 416,
               },
             }}
           />

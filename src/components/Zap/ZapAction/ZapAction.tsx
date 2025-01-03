@@ -135,7 +135,16 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
         ) : (
           <Skeleton
             variant="rectangular"
-            sx={{ height: '200px', width: '416px', borderRadius: '8px' }}
+            sx={{
+              height: '200px',
+              borderRadius: '8px',
+              [theme.breakpoints.down('md' as Breakpoint)]: {
+                width: 316,
+              },
+              [theme.breakpoints.up('md' as Breakpoint)]: {
+                width: 416,
+              },
+            }}
           />
         );
       case 1:
@@ -164,11 +173,12 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
 
   return (
     <Container>
+      <BackButton />
       <ZapProtocolActionBox>
         {isMobile && (
           <Box
             sx={{
-              marginTop: theme.spacing(8),
+              marginTop: theme.spacing(2),
               padding: theme.spacing(3, 1),
               borderRadius: '24px',
               backgroundColor: theme.palette.surface1.main,
@@ -190,129 +200,126 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
             </Box>
           </Box>
         )}
-        <Box>
-          <BackButton />
-          <ZapProtocolActionInfoBox>
-            <ZapActionProtocolIntro>
-              {!isMobile &&
-                (market?.attributes.Image.data.attributes.url ? (
-                  <Image
-                    src={`${baseUrl}${market.attributes.Image.data.attributes.url}`}
-                    alt="Protocol image"
-                    width={market.attributes.Image.data.attributes.width}
-                    height={market.attributes.Image.data.attributes.height}
-                    style={{ width: 192, height: 'auto', objectFit: 'contain' }}
-                  />
-                ) : (
-                  <Skeleton
-                    variant="circular"
-                    sx={{ width: '192px', height: '192px', flexShrink: 0 }}
-                  />
-                ))}
-              <ZapActionProtocolCard>
-                {market?.attributes.Title ? (
-                  <Typography variant="titleSmall">
-                    {market.attributes.Title}
-                  </Typography>
-                ) : (
-                  <Skeleton
-                    variant="rectangular"
-                    sx={{ height: '32px', width: '160px' }}
-                  />
-                )}
-                {market?.attributes?.Description && (
-                  <Typography variant="bodyMedium">
-                    {market.attributes.Description}
-                  </Typography>
-                )}
-                <Box sx={{ display: 'flex', gap: '12px' }}>
-                  {detailInformation?.socials && (
-                    <>
-                      {detailInformation?.socials?.twitter && (
-                        <ZapActionProtocolShareLink
-                          href={detailInformation?.socials?.twitter}
-                          style={{ color: 'inherit', textDecoration: 'none' }}
-                        >
-                          <ZapActionProtocolShare>
-                            <XIcon sx={{ width: '16px', height: '16px' }} />
-                          </ZapActionProtocolShare>
-                        </ZapActionProtocolShareLink>
-                      )}
-                      {detailInformation?.socials?.telegram && (
-                        <ZapActionProtocolShareLink
-                          href={detailInformation?.socials?.telegram}
-                        >
-                          <ZapActionProtocolShare>
-                            <TelegramIcon
-                              sx={{ width: '16px', height: '16px' }}
-                            />
-                          </ZapActionProtocolShare>
-                        </ZapActionProtocolShareLink>
-                      )}
-                      {detailInformation?.socials?.website && (
-                        <ZapActionProtocolShareLink
-                          href={detailInformation?.socials?.website}
-                        >
-                          <ZapActionProtocolShare>
-                            <LanguageIcon
-                              sx={{ width: '16px', height: '16px' }}
-                            />
-                          </ZapActionProtocolShare>
-                        </ZapActionProtocolShareLink>
-                      )}
-                    </>
-                  )}
-                </Box>
-              </ZapActionProtocolCard>
-            </ZapActionProtocolIntro>
-            {detailInformation?.faqItems && (
-              <ZapActionProtocolCard sx={{ padding: '20px 12px' }}>
-                <AccordionFAQ
-                  showIndex={true}
-                  showDivider={true}
-                  showAnswerDivider={true}
-                  sx={{
-                    padding: 0,
-                  }}
-                  itemSx={{
-                    padding: '0px 8px',
-                    backgroundColor: 'transparent',
-                    '.MuiAccordionSummary-root': {
-                      padding: 0,
-                    },
-                    '.accordion-items': {
-                      gap: '4px',
-                    },
-                    '.MuiAccordionDetails-root': {
-                      padding: '20px 16px 16px',
-                    },
-                  }}
-                  content={detailInformation?.faqItems}
-                  accordionHeader={<ZapActionFaqAccordionHeader />}
-                  questionTextTypography="bodyLarge"
-                  answerTextTypography="bodyMedium"
-                  arrowSize={12}
+        <ZapProtocolActionInfoBox>
+          <ZapActionProtocolIntro>
+            {!isMobile &&
+              (market?.attributes.Image.data.attributes.url ? (
+                <Image
+                  src={`${baseUrl}${market.attributes.Image.data.attributes.url}`}
+                  alt="Protocol image"
+                  width={market.attributes.Image.data.attributes.width}
+                  height={market.attributes.Image.data.attributes.height}
+                  style={{ width: 192, height: 'auto', objectFit: 'contain' }}
                 />
-              </ZapActionProtocolCard>
-            )}
-            {market?.attributes?.Information && (
-              <ZapActionProtocolDisclaimer>
-                <InfoIcon
-                  sx={(theme) => ({
-                    color: alpha(theme.palette.text.primary, 0.48),
-                  })}
+              ) : (
+                <Skeleton
+                  variant="circular"
+                  sx={{ width: '192px', height: '192px', flexShrink: 0 }}
                 />
-                <Typography variant="bodySmall">
-                  {market?.attributes.Information}
+              ))}
+            <ZapActionProtocolCard>
+              {market?.attributes.Title ? (
+                <Typography variant="titleSmall">
+                  {market.attributes.Title}
                 </Typography>
-              </ZapActionProtocolDisclaimer>
-            )}
-          </ZapProtocolActionInfoBox>
-        </Box>
+              ) : (
+                <Skeleton
+                  variant="rectangular"
+                  sx={{ height: '32px', width: '160px' }}
+                />
+              )}
+              {market?.attributes?.Description && (
+                <Typography variant="bodyMedium">
+                  {market.attributes.Description}
+                </Typography>
+              )}
+              <Box sx={{ display: 'flex', gap: '12px' }}>
+                {detailInformation?.socials && (
+                  <>
+                    {detailInformation?.socials?.twitter && (
+                      <ZapActionProtocolShareLink
+                        href={detailInformation?.socials?.twitter}
+                        style={{ color: 'inherit', textDecoration: 'none' }}
+                      >
+                        <ZapActionProtocolShare>
+                          <XIcon sx={{ width: '16px', height: '16px' }} />
+                        </ZapActionProtocolShare>
+                      </ZapActionProtocolShareLink>
+                    )}
+                    {detailInformation?.socials?.telegram && (
+                      <ZapActionProtocolShareLink
+                        href={detailInformation?.socials?.telegram}
+                      >
+                        <ZapActionProtocolShare>
+                          <TelegramIcon
+                            sx={{ width: '16px', height: '16px' }}
+                          />
+                        </ZapActionProtocolShare>
+                      </ZapActionProtocolShareLink>
+                    )}
+                    {detailInformation?.socials?.website && (
+                      <ZapActionProtocolShareLink
+                        href={detailInformation?.socials?.website}
+                      >
+                        <ZapActionProtocolShare>
+                          <LanguageIcon
+                            sx={{ width: '16px', height: '16px' }}
+                          />
+                        </ZapActionProtocolShare>
+                      </ZapActionProtocolShareLink>
+                    )}
+                  </>
+                )}
+              </Box>
+            </ZapActionProtocolCard>
+          </ZapActionProtocolIntro>
+          {detailInformation?.faqItems && (
+            <ZapActionProtocolCard sx={{ padding: '20px 12px' }}>
+              <AccordionFAQ
+                showIndex={true}
+                showDivider={true}
+                showAnswerDivider={true}
+                sx={{
+                  padding: 0,
+                }}
+                itemSx={{
+                  padding: '0px 8px',
+                  backgroundColor: 'transparent',
+                  '.MuiAccordionSummary-root': {
+                    padding: 0,
+                  },
+                  '.accordion-items': {
+                    gap: '4px',
+                  },
+                  '.MuiAccordionDetails-root': {
+                    padding: '20px 16px 16px',
+                  },
+                }}
+                content={detailInformation?.faqItems}
+                accordionHeader={<ZapActionFaqAccordionHeader />}
+                questionTextTypography="bodyLarge"
+                answerTextTypography="bodyMedium"
+                arrowSize={12}
+              />
+            </ZapActionProtocolCard>
+          )}
+          {market?.attributes?.Information && (
+            <ZapActionProtocolDisclaimer>
+              <InfoIcon
+                sx={(theme) => ({
+                  color: alpha(theme.palette.text.primary, 0.48),
+                })}
+              />
+              <Typography variant="bodySmall">
+                {market?.attributes.Information}
+              </Typography>
+            </ZapActionProtocolDisclaimer>
+          )}
+        </ZapProtocolActionInfoBox>
         {!isMobile && (
           <Box
             sx={{
-              marginTop: theme.spacing(8),
+              marginTop: theme.spacing(2),
               padding: theme.spacing(3, 1),
               borderRadius: '24px',
               backgroundColor: theme.palette.surface1.main,
@@ -331,7 +338,6 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
             />
             <Box
               sx={{
-                marginTop: theme.spacing(1.5),
                 [theme.breakpoints.down('md' as Breakpoint)]: {
                   minWidth: '316px',
                 },
