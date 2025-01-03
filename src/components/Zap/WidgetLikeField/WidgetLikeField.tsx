@@ -24,6 +24,7 @@ import { getEthersSigner } from './utils';
 import { MaxButton } from './WidgetLikeField.style';
 import { useContractWrite } from 'src/hooks/useWriteContractData';
 import { parseUnits } from 'ethers';
+import { useContractRead } from 'src/hooks/useReadContractData';
 
 interface Image {
   url: string;
@@ -62,9 +63,13 @@ interface WidgetLikeFieldProps {
   };
   balance?: string;
   projectData: {
-    address: string;
     chain: string;
+    chainId: number;
     project: string;
+    integrator: string;
+    address: string;
+    withdrawAddress?: string;
+    tokenAddress?: string;
   };
 }
 
@@ -84,8 +89,9 @@ function WidgetLikeField({
   const { account } = useAccount();
   const [value, setValue] = useState<string>('');
   const { write, isLoading, error, data } = useContractWrite({
-    address: projectData?.address as `0x${string}`,
-    chainId: projectData?.chain === 'ethereum' ? 1 : 8453,
+    address: (projectData?.withdrawAddress ||
+      projectData?.address) as `0x${string}`,
+    chainId: projectData?.chainId,
     functionName: 'redeem',
     abi: [
       {
@@ -98,6 +104,23 @@ function WidgetLikeField({
     ],
   });
 
+  const { data: depositTokenDecimals } = useContractRead({
+    address: (projectData.tokenAddress || projectData.address) as `0x${string}`,
+    chainId: projectData.chainId,
+    functionName: 'decimals',
+    abi: [
+      {
+        inputs: [],
+        name: 'decimals',
+        outputs: [{ name: '', type: 'uint8' }],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ],
+  });
+
+  const lpTokenDecimals = depositTokenDecimals ?? 18;
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     // Only allow numbers and one decimal point
@@ -109,7 +132,7 @@ function WidgetLikeField({
   async function onSubmit(e: React.FormEvent) {
     try {
       e.preventDefault();
-      write([parseUnits(value, 18)]);
+      write([parseUnits(value, lpTokenDecimals)]);
     } catch (e) {
       console.error(e);
     }

@@ -16,6 +16,8 @@ export interface ProjectData {
   project: string;
   integrator: string;
   address: string;
+  withdrawAddress?: string;
+  tokenAddress?: string;
 }
 
 interface CustomWidgetProps {
@@ -51,7 +53,7 @@ export function CustomWidget({ account, projectData }: CustomWidgetProps) {
     });
 
   const { data: depositTokenDecimals } = useContractRead({
-    address: projectData.address as `0x${string}`,
+    address: (projectData.tokenAddress || projectData.address) as `0x${string}`,
     chainId: projectData.chainId,
     functionName: 'decimals',
     abi: [
