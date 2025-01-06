@@ -21,6 +21,7 @@ import type { ExtendedChain } from '@lifi/sdk';
 import { WithdrawWidgetInputTokenTab } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawWidgetInputTokenTab';
 import { WithdrawWidgetIncentiveTab } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawWidgetIncentiveTab';
 import ConnectButton from '@/components/Navbar/ConnectButton';
+import { ClaimingInformation } from '../ClaimingInformation';
 
 export type TypedMarketWithdrawType = 'input_token' | 'incentives';
 export const MarketWithdrawType: Record<
@@ -44,12 +45,16 @@ export const WithdrawWidget = ({
   market,
   chain,
   overrideStyle = {},
+  appLink,
+  appName,
 }: {
   market: EnrichedMarketDataType;
   chain?: ExtendedChain;
   overrideStyle?: {
     mainColor?: string;
   };
+  appLink?: string;
+  appName?: string;
 }) => {
   const wagmiConfig = useConfig();
   const { account } = useAccount();
@@ -143,6 +148,10 @@ export const WithdrawWidget = ({
           <WithdrawWidgetIncentiveTab market={market} chain={chain} />
         )
       )}
+      <ClaimingInformation
+        link={appLink ?? 'https://jumper.exchange'}
+        appName={appName ?? ''}
+      />
     </Box>
   );
 };

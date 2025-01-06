@@ -21,6 +21,7 @@ import { useEffect, useState } from 'react';
 import { CustomLoadingButton } from '@/components/Berachain/components/BerachainWidget/LoadingButton.style';
 import type { ExtendedChain } from '@lifi/sdk';
 import { TxConfirmation } from '../TxConfirmation';
+import { ClaimingInformation } from '../ClaimingInformation';
 
 export const WithdrawWidgetInputTokenTab = ({
   market,

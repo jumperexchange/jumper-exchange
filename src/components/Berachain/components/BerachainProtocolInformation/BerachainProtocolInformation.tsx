@@ -47,7 +47,11 @@ export const BerachainProtocolInformation = ({
     <BerachainProtocolActionBox>
       {isMobile &&
         (market ? (
-          <BerachainWidget market={market} />
+          <BerachainWidget
+            market={market}
+            appName={card?.attributes?.Title}
+            appLink={detailInformation?.socials?.website}
+          />
         ) : (
           <BerachainWidgetLoader />
         ))}

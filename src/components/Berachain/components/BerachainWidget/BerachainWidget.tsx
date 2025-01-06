@@ -19,8 +19,12 @@ import { useChains } from '@/hooks/useChains';
 
 export const BerachainWidget = ({
   market,
+  appLink,
+  appName,
 }: {
   market: EnrichedMarketDataType;
+  appLink?: string;
+  appName?: string;
 }) => {
   const [tab, setTab] = useState(1);
   const { t } = useTranslation();
@@ -156,6 +160,8 @@ export const BerachainWidget = ({
             market={market}
             chain={chain}
             overrideStyle={{ mainColor: '#FF8425' }}
+            appLink={appLink}
+            appName={appName}
           />
         )}
       </Box>
