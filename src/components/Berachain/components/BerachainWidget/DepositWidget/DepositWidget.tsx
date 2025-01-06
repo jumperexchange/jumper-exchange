@@ -553,7 +553,7 @@ function DepositWidget({
         ) : (
           txHash && (
             <TxConfirmation
-              s={'Transaction link'}
+              s={'Approval transaction link'}
               link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
             />
           )
