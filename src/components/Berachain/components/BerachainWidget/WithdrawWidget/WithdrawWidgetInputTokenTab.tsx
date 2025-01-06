@@ -329,29 +329,6 @@ export const WithdrawWidgetInputTokenTab = ({
           />
         )
       )}
-      {/* {txHash && (
-        <Box
-          sx={{
-            flexShrink: 0, // Equivalent to `shrink-0`
-          }}
-          // className="w-24 shrink-0"
-        >
-          <Typography
-            component="a"
-            href={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
-            target="_blank"
-          >
-            Transaction link
-          </Typography>
-        </Box>
-      )} */}
-      {/* {isTxConfirmed && (
-        <Box>
-          <Typography variant="body2" color="textSecondary">
-            Transaction successfull!
-          </Typography>
-        </Box>
-      )} */}
     </Box>
   );
 };

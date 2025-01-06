@@ -318,7 +318,6 @@ function DepositWidget({
           <Input
             autoComplete="off"
             id="component"
-            defaultValue=""
             value={inputValue}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               onChangeValue(event.target.value);
@@ -534,7 +533,10 @@ function DepositWidget({
               overrideStyle={overrideStyle}
             >
               <Typography variant="bodyMediumStrong">
-                {writeContractOptions[contractCallIndex].label}
+                {writeContractOptions[contractCallIndex].label.toLowerCase() ===
+                'fill ip offers'
+                  ? 'Deposit'
+                  : writeContractOptions[contractCallIndex].label}
               </Typography>
             </CustomLoadingButton>
           )
