@@ -9,11 +9,11 @@ export const TVL_TOOLTIP =
 export const APY_TOOLTIP =
   'Expected yearly return rate of the tokens invested.';
 export const DEPOSIT_TOOLTIP =
-  'Symbol of the underlying token to deposit into this market.';
+  'The displayed token is the token required to deposit into this market.';
 export const DEPOSITED_TOOLTIP = 'Amount you have deposited  into this market.';
 export const AVAILABLE_TOOLTIP =
   'Amount available to deposit into this market based on capacity.';
 export const INCENTIVES_TOOLTIP =
   'List of incentives available for this market.';
 export const LOCKUP_TOOLTIP =
-  'Rewards require a lockup period. You can withdraw your position but withdrawal forfeits rewards.';
+  'Deposits will be locked for the displayed amount of times to earn rewards. You are able to withdraw prior to the end of the lockup period but will forfeit any earned rewards.';

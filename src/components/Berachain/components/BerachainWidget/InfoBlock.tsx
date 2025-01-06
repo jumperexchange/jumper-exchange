@@ -130,7 +130,7 @@ function InfoBlock({ market, type }: InfoBlockProps) {
             }}
           >
             <DigitCard
-              title={'Available to Deposit'}
+              title={'Deposit Cap'}
               tooltipText={AVAILABLE_TOOLTIP}
               digit={Intl.NumberFormat('en-US', {
                 notation: 'standard',

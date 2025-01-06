@@ -58,10 +58,10 @@ export const BerachainMarketsHeader = () => {
                 })
               : 'N/A'
           }
-          tooltip={'This is the total amount in a protocol.'}
+          tooltip={'Total amount deposited into Boyco contracts.'}
           sx={BerachainMarketHeaderProgressCardStyles(theme)}
         />
-        <BerachainProgressCard
+        {/* <BerachainProgressCard
           title={'Total Volume'}
           value={
             data?.total_volume
@@ -73,7 +73,7 @@ export const BerachainMarketsHeader = () => {
           }
           tooltip={'This is the total volume done on Boyco.'}
           sx={BerachainMarketHeaderProgressCardStyles(theme)}
-        />
+        /> */}
       </BerachainMarketHeaderCards>
     </BerachainMarketHeaderBox>
   );
