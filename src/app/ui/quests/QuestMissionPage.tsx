@@ -1,6 +1,6 @@
 'use client';
 
-import { QuestsMissionPage } from 'src/components/Quests/QuestPage/QuestsMissionPage';
+import { QuestsMissionPage } from 'src/components/QuestPage/QuestsMissionPage';
 import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
 
 const QuestPage = ({ quest, url }: any) => {
