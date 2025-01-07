@@ -1,3 +1,4 @@
+import type { SxProps, Theme } from '@mui/material';
 import { Tooltip, Typography } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import {
@@ -10,7 +11,7 @@ interface DigitCardProps {
   digit: string | number | React.ReactNode;
   tooltipText?: string;
   endAdornment?: React.ReactNode;
-  sx?: React.CSSProperties;
+  sx?: SxProps<Theme>;
 }
 
 const DigitCard = ({
@@ -24,6 +25,7 @@ const DigitCard = ({
     <BeraChainProgressCardContent sx={sx}>
       <BeraChainProgressCardHeader display={'flex'}>
         <Typography
+          className="title"
           variant="bodySmall"
           sx={(theme) => ({
             typography: {
@@ -51,6 +53,7 @@ const DigitCard = ({
         </Tooltip>
       </BeraChainProgressCardHeader>
       <Typography
+        className="content"
         variant="titleXSmall"
         marginTop={'4px'}
         sx={(theme) => ({

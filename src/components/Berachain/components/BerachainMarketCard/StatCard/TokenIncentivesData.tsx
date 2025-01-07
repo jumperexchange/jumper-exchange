@@ -11,7 +11,7 @@ export const TokenIncentivesData = ({ tokens }: DigitCardProps) => {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        gap: '16px',
+        gap: 2,
       }}
     >
       {tokens?.map((incentiveTokenData: BerachainIncentiveToken) => (
@@ -20,9 +20,20 @@ export const TokenIncentivesData = ({ tokens }: DigitCardProps) => {
             display: 'flex',
             alignItems: 'center',
             marginTop: '4px',
+            gap: 1,
           }}
           key={incentiveTokenData?.id}
         >
+          <img
+            key={`berachain-market-card-token-${incentiveTokenData?.name}-${incentiveTokenData?.id}`}
+            src={incentiveTokenData?.image}
+            alt={`${incentiveTokenData?.name}-logo`}
+            width={24}
+            height={24}
+            style={{
+              borderRadius: '10px',
+            }}
+          />
           <Typography
             variant="titleXSmall"
             sx={(theme) => ({
@@ -39,17 +50,6 @@ export const TokenIncentivesData = ({ tokens }: DigitCardProps) => {
               maximumFractionDigits: 1,
             }).format(incentiveTokenData.token_amount)}{' '}
           </Typography>
-          <img
-            key={`berachain-market-card-token-${incentiveTokenData?.name}-${incentiveTokenData?.id}`}
-            src={incentiveTokenData?.image}
-            alt={`${incentiveTokenData?.name}-logo`}
-            width={24}
-            height={24}
-            style={{
-              borderRadius: '10px',
-              marginLeft: '4px',
-            }}
-          />
         </Box>
       ))}
     </Box>

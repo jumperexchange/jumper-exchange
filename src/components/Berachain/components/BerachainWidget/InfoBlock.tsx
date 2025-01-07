@@ -1,12 +1,14 @@
-import type { EnrichedMarketDataType } from 'royco/queries';
+import type {
+  EnrichedAccountBalanceRecipeInMarketDataType,
+  EnrichedMarketDataType,
+} from 'royco/queries';
 import {
   formatWithCustomLabels,
   secondsToDuration,
 } from '@/components/Berachain/lockupTimeMap';
 import { useTranslation } from 'react-i18next';
-import type { Breakpoint } from '@mui/material';
+import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { useTheme } from '@mui/material';
-import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
 import { BerchainMarketCardInfos } from '../BerachainMarketCard/BerachainMarketCard.style';
 import { BeraChainProgressCardComponent } from '../BerachainMarketCard/StatCard/BerachainProgressCard.style';
@@ -28,30 +30,21 @@ import DigitTokenSymbolCard from '../BerachainMarketCard/StatCard/DigitTokenSymb
 
 interface InfoBlockProps {
   market: EnrichedMarketDataType;
+  recipe?: EnrichedAccountBalanceRecipeInMarketDataType | null;
   type: 'deposit' | 'withdraw';
+  sx?: SxProps<Theme>;
 }
 
-function InfoBlock({ market, type }: InfoBlockProps) {
+function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
   const { t } = useTranslation();
   const { account } = useAccount();
   const theme = useTheme();
 
   const [openTokensTooltip] = useState(false);
 
-  const {
-    isLoading: isLoadingRecipe,
-    isRefetching: isRefetchingRecipe,
-    data: dataRecipe,
-  } = useEnrichedAccountBalancesRecipeInMarket({
-    chain_id: market.chain_id!,
-    market_id: market.market_id!,
-    account_address: account?.address?.toLowerCase() ?? '',
-    custom_token_data: undefined,
-  });
-
   const deposited =
-    dataRecipe?.input_token_data_ap?.token_amount &&
-    dataRecipe?.input_token_data_ap?.token_amount > 0;
+    recipe?.input_token_data_ap?.token_amount &&
+    recipe?.input_token_data_ap?.token_amount > 0;
 
   const maxInputValue = useMemo(() => {
     return parseRawAmountToTokenAmount(
@@ -61,7 +54,7 @@ function InfoBlock({ market, type }: InfoBlockProps) {
   }, [market]);
 
   return (
-    <BerachainWidgetSelection>
+    <BerachainWidgetSelection sx={sx}>
       <BerchainMarketCardInfos
         sx={{
           display: 'flex',
@@ -87,7 +80,7 @@ function InfoBlock({ market, type }: InfoBlockProps) {
             digit={
               deposited
                 ? t('format.currency', {
-                    value: dataRecipe?.input_token_data_ap?.token_amount_usd,
+                    value: recipe?.input_token_data_ap?.token_amount_usd,
                   })
                 : market?.input_token_data?.symbol
             }

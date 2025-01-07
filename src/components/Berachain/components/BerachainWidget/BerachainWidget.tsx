@@ -20,7 +20,7 @@ export const BerachainWidget = ({
   appLink?: string;
   appName?: string;
 }) => {
-  const [tab, setTab] = useState(1);
+  const [tab, setTab] = useState(2);
   const { t } = useTranslation();
   const theme = useTheme();
   const chains = useChains();
@@ -152,6 +152,14 @@ export const BerachainWidget = ({
         {tab === 2 && (
           <WithdrawWidget
             market={market}
+            image={{
+              url: market.input_token_data.image,
+              name: market.input_token_data.name,
+              badge: {
+                url: chain?.logoURI,
+                name: chain?.name,
+              },
+            }}
             chain={chain}
             overrideStyle={{ mainColor: '#FF8425' }}
             appLink={appLink}

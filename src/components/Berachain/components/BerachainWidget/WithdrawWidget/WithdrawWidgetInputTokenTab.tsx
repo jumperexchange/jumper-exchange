@@ -1,11 +1,11 @@
 import {
+  Avatar as MuiAvatar,
   Box,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
+  Stack,
   Typography,
   useTheme,
 } from '@mui/material';
+import { formatDistanceToNow } from 'date-fns';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import {
   getRecipeInputTokenWithdrawalTransactionOptions,
@@ -15,32 +15,58 @@ import {
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import { RoycoMarketType, RoycoMarketUserType } from 'royco/market';
-import { WithdrawInputTokenRow } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawInputTokenRow';
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { CustomLoadingButton } from '@/components/Berachain/components/BerachainWidget/LoadingButton.style';
 import type { ExtendedChain } from '@lifi/sdk';
 import { TxConfirmation } from '../TxConfirmation';
-import { ClaimingInformation } from '../ClaimingInformation';
+import { BerachainDepositInputBackground } from '@/components/Berachain/components/BerachainWidget/DepositWidget/WidgetDeposit.style';
+import DigitCard from '@/components/Berachain/components/BerachainMarketCard/StatCard/DigitCard';
+import {
+  APY_TOOLTIP,
+  INCENTIVES_TOOLTIP,
+  LOCKUP_TOOLTIP,
+} from '@/components/Berachain/const/title';
+import { TokenIncentivesData } from '@/components/Berachain/components/BerachainMarketCard/StatCard/TokenIncentivesData';
+import {
+  formatWithCustomLabels,
+  secondsToDuration,
+} from '@/components/Berachain/lockupTimeMap';
+import { useTranslation } from 'react-i18next';
+import {
+  WalletAvatar,
+  WalletCardBadge,
+} from '@/components/Menus/WalletMenu/WalletCard.style';
+import TokenImage from '@/components/Portfolio/TokenImage';
 
-export const WithdrawWidgetInputTokenTab = ({
-  market,
-  chain,
-  overrideStyle = {},
-}: {
+// TODO: refactorize, should have a common component TokenImage (without badge) and possibility to add an adornment to it
+interface Image {
+  url?: string;
+  name?: string;
+}
+
+interface WithdrawWidgetInputTokenTabProps {
   market: EnrichedMarketDataType;
   chain?: ExtendedChain;
   overrideStyle?: {
     mainColor?: string;
   };
-}) => {
+  image?: Image & { badge?: Image };
+  refetch: () => void;
+}
+
+export const WithdrawWidgetInputTokenTab = ({
+  market,
+  chain,
+  overrideStyle = {},
+  image,
+  refetch = () => undefined,
+}: WithdrawWidgetInputTokenTabProps) => {
+  const { t } = useTranslation();
   const { account } = useAccount();
   const [value, setValue] = useState(0);
   const theme = useTheme();
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(parseInt((event.target as HTMLInputElement).value, 10));
-  };
+  const [currentPositionIndex, setCurrentPositionIndex] = useState<number>();
 
   const {
     status: txStatus,
@@ -52,19 +78,6 @@ export const WithdrawWidgetInputTokenTab = ({
     writeContract,
     reset: resetTx,
   } = useWriteContract();
-
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('writecontract', {
-    status: txStatus,
-    data: txHash,
-    isIdle: isTxIdle,
-    isPending: isTxPending,
-    isError: isTxError,
-    error: txError,
-    writeContract,
-    reset: resetTx,
-  });
 
   const {
     isLoading: isTxConfirming,
@@ -78,23 +91,13 @@ export const WithdrawWidgetInputTokenTab = ({
     pollingInterval: 1_000,
   });
 
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('waitTransactionReceipt', {
-    txHash,
-    isLoading: isTxConfirming,
-    isSuccess: isTxConfirmed,
-    isError: isTxConfirmError,
-    status: confirmationStatus,
-  });
-
   const {
     isLoading: isLoadingPositionsRecipe,
     data: positionsRecipe,
     isSuccess: positionsRecipeSuccess,
     isError,
     error,
-    refetch,
+    refetch: positionsRecipeRefetch,
   } = useEnrichedPositionsRecipe({
     chain_id: market.chain_id!,
     market_id: market.market_id!,
@@ -141,6 +144,7 @@ export const WithdrawWidgetInputTokenTab = ({
 
   useEffect(() => {
     refetch();
+    positionsRecipeRefetch();
   }, [isTxConfirmed]);
 
   if (positionsRecipeSuccess && positions.length === 0) {
@@ -164,158 +168,240 @@ export const WithdrawWidgetInputTokenTab = ({
   }
 
   return (
-    <Box
-      sx={{
-        marginY: 1,
-      }}
-    >
-      <Typography variant="bodyLargeStrong" color="textSecondary">
-        Withdraw a position
-      </Typography>
-      <RadioGroup
-        aria-labelledby="input-token"
-        name="input-token"
-        sx={{}}
-        value={value}
-        onChange={handleChange}
-      >
-        {positions.map((position, positionIndex) => {
-          return (
-            <FormControlLabel
-              value={positionIndex}
+    <Stack direction="column" gap={3}>
+      {positions.map((position, positionIndex) => {
+        return (
+          <Stack gap={1}>
+            <Typography
+              variant="body2"
+              sx={(theme) => ({
+                color: theme.palette.alphaLight700.main,
+              })}
+            >
+              {formatDistanceToNow(
+                new Date((position?.block_timestamp ?? 0) * 1000),
+                { addSuffix: true },
+              )}
+            </Typography>
+            <BerachainDepositInputBackground
+              key={positionIndex}
               sx={{
                 display: 'flex', // Equivalent to `flex`
+                flexDirection: 'column',
                 justifyContent: 'space-between', // Equivalent to `justify-between`
                 alignItems: 'flex-start',
                 gap: 2, // Equivalent to `gap-2` (MUI uses theme-based spacing; `2` = 2 * 8px = 16px)
                 borderRadius: '16px', // Equivalent to `rounded-2xl` (16px)
-                border:
-                  value !== positionIndex
-                    ? '1px solid #554F4E'
-                    : '1px solid #FF8425', // Creates the border
-                padding: 3, // Equivalent to `p-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
-                marginY: 1,
-                marginX: 0,
-                cursor: !position?.can_withdraw ? 'not-allowed' : 'pointer',
+                border: '1px solid #554F4E', // Creates the border
+                padding: 2, // Equivalent to `p-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
+                cursor: !position?.can_withdraw ? 'not-allowed' : 'default',
               }}
-              control={
-                <Radio
-                  sx={{ visibility: 'hidden', width: '1px', height: '1px' }}
-                  disabled={position?.can_withdraw !== true}
-                />
-              }
-              labelPlacement="start"
-              label={
-                <Box
-                  component="span"
-                  sx={{
-                    flexGrow: 1, // Equivalent to `grow`
-                    minWidth: '400px', // Equivalent to `min-w-full`
-                    display: 'flex', // Equivalent to `flex`
-                    width: '100%', // Equivalent to `w-full`
-                    flexDirection: 'row', // Equivalent to `flex-row`
-                    alignItems: 'center', // Equivalent to `items-center`
-                  }}
-                >
+            >
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                width="100%"
+                gap={2}
+              >
+                <Stack direction="column" gap="inherit">
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                    Deposited
+                  </Typography>
                   <Box
                     sx={{
                       display: 'flex',
-                      width: '100%',
-                      flexGrow: 1, // Equivalent to `grow`
-                      minWidth: '400px',
-                      flexDirection: 'row',
                       alignItems: 'center',
-                      justifyContent: 'space-between',
+                      gap: 'inherit',
+                      marginTop: '4px',
                     }}
                   >
-                    <Box
-                      component="span"
-                      sx={{
-                        display: 'flex', // Equivalent to `flex`
-                        width: '100%', // Equivalent to `w-full`
-                        flexGrow: 1, // Equivalent to `grow`
-                        flexDirection: 'column', // Equivalent to `flex-col`
-                      }}
-                    >
-                      <WithdrawInputTokenRow
-                        key={`withdraw-input-token-row:${positionIndex}`}
-                        token={position?.input_token_data}
-                        tokenValueUSD={Intl.NumberFormat('en-US', {
-                          style: 'currency',
-                          currency: 'USD',
-                          notation: 'standard',
-                          useGrouping: true,
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        }).format(
-                          position?.input_token_data?.token_amount_usd ?? 0,
-                        )}
-                      />
-                    </Box>
-                    {!position?.can_withdraw && (
+                    {image && (
                       <Box
                         sx={{
-                          borderRadius: '32px',
-                          padding: theme.spacing(1),
-                          borderColor: '#302F2E',
-                          borderWidth: '1px',
-                          borderStyle: 'solid',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'flex-start',
+                          width: 'auto',
                         }}
                       >
-                        <Typography
-                          sx={{
-                            whiteSpace: 'nowrap',
-                            wordBreak: 'normal',
-                          }}
-                          variant="bodySmallStrong"
-                          color={theme.palette.text.primary}
-                        >
-                          Locked
-                        </Typography>
+                        <>
+                          <WalletCardBadge
+                            overlap="circular"
+                            className="badge"
+                            sx={{ maringRight: '8px' }}
+                            anchorOrigin={{
+                              vertical: 'bottom',
+                              horizontal: 'right',
+                            }}
+                            badgeContent={
+                              image.badge && (
+                                <MuiAvatar
+                                  alt={image.badge.name}
+                                  sx={(theme: any) => ({
+                                    width: '18px',
+                                    height: '18px',
+                                    border: `2px solid ${theme.palette.surface2.main}`,
+                                  })}
+                                >
+                                  {image.badge.name && (
+                                    <TokenImage
+                                      token={{
+                                        name: image.badge.name,
+                                        logoURI: image.badge.url,
+                                      }}
+                                    />
+                                  )}
+                                </MuiAvatar>
+                              )
+                            }
+                          >
+                            <WalletAvatar>
+                              {image.name && (
+                                <TokenImage
+                                  token={{
+                                    name: image.name,
+                                    logoURI: image.url,
+                                  }}
+                                />
+                              )}
+                            </WalletAvatar>
+                          </WalletCardBadge>
+                        </>
                       </Box>
                     )}
+                    <Typography
+                      variant="titleXSmall"
+                      sx={(theme) => ({
+                        fontSize: '1.5rem',
+                        /*                      typography: {
+                        xs: theme.typography.titleXSmall,
+                        sm: theme.typography.titleXSmall,
+                      },*/
+                      })}
+                    >
+                      {Intl.NumberFormat('en-US', {
+                        notation: 'compact',
+                        useGrouping: true,
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 5,
+                      }).format(
+                        position?.input_token_data?.token_amount_usd ?? 0,
+                      )}{' '}
+                    </Typography>
                   </Box>
-                  {/* </Box> */}
-                </Box>
-              }
-              key={`withdraw-position:${positionIndex}`}
-            />
-          );
-        })}
-      </RadioGroup>
-      <CustomLoadingButton
-        sx={{
-          marginY: 1,
-        }}
-        variant="contained"
-        loading={isTxConfirming || isTxPending}
-        overrideStyle={{
-          mainColor: '#FF8425',
-        }}
-        disabled={
-          !positions[value]?.can_withdraw ||
-          BigInt(positions[value]?.input_token_data?.raw_amount ?? 0) ===
-            BigInt(0)
-        }
-        onClick={() => {
-          if (!!positions[value]) {
-            const contractOptions =
-              getRecipeInputTokenWithdrawalTransactionOptions({
-                chain_id: market.chain_id!,
-                position: {
-                  // @ts-expect-error
-                  weiroll_wallet: positions[value].weiroll_wallet,
-                  token_data: positions[value].input_token_data,
-                },
-              });
-            // @ts-expect-error
-            writeContract(contractOptions);
-          }
-        }}
-        fullWidth
-      >
-        <Typography variant="bodyMediumStrong">Withdraw</Typography>
-      </CustomLoadingButton>
+                </Stack>
+                {market.lockup_time === '0' ? undefined : (
+                  <DigitCard
+                    sx={{
+                      gap: 'inherit',
+                      alignItems: 'flex-end',
+                      '.title': {
+                        fontWeight: 'bold',
+                      },
+                      '.content': {
+                        fontSize: '1.5rem',
+                      },
+                    }}
+                    title={'Lockup'}
+                    tooltipText={LOCKUP_TOOLTIP}
+                    digit={formatWithCustomLabels(
+                      Object.entries(secondsToDuration(market.lockup_time))
+                        .filter(([_, value]) => value > 0) // Filter out zero values
+                        .slice(0, 2) // Take the first two non-zero units
+                        .reduce(
+                          (acc, [unit, value]) => ({ ...acc, [unit]: value }),
+                          {},
+                        ),
+                    )}
+                  />
+                )}
+              </Stack>
+              <Stack direction="column">
+                <Stack direction="row" justifyContent="space-between">
+                  {market?.incentive_tokens_data?.length > 0 ? (
+                    <DigitCard
+                      title={'Earned rewards'}
+                      tooltipText={INCENTIVES_TOOLTIP}
+                      digit={
+                        <TokenIncentivesData
+                          tokens={market?.incentive_tokens_data}
+                        />
+                      }
+                      sx={(theme) => ({
+                        '.title': {
+                          fontSize: '0.750rem',
+                          color: theme.palette.alphaLight700.main,
+                        },
+                      })}
+                    />
+                  ) : (
+                    <DigitCard
+                      title={'APY rewards'}
+                      tooltipText={APY_TOOLTIP}
+                      digit={
+                        market?.annual_change_ratio
+                          ? t('format.percent', {
+                              value: market?.annual_change_ratio,
+                            })
+                          : 'N/A'
+                      }
+                    />
+                  )}
+                </Stack>
+              </Stack>
+              <Box
+                sx={{
+                  display: 'flex',
+                  width: '100%',
+                  flexGrow: 1, // Equivalent to `grow`
+                  minWidth: '400px',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <CustomLoadingButton
+                  sx={{
+                    marginY: 1,
+                  }}
+                  variant="contained"
+                  loading={
+                    currentPositionIndex === positionIndex &&
+                    (isTxConfirming || isTxPending)
+                  }
+                  overrideStyle={{
+                    mainColor: '#FF8425',
+                  }}
+                  disabled={
+                    !position?.can_withdraw ||
+                    BigInt(position?.input_token_data?.raw_amount ?? 0) ===
+                      BigInt(0)
+                  }
+                  onClick={() => {
+                    if (!!position) {
+                      setCurrentPositionIndex(positionIndex);
+                      const contractOptions =
+                        getRecipeInputTokenWithdrawalTransactionOptions({
+                          chain_id: market.chain_id!,
+                          position: {
+                            // @ts-expect-error
+                            weiroll_wallet: position.weiroll_wallet,
+                            token_data: position.input_token_data,
+                          },
+                        });
+                      // @ts-expect-error
+                      writeContract(contractOptions);
+                    }
+                  }}
+                  fullWidth
+                >
+                  <Typography variant="bodyMediumStrong">Withdraw</Typography>
+                </CustomLoadingButton>
+              </Box>
+            </BerachainDepositInputBackground>
+          </Stack>
+        );
+      })}
       {isTxConfirmed && txHash ? (
         <TxConfirmation
           s={'Withdrawal successful'}
@@ -330,6 +416,6 @@ export const WithdrawWidgetInputTokenTab = ({
           />
         )
       )}
-    </Box>
+    </Stack>
   );
 };

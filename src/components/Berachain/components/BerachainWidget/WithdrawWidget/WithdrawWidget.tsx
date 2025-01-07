@@ -1,15 +1,6 @@
 import type { SelectChangeEvent } from '@mui/material';
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import type { EnrichedMarketDataType } from 'royco/queries';
-import BerachainTransactionDetails from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
 import InfoBlock from '@/components/Berachain/components/BerachainWidget/InfoBlock';
 
 import { useConfig } from 'wagmi';
@@ -22,6 +13,7 @@ import { WithdrawWidgetInputTokenTab } from '@/components/Berachain/components/B
 import { WithdrawWidgetIncentiveTab } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawWidgetIncentiveTab';
 import ConnectButton from '@/components/Navbar/ConnectButton';
 import { ClaimingInformation } from '../ClaimingInformation';
+import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
 
 export type TypedMarketWithdrawType = 'input_token' | 'incentives';
 export const MarketWithdrawType: Record<
@@ -40,14 +32,12 @@ export const MarketWithdrawType: Record<
     label: 'Incentives',
   },
 };
+interface Image {
+  url?: string;
+  name?: string;
+}
 
-export const WithdrawWidget = ({
-  market,
-  chain,
-  overrideStyle = {},
-  appLink,
-  appName,
-}: {
+interface WithdrawWidgetProps {
   market: EnrichedMarketDataType;
   chain?: ExtendedChain;
   overrideStyle?: {
@@ -55,7 +45,17 @@ export const WithdrawWidget = ({
   };
   appLink?: string;
   appName?: string;
-}) => {
+  image?: Image & { badge?: Image };
+}
+
+export const WithdrawWidget = ({
+  market,
+  chain,
+  overrideStyle = {},
+  appLink,
+  appName,
+  image,
+}: WithdrawWidgetProps) => {
   const wagmiConfig = useConfig();
   const { account } = useAccount();
   const theme = useTheme();
@@ -64,6 +64,13 @@ export const WithdrawWidget = ({
   const handleChange = (event: SelectChangeEvent) => {
     setWithdrawType(event.target.value as string);
   };
+
+  const { data: recipe, refetch } = useEnrichedAccountBalancesRecipeInMarket({
+    chain_id: market.chain_id!,
+    market_id: market.market_id!,
+    account_address: account?.address?.toLowerCase() ?? '',
+    custom_token_data: undefined,
+  });
 
   const shouldSwitchChain = useMemo(() => {
     if (account?.isConnected && market.chain_id !== account?.chainId) {
@@ -74,39 +81,12 @@ export const WithdrawWidget = ({
 
   return (
     <Box sx={{ marginTop: theme.spacing(1.5) }}>
-      <InfoBlock market={market} type="withdraw" />
-
-      {/* <FormControl fullWidth sx={{ marginTop: theme.spacing(2) }}>
-        <InputLabel id="withdraw-type-label">Withdraw type</InputLabel>
-        <Select
-          labelId="withdraw-type-label"
-          id="demo-simple-select"
-          value={withdrawType}
-          label="Withdraw type"
-          onChange={handleChange}
-          MenuProps={{
-            sx: {
-              '.MuiMenu-list': {
-                backgroundColor: '#121214',
-              },
-            },
-          }}
-          sx={{
-            '.MuiSelect-icon': {
-              color: 'text.primary',
-            },
-          }}
-        >
-          {Object.keys(MarketWithdrawType).map((key, index) => (
-            <MenuItem
-              value={MarketWithdrawType[key as TypedMarketWithdrawType].id}
-              key={index}
-            >
-              {MarketWithdrawType[key as TypedMarketWithdrawType].label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl> */}
+      <InfoBlock
+        market={market}
+        type="withdraw"
+        sx={{ marginBottom: theme.spacing(3) }}
+        recipe={recipe}
+      />
       {!account?.isConnected ? (
         <Box
           sx={{
@@ -142,7 +122,12 @@ export const WithdrawWidget = ({
           </CustomLoadingButton>
         </Box>
       ) : withdrawType === MarketWithdrawType.input_token.id ? (
-        <WithdrawWidgetInputTokenTab market={market} chain={chain} />
+        <WithdrawWidgetInputTokenTab
+          market={market}
+          chain={chain}
+          image={image}
+          refetch={refetch}
+        />
       ) : (
         withdrawType === MarketWithdrawType.incentives.id && (
           <WithdrawWidgetIncentiveTab market={market} chain={chain} />
