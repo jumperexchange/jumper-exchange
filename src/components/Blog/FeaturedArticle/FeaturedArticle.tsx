@@ -48,9 +48,10 @@ export const FeaturedArticle = ({
   const formatedDate =
     featuredArticle &&
     t('format.shortDate', {
-      value:
+      value: new Date(
         featuredArticle?.attributes.publishedAt ||
-        featuredArticle?.attributes.createdAt,
+          featuredArticle?.attributes.createdAt,
+      ),
     });
 
   const minRead =

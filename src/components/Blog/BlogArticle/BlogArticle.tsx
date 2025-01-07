@@ -94,7 +94,9 @@ export const BlogArticle = ({
             {createdAt ? (
               <BlogArticleHeaderMeta>
                 <BlogArticleHeaderMetaDate variant="bodyXSmall" as="span">
-                  {t('format.shortDate', { value: publishedAt || createdAt })}
+                  {t('format.shortDate', {
+                    value: new Date(publishedAt || createdAt),
+                  })}
                 </BlogArticleHeaderMetaDate>
                 <span>{t('blog.minRead', { minRead: minRead })}</span>
               </BlogArticleHeaderMeta>
