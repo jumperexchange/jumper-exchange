@@ -1,5 +1,5 @@
 import type { Chain, ChainId } from '@lifi/sdk';
-import type { Breakpoint } from '@mui/material';
+import { Breakpoint, circularProgressClasses } from '@mui/material';
 import {
   Box,
   CircularProgress,
@@ -206,22 +206,44 @@ export const BerachainMarketCard = ({
                     title={
                       <>
                         there is still{' '}
-                        {t('format.decimal', { value: fillable })} to be filled
+                        {t('format.decimal', { value: fillable, notation: 'compact' })} to be filled
                       </>
                     }
                     placement="top"
                     enterTouchDelay={0}
                     arrow
                   >
-                    <CircularProgress
-                      variant="determinate"
-                      size={24}
-                      value={tvlGoal}
+                    <Box
                       sx={{
-                        color: '#FF8425',
+                        position: 'relative',
                         marginLeft: 1,
                       }}
+                    >
+                    <CircularProgress
+                      variant="determinate"
+                      sx={(theme) => ({
+                        color: theme.palette.alphaLight200.main,
+                      })}
+                      size={24}
+                      value={100}
                     />
+                    <CircularProgress
+                      variant="determinate"
+                      disableShrink
+                      sx={(theme) => ({
+                        color: '#FF8425',
+                        animationDuration: '550ms',
+                        position: 'absolute',
+                        right: 0,
+                        // background: theme.palette.alphaLight200.main,
+                        [`& .${circularProgressClasses.circle}`]: {
+                          strokeLinecap: 'round',
+                        },
+                      })}
+                      value={tvlGoal}
+                      size={24}
+                    />
+                    </Box>
                   </Tooltip>
                 )
               }

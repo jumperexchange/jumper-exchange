@@ -285,6 +285,7 @@ function DepositWidget({
   return (
     <>
       <BoxForm noValidate autoComplete="off" onSubmit={onSubmit}>
+        <DepositInfo market={market} />
         <BerachainDepositInputBackground>
           <FormControl
             error={isTxError || !!hasErrorText}
@@ -301,7 +302,7 @@ function DepositWidget({
               }}
             >
               <Typography component="span" sx={{ fontWeight: 'bold' }}>
-                Deposit {market?.input_token_data.name}
+                Deposit
               </Typography>
             </FormHelperText>
             <Input
@@ -414,6 +415,7 @@ function DepositWidget({
                       flexDirection: 'column',
                       marginTop: '20px',
                       width: '96px',
+                      alignItems: 'flex-end',
                     }}
                   >
                     <MaxButton
@@ -472,7 +474,6 @@ function DepositWidget({
             </FormHelperText>
           </FormControl>
         </BerachainDepositInputBackground>
-        <DepositInfo market={market} />
         {!account?.isConnected ? (
           <ConnectButton />
         ) : shouldSwitchChain ? (

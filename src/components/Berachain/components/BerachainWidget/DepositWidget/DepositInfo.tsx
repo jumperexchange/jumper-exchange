@@ -3,6 +3,7 @@ import type { EnrichedMarketDataType } from 'royco/queries';
 import { LinearProgress, Stack } from '@mui/material';
 import DigitCard from '@/components/Berachain/components/BerachainMarketCard/StatCard/DigitCard';
 import {
+  APY_TOOLTIP,
   AVAILABLE_TOOLTIP,
   INCENTIVES_TOOLTIP,
   LOCKUP_TOOLTIP,
@@ -17,6 +18,7 @@ import {
   secondsToDuration,
 } from '@/components/Berachain/lockupTimeMap';
 import { TokenIncentivesData } from '@/components/Berachain/components/BerachainMarketCard/StatCard/TokenIncentivesData';
+import DigitTooltipCard from '@/components/Berachain/components/BerachainMarketCard/StatCard/DigitTooltipCard';
 
 interface DepositInfoProps {
   market: EnrichedMarketDataType;
@@ -71,11 +73,12 @@ function DepositInfo({ market }: DepositInfoProps) {
         sx={(theme) => ({
           color: '#FF8425',
           background: theme.palette.alphaLight200.main,
+          borderRadius: '16px'
         })}
       />
       <Stack direction="column">
         <Stack direction="row" justifyContent="space-between">
-          {market?.incentive_tokens_data?.length > 0 && (
+          {market?.incentive_tokens_data?.length > 0 ? (
             <DigitCard
               title={'Total rewards'}
               tooltipText={INCENTIVES_TOOLTIP}
@@ -83,9 +86,24 @@ function DepositInfo({ market }: DepositInfoProps) {
                 <TokenIncentivesData tokens={market?.incentive_tokens_data} />
               }
             />
+          ) : (
+            <DigitCard
+              title={'APY rewards'}
+              tooltipText={APY_TOOLTIP}
+              digit={
+                market?.annual_change_ratio
+                  ? t('format.percent', {
+                    value: market?.annual_change_ratio,
+                  })
+                  : 'N/A'
+              }
+            />
           )}
           {market.lockup_time === '0' ? undefined : (
             <DigitCard
+              sx={{
+                alignItems: 'flex-end',
+              }}
               title={'Lockup'}
               tooltipText={LOCKUP_TOOLTIP}
               digit={formatWithCustomLabels(
