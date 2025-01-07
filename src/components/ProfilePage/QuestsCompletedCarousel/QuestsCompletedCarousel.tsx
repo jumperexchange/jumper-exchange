@@ -26,7 +26,13 @@ export const QuestsCompletedCarousel = ({
     !account?.address;
 
   const today = new Date();
-  const secondDay = new Date(today.getFullYear(), today.getMonth(), 2);
+  // to do: activate when PDA were not done on time
+  const lastMonth = new Date(
+    today.getFullYear(),
+    today.getMonth() - 1,
+    today.getDate(),
+  );
+  const secondDay = new Date(lastMonth.getFullYear(), lastMonth.getMonth(), 7);
 
   return (
     <QuestsOverviewContainer>
