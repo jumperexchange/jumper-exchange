@@ -1,4 +1,4 @@
-import { Box, Tooltip, Typography } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import {
   BeraChainProgressCardContent,
@@ -7,56 +7,64 @@ import {
 
 interface DigitCardProps {
   title: string;
-  digit: string | number;
+  digit: string | number | React.ReactNode;
   tooltipText?: string;
+  endAdornment?: React.ReactNode;
+  sx?: React.CSSProperties;
 }
 
-const DigitCard = ({ title, digit, tooltipText }: DigitCardProps) => {
+const DigitCard = ({
+  title,
+  digit,
+  tooltipText,
+  endAdornment,
+  sx = {},
+}: DigitCardProps) => {
   return (
-    <Box>
-      <BeraChainProgressCardContent>
-        <BeraChainProgressCardHeader display={'flex'}>
-          <Typography
-            variant="bodySmall"
-            sx={(theme) => ({
-              typography: {
-                xs: theme.typography.bodyXSmall,
-                sm: theme.typography.bodySmall,
-              },
-            })}
-          >
-            {title}
-          </Typography>
-          <Tooltip
-            title={tooltipText}
-            placement={'top'}
-            enterTouchDelay={0}
-            arrow
-          >
-            <InfoIcon
-              sx={{
-                width: '16px',
-                height: '16px',
-                marginLeft: '4px',
-                color: 'inherit',
-              }}
-            />
-          </Tooltip>
-        </BeraChainProgressCardHeader>
+    <BeraChainProgressCardContent sx={sx}>
+      <BeraChainProgressCardHeader display={'flex'}>
         <Typography
-          variant="titleXSmall"
-          marginTop={'4px'}
+          variant="bodySmall"
           sx={(theme) => ({
             typography: {
-              xs: theme.typography.titleXSmall,
-              sm: theme.typography.titleXSmall,
+              xs: theme.typography.bodyXSmall,
+              sm: theme.typography.bodySmall,
             },
           })}
         >
-          {digit}
+          {title}
         </Typography>
-      </BeraChainProgressCardContent>
-    </Box>
+        <Tooltip
+          title={tooltipText}
+          placement={'top'}
+          enterTouchDelay={0}
+          arrow
+        >
+          <InfoIcon
+            sx={{
+              width: '16px',
+              height: '16px',
+              marginLeft: '4px',
+              color: 'inherit',
+            }}
+          />
+        </Tooltip>
+      </BeraChainProgressCardHeader>
+      <Typography
+        variant="titleXSmall"
+        marginTop={'4px'}
+        sx={(theme) => ({
+          display: 'inline-flex',
+          typography: {
+            xs: theme.typography.titleXSmall,
+            sm: theme.typography.titleXSmall,
+          },
+        })}
+      >
+        {digit}
+        {endAdornment}
+      </Typography>
+    </BeraChainProgressCardContent>
   );
 };
 

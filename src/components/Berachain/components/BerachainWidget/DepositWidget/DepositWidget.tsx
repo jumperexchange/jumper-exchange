@@ -1,16 +1,12 @@
 import {
   Avatar as MuiAvatar,
   Box,
-  darken,
   FormHelperText,
-  InputLabel,
+  Input,
   Typography,
   useTheme,
-  alpha,
-  Input,
 } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import {
   WalletAvatar,
   WalletCardBadge,
@@ -35,14 +31,14 @@ import type { EnrichedMarketDataType } from 'royco/queries';
 import { switchChain } from '@wagmi/core';
 import { CustomLoadingButton } from '../LoadingButton.style';
 import type { ExtendedChain } from '@lifi/sdk';
-import {
-  ConnectButtonWrapper,
-  ConnectButtonLabel,
-} from '@/components/Navbar/WalletButton.style';
 import { useTranslation } from 'react-i18next';
 import ConnectButton from '@/components/Navbar/ConnectButton';
 import { TxConfirmation } from '../TxConfirmation';
-import { BerachainDepositInputBackground } from './WidgetDeposit.style';
+import {
+  BerachainDepositInputBackground,
+  BoxForm,
+} from './WidgetDeposit.style';
+import DepositInfo from '@/components/Berachain/components/BerachainWidget/DepositWidget/DepositInfo';
 
 interface Image {
   url?: string;
@@ -121,7 +117,6 @@ function DepositWidget({
   const {
     isValid,
     isLoading,
-    isReady,
     writeContractOptions,
     canBePerformedCompletely,
     canBePerformedPartially,
@@ -288,116 +283,111 @@ function DepositWidget({
   }
 
   return (
-    <BerachainDepositInputBackground>
-      <Box
-        component="form"
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-        noValidate
-        autoComplete="off"
-        onSubmit={onSubmit}
-      >
-        <FormControl
-          error={isTxError || !!hasErrorText}
-          variant="standard"
-          aria-autocomplete="none"
-        >
-          <FormHelperText
-            id="component-text"
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginBottom: 1,
-            }}
+    <>
+      <BoxForm noValidate autoComplete="off" onSubmit={onSubmit}>
+        <BerachainDepositInputBackground>
+          <FormControl
+            error={isTxError || !!hasErrorText}
+            variant="standard"
+            aria-autocomplete="none"
           >
-            <Typography component="span"></Typography>
-          </FormHelperText>
-          <Input
-            autoComplete="off"
-            id="component"
-            value={inputValue}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              onChangeValue(event.target.value);
-            }}
-            placeholder={placeholder}
-            aria-describedby="component-text"
-            disableUnderline={true}
-            sx={{
-              backgroundColor: '#302F2E',
-              borderRadius: theme.spacing(2),
-              padding: '16px',
-              '& input': {
-                fontSize: '24px',
-                fontWeight: 700,
-                lineHeight: '36px',
-                marginLeft: '8px',
-              },
-              '& input::placeholder': {
-                fontSize: '24px',
-                fontWeight: 700,
-                lineHeight: '36px',
-                marginLeft: '8px',
-              },
-              '& .MuiInput-underline:before': { borderBottom: 'none' },
-              '& .MuiInput-underline:after': { borderBottom: 'none' },
-              '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-                borderBottom: 'none',
-              },
-            }}
-            startAdornment={
-              image && (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-start',
-                    width: 'auto',
-                  }}
-                >
-                  <>
-                    <WalletCardBadge
-                      overlap="circular"
-                      className="badge"
-                      sx={{ maringRight: '8px' }}
-                      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                      badgeContent={
-                        image.badge && (
-                          <MuiAvatar
-                            alt={image.badge.name}
-                            sx={(theme: any) => ({
-                              width: '18px',
-                              height: '18px',
-                              border: `2px solid ${theme.palette.surface2.main}`,
-                            })}
-                          >
-                            {image.badge.name && (
-                              <TokenImage
-                                token={{
-                                  name: image.badge.name,
-                                  logoURI: image.badge.url,
-                                }}
-                              />
-                            )}
-                          </MuiAvatar>
-                        )
-                      }
-                    >
-                      <WalletAvatar>
-                        {image.name && (
-                          <TokenImage
-                            token={{
-                              name: image.name,
-                              logoURI: image.url,
-                            }}
-                          />
-                        )}
-                      </WalletAvatar>
-                    </WalletCardBadge>
-                  </>
-                  {/* <Box sx={{ marginTop: '4px', minWidth: '100px' }}>
+            <FormHelperText
+              id="component-text"
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 1,
+              }}
+            >
+              <Typography component="span" sx={{ fontWeight: 'bold' }}>
+                Deposit {market?.input_token_data.name}
+              </Typography>
+            </FormHelperText>
+            <Input
+              autoComplete="off"
+              id="component"
+              value={inputValue}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                onChangeValue(event.target.value);
+              }}
+              placeholder={placeholder}
+              aria-describedby="component-text"
+              disableUnderline={true}
+              sx={{
+                borderRadius: theme.spacing(2),
+                '& input': {
+                  fontSize: '24px',
+                  fontWeight: 700,
+                  lineHeight: '36px',
+                  marginLeft: '8px',
+                },
+                '& input::placeholder': {
+                  fontSize: '24px',
+                  fontWeight: 700,
+                  lineHeight: '36px',
+                  marginLeft: '8px',
+                },
+                '& .MuiInput-underline:before': { borderBottom: 'none' },
+                '& .MuiInput-underline:after': { borderBottom: 'none' },
+                '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+                  borderBottom: 'none',
+                },
+              }}
+              startAdornment={
+                image && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'flex-start',
+                      width: 'auto',
+                    }}
+                  >
+                    <>
+                      <WalletCardBadge
+                        overlap="circular"
+                        className="badge"
+                        sx={{ maringRight: '8px' }}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'right',
+                        }}
+                        badgeContent={
+                          image.badge && (
+                            <MuiAvatar
+                              alt={image.badge.name}
+                              sx={(theme: any) => ({
+                                width: '18px',
+                                height: '18px',
+                                border: `2px solid ${theme.palette.surface2.main}`,
+                              })}
+                            >
+                              {image.badge.name && (
+                                <TokenImage
+                                  token={{
+                                    name: image.badge.name,
+                                    logoURI: image.badge.url,
+                                  }}
+                                />
+                              )}
+                            </MuiAvatar>
+                          )
+                        }
+                      >
+                        <WalletAvatar>
+                          {image.name && (
+                            <TokenImage
+                              token={{
+                                name: image.name,
+                                logoURI: image.url,
+                              }}
+                            />
+                          )}
+                        </WalletAvatar>
+                      </WalletCardBadge>
+                    </>
+                    {/* <Box sx={{ marginTop: '4px', minWidth: '100px' }}>
                   <Typography
                     variant="bodyXSmall"
                     color="textSecondary"
@@ -413,83 +403,76 @@ function DepositWidget({
                     available
                   </Typography>
                 </Box> */}
-                </Box>
-              )
-            }
-            endAdornment={
-              balance > 0 && (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    marginTop: '20px',
-                    width: '96px',
-                  }}
-                >
-                  <MaxButton
-                    sx={{ p: '5px 10px' }}
-                    aria-label="menu"
-                    mainColor={overrideStyle?.mainColor}
-                    onClick={onClickMaxButton}
+                  </Box>
+                )
+              }
+              endAdornment={
+                balance > 0 && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      marginTop: '20px',
+                      width: '96px',
+                    }}
                   >
-                    max
-                  </MaxButton>
-                  {account?.isConnected && (
-                    <Box sx={{ marginTop: '4px' }}>
-                      <Typography
-                        variant="bodyXSmall"
-                        color="textSecondary"
-                        component="span"
-                      >
-                        /{' '}
-                        {Intl.NumberFormat('en-US', {
-                          notation: 'compact',
-                          useGrouping: true,
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 4,
-                        }).format(balance)}
-                      </Typography>
-                    </Box>
-                  )}
-                </Box>
-              )
-            }
-          />
-          <FormHelperText
-            id="component-text"
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginBottom: 1,
-            }}
-          >
-            {/* <Typography variant="body2" color="textSecondary" component="span">
-            {Intl.NumberFormat('en-US', {
-              notation: 'standard',
-              useGrouping: true,
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 8,
-            }).format(maxInputValue)}{' '}
-            {market?.input_token_data.symbol.toUpperCase()} Fillable in Total
-          </Typography> */}
-            {hasErrorText && (
-              <Typography
-                component="span"
-                variant="bodySmall"
-                sx={(theme) => ({
-                  marginBottom: theme.spacing(1),
-                  typography: {
-                    xs: theme.typography.bodyXSmall,
-                    sm: theme.typography.bodySmall,
-                  },
-                })}
-              >
-                {hasErrorText}
-              </Typography>
-            )}
-          </FormHelperText>
-        </FormControl>
+                    <MaxButton
+                      sx={{ p: '5px 10px' }}
+                      aria-label="menu"
+                      mainColor={overrideStyle?.mainColor}
+                      onClick={onClickMaxButton}
+                    >
+                      max
+                    </MaxButton>
+                    {account?.isConnected && (
+                      <Box sx={{ marginTop: '4px' }}>
+                        <Typography
+                          variant="bodyXSmall"
+                          color="textSecondary"
+                          component="span"
+                        >
+                          /{' '}
+                          {Intl.NumberFormat('en-US', {
+                            notation: 'compact',
+                            useGrouping: true,
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 4,
+                          }).format(balance)}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
+                )
+              }
+            />
+            <FormHelperText
+              id="component-text"
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 1,
+              }}
+            >
+              {hasErrorText && (
+                <Typography
+                  component="span"
+                  variant="bodySmall"
+                  sx={(theme) => ({
+                    marginBottom: theme.spacing(1),
+                    typography: {
+                      xs: theme.typography.bodyXSmall,
+                      sm: theme.typography.bodySmall,
+                    },
+                  })}
+                >
+                  {hasErrorText}
+                </Typography>
+              )}
+            </FormHelperText>
+          </FormControl>
+        </BerachainDepositInputBackground>
+        <DepositInfo market={market} />
         {!account?.isConnected ? (
           <ConnectButton />
         ) : shouldSwitchChain ? (
@@ -558,8 +541,8 @@ function DepositWidget({
             />
           )
         )}
-      </Box>
-    </BerachainDepositInputBackground>
+      </BoxForm>
+    </>
   );
 }
 

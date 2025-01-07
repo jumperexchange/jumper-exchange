@@ -1,4 +1,5 @@
-import { Breakpoint, IconButton } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { alpha, Box, styled } from '@mui/material';
 import Link from 'next/link';
 

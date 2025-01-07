@@ -101,7 +101,6 @@ function WidgetLikeField({
   const {
     isValid,
     isLoading,
-    isReady,
     writeContractOptions,
     canBePerformedCompletely,
     canBePerformedPartially,

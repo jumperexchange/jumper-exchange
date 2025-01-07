@@ -1,11 +1,5 @@
-import {
-  Box,
-  Breakpoint,
-  Theme,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import type { Breakpoint, Theme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { type TabProps, Tabs } from 'src/components/Tabs/Tabs';
 import { Widget } from 'src/components/Widgets/Widget';
@@ -135,7 +129,7 @@ export const BerachainWidget = ({
         )}
         {tab === 1 && (
           <Box sx={{ marginTop: theme.spacing(1.5) }}>
-            <InfoBlock market={market} type="deposit" />
+            {/*<InfoBlock market={market} type="deposit" />*/}
             <DepositWidget
               market={market}
               chain={chain}

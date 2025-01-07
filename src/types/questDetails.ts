@@ -3,7 +3,7 @@ import type { FaqProps } from 'src/components/AccordionFAQ';
 import type { Quest } from './loyaltyPass';
 import type { Chain } from '@/components/Superfest/SuperfestPage/Banner/Banner';
 import type { CTALinkInt } from '@/components/Superfest/SuperfestPage/CTA/MissionCTA';
-import { RewardsInterface } from 'src/components/ProfilePage/QuestCard/QuestCard';
+import type { RewardsInterface } from 'src/components/ProfilePage/QuestCard/QuestCard';
 
 export interface QuestSocials {
   twitter: string;

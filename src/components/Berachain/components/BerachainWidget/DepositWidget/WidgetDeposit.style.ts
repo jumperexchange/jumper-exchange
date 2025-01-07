@@ -55,6 +55,7 @@ export const BerachainWidgetSelection = styled(Box)(({ theme }) => ({
   gap: '8px',
 }));
 
+// TODO: Rename it to something more generic as it is used to have the most used berabackground
 export const BerachainDepositInputBackground = styled(Box)(({ theme }) => ({
   display: 'flex',
   color: theme.palette.text.primary,
@@ -63,7 +64,7 @@ export const BerachainDepositInputBackground = styled(Box)(({ theme }) => ({
   borderRadius: '16px',
   backgroundColor: '#1E1D1C',
   padding: theme.spacing(2),
-  marginTop: theme.spacing(2),
+  marginY: theme.spacing(2),
   border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
   gap: '8px',
 }));
@@ -188,4 +189,10 @@ export const BerachainActionBerachainWidget = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
   borderRadius: '24px',
   boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
+}));
+
+export const BoxForm = styled('form')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
 }));

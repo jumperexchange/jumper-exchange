@@ -28,8 +28,6 @@ export const BerachainProgressCard = ({
   icon,
   sx,
 }: BerachainProgressCardProps) => {
-  const { t } = useTranslation();
-
   return (
     <BeraChainProgressCardComponent sx={sx}>
       {icon && icon}

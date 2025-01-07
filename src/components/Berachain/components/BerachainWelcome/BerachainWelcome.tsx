@@ -15,11 +15,18 @@ import {
 import { useEnrichedRoycoStats } from 'royco/hooks';
 import { useTranslation } from 'react-i18next';
 import { BerachainProgressCard } from '../BerachainMarketCard/StatCard/BerachainProgressCard';
+import { useEffect, useState } from 'react';
 
 export const BerachainWelcome = () => {
   const theme = useTheme();
   const { t } = useTranslation();
   const { data } = useEnrichedRoycoStats();
+  // Prevent hydratation errors on values
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
@@ -70,62 +77,66 @@ export const BerachainWelcome = () => {
           transition={{ duration: 1, delay: 1 }} // Starts 1 second after the main content animation
         >
           <BerachainWelcomeBoxContent>
-            <BerachainProgressCard
-              title={isDesktop ? 'Total Value Locked' : 'TVL'}
-              value={t('format.currency', {
-                value: data?.total_tvl,
-                notation: 'compact',
-              })}
-              icon={
-                <Image
-                  src="/berachain/tvl.svg"
-                  alt="TVL illustration"
-                  width={26}
-                  height={26}
-                />
-              }
-              sx={(theme) => ({
-                borderRadius: '16px',
-                border: '1px solid rgba(255, 255, 255, 0.20)',
-                background: 'rgba(255, 255, 255, 0.08)',
-                backdropFilter: 'blur(8px)',
-                padding: theme.spacing(2, 2.5),
-                justifyContent: 'center',
-                [theme.breakpoints.up('sm')]: {
-                  justifyContent: 'flex-start',
-                  minWidth: '240px',
-                  padding: '18px',
-                },
-              })}
-            />
-            <BerachainProgressCard
-              title={'Incentives'}
-              value={t('format.currency', {
-                value: data?.total_incentives,
-                notation: 'compact',
-              })}
-              icon={
-                <Image
-                  src="/berachain/gift.svg"
-                  alt="Gift illustration"
-                  width={26}
-                  height={26}
-                />
-              }
-              sx={(theme) => ({
-                borderRadius: '16px',
-                border: '1px solid rgba(255, 255, 255, 0.20)',
-                background: 'rgba(255, 255, 255, 0.08)',
-                backdropFilter: 'blur(8px)',
-                padding: theme.spacing(2, 2.5),
-                justifyContent: 'center',
-                [theme.breakpoints.up('sm')]: {
-                  justifyContent: 'flex-start',
-                  minWidth: '240px',
-                  padding: '18px',
-                },
-              })}
-            />
+            {isMounted && (
+              <BerachainProgressCard
+                title={isDesktop ? 'Total Value Locked' : 'TVL'}
+                value={t('format.currency', {
+                  value: data?.total_tvl,
+                  notation: 'compact',
+                })}
+                icon={
+                  <Image
+                    src="/berachain/tvl.svg"
+                    alt="TVL illustration"
+                    width={26}
+                    height={26}
+                  />
+                }
+                sx={(theme) => ({
+                  borderRadius: '16px',
+                  border: '1px solid rgba(255, 255, 255, 0.20)',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  backdropFilter: 'blur(8px)',
+                  padding: theme.spacing(2, 2.5),
+                  justifyContent: 'center',
+                  [theme.breakpoints.up('sm')]: {
+                    justifyContent: 'flex-start',
+                    minWidth: '240px',
+                    padding: '18px',
+                  },
+                })}
+              />
+            )}
+            {isMounted && (
+              <BerachainProgressCard
+                title={'Incentives'}
+                value={t('format.currency', {
+                  value: data?.total_incentives,
+                  notation: 'compact',
+                })}
+                icon={
+                  <Image
+                    src="/berachain/gift.svg"
+                    alt="Gift illustration"
+                    width={26}
+                    height={26}
+                  />
+                }
+                sx={(theme) => ({
+                  borderRadius: '16px',
+                  border: '1px solid rgba(255, 255, 255, 0.20)',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  backdropFilter: 'blur(8px)',
+                  padding: theme.spacing(2, 2.5),
+                  justifyContent: 'center',
+                  [theme.breakpoints.up('sm')]: {
+                    justifyContent: 'flex-start',
+                    minWidth: '240px',
+                    padding: '18px',
+                  },
+                })}
+              />
+            )}
           </BerachainWelcomeBoxContent>
         </motion.div>
       </Box>

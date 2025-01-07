@@ -1,6 +1,13 @@
 import type { Chain, ChainId } from '@lifi/sdk';
 import type { Breakpoint } from '@mui/material';
-import { Box, Skeleton, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Skeleton,
+  Tooltip,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
@@ -28,6 +35,8 @@ import {
   DEPOSITED_TOOLTIP,
   TVL_TOOLTIP,
 } from '../../const/title';
+import { parseRawAmountToTokenAmount } from 'royco/utils';
+import { calculateTVLGoal } from '@/components/Berachain/utils';
 
 interface BerachainMarketCardProps {
   roycoData: EnrichedMarketDataType;
@@ -72,27 +81,14 @@ export const BerachainMarketCard = ({
     dataRecipe?.input_token_data_ap?.token_amount &&
     dataRecipe?.input_token_data_ap?.token_amount > 0;
 
-  // What is the purpose of below?
-  /*
-  const prepareTokenFetch = useMemo(() => {
-    if (chainId === undefined || !tokens) {
-      return undefined;
-    }
-    return tokens.map(
-      (token, index): UseMultipleTokenProps => ({
-        chainId,
-        tokenAddress: token,
-        queryKey: ['berachain-market-card-tokens', chainId, token, index],
-      }),
-    );
-  }, [chainId, tokens]);
+  const tvlGoal = useMemo(() => {
+    return calculateTVLGoal(roycoData);
+  }, [roycoData]);
 
-  const {
-    tokens: fetchedTokens,
-    // isLoading,
-    // isError,
-  } = useMultipleTokens(prepareTokenFetch);
-*/
+  const fillable = parseRawAmountToTokenAmount(
+    roycoData.quantity_ip?.toString() ?? '0',
+    roycoData?.input_token_data?.decimals ?? 0,
+  );
 
   return (
     <Link
@@ -191,6 +187,9 @@ export const BerachainMarketCard = ({
               }
             />
             <DigitCard
+              sx={{
+                alignItems: 'flex-end',
+              }}
               title={'TVL'}
               tooltipText={TVL_TOOLTIP}
               digit={
@@ -200,6 +199,31 @@ export const BerachainMarketCard = ({
                       notation: 'compact',
                     })
                   : 'N/A'
+              }
+              endAdornment={
+                roycoData?.locked_quantity_usd && (
+                  <Tooltip
+                    title={
+                      <>
+                        there is still{' '}
+                        {t('format.decimal', { value: fillable })} to be filled
+                      </>
+                    }
+                    placement="top"
+                    enterTouchDelay={0}
+                    arrow
+                  >
+                    <CircularProgress
+                      variant="determinate"
+                      size={24}
+                      value={tvlGoal}
+                      sx={{
+                        color: '#FF8425',
+                        marginLeft: 1,
+                      }}
+                    />
+                  </Tooltip>
+                )
               }
             />
           </BeraChainProgressCardComponent>

@@ -22,7 +22,7 @@ export const BerachainExploreProtocol = ({
 }: BerachainExploreProtocolProps) => {
   const {
     data: roycoData,
-    isFetched,
+    isSuccess,
     ...props
   } = useEnrichedMarkets({
     is_verified: false,
@@ -32,7 +32,7 @@ export const BerachainExploreProtocol = ({
 
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
 
-  if (!roycoData || !data) {
+  if (!isSuccess || !roycoData || !data) {
     return (
       <Container>
         <Background />

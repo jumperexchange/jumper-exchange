@@ -1,11 +1,5 @@
-import {
-  alpha,
-  Box,
-  Breakpoint,
-  Tooltip,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import type { Breakpoint } from '@mui/material';
+import { alpha, Box, Tooltip, Typography, useTheme } from '@mui/material';
 import { BerachainProgressCard } from './BerachainProgressCard';
 
 interface DigitCardProps {
