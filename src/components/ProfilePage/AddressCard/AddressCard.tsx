@@ -2,7 +2,6 @@ import { useMenuStore } from '@/stores/menu';
 import { useWalletMenu } from '@lifi/wallet-management';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Typography } from '@mui/material';
-import type { MouseEvent } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWalletAddressImg } from 'src/hooks/useAddressImg';
@@ -52,7 +51,7 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
     setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
   };
 
-  const handleAddressMenu = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleAddressMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (openAddressMenu) {
       setAnchorEl(null);
       setOpenAddressMenu(false);
