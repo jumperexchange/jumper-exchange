@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import { Box, Typography } from '@mui/material';
-import Image from 'next/image';
 import type { ReactElement } from 'react';
 import { StepDetailContainer } from './StepDetail.style';
 
@@ -28,7 +28,7 @@ const StepDetail = ({ title, description, img, content }: StepDetailProps) => {
         <Typography>{description}</Typography>
         {content}
       </Box>
-      <Image
+      <img
         src={img.imgUrl}
         alt={img.alt}
         width={img.width}
