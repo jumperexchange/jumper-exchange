@@ -1,4 +1,5 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
+import type { Theme } from '@mui/material';
 
 interface WidgetImageProps {
   endpoint: string;
@@ -14,7 +15,7 @@ interface GetWidgetImageProps {
   sourceChain?: ExtendedChain;
   destinationToken?: Token;
   destinationChain?: ExtendedChain;
-  theme?: any;
+  theme?: Theme;
   amount?: number;
   widgetImageProps: WidgetImageProps;
   isSwap?: boolean;
