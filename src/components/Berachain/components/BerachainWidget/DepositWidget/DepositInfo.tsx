@@ -73,7 +73,7 @@ function DepositInfo({ market }: DepositInfoProps) {
         sx={(theme) => ({
           color: '#FF8425',
           background: theme.palette.alphaLight200.main,
-          borderRadius: '16px'
+          borderRadius: '16px',
         })}
       />
       <Stack direction="column">
@@ -93,8 +93,8 @@ function DepositInfo({ market }: DepositInfoProps) {
               digit={
                 market?.annual_change_ratio
                   ? t('format.percent', {
-                    value: market?.annual_change_ratio,
-                  })
+                      value: market?.annual_change_ratio,
+                    })
                   : 'N/A'
               }
             />
