@@ -1,6 +1,5 @@
 import { Box, Typography } from '@mui/material';
 import type { BerachainIncentiveToken } from 'src/components/Berachain/BerachainType';
-import TokenIncentivesCard from '@/components/Berachain/components/BerachainMarketCard/StatCard/TokenIncentivesCard';
 
 interface DigitCardProps {
   tokens: BerachainIncentiveToken[];
@@ -56,5 +55,3 @@ export const TokenIncentivesData = ({ tokens }: DigitCardProps) => {
     </Box>
   );
 };
-
-export default TokenIncentivesCard;

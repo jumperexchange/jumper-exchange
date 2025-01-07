@@ -87,7 +87,7 @@ function BerachainTransactionDetails({
             width: '100%',
           }}
         >
-          <Typography>Market Details</Typography>
+          <Typography>Transfer Details</Typography>
           {!open ? <ArrowDropDown /> : <ArrowDropUp />}
         </Box>
       </AccordionSummary>
