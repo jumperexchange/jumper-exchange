@@ -1,7 +1,7 @@
 'use client';
 
 import type { TableCellProps } from '@mui/material';
-import { TableCell } from '@mui/material';
+import { alpha, TableCell } from '@mui/material';
 import type { BoxProps, Breakpoint } from '@mui/system';
 import { styled } from '@mui/system';
 import { DynamicPagesContainer } from '../DynamicPagesContainer';
@@ -25,6 +25,7 @@ interface InformationCardCellProps extends TableCellProps {
 export const InformationCardCell = styled(TableCell, {
   shouldForwardProp: (prop) => prop !== 'fullWidth',
 })<InformationCardCellProps>(({ theme, fullWidth }) => ({
+  borderBottom: `1px solid ${alpha(theme.palette.text.primary, 0.12)}`,
   [theme.breakpoints.up('md' as Breakpoint)]: {
     width: fullWidth ? '160px' : '30%',
   },
