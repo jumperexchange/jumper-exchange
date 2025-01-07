@@ -173,7 +173,7 @@ const SwapStepsExplainerSection = ({
         marginY={2}
         sx={{ fontSize: '36px!important' }}
       >
-        Steps to Swap on {sourceChain.name}
+        Steps to Swap tokens on {sourceChain.name}
       </Typography>
       <Typography>
         To swap tokens on {sourceChain?.name}, you will need to follow these
