@@ -151,6 +151,7 @@ interface Resources {
       copyAddress: 'Copy wallet address';
       shareProfile: 'Share profile';
       open: 'Open {{tool}}';
+      rewards: 'Rewards Earned';
     };
     leaderboard: {
       title: 'Leaderboard';
@@ -167,8 +168,8 @@ interface Resources {
       currency: '{{value, currencyExt(currency: USD)}}';
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
-      date: '{{value, dateExt}}';
-      shortDate: '{{value, dateShortExt}}';
+      date: '{{value, dateExt(month: long)}}';
+      shortDate: '{{value, dateExt(month: short)}}';
     };
   };
 }

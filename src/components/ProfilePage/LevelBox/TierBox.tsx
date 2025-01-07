@@ -1,3 +1,5 @@
+'use client';
+
 import type { LevelData } from '@/types/loyaltyPass';
 import { CardContainer } from '../LeaderboardCard/LeaderboardCard.style';
 import { LevelBox } from './LevelBox';

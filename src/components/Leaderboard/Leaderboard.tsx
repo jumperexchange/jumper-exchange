@@ -1,20 +1,19 @@
 'use client';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAccount } from '@lifi/wallet-management';
-import type {
-  LeaderboardEntryData,
-  LeaderboardMeta,
-} from '../../hooks/useLeaderboard';
+import { Box } from '@mui/material';
+import useClient from 'src/hooks/useClient';
+import type { LeaderboardEntryData } from '../../hooks/useLeaderboard';
 import {
   useLeaderboardList,
   useLeaderboardUser,
 } from '../../hooks/useLeaderboard';
+import IconHeader from '../ProfilePage/Common/IconHeader';
 import { Pagination } from '../ProfilePage/Common/Pagination';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
-import { TooltipInfo } from '../TooltipInfo/TooltipInfo';
 import {
   LeaderboardContainer,
   LeaderboardEntryDivider,
@@ -26,7 +25,6 @@ import {
 import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
-import { IconHeader } from '../ProfilePage/Common/IconHeader';
 
 export const LEADERBOARD_LENGTH = 25;
 
@@ -39,13 +37,13 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
 
   const { t } = useTranslation();
 
-  const {
-    data: leaderboardData,
-    meta,
-  }: { data: LeaderboardEntryData[]; meta: LeaderboardMeta } =
-    useLeaderboardList(defaultPage, LEADERBOARD_LENGTH);
-  const { data: leaderboardUserData }: { data: LeaderboardEntryData } =
-    useLeaderboardUser(account?.address);
+  const isClient = useClient();
+
+  const { data: leaderboardData, meta } = useLeaderboardList(
+    defaultPage,
+    LEADERBOARD_LENGTH,
+  );
+  const { data: leaderboardUserData } = useLeaderboardUser(account?.address);
 
   const currentPage = useMemo(() => {
     return isValidPage(defaultPage, meta?.pagination?.pagesLength)
@@ -68,10 +66,12 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
               {t('leaderboard.title')}
             </Typography>
             <LeaderboardUpdateDateBox>
-              <IconHeader
-                tooltipKey={t('leaderboard.description')}
-                title={`Updated: ${t('format.date', { value: new Date() })}`}
-              />
+              {isClient && (
+                <IconHeader
+                  tooltipKey={t('leaderboard.description')}
+                  title={`Updated: ${t('format.date', { value: new Date() })}`}
+                />
+              )}
             </LeaderboardUpdateDateBox>
           </LeaderboardTitleBox>
         </LeaderboardHeader>
@@ -79,17 +79,17 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
         <LeaderboardEntryStack direction={'column'}>
           {!leaderboardData?.length
             ? Array.from({ length: LEADERBOARD_LENGTH }).map((_, index) => (
-                <>
+                <Box key={`leaderboard-entry-${index}-fragment`}>
                   <LeaderboardEntrySkeleton
                     key={`leaderboard-entry-${index}-skeleton`}
                     isUserPosition={false}
                   />
                   {index !== LEADERBOARD_LENGTH - 1 && (
                     <LeaderboardEntryDivider
-                      key={`leaderboard-entry-${index}-skeleton-divider`}
+                      key={`leaderboard-entry-divider=${index}-skeleton`}
                     />
                   )}
-                </>
+                </Box>
               ))
             : leaderboardData?.map(
                 (entry: LeaderboardEntryData, index: number) => {
@@ -98,7 +98,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                     +parseInt(leaderboardUserData?.position);
 
                   return (
-                    <>
+                    <Box key={`leaderboard-entry-${index}-fragment`}>
                       <LeaderboardEntry
                         key={`leaderboard-entry-${index}`}
                         isUserPosition={isUserPosition}
@@ -108,10 +108,10 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                       />
                       {index !== leaderboardData.length - 1 && (
                         <LeaderboardEntryDivider
-                          key={`leaderboard-entry-${index}-divider`}
+                          key={`leaderboard-entry-divider-${index}`}
                         />
                       )}
-                    </>
+                    </Box>
                   );
                 },
               )}

@@ -33,15 +33,9 @@ export const ButtonPrimary = styled(ButtonBase)<MuiButtonProps>(
 
 export const ButtonSecondary = styled(ButtonBase)<MuiButtonProps>(
   ({ theme }) => ({
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.08)
-        : alpha(theme.palette.primary.main, 0.42),
+    backgroundColor: theme.palette.bgQuaternary.main,
     '&:hover': {
-      backgroundColor:
-        theme.palette.mode === 'light'
-          ? alpha(theme.palette.primary.main, 0.12)
-          : alpha(theme.palette.primary.main, 0.56),
+      backgroundColor: theme.palette.bgQuaternary.hover,
     },
   }),
 );

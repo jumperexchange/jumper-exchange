@@ -21,7 +21,7 @@ import { ProfileContext } from '@/providers/ProfileProvider';
 
 export const ProfilePage = () => {
   const { account } = useAccount();
-  const { isLoading, points, pdas } = useLoyaltyPass();
+  const { isLoading, points, pdas } = useLoyaltyPass(account?.address);
   const { traits } = useTraits();
   const { walletAddress, isPublic } = useContext(ProfileContext);
 

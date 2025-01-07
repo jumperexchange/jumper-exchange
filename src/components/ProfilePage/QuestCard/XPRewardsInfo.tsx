@@ -9,6 +9,7 @@ interface XPRewardsInfoProps {
   tooltip?: string;
   active?: boolean;
   completed?: boolean;
+  color?: string;
 }
 
 export const XPRewardsInfo: React.FC<PropsWithChildren<XPRewardsInfoProps>> = ({
@@ -18,6 +19,7 @@ export const XPRewardsInfo: React.FC<PropsWithChildren<XPRewardsInfoProps>> = ({
   active,
   children,
   completed,
+  color,
 }) => {
   return (
     <Tooltip title={tooltip} placement="top" enterTouchDelay={0} arrow>
@@ -30,11 +32,7 @@ export const XPRewardsInfo: React.FC<PropsWithChildren<XPRewardsInfoProps>> = ({
         <XPDisplayBoxLabel variant="bodySmallStrong">
           {points}
         </XPDisplayBoxLabel>
-        {children ? (
-          children
-        ) : (
-          <XPIcon size={20} variant={completed ? 'completed' : 'secondary'} />
-        )}
+        {children ? children : <XPIcon colorFill={color} />}
       </XPDisplayBox>
     </Tooltip>
   );

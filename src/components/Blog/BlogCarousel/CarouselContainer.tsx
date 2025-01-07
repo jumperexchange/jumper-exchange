@@ -4,7 +4,9 @@ import { Box, useTheme, type CSSObject } from '@mui/material';
 
 import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
+import IconHeader from 'src/components/ProfilePage/Common/IconHeader';
 import { SectionTitle } from 'src/components/ProfilePage/ProfilePage.style';
+import useClient from 'src/hooks/useClient';
 import {
   CarouselCenteredBox,
   CarouselContainerBox,
@@ -12,7 +14,6 @@ import {
   CarouselNavigationButton,
   CarouselNavigationContainer,
 } from '.';
-import { IconHeader } from 'src/components/ProfilePage/Common/IconHeader';
 
 interface CarouselContainerProps {
   title?: string;
@@ -34,6 +35,8 @@ export const CarouselContainer = ({
 }: CarouselContainerProps) => {
   const theme = useTheme();
   const carouselContainerRef = useRef<HTMLDivElement>(null);
+
+  const isClient = useClient();
 
   const handleChange = useCallback((direction: 'next' | 'prev') => {
     if (carouselContainerRef.current) {
@@ -74,10 +77,12 @@ export const CarouselContainer = ({
           {title && <SectionTitle variant="headerMedium">{title}</SectionTitle>}
           {updateTitle && (
             <Box>
-              <IconHeader
-                tooltipKey={updateTooltip || ''}
-                title={updateTitle}
-              />
+              {isClient && (
+                <IconHeader
+                  tooltipKey={updateTooltip || ''}
+                  title={updateTitle}
+                />
+              )}
             </Box>
           )}
         </CarouselCenteredBox>

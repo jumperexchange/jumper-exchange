@@ -1,4 +1,4 @@
-import { alpha, Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import { walletDigest } from 'src/utils/walletDigest';
@@ -13,7 +13,7 @@ import {
   RankWalletImageSkeleton,
 } from './LeaderboardEntry.style';
 
-import { useWalletAddressImg } from 'src/hooks/useAddressImg';
+import useBlockieImg from 'src/hooks/useBlockieImg';
 import { obfuscatedAddressFormatter } from 'src/utils/obfuscatedAddressFormatter';
 
 interface LeaderboardEntryProps {
@@ -33,10 +33,9 @@ export const LeaderboardEntry = ({
   position,
   points,
 }: LeaderboardEntryProps) => {
-  const theme = useTheme();
   const { t } = useTranslation();
   const formattedAddress = obfuscatedAddressFormatter(walletAddress);
-  const imgLink = useWalletAddressImg(formattedAddress);
+  const imgLink = useBlockieImg(formattedAddress);
 
   return (
     <LeaderboardEntryWrapper
@@ -68,8 +67,7 @@ export const LeaderboardEntry = ({
 
         <RankWalletAddress
           variant="bodyLargeStrong"
-          isUserConnected={isUserConnected}
-          isUserEntry={isUserEntry}
+          hide={!isUserConnected && isUserEntry}
         >
           {isUserEntry && !isUserConnected
             ? t('leaderboard.rankCtaConnect')
@@ -86,15 +84,7 @@ export const LeaderboardEntry = ({
           <Typography variant="bodyLargeStrong">
             {t('format.decimal2Digit', { value: points })}
           </Typography>
-          <XPIcon
-            size={24}
-            color={theme.palette.text.primary}
-            bgColor={
-              theme.palette.mode === 'light'
-                ? alpha(theme.palette.primary.main, 0.08)
-                : alpha(theme.palette.primary.main, 0.42)
-            }
-          />
+          <XPIcon />
         </RankPointsContainer>
       )}
     </LeaderboardEntryWrapper>

@@ -37,7 +37,6 @@ import {
 } from './QuestCard.style';
 import { TraitsBox } from './TraitsBox/TraitsBox';
 import { XPRewardsInfo } from './XPRewardsInfo';
-import { IconHeader } from '../Common/IconHeader';
 
 export interface RewardsInterface {
   logo: string;
@@ -49,7 +48,7 @@ export interface RewardsProgressProps extends OngoingNumericItemStats {
   earnedXP?: number;
 }
 
-interface QuestCardProps {
+export interface QuestCardProps {
   action?: string;
   active?: boolean;
   chains?: QuestChains[];
@@ -74,29 +73,35 @@ interface QuestCardProps {
   variableWeeklyAPY?: boolean;
 }
 
-export const QuestCard = ({
-  action,
-  active,
-  chains,
-  claimingIds,
-  completed,
-  ctaLink,
-  endDate,
-  hideXPProgressComponents,
-  id,
-  image,
-  isLoading,
-  isTraitsGarded,
-  isUnlocked,
-  label,
-  points,
-  // rewards,
-  rewardsProgress,
-  rewardRange,
-  startDate,
-  title,
-  variableWeeklyAPY,
-}: QuestCardProps) => {
+interface QuestCardDataProps {
+  data: QuestCardProps;
+}
+
+export const QuestCard = ({ data }: QuestCardDataProps) => {
+  const {
+    action,
+    active,
+    chains,
+    claimingIds,
+    completed,
+    ctaLink,
+    endDate,
+    hideXPProgressComponents,
+    id,
+    image,
+    isLoading,
+    isTraitsGarded,
+    isUnlocked,
+    label,
+    points,
+    // rewards,
+    rewardsProgress,
+    rewardRange,
+    startDate,
+    title,
+    variableWeeklyAPY,
+  } = data;
+
   const { t } = useTranslation();
   const { apy } = useMissionsMaxAPY(claimingIds);
   const { trackEvent } = useUserTracking();
@@ -248,6 +253,7 @@ export const QuestCard = ({
                           })
                         }
                         active={true}
+                        color={completed ? '#00B849' : undefined}
                       />
                     )}
                   </>
