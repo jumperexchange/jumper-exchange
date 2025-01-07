@@ -128,6 +128,19 @@ function WidgetLikeField({
     }
   }
 
+  const hasErrorText = useMemo(() => {
+    if (balance && (parseFloat(value) ?? 0) > parseFloat(balance)) {
+      return `You have not enough tokens. Current balance: ${balance}.`;
+    }
+
+    if (error?.message) {
+      console.log(error.message);
+      return `An error occurred during the execution: ${error?.name}. Please check your wallet.`;
+    }
+
+    return null;
+  }, [value, balance, error]);
+
   return (
     <Grid container justifyContent={'center'} maxWidth={416}>
       <Grid
@@ -155,7 +168,7 @@ function WidgetLikeField({
             <Typography variant="titleSmall">{label}</Typography>
           </InputLabel>
           <FormControl
-            error={false}
+            error={!!hasErrorText}
             variant="standard"
             aria-autocomplete="none"
           >
@@ -290,7 +303,7 @@ function WidgetLikeField({
                 )
               }
             />
-            {error && (
+            {hasErrorText && (
               <FormHelperText
                 sx={{
                   display: 'flex',
@@ -306,7 +319,7 @@ function WidgetLikeField({
                   },
                 }}
               >
-                {error.message}
+                {hasErrorText}
               </FormHelperText>
             )}
           </FormControl>
