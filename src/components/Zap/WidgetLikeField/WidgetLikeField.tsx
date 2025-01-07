@@ -316,7 +316,6 @@ function WidgetLikeField({
           ) : shouldSwitchChain ? (
             <LoadingButton
               sx={{ marginTop: theme.spacing(2) }}
-              overrideStyle={overrideStyle}
               type="button"
               variant="contained"
               onClick={async () => {
