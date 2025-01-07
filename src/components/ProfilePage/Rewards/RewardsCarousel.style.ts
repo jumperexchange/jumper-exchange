@@ -1,13 +1,11 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { BoxProps, Breakpoint, IconButtonProps } from '@mui/material';
 import {
   Box,
-  Typography,
-  styled,
   IconButton as MuiIconButton,
+  Typography,
   alpha,
-  darken,
+  styled,
 } from '@mui/material';
-import type { IconButtonProps } from '@mui/material';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.bgSecondary.main,
@@ -113,14 +111,8 @@ export const RewardsOpenIconButton = styled(MuiIconButton, {
   transition: 'background 0.3s',
   width: theme.spacing(6),
   height: theme.spacing(6),
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.primary.main, 0.08)
-      : alpha(theme.palette.primary.main, 0.42),
+  backgroundColor: theme.palette.bgQuaternary.main,
   '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.12)
-        : alpha(theme.palette.primary.main, 0.56),
+    backgroundColor: theme.palette.bgQuaternary.hover,
   },
 }));

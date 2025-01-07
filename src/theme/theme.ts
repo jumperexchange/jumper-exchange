@@ -50,7 +50,12 @@ declare module '@mui/material/styles' {
     bg: Palette['primary'];
     bgSecondary: Palette['primary'];
     bgTertiary: Palette['primary'];
+    bgQuaternary: {
+      main: string;
+      hover: string;
+    };
     shadow: Palette['primary'];
+    shadowLight: Palette['primary'];
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
     alphaDark300: Palette['primary'];
@@ -85,7 +90,9 @@ declare module '@mui/material/styles' {
     bg?: PaletteOptions['primary'];
     bgSecondary?: PaletteOptions['primary'];
     bgTertiary?: PaletteOptions['primary'];
+    bgQuaternary?: PaletteOptions['primary'];
     shadow?: PaletteOptions['primary'];
+    shadowLight?: PaletteOptions['primary'];
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
     alphaDark300?: PaletteOptions['primary'];
@@ -122,7 +129,9 @@ declare module '@mui/material/styles' {
     bodyXSmall: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
     titleSmall: React.CSSProperties;
+    titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
+    titleLarge: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
     urbanistTitle2XLarge: React.CSSProperties;
@@ -153,7 +162,9 @@ declare module '@mui/material/styles' {
     bodyXSmall: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
     titleSmall: React.CSSProperties;
+    titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
+    titleLarge: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
     urbanistTitle2XLarge: React.CSSProperties;
@@ -182,7 +193,9 @@ declare module '@mui/material/Button' {
     bg: true;
     bgSecondary: true;
     bgTertiary: true;
+    bgQuaternary: true;
     shadow: true;
+    shadowLight: true;
     alphaDark100: true;
     alphaDark200: true;
     alphaDark300: true;
@@ -222,7 +235,9 @@ declare module '@mui/material/Typography' {
     bodyXSmall: true;
     brandHeaderXLarge: true;
     titleSmall: true;
+    titleXSmall: true;
     title2XSmall: true;
+    titleLarge: true;
     urbanistTitleLarge: true;
     urbanistTitle2XLarge: true;
     urbanistTitleXLarge: true;
@@ -301,8 +316,8 @@ const themeCustomized = createTheme({
     },
     MuiContainer: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          [theme.breakpoints.up('lg' as Breakpoint)]: {
+        root: () => ({
+          [themeBase.breakpoints.up('lg' as Breakpoint)]: {
             maxWidth: 1280,
           },
         }),
@@ -467,6 +482,9 @@ const themeCustomized = createTheme({
       light: '#000000',
       dark: '#000000',
     },
+    shadowLight: {
+      main: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+    },
     alphaDark100: {
       main: 'rgba(0, 0, 0, 0.04)',
     },
@@ -613,7 +631,7 @@ const themeCustomized = createTheme({
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '14px',
-      lineHeight: '20px',
+      lineHeight: '18px',
       letterSpacing: 0,
     },
     bodySmall: {
@@ -644,6 +662,13 @@ const themeCustomized = createTheme({
       lineHeight: '72px',
       letterSpacing: 0,
     },
+    titleSmall: {
+      fontFamily: inter.style.fontFamily,
+      fontSize: '24px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '32px',
+    },
     title2XSmall: {
       fontFamily: inter.style.fontFamily,
       fontSize: '14px',
@@ -651,12 +676,11 @@ const themeCustomized = createTheme({
       fontWeight: 700,
       lineHeight: '20px',
     },
-    titleSmall: {
-      fontFamily: inter.style.fontFamily,
-      fontSize: '24px',
+    titleLarge: {
+      fontSize: '48px',
       fontStyle: 'normal',
       fontWeight: 700,
-      lineHeight: '32px',
+      lineHeight: '64px',
     },
     urbanistTitleLarge: {
       fontFamily: urbanist.style.fontFamily,
@@ -754,6 +778,12 @@ const themeCustomized = createTheme({
       lineHeight: themeBase.typography.pxToRem(18),
       fontWeight: 700,
     },
+    titleXSmall: {
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '24px',
+    },
   },
 });
 
@@ -784,6 +814,10 @@ export const lightTheme = createTheme(
       bgTertiary: {
         main: themeCustomized.palette.white.main,
       },
+      bgQuaternary: {
+        hover: alpha('#653BA3', 0.12),
+        main: alpha('#31007A', 0.08),
+      },
       shadow: {
         main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
       },
@@ -806,6 +840,11 @@ export const lightTheme = createTheme(
         light: '#31007A',
         main: '#31007A',
         dark: '#31007A',
+      },
+      accent1Alt: {
+        light: '#BEA0EB',
+        main: '#BEA0EB',
+        dark: '#BEA0EB',
       },
       accent2: {
         light: '#8700B8',
@@ -899,6 +938,10 @@ export const darkTheme = createTheme(
       },
       bgTertiary: {
         main: themeCustomized.palette.alphaLight200.main,
+      },
+      bgQuaternary: {
+        hover: alpha('#653BA3', 0.56),
+        main: alpha('#653BA3', 0.42),
       },
       shadow: {
         main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',

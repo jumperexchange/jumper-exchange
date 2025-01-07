@@ -48,22 +48,6 @@ export const FeaturedArticleLink = styled(Link, {
   },
 }));
 
-export const FeaturedArticleCard = styled(Box)<BoxProps>(({ theme }) => ({
-  display: 'flex',
-  backgroundColor: alpha(theme.palette.primary.main, 0.25),
-  top: theme.spacing(-4),
-  margin: theme.spacing(4, 2.5),
-  padding: theme.spacing(4),
-  borderRadius: '36px',
-  width: 'auto',
-  alignItems: 'center',
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    margin: theme.spacing(4, 2.5),
-    padding: theme.spacing(4),
-    height: 576,
-  },
-}));
-
 export const FeaturedArticleMetaContainer = styled(Box)<BoxProps>(
   ({ theme }) => ({
     display: 'flex',
