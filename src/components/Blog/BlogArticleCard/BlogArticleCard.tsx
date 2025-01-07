@@ -99,9 +99,10 @@ export const BlogArticleCard = ({
             >
               <BlogArticleMetaDate variant="bodyXSmall" as="span">
                 {t('format.shortDate', {
-                  value:
+                  value: new Date(
                     article.attributes.publishedAt ||
-                    article.attributes.createdAt,
+                      article.attributes.createdAt,
+                  ),
                 })}
               </BlogArticleMetaDate>
               <BlogArticleMetaReadingTime variant="bodyXSmall" as="span">
