@@ -5,7 +5,7 @@ import type {
   CSSObject,
   IconButtonProps,
 } from '@mui/material';
-import { Box, Typography, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 export interface CarouselContainerBoxProps extends BoxProps {
   styles?: CSSObject;
@@ -22,15 +22,10 @@ export const CarouselContainerBox = styled(Box, {
   overflowY: 'hidden',
   scrollSnapType: 'x mandatory',
   '& > *': {
+    flexShrink: 0,
     scrollSnapAlign: 'center',
   },
   '::-webkit-scrollbar': { display: 'none' },
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginTop: theme.spacing(4),
-  },
-  [theme.breakpoints.up('xs' as Breakpoint)]: {
-    marginTop: theme.spacing(2),
-  },
   ...styles,
 }));
 
@@ -44,21 +39,6 @@ export const CarouselHeader = styled(Box)(({ theme }) => ({
   }),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: 0,
-  },
-}));
-
-export const CarouselTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: 700,
-  fontSize: '24px',
-  lineHeight: '32px',
-  color: 'inherit',
-  margin: theme.spacing(0, 1.5, 0),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(0, 1.5, 0),
-  },
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    justifyContent: 'flex-start',
-    margin: 0,
   },
 }));
 
@@ -82,4 +62,10 @@ export const CarouselNavigationButton = styled(
   width: 40,
   height: 40,
   fontSize: 22,
+}));
+
+export const CarouselCenteredBox = styled(Box)(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 }));

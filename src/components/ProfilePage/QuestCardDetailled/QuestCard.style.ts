@@ -67,11 +67,12 @@ export const QuestPlatformMainBox = styled(Box, {
 
 export interface XPDisplayBoxProps extends BoxProps {
   active?: boolean;
+  completed?: boolean;
 }
 
 export const XPDisplayBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<XPDisplayBoxProps>(({ active }) => ({
+  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'completed',
+})<XPDisplayBoxProps>(({ active, completed }) => ({
   marginRight: active ? '8px' : undefined,
   display: 'flex',
   height: '28px',
@@ -80,26 +81,11 @@ export const XPDisplayBox = styled(Box, {
   alignItems: 'center',
   borderRadius: '128px',
   padding: '8px',
+  ...(completed && { backgroundColor: '#42B852' }),
 }));
 
 export const XPIconBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignContent: 'flex-end',
   justifyContent: 'flex-end',
-}));
-
-export const BadgeRelativeBox = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  display: 'flex',
-  justifyContent: 'center',
-  zIndex: 1,
-}));
-
-export const AbsoluteCenterTraitsBox = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  cursor: 'help',
-  backgroundColor: '#653ba3', //'rgba(84, 49, 136, 0.4)',
-  borderRadius: '32px',
-  padding: theme.spacing(0.5, 2),
-  marginTop: theme.spacing(1),
 }));

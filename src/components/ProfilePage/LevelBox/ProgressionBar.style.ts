@@ -2,10 +2,10 @@ import type { BoxProps } from '@mui/material';
 import { Box, styled } from '@mui/system';
 import type { LevelData } from 'src/types/loyaltyPass';
 
-export const LevelIndicatorWrapper = styled(Box)(() => ({
+export const LevelIndicatorWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  marginTop: '24px',
+  marginTop: theme.spacing(2),
 }));
 
 interface ProgressionContainerProps extends BoxProps {
@@ -15,9 +15,10 @@ interface ProgressionContainerProps extends BoxProps {
 export const ProgressionContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'hideLevelIndicator',
 })<ProgressionContainerProps>(({ hideLevelIndicator }) => ({
+  position: 'relative',
   ...(!hideLevelIndicator
     ? {
-        marginTop: 1.5,
+        marginTop: 8,
       }
     : {
         display: 'flex',
@@ -28,13 +29,35 @@ export const ProgressionContainer = styled(Box, {
       }),
 }));
 
-export const ProgressionChart = styled(Box)(() => ({
+interface ProgressionChartProps extends BoxProps {
+  hideLevelIndicator?: boolean;
+  label?: string;
+}
+
+export const ProgressionChart = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'label',
+})<ProgressionChartProps>(({ theme, label }) => ({
   position: 'relative',
   overflow: 'hidden',
   borderRadius: '12px',
   height: '16px',
   width: '100%',
   display: 'flex',
+  ...(!!label && {
+    height: 24,
+    ':before': {
+      content: `"${label}"`,
+      position: 'absolute',
+      width: '100%',
+      fontWeight: 700,
+      fontSize: '12px',
+      lineHeight: '24px',
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.primary.main
+          : theme.palette.white.main,
+    },
+  }),
 }));
 
 export interface ProgressionChartScoreProps extends BoxProps {
@@ -66,7 +89,7 @@ export const ProgressionChartScore = styled(Box, {
 export const ProgressionChartBg = styled(Box)(({ theme }) => ({
   position: 'absolute',
   width: '100%',
-  height: '16px',
+  height: '100%',
   borderRadius: '12px',
   backgroundColor:
     theme.palette.mode === 'light'

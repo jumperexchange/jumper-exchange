@@ -100,21 +100,15 @@ export const AmountInputBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const RewardsOpenIconButton = styled(MuiIconButton)<IconButtonProps>(
-  ({ theme }) => ({
-    color: theme.palette.white.main,
-    transition: 'background 0.3s',
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.08)
-        : alpha(theme.palette.primary.main, 0.42),
-    '&:hover': {
-      backgroundColor:
-        theme.palette.mode === 'light'
-          ? alpha(theme.palette.primary.main, 0.12)
-          : alpha(theme.palette.primary.main, 0.56),
-    },
-  }),
-);
+export const RewardsOpenIconButton = styled(MuiIconButton, {
+  shouldForwardProp: (prop) => prop !== 'styles',
+})<IconButtonProps>(({ theme }) => ({
+  color: theme.palette.white.main,
+  transition: 'background 0.3s',
+  width: theme.spacing(6),
+  height: theme.spacing(6),
+  backgroundColor: theme.palette.bgQuaternary.main,
+  '&:hover': {
+    backgroundColor: theme.palette.bgQuaternary.hover,
+  },
+}));

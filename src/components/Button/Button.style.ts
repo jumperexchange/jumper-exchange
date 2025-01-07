@@ -30,15 +30,9 @@ export const ButtonPrimary = styled(ButtonBase)(({ theme }) => ({
 }));
 
 export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.primary.main, 0.08)
-      : alpha(theme.palette.primary.main, 0.42),
+  backgroundColor: theme.palette.bgQuaternary.main,
   '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.12)
-        : alpha(theme.palette.primary.main, 0.56),
+    backgroundColor: theme.palette.bgQuaternary.hover,
   },
 }));
 
@@ -82,8 +76,12 @@ export const SuperfestButton = styled(ButtonBase)(({ theme }) => ({
   },
 }));
 
-export const LevelButton = styled(ButtonSecondary)(() => ({
+export const LevelButton = styled(ButtonSecondary)(({ theme }) => ({
   display: 'flex',
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.white.main,
   justifyContent: 'center',
   alignItems: 'center',
   pointerEvents: 'none',

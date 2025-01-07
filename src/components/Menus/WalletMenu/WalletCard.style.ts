@@ -2,7 +2,7 @@
 
 import { ButtonTransparent } from '@/components/Button';
 import type { Breakpoint } from '@mui/material';
-import { alpha, Avatar, Badge, Container } from '@mui/material';
+import { Avatar, Badge, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export const WalletAvatar = styled(Avatar)(({ theme }) => ({
@@ -54,15 +54,9 @@ export const WalletCardBadge = styled(Badge)(({ theme }) => ({
 
 export const Button = styled(ButtonTransparent)(({ theme }) => ({
   minWidth: 'auto',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.primary.main, 0.08)
-      : alpha(theme.palette.primary.main, 0.42),
+  backgroundColor: theme.palette.bgQuaternary.main,
   '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.12)
-        : alpha(theme.palette.primary.main, 0.56),
+    backgroundColor: theme.palette.bgQuaternary.hover,
   },
 }));
 

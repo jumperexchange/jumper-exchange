@@ -11,15 +11,15 @@ import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { NoSelectTypography } from '@/components/ProfilePage/ProfilePage.style';
-import {
-  AddressBoxContainer,
-  AddressDisplayBox,
-  PassImageBox,
-  ProfileIconButton,
-} from './AddressBox.style';
 import { getSiteUrl } from '@/const/urls';
 import useBlockieImg from '@/hooks/useBlockieImg';
 import { useWalletAddressImg } from '@/hooks/useAddressImg';
+import {
+  AddressBoxContainer,
+  PassImageBox,
+  ProfileIconButton,
+} from '../AddressCard/AddressCard.style';
+import { AddressDisplayBox } from './AddressBox.style';
 
 interface AddressBoxProps {
   address: string;
@@ -28,7 +28,9 @@ interface AddressBoxProps {
 export const AddressBox = ({ address }: AddressBoxProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const imgLink = useWalletAddressImg(address);
+  const imgLink = useWalletAddressImg({
+    userAddress: address,
+  });
   const { setSnackbarState } = useMenuStore((state) => state);
   const { data: ensName, isSuccess } = useEnsName({
     address: address as Address | undefined,
@@ -46,7 +48,7 @@ export const AddressBox = ({ address }: AddressBoxProps) => {
   };
 
   return (
-    <AddressBoxContainer imgUrl={imgLink}>
+    <AddressBoxContainer>
       <PassImageBox>
         <Image
           alt={`${address} wallet Icon`}
