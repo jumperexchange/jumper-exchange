@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
@@ -23,7 +23,6 @@ export const RewardsCarousel = ({
   hideComponent,
   isMerklSuccess,
 }: RewardsCarouselProps) => {
-  const theme = useTheme();
   const { t } = useTranslation();
 
   return (
