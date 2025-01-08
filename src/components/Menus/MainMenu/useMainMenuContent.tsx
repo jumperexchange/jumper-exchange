@@ -30,6 +30,7 @@ import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
+import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import { BoycoIcon } from 'src/components/illustrations/BoycoIcon';
 
 export const useMainMenuContent = () => {

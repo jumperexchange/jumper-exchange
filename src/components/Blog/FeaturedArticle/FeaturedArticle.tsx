@@ -48,9 +48,10 @@ export const FeaturedArticle = ({
   const formatedDate =
     featuredArticle &&
     t('format.shortDate', {
-      value:
+      value: new Date(
         featuredArticle?.attributes.publishedAt ||
-        featuredArticle?.attributes.createdAt,
+          featuredArticle?.attributes.createdAt,
+      ),
     });
 
   const minRead =
@@ -59,7 +60,10 @@ export const FeaturedArticle = ({
   return featuredArticle ? (
     <>
       <FeaturedArticleLink
-        href={`${JUMPER_LEARN_PATH}/${featuredArticle?.attributes.Slug}`}
+        href={
+          featuredArticle.attributes.RedirectURL ??
+          `${JUMPER_LEARN_PATH}/${featuredArticle?.attributes.Slug}`
+        }
         onClick={() => {
           handleFeatureCardClick(featuredArticle);
         }}

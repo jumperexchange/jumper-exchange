@@ -15,7 +15,7 @@ import {
 } from './LearnArticlePage.style';
 
 interface LearnArticlePageProps {
-  article: BlogArticleData[];
+  article: BlogArticleData;
   articles: BlogArticleData[];
   url: string;
   activeThemeMode?: ThemeMode;
@@ -34,17 +34,17 @@ const LearnArticlePage = ({
       <BlogArticleWrapper>
         <BlogBackgroundGradient />
         <BlogArticle
-          subtitle={article[0]?.attributes.Subtitle}
-          title={article[0]?.attributes.Title}
-          content={article[0]?.attributes.Content}
-          slug={article[0]?.attributes.Slug}
-          id={article[0]?.id}
-          author={article[0]?.attributes.author}
-          publishedAt={article[0]?.attributes.publishedAt}
-          createdAt={article[0]?.attributes.createdAt}
-          updatedAt={article[0]?.attributes.updatedAt}
-          tags={article[0]?.attributes.tags}
-          image={article[0]?.attributes.Image}
+          subtitle={article?.attributes.Subtitle}
+          title={article?.attributes.Title}
+          content={article?.attributes.Content}
+          slug={article?.attributes.Slug}
+          id={article?.id}
+          author={article?.attributes.author}
+          publishedAt={article?.attributes.publishedAt}
+          createdAt={article?.attributes.createdAt}
+          updatedAt={article?.attributes.updatedAt}
+          tags={article?.attributes.tags}
+          image={article?.attributes.Image}
           baseUrl={url}
           activeThemeMode={activeThemeMode}
         />

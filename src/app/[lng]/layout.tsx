@@ -181,10 +181,7 @@ export default async function RootLayout({
                   <SettingsStoreProvider
                     welcomeScreenClosed={welcomeScreenClosed}
                   >
-                    <WalletProvider>
-                      <Banner />
-                      {children}
-                    </WalletProvider>
+                    <WalletProvider>{children}</WalletProvider>
                   </SettingsStoreProvider>
                 </ThemeProvider>
               </NextThemeProvider>
