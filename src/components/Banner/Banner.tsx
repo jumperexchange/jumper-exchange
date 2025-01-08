@@ -33,7 +33,7 @@ export const Banner = () => {
     <a
       href="https://wrapped.jumper.exchange"
       target="_blank"
-      style={{ textDecoration: 'none', color: 'inherit' }}
+      style={{ textDecoration: 'none', color: 'inherit', position:'relative', zIndex: 1 }}
       rel="noreferrer"
     >
       <BannerContainer onClick={handleClick}>
