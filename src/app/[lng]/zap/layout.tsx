@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
 import { Layout } from 'src/Layout';
-import { WalletProviderZap } from 'src/providers/WalletProvider/ZapWalletProvider';
+import { WalletProviderZap } from 'src/providers/WalletProvider/WalletProviderZap';
 
 export const metadata: Metadata = {
   other: {
