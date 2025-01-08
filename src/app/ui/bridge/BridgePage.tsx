@@ -3,7 +3,7 @@ import { getChainInfoData, getTokenInfoData } from '@/app/ui/bridge/utils';
 import { Widget } from '@/components/Widgets/Widget';
 import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
 import { Container, Stack, Typography } from '@mui/material';
-import InformationCard from 'src/app/ui/bridge/InformationCard';
+import InformationCard from 'src/components/InformationCard/InformationCard';
 import BridgeExplanationSection from './BridgeExplanation';
 import PopularBridgeSection from './PopularBridgeSection';
 import StepsExplainerSection from './StepsExplainer';

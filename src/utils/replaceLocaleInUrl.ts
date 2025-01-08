@@ -1,5 +1,6 @@
 import { locales } from '@/i18n/i18next-locales';
 import { fallbackLng } from '@/i18n/i18next-settings';
+import { removeTrailingSlash } from './removeTrailingSlash';
 
 export const replaceLocaleInUrl = (currentPath: string, newLocale: string) => {
   const urlParts = currentPath.split('/');
@@ -26,9 +27,7 @@ export const replaceLocaleInUrl = (currentPath: string, newLocale: string) => {
   updatedUrl = updatedUrl.replace(/^\/+/, ''); // Remove leading slashes
 
   // Ensure the URL ends with a single slash
-  if (updatedUrl.endsWith('/')) {
-    updatedUrl = updatedUrl.slice(-1, 0);
-  }
+  updatedUrl = removeTrailingSlash(updatedUrl);
 
   // Update the URL using window.history.replaceState()
   const relativePath = `/${updatedUrl}`;

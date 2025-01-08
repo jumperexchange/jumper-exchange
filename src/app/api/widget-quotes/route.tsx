@@ -85,7 +85,7 @@ export async function GET(request: Request) {
           width={'100%'}
           height={'100%'}
           style={imageStyle}
-          src={`${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}` : process.env.NEXT_PUBLIC_SITE_URL}/widget/widget-quotes-${theme === 'dark' ? 'dark' : 'light'}.png`}
+          src={`${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}` : process.env.NEXT_PUBLIC_SITE_URL}/widget/widget${isSwap ? '-swap' : ''}-quotes-${theme === 'dark' ? 'dark' : 'light'}.png`}
         />
         <WidgetQuoteImage
           theme={theme as 'light' | 'dark'}

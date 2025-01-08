@@ -35,6 +35,16 @@ export const imageStyles = ({
   };
 };
 
+export const normalizeParagraph = () => {
+  return {
+    marginBlockStart: '0px',
+    marginBlockEnd: '0px',
+    marginInlineStart: '0px',
+    marginInlineEnd: '0px',
+    margin: '0px',
+  };
+};
+
 export const contentContainerStyles = ({
   height,
   width,
