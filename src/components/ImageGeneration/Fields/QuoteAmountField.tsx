@@ -4,6 +4,7 @@ import type { ExtendedChain, Token } from '@lifi/sdk';
 import type { CSSProperties } from 'react';
 import { decimalFormatter } from 'src/utils/formatNumbers';
 import { AvatarBadgeNoMUI } from '../../AvatarBadge/NoMUI/AvatarBadgeNoMUI';
+import { FieldSkeleton } from '../FieldSkeleton';
 import type { ImageTheme } from '../ImageGeneration.types';
 import {
   amountContainerStyles,
@@ -89,6 +90,9 @@ const QuoteAmountField = ({
                   ${(routeAmountUSD || amountUSD || amount || 0).toFixed(2)}
                 </p>
               </div>
+            )}
+            {(showSkeletons || !token) && (
+              <FieldSkeleton width={32} height={12} />
             )}
           </div>
         </div>
