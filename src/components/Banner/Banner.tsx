@@ -1,14 +1,14 @@
 'use client';
-import type { Theme } from '@mui/material';
-import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import Image from 'next/image';
-import { BannerContainer } from './Banner.style';
-import { useUserTracking } from 'src/hooks/userTracking';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
+import type { Theme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import Image from 'next/image';
+import { useUserTracking } from 'src/hooks/userTracking';
+import { BannerContainer } from './Banner.style';
 
 export const Banner = () => {
   const theme = useTheme();
@@ -49,16 +49,15 @@ export const Banner = () => {
           }
         />
         <Typography
-          color={
-            theme.palette.mode === 'dark'
-              ? '#FFFFFFD6'
-              : theme.palette.accent1.main
-          }
-          sx={{
+          sx={(theme) => ({
+            color:
+              theme.palette.mode === 'dark'
+                ? '#FFFFFFD6'
+                : theme.palette.accent1.main,
             fontSize: '16px',
             fontWeight: 700,
             lineHeight: '20px',
-          }}
+          })}
         >
           {' '}
           {isSmallScreen ? '' : ''}{' '}

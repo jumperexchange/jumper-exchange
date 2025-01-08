@@ -143,7 +143,9 @@ export const QuestCard = ({
                     fontSize="14px"
                     fontWeight={700}
                     lineHeight="18px"
-                    color={'#ffffff'}
+                    sx={(theme) => ({
+                      color: theme.palette.white.main,
+                    })}
                   >
                     {`${Number(apy).toFixed(1)}%`}
                   </SoraTypography>
@@ -158,7 +160,9 @@ export const QuestCard = ({
                     fontSize="14px"
                     fontWeight={700}
                     lineHeight="18px"
-                    color={'#ffffff'}
+                    sx={(theme) => ({
+                      color: theme.palette.white.main,
+                    })}
                   >
                     {rewardRange ? rewardRange : `VAR.%`}
                   </SoraTypography>
@@ -175,7 +179,9 @@ export const QuestCard = ({
                   fontSize="14px"
                   fontWeight={700}
                   lineHeight="18px"
-                  color={'#ffffff'}
+                  sx={(theme) => ({
+                    color: theme.palette.white.main,
+                  })}
                 >
                   {`${points}`}
                 </SoraTypography>

@@ -2,13 +2,13 @@ import { WalletCardContainer } from '@/components/Menus';
 import { TotalValue } from '@/components/Portfolio/Portfolio.styles';
 import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
 import { usePortfolioStore } from '@/stores/portfolio';
+import { arraysEqual } from '@/utils/getTokens/utils';
+import { useAccount } from '@lifi/wallet-management';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
 import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useAccount } from '@lifi/wallet-management';
-import { arraysEqual } from '@/utils/getTokens/utils';
 import { AnimatedCounter } from 'react-animated-counter';
+import { useTranslation } from 'react-i18next';
 import RefreshIcon from './CircularProgress/RefreshIcon';
 
 function has24HoursPassed(lastDate: number): boolean {
@@ -101,7 +101,9 @@ function TotalBalance({
           <Typography
             fontWeight={500}
             fontSize={14}
-            color={(theme) => theme.palette.text.primary}
+            sx={(theme) => ({
+              color: theme.palette.text.primary,
+            })}
           >
             {t('navbar.walletMenu.totalBalance')}
           </Typography>

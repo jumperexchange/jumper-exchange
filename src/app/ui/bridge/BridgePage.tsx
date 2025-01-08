@@ -1,12 +1,12 @@
 'use client';
-import { Container, Stack, Typography } from '@mui/material';
-import { Widget } from '@/components/Widgets/Widget';
-import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
 import HalfSizeBlock from '@/app/ui/bridge/HalfSizeBlock';
 import { getChainInfoData, getTokenInfoData } from '@/app/ui/bridge/utils';
-import StepsExplainerSection from './StepsExplainer';
+import { Widget } from '@/components/Widgets/Widget';
+import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
+import { Container, Stack, Typography } from '@mui/material';
 import BridgeExplanationSection from './BridgeExplanation';
 import PopularBridgeSection from './PopularBridgeSection';
+import StepsExplainerSection from './StepsExplainer';
 
 interface BridgePageProps {
   sourceChain: ExtendedChain;
@@ -30,10 +30,12 @@ const BridgePage = ({
       <Stack display="flex" alignItems="center" direction="column">
         <Typography
           variant="h1"
-          color="text.primary"
           marginY={2}
           textAlign="center"
-          sx={{ fontSize: '40px!important' }}
+          sx={(theme) => ({
+            color: theme.palette.text.primary,
+            fontSize: '40px!important',
+          })}
         >
           How to bridge from {sourceToken.symbol} on {sourceChain.name} to{' '}
           {destinationToken.symbol} on {destinationChain.name}

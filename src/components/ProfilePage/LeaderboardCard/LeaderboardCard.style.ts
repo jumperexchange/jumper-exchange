@@ -15,7 +15,7 @@ export const CardContainer = styled(Box)(({ theme }) => ({
   borderRadius: '16px',
   width: '100%',
   padding: theme.spacing(2),
-  boxShadow: theme.palette.shadowLight.main,
+  boxShadow: theme.shadows[2],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
   },

@@ -68,7 +68,9 @@ export const RewardsAmountBox = ({
           fontSize="24px"
           lineHeight="32px"
           fontWeight={700}
-          color={theme.palette.mode === 'dark' ? '#ffffff' : '#000000'}
+          sx={(theme) => ({
+            color: theme.palette.text.primary,
+          })}
         >
           {!account?.address ||
           rewardAmount === 0 ||

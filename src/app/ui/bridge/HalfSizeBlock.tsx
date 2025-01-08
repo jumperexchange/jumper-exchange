@@ -1,3 +1,4 @@
+import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
 import {
   Avatar,
   Link as MuiLink,
@@ -7,10 +8,8 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import Image from 'next/image';
-import Link from 'next/link';
-import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
 import { Box } from '@mui/system';
+import Link from 'next/link';
 
 function buildExplorerLink(blockExplorerUrls: string[] = [], address: string) {
   if (blockExplorerUrls.length === 0) {
@@ -19,9 +18,11 @@ function buildExplorerLink(blockExplorerUrls: string[] = [], address: string) {
 
   return (
     <MuiLink
-      color="text.primary"
       component={Link}
       target="_blank"
+      sx={(theme) => ({
+        color: theme.palette.text.primary,
+      })}
       href={`${blockExplorerUrls[0]}/tokens/${address}`}
     >
       {address}

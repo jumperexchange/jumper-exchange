@@ -1,8 +1,8 @@
 'use client';
 import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
+import type { ExtendedChain, Token } from '@lifi/sdk';
 import { Link as MuiLink, Typography } from '@mui/material';
 import Link from 'next/link';
-import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
 
 interface StepsExplainerProps {
   sourceChain: ExtendedChain;
@@ -21,9 +21,11 @@ const StepsExplainerSection = ({
     <BridgePageContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
       <Typography
         variant="h2"
-        color="text.primary"
         marginY={2}
-        sx={{ fontSize: '36px!important' }}
+        sx={(theme) => ({
+          color: theme.palette.text.primary,
+          fontSize: '36px!important',
+        })}
       >
         Bridge your {sourceToken.symbol} on {sourceChain.name} to{' '}
         {destinationToken.symbol} on {destinationChain.name}
@@ -109,9 +111,11 @@ const StepsExplainerSection = ({
         <li>
           Go to your{' '}
           <MuiLink
-            color="text.primary"
             component={Link}
             href="https://jumper.exchange/scan"
+            sx={(theme) => ({
+              color: theme.palette.text.primary,
+            })}
           >
             https://jumper.exchange/scan
           </MuiLink>{' '}
