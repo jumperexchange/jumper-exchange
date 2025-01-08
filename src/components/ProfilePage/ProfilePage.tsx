@@ -20,10 +20,9 @@ import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
 
 export const ProfilePage = () => {
-  const { account } = useAccount();
-  const { isLoading, points, pdas } = useLoyaltyPass(account?.address);
-  const { traits } = useTraits();
   const { walletAddress, isPublic } = useContext(ProfileContext);
+  const { isLoading, points, pdas } = useLoyaltyPass(walletAddress);
+  const { traits } = useTraits();
 
   // const { isEnabled: isABTestEnabled } = useABTest({
   //   feature: 'test_ab_1',
@@ -38,10 +37,10 @@ export const ProfilePage = () => {
     <PageContainer className="profile-page">
       {!isPublic && <MerklRewards />}
       <ProfileHeaderBox>
-        <AddressCard address={account?.address} />
+        <AddressCard address={walletAddress} />
         <ProfileInfoBox sx={{ display: 'flex', flex: 2, gap: 2 }}>
           <TierBox points={points} loading={isLoading} />
-          <LeaderboardCard address={account?.address} />
+          <LeaderboardCard address={walletAddress} />
         </ProfileInfoBox>
       </ProfileHeaderBox>
       <QuestsOverview pastCampaigns={pastCampaigns} traits={traits} />
