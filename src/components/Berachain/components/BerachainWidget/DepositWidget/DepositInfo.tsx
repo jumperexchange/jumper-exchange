@@ -1,6 +1,6 @@
 import { BerachainDepositInputBackground } from '@/components/Berachain/components/BerachainWidget/DepositWidget/WidgetDeposit.style';
 import type { EnrichedMarketDataType } from 'royco/queries';
-import { LinearProgress, Stack } from '@mui/material';
+import { LinearProgress, Stack, Tooltip } from '@mui/material';
 import DigitCard from '@/components/Berachain/components/BerachainMarketCard/StatCard/DigitCard';
 import {
   APY_TOOLTIP,
@@ -19,6 +19,8 @@ import {
 } from '@/components/Berachain/lockupTimeMap';
 import { TokenIncentivesData } from '@/components/Berachain/components/BerachainMarketCard/StatCard/TokenIncentivesData';
 import DigitTooltipCard from '@/components/Berachain/components/BerachainMarketCard/StatCard/DigitTooltipCard';
+import TooltipProgressbar from '@/components/Berachain/components/TooltipProgressbar';
+import TooltipIncentives from '@/components/Berachain/components/BerachainWidget/TooltipIncentives';
 
 interface DepositInfoProps {
   market: EnrichedMarketDataType;
@@ -36,6 +38,11 @@ function DepositInfo({ market }: DepositInfoProps) {
   const tvlGoal = useMemo(() => {
     return calculateTVLGoal(market);
   }, [market]);
+
+  const fillable = parseRawAmountToTokenAmount(
+    market.quantity_ip?.toString() ?? '0',
+    market?.input_token_data?.decimals ?? 0,
+  );
 
   return (
     <BerachainDepositInputBackground>
@@ -67,21 +74,23 @@ function DepositInfo({ market }: DepositInfoProps) {
           />
         </Stack>
       </Stack>
-      <LinearProgress
-        variant="determinate"
-        value={tvlGoal}
-        sx={(theme) => ({
-          color: '#FF8425',
-          background: theme.palette.alphaLight200.main,
-          borderRadius: '16px',
-        })}
-      />
+      <TooltipProgressbar market={market}>
+        <LinearProgress
+          variant="determinate"
+          value={tvlGoal}
+          sx={(theme) => ({
+            color: '#FF8425',
+            background: theme.palette.alphaLight200.main,
+            borderRadius: '16px',
+          })}
+        />
+      </TooltipProgressbar>
       <Stack direction="column">
         <Stack direction="row" justifyContent="space-between">
           {market?.incentive_tokens_data?.length > 0 ? (
             <DigitCard
               title={'Total rewards'}
-              tooltipText={INCENTIVES_TOOLTIP}
+              tooltipText={<TooltipIncentives market={market} />}
               digit={
                 <TokenIncentivesData tokens={market?.incentive_tokens_data} />
               }

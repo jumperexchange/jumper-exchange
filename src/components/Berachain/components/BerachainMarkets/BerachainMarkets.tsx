@@ -10,7 +10,7 @@ import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/Be
 
 export const BerachainMarkets = () => {
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
-  const { data: roycoData } = useEnrichedMarkets({
+  const { data: roycoData, isSuccess } = useEnrichedMarkets({
     is_verified: false,
     // chain_id: 11155111,
     sorting: [{ id: 'locked_quantity_usd', desc: true }],
@@ -25,7 +25,7 @@ export const BerachainMarkets = () => {
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
-        {(!roycoData || !data) &&
+        {(!isSuccess || !roycoData || !data) &&
           Array.from({ length: 9 }, () => 42).map((_, idx) => (
             <BerachainMarketCard
               roycoData={{} as EnrichedMarketDataType}
@@ -33,6 +33,7 @@ export const BerachainMarkets = () => {
             />
           ))}
         {Array.isArray(roycoData) &&
+          isSuccess &&
           roycoData
             .filter(
               (data) => !tokenFilter.includes(data.input_token_data?.symbol),

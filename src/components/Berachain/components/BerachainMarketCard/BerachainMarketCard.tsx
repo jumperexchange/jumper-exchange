@@ -38,6 +38,7 @@ import {
 } from '../../const/title';
 import { parseRawAmountToTokenAmount } from 'royco/utils';
 import { calculateTVLGoal } from '@/components/Berachain/utils';
+import TooltipProgressbar from '@/components/Berachain/components/TooltipProgressbar';
 
 interface BerachainMarketCardProps {
   roycoData: EnrichedMarketDataType;
@@ -85,11 +86,6 @@ export const BerachainMarketCard = ({
   const tvlGoal = useMemo(() => {
     return calculateTVLGoal(roycoData);
   }, [roycoData]);
-
-  const fillable = parseRawAmountToTokenAmount(
-    roycoData.quantity_ip?.toString() ?? '0',
-    roycoData?.input_token_data?.decimals ?? 0,
-  );
 
   return (
     <Link
@@ -203,21 +199,7 @@ export const BerachainMarketCard = ({
               }
               endAdornment={
                 roycoData?.locked_quantity_usd && (
-                  <Tooltip
-                    title={
-                      <>
-                        there is still{' '}
-                        {t('format.decimal', {
-                          value: fillable,
-                          notation: 'compact',
-                        })}{' '}
-                        to be filled
-                      </>
-                    }
-                    placement="top"
-                    enterTouchDelay={0}
-                    arrow
-                  >
+                  <TooltipProgressbar market={roycoData}>
                     <Box
                       sx={{
                         position: 'relative',
@@ -249,7 +231,7 @@ export const BerachainMarketCard = ({
                         size={24}
                       />
                     </Box>
-                  </Tooltip>
+                  </TooltipProgressbar>
                 )
               }
             />

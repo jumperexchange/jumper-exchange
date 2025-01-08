@@ -20,7 +20,7 @@ export const BerachainWidget = ({
   appLink?: string;
   appName?: string;
 }) => {
-  const [tab, setTab] = useState(2);
+  const [tab, setTab] = useState(1);
   const { t } = useTranslation();
   const theme = useTheme();
   const chains = useChains();

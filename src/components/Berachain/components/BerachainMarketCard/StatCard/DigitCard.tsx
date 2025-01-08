@@ -9,7 +9,7 @@ import {
 interface DigitCardProps {
   title: string;
   digit: string | number | React.ReactNode;
-  tooltipText?: string;
+  tooltipText?: string | React.ReactNode;
   endAdornment?: React.ReactNode;
   sx?: SxProps<Theme>;
 }

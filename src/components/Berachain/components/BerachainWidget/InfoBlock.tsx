@@ -84,8 +84,9 @@ function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
             }}
             digit={
               deposited
-                ? t('format.currency', {
-                    value: recipe?.input_token_data_ap?.token_amount_usd,
+                ? t('format.decimal', {
+                    value: recipe?.input_token_data_ap?.token_amount,
+                    maximumFractionDigits: 5,
                   })
                 : market?.input_token_data?.symbol
             }
