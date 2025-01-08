@@ -77,6 +77,11 @@ function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
             title={deposited ? 'Deposited' : 'Deposit'}
             tooltipText={deposited ? DEPOSITED_TOOLTIP : DEPOSIT_TOOLTIP}
             tokenImage={market?.input_token_data?.image}
+            sx={{
+              '.content': {
+                fontSize: '1.5rem',
+              },
+            }}
             digit={
               deposited
                 ? t('format.currency', {
@@ -88,6 +93,14 @@ function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
 
           {market.lockup_time === '0' ? undefined : (
             <DigitCard
+              sx={{
+                '.header-container': {
+                  justifyContent: 'flex-end',
+                },
+                '.content': {
+                  fontSize: '1.5rem',
+                },
+              }}
               title={'Lockup'}
               tooltipText={LOCKUP_TOOLTIP}
               digit={formatWithCustomLabels(

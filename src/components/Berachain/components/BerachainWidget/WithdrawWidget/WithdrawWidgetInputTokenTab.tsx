@@ -1,11 +1,12 @@
 import {
   Avatar as MuiAvatar,
   Box,
+  IconButton,
   Stack,
   Typography,
   useTheme,
 } from '@mui/material';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, isBefore } from 'date-fns';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import {
   getRecipeInputTokenWithdrawalTransactionOptions,
@@ -22,6 +23,7 @@ import type { ExtendedChain } from '@lifi/sdk';
 import { TxConfirmation } from '../TxConfirmation';
 import { BerachainDepositInputBackground } from '@/components/Berachain/components/BerachainWidget/DepositWidget/WidgetDeposit.style';
 import DigitCard from '@/components/Berachain/components/BerachainMarketCard/StatCard/DigitCard';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import {
   APY_TOOLTIP,
   INCENTIVES_TOOLTIP,
@@ -151,17 +153,48 @@ export const WithdrawWidgetInputTokenTab = ({
     return (
       <Box
         sx={{
-          height: '100%',
-          width: '100%',
-          display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
-          placeContent: 'center', // Centers content horizontally and vertically.
-          alignItems: 'start', // Aligns items at the start along the cross-axis.
-          marginTop: theme.spacing(2),
+          display: 'flex', // 'place-content-center' is equivalent to a grid with centered content.
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          // marginTop: theme.spacing(6),
+          // marginBottom: theme.spacing(6),
+          marginY: theme.spacing(8),
+          gap: 1,
         }}
       >
         {/*<div className="h-full w-full place-content-center items-start">*/}
-        <Typography variant="bodyLargeStrong" color="textSecondary">
-          No withdrawable positions found
+        <IconButton
+          disabled
+          sx={{
+            '&.Mui-disabled': {
+              background: '#1F1D1D',
+              borderRadius: '50%',
+              width: '6rem',
+              height: '6rem',
+              marginBottom: 4,
+            },
+          }}
+        >
+          <ReceiptLongIcon
+            sx={(theme) => ({
+              color: theme.palette.primary.main,
+              width: '3rem',
+              height: '3rem',
+            })}
+          />
+        </IconButton>
+        <Typography
+          variant="bodyLargeStrong"
+          color="textPrimary"
+          sx={{
+            fontSize: '1.5rem',
+          }}
+        >
+          Nothing to Withdraw yet
+        </Typography>
+        <Typography variant="body2" color="textSecondary">
+          Deposits and rewards can be withdrawn here.
         </Typography>
       </Box>
     );
@@ -290,30 +323,20 @@ export const WithdrawWidgetInputTokenTab = ({
                     </Typography>
                   </Box>
                 </Stack>
-                {market.lockup_time === '0' ? undefined : (
-                  <DigitCard
+                {isBefore(
+                  new Date(parseInt(position?.unlock_timestamp ?? '0') * 1000),
+                  new Date(),
+                ) ? undefined : (
+                  <Typography
                     sx={{
-                      gap: 'inherit',
-                      alignItems: 'flex-end',
-                      '.title': {
-                        fontWeight: 'bold',
-                      },
-                      '.content': {
-                        fontSize: '1.5rem',
-                      },
+                      whiteSpace: 'nowrap',
+                      wordBreak: 'normal',
                     }}
-                    title={'Lockup'}
-                    tooltipText={LOCKUP_TOOLTIP}
-                    digit={formatWithCustomLabels(
-                      Object.entries(secondsToDuration(market.lockup_time))
-                        .filter(([_, value]) => value > 0) // Filter out zero values
-                        .slice(0, 2) // Take the first two non-zero units
-                        .reduce(
-                          (acc, [unit, value]) => ({ ...acc, [unit]: value }),
-                          {},
-                        ),
-                    )}
-                  />
+                    variant="bodySmallStrong"
+                    color={theme.palette.text.primary}
+                  >
+                    Locked
+                  </Typography>
                 )}
               </Stack>
               <Stack direction="column">

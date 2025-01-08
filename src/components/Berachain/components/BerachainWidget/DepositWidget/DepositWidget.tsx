@@ -95,7 +95,11 @@ function DepositWidget({
 }: WidgetLikeFieldProps) {
   const { t } = useTranslation();
   const { account } = useAccount();
-  const { isLoading: isLoadingWallet, data: dataWallet } = useAccountBalance({
+  const {
+    isLoading: isLoadingWallet,
+    data: dataWallet,
+    refetch,
+  } = useAccountBalance({
     chain_id: market.chain_id!,
     account: account?.address || '',
     tokens: market ? [market.input_token_data.contract_address] : [],
@@ -247,6 +251,7 @@ function DepositWidget({
 
   useEffect(() => {
     if (isTxConfirmed) {
+      refetch();
       setContractCallIndex(contractCallIndex + 1);
     }
   }, [isTxConfirmed]);

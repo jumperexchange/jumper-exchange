@@ -1,3 +1,4 @@
+import type { SxProps, Theme } from '@mui/material';
 import { Box, Skeleton, Tooltip, Typography, useTheme } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import {
@@ -12,19 +13,22 @@ interface DigitCardProps {
   tooltipText?: string;
   tokenImage?: string;
   hasDeposited?: boolean;
+  sx?: SxProps<Theme>;
 }
 
+// TODO: Duplicate of DigitCard
 const DigitTokenSymbolCard = ({
   title,
   digit,
   hasDeposited,
   tooltipText,
   tokenImage,
+  sx,
 }: DigitCardProps) => {
   const theme = useTheme();
 
   return (
-    <BeraChainProgressCardContent>
+    <BeraChainProgressCardContent sx={sx}>
       <BeraChainProgressCardHeader display={'flex'}>
         <Typography
           variant="bodySmall"
@@ -82,6 +86,7 @@ const DigitTokenSymbolCard = ({
           )}
           <Typography
             variant="titleXSmall"
+            className="content"
             marginTop={'4px'}
             sx={(theme) => ({
               typography: {

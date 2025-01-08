@@ -23,7 +23,10 @@ const DigitCard = ({
 }: DigitCardProps) => {
   return (
     <BeraChainProgressCardContent sx={sx}>
-      <BeraChainProgressCardHeader display={'flex'}>
+      <BeraChainProgressCardHeader
+        display={'flex'}
+        className="header-container"
+      >
         <Typography
           className="title"
           variant="bodySmall"
