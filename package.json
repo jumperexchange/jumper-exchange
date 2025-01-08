@@ -13,7 +13,7 @@
     "@fingerprintjs/fingerprintjs": "^3.4.2",
     "@headlessui/react": "^2.2.0",
     "@lifi/explorer": "^0.0.4",
-    "@lifi/sdk": "^3.4.3",
+    "@lifi/sdk": "3.5.1-beta.0",
     "@lifi/wallet-management": "^3.4.7",
     "@lifi/widget": "^3.12.5",
     "@metaplex-foundation/mpl-core": "^1.1.1",
