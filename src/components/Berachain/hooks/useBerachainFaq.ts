@@ -9,7 +9,7 @@ export const useBerachainFaq = () => {
     },
     {
       Question: 'What is Boyco?',
-      Answer: `Boyco is the term used for the pre-launch liquidity acquisition marketplaces that will be live prior to the Berachain mainnet launch, powered by [Royco](https://royco.gitbook.io/developers?ref=berachain.ghost.io).
+      Answer: `Boyco is the term used for the pre-launch liquidity acquisition marketplaces that will be live prior to the Berachain mainnet launch, powered by Royco.
 
 Boyco will allow applications to onboard liquidity directly into their smart contracts on their mainnet deployment, ensuring they can focus on building and creating within the Berachain ecosystem in the early days of deployment. It also ensures that LPs will have an easy way to shop around their liquidity to a variety of different protocols, with the ability to filter by different types of assets, durations of locks, types of applications, and return profiles.`,
     },
