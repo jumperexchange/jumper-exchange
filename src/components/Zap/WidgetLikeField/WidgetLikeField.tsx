@@ -134,7 +134,6 @@ function WidgetLikeField({
     }
 
     if (error?.message) {
-      console.log(error.message);
       return `An error occurred during the execution: ${error?.name}. Please check your wallet.`;
     }
 
