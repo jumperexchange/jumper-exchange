@@ -1,6 +1,5 @@
 'use client';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
-import { useAccount } from '@lifi/wallet-management';
 import { useContext } from 'react';
 import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useTraits } from 'src/hooks/useTraits';
