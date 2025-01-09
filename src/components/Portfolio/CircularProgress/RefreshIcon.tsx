@@ -49,12 +49,12 @@ const RefreshIcon: React.FC<
         title={t('navbar.walletMenu.totalBalanceRefresh')}
         placement="top"
         enterTouchDelay={0}
-        componentsProps={{
-          popper: { sx: { zIndex: 25000 } },
-        }}
         arrow
         sx={{
           zIndex: 25000,
+        }}
+        slotProps={{
+          popper: { sx: { zIndex: 25000 } },
         }}
       >
         <CircularBox>
