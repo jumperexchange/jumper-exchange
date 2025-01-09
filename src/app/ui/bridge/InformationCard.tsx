@@ -1,7 +1,5 @@
-import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
 import {
   Avatar,
-  Link as MuiLink,
   Table,
   TableBody,
   TableCell,
@@ -9,26 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import Link from 'next/link';
-
-function buildExplorerLink(blockExplorerUrls: string[] = [], address: string) {
-  if (blockExplorerUrls.length === 0) {
-    return address;
-  }
-
-  return (
-    <MuiLink
-      component={Link}
-      target="_blank"
-      sx={(theme) => ({
-        color: theme.palette.text.primary,
-      })}
-      href={`${blockExplorerUrls[0]}/tokens/${address}`}
-    >
-      {address}
-    </MuiLink>
-  );
-}
+import { InformationCardContainer } from './InformationCard.style';
 
 interface Info {
   logoURI?: string;
@@ -40,7 +19,7 @@ interface Data {
   value: string | number | JSX.Element | JSX.Element[];
 }
 
-function HalfSizeBlock({
+function InformationCard({
   info,
   data = [],
   type,
@@ -50,7 +29,7 @@ function HalfSizeBlock({
   type: 'Blockchain' | 'Token';
 }) {
   return (
-    <BridgePageContainer width={'48.5%'}>
+    <InformationCardContainer>
       <Typography variant="h3" display="flex" alignItems="center">
         {info.logoURI && (
           <Box display="flex" marginRight={2}>
@@ -64,18 +43,20 @@ function HalfSizeBlock({
         )}
         {info.name} - {type} Information
       </Typography>
-      <Table>
+      <Table
+        sx={(theme) => ({ tableLayout: 'fixed', marginTop: theme.spacing(1) })}
+      >
         <TableBody>
           {data.map(({ label, value }, index) => (
             <TableRow key={index}>
-              <TableCell>{label}</TableCell>
+              <TableCell style={{ width: '30%' }}>{label}</TableCell>
               <TableCell>{value}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </BridgePageContainer>
+    </InformationCardContainer>
   );
 }
 
-export default HalfSizeBlock;
+export default InformationCard;

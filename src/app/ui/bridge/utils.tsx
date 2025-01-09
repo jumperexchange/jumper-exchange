@@ -19,7 +19,13 @@ export function buildExplorerLink(
       })}
       component={Link}
       target="_blank"
-      href={`${blockExplorerUrls[0]}/tokens/${address}`}
+      href={`${blockExplorerUrls[0]}tokens/${address}`} // todo: on OP it needs to be "token/..."
+      style={{
+        display: 'block',
+        maxWidth: '100%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      }}
     >
       {address}
     </MuiLink>
@@ -43,6 +49,7 @@ export function getChainInfoData(chainInfo: ExtendedChain) {
           target="_blank"
           href={blockExplorerUrl}
           key={blockExplorerUrl}
+          style={{ overflowWrap: 'break-word' }}
         >
           {blockExplorerUrl}
         </MuiLink>

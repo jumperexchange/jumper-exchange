@@ -1,9 +1,9 @@
 'use client';
-import HalfSizeBlock from '@/app/ui/bridge/HalfSizeBlock';
-import { getChainInfoData, getTokenInfoData } from '@/app/ui/bridge/utils';
+import { getChainInfoData } from '@/app/ui/bridge/utils';
 import { Widget } from '@/components/Widgets/Widget';
 import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
 import { Container, Stack, Typography } from '@mui/material';
+import InformationCard from 'src/app/ui/bridge/InformationCard';
 import BridgeExplanationSection from './BridgeExplanation';
 import PopularBridgeSection from './PopularBridgeSection';
 import StepsExplainerSection from './StepsExplainer';
@@ -34,7 +34,7 @@ const BridgePage = ({
           textAlign="center"
           sx={(theme) => ({
             color: theme.palette.text.primary,
-            fontSize: '40px!important',
+            fontSize: { xs: '40px', sm: '40px' },
           })}
         >
           How to bridge from {sourceToken.symbol} on {sourceChain.name} to{' '}
@@ -63,7 +63,7 @@ const BridgePage = ({
           flexWrap="wrap"
         >
           {[sourceChain, destinationChain].map((chain, index) => (
-            <HalfSizeBlock
+            <InformationCard
               type="Blockchain"
               key={`${chain.id}-${index}`}
               info={{
@@ -71,17 +71,6 @@ const BridgePage = ({
                 name: chain.name,
               }}
               data={getChainInfoData(chain)}
-            />
-          ))}
-          {[sourceToken, destinationToken].map((token, index) => (
-            <HalfSizeBlock
-              type="Token"
-              key={`${token.address}-${index}`}
-              info={{
-                logoURI: token?.logoURI,
-                name: `${token.name}`,
-              }}
-              data={getTokenInfoData(chains, token)}
             />
           ))}
         </Stack>
