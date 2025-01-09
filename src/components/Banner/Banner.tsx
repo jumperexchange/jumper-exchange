@@ -20,7 +20,7 @@ export const Banner = () => {
       action: TrackingAction.ClickBanner,
       label: 'click-banner-cta',
       data: {
-        [TrackingEventParameter.ActiveCampaign]: 'wrapped-2024',
+        [TrackingEventParameter.ActiveCampaign]: '',
       },
     });
   };
@@ -31,7 +31,7 @@ export const Banner = () => {
 
   return (
     <a
-      href="https://wrapped.jumper.exchange"
+      href="https://jumper.exchange"
       target="_blank"
       style={{ textDecoration: 'none', color: 'inherit' }}
       rel="noreferrer"
@@ -61,9 +61,7 @@ export const Banner = () => {
           }}
         >
           {' '}
-          {isSmallScreen
-            ? 'Your 2024 Jumper Wrapped is here'
-            : 'Your 2024 Jumper Wrapped is here. Wrap your year'}{' '}
+          {isSmallScreen ? '' : ''}{' '}
         </Typography>
         <Image
           alt="arrow-icon"

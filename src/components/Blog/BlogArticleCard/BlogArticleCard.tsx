@@ -51,7 +51,10 @@ export const BlogArticleCard = ({
   };
   return (
     <Link
-      href={`${JUMPER_LEARN_PATH}/${article.attributes.Slug}`}
+      href={
+        article.attributes.RedirectURL ??
+        `${JUMPER_LEARN_PATH}/${article.attributes.Slug}`
+      }
       style={{ textDecoration: 'none', width: '100%' }}
     >
       <BlogArticleCardContainer
@@ -99,9 +102,10 @@ export const BlogArticleCard = ({
             >
               <BlogArticleMetaDate variant="bodyXSmall" as="span">
                 {t('format.shortDate', {
-                  value:
+                  value: new Date(
                     article.attributes.publishedAt ||
-                    article.attributes.createdAt,
+                      article.attributes.createdAt,
+                  ),
                 })}
               </BlogArticleMetaDate>
               <BlogArticleMetaReadingTime variant="bodyXSmall" as="span">

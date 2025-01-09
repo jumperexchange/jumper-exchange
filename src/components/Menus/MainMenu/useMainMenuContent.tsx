@@ -11,9 +11,8 @@ import {
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
-  JUMPER_WASH_PATH,
-  JUMPER_WRAPPED_URL,
   X_URL,
+  JUMPER_WRAPPED_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
@@ -23,7 +22,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
-import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
 import { Typography } from '@mui/material';
@@ -31,6 +29,7 @@ import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
+import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();

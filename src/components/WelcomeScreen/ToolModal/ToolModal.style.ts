@@ -28,7 +28,7 @@ export const ModalContainer = styled(Box)<ModalContainerProps>(({ theme }) => ({
   margin: 'auto',
   paddingBottom: theme.spacing(3),
   borderRadius: '12px',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   width: `calc( 100% - ${theme.spacing(3)})`,
   maxWidth: 640,
   maxHeight: '85%',

@@ -26,13 +26,19 @@ export const QuestsCompletedCarousel = ({
     !account?.address;
 
   const today = new Date();
-  const secondDay = new Date(today.getFullYear(), today.getMonth(), 2);
+  // to do: activate when PDA were not done on time
+  // const lastMonth = new Date(
+  //   today.getFullYear(),
+  //   today.getMonth() - 1,
+  //   today.getDate(),
+  // );
+  const updateDay = new Date(today.getFullYear(), today.getMonth(), 7);
 
   return (
     <QuestsOverviewContainer>
       <CarouselContainer
         title={t('missions.completed')}
-        updateTitle={`Updated: ${t('format.date', { value: secondDay })}`}
+        updateTitle={`Updated: ${t('format.date', { value: updateDay })}`}
         updateTooltip={t('completedMissionsInformation.description')}
       >
         {/** render quests */}

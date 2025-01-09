@@ -41,7 +41,7 @@ export const ProfileInfoBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '24px',
   flexDirection: 'column',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   padding: theme.spacing(2),
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
