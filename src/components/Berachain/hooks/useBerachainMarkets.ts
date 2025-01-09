@@ -16,30 +16,45 @@ export interface UseBerachainQuestsProps {
 type T = Record<string, string[]>;
 
 export const strapiBerachainMatching: T = {
-  'berachain-moby': ['0x2120adcdcf8e0ed9d6dd3df683f076402b79e3bd'],
-  'berachain-beraborrow': ['0x78c4fe43b09402a28cb1aa45c2d041f2474018fd'],
-  'berachain-burrbear': [
-    '0x4a8be66cb0fea21db529108c17d1ec32d7cd3e49',
-    '0xa167f33e07c7d5d0dbf546adc40d647b6f4af1d2',
+  'berachain-moby': [
+    '11155111_0_0x02b3fbf71d027698992f4d25c21579b3d6be19aae510b9568b3f4a07735eb6ae',
   ],
-  'berachain-concrete': ['0xe15b622502aaef45ee31bcc23c7afa8a0d6f3192'],
-  'berachain-reservoir': ['0xe382e7a75d9246c9c8196d00ef6265c50cae10fa'],
-  'berachain-dalhia': ['0xc5ca5a7c4c25e35de65fb78605a9a17cbce93a0d'],
-  'berachain-goldilocks': ['0xb97e63afe33f8907302c37069a044edfaa64a543'],
+  'berachain-beraborrow': [
+    '11155111_0_0xe9361c6676c14fe04c72c841d1db72280e0db59b563d5f3e236400078cb4e235',
+  ],
+  'berachain-burrbear': [
+    '11155111_0_0x2a8b3660ee8d64a6464648dce594afb92d6697e06264c936ea8f96f4c1cc73eb',
+    '11155111_0_0x7b5bf8336ed469737813a9d3d2cfd77970d9c2a033ae0c64bb94d720860e9161',
+  ],
+  'berachain-concrete': [
+    '11155111_1_0xb51ae13ed205542da886164148cd8c4d4366dd73',
+  ],
+  'berachain-reservoir': [
+    '11155111_0_0x67ce48013dc6509385f4717d73f301db9a1295e07c54fe5d15c100c655b74d80',
+  ],
+  'berachain-dalhia': ['98865_1_0xe86a17a5e498161b19f9aaa374240473b8e2e5e9'],
+  'berachain-goldilocks': [
+    '11155111_0_0x75091cb3ba55fe7af132865c9a9d97c57203c2b7c8aca6c293c4cf1a9f1c765f',
+  ],
   'berachain-infrared': [
-    '0x1baeb82f78f55c793296e7153f2b45396ceaeb4b',
-    '0xf16cc52c836e6035638843614bc4956d564c5fe0',
+    '11155111_0_0xda51d0e8b23511146ab4c2058859473536fef2f7ae7edb52c99c947b292cbbc1',
   ],
   'berachain-gummi': [
-    '0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b',
-    '0x0623bd8ec9e040b7bd76dbb8b2fe86d312c28cd8',
+    '11155111_0_0xafac66433f00d152c43097707811594b6c2781e4baaccd8d3be6cd3d3af4d600',
   ],
   'berachain-dolomite': [
-    '0xdbf9e533bfbd2aa2a9e6b933dd8657f9de90edb0',
-    '0x578d5c8e4822b3b1d0a6241cb09d0be6695b1809',
+    '11155111_0_0x2358c05d965774d2db56493dfa94ce3edb7e78a35ebcbff30c112db54a008ce4',
   ],
-  'berachain-zerolend': ['0xded00ff949d611b9ee91ab1a086e81ecfc23bd76'],
-  'berachain-kodiak': ['0x2785a8814434a589ce47949f4c4d3beea13760af'],
+  'berachain-zerolend': [
+    '11155111_1_0xbe2a22476b6e3658fddd04c20928f52929aa4019',
+  ],
+  'berachain-kodiak': ['1_1_0x562113d1608a60807e2a474d037465b7868409fc'],
+  'berachain-setandforgetti': [
+    '1_0_0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b',
+  ],
+  'berachain-satlayer': [
+    '11155111_0_0xb7a4762722bc11627db15058c2067772831a6c869955784f79db9ecd90bec87a',
+  ],
 };
 
 const findKeyByValue =
