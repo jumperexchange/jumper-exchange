@@ -21,12 +21,12 @@ function TooltipProgressbar({
     <Tooltip
       title={
         <>
-          there is still{' '}
+          There is still{' '}
           {t('format.decimal', {
             value: fillable,
             notation: 'compact',
           })}{' '}
-          to be filled
+          tokens to be invested in this market.
         </>
       }
       placement="top"
