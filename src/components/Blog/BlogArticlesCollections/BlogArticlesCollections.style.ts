@@ -18,7 +18,7 @@ export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
   marginBottom: theme.spacing(14.5),
   padding: theme.spacing(2),
   margin: theme.spacing(6, 2, 0),
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   ':last-of-type': {
     marginBottom: theme.spacing(6),
   },
