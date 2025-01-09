@@ -1,5 +1,6 @@
 'use client';
 
+import type { Shadows } from '@mui/material';
 import type { BoxProps } from '@mui/system';
 import { Box, styled } from '@mui/system';
 
@@ -12,7 +13,7 @@ export const BridgePageContainer = styled(Box)<BoxProps>(({ theme }) => ({
   borderRadius: 32,
   backgroundColor: theme.palette.bgSecondary.main,
   transition: 'background-color 250ms',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: (theme.shadows as Shadows)[1],
   display: 'flex',
   textDecoration: 'none',
   flexDirection: 'column',
