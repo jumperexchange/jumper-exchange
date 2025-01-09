@@ -12,8 +12,11 @@ import {
 import { BerachainMarketsFilterBox } from './BerachainMarketsFilters.style';
 import { useEnrichedMarkets } from 'royco/hooks';
 import type { EnrichedMarketDataType } from 'royco/queries';
+import { useSearchParams } from 'next/navigation';
 
 export const BerachainFilterTokensMenu = () => {
+  const searchParam = useSearchParams();
+  const isVerified = searchParam.get('is_verified') === 'true';
   const { tokenFilter, setTokenFilter } = useBerachainMarketsFilterStore(
     (state) => state,
   );
@@ -36,7 +39,7 @@ export const BerachainFilterTokensMenu = () => {
   const assetsMenuId = 'token-filter-menu';
 
   const { data } = useEnrichedMarkets({
-    is_verified: false,
+    is_verified: isVerified,
     sorting: [{ id: 'locked_quantity_usd', desc: true }],
   });
 

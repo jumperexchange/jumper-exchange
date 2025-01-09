@@ -7,12 +7,15 @@ import { useEnrichedMarkets } from 'royco/hooks';
 import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
+import { useSearchParams } from 'next/navigation';
 
 export const BerachainMarkets = () => {
+  const searchParam = useSearchParams();
+  const isVerified = searchParam.get('is_verified') === 'true';
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
+
   const { data: roycoData, isSuccess } = useEnrichedMarkets({
-    is_verified: false,
-    // chain_id: 11155111,
+    is_verified: isVerified,
     sorting: [{ id: 'locked_quantity_usd', desc: true }],
   });
 
