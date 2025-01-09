@@ -6,10 +6,10 @@ import {
   ConnectionProvider,
   WalletProvider,
 } from '@solana/wallet-adapter-react';
-import { SolflareWalletAdapter } from '@solana/wallet-adapter-solflare';
 import { clusterApiUrl } from '@solana/web3.js';
 import { type FC, type PropsWithChildren } from 'react';
 import { UmiContextApp } from 'src/wash/contexts/useUmi';
+import { WalletConnectWalletAdapter } from '@walletconnect/solana-adapter';
 
 const endpoint = clusterApiUrl(WalletAdapterNetwork.Mainnet);
 /**
@@ -24,7 +24,14 @@ const endpoint = clusterApiUrl(WalletAdapterNetwork.Mainnet);
  * instantiate its legacy wallet adapter here. Common legacy adapters can be found
  * in the npm package `@solana/wallet-adapter-*`.
  */
-const wallets: Adapter[] = [new SolflareWalletAdapter()];
+const wallets: Adapter[] = [
+  new WalletConnectWalletAdapter({
+    network: WalletAdapterNetwork.Mainnet,
+    options: {
+      projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
+    },
+  }),
+];
 
 export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
