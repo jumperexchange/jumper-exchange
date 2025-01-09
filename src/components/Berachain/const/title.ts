@@ -16,4 +16,4 @@ export const AVAILABLE_TOOLTIP =
 export const INCENTIVES_TOOLTIP =
   'List of incentives available for this market.';
 export const LOCKUP_TOOLTIP =
-  'Deposits will be locked for the displayed amount of times to earn rewards. You are able to withdraw prior to the end of the lockup period but will forfeit any earned rewards.';
+  'Deposits will be locked for the displayed amount of times to earn rewards. You are able to withdraw prior to the end of the lockup period but will forfeit any rewards on Berachain.';

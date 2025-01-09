@@ -135,7 +135,7 @@ export const WithdrawWidget = ({
       )}
       <ClaimingInformation
         link={appLink ?? 'https://jumper.exchange'}
-        appName={appName ?? ''}
+        appName={appName}
       />
     </Box>
   );

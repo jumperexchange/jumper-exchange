@@ -290,7 +290,7 @@ function DepositWidget({
   return (
     <>
       <BoxForm noValidate autoComplete="off" onSubmit={onSubmit}>
-        <DepositInfo market={market} />
+        <DepositInfo market={market} balance={balance} />
         <BerachainDepositInputBackground>
           <FormControl
             error={isTxError || !!hasErrorText}
@@ -542,7 +542,7 @@ function DepositWidget({
         ) : (
           txHash && (
             <TxConfirmation
-              s={'Approval transaction link'}
+              s={'Transaction link'}
               link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
             />
           )

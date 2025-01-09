@@ -147,7 +147,7 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: 'Boyco Launch',
+      label: 'Jump into Boyco',
       prefixIcon: <BoycoIcon />,
       showMoreIcon: false,
       link: { url: JUMPER_BOYCO_PATH },

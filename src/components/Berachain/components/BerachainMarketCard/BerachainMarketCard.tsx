@@ -177,11 +177,12 @@ export const BerachainMarketCard = ({
               tokenImage={roycoData?.input_token_data?.image}
               digit={
                 deposited
-                  ? t('format.currency', {
+                  ? t('format.decimal', {
                       value: dataRecipe?.input_token_data_ap?.token_amount,
                     })
                   : roycoData?.input_token_data?.symbol
               }
+              hasDeposited={deposited ? true : false}
             />
             <DigitCard
               sx={{

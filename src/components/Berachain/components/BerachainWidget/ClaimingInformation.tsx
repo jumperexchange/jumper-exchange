@@ -5,10 +5,10 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 export const ClaimingInformation = ({
   link,
-  appName = 'the protocol',
+  appName,
 }: {
   link: string;
-  appName: string;
+  appName?: string;
 }) => {
   const theme = useTheme();
 
@@ -51,7 +51,7 @@ export const ClaimingInformation = ({
         </Box>
         <Typography color={theme.palette.text.primary} variant="bodySmall">
           {`After the launch of Berachain, withdrawal of funds and claiming of
-          rewards will be done on ${appName} website. You'll be able to access it here.`}
+          rewards will be done on ${appName ?? 'the protocol'} website. You'll be able to access it here.`}
         </Typography>
       </Box>
       <a

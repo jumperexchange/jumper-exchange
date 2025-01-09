@@ -5,6 +5,7 @@ import DigitCard from '@/components/Berachain/components/BerachainMarketCard/Sta
 import {
   APY_TOOLTIP,
   AVAILABLE_TOOLTIP,
+  DEPOSITED_TOOLTIP,
   INCENTIVES_TOOLTIP,
   LOCKUP_TOOLTIP,
   TVL_TOOLTIP,
@@ -21,13 +22,18 @@ import { TokenIncentivesData } from '@/components/Berachain/components/Berachain
 import DigitTooltipCard from '@/components/Berachain/components/BerachainMarketCard/StatCard/DigitTooltipCard';
 import TooltipProgressbar from '@/components/Berachain/components/TooltipProgressbar';
 import TooltipIncentives from '@/components/Berachain/components/BerachainWidget/TooltipIncentives';
+import DigitTokenSymbolCard from '../../BerachainMarketCard/StatCard/DigitTokenSymbolCard';
+import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
+import { useAccount } from '@lifi/wallet-management';
 
 interface DepositInfoProps {
   market: EnrichedMarketDataType;
+  balance?: number;
 }
 
-function DepositInfo({ market }: DepositInfoProps) {
+function DepositInfo({ market, balance }: DepositInfoProps) {
   const { t } = useTranslation();
+  const { account } = useAccount();
   const maxInputValue = useMemo(() => {
     return parseRawAmountToTokenAmount(
       market?.quantity_ip ?? '0', // @note: AP fills IP quantity
@@ -43,6 +49,13 @@ function DepositInfo({ market }: DepositInfoProps) {
     market.quantity_ip?.toString() ?? '0',
     market?.input_token_data?.decimals ?? 0,
   );
+
+  const { data: recipe, refetch } = useEnrichedAccountBalancesRecipeInMarket({
+    chain_id: market.chain_id!,
+    market_id: market.market_id!,
+    account_address: account?.address?.toLowerCase() ?? '',
+    custom_token_data: undefined,
+  });
 
   return (
     <BerachainDepositInputBackground>
@@ -60,18 +73,33 @@ function DepositInfo({ market }: DepositInfoProps) {
                 : 'N/A'
             }
           />
-          <DigitCard
-            sx={{
-              alignItems: 'flex-end',
-            }}
-            title={'Available to deposit'}
-            tooltipText={AVAILABLE_TOOLTIP}
-            digit={t('format.currency', {
-              value: maxInputValue,
-              notation: 'compact',
-              maximumFractionDigits: 5,
-            })}
-          />
+          {!!recipe?.input_token_data_ap?.token_amount &&
+          recipe.input_token_data_ap.token_amount > 0 ? (
+            <DigitTokenSymbolCard
+              title={'Deposited'}
+              tooltipText={DEPOSITED_TOOLTIP}
+              tokenImage={market?.input_token_data?.image}
+              digit={t('format.decimal', {
+                value: recipe?.input_token_data_ap?.token_amount,
+                maximumFractionDigits:
+                  recipe?.input_token_data_ap?.token_amount > 1 ? 1 : 5,
+              })}
+              hasDeposited={true}
+            />
+          ) : (
+            <DigitCard
+              sx={{
+                alignItems: 'flex-end',
+              }}
+              title={'Deposit Cap'}
+              tooltipText={AVAILABLE_TOOLTIP}
+              digit={t('format.currency', {
+                value: maxInputValue,
+                notation: 'compact',
+                maximumFractionDigits: maxInputValue > 1 ? 1 : 5,
+              })}
+            />
+          )}
         </Stack>
       </Stack>
       <TooltipProgressbar market={market}>

@@ -90,6 +90,7 @@ function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
                   })
                 : market?.input_token_data?.symbol
             }
+            hasDeposited={deposited ? true : false}
           />
 
           {market.lockup_time === '0' ? undefined : (
