@@ -28,12 +28,10 @@ declare module '@mui/material/styles' {
 
   interface Theme {
     shape: Shape;
-    shadow: Array<string>;
   }
 
   interface ThemeOptions {
     shape?: Partial<Shape>;
-    shadow?: Array<string>;
   }
   interface Palette {
     tertiary: Palette['primary'];
