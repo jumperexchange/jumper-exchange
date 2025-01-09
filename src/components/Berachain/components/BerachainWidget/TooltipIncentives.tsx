@@ -26,26 +26,36 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
           {` ${market?.input_token_data.symbol}, you receive:`}
         </Typography>
       </Box>
-      <List>
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        gap={'8px'}
+        marginTop={'8px'}
+      >
         {market?.incentive_tokens_data?.map((incentiveTokenData) => (
-          <ListItem key={incentiveTokenData.id}>
+          <Box
+            key={incentiveTokenData.id}
+            display={'flex'}
+            flexDirection={'row'}
+            marginLeft={'4px'}
+            gap={'4px'}
+          >
             {t('format.decimal', { value: incentiveTokenData.per_input_token })}{' '}
             {incentiveTokenData.symbol}{' '}
             <img
               key={`berachain-market-card-token-${incentiveTokenData?.name}-${incentiveTokenData?.id}`}
               src={incentiveTokenData?.image}
               alt={`${incentiveTokenData?.name}-logo`}
-              width={20}
-              height={20}
+              width={16}
+              height={16}
               style={{
                 borderRadius: '10px',
-                marginLeft: '2px',
-                marginRight: '2px',
+                marginLeft: '4px',
               }}
             />
-          </ListItem>
+          </Box>
         ))}
-      </List>
+      </Box>
     </Box>
   );
 }

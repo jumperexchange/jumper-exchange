@@ -26,6 +26,7 @@ import DigitCard from '@/components/Berachain/components/BerachainMarketCard/Sta
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import {
   APY_TOOLTIP,
+  INCENTIVES_TO_EARN_TOOLTIP,
   INCENTIVES_TOOLTIP,
   LOCKUP_TOOLTIP,
 } from '@/components/Berachain/const/title';
@@ -317,9 +318,7 @@ export const WithdrawWidgetInputTokenTab = ({
                         useGrouping: true,
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 5,
-                      }).format(
-                        position?.input_token_data?.token_amount_usd ?? 0,
-                      )}{' '}
+                      }).format(position?.input_token_data?.token_amount ?? 0)}
                     </Typography>
                   </Box>
                 </Stack>
@@ -343,11 +342,13 @@ export const WithdrawWidgetInputTokenTab = ({
                 <Stack direction="row" justifyContent="space-between">
                   {market?.incentive_tokens_data?.length > 0 ? (
                     <DigitCard
-                      title={'Earned rewards'}
-                      tooltipText={INCENTIVES_TOOLTIP}
+                      title={'Rewards to earn'}
+                      tooltipText={INCENTIVES_TO_EARN_TOOLTIP}
                       digit={
                         <TokenIncentivesData
                           tokens={market?.incentive_tokens_data}
+                          perInput={true}
+                          amount={position?.input_token_data?.token_amount}
                         />
                       }
                       sx={(theme) => ({

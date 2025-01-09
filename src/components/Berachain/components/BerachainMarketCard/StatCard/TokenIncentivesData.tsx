@@ -3,9 +3,15 @@ import type { BerachainIncentiveToken } from 'src/components/Berachain/Berachain
 
 interface DigitCardProps {
   tokens: BerachainIncentiveToken[];
+  perInput?: boolean;
+  amount?: number;
 }
 
-export const TokenIncentivesData = ({ tokens }: DigitCardProps) => {
+export const TokenIncentivesData = ({
+  tokens,
+  perInput,
+  amount,
+}: DigitCardProps) => {
   return (
     <Box
       sx={{
@@ -43,12 +49,19 @@ export const TokenIncentivesData = ({ tokens }: DigitCardProps) => {
               },
             })}
           >
-            {Intl.NumberFormat('en-US', {
-              notation: 'compact',
-              useGrouping: true,
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 1,
-            }).format(incentiveTokenData.token_amount)}{' '}
+            {perInput && amount
+              ? Intl.NumberFormat('en-US', {
+                  notation: 'compact',
+                  useGrouping: true,
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 1,
+                }).format(incentiveTokenData.per_input_token * amount)
+              : Intl.NumberFormat('en-US', {
+                  notation: 'compact',
+                  useGrouping: true,
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 1,
+                }).format(incentiveTokenData.token_amount)}
           </Typography>
         </Box>
       ))}
