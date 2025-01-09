@@ -1,5 +1,5 @@
 'use client';
-import { getChainInfoData } from '@/app/ui/bridge/utils';
+import { getChainInfoData, getTokenInfoData } from '@/app/ui/bridge/utils';
 import { Widget } from '@/components/Widgets/Widget';
 import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
 import { Container, Stack, Typography } from '@mui/material';
@@ -71,6 +71,17 @@ const BridgePage = ({
                 name: chain.name,
               }}
               data={getChainInfoData(chain)}
+            />
+          ))}
+          {[sourceToken, destinationToken].map((token, index) => (
+            <InformationCard
+              type="Token"
+              key={`${token.address}-${index}`}
+              info={{
+                logoURI: token?.logoURI,
+                name: `${token.name}`,
+              }}
+              data={getTokenInfoData(chains, token)}
             />
           ))}
         </Stack>
