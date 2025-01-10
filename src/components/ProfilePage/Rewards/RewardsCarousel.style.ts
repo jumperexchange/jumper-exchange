@@ -33,10 +33,10 @@ export const RewardsCarouselHeader = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<BoxProps>(({ theme }) => ({
   display: 'flex',
-  ...(theme.palette.mode === 'dark' && {
+  justifyContent: 'space-between',
+  ...theme.applyStyles('dark', {
     color: theme.palette.white.main,
   }),
-  justifyContent: 'space-between',
 }));
 
 export const RewardsCarouselTitle = styled(Typography, {
@@ -57,10 +57,7 @@ export const RewardsCarouselTitle = styled(Typography, {
 }));
 
 export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? '#FFFFFF'
-      : alpha(theme.palette.white.main, 0.08),
+  backgroundColor: alpha(theme.palette.white.main, 0.08),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -75,6 +72,9 @@ export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {
     minWidth: 300,
   },
+  ...theme.applyStyles('light', {
+    backgroundColor: '#FFFFFF',
+  }),
 }));
 
 export const ClaimButtonBox = styled(Box)(({ theme }) => ({

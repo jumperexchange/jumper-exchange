@@ -18,11 +18,10 @@ export const ContentWrapper = styled(
   {},
 )<ContentWrapperProps>(({ theme }) => ({
   textAlign: 'center',
-  background: theme.palette.mode === 'dark' ? '#1A1033' : '#F3EBFF',
+  background: '#F3EBFF',
   width: '100%',
   zIndex: '1400',
   height: 'auto',
-
   '&:before': {
     content: '" "',
     position: 'absolute',
@@ -31,12 +30,15 @@ export const ContentWrapper = styled(
     pointerEvents: 'none',
     left: 0,
     right: 0,
-    background:
-      theme.palette.mode === 'dark'
-        ? 'linear-gradient(to top, #1A1033 0%, transparent 100%)'
-        : 'linear-gradient(to top, #F3EBFF 0%, transparent 100%)',
+    background: 'linear-gradient(to top, #F3EBFF 0%, transparent 100%)',
     zIndex: '1000',
+    ...theme.applyStyles('dark', {
+      background: 'linear-gradient(to top, #1A1033 0%, transparent 100%)',
+    }),
   },
+  ...theme.applyStyles('dark', {
+    background: '#1A1033',
+  }),
 }));
 
 export const WelcomeContent = styled(Box)<BoxProps>(({ theme }) => ({
@@ -45,10 +47,7 @@ export const WelcomeContent = styled(Box)<BoxProps>(({ theme }) => ({
 
 export const WelcomeScreenSubtitle = styled(Typography)(({ theme }) => ({
   marginTop: 2,
-  color:
-    theme.palette.mode === 'dark'
-      ? theme.palette.accent1Alt.main
-      : theme.palette.primary.main,
+  color: theme.palette.primary.main,
   '& > .link-jumper': {
     fontWeight: 700,
     color: 'inherit',
@@ -59,6 +58,9 @@ export const WelcomeScreenSubtitle = styled(Typography)(({ theme }) => ({
     fontWeight: 400,
     lineHeight: '32px',
   },
+  ...theme.applyStyles('dark', {
+    color: theme.palette.accent1Alt.main,
+  }),
 }));
 
 export const WelcomeScreenButton = styled(ButtonPrimary)(({ theme }) => ({

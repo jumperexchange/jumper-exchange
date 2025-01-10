@@ -15,16 +15,15 @@ export const TierMainBox = styled(Box)(({ theme }) => ({
 export const TierBadgeBox = styled(Box)(({ theme }) => ({
   borderStyle: 'solid',
   borderWidth: '2px',
-  borderColor:
-    theme.palette.mode === 'light'
-      ? '#F9F5FF'
-      : alpha(theme.palette.white.main, 0.08),
+  borderColor: alpha(theme.palette.white.main, 0.08),
   padding: '15px 40px',
   borderRadius: '48px',
   display: 'flex',
-
   justifyContent: 'center',
   alignItems: 'center',
+  ...theme.applyStyles('light', {
+    borderColor: '#F9F5FF',
+  }),
 }));
 
 export const TierInfoBox = styled(Box)(() => ({

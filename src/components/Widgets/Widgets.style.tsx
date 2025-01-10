@@ -31,35 +31,21 @@ export const WidgetContainer = styled(Box, {
     transitionProperty: 'max-height',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
-
-    ...(!welcomeScreenClosed && {
-      minHeight: DEFAULT_WELCOME_SCREEN_HEIGHT,
-      maxHeight: DEFAULT_WELCOME_SCREEN_HEIGHT,
-    }),
-
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       width: 'auto',
     },
-
     [theme.breakpoints.up('lg' as Breakpoint)]: {
       margin: theme.spacing(0, 4),
-      ...(welcomeScreenClosed && {
-        // extra marginRight-spacing of 56px (width of navbar-tabs + gap) needed to center properly while welcome-screen is closed
-        marginRight: `calc( ${theme.spacing(4)} + 56px )`,
-      }),
     },
-
     // default radial shadow glow for a "spot-light" effect
     '&:after': {
       content: '" "',
-      visibility: !welcomeScreenClosed ? 'visible' : 'hidden',
+      visibility: 'hidden',
       transitionProperty: 'top, opacity',
       transitionDuration: '.4s',
       transitionTimingFunction: 'ease-in-out',
       background:
-        theme.palette.mode === 'dark'
-          ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);'
-          : 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);',
+        'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);',
       zIndex: -1,
       pointerEvents: 'none',
       width: 1080,
@@ -79,16 +65,54 @@ export const WidgetContainer = styled(Box, {
         maxWidth: '90vh',
         maxHeight: '90vh',
       },
-    },
-
-    // radial shadow glow -> hover
-    '&:hover:after': {
-      ...(!welcomeScreenClosed && {
-        opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
-        // adjusting top position of glow-effect while hovering for "spot-light" effect
-        top: `calc( ${GLOW_EFFECT_TOP_POSITION} + ${GLOW_EFFECT_TOP_OFFSET_POSITION})`,
+      ...theme.applyStyles('dark', {
+        background:
+          'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);',
       }),
     },
+    // radial shadow glow -> hover
+    '&:hover:after': {},
+    variants: [
+      {
+        props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
+        style: {
+          minHeight: DEFAULT_WELCOME_SCREEN_HEIGHT,
+          maxHeight: DEFAULT_WELCOME_SCREEN_HEIGHT,
+        },
+      },
+      {
+        props: ({ welcomeScreenClosed }) => welcomeScreenClosed,
+        style: {
+          [theme.breakpoints.up('lg' as Breakpoint)]: {
+            // extra marginRight-spacing of 56px (width of navbar-tabs + gap) needed to center properly while welcome-screen is closed
+            marginRight: `calc( ${theme.spacing(4)} + 56px )`,
+          },
+        },
+      },
+      {},
+      {
+        props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
+        style: {
+          '&:after': {
+            visibility: 'visible',
+          },
+        },
+      },
+      {},
+      {
+        props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
+        style: {
+          '&:hover:after': {
+            opacity: 0.34,
+            // adjusting top position of glow-effect while hovering for "spot-light" effect
+            top: `calc( ${GLOW_EFFECT_TOP_POSITION} + ${GLOW_EFFECT_TOP_OFFSET_POSITION})`,
+            ...theme.applyStyles('dark', {
+              opacity: 0.48,
+            }),
+          },
+        },
+      },
+    ],
   };
 });
 
@@ -107,7 +131,6 @@ export const BackgroundFooterImage = styled(Image)(({ theme }) => ({
     width: 400,
     height: 'auto',
   },
-
   '&:hover': {
     backgroundColor: alpha(theme.palette.black.main, 0.04),
   },

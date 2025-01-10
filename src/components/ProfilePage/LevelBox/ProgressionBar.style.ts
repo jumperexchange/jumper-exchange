@@ -14,20 +14,27 @@ interface ProgressionContainerProps extends BoxProps {
 
 export const ProgressionContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'hideLevelIndicator',
-})<ProgressionContainerProps>(({ hideLevelIndicator }) => ({
+})<ProgressionContainerProps>({
   position: 'relative',
-  ...(!hideLevelIndicator
-    ? {
+  variants: [
+    {
+      props: ({ hideLevelIndicator }) => !hideLevelIndicator,
+      style: {
         marginTop: 8,
-      }
-    : {
+      },
+    },
+    {
+      props: ({ hideLevelIndicator }) => !!hideLevelIndicator,
+      style: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         flexGrow: 1,
-      }),
-}));
+      },
+    },
+  ],
+});
 
 interface ProgressionChartProps extends BoxProps {
   hideLevelIndicator?: boolean;
@@ -43,21 +50,26 @@ export const ProgressionChart = styled(Box, {
   height: '16px',
   width: '100%',
   display: 'flex',
-  ...(!!label && {
-    height: 24,
-    ':before': {
-      content: `"${label}"`,
-      position: 'absolute',
-      width: '100%',
-      fontWeight: 700,
-      fontSize: '12px',
-      lineHeight: '24px',
-      color:
-        theme.palette.mode === 'light'
-          ? theme.palette.primary.main
-          : theme.palette.white.main,
+  variants: [
+    {
+      props: ({ label }) => !!label,
+      style: {
+        height: 24,
+        ':before': {
+          content: `"${label}"`,
+          position: 'absolute',
+          width: '100%',
+          fontWeight: 700,
+          fontSize: '12px',
+          lineHeight: '24px',
+          color: theme.palette.white.main,
+          ...theme.applyStyles('light', {
+            color: theme.palette.primary.main,
+          }),
+        },
+      },
     },
-  }),
+  ],
 }));
 
 export interface ProgressionChartScoreProps
@@ -77,13 +89,17 @@ export const ProgressionChartScore = styled(Box, {
       ongoingValue && levelData && ongoingValue > levelData?.minPoints
         ? `${calcWidth}%`
         : '0%',
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.accent1.main
-        : theme.palette.accent1Alt.main,
-    ...(ongoingValue &&
-      levelData &&
-      ongoingValue === levelData.maxPoints && { borderRadius: '12px' }),
+    backgroundColor: theme.palette.accent1Alt.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: theme.palette.accent1.main,
+    }),
+    variants: [
+      {
+        props: ({ ongoingValue, levelData }) =>
+          ongoingValue && levelData && ongoingValue === levelData.maxPoints,
+        style: { borderRadius: '12px' },
+      },
+    ],
   }),
 );
 
@@ -92,8 +108,8 @@ export const ProgressionChartBg = styled(Box)(({ theme }) => ({
   width: '100%',
   height: '100%',
   borderRadius: '12px',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.alphaDark200.main
-      : theme.palette.alphaLight200.main,
+  backgroundColor: theme.palette.alphaLight200.main,
+  ...theme.applyStyles('light', {
+    backgroundColor: theme.palette.alphaDark200.main,
+  }),
 }));
