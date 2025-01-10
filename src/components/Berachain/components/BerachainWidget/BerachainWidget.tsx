@@ -143,7 +143,6 @@ export const BerachainWidget = ({
                 },
               }}
             />
-            <BerachainTransactionDetails type="deposit" market={market} />
           </Box>
         )}
         {tab === 2 && (
