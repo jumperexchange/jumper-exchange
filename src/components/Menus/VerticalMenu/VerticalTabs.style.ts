@@ -1,10 +1,9 @@
 'use client';
 
 import { getContrastAlphaColor } from '@/utils/colors';
-import type { TabProps, TabsProps } from '@mui/material';
 import { Tab as MuiTab, Tabs, alpha, styled } from '@mui/material';
 
-export const VerticalTabsContainer = styled(Tabs)<TabsProps>(({ theme }) => ({
+export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
   display: 'none',
   borderRadius: 28,
   padding: 0,
@@ -38,7 +37,7 @@ export const VerticalTabsContainer = styled(Tabs)<TabsProps>(({ theme }) => ({
   },
 }));
 
-export const VerticalTab = styled(MuiTab)<TabProps>(({ theme }) => ({
+export const VerticalTab = styled(MuiTab)(({ theme }) => ({
   display: 'flex',
   height: 48,
   width: 48,

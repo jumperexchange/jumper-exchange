@@ -1,4 +1,4 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, alpha, styled } from '@mui/material';
 
 export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
@@ -26,9 +26,7 @@ export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const CompletedQuestHeader = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<BoxProps>(({ theme }) => ({
+export const CompletedQuestHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   ...(theme.palette.mode === 'dark' && {
     color: theme.palette.white.main,
@@ -36,9 +34,7 @@ export const CompletedQuestHeader = styled(Box, {
   justifyContent: 'space-between',
 }));
 
-export const CompletedQuestTitle = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
-})(({ theme }) => ({
+export const CompletedQuestTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   fontSize: '24px',
   lineHeight: '32px',

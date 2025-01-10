@@ -1,4 +1,4 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
 import { Box, Typography, styled } from '@mui/material';
 import { sequel85, sora } from 'src/fonts/fonts';
 
@@ -28,9 +28,7 @@ export const NFTClaimingContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const NFTClaimingHeader = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<BoxProps>(({ theme }) => ({
+export const NFTClaimingHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -41,9 +39,7 @@ export const NFTClaimingHeader = styled(Box, {
   }),
 }));
 
-export const NFTClaimingTitle = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
-})(({ theme }) => ({
+export const NFTClaimingTitle = styled(Typography)(({ theme }) => ({
   marginTop: theme.spacing(4),
   fontWeight: 900,
   fontSize: '32px',
@@ -60,9 +56,7 @@ export const NFTClaimingTitle = styled(Typography, {
   },
 }));
 
-export const NFTClaimingDescription = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
-})(({ theme }) => ({
+export const NFTClaimingDescription = styled(Typography)(({ theme }) => ({
   maxWidth: '600px',
   marginTop: theme.spacing(4),
   fontWeight: 500,

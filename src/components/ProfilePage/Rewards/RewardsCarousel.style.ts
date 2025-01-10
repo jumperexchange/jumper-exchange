@@ -1,4 +1,4 @@
-import type { BoxProps, Breakpoint, IconButtonProps } from '@mui/material';
+import type { Breakpoint, IconButtonProps } from '@mui/material';
 import {
   Box,
   IconButton as MuiIconButton,
@@ -29,9 +29,7 @@ export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const RewardsCarouselHeader = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<BoxProps>(({ theme }) => ({
+export const RewardsCarouselHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   ...(theme.palette.mode === 'dark' && {
     color: theme.palette.white.main,
@@ -39,9 +37,7 @@ export const RewardsCarouselHeader = styled(Box, {
   justifyContent: 'space-between',
 }));
 
-export const RewardsCarouselTitle = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
-})(({ theme }) => ({
+export const RewardsCarouselTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   fontSize: '24px',
   lineHeight: '32px',
