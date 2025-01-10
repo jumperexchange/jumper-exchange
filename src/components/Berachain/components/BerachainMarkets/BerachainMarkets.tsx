@@ -51,6 +51,9 @@ export const BerachainMarkets = () => {
             .filter((data) => {
               return search ? data.name?.toLowerCase().includes(search) : true;
             })
+            .filter((data) => {
+              return !!findFromStrapiByUid(data.market_id!);
+            })
             .map((roycoData, index) => {
               if (!roycoData?.id) {
                 return;
