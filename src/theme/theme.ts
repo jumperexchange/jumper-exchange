@@ -240,7 +240,6 @@ const themeCustomized = createTheme({
           pointerEvents: 'none',
           backgroundColor: theme.palette.bg.main,
           // typed-safe access to the `variant` prop
-
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
@@ -758,7 +757,6 @@ export const darkTheme = createTheme(
             pointerEvents: 'none',
             backgroundColor: theme.palette.surface1.main,
             // typed-safe access to the `variant` prop
-
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               backgroundRepeat: 'no-repeat',
               backgroundSize: 'cover',
