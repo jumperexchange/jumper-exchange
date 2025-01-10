@@ -89,7 +89,6 @@ export const BerachainDetailsAccordion = styled(Accordion)<{
   cursor: 'pointer',
   boxShadow: 'none',
   width: '100%',
-  marginTop: theme.spacing(2),
   backgroundColor: '#1E1D1C',
   borderRadius: '16px 16px 16px 16px',
   marginTop: 0,
