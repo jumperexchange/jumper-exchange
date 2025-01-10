@@ -3,22 +3,22 @@ import {
   TypographyPrimary,
   TypographySecondary,
 } from '@/components/Portfolio/Portfolio.styles';
+import TokenImage from '@/components/Portfolio/TokenImage';
+import { useMainPaths } from '@/hooks/useMainPaths';
+import { useWidgetCacheStore } from '@/stores/widgetCache';
+import type { CacheToken } from '@/types/portfolio';
 import {
-  Avatar as MuiAvatar,
   Badge,
   ButtonBase,
-  Grid,
-  useTheme,
   darken,
+  Grid,
   lighten,
+  Avatar as MuiAvatar,
+  useTheme,
 } from '@mui/material';
-import { useWidgetCacheStore } from '@/stores/widgetCache';
-import { useMainPaths } from '@/hooks/useMainPaths';
 import { useParams, useRouter } from 'next/navigation';
-import { useMenuStore } from 'src/stores/menu';
-import TokenImage from '@/components/Portfolio/TokenImage';
-import type { CacheToken } from '@/types/portfolio';
 import { useTranslation } from 'react-i18next';
+import { useMenuStore } from 'src/stores/menu';
 
 interface PortfolioTokenChainButtonProps {
   token: CacheToken;
@@ -42,26 +42,26 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
           router.push('/');
         }
       }}
-      sx={{
+      sx={(theme) => ({
         width: '100%',
         paddingLeft: '20px',
         paddingRight: '16px',
         paddingY: '16px',
         display: 'flex',
         '&:hover': {
-          backgroundColor:
-            theme.palette.mode === 'dark'
-              ? lighten(theme.palette.surface2.main, 0.04)
-              : darken(theme.palette.surface2.main, 0.04),
+          backgroundColor: darken(theme.palette.surface2.main, 0.04),
+          ...theme.applyStyles('dark', {
+            backgroundColor: lighten(theme.palette.surface2.main, 0.04),
+          }),
         },
         '&:last-child:hover': {
           borderRadius: '0 0 16px 16px',
-          backgroundColor:
-            theme.palette.mode === 'dark'
-              ? darken(theme.palette.surface2.main, 0.04)
-              : darken(theme.palette.surface2.main, 0.04),
+          backgroundColor: darken(theme.palette.surface2.main, 0.04),
+          ...theme.applyStyles('dark', {
+            backgroundColor: darken(theme.palette.surface2.main, 0.04),
+          }),
         },
-      }}
+      })}
     >
       <Grid container display="flex" alignItems="center">
         <Grid item xs={2} textAlign="left">

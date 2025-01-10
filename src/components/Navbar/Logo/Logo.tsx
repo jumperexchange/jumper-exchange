@@ -39,16 +39,16 @@ export const Logo = ({ variant }: LogoProps) => {
           <ClearIcon
             width="32px"
             height="32px"
-            sx={{
-              color:
-                theme.palette.mode === 'light'
-                  ? theme.palette.black.main
-                  : theme.palette.grey[500],
+            sx={(theme) => ({
+              color: theme.palette.grey[500],
               width: '32px',
               height: '32px',
               marginLeft: theme.spacing(-2),
               marginRight: theme.spacing(2),
-            }}
+              ...theme.applyStyles('light', {
+                color: theme.palette.black.main,
+              }),
+            })}
           />
           <Image
             alt="jumper-partner-logo"

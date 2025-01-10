@@ -62,12 +62,12 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
 
   return (
     <WalletCardContainer
-      sx={{
+      sx={(theme) => ({
         padding: '0px',
         [theme.breakpoints.up('md')]: {
           padding: '0px',
         },
-      }}
+      })}
     >
       <CustomAccordion
         expanded={isExpanded}
@@ -97,11 +97,11 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                     !hasMultipleChains ? (
                       <MuiAvatar
                         alt={token?.chainName || 'chain-name'}
-                        sx={{
+                        sx={(theme) => ({
                           width: '18px',
                           height: '18px',
                           border: `2px solid ${theme.palette.surface2.main}`,
-                        }}
+                        })}
                       >
                         <TokenImage
                           token={{

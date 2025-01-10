@@ -86,16 +86,15 @@ export const Pagination = ({
       <SmoothScrollWrapper id={id}>
         <PaginationButton onClick={() => handlePrev()} disableRipple={false}>
           <ArrowBackIcon
-            sx={{
-              color:
-                theme.palette.mode === 'light'
-                  ? lighten(theme.palette.text.primary, 0.6)
-                  : darken(theme.palette.text.primary, 0.2),
-            }}
+            sx={(theme) => ({
+              color: darken(theme.palette.text.primary, 0.2),
+              ...theme.applyStyles('light', {
+                color: lighten(theme.palette.text.primary, 0.6),
+              }),
+            })}
           />
         </PaginationButton>
       </SmoothScrollWrapper>
-
       {Array.from({ length: pagination.pageCount }).map((_, index) => {
         const actualPage = index;
         return (
@@ -115,12 +114,12 @@ export const Pagination = ({
       <SmoothScrollWrapper id={id}>
         <PaginationButton onClick={() => handleNext()}>
           <ArrowForwardIcon
-            sx={{
-              color:
-                theme.palette.mode === 'light'
-                  ? lighten(theme.palette.text.primary, 0.6)
-                  : darken(theme.palette.text.primary, 0.2),
-            }}
+            sx={(theme) => ({
+              color: darken(theme.palette.text.primary, 0.2),
+              ...theme.applyStyles('light', {
+                color: lighten(theme.palette.text.primary, 0.6),
+              }),
+            })}
           />
         </PaginationButton>
       </SmoothScrollWrapper>
