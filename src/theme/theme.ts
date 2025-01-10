@@ -26,10 +26,6 @@ declare module '@mui/material/styles' {
     borderRadiusSecondary: number;
   }
 
-  interface Theme {
-    shape: Shape;
-  }
-
   interface ThemeOptions {
     shape?: Partial<Shape>;
   }
@@ -54,8 +50,6 @@ declare module '@mui/material/styles' {
       main: string;
       hover: string;
     };
-    shadow: Palette['primary'];
-    shadowLight: Palette['primary'];
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
     alphaDark300: Palette['primary'];
@@ -131,6 +125,7 @@ declare module '@mui/material/styles' {
     titleSmall: React.CSSProperties;
     titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
+    urbanistTitleXSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
     urbanistTitle2XLarge: React.CSSProperties;
@@ -164,6 +159,7 @@ declare module '@mui/material/styles' {
     titleSmall: React.CSSProperties;
     titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
+    urbanistTitleXSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
     urbanistTitle2XLarge: React.CSSProperties;
@@ -194,8 +190,6 @@ declare module '@mui/material/Button' {
     bgSecondary: true;
     bgTertiary: true;
     bgQuaternary: true;
-    shadow: true;
-    shadowLight: true;
     alphaDark100: true;
     alphaDark200: true;
     alphaDark300: true;
@@ -237,6 +231,7 @@ declare module '@mui/material/Typography' {
     titleSmall: true;
     titleXSmall: true;
     title2XSmall: true;
+    urbanistTitleXSmall: true;
     urbanistTitleLarge: true;
     urbanistTitle2XLarge: true;
     urbanistTitleXLarge: true;
@@ -482,9 +477,6 @@ const themeCustomized = createTheme({
       light: '#000000',
       dark: '#000000',
     },
-    shadowLight: {
-      main: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
-    },
     alphaDark100: {
       main: 'rgba(0, 0, 0, 0.04)',
     },
@@ -669,12 +661,26 @@ const themeCustomized = createTheme({
       fontWeight: 700,
       lineHeight: '20px',
     },
+    titleXSmall: {
+      fontFamily: inter.style.fontFamily,
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '24px',
+    },
     titleSmall: {
       fontFamily: inter.style.fontFamily,
       fontSize: '24px',
       fontStyle: 'normal',
       fontWeight: 700,
       lineHeight: '32px',
+    },
+    urbanistTitleXSmall: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '24px',
     },
     urbanistTitleLarge: {
       fontFamily: urbanist.style.fontFamily,
@@ -772,12 +778,6 @@ const themeCustomized = createTheme({
       lineHeight: themeBase.typography.pxToRem(18),
       fontWeight: 700,
     },
-    titleXSmall: {
-      fontSize: '18px',
-      fontStyle: 'normal',
-      fontWeight: 700,
-      lineHeight: '24px',
-    },
     titleLarge: {
       fontSize: '48px',
       fontStyle: 'normal',
@@ -817,9 +817,6 @@ export const lightTheme = createTheme(
       bgQuaternary: {
         hover: alpha('#653BA3', 0.12),
         main: alpha('#31007A', 0.08),
-      },
-      shadow: {
-        main: 'rgba(0, 0, 0, 0.16)',
       },
       primary: {
         light: '#31007A',
@@ -887,6 +884,12 @@ export const lightTheme = createTheme(
         dark: '#7B61FF',
       },
     },
+    shadows: [
+      'none',
+      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+      '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+      ...themeBase.shadows.slice(3),
+    ],
   }),
 );
 
@@ -942,9 +945,6 @@ export const darkTheme = createTheme(
       bgQuaternary: {
         hover: alpha('#653BA3', 0.56),
         main: alpha('#653BA3', 0.42),
-      },
-      shadow: {
-        main: 'rgba(0, 0, 0, 0.16)',
       },
       primary: {
         light: '#653BA3',
@@ -1012,5 +1012,11 @@ export const darkTheme = createTheme(
         dark: '#B8ADFF',
       },
     },
+    shadows: [
+      'none',
+      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+      '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+      ...themeBase.shadows.slice(3),
+    ],
   }),
 );

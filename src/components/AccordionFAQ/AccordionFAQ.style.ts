@@ -21,10 +21,10 @@ export const AccordionBox = styled(Box)(({ theme }) => ({
   position: 'relative',
   maxWidth: theme.breakpoints.values.md,
   width: '100% !important',
-  boxShadow:
-    theme.palette.mode === 'dark'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
+  // boxShadow:
+  //   theme.palette.mode === 'dark'
+  //     ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+  //     : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: theme.breakpoints.values.md,

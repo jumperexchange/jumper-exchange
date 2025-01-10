@@ -36,5 +36,4 @@ export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   activeThemeMode?: ThemeMode;
   activeTheme?: string;
   autoHeight?: boolean;
-  customWidgetTheme?: WidgetTheme;
 }

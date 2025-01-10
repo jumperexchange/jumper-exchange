@@ -15,6 +15,7 @@ interface AccordionFAQItemProps {
   question: string;
   answer: string;
   itemSx?: SxProps<Theme>;
+  itemAnswerSx?: SxProps<Theme>;
   index: number;
   showIndex?: boolean;
   questionTextTypography?: TypographyProps['variant'];
@@ -36,6 +37,7 @@ export const AccordionFAQItem = ({
   question,
   answer,
   itemSx,
+  itemAnswerSx,
   lastItem,
 }: AccordionFAQItemProps) => {
   return (
@@ -60,7 +62,10 @@ export const AccordionFAQItem = ({
           className="accordion-details"
           sx={{ '& > img': { width: '100%' } }}
         >
-          <Typography variant={answerTextTypography || 'bodyMedium'}>
+          <Typography
+            variant={answerTextTypography || 'bodyMedium'}
+            sx={itemAnswerSx}
+          >
             {answer}
           </Typography>
           {/* <BlocksRenderer content={el.Answer} /> */}
