@@ -1,7 +1,10 @@
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Box, Skeleton, Typography } from '@mui/material';
+import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
+import { useEnrichedMarkets } from 'royco/hooks';
+import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import { BerachainMarketFilter } from '../BerachainMarketFilter/BerachainMarketFilter';
 import { BerachainMarketFilterItem } from '../BerachainMarketFilter/BerachainMarketFilter.style';
@@ -10,9 +13,6 @@ import {
   BerachainMarketFiltersButton,
 } from '../BerachainMarkets.style';
 import { BerachainMarketsFilterBox } from './BerachainMarketsFilters.style';
-import { useEnrichedMarkets } from 'royco/hooks';
-import type { EnrichedMarketDataType } from 'royco/queries';
-import { useSearchParams } from 'next/navigation';
 
 export const BerachainFilterIncentivesMenu = () => {
   const { incentiveFilter, setIncentiveFilter } =
@@ -61,6 +61,13 @@ export const BerachainFilterIncentivesMenu = () => {
     return mappedTokens;
   }, [data]);
 
+  const incentivesNumber = Array.from(tokens.values()).filter(
+    (incentive) => incentive !== undefined,
+  ).length;
+  const incentivesFiltered = incentivesNumber
+    ? incentivesNumber - incentiveFilter.length
+    : undefined;
+
   return (
     <BerachainMarketsFilterBox>
       <BerachainMarketFiltersButton
@@ -70,7 +77,11 @@ export const BerachainFilterIncentivesMenu = () => {
         aria-expanded={openTokensFilterMenu ? 'true' : undefined}
         onClick={handleTokensFilterClick}
       >
-        <Typography variant="bodyMedium">All Incentives</Typography>
+        <Typography variant="bodyMedium">
+          {incentivesNumber !== incentivesFiltered
+            ? `${incentivesFiltered ? incentivesFiltered : 'All '} Incentive${incentivesFiltered === 1 ? '' : 's'}`
+            : 'All Incentives'}
+        </Typography>
         <BerachainMarketFilterArrow active={openTokensFilterMenu} />
       </BerachainMarketFiltersButton>
       <BerachainMarketFilter

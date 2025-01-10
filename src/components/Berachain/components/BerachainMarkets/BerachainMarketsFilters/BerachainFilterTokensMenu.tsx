@@ -1,7 +1,10 @@
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Box, Skeleton, Typography } from '@mui/material';
+import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
+import { useEnrichedMarkets } from 'royco/hooks';
+import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import { BerachainMarketFilter } from '../BerachainMarketFilter/BerachainMarketFilter';
 import { BerachainMarketFilterItem } from '../BerachainMarketFilter/BerachainMarketFilter.style';
@@ -10,9 +13,6 @@ import {
   BerachainMarketFiltersButton,
 } from '../BerachainMarkets.style';
 import { BerachainMarketsFilterBox } from './BerachainMarketsFilters.style';
-import { useEnrichedMarkets } from 'royco/hooks';
-import type { EnrichedMarketDataType } from 'royco/queries';
-import { useSearchParams } from 'next/navigation';
 
 export const BerachainFilterTokensMenu = () => {
   const searchParam = useSearchParams();
@@ -61,6 +61,9 @@ export const BerachainFilterTokensMenu = () => {
     return mappedTokens;
   }, [data]);
 
+  const tokensNumber = Array.isArray(tokens) ? tokens.length : tokens.size;
+  const tokensFiltered = tokensNumber - tokenFilter.length;
+
   return (
     <BerachainMarketsFilterBox>
       <BerachainMarketFiltersButton
@@ -70,7 +73,11 @@ export const BerachainFilterTokensMenu = () => {
         aria-expanded={openTokensFilterMenu ? 'true' : undefined}
         onClick={handleTokensFilterClick}
       >
-        <Typography variant="bodyMedium">All Tokens</Typography>
+        <Typography variant="bodyMedium">
+          {tokensNumber !== tokensFiltered
+            ? `${tokensFiltered} Token${tokensFiltered === 1 ? '' : 's'}`
+            : 'All Tokens'}
+        </Typography>
         <BerachainMarketFilterArrow active={openTokensFilterMenu} />
       </BerachainMarketFiltersButton>
       <BerachainMarketFilter

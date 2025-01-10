@@ -40,6 +40,11 @@ export const BerachainFilterProtocolsMenu = () => {
   // @ts-expect-error
   const data = useBerachainMarketProtocols(berachainMarkets);
 
+  const protocolsNumber = data?.length;
+  const protocolsFiltered = protocolsNumber
+    ? protocolsNumber - protocolFilter.length
+    : undefined;
+
   return (
     <BerachainMarketsFilterBox>
       {/* <Typography variant="bodySmall" color={'text.primary'}>
@@ -52,7 +57,11 @@ export const BerachainFilterProtocolsMenu = () => {
         aria-expanded={openProtocolsFilterMenu ? 'true' : undefined}
         onClick={handleTokensFilterClick}
       >
-        <Typography variant="bodySmall">All Protocols</Typography>
+        <Typography variant="bodySmall">
+          {protocolsNumber !== protocolsFiltered
+            ? `${protocolsFiltered} Protocol${protocolsFiltered === 1 ? '' : 's'}`
+            : 'All Protocols'}
+        </Typography>
         <BerachainMarketFilterArrow active={openProtocolsFilterMenu} />
       </BerachainMarketFiltersButton>
       <BerachainMarketFilter
