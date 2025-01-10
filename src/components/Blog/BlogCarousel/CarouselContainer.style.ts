@@ -11,22 +11,23 @@ export interface CarouselContainerBoxProps extends Omit<BoxProps, 'variant'> {
   styles?: CSSObject;
 }
 
-export const CarouselContainerBox = styled(Box)<CarouselContainerBoxProps>(
-  ({ theme }) => ({
-    display: 'flex',
-    gap: theme.spacing(4),
-    marginTop: theme.spacing(3),
-    overflow: 'auto',
-    width: '100%',
-    overflowY: 'hidden',
-    scrollSnapType: 'x mandatory',
-    '& > *': {
-      flexShrink: 0,
-      scrollSnapAlign: 'center',
-    },
-    '::-webkit-scrollbar': { display: 'none' },
-  }),
-);
+export const CarouselContainerBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'styles',
+})<CarouselContainerBoxProps>(({ theme, styles }) => ({
+  display: 'flex',
+  gap: theme.spacing(4),
+  marginTop: theme.spacing(3),
+  overflow: 'auto',
+  width: '100%',
+  overflowY: 'hidden',
+  scrollSnapType: 'x mandatory',
+  '& > *': {
+    flexShrink: 0,
+    scrollSnapAlign: 'center',
+  },
+  '::-webkit-scrollbar': { display: 'none' },
+  ...styles,
+}));
 
 export const CarouselHeader = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
@@ -35,12 +36,12 @@ export const CarouselHeader = styled(Box, {
   alignItems: 'center',
   marginTop: theme.spacing(1.5),
   justifyContent: 'space-between',
+  ...(theme.palette.mode === 'dark' && {
+    color: theme.palette.white.main,
+  }),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: 0,
   },
-  ...theme.applyStyles('dark', {
-    color: theme.palette.white.main,
-  }),
 }));
 
 export interface CarouselNavigationContainerProps
@@ -50,19 +51,12 @@ export interface CarouselNavigationContainerProps
 
 export const CarouselNavigationContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'hide',
-})<CarouselNavigationContainerProps>(({ theme }) => ({
+})<CarouselNavigationContainerProps>(({ theme, hide }) => ({
   display: 'flex',
   [theme.breakpoints.up('md' as Breakpoint)]: {
+    ...(hide && { display: 'none' }),
     marginLeft: 3,
   },
-  variants: [
-    {
-      props: ({ hide }) => hide,
-      style: {
-        [theme.breakpoints.up('md' as Breakpoint)]: { display: 'none' },
-      },
-    },
-  ],
 }));
 
 export const CarouselNavigationButton = styled(IconButtonTertiary, {

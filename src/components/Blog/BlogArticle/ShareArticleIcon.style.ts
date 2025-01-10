@@ -8,20 +8,8 @@ export interface ShareButtonProps extends Omit<IconButtonProps, 'component'> {
 
 export const ShareButton = styled(IconButtonTertiary, {
   shouldForwardProp: (prop) => prop !== 'expanded',
-})<ShareButtonProps>(({ theme }) => ({
+})<ShareButtonProps>(({ theme, expanded }) => ({
   marginLeft: theme.spacing(1.5),
-  width: '48px',
-  variants: [
-    {
-      props: ({ expanded }) => expanded,
-      style: {
-        width: 'auto',
-      },
-    },
-    {},
-    {
-      props: ({ expanded }) => expanded,
-      style: { borderRadius: '24px' },
-    },
-  ],
+  width: expanded ? 'auto' : '48px',
+  ...(expanded && { borderRadius: '24px' }),
 }));

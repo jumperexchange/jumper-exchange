@@ -33,17 +33,18 @@ export const ModalContainer = styled(Box)<ModalContainerProps>(({ theme }) => ({
   maxWidth: 640,
   maxHeight: '85%',
   overflowY: 'auto',
-  background: theme.palette.surface1.main,
+  background:
+    theme.palette.mode === 'dark'
+      ? theme.palette.surface2.main
+      : theme.palette.surface1.main,
   '&:focus-visible': {
     outline: 0,
   },
+
   [theme.breakpoints.up('md' as Breakpoint)]: {
     margin: 0,
     width: 640,
   },
-  ...theme.applyStyles('dark', {
-    background: theme.palette.surface2.main,
-  }),
 }));
 
 export const ModalContent = styled(Grid)<GridProps>(({ theme }) => ({
@@ -73,19 +74,20 @@ export const ModalHeaderAppBar = styled(AppBar)<ModalHeaderAppBarProps>(
     minHeight: 48,
     top: 0,
     padding: theme.spacing(1.5, 3),
-    backgroundColor: alpha(theme.palette.surface1.main, 0.84),
+    backgroundColor:
+      theme.palette.mode === 'dark'
+        ? alpha(theme.palette.surface2.main, 0.2)
+        : alpha(theme.palette.surface1.main, 0.84),
     backdropFilter: 'blur(12px)',
     boxShadow: 'unset',
     backgroundImage: 'unset',
+
     '@supports ( -moz-appearance:none )': {
-      backgroundColor: theme.palette.surface1.main,
-      ...theme.applyStyles('dark', {
-        backgroundColor: theme.palette.surface2.main,
-      }),
+      backgroundColor:
+        theme.palette.mode === 'dark'
+          ? theme.palette.surface2.main
+          : theme.palette.surface1.main,
     },
-    ...theme.applyStyles('dark', {
-      backgroundColor: alpha(theme.palette.surface2.main, 0.2),
-    }),
   }),
 );
 

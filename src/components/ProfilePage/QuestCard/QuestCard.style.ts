@@ -11,7 +11,10 @@ import Image from 'next/image';
 
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  backgroundColor: alpha(theme.palette.white.main, 0.08),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? '#FFFFFF'
+      : alpha(theme.palette.white.main, 0.08),
   borderRadius: '24px',
   flexDirection: 'column',
   height: 'auto',
@@ -23,9 +26,6 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   textAlign: 'center',
   transition: 'background-color 250ms',
   boxShadow: theme.shadows[2],
-  ...theme.applyStyles('light', {
-    backgroundColor: '#FFFFFF',
-  }),
 }));
 
 export const QuestCardImage = styled(Image)(({ theme }) => ({
@@ -94,16 +94,16 @@ export const QuestPlatformMainBox = styled(Box)<BoxProps>(() => ({
 export const QuestDatesBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  backgroundColor: theme.palette.alphaLight300.main,
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? alpha(theme.palette.black.main, 0.04)
+      : theme.palette.alphaLight300.main,
   paddingTop: '4px',
   paddingBottom: '4px',
   paddingLeft: '8px',
   paddingRight: '8px',
   borderRadius: '128px',
   justifyContent: 'center',
-  ...theme.applyStyles('light', {
-    backgroundColor: alpha(theme.palette.black.main, 0.04),
-  }),
 }));
 
 export interface XPDisplayBoxProps extends BoxProps {
@@ -113,10 +113,10 @@ export interface XPDisplayBoxProps extends BoxProps {
 
 export const XPDisplayBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active' && prop !== 'completed',
-})<XPDisplayBoxProps>(({ theme }) => ({
+})<XPDisplayBoxProps>(({ active, theme, completed }) => ({
   display: 'flex',
-  color: theme.palette.primary.main,
-  backgroundColor: '#F0E5FF',
+  color: completed ? '#00B849' : theme.palette.primary.main,
+  backgroundColor: completed ? '#D6FFE7' : '#F0E5FF',
   height: 32,
   alignItems: 'center',
   borderRadius: '128px',
@@ -125,21 +125,6 @@ export const XPDisplayBox = styled(Box, {
   ':not(last-of-type)': {
     marginRight: theme.spacing(1),
   },
-  variants: [
-    {
-      props: ({ completed }) => completed,
-      style: {
-        color: '#00B849',
-      },
-    },
-    {},
-    {
-      props: ({ completed }) => completed,
-      style: {
-        backgroundColor: '#D6FFE7',
-      },
-    },
-  ],
 }));
 
 export const XPDisplayBoxLabel = styled(Typography)(({ theme }) => {

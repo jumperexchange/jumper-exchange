@@ -33,10 +33,10 @@ export const AvailableMissionsHeader = styled(Box, {
   display: 'flex',
   alignItems: 'center',
   alignContent: 'center',
-  justifyContent: 'space-between',
-  ...theme.applyStyles('dark', {
+  ...(theme.palette.mode === 'dark' && {
     color: theme.palette.white.main,
   }),
+  justifyContent: 'space-between',
 }));
 
 export const AvailableMissionsTitle = styled(Typography, {

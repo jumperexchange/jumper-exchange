@@ -11,6 +11,7 @@ export const WalletAvatar = styled(Avatar)(({ theme }) => ({
   height: 40,
   width: 40,
   backgroundColor: 'transparent',
+
   '> img': {
     height: '100%',
     width: '100%',

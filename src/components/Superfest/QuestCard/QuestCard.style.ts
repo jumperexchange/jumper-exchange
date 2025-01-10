@@ -4,14 +4,14 @@ import { Box, alpha, styled } from '@mui/material';
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor: alpha(theme.palette.white.main, 0.08),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? '#FFFFFF'
+      : alpha(theme.palette.white.main, 0.08),
   height: 450,
   width: 288,
   textAlign: 'center',
   borderRadius: '8px',
-  ...theme.applyStyles('light', {
-    backgroundColor: '#FFFFFF',
-  }),
 }));
 
 export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
@@ -42,10 +42,10 @@ export interface QuestCardInfoBoxProps extends Omit<BoxProps, 'component'> {
 
 export const QuestCardInfoBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'points',
-})<QuestCardInfoBoxProps>({
+})<QuestCardInfoBoxProps>(({ points }) => ({
   display: 'flex',
   flexDirection: 'column',
-});
+}));
 
 export const CompletedBox = styled(Box)(() => ({
   display: 'flex',
@@ -62,19 +62,11 @@ export interface QuestPlatformMainBoxProps extends Omit<BoxProps, 'component'> {
 
 export const QuestPlatformMainBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'platformName',
-})<QuestPlatformMainBoxProps>({
+})<QuestPlatformMainBoxProps>(({ platformName }) => ({
   display: 'flex',
-  justifyContent: 'flex-end',
+  justifyContent: platformName ? 'space-between' : 'flex-end',
   alignItems: 'center',
-  variants: [
-    {
-      props: ({ platformName }) => platformName,
-      style: {
-        justifyContent: 'space-between',
-      },
-    },
-  ],
-});
+}));
 
 export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {
   active?: boolean;
@@ -82,8 +74,8 @@ export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {
 
 export const XPDisplayBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active',
-})<XPDisplayBoxProps>({
-  marginRight: undefined,
+})<XPDisplayBoxProps>(({ active }) => ({
+  marginRight: active ? '8px' : undefined,
   display: 'flex',
   height: '28px',
   alignContent: 'center',
@@ -91,15 +83,7 @@ export const XPDisplayBox = styled(Box, {
   alignItems: 'center',
   borderRadius: '128px',
   padding: '8px',
-  variants: [
-    {
-      props: ({ active }) => active,
-      style: {
-        marginRight: '8px',
-      },
-    },
-  ],
-});
+}));
 
 export const XPIconBox = styled(Box)(({ theme }) => ({
   display: 'flex',

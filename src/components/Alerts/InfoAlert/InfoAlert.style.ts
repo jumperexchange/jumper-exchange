@@ -26,14 +26,10 @@ export const InfoAlertContainer = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 export const InfoAlertCard = styled(InfoMessageCard)(({ theme }) => ({
-  //todo: add to theme
-  backgroundColor: '#00317A',
+  backgroundColor: theme.palette.mode === 'light' ? '#EBF3FF' : '#00317A', //todo: add to theme
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: 384,
   },
-  ...theme.applyStyles('light', {
-    backgroundColor: '#EBF3FF',
-  }),
 }));
 
 export const InfoAlertButton = styled(IconButtonAlpha)(({ theme }) => ({
@@ -47,7 +43,10 @@ export const InfoAlertButton = styled(IconButtonAlpha)(({ theme }) => ({
 
 export const ButtonInfoAlertClickable = styled(ButtonPrimary)(({ theme }) => ({
   height: 32,
-  backgroundColor: lighten(theme.palette.info.main, 0.1),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? darken(theme.palette.info.main, 0.1)
+      : lighten(theme.palette.info.main, 0.1),
   padding: theme.spacing(2),
   marginTop: theme.spacing(1.5),
   display: 'flex',
@@ -57,7 +56,4 @@ export const ButtonInfoAlertClickable = styled(ButtonPrimary)(({ theme }) => ({
   '&:hover': {
     backgroundColor: theme.palette.info.main,
   },
-  ...theme.applyStyles('light', {
-    backgroundColor: darken(theme.palette.info.main, 0.1),
-  }),
 }));

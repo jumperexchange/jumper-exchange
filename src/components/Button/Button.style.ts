@@ -14,10 +14,10 @@ const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   overflow: 'hidden',
   color: theme.palette.text.primary,
   '&:hover': {
-    backgroundColor: theme.palette.accent1.main,
-    ...theme.applyStyles('dark', {
-      backgroundColor: theme.palette.primary.main,
-    }),
+    backgroundColor:
+      theme.palette.mode === 'dark'
+        ? theme.palette.primary.main
+        : theme.palette.accent1.main,
   },
 }));
 
@@ -42,12 +42,15 @@ export const ButtonSecondary = styled(ButtonBase)<MuiButtonProps>(
 
 export const ButtonTransparent = styled(ButtonBase)<MuiButtonProps>(
   ({ theme }) => ({
-    backgroundColor: alpha(theme.palette.black.main, 0.08),
+    backgroundColor:
+      theme.palette.mode === 'dark'
+        ? alpha(theme.palette.white.main, 0.12)
+        : alpha(theme.palette.black.main, 0.08),
     '&:hover': {
-      backgroundColor: alpha(theme.palette.black.main, 0.12),
-      ...theme.applyStyles('dark', {
-        backgroundColor: alpha(theme.palette.white.main, 0.16),
-      }),
+      backgroundColor:
+        theme.palette.mode === 'dark'
+          ? alpha(theme.palette.white.main, 0.16)
+          : alpha(theme.palette.black.main, 0.12),
     },
     '&:before': {
       content: '" "',
@@ -63,23 +66,20 @@ export const ButtonTransparent = styled(ButtonBase)<MuiButtonProps>(
     '&:hover:before': {
       background: getContrastAlphaColor(theme, '4%'),
     },
-    ...theme.applyStyles('dark', {
-      backgroundColor: alpha(theme.palette.white.main, 0.12),
-    }),
   }),
 );
 
 export const LevelButton = styled(ButtonSecondary)<MuiButtonProps>(
   ({ theme }) => ({
     display: 'flex',
-    color: theme.palette.white.main,
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.primary.main
+        : theme.palette.white.main,
     justifyContent: 'center',
     alignItems: 'center',
     pointerEvents: 'none',
     paddingLeft: '12px',
     height: '32px',
-    ...theme.applyStyles('light', {
-      color: theme.palette.primary.main,
-    }),
   }),
 );

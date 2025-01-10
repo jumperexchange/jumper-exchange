@@ -13,7 +13,10 @@ export const ToolCardContainer = styled('div')(({ theme }) => ({
   cursor: 'pointer',
   width: 104,
   height: 96,
-  color: theme.palette.primary.main,
+  color:
+    theme.palette.mode === 'dark'
+      ? theme.palette.accent1Alt.main
+      : theme.palette.primary.main,
   userSelect: 'none',
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '16px',
@@ -21,28 +24,23 @@ export const ToolCardContainer = styled('div')(({ theme }) => ({
   transitionDuration: '.3s',
   transitionTimingFunction: 'ease-in-out',
   boxShadow:
-    '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
+    theme.palette.mode === 'dark'
+      ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
   '&:hover': {
-    backgroundColor: alpha(theme.palette.white.main, 0.2),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.white.main, 0.8)
+        : alpha(theme.palette.white.main, 0.2),
     boxShadow:
-      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-    ...theme.applyStyles('light', {
-      backgroundColor: alpha(theme.palette.white.main, 0.8),
-    }),
-    ...theme.applyStyles('dark', {
-      boxShadow:
-        '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-    }),
+      theme.palette.mode === 'dark'
+        ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
+        : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: 136,
     height: 120,
   },
-  ...theme.applyStyles('dark', {
-    color: theme.palette.accent1Alt.main,
-    boxShadow:
-      '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-  }),
 }));
 
 export const ToolCardCounter = styled(Typography)(({ theme }) => ({

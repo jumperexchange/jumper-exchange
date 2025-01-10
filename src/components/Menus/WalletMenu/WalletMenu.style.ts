@@ -55,18 +55,18 @@ export const ChainAvatar = styled(Avatar)(({ theme }) => ({
   },
 }));
 
-export const WalletButton = styled(ButtonTransparent)<WalletButtonProps>(
-  ({ theme }) => ({
-    borderRadius: '24px',
-    padding: '10px 24px',
-    height: 40,
-    width: '100%',
-    background: alpha(theme.palette.text.primary, 0.04),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.text.primary, 0.08),
-    },
-  }),
-);
+export const WalletButton = styled(ButtonTransparent, {
+  shouldForwardProp: (prop) => prop !== 'colored',
+})<WalletButtonProps>(({ theme, colored }) => ({
+  borderRadius: '24px',
+  padding: '10px 24px',
+  height: 40,
+  width: '100%',
+  background: alpha(theme.palette.text.primary, 0.04),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.text.primary, 0.08),
+  },
+}));
 
 export const WalletButtonSecondary = styled(ButtonSecondary, {
   shouldForwardProp: (prop) => prop !== 'colored',

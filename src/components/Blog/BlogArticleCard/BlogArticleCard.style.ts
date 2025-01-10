@@ -29,10 +29,10 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   },
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor: theme.palette.alphaLight300.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: darken(theme.palette.white.main, 0.04),
-    }),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? darken(theme.palette.white.main, 0.04)
+        : theme.palette.alphaLight300.main,
   },
 }));
 
@@ -118,24 +118,16 @@ interface BlogArticleCardMetaContainerProps extends BoxProps {
 
 export const BlogArticleCardMetaContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'hasTags',
-})<BlogArticleCardMetaContainerProps>(({ theme }) => ({
+})<BlogArticleCardMetaContainerProps>(({ theme, hasTags }) => ({
   display: 'flex',
   alignItems: 'center',
   fontSize: '14px',
   height: 40,
   color: theme.palette.text.primary,
   '*': { textWrap: 'nowrap' },
-  [theme.breakpoints.up('sm' as Breakpoint)]: {},
-  variants: [
-    {
-      props: ({ hasTags }) => hasTags,
-      style: {
-        [theme.breakpoints.up('sm' as Breakpoint)]: {
-          marginLeft: theme.spacing(1),
-        },
-      },
-    },
-  ],
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    ...(hasTags && { marginLeft: theme.spacing(1) }),
+  },
 }));
 
 export const BlogArticleCardTag = styled(Tag)(({ theme }) => ({

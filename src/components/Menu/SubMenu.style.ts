@@ -14,37 +14,13 @@ export interface SubMenuLabelProps extends Omit<TypographyProps, 'component'> {
 export const SubMenuLabel = styled(Typography, {
   shouldForwardProp: (prop) =>
     prop !== 'isPrefixIcon' && prop !== 'isSuffixIcon' && prop !== 'component',
-})<SubMenuLabelProps>(({ theme }) => ({
+})<SubMenuLabelProps>(({ theme, isPrefixIcon, isSuffixIcon }) => ({
   maxWidth: 'inherit',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  marginLeft: 'inherit',
-  marginRight: 'inherit',
+  marginLeft: isPrefixIcon ? theme.spacing(1.5) : 'inherit',
+  marginRight: isSuffixIcon ? theme.spacing(1.5) : 'inherit',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxWidth: 'inherit',
+    maxWidth: isPrefixIcon ? 188 : 'inherit',
   },
-  variants: [
-    {
-      props: ({ isPrefixIcon }) => isPrefixIcon,
-      style: {
-        marginLeft: theme.spacing(1.5),
-      },
-    },
-    {},
-    {
-      props: ({ isSuffixIcon }) => isSuffixIcon,
-      style: {
-        marginRight: theme.spacing(1.5),
-      },
-    },
-    {},
-    {
-      props: ({ isPrefixIcon }) => isPrefixIcon,
-      style: {
-        [theme.breakpoints.up('sm' as Breakpoint)]: {
-          maxWidth: 188,
-        },
-      },
-    },
-  ],
 }));

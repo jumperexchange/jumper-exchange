@@ -19,10 +19,10 @@ export const FeaturedArticleLink = styled(Link)<BoxProps>(({ theme }) => ({
   margin: theme.spacing(4, 2, 0),
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor: alpha(theme.palette.white.main, 0.2),
-    ...theme.applyStyles('light', {
-      backgroundColor: alpha(theme.palette.white.main, 0.8),
-    }),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.white.main, 0.8)
+        : alpha(theme.palette.white.main, 0.2),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(6, 8, 0),
@@ -31,6 +31,7 @@ export const FeaturedArticleLink = styled(Link)<BoxProps>(({ theme }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {
     padding: theme.spacing(4),
   },
+
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     padding: theme.spacing(8),
     minHeight: 500,
@@ -81,11 +82,9 @@ export const FeaturedArticleImage = styled(Image)(({ theme }) => ({
     borderRadius: '14px',
     alignSelf: 'center',
     boxShadow:
-      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-    ...theme.applyStyles('light', {
-      boxShadow:
-        '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-    }),
+      theme.palette.mode === 'light'
+        ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+        : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
   },
 }));
 
@@ -98,14 +97,12 @@ export const FeaturedArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   transform: 'unset',
   alignSelf: 'flex-start',
   boxShadow:
-    '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+    theme.palette.mode === 'light'
+      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
   [theme.breakpoints.up('md' as Breakpoint)]: {
     alignSelf: 'center',
   },
-  ...theme.applyStyles('light', {
-    boxShadow:
-      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-  }),
 }));
 
 export const FeaturedArticleTagSkeleton = styled(Skeleton)(({ theme }) => ({
@@ -135,6 +132,7 @@ export const FeaturedArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
   borderRadius: '12px',
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     margin: theme.spacing(4, 0),
+
     height: 112,
   },
 }));
@@ -181,6 +179,7 @@ export const FeaturedArticleDetails = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
+
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -203,6 +202,7 @@ export const FeaturedArticleTitle = styled(Typography)<TypographyProps>(
     display: '-webkit-box',
     WebkitLineClamp: 4,
     WebkitBoxOrient: 'vertical',
+
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       fontSize: '48px',
       lineHeight: '56px',

@@ -20,12 +20,12 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   paddingBottom: '24px',
   paddingLeft: '16px',
   paddingRight: '16px',
-  backgroundColor: alpha(theme.palette.white.main, 0.08),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? '#FFFFFF'
+      : alpha(theme.palette.white.main, 0.08),
   borderBottomLeftRadius: '8px',
   borderBottomRightRadius: '8px',
-  ...theme.applyStyles('light', {
-    backgroundColor: '#FFFFFF',
-  }),
 }));
 
 export const QuestCardTitleBox = styled(Box)(() => ({
@@ -59,19 +59,11 @@ export interface QuestPlatformMainBoxProps extends Omit<BoxProps, 'component'> {
 
 export const QuestPlatformMainBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'platformName',
-})<QuestPlatformMainBoxProps>({
+})<QuestPlatformMainBoxProps>(({ platformName }) => ({
   display: 'flex',
-  justifyContent: 'flex-end',
+  justifyContent: platformName ? 'space-between' : 'flex-end',
   alignItems: 'center',
-  variants: [
-    {
-      props: ({ platformName }) => platformName,
-      style: {
-        justifyContent: 'space-between',
-      },
-    },
-  ],
-});
+}));
 
 export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {
   active?: boolean;
@@ -80,8 +72,8 @@ export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {
 
 export const XPDisplayBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active' && prop !== 'completed',
-})<XPDisplayBoxProps>({
-  marginRight: undefined,
+})<XPDisplayBoxProps>(({ active, completed }) => ({
+  marginRight: active ? '8px' : undefined,
   display: 'flex',
   height: '28px',
   alignContent: 'center',
@@ -89,20 +81,8 @@ export const XPDisplayBox = styled(Box, {
   alignItems: 'center',
   borderRadius: '128px',
   padding: '8px',
-  variants: [
-    {
-      props: ({ active }) => active,
-      style: {
-        marginRight: '8px',
-      },
-    },
-    {},
-    {
-      props: ({ completed }) => completed,
-      style: { backgroundColor: '#42B852' },
-    },
-  ],
-});
+  ...(completed && { backgroundColor: '#42B852' }),
+}));
 
 export const XPIconBox = styled(Box)(({ theme }) => ({
   display: 'flex',

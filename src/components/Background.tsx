@@ -17,6 +17,7 @@ const BackgroundContainer = styled('div', {
   name: 'Background', // The component name
   slot: 'root', // The slot name
 })(({ theme }) => ({}));
+
 function Background() {
   const configTheme = useThemeStore((state) => state.configTheme);
 
@@ -32,4 +33,5 @@ function Background() {
     </BackgroundContainer>
   );
 }
+
 export default Background;

@@ -19,9 +19,12 @@ export const BackgroundGradientContainer = styled('div', {
     position: 'fixed',
     overflow: 'hidden',
     pointerEvents: 'none',
-    background: (theme as Theme).palette.surface1.main,
+    background: backgroundImageUrl
+      ? `url(${backgroundImageUrl.href})`
+      : (theme as Theme).palette.surface1.main,
     backgroundColor: backgroundColor,
     left: 0,
+    ...(backgroundImageUrl && { backgroundSize: 'cover' }),
     bottom: 0,
     right: 0,
     top: 0,
@@ -30,20 +33,6 @@ export const BackgroundGradientContainer = styled('div', {
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
     },
-    variants: [
-      {
-        props: ({ backgroundImageUrl }) => backgroundImageUrl,
-        style: {
-          background: backgroundImageUrl
-            ? `url(${backgroundImageUrl.href})`
-            : (theme as Theme).palette.surface1.main,
-        },
-      },
-      {
-        props: ({ backgroundImageUrl }) => backgroundImageUrl,
-        style: { backgroundSize: 'cover' },
-      },
-    ],
   };
 });
 
@@ -56,24 +45,26 @@ const BackgroundGradient = styled('span')(() => ({
 }));
 
 export const BackgroundGradients = styled('span')(({ theme }) => ({
-  width: '100vh',
-  height: '100vh',
-  opacity: '0.12',
-  transform: 'translate(0%,-50%) scale(1.5)',
+  width: theme.palette.mode === 'dark' ? '100vw' : '100vh',
+  height: theme.palette.mode === 'dark' ? '100vw' : '100vh',
+  opacity: theme.palette.mode === 'dark' ? '0.24' : '0.12',
+  transform:
+    theme.palette.mode === 'dark'
+      ? 'translate(-0%, -50%) scale( calc( 1 + 1 / 3 ))'
+      : 'translate(0%,-50%) scale(1.5)',
   background:
     'radial-gradient(50% 50% at 50% 50%, #9747FF 0%, rgba(255, 255, 255, 0) 100%)',
   ':before': {
     content: '" "',
     width: '100vh',
     height: '100vh',
-    transform: undefined,
-    opacity: '0.12',
+    transform:
+      theme.palette.mode === 'dark'
+        ? 'translate( -50vh, 100vh ) scale(1.5)'
+        : undefined,
+    opacity: theme.palette.mode === 'dark' ? '0.24' : '0.12',
     background:
       'radial-gradient(50% 50% at 50% 50%, #1969FF 0%, rgba(255, 255, 255, 0) 100%)',
-    ...theme.applyStyles('dark', {
-      transform: 'translate( -50vh, 100vh ) scale(1.5)',
-      opacity: '0.24',
-    }),
   },
   ':after': {
     content: '" "',
@@ -83,19 +74,10 @@ export const BackgroundGradients = styled('span')(({ theme }) => ({
     transform: 'translate(50%,50%) scale(1.5)',
     right: 0,
     bottom: 0,
-    opacity: '0.12',
+    opacity: theme.palette.mode === 'dark' ? '0.24' : '0.12',
     background:
       'radial-gradient(50% 50% at 50% 50%, #E1147B 0%, rgba(255, 255, 255, 0) 100%)',
-    ...theme.applyStyles('dark', {
-      opacity: '0.24',
-    }),
   },
-  ...theme.applyStyles('dark', {
-    width: '100vw',
-    height: '100vw',
-    opacity: '0.24',
-    transform: 'translate(-0%, -50%) scale( calc( 1 + 1 / 3 ))',
-  }),
 }));
 
 export const BackgroundGradientBottomLeft = styled(BackgroundGradient)(
@@ -105,13 +87,10 @@ export const BackgroundGradientBottomLeft = styled(BackgroundGradient)(
     },
     transform: 'translate(-50%,50%) scale(1.5)',
     left: 0,
-    opacity: '0.16',
+    opacity: theme.palette.mode === 'dark' ? '0.24' : '0.16',
     bottom: 0,
     background:
       'radial-gradient(50% 50% at 50% 50%, #BB00FF 0%, rgba(255, 255, 255, 0) 100%)',
-    ...theme.applyStyles('dark', {
-      opacity: '0.24',
-    }),
   }),
 );
 
@@ -123,12 +102,9 @@ export const BackgroundGradientBottomRight = styled(BackgroundGradient)(
     transform: 'translate(50%,50%) scale(1.5)',
     right: 0,
     bottom: 0,
-    opacity: '0.16',
+    opacity: theme.palette.mode === 'dark' ? '0.24' : '0.16',
     background:
       'radial-gradient(50% 50% at 50% 50%, #0044FF 0%, rgba(255, 255, 255, 0) 100%)',
-    ...theme.applyStyles('dark', {
-      opacity: '0.24',
-    }),
   }),
 );
 
@@ -137,20 +113,17 @@ export const BackgroundGradientTopCenter = styled(BackgroundGradient)(
     [theme.breakpoints.down('sm' as Breakpoint)]: {
       display: 'none',
     },
-    transform: 'translate(-50%, -50%) scale(1.5)',
+    transform:
+      theme.palette.mode === 'dark'
+        ? 'translate(-50%, -50%) scale( calc( 1 + 1 / 3 ))'
+        : 'translate(-50%, -50%) scale(1.5)',
     top: 0,
     left: '50%',
-    width: '100vh',
-    height: '100vh',
-    opacity: '0.12',
+    width: theme.palette.mode === 'dark' ? '100vw' : '100vh',
+    height: theme.palette.mode === 'dark' ? '100vw' : '100vh',
+    opacity: theme.palette.mode === 'dark' ? '0.24' : '0.12',
     background:
       'radial-gradient(50% 50% at 50% 50%, #8800FF 0%, rgba(255, 255, 255, 0) 100%)',
-    ...theme.applyStyles('dark', {
-      transform: 'translate(-50%, -50%) scale( calc( 1 + 1 / 3 ))',
-      width: '100vw',
-      height: '100vw',
-      opacity: '0.24',
-    }),
   }),
 );
 
@@ -159,16 +132,15 @@ export const BlogBackgroundGradient = styled(BackgroundGradient)(
     transform: 'translateX(-50%)',
     top: -200,
     left: '50%',
-    position: 'fixed',
+    position: theme.palette.mode === 'light' ? 'absolute' : 'fixed',
     opacity: 1,
     width: '100%',
     height: 'calc( 100vh + 200px )',
     zIndex: -1,
-    background: `linear-gradient(180deg, rgba(3, 0, 20, 1) 0%, ${darken('#9747FF', 0.6)} 150%)`,
-    ...theme.applyStyles('light', {
-      position: 'absolute',
-      background: `linear-gradient(180deg, ${alpha(theme.palette.bg.main, 1)} 0%, ${alpha(theme.palette.bg.main, 0)} 100%)`,
-    }),
+    background:
+      theme.palette.mode === 'light'
+        ? `linear-gradient(180deg, ${alpha(theme.palette.bg.main, 1)} 0%, ${alpha(theme.palette.bg.main, 0)} 100%)`
+        : `linear-gradient(180deg, rgba(3, 0, 20, 1) 0%, ${darken('#9747FF', 0.6)} 150%)`,
   }),
 );
 

@@ -18,15 +18,19 @@ export const SuperFestPoweredContainer = styled('div', {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
     marginLeft: theme.spacing(2),
-    [theme.breakpoints.up('sm' as Breakpoint)]: {},
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      // marginTop: isArticlePage ? theme.spacing(-6) : theme.spacing(8),
+    },
+
     zIndex: 1,
+
     '.link-jumper': {
       fontWeight: '700',
-      color: theme.palette.accent1Alt.main,
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.accent1.main
+          : theme.palette.accent1Alt.main,
       textDecoration: 'none',
-      ...theme.applyStyles('light', {
-        color: theme.palette.accent1.main,
-      }),
     },
   },
 }));
