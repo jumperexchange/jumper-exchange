@@ -1,6 +1,6 @@
-import type { FaqMeta } from '@/types/strapi';
 import Script from 'next/script';
 import { useMemo } from 'react';
+import type { FaqProps } from '../AccordionFAQ';
 
 interface TextProps {
   text: string;
@@ -34,18 +34,18 @@ function extractTextFromBlocks(blocks: BlocksProps[]) {
 }
 
 interface QAJsonSchemaProps {
-  data: FaqMeta[];
+  data: FaqProps[];
 }
 
 export const QAJsonSchema = ({ data }: QAJsonSchemaProps) => {
   const schema = useMemo(() => {
     const entities = data?.map((el, index) => {
-      const text = extractTextFromBlocks(
-        el.attributes.Answer as unknown as BlocksProps[],
-      );
+      const text = el.Answer;
+      // used for data from strapi -->
+      // const text = extractTextFromBlocks(el.Answer as unknown as BlocksProps[]);
       const output = text && {
         '@type': 'Question',
-        name: el.attributes.Question,
+        name: el.Question,
         acceptedAnswer: {
           '@type': 'Answer',
           text: text.length > 256 ? `${text.slice(0, 256)}...` : text,

@@ -19,7 +19,7 @@ export const AddressBoxContainer = styled(Box, {
   paddingBottom: theme.spacing(1),
   width: '100%',
   minHeight: 200,
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
 
   ...(!imgUrl && {
     background: `linear-gradient(to bottom, ${theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.accent1Alt.main} 50%, ${theme.palette.mode === 'light' ? theme.palette.grey[100] : 'transparent'} 50%)`,

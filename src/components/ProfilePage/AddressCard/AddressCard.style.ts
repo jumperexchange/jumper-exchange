@@ -27,7 +27,7 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   position: 'relative',
   width: '100%',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   minHeight: 256,
 
   [theme.breakpoints.up('lg')]: {

@@ -1,5 +1,5 @@
 'use client';
-import { styled } from '@mui/system';
+import { styled } from '@mui/material';
 
 export const LogoWrapper = styled('div')(({ theme }) => {
   const mainCol =

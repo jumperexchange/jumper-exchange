@@ -60,7 +60,10 @@ export const FeaturedArticle = ({
   return featuredArticle ? (
     <>
       <FeaturedArticleLink
-        href={`${JUMPER_LEARN_PATH}/${featuredArticle?.attributes.Slug}`}
+        href={
+          featuredArticle.attributes.RedirectURL ??
+          `${JUMPER_LEARN_PATH}/${featuredArticle?.attributes.Slug}`
+        }
         onClick={() => {
           handleFeatureCardClick(featuredArticle);
         }}

@@ -12,7 +12,7 @@ export const QuestsOverviewContainer = styled(Box)(({ theme }) => ({
   borderRadius: '32px',
   paddingY: theme.spacing(2),
   paddingX: theme.spacing(1),
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   marginTop: theme.spacing(4),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),

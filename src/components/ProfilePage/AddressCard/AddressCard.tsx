@@ -4,6 +4,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
@@ -11,18 +12,16 @@ import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { AddressMenu } from '../AddressMenu/AddressMenu';
 import {
+  AddressBlockiesImage,
   AddressBox,
   AddressBoxContainer,
   AddressButton,
   AddressButtonLabel,
   AddressConnectButton,
-  AddressBlockiesImage,
-  AddressBlockiesImageSkeleton,
   ImageBackground,
   PassImageBox,
   ProfileIconButton,
 } from './AddressCard.style';
-import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 
 interface AddressBoxProps {
   address?: string;

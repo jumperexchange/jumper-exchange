@@ -7,7 +7,7 @@ export const NFTClaimingContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   borderRadius: '12px',
   width: '90%',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   [theme.breakpoints.down('md' as Breakpoint)]: {
     marginTop: '64px',
   },

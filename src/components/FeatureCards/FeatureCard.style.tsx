@@ -36,7 +36,7 @@ export const FCard = styled(MuiCard, {
     isDarkCard || theme.palette.mode === 'dark' ? '#20223D' : '#FFFFFF'
   } 506px 349px)`,
   backgroundSize: 'contain',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   ':last-child': {
     marginBottom: 0,
   },
