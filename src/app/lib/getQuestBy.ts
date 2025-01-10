@@ -9,7 +9,7 @@ export async function getQuestBy(key: string, value: string) {
   const accessToken = urlParams.getApiAccessToken();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
-    cache: 'force-cache',
+    cache: 'no-store',
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

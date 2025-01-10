@@ -106,10 +106,10 @@ export const BerachainMarketCard = ({
             {image ? (
               <Image
                 key={`berachain-market-card-token-${image.data.id}`}
-                src={`${url}${image.data.attributes.url}`}
-                alt={`${image.data.attributes.alternativeText || 'protocol'} logo`}
-                width={image.data.attributes.width}
-                height={image.data.attributes.height}
+                src={`${url}${image.data.attributes?.url}`}
+                alt={`${image.data.attributes?.alternativeText || 'protocol'} logo`}
+                width={image.data.attributes?.width}
+                height={image.data.attributes?.height}
                 style={{
                   width: '72px',
                   height: 'auto',

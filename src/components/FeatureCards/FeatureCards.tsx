@@ -49,14 +49,14 @@ export const FeatureCards = () => {
 
   function excludedFeatureCardsFilter(el: FeatureCardData) {
     if (
-      !el.attributes.featureCardsExclusions ||
-      !Array.isArray(el.attributes.featureCardsExclusions?.data)
+      !el.attributes?.featureCardsExclusions ||
+      !Array.isArray(el.attributes?.featureCardsExclusions?.data)
     ) {
       return true;
     }
 
-    const exclusions = el.attributes.featureCardsExclusions.data.map(
-      (item) => item.attributes.uid,
+    const exclusions = el.attributes?.featureCardsExclusions.data.map(
+      (item) => item.attributes?.uid,
     );
 
     return !exclusions.some((uid) => disabledFeatureCards.includes(uid));
@@ -69,8 +69,8 @@ export const FeatureCards = () => {
         ?.filter(
           (el, index) =>
             isSuccess &&
-            el.attributes.DisplayConditions &&
-            !disabledFeatureCards.includes(el.attributes.uid),
+            el.attributes?.DisplayConditions &&
+            !disabledFeatureCards.includes(el.attributes?.uid),
         )
         .slice(0, 2);
     }
@@ -93,8 +93,8 @@ export const FeatureCards = () => {
         ?.filter(excludedFeatureCardsFilter)
         ?.filter(
           (el, index) =>
-            el.attributes.DisplayConditions &&
-            !disabledFeatureCards.includes(el.attributes.uid),
+            el.attributes?.DisplayConditions &&
+            !disabledFeatureCards.includes(el.attributes?.uid),
         )
         .slice(0, 1);
     }

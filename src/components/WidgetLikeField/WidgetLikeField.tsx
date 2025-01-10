@@ -198,16 +198,6 @@ function WidgetLikeField({
     pollingInterval: 1_000,
   });
 
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('waitTransactionReceipt', {
-    txHash,
-    isLoading: isTxConfirming,
-    isSuccess: isTxConfirmed,
-    isError: isTxConfirmError,
-    status: confirmationStatus,
-  });
-
   useEffect(() => {
     if (isTxConfirmed) {
       setContractCallIndex(contractCallIndex + 1);

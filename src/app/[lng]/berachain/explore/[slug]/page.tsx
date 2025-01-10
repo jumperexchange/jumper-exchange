@@ -34,8 +34,8 @@ export async function generateMetadata({
     };
 
     return {
-      title: `Jumper Berachain | ${sliceStrToXChar(questData.attributes.Title, 45)}`,
-      description: `Description of ${questData.attributes.Title}`,
+      title: `Jumper Berachain | ${sliceStrToXChar(questData.attributes?.Title, 45)}`,
+      description: `Description of ${questData.attributes?.Title}`,
       alternates: {
         canonical: `${getSiteUrl()}/berachain/explore/${params.slug}`,
       },

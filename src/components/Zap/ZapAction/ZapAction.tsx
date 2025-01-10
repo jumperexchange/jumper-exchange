@@ -203,12 +203,12 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
         <ZapProtocolActionInfoBox>
           <ZapActionProtocolIntro>
             {!isMobile &&
-              (market?.attributes.Image.data.attributes.url ? (
+              (market?.attributes?.Image.data.attributes?.url ? (
                 <Image
-                  src={`${baseUrl}${market.attributes.Image.data.attributes.url}`}
+                  src={`${baseUrl}${market.attributes?.Image.data.attributes?.url}`}
                   alt="Protocol image"
-                  width={market.attributes.Image.data.attributes.width}
-                  height={market.attributes.Image.data.attributes.height}
+                  width={market.attributes?.Image.data.attributes?.width}
+                  height={market.attributes?.Image.data.attributes?.height}
                   style={{ width: 192, height: 'auto', objectFit: 'contain' }}
                 />
               ) : (
@@ -218,9 +218,9 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
                 />
               ))}
             <ZapActionProtocolCard>
-              {market?.attributes.Title ? (
+              {market?.attributes?.Title ? (
                 <Typography variant="titleSmall">
-                  {market.attributes.Title}
+                  {market.attributes?.Title}
                 </Typography>
               ) : (
                 <Skeleton
@@ -230,7 +230,7 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
               )}
               {market?.attributes?.Description && (
                 <Typography variant="bodyMedium">
-                  {market.attributes.Description}
+                  {market.attributes?.Description}
                 </Typography>
               )}
               <Box sx={{ display: 'flex', gap: '12px' }}>
@@ -311,7 +311,7 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
                 })}
               />
               <Typography variant="bodySmall">
-                {market?.attributes.Information}
+                {market?.attributes?.Information}
               </Typography>
             </ZapActionProtocolDisclaimer>
           )}

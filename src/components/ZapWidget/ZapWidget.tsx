@@ -1,13 +1,17 @@
 import type { WidgetConfig, TokenAmount } from '@lifi/widget';
-import { ChainType, DisabledUI, HiddenUI, LiFiWidget } from '@lifi/widget';
+import {
+  ChainType,
+  DisabledUI,
+  HiddenUI,
+  LiFiWidget,
+  RequiredUI,
+} from '@lifi/widget';
 import { formatUnits } from 'viem';
 import { useEffect, useMemo, useState } from 'react';
 import { useZaps } from '@/hooks/useZaps';
 import { useWalletMenu, type Account } from '@lifi/wallet-management';
 import { DepositCard } from './Deposit/DepositCard';
 import { useContractRead } from 'src/hooks/useReadContractData';
-import WidgetLikeField from '../Zap/WidgetLikeField/WidgetLikeField';
-import { Divider } from '@mui/material';
 import { useThemeStore } from 'src/stores/theme';
 import { Box } from '@mui/material';
 import { WithdrawWidget } from './Withdraw/WithdrawWidget';
@@ -34,6 +38,7 @@ interface CustomWidgetProps {
 export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
   const theme = useTheme();
   const [token, setToken] = useState<TokenAmount>();
+
   const { data, isSuccess } = useZaps(projectData);
   const { openWalletMenu } = useWalletMenu();
 
@@ -126,6 +131,7 @@ export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
           openWalletMenu();
         },
       },
+      requiredUI: [RequiredUI.ToAddress],
     };
     return baseConfig;
   }, [isSuccess, widgetTheme.config.theme, widgetTheme.config.appearance]);

@@ -78,10 +78,10 @@ export const BlogArticle = ({
       <BlogArticleContainer>
         <BlogArticleContentContainer sx={{ marginTop: 0 }}>
           <BlogArticleTopHeader>
-            {tags?.data[0]?.attributes.Title ? (
+            {tags?.data[0]?.attributes?.Title ? (
               <Tag
-                color={tags.data[0]?.attributes.TextColor}
-                backgroundColor={tags.data[0]?.attributes.BackgroundColor}
+                color={tags.data[0]?.attributes?.TextColor}
+                backgroundColor={tags.data[0]?.attributes?.BackgroundColor}
                 component="span"
                 variant="bodyMediumStrong"
                 key={`blog-article-tag-${tags.data[0]?.id}`}
@@ -126,7 +126,7 @@ export const BlogArticle = ({
                 <BlogAuthorAvatar
                   width={64}
                   height={64}
-                  src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
+                  src={`${baseUrl}${author.data.attributes?.Avatar.data.attributes?.url}`}
                   alt={`${author.data.attributes?.Name}'s avatar`}
                 />
               ) : (
@@ -156,7 +156,7 @@ export const BlogArticle = ({
                     variant="bodyXSmallStrong"
                     component="span"
                   >
-                    {author.data?.attributes.Name}
+                    {author.data?.attributes?.Name}
                   </BlogArticlAuthorName>
                 ) : (
                   <BlogArticlAuthorNameSkeleton variant="text" />
@@ -199,11 +199,11 @@ export const BlogArticle = ({
           )}
           <Divider />
           <BlogAuthorWrapper>
-            {author?.data?.attributes?.Avatar.data?.attributes.url ? (
+            {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
               <BlogAuthorAvatar
                 width={64}
                 height={64}
-                src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
+                src={`${baseUrl}${author.data.attributes?.Avatar.data.attributes?.url}`}
                 alt="author-avatar"
               />
             ) : (

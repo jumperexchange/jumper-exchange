@@ -6,7 +6,11 @@ interface UseZapsProps {
   project?: string;
 }
 
-export const useZaps = ({ chain, address, project }: UseZapsProps) => {
+export const useZaps = (input: UseZapsProps) => {
+  const chain = input?.chain;
+  const address = input?.address;
+  const project = input?.project;
+
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   // get data

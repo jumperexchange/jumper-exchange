@@ -41,20 +41,20 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   ]);
   const theme = useTheme();
   useEffect(() => {
-    if (data?.attributes.DisplayConditions?.showOnce) {
-      setDisabledFeatureCard(data?.attributes.uid);
+    if (data?.attributes?.DisplayConditions?.showOnce) {
+      setDisabledFeatureCard(data?.attributes?.uid);
     }
   }, [
-    data?.attributes.DisplayConditions,
-    data?.attributes.uid,
+    data?.attributes?.DisplayConditions,
+    data?.attributes?.uid,
     setDisabledFeatureCard,
   ]);
 
   const typographyColor = useMemo(() => {
-    if (data.attributes.DisplayConditions.mode) {
-      if (data.attributes.DisplayConditions.mode === 'dark') {
+    if (data.attributes?.DisplayConditions.mode) {
+      if (data.attributes?.DisplayConditions.mode === 'dark') {
         return theme.palette.white.main;
-      } else if (data.attributes.DisplayConditions.mode === 'light') {
+      } else if (data.attributes?.DisplayConditions.mode === 'light') {
         return theme.palette.black.main;
       }
     } else {
@@ -65,7 +65,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       }
     }
   }, [
-    data.attributes.DisplayConditions.mode,
+    data.attributes?.DisplayConditions.mode,
     theme.palette.black.main,
     theme.palette.mode,
     theme.palette.white.main,
@@ -78,31 +78,31 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         action: TrackingAction.DisplayFeatureCard,
         label: 'display-feature-card',
         data: {
-          [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
-          [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
-          url: data.attributes.URL,
+          [TrackingEventParameter.FeatureCardTitle]: data.attributes?.Title,
+          [TrackingEventParameter.FeatureCardId]: data.attributes?.uid,
+          url: data.attributes?.URL,
         },
       });
       eventFired.current = true;
     }
   }, [
-    data.attributes.uid,
-    data.attributes.Title,
-    data.attributes.URL,
+    data.attributes?.uid,
+    data.attributes?.Title,
+    data.attributes?.URL,
     open,
     trackEvent,
   ]);
 
-  const mode = data.attributes.DisplayConditions.mode || theme.palette.mode;
+  const mode = data.attributes?.DisplayConditions.mode || theme.palette.mode;
 
   const imageUrl =
     mode === 'dark'
       ? new URL(
-          data.attributes.BackgroundImageDark.data?.attributes.url,
+          data.attributes?.BackgroundImageDark.data?.attributes?.url,
           process.env.NEXT_PUBLIC_STRAPI_URL,
         )
       : new URL(
-          data.attributes.BackgroundImageLight.data?.attributes.url,
+          data.attributes?.BackgroundImageLight.data?.attributes?.url,
           process.env.NEXT_PUBLIC_STRAPI_URL,
         );
 
@@ -111,16 +111,16 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   ) => {
     event.stopPropagation();
     setOpen(false);
-    !data?.attributes.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes.uid &&
-      setDisabledFeatureCard(data?.attributes.uid);
+    !data?.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
+      !!data?.attributes?.uid &&
+      setDisabledFeatureCard(data?.attributes?.uid);
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.CloseFeatureCard,
       label: `click_close`,
       data: {
-        [TrackingEventParameter.FeatureCardTitle]: data?.attributes.Title,
-        [TrackingEventParameter.FeatureCardId]: data?.attributes.uid,
+        [TrackingEventParameter.FeatureCardTitle]: data?.attributes?.Title,
+        [TrackingEventParameter.FeatureCardId]: data?.attributes?.uid,
       },
     });
   };
@@ -129,34 +129,34 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
   ) => {
     event.stopPropagation();
-    !data?.attributes.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes.uid &&
-      setDisabledFeatureCard(data?.attributes.uid);
+    !data?.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
+      !!data?.attributes?.uid &&
+      setDisabledFeatureCard(data?.attributes?.uid);
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.ClickFeatureCard,
       label: `click_cta`,
       data: {
-        [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
-        [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
-        url: data.attributes.URL,
+        [TrackingEventParameter.FeatureCardTitle]: data.attributes?.Title,
+        [TrackingEventParameter.FeatureCardId]: data.attributes?.uid,
+        url: data.attributes?.URL,
       },
     });
   };
 
   const handleCardClick = () => {
-    data?.attributes.URL && openInNewTab(data?.attributes.URL);
-    !data?.attributes.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes.uid &&
-      setDisabledFeatureCard(data?.attributes.uid);
+    data?.attributes?.URL && openInNewTab(data?.attributes?.URL);
+    !data?.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
+      !!data?.attributes?.uid &&
+      setDisabledFeatureCard(data?.attributes?.uid);
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.ClickFeatureCard,
       label: 'click_card_bg',
       data: {
-        [TrackingEventParameter.FeatureCardTitle]: data.attributes.Title,
-        [TrackingEventParameter.FeatureCardId]: data.attributes.uid,
-        url: data.attributes.URL,
+        [TrackingEventParameter.FeatureCardTitle]: data.attributes?.Title,
+        [TrackingEventParameter.FeatureCardId]: data.attributes?.uid,
+        url: data.attributes?.URL,
       },
     });
   };
@@ -173,7 +173,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
       <Card
         backgroundImageUrl={imageUrl?.href}
         onClick={handleCardClick}
-        isDarkCard={data.attributes.DisplayConditions.mode === 'dark'}
+        isDarkCard={data.attributes?.DisplayConditions.mode === 'dark'}
       >
         <FeatureCardContent>
           <FeatureCardCloseButton
@@ -194,38 +194,38 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
               }}
             />
           </FeatureCardCloseButton>
-          {!!data?.attributes.Title && (
+          {!!data?.attributes?.Title && (
             <FeatureCardTitle
               variant="headerSmall"
               data={data}
-              typographyColor={data.attributes.TitleColor || typographyColor}
+              typographyColor={data.attributes?.TitleColor || typographyColor}
               gutterBottom
             >
-              {data?.attributes.Title}
+              {data?.attributes?.Title}
             </FeatureCardTitle>
           )}
-          {!!data?.attributes.Subtitle && (
+          {!!data?.attributes?.Subtitle && (
             <FeatureCardSubtitle
               variant="bodySmall"
               typographyColor={typographyColor}
             >
-              {data?.attributes.Subtitle}
+              {data?.attributes?.Subtitle}
             </FeatureCardSubtitle>
           )}
           <FeatureCardActions>
             <FeatureCardCtaLink
               target="_blank"
               rel="noopener"
-              href={data?.attributes.URL}
+              href={data?.attributes?.URL}
               onClick={(e) => handleCTA(e)}
               data={data}
             >
               <FeatureCardCtaLabel
                 variant="bodySmallStrong"
                 data={data}
-                typographyColor={data.attributes.CTAColor || typographyColor}
+                typographyColor={data.attributes?.CTAColor || typographyColor}
               >
-                {data.attributes.CTACall ?? t('featureCard.learnMore')}
+                {data.attributes?.CTACall ?? t('featureCard.learnMore')}
               </FeatureCardCtaLabel>
             </FeatureCardCtaLink>
           </FeatureCardActions>
