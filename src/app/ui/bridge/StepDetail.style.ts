@@ -1,7 +1,7 @@
 'use client';
 
-import type { BoxProps, Breakpoint } from '@mui/system';
-import { Box, styled } from '@mui/system';
+import type { BoxProps, Breakpoint } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 export const StepDetailContainer = styled(Box)(({ theme }) => ({
   display: 'flex',

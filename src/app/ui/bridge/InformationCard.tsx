@@ -7,8 +7,8 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Box } from '@mui/system';
 import Link from 'next/link';
+import { Box } from '@mui/material';
 import { InformationCardContainer } from './InformationCard.style';
 
 function buildExplorerLink(blockExplorerUrls: string[] = [], address: string) {

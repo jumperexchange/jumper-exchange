@@ -83,6 +83,9 @@ export function formatConfig(
     createdAt: theme.createdAt,
     uid: theme.uid,
     hasThemeModeSwitch: false,
+    hasBlurredNavigation:
+      (theme.lightConfig || theme.darkConfig)?.customization
+        ?.hasBlurredNavigation ?? false,
     hasBackgroundGradient:
       (theme.lightConfig || theme.darkConfig)?.customization
         ?.hasBackgroundGradient ?? false,

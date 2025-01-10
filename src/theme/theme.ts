@@ -122,14 +122,23 @@ declare module '@mui/material/styles' {
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
+    titleSmall: React.CSSProperties;
     titleXSmall: React.CSSProperties;
-    title2xSmall: React.CSSProperties;
+    title2XSmall: React.CSSProperties;
+    urbanistTitleXSmall: React.CSSProperties;
+    urbanistTitleLarge: React.CSSProperties;
+    urbanistTitleXLarge: React.CSSProperties;
+    urbanistTitle2XLarge: React.CSSProperties;
+    urbanistTitle3XLarge: React.CSSProperties;
+    urbanistTitleMedium: React.CSSProperties;
+    urbanistBodyLarge: React.CSSProperties;
+    urbanistBodyXLarge: React.CSSProperties;
+    urbanistBody2XLarge: React.CSSProperties;
     titleLarge: React.CSSProperties;
   }
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
-    brandHeaderXLarge: React.CSSProperties;
     headerDisplay?: React.CSSProperties;
     headerXLarge?: React.CSSProperties;
     headerLarge?: React.CSSProperties;
@@ -146,8 +155,19 @@ declare module '@mui/material/styles' {
     bodySmall: React.CSSProperties;
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
+    brandHeaderXLarge: React.CSSProperties;
+    titleSmall: React.CSSProperties;
     titleXSmall: React.CSSProperties;
-    title2xSmall: React.CSSProperties;
+    title2XSmall: React.CSSProperties;
+    urbanistTitleXSmall: React.CSSProperties;
+    urbanistTitleLarge: React.CSSProperties;
+    urbanistTitleXLarge: React.CSSProperties;
+    urbanistTitle2XLarge: React.CSSProperties;
+    urbanistTitle3XLarge: React.CSSProperties;
+    urbanistTitleMedium: React.CSSProperties;
+    urbanistBodyLarge: React.CSSProperties;
+    urbanistBodyXLarge: React.CSSProperties;
+    urbanistBody2XLarge: React.CSSProperties;
     titleLarge: React.CSSProperties;
   }
 }
@@ -208,8 +228,18 @@ declare module '@mui/material/Typography' {
     bodyXSmallStrong: true;
     bodyXSmall: true;
     brandHeaderXLarge: true;
+    titleSmall: true;
     titleXSmall: true;
-    title2xSmall: true;
+    title2XSmall: true;
+    urbanistTitleXSmall: true;
+    urbanistTitleLarge: true;
+    urbanistTitle2XLarge: true;
+    urbanistTitleXLarge: true;
+    urbanistTitle3XLarge: true;
+    urbanistTitleMedium: true;
+    urbanistBodyLarge: true;
+    urbanistBodyXLarge: true;
+    urbanistBody2XLarge: true;
     titleLarge: true;
   }
 }
@@ -257,11 +287,23 @@ const themeCustomized = createTheme({
         },
       },
     },
-    MuiSnackbar: {
+    MuiAccordion: {
       styleOverrides: {
         root: () => ({
+          ':last-of-type': {
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+          },
+          boxShadow: 'unset',
+          margin: 0,
+        }),
+      },
+    },
+    MuiSnackbar: {
+      styleOverrides: {
+        root: ({ theme }) => ({
           top: 80,
-          [themeBase.breakpoints.up('sm' as Breakpoint)]: {
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
             top: 80,
           },
         }),
@@ -294,6 +336,16 @@ const themeCustomized = createTheme({
         img: {
           objectFit: 'contain',
         },
+      },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.text.primary,
+          '&.Mui-focused': {
+            color: theme.palette.text.primary,
+          },
+        }),
       },
     },
     MuiCssBaseline: {
@@ -332,6 +384,28 @@ const themeCustomized = createTheme({
         },
       },
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            '& .MuiOutlinedInput-notchedOutline': {
+              border: '1px solid #554F4E',
+            },
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            border: '1px solid #554F4E',
+          },
+          '&.Mui-focused': {
+            '& .MuiOutlinedInput-notchedOutline': {
+              border: '1px solid #554F4E',
+            },
+            '& .MuiFormLabel-root': {
+              color: 'inherit',
+            },
+          },
+        },
+      },
+    },
     MuiTypography: {
       defaultProps: {
         variantMapping: {
@@ -352,6 +426,11 @@ const themeCustomized = createTheme({
           bodyXSmallStrong: 'p',
           bodyXSmall: 'p',
           brandHeaderXLarge: 'h1',
+          urbanistTitleLarge: 'p',
+          urbanistTitle2XLarge: 'p',
+          urbanistTitle3XLarge: 'h1',
+          urbanistBodyLarge: 'p',
+          urbanistBodyXLarge: 'p',
         },
       },
     },
@@ -575,6 +654,89 @@ const themeCustomized = createTheme({
       lineHeight: '72px',
       letterSpacing: 0,
     },
+    title2XSmall: {
+      fontFamily: inter.style.fontFamily,
+      fontSize: '14px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '20px',
+    },
+    titleXSmall: {
+      fontFamily: inter.style.fontFamily,
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '24px',
+    },
+    titleSmall: {
+      fontFamily: inter.style.fontFamily,
+      fontSize: '24px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '32px',
+    },
+    urbanistTitleXSmall: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '24px',
+    },
+    urbanistTitleLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '48px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '56px',
+    },
+    urbanistTitleXLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '64px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '72px',
+    },
+    urbanistTitle2XLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '80px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '96px',
+    },
+    urbanistTitle3XLarge: {
+      fontSize: '96px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '112px',
+    },
+    urbanistTitleMedium: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '32px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '40px',
+    },
+    urbanistBodyLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '24px',
+    },
+    urbanistBodyXLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '24px',
+      fontStyle: 'normal',
+      fontWeight: 400,
+      lineHeight: '32px',
+    },
+    urbanistBody2XLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '32px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '40px',
+    },
     h1: {
       fontFamily: urbanist.style.fontFamily,
       fontSize: themeBase.typography.pxToRem(48),
@@ -615,18 +777,6 @@ const themeCustomized = createTheme({
       fontSize: themeBase.typography.pxToRem(12),
       lineHeight: themeBase.typography.pxToRem(18),
       fontWeight: 700,
-    },
-    titleXSmall: {
-      fontSize: '18px',
-      fontStyle: 'normal',
-      fontWeight: 700,
-      lineHeight: '24px',
-    },
-    title2xSmall: {
-      fontSize: '14px',
-      fontStyle: 'normal',
-      fontWeight: 700,
-      lineHeight: '20px',
     },
     titleLarge: {
       fontSize: '48px',
