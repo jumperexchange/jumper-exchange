@@ -43,22 +43,84 @@ export const MenuList = styled(MuiMenuList, {
     prop !== 'isOpenSubMenu' && prop !== 'hasLabel' && prop !== 'cardsLayout',
 })<MenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => ({
   marginTop: 0,
-  display: cardsLayout ? 'flex' : 'block',
-  flexDirection: cardsLayout ? 'column' : 'unset',
-  justifyContent: cardsLayout ? 'center' : 'unset',
-  flexWrap: cardsLayout ? 'wrap' : 'inherit',
-  padding: cardsLayout ? theme.spacing(0, 3) : 0,
+  display: 'block',
+  flexDirection: 'unset',
+  justifyContent: 'unset',
+  flexWrap: 'inherit',
+  padding: 0,
   outline: 'unset',
-  gap: cardsLayout ? '12px' : 'inherit',
+  gap: 'inherit',
   '& > :first-of-type': {
     marginTop:
       isOpenSubMenu || hasLabel || cardsLayout ? 'inherit' : theme.spacing(1.5),
   },
   '& > li:last-of-type': {
-    marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(3),
-    paddingBottom: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
-    paddingTop: hasLabel ? 0 : 'inherit',
+    marginBottom: theme.spacing(3),
+    paddingBottom: 'inherit',
+    paddingTop: 'inherit',
   },
+  variants: [
+    {
+      props: ({ cardsLayout }) => cardsLayout,
+      style: {
+        display: 'flex',
+      },
+    },
+    {
+      props: ({ cardsLayout }) => cardsLayout,
+      style: {
+        flexDirection: 'column',
+      },
+    },
+    {
+      props: ({ cardsLayout }) => cardsLayout,
+      style: {
+        justifyContent: 'center',
+      },
+    },
+    {
+      props: ({ cardsLayout }) => cardsLayout,
+      style: {
+        flexWrap: 'wrap',
+      },
+    },
+    {
+      props: ({ cardsLayout }) => cardsLayout,
+      style: {
+        padding: theme.spacing(0, 3),
+      },
+    },
+    {
+      props: ({ cardsLayout }) => cardsLayout,
+      style: {
+        gap: '12px',
+      },
+    },
+    {
+      props: ({ isOpenSubMenu }) => isOpenSubMenu,
+      style: {
+        '& > li:last-of-type': {
+          marginBottom: 'inherit',
+        },
+      },
+    },
+    {
+      props: ({ isOpenSubMenu }) => isOpenSubMenu,
+      style: {
+        '& > li:last-of-type': {
+          paddingBottom: theme.spacing(1.5),
+        },
+      },
+    },
+    {
+      props: ({ hasLabel }) => hasLabel,
+      style: {
+        '& > li:last-of-type': {
+          paddingTop: 0,
+        },
+      },
+    },
+  ],
 }));
 
 export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
@@ -88,23 +150,18 @@ export interface MenuPaperProps
 export const MenuPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
     prop !== 'isMobile' && prop !== 'isWide' && prop !== 'show',
-})<MenuPaperProps>(({ theme, isMobile, width, show }) => ({
-  display: !show ? 'none' : 'block',
+})<MenuPaperProps>(({ theme, isMobile, width }) => ({
+  display: 'block',
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
-  boxShadow:
-    theme.palette.mode === 'light'
-      ? `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
-          isMobile ? '-' : ''
-        }8px 16px rgba(0, 0, 0, 0.08)`
-      : `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
-          isMobile ? '-' : ''
-        }8px 16px rgba(0, 0, 0, 0.16)`,
+  boxShadow: `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
+    isMobile ? '-' : ''
+  }8px 16px rgba(0, 0, 0, 0.16)`,
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
-
-  maxHeight: `calc( 100vh - ${MENU_LABEL_HEIGHT}px - 12px )`, // viewHeight - navbarHeight - offset
+  // viewHeight - navbarHeight - offset
+  maxHeight: `calc( 100vh - ${MENU_LABEL_HEIGHT}px - 12px )`,
   overflowY: 'auto',
   overflowX: 'hidden',
   width: '100%',
@@ -112,18 +169,14 @@ export const MenuPaper = styled(Paper, {
   height: '100% !important',
   transition:
     'opacity 307ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 204ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-
   '.submenu .wallet-select-avatar': {
     width: 32,
     height: 32,
   },
-
   '.submenu': { paddingBottom: theme.spacing(1.5) },
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     maxHeight: 'calc( 100vh - 72px - 12px )',
   },
-
   [theme.breakpoints.up('md' as Breakpoint)]: {
     transformOrigin: 'inherit',
     maxHeight: 'calc( 100vh - 80px - 12px )',
@@ -131,6 +184,19 @@ export const MenuPaper = styled(Paper, {
     width: width ?? 288,
     marginTop: -2,
   },
+  ...theme.applyStyles('light', {
+    boxShadow: `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
+      isMobile ? '-' : ''
+    }8px 16px rgba(0, 0, 0, 0.08)`,
+  }),
+  variants: [
+    {
+      props: ({ show }) => !show,
+      style: {
+        display: 'none',
+      },
+    },
+  ],
 }));
 
 export const MobileDrawer = styled(Drawer)<MenuItemLinkProps>(({ theme }) => ({
@@ -153,7 +219,6 @@ export const MenuItemLink = styled(Link, {
 }));
 
 export const MenuItemText = styled('span')({});
-
 export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
   ({ theme }) => ({
     position: 'sticky',
@@ -193,7 +258,6 @@ export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
     justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: 48,
-
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       padding: theme.spacing(0, 1.5),
       position: 'relative',
