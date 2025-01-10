@@ -26,10 +26,6 @@ declare module '@mui/material/styles' {
     borderRadiusSecondary: number;
   }
 
-  interface Theme {
-    shape: Shape;
-  }
-
   interface ThemeOptions {
     shape?: Partial<Shape>;
   }

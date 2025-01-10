@@ -24,7 +24,7 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   transition: 'background-color 250ms',
   boxShadow: theme.shadows[2],
   ...theme.applyStyles('light', {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.palette.white.main,
   }),
 }));
 

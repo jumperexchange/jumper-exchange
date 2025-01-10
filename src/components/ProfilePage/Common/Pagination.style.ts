@@ -22,8 +22,6 @@ export interface PaginationButtonProps extends ButtonProps {
 export const PaginationLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   color: theme.palette.text.primary,
-  // margin: theme.spacing(0, 1),
-  // width: 34,
   '&:hover': {
     textDecoration: 'none',
   },

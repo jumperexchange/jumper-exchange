@@ -2990,24 +2990,23 @@ __metadata:
   linkType: hard
 
 "@lifi/sdk@npm:^3.1.3, @lifi/sdk@npm:^3.4.4":
-  version: 3.5.0
-  resolution: "@lifi/sdk@npm:3.5.0"
+  version: 3.5.1
+  resolution: "@lifi/sdk@npm:3.5.1"
   dependencies:
     "@bigmi/core": "npm:^0.1.0"
     "@lifi/types": "npm:^16.5.0"
-    "@noble/curves": "npm:^1.7.0"
-    "@noble/hashes": "npm:^1.6.1"
+    "@noble/curves": "npm:^1.8.0"
     "@solana/wallet-adapter-base": "npm:^0.9.23"
     "@solana/web3.js": "npm:^1.98.0"
     bech32: "npm:^2.0.0"
     bitcoinjs-lib: "npm:^7.0.0-rc.0"
     bs58: "npm:^6.0.0"
-    viem: "npm:^2.22.1"
+    viem: "npm:^2.22.2"
   peerDependencies:
     "@solana/wallet-adapter-base": ^0.9.0
     "@solana/web3.js": ^1.98.0
     viem: ^2.21.0
-  checksum: 10/0ccdca6d87f78fe1b3a850fa445e0788a646257bcad566ad964ce72bb93ec5eeba3cae3937df0f34831184b632a3b5c67fdb56e81f38c6b95f101e13e008efd6
+  checksum: 10/c432ca4fc3b06ed872836e74f8c8d39b5efa4af44249cfa7550ab66770a0d76a63add97bf1e50966b2524ea5fecf6368de55abd107c4dc1c02a61c32fc062279
   languageName: node
   linkType: hard
 
@@ -4223,7 +4222,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noble/curves@npm:^1.0.0, @noble/curves@npm:^1.1.0, @noble/curves@npm:^1.4.0, @noble/curves@npm:^1.4.2, @noble/curves@npm:^1.6.0, @noble/curves@npm:^1.7.0, @noble/curves@npm:^1.8.0, @noble/curves@npm:~1.8.0":
+"@noble/curves@npm:^1.0.0, @noble/curves@npm:^1.1.0, @noble/curves@npm:^1.4.0, @noble/curves@npm:^1.4.2, @noble/curves@npm:^1.6.0, @noble/curves@npm:^1.8.0, @noble/curves@npm:~1.8.0":
   version: 1.8.0
   resolution: "@noble/curves@npm:1.8.0"
   dependencies:
@@ -6094,10 +6093,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/history@npm:1.95.0":
-  version: 1.95.0
-  resolution: "@tanstack/history@npm:1.95.0"
-  checksum: 10/84986cfab61b24a4cba30b29855b5ccf8d7f8981eced69ce2faded294aea080e3fc1ed72561ca8026b203aa3bf31e74d02519df643eaa65d312ed617ab1e75cf
+"@tanstack/history@npm:1.95.2":
+  version: 1.95.2
+  resolution: "@tanstack/history@npm:1.95.2"
+  checksum: 10/f14dfb953895561bfe1d31e4b91908d1452151bc4346aba1a8306873bf4fba37cb317d32b13e4ff1a305736acee39a5173ad7ad63639f91b5be363365030380c
   languageName: node
   linkType: hard
 
@@ -6138,10 +6137,10 @@ __metadata:
   linkType: hard
 
 "@tanstack/react-router@npm:^1.46.4":
-  version: 1.95.1
-  resolution: "@tanstack/react-router@npm:1.95.1"
+  version: 1.95.3
+  resolution: "@tanstack/react-router@npm:1.95.3"
   dependencies:
-    "@tanstack/history": "npm:1.95.0"
+    "@tanstack/history": "npm:1.95.2"
     "@tanstack/react-store": "npm:^0.7.0"
     jsesc: "npm:^3.0.2"
     tiny-invariant: "npm:^1.3.3"
@@ -6149,7 +6148,7 @@ __metadata:
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10/d5cadd1ca149aa3d11764a1900ce51f74bb8ce8af40e8b066deda17a8dd6ea8f78e714a68f11766f5a7713c7c225abf4e42b40d31e775c38c972ee9b7452acc6
+  checksum: 10/f072c7e6fd48415c667c2c229565daea4c229a4bf8fe993ac96850ed2006e2caaff4dba4ba9bdfb74e77b294ccdc4ce02c657ee4deb7234c82b999807df01a71
   languageName: node
   linkType: hard
 
@@ -8663,9 +8662,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.73":
-  version: 1.5.79
-  resolution: "electron-to-chromium@npm:1.5.79"
-  checksum: 10/c5b25ba04b4f4b46c4024b96e00e43adcd6c321b48c74c8d2660f69704901da5a6592009cbf96c36c89e3f6b53d7742e2b89514477fddbccf4e5c4caebed9d49
+  version: 1.5.80
+  resolution: "electron-to-chromium@npm:1.5.80"
+  checksum: 10/fa77236f05d1544d29ed71e3a787ad7d6da250fe0b5fc40aac0fcf46de9cb074d8a90a2b176f2245d2c4f2823b7ec2e95aafb0e29f612895b891d7ccfe43889a
   languageName: node
   linkType: hard
 
@@ -15269,11 +15268,11 @@ __metadata:
   linkType: hard
 
 "uuid@npm:^11.0.3":
-  version: 11.0.4
-  resolution: "uuid@npm:11.0.4"
+  version: 11.0.5
+  resolution: "uuid@npm:11.0.5"
   bin:
     uuid: dist/esm/bin/uuid
-  checksum: 10/5fd9832d2819f4535c92805f381e26ac254dfc601424a1000bc277ea38440538385db948645ef23c800906eeda28d3da9e037b049e71b2efe1eff1d05c9f61a2
+  checksum: 10/0594ecdff3051e15d4a2c614b4c72e73af373bde0a5d156512353c01156975295d024ae8d7151846d7bd4d22ccd251b16ed51b4318fa71505fb20ad984102dc1
   languageName: node
   linkType: hard
 
@@ -15362,9 +15361,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^2.1.1, viem@npm:^2.21.55, viem@npm:^2.21.57, viem@npm:^2.21.59, viem@npm:^2.22.1, viem@npm:^2.22.2":
-  version: 2.22.5
-  resolution: "viem@npm:2.22.5"
+"viem@npm:^2.1.1, viem@npm:^2.21.55, viem@npm:^2.21.57, viem@npm:^2.21.59, viem@npm:^2.22.2":
+  version: 2.22.6
+  resolution: "viem@npm:2.22.6"
   dependencies:
     "@noble/curves": "npm:1.7.0"
     "@noble/hashes": "npm:1.6.1"
@@ -15380,7 +15379,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/91bedd144924a9d829206fab65c1b5ce2874517afafd5e5cebfcf6326abfda865efe95001d1a6c381f8f971e0c404e94ab2332f5ee35eb36e88079d099aebbd0
+  checksum: 10/d4eb7d997f0d35e11b8b17260b22a5133cf05fd71cc6b3eb4adb70ddd873f7a1c411c9f3a87d4f8fcfe181bfdbb7838d91ed6cc3ed345bb516e333d4d60aaa81
   languageName: node
   linkType: hard
 
