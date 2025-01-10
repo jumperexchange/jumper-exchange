@@ -66,8 +66,8 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
             tooltipText={TVL_TOOLTIP}
             sx={{
               '.content': {
-              fontSize: '1.5rem'
-              }
+                fontSize: '1.5rem',
+              },
             }}
             digit={
               market?.locked_quantity_usd
@@ -84,8 +84,8 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
               title={'Deposited'}
               sx={{
                 '.content': {
-                  fontSize: '1.5rem'
-                }
+                  fontSize: '1.5rem',
+                },
               }}
               tooltipText={DEPOSITED_TOOLTIP}
               tokenImage={market?.input_token_data?.image}
@@ -101,8 +101,8 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
               sx={{
                 alignItems: 'flex-end',
                 '.content': {
-                  fontSize: '1.5rem'
-                }
+                  fontSize: '1.5rem',
+                },
               }}
               title={'Deposit Cap'}
               tooltipText={AVAILABLE_TOOLTIP}
@@ -133,8 +133,8 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
               title={'Total rewards'}
               sx={{
                 '.content': {
-                  fontSize: '1.5rem'
-                }
+                  fontSize: '1.5rem',
+                },
               }}
               tooltipText={<TooltipIncentives market={market} />}
               digit={
@@ -147,8 +147,8 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
               tooltipText={APY_TOOLTIP}
               sx={{
                 '.content': {
-                  fontSize: '1.5rem'
-                }
+                  fontSize: '1.5rem',
+                },
               }}
               digit={
                 market?.annual_change_ratio
@@ -164,8 +164,8 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
               sx={{
                 alignItems: 'flex-end',
                 '.content': {
-                  fontSize: '1.5rem'
-                }
+                  fontSize: '1.5rem',
+                },
               }}
               title={'Lockup'}
               tooltipText={LOCKUP_TOOLTIP}
