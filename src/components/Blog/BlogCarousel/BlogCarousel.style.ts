@@ -7,7 +7,7 @@ export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
   borderRadius: '32px',
   padding: theme.spacing(2),
   margin: theme.spacing(6, 2, 0),
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(2, 8, 0),
     padding: theme.spacing(3),

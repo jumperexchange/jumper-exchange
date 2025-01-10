@@ -7,7 +7,7 @@ export const SuperfestCarouselContainer = styled(Box)(({ theme }) => ({
   borderRadius: '12px',
   width: '90%',
   padding: theme.spacing(2),
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(2, 4, 0),
     padding: theme.spacing(3),
