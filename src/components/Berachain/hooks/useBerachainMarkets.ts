@@ -82,7 +82,9 @@ export const useBerachainMarkets = (): UseBerachainQuestsProps => {
   function findFromStrapiByUid(uid: string | null) {
     const found = data?.data.find((d) => d.attributes.UID === uid);
 
-    return found;
+    if (found) {
+      return found;
+    }
 
     // if (!found) {
     //   return undefined;
