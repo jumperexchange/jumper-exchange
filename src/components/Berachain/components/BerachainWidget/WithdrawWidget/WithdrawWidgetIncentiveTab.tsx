@@ -55,19 +55,6 @@ export const WithdrawWidgetIncentiveTab = ({
     reset: resetTx,
   } = useWriteContract();
 
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('writecontract', {
-    status: txStatus,
-    data: txHash,
-    isIdle: isTxIdle,
-    isPending: isTxPending,
-    isError: isTxError,
-    error: txError,
-    writeContract,
-    reset: resetTx,
-  });
-
   const {
     isLoading: isTxConfirming,
     isSuccess: isTxConfirmed,
@@ -78,16 +65,6 @@ export const WithdrawWidgetIncentiveTab = ({
     hash: txHash,
     confirmations: 2,
     pollingInterval: 1_000,
-  });
-
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('waitTransactionReceipt', {
-    txHash,
-    isLoading: isTxConfirming,
-    isSuccess: isTxConfirmed,
-    isError: isTxConfirmError,
-    status: confirmationStatus,
   });
 
   const {
@@ -137,10 +114,6 @@ export const WithdrawWidgetIncentiveTab = ({
     Array.isArray(positionsRecipe?.data)
       ? positionsRecipe.data
       : [];
-
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('-positions', positions, positionsRecipe, positionsVault);
 
   const tokensData = useMemo<
     (EnrichedPositionsRecipeDataType['tokens_data'][0] & {
@@ -222,82 +195,6 @@ export const WithdrawWidgetIncentiveTab = ({
               }
               labelPlacement="start"
               label={
-                // <Box
-                //   component="span"
-                //   sx={{
-                //     display: 'flex', // Equivalent to `flex`
-                //     width: '100%', // Equivalent to `w-full`
-                //     flexDirection: 'row', // Equivalent to `flex-row`
-                //     alignItems: 'center', // Equivalent to `items-center`
-                //   }}
-                //   // className="flex w-full flex-row items-center justify-between gap-2 rounded-2xl border border-divider p-3"
-                // >
-                //   <Box
-                //     component="span"
-                //     sx={{
-                //       display: 'flex', // Equivalent to `flex`
-                //       flexGrow: 1, // Equivalent to `grow`
-                //       flexDirection: 'column', // Equivalent to `flex-col`
-                //       alignItems: 'start', // Equivalent to `items-start`
-                //       gap: 1, // Equivalent to `space-y-1` (MUI uses theme-based spacing; `1` = 1 * 8px = 8px)
-                //       overflowX: 'scroll', // Equivalent to `overflow-x-scroll`
-                //     }}
-                //     // className="hide-scrollbar flex w-full grow flex-col items-start space-y-1 overflow-x-scroll"
-                //   >
-                //     <Typography
-                //       sx={{
-                //         whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
-                //         wordBreak: 'normal', // Equivalent to `break-normal`
-                //         color: 'text.primary', // Equivalent to `text-black`
-                //       }}
-                //       // className="whitespace-nowrap break-normal text-black"
-                //     >
-                //       Value:{' '}
-                //       {Intl.NumberFormat('en-US', {
-                //         style: 'currency',
-                //         currency: 'USD',
-                //         notation: 'standard',
-                //         useGrouping: true,
-                //         minimumFractionDigits: 2,
-                //         maximumFractionDigits: 6,
-                //       }).format(
-                //         token.position?.tokens_data?.reduce(
-                //           (acc, token) => acc + token.token_amount_usd,
-                //           0,
-                //         ) ?? 0,
-                //       )}
-                //     </Typography>
-                //     {!token.position?.can_claim && (
-                //       <Typography
-                //         sx={{
-                //           whiteSpace: 'nowrap', // Equivalent to `whitespace-nowrap`
-                //           wordBreak: 'normal', // Equivalent to `break-normal`
-                //           color: 'text.primary', // Equivalent to `text-black`
-                //         }}
-                //         // className="whitespace-nowrap break-normal text-black"
-                //       >
-                //         LOCKED
-                //       </Typography>
-                //     )}
-                //     <Box
-                //       component="span"
-                //       sx={{
-                //         display: 'flex', // Equivalent to `flex`
-                //         width: '100%', // Equivalent to `w-full`
-                //         flexGrow: 1, // Equivalent to `grow`
-                //         flexDirection: 'column', // Equivalent to `flex-col`
-                //         gap: 3, // Equivalent to `space-y-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
-                //       }}
-                //       // className="flex w-full grow flex-col space-y-3"
-                //     >
-                //       <WithdrawInputTokenRow
-                //         key={`withdraw-input-token-row:${tokenIndex}`}
-                //         token={token}
-                //         tokenValueUSD={}
-                //       />
-                //     </Box>
-                //   </Box>
-                // </Box>
                 <Box
                   component="span"
                   sx={{
@@ -373,8 +270,6 @@ export const WithdrawWidgetIncentiveTab = ({
                   {/* </Box> */}
                 </Box>
               }
-              // delay={0.1 + positionIndex * 0.1}
-              // className="w-full"
               key={`withdraw-position:${tokenIndex}`}
             />
           );
@@ -429,13 +324,6 @@ export const WithdrawWidgetIncentiveTab = ({
           />
         )
       )}
-      {/* {isTxConfirmed && (
-        <Box>
-          <Typography variant="body2" color="textSecondary">
-            Transaction successfull!
-          </Typography>
-        </Box>
-      )} */}
     </Box>
   );
 };

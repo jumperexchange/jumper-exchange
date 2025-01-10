@@ -112,7 +112,6 @@ export const WithdrawWidget = ({
                   chainId: market?.chain_id!,
                 });
               } catch (error) {
-                // TODO: to remove
                 // eslint-disable-next-line no-console
                 console.error(error);
               }

@@ -142,9 +142,6 @@ export const WithdrawWidgetInputTokenTab = ({
       ? positionsRecipe.data.filter((d) => !d?.is_withdrawn)
       : [];
 
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-
   useEffect(() => {
     refetch();
     positionsRecipeRefetch();
@@ -158,13 +155,11 @@ export const WithdrawWidgetInputTokenTab = ({
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          // marginTop: theme.spacing(6),
-          // marginBottom: theme.spacing(6),
+
           marginY: theme.spacing(8),
           gap: 1,
         }}
       >
-        {/*<div className="h-full w-full place-content-center items-start">*/}
         <IconButton
           disabled
           sx={{
@@ -307,10 +302,6 @@ export const WithdrawWidgetInputTokenTab = ({
                       variant="titleXSmall"
                       sx={(theme) => ({
                         fontSize: '1.5rem',
-                        /*                      typography: {
-                        xs: theme.typography.titleXSmall,
-                        sm: theme.typography.titleXSmall,
-                      },*/
                       })}
                     >
                       {Intl.NumberFormat('en-US', {

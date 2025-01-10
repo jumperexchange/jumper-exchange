@@ -81,9 +81,6 @@ export const BerachainWidget = ({
     },
   ];
 
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  // console.log('market', market);
   return (
     <Box
       sx={{

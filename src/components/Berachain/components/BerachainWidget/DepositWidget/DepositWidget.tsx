@@ -281,7 +281,6 @@ function DepositWidget({
         ...writeContractOptions[contractCallIndex],
       });
     } catch (e) {
-      // TODO: to remove
       // eslint-disable-next-line no-console
       console.error('ERROR SENDING', e);
     }
@@ -493,9 +492,8 @@ function DepositWidget({
                   chainId: writeContractOptions[0]?.chainId,
                 });
               } catch (error) {
-                // TODO: to remove
                 // eslint-disable-next-line no-console
-                console.error(error);
+                // console.error(error);
               }
             }}
           >
