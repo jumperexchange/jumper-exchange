@@ -10,7 +10,7 @@ export interface UseBerachainQuestsProps {
   url: string;
   isSuccess: boolean;
   isLoading: boolean;
-  findFromStrapiByUid: (key: string) => Quest | null;
+  findFromStrapiByUid: (key: string) => Quest | undefined;
 }
 
 type T = Record<string, string[]>;
