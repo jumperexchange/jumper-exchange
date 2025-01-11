@@ -131,7 +131,7 @@ export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
           openWalletMenu();
         },
       },
-      requiredUI: [RequiredUI.ToAddress],
+      // requiredUI: [RequiredUI.ToAddress],
     };
     return baseConfig;
   }, [isSuccess, widgetTheme.config.theme, widgetTheme.config.appearance]);
@@ -161,6 +161,7 @@ export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
           <LiFiWidget
             contractComponent={
               <DepositCard
+                underlyingToken={data?.data?.market?.depositToken}
                 token={token}
                 contractTool={data?.data?.meta}
                 analytics={analytics}
