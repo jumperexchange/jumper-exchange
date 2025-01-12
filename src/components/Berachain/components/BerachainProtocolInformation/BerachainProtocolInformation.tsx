@@ -59,12 +59,12 @@ export const BerachainProtocolInformation = ({
       <BerachainProtocolActionInfoBox>
         <BerachainInformationProtocolIntro>
           {!isMobile &&
-            (card?.attributes?.Image.data.attributes.url ? (
+            (card?.attributes?.Image.data.attributes?.url ? (
               <Image
-                src={`${baseUrl}${card?.attributes.Image.data.attributes.url}`}
+                src={`${baseUrl}${card?.attributes?.Image.data.attributes?.url}`}
                 alt="Protocol image"
-                width={card?.attributes.Image.data.attributes.width}
-                height={card?.attributes.Image.data.attributes.height}
+                width={card?.attributes?.Image.data.attributes?.width}
+                height={card?.attributes?.Image.data.attributes?.height}
                 style={{
                   width: 144,
                   height: 'auto',
@@ -85,7 +85,7 @@ export const BerachainProtocolInformation = ({
           <BerachainInformationProtocolCard>
             {card?.attributes?.Title ? (
               <Typography variant="titleSmall">
-                What is {card?.attributes.Title}?
+                What is {card?.attributes?.Title}?
               </Typography>
             ) : (
               <Skeleton
@@ -95,7 +95,7 @@ export const BerachainProtocolInformation = ({
             )}
             {card?.attributes?.Description ? (
               <Typography variant="bodyMedium">
-                {card?.attributes.Description}
+                {card?.attributes?.Description}
               </Typography>
             ) : (
               <Skeleton

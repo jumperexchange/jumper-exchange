@@ -26,10 +26,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       return article.data.map((el) => {
         return {
           url: withoutTrailingSlash(
-            `${getSiteUrl()}${JUMPER_LEARN_PATH}/${el.attributes.Slug}`,
+            `${getSiteUrl()}${JUMPER_LEARN_PATH}/${el.attributes?.Slug}`,
           ),
           lastModified: new Date(
-            el.attributes.updatedAt || el.attributes.publishedAt || Date.now(),
+            el.attributes?.updatedAt ||
+              el.attributes?.publishedAt ||
+              Date.now(),
           )
             .toISOString()
             .split('T')[0],

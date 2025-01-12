@@ -35,5 +35,5 @@ export const REWARDS_LIST = [
   },
 ];
 
-export const REWARDS_CHAIN_IDS = ['1329', '30'];
+export const REWARDS_CHAIN_IDS = ['1329', '30', '8453'];
 export const MERKL_CREATOR_TAG = 'sei-jumper';

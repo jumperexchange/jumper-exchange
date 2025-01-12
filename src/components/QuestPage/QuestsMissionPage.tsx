@@ -29,7 +29,7 @@ export const QuestsMissionPage = ({
   const missionType = quest?.attributes?.CustomInformation?.['missionType'];
   const rewardType = attributes?.CustomInformation?.['rewardType'];
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
-  const rewards = quest.attributes.CustomInformation?.['rewards'];
+  const rewards = quest.attributes?.CustomInformation?.['rewards'];
   const points = quest?.attributes?.Points;
 
   const { account } = useAccount();

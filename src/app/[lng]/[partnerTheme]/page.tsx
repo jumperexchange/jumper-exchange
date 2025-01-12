@@ -9,7 +9,7 @@ export async function generateStaticParams() {
 
   let customPath = [
     { partnerTheme: 'memecoins' },
-    ...partnerThemes.data.map((d) => ({ partnerTheme: d.attributes.uid })),
+    ...partnerThemes.data.map((d) => ({ partnerTheme: d.attributes?.uid })),
   ];
 
   return customPath;

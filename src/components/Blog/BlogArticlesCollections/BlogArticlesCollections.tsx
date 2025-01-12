@@ -25,9 +25,9 @@ export const BlogArticlesCollections = ({
         page: 0,
         pageSize: pageSize,
         pageCount: Math.ceil(
-          tag.attributes.blog_articles?.data.length / pageSize,
+          tag.attributes?.blog_articles?.data.length / pageSize,
         ),
-        total: tag.attributes.blog_articles?.data.length,
+        total: tag.attributes?.blog_articles?.data.length,
       };
       return (
         <BlogArticlesTabs
@@ -36,7 +36,7 @@ export const BlogArticlesCollections = ({
           tag={tag}
           tags={tags}
           pagination={pagination}
-          data={tag.attributes.blog_articles.data}
+          data={tag.attributes?.blog_articles.data}
         />
       );
     })

@@ -18,6 +18,7 @@ import { QuestsOverview } from './QuestsOverview/QuestsOverview';
 
 import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
+import { CampaignBanner } from './CampaignBanner/CampaignBanner';
 
 export const ProfilePage = () => {
   const { account } = useAccount();
@@ -44,6 +45,7 @@ export const ProfilePage = () => {
           <LeaderboardCard address={walletAddress} />
         </ProfileInfoBox>
       </ProfileHeaderBox>
+      <CampaignBanner />
       <QuestsOverview pastCampaigns={pastCampaigns} traits={traits} />
       <QuestsCompletedCarousel pdas={pdas} loading={isLoading} />
     </PageContainer>

@@ -68,8 +68,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
     return notFound();
   }
 
-  if (articleData.attributes.RedirectURL) {
-    return permanentRedirect(articleData.attributes.RedirectURL);
+  if (articleData.attributes?.RedirectURL) {
+    return permanentRedirect(articleData.attributes?.RedirectURL);
   }
 
   const currentTags = articleData?.attributes?.tags.data.map((el) => el?.id);
@@ -89,7 +89,7 @@ export async function generateStaticParams() {
   const articles = await getArticles();
 
   const data = articles.data.map((article) => ({
-    slug: article.attributes.Slug,
+    slug: article.attributes?.Slug,
   }));
 
   return data;
