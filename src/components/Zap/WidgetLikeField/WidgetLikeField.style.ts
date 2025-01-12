@@ -1,5 +1,4 @@
-import { styled } from '@mui/system';
-import { alpha, Button } from '@mui/material';
+import { styled, alpha, Button } from '@mui/material';
 
 export const MaxButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'mainColor',

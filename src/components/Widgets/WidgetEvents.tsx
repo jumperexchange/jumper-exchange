@@ -94,7 +94,10 @@ export function WidgetEvents() {
     };
 
     const onRouteExecutionCompleted = async (route: Route) => {
-      //to do: if route is lifi then refetch position of destination token??
+      //to do: if route is not lifi then refetch position of destination token??
+
+      // console.log('widget event received ------------------------');
+      // console.log(route);
 
       if (route.id) {
         // Refresh portfolio value

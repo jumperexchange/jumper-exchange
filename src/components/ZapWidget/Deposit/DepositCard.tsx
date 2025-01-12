@@ -54,13 +54,13 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
       <Box display="flex" alignItems="center" gap={1}>
         <Avatar alt="Protocol" src={contractTool?.logoURI} />
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-          {`${contractTool?.name} ${underlyingToken?.symbol} Pool`}
+          {`${contractTool?.name} ${underlyingToken?.symbol.toUpperCase()} Pool`}
         </Typography>
       </Box>
       <Box display="flex" justifyContent="space-between" gap={'16px'}>
         <Box
           sx={{
-            backgroundColor: theme.palette?.surface2?.main,
+            backgroundColor: theme.palette?.secondary?.main,
             alignItems: 'flex-start',
             borderRadius: 1,
             paddingX: 2,
@@ -74,9 +74,10 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
             tokenImage={underlyingToken?.logoURI}
             digit={
               hasDeposited
-                ? t('format.decimal', {
-                    value: analytics?.position,
-                  })
+                ? `${Number(analytics?.position).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}`
                 : underlyingToken?.symbol
             }
             hasDeposited={hasDeposited ? true : false}
@@ -110,7 +111,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         </Box>
         <Box
           sx={{
-            backgroundColor: theme.palette?.surface2?.main,
+            backgroundColor: theme.palette?.secondary?.main,
             alignItems: 'flex-start',
             borderRadius: 1,
             paddingX: 2,
@@ -165,7 +166,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
       <Box display="flex" justifyContent="space-between" gap={'16px'}>
         <Box
           sx={{
-            backgroundColor: theme.palette?.surface2?.main,
+            backgroundColor: theme.palette?.secondary?.main,
             alignItems: 'flex-start',
             borderRadius: 1,
             paddingX: 2,
@@ -186,7 +187,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         {true && (
           <Box
             sx={{
-              backgroundColor: theme.palette?.surface2?.main,
+              backgroundColor: theme.palette?.secondary?.main,
               alignItems: 'flex-start',
               borderRadius: 1,
               paddingX: 2,

@@ -51,7 +51,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
             onVerify: () => Promise.resolve(true),
           },
         ]}
-        label={`Redeem from ${projectData?.project} Pool`}
+        label={`Redeem from Pool`}
         image={{
           url: token?.logoURI || '',
           name: token?.name || '',

@@ -1,5 +1,4 @@
-import { IconButton } from '@mui/material';
-import { alpha, Box, Breakpoint, styled } from '@mui/system';
+import { alpha, Box, Breakpoint, styled, IconButton } from '@mui/material';
 import Link from 'next/link';
 
 export const ZapProtocolActionBox = styled(Box)(({ theme }) => ({
