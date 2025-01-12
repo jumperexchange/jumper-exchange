@@ -128,7 +128,7 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
         return detailInformation?.projectData ? (
           <>
             <ZapWidgetPage
-              projectData={detailInformation?.projectData}
+              customInformation={detailInformation}
               type="deposit"
             />
           </>
@@ -151,7 +151,7 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
         return detailInformation?.projectData ? (
           <>
             <ZapWidgetPage
-              projectData={detailInformation?.projectData}
+              customInformation={detailInformation}
               type="withdraw"
             />
           </>

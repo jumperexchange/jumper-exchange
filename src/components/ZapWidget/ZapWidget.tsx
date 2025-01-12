@@ -33,9 +33,15 @@ interface CustomWidgetProps {
   account: Account;
   projectData: ProjectData;
   type: 'deposit' | 'withdraw';
+  claimingIds?: string[] | undefined;
 }
 
-export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
+export function ZapWidget({
+  account,
+  projectData,
+  type,
+  claimingIds,
+}: CustomWidgetProps) {
   const theme = useTheme();
   const [token, setToken] = useState<TokenAmount>();
 
@@ -167,6 +173,7 @@ export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
                 contractTool={data?.data?.meta}
                 analytics={analytics}
                 contractCalls={[]}
+                claimingIds={claimingIds}
               />
             }
             config={widgetConfig}

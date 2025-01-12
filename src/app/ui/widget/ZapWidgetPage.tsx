@@ -2,16 +2,24 @@
 import type { ProjectData } from 'src/components/ZapWidget/ZapWidget';
 import { ZapWidget } from 'src/components/ZapWidget/ZapWidget';
 import { useAccount } from '@lifi/wallet-management';
+import { CustomInformation } from 'src/types/loyaltyPass';
 
 interface ZapWidgetPageProps {
-  projectData: ProjectData;
+  customInformation: CustomInformation;
   type: 'deposit' | 'withdraw';
 }
 
-const ZapWidgetPage = ({ projectData, type }: ZapWidgetPageProps) => {
+const ZapWidgetPage = ({ customInformation, type }: ZapWidgetPageProps) => {
   const { account } = useAccount();
 
-  return <ZapWidget account={account} projectData={projectData} type={type} />;
+  return (
+    <ZapWidget
+      account={account}
+      projectData={customInformation?.projectData}
+      claimingIds={customInformation?.claimingIds}
+      type={type}
+    />
+  );
 };
 
 export default ZapWidgetPage;

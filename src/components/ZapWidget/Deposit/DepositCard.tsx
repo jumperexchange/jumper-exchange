@@ -12,6 +12,7 @@ import {
   DEPOSITED_TOOLTIP,
 } from 'src/components/Berachain/const/title';
 import { useTranslation } from 'react-i18next';
+import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 
 export interface ItemPriceProps {
   token: TokenAmount;
@@ -22,6 +23,7 @@ export interface ItemPriceProps {
     name: string;
   };
   analytics: any;
+  claimingIds?: string[] | undefined;
 }
 
 export const DepositCard: React.FC<ItemPriceProps> = ({
@@ -30,8 +32,11 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
   contractCalls,
   contractTool,
   analytics,
+  claimingIds,
 }) => {
   const { setFieldValue } = useFieldActions();
+
+  const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds);
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -184,7 +189,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
             }
           />
         </Box>
-        {true && (
+        {!!boostedAPY && boostedAPY > 0 && (
           <Box
             sx={{
               backgroundColor: theme.palette?.bgSecondary?.main,
@@ -198,7 +203,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
             <DigitCard
               title={'Boosted APY'}
               tooltipText={'hello world'}
-              digit={analytics?.total_apy ? `100.4%` : 'N/A'}
+              digit={analytics?.total_apy ? `${boostedAPY.toFixed(1)}%` : 'N/A'}
             />
           </Box>
         )}
