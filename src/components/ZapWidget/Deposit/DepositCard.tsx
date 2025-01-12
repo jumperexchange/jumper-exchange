@@ -60,7 +60,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
       <Box display="flex" justifyContent="space-between" gap={'16px'}>
         <Box
           sx={{
-            backgroundColor: theme.palette?.surface3?.main,
+            backgroundColor: theme.palette?.surface2?.main,
             alignItems: 'flex-start',
             borderRadius: 1,
             paddingX: 2,
@@ -110,7 +110,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         </Box>
         <Box
           sx={{
-            backgroundColor: theme.palette?.surface3?.main,
+            backgroundColor: theme.palette?.surface2?.main,
             alignItems: 'flex-start',
             borderRadius: 1,
             paddingX: 2,
@@ -165,7 +165,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
       <Box display="flex" justifyContent="space-between" gap={'16px'}>
         <Box
           sx={{
-            backgroundColor: theme.palette?.surface3?.main,
+            backgroundColor: theme.palette?.surface2?.main,
             alignItems: 'flex-start',
             borderRadius: 1,
             paddingX: 2,
@@ -174,11 +174,6 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
           }}
         >
           <DigitCard
-            // sx={
-            //   {
-            //     // alignItems: 'flex-end',
-            //   }
-            // }
             title={'APY'}
             tooltipText={'hello world'}
             digit={
@@ -187,37 +182,26 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
                 : 'N/A'
             }
           />
-          {/* <Typography variant="subtitle2">TVL</Typography>
-          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            {analytics?.tvl_usd
-              ? `$${Number(analytics.tvl_usd).toLocaleString('en-US', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}`
-              : 'N/A'}
-          </Typography> */}
         </Box>
+        {true && (
+          <Box
+            sx={{
+              backgroundColor: theme.palette?.surface2?.main,
+              alignItems: 'flex-start',
+              borderRadius: 1,
+              paddingX: 2,
+              paddingY: 1,
+              flex: 1,
+            }}
+          >
+            <DigitCard
+              title={'Boosted APY'}
+              tooltipText={'hello world'}
+              digit={analytics?.total_apy ? `100.4%` : 'N/A'}
+            />
+          </Box>
+        )}
       </Box>
-      {/* <Box
-        sx={{
-          backgroundColor: 'rgba(0, 0, 0, 0.04)',
-          borderRadius: 1,
-          paddingX: 2,
-          paddingY: 1,
-          flex: 1,
-        }}
-      >
-        <Typography variant="subtitle2">Position</Typography>
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-          {analytics?.position || 'N/A'}
-        </Typography>
-      </Box> */}
-      {/* <Box display="flex" gap={1}>
-        <Chip
-          label={token.symbol}
-          avatar={<Avatar alt={token.symbol} src={token.logoURI} />}
-        />
-      </Box> */}
     </Stack>
   );
 };

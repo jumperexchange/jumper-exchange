@@ -97,10 +97,14 @@ export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
     }
   }, [isSuccess]);
 
+  console.log('---------------');
+  console.log(data?.data?.meta);
+
   const widgetConfig: WidgetConfig = useMemo(() => {
     const baseConfig: WidgetConfig = {
       toAddress: {
         ...data?.data?.meta,
+        name: data?.data?.market?.lpToken.symbol,
         address: data?.data?.market?.address,
         chainType: ChainType.EVM,
       },
@@ -131,7 +135,6 @@ export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
           openWalletMenu();
         },
       },
-      // requiredUI: [RequiredUI.ToAddress],
     };
     return baseConfig;
   }, [isSuccess, widgetTheme.config.theme, widgetTheme.config.appearance]);

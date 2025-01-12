@@ -51,7 +51,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
             onVerify: () => Promise.resolve(true),
           },
         ]}
-        label="Redeem"
+        label={`Redeem from ${token.symbol}`}
         image={{
           url: token?.logoURI || '',
           name: token?.name || '',

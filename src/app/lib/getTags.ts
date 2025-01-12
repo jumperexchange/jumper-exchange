@@ -32,18 +32,20 @@ const sortTagsByPredefinedOrder = (tags: TagAttributes[]) => {
 // Helper function to sort blog articles by `publishedAt` date
 const sortBlogArticlesByPublishedDate = (tags: TagAttributes[]) => {
   return tags.map((tag) => {
-    tag.attributes?.blog_articles.data =
-      tag.attributes?.blog_articles.data.sort((a, b) => {
-        const dateA = a.attributes?.publishedAt
-          ? Date.parse(a.attributes?.publishedAt)
-          : -Infinity; // Default to oldest if undefined
-        const dateB = b.attributes?.publishedAt
-          ? Date.parse(b.attributes?.publishedAt)
-          : -Infinity; // Default to oldest if undefined
+    if (tag.attributes && tag.attributes.blog_articles) {
+      tag.attributes.blog_articles.data =
+        tag.attributes.blog_articles.data.sort((a, b) => {
+          const dateA = a.attributes?.publishedAt
+            ? Date.parse(a.attributes?.publishedAt)
+            : -Infinity; // Default to oldest if undefined
+          const dateB = b.attributes?.publishedAt
+            ? Date.parse(b.attributes?.publishedAt)
+            : -Infinity; // Default to oldest if undefined
 
-        return dateB - dateA;
-      });
-    return tag;
+          return dateB - dateA;
+        });
+    }
+    return -1;
   });
 };
 
