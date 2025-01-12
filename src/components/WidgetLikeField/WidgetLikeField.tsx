@@ -262,7 +262,6 @@ function WidgetLikeField({
         <OutlinedInput
           autoComplete="off"
           id="component"
-          defaultValue=""
           value={inputValue}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             onChangeValue(event.target.value);

@@ -106,7 +106,7 @@ export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
         chainType: ChainType.EVM,
       },
       bridges: {
-        allow: ['across', 'hop', 'stargateV2', 'stargate', 'symbiosis'],
+        allow: ['across', 'stargateV2', 'stargate', 'symbiosis'],
       },
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
@@ -127,6 +127,7 @@ export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
       },
       useRecommendedRoute: true,
       contractCompactComponent: <></>,
+      requiredUI: [RequiredUI.ToAddress],
       walletConfig: {
         onConnect() {
           openWalletMenu();

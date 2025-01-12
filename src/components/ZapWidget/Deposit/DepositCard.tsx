@@ -60,7 +60,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
       <Box display="flex" justifyContent="space-between" gap={'16px'}>
         <Box
           sx={{
-            backgroundColor: theme.palette?.secondary?.main,
+            backgroundColor: theme.palette?.bgSecondary?.main,
             alignItems: 'flex-start',
             borderRadius: 1,
             paddingX: 2,
@@ -111,7 +111,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         </Box>
         <Box
           sx={{
-            backgroundColor: theme.palette?.secondary?.main,
+            backgroundColor: theme.palette?.bgSecondary?.main,
             alignItems: 'flex-start',
             borderRadius: 1,
             paddingX: 2,
@@ -166,7 +166,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
       <Box display="flex" justifyContent="space-between" gap={'16px'}>
         <Box
           sx={{
-            backgroundColor: theme.palette?.secondary?.main,
+            backgroundColor: theme.palette?.bgSecondary?.main,
             alignItems: 'flex-start',
             borderRadius: 1,
             paddingX: 2,
@@ -187,7 +187,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         {true && (
           <Box
             sx={{
-              backgroundColor: theme.palette?.secondary?.main,
+              backgroundColor: theme.palette?.bgSecondary?.main,
               alignItems: 'flex-start',
               borderRadius: 1,
               paddingX: 2,
