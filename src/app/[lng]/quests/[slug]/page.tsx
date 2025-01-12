@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { siteName } from 'src/app/lib/metadata';
 import { getSiteUrl } from 'src/const/urls';
-import type { QuestAttributes } from 'src/types/loyaltyPass';
+import type { Quest, QuestAttributes } from 'src/types/loyaltyPass';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { getQuestBySlug } from '../../../lib/getQuestBySlug';
 import QuestPage from '../../../ui/quests/QuestMissionPage';
@@ -19,7 +19,8 @@ export async function generateMetadata({
       throw new Error();
     }
 
-    const questData = quest.data.attributes as QuestAttributes;
+    const questData = (quest.data as any as Quest)
+      .attributes as QuestAttributes;
 
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
