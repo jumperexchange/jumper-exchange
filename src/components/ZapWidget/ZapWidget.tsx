@@ -14,10 +14,10 @@ import { DepositCard } from './Deposit/DepositCard';
 import { useContractRead } from 'src/hooks/useReadContractData';
 import { useThemeStore } from 'src/stores/theme';
 import { Box } from '@mui/material';
-import { WithdrawWidget } from './Withdraw/WithdrawWidget';
 import { Skeleton } from '@mui/material';
 import { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
+import { WithdrawWidget } from './Withdraw/WithdrawWidget';
 
 export interface ProjectData {
   chain: string;

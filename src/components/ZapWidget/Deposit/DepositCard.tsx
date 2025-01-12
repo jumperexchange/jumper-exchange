@@ -3,9 +3,16 @@ import {
   type TokenAmount,
   useFieldActions,
 } from '@lifi/widget';
-import { Avatar, Box, Chip, Stack, Typography, useTheme } from '@mui/material';
+import {
+  alpha,
+  Avatar,
+  Box,
+  Chip,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { useEffect } from 'react';
-import DigitCard from 'src/components/Berachain/components/BerachainMarketCard/StatCard/DigitCard';
 import DigitTokenSymbolCard from 'src/components/Berachain/components/BerachainMarketCard/StatCard/DigitTokenSymbolCard';
 import {
   DEPOSIT_TOOLTIP,
@@ -13,6 +20,8 @@ import {
 } from 'src/components/Berachain/const/title';
 import { useTranslation } from 'react-i18next';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import DigitOnlyCard from './Stat/DigitOnlyCard';
+import DigitTextCard from './Stat/DigitTextCard';
 
 export interface ItemPriceProps {
   token: TokenAmount;
@@ -65,7 +74,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
       <Box display="flex" justifyContent="space-between" gap={'16px'}>
         <Box
           sx={{
-            backgroundColor: theme.palette?.bgSecondary?.main,
+            backgroundColor: alpha(theme.palette.primary.main, 0.08),
             alignItems: 'flex-start',
             borderRadius: 1,
             paddingX: 2,
@@ -73,7 +82,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
             flex: 1,
           }}
         >
-          <DigitTokenSymbolCard
+          <DigitTextCard
             title={hasDeposited ? 'Deposited' : 'Deposit'}
             tooltipText={hasDeposited ? DEPOSITED_TOOLTIP : DEPOSIT_TOOLTIP}
             tokenImage={underlyingToken?.logoURI}
@@ -87,23 +96,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
             }
             hasDeposited={hasDeposited ? true : false}
           />
-          {/* <DigitCard
-            // sx={
-            //   {
-            //     // alignItems: 'flex-end',
-            //   }
-            // }
-            title={'TVL'}
-            tooltipText={'hello world'}
-            digit={
-              analytics?.tvl_usd
-                ? `$${Number(analytics.tvl_usd).toLocaleString('en-US', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  })}`
-                : 'N/A'
-            }
-          /> */}
+
           {/* <Typography variant="subtitle2">TVL</Typography>
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
             {analytics?.tvl_usd
@@ -116,7 +109,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         </Box>
         <Box
           sx={{
-            backgroundColor: theme.palette?.bgSecondary?.main,
+            backgroundColor: alpha(theme.palette.primary.main, 0.08),
             alignItems: 'flex-start',
             borderRadius: 1,
             paddingX: 2,
@@ -124,12 +117,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
             flex: 1,
           }}
         >
-          <DigitCard
-            // sx={
-            //   {
-            //     // alignItems: 'flex-end',
-            //   }
-            // }
+          <DigitOnlyCard
             title={'TVL'}
             tooltipText={'hello world'}
             digit={
@@ -153,7 +141,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         </Box>
         {/* <Box
           sx={{
-            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+            backgroundColor: 'rgba(0, 0, 0, 0.08)',
             borderRadius: 1,
             paddingX: 2,
             paddingY: 1,
@@ -171,7 +159,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
       <Box display="flex" justifyContent="space-between" gap={'16px'}>
         <Box
           sx={{
-            backgroundColor: theme.palette?.bgSecondary?.main,
+            backgroundColor: alpha(theme.palette.primary.main, 0.08),
             alignItems: 'flex-start',
             borderRadius: 1,
             paddingX: 2,
@@ -179,7 +167,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
             flex: 1,
           }}
         >
-          <DigitCard
+          <DigitOnlyCard
             title={'APY'}
             tooltipText={'hello world'}
             digit={
@@ -192,7 +180,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         {!!boostedAPY && boostedAPY > 0 && (
           <Box
             sx={{
-              backgroundColor: theme.palette?.bgSecondary?.main,
+              backgroundColor: alpha(theme.palette.primary.main, 0.08),
               alignItems: 'flex-start',
               borderRadius: 1,
               paddingX: 2,
@@ -200,8 +188,8 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
               flex: 1,
             }}
           >
-            <DigitCard
-              title={'Boosted APY'}
+            <DigitOnlyCard
+              title={'Boost APY'}
               tooltipText={'hello world'}
               digit={analytics?.total_apy ? `${boostedAPY.toFixed(1)}%` : 'N/A'}
             />
