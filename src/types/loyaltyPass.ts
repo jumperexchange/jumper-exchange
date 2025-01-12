@@ -101,7 +101,7 @@ export interface CustomInformation {
   [key: string]: any;
 }
 
-type QuestAttributes<T = never> = {
+export type QuestAttributes<T = never> = {
   UID: string;
   Title: string;
   Description?: string;
