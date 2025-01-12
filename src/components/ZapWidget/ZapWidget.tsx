@@ -97,9 +97,6 @@ export function ZapWidget({ account, projectData, type }: CustomWidgetProps) {
     }
   }, [isSuccess]);
 
-  console.log('---------------');
-  console.log(data?.data?.meta);
-
   const widgetConfig: WidgetConfig = useMemo(() => {
     const baseConfig: WidgetConfig = {
       toAddress: {
