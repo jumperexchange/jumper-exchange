@@ -41,7 +41,7 @@ export const ProfileHeaderBox = styled(Box)(({ theme }) => ({
 }));
 
 export const ProfileInfoBox = styled(Box)(({ theme }) => ({
-  gab: theme.spacing(2),
+  gap: theme.spacing(2),
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '24px',
   flexDirection: 'column',
