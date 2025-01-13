@@ -19,8 +19,10 @@ import {
   ZapActionProtocolShareLink,
   ZapProtocolActionInfoBox,
 } from './ZapInfo.style';
-import { ZapActionFaqAccordionHeader } from './ZapActionFaqAccordionHeader';
 import { SocialInfosBox } from './SocialInfosBox';
+import { ZapProtocolIntro } from './ZapProtocolIntro';
+import { ZapDisclaimerInfo } from './ZapDisclaimerInfo';
+import { ZapActionFaq } from './ZapActionFaq';
 
 interface ZapPageProps {
   market?: Quest;
@@ -37,88 +39,15 @@ export const ZapInfo = ({ market, detailInformation }: ZapPageProps) => {
   return (
     <ZapProtocolActionInfoBox>
       {/* Main Information about the protocol */}
-      <ZapActionProtocolIntro>
-        {!isMobile &&
-          (market?.attributes?.Image.data.attributes?.url ? (
-            <Image
-              src={`${baseUrl}${market.attributes?.Image.data.attributes?.url}`}
-              alt="Protocol image"
-              width={market.attributes?.Image.data.attributes?.width}
-              height={market.attributes?.Image.data.attributes?.height}
-              style={{ width: 192, height: 'auto', objectFit: 'contain' }}
-            />
-          ) : (
-            <Skeleton
-              variant="circular"
-              sx={{ width: '192px', height: '192px', flexShrink: 0 }}
-            />
-          ))}
-
-        <ZapActionProtocolCard>
-          {market?.attributes?.Title ? (
-            <Typography variant="titleSmall">
-              {market.attributes?.Title}
-            </Typography>
-          ) : (
-            <Skeleton
-              variant="rectangular"
-              sx={{ height: '32px', width: '160px' }}
-            />
-          )}
-          {market?.attributes?.Description && (
-            <Typography variant="bodyMedium">
-              {market.attributes?.Description}
-            </Typography>
-          )}
-          <SocialInfosBox detailInformation={detailInformation} />
-        </ZapActionProtocolCard>
-      </ZapActionProtocolIntro>
+      <ZapProtocolIntro market={market} detailInformation={detailInformation} />
 
       {/* FAQ about the Zap and the pool */}
       {detailInformation?.faqItems && (
-        <ZapActionProtocolCard sx={{ padding: '20px 12px' }}>
-          <AccordionFAQ
-            showIndex={true}
-            showDivider={true}
-            showAnswerDivider={true}
-            sx={{
-              padding: 0,
-            }}
-            itemSx={{
-              padding: '0px 8px',
-              backgroundColor: 'transparent',
-              '.MuiAccordionSummary-root': {
-                padding: 0,
-              },
-              '.accordion-items': {
-                gap: '4px',
-              },
-              '.MuiAccordionDetails-root': {
-                padding: '20px 16px 16px',
-              },
-            }}
-            content={detailInformation?.faqItems}
-            accordionHeader={<ZapActionFaqAccordionHeader />}
-            questionTextTypography="bodyLarge"
-            answerTextTypography="bodyMedium"
-            arrowSize={12}
-          />
-        </ZapActionProtocolCard>
+        <ZapActionFaq detailInformation={detailInformation} />
       )}
 
       {/* Disclaimer about the pool */}
-      {market?.attributes?.Information && (
-        <ZapActionProtocolDisclaimer>
-          <InfoIcon
-            sx={(theme) => ({
-              color: alpha(theme.palette.text.primary, 0.48),
-            })}
-          />
-          <Typography variant="bodySmall">
-            {market?.attributes?.Information}
-          </Typography>
-        </ZapActionProtocolDisclaimer>
-      )}
+      {market?.attributes?.Information && <ZapDisclaimerInfo market={market} />}
     </ZapProtocolActionInfoBox>
   );
 };
