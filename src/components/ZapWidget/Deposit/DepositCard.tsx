@@ -3,17 +3,8 @@ import {
   type TokenAmount,
   useFieldActions,
 } from '@lifi/widget';
-import {
-  alpha,
-  Avatar,
-  Box,
-  Chip,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Avatar, Box, Stack, Typography, useTheme } from '@mui/material';
 import { useEffect } from 'react';
-import DigitTokenSymbolCard from 'src/components/Berachain/components/BerachainMarketCard/StatCard/DigitTokenSymbolCard';
 import {
   DEPOSIT_TOOLTIP,
   DEPOSITED_TOOLTIP,
@@ -22,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import DigitOnlyCard from './Stat/DigitOnlyCard';
 import DigitTextCard from './Stat/DigitTextCard';
+import { ColoredStatBox } from './DepositCard.style';
 
 export interface ItemPriceProps {
   token: TokenAmount;
@@ -72,16 +64,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         </Typography>
       </Box>
       <Box display="flex" justifyContent="space-between" gap={'16px'}>
-        <Box
-          sx={{
-            backgroundColor: alpha(theme.palette.primary.main, 0.08),
-            alignItems: 'flex-start',
-            borderRadius: 1,
-            paddingX: 2,
-            paddingY: 1,
-            flex: 1,
-          }}
-        >
+        <ColoredStatBox>
           <DigitTextCard
             title={hasDeposited ? 'Position' : 'Deposit'}
             tooltipText={hasDeposited ? DEPOSITED_TOOLTIP : DEPOSIT_TOOLTIP}
@@ -98,27 +81,8 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
             }
             hasDeposited={hasDeposited ? true : false}
           />
-
-          {/* <Typography variant="subtitle2">TVL</Typography>
-          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            {analytics?.tvl_usd
-              ? `$${Number(analytics.tvl_usd).toLocaleString('en-US', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}`
-              : 'N/A'}
-          </Typography> */}
-        </Box>
-        <Box
-          sx={{
-            backgroundColor: alpha(theme.palette.primary.main, 0.08),
-            alignItems: 'flex-start',
-            borderRadius: 1,
-            paddingX: 2,
-            paddingY: 1,
-            flex: 1,
-          }}
-        >
+        </ColoredStatBox>
+        <ColoredStatBox>
           <DigitOnlyCard
             title={'TVL'}
             tooltipText={'hello world'}
@@ -131,44 +95,10 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
                 : 'N/A'
             }
           />
-          {/* <Typography variant="subtitle2">TVL</Typography>
-          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            {analytics?.tvl_usd
-              ? `$${Number(analytics.tvl_usd).toLocaleString('en-US', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}`
-              : 'N/A'}
-          </Typography> */}
-        </Box>
-        {/* <Box
-          sx={{
-            backgroundColor: 'rgba(0, 0, 0, 0.08)',
-            borderRadius: 1,
-            paddingX: 2,
-            paddingY: 1,
-            flex: 1,
-          }}
-        >
-          <Typography variant="subtitle2">Incentives</Typography>
-          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            {analytics?.total_apy
-              ? `${analytics?.total_apy.toFixed(2)}%`
-              : 'N/A'}
-          </Typography>
-        </Box> */}
+        </ColoredStatBox>
       </Box>
       <Box display="flex" justifyContent="space-between" gap={'16px'}>
-        <Box
-          sx={{
-            backgroundColor: alpha(theme.palette.primary.main, 0.08),
-            alignItems: 'flex-start',
-            borderRadius: 1,
-            paddingX: 2,
-            paddingY: 1,
-            flex: 1,
-          }}
-        >
+        <ColoredStatBox>
           <DigitOnlyCard
             title={'APY'}
             tooltipText={'hello world'}
@@ -178,24 +108,15 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
                 : 'N/A'
             }
           />
-        </Box>
+        </ColoredStatBox>
         {!!boostedAPY && boostedAPY > 0 && (
-          <Box
-            sx={{
-              backgroundColor: alpha(theme.palette.primary.main, 0.08),
-              alignItems: 'flex-start',
-              borderRadius: 1,
-              paddingX: 2,
-              paddingY: 1,
-              flex: 1,
-            }}
-          >
+          <ColoredStatBox>
             <DigitOnlyCard
               title={'Boost APY'}
               tooltipText={'hello world'}
               digit={analytics?.total_apy ? `${boostedAPY.toFixed(1)}%` : 'N/A'}
             />
-          </Box>
+          </ColoredStatBox>
         )}
       </Box>
     </Stack>

@@ -39,7 +39,6 @@ import {
   BoxForm,
 } from './WidgetDeposit.style';
 import DepositInfo from '@/components/Berachain/components/BerachainWidget/DepositWidget/DepositInfo';
-import BerachainTransactionDetails from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
 
 interface Image {
   url?: string;
@@ -546,7 +545,6 @@ function DepositWidget({
             />
           )
         )}
-        <BerachainTransactionDetails type="deposit" market={market} />
       </BoxForm>
     </>
   );

@@ -17,7 +17,7 @@ import {
 } from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useConfig } from 'wagmi';
+import { useConfig, useSwitchChain } from 'wagmi';
 import { useMemo, useState } from 'react';
 import { MaxButton } from './WidgetLikeField.style';
 import { useContractWrite } from 'src/hooks/useWriteContractData';
@@ -86,6 +86,7 @@ function WidgetLikeField({
   const theme = useTheme();
   const wagmiConfig = useConfig();
   const { account } = useAccount();
+  const { switchChainAsync } = useSwitchChain();
 
   const [value, setValue] = useState<string>('');
   const { write, isLoading, error, data } = useContractWrite({
@@ -140,6 +141,18 @@ function WidgetLikeField({
     return null;
   }, [value, balance, error]);
 
+  const handleSwitchChain = async (chainId: number) => {
+    try {
+      console.log('new chainId');
+      console.log(chainId);
+      const { id } = await switchChainAsync({
+        chainId: chainId,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Grid container justifyContent={'center'} maxWidth={416}>
       <Grid
@@ -174,7 +187,6 @@ function WidgetLikeField({
             <Input
               autoComplete="off"
               id="component"
-              defaultValue=""
               value={value}
               onChange={handleInputChange}
               placeholder={placeholder}
@@ -330,17 +342,7 @@ function WidgetLikeField({
               sx={{ marginTop: theme.spacing(2) }}
               type="button"
               variant="contained"
-              onClick={async () => {
-                try {
-                  await switchChain(wagmiConfig, {
-                    chainId: projectData.chainId,
-                  });
-                } catch (error) {
-                  // TODO: to remove
-                  // eslint-disable-next-line no-console
-                  console.error(error);
-                }
-              }}
+              onClick={() => handleSwitchChain(projectData?.chainId)}
             >
               <Typography variant="bodyMediumStrong">Switch chain</Typography>
             </LoadingButton>
