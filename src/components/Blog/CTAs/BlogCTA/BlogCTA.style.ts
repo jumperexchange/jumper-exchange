@@ -17,39 +17,40 @@ export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   margin: theme.spacing(6, 0),
   transition: 'background-color 250ms',
   borderRadius: '16px',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? '#F9F5FF' //todo: add to theme
-      : alpha(theme.palette.white.main, 0.08),
+  backgroundColor: alpha(theme.palette.white.main, 0.08),
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? darken('#F9F5FF', 0.02) //todo: add to theme
-        : alpha(theme.palette.white.main, 0.16),
+    backgroundColor: alpha(theme.palette.white.main, 0.16),
+    ...theme.applyStyles('light', {
+      //todo: add to theme
+      backgroundColor: darken('#F9F5FF', 0.02),
+    }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: theme.spacing(4),
     flexDirection: 'row',
   },
+  ...theme.applyStyles('light', {
+    //todo: add to theme
+    backgroundColor: '#F9F5FF',
+  }),
 }));
 
 export const BlogCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
   fontFamily: urbanist.style.fontFamily,
   fontWeight: 700,
-  color:
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.accent1Alt.main,
+  color: theme.palette.accent1Alt.main,
   fontSize: '32px',
   lineHeight: '38px',
   userSelect: 'none',
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     fontSize: '40px',
     lineHeight: '56px',
     textDecoration: 'auto',
   },
+  ...theme.applyStyles('light', {
+    color: theme.palette.primary.main,
+  }),
 }));
 
 export const BlogCtaButton = styled(IconButtonPrimary)(({ theme }) => ({

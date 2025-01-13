@@ -8,10 +8,7 @@ export const CardContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : theme.palette.bgSecondary.main,
+  backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '16px',
   width: '100%',
   padding: theme.spacing(2),
@@ -19,6 +16,9 @@ export const CardContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
   },
+  ...theme.applyStyles('light', {
+    backgroundColor: theme.palette.white.main,
+  }),
 }));
 
 export const RankContainer = styled(CardContainer)(({ theme }) => ({
@@ -65,10 +65,10 @@ export const LeaderboardUserPositionButton = styled(ButtonTransparent)(
     background: 'transparent',
     borderRadius: '16px',
     '&:hover': {
-      backgroundColor:
-        theme.palette.mode === 'dark'
-          ? theme.palette.alphaLight300.main
-          : theme.palette.white.main,
+      backgroundColor: theme.palette.white.main,
+      ...theme.applyStyles('dark', {
+        backgroundColor: theme.palette.alphaLight300.main,
+      }),
     },
   }),
 );

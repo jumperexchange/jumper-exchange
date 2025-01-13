@@ -31,23 +31,34 @@ export const VariationValue = styled(Typography)(({ theme }) => ({
 }));
 
 export const CustomAccordion = styled(Accordion)<{ isExpanded?: boolean }>(
-  ({ theme, isExpanded }) => ({
+  ({ theme }) => ({
     background: 'transparent',
     border: 0,
     boxShadow: 'none',
     width: '100%',
-
     '& .MuiAccordionSummary-root': {
       padding: '16px',
       borderRadius: 12,
       '&:hover': {
-        backgroundColor:
-          theme.palette.mode === 'dark'
-            ? lighten(theme.palette.surface2.main, 0.04)
-            : darken(theme.palette.surface2.main, 0.04),
-        borderRadius: isExpanded ? '16px 16px 0 0' : '16px',
+        backgroundColor: darken(theme.palette.surface2.main, 0.04),
+        borderRadius: '16px',
+        ...theme.applyStyles('dark', {
+          backgroundColor: lighten(theme.palette.surface2.main, 0.04),
+        }),
       },
     },
+    variants: [
+      {
+        props: ({ isExpanded }) => isExpanded,
+        style: {
+          '& .MuiAccordionSummary-root': {
+            '&:hover': {
+              borderRadius: '16px 16px 0 0',
+            },
+          },
+        },
+      },
+    ],
   }),
 );
 
@@ -68,16 +79,13 @@ export const TypographySecondary = styled(Typography)(({ theme }) => ({
 
 export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
   justifyContent: 'flex-end',
-
   '& .MuiAvatar-colorDefault': {
     fontSize: '0.4rem',
   },
-
   '& .MuiAvatar-root': {
     width: 16,
     height: 16,
     border: `2px solid ${theme.palette.surface2.main}`,
-
     '&:last-child': {
       marginLeft: '-6px',
     },
@@ -91,7 +99,6 @@ export const SmallAvatar = styled(Avatar)(({ theme }) => ({
 }));
 
 export const Icon = styled(SvgIcon)``;
-
 export const CustomDivider = styled(Divider)(({ theme }) => ({
   backgroundColor: theme.palette.surface2.main,
   opacity: 0.3,

@@ -30,10 +30,12 @@ const BridgePage = ({
       <Stack display="flex" alignItems="center" direction="column">
         <Typography
           variant="h1"
-          color="text.primary"
           marginY={2}
           textAlign="center"
-          sx={{ fontSize: { xs: '40px', sm: '40px' } }}
+          sx={(theme) => ({
+            color: theme.palette.text.primary,
+            fontSize: { xs: '40px', sm: '40px' },
+          })}
         >
           How to bridge from {sourceToken.symbol} on {sourceChain.name} to{' '}
           {destinationToken.symbol} on {destinationChain.name}

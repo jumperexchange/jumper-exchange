@@ -9,11 +9,11 @@ export const ProfileIconButton = styled(MuiIconButtom, {
   transition: 'background 0.3s',
   width: '48px',
   height: '48px',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : theme.palette.alphaLight300.main,
+  backgroundColor: theme.palette.alphaLight300.main,
   '&:hover': {
     backgroundColor: getContrastAlphaColor(theme, '8%'),
   },
+  ...theme.applyStyles('light', {
+    backgroundColor: theme.palette.white.main,
+  }),
 }));

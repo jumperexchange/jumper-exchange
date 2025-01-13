@@ -35,14 +35,11 @@ export const useVerticalTabs = () => {
       tooltip: t('navbar.links.exchange'),
       icon: (
         <SwapHorizIcon
-          sx={{
+          sx={(theme) => ({
             marginRight: 0.75,
             marginBottom: `${theme.spacing(0)} !important`,
-            color:
-              theme.palette.mode === 'dark'
-                ? theme.palette.white.main
-                : theme.palette.black.main,
-          }}
+            color: theme.palette.text.primary,
+          })}
         />
       ),
     },
@@ -52,14 +49,11 @@ export const useVerticalTabs = () => {
       tooltip: t('navbar.links.refuel'),
       icon: (
         <EvStationOutlinedIcon
-          sx={{
+          sx={(theme) => ({
             marginRight: 0.75,
             marginBottom: `${theme.spacing(0)} !important`,
-            color:
-              theme.palette.mode === 'dark'
-                ? theme.palette.white.main
-                : theme.palette.black.main,
-          }}
+            color: theme.palette.text.primary,
+          })}
         />
       ),
     },

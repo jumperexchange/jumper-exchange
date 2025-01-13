@@ -1,35 +1,34 @@
+import generateKey from '@/app/lib/generateKey';
 import { WalletCardContainer } from '@/components/Menus';
+import {
+  WalletAvatar,
+  WalletCardBadge,
+} from '@/components/Menus/WalletMenu/WalletCard.style';
 import {
   CustomAccordion,
   CustomAvatarGroup,
   TypographyPrimary,
   TypographySecondary,
 } from '@/components/Portfolio/Portfolio.styles';
-import generateKey from '@/app/lib/generateKey';
-import AccordionSummary from '@mui/material/AccordionSummary';
+import PortfolioTokenChainButton from '@/components/Portfolio/PortfolioTokenChainButton';
+import TokenImage from '@/components/Portfolio/TokenImage';
+import { useMainPaths } from '@/hooks/useMainPaths';
+import { useWidgetCacheStore } from '@/stores/widgetCache';
+import type { CacheToken } from '@/types/portfolio';
 import {
   AccordionDetails,
+  Box,
   Grid,
+  Avatar as MuiAvatar,
   Skeleton,
   Tooltip,
-  Avatar as MuiAvatar,
-  Divider,
-  Box,
   useTheme,
 } from '@mui/material';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import { useRouter } from 'next/navigation';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  WalletAvatar,
-  WalletCardBadge,
-} from '@/components/Menus/WalletMenu/WalletCard.style';
-import { useMainPaths } from '@/hooks/useMainPaths';
-import { useParams, useRouter } from 'next/navigation';
-import { useWidgetCacheStore } from '@/stores/widgetCache';
-import PortfolioTokenChainButton from '@/components/Portfolio/PortfolioTokenChainButton';
 import { useMenuStore } from 'src/stores/menu';
-import TokenImage from '@/components/Portfolio/TokenImage';
-import type { CacheToken } from '@/types/portfolio';
 import { stringLenShortener } from 'src/utils/stringLenShortener';
 import { PortfolioDivider } from './PortfolioDivider';
 
@@ -63,12 +62,12 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
 
   return (
     <WalletCardContainer
-      sx={{
+      sx={(theme) => ({
         padding: '0px',
         [theme.breakpoints.up('md')]: {
           padding: '0px',
         },
-      }}
+      })}
     >
       <CustomAccordion
         expanded={isExpanded}
@@ -98,11 +97,11 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                     !hasMultipleChains ? (
                       <MuiAvatar
                         alt={token?.chainName || 'chain-name'}
-                        sx={{
+                        sx={(theme) => ({
                           width: '18px',
                           height: '18px',
                           border: `2px solid ${theme.palette.surface2.main}`,
-                        }}
+                        })}
                       >
                         <TokenImage
                           token={{

@@ -1,8 +1,8 @@
-import { Box, Typography } from '@mui/material';
 import ActionFlow from '@/components/Berachain/components/BerachainTransactionDetails/ActionFlow';
-import { useActiveMarket } from '../../hooks/useActiveMarket';
+import { Box, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import type { EnrichedMarketDataType } from 'royco/queries';
-import Grid from '@mui/material/Unstable_Grid2';
+import { useActiveMarket } from '../../hooks/useActiveMarket';
 
 function Recipe({
   market,

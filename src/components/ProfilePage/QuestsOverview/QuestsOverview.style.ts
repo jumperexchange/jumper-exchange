@@ -34,30 +34,38 @@ export interface SeeAllButtonContainerProps
 
 export const SeeAllButtonContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'show',
-})<SeeAllButtonContainerProps>(({ theme, show }) => ({
+})<SeeAllButtonContainerProps>(({ theme }) => ({
   width: '100%',
   display: 'flex',
   justifyContent: 'center',
-  marginTop: show ? theme.spacing(2) : 0,
+  marginTop: 0,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: theme.spacing(4),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     marginTop: theme.spacing(6),
   },
+  variants: [
+    {
+      props: ({ show }) => show,
+      style: {
+        marginTop: theme.spacing(2),
+      },
+    },
+  ],
 }));
 
 export const SeeAllButton = styled(ButtonPrimary)(({ theme }) => ({
   color: 'inherit',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.alphaDark100.main
-      : theme.palette.alphaLight400.main,
+  backgroundColor: theme.palette.alphaLight400.main,
   width: 320,
   '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.alphaDark200.main
-        : theme.palette.alphaLight500.main,
+    backgroundColor: theme.palette.alphaLight500.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: theme.palette.alphaDark200.main,
+    }),
   },
+  ...theme.applyStyles('light', {
+    backgroundColor: theme.palette.alphaDark100.main,
+  }),
 }));

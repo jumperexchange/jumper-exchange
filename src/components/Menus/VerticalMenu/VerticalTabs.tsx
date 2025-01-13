@@ -39,10 +39,10 @@ export const VerticalTabs = () => {
             enterTouchDelay={0}
             disableHoverListener={el.disabled}
             placement="left"
-            componentsProps={{
+            arrow
+            slotProps={{
               popper: { sx: { zIndex: 1700 } },
             }}
-            arrow
           >
             {tab}
           </Tooltip>

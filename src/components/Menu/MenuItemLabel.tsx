@@ -34,13 +34,23 @@ export const MenuItemLabel = ({
           <Typography
             variant={'bodyMedium'}
             ml={theme.spacing(1.5)}
-            sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                maxWidth: prefixIcon ? 188 : 'inherit',
+            sx={[
+              {
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               },
-            }}
+              prefixIcon
+                ? {
+                    [theme.breakpoints.up('sm' as Breakpoint)]: {
+                      maxWidth: 188,
+                    },
+                  }
+                : {
+                    [theme.breakpoints.up('sm' as Breakpoint)]: {
+                      maxWidth: 'inherit',
+                    },
+                  },
+            ]}
           >
             {label}
           </Typography>

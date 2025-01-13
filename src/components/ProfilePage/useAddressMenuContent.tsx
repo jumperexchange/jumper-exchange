@@ -43,9 +43,7 @@ export const useAddressMenuContent = () => {
         <LinkIcon
           sx={{
             height: '16px',
-            color: isDarkMode
-              ? theme.palette.white.main
-              : theme.palette.black.main,
+            color: theme.palette.text.primary,
           }}
         />
       ),

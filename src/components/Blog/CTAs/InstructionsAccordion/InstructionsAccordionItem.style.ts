@@ -6,11 +6,7 @@ import { IconButtonTertiary } from 'src/components/IconButton.style';
 export const InstructionsAccordionItemContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   overflow: 'hidden',
-  backgroundColor:
-    theme.palette.mode === 'dark'
-      ? getContrastAlphaColor(theme, '8%')
-      : getContrastAlphaColor(theme, '4%'),
-
+  backgroundColor: getContrastAlphaColor(theme, '4%'),
   padding: theme.spacing(3),
   flexDirection: 'column',
   margin: theme.spacing(2, 0),
@@ -18,22 +14,22 @@ export const InstructionsAccordionItemContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'flex-start',
   position: 'relative',
-
   a: {
-    color:
-      theme.palette.mode === 'light'
-        ? theme.palette.primary.main
-        : theme.palette.accent1Alt.main,
+    color: theme.palette.accent1Alt.main,
+    ...theme.applyStyles('light', {
+      color: theme.palette.primary.main,
+    }),
   },
-
   '& a:not(:first-child)': {
     marginLeft: theme.spacing(0.5),
   },
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     alignSelf: 'flex-start',
     margin: theme.spacing(2, 0, 0, 0),
   },
+  ...theme.applyStyles('dark', {
+    backgroundColor: getContrastAlphaColor(theme, '8%'),
+  }),
 }));
 
 export const InstructionsAccordionItemMain = styled(Box)(() => ({
@@ -61,7 +57,6 @@ export const InstructionsAccordionItemIndex = styled(Typography)(
     fontWeight: 600,
     lineHeight: '32px',
     color: getContrastAlphaColor(theme, 0.32),
-
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       marginLeft: theme.spacing(2),
     },
@@ -81,16 +76,13 @@ export const InstructionsAccordionItemLabel = styled(Box)(({ theme }) => ({
   fontWeight: 600,
   fontSize: '18px',
   lineHeight: '32px',
-
   p: {
     marginBlock: 'auto',
     display: 'inline',
   },
-
   '& a:not(:first-child), & p:not(:first-child)': {
     marginLeft: theme.spacing(0.5),
   },
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginLeft: theme.spacing(3),
   },

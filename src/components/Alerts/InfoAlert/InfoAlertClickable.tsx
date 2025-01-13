@@ -80,7 +80,9 @@ export const InfoAlertClickable = ({
             <Typography
               variant={'bodySmall'}
               pt={theme.spacing(1.5)}
-              color={theme.palette.text.primary}
+              sx={(theme) => ({
+                color: theme.palette.text.primary,
+              })}
             >
               {subtitle}
             </Typography>

@@ -33,17 +33,34 @@ export const BlogParagraph = styled(Typography, {
       : 'auto';
   return {
     display: 'inline',
-    fontWeight: bold ? 700 : 400,
+    fontWeight: 400,
     color: theme.palette.text.secondary,
     textDecoration: textDecoration,
-    fontStyle: italic ? 'italic' : 'normal',
+    fontStyle: 'normal',
     fontSize: '18px',
     lineHeight: '32px',
     margin: theme.spacing(2, 0),
-    ...(quote && {
-      fontSize: '20px',
-      fontStyle: 'italic',
-    }),
+    variants: [
+      {
+        props: ({ bold }) => bold,
+        style: {
+          fontWeight: 700,
+        },
+      },
+      {
+        props: ({ italic }) => italic,
+        style: {
+          fontStyle: 'italic',
+        },
+      },
+      {
+        props: ({ quote }) => quote,
+        style: {
+          fontSize: '20px',
+          fontStyle: 'italic',
+        },
+      },
+    ],
   };
 });
 
@@ -53,16 +70,16 @@ export const BlogHeadline = styled(Typography)(({ theme }) => ({
   color: alpha(theme.palette.text.primary, 0.88),
   a: {
     fontWeight: 600,
-    textDecorationColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.04)
-        : alpha(theme.palette.accent1Alt.main, 0.4),
+    textDecorationColor: alpha(theme.palette.accent1Alt.main, 0.4),
+    ...theme.applyStyles('light', {
+      textDecorationColor: alpha(theme.palette.primary.main, 0.04),
+    }),
   },
   'a:hover': {
-    textDecorationColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.primary.main
-        : theme.palette.accent1Alt.main,
+    textDecorationColor: theme.palette.accent1Alt.main,
+    ...theme.applyStyles('light', {
+      textDecorationColor: theme.palette.primary.main,
+    }),
   },
   '& a:not(:first-child)': {
     marginLeft: theme.spacing(0.5),
@@ -101,10 +118,7 @@ export const BlogH6 = styled(BlogHeadline)(({ theme }) => ({
 
 export const BlogLink = styled(Link)(({ theme }) => ({
   marginLeft: theme.spacing(0.75),
-  color:
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.accent1Alt.main,
+  color: theme.palette.accent1Alt.main,
   fontWeight: 600,
   cursor: 'pointer',
   display: 'inline',
@@ -113,4 +127,7 @@ export const BlogLink = styled(Link)(({ theme }) => ({
   ':first-child': {
     marginLeft: 0,
   },
+  ...theme.applyStyles('light', {
+    color: theme.palette.primary.main,
+  }),
 }));

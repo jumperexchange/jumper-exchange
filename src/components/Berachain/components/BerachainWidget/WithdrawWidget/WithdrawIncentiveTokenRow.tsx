@@ -1,10 +1,10 @@
-import { Box, Typography } from '@mui/material';
-import React from 'react';
 import {
   WalletAvatar,
   WalletCardBadge,
 } from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
+import { Box, Typography } from '@mui/material';
+import React from 'react';
 
 export const WithdrawIncentiveTokenRow = React.forwardRef<
   HTMLDivElement,
@@ -45,7 +45,7 @@ export const WithdrawIncentiveTokenRow = React.forwardRef<
             className="badge"
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           >
-            <WalletAvatar component="span">
+            <WalletAvatar as="span">
               <TokenImage
                 token={{
                   name: token.symbol,

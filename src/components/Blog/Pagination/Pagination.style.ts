@@ -9,16 +9,16 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   width: 'fit-content',
   flexWrap: 'wrap',
   padding: theme.spacing(1),
-  backgroundColor:
-    theme.palette.mode === 'dark'
-      ? getContrastAlphaColor(theme, '12%')
-      : getContrastAlphaColor(theme, '4%'),
+  backgroundColor: getContrastAlphaColor(theme, '4%'),
   borderRadius: '24px',
   left: '50%',
   margin: theme.spacing(2, 'auto', 0, 'auto'),
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(2),
+  ...theme.applyStyles('dark', {
+    backgroundColor: getContrastAlphaColor(theme, '12%'),
+  }),
 }));
 
 export interface PaginationIndexButtonProps
@@ -28,9 +28,19 @@ export interface PaginationIndexButtonProps
 
 export const PaginationIndexButton = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'active',
-})<PaginationIndexButtonProps>(({ theme, active }) => ({
-  ...(active
-    ? {
+})<PaginationIndexButtonProps>(({ theme }) => ({
+  width: 40,
+  height: 40,
+  '&:hover': {
+    backgroundColor: getContrastAlphaColor(theme, '32%'),
+    ...theme.applyStyles('light', {
+      backgroundColor: getContrastAlphaColor(theme, '4%'),
+    }),
+  },
+  variants: [
+    {
+      props: ({ active }) => active,
+      style: {
         backgroundColor:
           theme.palette.mode === 'light'
             ? theme.palette.white.main
@@ -39,30 +49,30 @@ export const PaginationIndexButton = styled(IconButton, {
           theme.palette.mode === 'light'
             ? lighten(theme.palette.text.primary, 0.2)
             : theme.palette.text.primary,
-      }
-    : {
+      },
+    },
+    {
+      props: ({ active }) => !active,
+      style: {
         color:
           theme.palette.mode === 'light'
             ? lighten(theme.palette.text.primary, 0.4)
             : darken(theme.palette.text.primary, 0.2),
-      }),
-  width: 40,
-  height: 40,
-  ...(active && {
-    '& .MuiTouchRipple-root': {
-      backgroundColor:
-        theme.palette.mode === 'light'
-          ? theme.palette.alphaDark100.main
-          : theme.palette.alphaLight300.main,
-      zIndex: -1,
+      },
     },
-  }),
-  '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? getContrastAlphaColor(theme, '4%')
-        : getContrastAlphaColor(theme, '32%'),
-  },
+    {
+      props: ({ active }) => active,
+      style: {
+        '& .MuiTouchRipple-root': {
+          backgroundColor: theme.palette.alphaLight300.main,
+          zIndex: -1,
+          ...theme.applyStyles('light', {
+            backgroundColor: theme.palette.alphaDark100.main,
+          }),
+        },
+      },
+    },
+  ],
 }));
 
 export const PaginationButton = styled(IconButton)(({ theme }) => ({
@@ -70,9 +80,9 @@ export const PaginationButton = styled(IconButton)(({ theme }) => ({
   width: 40,
   height: 40,
   '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'dark'
-        ? getContrastAlphaColor(theme, '12%')
-        : getContrastAlphaColor(theme, '4%'),
+    backgroundColor: getContrastAlphaColor(theme, '4%'),
+    ...theme.applyStyles('dark', {
+      backgroundColor: getContrastAlphaColor(theme, '12%'),
+    }),
   },
 }));

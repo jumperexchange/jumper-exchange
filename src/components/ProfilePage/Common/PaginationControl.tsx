@@ -1,7 +1,7 @@
-import React from 'react';
+import { ChevronLeft, FirstPage } from '@mui/icons-material';
 import type { SxProps, Theme } from '@mui/material';
 import { Box } from '@mui/material';
-import { FirstPage, ChevronLeft } from '@mui/icons-material';
+import React from 'react';
 
 interface PaginationControlProps {
   onClick: () => void;
@@ -24,12 +24,36 @@ const PaginationControl = ({
   <Box
     component="span"
     onClick={disabled ? undefined : onClick}
-    sx={{
-      cursor: disabled ? 'default' : 'pointer',
-      pointerEvents: 'auto',
-      opacity: disabled ? 0.5 : 1,
-      '&:hover': { opacity: disabled ? 0.5 : 0.7 },
-    }}
+    sx={[
+      {
+        pointerEvents: 'auto',
+      },
+      disabled
+        ? {
+            cursor: 'default',
+          }
+        : {
+            cursor: 'pointer',
+          },
+      disabled
+        ? {
+            opacity: 0.5,
+          }
+        : {
+            opacity: 1,
+          },
+      disabled
+        ? {
+            '&:hover': {
+              opacity: 0.5,
+            },
+          }
+        : {
+            '&:hover': {
+              opacity: 0.7,
+            },
+          },
+    ]}
   >
     {children}
   </Box>

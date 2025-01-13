@@ -49,12 +49,12 @@ const RefreshIcon: React.FC<
         title={t('navbar.walletMenu.totalBalanceRefresh')}
         placement="top"
         enterTouchDelay={0}
-        componentsProps={{
-          popper: { sx: { zIndex: 25000 } },
-        }}
         arrow
         sx={{
           zIndex: 25000,
+        }}
+        slotProps={{
+          popper: { sx: { zIndex: 25000 } },
         }}
       >
         <CircularBox>
@@ -64,10 +64,10 @@ const RefreshIcon: React.FC<
             value={100}
             sx={(theme) => ({
               position: 'absolute',
-              color:
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[300]
-                  : theme.palette.grey[800],
+              color: theme.palette.grey[800],
+              ...theme.applyStyles('light', {
+                color: theme.palette.grey[300],
+              }),
             })}
           />
           <CircularProgress
@@ -76,10 +76,10 @@ const RefreshIcon: React.FC<
             value={value}
             sx={(theme) => ({
               opacity: value === 100 && !isLoading ? 0.5 : 1,
-              color:
-                theme.palette.mode === 'light'
-                  ? theme.palette.primary.main
-                  : theme.palette.primary.light,
+              color: theme.palette.primary.light,
+              ...theme.applyStyles('light', {
+                color: theme.palette.primary.main,
+              }),
             })}
           />
         </CircularBox>
