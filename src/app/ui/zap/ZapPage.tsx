@@ -1,5 +1,5 @@
 'use client';
-import { ZapAction } from 'src/components/Zap/ZapAction/ZapAction';
+import { ZapPage } from 'src/components/Zap/ZapPage';
 import type { ExtendedQuest } from 'src/types/questDetails';
 
 interface ZapPageProps {
@@ -10,7 +10,7 @@ interface ZapPageProps {
 
 const ZapPage = ({ market }: ZapPageProps) => {
   return (
-    <ZapAction
+    <ZapPage
       market={market?.data?.[0]}
       detailInformation={market?.data?.[0]?.attributes?.CustomInformation}
     />

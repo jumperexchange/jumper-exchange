@@ -26,7 +26,7 @@ import { useMenuStore } from 'src/stores/menu';
 import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import type { QuestDetails } from 'src/types/questDetails';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
-import { BackButton } from '../BackButton/BackButton';
+import { BackButton } from './BackButton/BackButton';
 import {
   ZapActionProtocolCard,
   ZapActionProtocolDisclaimer,
@@ -35,8 +35,9 @@ import {
   ZapActionProtocolShareLink,
   ZapProtocolActionBox,
   ZapProtocolActionInfoBox,
-} from './ZapAction.style';
-import { ZapActionFaqAccordionHeader } from './ZapActionFaqAccordionHeader';
+  ZapTabsBox,
+} from './ZapInfo/ZapInfo.style';
+import { ZapActionFaqAccordionHeader } from './ZapInfo/ZapActionFaqAccordionHeader';
 import ZapWidgetPage from 'src/app/ui/widget/ZapWidgetPage';
 import { useZaps } from 'src/hooks/useZaps';
 import { useContractRead } from 'src/hooks/useReadContractData';
@@ -45,12 +46,12 @@ import { useMediaQuery } from '@mui/material';
 import { Theme } from '@mui/material';
 import { Breakpoint } from '@mui/material';
 
-interface ZapActionProps {
+interface ZapPageProps {
   market?: Quest;
   detailInformation?: CustomInformation;
 }
 
-export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
+export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
   const [tab, setTab] = useState(0);
   const { setSnackbarState } = useMenuStore((state) => state);
   const { data, isSuccess } = useZaps(detailInformation?.projectData);
@@ -176,18 +177,7 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
       <BackButton />
       <ZapProtocolActionBox>
         {isMobile && (
-          <Box
-            sx={{
-              marginTop: theme.spacing(2),
-              padding: theme.spacing(3, 1),
-              borderRadius: '24px',
-              backgroundColor: theme.palette.surface1.main,
-              boxShadow:
-                theme.palette.mode === 'light'
-                  ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-                  : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-            }}
-          >
+          <ZapTabsBox>
             <Tabs
               data={tabs}
               value={tab}
@@ -195,10 +185,8 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
               containerStyles={containerStyles}
               tabStyles={tabStyles}
             />
-            <Box sx={{ marginTop: theme.spacing(1.5), minWidth: '416px' }}>
-              {renderZapWidget()}
-            </Box>
-          </Box>
+            {renderZapWidget()}
+          </ZapTabsBox>
         )}
         <ZapProtocolActionInfoBox>
           <ZapActionProtocolIntro>
@@ -317,18 +305,7 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
           )}
         </ZapProtocolActionInfoBox>
         {!isMobile && (
-          <Box
-            sx={{
-              marginTop: theme.spacing(2),
-              padding: theme.spacing(3, 1),
-              borderRadius: '24px',
-              backgroundColor: theme.palette.surface1.main,
-              boxShadow:
-                theme.palette.mode === 'light'
-                  ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-                  : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-            }}
-          >
+          <ZapTabsBox>
             <Tabs
               data={tabs}
               value={tab}
@@ -336,19 +313,8 @@ export const ZapAction = ({ market, detailInformation }: ZapActionProps) => {
               containerStyles={containerStyles}
               tabStyles={tabStyles}
             />
-            <Box
-              sx={{
-                [theme.breakpoints.down('md' as Breakpoint)]: {
-                  minWidth: '316px',
-                },
-                [theme.breakpoints.up('md' as Breakpoint)]: {
-                  minWidth: '416px',
-                },
-              }}
-            >
-              {renderZapWidget()}
-            </Box>
-          </Box>
+            {renderZapWidget()}
+          </ZapTabsBox>
         )}
       </ZapProtocolActionBox>
     </Container>
