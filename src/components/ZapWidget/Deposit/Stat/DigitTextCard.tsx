@@ -65,7 +65,7 @@ const DigitTextCard = ({
               alt={`${digit} logo`}
               width={24}
               height={24}
-              style={{ borderRadius: '10px' }}
+              style={{ borderRadius: '50%' }}
             />
           ) : (
             <Skeleton

@@ -83,9 +83,9 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
           }}
         >
           <DigitTextCard
-            title={hasDeposited ? 'Deposited' : 'Deposit'}
+            title={hasDeposited ? 'Position' : 'Deposit'}
             tooltipText={hasDeposited ? DEPOSITED_TOOLTIP : DEPOSIT_TOOLTIP}
-            tokenImage={underlyingToken?.logoURI}
+            tokenImage={token?.logoURI}
             digit={
               hasDeposited
                 ? `${Number(analytics?.position).toLocaleString('en-US', {
