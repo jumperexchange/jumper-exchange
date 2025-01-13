@@ -5,14 +5,12 @@ import { alpha, styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const FeaturedArticleLink = styled(Link, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<BoxProps>(({ theme }) => ({
+export const FeaturedArticleLink = styled(Link)<BoxProps>(({ theme }) => ({
   position: 'relative',
   borderRadius: 32,
   backgroundColor: theme.palette.bgSecondary.main,
   transition: 'background-color 250ms',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   display: 'grid',
   gridTemplateRows: '1fr',
   textDecoration: 'none',

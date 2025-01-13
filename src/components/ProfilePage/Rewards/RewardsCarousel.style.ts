@@ -10,7 +10,7 @@ import {
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '24px',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   display: 'flex',
   width: '100%',
   justifyContent: 'start',

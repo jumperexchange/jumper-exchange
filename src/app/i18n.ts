@@ -1,4 +1,8 @@
-import { currencyFormatter, decimalFormatter } from '@/utils/formatNumbers';
+import {
+  currencyFormatter,
+  decimalFormatter,
+  percentFormatter,
+} from '@/utils/formatNumbers';
 import type { Resource, i18n } from 'i18next';
 import { createInstance } from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
@@ -40,6 +44,7 @@ export default async function initTranslations(
     preload: resources ? [] : i18nConfig.locales,
   });
 
+  i18nInstance.services.formatter?.addCached('percentExt', percentFormatter);
   i18nInstance.services.formatter?.addCached('decimalExt', decimalFormatter);
   i18nInstance.services.formatter?.addCached('currencyExt', currencyFormatter);
   i18nInstance.services.formatter?.addCached('dateExt', dateFormatter);

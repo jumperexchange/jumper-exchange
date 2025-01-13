@@ -210,6 +210,7 @@ export interface BlogArticleAttributes {
   faq_items: FaqData;
   publishedAt?: string;
   locale: string;
+  RedirectURL?: string;
   localizations: {
     data: any[];
   };
@@ -226,6 +227,7 @@ export interface Customization {
   footerBannerUrl?: string;
   typography?: string;
   hasBackgroundGradient?: boolean;
+  hasBlurredNavigation?: boolean;
 }
 
 type WidgetConfigProps = Omit<WidgetConfig, 'integrator'>;

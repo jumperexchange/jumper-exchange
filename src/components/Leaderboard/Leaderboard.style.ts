@@ -1,5 +1,5 @@
 import type { Breakpoint } from '@mui/material';
-import { alpha, Box, Divider, Stack, styled, Typography } from '@mui/material';
+import { alpha, Box, Divider, Stack, styled } from '@mui/material';
 
 export const LeaderboardContainer = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -7,7 +7,7 @@ export const LeaderboardContainer = styled(Box)(({ theme }) => ({
   borderRadius: '32px',
   width: '100%',
   padding: theme.spacing(4, 2),
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(4),
   },
@@ -40,7 +40,7 @@ export const LeaderboardEntryStack = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(0, 1),
   borderRadius: '24px',
   marginTop: theme.spacing(3),
-  boxShadow: theme.palette.shadowLight.main,
+  boxShadow: theme.shadows[2],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(0, 3),
   },
