@@ -15,25 +15,15 @@ import { alpha, keyframes, styled } from '@mui/material/styles';
 
 export const AccordionBox = styled(Box)(({ theme }) => ({
   margin: 'auto',
-  // marginTop: theme.spacing(4),
-  // padding: theme.spacing(1, 2),
   borderRadius: '8px',
   position: 'relative',
   maxWidth: theme.breakpoints.values.md,
   width: '100% !important',
-  // boxShadow:
-  //   theme.palette.mode === 'dark'
-  //     ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-  //     : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: theme.breakpoints.values.md,
     maxWidth: theme.breakpoints.values.md,
   },
-  ...theme.applyStyles('dark', {
-    boxShadow:
-      '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-  }),
 }));
 
 interface FaqShowMoreArrowProps {
