@@ -2,7 +2,6 @@
 import type { SxProps, Theme } from '@mui/material';
 import { Tooltip } from '@mui/material';
 import { Tab, TabsContainer } from './Tabs.style';
-
 export interface TabProps {
   label?: string;
   tooltip?: string;

@@ -1,12 +1,12 @@
 import {
   Avatar,
+  Box,
   Table,
   TableBody,
   TableCell,
   TableRow,
   Typography,
 } from '@mui/material';
-import { Box } from '@mui/system';
 import { InformationCardContainer } from './InformationCard.style';
 
 interface Info {

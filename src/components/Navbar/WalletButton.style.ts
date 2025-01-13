@@ -37,7 +37,7 @@ export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
+export const ConnectButtonWrapper = styled(ButtonPrimary)(({ theme }) => ({
   padding: theme.spacing(3),
   textWrap: 'nowrap',
 }));

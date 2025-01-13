@@ -13,7 +13,6 @@ import {
   getPartnerTheme,
   getWidgetTheme,
 } from './utils';
-import { PartnerTheme, PartnerThemesAttributes } from '@/types/strapi';
 
 /**
  * App's theme provider component.

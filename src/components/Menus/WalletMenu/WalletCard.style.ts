@@ -16,7 +16,6 @@ export const WalletAvatar = styled(Avatar)(() => ({
     width: '100%',
     objectFit: 'contain',
   },
-  // mask: avatarMask32,
 }));
 
 export const WalletCardContainer = styled(Container)(({ theme }) => ({

@@ -1,6 +1,6 @@
 import type { Token } from '@lifi/widget';
 import { NoTokenImageBox } from './Portfolio.styles';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 
 function TokenImage({ token }: { token: Pick<Token, 'logoURI' | 'name'> }) {
   if (!token?.logoURI) {

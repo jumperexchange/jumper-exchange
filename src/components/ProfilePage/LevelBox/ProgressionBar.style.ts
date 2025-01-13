@@ -1,5 +1,5 @@
 import type { BoxProps } from '@mui/material';
-import { Box, styled } from '@mui/system';
+import { Box, styled } from '@mui/material';
 import type { LevelData } from 'src/types/loyaltyPass';
 
 export const LevelIndicatorWrapper = styled(Box)(({ theme }) => ({
@@ -77,13 +77,17 @@ export interface ProgressionChartScoreProps
   ongoingValue?: number;
   levelData?: LevelData;
   calcWidth?: number;
+  chartCol?: string;
 }
 
 export const ProgressionChartScore = styled(Box, {
   shouldForwardProp: (prop) =>
-    prop !== 'ongoingValue' && prop !== 'levelData' && prop !== 'calcWidth',
+    prop !== 'ongoingValue' &&
+    prop !== 'levelData' &&
+    prop !== 'calcWidth' &&
+    prop !== 'chartCol',
 })<ProgressionChartScoreProps>(
-  ({ theme, ongoingValue, levelData, calcWidth }) => ({
+  ({ theme, ongoingValue, levelData, calcWidth, chartCol }) => ({
     height: '100%',
     width:
       ongoingValue && levelData && ongoingValue > levelData?.minPoints
@@ -103,13 +107,19 @@ export const ProgressionChartScore = styled(Box, {
   }),
 );
 
-export const ProgressionChartBg = styled(Box)(({ theme }) => ({
+export interface ProgressionChartBgProps extends BoxProps {
+  chartBg?: string;
+}
+
+export const ProgressionChartBg = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'chartBg',
+})<ProgressionChartBgProps>(({ theme, chartBg }) => ({
   position: 'absolute',
   width: '100%',
   height: '100%',
   borderRadius: '12px',
-  backgroundColor: theme.palette.alphaLight200.main,
+  backgroundColor: chartBg || theme.palette.alphaLight200.main,
   ...theme.applyStyles('light', {
-    backgroundColor: theme.palette.alphaDark200.main,
+    backgroundColor: chartBg || theme.palette.alphaDark200.main,
   }),
 }));
