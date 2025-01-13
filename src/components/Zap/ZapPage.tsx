@@ -186,7 +186,9 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
               containerStyles={containerStyles}
               tabStyles={tabStyles}
             />
-            {renderZapWidget()}
+            <Box sx={{ marginTop: theme.spacing(1.5), minWidth: '416px' }}>
+              {renderZapWidget()}
+            </Box>
           </ZapTabsBox>
         )}
 
@@ -203,7 +205,18 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
               containerStyles={containerStyles}
               tabStyles={tabStyles}
             />
-            {renderZapWidget()}
+            <Box
+              sx={{
+                [theme.breakpoints.down('md' as Breakpoint)]: {
+                  minWidth: '316px',
+                },
+                [theme.breakpoints.up('md' as Breakpoint)]: {
+                  minWidth: '416px',
+                },
+              }}
+            >
+              {renderZapWidget()}
+            </Box>
           </ZapTabsBox>
         )}
       </ZapProtocolActionBox>
