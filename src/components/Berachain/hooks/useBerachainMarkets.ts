@@ -10,7 +10,7 @@ export interface UseBerachainQuestsProps {
   url: string;
   isSuccess: boolean;
   isLoading: boolean;
-  findFromStrapiByUid: (key: string) => Quest | undefined;
+  findFromStrapiByUid: (key: string) => Quest | null;
 }
 
 type T = Record<string, string[]>;
@@ -80,18 +80,14 @@ export const useBerachainMarkets = (): UseBerachainQuestsProps => {
   });
 
   function findFromStrapiByUid(uid: string | null) {
-    const found = data?.data.find((d) => d.attributes.UID === uid);
+    const found = data?.data.find((d) => d.attributes?.UID === uid);
 
     if (found) {
       return found;
     }
 
-    // if (!found) {
-    //   return undefined;
-    // }
-
     // TODO: return default berachain
-    // return data?.data.find((d) => d.attributes.UID === 'berachain-default')!;
+    return data?.data.find((d) => d.attributes?.UID === 'berachain-default')!;
   }
 
   return {

@@ -14,8 +14,8 @@ function getImageUrl(
   const imageDark = theme[`${imageType}Dark`];
   const imageUrl =
     defaultMode === 'light'
-      ? imageLight?.data?.attributes.url
-      : imageDark?.data?.attributes.url;
+      ? imageLight?.data?.attributes?.url
+      : imageDark?.data?.attributes?.url;
 
   return imageUrl ? new URL(imageUrl, baseStrapiUrl) : null;
 }

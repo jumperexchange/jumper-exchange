@@ -96,12 +96,12 @@ export interface QuestChains {
   logo: string;
 }
 
-interface CustomInformation {
+export interface CustomInformation {
   chains: QuestChains[];
   [key: string]: any;
 }
 
-type QuestAttributes<T = never> = {
+export type QuestAttributes<T = never> = {
   UID: string;
   Title: string;
   Description?: string;
