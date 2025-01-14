@@ -97,3 +97,17 @@ export const ZapWidgetSizeBox = styled(Box)(({ theme }) => ({
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
 }));
+
+export const ZapStyledAccordionItem = styled('div')(({ theme }) => ({
+  padding: '0px 8px',
+  backgroundColor: 'transparent',
+  '.MuiAccordionSummary-root': {
+    padding: 0,
+  },
+  '.accordion-items': {
+    gap: '4px',
+  },
+  '.MuiAccordionDetails-root': {
+    padding: '20px 16px 16px',
+  },
+}));

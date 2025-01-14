@@ -19,7 +19,11 @@ import TokenImage from '@/components/Portfolio/TokenImage';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useConfig, useSwitchChain } from 'wagmi';
 import { useMemo, useState } from 'react';
-import { MaxButton } from './WidgetLikeField.style';
+import {
+  MaxButton,
+  WidgetFormHelperText,
+  WidgetLikeInput,
+} from './WidgetLikeField.style';
 import { useContractWrite } from 'src/hooks/useWriteContractData';
 import { parseUnits } from 'ethers';
 import { useContractRead } from 'src/hooks/useReadContractData';
@@ -28,8 +32,10 @@ import { ProjectData } from 'src/components/ZapWidget/ZapWidget';
 import { ConnectButton } from 'src/components/ConnectButton';
 import { switchChain } from '@wagmi/core';
 import { useAccount } from '@lifi/wallet-management';
-import { TxConfirmation } from 'src/components/ZapWidget/TxConfirmation';
+import { TxConfirmation } from 'src/components/ZapWidget/Confirmation/TxConfirmation';
 import { Breakpoint } from '@mui/material';
+import WidgetFieldStartAdornment from './WidgetStartAdornment';
+import WidgetFieldEndAdornment from './WidgetEndAdornment';
 
 interface Image {
   url: string;
@@ -163,7 +169,6 @@ function WidgetLikeField({
         borderRadius={1}
         sx={{
           backgroundColor: theme.palette.surface1.main,
-          paddgin: theme.spacing(1),
         }}
       >
         <Box
@@ -184,7 +189,7 @@ function WidgetLikeField({
             variant="standard"
             aria-autocomplete="none"
           >
-            <Input
+            <WidgetLikeInput
               autoComplete="off"
               id="component"
               value={value}
@@ -193,145 +198,135 @@ function WidgetLikeField({
               disabled={isLoading}
               aria-describedby="component-text"
               disableUnderline={true}
-              sx={{
-                borderRadius: theme.spacing(2),
-                padding: '16px',
-                backgroundColor: theme.palette.surface2.main,
-                boxShadow:
-                  theme.palette.mode === 'light'
-                    ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-                    : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-                maxWidth: 416,
-                '& input': {
-                  fontSize: '24px',
-                  fontWeight: 700,
-                  lineHeight: '36px',
-                  marginLeft: '8px',
-                },
-                '& input::placeholder': {
-                  fontSize: '24px',
-                  fontWeight: 700,
-                  lineHeight: '36px',
-                  marginLeft: '8px',
-                },
-                '& .MuiInput-underline:before': { borderBottom: 'none' },
-                '& .MuiInput-underline:after': { borderBottom: 'none' },
-                '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-                  borderBottom: 'none',
-                },
-              }}
+              // sx={{
+              //   borderRadius: theme.spacing(2),
+              //   padding: '16px',
+              //   backgroundColor: theme.palette.surface2.main,
+              //   boxShadow:
+              //     theme.palette.mode === 'light'
+              //       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+              //       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+              //   maxWidth: 416,
+              //   '& input': {
+              //     fontSize: '24px',
+              //     fontWeight: 700,
+              //     lineHeight: '36px',
+              //     marginLeft: '8px',
+              //   },
+              //   '& input::placeholder': {
+              //     fontSize: '24px',
+              //     fontWeight: 700,
+              //     lineHeight: '36px',
+              //     marginLeft: '8px',
+              //   },
+              //   '& .MuiInput-underline:before': { borderBottom: 'none' },
+              //   '& .MuiInput-underline:after': { borderBottom: 'none' },
+              //   '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+              //     borderBottom: 'none',
+              //   },
+              // }}
               startAdornment={
                 image && (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'flex-start',
-                      width: 'auto',
-                    }}
-                  >
-                    <>
-                      <WalletCardBadge
-                        overlap="circular"
-                        className="badge"
-                        sx={{ maringRight: '8px' }}
-                        anchorOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'right',
-                        }}
-                        badgeContent={
-                          image.badge && (
-                            <MuiAvatar
-                              alt={image.badge.name}
-                              sx={(theme: any) => ({
-                                width: '18px',
-                                height: '18px',
-                                border: `2px solid ${theme.palette.surface2.main}`,
-                              })}
-                            >
-                              {image.badge.name && (
-                                <TokenImage
-                                  token={{
-                                    name: image.badge.name,
-                                    logoURI: image.badge.url,
-                                  }}
-                                />
-                              )}
-                            </MuiAvatar>
-                          )
-                        }
-                      >
-                        <WalletAvatar>
-                          {image.name && (
-                            <TokenImage
-                              token={{
-                                name: image.name,
-                                logoURI: image.url,
-                              }}
-                            />
-                          )}
-                        </WalletAvatar>
-                      </WalletCardBadge>
-                    </>
-                  </Box>
+                  <WidgetFieldStartAdornment image={image} />
+                  // <Box
+                  //   sx={{
+                  //     display: 'flex',
+                  //     flexDirection: 'column',
+                  //     justifyContent: 'flex-start',
+                  //     width: 'auto',
+                  //   }}
+                  // >
+                  //   <>
+                  //     <WalletCardBadge
+                  //       overlap="circular"
+                  //       className="badge"
+                  //       sx={{ maringRight: '8px' }}
+                  //       anchorOrigin={{
+                  //         vertical: 'bottom',
+                  //         horizontal: 'right',
+                  //       }}
+                  //       badgeContent={
+                  //         image.badge && (
+                  //           <MuiAvatar
+                  //             alt={image.badge.name}
+                  //             sx={(theme: any) => ({
+                  //               width: '18px',
+                  //               height: '18px',
+                  //               border: `2px solid ${theme.palette.surface2.main}`,
+                  //             })}
+                  //           >
+                  //             {image.badge.name && (
+                  //               <TokenImage
+                  //                 token={{
+                  //                   name: image.badge.name,
+                  //                   logoURI: image.badge.url,
+                  //                 }}
+                  //               />
+                  //             )}
+                  //           </MuiAvatar>
+                  //         )
+                  //       }
+                  //     >
+                  //       <WalletAvatar>
+                  //         {image.name && (
+                  //           <TokenImage
+                  //             token={{
+                  //               name: image.name,
+                  //               logoURI: image.url,
+                  //             }}
+                  //           />
+                  //         )}
+                  //       </WalletAvatar>
+                  //     </WalletCardBadge>
+                  //   </>
+                  // </Box>
                 )
               }
               endAdornment={
                 !!account?.isConnected &&
                 !!balance &&
                 parseFloat(balance) > 0 && (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }}
-                  >
-                    <MaxButton
-                      sx={{ p: '5px 10px', marginTop: '16px' }}
-                      aria-label="menu"
-                      mainColor={overrideStyle?.mainColor}
-                      onClick={() => setValue(balance ?? '0')}
-                    >
-                      max
-                    </MaxButton>
-                    <Box sx={{ marginTop: '4px' }}>
-                      <Typography
-                        variant="bodyXSmall"
-                        color="textSecondary"
-                        component="span"
-                      >
-                        /{' '}
-                        {Intl.NumberFormat('en-US', {
-                          notation: 'compact',
-                          useGrouping: true,
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits:
-                            parseFloat(balance) > 1 ? 1 : 4,
-                        }).format(parseFloat(balance))}
-                      </Typography>
-                    </Box>
-                  </Box>
+                  <WidgetFieldEndAdornment
+                    balance={balance}
+                    mainColor={overrideStyle?.mainColor}
+                    setValue={setValue}
+                  />
+                  // <Box
+                  //   sx={{
+                  //     display: 'flex',
+                  //     flexDirection: 'column',
+                  //   }}
+                  // >
+                  //   <MaxButton
+                  //     sx={{ p: '5px 10px', marginTop: '16px' }}
+                  //     aria-label="menu"
+                  //     mainColor={overrideStyle?.mainColor}
+                  //     onClick={() => setValue(balance ?? '0')}
+                  //   >
+                  //     max
+                  //   </MaxButton>
+                  //   <Box sx={{ marginTop: '4px' }}>
+                  //     <Typography
+                  //       variant="bodyXSmall"
+                  //       color="textSecondary"
+                  //       component="span"
+                  //     >
+                  //       /{' '}
+                  //       {Intl.NumberFormat('en-US', {
+                  //         notation: 'compact',
+                  //         useGrouping: true,
+                  //         minimumFractionDigits: 0,
+                  //         maximumFractionDigits:
+                  //           parseFloat(balance) > 1 ? 1 : 4,
+                  //       }).format(parseFloat(balance))}
+                  //     </Typography>
+                  //   </Box>
+                  // </Box>
                 )
               }
             />
             {hasErrorText && (
-              <FormHelperText
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginBottom: 1,
-                  color: 'red',
-                  [theme.breakpoints.down('md' as Breakpoint)]: {
-                    maxWidth: 316,
-                  },
-                  [theme.breakpoints.up('md' as Breakpoint)]: {
-                    maxWidth: 416,
-                  },
-                }}
-              >
-                {hasErrorText}
-              </FormHelperText>
+              <WidgetFormHelperText>{hasErrorText}</WidgetFormHelperText>
             )}
           </FormControl>
 

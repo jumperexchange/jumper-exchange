@@ -2,7 +2,15 @@ import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
 import type { Quest } from 'src/types/loyaltyPass';
 import type { StrapiResponse } from 'src/types/strapi';
 
-export async function getQuestBy(key: string, value: string) {
+interface getQuestByRes {
+  data: Quest;
+  url: string;
+}
+
+export async function getQuestBy(
+  key: string,
+  value: string,
+): Promise<getQuestByRes> {
   const urlParams = new QuestStrapiApi().filterBy(key, value);
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
@@ -19,7 +27,7 @@ export async function getQuestBy(key: string, value: string) {
     throw new Error('Failed to fetch data');
   }
 
-  const data: StrapiResponse<Quest> = await res.json(); // Use the defined type here
+  const data = await res.json(); // Use the defined type here
 
   return { data, url: apiBaseUrl }; // Return a plain object
 }

@@ -19,8 +19,7 @@ export async function generateMetadata({
       throw new Error();
     }
 
-    const questData = (quest.data as any as Quest)
-      .attributes as QuestAttributes;
+    const questData = quest.data.attributes;
 
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,

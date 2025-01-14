@@ -5,10 +5,11 @@ import {
 } from '@lifi/widget';
 import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
 import { useEffect } from 'react';
-import WidgetLikeField from 'src/components/Zap/WidgetLikeField/WidgetLikeField';
 import { formatUnits } from 'viem';
 import { ProjectData } from '../ZapWidget';
 import { Breakpoint, useTheme } from '@mui/material';
+import { WithdrawWidgetBox } from './WithdrawWidget.style';
+import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
 
 export interface WithdrawWidgetProps {
   token: TokenAmount;
@@ -27,21 +28,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
   const theme = useTheme();
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-        [theme.breakpoints.down('md' as Breakpoint)]: {
-          minWidth: 316,
-          maxWidth: 316,
-        },
-        [theme.breakpoints.up('md' as Breakpoint)]: {
-          minWidth: 416,
-          maxWidth: 416,
-        },
-      }}
-    >
+    <WithdrawWidgetBox>
       <WidgetLikeField
         contractCalls={[
           {
@@ -71,6 +58,6 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
         projectData={projectData}
         writeDecimals={lpTokenDecimals}
       />
-    </Box>
+    </WithdrawWidgetBox>
   );
 };
