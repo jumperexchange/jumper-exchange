@@ -133,7 +133,7 @@ export const BerachainMarketCard = ({
                   },
                 })}
               >
-                {`${title} ${roycoData?.input_token_data?.symbol} Market`}
+                {title}
               </Typography>
             ) : (
               <Skeleton
