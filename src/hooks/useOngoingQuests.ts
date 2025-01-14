@@ -9,6 +9,7 @@ export interface UseQuestsProps {
 }
 
 const STRAPI_CONTENT_TYPE = 'quests';
+
 export const useOngoingQuests = (label?: string): UseQuestsProps => {
   const apiBaseUrl =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'

@@ -17,3 +17,19 @@ export const CampaignBox = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
   },
 }));
+
+export const CampaignInfoVerticalBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+}));
+
+export const CampaignTagBox = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.bgQuaternary.main,
+  display: 'flex',
+  padding: '4px 8px',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: theme.spacing(24),
+  width: '33%',
+}));

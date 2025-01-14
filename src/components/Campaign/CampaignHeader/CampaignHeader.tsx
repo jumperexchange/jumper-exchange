@@ -1,47 +1,106 @@
-import type { Theme } from '@mui/material';
-import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
-import Link from 'next/link';
-import { useTranslation } from 'react-i18next';
+import LanguageIcon from '@mui/icons-material/Language';
+import XIcon from '@mui/icons-material/X';
 import {
-  BerachainMarketHeaderBox,
-  BerachainMarketHeaderSubtitle,
-  BerachainMarketHeaderTitle,
-  BerachainMarketInfos,
-} from 'src/components/Berachain/components/BerachainMarkets/BerachainMarketsHeader.style';
+  CampaignDigitInfoBox,
+  CampaignHeaderBoxBackground,
+  CampaignTitle,
+  CardInfoTypogragphy,
+  ColoredProtocolShareButton,
+  InformationShareLink,
+  VerticalCenterBox,
+} from './CampaignHeader.style';
 
-export const CampaignHeader = () => {
+export const CampaignHeader = ({
+  bannerImage,
+  tokenImage,
+  websiteLink,
+  Xlink,
+}: {
+  bannerImage: string;
+  tokenImage: string;
+  websiteLink?: string;
+  Xlink?: string;
+}) => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
-  const { t } = useTranslation();
   //   const { data } = useEnrichedRoycoStats();
 
   return (
-    <BerachainMarketHeaderBox>
-      <BerachainMarketInfos>
-        <BerachainMarketHeaderTitle>
-          <Typography variant="urbanistTitleMedium">
-            Pre-deposit liquidity into {!isDesktop && ' Berachain'}
-          </Typography>
-          {isDesktop && (
-            <Image
-              src={'/berachain/berachain-brand-orange-logo.png'}
-              alt={'Berachain brand logo orange'}
-              width={203}
-              height={40}
-            />
-          )}
-        </BerachainMarketHeaderTitle>
-        <BerachainMarketHeaderSubtitle>
-          Browse Boyco markets, deposit tokens and earn rewards when Berachain
-          launches.
-        </BerachainMarketHeaderSubtitle>
-        {/* <Link href="/berachain">
-          <BerachainMarketHeaderCTA>
-            <Typography variant="bodySmallStrong">How does it work?</Typography>
-          </BerachainMarketHeaderCTA>
-        </Link> */}
-      </BerachainMarketInfos>
-    </BerachainMarketHeaderBox>
+    <CampaignHeaderBoxBackground
+      sx={{
+        backgroundImage: `url(${bannerImage})`,
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '100%',
+        }}
+      >
+        <Box display="flex" flexDirection="row">
+          <Image
+            src={tokenImage}
+            alt={'top banner'}
+            width={132}
+            height={132}
+            style={{ objectFit: 'contain', borderRadius: '50%' }}
+          />
+          <VerticalCenterBox>
+            <CampaignTitle>Lisk your Limits</CampaignTitle>
+            <Box display="flex" gap="8px">
+              {Xlink && (
+                <InformationShareLink
+                  href={Xlink}
+                  style={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  <ColoredProtocolShareButton>
+                    <XIcon
+                      sx={{
+                        width: '16px',
+                        height: '16px',
+                        color: theme.palette.white.main,
+                      }}
+                    />
+                  </ColoredProtocolShareButton>
+                </InformationShareLink>
+              )}
+
+              {websiteLink && (
+                <InformationShareLink
+                  href={websiteLink}
+                  style={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  <ColoredProtocolShareButton>
+                    <LanguageIcon
+                      sx={{
+                        width: '16px',
+                        height: '16px',
+                        color: theme.palette.white.main,
+                      }}
+                    />
+                  </ColoredProtocolShareButton>
+                </InformationShareLink>
+              )}
+            </Box>
+          </VerticalCenterBox>
+        </Box>
+
+        <VerticalCenterBox>
+          <CampaignDigitInfoBox>
+            <CardInfoTypogragphy fontSize={14}>
+              Total Rewards
+            </CardInfoTypogragphy>
+            <CardInfoTypogragphy fontSize={32}>{'$300k'}</CardInfoTypogragphy>
+          </CampaignDigitInfoBox>
+        </VerticalCenterBox>
+      </Box>
+    </CampaignHeaderBoxBackground>
   );
 };

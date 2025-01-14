@@ -49,7 +49,16 @@ export const CampaignPage = ({
   return (
     <PageContainer className="profile-page">
       <BackButton path={path} title={activeCampaign} />
-      <CampaignHeader />
+      <CampaignHeader
+        bannerImage={
+          'https://strapi.jumper.exchange/uploads/topbanner_a079924a00.jpg'
+        }
+        tokenImage={
+          'https://strapi.jumper.exchange/uploads/lisk_chain_a996787b58.png'
+        }
+        websiteLink={'https://lisk.com/'}
+        Xlink={''}
+      />
       <QuestsOverview pastCampaigns={[]} label={label} />
     </PageContainer>
   );
