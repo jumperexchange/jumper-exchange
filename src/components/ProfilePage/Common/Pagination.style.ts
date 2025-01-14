@@ -45,7 +45,7 @@ export const PaginationButton = styled(Button, {
   padding: theme.spacing(1),
   borderRadius: '16px',
   ...(activePage && {
-    boxShadow: theme.palette.shadowLight.main,
+    boxShadow: theme.shadows[2],
     '&:hover': {
       backgroundColor: theme.palette.white.main,
     },

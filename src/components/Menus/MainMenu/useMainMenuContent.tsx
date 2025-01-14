@@ -8,11 +8,11 @@ import {
 } from '@/const/trackingKeys';
 import {
   DISCORD_URL,
+  JUMPER_BOYCO_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
   X_URL,
-  JUMPER_WRAPPED_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
@@ -21,6 +21,7 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
+import PetsIcon from '@mui/icons-material/Pets';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
@@ -30,6 +31,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
+import { BoycoIcon } from 'src/components/illustrations/BoycoIcon';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -144,6 +146,22 @@ export const useMainMenuContent = () => {
         });
       },
     },
+    // {
+    //   label: 'Jump into Boyco',
+    //   prefixIcon: <BoycoIcon />,
+    //   showMoreIcon: false,
+    //   link: { url: JUMPER_BOYCO_PATH },
+    //   onClick: () => {
+    //     trackEvent({
+    //       category: TrackingCategory.Menu,
+    //       label: 'click-jumper-pass-berachain',
+    //       action: TrackingAction.ClickJumperCampaignLink,
+    //       data: { [TrackingEventParameter.Menu]: 'berachain' },
+    //     });
+    //     closeAllMenus();
+    //     router.push(JUMPER_BOYCO_PATH);
+    //   },
+    // },
     {
       label: t('navbar.navbarMenu.profile'),
       prefixIcon: <AccountCircleIcon />,
@@ -158,21 +176,6 @@ export const useMainMenuContent = () => {
         });
         closeAllMenus();
         router.push(JUMPER_LOYALTY_PATH);
-      },
-    },
-    {
-      label: 'Jumper Wrapped',
-      prefixIcon: <ViewCarouselIcon />,
-      showMoreIcon: false,
-      link: { url: JUMPER_WRAPPED_URL, external: true },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-jumper-learn-link',
-          action: TrackingAction.ClickJumperLearnLink,
-          data: { [TrackingEventParameter.Menu]: 'jumper_wrapped' },
-        });
-        closeAllMenus();
       },
     },
     {

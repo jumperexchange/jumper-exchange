@@ -25,7 +25,7 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   minWidth: 288,
   textAlign: 'center',
   transition: 'background-color 250ms',
-  boxShadow: theme.palette.shadowLight.main,
+  boxShadow: theme.shadows[2],
 }));
 
 export const QuestCardImage = styled(Image)(({ theme }) => ({

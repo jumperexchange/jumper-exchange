@@ -27,6 +27,7 @@ const category = [
   'Derivatives',
   'Yield',
 ];
+
 interface AvailableMissionsListProps {
   quests?: Quest[];
   pastCampaigns?: string[];

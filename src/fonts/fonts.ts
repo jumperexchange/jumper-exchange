@@ -1,4 +1,10 @@
-import { Inter, Manrope, Sora, Urbanist } from 'next/font/google';
+import {
+  IBM_Plex_Sans,
+  Inter,
+  Manrope,
+  Sora,
+  Urbanist,
+} from 'next/font/google';
 import localFont from 'next/font/local';
 
 export const inter = Inter({
@@ -23,6 +29,13 @@ export const sora = Sora({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-sora',
+});
+
+export const ibmPlexSans = IBM_Plex_Sans({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-ibm-plex-sans',
 });
 
 export const sequel65 = localFont({

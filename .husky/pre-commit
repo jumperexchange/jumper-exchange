@@ -3,4 +3,4 @@
 
 echo "Executing pre-commit scripts"
 
-yarn pre-commit
+pnpm pre-commit
