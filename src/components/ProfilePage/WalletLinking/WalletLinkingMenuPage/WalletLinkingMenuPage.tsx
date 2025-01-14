@@ -7,9 +7,9 @@ import { getContrastAlphaColor } from 'src/utils/colors';
 import {
   WalletLinkingContent,
   WalletLinkingHeader,
-} from './WalletLinkingMenu.style';
+} from './WalletLinkingMenuPage.style';
 
-export const WalletLinkingMenu = ({
+export const WalletLinkingMenuPage = ({
   title,
   buttonLabel,
   setOpen,

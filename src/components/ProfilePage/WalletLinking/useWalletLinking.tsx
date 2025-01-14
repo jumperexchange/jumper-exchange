@@ -1,16 +1,28 @@
+import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import CheckIcon from '@mui/icons-material/Check';
-import { Box, Typography } from '@mui/material';
-import { useMemo, type Dispatch, type SetStateAction } from 'react';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import { Box, lighten, Typography } from '@mui/material';
+import { useMemo, useState, type Dispatch, type SetStateAction } from 'react';
 import { Warning } from 'src/components/illustrations/Warning';
-import { useWalletSignature } from 'src/hooks/useWalletSignature';
+import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import { useSignEVM, useSignSolana } from 'src/hooks/useWalletSignature';
+import { useWalletVerification } from 'src/hooks/useWalletVerification';
 import { WalletCardBox } from '../WalletCardBox/WalletCardBox';
 import WalletLinkingStepper from './WalletLinkingStepper';
-
 interface UseWalletLinkingProps {
   menuIndex: number;
   setMenuIndex: Dispatch<SetStateAction<number>>;
   setOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+function sumArray(arr: (number | undefined)[]): number {
+  return arr.reduce((sum: number, num: number | undefined) => {
+    if (typeof num === 'number' && !Number.isNaN(num)) {
+      return sum + num;
+    }
+    return sum;
+  }, 0);
 }
 
 export const useWalletLinking = ({
@@ -19,38 +31,44 @@ export const useWalletLinking = ({
   setOpen,
 }: UseWalletLinkingProps) => {
   const { accounts } = useAccount();
-  const {
-    loading,
-    signEVM,
-    signSolana,
-    verifySignatures,
-    verificationResult,
-    evmSignature,
-    solanaSignature,
-  } = useWalletSignature();
+  const { signEVM, evmMessage, evmSignature } = useSignEVM();
+  const { signSolana, solanaPublicKey, solanaSignature } = useSignSolana();
+  const [startWalletsVerification, setStartWalletsVerification] =
+    useState(false);
 
-  // console.log({
-  //   evmSignature,
-  //   solanaSignature,
-  //   loading,
-  //   signEVM,
-  //   signSolana,
-  //   verifySignatures,
-  //   verificationResult,
-  // });
+  const evmWallet = accounts.find(
+    (account) => account.chainType === ChainType.EVM,
+  );
+  const svmWallet = accounts.find(
+    (account) => account.chainType === ChainType.SVM,
+  );
+  const { points: evmPoints } = useLoyaltyPass(evmWallet?.address);
+  const { points: svmPoints } = useLoyaltyPass(svmWallet?.address);
+
+  const combinedPoints = useMemo(() => {
+    return sumArray([evmPoints, !!svmPoints ? svmPoints * 0.3 : undefined]);
+  }, [evmPoints, svmPoints]);
+
+  const { data: verificationData } = useWalletVerification({
+    evmAddress: evmWallet?.address,
+    evmMessage,
+    evmSignature,
+    solanaPublicKey,
+    solanaSignature: solanaSignature,
+    queryKey: `${evmWallet?.address}-${solanaPublicKey}`,
+    enabled: startWalletsVerification && !!evmSignature && !!solanaSignature,
+  });
 
   const data = useMemo(() => {
-    const evmHandler = () =>
-      evmSignature === '' ? signEVM() : setMenuIndex((state) => state + 1);
+    const evmHandler = () => {
+      !evmSignature ? signEVM() : setMenuIndex((state) => state + 1);
+    };
+    const solanaHandler = () => {
+      !solanaSignature ? signSolana() : setMenuIndex((state) => state + 1);
+    };
 
-    const solanaHandler = () =>
-      solanaSignature === ''
-        ? signSolana()
-        : setMenuIndex((state) => state + 1);
-
-    const verifyHandler = () => {
-      verifySignatures();
-      setMenuIndex((state) => state + 1);
+    const verifyEvmAndSolHandler = () => {
+      setStartWalletsVerification(true);
     };
 
     return [
@@ -74,7 +92,9 @@ export const useWalletLinking = ({
             )}
           </>
         ),
-        text: 'You’ll have a combined 1,259 XP. It is calculated at 100% XP from EVM and 30% XP from Solana of linked wallets to maintain fairness for early adopters.',
+        text: `You’ll have a ${
+          combinedPoints
+        } combined XP. It is calculated at 100% XP from EVM and 30% XP from Solana of linked wallets to maintain fairness for early adopters.`,
       },
       {
         buttonLabel: 'Agree and continue',
@@ -99,13 +119,14 @@ export const useWalletLinking = ({
       },
       {
         title: 'Sign with wallets',
-        buttonLabel: evmSignature === '' ? 'Sign with EVM' : 'Continue',
-        completed: evmSignature !== '',
+        buttonLabel: !evmSignature ? 'Sign with EVM' : 'Continue',
+        completed: !!evmSignature,
         content: (
           <WalletLinkingStepper
             step={1}
             maxSteps={3}
-            completed={evmSignature !== ''}
+            evmCompleted={!!evmSignature} //{evmSignature !== ''}
+            solanaCompleted={!!solanaSignature}
             onClick={evmHandler}
           />
         ),
@@ -115,13 +136,15 @@ export const useWalletLinking = ({
       },
       {
         title: 'Sign with wallets',
-        buttonLabel: solanaSignature === '' ? 'Sign with Solana' : 'Continue',
-        completed: false,
+        buttonLabel: !solanaSignature ? 'Verify wallet SVM' : 'Continue',
+        completed: !!solanaSignature,
         content: (
           <WalletLinkingStepper
             step={2}
             maxSteps={3}
-            completed={solanaSignature !== ''}
+            evmCompleted={!!evmSignature}
+            solanaCompleted={!!solanaSignature}
+            evmAndSvmCompleted={true}
             onClick={solanaHandler}
           />
         ),
@@ -132,26 +155,41 @@ export const useWalletLinking = ({
       {
         // todo: finish this step -->
         title: 'Sign with wallets',
-        buttonLabel:
-          evmSignature !== '' && solanaSignature !== ''
-            ? 'Verify signatures'
-            : 'Continue',
-        completed: evmSignature !== '' && solanaSignature !== '', // todo: finish this step to use verifySignatures() response
+        buttonLabel: !verificationData
+          ? 'Verify wallet signatures'
+          : 'Continue',
+        // evmSignature !== '' && solanaSignature !== ''
+        //   ? 'Verify signatures'
+        //   : 'Continue',
+        completed: false, //evmSignature !== '' && solanaSignature !== '', // todo: finish this step to use verifySignatures() response
         content: (
           <WalletLinkingStepper
             step={3}
             maxSteps={3}
-            completed={evmSignature !== '' && solanaSignature !== ''}
-            onClick={verifyHandler}
+            startWalletsVerification={startWalletsVerification}
+            evmCompleted={verificationData?.data.evm}
+            solanaCompleted={verificationData?.data.svm}
+            evmAndSvmCompleted={
+              verificationData?.data.evm && verificationData?.data.svm
+            }
+            onClick={verifyEvmAndSolHandler}
           />
         ),
         onClick: () => {
-          verifyHandler();
+          !startWalletsVerification
+            ? verifyEvmAndSolHandler()
+            : setMenuIndex((state) => state + 1);
         },
       },
       {
         buttonLabel: 'Done',
-        text: 'You now have a combined 1,259 XP. You can unlink wallets anytime to separate XP.',
+        text:
+          verificationData?.data.evm &&
+          verificationData?.data.svm &&
+          evmPoints &&
+          !!svmPoints
+            ? `You now have a combined ${combinedPoints} XP. You can unlink wallets anytime to separate XP.`
+            : 'There was an error verifying your wallet signatures.',
         content: (
           <Box
             sx={{
@@ -163,22 +201,37 @@ export const useWalletLinking = ({
             }}
           >
             <Box
-              sx={{
-                backgroundColor: '#D6FFE7',
+              sx={(theme) => ({
+                backgroundColor:
+                  verificationData?.data.evm && verificationData?.data.svm
+                    ? '#D6FFE7'
+                    : lighten(theme.palette.error.main, 0.8),
                 width: '96px',
                 height: '96px',
                 borderRadius: '48px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}
+              })}
             >
-              <CheckIcon
-                sx={{ width: '48px', height: '48px', color: '#00B849' }}
-              />
+              {verificationData?.data.evm && verificationData?.data.svm ? (
+                <CheckIcon
+                  sx={{ width: '48px', height: '48px', color: '#00B849' }}
+                />
+              ) : (
+                <PriorityHighIcon
+                  sx={(theme) => ({
+                    width: '48px',
+                    height: '48px',
+                    color: theme.palette.error.main,
+                  })}
+                />
+              )}
             </Box>
-            <Typography variant="titleXSmall">
-              Wallets linked successfully
+            <Typography variant="titleXSmall" sx={{ textAlign: 'center' }}>
+              {verificationData?.data.evm && verificationData?.data.svm
+                ? 'Wallets linked successfully'
+                : 'Error verifying wallets'}
             </Typography>
           </Box>
         ),
@@ -190,13 +243,17 @@ export const useWalletLinking = ({
     ];
   }, [
     accounts,
+    combinedPoints,
+    evmPoints,
     evmSignature,
     setMenuIndex,
     setOpen,
     signEVM,
     signSolana,
     solanaSignature,
-    verifySignatures,
+    startWalletsVerification,
+    svmPoints,
+    verificationData,
   ]);
 
   return {

@@ -26,4 +26,5 @@ export const WalletLinkingContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(2.5),
+  textAlign: 'center',
 }));

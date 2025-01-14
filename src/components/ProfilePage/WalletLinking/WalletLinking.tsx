@@ -1,79 +1,52 @@
-import { Backdrop } from '@mui/material';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Fade from '@mui/material/Fade';
+import { useAccount } from '@lifi/wallet-management';
+import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
-import { MenuPopper } from 'src/components/Menu/Menu.style';
-import { WalletLinkingMenu } from '../WalletLinkingMenu/WalletLinkingMenu';
-import { useWalletLinking } from './useWalletLinking';
-import {
-  WalletLinkingContainer,
-  WalletLinkingPaper,
-} from './WalletLinking.style';
+import { XPIcon } from 'src/components/illustrations/XPIcon';
+import { checkActiveSvmAndEvm } from 'src/utils/hasSvmAndEvmConnected';
+import { ProfileIconButton } from '../AddressCard/AddressCard.style';
+import { WalletLinkingMenu } from './WalletLinkingMenu/WalletLinkingMenu';
 
 export const WalletLinking = ({
-  open,
-  setOpen,
   anchorEl,
+  setAnchorEl,
 }: {
-  open: boolean;
-  setOpen: any;
   anchorEl: HTMLElement | null;
+  setAnchorEl: Dispatch<SetStateAction<HTMLElement | null>>;
 }) => {
-  const [menuIndex, setMenuIndex] = useState(0);
-  const data = useWalletLinking({ menuIndex, setMenuIndex, setOpen });
+  const [openWalletLinkMenu, setOpenWalletLinkMenu] = useState(false);
+  const { accounts } = useAccount();
+  const handleWalletLinkMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (openWalletLinkMenu) {
+      setAnchorEl(null);
+      setOpenWalletLinkMenu(false);
+    }
+    setAnchorEl(event.currentTarget);
+    setOpenWalletLinkMenu(true);
+  };
+
+  const hasSvmAndEvmConnected = checkActiveSvmAndEvm(accounts);
+  if (!hasSvmAndEvmConnected) {
+    return;
+  }
+
   return (
-    <ClickAwayListener
-      touchEvent={'onTouchStart'}
-      mouseEvent={'onMouseDown'}
-      onClickAway={(event) => {
-        setTimeout(() => {
-          event.stopPropagation();
-          open && setOpen(false);
-        }, 150);
-      }}
-    >
-      <Backdrop
-        sx={(theme) => ({
-          color: '#fff',
-          zIndex: theme.zIndex.drawer + 1,
-          pointerEvents: 'none',
-        })}
-        open={open}
+    <>
+      <ProfileIconButton
+        onClick={handleWalletLinkMenu}
+        id="wallet-linking-menu-button"
+        aria-controls={'wallet-linking'}
+        aria-haspopup="true"
+        aria-expanded={openWalletLinkMenu ? 'true' : undefined}
       >
-        <MenuPopper open={open} transition>
-          {({ TransitionProps }) => (
-            <Fade
-              {...TransitionProps}
-              in={open}
-              style={{
-                transformOrigin: 'top',
-              }}
-            >
-              <WalletLinkingPaper show={open}>
-                <WalletLinkingContainer>
-                  {data.data.map((item, index) => (
-                    <WalletLinkingMenu
-                      key={`wallet-linking-menu-${index}`}
-                      title={item.title}
-                      text={item.text}
-                      buttonLabel={item.buttonLabel}
-                      setOpen={setOpen}
-                      content={item.content}
-                      index={index}
-                      showPrevButton={
-                        index !== 0 && index !== data.maxSteps - 1
-                      }
-                      menuIndex={menuIndex}
-                      setMenuIndex={setMenuIndex}
-                      onClick={item.onClick}
-                    />
-                  ))}
-                </WalletLinkingContainer>
-              </WalletLinkingPaper>
-            </Fade>
-          )}
-        </MenuPopper>
-      </Backdrop>
-    </ClickAwayListener>
+        <XPIcon />
+      </ProfileIconButton>
+      {openWalletLinkMenu ? (
+        <WalletLinkingMenu
+          open={openWalletLinkMenu}
+          setOpen={setOpenWalletLinkMenu}
+          anchorEl={anchorEl}
+        />
+      ) : null}
+    </>
   );
 };
