@@ -174,8 +174,8 @@ dependencies:
     specifier: ^15.1.4
     version: 15.4.0(i18next@24.2.1)(react-dom@18.3.1)(react-native@0.76.6)(react@18.3.1)
   royco:
-    specifier: 0.9.146
-    version: 0.9.146(immer@10.1.1)
+    specifier: 0.9.179
+    version: 0.9.179(immer@10.1.1)
   shallow-equal:
     specifier: ^3.1.0
     version: 3.1.0
@@ -14865,8 +14865,8 @@ packages:
       '@rollup/rollup-win32-x64-msvc': 4.30.1
       fsevents: 2.3.3
 
-  /royco@0.9.146(immer@10.1.1):
-    resolution: {integrity: sha512-Zj8eg0OsVIB2FXbfmgfasxnb8vWjaGqeJG75kIjBPhe5TxeRrz0bpH85/EK1wv2q514L8N3aefovKkACWDv2Mw==}
+  /royco@0.9.179(immer@10.1.1):
+    resolution: {integrity: sha512-LsZVymyCjItYIa7udtfrTN35DgQxjeXTijf/xQk0w8gVUMm9QF7yF7f2v+ENq7r8IigkPP5YX8f9gESScwpJwg==}
     dependencies:
       '@changesets/cli': 2.27.11
       '@radix-ui/react-icons': 1.3.2(react@18.3.1)
