@@ -11,15 +11,10 @@ const MessageCard = styled(Box)(({ theme }) => ({
   margin: 'auto',
   width: '100%',
   padding: theme.spacing(2, 3),
-  boxShadow:
-    '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  boxShadow: theme.shadows[1],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: 416,
   },
-  ...theme.applyStyles('dark', {
-    boxShadow:
-      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-  }),
 }));
 
 export const WarningMessageCard = styled(MessageCard)(({ theme }) => ({

@@ -80,12 +80,7 @@ export const FeaturedArticleImage = styled(Image)(({ theme }) => ({
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     borderRadius: '14px',
     alignSelf: 'center',
-    boxShadow:
-      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-    ...theme.applyStyles('light', {
-      boxShadow:
-        '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-    }),
+    boxShadow: theme.shadows[1],
   },
 }));
 
@@ -97,15 +92,10 @@ export const FeaturedArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   userSelect: 'none',
   transform: 'unset',
   alignSelf: 'flex-start',
-  boxShadow:
-    '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  boxShadow: theme.shadows[1],
   [theme.breakpoints.up('md' as Breakpoint)]: {
     alignSelf: 'center',
   },
-  ...theme.applyStyles('light', {
-    boxShadow:
-      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-  }),
 }));
 
 export const FeaturedArticleTagSkeleton = styled(Skeleton)(({ theme }) => ({

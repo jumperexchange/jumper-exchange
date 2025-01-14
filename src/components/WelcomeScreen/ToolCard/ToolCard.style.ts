@@ -24,14 +24,9 @@ export const ToolCardContainer = styled('div')(({ theme }) => ({
     '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
   '&:hover': {
     backgroundColor: alpha(theme.palette.white.main, 0.2),
-    boxShadow:
-      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+    boxShadow: theme.shadows[1],
     ...theme.applyStyles('light', {
       backgroundColor: alpha(theme.palette.white.main, 0.8),
-    }),
-    ...theme.applyStyles('dark', {
-      boxShadow:
-        '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
     }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
