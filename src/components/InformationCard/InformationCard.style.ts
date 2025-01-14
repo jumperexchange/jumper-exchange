@@ -1,9 +1,7 @@
 'use client';
 
-import type { TableCellProps } from '@mui/material';
-import { alpha, TableCell } from '@mui/material';
-import type { BoxProps, Breakpoint } from '@mui/system';
-import { styled } from '@mui/system';
+import type { BoxProps, Breakpoint, TableCellProps } from '@mui/material';
+import { alpha, styled, TableCell } from '@mui/material';
 import { DynamicPagesContainer } from '../DynamicPagesContainer';
 
 interface InformationCardContainerProps extends BoxProps {

@@ -71,6 +71,7 @@ export const Accordion = styled(MuiAccordion)(({ theme }) => ({
   '&:last-of-type': {
     borderRadius: '16px',
   },
+
   '&:hover': {
     background: alpha(theme.palette.text.primary, 0.16),
   },

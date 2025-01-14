@@ -10,6 +10,10 @@ export const PageContainer = styled(Container)(({ theme }) => ({
   width: '100% !important',
   overflow: 'visible', //'hidden',
   paddingBottom: 20,
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    paddingLeft: '8px',
+    paddingRight: '8px',
+  },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     paddingLeft: 0,
     paddingRight: 0,
@@ -41,7 +45,7 @@ export const ProfileInfoBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '24px',
   flexDirection: 'column',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   padding: theme.spacing(2),
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {

@@ -24,7 +24,7 @@ const SwapExplanationSection = () => {
         questionTextTypography="bodyLargeStrong"
         itemSx={(theme) => ({
           background: theme.palette.bgSecondary.main,
-          boxShadow: theme.palette.shadow.main,
+          boxShadow: theme.shadows[1],
           '&:hover': {
             background:
               theme.palette.mode === 'light'

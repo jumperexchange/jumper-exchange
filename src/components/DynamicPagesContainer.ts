@@ -1,7 +1,7 @@
 'use client';
 
-import type { BoxProps } from '@mui/system';
-import { Box, styled } from '@mui/system';
+import type { BoxProps } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 export const DynamicPagesContainer = styled(Box)<BoxProps>(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -9,7 +9,7 @@ export const DynamicPagesContainer = styled(Box)<BoxProps>(({ theme }) => ({
   borderRadius: 32,
   backgroundColor: theme.palette.bgSecondary.main,
   transition: 'background-color 250ms',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   display: 'flex',
   textDecoration: 'none',
   flexDirection: 'column',

@@ -15,16 +15,16 @@ This is the [jumper.exchange](https://jumper.exchange) repository that gets depl
 In the root directory run the following commands to get started:
 
 ```
-yarn
+pnpm install
 ```
 
 to install all dependencies, and choose one of these start commands to start the development vite server and to start building packages in watch mode.
 
 ```
-yarn dev
-yarn dev:local
-yarn dev:staging
-yarn dev:production
+pnpm dev
+pnpm dev:local
+pnpm dev:staging
+pnpm dev:production
 ```
 
 Please refer to the following descriptions of the dev serve scripts:
@@ -64,5 +64,3 @@ Register on Crowdin and you can start translating the project into your preferre
 Your contributions will help make our project accessible to a wider audience around the world.
 
 Thank you for your support!
-
-

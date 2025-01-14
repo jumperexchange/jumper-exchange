@@ -1,5 +1,11 @@
-import { Avatar, Table, TableBody, TableRow, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import {
+  Avatar,
+  Box,
+  Table,
+  TableBody,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import {
   InformationCardCell,
   InformationCardContainer,
