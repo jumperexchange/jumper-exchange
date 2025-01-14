@@ -74,7 +74,7 @@ test.describe('Jumper full e2e flow', () => {
     page,
   }) => {
     await openOrCloseMainMenu(page);
-    await checkTheNumberOfMenuItems(page, 10);
+    await checkTheNumberOfMenuItems(page, 9);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
