@@ -10,7 +10,7 @@ export const BerachainMarketHeaderBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   borderRadius: '16px',
   border: '1px solid #383433',
-  background: 'rgba(30, 29, 28, 0.50)',
+  background: '#141414',
   backdropFilter: 'blur(8px)',
   padding: theme.spacing(4),
   [theme.breakpoints.up('md' as Breakpoint)]: {

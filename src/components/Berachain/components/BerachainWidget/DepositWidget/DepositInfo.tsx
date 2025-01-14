@@ -130,7 +130,7 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
         <Stack direction="row" justifyContent="space-between">
           {market?.incentive_tokens_data?.length > 0 ? (
             <DigitCard
-              title={'Total rewards'}
+              title={'Total Rewards'}
               sx={{
                 '.content': {
                   fontSize: '1.5rem',
@@ -167,8 +167,16 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
                   fontSize: '1.5rem',
                 },
               }}
-              title={'Lockup'}
-              tooltipText={LOCKUP_TOOLTIP}
+              title={'Post-Launch Lockup'}
+              tooltipText={`Deposits and rewards will be available for withdrawal ${formatWithCustomLabels(
+                Object.entries(secondsToDuration(market.lockup_time))
+                  .filter(([_, value]) => value > 0) // Filter out zero values
+                  .slice(0, 2) // Take the first two non-zero units
+                  .reduce(
+                    (acc, [unit, value]) => ({ ...acc, [unit]: value }),
+                    {},
+                  ),
+              )} after Berachain mainnet launches. Be aware that you can withdraw your position without lockup before the campaign ends, not after.`}
               digit={formatWithCustomLabels(
                 Object.entries(secondsToDuration(market.lockup_time))
                   .filter(([_, value]) => value > 0) // Filter out zero values

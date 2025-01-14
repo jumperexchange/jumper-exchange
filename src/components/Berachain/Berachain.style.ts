@@ -64,9 +64,9 @@ export const BerachainBackButton = styled(Button)(({ theme }) => ({
   alignItems: 'center',
   height: 40,
   borderRadius: '20px',
-  background: '#1E1D1C',
+  background: '#141414',
   transition: 'background ease-in-out 300ms',
   '&:hover': {
-    background: lighten('#1E1D1C', 0.04),
+    background: lighten('#141414', 0.04),
   },
 }));

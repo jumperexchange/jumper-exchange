@@ -16,6 +16,6 @@ export const AVAILABLE_TOOLTIP =
 export const INCENTIVES_TOOLTIP =
   'List of incentives available for this market.';
 export const INCENTIVES_TO_EARN_TOOLTIP =
-  'Rewards you should earn after the lockup on Berachain mainnet.';
+  'Rewards you will earn once the lockup period after Berachain mainnet launch is complete.';
 export const LOCKUP_TOOLTIP =
-  'Deposits will be locked for the displayed amount of times to earn rewards. You are able to withdraw prior to the end of the lockup period but will forfeit any rewards on Berachain.';
+  'Deposits and rewards will be available for withdrawal after this lockup time once Berachain mainnet launches.';

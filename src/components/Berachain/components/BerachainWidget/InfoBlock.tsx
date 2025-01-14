@@ -103,8 +103,16 @@ function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
                   fontSize: '1.5rem',
                 },
               }}
-              title={'Lockup'}
-              tooltipText={LOCKUP_TOOLTIP}
+              title={'Post-Launch Lockup'}
+              tooltipText={`Deposits and rewards will be available for withdrawal ${formatWithCustomLabels(
+                Object.entries(secondsToDuration(market.lockup_time))
+                  .filter(([_, value]) => value > 0) // Filter out zero values
+                  .slice(0, 2) // Take the first two non-zero units
+                  .reduce(
+                    (acc, [unit, value]) => ({ ...acc, [unit]: value }),
+                    {},
+                  ),
+              )} after Berachain mainnet launches. Be aware that you can withdraw your position before Boyco ends, not after.`}
               digit={formatWithCustomLabels(
                 Object.entries(secondsToDuration(market.lockup_time))
                   .filter(([_, value]) => value > 0) // Filter out zero values

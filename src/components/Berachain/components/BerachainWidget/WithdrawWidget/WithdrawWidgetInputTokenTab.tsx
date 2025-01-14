@@ -333,7 +333,7 @@ export const WithdrawWidgetInputTokenTab = ({
                 <Stack direction="row" justifyContent="space-between">
                   {market?.incentive_tokens_data?.length > 0 ? (
                     <DigitCard
-                      title={'Rewards to earn'}
+                      title={'Pending Rewards'}
                       tooltipText={INCENTIVES_TO_EARN_TOOLTIP}
                       digit={
                         <TokenIncentivesData

@@ -50,7 +50,7 @@ const TokenIncentivesCard = ({ marketData, tokens }: DigitCardProps) => {
                   },
                 })}
               >
-                {'Total Incentives'}
+                {'Total Rewards'}
               </Typography>
               <Tooltip title={''} placement={'top'} enterTouchDelay={0} arrow>
                 <InfoIcon

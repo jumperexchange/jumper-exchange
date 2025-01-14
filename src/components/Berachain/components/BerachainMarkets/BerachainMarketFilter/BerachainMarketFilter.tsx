@@ -58,7 +58,7 @@ export const BerachainMarketFilter: FC<
                 minWidth: 144,
                 borderRadius: '8px',
                 border: '1px solid #383433',
-                background: '#1E1D1C',
+                background: '#141414',
                 '& .MuiList-root': {
                   padding: 0,
                 },

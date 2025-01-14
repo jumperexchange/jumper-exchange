@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useBerachainMarkets } from 'src/components/Berachain/hooks/useBerachainMarkets';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import { BerachainSearchAutocomplete } from './BerachainSearch.style';
+
 export const BerachainSearch = () => {
   const theme = useTheme();
   const [isInputEmpty, setIsInputEmpty] = useState(true);
@@ -44,7 +45,7 @@ export const BerachainSearch = () => {
             padding: '12px 8px',
             borderRadius: '8px',
             border: '1px solid #383433',
-            background: '#1E1D1C',
+            background: '#141414',
             // list-container
             '& .MuiAutocomplete-listbox': {
               padding: 0,

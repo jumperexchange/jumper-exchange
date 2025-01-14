@@ -44,7 +44,7 @@ export const BerachainInformationProtocolCard = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1.5),
   padding: theme.spacing(3),
   borderRadius: '24px',
-  background: '#1E1D1C',
+  background: '#141414',
   boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
 }));
 
