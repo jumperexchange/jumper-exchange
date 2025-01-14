@@ -17,7 +17,7 @@ export async function getQuestBy(
   const accessToken = urlParams.getApiAccessToken();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
-    cache: 'no-store',
+    cache: 'force-cache',
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
