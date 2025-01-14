@@ -31,10 +31,10 @@ importers:
         version: 2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@lifi/explorer':
         specifier: ^0.0.4
-        version: 0.0.4(ffswywvvv65wo3zuxn62unex7y)
+        version: 0.0.4(jslzxp6pgtdjlhbb7qyujknvji)
       '@lifi/sdk':
-        specifier: 3.4.3
-        version: 3.4.3(@solana/wallet-adapter-base@0.9.23(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.3)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))
+        specifier: 3.5.2
+        version: 3.5.2(@solana/wallet-adapter-base@0.9.23(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))(zod@3.24.1)
       '@lifi/wallet-management':
         specifier: ^3.4.8-beta.0
         version: 3.5.2(etvk2o3bvxc3p3nnhmvzcxhigq)
@@ -2173,15 +2173,8 @@ packages:
       '@tanstack/react-query': 5.48.0
       react: 18.3.1
 
-  '@lifi/sdk@3.4.3':
-    resolution: {integrity: sha512-xRjjWXmNt/2iV4i/SMZz4GiIMP8HLcc3UyxZDfRz2b2+k4vVAz5sTqHyVLoCvK8LEe3YJcm0r7v33Hp1NMm/hA==}
-    peerDependencies:
-      '@solana/wallet-adapter-base': ^0.9.0
-      '@solana/web3.js': ^1.93.0
-      viem: ^2.16.0
-
-  '@lifi/sdk@3.5.1':
-    resolution: {integrity: sha512-Kd/WMMGitlusFa/ZMoy3Bl3xsUf1ZYel8qYHzxy8kUQozsXmfbpolPShZpG14JyauuSxa2Na/bzGmeIqYS3UkA==}
+  '@lifi/sdk@3.5.2':
+    resolution: {integrity: sha512-EUnGcFclymkateB+dHK8LLhe1TvHXldJQhoIvfGSmMOkqlOR6vwFf+ULPFIxNyDubdTwql218j5ajaTfn28fcg==}
     peerDependencies:
       '@solana/wallet-adapter-base': ^0.9.0
       '@solana/web3.js': ^1.98.0
@@ -9787,14 +9780,6 @@ snapshots:
       bs58: 5.0.0
       viem: 2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1)
 
-  '@bigmi/core@0.0.6(bitcoinjs-lib@7.0.0-rc.0(typescript@5.7.3))(bs58@6.0.0)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))':
-    dependencies:
-      '@noble/hashes': 1.7.0
-      bech32: 2.0.0
-      bitcoinjs-lib: 7.0.0-rc.0(typescript@5.7.3)
-      bs58: 6.0.0
-      viem: 2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1)
-
   '@bigmi/core@0.0.7(bs58@5.0.0)(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1)':
     dependencies:
       '@noble/hashes': 1.7.0
@@ -10961,11 +10946,11 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@lifi/explorer@0.0.4(ffswywvvv65wo3zuxn62unex7y)':
+  '@lifi/explorer@0.0.4(jslzxp6pgtdjlhbb7qyujknvji)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@18.3.18)(react@18.3.1)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1)
-      '@lifi/sdk': 3.4.3(@solana/wallet-adapter-base@0.9.23(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.3)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))
+      '@lifi/sdk': 3.5.2(@solana/wallet-adapter-base@0.9.23(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))(zod@3.24.1)
       '@mui/icons-material': 5.16.14(@mui/material@5.16.14(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.18)(react@18.3.1)
       '@mui/lab': 5.0.0-alpha.175(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@mui/material@5.16.14(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/material': 5.16.14(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -10980,25 +10965,13 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
     transitivePeerDependencies:
       - '@solana/wallet-adapter-base'
+      - bufferutil
       - typescript
+      - utf-8-validate
       - viem
+      - zod
 
-  '@lifi/sdk@3.4.3(@solana/wallet-adapter-base@0.9.23(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.3)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))':
-    dependencies:
-      '@bigmi/core': 0.0.6(bitcoinjs-lib@7.0.0-rc.0(typescript@5.7.3))(bs58@6.0.0)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))
-      '@lifi/types': 16.5.0
-      '@noble/curves': 1.8.0
-      '@noble/hashes': 1.7.0
-      '@solana/wallet-adapter-base': 0.9.23(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      '@solana/web3.js': 1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      bech32: 2.0.0
-      bitcoinjs-lib: 7.0.0-rc.0(typescript@5.7.3)
-      bs58: 6.0.0
-      viem: 2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1)
-    transitivePeerDependencies:
-      - typescript
-
-  '@lifi/sdk@3.5.1(@solana/wallet-adapter-base@0.9.23(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))(zod@3.24.1)':
+  '@lifi/sdk@3.5.2(@solana/wallet-adapter-base@0.9.23(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))(zod@3.24.1)':
     dependencies:
       '@bigmi/core': 0.1.0(bs58@6.0.0)(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1)
       '@lifi/types': 16.5.0
@@ -11024,7 +10997,7 @@ snapshots:
       '@bigmi/react': 0.0.6(@tanstack/query-core@5.62.16)(@types/react@18.3.18)(bitcoinjs-lib@7.0.0-rc.0(typescript@5.7.3))(bs58@5.0.0)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.3)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))(wagmi@2.14.3(@react-native-async-storage/async-storage@1.24.0(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10)))(@tanstack/query-core@5.62.16)(@tanstack/react-query@5.63.0(react@18.3.1))(@types/react@18.3.18)(bufferutil@4.0.9)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)(rollup@3.29.5)(typescript@5.7.3)(utf-8-validate@5.0.10)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))(zod@3.24.1))
       '@emotion/react': 11.14.0(@types/react@18.3.18)(react@18.3.1)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1)
-      '@lifi/sdk': 3.5.1(@solana/wallet-adapter-base@0.9.23(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))(zod@3.24.1)
+      '@lifi/sdk': 3.5.2(@solana/wallet-adapter-base@0.9.23(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))(zod@3.24.1)
       '@mui/icons-material': 6.0.2(@mui/material@6.3.1(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.18)(react@18.3.1)
       '@mui/lab': 6.0.0-beta.21(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@mui/material@6.3.1(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/material': 6.3.1(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -11063,7 +11036,7 @@ snapshots:
       '@bigmi/react': 0.0.6(@tanstack/query-core@5.62.16)(@types/react@18.3.18)(bitcoinjs-lib@7.0.0-rc.0(typescript@5.7.3))(bs58@5.0.0)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.3)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))(wagmi@2.14.3(@react-native-async-storage/async-storage@1.24.0(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10)))(@tanstack/query-core@5.62.16)(@tanstack/react-query@5.63.0(react@18.3.1))(@types/react@18.3.18)(bufferutil@4.0.9)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)(rollup@3.29.5)(typescript@5.7.3)(utf-8-validate@5.0.10)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))(zod@3.24.1))
       '@emotion/react': 11.14.0(@types/react@18.3.18)(react@18.3.1)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1)
-      '@lifi/sdk': 3.5.1(@solana/wallet-adapter-base@0.9.23(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))(zod@3.24.1)
+      '@lifi/sdk': 3.5.2(@solana/wallet-adapter-base@0.9.23(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(viem@2.22.5(bufferutil@4.0.9)(typescript@5.7.3)(utf-8-validate@5.0.10)(zod@3.24.1))(zod@3.24.1)
       '@lifi/wallet-management': 3.5.2(etvk2o3bvxc3p3nnhmvzcxhigq)
       '@mui/icons-material': 6.0.2(@mui/material@6.3.1(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.18)(react@18.3.1)
       '@mui/lab': 6.0.0-beta.21(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@mui/material@6.3.1(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
