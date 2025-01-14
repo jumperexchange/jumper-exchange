@@ -54,7 +54,7 @@ export const BerachainMarkets = () => {
             })
             .filter((data) => {
               const card = findFromStrapiByUid(data.market_id!);
-              const fullTitle = getFullTitle(data, card!);
+              const fullTitle = getFullTitle(data, card);
 
               return search ? includesCaseInsensitive(fullTitle, search) : true;
             })
