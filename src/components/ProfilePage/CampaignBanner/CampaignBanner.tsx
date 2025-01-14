@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 import { Button } from 'src/components/Button';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { CampaignBox } from './CampaignBanner.style';
 import Image from 'next/image';
 import { getContrastAlphaColor } from 'src/utils/colors';
@@ -13,6 +13,9 @@ import { CampaignInformation } from './CampaignInformation';
 
 export const CampaignBanner = () => {
   // const { quests, isLoading: isQuestsLoading, url } = useOngoingQuests();
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
+  );
 
   return (
     <a
@@ -29,8 +32,8 @@ export const CampaignBanner = () => {
         <Image
           src={`https://strapi.jumper.exchange/uploads/banner_602bc774b0.jpg`}
           alt={'top banner'}
-          width={640}
-          height={320}
+          width={isMobile ? 320 : 640}
+          height={isMobile ? 160 : 320}
           style={{ objectFit: 'contain', borderRadius: '16px' }}
         />
         <CampaignInformation

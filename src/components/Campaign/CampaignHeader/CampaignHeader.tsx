@@ -1,4 +1,4 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import LanguageIcon from '@mui/icons-material/Language';
 import XIcon from '@mui/icons-material/X';
@@ -24,7 +24,9 @@ export const CampaignHeader = ({
   Xlink?: string;
 }) => {
   const theme = useTheme();
-  //   const { data } = useEnrichedRoycoStats();
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
+  );
 
   return (
     <CampaignHeaderBoxBackground
@@ -92,14 +94,16 @@ export const CampaignHeader = ({
           </VerticalCenterBox>
         </Box>
 
-        <VerticalCenterBox>
-          <CampaignDigitInfoBox>
-            <CardInfoTypogragphy fontSize={14}>
-              Total Rewards
-            </CardInfoTypogragphy>
-            <CardInfoTypogragphy fontSize={32}>{'$300k'}</CardInfoTypogragphy>
-          </CampaignDigitInfoBox>
-        </VerticalCenterBox>
+        {!isMobile && (
+          <VerticalCenterBox>
+            <CampaignDigitInfoBox>
+              <CardInfoTypogragphy fontSize={14}>
+                Total Rewards
+              </CardInfoTypogragphy>
+              <CardInfoTypogragphy fontSize={32}>{'$300k'}</CardInfoTypogragphy>
+            </CampaignDigitInfoBox>
+          </VerticalCenterBox>
+        )}
       </Box>
     </CampaignHeaderBoxBackground>
   );

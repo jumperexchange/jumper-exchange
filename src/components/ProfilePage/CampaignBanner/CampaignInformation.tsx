@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 import { Button } from 'src/components/Button';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
 import {
   CampaignBox,
   CampaignInfoVerticalBox,
@@ -25,20 +25,25 @@ export const CampaignInformation = ({
   const theme = useTheme();
   const router = useRouter();
   const { quests, isLoading: isQuestsLoading, url } = useOngoingQuests();
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
+  );
 
   return (
     <CampaignInfoVerticalBox>
-      <CampaignTagBox>
-        <Typography
-          sx={{
-            fontSize: 14,
-            fontWeight: 700,
-            color: theme.palette.text.primary,
-          }}
-        >
-          {tag}
-        </Typography>
-      </CampaignTagBox>
+      {!isMobile && (
+        <CampaignTagBox>
+          <Typography
+            sx={{
+              fontSize: 14,
+              fontWeight: 700,
+              color: theme.palette.text.primary,
+            }}
+          >
+            {tag}
+          </Typography>
+        </CampaignTagBox>
+      )}
 
       <Box
         sx={{
@@ -48,7 +53,7 @@ export const CampaignInformation = ({
         }}
       >
         <Typography
-          fontSize={48}
+          fontSize={isMobile ? 32 : 48}
           fontWeight={700}
           color={theme.palette.text.primary}
         >
@@ -83,6 +88,7 @@ export const CampaignInformation = ({
           router.push(`${JUMPER_CAMPAIGN_PATH}/lisk`);
         }}
         styles={{
+          marginTop: isMobile ? '16px' : undefined,
           gap: '8px',
           borderRadius: '24px',
           '> button:hover': {

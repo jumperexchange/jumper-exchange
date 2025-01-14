@@ -9,8 +9,8 @@ export const CampaignBox = styled(Box)(({ theme }) => ({
   boxShadow: theme.shadows[1],
   padding: theme.spacing(2),
   marginTop: theme.spacing(4),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    padding: theme.spacing(3),
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    flexDirection: 'column',
   },
 
   [theme.breakpoints.up('lg' as Breakpoint)]: {

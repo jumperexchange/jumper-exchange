@@ -22,13 +22,18 @@ export const CampaignHeaderBoxBackground = styled(Box)(({ theme }) => ({
   backgroundPosition: 'center',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'flex-end',
   height: 180,
   borderRadius: theme.spacing(4),
   paddingLeft: theme.spacing(3),
   paddingRight: theme.spacing(3),
   paddingTop: theme.spacing(1),
   paddingBottom: theme.spacing(1),
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    justifyContent: 'center',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    justifyContent: 'flex-end',
+  },
 }));
 
 export const VerticalCenterBox = styled(Box)(({ theme }) => ({
@@ -41,6 +46,12 @@ export const CampaignTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.white.main,
   fontWeight: 700,
   fontSize: 32,
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    fontSize: 24,
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    fontSize: 32,
+  },
 }));
 
 export const CardInfoTypogragphy = styled(Typography)(({ theme }) => ({
