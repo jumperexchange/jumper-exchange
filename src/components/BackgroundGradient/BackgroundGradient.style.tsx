@@ -1,5 +1,5 @@
 'use client';
-import type { Breakpoint, Theme } from '@mui/material/styles';
+import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, styled } from '@mui/material/styles';
 
 export interface BackgroundGradientContainerProps {
@@ -19,7 +19,7 @@ export const BackgroundGradientContainer = styled('div', {
     position: 'fixed',
     overflow: 'hidden',
     pointerEvents: 'none',
-    background: (theme as Theme).palette.surface1.main,
+    background: theme.palette.surface1.main,
     backgroundColor: backgroundColor,
     left: 0,
     bottom: 0,
@@ -36,7 +36,7 @@ export const BackgroundGradientContainer = styled('div', {
         style: {
           background: backgroundImageUrl
             ? `url(${backgroundImageUrl.href})`
-            : (theme as Theme).palette.surface1.main,
+            : theme.palette.surface1.main,
         },
       },
       {
@@ -88,14 +88,11 @@ export const BackgroundGradients = styled('span')(({ theme }) => ({
       'radial-gradient(50% 50% at 50% 50%, #E1147B 0%, rgba(255, 255, 255, 0) 100%)',
     ...theme.applyStyles('dark', {
       opacity: '0.24',
+      width: '100vw',
+      height: '100vw',
+      transform: 'translate(-0%, -50%) scale( calc( 1 + 1 / 3 ))',
     }),
   },
-  ...theme.applyStyles('dark', {
-    width: '100vw',
-    height: '100vw',
-    opacity: '0.24',
-    transform: 'translate(-0%, -50%) scale( calc( 1 + 1 / 3 ))',
-  }),
 }));
 
 export const BackgroundGradientBottomLeft = styled(BackgroundGradient)(

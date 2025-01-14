@@ -168,26 +168,20 @@ export const InstructionsAccordionItem = ({
                             component={'span'}
                             mr={'8px'}
                             sx={(theme) => ({
-                              color: theme.palette.white.main,
+                              color: theme.palette.text.primary,
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
                               maxWidth: 208,
                               [theme.breakpoints.up('sm' as Breakpoint)]: {
                                 maxWidth: 168,
                               },
-                              ...theme.applyStyles('light', {
-                                color: theme.palette.black.main,
-                              }),
                             })}
                           >
                             {buttonTitles[i]}
                           </Typography>
                           <ArrowForwardIcon
                             style={{
-                              color:
-                                theme.palette.mode === 'light'
-                                  ? '#000000'
-                                  : '#FFFFFF',
+                              color: theme.palette.text.primary,
                             }}
                           />
                         </InstructionsAccordionLinkBox>
