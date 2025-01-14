@@ -8,6 +8,7 @@ import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
 import { getArticlesByTag } from '../../../../lib/getArticlesByTag';
 import { getCookies } from '../../../../lib/getCookies';
 import { getSiteUrl } from '@/const/urls';
+import { notFound, permanentRedirect } from 'next/navigation';
 
 export async function generateMetadata({
   params,
@@ -61,17 +62,22 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const article = await getArticleBySlug(params.slug);
   const { activeThemeMode } = getCookies();
 
-  const currentTags = (
-    article?.data?.data[0] as BlogArticleData
-  )?.attributes?.tags.data.map((el) => el?.id);
-  const relatedArticles = await getArticlesByTag(
-    article?.data?.data[0]?.id,
-    currentTags,
-  );
+  const articleData: BlogArticleData = article.data.data?.[0];
+
+  if (!articleData) {
+    return notFound();
+  }
+
+  if (articleData.attributes.RedirectURL) {
+    return permanentRedirect(articleData.attributes.RedirectURL);
+  }
+
+  const currentTags = articleData?.attributes?.tags.data.map((el) => el?.id);
+  const relatedArticles = await getArticlesByTag(articleData.id, currentTags);
 
   return (
     <LearnArticlePage
-      article={article.data.data}
+      article={articleData}
       url={article.url}
       articles={relatedArticles.data}
       activeThemeMode={activeThemeMode}

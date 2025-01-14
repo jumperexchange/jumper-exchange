@@ -2,7 +2,6 @@
 import { createDefaultBigmiConfig } from '@lifi/wallet-management';
 import { type FC, type PropsWithChildren } from 'react';
 import { useReconnect, BigmiProvider } from '@bigmi/react';
-
 const { config } = createDefaultBigmiConfig({
   bigmiConfig: {
     ssr: true,

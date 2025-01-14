@@ -51,7 +51,7 @@ export const QuestsCompletedCarousel = ({
                 id: pda?.id,
                 completed: true,
                 active: false,
-                title: `${capitalizeString(pda.reward?.type)} (${capitalizeString(pda?.reward?.name)})`,
+                title: capitalizeString(pda?.reward?.name),
                 image: pda?.reward?.image,
                 points: pda?.points,
               };
