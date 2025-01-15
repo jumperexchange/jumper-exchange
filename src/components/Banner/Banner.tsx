@@ -48,9 +48,9 @@ export const Banner = () => {
           height={24}
           style={{ marginRight: 8 }}
           src={
-            theme.palette.mode === 'dark'
-              ? 'https://strapi.jumper.exchange/uploads/jumper_04f15d06be.svg'
-              : 'https://strapi.jumper.exchange/uploads/jumper_57348536c0.svg'
+            theme.palette.mode === 'light'
+              ? 'https://strapi.jumper.exchange/uploads/jumper_57348536c0.svg'
+              : 'https://strapi.jumper.exchange/uploads/jumper_04f15d06be.svg'
           }
         />
         <Typography
@@ -73,9 +73,9 @@ export const Banner = () => {
           height={24}
           style={{ marginLeft: 8 }}
           src={
-            theme.palette.mode === 'dark'
-              ? 'https://strapi.jumper.exchange/uploads/button_darkl_70bedec2df.svg'
-              : 'https://strapi.jumper.exchange/uploads/theme_c92ac9f474.svg'
+            theme.palette.mode === 'light'
+              ? 'https://strapi.jumper.exchange/uploads/theme_c92ac9f474.svg'
+              : 'https://strapi.jumper.exchange/uploads/button_darkl_70bedec2df.svg'
           }
         />
       </BannerContainer>

@@ -1,11 +1,9 @@
 'use client';
-import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { useStrapi } from '@/hooks/useStrapi';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useSettingsStore } from '@/stores/settings';
 import type { FeatureCardData } from '@/types/strapi';
@@ -58,16 +56,12 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         return theme.palette.black.main;
       }
     } else {
-      if (theme.palette.mode === 'dark') {
-        return theme.palette.white.main;
-      } else {
-        return theme.palette.black.main;
-      }
+      return theme.palette.text.primary;
     }
   }, [
     data.attributes.DisplayConditions.mode,
     theme.palette.black.main,
-    theme.palette.mode,
+    theme.palette.text.primary,
     theme.palette.white.main,
   ]);
 

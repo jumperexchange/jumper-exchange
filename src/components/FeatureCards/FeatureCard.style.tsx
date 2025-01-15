@@ -33,9 +33,9 @@ export const FCard = styled(MuiCard, {
   marginBottom: theme.spacing(1.5),
   overflow: 'hidden',
   backgroundImage: `url(${backgroundImageUrl}), radial-gradient(circle at 506px 437px, #3F49E1 -43%, ${
-    isDarkCard || theme.palette.mode === 'dark'
-      ? '#20223D'
-      : theme.palette.white.main
+    isDarkCard || theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : '#20223D'
   } 506px 349px)`,
   backgroundSize: 'contain',
   boxShadow: theme.shadows[1],
@@ -105,9 +105,9 @@ export const FeatureCardCtaLink = styled(Link, {
   textDecoration: 'none',
   color:
     data.attributes.DisplayConditions.mode === 'dark' ||
-    theme.palette.mode === 'dark'
-      ? theme.palette.accent1Alt?.main
-      : theme.palette.primary.main,
+    theme.palette.mode === 'light'
+      ? theme.palette.primary?.main
+      : theme.palette.accent1Alt.main,
 }));
 
 export interface FeatureCardCtaLabelProps

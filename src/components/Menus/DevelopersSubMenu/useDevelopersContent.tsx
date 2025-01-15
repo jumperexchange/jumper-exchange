@@ -15,7 +15,6 @@ export const useDevelopersContent = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
   const closeAllMenus = useMenuStore((state) => state.closeAllMenus);
 
   return [

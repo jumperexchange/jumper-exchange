@@ -35,8 +35,7 @@ export const SmallAvatar = styled(Avatar)(({ theme }) => ({
   //   padding: theme.spacing(0.25),
   //   borderRadius: '50%',
   //   objectFit: 'contain',
-  //   background:
-  //     theme.palette.mode === 'dark' ? theme.palette.white.main : 'inherit',
+  //   background: theme.palette.text.primary,
   // },
 }));
 

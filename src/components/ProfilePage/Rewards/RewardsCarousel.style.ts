@@ -33,9 +33,7 @@ export const RewardsCarouselHeader = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<BoxProps>(({ theme }) => ({
   display: 'flex',
-  ...(theme.palette.mode === 'dark' && {
-    color: theme.palette.white.main,
-  }),
+  color: theme.palette.text.primary,
   justifyContent: 'space-between',
 }));
 

@@ -15,9 +15,9 @@ export const ErrorMessage = styled(Typography)(({ theme }) => ({
   margin: theme.spacing(2.5),
   textAlign: 'center',
   color:
-    theme.palette.mode === 'dark'
-      ? theme.palette.accent1Alt.main
-      : theme.palette.primary.main,
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.accent1Alt.main,
   fontWeight: 700,
   [theme.breakpoints.up('sm')]: {
     fontSize: '24px',

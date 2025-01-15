@@ -13,9 +13,9 @@ export const TempTitle = () => {
   const theme = useTheme();
 
   const IMAGE_LOGO =
-    theme.palette.mode === 'dark'
-      ? PROFILE_CAMPAIGN_DARK_CHAIN
-      : PROFILE_CAMPAIGN_LIGHT_CHAIN;
+    theme.palette.mode === 'light'
+      ? PROFILE_CAMPAIGN_LIGHT_CHAIN
+      : PROFILE_CAMPAIGN_DARK_CHAIN;
 
   return (
     <FlexCenterRowBox marginBottom={'16px'}>
@@ -42,9 +42,9 @@ export const TempTitle = () => {
         <EarnedTypography
           sx={(theme) => ({
             color:
-              theme.palette.mode === 'dark'
-                ? PROFILE_CAMPAIGN_DARK_COLOR
-                : PROFILE_CAMPAIGN_LIGHT_COLOR,
+              theme.palette.mode === 'light'
+                ? PROFILE_CAMPAIGN_LIGHT_COLOR
+                : PROFILE_CAMPAIGN_DARK_COLOR,
           })}
         >
           {/*Title*/}
@@ -55,9 +55,9 @@ export const TempTitle = () => {
           lineHeight={'18px'}
           fontWeight={500}
           color={
-            theme.palette.mode === 'dark'
-              ? PROFILE_CAMPAIGN_DARK_COLOR
-              : PROFILE_CAMPAIGN_LIGHT_COLOR
+            theme.palette.mode === 'light'
+              ? PROFILE_CAMPAIGN_LIGHT_COLOR
+              : PROFILE_CAMPAIGN_DARK_COLOR
           }
         >
           $300,000 SEI rewards to win
