@@ -44,10 +44,13 @@ const TokenIncentivesCard = ({ marketData, tokens }: DigitCardProps) => {
               <Typography
                 variant="bodySmall"
                 sx={(theme) => ({
+                  color: '#8b8989',
                   typography: {
                     xs: theme.typography.bodyXSmall,
                     sm: theme.typography.bodySmall,
                   },
+                  // important needed as the previous rules are overriding the fontSize
+                  fontSize: '0.75rem!important',
                 })}
               >
                 {'Total Incentives'}

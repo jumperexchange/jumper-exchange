@@ -105,42 +105,47 @@ export const BerachainProtocolInformation = ({
                     sx={{ height: '72px', width: '100%', borderRadius: '8px' }}
                   />
                 )}
+
+                <Box sx={{ display: 'flex', gap: '12px' }}>
+                  {detailInformation?.socials && (
+                    <>
+                      {detailInformation?.socials?.twitter && (
+                        <BerachainInformationProtocolShareLink
+                          href={detailInformation?.socials?.twitter}
+                          style={{ color: 'inherit', textDecoration: 'none' }}
+                        >
+                          <BerachainInformationProtocolShare>
+                            <XIcon sx={{ width: '16px', height: '16px' }} />
+                          </BerachainInformationProtocolShare>
+                        </BerachainInformationProtocolShareLink>
+                      )}
+                      {detailInformation?.socials?.telegram && (
+                        <BerachainInformationProtocolShareLink
+                          href={detailInformation?.socials?.telegram}
+                        >
+                          <BerachainInformationProtocolShare>
+                            <TelegramIcon
+                              sx={{ width: '16px', height: '16px' }}
+                            />
+                          </BerachainInformationProtocolShare>
+                        </BerachainInformationProtocolShareLink>
+                      )}
+                      {detailInformation?.socials?.website && (
+                        <BerachainInformationProtocolShareLink
+                          href={detailInformation?.socials?.website}
+                        >
+                          <BerachainInformationProtocolShare>
+                            <LanguageIcon
+                              sx={{ width: '16px', height: '16px' }}
+                            />
+                          </BerachainInformationProtocolShare>
+                        </BerachainInformationProtocolShareLink>
+                      )}
+                    </>
+                  )}
+                </Box>
               </Stack>
             </Stack>
-            <Box sx={{ display: 'flex', gap: '12px' }}>
-              {detailInformation?.socials && (
-                <>
-                  {detailInformation?.socials?.twitter && (
-                    <BerachainInformationProtocolShareLink
-                      href={detailInformation?.socials?.twitter}
-                      style={{ color: 'inherit', textDecoration: 'none' }}
-                    >
-                      <BerachainInformationProtocolShare>
-                        <XIcon sx={{ width: '16px', height: '16px' }} />
-                      </BerachainInformationProtocolShare>
-                    </BerachainInformationProtocolShareLink>
-                  )}
-                  {detailInformation?.socials?.telegram && (
-                    <BerachainInformationProtocolShareLink
-                      href={detailInformation?.socials?.telegram}
-                    >
-                      <BerachainInformationProtocolShare>
-                        <TelegramIcon sx={{ width: '16px', height: '16px' }} />
-                      </BerachainInformationProtocolShare>
-                    </BerachainInformationProtocolShareLink>
-                  )}
-                  {detailInformation?.socials?.website && (
-                    <BerachainInformationProtocolShareLink
-                      href={detailInformation?.socials?.website}
-                    >
-                      <BerachainInformationProtocolShare>
-                        <LanguageIcon sx={{ width: '16px', height: '16px' }} />
-                      </BerachainInformationProtocolShare>
-                    </BerachainInformationProtocolShareLink>
-                  )}
-                </>
-              )}
-            </Box>
           </BerachainInformationProtocolCard>
         </BerachainInformationProtocolIntro>
         {card?.attributes?.CustomInformation ? (

@@ -79,7 +79,6 @@ export const WithdrawWidget = ({
     <Box sx={{ marginTop: theme.spacing(1.5) }}>
       <InfoBlock
         market={market}
-        type="withdraw"
         sx={{ marginBottom: theme.spacing(3), padding: theme.spacing(1) }}
         recipe={recipe}
       />

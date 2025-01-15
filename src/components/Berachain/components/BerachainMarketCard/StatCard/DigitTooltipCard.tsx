@@ -20,6 +20,10 @@ const DigitTooltipCard = ({ title, digit, tooltipText }: DigitCardProps) => {
           value={digit}
           showTooltipIcon={true}
           sx={(theme) => ({
+            '.title': {
+              color: '#8b8989',
+              fontSize: '0.75rem',
+            },
             '.tooltip-icon': {
               color: theme.palette.alphaLight500.main,
             },
@@ -31,6 +35,7 @@ const DigitTooltipCard = ({ title, digit, tooltipText }: DigitCardProps) => {
             },
           })}
           valueSx={{
+            marginTop: 1,
             color: alpha(theme.palette.white.main, 0.84),
             fontSize: theme.typography.titleXSmall.fontSize,
             [theme.breakpoints.up('sm' as Breakpoint)]: {

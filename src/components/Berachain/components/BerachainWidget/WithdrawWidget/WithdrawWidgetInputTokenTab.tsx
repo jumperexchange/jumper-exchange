@@ -400,7 +400,7 @@ export const WithdrawWidgetInputTokenTab = ({
                   display: 'flex',
                   width: '100%',
                   flexGrow: 1, // Equivalent to `grow`
-                  minWidth: '400px',
+                  minWidth: '300px',
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'space-between',

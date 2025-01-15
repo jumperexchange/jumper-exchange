@@ -35,6 +35,7 @@ export const BerachainProgressCard = ({
         <BeraChainProgressCardHeader display={'flex'}>
           <Typography
             variant="bodySmall"
+            className="title"
             sx={(theme) => ({
               typography: {
                 xs: theme.typography.bodyXSmall,
