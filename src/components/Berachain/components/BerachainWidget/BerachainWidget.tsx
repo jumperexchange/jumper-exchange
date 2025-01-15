@@ -87,6 +87,7 @@ export const BerachainWidget = ({
   return (
     <Box
       sx={{
+        minWidth: '464px',
         width: '480px',
         borderRadius: '24px',
         backgroundColor: '#121214',
