@@ -1,6 +1,5 @@
 'use client';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
-import { useAccount } from '@lifi/wallet-management';
 import { useContext } from 'react';
 import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useTraits } from 'src/hooks/useTraits';
@@ -11,6 +10,7 @@ import {
   PageContainer,
   ProfileHeaderBox,
   ProfileInfoBox,
+  ProfileInfoBoxCards,
 } from './ProfilePage.style';
 import { QuestsCompletedCarousel } from './QuestsCompletedCarousel/QuestsCompletedCarousel';
 import { QuestsOverview } from './QuestsOverview/QuestsOverview';
@@ -18,9 +18,9 @@ import { QuestsOverview } from './QuestsOverview/QuestsOverview';
 
 import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
+import { Traits } from './Traits/Traits';
 
 export const ProfilePage = () => {
-  const { account } = useAccount();
   const { walletAddress, isPublic } = useContext(ProfileContext);
   const { isLoading, points, pdas } = useLoyaltyPass(walletAddress);
   const { traits } = useTraits();
@@ -39,9 +39,12 @@ export const ProfilePage = () => {
       {!isPublic && <MerklRewards />}
       <ProfileHeaderBox>
         <AddressCard address={walletAddress} />
-        <ProfileInfoBox sx={{ display: 'flex', flex: 2, gap: 2 }}>
-          <TierBox points={points} loading={isLoading} />
-          <LeaderboardCard address={walletAddress} />
+        <ProfileInfoBox>
+          <ProfileInfoBoxCards>
+            <TierBox points={points} loading={isLoading} />
+            <LeaderboardCard address={walletAddress} />
+          </ProfileInfoBoxCards>
+          {!!traits?.length && <Traits traits={traits} />}
         </ProfileInfoBox>
       </ProfileHeaderBox>
       <QuestsOverview pastCampaigns={pastCampaigns} traits={traits} />

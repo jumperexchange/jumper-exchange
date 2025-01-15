@@ -41,17 +41,24 @@ export const ProfileHeaderBox = styled(Box)(({ theme }) => ({
 }));
 
 export const ProfileInfoBox = styled(Box)(({ theme }) => ({
-  gab: theme.spacing(2),
+  display: 'flex',
+  flexDirection: 'column',
+  flex: 2,
+  gap: theme.spacing(2),
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '24px',
-  flexDirection: 'column',
   boxShadow: theme.shadows[1],
   padding: theme.spacing(2),
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
   },
+}));
 
+export const ProfileInfoBoxCards = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     flexDirection: 'row',
   },
