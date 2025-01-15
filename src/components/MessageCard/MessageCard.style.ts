@@ -19,41 +19,41 @@ const MessageCard = styled(Box)(({ theme }) => ({
 
 export const WarningMessageCard = styled(MessageCard)(({ theme }) => ({
   borderRadius: '12px',
-  backgroundColor: alpha(theme.palette.warning.main, 0.16),
-  ...theme.applyStyles('light', {
-    backgroundColor: alpha(theme.palette.warning.main, 0.24),
-  }),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? alpha(theme.palette.warning.main, 0.24)
+      : alpha(theme.palette.warning.main, 0.16),
 }));
 
 export const WarningMessageCardTitle = styled(Box)(({ theme }) => ({
   padding: 0,
-  color: alpha(theme.palette.warning.dark, 1),
-  ...theme.applyStyles('light', {
-    color: darken(theme.palette.warning.main, 0.36),
-  }),
+  color:
+    theme.palette.mode === 'light'
+      ? darken(theme.palette.warning.main, 0.36)
+      : alpha(theme.palette.warning.dark, 1),
 }));
 
 export const InfoMessageCard = styled(MessageCard)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.info.main, 0.16),
-  ...theme.applyStyles('light', {
-    backgroundColor: alpha(theme.palette.info.main, 0.12),
-  }),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? alpha(theme.palette.info.main, 0.12)
+      : alpha(theme.palette.info.main, 0.16),
 }));
 
 export const InfoMessageCardTitle = styled(Box)(({ theme }) => ({
   padding: 0,
-  color: lighten(theme.palette.info.main, 0.24),
-  ...theme.applyStyles('light', {
-    color: theme.palette.info.main,
-  }),
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.info.main
+      : lighten(theme.palette.info.main, 0.24),
 }));
 
 export const InfoMessageCardClickable = styled(MessageCard)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.info.main, 0.16),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? alpha(theme.palette.info.main, 0.12)
+      : alpha(theme.palette.info.main, 0.16),
   cursor: 'pointer',
-  ...theme.applyStyles('light', {
-    backgroundColor: alpha(theme.palette.info.main, 0.12),
-  }),
 }));
 
 export const InfoMessageCardSubtitle = styled(Typography)(({ theme }) => ({

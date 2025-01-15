@@ -20,7 +20,11 @@ export const TraitsBox = ({ trait }: TraitsBoxProps) => {
     >
       <AbsoluteCenterTraitsBox>
         <Typography
-          sx={{ color: '#FFFFFF', fontWeight: 700, fontSize: '12px' }}
+          sx={(theme) => ({
+            color: theme.palette.white.main,
+            fontWeight: 700,
+            fontSize: '12px',
+          })}
         >
           {trait}
         </Typography>

@@ -23,9 +23,7 @@ export const RewardsCarouselHeader = styled(Box, {
 })<BoxProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  ...theme.applyStyles('dark', {
-    color: theme.palette.white.main,
-  }),
+  color: theme.palette.text.primary,
 }));
 
 export const RewardsCarouselTitle = styled(Typography, {

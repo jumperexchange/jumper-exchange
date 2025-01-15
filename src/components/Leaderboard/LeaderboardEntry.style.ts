@@ -34,7 +34,10 @@ export const LeaderboardEntryWrapper = styled(Box, {
     {
       props: ({ isUserEntry }) => isUserEntry,
       style: {
-        background: theme.palette.bgTertiary.main,
+        background:
+          theme.palette.mode === 'light'
+            ? theme.palette.white.main
+            : theme.palette.bgTertiary.main,
         borderRadius: '24px',
         boxShadow: theme.shadows[2],
         marginTop: theme.spacing(3),
@@ -42,9 +45,6 @@ export const LeaderboardEntryWrapper = styled(Box, {
         [theme.breakpoints.up('sm' as Breakpoint)]: {
           padding: theme.spacing(2, 3),
         },
-        ...theme.applyStyles('light', {
-          background: theme.palette.white.main,
-        }),
       },
     },
     {
@@ -54,10 +54,10 @@ export const LeaderboardEntryWrapper = styled(Box, {
         transition: 'background-color 250ms',
         ':hover': {
           cursor: 'pointer',
-          backgroundColor: theme.palette.alphaLight300.main,
-          ...theme.applyStyles('light', {
-            backgroundColor: darken(theme.palette.white.main, 0.04),
-          }),
+          backgroundColor:
+            theme.palette.mode === 'light'
+              ? darken(theme.palette.white.main, 0.04)
+              : theme.palette.alphaLight300.main,
         },
       },
     },

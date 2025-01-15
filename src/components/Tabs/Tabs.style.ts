@@ -7,7 +7,10 @@ import { Tab as MuiTab, Tabs, alpha, styled } from '@mui/material';
 export const TabsContainer = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<TabsProps>(({ theme }) => ({
-  backgroundColor: getContrastAlphaColor(theme, '4%'),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? getContrastAlphaColor(theme, '4%')
+      : getContrastAlphaColor(theme, '12%'),
   padding: 1,
   alignItems: 'center',
   '.MuiTabs-flexContainer': {
@@ -17,18 +20,15 @@ export const TabsContainer = styled(Tabs, {
     position: 'absolute',
     top: '50%',
     transform: 'translateY(-50%) scaleY(0.98)',
-    backgroundColor: theme.palette.white.main,
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.white.main
+        : theme.palette.alphaLight300.main,
     zIndex: '-1',
-    ...theme.applyStyles('dark', {
-      backgroundColor: theme.palette.alphaLight300.main,
-    }),
   },
   '> .MuiTabs-root': {
     minHeight: 'unset !important',
   },
-  ...theme.applyStyles('dark', {
-    backgroundColor: getContrastAlphaColor(theme, '12%'),
-  }),
 }));
 
 export const Tab = styled(MuiTab, {
@@ -53,10 +53,10 @@ export const Tab = styled(MuiTab, {
   textDecoration: 'none',
   '&.Mui-selected': {
     color: theme.palette.text.primary,
-    backgroundColor: theme.palette.white.main,
-    ...theme.applyStyles('dark', {
-      backgroundColor: alpha(theme.palette.white.main, 0.1),
-    }),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.white.main
+        : alpha(theme.palette.white.main, 0.1),
   },
   ':hover': {
     backgroundColor: getContrastAlphaColor(theme, '4%'),

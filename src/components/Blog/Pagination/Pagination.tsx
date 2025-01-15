@@ -2,7 +2,7 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { StrapiMetaPagination } from '@/types/strapi';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { darken, lighten, Typography, useTheme } from '@mui/material';
+import { darken, lighten, Typography } from '@mui/material';
 import type { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 
 import {
@@ -32,7 +32,6 @@ export const Pagination = ({
   id,
   categoryId,
 }: PaginationProps) => {
-  const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const handlePage = (page: number) => {
     trackEvent({
@@ -87,10 +86,10 @@ export const Pagination = ({
         <PaginationButton onClick={() => handlePrev()} disableRipple={false}>
           <ArrowBackIcon
             sx={(theme) => ({
-              color: darken(theme.palette.text.primary, 0.2),
-              ...theme.applyStyles('light', {
-                color: lighten(theme.palette.text.primary, 0.6),
-              }),
+              color:
+                theme.palette.mode === 'light'
+                  ? lighten(theme.palette.text.primary, 0.6)
+                  : darken(theme.palette.text.primary, 0.2),
             })}
           />
         </PaginationButton>
@@ -115,10 +114,10 @@ export const Pagination = ({
         <PaginationButton onClick={() => handleNext()}>
           <ArrowForwardIcon
             sx={(theme) => ({
-              color: darken(theme.palette.text.primary, 0.2),
-              ...theme.applyStyles('light', {
-                color: lighten(theme.palette.text.primary, 0.6),
-              }),
+              color:
+                theme.palette.mode === 'light'
+                  ? lighten(theme.palette.text.primary, 0.6)
+                  : darken(theme.palette.text.primary, 0.2),
             })}
           />
         </PaginationButton>

@@ -20,11 +20,11 @@ export const SuperFestPoweredContainer = styled('div', {
     zIndex: 1,
     '.link-jumper': {
       fontWeight: '700',
-      color: theme.palette.accent1Alt.main,
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.accent1.main
+          : theme.palette.accent1Alt.main,
       textDecoration: 'none',
-      ...theme.applyStyles('light', {
-        color: theme.palette.accent1.main,
-      }),
     },
   },
 }));

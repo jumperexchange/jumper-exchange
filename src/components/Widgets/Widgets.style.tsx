@@ -45,7 +45,9 @@ export const WidgetContainer = styled(Box, {
       transitionDuration: '.4s',
       transitionTimingFunction: 'ease-in-out',
       background:
-        'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);',
+        theme.palette.mode === 'light'
+          ? 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);'
+          : 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);',
       zIndex: -1,
       pointerEvents: 'none',
       width: 1080,
@@ -65,10 +67,6 @@ export const WidgetContainer = styled(Box, {
         maxWidth: '90vh',
         maxHeight: '90vh',
       },
-      ...theme.applyStyles('dark', {
-        background:
-          'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);',
-      }),
     },
     // radial shadow glow -> hover
     '&:hover:after': {},
@@ -101,12 +99,9 @@ export const WidgetContainer = styled(Box, {
         props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
         style: {
           '&:hover:after': {
-            opacity: 0.34,
+            opacity: theme.palette.mode === 'light' ? 0.34 : 0.48,
             // adjusting top position of glow-effect while hovering for "spot-light" effect
             top: `calc( ${GLOW_EFFECT_TOP_POSITION} + ${GLOW_EFFECT_TOP_OFFSET_POSITION})`,
-            ...theme.applyStyles('dark', {
-              opacity: 0.48,
-            }),
           },
         },
       },

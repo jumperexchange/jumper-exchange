@@ -16,9 +16,6 @@ export const StyledInfoIcon = styled(InfoIcon, {
 })<StyledInfoIconProps>(({ theme, size }) => ({
   width: size || 16,
   height: size || 16,
-  opacity: 0.72,
+  opacity: theme.palette.mode === 'light' ? 0.24 : 0.72,
   marginLeft: theme.spacing(1),
-  ...theme.applyStyles('light', {
-    opacity: 0.24,
-  }),
 }));

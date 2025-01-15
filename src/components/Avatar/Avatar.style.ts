@@ -41,10 +41,10 @@ export const SmallAvatar = styled(Avatar)(({ theme }) => ({
 }));
 
 export const SmallAvatarSkeletonBase = styled(Skeleton)(({ theme }) => ({
-  border: `2px solid ${darken(theme.palette.white.main, 0.04)}`,
+  border:
+    theme.palette.mode === 'light'
+      ? `2px solid ${darken(theme.palette.white.main, 0.04)}`
+      : `2px solid ${theme.palette.alphaLight400.main}`,
   width: 16,
   height: 16,
-  ...theme.applyStyles('dark', {
-    border: `2px solid ${theme.palette.alphaLight400.main}`,
-  }),
 }));

@@ -62,10 +62,10 @@ export const ProgressionChart = styled(Box, {
           fontWeight: 700,
           fontSize: '12px',
           lineHeight: '24px',
-          color: theme.palette.white.main,
-          ...theme.applyStyles('light', {
-            color: theme.palette.primary.main,
-          }),
+          color:
+            theme.palette.mode === 'light'
+              ? theme.palette.primary.main
+              : theme.palette.white.main,
         },
       },
     },
@@ -93,10 +93,10 @@ export const ProgressionChartScore = styled(Box, {
       ongoingValue && levelData && ongoingValue > levelData?.minPoints
         ? `${calcWidth}%`
         : '0%',
-    backgroundColor: theme.palette.accent1Alt.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: theme.palette.accent1.main,
-    }),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.accent1.main
+        : theme.palette.accent1Alt.main,
     variants: [
       {
         props: ({ ongoingValue, levelData }) =>
@@ -118,8 +118,8 @@ export const ProgressionChartBg = styled(Box, {
   width: '100%',
   height: '100%',
   borderRadius: '12px',
-  backgroundColor: chartBg || theme.palette.alphaLight200.main,
-  ...theme.applyStyles('light', {
-    backgroundColor: chartBg || theme.palette.alphaDark200.main,
-  }),
+  backgroundColor:
+    chartBg || theme.palette.mode === 'light'
+      ? theme.palette.alphaDark200.main
+      : theme.palette.alphaLight200.main,
 }));

@@ -19,10 +19,10 @@ export const FeaturedArticleLink = styled(Link)<BoxProps>(({ theme }) => ({
   margin: theme.spacing(4, 2, 0),
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor: alpha(theme.palette.white.main, 0.2),
-    ...theme.applyStyles('light', {
-      backgroundColor: alpha(theme.palette.white.main, 0.8),
-    }),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.white.main, 0.8)
+        : alpha(theme.palette.white.main, 0.2),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(6, 8, 0),

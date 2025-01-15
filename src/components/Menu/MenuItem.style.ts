@@ -118,16 +118,16 @@ export const MenuItemButtonLabel = styled(Typography, {
 })<MenuItemLabelProps>(({ theme }) => ({
   marginLeft: 'inherit',
   marginRight: 'inherit',
-  color: theme.palette.white.main,
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.white.main,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   maxWidth: 208,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     maxWidth: 168,
   },
-  ...theme.applyStyles('light', {
-    color: theme.palette.primary.main,
-  }),
   variants: [
     {
       props: ({ prefixIcon }) => !!prefixIcon,

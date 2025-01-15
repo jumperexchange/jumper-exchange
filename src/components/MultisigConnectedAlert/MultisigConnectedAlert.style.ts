@@ -22,11 +22,11 @@ export const MultisigConnectedAlertContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(3),
   borderRadius: '16px',
-  background: theme.palette.surface1.main,
+  background:
+    theme.palette.mode === 'light'
+      ? theme.palette.surface1.main
+      : theme.palette.surface2.main,
   boxShadow: theme.shadows[1],
-  ...theme.applyStyles('dark', {
-    background: theme.palette.surface2.main,
-  }),
 }));
 
 export const MultisigConnectedAlertButton = styled(Button)(({ theme }) => ({

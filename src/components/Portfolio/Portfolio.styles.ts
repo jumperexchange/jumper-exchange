@@ -5,11 +5,11 @@ import {
   Box,
   darken,
   Divider,
+  styled,
   Typography,
 } from '@mui/material';
 import { lighten } from '@mui/material/styles';
 import SvgIcon from '@mui/material/SvgIcon/SvgIcon'; // Import AccordionProps
-import { styled } from '@mui/material';
 
 export const TotalValue = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -40,11 +40,11 @@ export const CustomAccordion = styled(Accordion)<{ isExpanded?: boolean }>(
       padding: '16px',
       borderRadius: 12,
       '&:hover': {
-        backgroundColor: darken(theme.palette.surface2.main, 0.04),
+        backgroundColor:
+          theme.palette.mode === 'light'
+            ? darken(theme.palette.surface2.main, 0.04)
+            : lighten(theme.palette.surface2.main, 0.04),
         borderRadius: '16px',
-        ...theme.applyStyles('dark', {
-          backgroundColor: lighten(theme.palette.surface2.main, 0.04),
-        }),
       },
     },
     variants: [

@@ -155,9 +155,14 @@ export const MenuPaper = styled(Paper, {
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
-  boxShadow: `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
-    isMobile ? '-' : ''
-  }8px 16px rgba(0, 0, 0, 0.16)`,
+  boxShadow:
+    theme.palette.mode === 'light'
+      ? `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
+          isMobile ? '-' : ''
+        }8px 16px rgba(0, 0, 0, 0.16)`
+      : `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
+          isMobile ? '-' : ''
+        }8px 16px rgba(0, 0, 0, 0.08)`,
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
   // viewHeight - navbarHeight - offset
@@ -184,11 +189,6 @@ export const MenuPaper = styled(Paper, {
     width: width ?? 288,
     marginTop: -2,
   },
-  ...theme.applyStyles('light', {
-    boxShadow: `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
-      isMobile ? '-' : ''
-    }8px 16px rgba(0, 0, 0, 0.08)`,
-  }),
   variants: [
     {
       props: ({ show }) => !show,

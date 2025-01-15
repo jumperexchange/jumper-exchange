@@ -35,12 +35,10 @@ export const CarouselHeader = styled(Box, {
   alignItems: 'center',
   marginTop: theme.spacing(1.5),
   justifyContent: 'space-between',
+  color: theme.palette.text.primary,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: 0,
   },
-  ...theme.applyStyles('dark', {
-    color: theme.palette.white.main,
-  }),
 }));
 
 export interface CarouselNavigationContainerProps

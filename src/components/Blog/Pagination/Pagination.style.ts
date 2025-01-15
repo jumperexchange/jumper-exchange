@@ -9,16 +9,16 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   width: 'fit-content',
   flexWrap: 'wrap',
   padding: theme.spacing(1),
-  backgroundColor: getContrastAlphaColor(theme, '4%'),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? getContrastAlphaColor(theme, '4%')
+      : getContrastAlphaColor(theme, '12%'),
   borderRadius: '24px',
   left: '50%',
   margin: theme.spacing(2, 'auto', 0, 'auto'),
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(2),
-  ...theme.applyStyles('dark', {
-    backgroundColor: getContrastAlphaColor(theme, '12%'),
-  }),
 }));
 
 export interface PaginationIndexButtonProps
@@ -32,10 +32,10 @@ export const PaginationIndexButton = styled(IconButton, {
   width: 40,
   height: 40,
   '&:hover': {
-    backgroundColor: getContrastAlphaColor(theme, '32%'),
-    ...theme.applyStyles('light', {
-      backgroundColor: getContrastAlphaColor(theme, '4%'),
-    }),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? getContrastAlphaColor(theme, '4%')
+        : getContrastAlphaColor(theme, '32%'),
   },
   variants: [
     {
@@ -64,11 +64,11 @@ export const PaginationIndexButton = styled(IconButton, {
       props: ({ active }) => active,
       style: {
         '& .MuiTouchRipple-root': {
-          backgroundColor: theme.palette.alphaLight300.main,
+          backgroundColor:
+            theme.palette.mode === 'light'
+              ? theme.palette.alphaDark100.main
+              : theme.palette.alphaLight300.main,
           zIndex: -1,
-          ...theme.applyStyles('light', {
-            backgroundColor: theme.palette.alphaDark100.main,
-          }),
         },
       },
     },
@@ -80,9 +80,9 @@ export const PaginationButton = styled(IconButton)(({ theme }) => ({
   width: 40,
   height: 40,
   '&:hover': {
-    backgroundColor: getContrastAlphaColor(theme, '4%'),
-    ...theme.applyStyles('dark', {
-      backgroundColor: getContrastAlphaColor(theme, '12%'),
-    }),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? getContrastAlphaColor(theme, '4%')
+        : getContrastAlphaColor(theme, '12%'),
   },
 }));

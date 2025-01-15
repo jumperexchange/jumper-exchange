@@ -42,19 +42,19 @@ export const AddressBoxContainer = styled(Box, {
     top: '50%',
     right: 0,
     bottom: 0,
-    backgroundColor: alpha(theme.palette.grey[100], 0.08),
-    ...theme.applyStyles('light', {
-      backgroundColor: theme.palette.grey[100],
-    }),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[100]
+        : alpha(theme.palette.grey[100], 0.08),
   },
   variants: [
     {
       props: ({ imgUrl }) => !imgUrl,
       style: {
-        background: `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, ${'transparent'} 50%)`,
-        ...theme.applyStyles('light', {
-          background: `linear-gradient(to bottom, ${theme.palette.primary.main} 50%, ${theme.palette.grey[100]} 50%)`,
-        }),
+        background:
+          theme.palette.mode === 'light'
+            ? `linear-gradient(to bottom, ${theme.palette.primary.main} 50%, ${theme.palette.grey[100]} 50%)`
+            : `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, ${'transparent'} 50%)`,
       },
     },
     {
@@ -74,15 +74,17 @@ export const AddressBoxContainer = styled(Box, {
 
 export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
   ({ theme }) => ({
-    backgroundColor: alpha(theme.palette.grey[200], 0.08),
-    color: theme.palette.grey[100],
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[200]
+        : alpha(theme.palette.grey[200], 0.08),
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.black.main
+        : theme.palette.grey[100],
     width: '32px',
     height: '32px',
     marginLeft: theme.spacing(1),
-    ...theme.applyStyles('light', {
-      backgroundColor: theme.palette.grey[200],
-      color: theme.palette.black.main,
-    }),
   }),
 );
 

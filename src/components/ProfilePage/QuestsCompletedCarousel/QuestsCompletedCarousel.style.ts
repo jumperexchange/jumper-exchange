@@ -2,7 +2,10 @@ import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, alpha, styled } from '@mui/material';
 
 export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.white.main, 0.08),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? '#F9F5FF'
+      : alpha(theme.palette.white.main, 0.08),
   padding: theme.spacing(2),
   borderRadius: '32px',
   boxShadow: theme.shadows[1],
@@ -21,9 +24,6 @@ export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
     margin: `${theme.spacing(12, 'auto', 0)}`,
     maxWidth: theme.breakpoints.values.xl,
   },
-  ...theme.applyStyles('light', {
-    backgroundColor: '#F9F5FF',
-  }),
 }));
 
 export const CompletedQuestHeader = styled(Box, {
@@ -31,9 +31,7 @@ export const CompletedQuestHeader = styled(Box, {
 })<BoxProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  ...theme.applyStyles('dark', {
-    color: theme.palette.white.main,
-  }),
+  color: theme.palette.text.primary,
 }));
 
 export const CompletedQuestTitle = styled(Typography, {

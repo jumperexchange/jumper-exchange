@@ -55,13 +55,13 @@ export const Banner = () => {
         />
         <Typography
           sx={(theme) => ({
-            color: theme.palette.accent1.main,
+            color:
+              theme.palette.mode === 'light'
+                ? theme.palette.accent1.main
+                : '#FFFFFFD6',
             fontSize: '16px',
             fontWeight: 700,
             lineHeight: '20px',
-            ...theme.applyStyles('dark', {
-              color: '#FFFFFFD6',
-            }),
           })}
         >
           {' '}

@@ -1,10 +1,8 @@
-import { Badge, Box, Skeleton, Stack, useTheme } from '@mui/material';
+import { Badge, Box, Skeleton, Stack } from '@mui/material';
 import { WalletCardContainer } from '../Menus';
 import { PortfolioSkeletonBox } from './Portfolio.styles';
 
 export default function PortfolioTokenSkeleton() {
-  const theme = useTheme();
-
   return (
     <>
       {Array.from({ length: 10 }, () => 42).map((_, index) => (
@@ -21,10 +19,8 @@ export default function PortfolioTokenSkeleton() {
                     height={16}
                     sx={(theme) => ({
                       border: `2px solid ${theme.palette.surface2.main}`,
-                      backgroundColor: '#3f3d56',
-                      ...theme.applyStyles('light', {
-                        backgroundColor: '#e4e4e4',
-                      }),
+                      backgroundColor:
+                        theme.palette.mode === 'light' ? '#e4e4e4' : '#3f3d56',
                     })}
                   />
                 }

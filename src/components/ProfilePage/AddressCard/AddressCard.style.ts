@@ -18,7 +18,10 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  background: theme.palette.bgTertiary.main,
+  background:
+    theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : theme.palette.bgTertiary.main,
   alignItems: 'center',
   borderRadius: 24,
   overflow: 'hidden',
@@ -29,9 +32,6 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     maxWidth: 320,
   },
-  ...theme.applyStyles('light', {
-    background: theme.palette.white.main,
-  }),
 }));
 
 interface AddressBlockiesImageProps extends ImageProps {
@@ -69,19 +69,19 @@ export const AddressBlockiesImageSkeleton = styled(Skeleton)(({ theme }) => ({
 export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
   ({ theme }) => ({
     backgroundColor: 'transparent',
-    color: theme.palette.grey[100],
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.black.main
+        : theme.palette.grey[100],
     width: 32,
     height: 32,
     marginLeft: theme.spacing(1),
     ':hover': {
-      color: theme.palette.grey[100],
-      ...theme.applyStyles('light', {
-        color: theme.palette.black.main,
-      }),
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.black.main
+          : theme.palette.grey[100],
     },
-    ...theme.applyStyles('light', {
-      color: theme.palette.black.main,
-    }),
   }),
 );
 
@@ -91,10 +91,10 @@ export const AddressButton = styled(ButtonTransparent)(({ theme }) => ({
   background: 'transparent',
   borderRadius: '16px',
   '&:hover': {
-    backgroundColor: theme.palette.white.main,
-    ...theme.applyStyles('dark', {
-      backgroundColor: theme.palette.alphaLight300.main,
-    }),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.white.main
+        : theme.palette.alphaLight300.main,
   },
 }));
 
@@ -102,10 +102,10 @@ export const AddressConnectButton = styled(ButtonSecondary)(({ theme }) => ({
   textWrap: 'nowrap',
   height: 40,
   padding: theme.spacing(1, 2),
-  color: theme.palette.white.main,
-  ...theme.applyStyles('light', {
-    color: theme.palette.primary.main,
-  }),
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.white.main,
 }));
 
 export const AddressButtonLabel = styled(Typography)(({ theme }) => ({}));
@@ -163,10 +163,10 @@ export const ImageBackground = styled(Box, {
     {
       props: ({ imgUrl }) => !imgUrl,
       style: {
-        background: `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, ${'transparent'} 50%)`,
-        ...theme.applyStyles('light', {
-          background: `linear-gradient(to bottom, ${theme.palette.primary.main} 50%, ${theme.palette.grey[100]} 50%)`,
-        }),
+        background:
+          theme.palette.mode === 'light'
+            ? `linear-gradient(to bottom, ${theme.palette.primary.main} 50%, ${theme.palette.grey[100]} 50%)`
+            : `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, ${'transparent'} 50%)`,
       },
     },
     {

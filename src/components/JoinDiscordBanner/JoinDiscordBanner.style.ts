@@ -23,10 +23,10 @@ export const DiscordBannerLink = styled(Link)<BoxProps>(({ theme }) => ({
   margin: theme.spacing(6, 2),
   marginBottom: theme.spacing(14.5),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.white.main, 0.2),
-    ...theme.applyStyles('light', {
-      backgroundColor: alpha(theme.palette.white.main, 1),
-    }),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.white.main, 1)
+        : alpha(theme.palette.white.main, 0.2),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(12, 8),

@@ -14,9 +14,8 @@ import {
   Grid,
   lighten,
   Avatar as MuiAvatar,
-  useTheme,
 } from '@mui/material';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useMenuStore } from 'src/stores/menu';
 
@@ -29,8 +28,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
   const { setWalletMenuState } = useMenuStore((state) => state);
   const { isMainPaths } = useMainPaths();
   const router = useRouter();
-  const { lng } = useParams();
-  const theme = useTheme();
+  // const { lng } = useParams();
   const { t } = useTranslation();
 
   return (
@@ -49,17 +47,17 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
         paddingY: '16px',
         display: 'flex',
         '&:hover': {
-          backgroundColor: darken(theme.palette.surface2.main, 0.04),
-          ...theme.applyStyles('dark', {
-            backgroundColor: lighten(theme.palette.surface2.main, 0.04),
-          }),
+          backgroundColor:
+            theme.palette.mode === 'light'
+              ? darken(theme.palette.surface2.main, 0.04)
+              : lighten(theme.palette.surface2.main, 0.04),
         },
         '&:last-child:hover': {
           borderRadius: '0 0 16px 16px',
-          backgroundColor: darken(theme.palette.surface2.main, 0.04),
-          ...theme.applyStyles('dark', {
-            backgroundColor: darken(theme.palette.surface2.main, 0.04),
-          }),
+          backgroundColor:
+            theme.palette.mode === 'light'
+              ? darken(theme.palette.surface2.main, 0.04)
+              : darken(theme.palette.surface2.main, 0.04),
         },
       })}
     >

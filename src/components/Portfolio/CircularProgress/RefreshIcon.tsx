@@ -9,8 +9,8 @@ const getProgressValue = (updatedAt: number, timeToUpdate: number) =>
     ? Math.min(100, ((Date.now() - updatedAt) / timeToUpdate) * 100)
     : 0;
 
-const getSecondsToUpdate = (updatedAt: number, timeToUpdate: number) =>
-  Math.max(Math.round((timeToUpdate - (Date.now() - updatedAt)) / 1000), 0);
+// const getSecondsToUpdate = (updatedAt: number, timeToUpdate: number) =>
+//   Math.max(Math.round((timeToUpdate - (Date.now() - updatedAt)) / 1000), 0);
 
 const RefreshIcon: React.FC<
   {
@@ -64,10 +64,10 @@ const RefreshIcon: React.FC<
             value={100}
             sx={(theme) => ({
               position: 'absolute',
-              color: theme.palette.grey[800],
-              ...theme.applyStyles('light', {
-                color: theme.palette.grey[300],
-              }),
+              color:
+                theme.palette.mode === 'light'
+                  ? theme.palette.grey[300]
+                  : theme.palette.grey[800],
             })}
           />
           <CircularProgress
@@ -76,10 +76,10 @@ const RefreshIcon: React.FC<
             value={value}
             sx={(theme) => ({
               opacity: value === 100 && !isLoading ? 0.5 : 1,
-              color: theme.palette.primary.light,
-              ...theme.applyStyles('light', {
-                color: theme.palette.primary.main,
-              }),
+              color:
+                theme.palette.mode === 'light'
+                  ? theme.palette.primary.main
+                  : theme.palette.primary.light,
             })}
           />
         </CircularBox>

@@ -15,22 +15,22 @@ export const NavbarButtonsContainer = styled('div')({
 export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => ({
   justifyContent: 'center',
   backgroundColor: 'transparent',
-  color: theme.palette.primary.main,
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.accent1Alt.main,
   width: 48,
   borderRadius: '50%',
   marginLeft: theme.spacing(1.5),
   minWidth: 'unset',
   height: 48,
   ':hover:before': {
-    backgroundColor: theme.palette.alphaDark100.main,
-    ...theme.applyStyles('dark', {
-      backgroundColor: getContrastAlphaColor(theme, '12%'),
-    }),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.alphaDark100.main
+        : getContrastAlphaColor(theme, '12%'),
   },
   ':hover': {
     backgroundColor: 'transparent',
   },
-  ...theme.applyStyles('dark', {
-    color: theme.palette.accent1Alt.main,
-  }),
 }));

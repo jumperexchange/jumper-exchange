@@ -29,10 +29,10 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   },
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor: theme.palette.alphaLight300.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: darken(theme.palette.white.main, 0.04),
-    }),
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? darken(theme.palette.white.main, 0.04)
+        : theme.palette.alphaLight300.main,
   },
 }));
 

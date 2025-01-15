@@ -157,10 +157,10 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           sx={(theme) => ({
             background: 'transparent',
             '&:hover': {
-              backgroundColor: theme.palette.white.main,
-              ...theme.applyStyles('dark', {
-                backgroundColor: theme.palette.alphaLight300.main,
-              }),
+              backgroundColor:
+                theme.palette.mode === 'light'
+                  ? theme.palette.white.main
+                  : theme.palette.alphaLight300.main,
             },
           })}
         >

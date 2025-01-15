@@ -4,14 +4,14 @@ import { Box, alpha, styled } from '@mui/material';
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor: alpha(theme.palette.white.main, 0.08),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : alpha(theme.palette.white.main, 0.08),
   height: 450,
   width: 288,
   textAlign: 'center',
   borderRadius: '8px',
-  ...theme.applyStyles('light', {
-    backgroundColor: '#FFFFFF',
-  }),
 }));
 
 export const QuestCardBottomBox = styled(Box)(({ theme }) => ({

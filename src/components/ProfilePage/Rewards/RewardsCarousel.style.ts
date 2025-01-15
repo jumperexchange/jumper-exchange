@@ -59,7 +59,7 @@ export const RewardsCarouselTitle = styled(Typography, {
 export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'light'
-      ? '#FFFFFF'
+      ? theme.palette.white.main
       : alpha(theme.palette.white.main, 0.08),
   display: 'flex',
   alignItems: 'center',

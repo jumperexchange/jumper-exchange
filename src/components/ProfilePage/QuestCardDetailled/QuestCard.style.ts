@@ -20,12 +20,12 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   paddingBottom: '24px',
   paddingLeft: '16px',
   paddingRight: '16px',
-  backgroundColor: alpha(theme.palette.white.main, 0.08),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : alpha(theme.palette.white.main, 0.08),
   borderBottomLeftRadius: '8px',
   borderBottomRightRadius: '8px',
-  ...theme.applyStyles('light', {
-    backgroundColor: '#FFFFFF',
-  }),
 }));
 
 export const QuestCardTitleBox = styled(Box)(() => ({

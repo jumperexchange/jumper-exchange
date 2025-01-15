@@ -1,5 +1,5 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -76,6 +76,7 @@ export const QuestCard = ({
   const router = useRouter();
   const { apy } = useMissionsMaxAPY(claimingIds);
   const { trackEvent } = useUserTracking();
+  const theme = useTheme();
   const handleClick = () => {
     trackEvent({
       category: TrackingCategory.Quests,
@@ -189,7 +190,9 @@ export const QuestCard = ({
                   {!completed ? (
                     <SuperfestXPIcon size={16} />
                   ) : (
-                    <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
+                    <CheckCircleIcon
+                      sx={{ width: '16px', color: theme.palette.white.main }}
+                    />
                   )}
                 </XPIconBox>
               </XPDisplayBox>
@@ -209,7 +212,7 @@ export const QuestCard = ({
                 border: '2px dotted',
                 padding: '16px',
                 '&:hover': {
-                  color: '#FFFFFF',
+                  color: theme.palette.white.main,
                   backgroundColor: '#ff0420',
                 },
               }}
