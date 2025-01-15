@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 import { Button } from 'src/components/Button';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { CampaignBox } from './CampaignBanner.style';
 import Image from 'next/image';
 import { getContrastAlphaColor } from 'src/utils/colors';
 import { openInNewTab } from 'src/utils/openInNewTab';
-import { JUMPER_CAMPAIGN_PATH } from 'src/const/urls';
 import { useRouter } from 'next/navigation';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { CampaignInformation } from './CampaignInformation';
