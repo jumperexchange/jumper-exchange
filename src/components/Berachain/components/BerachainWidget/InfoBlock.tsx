@@ -67,7 +67,7 @@ function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
             padding: theme.spacing(1.5, 2),
             display: 'flex',
             justifyContent: 'space-between',
-            backgroundColor: deposited ? '#291812' : undefined,
+            background: 'transparent',
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               padding: theme.spacing(1.5, 2),
             },
@@ -77,11 +77,14 @@ function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
             title={deposited ? 'Deposited' : 'Deposit'}
             tooltipText={deposited ? DEPOSITED_TOOLTIP : DEPOSIT_TOOLTIP}
             tokenImage={market?.input_token_data?.image}
-            sx={{
+            sx={(theme) => ({
+              '.tooltip-icon': {
+                color: theme.palette.alphaLight500.main,
+              },
               '.content': {
                 fontSize: '1.5rem',
               },
-            }}
+            })}
             digit={
               deposited
                 ? t('format.decimal', {
@@ -95,14 +98,17 @@ function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
 
           {market.lockup_time === '0' ? undefined : (
             <DigitCard
-              sx={{
+              sx={(theme) => ({
                 '.header-container': {
                   justifyContent: 'flex-end',
                 },
                 '.content': {
                   fontSize: '1.5rem',
                 },
-              }}
+                '.tooltip-icon': {
+                  color: theme.palette.alphaLight500.main,
+                },
+              })}
               title={'Lockup'}
               tooltipText={LOCKUP_TOOLTIP}
               digit={formatWithCustomLabels(

@@ -41,6 +41,9 @@ import {
   WalletCardBadge,
 } from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
+import { TrackingCategory } from '@/const/trackingKeys';
+import { parseTokenAmountToRawAmount } from 'royco/utils';
+import { useUserTracking } from '@/hooks/userTracking';
 
 // TODO: refactorize, should have a common component TokenImage (without badge) and possibility to add an adornment to it
 interface Image {
@@ -51,6 +54,7 @@ interface Image {
 interface WithdrawWidgetInputTokenTabProps {
   market: EnrichedMarketDataType;
   chain?: ExtendedChain;
+  appName?: string;
   overrideStyle?: {
     mainColor?: string;
   };
@@ -61,10 +65,12 @@ interface WithdrawWidgetInputTokenTabProps {
 export const WithdrawWidgetInputTokenTab = ({
   market,
   chain,
+  appName,
   overrideStyle = {},
   image,
   refetch = () => undefined,
 }: WithdrawWidgetInputTokenTabProps) => {
+  const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
   const { account } = useAccount();
   const [value, setValue] = useState(0);
@@ -143,8 +149,30 @@ export const WithdrawWidgetInputTokenTab = ({
       : [];
 
   useEffect(() => {
+    if (!isTxConfirmed) {
+      return;
+    }
     refetch();
     positionsRecipeRefetch();
+
+    trackEvent({
+      category: TrackingCategory.WidgetEvent,
+      action: 'berachain_withdraw',
+      label: 'execution_success',
+      data: {
+        chain_id: market.chain_id,
+        market_id: market.market_id,
+        withdrawn_token: market.input_token_data.contract_address,
+        protocol_name: appName ?? 'NA',
+        amount_withdrawn:
+          positions[currentPositionIndex ?? -1]?.input_token_data?.token_amount,
+        amount_withdrawn_usd:
+          positions[currentPositionIndex ?? -1]?.input_token_data
+            ?.token_amount_usd,
+        timestamp: new Date(),
+      } as any, // Shortcut
+      isConversion: true,
+    });
   }, [isTxConfirmed]);
 
   if (positionsRecipeSuccess && positions.length === 0) {
@@ -200,7 +228,7 @@ export const WithdrawWidgetInputTokenTab = ({
     <Stack direction="column" gap={3}>
       {positions.map((position, positionIndex) => {
         return (
-          <Stack gap={1}>
+          <Stack gap={1} key={positionIndex}>
             <Typography
               variant="body2"
               sx={(theme) => ({
@@ -343,6 +371,9 @@ export const WithdrawWidgetInputTokenTab = ({
                         />
                       }
                       sx={(theme) => ({
+                        '.tooltip-icon': {
+                          color: theme.palette.alphaLight500.main,
+                        },
                         '.title': {
                           fontSize: '0.750rem',
                           color: theme.palette.alphaLight700.main,
@@ -395,6 +426,7 @@ export const WithdrawWidgetInputTokenTab = ({
                   onClick={() => {
                     if (!!position) {
                       setCurrentPositionIndex(positionIndex);
+
                       const contractOptions =
                         getRecipeInputTokenWithdrawalTransactionOptions({
                           chain_id: market.chain_id!,

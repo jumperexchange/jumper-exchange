@@ -1,14 +1,12 @@
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import InfoIcon from '@mui/icons-material/Info';
 import LanguageIcon from '@mui/icons-material/Language';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import XIcon from '@mui/icons-material/X';
 import type { Theme } from '@mui/material';
-import { Box, Skeleton, Typography, useMediaQuery } from '@mui/material';
+import { Box, Skeleton, Stack, Typography, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { AccordionFAQ } from 'src/components/AccordionFAQ';
-import { getSiteUrl } from 'src/const/urls';
 import { useMenuStore } from 'src/stores/menu';
 import type { Quest } from 'src/types/loyaltyPass';
 import { BerachainWidget } from '../BerachainWidget/BerachainWidget';
@@ -23,8 +21,9 @@ import {
 import { BerachainProtocolFaqAccordionHeader } from './BerachainProtocolFaqAccordionHeader';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
-import { WagmiProvider } from 'wagmi';
 import BerachainWidgetLoader from '../BerachainWidget/WidgetLoader/WidgetLoader';
+import BackButton from '@/components/Berachain/components/BackButton';
+import { getFullTitle } from '@/components/Berachain/utils';
 
 interface BerachainProtocolActionProps {
   market?: EnrichedMarketDataType;
@@ -50,7 +49,7 @@ export const BerachainProtocolInformation = ({
         (market ? (
           <BerachainWidget
             market={market}
-            appName={card?.attributes?.Title}
+            appName={getFullTitle(market!, card)}
             appLink={detailInformation?.socials?.website}
           />
         ) : (
@@ -58,51 +57,56 @@ export const BerachainProtocolInformation = ({
         ))}
       <BerachainProtocolActionInfoBox>
         <BerachainInformationProtocolIntro>
-          {!isMobile &&
-            (card?.attributes?.Image.data.attributes.url ? (
-              <Image
-                src={`${baseUrl}${card?.attributes.Image.data.attributes.url}`}
-                alt="Protocol image"
-                width={card?.attributes.Image.data.attributes.width}
-                height={card?.attributes.Image.data.attributes.height}
-                style={{
-                  width: 144,
-                  height: 'auto',
-                  objectFit: 'contain',
-                }}
-              />
-            ) : (
-              <Skeleton
-                variant="circular"
-                sx={{
-                  width: '144px',
-                  height: '144px',
-                  flexShrink: 0,
-                  marginTop: '16px',
-                }}
-              />
-            ))}
+          <BackButton />
           <BerachainInformationProtocolCard>
-            {card?.attributes?.Title ? (
-              <Typography variant="titleSmall">
-                What is {card?.attributes.Title}?
-              </Typography>
-            ) : (
-              <Skeleton
-                variant="rectangular"
-                sx={{ height: '32px', width: '380px' }}
-              />
-            )}
-            {card?.attributes?.Description ? (
-              <Typography variant="bodyMedium">
-                {card?.attributes.Description}
-              </Typography>
-            ) : (
-              <Skeleton
-                variant="rectangular"
-                sx={{ height: '72px', width: '100%', borderRadius: '8px' }}
-              />
-            )}
+            <Stack spacing={2} direction="row">
+              {!isMobile &&
+                (card?.attributes?.Image.data.attributes.url ? (
+                  <Image
+                    src={`${baseUrl}${card?.attributes.Image.data.attributes.url}`}
+                    alt="Protocol image"
+                    width={card?.attributes.Image.data.attributes.width}
+                    height={card?.attributes.Image.data.attributes.height}
+                    style={{
+                      width: 144,
+                      height: 'auto',
+                      objectFit: 'contain',
+                    }}
+                  />
+                ) : (
+                  <Skeleton
+                    variant="circular"
+                    sx={{
+                      width: '144px',
+                      height: '144px',
+                      flexShrink: 0,
+                      marginTop: '16px',
+                    }}
+                  />
+                ))}
+              <Stack spacing={2} direction="column">
+                {card?.attributes?.Title ? (
+                  <Typography variant="titleSmall">
+                    What is {card?.attributes.Title}?
+                  </Typography>
+                ) : (
+                  <Skeleton
+                    variant="rectangular"
+                    sx={{ height: '32px', width: '380px' }}
+                  />
+                )}
+                {card?.attributes?.Description ? (
+                  <Typography variant="bodyMedium" color="textSecondary">
+                    {card?.attributes.Description}
+                  </Typography>
+                ) : (
+                  <Skeleton
+                    variant="rectangular"
+                    sx={{ height: '72px', width: '100%', borderRadius: '8px' }}
+                  />
+                )}
+              </Stack>
+            </Stack>
             <Box sx={{ display: 'flex', gap: '12px' }}>
               {detailInformation?.socials && (
                 <>
@@ -187,7 +191,10 @@ export const BerachainProtocolInformation = ({
       </BerachainProtocolActionInfoBox>
       {!isMobile &&
         (market ? (
-          <BerachainWidget market={market} />
+          <BerachainWidget
+            market={market}
+            appName={getFullTitle(market!, card)}
+          />
         ) : (
           <BerachainWidgetLoader />
         ))}

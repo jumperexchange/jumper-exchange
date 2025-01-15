@@ -61,10 +61,6 @@ export const WithdrawWidget = ({
   const theme = useTheme();
   const [withdrawType, setWithdrawType] = useState('input_token');
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setWithdrawType(event.target.value as string);
-  };
-
   const { data: recipe, refetch } = useEnrichedAccountBalancesRecipeInMarket({
     chain_id: market.chain_id!,
     market_id: market.market_id!,
@@ -84,7 +80,7 @@ export const WithdrawWidget = ({
       <InfoBlock
         market={market}
         type="withdraw"
-        sx={{ marginBottom: theme.spacing(3) }}
+        sx={{ marginBottom: theme.spacing(3), padding: theme.spacing(1) }}
         recipe={recipe}
       />
       {!account?.isConnected ? (
@@ -123,6 +119,7 @@ export const WithdrawWidget = ({
       ) : withdrawType === MarketWithdrawType.input_token.id ? (
         <WithdrawWidgetInputTokenTab
           market={market}
+          appName={appName}
           chain={chain}
           image={image}
           refetch={refetch}

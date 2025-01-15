@@ -54,12 +54,12 @@ const TokenIncentivesCard = ({ marketData, tokens }: DigitCardProps) => {
               </Typography>
               <Tooltip title={''} placement={'top'} enterTouchDelay={0} arrow>
                 <InfoIcon
-                  sx={{
+                  sx={(theme) => ({
+                    color: theme.palette.alphaLight500.main,
                     width: '16px',
                     height: '16px',
                     marginLeft: '4px',
-                    color: 'inherit',
-                  }}
+                  })}
                 />
               </Tooltip>
             </BeraChainProgressCardHeader>

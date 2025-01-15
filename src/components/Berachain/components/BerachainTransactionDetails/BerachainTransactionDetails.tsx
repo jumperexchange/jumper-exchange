@@ -1,14 +1,10 @@
-import { Box } from '@mui/material';
 import {
-  Button,
-  Collapse,
-  Divider,
-  IconButton,
+  AccordionDetails,
+  Box,
   Link,
   Tooltip,
   Typography,
   useTheme,
-  AccordionDetails,
 } from '@mui/material';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import type {
@@ -23,10 +19,13 @@ import { getExplorerUrl, shortAddress } from 'royco/utils';
 import InfoIcon from '@mui/icons-material/Info';
 import ExternalLinkIcon from '@mui/icons-material/Link';
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
-import SvgIcon from '@mui/material/SvgIcon/SvgIcon';
 
 import AccordionSummary from '@mui/material/AccordionSummary';
 import { BerachainDetailsAccordion } from '../BerachainWidget/DepositWidget/WidgetDeposit.style';
+import {
+  AccordionToggleButton,
+  FaqShowMoreArrow,
+} from '@/components/AccordionFAQ';
 
 export const MarketRewardStyle: Record<
   TypedRoycoMarketRewardStyle,
@@ -79,7 +78,14 @@ function BerachainTransactionDetails({
       onChange={handleChange}
       sx={{ borderRadius: '16px !important' }}
     >
-      <AccordionSummary sx={{ borderRadius: '16px' }}>
+      <AccordionSummary
+        sx={{ borderRadius: '16px' }}
+        expandIcon={
+          <AccordionToggleButton sx={{ color: 'text.primary' }}>
+            <FaqShowMoreArrow arrowSize={12} />
+          </AccordionToggleButton>
+        }
+      >
         <Box
           sx={{
             display: 'flex',
@@ -88,7 +94,6 @@ function BerachainTransactionDetails({
           }}
         >
           <Typography>Transfer Details</Typography>
-          {!open ? <ArrowDropDown /> : <ArrowDropUp />}
         </Box>
       </AccordionSummary>
       <AccordionDetails

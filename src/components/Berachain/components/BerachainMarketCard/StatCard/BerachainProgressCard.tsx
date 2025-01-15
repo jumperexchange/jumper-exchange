@@ -46,6 +46,7 @@ export const BerachainProgressCard = ({
           </Typography>
           {(tooltip || showTooltipIcon) && (
             <Tooltip
+              className="tooltip-icon"
               title={tooltip}
               placement={'top'}
               enterTouchDelay={0}
