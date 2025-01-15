@@ -22,6 +22,7 @@ import type { HighlightedAreas } from 'src/components/ImageGeneration/ImageGener
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
 import { imageFrameStyles } from 'src/components/ImageGeneration/style';
 import WidgetAmountsImage from 'src/components/ImageGeneration/WidgetAmountImage';
+import { getSiteUrl } from 'src/const/urls';
 import { getChainsQuery } from 'src/hooks/useChains';
 import { getTokensQuery } from 'src/hooks/useTokens';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
@@ -72,7 +73,7 @@ export async function GET(request: Request) {
           width={'100%'}
           height={'100%'}
           style={imageStyle}
-          src={`${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}` : process.env.NEXT_PUBLIC_SITE_URL}/widget/widget-swap-amounts-${theme === 'dark' ? 'dark' : 'light'}.png`} //${theme === 'dark' ? 'dark' : 'light'}
+          src={`${getSiteUrl()}/widget/widget-swap-amounts-${theme === 'dark' ? 'dark' : 'light'}.png`} //${theme === 'dark' ? 'dark' : 'light'}
         />
         <WidgetAmountsImage
           height={WIDGET_IMAGE_WIDTH}
