@@ -77,7 +77,7 @@ interface WidgetLikeFieldProps {
   placeholder?: string;
   image?: Image & { badge?: Image };
   chain?: ExtendedChain;
-  appName: string;
+  appName?: string;
   helperText?: {
     before?: Partial<HelperText>;
     after?: Partial<HelperText>;
