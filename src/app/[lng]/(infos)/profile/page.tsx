@@ -3,8 +3,9 @@ import ProfilePage from '@/app/ui/profile/ProfilePage';
 import { getSiteUrl } from '@/const/urls';
 
 export const metadata: Metadata = {
-  title: 'Jumper Profile',
-  description: 'Jumper Profile is the profile page of Jumper Exchange.',
+  title: 'Jumper Loyalty Pass',
+  description:
+    'Jumper Loyalty Pass is the page explaining the Loyalty Pass sytem.',
   alternates: {
     canonical: `${getSiteUrl()}/profile`,
   },
