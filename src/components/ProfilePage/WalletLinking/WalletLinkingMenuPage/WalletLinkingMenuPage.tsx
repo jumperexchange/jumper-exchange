@@ -68,7 +68,6 @@ export const WalletLinkingMenuPage = ({
                 backgroundColor: alpha(theme.palette.text.primary, 0.04),
               },
             })}
-            color="primary"
           >
             <CloseIcon />
           </IconButton>
@@ -76,7 +75,11 @@ export const WalletLinkingMenuPage = ({
         <WalletLinkingContent>{content}</WalletLinkingContent>
         {text && <Typography variant="bodyMedium">{text}</Typography>}
         <ButtonSecondary sx={{ color: '#200052' }} onClick={onClick}>
-          <Typography variant="bodyMediumStrong" component="span">
+          <Typography
+            variant="bodyMediumStrong"
+            component="span"
+            sx={(theme) => ({ color: theme.palette.text.primary })}
+          >
             {buttonLabel}
           </Typography>
         </ButtonSecondary>

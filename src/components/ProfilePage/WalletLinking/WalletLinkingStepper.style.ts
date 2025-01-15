@@ -9,6 +9,7 @@ export const WalletLinkingStepBox = styled(Box)(({ theme }) => ({
 }));
 
 export const WalletLinkingStepText = styled(Typography)(({ theme }) => ({
+  color: theme.palette.text.primary,
   [theme.breakpoints.up('sm')]: {
     whiteSpace: 'nowrap',
   },

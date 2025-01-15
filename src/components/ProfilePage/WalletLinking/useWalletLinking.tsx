@@ -53,7 +53,7 @@ export const useWalletLinking = ({
     evmAddress: evmWallet?.address,
     evmMessage,
     evmSignature,
-    solanaPublicKey,
+    solanaPublicKey, // or: svmWallet?.address ?
     solanaSignature: solanaSignature,
     queryKey: `${evmWallet?.address}-${solanaPublicKey}`,
     enabled: startWalletsVerification && !!evmSignature && !!solanaSignature,
@@ -238,6 +238,7 @@ export const useWalletLinking = ({
         onClick: () => {
           setOpen(false);
           setMenuIndex(0);
+          setStartWalletsVerification(false);
         },
       },
     ];

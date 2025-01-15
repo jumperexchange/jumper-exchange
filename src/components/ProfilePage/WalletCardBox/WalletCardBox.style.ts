@@ -5,7 +5,7 @@ export const WalletCardsContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   padding: theme.spacing(3),
-  backgroundColor: theme.palette.white.main,
+  backgroundColor: theme.palette.bgSecondary.main,
   gap: theme.spacing(2),
   minWidth: 208,
   width: '100%',
