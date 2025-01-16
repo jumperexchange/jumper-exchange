@@ -70,7 +70,7 @@ export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
   flexDirection: 'row',
   padding: theme.spacing(2),
   [theme.breakpoints.down('md' as Breakpoint)]: {
-    minWidth: 200,
+    minWidth: 400,
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     minWidth: 300,

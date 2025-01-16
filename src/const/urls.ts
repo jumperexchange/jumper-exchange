@@ -20,7 +20,6 @@ export const JUMPER_FEST_PATH = '/superfest';
 export const JUMPER_MEMECOIN_PATH = '/memecoins';
 export const JUMPER_QUESTS_PATH = '/quests';
 export const JUMPER_BOYCO_PATH = '/berachain';
-export const JUMPER_CAMPAIGN_PATH = '/campaign';
 
 export const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
 

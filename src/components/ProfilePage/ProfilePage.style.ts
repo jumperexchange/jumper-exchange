@@ -2,7 +2,7 @@ import type { Breakpoint } from '@mui/material';
 import { Box, Container, Typography, alpha, styled } from '@mui/material';
 
 export const PageContainer = styled(Container)(({ theme }) => ({
-  marginTop: 16,
+  marginTop: 32,
   fontFamily: 'var(--font-inter)',
   background: 'transparent',
   borderRadius: '8px',
@@ -41,7 +41,7 @@ export const ProfileHeaderBox = styled(Box)(({ theme }) => ({
 }));
 
 export const ProfileInfoBox = styled(Box)(({ theme }) => ({
-  gap: theme.spacing(2),
+  gab: theme.spacing(2),
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '24px',
   flexDirection: 'column',

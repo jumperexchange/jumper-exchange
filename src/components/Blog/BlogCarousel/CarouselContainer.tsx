@@ -1,12 +1,6 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import {
-  Box,
-  Theme,
-  useMediaQuery,
-  useTheme,
-  type CSSObject,
-} from '@mui/material';
+import { Box, useTheme, type CSSObject } from '@mui/material';
 
 import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
@@ -42,9 +36,6 @@ export const CarouselContainer = ({
   const theme = useTheme();
   const carouselContainerRef = useRef<HTMLDivElement>(null);
 
-  const isMobile = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down('md'),
-  );
   const isClient = useClient();
 
   const handleChange = useCallback((direction: 'next' | 'prev') => {
@@ -86,7 +77,7 @@ export const CarouselContainer = ({
           {title && <SectionTitle variant="headerMedium">{title}</SectionTitle>}
           {updateTitle && (
             <Box>
-              {!isMobile && isClient && (
+              {isClient && (
                 <IconHeader
                   tooltipKey={updateTooltip || ''}
                   title={updateTitle}

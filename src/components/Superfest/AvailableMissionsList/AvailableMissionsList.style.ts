@@ -9,7 +9,6 @@ export const AvailableMissionsContainer = styled(Box)(({ theme }) => ({
   boxShadow: theme.shadows[1],
   [theme.breakpoints.down('md' as Breakpoint)]: {
     marginTop: '64px',
-    padding: theme.spacing(2),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(2, 4, 0),
