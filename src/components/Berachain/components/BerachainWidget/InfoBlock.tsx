@@ -31,11 +31,10 @@ import DigitTokenSymbolCard from '../BerachainMarketCard/StatCard/DigitTokenSymb
 interface InfoBlockProps {
   market: EnrichedMarketDataType;
   recipe?: EnrichedAccountBalanceRecipeInMarketDataType | null;
-  type: 'deposit' | 'withdraw';
   sx?: SxProps<Theme>;
 }
 
-function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
+function InfoBlock({ market, recipe, sx = {} }: InfoBlockProps) {
   const { t } = useTranslation();
   const { account } = useAccount();
   const theme = useTheme();
@@ -67,7 +66,7 @@ function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
             padding: theme.spacing(1.5, 2),
             display: 'flex',
             justifyContent: 'space-between',
-            backgroundColor: deposited ? '#291812' : undefined,
+            background: 'transparent',
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               padding: theme.spacing(1.5, 2),
             },
@@ -77,11 +76,14 @@ function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
             title={deposited ? 'Deposited' : 'Deposit'}
             tooltipText={deposited ? DEPOSITED_TOOLTIP : DEPOSIT_TOOLTIP}
             tokenImage={market?.input_token_data?.image}
-            sx={{
+            sx={(theme) => ({
+              '.tooltip-icon': {
+                color: theme.palette.alphaLight500.main,
+              },
               '.content': {
                 fontSize: '1.5rem',
               },
-            }}
+            })}
             digit={
               deposited
                 ? t('format.decimal', {
@@ -95,14 +97,17 @@ function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
 
           {market.lockup_time === '0' ? undefined : (
             <DigitCard
-              sx={{
+              sx={(theme) => ({
                 '.header-container': {
                   justifyContent: 'flex-end',
                 },
                 '.content': {
                   fontSize: '1.5rem',
                 },
-              }}
+                '.tooltip-icon': {
+                  color: theme.palette.alphaLight500.main,
+                },
+              })}
               title={'Lockup'}
               tooltipText={LOCKUP_TOOLTIP}
               digit={formatWithCustomLabels(
@@ -118,77 +123,6 @@ function InfoBlock({ market, recipe, type, sx = {} }: InfoBlockProps) {
           )}
         </BeraChainProgressCardComponent>
       </BerchainMarketCardInfos>
-
-      {type === 'deposit' && (
-        <BerchainMarketCardInfos
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-          }}
-        >
-          <BeraChainProgressCardComponent
-            sx={{
-              height: '100%',
-              padding: theme.spacing(1.5, 2),
-              display: 'flex',
-              justifyContent: 'space-between',
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                padding: theme.spacing(1.5, 2),
-              },
-            }}
-          >
-            <DigitCard
-              title={'Deposit Cap'}
-              tooltipText={AVAILABLE_TOOLTIP}
-              digit={Intl.NumberFormat('en-US', {
-                notation: 'standard',
-                useGrouping: true,
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 5,
-              }).format(maxInputValue)}
-            />
-            <DigitCard
-              title={'TVL'}
-              tooltipText={TVL_TOOLTIP}
-              digit={
-                market?.locked_quantity_usd
-                  ? t('format.currency', {
-                      value: market?.locked_quantity_usd,
-                      notation: 'compact',
-                    })
-                  : 'N/A'
-              }
-            />
-          </BeraChainProgressCardComponent>
-        </BerchainMarketCardInfos>
-      )}
-
-      {type === 'deposit' && (
-        <BerchainMarketCardInfos
-          sx={{
-            display: 'flex',
-          }}
-        >
-          {market?.incentive_tokens_data?.length > 0 ? (
-            <TokenIncentivesCard
-              tokens={market?.incentive_tokens_data}
-              marketData={market}
-            />
-          ) : (
-            <DigitTooltipCard
-              title={'APY'}
-              digit={
-                market?.annual_change_ratio
-                  ? t('format.percent', {
-                      value: market?.annual_change_ratio,
-                    })
-                  : 'N/A'
-              }
-              tooltipText={APY_TOOLTIP}
-            />
-          )}
-        </BerchainMarketCardInfos>
-      )}
     </BerachainWidgetSelection>
   );
 }
