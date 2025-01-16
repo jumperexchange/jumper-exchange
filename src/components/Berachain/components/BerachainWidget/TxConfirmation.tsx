@@ -25,7 +25,6 @@ export const TxConfirmation = ({
         justifyContent: 'space-between',
         backgroundColor: 'inherit',
         padding: theme.spacing(2),
-        marginTop: theme.spacing(2),
         border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
         gap: '8px',
       }}
