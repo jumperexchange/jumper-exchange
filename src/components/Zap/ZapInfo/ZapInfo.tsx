@@ -10,7 +10,7 @@ import { AccordionFAQ } from 'src/components/AccordionFAQ';
 import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { useMediaQuery } from '@mui/material';
-import { Theme } from '@mui/material';
+import type { Theme } from '@mui/material';
 import {
   ZapActionProtocolCard,
   ZapActionProtocolDisclaimer,
@@ -23,6 +23,7 @@ import { SocialInfosBox } from './SocialInfosBox';
 import { ZapProtocolIntro } from './ZapProtocolIntro';
 import { ZapDisclaimerInfo } from './ZapDisclaimerInfo';
 import { ZapActionFaq } from './ZapActionFaq';
+import { BackButton } from '@/components/Zap/BackButton/BackButton';
 
 interface ZapPageProps {
   market?: Quest;
@@ -38,6 +39,7 @@ export const ZapInfo = ({ market, detailInformation }: ZapPageProps) => {
 
   return (
     <ZapProtocolActionInfoBox>
+      <BackButton />
       {/* Main Information about the protocol */}
       <ZapProtocolIntro market={market} detailInformation={detailInformation} />
 

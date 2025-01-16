@@ -1,3 +1,4 @@
+import type { Breakpoint } from '@mui/material';
 import {
   styled,
   alpha,
@@ -5,7 +6,6 @@ import {
   Grid,
   Input,
   FormHelperText,
-  Breakpoint,
 } from '@mui/material';
 
 export const MaxButton = styled(Button, {

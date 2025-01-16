@@ -12,14 +12,13 @@ interface BadgeWithChainProps {
 // TODO: Refactorize code to use this function everytime we need to display chain as badge
 function BadgeWithChain({ alt, logoURI, chainId }: BadgeWithChainProps) {
   const { chains, getChainById } = useChains();
-  const chainMetadata = useMemo(() => chainId && getChainById(chainId), [chainId, chains]);
+  const chainMetadata = useMemo(
+    () => chainId && getChainById(chainId),
+    [chainId, chains],
+  );
 
   if (!chainMetadata) {
-    return (
-      <Avatar
-        alt="Protocol"
-        src={logoURI} />
-    );
+    return <Avatar alt="Protocol" src={logoURI} />;
   }
 
   return (
@@ -35,7 +34,8 @@ function BadgeWithChain({ alt, logoURI, chainId }: BadgeWithChainProps) {
           sx={{
             width: 16,
             height: 16,
-          }}>
+          }}
+        >
           <TokenImage
             token={{
               logoURI: chainMetadata?.logoURI,
@@ -45,9 +45,7 @@ function BadgeWithChain({ alt, logoURI, chainId }: BadgeWithChainProps) {
         </Avatar>
       }
     >
-      <Avatar
-        alt={alt}
-        src={logoURI} />
+      <Avatar alt={alt} src={logoURI} />
     </Badge>
   );
 }

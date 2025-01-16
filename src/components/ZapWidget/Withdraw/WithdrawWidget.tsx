@@ -6,10 +6,11 @@ import {
 import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { formatUnits } from 'viem';
-import { ProjectData } from '../ZapWidget';
+import type { ProjectData } from '../ZapWidget';
 import { Breakpoint, useTheme } from '@mui/material';
 import { WithdrawWidgetBox } from './WithdrawWidget.style';
 import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
+import BadgeWithChain from '@/components/ZapWidget/BadgeWithChain';
 
 export interface WithdrawWidgetProps {
   token: TokenAmount;
@@ -17,6 +18,7 @@ export interface WithdrawWidgetProps {
   lpTokenDecimals: number;
   projectData: ProjectData;
   depositTokenData: any;
+  refetchPosition: () => void;
 }
 
 export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
@@ -24,6 +26,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
   lpTokenDecimals,
   projectData,
   depositTokenData,
+  refetchPosition,
 }) => {
   const theme = useTheme();
 
@@ -35,14 +38,23 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
             data: '0x',
             type: 'send',
             label: 'Redeem',
-            onVerify: () => Promise.resolve(true),
+            // Deprecated
+            onVerify: () => {
+              return Promise.resolve(true);
+            },
           },
         ]}
+        refetch={refetchPosition}
         label={`Redeem from Pool`}
-        image={{
-          url: token?.logoURI || '',
-          name: token?.name || '',
-        }}
+        image={
+          token?.logoURI && (
+            <BadgeWithChain
+              chainId={projectData?.chainId}
+              logoURI={token?.logoURI}
+              alt={token?.name}
+            />
+          )
+        }
         placeholder="0"
         helperText={{
           left: 'Available balance',

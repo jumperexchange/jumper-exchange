@@ -14,7 +14,7 @@ export const useZaps = (input: UseZapsProps) => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   // get data
-  const { data, isSuccess, isLoading } = useQuery({
+  return useQuery({
     queryKey: ['zaps', `${chain}-${address}-${project}`],
     queryFn: async () => {
       if (!chain || !address || !project) {
@@ -47,6 +47,4 @@ export const useZaps = (input: UseZapsProps) => {
     enabled: !!chain && !!address && !!project,
     refetchInterval: 1 * 60 * 60,
   });
-
-  return { data, isSuccess, isLoading };
 };

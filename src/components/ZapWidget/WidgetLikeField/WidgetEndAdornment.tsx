@@ -10,7 +10,7 @@ import {
   Input,
 } from '@mui/material';
 import { MaxButton } from './WidgetLikeField.style';
-import { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 
 interface WidgetFieldEndAdornmentProps {
   balance: string;
@@ -40,7 +40,7 @@ function WidgetFieldEndAdornment({
       >
         max
       </MaxButton>
-      <Box sx={{ marginTop: '4px' }}>
+      <Box sx={{ marginTop: '4px', textAlign: 'right' }}>
         <Typography variant="bodyXSmall" color="textSecondary" component="span">
           /{' '}
           {Intl.NumberFormat('en-US', {

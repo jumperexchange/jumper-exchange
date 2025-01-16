@@ -2,7 +2,7 @@
 import type { ProjectData } from 'src/components/ZapWidget/ZapWidget';
 import { ZapWidget } from 'src/components/ZapWidget/ZapWidget';
 import { useAccount } from '@lifi/wallet-management';
-import { CustomInformation } from 'src/types/loyaltyPass';
+import type { CustomInformation } from 'src/types/loyaltyPass';
 
 interface ZapWidgetPageProps {
   customInformation: CustomInformation;

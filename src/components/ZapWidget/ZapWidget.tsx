@@ -5,19 +5,22 @@ import {
   HiddenUI,
   LiFiWidget,
   RequiredUI,
+  useWidgetEvents,
+  WidgetEvent,
 } from '@lifi/widget';
 import { formatUnits } from 'viem';
 import { useEffect, useMemo, useState } from 'react';
 import { useZaps } from '@/hooks/useZaps';
 import { useWalletMenu, type Account } from '@lifi/wallet-management';
 import { DepositCard } from './Deposit/DepositCard';
-import { useContractRead } from 'src/hooks/useReadContractData';
 import { useThemeStore } from 'src/stores/theme';
 import { Box } from '@mui/material';
 import { Skeleton } from '@mui/material';
-import { Breakpoint } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { WithdrawWidget } from './Withdraw/WithdrawWidget';
+import { useReadContract, useReadContracts } from 'wagmi';
+import { result } from 'lodash';
 
 export interface ProjectData {
   chain: string;
@@ -53,37 +56,65 @@ export function ZapWidget({
     state.configTheme,
   ]);
 
-  const { data: depositTokenData, isLoading: isLoadingDepositTokenData } =
-    useContractRead({
-      address: projectData.address as `0x${string}`,
-      chainId: projectData.chainId,
-      functionName: 'balanceOf',
-      abi: [
-        {
-          inputs: [{ name: 'owner', type: 'address' }],
-          name: 'balanceOf',
-          outputs: [{ name: '', type: 'uint256' }],
-          stateMutability: 'view',
-          type: 'function',
-        },
-      ],
-      args: [account.address],
-    });
-
-  const { data: depositTokenDecimals } = useContractRead({
-    address: (projectData.tokenAddress || projectData.address) as `0x${string}`,
-    chainId: projectData.chainId,
-    functionName: 'decimals',
-    abi: [
+  const {
+    data: [
+      { result: depositTokenData } = {},
+      { result: depositTokenDecimals } = {},
+    ] = [],
+    isLoading: isLoadingDepositTokenData,
+    refetch,
+  } = useReadContracts({
+    contracts: [
       {
-        inputs: [],
-        name: 'decimals',
-        outputs: [{ name: '', type: 'uint8' }],
-        stateMutability: 'view',
-        type: 'function',
+        address: projectData.address as `0x${string}`,
+        abi: [
+          {
+            inputs: [{ name: 'owner', type: 'address' }],
+            name: 'balanceOf',
+            outputs: [{ name: '', type: 'uint256' }],
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ],
+        functionName: 'balanceOf',
+        args: [account.address as `0x${string}`],
+      },
+      {
+        abi: [
+          {
+            inputs: [],
+            name: 'decimals',
+            outputs: [{ name: '', type: 'uint8' }],
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ],
+        address: (projectData.tokenAddress ||
+          projectData.address) as `0x${string}`,
+        chainId: projectData.chainId,
+        functionName: 'decimals',
       },
     ],
   });
+
+  function onRouteExecutionCompleted() {
+    refetch();
+  }
+
+  const widgetEvents = useWidgetEvents();
+  useEffect(() => {
+    widgetEvents.on(
+      WidgetEvent.RouteExecutionCompleted,
+      onRouteExecutionCompleted,
+    );
+
+    return () => {
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionCompleted,
+        onRouteExecutionCompleted,
+      );
+    };
+  }, [widgetEvents]);
 
   const lpTokenDecimals = depositTokenDecimals ?? 18;
 
@@ -174,6 +205,7 @@ export function ZapWidget({
               <DepositCard
                 underlyingToken={data?.data?.market?.depositToken}
                 token={token}
+                chainId={projectData?.chainId}
                 contractTool={data?.data?.meta}
                 analytics={analytics}
                 contractCalls={[]}
@@ -202,6 +234,7 @@ export function ZapWidget({
 
       {!isLoadingDepositTokenData && type === 'withdraw' && token && (
         <WithdrawWidget
+          refetchPosition={refetch}
           token={token}
           lpTokenDecimals={lpTokenDecimals}
           projectData={projectData}

@@ -17,18 +17,17 @@ import {
 } from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useConfig, useSwitchChain } from 'wagmi';
-import { useMemo, useState } from 'react';
+import { useConfig, useSwitchChain, useWaitForTransactionReceipt } from 'wagmi';
+import { useEffect, useMemo, useState } from 'react';
 import {
   MaxButton,
   WidgetFormHelperText,
   WidgetLikeInput,
 } from './WidgetLikeField.style';
-import { useContractWrite } from 'src/hooks/useWriteContractData';
+import { useWriteContract } from 'wagmi';
 import { parseUnits } from 'ethers';
-import { useContractRead } from 'src/hooks/useReadContractData';
 import { alpha } from '@mui/material';
-import { ProjectData } from 'src/components/ZapWidget/ZapWidget';
+import type { ProjectData } from 'src/components/ZapWidget/ZapWidget';
 import { ConnectButton } from 'src/components/ConnectButton';
 import { switchChain } from '@wagmi/core';
 import { useAccount } from '@lifi/wallet-management';
@@ -36,6 +35,7 @@ import { TxConfirmation } from 'src/components/ZapWidget/Confirmation/TxConfirma
 import { Breakpoint } from '@mui/material';
 import WidgetFieldStartAdornment from './WidgetStartAdornment';
 import WidgetFieldEndAdornment from './WidgetEndAdornment';
+import * as React from 'react';
 
 interface Image {
   url: string;
@@ -63,7 +63,7 @@ interface WidgetLikeFieldProps {
   contractCalls: ContractCall[];
   label: string;
   placeholder?: string;
-  image?: Image & { badge?: Image };
+  image?: React.ReactNode;
   hasMaxButton?: boolean;
   helperText?: {
     left?: string;
@@ -75,6 +75,7 @@ interface WidgetLikeFieldProps {
   balance?: string;
   projectData: ProjectData;
   writeDecimals: number;
+  refetch: () => void;
 }
 
 function WidgetLikeField({
@@ -88,28 +89,42 @@ function WidgetLikeField({
   balance,
   projectData,
   writeDecimals,
+  refetch,
 }: WidgetLikeFieldProps) {
   const theme = useTheme();
   const wagmiConfig = useConfig();
   const { account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
+  const {
+    writeContract,
+    data,
+    isPending,
+    isError,
+    error,
+    isSuccess: isSuccessWriteContract,
+  } = useWriteContract();
 
   const [value, setValue] = useState<string>('');
-  const { write, isLoading, error, data } = useContractWrite({
-    address: (projectData?.withdrawAddress ||
-      projectData?.address) as `0x${string}`,
+
+  const {
+    data: transactionReceiptData,
+    isLoading,
+    isSuccess,
+  } = useWaitForTransactionReceipt({
     chainId: projectData?.chainId,
-    functionName: 'redeem',
-    abi: [
-      {
-        inputs: [{ name: 'amount', type: 'uint256' }],
-        name: 'redeem',
-        outputs: [{ name: '', type: 'uint256' }],
-        stateMutability: 'nonpayable',
-        type: 'function',
-      },
-    ],
+    hash: data,
+    confirmations: 5,
+    pollingInterval: 1_000,
   });
+
+  // When the transaction is done, triggering the refetch
+  useEffect(() => {
+    if (!transactionReceiptData) {
+      return;
+    }
+
+    refetch();
+  }, [transactionReceiptData]);
 
   const shouldSwitchChain = useMemo(() => {
     if (!!projectData?.address && account?.chainId !== projectData?.chainId) {
@@ -129,7 +144,22 @@ function WidgetLikeField({
   async function onSubmit(e: React.FormEvent) {
     try {
       e.preventDefault();
-      write([parseUnits(value, writeDecimals)]);
+      writeContract({
+        address: (projectData?.withdrawAddress ||
+          projectData?.address) as `0x${string}`,
+        chainId: projectData?.chainId,
+        functionName: 'redeem',
+        abi: [
+          {
+            inputs: [{ name: 'amount', type: 'uint256' }],
+            name: 'redeem',
+            outputs: [{ name: '', type: 'uint256' }],
+            stateMutability: 'nonpayable',
+            type: 'function',
+          },
+        ],
+        args: [parseUnits(value, writeDecimals)],
+      });
     } catch (e) {
       console.error(e);
     }
@@ -149,8 +179,6 @@ function WidgetLikeField({
 
   const handleSwitchChain = async (chainId: number) => {
     try {
-      console.log('new chainId');
-      console.log(chainId);
       const { id } = await switchChainAsync({
         chainId: chainId,
       });
@@ -195,7 +223,7 @@ function WidgetLikeField({
               value={value}
               onChange={handleInputChange}
               placeholder={placeholder}
-              disabled={isLoading}
+              disabled={isPending}
               aria-describedby="component-text"
               disableUnderline={true}
               // sx={{
@@ -225,63 +253,7 @@ function WidgetLikeField({
               //     borderBottom: 'none',
               //   },
               // }}
-              startAdornment={
-                image && (
-                  <WidgetFieldStartAdornment image={image} />
-                  // <Box
-                  //   sx={{
-                  //     display: 'flex',
-                  //     flexDirection: 'column',
-                  //     justifyContent: 'flex-start',
-                  //     width: 'auto',
-                  //   }}
-                  // >
-                  //   <>
-                  //     <WalletCardBadge
-                  //       overlap="circular"
-                  //       className="badge"
-                  //       sx={{ maringRight: '8px' }}
-                  //       anchorOrigin={{
-                  //         vertical: 'bottom',
-                  //         horizontal: 'right',
-                  //       }}
-                  //       badgeContent={
-                  //         image.badge && (
-                  //           <MuiAvatar
-                  //             alt={image.badge.name}
-                  //             sx={(theme: any) => ({
-                  //               width: '18px',
-                  //               height: '18px',
-                  //               border: `2px solid ${theme.palette.surface2.main}`,
-                  //             })}
-                  //           >
-                  //             {image.badge.name && (
-                  //               <TokenImage
-                  //                 token={{
-                  //                   name: image.badge.name,
-                  //                   logoURI: image.badge.url,
-                  //                 }}
-                  //               />
-                  //             )}
-                  //           </MuiAvatar>
-                  //         )
-                  //       }
-                  //     >
-                  //       <WalletAvatar>
-                  //         {image.name && (
-                  //           <TokenImage
-                  //             token={{
-                  //               name: image.name,
-                  //               logoURI: image.url,
-                  //             }}
-                  //           />
-                  //         )}
-                  //       </WalletAvatar>
-                  //     </WalletCardBadge>
-                  //   </>
-                  // </Box>
-                )
-              }
+              startAdornment={image}
               endAdornment={
                 !!account?.isConnected &&
                 !!balance &&
@@ -344,8 +316,8 @@ function WidgetLikeField({
           ) : (
             <LoadingButton
               type="submit"
-              loading={isLoading}
-              disabled={balance === '0' || isLoading}
+              loading={isPending || isLoading}
+              disabled={balance === '0' || isPending}
               variant="contained"
               sx={{
                 marginTop: theme.spacing(2),
@@ -364,10 +336,10 @@ function WidgetLikeField({
             </LoadingButton>
           )}
 
-          {data && (
+          {isSuccessWriteContract && (
             <TxConfirmation
               s={
-                !!data && !isLoading
+                !!data && !isPending
                   ? 'Interaction successful'
                   : 'Check on explorer'
               }
@@ -376,7 +348,7 @@ function WidgetLikeField({
                   ? 'https://etherscan.io/tx/' + data
                   : 'https://basescan.org/tx/' + data
               }
-              success={!!data && !isLoading ? true : false}
+              success={!!isSuccessWriteContract && !isPending ? true : false}
             />
           )}
         </Box>

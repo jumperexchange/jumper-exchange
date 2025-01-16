@@ -5,7 +5,7 @@ import Image from 'next/image';
 import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { useMediaQuery } from '@mui/material';
-import { Theme } from '@mui/material';
+import type { Theme } from '@mui/material';
 import { ZapActionProtocolCard, ZapActionProtocolIntro } from './ZapInfo.style';
 import { SocialInfosBox } from './SocialInfosBox';
 

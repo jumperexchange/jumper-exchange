@@ -3,8 +3,16 @@ import {
   type TokenAmount,
   useFieldActions,
 } from '@lifi/widget';
-import { Avatar, Box, Stack, Typography, useTheme } from '@mui/material';
-import { useEffect } from 'react';
+import {
+  Avatar as MuiAvatar,
+  Avatar,
+  Badge,
+  Box,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import { useEffect, useMemo } from 'react';
 import {
   DEPOSIT_TOOLTIP,
   DEPOSITED_TOOLTIP,
@@ -14,6 +22,9 @@ import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import DigitOnlyCard from './Stat/DigitOnlyCard';
 import DigitTextCard from './Stat/DigitTextCard';
 import { ColoredStatBox } from './DepositCard.style';
+import { useChains } from '@/hooks/useChains';
+import TokenImage from '@/components/Portfolio/TokenImage';
+import BadgeWithChain from '@/components/ZapWidget/BadgeWithChain';
 
 export interface ItemPriceProps {
   token: TokenAmount;
@@ -23,6 +34,7 @@ export interface ItemPriceProps {
     logoURI: string;
     name: string;
   };
+  chainId: number;
   analytics: any;
   claimingIds?: string[] | undefined;
 }
@@ -32,6 +44,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
   underlyingToken,
   contractCalls,
   contractTool,
+  chainId,
   analytics,
   claimingIds,
 }) => {
@@ -58,7 +71,11 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
   return (
     <Stack spacing={2} padding={2}>
       <Box display="flex" alignItems="center" gap={1}>
-        <Avatar alt="Protocol" src={contractTool?.logoURI} />
+        <BadgeWithChain
+          chainId={chainId}
+          logoURI={contractTool?.logoURI}
+          alt={'Protocol'}
+        />
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
           {`${contractTool?.name} ${underlyingToken?.symbol.toUpperCase()} Pool`}
         </Typography>

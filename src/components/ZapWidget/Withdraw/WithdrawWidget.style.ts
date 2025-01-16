@@ -1,4 +1,5 @@
-import { Box, Breakpoint, styled, IconButton } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
+import { Box, styled, IconButton } from '@mui/material';
 
 export const WithdrawWidgetBox = styled(Box)(({ theme }) => ({
   display: 'flex',
