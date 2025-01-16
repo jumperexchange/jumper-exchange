@@ -11,15 +11,17 @@ import {
 interface QuestCarouselProps {
   pastCampaigns?: string[];
   traits?: string[];
+  label?: string;
   // traits?: Trait[];
 }
 
 export const QuestsOverview = ({
   pastCampaigns,
   traits,
+  label,
 }: QuestCarouselProps) => {
   const { t } = useTranslation();
-  const { quests, isLoading: isQuestsLoading, url } = useOngoingQuests();
+  const { quests, isLoading: isQuestsLoading, url } = useOngoingQuests(label);
 
   return (
     <QuestsOverviewContainer>
