@@ -25,7 +25,7 @@ export const TokenIncentivesData = ({
           sx={{
             display: 'flex',
             alignItems: 'center',
-            marginTop: '4px',
+            marginTop: '8px',
             gap: 1,
           }}
           key={incentiveTokenData?.id}

@@ -146,22 +146,22 @@ export const useMainMenuContent = () => {
         });
       },
     },
-    {
-      label: 'Jump into Boyco',
-      prefixIcon: <BoycoIcon />,
-      showMoreIcon: false,
-      link: { url: JUMPER_BOYCO_PATH },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-jumper-pass-berachain',
-          action: TrackingAction.ClickJumperCampaignLink,
-          data: { [TrackingEventParameter.Menu]: 'berachain' },
-        });
-        closeAllMenus();
-        router.push(JUMPER_BOYCO_PATH);
-      },
-    },
+    // {
+    //   label: 'Jump into Boyco',
+    //   prefixIcon: <BoycoIcon />,
+    //   showMoreIcon: false,
+    //   link: { url: JUMPER_BOYCO_PATH },
+    //   onClick: () => {
+    //     trackEvent({
+    //       category: TrackingCategory.Menu,
+    //       label: 'click-jumper-pass-berachain',
+    //       action: TrackingAction.ClickJumperCampaignLink,
+    //       data: { [TrackingEventParameter.Menu]: 'berachain' },
+    //     });
+    //     closeAllMenus();
+    //     router.push(JUMPER_BOYCO_PATH);
+    //   },
+    // },
     {
       label: t('navbar.navbarMenu.profile'),
       prefixIcon: <AccountCircleIcon />,

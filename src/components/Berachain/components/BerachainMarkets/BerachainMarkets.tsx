@@ -8,6 +8,10 @@ import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMa
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 import { useSearchParams } from 'next/navigation';
+import {
+  getFullTitle,
+  includesCaseInsensitive,
+} from '@/components/Berachain/utils';
 
 export const BerachainMarkets = () => {
   const searchParam = useSearchParams();
@@ -49,7 +53,10 @@ export const BerachainMarkets = () => {
               );
             })
             .filter((data) => {
-              return search ? data.name?.toLowerCase().includes(search) : true;
+              const card = findFromStrapiByUid(data.market_id!);
+              const fullTitle = getFullTitle(data, card);
+
+              return search ? includesCaseInsensitive(fullTitle, search) : true;
             })
             .filter((data) => {
               return !!findFromStrapiByUid(data.market_id!);
@@ -60,13 +67,15 @@ export const BerachainMarkets = () => {
               }
               const card = findFromStrapiByUid(roycoData.market_id!);
 
+              const fullTitle = getFullTitle(roycoData, card);
+
               return (
                 <BerachainMarketCard
                   key={`berachain-market-card-${roycoData.id || 'protocol'}-${index}`}
                   roycoData={roycoData}
                   // chainId={roycoData.chain_id}
                   image={card?.attributes?.Image}
-                  title={card?.attributes?.Title}
+                  title={fullTitle}
                   // slug={roycoData.id}
                   // slug={card.attributes?.Slug}
                   tokens={[]}

@@ -38,12 +38,6 @@ export const BerachainExploreProtocol = ({
     return (
       <Container>
         <Background />
-        <Link href="/berachain/explore" style={{ textDecoration: 'none' }}>
-          <BerachainBackButton>
-            <ArrowBackIcon />
-            <Typography variant="bodySmallStrong">Explore Berachain</Typography>
-          </BerachainBackButton>
-        </Link>
         <BerachainProtocolInformation />
       </Container>
     );
@@ -60,12 +54,6 @@ export const BerachainExploreProtocol = ({
   return (
     <Container>
       <Background />
-      <Link href="/berachain/explore" style={{ textDecoration: 'none' }}>
-        <BerachainBackButton>
-          <ArrowBackIcon />
-          <Typography variant="bodySmallStrong">Explore Berachain</Typography>
-        </BerachainBackButton>
-      </Link>
       {/* {card &&  */}
       <BerachainProtocolInformation
         market={roycoDataMarket}
