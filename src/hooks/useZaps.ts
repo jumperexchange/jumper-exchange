@@ -45,6 +45,6 @@ export const useZaps = (input: UseZapsProps) => {
       return { data };
     },
     enabled: !!chain && !!address && !!project,
-    refetchInterval: 1 * 60 * 60,
+    refetchInterval: 1 * 60 * 1000,
   });
 };

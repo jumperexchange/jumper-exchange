@@ -21,6 +21,7 @@ import { useTheme } from '@mui/material';
 import { WithdrawWidget } from './Withdraw/WithdrawWidget';
 import { useReadContract, useReadContracts } from 'wagmi';
 import { result } from 'lodash';
+import { WidgetEvents } from '@/components/Widgets';
 
 export interface ProjectData {
   chain: string;
@@ -97,12 +98,13 @@ export function ZapWidget({
     ],
   });
 
-  function onRouteExecutionCompleted() {
-    refetch();
-  }
-
   const widgetEvents = useWidgetEvents();
+  // Custom effect to refetch the balance
   useEffect(() => {
+    function onRouteExecutionCompleted() {
+      refetch();
+    }
+
     widgetEvents.on(
       WidgetEvent.RouteExecutionCompleted,
       onRouteExecutionCompleted,
@@ -241,6 +243,7 @@ export function ZapWidget({
           depositTokenData={depositTokenData}
         />
       )}
+      <WidgetEvents />
     </Box>
   );
 }
