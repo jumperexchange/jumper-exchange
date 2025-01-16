@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import type { ExtendedQuest } from 'src/types/questDetails';
-import { getQuestBy } from '@/app/lib/getQuestBy';
+import { getQuestsBy } from '@/app/lib/getQuestsBy';
 import type { Quest } from '@/types/loyaltyPass';
 import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
 import type { StrapiResponse } from '@/types/strapi';
@@ -10,7 +10,7 @@ export interface UseBerachainQuestsProps {
   url: string;
   isSuccess: boolean;
   isLoading: boolean;
-  findFromStrapiByUid: (key: string) => Quest | null;
+  findFromStrapiByUid: (key: string) => Quest | undefined;
 }
 
 type T = Record<string, string[]>;
@@ -72,7 +72,7 @@ export const useBerachainMarkets = (): UseBerachainQuestsProps => {
     queryKey: ['berachain-markets'],
 
     queryFn: async () => {
-      const { data } = await getQuestBy('Label', 'berachain');
+      const { data } = await getQuestsBy('Label', 'berachain');
 
       return data;
     },
