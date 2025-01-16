@@ -40,6 +40,8 @@ import {
 } from './WidgetDeposit.style';
 import DepositInfo from '@/components/Berachain/components/BerachainWidget/DepositWidget/DepositInfo';
 import BerachainTransactionDetails from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
+import { useUserTracking } from '@/hooks/userTracking';
+import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 
 interface Image {
   url?: string;
@@ -75,6 +77,7 @@ interface WidgetLikeFieldProps {
   placeholder?: string;
   image?: Image & { badge?: Image };
   chain?: ExtendedChain;
+  appName?: string;
   helperText?: {
     before?: Partial<HelperText>;
     after?: Partial<HelperText>;
@@ -87,6 +90,7 @@ interface WidgetLikeFieldProps {
 function DepositWidget({
   contractCalls = [],
   label,
+  appName,
   image,
   placeholder,
   chain,
@@ -94,6 +98,7 @@ function DepositWidget({
   market,
   overrideStyle = {},
 }: WidgetLikeFieldProps) {
+  const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
   const { account } = useAccount();
   const {
@@ -198,6 +203,33 @@ function DepositWidget({
     pollingInterval: 1_000,
   });
 
+  useEffect(() => {
+    if (
+      !isTxConfirmed ||
+      writeContractOptions.length !== contractCallIndex + 1
+    ) {
+      return;
+    }
+
+    trackEvent({
+      category: TrackingCategory.WidgetEvent,
+      action: 'berachain_deposit',
+      label: 'execution_success',
+      data: {
+        chain_id: market.chain_id,
+        market_id: market.market_id,
+        deposited_token: market.input_token_data.contract_address,
+        protocol_name: appName ?? 'N/A',
+        amount_deposited: String(inputValue) ?? '0',
+        amount_deposited_usd:
+          parseFloat(String(inputValue) ?? '0') *
+          market?.input_token_data.price,
+        timestamp: new Date(),
+      } as any, // Shortcut
+      isConversion: true,
+    });
+  }, [isTxConfirmed]);
+
   const hasErrorDisablingButton = useMemo(() => {
     if (
       (parseFloat(inputValue) ?? 0) >
@@ -259,6 +291,7 @@ function DepositWidget({
 
   function onChangeValue(value: string = '0') {
     setInputValue(value);
+    resetTx();
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -291,12 +324,15 @@ function DepositWidget({
     <>
       <BoxForm noValidate autoComplete="off" onSubmit={onSubmit}>
         <DepositInfo market={market} balance={balance} />
-        <BerachainDepositInputBackground>
-          <FormControl
-            error={isTxError || !!hasErrorText}
-            variant="standard"
-            aria-autocomplete="none"
-          >
+        <FormControl
+          error={isTxError || !!hasErrorText}
+          variant="standard"
+          aria-autocomplete="none"
+          sx={{
+            gap: 1,
+          }}
+        >
+          <BerachainDepositInputBackground>
             <FormHelperText
               id="component-text"
               sx={{
@@ -452,33 +488,32 @@ function DepositWidget({
                 )
               }
             />
+          </BerachainDepositInputBackground>
+          {hasErrorText && (
             <FormHelperText
               id="component-text"
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginBottom: 1,
               }}
             >
-              {hasErrorText && (
-                <Typography
-                  component="span"
-                  variant="bodySmall"
-                  sx={(theme) => ({
-                    marginBottom: theme.spacing(1),
-                    typography: {
-                      xs: theme.typography.bodyXSmall,
-                      sm: theme.typography.bodySmall,
-                    },
-                  })}
-                >
-                  {hasErrorText}
-                </Typography>
-              )}
+              <Typography
+                component="span"
+                variant="bodySmall"
+                sx={(theme) => ({
+                  marginBottom: theme.spacing(1),
+                  typography: {
+                    xs: theme.typography.bodyXSmall,
+                    sm: theme.typography.bodySmall,
+                  },
+                })}
+              >
+                {hasErrorText}
+              </Typography>
             </FormHelperText>
-          </FormControl>
-        </BerachainDepositInputBackground>
+          )}
+        </FormControl>
         {!account?.isConnected ? (
           <ConnectButton />
         ) : shouldSwitchChain ? (
@@ -517,7 +552,9 @@ function DepositWidget({
               type="submit"
               loading={isLoading || isTxPending || isTxConfirming}
               variant="contained"
-              disabled={!!hasErrorDisablingButton}
+              disabled={
+                !!hasErrorDisablingButton || ['', '0'].includes(inputValue)
+              }
               overrideStyle={overrideStyle}
             >
               <Typography variant="bodyMediumStrong">

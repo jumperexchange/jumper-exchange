@@ -105,7 +105,7 @@ export const BerachainSearch = () => {
             },
           }}
           {...params}
-          placeholder="Search for markets"
+          placeholder="Search for markets or tokens"
           InputLabelProps={{
             ...params.InputLabelProps,
             shrink: false,
