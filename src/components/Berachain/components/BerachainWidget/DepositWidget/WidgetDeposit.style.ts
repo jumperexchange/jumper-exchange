@@ -194,5 +194,5 @@ export const BerachainActionBerachainWidget = styled(Box)(({ theme }) => ({
 export const BoxForm = styled('form')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(2),
+  gap: theme.spacing(3),
 }));
