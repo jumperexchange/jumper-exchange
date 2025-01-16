@@ -44,22 +44,25 @@ const TokenIncentivesCard = ({ marketData, tokens }: DigitCardProps) => {
               <Typography
                 variant="bodySmall"
                 sx={(theme) => ({
+                  color: '#8b8989',
                   typography: {
                     xs: theme.typography.bodyXSmall,
                     sm: theme.typography.bodySmall,
                   },
+                  // important needed as the previous rules are overriding the fontSize
+                  fontSize: '0.75rem!important',
                 })}
               >
                 {'Total Incentives'}
               </Typography>
               <Tooltip title={''} placement={'top'} enterTouchDelay={0} arrow>
                 <InfoIcon
-                  sx={{
+                  sx={(theme) => ({
+                    color: theme.palette.alphaLight500.main,
                     width: '16px',
                     height: '16px',
                     marginLeft: '4px',
-                    color: 'inherit',
-                  }}
+                  })}
                 />
               </Tooltip>
             </BeraChainProgressCardHeader>

@@ -31,6 +31,7 @@ const DigitTokenSymbolCard = ({
     <BeraChainProgressCardContent sx={sx}>
       <BeraChainProgressCardHeader display={'flex'}>
         <Typography
+          className="title"
           variant="bodySmall"
           sx={(theme) => ({
             typography: {
@@ -42,6 +43,7 @@ const DigitTokenSymbolCard = ({
           {title}
         </Typography>
         <Tooltip
+          className="tooltip-icon"
           title={tooltipText}
           placement={'top'}
           enterTouchDelay={0}
@@ -65,7 +67,8 @@ const DigitTokenSymbolCard = ({
         }}
       >
         <BerachainMarketCardTokenContainer
-          sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+          className="content-wrapper"
+          sx={{ display: 'flex', alignItems: 'flex-end', gap: '4px' }}
           key={`berachain-market-card-token-container-name-${title}`}
         >
           {tokenImage ? (
@@ -89,6 +92,7 @@ const DigitTokenSymbolCard = ({
             className="content"
             marginTop={'4px'}
             sx={(theme) => ({
+              marginTop: 1,
               typography: {
                 xs: theme.typography.titleXSmall,
                 sm: theme.typography.titleXSmall,

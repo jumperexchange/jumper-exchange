@@ -26,14 +26,14 @@ export const BerachainProtocolActionInfoBox = styled(Box)(({ theme }) => ({
     maxWidth: 380,
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    maxWidth: 640,
+    maxWidth: 760,
     padding: theme.spacing(3),
   },
 }));
 
 export const BerachainInformationProtocolIntro = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'column',
   gap: theme.spacing(2),
 }));
 
