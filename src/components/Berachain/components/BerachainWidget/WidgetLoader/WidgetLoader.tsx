@@ -7,7 +7,7 @@ function BerachainWidgetLoader() {
     <Box
       sx={{
         padding: theme.spacing(3),
-        width: '592px',
+        width: '480px',
         borderRadius: '24px',
         backgroundColor: '#121214',
       }}

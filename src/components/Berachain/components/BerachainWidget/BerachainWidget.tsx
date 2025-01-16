@@ -40,6 +40,8 @@ export const BerachainWidget = ({
     display: 'flex',
     width: '100%',
     borderRadius: '24px',
+    backgroundColor: '#1E1D1C',
+    fontSize: '0.875rem',
     div: {
       height: 38,
     },
@@ -52,6 +54,7 @@ export const BerachainWidget = ({
 
   const tabStyles = {
     height: 38,
+    fontSize: '0.875rem',
     margin: theme.spacing(0.75),
     minWidth: 'unset',
     borderRadius: '18px',
@@ -84,7 +87,8 @@ export const BerachainWidget = ({
   return (
     <Box
       sx={{
-        width: '100%',
+        minWidth: '464px',
+        width: '480px',
         borderRadius: '24px',
         backgroundColor: '#121214',
         boxShadow:
@@ -106,7 +110,7 @@ export const BerachainWidget = ({
         containerStyles={containerStyles}
         tabStyles={tabStyles}
       />
-      <Box>
+      <Box sx={{ marginTop: 3 }}>
         {tab === 0 && (
           <Box
             sx={{
@@ -128,6 +132,7 @@ export const BerachainWidget = ({
           <Box sx={{ marginTop: theme.spacing(1.5) }}>
             {/*<InfoBlock market={market} type="deposit" />*/}
             <DepositWidget
+              appName={appName}
               market={market}
               chain={chain}
               contractCalls={[]}
