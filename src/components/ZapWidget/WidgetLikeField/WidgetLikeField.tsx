@@ -336,13 +336,21 @@ function WidgetLikeField({
             </LoadingButton>
           )}
 
-          {isSuccessWriteContract && (
+          {isSuccess && (
             <TxConfirmation
-              s={
-                !!data && !isPending
-                  ? 'Interaction successful'
-                  : 'Check on explorer'
+              s={'Withdraw successful'}
+              link={
+                projectData?.chain === 'ethereum'
+                  ? 'https://etherscan.io/tx/' + data
+                  : 'https://basescan.org/tx/' + data
               }
+              success={!!isSuccessWriteContract && !isPending ? true : false}
+            />
+          )}
+
+          {data && (
+            <TxConfirmation
+              s={'Check on explorer'}
               link={
                 projectData?.chain === 'ethereum'
                   ? 'https://etherscan.io/tx/' + data

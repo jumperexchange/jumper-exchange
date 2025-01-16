@@ -41,7 +41,8 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
 
   const containerStyles = {
     display: 'flex',
-    width: '100%',
+    width: 'auto',
+    marginX: 2,
     borderRadius: '24px',
     div: {
       height: 38,
@@ -154,32 +155,33 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
 
         {/* widget on web */}
 
-        {!isSuccess ? (
-          <Skeleton
-            variant="rectangular"
-            sx={{
-              marginTop: theme.spacing(2),
-              height: '600px',
-              borderRadius: '8px',
-              [theme.breakpoints.down('md' as Breakpoint)]: {
-                width: 316,
-              },
-              [theme.breakpoints.up('md' as Breakpoint)]: {
-                width: 416,
-              },
-            }}
-          />
-        ) : (
-          <>
-            {!isMobile && (
-              <ZapTabsBox>
-                <Tabs
-                  data={tabs}
-                  value={tab}
-                  ariaLabel="zap-switch-tabs"
-                  containerStyles={containerStyles}
-                  tabStyles={tabStyles}
+        <>
+          {!isMobile && (
+            <ZapTabsBox>
+              <Tabs
+                data={tabs}
+                value={tab}
+                ariaLabel="zap-switch-tabs"
+                containerStyles={containerStyles}
+                tabStyles={tabStyles}
+              />
+              {!isSuccess ? (
+                <Skeleton
+                  variant="rectangular"
+                  sx={{
+                    marginX: 2,
+                    marginTop: theme.spacing(2),
+                    height: '600px',
+                    borderRadius: '8px',
+                    [theme.breakpoints.down('md' as Breakpoint)]: {
+                      width: 284,
+                    },
+                    [theme.breakpoints.up('md' as Breakpoint)]: {
+                      width: 384,
+                    },
+                  }}
                 />
+              ) : (
                 <Box
                   sx={{
                     [theme.breakpoints.down('md' as Breakpoint)]: {
@@ -192,10 +194,10 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
                 >
                   {renderZapWidget()}
                 </Box>
-              </ZapTabsBox>
-            )}
-          </>
-        )}
+              )}
+            </ZapTabsBox>
+          )}
+        </>
       </ZapProtocolActionBox>
     </Container>
   );
