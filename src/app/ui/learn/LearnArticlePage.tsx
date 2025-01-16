@@ -34,17 +34,7 @@ const LearnArticlePage = ({
       <BlogArticleWrapper>
         <BlogBackgroundGradient />
         <BlogArticle
-          subtitle={article?.attributes.Subtitle}
-          title={article?.attributes.Title}
-          content={article?.attributes.Content}
-          slug={article?.attributes.Slug}
-          id={article?.id}
-          author={article?.attributes.author}
-          publishedAt={article?.attributes.publishedAt}
-          createdAt={article?.attributes.createdAt}
-          updatedAt={article?.attributes.updatedAt}
-          tags={article?.attributes.tags}
-          image={article?.attributes.Image}
+          article={article}
           baseUrl={url}
           activeThemeMode={activeThemeMode}
         />
