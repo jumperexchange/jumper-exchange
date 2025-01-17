@@ -1,6 +1,8 @@
 import {
   Accordion,
+  alpha,
   Box,
+  Button,
   Card,
   darken,
   Divider,
@@ -8,7 +10,6 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { alpha, Button } from '@mui/material';
 import { urbanist } from 'src/fonts/fonts';
 
 export const MaxButton = styled(Button, {
@@ -26,14 +27,11 @@ export const MaxButton = styled(Button, {
   },
 }));
 
-export const BerachainActionBerachainWidgetWrapper = styled(Box)(
-  ({ theme }) => ({
-    minWidth: 416,
-    height: 'fit-content',
-    borderRadius: '24px',
-    boxShadow: '0px 4px 24px 0px rgba(126, 88, 88, 0.08)',
-  }),
-);
+export const BerachainActionBerachainWidgetWrapper = styled(Box)(() => ({
+  height: 'fit-content',
+  borderRadius: '24px',
+  boxShadow: '0px 4px 24px 0px rgba(126, 88, 88, 0.08)',
+}));
 
 export const BerachainWidgetHeader = styled(Box)(({ theme }) => ({
   display: 'flex',

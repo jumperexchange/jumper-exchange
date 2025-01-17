@@ -1,5 +1,6 @@
 'use client';
-import { useTranslation } from 'react-i18next';
+import { useAccount } from '@lifi/wallet-management';
+import type { TokenAmount } from '@lifi/widget';
 import type { Breakpoint, Theme } from '@mui/material';
 import {
   Box,
@@ -9,17 +10,16 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import type { TokenAmount } from '@lifi/widget';
+import { useTranslation } from 'react-i18next';
+import ZapWidgetPage from 'src/app/ui/widget/ZapWidgetPage';
 import type { TabProps } from 'src/components/Tabs';
 import { Tabs } from 'src/components/Tabs';
+import { useZaps } from 'src/hooks/useZaps';
 import { useMenuStore } from 'src/stores/menu';
 import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
-import { ZapProtocolActionBox, ZapTabsBox } from './ZapInfo/ZapInfo.style';
-import ZapWidgetPage from 'src/app/ui/widget/ZapWidgetPage';
-import { useZaps } from 'src/hooks/useZaps';
-import { useAccount } from '@lifi/wallet-management';
 import { ZapInfo } from './ZapInfo/ZapInfo';
+import { ZapProtocolActionBox, ZapTabsBox } from './ZapInfo/ZapInfo.style';
 
 interface ZapPageProps {
   market?: Quest;
@@ -144,7 +144,14 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
               containerStyles={containerStyles}
               tabStyles={tabStyles}
             />
-            <Box sx={{ marginTop: theme.spacing(1.5), minWidth: '416px' }}>
+            <Box
+              sx={{
+                marginTop: theme.spacing(1.5),
+                [theme.breakpoints.up('sm')]: {
+                  minWidth: '416px',
+                },
+              }}
+            >
               {renderZapWidget()}
             </Box>
           </ZapTabsBox>
