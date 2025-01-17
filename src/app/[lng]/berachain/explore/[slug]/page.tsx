@@ -12,7 +12,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   try {
     const { data } = await getQuestBySlug(params.slug);
-    const questData = data.data[0] || undefined;
+    const questData = data || undefined;
     if (!questData) {
       throw new Error();
     }
