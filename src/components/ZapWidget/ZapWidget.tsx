@@ -12,7 +12,7 @@ import {
   WidgetEvent,
 } from '@lifi/widget';
 import type { Breakpoint } from '@mui/material';
-import { Box, Skeleton, useTheme } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useThemeStore } from 'src/stores/theme';
 import { formatUnits } from 'viem';
@@ -43,7 +43,6 @@ export function ZapWidget({
   type,
   claimingIds,
 }: CustomWidgetProps) {
-  const theme = useTheme();
   const [token, setToken] = useState<TokenAmount>();
 
   const { data, isSuccess } = useZaps(projectData);
@@ -215,7 +214,7 @@ export function ZapWidget({
         ) : (
           <Skeleton
             variant="rectangular"
-            sx={{
+            sx={(theme) => ({
               marginTop: '32px',
               height: 592,
               borderRadius: '16px',
@@ -225,7 +224,7 @@ export function ZapWidget({
               [theme.breakpoints.up('md' as Breakpoint)]: {
                 maxWidth: '100%',
               },
-            }}
+            })}
           />
         ))}
 
