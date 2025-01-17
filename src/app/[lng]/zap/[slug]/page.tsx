@@ -64,5 +64,5 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   const questData = data;
 
-  return <ZapPage market={questData} />;
+  return <ZapPage data={questData} />;
 }
