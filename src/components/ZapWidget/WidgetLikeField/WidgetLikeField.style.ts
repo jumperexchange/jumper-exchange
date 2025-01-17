@@ -46,7 +46,7 @@ export const WidgetLikeInput = styled(Input)(({ theme }) => ({
   borderRadius: theme.spacing(2),
   padding: '16px',
   backgroundColor: theme.palette.surface2.main,
-  border: `1px solid #E5E1EB`,
+  border: `1px solid ${theme.palette.mode === 'light' ? '#E5E1EB' : '#302B52'}`,
   '& input': {
     fontSize: '24px',
     fontWeight: 700,
