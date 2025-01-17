@@ -1,5 +1,4 @@
 'use client';
-import { useAccount } from '@lifi/wallet-management';
 import type { TokenAmount } from '@lifi/widget';
 import type { Breakpoint, Theme } from '@mui/material';
 import {
@@ -10,14 +9,11 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import ZapWidgetPage from 'src/app/ui/widget/ZapWidgetPage';
 import type { TabProps } from 'src/components/Tabs';
 import { Tabs } from 'src/components/Tabs';
 import { useZaps } from 'src/hooks/useZaps';
-import { useMenuStore } from 'src/stores/menu';
 import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { ZapInfo } from './ZapInfo/ZapInfo';
 import { ZapProtocolActionBox, ZapTabsBox } from './ZapInfo/ZapInfo.style';
 
@@ -28,13 +24,9 @@ interface ZapPageProps {
 
 export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
   const [tab, setTab] = useState(0);
-  const { setSnackbarState } = useMenuStore((state) => state);
   const { data, isSuccess, refetch } = useZaps(detailInformation?.projectData);
   const [token, setToken] = useState<TokenAmount>();
-  const { t } = useTranslation();
-  const baseUrl = getStrapiBaseUrl();
   const theme = useTheme();
-  const { account } = useAccount();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
