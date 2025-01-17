@@ -75,6 +75,7 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
     margin: theme.spacing(0.75),
     minWidth: 'unset',
     borderRadius: '18px',
+    maxWidth: 'unset',
   };
 
   const tabs: TabProps[] = [
