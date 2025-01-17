@@ -1,18 +1,17 @@
 'use client';
 import { ZapPage as ZapComponentPage } from 'src/components/Zap/ZapPage';
+import { Quest } from 'src/types/loyaltyPass';
 import type { ExtendedQuest } from 'src/types/questDetails';
 
 interface ZapPageProps {
-  market?: {
-    data: ExtendedQuest[];
-  };
+  data: Quest;
 }
 
-const ZapPage = ({ market }: ZapPageProps) => {
+const ZapPage = ({ data }: ZapPageProps) => {
   return (
     <ZapComponentPage
-      market={market?.data?.[0]}
-      detailInformation={market?.data?.[0]?.attributes?.CustomInformation}
+      market={data}
+      detailInformation={data.attributes?.CustomInformation}
     />
   );
 };
