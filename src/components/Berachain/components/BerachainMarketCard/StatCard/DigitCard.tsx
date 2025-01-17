@@ -40,6 +40,7 @@ const DigitCard = ({
           {title}
         </Typography>
         <Tooltip
+          className="tooltip-icon"
           title={tooltipText}
           placement={'top'}
           enterTouchDelay={0}
@@ -61,6 +62,7 @@ const DigitCard = ({
         marginTop={'4px'}
         sx={(theme) => ({
           display: 'inline-flex',
+          marginTop: 1,
           typography: {
             xs: theme.typography.titleXSmall,
             sm: theme.typography.titleXSmall,
