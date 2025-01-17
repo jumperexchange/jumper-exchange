@@ -135,30 +135,30 @@ function WidgetLikeField({
 
   // TODO: to remove
   // eslint-disable-next-line no-console
-  console.log('prep', {
-    chain_id: market.chain_id,
-    market_id: market.market_id,
-    market_type: 'recipe',
-    user_type: userType,
-    offer_type: offerType,
-    account: account?.address,
-    quantity: parseTokenAmountToRawAmount(
-      String(inputValue) ?? '0',
-      market?.input_token_data.decimals ?? 0,
-    ),
-    funding_vault: DEFAULT_WALLET_ADDRESS,
-    token_ids: [],
-    token_amounts: [],
-    expiry: '0',
-    token_rates: [],
-    start_timestamps: [],
-    end_timestamps: [],
+  // console.log('prep', {
+  //   chain_id: market.chain_id,
+  //   market_id: market.market_id,
+  //   market_type: 'recipe',
+  //   user_type: userType,
+  //   offer_type: offerType,
+  //   account: account?.address,
+  //   quantity: parseTokenAmountToRawAmount(
+  //     String(inputValue) ?? '0',
+  //     market?.input_token_data.decimals ?? 0,
+  //   ),
+  //   funding_vault: DEFAULT_WALLET_ADDRESS,
+  //   token_ids: [],
+  //   token_amounts: [],
+  //   expiry: '0',
+  //   token_rates: [],
+  //   start_timestamps: [],
+  //   end_timestamps: [],
 
-    vault_incentive_action: vaultIncentiveActionType,
-    offer_validation_url: `/api/validate`,
-    frontend_fee_recipient:
-      process.env.NEXT_PUBLIC_ROYCO_FRONTEND_FEE_RECIPIENT,
-  });
+  //   vault_incentive_action: vaultIncentiveActionType,
+  //   offer_validation_url: `/api/validate`,
+  //   frontend_fee_recipient:
+  //     process.env.NEXT_PUBLIC_ROYCO_FRONTEND_FEE_RECIPIENT,
+  // });
 
   const [contractCallIndex, setContractCallIndex] = useState(0);
 
@@ -215,7 +215,7 @@ function WidgetLikeField({
     try {
       // TODO: to remove
       // eslint-disable-next-line no-console
-      console.log('submitted', inputValue);
+      // console.log('submitted', inputValue);
       e.preventDefault();
 
       resetTx();
