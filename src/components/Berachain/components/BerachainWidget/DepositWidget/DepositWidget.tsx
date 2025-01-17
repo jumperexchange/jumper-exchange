@@ -211,6 +211,7 @@ function DepositWidget({
       return;
     }
 
+    setInputValue('');
     trackEvent({
       category: TrackingCategory.WidgetEvent,
       action: 'berachain_deposit',
@@ -455,7 +456,7 @@ function DepositWidget({
                       display: 'flex',
                       flexDirection: 'column',
                       marginTop: '20px',
-                      width: '96px',
+                      width: '100%',
                       alignItems: 'flex-end',
                     }}
                   >

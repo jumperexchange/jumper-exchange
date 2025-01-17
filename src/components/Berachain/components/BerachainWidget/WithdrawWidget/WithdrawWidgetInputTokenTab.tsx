@@ -125,6 +125,7 @@ export const WithdrawWidgetInputTokenTab = ({
     data: positionsVault,
     isError: isErrorPositionsVault,
     error: errorPositionsVault,
+    refetch: positionsVaultRefetch,
   } = useEnrichedPositionsVault({
     chain_id: market.chain_id!,
     market_id: market.market_id!,
@@ -152,8 +153,14 @@ export const WithdrawWidgetInputTokenTab = ({
     if (!isTxConfirmed) {
       return;
     }
-    refetch();
-    positionsRecipeRefetch();
+
+    // Give a bit of time to royco to refresh its data
+    setTimeout(() => {
+      refetch();
+      positionsRecipeRefetch();
+      positionsVaultRefetch();
+
+    }, 3000);
 
     trackEvent({
       category: TrackingCategory.WidgetEvent,
