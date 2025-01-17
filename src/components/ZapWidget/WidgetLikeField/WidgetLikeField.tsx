@@ -149,8 +149,6 @@ function WidgetLikeField({
 
   const handleSwitchChain = async (chainId: number) => {
     try {
-      console.log('new chainId');
-      console.log(chainId);
       const { id } = await switchChainAsync({
         chainId: chainId,
       });
