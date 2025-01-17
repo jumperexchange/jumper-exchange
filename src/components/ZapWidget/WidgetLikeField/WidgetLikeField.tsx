@@ -123,6 +123,7 @@ function WidgetLikeField({
       return;
     }
 
+    setValue('');
     refetch();
   }, [transactionReceiptData]);
 
@@ -223,7 +224,7 @@ function WidgetLikeField({
               value={value}
               onChange={handleInputChange}
               placeholder={placeholder}
-              disabled={isPending}
+              disabled={isPending || isLoading}
               aria-describedby="component-text"
               disableUnderline={true}
               // sx={{
@@ -348,7 +349,7 @@ function WidgetLikeField({
             />
           )}
 
-          {data && (
+          {!isSuccess && data && (
             <TxConfirmation
               s={'Check on explorer'}
               link={
@@ -356,7 +357,7 @@ function WidgetLikeField({
                   ? 'https://etherscan.io/tx/' + data
                   : 'https://basescan.org/tx/' + data
               }
-              success={!!isSuccessWriteContract && !isPending ? true : false}
+              success={false}
             />
           )}
         </Box>

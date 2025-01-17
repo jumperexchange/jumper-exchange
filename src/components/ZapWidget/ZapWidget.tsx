@@ -145,7 +145,13 @@ export function ZapWidget({
         chainType: ChainType.EVM,
       },
       bridges: {
-        allow: ['across', 'stargateV2', 'stargate', 'symbiosis'],
+        allow: ['relay', 'across', 'stargateV2', 'stargate', 'symbiosis'],
+      },
+      tokens: {
+        deny: [{
+          address: '0x05D032ac25d322df992303dCa074EE7392C117b9',
+          chainId: 1135,
+        }]
       },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
