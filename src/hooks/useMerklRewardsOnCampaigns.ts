@@ -129,11 +129,8 @@ export const useMerklRewardsOnCampaigns = ({
       return result;
     },
     enabled: !!userAddress,
-    refetchInterval: 1 * 60 * 60,
+    refetchInterval: 1000 * 60 * 60,
   });
-
-  console.log('in hooks');
-  console.log(rewardsData);
 
   // transform to know what is not coming from Jumper campaigns
 

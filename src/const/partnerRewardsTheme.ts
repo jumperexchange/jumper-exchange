@@ -38,12 +38,12 @@ export const REWARDS_LIST = [
     tokenChainId: 1135,
     claimingAddress: '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae',
     tokenAddress: '0xac485391EB2d7D88253a7F1eF18C37f4242D1A24',
-    decimalsToShow: 3,
+    decimalsToShow: 2,
     explorerLink: 'https://blockscout.lisk.com/',
     lightTokenLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/liskttoken_386a617ff7.png`,
     darkTokenLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/liskttoken_386a617ff7.png`,
-    lightChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/lisk_chain_a996787b58.png`,
-    darkChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/lisk_chain_a996787b58.png`,
+    lightChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/lisk_chain_de4347a5f9.png`,
+    darkChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/lisk_chain_de4347a5f9.png`,
   },
 ];
 
