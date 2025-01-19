@@ -19,3 +19,6 @@ export const INCENTIVES_TO_EARN_TOOLTIP =
   'Rewards you should earn after the lockup on Berachain mainnet.';
 export const LOCKUP_TOOLTIP =
   'Deposits will be locked for the displayed amount of times to earn rewards. You are able to withdraw prior to the end of the lockup period but will forfeit any rewards on Berachain.';
+
+export const BOOSTED_APY =
+  'Additional APY you get from participating to this campaign inside Jumper.';

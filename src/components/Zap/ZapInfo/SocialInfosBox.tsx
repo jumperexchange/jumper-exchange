@@ -20,32 +20,55 @@ export const SocialInfosBox = ({ detailInformation }: ZapPageProps) => {
       {detailInformation?.socials && (
         <>
           {detailInformation?.socials?.twitter && (
-            <ZapActionProtocolShareLink
+            <a
               href={detailInformation?.socials?.twitter}
-              style={{ color: 'inherit', textDecoration: 'none' }}
+              target="_blank"
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              rel="noreferrer"
             >
               <ZapActionProtocolShare>
                 <XIcon sx={{ width: '16px', height: '16px' }} />
               </ZapActionProtocolShare>
-            </ZapActionProtocolShareLink>
+            </a>
           )}
           {detailInformation?.socials?.telegram && (
-            <ZapActionProtocolShareLink
+            <a
               href={detailInformation?.socials?.telegram}
+              target="_blank"
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              rel="noreferrer"
             >
               <ZapActionProtocolShare>
                 <TelegramIcon sx={{ width: '16px', height: '16px' }} />
               </ZapActionProtocolShare>
-            </ZapActionProtocolShareLink>
+            </a>
           )}
           {detailInformation?.socials?.website && (
-            <ZapActionProtocolShareLink
+            <a
               href={detailInformation?.socials?.website}
+              target="_blank"
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              rel="noreferrer"
             >
               <ZapActionProtocolShare>
                 <LanguageIcon sx={{ width: '16px', height: '16px' }} />
               </ZapActionProtocolShare>
-            </ZapActionProtocolShareLink>
+            </a>
           )}
         </>
       )}
