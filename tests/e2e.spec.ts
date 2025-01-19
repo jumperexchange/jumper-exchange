@@ -74,7 +74,7 @@ test.describe('Jumper full e2e flow', () => {
     page,
   }) => {
     await openOrCloseMainMenu(page);
-    await checkTheNumberOfMenuItems(page, 10);
+    await checkTheNumberOfMenuItems(page, 9);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
@@ -87,7 +87,7 @@ test.describe('Jumper full e2e flow', () => {
       'xpath=//div[@class="MuiBox-root mui-9cpca"]',
     );
     await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Jumper Profile');
+    await itemInMenu(page, 'Jumper Loyalty Pass');
     expect(await page.url()).toBe(profileUrl);
     await page.locator('.profile-page').isVisible();
     await page
@@ -151,7 +151,7 @@ test.describe('Jumper full e2e flow', () => {
     page,
   }) => {
     const jumperProfileBackButton = await page.locator(
-      'xpath=//p[normalize-space(text())="JUMPER PROFILE"]',
+      'xpath=//p[normalize-space(text())="JUMPER LOYALTY PASS"]',
     );
     await page.goto(values.aerodromeQuestsURL);
     expect(jumperProfileBackButton).toBeVisible();

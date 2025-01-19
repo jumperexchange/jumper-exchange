@@ -1,6 +1,7 @@
-import type { Breakpoint } from '@mui/material';
+import type { Breakpoint, SxProps } from '@mui/material';
 import { alpha, Box, Tooltip, Typography, useTheme } from '@mui/material';
 import { BerachainProgressCard } from './BerachainProgressCard';
+import { Theme } from '@mui/material/styles';
 
 interface DigitCardProps {
   title: string;
@@ -18,15 +19,23 @@ const DigitTooltipCard = ({ title, digit, tooltipText }: DigitCardProps) => {
           title={title}
           value={digit}
           showTooltipIcon={true}
-          sx={{
+          sx={(theme) => ({
+            '.title': {
+              color: '#8b8989',
+              fontSize: '0.75rem',
+            },
+            '.tooltip-icon': {
+              color: theme.palette.alphaLight500.main,
+            },
             height: '100%',
             padding: theme.spacing(1.5, 2),
             display: 'flex',
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               padding: theme.spacing(1.5, 2),
             },
-          }}
+          })}
           valueSx={{
+            marginTop: 1,
             color: alpha(theme.palette.white.main, 0.84),
             fontSize: theme.typography.titleXSmall.fontSize,
             [theme.breakpoints.up('sm' as Breakpoint)]: {

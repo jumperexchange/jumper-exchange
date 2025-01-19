@@ -58,17 +58,24 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
   });
 
   return (
-    <BerachainDepositInputBackground>
+    <BerachainDepositInputBackground
+      sx={{
+        gap: 2,
+      }}
+    >
       <Stack direction="column">
         <Stack direction="row" justifyContent="space-between">
           <DigitCard
             title={'TVL'}
             tooltipText={TVL_TOOLTIP}
-            sx={{
+            sx={(theme) => ({
+              '.tooltip-icon': {
+                color: theme.palette.alphaLight500.main,
+              },
               '.content': {
                 fontSize: '1.5rem',
               },
-            }}
+            })}
             digit={
               market?.locked_quantity_usd
                 ? t('format.currency', {
@@ -82,11 +89,18 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
           recipe.input_token_data_ap.token_amount > 0 ? (
             <DigitTokenSymbolCard
               title={'Deposited'}
-              sx={{
+              sx={(theme) => ({
+                '.tooltip-icon': {
+                  color: theme.palette.alphaLight500.main,
+                },
+                '.content-wrapper': {
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-end',
+                },
                 '.content': {
                   fontSize: '1.5rem',
                 },
-              }}
+              })}
               tooltipText={DEPOSITED_TOOLTIP}
               tokenImage={market?.input_token_data?.image}
               digit={t('format.decimal', {
@@ -98,12 +112,15 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
             />
           ) : (
             <DigitCard
-              sx={{
+              sx={(theme) => ({
+                '.tooltip-icon': {
+                  color: theme.palette.alphaLight500.main,
+                },
                 alignItems: 'flex-end',
                 '.content': {
                   fontSize: '1.5rem',
                 },
-              }}
+              })}
               title={'Deposit Cap'}
               tooltipText={AVAILABLE_TOOLTIP}
               digit={t('format.currency', {
@@ -131,11 +148,18 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
           {market?.incentive_tokens_data?.length > 0 ? (
             <DigitCard
               title={'Total rewards'}
-              sx={{
+              sx={(theme) => ({
+                '.tooltip-icon': {
+                  color: theme.palette.alphaLight500.main,
+                },
+                '.title': {
+                  color: theme.palette.text.secondary,
+                  fontSize: '0.75rem',
+                },
                 '.content': {
                   fontSize: '1.5rem',
                 },
-              }}
+              })}
               tooltipText={<TooltipIncentives market={market} />}
               digit={
                 <TokenIncentivesData tokens={market?.incentive_tokens_data} />
@@ -145,11 +169,18 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
             <DigitCard
               title={'APY rewards'}
               tooltipText={APY_TOOLTIP}
-              sx={{
+              sx={(theme) => ({
+                '.tooltip-icon': {
+                  color: theme.palette.alphaLight500.main,
+                },
+                '.title': {
+                  color: theme.palette.text.secondary,
+                  fontSize: '0.75rem',
+                },
                 '.content': {
                   fontSize: '1.5rem',
                 },
-              }}
+              })}
               digit={
                 market?.annual_change_ratio
                   ? t('format.percent', {
@@ -161,12 +192,19 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
           )}
           {market.lockup_time === '0' ? undefined : (
             <DigitCard
-              sx={{
+              sx={(theme) => ({
                 alignItems: 'flex-end',
+                '.tooltip-icon': {
+                  color: theme.palette.alphaLight500.main,
+                },
+                '.title': {
+                  color: theme.palette.text.secondary,
+                  fontSize: '0.75rem',
+                },
                 '.content': {
                   fontSize: '1.5rem',
                 },
-              }}
+              })}
               title={'Lockup'}
               tooltipText={LOCKUP_TOOLTIP}
               digit={formatWithCustomLabels(

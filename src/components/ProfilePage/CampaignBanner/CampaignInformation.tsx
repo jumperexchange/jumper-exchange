@@ -57,7 +57,7 @@ export const CampaignInformation = ({
           fontWeight={700}
           color={theme.palette.text.primary}
         >
-          Lisk Your Limits
+          Discover Lisk
         </Typography>
         <Typography
           fontSize={14}

@@ -35,6 +35,7 @@ export const BerachainProgressCard = ({
         <BeraChainProgressCardHeader display={'flex'}>
           <Typography
             variant="bodySmall"
+            className="title"
             sx={(theme) => ({
               typography: {
                 xs: theme.typography.bodyXSmall,
@@ -46,6 +47,7 @@ export const BerachainProgressCard = ({
           </Typography>
           {(tooltip || showTooltipIcon) && (
             <Tooltip
+              className="tooltip-icon"
               title={tooltip}
               placement={'top'}
               enterTouchDelay={0}

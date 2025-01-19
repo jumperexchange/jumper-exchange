@@ -27,7 +27,7 @@ export interface QuestDetails {
   partner: { logo: string; name: string }[];
 }
 
-export interface ExtendedQuest extends Quest<never> {
+export interface ExtendedQuest extends Quest {
   protocolInfos?: ProtocolInfo;
 }
 
