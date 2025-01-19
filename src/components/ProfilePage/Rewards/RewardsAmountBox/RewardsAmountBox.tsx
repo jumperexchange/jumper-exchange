@@ -43,7 +43,7 @@ export const RewardsAmountBox = ({
           width={40}
           height={40}
           style={{
-            borderRadius: 16,
+            borderRadius: '50%',
           }}
         />
         {isMobile ? undefined : (
