@@ -4,7 +4,7 @@ import {
   useFieldActions,
 } from '@lifi/widget';
 import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { formatUnits } from 'viem';
 import type { ProjectData } from '../ZapWidget';
 import { Breakpoint, useTheme } from '@mui/material';
