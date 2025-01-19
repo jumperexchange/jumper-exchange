@@ -16,7 +16,6 @@ import {
 } from 'wagmi';
 import WidgetFieldEndAdornment from './WidgetEndAdornment';
 import { WidgetFormHelperText, WidgetLikeInput } from './WidgetLikeField.style';
-import * as React from 'react';
 import { useChains } from '@/hooks/useChains';
 
 interface Image {
@@ -73,7 +72,6 @@ function WidgetLikeField({
   writeDecimals,
   refetch,
 }: WidgetLikeFieldProps) {
-  const theme = useTheme();
   const chains = useChains();
   const chain = useMemo(
     () => chains.getChainById(projectData?.chainId),
