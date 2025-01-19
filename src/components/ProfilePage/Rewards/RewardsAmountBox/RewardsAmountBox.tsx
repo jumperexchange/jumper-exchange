@@ -50,10 +50,10 @@ export const RewardsAmountBox = ({
           <Image
             src={REWARD_CHAIN_LOGO}
             alt="chain image"
-            width={15}
-            height={15}
+            width={20}
+            height={20}
             style={{
-              borderRadius: 16,
+              borderRadius: '50%',
               border: '2px solid',
               borderColor: '#FFFFFF',
               zIndex: 10,

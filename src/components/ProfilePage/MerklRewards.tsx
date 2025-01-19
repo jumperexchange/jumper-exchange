@@ -42,6 +42,9 @@ export function MerklRewards() {
     [account, isRewardLoading, isRewardSuccess, availableRewards],
   );
 
+  console.log('rewards');
+  console.log(availableRewards);
+
   return (
     <RewardsCarousel
       hideComponent={hideComponent}
