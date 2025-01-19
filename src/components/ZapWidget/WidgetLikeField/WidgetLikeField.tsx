@@ -16,6 +16,8 @@ import {
 } from 'wagmi';
 import WidgetFieldEndAdornment from './WidgetEndAdornment';
 import { WidgetFormHelperText, WidgetLikeInput } from './WidgetLikeField.style';
+import * as React from 'react';
+import { useChains } from '@/hooks/useChains';
 
 interface Image {
   url: string;
@@ -71,6 +73,12 @@ function WidgetLikeField({
   writeDecimals,
   refetch,
 }: WidgetLikeFieldProps) {
+  const theme = useTheme();
+  const chains = useChains();
+  const chain = useMemo(
+    () => chains.getChainById(projectData?.chainId),
+    [projectData?.chainId],
+  );
   const wagmiConfig = useConfig();
   const { account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
@@ -320,11 +328,7 @@ function WidgetLikeField({
           {isSuccess && (
             <TxConfirmation
               s={'Withdraw successful'}
-              link={
-                projectData?.chain === 'ethereum'
-                  ? 'https://etherscan.io/tx/' + data
-                  : 'https://basescan.org/tx/' + data
-              }
+              link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${data}`}
               success={!!isSuccessWriteContract && !isPending ? true : false}
             />
           )}
@@ -332,11 +336,7 @@ function WidgetLikeField({
           {!isSuccess && data && (
             <TxConfirmation
               s={'Check on explorer'}
-              link={
-                projectData?.chain === 'ethereum'
-                  ? 'https://etherscan.io/tx/' + data
-                  : 'https://basescan.org/tx/' + data
-              }
+              link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${data}`}
               success={false}
             />
           )}
