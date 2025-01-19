@@ -4,9 +4,8 @@ import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { siteName } from 'src/app/lib/metadata';
 import ZapPage from 'src/app/ui/zap/ZapPage';
 import { getSiteUrl } from 'src/const/urls';
-import type { Quest, QuestAttributes } from 'src/types/loyaltyPass';
+import type { QuestAttributes } from 'src/types/loyaltyPass';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
-import { ExtendedQuest } from '@/types/questDetails';
 
 export async function generateMetadata({
   params,

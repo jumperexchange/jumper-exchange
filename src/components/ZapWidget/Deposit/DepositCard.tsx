@@ -129,7 +129,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         {!!boostedAPY && boostedAPY > 0 && (
           <ColoredStatBox>
             <DigitOnlyCard
-              title={'Boost APY'}
+              title={'Boosted APY'}
               tooltipText={'hello world'}
               digit={analytics?.total_apy ? `${boostedAPY.toFixed(1)}%` : 'N/A'}
             />

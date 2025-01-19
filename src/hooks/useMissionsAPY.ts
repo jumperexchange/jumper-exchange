@@ -1,8 +1,8 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import type { CTALinkInt } from 'src/components/Superfest/SuperfestPage/CTA/MissionCTA';
+import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
 
-const ACTIVE_CHAINS = ['10', '8453', '252', '34443'];
 const MERKL_API = 'https://api.merkl.xyz/v3';
 const CREATOR_TAG = 'superfest';
 
@@ -18,7 +18,7 @@ export interface MerklApyRes {
 }
 
 export const useMissionsAPY = (CTAs: CTALinkInt[] = []): useMissionsAPYRes => {
-  const MERKL_CAMPAIGN_API = `${MERKL_API}/campaigns?chainIds=${ACTIVE_CHAINS.join(',')}&creatorTag=${CREATOR_TAG}`;
+  const MERKL_CAMPAIGN_API = `${MERKL_API}/campaigns?chainIds=${REWARDS_CHAIN_IDS.join(',')}`; //&creatorTag=${CREATOR_TAG}
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['campaignInfo'],
     queryFn: async () => {
@@ -37,7 +37,7 @@ export const useMissionsAPY = (CTAs: CTALinkInt[] = []): useMissionsAPYRes => {
   const CTAsWithAPYs = CTAs.map((CTA: CTALinkInt) => {
     const timestamp = Date.now() / 1000;
 
-    for (const id of ACTIVE_CHAINS) {
+    for (const id of REWARDS_CHAIN_IDS) {
       const chainCampaignData = data?.[id];
       if (chainCampaignData && chainCampaignData[CTA.claimingId]) {
         for (const [, data] of Object.entries(
