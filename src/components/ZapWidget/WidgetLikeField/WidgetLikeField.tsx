@@ -1,6 +1,15 @@
 import { useAccount } from '@lifi/wallet-management';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { alpha, Box, Grid, InputLabel, Typography } from '@mui/material';
+import {
+  alpha,
+  Box,
+  FormHelperText,
+  Grid,
+  Input,
+  InputLabel,
+  Stack,
+  Typography,
+} from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import { parseUnits } from 'ethers';
 import * as React from 'react';
@@ -15,8 +24,16 @@ import {
   useWriteContract,
 } from 'wagmi';
 import WidgetFieldEndAdornment from './WidgetEndAdornment';
-import { WidgetFormHelperText, WidgetLikeInput } from './WidgetLikeField.style';
+import {
+  WidgetFormHelperText,
+  CustomFormControl,
+} from './WidgetLikeField.style';
 import { useChains } from '@/hooks/useChains';
+import type { TokenAmount } from '@lifi/sdk';
+import { useUserTracking } from '@/hooks/userTracking';
+import { TrackingCategory } from 'src/const/trackingKeys';
+import { useToken } from '@/hooks/useToken';
+import WidgetFieldStartAdornment from '@/components/ZapWidget/WidgetLikeField/WidgetStartAdornment';
 
 interface Image {
   url: string;
@@ -56,6 +73,7 @@ interface WidgetLikeFieldProps {
   balance?: string;
   projectData: ProjectData;
   writeDecimals: number;
+  token: TokenAmount;
   refetch: () => void;
 }
 
@@ -66,12 +84,14 @@ function WidgetLikeField({
   placeholder,
   hasMaxButton = true,
   helperText,
+  token,
   overrideStyle = {},
   balance,
   projectData,
   writeDecimals,
   refetch,
 }: WidgetLikeFieldProps) {
+  const { trackEvent } = useUserTracking();
   const chains = useChains();
   const chain = useMemo(
     () => chains.getChainById(projectData?.chainId),
@@ -88,8 +108,15 @@ function WidgetLikeField({
     error,
     isSuccess: isSuccessWriteContract,
   } = useWriteContract();
+  const { token: tokenInfo } = useToken(token.chainId, token.address);
 
   const [value, setValue] = useState<string>('');
+  const tokenUSDAmount = useMemo<string>(() => {
+    if (!value || !tokenInfo?.priceUSD) {
+      return '0';
+    }
+    return (parseFloat(tokenInfo?.priceUSD) * parseFloat(value)).toString();
+  }, [value, tokenInfo]);
 
   const {
     data: transactionReceiptData,
@@ -104,12 +131,27 @@ function WidgetLikeField({
 
   // When the transaction is done, triggering the refetch
   useEffect(() => {
-    if (!transactionReceiptData) {
+    if (!isSuccess) {
       return;
     }
 
     setValue('');
     refetch();
+    trackEvent({
+      category: TrackingCategory.WidgetEvent,
+      action: 'zap_withdraw',
+      label: 'execution_success',
+      data: {
+        protocol_name: projectData.integrator,
+        chain_id: token.chainId,
+        withdrawn_token: token.address,
+        amount_withdrawn: value ?? 'NA',
+        amount_withdrawn_usd:
+          parseFloat(value ?? '0') * parseFloat(tokenInfo?.priceUSD ?? '0'),
+        timestamp: new Date(),
+      } as any, // Shortcut
+      isConversion: true,
+    });
   }, [transactionReceiptData]);
 
   const shouldSwitchChain = useMemo(() => {
@@ -199,95 +241,69 @@ function WidgetLikeField({
           <InputLabel htmlFor="component" sx={{ marginBottom: 2 }}>
             <Typography variant="titleSmall">{label}</Typography>
           </InputLabel>
-          <FormControl
-            error={!!hasErrorText}
+          <CustomFormControl
             variant="standard"
             aria-autocomplete="none"
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+            }}
           >
-            <WidgetLikeInput
-              autoComplete="off"
-              id="component"
-              value={value}
-              onChange={handleInputChange}
-              placeholder={placeholder}
-              disabled={isPending || isLoading}
-              aria-describedby="component-text"
-              disableUnderline={true}
-              // sx={{
-              //   borderRadius: theme.spacing(2),
-              //   padding: '16px',
-              //   backgroundColor: theme.palette.surface2.main,
-              //   boxShadow:
-              //     theme.palette.mode === 'light'
-              //       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-              //       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-              //   maxWidth: 416,
-              //   '& input': {
-              //     fontSize: '24px',
-              //     fontWeight: 700,
-              //     lineHeight: '36px',
-              //     marginLeft: '8px',
-              //   },
-              //   '& input::placeholder': {
-              //     fontSize: '24px',
-              //     fontWeight: 700,
-              //     lineHeight: '36px',
-              //     marginLeft: '8px',
-              //   },
-              //   '& .MuiInput-underline:before': { borderBottom: 'none' },
-              //   '& .MuiInput-underline:after': { borderBottom: 'none' },
-              //   '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-              //     borderBottom: 'none',
-              //   },
-              // }}
-              startAdornment={image}
-              endAdornment={
-                !!account?.isConnected &&
-                !!balance &&
-                parseFloat(balance) > 0 && (
-                  <WidgetFieldEndAdornment
-                    balance={balance}
-                    mainColor={overrideStyle?.mainColor}
-                    setValue={setValue}
-                  />
-                  // <Box
-                  //   sx={{
-                  //     display: 'flex',
-                  //     flexDirection: 'column',
-                  //   }}
-                  // >
-                  //   <MaxButton
-                  //     sx={{ p: '5px 10px', marginTop: '16px' }}
-                  //     aria-label="menu"
-                  //     mainColor={overrideStyle?.mainColor}
-                  //     onClick={() => setValue(balance ?? '0')}
-                  //   >
-                  //     max
-                  //   </MaxButton>
-                  //   <Box sx={{ marginTop: '4px' }}>
-                  //     <Typography
-                  //       variant="bodyXSmall"
-                  //       color="textSecondary"
-                  //       component="span"
-                  //     >
-                  //       /{' '}
-                  //       {Intl.NumberFormat('en-US', {
-                  //         notation: 'compact',
-                  //         useGrouping: true,
-                  //         minimumFractionDigits: 0,
-                  //         maximumFractionDigits:
-                  //           parseFloat(balance) > 1 ? 1 : 4,
-                  //       }).format(parseFloat(balance))}
-                  //     </Typography>
-                  //   </Box>
-                  // </Box>
-                )
-              }
+            <WidgetFieldStartAdornment
+              tokenUSDAmount={tokenUSDAmount}
+              image={image}
             />
-            {hasErrorText && (
-              <WidgetFormHelperText>{hasErrorText}</WidgetFormHelperText>
+            <Stack spacing={2} direction="column">
+              <Input
+                autoComplete="off"
+                id="component"
+                value={value}
+                onChange={handleInputChange}
+                placeholder={placeholder}
+                disabled={isPending || isLoading}
+                aria-describedby="withdraw-component-text"
+                disableUnderline={true}
+              />
+              <FormHelperText
+                id="withdraw-component-text"
+                sx={(theme) => ({
+                  marginLeft: `${theme.spacing(2)}!important`,
+                  marginTop: '0!important', // There's an override of that property into the main theme, !important cannot be removed yet
+                })}
+              >
+                <Typography
+                  variant="bodyXSmall"
+                  color="textSecondary"
+                  component="span"
+                  sx={{
+                    color: '#bbbbbb',
+                  }}
+                >
+                  {tokenUSDAmount
+                    ? Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        notation: 'compact',
+                        currency: 'USD',
+                        useGrouping: true,
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits:
+                          parseFloat(tokenUSDAmount) > 2 ? 2 : 4,
+                      }).format(parseFloat(tokenUSDAmount))
+                    : 'NA'}
+                </Typography>
+              </FormHelperText>
+            </Stack>
+            {!!account?.isConnected && !!balance && parseFloat(balance) > 0 && (
+              <WidgetFieldEndAdornment
+                balance={balance}
+                mainColor={overrideStyle?.mainColor}
+                setValue={setValue}
+              />
             )}
-          </FormControl>
+          </CustomFormControl>
+          {hasErrorText && (
+            <WidgetFormHelperText>{hasErrorText}</WidgetFormHelperText>
+          )}
 
           {!account?.isConnected ? (
             <ConnectButton sx={(theme) => ({ marginTop: theme.spacing(2) })} />

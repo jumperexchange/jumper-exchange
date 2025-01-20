@@ -15,7 +15,7 @@ export async function generateMetadata({
   try {
     const quest = await getQuestBySlug(params.slug);
 
-    if (!quest || !quest) {
+    if (!quest) {
       throw new Error();
     }
 

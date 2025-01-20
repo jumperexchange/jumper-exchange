@@ -39,7 +39,7 @@ export const ZapInfo = ({ market, detailInformation }: ZapPageProps) => {
 
   return (
     <ZapProtocolActionInfoBox>
-      <BackButton />
+      <BackButton title={'Loyalty Pass'} />
       {/* Main Information about the protocol */}
       <ZapProtocolIntro market={market} detailInformation={detailInformation} />
 
