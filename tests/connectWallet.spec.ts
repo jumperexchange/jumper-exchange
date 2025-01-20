@@ -1,4 +1,3 @@
-import { execSync } from 'child_process';
 import { testWithSynpress } from '@synthetixio/synpress-core';
 import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
 import {
@@ -33,11 +32,11 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
     const ethereumOption = page.locator(
       'xpath=//span[normalize-space(text())="Ethereum"]',
     );
+    const nextButton = page.locator('xpath=//button[@data-testid="page-container-footer-next"]')
     await page.goto('/');
     await expect(connectWalletButton).toBeEnabled();
     await connectWalletButton.click();
     await metaMaskWalletOption.click();
-    await ethereumOption.click();
     await metamask.connectToDapp(['Account 1']);
     await closeWelcomeScreen(page);
     await openOrCloseMainMenu(page);

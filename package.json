@@ -76,7 +76,7 @@
     "@eslint/eslintrc": "^3.2.0",
     "@metamask/test-dapp": "8.13.0",
     "@next/eslint-plugin-next": "^14.2.22",
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "1.44.0",
     "@synthetixio/synpress": "4.0.0-alpha.7",
     "@synthetixio/synpress-core": "^0.0.4",
     "@types/gtag.js": "^0.0.20",
