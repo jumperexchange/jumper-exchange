@@ -159,7 +159,6 @@ export const WithdrawWidgetInputTokenTab = ({
       refetch();
       positionsRecipeRefetch();
       positionsVaultRefetch();
-
     }, 3000);
 
     trackEvent({
