@@ -132,7 +132,7 @@ function WidgetLikeField({
       action: 'zap_withdraw',
       label: 'execution_success',
       data: {
-        project: projectData.project,
+        protocol_name: projectData.integrator,
         chain_id: token.chainId,
         withdrawn_token: token.address,
         amount_withdrawn: value ?? 'NA',
