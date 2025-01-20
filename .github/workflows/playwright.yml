@@ -27,7 +27,7 @@ jobs:
     - name: Install xvfb server
       run: sudo apt-get install xvfb
     - name: Install Playwright Browsers
-      run: pnpm exec playwright install 
+      run: npx playwright install --with-deps chromium
     - name: Run Playwright tests
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.json
