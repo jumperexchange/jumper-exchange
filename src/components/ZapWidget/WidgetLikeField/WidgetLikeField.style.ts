@@ -56,7 +56,7 @@ export const CustomFormControl = styled(FormControl)(({ theme }) => ({
     fontSize: '24px',
     fontWeight: 700,
     lineHeight: '36px',
-    marginLeft: '8px',
+    marginLeft: '12px',
     padding: 0,
     height: '1em',
   },

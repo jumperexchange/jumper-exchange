@@ -267,7 +267,7 @@ function WidgetLikeField({
               <FormHelperText
                 id="withdraw-component-text"
                 sx={(theme) => ({
-                  marginLeft: `${theme.spacing(1)}!important`,
+                  marginLeft: `${theme.spacing(2)}!important`,
                   marginTop: '0!important', // There's an override of that property into the main theme, !important cannot be removed yet
                 })}
               >
@@ -285,7 +285,7 @@ function WidgetLikeField({
                         notation: 'compact',
                         currency: 'USD',
                         useGrouping: true,
-                        minimumFractionDigits: 0,
+                        minimumFractionDigits: 2,
                         maximumFractionDigits:
                           parseFloat(tokenUSDAmount) > 2 ? 2 : 4,
                       }).format(parseFloat(tokenUSDAmount))
