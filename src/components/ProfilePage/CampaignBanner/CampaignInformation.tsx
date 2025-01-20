@@ -34,9 +34,8 @@ export const CampaignInformation = ({
       {!isMobile && (
         <CampaignTagBox>
           <Typography
+            variant="title2XSmall"
             sx={{
-              fontSize: 14,
-              fontWeight: 700,
               color: theme.palette.text.primary,
             }}
           >
@@ -71,20 +70,19 @@ export const CampaignInformation = ({
       <Button
         variant="secondary"
         onClick={() => {
-          //   trackEvent({
-          //     category: TrackingCategory.Pageload,
-          //     action: TrackingAction.PageLoad,
-          //     label: 'error-discord-jumper',
-          //     data: {
-          //       [TrackingEventParameter.PageloadSource]:
-          //         TrackingCategory.ErrorPage,
-          //       [TrackingEventParameter.PageloadDestination]:
-          //         'discord-jumper',
-          //       [TrackingEventParameter.PageloadURL]: DISCORD_URL,
-          //       [TrackingEventParameter.PageloadExternal]: true,
-          //     },
-          //   });
-          //   openInNewTab(DISCORD_URL);
+          // trackEvent({
+          //   category: TrackingCategory.Pageload,
+          //   action: TrackingAction.PageLoad,
+          //   label: 'error-discord-jumper',
+          //   data: {
+          //     [TrackingEventParameter.PageloadSource]:
+          //       TrackingCategory.ErrorPage,
+          //     [TrackingEventParameter.PageloadDestination]:
+          //       'discord-jumper',
+          //     [TrackingEventParameter.PageloadURL]: DISCORD_URL,
+          //     [TrackingEventParameter.PageloadExternal]: true,
+          //   },
+          // });
           router.push(`${JUMPER_CAMPAIGN_PATH}/lisk`);
         }}
         styles={{
