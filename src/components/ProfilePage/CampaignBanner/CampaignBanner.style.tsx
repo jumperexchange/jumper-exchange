@@ -1,4 +1,7 @@
 import { Box, Breakpoint, styled, Typography } from '@mui/material';
+import { ButtonSecondary } from 'src/components/Button';
+import { getContrastAlphaColor } from 'src/utils/colors';
+import type { ButtonProps as MuiButtonProps } from '@mui/material';
 
 export const CampaignBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -58,3 +61,22 @@ export const TextDescriptionBox = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.spacing(1),
 }));
+
+export const BannerButton = styled(ButtonSecondary)<MuiButtonProps>(
+  ({ theme }) => ({
+    gap: '8px',
+    borderRadius: '24px',
+    '&:hover': {
+      backgroundColor: getContrastAlphaColor(theme, '4%'),
+    },
+    '&:hover svg': {
+      fill:
+        theme.palette.mode === 'light'
+          ? theme.palette.grey[700]
+          : theme.palette.grey[300],
+    },
+    [theme.breakpoints.down('md' as Breakpoint)]: {
+      marginTop: 16,
+    },
+  }),
+);

@@ -1,6 +1,6 @@
 'use client';
 import { getContrastAlphaColor } from '@/utils/colors';
-import type { Breakpoint, ButtonProps as MuiButtonProps } from '@mui/material';
+import type { ButtonProps as MuiButtonProps } from '@mui/material';
 import { Button as MuiButton, alpha, darken } from '@mui/material'; //ButtonProps
 import { styled } from '@mui/material/styles';
 
@@ -81,24 +81,5 @@ export const LevelButton = styled(ButtonSecondary)<MuiButtonProps>(
     pointerEvents: 'none',
     paddingLeft: '12px',
     height: '32px',
-  }),
-);
-
-export const BannerButton = styled(ButtonSecondary)<MuiButtonProps>(
-  ({ theme }) => ({
-    gap: '8px',
-    borderRadius: '24px',
-    '&:hover': {
-      backgroundColor: getContrastAlphaColor(theme, '4%'),
-    },
-    '&:hover svg': {
-      fill:
-        theme.palette.mode === 'light'
-          ? theme.palette.grey[700]
-          : theme.palette.grey[300],
-    },
-    [theme.breakpoints.down('md' as Breakpoint)]: {
-      marginTop: 16,
-    },
   }),
 );

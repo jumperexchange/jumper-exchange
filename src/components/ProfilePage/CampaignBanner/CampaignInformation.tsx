@@ -1,6 +1,6 @@
-import { BannerButton } from 'src/components/Button';
 import { Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
 import {
+  BannerButton,
   CampaignInfoVerticalBox,
   CampaignTagBox,
   SubtitleTypography,
