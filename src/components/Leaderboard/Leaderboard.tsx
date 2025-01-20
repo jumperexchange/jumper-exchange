@@ -1,14 +1,18 @@
 'use client';
-import { Typography } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAccount } from '@lifi/wallet-management';
+import { Box } from '@mui/material';
+import useClient from 'src/hooks/useClient';
 import type { LeaderboardEntryData } from '../../hooks/useLeaderboard';
 import {
   useLeaderboardList,
   useLeaderboardUser,
 } from '../../hooks/useLeaderboard';
+import IconHeader from '../ProfilePage/Common/IconHeader';
 import { Pagination } from '../ProfilePage/Common/Pagination';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
 import {
@@ -22,9 +26,6 @@ import {
 import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
-import IconHeader from '../ProfilePage/Common/IconHeader';
-import useClient from 'src/hooks/useClient';
-import { Box } from '@mui/material';
 
 export const LEADERBOARD_LENGTH = 25;
 
@@ -36,7 +37,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
   const { account } = useAccount();
 
   const { t } = useTranslation();
-
+  const theme = useTheme();
   const isClient = useClient();
 
   const { data: leaderboardData, meta } = useLeaderboardList(
@@ -70,6 +71,11 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                 <IconHeader
                   tooltipKey={t('leaderboard.description')}
                   title={`Updated: ${t('format.date', { value: new Date() })}`}
+                  sx={{
+                    [theme.breakpoints.down('sm' as Breakpoint)]: {
+                      display: 'none',
+                    },
+                  }}
                 />
               )}
             </LeaderboardUpdateDateBox>

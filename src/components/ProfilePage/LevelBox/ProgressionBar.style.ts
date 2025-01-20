@@ -40,7 +40,7 @@ export const ProgressionChart = styled(Box, {
   position: 'relative',
   overflow: 'hidden',
   borderRadius: '12px',
-  height: '16px',
+  height: 8,
   width: '100%',
   display: 'flex',
   ...(!!label && {

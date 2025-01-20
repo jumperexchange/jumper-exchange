@@ -1,4 +1,6 @@
 'use client';
+import ConnectButton from '@/components/Navbar/ConnectButton';
+import { useWalletAddressImg } from '@/hooks/useAddressImg';
 import { useChains } from '@/hooks/useChains';
 import { useMenuStore } from '@/stores/menu';
 import { getAddressLabel } from '@/utils/getAddressLabel';
@@ -22,7 +24,6 @@ import { mainnet } from 'wagmi/chains';
 import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
-  ConnectButtonLabel,
   ImageWalletMenuButton,
   SkeletonWalletMenuButton,
   WalletLabel,
@@ -31,8 +32,6 @@ import {
   WalletMgmtChainAvatar,
   WalletMgmtWalletAvatar,
 } from './WalletButton.style';
-import { useWalletAddressImg } from '@/hooks/useAddressImg';
-import ConnectButton from '@/components/Navbar/ConnectButton';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
@@ -108,7 +107,7 @@ export const WalletButtons = () => {
                     {points ? t('format.decimal2Digit', { value: points }) : 0}
                   </Typography>
                 )}
-                <XPIcon />
+                <XPIcon props={{ style: { width: 32, height: 32 } }} />
               </WalletMenuButton>
             )}
           <WalletMenuButton

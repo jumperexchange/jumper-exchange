@@ -1,5 +1,6 @@
 'use client';
 
+import type { SxProps, Theme } from '@mui/material';
 import { Tooltip, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { StyledInfoIcon } from '../../TooltipInfo/TooltipInfo.style';
@@ -9,16 +10,19 @@ export interface IconHeaderProps {
   tooltipKey: string;
   title: string;
   icon?: React.ReactNode;
+  sx?: SxProps<Theme>;
 }
 
-const IconHeader = ({ tooltipKey, title, icon }: IconHeaderProps) => {
+const IconHeader = ({ tooltipKey, title, icon, sx }: IconHeaderProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
 
   return (
-    <IconHeaderContainer>
+    <IconHeaderContainer sx={sx}>
       {icon}
-      <IconHeaderTitle variant="title2XSmall">{title}</IconHeaderTitle>
+      <IconHeaderTitle className="icon-header-title" variant="title2XSmall">
+        {title}
+      </IconHeaderTitle>
       <Tooltip
         title={t(tooltipKey as any)}
         sx={{ cursor: 'help', color: theme.palette.text.primary }}
