@@ -37,9 +37,9 @@ export const CampaignBanner = () => {
         />
         <CampaignInformation
           tag={'New Ecosystem'}
-          description={
-            'Lisk is a Layer 2 blockchain platform designed to simplify decentralized app development using JavaScript and TypeScript. Its modular SDK enables seamless custom blockchain creation, while interoperability and scalability ensure efficient performance. Lisk empowers innovation with ease and flexibility.'
-          }
+          description={`Lisk was an OG Layer 1 since 2016, it became a prominent L2 in the Superchain Ecosystem recently.
+Jumper is giving you the perfect occasion to explore Lisk:
+$180,000 rewards will be distributed in the span of three weeks through 3 Lil Pudgies in raffles and double-digit yield boosts on major Lisk protocols (Velodrome, Beefy, Ionic).`}
         />
       </CampaignBox>
     </a>

@@ -51,7 +51,7 @@ export const CampaignHeader = ({
             style={{ objectFit: 'contain', borderRadius: '50%' }}
           />
           <VerticalCenterBox>
-            <CampaignTitle>Discover Lisk</CampaignTitle>
+            <CampaignTitle>Explore Lisk</CampaignTitle>
             <Box display="flex" gap="8px">
               {Xlink && (
                 <InformationShareLink

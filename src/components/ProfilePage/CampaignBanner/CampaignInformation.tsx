@@ -57,7 +57,7 @@ export const CampaignInformation = ({
           fontWeight={700}
           color={theme.palette.text.primary}
         >
-          Discover Lisk
+          Explore Lisk
         </Typography>
         <Typography
           fontSize={14}
