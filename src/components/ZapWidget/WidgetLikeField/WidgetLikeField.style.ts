@@ -51,11 +51,14 @@ export const CustomFormControl = styled(FormControl)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   alignContent: 'flex-start',
+  alignItems: 'center',
   '& input': {
     fontSize: '24px',
     fontWeight: 700,
     lineHeight: '36px',
     marginLeft: '8px',
+    padding: 0,
+    height: '1em',
   },
   '& input::placeholder': {
     fontSize: '24px',

@@ -275,6 +275,9 @@ function WidgetLikeField({
                   variant="bodyXSmall"
                   color="textSecondary"
                   component="span"
+                  sx={{
+                    color: '#bbbbbb',
+                  }}
                 >
                   {tokenUSDAmount
                     ? Intl.NumberFormat('en-US', {

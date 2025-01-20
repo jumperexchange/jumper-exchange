@@ -33,7 +33,7 @@ function WidgetFieldEndAdornment({
       }}
     >
       <MaxButton
-        sx={{ p: '5px 10px', marginY: 1 }}
+        sx={{ p: '5px 10px', marginY: 0 }}
         aria-label="menu"
         mainColor={mainColor}
         onClick={() => setValue(balance ?? '0')}
