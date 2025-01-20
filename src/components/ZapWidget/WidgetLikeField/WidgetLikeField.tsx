@@ -100,13 +100,14 @@ function WidgetLikeField({
     isSuccess: isSuccessWriteContract,
   } = useWriteContract();
   const { token: tokenInfo } = useToken(token.chainId, token.address);
-  const tokenUSDAmount = useMemo<string>(() => {
-    return (
-      parseFloat(tokenInfo?.priceUSD ?? '0') * parseFloat(balance ?? '0')
-    ).toString();
-  }, [balance, tokenInfo]);
 
   const [value, setValue] = useState<string>('');
+  const tokenUSDAmount = useMemo<string>(() => {
+    if (!value || !tokenInfo?.priceUSD) {
+      return '0';
+    }
+    return (parseFloat(tokenInfo?.priceUSD) * parseFloat(value)).toString();
+  }, [value, tokenInfo]);
 
   const {
     data: transactionReceiptData,
