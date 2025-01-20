@@ -152,7 +152,7 @@ test.describe('Jumper full e2e flow', () => {
     page,
   }) => {
     const jumperProfileBackButton = await page.locator(
-      'xpath=//p[normalize-space(text())="JUMPER PROFILE"]',
+      'xpath=//p[normalize-space(text())="JUMPER LOYALTY PASS"]',
     );
     await page.goto(values.aerodromeQuestsURL);
     expect(jumperProfileBackButton).toBeVisible();
