@@ -1,41 +1,39 @@
+import { useAccount } from '@lifi/wallet-management';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
-  Avatar as MuiAvatar,
+  alpha,
   Box,
   FormHelperText,
-  InputLabel,
-  Typography,
-  useTheme,
   Grid,
-  Link,
   Input,
+  InputLabel,
+  Stack,
+  Typography,
 } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import {
-  WalletAvatar,
-  WalletCardBadge,
-} from '@/components/Menus/WalletMenu/WalletCard.style';
-import TokenImage from '@/components/Portfolio/TokenImage';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { useConfig, useSwitchChain } from 'wagmi';
-import { useMemo, useState } from 'react';
-import {
-  MaxButton,
-  WidgetFormHelperText,
-  WidgetLikeInput,
-} from './WidgetLikeField.style';
-import { useContractWrite } from 'src/hooks/useWriteContractData';
 import { parseUnits } from 'ethers';
-import { useContractRead } from 'src/hooks/useReadContractData';
-import { alpha } from '@mui/material';
-import { ProjectData } from 'src/components/ZapWidget/ZapWidget';
+import * as React from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ConnectButton } from 'src/components/ConnectButton';
-import { switchChain } from '@wagmi/core';
-import { useAccount } from '@lifi/wallet-management';
 import { TxConfirmation } from 'src/components/ZapWidget/Confirmation/TxConfirmation';
-import { Breakpoint } from '@mui/material';
-import WidgetFieldStartAdornment from './WidgetStartAdornment';
+import type { ProjectData } from 'src/components/ZapWidget/ZapWidget';
+import {
+  useConfig,
+  useSwitchChain,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi';
 import WidgetFieldEndAdornment from './WidgetEndAdornment';
+import {
+  WidgetFormHelperText,
+  CustomFormControl,
+} from './WidgetLikeField.style';
+import { useChains } from '@/hooks/useChains';
+import type { TokenAmount } from '@lifi/sdk';
+import { useUserTracking } from '@/hooks/userTracking';
+import { TrackingCategory } from 'src/const/trackingKeys';
+import { useToken } from '@/hooks/useToken';
+import WidgetFieldStartAdornment from '@/components/ZapWidget/WidgetLikeField/WidgetStartAdornment';
 
 interface Image {
   url: string;
@@ -63,7 +61,7 @@ interface WidgetLikeFieldProps {
   contractCalls: ContractCall[];
   label: string;
   placeholder?: string;
-  image?: Image & { badge?: Image };
+  image?: React.ReactNode;
   hasMaxButton?: boolean;
   helperText?: {
     left?: string;
@@ -75,6 +73,8 @@ interface WidgetLikeFieldProps {
   balance?: string;
   projectData: ProjectData;
   writeDecimals: number;
+  token: TokenAmount;
+  refetch: () => void;
 }
 
 function WidgetLikeField({
@@ -84,32 +84,75 @@ function WidgetLikeField({
   placeholder,
   hasMaxButton = true,
   helperText,
+  token,
   overrideStyle = {},
   balance,
   projectData,
   writeDecimals,
+  refetch,
 }: WidgetLikeFieldProps) {
-  const theme = useTheme();
+  const { trackEvent } = useUserTracking();
+  const chains = useChains();
+  const chain = useMemo(
+    () => chains.getChainById(projectData?.chainId),
+    [projectData?.chainId],
+  );
   const wagmiConfig = useConfig();
   const { account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
+  const {
+    writeContract,
+    data,
+    isPending,
+    isError,
+    error,
+    isSuccess: isSuccessWriteContract,
+  } = useWriteContract();
+  const { token: tokenInfo } = useToken(token.chainId, token.address);
 
   const [value, setValue] = useState<string>('');
-  const { write, isLoading, error, data } = useContractWrite({
-    address: (projectData?.withdrawAddress ||
-      projectData?.address) as `0x${string}`,
+  const tokenUSDAmount = useMemo<string>(() => {
+    if (!value || !tokenInfo?.priceUSD) {
+      return '0';
+    }
+    return (parseFloat(tokenInfo?.priceUSD) * parseFloat(value)).toString();
+  }, [value, tokenInfo]);
+
+  const {
+    data: transactionReceiptData,
+    isLoading,
+    isSuccess,
+  } = useWaitForTransactionReceipt({
     chainId: projectData?.chainId,
-    functionName: 'redeem',
-    abi: [
-      {
-        inputs: [{ name: 'amount', type: 'uint256' }],
-        name: 'redeem',
-        outputs: [{ name: '', type: 'uint256' }],
-        stateMutability: 'nonpayable',
-        type: 'function',
-      },
-    ],
+    hash: data,
+    confirmations: 5,
+    pollingInterval: 1_000,
   });
+
+  // When the transaction is done, triggering the refetch
+  useEffect(() => {
+    if (!isSuccess) {
+      return;
+    }
+
+    setValue('');
+    refetch();
+    trackEvent({
+      category: TrackingCategory.WidgetEvent,
+      action: 'zap_withdraw',
+      label: 'execution_success',
+      data: {
+        protocol_name: projectData.integrator,
+        chain_id: token.chainId,
+        withdrawn_token: token.address,
+        amount_withdrawn: value ?? 'NA',
+        amount_withdrawn_usd:
+          parseFloat(value ?? '0') * parseFloat(tokenInfo?.priceUSD ?? '0'),
+        timestamp: new Date(),
+      } as any, // Shortcut
+      isConversion: true,
+    });
+  }, [transactionReceiptData]);
 
   const shouldSwitchChain = useMemo(() => {
     if (!!projectData?.address && account?.chainId !== projectData?.chainId) {
@@ -129,7 +172,22 @@ function WidgetLikeField({
   async function onSubmit(e: React.FormEvent) {
     try {
       e.preventDefault();
-      write([parseUnits(value, writeDecimals)]);
+      writeContract({
+        address: (projectData?.withdrawAddress ||
+          projectData?.address) as `0x${string}`,
+        chainId: projectData?.chainId,
+        functionName: 'redeem',
+        abi: [
+          {
+            inputs: [{ name: 'amount', type: 'uint256' }],
+            name: 'redeem',
+            outputs: [{ name: '', type: 'uint256' }],
+            stateMutability: 'nonpayable',
+            type: 'function',
+          },
+        ],
+        args: [parseUnits(value, writeDecimals)],
+      });
     } catch (e) {
       console.error(e);
     }
@@ -158,16 +216,17 @@ function WidgetLikeField({
   };
 
   return (
-    <Grid container justifyContent={'center'} maxWidth={416}>
+    <Grid container justifyContent={'center'}>
       <Grid
         xs={12}
         md={12}
         p={3}
         bgcolor={'#fff'}
         borderRadius={1}
-        sx={{
+        sx={(theme) => ({
           backgroundColor: theme.palette.surface1.main,
-        }}
+          padding: theme.spacing(2, 3),
+        })}
       >
         <Box
           component="form"
@@ -179,160 +238,78 @@ function WidgetLikeField({
           autoComplete="off"
           onSubmit={onSubmit}
         >
-          <InputLabel htmlFor="component" sx={{ marginBottom: 1 }}>
+          <InputLabel htmlFor="component" sx={{ marginBottom: 2 }}>
             <Typography variant="titleSmall">{label}</Typography>
           </InputLabel>
-          <FormControl
-            error={!!hasErrorText}
+          <CustomFormControl
             variant="standard"
             aria-autocomplete="none"
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+            }}
           >
-            <WidgetLikeInput
-              autoComplete="off"
-              id="component"
-              value={value}
-              onChange={handleInputChange}
-              placeholder={placeholder}
-              disabled={isLoading}
-              aria-describedby="component-text"
-              disableUnderline={true}
-              // sx={{
-              //   borderRadius: theme.spacing(2),
-              //   padding: '16px',
-              //   backgroundColor: theme.palette.surface2.main,
-              //   boxShadow:
-              //     theme.palette.mode === 'light'
-              //       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-              //       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-              //   maxWidth: 416,
-              //   '& input': {
-              //     fontSize: '24px',
-              //     fontWeight: 700,
-              //     lineHeight: '36px',
-              //     marginLeft: '8px',
-              //   },
-              //   '& input::placeholder': {
-              //     fontSize: '24px',
-              //     fontWeight: 700,
-              //     lineHeight: '36px',
-              //     marginLeft: '8px',
-              //   },
-              //   '& .MuiInput-underline:before': { borderBottom: 'none' },
-              //   '& .MuiInput-underline:after': { borderBottom: 'none' },
-              //   '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-              //     borderBottom: 'none',
-              //   },
-              // }}
-              startAdornment={
-                image && (
-                  <WidgetFieldStartAdornment image={image} />
-                  // <Box
-                  //   sx={{
-                  //     display: 'flex',
-                  //     flexDirection: 'column',
-                  //     justifyContent: 'flex-start',
-                  //     width: 'auto',
-                  //   }}
-                  // >
-                  //   <>
-                  //     <WalletCardBadge
-                  //       overlap="circular"
-                  //       className="badge"
-                  //       sx={{ maringRight: '8px' }}
-                  //       anchorOrigin={{
-                  //         vertical: 'bottom',
-                  //         horizontal: 'right',
-                  //       }}
-                  //       badgeContent={
-                  //         image.badge && (
-                  //           <MuiAvatar
-                  //             alt={image.badge.name}
-                  //             sx={(theme: any) => ({
-                  //               width: '18px',
-                  //               height: '18px',
-                  //               border: `2px solid ${theme.palette.surface2.main}`,
-                  //             })}
-                  //           >
-                  //             {image.badge.name && (
-                  //               <TokenImage
-                  //                 token={{
-                  //                   name: image.badge.name,
-                  //                   logoURI: image.badge.url,
-                  //                 }}
-                  //               />
-                  //             )}
-                  //           </MuiAvatar>
-                  //         )
-                  //       }
-                  //     >
-                  //       <WalletAvatar>
-                  //         {image.name && (
-                  //           <TokenImage
-                  //             token={{
-                  //               name: image.name,
-                  //               logoURI: image.url,
-                  //             }}
-                  //           />
-                  //         )}
-                  //       </WalletAvatar>
-                  //     </WalletCardBadge>
-                  //   </>
-                  // </Box>
-                )
-              }
-              endAdornment={
-                !!account?.isConnected &&
-                !!balance &&
-                parseFloat(balance) > 0 && (
-                  <WidgetFieldEndAdornment
-                    balance={balance}
-                    mainColor={overrideStyle?.mainColor}
-                    setValue={setValue}
-                  />
-                  // <Box
-                  //   sx={{
-                  //     display: 'flex',
-                  //     flexDirection: 'column',
-                  //   }}
-                  // >
-                  //   <MaxButton
-                  //     sx={{ p: '5px 10px', marginTop: '16px' }}
-                  //     aria-label="menu"
-                  //     mainColor={overrideStyle?.mainColor}
-                  //     onClick={() => setValue(balance ?? '0')}
-                  //   >
-                  //     max
-                  //   </MaxButton>
-                  //   <Box sx={{ marginTop: '4px' }}>
-                  //     <Typography
-                  //       variant="bodyXSmall"
-                  //       color="textSecondary"
-                  //       component="span"
-                  //     >
-                  //       /{' '}
-                  //       {Intl.NumberFormat('en-US', {
-                  //         notation: 'compact',
-                  //         useGrouping: true,
-                  //         minimumFractionDigits: 0,
-                  //         maximumFractionDigits:
-                  //           parseFloat(balance) > 1 ? 1 : 4,
-                  //       }).format(parseFloat(balance))}
-                  //     </Typography>
-                  //   </Box>
-                  // </Box>
-                )
-              }
+            <WidgetFieldStartAdornment
+              tokenUSDAmount={tokenUSDAmount}
+              image={image}
             />
-            {hasErrorText && (
-              <WidgetFormHelperText>{hasErrorText}</WidgetFormHelperText>
+            <Stack spacing={2} direction="column">
+              <Input
+                autoComplete="off"
+                id="component"
+                value={value}
+                onChange={handleInputChange}
+                placeholder={placeholder}
+                disabled={isPending || isLoading}
+                aria-describedby="withdraw-component-text"
+                disableUnderline={true}
+              />
+              <FormHelperText
+                id="withdraw-component-text"
+                sx={(theme) => ({
+                  marginLeft: `${theme.spacing(2)}!important`,
+                  marginTop: '0!important', // There's an override of that property into the main theme, !important cannot be removed yet
+                })}
+              >
+                <Typography
+                  variant="bodyXSmall"
+                  color="textSecondary"
+                  component="span"
+                  sx={{
+                    color: '#bbbbbb',
+                  }}
+                >
+                  {tokenUSDAmount
+                    ? Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        notation: 'compact',
+                        currency: 'USD',
+                        useGrouping: true,
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits:
+                          parseFloat(tokenUSDAmount) > 2 ? 2 : 4,
+                      }).format(parseFloat(tokenUSDAmount))
+                    : 'NA'}
+                </Typography>
+              </FormHelperText>
+            </Stack>
+            {!!account?.isConnected && !!balance && parseFloat(balance) > 0 && (
+              <WidgetFieldEndAdornment
+                balance={balance}
+                mainColor={overrideStyle?.mainColor}
+                setValue={setValue}
+              />
             )}
-          </FormControl>
+          </CustomFormControl>
+          {hasErrorText && (
+            <WidgetFormHelperText>{hasErrorText}</WidgetFormHelperText>
+          )}
 
           {!account?.isConnected ? (
-            <ConnectButton sx={{ marginTop: theme.spacing(2) }} />
+            <ConnectButton sx={(theme) => ({ marginTop: theme.spacing(2) })} />
           ) : shouldSwitchChain ? (
             <LoadingButton
-              sx={{ marginTop: theme.spacing(2) }}
+              sx={(theme) => ({ marginTop: theme.spacing(2) })}
               type="button"
               variant="contained"
               onClick={() => handleSwitchChain(projectData?.chainId)}
@@ -342,10 +319,10 @@ function WidgetLikeField({
           ) : (
             <LoadingButton
               type="submit"
-              loading={isLoading}
-              disabled={balance === '0' || isLoading}
+              loading={isPending || isLoading}
+              disabled={balance === '0' || isPending}
               variant="contained"
-              sx={{
+              sx={(theme) => ({
                 marginTop: theme.spacing(2),
                 borderColor: alpha(theme.palette.surface2.main, 0.08),
                 '&.MuiLoadingButton-loading': {
@@ -354,7 +331,7 @@ function WidgetLikeField({
                 '.MuiLoadingButton-loadingIndicator': {
                   color: overrideStyle?.mainColor ?? theme.palette.primary.main,
                 },
-              }}
+              })}
             >
               <Typography variant="bodyMediumStrong">
                 {contractCalls[0].label}
@@ -362,19 +339,19 @@ function WidgetLikeField({
             </LoadingButton>
           )}
 
-          {data && (
+          {isSuccess && (
             <TxConfirmation
-              s={
-                !!data && !isLoading
-                  ? 'Interaction successful'
-                  : 'Check on explorer'
-              }
-              link={
-                projectData?.chain === 'ethereum'
-                  ? 'https://etherscan.io/tx/' + data
-                  : 'https://basescan.org/tx/' + data
-              }
-              success={!!data && !isLoading ? true : false}
+              s={'Withdraw successful'}
+              link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${data}`}
+              success={!!isSuccessWriteContract && !isPending ? true : false}
+            />
+          )}
+
+          {!isSuccess && data && (
+            <TxConfirmation
+              s={'Check on explorer'}
+              link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${data}`}
+              success={false}
             />
           )}
         </Box>

@@ -12,7 +12,7 @@ export function calculateTVLGoal(market: EnrichedMarketDataType) {
 
 export function getFullTitle(
   roycoData: EnrichedMarketDataType,
-  strapiData?: Quest<never>,
+  strapiData?: Quest,
 ) {
   return `${strapiData?.attributes.Title} ${roycoData?.input_token_data?.symbol} Market`;
 }

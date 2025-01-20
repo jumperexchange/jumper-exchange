@@ -455,7 +455,7 @@ function DepositWidget({
                       display: 'flex',
                       flexDirection: 'column',
                       marginTop: '20px',
-                      width: '96px',
+                      width: '100%',
                       alignItems: 'flex-end',
                     }}
                   >

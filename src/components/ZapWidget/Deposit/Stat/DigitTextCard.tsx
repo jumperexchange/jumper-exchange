@@ -43,6 +43,7 @@ const DigitTextCard = ({
               height: '16px',
               marginLeft: '4px',
               color: 'inherit',
+              cursor: 'help',
             }}
           />
         </Tooltip>

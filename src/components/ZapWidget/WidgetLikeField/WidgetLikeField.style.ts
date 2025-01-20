@@ -1,11 +1,12 @@
+import type { Breakpoint } from '@mui/material';
 import {
-  styled,
   alpha,
   Button,
+  FormControl,
+  FormHelperText,
   Grid,
   Input,
-  FormHelperText,
-  Breakpoint,
+  styled,
 } from '@mui/material';
 
 export const MaxButton = styled(Button, {
@@ -42,20 +43,22 @@ export const WidgetLikeGrid = styled(Grid)(({ theme }) => ({
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
 }));
 
-export const WidgetLikeInput = styled(Input)(({ theme }) => ({
+export const CustomFormControl = styled(FormControl)(({ theme }) => ({
   borderRadius: theme.spacing(2),
   padding: '16px',
   backgroundColor: theme.palette.surface2.main,
-  boxShadow:
-    theme.palette.mode === 'light'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-  maxWidth: 416,
+  border: `1px solid ${theme.palette.mode === 'light' ? '#E5E1EB' : '#302B52'}`,
+  display: 'flex',
+  flexDirection: 'row',
+  alignContent: 'flex-start',
+  alignItems: 'center',
   '& input': {
     fontSize: '24px',
     fontWeight: 700,
     lineHeight: '36px',
-    marginLeft: '8px',
+    marginLeft: '12px',
+    padding: 0,
+    height: '1em',
   },
   '& input::placeholder': {
     fontSize: '24px',
@@ -80,6 +83,6 @@ export const WidgetFormHelperText = styled(FormHelperText)(({ theme }) => ({
     maxWidth: 316,
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    maxWidth: 416,
+    maxWidth: '100%',
   },
 }));
