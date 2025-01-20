@@ -1,10 +1,12 @@
-import { BannerButton, Button } from 'src/components/Button';
-import { Box, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { BannerButton } from 'src/components/Button';
+import { Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
 import {
   CampaignInfoVerticalBox,
   CampaignTagBox,
+  SubtitleTypography,
+  TextDescriptionBox,
+  TitleTypography,
 } from './CampaignBanner.style';
-import { getContrastAlphaColor } from 'src/utils/colors';
 import { useRouter } from 'next/navigation';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { JUMPER_CAMPAIGN_PATH } from 'src/const/urls';
@@ -43,29 +45,10 @@ export const CampaignInformation = ({
           </Typography>
         </CampaignTagBox>
       )}
-
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: theme.spacing(1),
-        }}
-      >
-        <Typography
-          fontSize={isMobile ? 32 : 48}
-          fontWeight={700}
-          color={theme.palette.text.primary}
-        >
-          Explore Lisk
-        </Typography>
-        <Typography
-          fontSize={14}
-          fontWeight={500}
-          color={theme.palette.text.secondary}
-        >
-          {description}
-        </Typography>
-      </Box>
+      <TextDescriptionBox>
+        <TitleTypography>Explore Lisk</TitleTypography>
+        <SubtitleTypography>{description}</SubtitleTypography>
+      </TextDescriptionBox>
 
       <BannerButton
         onClick={() => {
