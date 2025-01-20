@@ -133,7 +133,7 @@ export const BerachainMarketCard = ({
                   },
                 })}
               >
-                {`${title} ${roycoData?.input_token_data?.symbol} Market`}
+                {title}
               </Typography>
             ) : (
               <Skeleton
@@ -172,6 +172,15 @@ export const BerachainMarketCard = ({
             }}
           >
             <DigitTokenSymbolCard
+              sx={(theme) => ({
+                '.tooltip-icon': {
+                  color: theme.palette.alphaLight500.main,
+                },
+                '.title': {
+                  color: '#8b8989',
+                  fontSize: '0.75rem',
+                },
+              })}
               title={deposited ? 'Deposited' : 'Deposit'}
               tooltipText={deposited ? DEPOSITED_TOOLTIP : DEPOSIT_TOOLTIP}
               tokenImage={roycoData?.input_token_data?.image}
@@ -185,9 +194,19 @@ export const BerachainMarketCard = ({
               hasDeposited={deposited ? true : false}
             />
             <DigitCard
-              sx={{
+              sx={(theme) => ({
+                '.tooltip-icon': {
+                  color: theme.palette.alphaLight500.main,
+                },
                 alignItems: 'flex-end',
-              }}
+                '.title': {
+                  color: '#8b8989',
+                  fontSize: '0.75rem',
+                },
+                '.content': {
+                  marginTop: 1,
+                },
+              })}
               title={'TVL'}
               tooltipText={TVL_TOOLTIP}
               digit={
