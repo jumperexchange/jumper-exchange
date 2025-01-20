@@ -82,6 +82,7 @@ export enum TrackingAction {
 
   //Banner
   ClickBanner = 'action_click_banner',
+  ClickCampaignBanner = 'action_click_campaign_banner',
 }
 
 export enum TrackingCategory {
@@ -113,6 +114,7 @@ export enum TrackingCategory {
   Missions = 'cat_missions',
   Quests = 'cat_quests',
   Banner = 'cat_banner',
+  CampaignBanner = 'cat_campaign_banner',
 }
 
 // can be used as custom dimensions / metrics
@@ -231,4 +233,5 @@ export enum TrackingEventParameter {
 
   //Banner
   ActiveCampaign = 'param_banner_campaign',
+  ActiveCampaignBanner = 'param_campaign_banner_campaign',
 }
