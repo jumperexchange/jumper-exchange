@@ -213,33 +213,6 @@ function WidgetLikeField({
               disabled={isPending || isLoading}
               aria-describedby="component-text"
               disableUnderline={true}
-              // sx={{
-              //   borderRadius: theme.spacing(2),
-              //   padding: '16px',
-              //   backgroundColor: theme.palette.surface2.main,
-              //   boxShadow:
-              //     theme.palette.mode === 'light'
-              //       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-              //       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-              //   maxWidth: 416,
-              //   '& input': {
-              //     fontSize: '24px',
-              //     fontWeight: 700,
-              //     lineHeight: '36px',
-              //     marginLeft: '8px',
-              //   },
-              //   '& input::placeholder': {
-              //     fontSize: '24px',
-              //     fontWeight: 700,
-              //     lineHeight: '36px',
-              //     marginLeft: '8px',
-              //   },
-              //   '& .MuiInput-underline:before': { borderBottom: 'none' },
-              //   '& .MuiInput-underline:after': { borderBottom: 'none' },
-              //   '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-              //     borderBottom: 'none',
-              //   },
-              // }}
               startAdornment={image}
               endAdornment={
                 !!account?.isConnected &&
@@ -250,37 +223,6 @@ function WidgetLikeField({
                     mainColor={overrideStyle?.mainColor}
                     setValue={setValue}
                   />
-                  // <Box
-                  //   sx={{
-                  //     display: 'flex',
-                  //     flexDirection: 'column',
-                  //   }}
-                  // >
-                  //   <MaxButton
-                  //     sx={{ p: '5px 10px', marginTop: '16px' }}
-                  //     aria-label="menu"
-                  //     mainColor={overrideStyle?.mainColor}
-                  //     onClick={() => setValue(balance ?? '0')}
-                  //   >
-                  //     max
-                  //   </MaxButton>
-                  //   <Box sx={{ marginTop: '4px' }}>
-                  //     <Typography
-                  //       variant="bodyXSmall"
-                  //       color="textSecondary"
-                  //       component="span"
-                  //     >
-                  //       /{' '}
-                  //       {Intl.NumberFormat('en-US', {
-                  //         notation: 'compact',
-                  //         useGrouping: true,
-                  //         minimumFractionDigits: 0,
-                  //         maximumFractionDigits:
-                  //           parseFloat(balance) > 1 ? 1 : 4,
-                  //       }).format(parseFloat(balance))}
-                  //     </Typography>
-                  //   </Box>
-                  // </Box>
                 )
               }
             />
