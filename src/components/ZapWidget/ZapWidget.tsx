@@ -1,4 +1,7 @@
-import type { WidgetConfig, TokenAmount } from '@lifi/widget';
+import { WidgetEvents } from '@/components/Widgets';
+import { useZaps } from '@/hooks/useZaps';
+import { useWalletMenu, type Account } from '@lifi/wallet-management';
+import type { TokenAmount, WidgetConfig } from '@lifi/widget';
 import {
   ChainType,
   DisabledUI,
@@ -8,20 +11,14 @@ import {
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { formatUnits } from 'viem';
-import { useEffect, useMemo, useState } from 'react';
-import { useZaps } from '@/hooks/useZaps';
-import { useWalletMenu, type Account } from '@lifi/wallet-management';
-import { DepositCard } from './Deposit/DepositCard';
-import { useThemeStore } from 'src/stores/theme';
-import { Box } from '@mui/material';
-import { Skeleton } from '@mui/material';
 import type { Breakpoint } from '@mui/material';
-import { useTheme } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
+import { useThemeStore } from 'src/stores/theme';
+import { formatUnits } from 'viem';
+import { useReadContracts } from 'wagmi';
+import { DepositCard } from './Deposit/DepositCard';
 import { WithdrawWidget } from './Withdraw/WithdrawWidget';
-import { useReadContract, useReadContracts } from 'wagmi';
-import { result } from 'lodash';
-import { WidgetEvents } from '@/components/Widgets';
 
 export interface ProjectData {
   chain: string;
@@ -46,7 +43,6 @@ export function ZapWidget({
   type,
   claimingIds,
 }: CustomWidgetProps) {
-  const theme = useTheme();
   const [token, setToken] = useState<TokenAmount>();
 
   const { data, isSuccess } = useZaps(projectData);
@@ -166,6 +162,7 @@ export function ZapWidget({
         ...widgetTheme.config.theme,
         container: {
           maxHeight: 820,
+          maxWidth: 'unset',
         },
       },
       useRecommendedRoute: true,
@@ -188,18 +185,7 @@ export function ZapWidget({
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      sx={{
-        [theme.breakpoints.down('md' as Breakpoint)]: {
-          maxWidth: 316,
-        },
-        [theme.breakpoints.up('md' as Breakpoint)]: {
-          maxWidth: 416,
-        },
-      }}
-    >
+    <Box display="flex" justifyContent="center">
       {type === 'deposit' &&
         (token ? (
           <LiFiWidget
@@ -220,7 +206,7 @@ export function ZapWidget({
         ) : (
           <Skeleton
             variant="rectangular"
-            sx={{
+            sx={(theme) => ({
               marginTop: '32px',
               height: 592,
               borderRadius: '16px',
@@ -228,9 +214,9 @@ export function ZapWidget({
                 maxWidth: 316,
               },
               [theme.breakpoints.up('md' as Breakpoint)]: {
-                maxWidth: 416,
+                maxWidth: '100%',
               },
-            }}
+            })}
           />
         ))}
 

@@ -1,41 +1,22 @@
-import {
-  Avatar as MuiAvatar,
-  Box,
-  FormHelperText,
-  InputLabel,
-  Typography,
-  useTheme,
-  Grid,
-  Link,
-  Input,
-} from '@mui/material';
-import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import {
-  WalletAvatar,
-  WalletCardBadge,
-} from '@/components/Menus/WalletMenu/WalletCard.style';
-import TokenImage from '@/components/Portfolio/TokenImage';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { useConfig, useSwitchChain, useWaitForTransactionReceipt } from 'wagmi';
-import { useEffect, useMemo, useState } from 'react';
-import {
-  MaxButton,
-  WidgetFormHelperText,
-  WidgetLikeInput,
-} from './WidgetLikeField.style';
-import { useWriteContract } from 'wagmi';
-import { parseUnits } from 'ethers';
-import { alpha } from '@mui/material';
-import type { ProjectData } from 'src/components/ZapWidget/ZapWidget';
-import { ConnectButton } from 'src/components/ConnectButton';
-import { switchChain } from '@wagmi/core';
 import { useAccount } from '@lifi/wallet-management';
-import { TxConfirmation } from 'src/components/ZapWidget/Confirmation/TxConfirmation';
-import { Breakpoint } from '@mui/material';
-import WidgetFieldStartAdornment from './WidgetStartAdornment';
-import WidgetFieldEndAdornment from './WidgetEndAdornment';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { alpha, Box, Grid, InputLabel, Typography } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import { parseUnits } from 'ethers';
 import * as React from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { ConnectButton } from 'src/components/ConnectButton';
+import { TxConfirmation } from 'src/components/ZapWidget/Confirmation/TxConfirmation';
+import type { ProjectData } from 'src/components/ZapWidget/ZapWidget';
+import {
+  useConfig,
+  useSwitchChain,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi';
+import WidgetFieldEndAdornment from './WidgetEndAdornment';
+import { WidgetFormHelperText, WidgetLikeInput } from './WidgetLikeField.style';
+import { useChains } from '@/hooks/useChains';
 import { ExtendedTokenAmount } from '@/utils/getTokens';
 import type { TokenAmount } from '@lifi/sdk';
 import { getTokenBalance } from '@lifi/sdk';
@@ -43,6 +24,7 @@ import { useUserTracking } from '@/hooks/userTracking';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { useToken } from '@/hooks/useToken';
 import { formatTokenAmount } from '@/utils/format';
+import WidgetFieldStartAdornment from '@/components/ZapWidget/WidgetLikeField/WidgetStartAdornment';
 
 interface Image {
   url: string;
@@ -101,7 +83,11 @@ function WidgetLikeField({
   refetch,
 }: WidgetLikeFieldProps) {
   const { trackEvent } = useUserTracking();
-  const theme = useTheme();
+  const chains = useChains();
+  const chain = useMemo(
+    () => chains.getChainById(projectData?.chainId),
+    [projectData?.chainId],
+  );
   const wagmiConfig = useConfig();
   const { account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
@@ -220,16 +206,17 @@ function WidgetLikeField({
   };
 
   return (
-    <Grid container justifyContent={'center'} maxWidth={416}>
+    <Grid container justifyContent={'center'}>
       <Grid
         xs={12}
         md={12}
         p={3}
         bgcolor={'#fff'}
         borderRadius={1}
-        sx={{
+        sx={(theme) => ({
           backgroundColor: theme.palette.surface1.main,
-        }}
+          padding: theme.spacing(2, 3),
+        })}
       >
         <Box
           component="form"
@@ -241,7 +228,7 @@ function WidgetLikeField({
           autoComplete="off"
           onSubmit={onSubmit}
         >
-          <InputLabel htmlFor="component" sx={{ marginBottom: 1 }}>
+          <InputLabel htmlFor="component" sx={{ marginBottom: 2 }}>
             <Typography variant="titleSmall">{label}</Typography>
           </InputLabel>
           <FormControl
@@ -258,33 +245,6 @@ function WidgetLikeField({
               disabled={isPending || isLoading}
               aria-describedby="component-text"
               disableUnderline={true}
-              // sx={{
-              //   borderRadius: theme.spacing(2),
-              //   padding: '16px',
-              //   backgroundColor: theme.palette.surface2.main,
-              //   boxShadow:
-              //     theme.palette.mode === 'light'
-              //       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-              //       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-              //   maxWidth: 416,
-              //   '& input': {
-              //     fontSize: '24px',
-              //     fontWeight: 700,
-              //     lineHeight: '36px',
-              //     marginLeft: '8px',
-              //   },
-              //   '& input::placeholder': {
-              //     fontSize: '24px',
-              //     fontWeight: 700,
-              //     lineHeight: '36px',
-              //     marginLeft: '8px',
-              //   },
-              //   '& .MuiInput-underline:before': { borderBottom: 'none' },
-              //   '& .MuiInput-underline:after': { borderBottom: 'none' },
-              //   '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-              //     borderBottom: 'none',
-              //   },
-              // }}
               startAdornment={
                 <WidgetFieldStartAdornment
                   tokenUSDAmount={tokenUSDAmount}
@@ -300,37 +260,6 @@ function WidgetLikeField({
                     mainColor={overrideStyle?.mainColor}
                     setValue={setValue}
                   />
-                  // <Box
-                  //   sx={{
-                  //     display: 'flex',
-                  //     flexDirection: 'column',
-                  //   }}
-                  // >
-                  //   <MaxButton
-                  //     sx={{ p: '5px 10px', marginTop: '16px' }}
-                  //     aria-label="menu"
-                  //     mainColor={overrideStyle?.mainColor}
-                  //     onClick={() => setValue(balance ?? '0')}
-                  //   >
-                  //     max
-                  //   </MaxButton>
-                  //   <Box sx={{ marginTop: '4px' }}>
-                  //     <Typography
-                  //       variant="bodyXSmall"
-                  //       color="textSecondary"
-                  //       component="span"
-                  //     >
-                  //       /{' '}
-                  //       {Intl.NumberFormat('en-US', {
-                  //         notation: 'compact',
-                  //         useGrouping: true,
-                  //         minimumFractionDigits: 0,
-                  //         maximumFractionDigits:
-                  //           parseFloat(balance) > 1 ? 1 : 4,
-                  //       }).format(parseFloat(balance))}
-                  //     </Typography>
-                  //   </Box>
-                  // </Box>
                 )
               }
             />
@@ -340,10 +269,10 @@ function WidgetLikeField({
           </FormControl>
 
           {!account?.isConnected ? (
-            <ConnectButton sx={{ marginTop: theme.spacing(2) }} />
+            <ConnectButton sx={(theme) => ({ marginTop: theme.spacing(2) })} />
           ) : shouldSwitchChain ? (
             <LoadingButton
-              sx={{ marginTop: theme.spacing(2) }}
+              sx={(theme) => ({ marginTop: theme.spacing(2) })}
               type="button"
               variant="contained"
               onClick={() => handleSwitchChain(projectData?.chainId)}
@@ -356,7 +285,7 @@ function WidgetLikeField({
               loading={isPending || isLoading}
               disabled={balance === '0' || isPending}
               variant="contained"
-              sx={{
+              sx={(theme) => ({
                 marginTop: theme.spacing(2),
                 borderColor: alpha(theme.palette.surface2.main, 0.08),
                 '&.MuiLoadingButton-loading': {
@@ -365,7 +294,7 @@ function WidgetLikeField({
                 '.MuiLoadingButton-loadingIndicator': {
                   color: overrideStyle?.mainColor ?? theme.palette.primary.main,
                 },
-              }}
+              })}
             >
               <Typography variant="bodyMediumStrong">
                 {contractCalls[0].label}
@@ -376,11 +305,7 @@ function WidgetLikeField({
           {isSuccess && (
             <TxConfirmation
               s={'Withdraw successful'}
-              link={
-                projectData?.chain === 'ethereum'
-                  ? 'https://etherscan.io/tx/' + data
-                  : 'https://basescan.org/tx/' + data
-              }
+              link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${data}`}
               success={!!isSuccessWriteContract && !isPending ? true : false}
             />
           )}
@@ -388,11 +313,7 @@ function WidgetLikeField({
           {!isSuccess && data && (
             <TxConfirmation
               s={'Check on explorer'}
-              link={
-                projectData?.chain === 'ethereum'
-                  ? 'https://etherscan.io/tx/' + data
-                  : 'https://basescan.org/tx/' + data
-              }
+              link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${data}`}
               success={false}
             />
           )}
