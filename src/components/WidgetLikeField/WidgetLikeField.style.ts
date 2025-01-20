@@ -1,4 +1,4 @@
-import { styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import { alpha, Button } from '@mui/material';
 
 export const MaxButton = styled(Button, {
@@ -14,4 +14,12 @@ export const MaxButton = styled(Button, {
   '&:hover': {
     backgroundColor: alpha(mainColor ?? theme.palette.primary.main, 0.48),
   },
+}));
+
+export const NotConnectedBox = styled(Box)(({ theme }) => ({
+  height: '100%',
+  width: '100%',
+  display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
+  placeContent: 'center', // Centers content horizontally and vertically.
+  alignItems: 'start', // Aligns items at the start along the cross-axis.
 }));

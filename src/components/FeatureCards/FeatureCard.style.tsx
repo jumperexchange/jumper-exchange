@@ -62,7 +62,7 @@ export interface FeatureCardTitleProps
 export const FeatureCardTitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'data' && prop !== 'typographyColor',
 })<FeatureCardTitleProps>(({ typographyColor, data }) => ({
-  color: data?.attributes.TitleColor ?? typographyColor,
+  color: data?.attributes?.TitleColor ?? typographyColor,
   fontSize: '24px',
   lineHeight: '32px',
   userSelect: 'none',
@@ -102,7 +102,7 @@ export const FeatureCardCtaLink = styled(Link, {
 })<FeatureCardCtaLinkProps>(({ theme, data }) => ({
   textDecoration: 'none',
   color:
-    data.attributes.DisplayConditions.mode === 'dark' ||
+    data.attributes?.DisplayConditions.mode === 'dark' ||
     theme.palette.mode === 'dark'
       ? theme.palette.accent1Alt?.main
       : theme.palette.primary.main,
@@ -121,5 +121,5 @@ export const FeatureCardCtaLabel = styled(Typography, {
   maxHeight: 20,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  color: data.attributes.CTAColor ?? 'inherit',
+  color: data.attributes?.CTAColor ?? 'inherit',
 }));

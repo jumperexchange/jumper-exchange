@@ -49,20 +49,20 @@ export const FeaturedArticle = ({
     featuredArticle &&
     t('format.shortDate', {
       value: new Date(
-        featuredArticle?.attributes.publishedAt ||
-          featuredArticle?.attributes.createdAt,
+        featuredArticle?.attributes?.publishedAt ||
+          featuredArticle?.attributes?.createdAt,
       ),
     });
 
   const minRead =
-    featuredArticle && readingTime(featuredArticle?.attributes.Content);
+    featuredArticle && readingTime(featuredArticle?.attributes?.Content);
 
   return featuredArticle ? (
     <>
       <FeaturedArticleLink
         href={
-          featuredArticle.attributes.RedirectURL ??
-          `${JUMPER_LEARN_PATH}/${featuredArticle?.attributes.Slug}`
+          featuredArticle.attributes?.RedirectURL ??
+          `${JUMPER_LEARN_PATH}/${featuredArticle?.attributes?.Slug}`
         }
         onClick={() => {
           handleFeatureCardClick(featuredArticle);
@@ -74,22 +74,22 @@ export const FeaturedArticle = ({
           height={0}
           sizes="100vw"
           priority
-          src={`${url}${featuredArticle?.attributes.Image.data.attributes.formats.medium.url}`}
+          src={`${url}${featuredArticle?.attributes?.Image.data.attributes?.formats.medium.url}`}
           alt={
-            featuredArticle.attributes.Image.data.attributes.alternativeText ??
-            featuredArticle.attributes.Title
+            featuredArticle.attributes?.Image.data.attributes
+              ?.alternativeText ?? featuredArticle.attributes?.Title
           }
         />
         <FeaturedArticleContent>
           <FeaturedArticleDetails>
-            {featuredArticle.attributes.tags.data
+            {featuredArticle.attributes?.tags.data
               .slice(0, 1)
               .map((el, index) => (
                 <Tag
                   key={`blog-highlights-tag-${index}`}
                   variant="bodyMediumStrong"
                 >
-                  {el.attributes.Title}
+                  {el.attributes?.Title}
                 </Tag>
               ))}
             <FeaturedArticleMetaContainer>
@@ -107,12 +107,12 @@ export const FeaturedArticle = ({
           </FeaturedArticleDetails>
           <Box>
             <FeaturedArticleTitle variant="headerMedium" as="h2">
-              {featuredArticle.attributes.Title}
+              {featuredArticle.attributes?.Title}
             </FeaturedArticleTitle>
           </Box>
           <Box>
             <FeaturedArticleSubtitle>
-              {featuredArticle.attributes.Subtitle}
+              {featuredArticle.attributes?.Subtitle}
             </FeaturedArticleSubtitle>
           </Box>
         </FeaturedArticleContent>
