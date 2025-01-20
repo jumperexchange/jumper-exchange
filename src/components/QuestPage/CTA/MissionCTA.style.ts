@@ -124,12 +124,12 @@ export const StartedTitleTypography = styled(Typography)(({ theme }) => ({
   fontFamily: urbanist.style.fontFamily,
   [theme.breakpoints.down('md' as Breakpoint)]: {
     fontSize: '16px',
-    fontWeight: 600,
+    fontWeight: 700,
     lineHeight: '14px',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    fontSize: '20px',
-    fontWeight: 600,
+    fontSize: '32px',
+    fontWeight: 700,
     lineHeight: '20px',
   },
 }));
