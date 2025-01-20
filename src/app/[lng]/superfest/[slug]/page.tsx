@@ -1,6 +1,6 @@
+import { notFound } from 'next/navigation';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import SuperfestPage from 'src/app/ui/superfest/SuperfestMissionPage';
-import { notFound } from 'next/navigation';
 
 // export async function generateMetadata({
 //   params,
@@ -44,10 +44,8 @@ import { notFound } from 'next/navigation';
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const { data, url } = await getQuestBySlug(params.slug);
-
-  if (!data?.data?.[0]) {
+  if (!data) {
     return notFound();
   }
-
-  return <SuperfestPage quest={data?.data?.[0]} url={url} />;
+  return <SuperfestPage quest={data} url={url} />;
 }

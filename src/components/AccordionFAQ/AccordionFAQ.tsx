@@ -34,7 +34,7 @@ export const AccordionFAQ = ({
   content,
   title,
   sx,
-  itemSx,
+  itemSx = {},
   itemAnswerSx,
   accordionHeader,
   showIndex,

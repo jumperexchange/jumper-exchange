@@ -12,7 +12,7 @@
     "@fingerprintjs/fingerprintjs": "^3.4.2",
     "@headlessui/react": "^2.2.0",
     "@lifi/explorer": "^0.1.0",
-    "@lifi/sdk": "3.5.1-beta.0",
+    "@lifi/sdk": "3.5.2",
     "@lifi/wallet-management": "^3.5.2",
     "@lifi/widget": "^3.13.2",
     "@metaplex-foundation/mpl-core": "^1.1.1",
@@ -127,6 +127,9 @@
     "test:e2e-real": "npx playwright test --headed",
     "build:cache": "synpress --headless",
     "build:cache:ci": "xvfb-run synpress --force tests/wallet-setup/"
+  },
+  "resolutions": {
+    "@metamask/sdk": "0.30.0"
   },
   "lint-staged": {
     "**/*.(ts|tsx|js)": [

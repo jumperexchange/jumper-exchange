@@ -80,7 +80,7 @@ export const Accordion = styled(MuiAccordion)(({ theme }) => ({
   },
 
   '&:hover': {
-    background: alpha(theme.palette.text.primary, 0.16),
+    background: alpha(theme.palette.text.primary, 0.02),
   },
 }));
 

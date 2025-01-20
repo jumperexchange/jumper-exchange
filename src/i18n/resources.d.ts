@@ -38,7 +38,7 @@ interface Resources {
         theme: 'Theme';
         developers: 'Developers';
         support: 'Support';
-        profile: 'Jumper Loyalty Pass';
+        profile: 'Loyalty Pass';
         fest: 'Superfest Festival';
       };
       walletMenu: {
