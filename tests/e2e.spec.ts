@@ -87,7 +87,7 @@ test.describe('Jumper full e2e flow', () => {
       'xpath=//div[@class="MuiBox-root mui-9cpca"]',
     );
     await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Jumper Profile');
+    await itemInMenu(page, 'Jumper Loyalty Pass');
     expect(await page.url()).toBe(profileUrl);
     await page.locator('.profile-page').isVisible();
     await page
@@ -117,7 +117,8 @@ test.describe('Jumper full e2e flow', () => {
     expect(await page.url()).toBe(learnUrl);
     await page.waitForLoadState('load');
     await page.locator('.learn-page').isVisible();
-    sectionOnTheBlogPage(page, sectionName);
+    await sectionOnTheBlogPage(page, sectionName);
+    await expect(blogArticle).toBeVisible();
     await blogArticle.click();
     await page.waitForLoadState('load');
     await expect(articleTitle).toBeVisible();
