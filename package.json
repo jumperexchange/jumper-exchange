@@ -146,5 +146,6 @@
     "@bigmi/client/wagmi": "2.14.3",
     "@bigmi/client/@wagmi/core": "2.16.0",
     "@metamask/sdk": "0.30.0"
-  }
+  },
+  "packageManager": "pnpm@9.15.4"
 }

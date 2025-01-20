@@ -31,45 +31,38 @@ import {
 
 import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
 import { Tag } from '@/components/Tag.style';
-import type { AuthorData, StrapiImageData, TagData } from '@/types/strapi';
+import type { BlogArticleData } from '@/types/strapi';
 import type { ThemeMode } from '@/types/theme';
 import { readingTime } from '@/utils/readingTime';
-import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
 import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
 
 interface BlogArticleProps {
-  title: string;
-  subtitle?: string;
-  content?: RootNode[];
-  tags?: TagData;
-  author?: AuthorData;
-  slug: string | undefined;
-  publishedAt?: string;
-  updatedAt?: string;
-  createdAt?: string;
-  image?: StrapiImageData;
+  article: BlogArticleData;
   baseUrl?: string;
   activeThemeMode?: ThemeMode;
   id?: number;
 }
 
 export const BlogArticle = ({
-  title,
-  subtitle,
-  content,
-  author,
-  tags,
-  id,
-  publishedAt,
-  updatedAt,
-  createdAt,
-  slug,
-  image,
+  article,
   baseUrl,
   activeThemeMode,
 }: BlogArticleProps) => {
   const theme = useTheme();
+  const {
+    Subtitle: subtitle,
+    Title: title,
+    Content: content,
+    Slug: slug,
+    author,
+    publishedAt,
+    createdAt,
+    updatedAt,
+    tags,
+    Image: image,
+  } = article.attributes;
+  const id = article.id;
   const minRead = readingTime(content);
   const { t } = useTranslation();
 
