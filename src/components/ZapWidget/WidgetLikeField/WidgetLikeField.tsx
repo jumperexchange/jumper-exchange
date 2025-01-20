@@ -37,7 +37,8 @@ import WidgetFieldStartAdornment from './WidgetStartAdornment';
 import WidgetFieldEndAdornment from './WidgetEndAdornment';
 import * as React from 'react';
 import { ExtendedTokenAmount } from '@/utils/getTokens';
-import { getTokenBalance, TokenAmount } from '@lifi/sdk';
+import type { TokenAmount } from '@lifi/sdk';
+import { getTokenBalance } from '@lifi/sdk';
 import { useUserTracking } from '@/hooks/userTracking';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { useToken } from '@/hooks/useToken';
@@ -114,7 +115,9 @@ function WidgetLikeField({
   } = useWriteContract();
   const { token: tokenInfo } = useToken(token.chainId, token.address);
   const tokenUSDAmount = useMemo<string>(() => {
-    return (parseFloat(tokenInfo?.priceUSD ?? '0') * parseFloat(balance ?? '0')).toString();
+    return (
+      parseFloat(tokenInfo?.priceUSD ?? '0') * parseFloat(balance ?? '0')
+    ).toString();
   }, [balance, tokenInfo]);
 
   const [value, setValue] = useState<string>('');
@@ -147,7 +150,8 @@ function WidgetLikeField({
         chain_id: token.chainId,
         withdrawn_token: token.address,
         amount_withdrawn: value ?? 'NA',
-        amount_withdrawn_usd: parseFloat(value ?? '0') * parseFloat(tokenInfo?.priceUSD ?? '0'),
+        amount_withdrawn_usd:
+          parseFloat(value ?? '0') * parseFloat(tokenInfo?.priceUSD ?? '0'),
         timestamp: new Date(),
       } as any, // Shortcut
       isConversion: true,
@@ -281,10 +285,12 @@ function WidgetLikeField({
               //     borderBottom: 'none',
               //   },
               // }}
-              startAdornment={<WidgetFieldStartAdornment
-                tokenUSDAmount={tokenUSDAmount}
-                image={image}
-              />}
+              startAdornment={
+                <WidgetFieldStartAdornment
+                  tokenUSDAmount={tokenUSDAmount}
+                  image={image}
+                />
+              }
               endAdornment={
                 !!account?.isConnected &&
                 !!balance &&
