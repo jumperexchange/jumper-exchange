@@ -2,6 +2,7 @@ import type { Breakpoint } from '@mui/material';
 import {
   alpha,
   Button,
+  FormControl,
   FormHelperText,
   Grid,
   Input,
@@ -42,11 +43,14 @@ export const WidgetLikeGrid = styled(Grid)(({ theme }) => ({
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
 }));
 
-export const WidgetLikeInput = styled(Input)(({ theme }) => ({
+export const CustomFormControl = styled(FormControl)(({ theme }) => ({
   borderRadius: theme.spacing(2),
   padding: '16px',
   backgroundColor: theme.palette.surface2.main,
   border: `1px solid ${theme.palette.mode === 'light' ? '#E5E1EB' : '#302B52'}`,
+  display: 'flex',
+  flexDirection: 'row',
+  alignContent: 'flex-start',
   '& input': {
     fontSize: '24px',
     fontWeight: 700,

@@ -19,20 +19,6 @@ function WidgetFieldStartAdornment({
       }}
     >
       {image}
-      <Box sx={{ marginTop: '4px', textAlign: 'left' }}>
-        <Typography variant="bodyXSmall" color="textSecondary" component="span">
-          {tokenUSDAmount
-            ? Intl.NumberFormat('en-US', {
-                style: 'currency',
-                notation: 'compact',
-                currency: 'USD',
-                useGrouping: true,
-                minimumFractionDigits: 0,
-                maximumFractionDigits: parseFloat(tokenUSDAmount) > 2 ? 2 : 4,
-              }).format(parseFloat(tokenUSDAmount))
-            : 'NA'}
-        </Typography>
-      </Box>
     </Box>
   );
 }

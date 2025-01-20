@@ -33,14 +33,14 @@ function WidgetFieldEndAdornment({
       }}
     >
       <MaxButton
-        sx={{ p: '5px 10px', marginTop: '16px' }}
+        sx={{ p: '5px 10px', marginY: 1 }}
         aria-label="menu"
         mainColor={mainColor}
         onClick={() => setValue(balance ?? '0')}
       >
         max
       </MaxButton>
-      <Box sx={{ marginTop: '4px', textAlign: 'right' }}>
+      <Box sx={{ textAlign: 'right' }}>
         <Typography variant="bodyXSmall" color="textSecondary" component="span">
           /{' '}
           {Intl.NumberFormat('en-US', {
