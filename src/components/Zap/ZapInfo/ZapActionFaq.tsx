@@ -24,18 +24,18 @@ export const ZapActionFaq = ({ detailInformation }: ZapActionFaqProps) => {
         showAnswerDivider={true}
         sx={{
           padding: 0,
-        }}
-        itemSx={{
-          padding: '0px 8px',
-          backgroundColor: 'transparent',
-          '.MuiAccordionSummary-root': {
-            padding: 0,
-          },
-          '.accordion-items': {
-            gap: '4px',
-          },
-          '.MuiAccordionDetails-root': {
-            padding: '20px 16px 16px',
+          '& .faq-item': {
+            padding: '0px 8px',
+            backgroundColor: 'transparent',
+            '.MuiAccordionSummary-root': {
+              padding: 0,
+            },
+            '.accordion-items': {
+              gap: '4px',
+            },
+            '.MuiAccordionDetails-root': {
+              padding: '20px 16px 16px',
+            },
           },
         }}
         content={detailInformation?.faqItems}

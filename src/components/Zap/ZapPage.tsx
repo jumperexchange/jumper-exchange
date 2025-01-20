@@ -1,50 +1,21 @@
 'use client';
-import { useTranslation } from 'react-i18next';
-
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import InfoIcon from '@mui/icons-material/Info';
-import LanguageIcon from '@mui/icons-material/Language';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import XIcon from '@mui/icons-material/X';
+import type { TokenAmount } from '@lifi/widget';
+import type { Breakpoint, Theme } from '@mui/material';
 import {
-  alpha,
   Box,
   Container,
   Skeleton,
-  Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { formatUnits } from 'viem';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import type { TokenAmount } from '@lifi/widget';
-import { AccordionFAQ } from 'src/components/AccordionFAQ';
+import ZapWidgetPage from 'src/app/ui/widget/ZapWidgetPage';
 import type { TabProps } from 'src/components/Tabs';
 import { Tabs } from 'src/components/Tabs';
-import { getSiteUrl } from 'src/const/urls';
-import { useMenuStore } from 'src/stores/menu';
-import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
-import type { QuestDetails } from 'src/types/questDetails';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
-import { BackButton } from './BackButton/BackButton';
-import {
-  ZapActionProtocolCard,
-  ZapActionProtocolDisclaimer,
-  ZapActionProtocolIntro,
-  ZapActionProtocolShare,
-  ZapActionProtocolShareLink,
-  ZapProtocolActionBox,
-  ZapProtocolActionInfoBox,
-  ZapTabsBox,
-} from './ZapInfo/ZapInfo.style';
-import ZapWidgetPage from 'src/app/ui/widget/ZapWidgetPage';
 import { useZaps } from 'src/hooks/useZaps';
-import { useContractRead } from 'src/hooks/useReadContractData';
-import { useAccount } from '@lifi/wallet-management';
-import { useMediaQuery } from '@mui/material';
-import { Theme } from '@mui/material';
-import { Breakpoint } from '@mui/material';
+import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import { ZapInfo } from './ZapInfo/ZapInfo';
+import { ZapProtocolActionBox, ZapTabsBox } from './ZapInfo/ZapInfo.style';
 
 interface ZapPageProps {
   market?: Quest;
@@ -53,20 +24,17 @@ interface ZapPageProps {
 
 export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
   const [tab, setTab] = useState(0);
-  const { setSnackbarState } = useMenuStore((state) => state);
-  const { data, isSuccess } = useZaps(detailInformation?.projectData);
+  const { data, isSuccess, refetch } = useZaps(detailInformation?.projectData);
   const [token, setToken] = useState<TokenAmount>();
-  const { t } = useTranslation();
-  const baseUrl = getStrapiBaseUrl();
   const theme = useTheme();
-  const { account } = useAccount();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
 
   const containerStyles = {
     display: 'flex',
-    width: '100%',
+    width: 'auto',
+    marginX: 2,
     borderRadius: '24px',
     div: {
       height: 38,
@@ -77,23 +45,6 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
       borderRadius: '18px',
     },
   };
-
-  const { data: depositTokenData, isLoading: isLoadingDepositTokenData } =
-    useContractRead({
-      address: detailInformation?.projectData as `0x${string}`,
-      chainId: detailInformation?.projectData.chainId,
-      functionName: 'balanceOf',
-      abi: [
-        {
-          inputs: [{ name: 'owner', type: 'address' }],
-          name: 'balanceOf',
-          outputs: [{ name: '', type: 'uint256' }],
-          stateMutability: 'view',
-          type: 'function',
-        },
-      ],
-      args: [account.address],
-    });
 
   useEffect(() => {
     if (isSuccess) {
@@ -116,6 +67,7 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
     margin: theme.spacing(0.75),
     minWidth: 'unset',
     borderRadius: '18px',
+    maxWidth: 'unset',
   };
 
   const tabs: TabProps[] = [
@@ -174,7 +126,6 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
 
   return (
     <Container>
-      <BackButton />
       <ZapProtocolActionBox>
         {/* widget on mobile */}
         {isMobile && (
@@ -186,7 +137,14 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
               containerStyles={containerStyles}
               tabStyles={tabStyles}
             />
-            <Box sx={{ marginTop: theme.spacing(1.5), minWidth: '416px' }}>
+            <Box
+              sx={{
+                marginTop: theme.spacing(1.5),
+                [theme.breakpoints.up('sm')]: {
+                  minWidth: '416px',
+                },
+              }}
+            >
               {renderZapWidget()}
             </Box>
           </ZapTabsBox>
@@ -196,29 +154,50 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
         <ZapInfo market={market} detailInformation={detailInformation} />
 
         {/* widget on web */}
-        {!isMobile && (
-          <ZapTabsBox>
-            <Tabs
-              data={tabs}
-              value={tab}
-              ariaLabel="zap-switch-tabs"
-              containerStyles={containerStyles}
-              tabStyles={tabStyles}
-            />
-            <Box
-              sx={{
-                [theme.breakpoints.down('md' as Breakpoint)]: {
-                  minWidth: '316px',
-                },
-                [theme.breakpoints.up('md' as Breakpoint)]: {
-                  minWidth: '416px',
-                },
-              }}
-            >
-              {renderZapWidget()}
-            </Box>
-          </ZapTabsBox>
-        )}
+
+        <>
+          {!isMobile && (
+            <ZapTabsBox>
+              <Tabs
+                data={tabs}
+                value={tab}
+                ariaLabel="zap-switch-tabs"
+                containerStyles={containerStyles}
+                tabStyles={tabStyles}
+              />
+              {!isSuccess ? (
+                <Skeleton
+                  variant="rectangular"
+                  sx={{
+                    marginX: 2,
+                    marginTop: theme.spacing(2),
+                    height: '600px',
+                    borderRadius: '8px',
+                    [theme.breakpoints.down('md' as Breakpoint)]: {
+                      width: 284,
+                    },
+                    [theme.breakpoints.up('md' as Breakpoint)]: {
+                      width: 384,
+                    },
+                  }}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    [theme.breakpoints.down('md' as Breakpoint)]: {
+                      minWidth: '316px',
+                    },
+                    [theme.breakpoints.up('md' as Breakpoint)]: {
+                      minWidth: '416px',
+                    },
+                  }}
+                >
+                  {renderZapWidget()}
+                </Box>
+              )}
+            </ZapTabsBox>
+          )}
+        </>
       </ZapProtocolActionBox>
     </Container>
   );

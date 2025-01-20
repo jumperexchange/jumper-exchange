@@ -74,7 +74,7 @@ export const BerachainMarkets = () => {
                   key={`berachain-market-card-${roycoData.id || 'protocol'}-${index}`}
                   roycoData={roycoData}
                   // chainId={roycoData.chain_id}
-                  image={card?.attributes.Image}
+                  image={card?.attributes?.Image}
                   title={fullTitle}
                   // slug={roycoData.id}
                   // slug={card.attributes?.Slug}

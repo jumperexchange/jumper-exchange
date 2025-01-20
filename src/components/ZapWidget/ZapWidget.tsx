@@ -1,22 +1,23 @@
-import type { WidgetConfig, TokenAmount } from '@lifi/widget';
+import { WidgetEvents } from '@/components/Widgets';
+import { useZaps } from '@/hooks/useZaps';
+import { useWalletMenu, type Account } from '@lifi/wallet-management';
+import type { TokenAmount, WidgetConfig } from '@lifi/widget';
 import {
   ChainType,
   DisabledUI,
   HiddenUI,
   LiFiWidget,
   RequiredUI,
+  useWidgetEvents,
+  WidgetEvent,
 } from '@lifi/widget';
-import { formatUnits } from 'viem';
+import type { Breakpoint } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
-import { useZaps } from '@/hooks/useZaps';
-import { useWalletMenu, type Account } from '@lifi/wallet-management';
-import { DepositCard } from './Deposit/DepositCard';
-import { useContractRead } from 'src/hooks/useReadContractData';
 import { useThemeStore } from 'src/stores/theme';
-import { Box } from '@mui/material';
-import { Skeleton } from '@mui/material';
-import { Breakpoint } from '@mui/material';
-import { useTheme } from '@mui/material';
+import { formatUnits } from 'viem';
+import { useReadContracts } from 'wagmi';
+import { DepositCard } from './Deposit/DepositCard';
 import { WithdrawWidget } from './Withdraw/WithdrawWidget';
 
 export interface ProjectData {
@@ -42,7 +43,6 @@ export function ZapWidget({
   type,
   claimingIds,
 }: CustomWidgetProps) {
-  const theme = useTheme();
   const [token, setToken] = useState<TokenAmount>();
 
   const { data, isSuccess } = useZaps(projectData);
@@ -53,37 +53,66 @@ export function ZapWidget({
     state.configTheme,
   ]);
 
-  const { data: depositTokenData, isLoading: isLoadingDepositTokenData } =
-    useContractRead({
-      address: projectData.address as `0x${string}`,
-      chainId: projectData.chainId,
-      functionName: 'balanceOf',
-      abi: [
-        {
-          inputs: [{ name: 'owner', type: 'address' }],
-          name: 'balanceOf',
-          outputs: [{ name: '', type: 'uint256' }],
-          stateMutability: 'view',
-          type: 'function',
-        },
-      ],
-      args: [account.address],
-    });
-
-  const { data: depositTokenDecimals } = useContractRead({
-    address: (projectData.tokenAddress || projectData.address) as `0x${string}`,
-    chainId: projectData.chainId,
-    functionName: 'decimals',
-    abi: [
+  const {
+    data: [
+      { result: depositTokenData } = {},
+      { result: depositTokenDecimals } = {},
+    ] = [],
+    isLoading: isLoadingDepositTokenData,
+    refetch,
+  } = useReadContracts({
+    contracts: [
       {
-        inputs: [],
-        name: 'decimals',
-        outputs: [{ name: '', type: 'uint8' }],
-        stateMutability: 'view',
-        type: 'function',
+        address: projectData.address as `0x${string}`,
+        abi: [
+          {
+            inputs: [{ name: 'owner', type: 'address' }],
+            name: 'balanceOf',
+            outputs: [{ name: '', type: 'uint256' }],
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ],
+        functionName: 'balanceOf',
+        args: [account.address as `0x${string}`],
+      },
+      {
+        abi: [
+          {
+            inputs: [],
+            name: 'decimals',
+            outputs: [{ name: '', type: 'uint8' }],
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ],
+        address: (projectData.tokenAddress ||
+          projectData.address) as `0x${string}`,
+        chainId: projectData.chainId,
+        functionName: 'decimals',
       },
     ],
   });
+
+  const widgetEvents = useWidgetEvents();
+  // Custom effect to refetch the balance
+  useEffect(() => {
+    function onRouteExecutionCompleted() {
+      refetch();
+    }
+
+    widgetEvents.on(
+      WidgetEvent.RouteExecutionCompleted,
+      onRouteExecutionCompleted,
+    );
+
+    return () => {
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionCompleted,
+        onRouteExecutionCompleted,
+      );
+    };
+  }, [widgetEvents]);
 
   const lpTokenDecimals = depositTokenDecimals ?? 18;
 
@@ -133,6 +162,7 @@ export function ZapWidget({
         ...widgetTheme.config.theme,
         container: {
           maxHeight: 820,
+          maxWidth: 'unset',
         },
       },
       useRecommendedRoute: true,
@@ -155,18 +185,7 @@ export function ZapWidget({
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      sx={{
-        [theme.breakpoints.down('md' as Breakpoint)]: {
-          maxWidth: 316,
-        },
-        [theme.breakpoints.up('md' as Breakpoint)]: {
-          maxWidth: 416,
-        },
-      }}
-    >
+    <Box display="flex" justifyContent="center">
       {type === 'deposit' &&
         (token ? (
           <LiFiWidget
@@ -174,6 +193,7 @@ export function ZapWidget({
               <DepositCard
                 underlyingToken={data?.data?.market?.depositToken}
                 token={token}
+                chainId={projectData?.chainId}
                 contractTool={data?.data?.meta}
                 analytics={analytics}
                 contractCalls={[]}
@@ -186,7 +206,7 @@ export function ZapWidget({
         ) : (
           <Skeleton
             variant="rectangular"
-            sx={{
+            sx={(theme) => ({
               marginTop: '32px',
               height: 592,
               borderRadius: '16px',
@@ -194,20 +214,22 @@ export function ZapWidget({
                 maxWidth: 316,
               },
               [theme.breakpoints.up('md' as Breakpoint)]: {
-                maxWidth: 416,
+                maxWidth: '100%',
               },
-            }}
+            })}
           />
         ))}
 
       {!isLoadingDepositTokenData && type === 'withdraw' && token && (
         <WithdrawWidget
+          refetchPosition={refetch}
           token={token}
           lpTokenDecimals={lpTokenDecimals}
           projectData={projectData}
           depositTokenData={depositTokenData}
         />
       )}
+      <WidgetEvents />
     </Box>
   );
 }

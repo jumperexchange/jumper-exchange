@@ -1,4 +1,5 @@
-import { alpha, Box, Breakpoint, styled, IconButton } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
+import { alpha, Box, IconButton, styled } from '@mui/material';
 import Link from 'next/link';
 
 export const ZapProtocolActionBox = styled(Box)(({ theme }) => ({
@@ -19,7 +20,6 @@ export const ZapProtocolActionInfoBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
   flexDirection: 'column',
   marginTop: theme.spacing(2),
-  maxWidth: 640,
   gap: theme.spacing(2),
   borderRadius: '24px',
   background: theme.palette.surface1.main,
@@ -27,6 +27,9 @@ export const ZapProtocolActionInfoBox = styled(Box)(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    maxWidth: 640,
+  },
 }));
 
 export const ZapActionProtocolIntro = styled(Box)(({ theme }) => ({
@@ -78,36 +81,14 @@ export const ZapActionProtocolShare = styled(IconButton)(({ theme }) => ({
 
 export const ZapTabsBox = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(2),
-  padding: theme.spacing(3, 1),
+  padding: theme.spacing(3, 0),
   borderRadius: '24px',
   backgroundColor: theme.palette.surface1.main,
   boxShadow:
     theme.palette.mode === 'light'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-}));
-
-export const ZapWidgetSizeBox = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(2),
-  padding: theme.spacing(3, 1),
-  borderRadius: '24px',
-  backgroundColor: theme.palette.surface1.main,
-  boxShadow:
-    theme.palette.mode === 'light'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-}));
-
-export const ZapStyledAccordionItem = styled('div')(({ theme }) => ({
-  padding: '0px 8px',
-  backgroundColor: 'transparent',
-  '.MuiAccordionSummary-root': {
-    padding: 0,
-  },
-  '.accordion-items': {
-    gap: '4px',
-  },
-  '.MuiAccordionDetails-root': {
-    padding: '20px 16px 16px',
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    maxWidth: 432,
   },
 }));

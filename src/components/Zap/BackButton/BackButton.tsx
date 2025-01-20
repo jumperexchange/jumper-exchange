@@ -15,7 +15,7 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
   return (
     <Link
       href={path ?? '/profile'}
-      style={{ textDecoration: 'none', width: 168, display: 'block' }}
+      style={{ textDecoration: 'none', width: 184, display: 'block' }}
     >
       <BackButtonStyles size={'large'}>
         <ArrowBackIcon
@@ -28,7 +28,7 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
           marginLeft={'8px'}
         >
           {String(
-            title || t('navbar.navbarMenu.profile') || 'Profile',
+            title || t('navbar.navbarMenu.profile') || 'Loyalty Pass',
           ).toUpperCase()}
         </Typography>
       </BackButtonStyles>
