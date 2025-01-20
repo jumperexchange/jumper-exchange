@@ -1,33 +1,14 @@
 import {
-  Avatar as MuiAvatar,
   Box,
-  FormHelperText,
-  InputLabel,
   Typography,
-  useTheme,
-  Grid,
-  Link,
-  Input,
 } from '@mui/material';
-import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import {
-  WalletAvatar,
-  WalletCardBadge,
-} from '@/components/Menus/WalletMenu/WalletCard.style';
-import TokenImage from '@/components/Portfolio/TokenImage';
-
-interface Image {
-  url: string;
-  name: string;
-}
 
 interface WidgetFieldStartAdornmentProps {
-  image: Image & { badge?: Image };
+  image: React.ReactNode;
+  tokenUSDAmount?: string;
 }
 
-function WidgetFieldStartAdornment({ image }: WidgetFieldStartAdornmentProps) {
-  const theme = useTheme();
+function WidgetFieldStartAdornment({ image, tokenUSDAmount }: WidgetFieldStartAdornmentProps) {
 
   return (
     <Box
@@ -38,49 +19,19 @@ function WidgetFieldStartAdornment({ image }: WidgetFieldStartAdornmentProps) {
         width: 'auto',
       }}
     >
-      <>
-        <WalletCardBadge
-          overlap="circular"
-          className="badge"
-          sx={{ maringRight: '8px' }}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          badgeContent={
-            image.badge && (
-              <MuiAvatar
-                alt={image.badge.name}
-                sx={(theme: any) => ({
-                  width: '18px',
-                  height: '18px',
-                  border: `2px solid ${theme.palette.surface2.main}`,
-                })}
-              >
-                {image.badge.name && (
-                  <TokenImage
-                    token={{
-                      name: image.badge.name,
-                      logoURI: image.badge.url,
-                    }}
-                  />
-                )}
-              </MuiAvatar>
-            )
-          }
-        >
-          <WalletAvatar>
-            {image.name && (
-              <TokenImage
-                token={{
-                  name: image.name,
-                  logoURI: image.url,
-                }}
-              />
-            )}
-          </WalletAvatar>
-        </WalletCardBadge>
-      </>
+      {image}
+      <Box sx={{ marginTop: '4px', textAlign: 'left' }}>
+        <Typography variant="bodyXSmall" color="textSecondary" component="span">
+          {tokenUSDAmount ? Intl.NumberFormat('en-US', {
+            style: 'currency',
+            notation: 'compact',
+            currency: 'USD',
+            useGrouping: true,
+            minimumFractionDigits: 0,
+            maximumFractionDigits: parseFloat(tokenUSDAmount) > 2 ? 2 : 4,
+          }).format(parseFloat(tokenUSDAmount)) : 'NA'}
+        </Typography>
+      </Box>
     </Box>
   );
 }

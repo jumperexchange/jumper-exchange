@@ -36,6 +36,12 @@ import { Breakpoint } from '@mui/material';
 import WidgetFieldStartAdornment from './WidgetStartAdornment';
 import WidgetFieldEndAdornment from './WidgetEndAdornment';
 import * as React from 'react';
+import { ExtendedTokenAmount } from '@/utils/getTokens';
+import { getTokenBalance, TokenAmount } from '@lifi/sdk';
+import { useUserTracking } from '@/hooks/userTracking';
+import { TrackingCategory } from 'src/const/trackingKeys';
+import { useToken } from '@/hooks/useToken';
+import { formatTokenAmount } from '@/utils/format';
 
 interface Image {
   url: string;
@@ -75,6 +81,7 @@ interface WidgetLikeFieldProps {
   balance?: string;
   projectData: ProjectData;
   writeDecimals: number;
+  token: TokenAmount;
   refetch: () => void;
 }
 
@@ -85,12 +92,14 @@ function WidgetLikeField({
   placeholder,
   hasMaxButton = true,
   helperText,
+  token,
   overrideStyle = {},
   balance,
   projectData,
   writeDecimals,
   refetch,
 }: WidgetLikeFieldProps) {
+  const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const wagmiConfig = useConfig();
   const { account } = useAccount();
@@ -103,6 +112,10 @@ function WidgetLikeField({
     error,
     isSuccess: isSuccessWriteContract,
   } = useWriteContract();
+  const { token: tokenInfo } = useToken(token.chainId, token.address);
+  const tokenUSDAmount = useMemo<string>(() => {
+    return (parseFloat(tokenInfo?.priceUSD ?? '0') * parseFloat(balance ?? '0')).toString();
+  }, [balance, tokenInfo]);
 
   const [value, setValue] = useState<string>('');
 
@@ -119,12 +132,26 @@ function WidgetLikeField({
 
   // When the transaction is done, triggering the refetch
   useEffect(() => {
-    if (!transactionReceiptData) {
+    if (!isSuccess) {
       return;
     }
 
     setValue('');
     refetch();
+    trackEvent({
+      category: TrackingCategory.WidgetEvent,
+      action: 'zap_withdraw',
+      label: 'execution_success',
+      data: {
+        project: projectData.project,
+        chain_id: token.chainId,
+        withdrawn_token: token.address,
+        amount_withdrawn: value ?? 'NA',
+        amount_withdrawn_usd: parseFloat(value ?? '0') * parseFloat(tokenInfo?.priceUSD ?? '0'),
+        timestamp: new Date(),
+      } as any, // Shortcut
+      isConversion: true,
+    });
   }, [transactionReceiptData]);
 
   const shouldSwitchChain = useMemo(() => {
@@ -254,7 +281,10 @@ function WidgetLikeField({
               //     borderBottom: 'none',
               //   },
               // }}
-              startAdornment={image}
+              startAdornment={<WidgetFieldStartAdornment
+                tokenUSDAmount={tokenUSDAmount}
+                image={image}
+              />}
               endAdornment={
                 !!account?.isConnected &&
                 !!balance &&

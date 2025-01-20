@@ -46,6 +46,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
         ]}
         refetch={refetchPosition}
         label={`Redeem from Pool`}
+        token={token}
         image={
           token?.logoURI && (
             <BadgeWithChain
