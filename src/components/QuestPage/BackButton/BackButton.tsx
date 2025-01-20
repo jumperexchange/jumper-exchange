@@ -30,10 +30,12 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
           sx={{ color: '#FFFFFF', width: '16px', height: '16px' }}
         />
         <Typography
-          fontSize="14px"
-          lineHeight="14px"
-          fontWeight={500}
-          marginLeft={'8px'}
+          sx={{
+            fontSize: '14px',
+            lineHeight: '14px',
+            fontWeight: 500,
+            marginLeft: '8px',
+          }}
         >
           {String(
             title || 'Loyalty Pass' || t('navbar.navbarMenu.profile'),

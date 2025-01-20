@@ -50,8 +50,10 @@ const DigitOnlyCard = ({
       <Typography
         className="content"
         variant="h6"
-        marginTop={'4px'}
-        fontWeight={700}
+        sx={{
+          marginTop: '4px',
+          fontWeight: 700,
+        }}
       >
         {digit}
         {endAdornment}

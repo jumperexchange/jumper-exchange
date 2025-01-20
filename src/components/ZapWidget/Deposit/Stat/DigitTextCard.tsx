@@ -77,11 +77,13 @@ const DigitTextCard = ({
           )}
           <Typography
             variant="h6"
-            fontWeight={700}
             className="content"
-            marginTop={'4px'}
             key={`berachain-market-card-token-label`}
-            color={hasDeposited ? theme.palette.primary.main : undefined}
+            sx={{
+              color: hasDeposited ? theme.palette.primary.main : undefined,
+              fontWeight: 700,
+              marginTop: '4px',
+            }}
           >
             {digit}
           </Typography>
