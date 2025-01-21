@@ -8,6 +8,7 @@ import type { CSSObject } from '@mui/material';
 import { Skeleton } from '@mui/material';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import useClient from 'src/hooks/useClient';
 import {
   BlogArticleCardContainer,
   BlogArticleCardContent,
@@ -37,6 +38,7 @@ export const BlogArticleCard = ({
   const minRead = readingTime(article.attributes?.Content);
   const { t } = useTranslation();
   const { closeAllMenus } = useMenuStore((state) => state);
+  const isClient = useClient();
   const handleClick = () => {
     trackEvent({
       category: trackingCategory,
@@ -55,7 +57,7 @@ export const BlogArticleCard = ({
         article.attributes?.RedirectURL ??
         `${JUMPER_LEARN_PATH}/${article.attributes?.Slug}`
       }
-      style={{ textDecoration: 'none', width: '100%' }}
+      style={{ textDecoration: 'none', width: '100%', maxWidth: '416px' }}
     >
       <BlogArticleCardContainer
         variant="outlined"
@@ -100,14 +102,26 @@ export const BlogArticleCard = ({
             <BlogArticleCardMetaContainer
               hasTags={article.attributes?.tags?.data.length > 0}
             >
-              <BlogArticleMetaDate variant="bodyXSmall" as="span">
-                {t('format.shortDate', {
-                  value: new Date(
-                    article.attributes?.publishedAt ||
-                      article.attributes?.createdAt,
-                  ),
-                })}
-              </BlogArticleMetaDate>
+              {isClient ? (
+                <BlogArticleMetaDate variant="bodyXSmall" as="span">
+                  {t('format.shortDate', {
+                    value: new Date(
+                      article.attributes?.publishedAt ||
+                        article.attributes?.createdAt,
+                    ),
+                  })}
+                </BlogArticleMetaDate>
+              ) : (
+                <Skeleton
+                  component="span"
+                  sx={{
+                    width: '96px',
+                    transform: 'unset',
+                    borderRadius: '16px',
+                    marginRight: '12px',
+                  }}
+                />
+              )}
               <BlogArticleMetaReadingTime variant="bodyXSmall" as="span">
                 {t('blog.minRead', { minRead: minRead })}
               </BlogArticleMetaReadingTime>
