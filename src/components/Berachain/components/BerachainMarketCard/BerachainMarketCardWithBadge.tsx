@@ -32,7 +32,7 @@ export const BerachainMarketCardWithBadge = ({
     >
       <Badge
         color="primary"
-        badgeContent="BAFFLE"
+        badgeContent="baffle"
         sx={(theme) => ({
           cursor: 'help',
           '.MuiBadge-badge': {
