@@ -12,10 +12,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const partnerThemes = await getPartnerThemes();
   const partnerThemesData = partnerThemes.data?.find(
-    (d) => d.attributes.uid === partnerTheme,
+    (d) => d.attributes?.uid === partnerTheme,
   );
   const theme = partnerThemesData
-    ? partnerThemesData.attributes.uid
+    ? partnerThemesData.attributes?.uid
     : 'default';
   return {
     other: {
@@ -34,7 +34,7 @@ export default async function PartnerThemeLayout({
   const partnerThemes = await getPartnerThemes();
 
   const partnerThemesData = partnerThemes.data?.find(
-    (d) => d.attributes.uid === partnerTheme,
+    (d) => d.attributes?.uid === partnerTheme,
   );
 
   if (!partnerThemesData) {
