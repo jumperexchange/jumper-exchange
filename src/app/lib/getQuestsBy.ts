@@ -2,7 +2,7 @@ import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
 import type { Quest } from 'src/types/loyaltyPass';
 import type { StrapiResponse } from 'src/types/strapi';
 
-export async function getQuestBy(key: string, value: string) {
+export async function getQuestsBy(key: string, value: string) {
   const urlParams = new QuestStrapiApi().filterBy(key, value);
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
