@@ -1,5 +1,5 @@
 export function chunkArray<T>(array: T[], chunkSize: number): T[][] {
-  if (!array) {
+  if (!array || !Array.isArray(array) || array.length === 0) {
     return [];
   }
   const result: T[][] = [];
