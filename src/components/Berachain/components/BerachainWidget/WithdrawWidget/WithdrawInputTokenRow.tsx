@@ -51,7 +51,7 @@ export const WithdrawInputTokenRow = React.forwardRef<
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Typography
             variant="bodyMediumStrong"
-            color={theme.palette.text.primary}
+            sx={(theme) => ({ color: theme.palette.text.primary })}
           >
             {Intl.NumberFormat('en-US', {
               style: 'decimal',

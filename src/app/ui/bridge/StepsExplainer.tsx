@@ -130,7 +130,7 @@ const StepsExplainerSection = ({
           <li>
             Go to your{' '}
             <MuiLink
-              color="text.primary"
+              sx={(theme) => ({ color: theme.palette.text.primary })}
               component={Link}
               href="https://jumper.exchange/scan"
             >

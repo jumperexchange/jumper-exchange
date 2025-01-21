@@ -48,7 +48,10 @@ export const ClaimingInformation = ({
         >
           <InfoIcon sx={{ color: '#FF8425', width: '16px', height: '16px' }} />
         </Box>
-        <Typography color={theme.palette.text.primary} variant="bodySmall">
+        <Typography
+          sx={{ color: theme.palette.text.primary }}
+          variant="bodySmall"
+        >
           {`After the launch of Berachain, withdrawal of funds and claiming of
           rewards will be done on ${appName ?? 'the protocol'} website. You'll be able to access it here.`}
         </Typography>

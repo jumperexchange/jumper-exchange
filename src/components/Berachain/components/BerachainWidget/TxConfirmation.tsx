@@ -58,7 +58,7 @@ export const TxConfirmation = ({
             />
           )}
         </Box>
-        <Typography color={theme.palette.text.primary}>{s}</Typography>
+        <Typography sx={{ color: theme.palette.text.primary }}>{s}</Typography>
       </Box>
       <a
         href={link}

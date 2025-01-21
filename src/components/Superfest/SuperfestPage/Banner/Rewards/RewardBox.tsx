@@ -13,7 +13,7 @@ export const RewardBox = ({ title, logos, value }: RewardBoxProps) => {
   return (
     <RewardTopBox>
       <RewardSubtitleBox>
-        <SoraTypography fontSize={'14px'} fontWeight={700} color={'#525252'}>
+        <SoraTypography variant="bodySmallStrong" sx={{ color: '#525252' }}>
           {title}
         </SoraTypography>
       </RewardSubtitleBox>
