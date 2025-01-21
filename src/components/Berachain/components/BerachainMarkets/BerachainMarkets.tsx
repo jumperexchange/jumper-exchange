@@ -71,6 +71,9 @@ export const BerachainMarkets = () => {
 
               return (
                 <BerachainMarketCard
+                  extraRewards={
+                    card?.attributes.CustomInformation?.extraRewards
+                  }
                   key={`berachain-market-card-${roycoData.id || 'protocol'}-${index}`}
                   roycoData={roycoData}
                   // chainId={roycoData.chain_id}

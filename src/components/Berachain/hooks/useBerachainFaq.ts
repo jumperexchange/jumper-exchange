@@ -38,6 +38,10 @@ Boyco will allow applications to onboard liquidity directly into their smart con
       Answer:
         'Rewards will be paid to depositors at the conclusion of the pre-determined lock period and will be claimed from each dApp directly. Depositors will be provided a redirection link from the Jumper UI to each official claim page on the dApps UI where they can claim their incentives at the conclusion of the lock period.',
     },
+    {
+      Question: 'What are "Baffle" rewards?',
+      Answer: `Baffle rewards are additional rewards offered by participating applications exclusively to Jumper UI users. This rewards are NFTs that are distributed through raffle mechanisms to every qualifying wallets (i.e. deposit more than >$69 on a curated list of pools). All of those pools are recognisable by the 'Reward' tag on the UI. List of rewards: 25 HJ1 NFTs, 5 Big Fat Beras NFTs, 5 Beary Benslers NFTs, min 1 Bearet Yellens NFT, etc.`,
+    },
   ];
 
   return faqItems;
