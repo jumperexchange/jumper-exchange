@@ -28,32 +28,6 @@ export const ClaimingInformation = ({
         gap: '8px',
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: '16px',
-          alignItems: 'center',
-        }}
-      >
-        <Box
-          sx={{
-            backgroundColor: '#291812',
-            borderRadius: '50%',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: theme.spacing(1),
-          }}
-        >
-          <InfoIcon sx={{ color: '#FF8425', width: '16px', height: '16px' }} />
-        </Box>
-        <Typography color={theme.palette.text.primary} variant="bodySmall">
-          {`After the launch of Berachain, withdrawal of funds and claiming of
-          rewards will be done on ${appName ?? 'the protocol'} website. You'll be able to access it here.`}
-        </Typography>
-      </Box>
       <a
         href={link}
         target="_blank"
@@ -65,6 +39,34 @@ export const ClaimingInformation = ({
         }}
         rel="noreferrer"
       >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '16px',
+            alignItems: 'center',
+          }}
+        >
+          <Box
+            sx={{
+              backgroundColor: '#291812',
+              borderRadius: '50%',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: theme.spacing(1),
+            }}
+          >
+            <InfoIcon
+              sx={{ color: '#FF8425', width: '16px', height: '16px' }}
+            />
+          </Box>
+          <Typography color={theme.palette.text.primary} variant="bodySmall">
+            {`After the launch of Berachain, withdrawal of funds and claiming of
+          rewards will be done on ${appName ?? 'the protocol'} website. You'll be able to access it here.`}
+          </Typography>
+        </Box>
         <Box
           sx={{
             backgroundColor: alpha(theme.palette.white.main, 0.08),

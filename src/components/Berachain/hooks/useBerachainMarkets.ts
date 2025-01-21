@@ -1,16 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import type { ExtendedQuest } from 'src/types/questDetails';
 import { getQuestsBy } from '@/app/lib/getQuestsBy';
-import type { Quest } from '@/types/loyaltyPass';
 import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
 import type { StrapiResponse } from '@/types/strapi';
+import type { QuestWithExtraRewards } from '@/components/Berachain/BerachainType';
 
 export interface UseBerachainQuestsProps {
-  data?: StrapiResponse<Quest>;
+  data?: StrapiResponse<QuestWithExtraRewards>;
   url: string;
   isSuccess: boolean;
   isLoading: boolean;
-  findFromStrapiByUid: (key: string) => Quest | undefined;
+  findFromStrapiByUid: (key: string) => QuestWithExtraRewards | undefined;
 }
 
 type T = Record<string, string[]>;
