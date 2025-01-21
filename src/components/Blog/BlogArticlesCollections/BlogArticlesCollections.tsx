@@ -30,7 +30,10 @@ export const BlogArticlesCollections = ({
         total: tag.attributes?.blog_articles?.data.length,
       };
 
-      if (tag.attributes?.blog_articles.data.length === 0) {
+      if (
+        !tag.attributes?.blog_articles?.data ||
+        tag.attributes?.blog_articles?.data.length === 0
+      ) {
         return null;
       }
 
