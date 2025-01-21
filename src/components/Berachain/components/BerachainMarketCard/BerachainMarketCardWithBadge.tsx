@@ -1,5 +1,6 @@
-import { Badge, Tooltip } from '@mui/material';
+import { Badge, Box, Tooltip, Typography } from '@mui/material';
 import type { ExtraRewards } from '@/components/Berachain/BerachainType';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import React from 'react';
 
 interface BerachainMarketCardWithBadgeProps {
@@ -32,13 +33,25 @@ export const BerachainMarketCardWithBadge = ({
     >
       <Badge
         color="primary"
-        badgeContent="BAFFLE"
+        badgeContent={
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>
+            <AutoAwesomeIcon
+              sx={{ width: '16px', height: '16px', color: '#00000' }}
+            />
+            <Typography
+              sx={{
+                fontWeight: 700,
+                lineHeight: '16px',
+              }}
+            >
+              Baffle
+            </Typography>
+          </Box>
+        }
         sx={(theme) => ({
           cursor: 'help',
           '.MuiBadge-badge': {
             right: '25px',
-            fontWeight: 700,
-            lineHeight: '16px',
             borderRadius: '128px',
             color: theme.palette.black.main,
             paddingX: theme.spacing(1.75),
