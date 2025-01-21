@@ -15,10 +15,12 @@ export const BerachainWidget = ({
   market,
   appLink,
   appName,
+  fullAppName,
 }: {
   market: EnrichedMarketDataType;
   appLink?: string;
   appName?: string;
+  fullAppName?: string;
 }) => {
   const [tab, setTab] = useState(1);
   const { t } = useTranslation();
@@ -132,7 +134,7 @@ export const BerachainWidget = ({
           <Box sx={{ marginTop: theme.spacing(1.5) }}>
             {/*<InfoBlock market={market} type="deposit" />*/}
             <DepositWidget
-              appName={appName}
+              appName={fullAppName}
               market={market}
               chain={chain}
               contractCalls={[]}
@@ -165,6 +167,7 @@ export const BerachainWidget = ({
             overrideStyle={{ mainColor: '#FF8425' }}
             appLink={appLink}
             appName={appName}
+            fullAppName={fullAppName}
           />
         )}
       </Box>
