@@ -110,7 +110,6 @@ export const useLeaderboardUser = (
     queryFn: getLeaderboardUserQuery,
     refetchInterval: 1000 * 60 * 60,
   });
-
   const userPage =
     leaderboardUserData?.data &&
     Math.ceil(leaderboardUserData?.data.position / LEADERBOARD_LENGTH);

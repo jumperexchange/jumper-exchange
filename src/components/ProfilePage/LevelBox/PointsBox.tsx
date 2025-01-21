@@ -3,9 +3,9 @@
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
-import { PointsDisplay } from './PointsDisplay';
-import IconHeader from '../Common/IconHeader';
 import useClient from 'src/hooks/useClient';
+import IconHeader from '../Common/IconHeader';
+import { PointsDisplay } from './PointsDisplay';
 
 interface PointsBoxProps {
   points?: number;

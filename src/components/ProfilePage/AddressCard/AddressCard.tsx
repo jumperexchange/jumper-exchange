@@ -4,13 +4,13 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { WalletLinking } from 'src/components/ProfilePage/WalletLinking/WalletLinking';
 import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { AddressMenu } from '../AddressMenu/AddressMenu';
 import {
   AddressBlockiesImage,
   AddressBox,
@@ -113,11 +113,7 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
             >
               <KeyboardArrowDownIcon />
             </ProfileIconButton>
-            <AddressMenu
-              open={openAddressMenu}
-              setOpen={setOpenAddressMenu}
-              anchorEl={anchorEl}
-            />
+            <WalletLinking anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
           </>
         )}
       </AddressBox>

@@ -1,4 +1,5 @@
 import { Box, useTheme } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { ClaimingBox } from './ClaimingBox/ClaimingBox';
@@ -6,7 +7,6 @@ import {
   EarnedTypography,
   RewardsCarouselContainer,
 } from './RewardsCarousel.style';
-import { useTranslation } from 'react-i18next';
 
 interface RewardsCarouselProps {
   isMerklSuccess: boolean;

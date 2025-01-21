@@ -1,6 +1,5 @@
 'use client';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
-import { useAccount } from '@lifi/wallet-management';
 import { useContext } from 'react';
 import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useTraits } from 'src/hooks/useTraits';
@@ -20,7 +19,6 @@ import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
 
 export const ProfilePage = () => {
-  const { account } = useAccount();
   const { walletAddress, isPublic } = useContext(ProfileContext);
   const { isLoading, points, pdas } = useLoyaltyPass(walletAddress);
   const { traits } = useTraits();
