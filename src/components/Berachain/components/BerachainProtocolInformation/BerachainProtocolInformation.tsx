@@ -49,7 +49,8 @@ export const BerachainProtocolInformation = ({
         (market ? (
           <BerachainWidget
             market={market}
-            appName={getFullTitle(market!, card)}
+            appName={card?.attributes.Title}
+            fullAppName={getFullTitle(market!, card)}
             appLink={detailInformation?.socials?.website}
           />
         ) : (
@@ -197,8 +198,9 @@ export const BerachainProtocolInformation = ({
       {!isMobile &&
         (market ? (
           <BerachainWidget
+            fullAppName={getFullTitle(market!, card)}
             market={market}
-            appName={getFullTitle(market!, card)}
+            appName={card?.attributes.Title}
           />
         ) : (
           <BerachainWidgetLoader />
