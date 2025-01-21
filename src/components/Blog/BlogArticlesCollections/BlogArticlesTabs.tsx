@@ -39,6 +39,10 @@ export function BlogArticlesTabs({
   const [pageTab, setPageTab] = useState(pagination.page);
   const chunkedPages = chunkArray(data, pagination.pageSize);
 
+  if (!chunkedPages) {
+    return null;
+  }
+
   return (
     <BlogArticlesCollectionsContainer id={tag.attributes?.Title}>
       <Box

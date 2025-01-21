@@ -1,5 +1,5 @@
 'use client';
-import { Box, Typography } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { Tag } from '@/components/Tag.style';
@@ -12,6 +12,7 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData } from '@/types/strapi';
 import { readingTime } from '@/utils/readingTime';
 import { JUMPER_LEARN_PATH } from 'src/const/urls';
+import useClient from 'src/hooks/useClient';
 import {
   FeaturedArticleContent,
   FeaturedArticleDetails,
@@ -35,6 +36,7 @@ export const FeaturedArticle = ({
 }: FeaturedArticleProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const isClient = useClient();
 
   const handleFeatureCardClick = (featuredArticle: BlogArticleData) => {
     trackEvent({
@@ -93,9 +95,22 @@ export const FeaturedArticle = ({
                 </Tag>
               ))}
             <FeaturedArticleMetaContainer>
-              <FeaturedArticleMetaDate variant="bodyXSmall" component="span">
-                {formatedDate}
-              </FeaturedArticleMetaDate>
+              {isClient ? (
+                <FeaturedArticleMetaDate variant="bodyXSmall" component="span">
+                  {formatedDate}
+                </FeaturedArticleMetaDate>
+              ) : (
+                <Skeleton
+                  component="span"
+                  sx={{
+                    width: '96px',
+                    transform: 'unset',
+                    borderRadius: '16px',
+                    marginRight: '12px',
+                  }}
+                />
+              )}
+
               <Typography
                 variant="bodyXSmall"
                 component="span"

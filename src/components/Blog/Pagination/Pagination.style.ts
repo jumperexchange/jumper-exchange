@@ -49,6 +49,19 @@ export const PaginationIndexButton = styled(IconButton, {
           theme.palette.mode === 'light'
             ? lighten(theme.palette.text.primary, 0.2)
             : theme.palette.text.primary,
+        '& .MuiTouchRipple-root': {
+          backgroundColor:
+            theme.palette.mode === 'light'
+              ? theme.palette.alphaDark100.main
+              : theme.palette.alphaLight300.main,
+          zIndex: -1,
+        },
+        '&:hover': {
+          color:
+            theme.palette.mode === 'light'
+              ? lighten(theme.palette.text.primary, 0.2)
+              : theme.palette.text.primary,
+        },
       },
     },
     {
@@ -58,17 +71,11 @@ export const PaginationIndexButton = styled(IconButton, {
           theme.palette.mode === 'light'
             ? lighten(theme.palette.text.primary, 0.4)
             : darken(theme.palette.text.primary, 0.2),
-      },
-    },
-    {
-      props: ({ active }) => active,
-      style: {
-        '& .MuiTouchRipple-root': {
-          backgroundColor:
+        '&:hover': {
+          color:
             theme.palette.mode === 'light'
-              ? theme.palette.alphaDark100.main
-              : theme.palette.alphaLight300.main,
-          zIndex: -1,
+              ? lighten(theme.palette.text.primary, 0.4)
+              : darken(theme.palette.text.primary, 0.2),
         },
       },
     },
