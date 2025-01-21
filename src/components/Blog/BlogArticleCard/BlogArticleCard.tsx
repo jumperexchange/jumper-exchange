@@ -55,7 +55,7 @@ export const BlogArticleCard = ({
         article.attributes?.RedirectURL ??
         `${JUMPER_LEARN_PATH}/${article.attributes?.Slug}`
       }
-      style={{ textDecoration: 'none', width: '100%' }}
+      style={{ textDecoration: 'none', width: '416px' }}
     >
       <BlogArticleCardContainer
         variant="outlined"
