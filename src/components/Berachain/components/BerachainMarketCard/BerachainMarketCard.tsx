@@ -144,7 +144,7 @@ export const BerachainMarketCard = ({
                 />
               )}
             </Box>
-            {type && (
+            {/*            {type && (
               <BerachainMarketCardBadge
                 variant="bodySmall"
                 type={type}
@@ -153,7 +153,7 @@ export const BerachainMarketCard = ({
               >
                 {type}
               </BerachainMarketCardBadge>
-            )}
+            )}*/}
           </BerachainMarketCardHeader>
           <BerchainMarketCardInfos
             sx={{

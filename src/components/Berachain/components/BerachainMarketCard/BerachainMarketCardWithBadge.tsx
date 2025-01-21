@@ -36,7 +36,13 @@ export const BerachainMarketCardWithBadge = ({
         sx={(theme) => ({
           cursor: 'help',
           '.MuiBadge-badge': {
+            right: '25px',
+            fontWeight: 700,
+            lineHeight: '16px',
+            borderRadius: '128px',
             color: theme.palette.black.main,
+            paddingX: theme.spacing(1.75),
+            paddingY: theme.spacing(2),
           },
         })}
       >
