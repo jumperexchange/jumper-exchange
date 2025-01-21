@@ -3,7 +3,7 @@ import type { ExtraRewards } from '@/components/Berachain/BerachainType';
 import React from 'react';
 
 interface BerachainMarketCardWithBadgeProps {
-  extraRewards: ExtraRewards;
+  extraRewards?: ExtraRewards;
   children: React.ReactNode;
 }
 

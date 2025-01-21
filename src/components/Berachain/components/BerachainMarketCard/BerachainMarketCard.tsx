@@ -40,7 +40,7 @@ import { BerachainMarketCardWithBadge } from '@/components/Berachain/components/
 import type { ExtraRewards } from '@/components/Berachain/BerachainType';
 
 interface BerachainMarketCardProps {
-  extraRewards: ExtraRewards;
+  extraRewards?: ExtraRewards;
   roycoData: EnrichedMarketDataType;
   title?: string;
   image?: StrapiImageData;
