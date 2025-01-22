@@ -1,4 +1,5 @@
-import { Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import {
   BannerButton,
   CampaignInfoVerticalBox,

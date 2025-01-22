@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useOngoingQuests } from 'src/hooks/useOngoingQuests';
 import { Button } from 'src/components/Button';
-import { Box, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { CampaignBox } from './CampaignBanner.style';
 import Image from 'next/image';
 import { getContrastAlphaColor } from 'src/utils/colors';
