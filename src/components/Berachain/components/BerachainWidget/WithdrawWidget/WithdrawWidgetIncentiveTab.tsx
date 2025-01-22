@@ -1,3 +1,7 @@
+import { CustomLoadingButton } from '@/components/Berachain/components/BerachainWidget/LoadingButton.style';
+import { WithdrawInputTokenRow } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawInputTokenRow';
+import type { ExtendedChain } from '@lifi/sdk';
+import { useAccount } from '@lifi/wallet-management';
 import {
   Box,
   FormControlLabel,
@@ -6,23 +10,19 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import type {
-  EnrichedMarketDataType,
-  EnrichedPositionsRecipeDataType,
-} from 'royco/queries';
+import type { ChangeEvent } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   getRecipeIncentiveTokenWithdrawalTransactionOptions,
   useEnrichedPositionsRecipe,
   useEnrichedPositionsVault,
 } from 'royco/hooks';
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
-import { useAccount } from '@lifi/wallet-management';
 import { RoycoMarketType, RoycoMarketUserType } from 'royco/market';
-import type { ChangeEvent } from 'react';
-import { useEffect, useMemo, useState } from 'react';
-import type { ExtendedChain } from '@lifi/sdk';
-import { WithdrawInputTokenRow } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawInputTokenRow';
-import { CustomLoadingButton } from '@/components/Berachain/components/BerachainWidget/LoadingButton.style';
+import type {
+  EnrichedMarketDataType,
+  EnrichedPositionsRecipeDataType,
+} from 'royco/queries';
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { TxConfirmation } from '../TxConfirmation';
 
 export const WithdrawWidgetIncentiveTab = ({
@@ -255,12 +255,12 @@ export const WithdrawWidgetIncentiveTab = ({
                         }}
                       >
                         <Typography
-                          sx={{
+                          sx={(theme) => ({
                             whiteSpace: 'nowrap',
                             wordBreak: 'normal',
-                          }}
+                            color: theme.palette.text.primary,
+                          })}
                           variant="bodySmallStrong"
-                          color={theme.palette.text.primary}
                         >
                           Locked
                         </Typography>

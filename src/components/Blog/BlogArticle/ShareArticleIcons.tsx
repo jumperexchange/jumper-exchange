@@ -145,7 +145,7 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
           <LinkIcon
             sx={{
               width: '28px',
-              ...(showCopyMessage ? { marginLeft: '2px' } : { marginLeft: 0 }),
+              marginLeft: showCopyMessage ? '2px' : 0,
             }}
           />
         }

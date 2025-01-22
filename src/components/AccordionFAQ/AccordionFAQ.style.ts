@@ -16,7 +16,13 @@ export const AccordionBox = styled(Box)(({ theme }) => ({
   margin: 'auto',
   borderRadius: '8px',
   position: 'relative',
-  width: '100%',
+  maxWidth: theme.breakpoints.values.md,
+  width: '100% !important',
+
+  [theme.breakpoints.up('sm')]: {
+    width: theme.breakpoints.values.md,
+    maxWidth: theme.breakpoints.values.md,
+  },
 }));
 
 interface FaqShowMoreArrowProps {

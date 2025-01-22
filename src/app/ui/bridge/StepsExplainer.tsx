@@ -130,7 +130,7 @@ const StepsExplainerSection = ({
           <li>
             Go to your{' '}
             <MuiLink
-              color="text.primary"
+              sx={(theme) => ({ color: theme.palette.text.primary })}
               component={Link}
               href="https://jumper.exchange/scan"
             >
@@ -160,9 +160,11 @@ const StepsExplainerSection = ({
     <DynamicPagesContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
       <Typography
         variant="h2"
-        color="text.primary"
         marginY={2}
-        sx={{ fontSize: '36px' }}
+        sx={{
+          color: theme.palette.text.primary,
+          fontSize: '36px',
+        }}
       >
         Bridge your {sourceToken.symbol} on {sourceChain.name} to{' '}
         {destinationToken.symbol} on {destinationChain.name}

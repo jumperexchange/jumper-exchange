@@ -23,29 +23,34 @@ export const LeaderboardEntryWrapper = styled(Box, {
     prop !== 'isUserPosition' &&
     prop !== 'isUserConnected' &&
     prop !== 'isUserEntry',
-})<LeaderboardEntryWrapperProps>(
-  ({ theme, isUserPosition, isUserConnected, isUserEntry }) => ({
-    display: 'flex',
-    padding: theme.spacing(2, 0),
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    position: 'relative',
-    ...(isUserEntry && {
-      background:
-        theme.palette.mode === 'light'
-          ? theme.palette.white.main
-          : theme.palette.bgTertiary.main,
-      borderRadius: '24px',
-      boxShadow: theme.shadows[2],
-      marginTop: theme.spacing(3),
-      padding: theme.spacing(2, 1),
-      [theme.breakpoints.up('sm' as Breakpoint)]: {
-        padding: theme.spacing(2, 3),
+})<LeaderboardEntryWrapperProps>(({ theme }) => ({
+  display: 'flex',
+  padding: theme.spacing(2, 0),
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '100%',
+  position: 'relative',
+  variants: [
+    {
+      props: ({ isUserEntry }) => isUserEntry,
+      style: {
+        background:
+          theme.palette.mode === 'light'
+            ? theme.palette.white.main
+            : theme.palette.bgTertiary.main,
+        borderRadius: '24px',
+        boxShadow: theme.shadows[2],
+        marginTop: theme.spacing(3),
+        padding: theme.spacing(2, 1),
+        [theme.breakpoints.up('sm' as Breakpoint)]: {
+          padding: theme.spacing(2, 3),
+        },
       },
-    }),
-    ...(isUserEntry &&
-      isUserConnected && {
+    },
+    {
+      props: ({ isUserConnected, isUserEntry }) =>
+        isUserEntry && isUserConnected,
+      style: {
         transition: 'background-color 250ms',
         ':hover': {
           cursor: 'pointer',
@@ -54,26 +59,30 @@ export const LeaderboardEntryWrapper = styled(Box, {
               ? darken(theme.palette.white.main, 0.04)
               : theme.palette.alphaLight300.main,
         },
-      }),
-    ...(isUserPosition && {
-      '&:before': {
-        content: '""',
-        position: 'absolute',
-        top: -1,
-        bottom: -1,
-        left: -2,
-        right: -2,
-        borderRadius: '6px',
-        backgroundColor: alpha(theme.palette.black.main, 0.04),
-        boxShadow: `inset 0 0 0 1px ${theme.palette.grey[400]}`,
-        [theme.breakpoints.up('sm' as Breakpoint)]: {
-          left: -12,
-          right: -12,
+      },
+    },
+    {
+      props: ({ isUserPosition }) => isUserPosition,
+      style: {
+        '&:before': {
+          content: '""',
+          position: 'absolute',
+          top: -1,
+          bottom: -1,
+          left: -2,
+          right: -2,
+          borderRadius: '6px',
+          backgroundColor: alpha(theme.palette.black.main, 0.04),
+          boxShadow: `inset 0 0 0 1px ${theme.palette.grey[400]}`,
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            left: -12,
+            right: -12,
+          },
         },
       },
-    }),
-  }),
-);
+    },
+  ],
+}));
 
 export const LeaderboardEntryDivider = styled(Divider)(({ theme }) => ({
   color: theme.palette.alphaDark100.main,
@@ -128,10 +137,7 @@ interface RankWalletProps extends ImageProps {
 
 export const RankWalletImage = styled(Image, {
   shouldForwardProp: (prop) => prop !== 'isUserEntry',
-})<RankWalletProps>(({ theme, isUserEntry }) => ({
-  ...(isUserEntry && {
-    display: 'none',
-  }),
+})<RankWalletProps>(({ theme }) => ({
   borderRadius: '100%',
   width: 24,
   height: 24,
@@ -140,6 +146,14 @@ export const RankWalletImage = styled(Image, {
     width: 48,
     height: 48,
   },
+  variants: [
+    {
+      props: ({ isUserEntry }) => isUserEntry,
+      style: {
+        display: 'none',
+      },
+    },
+  ],
 }));
 
 export const RankWalletImageSkeleton = styled(Skeleton)(({ theme }) => ({
@@ -161,15 +175,22 @@ interface RankWalletAddressProps extends TypographyProps {
 
 export const RankWalletAddress = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'hide',
-})<RankWalletAddressProps>(({ theme, hide }) => ({
+})<RankWalletAddressProps>(({ theme }) => ({
   textOverflow: 'ellipsis',
   overflow: 'hidden',
   [theme.breakpoints.down('sm' as Breakpoint)]: {
     fontSize: '14px',
-    ...(hide && {
-      display: 'none',
-    }),
   },
+  variants: [
+    {
+      props: ({ hide }) => hide,
+      style: {
+        [theme.breakpoints.down('sm' as Breakpoint)]: {
+          display: 'none',
+        },
+      },
+    },
+  ],
 }));
 
 export const RankPointsContainer = styled(Box)(({ theme }) => ({

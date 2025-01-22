@@ -1,7 +1,7 @@
-import { alpha, Box, Typography, useTheme } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import InfoIcon from '@mui/icons-material/Info';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Typography, useTheme } from '@mui/material';
 import {
   FlexRowCenterGapBox,
   RoundedColoredBox,
@@ -41,7 +41,9 @@ export const TxConfirmation = ({
             />
           )}
         </RoundedColoredBox>
-        <Typography color={theme.palette.text.primary}>{s}</Typography>
+        <Typography sx={(theme) => ({ color: theme.palette.text.primary })}>
+          {s}
+        </Typography>
       </FlexRowCenterGapBox>
       <a
         href={link}

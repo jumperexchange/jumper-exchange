@@ -61,8 +61,10 @@ const PopularBridgeSection = ({
         {popularBridges.map((token) => (
           <MuiLink
             width="50%"
-            color="text.primary"
             key={generateKey(token.address)}
+            sx={(theme) => ({
+              color: theme.palette.text.primary,
+            })}
             component={Link}
             href={`/bridge/${getChainById(chains, token.chainId)?.name}-${token.symbol}-to-${destinationChain?.name}-${destinationToken?.symbol}`.toLowerCase()}
           >
