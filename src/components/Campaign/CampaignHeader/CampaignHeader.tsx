@@ -1,8 +1,8 @@
-import type { Theme } from '@mui/material';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import Image from 'next/image';
 import LanguageIcon from '@mui/icons-material/Language';
 import XIcon from '@mui/icons-material/X';
+import type { Theme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
+import Image from 'next/image';
 import {
   CampaignDigitInfoBox,
   CampaignHeaderBoxBackground,
@@ -63,11 +63,11 @@ export const CampaignHeader = ({
                 >
                   <ColoredProtocolShareButton>
                     <XIcon
-                      sx={{
+                      sx={(theme) => ({
                         width: '16px',
                         height: '16px',
                         color: theme.palette.white.main,
-                      }}
+                      })}
                     />
                   </ColoredProtocolShareButton>
                 </InformationShareLink>
@@ -87,11 +87,11 @@ export const CampaignHeader = ({
                 >
                   <ColoredProtocolShareButton>
                     <LanguageIcon
-                      sx={{
+                      sx={(theme) => ({
                         width: '16px',
                         height: '16px',
                         color: theme.palette.white.main,
-                      }}
+                      })}
                     />
                   </ColoredProtocolShareButton>
                 </a>

@@ -1,7 +1,7 @@
+import type { Breakpoint, ButtonProps as MuiButtonProps } from '@mui/material';
 import { Box, styled, Typography } from '@mui/material';
 import { ButtonSecondary } from 'src/components/Button';
 import { getContrastAlphaColor } from 'src/utils/colors';
-import type { ButtonProps as MuiButtonProps, Breakpoint } from '@mui/material';
 
 export const CampaignBox = styled(Box)(({ theme }) => ({
   display: 'flex',

@@ -1,5 +1,14 @@
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import type { Theme } from '@mui/material';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
+import { JUMPER_CAMPAIGN_PATH } from 'src/const/urls';
+import { useUserTracking } from 'src/hooks/userTracking';
 import {
   BannerButton,
   CampaignInfoVerticalBox,
@@ -8,15 +17,6 @@ import {
   TextDescriptionBox,
   TitleTypography,
 } from './CampaignBanner.style';
-import { useRouter } from 'next/navigation';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { JUMPER_CAMPAIGN_PATH } from 'src/const/urls';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from 'src/const/trackingKeys';
-import { useUserTracking } from 'src/hooks/userTracking';
 
 export const CampaignInformation = ({
   tag,

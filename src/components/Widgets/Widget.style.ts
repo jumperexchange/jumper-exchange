@@ -30,82 +30,41 @@ export const WidgetWrapper = styled(Box, {
     margin: theme.spacing(0, 'auto'),
     zIndex: 2,
     height: 'auto',
-
-    // welcome-screen styles to be found in Widget.style.tsx + Widgets.style.tsx
-    // CSS for welcome-screen -->
-    ...(!welcomeScreenClosed && {
-      overflow: 'hidden',
-      [`@media screen and (min-height: 700px)`]: {
-        overflow: 'visible',
-      },
-    }),
-
     '& > div:not(.alert)': {
       position: 'relative',
       transitionProperty: 'margin-top',
       transitionDuration: '.3s',
       transitionTimingFunction: 'ease-in-out',
       marginTop: 0,
-      maxHeight: welcomeScreenClosed ? '100%' : '50vh',
-      ...(!welcomeScreenClosed && {
-        cursor: 'pointer',
-        // add margin-top to widget-wrapper when welcome-screen is closed
-        marginTop: DEFAULT_WIDGET_TOP_HOVER_OFFSET,
-
-        '&:hover': {
-          // add margin-top to widget-wrapper when welcome-screen is closed
-          marginTop: 0,
-        },
-
-        // positioning of widget on mobile-screens from 700px height
-        [`@media screen and (min-height: 700px)`]: {
-          marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.XS}px )`,
-          '&:hover': {
-            marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.XS}px - ${DEFAULT_WIDGET_TOP_HOVER_OFFSET}px )`,
-          },
-        },
-        // positioning of widget on mobile-screens from 900px height
-        [`@media screen and (min-height: 900px)`]: {
-          marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.MD}px)`,
-          '&:hover': {
-            marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.MD}px - ${DEFAULT_WIDGET_TOP_HOVER_OFFSET}px )`,
-          },
-        },
-      }),
-
+      maxHeight: '50vh',
       [theme.breakpoints.up('sm' as Breakpoint)]: {
         height: 'auto',
-        marginTop: !welcomeScreenClosed ? DEFAULT_WIDGET_TOP_OFFSET_VAR : 0,
+        marginTop: 0,
         [`@media screen and (min-height: 700px)`]: {
           // set default widget height
-          height: welcomeScreenClosed ? widgetHeight : '50vh',
-          marginTop: !welcomeScreenClosed
-            ? // (mid viewheight - ≈ 2/3 of widget height - navbar height )
-              `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - 40px )`
-            : 0,
+          height: '50vh',
+          marginTop: 0,
         },
-
         [`@media screen and (min-height: 900px)`]: {
-          marginTop: !welcomeScreenClosed
-            ? // (mid viewheight - ≈ 2/3 of widget height - ( navbar height + additional spacing) )
-              `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.MD}px )`
-            : 0,
+          marginTop: 0,
         },
       },
     },
-
     // widget overlay while welcome-screen is opened
     '& > div:before': {
       content: '" "',
       // hide overlay while welcome-screen is closed
-      visibility: !welcomeScreenClosed ? 'visible' : 'hidden',
+      visibility: 'hidden',
       position: 'absolute',
       width: 'inherit',
       zIndex: 900,
       left: 0,
       right: 0,
       bottom: 0,
-      background: `linear-gradient(180deg, transparent 15%,  ${theme.palette.mode === 'dark' ? theme.palette.black.main : theme.palette.white.main} 40%)`,
+      background:
+        theme.palette.mode === 'light'
+          ? `linear-gradient(180deg, transparent 15%,  ${theme.palette.white.main} 40%)`
+          : `linear-gradient(180deg, transparent 15%,  ${theme.palette.black.main} 40%)`,
       opacity: 0.5,
       margin: 'auto',
       transitionProperty: 'opacity, bottom',
@@ -116,11 +75,113 @@ export const WidgetWrapper = styled(Box, {
       borderTopLeftRadius: '12px',
       top: 0,
     },
-
     // hover animation of widget overlay
     '& > div:hover:before': {
       opacity: 0.25,
       top: DEFAULT_WIDGET_TOP_HOVER_OFFSET,
     },
+    variants: [
+      {
+        props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
+        style: {
+          overflow: 'hidden',
+          [`@media screen and (min-height: 700px)`]: {
+            overflow: 'visible',
+          },
+        },
+      },
+      {
+        props: ({ welcomeScreenClosed }) => welcomeScreenClosed,
+        style: {
+          '& > div:not(.alert)': {
+            maxHeight: '100%',
+          },
+        },
+      },
+      {
+        props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
+        style: {
+          '& > div:not(.alert)': {
+            cursor: 'pointer',
+            // add margin-top to widget-wrapper when welcome-screen is closed
+            marginTop: DEFAULT_WIDGET_TOP_HOVER_OFFSET,
+            '&:hover': {
+              // add margin-top to widget-wrapper when welcome-screen is closed
+              marginTop: 0,
+            },
+            // positioning of widget on mobile-screens from 700px height
+            [`@media screen and (min-height: 700px)`]: {
+              marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.XS}px )`,
+              '&:hover': {
+                marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.XS}px - ${DEFAULT_WIDGET_TOP_HOVER_OFFSET}px )`,
+              },
+            },
+            // positioning of widget on mobile-screens from 900px height
+            [`@media screen and (min-height: 900px)`]: {
+              marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.MD}px)`,
+              '&:hover': {
+                marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.MD}px - ${DEFAULT_WIDGET_TOP_HOVER_OFFSET}px )`,
+              },
+            },
+          },
+        },
+      },
+      {
+        props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
+        style: {
+          '& > div:not(.alert)': {
+            [theme.breakpoints.up('sm' as Breakpoint)]: {
+              marginTop: DEFAULT_WIDGET_TOP_OFFSET_VAR,
+            },
+          },
+        },
+      },
+      {
+        props: ({ welcomeScreenClosed }) => welcomeScreenClosed,
+        style: {
+          '& > div:not(.alert)': {
+            [theme.breakpoints.up('sm' as Breakpoint)]: {
+              [`@media screen and (min-height: 700px)`]: {
+                height: widgetHeight,
+              },
+            },
+          },
+        },
+      },
+      {
+        props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
+        style: {
+          '& > div:not(.alert)': {
+            [theme.breakpoints.up('sm' as Breakpoint)]: {
+              [`@media screen and (min-height: 700px)`]: {
+                // (mid viewheight - ≈ 2/3 of widget height - navbar height )
+                marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - 40px )`,
+              },
+            },
+          },
+        },
+      },
+      {
+        props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
+        style: {
+          '& > div:not(.alert)': {
+            [theme.breakpoints.up('sm' as Breakpoint)]: {
+              [`@media screen and (min-height: 900px)`]: {
+                // (mid viewheight - ≈ 2/3 of widget height - ( navbar height + additional spacing) )
+                marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.MD}px )`,
+              },
+            },
+          },
+        },
+      },
+      {
+        props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
+        style: {
+          '& > div:before': {
+            visibility: 'visible',
+          },
+        },
+      },
+    ],
   };
 });
