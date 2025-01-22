@@ -1,9 +1,8 @@
 'use client';
 
+import { Box, darken, Link, Tooltip, Typography } from '@mui/material';
 import React from 'react';
-import { darken, Link, Tooltip, Typography } from '@mui/material';
 import type { decodeActionsReturnType } from 'royco/market';
-import { Box } from '@mui/material';
 // import { decodeActionsReturnType } from "@/sdk/market";
 // import { SlideUpWrapper } from "@/components/animations";
 // import {
@@ -143,9 +142,12 @@ const ActionFlow = React.forwardRef<
                   >
                     <Typography
                       variant="body2"
-                      color="primary.main"
                       component="span"
-                      sx={{ cursor: 'help', marginX: 0.5 }}
+                      sx={(theme) => ({
+                        color: theme.palette.primary.main,
+                        cursor: 'help',
+                        marginX: 0.5,
+                      })}
                     >
                       {action.function_name
                         ? action.function_name

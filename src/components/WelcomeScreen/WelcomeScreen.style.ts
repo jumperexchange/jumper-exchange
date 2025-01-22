@@ -13,16 +13,12 @@ export interface ContentWrapperProps extends BoxProps {
   showWelcome?: boolean;
 }
 
-export const ContentWrapper = styled(
-  Box,
-  {},
-)<ContentWrapperProps>(({ theme }) => ({
+export const ContentWrapper = styled(Box)<ContentWrapperProps>(({ theme }) => ({
   textAlign: 'center',
-  background: theme.palette.mode === 'dark' ? '#1A1033' : '#F3EBFF',
+  background: theme.palette.mode === 'light' ? '#F3EBFF' : '#1A1033',
   width: '100%',
   zIndex: '1400',
   height: 'auto',
-
   '&:before': {
     content: '" "',
     position: 'absolute',
@@ -32,9 +28,9 @@ export const ContentWrapper = styled(
     left: 0,
     right: 0,
     background:
-      theme.palette.mode === 'dark'
-        ? 'linear-gradient(to top, #1A1033 0%, transparent 100%)'
-        : 'linear-gradient(to top, #F3EBFF 0%, transparent 100%)',
+      theme.palette.mode === 'light'
+        ? 'linear-gradient(to top, #F3EBFF 0%, transparent 100%)'
+        : 'linear-gradient(to top, #1A1033 0%, transparent 100%)',
     zIndex: '1000',
   },
 }));
@@ -46,9 +42,9 @@ export const WelcomeContent = styled(Box)(() => ({
 export const WelcomeScreenSubtitle = styled(Typography)(({ theme }) => ({
   marginTop: 2,
   color:
-    theme.palette.mode === 'dark'
-      ? theme.palette.accent1Alt.main
-      : theme.palette.primary.main,
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.accent1Alt.main,
   '& > .link-jumper': {
     fontWeight: 700,
     color: 'inherit',

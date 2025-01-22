@@ -13,7 +13,7 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   backgroundColor:
     theme.palette.mode === 'light'
-      ? '#FFFFFF'
+      ? theme.palette.white.main
       : alpha(theme.palette.white.main, 0.08),
   borderRadius: '24px',
   flexDirection: 'column',
@@ -98,10 +98,10 @@ export interface XPDisplayBoxProps extends BoxProps {
 
 export const XPDisplayBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active' && prop !== 'completed',
-})<XPDisplayBoxProps>(({ active, theme, completed }) => ({
+})<XPDisplayBoxProps>(({ theme }) => ({
   display: 'flex',
-  color: completed ? '#00B849' : theme.palette.primary.main,
-  backgroundColor: completed ? '#D6FFE7' : '#F0E5FF',
+  color: theme.palette.primary.main,
+  backgroundColor: '#F0E5FF',
   height: 32,
   alignItems: 'center',
   borderRadius: '128px',
@@ -110,6 +110,20 @@ export const XPDisplayBox = styled(Box, {
   ':not(last-of-type)': {
     marginRight: theme.spacing(1),
   },
+  variants: [
+    {
+      props: ({ completed }) => completed,
+      style: {
+        color: '#00B849',
+      },
+    },
+    {
+      props: ({ completed }) => completed,
+      style: {
+        backgroundColor: '#D6FFE7',
+      },
+    },
+  ],
 }));
 
 export const XPDisplayBoxLabel = styled(Typography)(({ theme }) => {

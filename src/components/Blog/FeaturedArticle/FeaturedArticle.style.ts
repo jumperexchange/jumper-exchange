@@ -31,7 +31,6 @@ export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {
     padding: theme.spacing(4),
   },
-
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     padding: theme.spacing(8),
     minHeight: 500,
@@ -96,10 +95,7 @@ export const FeaturedArticleImage = styled(Image)(({ theme }) => ({
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     borderRadius: '14px',
     alignSelf: 'center',
-    boxShadow:
-      theme.palette.mode === 'light'
-        ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-        : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+    boxShadow: theme.shadows[1],
   },
 }));
 
@@ -111,10 +107,7 @@ export const FeaturedArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   userSelect: 'none',
   transform: 'unset',
   alignSelf: 'flex-start',
-  boxShadow:
-    theme.palette.mode === 'light'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  boxShadow: theme.shadows[1],
   [theme.breakpoints.up('md' as Breakpoint)]: {
     alignSelf: 'center',
   },
@@ -147,7 +140,6 @@ export const FeaturedArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
   borderRadius: '12px',
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     margin: theme.spacing(4, 0),
-
     height: 112,
   },
 }));
@@ -194,7 +186,6 @@ export const FeaturedArticleDetails = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
-
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -15,9 +15,9 @@ const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   color: theme.palette.text.primary,
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'dark'
-        ? theme.palette.primary.main
-        : theme.palette.accent1.main,
+      theme.palette.mode === 'light'
+        ? theme.palette.accent1.main
+        : theme.palette.primary.main,
   },
 }));
 
@@ -43,9 +43,9 @@ export const ButtonTransparent = styled(ButtonBase)(({ theme }) => ({
       : alpha(theme.palette.black.main, 0.08),
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'dark'
-        ? alpha(theme.palette.white.main, 0.16)
-        : alpha(theme.palette.black.main, 0.12),
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.black.main, 0.08)
+        : alpha(theme.palette.white.main, 0.12),
   },
   '&:before': {
     content: '" "',

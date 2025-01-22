@@ -32,9 +32,7 @@ export const RedirectToApp = ({ hideConnectButton }: RedirectToAppProps) => {
       component={Link}
       href={'/'}
       onClick={handleOpenApp}
-      sx={{
-        ...(!hideConnectButton && { marginRight: theme.spacing(1) }),
-      }}
+      sx={[!hideConnectButton && { marginRight: theme.spacing(1) }]}
     >
       <RedirectAppIcon />
       <RedirectAppLabel variant={'bodyMediumStrong'}>

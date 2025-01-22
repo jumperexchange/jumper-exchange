@@ -28,10 +28,8 @@ export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
 
 export const CompletedQuestHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
-  ...(theme.palette.mode === 'dark' && {
-    color: theme.palette.white.main,
-  }),
   justifyContent: 'space-between',
+  color: theme.palette.text.primary,
 }));
 
 export const CompletedQuestTitle = styled(Typography)(({ theme }) => ({

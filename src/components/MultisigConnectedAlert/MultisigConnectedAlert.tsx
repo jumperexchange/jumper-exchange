@@ -20,17 +20,23 @@ export const MultisigConnectedAlert: React.FC<{
           <MultisigConnectedAlertIcon />
         </MultisigConnectedAlertIconContainer>
         <Typography
-          fontWeight={700}
-          textAlign={'center'}
-          marginY={4}
-          color="inherit"
-          style={{
+          sx={(theme) => ({
+            color: 'inherit',
+            fontWeight: 700,
+            marginY: theme.spacing(0.5),
+            textAlign: 'center',
             fontSize: '1.125rem',
-          }}
+          })}
         >
           {t('multisig.connected.title')}
         </Typography>
-        <Typography fontSize={'1.125 rem'} marginY={4} color="inherit">
+        <Typography
+          sx={(theme) => ({
+            fontSize: '1.125 rem',
+            marginY: theme.spacing(0.5),
+            color: 'inherit',
+          })}
+        >
           {t('multisig.connected.description')}
         </Typography>
         <Button

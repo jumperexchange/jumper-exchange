@@ -11,7 +11,7 @@ export const BannerMainBox = styled(Box)(({ theme }) => ({
   alignContent: 'center',
   backgroundColor:
     theme.palette.mode === 'light'
-      ? '#FFFFFF'
+      ? theme.palette.white.main
       : alpha(theme.palette.white.main, 0.08),
   textAlign: 'center',
   overflow: 'hidden',

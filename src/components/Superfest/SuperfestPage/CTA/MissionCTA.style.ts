@@ -22,8 +22,8 @@ export const MissionCtaContainer = styled(Box)(({ theme }) => ({
     cursor: 'pointer',
     backgroundColor:
       theme.palette.mode === 'light'
-        ? darken('#69d7ff', 0.02) //todo: add to theme
-        : alpha('#69d7ff', 0.16),
+        ? darken('#69d7ff', 0.02)
+        : alpha('#69d7ff', 0.16), //todo: add to theme
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: theme.spacing(4),
@@ -54,10 +54,6 @@ export const SeveralMissionCtaContainer = styled(Box)(({ theme }) => ({
       theme.palette.mode === 'light'
         ? darken(theme.palette.bgTertiary.main, 0.02) //todo: add to theme
         : alpha(theme.palette.bgTertiary.main, 0.16),
-    // backgroundColor:
-    //   theme.palette.mode === 'light'
-    //     ? darken('#fff0ca', 0.02) //todo: add to theme
-    //     : alpha('#fff0ca', 0.16),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: theme.spacing(4),
@@ -91,7 +87,7 @@ export const MissionCtaButton = styled(IconButtonPrimary)(({ theme }) => ({
     display: 'flex',
   },
 }));
-export const CTABox = styled(Box)(({ theme }) => ({
+export const CTABox = styled(Box)(() => ({
   width: '80%',
   maxWidth: '1210px',
   display: 'flex',
@@ -129,7 +125,7 @@ export const StartedTitleTypography = styled(Typography)(({ theme }) => ({
     lineHeight: '20px',
   },
 }));
-export const StartedTitleBox = styled(Box)(({ theme }) => ({
+export const StartedTitleBox = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-start',

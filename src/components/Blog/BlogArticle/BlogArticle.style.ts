@@ -39,7 +39,6 @@ export const BlogArticleTopHeader = styled(Box)(({ theme }) => ({
       ? theme.palette.grey[800]
       : theme.palette.grey[300],
   '*': { textWrap: 'nowrap' },
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -132,7 +131,6 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   width: '100% !important',
   overflow: 'hidden',
   padding: theme.spacing(1.5, 2, 3),
-
   li: {
     color: alpha(theme.palette.text.primary, 0.75),
     margin: theme.spacing(0.5, 0),
@@ -140,14 +138,12 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
     lineHeight: '32px',
     fontWeight: 400,
   },
-
   ':first-of-type': {
     marginTop: theme.spacing(4),
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       marginTop: theme.spacing(6),
     },
   },
-
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     maxWidth: `${theme.breakpoints.values.md}px`,
   },
@@ -159,14 +155,12 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   img: {
     width: '100%',
   },
-
   '& a': {
     color:
       theme.palette.mode === 'light'
         ? theme.palette.primary.main
         : theme.palette.accent1Alt.main,
   },
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(0, 'auto'),
     maxWidth: '100%',
@@ -220,10 +214,7 @@ export const BlogAuthorWrapper = styled(Box)(({ theme }) => ({
 export const BlogAuthorMetaWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  color:
-    theme.palette.mode === 'light'
-      ? '#525252' //todo: add to theme colors
-      : theme.palette.grey[300],
+  color: theme.palette.mode === 'light' ? '#525252' : theme.palette.grey[300], //todo: add to theme colors
 }));
 
 export const Divider = styled(MuiDivider)(({ theme }) => ({
@@ -317,7 +308,6 @@ export const BlogArticlAuthorRoleSkeleton = styled(Skeleton)(({ theme }) => ({
 
 export const BlogParagraphContainer = styled(Box)(({ theme }) => ({
   margin: theme.spacing(2, 0),
-
   '& a:not(:first-child)': {
     marginLeft: 0,
   },

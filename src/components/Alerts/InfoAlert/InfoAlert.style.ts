@@ -26,7 +26,8 @@ export const InfoAlertContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const InfoAlertCard = styled(InfoMessageCard)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'light' ? '#EBF3FF' : '#00317A', //todo: add to theme
+  //todo: add to theme
+  backgroundColor: theme.palette.mode === 'light' ? '#EBF3FF' : '#00317A',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: 384,
   },

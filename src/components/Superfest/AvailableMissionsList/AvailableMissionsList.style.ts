@@ -31,9 +31,7 @@ export const AvailableMissionsHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   alignContent: 'center',
-  ...(theme.palette.mode === 'dark' && {
-    color: theme.palette.white.main,
-  }),
+  color: theme.palette.text.primary,
   justifyContent: 'space-between',
 }));
 

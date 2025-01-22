@@ -1,22 +1,20 @@
 'use client';
 
 import { ButtonTransparent } from '@/components/Button';
-import type { AvatarProps, Breakpoint } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
 import { Avatar, Badge, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-export const WalletAvatar = styled(Avatar)<AvatarProps>(({ theme }) => ({
+export const WalletAvatar = styled(Avatar)(() => ({
   margin: 'auto',
   height: 40,
   width: 40,
   backgroundColor: 'transparent',
-
   '> img': {
     height: '100%',
     width: '100%',
     objectFit: 'contain',
   },
-  // mask: avatarMask32,
 }));
 
 export const WalletCardContainer = styled(Container)(({ theme }) => ({
@@ -30,7 +28,7 @@ export const WalletCardContainer = styled(Container)(({ theme }) => ({
   },
 }));
 
-export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
+export const WalletCardButtonContainer = styled(Container)(() => ({
   display: 'grid',
   gridTemplateRows: 'repeat(2, auto)',
   gridTemplateColumns: '1fr 1fr 1fr',
@@ -42,7 +40,7 @@ export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
   margin: 0,
 }));
 
-export const WalletCardBadge = styled(Badge)(({ theme }) => ({
+export const WalletCardBadge = styled(Badge)(() => ({
   borderRadius: '50%',
   '> .MuiAvatar-root': {
     '+ .MuiBadge-badge .MuiAvatar-root': {

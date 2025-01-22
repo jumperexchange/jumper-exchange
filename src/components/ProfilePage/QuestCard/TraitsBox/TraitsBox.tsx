@@ -13,14 +13,18 @@ export const TraitsBox = ({ trait }: TraitsBoxProps) => {
       }
       placement="top"
       enterTouchDelay={0}
-      componentsProps={{
+      arrow
+      slotProps={{
         popper: { sx: { zIndex: 2000 } },
       }}
-      arrow
     >
       <AbsoluteCenterTraitsBox>
         <Typography
-          sx={{ color: '#FFFFFF', fontWeight: 700, fontSize: '12px' }}
+          sx={(theme) => ({
+            color: theme.palette.white.main,
+            fontWeight: 700,
+            fontSize: '12px',
+          })}
         >
           {trait}
         </Typography>

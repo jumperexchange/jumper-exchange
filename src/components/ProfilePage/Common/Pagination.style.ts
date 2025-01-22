@@ -22,8 +22,6 @@ export interface PaginationButtonProps extends ButtonProps {
 export const PaginationLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   color: theme.palette.text.primary,
-  // margin: theme.spacing(0, 1),
-  // width: 34,
   '&:hover': {
     textDecoration: 'none',
   },
@@ -32,27 +30,56 @@ export const PaginationLink = styled(Link)(({ theme }) => ({
 
 export const PaginationButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'activePage',
-})<PaginationButtonProps>(({ theme, activePage }) => ({
-  backgroundColor: activePage ? theme.palette.white.main : 'transparent',
-  color: activePage ? theme.palette.black.main : theme.palette.text.primary,
+})<PaginationButtonProps>(({ theme }) => ({
+  backgroundColor: 'transparent',
+  color: theme.palette.text.primary,
   height: 34,
-  display: activePage ? 'flex' : 'none',
+  display: 'none',
   alignItems: 'center',
   justifyContent: 'center',
-  cursor: activePage ? 'unset' : 'pointer',
+  cursor: 'pointer',
   pointerEvents: 'auto',
   minWidth: 34,
   padding: theme.spacing(1),
   borderRadius: '16px',
-  ...(activePage && {
-    boxShadow: theme.shadows[2],
-    '&:hover': {
-      backgroundColor: theme.palette.white.main,
-    },
-  }),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     display: 'flex',
   },
+  variants: [
+    {
+      props: ({ activePage }) => activePage,
+      style: {
+        backgroundColor: theme.palette.white.main,
+      },
+    },
+    {
+      props: ({ activePage }) => activePage,
+      style: {
+        color: theme.palette.black.main,
+      },
+    },
+    {
+      props: ({ activePage }) => activePage,
+      style: {
+        display: 'flex',
+      },
+    },
+    {
+      props: ({ activePage }) => activePage,
+      style: {
+        cursor: 'unset',
+      },
+    },
+    {
+      props: ({ activePage }) => activePage,
+      style: {
+        boxShadow: theme.shadows[2],
+        '&:hover': {
+          backgroundColor: theme.palette.white.main,
+        },
+      },
+    },
+  ],
 }));
 
 export const PaginationClosestPages = styled(Box)(({ theme }) => ({

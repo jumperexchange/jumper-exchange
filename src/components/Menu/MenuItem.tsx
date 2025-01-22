@@ -1,7 +1,7 @@
 import { ButtonSecondary } from '@/components/Button/Button.style';
 import type { MenuKeysEnum } from '@/const/menuKeys';
 import type { Breakpoint, SxProps, Theme } from '@mui/material';
-import { Typography, useTheme } from '@mui/material';
+import { Typography } from '@mui/material';
 import type { MouseEvent, MouseEventHandler, ReactNode } from 'react';
 import { MenuItemContainer, MenuItemLink } from '.';
 import { MenuItemLabel } from './MenuItemLabel';
@@ -42,12 +42,9 @@ export const MenuItem = ({
   prefixIcon,
   suffixIcon,
 }: MenuItemProps) => {
-  const theme = useTheme();
-
   return open ? (
     <MenuItemContainer
       disableRipple={disableRipple || showButton}
-      showButton={showButton || false}
       sx={styles}
       autoFocus={autoFocus}
       onClick={(event: MouseEvent<HTMLLIElement>) => {
@@ -67,7 +64,7 @@ export const MenuItem = ({
               component={'span'}
               ml={!!prefixIcon ? '9.5px' : 'inherit'}
               mr={!!prefixIcon ? '9.5px' : 'inherit'}
-              sx={{
+              sx={(theme) => ({
                 color:
                   theme.palette.mode === 'light'
                     ? theme.palette.primary.main
@@ -78,7 +75,7 @@ export const MenuItem = ({
                 [theme.breakpoints.up('sm' as Breakpoint)]: {
                   maxWidth: 168,
                 },
-              }}
+              })}
             >
               {label}
             </Typography>

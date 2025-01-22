@@ -125,7 +125,9 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
               fontSize="14px"
               lineHeight="18px"
               fontWeight={700}
-              color={theme.palette.text.primary}
+              sx={(theme) => ({
+                color: theme.palette.text.primary,
+              })}
             >
               {isPending || isConfirming ? 'Claiming...' : 'Claim'}
             </Typography>

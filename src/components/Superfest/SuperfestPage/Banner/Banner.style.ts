@@ -11,7 +11,7 @@ export const BannerMainBox = styled(Box)(({ theme }) => ({
   alignContent: 'center',
   backgroundColor:
     theme.palette.mode === 'light'
-      ? '#FFFFFF'
+      ? theme.palette.white.main
       : alpha(theme.palette.white.main, 0.08),
   textAlign: 'center',
   overflow: 'hidden',
@@ -58,10 +58,10 @@ export interface BannerInfoBoxProps extends BoxProps {
 
 export const BannerInfoBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'points',
-})<BannerInfoBoxProps>(({ points }) => ({
+})<BannerInfoBoxProps>({
   display: 'flex',
   flexDirection: 'column',
-}));
+});
 
 export const QuestDatesBox = styled(Box)(({ theme }) => ({
   display: 'flex',
