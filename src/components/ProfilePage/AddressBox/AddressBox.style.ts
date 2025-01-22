@@ -20,19 +20,12 @@ export const AddressBoxContainer = styled(Box, {
   width: '100%',
   minHeight: 200,
   boxShadow: theme.shadows[1],
-
-  ...(!imgUrl && {
-    background: `linear-gradient(to bottom, ${theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.accent1Alt.main} 50%, ${theme.palette.mode === 'light' ? theme.palette.grey[100] : 'transparent'} 50%)`,
-  }),
-
   [theme.breakpoints.up('sm')]: {
     minHeight: 256,
     paddingTop: 0,
     paddingBottom: 0,
   },
-
   '&:before': {
-    ...(imgUrl && { content: '" "' }),
     position: 'absolute',
     left: 0,
     top: 0,
@@ -44,7 +37,6 @@ export const AddressBoxContainer = styled(Box, {
     backgroundSize: 'cover',
   },
   '&:after': {
-    ...(imgUrl && { content: '" "' }),
     position: 'absolute',
     left: 0,
     top: '50%',
@@ -55,6 +47,29 @@ export const AddressBoxContainer = styled(Box, {
         ? theme.palette.grey[100]
         : alpha(theme.palette.grey[100], 0.08),
   },
+  variants: [
+    {
+      props: ({ imgUrl }) => !imgUrl,
+      style: {
+        background:
+          theme.palette.mode === 'light'
+            ? `linear-gradient(to bottom, ${theme.palette.primary.main} 50%, ${theme.palette.grey[100]} 50%)`
+            : `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, ${'transparent'} 50%)`,
+      },
+    },
+    {
+      props: ({ imgUrl }) => imgUrl,
+      style: {
+        '&:before': { content: '" "' },
+      },
+    },
+    {
+      props: ({ imgUrl }) => imgUrl,
+      style: {
+        '&:after': { content: '" "' },
+      },
+    },
+  ],
 }));
 
 export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
@@ -78,7 +93,6 @@ export const AddressDisplayBox = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(1.5),
   marginBottom: theme.spacing(1.5),
   zIndex: 1,
-
   [theme.breakpoints.up('sm')]: {
     flexWrap: 'wrap',
     justifyContent: 'center',

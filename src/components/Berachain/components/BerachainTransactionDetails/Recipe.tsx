@@ -1,6 +1,6 @@
 import ActionFlow from '@/components/Berachain/components/BerachainTransactionDetails/ActionFlow';
 import { Box, Typography } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Grid';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useActiveMarket } from '../../hooks/useActiveMarket';
 

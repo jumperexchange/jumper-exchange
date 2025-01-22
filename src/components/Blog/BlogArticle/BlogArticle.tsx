@@ -73,7 +73,11 @@ export const BlogArticle = ({
           <BlogArticleTopHeader>
             {tags?.data[0]?.attributes?.Title ? (
               <Tag
-                color={tags.data[0]?.attributes?.TextColor}
+                sx={{
+                  ...(tags.data[0]?.attributes?.TextColor && {
+                    color: tags.data[0]?.attributes?.TextColor,
+                  }),
+                }}
                 backgroundColor={tags.data[0]?.attributes?.BackgroundColor}
                 component="span"
                 variant="bodyMediumStrong"

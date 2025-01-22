@@ -36,9 +36,7 @@ export const NFTClaimingHeader = styled(Box, {
   justifyContent: 'center',
   alignContent: 'center',
   textAlign: 'center',
-  ...(theme.palette.mode === 'dark' && {
-    color: theme.palette.white.main,
-  }),
+  color: theme.palette.text.primary,
 }));
 
 export const NFTClaimingTitle = styled(Typography, {
