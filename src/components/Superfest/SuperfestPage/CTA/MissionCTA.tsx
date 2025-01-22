@@ -36,7 +36,7 @@ export interface CTALinkInt {
 interface MissionCtaProps {
   title?: string;
   url?: string;
-  rewards?: number;
+  rewards?: boolean;
   id?: number;
   label?: string;
   CTAs: CTALinkInt[];
@@ -155,7 +155,9 @@ export const MissionCTA = ({
                         fontSize="16px"
                         fontWeight={700}
                         lineHeight="20px"
-                        color={'#ffffff'}
+                        sx={(theme) => ({
+                          color: theme.palette.white.main,
+                        })}
                       >
                         {`${Number(CTA.apy).toFixed(1)}%`}
                       </SoraTypography>
@@ -175,7 +177,9 @@ export const MissionCTA = ({
                         fontSize="16px"
                         fontWeight={700}
                         lineHeight="20px"
-                        color={'#ffffff'}
+                        sx={(theme) => ({
+                          color: theme.palette.white.main,
+                        })}
                       >
                         {CTA?.weeklyApy
                           ? CTA?.weeklyApy

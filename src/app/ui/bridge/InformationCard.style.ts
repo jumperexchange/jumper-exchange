@@ -1,7 +1,7 @@
 'use client';
 
-import type { BoxProps, Breakpoint } from '@mui/system';
-import { styled } from '@mui/system';
+import type { BoxProps, Breakpoint } from '@mui/material';
+import { styled } from '@mui/material';
 import { BridgePageContainer } from './BridgePage.style';
 
 export const InformationCardContainer = styled(BridgePageContainer)<BoxProps>(

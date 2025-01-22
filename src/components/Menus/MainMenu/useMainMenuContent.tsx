@@ -12,7 +12,6 @@ import {
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
   X_URL,
-  JUMPER_WRAPPED_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
@@ -29,7 +28,6 @@ import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
-import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -144,8 +142,24 @@ export const useMainMenuContent = () => {
         });
       },
     },
+    // {
+    //   label: 'Jump into Boyco',
+    //   prefixIcon: <BoycoIcon />,
+    //   showMoreIcon: false,
+    //   link: { url: JUMPER_BOYCO_PATH },
+    //   onClick: () => {
+    //     trackEvent({
+    //       category: TrackingCategory.Menu,
+    //       label: 'click-jumper-pass-berachain',
+    //       action: TrackingAction.ClickJumperCampaignLink,
+    //       data: { [TrackingEventParameter.Menu]: 'berachain' },
+    //     });
+    //     closeAllMenus();
+    //     router.push(JUMPER_BOYCO_PATH);
+    //   },
+    // },
     {
-      label: t('navbar.navbarMenu.profile'),
+      label: 'Jumper Loyalty Pass',
       prefixIcon: <AccountCircleIcon />,
       showMoreIcon: false,
       link: { url: JUMPER_LOYALTY_PATH },
@@ -158,21 +172,6 @@ export const useMainMenuContent = () => {
         });
         closeAllMenus();
         router.push(JUMPER_LOYALTY_PATH);
-      },
-    },
-    {
-      label: 'Jumper Wrapped',
-      prefixIcon: <ViewCarouselIcon />,
-      showMoreIcon: false,
-      link: { url: JUMPER_WRAPPED_URL, external: true },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-jumper-learn-link',
-          action: TrackingAction.ClickJumperLearnLink,
-          data: { [TrackingEventParameter.Menu]: 'jumper_wrapped' },
-        });
-        closeAllMenus();
       },
     },
     {
@@ -232,15 +231,7 @@ export const useMainMenuContent = () => {
     },
     {
       label: 'Discord',
-      prefixIcon: (
-        <Discord
-          color={
-            theme.palette.mode === 'dark'
-              ? theme.palette.white.main
-              : theme.palette.black.main
-          }
-        />
-      ),
+      prefixIcon: <Discord color={theme.palette.text.primary} />,
       showMoreIcon: false,
       onClick: () => {
         trackEvent({

@@ -12,14 +12,16 @@ interface QuestCarouselProps {
   pastCampaigns?: string[];
   traits?: string[];
   // traits?: Trait[];
+  label?: string;
 }
 
 export const QuestsOverview = ({
   pastCampaigns,
   traits,
+  label,
 }: QuestCarouselProps) => {
   const { t } = useTranslation();
-  const { quests, isLoading: isQuestsLoading, url } = useOngoingQuests();
+  const { quests, isLoading: isQuestsLoading, url } = useOngoingQuests(label);
 
   return (
     <QuestsOverviewContainer>
@@ -52,7 +54,7 @@ export const QuestsOverview = ({
             }
 
             let isUnlockedForUser = false;
-            if (questTraits?.length > 0 && traits) {
+            if (questTraits && questTraits?.length > 0 && traits) {
               isUnlockedForUser = checkInclusion(traits, questTraits);
               // isUnlockedForUser = false;
             }
@@ -76,7 +78,7 @@ export const QuestsOverview = ({
               variableWeeklyAPY:
                 quest?.attributes?.Points > 0 && rewardType === 'weekly',
               rewardRange: rewardRange,
-              isTraitsGarded: questTraits?.length > 0,
+              isTraitsGarded: questTraits && questTraits?.length > 0,
               isUnlocked: isUnlockedForUser,
             };
 

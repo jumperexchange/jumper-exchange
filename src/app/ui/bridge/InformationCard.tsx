@@ -1,32 +1,13 @@
 import {
   Avatar,
-  Link as MuiLink,
+  Box,
   Table,
   TableBody,
   TableCell,
   TableRow,
   Typography,
 } from '@mui/material';
-import { Box } from '@mui/system';
-import Link from 'next/link';
 import { InformationCardContainer } from './InformationCard.style';
-
-function buildExplorerLink(blockExplorerUrls: string[] = [], address: string) {
-  if (blockExplorerUrls.length === 0) {
-    return address;
-  }
-
-  return (
-    <MuiLink
-      color="text.primary"
-      component={Link}
-      target="_blank"
-      href={`${blockExplorerUrls[0]}tokens/${address}`}
-    >
-      {address}
-    </MuiLink>
-  );
-}
 
 interface Info {
   logoURI?: string;

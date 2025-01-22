@@ -37,7 +37,7 @@ export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-export const ConnectButton = styled(ButtonPrimary)(({ theme }) => ({
+export const ConnectButtonWrapper = styled(ButtonPrimary)(({ theme }) => ({
   padding: theme.spacing(3),
   textWrap: 'nowrap',
 }));
@@ -55,15 +55,15 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
   paddingRight: theme.spacing(1.5),
   gap: '0.5rem',
   backgroundColor:
-    theme.palette.mode === 'dark'
-      ? theme.palette.alphaLight300.main
-      : theme.palette.white.main,
+    theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : theme.palette.alphaLight300.main,
   boxShadow: '0px 2px 8px 0px #00000014',
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'dark'
-        ? theme.palette.alphaLight300.main
-        : theme.palette.white.main,
+      theme.palette.mode === 'light'
+        ? theme.palette.white.main
+        : theme.palette.alphaLight300.main,
   },
   '&:hover:before': {
     content: '" "',

@@ -1,14 +1,14 @@
 'use client';
-import type { Theme } from '@mui/material';
-import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import Image from 'next/image';
-import { BannerContainer } from './Banner.style';
-import { useUserTracking } from 'src/hooks/userTracking';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
+import type { Theme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import Image from 'next/image';
+import { useUserTracking } from 'src/hooks/userTracking';
+import { BannerContainer } from './Banner.style';
 
 export const Banner = () => {
   const theme = useTheme();
@@ -33,7 +33,12 @@ export const Banner = () => {
     <a
       href="https://jumper.exchange"
       target="_blank"
-      style={{ textDecoration: 'none', color: 'inherit' }}
+      style={{
+        textDecoration: 'none',
+        color: 'inherit',
+        position: 'relative',
+        zIndex: 1,
+      }}
       rel="noreferrer"
     >
       <BannerContainer onClick={handleClick}>
@@ -43,22 +48,21 @@ export const Banner = () => {
           height={24}
           style={{ marginRight: 8 }}
           src={
-            theme.palette.mode === 'dark'
-              ? 'https://strapi.jumper.exchange/uploads/jumper_04f15d06be.svg'
-              : 'https://strapi.jumper.exchange/uploads/jumper_57348536c0.svg'
+            theme.palette.mode === 'light'
+              ? 'https://strapi.jumper.exchange/uploads/jumper_57348536c0.svg'
+              : 'https://strapi.jumper.exchange/uploads/jumper_04f15d06be.svg'
           }
         />
         <Typography
-          color={
-            theme.palette.mode === 'dark'
-              ? '#FFFFFFD6'
-              : theme.palette.accent1.main
-          }
-          sx={{
+          sx={(theme) => ({
+            color:
+              theme.palette.mode === 'light'
+                ? theme.palette.accent1.main
+                : '#FFFFFFD6',
             fontSize: '16px',
             fontWeight: 700,
             lineHeight: '20px',
-          }}
+          })}
         >
           {' '}
           {isSmallScreen ? '' : ''}{' '}
@@ -69,9 +73,9 @@ export const Banner = () => {
           height={24}
           style={{ marginLeft: 8 }}
           src={
-            theme.palette.mode === 'dark'
-              ? 'https://strapi.jumper.exchange/uploads/button_darkl_70bedec2df.svg'
-              : 'https://strapi.jumper.exchange/uploads/theme_c92ac9f474.svg'
+            theme.palette.mode === 'light'
+              ? 'https://strapi.jumper.exchange/uploads/theme_c92ac9f474.svg'
+              : 'https://strapi.jumper.exchange/uploads/button_darkl_70bedec2df.svg'
           }
         />
       </BannerContainer>

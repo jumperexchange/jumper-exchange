@@ -2,6 +2,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
   Box,
   type Theme,
+  Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
@@ -74,7 +75,7 @@ export interface CTALinkInt {
 interface MissionCtaProps {
   title?: string;
   url?: string;
-  rewards?: number;
+  rewards?: boolean;
   id?: number;
   label?: string;
   CTAs: CTALinkInt[];
@@ -191,24 +192,34 @@ export const MissionCTA = ({
                 </CTAExplanationBox>
                 <FlexCenterRowBox>
                   {CTA.apy && !variableWeeklyAPY && (
-                    <XPDisplayBox
-                      bgcolor={theme.palette.primary.main}
-                      marginRight={'16px'}
-                      height={'32px'}
-                      minWidth={'88px'}
+                    <Tooltip
+                      className="tooltip-icon"
+                      title={
+                        'Expected extra rewards to win during the campaign for the tokens invested.'
+                      }
+                      placement={'top'}
+                      enterTouchDelay={0}
+                      arrow
                     >
-                      <Typography
-                        fontSize="16px"
-                        fontWeight={700}
-                        lineHeight="20px"
-                        color={'#ffffff'}
+                      <XPDisplayBox
+                        bgcolor={theme.palette.primary.main}
+                        marginRight={'16px'}
+                        height={'32px'}
+                        minWidth={'88px'}
                       >
-                        {`${Number(CTA.apy).toFixed(1)}%`}
-                      </Typography>
-                      <XPIconBox marginLeft="4px">
-                        <APYIcon size={24} />
-                      </XPIconBox>
-                    </XPDisplayBox>
+                        <Typography
+                          variant="bodyMediumStrong"
+                          sx={(theme) => ({
+                            color: theme.palette.text.primary,
+                          })}
+                        >
+                          {`${Number(CTA.apy).toFixed(1)}%`}
+                        </Typography>
+                        <XPIconBox marginLeft="4px">
+                          <APYIcon size={24} />
+                        </XPIconBox>
+                      </XPDisplayBox>
+                    </Tooltip>
                   )}
                   {variableWeeklyAPY && (
                     <XPDisplayBox
@@ -218,10 +229,12 @@ export const MissionCTA = ({
                       minWidth={'88px'}
                     >
                       <Typography
-                        fontSize="16px"
-                        fontWeight={700}
-                        lineHeight="20px"
-                        color={'#ffffff'}
+                        sx={(theme) => ({
+                          fontSize: '16px',
+                          fontWeight: 700,
+                          lineHeight: '20px',
+                          color: theme.palette.white.main,
+                        })}
                       >
                         {CTA?.weeklyApy
                           ? CTA?.weeklyApy

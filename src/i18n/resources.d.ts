@@ -38,7 +38,7 @@ interface Resources {
         theme: 'Theme';
         developers: 'Developers';
         support: 'Support';
-        profile: 'Jumper Profile';
+        profile: 'Loyalty Pass';
         fest: 'Superfest Festival';
       };
       walletMenu: {
@@ -142,7 +142,7 @@ interface Resources {
     };
     profile_page: {
       mobileTitle: 'Only available on Desktop';
-      mobileDescription: 'The Jumper Profile page is not available on small screens yet. We are working on it.';
+      mobileDescription: 'The Jumper Loyalty Pass page is not available on small screens yet. We are working on it.';
       level: 'Level';
       rank: 'Rank';
       rankInfo: 'Rank is your position in the leaderboard. Gain XP and move upward in the leaderboard.';
@@ -167,6 +167,7 @@ interface Resources {
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
+      percent: '{{value, decimalExt()}}';
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';

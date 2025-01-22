@@ -33,7 +33,9 @@ export const FCard = styled(MuiCard, {
   marginBottom: theme.spacing(1.5),
   overflow: 'hidden',
   backgroundImage: `url(${backgroundImageUrl}), radial-gradient(circle at 506px 437px, #3F49E1 -43%, ${
-    isDarkCard || theme.palette.mode === 'dark' ? '#20223D' : '#FFFFFF'
+    isDarkCard || theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : '#20223D'
   } 506px 349px)`,
   backgroundSize: 'contain',
   boxShadow: theme.shadows[1],
@@ -62,7 +64,7 @@ export interface FeatureCardTitleProps
 export const FeatureCardTitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'data' && prop !== 'typographyColor',
 })<FeatureCardTitleProps>(({ typographyColor, data }) => ({
-  color: data?.attributes.TitleColor ?? typographyColor,
+  color: data?.attributes?.TitleColor ?? typographyColor,
   fontSize: '24px',
   lineHeight: '32px',
   userSelect: 'none',
@@ -102,10 +104,10 @@ export const FeatureCardCtaLink = styled(Link, {
 })<FeatureCardCtaLinkProps>(({ theme, data }) => ({
   textDecoration: 'none',
   color:
-    data.attributes.DisplayConditions.mode === 'dark' ||
-    theme.palette.mode === 'dark'
-      ? theme.palette.accent1Alt?.main
-      : theme.palette.primary.main,
+    data.attributes?.DisplayConditions.mode === 'dark' ||
+    theme.palette.mode === 'light'
+      ? theme.palette.primary?.main
+      : theme.palette.accent1Alt.main,
 }));
 
 export interface FeatureCardCtaLabelProps
@@ -121,5 +123,5 @@ export const FeatureCardCtaLabel = styled(Typography, {
   maxHeight: 20,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  color: data.attributes.CTAColor ?? 'inherit',
+  color: data.attributes?.CTAColor ?? 'inherit',
 }));

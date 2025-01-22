@@ -35,17 +35,15 @@ export const SmallAvatar = styled(Avatar)(({ theme }) => ({
   //   padding: theme.spacing(0.25),
   //   borderRadius: '50%',
   //   objectFit: 'contain',
-  //   background:
-  //     theme.palette.mode === 'dark' ? theme.palette.white.main : 'inherit',
+  //   background: theme.palette.text.primary,
   // },
 }));
 
 export const SmallAvatarSkeletonBase = styled(Skeleton)(({ theme }) => ({
-  border: `2px solid ${
-    theme.palette.mode === 'dark'
-      ? theme.palette.alphaLight400.main
-      : darken(theme.palette.white.main, 0.04)
-  }`,
+  border:
+    theme.palette.mode === 'light'
+      ? `2px solid ${darken(theme.palette.white.main, 0.04)}`
+      : `2px solid ${theme.palette.alphaLight400.main}`,
   width: 16,
   height: 16,
 }));

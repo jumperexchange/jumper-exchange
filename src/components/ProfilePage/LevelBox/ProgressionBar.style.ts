@@ -1,5 +1,5 @@
 import type { BoxProps } from '@mui/material';
-import { Box, styled } from '@mui/system';
+import { Box, styled } from '@mui/material';
 import type { LevelData } from 'src/types/loyaltyPass';
 
 export const LevelIndicatorWrapper = styled(Box)(({ theme }) => ({
@@ -14,20 +14,27 @@ interface ProgressionContainerProps extends BoxProps {
 
 export const ProgressionContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'hideLevelIndicator',
-})<ProgressionContainerProps>(({ hideLevelIndicator }) => ({
+})<ProgressionContainerProps>({
   position: 'relative',
-  ...(!hideLevelIndicator
-    ? {
+  variants: [
+    {
+      props: ({ hideLevelIndicator }) => !hideLevelIndicator,
+      style: {
         marginTop: 8,
-      }
-    : {
+      },
+    },
+    {
+      props: ({ hideLevelIndicator }) => !!hideLevelIndicator,
+      style: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         flexGrow: 1,
-      }),
-}));
+      },
+    },
+  ],
+});
 
 interface ProgressionChartProps extends BoxProps {
   hideLevelIndicator?: boolean;
@@ -43,21 +50,26 @@ export const ProgressionChart = styled(Box, {
   height: '16px',
   width: '100%',
   display: 'flex',
-  ...(!!label && {
-    height: 24,
-    ':before': {
-      content: `"${label}"`,
-      position: 'absolute',
-      width: '100%',
-      fontWeight: 700,
-      fontSize: '12px',
-      lineHeight: '24px',
-      color:
-        theme.palette.mode === 'light'
-          ? theme.palette.primary.main
-          : theme.palette.white.main,
+  variants: [
+    {
+      props: ({ label }) => !!label,
+      style: {
+        height: 24,
+        ':before': {
+          content: `"${label}"`,
+          position: 'absolute',
+          width: '100%',
+          fontWeight: 700,
+          fontSize: '12px',
+          lineHeight: '24px',
+          color:
+            theme.palette.mode === 'light'
+              ? theme.palette.primary.main
+              : theme.palette.white.main,
+        },
+      },
     },
-  }),
+  ],
 }));
 
 export interface ProgressionChartScoreProps
@@ -65,13 +77,17 @@ export interface ProgressionChartScoreProps
   ongoingValue?: number;
   levelData?: LevelData;
   calcWidth?: number;
+  chartCol?: string;
 }
 
 export const ProgressionChartScore = styled(Box, {
   shouldForwardProp: (prop) =>
-    prop !== 'ongoingValue' && prop !== 'levelData' && prop !== 'calcWidth',
+    prop !== 'ongoingValue' &&
+    prop !== 'levelData' &&
+    prop !== 'calcWidth' &&
+    prop !== 'chartCol',
 })<ProgressionChartScoreProps>(
-  ({ theme, ongoingValue, levelData, calcWidth }) => ({
+  ({ theme, ongoingValue, levelData, calcWidth, chartCol }) => ({
     height: '100%',
     width:
       ongoingValue && levelData && ongoingValue > levelData?.minPoints
@@ -81,19 +97,29 @@ export const ProgressionChartScore = styled(Box, {
       theme.palette.mode === 'light'
         ? theme.palette.accent1.main
         : theme.palette.accent1Alt.main,
-    ...(ongoingValue &&
-      levelData &&
-      ongoingValue === levelData.maxPoints && { borderRadius: '12px' }),
+    variants: [
+      {
+        props: ({ ongoingValue, levelData }) =>
+          ongoingValue && levelData && ongoingValue === levelData.maxPoints,
+        style: { borderRadius: '12px' },
+      },
+    ],
   }),
 );
 
-export const ProgressionChartBg = styled(Box)(({ theme }) => ({
+export interface ProgressionChartBgProps extends BoxProps {
+  chartBg?: string;
+}
+
+export const ProgressionChartBg = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'chartBg',
+})<ProgressionChartBgProps>(({ theme, chartBg }) => ({
   position: 'absolute',
   width: '100%',
   height: '100%',
   borderRadius: '12px',
   backgroundColor:
-    theme.palette.mode === 'light'
+    chartBg || theme.palette.mode === 'light'
       ? theme.palette.alphaDark200.main
       : theme.palette.alphaLight200.main,
 }));

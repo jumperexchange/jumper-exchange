@@ -8,13 +8,13 @@ export const BannerContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   width: '100%',
   padding: '10px',
-  background: theme.palette.mode === 'dark' ? '#30007A' : '#CEADFF',
+  background: theme.palette.mode === 'light' ? '#CEADFF' : '#30007A',
   fontWeight: 700,
   cursor: 'pointer',
   ':hover': {
     backgroundColor:
-      theme.palette.mode === 'dark'
-        ? lighten('#30007A', 0.04)
-        : darken('#CEADFF', 0.04),
+      theme.palette.mode === 'light'
+        ? darken('#CEADFF', 0.04)
+        : lighten('#30007A', 0.04),
   },
 }));

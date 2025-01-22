@@ -2,7 +2,6 @@
 import type { SxProps, Theme } from '@mui/material';
 import { Tooltip } from '@mui/material';
 import { Tab, TabsContainer } from './Tabs.style';
-
 export interface TabProps {
   label?: string;
   tooltip?: string;
@@ -63,10 +62,10 @@ export const Tabs = ({
             key={`tooltip-${el.label}-${index}`}
             enterTouchDelay={0}
             disableHoverListener={el.disabled}
-            componentsProps={{
+            arrow
+            slotProps={{
               popper: { sx: { zIndex: 1700 } },
             }}
-            arrow
           >
             {tab}
           </Tooltip>
