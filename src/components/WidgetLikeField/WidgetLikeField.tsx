@@ -24,7 +24,10 @@ import { useAccount } from '@lifi/wallet-management';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { getEthersSigner } from '@/components/WidgetLikeField/utils';
-import { MaxButton } from '@/components/WidgetLikeField/WidgetLikeField.style';
+import {
+  MaxButton,
+  NotConnectedBox,
+} from '@/components/WidgetLikeField/WidgetLikeField.style';
 import type { TransactionOptionsType } from 'royco/types';
 import { usePrepareMarketAction } from 'royco/hooks';
 import {
@@ -198,16 +201,6 @@ function WidgetLikeField({
     pollingInterval: 1_000,
   });
 
-  // TODO: to remove
-  // eslint-disable-next-line no-console
-  console.log('waitTransactionReceipt', {
-    txHash,
-    isLoading: isTxConfirming,
-    isSuccess: isTxConfirmed,
-    isError: isTxConfirmError,
-    status: confirmationStatus,
-  });
-
   useEffect(() => {
     if (isTxConfirmed) {
       setContractCallIndex(contractCallIndex + 1);
@@ -272,7 +265,6 @@ function WidgetLikeField({
         <OutlinedInput
           autoComplete="off"
           id="component"
-          defaultValue=""
           value={inputValue}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             onChangeValue(event.target.value);
@@ -347,24 +339,14 @@ function WidgetLikeField({
         )}
       </FormControl>
       {!account?.isConnected ? (
-        <Box
-          sx={{
-            height: '100%',
-            width: '100%',
-            display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
-            placeContent: 'center', // Centers content horizontally and vertically.
-            alignItems: 'start', // Aligns items at the start along the cross-axis.
-          }}
-        >
-          {/*<div className="h-full w-full place-content-center items-start">*/}
+        <NotConnectedBox>
           <Typography variant="body2" color="textSecondary">
             Wallet not connected
           </Typography>
-        </Box>
+        </NotConnectedBox>
       ) : shouldSwitchChain ? (
         <LoadingButton
           type="button"
-          // loading={isLoading || isTxPending || isTxConfirming}
           variant="contained"
           sx={{
             '&.MuiLoadingButton-loading': {
@@ -409,24 +391,6 @@ function WidgetLikeField({
           </LoadingButton>
         )
       )}
-
-      {contractCallIndex !== 0 &&
-        contractCallIndex > writeContractOptions.length - 1 && (
-          <Box
-            sx={{
-              height: '100%',
-              width: '100%',
-              display: 'grid', // 'place-content-center' is equivalent to a grid with centered content.
-              placeContent: 'center', // Centers content horizontally and vertically.
-              alignItems: 'start', // Aligns items at the start along the cross-axis.
-            }}
-          >
-            {/*<div className="h-full w-full place-content-center items-start">*/}
-            <Typography variant="body2" color="textSecondary">
-              Deposited with success!
-            </Typography>
-          </Box>
-        )}
     </Box>
   );
 }

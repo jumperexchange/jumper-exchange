@@ -32,7 +32,7 @@ export function ThemeProvider({
     const metaTheme = metaElement?.getAttribute('content');
     const partnerTheme = metaTheme || activeTheme || 'default';
     const isPartnerTheme = themes?.find(
-      (d) => d.attributes.uid === partnerTheme,
+      (d) => d.attributes?.uid === partnerTheme,
     );
     const effectiveThemeMode = getEffectiveThemeMode(
       isPartnerTheme

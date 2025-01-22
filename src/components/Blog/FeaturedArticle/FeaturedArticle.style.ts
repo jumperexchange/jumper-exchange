@@ -65,6 +65,7 @@ export const FeaturedArticleCard = styled(Box)(({ theme }) => ({
 export const FeaturedArticleMetaContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   fontSize: '16px',
+  alignItems: 'center',
   color: theme.palette.text.primary,
   marginTop: theme.spacing(2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {

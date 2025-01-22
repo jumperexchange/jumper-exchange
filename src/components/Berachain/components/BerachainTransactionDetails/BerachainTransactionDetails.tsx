@@ -1,3 +1,5 @@
+import InfoIcon from '@mui/icons-material/Info';
+import ExternalLinkIcon from '@mui/icons-material/Link';
 import {
   AccordionDetails,
   Box,
@@ -6,26 +8,23 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import type { EnrichedMarketDataType } from 'royco/queries';
+import { useState } from 'react';
 import type {
   RoycoMarketRewardStyleRecordType,
   TypedRoycoMarketRewardStyle,
 } from 'royco/market';
 import { RoycoMarketRewardStyle, RoycoMarketType } from 'royco/market';
-import Recipe from './Recipe';
-import { useState } from 'react';
-import { InfoCard } from './InfoCard';
+import type { EnrichedMarketDataType } from 'royco/queries';
 import { getExplorerUrl, shortAddress } from 'royco/utils';
-import InfoIcon from '@mui/icons-material/Info';
-import ExternalLinkIcon from '@mui/icons-material/Link';
-import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
+import { InfoCard } from './InfoCard';
+import Recipe from './Recipe';
 
-import AccordionSummary from '@mui/material/AccordionSummary';
-import { BerachainDetailsAccordion } from '../BerachainWidget/DepositWidget/WidgetDeposit.style';
 import {
   AccordionToggleButton,
   FaqShowMoreArrow,
 } from '@/components/AccordionFAQ';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import { BerachainDetailsAccordion } from '../BerachainWidget/DepositWidget/WidgetDeposit.style';
 
 export const MarketRewardStyle: Record<
   TypedRoycoMarketRewardStyle,

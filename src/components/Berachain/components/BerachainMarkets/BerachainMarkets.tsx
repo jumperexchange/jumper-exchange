@@ -71,19 +71,22 @@ export const BerachainMarkets = () => {
 
               return (
                 <BerachainMarketCard
+                  extraRewards={
+                    card?.attributes.CustomInformation?.extraRewards
+                  }
                   key={`berachain-market-card-${roycoData.id || 'protocol'}-${index}`}
                   roycoData={roycoData}
                   // chainId={roycoData.chain_id}
-                  image={card?.attributes.Image}
+                  image={card?.attributes?.Image}
                   title={fullTitle}
                   // slug={roycoData.id}
-                  // slug={card.attributes.Slug}
+                  // slug={card.attributes?.Slug}
                   tokens={[]}
                   // netApy={roycoData.native_annual_change_ratio}
                   // @ts-ignore
                   // apys={roycoData.native_annual_change_ratios} // existing but not typed :(
                   // tvl={roycoData.locked_quantity_usd}
-                  type={card.attributes.CustomInformation?.type}
+                  type={card.attributes?.CustomInformation?.type}
                   url={url}
                 />
               );

@@ -12,9 +12,9 @@
     "@fingerprintjs/fingerprintjs": "^3.4.2",
     "@headlessui/react": "^2.2.0",
     "@lifi/explorer": "^0.0.4",
-    "@lifi/sdk": "3.4.3",
-    "@lifi/wallet-management": "^3.4.7",
-    "@lifi/widget": "3.12.5",
+    "@lifi/sdk": "3.5.2",
+    "@lifi/wallet-management": "^3.4.8-beta.0",
+    "@lifi/widget": "^3.12.6-beta.0",
     "@metaplex-foundation/mpl-core": "^1.1.1",
     "@metaplex-foundation/umi": "^0.9.2",
     "@metaplex-foundation/umi-bundle-defaults": "^0.9.2",
@@ -61,7 +61,7 @@
     "react-dom": "^18.3.1",
     "react-error-boundary": "^4.1.2",
     "react-i18next": "^15.1.4",
-    "royco": "0.9.179",
+    "royco": "0.9.238",
     "shallow-equal": "^3.1.0",
     "sharp": "^0.33.5",
     "siwe": "^2.3.2",
@@ -127,6 +127,9 @@
     "test:e2e-real": "npx playwright test --headed",
     "build:cache": "synpress --headless",
     "build:cache:ci": "xvfb-run synpress --force tests/wallet-setup/"
+  },
+  "resolutions": {
+    "@metamask/sdk": "0.30.0"
   },
   "lint-staged": {
     "**/*.(ts|tsx|js)": [

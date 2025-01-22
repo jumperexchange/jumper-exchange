@@ -1,3 +1,6 @@
+import type { Quest, QuestAttributes } from '@/types/loyaltyPass';
+import type { QuestDetails } from '@/types/questDetails';
+
 export interface BerachainIncentiveToken {
   id: string;
   chain_id: number;
@@ -18,4 +21,17 @@ export interface BerachainIncentiveToken {
   annual_change_ratio: number;
   per_input_token: number;
   token_rate: number;
+}
+
+export interface ExtraRewards {
+  type: string;
+  included: boolean;
+}
+
+export interface QuestWithExtraRewards extends Quest {
+  attributes: QuestAttributes & {
+    CustomInformation?: QuestDetails & {
+      extraRewards?: ExtraRewards;
+    };
+  };
 }
