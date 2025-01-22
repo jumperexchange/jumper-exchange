@@ -1,6 +1,6 @@
-import type { Breakpoint, TypographyProps } from '@mui/material';
+import type { TypographyProps } from '@mui/material';
 import { Stack, styled, Typography } from '@mui/material';
-import { CardContainer } from '../LeaderboardCard/LeaderboardCard.style';
+import { CardContainer } from '../ProfilePage.style';
 
 export const TraitsContainer = styled(CardContainer)(({ theme }) => ({
   flexDirection: 'row',
@@ -51,11 +51,7 @@ export const TraitsRemaining = styled(TraitsItem)<TraitsRemaingProps>(
 
 export const TraitsEntryStack = styled(Stack)(({ theme }) => ({
   background: theme.palette.bgTertiary.main,
-  padding: theme.spacing(0, 1),
   borderRadius: '24px',
   marginTop: theme.spacing(3),
   boxShadow: theme.shadows[2],
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    padding: theme.spacing(0, 3),
-  },
 }));

@@ -1,14 +1,20 @@
 import type { Breakpoint } from '@mui/material';
 import { Box, Typography, alpha, styled } from '@mui/material';
 
-export const SectionTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  fontWeight: 700,
-  fontSize: '24px',
-  lineHeight: '32px',
-  margin: theme.spacing(0, 1.5, 0),
+export const CardContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : theme.palette.bgSecondary.main,
+  borderRadius: '16px',
+  width: '100%',
+  padding: theme.spacing(2),
+  boxShadow: theme.shadows[2],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(0, 1.5, 0),
+    padding: theme.spacing(3),
   },
 }));
 

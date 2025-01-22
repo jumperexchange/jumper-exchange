@@ -9,15 +9,13 @@ import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
 import type { GetTagsResponse } from 'src/app/lib/getTags';
+import { SectionTitle } from 'src/components/styles';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { chunkArray } from 'src/utils/chunkArray';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { CarouselHeader } from '../BlogCarousel';
 import { Pagination } from '../Pagination/Pagination';
-import {
-  BlogArticlesCollectionsContainer,
-  BlogArticlesCollectionsTitle,
-} from './BlogArticlesCollections.style';
+import { BlogArticlesCollectionsContainer } from './BlogArticlesCollections.style';
 import { ArticlesGrid } from './BlogArticlesTabs.style';
 
 interface BlogArticlesTabsProps {
@@ -54,9 +52,9 @@ export function BlogArticlesTabs({
         }}
       >
         <CarouselHeader>
-          <BlogArticlesCollectionsTitle variant="headerMedium">
+          <SectionTitle variant="headerMedium">
             {tag.attributes?.Title}
-          </BlogArticlesCollectionsTitle>
+          </SectionTitle>
         </CarouselHeader>
         {chunkedPages.map(
           (page, pageIndex) =>

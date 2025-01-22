@@ -4,7 +4,9 @@ import { Box, useTheme, type CSSObject } from '@mui/material';
 
 import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
-import { SectionTitle } from 'src/components/ProfilePage/ProfilePage.style';
+import IconHeader from 'src/components/ProfilePage/Common/IconHeader';
+import { SectionTitle } from 'src/components/styles';
+import useClient from 'src/hooks/useClient';
 import {
   CarouselCenteredBox,
   CarouselContainerBox,
@@ -12,8 +14,6 @@ import {
   CarouselNavigationButton,
   CarouselNavigationContainer,
 } from '.';
-import IconHeader from 'src/components/ProfilePage/Common/IconHeader';
-import useClient from 'src/hooks/useClient';
 
 interface CarouselContainerProps {
   title?: string;
