@@ -1,9 +1,9 @@
 import { getArticles } from '@/app/lib/getArticles';
 import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
 import LearnPage from '@/app/ui/learn/LearnPage';
+import { getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
 import { getTags } from 'src/app/lib/getTags';
-import { getSiteUrl } from '@/const/urls';
 
 export const metadata: Metadata = {
   title: 'Jumper Learn',
@@ -19,7 +19,6 @@ export default async function Page() {
   const featuredArticle = await getFeaturedArticle();
   const carouselArticles = await getArticles(featuredArticle.data.id, 5);
   const tags = await getTags();
-
   return (
     <LearnPage
       tags={tags}

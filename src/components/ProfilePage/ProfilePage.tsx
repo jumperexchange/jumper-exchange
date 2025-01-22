@@ -1,5 +1,7 @@
 'use client';
+import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
+import { ProfileContext } from '@/providers/ProfileProvider';
 import { useContext } from 'react';
 import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useTraits } from 'src/hooks/useTraits';
@@ -14,11 +16,9 @@ import {
 } from './ProfilePage.style';
 import { QuestsCompletedCarousel } from './QuestsCompletedCarousel/QuestsCompletedCarousel';
 import { QuestsOverview } from './QuestsOverview/QuestsOverview';
-// import { useABTest } from 'src/hooks/useABTest';
-
-import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
-import { ProfileContext } from '@/providers/ProfileProvider';
 import { Traits } from './Traits/Traits';
+// import { useABTest } from 'src/hooks/useABTest';
+// import { CampaignBanner } from './CampaignBanner/CampaignBanner';
 
 export const ProfilePage = () => {
   const { walletAddress, isPublic } = useContext(ProfileContext);
@@ -47,6 +47,7 @@ export const ProfilePage = () => {
           {!!traits?.length && <Traits traits={traits} />}
         </ProfileInfoBox>
       </ProfileHeaderBox>
+      {/* <CampaignBanner /> */}
       <QuestsOverview pastCampaigns={pastCampaigns} traits={traits} />
       <QuestsCompletedCarousel pdas={pdas} loading={isLoading} />
     </PageContainer>

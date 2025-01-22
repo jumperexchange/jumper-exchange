@@ -143,10 +143,6 @@ export const useActiveMarket = (
     propsEnrichedMarket.data,
   ]);
 
-  // Debugging: Log the state changes
-  // console.log("Current Market Data:", placeholderDatas[1]);
-  // console.log("Previous Market Data:", placeholderDatas[0]);
-
   const isLoading =
     propsEnrichedMarket.isLoading ||
     propsHighestOffers.isLoading ||
