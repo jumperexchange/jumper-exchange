@@ -218,10 +218,10 @@ devDependencies:
     specifier: ^14.2.22
     version: 14.2.23
   '@playwright/test':
-    specifier: ^1.46.1
+    specifier: ^1.49.1
     version: 1.49.1
   '@synthetixio/synpress':
-    specifier: ^4.0.0-alpha.7
+    specifier: 4.0.0-alpha.7
     version: 4.0.0-alpha.7(@playwright/test@1.49.1)(playwright-core@1.44.0)(postcss@8.5.1)(typescript@5.7.3)
   '@synthetixio/synpress-core':
     specifier: ^0.0.4

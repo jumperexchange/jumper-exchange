@@ -27,7 +27,10 @@ jobs:
     - name: Install xvfb server
       run: sudo apt-get install xvfb
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
+      run: |
+        npx playwright install chromium
+        wget https://playwright.azureedge.net/builds/chromium/1117/chromium-linux.zip -P ~/.cache/ms-playwright
+        unzip ~/.cache/ms-playwright/chromium-linux.zip -d ~/.cache/ms-playwright/
     - name: Run Playwright tests
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.json
