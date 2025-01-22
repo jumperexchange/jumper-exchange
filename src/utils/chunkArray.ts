@@ -1,4 +1,7 @@
 export function chunkArray<T>(array: T[], chunkSize: number): T[][] {
+  if (!Array.isArray(array)) {
+    return [];
+  }
   const result: T[][] = [];
 
   for (let i = 0; i < array.length; i += chunkSize) {

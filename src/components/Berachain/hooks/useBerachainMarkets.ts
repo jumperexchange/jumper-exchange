@@ -1,16 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import type { ExtendedQuest } from 'src/types/questDetails';
-import { getQuestBy } from '@/app/lib/getQuestBy';
-import type { Quest } from '@/types/loyaltyPass';
+import { getQuestsBy } from '@/app/lib/getQuestsBy';
 import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
 import type { StrapiResponse } from '@/types/strapi';
+import type { QuestWithExtraRewards } from '@/components/Berachain/BerachainType';
 
 export interface UseBerachainQuestsProps {
-  data?: StrapiResponse<Quest>;
+  data?: StrapiResponse<QuestWithExtraRewards>;
   url: string;
   isSuccess: boolean;
   isLoading: boolean;
-  findFromStrapiByUid: (key: string) => Quest | undefined;
+  findFromStrapiByUid: (key: string) => QuestWithExtraRewards | undefined;
 }
 
 type T = Record<string, string[]>;
@@ -72,7 +71,7 @@ export const useBerachainMarkets = (): UseBerachainQuestsProps => {
     queryKey: ['berachain-markets'],
 
     queryFn: async () => {
-      const { data } = await getQuestBy('Label', 'berachain');
+      const { data } = await getQuestsBy('Label', 'berachain');
 
       return data;
     },
@@ -80,18 +79,14 @@ export const useBerachainMarkets = (): UseBerachainQuestsProps => {
   });
 
   function findFromStrapiByUid(uid: string | null) {
-    const found = data?.data.find((d) => d.attributes.UID === uid);
+    const found = data?.data.find((d) => d.attributes?.UID === uid);
 
     if (found) {
       return found;
     }
 
-    // if (!found) {
-    //   return undefined;
-    // }
-
     // TODO: return default berachain
-    // return data?.data.find((d) => d.attributes.UID === 'berachain-default')!;
+    return data?.data.find((d) => d.attributes?.UID === 'berachain-default')!;
   }
 
   return {
