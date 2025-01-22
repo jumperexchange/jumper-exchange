@@ -42,7 +42,7 @@ export const AccordionFAQItem = ({
 }: AccordionFAQItemProps) => {
   return (
     <>
-      <Accordion sx={itemSx}>
+      <Accordion sx={itemSx} className="faq-item">
         <AccordionSummary
           expandIcon={
             <AccordionToggleButton sx={{ color: 'text.primary' }}>
