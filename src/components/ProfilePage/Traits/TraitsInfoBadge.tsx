@@ -1,10 +1,13 @@
 import { Tooltip, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import {
   TraitsInfo,
   TraitsInfoIcon,
   TraitsInfoStar,
 } from './TraitsInfoBadge.style';
 export const TraitsInfoBadge = () => {
+  const { t } = useTranslation();
+
   return (
     <TraitsInfo>
       <TraitsInfoStar />
@@ -12,12 +15,10 @@ export const TraitsInfoBadge = () => {
         variant="bodyXSmallStrong"
         sx={(theme) => ({ color: theme.palette.text.primary })}
       >
-        Traits
+        {t('traits.title')}
       </Typography>
       <Tooltip
-        title={
-          'Each trait represents a specific aspect of your crypto trading profile on Jumper.'
-        }
+        title={t('traits.description')}
         placement={'top'}
         enterTouchDelay={0}
         arrow

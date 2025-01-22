@@ -44,7 +44,7 @@ export const ProfilePage = () => {
             <TierBox points={points} loading={isLoading} />
             <LeaderboardCard address={walletAddress} />
           </ProfileInfoBoxCards>
-          {!!traits?.length && <Traits traits={traits} />}
+          <Traits />
         </ProfileInfoBox>
       </ProfileHeaderBox>
       {/* <CampaignBanner /> */}
