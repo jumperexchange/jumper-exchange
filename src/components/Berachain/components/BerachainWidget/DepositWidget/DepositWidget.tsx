@@ -211,6 +211,7 @@ function DepositWidget({
       return;
     }
 
+    setInputValue('');
     trackEvent({
       category: TrackingCategory.WidgetEvent,
       action: 'berachain_deposit',
