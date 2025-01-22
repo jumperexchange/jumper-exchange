@@ -65,13 +65,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
         }}
         fullWidth={true}
       >
-        <Discord
-          color={
-            theme.palette.mode === 'dark'
-              ? theme.palette.white.main
-              : theme.palette.black.main
-          }
-        />
+        <Discord color={theme.palette.text.primary} />
         <SupportMessage variant="bodyMediumStrong" component="span">
           {t('navbar.navbarMenu.support')}
         </SupportMessage>

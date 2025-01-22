@@ -29,7 +29,6 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   boxShadow: theme.shadows[1],
   minHeight: 256,
-
   [theme.breakpoints.up('lg')]: {
     maxWidth: 320,
   },
@@ -41,17 +40,24 @@ interface AddressBlockiesImageProps extends ImageProps {
 
 export const AddressBlockiesImage = styled(Image, {
   shouldForwardProp: (prop) => prop !== 'imageLink',
-})<AddressBlockiesImageProps>(({ theme, imageLink }) => ({
-  backgroundColor: imageLink
-    ? theme.palette.mode === 'light'
-      ? '#F9F5FF'
-      : theme.palette.accent1Alt.main
-    : undefined,
+})<AddressBlockiesImageProps>(({ theme }) => ({
+  backgroundColor: undefined,
   borderRadius: '100%',
   borderStyle: 'solid',
   borderWidth: '5px',
   borderColor: theme.palette.white.main,
   zIndex: 1,
+  variants: [
+    {
+      props: ({ imageLink }) => imageLink,
+      style: {
+        backgroundColor:
+          theme.palette.mode === 'light'
+            ? '#F9F5FF'
+            : theme.palette.accent1Alt.main,
+      },
+    },
+  ],
 }));
 
 export const AddressBlockiesImageSkeleton = styled(Skeleton)(({ theme }) => ({
@@ -86,9 +92,9 @@ export const AddressButton = styled(ButtonTransparent)(({ theme }) => ({
   borderRadius: '16px',
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'dark'
-        ? theme.palette.alphaLight300.main
-        : theme.palette.white.main,
+      theme.palette.mode === 'light'
+        ? theme.palette.white.main
+        : theme.palette.alphaLight300.main,
   },
 }));
 
@@ -103,7 +109,6 @@ export const AddressConnectButton = styled(ButtonSecondary)(({ theme }) => ({
 }));
 
 export const AddressButtonLabel = styled(Typography)(({ theme }) => ({}));
-
 export const AddressBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   zIndex: 1,
@@ -143,11 +148,7 @@ export const ImageBackground = styled(Box, {
   right: 0,
   bottom: 72,
   overflow: 'hidden',
-  ...(!imgUrl && {
-    background: `linear-gradient(to bottom, ${theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.accent1Alt.main} 50%, ${theme.palette.mode === 'light' ? theme.palette.grey[100] : 'transparent'} 50%)`,
-  }),
   '&:before': {
-    ...(imgUrl && { content: '" "' }),
     position: 'absolute',
     left: 0,
     top: 0,
@@ -158,4 +159,21 @@ export const ImageBackground = styled(Box, {
     backgroundPosition: 'top',
     backgroundSize: 'cover',
   },
+  variants: [
+    {
+      props: ({ imgUrl }) => !imgUrl,
+      style: {
+        background:
+          theme.palette.mode === 'light'
+            ? `linear-gradient(to bottom, ${theme.palette.primary.main} 50%, ${theme.palette.grey[100]} 50%)`
+            : `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, ${'transparent'} 50%)`,
+      },
+    },
+    {
+      props: ({ imgUrl }) => imgUrl,
+      style: {
+        '&:before': { content: '" "' },
+      },
+    },
+  ],
 }));

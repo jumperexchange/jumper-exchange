@@ -14,7 +14,9 @@ export function buildExplorerLink(
 
   return (
     <MuiLink
-      color="text.primary"
+      sx={(theme) => ({
+        color: theme.palette.text.primary,
+      })}
       component={Link}
       target="_blank"
       href={`${blockExplorerUrls[0]}tokens/${address}`} // todo: on OP it needs to be "token/..."
@@ -39,8 +41,10 @@ export function getChainInfoData(chainInfo: ExtendedChain) {
       label: 'Block explorer urls',
       value: chainInfo.metamask?.blockExplorerUrls?.map((blockExplorerUrl) => (
         <MuiLink
-          color="text.primary"
-          sx={{ marginRight: 2 }}
+          sx={(theme) => ({
+            color: theme.palette.text.primary,
+            marginRight: 2,
+          })}
           component={Link}
           target="_blank"
           href={blockExplorerUrl}

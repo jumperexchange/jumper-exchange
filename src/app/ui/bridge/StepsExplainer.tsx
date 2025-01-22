@@ -3,7 +3,7 @@ import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
 import type { ExtendedChain, Token } from '@lifi/sdk';
 import { Link as MuiLink, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
-import React from 'react';
+import { Fragment } from 'react';
 import { Divider } from 'src/components/Blog';
 import { getWidgetImageProps } from 'src/utils/image-generation/getWidgetImage';
 import StepDetail from './StepDetail';
@@ -130,7 +130,7 @@ const StepsExplainerSection = ({
           <li>
             Go to your{' '}
             <MuiLink
-              color="text.primary"
+              sx={(theme) => ({ color: theme.palette.text.primary })}
               component={Link}
               href="https://jumper.exchange/scan"
             >
@@ -160,9 +160,11 @@ const StepsExplainerSection = ({
     <BridgePageContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
       <Typography
         variant="h2"
-        color="text.primary"
         marginY={2}
-        sx={{ fontSize: '36px' }}
+        sx={{
+          color: theme.palette.text.primary,
+          fontSize: '36px',
+        }}
       >
         Bridge your {sourceToken.symbol} on {sourceChain.name} to{' '}
         {destinationToken.symbol} on {destinationChain.name}
@@ -176,7 +178,7 @@ const StepsExplainerSection = ({
       </Typography>
 
       {steps.map((step, index) => (
-        <React.Fragment key={index}>
+        <Fragment key={index}>
           <Divider />
           <StepDetail
             title={step.title}
@@ -184,7 +186,7 @@ const StepsExplainerSection = ({
             content={step.content}
             img={step.img}
           />
-        </React.Fragment>
+        </Fragment>
       ))}
     </BridgePageContainer>
   );
