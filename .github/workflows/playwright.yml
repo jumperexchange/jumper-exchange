@@ -27,11 +27,7 @@ jobs:
     - name: Install xvfb server
       run: sudo apt-get install xvfb
     - name: Install Playwright Browsers
-      run: |
-        npx playwright install --with-deps chromium &
-        sudo apt-get install -y \
-        libasound2-data \
-        libasound2-plugins
+      run: npx playwright install --with-deps chromium
     - name: Run Playwright tests
       env:
         PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.json
