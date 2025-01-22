@@ -153,6 +153,10 @@ interface Resources {
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
     };
+    traits: {
+      title: 'Traits';
+      description: 'Each trait represents a specific aspect of your crypto trading profile on Jumper.';
+    };
     leaderboard: {
       title: 'Leaderboard';
       description: 'The leaderboard is updated on a daily basis.';
