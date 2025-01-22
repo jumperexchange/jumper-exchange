@@ -6,6 +6,7 @@ import {
   InputLabel,
   Typography,
   useTheme,
+  buttonClasses,
 } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -14,27 +15,20 @@ import {
   WalletCardBadge,
 } from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
-import LoadingButton from '@mui/lab/LoadingButton';
 import {
   useConfig,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { getEthersSigner } from '@/components/WidgetLikeField/utils';
+import { useEffect, useMemo, useState } from 'react';
 import {
   MaxButton,
   NotConnectedBox,
 } from '@/components/WidgetLikeField/WidgetLikeField.style';
 import type { TransactionOptionsType } from 'royco/types';
 import { usePrepareMarketAction } from 'royco/hooks';
-import {
-  parseRawAmount,
-  parseRawAmountToTokenAmount,
-  parseTokenAmountToRawAmount,
-} from 'royco/utils';
+import { parseTokenAmountToRawAmount } from 'royco/utils';
 import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { switchChain } from '@wagmi/core';
@@ -345,14 +339,14 @@ function WidgetLikeField({
           </Typography>
         </NotConnectedBox>
       ) : shouldSwitchChain ? (
-        <LoadingButton
+        <Button
           type="button"
           variant="contained"
           sx={{
-            '&.MuiLoadingButton-loading': {
+            [`&.${buttonClasses.loading}`]: {
               border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
             },
-            '.MuiLoadingButton-loadingIndicator': {
+            [`&.${buttonClasses.loadingIndicator}`]: {
               color: overrideStyle?.mainColor ?? theme.palette.primary.main,
             },
           }}
@@ -369,18 +363,18 @@ function WidgetLikeField({
           }}
         >
           <Typography variant="bodyMediumStrong">Switch chain</Typography>
-        </LoadingButton>
+        </Button>
       ) : (
         writeContractOptions[contractCallIndex] && (
-          <LoadingButton
+          <Button
             type="submit"
             loading={isLoading || isTxPending || isTxConfirming}
             variant="contained"
             sx={{
-              '&.MuiLoadingButton-loading': {
+              [`&.${buttonClasses.loading}`]: {
                 border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
               },
-              '.MuiLoadingButton-loadingIndicator': {
+              [`&.${buttonClasses.loadingIndicator}`]: {
                 color: overrideStyle?.mainColor ?? theme.palette.primary.main,
               },
             }}
@@ -388,7 +382,7 @@ function WidgetLikeField({
             <Typography variant="bodyMediumStrong">
               {writeContractOptions[contractCallIndex].label}
             </Typography>
-          </LoadingButton>
+          </Button>
         )
       )}
     </Box>
