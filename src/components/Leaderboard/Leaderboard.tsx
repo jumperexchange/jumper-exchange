@@ -4,13 +4,16 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAccount } from '@lifi/wallet-management';
+import { Box } from '@mui/material';
+import useClient from 'src/hooks/useClient';
 import type { LeaderboardEntryData } from '../../hooks/useLeaderboard';
 import {
   useLeaderboardList,
   useLeaderboardUser,
 } from '../../hooks/useLeaderboard';
+import IconHeader from '../ProfilePage/Common/IconHeader';
 import { Pagination } from '../ProfilePage/Common/Pagination';
-import { PageContainer } from '../ProfilePage/ProfilePage.style';
+import { PageContainer } from '../styles';
 import {
   LeaderboardContainer,
   LeaderboardEntryDivider,
@@ -22,9 +25,6 @@ import {
 import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardEntrySkeleton } from './LeaderboardEntrySkeleton';
 import { LeaderboardUserEntry } from './LeaderboardUserEntry';
-import IconHeader from '../ProfilePage/Common/IconHeader';
-import useClient from 'src/hooks/useClient';
-import { Box } from '@mui/material';
 
 export const LEADERBOARD_LENGTH = 25;
 

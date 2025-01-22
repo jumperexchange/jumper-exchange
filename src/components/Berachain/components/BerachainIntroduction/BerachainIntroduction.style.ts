@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { alpha, styled } from '@mui/material/styles';
 import Image from 'next/image';
-import { PageContainer } from 'src/components/ProfilePage/ProfilePage.style';
+import { PageContainer } from 'src/components/styles';
 
 export const BerachainIntroductionBox = styled(PageContainer)(({ theme }) => ({
   marginTop: theme.spacing(10),

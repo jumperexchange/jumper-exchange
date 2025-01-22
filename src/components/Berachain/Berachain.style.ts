@@ -1,7 +1,7 @@
 import { Box, Button } from '@mui/material';
 import { lighten, styled } from '@mui/material/styles';
 import { inter } from 'src/fonts/fonts';
-import { PageContainer } from '../ProfilePage/ProfilePage.style';
+import { PageContainer } from '../styles';
 
 export const BerachainFrame = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.black.main,

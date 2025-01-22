@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import useClient from 'src/hooks/useClient';
 import { LeaderboardUserEntry } from '../Leaderboard/LeaderboardUserEntry';
 import IconHeader from '../ProfilePage/Common/IconHeader';
-import { PageContainer } from '../ProfilePage/ProfilePage.style';
 import { Traits as TraitsComponent } from '../ProfilePage/Traits/Traits';
 import { TraitsEntryStack } from '../ProfilePage/Traits/Traits.style';
+import { PageContainer } from '../styles';
 import {
   TraitsContainer,
   TraitsHeader,

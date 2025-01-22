@@ -5,11 +5,11 @@ import { ProfileContext } from '@/providers/ProfileProvider';
 import { useContext } from 'react';
 import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useTraits } from 'src/hooks/useTraits';
+import { PageContainer } from '../styles';
 import { AddressCard } from './AddressCard/AddressCard';
 import { LeaderboardCard } from './LeaderboardCard/LeaderboardCard';
 import { TierBox } from './LevelBox/TierBox';
 import {
-  PageContainer,
   ProfileHeaderBox,
   ProfileInfoBox,
   ProfileInfoBoxCards,
