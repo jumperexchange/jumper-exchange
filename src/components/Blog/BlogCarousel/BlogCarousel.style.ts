@@ -7,7 +7,7 @@ export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
   borderRadius: '32px',
   padding: theme.spacing(2),
   margin: theme.spacing(6, 2, 0),
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(2, 8, 0),
     padding: theme.spacing(3),
@@ -32,17 +32,25 @@ export interface SeeAllButtonContainerProps
 
 export const SeeAllButtonContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'show',
-})<SeeAllButtonContainerProps>(({ theme, show }) => ({
+})<SeeAllButtonContainerProps>(({ theme }) => ({
   width: '100%',
   display: 'flex',
   justifyContent: 'center',
-  marginTop: show ? theme.spacing(2) : 0,
+  marginTop: 0,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: theme.spacing(4),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     marginTop: theme.spacing(6),
   },
+  variants: [
+    {
+      props: ({ show }) => show,
+      style: {
+        marginTop: theme.spacing(2),
+      },
+    },
+  ],
 }));
 
 export const SeeAllButton = styled(ButtonPrimary)(({ theme }) => ({

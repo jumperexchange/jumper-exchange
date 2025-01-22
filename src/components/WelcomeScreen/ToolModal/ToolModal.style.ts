@@ -28,19 +28,18 @@ export const ModalContainer = styled(Box)<ModalContainerProps>(({ theme }) => ({
   margin: 'auto',
   paddingBottom: theme.spacing(3),
   borderRadius: '12px',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   width: `calc( 100% - ${theme.spacing(3)})`,
   maxWidth: 640,
   maxHeight: '85%',
   overflowY: 'auto',
   background:
-    theme.palette.mode === 'dark'
-      ? theme.palette.surface2.main
-      : theme.palette.surface1.main,
+    theme.palette.mode === 'light'
+      ? theme.palette.surface1.main
+      : theme.palette.surface2.main,
   '&:focus-visible': {
     outline: 0,
   },
-
   [theme.breakpoints.up('md' as Breakpoint)]: {
     margin: 0,
     width: 640,
@@ -75,18 +74,17 @@ export const ModalHeaderAppBar = styled(AppBar)<ModalHeaderAppBarProps>(
     top: 0,
     padding: theme.spacing(1.5, 3),
     backgroundColor:
-      theme.palette.mode === 'dark'
-        ? alpha(theme.palette.surface2.main, 0.2)
-        : alpha(theme.palette.surface1.main, 0.84),
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.surface1.main, 0.84)
+        : alpha(theme.palette.surface2.main, 0.2),
     backdropFilter: 'blur(12px)',
     boxShadow: 'unset',
     backgroundImage: 'unset',
-
     '@supports ( -moz-appearance:none )': {
       backgroundColor:
-        theme.palette.mode === 'dark'
-          ? theme.palette.surface2.main
-          : theme.palette.surface1.main,
+        theme.palette.mode === 'light'
+          ? theme.palette.surface1.main
+          : theme.palette.surface2.main,
     },
   }),
 );

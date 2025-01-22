@@ -1,5 +1,5 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -74,8 +74,9 @@ export const QuestCard = ({
 }: QuestCardProps) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { apy, isLoading, isSuccess } = useMissionsMaxAPY(claimingIds);
+  const { apy } = useMissionsMaxAPY(claimingIds);
   const { trackEvent } = useUserTracking();
+  const theme = useTheme();
   const handleClick = () => {
     trackEvent({
       category: TrackingCategory.Quests,
@@ -143,7 +144,9 @@ export const QuestCard = ({
                     fontSize="14px"
                     fontWeight={700}
                     lineHeight="18px"
-                    color={'#ffffff'}
+                    sx={(theme) => ({
+                      color: theme.palette.white.main,
+                    })}
                   >
                     {`${Number(apy).toFixed(1)}%`}
                   </SoraTypography>
@@ -158,7 +161,9 @@ export const QuestCard = ({
                     fontSize="14px"
                     fontWeight={700}
                     lineHeight="18px"
-                    color={'#ffffff'}
+                    sx={(theme) => ({
+                      color: theme.palette.white.main,
+                    })}
                   >
                     {rewardRange ? rewardRange : `VAR.%`}
                   </SoraTypography>
@@ -175,7 +180,9 @@ export const QuestCard = ({
                   fontSize="14px"
                   fontWeight={700}
                   lineHeight="18px"
-                  color={'#ffffff'}
+                  sx={(theme) => ({
+                    color: theme.palette.white.main,
+                  })}
                 >
                   {`${points}`}
                 </SoraTypography>
@@ -183,7 +190,9 @@ export const QuestCard = ({
                   {!completed ? (
                     <SuperfestXPIcon size={16} />
                   ) : (
-                    <CheckCircleIcon sx={{ width: '16px', color: '#ffffff' }} />
+                    <CheckCircleIcon
+                      sx={{ width: '16px', color: theme.palette.white.main }}
+                    />
                   )}
                 </XPIconBox>
               </XPDisplayBox>
@@ -203,7 +212,7 @@ export const QuestCard = ({
                 border: '2px dotted',
                 padding: '16px',
                 '&:hover': {
-                  color: '#FFFFFF',
+                  color: theme.palette.white.main,
                   backgroundColor: '#ff0420',
                 },
               }}

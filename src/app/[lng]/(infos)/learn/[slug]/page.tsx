@@ -1,13 +1,14 @@
 import { getArticles } from '@/app/lib/getArticles';
 import { siteName } from '@/app/lib/metadata';
 import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
+import { getSiteUrl } from '@/const/urls';
 import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
 import { sliceStrToXChar } from '@/utils/splitStringToXChar';
 import type { Metadata } from 'next';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
 import { getArticlesByTag } from '../../../../lib/getArticlesByTag';
 import { getCookies } from '../../../../lib/getCookies';
-import { getSiteUrl } from '@/const/urls';
 
 export async function generateMetadata({
   params,
@@ -61,17 +62,21 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const article = await getArticleBySlug(params.slug);
   const { activeThemeMode } = getCookies();
 
-  const currentTags = (
-    article?.data?.data[0] as BlogArticleData
-  )?.attributes?.tags.data.map((el) => el?.id);
-  const relatedArticles = await getArticlesByTag(
-    article?.data?.data[0]?.id,
-    currentTags,
-  );
+  const articleData: BlogArticleData = article.data.data?.[0];
 
+  if (!articleData) {
+    return notFound();
+  }
+
+  if (articleData.attributes?.RedirectURL) {
+    return permanentRedirect(articleData.attributes?.RedirectURL);
+  }
+
+  const currentTags = articleData?.attributes?.tags.data.map((el) => el?.id);
+  const relatedArticles = await getArticlesByTag(articleData.id, currentTags);
   return (
     <LearnArticlePage
-      article={article.data.data}
+      article={articleData}
       url={article.url}
       articles={relatedArticles.data}
       activeThemeMode={activeThemeMode}
@@ -83,7 +88,7 @@ export async function generateStaticParams() {
   const articles = await getArticles();
 
   const data = articles.data.map((article) => ({
-    slug: article.attributes.Slug,
+    slug: article.attributes?.Slug,
   }));
 
   return data;

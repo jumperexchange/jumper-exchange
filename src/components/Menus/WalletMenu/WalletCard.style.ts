@@ -2,22 +2,20 @@
 
 import { ButtonTransparent } from '@/components/Button';
 import type { Breakpoint } from '@mui/material';
-import { alpha, Avatar, Badge, Container } from '@mui/material';
+import { Avatar, Badge, Container } from '@mui/material';
 import type { ButtonProps as MuiButtonProps } from '@mui/material/Button/Button';
 import { styled } from '@mui/material/styles';
 
-export const WalletAvatar = styled(Avatar)(({ theme }) => ({
+export const WalletAvatar = styled(Avatar)(() => ({
   margin: 'auto',
   height: 40,
   width: 40,
   backgroundColor: 'transparent',
-
   '> img': {
     height: '100%',
     width: '100%',
     objectFit: 'contain',
   },
-  // mask: avatarMask32,
 }));
 
 export const WalletCardContainer = styled(Container)(({ theme }) => ({
@@ -31,7 +29,7 @@ export const WalletCardContainer = styled(Container)(({ theme }) => ({
   },
 }));
 
-export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
+export const WalletCardButtonContainer = styled(Container)(() => ({
   display: 'grid',
   gridTemplateRows: 'repeat(2, auto)',
   gridTemplateColumns: '1fr 1fr 1fr',
@@ -43,7 +41,7 @@ export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
   margin: 0,
 }));
 
-export const WalletCardBadge = styled(Badge)(({ theme }) => ({
+export const WalletCardBadge = styled(Badge)(() => ({
   borderRadius: '50%',
   '> .MuiAvatar-root': {
     '+ .MuiBadge-badge .MuiAvatar-root': {
@@ -56,15 +54,9 @@ export const WalletCardBadge = styled(Badge)(({ theme }) => ({
 export const Button = styled(ButtonTransparent)<MuiButtonProps>(
   ({ theme }) => ({
     minWidth: 'auto',
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.08)
-        : alpha(theme.palette.primary.main, 0.42),
+    backgroundColor: theme.palette.bgQuaternary.main,
     '&:hover': {
-      backgroundColor:
-        theme.palette.mode === 'light'
-          ? alpha(theme.palette.primary.main, 0.12)
-          : alpha(theme.palette.primary.main, 0.56),
+      backgroundColor: theme.palette.bgQuaternary.hover,
     },
   }),
 );

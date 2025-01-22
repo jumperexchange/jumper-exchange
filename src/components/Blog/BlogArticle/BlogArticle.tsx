@@ -31,46 +31,38 @@ import {
 
 import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
 import { Tag } from '@/components/Tag.style';
-import type { AuthorData, StrapiImageData, TagData } from '@/types/strapi';
+import type { BlogArticleData } from '@/types/strapi';
 import type { ThemeMode } from '@/types/theme';
-import { formatDate } from '@/utils/formatDate';
 import { readingTime } from '@/utils/readingTime';
-import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
 import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
 
 interface BlogArticleProps {
-  title: string;
-  subtitle?: string;
-  content?: RootNode[];
-  tags?: TagData;
-  author?: AuthorData;
-  slug: string | undefined;
-  publishedAt?: string;
-  updatedAt?: string;
-  createdAt?: string;
-  image?: StrapiImageData;
+  article: BlogArticleData;
   baseUrl?: string;
   activeThemeMode?: ThemeMode;
   id?: number;
 }
 
 export const BlogArticle = ({
-  title,
-  subtitle,
-  content,
-  author,
-  tags,
-  id,
-  publishedAt,
-  updatedAt,
-  createdAt,
-  slug,
-  image,
+  article,
   baseUrl,
   activeThemeMode,
 }: BlogArticleProps) => {
   const theme = useTheme();
+  const {
+    Subtitle: subtitle,
+    Title: title,
+    Content: content,
+    Slug: slug,
+    author,
+    publishedAt,
+    createdAt,
+    updatedAt,
+    tags,
+    Image: image,
+  } = article.attributes;
+  const id = article.id;
   const minRead = readingTime(content);
   const { t } = useTranslation();
 
@@ -79,10 +71,14 @@ export const BlogArticle = ({
       <BlogArticleContainer>
         <BlogArticleContentContainer sx={{ marginTop: 0 }}>
           <BlogArticleTopHeader>
-            {tags?.data[0]?.attributes.Title ? (
+            {tags?.data[0]?.attributes?.Title ? (
               <Tag
-                color={tags.data[0]?.attributes.TextColor}
-                backgroundColor={tags.data[0]?.attributes.BackgroundColor}
+                sx={{
+                  ...(tags.data[0]?.attributes?.TextColor && {
+                    color: tags.data[0]?.attributes?.TextColor,
+                  }),
+                }}
+                backgroundColor={tags.data[0]?.attributes?.BackgroundColor}
                 component="span"
                 variant="bodyMediumStrong"
                 key={`blog-article-tag-${tags.data[0]?.id}`}
@@ -95,7 +91,9 @@ export const BlogArticle = ({
             {createdAt ? (
               <BlogArticleHeaderMeta>
                 <BlogArticleHeaderMetaDate variant="bodyXSmall" as="span">
-                  {formatDate(publishedAt || createdAt)}
+                  {t('format.shortDate', {
+                    value: new Date(publishedAt || createdAt),
+                  })}
                 </BlogArticleHeaderMetaDate>
                 <span>{t('blog.minRead', { minRead: minRead })}</span>
               </BlogArticleHeaderMeta>
@@ -125,7 +123,7 @@ export const BlogArticle = ({
                 <BlogAuthorAvatar
                   width={64}
                   height={64}
-                  src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
+                  src={`${baseUrl}${author.data.attributes?.Avatar.data.attributes?.url}`}
                   alt={`${author.data.attributes?.Name}'s avatar`}
                 />
               ) : (
@@ -155,7 +153,7 @@ export const BlogArticle = ({
                     variant="bodyXSmallStrong"
                     component="span"
                   >
-                    {author.data?.attributes.Name}
+                    {author.data?.attributes?.Name}
                   </BlogArticlAuthorName>
                 ) : (
                   <BlogArticlAuthorNameSkeleton variant="text" />
@@ -198,11 +196,11 @@ export const BlogArticle = ({
           )}
           <Divider />
           <BlogAuthorWrapper>
-            {author?.data?.attributes?.Avatar.data?.attributes.url ? (
+            {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
               <BlogAuthorAvatar
                 width={64}
                 height={64}
-                src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
+                src={`${baseUrl}${author.data.attributes?.Avatar.data.attributes?.url}`}
                 alt="author-avatar"
               />
             ) : (

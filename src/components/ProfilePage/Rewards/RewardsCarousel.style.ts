@@ -1,18 +1,16 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { BoxProps, Breakpoint, IconButtonProps } from '@mui/material';
 import {
   Box,
-  Typography,
-  styled,
   IconButton as MuiIconButton,
+  Typography,
   alpha,
-  darken,
+  styled,
 } from '@mui/material';
-import type { IconButtonProps } from '@mui/material';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '24px',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   display: 'flex',
   width: '100%',
   justifyContent: 'start',
@@ -35,9 +33,7 @@ export const RewardsCarouselHeader = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<BoxProps>(({ theme }) => ({
   display: 'flex',
-  ...(theme.palette.mode === 'dark' && {
-    color: theme.palette.white.main,
-  }),
+  color: theme.palette.text.primary,
   justifyContent: 'space-between',
 }));
 
@@ -61,7 +57,7 @@ export const RewardsCarouselTitle = styled(Typography, {
 export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'light'
-      ? '#FFFFFF'
+      ? theme.palette.white.main
       : alpha(theme.palette.white.main, 0.08),
   display: 'flex',
   alignItems: 'center',
@@ -113,14 +109,8 @@ export const RewardsOpenIconButton = styled(MuiIconButton, {
   transition: 'background 0.3s',
   width: theme.spacing(6),
   height: theme.spacing(6),
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.primary.main, 0.08)
-      : alpha(theme.palette.primary.main, 0.42),
+  backgroundColor: theme.palette.bgQuaternary.main,
   '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.12)
-        : alpha(theme.palette.primary.main, 0.56),
+    backgroundColor: theme.palette.bgQuaternary.hover,
   },
 }));

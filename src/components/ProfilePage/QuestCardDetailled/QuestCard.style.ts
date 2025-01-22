@@ -22,7 +22,7 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   paddingRight: '16px',
   backgroundColor:
     theme.palette.mode === 'light'
-      ? '#FFFFFF'
+      ? theme.palette.white.main
       : alpha(theme.palette.white.main, 0.08),
   borderBottomLeftRadius: '8px',
   borderBottomRightRadius: '8px',
@@ -59,20 +59,29 @@ export interface QuestPlatformMainBoxProps extends Omit<BoxProps, 'component'> {
 
 export const QuestPlatformMainBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'platformName',
-})<QuestPlatformMainBoxProps>(({ platformName }) => ({
+})<QuestPlatformMainBoxProps>({
   display: 'flex',
-  justifyContent: platformName ? 'space-between' : 'flex-end',
+  justifyContent: 'flex-end',
   alignItems: 'center',
-}));
+  variants: [
+    {
+      props: ({ platformName }) => platformName,
+      style: {
+        justifyContent: 'space-between',
+      },
+    },
+  ],
+});
 
 export interface XPDisplayBoxProps extends Omit<BoxProps, 'component'> {
   active?: boolean;
+  completed?: boolean;
 }
 
 export const XPDisplayBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<XPDisplayBoxProps>(({ active }) => ({
-  marginRight: active ? '8px' : undefined,
+  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'completed',
+})<XPDisplayBoxProps>({
+  marginRight: undefined,
   display: 'flex',
   height: '28px',
   alignContent: 'center',
@@ -80,26 +89,22 @@ export const XPDisplayBox = styled(Box, {
   alignItems: 'center',
   borderRadius: '128px',
   padding: '8px',
-}));
+  variants: [
+    {
+      props: ({ active }) => active,
+      style: {
+        marginRight: '8px',
+      },
+    },
+    {
+      props: ({ completed }) => completed,
+      style: { backgroundColor: '#42B852' },
+    },
+  ],
+});
 
 export const XPIconBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignContent: 'flex-end',
   justifyContent: 'flex-end',
-}));
-
-export const BadgeRelativeBox = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  display: 'flex',
-  justifyContent: 'center',
-  zIndex: 1,
-}));
-
-export const AbsoluteCenterTraitsBox = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  cursor: 'help',
-  backgroundColor: '#653ba3', //'rgba(84, 49, 136, 0.4)',
-  borderRadius: '32px',
-  padding: theme.spacing(0.5, 2),
-  marginTop: theme.spacing(1),
 }));

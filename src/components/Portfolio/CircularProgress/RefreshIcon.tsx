@@ -9,8 +9,8 @@ const getProgressValue = (updatedAt: number, timeToUpdate: number) =>
     ? Math.min(100, ((Date.now() - updatedAt) / timeToUpdate) * 100)
     : 0;
 
-const getSecondsToUpdate = (updatedAt: number, timeToUpdate: number) =>
-  Math.max(Math.round((timeToUpdate - (Date.now() - updatedAt)) / 1000), 0);
+// const getSecondsToUpdate = (updatedAt: number, timeToUpdate: number) =>
+//   Math.max(Math.round((timeToUpdate - (Date.now() - updatedAt)) / 1000), 0);
 
 const RefreshIcon: React.FC<
   {
@@ -49,12 +49,12 @@ const RefreshIcon: React.FC<
         title={t('navbar.walletMenu.totalBalanceRefresh')}
         placement="top"
         enterTouchDelay={0}
-        componentsProps={{
-          popper: { sx: { zIndex: 25000 } },
-        }}
         arrow
         sx={{
           zIndex: 25000,
+        }}
+        slotProps={{
+          popper: { sx: { zIndex: 25000 } },
         }}
       >
         <CircularBox>

@@ -1,33 +1,8 @@
 import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { StrapiImageData } from './strapi';
+import type { QuestDetails } from '@/types/questDetails';
 
 // PDA Type
-
-type Claim = {
-  points: number;
-  level: string;
-  transactions?: number;
-  chains?: number;
-  volume?: string;
-};
-
-type Owner = {
-  gatewayId: string;
-  walletId?: string;
-};
-
-type DataModel = {
-  id: string;
-};
-
-type DataAsset = {
-  claim: Claim;
-  title: string;
-  description: string;
-  image: string;
-  dataModel: DataModel;
-  owner: Owner;
-};
-
 export interface Reward {
   description: string;
   image: string;
@@ -93,13 +68,6 @@ type ImageAttributes = {
   updatedAt: string;
 };
 
-type ImageData = {
-  data: {
-    id: number;
-    attributes: ImageAttributes;
-  };
-};
-
 type BannerImageData = {
   data: [
     {
@@ -116,14 +84,24 @@ type QuestsPlatformAttributes = {
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
-  Logo: ImageData;
+  Logo: StrapiImageData;
 };
 
 type QuestsPlatformData = {
   data: { id: number; attributes: QuestsPlatformAttributes };
 };
 
-type QuestAttributes = {
+export interface QuestChains {
+  name: string;
+  logo: string;
+}
+
+export interface CustomInformation {
+  chains: QuestChains[];
+  [key: string]: any;
+}
+
+export type QuestAttributes = {
   UID: string;
   Title: string;
   Description?: string;
@@ -141,8 +119,8 @@ type QuestAttributes = {
   ClaimingId?: string;
   Subtitle?: string;
   Steps?: RootNode[];
-  CustomInformation?: any; // JSON object that can change and where type is not enforced inside Strapi yet.
-  Image: ImageData;
+  CustomInformation?: QuestDetails; // JSON object that can change and where type is not enforced inside Strapi yet.
+  Image: StrapiImageData;
   BannerImage: BannerImageData;
   quests_platform: QuestsPlatformData;
 };

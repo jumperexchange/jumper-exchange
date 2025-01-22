@@ -7,7 +7,13 @@ import { mainnet } from 'wagmi/chains';
 import { normalize } from 'viem/ens';
 import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 
-export const useWalletAddressImg = (userAddress?: string) => {
+interface UseWalletAddressImgProps {
+  userAddress?: string;
+}
+
+export const useWalletAddressImg = ({
+  userAddress,
+}: UseWalletAddressImgProps) => {
   const { imageLink: merkleNFTImg } = useMercleNft({ userAddress });
   const { data: ensImage } = useEnsAvatar({
     chainId: mainnet.id,

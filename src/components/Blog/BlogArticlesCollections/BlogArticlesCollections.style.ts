@@ -2,7 +2,7 @@ import type { Breakpoint } from '@mui/material';
 import { Grid } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import { CarouselTitle } from '../BlogCarousel';
+import { SectionTitle } from 'src/components/ProfilePage/ProfilePage.style';
 
 export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
   display: 'flex',
@@ -18,7 +18,7 @@ export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
   marginBottom: theme.spacing(14.5),
   padding: theme.spacing(2),
   margin: theme.spacing(6, 2, 0),
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   ':last-of-type': {
     marginBottom: theme.spacing(6),
   },
@@ -48,7 +48,7 @@ export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
   },
 }));
 
-export const BlogArticlesCollectionsTitle = styled(CarouselTitle)(
+export const BlogArticlesCollectionsTitle = styled(SectionTitle)(
   ({ theme }) => ({
     color: theme.palette.text.primary,
   }),

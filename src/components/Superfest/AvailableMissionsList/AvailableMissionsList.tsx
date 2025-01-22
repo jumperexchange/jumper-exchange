@@ -27,6 +27,7 @@ const category = [
   'Derivatives',
   'Yield',
 ];
+
 interface AvailableMissionsListProps {
   quests?: Quest[];
   pastCampaigns?: string[];
@@ -100,18 +101,15 @@ export const AvailableMissionsList = ({
       >
         {!loading && quests
           ? quests?.map((quest: Quest, index: number) => {
-              const baseURL = quest.attributes.Image?.data?.attributes?.url;
-              const imgURL = new URL(baseURL, url.origin);
-              const rewards = quest.attributes.CustomInformation?.['rewards'];
+              const imgURL = new URL(
+                quest.attributes?.Image?.data?.attributes?.url,
+                url.origin,
+              );
               const rewardType =
                 quest.attributes?.CustomInformation?.['rewardType'];
               const missionType =
                 quest?.attributes?.CustomInformation?.['missionType'];
-              const rewardRange =
-                quest.attributes?.CustomInformation?.['rewardRange'];
-              const chains = quest.attributes.CustomInformation?.['chains'];
-              const claimingIds =
-                quest.attributes?.CustomInformation?.['claimingIds'];
+              const chains = quest.attributes?.CustomInformation?.['chains'];
               const rewardsIds =
                 quest.attributes?.CustomInformation?.['rewardsIds'];
               //todo: exclude in a dedicated helper function
@@ -134,9 +132,9 @@ export const AvailableMissionsList = ({
               if (
                 categoryFilter &&
                 categoryFilter.length > 0 &&
-                (!quest.attributes.Category ||
-                  (quest.attributes.Category &&
-                    !categoryFilter.includes(quest.attributes.Category)))
+                (!quest.attributes?.Category ||
+                  (quest.attributes?.Category &&
+                    !categoryFilter.includes(quest.attributes?.Category)))
               ) {
                 return undefined;
               }
@@ -156,26 +154,30 @@ export const AvailableMissionsList = ({
                 <QuestCard
                   key={`available-mission-${index}`}
                   active={true}
-                  title={quest?.attributes.Title}
+                  title={quest?.attributes?.Title}
                   image={String(imgURL)}
                   id={quest.id}
-                  label={quest?.attributes.Label}
-                  points={quest?.attributes.Points}
-                  link={quest?.attributes.Link}
-                  startDate={quest?.attributes.StartDate}
-                  endDate={quest?.attributes.EndDate}
+                  label={quest?.attributes?.Label}
+                  points={quest?.attributes?.Points}
+                  link={quest?.attributes?.Link}
+                  startDate={quest?.attributes?.StartDate}
+                  endDate={quest?.attributes?.EndDate}
                   platformName={
-                    quest?.attributes.quests_platform?.data?.attributes?.Name
+                    quest?.attributes?.quests_platform?.data?.attributes?.Name
                   }
-                  slug={quest?.attributes.Slug}
+                  slug={quest?.attributes?.Slug}
                   chains={chains}
-                  rewards={rewards}
+                  rewards={quest.attributes?.CustomInformation?.['rewards']}
                   completed={completed}
-                  claimingIds={claimingIds}
-                  variableWeeklyAPY={
-                    quest?.attributes.Points > 0 && rewardType === 'weekly'
+                  claimingIds={
+                    quest.attributes?.CustomInformation?.['claimingIds']
                   }
-                  rewardRange={rewardRange}
+                  variableWeeklyAPY={
+                    quest?.attributes?.Points > 0 && rewardType === 'weekly'
+                  }
+                  rewardRange={
+                    quest.attributes?.CustomInformation?.['rewardRange']
+                  }
                 />
               );
             })

@@ -15,9 +15,9 @@ const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   color: theme.palette.text.primary,
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'dark'
-        ? theme.palette.primary.main
-        : theme.palette.accent1.main,
+      theme.palette.mode === 'light'
+        ? theme.palette.accent1.main
+        : theme.palette.primary.main,
   },
 }));
 
@@ -33,15 +33,9 @@ export const ButtonPrimary = styled(ButtonBase)<MuiButtonProps>(
 
 export const ButtonSecondary = styled(ButtonBase)<MuiButtonProps>(
   ({ theme }) => ({
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.08)
-        : alpha(theme.palette.primary.main, 0.42),
+    backgroundColor: theme.palette.bgQuaternary.main,
     '&:hover': {
-      backgroundColor:
-        theme.palette.mode === 'light'
-          ? alpha(theme.palette.primary.main, 0.12)
-          : alpha(theme.palette.primary.main, 0.56),
+      backgroundColor: theme.palette.bgQuaternary.hover,
     },
   }),
 );
@@ -49,14 +43,14 @@ export const ButtonSecondary = styled(ButtonBase)<MuiButtonProps>(
 export const ButtonTransparent = styled(ButtonBase)<MuiButtonProps>(
   ({ theme }) => ({
     backgroundColor:
-      theme.palette.mode === 'dark'
-        ? alpha(theme.palette.white.main, 0.12)
-        : alpha(theme.palette.black.main, 0.08),
+      theme.palette.mode === 'light'
+        ? alpha(theme.palette.black.main, 0.08)
+        : alpha(theme.palette.white.main, 0.12),
     '&:hover': {
       backgroundColor:
-        theme.palette.mode === 'dark'
-          ? alpha(theme.palette.white.main, 0.16)
-          : alpha(theme.palette.black.main, 0.12),
+        theme.palette.mode === 'light'
+          ? alpha(theme.palette.black.main, 0.12)
+          : alpha(theme.palette.white.main, 0.16),
     },
     '&:before': {
       content: '" "',
@@ -75,26 +69,17 @@ export const ButtonTransparent = styled(ButtonBase)<MuiButtonProps>(
   }),
 );
 
-export const SuperfestButton = styled(ButtonBase)<MuiButtonProps>(
+export const LevelButton = styled(ButtonSecondary)<MuiButtonProps>(
   ({ theme }) => ({
-    backgroundColor:
+    display: 'flex',
+    color:
       theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.08)
-        : alpha(theme.palette.primary.main, 0.42),
-    '&:hover': {
-      backgroundColor:
-        theme.palette.mode === 'light'
-          ? alpha(theme.palette.primary.main, 0.12)
-          : alpha(theme.palette.primary.main, 0.56),
-    },
+        ? theme.palette.primary.main
+        : theme.palette.white.main,
+    justifyContent: 'center',
+    alignItems: 'center',
+    pointerEvents: 'none',
+    paddingLeft: '12px',
+    height: '32px',
   }),
 );
-
-export const LevelButton = styled(ButtonSecondary)<MuiButtonProps>(() => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  pointerEvents: 'none',
-  paddingLeft: '12px',
-  height: '32px',
-}));

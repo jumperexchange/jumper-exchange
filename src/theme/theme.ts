@@ -1,9 +1,8 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
 import type { ComponentsOverrides, ComponentsVariants } from '@mui/material';
-import { darken } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
-import { alpha, lighten, createTheme } from '@mui/material/styles';
+import { alpha, createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
@@ -27,10 +26,6 @@ declare module '@mui/material/styles' {
     borderRadiusSecondary: number;
   }
 
-  interface Theme {
-    shape: Shape;
-  }
-
   interface ThemeOptions {
     shape?: Partial<Shape>;
   }
@@ -51,7 +46,10 @@ declare module '@mui/material/styles' {
     bg: Palette['primary'];
     bgSecondary: Palette['primary'];
     bgTertiary: Palette['primary'];
-    shadow: Palette['primary'];
+    bgQuaternary: {
+      main: string;
+      hover: string;
+    };
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
     alphaDark300: Palette['primary'];
@@ -86,7 +84,7 @@ declare module '@mui/material/styles' {
     bg?: PaletteOptions['primary'];
     bgSecondary?: PaletteOptions['primary'];
     bgTertiary?: PaletteOptions['primary'];
-    shadow?: PaletteOptions['primary'];
+    bgQuaternary?: PaletteOptions['primary'];
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
     alphaDark300?: PaletteOptions['primary'];
@@ -122,11 +120,23 @@ declare module '@mui/material/styles' {
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
+    titleSmall: React.CSSProperties;
+    titleXSmall: React.CSSProperties;
+    title2XSmall: React.CSSProperties;
+    urbanistTitleXSmall: React.CSSProperties;
+    urbanistTitleLarge: React.CSSProperties;
+    urbanistTitleXLarge: React.CSSProperties;
+    urbanistTitle2XLarge: React.CSSProperties;
+    urbanistTitle3XLarge: React.CSSProperties;
+    urbanistTitleMedium: React.CSSProperties;
+    urbanistBodyLarge: React.CSSProperties;
+    urbanistBodyXLarge: React.CSSProperties;
+    urbanistBody2XLarge: React.CSSProperties;
+    titleLarge: React.CSSProperties;
   }
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
-    brandHeaderXLarge: React.CSSProperties;
     headerDisplay?: React.CSSProperties;
     headerXLarge?: React.CSSProperties;
     headerLarge?: React.CSSProperties;
@@ -143,6 +153,20 @@ declare module '@mui/material/styles' {
     bodySmall: React.CSSProperties;
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
+    brandHeaderXLarge: React.CSSProperties;
+    titleSmall: React.CSSProperties;
+    titleXSmall: React.CSSProperties;
+    title2XSmall: React.CSSProperties;
+    urbanistTitleXSmall: React.CSSProperties;
+    urbanistTitleLarge: React.CSSProperties;
+    urbanistTitleXLarge: React.CSSProperties;
+    urbanistTitle2XLarge: React.CSSProperties;
+    urbanistTitle3XLarge: React.CSSProperties;
+    urbanistTitleMedium: React.CSSProperties;
+    urbanistBodyLarge: React.CSSProperties;
+    urbanistBodyXLarge: React.CSSProperties;
+    urbanistBody2XLarge: React.CSSProperties;
+    titleLarge: React.CSSProperties;
   }
 }
 declare module '@mui/material/Button' {
@@ -163,7 +187,7 @@ declare module '@mui/material/Button' {
     bg: true;
     bgSecondary: true;
     bgTertiary: true;
-    shadow: true;
+    bgQuaternary: true;
     alphaDark100: true;
     alphaDark200: true;
     alphaDark300: true;
@@ -202,6 +226,19 @@ declare module '@mui/material/Typography' {
     bodyXSmallStrong: true;
     bodyXSmall: true;
     brandHeaderXLarge: true;
+    titleSmall: true;
+    titleXSmall: true;
+    title2XSmall: true;
+    urbanistTitleXSmall: true;
+    urbanistTitleLarge: true;
+    urbanistTitle2XLarge: true;
+    urbanistTitleXLarge: true;
+    urbanistTitle3XLarge: true;
+    urbanistTitleMedium: true;
+    urbanistBodyLarge: true;
+    urbanistBodyXLarge: true;
+    urbanistBody2XLarge: true;
+    titleLarge: true;
   }
 }
 
@@ -233,7 +270,6 @@ const themeCustomized = createTheme({
           pointerEvents: 'none',
           backgroundColor: theme.palette.bg.main,
           // typed-safe access to the `variant` prop
-
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
@@ -248,12 +284,33 @@ const themeCustomized = createTheme({
         },
       },
     },
-    MuiSnackbar: {
+    MuiAccordion: {
       styleOverrides: {
         root: () => ({
+          ':last-of-type': {
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+          },
+          boxShadow: 'unset',
+          margin: 0,
+        }),
+      },
+    },
+    MuiSnackbar: {
+      styleOverrides: {
+        root: ({ theme }) => ({
           top: 80,
-          [themeBase.breakpoints.up('sm' as Breakpoint)]: {
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
             top: 80,
+          },
+        }),
+      },
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: () => ({
+          [themeBase.breakpoints.up('lg' as Breakpoint)]: {
+            maxWidth: 1280,
           },
         }),
       },
@@ -276,6 +333,16 @@ const themeCustomized = createTheme({
         img: {
           objectFit: 'contain',
         },
+      },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.text.primary,
+          '&.Mui-focused': {
+            color: theme.palette.text.primary,
+          },
+        }),
       },
     },
     MuiCssBaseline: {
@@ -314,6 +381,28 @@ const themeCustomized = createTheme({
         },
       },
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            '& .MuiOutlinedInput-notchedOutline': {
+              border: '1px solid #554F4E',
+            },
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            border: '1px solid #554F4E',
+          },
+          '&.Mui-focused': {
+            '& .MuiOutlinedInput-notchedOutline': {
+              border: '1px solid #554F4E',
+            },
+            '& .MuiFormLabel-root': {
+              color: 'inherit',
+            },
+          },
+        },
+      },
+    },
     MuiTypography: {
       defaultProps: {
         variantMapping: {
@@ -334,6 +423,11 @@ const themeCustomized = createTheme({
           bodyXSmallStrong: 'p',
           bodyXSmall: 'p',
           brandHeaderXLarge: 'h1',
+          urbanistTitleLarge: 'p',
+          urbanistTitle2XLarge: 'p',
+          urbanistTitle3XLarge: 'h1',
+          urbanistBodyLarge: 'p',
+          urbanistBodyXLarge: 'p',
         },
       },
     },
@@ -526,7 +620,7 @@ const themeCustomized = createTheme({
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '14px',
-      lineHeight: '20px',
+      lineHeight: '18px',
       letterSpacing: 0,
     },
     bodySmall: {
@@ -556,6 +650,89 @@ const themeCustomized = createTheme({
       fontSize: '64px',
       lineHeight: '72px',
       letterSpacing: 0,
+    },
+    title2XSmall: {
+      fontFamily: inter.style.fontFamily,
+      fontSize: '14px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '20px',
+    },
+    titleXSmall: {
+      fontFamily: inter.style.fontFamily,
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '24px',
+    },
+    titleSmall: {
+      fontFamily: inter.style.fontFamily,
+      fontSize: '24px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '32px',
+    },
+    urbanistTitleXSmall: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '24px',
+    },
+    urbanistTitleLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '48px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '56px',
+    },
+    urbanistTitleXLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '64px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '72px',
+    },
+    urbanistTitle2XLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '80px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '96px',
+    },
+    urbanistTitle3XLarge: {
+      fontSize: '96px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '112px',
+    },
+    urbanistTitleMedium: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '32px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '40px',
+    },
+    urbanistBodyLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '24px',
+    },
+    urbanistBodyXLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '24px',
+      fontStyle: 'normal',
+      fontWeight: 400,
+      lineHeight: '32px',
+    },
+    urbanistBody2XLarge: {
+      fontFamily: urbanist.style.fontFamily,
+      fontSize: '32px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '40px',
     },
     h1: {
       fontFamily: urbanist.style.fontFamily,
@@ -598,6 +775,12 @@ const themeCustomized = createTheme({
       lineHeight: themeBase.typography.pxToRem(18),
       fontWeight: 700,
     },
+    titleLarge: {
+      fontSize: '48px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '64px',
+    },
   },
 });
 
@@ -628,8 +811,9 @@ export const lightTheme = createTheme(
       bgTertiary: {
         main: themeCustomized.palette.white.main,
       },
-      shadow: {
-        main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+      bgQuaternary: {
+        hover: alpha('#653BA3', 0.12),
+        main: alpha('#31007A', 0.08),
       },
       primary: {
         light: '#31007A',
@@ -650,6 +834,11 @@ export const lightTheme = createTheme(
         light: '#31007A',
         main: '#31007A',
         dark: '#31007A',
+      },
+      accent1Alt: {
+        light: '#BEA0EB',
+        main: '#BEA0EB',
+        dark: '#BEA0EB',
       },
       accent2: {
         light: '#8700B8',
@@ -692,6 +881,12 @@ export const lightTheme = createTheme(
         dark: '#7B61FF',
       },
     },
+    shadows: [
+      'none',
+      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+      '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+      ...themeBase.shadows.slice(3),
+    ],
   }),
 );
 
@@ -712,7 +907,6 @@ export const darkTheme = createTheme(
             pointerEvents: 'none',
             backgroundColor: theme.palette.surface1.main,
             // typed-safe access to the `variant` prop
-
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               backgroundRepeat: 'no-repeat',
               backgroundSize: 'cover',
@@ -744,8 +938,9 @@ export const darkTheme = createTheme(
       bgTertiary: {
         main: themeCustomized.palette.alphaLight200.main,
       },
-      shadow: {
-        main: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+      bgQuaternary: {
+        hover: alpha('#653BA3', 0.56),
+        main: alpha('#653BA3', 0.42),
       },
       primary: {
         light: '#653BA3',
@@ -813,5 +1008,11 @@ export const darkTheme = createTheme(
         dark: '#B8ADFF',
       },
     },
+    shadows: [
+      'none',
+      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+      '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+      ...themeBase.shadows.slice(3),
+    ],
   }),
 );

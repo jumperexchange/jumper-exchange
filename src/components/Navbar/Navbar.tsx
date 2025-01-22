@@ -10,13 +10,8 @@ import {
 } from '@/const/urls';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useMenuStore } from '@/stores/menu';
-import {
-  NavbarContainer as Container,
-  Logo,
-  LogoLink,
-  NavbarButtons,
-  NavbarTabs,
-} from '.';
+import { useThemeStore } from 'src/stores/theme';
+import { Logo, LogoLink, NavbarButtons, NavbarContainer, NavbarTabs } from '.';
 
 export const Navbar = ({ disableNavbar = false }) => {
   const pathname = usePathname();
@@ -27,6 +22,7 @@ export const Navbar = ({ disableNavbar = false }) => {
     pathname?.includes(JUMPER_WALLET_PATH);
   const isWashPage = pathname?.includes(JUMPER_WASH_PATH);
   const { setWelcomeScreenClosed } = useWelcomeScreen();
+  const configTheme = useThemeStore((state) => state.configTheme);
 
   const { closeAllMenus } = useMenuStore((state) => state);
   const handleClick = () => {
@@ -44,7 +40,7 @@ export const Navbar = ({ disableNavbar = false }) => {
   }
 
   return (
-    <Container>
+    <NavbarContainer hasBlurredNavigation={configTheme?.hasBlurredNavigation}>
       <LogoLink href={logoHref} id="jumper-logo" onClick={handleClick}>
         <Logo
           variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'}
@@ -52,6 +48,6 @@ export const Navbar = ({ disableNavbar = false }) => {
       </LogoLink>
       {isWashPage && <NavbarTabs />}
       <NavbarButtons />
-    </Container>
+    </NavbarContainer>
   );
 };

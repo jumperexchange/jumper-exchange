@@ -5,14 +5,12 @@ import { alpha, styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const FeaturedArticleLink = styled(Link, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<BoxProps>(({ theme }) => ({
+export const FeaturedArticleLink = styled(Link)<BoxProps>(({ theme }) => ({
   position: 'relative',
   borderRadius: 32,
   backgroundColor: theme.palette.bgSecondary.main,
   transition: 'background-color 250ms',
-  boxShadow: theme.palette.shadow.main,
+  boxShadow: theme.shadows[1],
   display: 'grid',
   gridTemplateRows: '1fr',
   textDecoration: 'none',
@@ -33,7 +31,6 @@ export const FeaturedArticleLink = styled(Link, {
   [theme.breakpoints.up('md' as Breakpoint)]: {
     padding: theme.spacing(4),
   },
-
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     padding: theme.spacing(8),
     minHeight: 500,
@@ -48,26 +45,11 @@ export const FeaturedArticleLink = styled(Link, {
   },
 }));
 
-export const FeaturedArticleCard = styled(Box)<BoxProps>(({ theme }) => ({
-  display: 'flex',
-  backgroundColor: alpha(theme.palette.primary.main, 0.25),
-  top: theme.spacing(-4),
-  margin: theme.spacing(4, 2.5),
-  padding: theme.spacing(4),
-  borderRadius: '36px',
-  width: 'auto',
-  alignItems: 'center',
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    margin: theme.spacing(4, 2.5),
-    padding: theme.spacing(4),
-    height: 576,
-  },
-}));
-
 export const FeaturedArticleMetaContainer = styled(Box)<BoxProps>(
   ({ theme }) => ({
     display: 'flex',
     fontSize: '16px',
+    alignItems: 'center',
     color: theme.palette.text.primary,
     marginTop: theme.spacing(2),
     [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -99,10 +81,7 @@ export const FeaturedArticleImage = styled(Image)(({ theme }) => ({
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     borderRadius: '14px',
     alignSelf: 'center',
-    boxShadow:
-      theme.palette.mode === 'light'
-        ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-        : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+    boxShadow: theme.shadows[1],
   },
 }));
 
@@ -114,10 +93,7 @@ export const FeaturedArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   userSelect: 'none',
   transform: 'unset',
   alignSelf: 'flex-start',
-  boxShadow:
-    theme.palette.mode === 'light'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  boxShadow: theme.shadows[1],
   [theme.breakpoints.up('md' as Breakpoint)]: {
     alignSelf: 'center',
   },
@@ -150,7 +126,6 @@ export const FeaturedArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
   borderRadius: '12px',
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     margin: theme.spacing(4, 0),
-
     height: 112,
   },
 }));
@@ -197,7 +172,6 @@ export const FeaturedArticleDetails = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
-
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -220,7 +194,6 @@ export const FeaturedArticleTitle = styled(Typography)<TypographyProps>(
     display: '-webkit-box',
     WebkitLineClamp: 4,
     WebkitBoxOrient: 'vertical',
-
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       fontSize: '48px',
       lineHeight: '56px',

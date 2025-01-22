@@ -1,8 +1,8 @@
+import { currencyFormatter } from '@/utils/formatNumbers';
+import { getChainById } from '@/utils/tokenAndChain';
+import type { ExtendedChain, Token } from '@lifi/sdk';
 import { Link as MuiLink } from '@mui/material';
 import Link from 'next/link';
-import type { ExtendedChain, Token } from '@lifi/sdk';
-import { getChainById } from '@/utils/tokenAndChain';
-import { currencyFormatter } from '@/utils/formatNumbers';
 
 export function buildExplorerLink(
   blockExplorerUrls: string[] = [],
@@ -14,10 +14,18 @@ export function buildExplorerLink(
 
   return (
     <MuiLink
-      color="text.primary"
+      sx={(theme) => ({
+        color: theme.palette.text.primary,
+      })}
       component={Link}
       target="_blank"
-      href={`${blockExplorerUrls[0]}/tokens/${address}`}
+      href={`${blockExplorerUrls[0]}tokens/${address}`} // todo: on OP it needs to be "token/..."
+      style={{
+        display: 'block',
+        maxWidth: '100%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      }}
     >
       {address}
     </MuiLink>
@@ -33,12 +41,15 @@ export function getChainInfoData(chainInfo: ExtendedChain) {
       label: 'Block explorer urls',
       value: chainInfo.metamask?.blockExplorerUrls?.map((blockExplorerUrl) => (
         <MuiLink
-          color="text.primary"
-          sx={{ marginRight: 2 }}
+          sx={(theme) => ({
+            color: theme.palette.text.primary,
+            marginRight: 2,
+          })}
           component={Link}
           target="_blank"
           href={blockExplorerUrl}
           key={blockExplorerUrl}
+          style={{ overflowWrap: 'break-word' }}
         >
           {blockExplorerUrl}
         </MuiLink>

@@ -96,6 +96,7 @@ const WidgetQuoteImage = ({
               theme={theme || undefined}
               chain={fromChain}
               token={fromToken}
+              showSkeletons={true}
               amount={amount ? parseFloat(amount) : undefined}
               amountUSD={amountUSD ? parseFloat(amountUSD) : undefined}
               fullWidth={true}
@@ -146,5 +147,4 @@ const WidgetQuoteImage = ({
     </div>
   );
 };
-
 export default WidgetQuoteImage;

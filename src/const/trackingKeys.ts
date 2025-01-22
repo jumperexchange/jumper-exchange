@@ -52,6 +52,7 @@ export enum TrackingAction {
   ClickJumperLearnLink = 'action_click_jumper_learn_link',
   ClickJumperProfileLink = 'action_click_jumper_profile_link',
   ClickJumperScanLink = 'action_click_jumper-scan_link',
+  ClickJumperCampaignLink = 'action_click_jumper-campaign_link',
 
   // Blog
   SeeAllPosts = 'action_see_all_posts',
@@ -81,6 +82,7 @@ export enum TrackingAction {
 
   //Banner
   ClickBanner = 'action_click_banner',
+  ClickCampaignBanner = 'action_click_campaign_banner',
 }
 
 export enum TrackingCategory {
@@ -96,6 +98,7 @@ export enum TrackingCategory {
   DiscordBanner = 'cat_discord_banner',
   Wallet = 'cat_wallet',
   WalletMenu = 'cat_wallet_menu',
+  AddressMenu = 'cat_address_menu',
   Connect = 'cat_connect_wallet',
   Pageload = 'cat_pageload',
   WalletSelectMenu = 'cat_wallet_select_menu',
@@ -111,6 +114,7 @@ export enum TrackingCategory {
   Missions = 'cat_missions',
   Quests = 'cat_quests',
   Banner = 'cat_banner',
+  CampaignBanner = 'cat_campaign_banner',
 }
 
 // can be used as custom dimensions / metrics
@@ -229,4 +233,5 @@ export enum TrackingEventParameter {
 
   //Banner
   ActiveCampaign = 'param_banner_campaign',
+  ActiveCampaignBanner = 'param_campaign_banner_campaign',
 }
