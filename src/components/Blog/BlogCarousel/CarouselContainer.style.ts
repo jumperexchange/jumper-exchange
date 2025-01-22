@@ -37,9 +37,7 @@ export const CarouselHeader = styled(Box, {
   alignItems: 'center',
   marginTop: theme.spacing(1.5),
   justifyContent: 'space-between',
-  ...(theme.palette.mode === 'dark' && {
-    color: theme.palette.white.main,
-  }),
+  color: theme.palette.text.primary,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: 0,
   },
@@ -52,12 +50,19 @@ export interface CarouselNavigationContainerProps
 
 export const CarouselNavigationContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'hide',
-})<CarouselNavigationContainerProps>(({ theme, hide }) => ({
+})<CarouselNavigationContainerProps>(({ theme }) => ({
   display: 'flex',
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    ...(hide && { display: 'none' }),
     marginLeft: 3,
   },
+  variants: [
+    {
+      props: ({ hide }) => hide,
+      style: {
+        [theme.breakpoints.up('md' as Breakpoint)]: { display: 'none' },
+      },
+    },
+  ],
 }));
 
 export const CarouselNavigationButton = styled(IconButtonSecondary, {

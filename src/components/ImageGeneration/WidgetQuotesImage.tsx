@@ -147,5 +147,4 @@ const WidgetQuoteImage = ({
     </div>
   );
 };
-
 export default WidgetQuoteImage;

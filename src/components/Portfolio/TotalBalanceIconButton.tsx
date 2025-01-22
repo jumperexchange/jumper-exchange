@@ -21,12 +21,12 @@ function TotalBalanceIconButton({
       title={tooltipText}
       placement="top"
       enterTouchDelay={0}
-      componentsProps={{
-        popper: { sx: { zIndex: 2000 } },
-      }}
       arrow
       sx={{
         zIndex: 25000,
+      }}
+      slotProps={{
+        popper: { sx: { zIndex: 2000 } },
       }}
     >
       <span>

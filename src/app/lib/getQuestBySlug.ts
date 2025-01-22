@@ -1,5 +1,16 @@
-import { getQuestBy } from '@/app/lib/getQuestBy';
+import { getQuestsBy } from '@/app/lib/getQuestsBy';
 
 export async function getQuestBySlug(slug: string) {
-  return getQuestBy('Slug', slug);
+  const quests = await getQuestsBy('Slug', slug);
+
+  if (!quests) {
+    return {
+      data: undefined,
+    };
+  }
+
+  return {
+    data: quests.data.data.find((quest) => quest.attributes.Slug === slug),
+    url: quests.url,
+  };
 }

@@ -12,7 +12,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   try {
     const { data } = await getQuestBySlug(params.slug);
-    const questData = data.data[0] || undefined;
+    const questData = data;
     if (!questData) {
       throw new Error();
     }
@@ -34,8 +34,8 @@ export async function generateMetadata({
     };
 
     return {
-      title: `Jumper Berachain | ${sliceStrToXChar(questData.attributes.Title, 45)}`,
-      description: `Description of ${questData.attributes.Title}`,
+      title: `Jumper Berachain | ${sliceStrToXChar(questData.attributes?.Title, 45)}`,
+      description: `Description of ${questData.attributes?.Title}`,
       alternates: {
         canonical: `${getSiteUrl()}/berachain/explore/${params.slug}`,
       },

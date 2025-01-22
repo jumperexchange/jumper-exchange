@@ -11,11 +11,11 @@ interface StyledInfoIconProps {
   size?: number;
 }
 
-export const StyledInfoIcon = styled(InfoIcon)<StyledInfoIconProps>(
-  ({ theme, size }) => ({
-    width: size || 16,
-    height: size || 16,
-    opacity: theme.palette.mode === 'light' ? 0.24 : 0.72,
-    marginLeft: theme.spacing(1),
-  }),
-);
+export const StyledInfoIcon = styled(InfoIcon, {
+  shouldForwardProp: (prop) => prop !== 'size',
+})<StyledInfoIconProps>(({ theme, size }) => ({
+  width: size || 16,
+  height: size || 16,
+  opacity: theme.palette.mode === 'light' ? 0.24 : 0.72,
+  marginLeft: theme.spacing(1),
+}));

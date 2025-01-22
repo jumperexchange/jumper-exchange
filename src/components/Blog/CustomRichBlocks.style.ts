@@ -33,17 +33,34 @@ export const BlogParagraph = styled(Typography, {
       : 'auto';
   return {
     display: 'inline',
-    fontWeight: bold ? 700 : 400,
+    fontWeight: 400,
     color: theme.palette.text.secondary,
     textDecoration: textDecoration,
-    fontStyle: italic ? 'italic' : 'normal',
+    fontStyle: 'normal',
     fontSize: '18px',
     lineHeight: '32px',
     margin: theme.spacing(2, 0),
-    ...(quote && {
-      fontSize: '20px',
-      fontStyle: 'italic',
-    }),
+    variants: [
+      {
+        props: ({ bold }) => bold,
+        style: {
+          fontWeight: 700,
+        },
+      },
+      {
+        props: ({ italic }) => italic,
+        style: {
+          fontStyle: 'italic',
+        },
+      },
+      {
+        props: ({ quote }) => quote,
+        style: {
+          fontSize: '20px',
+          fontStyle: 'italic',
+        },
+      },
+    ],
   };
 });
 

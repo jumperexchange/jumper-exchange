@@ -21,10 +21,7 @@ export const getDefaultWidgetTheme = (
           borderRadius: '12px',
           maxWidth: 416,
           minWidth: 416,
-          boxShadow:
-            theme.palette.mode === 'light'
-              ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-              : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+          boxShadow: theme.shadows[1],
         },
       },
       shape: {

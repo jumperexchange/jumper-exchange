@@ -45,6 +45,7 @@ interface WithdrawWidgetProps {
   };
   appLink?: string;
   appName?: string;
+  fullAppName?: string;
   image?: Image & { badge?: Image };
 }
 
@@ -54,6 +55,7 @@ export const WithdrawWidget = ({
   overrideStyle = {},
   appLink,
   appName,
+  fullAppName,
   image,
 }: WithdrawWidgetProps) => {
   const wagmiConfig = useConfig();
@@ -118,7 +120,7 @@ export const WithdrawWidget = ({
       ) : withdrawType === MarketWithdrawType.input_token.id ? (
         <WithdrawWidgetInputTokenTab
           market={market}
-          appName={appName}
+          appName={fullAppName}
           chain={chain}
           image={image}
           refetch={refetch}

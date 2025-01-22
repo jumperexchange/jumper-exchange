@@ -158,9 +158,9 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             background: 'transparent',
             '&:hover': {
               backgroundColor:
-                theme.palette.mode === 'dark'
-                  ? theme.palette.alphaLight300.main
-                  : theme.palette.white.main,
+                theme.palette.mode === 'light'
+                  ? theme.palette.white.main
+                  : theme.palette.alphaLight300.main,
             },
           })}
         >

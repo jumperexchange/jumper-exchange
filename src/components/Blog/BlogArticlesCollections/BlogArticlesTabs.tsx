@@ -39,8 +39,12 @@ export function BlogArticlesTabs({
   const [pageTab, setPageTab] = useState(pagination.page);
   const chunkedPages = chunkArray(data, pagination.pageSize);
 
+  if (!chunkedPages) {
+    return null;
+  }
+
   return (
-    <BlogArticlesCollectionsContainer id={tag.attributes.Title}>
+    <BlogArticlesCollectionsContainer id={tag.attributes?.Title}>
       <Box
         sx={{
           width: '100%',
@@ -51,7 +55,7 @@ export function BlogArticlesTabs({
       >
         <CarouselHeader>
           <BlogArticlesCollectionsTitle variant="headerMedium">
-            {tag.attributes.Title}
+            {tag.attributes?.Title}
           </BlogArticlesCollectionsTitle>
         </CarouselHeader>
         {chunkedPages.map(
@@ -80,7 +84,7 @@ export function BlogArticlesTabs({
         /* todo: enable pagination*/
         pagination.pageCount > 1 && (
           <Pagination
-            id={tag.attributes.Title}
+            id={tag.attributes?.Title}
             page={pageTab}
             setPage={setPageTab}
             pagination={pagination}

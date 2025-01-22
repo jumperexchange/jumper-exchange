@@ -23,25 +23,26 @@ export const IconButtonPrimary = styled(IconButton, {
 })<IconButtonProps>(({ theme }) => ({
   color: theme.palette.white.main,
   backgroundColor:
-    theme.palette.mode === 'dark'
-      ? theme.palette.primary.main
-      : theme.palette.accent1.main,
+    theme.palette.mode === 'light'
+      ? theme.palette.accent1.main
+      : theme.palette.primary.main,
   ':hover': {
     backgroundColor:
-      theme.palette.mode === 'dark'
-        ? darken(theme.palette.primary.main, 0.16)
-        : darken(theme.palette.accent1.main, 0.16),
+      theme.palette.mode === 'light'
+        ? darken(theme.palette.accent1.main, 0.16)
+        : darken(theme.palette.primary.main, 0.16),
   },
 }));
 
 export const IconButtonSecondary = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<IconButtonProps>(({ theme }) => ({
-  color: theme.palette.mode === 'light' ? '#240752' : theme.palette.white.main, // todo add color to theme
+  // todo add color to theme
+  color: theme.palette.mode === 'light' ? '#240752' : theme.palette.white.main,
   backgroundColor:
-    theme.palette.mode === 'dark'
-      ? theme.palette.alphaLight300.main
-      : theme.palette.white.main,
+    theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : theme.palette.alphaLight300.main,
   '&:hover': {
     backgroundColor: getContrastAlphaColor(theme, '4%'),
   },
@@ -51,13 +52,13 @@ export const IconButtonAlpha = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<IconButtonProps>(({ theme }) => ({
   backgroundColor:
-    theme.palette.mode === 'dark'
-      ? theme.palette.alphaLight300.main
-      : theme.palette.alphaDark100.main,
+    theme.palette.mode === 'light'
+      ? theme.palette.alphaDark100.main
+      : theme.palette.alphaLight300.main,
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'dark'
-        ? theme.palette.alphaLight500.main
-        : theme.palette.alphaDark300.main,
+      theme.palette.mode === 'light'
+        ? theme.palette.alphaDark300.main
+        : theme.palette.alphaLight500.main,
   },
 }));
