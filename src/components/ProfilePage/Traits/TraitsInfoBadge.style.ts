@@ -10,6 +10,7 @@ export const TraitsInfo = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1),
   padding: theme.spacing(0.75),
   borderRadius: '16px',
+  width: 'fit-content',
   backgroundColor:
     theme.palette.mode === 'light'
       ? theme.palette.alphaDark100.main

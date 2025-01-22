@@ -1,13 +1,16 @@
+import { Tooltip, type SxProps, type Theme } from '@mui/material';
 import { useTraits } from 'src/hooks/useTraits';
 import { TraitsContainer, TraitsItem, TraitsRemaining } from './Traits.style';
 import { TraitsInfoBadge } from './TraitsInfoBadge';
 
-const MAX_DISPLAY_TRAITS = 5;
-
 export const Traits = ({
-  hideMoreButton = false,
+  hideTooltip = true,
+  maxDisplayTraits,
+  sx,
 }: {
-  hideMoreButton?: boolean;
+  hideTooltip?: boolean;
+  maxDisplayTraits?: number;
+  sx?: SxProps<Theme>;
 }) => {
   const { traits } = useTraits();
 
@@ -15,22 +18,42 @@ export const Traits = ({
     return null;
   }
 
-  const displayTraits = traits.slice(0, MAX_DISPLAY_TRAITS);
-  const remainingCount = Math.max(traits.length - MAX_DISPLAY_TRAITS, 0);
+  let displayTraits = traits;
+  if (maxDisplayTraits) {
+    displayTraits = traits.slice(0, maxDisplayTraits);
+  }
+  const remainingCount = Math.max(traits.length - displayTraits.length, 0);
 
   return (
-    <TraitsContainer>
+    <TraitsContainer sx={sx}>
       <TraitsInfoBadge />
       {displayTraits.map((trait, index) => (
-        <TraitsItem key={index} variant="bodyXSmallStrong">
-          {trait}
-        </TraitsItem>
+        <Tooltip
+          title={
+            hideTooltip
+              ? ''
+              : 'Todo: This should be the explanation for a certain trait.'
+          }
+          placement="top"
+          enterTouchDelay={0}
+          arrow
+        >
+          <TraitsItem
+            key={index}
+            variant="bodyXSmallStrong"
+            sx={{ ...(!hideTooltip && { cursor: 'help' }) }}
+          >
+            {trait}
+          </TraitsItem>
+        </Tooltip>
       ))}
-      {!hideMoreButton && remainingCount > 0 && (
-        <TraitsRemaining variant="bodyXSmallStrong" as={'a'} href="/traits">
-          +{remainingCount}
-        </TraitsRemaining>
-      )}
+      {maxDisplayTraits &&
+        maxDisplayTraits < traits.length &&
+        Math.max(traits.length - remainingCount, 0) > 0 && (
+          <TraitsRemaining variant="bodyXSmallStrong" as={'a'} href="/traits">
+            +{remainingCount}
+          </TraitsRemaining>
+        )}
     </TraitsContainer>
   );
 };

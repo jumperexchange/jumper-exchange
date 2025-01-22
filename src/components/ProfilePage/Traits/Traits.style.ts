@@ -1,5 +1,5 @@
 import type { TypographyProps } from '@mui/material';
-import { Stack, styled, Typography } from '@mui/material';
+import { Box, styled, Typography } from '@mui/material';
 import { CardContainer } from '../ProfilePage.style';
 
 export const TraitsContainer = styled(CardContainer)(({ theme }) => ({
@@ -13,6 +13,7 @@ export const TraitsItem = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(0.75, 1.75),
   alignContent: 'center',
   borderRadius: '16px',
+  width: 'fit-content',
   color:
     theme.palette.mode === 'light'
       ? theme.palette.primary.main
@@ -49,9 +50,11 @@ export const TraitsRemaining = styled(TraitsItem)<TraitsRemaingProps>(
   }),
 );
 
-export const TraitsEntryStack = styled(Stack)(({ theme }) => ({
+export const TraitsEntryStack = styled(Box)(({ theme }) => ({
   background: theme.palette.bgTertiary.main,
   borderRadius: '24px',
   marginTop: theme.spacing(3),
   boxShadow: theme.shadows[2],
+  flexDirection: 'column',
+  display: 'flex',
 }));

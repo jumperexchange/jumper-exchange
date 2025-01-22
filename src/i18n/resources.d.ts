@@ -156,6 +156,8 @@ interface Resources {
     traits: {
       title: 'Traits';
       description: 'Each trait represents a specific aspect of your crypto trading profile on Jumper.';
+      label: 'What traits do you have?';
+      descriptionTooltip: 'Traits and XP are updated daily to reflect ad-hoc campaigns and associated activities.';
     };
     leaderboard: {
       title: 'Leaderboard';

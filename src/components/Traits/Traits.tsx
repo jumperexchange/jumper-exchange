@@ -23,15 +23,21 @@ export const Traits = () => {
           <TraitsUpdateDateBox>
             {isClient && (
               <IconHeader
-                tooltipKey={t('traits.description')}
+                tooltipKey={t('traits.descriptionTooltip')}
                 title={`Updated: ${t('format.date', { value: new Date() })}`}
               />
             )}
           </TraitsUpdateDateBox>
         </TraitsTitleBox>
-        <LeaderboardUserEntry />
+        <LeaderboardUserEntry
+          hideRank={true}
+          loadingLabel={`${t('traits.label')}`}
+        />
         <TraitsEntryStack>
-          <TraitsComponent hideMoreButton={true} />
+          <TraitsComponent
+            hideTooltip={false}
+            sx={{ flexDirection: 'column' }}
+          />
         </TraitsEntryStack>
       </SectionContainer>
     </PageContainer>
