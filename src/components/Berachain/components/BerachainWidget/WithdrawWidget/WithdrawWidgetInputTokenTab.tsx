@@ -96,7 +96,7 @@ export const WithdrawWidgetInputTokenTab = ({
   } = useWaitForTransactionReceipt({
     chainId: market.chain_id ?? undefined,
     hash: txHash,
-    confirmations: 20,
+    confirmations: 5,
     pollingInterval: 1_000,
   });
 

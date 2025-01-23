@@ -1,16 +1,11 @@
 'use client';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Link, Typography } from '@mui/material';
-import type { Quest } from 'src/types/loyaltyPass';
 import {
   BerachainBackground as Background,
-  BerachainBackButton,
   BerachainContentContainer as Container,
 } from './Berachain.style';
 import { useEnrichedMarkets } from 'royco/hooks';
 import { notFound, useSearchParams } from 'next/navigation';
 import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
-import { EnrichedMarketDataType } from 'royco/queries';
 import { BerachainProtocolInformation } from './components/BerachainProtocolInformation/BerachainProtocolInformation';
 
 interface BerachainExploreProtocolProps {
