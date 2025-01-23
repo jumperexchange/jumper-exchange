@@ -1,28 +1,23 @@
-import WidgetFieldStartAdornment from '@/components/ZapWidget/WidgetLikeField/WidgetStartAdornment';
-import { useChains } from '@/hooks/useChains';
-import { useUserTracking } from '@/hooks/userTracking';
-import { useToken } from '@/hooks/useToken';
-import type { TokenAmount } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import {
   alpha,
   Box,
-  Button,
-  buttonClasses,
   FormHelperText,
+  Grid,
   Input,
   InputLabel,
   Stack,
   Typography,
+  Button,
+  buttonClasses,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
+import FormControl from '@mui/material/FormControl';
 import { parseUnits } from 'ethers';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { ConnectButton } from 'src/components/ConnectButton';
 import { TxConfirmation } from 'src/components/ZapWidget/Confirmation/TxConfirmation';
 import type { ProjectData } from 'src/components/ZapWidget/ZapWidget';
-import { TrackingCategory } from 'src/const/trackingKeys';
 import {
   useConfig,
   useSwitchChain,
@@ -31,14 +26,20 @@ import {
 } from 'wagmi';
 import WidgetFieldEndAdornment from './WidgetEndAdornment';
 import {
-  CustomFormControl,
   WidgetFormHelperText,
+  CustomFormControl,
 } from './WidgetLikeField.style';
+import { useChains } from '@/hooks/useChains';
+import type { TokenAmount } from '@lifi/sdk';
+import { useUserTracking } from '@/hooks/userTracking';
+import { TrackingCategory } from 'src/const/trackingKeys';
+import { useToken } from '@/hooks/useToken';
+import WidgetFieldStartAdornment from '@/components/ZapWidget/WidgetLikeField/WidgetStartAdornment';
 
-// interface Image {
-//   url: string;
-//   name: string;
-// }
+interface Image {
+  url: string;
+  name: string;
+}
 
 interface BaseContractCall {
   label: string;
@@ -218,7 +219,8 @@ function WidgetLikeField({
   return (
     <Grid container justifyContent={'center'}>
       <Grid
-        size={{ xs: 12, md: 12 }}
+        xs={12}
+        md={12}
         p={3}
         bgcolor={'#fff'}
         borderRadius={1}

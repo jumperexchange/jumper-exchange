@@ -18,12 +18,13 @@ import type { CacheToken } from '@/types/portfolio';
 import {
   AccordionDetails,
   Box,
+  Grid,
   Avatar as MuiAvatar,
   Skeleton,
   Tooltip,
+  useTheme,
 } from '@mui/material';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import Grid from '@mui/material/Grid2';
 import { useRouter } from 'next/navigation';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -42,6 +43,8 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
   const router = useRouter();
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
   const { setWalletMenuState } = useMenuStore((state) => state);
+  const theme = useTheme();
+
   const hasMultipleChains = token.chains.length > 1;
 
   const handleChange = (_: React.ChangeEvent<{}>, expanded: boolean) => {
@@ -60,12 +63,9 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
   return (
     <WalletCardContainer
       sx={(theme) => ({
-        padding: 0,
-        [theme.breakpoints.up('sm')]: {
-          padding: 0,
-        },
+        padding: '0px',
         [theme.breakpoints.up('md')]: {
-          padding: 0,
+          padding: '0px',
         },
       })}
     >
@@ -82,13 +82,8 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             },
           }}
         >
-          <Grid
-            container
-            display="flex"
-            alignItems="center"
-            sx={{ width: '100%' }}
-          >
-            <Grid size={{ xs: 2 }}>
+          <Grid container display="flex" alignItems="center">
+            <Grid item xs={2}>
               {hasMultipleChains ? (
                 <MuiAvatar>
                   <TokenImage token={token} />
@@ -126,7 +121,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                 </WalletCardBadge>
               )}
             </Grid>
-            <Grid size={{ xs: 5 }}>
+            <Grid item xs={5}>
               <TypographyPrimary>
                 {stringLenShortener(token.symbol, 8)}
               </TypographyPrimary>
@@ -157,7 +152,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                 </CustomAvatarGroup>
               )}
             </Grid>
-            <Grid size={{ xs: 5 }} style={{ textAlign: 'right' }}>
+            <Grid item xs={5} style={{ textAlign: 'right' }}>
               <TypographyPrimary>
                 {t('format.decimal', { value: token.cumulatedBalance })}
               </TypographyPrimary>

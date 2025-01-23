@@ -1,7 +1,8 @@
+import { WalletCardContainer } from '@/components/Menus';
 import PortfolioToken from '@/components/Portfolio/PortfolioToken';
 import TotalBalance from '@/components/Portfolio/TotalBalance';
 import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
-import { Stack, useTheme } from '@mui/material';
+import { Badge, Box, Skeleton, Stack, useTheme } from '@mui/material';
 import PortfolioTokenSkeleton from './PortfolioTokensSkeleton';
 
 export function Portfolio() {

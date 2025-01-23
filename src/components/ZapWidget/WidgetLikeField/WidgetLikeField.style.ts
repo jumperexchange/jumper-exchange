@@ -4,9 +4,10 @@ import {
   Button,
   FormControl,
   FormHelperText,
+  Grid,
+  Input,
   styled,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
 
 export const MaxButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'mainColor',

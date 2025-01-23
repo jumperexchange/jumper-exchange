@@ -61,7 +61,7 @@ export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
         <ModalContent container>
           {data?.map((el, index) => {
             return (
-              <ToolModalGrid key={`${title}-item-${index}`}>
+              <ToolModalGrid item key={`${title}-item-${index}`}>
                 <ToolModalAvatar src={el.logoURI} />
                 <ToolModaItemlTitle variant={'bodyXSmall'}>
                   {el.name}

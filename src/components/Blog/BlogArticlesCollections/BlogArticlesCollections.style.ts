@@ -1,5 +1,5 @@
 import type { Breakpoint } from '@mui/material';
-import Grid from '@mui/material/Grid2';
+import { Grid } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 import { SectionTitle } from 'src/components/ProfilePage/ProfilePage.style';
