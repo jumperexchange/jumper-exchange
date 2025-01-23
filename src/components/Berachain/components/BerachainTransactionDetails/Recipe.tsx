@@ -1,6 +1,6 @@
 import ActionFlow from '@/components/Berachain/components/BerachainTransactionDetails/ActionFlow';
 import { Box, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useActiveMarket } from '../../hooks/useActiveMarket';
 
@@ -31,10 +31,11 @@ function Recipe({
       container
       spacing={{ xs: 1, md: 3 }}
       mb={2}
+      sx={{ width: '100%' }}
       className="mb-2 grid grid-cols-2 gap-x-1 md:gap-x-3"
     >
       {type === 'deposit' && (
-        <Grid xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Typography variant="body2" color="textSecondary">
             Deposit Script
           </Typography>
@@ -62,7 +63,7 @@ function Recipe({
         </Grid>
       )}
       {type === 'withdraw' && (
-        <Grid xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Typography variant="body2" color="textSecondary">
             Withdrawal Script
           </Typography>

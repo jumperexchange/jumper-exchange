@@ -1,5 +1,6 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, styled } from '@mui/material/styles';
 export const BerachainMarketFilters = styled(Box)(({ theme }) => ({
