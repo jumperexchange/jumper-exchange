@@ -90,7 +90,7 @@ export const WalletCardContainer = styled(Container)(({ theme }) => ({
   },
 }));
 
-export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
+export const WalletCardButtonContainer = styled(Container)(() => ({
   display: 'grid',
   gridTemplateRows: 'repeat(2, auto)',
   gridTemplateColumns: '1fr 1fr 1fr',
@@ -102,7 +102,7 @@ export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
   margin: 0,
 }));
 
-export const WalletCardBadge = styled(Badge)(({ theme }) => ({
+export const WalletCardBadge = styled(Badge)(() => ({
   borderRadius: '50%',
   '> .MuiAvatar-root': {
     mask: avatarMask32,

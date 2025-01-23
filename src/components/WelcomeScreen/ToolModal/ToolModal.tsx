@@ -58,10 +58,13 @@ export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
             <CloseIcon />
           </ToolModalIconButton>
         </ModalHeaderAppBar>
-        <ModalContent container>
+        <ModalContent container spacing={3}>
           {data?.map((el, index) => {
             return (
-              <ToolModalGrid item key={`${title}-item-${index}`}>
+              <ToolModalGrid
+                key={`${title}-item-${index}`}
+                size={{ xs: 4, sm: 2 }}
+              >
                 <ToolModalAvatar src={el.logoURI} />
                 <ToolModaItemlTitle variant={'bodyXSmall'}>
                   {el.name}

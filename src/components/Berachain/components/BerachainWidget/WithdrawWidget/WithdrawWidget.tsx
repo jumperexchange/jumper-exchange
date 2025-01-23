@@ -1,19 +1,18 @@
-import type { SelectChangeEvent } from '@mui/material';
+import InfoBlock from '@/components/Berachain/components/BerachainWidget/InfoBlock';
 import { Box, Typography, useTheme } from '@mui/material';
 import type { EnrichedMarketDataType } from 'royco/queries';
-import InfoBlock from '@/components/Berachain/components/BerachainWidget/InfoBlock';
 
-import { useConfig } from 'wagmi';
-import { useAccount } from '@lifi/wallet-management';
-import { useMemo, useState } from 'react';
 import { CustomLoadingButton } from '@/components/Berachain/components/BerachainWidget/LoadingButton.style';
-import { switchChain } from '@wagmi/core';
-import type { ExtendedChain } from '@lifi/sdk';
-import { WithdrawWidgetInputTokenTab } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawWidgetInputTokenTab';
 import { WithdrawWidgetIncentiveTab } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawWidgetIncentiveTab';
+import { WithdrawWidgetInputTokenTab } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawWidgetInputTokenTab';
 import ConnectButton from '@/components/Navbar/ConnectButton';
-import { ClaimingInformation } from '../ClaimingInformation';
+import type { ExtendedChain } from '@lifi/sdk';
+import { useAccount } from '@lifi/wallet-management';
+import { switchChain } from '@wagmi/core';
+import { useMemo, useState } from 'react';
 import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
+import { useConfig } from 'wagmi';
+import { ClaimingInformation } from '../ClaimingInformation';
 
 export type TypedMarketWithdrawType = 'input_token' | 'incentives';
 export const MarketWithdrawType: Record<

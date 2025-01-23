@@ -1,17 +1,17 @@
-import { Box } from '@mui/material';
-import { BerachainMarketCard } from '../BerachainMarketCard/BerachainMarketCard';
-import { BerachainMarketCards } from './BerachainMarkets.style';
-import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMarketsFilters';
-import { BerachainMarketsHeader } from './BerachainMarketsHeader';
-import { useEnrichedMarkets } from 'royco/hooks';
 import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
-import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
-import { useSearchParams } from 'next/navigation';
 import {
   getFullTitle,
   includesCaseInsensitive,
 } from '@/components/Berachain/utils';
+import { Box } from '@mui/material';
+import { useSearchParams } from 'next/navigation';
+import { useEnrichedMarkets } from 'royco/hooks';
+import type { EnrichedMarketDataType } from 'royco/queries';
+import { BerachainMarketCard } from '../BerachainMarketCard/BerachainMarketCard';
+import { BerachainMarketCards } from './BerachainMarkets.style';
+import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMarketsFilters';
+import { BerachainMarketsHeader } from './BerachainMarketsHeader';
 
 export const BerachainMarkets = () => {
   const searchParam = useSearchParams();
@@ -31,7 +31,7 @@ export const BerachainMarkets = () => {
     <Box>
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
-      <BerachainMarketCards>
+      <BerachainMarketCards container rowGap={{ xs: 3, md: 4 }}>
         {(!isSuccess || !roycoData || !data) &&
           Array.from({ length: 9 }, () => 42).map((_, idx) => (
             <BerachainMarketCard

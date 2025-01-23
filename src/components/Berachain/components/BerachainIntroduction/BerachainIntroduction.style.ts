@@ -1,4 +1,5 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import type { Breakpoint } from '@mui/material/styles';
 import { alpha, styled } from '@mui/material/styles';
 import Image from 'next/image';
@@ -26,18 +27,15 @@ export const BerachainIntroductionTitle = styled(Typography)(({ theme }) => ({
 }));
 
 export const BerachainIntroductionSteps = styled(Grid)(({ theme }) => ({
-  display: 'grid',
-  gridTemplateColumns: '1fr',
   justifyItems: 'center',
   gap: theme.spacing(3),
   [theme.breakpoints.up('lg' as Breakpoint)]: {
-    gridTemplateColumns: '1fr 1fr 1fr',
     gap: theme.spacing(4),
   },
 }));
 
-export const BerachainIntroductionStep = styled(Box)(({ theme }) => ({
-  display: 'flex',
+export const BerachainIntroductionStep = styled(Grid)(({ theme }) => ({
+  // display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(4, 0, 4, 3),
   width: '100%',
@@ -49,6 +47,8 @@ export const BerachainIntroductionStep = styled(Box)(({ theme }) => ({
   border: '1px solid #383433',
   background: 'transparent',
   transition: 'background-color 300ms ease-in-out',
+  maxWidth: 500,
+  margin: 'auto',
 
   '&:hover': {
     background: alpha(theme.palette.text.primary, 0.16),

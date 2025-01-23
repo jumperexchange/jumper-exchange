@@ -4,8 +4,6 @@ import {
   Button,
   FormControl,
   FormHelperText,
-  Grid,
-  Input,
   styled,
 } from '@mui/material';
 
@@ -23,24 +21,6 @@ export const MaxButton = styled(Button, {
   '&:hover': {
     backgroundColor: mainColor ?? theme.palette.primary.main,
   },
-}));
-
-export const WidgetLikeGrid = styled(Grid)(({ theme }) => ({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  borderRadius: '16px',
-  justifyContent: 'space-between',
-  padding: theme.spacing(2),
-  marginTop: theme.spacing(2),
-  border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
-  gap: '8px',
-  backgroundColor: theme.palette.surface2.main,
-  boxShadow:
-    theme.palette.mode === 'light'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
 }));
 
 export const CustomFormControl = styled(FormControl)(({ theme }) => ({
