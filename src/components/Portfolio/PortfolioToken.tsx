@@ -63,9 +63,12 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
   return (
     <WalletCardContainer
       sx={(theme) => ({
-        padding: '0px',
+        padding: 0,
+        [theme.breakpoints.up('sm')]: {
+          padding: 0,
+        },
         [theme.breakpoints.up('md')]: {
-          padding: '0px',
+          padding: 0,
         },
       })}
     >
