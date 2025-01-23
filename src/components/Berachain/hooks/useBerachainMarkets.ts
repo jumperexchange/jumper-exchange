@@ -42,7 +42,7 @@ export const useBerachainMarkets = (): UseBerachainQuestsProps => {
 
   function findFromStrapiByUid(uid: string | null) {
     const found = data?.data.find((d) => {
-      return uid && d.attributes?.CustomInformation?.marketIds?.includes(uid)
+      return uid && d.attributes?.CustomInformation?.marketIds?.includes(uid);
     });
 
     if (found) {
