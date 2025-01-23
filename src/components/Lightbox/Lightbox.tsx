@@ -35,7 +35,7 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
         sizes="100vw"
         // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         // fill
-        alt={imageData.caption ?? 'article-image'}
+        alt={imageData.alternativeText ?? 'article-image'}
         onClick={handleImage}
       />
       <LightboxModal open={open} onClose={handleClose} closeAfterTransition>
@@ -59,7 +59,7 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
             />
             <LightboxImage
               src={imageData?.url}
-              alt={imageData.caption ?? 'article-image'}
+              alt={imageData.alternativeText ?? 'article-image'}
             />
           </LightboxContainer>
         </Fade>

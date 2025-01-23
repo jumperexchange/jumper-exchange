@@ -13,7 +13,7 @@ import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection';
 import { useMenuStore } from '@/stores/menu';
 import { useMultisigStore } from '@/stores/multisig';
 import { usePortfolioStore } from '@/stores/portfolio';
-import type { RouteExtended, TokenAmount } from '@lifi/sdk';
+import type { RouteExtended } from '@lifi/sdk';
 import { type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import type {
@@ -25,22 +25,17 @@ import type {
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqualObjects } from 'shallow-equal';
+import { useSpindlFetch } from 'src/hooks/spindl/useSpindlFetch';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import type { TransformedRoute } from 'src/types/internal';
-import type {
-  RouteSelectedProps,
-  TokenSearchProps,
-} from 'src/types/userTracking';
 import { calcPriceImpact } from 'src/utils/calcPriceImpact';
-import { isValidEvmOrSvmAddress } from 'src/utils/isValidEvmOrSvmAddress';
-import {
-  handleRouteEventDetails,
-  handleTransactionDetails,
-} from 'src/utils/routesInterpreterUtils';
+import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
   const { activeTab } = useActiveTabStore();
+  const { account } = useAccount();
+  const fetchSpindl = useSpindlFetch();
   const {
     sourceChainToken,
     destinationChainToken,
@@ -56,8 +51,6 @@ export function WidgetEvents() {
   const [setDestinationChain] = useMultisigStore((state) => [
     state.setDestinationChain,
   ]);
-
-  const { account } = useAccount();
 
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
     useState(false);
@@ -113,6 +106,11 @@ export function WidgetEvents() {
           data,
           enableAddressable: true,
           isConversion: true,
+        });
+        fetchSpindl({
+          address: account?.address,
+          chainId: route.toToken.chainId,
+          tokenAddress: route.toToken.address,
         });
       }
     };
@@ -386,9 +384,11 @@ export function WidgetEvents() {
       widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
     };
   }, [
+    account?.address,
     activeTab,
     destinationChainToken.chainId,
     destinationChainToken.tokenAddress,
+    fetchSpindl,
     setDestinationChain,
     setDestinationChainToken,
     setSourceChainToken,

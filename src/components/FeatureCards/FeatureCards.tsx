@@ -1,5 +1,6 @@
 'use client';
 import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
+import { usePersonalizedFeatureCards } from '@/hooks/usePersonalizedFeatureCards';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useSettingsStore } from '@/stores/settings';
 import type { FeatureCardData } from '@/types/strapi';
@@ -10,9 +11,9 @@ import { useMediaQuery } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { usePersonalizedFeatureOnLevel } from 'src/hooks/usePersonalizedFeatureOnLevel';
+import { useSpindlStore } from 'src/stores/spindl';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
-import { usePersonalizedFeatureCards } from '@/hooks/usePersonalizedFeatureCards';
 
 export const FeatureCards = () => {
   const { account } = useAccount();
@@ -24,7 +25,7 @@ export const FeatureCards = () => {
   const [widgetExpanded, setWidgetExpanded] = useState(false);
   const widgetEvents = useWidgetEvents();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
-
+  const [spindl] = useSpindlStore((state) => [state.spindl]);
   const { data: cards, isSuccess } = useStrapi<FeatureCardData>({
     contentType: STRAPI_FEATURE_CARDS,
     queryKey: ['feature-cards'],
@@ -101,21 +102,18 @@ export const FeatureCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [featureCardsToDisplay, featureCardsLevel]);
 
+  const featureCards = [
+    ...(spindl ?? []),
+    ...(slicedPersonalizedFeatureCards ?? []),
+    ...(slicedFeatureCards ?? []),
+  ].filter((_, index) => index < 3);
+
   return (
     isDesktop &&
     welcomeScreenClosed &&
     !widgetExpanded && (
       <FeatureCardsContainer>
-        {slicedPersonalizedFeatureCards?.map((cardData, index) => {
-          return (
-            <FeatureCard
-              isSuccess={isSuccess}
-              data={cardData}
-              key={`feature-card-p-${index}`}
-            />
-          );
-        })}
-        {slicedFeatureCards?.map((cardData, index) => {
+        {featureCards?.map((cardData, index) => {
           return (
             <FeatureCard
               isSuccess={isSuccess}

@@ -12,6 +12,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Slide, useTheme } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { trackSpindl } from 'src/hooks/spindl/trackSpindl';
+import type { SpindlTrackData } from 'src/types/spindl';
 import {
   FCard as Card,
   FeatureCardActions,
@@ -119,6 +121,10 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     });
   };
 
+  const handleSpindl = (spindlData: SpindlTrackData) => {
+    trackSpindl(spindlData.impression_id, spindlData.ad_creative_id);
+  };
+
   const handleCTA = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
   ) => {
@@ -136,6 +142,9 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         url: data.attributes?.URL,
       },
     });
+    if (data?.attributes.spindleData) {
+      handleSpindl(data.attributes.spindleData);
+    }
   };
 
   const handleCardClick = () => {
@@ -153,6 +162,9 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
         url: data.attributes?.URL,
       },
     });
+    if (data?.attributes.spindleData) {
+      handleSpindl(data.attributes.spindleData);
+    }
   };
 
   return (
