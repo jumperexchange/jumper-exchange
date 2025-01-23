@@ -25,40 +25,40 @@ export const useSpindlFetch = () => {
           return {
             id: `spindle-${index}`,
             attributes: {
-              Title: item.title, // --> let´s make use this to set the title of the feature card
-              Subtitle: item.description, // --> let´s make use this to set the subtitle of the feature card
-              CTACall: item.ctas[0].title, // --> let´s make use this to set the CTA label of the feature card
+              Title: item.title, // used to set the title of the feature card
+              Subtitle: item.description, // used to set the subtitle of the feature card
+              CTACall: item.ctas[0].title, // used to set the CTA label of the feature card
               URL: item.ctas[0].title,
-              // TitleColor?: string, // --> make use this to set the color of the title
-              // CTAColor?: string, // --> make use this to set the color of the CTA
+              // TitleColor?: string, // @spindl: you can make use of this to set the color of the title
+              // CTAColor?: string, // @spindl: you can make use this to set the color of the CTA
               DisplayConditions: { mode: 'light', showOnce: true },
               createdAt: Date.now().toString(),
               updatedAt: Date.now().toString(),
               PersonalizedFeatureCard: true,
               publishedAt: Date.now().toString(),
               uid: item.id,
-              // --> do we differentiate between light and dark mode?
+              // @spindl: @spindl: do we support two versions of one card (light and dark mode) or only show either of them per card?
               BackgroundImageLight: {
-                // --> this would be the place for a light image bg
+                // @spindl: this would be the place for a light image bg
                 data: {
                   id: 0,
                   attributes: {
-                    alternativeText: 'Spindl ad img', // can we supply an alternative text?
-                    width: 384, // --> needs to have this width
-                    height: 160, // --> needs to have this height
-                    url: item.imageUrl, // !!!! --> problem: Images have texts baked in! We need to remove this and apply texts via Title, Subtitle and CTACall
+                    alternativeText: 'Spindl ad img', // @spindl: can we supply an alternative text or use advertiser.name?
+                    width: 384, // @spindl: bg img must have this width
+                    height: 160, // @spindl: bg img must have this height
+                    url: item.imageUrl, // !!!! @spindl: problem: Images have texts baked in! We need to remove this and apply texts via Title, Subtitle and CTACall
                   },
                 },
               },
               BackgroundImageDark: {
-                // --> this would be the place for a dark image bg
+                // @spindl: this would be the place for a dark image bg
                 data: {
                   id: 1,
                   attributes: {
-                    alternativeText: 'Spindl ad img', // can we supply an alternative text?
-                    width: 384, // --> needs to have this width
-                    height: 160, // --> needs to have this height
-                    url: item.imageUrl, // !!!! --> problem: Images have texts baked in! We need to remove this and apply texts via Title, Subtitle and CTACall
+                    alternativeText: 'Spindl ad img', // @spindl: can we supply an alternative text or use advertiser.name?
+                    width: 384, // @spindl: bg img must have this width
+                    height: 160, // @spindl: bg img must have this height
+                    url: item.imageUrl, // !!!! @spindl: problem: Images have texts baked in! We need to remove this and apply texts via Title, Subtitle and CTACall
                   },
                 },
               },
