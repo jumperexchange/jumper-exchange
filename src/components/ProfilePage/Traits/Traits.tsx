@@ -1,4 +1,4 @@
-import { Tooltip, type SxProps, type Theme } from '@mui/material';
+import { type SxProps, type Theme } from '@mui/material';
 import { useTraits } from 'src/hooks/useTraits';
 import { TraitsContainer, TraitsItem, TraitsRemaining } from './Traits.style';
 import { TraitsInfoBadge } from './TraitsInfoBadge';
@@ -28,24 +28,24 @@ export const Traits = ({
     <TraitsContainer sx={sx}>
       <TraitsInfoBadge />
       {displayTraits.map((trait, index) => (
-        <Tooltip
-          title={
-            hideTooltip
-              ? ''
-              : 'Todo: This should be the explanation for a certain trait.'
-          }
-          placement="top"
-          enterTouchDelay={0}
-          arrow
+        // <Tooltip
+        //   title={
+        //     hideTooltip
+        //       ? ''
+        //       : 'Todo: This should be the explanation for a certain trait.'
+        //   }
+        //   placement="top"
+        //   enterTouchDelay={0}
+        //   arrow
+        // >
+        <TraitsItem
+          key={index}
+          variant="bodyXSmallStrong"
+          // sx={{ ...(!hideTooltip && { cursor: 'help' }) }}
         >
-          <TraitsItem
-            key={index}
-            variant="bodyXSmallStrong"
-            sx={{ ...(!hideTooltip && { cursor: 'help' }) }}
-          >
-            {trait}
-          </TraitsItem>
-        </Tooltip>
+          {trait}
+        </TraitsItem>
+        // </Tooltip>
       ))}
       {maxDisplayTraits &&
         maxDisplayTraits < traits.length &&
