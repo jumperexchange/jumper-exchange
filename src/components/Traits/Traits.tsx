@@ -3,11 +3,10 @@ import { useTranslation } from 'react-i18next';
 
 import useClient from 'src/hooks/useClient';
 import { LeaderboardUserEntry } from '../Leaderboard/LeaderboardUserEntry';
-import IconHeader from '../ProfilePage/Common/IconHeader';
 import { Traits as TraitsComponent } from '../ProfilePage/Traits/Traits';
 import { TraitsEntryStack } from '../ProfilePage/Traits/Traits.style';
 import { PageContainer, SectionContainer, SectionTitle } from '../styles';
-import { TraitsTitleBox, TraitsUpdateDateBox } from './Traits.style';
+import { TraitsTitleBox } from './Traits.style';
 
 export const Traits = () => {
   const { t } = useTranslation();
@@ -20,14 +19,6 @@ export const Traits = () => {
           <SectionTitle variant="headerMedium">
             {t('traits.title')}
           </SectionTitle>
-          <TraitsUpdateDateBox>
-            {isClient && (
-              <IconHeader
-                tooltipKey={t('traits.descriptionTooltip')}
-                title={`Updated: ${t('format.date', { value: new Date() })}`}
-              />
-            )}
-          </TraitsUpdateDateBox>
         </TraitsTitleBox>
         <LeaderboardUserEntry
           hideRank={true}
