@@ -20,7 +20,7 @@ export const BerachainMarketCardWithBadge = ({
     <Tooltip
       title={
         <>
-          {`Baffle rewards are additional rewards offered by participating applications exclusively to users who deposit into Boyco via Jumper. These rewards are Berachain ecosystem NFTs that will be distributed through raffle mechanisms. To enter the raffle you must deposit more than $69 into any pool of the protocol. Known rewards: 25 HJ1 NFTs, 5 Big Fat Beras NFTs, 5 Beary Benslers NFTs, 1 Bearet Yellens NFT...`}
+          {`Baffle rewards are additional raffle rewards on top of the Boyco rewards offered by participating protocols exclusively to users who deposit into Boyco via Jumper. The rewards will be distributed through a raffle mechanism at the end of Boyco. To qualify for a protocols baffle you need to deposit and lock the minimum amount into any of their markets. More details about the rewards and how to qualify can be found in the market’s description.`}
         </>
       }
       placement="top"

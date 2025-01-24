@@ -40,7 +40,7 @@ Boyco will allow applications to onboard liquidity directly into their smart con
     },
     {
       Question: 'What are "Baffle" rewards?',
-      Answer: `Baffle rewards are additional rewards offered by participating applications exclusively to users who deposit into Boyco via the Jumper UI. These rewards are Berachain ecosystem NFTs that will be distributed through raffle mechanisms. To enter the raffle you must deposit more than $69 into any pool with the “Baffle” tag on the UI. List of rewards: 25 HJ1 NFTs, 5 Big Fat Beras NFTs, 5 Beary Benslers NFTs, min 1 Bearet Yellens NFT, etc.`,
+      Answer: `Baffle rewards are additional raffle rewards on top of the Boyco rewards offered by participating protocols exclusively to users who deposit into Boyco via Jumper. The rewards will be distributed through a raffle mechanism at the end of Boyco. To qualify for a protocols baffle you need to deposit and lock the minimum amount into any of their markets. More details about how to qualify can be found in the market’s description. All of those markets are recognisable by the 'Baffle' tag on the UI. List of all Baffle rewards: 25 HJ1 NFTs from The Honey Jar, 5 Big Fat Beras NFTs from Beraborrow, 5 Beary Benslers NFTs & 1 Bearet Yellens NFT from BurrBear, 6.9k USDC from Origami.`,
     },
   ];
 
