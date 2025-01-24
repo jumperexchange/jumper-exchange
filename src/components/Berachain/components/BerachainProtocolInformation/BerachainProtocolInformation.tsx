@@ -51,7 +51,9 @@ export const BerachainProtocolInformation = ({
             market={market}
             appName={card?.attributes.Title}
             fullAppName={getFullTitle(market!, card)}
-            appLink={detailInformation?.socials?.website ?? 'https://jumper.exchange/'}
+            appLink={
+              detailInformation?.socials?.website ?? 'https://jumper.exchange/'
+            }
           />
         ) : (
           <BerachainWidgetLoader />
@@ -201,7 +203,9 @@ export const BerachainProtocolInformation = ({
             fullAppName={getFullTitle(market!, card)}
             market={market}
             appName={card?.attributes.Title}
-            appLink={detailInformation?.socials?.website ?? 'https://jumper.exchange/'}
+            appLink={
+              detailInformation?.socials?.website ?? 'https://jumper.exchange/'
+            }
           />
         ) : (
           <BerachainWidgetLoader />
