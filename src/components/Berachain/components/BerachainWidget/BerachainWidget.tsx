@@ -120,6 +120,12 @@ export const BerachainWidget = ({
               '.widget-wrapper > div > div': {
                 maxWidth: '100%!important',
               },
+              '.widget-wrapper .MuiContainer-root': {
+                padding: 0,
+              },
+              '.widget-wrapper .MuiContainer-root .MuiBox-root': {
+                padding: 0,
+              },
             }}
           >
             <Widget
