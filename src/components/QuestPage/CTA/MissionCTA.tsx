@@ -208,10 +208,10 @@ export const MissionCTA = ({
                         minWidth={'88px'}
                       >
                         <Typography
-                          fontSize="16px"
-                          fontWeight={700}
-                          lineHeight="20px"
-                          color={theme.palette.text.primary}
+                          variant="bodyMediumStrong"
+                          sx={(theme) => ({
+                            color: theme.palette.text.primary,
+                          })}
                         >
                           {`${Number(CTA.apy).toFixed(1)}%`}
                         </Typography>
@@ -229,10 +229,12 @@ export const MissionCTA = ({
                       minWidth={'88px'}
                     >
                       <Typography
-                        fontSize="16px"
-                        fontWeight={700}
-                        lineHeight="20px"
-                        color={'#ffffff'}
+                        sx={(theme) => ({
+                          fontSize: '16px',
+                          fontWeight: 700,
+                          lineHeight: '20px',
+                          color: theme.palette.white.main,
+                        })}
                       >
                         {CTA?.weeklyApy
                           ? CTA?.weeklyApy

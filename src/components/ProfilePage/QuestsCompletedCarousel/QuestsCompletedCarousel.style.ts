@@ -30,10 +30,8 @@ export const CompletedQuestHeader = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<BoxProps>(({ theme }) => ({
   display: 'flex',
-  ...(theme.palette.mode === 'dark' && {
-    color: theme.palette.white.main,
-  }),
   justifyContent: 'space-between',
+  color: theme.palette.text.primary,
 }));
 
 export const CompletedQuestTitle = styled(Typography, {

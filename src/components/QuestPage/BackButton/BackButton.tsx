@@ -27,7 +27,11 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
         }}
       >
         <ArrowBackIcon
-          sx={{ color: '#FFFFFF', width: '16px', height: '16px' }}
+          sx={(theme) => ({
+            color: theme.palette.white.main,
+            width: '16px',
+            height: '16px',
+          })}
         />
         <Typography
           sx={{
