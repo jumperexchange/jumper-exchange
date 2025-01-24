@@ -267,7 +267,7 @@ export const BerachainMarketCard = ({
               />
             ) : (
               <DigitTooltipCard
-                title={'APY'}
+                title={'APR'}
                 digit={
                   roycoData?.annual_change_ratio
                     ? t('format.percent', {

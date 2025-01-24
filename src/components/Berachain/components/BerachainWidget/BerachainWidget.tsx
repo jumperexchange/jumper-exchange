@@ -18,7 +18,7 @@ export const BerachainWidget = ({
   fullAppName,
 }: {
   market: EnrichedMarketDataType;
-  appLink?: string;
+  appLink: string;
   appName?: string;
   fullAppName?: string;
 }) => {
