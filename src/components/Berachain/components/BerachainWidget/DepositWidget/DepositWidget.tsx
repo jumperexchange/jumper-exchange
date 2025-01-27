@@ -211,6 +211,9 @@ function DepositWidget({
       return;
     }
 
+    setContractCallIndex(0);
+    setInputValue('');
+
     trackEvent({
       category: TrackingCategory.WidgetEvent,
       action: 'berachain_deposit',
@@ -285,7 +288,11 @@ function DepositWidget({
   useEffect(() => {
     if (isTxConfirmed) {
       refetch();
-      setContractCallIndex(contractCallIndex + 1);
+
+      const newIndex = contractCallIndex + 1;
+      if (writeContractOptions[newIndex]) {
+        setContractCallIndex(newIndex);
+      }
     }
   }, [isTxConfirmed]);
 

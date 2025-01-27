@@ -78,6 +78,7 @@ export const BerachainMarketCard = ({
     market_id: roycoData?.market_id!,
     account_address: account?.address?.toLowerCase() ?? '',
     custom_token_data: undefined,
+    enabled: false, // Disable to avoid spamming infra
   });
 
   const deposited =
