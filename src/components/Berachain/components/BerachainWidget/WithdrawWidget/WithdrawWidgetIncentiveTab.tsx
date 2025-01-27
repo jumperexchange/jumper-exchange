@@ -120,7 +120,6 @@ export const WithdrawWidgetIncentiveTab = ({
       position?: EnrichedPositionsRecipeDataType;
     })[]
   >(
-    // @ts-expect-error
     () => {
       const tokens = [];
       for (const position of positions) {
