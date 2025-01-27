@@ -1,10 +1,10 @@
 'use client';
+import generateKey from '@/app/lib/generateKey';
 import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
+import { getChainById } from '@/utils/tokenAndChain';
+import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
 import { Link as MuiLink, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
-import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
-import { getChainById, getTokenByName } from '@/utils/tokenAndChain';
-import generateKey from '@/app/lib/generateKey';
 
 interface PopularBridgeProps {
   sourceChain: ExtendedChain;
@@ -61,8 +61,10 @@ const PopularBridgeSection = ({
         {popularBridges.map((token) => (
           <MuiLink
             width="50%"
-            color="text.primary"
             key={generateKey(token.address)}
+            sx={(theme) => ({
+              color: theme.palette.text.primary,
+            })}
             component={Link}
             href={`/bridge/${getChainById(chains, token.chainId)?.name}-${token.symbol}-to-${destinationChain?.name}-${destinationToken?.symbol}`.toLowerCase()}
           >

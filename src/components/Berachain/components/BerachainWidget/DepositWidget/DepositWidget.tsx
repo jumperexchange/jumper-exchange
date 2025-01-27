@@ -98,6 +98,7 @@ function DepositWidget({
   market,
   overrideStyle = {},
 }: WidgetLikeFieldProps) {
+  const wagmiConfig = useConfig();
   const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
   const { account } = useAccount();
@@ -115,7 +116,6 @@ function DepositWidget({
     dataWallet?.[0]?.raw_amount?.toString() ?? '0',
     market?.input_token_data.decimals ?? 0,
   );
-  const wagmiConfig = useConfig();
   const theme = useTheme();
   const [inputValue, setInputValue] = useState<string>('');
 
@@ -199,7 +199,7 @@ function DepositWidget({
   } = useWaitForTransactionReceipt({
     chainId: market.chain_id ?? undefined,
     hash: txHash,
-    confirmations: 2,
+    confirmations: 10,
     pollingInterval: 1_000,
   });
 
@@ -455,7 +455,7 @@ function DepositWidget({
                       display: 'flex',
                       flexDirection: 'column',
                       marginTop: '20px',
-                      width: '96px',
+                      width: '100%',
                       alignItems: 'flex-end',
                     }}
                   >
@@ -583,7 +583,6 @@ function DepositWidget({
             />
           )
         )}
-        <BerachainTransactionDetails type="deposit" market={market} />
       </BoxForm>
     </>
   );

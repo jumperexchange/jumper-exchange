@@ -33,7 +33,19 @@ export const REWARDS_LIST = [
     lightChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Layer_1_2_e342a1f262.svg`,
     darkChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Layer_1_2_e342a1f262.svg`,
   },
+  {
+    chainId: '1135',
+    tokenChainId: 1135,
+    claimingAddress: '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae',
+    tokenAddress: '0xac485391EB2d7D88253a7F1eF18C37f4242D1A24',
+    decimalsToShow: 2,
+    explorerLink: 'https://blockscout.lisk.com/',
+    lightTokenLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/liskttoken_386a617ff7.png`,
+    darkTokenLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/liskttoken_386a617ff7.png`,
+    lightChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/lisk_chain_de4347a5f9.png`,
+    darkChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/lisk_chain_de4347a5f9.png`,
+  },
 ];
 
-export const REWARDS_CHAIN_IDS = ['1329', '30'];
-export const MERKL_CREATOR_TAG = 'sei-jumper';
+export const REWARDS_CHAIN_IDS = ['1135', '30', '8453'];
+export const MERKL_CREATOR_TAG = 'jumper-test';

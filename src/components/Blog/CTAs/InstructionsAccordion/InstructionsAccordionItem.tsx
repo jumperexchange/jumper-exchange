@@ -4,8 +4,14 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 import { sora } from 'src/fonts/fonts';
+import { useUserTracking } from 'src/hooks/userTracking';
 import type { InstructionItemProps } from '.';
 import {
   InstructionsAccordionButtonMainBox,
@@ -18,12 +24,6 @@ import {
   InstructionsAccordionLinkBox,
   InstructionsAccordionToggle,
 } from '.';
-import { useUserTracking } from 'src/hooks/userTracking';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from 'src/const/trackingKeys';
 
 interface InstructionsAccordionItemProps extends InstructionItemProps {
   index: number;
@@ -131,7 +131,6 @@ export const InstructionsAccordionItem = ({
           )
         ) : null}
       </InstructionsAccordionItemMain>
-
       {open ? (
         <InstructionsAccordionItemMore>
           <>
@@ -168,27 +167,21 @@ export const InstructionsAccordionItem = ({
                             variant={'bodyMediumStrong'}
                             component={'span'}
                             mr={'8px'}
-                            sx={{
-                              color:
-                                theme.palette.mode === 'light'
-                                  ? '#000000'
-                                  : '#FFFFFF',
+                            sx={(theme) => ({
+                              color: theme.palette.text.primary,
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
                               maxWidth: 208,
                               [theme.breakpoints.up('sm' as Breakpoint)]: {
                                 maxWidth: 168,
                               },
-                            }}
+                            })}
                           >
                             {buttonTitles[i]}
                           </Typography>
                           <ArrowForwardIcon
                             style={{
-                              color:
-                                theme.palette.mode === 'light'
-                                  ? '#000000'
-                                  : '#FFFFFF',
+                              color: theme.palette.text.primary,
                             }}
                           />
                         </InstructionsAccordionLinkBox>

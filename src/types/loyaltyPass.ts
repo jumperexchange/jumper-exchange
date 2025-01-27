@@ -96,12 +96,12 @@ export interface QuestChains {
   logo: string;
 }
 
-interface CustomInformation {
+export interface CustomInformation {
   chains: QuestChains[];
   [key: string]: any;
 }
 
-type QuestAttributes<T = never> = {
+export type QuestAttributes = {
   UID: string;
   Title: string;
   Description?: string;
@@ -125,9 +125,9 @@ type QuestAttributes<T = never> = {
   quests_platform: QuestsPlatformData;
 };
 
-export interface Quest<T = never> {
+export interface Quest {
   id: number;
-  attributes: QuestAttributes<T>;
+  attributes: QuestAttributes;
 }
 
 export interface LoyaltyPassProps {

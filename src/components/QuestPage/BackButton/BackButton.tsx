@@ -27,15 +27,23 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
         }}
       >
         <ArrowBackIcon
-          sx={{ color: '#FFFFFF', width: '16px', height: '16px' }}
+          sx={(theme) => ({
+            color: theme.palette.white.main,
+            width: '16px',
+            height: '16px',
+          })}
         />
         <Typography
-          fontSize="14px"
-          lineHeight="14px"
-          fontWeight={500}
-          marginLeft={'8px'}
+          sx={{
+            fontSize: '14px',
+            lineHeight: '14px',
+            fontWeight: 500,
+            marginLeft: '8px',
+          }}
         >
-          {String(title || t('navbar.navbarMenu.profile')).toUpperCase()}
+          {String(
+            title || 'Loyalty Pass' || t('navbar.navbarMenu.profile'),
+          ).toUpperCase()}
         </Typography>
       </Button>
     </BackButtonMainBox>

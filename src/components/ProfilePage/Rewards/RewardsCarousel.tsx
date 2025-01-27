@@ -1,4 +1,5 @@
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { ClaimingBox } from './ClaimingBox/ClaimingBox';
@@ -6,7 +7,6 @@ import {
   EarnedTypography,
   RewardsCarouselContainer,
 } from './RewardsCarousel.style';
-import { useTranslation } from 'react-i18next';
 
 interface RewardsCarouselProps {
   isMerklSuccess: boolean;
@@ -23,7 +23,6 @@ export const RewardsCarousel = ({
   hideComponent,
   isMerklSuccess,
 }: RewardsCarouselProps) => {
-  const theme = useTheme();
   const { t } = useTranslation();
 
   return (
@@ -31,7 +30,11 @@ export const RewardsCarousel = ({
       <RewardsCarouselContainer>
         <FlexCenterRowBox>
           <Box>
-            <EarnedTypography color={theme.palette.text.primary}>
+            <EarnedTypography
+              sx={(theme) => ({
+                color: theme.palette.text.primary,
+              })}
+            >
               {t('profile_page.rewards')}
             </EarnedTypography>
           </Box>

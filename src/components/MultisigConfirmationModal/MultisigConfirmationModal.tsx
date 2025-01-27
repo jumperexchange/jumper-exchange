@@ -24,14 +24,20 @@ export const MultisigConfirmationModal: React.FC<{
           fontWeight={700}
           textAlign={'center'}
           marginY={4}
-          color="inherit"
-          style={{
+          sx={{
+            color: 'inherit',
             fontSize: '1.125rem',
           }}
         >
           {t('multisig.transactionInitiated.title')}
         </Typography>
-        <Typography fontSize={'1.125 rem'} marginY={4} color="inherit">
+        <Typography
+          fontSize={'1.125 rem'}
+          marginY={4}
+          sx={{
+            color: 'inherit',
+          }}
+        >
           {t('multisig.transactionInitiated.description')}
         </Typography>
         <Button
