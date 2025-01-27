@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { BerachainMarketCard } from '../BerachainMarketCard/BerachainMarketCard';
 import { BerachainMarketCards } from './BerachainMarkets.style';
 import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMarketsFilters';
@@ -20,7 +20,11 @@ export const BerachainMarkets = () => {
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
   const berachainFilters = useBerachainFilters();
 
-  const { data: roycoData, isSuccess } = useEnrichedMarkets({
+  const {
+    data: roycoData,
+    isSuccess,
+    isError,
+  } = useEnrichedMarkets({
     is_verified: isVerified,
     sorting: [{ id: 'locked_quantity_usd', desc: true }],
     ...berachainFilters,
@@ -42,7 +46,32 @@ export const BerachainMarkets = () => {
               key={idx}
             />
           ))}
-        {Array.isArray(roycoData) &&
+        {isError && (
+          <Grid
+            item
+            xs={12}
+            md={12}
+            sx={{
+              border: '1px solid white',
+              width: '100%',
+              textAlign: 'center',
+              gridColumn: '1 / -1',
+              padding: 8,
+              borderRadius: 2,
+            }}
+          >
+            <Typography
+              sx={(theme) => ({
+                color: theme.palette.text.primary,
+              })}
+            >
+              Boyco is having issues returning the markets. Please refresh the
+              page or try again later.
+            </Typography>
+          </Grid>
+        )}
+        {isSuccess &&
+          Array.isArray(roycoData) &&
           isSuccess &&
           roycoData
             .filter(
