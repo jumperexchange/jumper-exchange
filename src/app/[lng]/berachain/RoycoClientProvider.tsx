@@ -16,13 +16,6 @@ export const RoycoClientProvider = ({
       'https://eth-sepolia.g.alchemy.com/v2/1loBE7C025PbFMLCiTAhbG3WrIqH0J1y',
   };
 
-  console.log('---', {
-    originUrl: process.env.NEXT_PUBLIC_ROYCO_URL!,
-    originKey: process.env.NEXT_PUBLIC_ROYCO_KEY!,
-    originId: process.env.NEXT_PUBLIC_ROYCO_ID!,
-    rpcApiKeys: RPC_API_KEYS,
-  })
-
   return (
     <RoycoProvider
       originUrl={process.env.NEXT_PUBLIC_ROYCO_URL!}

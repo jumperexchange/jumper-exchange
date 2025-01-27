@@ -18,8 +18,8 @@ export const BerachainMarkets = () => {
   const searchParam = useSearchParams();
   const isVerified = searchParam.get('is_verified') === 'true';
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
-
   const berachainFilters = useBerachainFilters();
+
   const { data: roycoData, isSuccess } = useEnrichedMarkets({
     is_verified: isVerified,
     sorting: [{ id: 'locked_quantity_usd', desc: true }],

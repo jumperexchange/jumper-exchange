@@ -42,7 +42,7 @@ export const BerachainFilterIncentivesMenu = () => {
   const { data } = useEnrichedMarkets({
     is_verified: isVerified,
     sorting: [{ id: 'locked_quantity_usd', desc: true }],
-    ...berachainFilters
+    ...berachainFilters,
   });
 
   const tokens = useMemo(() => {
