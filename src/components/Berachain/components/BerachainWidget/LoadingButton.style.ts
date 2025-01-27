@@ -1,22 +1,27 @@
-import { type BoxProps, darken, styled } from '@mui/material';
-import LoadingButton, { type LoadingButtonProps } from '@mui/lab/LoadingButton';
+import {
+  type ButtonProps,
+  Button,
+  buttonClasses,
+  darken,
+  styled,
+} from '@mui/material';
 
-interface CustomLoadingButtonProps extends LoadingButtonProps {
+interface CustomLoadingButtonProps extends ButtonProps {
   overrideStyle: {
     mainColor?: string;
   };
 }
 
-export const CustomLoadingButton = styled(LoadingButton, {
+export const CustomLoadingButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'overrideStyle',
 })<CustomLoadingButtonProps>(({ theme, overrideStyle }) => ({
-  '&.MuiLoadingButton-loading': {
+  [`&.${buttonClasses.loading}`]: {
     border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
   },
-  '.MuiLoadingButton-loadingIndicator': {
+  [`&.${buttonClasses.loadingIndicator}`]: {
     color: theme.palette.text.primary,
   },
-  '&.Mui-disabled': {
+  [`&.${buttonClasses.disabled}`]: {
     // TODO: Refactorize the button
     backgroundColor: darken(theme.palette.primary.main, 0.16),
   },

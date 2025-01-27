@@ -118,16 +118,24 @@ interface BlogArticleCardMetaContainerProps extends BoxProps {
 
 export const BlogArticleCardMetaContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'hasTags',
-})<BlogArticleCardMetaContainerProps>(({ theme, hasTags }) => ({
+})<BlogArticleCardMetaContainerProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   fontSize: '14px',
   height: 40,
   color: theme.palette.text.primary,
   '*': { textWrap: 'nowrap' },
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    ...(hasTags && { marginLeft: theme.spacing(1) }),
-  },
+  [theme.breakpoints.up('sm' as Breakpoint)]: {},
+  variants: [
+    {
+      props: ({ hasTags }) => hasTags,
+      style: {
+        [theme.breakpoints.up('sm' as Breakpoint)]: {
+          marginLeft: theme.spacing(1),
+        },
+      },
+    },
+  ],
 }));
 
 export const BlogArticleCardTag = styled(Tag)(({ theme }) => ({

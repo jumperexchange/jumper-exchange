@@ -15,7 +15,6 @@ export const useAddressMenuContent = () => {
   const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
   const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
   const closeAllMenus = useMenuStore((state) => state.closeAllMenus);
   const router = useRouter();
   const { setSnackbarState } = useMenuStore((state) => state);
@@ -43,9 +42,7 @@ export const useAddressMenuContent = () => {
         <LinkIcon
           sx={{
             height: '16px',
-            color: isDarkMode
-              ? theme.palette.white.main
-              : theme.palette.black.main,
+            color: theme.palette.text.primary,
           }}
         />
       ),

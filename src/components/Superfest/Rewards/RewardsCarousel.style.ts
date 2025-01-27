@@ -1,13 +1,12 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import { getContrastAlphaColor } from '@/utils/colors';
+import type { BoxProps, Breakpoint, IconButtonProps } from '@mui/material';
 import {
   Box,
+  IconButton as MuiIconButton,
   Typography,
   styled,
-  IconButton as MuiIconButton,
 } from '@mui/material';
 import { sequel65 } from 'src/fonts/fonts';
-import { getContrastAlphaColor } from '@/utils/colors';
-import type { IconButtonProps } from '@mui/material';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#fdfbef',
@@ -23,10 +22,8 @@ export const RewardsCarouselHeader = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<BoxProps>(({ theme }) => ({
   display: 'flex',
-  ...(theme.palette.mode === 'dark' && {
-    color: theme.palette.white.main,
-  }),
   justifyContent: 'space-between',
+  color: theme.palette.text.primary,
 }));
 
 export const RewardsCarouselTitle = styled(Typography, {

@@ -1,5 +1,4 @@
 import { useAccount } from '@lifi/wallet-management';
-import LoadingButton from '@mui/lab/LoadingButton';
 import {
   alpha,
   Box,
@@ -9,6 +8,8 @@ import {
   InputLabel,
   Stack,
   Typography,
+  Button,
+  buttonClasses,
 } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import { parseUnits } from 'ethers';
@@ -308,16 +309,16 @@ function WidgetLikeField({
           {!account?.isConnected ? (
             <ConnectButton sx={(theme) => ({ marginTop: theme.spacing(2) })} />
           ) : shouldSwitchChain ? (
-            <LoadingButton
+            <Button
               sx={(theme) => ({ marginTop: theme.spacing(2) })}
               type="button"
               variant="contained"
               onClick={() => handleSwitchChain(projectData?.chainId)}
             >
               <Typography variant="bodyMediumStrong">Switch chain</Typography>
-            </LoadingButton>
+            </Button>
           ) : (
-            <LoadingButton
+            <Button
               type="submit"
               loading={isPending || isLoading}
               disabled={balance === '0' || isPending}
@@ -325,10 +326,10 @@ function WidgetLikeField({
               sx={(theme) => ({
                 marginTop: theme.spacing(2),
                 borderColor: alpha(theme.palette.surface2.main, 0.08),
-                '&.MuiLoadingButton-loading': {
+                [`&.${buttonClasses.loading}`]: {
                   border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
                 },
-                '.MuiLoadingButton-loadingIndicator': {
+                [`&.${buttonClasses.loadingIndicator}`]: {
                   color: overrideStyle?.mainColor ?? theme.palette.primary.main,
                 },
               })}
@@ -336,7 +337,7 @@ function WidgetLikeField({
               <Typography variant="bodyMediumStrong">
                 {contractCalls[0].label}
               </Typography>
-            </LoadingButton>
+            </Button>
           )}
 
           {isSuccess && (

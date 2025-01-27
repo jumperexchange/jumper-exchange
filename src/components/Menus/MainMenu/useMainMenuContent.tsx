@@ -8,7 +8,6 @@ import {
 } from '@/const/trackingKeys';
 import {
   DISCORD_URL,
-  JUMPER_BOYCO_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
@@ -21,7 +20,6 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
-import PetsIcon from '@mui/icons-material/Pets';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
@@ -30,8 +28,6 @@ import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
-import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
-import { BoycoIcon } from 'src/components/illustrations/BoycoIcon';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -235,15 +231,7 @@ export const useMainMenuContent = () => {
     },
     {
       label: 'Discord',
-      prefixIcon: (
-        <Discord
-          color={
-            theme.palette.mode === 'dark'
-              ? theme.palette.white.main
-              : theme.palette.black.main
-          }
-        />
-      ),
+      prefixIcon: <Discord color={theme.palette.text.primary} />,
       showMoreIcon: false,
       onClick: () => {
         trackEvent({

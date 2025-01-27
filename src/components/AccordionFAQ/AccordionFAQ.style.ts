@@ -3,7 +3,6 @@ import type { BoxProps } from '@mui/material';
 import {
   Box,
   Divider,
-  IconButton,
   Accordion as MuiAccordion,
   AccordionDetails as MuiAccordionDetails,
   AccordionSummary as MuiAccordionSummary,
@@ -15,16 +14,10 @@ import { alpha, keyframes, styled } from '@mui/material/styles';
 
 export const AccordionBox = styled(Box)(({ theme }) => ({
   margin: 'auto',
-  // marginTop: theme.spacing(4),
-  // padding: theme.spacing(1, 2),
   borderRadius: '8px',
   position: 'relative',
   maxWidth: theme.breakpoints.values.md,
   width: '100% !important',
-  // boxShadow:
-  //   theme.palette.mode === 'dark'
-  //     ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-  //     : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: theme.breakpoints.values.md,
@@ -74,6 +67,7 @@ export const Accordion = styled(MuiAccordion)(({ theme }) => ({
   width: '100%',
   background: alpha(theme.palette.text.primary, 0.08),
   minHeight: 64,
+  alignContent: 'center',
   transition: 'background-color 300ms ease-in-out',
   '&:before': {
     display: 'none',
@@ -104,12 +98,16 @@ export const AccordionTitle = styled(Typography)(({ theme }) => ({
   textAlign: 'center',
 }));
 
-export const AccordionToggleButton = styled(IconButton)(({ theme }) => ({
+export const AccordionToggleButton = styled(Box)(({ theme }) => ({
   background: alpha(theme.palette.text.primary, 0.08),
   color: theme.palette.text.primary,
   transition: 'background-color 300ms ease-in-out',
   width: 32,
   height: 32,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: '50%',
   backgroundColor: alpha(theme.palette.text.primary, 0.08),
 
   '&:hover': {
