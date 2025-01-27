@@ -1,22 +1,25 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Chip, Tooltip, Typography } from '@mui/material';
 import type { BerachainIncentiveToken } from 'src/components/Berachain/BerachainType';
+import TooltipIncentives from '@/components/Berachain/components/BerachainWidget/TooltipIncentives';
+import type { EnrichedMarketDataType } from 'royco/queries';
 
 interface DigitCardProps {
-  tokens: BerachainIncentiveToken[];
+  market: EnrichedMarketDataType;
   perInput?: boolean;
   amount?: number;
 }
 
 export const TokenIncentivesData = ({
-  tokens,
+  market,
   perInput,
   amount,
 }: DigitCardProps) => {
+  const tokens = market?.incentive_tokens_data;
   return (
     <Box
       sx={{
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         gap: 2,
       }}
     >
@@ -65,6 +68,18 @@ export const TokenIncentivesData = ({
           </Typography>
         </Box>
       ))}
+      <Tooltip
+        title={<TooltipIncentives market={market} />}
+        placement={'top'}
+        enterTouchDelay={0}
+        arrow
+      >
+        <Chip
+          label={`+${market.external_incentives.length} rewards`}
+          variant="outlined"
+          sx={{ backgroundColor: '#313131', height: 24, fontSize: '0.75rem' }}
+        />
+      </Tooltip>
     </Box>
   );
 };

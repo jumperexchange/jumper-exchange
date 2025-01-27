@@ -34,6 +34,7 @@ interface DepositInfoProps {
 function DepositInfo({ market, balance }: DepositInfoProps) {
   const { t } = useTranslation();
   const { account } = useAccount();
+
   const maxInputValue = useMemo(() => {
     return parseRawAmountToTokenAmount(
       market?.quantity_ip ?? '0', // @note: AP fills IP quantity
@@ -161,9 +162,7 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
                 },
               })}
               tooltipText={<TooltipIncentives market={market} />}
-              digit={
-                <TokenIncentivesData tokens={market?.incentive_tokens_data} />
-              }
+              digit={<TokenIncentivesData market={market} />}
             />
           ) : (
             <DigitCard
