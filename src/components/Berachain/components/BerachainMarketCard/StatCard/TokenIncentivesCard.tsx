@@ -19,8 +19,6 @@ interface DigitCardProps {
 const TokenIncentivesCard = ({ marketData, tokens }: DigitCardProps) => {
   const theme = useTheme();
 
-  console.log('ncentnvie', marketData, tokens);
-
   return (
     <div style={{ flexGrow: 1 }}>
       <BeraChainProgressCardComponent

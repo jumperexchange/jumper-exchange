@@ -39,19 +39,6 @@ export const TokenIncentivesData = ({
     }
   }, [currentMarketData, currentHighestOffers, marketMetadata]);
 
-  console.log(
-    'highestincentives',
-    highestIncentives,
-    {
-      chain_id: market.chain_id,
-      market_id: market.id,
-      type: market.market_type,
-    },
-    currentHighestOffers,
-    marketMetadata,
-    currentMarketData,
-  );
-
   const tokens = market?.incentive_tokens_data;
   return (
     <Box
